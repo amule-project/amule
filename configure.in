@@ -102,12 +102,8 @@ AC_ARG_WITH(
 # configure as soon as possible in case of a missing one
 # to avoid losing too much time
 
-# Check for zlib
-MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amulecmd, webserver, amule-gui],
-	[MULE_CHECK_ZLIB([1.1.4],, [AC_MSG_ERROR([zlib >= 1.1.4 is required for aMule])])])
-
+# Check for gd
 MULE_IF_ENABLED([cas], [
-	# Check for gd
 	MULE_CHECK_GDLIB([2.0.0], [
 		CAS_DEFS="-D__GD__"
 		MULE_PREPEND([GDLIB_LIBS], [-lgd])
@@ -123,6 +119,26 @@ MULE_IF_ENABLED([cas], [
 ])
 AC_SUBST([CAS_DEFS])dnl
 
+dnl Tests explicitly requiring C. They test features of the C compiler.
+AC_HEADER_STDBOOL
+AC_C_CONST
+AC_C_INLINE
+AC_C_VOLATILE
+
+dnl Use C++ for all other tests, since we use C++ to actually compile the
+dnl sources.  There might be differences between the compilers, thus if
+dnl something works in C it doesn't automatically mean it also works in C++.
+dnl
+dnl The only exception is cas which is written in pure C.
+AC_LANG_PUSH([C++])
+
+
+# Check for zlib
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amulecmd, webserver, amule-gui],
+	[MULE_CHECK_ZLIB([1.1.4],, [AC_MSG_ERROR([zlib >= 1.1.4 is required for aMule])])])
+
+
+# Check for libpng
 MULE_IF_ENABLED([webserver],
 	[MULE_CHECK_LIBPNG([1.2.0], [AMULEWEB_DEFS="-DWITH_LIBPNG"], [
 		MULE_WARNING(
@@ -132,6 +148,7 @@ MULE_IF_ENABLED([webserver],
 	])
 AC_SUBST([AMULEWEB_DEFS])dnl
 
+
 # Check for perl File::Copy
 AC_MSG_CHECKING([for File::Copy])
 AS_IF([perl -e "require File::Copy" 2>/dev/null], [AC_MSG_RESULT([ok])],
@@ -139,8 +156,10 @@ AS_IF([perl -e "require File::Copy" 2>/dev/null], [AC_MSG_RESULT([ok])],
 		[File::Copy perl module is required by the mldonkey_importer script.
 		If you want to use this script please install File::Copy from CPAN.])])
 
+
 # Check for GeoIP (required for IP2Country capability)
 MULE_IF_ENABLED_ANY([monolithic, amule-gui], [MULE_CHECK_GEOIP])
+
 
 # Check for wx
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver, alc, alcc, wxcas, fileview],
@@ -189,6 +208,7 @@ MULE_IF_ENABLED_ANY([monolithic, amule-gui, wxcas, alc],
 	])]
 )])
 
+
 dnl Resource compiler for W32
 AC_ARG_VAR([RC], [Resource Compiler])dnl
 AC_ARG_VAR([RCFLAGS], [Resource Compiler Flags])dnl
@@ -221,11 +241,13 @@ MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
 	installation directory).])
 ])])
 
+
 MULE_COMPILATION_FLAGS
 
-dnl Checks requiring C++
+
+dnl Checks explicitly requiring C++
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver, ed2k, alc, alcc, wxcas, fileview],
-[AC_LANG_PUSH([C++])
+[
 dnl MULE_CHECK_GLIBCXX
 MULE_CHECK_STRICT_ALIASING
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, alc, alcc], [MULE_CHECK_WX_SUPPORTS_LARGEFILE])
@@ -236,37 +258,29 @@ MULE_CHECK_EXCEPTIONS
 MULE_CHECK_CXXABI
 
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver], [MULE_CHECK_BOOST([1.47])])
-AC_LANG_POP([C++])
 ])
 
 # Ok, we have all needed libs, now checking for other stuff
 AS_IF([test "$LEX" = "flex"], [MULE_CHECK_FLEX_EXTENDED], [HAVE_FLEX_EXTENDED=no])
 
-# Flush standard test results for speeding cache
-AC_CACHE_SAVE
 
-dnl -------------------------------------------------------------------------------
-dnl Start of autoscan stuff
-dnl -------------------------------------------------------------------------------
 # Checks for header files.
 AC_FUNC_ALLOCA
 AC_HEADER_DIRENT
 AC_HEADER_STDC
-AC_CHECK_HEADERS([argz.h arpa/inet.h fcntl.h inttypes.h langinfo.h libintl.h limits.h locale.h malloc.h mntent.h netdb.h netinet/in.h stddef.h  nl_types.h stdint.h stdio_ext.h stdlib.h string.h strings.h sys/ioctl.h sys/mntent.h sys/mnttab.h sys/mount.h sys/param.h sys/resource.h sys/select.h sys/socket.h sys/statvfs.h sys/time.h sys/timeb.h sys/types.h unistd.h errno.h signal.h])
+AC_CHECK_HEADERS([argz.h arpa/inet.h errno.h fcntl.h inttypes.h langinfo.h libintl.h limits.h locale.h malloc.h mntent.h netdb.h netinet/in.h stddef.h nl_types.h signal.h stdint.h stdio_ext.h stdlib.h string.h strings.h sys/ioctl.h sys/mntent.h sys/mnttab.h sys/mount.h sys/param.h sys/resource.h sys/select.h sys/socket.h sys/statvfs.h sys/time.h sys/timeb.h sys/types.h unistd.h])
 AC_HEADER_SYS_WAIT
 
+
 # Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
-AC_C_CONST
-AC_C_INLINE
 AC_TYPE_MODE_T
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 AC_HEADER_TIME
 AC_STRUCT_TM
 AC_TYPE_UID_T
-AC_C_VOLATILE
 AC_CHECK_TYPES([ptrdiff_t])
+
 
 # Checks for library functions.
 AC_FUNC_CLOSEDIR_VOID
@@ -300,26 +314,16 @@ AS_IF([test $cross_compiling = yes -a $gnumalloc = yes], [
 ])
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
-AC_CHECK_FUNCS([__argz_count __argz_next __argz_stringify endpwent floor ftruncate getcwd gethostbyaddr gethostbyname gethostname getpass gettimeofday inet_ntoa localeconv memmove mempcpy memset nl_langinfo pow select setlocale socket sqrt stpcpy strcasecmp strchr strcspn strdup strerror strncasecmp strstr strtoul sigaction])
-#-------------------------------------------------------------------------------
-# End of autoscan stuff
-#-------------------------------------------------------------------------------
+AC_CHECK_FUNCS([__argz_count __argz_next __argz_stringify endpwent floor ftruncate getcwd gethostbyaddr gethostbyname gethostname getopt_long getpass getrlimit gettimeofday inet_ntoa localeconv memmove mempcpy memset mkdir nl_langinfo pow select setlocale setrlimit sigaction socket sqrt stpcpy strcasecmp strchr strcspn strdup strerror strncasecmp strstr strtoul])
 
-dnl
-dnl autoscan has missed these ones.
-dnl
-AC_CHECK_FUNCS([mkdir getrlimit setrlimit getopt_long])
 
 dnl This must be *before* MULE_CHECK_NLS
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon], [MULE_CHECK_MMAP])
 
-MULE_BACKUP([CPPFLAGS])
-MULE_APPEND([CPPFLAGS], [-D_XOPEN_SOURCE=600])
-AC_FUNC_STRERROR_R
-MULE_RESTORE([CPPFLAGS])
 
 # Look for a way to preallocate disk space for files.
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon], [MULE_CHECK_FALLOCATE])
+
 
 # Checking Native Language Support
 dnl Sets gettext version.
@@ -327,12 +331,30 @@ dnl AM_GNU_GETTEXT_VERSION *must not* be moved away from configure.in!
 AM_GNU_GETTEXT_VERSION(0.11.5)
 MULE_CHECK_NLS
 
+
 # Check for bfd.h (to have proper backtraces without using wxExecute)
 MULE_CHECK_BFD
 MULE_CHECK_EXECINFO
 
-# Flush standard test results for speeding cache
-AC_CACHE_SAVE
+
+# aMule plasma widget
+MULE_IF_ENABLED([plasmamule], [PLASMAMULE_CHECKS])
+
+
+# Check for readline library
+MULE_IF_ENABLED_ANY([amulecmd, webserver], [VL_LIB_READLINE])
+
+
+dnl Tests that should be run in C mode. These tests either test features of the
+dnl C compiler or their results will be used in C sources only.
+AC_LANG_POP([C++])
+
+# Check for strerror_r
+MULE_BACKUP([CPPFLAGS])
+MULE_APPEND([CPPFLAGS], [-D_XOPEN_SOURCE=600])
+AC_FUNC_STRERROR_R
+MULE_RESTORE([CPPFLAGS])
+
 
 # Other tests
 
@@ -341,6 +363,7 @@ AC_MSG_CHECKING([for docdir])
 AS_IF([test -z "$docdir"], [docdir="${datadir}/doc/${PACKAGE_NAME}-${PACKAGE_VERSION}"])
 AC_SUBST([docdir])dnl
 AC_MSG_RESULT([$docdir])
+
 
 # Try to set the SVN checkout-date
 AC_MSG_CHECKING([for SVNDATE])
@@ -358,10 +381,18 @@ AS_IF([test -n "$svndate"], [
 ])
 AC_SUBST([SVNDATE], [$svndate])dnl
 
+
 dnl Set up the denoiser
 MULE_DENOISER
 
-MULE_IF_ENABLED([plasmamule], [PLASMAMULE_CHECKS])
+
+# DO NOT MOVE UP... THERE'S A REASON TO BE HERE!!
+MULE_CHECK_CCACHE
+
+
+dnl ---------------------------------------------------------------------------
+dnl End of checks, now write the results and report
+dnl ---------------------------------------------------------------------------
 
 AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
 AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32 -a "$RC" != ":")
@@ -374,20 +405,13 @@ AM_CONDITIONAL(PLASMAMULE, test MULE_IS_ENABLED([plasmamule]))
 AM_CONDITIONAL([COMPILE_LIB_COMMON],	[test MULE_IS_ENABLED_ANY([monolithic, amule-daemon, amulecmd, webserver, amule-gui, fileview])])
 AM_CONDITIONAL([COMPILE_LIB_EC],	[test MULE_IS_ENABLED_ANY([monolithic, amule-daemon, amulecmd, webserver, amule-gui])])
 
-# Check for readline library
-MULE_IF_ENABLED_ANY([amulecmd, webserver], [VL_LIB_READLINE])
-
-# DO NOT MOVE UP... THERE'S A REASON TO BE HERE!!
-
-MULE_CHECK_CCACHE
-
-dnl
 dnl Generate the Makefiles
-dnl
-AC_CONFIG_FILES([Makefile
+AC_CONFIG_FILES([Compilation.flags
+		 Makefile
 		 docs/Makefile
 		 docs/man/Makefile
 		 intl/Makefile
+		 po/Makefile.in
 		 src/Makefile
 		 src/pixmaps/Makefile
 		 src/pixmaps/flags_xpm/Makefile
@@ -416,11 +440,7 @@ AC_CONFIG_FILES([Makefile
 		 unittests/Makefile
 		 unittests/muleunit/Makefile
 		 unittests/tests/Makefile])
-dnl
-dnl autoscan has missed these, i wonder why...
-dnl
-AC_CONFIG_FILES([po/Makefile.in
-		 Compilation.flags])
+
 AS_IF([test x$SYS = xwin32], [AC_CONFIG_FILES([version.rc])])
 AC_OUTPUT
 

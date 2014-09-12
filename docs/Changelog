@@ -11,6 +11,8 @@ Version 2.4.0 - The river knows.
 	GonoszTopi:
 		* Allow any kind of file links in collections
 		* Make UPnP log go to the appropriate category (#1681)
+		* Use the C++ compiler to check for features we're about to use
+		  in C++ source files (#1572)
 
 	iz0bbz:
 		* Fix WinSock library version detection with MinGW-w64

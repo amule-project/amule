@@ -78,7 +78,7 @@ m4_define([zver_min], [m4_bregexp(MIN_ZLIB_VERSION, [\([0-9]+\)\.\([0-9]+\)\.\([
 			#include <zlib.h>
 			#include <stdio.h>
 		]], [dnl Do not use double-quoting here!
-			char *zver = zlibVersion();
+			const char *zver = zlibVersion();
 			FILE *f=fopen("conftestval", "w");
 			if (!f) return 1;
 			fprintf(f, "%s",
