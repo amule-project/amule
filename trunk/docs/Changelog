@@ -19,7 +19,8 @@ Version 2.4.0 - The river knows.
 		* Fix compilation with MinGW-w64
 
 	Mr Hyde:
-		* Fix  "Disable computer's timed standby mode" for MacOS 10.9 Mavericks
+		* Fix "Disable computer's timed standby mode" for MacOS 10.9 Mavericks
+		* Compilation fix on Linux Slackware 64bit and MacOS 10.9.4
 
 	Stu Redman:
 		* Display hashing progress in progress bars
