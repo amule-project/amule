@@ -655,7 +655,10 @@ AC_CACHE_CHECK([for working mmap], [ac_cv_func_mmap_fixed_mapped],
    * how to use it (BSD variants)  */
 
 #include <fcntl.h>
+
+#ifdef HAVE_SYS_MMAN_H
 #include <sys/mman.h>
+#endif
 
 #if !defined STDC_HEADERS && !defined HAVE_STDLIB_H
 char *malloc ();
