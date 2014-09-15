@@ -1004,7 +1004,7 @@ void CamuleApp::OnFatalException()
 		<< wxT("circumstances of this crash. The forum is located here:\n")
 		<< wxT("    http://forum.amule.org/index.php?board=67.0\n")
 		<< wxT("If possible, please try to generate a real backtrace of this crash:\n")
-		<< wxT("    http://wiki.amule.org/index.php/Backtraces\n\n")
+		<< wxT("    http://wiki.amule.org/wiki/Backtraces\n\n")
 		<< wxT("----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n")
 		<< wxT("Current version is: ") << FullMuleVersion
 		<< wxT("\nRunning on: ") << OSDescription
