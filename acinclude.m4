@@ -655,10 +655,7 @@ AC_CACHE_CHECK([for working mmap], [ac_cv_func_mmap_fixed_mapped],
    * how to use it (BSD variants)  */
 
 #include <fcntl.h>
-
-#ifdef HAVE_SYS_MMAN_H
 #include <sys/mman.h>
-#endif
 
 #if !defined STDC_HEADERS && !defined HAVE_STDLIB_H
 char *malloc ();
@@ -786,8 +783,10 @@ AC_DEFUN([MULE_CHECK_MMAP],
 [
 	MULE_ARG_ENABLE([mmap], [no], [enable using mapped memory if supported])
 
+	AH_TEMPLATE([ENABLE_MMAP], [Define this variable to 1 if using mapped memory was requested. Note that defining it will alone not allow usage of mmap(), but unsetting it will completely disable its usage.])
+
 	MULE_IF_ENABLED([mmap], [
-		AC_CHECK_HEADERS([sys/mman.h])
+		AC_DEFINE([ENABLE_MMAP], [1])
 		MULE_FUNC_MMAP
 		AC_CHECK_FUNCS([munmap sysconf])
 		AS_IF([test $ac_cv_func_sysconf = yes], [
@@ -816,9 +815,6 @@ AC_DEFUN([MULE_CHECK_MMAP],
 				])
 			])
 		])
-	], [
-		# fake the result of the test for munmap() for the gettext macros
-		ac_cv_func_munmap=no
 	])
 ])
 
