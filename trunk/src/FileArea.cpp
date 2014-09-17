@@ -53,10 +53,6 @@
 static const long gs_pageSize = sysconf(_SC_PAGESIZE);
 #elif defined(HAVE_SYSCONF) && defined(HAVE__SC_PAGE_SIZE)
 static const long gs_pageSize = sysconf(_SC_PAGE_SIZE);
-#elif defined(HAVE_GETPAGESIZE)
-static const int gs_pageSize = getpagesize();
-#else
-#	error "Should use memory mapped files but don't know how to determine page size!"
 #endif
 
 #endif /* USE_MMAP */
