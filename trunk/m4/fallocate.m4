@@ -29,7 +29,9 @@ AC_DEFUN([MULE_CHECK_FALLOCATE],
 	MULE_APPEND([CPPFLAGS], [$WX_CPPFLAGS])
 	AC_LINK_IFELSE([
 		AC_LANG_PROGRAM([[
-			#define _GNU_SOURCE
+			#ifndef _GNU_SOURCE
+			#	define _GNU_SOURCE
+			#endif
 			#ifdef HAVE_FCNTL_H
 			#  include <fcntl.h>
 			#endif
