@@ -39,23 +39,29 @@
 #include "FileArea.h"		// Interface declarations.
 #include "FileAutoClose.h"	// Needed for CFileAutoClose
 
-#ifdef HAVE_SYS_MMAN_H
+#ifndef ENABLE_MMAP
+#	define ENABLE_MMAP	0
+#endif
+
+#define USE_MMAP	(ENABLE_MMAP && defined(HAVE_MMAP) && defined(HAVE_SYSCONF) && (defined(HAVE__SC_PAGESIZE) || defined(HAVE__SC_PAGE_SIZE)))
+
+#if USE_MMAP
+
 #include <sys/mman.h>
-#endif
 
-#ifdef HAVE_MMAP
-#	if defined(HAVE_SYSCONF) && defined(HAVE__SC_PAGESIZE)
+#if defined(HAVE_SYSCONF) && defined(HAVE__SC_PAGESIZE)
 static const long gs_pageSize = sysconf(_SC_PAGESIZE);
-#	elif defined(HAVE_SYSCONF) && defined(HAVE__SC_PAGE_SIZE)
+#elif defined(HAVE_SYSCONF) && defined(HAVE__SC_PAGE_SIZE)
 static const long gs_pageSize = sysconf(_SC_PAGE_SIZE);
-#	elif defined(HAVE_GETPAGESIZE)
+#elif defined(HAVE_GETPAGESIZE)
 static const int gs_pageSize = getpagesize();
-#	else
-#		error "Should use memory mapped files but don't know how to determine page size!"
-#	endif
+#else
+#	error "Should use memory mapped files but don't know how to determine page size!"
 #endif
 
-#if !defined(HAVE_SIGACTION) || !defined(SA_SIGINFO) || !defined(HAVE_MMAP) || defined(__UCLIBC__)
+#endif /* USE_MMAP */
+
+#if !defined(HAVE_SIGACTION) || !defined(SA_SIGINFO) || !USE_MMAP || defined(__UCLIBC__)
 
 class CFileAreaSigHandler
 {
@@ -198,7 +204,7 @@ bool CFileArea::Close()
 		delete[] m_buffer;
 		m_buffer = NULL;
 	}
-#ifdef HAVE_MMAP
+#if USE_MMAP
 	if (m_mmap_buffer)
 	{
 		munmap(m_mmap_buffer, m_length);
@@ -220,7 +226,7 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 {
 	Close();
 
-#ifdef HAVE_MMAP
+#if USE_MMAP
 	uint64 offEnd = offset + count;
 	if (gs_pageSize > 0 && offEnd < 0x100000000ull) {
 		uint64 offStart = offset & (~((uint64)gs_pageSize-1));
@@ -242,7 +248,7 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 	file.ReadAt(m_buffer, offset, count);
 }
 
-#ifdef HAVE_MMAP
+#if USE_MMAP
 void CFileArea::StartWriteAt(CFileAutoClose& file, uint64 offset, size_t count)
 {
 	Close();
@@ -280,7 +286,7 @@ bool CFileArea::FlushAt(CFileAutoClose& file, uint64 offset, size_t count)
 	if (!m_buffer)
 		return false;
 
-#ifdef HAVE_MMAP
+#if USE_MMAP
 	if (m_mmap_buffer) {
 		if (msync(m_mmap_buffer, m_length, MS_SYNC))
 			return false;
