@@ -325,11 +325,15 @@ MULE_IF_ENABLED_ANY([monolithic, amule-daemon], [MULE_CHECK_MMAP])
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon], [MULE_CHECK_FALLOCATE])
 
 
+dnl If I move it to the end of the tests, after all other test, aclocal fails.
+dnl However, I still want it to use the C compiler.
+AC_LANG_POP([C++])
 # Checking Native Language Support
 dnl Sets gettext version.
 dnl AM_GNU_GETTEXT_VERSION *must not* be moved away from configure.in!
 AM_GNU_GETTEXT_VERSION(0.11.5)
 MULE_CHECK_NLS
+AC_LANG_PUSH([C++])
 
 
 # Check for bfd.h (to have proper backtraces without using wxExecute)
