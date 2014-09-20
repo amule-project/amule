@@ -529,7 +529,9 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			}
 			break;
 		case CMD_ID_SEARCH:
-			printf("No search type defined.\nType 'help search' to get more help.\n");
+			/* TRANSLATORS:
+			   'help search' is a command to the program, do not translate it. */
+			Show(_("No search type defined.\nType 'help search' to get more help.\n"));
 			break;
 
 
@@ -548,7 +550,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				if (args.ToULong(&id) == true && id < m_Results_map.size()) {
 
 					SearchFile* file = m_Results_map[id];
-					printf("Download File: %lu %s\n", id, (const char*)unicode2char(file->sFileName));
+					Show(CFormat(_("Download File: %lu %s\n")) % id % file->sFileName);
 					request = new CECPacket(EC_OP_DOWNLOAD_SEARCH_RESULT);
 					// get with id the hash and category=0
 					uint32 category = 0;
@@ -895,9 +897,9 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp2 = tmp->AddCommand(wxT("BwLimit"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set bandwidth limits."),
 			       wxTRANSLATE("The value given to these commands has to be in kilobytes/sec.\n"), CMD_PARAM_NEVER);
 	tmp2->AddCommand(wxT("Up"), CMD_ID_SET_BWLIMIT_UP, wxTRANSLATE("Set upload bandwidth limit."),
-			 wxT("The given value must be in kilobytes/sec.\n"), CMD_PARAM_ALWAYS);
+			 wxTRANSLATE("The given value must be in kilobytes/sec.\n"), CMD_PARAM_ALWAYS);
 	tmp2->AddCommand(wxT("Down"), CMD_ID_SET_BWLIMIT_DOWN, wxTRANSLATE("Set download bandwidth limit."),
-			 wxT("The given value must be in kilobytes/sec.\n"), CMD_PARAM_ALWAYS);
+			 wxTRANSLATE("The given value must be in kilobytes/sec.\n"), CMD_PARAM_ALWAYS);
 
 	tmp = m_commands.AddCommand(wxT("Get"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Get and display a preference value."),
 				    wxEmptyString, CMD_PARAM_NEVER);
