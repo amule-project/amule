@@ -635,7 +635,7 @@ bool CAICHHashSet::SaveHashSet()
 
 
 	try {
-		const wxString fullpath = theApp->ConfigDir + KNOWN2_MET_FILENAME;
+		const wxString fullpath = thePrefs::GetConfigDir() + KNOWN2_MET_FILENAME;
 		const bool exists = wxFile::Exists(fullpath);
 
 		CFile file(fullpath, exists ? CFile::read_write : CFile::write);
@@ -715,7 +715,7 @@ bool CAICHHashSet::LoadHashSet()
 		wxFAIL;
 		return false;
 	}
-	wxString fullpath = theApp->ConfigDir + KNOWN2_MET_FILENAME;
+	wxString fullpath = thePrefs::GetConfigDir() + KNOWN2_MET_FILENAME;
 	CFile file(fullpath, CFile::read);
 	if (!file.IsOpened()) {
 		if (wxFileExists(fullpath)) {

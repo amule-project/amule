@@ -84,7 +84,7 @@ CRoutingZone::CRoutingZone()
 	// Set our KadID for creating the contact tree
 	me = CKademlia::GetPrefs()->GetKadID();
 	// Set the preference file name.
-	m_filename = theApp->ConfigDir + wxT("nodes.dat");
+	m_filename = thePrefs::GetConfigDir() + wxT("nodes.dat");
 	Init(NULL, 0, CUInt128((uint32_t)0));
 }
 

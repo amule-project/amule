@@ -111,7 +111,7 @@ private:
 	void Entry()
 	{
 		AddLogLineN(_("Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."));
-		if ( !LoadFromFile(theApp->ConfigDir + wxT("ipfilter.dat")) &&
+		if ( !LoadFromFile(thePrefs::GetConfigDir() + wxT("ipfilter.dat")) &&
 		     thePrefs::UseIPFilterSystem() ) {
 			// Load from system wide IP filter file
 			wxStandardPathsBase &spb(wxStandardPaths::Get());
@@ -127,7 +127,7 @@ private:
 		}
 
 
-		LoadFromFile(theApp->ConfigDir + wxT("ipfilter_static.dat"));
+		LoadFromFile(thePrefs::GetConfigDir() + wxT("ipfilter_static.dat"));
 
 		uint8 accessLevel = thePrefs::GetIPFilterLevel();
 		uint32 size = m_result.size();
@@ -372,7 +372,7 @@ CIPFilter::CIPFilter() :
 	m_connectToAnyServerWhenReady(false)
 {
 	// Setup dummy files for the curious user.
-	const wxString normalDat = theApp->ConfigDir + wxT("ipfilter.dat");
+	const wxString normalDat = thePrefs::GetConfigDir() + wxT("ipfilter.dat");
 	const wxString normalMsg = wxString()
 		<< wxT("# This file is used by aMule to store ipfilter lists downloaded\n")
 		<< wxT("# through the auto-update functionality. Do not save ipfilter-\n")
@@ -383,7 +383,7 @@ CIPFilter::CIPFilter() :
 		thePrefs::SetLastHTTPDownloadURL(HTTP_IPFilter, wxEmptyString);
 	}
 
-	const wxString staticDat = theApp->ConfigDir + wxT("ipfilter_static.dat");
+	const wxString staticDat = thePrefs::GetConfigDir() + wxT("ipfilter_static.dat");
 	const wxString staticMsg = wxString()
 		<< wxT("# This file is used to store ipfilter-ranges that should\n")
 		<< wxT("# not be overwritten by aMule. If you wish to keep a custom\n")
@@ -478,8 +478,8 @@ void CIPFilter::Update(const wxString& strURL)
 	if (!strURL.IsEmpty()) {
 		m_URL = strURL;
 
-		wxString filename = theApp->ConfigDir + wxT("ipfilter.download");
-		wxString oldfilename = theApp->ConfigDir + wxT("ipfilter.dat");
+		wxString filename = thePrefs::GetConfigDir() + wxT("ipfilter.download");
+		wxString oldfilename = thePrefs::GetConfigDir() + wxT("ipfilter.dat");
 		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(m_URL, filename, oldfilename, HTTP_IPFilter, true, true);
 
 		downloader->Create();
@@ -493,8 +493,8 @@ void CIPFilter::DownloadFinished(uint32 result)
 	wxString datName = wxT("ipfilter.dat");
 	if (result == HTTP_Success) {
 		// download succeeded. proceed with ipfilter loading
-		wxString newDat = theApp->ConfigDir + wxT("ipfilter.download");
-		wxString oldDat = theApp->ConfigDir + datName;
+		wxString newDat = thePrefs::GetConfigDir() + wxT("ipfilter.download");
+		wxString oldDat = thePrefs::GetConfigDir() + datName;
 
 		if (wxFileExists(oldDat) && !wxRemoveFile(oldDat)) {
 			AddLogLineC(CFormat(_("Failed to remove %s file, aborting update.")) % datName);

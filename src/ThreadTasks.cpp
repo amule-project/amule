@@ -283,7 +283,7 @@ void CAICHSyncTask::Entry()
 
 	// We collect all masterhashs which we find in the known2.met and store them in a list
 	std::list<CAICHHash> hashlist;
-	const CPath fullpath = CPath(theApp->ConfigDir + KNOWN2_MET_FILENAME);
+	const CPath fullpath = CPath(thePrefs::GetConfigDir() + KNOWN2_MET_FILENAME);
 
 	CFile file;
 	if (!fullpath.FileExists()) {
@@ -348,8 +348,8 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 	// converting known2.met to known2_64.met to support large files
 	// changing hashcount from uint16 to uint32
 
-	const CPath oldfullpath = CPath(theApp->ConfigDir + OLD_KNOWN2_MET_FILENAME);
-	const CPath newfullpath = CPath(theApp->ConfigDir + KNOWN2_MET_FILENAME);
+	const CPath oldfullpath = CPath(thePrefs::GetConfigDir() + OLD_KNOWN2_MET_FILENAME);
+	const CPath newfullpath = CPath(thePrefs::GetConfigDir() + KNOWN2_MET_FILENAME);
 
 	if (newfullpath.FileExists() || !oldfullpath.FileExists()) {
 		// In this case, there is nothing that we need to do.

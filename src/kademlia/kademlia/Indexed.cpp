@@ -52,7 +52,6 @@ there client on the eMule forum..
 #include "../utils/KadUDPKey.h"
 #include "../../CFile.h"
 #include "../../MemFile.h"
-#include "../../amule.h"
 #include "../../Preferences.h"
 #include "../../Logger.h"
 
@@ -66,9 +65,9 @@ wxString CIndexed::m_loadfilename;
 
 CIndexed::CIndexed()
 {
-	m_sfilename = theApp->ConfigDir + wxT("src_index.dat");
-	m_kfilename = theApp->ConfigDir + wxT("key_index.dat");
-	m_loadfilename = theApp->ConfigDir + wxT("load_index.dat");
+	m_sfilename = thePrefs::GetConfigDir() + wxT("src_index.dat");
+	m_kfilename = thePrefs::GetConfigDir() + wxT("key_index.dat");
+	m_loadfilename = thePrefs::GetConfigDir() + wxT("load_index.dat");
 	m_lastClean = time(NULL) + (60*30);
 	m_totalIndexSource = 0;
 	m_totalIndexKeyword = 0;

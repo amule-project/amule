@@ -38,20 +38,19 @@
 	#include <common/Path.h>	// Needed for JoinPaths
 	#include <wx/config.h>		// Needed for wxConfig
 	#include "DataToText.h"		// Needed for GetSoftName()
-	#include "Preferences.h"	// Needed for thePrefs
 	#include "ListenSocket.h"	// (tree, GetAverageConnections)
 	#include "ServerList.h"		// Needed for CServerList (tree)
 	#include <cmath>		// Needed for std::floor
 	#include "updownclient.h"	// Needed for CUpDownClient
 #else
 	#include "GetTickCount.h"	// Needed for GetTickCount64()
-	#include "Preferences.h"
 	#include <ec/cpp/RemoteConnect.h>		// Needed for CRemoteConnect
 #endif
 
 #include "amule.h"		// Needed for theApp
 #include <wx/intl.h>
 #include "Logger.h"
+#include "Preferences.h"	// Needed for thePrefs
 
 #ifdef __BSD__
 	// glibc -> bsd libc
@@ -313,7 +312,7 @@ void CStatistics::Load()
 	s_totalSent = 0;
 	s_totalReceived = 0;
 	try {
-		CPath path(JoinPaths(theApp->ConfigDir, wxT("statistics.dat")));
+		CPath path(JoinPaths(thePrefs::GetConfigDir(), wxT("statistics.dat")));
 		if (path.FileExists() && f.Open(path)) {
 			uint8_t version = f.ReadUInt8();
 			if (version == 0) {
@@ -351,7 +350,7 @@ void CStatistics::Save()
 	if (s_statsNeedSave) {
 		CFile f;
 
-		if (f.Open(JoinPaths(theApp->ConfigDir, wxT("statistics.dat")), CFile::write)) {
+		if (f.Open(JoinPaths(thePrefs::GetConfigDir(), wxT("statistics.dat")), CFile::write)) {
 			f.WriteUInt8(0);	/* version */
 			f.WriteUInt64(s_totalSent);
 			f.WriteUInt64(s_totalReceived);

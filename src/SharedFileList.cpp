@@ -400,7 +400,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 	//  - The users home-dir
 	if (CheckDirectory(wxGetHomeDir(), directory)) {
 		return 0;
-	} else if (CheckDirectory(theApp->ConfigDir, directory)) {
+	} else if (CheckDirectory(thePrefs::GetConfigDir(), directory)) {
 		return 0;
 	} else if (CheckDirectory(thePrefs::GetTempDir().GetRaw(), directory)) {
 		return 0;

@@ -65,7 +65,7 @@ CClientCreditsList::~CClientCreditsList()
 void CClientCreditsList::LoadList()
 {
 	CFile file;
-	CPath fileName = CPath(theApp->ConfigDir + CLIENTS_MET_FILENAME);
+	CPath fileName = CPath(thePrefs::GetConfigDir() + CLIENTS_MET_FILENAME);
 
 	if (!fileName.FileExists()) {
 		return;
@@ -81,7 +81,7 @@ void CClientCreditsList::LoadList()
 		}
 
 		// everything is ok, lets see if the backup exist...
-		CPath bakFileName = CPath(theApp->ConfigDir + CLIENTS_MET_BAK_FILENAME);
+		CPath bakFileName = CPath(thePrefs::GetConfigDir() + CLIENTS_MET_BAK_FILENAME);
 
 		bool bCreateBackup = TRUE;
 		if (bakFileName.FileExists()) {
@@ -171,7 +171,7 @@ void CClientCreditsList::SaveList()
 	AddDebugLogLineN( logCredits, wxT("Saved Credit list"));
 	m_nLastSaved = ::GetTickCount();
 
-	wxString name(theApp->ConfigDir + CLIENTS_MET_FILENAME);
+	wxString name(thePrefs::GetConfigDir() + CLIENTS_MET_FILENAME);
 	CFile file;
 
 	if ( !file.Create(name, true) ) {
@@ -254,7 +254,7 @@ bool CClientCreditsList::CreateKeyPair()
 		privkey.Initialize(rng, RSAKEYSIZE);
 
 		// Nothing we can do against this filename2char :/
-		wxCharBuffer filename = filename2char(theApp->ConfigDir + CRYPTKEY_FILENAME);
+		wxCharBuffer filename = filename2char(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME);
 		CryptoPP::FileSink *fileSink = new CryptoPP::FileSink(filename);
 		CryptoPP::Base64Encoder *privkeysink = new CryptoPP::Base64Encoder(fileSink);
 		privkey.DEREncode(*privkeysink);
@@ -291,8 +291,8 @@ void CClientCreditsList::InitalizeCrypting()
 
 	try {
 		// check if keyfile is there
-		if (wxFileExists(theApp->ConfigDir + CRYPTKEY_FILENAME)) {
-			off_t keySize = CPath::GetFileSize(theApp->ConfigDir + CRYPTKEY_FILENAME);
+		if (wxFileExists(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME)) {
+			off_t keySize = CPath::GetFileSize(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME);
 
 			if (keySize == wxInvalidOffset) {
 				AddDebugLogLineC(logCredits, wxT("Cannot access 'cryptkey.dat', please check permissions."));
@@ -307,7 +307,7 @@ void CClientCreditsList::InitalizeCrypting()
 		}
 
 		// load private key
-		CryptoPP::FileSource filesource(filename2char(theApp->ConfigDir + CRYPTKEY_FILENAME), true, new CryptoPP::Base64Decoder);
+		CryptoPP::FileSource filesource(filename2char(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME), true, new CryptoPP::Base64Decoder);
 		m_pSignkey = new CryptoPP::RSASSA_PKCS1v15_SHA_Signer(filesource);
 		// calculate and store public key
 		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(*static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey));
