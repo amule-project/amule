@@ -87,13 +87,13 @@ void CamuleAppCommon::RefreshSingleInstanceChecker()
 	//#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
 #else
 	delete m_singleInstance;
-	m_singleInstance = new wxSingleInstanceChecker(wxT("muleLock"), ConfigDir);
+	m_singleInstance = new wxSingleInstanceChecker(wxT("muleLock"), thePrefs::GetConfigDir());
 #endif
 }
 
 void CamuleAppCommon::AddLinksFromFile()
 {
-	const wxString fullPath = ConfigDir + wxT("ED2KLinks");
+	const wxString fullPath = thePrefs::GetConfigDir() + wxT("ED2KLinks");
 	if (!wxFile::Exists(fullPath)) {
 		return;
 	}
@@ -129,7 +129,7 @@ void CamuleAppCommon::AddLinksFromFile()
 	}
 
 	// Delete the file.
-	wxRemoveFile(theApp->ConfigDir + wxT("ED2KLinks"));
+	wxRemoveFile(thePrefs::GetConfigDir() + wxT("ED2KLinks"));
 }
 
 
@@ -278,16 +278,18 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 		return false;
 	}
 
-	if ( cmdline.Found(wxT("config-dir"), &ConfigDir) ) {
+	wxString configdir;
+	if (cmdline.Found(wxT("config-dir"), &configdir)) {
 		// Make an absolute path from the config dir
-		wxFileName fn(ConfigDir);
+		wxFileName fn(configdir);
 		fn.MakeAbsolute();
-		ConfigDir = fn.GetFullPath();
-		if (ConfigDir.Last() != wxFileName::GetPathSeparator()) {
-			ConfigDir += wxFileName::GetPathSeparator();
+		configdir = fn.GetFullPath();
+		if (configdir.Last() != wxFileName::GetPathSeparator()) {
+			configdir += wxFileName::GetPathSeparator();
 		}
+		thePrefs::SetConfigDir(configdir);
 	} else {
-		ConfigDir = GetConfigDir();
+		thePrefs::SetConfigDir(/*OtherFunctions::*/GetConfigDir());
 	}
 
 	// Backtracing works in MSW.
@@ -333,14 +335,14 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 
 	// Ensure that "~/.aMule/" is accessible.
 	CPath outDir;
-	if (!CheckMuleDirectory(wxT("configuration"), CPath(ConfigDir), wxEmptyString, outDir)) {
+	if (!CheckMuleDirectory(wxT("configuration"), CPath(thePrefs::GetConfigDir()), wxEmptyString, outDir)) {
 		return false;
 	}
 
 	if (cmdline.Found(wxT("reset-config"))) {
 		// Make a backup first.
-		wxRemoveFile(ConfigDir + m_configFile + wxT(".backup"));
-		wxRenameFile(ConfigDir + m_configFile, ConfigDir + m_configFile + wxT(".backup"));
+		wxRemoveFile(thePrefs::GetConfigDir() + m_configFile + wxT(".backup"));
+		wxRenameFile(thePrefs::GetConfigDir() + m_configFile, thePrefs::GetConfigDir() + m_configFile + wxT(".backup"));
 		AddLogLineNS(CFormat(wxT("Your settings have been reset to default values.\nThe old config file has been saved as %s.backup\n")) % m_configFile);
 	}
 
@@ -353,7 +355,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 			cat = 0;
 		}
 
-		wxTextFile ed2kFile(ConfigDir + wxT("ED2KLinks"));
+		wxTextFile ed2kFile(thePrefs::GetConfigDir() + wxT("ED2KLinks"));
 		if (!ed2kFile.Exists()) {
 			ed2kFile.Create();
 		}
@@ -380,10 +382,10 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 
 	m_singleInstance = new wxSingleInstanceChecker();
 	wxString lockfile = IsRemoteGui() ? wxT("muleLockRGUI") : wxT("muleLock");
-	if (m_singleInstance->Create(lockfile, ConfigDir)
+	if (m_singleInstance->Create(lockfile, thePrefs::GetConfigDir())
 		&& m_singleInstance->IsAnotherRunning()) {
 		AddLogLineCS(CFormat(wxT("There is an instance of %s already running")) % m_appName);
-		AddLogLineNS(CFormat(wxT("(lock file: %s%s)")) % ConfigDir % lockfile);
+		AddLogLineNS(CFormat(wxT("(lock file: %s%s)")) % thePrefs::GetConfigDir() % lockfile);
 		if (linksPassed) {
 			AddLogLineNS(CFormat(wxT("passed %d %s to it, finished")) % linksActuallyPassed
 				% (linksPassed == 1 ? wxT("link") : wxT("links")));
@@ -391,7 +393,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 		}
 
 		// This is very tricky. The most secure way to communicate is via ED2K links file
-		wxTextFile ed2kFile(ConfigDir + wxT("ED2KLinks"));
+		wxTextFile ed2kFile(thePrefs::GetConfigDir() + wxT("ED2KLinks"));
 		if (!ed2kFile.Exists()) {
 			ed2kFile.Create();
 		}
@@ -424,10 +426,10 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 #endif
 
 	// Create the CFG file we shall use and set the config object as the global cfg file
-	wxConfig::Set(new wxFileConfig( wxEmptyString, wxEmptyString, ConfigDir + m_configFile));
+	wxConfig::Set(new wxFileConfig( wxEmptyString, wxEmptyString, thePrefs::GetConfigDir() + m_configFile));
 
 	// Make a backup of the log file
-	CPath logfileName = CPath(ConfigDir + m_logFile);
+	CPath logfileName = CPath(thePrefs::GetConfigDir() + m_logFile);
 	if (logfileName.FileExists()) {
 		CPath::BackupFile(logfileName, wxT(".bak"));
 	}
@@ -441,7 +443,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	}
 
 	// Load Preferences
-	CPreferences::BuildItemList(ConfigDir);
+	CPreferences::BuildItemList(thePrefs::GetConfigDir());
 	CPreferences::LoadAllItems( wxConfigBase::Get() );
 
 #ifdef CLIENT_GUI

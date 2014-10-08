@@ -131,7 +131,6 @@ protected:
 	void		RefreshSingleInstanceChecker();
 	bool		CheckMuleDirectory(const wxString& desc, const class CPath& directory, const wxString& alternative, class CPath& outDir);
 public:
-	wxString	ConfigDir;
 	wxString	m_configFile;
 
 	CamuleAppCommon();

@@ -36,6 +36,7 @@
 #include "ScopedPtr.h"
 #include "SearchList.h"		// Needed for UpdateSearchFileByHash
 #include <common/Format.h>
+#include "Preferences.h"	// Needed for thePrefs
 
 
 // This function is inlined for performance
@@ -74,7 +75,7 @@ bool CKnownFileList::Init()
 {
 	CFile file;
 
-	CPath fullpath = CPath(theApp->ConfigDir + m_filename);
+	CPath fullpath = CPath(thePrefs::GetConfigDir() + m_filename);
 	if (!fullpath.FileExists()) {
 		// This is perfectly normal. The file was probably either
 		// deleted, or this is the first time running aMule.
@@ -122,7 +123,7 @@ bool CKnownFileList::Init()
 
 void CKnownFileList::Save()
 {
-	CFile file(theApp->ConfigDir + m_filename, CFile::write_safe);
+	CFile file(thePrefs::GetConfigDir() + m_filename, CFile::write_safe);
 	if (!file.IsOpened()) {
 		return;
 	}

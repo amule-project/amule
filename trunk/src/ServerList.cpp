@@ -66,10 +66,10 @@ CServerList::CServerList()
 bool CServerList::Init()
 {
 	// Load Metfile
-	bool bRes = LoadServerMet(CPath(theApp->ConfigDir + wxT("server.met")));
+	bool bRes = LoadServerMet(CPath(thePrefs::GetConfigDir() + wxT("server.met")));
 
 	// insert static servers from textfile
-	m_staticServersConfig = theApp->ConfigDir + wxT("staticservers.dat");
+	m_staticServersConfig = thePrefs::GetConfigDir() + wxT("staticservers.dat");
 	LoadStaticServers();
 
 	// Send the auto-update of server.met via HTTPThread requests
@@ -679,7 +679,7 @@ void CServerList::SetServerPrio(CServer* server, uint32 prio)
 
 bool CServerList::SaveServerMet()
 {
-	CPath curservermet = CPath(theApp->ConfigDir + wxT("server.met"));
+	CPath curservermet = CPath(thePrefs::GetConfigDir() + wxT("server.met"));
 
 	CFile servermet(curservermet, CFile::write_safe);
 	if (!servermet.IsOpened()) {
@@ -799,7 +799,7 @@ bool CServerList::SaveServerMet()
 		}
 		// Now server.met.new is ready to be closed and renamed to server.met.
 		// But first rename existing server.met to server.met.bak (replacing old .bak file).
-		const CPath oldservermet = CPath(theApp->ConfigDir + wxT("server.met.bak"));
+		const CPath oldservermet = CPath(thePrefs::GetConfigDir() + wxT("server.met.bak"));
 		if (curservermet.FileExists()) {
 			CPath::RenameFile(curservermet, oldservermet, true);
 		}
@@ -834,8 +834,8 @@ void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 		return;
 	}
 	m_URLUpdate = strURL;
-	wxString strTempFilename(theApp->ConfigDir + wxT("server.met.download"));
-	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL, strTempFilename, theApp->ConfigDir + wxT("server.met"), HTTP_ServerMet, false, false);
+	wxString strTempFilename(thePrefs::GetConfigDir() + wxT("server.met.download"));
+	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL, strTempFilename, thePrefs::GetConfigDir() + wxT("server.met"), HTTP_ServerMet, false, false);
 	downloader->Create();
 	downloader->Run();
 }
@@ -845,7 +845,7 @@ bool CServerList::DownloadFinished(uint32 result)
 {
 	bool ret = false;
 	if(result == HTTP_Success) {
-		const CPath tempFilename = CPath(theApp->ConfigDir + wxT("server.met.download"));
+		const CPath tempFilename = CPath(thePrefs::GetConfigDir() + wxT("server.met.download"));
 
 		// curl succeeded. proceed with server.met loading
 		LoadServerMet(tempFilename);
@@ -882,11 +882,11 @@ void CServerList::AutoUpdate()
 			// Ok, got a valid URI
 			m_URLUpdate = URI;
 			wxString strTempFilename =
-				theApp->ConfigDir + wxT("server_auto.met");
+				thePrefs::GetConfigDir() + wxT("server_auto.met");
 			AddLogLineC(CFormat(
 				_("Start downloading server list from %s")) % URI);
 			CHTTPDownloadThread *downloader = new CHTTPDownloadThread(
-				URI, strTempFilename, theApp->ConfigDir + wxT("server.met"), HTTP_ServerMetAuto, false, false);
+				URI, strTempFilename, thePrefs::GetConfigDir() + wxT("server.met"), HTTP_ServerMetAuto, false, false);
 			downloader->Create();
 			downloader->Run();
 
@@ -904,7 +904,7 @@ void CServerList::AutoUpdate()
 void CServerList::AutoDownloadFinished(uint32 result)
 {
 	if (result == HTTP_Success) {
-		CPath tempFilename = CPath(theApp->ConfigDir + wxT("server_auto.met"));
+		CPath tempFilename = CPath(thePrefs::GetConfigDir() + wxT("server_auto.met"));
 
 		// curl succeeded. proceed with server.met loading
 		LoadServerMet(tempFilename);

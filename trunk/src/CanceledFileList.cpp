@@ -26,7 +26,7 @@
 #include "CanceledFileList.h"	// Interface declarations
 
 #include <common/DataFileVersion.h>
-#include "amule.h"
+#include "Preferences.h"
 #include "CFile.h"
 #include "Logger.h"
 #include <common/Format.h>
@@ -43,7 +43,7 @@ bool CCanceledFileList::Init()
 {
 	CFile file;
 
-	CPath fullpath = CPath(theApp->ConfigDir + m_filename);
+	CPath fullpath = CPath(thePrefs::GetConfigDir() + m_filename);
 	if (!fullpath.FileExists()) {
 		// This is perfectly normal. The file was probably either
 		// deleted, or this is the first time running aMule.
@@ -87,7 +87,7 @@ bool CCanceledFileList::Init()
 
 void CCanceledFileList::Save()
 {
-	CFile file(theApp->ConfigDir + m_filename, CFile::write);
+	CFile file(thePrefs::GetConfigDir() + m_filename, CFile::write);
 	if (!file.IsOpened()) {
 		return;
 	}

@@ -79,6 +79,7 @@ unsigned long		CPreferences::s_colors_ref[cntStatColors];
 CPreferences::CFGMap	CPreferences::s_CfgList;
 CPreferences::CFGList	CPreferences::s_MiscList;
 
+wxString	CPreferences::s_configDir;
 
 /* Proxy */
 CProxyData	CPreferences::s_ProxyData;
@@ -928,7 +929,7 @@ CPreferences::CPreferences()
 	srand( wxGetLocalTimeMillis().GetLo() ); // we need random numbers sometimes
 
 	// load preferences.dat or set standard values
-	wxString fullpath(theApp->ConfigDir + wxT("preferences.dat"));
+	wxString fullpath(s_configDir + wxT("preferences.dat"));
 	CFile preffile;
 	if (wxFileExists(fullpath)) {
 		if (preffile.Open(fullpath, CFile::read)) {
@@ -961,7 +962,7 @@ CPreferences::CPreferences()
 
 	// serverlist adresses
 	CTextFile slistfile;
-	if (slistfile.Open(theApp->ConfigDir + wxT("addresses.dat"), CTextFile::read)) {
+	if (slistfile.Open(s_configDir + wxT("addresses.dat"), CTextFile::read)) {
 		adresses_list = slistfile.ReadLines();
 	}
 #endif
@@ -1455,7 +1456,7 @@ void CPreferences::CheckUlDlRatio()
 
 void CPreferences::Save()
 {
-	wxString fullpath(theApp->ConfigDir + wxT("preferences.dat"));
+	wxString fullpath(s_configDir + wxT("preferences.dat"));
 
 	CFile preffile;
 	if (!wxFileExists(fullpath)) {
@@ -1475,7 +1476,7 @@ void CPreferences::Save()
 
 	#ifndef CLIENT_GUI
 	CTextFile sdirfile;
-	if (sdirfile.Open(theApp->ConfigDir + wxT("shareddir.dat"), CTextFile::write)) {
+	if (sdirfile.Open(s_configDir + wxT("shareddir.dat"), CTextFile::write)) {
 		for (size_t i = 0; i < shareddir_list.size(); ++i) {
 			sdirfile.WriteLine(CPath::ToUniv(shareddir_list[i]), wxConvUTF8);
 		}
@@ -1781,7 +1782,7 @@ void CPreferences::ReloadSharedFolders()
 	shareddir_list.clear();
 
 	CTextFile file;
-	if (file.Open(theApp->ConfigDir + wxT("shareddir.dat"), CTextFile::read)) {
+	if (file.Open(s_configDir + wxT("shareddir.dat"), CTextFile::read)) {
 		wxArrayString lines = file.ReadLines(txtReadDefault, wxConvUTF8);
 
 		for (size_t i = 0; i < lines.size(); ++i) {

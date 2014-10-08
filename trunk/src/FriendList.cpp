@@ -35,6 +35,7 @@
 #include "CFile.h"
 #include "Logger.h"
 #include "GuiEvents.h"
+#include "Preferences.h"	// Needed for thePrefs
 
 CFriendList::CFriendList()
 {
@@ -100,7 +101,7 @@ void CFriendList::RemoveFriend(CFriend* toremove)
 
 void CFriendList::LoadList()
 {
-	CPath metfile = CPath(theApp->ConfigDir + wxT("emfriends.met"));
+	CPath metfile = CPath(thePrefs::GetConfigDir() + wxT("emfriends.met"));
 
 	if (!metfile.FileExists()) {
 		return;
@@ -133,7 +134,7 @@ void CFriendList::LoadList()
 void CFriendList::SaveList()
 {
 	CFile file;
-	if (file.Create(theApp->ConfigDir + wxT("emfriends.met"), true)) {
+	if (file.Create(thePrefs::GetConfigDir() + wxT("emfriends.met"), true)) {
 		try {
 			file.WriteUInt8(MET_HEADER);
 			file.WriteUInt32(m_FriendList.size());

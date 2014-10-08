@@ -197,6 +197,9 @@ public:
 	void			SaveCats();
 	void			ReloadSharedFolders();
 
+	static const wxString&	GetConfigDir()			{ return s_configDir; }
+	static void		SetConfigDir(const wxString& dir) { s_configDir = dir; }
+
 	static bool		Score()				{ return s_scorsystem; }
 	static void		SetScoreSystem(bool val)	{ s_scorsystem = val; }
 	static bool		Reconnect()			{ return s_reconnect; }
@@ -607,6 +610,8 @@ private:
 	void SavePreferences();
 
 protected:
+	static wxString	s_configDir;
+
 ////////////// USER
 	static wxString	s_nick;
 

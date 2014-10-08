@@ -60,7 +60,7 @@ using namespace Kademlia;
 
 CPrefs::CPrefs()
 {
-	Init(theApp->ConfigDir + wxT("preferencesKad.dat"));
+	Init(thePrefs::GetConfigDir() + wxT("preferencesKad.dat"));
 }
 
 CPrefs::~CPrefs()

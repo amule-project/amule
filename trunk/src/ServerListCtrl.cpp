@@ -43,6 +43,7 @@
 #include "Server.h"		// Needed for CServer and SRV_PR_*
 #include "Logger.h"
 #include <common/Format.h>	// Needed for CFormat
+#include "Preferences.h"	// Needed for thePrefs
 
 
 #define CMuleColour(x) (wxSystemSettings::GetColour(x))

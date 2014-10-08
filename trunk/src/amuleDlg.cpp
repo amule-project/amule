@@ -244,7 +244,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 
 #ifdef ENABLE_IP2COUNTRY
 	m_GeoIPavailable = true;
-	m_IP2Country = new CIP2Country(theApp->ConfigDir);
+	m_IP2Country = new CIP2Country(thePrefs::GetConfigDir());
 #else
 	m_GeoIPavailable = false;
 #endif

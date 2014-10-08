@@ -94,6 +94,7 @@ libmuleappcommon_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs
 
 libmuleappcore_a_SOURCES = \
 	AsyncDNS.cpp \
+	CanceledFileList.cpp \
 	DeadSourceList.cpp \
 	FileArea.cpp \
 	FileAutoClose.cpp \
@@ -108,6 +109,7 @@ libmuleappcore_a_SOURCES = \
 	ThreadScheduler.cpp \
 	UPnPBase.cpp \
 	kademlia/kademlia/Entry.cpp \
+	kademlia/kademlia/Indexed.cpp \
 	kademlia/kademlia/SearchManager.cpp \
 	kademlia/routing/RoutingBin.cpp \
 	kademlia/utils/UInt128.cpp
@@ -137,7 +139,6 @@ libmuleappgui_a_CPPFLAGS = $(AM_CPPFLAGS) $(WX_CPPFLAGS) -I$(srcdir)/libs -I$(sr
 core_sources = \
 	amule.cpp \
 	BaseClient.cpp \
-	CanceledFileList.cpp \
 	ClientList.cpp \
 	ClientCreditsList.cpp \
 	ClientTCPSocket.cpp \
@@ -167,7 +168,6 @@ core_sources = \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
-	kademlia/kademlia/Indexed.cpp \
 	kademlia/kademlia/Kademlia.cpp \
 	kademlia/kademlia/Prefs.cpp \
 	kademlia/kademlia/Search.cpp \
