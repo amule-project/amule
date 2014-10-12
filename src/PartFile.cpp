@@ -1149,8 +1149,6 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			// Very nice feature, if a file is completed but .part.met don't believe it,
 			// update it.
 
-			uint64 partStart = i * PARTSIZE;
-			uint64 partEnd   = partStart + GetPartSize(i) - 1;
 			if (!( i < result->GetHashCount() && (result->GetPartHash(i) == GetPartHash(i)))){
 				if (IsComplete(i)) {
 					CMD4Hash wronghash;
@@ -1178,6 +1176,8 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 						% GetFileName() );
 
 					FillGap(i);
+					uint64 partStart = i * PARTSIZE;
+					uint64 partEnd   = partStart + GetPartSize(i) - 1;
 					RemoveBlockFromList(partStart, partEnd);
 				}
 			}
