@@ -18,6 +18,9 @@ Version 2.4.0 - The river knows.
 		* Fix WinSock library version detection with MinGW-w64
 		* Fix compilation with MinGW-w64
 
+	kam:
+		* WebServer serves .json, .manifest and .appacache files
+
 	Mr Hyde:
 		* Fix "Disable computer's timed standby mode" for MacOS 10.9 Mavericks
 		* Compilation fix on Linux Slackware 64bit and MacOS 10.9.4

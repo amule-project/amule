@@ -1915,6 +1915,13 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 				|| req_file.EndsWith(wxT(".xsl"))) {
 		session->m_vars["content_type"] = "text/xml";
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
+	} else if (req_file.EndsWith(wxT(".appcache"))
+		   || req_file.EndsWith(wxT(".manifest"))) {
+		session->m_vars["content_type"] = "text/cache-manifest";
+		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
+	} else if (req_file.EndsWith(wxT(".json"))) {
+		session->m_vars["content_type"] = "application/json";
+		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
 	} else {
 		httpOut = GetErrorPage("aMuleweb doesn't handle the requested file type ", httpOutLen);
 	}
