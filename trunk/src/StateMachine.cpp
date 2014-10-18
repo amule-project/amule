@@ -35,8 +35,7 @@ CStateMachine::CStateMachine(
 m_stateMutex(wxMUTEX_RECURSIVE),
 m_queueMutex(wxMUTEX_RECURSIVE),
 m_name(name),
-m_maxStates(maxStates),
-m_initialState(initialState)
+m_maxStates(maxStates)
 {
 	m_state = initialState;
 	m_clockCounter = 0;

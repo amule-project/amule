@@ -63,7 +63,6 @@ private:
 	wxMutex			m_queueMutex;
 	const wxString		m_name;
 	const unsigned int	m_maxStates;
-	const unsigned int	m_initialState;
 	unsigned int		m_clockCounter;
 	unsigned int		m_clocksInCurrentState;
 };
