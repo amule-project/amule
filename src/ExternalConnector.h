@@ -33,6 +33,10 @@
 #ifndef __EXTERNALCONNECTOR_H__
 #define __EXTERNALCONNECTOR_H__
 
+#ifdef HAVE_CONFIG_H
+#	include "config.h"		// Needed for HAVE_LIBREADLINE
+#endif
+
 #include <wx/app.h>			// For wxApp
 #include <wx/cmdline.h>		// For wxCmdLineEntryDesc
 #include <ec/cpp/RemoteConnect.h>
@@ -180,7 +184,9 @@ private:
 	wxString	m_cmdargs;
 	wxString	m_lastcmdstr;
 	CRemoteConnect*	m_ECClient;
+#ifdef HAVE_LIBREADLINE
 	char *		m_InputLine;
+#endif
 	bool		m_NeedsConfigSave;
 	wxString	m_language;
 	wxLocale *	m_locale;
