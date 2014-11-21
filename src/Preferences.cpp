@@ -660,6 +660,7 @@ static LangInfo aMuleLanguages[] = {
 	{ wxLANGUAGE_POLISH,				false,	wxEmptyString,	wxTRANSLATE("Polish") },
 	{ wxLANGUAGE_PORTUGUESE,			false,	wxEmptyString,	wxTRANSLATE("Portuguese") },
 	{ wxLANGUAGE_PORTUGUESE_BRAZILIAN,	false,	wxEmptyString,	wxTRANSLATE("Portuguese (Brazilian)") },
+	{ wxLANGUAGE_ROMANIAN,				false,	wxEmptyString,	wxTRANSLATE("Romanian") },
 	{ wxLANGUAGE_RUSSIAN,				false,	wxEmptyString,	wxTRANSLATE("Russian") },
 	{ wxLANGUAGE_SLOVENIAN,				false,	wxEmptyString,	wxTRANSLATE("Slovenian") },
 	{ wxLANGUAGE_SPANISH,				false,	wxEmptyString,	wxTRANSLATE("Spanish") },

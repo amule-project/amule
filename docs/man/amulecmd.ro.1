@@ -1,0 +1,284 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULECMD 1 "Noiembrie 2011" "aMuleCmd v2.3.1" "utilitare aMule"
+.als B_untranslated B
+.als RB_untranslated RB
+.als SS_untranslated SS
+.SH NUME
+amulecmd \- Program bazat pe terminal pentru controlat aMule
+.SH REZUMAT
+.B_untranslated amulecmd
+[\fB\-h\fP \fI<host>\fP] [\fB\-p\fP \fI<port>\fP] [\fB\-P\fP
+\fI<password>\fP] [\fB\-f\fP \fI<path>\fP]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+[\fB\-l\fP \fI<lang>\fP] {\fB \fP[\fB\-w\fP]\fB \fP|\fB \fP[\fB\-c\fP
+\fI<command>\fP]\fB \fP}
+
+.B_untranslated amulecmd
+[\fB\-\-create\-config\-from\fP=\fI<path>\fP]
+
+.B_untranslated amulecmd
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amulecmd
+.RB_untranslated [ \-\-help ]
+.SH DESCRIERE
+\fBamulecmd\fP este un client bazat pe terminal pentru a controla aMule.
+.TP 
+\fB[ \-h\fP \fI<host>\fP, \fB\-\-host\fP=\fI<host>\fP \fB]\fP
+Gazda unde rulează aMule (implicit: \fIlocalhost\fP).  \fI<host>\fP ar
+putea fi o adresă IP sau un nume DNS
+.TP 
+\fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
+Portul aMule pentru conexiuni externe, cum este configurat în
+Preferințe\->Control la distanță (implicit: \fI4712\fP)
+.TP 
+\fB[ \-P\fP \fI<password>\fP, \fB\-\-password\fP=\fI<password>\fP \fB]\fP
+Parolă conexiuni externe.
+.TP 
+\fB[ \-f\fP \fI<path>\fP, \fB\-\-config\-file\fP=\fI<path>\fP \fB]\fP
+Utilizează fișierul de configurare dat. Fișierul de configurare implicit
+este \fI~/.aMule/remote.conf\fP
+.TP 
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+Nu tipării nici o ieșire la stdout.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+Fi detaliat \- arată și mesajele de depanare.
+.TP 
+\fB[ \-l\fP \fI<lang>\fP, \fB\-\-locale\fP=\fI<lang>\fP \fB]\fP
+Configurați localizarea aplicației (limba). Vedeți secțiunea \fBNOTES\fP pentru
+descrierea parametrului \fI<lang>\fP .
+.TP 
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+Scrie opțiunile liniei de comandă în fișierul de configurare și ieși
+.TP 
+\fB[ \-c\fP \fI<command>\fP, \fB\-\-command\fP=\fI<command>\fP \fB]\fP
+Execută \fI<command>\fP ca și cum ar fi fost introdusă în terminalul
+amulecmd și ieși.
+.TP 
+\fB[ \-\-create\-config\-from\fP=\fI<path>\fP \fB]\fP
+Creează fișierul de configurare bazat pe \fI<path>\fP, care trebuie să
+indice la un fișier de configurare aMule valid, iar apoi ieși.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Afișează numărul versiunii curente.
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Tipărește o scurtă descriere de utilizare.
+.SH COMENZI
+toate comenzile nu sunt sensibile la majuscule.
+.SS "Adaugă \fI<eD2k\-link>\fP | \fI<magnet\-link>\fP"
+Adaugă la nucleu o legătură eD2k sau o legătură magnet.
+
+Link\-ul eD2k de adăugat poate fi:
+.RS 3
+.IP \(bu 2
+un link fișier (ed2k://|file|...), va fi adăugat la coada descărcărilor,
+.IP \(bu 2
+o legătură server (ed2k://|server|...), care va fi adăugată la lista
+serverelor,
+.IP \(bu 2
+un link listă server, în care caz toate serverele din listă vor fi adăugate
+la lista serverelor.
+.RE
+
+Legătura magnet trebuie să conțină indexul eD2k și lungimea fișierului.
+.SS "Anulează \fI<hash>\fP | \fI<number>\fP"
+Anulează descărcarea specificată de \fI<hash>\fP sau
+\fI<number>\fP. Pentru a obține valoarea utilizați  \fBshow\fP.
+.SS "Conectare [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]"
+Conectare la rețea.
+
+Aceasta va conecta la toate rețelele care sunt activate în preferințe.
+
+Cu parametrii facultativi puteți specifica la care rețea să se
+conecteze. Dând o adresă pentru server în forma IP:Port (unde IP este fie o
+adresă zecimală IPv4 sau un nume DNS rezolvabil) aMule se va conecta numai
+la acel server.
+.SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
+Deconectați de la toate rețelele la care sunteți conectat, sau doar
+deconectați de la rețeaua specificată.
+.SS "Descarcă \fI<number>\fP"
+Pornește descărcarea unui fișier.
+
+Un \fI<number>\fP a unui fișier de la ultima căutare trebuie
+dat. Exemplu: `descărcarea 12' va porni descărcarea fișierului cu numărul 12
+al căutării anterioare.
+.SS_untranslated Exit
+Deconectează de la amule/amuled și termină amulecmd.
+.SS "Ia \fI<what>\fP"
+Ia și afișează o valoare preferată.
+
+Valori disponibile pentru \fI<what>\fP:
+.RS
+.IP BwLimits 10
+Ia limitele lățimii de bandă.
+.IP IPFilter 10
+Ia preferințele filtrului IP.
+.RE
+.SS "Ajutor [ \fI<command>\fP ]"
+Tipărește o scurtă descriere a utilizării. Dacă este adresată fără nici un
+parametru, va arăta o listă a comenzilor disponibile. Dacă este adresată cu
+\fI<command>\fP, va arăta o scurtă descriere a comenzii date.
+.SS "Pauză \fI<hash>\fP | \fI<number>\fP"
+Pauzează descărcarea specificată de \fI<hash>\fP or
+\fI<number>\fP. Pentru a obține valoarea utilizați \fBshow\fP.
+.SS "Prioritate \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP"
+Configurați prioritatea unei descărcări cu \fI<hash>\fP sau
+\fI<number>\fP.
+
+Valori disponibile pentru \fI<priority>\fP:
+.RS
+.IP Auto 10
+Prioritate automată.
+.IP High 10
+Prioritate înaltă.
+.IP Low 10
+Prioritate scăzută.
+.IP Normal 10
+Prioritate normală.
+.RE
+.SS_untranslated Progress
+Arată progresul unei căutări în desfășurare.
+.SS_untranslated Quit
+Un sinonim a comenzii \fBexit\fP .
+.SS "Reâncarcă \fI<what>\fP"
+Reâncarcă un obiect dat.
+
+Valori disponibile pentru \fI<what>\fP:
+.RS
+.IP Shared 10
+Reâncarcă lista fișierelor partajate.
+.IP IPFilter 10
+Reâncarcă tabelele filtrului IP.
+.RE
+.SS_untranslated Reset
+Resetează jurnalul.
+.SS_untranslated Results
+Arată rezultatele ultimei căutări.
+.SS "Reia \fI<hash>\fP | \fI<number>\fP"
+Reia descărcarea specificată de \fI<hash>\fP sau
+\fI<number>\fP. Pentru a obține valoarea utilizați \fBshow\fP.
+.SS "Caută \fI<type>\fP \fI<keyword>\fP"
+Face o căutare a cuvântului cheie dat \fI<keyword>\fP. Un tip de
+căutare și un un cuvânt cheie sunt obligatorii pentru a face asta. Exemplu:
+`caută kad amule' efectuează o căutare kad pentru `amule'.
+
+Tipuri de căutări disponibile:
+.RS
+.IP Global 10
+Efectuează o căutare globală.
+.IP Kad 10
+Efectuează o căutare în rețeaua Kademlia.
+.IP Local 10
+Efectuează o căutare locală.
+.RE
+.SS "Configurează \fI<what>\fP"
+Configurați o valoare a preferințelor date.
+
+Valori disponibile pentru \fI<what>\fP:
+.RS
+.IP BwLimits 10
+Configurare limite lățime de bandă.
+.IP IPFilter 10
+Configurare preferințe filtru IP.
+.RE
+.SS "Arată \fI<what>\fP"
+Arată coada încărcărilor/descărcărilor, lista serverelor sau lista
+fișierelor partajate.
+
+Valori disponibile pentru \fI<what>\fP:
+.RS
+.IP DL 10
+Arată coada descărcărilor.
+.IP Log 10
+Arată jurnalul.
+.IP Servers 10
+Arată lista serverelor.
+.IP UL 10
+Arată coada încărcărilor.
+.RE
+.SS_untranslated Shutdown
+Închide nucleul distant care rulează (amule/amuled). Aceasta va închide de
+asemenea clientul text, deoarece este inutilizabil fără un nucleu care
+rulează.
+.SS "Statistici [ \fI<number>\fP ]"
+Arată arborele statisticilor.
+
+Numărul facultativ \fI<number>\fP în domeniul 0\-255 poate fi trecut ca
+argument la această comandă, care spune cât de multe intrări de subdiviziuni
+a versiunii clientului vor fi afișate. Trecând 0, sau lăsând gol va însemna
+`nelimitat'.
+
+Exemplu: `statistici 5' va afișa numai primele 5 versiuni pentru fiecare tip
+de client.
+.SS_untranslated Status
+Arată starea conexiunii, vitezele actuale de încărcare/descărcare, etc.
+.SH NOTE
+.SS Căi
+Pentru toate opțiunile care iau o \fI<path>\fP valoare, dacă \fIpath\fP nu
+conține nici o parte a unui director (ex. doar un nume de fișier simplu),
+atunci se consideră a fi sub directorul de configurare aMule, \fI~/.aMule\fP.
+.SS Limbi
+Parametrul \fI<lang>\fP pentru opțiunea \fB\-l\fP are următoarea formă:
+\fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP] unde \fIlang\fP este
+limba primară, \fILANG\fP este dialectul/teritoriul, \fIencoding\fP este setul de
+caractere de utilizat iar \fImodifier\fP permite utilizatorului de a specifica
+o instanță specifică a datelor localizării în cadrul unei singure categorii.
+
+De exemplu, următoarele șiruri sunt valide:
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+Deși toate șirurile de mai sus sunt acceptate ca definiții de limbă valide,
+\fIencoding\fP și \fImodifier\fP sunt momentan neutilizate.
+
+În completare la formatul de mai sus, puteți specifica și numele întreg al
+limbii în engleză \- so \fB\-l german\fP este valid și  similar cu \fB\-l de_DE\fP.
+
+Când nu este definită nici o limbă, în linia de comandă sau în fișierul de
+configurare, va fi utilizată limba implicită a sistemului de operare.
+.SH FIȘIERE
+~/.aMule/remote.conf
+.SH EXEMPLU
+De obicei amulecmd va rula întâi ca:
+.PP
+\fBamulecmd\fP \fB\-h\fP \fIhostname\fP \fB\-p\fP \fIECport\fP \fB\-P\fP \fIECpassword\fP \fB\-w\fP
+.PP
+sau
+.PP
+\fBamulecmd\fP \fB\-\-create\-config\-from\fP=\fI/home/username/.aMule/amule.conf\fP
+.PP
+Aceasta va salva configurările la \fI$HOME/.aMule/remote.conf\fP, iar mai
+târziu trebuie doar să tastați:
+
+.B_untranslated amulecmd
+
+Desigur, nu trebuie să urmați acest exemplu.
+.SH "RAPORTAREA ERORILOR"
+Vă rugăm să raportați erorile fie pe forumul
+nostru(\fIhttp://forum.amule.org/\fP), sau în bugtracker\-ul nostru
+(\fIhttp://bugs.amule.org/\fP). Nu raportați erorile pe email, nici la lista
+noastră de adrese nici direct la nici un membru al echipei.
+.SH "DREPT DE AUTOR"
+aMule și toate utilitarele conexe sunt distribuite sub GNU General Public
+License.
+.SH "VEDEȚI ȘI"
+.B_untranslated amule\fR(1), \fBamuled\fR(1)
+.SH AUTOR
+Această pagină manual a fost scrisă de Vollstrecker
+<amule@vollstreckernet.de>

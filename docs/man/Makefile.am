@@ -13,6 +13,7 @@ EXTRA_DIST = \
 	amule.fr.1 amuled.fr.1 amulecmd.fr.1 amulegui.fr.1 amuleweb.fr.1 ed2k.fr.1 \
 	amule.hu.1 amuled.hu.1 amulecmd.hu.1 amulegui.hu.1 amuleweb.hu.1 ed2k.hu.1 \
 	amule.it.1 amuled.it.1 amulecmd.it.1 amulegui.it.1 amuleweb.it.1 ed2k.it.1 \
+	amule.ro.1 amuled.ro.1 amulecmd.ro.1 amulegui.ro.1 amuleweb.ro.1 ed2k.ro.1 \
 	amule.ru.1 amuled.ru.1 amulecmd.ru.1 amulegui.ru.1 amuleweb.ru.1 ed2k.ru.1 \
 	amule.tr.1 amuled.tr.1 amulecmd.tr.1 amulegui.tr.1 amuleweb.tr.1 ed2k.tr.1 \
 	amule.zh_TW.1 amuled.zh_TW.1 amulecmd.zh_TW.1 amulegui.zh_TW.1 amuleweb.zh_TW.1 ed2k.zh_TW.1

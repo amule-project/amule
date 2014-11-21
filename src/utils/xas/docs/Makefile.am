@@ -1,8 +1,8 @@
 dist_man_MANS = xas.1
 
-man_langs = de es fr hu it ru tr zh_TW
+man_langs = de es fr hu it ro ru tr zh_TW
 
-EXTRA_DIST = xas.de.1 xas.es.1 xas.fr.1 xas.hu.1 xas.it.1 xas.ru.1 xas.tr.1 xas.zh_TW.1
+EXTRA_DIST = xas.de.1 xas.es.1 xas.fr.1 xas.hu.1 xas.it.1 xas.ro.1 xas.ru.1 xas.tr.1 xas.zh_TW.1
 
 install-data-hook:
 	@for lang in $(man_langs); do \
