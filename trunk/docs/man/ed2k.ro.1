@@ -1,0 +1,85 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH ED2K 1 "Noiembrie 2011" "Analizor aMule de link\-uri eD2k v1.5.1" "utilitare aMule"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NUME
+ed2k \- analizor aMule de linkuri eD2k
+.SH REZUMAT
+.B_untranslated ed2k
+[\fB\-c\fP \fI<path>\fP] [\fB\-t\fP \fI<num>\fP]
+.RB_untranslated [ \-e ]
+.RB_untranslated [ \-l ]
+\fI<eD2k\-link>\fP
+
+.B_untranslated ed2k
+.RB_untranslated [ \-h ]
+
+.B_untranslated ed2k
+.RB_untranslated [ \-v ]
+.SH DESCRIERE
+Trimite link\-ul dat \fI<eD2k\-link>\fP la aMule, ex. îl scrie în
+fișierul ~/.aMule/ED2KLinks, care va fi verificat de aMule în fiecare
+secundă pentru link\-uri.
+.TP 
+\fB[ \-c\fP \fI<path>\fP, \fB\-\-config\-dir\fP=\fI<path>\fP \fB]\fP
+Citește configurarea din \fI<path>\fP în schimb de acasă
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
+Configurați categoria pentru link\-urile eD2k trecute la \fI<num>\fP
+.TP 
+.B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
+Încarcă toate link\-urile găsite în colecția emule date ca
+\fI<ed2k\-link>\fP
+.TP 
+.B_untranslated [ \-l\fR, \fB\-\-list ]\fR
+Listează toate link\-urile găsite în colecția emule date ca
+\fI<ed2k\-link>\fP
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Tipărește o scurtă descriere de utilizare.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Afișează numărul versiunii curente.
+.TP 
+\fB[ eD2k\-link ]\fP
+Adaugă o legătură eD2k la nucleu.
+.PP
+Link\-ul eD2k de adăugat poate fi:
+.RS 3
+.IP \(bu 2
+un link fișier (ed2k://|file|...), va fi adăugat la coada descărcărilor,
+.IP \(bu 2
+o legătură server (ed2k://|server|...), care va fi adăugată la lista
+serverelor,
+.IP \(bu 2
+o legătură listă server, în care caz toate serverele din listă vor fi
+adăugate la lista serverelor;
+.IP \(bu 2
+o legătură magnet;
+.IP \(bu 2
+un fișier colecție emule.
+.RE
+
+\fB Ordinea în care dați parametrii este importantă.\fP Puteți da mai mult
+decât un link, iar fiecare link poate avea proprii parametri. De exemplu
+\fBed2k <link1> \-t2 <link2>\fP va descărca \fI<link1>\fP
+în categoria standard și \fI<link2>\fP în categoria 2.
+.SH FIȘIERE
+~/.aMule/ED2KLinks
+.SH "RAPORTAREA ERORILOR"
+Vă rugăm să raportați erorile fie pe forumul
+nostru(\fIhttp://forum.amule.org/\fP), sau în bugtracker\-ul nostru
+(\fIhttp://bugs.amule.org/\fP). Nu raportați erorile pe email, nici la lista
+noastră de adrese nici direct la nici un membru al echipei.
+.SH "DREPT DE AUTOR"
+aMule și toate utilitarele conexe sunt distribuite sub GNU General Public
+License.
+.SH "VEDEȚI ȘI"
+.B_untranslated amule\fR(1)
+.SH AUTOR
+Această pagină manual a fost scrisă de Vollstrecker
+<amule@vollstreckernet.de>

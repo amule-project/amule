@@ -1,0 +1,219 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULEWEB 1 "Noiembrie 2011" "aMule webserver v2.3.1" "utilitare aMule"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NUME
+amuleweb \- aMule server web
+.SH REZUMAT
+.B_untranslated amuleweb
+[\fB\-h\fP \fI<host>\fP] [\fB\-p\fP \fI<port>\fP] [\fB\-P\fP
+\fI<password>\fP] [\fB\-f\fP \fI<path>\fP]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+[\fB\-l\fP \fI<lang>\fP]
+.RB_untranslated [ \-w ]
+[\fB\-t\fP \fI<name>\fP] [\fB\-s\fP \fI<port>\fP]
+.RB_untranslated [ \-u ]
+[\fB\-U\fP \fI<port>\fP]
+.RB_untranslated [ \-z ]
+.RB_untranslated [ \-Z ]
+[\fB\-A\fP \fI<parolă>\fP] [\fB\-G\fP \fI<parolă>\fP]
+.RB_untranslated [ \-a " " | " " \-d ]
+.RB_untranslated [ \-L ]
+.RB_untranslated [ \-\-no\-php ]
+.RB_untranslated [ \-N ]
+
+.B_untranslated amuleweb
+[\fB\-\-create\-config\-from\fP=\fI<path>\fP]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-help ]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amuleweb
+[\fB\-\-amule\-config\-file\fP=\fI<path>\fP]
+
+.SH DESCRIERE
+\fBamuleweb\fP vă administrează accesul la amule printr\-un navigator
+web. Puteți porni amuleweb împreună cu \fBamule\fP(1), sau separat, oricând mai
+târziu. Pot fi specificate opțiuni prin linia de comandă sau prin fișierul
+de configurare. Opțiunile din linia de comandă au prioritate față de
+opțiunile din fișierul de configurare.
+.TP 
+\fB[ \-h\fP \fI<host>\fP, \fB\-\-host\fP=\fI<host>\fP \fB]\fP
+Gazda unde rulează aMule (implicit: \fIlocalhost\fP).  \fI<host>\fP ar
+putea fi o adresă IP sau un nume DNS
+.TP 
+\fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
+Portul aMule pentru conexiuni externe, cum este configurat în
+Preferințe\->Control la distanță (implicit: \fI4712\fP)
+.TP 
+\fB[ \-P\fP \fI<password>\fP, \fB\-\-password\fP=\fI<password>\fP \fB]\fP
+Parolă conexiuni externe.
+.TP 
+\fB[ \-f\fP \fI<path>\fP, \fB\-\-config\-file\fP=\fI<path>\fP \fB]\fP
+Utilizează fișierul de configurare dat. Fișierul de configurare implicit
+este \fI~/.aMule/remote.conf\fP
+.TP 
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+Nu tipării nici o ieșire la stdout.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+Fi detaliat \- arată și mesajele de depanare.
+.TP 
+\fB[ \-l\fP \fI<lang>\fP, \fB\-\-locale\fP=\fI<lang>\fP \fB]\fP
+Configurați localizarea aplicației (limba). Vedeți secțiunea \fBNOTES\fP pentru
+descrierea parametrului \fI<lang>\fP .
+.TP 
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+Scrie opțiunile liniei de comandă în fișierul de configurare și ieși
+.TP 
+\fB[ \-t\fP \fI<name>\fP, \fB\-\-template\fP=\fI<name>\fP \fB]\fP
+Încarcă modelul denumit \fI<name>\fP. Vedeți secțiunea \fBSKIN SUPPORT\fP
+pentru detalii.
+.TP 
+\fB[ \-s\fP \fI<port>\fP, \fB\-\-server\-port\fP=\fI<port>\fP \fB]\fP
+Portul HTTP al serverului web. Acesta este portul pe care trebuie să\-l
+indicați navigatorului (implicit: \fI4711\fP).
+.TP 
+.B_untranslated [ \-u ]\fR
+.br
+Activare UPnP.
+.TP 
+\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP \fI<port>\fP \fB]\fP
+Port UPnP.
+.TP 
+.B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
+Activează utilizând compresia gzip în traficul HTTP pentru a salva lățimea
+de bandă.
+.TP 
+.B_untranslated [ \-Z\fR, \fB\-\-disable\-gzip ]\fR
+Dezactivează utilizând compresia gzip (aceasta este implicita).
+.TP 
+\fB[ \-A\fP \fI<passwd>\fP, \fB\-\-admin\-pass\fP=\fI<passwd>\fP \fB]\fP
+Parola pentru accesul nerestricționat pentru serverul web.
+.TP 
+\fB[ \-G\fP \fI<passwd>\fP, \fB\-\-guest\-pass\fP=\fI<passwd>\fP \fB]\fP
+Parolă oaspete pentru webserver.
+.TP 
+.B_untranslated [ \-a\fR, \fB\-\-allow\-guest ]\fR
+Permite accesul oaspeților.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-deny\-guest ]\fR
+Interzice accesul oaspeților (implicit).
+.TP 
+.B_untranslated [ \-L\fR, \fB\-\-load\-settings ]\fR
+Încarcă/Salvează configurările serverului web din/la aMule distant. Aceasta
+determină amuleweb să ignore configurările din linia de comandă sau fișierul
+de configurare și să le încarece din aMule. Când se salvează preferințele nu
+se va scrie nimic în fișierul de configurare, doar la aMule. (Desigur,
+aceasta funcționează doar pentru acele configurări care pot fi configurate
+în aMule la Preferințe\->Control la distanță.)
+.TP 
+.B_untranslated [ \-\-no\-php ]\fR
+Dezactivează interpretorul PHP (învechit)
+.TP 
+.B_untranslated [ \-N\fR, \fB\-\-no\-script\-cache ]\fR
+Recompilează paginile PHP la fiecare cerere.
+.TP 
+\fB[ \-\-create\-config\-from\fP=\fI<path>\fP \fB]\fP
+Creează fișierul de configurare bazat pe \fI<path>\fP, care trebuie să
+indice la un fișier de configurare aMule valid, iar apoi ieși.
+.TP 
+.B_untranslated [ \-\-help ]\fR
+Tipărește o scurtă descriere de utilizare.
+.TP 
+.B_untranslated [ \-\-version ]\fR
+Afișează numărul versiunii curente.
+.TP 
+\fB[ \-\-amule\-config\-file\fP=\fI<path>\fP \fB]\fP
+Calea fișierului de configurare aMule. \fBNU UTILIZAȚI DIRECT!\fP aMule
+utilizează această opțiune când pornește amuleweb la pornirea aMule. Această
+opțiune cauzează tuturor celorlalte configurări din linia de comandă și
+fișiere de configurare să fie ignorate, preferințele vor fi citite din
+fișierul de configurare dat, de asemenea implică și opțiunile \fB\-q \-L\fP .
+.SH NOTE
+.SS Căi
+Pentru toate opțiunile care iau o \fI<path>\fP valoare, dacă \fIpath\fP nu
+conține nici o parte a unui director (ex. doar un nume de fișier simplu),
+atunci se consideră a fi sub directorul de configurare aMule, \fI~/.aMule\fP.
+.SS Limbi
+Parametrul \fI<lang>\fP pentru opțiunea \fB\-l\fP are următoarea formă:
+\fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP] unde \fIlang\fP este
+limba primară, \fILANG\fP este dialectul/teritoriul, \fIencoding\fP este setul de
+caractere de utilizat iar \fImodifier\fP permite utilizatorului de a specifica
+o instanță specifică a datelor localizării în cadrul unei singure categorii.
+
+De exemplu, următoarele șiruri sunt valide:
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+Deși toate șirurile de mai sus sunt acceptate ca definiții de limbă valide,
+\fIencoding\fP și \fImodifier\fP sunt momentan neutilizate.
+
+În completare la formatul de mai sus, puteți specifica și numele întreg al
+limbii în engleză \- so \fB\-l german\fP este valid și  similar cu \fB\-l de_DE\fP.
+
+Când nu este definită nici o limbă, în linia de comandă sau în fișierul de
+configurare, va fi utilizată limba implicită a sistemului de operare.
+.SH "SUPORT ASPECT"
+\fBamuleweb\fP este capabil să afișeze informația în diferite aspecte. Aceste
+aspecte se numesc modele, și puteți face ca amuleweb să încarce un model
+anumit prin \fB\-t\fP opțiune linie de comandă. Modelele sunt căutate în două
+locuri: întâi în \fI~/.aMule/webserver/\fP apoi în
+\fI/usr/share/amule/webserver/\fP dacă a fost instalat cu \-\-prefix=/usr.
+.PP
+Fiecare șablon trebuie să fie într\-un subdirector al numelui șablonului, iar
+acest director trebuie să conțină toate fișierele de care șablonul are
+nevoie.
+.SH FIȘIERE
+~/.aMule/remote.conf
+.br
+~/.aMule/webserver/
+.br
+\fI$(pkgdatadir)\fP/webserver/
+.SH EXEMPLU
+De obicei amuleweb va rula la început ca:
+.PP
+\fBamuleweb\fP \fB\-h\fP \fInume gazdă\fP \fB\-p\fP \fIECport\fP \fB\-P\fP \fIECprolă\fP \fB\-s\fP
+\fIHTTPport\fP \fB\-A\fP \fIParolă administrator\fP \fB\-w\fP
+.PP
+sau
+.PP
+\fBamuleweb\fP \fB\-\-create\-config\-from\fP=\fI/home/username/.aMule/amule.conf\fP
+.PP
+Aceasta va salva configurările la \fI$HOME/.aMule/remote.conf\fP, iar mai
+târziu trebuie doar să tastați:
+.PP
+.B_untranslated amuleweb
+.PP
+Desigur, puteți specifica cât de multe sau cât de puține opțiuni în linia
+primului exemplu, și de asemenea le puteți omite integral.
+.SH "RAPORTAREA ERORILOR"
+Vă rugăm să raportați erorile fie pe forumul
+nostru(\fIhttp://forum.amule.org/\fP), sau în bugtracker\-ul nostru
+(\fIhttp://bugs.amule.org/\fP). Nu raportați erorile pe email, nici la lista
+noastră de adrese nici direct la nici un membru al echipei.
+.SH "DREPT DE AUTOR"
+aMule și toate utilitarele conexe sunt distribuite sub GNU General Public
+License.
+.SH "VEDEȚI ȘI"
+.B_untranslated amule\fR(1), \fBamulecmd\fR(1)
+.SH AUTOR
+Această pagină manual a fost scrisă de Vollstrecker
+<amule@vollstreckernet.de>
