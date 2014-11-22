@@ -142,7 +142,7 @@ CEncryptedStreamSocket::~CEncryptedStreamSocket()
 void CEncryptedStreamSocket::SetConnectionEncryption(bool bEnabled, const uint8_t* pTargetClientHash, bool bServerConnection)
 {
 	if (m_StreamCryptState != ECS_UNKNOWN && m_StreamCryptState != ECS_NONE) {
-		if (!m_StreamCryptState == ECS_NONE || bEnabled) {
+		if (bEnabled) {
 			wxFAIL;
 		}
 		return;
