@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-12 07:21+0200\n"
+"POT-Creation-Date: 2014-11-25 15:48+0100\n"
 "PO-Revision-Date: 2014-02-15 13:05+0100\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
@@ -69,7 +69,7 @@ msgstr "Interruption de l'instance amuleweb avec le pid '%ld' …"
 msgid "Killing amuleweb instance with pid '%ld' ... "
 msgstr "Mise à mort de l'instance amuleweb avec le pid '%ld' …"
 
-#: src/amule.cpp:253 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:94
+#: src/amule.cpp:253 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
 msgstr "Échec"
 
@@ -97,7 +97,7 @@ msgstr ""
 msgid "Password set and external connections enabled."
 msgstr "Mot de passe renseigné et connexions externes activées."
 
-#: src/amule.cpp:447 src/KadDlg.cpp:179 src/KadDlg.cpp:185
+#: src/amule.cpp:447 src/KadDlg.cpp:183 src/KadDlg.cpp:189
 #: src/PrefsUnifiedDlg.cpp:747 src/SharedFilesCtrl.cpp:318
 msgid "WARNING"
 msgstr "AVERTISSEMENT"
@@ -110,13 +110,13 @@ msgstr ""
 "Votre localisation à été remise par défaut à cause d'un changement dans la "
 "configuration. Désolé."
 
-#: src/amule.cpp:495 src/amule.cpp:1054 src/CatDialog.cpp:141
+#: src/amule.cpp:495 src/amule.cpp:1049 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:346
-#: src/ServerListCtrl.cpp:148
+#: src/ServerListCtrl.cpp:149
 msgid "Info"
 msgstr "Infos"
 
-#: src/amule.cpp:581
+#: src/amule.cpp:580
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -124,16 +124,16 @@ msgstr ""
 "Vous n'avez pas de serveurs dans votre liste de serveurs.\n"
 "Voulez vous qu'aMule télécharge une nouvelle liste maintenant ?"
 
-#: src/amule.cpp:582
+#: src/amule.cpp:581
 msgid "Server list download"
 msgstr "Téléchargement de la liste de serveurs."
 
-#: src/amule.cpp:655
+#: src/amule.cpp:650
 #, c-format
 msgid "web server running on pid %d"
 msgstr "serveur web s'exécutant avec le pid %d"
 
-#: src/amule.cpp:659
+#: src/amule.cpp:654
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
@@ -144,23 +144,23 @@ msgstr ""
 "serveur web aMule, ou compilez aMule en utilisant --enable-webserver et "
 "exécutez make install"
 
-#: src/amule.cpp:660 src/amule.cpp:774 src/amule.cpp:1065
+#: src/amule.cpp:655 src/amule.cpp:769 src/amule.cpp:1060
 #: src/amule-remote-gui.cpp:304 src/amule-remote-gui.cpp:326
 #: src/amule-remote-gui.cpp:328 src/amule-remote-gui.cpp:641
 msgid "ERROR"
 msgstr "ERREUR"
 
-#: src/amule.cpp:742
+#: src/amule.cpp:737
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "Impossible de lier les ports à l'adresse spécifiée : %s"
 
-#: src/amule.cpp:766
+#: src/amule.cpp:761
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Le port %u n'est pas disponible. Vous serez LowID\n"
 
-#: src/amule.cpp:772
+#: src/amule.cpp:767
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -176,15 +176,15 @@ msgstr ""
 "Vérifiez votre réseau pour être sûr que le port est ouvert en sortie et en "
 "entrée."
 
-#: src/amule.cpp:851
+#: src/amule.cpp:846
 msgid "Failed to create OnlineSig File"
 msgstr "Échec de la création du fichier OnlineSig"
 
-#: src/amule.cpp:859
+#: src/amule.cpp:854
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Échec de la création du fichier aMule OnlineSig"
 
-#: src/amule.cpp:1031
+#: src/amule.cpp:1026
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -192,42 +192,42 @@ msgstr ""
 "La localisation choisie semble ne pas être installer sur votre machine. "
 "(Note : Je tente de la forcer quant même)"
 
-#: src/amule.cpp:1040
+#: src/amule.cpp:1035
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "C'est la première fois que vous lancez aMule %s"
 
-#: src/amule.cpp:1042
+#: src/amule.cpp:1037
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Cette version est une version de test, mis à jour quotidienne, et\n"
 
-#: src/amule.cpp:1043
+#: src/amule.cpp:1038
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "nous ne fournissons aucune garantie que cela n'endommagera rien, brûlera "
 "votre maison,\n"
 
-#: src/amule.cpp:1044
+#: src/amule.cpp:1039
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "ou tuera votre chien. Mais ça *devrait* être à peu près sûr quand-même.\n"
 
-#: src/amule.cpp:1049
+#: src/amule.cpp:1044
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Plus d'informations, de l'aide et de nouvelles versions peuvent être "
 "trouvées sur notre page web,\n"
 
-#: src/amule.cpp:1050
+#: src/amule.cpp:1045
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 " www.aMule.org, ou sur notre canal IRC : #aMule sur irc.freenode.net.\n"
 
-#: src/amule.cpp:1052
+#: src/amule.cpp:1047
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Ne vous gênez pas pour reporter tout bogue sur http://forum.amule.org"
 
-#: src/amule.cpp:1065
+#: src/amule.cpp:1060
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -236,136 +236,136 @@ msgstr ""
 "La signature en ligne sera DÉSACTIVÉE jusqu'à ce que cela soit corrigé dans "
 "les préférences."
 
-#: src/amule.cpp:1121
+#: src/amule.cpp:1116
 msgid "Server hostname notified"
 msgstr "Nom du serveur signalé"
 
-#: src/amule.cpp:1347
+#: src/amule.cpp:1342
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Erreur lors de la réserve d'espace pour le fichier '%s' : %s"
 
-#: src/amule.cpp:1482
+#: src/amule.cpp:1477
 msgid "ERROR: can't open logfile"
 msgstr "ERREUR : impossible d'ouvrir le fichier journal"
 
-#: src/amule.cpp:1486
+#: src/amule.cpp:1481
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "AVERTISSEMENT : le fichier journal est vide. Quelque chose ne va pas."
 
-#: src/amule.cpp:1504
+#: src/amule.cpp:1499
 msgid "Log has been reset"
 msgstr "Le journal a été effacé"
 
-#: src/amule.cpp:1530
+#: src/amule.cpp:1525
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "ServerMessage : %s"
 
-#: src/amule.cpp:1568 src/IP2Country.cpp:151 src/IPFilter.cpp:510
-#: src/ServerList.cpp:858
+#: src/amule.cpp:1567 src/IP2Country.cpp:152 src/IPFilter.cpp:510
+#: src/ServerList.cpp:860
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr "Saut du téléchargement de %s, car le fichier demandé n'est pas récent."
 
-#: src/amule.cpp:1570
+#: src/amule.cpp:1569
 msgid "Failed to download the nodes list."
 msgstr "Échec du téléchargement de la liste des nœuds."
 
-#: src/amule.cpp:1590
+#: src/amule.cpp:1589
 msgid "Failed to open the downloaded version check file"
 msgstr "Échec de l'ouverture du fichier de vérification de version téléchargé"
 
-#: src/amule.cpp:1593 src/amule.cpp:1603 src/amule.cpp:1609
+#: src/amule.cpp:1592 src/amule.cpp:1602 src/amule.cpp:1608
 msgid "Corrupted version check file"
 msgstr "Fichier de vérification de version corrompu"
 
-#: src/amule.cpp:1619
+#: src/amule.cpp:1618
 msgid "You are using an outdated version of aMule!"
 msgstr "Vous utilisez une version obsolète d'aMule !"
 
-#: src/amule.cpp:1621
+#: src/amule.cpp:1620
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 "Votre version d'aMule est %i.%i.%i et la dernière version est %li.%li.%li"
 
-#: src/amule.cpp:1622
+#: src/amule.cpp:1621
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr ""
 "La dernière version peut toujours être trouvée sur http://www.amule.org"
 
-#: src/amule.cpp:1624
+#: src/amule.cpp:1623
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr ""
 "AVERTISSEMENT : votre version d'aMuled est obsolète : %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1628
+#: src/amule.cpp:1627
 msgid "Your copy of aMule is up to date."
 msgstr "Votre version d'aMule est à jour."
 
-#: src/amule.cpp:1635
+#: src/amule.cpp:1634
 msgid "Failed to download the version check file"
 msgstr "Échec du téléchargement du fichier de vérification de version"
 
-#: src/amule.cpp:1800 src/amule-remote-gui.cpp:526
+#: src/amule.cpp:1799 src/amule-remote-gui.cpp:526
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Utilisateurs : %s | Fichiers : %s"
 
-#: src/amule.cpp:1801 src/amule-remote-gui.cpp:527
+#: src/amule.cpp:1800 src/amule-remote-gui.cpp:527
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Utilisateurs : E : %s K : %s | Fichiers : E : %s K : %s"
 
-#: src/amule.cpp:1810 src/amule-remote-gui.cpp:536
+#: src/amule.cpp:1809 src/amule-remote-gui.cpp:536
 msgid "No networks selected"
 msgstr "Aucun réseau sélectionné"
 
-#: src/amule.cpp:1873 src/TextClient.cpp:707
+#: src/amule.cpp:1872 src/TextClient.cpp:709
 msgid "with LowID"
 msgstr "avec un LowID"
 
-#: src/amule.cpp:1873 src/TextClient.cpp:707
+#: src/amule.cpp:1872 src/TextClient.cpp:709
 msgid "with HighID"
 msgstr "avec un HighID"
 
-#: src/amule.cpp:1875
+#: src/amule.cpp:1874
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Connecté à %s %s"
 
-#: src/amule.cpp:1879
+#: src/amule.cpp:1878
 #, c-format
 msgid "Connecting to %s"
 msgstr "Connexion à %s"
 
-#: src/amule.cpp:1881
+#: src/amule.cpp:1880
 msgid "Disconnected from eD2k"
 msgstr "Déconnecté de eD2k"
 
-#: src/amule.cpp:1889
+#: src/amule.cpp:1888
 msgid "Kad started."
 msgstr "Kad démarré."
 
-#: src/amule.cpp:1891
+#: src/amule.cpp:1890
 msgid "Kad stopped."
 msgstr "Kad arrêté."
 
-#: src/amule.cpp:1899
+#: src/amule.cpp:1898
 msgid "Connected to Kad (ok)"
 msgstr "Connecté à Kad (OK)"
 
-#: src/amule.cpp:1901
+#: src/amule.cpp:1900
 msgid "Connected to Kad (firewalled)"
 msgstr "Connecté à Kad (pare-feu)"
 
-#: src/amule.cpp:1904
+#: src/amule.cpp:1903
 msgid "Disconnected from Kad"
 msgstr "Déconnecté de Kad"
 
-#: src/amule.cpp:1971
+#: src/amule.cpp:1970
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -373,11 +373,11 @@ msgstr ""
 "Le réseau Kad ne peut être utilisé si le port UDP est désactivé dans les "
 "préférences, pas de démarrage."
 
-#: src/amule.cpp:1974
+#: src/amule.cpp:1973
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Le réseau Kad est désactivé dans les préférences, pas de connexion."
 
-#: src/amuled.cpp:584
+#: src/amuled.cpp:589
 msgid ""
 "ERROR: aMule daemon cannot be used when external connections are disabled. "
 "To enable External Connections, use either a normal aMule, start amuled with "
@@ -389,7 +389,7 @@ msgstr ""
 "aMule normal, démarrez amuled avec l'option --ec-config ou passez la clé "
 "\"AcceptExternalConnections\" à 1 dans le fichier ~/.aMule/amule.conf"
 
-#: src/amuled.cpp:587
+#: src/amuled.cpp:592
 msgid ""
 "ERROR: A valid password is required to use external connections, and aMule "
 "daemon cannot be used without external connections. To run aMule deamon, you "
@@ -404,19 +404,19 @@ msgstr ""
 "conf. Lancez amuled avec le flag --ec-config pour affecter le mot de passe. "
 "Plus d'information est disponible sur http://wiki.amule.org"
 
-#: src/amuled.cpp:642
+#: src/amuled.cpp:649
 msgid "amuled: OnInit - starting timer"
 msgstr "amuled: OnInit - démarrage du timer"
 
-#: src/amuled.cpp:657
+#: src/amuled.cpp:664
 msgid "amuled: forking to background - see you"
 msgstr "amuled: passage en arrière plan - à bientôt"
 
-#: src/amuled.cpp:688
+#: src/amuled.cpp:695
 msgid "Cannot Create Pid File"
 msgstr "Impossible de créer le fichier Pid"
 
-#: src/amuled.cpp:735
+#: src/amuled.cpp:742
 #, c-format
 msgid "ERROR: %s"
 msgstr "Erreur : %s"
@@ -501,7 +501,7 @@ msgstr " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:513 src/KadDlg.cpp:189 src/PartFile.cpp:920
+#: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:920
 #: src/PartFile.cpp:928 src/PrefsUnifiedDlg.cpp:629
 #: src/PrefsUnifiedDlg.cpp:734 src/PrefsUnifiedDlg.cpp:847
 msgid "Message"
@@ -543,8 +543,8 @@ msgstr "Kad : Coupé"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:153
-#: src/ServerListCtrl.cpp:527 src/ServerListCtrl.cpp:546
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
+#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
 #: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Annuler"
@@ -599,112 +599,112 @@ msgstr "Voulez-vous vraiment quitter %s ?"
 msgid "Exit confirmation"
 msgstr "Confirmation de sortie"
 
-#: src/amuleDlg.cpp:1173
+#: src/amuleDlg.cpp:1174
 msgid "Launch Command: "
 msgstr "Commande de lancement :"
 
-#: src/amuleDlg.cpp:1209 src/muuli_wdr.cpp:2092 src/Preferences.cpp:844
+#: src/amuleDlg.cpp:1210 src/muuli_wdr.cpp:2092 src/Preferences.cpp:846
 msgid "- default -"
 msgstr "- défaut -"
 
-#: src/amuleDlg.cpp:1232
+#: src/amuleDlg.cpp:1233
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Le répertoire de thèmes '%s' n'existe pas"
 
-#: src/amuleDlg.cpp:1237
+#: src/amuleDlg.cpp:1238
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr ""
 "AVERTISSEMENT : Impossible d'ouvrir le fichier thème '%s' pour la lecture"
 
-#: src/amuleDlg.cpp:1335 src/amuleDlg.cpp:1469 src/muuli_wdr.cpp:1673
+#: src/amuleDlg.cpp:1336 src/amuleDlg.cpp:1472 src/muuli_wdr.cpp:1673
 #: src/muuli_wdr.cpp:3532
 msgid "Networks"
 msgstr "Réseaux"
 
-#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:3532
+#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:3532
 msgid "Networks Window"
 msgstr "Fenêtre des réseaux"
 
-#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:3533
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3533
 msgid "Searches"
 msgstr "Recherches"
 
-#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:3533
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3533
 msgid "Searches Window"
 msgstr "Fenêtre de Recherche"
 
-#: src/amuleDlg.cpp:1337 src/DownloadListCtrl.cpp:643 src/muuli_wdr.cpp:426
+#: src/amuleDlg.cpp:1338 src/DownloadListCtrl.cpp:643 src/muuli_wdr.cpp:426
 #: src/muuli_wdr.cpp:1788 src/muuli_wdr.cpp:3534 src/Statistics.cpp:757
 msgid "Downloads"
 msgstr "Téléchargements"
 
-#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:3534
 msgid "Downloads Window"
 msgstr "Fenêtre des Téléchargements"
 
-#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:3412
+#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3412
 msgid "Shared files"
 msgstr "Fichiers partagés"
 
-#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:3536
+#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3536
 msgid "Shared Files Window"
 msgstr "Fenêtre des Fichiers Partagés"
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:2971 src/muuli_wdr.cpp:3485
+#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:2971 src/muuli_wdr.cpp:3485
 #: src/muuli_wdr.cpp:3537
 msgid "Messages"
 msgstr "Messages"
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3537
+#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:3537
 msgid "Messages Window"
 msgstr "Fenêtre des Messages"
 
-#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:3538 src/PrefsUnifiedDlg.cpp:183
+#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3538 src/PrefsUnifiedDlg.cpp:183
 #: src/Statistics.cpp:727 src/Statistics.cpp:1024
 msgid "Statistics"
 msgstr "Statistiques"
 
-#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:3538
+#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3538
 msgid "Statistics Graph Window"
 msgstr "Fenêtre des Statistiques"
 
-#: src/amuleDlg.cpp:1342 src/muuli_wdr.cpp:3540 src/PrefsUnifiedDlg.cpp:198
+#: src/amuleDlg.cpp:1343 src/muuli_wdr.cpp:3540 src/PrefsUnifiedDlg.cpp:198
 #: src/utils/wxCas/src/wxcasprefs.cpp:41
 msgid "Preferences"
 msgstr "Préférences"
 
-#: src/amuleDlg.cpp:1342 src/muuli_wdr.cpp:3540
+#: src/amuleDlg.cpp:1343 src/muuli_wdr.cpp:3540
 msgid "Preferences Settings Window"
 msgstr "Fenêtre des Préférences"
 
-#: src/amuleDlg.cpp:1344 src/muuli_wdr.cpp:3541
+#: src/amuleDlg.cpp:1345 src/muuli_wdr.cpp:3541
 msgid "Import"
 msgstr "Importer"
 
-#: src/amuleDlg.cpp:1344 src/muuli_wdr.cpp:3541
+#: src/amuleDlg.cpp:1345 src/muuli_wdr.cpp:3541
 msgid "The partfile importer tool"
 msgstr "L'outil d'importation de fichier .part"
 
-#: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3542
+#: src/amuleDlg.cpp:1347 src/muuli_wdr.cpp:3542
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 msgid "About"
 msgstr "À propos"
 
-#: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3542
+#: src/amuleDlg.cpp:1347 src/muuli_wdr.cpp:3542
 msgid "About/Help"
 msgstr "À propos/Aide"
 
-#: src/amuleDlg.cpp:1480
+#: src/amuleDlg.cpp:1476
 msgid "eD2k network"
 msgstr "Réseau eD2k"
 
-#: src/amuleDlg.cpp:1484
+#: src/amuleDlg.cpp:1480
 msgid "Kad network"
 msgstr "Réseau Kad"
 
-#: src/amuleDlg.cpp:1489
+#: src/amuleDlg.cpp:1480
 msgid "No network"
 msgstr "Pas de réseau"
 
@@ -779,7 +779,7 @@ msgstr ""
 #: src/ClientDetailDialog.cpp:125 src/DataToText.cpp:54 src/DataToText.cpp:70
 #: src/DataToText.cpp:80 src/DataToText.cpp:116 src/DataToText.cpp:137
 #: src/DownloadListCtrl.cpp:1081 src/DownloadListCtrl.cpp:1094
-#: src/DownloadListCtrl.cpp:1105 src/ExternalConn.cpp:440
+#: src/DownloadListCtrl.cpp:1105 src/ExternalConn.cpp:441
 #: src/FileDetailDialog.cpp:129 src/GenericClientListCtrl.cpp:1050
 #: src/GenericClientListCtrl.cpp:1061 src/GenericClientListCtrl.cpp:1071
 #: src/HTTPDownload.cpp:83 src/KnownFile.cpp:919 src/KnownFile.cpp:925
@@ -872,7 +872,7 @@ msgstr ""
 "L'utilisateur %s (%u) a demandé votre liste de fichier partagés pour le "
 "répertoire inexistant '%s' -> ignoré"
 
-#: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:85
+#: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:86
 #, c-format
 msgid "WARNING: %s cannot be opened."
 msgstr "AVERTISSEMENT : %s n'a pas pu être ouvert."
@@ -883,12 +883,12 @@ msgstr ""
 "AVERTISSEMENT : Annulation de la liste des fichiers corrompus, elle contient "
 "des entêtes invalides."
 
-#: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:116
+#: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:117
 #, c-format
 msgid "IO error while reading %s file: %s"
 msgstr "Erreur d'E/S lors de la lecture du fichier %s : %s"
 
-#: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:164
+#: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:165
 #, c-format
 msgid "Error while saving %s file: %s"
 msgstr "Erreur lors de la sauvegarde du fichier %s : %s"
@@ -1027,7 +1027,7 @@ msgid "Disabled"
 msgstr "Désactivé"
 
 #: src/ClientDetailDialog.cpp:131 src/ServerWnd.cpp:163 src/ServerWnd.cpp:210
-#: src/TextClient.cpp:717
+#: src/TextClient.cpp:719
 msgid "Connected"
 msgstr "Connecté"
 
@@ -1194,19 +1194,19 @@ msgid "Very low"
 msgstr "Très basse"
 
 #: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:646 src/muuli_wdr.cpp:2393
-#: src/ServerListCtrl.cpp:235 src/ServerListCtrl.cpp:398
+#: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
 #: src/SharedFilesCtrl.cpp:138
 msgid "Low"
 msgstr "Basse"
 
 #: src/DataToText.cpp:45 src/DownloadListCtrl.cpp:647 src/muuli_wdr.cpp:2394
-#: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
+#: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:400
 #: src/SharedFilesCtrl.cpp:139
 msgid "Normal"
 msgstr "Normale"
 
 #: src/DataToText.cpp:46 src/DownloadListCtrl.cpp:648 src/muuli_wdr.cpp:2395
-#: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:400
+#: src/ServerListCtrl.cpp:238 src/ServerListCtrl.cpp:401
 #: src/SharedFilesCtrl.cpp:140
 msgid "High"
 msgstr "Haute"
@@ -1237,7 +1237,7 @@ msgid "On Queue"
 msgstr "En attente"
 
 #: src/DataToText.cpp:65 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:679 src/PartFile.cpp:3720 src/TransferWnd.cpp:348
+#: src/OtherFunctions.cpp:681 src/PartFile.cpp:3720 src/TransferWnd.cpp:348
 msgid "Downloading"
 msgstr "En téléchargement"
 
@@ -1298,7 +1298,7 @@ msgid "Remote Server"
 msgstr "Serveur Distant"
 
 #: src/DataToText.cpp:130 src/muuli_wdr.cpp:198 src/muuli_wdr.cpp:3287
-#: src/SearchDlg.cpp:109 src/TextClient.cpp:714
+#: src/SearchDlg.cpp:109 src/TextClient.cpp:716
 msgid "Kad"
 msgstr "Kad"
 
@@ -1323,7 +1323,7 @@ msgid "Search Result"
 msgstr "Résultat de la recherche"
 
 #: src/DataToText.cpp:145 src/DownloadListCtrl.cpp:162
-#: src/OtherFunctions.cpp:677 src/TransferWnd.cpp:346
+#: src/OtherFunctions.cpp:679 src/TransferWnd.cpp:346
 msgid "Completed"
 msgstr "Terminé"
 
@@ -1386,7 +1386,7 @@ msgid "Sources"
 msgstr "Sources"
 
 #: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:651
-#: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:402
+#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:403
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:145
 msgid "Priority"
 msgstr "Priorité"
@@ -1576,94 +1576,94 @@ msgid_plural "Found %u part files"
 msgstr[0] "%u fichier .part trouvé"
 msgstr[1] "%u fichiers .part trouvés"
 
-#: src/DownloadQueue.cpp:241 src/DownloadQueue.cpp:1467
+#: src/DownloadQueue.cpp:244 src/DownloadQueue.cpp:1470
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr ""
 "Le système de fichiers pour le répertoire Temp ne peut pas traiter des "
 "grands fichiers."
 
-#: src/DownloadQueue.cpp:244 src/DownloadQueue.cpp:1470
+#: src/DownloadQueue.cpp:247 src/DownloadQueue.cpp:1473
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr ""
 "Le système de fichiers pour le répertoire Incoming ne peut pas traiter des "
 "grands fichiers."
 
-#: src/DownloadQueue.cpp:374
+#: src/DownloadQueue.cpp:377
 #, c-format
 msgid "Downloading %s"
 msgstr "Téléchargement de %s"
 
-#: src/DownloadQueue.cpp:382
+#: src/DownloadQueue.cpp:385
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "Vous êtes déjà en train de télécharger le fichier '%s'"
 
-#: src/DownloadQueue.cpp:394
+#: src/DownloadQueue.cpp:397
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "Vous avez déjà le fichier '%s'"
 
-#: src/DownloadQueue.cpp:399
+#: src/DownloadQueue.cpp:402
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "Vous êtes déjà en train de télécharger le fichier %s"
 
-#: src/DownloadQueue.cpp:1401
+#: src/DownloadQueue.cpp:1404
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
 msgstr "Impossible de convertir le lien magnétique en eD2k : %s"
 
-#: src/DownloadQueue.cpp:1409
+#: src/DownloadQueue.cpp:1412
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Protocole de lien inconnu : %s"
 
-#: src/DownloadQueue.cpp:1430
+#: src/DownloadQueue.cpp:1433
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Lien eD2k invalide ! ERREUR : %s"
 
-#: src/ExternalConn.cpp:260
+#: src/ExternalConn.cpp:261
 msgid "Client sent packet after authentication failed."
 msgstr "Le client a envoyé un paquet après l'échec d'authentification."
 
-#: src/ExternalConn.cpp:278
+#: src/ExternalConn.cpp:279
 msgid "External connection closed."
 msgstr "Connexion externe fermée."
 
-#: src/ExternalConn.cpp:317
+#: src/ExternalConn.cpp:318
 msgid "External connections disabled due to empty password!"
 msgstr ""
 "Les connexions externes sont désactivées car le mot de passe est vide !"
 
-#: src/ExternalConn.cpp:340
+#: src/ExternalConn.cpp:341
 msgid "External connections disabled in config file"
 msgstr ""
 "Les connexions externes sont désactivées dans le fichier de configuration"
 
-#: src/ExternalConn.cpp:407
+#: src/ExternalConn.cpp:408
 msgid "New external connection accepted"
 msgstr "Nouvelle connexion externe acceptée"
 
-#: src/ExternalConn.cpp:410
+#: src/ExternalConn.cpp:411
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "ERREUR : impossible d'accepter une nouvelle connexion externe"
 
-#: src/ExternalConn.cpp:428
+#: src/ExternalConn.cpp:429
 msgid "External connection refused due to empty password in preferences!"
 msgstr ""
 "Connexion externe refusée car le mot de passe est vide dans les préférences !"
 
-#: src/ExternalConn.cpp:439
+#: src/ExternalConn.cpp:440
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "Connexion au client : %s %s"
 
-#: src/ExternalConn.cpp:441
+#: src/ExternalConn.cpp:442
 msgid "Unknown version"
 msgstr "Version inconnue"
 
-#: src/ExternalConn.cpp:451
+#: src/ExternalConn.cpp:452
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -1671,7 +1671,7 @@ msgstr ""
 "ID de version de EC incorrecte, Il peut y avoir des incompatibilités entre "
 "les binaires. Utilisez un noyau et un client distant de la même version."
 
-#: src/ExternalConn.cpp:456
+#: src/ExternalConn.cpp:457
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
 "snapshot! *sigh* possible crash prevented"
@@ -1679,161 +1679,161 @@ msgstr ""
 "Vous ne pouvez pas connecter une version stable depuis une version de "
 "développement! *pfff* un crash potentiel a été évité"
 
-#: src/ExternalConn.cpp:480
+#: src/ExternalConn.cpp:481
 msgid "Invalid protocol version."
 msgstr "Version du protocole invalide."
 
-#: src/ExternalConn.cpp:485
+#: src/ExternalConn.cpp:486
 msgid "Missing protocol version tag."
 msgstr "L'étiquette de la version du protocole est manquante."
 
-#: src/ExternalConn.cpp:492
+#: src/ExternalConn.cpp:493
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr ""
 "Authentification échoué : hachage spécifié comme mot de passe invalide."
 
-#: src/ExternalConn.cpp:509
+#: src/ExternalConn.cpp:510
 msgid "Authentication failed: wrong password."
 msgstr "Authentification échoué : mot de passe erroné."
 
-#: src/ExternalConn.cpp:511
+#: src/ExternalConn.cpp:512
 msgid "Authentication failed: missing password."
 msgstr "Authentification échoué : mot de passe manquant."
 
-#: src/ExternalConn.cpp:521
+#: src/ExternalConn.cpp:522
 msgid "Invalid request, please authenticate first."
 msgstr "Requête invalide, veuillez vous authentifier d'abord."
 
-#: src/ExternalConn.cpp:526
+#: src/ExternalConn.cpp:527
 msgid "Access granted."
 msgstr "Accès autorisé."
 
-#: src/ExternalConn.cpp:534
+#: src/ExternalConn.cpp:535
 #, c-format
 msgid "Sent error message \"%s\" to client."
 msgstr "Envoi du message d'erreur \"%s\" au client."
 
-#: src/ExternalConn.cpp:537
+#: src/ExternalConn.cpp:538
 #, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
 msgstr "Tentative d'accès non autorisé de %s. Connexion fermée."
 
-#: src/ExternalConn.cpp:802
+#: src/ExternalConn.cpp:804
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr ""
 "Échec de la commande du fichier .part à distance : Hachage du fichier non "
 "trouvé : %s"
 
-#: src/ExternalConn.cpp:804
+#: src/ExternalConn.cpp:806
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "Hachage du fichier non trouvé : %s"
 
-#: src/ExternalConn.cpp:851 src/ExternalConn.cpp:933 src/ExternalConn.cpp:1004
+#: src/ExternalConn.cpp:853 src/ExternalConn.cpp:935 src/ExternalConn.cpp:1006
 msgid "OOPS! OpCode processing error!"
 msgstr "ARGH ! Erreur de traitement de l'OpCode !"
 
-#: src/ExternalConn.cpp:879
+#: src/ExternalConn.cpp:881
 msgid "Server not added"
 msgstr "Serveur non ajouté"
 
-#: src/ExternalConn.cpp:897
+#: src/ExternalConn.cpp:899
 #, c-format
 msgid "server not found: %s"
 msgstr "serveur non trouvé : %s"
 
-#: src/ExternalConn.cpp:913
+#: src/ExternalConn.cpp:915
 msgid "need to define server to be removed"
 msgstr "il faut définir le serveur à supprimer"
 
-#: src/ExternalConn.cpp:927
+#: src/ExternalConn.cpp:929
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k est désactivé dans les préférences"
 
-#: src/ExternalConn.cpp:1105
+#: src/ExternalConn.cpp:1107
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Recherche en cours. Résultats dans un moment !"
 
-#: src/ExternalConn.cpp:1111
+#: src/ExternalConn.cpp:1113
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Une recherche Web par une interface distante n'a aucun sens."
 
-#: src/ExternalConn.cpp:1309
+#: src/ExternalConn.cpp:1311
 msgid "No points for graph."
 msgstr "Pas de points pour le graphique."
 
-#: src/ExternalConn.cpp:1318
+#: src/ExternalConn.cpp:1320
 msgid "Your client is not configured for this detail level."
 msgstr "Votre client n'est pas configuré pour ce niveau de détails."
 
-#: src/ExternalConn.cpp:1345
+#: src/ExternalConn.cpp:1347
 msgid "External Connection: shutdown requested"
 msgstr "Connexion externe : fermeture demandée"
 
-#: src/ExternalConn.cpp:1357
+#: src/ExternalConn.cpp:1359
 msgid "Already shutting down."
 msgstr "Arrêt déjà en cours."
 
-#: src/ExternalConn.cpp:1369
+#: src/ExternalConn.cpp:1371
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ConnExt : ajout du lien '%s'."
 
-#: src/ExternalConn.cpp:1375
+#: src/ExternalConn.cpp:1377
 msgid "Invalid link or already on list."
 msgstr "Lien invalide ou déjà dans la liste."
 
-#: src/ExternalConn.cpp:1445
+#: src/ExternalConn.cpp:1447
 msgid "File not found."
 msgstr "Fichier non trouvé."
 
-#: src/ExternalConn.cpp:1450
+#: src/ExternalConn.cpp:1452
 msgid "Invalid file name."
 msgstr "Nom de fichier invalide."
 
-#: src/ExternalConn.cpp:1458
+#: src/ExternalConn.cpp:1460
 msgid "Unable to rename file."
 msgstr "Impossible de renommer le fichier."
 
-#: src/ExternalConn.cpp:1756 src/ExternalConn.cpp:1783
+#: src/ExternalConn.cpp:1758 src/ExternalConn.cpp:1785
 msgid "Kad is disabled in preferences."
 msgstr "Kad est désactivé dans les préférences."
 
-#: src/ExternalConn.cpp:1795
+#: src/ExternalConn.cpp:1797
 msgid "Already connected to eD2k."
 msgstr "Déjà connecté à eD2k."
 
-#: src/ExternalConn.cpp:1798
+#: src/ExternalConn.cpp:1800
 msgid "Connecting to eD2k..."
 msgstr "Connexion à eD2k…"
 
-#: src/ExternalConn.cpp:1806
+#: src/ExternalConn.cpp:1808
 msgid "Already connected to Kad."
 msgstr "Déjà connecté à Kad."
 
-#: src/ExternalConn.cpp:1809
+#: src/ExternalConn.cpp:1811
 msgid "Connecting to Kad..."
 msgstr "Connexion à Kad…"
 
-#: src/ExternalConn.cpp:1816
+#: src/ExternalConn.cpp:1818
 msgid "All networks are disabled."
 msgstr "Tout les réseaux sont désactivés."
 
-#: src/ExternalConn.cpp:1824
+#: src/ExternalConn.cpp:1826
 msgid "Disconnected from eD2k."
 msgstr "Déconnecté de eD2k."
 
-#: src/ExternalConn.cpp:1828
+#: src/ExternalConn.cpp:1830
 msgid "Disconnected from Kad."
 msgstr "Déconnecté de Kad."
 
-#: src/ExternalConn.cpp:1837
+#: src/ExternalConn.cpp:1839
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Connexion externe : opcode reçu invalide : %#x"
 
-#: src/ExternalConn.cpp:1840
+#: src/ExternalConn.cpp:1842
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "opcode invalide (mauvaise version de protocole ? )"
 
@@ -2058,19 +2058,19 @@ msgstr "%.1f%% fait"
 msgid "%.2f kB/s"
 msgstr "%.2f Ko/s"
 
-#: src/FriendList.cpp:122
+#: src/FriendList.cpp:123
 msgid "Failed to open friend list file 'emfriends.met' for reading!"
 msgstr ""
 "Échec de l'ouverture du fichier de la liste d'amis 'emfriends.met' pour la "
 "lecture !"
 
-#: src/FriendList.cpp:148
+#: src/FriendList.cpp:149
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
 "Échec de l'ouverture du fichier de la liste d'amis 'emfriends.met' pour "
 "l'écriture !"
 
-#: src/FriendList.cpp:248
+#: src/FriendList.cpp:249
 msgid "CRITICAL - no client on StartChatSession"
 msgstr "CRITIQUE - Pas de client dans StartChatSession"
 
@@ -2172,11 +2172,11 @@ msgstr "Émission en cours"
 msgid "None"
 msgstr "Aucun"
 
-#: src/GenericClientListCtrl.cpp:1089 src/ServerListCtrl.cpp:242
+#: src/GenericClientListCtrl.cpp:1089 src/ServerListCtrl.cpp:243
 msgid "No"
 msgstr "Non"
 
-#: src/GenericClientListCtrl.cpp:1091 src/ServerListCtrl.cpp:242
+#: src/GenericClientListCtrl.cpp:1091 src/ServerListCtrl.cpp:243
 msgid "Yes"
 msgstr "Oui"
 
@@ -2238,35 +2238,35 @@ msgstr "Réponse invalide du serveur de téléchargement HTTP"
 msgid "Download new GeoIP.dat from %s"
 msgstr "Télécharger un nouveau fichier GeoIP.dat à partir de %s"
 
-#: src/IP2Country.cpp:128
+#: src/IP2Country.cpp:129
 msgid "Download of GeoIP.dat file failed, aborting update."
 msgstr "Échec du téléchargement du fichier GeoIP.dat, mise à jour annulée."
 
-#: src/IP2Country.cpp:134 src/IPFilter.cpp:500
+#: src/IP2Country.cpp:135 src/IPFilter.cpp:500
 #, c-format
 msgid "Failed to remove %s file, aborting update."
 msgstr "Impossible de supprimer le fichier %s, abandon de la mise à jour."
 
-#: src/IP2Country.cpp:140
+#: src/IP2Country.cpp:141
 #, c-format
 msgid "Failed to rename %s file, aborting update."
 msgstr "Impossible de renommer le fichier %s, abandon de la mise à jour."
 
-#: src/IP2Country.cpp:146 src/IPFilter.cpp:506
+#: src/IP2Country.cpp:147 src/IPFilter.cpp:506
 #, c-format
 msgid "Successfully updated %s"
 msgstr "Mise à jour réussite de %s"
 
-#: src/IP2Country.cpp:148
+#: src/IP2Country.cpp:149
 msgid "Error updating GeoIP.dat"
 msgstr "Erreur lors de la mise à jour de GeoIP.dat"
 
-#: src/IP2Country.cpp:153 src/IPFilter.cpp:512 src/ServerList.cpp:860
+#: src/IP2Country.cpp:154 src/IPFilter.cpp:512 src/ServerList.cpp:862
 #, c-format
 msgid "Failed to download %s from %s"
 msgstr "Échec du téléchargement %s de %s"
 
-#: src/IP2Country.cpp:172
+#: src/IP2Country.cpp:173
 #, c-format
 msgid "Failed to load country data for '%s'."
 msgstr "Échec du chargement des données des pays pour '%s'."
@@ -2319,34 +2319,34 @@ msgstr ""
 "Amorçage depuis\n"
 "les clients connus"
 
-#: src/KadDlg.cpp:147
+#: src/KadDlg.cpp:151
 #, c-format
 msgid "Nodes (%u)"
 msgstr "Nœuds (%u)"
 
-#: src/KadDlg.cpp:179
+#: src/KadDlg.cpp:183
 msgid "Invalid ip to bootstrap"
 msgstr "IP invalide pour l'amorçage"
 
-#: src/KadDlg.cpp:185
+#: src/KadDlg.cpp:189
 msgid "Invalid port to bootstrap"
 msgstr "Port invalide pour l'amorçage"
 
-#: src/KadDlg.cpp:189
+#: src/KadDlg.cpp:193
 msgid "Please fill all fields required"
 msgstr "Veuillez remplir tous les champs requis"
 
-#: src/KadDlg.cpp:208
+#: src/KadDlg.cpp:212
 msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Êtes-vous sûr de vouloir télécharger un nouveau fichier nodes.dat?\n"
 
-#: src/KadDlg.cpp:209
+#: src/KadDlg.cpp:213
 msgid ""
 "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
 "Le faire supprimera les nœuds actuels et redémarrera la connexion à Kademlia."
 
-#: src/KadDlg.cpp:210
+#: src/KadDlg.cpp:214
 msgid "Continue?"
 msgstr "Continuer ?"
 
@@ -2431,19 +2431,19 @@ msgstr "Accepté"
 msgid "Complete sources"
 msgstr "Sources complètes"
 
-#: src/KnownFileList.cpp:92
+#: src/KnownFileList.cpp:93
 msgid "WARNING: Known file list corrupted, contains invalid header."
 msgstr ""
 "AVERTISSEMENT : La liste de fichiers connus est corrompue, elle contient des "
 "entêtes invalides."
 
-#: src/KnownFileList.cpp:107
+#: src/KnownFileList.cpp:108
 msgid "Failed to load entry in known file list, file may be corrupt"
 msgstr ""
 "Échec du chargement de l'entrée dans la liste des fichiers connus, le "
 "fichier est peut être corrompu"
 
-#: src/KnownFileList.cpp:114
+#: src/KnownFileList.cpp:115
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
 "Entrée invalide dans la liste des fichiers connus, le fichier est peut être "
@@ -2471,17 +2471,17 @@ msgstr "Finalisation"
 msgid "Complete"
 msgstr "Terminé"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:681
+#: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:683
 #: src/PartFile.cpp:3710 src/TransferWnd.cpp:350
 msgid "Paused"
 msgstr "En pause"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:680
+#: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:682
 #: src/PartFile.cpp:3713 src/TransferWnd.cpp:349
 msgid "Erroneous"
 msgstr "Erroné"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:678
+#: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:680
 #: src/PartFile.cpp:3722 src/TransferWnd.cpp:347
 msgid "Waiting"
 msgstr "En attente"
@@ -2522,7 +2522,7 @@ msgstr "Connexion externe : Accès refusé car :"
 msgid "External Connection: Handshake failed."
 msgstr "Connexion externe : Échange raté."
 
-#: src/LibSocketAsio.cpp:1259
+#: src/LibSocketAsio.cpp:1260
 #, c-format
 msgid "Asio thread %d started"
 msgstr "Processus ASIO %d démarré"
@@ -2535,11 +2535,11 @@ msgstr "ListenSocket : OK."
 msgid "ERROR: Could not listen to TCP port."
 msgstr "ERREUR : Le port TCP n'a pas pu être mis en écoute."
 
-#: src/Logger.cpp:329 src/Logger.cpp:353
+#: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "ERROR: "
 msgstr "ERREUR : "
 
-#: src/Logger.cpp:329 src/Logger.cpp:353
+#: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
 msgstr "AVERTISSEMENT : "
 
@@ -2572,7 +2572,7 @@ msgstr "Tout sélectionner"
 
 #: src/MuleTrayIcon.cpp:82 src/MuleTrayIcon.cpp:464 src/MuleTrayIcon.cpp:485
 #: src/muuli_wdr.cpp:1576 src/muuli_wdr.cpp:1585 src/muuli_wdr.cpp:1594
-#: src/muuli_wdr.cpp:1941 src/muuli_wdr.cpp:1950 src/OtherFunctions.cpp:142
+#: src/muuli_wdr.cpp:1941 src/muuli_wdr.cpp:1950 src/OtherFunctions.cpp:144
 #: src/StatisticsDlg.cpp:101 src/StatisticsDlg.cpp:103
 msgid "kB/s"
 msgstr "Ko/s"
@@ -2635,8 +2635,8 @@ msgstr "Aucun pseudo sélectionné !"
 msgid "ClientID: "
 msgstr "ID Client : "
 
-#: src/MuleTrayIcon.cpp:342 src/MuleTrayIcon.cpp:356 src/TextClient.cpp:712
-#: src/TextClient.cpp:725
+#: src/MuleTrayIcon.cpp:342 src/MuleTrayIcon.cpp:356 src/TextClient.cpp:714
+#: src/TextClient.cpp:727
 msgid "Not connected"
 msgstr "Non connecté"
 
@@ -2841,38 +2841,38 @@ msgstr "Filtrage"
 msgid "File Type"
 msgstr "Type de fichier"
 
-#: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:244
+#: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:246
 msgid "Any"
 msgstr "Tous"
 
-#: src/muuli_wdr.cpp:230 src/OtherFunctions.cpp:209
+#: src/muuli_wdr.cpp:230 src/OtherFunctions.cpp:211
 msgid "Archives"
 msgstr "Archives"
 
-#: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:202 src/OtherFunctions.cpp:684
+#: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:204 src/OtherFunctions.cpp:686
 #: src/TransferWnd.cpp:357
 msgid "Audio"
 msgstr "Audio"
 
-#: src/muuli_wdr.cpp:232 src/OtherFunctions.cpp:216 src/OtherFunctions.cpp:686
+#: src/muuli_wdr.cpp:232 src/OtherFunctions.cpp:218 src/OtherFunctions.cpp:688
 #: src/TransferWnd.cpp:359
 msgid "CD-Images"
 msgstr "Images CD"
 
-#: src/muuli_wdr.cpp:233 src/OtherFunctions.cpp:223 src/OtherFunctions.cpp:687
+#: src/muuli_wdr.cpp:233 src/OtherFunctions.cpp:225 src/OtherFunctions.cpp:689
 #: src/TransferWnd.cpp:360
 msgid "Pictures"
 msgstr "Images"
 
-#: src/muuli_wdr.cpp:234 src/OtherFunctions.cpp:237
+#: src/muuli_wdr.cpp:234 src/OtherFunctions.cpp:239
 msgid "Programs"
 msgstr "Programmes"
 
-#: src/muuli_wdr.cpp:235 src/OtherFunctions.cpp:230
+#: src/muuli_wdr.cpp:235 src/OtherFunctions.cpp:232
 msgid "Texts"
 msgstr "Textes"
 
-#: src/muuli_wdr.cpp:236 src/OtherFunctions.cpp:195
+#: src/muuli_wdr.cpp:236 src/OtherFunctions.cpp:197
 msgid "Videos"
 msgstr "Vidéos"
 
@@ -2893,11 +2893,11 @@ msgid "KB"
 msgstr "Ko"
 
 #: src/muuli_wdr.cpp:272 src/muuli_wdr.cpp:295 src/muuli_wdr.cpp:1826
-#: src/OtherFunctions.cpp:113
+#: src/OtherFunctions.cpp:115
 msgid "MB"
 msgstr "Mo"
 
-#: src/muuli_wdr.cpp:273 src/muuli_wdr.cpp:296 src/OtherFunctions.cpp:115
+#: src/muuli_wdr.cpp:273 src/muuli_wdr.cpp:296 src/OtherFunctions.cpp:117
 msgid "GB"
 msgstr "Go"
 
@@ -3095,27 +3095,27 @@ msgstr ""
 msgid "File Quality"
 msgstr "Qualité du fichier"
 
-#: src/muuli_wdr.cpp:846 src/OtherFunctions.cpp:264 src/OtherFunctions.cpp:270
+#: src/muuli_wdr.cpp:846 src/OtherFunctions.cpp:266 src/OtherFunctions.cpp:272
 msgid "Not rated"
 msgstr "Non évalué"
 
-#: src/muuli_wdr.cpp:847 src/OtherFunctions.cpp:265
+#: src/muuli_wdr.cpp:847 src/OtherFunctions.cpp:267
 msgid "Invalid / Corrupt / Fake"
 msgstr "Invalide / Corrompu / Contrefaçon"
 
-#: src/muuli_wdr.cpp:848 src/OtherFunctions.cpp:266
+#: src/muuli_wdr.cpp:848 src/OtherFunctions.cpp:268
 msgid "Poor"
 msgstr "Mauvais"
 
-#: src/muuli_wdr.cpp:849 src/OtherFunctions.cpp:267
+#: src/muuli_wdr.cpp:849 src/OtherFunctions.cpp:269
 msgid "Fair"
 msgstr "Assez bon"
 
-#: src/muuli_wdr.cpp:850 src/OtherFunctions.cpp:268
+#: src/muuli_wdr.cpp:850 src/OtherFunctions.cpp:270
 msgid "Good"
 msgstr "Bon"
 
-#: src/muuli_wdr.cpp:851 src/OtherFunctions.cpp:269
+#: src/muuli_wdr.cpp:851 src/OtherFunctions.cpp:271
 msgid "Excellent"
 msgstr "Excellent"
 
@@ -4427,100 +4427,100 @@ msgstr "Se connecter à n'importe quel serveur et/ou Kad"
 msgid "Shared Files"
 msgstr "Fichiers partagés"
 
-#: src/OScopeCtrl.cpp:247
+#: src/OScopeCtrl.cpp:242
 #, c-format
 msgid "Disabled [%s]"
 msgstr "Désactivé [%s]"
 
-#: src/OtherFunctions.cpp:109
+#: src/OtherFunctions.cpp:111
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "octet"
 msgstr[1] "octets"
 
-#: src/OtherFunctions.cpp:111
+#: src/OtherFunctions.cpp:113
 msgid "kB"
 msgstr "ko"
 
-#: src/OtherFunctions.cpp:117
+#: src/OtherFunctions.cpp:119
 msgid "TB"
 msgstr "To"
 
-#: src/OtherFunctions.cpp:127
+#: src/OtherFunctions.cpp:129
 msgid "k"
 msgstr "k"
 
-#: src/OtherFunctions.cpp:129
+#: src/OtherFunctions.cpp:131
 msgid "M"
 msgstr "M"
 
-#: src/OtherFunctions.cpp:131
+#: src/OtherFunctions.cpp:133
 msgid "G"
 msgstr "G"
 
-#: src/OtherFunctions.cpp:133
+#: src/OtherFunctions.cpp:135
 msgid "T"
 msgstr "T"
 
-#: src/OtherFunctions.cpp:140
+#: src/OtherFunctions.cpp:142
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "octet/sec"
 msgstr[1] "octets/sec"
 
-#: src/OtherFunctions.cpp:144
+#: src/OtherFunctions.cpp:146
 msgid "MB/s"
 msgstr "Mo/s"
 
-#: src/OtherFunctions.cpp:153 src/OtherFunctions.cpp:156
+#: src/OtherFunctions.cpp:155 src/OtherFunctions.cpp:158
 msgid "secs"
 msgstr "s"
 
-#: src/OtherFunctions.cpp:160
+#: src/OtherFunctions.cpp:162
 msgid "mins"
 msgstr "min"
 
-#: src/OtherFunctions.cpp:163 src/OtherFunctions.cpp:167
+#: src/OtherFunctions.cpp:165 src/OtherFunctions.cpp:169
 msgid "hours"
 msgstr "heures"
 
-#: src/OtherFunctions.cpp:166
+#: src/OtherFunctions.cpp:168
 msgid "Days"
 msgstr "Jours"
 
-#: src/OtherFunctions.cpp:674
+#: src/OtherFunctions.cpp:676
 msgid "all"
 msgstr "Tous"
 
-#: src/OtherFunctions.cpp:675
+#: src/OtherFunctions.cpp:677
 msgid "all others"
 msgstr "tous les autres"
 
-#: src/OtherFunctions.cpp:676 src/TransferWnd.cpp:345
+#: src/OtherFunctions.cpp:678 src/TransferWnd.cpp:345
 msgid "Incomplete"
 msgstr "Incomplet"
 
-#: src/OtherFunctions.cpp:682 src/PartFile.cpp:3727 src/TransferWnd.cpp:351
+#: src/OtherFunctions.cpp:684 src/PartFile.cpp:3727 src/TransferWnd.cpp:351
 msgid "Stopped"
 msgstr "Arrêté"
 
-#: src/OtherFunctions.cpp:683 src/TransferWnd.cpp:356
+#: src/OtherFunctions.cpp:685 src/TransferWnd.cpp:356
 msgid "Video"
 msgstr "Vidéo"
 
-#: src/OtherFunctions.cpp:685 src/TransferWnd.cpp:358
+#: src/OtherFunctions.cpp:687 src/TransferWnd.cpp:358
 msgid "Archive"
 msgstr "Archive"
 
-#: src/OtherFunctions.cpp:688 src/TransferWnd.cpp:361
+#: src/OtherFunctions.cpp:690 src/TransferWnd.cpp:361
 msgid "Text"
 msgstr "Texte"
 
-#: src/OtherFunctions.cpp:689 src/TransferWnd.cpp:352
+#: src/OtherFunctions.cpp:691 src/TransferWnd.cpp:352
 msgid "Active"
 msgstr "Actif"
 
-#: src/OtherFunctions.cpp:1106
+#: src/OtherFunctions.cpp:1111
 #, c-format
 msgid "Using config dir: %s"
 msgstr "Utilisation du répertoire de config : %s"
@@ -4703,23 +4703,18 @@ msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "%i source seed sauvegardé pour le fichier .part : %s (%s)"
 msgstr[1] "%i source seeds sauvegardés pour le fichier .part : %s (%s)"
 
-#: src/PartFile.cpp:1049
-#, c-format
-msgid "Partfile %s (%s) has no seeds file"
-msgstr "Le fichier .part %s (%s) n'a pas de fichier seeds"
+#: src/PartFile.cpp:1050
+#, fuzzy, c-format
+msgid "Can't read seeds file for Partfile %s (%s)"
+msgstr "%i source seed sauvegardé pour le fichier .part : %s (%s)"
 
-#: src/PartFile.cpp:1058
-#, c-format
-msgid "Partfile %s (%s) has a void seeds file"
-msgstr "Le fichier .part %s (%s) a un fichier seeds vide"
-
-#: src/PartFile.cpp:1114
+#: src/PartFile.cpp:1109
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr ""
 "Erreur lors de la lecture du fichier seeds du fichier .part (%s - %s) : %s"
 
-#: src/PartFile.cpp:1132 src/PartFile.cpp:1161
+#: src/PartFile.cpp:1132 src/PartFile.cpp:1159
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
@@ -4734,7 +4729,7 @@ msgstr[1] ""
 "Une partie corrompue trouvée (%d) dans %d partie du .part %s - "
 "FileResultHash |%s| FileHash |%s|"
 
-#: src/PartFile.cpp:1176
+#: src/PartFile.cpp:1174
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Partie complète (%i) trouvée dans %s"
@@ -4819,187 +4814,191 @@ msgstr "Téléchargé"
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "ERREUR : Impossible d'ouvrir fichier .part : '%s'"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:632
 msgid "System default"
 msgstr "Système par défaut"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:633
 msgid "Albanian"
 msgstr "Albanais"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:634
 msgid "Arabic"
 msgstr "Arabe"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:635
 msgid "Asturian"
 msgstr "Asturien"
 
-#: src/Preferences.cpp:635
+#: src/Preferences.cpp:636
 msgid "Basque"
 msgstr "Basque"
 
-#: src/Preferences.cpp:636
+#: src/Preferences.cpp:637
 msgid "Bulgarian"
 msgstr "Bulgare"
 
-#: src/Preferences.cpp:637
+#: src/Preferences.cpp:638
 msgid "Catalan"
 msgstr "Catalan"
 
-#: src/Preferences.cpp:638
+#: src/Preferences.cpp:639
 msgid "Chinese (Simplified)"
 msgstr "Chinois (Simplifié)"
 
-#: src/Preferences.cpp:639
+#: src/Preferences.cpp:640
 msgid "Chinese (Traditional)"
 msgstr "Chinois (Traditionnel)"
 
-#: src/Preferences.cpp:640
+#: src/Preferences.cpp:641
 msgid "Croatian"
 msgstr "Croate"
 
-#: src/Preferences.cpp:641
+#: src/Preferences.cpp:642
 msgid "Czech"
 msgstr "Tchèque"
 
-#: src/Preferences.cpp:642
+#: src/Preferences.cpp:643
 msgid "Danish"
 msgstr "Danois"
 
-#: src/Preferences.cpp:643
+#: src/Preferences.cpp:644
 msgid "Dutch"
 msgstr "Hollandais"
 
-#: src/Preferences.cpp:644
+#: src/Preferences.cpp:645
 msgid "English (U.K.)"
 msgstr "Anglais (U.K.)"
 
-#: src/Preferences.cpp:645
+#: src/Preferences.cpp:646
 msgid "Estonian"
 msgstr "Estonien"
 
-#: src/Preferences.cpp:646
+#: src/Preferences.cpp:647
 msgid "Finnish"
 msgstr "Finlandais"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:648
 msgid "French"
 msgstr "Français"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:649
 msgid "Galician"
 msgstr "Galicien"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:650
 msgid "German"
 msgstr "Allemand"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:651
 msgid "Greek"
 msgstr "Grec"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:652
 msgid "Hebrew"
 msgstr "Hébreux"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:653
 msgid "Hungarian"
 msgstr "Hongrois"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:654
 msgid "Italian"
 msgstr "Italien"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:655
 msgid "Italian (Swiss)"
 msgstr "Italien (Suisse)"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:656
 msgid "Japanese"
 msgstr "Japonais"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:657
 msgid "Korean"
 msgstr "Coréen"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:658
 msgid "Lithuanian"
 msgstr "Lituanien"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:659
 msgid "Norwegian (Nynorsk)"
 msgstr "Norvégien (Nynorsk)"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:660
 msgid "Polish"
 msgstr "Polonais"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:661
 msgid "Portuguese"
 msgstr "Portugais"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:662
 msgid "Portuguese (Brazilian)"
 msgstr "Portugais (Brésilien)"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:663
+msgid "Romanian"
+msgstr "Roumain"
+
+#: src/Preferences.cpp:664
 msgid "Russian"
 msgstr "Russe"
 
-#: src/Preferences.cpp:663
+#: src/Preferences.cpp:665
 msgid "Slovenian"
 msgstr "Slovène"
 
-#: src/Preferences.cpp:664
+#: src/Preferences.cpp:666
 msgid "Spanish"
 msgstr "Espagnol"
 
-#: src/Preferences.cpp:665
+#: src/Preferences.cpp:667
 msgid "Swedish"
 msgstr "Suédois"
 
-#: src/Preferences.cpp:666
+#: src/Preferences.cpp:668
 msgid "Turkish"
 msgstr "Turque"
 
-#: src/Preferences.cpp:667
+#: src/Preferences.cpp:669
 msgid "Ukrainian"
 msgstr "Ukrainien"
 
-#: src/Preferences.cpp:730
+#: src/Preferences.cpp:732
 msgid "Change Language"
 msgstr "Changer de Langue"
 
-#: src/Preferences.cpp:773
+#: src/Preferences.cpp:775
 msgid "There are no translations installed for aMule"
 msgstr "Il n'y a pas de traductions installés pour aMule"
 
-#: src/Preferences.cpp:773
+#: src/Preferences.cpp:775
 msgid "No languages available"
 msgstr "Pas de langues disponibles"
 
-#: src/Preferences.cpp:904
+#: src/Preferences.cpp:906
 msgid "no options available"
 msgstr "pas d'option disponible"
 
-#: src/Preferences.cpp:1587
+#: src/Preferences.cpp:1589
 msgid "Invalid category found, skipping"
 msgstr "Catégorie invalide trouvée, on passe"
 
-#: src/Preferences.cpp:1769
+#: src/Preferences.cpp:1771
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "Le port TCP ne peut pas dépasser 65532 car le socket UDP du serveur sera à "
 "TCP+3"
 
-#: src/Preferences.cpp:1770
+#: src/Preferences.cpp:1772
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Le port par défaut sera utilisé (%d)"
 
-#: src/Preferences.cpp:1793
+#: src/Preferences.cpp:1795
 #, c-format
 msgid "Dropping non-existing shared directory: %s"
 msgstr "Abandon d'un répertoire partagé inexistant : %s"
@@ -5016,7 +5015,7 @@ msgstr "Répertoires"
 msgid "Servers"
 msgstr "Serveurs"
 
-#: src/PrefsUnifiedDlg.cpp:180 src/ServerListCtrl.cpp:92
+#: src/PrefsUnifiedDlg.cpp:180 src/ServerListCtrl.cpp:93
 msgid "Files"
 msgstr "Fichiers"
 
@@ -5372,7 +5371,7 @@ msgstr "Chercher les fichiers liés (eD2k, serveur local)"
 msgid "Mark as known file"
 msgstr "Marquer comme fichier connu"
 
-#: src/SearchListCtrl.cpp:652 src/ServerListCtrl.cpp:426
+#: src/SearchListCtrl.cpp:652 src/ServerListCtrl.cpp:427
 msgid "Copy eD2k link to clipboard"
 msgstr "Copier le lien eD2k dans le presse-papiers"
 
@@ -5558,12 +5557,12 @@ msgstr "Échec de l'enregistrement de server.met !"
 msgid "Invalid URL"
 msgstr "URL invalide"
 
-#: src/ServerList.cpp:855
+#: src/ServerList.cpp:856
 #, c-format
 msgid "Finished downloading the server list from %s"
 msgstr "Téléchargement terminé de la liste de serveur depuis %s"
 
-#: src/ServerList.cpp:871
+#: src/ServerList.cpp:874
 msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
@@ -5572,30 +5571,30 @@ msgstr ""
 "Veuillez coller une liste de serveurs valide dans ce fichier afin de mettre "
 "à jour automatiquement votre liste de serveurs."
 
-#: src/ServerList.cpp:884
+#: src/ServerList.cpp:887
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr "Démarre le téléchargement de la liste de serveur depuis %s"
 
-#: src/ServerList.cpp:893
+#: src/ServerList.cpp:896
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
 msgstr ""
 "AVERTISSEMENT : URL invalide indiquée pour la mise à jour automatique des "
 "serveurs : %s"
 
-#: src/ServerList.cpp:897
+#: src/ServerList.cpp:900
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr ""
 "Pas d'URL valide pour la mise à jour automatique des serveurs dans adresses."
 "dat "
 
-#: src/ServerList.cpp:913
+#: src/ServerList.cpp:916
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr "Échec du téléchargement de la liste des serveurs depuis %s"
 
-#: src/ServerList.cpp:987
+#: src/ServerList.cpp:990
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
@@ -5603,40 +5602,40 @@ msgstr ""
 "Le serveur local est filtré par les filtres IP, reconnexion à un autre "
 "serveur !"
 
-#: src/ServerListCtrl.cpp:86
+#: src/ServerListCtrl.cpp:87
 msgid "Server Name"
 msgstr "Nom du serveur"
 
-#: src/ServerListCtrl.cpp:87
+#: src/ServerListCtrl.cpp:88
 msgid "Address"
 msgstr "Adresse"
 
-#: src/ServerListCtrl.cpp:88
+#: src/ServerListCtrl.cpp:89
 msgid "Port"
 msgstr "Port"
 
-#: src/ServerListCtrl.cpp:89
+#: src/ServerListCtrl.cpp:90
 msgid "Description"
 msgstr "Description"
 
-#: src/ServerListCtrl.cpp:90
+#: src/ServerListCtrl.cpp:91
 msgid "Ping"
 msgstr "Temps de réponse"
 
-#: src/ServerListCtrl.cpp:91
+#: src/ServerListCtrl.cpp:92
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: src/ServerListCtrl.cpp:95
+#: src/ServerListCtrl.cpp:96
 msgid "Static"
 msgstr "Statique"
 
-#: src/ServerListCtrl.cpp:96 src/SharedFilePeersListCtrl.cpp:34
+#: src/ServerListCtrl.cpp:97 src/SharedFilePeersListCtrl.cpp:34
 #: src/SourceListCtrl.cpp:33 src/Statistics.cpp:959
 msgid "Version"
 msgstr "Version"
 
-#: src/ServerListCtrl.cpp:148
+#: src/ServerListCtrl.cpp:149
 msgid ""
 "You are connected to a server you are trying to delete. Please disconnect "
 "first. The server was NOT deleted."
@@ -5644,74 +5643,74 @@ msgstr ""
 "Vous êtes connecté au serveur que vous tentez de supprimer. Déconnectez-vous "
 "d'abord s'il  vous plaît . Le serveur n'a PAS été supprimé."
 
-#: src/ServerListCtrl.cpp:151
+#: src/ServerListCtrl.cpp:152
 msgid "(Unknown name)"
 msgstr "(Nom inconnu)"
 
-#: src/ServerListCtrl.cpp:153
+#: src/ServerListCtrl.cpp:154
 #, c-format
 msgid "Are you sure you want to delete the static server %s"
 msgstr "Êtes-vous sûr de vouloir supprimer le serveur statique %s"
 
-#: src/ServerListCtrl.cpp:347
+#: src/ServerListCtrl.cpp:348
 #, c-format
 msgid "Servers (%i)"
 msgstr "Serveurs (%i)"
 
-#: src/ServerListCtrl.cpp:396 src/ServerSocket.cpp:255
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:255
 #: src/ServerSocket.cpp:270 src/ServerWnd.cpp:178
 msgid "Server"
 msgstr "Serveur"
 
-#: src/ServerListCtrl.cpp:401
+#: src/ServerListCtrl.cpp:402
 msgid "Connect to server"
 msgstr "Connexion au serveur"
 
-#: src/ServerListCtrl.cpp:407
+#: src/ServerListCtrl.cpp:408
 msgid "Mark server as static"
 msgstr "Marquer le serveur comme statique"
 
-#: src/ServerListCtrl.cpp:408
+#: src/ServerListCtrl.cpp:409
 msgid "Mark server as non-static"
 msgstr "Marquer le serveur comme non statique"
 
-#: src/ServerListCtrl.cpp:410
+#: src/ServerListCtrl.cpp:411
 msgid "Mark servers as static"
 msgstr "Marquer les serveurs comme statiques"
 
-#: src/ServerListCtrl.cpp:411
+#: src/ServerListCtrl.cpp:412
 msgid "Mark servers as non-static"
 msgstr "Marquer les serveurs comme non statiques"
 
-#: src/ServerListCtrl.cpp:417
+#: src/ServerListCtrl.cpp:418
 msgid "Remove server"
 msgstr "Supprimer le serveur"
 
-#: src/ServerListCtrl.cpp:419
+#: src/ServerListCtrl.cpp:420
 msgid "Remove servers"
 msgstr "Supprimer les serveurs"
 
-#: src/ServerListCtrl.cpp:421
+#: src/ServerListCtrl.cpp:422
 msgid "Remove all servers"
 msgstr "Supprimer tous les serveurs"
 
-#: src/ServerListCtrl.cpp:428
+#: src/ServerListCtrl.cpp:429
 msgid "Copy eD2k links to clipboard"
 msgstr "Copier les liens eD2k dans le presse-papiers"
 
-#: src/ServerListCtrl.cpp:436
+#: src/ServerListCtrl.cpp:437
 msgid "Reconnect to server"
 msgstr "Reconnexion au serveur"
 
-#: src/ServerListCtrl.cpp:525
+#: src/ServerListCtrl.cpp:526
 msgid "Are you sure that you wish to delete all servers?"
 msgstr "Êtes-vous sûr de vouloir supprimer tout les serveurs ?"
 
-#: src/ServerListCtrl.cpp:541
+#: src/ServerListCtrl.cpp:542
 msgid "Are you sure that you wish to delete the selected server?"
 msgstr "Êtes-vous sûr de vouloir supprimer le serveur sélectionné ?"
 
-#: src/ServerListCtrl.cpp:543
+#: src/ServerListCtrl.cpp:544
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr "Êtes-vous sûr de vouloir supprimer les serveurs sélectionnés ?"
 
@@ -5901,7 +5900,7 @@ msgstr "Nombre moyen d'utilisateurs :"
 msgid "Average Files:"
 msgstr "Nombre moyen de fichiers :"
 
-#: src/ServerWnd.cpp:267 src/TextClient.cpp:728
+#: src/ServerWnd.cpp:267 src/TextClient.cpp:730
 msgid "Not running"
 msgstr "À l'arrêt"
 
@@ -6358,71 +6357,85 @@ msgstr ""
 "Ce n'est pas un hachage valide (la longueur devrait être exactement 32 "
 "caractères)\n"
 
-#: src/TextClient.cpp:643 src/webserver/src/WebServer.cpp:395
+#. TRANSLATORS:
+#. 'help search' is a command to the program, do not translate it.
+#: src/TextClient.cpp:534
+#, fuzzy
+msgid ""
+"No search type defined.\n"
+"Type 'help search' to get more help.\n"
+msgstr "Tapez '%s' pour avoir plus d'aide.\n"
+
+#: src/TextClient.cpp:553
+#, fuzzy, c-format
+msgid "Download File: %lu %s\n"
+msgstr "Taille du téléchargement : %i"
+
+#: src/TextClient.cpp:645 src/webserver/src/WebServer.cpp:395
 msgid "Request failed with an unknown error."
 msgstr "La requête a échouée avec une erreur inconnue."
 
-#: src/TextClient.cpp:647
+#: src/TextClient.cpp:649
 msgid "Operation was successful."
 msgstr "L'opération s'est déroulée avec succès."
 
-#: src/TextClient.cpp:653
+#: src/TextClient.cpp:655
 #, c-format
 msgid "Request failed with the following error: %s"
 msgstr "La requête à échouée avec l'erreur suivante : %s"
 
-#: src/TextClient.cpp:667
+#: src/TextClient.cpp:669
 #, c-format
 msgid "IP filtering for clients is %s.\n"
 msgstr "Statut du filtrage IP pour les clients : %s.\n"
 
-#: src/TextClient.cpp:668 src/TextClient.cpp:674
+#: src/TextClient.cpp:670 src/TextClient.cpp:676
 msgid "OFF"
 msgstr "Arrêt"
 
-#: src/TextClient.cpp:668 src/TextClient.cpp:674
+#: src/TextClient.cpp:670 src/TextClient.cpp:676
 msgid "ON"
 msgstr "Marche"
 
-#: src/TextClient.cpp:673
+#: src/TextClient.cpp:675
 #, c-format
 msgid "IP filtering for servers is %s.\n"
 msgstr "Le filtrage IP pour les serveurs est %s.\n"
 
-#: src/TextClient.cpp:678
+#: src/TextClient.cpp:680
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
 msgstr "Le niveau actuel d'IPFilter est %d.\n"
 
-#: src/TextClient.cpp:685
+#: src/TextClient.cpp:687
 #, c-format
 msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr "Limites de la bande passante : E : %u ko/s, R : %u kB/s.\n"
 
-#: src/TextClient.cpp:699
+#: src/TextClient.cpp:701
 msgid "eD2k"
 msgstr "eD2k"
 
-#: src/TextClient.cpp:704
+#: src/TextClient.cpp:706
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "Connecté à %s %s %s"
 
-#: src/TextClient.cpp:710
+#: src/TextClient.cpp:712
 msgid "Now connecting"
 msgstr "Connexion en cours"
 
-#: src/TextClient.cpp:719 src/utils/wxCas/src/wxcasframe.cpp:1051
+#: src/TextClient.cpp:721 src/utils/wxCas/src/wxcasframe.cpp:1051
 #: src/utils/wxCas/src/wxcasframe.cpp:1073
 msgid "firewalled"
 msgstr "derrière un pare-feu"
 
-#: src/TextClient.cpp:721 src/utils/wxCas/src/wxcasframe.cpp:1049
+#: src/TextClient.cpp:723 src/utils/wxCas/src/wxcasframe.cpp:1049
 #: src/utils/wxCas/src/wxcasframe.cpp:1071
 msgid "ok"
 msgstr "OK"
 
-#: src/TextClient.cpp:734
+#: src/TextClient.cpp:736
 #, c-format
 msgid ""
 "\n"
@@ -6431,7 +6444,7 @@ msgstr ""
 "\n"
 "Réception : \t%s"
 
-#: src/TextClient.cpp:737
+#: src/TextClient.cpp:739
 #, c-format
 msgid ""
 "\n"
@@ -6440,7 +6453,7 @@ msgstr ""
 "\n"
 "Émission : \t%s"
 
-#: src/TextClient.cpp:740
+#: src/TextClient.cpp:742
 #, c-format
 msgid ""
 "\n"
@@ -6449,7 +6462,7 @@ msgstr ""
 "\n"
 "Clients dans la file d'attente : \t%d\n"
 
-#: src/TextClient.cpp:743
+#: src/TextClient.cpp:745
 #, c-format
 msgid ""
 "\n"
@@ -6458,39 +6471,39 @@ msgstr ""
 "\n"
 "Nombre total de sources : \t%d\n"
 
-#: src/TextClient.cpp:816
+#: src/TextClient.cpp:818
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr "Nombres de résultats de la recherche : %i\n"
 
-#: src/TextClient.cpp:830
+#: src/TextClient.cpp:832
 #, c-format
 msgid "Search progress: %u %% \n"
 msgstr "Progrès de la recherche : %u %% \n"
 
-#: src/TextClient.cpp:832
+#: src/TextClient.cpp:834
 msgid "Search progress not available"
 msgstr "Progrès de la recherche indisponibles"
 
-#: src/TextClient.cpp:837
+#: src/TextClient.cpp:839
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "Réponse inconnue reçue du serveur, OpCode = %#x."
 
-#: src/TextClient.cpp:850
+#: src/TextClient.cpp:852
 msgid "Show short status information."
 msgstr "Montrer de courtes informations sur le statut."
 
-#: src/TextClient.cpp:851
+#: src/TextClient.cpp:853
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr ""
 "Montrer le statut de la connexion, vitesses d'émission/réception, etc.\n"
 
-#: src/TextClient.cpp:853
+#: src/TextClient.cpp:855
 msgid "Show full statistics tree."
 msgstr "Montrer l'arbre des statistiques complet."
 
-#: src/TextClient.cpp:854
+#: src/TextClient.cpp:856
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -6510,11 +6523,11 @@ msgstr ""
 "Exemple: 'statistics 5' montrera seulement les 5 premières versions pour "
 "chaque type de client.\n"
 
-#: src/TextClient.cpp:856
+#: src/TextClient.cpp:858
 msgid "Shut down aMule."
 msgstr "Fermer aMule."
 
-#: src/TextClient.cpp:857
+#: src/TextClient.cpp:859
 msgid ""
 "Shut down the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
@@ -6524,35 +6537,35 @@ msgstr ""
 "Ceci coupera aussi le clien texte, puisqu'il est\n"
 "inutilisable sans noyau actif.\n"
 
-#: src/TextClient.cpp:859
+#: src/TextClient.cpp:861
 msgid "Reload the given object."
 msgstr "Recharge l'objet donné."
 
-#: src/TextClient.cpp:860
+#: src/TextClient.cpp:862
 msgid "Reload shared files list."
 msgstr "Recharge la liste des fichiers partagés."
 
-#: src/TextClient.cpp:862
+#: src/TextClient.cpp:864
 msgid "Reload IP filtering table."
 msgstr "Recharge la table de filtrage d'IP."
 
-#: src/TextClient.cpp:863
+#: src/TextClient.cpp:865
 msgid "Reload current IP filtering table."
 msgstr "Recharge la table actuelle de filtrage d'IP."
 
-#: src/TextClient.cpp:864
+#: src/TextClient.cpp:866
 msgid "Update IP filtering table from URL."
 msgstr "Mise à jour de la table de filtrage d'IP depuis l'URL."
 
-#: src/TextClient.cpp:865
+#: src/TextClient.cpp:867
 msgid "If URL is omitted the URL from the preferences is used."
 msgstr "Si l'URL est omis l'URL des préférences est utilisé."
 
-#: src/TextClient.cpp:867
+#: src/TextClient.cpp:869
 msgid "Connect to the network."
 msgstr "Se connecter au réseau."
 
-#: src/TextClient.cpp:868
+#: src/TextClient.cpp:870
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -6566,37 +6579,37 @@ msgstr ""
 "seulement à ce serveur. L'IP doit être une IPv4 décimal,\n"
 "ou un nom DNS pouvant être résolu."
 
-#: src/TextClient.cpp:869
+#: src/TextClient.cpp:871
 msgid "Connect to eD2k only."
 msgstr "Se connecter à eD2k uniquement."
 
-#: src/TextClient.cpp:870
+#: src/TextClient.cpp:872
 msgid "Connect to Kad only."
 msgstr "Se connecter à Kad uniquement."
 
-#: src/TextClient.cpp:872
+#: src/TextClient.cpp:874
 msgid "Disconnect from the network."
 msgstr "Se déconnecter du réseau."
 
-#: src/TextClient.cpp:873
+#: src/TextClient.cpp:875
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr ""
 "Ceci vous déconnectera de tous les réseaux auxquels vous êtes actuellement "
 "connecté.\n"
 
-#: src/TextClient.cpp:874
+#: src/TextClient.cpp:876
 msgid "Disconnect from eD2k only."
 msgstr "Se déconnecter de eD2k uniquement."
 
-#: src/TextClient.cpp:875
+#: src/TextClient.cpp:877
 msgid "Disconnect from Kad only."
 msgstr "Se déconnecter de Kad uniquement."
 
-#: src/TextClient.cpp:877
+#: src/TextClient.cpp:879
 msgid "Add an eD2k or magnet link to core."
 msgstr "Ajoute un lien eD2k ou magnétique au noyau."
 
-#: src/TextClient.cpp:878
+#: src/TextClient.cpp:880
 msgid ""
 "The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -6618,51 +6631,51 @@ msgstr ""
 "\n"
 "Le lien magnétique devra contenir le hachage eD2k et la taille du fichier.\n"
 
-#: src/TextClient.cpp:880
+#: src/TextClient.cpp:882
 msgid "Set a preference value."
 msgstr "Définir une valeur de préférence."
 
-#: src/TextClient.cpp:883
+#: src/TextClient.cpp:885
 msgid "Set IP filtering preferences."
 msgstr "Définir les préférences de filtrage d'IP."
 
-#: src/TextClient.cpp:884
+#: src/TextClient.cpp:886
 msgid "Turn IP filtering on for both clients and servers."
 msgstr "Activer le filtrage IP pour les clients et les serveurs."
 
-#: src/TextClient.cpp:885
+#: src/TextClient.cpp:887
 msgid "Turn IP filtering off for both clients and servers."
 msgstr "Désactiver le filtrage IP pour les clients et les serveurs."
 
-#: src/TextClient.cpp:886
+#: src/TextClient.cpp:888
 msgid "Enable/Disable IP filtering for clients."
 msgstr "Activer/Désactiver le filtrage IP pour les clients."
 
-#: src/TextClient.cpp:887
+#: src/TextClient.cpp:889
 msgid "Turn IP filtering on for clients."
 msgstr "Activer le filtrage IP pour les clients."
 
-#: src/TextClient.cpp:888
+#: src/TextClient.cpp:890
 msgid "Turn IP filtering off for clients."
 msgstr "Désactiver le filtrage IP pour les clients."
 
-#: src/TextClient.cpp:889
+#: src/TextClient.cpp:891
 msgid "Enable/Disable IP filtering for servers."
 msgstr "Activer/Désactiver le filtrage IP pour les serveurs."
 
-#: src/TextClient.cpp:890
+#: src/TextClient.cpp:892
 msgid "Turn IP filtering on for servers."
 msgstr "Activer le filtrage IP pour les serveurs."
 
-#: src/TextClient.cpp:891
+#: src/TextClient.cpp:893
 msgid "Turn IP filtering off for servers."
 msgstr "Désactiver le filtrage IP pour les serveurs."
 
-#: src/TextClient.cpp:892
+#: src/TextClient.cpp:894
 msgid "Select IP filtering level."
 msgstr "Choisir le niveau de filtrage IP."
 
-#: src/TextClient.cpp:893
+#: src/TextClient.cpp:895
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
@@ -6671,55 +6684,60 @@ msgstr ""
 "défaut (initiale)\n"
 "est 127.\n"
 
-#: src/TextClient.cpp:895
+#: src/TextClient.cpp:897
 msgid "Set bandwidth limits."
 msgstr "Définir les limites de bande passante."
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:898
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr "La valeur passée à ces commandes doit être en kilo-octets/s.\n"
 
-#: src/TextClient.cpp:897
+#: src/TextClient.cpp:899
 msgid "Set upload bandwidth limit."
 msgstr "Définir la limite de bande passante en émission."
 
-#: src/TextClient.cpp:899
+#: src/TextClient.cpp:900 src/TextClient.cpp:902
+#, fuzzy
+msgid "The given value must be in kilobytes/sec.\n"
+msgstr "La valeur passée à ces commandes doit être en kilo-octets/s.\n"
+
+#: src/TextClient.cpp:901
 msgid "Set download bandwidth limit."
 msgstr "Définir la limite de bande passante en réception."
 
-#: src/TextClient.cpp:902
+#: src/TextClient.cpp:904
 msgid "Get and display a preference value."
 msgstr "Obtenir et afficher une valeur de préférence."
 
-#: src/TextClient.cpp:905
+#: src/TextClient.cpp:907
 msgid "Get IP filtering preferences."
 msgstr "Obtenir les préférences de filtrage IP."
 
-#: src/TextClient.cpp:906
+#: src/TextClient.cpp:908
 msgid "Get IP filtering state for both clients and servers."
 msgstr "Obtenir le statut du filtrage d'IP pour les clients et les serveurs."
 
-#: src/TextClient.cpp:907
+#: src/TextClient.cpp:909
 msgid "Get IP filtering state for clients only."
 msgstr "Obtenir le statut du filtrage d'IP pour les clients seulement."
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:910
 msgid "Get IP filtering state for servers only."
 msgstr "Obtenir le statut du filtrage d'IP pour les serveurs seulement."
 
-#: src/TextClient.cpp:909
+#: src/TextClient.cpp:911
 msgid "Get IP filtering level."
 msgstr "Obtenir le niveau de filtrage IP."
 
-#: src/TextClient.cpp:911
+#: src/TextClient.cpp:913
 msgid "Get bandwidth limits."
 msgstr "Obtenir les limites de bande passante."
 
-#: src/TextClient.cpp:913
+#: src/TextClient.cpp:915
 msgid "Execute a search."
 msgstr "Effectuer une recherche"
 
-#: src/TextClient.cpp:914
+#: src/TextClient.cpp:916
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
@@ -6734,39 +6752,39 @@ msgstr ""
 "Exemple: 'recherche fichier kad' exécutera une recherche kad pour \"fichier"
 "\".\n"
 
-#: src/TextClient.cpp:915
+#: src/TextClient.cpp:917
 msgid "Execute a global search."
 msgstr "Effectuer une recherche globale"
 
-#: src/TextClient.cpp:916
+#: src/TextClient.cpp:918
 msgid "Execute a local search"
 msgstr "Effectuer une recherche locale"
 
-#: src/TextClient.cpp:917
+#: src/TextClient.cpp:919
 msgid "Execute a kad search"
 msgstr "Effectuer une recherche Kad"
 
-#: src/TextClient.cpp:919
+#: src/TextClient.cpp:921
 msgid "Show the results of the last search."
 msgstr "Montre les résultats de la dernière recherche."
 
-#: src/TextClient.cpp:920
+#: src/TextClient.cpp:922
 msgid "Return the results of the previous search.\n"
 msgstr "Retourne les résultats de la précédente recherche.\n"
 
-#: src/TextClient.cpp:922
+#: src/TextClient.cpp:924
 msgid "Show the progress of a search."
 msgstr "Affiche la progression de la recherche."
 
-#: src/TextClient.cpp:923
+#: src/TextClient.cpp:925
 msgid "Show the progress of a search.\n"
 msgstr "Affiche la progression de la recherche.\n"
 
-#: src/TextClient.cpp:925
+#: src/TextClient.cpp:927
 msgid "Start downloading a file"
 msgstr "Démarrer le téléchargement du fichier."
 
-#: src/TextClient.cpp:926
+#: src/TextClient.cpp:928
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
@@ -6776,79 +6794,79 @@ msgstr ""
 "Exemple: 'download 12' va télécharger le douzième fichier de la précédente "
 "recherche.\n"
 
-#: src/TextClient.cpp:933
+#: src/TextClient.cpp:935
 msgid "Pause download."
 msgstr "Mettre le téléchargement en pause."
 
-#: src/TextClient.cpp:936
+#: src/TextClient.cpp:938
 msgid "Resume download."
 msgstr "Reprendre le téléchargement."
 
-#: src/TextClient.cpp:939
+#: src/TextClient.cpp:941
 msgid "Cancel download."
 msgstr "Annuler le téléchargement."
 
-#: src/TextClient.cpp:942
+#: src/TextClient.cpp:944
 msgid "Set download priority."
 msgstr "Régler la priorité de téléchargement."
 
-#: src/TextClient.cpp:943
+#: src/TextClient.cpp:945
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr ""
 "Passer la priorité d'un téléchargement en Basse, Normale, Haute, ou Auto.\n"
 
-#: src/TextClient.cpp:944
+#: src/TextClient.cpp:946
 msgid "Set priority to low."
 msgstr "Passer en priorité basse."
 
-#: src/TextClient.cpp:945
+#: src/TextClient.cpp:947
 msgid "Set priority to normal."
 msgstr "Passer en priorité normale."
 
-#: src/TextClient.cpp:946
+#: src/TextClient.cpp:948
 msgid "Set priority to high."
 msgstr "Passer en priorité haute."
 
-#: src/TextClient.cpp:947
+#: src/TextClient.cpp:949
 msgid "Set priority to auto."
 msgstr "Passer en priorité auto."
 
-#: src/TextClient.cpp:949
+#: src/TextClient.cpp:951
 msgid "Show queues/lists."
 msgstr "Montrer les files d'attente/listes."
 
-#: src/TextClient.cpp:950
+#: src/TextClient.cpp:952
 msgid "Show upload/download queue, server list or shared files list.\n"
 msgstr ""
 "Montrer la file d'attente des envois/réceptions, la liste des serveurs ou la "
 "liste des fichiers partagés.\n"
 
-#: src/TextClient.cpp:951
+#: src/TextClient.cpp:953
 msgid "Show upload queue."
 msgstr "Montrer la file d'attente des envois."
 
-#: src/TextClient.cpp:952
+#: src/TextClient.cpp:954
 msgid "Show download queue."
 msgstr "Montrer la file d'attente des réceptions."
 
-#: src/TextClient.cpp:953
+#: src/TextClient.cpp:955
 msgid "Show log."
 msgstr "Montrer le journal."
 
-#: src/TextClient.cpp:954
+#: src/TextClient.cpp:956
 msgid "Show servers list."
 msgstr "Montrer la liste des serveurs."
 
-#: src/TextClient.cpp:957
+#: src/TextClient.cpp:959
 msgid "Reset log."
 msgstr "Effacer le journal."
 
-#: src/TextClient.cpp:964
+#: src/TextClient.cpp:966
 #, c-format
 msgid "Deprecated command, use '%s' instead."
 msgstr "Commande obsolète, utilisez '%s' à la place."
 
-#: src/TextClient.cpp:965
+#: src/TextClient.cpp:967
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
@@ -6861,18 +6879,18 @@ msgstr ""
 msgid "aMule text client"
 msgstr "client texte aMule"
 
-#: src/ThreadTasks.cpp:374
+#: src/ThreadTasks.cpp:376
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "Conversion des anciens hashsets AICH en '%s' vers 64b en '%s'."
 
-#: src/ThreadTasks.cpp:453
+#: src/ThreadTasks.cpp:455
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr ""
 "AVERTISSEMENT : Le nom de fichier '%s' est invalide et a été renommé en '%s'."
 
-#: src/ThreadTasks.cpp:465
+#: src/ThreadTasks.cpp:467
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr ""
@@ -7168,7 +7186,7 @@ msgstr "Calcul des hachages eD2k…"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:567
 #: src/utils/aLinkCreator/src/alcframe.cpp:568
-#: src/utils/aLinkCreator/src/md4.cpp:351
+#: src/utils/aLinkCreator/src/md4.cpp:352
 msgid "Cancelled !"
 msgstr "Annulé !"
 
@@ -7185,12 +7203,12 @@ msgstr "Vous avez déjà ajouté cette URL !"
 msgid "Please, enter a non empty URL"
 msgstr "Entrez une URL non vide s'il vous plaît"
 
-#: src/utils/aLinkCreator/src/ed2khash.cpp:73
+#: src/utils/aLinkCreator/src/ed2khash.cpp:58
 #, c-format
 msgid "Unable to open %s"
 msgstr "Impossible d'ouvrir %s"
 
-#: src/utils/aLinkCreator/src/ed2khash.cpp:162
+#: src/utils/aLinkCreator/src/ed2khash.cpp:147
 msgid "Out of memory while calculating ed2k hash!"
 msgstr "Dépassement de mémoire lors du calcul du hachage eD2k!"
 
@@ -7661,8 +7679,11 @@ msgstr "Déconnexion demandée\n"
 msgid "Processing request [redirected]: "
 msgstr "Requête en cours [redirigée] :"
 
-#~ msgid "Romanian"
-#~ msgstr "Roumain"
+#~ msgid "Partfile %s (%s) has no seeds file"
+#~ msgstr "Le fichier .part %s (%s) n'a pas de fichier seeds"
+
+#~ msgid "Partfile %s (%s) has a void seeds file"
+#~ msgstr "Le fichier .part %s (%s) a un fichier seeds vide"
 
 #~ msgid "Download status"
 #~ msgstr "État de la réception"
@@ -7856,9 +7877,6 @@ msgstr "Requête en cours [redirigée] :"
 #~ msgstr ""
 #~ "Taille à télécharger non reçue, téléchargement jusqu'à ce que la "
 #~ "connexion soit fermée"
-
-#~ msgid "Download size: %i"
-#~ msgstr "Taille du téléchargement : %i"
 
 #~ msgid "HTTP download thread ended"
 #~ msgstr "Processus de téléchargement HTTP terminé"
