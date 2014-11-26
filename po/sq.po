@@ -1,6 +1,6 @@
 # translation of sq.po to Shqip
-# Albanian translations for PACKAGE package.
-# This file is distributed under the same license as the PACKAGE package.
+# Albanian translations for aMule package.
+# This file is distributed under the same license as the aMule package.
 #
 #  <dj_barthezz@linuxmail.org>, 2008.
 # fation <dj_barthezz@linuxmail.org>, 2008.
@@ -8,13 +8,14 @@
 # Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail.com>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: sq\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: aMule\n"
+"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2014-11-25 15:48+0100\n"
 "PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail."
 "com>\n"
 "Language-Team: Shqip <en@li.org>\n"
+"Language: sq\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

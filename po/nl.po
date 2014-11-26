@@ -1,19 +1,20 @@
 # translation of nl.po to Dutch
 # aMule i18n resource file.
 # Copyright (c) 2003-2011 aMule Team
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the aMule package.
 #
 # Kry <elkry@users.sourceforge.net>, 2004.
 # Oliver Heesakkers <dev2@Heesakkers.info>, 2007.
 # Frank van der Loo <f.vanderloo@gmail.com>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: nl\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: aMule\n"
+"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2014-11-25 15:48+0100\n"
 "PO-Revision-Date: 2011-11-11 03:26+0100\n"
 "Last-Translator: Frank van der Loo <f.vanderloo@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
