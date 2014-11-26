@@ -1,15 +1,16 @@
 # translation of lt.po to Lithuanian
 # Dovydas Sankauskas <laisve@gmail.com>, 2006, 2007, 2008.
 # Dovydas Sankauskas <dovydas@pasaka>, 2006.
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the aMule package.
 msgid ""
 msgstr ""
-"Project-Id-Version: lt\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: aMule\n"
+"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2014-11-25 15:48+0100\n"
 "PO-Revision-Date: 2008-06-08 10:44+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
+"Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

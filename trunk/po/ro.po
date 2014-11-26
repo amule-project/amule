@@ -4,8 +4,8 @@
 # Angelescu Constantin <titus0818@yahoo.com>, 2014.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: aMule\n"
+"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2014-11-25 15:48+0100\n"
 "PO-Revision-Date: 2014-11-21 18:04+0200\n"
 "Last-Translator: Angelescu Constantin <titus0818@yahoo.com>\n"

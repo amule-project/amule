@@ -9,15 +9,16 @@
 # translation of source_strings.po to
 # aMule i18n resource file.
 # Copyright (c) 2003-2011 aMule Team
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the aMule package.
 msgid ""
 msgstr ""
-"Project-Id-Version: it_CH\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: aMule\n"
+"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2014-11-25 15:48+0100\n"
 "PO-Revision-Date: 2008-06-12 22:36+0100\n"
 "Last-Translator: Luca Pagliero <luca@lucapagliero.it>\n"
 "Language-Team: Italian_CH\n"
+"Language: it_CH\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

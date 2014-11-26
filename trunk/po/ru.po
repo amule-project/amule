@@ -11,8 +11,8 @@
 # Radist Morse <radist.morse@gmail.com>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: amule_2007-08-29\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: aMule\n"
+"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2014-11-25 15:48+0100\n"
 "PO-Revision-Date: 2011-06-19 18:31+0100\n"
 "Last-Translator: Radist Morse <radist.morse@gmail.com>\n"

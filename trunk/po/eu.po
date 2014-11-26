@@ -1,12 +1,12 @@
 # translation of eu.po to Euskara
 # translation of source_strings-04-08-2005.po to
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the aMule package.
 # Piarres Beobide <pi@beobide.net>, 2005, 2007, 2008, 2010, 2011.
 # Administrator <pi@beobide.net>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: eu\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: aMule\n"
+"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2014-11-25 15:48+0100\n"
 "PO-Revision-Date: 2011-11-04 23:17+0100\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
