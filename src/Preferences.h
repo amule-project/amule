@@ -412,20 +412,6 @@ public:
 	static bool		ShowCatTabInfos()		{ return s_showCatTabInfos; }
 	static void		ShowCatTabInfos(bool in)	{ s_showCatTabInfos=in; }
 
-	// Sources Dropping Tweaks
-	static bool		DropNoNeededSources()		{ return s_NoNeededSources > 0; }
-	static bool		SwapNoNeededSources()		{ return s_NoNeededSources == 2; }
-	static uint8		GetNoNeededSources()		{ return s_NoNeededSources; }
-	static void		SetNoNeededSources(uint8 val)	{ s_NoNeededSources = val; }
-	static bool		DropFullQueueSources()		{ return s_DropFullQueueSources; }
-	static void		SetDropFullQueueSources(bool val) { s_DropFullQueueSources = val; }
-	static bool		DropHighQueueRankingSources()	{ return s_DropHighQueueRankingSources; }
-	static void		SetDropHighQueueRankingSources(bool val) { s_DropHighQueueRankingSources = val; }
-	static uint32		HighQueueRanking()		{ return s_HighQueueRanking; }
-	static void		SetHighQueueRanking(uint32 val)	{ s_HighQueueRanking = val; }
-	static uint32		GetAutoDropTimer()		{ return s_AutoDropTimer; }
-	static void		SetAutoDropTimer(uint32 val)	{ s_AutoDropTimer = val; }
-
 	// External Connections
 	static bool		AcceptExternalConnections()	{ return s_AcceptExternalConnections; }
 	static void			EnableExternalConnections( bool val ) { s_AcceptExternalConnections = val; }
@@ -732,13 +718,6 @@ protected:
 
 	static bool	s_showCatTabInfos;
 	static AllCategoryFilter s_allcatFilter;
-
-	// Madcat - Sources Dropping Tweaks
-	static uint8	s_NoNeededSources; // 0: Keep, 1: Drop, 2:Swap
-	static bool	s_DropFullQueueSources;
-	static bool	s_DropHighQueueRankingSources;
-	static uint32	s_HighQueueRanking;
-	static uint32	s_AutoDropTimer;
 
 	// Kry - external connections
 	static bool	s_AcceptExternalConnections;

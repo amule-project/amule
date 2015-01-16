@@ -263,20 +263,6 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 		AddTag(filePrefs);
 	}
 
-	if (selection & EC_PREFS_SRCDROP) {
-		CECEmptyTag srcdrop(EC_TAG_PREFS_SRCDROP);
-		srcdrop.AddTag(CECTag(EC_TAG_SRCDROP_NONEEDED, (uint8)thePrefs::GetNoNeededSources()));
-		if (thePrefs::DropFullQueueSources()) {
-			srcdrop.AddTag(CECEmptyTag(EC_TAG_SRCDROP_DROP_FQS));
-		}
-		if (thePrefs::DropHighQueueRankingSources()) {
-			srcdrop.AddTag(CECEmptyTag(EC_TAG_SRCDROP_DROP_HQRS));
-		}
-		srcdrop.AddTag(CECTag(EC_TAG_SRCDROP_HQRS_VALUE, (uint16)thePrefs::HighQueueRanking()));
-		srcdrop.AddTag(CECTag(EC_TAG_SRCDROP_AUTODROP_TIMER, (uint16)thePrefs::GetAutoDropTimer()));
-		AddTag(srcdrop);
-	}
-
 	if (selection & EC_PREFS_DIRECTORIES) {
 		CECEmptyTag dirPrefs(EC_TAG_PREFS_DIRECTORIES);
 		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_INCOMING, thePrefs::GetIncomingDir().GetRaw()));
@@ -505,20 +491,6 @@ void CEC_Prefs_Packet::Apply() const
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetCheckDiskspaceEnabled, EC_TAG_FILES_CHECK_FREE_SPACE);
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_FILES_MIN_FREE_SPACE)) != NULL) {
 			thePrefs::SetMinFreeDiskSpaceMB(oneTag->GetInt());
-		}
-	}
-
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_SRCDROP)) != NULL) {
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_SRCDROP_NONEEDED)) != NULL) {
-			thePrefs::SetNoNeededSources(oneTag->GetInt());
-		}
-		ApplyBoolean(use_tag, thisTab, thePrefs::SetDropFullQueueSources, EC_TAG_SRCDROP_DROP_FQS);
-		ApplyBoolean(use_tag, thisTab, thePrefs::SetDropHighQueueRankingSources, EC_TAG_SRCDROP_DROP_HQRS);
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_SRCDROP_HQRS_VALUE)) != NULL) {
-			thePrefs::SetHighQueueRanking(oneTag->GetInt());
-		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_SRCDROP_AUTODROP_TIMER)) != NULL) {
-			thePrefs::SetAutoDropTimer(oneTag->GetInt());
 		}
 	}
 
