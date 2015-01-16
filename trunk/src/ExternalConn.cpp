@@ -1413,9 +1413,6 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		case EC_OP_GET_ULOAD_QUEUE:
 			response = Get_EC_Response_GetClientQueue(request, m_obj_tagmap, EC_OP_ULOAD_QUEUE);
 			break;
-		case EC_OP_PARTFILE_REMOVE_NO_NEEDED:
-		case EC_OP_PARTFILE_REMOVE_FULL_QUEUE:
-		case EC_OP_PARTFILE_REMOVE_HIGH_QUEUE:
 		case EC_OP_PARTFILE_SWAP_A4AF_THIS:
 		case EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO:
 		case EC_OP_PARTFILE_SWAP_A4AF_OTHERS:

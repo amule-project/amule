@@ -59,10 +59,6 @@ enum ECOpCodes {
 	EC_OP_GET_ULOAD_QUEUE               = 0x0E,
 	EC_OP_GET_SHARED_FILES              = 0x10,
 	EC_OP_SHARED_SET_PRIO               = 0x11,
-	EC_OP_PARTFILE_REMOVE_NO_NEEDED     = 0x12,
-	EC_OP_PARTFILE_REMOVE_FULL_QUEUE    = 0x13,
-	EC_OP_PARTFILE_REMOVE_HIGH_QUEUE    = 0x14,
-	EC_OP_PARTFILE_UNUSED               = 0x15,
 	EC_OP_PARTFILE_SWAP_A4AF_THIS       = 0x16,
 	EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO  = 0x17,
 	EC_OP_PARTFILE_SWAP_A4AF_OTHERS     = 0x18,
@@ -377,12 +373,6 @@ enum ECTagNames {
 			EC_TAG_FILES_ALLOC_FULL_SIZE              = 0x180C,
 			EC_TAG_FILES_CHECK_FREE_SPACE             = 0x180D,
 			EC_TAG_FILES_MIN_FREE_SPACE               = 0x180E,
-		EC_TAG_PREFS_SRCDROP                      = 0x1900,
-			EC_TAG_SRCDROP_NONEEDED                   = 0x1901,
-			EC_TAG_SRCDROP_DROP_FQS                   = 0x1902,
-			EC_TAG_SRCDROP_DROP_HQRS                  = 0x1903,
-			EC_TAG_SRCDROP_HQRS_VALUE                 = 0x1904,
-			EC_TAG_SRCDROP_AUTODROP_TIMER             = 0x1905,
 		EC_TAG_PREFS_DIRECTORIES                  = 0x1A00,
 			EC_TAG_DIRECTORIES_INCOMING               = 0x1A01,
 			EC_TAG_DIRECTORIES_TEMP                   = 0x1A02,
@@ -455,7 +445,6 @@ enum EcPrefs {
 	EC_PREFS_ONLINESIG      = 0x00000020,
 	EC_PREFS_SERVERS        = 0x00000040,
 	EC_PREFS_FILES          = 0x00000080,
-	EC_PREFS_SRCDROP        = 0x00000100,
 	EC_PREFS_DIRECTORIES    = 0x00000200,
 	EC_PREFS_STATISTICS     = 0x00000400,
 	EC_PREFS_SECURITY       = 0x00000800,
@@ -502,10 +491,6 @@ wxString GetDebugNameECOpCodes(uint8 arg)
 		case 0x0E: return wxT("EC_OP_GET_ULOAD_QUEUE");
 		case 0x10: return wxT("EC_OP_GET_SHARED_FILES");
 		case 0x11: return wxT("EC_OP_SHARED_SET_PRIO");
-		case 0x12: return wxT("EC_OP_PARTFILE_REMOVE_NO_NEEDED");
-		case 0x13: return wxT("EC_OP_PARTFILE_REMOVE_FULL_QUEUE");
-		case 0x14: return wxT("EC_OP_PARTFILE_REMOVE_HIGH_QUEUE");
-		case 0x15: return wxT("EC_OP_PARTFILE_UNUSED");
 		case 0x16: return wxT("EC_OP_PARTFILE_SWAP_A4AF_THIS");
 		case 0x17: return wxT("EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO");
 		case 0x18: return wxT("EC_OP_PARTFILE_SWAP_A4AF_OTHERS");
@@ -824,12 +809,6 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x180C: return wxT("EC_TAG_FILES_ALLOC_FULL_SIZE");
 		case 0x180D: return wxT("EC_TAG_FILES_CHECK_FREE_SPACE");
 		case 0x180E: return wxT("EC_TAG_FILES_MIN_FREE_SPACE");
-		case 0x1900: return wxT("EC_TAG_PREFS_SRCDROP");
-		case 0x1901: return wxT("EC_TAG_SRCDROP_NONEEDED");
-		case 0x1902: return wxT("EC_TAG_SRCDROP_DROP_FQS");
-		case 0x1903: return wxT("EC_TAG_SRCDROP_DROP_HQRS");
-		case 0x1904: return wxT("EC_TAG_SRCDROP_HQRS_VALUE");
-		case 0x1905: return wxT("EC_TAG_SRCDROP_AUTODROP_TIMER");
 		case 0x1A00: return wxT("EC_TAG_PREFS_DIRECTORIES");
 		case 0x1A01: return wxT("EC_TAG_DIRECTORIES_INCOMING");
 		case 0x1A02: return wxT("EC_TAG_DIRECTORIES_TEMP");
@@ -918,7 +897,6 @@ wxString GetDebugNameEcPrefs(uint32 arg)
 		case 0x00000020: return wxT("EC_PREFS_ONLINESIG");
 		case 0x00000040: return wxT("EC_PREFS_SERVERS");
 		case 0x00000080: return wxT("EC_PREFS_FILES");
-		case 0x00000100: return wxT("EC_PREFS_SRCDROP");
 		case 0x00000200: return wxT("EC_PREFS_DIRECTORIES");
 		case 0x00000400: return wxT("EC_PREFS_STATISTICS");
 		case 0x00000800: return wxT("EC_PREFS_SECURITY");
