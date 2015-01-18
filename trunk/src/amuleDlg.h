@@ -229,8 +229,6 @@ private:
 	bool m_GeoIPavailable;
 
 	WX_DECLARE_STRING_HASH_MAP(wxZipEntry*, ZipCatalog);
-	ZipCatalog::iterator it;
-	wxZipEntry *entry;
 	ZipCatalog cat;
 
 	PageType m_logpages[4];
