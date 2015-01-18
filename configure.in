@@ -371,13 +371,65 @@ AC_MSG_RESULT([$docdir])
 
 # Try to set the SVN checkout-date
 AC_MSG_CHECKING([for SVNDATE])
-if test -f "$srcdir/.svn-revision" # SVNDATE for tarballs
-then
-	svndate="rev. `cat $srcdir/.svn-revision`"
-elif test -d $srcdir/.svn # SVNDATE for svn
-then
-	svndate="rev. `svnversion $srcdir | sed -e 's/[[0-9]][[0-9]]*:\(.*\)/\1/' -e 's/\([[0-9]][[0-9]]*\).*/\1/'`"
-fi
+modified=
+MULE_IF(
+dnl SVNDATE for tarballs
+[test -f "$srcdir/.svn-revision"],
+	[svndate="rev. `cat $srcdir/.svn-revision`"],
+
+dnl SVNDATE for Subversion checkouts
+[test -d "$srcdir"/.svn],
+	[svndate="rev. `svnversion "$srcdir" | sed -e 'h;s/[[0-9]][[0-9]]*:\(.*\)/\1/;s/\([[0-9]][[0-9]]*\).*/\1/;x;/.*M.*/{x;s/$/+/;b;};x'`"],
+
+dnl SVNDATE for git/git-svn clones
+[test -d "$srcdir"/.git],
+[
+	git_revision=`git -C "$srcdir" log --max-count=1 --pretty='tformat:%h'`
+	if test -n "`git -C "$srcdir" status --porcelain --untracked-files=no`" ; then
+		modified="+"
+	fi
+	if test -f $srcdir/.git/svn/.metadata ; then
+		git_sha=`git -C "$srcdir" log --max-count=1 --pretty='tformat:%H'`
+		svndate=`git -C "$srcdir" rev-list ${git_sha} | while read sha; do
+			svn_revision=\`git -C "$srcdir" svn find-rev \${sha}\`
+			if test -n "\${svn_revision}" ; then
+				if test \${sha} = ${git_sha} ; then
+					echo "rev. \${svn_revision}${modified}"
+				else
+					echo "rev. \${svn_revision}+g${git_revision}${modified}"
+				fi
+				break
+			fi
+		done`
+	else
+		svndate="rev. g${git_revision}${modified}"
+	fi
+],
+
+dnl SVNDATE for mercurial/hgsubversion clones
+[test -d "$srcdir"/.hg],
+[
+	hg_revision=`hg --cwd "$srcdir" identify --id`
+	hg_revid=${hg_revision%+}
+	if test ${hg_revision} != ${hg_revid} ; then
+		modified="+"
+	fi
+	if test -f "$srcdir"/.hg/svn/uuid ; then
+		svndate=`hg --cwd "$srcdir" log --follow --template='r{svnrev} {node|short}\n' | while read svn_revision hg_sha; do
+			if test \${svn_revision} != r ; then
+				if test \${hg_sha} = ${hg_revid} ; then
+					echo "rev. \${svn_revision#r}${modified}"
+				else
+					echo "rev. \${svn_revision#r}+h${hg_revision}"
+				fi
+				break
+			fi
+		done`
+	else
+		svndate="rev. h${hg_revision}"
+	fi
+])
+
 AC_MSG_RESULT(${svndate:-None required})
 AS_IF([test -n "$svndate"], [
 	    AC_DEFINE_UNQUOTED([SVNDATE], ["$svndate"], [The checkout date or svn revision number.])

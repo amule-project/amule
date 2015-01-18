@@ -13,6 +13,8 @@ Version 2.4.0 - The river knows.
 		* Make UPnP log go to the appropriate category (#1681)
 		* Use the C++ compiler to check for features we're about to use
 		  in C++ source files (#1572)
+		* Adapt configure to handle subversion repository clones in
+		  mercurial and git
 
 	iz0bbz:
 		* Fix WinSock library version detection with MinGW-w64
