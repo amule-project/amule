@@ -231,9 +231,43 @@ m4_define([MULE_IF],
 m4_if(m4_eval([$# > 2]), 1, [__mule_if_helper(m4_shiftn(2, $@))])m4_n([fi])])])
 
 
-# ----------------------- #
-# Other high-level macros #
-# ----------------------- #
+# ------------------------ #
+# High level helper macros #
+# ------------------------ #
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_COMBINATE(ARGS, ...)
+dnl
+dnl Creates all possible combinations of ARGS, enclosed in double quotes. Order
+dnl of arguments is preserved during expansion, and shorter sequences always
+dnl come before longer ones.
+dnl
+dnl Example:
+dnl	MULE_COMBINATE([a], [b], [c])
+dnl expands to
+dnl	"" "a" "b" "c" "a b" "a c" "b c" "a b c"
+dnl ---------------------------------------------------------------------------
+m4_define([__mule_combinate_append],
+	[m4_if( [$#], [0],,
+		[$#], [1], [$1],
+		[m4_ifblank([$1], [$0(m4_shift($@))], [$1 $0(m4_shift($@))])])])
+
+m4_define([__mule_combinate_print], ["__mule_combinate_append($@)" ])
+m4_define([__mule_combinate_helper],
+	[m4_if( [$1], [0], [__mule_combinate_print([$2])],
+		[$1], m4_eval([$# - 2]), [__mule_combinate_print(m4_shift($@))],
+		[$0(m4_decr([$1]), __mule_combinate_append([$2], [$3]), m4_shiftn([3], $@))$0([$1], [$2], m4_shiftn([3], $@))])])
+
+m4_define([__mule_combinate_for],
+	[m4_if([$1], [$2],, [__mule_combinate_helper([$1], [], m4_shiftn([2], $@))$0(m4_incr([$1]), m4_shift($@))])])
+
+m4_define([MULE_COMBINATE],
+	[__mule_combinate_for([0], m4_incr([$#]), $@)])
+
+
+# ------------------- #
+# Feature test macros #
+# ------------------- #
 
 dnl ---------------------------------------------------------------------------
 dnl MULE_CHECK_SYSTEM
@@ -466,49 +500,6 @@ AC_DEFUN([MULE_CHECK_CCACHE],
 		], [MULE_ENABLEVAR([ccache])=no])
 		AC_MSG_RESULT([MULE_STATUSOF([ccache])])
 	])
-])
-
-
-dnl ----------------------------------------------------
-dnl MULE_CHECK_BFD
-dnl check if bfd.h is on the system and usable
-dnl ----------------------------------------------------
-AC_DEFUN([MULE_CHECK_BFD],
-[AC_REQUIRE([MULE_CHECK_NLS])dnl
-
-	AC_MSG_CHECKING([for bfd])
-	result=no
-	for bfd_ldadd in "" "${LIBINTL}" "-ldl" "-ldl ${LIBINTL}"; do
-		MULE_BACKUP([LIBS])
-		MULE_BACKUP([LDFLAGS])
-		MULE_PREPEND([LIBS], [-lbfd -liberty ${bfd_ldadd} ${ZLIB_LIBS}])
-		MULE_APPEND([LDFLAGS], [${ZLIB_LDFLAGS}])
-		AC_LINK_IFELSE([
-			AC_LANG_PROGRAM([[
-				#include <ansidecl.h>
-				#include <bfd.h>
-			]], [[
-				const char *dummy = bfd_errmsg(bfd_get_error());
-			]])
-		], [
-			result=yes
-			BFD_CPPFLAGS="-DHAVE_BFD"
-			BFD_LIBS="-lbfd -liberty ${bfd_ldadd}"
-			MULE_RESTORE([LIBS])
-			MULE_RESTORE([LDFLAGS])
-			break
-		])
-		MULE_RESTORE([LIBS])
-		MULE_RESTORE([LDFLAGS])
-	done
-
-	AC_MSG_RESULT([$result])
-
-	AS_IF([test $result = no],
-		[MULE_WARNING([bfd.h not found or unusable, please install binutils development package if you are a developer or want to help testing aMule])])
-
-AC_SUBST([BFD_CPPFLAGS])dnl
-AC_SUBST([BFD_LIBS])dnl
 ])
 
 

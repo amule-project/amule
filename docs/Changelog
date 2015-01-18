@@ -15,6 +15,7 @@ Version 2.4.0 - The river knows.
 		  in C++ source files (#1572)
 		* Adapt configure to handle subversion repository clones in
 		  mercurial and git
+		* Fix bfd detection for systems missing -liberty
 
 	iz0bbz:
 		* Fix WinSock library version detection with MinGW-w64
