@@ -187,18 +187,6 @@ public:
 	// Returns waiting queue
 	void GetWtQueue(CMD4Hash* file);
 
-	// Drops no needed sources
-	void DropNoNeededSources(CMD4Hash* file);
-
-	// Drops full queue sources
-	void DropFullQueueSources(CMD4Hash* file);
-
-	// Drops high queue rating sources
-	void DropHighQueueSources(CMD4Hash* file);
-
-	// Cleans up sources
-	void CleanUpSources(CMD4Hash* file);
-
 	// Swaps A4AF to a file
 	void SwapA4AFThis(CMD4Hash* file);
 
@@ -342,11 +330,6 @@ public:
 				 bool AllocateFullSize,
 				 bool CheckFreeSpace,
 				 uint32 MinFreeSpace);
-	void SetPreferencesSrcDrop(uint8 NoNeeded,
-				   bool DropFQS,
-				   bool DropHQRS,
-				   uint16 HQRSValue,
-				   uint16 AutodropTimer);
 	void SetPreferencesDirectories();
 	void SetPreferencesStatistics();
 	void SetPreferencesSecurity(uint8 CanSeeShares,
