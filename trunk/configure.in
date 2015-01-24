@@ -379,7 +379,7 @@ dnl SVNDATE for tarballs
 
 dnl SVNDATE for Subversion checkouts
 [test -d "$srcdir"/.svn],
-	[svndate="rev. `svnversion "$srcdir" | sed -e 'h;s/[[0-9]][[0-9]]*:\(.*\)/\1/;s/\([[0-9]][[0-9]]*\).*/\1/;x;/.*M.*/{x;s/$/+/;b;};x'`"],
+	[svndate="rev. `svnversion "$srcdir" | ${SED} -e 'h;s/[[0-9]][[0-9]]*:\(.*\)/\1/;s/\([[0-9]][[0-9]]*\).*/\1/;x;/.*M.*/{x;s/$/+/;b;};x'`"],
 
 dnl SVNDATE for git/git-svn clones
 [test -d "$srcdir"/.git],

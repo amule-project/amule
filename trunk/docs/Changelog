@@ -27,6 +27,7 @@ Version 2.4.0 - The river knows.
 	Mr Hyde:
 		* Fix "Disable computer's timed standby mode" for MacOS 10.9 Mavericks
 		* Compilation fix on Linux Slackware 64bit and MacOS 10.9.4
+		* Fix configure on Mac
 
 	Stu Redman:
 		* Display hashing progress in progress bars
