@@ -28,8 +28,6 @@
 
 #include "ArchSpecific.h"	// Needed for Raw{Peek,Poke}UInt64()
 
-#include "kademlia/utils/UInt128.h" // Needed for CUInt128
-
 #include <common/MuleDebug.h>		// Needed for MULE_VALIDATE_PARAMS
 
 #ifdef USE_WX_EXTENSIONS
@@ -62,18 +60,6 @@ public:
 	 */
 	CMD4Hash() {
 		Clear();
-	}
-
-	/**
-	 * Create a CMD4Hash from a CUInt128
-	 *
-	 * @param hash The 128 bits integer to be used.
-	 *
-	 */
-	CMD4Hash(const Kademlia::CUInt128& hash) {
-		byte transitional_array[MD4HASH_LENGTH];
-		hash.ToByteArray(transitional_array);
-		SetHash(transitional_array);
 	}
 
 	~CMD4Hash() {
