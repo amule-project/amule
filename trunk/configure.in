@@ -384,14 +384,14 @@ dnl SVNDATE for Subversion checkouts
 dnl SVNDATE for git/git-svn clones
 [test -d "$srcdir"/.git],
 [
-	git_revision=`git -C "$srcdir" log --max-count=1 --pretty='tformat:%h'`
-	if test -n "`git -C "$srcdir" status --porcelain --untracked-files=no`" ; then
+	git_revision=`git --git-dir="$srcdir"/.git log --max-count=1 --pretty='tformat:%h'`
+	if test -n "`git --git-dir="$srcdir"/.git --work-tree="$srcdir" status --porcelain --untracked-files=no`" ; then
 		modified="+"
 	fi
 	if test -f $srcdir/.git/svn/.metadata ; then
-		git_sha=`git -C "$srcdir" log --max-count=1 --pretty='tformat:%H'`
-		svndate=`git -C "$srcdir" rev-list ${git_sha} | while read sha; do
-			svn_revision=\`git -C "$srcdir" svn find-rev \${sha}\`
+		git_sha=`git --git-dir="$srcdir"/.git log --max-count=1 --pretty='tformat:%H'`
+		svndate=`git --git-dir="$srcdir"/.git rev-list ${git_sha} | while read sha; do
+			svn_revision=\`git --git-dir="$srcdir"/.git svn find-rev \${sha}\`
 			if test -n "\${svn_revision}" ; then
 				if test \${sha} = ${git_sha} ; then
 					echo "rev. \${svn_revision}${modified}"
