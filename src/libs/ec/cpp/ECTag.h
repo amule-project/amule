@@ -41,6 +41,11 @@
 /* aMule/libcommon generic includes */
 #include "../../../MD4Hash.h"		// Needed for CMD4Hash
 
+namespace Kademlia {
+	class CUInt128;
+}
+using Kademlia::CUInt128;
+
 /* EC specific includes */
 #include "ECCodes.h"		// Needed for EC types
 #include "ECTagTypes.h"	// Needed for TagTypes
@@ -108,6 +113,7 @@ class CECTag {
 		CECTag(ec_tagname_t name, const std::string& data);
 		CECTag(ec_tagname_t name, const EC_IPv4_t& data);
 		CECTag(ec_tagname_t name, const CMD4Hash& data);
+		CECTag(ec_tagname_t name, const CUInt128& data);
 		#ifdef USE_WX_EXTENSIONS
 		CECTag(ec_tagname_t name, const wxString& data);
 		CECTag(ec_tagname_t name, const wxChar* data);
@@ -123,6 +129,7 @@ class CECTag {
 		bool		AddTag(const CECTag& tag, CValueMap* valuemap = NULL);
 		void		AddTag(ec_tagname_t name, uint64_t data, CValueMap* valuemap = NULL);
 		void		AddTag(ec_tagname_t name, const CMD4Hash& data, CValueMap* valuemap);
+		void		AddTag(ec_tagname_t name, const CUInt128& data, CValueMap* valuemap);
 		#ifdef USE_WX_EXTENSIONS
 		void		AddTag(ec_tagname_t name, const wxString& data, CValueMap* valuemap = NULL);
 		#endif
@@ -157,6 +164,7 @@ class CECTag {
 
 		EC_IPv4_t	GetIPv4Data() const;
 		CMD4Hash	GetMD4Data() const;
+		CUInt128	GetInt128Data() const;
 
 		void		DebugPrint(int level, bool print_empty) const;
 		void		swap(CECTag & t);
@@ -173,6 +181,7 @@ class CECTag {
 		double		AssignIfExist(ec_tagname_t tagname, double *target) const;
 		float		AssignIfExist(ec_tagname_t tagname, float *target) const;
 		CMD4Hash	AssignIfExist(ec_tagname_t tagname, CMD4Hash *target) const;
+		CUInt128	AssignIfExist(ec_tagname_t tagname, CUInt128 *target) const;
 		std::string	AssignIfExist(ec_tagname_t tagname, std::string *target) const;
 		#ifdef USE_WX_EXTENSIONS
 		wxString	AssignIfExist(ec_tagname_t tagname, wxString *target) const;
@@ -189,6 +198,7 @@ class CECTag {
 		bool		AssignIfExist(ec_tagname_t tagname, double &target) const;
 		bool		AssignIfExist(ec_tagname_t tagname, float &target) const;
 		bool		AssignIfExist(ec_tagname_t tagname, CMD4Hash &target) const;
+		bool		AssignIfExist(ec_tagname_t tagname, CUInt128 &target) const;
 		bool		AssignIfExist(ec_tagname_t tagname, std::string &target) const;
 		#ifdef USE_WX_EXTENSIONS
 		bool		AssignIfExist(ec_tagname_t tagname, wxString &target) const;

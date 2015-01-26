@@ -36,5 +36,6 @@ public final static byte EC_TAGTYPE_STRING = 6;
 public final static byte EC_TAGTYPE_DOUBLE = 7;
 public final static byte EC_TAGTYPE_IPV4 = 8;
 public final static byte EC_TAGTYPE_HASH16 = 9;
+public final static byte EC_TAGTYPE_UINT128 = 10;
 
 }

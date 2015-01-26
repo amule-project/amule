@@ -14,7 +14,8 @@ libec_a_SOURCES = \
 	ECSocket.cpp \
 	ECMuleSocket.cpp \
 	RemoteConnect.cpp \
-	ECSpecialTags.cpp
+	ECSpecialTags.cpp \
+	ECUInt128.cpp
 
 noinst_HEADERS =  \
 		ECTag.h \

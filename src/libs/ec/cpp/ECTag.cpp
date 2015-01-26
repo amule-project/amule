@@ -1002,6 +1002,13 @@ void CECTag::DebugPrint(int level, bool print_empty) const
 						s2 = CFormat(wxT("%.1f")) % GetDoubleData(); break;
 					case EC_TAGTYPE_HASH16:
 						s2 = GetMD4Data().Encode(); break;
+					case EC_TAGTYPE_UINT128:
+						// Using any non-inline function from UInt128.h would break linkage
+						// of remote apps otherwise not using CUInt128. So just fall through
+						// and display the value as a byte-stream. Since the value is sent
+						// big-endian on the network, the visual result is correct, except
+						// for the intervening spaces...
+						//s2 = GetInt128Data().ToHexString(); break;
 					case EC_TAGTYPE_CUSTOM:
 						if (m_dataLen == 0) {
 							s2 = wxT("empty");
