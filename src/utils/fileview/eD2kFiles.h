@@ -34,6 +34,7 @@ void DecodeServerMet(const CFileDataIO& file);
 void DecodeClientsMet(const CFileDataIO& file);
 void DecodeKnownMet(const CFileDataIO& file);
 void DecodePartMetFile(const CFileDataIO& file);
+void DecodeCanceledMet(const CFileDataIO& file);
 
 /* Not really eD2k related... */
 void DecodeStatisticsDat(const CFileDataIO& file);
