@@ -146,6 +146,8 @@ int CFileView::OnRun()
 					DecodeStatisticsDat(file);
 				} else if (basename.Find(wxT(".part.met")) != wxNOT_FOUND) {
 					DecodePartMetFile(file);
+				} else if (basename == wxT("canceled.met")) {
+					DecodeCanceledMet(file);
 				} else {
 					cerr << "ERROR: Don't know how to decode " << *it << endl;
 				}

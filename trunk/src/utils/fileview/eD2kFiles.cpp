@@ -35,7 +35,8 @@ enum VersionType {
 	PrefFile,
 	PartMetFile,
 	CreditFile,
-	KnownFileList
+	KnownFileList,
+	CanceledFileList
 };
 
 static wxString VersionInfo(uint8_t version, uint8_t type)
@@ -62,6 +63,10 @@ static wxString VersionInfo(uint8_t version, uint8_t type)
 			verStr = wxT("MET_HEADER");
 		} else if (version == MET_HEADER_WITH_LARGEFILES) {
 			verStr = wxT("MET_HEADER_WITH_LARGEFILES");
+		}
+	} else if (type == CanceledFileList) {
+		if (version == CANCELEDFILE_VERSION) {
+			verStr = wxT("CANCELEDFILE_VERSION");
 		}
 	}
 	return hex(version) + wxT(' ') + verStr;
@@ -266,5 +271,20 @@ void DecodeStatisticsDat(const CFileDataIO& file)
 		cout << "Total sent bytes     : " << tmp << " (" << CastItoXBytes(tmp) << ")\n";
 		tmp = file.ReadUInt64();
 		cout << "Total received bytes : " << tmp << " (" << CastItoXBytes(tmp) << ")\n";
+	}
+}
+
+void DecodeCanceledMet(const CFileDataIO& file)
+{
+	uint8_t version = file.ReadUInt8();
+	cout << "Version : " << VersionInfo(version, CanceledFileList) << endl;
+	if (version != CANCELEDFILE_VERSION) {
+		cerr << "File seems to be corrupt, invalid version!" << endl;
+		return;
+	}
+	uint32_t records = file.ReadUInt32();
+	cout << "Records : " << records << '\n';
+	for (uint32_t i = 0; i < records; i++) {
+		cout << "\tFile hash : " << file.ReadHash() << '\n';
 	}
 }

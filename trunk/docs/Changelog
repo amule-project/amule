@@ -16,6 +16,7 @@ Version 2.4.0 - The river knows.
 		* Adapt configure to handle subversion repository clones in
 		  mercurial and git
 		* Fix bfd detection for systems missing -liberty
+		* Add support for 'canceled.met' to the fileview tool
 
 	iz0bbz:
 		* Fix WinSock library version detection with MinGW-w64
