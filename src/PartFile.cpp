@@ -281,9 +281,6 @@ void CPartFile::CreatePartFile()
 
 	m_CorruptionBlackBox->SetPartFileInfo(GetFileName().GetPrintable(), m_partmetfilename.RemoveAllExt().GetPrintable());
 
-	wxString strPartName = m_partmetfilename.RemoveExt().GetRaw();
-	m_taglist.push_back(CTagString(FT_PARTFILENAME, strPartName ));
-
 	m_gaplist.Init(GetFileSize(), true);	// Init empty
 
 	m_PartPath = m_fullname.RemoveExt();
@@ -485,6 +482,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 					// old tags: as long as they are not needed, take the chance to purge them
 					case FT_PERMISSIONS:
 					case FT_KADLASTPUBLISHKEY:
+					case FT_PARTFILENAME:
 						break;
 					case FT_DL_ACTIVE_TIME:
 						if (newtag.IsInt()) {

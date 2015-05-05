@@ -82,6 +82,11 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID,
 			case FT_COMPLETE_SOURCES:
 				m_completeSourceCount = tag.GetInt();
 				break;
+			case FT_PERMISSIONS:
+			case FT_KADLASTPUBLISHKEY:
+			case FT_PARTFILENAME:
+				// Just ignore
+				break;
 			default:
 				AddTagUnique(tag);
 		}
