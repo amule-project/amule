@@ -613,7 +613,9 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 				break;
 
 			case FT_PERMISSIONS:
-				// Ignore it, it's not used anymore.
+			case FT_KADLASTPUBLISHKEY:
+			case FT_PARTFILENAME:
+				// Old tags, not used anymore. Just purge them.
 				break;
 
 			case FT_AICH_HASH: {
@@ -638,11 +640,6 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 
 			case FT_KADLASTPUBLISHNOTES:
 				SetLastPublishTimeKadNotes( newtag.GetInt() );
-				break;
-
-			case FT_KADLASTPUBLISHKEY:
-				// Just purge it
-				wxASSERT( newtag.IsInt() );
 				break;
 
 			default:
