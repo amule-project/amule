@@ -444,6 +444,10 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request_list.push_back(new CECPacket(EC_OP_GET_SERVER_LIST, EC_DETAIL_CMD));
 			break;
 
+		case CMD_ID_SHOW_SHARED:
+			request_list.push_back(new CECPacket(EC_OP_GET_SHARED_FILES));
+			break;
+
 		case CMD_ID_RESET_LOG:
 			request_list.push_back(new CECPacket(EC_OP_RESET_LOG));
 			break;
@@ -807,6 +811,42 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 				}
 			}
 			break;
+
+		case EC_OP_SHARED_FILES:
+			for (CECPacket::const_iterator it = response->begin(); it != response->end(); ++it) {
+				const CEC_SharedFile_Tag *tag = static_cast<const CEC_SharedFile_Tag *>(&*it);
+				s << tag->FileHashString() << wxT(" ");
+				wxString filePath = tag->FilePath();
+				bool ispartfile = true;
+				if (filePath.EndsWith(wxT(".part"))) {
+					for (unsigned i = 0; i < filePath.Length() - 5; i++) {
+						if (filePath[i] < wxT('0') || filePath[i] > wxT('9')) {
+							ispartfile = false;
+							break;
+						}
+					}
+				} else {
+					ispartfile = false;
+				}
+				if (ispartfile) {
+					s << _("[PartFile]") << wxT(" ");
+				} else {
+					s << filePath
+#ifdef __WINDOWS__
+					  << wxT('\\');
+#else
+					  << wxT('/');
+#endif
+				}
+				s << tag->FileName()
+				  << wxT("\n\t") << PriorityToStr(tag->UpPrio() % 10, tag->UpPrio() >= 10) << wxT(" - ") << CFormat(wxT("%i(%i) / %i(%i) - %s (%s) - %.2f\n"))
+					% tag->GetRequests() % tag->GetAllRequests()
+					% tag->GetAccepts() % tag->GetAllAccepts()
+					% CastItoXBytes(tag->GetXferred()) % CastItoXBytes(tag->GetAllXferred())
+					% (static_cast<float>(tag->GetAllXferred()) / static_cast<float>(tag->SizeFull()));
+			}
+			break;
+
 		case EC_OP_STATSTREE:
 			s << StatTree2Text(static_cast<const CEC_StatTree_Node_Tag*>(response->GetTagByName(EC_TAG_STATTREE_NODE)), 0);
 			break;
@@ -954,7 +994,7 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp->AddCommand(wxT("DL"), CMD_ID_SHOW_DL, wxTRANSLATE("Show download queue."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Log"), CMD_ID_SHOW_LOG, wxTRANSLATE("Show log."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Servers"), CMD_ID_SHOW_SERVERS, wxTRANSLATE("Show servers list."), wxEmptyString, CMD_PARAM_NEVER);
-//	tmp->AddCommand(wxT("Shared"), CMD_ID_SHOW_SHARED, wxTRANSLATE("Show shared files list."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp->AddCommand(wxT("Shared"), CMD_ID_SHOW_SHARED, wxTRANSLATE("Show shared files list."), wxEmptyString, CMD_PARAM_NEVER);
 
 	m_commands.AddCommand(wxT("Reset"), CMD_ID_RESET_LOG, wxTRANSLATE("Reset log."), wxEmptyString, CMD_PARAM_NEVER);
 
