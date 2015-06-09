@@ -39,14 +39,6 @@
 extern std::string stdEmptyString;
 
 
-/**
- * Case insensitive std::string comparison
- */
-bool stdStringIsEqualCI(
-	const std::string &s1,
-	const std::string &s2);
-
-
 class CUPnPPortMapping
 {
 private:
@@ -77,87 +69,33 @@ public:
 };
 
 
-class CUPnPControlPoint;
-
-
-class CUPnPLib
+namespace IXML
 {
-public:
-	static const std::string &UPNP_ROOT_DEVICE;
-	static const std::string &UPNP_DEVICE_IGW;
-	static const std::string &UPNP_DEVICE_WAN;
-	static const std::string &UPNP_DEVICE_WAN_CONNECTION;
-	static const std::string &UPNP_DEVICE_LAN;
-	static const std::string &UPNP_SERVICE_LAYER3_FORWARDING;
-	static const std::string &UPNP_SERVICE_WAN_COMMON_INTERFACE_CONFIG;
-	static const std::string &UPNP_SERVICE_WAN_IP_CONNECTION;
-	static const std::string &UPNP_SERVICE_WAN_PPP_CONNECTION;
-	CUPnPControlPoint &m_ctrlPoint;
+	namespace Document {
+		IXML_Element *GetRootElement(IXML_Document *doc);
+	}
 
-public:
-	CUPnPLib(CUPnPControlPoint &ctrlPoint);
-	~CUPnPLib() {}
-
-	// Convenience function so we don't have to write explicit calls
-	// to char2unicode every time
-	std::string GetUPnPErrorMessage(int code) const;
-
-	// Convenience function to avoid repetitive processing of error
-	// messages
-	std::string processUPnPErrorMessage(
-		const std::string &messsage,
-		int code,
-		const DOMString errorString,
-		IXML_Document *doc) const;
-
-	// Processing response to actions
-	void ProcessActionResponse(
-		IXML_Document *RespDoc,
-		const std::string &actionName) const;
-
-	// IXML_Element
-	IXML_Element *Element_GetRootElement(
-		IXML_Document *doc) const;
-	IXML_Element *Element_GetFirstChild(
-		IXML_Element *parent) const;
-	IXML_Element *Element_GetNextSibling(
-		IXML_Element *child) const;
-	const DOMString Element_GetTag(
-		IXML_Element *element) const;
-	const std::string Element_GetTextValue(
-		IXML_Element *element) const;
-	const std::string Element_GetChildValueByTag(
-		IXML_Element *element,
-		const DOMString tag) const;
-	IXML_Element *Element_GetFirstChildByTag(
-		IXML_Element *element,
-		const DOMString tag) const;
-	IXML_Element *Element_GetNextSiblingByTag(
-		IXML_Element *element,
-		const DOMString tag) const;
-	const std::string Element_GetAttributeByTag(
-		IXML_Element *element,
-		const DOMString tag) const;
-};
+	namespace Element {
+		IXML_Element *GetFirstChild(IXML_Element *parent);
+		IXML_Element *GetNextSibling(IXML_Element *child);
+		const DOMString GetTag(IXML_Element *element);
+		const std::string GetTextValue(IXML_Element *element);
+		const std::string GetChildValueByTag(IXML_Element *element, const DOMString tag);
+		IXML_Element *GetFirstChildByTag(IXML_Element *element, const DOMString tag);
+		IXML_Element *GetNextSiblingByTag(IXML_Element *element, const DOMString tag);
+		const std::string GetAttributeByTag(IXML_Element *element, const DOMString tag);
+	}
+}
 
 
 class CUPnPControlPoint;
 
-/*
- * Even though we can retrieve the upnpLib handler from the upnpControlPoint,
- * we must pass it separetly at this point, because the class CUPnPControlPoint
- * must be declared after.
- *
- * CUPnPLib can only be removed from the constructor once we agree to link to
- * UPnPLib explicitly, making this dlopen() stuff unnecessary.
- */
 template <typename T, char const *XML_ELEMENT_NAME, char const *XML_LIST_NAME>
 class CXML_List : public std::map<const std::string, T *>
 {
 public:
 	CXML_List(
 		const CUPnPControlPoint &upnpControlPoint,
-		CUPnPLib &upnpLib,
 		IXML_Element *parent,
 		const std::string &url);
 	~CXML_List();
@@ -167,18 +105,16 @@ public:
 template <typename T, char const *XML_ELEMENT_NAME, char const *XML_LIST_NAME>
 CXML_List<T, XML_ELEMENT_NAME, XML_LIST_NAME>::CXML_List(
 	const CUPnPControlPoint &upnpControlPoint,
-	CUPnPLib &upnpLib,
 	IXML_Element *parent,
 	const std::string &url)
 {
-	IXML_Element *elementList =
-		upnpLib.Element_GetFirstChildByTag(parent, XML_LIST_NAME);
+	IXML_Element *elementList = IXML::Element::GetFirstChildByTag(parent, XML_LIST_NAME);
 	unsigned int i = 0;
-	for (	IXML_Element *element = upnpLib.Element_GetFirstChildByTag(elementList, XML_ELEMENT_NAME);
+	for (   IXML_Element *element = IXML::Element::GetFirstChildByTag(elementList, XML_ELEMENT_NAME);
 		element;
-		element = upnpLib.Element_GetNextSiblingByTag(element, XML_ELEMENT_NAME)) {
+		element = IXML::Element::GetNextSiblingByTag(element, XML_ELEMENT_NAME)) {
 		// Add a new element to the element list
-		T *upnpElement = new T(upnpControlPoint, upnpLib, element, url);
+		T *upnpElement = new T(upnpControlPoint, element, url);
 		(*this)[upnpElement->GetKey()] = upnpElement;
 		++i;
 	}
@@ -234,9 +170,7 @@ private:
 	const std::string m_ErrorCode;
 	const std::string m_ErrorDescription;
 public:
-	CUPnPError(
-		const CUPnPLib &upnpLib,
-		IXML_Document *errorDoc);
+	CUPnPError(IXML_Document *errorDoc);
 	~CUPnPError() {}
 	const std::string &getErrorCode() const
 		{ return m_ErrorCode; }
@@ -248,7 +182,6 @@ public:
 class CUPnPArgument
 {
 private:
-	const CUPnPControlPoint &m_UPnPControlPoint;
 	const std::string m_name;
 	const std::string m_direction;
 	bool m_retval;
@@ -257,7 +190,6 @@ private:
 public:
 	CUPnPArgument(
 		const CUPnPControlPoint &upnpControlPoint,
-		CUPnPLib &upnpLib,
 		IXML_Element *argument,
 		const std::string &SCPDURL);
 	~CUPnPArgument() {}
@@ -278,14 +210,12 @@ public:
 class CUPnPAction
 {
 private:
-	const CUPnPControlPoint &m_UPnPControlPoint;
 	ArgumentList m_ArgumentList;
 	const std::string m_name;
 
 public:
 	CUPnPAction(
 		const CUPnPControlPoint &upnpControlPoint,
-		CUPnPLib &upnpLib,
 		IXML_Element *action,
 		const std::string &SCPDURL);
 	~CUPnPAction() {}
@@ -301,13 +231,11 @@ public:
 class CUPnPAllowedValue
 {
 private:
-	const CUPnPControlPoint &m_UPnPControlPoint;
 	const std::string m_allowedValue;
 
 public:
 	CUPnPAllowedValue(
 		const CUPnPControlPoint &upnpControlPoint,
-		CUPnPLib &upnpLib,
 		IXML_Element *allowedValue,
 		const std::string &SCPDURL);
 	~CUPnPAllowedValue() {}
@@ -321,7 +249,6 @@ public:
 class CUPnPStateVariable
 {
 private:
-	const CUPnPControlPoint &m_UPnPControlPoint;
 	AllowedValueList m_AllowedValueList;
 	const std::string m_name;
 	const std::string m_dataType;
@@ -331,7 +258,6 @@ private:
 public:
 	CUPnPStateVariable(
 		const CUPnPControlPoint &upnpControlPoint,
-		CUPnPLib &upnpLib,
 		IXML_Element *stateVariable,
 		const std::string &URLBase);
 	~CUPnPStateVariable() {}
@@ -351,7 +277,6 @@ public:
 class CUPnPSCPD
 {
 private:
-	const CUPnPControlPoint &m_UPnPControlPoint;
 	ActionList m_ActionList;
 	ServiceStateTable m_ServiceStateTable;
 	const std::string m_SCPDURL;
@@ -359,7 +284,6 @@ private:
 public:
 	CUPnPSCPD(
 		const CUPnPControlPoint &upnpControlPoint,
-		CUPnPLib &upnpLib,
 		IXML_Element *scpd,
 		const std::string &SCPDURL);
 	~CUPnPSCPD() {}
@@ -392,7 +316,6 @@ class CUPnPService
 {
 private:
 	const CUPnPControlPoint &m_UPnPControlPoint;
-	CUPnPLib &m_upnpLib;
 	const std::string m_serviceType;
 	const std::string m_serviceId;
 	const std::string m_SCPDURL;
@@ -408,7 +331,6 @@ private:
 public:
 	CUPnPService(
 		const CUPnPControlPoint &upnpControlPoint,
-		CUPnPLib &upnpLib,
 		IXML_Element *service,
 		const std::string &URLBase);
 	~CUPnPService();
@@ -457,8 +379,6 @@ public:
 class CUPnPDevice
 {
 private:
-	const CUPnPControlPoint &m_UPnPControlPoint;
-
 	// Please, lock these lists before use
 	DeviceList m_DeviceList;
 	ServiceList m_ServiceList;
@@ -479,7 +399,6 @@ private:
 public:
 	CUPnPDevice(
 		const CUPnPControlPoint &upnpControlPoint,
-		CUPnPLib &upnpLib,
 		IXML_Element *device,
 		const std::string &URLBase);
 	~CUPnPDevice() {}
@@ -500,7 +419,6 @@ public:
 class CUPnPRootDevice : public CUPnPDevice
 {
 private:
-	const CUPnPControlPoint &m_UPnPControlPoint;
 	const std::string m_URLBase;
 	const std::string m_location;
 	int m_expires;
@@ -508,7 +426,6 @@ private:
 public:
 	CUPnPRootDevice(
 		const CUPnPControlPoint &upnpControlPoint,
-		CUPnPLib &upnpLib,
 		IXML_Element *rootDevice,
 		const std::string &OriginalURLBase,
 		const std::string &FixedURLBase,
@@ -537,7 +454,6 @@ class CUPnPControlPoint
 private:
 	static CUPnPControlPoint *s_CtrlPoint;
 	// upnp stuff
-	CUPnPLib m_upnpLib;
 	UpnpClient_Handle m_UPnPClientHandle;
 	RootDeviceMap m_RootDeviceMap;
 	ServiceMap m_ServiceMap;
