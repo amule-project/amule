@@ -91,47 +91,29 @@ m_key()
 	m_key = m_protocol + m_port;
 }
 
+namespace UPnP {
 
-const std::string &CUPnPLib::UPNP_ROOT_DEVICE =
-	"upnp:rootdevice";
+static const std::string ROOT_DEVICE("upnp:rootdevice");
 
-const std::string &CUPnPLib::UPNP_DEVICE_IGW =
-	"urn:schemas-upnp-org:device:InternetGatewayDevice:1";
-const std::string &CUPnPLib::UPNP_DEVICE_WAN =
-	"urn:schemas-upnp-org:device:WANDevice:1";
-const std::string &CUPnPLib::UPNP_DEVICE_WAN_CONNECTION =
-	"urn:schemas-upnp-org:device:WANConnectionDevice:1";
-const std::string &CUPnPLib::UPNP_DEVICE_LAN =
-	"urn:schemas-upnp-org:device:LANDevice:1";
-
-const std::string &CUPnPLib::UPNP_SERVICE_LAYER3_FORWARDING =
-	"urn:schemas-upnp-org:service:Layer3Forwarding:1";
-const std::string &CUPnPLib::UPNP_SERVICE_WAN_COMMON_INTERFACE_CONFIG =
-	"urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1";
-const std::string &CUPnPLib::UPNP_SERVICE_WAN_IP_CONNECTION =
-	"urn:schemas-upnp-org:service:WANIPConnection:1";
-const std::string &CUPnPLib::UPNP_SERVICE_WAN_PPP_CONNECTION =
-	"urn:schemas-upnp-org:service:WANPPPConnection:1";
-
-
-CUPnPLib::CUPnPLib(CUPnPControlPoint &ctrlPoint)
-:
-m_ctrlPoint(ctrlPoint)
-{
+namespace Device {
+	static const std::string IGW("urn:schemas-upnp-org:device:InternetGatewayDevice:1");
+	static const std::string WAN("urn:schemas-upnp-org:device:WANDevice:1");
+	static const std::string WAN_Connection("urn:schemas-upnp-org:device:WANConnectionDevice:1");
+	static const std::string LAN("urn:schemas-upnp-org:device:LANDevice:1");
 }
 
-
-std::string CUPnPLib::GetUPnPErrorMessage(int code) const
-{
-	return UpnpGetErrorMessage(code);
+namespace Service {
+	static const std::string Layer3_Forwarding("urn:schemas-upnp-org:service:Layer3Forwarding:1");
+	static const std::string WAN_Common_Interface_Config("urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1");
+	static const std::string WAN_IP_Connection("urn:schemas-upnp-org:service:WANIPConnection:1");
+	static const std::string WAN_PPP_Connection("urn:schemas-upnp-org:service:WANPPPConnection:1");
 }
 
-
-std::string CUPnPLib::processUPnPErrorMessage(
+static std::string ProcessErrorMessage(
 	const std::string &messsage,
 	int errorCode,
 	const DOMString errorString,
-	IXML_Document *doc) const
+	IXML_Document *doc)
 {
 	std::ostringstream msg;
 	if (errorString == NULL || *errorString == 0) {
@@ -142,7 +124,7 @@ std::string CUPnPLib::processUPnPErrorMessage(
 			messsage <<
 			": Error code :'";
 		if (doc) {
-			CUPnPError e(*this, doc);
+			CUPnPError e(doc);
 			msg << e.getErrorCode() <<
 				"', Error description :'" <<
 				e.getErrorDescription() <<
@@ -158,7 +140,7 @@ std::string CUPnPLib::processUPnPErrorMessage(
 		msg << "Error: " <<
 			messsage <<
 			": UPnP SDK error: " <<
-			GetUPnPErrorMessage(errorCode) <<
+			UpnpGetErrorMessage(errorCode) <<
 			" (" << errorCode << ").";
 		AddDebugLogLineN(logUPnP, msg);
 	}
@@ -167,22 +149,22 @@ std::string CUPnPLib::processUPnPErrorMessage(
 }
 
 
-void CUPnPLib::ProcessActionResponse(
+static void ProcessActionResponse(
 	IXML_Document *RespDoc,
-	const std::string &actionName) const
+	const std::string &actionName)
 {
 	std::ostringstream msg;
 	msg << "Response: ";
-	IXML_Element *root = Element_GetRootElement(RespDoc);
-	IXML_Element *child = Element_GetFirstChild(root);
+	IXML_Element *root = IXML::Document::GetRootElement(RespDoc);
+	IXML_Element *child = IXML::Element::GetFirstChild(root);
 	if (child) {
 		while (child) {
-			const DOMString childTag = Element_GetTag(child);
-			std::string childValue = Element_GetTextValue(child);
+			const DOMString childTag = IXML::Element::GetTag(child);
+			std::string childValue = IXML::Element::GetTextValue(child);
 			msg << "\n    " <<
 				childTag << "='" <<
 				childValue << "'";
-			child = Element_GetNextSibling(child);
+			child = IXML::Element::GetNextSibling(child);
 		}
 	} else {
 		msg << "\n    Empty response for action '" <<
@@ -191,61 +173,53 @@ void CUPnPLib::ProcessActionResponse(
 	AddDebugLogLineN(logUPnP, msg);
 }
 
+} /* namespace UPnP */
+
+
+namespace IXML {
 
 /*!
  * \brief Returns the root node of a given document.
  */
-IXML_Element *CUPnPLib::Element_GetRootElement(
-	IXML_Document *doc) const
+IXML_Element *Document::GetRootElement(IXML_Document *doc)
 {
-	IXML_Element *root = reinterpret_cast<IXML_Element *>(
-		ixmlNode_getFirstChild(&doc->n));
-
-	return root;
+	return reinterpret_cast<IXML_Element *>(ixmlNode_getFirstChild(&doc->n));
 }
 
+namespace Element {
 
 /*!
  * \brief Returns the first child of a given element.
  */
-IXML_Element *CUPnPLib::Element_GetFirstChild(
-	IXML_Element *parent) const
+IXML_Element *GetFirstChild(IXML_Element *parent)
 {
-	IXML_Node *child = ixmlNode_getFirstChild(&parent->n);
-
-	return reinterpret_cast<IXML_Element *>(child);
+	return reinterpret_cast<IXML_Element *>(ixmlNode_getFirstChild(&parent->n));
 }
+
 
 
 /*!
  * \brief Returns the next sibling of a given child.
  */
-IXML_Element *CUPnPLib::Element_GetNextSibling(
-	IXML_Element *child) const
+IXML_Element *GetNextSibling(IXML_Element *child)
 {
-	IXML_Node *sibling = ixmlNode_getNextSibling(&child->n);
-
-	return reinterpret_cast<IXML_Element *>(sibling);
+	return reinterpret_cast<IXML_Element *>(ixmlNode_getNextSibling(&child->n));
 }
 
 
 /*!
  * \brief Returns the element tag (name)
  */
-const DOMString CUPnPLib::Element_GetTag(
-	IXML_Element *element) const
+const DOMString GetTag(IXML_Element *element)
 {
-	const DOMString tag = ixmlNode_getNodeName(&element->n);
-
-	return tag;
+	return ixmlNode_getNodeName(&element->n);
 }
 
 
 /*!
  * \brief Returns the TEXT node value of the current node.
  */
-const std::string CUPnPLib::Element_GetTextValue(
-	IXML_Element *element) const
+const std::string GetTextValue(IXML_Element *element)
 {
 	if (!element) {
 		return stdEmptyString;
@@ -264,14 +238,9 @@ const std::string CUPnPLib::Element_GetTextValue(
 /*!
  * \brief Returns the TEXT node value of the first child matching tag.
  */
-const std::string CUPnPLib::Element_GetChildValueByTag(
-	IXML_Element *element,
-	const DOMString tag) const
+const std::string GetChildValueByTag(IXML_Element *element, const DOMString tag)
 {
-	IXML_Element *child =
-		Element_GetFirstChildByTag(element, tag);
-
-	return Element_GetTextValue(child);
+	return GetTextValue(GetFirstChildByTag(element, tag));
 }
 
 
@@ -279,9 +248,7 @@ const std::string CUPnPLib::Element_GetChildValueByTag(
  * \brief Returns the first child element that matches the requested tag or
  * NULL if not found.
  */
-IXML_Element *CUPnPLib::Element_GetFirstChildByTag(
-	IXML_Element *element,
-	const DOMString tag) const
+IXML_Element *GetFirstChildByTag(IXML_Element *element, const DOMString tag)
 {
 	if (!element || !tag) {
 		return NULL;
@@ -300,10 +267,9 @@ IXML_Element *CUPnPLib::Element_GetFirstChildByTag(
 
 /*!
  * \brief Returns the next sibling element that matches the requested tag. Should be
- * used with the return value of Element_GetFirstChildByTag().
+ * used with the return value of GetFirstChildByTag().
  */
-IXML_Element *CUPnPLib::Element_GetNextSiblingByTag(
-	IXML_Element *element, const DOMString tag) const
+IXML_Element *GetNextSiblingByTag(IXML_Element *element, const DOMString tag)
 {
 	if (!element || !tag) {
 		return NULL;
@@ -320,8 +286,7 @@ IXML_Element *CUPnPLib::Element_GetNextSiblingByTag(
 }
 
 
-const std::string CUPnPLib::Element_GetAttributeByTag(
-	IXML_Element *element, const DOMString tag) const
+const std::string GetAttributeByTag(IXML_Element *element, const DOMString tag)
 {
 	IXML_NamedNodeMap *NamedNodeMap = ixmlNode_getAttributes(&element->n);
 	IXML_Node *attribute = ixmlNamedNodeMap_getNamedItem(NamedNodeMap, tag);
@@ -335,29 +300,29 @@ const std::string CUPnPLib::Element_GetAttributeByTag(
 	return ret;
 }
 
+} /* namespace Element */
 
-CUPnPError::CUPnPError(
-	const CUPnPLib &upnpLib,
-	IXML_Document *errorDoc)
+} /* namespace IXML */
+
+
+CUPnPError::CUPnPError(IXML_Document *errorDoc)
 :
-m_root            (upnpLib.Element_GetRootElement(errorDoc)),
-m_ErrorCode       (upnpLib.Element_GetChildValueByTag(m_root, "errorCode")),
-m_ErrorDescription(upnpLib.Element_GetChildValueByTag(m_root, "errorDescription"))
+m_root            (IXML::Document::GetRootElement(errorDoc)),
+m_ErrorCode       (IXML::Element::GetChildValueByTag(m_root, "errorCode")),
+m_ErrorDescription(IXML::Element::GetChildValueByTag(m_root, "errorDescription"))
 {
 }
 
 
 CUPnPArgument::CUPnPArgument(
-	const CUPnPControlPoint &upnpControlPoint,
-	CUPnPLib &upnpLib,
+	const CUPnPControlPoint &WXUNUSED(upnpControlPoint),
 	IXML_Element *argument,
 	const std::string &WXUNUSED(SCPDURL))
 :
-m_UPnPControlPoint(upnpControlPoint),
-m_name                (upnpLib.Element_GetChildValueByTag(argument, "name")),
-m_direction           (upnpLib.Element_GetChildValueByTag(argument, "direction")),
-m_retval              (upnpLib.Element_GetFirstChildByTag(argument, "retval")),
-m_relatedStateVariable(upnpLib.Element_GetChildValueByTag(argument, "relatedStateVariable"))
+m_name                (IXML::Element::GetChildValueByTag(argument, "name")),
+m_direction           (IXML::Element::GetChildValueByTag(argument, "direction")),
+m_retval              (IXML::Element::GetFirstChildByTag(argument, "retval")),
+m_relatedStateVariable(IXML::Element::GetChildValueByTag(argument, "relatedStateVariable"))
 {
 	std::ostringstream msg;
 	msg <<	"\n    Argument:"                  <<
@@ -371,13 +336,11 @@ m_relatedStateVariable(upnpLib.Element_GetChildValueByTag(argument, "relatedStat
 
 CUPnPAction::CUPnPAction(
 	const CUPnPControlPoint &upnpControlPoint,
-	CUPnPLib &upnpLib,
 	IXML_Element *action,
 	const std::string &SCPDURL)
 :
-m_UPnPControlPoint(upnpControlPoint),
-m_ArgumentList(upnpControlPoint, upnpLib, action, SCPDURL),
-m_name(upnpLib.Element_GetChildValueByTag(action, "name"))
+m_ArgumentList(upnpControlPoint, action, SCPDURL),
+m_name(IXML::Element::GetChildValueByTag(action, "name"))
 {
 	std::ostringstream msg;
 	msg <<	"\n    Action:"    <<
@@ -387,13 +350,11 @@ m_name(upnpLib.Element_GetChildValueByTag(action, "name"))
 
 
 CUPnPAllowedValue::CUPnPAllowedValue(
-	const CUPnPControlPoint &upnpControlPoint,
-	CUPnPLib &upnpLib,
+	const CUPnPControlPoint &WXUNUSED(upnpControlPoint),
 	IXML_Element *allowedValue,
 	const std::string &WXUNUSED(SCPDURL))
 :
-m_UPnPControlPoint(upnpControlPoint),
-m_allowedValue(upnpLib.Element_GetTextValue(allowedValue))
+m_allowedValue(IXML::Element::GetTextValue(allowedValue))
 {
 	std::ostringstream msg;
 	msg <<	"\n    AllowedValue:"      <<
@@ -404,16 +365,14 @@ m_allowedValue(upnpLib.Element_GetTextValue(allowedValue))
 
 CUPnPStateVariable::CUPnPStateVariable(
 	const CUPnPControlPoint &upnpControlPoint,
-	CUPnPLib &upnpLib,
 	IXML_Element *stateVariable,
 	const std::string &SCPDURL)
 :
-m_UPnPControlPoint(upnpControlPoint),
-m_AllowedValueList(upnpControlPoint, upnpLib, stateVariable, SCPDURL),
-m_name        (upnpLib.Element_GetChildValueByTag(stateVariable, "name")),
-m_dataType    (upnpLib.Element_GetChildValueByTag(stateVariable, "dataType")),
-m_defaultValue(upnpLib.Element_GetChildValueByTag(stateVariable, "defaultValue")),
-m_sendEvents  (upnpLib.Element_GetAttributeByTag (stateVariable, "sendEvents"))
+m_AllowedValueList(upnpControlPoint, stateVariable, SCPDURL),
+m_name        (IXML::Element::GetChildValueByTag(stateVariable, "name")),
+m_dataType    (IXML::Element::GetChildValueByTag(stateVariable, "dataType")),
+m_defaultValue(IXML::Element::GetChildValueByTag(stateVariable, "defaultValue")),
+m_sendEvents  (IXML::Element::GetAttributeByTag (stateVariable, "sendEvents"))
 {
 	std::ostringstream msg;
 	msg <<	"\n    StateVariable:"     <<
@@ -427,13 +386,11 @@ m_sendEvents  (upnpLib.Element_GetAttributeByTag (stateVariable, "sendEvents"))
 
 CUPnPSCPD::CUPnPSCPD(
 	const CUPnPControlPoint &upnpControlPoint,
-	CUPnPLib &upnpLib,
 	IXML_Element *scpd,
 	const std::string &SCPDURL)
 :
-m_UPnPControlPoint(upnpControlPoint),
-m_ActionList(upnpControlPoint, upnpLib, scpd, SCPDURL),
-m_ServiceStateTable(upnpControlPoint, upnpLib, scpd, SCPDURL),
+m_ActionList(upnpControlPoint, scpd, SCPDURL),
+m_ServiceStateTable(upnpControlPoint, scpd, SCPDURL),
 m_SCPDURL(SCPDURL)
 {
 }
@@ -458,17 +415,15 @@ m_value(value)
 
 CUPnPService::CUPnPService(
 	const CUPnPControlPoint &upnpControlPoint,
-	CUPnPLib &upnpLib,
 	IXML_Element *service,
 	const std::string &URLBase)
 :
 m_UPnPControlPoint(upnpControlPoint),
-m_upnpLib(upnpLib),
-m_serviceType(upnpLib.Element_GetChildValueByTag(service, "serviceType")),
-m_serviceId  (upnpLib.Element_GetChildValueByTag(service, "serviceId")),
-m_SCPDURL    (upnpLib.Element_GetChildValueByTag(service, "SCPDURL")),
-m_controlURL (upnpLib.Element_GetChildValueByTag(service, "controlURL")),
-m_eventSubURL(upnpLib.Element_GetChildValueByTag(service, "eventSubURL")),
+m_serviceType(IXML::Element::GetChildValueByTag(service, "serviceType")),
+m_serviceId  (IXML::Element::GetChildValueByTag(service, "serviceId")),
+m_SCPDURL    (IXML::Element::GetChildValueByTag(service, "SCPDURL")),
+m_controlURL (IXML::Element::GetChildValueByTag(service, "controlURL")),
+m_eventSubURL(IXML::Element::GetChildValueByTag(service, "eventSubURL")),
 m_timeout(1801),
 m_SCPD(NULL)
 {
@@ -533,28 +488,28 @@ m_SCPD(NULL)
 		"\n        absEventSubURL: " << m_absEventSubURL;
 	AddDebugLogLineN(logUPnP, msg);
 
-	if (m_serviceType == upnpLib.UPNP_SERVICE_WAN_IP_CONNECTION ||
-	    m_serviceType == upnpLib.UPNP_SERVICE_WAN_PPP_CONNECTION) {
+	if (m_serviceType == UPnP::Service::WAN_IP_Connection ||
+	    m_serviceType == UPnP::Service::WAN_PPP_Connection) {
 #if 0
-	    m_serviceType == upnpLib.UPNP_SERVICE_WAN_PPP_CONNECTION ||
-	    m_serviceType == upnpLib.UPNP_SERVICE_WAN_COMMON_INTERFACE_CONFIG ||
-	    m_serviceType == upnpLib.UPNP_SERVICE_LAYER3_FORWARDING) {
+	    m_serviceType == UPnP::Service::WAN_PPP_Connection ||
+	    m_serviceType == UPnP::Service::WAN_Common_Interface_Config ||
+	    m_serviceType == UPnP::Service::Layer3_Forwarding) {
 #endif
 #if 0
 //#warning Delete this code on release.
-		if (!upnpLib.m_ctrlPoint.WanServiceDetected()) {
+		if (!upnpControlPoint.WanServiceDetected()) {
 			// This condition can be used to suspend the parse
 			// of the XML tree.
 #endif
 //#warning Delete this code when m_WanService is no longer used.
-			upnpLib.m_ctrlPoint.SetWanService(this);
+			const_cast<CUPnPControlPoint &>(upnpControlPoint).SetWanService(this);
 			// Log it
 			msg.str("");
 			msg << "WAN Service Detected: '" <<
 				m_serviceType << "'.";
 			AddDebugLogLineC(logUPnP, msg);
 			// Subscribe
-			upnpLib.m_ctrlPoint.Subscribe(*this);
+			const_cast<CUPnPControlPoint &>(upnpControlPoint).Subscribe(*this);
 #if 0
 //#warning Delete this code on release.
 		} else {
@@ -676,7 +631,7 @@ bool CUPnPService::Execute(
 				ArgValue[i].GetArgument().c_str(),
 				ArgValue[i].GetValue().c_str());
 			if (ret != UPNP_E_SUCCESS) {
-				m_upnpLib.processUPnPErrorMessage(
+				UPnP::ProcessErrorMessage(
 					"UpnpAddToAction", ret, NULL, NULL);
 				return false;
 			}
@@ -712,7 +667,7 @@ bool CUPnPService::Execute(
 		GetServiceType().c_str(),
 		NULL, ActionDoc, &RespDoc);
 	if (ret != UPNP_E_SUCCESS) {
-		m_upnpLib.processUPnPErrorMessage(
+		UPnP::ProcessErrorMessage(
 			"UpnpSendAction", ret, NULL, RespDoc);
 		ixmlDocument_free(ActionDoc);
 		ixmlDocument_free(RespDoc);
@@ -721,8 +676,7 @@ bool CUPnPService::Execute(
 	ixmlDocument_free(ActionDoc);
 
 	// Check the response document
-	m_upnpLib.ProcessActionResponse(
-		RespDoc, action.GetName());
+	UPnP::ProcessActionResponse(RespDoc, action.GetName());
 
 	// Free the response document
 	ixmlDocument_free(RespDoc);
@@ -745,7 +699,7 @@ const std::string CUPnPService::GetStateVariable(
 		msg << "GetStateVariable(\"" <<
 			stateVariableName <<
 			"\"): in a call to UpnpGetServiceVarStatus";
-		m_upnpLib.processUPnPErrorMessage(
+		UPnP::ProcessErrorMessage(
 			msg.str(), ret, StVarVal, NULL);
 		return stdEmptyString;
 	}
@@ -755,31 +709,29 @@ const std::string CUPnPService::GetStateVariable(
 		StVarVal <<
 		"'.";
 	AddDebugLogLineN(logUPnP, msg);
-	return stdEmptyString;
+	return StVarVal;
 }
 
 
 CUPnPDevice::CUPnPDevice(
 	const CUPnPControlPoint &upnpControlPoint,
-	CUPnPLib &upnpLib,
 	IXML_Element *device,
 	const std::string &URLBase)
 :
-m_UPnPControlPoint(upnpControlPoint),
-m_DeviceList(upnpControlPoint, upnpLib, device, URLBase),
-m_ServiceList(upnpControlPoint, upnpLib, device, URLBase),
-m_deviceType       (upnpLib.Element_GetChildValueByTag(device, "deviceType")),
-m_friendlyName     (upnpLib.Element_GetChildValueByTag(device, "friendlyName")),
-m_manufacturer     (upnpLib.Element_GetChildValueByTag(device, "manufacturer")),
-m_manufacturerURL  (upnpLib.Element_GetChildValueByTag(device, "manufacturerURL")),
-m_modelDescription (upnpLib.Element_GetChildValueByTag(device, "modelDescription")),
-m_modelName        (upnpLib.Element_GetChildValueByTag(device, "modelName")),
-m_modelNumber      (upnpLib.Element_GetChildValueByTag(device, "modelNumber")),
-m_modelURL         (upnpLib.Element_GetChildValueByTag(device, "modelURL")),
-m_serialNumber     (upnpLib.Element_GetChildValueByTag(device, "serialNumber")),
-m_UDN              (upnpLib.Element_GetChildValueByTag(device, "UDN")),
-m_UPC              (upnpLib.Element_GetChildValueByTag(device, "UPC")),
-m_presentationURL  (upnpLib.Element_GetChildValueByTag(device, "presentationURL"))
+m_DeviceList(upnpControlPoint, device, URLBase),
+m_ServiceList(upnpControlPoint, device, URLBase),
+m_deviceType       (IXML::Element::GetChildValueByTag(device, "deviceType")),
+m_friendlyName     (IXML::Element::GetChildValueByTag(device, "friendlyName")),
+m_manufacturer     (IXML::Element::GetChildValueByTag(device, "manufacturer")),
+m_manufacturerURL  (IXML::Element::GetChildValueByTag(device, "manufacturerURL")),
+m_modelDescription (IXML::Element::GetChildValueByTag(device, "modelDescription")),
+m_modelName        (IXML::Element::GetChildValueByTag(device, "modelName")),
+m_modelNumber      (IXML::Element::GetChildValueByTag(device, "modelNumber")),
+m_modelURL         (IXML::Element::GetChildValueByTag(device, "modelURL")),
+m_serialNumber     (IXML::Element::GetChildValueByTag(device, "serialNumber")),
+m_UDN              (IXML::Element::GetChildValueByTag(device, "UDN")),
+m_UPC              (IXML::Element::GetChildValueByTag(device, "UPC")),
+m_presentationURL  (IXML::Element::GetChildValueByTag(device, "presentationURL"))
 {
 	std::ostringstream msg;
 	int presURLlen = strlen(URLBase.c_str()) +
@@ -819,15 +771,13 @@ m_presentationURL  (upnpLib.Element_GetChildValueByTag(device, "presentationURL"
 
 CUPnPRootDevice::CUPnPRootDevice(
 	const CUPnPControlPoint &upnpControlPoint,
-	CUPnPLib &upnpLib,
 	IXML_Element *rootDevice,
 	const std::string &OriginalURLBase,
 	const std::string &FixedURLBase,
 	const char *location,
 	int expires)
 :
-CUPnPDevice(upnpControlPoint, upnpLib, rootDevice, FixedURLBase),
-m_UPnPControlPoint(upnpControlPoint),
+CUPnPDevice(upnpControlPoint, rootDevice, FixedURLBase),
 m_URLBase(OriginalURLBase),
 m_location(location),
 m_expires(expires)
@@ -848,7 +798,6 @@ CUPnPControlPoint *CUPnPControlPoint::s_CtrlPoint = NULL;
 
 CUPnPControlPoint::CUPnPControlPoint(unsigned short udpPort)
 :
-m_upnpLib(*this),
 m_UPnPClientHandle(),
 m_RootDeviceMap(),
 m_ServiceMap(),
@@ -890,15 +839,15 @@ m_WanService(NULL)
 	// contains the device we want, it will respond with the full XML doc,
 	// including the root device and every sub-device it has.
 	//
-	// But lets find out what we have in our network by calling UPNP_ROOT_DEVICE.
+	// But let's find out what we have in our network by calling UPnP::ROOT_DEVICE.
 	//
 	// We should not search twice, because this will produce two
 	// UPNP_DISCOVERY_SEARCH_TIMEOUT events, and we might end with problems
 	// on the mutex.
-	ret = UpnpSearchAsync(m_UPnPClientHandle, 3, m_upnpLib.UPNP_ROOT_DEVICE.c_str(), NULL);
-	//ret = UpnpSearchAsync(m_UPnPClientHandle, 3, m_upnpLib.UPNP_DEVICE_IGW.c_str(), this);
-	//ret = UpnpSearchAsync(m_UPnPClientHandle, 3, m_upnpLib.UPNP_DEVICE_LAN.c_str(), this);
-	//ret = UpnpSearchAsync(m_UPnPClientHandle, 3, m_upnpLib.UPNP_DEVICE_WAN_CONNECTION.c_str(), this);
+	ret = UpnpSearchAsync(m_UPnPClientHandle, 3, UPnP::ROOT_DEVICE.c_str(), NULL);
+	//ret = UpnpSearchAsync(m_UPnPClientHandle, 3, UPnP::Device::IGW.c_str(), this);
+	//ret = UpnpSearchAsync(m_UPnPClientHandle, 3, UPnP::Device::LAN.c_str(), this);
+	//ret = UpnpSearchAsync(m_UPnPClientHandle, 3, UPnP::Device::WAN_Connection.c_str(), this);
 	if (ret != UPNP_E_SUCCESS) {
 		msg << "error(UpnpSearchAsync): Error sending search request: ";
 		goto error;
@@ -919,7 +868,7 @@ m_WanService(NULL)
 	// Error processing
 error:
 	UpnpFinish();
-	msg << ret << ": " << m_upnpLib.GetUPnPErrorMessage(ret) << ".";
+	msg << ret << ": " << UpnpGetErrorMessage(ret) << ".";
 	throw CUPnPException(msg);
 }
 
@@ -1005,7 +954,7 @@ bool CUPnPControlPoint::AddPortMappings(
 
 	// Debug only
 	msg.str("");
-	msg << "CUPnPControlPoint::DeletePortMappings: "
+	msg << "CUPnPControlPoint::AddPortMappings: "
 		"m_ActivePortMappingsMap.size() == " <<
 		m_ActivePortMappingsMap.size();
 	AddDebugLogLineN(logUPnP, msg);
@@ -1191,7 +1140,7 @@ upnpDiscovery:
 		IXML_Document *doc = NULL;
 		int ret;
 		if (d_event->ErrCode != UPNP_E_SUCCESS) {
-			msg << upnpCP->m_upnpLib.GetUPnPErrorMessage(d_event->ErrCode) << ".";
+			msg << UpnpGetErrorMessage(d_event->ErrCode) << ".";
 			AddDebugLogLineC(logUPnP, msg);
 		}
 		// Get the XML tree device description in doc
@@ -1199,7 +1148,7 @@ upnpDiscovery:
 		if (ret != UPNP_E_SUCCESS) {
 			msg << "Error retrieving device description from " <<
 				d_event->Location << ": " <<
-				upnpCP->m_upnpLib.GetUPnPErrorMessage(ret) <<
+				UpnpGetErrorMessage(ret) <<
 				"(" << ret << ").";
 			AddDebugLogLineC(logUPnP, msg);
 		} else {
@@ -1209,19 +1158,15 @@ upnpDiscovery:
 		}
 		if (doc) {
 			// Get the root node
-			IXML_Element *root =
-				upnpCP->m_upnpLib.Element_GetRootElement(doc);
+			IXML_Element *root = IXML::Document::GetRootElement(doc);
 			// Extract the URLBase
-			const std::string urlBase = upnpCP->m_upnpLib.
-				Element_GetChildValueByTag(root, "URLBase");
+			const std::string urlBase = IXML::Element::GetChildValueByTag(root, "URLBase");
 			// Get the root device
-			IXML_Element *rootDevice = upnpCP->m_upnpLib.
-				Element_GetFirstChildByTag(root, "device");
+			IXML_Element *rootDevice = IXML::Element::GetFirstChildByTag(root, "device");
 			// Extract the deviceType
-			std::string devType(upnpCP->m_upnpLib.
-				Element_GetChildValueByTag(rootDevice, "deviceType"));
+			std::string devType(IXML::Element::GetChildValueByTag(rootDevice, "deviceType"));
 			// Only add device if it is an InternetGatewayDevice
-			if (stdStringIsEqualCI(devType, upnpCP->m_upnpLib.UPNP_DEVICE_IGW)) {
+			if (stdStringIsEqualCI(devType, UPnP::Device::IGW)) {
 				// This condition can be used to auto-detect
 				// the UPnP device we are interested in.
 				// Obs.: Don't block the entry here on this
@@ -1261,14 +1206,14 @@ upnpDiscovery:
 		struct Upnp_Discovery *dab_event = (struct Upnp_Discovery *)Event;
 		if (dab_event->ErrCode != UPNP_E_SUCCESS) {
 			msg << "error(UPNP_DISCOVERY_ADVERTISEMENT_BYEBYE): " <<
-				upnpCP->m_upnpLib.GetUPnPErrorMessage(dab_event->ErrCode) <<
+				UpnpGetErrorMessage(dab_event->ErrCode) <<
 				".";
 			AddDebugLogLineC(logUPnP, msg);
 		}
 		std::string devType = dab_event->DeviceType;
 		// Check for an InternetGatewayDevice and removes it from the list
 		std::transform(devType.begin(), devType.end(), devType.begin(), tolower);
-		if (stdStringIsEqualCI(devType, upnpCP->m_upnpLib.UPNP_DEVICE_IGW)) {
+		if (stdStringIsEqualCI(devType, UPnP::Device::IGW)) {
 			upnpCP->RemoveRootDevice(dab_event->DeviceId);
 		}
 		break;
@@ -1298,7 +1243,7 @@ upnpEventRenewalComplete:
 			(struct Upnp_Event_Subscribe *)Event;
 		if (es_event->ErrCode != UPNP_E_SUCCESS) {
 			msg << "Error in Event Subscribe Callback";
-			upnpCP->m_upnpLib.processUPnPErrorMessage(
+			UPnP::ProcessErrorMessage(
 				msg.str(), es_event->ErrCode, NULL, NULL);
 		} else {
 #if 0
@@ -1333,7 +1278,7 @@ upnpEventSubscriptionExpired:
 			newSID);
 		if (ret != UPNP_E_SUCCESS) {
 			msg << "Error Subscribing to EventURL";
-			upnpCP->m_upnpLib.processUPnPErrorMessage(
+			UPnP::ProcessErrorMessage(
 				msg.str(), es_event->ErrCode, NULL, NULL);
 		} else {
 			ServiceMap::iterator it =
@@ -1365,13 +1310,13 @@ upnpEventSubscriptionExpired:
 		struct Upnp_Action_Complete *a_event =
 			(struct Upnp_Action_Complete *)Event;
 		if (a_event->ErrCode != UPNP_E_SUCCESS) {
-			upnpCP->m_upnpLib.processUPnPErrorMessage(
+			UPnP::ProcessErrorMessage(
 				"UpnpSendActionAsync",
 				a_event->ErrCode, NULL,
 				a_event->ActionResult);
 		} else {
 			// Check the response document
-			upnpCP->m_upnpLib.ProcessActionResponse(
+			UPnP::ProcessActionResponse(
 				a_event->ActionResult,
 				"<UpnpSendActionAsync>");
 		}
@@ -1387,7 +1332,7 @@ upnpEventSubscriptionExpired:
 			(struct Upnp_State_Var_Complete *)Event;
 		if (sv_event->ErrCode != UPNP_E_SUCCESS) {
 			msg << "m_UpnpGetServiceVarStatusAsync";
-			upnpCP->m_upnpLib.processUPnPErrorMessage(
+			UPnP::ProcessErrorMessage(
 				msg.str(), sv_event->ErrCode, NULL, NULL);
 		} else {
 #if 0
@@ -1446,22 +1391,17 @@ void CUPnPControlPoint::OnEventReceived(
 		"\n    SID: " << Sid <<
 		"\n    Key: " << EventKey <<
 		"\n    Property list:";
-	IXML_Element *root =
-		m_upnpLib.Element_GetRootElement(ChangedVariablesDoc);
-	IXML_Element *child =
-		m_upnpLib.Element_GetFirstChild(root);
+	IXML_Element *root = IXML::Document::GetRootElement(ChangedVariablesDoc);
+	IXML_Element *child = IXML::Element::GetFirstChild(root);
 	if (child) {
 		while (child) {
-			IXML_Element *child2 =
-				m_upnpLib.Element_GetFirstChild(child);
-			const DOMString childTag =
-				m_upnpLib.Element_GetTag(child2);
-			std::string childValue =
-				m_upnpLib.Element_GetTextValue(child2);
+			IXML_Element *child2 = IXML::Element::GetFirstChild(child);
+			const DOMString childTag = IXML::Element::GetTag(child2);
+			std::string childValue = IXML::Element::GetTextValue(child2);
 			msg << "\n        " <<
 				childTag << "='" <<
 				childValue << "'";
-			child = m_upnpLib.Element_GetNextSibling(child);
+			child = IXML::Element::GetNextSibling(child);
 		}
 	} else {
 		msg << "\n    Empty property list.";
@@ -1486,8 +1426,7 @@ void CUPnPControlPoint::AddRootDevice(
 		OriginalURLBase);
 
 	// Get the UDN (Unique Device Name)
-	std::string UDN(
-		m_upnpLib.Element_GetChildValueByTag(rootDevice, "UDN"));
+	std::string UDN(IXML::Element::GetChildValueByTag(rootDevice, "UDN"));
 	RootDeviceMap::iterator it = m_RootDeviceMap.find(UDN);
 	bool alreadyAdded = it != m_RootDeviceMap.end();
 	if (alreadyAdded) {
@@ -1496,7 +1435,7 @@ void CUPnPControlPoint::AddRootDevice(
 	} else {
 		// Add a new root device to the root device list
 		CUPnPRootDevice *upnpRootDevice = new CUPnPRootDevice(
-			*this, m_upnpLib, rootDevice,
+			*this, rootDevice,
 			OriginalURLBase, FixedURLBase,
 			location, expires);
 		m_RootDeviceMap[upnpRootDevice->GetUDN()] = upnpRootDevice;
@@ -1528,10 +1467,8 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 		service.GetAbsSCPDURL().c_str(), &scpdDoc);
 	if (errcode == UPNP_E_SUCCESS) {
 		// Get the root node of this service (the SCPD Document)
-		IXML_Element *scpdRoot =
-			m_upnpLib.Element_GetRootElement(scpdDoc);
-		CUPnPSCPD *scpd = new CUPnPSCPD(*this, m_upnpLib,
-			scpdRoot, service.GetAbsSCPDURL());
+		IXML_Element *scpdRoot = IXML::Document::GetRootElement(scpdDoc);
+		CUPnPSCPD *scpd = new CUPnPSCPD(*this, scpdRoot, service.GetAbsSCPDURL());
 		service.SetSCPD(scpd);
 		m_ServiceMap[service.GetAbsEventSubURL()] = &service;
 		msg << "Successfully retrieved SCPD Document for service " <<
@@ -1556,7 +1493,7 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 			msg << "Error subscribing to service " <<
 				service.GetServiceType() << ", absEventSubURL: " <<
 				service.GetAbsEventSubURL() << ", error: " <<
-				m_upnpLib.GetUPnPErrorMessage(errcode) << ".";
+				UpnpGetErrorMessage(errcode) << ".";
 			goto error;
 		}
 	} else {
