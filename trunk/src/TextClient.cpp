@@ -51,11 +51,6 @@
 #include "KnownFile.h"			// Needed for Priority Levels
 #include "DataToText.cpp"		// Needed for PriorityToStr
 
-#define APP_INIT_SIZE_X 640
-#define APP_INIT_SIZE_Y 480
-
-#define theApp (*((CamulecmdApp*)wxTheApp))
-
 //-------------------------------------------------------------------
 
 enum {
