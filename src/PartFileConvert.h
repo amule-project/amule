@@ -24,31 +24,14 @@
 //
 
 #ifndef PARTFILECONVERT_H
-#if !(defined __need_convertinfo || defined __need_convstatus)
+#if !defined __need_convertinfo
 #	define PARTFILECONVERT_H
 #endif
-
-#ifndef __have_convstatus
-#define __have_convstatus
-
-enum ConvStatus {
-	CONV_OK			= 0,
-	CONV_QUEUE,
-	CONV_INPROGRESS,
-	CONV_OUTOFDISKSPACE,
-	CONV_PARTMETNOTFOUND,
-	CONV_IOERROR,
-	CONV_FAILED,
-	CONV_BADFORMAT,
-	CONV_ALREADYEXISTS
-};
-
-#endif /* convstatus */
-#undef __need_convstatus
 
 #if !defined __have_convertinfo && (defined __need_convertinfo || defined PARTFILECONVERT_H)
 #define __have_convertinfo
 
+#include "Constants.h"
 #include "Types.h"
 #include <common/Path.h>
 

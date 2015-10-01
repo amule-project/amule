@@ -32,7 +32,7 @@
 #endif
 
 #include "WebInterface.h"
-#include "KnownFile.h"
+#include <set>			// Needed for std::set
 #include "RLE.h"
 #include "OtherStructs.h"
 #include <ec/cpp/ECID.h>	// Needed for CECID

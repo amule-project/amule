@@ -41,6 +41,9 @@
 #include <common/MD5Sum.h>
 #include <common/Format.h>		// Needed for CFormat
 
+#include <protocol/ed2k/Constants.h>	// Needed for PARTSIZE
+#include "Constants.h"			// Needed for PR_*
+
 //-------------------------------------------------------------------
 
 #include "WebSocket.h"		// Needed for StopSockets()

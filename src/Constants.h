@@ -182,6 +182,18 @@ enum {
 	MS_UNABLETOCONNECT
 };
 
+// partfile converter status codes
+enum ConvStatus {
+	CONV_OK			= 0,
+	CONV_QUEUE,
+	CONV_INPROGRESS,
+	CONV_OUTOFDISKSPACE,
+	CONV_PARTMETNOTFOUND,
+	CONV_IOERROR,
+	CONV_FAILED,
+	CONV_BADFORMAT,
+	CONV_ALREADYEXISTS
+};
 
 
 #endif

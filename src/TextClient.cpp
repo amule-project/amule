@@ -48,8 +48,8 @@
 
 #include <common/Format.h>		// Needed for CFormat
 #include "OtherFunctions.h"
-#include "KnownFile.h"			// Needed for Priority Levels
-#include "DataToText.cpp"		// Needed for PriorityToStr
+#include "Constants.h"			// Needed for Priority Levels
+#include "DataToText.h"			// Needed for PriorityToStr
 
 //-------------------------------------------------------------------
 

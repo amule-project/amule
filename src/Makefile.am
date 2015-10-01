@@ -72,6 +72,7 @@ libmulesocket_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(BOOST_CPPFLAGS) -
 libmuleappcommon_a_SOURCES = \
 	CFile.cpp \
 	ClientCredits.cpp \
+	DataToText.cpp \
 	ED2KLink.cpp \
 	Friend.cpp \
 	GapList.cpp \
@@ -212,7 +213,6 @@ gui_sources = \
 common_sources = \
 	amuleAppCommon.cpp \
 	ClientRef.cpp \
-	DataToText.cpp \
 	ECSpecialMuleTags.cpp \
 	KnownFile.cpp \
 	GetTickCount.cpp \
@@ -307,6 +307,7 @@ endif
 
 amulecmd_SOURCES = \
 	TextClient.cpp \
+	DataToText.cpp \
 	ExternalConnector.cpp \
 	LoggerConsole.cpp \
 	OtherFunctions.cpp \

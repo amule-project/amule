@@ -31,7 +31,7 @@
 #include <protocol/ed2k/Client2Server/UDP.h>
 #include "../../OtherFunctions.h"
 #include "../../Friend.h"			// Needed for FF_NAME
-#include "../../KnownFile.h"		// Needed for PR_*
+#include "../../Constants.h"		// Needed for PR_*
 #include "../../NetworkFunctions.h"	// Needed for Uint32toStringIP
 
 #include <cctype>

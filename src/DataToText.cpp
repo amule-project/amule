@@ -22,12 +22,9 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/intl.h>
 
-#include "KnownFile.h"		// Needed by PriorityToStr
-#include "Constants.h"		// Needed by DownloadStateToStr and GetSoftName
-#define __need_convstatus	// Only the conversion status enum is needed
-#include "PartFileConvert.h"	// Needed by GetConversionState
-
+#include "Constants.h"
 #include <protocol/ed2k/ClientSoftware.h>
 
 wxString PriorityToStr( int priority, bool isAuto )
