@@ -196,7 +196,7 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 	int sessid = 0;
 	char *current_cookie = strstr(pHeader, "Cookie: ");
 	if ( current_cookie == NULL ) {
-		*current_cookie = strstr(pHeader, "cookie: ");
+		current_cookie = strstr(pHeader, "cookie: ");
 	}	
 	if ( current_cookie ) {
 		current_cookie = strstr(current_cookie, "amuleweb_session_id");
