@@ -27,6 +27,10 @@
 #ifndef WEBSERVER_H
 #define WEBSERVER_H
 
+#ifdef HAVE_CONFIG_H
+	#include "config.h"	// Needed for ASIO_SOCKETS
+#endif
+
 #ifdef WITH_LIBPNG
 	#include <png.h>
 #endif
@@ -676,11 +680,13 @@ struct ThreadData {
 	CWebSocket	*pSocket;
 };
 
+#ifndef ASIO_SOCKETS
 enum {
     // Socket handlers
     ID_WEBLISTENSOCKET_EVENT = wxID_HIGHEST+123,  // random safe ID
     ID_WEBCLIENTSOCKET_EVENT,
 };
+#endif
 
 #ifdef ENABLE_UPNP
 class CUPnPControlPoint;
@@ -695,7 +701,6 @@ public:
 private:
 	CWebServerBase * m_webServerBase;
 };
-
 
 class CWebServerBase : public wxEvtHandler {
 	protected:
@@ -728,10 +733,11 @@ class CWebServerBase : public wxEvtHandler {
 		CUPnPControlPoint *m_upnp;
 		std::vector<CUPnPPortMapping> m_upnpMappings;
 #endif
-
+#ifndef ASIO_SOCKETS
 		void OnWebSocketServerEvent(wxSocketEvent& event);
 		void OnWebSocketEvent(wxSocketEvent& event);
 		DECLARE_EVENT_TABLE();
+#endif
 	public:
 		CWebServerBase(CamulewebApp *webApp, const wxString& templateDir);
 		virtual ~CWebServerBase();
