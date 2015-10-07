@@ -295,7 +295,7 @@ bool CMuleCollection::OpenText(const std::string &File)
 	}
 
 	while (getline(infile, line, (char)10 /* LF */)) {
-		int last = line.size()-1;
+		size_t last = line.size()-1;
 		if ((1 < last) && ((char)13 /* CR */ == line.at(last))) {
 			line.erase(last);
 		}
