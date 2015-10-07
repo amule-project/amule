@@ -36,6 +36,7 @@
 #endif
 
 #include "WebInterface.h"
+#include <map>			// Needed for std::map
 #include <set>			// Needed for std::set
 #include "RLE.h"
 #include "OtherStructs.h"
