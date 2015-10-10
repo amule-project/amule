@@ -28,6 +28,13 @@
 #include "../../../amuleIPV4Address.h"
 #include "../../../NetworkFunctions.h"
 
+#ifdef ASIO_SOCKETS
+
+#include <boost/system/error_code.hpp>
+using namespace boost::system;
+
+#endif
+
 //-------------------- CECSocketHandler --------------------
 
 #define	EC_SOCKET_HANDLER	(wxID_HIGHEST + 644)
@@ -111,8 +118,41 @@ bool CECMuleSocket::InternalConnect(uint32_t ip, uint16_t port, bool wait) {
 	return CLibSocket::Connect(addr, wait);
 }
 
-int CECMuleSocket::InternalGetLastError() {
-	switch(LastError()) {
+int CECMuleSocket::InternalGetLastError()
+{
+	switch (LastError()) {
+#ifdef ASIO_SOCKETS
+		case errc::success:
+			return EC_ERROR_NOERROR;
+		case errc::address_family_not_supported:
+		case errc::address_in_use:
+		case errc::address_not_available:
+		case errc::bad_address:
+		case errc::invalid_argument:
+			return EC_ERROR_INVADDR;
+		case errc::already_connected:
+		case errc::connection_already_in_progress:
+		case errc::not_connected:
+			return EC_ERROR_INVOP;
+		case errc::connection_aborted:
+		case errc::connection_reset:
+		case errc::io_error:
+		case errc::network_down:
+		case errc::network_reset:
+		case errc::network_unreachable:
+			return EC_ERROR_IOERR;
+		case errc::connection_refused:
+		case errc::host_unreachable:
+			return EC_ERROR_NOHOST;
+		case errc::not_a_socket:
+			return EC_ERROR_INVSOCK;
+		case errc::not_enough_memory:
+			return EC_ERROR_MEMERR;
+		case errc::operation_would_block:
+			return EC_ERROR_WOULDBLOCK;
+		case errc::timed_out:
+			return EC_ERROR_TIMEDOUT;
+#else
 		case wxSOCKET_NOERROR:
 			return EC_ERROR_NOERROR;
 		case wxSOCKET_INVOP:
@@ -133,6 +173,7 @@ int CECMuleSocket::InternalGetLastError() {
 			return EC_ERROR_TIMEDOUT;
 		case wxSOCKET_MEMERR:
 			return EC_ERROR_MEMERR;
+#endif
 		default:
 			return EC_ERROR_UNKNOWN;
 	}

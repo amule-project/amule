@@ -564,12 +564,8 @@ private:
 
 	bool SetError(const error_code & err)
 	{
-		if (err) {
-			SetError();
-		} else {
-			m_ErrorCode = 0;
-		}
-		return m_ErrorCode != 0;
+		m_ErrorCode = err.value();
+		return m_ErrorCode != errc::success;
 	}
 
 	//

@@ -48,6 +48,10 @@
 #include <common/Format.h>
 #include "IPFilter.h"
 #include "GuiEvents.h"		// Needed for Notify_*
+#ifdef ASIO_SOCKETS
+#	include <boost/system/error_code.hpp>
+using namespace boost::system;
+#endif
 
 
 
@@ -159,7 +163,11 @@ CServerSocket::~CServerSocket()
 void CServerSocket::OnConnect(int nErrorCode)
 {
 	switch (nErrorCode) {
+#ifdef ASIO_SOCKETS
+		case errc::success:
+#else
 		case wxSOCKET_NOERROR:
+#endif
 			if (cur_server->HasDynIP()) {
 				uint32 server_ip = GetPeerInt();
 				cur_server->SetID(server_ip);
@@ -178,18 +186,25 @@ void CServerSocket::OnConnect(int nErrorCode)
 			SetConnectionState(CS_WAITFORLOGIN);
 			break;
 
+#ifdef ASIO_SOCKETS
+		case errc::address_in_use:
+		case errc::address_not_available:
+		case errc::bad_address:
+		case errc::connection_refused:
+		case errc::host_unreachable:
+		case errc::invalid_argument:
+		case errc::timed_out:
+#else
 		case wxSOCKET_INVADDR:
 		case wxSOCKET_NOHOST:
 		case wxSOCKET_INVPORT:
 		case wxSOCKET_TIMEDOUT:
+#endif
 			m_bIsDeleting = true;
 			SetConnectionState(CS_SERVERDEAD);
 			serverconnect->DestroySocket(this);
 			return;
 
-		case wxSOCKET_IOERR:
-		case wxSOCKET_MEMERR:
-		case wxSOCKET_INVOP:
 		default:
 			m_bIsDeleting = true;
 			SetConnectionState(CS_FATALERROR);
@@ -721,7 +736,11 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 		if (theApp->ipfilter->IsFiltered(ip, true)) {
 			AddLogLineC(CFormat( _("Server IP %s (%s) is filtered.  Not connecting.") )
 				% Uint32toStringIP(ip) % cur_server->GetAddress() );
+#ifdef ASIO_SOCKETS
+			OnConnect(errc::invalid_argument);
+#else
 			OnConnect(wxSOCKET_INVADDR);
+#endif
 		} else {
 			amuleIPV4Address addr;
 			addr.Hostname(ip);
@@ -753,7 +772,11 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 	} else {
 		AddLogLineC(CFormat( _("Could not solve dns for server %s: Unable to connect!") )
 			% cur_server->GetAddress() );
+#ifdef ASIO_SOCKETS
+		OnConnect(errc::host_unreachable);
+#else
 		OnConnect(wxSOCKET_NOHOST);
+#endif
 	}
 
 }
