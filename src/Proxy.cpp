@@ -257,12 +257,6 @@ void CProxyStateMachine::AddDummyEvent()
 #endif
 }
 
-/*
- * Notice! These includes are here as long as it is impossible to retrieve
- * the event handler from the socket. They should be removed. For now,
- * please leave it here.
- */
-
 void CProxyStateMachine::ReactivateSocket()
 {
 	/*    If proxy is beeing used, then the TCP socket handlers
@@ -456,8 +450,7 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
  * Code this such that the next state is only entered when it is able to
  * perform the operation (read or write). State processing will assume
  * that it can read or write upon entry of the state. This is done using
- * CanSend() and CanReceive(). On daemon, these functions always return
- * true, because sockets are blocking.
+ * CanSend() and CanReceive().
  */
 t_sm_state CSocks5StateMachine::next_state(t_sm_event event)
 {
