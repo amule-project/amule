@@ -70,8 +70,10 @@ void CMuleUDPSocket::CreateSocket()
 
 	m_socket = new CEncryptedDatagramSocket(m_addr, MULE_SOCKET_NOWAIT, m_proxy);
 	m_socket->SetClientData(this);
+#ifndef ASIO_SOCKETS
 	m_socket->SetEventHandler(*theApp, m_id);
 	m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
+#endif
 	m_socket->Notify(true);
 
 	if (!m_socket->IsOk()) {
@@ -87,8 +89,10 @@ void CMuleUDPSocket::DestroySocket()
 {
 	if (m_socket) {
 		AddDebugLogLineN(logMuleUDP, wxT("Shutting down ") + m_name);
+#ifndef ASIO_SOCKETS
 		m_socket->SetNotify(0);
 		m_socket->Notify(false);
+#endif
 		m_socket->Close();
 		m_socket->Destroy();
 		m_socket = NULL;

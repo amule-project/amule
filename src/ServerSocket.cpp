@@ -53,6 +53,7 @@
 #endif
 
 
+#ifndef ASIO_SOCKETS
 
 //------------------------------------------------------------------------------
 // CServerSocketHandler
@@ -112,6 +113,8 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
 //
 static CServerSocketHandler g_serverSocketHandler;
 
+#endif /* !ASIO_SOCKETS */
+
 
 //------------------------------------------------------------------------------
 // CServerSocket
@@ -127,6 +130,7 @@ CEMSocket(ProxyData)
 	info.Clear();
 	m_bIsDeleting = false;
 
+#ifndef ASIO_SOCKETS
 	SetEventHandler(g_serverSocketHandler, ID_SERVERSOCKET_EVENT);
 
 	SetNotify(
@@ -134,6 +138,7 @@ CEMSocket(ProxyData)
 		wxSOCKET_INPUT_FLAG |
 		wxSOCKET_OUTPUT_FLAG |
 		wxSOCKET_LOST_FLAG);
+#endif
 	Notify(true);
 
 	m_dwLastTransmission = 0;
@@ -143,9 +148,11 @@ CEMSocket(ProxyData)
 
 CServerSocket::~CServerSocket()
 {
+#ifndef ASIO_SOCKETS
 	// remove event handler...
 	SetNotify(0);
 	Notify(FALSE);
+#endif
 
 	if (cur_server) {
 		delete cur_server;

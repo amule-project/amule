@@ -67,6 +67,7 @@
 #include "MuleUDPSocket.h"
 #include "OtherFunctions.h"	// DeleteContents, MuleBoostVersion
 #include "ScopedPtr.h"
+#include <common/Macros.h>
 
 using namespace boost::asio;
 using namespace boost::system;	// for error_code
@@ -454,7 +455,7 @@ private:
 		}
 	}
 
-	void HandleSend(const error_code& err, size_t bytes_transferred)
+	void HandleSend(const error_code& err, size_t DEBUG_ONLY(bytes_transferred) )
 	{
 		delete[] m_sendBuffer;
 		m_sendBuffer = NULL;
@@ -541,7 +542,7 @@ private:
 		m_strand.dispatch(boost::bind(& CAsioSocketImpl::DispatchBackgroundRead, this));
 	}
 
-	void PostReadEvent(int from)
+	void PostReadEvent(int DEBUG_ONLY(from) )
 	{
 		if (!m_eventPending) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("Post read event %d %s")) % from % m_IP);
@@ -912,7 +913,7 @@ CLibSocket * CLibSocketServer::Accept(bool /* wait */)
 
 
 // Accept an incoming connection using the specified socket object.
-bool CLibSocketServer::AcceptWith(CLibSocket & socket, bool wait)
+bool CLibSocketServer::AcceptWith(CLibSocket & socket, bool WXUNUSED_UNLESS_DEBUG(wait) )
 {
 	wxASSERT(!wait);
 	return m_aServer->AcceptWith(socket);

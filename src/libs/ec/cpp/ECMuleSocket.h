@@ -31,8 +31,7 @@
 
 /*! \class CECMuleSocket
  *
- * \brief Socket handler for External Communications (EC), wx implementation
- *
+ * \brief Socket handler for External Communications (EC)
  */
 
 class CECMuleSocket : public CECSocket,  public CLibSocket {

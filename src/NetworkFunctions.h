@@ -29,7 +29,6 @@
 
 #include "Types.h"		// Needed for uint16 and uint32
 #include <common/Format.h>	// Needed for CFormat
-#include <wx/socket.h>
 
 // Network ip/host handling functions
 // These functions take IPs in anti-host order

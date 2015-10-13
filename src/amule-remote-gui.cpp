@@ -216,9 +216,11 @@ void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 	delete poll_timer;
 	poll_timer = NULL;
 
+#ifdef ASIO_SOCKETS
 	m_AsioService->Stop();
 	delete m_AsioService;
 	m_AsioService = NULL;
+#endif
 
 	// Destroy the EC socket
 	m_connect->Destroy();
@@ -260,7 +262,9 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	m_connect = new CRemoteConnect(this);
 
+#ifdef ASIO_SOCKETS
 	m_AsioService = new CAsioService;
+#endif
 
 	glob_prefs = new CPreferencesRem(m_connect);
 	long enableZLIB;

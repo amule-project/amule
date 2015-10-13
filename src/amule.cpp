@@ -42,6 +42,7 @@
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>
+#include <wx/socket.h>
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
 
@@ -321,8 +322,10 @@ int CamuleApp::OnExit()
 	delete uploadBandwidthThrottler;
 	uploadBandwidthThrottler = NULL;
 
+#ifdef ASIO_SOCKETS
 	delete m_AsioService;
 	m_AsioService = NULL;
+#endif
 
 	wxSocketBase::Shutdown();	// needed because we also called Initialize() manually
 
@@ -550,9 +553,10 @@ bool CamuleApp::OnInit()
 	// and the UBT constructor creates a thread.
 	uploadBandwidthThrottler = new UploadBandwidthThrottler();
 
+#ifdef ASIO_SOCKETS
 	m_AsioService = new CAsioService;
+#endif
 
-	
 	// Start performing background tasks
 	// This will start loading the IP filter. It will start right away.
 	// Log is confusing, because log entries from background will only be printed
@@ -1818,6 +1822,7 @@ void CamuleApp::ShowUserCount() {
 }
 
 
+#ifndef ASIO_SOCKETS
 void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 {
 	{ wxCHECK_RET(listensocket, wxT("Connection-event for NULL'd listen-socket")); }
@@ -1837,6 +1842,7 @@ void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 		socket->Destroy();
 	}
 }
+#endif
 
 
 void CamuleApp::ShowConnectionState(bool forceUpdate)
@@ -1919,6 +1925,7 @@ void CamuleApp::ShowConnectionState(bool forceUpdate)
 }
 
 
+#ifndef ASIO_SOCKETS
 void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 {
 	CMuleUDPSocket* socket = reinterpret_cast<CMuleUDPSocket*>(event.GetClientData());
@@ -1952,6 +1959,7 @@ void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 			break;
 	}
 }
+#endif
 
 
 void CamuleApp::OnUnhandledException()

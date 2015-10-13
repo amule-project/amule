@@ -295,6 +295,7 @@ void CECServerSocket::WriteDoneAndQueueEmpty()
 
 //-------------------- ExternalConn --------------------
 
+#ifndef ASIO_SOCKETS
 enum
 {	// id for sockets
 	SERVER_ID = 1000
@@ -304,6 +305,7 @@ enum
 BEGIN_EVENT_TABLE(ExternalConn, wxEvtHandler)
 	EVT_SOCKET(SERVER_ID, ExternalConn::OnServerEvent)
 END_EVENT_TABLE()
+#endif
 
 
 ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
@@ -321,8 +323,10 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 
 		// Create the socket
 		m_ECServer = new CExternalConnListener(addr, MULE_SOCKET_REUSEADDR, this);
+#ifndef ASIO_SOCKETS
 		m_ECServer->SetEventHandler(*this, SERVER_ID);
 		m_ECServer->SetNotify(wxSOCKET_CONNECTION_FLAG);
+#endif
 		m_ECServer->Notify(true);
 
 		int port = addr.Service();
@@ -391,10 +395,12 @@ void ExternalConn::ResetAllLogs()
 }
 
 
+#ifndef ASIO_SOCKETS
 void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event))
 {
 	m_ECServer->OnAccept();
 }
+#endif
 
 
 void CExternalConnListener::OnAccept()

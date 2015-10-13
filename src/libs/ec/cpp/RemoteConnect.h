@@ -30,6 +30,8 @@
 #include "ECMuleSocket.h"
 #include "ECPacket.h"		// Needed for CECPacket
 
+#include <wx/event.h>
+
 class CECPacketHandlerBase {
 	public:
 		virtual ~CECPacketHandlerBase() { }

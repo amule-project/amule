@@ -30,6 +30,7 @@
 
 #include "LibSocket.h"
 #include "Logger.h"
+#include "amuleIPV4Address.h"
 
 
 class CamuleIPV4Endpoint : public wxIPV4address {

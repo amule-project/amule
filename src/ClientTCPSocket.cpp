@@ -56,6 +56,8 @@
 
 //#define __PACKET_RECV_DUMP__
 
+#ifndef ASIO_SOCKETS
+
 //------------------------------------------------------------------------------
 // CClientTCPSocketHandler
 //------------------------------------------------------------------------------
@@ -119,6 +121,8 @@ void CClientTCPSocketHandler::ClientTCPSocketHandler(wxSocketEvent& event)
 //
 static CClientTCPSocketHandler g_clientReqSocketHandler;
 
+#endif /* !ASIO_SOCKETS */
+
 
 //------------------------------------------------------------------------------
 // CClientTCPSocket
@@ -136,12 +140,14 @@ CClientTCPSocket::CClientTCPSocket(CUpDownClient* in_client, const CProxyData *P
 
 	ResetTimeOutTimer();
 
+#ifndef ASIO_SOCKETS
 	SetEventHandler(g_clientReqSocketHandler, ID_CLIENTTCPSOCKET_EVENT);
 	SetNotify(
 		wxSOCKET_CONNECTION_FLAG |
 		wxSOCKET_INPUT_FLAG |
 		wxSOCKET_OUTPUT_FLAG |
 		wxSOCKET_LOST_FLAG);
+#endif
 	Notify(true);
 
 	theApp->listensocket->AddSocket(this);
@@ -150,9 +156,11 @@ CClientTCPSocket::CClientTCPSocket(CUpDownClient* in_client, const CProxyData *P
 
 CClientTCPSocket::~CClientTCPSocket()
 {
+#ifndef ASIO_SOCKETS
 	// remove event handler
 	SetNotify(0);
 	Notify(false);
+#endif
 
 	if (m_client) {
 		m_client->SetSocket( NULL );

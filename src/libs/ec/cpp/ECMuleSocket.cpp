@@ -30,7 +30,7 @@
 
 #ifdef ASIO_SOCKETS
 #include <boost/system/error_code.hpp>
-#endif
+#else
 
 //-------------------- CECSocketHandler --------------------
 
@@ -78,6 +78,8 @@ void CECMuleSocketHandler::SocketHandler(wxSocketEvent& event)
 
 static CECMuleSocketHandler	g_ECSocketHandler;
 
+#endif /* ASIO_SOCKETS */
+
 //
 // CECMuleSocket API - User interface functions
 //
@@ -86,6 +88,9 @@ CECMuleSocket::CECMuleSocket(bool use_events)
 :
 CECSocket(use_events)
 {
+#ifdef ASIO_SOCKETS
+	Notify(use_events);
+#else
 	if ( use_events ) {
 		SetEventHandler(g_ECSocketHandler, EC_SOCKET_HANDLER);
 		SetNotify(wxSOCKET_CONNECTION_FLAG | wxSOCKET_INPUT_FLAG |
@@ -96,6 +101,7 @@ CECSocket(use_events)
 		SetFlags(wxSOCKET_WAITALL | wxSOCKET_BLOCK);
 		Notify(false);
 	}
+#endif
 }
 
 CECMuleSocket::~CECMuleSocket()

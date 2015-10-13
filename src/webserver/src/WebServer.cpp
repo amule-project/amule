@@ -244,15 +244,19 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 	m_upnpEnabled = webInterface->m_UPnPWebServerEnabled;
 	m_upnpTCPPort = webInterface->m_UPnPTCPPort;
 
+#ifdef ASIO_SOCKETS
 	m_AsioService = new CAsioService;
+#endif
 }
 
 
 // Probably always terminated by Ctrl-C or kill, but make a clean shutdown of the service anyway 
 CWebServerBase::~CWebServerBase()
 {
+#ifdef ASIO_SOCKETS
 	m_AsioService->Stop();
 	delete m_AsioService;
+#endif
 }
 
 

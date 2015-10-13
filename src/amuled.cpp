@@ -78,6 +78,8 @@
 
 
 BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
+
+#ifndef ASIO_SOCKETS
 	//
 	// Socket handlers
 	//
@@ -89,6 +91,7 @@ BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 	EVT_SOCKET(ID_SERVERUDPSOCKET_EVENT, CamuleDaemonApp::UDPSocketHandler)
 	// UDP Socket (clients)
 	EVT_SOCKET(ID_CLIENTUDPSOCKET_EVENT, CamuleDaemonApp::UDPSocketHandler)
+#endif
 
 	// Socket timer (TCP)
 	EVT_MULE_TIMER(ID_SERVER_RETRY_TIMER_EVENT, CamuleDaemonApp::OnTCPTimer)

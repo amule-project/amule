@@ -36,8 +36,9 @@
 #include "DownloadQueue.h"
 #include "PartFile.h"			// for SourcenameItemMap
 
-class wxSocketServer;
+#ifndef ASIO_SOCKETS
 class wxSocketEvent;
+#endif
 
 template <class T, ec_tagname_t OP>
 class CTagSet : public std::set<T> {
@@ -110,10 +111,12 @@ public:
 	void KillAllSockets();
 	void ResetAllLogs();
 
+#ifndef ASIO_SOCKETS
 private:
 	// event handlers (these functions should _not_ be virtual)
 	void OnServerEvent(wxSocketEvent& event);
 	DECLARE_EVENT_TABLE()
+#endif
 };
 
 class ECUpdateMsgSource {

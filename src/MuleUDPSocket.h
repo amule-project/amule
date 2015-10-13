@@ -30,6 +30,8 @@
 #include "ThrottledSocket.h"	// Needed for ThrottledControlSocket
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 
+#include <wx/thread.h>		// Needed for wxMutex
+
 class CEncryptedDatagramSocket;
 class CProxyData;
 class CPacket;

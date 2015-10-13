@@ -84,6 +84,8 @@ void CProxyData::Clear()
 
 #include <typeinfo> // Do_not_auto_remove (NetBSD, older gccs)
 
+#ifndef ASIO_SOCKETS
+
 //------------------------------------------------------------------------------
 // ProxyEventHandler
 //------------------------------------------------------------------------------
@@ -112,6 +114,8 @@ void CProxyEventHandler::ProxySocketHandler(wxSocketEvent& event)
 	}
 }
 
+#else
+
 //
 // In Asio mode the event handler is:
 //
@@ -120,6 +124,8 @@ void CProxySocket::OnProxyEvent(int evt)
 	m_proxyStateMachine->Schedule(evt);
 	m_proxyStateMachine->Clock();
 }
+
+#endif
 
 //------------------------------------------------------------------------------
 // CProxyStateMachine
@@ -1176,11 +1182,13 @@ CProxySocket::CProxySocket(
 :
 CLibSocket(flags),
 m_proxyStateMachine(NULL),
-m_udpSocket(udpSocket),
-m_socketEventHandler(NULL),
-m_socketEventHandlerId(0),
-m_savedSocketEventHandler(NULL),
-m_savedSocketEventHandlerId(0)
+m_udpSocket(udpSocket)
+#ifndef ASIO_SOCKETS
+,m_socketEventHandler(NULL)
+,m_socketEventHandlerId(0)
+,m_savedSocketEventHandler(NULL)
+,m_savedSocketEventHandlerId(0)
+#endif
 {
 	SetProxyData(proxyData);
 	if (m_useProxy) {

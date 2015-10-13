@@ -39,6 +39,10 @@
 //	#include <wx/unix/execute.h>
 #endif // __WINDOWS__ 
 
+#ifdef HAVE_CONFIG_H
+#	include "config.h"		// Needed for ASIO_SOCKETS
+#endif
+
 
 class CAbstractFile;
 class CKnownFile;
@@ -63,13 +67,16 @@ class CFriendList;
 class CClientUDPSocket;
 class CIPFilter;
 class UploadBandwidthThrottler;
+#ifdef ASIO_SOCKETS
 class CAsioService;
+#else
+class wxSocketEvent;
+#endif
 #ifdef ENABLE_UPNP
 class CUPnPControlPoint;
 class CUPnPPortMapping;
 #endif
 class CStatistics;
-class wxSocketEvent;
 class wxCommandEvent;
 class wxCloseEvent;
 class wxFFileOutputStream;
@@ -179,10 +186,11 @@ public:
 	// derived classes may override those
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
+#ifndef ASIO_SOCKETS
 	// Socket handlers
 	void ListenSocketHandler(wxSocketEvent& event);
-	void ServerSocketHandler(wxSocketEvent& event);
 	void UDPSocketHandler(wxSocketEvent& event);
+#endif
 
 	virtual int ShowAlert(wxString msg, wxString title, int flags) = 0;
 
@@ -258,7 +266,9 @@ public:
 	CStatistics*		m_statistics;
 	CIPFilter*		ipfilter;
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
+#ifdef ASIO_SOCKETS
 	CAsioService*		m_AsioService;
+#endif
 #ifdef ENABLE_UPNP
 	CUPnPControlPoint*	m_upnp;
 	std::vector<CUPnPPortMapping> m_upnpMappings;

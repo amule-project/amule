@@ -115,8 +115,10 @@ CEMSocket::~CEMSocket()
 
     ClearQueues();
 
+#ifndef ASIO_SOCKETS
 	SetNotify(0);	// this is already done in Destroy()
 	Notify(FALSE);
+#endif
 }
 
 

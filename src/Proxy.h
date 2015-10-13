@@ -163,6 +163,7 @@ public:
 	wxString	m_password;
 };
 
+#ifndef ASIO_SOCKETS
 //------------------------------------------------------------------------------
 // CProxyEventHandler
 //------------------------------------------------------------------------------
@@ -183,6 +184,7 @@ private:
 	void ProxySocketHandler(wxSocketEvent &event);
 	DECLARE_EVENT_TABLE()
 };
+#endif /* !ASIO_SOCKETS */
 
 //------------------------------------------------------------------------------
 // CProxyStateMachine
@@ -464,9 +466,10 @@ public:
 		m_socketEventHandlerId = m_savedSocketEventHandlerId;
 		SetEventHandler(*m_socketEventHandler, m_socketEventHandlerId);
 	}
-#endif
+#else
 	// Asio mode
 	virtual void	OnProxyEvent(int evt);
+#endif
 
 	/* Interface */
 	void		SetProxyData(const CProxyData *proxyData);
@@ -485,10 +488,12 @@ private:
 	amuleIPV4Address	m_proxyAddress;
 	CProxyStateMachine	*m_proxyStateMachine;
 	CDatagramSocketProxy	*m_udpSocket;
+#ifndef ASIO_SOCKETS
 	wxEvtHandler		*m_socketEventHandler;
 	int			m_socketEventHandlerId;
 	wxEvtHandler		*m_savedSocketEventHandler;
 	int			m_savedSocketEventHandlerId;
+#endif
 };
 
 //------------------------------------------------------------------------------

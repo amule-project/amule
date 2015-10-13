@@ -31,12 +31,10 @@
 #	include "config.h"		// Needed for ASIO_SOCKETS
 #endif
 
-#ifdef ASIO_SOCKETS
-
-#include <wx/event.h>
-#include <wx/thread.h>
 #include "Types.h"
 class amuleIPV4Address;
+
+#ifdef ASIO_SOCKETS
 
 // Socket flags (unused in ASIO implementation, just provide the names)
 enum {
@@ -88,10 +86,6 @@ public:
 	uint32	Write(const void * buffer, uint32 nbytes);
 	void	Close();
 	void	Destroy();
-
-	// Not needed here, we always notify the same way
-	void	SetNotify(int) {}
-	void	SetEventHandler(wxEvtHandler&, int) {}
 
 	// Get last error, 0 == no error
 	int		LastError() const;
@@ -164,8 +158,6 @@ public:
 
 	// Not needed here
 	void	Discard() {}
-	void	SetEventHandler(wxEvtHandler& , int ) {}
-	void	SetNotify(int) {}
 	bool	Notify(bool) { return true; }
 
 	// new Stuff
@@ -197,8 +189,6 @@ public:
 	void	SetClientData(class CMuleUDPSocket *);
 
 	// Not needed here
-	void	SetEventHandler(wxEvtHandler&, int) {}
-	void	SetNotify(int) {}
 	bool	Notify(bool) { return true; }
 
 	// Check if socket is currently blocking for write
@@ -234,7 +224,7 @@ private:
 // use wx sockets
 
 #include <wx/socket.h>
-#include "amuleIPV4Address.h"
+#include "NetworkFunctions.h"		// Needed for StringIPtoUint32
 
 typedef wxSocketFlags muleSocketFlags;
 
@@ -390,13 +380,6 @@ private:
 	bool Error() const;	// Only use LastError
 };
 
-
-class CAsioService
-{
-public:
-	void Wait() {}
-	void Stop() {}
-};
 
 #endif /* ASIO_SOCKETS */
 

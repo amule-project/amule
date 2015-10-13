@@ -707,8 +707,6 @@ class CWebServerBase : public wxEvtHandler {
 	protected:
 		CWebLibSocketServer *m_webserver_socket;
 
-		class CAsioService *m_AsioService;
-
 		ServersInfo m_ServersInfo;
 		SharedFileInfo m_SharedFileInfo;
 		DownloadFileInfo m_DownloadFileInfo;
@@ -734,7 +732,9 @@ class CWebServerBase : public wxEvtHandler {
 		CUPnPControlPoint *m_upnp;
 		std::vector<CUPnPPortMapping> m_upnpMappings;
 #endif
-#ifndef ASIO_SOCKETS
+#ifdef ASIO_SOCKETS
+		CAsioService *m_AsioService;
+#else
 		void OnWebSocketServerEvent(wxSocketEvent& event);
 		void OnWebSocketEvent(wxSocketEvent& event);
 		DECLARE_EVENT_TABLE();

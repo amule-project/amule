@@ -58,8 +58,10 @@ CSocketServerProxy(addr, MULE_SOCKET_NOWAIT|MULE_SOCKET_REUSEADDR, ProxyData)
 	memset(m_ConnectionStates, 0, 3 * sizeof(m_ConnectionStates[0]));
 	// Set the listen socket event handler -- The handler is written in amule.cpp
 	if (IsOk()) {
+#ifndef ASIO_SOCKETS
 		SetEventHandler(*theApp, ID_LISTENSOCKET_EVENT);
 		SetNotify(wxSOCKET_CONNECTION_FLAG);
+#endif
 		Notify(true);
 
 		AddLogLineNS(_("ListenSocket: Ok."));

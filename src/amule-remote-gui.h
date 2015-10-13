@@ -655,7 +655,9 @@ public:
 
 	CPreferencesRem *glob_prefs;
 
+#ifdef ASIO_SOCKETS
 	CAsioService*	m_AsioService;
+#endif
 
 	//
 	// Provide access to core data thru EC
