@@ -38,6 +38,30 @@
 #include "Types.h"
 class amuleIPV4Address;
 
+// Socket flags (unused in ASIO implementation, just provide the names)
+enum {
+	MULE_SOCKET_NONE,
+	MULE_SOCKET_NOWAIT_READ,
+	MULE_SOCKET_NOWAIT_WRITE,
+	MULE_SOCKET_NOWAIT,
+	MULE_SOCKET_WAITALL_READ,
+	MULE_SOCKET_WAITALL_WRITE,
+	MULE_SOCKET_WAITALL,
+	MULE_SOCKET_BLOCK,
+	MULE_SOCKET_REUSEADDR,
+	MULE_SOCKET_BROADCAST,
+	MULE_SOCKET_NOBIND
+};
+typedef int muleSocketFlags;
+
+// Socket events (used for proxy notification)
+enum {
+	MULE_SOCKET_CONNECTION,
+	MULE_SOCKET_INPUT,
+	MULE_SOCKET_OUTPUT,
+	MULE_SOCKET_LOST
+};
+
 //
 // Abstraction class for library TCP socket
 // Can be a wxSocket or an ASIO socket
@@ -211,6 +235,27 @@ private:
 
 #include <wx/socket.h>
 #include "amuleIPV4Address.h"
+
+typedef wxSocketFlags muleSocketFlags;
+
+// Socket flags
+#define MULE_SOCKET_NONE		wxSOCKET_NONE
+#define MULE_SOCKET_NOWAIT_READ		wxSOCKET_NOWAIT_READ
+#define MULE_SOCKET_NOWAIT_WRITE	wxSOCKET_NOWAIT_WRITE
+#define MULE_SOCKET_NOWAIT		wxSOCKET_NOWAIT
+#define MULE_SOCKET_WAITALL_READ	wxSOCKET_WAITALL_READ
+#define MULE_SOCKET_WAITALL_WRITE	wxSOCKET_WAITALL_WRITE
+#define MULE_SOCKET_WAITALL		wxSOCKET_WAITALL
+#define MULE_SOCKET_BLOCK		wxSOCKET_BLOCK
+#define MULE_SOCKET_REUSEADDR		wxSOCKET_REUSEADDR
+#define MULE_SOCKET_BROADCAST		wxSOCKET_BROADCAST
+#define MULE_SOCKET_NOBIND		wxSOCKET_NOBIND
+
+// Socket events
+#define MULE_SOCKET_CONNECTION		wxSOCKET_CONNECTION
+#define MULE_SOCKET_INPUT		wxSOCKET_INPUT
+#define MULE_SOCKET_OUTPUT		wxSOCKET_OUTPUT
+#define MULE_SOCKET_LOST		wxSOCKET_LOST
 
 class CLibSocket : public wxSocketClient
 {

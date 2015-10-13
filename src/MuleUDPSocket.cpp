@@ -68,7 +68,7 @@ void CMuleUDPSocket::CreateSocket()
 {
 	wxCHECK_RET(!m_socket, wxT("Socket already opened."));
 
-	m_socket = new CEncryptedDatagramSocket(m_addr, wxSOCKET_NOWAIT, m_proxy);
+	m_socket = new CEncryptedDatagramSocket(m_addr, MULE_SOCKET_NOWAIT, m_proxy);
 	m_socket->SetClientData(this);
 	m_socket->SetEventHandler(*theApp, m_id);
 	m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);

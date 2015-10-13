@@ -42,7 +42,7 @@ const uint32 MAX_PACKET_SIZE = 2000000;
 
 // cppcheck-suppress uninitMemberVar CEMSocket::pendingHeader
 CEMSocket::CEMSocket(const CProxyData *ProxyData)
-	: CEncryptedStreamSocket(wxSOCKET_NOWAIT, ProxyData)
+	: CEncryptedStreamSocket(MULE_SOCKET_NOWAIT, ProxyData)
 {
 	// If an interface has been specified,
 	// then we need to bind to it.

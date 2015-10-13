@@ -87,7 +87,7 @@ enum EEncryptionMethods {
 class CEncryptedStreamSocket : public CSocketClientProxy
 {
 public:
-	CEncryptedStreamSocket(wxSocketFlags flags = wxSOCKET_NONE, const CProxyData *proxyData = NULL);
+	CEncryptedStreamSocket(muleSocketFlags flags = MULE_SOCKET_NONE, const CProxyData *proxyData = NULL);
 	virtual ~CEncryptedStreamSocket();
 
 	void SetConnectionEncryption(bool bEnabled, const uint8_t *pTargetClientHash, bool bServerConnection);

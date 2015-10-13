@@ -192,7 +192,7 @@ bool CProxyStateMachine::Start(const amuleIPV4Address &peerAddress, CLibSocket *
 	return true;
 }
 
-static const int wxSOCKET_DUMMY_VALUE = wxSOCKET_INPUT + wxSOCKET_OUTPUT + wxSOCKET_CONNECTION + wxSOCKET_LOST;
+static const int MULE_SOCKET_DUMMY_VALUE = MULE_SOCKET_INPUT + MULE_SOCKET_OUTPUT + MULE_SOCKET_CONNECTION + MULE_SOCKET_LOST;
 
 t_sm_state CProxyStateMachine::HandleEvent(t_sm_event event)
 {
@@ -200,28 +200,28 @@ t_sm_state CProxyStateMachine::HandleEvent(t_sm_event event)
 	t_sm_state ret = GetState();
 	switch(event)
 	{
-	case wxSOCKET_CONNECTION:
+	case MULE_SOCKET_CONNECTION:
 		AddDebugLogLineN(logProxy, wxT("Connection event"));
 		m_isConnected = true;
 		break;
 
-	case wxSOCKET_INPUT:
+	case MULE_SOCKET_INPUT:
 		AddDebugLogLineN(logProxy, wxT("Input event"));
 		m_canReceive = true;
 		break;
 
-	case wxSOCKET_OUTPUT:
+	case MULE_SOCKET_OUTPUT:
 		AddDebugLogLineN(logProxy, wxT("Output event"));
 		m_canSend = true;
 		break;
 
-	case wxSOCKET_LOST:
+	case MULE_SOCKET_LOST:
 		AddDebugLogLineN(logProxy, wxT("Lost connection event"));
 		m_isLost = true;
 		m_ok = false;
 		break;
 
-	case wxSOCKET_DUMMY_VALUE:
+	case MULE_SOCKET_DUMMY_VALUE:
 		AddDebugLogLineN(logProxy, wxT("Dummy event"));
 		break;
 
@@ -231,7 +231,7 @@ t_sm_state CProxyStateMachine::HandleEvent(t_sm_event event)
 	}
 
 	// Aborting conditions:
-	// - wxSOCKET_LOST event
+	// - MULE_SOCKET_LOST event
 	// - More than 10 times on the same state
 	if (	m_isLost ||
 		GetClocksInCurrentState() > 10) {
@@ -246,12 +246,12 @@ void CProxyStateMachine::AddDummyEvent()
 #ifdef ASIO_SOCKETS
 	CProxySocket *s = dynamic_cast<CProxySocket *>(m_proxyClientSocket);
 	if (s) {	// should always be
-		CoreNotify_ProxySocketEvent(s, wxSOCKET_DUMMY_VALUE);
+		CoreNotify_ProxySocketEvent(s, MULE_SOCKET_DUMMY_VALUE);
 	}
 #else
 	wxSocketEvent e(ID_PROXY_SOCKET_EVENT);
 	// Make sure this is an unknown event :)
-	e.m_event = (wxSocketNotify)(wxSOCKET_DUMMY_VALUE);
+	e.m_event = (wxSocketNotify)(MULE_SOCKET_DUMMY_VALUE);
 	e.SetEventObject(m_proxyClientSocket);
 	g_proxyEventHandler.AddPendingEvent(e);
 #endif
@@ -1169,7 +1169,7 @@ void CHttpStateMachine::process_process_command_reply(bool entry)
 //------------------------------------------------------------------------------
 
 CProxySocket::CProxySocket(
-	wxSocketFlags flags,
+	muleSocketFlags flags,
 	const CProxyData *proxyData,
 	CProxyCommand proxyCommand,
 	CDatagramSocketProxy *udpSocket)
@@ -1246,7 +1246,7 @@ bool CProxySocket::Start(const amuleIPV4Address &peerAddress)
 	Notify(true);
 #endif
 	Connect(m_proxyAddress, false);
-	SetFlags(wxSOCKET_NONE);
+	SetFlags(MULE_SOCKET_NONE);
 	return m_proxyStateMachine->Start(peerAddress, this);
 }
 
@@ -1284,7 +1284,7 @@ bool CProxySocket::ProxyIsCapableOf(CProxyCommand proxyCommand) const
 //------------------------------------------------------------------------------
 
 CSocketClientProxy::CSocketClientProxy(
-	wxSocketFlags flags,
+	muleSocketFlags flags,
 	const CProxyData *proxyData)
 :
 CProxySocket(flags, proxyData, PROXY_CMD_CONNECT)
@@ -1323,7 +1323,7 @@ uint32 CSocketClientProxy::Write(const void *buffer, wxUint32 nbytes)
 
 CSocketServerProxy::CSocketServerProxy(
 	amuleIPV4Address &address,
-	wxSocketFlags flags,
+	muleSocketFlags flags,
 	const CProxyData *)
 :
 CLibSocketServer(address, flags)
@@ -1336,10 +1336,10 @@ CLibSocketServer(address, flags)
 //------------------------------------------------------------------------------
 
 CDatagramSocketProxy::CDatagramSocketProxy(
-	amuleIPV4Address &address, wxSocketFlags flags, const CProxyData *proxyData)
+	amuleIPV4Address &address, muleSocketFlags flags, const CProxyData *proxyData)
 :
 CLibUDPSocket(address, flags),
-m_proxyTCPSocket(wxSOCKET_NOWAIT, proxyData, PROXY_CMD_UDP_ASSOCIATE, this)
+m_proxyTCPSocket(MULE_SOCKET_NOWAIT, proxyData, PROXY_CMD_UDP_ASSOCIATE, this)
 {
 	m_udpSocketOk = false;
 	if (	m_proxyTCPSocket.GetUseProxy() &&

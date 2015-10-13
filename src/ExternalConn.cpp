@@ -320,7 +320,7 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		}
 
 		// Create the socket
-		m_ECServer = new CExternalConnListener(addr, wxSOCKET_REUSEADDR, this);
+		m_ECServer = new CExternalConnListener(addr, MULE_SOCKET_REUSEADDR, this);
 		m_ECServer->SetEventHandler(*this, SERVER_ID);
 		m_ECServer->SetNotify(wxSOCKET_CONNECTION_FLAG);
 		m_ECServer->Notify(true);

@@ -432,7 +432,7 @@ friend class CProxyEventHandler;
 public:
 	/* Constructor */
 	CProxySocket(
-		wxSocketFlags flags = wxSOCKET_NONE,
+		muleSocketFlags flags = MULE_SOCKET_NONE,
 		const CProxyData *proxyData = NULL,
 		CProxyCommand proxyCommand = PROXY_CMD_CONNECT,
 		CDatagramSocketProxy *udpSocket = NULL);
@@ -500,7 +500,7 @@ class CSocketClientProxy : public CProxySocket
 public:
 	/* Constructor */
 	CSocketClientProxy(
-		wxSocketFlags flags = wxSOCKET_NONE,
+		muleSocketFlags flags = MULE_SOCKET_NONE,
 		const CProxyData *proxyData = NULL);
 
 	/* Interface */
@@ -522,7 +522,7 @@ public:
 	/* Constructor */
 	CSocketServerProxy(
 		amuleIPV4Address &address,
-		wxSocketFlags flags = wxSOCKET_NONE,
+		muleSocketFlags flags = MULE_SOCKET_NONE,
 		const CProxyData *proxyData = NULL);
 
 private:
@@ -550,7 +550,7 @@ public:
 	/* Constructor */
 	CDatagramSocketProxy(
 		amuleIPV4Address &address,
-		wxSocketFlags flags = wxSOCKET_NONE,
+		muleSocketFlags flags = MULE_SOCKET_NONE,
 		const CProxyData *proxyData = NULL);
 
 	/* Destructor */

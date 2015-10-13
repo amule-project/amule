@@ -282,7 +282,7 @@ void CWebServerBase::StartServer()
 	addr.AnyAddress();
 	addr.Service(webInterface->m_WebserverPort);
 
-	m_webserver_socket = new CWebLibSocketServer(addr, wxSOCKET_REUSEADDR, this);
+	m_webserver_socket = new CWebLibSocketServer(addr, MULE_SOCKET_REUSEADDR, this);
 #ifndef ASIO_SOCKETS
 	m_webserver_socket->SetEventHandler(*this, ID_WEBLISTENSOCKET_EVENT);
 	m_webserver_socket->SetNotify(wxSOCKET_CONNECTION_FLAG);

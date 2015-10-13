@@ -1425,7 +1425,7 @@ namespace MuleNotify
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketConnect Destroying %s %d")) % socket->GetIP() % error);
 		} else if (socket->GetProxyState()) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketConnect Proxy %s %d")) % socket->GetIP() % error);
-			socket->OnProxyEvent(wxSOCKET_CONNECTION);
+			socket->OnProxyEvent(MULE_SOCKET_CONNECTION);
 		} else {
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketConnect %s %d")) %socket->GetIP() % error);
 			socket->OnConnect(error);
@@ -1438,7 +1438,7 @@ namespace MuleNotify
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketSend Destroying %s %d")) % socket->GetIP() % error);
 		} else if (socket->GetProxyState()) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketSend Proxy %s %d")) % socket->GetIP() % error);
-			socket->OnProxyEvent(wxSOCKET_OUTPUT);
+			socket->OnProxyEvent(MULE_SOCKET_OUTPUT);
 		} else {
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketSend %s %d")) % socket->GetIP() % error);
 			socket->OnSend(error);
@@ -1452,7 +1452,7 @@ namespace MuleNotify
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketReceive Destroying %s %d")) % socket->GetIP() % error);
 		} else if (socket->GetProxyState()) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketReceive Proxy %s %d")) % socket->GetIP() % error);
-			socket->OnProxyEvent(wxSOCKET_INPUT);
+			socket->OnProxyEvent(MULE_SOCKET_INPUT);
 		} else {
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketReceive %s %d")) % socket->GetIP() % error);
 			socket->OnReceive(error);
@@ -1465,7 +1465,7 @@ namespace MuleNotify
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketLost Destroying %s")) % socket->GetIP());
 		} else if (socket->GetProxyState()) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketLost Proxy %s")) % socket->GetIP());
-			socket->OnProxyEvent(wxSOCKET_LOST);
+			socket->OnProxyEvent(MULE_SOCKET_LOST);
 		} else {
 			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketLost %s")) % socket->GetIP());
 			socket->OnLost();

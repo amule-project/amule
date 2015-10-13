@@ -47,7 +47,7 @@ CListenSocket::CListenSocket(amuleIPV4Address &addr, const CProxyData *ProxyData
 :
 // wxSOCKET_NOWAIT    - means non-blocking i/o
 // wxSOCKET_REUSEADDR - means we can reuse the socket immediately (wx-2.5.3)
-CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
+CSocketServerProxy(addr, MULE_SOCKET_NOWAIT|MULE_SOCKET_REUSEADDR, ProxyData)
 {
 	// 0.42e - vars not used by us
 	m_pending = false;
