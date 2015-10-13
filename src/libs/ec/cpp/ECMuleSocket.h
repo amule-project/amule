@@ -40,7 +40,7 @@ public:
 	CECMuleSocket(bool use_events);
 	virtual ~CECMuleSocket();
 
-	bool ConnectSocket(class wxIPV4address& address);
+	bool ConnectSocket(class amuleIPV4Address& address);
 
 	virtual void OnConnect()	{}					// This is overwritten in RemoteConnect
 	virtual void OnConnect(int)	{ OnConnect(); }	// This is called from LibSocketAsio

@@ -196,7 +196,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 					long lPort;
 					bool ok = args.AfterFirst(wxT(':')).ToLong(&lPort);
 					port = (unsigned int)lPort;
-					wxIPV4address a;
+					amuleIPV4Address a;
 					a.Hostname(serverName);
 					a.Service(port);
 					result = sscanf(unicode2char(a.IPAddress()), "%3d.%3d.%3d.%3d", &ip[0], &ip[1], &ip[2], &ip[3]);

@@ -129,7 +129,7 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 		}
 	}
 
-	wxIPV4address addr;
+	amuleIPV4Address addr;
 
 	addr.Hostname(host);
 	addr.Service(port);

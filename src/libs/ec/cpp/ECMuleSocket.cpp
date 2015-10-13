@@ -105,7 +105,7 @@ CECMuleSocket::~CECMuleSocket()
 {
 }
 
-bool CECMuleSocket::ConnectSocket(wxIPV4address& address)
+bool CECMuleSocket::ConnectSocket(amuleIPV4Address& address)
 {
 	return CECSocket::ConnectSocket(StringIPtoUint32(address.IPAddress()),address.Service());
 }
