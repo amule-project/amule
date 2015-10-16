@@ -246,7 +246,7 @@ endif
 #
 # Flags
 #
-core_flags = $(LIBUPNP_CPPFLAGS) $(LIBUPNP_CFLAGS)
+core_flags = $(BOOST_CPPFLAGS) $(LIBUPNP_CPPFLAGS) $(LIBUPNP_CFLAGS)
 gui_flags = $(WX_CPPFLAGS) $(GEOIP_CPPFLAGS)
 common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS)
 
