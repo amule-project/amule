@@ -50,7 +50,6 @@
 #include "GuiEvents.h"		// Needed for Notify_*
 #ifdef ASIO_SOCKETS
 #	include <boost/system/error_code.hpp>
-using namespace boost::system;
 #endif
 
 
@@ -159,7 +158,7 @@ void CServerSocket::OnConnect(int nErrorCode)
 {
 	switch (nErrorCode) {
 #ifdef ASIO_SOCKETS
-		case errc::success:
+		case boost::system::errc::success:
 #else
 		case wxSOCKET_NOERROR:
 #endif
@@ -182,13 +181,13 @@ void CServerSocket::OnConnect(int nErrorCode)
 			break;
 
 #ifdef ASIO_SOCKETS
-		case errc::address_in_use:
-		case errc::address_not_available:
-		case errc::bad_address:
-		case errc::connection_refused:
-		case errc::host_unreachable:
-		case errc::invalid_argument:
-		case errc::timed_out:
+		case boost::system::errc::address_in_use:
+		case boost::system::errc::address_not_available:
+		case boost::system::errc::bad_address:
+		case boost::system::errc::connection_refused:
+		case boost::system::errc::host_unreachable:
+		case boost::system::errc::invalid_argument:
+		case boost::system::errc::timed_out:
 #else
 		case wxSOCKET_INVADDR:
 		case wxSOCKET_NOHOST:
@@ -732,7 +731,7 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 			AddLogLineC(CFormat( _("Server IP %s (%s) is filtered.  Not connecting.") )
 				% Uint32toStringIP(ip) % cur_server->GetAddress() );
 #ifdef ASIO_SOCKETS
-			OnConnect(errc::invalid_argument);
+			OnConnect(boost::system::errc::invalid_argument);
 #else
 			OnConnect(wxSOCKET_INVADDR);
 #endif
@@ -768,7 +767,7 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 		AddLogLineC(CFormat( _("Could not solve dns for server %s: Unable to connect!") )
 			% cur_server->GetAddress() );
 #ifdef ASIO_SOCKETS
-		OnConnect(errc::host_unreachable);
+		OnConnect(boost::system::errc::host_unreachable);
 #else
 		OnConnect(wxSOCKET_NOHOST);
 #endif
