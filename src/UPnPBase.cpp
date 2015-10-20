@@ -430,6 +430,8 @@ m_SCPD(NULL)
 	std::ostringstream msg;
 	int errcode;
 
+	memset(m_SID, 0 , sizeof(Upnp_SID));
+
 	std::vector<char> vscpdURL(URLBase.length() + m_SCPDURL.length() + 1);
 	char *scpdURL = &vscpdURL[0];
 	errcode = UpnpResolveURL(
@@ -1270,6 +1272,7 @@ upnpEventSubscriptionExpired:
 		struct Upnp_Event_Subscribe *es_event =
 			(struct Upnp_Event_Subscribe *)Event;
 		Upnp_SID newSID;
+		memset(newSID, 0, sizeof(Upnp_SID));
 		int TimeOut = 1801;
 		int ret = UpnpSubscribe(
 			upnpCP->m_UPnPClientHandle,
