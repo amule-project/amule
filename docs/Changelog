@@ -2,6 +2,9 @@ Version 2.4.0 - The river knows.
 ----------
 201?-??-??
 
+	tgragnato:
+		* Fixed ASIO compilation with libcxx
+
 	Dan64:
 		* Read AICH root hashes from binary eMuleCollection files
 
