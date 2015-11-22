@@ -29,6 +29,7 @@
 
 #include "Logger.h"				// for Add(Debug)LogLineM()
 
+DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE)
 
 #ifdef __DEBUG__
 bool CLogger::IsEnabled(DebugType /*type*/) const
