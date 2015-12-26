@@ -775,22 +775,5 @@ namespace MuleNotify
 
 #endif	// #ifndef CLIENT_GUI
 
-	void UDPSocketSend(CMuleUDPSocket * NOT_ON_REMOTEGUI(socket))
-	{
-#ifndef CLIENT_GUI
-		AddDebugLogLineF(logAsio, wxT("UDPSocketSend"));
-		socket->OnSend(0);
-#endif
-	}
-
-	void UDPSocketReceive(CMuleUDPSocket * NOT_ON_REMOTEGUI(socket))
-	{
-#ifndef CLIENT_GUI
-		AddDebugLogLineF(logAsio, wxT("UDPSocketReceive"));
-		socket->OnReceive(0);
-#endif
-	}
-
-
 }
 // File_checked_for_headers

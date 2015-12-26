@@ -409,9 +409,6 @@ namespace MuleNotify
 		CMuleGUIEvent evt(ntf.Clone());
 		wxPostEvent(wxTheApp, evt);
 	}
-
-	void UDPSocketSend(class CMuleUDPSocket *) {}
-	void UDPSocketReceive(class CMuleUDPSocket *) {}
 }
 
 

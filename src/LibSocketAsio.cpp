@@ -1491,6 +1491,19 @@ namespace MuleNotify
 		socketServer->OnAccept();
 	}
 
+	void UDPSocketSend(CMuleUDPSocket * socket)
+	{
+		AddDebugLogLineF(logAsio, wxT("UDPSocketSend"));
+		socket->OnSend(0);
+	}
+
+	void UDPSocketReceive(CMuleUDPSocket * socket)
+	{
+		AddDebugLogLineF(logAsio, wxT("UDPSocketReceive"));
+		socket->OnReceive(0);
+	}
+
+
 } // namespace MuleNotify
 
 //
