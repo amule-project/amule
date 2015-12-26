@@ -2,10 +2,10 @@
 # Helps bootstrapping 'aMule' when checked out from the source control system.
 # Requires GNU autoconf, GNU automake and GNU which.
 
-WANT_AUTOMAKE="1.7"
+WANT_AUTOMAKE="1.9"
 export WANT_AUTOMAKE
 (autoconf --version) >/dev/null 2>/dev/null || (echo "You need GNU autoconf to install from sources (ftp://ftp.gnu.org/gnu/autoconf/)"; exit 1) || exit 1
-(automake --version) >/dev/null 2>/dev/null || (echo "You need GNU automake 1.7 to install from sources (ftp://ftp.gnu.org/gnu/automake/)"; exit 1) || exit 1
+(automake --version) >/dev/null 2>/dev/null || (echo "You need GNU automake $WANT_AUTOMAKE to install from sources (ftp://ftp.gnu.org/gnu/automake/)"; exit 1) || exit 1
 
 # Do sanity checks.
 # Directory check.
@@ -17,10 +17,10 @@ fi
 # Determine the version of automake.
 automake_version=`automake --version | head -n 1 | sed -e 's/[^12]*\([12]\.[0-9]+[^ ]*\).*/\1/'`
 
-# Require automake 1.7.
-if expr "1.7" \> "$automake_version" >/dev/null; then
+# Require automake version at least $WANT_AUTOMAKE
+if expr "$WANT_AUTOMAKE" \> "$automake_version" >/dev/null; then
   automake --version | head -n 1
-  echo "Fatal error: automake version 1.7 or higher is required."
+  echo "Fatal error: automake version $WANT_AUTOMAKE or higher is required."
   exit 1
 fi
 
