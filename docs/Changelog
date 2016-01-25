@@ -2,8 +2,8 @@ Version 2.4.0 - The river knows.
 ----------
 201?-??-??
 
-	tgragnato:
-		* Fixed ASIO compilation with libcxx
+	circulosmeos:
+		* amuleweb cookies read behind a "lowercase" proxy (http/2 compliant)
 
 	Dan64:
 		* Read AICH root hashes from binary eMuleCollection files
@@ -52,8 +52,11 @@ Version 2.4.0 - The river knows.
 		* Projects for Visual Studio 2013 (which is now the preferred Win32 compiler)
 		* Fixed build with wx 3.0 (including STL build)
 
-	circulosmeos:
-		* amuleweb cookies read behind a "lowercase" proxy (http/2 compliant)
+	tgragnato:
+		* Fixed ASIO compilation with libcxx
+
+	Tianming Xie:
+		* Fix for debian bug #795061: There is nor rule to generate Scanner.h
 
 --------------------------------------------------------------------------------
 
