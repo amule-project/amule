@@ -73,6 +73,7 @@ namespace IXML
 {
 	namespace Document {
 		IXML_Element *GetRootElement(IXML_Document *doc);
+		void Free(IXML_Document *doc);
 	}
 
 	namespace Element {
