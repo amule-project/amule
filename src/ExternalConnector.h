@@ -154,14 +154,13 @@ public:
 	void OnAssertFailure(const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg);
 #endif
 
-	CECFileConfig*	m_configFile;
-	wxString	m_configFileName;
-
 protected:
 	// Set current locale, if language is not empty.
 	// returns canonical name of set (current) locale
 	virtual wxString SetLocale(const wxString& language);
 
+	CECFileConfig*	m_configFile;
+	wxString	m_configDir;
 	long		m_port;
 	wxString	m_host;
 	CMD4Hash	m_password;
@@ -177,6 +176,7 @@ protected:
 #endif
 
 private:
+	wxString	m_configFileName;
 	wxString	m_cmdargs;
 	wxString	m_lastcmdstr;
 	CRemoteConnect*	m_ECClient;

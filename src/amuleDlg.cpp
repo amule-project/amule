@@ -1210,7 +1210,7 @@ bool CamuleDlg::Check_and_Init_Skin()
 		return false;
 	}
 
-	wxString userDir(JoinPaths(GetConfigDir(), wxT("skins")) + wxFileName::GetPathSeparator());
+	wxString userDir(JoinPaths(thePrefs::GetConfigDir(), wxT("skins")) + wxFileName::GetPathSeparator());
 
 	wxStandardPathsBase &spb(wxStandardPaths::Get());
 #ifdef __WINDOWS__ 

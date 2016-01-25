@@ -518,7 +518,7 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 	}
 #endif
 
-	dir = GetConfigDir(wxT("remote.conf")) + wxT("webserver");
+	dir = m_configDir + wxT("webserver");
 	if (CheckDirForTemplate(dir, templateName)) {
 		templateDir = dir;
 		m_localTemplate = true;
@@ -851,7 +851,7 @@ wxString CamulewebApp::SetLocale(const wxString& language)
 		// First look in ~/.aMule/webserver/<template>, but only if a local template was used
 		wxString dir;
 		if (m_localTemplate) {
-			dir = JoinPaths(JoinPaths(JoinPaths(GetConfigDir(), wxT("webserver")), m_TemplateName), wxT("locale"));
+			dir = JoinPaths(JoinPaths(JoinPaths(m_configDir, wxT("webserver")), m_TemplateName), wxT("locale"));
 			DebugShow(wxT("looking for message catalogs in ") + dir + wxT("... "));
 		}
 		if (!m_localTemplate || !DirHasMessageCatalog(dir, lang, domain)) {

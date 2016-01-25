@@ -1097,26 +1097,23 @@ void DumpMem_DW(const uint32 *ptr, int count)
 
 wxString GetConfigDir(const wxString &configFileBase)
 {
-	// Cache the path.
-	static wxString configPath;
+	wxString configPath;
 
-	if (configPath.IsEmpty()) {
-		// "Portable aMule" - Use aMule from an external USB drive
-		// Check for ./config/amule.conf (or whatever gets passed as configFile)
-		// and use this configuration if found
-		const wxString configDir = JoinPaths(wxFileName::GetCwd(), wxT("config"));
-		const wxString configFile = JoinPaths(configDir, configFileBase);
+	// "Portable aMule" - Use aMule from an external USB drive
+	// Check for ./config/amule.conf (or whatever gets passed as configFile)
+	// and use this configuration if found
+	const wxString configDir = JoinPaths(wxFileName::GetCwd(), wxT("config"));
+	const wxString configFile = JoinPaths(configDir, configFileBase);
 
-		if (CPath::DirExists(configDir) && CPath::FileExists(configFile)) {
-			AddLogLineN(CFormat(_("Using config dir: %s")) % configDir);
+	if (CPath::DirExists(configDir) && CPath::FileExists(configFile)) {
+		AddLogLineN(CFormat(_("Using config dir: %s")) % configDir);
 
-			configPath = configDir;
-		} else {
-			configPath = wxStandardPaths::Get().GetUserDataDir();
-		}
-
-		configPath += wxFileName::GetPathSeparator();
+		configPath = configDir;
+	} else {
+		configPath = wxStandardPaths::Get().GetUserDataDir();
 	}
+
+	configPath += wxFileName::GetPathSeparator();
 
 	return configPath;
 }

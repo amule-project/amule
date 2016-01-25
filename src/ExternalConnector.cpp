@@ -455,8 +455,10 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 	}
 
 	if (!parser.Found(wxT("config-file"), &m_configFileName)) {
-		m_configFileName = GetConfigDir() + wxT("remote.conf");
+		m_configFileName = wxT("remote.conf");
 	}
+	m_configDir = GetConfigDir(m_configFileName);
+	m_configFileName = m_configDir + m_configFileName;
 
 	wxString aMuleConfigFile;
 	if (parser.Found(wxT("create-config-from"), &aMuleConfigFile)) {
@@ -536,8 +538,8 @@ void CaMuleExternalConnector::LoadConfigFile()
 
 void CaMuleExternalConnector::SaveConfigFile()
 {
-	if (!wxFileName::DirExists(GetConfigDir())) {
-		wxFileName::Mkdir(GetConfigDir());
+	if (!wxFileName::DirExists(m_configDir)) {
+		wxFileName::Mkdir(m_configDir);
 	}
 	if (!m_configFile) {
 		m_configFile = new CECFileConfig(m_configFileName);

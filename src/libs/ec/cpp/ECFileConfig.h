@@ -39,7 +39,7 @@
 inline wxString FinalizeFilename(const wxString filename)
 {
 	if (wxStrchr(filename, wxFileName::GetPathSeparator()) == NULL) {
-		return GetConfigDir() + filename;
+		return GetConfigDir(filename) + filename;
 	}
 	if ((filename.GetChar(0) == '~') && (filename.GetChar(1) == wxFileName::GetPathSeparator())) {
 		return wxGetHomeDir() + filename.Mid(1);

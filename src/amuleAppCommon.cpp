@@ -289,7 +289,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 		}
 		thePrefs::SetConfigDir(configdir);
 	} else {
-		thePrefs::SetConfigDir(/*OtherFunctions::*/GetConfigDir());
+		thePrefs::SetConfigDir(/*OtherFunctions::*/GetConfigDir(m_configFile));
 	}
 
 	// Backtracing works in MSW.

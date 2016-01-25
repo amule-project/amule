@@ -849,7 +849,7 @@ public:
 		} else {
 			folder = wxT("webserver");
 		}
-		wxString dirName(JoinPaths(GetConfigDir(theApp->m_configFile), folder));
+		wxString dirName(JoinPaths(thePrefs::GetConfigDir(), folder));
 		wxString Filename;
 		wxDir d;
 
