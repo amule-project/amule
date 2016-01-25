@@ -1421,8 +1421,6 @@ void CUPnPControlPoint::OnEventReceived(
 		msg << "\n    Empty property list.";
 	}
 	AddDebugLogLineC(logUPnP, msg);
-	// Freeing that doc segfaults. Probably should not be freed.
-	//ixmlDocument_free(ChangedVariablesDoc);
 }
 
 
@@ -1484,6 +1482,7 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 		IXML_Element *scpdRoot = IXML::Document::GetRootElement(scpdDoc);
 		CUPnPSCPD *scpd = new CUPnPSCPD(*this, scpdRoot, service.GetAbsSCPDURL());
 		service.SetSCPD(scpd);
+		IXML::Document::Free(scpdDoc);
 		m_ServiceMap[service.GetAbsEventSubURL()] = &service;
 		msg << "Successfully retrieved SCPD Document for service " <<
 			service.GetServiceType() << ", absEventSubURL: " <<
