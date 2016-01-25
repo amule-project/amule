@@ -228,17 +228,17 @@ MULE_IF_ENABLED([upnp], [
 ])dnl
 
 
-# Check for Crypto++
+# Check for Crypto++ (requires C++)
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
 [MULE_CHECK_CRYPTOPP([5.1], [
 	# Check for CryptoPP >= 5.5
 	AS_IF([test $CRYPTOPP_VERSION_NUMBER -ge "5005000"], [MULE_APPEND([CRYPTOPP_CPPFLAGS], [-D__WEAK_CRYPTO__])])
 ], [
 	AC_MSG_ERROR([
-	Could not find crypto++ header file "$cryptopp_file_with_version".
+	Could not find crypto++ installation or sources.
 	Please try again with --with-crypto-prefix=/my_crypto_prefix
 	(replace /my_crypto_prefix with a valid path to your crypto++
-	installation directory).])
+	installation or source directory).])
 ])])
 
 
@@ -520,7 +520,6 @@ echo "  Should aMule be compiled with IP2country support?          MULE_STATUSOF
 echo "  Should aMule monolithic application be built?              MULE_STATUSOF([monolithic])"
 echo "  Should aMule daemon version be built?                      MULE_STATUSOF([amule-daemon])"
 echo "  Should aMule remote gui be built?                          MULE_STATUSOF([amule-gui])"
-echo "  Crypto++ library/headers style?                            ${CRYPTOPP_STYLE:-not found}"
 
 echo
 echo "  **** aMule TextClient ****"
@@ -561,7 +560,7 @@ AS_IF([test ${with_boost:-no} != no],
 		[echo "                             boost                 `echo ${boost_cv_lib_version} | sed -e 's/_/./g'`"],
 )])
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
-	[echo "                             crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"])
+	[echo "                             crypto++              ${CRYPTOPP_VERSION_STRING} (in ${CRYPTOPP_PREFIX})"])
 MULE_IF_ENABLED([upnp], [
 	AS_IF([test -n "$with_libupnp_prefix"], [libupnp_place=" (in $with_libupnp_prefix)"])
 	echo "                             libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"

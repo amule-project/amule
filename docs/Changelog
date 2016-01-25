@@ -23,6 +23,8 @@ Version 2.4.0 - The river knows.
 		* Implemented the missing 'show shared' command in amulecmd
 		* Fix check for a valid locale config entry being done *after*
 		  the locale has been set
+		* Fix Crypto++ detection routine happily using build library
+		  for host when cross-compiling
 
 	iz0bbz:
 		* Fix WinSock library version detection with MinGW-w64
