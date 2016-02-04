@@ -141,6 +141,7 @@ enum ECTagNames {
 	EC_TAG_CAN_UTF8_NUMBERS                   = 0x000D,
 	EC_TAG_CAN_NOTIFY                         = 0x000E,
 	EC_TAG_ECID                               = 0x000F,
+	EC_TAG_KAD_ID                             = 0x0010,
 	EC_TAG_CLIENT_NAME                        = 0x0100,
 		EC_TAG_CLIENT_VERSION                     = 0x0101,
 		EC_TAG_CLIENT_MOD                         = 0x0102,
@@ -577,6 +578,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x000D: return wxT("EC_TAG_CAN_UTF8_NUMBERS");
 		case 0x000E: return wxT("EC_TAG_CAN_NOTIFY");
 		case 0x000F: return wxT("EC_TAG_ECID");
+		case 0x0010: return wxT("EC_TAG_KAD_ID");
 		case 0x0100: return wxT("EC_TAG_CLIENT_NAME");
 		case 0x0101: return wxT("EC_TAG_CLIENT_VERSION");
 		case 0x0102: return wxT("EC_TAG_CLIENT_MOD");

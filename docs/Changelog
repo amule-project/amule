@@ -25,6 +25,7 @@ Version 2.4.0 - The river knows.
 		  the locale has been set
 		* Fix Crypto++ detection routine happily using build library
 		  for host when cross-compiling
+		* Fix bug #1711: Kad Info tab should display my own user ID
 
 	iz0bbz:
 		* Fix WinSock library version detection with MinGW-w64

@@ -34,7 +34,7 @@
 #include "Statistics.h"
 #include "RLE.h"
 #include "SearchList.h"			// Needed for CSearchFile
-
+#include "kademlia/utils/UInt128.h"	// Needed for CUInt128
 
 class CED2KFileLink;
 class CServer;
@@ -711,6 +711,7 @@ public:
 	uint32 GetKadIndexedKeywords() const{ return theStats::GetKadIndexedKeywords(); }
 	uint32 GetKadIndexedNotes() const	{ return theStats::GetKadIndexedNotes(); }
 	uint32 GetKadIndexedLoad() const	{ return theStats::GetKadIndexedLoad(); }
+	const CUInt128&	GetKadID() const	{ return m_kadID; }
 	// True IP of machine
 	uint32 GetKadIPAdress() const		{ return theStats::GetKadIPAdress(); }
 	// Buddy status
@@ -740,6 +741,8 @@ public:
 	wxLocale	m_locale;
 	// This KnownFile collects all currently uploading clients for display in the upload list control
 	CKnownFile * m_allUploadingKnownFile;
+
+	CUInt128	m_kadID;
 
 	DECLARE_EVENT_TABLE()
 };

@@ -59,6 +59,8 @@ class CKadClientSearcher;
 
 typedef std::map<CRoutingZone*, CRoutingZone*> EventMap;
 
+extern const CUInt128 s_nullUInt128;
+
 class CKademlia
 {
 public:
@@ -84,6 +86,8 @@ public:
 	static uint32_t			GetTotalFile() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalFile() : 0; }
 	static bool			GetPublish() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetPublish() : false; }
 	static uint32_t			GetIPAddress() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetIPAddress() : 0; }
+	static const CUInt128&		GetKadID() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetKadID() : s_nullUInt128; }
+
 	static void Bootstrap(uint32_t ip, uint16_t port)
 	{
 		time_t now = time(NULL);

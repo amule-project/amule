@@ -129,6 +129,7 @@ public final static short EC_TAG_CAN_ZLIB                           = 0x000C;
 public final static short EC_TAG_CAN_UTF8_NUMBERS                   = 0x000D;
 public final static short EC_TAG_CAN_NOTIFY                         = 0x000E;
 public final static short EC_TAG_ECID                               = 0x000F;
+public final static short EC_TAG_KAD_ID                             = 0x0010;
 public final static short EC_TAG_CLIENT_NAME                        = 0x0100;
 public final static short 	EC_TAG_CLIENT_VERSION                     = 0x0101;
 public final static short 	EC_TAG_CLIENT_MOD                         = 0x0102;

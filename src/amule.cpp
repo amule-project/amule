@@ -1749,6 +1749,11 @@ uint32	CamuleApp::GetBuddyPort() const
 	return clientlist->GetBuddyPort();
 }
 
+const Kademlia::CUInt128& CamuleApp::GetKadID() const
+{
+	return Kademlia::CKademlia::GetKadID();
+}
+
 bool CamuleApp::CanDoCallback(uint32 clientServerIP, uint16 clientServerPort)
 {
 	if (Kademlia::CKademlia::IsConnected()) {

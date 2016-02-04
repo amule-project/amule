@@ -54,6 +54,8 @@ there client on the eMule forum..
 #pragma warning(disable:4996)
 #endif
 
+const CUInt128	Kademlia::s_nullUInt128(false);
+
 ////////////////////////////////////////
 using namespace Kademlia;
 ////////////////////////////////////////

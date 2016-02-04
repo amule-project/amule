@@ -148,6 +148,10 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 	}
 
 	AddTag(CECTag(EC_TAG_CLIENT_ID, theApp->GetID()));
+
+	if (Kademlia::CKademlia::IsRunning()) {
+		AddTag(CECTag(EC_TAG_KAD_ID, Kademlia::CKademlia::GetKadID()));
+	}
 }
 
 CEC_PartFile_Tag::CEC_PartFile_Tag(const CPartFile *file, EC_DETAIL_LEVEL detail_level, CValueMap *valuemap)

@@ -34,6 +34,7 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
 #include "Logger.h"
+#include "kademlia/utils/UInt128.h"
 
 #include "ClientList.h"
 
@@ -206,6 +207,8 @@ void CServerWnd::UpdateKadInfo()
 		KadInfoList->SetItem(next_row++, 1, (theApp->IsKadRunningInLanMode() ? _("Running in LAN mode") : _("Running")));
 
 		// Connection data
+		KadInfoList->InsertItem(next_row, _("Kademlia client ID:"));
+		KadInfoList->SetItem(next_row++, 1, theApp->GetKadID().ToHexString());
 		KadInfoList->InsertItem(next_row, _("Status:"));
 		KadInfoList->SetItem(next_row++, 1, theApp->IsConnectedKad() ? _("Connected"): _("Disconnected"));
 		if (theApp->IsConnectedKad()) {

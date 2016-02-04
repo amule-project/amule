@@ -758,6 +758,7 @@ void CServerConnectRem::HandlePacket(const CECPacket *packet)
 	CServer *server;
 	m_ID = tag->GetEd2kId();
 	theApp->m_clientID = tag->GetClientId();
+	tag->GetKadID(theApp->m_kadID);
 
 	if (tag->IsConnectedED2K()) {
 		const CECTag *srvtag = tag->GetTagByName(EC_TAG_SERVER);

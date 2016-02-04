@@ -208,6 +208,7 @@ class CEC_ConnState_Tag : public CECTag {
 		bool	IsConnectedKademlia()	const { return (GetInt() & 0x04) != 0; }
 		bool	IsKadFirewalled()	const { return (GetInt() & 0x08) != 0; }
 		bool	IsKadRunning()	const { return (GetInt() & 0x10) != 0; }
+		bool	GetKadID(CUInt128& target)	const { return AssignIfExist(EC_TAG_KAD_ID, target); }
 };
 
 class CEC_SharedFile_Tag : public CECTag {

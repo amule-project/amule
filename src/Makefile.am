@@ -86,7 +86,8 @@ libmuleappcommon_a_SOURCES = \
 	SHA.cpp \
 	Tag.cpp \
 	TerminationProcess.cpp \
-	Timer.cpp
+	Timer.cpp \
+	kademlia/utils/UInt128.cpp
 
 libmuleappcommon_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
 
@@ -112,8 +113,7 @@ libmuleappcore_a_SOURCES = \
 	kademlia/kademlia/Entry.cpp \
 	kademlia/kademlia/Indexed.cpp \
 	kademlia/kademlia/SearchManager.cpp \
-	kademlia/routing/RoutingBin.cpp \
-	kademlia/utils/UInt128.cpp
+	kademlia/routing/RoutingBin.cpp
 
 libmuleappcore_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
 

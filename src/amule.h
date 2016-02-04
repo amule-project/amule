@@ -95,8 +95,12 @@ namespace MuleNotify {
 	class CMuleGUIEvent;
 }
 
-
 using MuleNotify::CMuleGUIEvent;
+
+
+namespace Kademlia {
+	class CUInt128;
+}
 
 
 #ifdef AMULE_DAEMON
@@ -228,6 +232,8 @@ public:
 	uint8	GetBuddyStatus() const;
 	uint32	GetBuddyIP() const;
 	uint32	GetBuddyPort() const;
+	// Kad ID
+	const Kademlia::CUInt128& GetKadID() const;
 
 	// Check if we should callback this client
 	bool CanDoCallback(uint32 clientServerIP, uint16 clientServerPort);
