@@ -63,7 +63,6 @@ m_files(files),
 m_index(index),
 m_filenameChanged(false)
 {
-	theApp->m_FileDetailDialogActive++;
 	m_timer.SetOwner(this, ID_MY_TIMER);
 	m_timer.Start(5000);
 	wxSizer *content = fileDetails(this, true);
@@ -75,7 +74,6 @@ m_filenameChanged(false)
 
 CFileDetailDialog::~CFileDetailDialog()
 {
-	theApp->m_FileDetailDialogActive = 0;
 	m_timer.Stop();
 }
 
