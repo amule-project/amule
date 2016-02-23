@@ -14,16 +14,15 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2014-11-25 15:48+0100\n"
-"PO-Revision-Date: 2012-01-06 13:53+0100\n"
-"Last-Translator: tHatdUde\n"
+"PO-Revision-Date: 2015-12-25 16:01+0100\n"
+"Last-Translator: Civ Ysh K <civyshk@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
-"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Country: SPAIN\n"
+"Language: es\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Poedit 1.5.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Language: es_ES\n"
 
@@ -2496,9 +2495,9 @@ msgid "External Connection: Handshake failed."
 msgstr "Conexión externa: Falló el manejador."
 
 #: src/LibSocketAsio.cpp:1260
-#, fuzzy, c-format
+#, c-format
 msgid "Asio thread %d started"
-msgstr "Descarga HTTP hilo comenzado"
+msgstr "Hilo Asio %d comenzado"
 
 #: src/ListenSocket.cpp:65
 msgid "ListenSocket: Ok."
@@ -4311,9 +4310,8 @@ msgid "Enable Verbose Debug-Logging."
 msgstr "Habilita modo extendido de depuración al inicio"
 
 #: src/muuli_wdr.cpp:3169
-#, fuzzy
 msgid "Only to Logfile"
-msgstr "&Abrir el archivo"
+msgstr "Sólo al archivo de Log"
 
 #: src/muuli_wdr.cpp:3172
 msgid "Message Categories:"
@@ -4667,9 +4665,9 @@ msgstr[0] "Guardado %i semilla de fuentes en archivo part: %s (%s)"
 msgstr[1] "Guardado %i semillas de fuentes en archivo part: %s (%s)"
 
 #: src/PartFile.cpp:1050
-#, fuzzy, c-format
+#, c-format
 msgid "Can't read seeds file for Partfile %s (%s)"
-msgstr "Guardado %i semilla de fuentes en archivo part: %s (%s)"
+msgstr "No se puede leer el archivo de semillas para el Partfile %s (%s)"
 
 #: src/PartFile.cpp:1109
 #, c-format
@@ -5093,9 +5091,8 @@ msgid "- External connect interface changed.\n"
 msgstr "- Interfaz de conexión externa cambiada.\n"
 
 #: src/PrefsUnifiedDlg.cpp:619
-#, fuzzy
 msgid "- Protocol obfuscation support changed.\n"
-msgstr "Ofuscación de protocolo"
+msgstr " -El soporte de ofuscación de protocolo cambió.\n"
 
 #: src/PrefsUnifiedDlg.cpp:628
 msgid ""
@@ -5992,9 +5989,8 @@ msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr "Copiar el enlace eD2k al portapapeles (Información &AICH)"
 
 #: src/SharedFilesCtrl.cpp:170
-#, fuzzy
 msgid "Copy eD2k link to clipboard (&AICH info + Source)"
-msgstr "Copiar el enlace eD2k al portapapeles (Información &AICH)"
+msgstr "Copiar el enlace eD2k al portapapeles (Información &AICH + Fuente)"
 
 #: src/SharedFilesCtrl.cpp:318
 msgid "You need a HighID to create a valid sourcelink"
@@ -6303,16 +6299,17 @@ msgstr "Hash no válido (la longitud debería ser exactamente 32 caracteres)\n"
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
 #: src/TextClient.cpp:534
-#, fuzzy
 msgid ""
 "No search type defined.\n"
 "Type 'help search' to get more help.\n"
-msgstr "Teclea '%s' para obtener mas ayuda.\n"
+msgstr ""
+"Tipo de búsqueda sin definir.\n"
+"Teclea 'help search' para obtener mas ayuda.\n"
 
 #: src/TextClient.cpp:553
-#, fuzzy, c-format
+#, c-format
 msgid "Download File: %lu %s\n"
-msgstr "Tamaño de descarga: %i"
+msgstr "Archivo de descarga: %lu %s\n"
 
 #: src/TextClient.cpp:645 src/webserver/src/WebServer.cpp:395
 msgid "Request failed with an unknown error."
@@ -6637,9 +6634,8 @@ msgid "Set upload bandwidth limit."
 msgstr "Asignar un limite de subida."
 
 #: src/TextClient.cpp:900 src/TextClient.cpp:902
-#, fuzzy
 msgid "The given value must be in kilobytes/sec.\n"
-msgstr "El valor dado a estos comandos han de ser en kilobytes/seg.\n"
+msgstr "El valor dado ha de ser en kilobytes/seg.\n"
 
 #: src/TextClient.cpp:901
 msgid "Set download bandwidth limit."
@@ -7141,7 +7137,7 @@ msgstr "Imposible abrir %s"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:147
 msgid "Out of memory while calculating ed2k hash!"
-msgstr ""
+msgstr "¡Sin memoria al calcular el hash ed2k!"
 
 #: src/utils/wxCas/src/linuxmon.cpp:77
 #, c-format
