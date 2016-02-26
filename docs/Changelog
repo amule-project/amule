@@ -26,6 +26,7 @@ Version 2.4.0 - The river knows.
 		* Fix Crypto++ detection routine happily using build library
 		  for host when cross-compiling
 		* Fix bug #1711: Kad Info tab should display my own user ID
+		* Fix wrong sized images in the priscilla skin
 
 	iz0bbz:
 		* Fix WinSock library version detection with MinGW-w64
