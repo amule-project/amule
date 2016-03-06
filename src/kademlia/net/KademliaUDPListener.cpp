@@ -524,7 +524,9 @@ void CKademliaUDPListener::Process2HelloRequest(const uint8_t *packetData, uint3
 	uint8_t contactVersion = 0;
 	CUInt128 contactID;
 	bool addedOrUpdated = AddContact2(packetData, lenPacket, ip, port, &contactVersion, senderKey, validReceiverKey, true, true, NULL, &contactID); // might change (udp)port, validReceiverKey
-	wxASSERT(contactVersion >= 2);
+	if (contactVersion < 2) {
+		throw wxString(CFormat(wxT("***NOTE: Received invalid Kademlia2 version (%u) in %s")) % contactVersion % wxString::FromAscii(__FUNCTION__));
+	}
 #ifdef __DEBUG__
 	if (dbgOldUDPPort != port) {
 		AddDebugLogLineN(logClientKadUDP, CFormat(wxT("KadContact %s uses his internal (%u) instead external (%u) UDP Port")) % KadIPToString(ip) % port % dbgOldUDPPort);
@@ -1650,7 +1652,6 @@ void CKademliaUDPListener::SendLegacyChallenge(uint32_t ip, uint16_t port, const
 	CUInt128 challenge(GetRandomUint128());
 	if (challenge == 0) {
 		// hey there is a 2^128 chance that this happens ;)
-		wxFAIL;
 		challenge = 1;
 	}
 	// Put the target we want into the packet. This is our challenge

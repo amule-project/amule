@@ -270,7 +270,6 @@ void CRoutingZone::ReadBootstrapNodesDat(CFileDataIO& file)
 							}
 						}
 						if (!inserted) {
-							wxASSERT(CKademlia::s_bootstrapList.size() < 50);
 							CKademlia::s_bootstrapList.push_back(contact);
 						} else if (CKademlia::s_bootstrapList.size() > 50) {
 							delete CKademlia::s_bootstrapList.back();
@@ -811,6 +810,7 @@ void CRoutingZone::OnSmallTimer()
 			CKademlia::GetUDPListener()->SendMyDetails(KADEMLIA2_HELLO_REQ, c->GetIPAddress(), c->GetUDPPort(), c->GetVersion(), 0, NULL, false);
 			wxASSERT(c->GetUDPKey() == CKadUDPKey(0));
 		} else {
+			AddDebugLogLineN(logKadRouting, CFormat(wxT("Ignoring Kad contact %s version %d.")) % KadIPToString(c->GetIPAddress()) % c->GetVersion());
 			//wxFAIL;	// thanks, I'm having enough problems without any Kad asserts
 		}
 	}
