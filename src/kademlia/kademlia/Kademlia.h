@@ -103,7 +103,7 @@ public:
 	static void RemoveEvent(CRoutingZone *zone)			{ m_events.erase(zone); }
 	static void Process();
 	static void StatsAddClosestDistance(const CUInt128& distance);
-	static bool FindNodeIDByIP(CKadClientSearcher& requester, uint32_t ip, uint16_t tcpPort, uint16_t udpPort);
+//	static bool FindNodeIDByIP(CKadClientSearcher& requester, uint32_t ip, uint16_t tcpPort, uint16_t udpPort);
 	static bool FindIPByNodeID(CKadClientSearcher& requester, const uint8_t *nodeID);
 	static void CancelClientSearch(CKadClientSearcher& fromRequester);
 	static bool IsRunningInLANMode();

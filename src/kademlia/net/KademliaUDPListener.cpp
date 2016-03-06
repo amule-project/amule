@@ -70,7 +70,6 @@ there client on the eMule forum..
 
 #include <wx/tokenzr.h>
 
-#define THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX 0
 
 #define CHECK_PACKET_SIZE(OP, SIZE) \
 	if (lenPacket OP (uint32_t)(SIZE)) \
@@ -155,7 +154,7 @@ void CKademliaUDPListener::SendMyDetails(uint8_t opcode, uint32_t ip, uint16_t p
 			wxASSERT(targetKey.IsEmpty());
 		}
 	} else {
-		wxFAIL;
+		wxFAIL;	// can never happen
 	}
 }
 
@@ -1600,6 +1599,9 @@ void CKademliaUDPListener::SendPacket(const CMemFile &data, uint8_t opcode, uint
 	theApp->clientudp->SendPacket(packet, wxUINT32_SWAP_ALWAYS(destinationHost), destinationPort, true, cryptKey, true, targetKey.GetKeyValue(theApp->GetPublicIP(false)));
 }
 
+#if 0
+// This function is called only from CKademlia::FindNodeIDByIP (currently unused)
+// TODO if ever enabled: the contact version in SendMyDetails *must* be > 1
 bool CKademliaUDPListener::FindNodeIDByIP(CKadClientSearcher* requester, uint32_t ip, uint16_t tcpPort, uint16_t udpPort)
 {
 	// send a hello packet to the given IP in order to get a HELLO_RES with the NodeID
@@ -1610,6 +1612,7 @@ bool CKademliaUDPListener::FindNodeIDByIP(CKadClientSearcher* requester, uint32_
 	m_fetchNodeIDRequests.push_back(sRequest);
 	return true;
 }
+#endif
 
 void CKademliaUDPListener::ExpireClientSearch(CKadClientSearcher* expireImmediately)
 {
@@ -1664,9 +1667,9 @@ void CKademliaUDPListener::SendLegacyChallenge(uint32_t ip, uint16_t port, const
 	AddLegacyChallenge(contactID, challenge, ip, KADEMLIA2_REQ);
 }
 
+#if 0
 void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 kad_ip, uint32 port, const byte* data, int len)
 {
-#if THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX
 	uint32 ip = wxUINT32_SWAP_ALWAYS(kad_ip);
 	printf("Error on %s received from: %s\n",(const char*)unicode2char(place),(const char*)unicode2char(Uint32_16toStringIP_Port(ip,port)));
 	if (data) {
@@ -1685,13 +1688,6 @@ void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 kad_i
 		client->SetConnectionReason(wxT("Error on ") + place);
 		client->TryToConnect(true);
 	}
-#else
-	// No need for warnings for the rest of us.
-	(void)place;
-	(void)kad_ip;
-	(void)port;
-	(void)data;
-	(void)len;
-#endif
 }
+#endif
 // File_checked_for_headers

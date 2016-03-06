@@ -330,6 +330,7 @@ void CKademlia::RecheckFirewalled()
 	}
 }
 
+#if 0	// currently unused function
 bool CKademlia::FindNodeIDByIP(CKadClientSearcher& requester, uint32_t ip, uint16_t tcpPort, uint16_t udpPort)
 {
 	wxCHECK(IsRunning() && instance && GetUDPListener() && GetRoutingZone(), false);
@@ -345,6 +346,7 @@ bool CKademlia::FindNodeIDByIP(CKadClientSearcher& requester, uint32_t ip, uint1
 		return GetUDPListener()->FindNodeIDByIP(&requester, wxUINT32_SWAP_ALWAYS(ip), tcpPort, udpPort);
 	}
 }
+#endif
 
 bool CKademlia::FindIPByNodeID(CKadClientSearcher& requester, const uint8_t* nodeID)
 {

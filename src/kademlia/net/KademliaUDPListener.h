@@ -83,7 +83,7 @@ public:
 	virtual void ProcessPacket(const uint8_t* data, uint32_t lenData, uint32_t ip, uint16_t port, bool validReceiverKey, const CKadUDPKey& senderKey);
 	void SendPacket(const CMemFile& data, uint8_t opcode, uint32_t destinationHost, uint16_t destinationPort, const CKadUDPKey& targetKey, const CUInt128* cryptTargetID);
 
-	bool FindNodeIDByIP(CKadClientSearcher *requester, uint32_t ip, uint16_t tcpPort, uint16_t udpPort);
+//	bool FindNodeIDByIP(CKadClientSearcher *requester, uint32_t ip, uint16_t tcpPort, uint16_t udpPort);
 	void ExpireClientSearch(CKadClientSearcher *expireImmediately = NULL);
 private:
 	static SSearchTerm* CreateSearchExpressionTree(CMemFile& bio, int iLevel);
@@ -127,7 +127,7 @@ private:
 	void ProcessFirewalled2Request		(const uint8_t* packetData, uint32_t lenPacket, uint32_t ip, uint16_t port, const CKadUDPKey& senderKey);
 
 	// Debug
-	void DebugClientOutput(const wxString& place, uint32_t kad_ip, uint32_t port, const uint8_t* data = NULL, int len = 0);
+//	void DebugClientOutput(const wxString& place, uint32_t kad_ip, uint32_t port, const uint8_t* data = NULL, int len = 0);
 
 	typedef std::list<FetchNodeID_Struct>	FetchNodeIDList;
 	FetchNodeIDList m_fetchNodeIDRequests;
