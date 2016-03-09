@@ -31,7 +31,7 @@
 
 
 // This include must be before amuleDlg.h
-#ifdef __WINDOWS__ 
+#ifdef __WINDOWS__
     #include <wx/msw/winundef.h>	// Needed for windows compilation
 #endif
 

@@ -1121,7 +1121,7 @@ wxString GetConfigDir(const wxString &configFileBase)
 
 /*************************** Locale specific stuff ***************************/
 
-#ifndef __WINDOWS__ 
+#ifndef __WINDOWS__
 #	define	SETWINLANG(LANG, SUBLANG)
 #else
 #	define	SETWINLANG(LANG, SUBLANG) \
@@ -1151,7 +1151,7 @@ void InitLocale(wxLocale& locale, int language)
 {
 	locale.Init(language, wxLOCALE_LOAD_DEFAULT);
 
-#if defined(__WXMAC__) || defined(__WINDOWS__ )
+#if defined(__WXMAC__) || defined(__WINDOWS__)
 	locale.AddCatalogLookupPathPrefix(JoinPaths(wxStandardPaths::Get().GetDataDir(), wxT("locale")));
 #endif
 	locale.AddCatalog(wxT(PACKAGE));
@@ -1209,7 +1209,7 @@ CMD4Hash GetPassword(bool allowEmptyPassword)
 {
 	wxString pass_plain;
 	CMD4Hash password;
-#ifndef __WINDOWS__ 
+#ifndef __WINDOWS__
 	pass_plain = char2unicode(getpass("Enter password for mule connection: "));
 #else
 	//#warning This way, pass enter is not hidden on windows. Bad thing.

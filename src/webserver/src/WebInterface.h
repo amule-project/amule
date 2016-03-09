@@ -36,14 +36,14 @@
 	#define AMULEWEB28_EVENTLOOP
 
 	// wx 2.8 also needs extra socket code, unless we have ASIO sockets
-	// 
+	//
 	#ifdef HAVE_CONFIG_H
 	#	include "config.h"		// defines ASIO_SOCKETS
 	#endif
 
 	#ifndef ASIO_SOCKETS
 		// MSW: can't run amuled with 2.8 without ASIO sockets, just get it compiled
-		#ifndef __WINDOWS__ 
+		#ifndef __WINDOWS__
 			#define AMULEWEB28_SOCKETS
 		#endif
 	#endif

@@ -34,10 +34,10 @@
 
 #include "Types.h"		// Needed for int32, uint16 and uint64
 #include <map>
-#ifndef __WINDOWS__ 
+#ifndef __WINDOWS__
 	#include <signal.h>
 //	#include <wx/unix/execute.h>
-#endif // __WINDOWS__ 
+#endif // __WINDOWS__
 
 #ifdef HAVE_CONFIG_H
 #	include "config.h"		// Needed for ASIO_SOCKETS
@@ -443,14 +443,14 @@ extern CamuleGuiApp *theApp;
 	#define AMULED28_EVENTLOOP
 
 	// wx 2.8 also needs extra socket code, unless we have ASIO sockets
-	// 
+	//
 	#ifdef HAVE_CONFIG_H
 	#	include "config.h"		// defines ASIO_SOCKETS
 	#endif
 
 	#ifndef ASIO_SOCKETS
 		// MSW: can't run amuled with 2.8 without ASIO sockets, just get it compiled
-		#ifndef __WINDOWS__ 
+		#ifndef __WINDOWS__
 			#define AMULED28_SOCKETS
 		#endif
 	#endif
@@ -494,7 +494,7 @@ public:
 // which stops working with wx 2.9.5.
 // So disable it there (no idea if this has a noticeable impact).
 
-#if !wxCHECK_VERSION(2, 9, 5) && !defined(__WINDOWS__ )
+#if !wxCHECK_VERSION(2, 9, 5) && !defined(__WINDOWS__)
 #define AMULED_APPTRAITS
 #endif
 

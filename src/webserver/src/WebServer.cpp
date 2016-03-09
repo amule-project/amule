@@ -250,7 +250,7 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 }
 
 
-// Probably always terminated by Ctrl-C or kill, but make a clean shutdown of the service anyway 
+// Probably always terminated by Ctrl-C or kill, but make a clean shutdown of the service anyway
 CWebServerBase::~CWebServerBase()
 {
 #ifdef ASIO_SOCKETS
@@ -320,7 +320,7 @@ void CWebServerBase::OnWebSocketServerEvent(wxSocketEvent& WXUNUSED(event))
 #endif
 
 CWebLibSocketServer::CWebLibSocketServer(const class amuleIPV4Address& adr, int flags, CWebServerBase * webServerBase)
-	:	CLibSocketServer(adr, flags), 
+	:	CLibSocketServer(adr, flags),
 		m_webServerBase(webServerBase)
 {
 }
@@ -974,7 +974,7 @@ CFileImage::CFileImage(const wxString& name) : CAnyImage(0)
 {
 	m_size = 0;
 	m_name = name;
-#ifdef __WINDOWS__ 
+#ifdef __WINDOWS__
 	wxFFile fis(m_name, wxT("rb"));
 #else
 	wxFFile fis(m_name);

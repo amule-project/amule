@@ -63,7 +63,7 @@ private:
 	wxPanel *m_mainPanel;
 
 	wxStaticLine *m_staticLine;
-#ifdef __WINDOWS__ 
+#ifdef __WINDOWS__
 
 	wxStaticLine *m_BottomStaticLine;
 #endif

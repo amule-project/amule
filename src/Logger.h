@@ -112,7 +112,7 @@ enum DebugType
 	logEC,
 	//! Warnings/Errors related to HTTP traffic
 	logHTTP,
-	//! Warnings/Errors related to Boost Asio networking 
+	//! Warnings/Errors related to Boost Asio networking
 	logAsio
 	// IMPORTANT NOTE: when you add values to this enum, update the g_debugcats
 	// array in Logger.cpp!

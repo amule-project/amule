@@ -270,7 +270,7 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 	if (Record->GetFileSize() > 0) {
 		// sanity check if the number of part hashes is correct here
 		if (Record->GetHashCount() != Record->GetED2KPartHashCount()) {
-			AddDebugLogLineC(logKnownFiles, CFormat(wxT("%s with size %d should have %d part hashes, but only %d are available")) 
+			AddDebugLogLineC(logKnownFiles, CFormat(wxT("%s with size %d should have %d part hashes, but only %d are available"))
 				% Record->GetFileName().GetPrintable() % Record->GetFileSize() % Record->GetED2KPartHashCount() % Record->GetHashCount());
 			return false;
 		}

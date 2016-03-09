@@ -938,7 +938,7 @@ void CSocks4StateMachine::process_send_command_request(bool entry)
 		switch (m_proxyData.m_proxyType) {
 		case PROXY_SOCKS4a: {
 			unsigned int offsetDomain = offsetUser + lenUser + 1;
-			// The Hostname() method was used here before, but I don't see why we can't use 
+			// The Hostname() method was used here before, but I don't see why we can't use
 			// the IP address which we actually know instead here.
 			wxString hostname(m_peerAddress->IPAddress());
 			unsigned char lenDomain = hostname.Len();

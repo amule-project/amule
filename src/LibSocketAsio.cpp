@@ -855,7 +855,7 @@ private:
 	void StartAccept()
 	{
 		m_currentSocket.reset(new CAsioSocketImpl(NULL));
-		async_accept(m_currentSocket->GetAsioSocket(), 
+		async_accept(m_currentSocket->GetAsioSocket(),
 			m_strand.wrap(boost::bind(& CAsioSocketServerImpl::HandleAccept, this, placeholders::error)));
 	}
 

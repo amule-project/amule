@@ -874,7 +874,7 @@ public:
 		} else {
 			dataDir = wxStandardPaths::Get().GetResourcesDir();
 		}
-#if !defined(__WINDOWS__ ) && !defined(__WXMAC__)
+#if !defined(__WINDOWS__) && !defined(__WXMAC__)
 		dataDir = dataDir.BeforeLast(wxT('/')) + wxT("/amule");
 #endif
 		wxString systemDir(JoinPaths(dataDir,folder));
@@ -1067,7 +1067,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 **/
 	NewCfgItem(IDC_TEMPFILES,	(new Cfg_Path(  wxT("/eMule/TempDir"),	s_tempdir, appdir + wxT("Temp") )));
 
-	#if defined(__WXMAC__) || defined(__WINDOWS__ )
+	#if defined(__WXMAC__) || defined(__WINDOWS__)
 		wxString incpath = wxStandardPaths::Get().GetDocumentsDir();
 		if (incpath.IsEmpty()) {
 			// There is a built-in possibility for this call to fail, though I can't imagine a reason for that.
@@ -1705,7 +1705,7 @@ bool CPreferences::UpdateCategory(
 wxString CPreferences::GetBrowser()
 {
 	wxString cmd(s_CustomBrowser);
-#ifndef __WINDOWS__ 
+#ifndef __WINDOWS__
 	if( s_BrowserTab ) {
 		// This is certainly not the best way to do it, but I'm lazy
 		if ((wxT("mozilla") == cmd.Right(7)) || (wxT("firefox") == cmd.Right(7))
@@ -1722,7 +1722,7 @@ wxString CPreferences::GetBrowser()
 			cmd += wxT(" -remote 'openURLs(%s,new-tab)'");
 		}
 	}
-#endif /* !__WINDOWS__  */
+#endif /* !__WINDOWS__ */
 	return cmd;
 }
 
