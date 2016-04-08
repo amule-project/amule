@@ -30,29 +30,12 @@
 #include <common/Constants.h>
 
 #include <cmath>
-#include <limits> // Do_not_auto_remove (NetBSD)
 #include "OtherFunctions.h"
 #include "ThrottledSocket.h"
 #include "Logger.h"
 #include "Preferences.h"
 #include "Statistics.h"
 
-#ifndef _MSC_VER
-
-#ifdef _UI64_MAX
-#undef _UI64_MAX
-#endif
-
-#ifdef _I64_MAX
-#undef _I64_MAX
-#endif
-
-const uint32 _UI32_MAX = std::numeric_limits<uint32>::max();
-const sint32 _I32_MAX = std::numeric_limits<sint32>::max();
-const uint64 _UI64_MAX = std::numeric_limits<uint64>::max();
-const sint64 _I64_MAX = std::numeric_limits<sint64>::max();
-
-#endif
 
 /////////////////////////////////////
 
