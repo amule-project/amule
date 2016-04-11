@@ -7,13 +7,13 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-04-11 11:33+0200\n"
-"PO-Revision-Date: 2016-03-26 00:01+0100\n"
+"PO-Revision-Date: 2016-04-11 20:35+0100\n"
 "Last-Translator: Balla Marcell <marcell.balla@gmx.at>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
+"Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: hu\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-Basepath: .\n"
 
@@ -4690,8 +4690,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 "EOF hiba tördelőalgoritmizáláskor a %u. letöltött résznél, amely %u (max %u) "
 "hosszú és a(z) '%s' részfájlhoz tartozik, amely %u hosszú: %s"
@@ -5720,9 +5720,8 @@ msgid "Running"
 msgstr "Fut"
 
 #: src/ServerWnd.cpp:210
-#, fuzzy
 msgid "Kademlia client ID:"
-msgstr "Kademlia állapot:"
+msgstr "Kademlia kliens ID:"
 
 #: src/ServerWnd.cpp:212
 msgid "Status:"
@@ -6748,9 +6747,8 @@ msgid "Show servers list."
 msgstr "Kiszolgáló-lista megmutatása."
 
 #: src/TextClient.cpp:992
-#, fuzzy
 msgid "Show shared files list."
-msgstr "A megosztott fájlok listájának újratöltése."
+msgstr "A megosztott fájlok listájának megjelenítése."
 
 #: src/TextClient.cpp:994
 msgid "Reset log."
