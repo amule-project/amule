@@ -71,7 +71,7 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data) : m_tag
 		NewData();
 		memcpy(m_tagData, data, m_dataLen);
 	} else {
-		wxASSERT(length == 0);
+		EC_ASSERT(length == 0);
 		m_dataLen = 0;
 		m_tagData = NULL;
 	}
@@ -454,7 +454,7 @@ bool CECTag::WriteTag(CECSocket& socket) const
 	ec_tagname_t tmp_tagName = (m_tagName << 1) | (m_tagList.empty() ? 0 : 1);
 	ec_tagtype_t type = m_dataType;
 	ec_taglen_t tagLen = GetTagLen();
-	wxASSERT(type != EC_TAGTYPE_UNKNOWN);
+	EC_ASSERT(type != EC_TAGTYPE_UNKNOWN);
 
 	if (!socket.WriteNumber(&tmp_tagName, sizeof(ec_tagname_t))) return false;
 	if (!socket.WriteNumber(&type, sizeof(ec_tagtype_t))) return false;
