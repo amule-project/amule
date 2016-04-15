@@ -353,7 +353,8 @@ bool CECTag::operator==(const CECTag& tag) const
  *
  * @param tag a CECTag class instance to add.
  * @return \b true if tag was really added,
- * \b false when it was omitted through valuemap.
+ * \b false when it was omitted through valuemap or the limit for children
+ * is exceeded.
  */
 bool CECTag::AddTag(const CECTag& tag, CValueMap* valuemap)
 {
@@ -361,7 +362,9 @@ bool CECTag::AddTag(const CECTag& tag, CValueMap* valuemap)
 		return valuemap->AddTag(tag, this);
 	}
 	// cannot have more than 64k tags
-	wxASSERT(m_tagList.size() < 0xffff);
+	if (m_tagList.size() >= 0xffff) {
+		return false;
+	}
 
 	// First add an empty tag.
 	m_tagList.push_back(CECEmptyTag());
@@ -489,7 +492,6 @@ bool CECTag::ReadChildren(CECSocket& socket)
 
 bool CECTag::WriteChildren(CECSocket& socket) const
 {
-	wxASSERT(m_tagList.size() < 0xFFFF);
 	uint16 tmp = (uint16)m_tagList.size();
 	if (!socket.WriteNumber(&tmp, sizeof(tmp))) return false;
 	for (const_iterator it = begin(); it != end(); ++it) {
