@@ -362,6 +362,7 @@ public final static short 		EC_TAG_FILES_EXTRACT_METADATA             = 0x180B;
 public final static short 		EC_TAG_FILES_ALLOC_FULL_SIZE              = 0x180C;
 public final static short 		EC_TAG_FILES_CHECK_FREE_SPACE             = 0x180D;
 public final static short 		EC_TAG_FILES_MIN_FREE_SPACE               = 0x180E;
+public final static short 		EC_TAG_FILES_CREATE_NORMAL                = 0x180F;
 public final static short 	EC_TAG_PREFS_DIRECTORIES                  = 0x1A00;
 public final static short 		EC_TAG_DIRECTORIES_INCOMING               = 0x1A01;
 public final static short 		EC_TAG_DIRECTORIES_TEMP                   = 0x1A02;

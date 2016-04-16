@@ -285,7 +285,7 @@ void CPartFile::CreatePartFile()
 
 	m_PartPath = m_fullname.RemoveExt();
 	bool fileCreated;
-	if (thePrefs::GetAllocFullFile()) {
+	if (thePrefs::GetAllocFullFile() || !thePrefs::CreateFilesSparse()) {
 		fileCreated = m_hpartfile.Create(m_PartPath, true);
 		m_hpartfile.Close();
 	} else {

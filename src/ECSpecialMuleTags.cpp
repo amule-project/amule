@@ -260,6 +260,9 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 			filePrefs.AddTag(CECEmptyTag(EC_TAG_FILES_CHECK_FREE_SPACE));
 		}
 		filePrefs.AddTag(CECTag(EC_TAG_FILES_MIN_FREE_SPACE, thePrefs::GetMinFreeDiskSpaceMB()));
+		if (!thePrefs::CreateFilesSparse()) {
+			filePrefs.AddTag(CECEmptyTag(EC_TAG_FILES_CREATE_NORMAL));
+		}
 		AddTag(filePrefs);
 	}
 
@@ -492,6 +495,7 @@ void CEC_Prefs_Packet::Apply() const
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_FILES_MIN_FREE_SPACE)) != NULL) {
 			thePrefs::SetMinFreeDiskSpaceMB(oneTag->GetInt());
 		}
+		ApplyBoolean(use_tag, thisTab, thePrefs::CreateFilesNormal, EC_TAG_FILES_CREATE_NORMAL);
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_DIRECTORIES)) != NULL) {

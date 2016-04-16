@@ -374,6 +374,7 @@ enum ECTagNames {
 			EC_TAG_FILES_ALLOC_FULL_SIZE              = 0x180C,
 			EC_TAG_FILES_CHECK_FREE_SPACE             = 0x180D,
 			EC_TAG_FILES_MIN_FREE_SPACE               = 0x180E,
+			EC_TAG_FILES_CREATE_NORMAL                = 0x180F,
 		EC_TAG_PREFS_DIRECTORIES                  = 0x1A00,
 			EC_TAG_DIRECTORIES_INCOMING               = 0x1A01,
 			EC_TAG_DIRECTORIES_TEMP                   = 0x1A02,
@@ -811,6 +812,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x180C: return wxT("EC_TAG_FILES_ALLOC_FULL_SIZE");
 		case 0x180D: return wxT("EC_TAG_FILES_CHECK_FREE_SPACE");
 		case 0x180E: return wxT("EC_TAG_FILES_MIN_FREE_SPACE");
+		case 0x180F: return wxT("EC_TAG_FILES_CREATE_NORMAL");
 		case 0x1A00: return wxT("EC_TAG_PREFS_DIRECTORIES");
 		case 0x1A01: return wxT("EC_TAG_DIRECTORIES_INCOMING");
 		case 0x1A02: return wxT("EC_TAG_DIRECTORIES_TEMP");

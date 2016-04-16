@@ -455,6 +455,11 @@ public:
 	static bool		GetAllocFullFile()		{ return s_allocFullFile; };
 	static void		SetAllocFullFile(bool val)	{ s_allocFullFile = val; }
 
+	static bool		CreateFilesSparse()		{ return s_createFilesSparse; }
+	// Beware! This function reverts the value it gets, that's why the name is also different!
+	// In EC we send/receive the reverted value, that's the reason for a reverse setter.
+	static void		CreateFilesNormal(bool val)	{ s_createFilesSparse = !val; }
+
 	static wxString		GetBrowser();
 
 	static const wxString&	GetSkin()			{ return s_Skin; }
@@ -745,6 +750,7 @@ protected:
 	static bool	s_ExtractMetaData;
 
 	static bool	s_allocFullFile;
+	static bool	s_createFilesSparse;
 
 	static wxString	s_CustomBrowser;
 	static bool	s_BrowserTab;     // Jacobo221 - Open in tabs if possible

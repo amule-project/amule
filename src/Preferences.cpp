@@ -189,6 +189,7 @@ bool		CPreferences::s_Percent;
 bool		CPreferences::s_SecIdent;
 bool		CPreferences::s_ExtractMetaData;
 bool		CPreferences::s_allocFullFile;
+bool		CPreferences::s_createFilesSparse;
 wxString	CPreferences::s_CustomBrowser;
 bool		CPreferences::s_BrowserTab;
 CPath		CPreferences::s_OSDirectory;
@@ -1257,6 +1258,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Str( wxT("/eMule/StatsServerURL"),		s_StatsServerURL,	wxT("http://ed2k.shortypower.dyndns.org/?hash=") ) );
 
 	s_MiscList.push_back( new Cfg_Bool( wxT("/ExternalConnect/TransmitOnlyUploadingClients"),	s_TransmitOnlyUploadingClients, false ) );
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/CreateSparseFiles"),		s_createFilesSparse, true ) );
 
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
