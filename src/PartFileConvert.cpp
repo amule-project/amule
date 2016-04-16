@@ -310,7 +310,7 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 			}
 
 			// create new partmetfile, and remember the new name
-			file->CreatePartFile();
+			file->CreatePartFile(true);
 			newfilename = file->GetFullName();
 
 			Notify_ConvertUpdateProgress(8, _("Creating destination file"));
@@ -378,7 +378,7 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 			return CONV_OUTOFDISKSPACE;
 		}
 
-		file->CreatePartFile();
+		file->CreatePartFile(true);
 		newfilename = file->GetFullName();
 
 		file->m_hpartfile.Close();

@@ -307,7 +307,7 @@ private:
 	bool	GetNextEmptyBlockInPart(uint16 partnumber,Requested_Block_Struct* result);
 	bool	IsAlreadyRequested(uint64 start, uint64 end);
 	void	CompleteFile(bool hashingdone);
-	void	CreatePartFile();
+	void	CreatePartFile(bool isImporting = false);
 	void	Init();
 
 	bool	CheckFreeDiskSpace( uint64 neededSpace = 0 );

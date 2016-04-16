@@ -269,7 +269,7 @@ CPartFile::~CPartFile()
 	wxASSERT(m_A4AFsrclist.empty());
 }
 
-void CPartFile::CreatePartFile()
+void CPartFile::CreatePartFile(bool isImporting)
 {
 	// use lowest free partfilenumber for free file (InterCeptor)
 	int i = 0;
@@ -298,7 +298,7 @@ void CPartFile::CreatePartFile()
 
 	SetFilePath(thePrefs::GetTempDir());
 
-	if (thePrefs::GetAllocFullFile()) {
+	if (!isImporting && thePrefs::GetAllocFullFile()) {
 		SetStatus(PS_ALLOCATING);
 		CThreadScheduler::AddTask(new CAllocateFileTask(this, thePrefs::AddNewFilesPaused()));
 	} else {

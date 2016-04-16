@@ -28,6 +28,7 @@ Version 2.4.0 - The river knows.
 		* Fix bug #1711: Kad Info tab should display my own user ID
 		* Fix wrong sized images in the priscilla skin
 		* Fix bug #1423: Add the possibility to not create sparse files
+		* Fix bug #1743: crash when importing part files
 
 	iz0bbz:
 		* Fix WinSock library version detection with MinGW-w64
