@@ -239,16 +239,41 @@ class WxFailUsage < SanityCheck
 	def initialize
 		super
 
-		@name  = "WxFailUsagesy"
+		@name  = "WxFailUsage"
 		@title = "Always failing wxASSERT()"
 		@type  = "Good Practice"
-		@desc  = "Use wxFAIL instead of an always failing wxASSERT()."
+		@desc  = "Use wxFAIL_MSG() instead of an always failing wxASSERT()."
 	end
 
 	def parse_file(file, lines)
 		results = lines.select do |line|
 			line.text =~ /\bwxASSERT\s*\(\s*(0|false)\s*\)/ or
 			line.text =~ /\bwxASSERT_MSG\s*\(\s*(0|false)\s*,/
+		end
+
+		add_results( file, results )
+	end
+end
+
+
+
+class NoMoreWxFail < SanityCheck
+	def initialize
+		super
+
+		@name  = "NoMoreWxFail"
+		@title = "wxFAIL needs an explanation"
+		@type  = "Good Practice"
+		@desc  = "Use wxFAIL_MSG() instead of wxFAIL to provide a description of what happened. "
+		@desc += "Or even better, use one of the wxCHECK*() or wxASSERT*() macros if applicable. "
+		@desc += "An assertion of type 'wxAssertFailure' without description does not say much, "
+		@desc += "please provide a short explanation of what went wrong."
+	end
+
+	def parse_file(file, lines)
+		results = lines.select do |line|
+			line.text =~ /\bwxFAIL\b/ and not
+			line.text =~ /\/\/\s*wxFAIL\b/
 		end
 
 		add_results( file, results )
@@ -664,6 +689,7 @@ filterList.push InlinedIfTrue.new
 filterList.push LoopOnConstant.new
 filterList.push MissingImplementation.new
 filterList.push WxFailUsage.new
+filterList.push NoMoreWxFail.new
 
 
 # Sort enabled filters by type and name. The reason why this is done here is
