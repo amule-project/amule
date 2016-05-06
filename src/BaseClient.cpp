@@ -723,10 +723,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 
 bool CUpDownClient::SendHelloPacket()
 {
-	if (m_socket == NULL) {
-		wxFAIL;
-		return true;
-	}
+	wxCHECK(m_socket != NULL, true);
 
 	// if IP is filtered, don't greet him but disconnect...
 	if (theApp->ipfilter->IsFiltered(m_socket->GetPeerInt())) {
@@ -749,12 +746,9 @@ bool CUpDownClient::SendHelloPacket()
 	return true;
 }
 
-void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
-
-	if (m_socket == NULL){
-		wxFAIL;
-		return;
-	}
+void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo)
+{
+	wxCHECK2(m_socket != NULL, return);
 
 	CPacket* packet = NULL;
 	CMemFile data;
@@ -1015,10 +1009,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const byte* pachPacket, uint32 nSize)
 
 void CUpDownClient::SendHelloAnswer()
 {
-	if (m_socket == NULL){
-		wxFAIL;
-		return;
-	}
+	wxCHECK2(m_socket != NULL, return);
 
 	CMemFile data(128);
 	SendHelloTypePacket(&data);
@@ -2051,12 +2042,13 @@ bool CUpDownClient::SafeSendPacket(CPacket* packet)
 	}
 }
 
-void CUpDownClient::SendPublicKeyPacket(){
+void CUpDownClient::SendPublicKeyPacket()
+{
 	// send our public key to the client who requested it
-	if (m_socket == NULL || credits == NULL || m_SecureIdentState != IS_KEYANDSIGNEEDED){
-		wxFAIL;
-		return;
-	}
+	wxCHECK2(m_socket != NULL, return);
+	wxCHECK2(credits != NULL, return);
+	wxCHECK2(m_SecureIdentState == IS_KEYANDSIGNEEDED, return);
+
 	if (!theApp->CryptoAvailable())
 		return;
 
@@ -2072,12 +2064,12 @@ void CUpDownClient::SendPublicKeyPacket(){
 }
 
 
-void CUpDownClient::SendSignaturePacket(){
+void CUpDownClient::SendSignaturePacket()
+{
 	// signate the public key of this client and send it
-	if (m_socket == NULL || credits == NULL || m_SecureIdentState == 0){
-		wxFAIL;
-		return;
-	}
+	wxCHECK2(m_socket != NULL, return);
+	wxCHECK2(credits != NULL, return);
+	wxCHECK2(m_SecureIdentState != 0, return);
 
 	if (!theApp->CryptoAvailable()) {
 		return;
@@ -2114,10 +2106,8 @@ void CUpDownClient::SendSignaturePacket(){
 	byte achBuffer[250];
 
 	uint8 siglen = theApp->clientcredits->CreateSignature(credits, achBuffer,  250, ChallengeIP, byChaIPKind );
-	if (siglen == 0){
-		wxFAIL;
-		return;
-	}
+	wxCHECK2(siglen != 0, return);
+
 	CMemFile data;
 	data.WriteUInt8(siglen);
 	data.Write(achBuffer, siglen);
@@ -2138,9 +2128,18 @@ void CUpDownClient::ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize)
 {
 	theApp->clientlist->AddTrackClient(this);
 
-	if (m_socket == NULL || credits == NULL || pachPacket[0] != nSize-1
-		|| nSize == 0 || nSize > 250){
-		wxFAIL;
+	wxCHECK2(m_socket != NULL, return);
+	wxCHECK2(credits != NULL, return);
+	if (pachPacket[0] != nSize - 1) {
+		AddDebugLogLineN(logClient, CFormat(wxT("Inconsistent packet size (%d != %d)")) % pachPacket[0] % (nSize - 1));
+		return;
+	}
+	if (nSize == 0) {
+		AddDebugLogLineN(logClient, wxT("Invalid packet size (0)"));
+		return;
+	}
+	if (nSize > 250) {
+		AddDebugLogLineN(logClient, CFormat(wxT("Invalid packet size (%d > 250)")) % nSize);
 		return;
 	}
 	if (!theApp->CryptoAvailable())
@@ -2165,8 +2164,14 @@ void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 {
 	// here we spread the good guys from the bad ones ;)
 
-	if (m_socket == NULL || credits == NULL || nSize == 0 || nSize > 250){
-		wxFAIL;
+	wxCHECK2(m_socket != NULL, return);
+	wxCHECK2(credits != NULL, return);
+	if (nSize == 0) {
+		AddDebugLogLineN(logClient, wxT("Invalid packet size (0)"));
+		return;
+	}
+	if (nSize > 250) {
+		AddDebugLogLineN(logClient, CFormat(wxT("Invalid packet size (%d > 250)")) % nSize);
 		return;
 	}
 
@@ -2175,8 +2180,9 @@ void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 		byChaIPKind = 0;
 	else if (pachPacket[0] == nSize-2 && (m_bySupportSecIdent & 2) > 0) //v2
 		byChaIPKind = pachPacket[nSize-1];
-	else{
-		wxFAIL;
+	else {
+		// Unknown or invalid format
+		AddDebugLogLineN(logClient, wxT("Invalid or unknown challenge format - ignoring"));
 		return;
 	}
 
@@ -2210,36 +2216,35 @@ void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 	m_dwLastSignatureIP = GetIP();
 }
 
-void CUpDownClient::SendSecIdentStatePacket(){
+void CUpDownClient::SendSecIdentStatePacket()
+{
+	wxCHECK2(credits != NULL, return);
+
 	// check if we need public key and signature
-	if (credits){
-		uint8 nValue = 0;
-		if (theApp->CryptoAvailable()){
-			if (credits->GetSecIDKeyLen() == 0) {
-				nValue = IS_KEYANDSIGNEEDED;
-			} else if (m_dwLastSignatureIP != GetIP()) {
-				nValue = IS_SIGNATURENEEDED;
-			}
+	uint8 nValue = 0;
+	if (theApp->CryptoAvailable()){
+		if (credits->GetSecIDKeyLen() == 0) {
+			nValue = IS_KEYANDSIGNEEDED;
+		} else if (m_dwLastSignatureIP != GetIP()) {
+			nValue = IS_SIGNATURENEEDED;
 		}
-		if (nValue == 0){
-			AddDebugLogLineN( logClient, wxT("Not sending SecIdentState Packet, because State is Zero") );
-			return;
-		}
-		// crypt: send random data to sign
-		uint32 dwRandom = rand()+1;
-		credits->m_dwCryptRndChallengeFor = dwRandom;
-
-		CMemFile data;
-		data.WriteUInt8(nValue);
-		data.WriteUInt32(dwRandom);
-		CPacket* packet = new CPacket(data, OP_EMULEPROT, OP_SECIDENTSTATE);
-
-		theStats::AddUpOverheadOther(packet->GetPacketSize());
-		AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_SECIDENTSTATE to ") + GetFullIP() );
-		SendPacket(packet,true,true);
-	} else {
-		wxFAIL;
 	}
+	if (nValue == 0){
+		AddDebugLogLineN( logClient, wxT("Not sending SecIdentState Packet, because State is Zero") );
+		return;
+	}
+	// crypt: send random data to sign
+	uint32 dwRandom = rand()+1;
+	credits->m_dwCryptRndChallengeFor = dwRandom;
+
+	CMemFile data;
+	data.WriteUInt8(nValue);
+	data.WriteUInt32(dwRandom);
+	CPacket* packet = new CPacket(data, OP_EMULEPROT, OP_SECIDENTSTATE);
+
+	theStats::AddUpOverheadOther(packet->GetPacketSize());
+	AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_SECIDENTSTATE to ") + GetFullIP() );
+	SendPacket(packet,true,true);
 }
 
 
@@ -2249,10 +2254,7 @@ void CUpDownClient::ProcessSecIdentStatePacket(const byte* pachPacket, uint32 nS
 		return;
 	}
 
-	if ( !credits ) {
-		wxASSERT( credits );
-		return;
-	}
+	wxCHECK2(credits, return);
 
 	CMemFile data(pachPacket,nSize);
 
