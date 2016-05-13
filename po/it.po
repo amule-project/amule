@@ -23,16 +23,14 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-04-11 11:33+0200\n"
-"PO-Revision-Date: 2011-11-02 15:22+0100\n"
-"Last-Translator: Giuliano Manzitti <giuliano1979@hotmail.com>\n"
-"Language-Team:  <it@li.org>\n"
+"PO-Revision-Date: 2016-05-13 11:50+0200\n"
+"Last-Translator: Sebastiano Pistore <olatusrooc@virgilio.it>\n"
+"Language-Team: it@li.org; Sebastiano Pistore\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: it\n"
-"X-Generator: KBabel 1.11.4\n"
-"X-Poedit-Language: Italian\n"
-"X-Poedit-Country: ITALY\n"
+"X-Generator: Poedit 1.8.7\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/AddFriend.cpp:45
@@ -492,7 +490,7 @@ msgstr "Parte di aMule è basata su \n"
 
 #: src/amuleDlg.cpp:507
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-msgstr "Kademlia: Peer-to-peer routing basato sulla metrica XOR.\n"
+msgstr "Kademlia: Routing peer-to-peer basato sulla metrica XOR.\n"
 
 #: src/amuleDlg.cpp:508
 msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
@@ -1287,7 +1285,7 @@ msgstr "Nuovo MLDonkey"
 
 #: src/DataToText.cpp:115
 msgid "eMule Compatible"
-msgstr "eMule compatibile"
+msgstr "Compatibile con eMule"
 
 #: src/DataToText.cpp:125
 msgid "Local Server"
@@ -2510,9 +2508,9 @@ msgid "External Connection: Handshake failed."
 msgstr "Connessione Esterna: errore di negoziazione."
 
 #: src/LibSocketAsio.cpp:1257
-#, fuzzy, c-format
+#, c-format
 msgid "Asio thread %d started"
-msgstr "Processo di download HTTP avviato"
+msgstr "Thread %d asincrono avviato"
 
 #: src/ListenSocket.cpp:67
 msgid "ListenSocket: Ok."
@@ -4319,9 +4317,8 @@ msgid "Enable Verbose Debug-Logging."
 msgstr "Abilita il log dettagliato dei messaggi di debug."
 
 #: src/muuli_wdr.cpp:3169
-#, fuzzy
 msgid "Only to Logfile"
-msgstr "&Apri file"
+msgstr "Solamente sul file di log"
 
 #: src/muuli_wdr.cpp:3172
 msgid "Message Categories:"
@@ -4677,9 +4674,9 @@ msgstr[0] "Salvata %i fonte per il file incompleto: %s (%s)"
 msgstr[1] "Salvate %i fonti per il file incompleto: %s (%s)"
 
 #: src/PartFile.cpp:1048
-#, fuzzy, c-format
+#, c-format
 msgid "Can't read seeds file for Partfile %s (%s)"
-msgstr "Salvata %i fonte per il file incompleto: %s (%s)"
+msgstr "Impossibile accedere alle fonti del partfile %s (%s)"
 
 #: src/PartFile.cpp:1107
 #, c-format
@@ -5100,9 +5097,8 @@ msgid "- External connect interface changed.\n"
 msgstr "- Interfaccia connessione esterna modificata. \n"
 
 #: src/PrefsUnifiedDlg.cpp:619
-#, fuzzy
 msgid "- Protocol obfuscation support changed.\n"
-msgstr "Offuscamento del protocollo"
+msgstr "- Modificato il supporto all'offuscamento del protocollo.\n"
 
 #: src/PrefsUnifiedDlg.cpp:628
 msgid ""
@@ -5784,9 +5780,8 @@ msgid "Running"
 msgstr "Attivo"
 
 #: src/ServerWnd.cpp:210
-#, fuzzy
 msgid "Kademlia client ID:"
-msgstr "Stato Kademlia:"
+msgstr "ID client Kademlia:"
 
 #: src/ServerWnd.cpp:212
 msgid "Status:"
@@ -5983,11 +5978,11 @@ msgstr "Copia &URI magnet negli appunti"
 
 #: src/SharedFilesCtrl.cpp:165
 msgid "Copy eD2k link to clipboard (&Source)"
-msgstr "Copia eD2k &link negli appunti (&Source)"
+msgstr "Copia eD2k &link negli appunti (&Fonte)"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy eD2k link to clipboard (Source) (&With Crypt options)"
-msgstr "Copia eD2k &link negli appunti (Source) (&With Crypt options)"
+msgstr "Copia &link eD2k negli appunti (Fonte) (con &opzioni di offuscamento)"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy eD2k link to clipboard (&Hostname)"
@@ -5996,16 +5991,16 @@ msgstr "Copia il collegamento eD2k negli appunti (&Hostname)"
 #: src/SharedFilesCtrl.cpp:168
 msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
 msgstr ""
-"Copia il collegamento eD2k negli appunti (Hostname) (With &Crypt options)"
+"Copia il collegamento eD2k negli appunti (Hostname) (con &opzioni di "
+"offuscamento)"
 
 #: src/SharedFilesCtrl.cpp:169
 msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr "Copia il collegamento eD2k negli appunti (&AICH info)"
 
 #: src/SharedFilesCtrl.cpp:170
-#, fuzzy
 msgid "Copy eD2k link to clipboard (&AICH info + Source)"
-msgstr "Copia il collegamento eD2k negli appunti (&AICH info)"
+msgstr "Copia il collegamento eD2k negli appunti (&AICH info + Fonte)"
 
 #: src/SharedFilesCtrl.cpp:318
 msgid "You need a HighID to create a valid sourcelink"
@@ -6057,7 +6052,7 @@ msgstr "Overhead Kad (pacchetti): %s"
 #: src/Statistics.cpp:748 src/Statistics.cpp:769
 #, c-format
 msgid "Crypt overhead (UDP): %s"
-msgstr "Crypt overhead (UDP): %s"
+msgstr "Overhead offuscamento (UDP): %s"
 
 #: src/Statistics.cpp:750
 #, c-format
@@ -6314,16 +6309,17 @@ msgstr "Non è un hash valido (la lunghezza deve essere di 32 caratteri)\n"
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
 #: src/TextClient.cpp:533
-#, fuzzy
 msgid ""
 "No search type defined.\n"
 "Type 'help search' to get more help.\n"
-msgstr "Digita '%s' per avere altro aiuto.\n"
+msgstr ""
+"Il tipo della ricerca non è definito.\n"
+"Digitare 'help search' per ottenere ulteriori informazioni.\n"
 
 #: src/TextClient.cpp:552
-#, fuzzy, c-format
+#, c-format
 msgid "Download File: %lu %s\n"
-msgstr "Dimensioni download (%i)"
+msgstr "Download del file: %lu %s\n"
 
 #: src/TextClient.cpp:644 src/webserver/src/WebServer.cpp:409
 msgid "Request failed with an unknown error."
@@ -6341,7 +6337,7 @@ msgstr "Richiesta fallita con il seguente errore: %s"
 #: src/TextClient.cpp:668
 #, c-format
 msgid "IP filtering for clients is %s.\n"
-msgstr "Filtraggio IP per i client: %s.\n"
+msgstr "Il filtraggio IP per i client è %s.\n"
 
 #: src/TextClient.cpp:669 src/TextClient.cpp:675
 msgid "OFF"
@@ -6354,7 +6350,7 @@ msgstr "ON"
 #: src/TextClient.cpp:674
 #, c-format
 msgid "IP filtering for servers is %s.\n"
-msgstr "Filtraggio IP per i server: %s.\n"
+msgstr "Il filtraggio IP per i server è %s.\n"
 
 #: src/TextClient.cpp:679
 #, c-format
@@ -6574,10 +6570,10 @@ msgid ""
 "The magnet link must contain the eD2k hash and file length.\n"
 msgstr ""
 "Il link eD2k da aggiungere può essere:\n"
-"*) un collegamento a un file (ed2k://|file|...), il quale sarà aggiunto ai "
+"*) un collegamento a un file (ed2k://|file|...), che sarà aggiunto ai "
 "download in attesa,\n"
-"*) un collegamento a un server (ed2k://|server|...), il quale sarà aggiunto "
-"alla lista dei server,\n"
+"*) un collegamento a un server (ed2k://|server|...), che sarà aggiunto alla "
+"lista dei server,\n"
 "*) o un collegamento ad una lista server, in questo caso tutti i server "
 "elencati saranno aggiunti alla\n"
 "lista dei server.\n"
@@ -6650,10 +6646,8 @@ msgid "Set upload bandwidth limit."
 msgstr "Imposta limiti di banda per l'upload."
 
 #: src/TextClient.cpp:935 src/TextClient.cpp:937
-#, fuzzy
 msgid "The given value must be in kilobytes/sec.\n"
-msgstr ""
-"Il valore fornito a questi comandi deve essere in kilobyte al secondo.\n"
+msgstr "Il valore inserito deve essere espresso in kilobyte al secondo.\n"
 
 #: src/TextClient.cpp:936
 msgid "Set download bandwidth limit."
@@ -6810,9 +6804,8 @@ msgid "Show servers list."
 msgstr "Mostra la lista dei server."
 
 #: src/TextClient.cpp:992
-#, fuzzy
 msgid "Show shared files list."
-msgstr "Ricarica la lista dei file condivisi."
+msgstr "Mostra la lista dei file condivisi."
 
 #: src/TextClient.cpp:994
 msgid "Reset log."
@@ -7164,6 +7157,8 @@ msgstr "Impossibile aprire %s"
 #: src/utils/aLinkCreator/src/ed2khash.cpp:147
 msgid "Out of memory while calculating ed2k hash!"
 msgstr ""
+"Si è verificato un errore \"out of memory\" durante il calcolo di un hash "
+"ed2k!"
 
 #: src/utils/wxCas/src/linuxmon.cpp:77
 #, c-format
@@ -7305,7 +7300,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:575
 msgid "Oh Oh, aMule is not running..."
-msgstr "Oh Oh, aMule non è in esecuzione..."
+msgstr "Oh oh, aMule non è in esecuzione..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:651
 #: src/utils/wxCas/src/wxcasframe.cpp:721
@@ -7614,7 +7609,7 @@ msgstr "Password errata\n"
 #: src/webserver/src/WebServer.cpp:1897
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr ""
-"Non hai inserito alcuna password e le password vuote non sono ammesse.\n"
+"Non hai inserito alcuna password. Le password vuote non sono ammesse.\n"
 
 #: src/webserver/src/WebServer.cpp:1905
 msgid "Logout requested\n"
