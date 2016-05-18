@@ -1,14 +1,14 @@
 # Swedish tranlation for aMule
 # This file is distributed under the same license as the amule package.
-# Daniel Nylander <po@danielnylander.se>, 2007.
+# raffe, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-04-11 11:33+0200\n"
-"PO-Revision-Date: 2016-05-15 11:25+0100\n"
-"Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
+"PO-Revision-Date: 2016-05-18 09:44+0100\n"
+"Last-Translator: raffe <raffe@localhost.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,7 +81,7 @@ msgid ""
 "change. Sorry."
 msgstr ""
 "Din plats har ändrats till systemets standard på grund av en "
-"konfigurationsändring. Sorry."
+"konfigurationsändring. Ledsen."
 
 #: src/amule.cpp:443 src/amule.cpp:1058 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:346
@@ -216,7 +216,7 @@ msgid ""
 " OnlineSignature will be DISABLED until you fix it on preferences."
 msgstr ""
 "Katalogen för Online Signaturefiler som du angav är OGILTIG!\n"
-"  OnlineSignatur kommer vara INAKTIVERAD tills du ändrar inställningarna."
+" OnlineSignatur kommer vara INAKTIVERAD tills du ändrar inställningarna."
 
 #: src/amule.cpp:1125
 msgid "Server hostname notified"
@@ -363,7 +363,7 @@ msgid ""
 "the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in "
 "the file ~/.aMule/amule.conf"
 msgstr ""
-"FEL: aMule deamon kan inte användas när externa anslutningar är "
+"FEL: aMule-deamon kan inte användas när externa anslutningar är "
 "inaktiverade. För att aktivera Externa Anslutningar, använd en normal aMule, "
 "starta amuled med optionen --ec-config eller sätt nyckeln "
 "\"AcceptExternalConnections\" till 1 i filen ~/.aMule/amule.conf"
