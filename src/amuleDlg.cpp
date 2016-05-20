@@ -81,6 +81,7 @@
 #endif
 
 #include "kademlia/kademlia/Kademlia.h"
+#include "MuleVersion.h"	// Needed for GetMuleVersion()
 
 #ifdef ENABLE_IP2COUNTRY
 #include "IP2Country.h"		// Needed for IP2Country

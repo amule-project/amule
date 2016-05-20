@@ -399,6 +399,7 @@ noinst_HEADERS = \
 		MuleThread.h \
 		MuleTrayIcon.h \
 		MuleUDPSocket.h \
+		MuleVersion.h \
 		muuli_wdr.h \
 		NetworkFunctions.h \
 		OScopeCtrl.h \

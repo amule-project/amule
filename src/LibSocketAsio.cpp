@@ -65,7 +65,7 @@
 #include "GuiEvents.h"
 #include "amuleIPV4Address.h"
 #include "MuleUDPSocket.h"
-#include "OtherFunctions.h"	// DeleteContents, MuleBoostVersion
+#include "OtherFunctions.h"	// DeleteContents
 #include "ScopedPtr.h"
 #include <common/Macros.h>
 

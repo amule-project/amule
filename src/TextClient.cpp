@@ -26,9 +26,10 @@
 
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for VERSION
+#else
+	#include <common/ClientVersion.h>
 #endif
 
-#include <common/ClientVersion.h>
 
 #include "TextClient.h"
 
@@ -50,6 +51,7 @@
 #include "OtherFunctions.h"
 #include "Constants.h"			// Needed for Priority Levels
 #include "DataToText.h"			// Needed for PriorityToStr
+#include "MuleVersion.h"		// Needed for GetMuleVersion()
 
 //-------------------------------------------------------------------
 

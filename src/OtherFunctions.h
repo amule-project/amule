@@ -174,20 +174,6 @@ OutputIterator STLCopy_n(InputIterator first, size_t n, OutputIterator result)
 
 
 /**
- * Returns a description of the version of aMule being used.
- *
- * @return A detailed description of the aMule version, including wx information.
- *
- * Use this rather than just using the VERSION or CURRENT_VERSION_LONG
- * constants, when displaying information to the user. The purpose is to
- * help with debugging.
- */
-wxString GetMuleVersion();
-
-extern wxString MuleBoostVersion;
-
-
-/**
  * Helperfunction for accessing a child of the calling widget.
  *
  * @param IdOrName The ID or the Name of the widget to find.

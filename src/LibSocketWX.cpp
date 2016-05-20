@@ -150,5 +150,3 @@ CamuleIPV4Endpoint & amuleIPV4Address::GetEndpoint()
 {
 	return * m_endpoint;
 }
-
-wxString MuleBoostVersion;

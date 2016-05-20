@@ -26,9 +26,10 @@
 
 #ifdef HAVE_CONFIG_H
 	#include "config.h"	// Needed for VERSION and readline detection
+#else
+	#include <common/ClientVersion.h>
 #endif
 
-#include <common/ClientVersion.h>
 #include <common/Format.h>		// Needed for CFormat
 #include <wx/tokenzr.h>		// For wxStringTokenizer
 
@@ -62,6 +63,7 @@
 #include <ec/cpp/ECFileConfig.h>	// Needed for CECFileConfig
 #include <common/MD5Sum.h>
 #include "OtherFunctions.h"		// Needed for GetPassword()
+#include "MuleVersion.h"		// Needed for GetMuleVersion()
 
 #ifdef _MSC_VER  // silly warnings about deprecated functions
 #pragma warning(disable:4996)

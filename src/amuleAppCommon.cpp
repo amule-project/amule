@@ -35,9 +35,9 @@
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>
 
-#include "amule.h"				// Interface declarations.
+#include "amule.h"			// Interface declarations.
 #include <common/Format.h>		// Needed for CFormat
-#include "CFile.h"				// Needed for CFile
+#include "CFile.h"			// Needed for CFile
 #include "ED2KLink.h"			// Needed for command line passing of links
 #include "FileLock.h"			// Needed for CFileLock
 #include "GuiEvents.h"			// Needed for Notify_*
@@ -46,6 +46,7 @@
 #include "MagnetURI.h"			// Needed for CMagnetURI
 #include "Preferences.h"
 #include "ScopedPtr.h"
+#include "MuleVersion.h"		// Needed for GetMuleVersion()
 
 #ifndef CLIENT_GUI
 #include "DownloadQueue.h"
