@@ -91,6 +91,17 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">GeoIP_X.c;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="CountryFlags.cmd">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CountryFlags.cmd</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Creating CountryFlags.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\..\src\pixmaps\flags_xpm\CountryFlags.h</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CountryFlags.cmd</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Creating CountryFlags.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\..\src\pixmaps\flags_xpm\CountryFlags.h</Outputs>
+    </CustomBuild>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
