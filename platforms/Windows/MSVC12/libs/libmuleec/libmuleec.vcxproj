@@ -147,6 +147,7 @@
     <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECSocket.cpp" />
     <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECSpecialTags.cpp" />
     <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECTag.cpp" />
+    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECUInt128.cpp" />
     <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\RemoteConnect.cpp" />
   </ItemGroup>
   <ItemGroup>

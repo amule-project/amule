@@ -188,6 +188,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\src\DataToText.cpp" />
     <ClCompile Include="..\..\..\..\src\ExternalConnector.cpp" />
     <ClCompile Include="..\..\..\..\src\LoggerConsole.cpp" />
     <ClCompile Include="..\..\..\..\src\NetworkFunctions.cpp" />
@@ -195,6 +196,7 @@
     <ClCompile Include="..\..\..\..\src\TextClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\src\DataToText.h" />
     <ClInclude Include="..\..\..\..\src\ExternalConnector.h" />
     <ClInclude Include="..\..\..\..\src\NetworkFunctions.h" />
     <ClInclude Include="..\..\..\..\src\OtherFunctions.h" />

@@ -227,6 +227,7 @@
     <ClCompile Include="..\..\..\..\src\HTTPDownload.cpp" />
     <ClCompile Include="..\..\..\..\src\IP2Country.cpp" />
     <ClCompile Include="..\..\..\..\src\KadDlg.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\utils\UInt128.cpp" />
     <ClCompile Include="..\..\..\..\src\KnownFile.cpp" />
     <ClCompile Include="..\..\..\..\src\Logger.cpp" />
     <ClCompile Include="..\..\..\..\src\MagnetURI.cpp" />
@@ -302,6 +303,7 @@
     <ClInclude Include="..\..\..\..\src\DownloadQueue.h" />
     <ClInclude Include="..\..\..\..\src\GenericClientListCtrl.h" />
     <ClInclude Include="..\..\..\..\src\include\common\MacrosProgramSpecific.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\utils\UInt128.h" />
     <ClInclude Include="..\..\..\..\src\libs\ec\cpp\ECID.h" />
     <ClInclude Include="..\..\..\..\src\ED2KLink.h" />
     <ClInclude Include="..\..\..\..\src\EditServerListDlg.h" />

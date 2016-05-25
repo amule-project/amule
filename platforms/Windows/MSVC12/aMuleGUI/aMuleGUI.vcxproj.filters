@@ -236,6 +236,9 @@
     <ClCompile Include="..\..\..\..\src\ClientRef.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\kademlia\utils\UInt128.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\PCH.h">
@@ -554,6 +557,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\ClientRef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\kademlia\utils\UInt128.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
