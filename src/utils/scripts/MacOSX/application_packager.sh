@@ -29,6 +29,13 @@ if [ -z $SRC_FOLDER ]; then
 	SRC_FOLDER="./"
 fi
 
+# Ensure empty directories exist
+for pkg in aMule.app aMuleGUI.app ; do
+	for d in Frameworks MacOS SharedSupport SharedSupport/locale ; do
+		[ -d $pkg/Contents/$d ] || mkdir $pkg/Contents/$d
+	done
+done
+
 echo ""
 echo -n "Step 1: Cleaning bundles... "
 rm aMule.app/Contents/Frameworks/libwx_* aMule.app/Contents/MacOS/* 1> /dev/null 2> /dev/null
