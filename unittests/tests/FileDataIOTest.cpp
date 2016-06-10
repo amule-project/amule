@@ -335,13 +335,13 @@ public:
 
 	void run() {
 		const unsigned char CanaryData = 170;
-		const char canaryBlock[] = { CanaryData };
+		const unsigned char canaryBlock[] = { CanaryData };
 
 		CFileDataIO* file = this->m_predefFile;
 
 		for (size_t j = 0; j < TEST_LENGTH + 1 - SIZE; ++j) {
 			// Clear before, after and at the target byte(s)
-			for (int t = -SIZE; t < (int)(2*SIZE); ++t) {
+			for (int t = -static_cast<int>(SIZE); t < (int)(2*SIZE); ++t) {
 				if ((j + t) < TEST_LENGTH && ((int)j + t) >= 0) {
 					file->Seek(j + t, wxFromStart);
 					ASSERT_EQUALS(j + t, file->GetPosition());
@@ -362,7 +362,7 @@ public:
 			ASSERT_EQUALS(j + SIZE, file->GetPosition());
 
 			// Check before, after and at the target byte
-			for (int t = -SIZE; t < (int)(2*SIZE); ++t) {
+			for (int t = -static_cast<int>(SIZE); t < (int)(2*SIZE); ++t) {
 				if ((j + t) < TEST_LENGTH && ((int)j + t) >= 0) {
 					if (t) {
 						if (t < 0 || t >= (int)SIZE) {
