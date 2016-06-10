@@ -534,7 +534,7 @@ public:
 			CONTEXT(wxString(wxT("Testing string: '")) << testData[str].str << wxT("'"));
 
 			for (size_t enc = 0; enc < ArraySize(encodings); ++enc) {
-				CONTEXT(wxString::Format(wxT("Testing encoding: %i"), encodings[enc]));
+				CONTEXT(wxString::Format(wxT("Testing encoding: %i"), encodings[enc].id));
 
 				const wxChar* curStr = testData[str].str;
 				size_t strLen = testData[str].lengths[(encodings[enc].id == utf8strNone) ? 0 : 1];
@@ -577,7 +577,7 @@ public:
 
 		CAssertOff silence;
 		for (size_t enc = 0; enc < ArraySize(encodings); ++enc) {
-			CONTEXT(wxString::Format(wxT("Testing encoding against poisoning: %i"), encodings[enc]));
+			CONTEXT(wxString::Format(wxT("Testing encoding against poisoning: %i"), encodings[enc].id));
 
 			//////////////////////////////////////////////
 			// Check if we guard against "poisoning".

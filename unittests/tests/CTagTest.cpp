@@ -391,7 +391,7 @@ TEST_M(CTag, CMD4Hash, wxT("Kad: Read/Write CMD4Hash"))
 	TagPtrList::iterator it = taglist.begin();
 
 	CMD4Hash hash;
-	ASSERT_TRUE(hash.Decode("000102030405060708090A0B0C0D0E0F"));
+	ASSERT_TRUE(hash.Decode(std::string("000102030405060708090A0B0C0D0E0F")));
 
 	CheckTagData(*it++, TAG_SOURCETYPE, valid_tag_value(hash));
 
