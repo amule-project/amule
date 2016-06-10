@@ -157,7 +157,7 @@ void DecodeSourceIndexDat(const CFileDataIO& file)
 			cout << "\n\t\tnumName : " << (numName = file.ReadUInt32()) << '\n';
 			for (uint32_t iN = 0; iN < numName; iN++) {
 				cout << "\t\t\tLifeTime: " << CTimeT(file.ReadUInt32());
-				cout << "\n\t\t\ttagCount: " << (tagCount = file.ReadUInt8()) << '\n';
+				cout << "\n\t\t\ttagCount: " << static_cast<unsigned int>(tagCount = file.ReadUInt8()) << '\n';
 				for (uint32_t it = 0; it < tagCount; it++) {
 					CTag *tag = file.ReadTag();
 					cout << "\t\t\t\t" << *tag << '\n';
