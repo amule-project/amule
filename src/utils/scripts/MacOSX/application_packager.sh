@@ -110,6 +110,7 @@ for i in $( ls Frameworks | grep -v CVS); do
 		`otool -L MacOS/amulecmd | grep $i | cut -d " " -f 1` \
 		@executable_path/../Frameworks/$i MacOS/amulecmd 1> /dev/null 2> /dev/null
 done
+popd
 pushd aMuleGUI.app/Contents/
 for i in $( ls Frameworks | grep -v CVS); do
 	echo "    Updating $i"
