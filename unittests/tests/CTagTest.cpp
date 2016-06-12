@@ -275,7 +275,7 @@ void test_taglist_serialization(TagPtrList& taglist, byte* packet, uint64 packet
 	}
 
 	for (uint64 i = 0; i < packet_len; i++) {
-		CONTEXT(wxString::Format(wxT("Comparing serialized byte #%d"), i));
+		CONTEXT(wxString::Format(wxT("Comparing serialized byte #%") wxLongLongFmtSpec wxT("u"), i));
 
 		ASSERT_EQUALS(packet[i], buf[i]);
 	}
@@ -421,7 +421,7 @@ void check_single_kad_tag(byte* packet, size_t packet_len, T tagName, V tagValue
 
 		newbuf.Seek(0, wxFromStart);
 		for (size_t i = 0; i < packet_len; i++) {
-			CONTEXT(wxString::Format(wxT("Comparing byte #%d"), i));
+			CONTEXT(wxString::Format(wxT("Comparing byte #%d"), static_cast<int>(i)));
 
 			ASSERT_EQUALS(packet[i], newbuf.ReadUInt8());
 		}
@@ -664,7 +664,7 @@ TEST_M(CTag, ED2kTagNames, wxT("Ed2k: Test ed2k tags (name=id) - write/read ever
 
 	counter = 0;
 	for (TagNamesByInt::iterator it_name = tagNames.begin(); it_name != tagNames.end(); ++it_name) {
-		CONTEXT(wxString::Format(wxT("Reading tag#%d"), counter));
+		CONTEXT(wxString::Format(wxT("Reading tag#%") wxLongLongFmtSpec wxT("u"), counter));
 		CTag* newtag = new CTag(buf, true);
 		CheckTagName(it_name->first, newtag);
 		CheckTagValue( valid_tag_value( counter ), newtag);

@@ -60,7 +60,7 @@ const wxString& TestCase::getName() const
 
 bool TestCase::run()
 {
-	Print(wxT("\nRunning test-collection \"") + m_name + wxString::Format(wxT("\" with %u test-cases:"), m_tests.size()));
+	Print(wxT("\nRunning test-collection \"") + m_name + wxString::Format(wxT("\" with %u test-cases:"), static_cast<unsigned int>(m_tests.size())));
 
 	bool failures = false;
 
