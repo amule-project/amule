@@ -3,7 +3,6 @@ dnl Author:          wxWidgets development team,
 dnl                  Francesco Montorsi,
 dnl                  Bob McCown (Mac-testing)
 dnl Creation date:   24/11/2001
-dnl RCS-ID:          $Id$
 dnl ---------------------------------------------------------------------------
 
 dnl ===========================================================================
@@ -122,7 +121,7 @@ dnl wx_ver_ok=yes if it is:
 AC_DEFUN([_WX_PRIVATE_CHECK_VERSION],
 [
     wx_ver_ok=""
-    if test "x$WX_VERSION_FULL" != x ; then
+    if test "x$WX_VERSION" != x ; then
       if test $wx_config_major_version -gt $1; then
         wx_ver_ok=yes
       else
@@ -152,9 +151,9 @@ dnl to use. Set WX_CONFIG_PATH to specify the full path to wx-config - in this
 dnl case the macro won't even waste time on tests for its existence.
 dnl
 dnl Optional WX-LIBS argument contains comma- or space-separated list of
-dnl wxWidgets libraries to link against (it may include contrib libraries). If
-dnl it is not specified then WX_LIBS and WX_LIBS_STATIC will contain flags to
-dnl link with all of the core wxWidgets libraries.
+dnl wxWidgets libraries to link against. If it is not specified then WX_LIBS
+dnl and WX_LIBS_STATIC will contain flags to link with all of the core
+dnl wxWidgets libraries.
 dnl
 dnl Optional ADDITIONAL-WX-CONFIG-FLAGS argument is appended to wx-config
 dnl invocation command in present. It can be used to fine-tune lookup of
@@ -202,23 +201,25 @@ AC_DEFUN([WX_CONFIG_CHECK],
   fi
 
   if test "$WX_CONFIG_PATH" != "no" ; then
-    WX_VERSION_FULL=""
+    WX_VERSION=""
 
-    min_wx_version=ifelse([$1], ,2.8.0,$1)
+    min_wx_version=ifelse([$1], ,2.2.1,$1)
     if test -z "$5" ; then
       AC_MSG_CHECKING([for wxWidgets version >= $min_wx_version])
     else
       AC_MSG_CHECKING([for wxWidgets version >= $min_wx_version ($5)])
     fi
 
-    WX_CONFIG_WITH_ARGS="$WX_CONFIG_PATH $wx_config_args $5 $4"
+    dnl don't add the libraries ($4) to this variable as this would result in
+    dnl an error when it's used with --version below
+    WX_CONFIG_WITH_ARGS="$WX_CONFIG_PATH $wx_config_args $5"
 
-    WX_VERSION_FULL=`$WX_CONFIG_WITH_ARGS --version 2>/dev/null`
-    wx_config_major_version=`echo $WX_VERSION_FULL | \
+    WX_VERSION=`$WX_CONFIG_WITH_ARGS --version 2>/dev/null`
+    wx_config_major_version=`echo $WX_VERSION | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-    wx_config_minor_version=`echo $WX_VERSION_FULL | \
+    wx_config_minor_version=`echo $WX_VERSION | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-    wx_config_micro_version=`echo $WX_VERSION_FULL | \
+    wx_config_micro_version=`echo $WX_VERSION | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
 
     wx_requested_major_version=`echo $min_wx_version | \
@@ -233,34 +234,91 @@ AC_DEFUN([WX_CONFIG_CHECK],
                               [$wx_requested_micro_version])
 
     if test -n "$wx_ver_ok"; then
+      AC_MSG_RESULT(yes (version $WX_VERSION))
+      WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs $4`
 
-      AC_MSG_RESULT(yes (version $WX_VERSION_FULL))
-      WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`
+      dnl is this even still appropriate?  --static is a real option now
+      dnl and WX_CONFIG_WITH_ARGS is likely to contain it if that is
+      dnl what the user actually wants, making this redundant at best.
+      dnl For now keep it in case anyone actually used it in the past.
+      AC_MSG_CHECKING([for wxWidgets static library])
+      WX_LIBS_STATIC=`$WX_CONFIG_WITH_ARGS --static --libs $4 2>/dev/null`
+      if test "x$WX_LIBS_STATIC" = "x"; then
+        AC_MSG_RESULT(no)
+      else
+        AC_MSG_RESULT(yes)
+      fi
 
-      WX_RESCOMP=`$WX_CONFIG_WITH_ARGS --rescomp`
+      dnl starting with version 2.2.6 wx-config has --cppflags argument
+      wx_has_cppflags=""
+      if test $wx_config_major_version -gt 2; then
+        wx_has_cppflags=yes
+      else
+        if test $wx_config_major_version -eq 2; then
+           if test $wx_config_minor_version -gt 2; then
+              wx_has_cppflags=yes
+           else
+              if test $wx_config_minor_version -eq 2; then
+                 if test $wx_config_micro_version -ge 6; then
+                    wx_has_cppflags=yes
+                 fi
+              fi
+           fi
+        fi
+      fi
 
-      WX_CPPFLAGS=`$WX_CONFIG_WITH_ARGS --cppflags`
-      WX_CXXFLAGS=`$WX_CONFIG_WITH_ARGS --cxxflags`
-      WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags`
+      dnl starting with version 2.7.0 wx-config has --rescomp option
+      wx_has_rescomp=""
+      if test $wx_config_major_version -gt 2; then
+        wx_has_rescomp=yes
+      else
+        if test $wx_config_major_version -eq 2; then
+           if test $wx_config_minor_version -ge 7; then
+              wx_has_rescomp=yes
+           fi
+        fi
+      fi
+      if test "x$wx_has_rescomp" = x ; then
+         dnl cannot give any useful info for resource compiler
+         WX_RESCOMP=
+      else
+         WX_RESCOMP=`$WX_CONFIG_WITH_ARGS --rescomp`
+      fi
 
-      WX_CFLAGS_ONLY=`echo $WX_CFLAGS | sed "s@^$WX_CPPFLAGS *@@"`
-      WX_CXXFLAGS_ONLY=`echo $WX_CXXFLAGS | sed "s@^$WX_CFLAGS *@@"`
+      if test "x$wx_has_cppflags" = x ; then
+         dnl no choice but to define all flags like CFLAGS
+         WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags $4`
+         WX_CPPFLAGS=$WX_CFLAGS
+         WX_CXXFLAGS=$WX_CFLAGS
+
+         WX_CFLAGS_ONLY=$WX_CFLAGS
+         WX_CXXFLAGS_ONLY=$WX_CFLAGS
+      else
+         dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
+         WX_CPPFLAGS=`$WX_CONFIG_WITH_ARGS --cppflags $4`
+         WX_CXXFLAGS=`$WX_CONFIG_WITH_ARGS --cxxflags $4`
+         WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags $4`
+
+         WX_CFLAGS_ONLY=`echo $WX_CFLAGS | sed "s@^$WX_CPPFLAGS *@@"`
+         WX_CXXFLAGS_ONLY=`echo $WX_CXXFLAGS | sed "s@^$WX_CFLAGS *@@"`
+      fi
 
       ifelse([$2], , :, [$2])
 
     else
 
-       if test "x$WX_VERSION_FULL" = x; then
+       if test "x$WX_VERSION" = x; then
           dnl no wx-config at all
           AC_MSG_RESULT(no)
        else
-          AC_MSG_RESULT(no (version $WX_VERSION_FULL is not new enough))
+          AC_MSG_RESULT(no (version $WX_VERSION is not new enough))
        fi
 
        WX_CFLAGS=""
        WX_CPPFLAGS=""
        WX_CXXFLAGS=""
        WX_LIBS=""
+       WX_LIBS_STATIC=""
        WX_RESCOMP=""
 
        if test ! -z "$5"; then
@@ -296,6 +354,7 @@ AC_DEFUN([WX_CONFIG_CHECK],
     WX_CPPFLAGS=""
     WX_CXXFLAGS=""
     WX_LIBS=""
+    WX_LIBS_STATIC=""
     WX_RESCOMP=""
 
     ifelse([$3], , :, [$3])
@@ -308,15 +367,18 @@ AC_DEFUN([WX_CONFIG_CHECK],
   AC_SUBST(WX_CFLAGS_ONLY)
   AC_SUBST(WX_CXXFLAGS_ONLY)
   AC_SUBST(WX_LIBS)
-  AC_SUBST(WX_VERSION_FULL)
+  AC_SUBST(WX_LIBS_STATIC)
+  AC_SUBST(WX_VERSION)
   AC_SUBST(WX_RESCOMP)
 
   dnl need to export also WX_VERSION_MINOR and WX_VERSION_MAJOR symbols
-  dnl to support wxpresets bakefiles
+  dnl to support wxpresets bakefiles (we export also WX_VERSION_MICRO for completeness):
   WX_VERSION_MAJOR="$wx_config_major_version"
   WX_VERSION_MINOR="$wx_config_minor_version"
+  WX_VERSION_MICRO="$wx_config_micro_version"
   AC_SUBST(WX_VERSION_MAJOR)
   AC_SUBST(WX_VERSION_MINOR)
+  AC_SUBST(WX_VERSION_MICRO)
 ])
 
 dnl ---------------------------------------------------------------------------
@@ -409,7 +471,7 @@ dnl wxWidgets rule.
 dnl E.g. for output-var=='lib', name=='test', prefix='mine', sets
 dnl      the $lib variable to:
 dnl          'mine_gtk2ud_test-2.8'
-dnl      if WX_PORT=gtk2, WX_UNICODE=1, WX_DEBUG=1 and WX_VERSION=28
+dnl      if WX_PORT=gtk2, WX_UNICODE=1, WX_DEBUG=1 and WX_RELEASE=28
 dnl ---------------------------------------------------------------------------
 AC_DEFUN([WX_LIKE_LIBNAME],
     [
@@ -457,7 +519,7 @@ AC_DEFUN([WX_ARG_ENABLE_YESNOAUTO],
                 $2=0
             elif test "$enableval" = "auto" ; then
                 AC_MSG_RESULT([will be automatically detected])
-                $2="auto"
+                $2=""
             else
                 AC_MSG_ERROR([
     Unrecognized option value (allowed values: yes, no, auto)
@@ -483,7 +545,7 @@ AC_DEFUN([WX_ARG_WITH_YESNOAUTO],
                 $2=0
             elif test "$withval" = "auto" ; then
                 AC_MSG_RESULT([will be automatically detected])
-                $2="auto"
+                $2=""
             else
                 AC_MSG_ERROR([
     Unrecognized option value (allowed values: yes, auto)
@@ -497,7 +559,8 @@ dnl WX_STANDARD_OPTIONS([options-to-add])
 dnl
 dnl Adds to the configure script one or more of the following options:
 dnl   --enable-[debug|unicode|shared|wxshared|wxdebug]
-dnl   --with-[gtk|msw|motif|x11|mac|mgl|dfb]
+dnl   --with-[gtk|msw|motif|x11|mac|dfb]
+dnl   --with-wxversion
 dnl Then checks for their presence and eventually set the DEBUG, UNICODE, SHARED,
 dnl PORT, WX_SHARED, WX_DEBUG, variables to one of the "yes", "no", "auto" values.
 dnl
@@ -511,6 +574,7 @@ AC_DEFUN([WX_STANDARD_OPTIONS],
         dnl the following lines will expand to WX_ARG_ENABLE_YESNOAUTO calls if and only if
         dnl the $1 argument contains respectively the debug,unicode or shared options.
 
+        dnl be careful here not to set debug flag if only "wxdebug" was specified
         ifelse(regexp([$1], [\bdebug]), [-1],,
                [WX_ARG_ENABLE_YESNOAUTO([debug], [DEBUG], [Build in debug mode], [auto])])
 
@@ -533,19 +597,17 @@ AC_DEFUN([WX_STANDARD_OPTIONS],
                 AC_MSG_CHECKING([for the --with-toolkit option])
                 if test "$withval" = "auto" ; then
                     AC_MSG_RESULT([will be automatically detected])
-                    TOOLKIT="auto"
+                    TOOLKIT=""
                 else
                     TOOLKIT="$withval"
 
                     dnl PORT must be one of the allowed values
-                    if test "$TOOLKIT" != "gtk1" -a "$TOOLKIT" != "gtk2" -a \
+                    if test "$TOOLKIT" != "gtk1" -a "$TOOLKIT" != "gtk2" -a "$TOOLKIT" != "gtk3" -a \
                             "$TOOLKIT" != "msw" -a "$TOOLKIT" != "motif" -a \
-                            "$TOOLKIT" != "x11" -a "$TOOLKIT" != "mac" -a \
-                            "$TOOLKIT" != "mgl" -a "$TOOLKIT" != "dfb" -a \
-                            "$TOOLKIT" != "base" -a "$TOOLKIT" != "cocoa" -a \
-                            "$TOOLKIT" != "osx_cocoa"; then
+                            "$TOOLKIT" != "osx_carbon" -a "$TOOLKIT" != "osx_cocoa" -a \
+                            "$TOOLKIT" != "dfb" -a "$TOOLKIT" != "x11"; then
                         AC_MSG_ERROR([
-    Unrecognized option value (allowed values: auto, gtk1, gtk2, msw, motif, x11, mac, mgl, dfb, base, cocoa, osx_cocoa)
+    Unrecognized option value (allowed values: auto, gtk1, gtk2, gtk3, msw, motif, osx_carbon, osx_cocoa, dfb, x11)
                         ])
                     fi
 
@@ -597,7 +659,7 @@ AC_DEFUN([WX_STANDARD_OPTIONS],
                ])
 
         dnl WX_ARG_WITH_YESNOAUTO cannot be used for --with-wxversion since it's an option
-        dnl which must be able to accept the auto|28|29... values
+        dnl which accepts the "auto|2.6|2.7|2.8|2.9|3.0" etc etc values
         ifelse(index([$1], [wxversion]), [-1],,
                [
                 AC_ARG_WITH([wxversion],
@@ -609,7 +671,7 @@ AC_DEFUN([WX_STANDARD_OPTIONS],
                 AC_MSG_CHECKING([for the --with-wxversion option])
                 if test "$withval" = "auto" ; then
                     AC_MSG_RESULT([will be automatically detected])
-                    WX_VERSION="auto"
+                    WX_RELEASE=""
                 else
 
                     wx_requested_major_version=`echo $withval | \
@@ -621,12 +683,12 @@ AC_DEFUN([WX_STANDARD_OPTIONS],
                     if test "${#wx_requested_major_version}" != "1" -o \
                             "${#wx_requested_minor_version}" != "1" ; then
                         AC_MSG_ERROR([
-    Unrecognized option value (allowed values: auto, 2.8, 2.9)
+    Unrecognized option value (allowed values: auto, 2.6, 2.7, 2.8, 2.9, 3.0)
                         ])
                     fi
 
-                    WX_VERSION="$wx_requested_major_version"".""$wx_requested_minor_version"
-                    AC_MSG_RESULT([$WX_VERSION])
+                    WX_RELEASE="$wx_requested_major_version"".""$wx_requested_minor_version"
+                    AC_MSG_RESULT([$WX_RELEASE])
                 fi
                ])
 
@@ -635,7 +697,7 @@ AC_DEFUN([WX_STANDARD_OPTIONS],
             echo "[[dbg]] UNICODE: $UNICODE, WX_UNICODE: $WX_UNICODE"
             echo "[[dbg]] SHARED: $SHARED, WX_SHARED: $WX_SHARED"
             echo "[[dbg]] TOOLKIT: $TOOLKIT, WX_TOOLKIT: $WX_TOOLKIT"
-            echo "[[dbg]] VERSION: $VERSION, WX_VERSION: $WX_VERSION"
+            echo "[[dbg]] VERSION: $VERSION, WX_RELEASE: $WX_RELEASE"
         fi
     ])
 
@@ -644,7 +706,7 @@ dnl ---------------------------------------------------------------------------
 dnl WX_CONVERT_STANDARD_OPTIONS_TO_WXCONFIG_FLAGS
 dnl
 dnl Sets the WXCONFIG_FLAGS string using the SHARED,DEBUG,UNICODE variable values
-dnl which are different from "auto".
+dnl which were specified.
 dnl Thus this macro needs to be called only once all options have been set.
 dnl ---------------------------------------------------------------------------
 AC_DEFUN([WX_CONVERT_STANDARD_OPTIONS_TO_WXCONFIG_FLAGS],
@@ -668,12 +730,12 @@ AC_DEFUN([WX_CONVERT_STANDARD_OPTIONS_TO_WXCONFIG_FLAGS],
             WXCONFIG_FLAGS="$WXCONFIG_FLAGS""--unicode=no "
         fi
 
-        if test "$TOOLKIT" != "auto" ; then
+        if test -n "$TOOLKIT" ; then
             WXCONFIG_FLAGS="$WXCONFIG_FLAGS""--toolkit=$TOOLKIT "
         fi
 
-        if test "$WX_VERSION" != "auto" ; then
-            WXCONFIG_FLAGS="$WXCONFIG_FLAGS""--version=$WX_VERSION "
+        if test -n "$WX_RELEASE" ; then
+            WXCONFIG_FLAGS="$WXCONFIG_FLAGS""--version=$WX_RELEASE "
         fi
 
         dnl strip out the last space of the string
@@ -686,16 +748,16 @@ AC_DEFUN([WX_CONVERT_STANDARD_OPTIONS_TO_WXCONFIG_FLAGS],
 
 
 dnl ---------------------------------------------------------------------------
-dnl _WX_SELECTEDCONFIG_CHECKFOR([RESULTVAR], [STRING], [MSG]
-dnl                             [, ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl _WX_SELECTEDCONFIG_CHECKFOR([RESULTVAR], [STRING], [MSG])
 dnl
-dnl Outputs the given MSG. Then searches the given STRING in the wxWidgets
-dnl additional CPP flags and put the result of the search in WX_$RESULTVAR
-dnl also adding the "yes" or "no" message result to MSG.
+dnl Sets WX_$RESULTVAR to the value of $RESULTVAR if it's defined. Otherwise,
+dnl auto-detect the value by checking for the presence of STRING in
+dnl $WX_SELECTEDCONFIG (which is supposed to be set by caller) and set
+dnl WX_$RESULTVAR to either 0 or 1, also outputting "yes" or "no" after MSG.
 dnl ---------------------------------------------------------------------------
 AC_DEFUN([_WX_SELECTEDCONFIG_CHECKFOR],
         [
-        if test "$$1" = "auto" ; then
+        if test -z "$$1" ; then
 
             dnl The user does not have particular preferences for this option;
             dnl so we will detect the wxWidgets relative build setting and use it
@@ -710,11 +772,9 @@ AC_DEFUN([_WX_SELECTEDCONFIG_CHECKFOR],
             if test "$WX_$1" != "0"; then
                 WX_$1=1
                 AC_MSG_RESULT([yes])
-                ifelse([$4], , :, [$4])
             else
                 WX_$1=0
                 AC_MSG_RESULT([no])
-                ifelse([$5], , :, [$5])
             fi
         else
 
@@ -727,7 +787,7 @@ dnl ---------------------------------------------------------------------------
 dnl WX_DETECT_STANDARD_OPTION_VALUES
 dnl
 dnl Detects the values of the following variables:
-dnl 1) WX_VERSION
+dnl 1) WX_RELEASE
 dnl 2) WX_UNICODE
 dnl 3) WX_DEBUG
 dnl 4) WX_SHARED    (and also WX_STATIC)
@@ -740,7 +800,17 @@ dnl by WX_CONFIG_CHECK macro
 dnl ---------------------------------------------------------------------------
 AC_DEFUN([WX_DETECT_STANDARD_OPTION_VALUES],
         [
-        WX_VERSION="$WX_VERSION_MAJOR""$WX_VERSION_MINOR"
+        dnl IMPORTANT: WX_VERSION contains all three major.minor.micro digits,
+        dnl            while WX_RELEASE only the major.minor ones.
+        WX_RELEASE="$WX_VERSION_MAJOR""$WX_VERSION_MINOR"
+        if test $WX_RELEASE -lt 26 ; then
+
+            AC_MSG_ERROR([
+    Cannot detect the wxWidgets configuration for the selected wxWidgets build
+    since its version is $WX_VERSION < 2.6.0; please install a newer
+    version of wxWidgets.
+                         ])
+        fi
 
         dnl The wx-config we are using understands the "--selected_config"
         dnl option which returns an easy-parseable string !
@@ -751,19 +821,16 @@ AC_DEFUN([WX_DETECT_STANDARD_OPTION_VALUES],
             echo "[[dbg]] WX_SELECTEDCONFIG: $WX_SELECTEDCONFIG"
         fi
 
-
         dnl we could test directly for WX_SHARED with a line like:
         dnl    _WX_SELECTEDCONFIG_CHECKFOR([SHARED], [shared],
         dnl                                [if wxWidgets was built in SHARED mode])
         dnl but wx-config --selected-config DOES NOT outputs the 'shared'
         dnl word when wx was built in shared mode; it rather outputs the
         dnl 'static' word when built in static mode.
-        if test $WX_SHARED = "1"; then
+        if test "$WX_SHARED" = "1"; then
             STATIC=0
-        elif test $WX_SHARED = "0"; then
+        elif test "$WX_SHARED" = "0"; then
             STATIC=1
-        elif test $WX_SHARED = "auto"; then
-            STATIC="auto"
         fi
 
         dnl Now set the WX_UNICODE, WX_DEBUG, WX_STATIC variables
@@ -786,7 +853,7 @@ AC_DEFUN([WX_DETECT_STANDARD_OPTION_VALUES],
         AC_SUBST(WX_SHARED)
 
         dnl detect the WX_PORT to use
-        if test "$TOOLKIT" = "auto" ; then
+        if test -z "$TOOLKIT" ; then
 
             dnl The user does not have particular preferences for this option;
             dnl so we will detect the wxWidgets relative build setting and use it
@@ -794,28 +861,29 @@ AC_DEFUN([WX_DETECT_STANDARD_OPTION_VALUES],
 
             WX_GTKPORT1=$(expr "$WX_SELECTEDCONFIG" : ".*gtk1.*")
             WX_GTKPORT2=$(expr "$WX_SELECTEDCONFIG" : ".*gtk2.*")
+            WX_GTKPORT3=$(expr "$WX_SELECTEDCONFIG" : ".*gtk3.*")
             WX_MSWPORT=$(expr "$WX_SELECTEDCONFIG" : ".*msw.*")
             WX_MOTIFPORT=$(expr "$WX_SELECTEDCONFIG" : ".*motif.*")
-            WX_MACPORT=$(expr "$WX_SELECTEDCONFIG" : ".*mac.*")
-            WX_X11PORT=$(expr "$WX_SELECTEDCONFIG" : ".*x11.*")
-            WX_MGLPORT=$(expr "$WX_SELECTEDCONFIG" : ".*mgl.*")
-            WX_DFBPORT=$(expr "$WX_SELECTEDCONFIG" : ".*dfb.*")
-            WX_BASEPORT=$(expr "$WX_SELECTEDCONFIG" : ".*base.*")
-            WX_COCOAPORT=$(expr "$WX_SELECTEDCONFIG" : ".*cocoa.*")
             WX_OSXCOCOAPORT=$(expr "$WX_SELECTEDCONFIG" : ".*osx_cocoa.*")
+            WX_OSXCARBONPORT=$(expr "$WX_SELECTEDCONFIG" : ".*osx_carbon.*")
+            WX_X11PORT=$(expr "$WX_SELECTEDCONFIG" : ".*x11.*")
+            WX_DFBPORT=$(expr "$WX_SELECTEDCONFIG" : ".*dfb.*")
 
             WX_PORT="unknown"
             if test "$WX_GTKPORT1" != "0"; then WX_PORT="gtk1"; fi
             if test "$WX_GTKPORT2" != "0"; then WX_PORT="gtk2"; fi
+            if test "$WX_GTKPORT3" != "0"; then WX_PORT="gtk3"; fi
             if test "$WX_MSWPORT" != "0"; then WX_PORT="msw"; fi
             if test "$WX_MOTIFPORT" != "0"; then WX_PORT="motif"; fi
-            if test "$WX_MACPORT" != "0"; then WX_PORT="mac"; fi
-            if test "$WX_X11PORT" != "0"; then WX_PORT="x11"; fi
-            if test "$WX_MGLPORT" != "0"; then WX_PORT="mgl"; fi
-            if test "$WX_DFBPORT" != "0"; then WX_PORT="dfb"; fi
-            if test "$WX_BASEPORT" != "0"; then WX_PORT="base"; fi
-            if test "$WX_COCOAPORT" != "0"; then WX_PORT="cocoa"; fi
             if test "$WX_OSXCOCOAPORT" != "0"; then WX_PORT="osx_cocoa"; fi
+            if test "$WX_OSXCARBONPORT" != "0"; then WX_PORT="osx_carbon"; fi
+            if test "$WX_X11PORT" != "0"; then WX_PORT="x11"; fi
+            if test "$WX_DFBPORT" != "0"; then WX_PORT="dfb"; fi
+
+            dnl NOTE: backward-compatible check for wx2.8; in wx2.9 the mac
+            dnl       ports are called 'osx_cocoa' and 'osx_carbon' (see above)
+            WX_MACPORT=$(expr "$WX_SELECTEDCONFIG" : ".*mac.*")
+            if test "$WX_MACPORT" != "0"; then WX_PORT="mac"; fi
 
             dnl check at least one of the WX_*PORT has been set !
 
@@ -828,14 +896,8 @@ AC_DEFUN([WX_DETECT_STANDARD_OPTION_VALUES],
 
             AC_MSG_RESULT([$WX_PORT])
         else
-
             dnl Use the setting given by the user
-            if test -n "$TOOLKIT" ; then
-                WX_PORT=$TOOLKIT
-            else
-                dnl try with PORT
-                WX_PORT=$PORT
-            fi
+            WX_PORT=$TOOLKIT
         fi
 
         AC_SUBST(WX_PORT)
@@ -845,7 +907,7 @@ AC_DEFUN([WX_DETECT_STANDARD_OPTION_VALUES],
             echo "[[dbg]] WX_DEBUG: $WX_DEBUG"
             echo "[[dbg]] WX_UNICODE: $WX_UNICODE"
             echo "[[dbg]] WX_SHARED: $WX_SHARED"
-            echo "[[dbg]] WX_VERSION: $WX_VERSION"
+            echo "[[dbg]] WX_RELEASE: $WX_RELEASE"
             echo "[[dbg]] WX_PORT: $WX_PORT"
         fi
 
@@ -866,26 +928,31 @@ AC_DEFUN([WX_DETECT_STANDARD_OPTION_VALUES],
                          ])
         fi
 
-        dnl now we can finally update the DEBUG,UNICODE,SHARED options
-        dnl to their final values if they were set to 'auto'
-        if test "$DEBUG" = "auto"; then
-            DEBUG=$WX_DEBUG
-
-            dnl in case user wants a BUILD=debug/release var...
-            if test "$DEBUG" = "1"; then
-                BUILD="debug"
-            elif test "$DEBUG" = ""; then
-                BUILD="release"
-            fi
-        fi
-        if test "$UNICODE" = "auto"; then
+        dnl now we can finally update the options to their final values if they
+        dnl were not already set
+        if test -z "$UNICODE" ; then
             UNICODE=$WX_UNICODE
         fi
-        if test "$SHARED" = "auto"; then
+        if test -z "$SHARED" ; then
             SHARED=$WX_SHARED
         fi
-        if test "$TOOLKIT" = "auto"; then
+        if test -z "$TOOLKIT" ; then
             TOOLKIT=$WX_PORT
+        fi
+
+        dnl respect the DEBUG variable adding the optimize/debug flags and also
+        dnl define a BUILD variable in case the user wants to use it
+        dnl
+        dnl NOTE: the CXXFLAGS are merged together with the CPPFLAGS so we
+        dnl       don't need to set them, too
+        if test "$DEBUG" = "1"; then
+            BUILD="debug"
+            CXXFLAGS="$CXXFLAGS -g -O0"
+            CFLAGS="$CFLAGS -g -O0"
+        elif test "$DEBUG" = "0"; then
+            BUILD="release"
+            CXXFLAGS="$CXXFLAGS -O2"
+            CFLAGS="$CFLAGS -O2"
         fi
     ])
 
@@ -926,7 +993,7 @@ AC_DEFUN([WX_STANDARD_OPTIONS_SUMMARY_MSG],
         WX_BOOLOPT_SUMMARY([WX_DEBUG],   ["  - DEBUG build"],  ["  - RELEASE build"])
         WX_BOOLOPT_SUMMARY([WX_UNICODE], ["  - UNICODE mode"], ["  - ANSI mode"])
         WX_BOOLOPT_SUMMARY([WX_SHARED],  ["  - SHARED mode"],  ["  - STATIC mode"])
-        echo "  - VERSION: $WX_VERSION_FULL"
+        echo "  - VERSION: $WX_VERSION"
         echo "  - PORT: $WX_PORT"
     ])
 
@@ -974,5 +1041,4 @@ AC_DEFUN([AM_OPTIONS_WXCONFIG], [WX_CONFIG_OPTIONS])
 AC_DEFUN([AM_PATH_WXCONFIG], [
     WX_CONFIG_CHECK([$1],[$2],[$3],[$4],[$5])
 ])
-
-
+AC_DEFUN([AM_PATH_WXRC], [WXRC_CHECK([$1],[$2])])
