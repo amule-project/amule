@@ -106,10 +106,12 @@ bool CMuleNotebook::DeleteAllPages()
 {
 	Freeze();
 
-	bool result = true;
-	while ( GetPageCount() ) {
-		result &= DeletePage( 0 );
-	}
+	bool result = wxNotebook::DeleteAllPages();
+
+	// Send an event when no pages are left open
+	wxNotebookEvent event( wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED, GetId() );
+	event.SetEventObject(this);
+	ProcessEvent( event );
 
 	Thaw();
 
