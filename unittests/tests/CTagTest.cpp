@@ -576,7 +576,8 @@ TEST_M(CTag, KadTagNames, wxT("Kad: Test Kad tags (name=string) - write/read eve
 		buf.WriteUInt8(0x01); // single char string
 		buf.WriteUInt8(0x00); //
 
-		buf.WriteUInt8(it_name->first.GetChar(0)); // Write string first char
+		wxCharBuffer b = wxConvISO8859_1.cWC2MB(it_name->first);
+		buf.WriteUInt8(((const char *)b)[0]); // Write string first char
 		buf.WriteUInt8(counter++); // write tag value
 	}
 
