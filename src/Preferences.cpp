@@ -1476,7 +1476,7 @@ void CPreferences::Save()
 	CTextFile sdirfile;
 	if (sdirfile.Open(s_configDir + wxT("shareddir.dat"), CTextFile::write)) {
 		for (size_t i = 0; i < shareddir_list.size(); ++i) {
-			sdirfile.WriteLine(CPath::ToUniv(shareddir_list[i]), wxConvUTF8);
+			sdirfile.WriteLine(shareddir_list[i].GetRaw(), wxConvUTF8);
 		}
 
 	}
@@ -1784,12 +1784,12 @@ void CPreferences::ReloadSharedFolders()
 		wxArrayString lines = file.ReadLines(txtReadDefault, wxConvUTF8);
 
 		for (size_t i = 0; i < lines.size(); ++i) {
-			CPath path = CPath::FromUniv(lines[i]);
+			CPath path(lines[i]);
 
 			if (path.DirExists()) {
 				shareddir_list.push_back(path);
 			} else {
-				AddLogLineN(CFormat(_("Dropping non-existing shared directory: %s")) % path.GetRaw());
+				AddLogLineN(CFormat(_("Dropping non-existing shared directory: %s")) % path.GetPrintable());
 			}
 		}
 	}

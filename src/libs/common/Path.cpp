@@ -276,7 +276,7 @@ CPath::CPath(const CPath& other)
 
 CPath CPath::FromUniv(const wxString& path)
 {
-	wxCharBuffer fn = path.mb_str(wxConvLocal);
+	wxCharBuffer fn = path.mb_str(wxConvISO8859_1);
 	return CPath(wxConvFile.cMB2WC(fn));
 }
 
@@ -287,7 +287,7 @@ wxString CPath::ToUniv(const CPath& path)
 	// as a raw bytestream, we can always recreate the on-disk filename,
 	// as if we had read it using wx functions.
 	wxCharBuffer fn = path.m_filesystem.mb_str(wxConvFile);
-	return wxConvLocal.cMB2WC(fn);
+	return wxConvISO8859_1.cMB2WC(fn);
 }
 
 
