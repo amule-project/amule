@@ -275,7 +275,7 @@ void test_taglist_serialization(TagPtrList& taglist, byte* packet, uint64 packet
 	}
 
 	for (uint64 i = 0; i < packet_len; i++) {
-		CONTEXT(wxString::Format(wxT("Comparing serialized byte #%d"), i));
+		CONTEXT(wxString::Format(wxT("Comparing serialized byte #%") wxLongLongFmtSpec wxT("u"), i));
 
 		ASSERT_EQUALS(packet[i], buf[i]);
 	}
@@ -391,7 +391,7 @@ TEST_M(CTag, CMD4Hash, wxT("Kad: Read/Write CMD4Hash"))
 	TagPtrList::iterator it = taglist.begin();
 
 	CMD4Hash hash;
-	ASSERT_TRUE(hash.Decode("000102030405060708090A0B0C0D0E0F"));
+	ASSERT_TRUE(hash.Decode(std::string("000102030405060708090A0B0C0D0E0F")));
 
 	CheckTagData(*it++, TAG_SOURCETYPE, valid_tag_value(hash));
 
@@ -421,7 +421,7 @@ void check_single_kad_tag(byte* packet, size_t packet_len, T tagName, V tagValue
 
 		newbuf.Seek(0, wxFromStart);
 		for (size_t i = 0; i < packet_len; i++) {
-			CONTEXT(wxString::Format(wxT("Comparing byte #%d"), i));
+			CONTEXT(wxString::Format(wxT("Comparing byte #%d"), static_cast<int>(i)));
 
 			ASSERT_EQUALS(packet[i], newbuf.ReadUInt8());
 		}
@@ -576,7 +576,8 @@ TEST_M(CTag, KadTagNames, wxT("Kad: Test Kad tags (name=string) - write/read eve
 		buf.WriteUInt8(0x01); // single char string
 		buf.WriteUInt8(0x00); //
 
-		buf.WriteUInt8(it_name->first.GetChar(0)); // Write string first char
+		wxCharBuffer b = wxConvISO8859_1.cWC2MB(it_name->first);
+		buf.WriteUInt8(((const char *)b)[0]); // Write string first char
 		buf.WriteUInt8(counter++); // write tag value
 	}
 
@@ -664,7 +665,7 @@ TEST_M(CTag, ED2kTagNames, wxT("Ed2k: Test ed2k tags (name=id) - write/read ever
 
 	counter = 0;
 	for (TagNamesByInt::iterator it_name = tagNames.begin(); it_name != tagNames.end(); ++it_name) {
-		CONTEXT(wxString::Format(wxT("Reading tag#%d"), counter));
+		CONTEXT(wxString::Format(wxT("Reading tag#%") wxLongLongFmtSpec wxT("u"), counter));
 		CTag* newtag = new CTag(buf, true);
 		CheckTagName(it_name->first, newtag);
 		CheckTagValue( valid_tag_value( counter ), newtag);

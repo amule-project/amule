@@ -7,6 +7,12 @@
 
 using namespace muleunit;
 
+#if 0
+/*
+ * The validity of this test is at least questionable. The result depends on
+ * - the current system locale and character encoding used, and
+ * - the way wxConvFileName reports error conditions and its fallback behaviour.
+
 struct STestStr
 {
 	//! Specifies the "source" of the string (user/fs)
@@ -56,7 +62,8 @@ wxString GetExpectedString(const wxString& src)
 		return src;
 	}
 }
-
+*/
+#endif
 
 wxString StringFrom(const CPath& prt)
 {
@@ -113,6 +120,9 @@ TEST(CPath, PathConstructor)
 		ASSERT_EQUALS(tmp, CPath());
 	}
 
+#if 0
+/*
+ * See the note above
 
 	for (size_t i = 0; i < ArraySize(g_fromFSTests); ++i) {
 		const wxString input = g_fromFSTests[i].input;
@@ -132,6 +142,8 @@ TEST(CPath, PathConstructor)
 		ASSERT_EQUALS(tmp.GetFullName(), tmp);
 		ASSERT_EQUALS(tmp.GetPath(), CPath());
 	}
+*/
+#endif
 }
 
 

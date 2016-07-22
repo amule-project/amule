@@ -129,6 +129,26 @@ public:
 
 
 /**
+ * Helperfunction that converts basic types to strings.
+ */
+template <typename TYPE>
+wxString StringFrom(const TYPE& value)
+{
+	return wxString() << value;
+}
+
+inline wxString StringFrom(unsigned long long value)
+{
+	return wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), value);
+}
+
+inline wxString StringFrom(signed long long value)
+{
+	return wxString::Format(wxT("%") wxLongLongFmtSpec wxT("i"), value);
+}
+
+
+/**
  * Test class containing all macros to do unit testing.
  * A test object represents a test that will be executed. Once it has been
  * executed, it reports all failures in the testPartResult linked list.
@@ -206,26 +226,6 @@ protected:
 	wxString m_testName;
 	TestCase* m_testCase;
 };
-
-
-/**
- * Helperfunction that converts basic types to strings.
- */
-template <typename TYPE>
-wxString StringFrom(const TYPE& value)
-{
-	return wxString() << value;
-}
-
-inline wxString StringFrom(unsigned long long value)
-{
-	return wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), value);
-}
-
-inline wxString StringFrom(signed long long value)
-{
-	return wxString::Format(wxT("%") wxLongLongFmtSpec wxT("i"), value);
-}
 
 
 #define THROW_TEST_FAILURE(message) \

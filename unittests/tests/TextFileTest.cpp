@@ -191,7 +191,7 @@ public:
 			ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::write));
 
 			for (size_t i = 0; i < ArraySize(lines); ++i) {
-				CONTEXT(wxString::Format(wxT("Writing the %i'th line."), i));
+				CONTEXT(wxString::Format(wxT("Writing the %i'th line."), static_cast<int>(i)));
 
 				ASSERT_TRUE(file.WriteLine(lines[i]));
 			}
@@ -205,7 +205,7 @@ public:
 			ASSERT_FALSE(file.Eof());
 
 			for (size_t i = 0; i < ArraySize(lines); ++i) {
-				CONTEXT(wxString::Format(wxT("Reading the %i'th line."), i));
+				CONTEXT(wxString::Format(wxT("Reading the %i'th line."), static_cast<int>(i)));
 
 				ASSERT_EQUALS(lines[i], file.GetNextLine());
 			}
@@ -232,7 +232,7 @@ public:
 			ASSERT_FALSE(file.Eof());
 
 			for (size_t i = 0; i < ArraySize(lines); ++i) {
-				CONTEXT(wxString::Format(wxT("Reading the %i'th line."), i));
+				CONTEXT(wxString::Format(wxT("Reading the %i'th line."), static_cast<int>(i)));
 
 				ASSERT_EQUALS(lines[i], file.GetNextLine());
 			}
@@ -241,4 +241,3 @@ public:
 		}
 	}
 } testInstance;
-
