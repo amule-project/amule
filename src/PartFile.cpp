@@ -534,7 +534,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 						// Start Changes by Slugfiller for better exception handling
 
 						wxCharBuffer tag_ansi_name = newtag.GetName().ToAscii();
-						char gap_mark = tag_ansi_name ? tag_ansi_name[0u] : 0;
+						char gap_mark = tag_ansi_name.data() ? tag_ansi_name[0u] : 0;
 						if ( newtag.IsInt() && (newtag.GetName().Length() > 1) &&
 							((gap_mark == FT_GAPSTART) ||
 							 (gap_mark == FT_GAPEND))) {

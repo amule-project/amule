@@ -323,7 +323,7 @@ void CFileDataIO::WriteString(const wxString& str, EUtf8Str eEncode, uint8 SizeL
 		case utf8strRaw:
 		case utf8strOptBOM: {
 			Unicode2CharBuf s(unicode2UTF8(str));
-			if (s) {
+			if (s.data()) {
 				WriteStringCore(s, eEncode, SizeLen);
 				break;
 			}

@@ -327,7 +327,7 @@ std::ostream& operator<<(std::ostream& out, const CTag& tag)
 		bool name_decoded = false;
 		if (tag.IsInt() && tag.GetName().length() > 1) {
 			wxCharBuffer ascii_name = tag.GetName().ToAscii();
-			char gap_mark = ascii_name ? ascii_name[(size_t)0] : 0;
+			char gap_mark = ascii_name.data() ? ascii_name[(size_t)0] : 0;
 			if (gap_mark == FT_GAPSTART || gap_mark == FT_GAPEND) {
 				unsigned long gapkey;
 				if (tag.GetName().Mid(1).ToULong(&gapkey)) {
