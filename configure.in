@@ -539,7 +539,7 @@ echo "  **** aMule Statistics ****"
 echo "  Should C aMule Statistics (CAS) be built?                  MULE_STATUSOF([cas])"
 echo "  Should aMule GUI Statistics (wxCas) be built?              MULE_STATUSOF([wxcas])"
 echo "  Should xas XChat2 plugin be installed?                     MULE_STATUSOF([xas])"
-echo "  Should plasmaMule plasma-applet be build?                  MULE_STATUSOF([plasmamule])"
+echo "  Should plasmaMule plasma-applet be built?                  MULE_STATUSOF([plasmamule])"
 
 echo
 echo "  **** General Libraries and Tools ****"
