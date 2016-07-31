@@ -504,5 +504,5 @@ TEST(Format, DifferentArguments)
 	// Tests for accepting mismatching argument type
 	ASSERT_EQUALS(wxT("C"), CFormat(wxT("%c")) % 67);
 	ASSERT_EQUALS(wxT("69"), CFormat(wxT("%i")) % wxT('E'));
-	ASSERT_EQUALS(wxT("1e+00"), CFormat(wxT("%.e")) % 1u);
+	ASSERT_EQUALS(wxString::Format(wxT("%.e"), 1.0), CFormat(wxT("%.e")) % 1u);
 }
