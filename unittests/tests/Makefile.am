@@ -8,7 +8,7 @@ MUCPPFLAGS = -DMULEUNIT
 AM_CPPFLAGS = $(MULECPPFLAGS) -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include $(MUCPPFLAGS) $(WXBASE_CPPFLAGS)
 AM_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 AM_LDFLAGS = $(MULELDFLAGS)
-LDADD = $(WXBASE_LIBS) ../muleunit/libmuleunit.a
+LDADD = ../muleunit/libmuleunit.a $(WXBASE_LIBS)
 
 MAINTAINERCLEANFILES = Makefile.in
 TESTS = CUInt128Test RangeMapTest FormatTest StringFunctionsTest NetworkFunctionsTest FileDataIOTest PathTest TextFileTest CTagTest
