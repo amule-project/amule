@@ -149,19 +149,11 @@ wxString DoCleanup(const wxString& filename, bool keepSpaces, bool isFAT32)
 /** Does the actual work of adding a postfix ... */
 wxString DoAddPostfix(const wxString& src, const wxString& postfix)
 {
-	const wxFileName srcFn(src);
-	wxString result = srcFn.GetName() + postfix;
+	wxFileName fn(src);
 
-	if (srcFn.HasExt()) {
-		result += wxT(".") + srcFn.GetExt();
-	}
+	fn.SetName(fn.GetName() + postfix);
 
-	wxString path = srcFn.GetPath();
-	if (path.Length()) {
-		return path + wxFileName::GetPathSeparator() + result;
-	}
-
-	return result;
+	return fn.GetFullPath();
 }
 
 /** Removes the last extension of a filename. */
