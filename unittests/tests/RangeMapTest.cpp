@@ -118,7 +118,7 @@ DECLARE(RangeMap);
 		// Test that the correct iterator was returned
 		ASSERT_TRUE(it.keyStart() <= start);
 		ASSERT_TRUE(it.keyEnd() >= end);
-		ASSERT_EQUALS(*it, value);
+		ASSERT_EQUALS(value, *it);
 
 		// Check the resulting map
 		ASSERT_EQUALS(result, StringFrom(m_map));
@@ -153,7 +153,7 @@ DECLARE(RangeMap);
 		// Test that the correct iterator was returned
 		ASSERT_TRUE(it.keyStart() <= start);
 		ASSERT_TRUE(it.keyEnd() >= end);
-		ASSERT_EQUALS(*it, value);
+		ASSERT_EQUALS(value, *it);
 
 		// Check the resulting map
 		ASSERT_EQUALS(result, StringFrom(m_mmaps[type]));
@@ -787,26 +787,26 @@ TEST(RangeMap, Swap)
 		TestRangeMap mapA = m_mmaps[CONT];
 		TestRangeMap mapB = m_mmaps[SSAME];
 
-		ASSERT_EQUALS(mapA, m_mmaps[CONT]);
-		ASSERT_EQUALS(mapB, m_mmaps[SSAME]);
+		ASSERT_EQUALS(m_mmaps[CONT], mapA);
+		ASSERT_EQUALS(m_mmaps[SSAME], mapB);
 
 		std::swap(mapA, mapB);
 
-		ASSERT_EQUALS(mapB, m_mmaps[CONT]);
-		ASSERT_EQUALS(mapA, m_mmaps[SSAME]);
+		ASSERT_EQUALS(m_mmaps[CONT], mapB);
+		ASSERT_EQUALS(m_mmaps[SSAME], mapA);
 	}
 
 	{
 		TestRangeMap mapA = m_mmaps[CONT];
 		TestRangeMap mapB = m_mmaps[SSAME];
 
-		ASSERT_EQUALS(mapA, m_mmaps[CONT]);
-		ASSERT_EQUALS(mapB, m_mmaps[SSAME]);
+		ASSERT_EQUALS(m_mmaps[CONT], mapA);
+		ASSERT_EQUALS(m_mmaps[SSAME], mapB);
 
 		mapA.swap(mapB);
 
-		ASSERT_EQUALS(mapB, m_mmaps[CONT]);
-		ASSERT_EQUALS(mapA, m_mmaps[SSAME]);
+		ASSERT_EQUALS(m_mmaps[CONT], mapB);
+		ASSERT_EQUALS(m_mmaps[SSAME], mapA);
 	}
 }
 
