@@ -42,7 +42,7 @@ public:
 		return (TestRegistry::runAndPrint() ? 0 : 1);
 	}
 
-	void OnAssertFailure(const wxChar* file, int line,  const wxChar* func, const wxChar* cond, const wxChar* msg)
+	void OnAssertFailure(const wxChar* file, int line,  const wxChar* /*func*/, const wxChar* cond, const wxChar* msg)
 	{
 		if (s_disableAssertions) {
 			return;
