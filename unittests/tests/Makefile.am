@@ -32,7 +32,9 @@ StringFunctionsTest_SOURCES = StringFunctionsTest.cpp $(top_srcdir)/src/libs/com
 
 # Tests for the various network functions.
 NetworkFunctionsTest_SOURCES = NetworkFunctionsTest.cpp $(top_srcdir)/src/NetworkFunctions.cpp $(top_srcdir)/src/LibSocket.cpp $(top_srcdir)/src/libs/common/Format.cpp $(top_srcdir)/src/libs/common/strerror_r.c
-NetworkFunctionsTest_CPPFLAGS = $(AM_CPPFLAGS) -DEC_REMOTE # Needed to avoid compiling the http-thread
+NetworkFunctionsTest_CPPFLAGS = $(BOOST_CPPFLAGS) $(AM_CPPFLAGS) -DEC_REMOTE # Needed to avoid compiling the http-thread
+NetworkFunctionsTest_LDFLAGS = $(BOOST_SYSTEM_LDFLAGS) $(AM_LDFLAGS)
+NetworkFunctionsTest_LDADD = $(BOOST_SYSTEM_LIBS) $(LDADD)
 
 # Tests for the classes that implement the CFileDataIO interface
 FileDataIOTest_SOURCES = FileDataIOTest.cpp $(top_srcdir)/src/SafeFile.cpp $(top_srcdir)/src/CFile.cpp $(top_srcdir)/src/MemFile.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/Tag.cpp $(top_srcdir)/src/libs/common/Path.cpp $(top_srcdir)/src/libs/common/Format.cpp $(top_srcdir)/src/libs/common/strerror_r.c
