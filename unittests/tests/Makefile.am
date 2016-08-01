@@ -8,7 +8,7 @@ MUCPPFLAGS = -DMULEUNIT
 AM_CPPFLAGS = $(MULECPPFLAGS) -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include $(MUCPPFLAGS) $(WXBASE_CPPFLAGS)
 AM_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 AM_LDFLAGS = $(MULELDFLAGS)
-LDADD = $(WXBASE_LIBS) ../muleunit/libmuleunit.a
+LDADD = ../muleunit/libmuleunit.a $(WXBASE_LIBS)
 
 MAINTAINERCLEANFILES = Makefile.in
 TESTS = CUInt128Test RangeMapTest FormatTest StringFunctionsTest NetworkFunctionsTest FileDataIOTest PathTest TextFileTest CTagTest
@@ -32,7 +32,9 @@ StringFunctionsTest_SOURCES = StringFunctionsTest.cpp $(top_srcdir)/src/libs/com
 
 # Tests for the various network functions.
 NetworkFunctionsTest_SOURCES = NetworkFunctionsTest.cpp $(top_srcdir)/src/NetworkFunctions.cpp $(top_srcdir)/src/LibSocket.cpp $(top_srcdir)/src/libs/common/Format.cpp $(top_srcdir)/src/libs/common/strerror_r.c
-NetworkFunctionsTest_CPPFLAGS = $(AM_CPPFLAGS) -DEC_REMOTE # Needed to avoid compiling the http-thread
+NetworkFunctionsTest_CPPFLAGS = $(BOOST_CPPFLAGS) $(AM_CPPFLAGS) -DEC_REMOTE # Needed to avoid compiling the http-thread
+NetworkFunctionsTest_LDFLAGS = $(BOOST_SYSTEM_LDFLAGS) $(AM_LDFLAGS)
+NetworkFunctionsTest_LDADD = $(BOOST_SYSTEM_LIBS) $(LDADD)
 
 # Tests for the classes that implement the CFileDataIO interface
 FileDataIOTest_SOURCES = FileDataIOTest.cpp $(top_srcdir)/src/SafeFile.cpp $(top_srcdir)/src/CFile.cpp $(top_srcdir)/src/MemFile.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/Tag.cpp $(top_srcdir)/src/libs/common/Path.cpp $(top_srcdir)/src/libs/common/Format.cpp $(top_srcdir)/src/libs/common/strerror_r.c

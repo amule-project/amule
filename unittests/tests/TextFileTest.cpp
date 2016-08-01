@@ -62,6 +62,8 @@ void CompareReadLines(size_t count, const wxChar* expected[], EReadTextFile crit
 
 TEST(TextFile, ReadLines)
 {
+	ASSERT_TRUE(CPath::DirExists(wxSTRINGIZE_T(SRCDIR)));
+
 	{
 		CONTEXT(wxT("Checking default parameters"));
 

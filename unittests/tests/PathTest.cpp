@@ -134,13 +134,13 @@ TEST(CPath, PathConstructor)
 		CPath tmp(input);
 
 		ASSERT_TRUE(tmp.IsOk());
-		ASSERT_EQUALS(tmp, CPath(input));
+		ASSERT_EQUALS(CPath(input), tmp);
 
-		ASSERT_EQUALS(tmp.GetRaw(), ::GetExpectedString(input));
-		ASSERT_EQUALS(tmp.GetPrintable(), result);
+		ASSERT_EQUALS(::GetExpectedString(input), tmp.GetRaw());
+		ASSERT_EQUALS(result, tmp.GetPrintable());
 
-		ASSERT_EQUALS(tmp.GetFullName(), tmp);
-		ASSERT_EQUALS(tmp.GetPath(), CPath());
+		ASSERT_EQUALS(tmp, tmp.GetFullName());
+		ASSERT_EQUALS(CPath(), tmp.GetPath());
 	}
 */
 #endif
@@ -155,36 +155,17 @@ TEST(CPath, CopyConstructor)
 		CPath a(tmpPath);
 
 		ASSERT_TRUE(a.IsOk());
-		ASSERT_EQUALS(a.GetRaw(), tmpPath);
-		ASSERT_EQUALS(a.GetPrintable(), tmpPath);
-		ASSERT_EQUALS(a.GetPath(), CPath());
-		ASSERT_EQUALS(a.GetFullName(), CPath(tmpPath));
+		ASSERT_EQUALS(tmpPath, a.GetRaw());
+		ASSERT_EQUALS(tmpPath, a.GetPrintable());
+		ASSERT_EQUALS(CPath(), a.GetPath());
+		ASSERT_EQUALS(CPath(tmpPath), a.GetFullName());
 
 		CPath b(a);
 		ASSERT_TRUE(b.IsOk());
-		ASSERT_EQUALS(b.GetRaw(), tmpPath);
-		ASSERT_EQUALS(b.GetPrintable(), tmpPath);
-		ASSERT_EQUALS(b.GetPath(), CPath());
-		ASSERT_EQUALS(b.GetFullName(), CPath(tmpPath));
-
-		ASSERT_EQUALS(a, b);
-	}
-
-	{
-		CPath a(tmpPath);
-
-		ASSERT_TRUE(a.IsOk());
-		ASSERT_EQUALS(a.GetRaw(), tmpPath);
-		ASSERT_EQUALS(a.GetPrintable(), tmpPath);
-		ASSERT_EQUALS(a.GetPath(), CPath());
-		ASSERT_EQUALS(a.GetFullName(), CPath(tmpPath));
-
-		CPath b(a);
-		ASSERT_TRUE(b.IsOk());
-		ASSERT_EQUALS(b.GetRaw(), tmpPath);
-		ASSERT_EQUALS(b.GetPrintable(), tmpPath);
-		ASSERT_EQUALS(b.GetPath(), CPath());
-		ASSERT_EQUALS(b.GetFullName(), CPath(tmpPath));
+		ASSERT_EQUALS(tmpPath, b.GetRaw());
+		ASSERT_EQUALS(tmpPath, b.GetPrintable());
+		ASSERT_EQUALS(CPath(), b.GetPath());
+		ASSERT_EQUALS(CPath(tmpPath), b.GetFullName());
 
 		ASSERT_EQUALS(a, b);
 	}
@@ -212,18 +193,18 @@ TEST(CPath, Operators)
 		ASSERT_FALSE(b.IsOk());
 
 		a = CPath(tmpPath1);
-		ASSERT_EQUALS(a.GetRaw(), tmpPath1);
-		ASSERT_EQUALS(a.GetPrintable(), tmpPath1);
-		ASSERT_EQUALS(a.GetPath(), CPath());
-		ASSERT_EQUALS(a.GetFullName(), CPath(tmpPath1));
+		ASSERT_EQUALS(tmpPath1, a.GetRaw());
+		ASSERT_EQUALS(tmpPath1, a.GetPrintable());
+		ASSERT_EQUALS(CPath(), a.GetPath());
+		ASSERT_EQUALS(CPath(tmpPath1), a.GetFullName());
 		ASSERT_TRUE(a.IsOk());
 		ASSERT_TRUE(a != b);
 
 		b = a;
-		ASSERT_EQUALS(b.GetRaw(), tmpPath1);
-		ASSERT_EQUALS(b.GetPrintable(), tmpPath1);
-		ASSERT_EQUALS(b.GetPath(), CPath());
-		ASSERT_EQUALS(b.GetFullName(), CPath(tmpPath1));
+		ASSERT_EQUALS(tmpPath1, b.GetRaw());
+		ASSERT_EQUALS(tmpPath1, b.GetPrintable());
+		ASSERT_EQUALS(CPath(), b.GetPath());
+		ASSERT_EQUALS(CPath(tmpPath1), b.GetFullName());
 		ASSERT_TRUE(a.IsOk());
 		ASSERT_TRUE(b.IsOk());
 		ASSERT_EQUALS(a, b);
@@ -233,14 +214,14 @@ TEST(CPath, Operators)
 		ASSERT_TRUE(b.IsOk());
 		ASSERT_TRUE(a != b);
 
-		ASSERT_EQUALS(a.GetRaw(), tmpPath2);
-		ASSERT_EQUALS(a.GetPrintable(), tmpPath2);
-		ASSERT_EQUALS(a.GetPath(), CPath());
-		ASSERT_EQUALS(a.GetFullName(), CPath(tmpPath2));
-		ASSERT_EQUALS(b.GetRaw(), tmpPath1);
-		ASSERT_EQUALS(b.GetPrintable(), tmpPath1);
-		ASSERT_EQUALS(b.GetPath(), CPath());
-		ASSERT_EQUALS(b.GetFullName(), CPath(tmpPath1));
+		ASSERT_EQUALS(tmpPath2, a.GetRaw());
+		ASSERT_EQUALS(tmpPath2, a.GetPrintable());
+		ASSERT_EQUALS(CPath(), a.GetPath());
+		ASSERT_EQUALS(CPath(tmpPath2), a.GetFullName());
+		ASSERT_EQUALS(tmpPath1, b.GetRaw());
+		ASSERT_EQUALS(tmpPath1, b.GetPrintable());
+		ASSERT_EQUALS(CPath(), b.GetPath());
+		ASSERT_EQUALS(CPath(tmpPath1), b.GetFullName());
 	}
 
 // See note in CPath::operator==
@@ -329,36 +310,36 @@ TEST(CPath, IsSameDir)
 TEST(CPath, GetPath_FullName)
 {
 	{
-		ASSERT_EQUALS(CPath().GetPath(), CPath());
-		ASSERT_EQUALS(CPath().GetFullName(), CPath());
+		ASSERT_EQUALS(CPath(), CPath().GetPath());
+		ASSERT_EQUALS(CPath(), CPath().GetFullName());
 	}
 
 	{
 		const CPath path = Norm(wxT("/home/mule/"));
 
-		ASSERT_EQUALS(path.GetPath(), Norm(wxT("/home/mule")));
-		ASSERT_EQUALS(path.GetFullName(), CPath());
+		ASSERT_EQUALS(Norm(wxT("/home/mule")), path.GetPath());
+		ASSERT_EQUALS(CPath(), path.GetFullName());
 	}
 
 	{
 		const CPath path = Norm(wxT("/home/mule"));
 
-		ASSERT_EQUALS(path.GetPath(), Norm(wxT("/home")));
-		ASSERT_EQUALS(path.GetFullName(), Norm(wxT("mule")));
+		ASSERT_EQUALS(Norm(wxT("/home")), path.GetPath());
+		ASSERT_EQUALS(Norm(wxT("mule")), path.GetFullName());
 	}
 
 	{
 		const CPath path = Norm(wxT("mule"));
 
-		ASSERT_EQUALS(path.GetPath(), CPath());
-		ASSERT_EQUALS(path.GetFullName(), Norm(wxT("mule")));
+		ASSERT_EQUALS(CPath(), path.GetPath());
+		ASSERT_EQUALS(Norm(wxT("mule")), path.GetFullName());
 	}
 
 	{
 		const CPath path = Norm(wxT("mule.ext"));
 
-		ASSERT_EQUALS(path.GetPath(), CPath());
-		ASSERT_EQUALS(path.GetFullName(), Norm(wxT("mule.ext")));
+		ASSERT_EQUALS(CPath(), path.GetPath());
+		ASSERT_EQUALS(Norm(wxT("mule.ext")), path.GetFullName());
 	}
 }
 
@@ -367,19 +348,19 @@ TEST(CPath, Cleanup)
 {
 	const CPath initial = CPath(wxT(" /a\"b*c* <d>?e|\\:f "));
 
-	ASSERT_EQUALS(initial.Cleanup(false, false), Norm(wxT("\%20a\"b*c*\%20<d>?e|\\:f\%20")));
-	ASSERT_EQUALS(initial.Cleanup(false, true), Norm(wxT("\%20abc\%20def\%20")));
-	ASSERT_EQUALS(initial.Cleanup(true, false), Norm(wxT(" a\"b*c* <d>?e|\\:f ")));
-	ASSERT_EQUALS(initial.Cleanup(true, true), Norm(wxT(" abc def ")));
+	ASSERT_EQUALS(Norm(wxT("\%20a\"b*c*\%20<d>?e|\\:f\%20")), initial.Cleanup(false, false));
+	ASSERT_EQUALS(Norm(wxT("\%20abc\%20def\%20")), initial.Cleanup(false, true));
+	ASSERT_EQUALS(Norm(wxT(" a\"b*c* <d>?e|\\:f ")), initial.Cleanup(true, false));
+	ASSERT_EQUALS(Norm(wxT(" abc def ")), initial.Cleanup(true, true));
 }
 
 
 TEST(CPath, AddPostFix)
 {
-	ASSERT_EQUALS(Norm(wxT("/foo.bar")).AddPostfix(wxT("_1")), Norm(wxT("/foo_1.bar")));
-	ASSERT_EQUALS(Norm(wxT("/foo.bar")).AddPostfix(wxT("")), Norm(wxT("/foo.bar")));
-	ASSERT_EQUALS(Norm(wxT("/.bar")).AddPostfix(wxT("_1")), Norm(wxT("/.bar_1")));
-	ASSERT_EQUALS(Norm(wxT("/")).AddPostfix(wxT("_1")), Norm(wxT("/_1")));
+	ASSERT_EQUALS(Norm(wxT("/foo_1.bar")), Norm(wxT("/foo.bar")).AddPostfix(wxT("_1")));
+	ASSERT_EQUALS(Norm(wxT("/foo.bar")), Norm(wxT("/foo.bar")).AddPostfix(wxT("")));
+	ASSERT_EQUALS(Norm(wxT("/.bar_1")), Norm(wxT("/.bar")).AddPostfix(wxT("_1")));
+	ASSERT_EQUALS(Norm(wxT("/_1")), Norm(wxT("/")).AddPostfix(wxT("_1")));
 }
 
 

@@ -5,6 +5,11 @@
 
 using namespace muleunit;
 
+// Needed for Boost-enabled build
+namespace MuleNotify {
+	void HandleNotificationAlways(const class CMuleNotiferBase&) {}
+};
+
 DECLARE_SIMPLE(NetworkFunctions)
 
 TEST(NetworkFunctions, StringIPtoUint32)

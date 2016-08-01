@@ -432,6 +432,8 @@ public:
 	#define AddDebugLogLineC(...) do {} while (false)
 	#define AddLogLineC(...) do {} while (false)
 	#define AddLogLineCS(...) do {} while (false)
+	#define AddDebugLogLineF(...) do {} while (false)
+	#define AddLogLineF(...) do {} while (false)
 #else
 // Macros for 'N'on critical logging
 	#ifdef __DEBUG__
