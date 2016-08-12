@@ -94,7 +94,7 @@
       <ForcedIncludeFiles>$(SolutionDir)PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;wxUSE_NO_MANIFEST=1;VER_FILEDESCRIPTION_STR=\"aMule Remote GUI\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__DEBUG__;_UNICODE;UNICODE;wxUSE_NO_MANIFEST=1;VER_FILEDESCRIPTION_STR=\"aMule Remote GUI\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
@@ -151,7 +151,7 @@
       <ForcedIncludeFiles>$(SolutionDir)PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Remote GUI\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__DEBUG__;_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"aMule Remote GUI\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets30\include;$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
@@ -227,6 +227,7 @@
     <ClCompile Include="..\..\..\..\src\HTTPDownload.cpp" />
     <ClCompile Include="..\..\..\..\src\IP2Country.cpp" />
     <ClCompile Include="..\..\..\..\src\KadDlg.cpp" />
+    <ClCompile Include="..\..\..\..\src\kademlia\utils\UInt128.cpp" />
     <ClCompile Include="..\..\..\..\src\KnownFile.cpp" />
     <ClCompile Include="..\..\..\..\src\Logger.cpp" />
     <ClCompile Include="..\..\..\..\src\MagnetURI.cpp" />
@@ -302,6 +303,7 @@
     <ClInclude Include="..\..\..\..\src\DownloadQueue.h" />
     <ClInclude Include="..\..\..\..\src\GenericClientListCtrl.h" />
     <ClInclude Include="..\..\..\..\src\include\common\MacrosProgramSpecific.h" />
+    <ClInclude Include="..\..\..\..\src\kademlia\utils\UInt128.h" />
     <ClInclude Include="..\..\..\..\src\libs\ec\cpp\ECID.h" />
     <ClInclude Include="..\..\..\..\src\ED2KLink.h" />
     <ClInclude Include="..\..\..\..\src\EditServerListDlg.h" />

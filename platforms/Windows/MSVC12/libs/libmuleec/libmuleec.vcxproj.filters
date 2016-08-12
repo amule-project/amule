@@ -33,6 +33,9 @@
     <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\RemoteConnect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\src\libs\ec\cpp\ECUInt128.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\src\libs\ec\cpp\ECCodes.h">
