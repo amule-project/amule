@@ -61,7 +61,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"ED2K Links Handler\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__DEBUG__;_UNICODE;UNICODE;VER_FILEDESCRIPTION_STR=\"ED2K Links Handler\";VER_INTERNALNAME_STR=\"$(ProjectName)\";VER_ORIGINALFILENAME_STR=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\..;$(SolutionDir)..\..\..\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
