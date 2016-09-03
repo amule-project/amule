@@ -340,7 +340,6 @@ noinst_HEADERS = \
 		ClientCredits.h \
 		ClientCreditsList.h \
 		ClientDetailDialog.h \
-		SharedFilePeersListCtrl.h \
 		ClientList.h \
 		ClientRef.h \
 		ClientTCPSocket.h \
@@ -348,6 +347,7 @@ noinst_HEADERS = \
 		ColorFrameCtrl.h \
 		CommentDialog.h \
 		CommentDialogLst.h \
+		CompilerSpecific.h \
 		Constants.h \
 		CorruptionBlackBox.h \
 		CryptoPP_Inc.h \
@@ -438,6 +438,7 @@ noinst_HEADERS = \
 		SHA.h \
 		SHAHashSet.h \
 		SharedFileList.h \
+		SharedFilePeersListCtrl.h \
 		SharedFilesCtrl.h \
 		SharedFilesWnd.h \
 		SourceListCtrl.h \
