@@ -9,16 +9,15 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-04-11 11:33+0200\n"
-"PO-Revision-Date: 2012-03-23 10:36+0100\n"
+"PO-Revision-Date: 2016-08-24 17:06+0200\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr\n"
-"Plural-Forms: nplurals=1; plural=0\n"
-"X-Poedit-Language: Turkish\n"
-"X-Poedit-Country: TURKEY\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.8\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -812,6 +811,8 @@ msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
 "Bu oturum için dosya durumu: Kabul edilen istek %d, toplam %d, %s aktarıldı\n"
+msgstr[1] ""
+"Bu oturum için dosya durumu: Kabul edilen istek %d, toplam %d, %s aktarıldı\n"
 
 #: src/BaseClient.cpp:2032
 #, c-format
@@ -819,6 +820,9 @@ msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
+"Tüm oturumlar için dosya durumu: Kabul edilen istek %d, toplam %d, %s "
+"aktarıldı\n"
+msgstr[1] ""
 "Tüm oturumlar için dosya durumu: Kabul edilen istek %d, toplam %d, %s "
 "aktarıldı\n"
 
@@ -951,12 +955,14 @@ msgstr "Arkadaşlara Ekle"
 msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
 msgstr[0] "Kredi dosyası yüklendi. %u adet kullanıcı biliniyor"
+msgstr[1] "Kredi dosyası yüklendi. %u adet kullanıcı biliniyor"
 
 #: src/ClientCreditsList.cpp:161
 #, c-format
 msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
 msgstr[0] " - %u adet kullanıcı için krediler bitti!"
+msgstr[1] " - %u adet kullanıcı için krediler bitti!"
 
 #: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
@@ -1122,6 +1128,7 @@ msgstr "Yorum yok"
 msgid "%u comment"
 msgid_plural "%u comments"
 msgstr[0] "%u adet yorum"
+msgstr[1] "%u adet yorum"
 
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
@@ -1527,6 +1534,7 @@ msgstr "Hiç part dosyası bulunamadı"
 msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "%u adet parça dosyası bulundu"
+msgstr[1] "%u adet parça dosyası bulundu"
 
 #: src/DownloadQueue.cpp:244 src/DownloadQueue.cpp:1470
 msgid "Filesystem for Temp directory cannot handle large files."
@@ -2227,12 +2235,14 @@ msgstr "ipfilter.dat dosyasını '%s' yükleme başarısız. Dosya açılamıyor
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "%u adet IP-aralığı '%s' den  yüklendi."
+msgstr[1] "%u adet IP-aralığı '%s' den  yüklendi."
 
 #: src/IPFilter.cpp:331
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] "%u adet bozuk satır göz ardı edildi."
+msgstr[1] "%u adet bozuk satır göz ardı edildi."
 
 #: src/IPFilter.cpp:503
 #, c-format
@@ -2310,6 +2320,7 @@ msgstr ""
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "%u adet Kademlia bağlantısı okundu"
+msgstr[1] "%u adet Kademlia bağlantısı okundu"
 
 #: src/kademlia/routing/RoutingZone.cpp:221
 #: src/kademlia/routing/RoutingZone.cpp:287
@@ -2322,13 +2333,15 @@ msgstr ""
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
-msgstr[0] "Sadece %d Kad bağlantısı var. Nodes.dat yazılamadı"
+msgstr[0] "Sadece %d Kad bağlantısı var. Nodes.dat yazılmadı"
+msgstr[1] "Sadece %d Kad bağlantısı var. Nodes.dat yazılmadı"
 
 #: src/kademlia/routing/RoutingZone.cpp:336
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
 msgstr[0] "%d Kademlia bağlantısı yazıldı"
+msgstr[1] "%d Kademlia bağlantısı yazıldı"
 
 #: src/KnownFile.cpp:1544 src/PartFileConvertDlg.cpp:91
 msgid "File name"
@@ -2446,9 +2459,9 @@ msgid "External Connection: Handshake failed."
 msgstr "Dış Bağlantı: Tanılama engellendi"
 
 #: src/LibSocketAsio.cpp:1257
-#, fuzzy, c-format
+#, c-format
 msgid "Asio thread %d started"
-msgstr "HTTP aktarımı başladı"
+msgstr "Asio iş parçacığı %d başladı"
 
 #: src/ListenSocket.cpp:67
 msgid "ListenSocket: Ok."
@@ -4241,9 +4254,8 @@ msgid "Enable Verbose Debug-Logging."
 msgstr "Fazladan Hata Çıktısı Kaydını Etkinleştir."
 
 #: src/muuli_wdr.cpp:3169
-#, fuzzy
 msgid "Only to Logfile"
-msgstr "Dosyayı &Aç"
+msgstr "Sadece Kütük Dosyasına"
 
 #: src/muuli_wdr.cpp:3172
 msgid "Message Categories:"
@@ -4336,6 +4348,7 @@ msgstr "Devre dışı [%s]"
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "bayt"
+msgstr[1] "bayt"
 
 #: src/OtherFunctions.cpp:113
 msgid "kB"
@@ -4365,6 +4378,7 @@ msgstr "T"
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "bayt/sn"
+msgstr[1] "bayt/sn"
 
 #: src/OtherFunctions.cpp:146
 msgid "MB/s"
@@ -4580,18 +4594,19 @@ msgstr "'%s' bir şekilde 0 boyutlu-%s dosyası kullanılacak."
 #: src/PartFile.cpp:992
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
-msgstr "%s için pat.met girdilerini kaydetme başarısız."
+msgstr "%s için part.met girdilerini kaydetme başarısız."
 
 #: src/PartFile.cpp:1018
 #, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "%i kaynak tohumu parça dosyası için kaydedildi: %s (%s)"
+msgstr[1] "%i kaynak tohumu parça dosyası için kaydedildi: %s (%s)"
 
 #: src/PartFile.cpp:1048
-#, fuzzy, c-format
+#, c-format
 msgid "Can't read seeds file for Partfile %s (%s)"
-msgstr "%i kaynak tohumu parça dosyası için kaydedildi: %s (%s)"
+msgstr "Kısmi dosya %s (%s) için tohum dosyası okunamadı"
 
 #: src/PartFile.cpp:1107
 #, c-format
@@ -4607,6 +4622,9 @@ msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
 msgstr[0] ""
+"Bozuk parça (%d) %d parça dosyası %s içinde bulundu -Dosya sonuç adreslemesi "
+"|%s| Dosya adreslemesi |%s|"
+msgstr[1] ""
 "Bozuk parça (%d) %d parça dosyası %s içinde bulundu -Dosya sonuç adreslemesi "
 "|%s| Dosya adreslemesi |%s|"
 
@@ -5007,9 +5025,8 @@ msgid "- External connect interface changed.\n"
 msgstr "- Dışarıdan bağlantı arayüzü değişti.\n"
 
 #: src/PrefsUnifiedDlg.cpp:619
-#, fuzzy
 msgid "- Protocol obfuscation support changed.\n"
-msgstr "Protokol Gizleme"
+msgstr "- Protokol gizleme desteği değişti.\n"
 
 #: src/PrefsUnifiedDlg.cpp:628
 msgid ""
@@ -5123,12 +5140,14 @@ msgstr ""
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Güncelleme gecikmesi: %d saniye"
+msgstr[1] "Güncelleme gecikmesi: %d saniye"
 
 #: src/PrefsUnifiedDlg.cpp:1126
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Ortalama grafiği için süre: %d dakika"
+msgstr[1] "Ortalama grafiği için süre: %d dakika"
 
 #: src/PrefsUnifiedDlg.cpp:1132
 #, c-format
@@ -5140,18 +5159,21 @@ msgstr "Bağlantı Grafik Ölçüsü: %d"
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Dosya Alım Boyutu: %d bayt"
+msgstr[1] "Dosya Alım Boyutu: %d bayt"
 
 #: src/PrefsUnifiedDlg.cpp:1150
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Gönderme Sıra Boyutu: %d kullanıcı"
+msgstr[1] "Gönderme Sıra Boyutu: %d kullanıcı"
 
 #: src/PrefsUnifiedDlg.cpp:1157
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Sunucu bağlantısı yenileme sıklığı: %d dakika"
+msgstr[1] "Sunucu bağlantısı yenileme sıklığı: %d dakika"
 
 #: src/PrefsUnifiedDlg.cpp:1159
 msgid "Server connection refresh interval: Disabled"
@@ -5305,6 +5327,7 @@ msgstr "%s (%s:%i) görünüşe göre dolu."
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "Sunucuya otomatik bağlanma %d saniye içinde tekrar denenecek"
+msgstr[1] "Sunucuya otomatik bağlanma %d saniye içinde tekrar denenecek"
 
 #: src/ServerConnect.cpp:412
 msgid "Connection lost"
@@ -5356,12 +5379,14 @@ msgstr "Server.met dosyası bozuk, geçersiz sürüm eki bulundu: 0x%x, size %i"
 msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] "%i adet sunucu server.met dosyasında bulundu"
+msgstr[1] "%i adet sunucu server.met dosyasında bulundu"
 
 #: src/ServerList.cpp:176
 #, c-format
 msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] "%d adet sunucu eklendi"
+msgstr[1] "%d adet sunucu eklendi"
 
 #: src/ServerList.cpp:179
 msgid "Error: the file 'server.met' is corrupted: "
@@ -5602,6 +5627,7 @@ msgstr "Bilinmeyen sunucu bilgisi alındı! - çok kısa"
 msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] "%d adet yeni sunucu alındı"
+msgstr[1] "%d adet yeni sunucu alındı"
 
 #: src/ServerSocket.cpp:551
 msgid "Saving of server-list completed."
@@ -5674,9 +5700,8 @@ msgid "Running"
 msgstr "Çalışıyor"
 
 #: src/ServerWnd.cpp:210
-#, fuzzy
 msgid "Kademlia client ID:"
-msgstr "Kademlia Durumu:"
+msgstr "Kademlia istemci kimliği:"
 
 #: src/ServerWnd.cpp:212
 msgid "Status:"
@@ -5763,12 +5788,14 @@ msgstr "%s dosyası paylaşılanlara ekleniyor"
 msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] "Bilinen %i adet paylaşılmış dosya bulundu"
+msgstr[1] "Bilinen %i adet paylaşılmış dosya bulundu"
 
 #: src/SharedFileList.cpp:377
 #, c-format
 msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "Bilinen %i adet paylaşılmış dosya bulundu. Bilinmeyen %i adet"
+msgstr[1] "Bilinen %i adet paylaşılmış dosya bulundu. Bilinmeyen %i adet"
 
 #: src/SharedFileList.cpp:386
 #, c-format
@@ -5894,9 +5921,8 @@ msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr "eD2k bağlantısını panoya kopyala (&AICH bilgisi)"
 
 #: src/SharedFilesCtrl.cpp:170
-#, fuzzy
 msgid "Copy eD2k link to clipboard (&AICH info + Source)"
-msgstr "eD2k bağlantısını panoya kopyala (&AICH bilgisi)"
+msgstr "eD2k bağlantısını panoya kopyala (&AICH bilgisi + Kaynak)"
 
 #: src/SharedFilesCtrl.cpp:318
 msgid "You need a HighID to create a valid sourcelink"
@@ -6206,16 +6232,17 @@ msgstr "Geçerli bir adresleme değil (uzunluğu tam olarak 32 karakter olmalı)
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
 #: src/TextClient.cpp:533
-#, fuzzy
 msgid ""
 "No search type defined.\n"
 "Type 'help search' to get more help.\n"
-msgstr "Daha fazla yardım için '%s' yazınız.\n"
+msgstr ""
+"Hiçbir arama türü tanımlanmadı.\n"
+"Daha fazla yardım için 'help search' yazınız.\n"
 
 #: src/TextClient.cpp:552
-#, fuzzy, c-format
+#, c-format
 msgid "Download File: %lu %s\n"
-msgstr "İndirme Boyutu: %i"
+msgstr "Dosyayı indir: %lu %s\n"
 
 #: src/TextClient.cpp:644 src/webserver/src/WebServer.cpp:409
 msgid "Request failed with an unknown error."
@@ -6535,9 +6562,8 @@ msgid "Set upload bandwidth limit."
 msgstr "Gönderme sınırını girin."
 
 #: src/TextClient.cpp:935 src/TextClient.cpp:937
-#, fuzzy
 msgid "The given value must be in kilobytes/sec.\n"
-msgstr "Bu komutlar için girdiler kilobayt/saniye cinsinden olmalıdır.\n"
+msgstr "Girilen değer kilobayt/saniye cinsinden olmalıdır.\n"
 
 #: src/TextClient.cpp:936
 msgid "Set download bandwidth limit."
@@ -6694,9 +6720,8 @@ msgid "Show servers list."
 msgstr "Sunucu listesini göster."
 
 #: src/TextClient.cpp:992
-#, fuzzy
 msgid "Show shared files list."
-msgstr "Paylaşılmış dosya listesini yeniden yükler."
+msgstr "Paylaşılan dosyalar listesini göster."
 
 #: src/TextClient.cpp:994
 msgid "Reset log."
@@ -7046,7 +7071,7 @@ msgstr "%s açılamıyor."
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:147
 msgid "Out of memory while calculating ed2k hash!"
-msgstr ""
+msgstr "ed2k adreslemesi hesaplanırken bellek yetersiz kaldı!"
 
 #: src/utils/wxCas/src/linuxmon.cpp:77
 #, c-format
