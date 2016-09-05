@@ -1,5 +1,5 @@
 # aMule i18n resource file.
-# Copyright (C) 2004 - 2014 aMule Team
+# Copyright (C) 2004 - 2016 aMule Team
 # This file is distributed under the same license as the aMule package.
 #
 # Translation of aMule to French
@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-04-11 11:33+0200\n"
-"PO-Revision-Date: 2014-02-15 13:05+0100\n"
+"PO-Revision-Date: 2016-08-20 22:40+0200\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
@@ -26,6 +26,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.8.8\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -4704,9 +4705,9 @@ msgstr[0] "%i source seed sauvegardé pour le fichier .part : %s (%s)"
 msgstr[1] "%i source seeds sauvegardés pour le fichier .part : %s (%s)"
 
 #: src/PartFile.cpp:1048
-#, fuzzy, c-format
+#, c-format
 msgid "Can't read seeds file for Partfile %s (%s)"
-msgstr "%i source seed sauvegardé pour le fichier .part : %s (%s)"
+msgstr "Impossible de lire le fichier seeds pour le fichier partiel %s (%s)"
 
 #: src/PartFile.cpp:1107
 #, c-format
@@ -5828,9 +5829,8 @@ msgid "Running"
 msgstr "En marche"
 
 #: src/ServerWnd.cpp:210
-#, fuzzy
 msgid "Kademlia client ID:"
-msgstr "Statut de Kademlia :"
+msgstr "ID du client Kademlia :"
 
 #: src/ServerWnd.cpp:212
 msgid "Status:"
@@ -6365,16 +6365,17 @@ msgstr ""
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
 #: src/TextClient.cpp:533
-#, fuzzy
 msgid ""
 "No search type defined.\n"
 "Type 'help search' to get more help.\n"
-msgstr "Tapez '%s' pour avoir plus d'aide.\n"
+msgstr ""
+"Aucun type de recherche défini.\n"
+"Tapez « help search » pour obtenir davantage d'aide.\n"
 
 #: src/TextClient.cpp:552
-#, fuzzy, c-format
+#, c-format
 msgid "Download File: %lu %s\n"
-msgstr "Taille du téléchargement : %i"
+msgstr "Télécharger le fichier : %lu %s\n"
 
 #: src/TextClient.cpp:644 src/webserver/src/WebServer.cpp:409
 msgid "Request failed with an unknown error."
@@ -6702,9 +6703,8 @@ msgid "Set upload bandwidth limit."
 msgstr "Définir la limite de bande passante en émission."
 
 #: src/TextClient.cpp:935 src/TextClient.cpp:937
-#, fuzzy
 msgid "The given value must be in kilobytes/sec.\n"
-msgstr "La valeur passée à ces commandes doit être en kilo-octets/s.\n"
+msgstr "La valeur en question doit être en kilooctets/s.\n"
 
 #: src/TextClient.cpp:936
 msgid "Set download bandwidth limit."
@@ -6863,9 +6863,8 @@ msgid "Show servers list."
 msgstr "Montrer la liste des serveurs."
 
 #: src/TextClient.cpp:992
-#, fuzzy
 msgid "Show shared files list."
-msgstr "Recharge la liste des fichiers partagés."
+msgstr "Afficher la liste des fichiers partagés."
 
 #: src/TextClient.cpp:994
 msgid "Reset log."
