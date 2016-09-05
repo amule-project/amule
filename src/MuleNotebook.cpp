@@ -36,12 +36,13 @@ DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED)
 BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_RIGHT_DOWN(CMuleNotebook::OnRMButton)
 
-	EVT_MENU(MP_CLOSE_TAB,			CMuleNotebook::OnPopupClose)
-	EVT_MENU(MP_CLOSE_ALL_TABS,		CMuleNotebook::OnPopupCloseAll)
+	EVT_MENU(MP_CLOSE_TAB,		CMuleNotebook::OnPopupClose)
+	EVT_MENU(MP_CLOSE_ALL_TABS,	CMuleNotebook::OnPopupCloseAll)
 	EVT_MENU(MP_CLOSE_OTHER_TABS,	CMuleNotebook::OnPopupCloseOthers)
 
 	// Madcat - tab closing engine
-	EVT_LEFT_UP(CMuleNotebook::OnMouseLeftRelease)
+	EVT_LEFT_UP(CMuleNotebook::OnMouseButtonRelease)
+	EVT_MIDDLE_UP(CMuleNotebook::OnMouseButtonRelease)
 	EVT_MOTION(CMuleNotebook::OnMouseMotion)
 END_EVENT_TABLE()
 
@@ -197,7 +198,7 @@ void CMuleNotebook::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-void CMuleNotebook::OnMouseLeftRelease(wxMouseEvent &event)
+void CMuleNotebook::OnMouseButtonRelease(wxMouseEvent &event)
 {
 
 	if (GetImageList() == NULL) {
@@ -212,8 +213,9 @@ void CMuleNotebook::OnMouseLeftRelease(wxMouseEvent &event)
 	long flags = 0;
 	int tab = HitTest(wxPoint(xpos,ypos),&flags);
 
-	if ((tab != -1) &&  (flags == wxNB_HITTEST_ONICON)) {
-		// User did click on a 'x'
+	if ((tab != -1) &&  (((flags == wxNB_HITTEST_ONICON) && event.LeftUp()) ||
+			((flags == wxNB_HITTEST_ONLABEL) && event.MiddleUp()))) {
+		// User did click on a 'x' or middle click on the label
 		DeletePage(tab);
 	} else {
 		// Is not a 'x'. Send this event up.

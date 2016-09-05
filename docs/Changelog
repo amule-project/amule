@@ -42,6 +42,9 @@ Version 2.4.0 - The river knows.
 		* Compilation fix on Linux Slackware 64bit and MacOS 10.9.4
 		* Fix configure on Mac
 
+	sc0w:
+		* Add ability to use middle-click to close search tabs
+
 	Stu Redman:
 		* Display hashing progress in progress bars
 		* Assertion from background thread now prints a message and not just closes the app
