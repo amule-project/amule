@@ -41,7 +41,7 @@ BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_MENU(MP_CLOSE_OTHER_TABS,	CMuleNotebook::OnPopupCloseOthers)
 
 	// Madcat - tab closing engine
-	EVT_LEFT_UP(CMuleNotebook::OnMouseLeftRelease)
+	EVT_LEFT_DOWN(CMuleNotebook::OnMouseLeftRelease)
 	EVT_MOTION(CMuleNotebook::OnMouseMotion)
 END_EVENT_TABLE()
 
