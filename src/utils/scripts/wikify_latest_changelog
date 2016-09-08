@@ -26,13 +26,9 @@ else
   head -n `grep -hn -E '(\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-)+' docs/Changelog | cut -d ':' -f 1 | head -1` docs/Changelog > $CHANGELOG
   sed -i -r "s/\t([A-Z,a-z].+):$/'''\1:'''/g" $CHANGELOG
   sed -i -r "s/^(Version .+)$/=== \1 ===/g" $CHANGELOG
-  sed -i -r "s/^----------$//g" $CHANGELOG
+  sed -i -r "s/^-----------*$//g" $CHANGELOG
   sed -i -r "s/^([0-9][0-9][0-9][0-9]-[0-9][0-9]?-[0-9][0-9]?)$/''\1''/g" $CHANGELOG
   sed -i -r "s/\t+(\*? .+)$/\1/g" $CHANGELOG
-  while test x"`grep -E '^\s+.+$' $CHANGELOG`" != x""; do
-    sed -i -r "N
-		s/^(\*?.*)\n\s+([^\*]+)$/\1 \2/g " $CHANGELOG;
-  done
+  sed -i -r ":0;N;s/\n\s+/ /;t0;P;D" $CHANGELOG
   echo "$CHANGELOG created."
 fi
-
