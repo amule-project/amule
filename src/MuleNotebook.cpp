@@ -41,8 +41,8 @@ BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_MENU(MP_CLOSE_OTHER_TABS,	CMuleNotebook::OnPopupCloseOthers)
 
 	// Madcat - tab closing engine
-	EVT_LEFT_UP(CMuleNotebook::OnMouseButtonRelease)
-	EVT_MIDDLE_UP(CMuleNotebook::OnMouseButtonRelease)
+	EVT_LEFT_DOWN(CMuleNotebook::OnMouseButtonRelease)
+	EVT_MIDDLE_DOWN(CMuleNotebook::OnMouseButtonRelease)
 	EVT_MOTION(CMuleNotebook::OnMouseMotion)
 END_EVENT_TABLE()
 
@@ -213,8 +213,8 @@ void CMuleNotebook::OnMouseButtonRelease(wxMouseEvent &event)
 	long flags = 0;
 	int tab = HitTest(wxPoint(xpos,ypos),&flags);
 
-	if ((tab != -1) &&  (((flags == wxNB_HITTEST_ONICON) && event.LeftUp()) ||
-			((flags == wxNB_HITTEST_ONLABEL) && event.MiddleUp()))) {
+	if ((tab != -1) &&  (((flags == wxNB_HITTEST_ONICON) && event.LeftDown()) ||
+			((flags == wxNB_HITTEST_ONLABEL) && event.MiddleDown()))) {
 		// User did click on a 'x' or middle click on the label
 		DeletePage(tab);
 	} else {
