@@ -44,7 +44,7 @@ public:
 
 	bool Open(const std::string &File);
 
-	size_t 			size() const 			{ return vCollection.size(); }
+	size_t			size() const			{ return vCollection.size(); }
 	std::string&		operator[](size_t index)	{ return vCollection[index]; }
 	const std::string&	operator[](size_t index) const	{ return vCollection[index]; }
 

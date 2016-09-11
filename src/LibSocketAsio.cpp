@@ -71,7 +71,7 @@
 
 using namespace boost::asio;
 using namespace boost::system;	// for error_code
-static 	io_service s_io_service;
+static io_service s_io_service;
 
 // Number of threads in the Asio thread pool
 const int CAsioService::m_numberOfThreads = 4;

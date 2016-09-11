@@ -8,7 +8,7 @@ I decided on Boost ASIO because of the good reputation of the Boost library.
 
 The goal is to have an aMule which can be configured to use either wx Sockets
 or ASIO sockets for all major tasks (this may exclude things like http download).
-And with ASIO sockets it should perform better at least in some aspects 
+And with ASIO sockets it should perform better at least in some aspects
 (stability, speed, CPU, memory) for this endeavour to make sense.
 
 There are no plans to "boostify" aMule. Boost is encapsulated in the implementation
@@ -31,7 +31,7 @@ are running aMule at high speeds.
 
 Compilation:
 
-Get current boost lib from www.boost.org . Extract it to your favorite 
+Get current boost lib from www.boost.org . Extract it to your favorite
 place (like ~/amule/boost_1_49_0).
 Boost.Asio is header-only. It requires Boost.System for its error codes,
 but we include the single .cpp directly, so we don't need to build
@@ -42,5 +42,5 @@ Configure aMule using
 or
   ./configure --with-boost=/path/to/boost/sources
 
-Important: aMule prints "Asio thread started" in log and console on startup. 
+Important: aMule prints "Asio thread started" in log and console on startup.
 If it doesn't you have probably configured it to use wx sockets!

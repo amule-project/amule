@@ -1,4 +1,4 @@
-To build on MacOSX, there are some experimental scripts located in src/utils/scripts/MacOSX 
+To build on MacOSX, there are some experimental scripts located in src/utils/scripts/MacOSX
 
 An example basic flow to create an SVN build is to do the following from the root folder where this file is located:
 
@@ -8,7 +8,7 @@ cd Build/
 WXVERSION=svn WXPORT=cocoa MULECLEAN=YES ../src/utils/scripts/MacOSX/full_build.sh
 
 
-Those commands would build a MacOSX 10.6 (Snow Leopard) compatible application bundle for aMule and aMuleGUI 
+Those commands would build a MacOSX 10.6 (Snow Leopard) compatible application bundle for aMule and aMuleGUI
 using the architecture of the build system ( i386 or x86_64 ), with the latest SVN vesion of wxWidgets.
 
 Other parameters are explained upon execution of the script.

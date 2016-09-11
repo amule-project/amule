@@ -176,7 +176,7 @@ MAKEFLAGS=-w -s
 		b 0
 	}
 
-	# ship the check target, otherwise test results would be stripped
+	# skip the check target, otherwise test results would be stripped
 	/^check-TESTS$/ {
 		s/.*//
 		x
