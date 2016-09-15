@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule Manual zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-08 11:55+0200\n"
+"POT-Creation-Date: 2016-09-15 11:10+0200\n"
 "PO-Revision-Date: 2011-12-27 14:53+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
@@ -34,11 +34,13 @@ msgstr "AMULE"
 #: ../../src/utils/aLinkCreator/docs/alc.1:1
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
+#, no-wrap
 msgid "September 2016"
 msgstr "2016 九月"
 
 #. type: TH
 #: amule.1:1
+#, no-wrap
 msgid "aMule v2.3.2"
 msgstr "aMule v2.3.2"
 
@@ -337,6 +339,7 @@ msgstr "AMULECMD"
 
 #. type: TH
 #: amulecmd.1:1
+#, no-wrap
 msgid "aMuleCmd v2.3.2"
 msgstr "aMuleCmd v2.3.2"
 
@@ -985,6 +988,7 @@ msgstr "AMULED"
 
 #. type: TH
 #: amuled.1:1
+#, no-wrap
 msgid "aMule Daemon v2.3.2"
 msgstr "aMule Daemon v2.3.2"
 
@@ -1042,6 +1046,7 @@ msgstr "AMULEGUI"
 
 #. type: TH
 #: amulegui.1:1
+#, no-wrap
 msgid "aMuleGUI v2.3.2"
 msgstr "aMuleGUI v2.3.2"
 
@@ -1099,6 +1104,7 @@ msgstr "AMULEWEB"
 
 #. type: TH
 #: amuleweb.1:1
+#, no-wrap
 msgid "aMule webserver v2.3.2"
 msgstr "aMule webserver v2.3.2"
 
@@ -1627,10 +1633,10 @@ msgstr ""
 #. type: Plain text
 #: ../../src/utils/xas/docs/xas.1:14
 msgid ""
-"To enable it on every startup of xchat you can just run the autstart-xas "
+"To enable it on every startup of xchat you can just run the autostart-xas "
 "script (in /usr/bin if you installed with --prefix=/usr)."
 msgstr ""
-"你可以執行 autstart-xas (如果是用 --prefix=/usr 安裝程式，就在 /usr/bin 下) "
+"你可以執行 autostart-xas (如果是用 --prefix=/usr 安裝程式，就在 /usr/bin 下) "
 "在每次啟動 xchat 時都啟用它。"
 
 #. type: Plain text
