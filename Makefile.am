@@ -7,7 +7,7 @@ endif
 SUBDIRS += docs src unittests
 
 EXTRA_DIST = amule.rc amule.ico amule.png convert.ico \
-	README.Debian-Packages aMule-CVS.spec aMule.spec \
+	README.Debian-Packages  aMule.spec \
 	amule_build_install.sh autogen.sh \
 	po/l10n.xsl
 

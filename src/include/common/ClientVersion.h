@@ -44,10 +44,10 @@
 // RELEASERS: REMOVE THE DEFINE ON THE RELEASES, PLEASE
 // AND FIX THE MOD_VERSION_LONG
 
-#define __SVN__
+/* #undef __SVN__ */
 
 #ifndef VERSION
-	#define VERSION "2.4.0"
+	#define VERSION "2.3.2"
 #endif
 
 #ifdef __SVN__
@@ -57,8 +57,8 @@
 #endif
 
 #define	VERSION_MJR		2
-#define	VERSION_MIN		4
-#define	VERSION_UPDATE		0
+#define	VERSION_MIN		3
+#define	VERSION_UPDATE		2
 
 #ifndef PACKAGE
 #define PACKAGE "amule"
