@@ -329,7 +329,7 @@ dnl Use the C compiler for the gettext library checks
 AC_LANG_POP([C++])
 # Checking Native Language Support
 dnl Sets gettext version.
-dnl AM_GNU_GETTEXT_VERSION *must not* be moved away from configure.in!
+dnl AM_GNU_GETTEXT_VERSION *must not* be moved away from configure.ac!
 AM_GNU_GETTEXT_VERSION(0.11.5)
 MULE_CHECK_NLS
 AC_LANG_PUSH([C++])

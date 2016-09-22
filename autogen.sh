@@ -26,9 +26,9 @@ fi
 
 # Determine version of gettext.
 gettext_version=`gettext --version | head -n 1 | sed -e 's/[^0]*\(0\.[0-9][^ ]*\).*/\1/'`
-confver=`cat configure.in | grep '^AM_GNU_GETTEXT_VERSION(' | sed -e 's/^AM_GNU_GETTEXT_VERSION(\([^()]*\))/\1/p' | sed -e 's/^\[\(.*\)\]$/\1/' | sed -e 1q`
+confver=`cat configure.ac | grep '^AM_GNU_GETTEXT_VERSION(' | sed -e 's/^AM_GNU_GETTEXT_VERSION(\([^()]*\))/\1/p' | sed -e 's/^\[\(.*\)\]$/\1/' | sed -e 1q`
 
-# Require version as specified in configure.in.
+# Require version as specified in configure.ac.
 if expr "$confver" \> "$gettext_version" >/dev/null; then
   gettext --version | head -n 1
   echo "Fatal error: gettext version "$confver" or higher is required."
@@ -60,9 +60,9 @@ fi
 #        CONFIG_FILES=intl/Makefile CONFIG_HEADERS= /bin/sh ./config.status
 #    fi
 #   gettextize --intl -f --no-changelog
-#   echo "restoring Makefile.am and configure.in"
+#   echo "restoring Makefile.am and configure.ac"
 #   cp -f Makefile.am~ Makefile.am
-#   cp -f configure.in~ configure.in
+#   cp -f configure.ac~ configure.ac
 #fi
 
 echo "Running aclocal -I m4"
