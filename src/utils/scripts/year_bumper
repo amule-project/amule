@@ -22,10 +22,10 @@
 # Usage:
 #	year_bumper [oldyear [newyear]]
 #
-#	oldyear defaults to the year found in configure.in
+#	oldyear defaults to the year found in configure.ac
 #	newyear defaults to the current year
 
-if [ ! -f ./configure.in ]; then
+if [ ! -f ./configure.ac ]; then
 	echo "This script must be run from the source root directory!"
 	exit 1
 fi
@@ -33,7 +33,7 @@ fi
 if [ $# -ge 1 ]; then
 	oldyear="$1"
 else
-	oldyear=`sed -e 's/# Copyright (c) 2003-\([0-9]\{4\}\).*/\1/;t;d' ./configure.in`
+	oldyear=`sed -e 's/# Copyright (c) 2003-\([0-9]\{4\}\).*/\1/;t;d' ./configure.ac`
 fi
 
 if [ $# -ge 2 ]; then

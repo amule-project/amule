@@ -1,6 +1,6 @@
 #!/bin/sh -eu
 
-if [ ! -f './configure.in' ]; then
+if [ ! -f './configure.ac' ]; then
 	echo "Error: You must run this script from the source root directory!"
 	exit 1
 fi

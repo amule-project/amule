@@ -13,8 +13,8 @@ dnl the same distribution terms as the rest of that program.
 # because gettext's gettext.m4 (distributed in the automake package)
 # still uses it.  Otherwise, the use in gettext.m4 makes autoheader
 # give these diagnostics:
-#   configure.in:556: AC_TRY_COMPILE was called before AC_ISC_POSIX
-#   configure.in:556: AC_TRY_RUN was called before AC_ISC_POSIX
+#   configure.ac:556: AC_TRY_COMPILE was called before AC_ISC_POSIX
+#   configure.ac:556: AC_TRY_RUN was called before AC_ISC_POSIX
 
 undefine([AC_ISC_POSIX])
 
