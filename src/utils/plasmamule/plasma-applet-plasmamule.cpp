@@ -126,7 +126,7 @@ void PlasmaMuleApplet::paintInterface(QPainter *painter,
 
 		if (days)
 		{
-			if (days = 1)
+			if (days == 1)
 			{
 				runtime.prepend(QString("%1 day ").arg(days));
 			} else {
