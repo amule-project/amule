@@ -81,7 +81,7 @@ AC_DEFUN([AM_GNU_GETTEXT],
   dnl Ideally we would do this search only after the
   dnl      if test "$USE_NLS" = "yes"; then
   dnl        if test "$gt_cv_func_gnugettext_libc" != "yes"; then
-  dnl tests. But if configure.in invokes AM_ICONV after AM_GNU_GETTEXT
+  dnl tests. But if configure.ac invokes AM_ICONV after AM_GNU_GETTEXT
   dnl the configure script would need to contain the same shell code
   dnl again, outside any 'if'. There are two solutions:
   dnl - Invoke AM_ICONV_LINKFLAGS_BODY here, outside any 'if'.
@@ -293,7 +293,7 @@ return (long) gettext ("")]ifelse([$2], [need-ngettext], [ + (long) ngettext (""
     AC_SUBST(CATOBJEXT)
     AC_SUBST(INTLOBJS)
 
-    dnl For backward compatibility. Some configure.ins may be using this.
+    dnl For backward compatibility. Some configure.ac may be using this.
     nls_cv_header_intl=
     nls_cv_header_libgt=
 
@@ -422,7 +422,7 @@ AC_DEFUN([AM_PO_SUBDIRS],
           if test -f "$ac_given_srcdir/$ac_dir/LINGUAS"; then
             # The LINGUAS file contains the set of available languages.
             if test -n "$ALL_LINGUAS"; then
-              test -n "$as_me" && echo "$as_me: setting ALL_LINGUAS in configure.in is obsolete" || echo "setting ALL_LINGUAS in configure.in is obsolete"
+              test -n "$as_me" && echo "$as_me: setting ALL_LINGUAS in configure.ac is obsolete" || echo "setting ALL_LINGUAS in configure.ac is obsolete"
             fi
             ALL_LINGUAS_=`sed -e "/^#/d" "$ac_given_srcdir/$ac_dir/LINGUAS"`
             # Hide the ALL_LINGUAS assigment from automake.
