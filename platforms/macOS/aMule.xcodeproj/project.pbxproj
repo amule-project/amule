@@ -28,7 +28,6 @@
 		4357B6881D5C6DBD00A2C138 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4357B6871D5C6DBD00A2C138 /* CoreFoundation.framework */; };
 		4357B68A1D5C6DCA00A2C138 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4357B6891D5C6DCA00A2C138 /* CoreServices.framework */; };
 		4357B68C1D5C6DE300A2C138 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4357B68B1D5C6DE300A2C138 /* libc++.tbd */; };
-		435E3C331DA01A68004816AB /* error_code.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 435E3C321DA01A68004816AB /* error_code.cpp */; };
 		43B56D1D1DA0071D0089CF0D /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 43B56D1C1DA0071D0089CF0D /* Makefile */; };
 		43D8A9031D5B516D00FE3039 /* LibSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43D8A9001D5B516D00FE3039 /* LibSocket.cpp */; };
 		43D8A9091D5B55BA00FE3039 /* ClientRef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43D8A9071D5B55BA00FE3039 /* ClientRef.cpp */; };
@@ -1298,7 +1297,6 @@
 				487911DE11925E61002C086E /* MagnetURI.cpp in Sources */,
 				487911DF11925E61002C086E /* MemFile.cpp in Sources */,
 				487911E111925E61002C086E /* Packet.cpp in Sources */,
-				435E3C331DA01A68004816AB /* error_code.cpp in Sources */,
 				487911E211925E61002C086E /* RLE.cpp in Sources */,
 				487911E311925E61002C086E /* SafeFile.cpp in Sources */,
 				487911E411925E61002C086E /* SHA.cpp in Sources */,
