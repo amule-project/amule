@@ -28,7 +28,6 @@
 		4357B6881D5C6DBD00A2C138 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4357B6871D5C6DBD00A2C138 /* CoreFoundation.framework */; };
 		4357B68A1D5C6DCA00A2C138 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4357B6891D5C6DCA00A2C138 /* CoreServices.framework */; };
 		4357B68C1D5C6DE300A2C138 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4357B68B1D5C6DE300A2C138 /* libc++.tbd */; };
-		435E3C301DA01A08004816AB /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 435E3C241DA0195E004816AB /* libboost_system.a */; };
 		435E3C331DA01A68004816AB /* error_code.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 435E3C321DA01A68004816AB /* error_code.cpp */; };
 		43B56D1D1DA0071D0089CF0D /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 43B56D1C1DA0071D0089CF0D /* Makefile */; };
 		43D8A9031D5B516D00FE3039 /* LibSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43D8A9001D5B516D00FE3039 /* LibSocket.cpp */; };
@@ -213,13 +212,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 435E3C281DA0198C004816AB;
 			remoteInfo = Boost;
-		};
-		435E3C2E1DA019F4004816AB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 435E3C231DA0195E004816AB;
-			remoteInfo = boost_system;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -571,7 +563,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				435E3C301DA01A08004816AB /* libboost_system.a in Frameworks */,
 				4357B68C1D5C6DE300A2C138 /* libc++.tbd in Frameworks */,
 				4357B67E1D5C6D6A00A2C138 /* libSystem.B.tbd in Frameworks */,
 				432DB75C1D5D514C0048FB7B /* libiconv.tbd in Frameworks */,
@@ -1207,7 +1198,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				435E3C2F1DA019F4004816AB /* PBXTargetDependency */,
 				4338D8081D6B630E006043CB /* PBXTargetDependency */,
 				4338D80A1D6B630E006043CB /* PBXTargetDependency */,
 				4324B44F1D71D2CD0045BFC7 /* PBXTargetDependency */,
@@ -1478,11 +1468,6 @@
 			isa = PBXTargetDependency;
 			target = 435E3C281DA0198C004816AB /* Boost */;
 			targetProxy = 435E3C2C1DA019EC004816AB /* PBXContainerItemProxy */;
-		};
-		435E3C2F1DA019F4004816AB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 435E3C231DA0195E004816AB /* boost_system */;
-			targetProxy = 435E3C2E1DA019F4004816AB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1936,7 +1921,6 @@
 					"wxDEBUG_LEVEL=0",
 					__WEAK_CRYPTO__,
 					"ENABLE_UPNP=1",
-					ASIO_SOCKETS,
 				);
 				GCC_THREADSAFE_STATICS = NO;
 				GCC_VERSION = "";
@@ -2033,7 +2017,6 @@
 					"wxDEBUG_LEVEL=0",
 					__WEAK_CRYPTO__,
 					"ENABLE_UPNP=1",
-					ASIO_SOCKETS,
 				);
 				GCC_THREADSAFE_STATICS = NO;
 				GCC_VERSION = "";
