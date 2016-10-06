@@ -521,6 +521,9 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	}
 #endif
 
+	m_verticalToolbar = thePrefs::VerticalToolbar();
+	m_toolbarOrientationChanged = false;
+
 	return true;
 }
 
@@ -780,6 +783,13 @@ void PrefsUnifiedDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
 	Show(false);
 	// restore state of server tab if necessary
 	EnableServerTab(thePrefs::GetNetworkED2K());
+
+	if (m_toolbarOrientationChanged) {
+			theApp->amuledlg->Create_Toolbar(m_verticalToolbar);
+			// Update the first tool (conn button)
+			theApp->amuledlg->ShowConnectionState();
+			theApp->amuledlg->Layout();
+	}
 }
 
 
@@ -920,6 +930,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 
 		case IDC_VERTTOOLBAR:
+			m_toolbarOrientationChanged = (m_verticalToolbar != value);
 			theApp->amuledlg->Create_Toolbar(value);
 			// Update the first tool (conn button)
 			theApp->amuledlg->ShowConnectionState();
