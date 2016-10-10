@@ -4,6 +4,8 @@ Version 2.4.0 - The river knows.
 
 	GonoszTopi:
 		* Fix restoring toolbar orientation on 'Cancel'
+		* Features ported from eMule:
+			- Find best keyword for Kad search (0.49c)
 
 --------------------------------------------------------------------------------
 
