@@ -32,6 +32,7 @@
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED)
+DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_DELETE_PAGE)
 
 BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_RIGHT_DOWN(CMuleNotebook::OnRMButton)
@@ -44,6 +45,7 @@ BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_LEFT_UP(CMuleNotebook::OnMouseButtonRelease)
 	EVT_MIDDLE_UP(CMuleNotebook::OnMouseButtonRelease)
 	EVT_MOTION(CMuleNotebook::OnMouseMotion)
+	EVT_MULENOTEBOOK_DELETE_PAGE(wxID_ANY, CMuleNotebook::OnDeletePage)
 END_EVENT_TABLE()
 
 CMuleNotebook::CMuleNotebook( wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name )
@@ -58,6 +60,12 @@ CMuleNotebook::~CMuleNotebook()
 {
 	// Ensure that all notifications gets sent
 	DeleteAllPages();
+}
+
+void CMuleNotebook::OnDeletePage(wxBookCtrlEvent& evt)
+{
+	int page = evt.GetSelection();
+	DeletePage(page);
 }
 
 
@@ -216,7 +224,14 @@ void CMuleNotebook::OnMouseButtonRelease(wxMouseEvent &event)
 	if ((tab != -1) &&  (((flags == wxNB_HITTEST_ONICON) && event.LeftUp()) ||
 			((flags == wxNB_HITTEST_ONLABEL) && event.MiddleUp()))) {
 		// User did click on a 'x' or middle click on the label
-		DeletePage(tab);
+
+		/*	WORKAROUND: Instead of calling DeletePage, we need to wait for the
+		 *	mouse release signal to reach Gtk. Inconsistent with normal wxEvent
+		 *	behaviour the button release handler in wxWidgets don't evaluate
+		 *	the result of the signal handling. */
+		wxNotebookEvent evt( wxEVT_COMMAND_MULENOTEBOOK_DELETE_PAGE, GetId(), tab );
+		evt.SetEventObject(this);
+		AddPendingEvent( evt );
 	} else {
 		// Is not a 'x'. Send this event up.
 		event.Skip();
