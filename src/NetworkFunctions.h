@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2011 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2016 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -90,6 +90,8 @@ inline uint32 StringIPtoUint32(const wxString &strIP)
 
 	return ip;
 }
+
+
 /**
  * Parses a String-IHost and returns the IP or 0 if it was invalid.
  *
@@ -100,6 +102,7 @@ inline uint32 StringIPtoUint32(const wxString &strIP)
  */
 uint32 StringHosttoUint32(const wxString &Host);
 
+
 /**
  * Checks for invalid IP-values.
  *
@@ -109,18 +112,22 @@ uint32 StringHosttoUint32(const wxString &Host);
  *
  * Note: IP must be in anti-host order (BE on LE platform, LE on BE platform).
  */
-bool IsGoodIP( uint32 IP, bool filterLAN );
+bool IsGoodIP( uint32 IP, bool filterLAN ) throw();
 
-inline bool IsGoodIPPort(uint32 nIP, uint16 nPort)
+
+inline bool IsGoodIPPort(uint32 nIP, uint16 nPort) throw()
 {
 	return IsGoodIP(nIP, true) && nPort!=0;
 }
 
 #define HIGHEST_LOWID_ED2K_KAD		16777216
 
-inline bool IsLowID(uint32 id) {
+
+inline bool IsLowID(uint32 id)
+{
 	return (id < HIGHEST_LOWID_ED2K_KAD);
 }
+
 
 /**
  * Checks for LAN IPs.

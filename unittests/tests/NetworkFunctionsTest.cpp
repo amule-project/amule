@@ -137,3 +137,48 @@ TEST(NetworkFunctions, StringIPtoUint32)
 	ASSERT_EQUALS(27u, dummyIP);
 }
 
+
+// Testing the IsGoodIP() and IsLanIP() functions
+TEST(NetworkFunctions, IsGoodIP)
+{
+	struct {
+		wxString	ip;
+		bool		isgood;
+		bool		islan;
+	} ipList[] = {
+		{ wxT("0.0.0.0"),	false,	false	},
+		{ wxT("0.0.0.1"),	false,	false	},
+		{ wxT("0.0.1.0"),	false,	false	},
+		{ wxT("0.1.0.0"),	false,	false	},
+		{ wxT("1.0.0.0"),	true,	false	},
+		{ wxT("10.0.0.1"),	true,	true	},
+		{ wxT("10.0.1.0"),	true,	true	},
+		{ wxT("10.1.0.0"),	true,	true	},
+		{ wxT("14.156.39.4"),	true,	false	},
+		{ wxT("24.93.63.177"),	true,	false	},
+		{ wxT("172.15.0.0"),	true,	false	},
+		{ wxT("172.16.0.0"),	true,	true	},
+		{ wxT("172.17.0.0"),	true,	true	},
+		{ wxT("172.31.0.0"),	true,	true	},
+		{ wxT("172.32.0.0"),	true,	false	},
+		{ wxT("192.88.98.176"),	true,	false	},
+		{ wxT("192.88.99.175"),	false,	false	},
+		{ wxT("192.88.100.17"),	true,	false	},
+		{ wxT("192.167.0.0"),	true,	false	},
+		{ wxT("192.168.0.0"),	true,	true	},
+		{ wxT("192.168.255.255"), true, true	},
+		{ wxT("192.169.0.0"),	true,	false	},
+		{ wxT("198.17.0.0"),	true,	false	},
+		{ wxT("198.18.0.0"),	false,	false	},
+		{ wxT("198.19.0.0"),	false,	false	},
+		{ wxT("198.20.0.0"),	true,	false	}
+	};
+
+	unsigned int ip;
+	for (unsigned int i = 0; i < itemsof(ipList); i++) {
+		ASSERT_TRUE(StringIPtoUint32(ipList[i].ip, ip));
+		ASSERT_EQUALS(ipList[i].isgood, IsGoodIP(ip, false));
+		ASSERT_EQUALS(ipList[i].islan, IsLanIP(ip));
+		ASSERT_EQUALS(ipList[i].isgood && !ipList[i].islan, IsGoodIP(ip, true));
+	}
+}
