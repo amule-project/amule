@@ -28,9 +28,13 @@
 
 #include <wx/notebook.h>
 
+#define MULE_NEEDS_DELETEPAGE_WORKAROUND	wxCHECK_VERSION(3,0,2)
+
 
 DECLARE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING, -1)
 DECLARE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED, -1)
+
+#if MULE_NEEDS_DELETEPAGE_WORKAROUND
 DECLARE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_DELETE_PAGE, -1)
 
 #define EVT_MULENOTEBOOK_DELETE_PAGE(id, fn)						\
@@ -41,6 +45,8 @@ DECLARE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_DELETE_PAGE, -1)
 		(wxObjectEventFunction)(wxEventFunction)(wxNotebookEventFunction) &fn,  \
 		NULL                                                                    \
 	),
+#endif // MULE_NEEDS_DELETEPAGE_WORKAROUND
+
 #define EVT_MULENOTEBOOK_PAGE_CLOSING(id, fn)						\
 	DECLARE_EVENT_TABLE_ENTRY(							\
 		wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING,					\
@@ -116,9 +122,11 @@ public:
 	 */
 	void SetPopupHandler( wxWindow* widget );
 
+#if MULE_NEEDS_DELETEPAGE_WORKAROUND
 private:
 	// Internal handler. Workaround for wxWidgets Tab-Crash bug.
 	void OnDeletePage(wxBookCtrlEvent& evt);
+#endif // MULE_NEEDS_DELETEPAGE_WORKAROUND
 
 protected:
 	/**

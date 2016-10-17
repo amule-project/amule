@@ -32,7 +32,10 @@
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED)
+
+#if MULE_NEEDS_DELETEPAGE_WORKAROUND
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_DELETE_PAGE)
+#endif
 
 BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_RIGHT_DOWN(CMuleNotebook::OnRMButton)
@@ -45,8 +48,11 @@ BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_LEFT_UP(CMuleNotebook::OnMouseButtonRelease)
 	EVT_MIDDLE_UP(CMuleNotebook::OnMouseButtonRelease)
 	EVT_MOTION(CMuleNotebook::OnMouseMotion)
+#if MULE_NEEDS_DELETEPAGE_WORKAROUND
 	EVT_MULENOTEBOOK_DELETE_PAGE(wxID_ANY, CMuleNotebook::OnDeletePage)
+#endif
 END_EVENT_TABLE()
+
 
 CMuleNotebook::CMuleNotebook( wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name )
 	: wxNotebook(parent, id, pos, size, style, name)
@@ -62,11 +68,14 @@ CMuleNotebook::~CMuleNotebook()
 	DeleteAllPages();
 }
 
+
+#if MULE_NEEDS_DELETEPAGE_WORKAROUND
 void CMuleNotebook::OnDeletePage(wxBookCtrlEvent& evt)
 {
 	int page = evt.GetSelection();
 	DeletePage(page);
 }
+#endif // MULE_NEEDS_DELETEPAGE_WORKAROUND
 
 
 bool CMuleNotebook::DeletePage(int nPage)
@@ -208,7 +217,6 @@ void CMuleNotebook::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 
 void CMuleNotebook::OnMouseButtonRelease(wxMouseEvent &event)
 {
-
 	if (GetImageList() == NULL) {
 		// This Mulenotebook has no images on tabs, so nothing to do.
 		event.Skip();
@@ -224,7 +232,7 @@ void CMuleNotebook::OnMouseButtonRelease(wxMouseEvent &event)
 	if ((tab != -1) &&  (((flags == wxNB_HITTEST_ONICON) && event.LeftUp()) ||
 			((flags == wxNB_HITTEST_ONLABEL) && event.MiddleUp()))) {
 		// User did click on a 'x' or middle click on the label
-
+#if MULE_NEEDS_DELETEPAGE_WORKAROUND
 		/*	WORKAROUND: Instead of calling DeletePage, we need to wait for the
 		 *	mouse release signal to reach Gtk. Inconsistent with normal wxEvent
 		 *	behaviour the button release handler in wxWidgets don't evaluate
@@ -232,16 +240,18 @@ void CMuleNotebook::OnMouseButtonRelease(wxMouseEvent &event)
 		wxNotebookEvent evt( wxEVT_COMMAND_MULENOTEBOOK_DELETE_PAGE, GetId(), tab );
 		evt.SetEventObject(this);
 		AddPendingEvent( evt );
+#else
+		DeletePage(tab);
+#endif // MULE_NEEDS_DELETEPAGE_WORKAROUND
 	} else {
 		// Is not a 'x'. Send this event up.
 		event.Skip();
 	}
-
 }
+
 
 void CMuleNotebook::OnMouseMotion(wxMouseEvent &event)
 {
-
 	if (GetImageList() == NULL) {
 		// This Mulenotebook has no images on tabs, so nothing to do.
 		event.Skip();
@@ -263,7 +273,6 @@ void CMuleNotebook::OnMouseMotion(wxMouseEvent &event)
 		// Is not a 'x'. Send this event up.
 		event.Skip();
 	}
-
 }
 
 // File_checked_for_headers
