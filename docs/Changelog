@@ -2,6 +2,10 @@ Version 2.4.0 - The river knows.
 ----------
 201?-??-??
 
+	persmule:
+		* Fix sharing directories with non-ASCII names with aMule daemon
+		* Fix potential invalid detection for empty wxCharBuffer
+
 --------------------------------------------------------------------------------
 
 Version 2.3.2 - The "don't close tabs" version.
