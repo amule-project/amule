@@ -79,26 +79,26 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
 			])
 	])
 
-        AS_IF([test ${GDLIB_CONFIG_PATH:-no} == no], [
-            AS_IF([test -n "$PKG_CONFIG"], [
-                    AS_IF([$PKG_CONFIG gdlib --exists], [
-                            GDLIB_VERSION=`$PKG_CONFIG gdlib --modversion`
-                            AS_IF([$PKG_CONFIG gdlib --atleast-version=REQUIRED_VERSION], [
-                                    gdlib_ver_ok=yes
-                                    GDLIB_CFLAGS=`$PKG_CONFIG gdlib --cflags-only-other`
-                                    GDLIB_LDFLAGS=`$PKG_CONFIG gdlib --libs-only-L`
-                                    GDLIB_LIBS=`$PKG_CONFIG gdlib --libs-only-other`
-                                    GDLIB_LIBS="$GDLIB_LIBS `$PKG_CONFIG gdlib --libs-only-l`"
-                            ], [
-                                    gdlib_ver_ok=no
-                            ])
-                    ], [
-                            gdlib_ver_ok=no
-                    ])
-            ], [
-                    gdlib_ver_ok=no
-            ])
-        ])
+	AS_IF([test ${GDLIB_CONFIG_PATH:-no} == no], [
+		AC_MSG_CHECKING([for gdlib-pkgconfig])
+
+		AS_IF([test -n "$PKG_CONFIG"], [
+			AS_IF([$PKG_CONFIG gdlib --exists], [
+			GDLIB_VERSION=`$PKG_CONFIG gdlib --modversion`
+
+				AS_IF([$PKG_CONFIG gdlib --atleast-version=REQUIRED_VERSION], [
+					gdlib_ver_ok=yes
+					gdlib_pkgconfig=yes
+				], [
+					gdlib_ver_ok=no
+				])
+			], [
+				gdlib_ver_ok=no
+			])
+		], [
+			gdlib_ver_ok=no
+		])
+	])
 
 	AS_IF([test -z "$gdlib_ver_ok"], [
 		AS_IF([test -z "$GDLIB_VERSION"], [AC_MSG_RESULT([no])], [
@@ -107,17 +107,28 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
 		])
 	], [
 		AC_MSG_RESULT([yes (version $GDLIB_VERSION)])
-		GDLIB_CFLAGS="`$GDLIB_CONFIG_WITH_ARGS --cflags`"
-		GDLIB_LDFLAGS="`$GDLIB_CONFIG_WITH_ARGS --ldflags`"
-		GDLIB_LIBS="`$GDLIB_CONFIG_WITH_ARGS --libs`"
+
+		AS_IF([test ${gdlib_pkgconfig} == yes], [
+			GDLIB_CFLAGS=`$PKG_CONFIG gdlib --cflags-only-other`
+			GDLIB_LDFLAGS=`$PKG_CONFIG gdlib --libs-only-L`
+			GDLIB_LIBS=`$PKG_CONFIG gdlib --libs-only-other`
+			GDLIB_LIBS="$GDLIB_LIBS `$PKG_CONFIG gdlib --libs-only-l`"
+		], [
+			GDLIB_CFLAGS="`$GDLIB_CONFIG_WITH_ARGS --cflags`"
+			GDLIB_LDFLAGS="`$GDLIB_CONFIG_WITH_ARGS --ldflags`"
+			GDLIB_LIBS="`$GDLIB_CONFIG_WITH_ARGS --libs`"
+		])
+
 		MULE_BACKUP([CFLAGS])
 		MULE_APPEND([CFLAGS], [$GDLIB_CFLAGS])
+
 		AC_CHECK_HEADER([gd.h],, [
 			GDLIB_CFLAGS=
 			GDLIB_LDFLAGS=
 			GDLIB_LIBS=
 			GDLIB_VERSION=
 		])
+
 		MULE_RESTORE([CFLAGS])
 	])
 
