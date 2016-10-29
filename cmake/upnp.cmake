@@ -1,0 +1,8 @@
+INCLUDE (FindPkgConfig)
+
+PKG_CHECK_MODULES (LIBUPNP   libupnp>=${MIN_UPNP_VERSION})
+
+IF (NOT LIBUPNP_FOUND)
+	SET (ENABLE_UPNP FALSE)
+	MESSAGE (STATUS "lib-upnp not found or too old, disabling upnp")
+ENDIF (NOT LIBUPNP_FOUND)
