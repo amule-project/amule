@@ -1,0 +1,2 @@
+INCLUDE (CheckFunctionExists)
+CHECK_FUNCTION_EXISTS (getopt_long HAVE_GETOPT_LONG)
