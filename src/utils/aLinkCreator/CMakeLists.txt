@@ -1,0 +1,13 @@
+ADD_SUBDIRECTORY (docs)
+ADD_SUBDIRECTORY (src)
+
+
+IF (BUILD_ALC)
+	INSTALL (FILES alc.xpm
+		DESTINATION "${DATADIR}/pixmaps"
+	)
+
+	INSTALL (FILES alc.desktop
+		DESTINATION "${DATADIR}/applications"
+	)
+ENDIF (BUILD_ALC)
