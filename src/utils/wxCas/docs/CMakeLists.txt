@@ -1,0 +1,1 @@
+CHECK_MANPAGE ("wxcas")

@@ -1,0 +1,21 @@
+ADD_LIBRARY (ec STATIC
+	ECMuleSocket.cpp
+	ECPacket.cpp
+	ECSpecialTags.cpp
+	ECSocket.cpp
+	ECTag.cpp
+	ECUInt128.cpp
+	RemoteConnect.cpp
+)
+
+ADD_DEPENDENCIES(ec generate_ECCodes.h generate_ECTagTypes.h)
+
+TARGET_LINK_LIBRARIES (ec
+		${CRYPTOPP}
+)
+
+SET_TARGET_PROPERTIES (ec
+	PROPERTIES COMPILE_FLAGS "-I${CMAKE_CURRENT_BINARY_DIR} -I${INCLUDE_INCLUDE_DIR} -I${LIBS_INCLUDE_DIR} ${wxWidgets_BASE_DEFS}"
+)
+
+TARGET_LINK_LIBRARIES (ec ${wxWidgets_BASE_LIBRARIES})
