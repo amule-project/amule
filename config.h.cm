@@ -11,9 +11,6 @@
    native language is requested. */
 #cmakedefine ENABLE_NLS 1
 
-/* Define if geoip was found */
-#cmakedefine ENABLE_IP2COUNTRY
-
 /* Define if you have the _SC_PAGESIZE constant in <unistd.h> */
 #cmakedefine HAVE__SC_PAGESIZE
 
