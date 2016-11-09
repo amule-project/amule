@@ -1,5 +1,7 @@
 INCLUDE (CheckIncludeFile)
 
+MESSAGE (STATUS "Checking for libgeoip...")
+
 CHECK_INCLUDE_FILE (GeoIP.h GEOIP_H)
 
 IF (GEOIP_H)
@@ -8,7 +10,9 @@ IF (GEOIP_H)
 	IF (NOT LIBGEOIP)
 		SET (ENABLE_IP2COUNTRY FALSE)
 		MESSAGE (STATUS "GeoIP lib not found, disabling support")
-	ENDIF (NOT LIBGEOIP)		
+	ELSE (NOT LIBGEOIP)
+		MESSAGE (STATUS "GeoIP found useable")
+	ENDIF (NOT LIBGEOIP)
 ELSE (GEOIP_H)
 	SET (ENABLE_IP2COUNTRY FALSE)
 	MESSAGE (STATUS "GeoIP headers not found, disabling support")
