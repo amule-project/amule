@@ -9,8 +9,8 @@ ADD_LIBRARY (mulecommon STATIC
 	TextFile.cpp
 )
 
-SET_TARGET_PROPERTIES (mulecommon
-	PROPERTIES COMPILE_FLAGS "${wxWidgets_BASE_DEFS}"
+TARGET_COMPILE_DEFINITIONS (mulecommon
+	PRIVATE "${wxWidgets_BASE_DEFS}"
 )
 
 TARGET_LINK_LIBRARIES (mulecommon ${wxWidgets_BASE_LIBRARIES})
