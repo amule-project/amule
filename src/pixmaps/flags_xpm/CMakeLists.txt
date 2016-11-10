@@ -29,10 +29,10 @@ FOREACH (FLAG ${FLAGS})
 		SET (FIRST FALSE)
 	ELSE (FIRST)
 		IF (${CODE} MATCHES "do")
-			SET (CODE "do_")
+			FILE (APPEND ${HEADER_FILE} ",\n\t {do_, \"do\"}")
+		ELSE (${CODE} MATCHES "do")
+			FILE (APPEND ${HEADER_FILE} ",\n\t {${CODE}, \"${CODE}\"}")
 		ENDIF (${CODE} MATCHES "do")
-
-		FILE (APPEND ${HEADER_FILE} ",\n\t {${CODE}, \"${CODE}\"}")
 	ENDIF (FIRST)
 ENDFOREACH (FLAG ${FLAGS})
 
