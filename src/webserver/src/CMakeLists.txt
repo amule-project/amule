@@ -1,14 +1,14 @@
 INCLUDE (${CMAKE_SOURCE_DIR}/cmake/source-vars.cmake)
 
 IF (BISON_FOUND)
-	BISON_TARGET(php_parser.c php_parser.y
+	BISON_TARGET (php_parser.c php_parser.y
 		${CMAKE_CURRENT_BINARY_DIR}/php_parser.c
 		COMPILE_FLAGS "-t -v -p php"
 	)
 ENDIF (BISON_FOUND)
 
 IF (FLEX_FOUND)
-	FLEX_TARGET(php_lexer.c php_lexer.l
+	FLEX_TARGET (php_lexer.c php_lexer.l
 		${CMAKE_CURRENT_BINARY_DIR}/php_lexer.c
 		COMPILE_FLAGS "-P php"
 	)
@@ -70,6 +70,6 @@ IF (WITH_LIBPNG)
 	TARGET_LINK_LIBRARIES (amuleweb ${PNG_LIBRARIES})
 ENDIF (WITH_LIBPNG)
 
-install(TARGETS amuleweb
+install (TARGETS amuleweb
             RUNTIME DESTINATION bin
 )

@@ -8,7 +8,10 @@ ADD_LIBRARY (ec STATIC
 	RemoteConnect.cpp
 )
 
-ADD_DEPENDENCIES(ec generate_ECCodes.h generate_ECTagTypes.h)
+ADD_DEPENDENCIES (ec
+	generate_ECCodes.h
+	generate_ECTagTypes.h
+)
 
 TARGET_LINK_LIBRARIES (ec
 		${CRYPTOPP}

@@ -31,7 +31,7 @@
 
 MACRO (CHECK_WX)
 	SET (wxWidgets_USE_LIBS base)
-	FIND_PACKAGE(wxWidgets REQUIRED)
+	FIND_PACKAGE (wxWidgets REQUIRED)
 
 	EXECUTE_PROCESS (COMMAND ${wxWidgets_CONFIG_EXECUTABLE} --version
 		OUTPUT_VARIABLE wx_Version
@@ -60,7 +60,7 @@ MACRO (CHECK_WX)
 
 	IF (wx_NEED_GUI)
 		SET (wxWidgets_USE_LIBS core)
-		FIND_PACKAGE(wxWidgets REQUIRED)
+		FIND_PACKAGE (wxWidgets REQUIRED)
 		STRING (REGEX REPLACE "-L[^;]*;" ";" wxWidgets_GUI_LIBRARIES "${wxWidgets_LIBRARIES}")
 		SET (wxWidgets_GUI_LIBRARY_DIRS ${wxWidgets_LIBRARY_DIRS})
 		SET (wxWidgets_GUI_DEFS "${wxWidgets_DEFINITIONS};USE_WX_EXTENSIONS")
@@ -70,7 +70,7 @@ MACRO (CHECK_WX)
 
 	IF (wx_NEED_NET)
 		SET (wxWidgets_USE_LIBS net)
-		FIND_PACKAGE(wxWidgets REQUIRED)
+		FIND_PACKAGE (wxWidgets REQUIRED)
 		STRING (REGEX REPLACE "-L[^;]*;" ";" wxWidgets_NET_LIBRARIES "${wxWidgets_LIBRARIES}")
 		SET (wxWidgets_NET_LIBRARY_DIRS ${wxWidgets_LIBRARY_DIRS})
 		SET (wxWidgets_NET_DEFS ${wxWidgets_DEFINITIONS})
@@ -80,7 +80,7 @@ MACRO (CHECK_WX)
 
 	IF (wx_NEED_ADV)
 		SET (wxWidgets_USE_LIBS adv)
-		FIND_PACKAGE(wxWidgets REQUIRED)
+		FIND_PACKAGE (wxWidgets REQUIRED)
 		STRING (REGEX REPLACE "-L[^;]*;" ";" wxWidgets_ADV_LIBRARIES "${wxWidgets_LIBRARIES}")
 		SET (wxWidgets_ADV_LIBRARY_DIRS ${wxWidgets_LIBRARY_DIRS})
 		UNSET (wxWidgets_LIBRARIES)
