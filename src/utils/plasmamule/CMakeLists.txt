@@ -5,8 +5,8 @@ INCLUDE_DIRECTORIES (${CMAKE_CURRENT_BINARY_DIR})
 
 FIND_PACKAGE (SharedMimeInfo)
 
-QT4_GENERATE_MOC(${CMAKE_CURRENT_SOURCE_DIR}/plasma-applet-plasmamule.h ${CMAKE_CURRENT_BINARY_DIR}/plasma-applet-plasmamule.moc)
-QT4_GENERATE_MOC(${CMAKE_CURRENT_SOURCE_DIR}/plasma-engine-plasmamule.h ${CMAKE_CURRENT_BINARY_DIR}/plasma-engine-plasmamule.moc)
+QT4_GENERATE_MOC (${CMAKE_CURRENT_SOURCE_DIR}/plasma-applet-plasmamule.h ${CMAKE_CURRENT_BINARY_DIR}/plasma-applet-plasmamule.moc)
+QT4_GENERATE_MOC (${CMAKE_CURRENT_SOURCE_DIR}/plasma-engine-plasmamule.h ${CMAKE_CURRENT_BINARY_DIR}/plasma-engine-plasmamule.moc)
 
 ADD_EXECUTABLE (plasmamule-engine-feeder
 	plasmamule-dbus.cpp

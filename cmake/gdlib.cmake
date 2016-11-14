@@ -58,7 +58,7 @@ IF (gdlib_CONFIG_EXECUTABLE)
 	EXECUTE_PROCESS (COMMAND ${gdlib_CONFIG_EXECUTABLE} --version
 		OUTPUT_VARIABLE gdlib_VERSION
 	)
-	STRING(REGEX REPLACE "(\r?\n)+$" "" gdlib_VERSION "${gdlib_VERSION}")
+	STRING (REGEX REPLACE "(\r?\n)+$" "" gdlib_VERSION "${gdlib_VERSION}")
 
 	IF (${gdlib_VERSION} VERSION_LESS ${MIN_GDLIB_VERSION})
 		MESSAGE (FATAL_ERROR "gdlib version ${gdlib_VERSION} -- too old")
@@ -83,7 +83,7 @@ IF (gdlib_CONFIG_EXECUTABLE)
 	ENDIF (${gdlib_VERSION} VERSION_LESS ${MIN_GDLIB_VERSION})
 ELSE (gdlib_CONFIG_EXECUTABLE)
 	FIND_PACKAGE (PkgConfig REQUIRED)
-	pkg_search_module(gdlib REQUIRED gdlib)
+	pkg_search_module (gdlib REQUIRED gdlib)
 	MESSAGE (STATUS "gdlib version: ${gdlib_VERSION} -- OK")
 ENDIF (gdlib_CONFIG_EXECUTABLE)
 
