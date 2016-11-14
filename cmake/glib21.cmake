@@ -33,16 +33,7 @@ IF (BUILD_MONOLITHIC OR BUILD_DAEMON)
 		MESSAGE (STATUS "glibc -- found")
 	ENDIF (${MATCH})
 
-	TRY_RUN (posix_fallocate_run_result
-		posix_fallocate_compile_result
-		${CMAKE_CURRENT_SOURCE_DIR}
-		${CMAKE_CURRENT_SOURCE_DIR}/cmake/glib21-posix-fallocate.c
-	)
-
-	IF (${posix_fallocate_run_result} EQUAL 0)
-		SET (HAVE_POSIX_FALLOCATE TRUE)
-		MESSAGE (STATUS "posix fallocate -- OK")
-	ENDIF (${posix_fallocate_run_result} EQUAL 0)
+	CHECK_FUNCTION_EXISTS (posix_fallocate HAVE_POSIX_FALLOCATE)
 ENDIF (BUILD_MONOLITHIC OR BUILD_DAEMON)
 
 IF (BUILD_DAEMON)
