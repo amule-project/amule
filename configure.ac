@@ -451,7 +451,7 @@ dnl End of checks, now write the results and report
 dnl ---------------------------------------------------------------------------
 
 AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
-AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32 -a "$RC" != ":")
+AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32 -a "$RC" != ":" -a x$WX_PORT = xmsw)
 AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
 AM_CONDITIONAL(COMPILE_NLS, test x$USE_NLS = xyes)
 AM_CONDITIONAL(GENERATE_FLEX_HEADER, test x$HAVE_FLEX_EXTENDED = xyes)
