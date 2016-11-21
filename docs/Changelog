@@ -1,4 +1,4 @@
-Version 2.4.0 - The river knows.
+Version 2.3.3 - The "what do you want?" version.
 ----------
 201?-??-??
 
@@ -10,10 +10,19 @@ Version 2.4.0 - The river knows.
 		* Fix restoring toolbar orientation on 'Cancel'
 		* Features ported from eMule:
 			- Find best keyword for Kad search (0.49c)
+		* Various fixes to gdlib detection
+		* Support for compiling aMule with wxGTK under Cygwin
+		* Various small fixes to the MacOSX packager script
 
 	persmule:
 		* Fix sharing directories with non-ASCII names with aMule daemon
 		* Fix potential invalid detection for empty wxCharBuffer
+
+	scow:
+		* C++11 fixes
+
+	Vollstrecker:
+		* Initial support for detecting pkg-config based gdlib versions
 
 --------------------------------------------------------------------------------
 
