@@ -704,6 +704,41 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
 	return 0;
 }
 
+bool CamuleDaemonApp::Initialize(int& argc_, wxChar **argv_)
+{
+	if ( !wxAppConsole::Initialize(argc_, argv_) ) {
+		return false;
+	}
+
+#ifdef __UNIX__
+	wxString encName;
+#if wxUSE_INTL
+	// if a non default locale is set,
+	// assume that the user wants his
+        // filenames in this locale too
+        encName = wxLocale::GetSystemEncodingName().Upper();
+
+        // But don't consider ASCII in this case.
+	if ( !encName.empty() ) {
+		if ( encName == wxT("US-ASCII") ) {
+			// This means US-ASCII when returned
+			// from GetEncodingFromName().
+			encName.clear();
+		}
+        }
+#endif // wxUSE_INTL
+
+	// in this case, UTF-8 is used by default.
+        if ( encName.empty() ) {
+		encName = wxT("UTF-8");
+	}
+
+	static wxConvBrokenFileNames fileconv(encName);
+	wxConvFileName = &fileconv;
+#endif // __UNIX__
+
+	return true;
+}
 
 int CamuleDaemonApp::OnExit()
 {
