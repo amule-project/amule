@@ -75,7 +75,7 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
 	int iOpNot = 0;
 
 	for (unsigned int i = 0; i < pexpr->m_aExpr.GetCount(); i++) {
-		wxString str(pexpr->m_aExpr[i]);
+		const wxString& str = pexpr->m_aExpr[i];
 		if (str == SEARCHOPTOK_AND) {
 			iOpAnd++;
 		} else if (str == SEARCHOPTOK_OR) {
@@ -108,6 +108,25 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
 
 	// optimize search expression, if no OR nor NOT specified
 	if (iOpAnd > 0 && iOpOr == 0 && iOpNot == 0) {
+		// figure out if we can use a better keyword than the one the user selected
+		// for example most user will search like this "The oxymoronaccelerator 2", which would ask the node which indexes "the"
+		// This causes higher traffic for such nodes and makes them a viable target to attackers, while the kad result should be
+		// the same or even better if we ask the node which indexes the rare keyword "oxymoronaccelerator", so we try to rearrange
+		// keywords and generally assume that the longer keywords are rarer
+		if (/*thePrefs::GetRearrangeKadSearchKeywords() &&*/ !s_strCurKadKeyword.IsEmpty()) {
+			for (unsigned int i = 0; i < pexpr->m_aExpr.GetCount(); i++) {
+				if (pexpr->m_aExpr[i] != SEARCHOPTOK_AND) {
+					if (pexpr->m_aExpr[i] != s_strCurKadKeyword
+						&& pexpr->m_aExpr[i].find_first_of(Kademlia::CSearchManager::GetInvalidKeywordChars()) == wxString::npos
+						&& pexpr->m_aExpr[i].Find('"') != 0 // no quoted expressions as keyword
+						&& pexpr->m_aExpr[i].length() >= 3
+						&& s_strCurKadKeyword.length() < pexpr->m_aExpr[i].length())
+					{
+						s_strCurKadKeyword = pexpr->m_aExpr[i];
+					}
+				}
+			}
+		}
 		wxString strAndTerms;
 		for (unsigned int i = 0; i < pexpr->m_aExpr.GetCount(); i++) {
 			if (pexpr->m_aExpr[i] != SEARCHOPTOK_AND) {
@@ -285,7 +304,7 @@ void CSearchList::RemoveResults(long searchID)
 }
 
 
-wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CSearchParams& params)
+wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, CSearchParams& params)
 {
 	// Check that we can actually perform the specified desired search.
 	if ((type == KadSearch) && !Kademlia::CKademlia::IsRunning()) {
@@ -304,6 +323,16 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 		// No check is to be made on returned results if the
 		// type is 'Programs', since this returns multiple types.
 		m_resultType.Clear();
+	}
+
+	if (type == KadSearch) {
+		Kademlia::WordList words;
+		Kademlia::CSearchManager::GetWords(params.searchString, &words);
+		if (!words.empty()) {
+			params.strKeyword = words.front();
+		} else {
+			return _("No keyword for Kad search - aborting");
+		}
 	}
 
 	bool supports64bit = type == KadSearch ? true : theApp->serverconnect->GetCurrentServer() != NULL && (theApp->serverconnect->GetCurrentServer()->GetTCPFlags() & SRV_TCPFLG_LARGEFILES);
@@ -332,8 +361,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 
 			// searchstring will get tokenized there
 			// The tab must be created with the Kad search ID, so searchID is updated.
-			Kademlia::CSearch* search = Kademlia::CSearchManager::PrepareFindKeywords(
-										 params.searchString, data->GetLength(), data->GetRawBuffer(), *searchID);
+			Kademlia::CSearch* search = Kademlia::CSearchManager::PrepareFindKeywords(params.strKeyword, data->GetLength(), data->GetRawBuffer(), *searchID);
 
 			*searchID = search->GetSearchID();
 			m_currentSearch = *searchID;
@@ -632,7 +660,7 @@ void CSearchList::StopSearch(bool globalOnly)
 }
 
 
-CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& params, SearchType WXUNUSED(type), bool supports64bit, bool& packetUsing64bit)
+CSearchList::CMemFilePtr CSearchList::CreateSearchData(CSearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit)
 {
 	// Count the number of used parameters
 	unsigned int parametercount = 0;
@@ -659,14 +687,16 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	_astrParserErrors.Empty();
 	_SearchExpr.m_aExpr.Empty();
 
+	s_strCurKadKeyword.Clear();
+	if (type == KadSearch) {
+		wxASSERT( !params.strKeyword.IsEmpty() );
+		s_strCurKadKeyword = params.strKeyword;
+	}
+
 	LexInit(params.searchString);
 	int iParseResult = yyparse();
 	LexFree();
 
-#ifdef __DEBUG__
-	AddLogLineNS(CFormat(wxT("Search parsing result for \"%s\": %i"))
-		% params.searchString % iParseResult);
-#endif
 	if (_astrParserErrors.GetCount() > 0) {
 		for (unsigned int i=0; i < _astrParserErrors.GetCount(); ++i) {
 			AddLogLineNS(CFormat(wxT("Error %u: %s\n")) % i % _astrParserErrors[i]);
@@ -681,20 +711,12 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 		return CMemFilePtr(NULL);
 	}
 
-	#ifdef __DEBUG__
-	wxString mes(wxT("Search expression:"));
-	for (unsigned int i = 0; i < _SearchExpr.m_aExpr.GetCount(); i++) {
-		mes << wxT(" ") << _SearchExpr.m_aExpr[i];
+	if (type == KadSearch && s_strCurKadKeyword != params.strKeyword) {
+		AddDebugLogLineN(logSearch, CFormat(wxT("Keyword was rearranged, using '%s' instead of '%s'")) % s_strCurKadKeyword % params.strKeyword);
+		params.strKeyword = s_strCurKadKeyword;
 	}
-	AddLogLineNS(mes);
-	AddLogLineNS(CFormat(wxT("Expression count: %i")) % _SearchExpr.m_aExpr.GetCount());
-	#endif
 
 	parametercount += _SearchExpr.m_aExpr.GetCount();
-
-	#ifdef __DEBUG__
-	AddLogLineNS(CFormat(wxT("Parameters: %i")) % parametercount);
-	#endif
 
 	/* Leave the unicode comment there, please... */
 	CSearchExprTarget target(data.get(), true /*I assume everyone is unicoded */ ? utf8strRaw : utf8strNone, supports64bit, packetUsing64bit);

@@ -64,6 +64,8 @@ public:
 
 		//! The actual string to search for.
 		wxString searchString;
+		//! The keyword selected for Kad search
+		wxString strKeyword;
 		//! The type of files to search for (may be empty), one of ED2KFTSTR_*
 		wxString typeText;
 		//! The filename extension. May be empty.
@@ -90,7 +92,7 @@ public:
 	 * @param params The search parameters, see CSearchParams.
 	 * @return An empty string on success, otherwise an error-message.
 	 */
-	wxString StartNewSearch(uint32* searchID, SearchType type, const CSearchParams& params);
+	wxString StartNewSearch(uint32* searchID, SearchType type, CSearchParams& params);
 
 	/** Stops the current search (global or Kad), if any is in progress. */
 	void StopSearch(bool globalOnly = false);
@@ -189,7 +191,7 @@ private:
 	typedef std::auto_ptr<CMemFile> CMemFilePtr;
 
 	/** Create a basic search-packet for the given search-type. */
-	CMemFilePtr CreateSearchData(const CSearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit);
+	CMemFilePtr CreateSearchData(CSearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit);
 
 
 	//! Timer used for global search intervals.
