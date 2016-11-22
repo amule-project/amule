@@ -11,14 +11,14 @@
 # Carlos Diaz <cskyline@gmail.com>, 2008.
 # Youpla <Youpla@boum.fr>, 2008.
 # Olivier Sannier <obones att altern dott org>, 2009, 2010.
-# Dylan Aïssi <bob.dybian@gmail.com>, 2008 - 2014.
+# Dylan Aïssi <bob.dybian@gmail.com>, 2008 - 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2016-08-20 22:40+0200\n"
+"PO-Revision-Date: 2016-11-23 00:11+0100\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.6.10\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -832,8 +832,8 @@ msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
-"Statistiques des fichiers pour cette session : %d requête acceptée sur %d, %"
-"s transférés\n"
+"Statistiques des fichiers pour cette session : %d requête acceptée sur %d, "
+"%s transférés\n"
 msgstr[1] ""
 "Statistiques des fichiers pour cette session : %d requêtes acceptées sur %d, "
 "%s transférées\n"
@@ -2353,7 +2353,7 @@ msgstr "Continuer ?"
 
 #: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
-msgstr "Kademlia : le mot recherché est trop court"
+msgstr "Kademlia : le mot-clé recherché est trop court"
 
 #: src/kademlia/kademlia/SearchManager.cpp:138
 msgid "Kademlia: Search keyword is already on search list: "
@@ -4769,8 +4769,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 "EOF lors du hachage du fichier .part téléchargé %u avec une longueur %u (max "
 "%u) du fichier .part '%s' avec une longueur %u : %s"
@@ -5339,9 +5339,8 @@ msgid "eD2k search can't be done if eD2k is not connected"
 msgstr "La recherche eD2k ne peut être établie si eD2k n'est pas connecté"
 
 #: src/SearchList.cpp:334
-#, fuzzy
 msgid "No keyword for Kad search - aborting"
-msgstr "Mot clé de recherche : %s"
+msgstr "Pas de mot-clé pour la recherche Kad - abandon"
 
 #: src/SearchList.cpp:371
 msgid "Unexpected error while attempting Kad search: "
@@ -6704,7 +6703,7 @@ msgstr "Définir la limite de bande passante en émission."
 
 #: src/TextClient.cpp:937 src/TextClient.cpp:939
 msgid "The given value must be in kilobytes/sec.\n"
-msgstr "La valeur en question doit être en kilooctets/s.\n"
+msgstr "La valeur en question doit être en kilo-octets/s.\n"
 
 #: src/TextClient.cpp:938
 msgid "Set download bandwidth limit."
@@ -8602,8 +8601,8 @@ msgstr "Requête en cours [redirigée] :"
 #~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
 #~ "should never happen"
 #~ msgstr ""
-#~ "ERREUR : Impossible de hacher la partie téléchargée - hashset incomplet (%"
-#~ "s). Ceci ne devrait jamais arriver"
+#~ "ERREUR : Impossible de hacher la partie téléchargée - hashset incomplet "
+#~ "(%s). Ceci ne devrait jamais arriver"
 
 #~ msgid "Insufficient Diskspace"
 #~ msgstr "Espace disque insuffisant"
