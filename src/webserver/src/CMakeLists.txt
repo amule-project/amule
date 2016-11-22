@@ -33,7 +33,6 @@ ADD_EXECUTABLE (amuleweb
 
 TARGET_COMPILE_DEFINITIONS (amuleweb
 	PRIVATE ${wxWidgets_BASE_DEFS}
-	PRIVATE ${wxWidgets_NET_DEFS}
 )
 
 TARGET_INCLUDE_DIRECTORIES (amuleweb
@@ -49,10 +48,22 @@ TARGET_LINK_LIBRARIES (amuleweb
 	ec
 	mulecommon
 	mulesocket
-	${wxWidgets_NET_LIBRARIES}
 	${wxWidgets_BASE_LIBRARIES}
 	${ZLIB_LIBRARIES}
 )
+
+IF (ENABLE_BOOST)
+	TARGET_LINK_LIBRARIES (amuleweb
+		boost_system
+	)
+	TARGET_COMPILE_DEFINITIONS (amuleweb
+		PRIVATE ${wxWidgets_NET_DEFS}
+	)
+ELSE (ENABLE_BOOST)
+	TARGET_LINK_LIBRARIES (amuleweb
+		${wxWidgets_NET_LIBRARIES}
+	)
+ENDIF (ENABLE_BOOST)
 
 IF (ENABLE_UPNP)
 	TARGET_LINK_LIBRARIES (amuleweb ${LIBUPNP_LIBRARIES})

@@ -1,6 +1,10 @@
 /* Define if cryptlib is newer than 5.5.0 */
 #cmakedefine __WEAK_CRYPTO__
 
+/* Define to 1 if you have <boost/asio.hpp> and are using Boost.Asio for
+   networking. */
+#cmakedefine ASIO_SOCKETS 1
+
 /* Define this to the include prefix of crypto++ */
 #cmakedefine CRYPTOPP_INCLUDE_PREFIX ${CRYPTOPP_INCLUDE_DIRS}
 
@@ -19,6 +23,9 @@
 
 /* Define if you have the <bfd.h> header file. */
 #cmakedefine  HAVE_BFD
+
+/* Define to 1 if you have <boost/system/error_code.hpp> */
+#cmakedefine HAVE_BOOST_SYSTEM_ERROR_CODE_HPP 1
 
 /* Define if you have the <cxxabi.h> header file */
 #cmakedefine HAVE_CXXABI
