@@ -229,7 +229,7 @@ CPath::CPath(const wxString& filename)
 	}
 
 	wxCharBuffer fn = filename2char(filename);
-	if (fn.data() && fn.length()) {
+	if (fn.data()) {
 		// Filename is valid in the current locale. This means that
 		// it either originated from a (wx)system-call, or from a
 		// user with a properly setup system.
