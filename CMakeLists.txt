@@ -2,6 +2,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 PROJECT (amule)
 
 ADD_DEFINITIONS (-DHAVE_CONFIG_H)
+
 INCLUDE_DIRECTORIES (${CMAKE_BINARY_DIR})
 
 SET (MIN_BOOST_VERSION 1.47)
@@ -20,6 +21,7 @@ SET (VERSION "SVN")
 
 INCLUDE (cmake/manpage_install.cmake)
 INCLUDE (cmake/options.cmake)
+INCLUDE (cmake/search-dirs.cmake)
 
 IF (BUILD_AMULECMD OR BUILD_WEBSERVER)
 	INCLUDE (cmake/FindReadline.cmake)
@@ -72,7 +74,7 @@ IF (NEED_LIB_CRYPTO)
 ENDIF (NEED_LIB_CRYPTO)
 
 IF (NEED_ZLIB)
-	INCLUDE (FindZLIB)
+	INCLUDE (cmake/zlib.cmake)
 ENDIF (NEED_ZLIB)
 
 IF (wx_NEEDED)

@@ -6,7 +6,7 @@
 #cmakedefine ASIO_SOCKETS 1
 
 /* Define this to the include prefix of crypto++ */
-#cmakedefine CRYPTOPP_INCLUDE_PREFIX ${CRYPTOPP_INCLUDE_DIRS}
+#cmakedefine CRYPTOPP_INCLUDE_PREFIX ${CRYPTOPP_INCLUDE_PREFIX}
 
 /* Define if upnp was found. */
 #cmakedefine ENABLE_UPNP

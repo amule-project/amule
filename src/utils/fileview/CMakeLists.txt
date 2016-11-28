@@ -20,7 +20,7 @@ SET_TARGET_PROPERTIES (fileview
 
 TARGET_LINK_LIBRARIES (fileview
 	mulecommon
-	${CRYPTOPP}
+	${CRYPTOLIB}
 )
 
 INSTALL (TARGETS fileview

@@ -33,11 +33,18 @@ MACRO (CHECK_WX)
 	SET (wxWidgets_USE_LIBS base)
 	FIND_PACKAGE (wxWidgets REQUIRED)
 
-	EXECUTE_PROCESS (COMMAND ${wxWidgets_CONFIG_EXECUTABLE} --version
-		OUTPUT_VARIABLE wx_Version
-	)
+	IF (UNIX)
+		EXECUTE_PROCESS (COMMAND ${wxWidgets_CONFIG_EXECUTABLE} --version
+			OUTPUT_VARIABLE wx_Version
+		)
 
-	STRING (REGEX REPLACE "(\r?\n)+$" "" wx_Version "${wx_Version}")
+		STRING (REGEX REPLACE "(\r?\n)+$" "" wx_Version "${wx_Version}")
+	ELSE (UNIX)
+		IF (_filename)
+			FILE (STRINGS ${_filename} wx_Version REGEX "wxVERSION_STRING")
+			STRING (REGEX MATCH "[0-9].[0-9].[0-9]" wx_Version ${wx_Version})
+		ENDIF (_filename)
+	ENDIF (UNIX)
 
 	IF (${wx_Version} VERSION_LESS ${MIN_WX_VERSION})
 
@@ -66,6 +73,10 @@ MACRO (CHECK_WX)
 		SET (wxWidgets_GUI_DEFS "${wxWidgets_DEFINITIONS};USE_WX_EXTENSIONS")
 		UNSET (wxWidgets_LIBRARIES)
 		UNSET (wxWidgets_LIBRARY_DIRS)
+
+		IF (WIN32)
+			SET (wxWidgets_GUI_LIBRARIES "${wxWidgets_GUI_LIBRARIES};${wxWidgets_BASE_LIBRARIES}")
+		ENDIF (WIN32)
 	ENDIF (wx_NEED_GUI)
 
 	IF (wx_NEED_NET)
@@ -76,6 +87,10 @@ MACRO (CHECK_WX)
 		SET (wxWidgets_NET_DEFS ${wxWidgets_DEFINITIONS})
 		UNSET (wxWidgets_LIBRARIES)
 		UNSET (wxWidgets_LIBRARY_DIRS)
+
+		IF (WIN32)
+			SET (wxWidgets_NET_LIBRARIES "${wxWidgets_NET_LIBRARIES};${wxWidgets_BASE_LIBRARIES}")
+		ENDIF (WIN32)
 	ENDIF (wx_NEED_NET)
 
 	IF (wx_NEED_ADV)
@@ -85,6 +100,10 @@ MACRO (CHECK_WX)
 		SET (wxWidgets_ADV_LIBRARY_DIRS ${wxWidgets_LIBRARY_DIRS})
 		UNSET (wxWidgets_LIBRARIES)
 		UNSET (wxWidgets_LIBRARY_DIRS)
+
+		IF (WIN32)
+			SET (wxWidgets_ADV_LIBRARIES "${wxWidgets_ADV_LIBRARIES};${wxWidgets_BASE_LIBRARIES}")
+		ENDIF (WIN32)
 	ENDIF (wx_NEED_ADV)
 
 	INCLUDE_DIRECTORIES (${wxWidgets_INCLUDE_DIRS})
