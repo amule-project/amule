@@ -13,6 +13,10 @@ Version 2.3.3 - The "what do you want?" version.
 		* Various fixes to gdlib detection
 		* Support for compiling aMule with wxGTK under Cygwin
 		* Various small fixes to the MacOSX packager script
+		* Workaround for wxWidgets bug #17740 (Wrong path used to
+		  search for translations), fixes GitHub issue #74 (.mo files
+		  for translation are not loaded if amule is built to install
+		  to a prefix other than /usr (e.g. /usr/local).)
 
 	persmule:
 		* Fix sharing directories with non-ASCII names with aMule daemon
