@@ -7,6 +7,10 @@
 # The location, where the linkable output of crypto++ compilation can be found.
 #SET (CRYTOPP_LIB_SEARCH_PATH "${CMAKE_SOURCE_DIR}/../cryptopp/Win32/Output/Debug")
 
+
+# The location, where the headers of libgeoip can be found.
+#SET (GEOIP_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/../geoip-api-c-master/libGeoIP")
+
 # The location, where you extracted wx-sources
 #SET (wxWidgets_ROOT_DIR "${CMAKE_SOURCE_DIR}/../wxWidgets")
 
