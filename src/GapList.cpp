@@ -30,6 +30,10 @@
 #include "Logger.h"
 #include <common/Format.h>
 
+#if defined(_MSC_VER) && (_MSC_VER >= 1800) 
+#include <algorithm> // for std::min and std::max 
+#endif
+
 void CGapList::Init(uint64 fileSize, bool isEmpty)
 {
 	m_filesize = fileSize;

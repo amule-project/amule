@@ -28,6 +28,10 @@
 #include "BarShader.h"		// Interface declarations.
 #include <cstring>		// Needed for std::memcpy
 
+#if defined(_MSC_VER) && (_MSC_VER >= 1800) 
+#include <algorithm> // for std::min and std::max 
+#endif
+
 const double Pi = 3.14159265358979323846264338328;
 
 #define HALF(X) (((X) + 1) / 2)
