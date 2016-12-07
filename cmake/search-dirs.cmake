@@ -11,6 +11,12 @@
 # The location, where the headers of libgeoip can be found.
 #SET (GEOIP_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/../geoip-api-c-master/libGeoIP")
 
+# The location, where to find libpng headers.
+#SET (PNG_HEADER_DIR "${CMAKE_SOURCE_DIR}/../lpng1626")
+
+# The location, where to find libpng.
+#SET (PNG_LIB_DIR "${CMAKE_SOURCE_DIR}/../lpng1626/projects/vstudio/Debug")
+
 # The location, where you extracted wx-sources
 #SET (wxWidgets_ROOT_DIR "${CMAKE_SOURCE_DIR}/../wxWidgets")
 
