@@ -109,6 +109,13 @@ CONFIGURE_FILE (
 	config.h
 )
 
+IF (WIN32)
+	CONFIGURE_FILE (
+		version.rc.in
+		version.rc
+	)
+ENDIF (WIN32)
+
 IF (BUILD_MONOLITHIC)
 	INSTALL (FILES amule.desktop
 		DESTINATION "${DATADIR}/applications"

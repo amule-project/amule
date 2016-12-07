@@ -63,6 +63,12 @@ IF (BUILD_AMULECMD)
 		TextClient.cpp
 	)
 
+	IF (WIN32)
+		TARGET_SOURCES (amulecmd
+			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+		)
+	ENDIF (WIN32)
+
 	TARGET_COMPILE_DEFINITIONS (amulecmd
 		PRIVATE ${wxWidgets_BASE_DEFS}
 	)
@@ -112,6 +118,12 @@ IF (BUILD_DAEMON)
 		${COMMON_SOURCES}
 		amuled.cpp
 	)
+
+	IF (WIN32)
+		TARGET_SOURCES (amuled
+			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+		)
+	ENDIF (WIN32)
 
 	TARGET_COMPILE_DEFINITIONS (amuled
 		PRIVATE "AMULE_DAEMON"
@@ -168,6 +180,12 @@ IF (BUILD_ED2K)
 		MuleCollection.cpp
 	)
 
+	IF (WIN32)
+		TARGET_SOURCES (ed2k
+			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+		)
+	ENDIF (WIN32)
+
 	TARGET_COMPILE_DEFINITIONS (ed2k
 		PRIVATE "USE_STD_STRING"
 	)
@@ -191,6 +209,12 @@ IF (BUILD_MONOLITHIC)
 		PartFileConvert.cpp
 		PartFileConvertDlg.cpp
 	)
+
+	IF (WIN32)
+		TARGET_SOURCES (amule
+			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+		)
+	ENDIF (WIN32)
 
 	TARGET_COMPILE_DEFINITIONS (amule
 		PRIVATE ${wxWidgets_GUI_DEFS}
@@ -262,6 +286,12 @@ IF (BUILD_REMOTEGUI)
 		kademlia/utils/UInt128.cpp
 		amule-remote-gui.cpp
 	)
+
+	IF (WIN32)
+		TARGET_SOURCES (amulegui
+			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+		)
+	ENDIF (WIN32)
 
 	TARGET_COMPILE_DEFINITIONS (amulegui
 		PRIVATE "CLIENT_GUI"
