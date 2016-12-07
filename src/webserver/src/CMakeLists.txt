@@ -31,6 +31,12 @@ ADD_EXECUTABLE (amuleweb
 	WebSocket.cpp
 )
 
+IF (WIN32)
+	TARGET_SOURCES (amuleweb
+		PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+	)
+ENDIF (WIN32)
+
 TARGET_COMPILE_DEFINITIONS (amuleweb
 	PRIVATE ${wxWidgets_BASE_DEFS}
 )

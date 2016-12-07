@@ -10,6 +10,12 @@ ADD_EXECUTABLE (fileview
 	Print.cpp
 )
 
+IF (WIN32)
+	TARGET_SOURCES (fileview
+		PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+	)
+ENDIF (WIN32)
+
 TARGET_COMPILE_DEFINITIONS (fileview
 	PRIVATE ${wxWidgets_BASE_DEFS}
 )

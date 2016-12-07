@@ -9,6 +9,12 @@ ADD_EXECUTABLE (cas
 	lines.c
 )
 
+IF (WIN32)
+	TARGET_SOURCES (cas
+		${CMAKE_SOURCE_DIR}/version.rc
+	)
+ENDIF (WIN32)
+
 TARGET_COMPILE_DEFINITIONS (cas
 		PRIVATE ${gdlib_CFLAGS}
 )
