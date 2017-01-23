@@ -9,14 +9,15 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2008-04-11 00:21+0300\n"
-"Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
+"PO-Revision-Date: 2017-01-20 11:13+0100\n"
+"Last-Translator: Sebastiano Pistore <sebastiano.pistore.info@aol.com>\n"
 "Language-Team: Hebrew\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: he\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -131,7 +132,7 @@ msgstr ""
 #: src/amule-remote-gui.cpp:308 src/amule-remote-gui.cpp:330
 #: src/amule-remote-gui.cpp:332 src/amule-remote-gui.cpp:644
 msgid "ERROR"
-msgstr ""
+msgstr "שְׁגִיאָה"
 
 #: src/amule.cpp:746
 #, c-format
@@ -417,7 +418,7 @@ msgstr ""
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
-msgstr ""
+msgstr "שאלות נפוצות: http://wiki.amule.org\n"
 
 #: src/amuleDlg.cpp:505
 msgid "Contact: admin@amule.org (administrative issues) \n"
@@ -443,11 +444,11 @@ msgstr ""
 
 #: src/amuleDlg.cpp:510
 msgid "http://kademlia.scs.cs.nyu.edu\n"
-msgstr ""
+msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "הודעה"
 
@@ -487,9 +488,9 @@ msgstr "קאד: מכובה"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "ביטול"
 
@@ -1302,8 +1303,7 @@ msgstr "מקורות"
 msgid "Priority"
 msgstr "עדיפות"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "מצב"
 
@@ -3077,7 +3077,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1306
 msgid "Kad:"
-msgstr ""
+msgstr "Kad:"
 
 #: src/muuli_wdr.cpp:1317
 msgid "Transfers to client"
@@ -3134,7 +3134,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1448
 msgid "Nick"
-msgstr ""
+msgstr "שֵׁם חִבָּה"
 
 #: src/muuli_wdr.cpp:1451
 msgid "http://www.aMule.org - the multi-platform Mule"
@@ -3224,8 +3224,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "דפדף"
 
@@ -3271,7 +3270,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1617
 msgid "4665"
-msgstr ""
+msgstr "4665"
 
 #: src/muuli_wdr.cpp:1620
 msgid "Extended UDP port (Kad / global search) "
@@ -3309,7 +3308,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1676
 msgid "Kademlia"
-msgstr ""
+msgstr "Kademlia"
 
 #: src/muuli_wdr.cpp:1680 src/muuli_wdr.cpp:3282
 msgid "ED2K"
@@ -4072,6 +4071,8 @@ msgstr ""
 #: src/muuli_wdr.cpp:3043
 msgid "Password:"
 msgstr ""
+"9/5000\n"
+"סיסמה:"
 
 #: src/muuli_wdr.cpp:3047
 msgid "The password to use to connect to the proxy"
@@ -4115,7 +4116,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3120
 msgid "User name"
-msgstr ""
+msgstr "שם משתמש"
 
 #: src/muuli_wdr.cpp:3137
 msgid "Remember those settings"
@@ -4540,8 +4541,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 
 #: src/PartFile.cpp:2971
@@ -4590,9 +4591,8 @@ msgid "Arabic"
 msgstr "ערבית"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "אסטונית"
+msgstr "אסטוניתאסטורית"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
@@ -4660,7 +4660,7 @@ msgstr "יוונית"
 
 #: src/Preferences.cpp:648
 msgid "Hebrew"
-msgstr ""
+msgstr "עִברִית"
 
 #: src/Preferences.cpp:649
 msgid "Hungarian"
@@ -4703,9 +4703,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "פורטגזית (ברזילאית)"
 
 #: src/Preferences.cpp:659
-#, fuzzy
 msgid "Romanian"
-msgstr "אלבני"
+msgstr "אלבנירומנית"
 
 #: src/Preferences.cpp:660
 msgid "Russian"
@@ -4729,20 +4728,19 @@ msgstr "טורקית"
 
 #: src/Preferences.cpp:665
 msgid "Ukrainian"
-msgstr ""
+msgstr "אוקראיני"
 
 #: src/Preferences.cpp:728
 msgid "Change Language"
-msgstr ""
+msgstr "שנה שפה"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
 msgstr ""
 
 #: src/Preferences.cpp:771
-#, fuzzy
 msgid "No languages available"
-msgstr "לא זמין"
+msgstr "אין שפות זמינות"
 
 #: src/Preferences.cpp:902
 msgid "no options available"
@@ -5386,8 +5384,8 @@ msgstr "האם אתה בטוח שאתה רוצה למחוק את השרת הקב
 msgid "Servers (%i)"
 msgstr "שרתים (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "שרת"
 
@@ -5671,7 +5669,6 @@ msgid "No shareable files found in directory: %s"
 msgstr ""
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:28
-#, fuzzy
 msgid "User Name"
 msgstr "שם משתמש"
 
@@ -6146,7 +6143,7 @@ msgstr ""
 
 #: src/TextClient.cpp:702
 msgid "eD2k"
-msgstr ""
+msgstr "eD2k"
 
 #: src/TextClient.cpp:707
 #, c-format
@@ -7380,581 +7377,3 @@ msgstr "ב‏‎ֻקְשַה התנתקות\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "מעבד בקשה [הופנתה מחדש]: "
-
-#~ msgid "Partfile %s (%s) has no seeds file"
-#~ msgstr "לקובץ החלקים %s (%s) אין קובץ הזרעה."
-
-#~ msgid "Partfile %s (%s) has a void seeds file"
-#~ msgstr "לקובץ-החלקים %s(%s) יש קובץ הזרעה לא חוקי."
-
-#, fuzzy
-#~ msgid "Download status"
-#~ msgstr "הורדות"
-
-#~ msgid "( %s / %s )"
-#~ msgstr "( %s / %s )"
-
-#, fuzzy
-#~ msgid "Update delay : %d second"
-#~ msgid_plural "Update delay : %d seconds"
-#~ msgstr[0] "השהיית עדכון: %d שניות"
-#~ msgstr[1] "השהיית עדכון: %d שניות"
-
-#~ msgid "Transferring"
-#~ msgstr "מעביר"
-
-#, fuzzy
-#~ msgid "Queue Rank"
-#~ msgstr "נכנס לתור"
-
-#~ msgid "TODO - show progress of a search"
-#~ msgstr "לביצוע - הראה התקדמות של חיפוש"
-
-#~ msgid "Starting to create MD4 and AICH hash for file: %s"
-#~ msgstr "מתחיל לייצר מחרוזת גיבוב באמצעות MD4 ובאמצעות AICH עבור הקובץ: %s"
-
-#~ msgid "Starting to create MD4 hash for file: %s"
-#~ msgstr "מתחיל לייצר מחרוזת גיבוב באמצעות MD4עבור הקובץ:%s"
-
-#~ msgid "Starting to create AICH hash for file: %s"
-#~ msgstr "מתחיל לייצר מחרוזת גיבוב באמצעות AICH עבור הקובץ:%s"
-
-#~ msgid "WARNING: Could not remove original '%s' after creating backup"
-#~ msgstr "אזהרה: לא ניתן להסיר את '%s' המקורי לאחר שנוצר גיבוי."
-
-#~ msgid "WARNING: Failed to delete %s"
-#~ msgstr "אזהרה: הניסיון למחוק/להסיר את '%s' נכשל."
-
-#, fuzzy
-#~ msgid "Downloads window"
-#~ msgstr "מוריד מהרשת"
-
-#~ msgid "Transfers"
-#~ msgstr "העברות"
-
-#~ msgid "Shows Upload / Up-queue"
-#~ msgstr "מראה תור האלעה / למעלה "
-
-#~ msgid "Clients on queue :"
-#~ msgstr "לקוחות בתור :"
-
-#~ msgid "Current Session"
-#~ msgstr "הרצה נוכחית"
-
-#~ msgid "Total"
-#~ msgstr "סה\"כ"
-
-#~ msgid "Requested :"
-#~ msgstr "בֻקַש :"
-
-#~ msgid "Files Transfers Window"
-#~ msgstr "חלון העברות הקבצים"
-
-#~ msgid "Total Users: %s | Total Files: %s"
-#~ msgstr "סה\"כ משתמשים: %s | סה\"כ קבצים: %s"
-
-#, fuzzy
-#~ msgid "WARNING: Void response on stream creation"
-#~ msgstr "אזהרה: לא ניתן להסיר את '%s' המקורי לאחר שנוצר גיבוי."
-
-#~ msgid "Get IPFilter level."
-#~ msgstr "שלוף רמת סינון ה IP."
-
-#~ msgid "Makes a search."
-#~ msgstr "מבצע חיפוש."
-
-#, fuzzy
-#~ msgid "Killed!"
-#~ msgstr "נכשל"
-
-#, fuzzy
-#~ msgid "Shutting down aMule..."
-#~ msgstr "כבה את אימיול."
-
-#~ msgid "Fetching status..."
-#~ msgstr "מביא את נתוני המצב..."
-
-#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
-#~ msgstr "משתמשים: ed2k -> %s קאד -> %s | קבצים: ed2k -> %s קאד -> %s"
-
-#~ msgid "Client %s on IP:Port %s:%d using %s %s %s"
-#~ msgstr "לקוח %s ב כתובת:מבואה %s:%d משתמש ב %s %s %s"
-
-#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "האפליקציה->רשית השרתים->קבל־שרת־באמצעות־כתובת() מחזיר כלום"
-
-#~ msgid "Firewalled"
-#~ msgstr "חסום חומת אש"
-
-#, fuzzy
-#~ msgid "Loaded %d flag bitmap."
-#~ msgid_plural "Loaded %d flag bitmaps."
-#~ msgstr[0] "טוען %d תמונת דגל."
-#~ msgstr[1] "טוען %d תמונת דגל."
-
-#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-#~ msgstr ""
-#~ "הקובץ %s גדול מדי עבור ה\"חמור\": גודל קובץ מקסימלי שמותר זה 4 ג\"ב."
-
-#~ msgid "No handler for this file type."
-#~ msgstr "אין 'מאחז' עבור סוג קובץ זה"
-
-#~ msgid "File was not saved"
-#~ msgstr "קובץ לא נשמר"
-
-#~ msgid "Message Filter"
-#~ msgstr "מסנן הודעות"
-
-#~ msgid "Gui Tweaks"
-#~ msgstr "כיולי המנשק הגרפי"
-
-#~ msgid "Core Tweaks"
-#~ msgstr "כיולי ליבה"
-
-#~ msgid "Status text"
-#~ msgstr "טקסט סטאטוס"
-
-#~ msgid "Pop-up status text"
-#~ msgstr "טקסט מצב שמופיע"
-
-#~ msgid ""
-#~ " 'All-Platform' p2p client based on eMule \n"
-#~ "\n"
-#~ msgstr ""
-#~ "לקוח p2p2 הפועל ב 'כל פלטפורמה' ומבוסס כל אִימיול \n"
-#~ "\n"
-
-#~ msgid " Website: http://www.amule.org \n"
-#~ msgstr " אתר הבית: http://www.amule.org \n"
-
-#~ msgid " Forum: http://forum.amule.org \n"
-#~ msgstr " פורום: http://forum.amule.org \n"
-
-#~ msgid ""
-#~ " FAQ: http://wiki.amule.org \n"
-#~ "\n"
-#~ msgstr ""
-#~ " שאלות נפוצות: http://wiki.amule.org \n"
-#~ "\n"
-
-#~ msgid " Contact: admin@amule.org (administrative issues) \n"
-#~ msgstr " יצירת קשר: admin@amule.org (נושאים מנהליים) \n"
-
-#~ msgid ""
-#~ " Copyright (C) 2003-2008 aMule Team \n"
-#~ "\n"
-#~ msgstr ""
-#~ "זכוייות יוצרים (C) 2003-2008 צוות אימיול \n"
-#~ "\n"
-
-#~ msgid " Part of aMule is based on \n"
-#~ msgstr " חלק מאֵימיול מבוסס על \n"
-
-#~ msgid " Copyright (C) 2002 Petar Maymounkov\n"
-#~ msgstr " זכויות יוצרים (C)·2002·Petar·Maymounkov\n"
-
-#~ msgid " http://kademlia.scs.cs.nyu.edu\n"
-#~ msgstr " http://kademlia.scs.cs.nyu.edu\n"
-
-#~ msgid ""
-#~ "For a film you can say its length, its story, language ...\n"
-#~ "and if it's a fake, you can tell that to other users of aMule."
-#~ msgstr ""
-#~ "עבור סרט אתה יכול לציין את האורך, העלילה, השפה ...\n"
-#~ "ואם זה זיוף, אתה יכול לספר את זה לשאר משתמשי אימיול."
-
-#~ msgid "Unable to determine selected browser!"
-#~ msgstr "לא ניתן לזהות את הדפדפן הנבחר!"
-
-#~ msgid "User Defined"
-#~ msgstr "הגדרות משתמש"
-
-#~ msgid "Please wait... "
-#~ msgstr "אנא המתן... "
-
-#~ msgid "Could not determine the command for running the browser."
-#~ msgstr "לא יכול לקבוע מהי הפקודה המריצה את הדפדפן."
-
-#~ msgid "EC Connection Failed. Empty reply."
-#~ msgstr "התחברות EC נכשלה. התקבלה תשובה ריקה."
-
-#~ msgid "ExternalConn: Access denied because: "
-#~ msgstr "ExternalConn: (התחברות חיצונית) הגישה נאסרה בגלל:"
-
-#~ msgid "ExternalConn: Access denied"
-#~ msgstr "ExternalConn: (התחברות חיצונית) הגישה נאסרה ."
-
-#~ msgid "The ed2k hash of the file."
-#~ msgstr "מחרוזת גיבוב ה ed2k של הקובץ"
-
-#~ msgid "Copy ED2k &link to clipboard"
-#~ msgstr "העתק &קישור ED2k ללוח"
-
-#~ msgid "Copy ED2k link to clipboard (&Source)"
-#~ msgstr "העתק קישור ED2k ללוח (&מקור)"
-
-#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-#~ msgstr "העתק קישור ED2k ללוח (מקור) (&עם אופציות הצפנה)"
-
-#~ msgid "Copy ED2k link to clipboard (&Hostname)"
-#~ msgstr "העתק קישור ED2k ללוח (&שם שרת)"
-
-#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-#~ msgstr "העתק קישור ED2k ללוח (שם שרת) (עם אופציות &הצפנה)"
-
-#~ msgid "Warning"
-#~ msgstr "אזהרה"
-
-#~ msgid "Error: Could not listen to TCP port."
-#~ msgstr "שגיאה: לא ניתן להאזין למבואת TCP."
-
-#~ msgid "Webserver HTTP port"
-#~ msgstr "שרת-רשתי HTTP מבואה"
-
-#~ msgid "Use UPnP port forwarding on webserver port"
-#~ msgstr "השתמש בהפניית המבואות של UPnP על המבואב של השרת-רשתי."
-
-#~ msgid "Full access password for webserver"
-#~ msgstr "ססימת גישה מלאה יבור השרת-הרשתי."
-
-#~ msgid "Guest password for webserver"
-#~ msgstr "סיסמת אורח עבור השרת-הרשתי"
-
-#~ msgid "Load/save webserver settings from/to remote aMule"
-#~ msgstr "טען/שמור הגדרות השרת-הרשתי מ/אל אימיול מרוחק"
-
-#~ msgid "Enter here the file you want to compute the Ed2k link"
-#~ msgstr "הנס פה את את הקובץ שלגביו אתה רוצה לחשב את קישור ה Ed2k"
-
-#~ msgid ""
-#~ "Enter here the URL you want to add to the Ed2k link: Add / at the end to "
-#~ "let aLinkCreator append the current file name"
-#~ msgstr ""
-#~ "הנס פה את את הקובץ שלגביו אתה רוצה לחשב את קישור ה Ed2k: הוסף / בסוף כדי "
-#~ "לאפשר ל aLinkCreator לשרשר את שם הקובץ הנוכחי"
-
-#~ msgid "Ed2k File Hash"
-#~ msgstr "קובץ גיבובי Ed2k"
-
-#~ msgid "Ed2k link"
-#~ msgstr "קישור Ed2k"
-
-#~ msgid "Open a file to compute its ed2k link"
-#~ msgstr "פתח קובץ כדי לחשב את קישור ה ed2k שלו"
-
-#~ msgid "Copy computed ed2k link to clipboard"
-#~ msgstr "העתק קישור ed2k שחושב לתוך הלוח"
-
-#~ msgid "Save computed ed2k link to file"
-#~ msgstr "שמור קישור ed2k שחושב לקובץ"
-
-#~ msgid "Select the file you want to compute the ed2k link"
-#~ msgstr "בחר את הרובץ שלו אתם רוצים לחשב את קישור ה ed2k"
-
-#~ msgid "Select the file to your computed ed2k link"
-#~ msgstr "בחר את הקובץ עבור קישור ה ed2k שלך שחושב"
-
-#~ msgid ""
-#~ "aLinkCreator, the aMule ed2k link creator\n"
-#~ "\n"
-#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-#~ "\n"
-#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
-#~ "and http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "Distributed under GPL"
-#~ msgstr ""
-#~ "יוצר קישורי ed2k עבור אימיול - aLinkCreator\n"
-#~ "\n"
-#~ "(c)·2004·ThePolish·<thepolish@vipmail.ru>\n"
-#~ "\n"
-#~ "תמנות מ http://www.everaldo.com ומ http://www.icomania.com\n"
-#~ "וכן מ http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "מופץ תחת רשיון GPL"
-
-#~ msgid "aLinkCreator, the aMule ed2k link creator"
-#~ msgstr "יוצר קישורי ed2k עבור אימיול - aLinkCreator"
-
-#~ msgid "Copy ED2k link to clipboard"
-#~ msgstr "העתק קישור ED2k ללוח"
-
-#~ msgid "Copy ED2k links to clipboard"
-#~ msgstr "העתק קישורי ED2k ללוח"
-
-#~ msgid "ED2K: Connecting"
-#~ msgstr "ED2K: מתחבר"
-
-#~ msgid "ED2K: Disconnected"
-#~ msgstr "ED2K: מנותק"
-
-#~ msgid ""
-#~ "Your Auto-update servers list is in blank.\n"
-#~ "'Auto-update serverlist at startup' will be disabled."
-#~ msgstr ""
-#~ "רשימת השרתים המעודכנים אוטומטית, ריקה.\n"
-#~ "אופציית 'עדכן אוטומטית רשימת שרתים בעת אתחול' תנוטרל."
-
-#~ msgid ""
-#~ "Both ED2K and Kad network are disabled.\n"
-#~ "You won't be able to connect until you enable at least one of them."
-#~ msgstr ""
-#~ "הן ED2K והן קאד מנוטרלים.\n"
-#~ "לא תוכל להתחבר אלא אם כן תאפשר לפחות אחד מהם."
-
-#~ msgid "Edit Serverlist"
-#~ msgstr "ערוך רשימת שרתים"
-
-#~ msgid "Error: couldn't accept a new external connection"
-#~ msgstr "שגיאה: לא יכל לקבל גישה חיצונית."
-
-#~ msgid "ED2K is disabled in preferences."
-#~ msgstr "מתוך קובץ ההגדרות ED2K מנוטרל."
-
-#~ msgid "ExternalConn: shutdown requested"
-#~ msgstr "חיבור-חיצוני: בקשת כיבוי התבקשה."
-
-#~ msgid "Already connected to ED2K."
-#~ msgstr "כבר מחובר ל ED2K."
-
-#~ msgid "Connecting to ED2K..."
-#~ msgstr "מתחבר ל ED2K..."
-
-#~ msgid "Disconnected from ED2K."
-#~ msgstr "מתנתק מ ED2K."
-
-#~ msgid "ExternalConn: invalid opcode received: %#x"
-#~ msgstr "חיבור-חיצוני: התקבל קוד-פעולה שגוי: %#x"
-
-#~ msgid "ED2K Status:"
-#~ msgstr "סטטוס ED2K:"
-
-#~ msgid "Average Downloadrate (Session): %s"
-#~ msgstr "קצה הורדה ממוצע (בהתחברות נוכחית): %s"
-
-#~ msgid "Average Uploadrate (Session): %s"
-#~ msgstr "קצה העלאה ממוצע (בהתחברות הנוכחית): %s"
-
-#~ msgid "Max Downloadrate (Session): %s"
-#~ msgstr "קצב הורדה מקבימלית (בהתחברות הנוכחית): %s"
-
-#~ msgid "Max Uploadrate (Session): %s"
-#~ msgstr "קצב הורדה מקסימלי (בהתחברות הנוכחית): %s"
-
-#~ msgid "Average filesize: %s"
-#~ msgstr "גודל קובץ ממוצע: %s"
-
-#~ msgid "ED2K search can't be done if ED2K is not connected"
-#~ msgstr "לא יכול להתבצע חיפוש באמצעות ED2K אם ED2K לא פועל"
-
-#~ msgid "Error: "
-#~ msgstr "שגיאה: "
-
-#~ msgid "Warning: "
-#~ msgstr "אזהרה: "
-
-#~ msgid "Search related files (ED2k, local server)"
-#~ msgstr "חפש קבצים קשורים (ED2k, שרת מקומי)"
-
-#~ msgid "Error"
-#~ msgstr "שגיאה"
-
-#~ msgid ""
-#~ "WARNING: You can't add yourself as a source for a ed2k link while being "
-#~ "lowid."
-#~ msgstr ""
-#~ "אזהרה: אתה לא יכול להוסיף את עצמך בתור מקור לקישור ed2k כשיש לך מ\"ז נמוך "
-#~ "(LowId)."
-
-#~ msgid ""
-#~ "Please set your preferred video player on preferences.\n"
-#~ "Meanwhile, aMule will attempt to use mplayer and you will get this "
-#~ "warning on every preview"
-#~ msgstr ""
-#~ "בבקשה תגדיר את נגן הסרטים המועדף עליך בהעדפות.\n"
-#~ "בינתיים אימיול ינסה להשתמש עם mplayer ואתה תקבל את ההודעה הזאת בכל פעם "
-#~ "שתצפה בתקדימון"
-
-#~ msgid "Error: Failed to open part.met file: %s ==> %s"
-#~ msgstr "שגיאה: פתיחת הקובץ part.met נכשלה: %s ==> %s"
-
-#~ msgid "Error: part.met file is 0 size: %s ==> %s"
-#~ msgstr "שגיאה: הגודל של הקובץ part.met הוא 0: %s·==>·%s"
-
-#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
-#~ msgstr "שגיאה: גרסת הקובץ part.met אינה תקפה: %s·==>·%s"
-
-#~ msgid "Warning: %s might be corrupted (%i)"
-#~ msgstr "אזהרה: %s עלול להיות פגום (%i)"
-
-#~ msgid "Unexpected file error while completing %s. File paused"
-#~ msgstr "שגיאה לא צפויה בעת השלמת הקובץ %s הקובץ משוהה"
-
-#~ msgid ""
-#~ "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-#~ msgstr ""
-#~ "אזהרה לא יכול לגהה את החלק שהורד - קבוצת-הגיבובים אינה שלמה עבור '%s'"
-
-#~ msgid ""
-#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
-#~ "should never happen"
-#~ msgstr ""
-#~ "אזהרה לא יכול לגהה את החלק שהורד - קבוצת-הגיבובים אינה שלמה עבור '%s'. "
-#~ "זהלעולם לא אמור לקרות"
-
-#~ msgid "Insufficient Diskspace"
-#~ msgstr "חסר שטח דיסק"
-
-#~ msgid "ERROR! Attempted to share %s"
-#~ msgstr "שגיאה! ניסיון לשתפ את %s"
-
-#~ msgid "ED2K network disabled on preferences, not connecting."
-#~ msgstr "רשת ה ED2K מנוטרלת בהעדפות, לא מתחבר."
-
-#~ msgid "No valid servers to connect in serverlist found"
-#~ msgstr "לא נמצא ברשימת השרתים אף שרת תקף כדי להתחבר איליו."
-
-#~ msgid "Error: Socket invalid at timeoutcheck"
-#~ msgstr "שגיאה: מבואה לא תקפה לא התקבל תגובה בזמן."
-
-#~ msgid ""
-#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
-#~ "part.met recovery solutions."
-#~ msgstr ""
-#~ "שגיאה: הניסיון לטעון קובץ גיבוי כשל חפש ב http://forum.amule.org עבור "
-#~ "פתרונות לשחזור קבצי part.met."
-
-#~ msgid "Cannot convert magnet link to ed2k: %s"
-#~ msgstr "לא מצליח להמיר קישור מגנט ל ed2k: %s"
-
-#~ msgid "Invalid ed2k link! Error: %s"
-#~ msgstr "קישור ed2k לא תקף! שגיאה: %s"
-
-#~ msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-#~ msgstr "גבולות רוחב הפס: העלאה: %u ק\"ב/ש, הורדה: %u ק\"ב/ש.\n"
-
-#~ msgid ""
-#~ "Shutdown the remote running core (amule/amuled).\n"
-#~ "This will also shut down the text client, since it is unusable without a\n"
-#~ "running core.\n"
-#~ msgstr ""
-#~ "כבה את הליבה (אימיול/אימיול-דיאמון) המרוחקת.\n"
-#~ "זה יכבה גם את הלקוח הטסטואלי מאחר שהוא לא שמיש ללא\n"
-#~ "ליבה שרצה.\n"
-
-#~ msgid "Connect to ED2K only."
-#~ msgstr "התחבר רק ל ED2K"
-
-#~ msgid "Disconnect from ED2K only."
-#~ msgstr "התנתק רק מ ED2K."
-
-#~ msgid ""
-#~ "The ed2k link to be added can be:\n"
-#~ "*) a file link (ed2k://|file|...), it will be added to the download "
-#~ "queue,\n"
-#~ "*) a server link (ed2k://|server|...), it will be added to the server "
-#~ "list,\n"
-#~ "*) or a serverlist link, in which case all servers in the list will be "
-#~ "added to the\n"
-#~ "   server list.\n"
-#~ "\n"
-#~ "The magnet link must contain the ed2k hash and file length.\n"
-#~ msgstr ""
-#~ "קישור ה ed2k שיתווסף יכול להיות: \n"
-#~ "* קישור לקובץ (ed2k://|file|...), הוא יתווסף לתור ההורדות,\n"
-#~ "* קישור לשרת (ed2k://|server|...), הוא יתווסף לרשימת השרתים,\n"
-#~ "* או קישור לרשימת שרתים שבמקרה זה כל השרתים ברשימהיתווספו \n"
-#~ "   לרשימת השרתים.\n"
-#~ "\n"
-#~ "על המגנט להכיל הן את גיבוב ה ed2k והן את אורך הקובץ.\n"
-
-#~ msgid "Deprecated command, now '%s'."
-#~ msgstr "פקודה מיושנת, עכשיו '%s'."
-
-#~ msgid "Error: %s (%s) - %s"
-#~ msgstr "שגיאה: %s·(%s)·-·%s"
-
-#~ msgid "Warning: %s (%s) - %s"
-#~ msgstr "אזהרה: %s·(%s)·-·%s"
-
-#~ msgid "Error: Out of diskspace"
-#~ msgstr "שגיאה: נגמר שטח דיסק"
-
-#~ msgid "Error: Partmet not found"
-#~ msgstr "שגיאה part.met לא נמצא"
-
-#~ msgid "Error: IO error!"
-#~ msgstr "שגיאה: שגיאת קריא/כתיבה!"
-
-#~ msgid "Error: Failed!"
-#~ msgstr "שגיאה: נכשל!"
-
-#~ msgid "ED2K Link: "
-#~ msgstr "קישור ED2K: "
-
-#~ msgid ""
-#~ "Click here to add the ed2k link in the text control to your download "
-#~ "queue."
-#~ msgstr "לחץ כאן על מנת להוסיף את קישור ה ed2k שבפקד הטקסט לתור ההורדות."
-
-#~ msgid "Searches for more results on ED2K. Not supported for Kad yet."
-#~ msgstr "מחפש תוצאות נוספות עבור ED2K. לא נתמך עדיין עבור קאד."
-
-#~ msgid "0"
-#~ msgstr "0"
-
-#~ msgid "Disconnected from ED2K"
-#~ msgstr "מנותק מED2K"
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-#~ msgstr "הפתיחה של הקובץ 'emfriends.met' לכתיבה נכשלה!"
-
-#~ msgid "ERROR: Failed to open partfile)"
-#~ msgstr "שגיאה: פתיחת קובץ-החלקים נכשלה)"
-
-#~ msgid "Can't create web socket thread\n"
-#~ msgstr "לא ניתן ליצור תהליכון מבואה רשתי\n"
-
-#~ msgid "Web Server: Started\n"
-#~ msgstr "שרת רשת: הותחל\n"
-
-#~ msgid "LowID: %u (%.2f%% Total %.2f%% Known)"
-#~ msgstr "מ\"ז (LowID): %u·(%.2f%% סכום כולל %.2f%% ידוע)"
-
-#~ msgid "SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"
-#~ msgstr "SecIdent דלוק/מכובה: %u·(%.2f%%)·:·%u·(%.2f%%)"
-
-#~ msgid ""
-#~ "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-#~ "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-#~ msgstr ""
-#~ "סטטיסטיקות קבצים עבור ההפעלה הנוכחית: התקבלו %d מתוך בקשה %d , %s הועברו\n"
-#~ "סטטיסטיקות קבצים עבור ההפעלה הנוכחית: התקבלו %d מתוך  %d בקשות, %s "
-#~ "הועברו\n"
-
-#~ msgid ""
-#~ "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-#~ "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-#~ msgstr ""
-#~ "סטטיסטיקות קבצים עבור כל ההפעלה הנוכחית: התקבלו %d מתוך בקשה %d , %s "
-#~ "הועברו\n"
-#~ "סטטיסטיקות קבצים עבור כל ההפעלה הנוכחית: התקבלו %d מתוך  %d בקשות, %s "
-#~ "הועברו\n"
-
-#~ msgid "Browse wav"
-#~ msgstr "דפדף ב wav"
-
-#~ msgid "File wav (*.wav)|*.wav||"
-#~ msgstr "קובץ wav (*.wav)|*.wav||"
-
-#~ msgid ""
-#~ "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| "
-#~ "FileHash |%s|Found corrupted part (%d) in %d parts file %s - "
-#~ "FileResultHash |%s| FileHash |%s|"
-#~ msgstr ""
-#~ "נמצא חלק פגום (%d) בתוך %d קובץ-החלקים %s גיבוב-קובץ-התוצאות |%s| גיבוב-"
-#~ "הקובץ |%s|נמצא חלק פגום (%d) בתוך %d קבציי-החלקים %s גיבוב-קובץ-התוצאות |%"
-#~ "s| גיבוב-הקובץ |%s|"
-
-#~ msgid "No comment(s)"
-#~ msgstr "רין הערות"
