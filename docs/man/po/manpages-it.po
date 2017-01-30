@@ -8,13 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule SVN\n"
 "POT-Creation-Date: 2016-09-15 11:10+0200\n"
-"PO-Revision-Date: 2011-11-04 12:11+0100\n"
-"Last-Translator: Stefano Corti <iz0bbz@libero.it>\n"
+"PO-Revision-Date: 2017-01-23 15:22+0100\n"
+"Last-Translator: Sebastiano Pistore <sebastiano.pistore.info@aol.com>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: it\n"
+"X-Generator: Poedit 2.0beta2\n"
 
 # type: TH
 #. type: TH
@@ -94,25 +96,22 @@ msgstr "[B<-t> I<E<lt>numeroE<gt>>] [I<collegamento-eD2k>]"
 #. type: SH
 #: amule.1:24 amulecmd.1:26 amuled.1:25 amulegui.1:20 amuleweb.1:41 ed2k.1:19
 #: ../../src/utils/aLinkCreator/docs/alc.1:7
-#: ../../src/utils/aLinkCreator/docs/alcc.1:14
-#: ../../src/utils/cas/docs/cas.1:14 ../../src/utils/wxCas/docs/wxcas.1:7
-#: ../../src/utils/xas/docs/xas.1:7
+#: ../../src/utils/aLinkCreator/docs/alcc.1:14 ../../src/utils/cas/docs/cas.1:14
+#: ../../src/utils/wxCas/docs/wxcas.1:7 ../../src/utils/xas/docs/xas.1:7
 #, no-wrap
 msgid "DESCRIPTION"
 msgstr "DESCRIZIONE"
 
 # type: TP
 #. type: TP
-#: amule.1:25 amuled.1:26 amulegui.1:24 ed2k.1:21
-#: ../../src/utils/cas/docs/cas.1:26
+#: amule.1:25 amuled.1:26 amulegui.1:24 ed2k.1:21 ../../src/utils/cas/docs/cas.1:26
 #, no-wrap
 msgid "B<[ -c> I<E<lt>pathE<gt>>, B<--config-dir>=I<E<lt>pathE<gt>> B<]>"
 msgstr "B<[ -c> I<E<lt>percorsoE<gt>>, B<--config-dir>=I<E<lt>percorsoE<gt>> B<]>"
 
 # type: Plain text
 #. type: Plain text
-#: amule.1:28 amuled.1:29 amulegui.1:27 ed2k.1:24
-#: ../../src/utils/cas/docs/cas.1:29
+#: amule.1:28 amuled.1:29 amulegui.1:27 ed2k.1:24 ../../src/utils/cas/docs/cas.1:29
 msgid "Read config from I<E<lt>pathE<gt>> instead of home"
 msgstr ""
 "Legge la configurazione dal I<E<lt>percorsoE<gt>> invece che dalla directory "
@@ -129,14 +128,14 @@ msgstr "B<[ -geometry >I<E<lt>geometriaE<gt>> B<]>"
 #. type: Plain text
 #: amule.1:31 amulegui.1:30
 msgid ""
-"Sets the geometry of the app. I<E<lt>geomE<gt>> uses the same format as "
-"standard X11 apps:\t[B<=>][I<E<lt>widthE<gt>>{B<xX>}I<E<lt>heightE<gt>>][{B<"
-"+->}I<E<lt>xoffsetE<gt>>{B<+->}I<E<lt>yoffsetE<gt>>]"
+"Sets the geometry of the app. I<E<lt>geomE<gt>> uses the same format as standard "
+"X11 apps:\t[B<=>][I<E<lt>widthE<gt>>{B<xX>}I<E<lt>heightE<gt>>][{B<+->}"
+"I<E<lt>xoffsetE<gt>>{B<+->}I<E<lt>yoffsetE<gt>>]"
 msgstr ""
-"Imposta la geometria della applicazione. I<E<lt>geometriaE<gt>> usa lo "
-"stesso formato delle applicazioni X11 standard: \t[B<=>]"
-"[I<E<lt>larghezzaE<gt>>{B<xX>}I<E<lt>altezzaE<gt>>][{B<+->}"
-"I<E<lt>spostamentoxE<gt>>{B<+->}I<E<lt>spostamentoyE<gt>>]"
+"Imposta la geometria della applicazione. I<E<lt>geometriaE<gt>> usa lo stesso "
+"formato delle applicazioni X11 standard: \t[B<=>][I<E<lt>larghezzaE<gt>>{B<xX>}"
+"I<E<lt>altezzaE<gt>>][{B<+->}I<E<lt>spostamentoxE<gt>>{B<+->}"
+"I<E<lt>spostamentoyE<gt>>]"
 
 # type: Plain text
 #. type: Plain text
@@ -187,20 +186,18 @@ msgstr "B<[ -t>, B<--category>=I<E<lt>numeroE<gt>> B<]>"
 #. type: Plain text
 #: amule.1:49 amuled.1:57 amulegui.1:42 ed2k.1:27
 msgid "Set category for passed eD2k links to I<E<lt>numE<gt>>"
-msgstr ""
-"Imposta la categoria per i collegamenti eD2k ricevuti a I<E<lt>numeroE<gt>>"
+msgstr "Imposta la categoria per i collegamenti eD2k ricevuti a I<E<lt>numeroE<gt>>"
 
 # type: Plain text
 #. type: Plain text
 #: amule.1:52 amulecmd.1:66 amuled.1:60 amulegui.1:48 amuleweb.1:126 ed2k.1:39
 msgid "Displays the current version number."
-msgstr "Visualizza il numero di versione corrente."
+msgstr "Visualizza il numero della versione attuale."
 
 # type: Plain text
 #. type: Plain text
 #: amule.1:55 amulecmd.1:69 amuled.1:63 amulegui.1:45 amuleweb.1:123 ed2k.1:36
-#: ../../src/utils/aLinkCreator/docs/alcc.1:22
-#: ../../src/utils/cas/docs/cas.1:32
+#: ../../src/utils/aLinkCreator/docs/alcc.1:22 ../../src/utils/cas/docs/cas.1:32
 msgid "Prints a short usage description."
 msgstr "Visualizza una breve descrizione dell'utilizzo."
 
@@ -228,27 +225,26 @@ msgstr "Il collegamento eD2k da aggiungere può essere:"
 #: amule.1:63 amulecmd.1:78 amuled.1:71 ed2k.1:47
 msgid "a file link (ed2k://|file|...), it will be added to the download queue;"
 msgstr ""
-"un collegamento a un file (ed2k://|file|...), sarà aggiunto alla coda di "
+"un collegamento a un file (ed2k://|file|...), sarà aggiunto alla coda dei "
 "download;"
 
 # type: Plain text
 #. type: Plain text
 #: amule.1:65 amulecmd.1:80 amuled.1:73 ed2k.1:49
-msgid ""
-"a server link (ed2k://|server|...), it will be added to the server list;"
+msgid "a server link (ed2k://|server|...), it will be added to the server list;"
 msgstr ""
-"un collegamento a un server (ed2k://|server|...), sarà aggiunto alla lista "
-"dei server;"
+"un collegamento a un server (ed2k://|server|...), sarà aggiunto alla lista dei "
+"server;"
 
 # type: Plain text
 #. type: Plain text
 #: amule.1:67 amuled.1:75 ed2k.1:51
 msgid ""
-"a serverlist link, in which case all servers in the list will be added to "
-"the server list;"
+"a serverlist link, in which case all servers in the list will be added to the "
+"server list;"
 msgstr ""
-"un collegamento a una lista di server, nel cui caso tutti i server inclusi "
-"nella lista verranno aggiunti alla lista dei server;"
+"un collegamento a una lista di server, nel cui caso tutti i server inclusi nella "
+"lista verranno aggiunti alla lista dei server;"
 
 # type: Plain text
 #. type: Plain text
@@ -274,14 +270,13 @@ msgstr "Percorsi"
 #. type: Plain text
 #: amule.1:75 amulecmd.1:212 amuleweb.1:137
 msgid ""
-"For all options which take a I<E<lt>pathE<gt>> value, if the I<path> "
-"contains no directory part (i.e. just a plain filename), then it is "
-"considered to be under the aMule configuration directory, I<~/.aMule>."
+"For all options which take a I<E<lt>pathE<gt>> value, if the I<path> contains no "
+"directory part (i.e. just a plain filename), then it is considered to be under "
+"the aMule configuration directory, I<~/.aMule>."
 msgstr ""
-"Per tutte le opzioni che accettano un I<E<lt>percorsoE<gt>>, se il "
-"I<percorso> non contiene una directory (ossia è solo un nome di file), "
-"allora si assume che esso sia presente nella directory di configurazione di "
-"aMule, I<~/.aMule>."
+"Per tutte le opzioni che accettano un I<E<lt>percorsoE<gt>>, se il I<percorso> "
+"non contiene una directory (ossia è solo un nome di file), allora si assume che "
+"esso sia presente nella directory di configurazione di aMule, I<~/.aMule>."
 
 # type: SH
 #. type: SH
@@ -299,75 +294,69 @@ msgstr "~/.aMule/*"
 
 # type: SH
 #. type: SH
-#: amule.1:77 amulecmd.1:256 amuled.1:80 amulegui.1:48 amuleweb.1:191
-#: ed2k.1:62 ../../src/utils/aLinkCreator/docs/alc.1:11
-#: ../../src/utils/aLinkCreator/docs/alcc.1:26
-#: ../../src/utils/cas/docs/cas.1:42 ../../src/utils/wxCas/docs/wxcas.1:16
-#: ../../src/utils/xas/docs/xas.1:16
+#: amule.1:77 amulecmd.1:256 amuled.1:80 amulegui.1:48 amuleweb.1:191 ed2k.1:62
+#: ../../src/utils/aLinkCreator/docs/alc.1:11
+#: ../../src/utils/aLinkCreator/docs/alcc.1:26 ../../src/utils/cas/docs/cas.1:42
+#: ../../src/utils/wxCas/docs/wxcas.1:16 ../../src/utils/xas/docs/xas.1:16
 #, no-wrap
 msgid "REPORTING BUGS"
-msgstr "SEGNALARE I BUG"
+msgstr "SEGNALA I BUG"
 
 # type: Plain text
 #. type: Plain text
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194
-#: ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14
-#: ../../src/utils/aLinkCreator/docs/alcc.1:29
-#: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
-#: ../../src/utils/xas/docs/xas.1:19
+#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: ../../src/utils/aLinkCreator/docs/alc.1:14
+#: ../../src/utils/aLinkCreator/docs/alcc.1:29 ../../src/utils/cas/docs/cas.1:45
+#: ../../src/utils/wxCas/docs/wxcas.1:19 ../../src/utils/xas/docs/xas.1:19
 msgid ""
-"Please report bugs either on our forum (I<http://forum.amule.org/>), or in "
-"our bugtracker (I<http://bugs.amule.org/>).  Please do not report bugs in e-"
-"mail, neither to our mailing list nor directly to any team member."
+"Please report bugs either on our forum (I<http://forum.amule.org/>), or in our "
+"bugtracker (I<http://bugs.amule.org/>).  Please do not report bugs in e-mail, "
+"neither to our mailing list nor directly to any team member."
 msgstr ""
-"Per favore segnalare i bug nel nostro forum (I<http://forum.amule.org/>) o "
-"nel nostro bugtracker (I<http://bugs.amule.org/>). Per favore non segnalare "
-"i bug via posta elettronica, né nella nostra mailing list né direttamente a "
-"qualunque membro del gruppo."
+"Per favore segnala i bug nel nostro forum (I<http://forum.amule.org/>) o nel "
+"nostro bugtracker (I<http://bugs.amule.org/>). Per favore non segnalare i bug via "
+"posta elettronica, nella nostra mailing list né direttamente a qualunque membro "
+"del gruppo."
 
 # type: SH
 #. type: SH
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194
-#: ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14
-#: ../../src/utils/aLinkCreator/docs/alcc.1:29
-#: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
-#: ../../src/utils/xas/docs/xas.1:19
+#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: ../../src/utils/aLinkCreator/docs/alc.1:14
+#: ../../src/utils/aLinkCreator/docs/alcc.1:29 ../../src/utils/cas/docs/cas.1:45
+#: ../../src/utils/wxCas/docs/wxcas.1:19 ../../src/utils/xas/docs/xas.1:19
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr "COPYRIGHT"
 
 # type: Plain text
 #. type: Plain text
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196
-#: ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16
-#: ../../src/utils/aLinkCreator/docs/alcc.1:31
-#: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
-#: ../../src/utils/xas/docs/xas.1:21
+#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: ../../src/utils/aLinkCreator/docs/alc.1:16
+#: ../../src/utils/aLinkCreator/docs/alcc.1:31 ../../src/utils/cas/docs/cas.1:47
+#: ../../src/utils/wxCas/docs/wxcas.1:21 ../../src/utils/xas/docs/xas.1:21
 msgid ""
 "aMule and all of its related utilities are distributed under the GNU General "
 "Public License."
 msgstr ""
-"aMule e tutti i programmi di utilità correlati sono distribuiti in accordo "
-"alla GNU General Public License. "
+"aMule e tutte le utility correlate sono distribuite secondo la licenza GNU "
+"General Public License. "
 
 # type: SH
 #. type: SH
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196
-#: ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16
-#: ../../src/utils/aLinkCreator/docs/alcc.1:31
-#: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
-#: ../../src/utils/xas/docs/xas.1:21
+#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: ../../src/utils/aLinkCreator/docs/alc.1:16
+#: ../../src/utils/aLinkCreator/docs/alcc.1:31 ../../src/utils/cas/docs/cas.1:47
+#: ../../src/utils/wxCas/docs/wxcas.1:21 ../../src/utils/xas/docs/xas.1:21
 #, no-wrap
 msgid "SEE ALSO"
 msgstr "VEDI ANCHE"
 
 # type: SH
 #. type: SH
-#: amule.1:84 amulecmd.1:263 amuled.1:87 amulegui.1:55 amuleweb.1:198
-#: ed2k.1:69 ../../src/utils/aLinkCreator/docs/alc.1:18
-#: ../../src/utils/aLinkCreator/docs/alcc.1:33
-#: ../../src/utils/cas/docs/cas.1:49 ../../src/utils/wxCas/docs/wxcas.1:23
-#: ../../src/utils/xas/docs/xas.1:23
+#: amule.1:84 amulecmd.1:263 amuled.1:87 amulegui.1:55 amuleweb.1:198 ed2k.1:69
+#: ../../src/utils/aLinkCreator/docs/alc.1:18
+#: ../../src/utils/aLinkCreator/docs/alcc.1:33 ../../src/utils/cas/docs/cas.1:49
+#: ../../src/utils/wxCas/docs/wxcas.1:23 ../../src/utils/xas/docs/xas.1:23
 #, no-wrap
 msgid "AUTHOR"
 msgstr "AUTORE"
@@ -376,11 +365,9 @@ msgstr "AUTORE"
 #. type: Plain text
 #: amule.1:85 amulecmd.1:264 amuled.1:88 amuleweb.1:199 ed2k.1:70
 #: ../../src/utils/aLinkCreator/docs/alc.1:19
-#: ../../src/utils/aLinkCreator/docs/alcc.1:34
-#: ../../src/utils/cas/docs/cas.1:50 ../../src/utils/wxCas/docs/wxcas.1:24
-#: ../../src/utils/xas/docs/xas.1:24
-msgid ""
-"This manpage was written by Vollstrecker E<lt>amule@vollstreckernet.deE<gt>"
+#: ../../src/utils/aLinkCreator/docs/alcc.1:34 ../../src/utils/cas/docs/cas.1:50
+#: ../../src/utils/wxCas/docs/wxcas.1:24 ../../src/utils/xas/docs/xas.1:24
+msgid "This manpage was written by Vollstrecker E<lt>amule@vollstreckernet.deE<gt>"
 msgstr ""
 "Questa pagina del manuale è stata scritta da Vollstrecker "
 "E<lt>amule@vollstreckernet.deE<gt>"
@@ -401,26 +388,25 @@ msgstr "aMuleCmd v2.3.2"
 
 # type: TH
 #. type: TH
-#: amulecmd.1:1 amuleweb.1:1 ed2k.1:1
-#: ../../src/utils/aLinkCreator/docs/alc.1:1
+#: amulecmd.1:1 amuleweb.1:1 ed2k.1:1 ../../src/utils/aLinkCreator/docs/alc.1:1
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
 msgid "aMule utilities"
-msgstr "Utilità di aMule"
+msgstr "Utility di aMule"
 
 # type: Plain text
 #. type: Plain text
 #: amulecmd.1:7
 msgid "amulecmd - Console-based program to control aMule"
-msgstr "amulecmd - programma in console per controllare aMule"
+msgstr "amulecmd - Programma a console per controllare aMule"
 
 # type: Plain text
 #. type: Plain text
 #: amulecmd.1:13 amuleweb.1:12
 msgid ""
-"[B<-h> I<E<lt>hostE<gt>>] [B<-p> I<E<lt>portE<gt>>] [B<-P> "
-"I<E<lt>passwordE<gt>>] [B<-f> I<E<lt>pathE<gt>>]"
+"[B<-h> I<E<lt>hostE<gt>>] [B<-p> I<E<lt>portE<gt>>] [B<-P> I<E<lt>passwordE<gt>>] "
+"[B<-f> I<E<lt>pathE<gt>>]"
 msgstr ""
 "[B<-h> I<E<lt>hostE<gt>>] [B<-p> I<E<lt>portaE<gt>>] [B<-P> "
 "I<E<lt>passwordE<gt>>] [B<-f> I<E<lt>percorsoE<gt>>]"
@@ -429,8 +415,7 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1:17
 msgid ""
-"[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> I<E<lt>commandE<gt>>]"
-"B< >}"
+"[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> I<E<lt>commandE<gt>>]B< >}"
 msgstr ""
 "[B<-l> I<E<lt>linguaggioE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> "
 "I<E<lt>comandoE<gt>>]B< >}"
@@ -445,7 +430,7 @@ msgstr "[B<--create-config-from>=I<E<lt>percorsoE<gt>>]"
 #. type: Plain text
 #: amulecmd.1:29
 msgid "B<amulecmd> is a console-based client to control aMule."
-msgstr "B<amulecmd> è un client in console per controllare aMule."
+msgstr "B<amulecmd> è un client a console per controllare aMule."
 
 # type: TP
 #. type: TP
@@ -458,11 +443,11 @@ msgstr "B<[ -h> I<E<lt>hostE<gt>>, B<--host>=I<E<lt>hostE<gt>> B<]>"
 #. type: Plain text
 #: amulecmd.1:33 amuleweb.1:50
 msgid ""
-"Host where aMule is running (default: I<localhost>).  I<E<lt>hostE<gt>> "
-"might be an IP address or a DNS name"
+"Host where aMule is running (default: I<localhost>).  I<E<lt>hostE<gt>> might be "
+"an IP address or a DNS name"
 msgstr ""
-"Computer dove è in esecuzione aMule (default: I<localhost>). "
-"I<E<lt>hostE<gt>> può essere un indirizzo IP o un nome DNS."
+"Computer dove è in esecuzione aMule (default: I<localhost>). I<E<lt>hostE<gt>> "
+"può essere un indirizzo IP o un nome DNS."
 
 # type: TP
 #. type: TP
@@ -475,8 +460,8 @@ msgstr "B<[ -p> I<E<lt>portaE<gt>>, B<--port>=I<E<lt>portaE<gt>> B<]>"
 #. type: Plain text
 #: amulecmd.1:36 amuleweb.1:53
 msgid ""
-"aMule's port for External Connections, as set in Preferences-E<gt>Remote "
-"Controls (default: I<4712>)"
+"aMule's port for External Connections, as set in Preferences-E<gt>Remote Controls "
+"(default: I<4712>)"
 msgstr ""
 "Porta di aMule per le connessioni esterne, come impostata nelle preferenze-"
 "E<gt>controllo remoto (default: I<4712>) "
@@ -508,8 +493,8 @@ msgid ""
 "Use the given configuration file.  Default configuration file is I<~/.aMule/"
 "remote.conf>"
 msgstr ""
-"Usa il file di configurazione fornito. Il file di configurazione di default "
-"è I<~/.aMule/remote.conf>"
+"Usa il file di configurazione fornito. Il file di configurazione di default è "
+"I<~/.aMule/remote.conf>"
 
 # type: Plain text
 #. type: Plain text
@@ -534,18 +519,17 @@ msgstr "B<[ -l> I<E<lt>linguaggioE<gt>>, B<--locale>=I<E<lt>linguaggioE<gt>> B<]
 #. type: Plain text
 #: amulecmd.1:54 amuleweb.1:71
 msgid ""
-"Sets program locale (language).  See the B<NOTES> section for the "
-"description of the I<E<lt>langE<gt>> parameter."
+"Sets program locale (language).  See the B<NOTES> section for the description of "
+"the I<E<lt>langE<gt>> parameter."
 msgstr ""
-"Imposta il linguaggio del programma. Vedi anche la sezione delle B<NOTE> per "
-"la descrizione del parametro I<E<lt>linguaggioE<gt>> ."
+"Imposta il linguaggio del programma. Vedi anche la sezione delle B<NOTE> per la "
+"descrizione del parametro I<E<lt>linguaggioE<gt>> ."
 
 # type: Plain text
 #. type: Plain text
 #: amulecmd.1:57 amuleweb.1:74
 msgid "Write command line options to config file and exit"
-msgstr ""
-"Scrive le opzioni della riga di comando nel file di configurazione ed esce."
+msgstr "Scrive le opzioni della riga di comando nel file di configurazione ed esce."
 
 # type: TP
 #. type: TP
@@ -558,11 +542,10 @@ msgstr "B<[ -c> I<E<lt>comandoE<gt>>, B<--command>=I<E<lt>comandoE<gt>> B<]>"
 #. type: Plain text
 #: amulecmd.1:60
 msgid ""
-"Execute I<E<lt>commandE<gt>> as if it was entered at amulecmd's prompt and "
-"exit."
+"Execute I<E<lt>commandE<gt>> as if it was entered at amulecmd's prompt and exit."
 msgstr ""
-"Esegue il I<E<lt>comandoE<gt>> come se fosse stato immesso nel prompt di "
-"amulecmd ed esce."
+"Esegue il I<E<lt>comandoE<gt>> come se fosse stato immesso nel prompt di amulecmd "
+"ed esce."
 
 # type: TP
 #. type: TP
@@ -592,7 +575,7 @@ msgstr "COMANDI"
 #. type: Plain text
 #: amulecmd.1:71
 msgid "All commands are case insensitive."
-msgstr "Tutti i comandi non distinguono tra maiuscolo e minuscolo."
+msgstr "I comandi non distinguono tra maiuscolo e minuscolo."
 
 # type: SS
 #. type: SS
@@ -611,18 +594,17 @@ msgstr "Aggiunge un collegamento eD2k o un collegamento magnet."
 #. type: Plain text
 #: amulecmd.1:82
 msgid ""
-"a serverlist link, in which case all servers in the list will be added to "
-"the server list."
+"a serverlist link, in which case all servers in the list will be added to the "
+"server list."
 msgstr ""
-"un collegamento ad una lista di server, nel cui caso tutti i server "
-"contenuti nella lista saranno aggiunti alla lista dei server correnti."
+"un collegamento ad una lista di server, nel cui caso tutti i server contenuti "
+"nella lista saranno aggiunti alla lista dei server correnti."
 
 # type: Plain text
 #. type: Plain text
 #: amulecmd.1:85
 msgid "The magnet link must contain the eD2k hash and file length."
-msgstr ""
-"Il collegamento magnet deve contenere l'hash eD2k e la lunghezza del file."
+msgstr "Il collegamento magnet deve contenere l'hash eD2k e la lunghezza del file."
 
 # type: SS
 #. type: SS
@@ -635,11 +617,11 @@ msgstr "Cancel I<E<lt>hashE<gt>> | I<E<lt>numeroE<gt>>"
 #. type: Plain text
 #: amulecmd.1:87
 msgid ""
-"Cancels the download specified by I<E<lt>hashE<gt>> or I<E<lt>numberE<gt>>. "
-"To get the value use B<show>."
+"Cancels the download specified by I<E<lt>hashE<gt>> or I<E<lt>numberE<gt>>. To "
+"get the value use B<show>."
 msgstr ""
-"Cancella il download specificato da I<E<lt>hashE<gt>> o I<E<lt>numeroE<gt>>. "
-"Per ottenere il valore utilizzare B<show>."
+"Cancella il download specificato da I<E<lt>hashE<gt>> o I<E<lt>numeroE<gt>>. Per "
+"ottenere il valore utilizzare B<show>."
 
 # type: SS
 #. type: SS
@@ -658,31 +640,29 @@ msgstr "Connessione alla rete."
 #. type: Plain text
 #: amulecmd.1:91
 msgid "This will connect to all networks that are enabled in Preferences."
-msgstr ""
-"Questo avvierà la connessione a tutte le reti abilitate nelle preferenze."
+msgstr "Questo avvierà la connessione a tutte le reti abilitate nelle Preferenze."
 
 #. type: Plain text
 #: amulecmd.1:95
 msgid ""
-"With the optional parameter you can specify which network to connect to. "
-"Giving a server address in the form of IP:Port (where IP is either a dotted "
-"decimal IPv4 address or a resolvable DNS name) aMule will connect to that "
-"server only."
+"With the optional parameter you can specify which network to connect to. Giving a "
+"server address in the form of IP:Port (where IP is either a dotted decimal IPv4 "
+"address or a resolvable DNS name) aMule will connect to that server only."
 msgstr ""
-"Con il parametro opzionale si può specificare a che rete connettersi. "
-"Fornendo un indirizzo di server nella forma IP:Porta (dove IP è un indirizzo "
-"IPv4 in forma decimale puntata o un nome DNS risolvibile) aMule si "
-"connetterà solo a quel server."
+"Con il parametro opzionale si può specificare a che rete connettersi. Fornendo un "
+"indirizzo di server nella forma IP:Porta (dove IP è un indirizzo IPv4 in forma "
+"decimale puntata o un nome DNS risolvibile) aMule si connetterà solo a quel "
+"server."
 
 # type: Plain text
 #. type: Plain text
 #: amulecmd.1:98
 msgid ""
-"Disconnect from all networks you are connected to, or just disconnect from "
-"the specified network."
+"Disconnect from all networks you are connected to, or just disconnect from the "
+"specified network."
 msgstr ""
-"Disconnette da tutte le reti attualmente connesse, o disconnette solo dalla "
-"rete specificata."
+"Disconnette da tutte le reti attualmente connesse, o disconnette solo dalla rete "
+"specificata."
 
 # type: SS
 #. type: SS
@@ -701,9 +681,9 @@ msgstr "Inizia il download di un file."
 #. type: Plain text
 #: amulecmd.1:104
 msgid ""
-"The I<E<lt>numberE<gt>> of a file from the last search has to be given.  "
-"Example: `download 12' will start to download the file with the number 12 of "
-"the previous search."
+"The I<E<lt>numberE<gt>> of a file from the last search has to be given.  Example: "
+"`download 12' will start to download the file with the number 12 of the previous "
+"search."
 msgstr ""
 "Deve essere fornito il I<E<lt>numeroE<gt>> di un file dall'ultima ricerca."
 "Esempio: `download 12' inizierà il download del file numero 12 della ricerca "
@@ -757,12 +737,12 @@ msgstr "Help [ I<E<lt>comandoE<gt>> ]"
 #. type: Plain text
 #: amulecmd.1:120
 msgid ""
-"Prints a short usage description.  If called without parameter, it shows a "
-"list of available commands.  If called with I<E<lt>commandE<gt>>, it shows a "
-"short description of the given command."
+"Prints a short usage description.  If called without parameter, it shows a list "
+"of available commands.  If called with I<E<lt>commandE<gt>>, it shows a short "
+"description of the given command."
 msgstr ""
-"Visualizza una breve descrizione dell'uso. Se chiamato senza parametro, "
-"mostra una lista dei comandi disponibili. Se chiamato con il parametro "
+"Visualizza una breve descrizione dell'uso. Se chiamato senza parametro, mostra "
+"una lista dei comandi disponibili. Se chiamato con il parametro "
 "I<E<lt>commandE<gt>>, mostra una breve descrizione del comando dato"
 
 # type: SS
@@ -776,8 +756,8 @@ msgstr "Pause I<E<lt>hashE<gt>> | I<E<lt>numeroE<gt>>"
 #. type: Plain text
 #: amulecmd.1:122
 msgid ""
-"Pauses the download specified by I<E<lt>hashE<gt>> or I<E<lt>numberE<gt>>. "
-"To get the value use B<show>."
+"Pauses the download specified by I<E<lt>hashE<gt>> or I<E<lt>numberE<gt>>. To get "
+"the value use B<show>."
 msgstr ""
 "Mette in pausa il download specificato da I<E<lt>hashE<gt>> o "
 "I<E<lt>numeroE<gt>>. Per ottenere il valore utilizzare B<show>."
@@ -793,8 +773,7 @@ msgstr "Priority I<E<lt>prioritàE<gt>> I<E<lt>hashE<gt>> | I<E<lt>numeroE<gt>>"
 #. type: Plain text
 #: amulecmd.1:124
 msgid ""
-"Set priority of a download specified by I<E<lt>hashE<gt>> or "
-"I<E<lt>numberE<gt>>."
+"Set priority of a download specified by I<E<lt>hashE<gt>> or I<E<lt>numberE<gt>>."
 msgstr ""
 "Imposta la priorità di un download specificato da I<E<lt>hashE<gt>> o "
 "I<E<lt>numeroE<gt>>."
@@ -889,11 +868,11 @@ msgstr "Resume I<E<lt>hashE<gt>> | I<E<lt>numeroE<gt>>"
 #. type: Plain text
 #: amulecmd.1:156
 msgid ""
-"Resumes the download specified by I<E<lt>hashE<gt>> or I<E<lt>numberE<gt>>. "
-"To get the value use B<show>."
+"Resumes the download specified by I<E<lt>hashE<gt>> or I<E<lt>numberE<gt>>. To "
+"get the value use B<show>."
 msgstr ""
-"Riprende il download specificato da I<E<lt>hashE<gt>> o I<E<lt>numeroE<gt>>. "
-"Per ottenere il valore utilizzare B<show>."
+"Riprende il download specificato da I<E<lt>hashE<gt>> o I<E<lt>numeroE<gt>>. Per "
+"ottenere il valore utilizzare B<show>."
 
 # type: SS
 #. type: SS
@@ -906,13 +885,13 @@ msgstr "Search I<E<lt>tipoE<gt>> I<E<lt>parola-chiaveE<gt>>"
 #. type: Plain text
 #: amulecmd.1:159
 msgid ""
-"Makes a search for the given I<E<lt>keywordE<gt>>. A search type and a "
-"keyword to search is mandatory to do this.  Example: `search kad amule' "
-"performs a kad search for `amule'."
+"Makes a search for the given I<E<lt>keywordE<gt>>. A search type and a keyword to "
+"search is mandatory to do this.  Example: `search kad amule' performs a kad "
+"search for `amule'."
 msgstr ""
-"Esegue una ricerca per la data I<E<lt>parola-chiaveE<gt>>. Il tipo della "
-"ricerca e una parola chiave da cercare sono obbligatori. Esempio: `search "
-"kad amule' esegue una ricerca sulla rete kad per `amule'."
+"Esegue una ricerca per la data I<E<lt>parola-chiaveE<gt>>. Il tipo della ricerca "
+"e una parola chiave da cercare sono obbligatori. Esempio: `search kad amule' "
+"esegue una ricerca sulla rete kad per `amule'."
 
 # type: Plain text
 #. type: Plain text
@@ -968,7 +947,7 @@ msgstr "Imposta le preferenze del filtro IP."
 #: amulecmd.1:179
 #, no-wrap
 msgid "Show I<E<lt>whatE<gt>>"
-msgstr "Show I<E<lt>oggettoE<gt>>"
+msgstr "Mostra I <E<lt>oggettoE<gt>>"
 
 # type: Plain text
 #. type: Plain text
@@ -988,7 +967,7 @@ msgstr "Mostra la coda di download."
 #. type: Plain text
 #: amulecmd.1:188
 msgid "Show log."
-msgstr "Mostra il log."
+msgstr "Mostra i log."
 
 # type: Plain text
 #. type: Plain text
@@ -1006,18 +985,18 @@ msgstr "Mostra la coda di upload."
 #. type: Plain text
 #: amulecmd.1:196
 msgid ""
-"Shutdown the remote running core (amule/amuled).  This will also shut down "
-"the text client, since it is unusable without a running core."
+"Shutdown the remote running core (amule/amuled).  This will also shut down the "
+"text client, since it is unusable without a running core."
 msgstr ""
-"Chiude il motore remoto in esecuzione (amule/amuled). Questo chiuderà anche "
-"il cliente in formato testo, siccome è inutile senza un motore in esecuzione."
+"Chiude il motore remoto in esecuzione (amule/amuled). Questo chiuderà anche il "
+"cliente in formato testo, siccome è inutile senza un motore in esecuzione."
 
 # type: SS
 #. type: SS
 #: amulecmd.1:196
 #, no-wrap
 msgid "Statistics [ I<E<lt>numberE<gt>> ]"
-msgstr "Statistics [ I<E<lt>numeroE<gt>> ]"
+msgstr "Statistiche [ I<E<lt>numeroE<gt>> ]"
 
 # type: Plain text
 #. type: Plain text
@@ -1029,24 +1008,22 @@ msgstr "Mostra l'albero delle statistiche."
 #. type: Plain text
 #: amulecmd.1:202
 msgid ""
-"The optional I<E<lt>numberE<gt>> in the range of 0-255 can be passed as "
-"argument to this command, which tells how many entries of the client version "
-"subtree should be shown. Passing 0, or omitting it means `unlimited'."
+"The optional I<E<lt>numberE<gt>> in the range of 0-255 can be passed as argument "
+"to this command, which tells how many entries of the client version subtree "
+"should be shown. Passing 0, or omitting it means `unlimited'."
 msgstr ""
-"Il I<E<lt>numeroE<gt>> opzionale, nell'intervallo 0-255, può essere passato "
-"come argomento a questo comando per indicare quante righe del ramo delle "
-"versioni dei client devono essere mostrate. Indicando 0, o omettendo il "
-"parametro significa `illimitato'."
+"Il I<E<lt>numeroE<gt>> opzionale, nell'intervallo 0-255, può essere passato come "
+"argomento a questo comando per indicare quante righe del ramo delle versioni dei "
+"client devono essere mostrate. Indicando 0, o omettendo il parametro significa "
+"`illimitato'."
 
 # type: Plain text
 #. type: Plain text
 #: amulecmd.1:205
 msgid ""
-"Example: `statistics 5' will show only the top 5 versions for each client "
-"type."
+"Example: `statistics 5' will show only the top 5 versions for each client type."
 msgstr ""
-"Esempio: `statistics 5' mostrerà solo le prime 5 versioni per ogni tipo di "
-"client."
+"Esempio: `statistics 5' mostrerà solo le prime 5 versioni per ogni tipo di client."
 
 # type: Plain text
 #. type: Plain text
@@ -1072,13 +1049,12 @@ msgid ""
 "character set to use and I<modifier> allows the user to select a specific "
 "instance of localization data within a single category."
 msgstr ""
-"Il parametro I<E<lt>linguaggioE<gt>> per l'opzione B<-l> ha la forma "
-"seguente: I<linguaggio>[B<_>I<LINGUAGGIO>][B<.>I<codifica>]"
-"[B<@>I<modificatore>] dove I<linguaggio> è il linguaggio primario, "
-"I<LINGUAGGIO> è il sottotipo/territorio, I<codifica> è l'insieme di "
-"caratteri usato e I<modificatore> consente all'utente di selezionare una "
-"specifica istanza dei dati di localizzazione all'interno di una singola "
-"categoria."
+"Il parametro I<E<lt>linguaggioE<gt>> per l'opzione B<-l> ha la forma seguente: "
+"I<linguaggio>[B<_>I<LINGUAGGIO>][B<.>I<codifica>][B<@>I<modificatore>] dove "
+"I<linguaggio> è il linguaggio primario, I<LINGUAGGIO> è il sottotipo/territorio, "
+"I<codifica> è l'insieme di caratteri usato e I<modificatore> consente all'utente "
+"di selezionare una specifica istanza dei dati di localizzazione all'interno di "
+"una singola categoria."
 
 # type: Plain text
 #. type: Plain text
@@ -1103,9 +1079,9 @@ msgid ""
 "In addition to the format above, you can also specify full language names in "
 "English - so B<-l german> is also valid and is equal to B<-l de_DE>."
 msgstr ""
-"In aggiunta al formato di cui sopra, si può anche specificare il nome "
-"completo del linguaggio in inglese, e quindi B<-l german> è valido ed "
-"equivalente a B<-l de_DE>."
+"In aggiunta al formato di cui sopra, si può anche specificare il nome completo "
+"del linguaggio in inglese, e quindi B<-l german> è valido ed equivalente a B<-l "
+"de_DE>."
 
 # type: Plain text
 #. type: Plain text
@@ -1140,8 +1116,7 @@ msgstr "Di norma amulecmd sarà inizialmente eseguito come:"
 #. type: Plain text
 #: amulecmd.1:246
 msgid "B<amulecmd> B<-h> I<hostname> B<-p> I<ECport> B<-P> I<ECpassword> B<-w>"
-msgstr ""
-"B<amulecmd> B<-h> I<nomehost> B<-p> I<portaEC> B<-P> I<passwordEC> B<-w>"
+msgstr "B<amulecmd> B<-h> I<nomehost> B<-p> I<portaEC> B<-P> I<passwordEC> B<-w>"
 
 # type: Plain text
 #. type: Plain text
@@ -1153,18 +1128,17 @@ msgstr "o"
 #. type: Plain text
 #: amulecmd.1:250
 msgid "B<amulecmd> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
-msgstr ""
-"B<amulecmd> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
+msgstr "B<amulecmd> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
 
 # type: Plain text
 #. type: Plain text
 #: amulecmd.1:252 amuleweb.1:187
 msgid ""
-"These will save settings to I<$HOME/.aMule/remote.conf>, and later you only "
-"need to type:"
+"These will save settings to I<$HOME/.aMule/remote.conf>, and later you only need "
+"to type:"
 msgstr ""
-"In questo modo la configurazione verrà salvata in I<$HOME/.aMule/remote."
-"conf>, e le volte successive si dovrà solo digitare:"
+"In questo modo la configurazione verrà salvata in I<$HOME/.aMule/remote.conf>, e "
+"le volte successive si dovrà solo digitare:"
 
 # type: Plain text
 #. type: Plain text
@@ -1197,8 +1171,7 @@ msgstr "aMule Daemon"
 #. type: Plain text
 #: amuled.1:6
 msgid "amuled - the all-platform eMule p2p client - daemonized version"
-msgstr ""
-"amuled - il client p2p multipiattaforma basato su eMule - versione demone"
+msgstr "amuled - il client p2p multipiattaforma basato su eMule - versione demone"
 
 # type: Plain text
 #. type: Plain text
@@ -1229,11 +1202,11 @@ msgstr "B<[ -p> I<E<lt>percorsoE<gt>>, B<--pid-file>=I<E<lt>percorsoE<gt>> B<]>"
 #. type: Plain text
 #: amuled.1:36
 msgid ""
-"After fork, create a pid-file in the I<E<lt>pathE<gt>>.  I<E<lt>pathE<gt>> "
-"has to contain the filename."
+"After fork, create a pid-file in the I<E<lt>pathE<gt>>.  I<E<lt>pathE<gt>> has to "
+"contain the filename."
 msgstr ""
-"Dopo il passaggio in background, crea un file di pid in "
-"I<E<lt>percorsoE<gt>>. I<E<lt>percorsoE<gt>> deve includere il nome del file."
+"Dopo il passaggio in background, crea un file di pid in I<E<lt>percorsoE<gt>>. "
+"I<E<lt>percorsoE<gt>> deve includere il nome del file."
 
 # type: Plain text
 #. type: Plain text
@@ -1266,7 +1239,7 @@ msgstr "aMuleGUI"
 #. type: Plain text
 #: amulegui.1:6
 msgid "amulegui - aMule control program with GUI"
-msgstr "amulegui - programma in interfaccia grafica per controllare aMule"
+msgstr "amulegui - programma con interfaccia grafica per controllare aMule"
 
 # type: Plain text
 #. type: Plain text
@@ -1278,13 +1251,13 @@ msgstr "[B<-t> I<E<lt>numeroE<gt>>]"
 #. type: Plain text
 #: amulegui.1:24
 msgid ""
-"B<amulegui> is a client program, and can be connected to amule or amuled via "
-"EC. You can manage your amule program with it. It provides almost the same "
+"B<amulegui> is a client program, and can be connected to amule or amuled via EC. "
+"You can manage your amule program with it. It provides almost the same "
 "functionalities as amule, even if the core works on another computer."
 msgstr ""
 "B<amulegui> è un programma client, e può connettersi tramite EC ad amule o "
-"amuled. Con esso si può gestire amule. Fornisce circa le stesse funzionalità "
-"di amule, anche se il motore lavora su un'altro computer."
+"amuled. Con esso si può gestire amule. Fornisce circa le stesse funzionalità di "
+"amule, anche se il motore lavora su un'altro computer."
 
 # type: Plain text
 #. type: Plain text
@@ -1296,11 +1269,11 @@ msgstr "Salta la finestra di connessione."
 #. type: Plain text
 #: amulegui.1:57
 msgid ""
-"This manpage was written by Julien Delange for Debian E<lt>julien AT gunnm "
-"DOT orgE<gt>"
+"This manpage was written by Julien Delange for Debian E<lt>julien AT gunnm DOT "
+"orgE<gt>"
 msgstr ""
-"Questa pagina di manuale è stata scritta da Julien Delange per Debian "
-"E<lt>julien AT gunnm DOT orgE<gt>"
+"Questa pagina di manuale è stata scritta da Julien Delange per Debian E<lt>julien "
+"AT gunnm DOT orgE<gt>"
 
 # type: Plain text
 #. type: Plain text
@@ -1365,16 +1338,16 @@ msgstr "[B<--amule-config-file>=I<E<lt>percorsoE<gt>>]"
 #. type: Plain text
 #: amuleweb.1:46
 msgid ""
-"B<amuleweb> manages your access to amule through a web browser.  You can "
-"start amuleweb together with B<amule>(1), or separately, any time later.  "
-"Options can be specified via command-line or via config-file.  Command-line "
-"options take precedence over config-file options."
+"B<amuleweb> manages your access to amule through a web browser.  You can start "
+"amuleweb together with B<amule>(1), or separately, any time later.  Options can "
+"be specified via command-line or via config-file.  Command-line options take "
+"precedence over config-file options."
 msgstr ""
 "B<amuleweb> gestisce l'accesso ad amule attraverso un browser web.  Si può "
-"eseguire amuleweb insieme ad B<amule>(1), o separatamente in qualunque "
-"momento successivo. Le opzioni possono essere specificate in riga di comando "
-"o nel file di configurazione. Le opzioni in riga di comando hanno la "
-"precedenza su quelle nel file di configurazione."
+"eseguire amuleweb insieme ad B<amule>(1), o separatamente in qualunque momento "
+"successivo. Le opzioni possono essere specificate in riga di comando o nel file "
+"di configurazione. Le opzioni in riga di comando hanno la precedenza su quelle "
+"nel file di configurazione."
 
 # type: TP
 #. type: TP
@@ -1387,11 +1360,11 @@ msgstr "B<[ -t> I<E<lt>nomeE<gt>>, B<--template>=I<E<lt>nomeE<gt>> B<]>"
 #. type: Plain text
 #: amuleweb.1:77
 msgid ""
-"Loads the template named I<E<lt>nameE<gt>>. See the B<SKIN SUPPORT> section "
-"for details."
+"Loads the template named I<E<lt>nameE<gt>>. See the B<SKIN SUPPORT> section for "
+"details."
 msgstr ""
-"Carica il modello chiamato I<E<lt>nomeE<gt>>. Vedi la sezione B<SUPPORTO "
-"AGLI SKIN> per i dettagli."
+"Carica il modello chiamato I<E<lt>nomeE<gt>>. Vedi la sezione B<SUPPORTO AGLI "
+"SKIN> per i dettagli."
 
 # type: TP
 #. type: TP
@@ -1404,11 +1377,11 @@ msgstr "B<[ -s> I<E<lt>portaE<gt>>, B<--server-port>=I<E<lt>portaE<gt>> B<]>"
 #. type: Plain text
 #: amuleweb.1:80
 msgid ""
-"Webserver's HTTP port. This is the port you must point your browser to "
-"(default: I<4711>)."
+"Webserver's HTTP port. This is the port you must point your browser to (default: "
+"I<4711>)."
 msgstr ""
-"Porta HTTP del server web. Questa è la porta da indicare nel browser "
-"(default: I<4711>)."
+"Porta HTTP del server web. Questa è la porta da indicare nel browser (default: "
+"I<4711>)."
 
 # type: Plain text
 #. type: Plain text
@@ -1427,7 +1400,7 @@ msgstr "B<[ -U> I<E<lt>portaE<gt>>, B<--upnp-port> I<E<lt>portaE<gt>> B<]>"
 #. type: Plain text
 #: amuleweb.1:87
 msgid "UPnP port."
-msgstr "Porta per l'UPnP."
+msgstr "Porta UPnP."
 
 # type: Plain text
 #. type: Plain text
@@ -1465,7 +1438,7 @@ msgstr "B<[ -G> I<E<lt>passwordE<gt>>, B<--guest-pass>=I<E<lt>passwordE<gt>> B<]
 #. type: Plain text
 #: amuleweb.1:99
 msgid "Guest password for webserver."
-msgstr "Password for l'accesso ospite al web server."
+msgstr "Password per l'accesso come guest al web server."
 
 # type: Plain text
 #. type: Plain text
@@ -1484,17 +1457,17 @@ msgstr "Nega l'accesso ospite (default)."
 #: amuleweb.1:111
 msgid ""
 "Load/save webserver settings from/to remote aMule.  This causes amuleweb to "
-"ignore command-line and config-file settings, and load them from aMule.  "
-"When saving preferences none will be written to the config file, but to "
-"aMule.  (Of course, this works only for those settings that can be set in "
-"aMule's Preferences-E<gt>Remote Controls.)"
+"ignore command-line and config-file settings, and load them from aMule.  When "
+"saving preferences none will be written to the config file, but to aMule.  (Of "
+"course, this works only for those settings that can be set in aMule's Preferences-"
+"E<gt>Remote Controls.)"
 msgstr ""
 "Carica/salva le configurazioni del webserver da/verso aMule remoto. amuleweb "
 "ignorerà le opzioni in linea di comando e nel file di configurazione, e le "
 "caricherà invece da aMule. Quando si salveranno le preferenze, niente verrà "
-"scritto nel file di configurazione, ma in aMule. (Ovviamente, questo "
-"funzionerà solo per quelle impostazioni che possono essere scritte nelle "
-"preferenze di aMule-E<gt>controllo remoto.)"
+"scritto nel file di configurazione, ma in aMule. (Ovviamente, questo funzionerà "
+"solo per quelle impostazioni che possono essere scritte nelle preferenze di aMule-"
+"E<gt>controllo remoto.)"
 
 # type: Plain text
 #. type: Plain text
@@ -1520,14 +1493,14 @@ msgstr "B<[ --amule-config-file>=I<E<lt>percorsoE<gt>> B<]>"
 #: amuleweb.1:132
 msgid ""
 "aMule config file path.  B<DO NOT USE DIRECTLY!> aMule uses this option when "
-"starting amuleweb at aMule startup.  This option causes all other command-"
-"line and config-file settings to be ignored, preferences to be read from the "
-"given config file, and also implies the B<-q -L> options."
+"starting amuleweb at aMule startup.  This option causes all other command-line "
+"and config-file settings to be ignored, preferences to be read from the given "
+"config file, and also implies the B<-q -L> options."
 msgstr ""
-"Percorso del file di configurazione di aMule. B<NON USARE DIRETTAMENTE!> "
-"aMule usa questa opzione quando lancia amuleweb all'avvio di aMule. Questa "
-"opzione fa sì che tutte le altre impostazioni in riga di comando e nel file "
-"di configurazione vengano ignorate, le preferenze vengano lette dal file di "
+"Percorso del file di configurazione di aMule. B<NON USARE DIRETTAMENTE!> aMule "
+"usa questa opzione quando lancia amuleweb all'avvio di aMule. Questa opzione fa "
+"sì che tutte le altre impostazioni in riga di comando e nel file di "
+"configurazione vengano ignorate, le preferenze vengano lette dal file di "
 "configurazione dato, e anche implica le opzioni B<-q -L> ."
 
 # type: SH
@@ -1535,31 +1508,30 @@ msgstr ""
 #: amuleweb.1:165
 #, no-wrap
 msgid "SKIN SUPPORT"
-msgstr "SUPPORTO AGLI SKIN"
+msgstr "SUPPORTO ALLE SKIN"
 
 # type: Plain text
 #. type: Plain text
 #: amuleweb.1:169
 msgid ""
-"B<amuleweb> is capable of displaying information in different skins.  These "
-"skins are called templates, and you can make amuleweb load a specific "
-"template via the B<-t> command line option.  Templates are searched in two "
-"places: first in I<~/.aMule/webserver/> and then in I</usr/share/amule/"
-"webserver/> if you installed with --prefix=/usr."
+"B<amuleweb> is capable of displaying information in different skins.  These skins "
+"are called templates, and you can make amuleweb load a specific template via the "
+"B<-t> command line option.  Templates are searched in two places: first in I<~/."
+"aMule/webserver/> and then in I</usr/share/amule/webserver/> if you installed "
+"with --prefix=/usr."
 msgstr ""
-"B<amuleweb> può visualizzare l'informazione utilizzando diversi 'skin'. "
-"Questi 'skin' sono contenuti in dei modelli, e si può far caricare da "
-"amuleweb un dato modello tramite l'opzione B<-t> in riga di comando. I "
-"modelli sono cercati in due posti: prima in I<~/.aMule/webserver/> e quindi "
-"in I</usr/share/amule/webserver/> se aMule è stato installato con --prefix=/"
-"usr."
+"B<amuleweb> può visualizzare l'informazione utilizzando diversi 'skin'. Questi "
+"'skin' sono contenuti in dei modelli, e si può far caricare da amuleweb un dato "
+"modello tramite l'opzione B<-t> in riga di comando. I modelli sono cercati in due "
+"posti: prima in I<~/.aMule/webserver/> e quindi in I</usr/share/amule/webserver/> "
+"se aMule è stato installato con --prefix=/usr."
 
 # type: Plain text
 #. type: Plain text
 #: amuleweb.1:171
 msgid ""
-"Each template must be in a subdirectory of the template name, and this "
-"directory must contain all files the template needs."
+"Each template must be in a subdirectory of the template name, and this directory "
+"must contain all files the template needs."
 msgstr ""
 "Ogni modello deve essere in una sottodirectory del nome di modello, e questa "
 "directory deve contenere tutti i file necessari al modello."
@@ -1596,15 +1568,14 @@ msgstr ""
 #. type: Plain text
 #: amuleweb.1:185
 msgid "B<amuleweb> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
-msgstr ""
-"B<amuleweb> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
+msgstr "B<amuleweb> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
 
 # type: Plain text
 #. type: Plain text
 #: amuleweb.1:191
 msgid ""
-"Of course, you may specify any more or less options on the first example "
-"line, and you may also totally omit it."
+"Of course, you may specify any more or less options on the first example line, "
+"and you may also totally omit it."
 msgstr ""
 "Ovviamente, si possono specificare più o meno opzioni della prima riga di "
 "esempio, e si si possono anche omettere completamente."
@@ -1645,8 +1616,8 @@ msgstr "I<E<lt>collegamento-eD2kE<gt>>"
 #. type: Plain text
 #: ed2k.1:21
 msgid ""
-"Sends the given I<E<lt>eD2k-linkE<gt>> to aMule, i.e. writes it to the file "
-"~/.aMule/ED2KLinks, which will be checked by aMule every second for links."
+"Sends the given I<E<lt>eD2k-linkE<gt>> to aMule, i.e. writes it to the file ~/."
+"aMule/ED2KLinks, which will be checked by aMule every second for links."
 msgstr ""
 "Invia il I<E<lt>collegamento-eD2kE<gt>> ad aMule, cioè lo scrive nel file ~/."
 "aMule/ED2KLinks, che sarà controllato da aMule ogni secondo per nuovi "
@@ -1655,8 +1626,7 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: ed2k.1:30
-msgid ""
-"Loads all link found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
+msgid "Loads all link found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
 msgstr ""
 "Carica tutti i collegamenti trovati nel file emulecollection fornito come "
 "I<E<lt>collegamento-ed2kE<gt>>"
@@ -1664,8 +1634,7 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: ed2k.1:33
-msgid ""
-"Lists all link found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
+msgid "Lists all link found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
 msgstr ""
 "Elenca tutti i collegamenti trovati nel file emulecollection fornito come "
 "I<E<lt>collegamento-ed2kE<gt>>"
@@ -1680,22 +1649,22 @@ msgstr "un collegamento magnet;"
 #. type: Plain text
 #: ed2k.1:55
 msgid "an emulecollection file."
-msgstr "un file emulecollection."
+msgstr "un file collezione di emule."
 
 # type: Plain text
 #. type: Plain text
 #: ed2k.1:60
 msgid ""
-"B<The order in which you give the parameters is important.> You can give "
-"more than one link, and every link can have it's own params.  For example "
-"B<ed2k E<lt>link1E<gt> -t2 E<lt>link2E<gt>> will download I<E<lt>link1E<gt>> "
-"in standard category and I<E<lt>link2E<gt>> in category 2."
+"B<The order in which you give the parameters is important.> You can give more "
+"than one link, and every link can have it's own params.  For example B<ed2k "
+"E<lt>link1E<gt> -t2 E<lt>link2E<gt>> will download I<E<lt>link1E<gt>> in standard "
+"category and I<E<lt>link2E<gt>> in category 2."
 msgstr ""
-"B<L'ordine con cui fornisci i parametri è importante.> Si può fornire più di "
-"un collegamento, e ogni collegamento può avere propri parametri. Per esempio "
-"B<ed2k E<lt>collegamento1E<gt> -t2 E<lt>collegamento2E<gt>> eseguirà il "
-"download di I<E<lt>collegamento1E<gt>> in categoria standard e "
-"I<E<lt>collegamento2E<gt>> in categoria 2."
+"B<L'ordine con cui fornisci i parametri è importante.> Si può fornire più di un "
+"collegamento, e ogni collegamento può avere propri parametri. Per esempio B<ed2k "
+"E<lt>collegamento1E<gt> -t2 E<lt>collegamento2E<gt>> eseguirà il download di "
+"I<E<lt>collegamento1E<gt>> in categoria standard e I<E<lt>collegamento2E<gt>> in "
+"categoria 2."
 
 # type: Plain text
 #. type: Plain text
@@ -1721,22 +1690,20 @@ msgstr "aLinkCreator"
 #. type: Plain text
 #: ../../src/utils/aLinkCreator/docs/alc.1:5
 msgid "aLinkCreator - the aMule eD2k link creator"
-msgstr "aLinkCreator - generatore di collegamenti eD2k di aMule"
+msgstr "aLinkCreator - generatore di collegamenti eD2k per aMule"
 
 # type: Plain text
 #. type: Plain text
 #: ../../src/utils/aLinkCreator/docs/alc.1:9
 msgid ""
-"B<alc> is a graphical utility to create an eD2k link to any file on your "
-"computer."
+"B<alc> is a graphical utility to create an eD2k link to any file on your computer."
 msgstr ""
-"B<alc> è una utilità grafica per creare un collegamento eD2k da ogni file "
-"sul vostro computer."
+"B<alc> è una utilità grafica per creare un collegamento eD2k da ogni file sul "
+"vostro computer."
 
 # type: Plain text
 #. type: Plain text
-#: ../../src/utils/aLinkCreator/docs/alc.1:11
-#: ../../src/utils/wxCas/docs/wxcas.1:16
+#: ../../src/utils/aLinkCreator/docs/alc.1:11 ../../src/utils/wxCas/docs/wxcas.1:16
 msgid "This app doesn't take any arguments."
 msgstr "Questa applicazione non accetta parametri."
 
@@ -1786,7 +1753,7 @@ msgstr "Genera e include gli hash delle singole parti al collegamento eD2k."
 #. type: Plain text
 #: ../../src/utils/aLinkCreator/docs/alcc.1:26
 msgid "Be verbose - show also calculation steps."
-msgstr "Dettagliato - mostra anche i passaggi di calcolo."
+msgstr "Dettagliato - mostra anche i calcoli."
 
 # type: TH
 #. type: TH
@@ -1812,38 +1779,35 @@ msgstr "cas - statistiche c di aMule"
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1:18
 msgid ""
-"B<cas> is a program for displaying the contents of your aMule online "
-"signature file to console (in a human readable form). For this to work, you "
-"must enable the \"Online Signature\" option in aMule's preferences."
+"B<cas> is a program for displaying the contents of your aMule online signature "
+"file to console (in a human readable form). For this to work, you must enable the "
+"\"Online Signature\" option in aMule's preferences."
 msgstr ""
-"B<cas> è un programma per visualizzare i contenuti del file di firma "
-"generato da aMule in console (in forma leggibile dalle persone). Per il "
-"funzionamento, devi abilitare l'opzione \"firma online\" nelle preferenze di "
-"aMule."
+"B<cas> è un programma per visualizzare i contenuti del file di firma generato da "
+"aMule in console (in forma leggibile dalle persone). Per il funzionamento, devi "
+"abilitare l'opzione \"firma online\" nelle preferenze di aMule."
 
 # type: Plain text
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1:22
 msgid ""
 "Writes the online signature picture.  You can optionally append "
-"I<=E<lt>PATHE<gt>> to this option, to specify the location it should be "
-"written to."
+"I<=E<lt>PATHE<gt>> to this option, to specify the location it should be written "
+"to."
 msgstr ""
-"Genera il disegno per la firma. Si può anche aggiungere "
-"I<=E<lt>percorsoE<gt>> a questa opzione per specificare il luogo dove deve "
-"essere scritta."
+"Genera il disegno per la firma. Si può anche aggiungere I<=E<lt>percorsoE<gt>> a "
+"questa opzione per specificare il luogo dove deve essere scritta."
 
 # type: Plain text
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1:26
 msgid ""
-"HTML page with stats and picture.  You can optionally append "
-"I<=E<lt>PATHE<gt>> to this option, to specify the location it should be "
-"written to."
+"HTML page with stats and picture.  You can optionally append I<=E<lt>PATHE<gt>> "
+"to this option, to specify the location it should be written to."
 msgstr ""
 "Pagina HTML con le statistiche e il disegno. Si può anche aggiungere "
-"I<=E<lt>percorsoE<gt>> a questa opzione per specificare il luogo dove deve "
-"essere scritta."
+"I<=E<lt>percorsoE<gt>> a questa opzione per specificare il luogo dove deve essere "
+"scritta."
 
 # type: Plain text
 #. type: Plain text
@@ -1855,8 +1819,7 @@ msgstr "Senza opzioni, scrive i dati della firma nello stdout."
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1:36
 msgid "B<cas> was written by Pedro de Oliveira E<lt>falso@rdk.homeip.netE<gt>"
-msgstr ""
-"B<cas> è stato scritto da Pedro de Oliveira E<lt>falso@rdk.homeip.netE<gt>"
+msgstr "B<cas> è stato scritto da Pedro de Oliveira E<lt>falso@rdk.homeip.netE<gt>"
 
 # type: Plain text
 #. type: Plain text
@@ -1900,13 +1863,13 @@ msgstr "wxcas - statistiche wx c di aMule"
 #. type: Plain text
 #: ../../src/utils/wxCas/docs/wxcas.1:11
 msgid ""
-"B<wxcas> is a program for displaying the contents of your online signature "
-"file in a nice wx Window on your Desktop.  For this to work, you must enable "
-"the \"Online Signature\" option in aMule's preferences."
+"B<wxcas> is a program for displaying the contents of your online signature file "
+"in a nice wx Window on your Desktop.  For this to work, you must enable the "
+"\"Online Signature\" option in aMule's preferences."
 msgstr ""
-"B<wxcas> è un programma per visualizzare i contenuti del file di firma "
-"online in una bella finestra wx sul tuo schermo. Per il funzionamento, devi "
-"abilitare l'opzione \"firma online\" nelle preferenze di aMule."
+"B<wxcas> è un programma per visualizzare i contenuti del file di firma online in "
+"una bella finestra wx sul tuo schermo. Per il funzionamento, devi abilitare "
+"l'opzione \"firma online\" nelle preferenze di aMule."
 
 # type: Plain text
 #. type: Plain text
@@ -1915,8 +1878,8 @@ msgid ""
 "Based on Pedro de Oliveira's B<cas>(1).  B<wxcas> was written by ThePolish "
 "E<lt>thepolish@vipmail.ruE<gt>"
 msgstr ""
-"Basato su B<cas>(1) di Pedro de Oliveira.  B<wxcas> è stato scritto da "
-"ThePolish E<lt>thepolish@vipmail.ruE<gt>"
+"Basato su B<cas>(1) di Pedro de Oliveira.  B<wxcas> è stato scritto da ThePolish "
+"E<lt>thepolish@vipmail.ruE<gt>"
 
 # type: TH
 #. type: TH
@@ -1948,26 +1911,26 @@ msgstr "B<nessuna>"
 #. type: Plain text
 #: ../../src/utils/xas/docs/xas.1:12
 msgid ""
-"B<xas> is a plugin for xchat. For loading see your xchat documentation. "
-"After loading type /xas and it will send statistics to the channel you are "
-"in. These are taken from your Online Signature file.  For this to work, you "
-"must enable the \"Online Signature\" option in aMule's preferences."
+"B<xas> is a plugin for xchat. For loading see your xchat documentation. After "
+"loading type /xas and it will send statistics to the channel you are in. These "
+"are taken from your Online Signature file.  For this to work, you must enable the "
+"\"Online Signature\" option in aMule's preferences."
 msgstr ""
 "B<xas> è un plugin per xchat. Per il caricamento vedere la documentazione di "
-"xchat. Dopo il caricamento digitare /xas e le statistiche verranno inviate "
-"sul canale a cui siete collegati. Queste sono prese dal file di firma "
-"online. Per il funzionamento, dovete abilitare l'opzione della \"firma online"
-"\" nelle preferenze di aMule."
+"xchat. Dopo il caricamento digitare /xas e le statistiche verranno inviate sul "
+"canale a cui siete collegati. Queste sono caricate dalla file della vostra Firma "
+"online. Per il funzionamento, dovete abilitare l'opzione della \"Firma online\" "
+"nelle preferenze di aMule."
 
 # type: Plain text
 #. type: Plain text
 #: ../../src/utils/xas/docs/xas.1:14
 msgid ""
-"To enable it on every startup of xchat you can just run the autostart-xas "
-"script (in /usr/bin if you installed with --prefix=/usr)."
+"To enable it on every startup of xchat you can just run the autostart-xas script "
+"(in /usr/bin if you installed with --prefix=/usr)."
 msgstr ""
-"Per abilitarlo ad ogni avvio di xchat dovete eseguire lo script autostart-"
-"xas (presente in /usr/bin se avete installato con --prefix=/usr)"
+"Per abilitarlo ad ogni avvio di xchat dovete eseguire lo script autostart-xas "
+"(presente in /usr/bin se avete installato con --prefix=/usr)"
 
 # type: Plain text
 #. type: Plain text
