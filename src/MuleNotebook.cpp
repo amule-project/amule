@@ -45,7 +45,9 @@ BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_MENU(MP_CLOSE_OTHER_TABS,	CMuleNotebook::OnPopupCloseOthers)
 
 	// Madcat - tab closing engine
+	EVT_LEFT_DOWN(CMuleNotebook::OnMouseButtonRelease)
 	EVT_LEFT_UP(CMuleNotebook::OnMouseButtonRelease)
+	EVT_MIDDLE_DOWN(CMuleNotebook::OnMouseButtonRelease)
 	EVT_MIDDLE_UP(CMuleNotebook::OnMouseButtonRelease)
 	EVT_MOTION(CMuleNotebook::OnMouseMotion)
 #if MULE_NEEDS_DELETEPAGE_WORKAROUND
@@ -228,10 +230,28 @@ void CMuleNotebook::OnMouseButtonRelease(wxMouseEvent &event)
 
 	long flags = 0;
 	int tab = HitTest(wxPoint(xpos,ypos),&flags);
+	static int tab_down_icon = -1;
+	static int tab_down_label = -1;
 
-	if ((tab != -1) &&  (((flags == wxNB_HITTEST_ONICON) && event.LeftUp()) ||
-			((flags == wxNB_HITTEST_ONLABEL) && event.MiddleUp()))) {
+	if (event.LeftDown() &&  (flags == wxNB_HITTEST_ONICON)) {
+		tab_down_icon = tab;
+		return;
+	}
+	else if (event.MiddleDown() && (flags == wxNB_HITTEST_ONLABEL)) {
+		tab_down_label = tab;
+		return;
+	}
+	else if (event.LeftDown() || event.MiddleDown()) {
+		tab_down_icon = -1;
+		tab_down_label = -1;
+		return;
+	}
+	
+	if (((tab != -1) &&  (((flags == wxNB_HITTEST_ONICON) && event.LeftUp() && (tab == tab_down_icon)) ||
+			((flags == wxNB_HITTEST_ONLABEL) && event.MiddleUp() && (tab == tab_down_label))))) {
 		// User did click on a 'x' or middle click on the label
+		tab_down_icon = -1;
+		tab_down_label = -1;
 #if MULE_NEEDS_DELETEPAGE_WORKAROUND
 		/*	WORKAROUND: Instead of calling DeletePage, we need to wait for the
 		 *	mouse release signal to reach Gtk. Inconsistent with normal wxEvent
