@@ -23,15 +23,15 @@ msgstr ""
 "Project-Id-Version: aMule 2.3.2\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2016-05-19 11:46+0200\n"
-"Last-Translator: Sebastiano Pistore <olatusrooc@virgilio.it>\n"
+"PO-Revision-Date: 2017-01-19 12:20+0100\n"
+"Last-Translator: Sebastiano Pistore <sebastiano.pistore.info@aol.com>\n"
 "Language-Team: it@li.org; Sebastiano Pistore; <sebastiano.pistore.info@aol."
 "com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: it\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 1.8.11\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/AddFriend.cpp:45
@@ -64,7 +64,7 @@ msgstr ""
 
 #: src/amule.cpp:230
 msgid "Now, exiting main app..."
-msgstr "Uscita dall'applicazione..."
+msgstr "Chiusura dell'applicazione..."
 
 #: src/amule.cpp:249
 #, c-format
@@ -117,7 +117,7 @@ msgstr ""
 
 #: src/amule.cpp:452
 msgid "Password set and external connections enabled."
-msgstr "Password stabilita, connessioni esterne abilitate."
+msgstr "Password impostata, connessioni esterne abilitate."
 
 #: src/amule.cpp:463 src/KadDlg.cpp:183 src/KadDlg.cpp:189
 #: src/PrefsUnifiedDlg.cpp:750 src/SharedFilesCtrl.cpp:318
@@ -129,7 +129,7 @@ msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
 msgstr ""
-"Non hai alcun server nella lista dei server.\n"
+"Non c'è alcun server nella lista dei server.\n"
 "Vuoi che aMule scarichi una lista ora?"
 
 #: src/amule.cpp:590
@@ -210,7 +210,7 @@ msgstr "Questa è una versione di prova, aggiornata quotidianamente, e\n"
 
 #: src/amule.cpp:1047
 msgid "we give no warranty it won't break anything, burn your house,\n"
-msgstr "non garantiamo che essa non distrugga qualcosa, bruci la tua casa,\n"
+msgstr "non garantiamo che non possa causare danni, bruciarti la tua casa,\n"
 
 #: src/amule.cpp:1048
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
@@ -300,7 +300,7 @@ msgstr "L'ultima versione è sempre disponibile su http://www.amule.org"
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr ""
-"ATTENZIONE: La tua versione di aMuled e' obsoleta: %i.%i.%i < %li.%li.%li"
+"ATTENZIONE: La tua versione di aMuled è obsoleta: %i.%i.%i < %li.%li.%li"
 
 #: src/amule.cpp:1636
 msgid "Your copy of aMule is up to date."
@@ -376,7 +376,7 @@ msgstr ""
 
 #: src/amule.cpp:1991
 msgid "Kad network disabled on preferences, not connecting."
-msgstr "Rete Kad disattivata dalle opzioni, non mi connetto."
+msgstr "Rete Kad disattivata dalle opzioni, connessione interrotta."
 
 #: src/amuled.cpp:592
 msgid ""
@@ -407,7 +407,7 @@ msgstr ""
 
 #: src/amuled.cpp:652
 msgid "amuled: OnInit - starting timer"
-msgstr "amuled: OnInit - Avvio del timer"
+msgstr "amuled: OnInit - avvio del timer"
 
 #: src/amuled.cpp:667
 msgid "amuled: forking to background - see you"
@@ -491,7 +491,7 @@ msgstr "Parte di aMule è basata su \n"
 
 #: src/amuleDlg.cpp:508
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-msgstr "Kademlia: Routing peer-to-peer basato sulla metrica XOR.\n"
+msgstr "Kademlia: Routing peer-to-peer basato su metrica XOR.\n"
 
 #: src/amuleDlg.cpp:509
 msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
@@ -502,8 +502,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "Messaggio"
 
@@ -543,9 +543,9 @@ msgstr "Kad: Spento"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -615,7 +615,7 @@ msgstr "La cartella delle skin '%s' non esiste"
 #: src/amuleDlg.cpp:1238
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
-msgstr "ATTENZIONE: impossibile aprire in lettura il file '%s' della skin"
+msgstr "ATTENZIONE: Impossibile aprire il file della skin '%s' in lettura"
 
 #: src/amuleDlg.cpp:1337 src/amuleDlg.cpp:1473 src/muuli_wdr.cpp:1673
 #: src/muuli_wdr.cpp:3532
@@ -955,7 +955,7 @@ msgid ""
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
 "*** La tua risposta al captcha era errata ed il tuo messaggio è stato "
-"ignorato. Puoi richiedere un nuovo captcha inviando un nuovo messaggio. ***"
+"ignorato. Puoi chiedere un nuovo captcha inviando un nuovo messaggio. ***"
 
 #: src/ChatWnd.cpp:99
 msgid "Chat"
@@ -1090,16 +1090,16 @@ msgstr ""
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
 msgstr ""
-"L'utente %s (%u) ha richiesto la lista dei file condivisi nella cartella '%"
-"s' -> richiesta accettata"
+"L'utente %s (%u) ha richiesto la lista dei file condivisi nella cartella "
+"'%s' -> richiesta accettata"
 
 #: src/ClientTCPSocket.cpp:929
 #, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
 msgstr ""
-"L'utente %s (%u) ha richiesto la lista dei file condivisi nella cartella '%"
-"s' -> richiesta negata"
+"L'utente %s (%u) ha richiesto la lista dei file condivisi nella cartella "
+"'%s' -> richiesta negata"
 
 #: src/ClientTCPSocket.cpp:948
 #, c-format
@@ -1151,7 +1151,7 @@ msgstr "Nome file"
 
 #: src/CommentDialogLst.cpp:57
 msgid "Rating"
-msgstr "Giudizio"
+msgstr "Valutazione"
 
 #: src/CommentDialogLst.cpp:58
 msgid "Comment"
@@ -1390,8 +1390,7 @@ msgstr "Fonti"
 msgid "Priority"
 msgstr "Priorità"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Stato"
 
@@ -1520,7 +1519,7 @@ msgid ""
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
 "Per prevenire questo avviso ad ogni anteprima, \n"
-"seleziona nelle preferenze il tuo riproduttore video preferito (di default è "
+"seleziona nelle preferenze il tuo lettore video preferito (di default è "
 "mplayer)."
 
 #: src/DownloadListCtrl.cpp:1429
@@ -1681,7 +1680,7 @@ msgstr "Versione protocollo non valida."
 
 #: src/ExternalConn.cpp:492
 msgid "Missing protocol version tag."
-msgstr "Tag versione di protocollo mancante."
+msgstr "Manca tag versione del protocollo."
 
 #: src/ExternalConn.cpp:499
 msgid "Authentication failed: invalid hash specified as EC password."
@@ -2227,17 +2226,17 @@ msgstr "Scaricamento in corso di nuovo GeoIP.dat da %s"
 
 #: src/IP2Country.cpp:129
 msgid "Download of GeoIP.dat file failed, aborting update."
-msgstr "Scaricamento del file GeoIP.dat fallito, interrompo l'aggiornamento."
+msgstr "Scaricamento del file GeoIP.dat fallito, interruzione aggiornamento."
 
 #: src/IP2Country.cpp:135 src/IPFilter.cpp:500
 #, c-format
 msgid "Failed to remove %s file, aborting update."
-msgstr "Impossibile rimuovere %s file, aggiornamento interrotto."
+msgstr "Impossibile rimuovere %s file, interruzione aggiornamento."
 
 #: src/IP2Country.cpp:141
 #, c-format
 msgid "Failed to rename %s file, aborting update."
-msgstr "Impossibile rinominare %s file, aggiornamento interrotto."
+msgstr "Impossibile rinominare %s file, interruzione aggiornamento."
 
 #: src/IP2Country.cpp:147 src/IPFilter.cpp:506
 #, c-format
@@ -2291,7 +2290,7 @@ msgstr[1] "%u righe non valide sono state scartate."
 #: src/IPFilter.cpp:503
 #, c-format
 msgid "Failed to rename new %s file, aborting update."
-msgstr "Impossibile rinominare il nuovo file %s, aggiornamento interrotto."
+msgstr "Impossibile rinominare il nuovo file %s, interruzione aggiornamento."
 
 #: src/IPFilter.cpp:534
 msgid "IP filter is ready"
@@ -3376,8 +3375,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Sfoglia"
 
@@ -4738,8 +4736,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 "EOF durante l'hashing della parte %u scaricata con lunghezza %u (max %u) del "
 "file Part '%s' con lunghezza %u: %s"
@@ -4901,7 +4899,7 @@ msgstr "Portoghese"
 
 #: src/Preferences.cpp:658
 msgid "Portuguese (Brazilian)"
-msgstr "Portoghese (brasiliano)"
+msgstr "Portoghese (Brasile)"
 
 #: src/Preferences.cpp:659
 msgid "Romanian"
@@ -5299,9 +5297,8 @@ msgstr ""
 "La ricerca eD2k non può essere effettuata se non si è connessi alla rete eD2k"
 
 #: src/SearchList.cpp:334
-#, fuzzy
 msgid "No keyword for Kad search - aborting"
-msgstr "Chiave di ricerca: %s"
+msgstr "Nessuna chiave di ricerca per Kad - interruzione in corso"
 
 #: src/SearchList.cpp:371
 msgid "Unexpected error while attempting Kad search: "
@@ -5611,8 +5608,8 @@ msgstr "Sei sicuro di voler eliminare il server statico %s?"
 msgid "Servers (%i)"
 msgstr "Server (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Server"
 
@@ -7510,7 +7507,7 @@ msgstr "Usa compressione gzip"
 
 #: src/webserver/src/WebInterface.cpp:582
 msgid "Full access password for web server"
-msgstr "Password per l'accesso pieno al web server"
+msgstr "Password per l'accesso completo al web server"
 
 #: src/webserver/src/WebInterface.cpp:586
 msgid "Guest password for web server"
@@ -7530,7 +7527,7 @@ msgstr "Carica/salva le impostazioni del web server da/su l'aMule remoto"
 
 #: src/webserver/src/WebInterface.cpp:602
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
-msgstr "Percorso del file di configurazione di aMule. Non usare direttamente!"
+msgstr "Percorso del file di configurazione di aMule. NON USARE DIRETTAMENTE!"
 
 #: src/webserver/src/WebInterface.cpp:610
 msgid "Disable PHP interpreter (deprecated)"
@@ -7617,296 +7614,3 @@ msgstr "Disconnessone richiesta\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "Elaborazione richiesta [rediretta]: "
-
-#~ msgid "Partfile %s (%s) has no seeds file"
-#~ msgstr "Il file incompleto %s (%s) non ha file delle fonti"
-
-#~ msgid "Partfile %s (%s) has a void seeds file"
-#~ msgstr "Il file incompleto %s (%s) ha un file delle fonti vuoto"
-
-#~ msgid "Download status"
-#~ msgstr "Stato download"
-
-#~ msgid "( %s / %s )"
-#~ msgstr "( %s / %s )"
-
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgid "SOCKS5"
-#~ msgstr "SOCKS5"
-
-#~ msgid "SOCKS4"
-#~ msgstr "SOCKS4"
-
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgid "SOCKS4a"
-#~ msgstr "SOCKS4a"
-
-#~ msgid "Update delay : %d second"
-#~ msgid_plural "Update delay : %d seconds"
-#~ msgstr[0] "Intervallo aggiornamento : %d secondo"
-#~ msgstr[1] "Intervallo aggiornamento : %d secondi"
-
-#~ msgid "Comments and ratings are not supported on remote gui yet"
-#~ msgstr ""
-#~ "I Commenti e i Ratings non sono ancora supportati nell'interfaccia remota."
-
-#~ msgid "Transferring"
-#~ msgstr "Trasferimento"
-
-#~ msgid "QR: ???"
-#~ msgstr "QR: ???"
-
-#~ msgid "QR: %u"
-#~ msgstr "QR: %u"
-
-#~ msgid "Only files currently uploading"
-#~ msgstr "Solo file attualmente in caricamento"
-
-#~ msgid "Queue Rank"
-#~ msgstr "Punteggio in coda"
-
-#~ msgid "TODO - show progress of a search"
-#~ msgstr "TODO - visualizzare l'avanzamento della ricerca"
-
-#~ msgid "Starting to create MD4 and AICH hash for file: %s"
-#~ msgstr "Creo gli hash MD4 e AICH del file %s"
-
-#~ msgid "Starting to create MD4 hash for file: %s"
-#~ msgstr "Creazione dell'hash MD4 per il file %s"
-
-#~ msgid "Starting to create AICH hash for file: %s"
-#~ msgstr "Creazione dell'hash AICH per il file %s"
-
-#~ msgid "WARNING: Could not remove original '%s' after creating backup"
-#~ msgstr ""
-#~ "ATTENZIONE: impossibile rimuovere l'originale '%s' dopo aver creato il "
-#~ "backup"
-
-#~ msgid "WARNING: Failed to delete %s"
-#~ msgstr "ATTENZIONE: impossibile eliminare %s"
-
-#~ msgid "%u"
-#~ msgstr "%u"
-
-#~ msgid "%u (QR: %u)"
-#~ msgstr "%u (QR: %u)"
-
-#~ msgid "Rating (total):"
-#~ msgstr "Giudizio (totale):"
-
-#~ msgid "Try to transfer full chunks to all uploads"
-#~ msgstr "Cerca di trasferire parti complete per ogni upload"
-
-#~ msgid "Networks window"
-#~ msgstr "Finestra delle reti"
-
-#~ msgid "Searches window"
-#~ msgstr "Finestra delle ricerche"
-
-#, fuzzy
-#~ msgid "Downloads window"
-#~ msgstr "Download in corso"
-
-#~ msgid "Shared files window"
-#~ msgstr "Finestra dei file condivisi"
-
-#~ msgid "Messages window"
-#~ msgstr "Finestra dei messaggi"
-
-#~ msgid "Statistics graph window"
-#~ msgstr "Finestra delle statistiche"
-
-#~ msgid "Preferences settings window"
-#~ msgstr "Finestra delle preferenze"
-
-#~ msgid "Traybar-icon lost, trying to recreate ..."
-#~ msgstr "Icona nella traybar persa, tentativo di ricrearla ..."
-
-#~ msgid "Transfers"
-#~ msgstr "Trasferimenti"
-
-#~ msgid "Files transfers window"
-#~ msgstr "Finestra dei trasferimenti"
-
-#~ msgid "Unban"
-#~ msgstr "Rimuovi ban"
-
-#~ msgid "Show Uploads"
-#~ msgstr "Mostra upload"
-
-#~ msgid "Show Queue"
-#~ msgstr "Mostra coda"
-
-#~ msgid "Select View"
-#~ msgstr "Seleziona visuale"
-
-#~ msgid "Client Software"
-#~ msgstr "Software client"
-
-#~ msgid "Waited"
-#~ msgstr "Atteso"
-
-#~ msgid "Upload Time"
-#~ msgstr "Tempo upload"
-
-#~ msgid "Upload/Download"
-#~ msgstr "Upload/Download"
-
-#~ msgid "Remote Status"
-#~ msgstr "Stato remoto"
-
-#~ msgid "File Priority"
-#~ msgstr "Priorità file"
-
-#~ msgid "Score"
-#~ msgstr "Punteggio"
-
-#~ msgid "Asked"
-#~ msgstr "Richiesto"
-
-#~ msgid "Last Seen"
-#~ msgstr "Ultima volta visto"
-
-#~ msgid "Entered Queue"
-#~ msgstr "Aggiunto in coda"
-
-#~ msgid "Transferred Up"
-#~ msgstr "Inviati"
-
-#~ msgid "Transferred Down"
-#~ msgstr "Ricevuti"
-
-#~ msgid "Userhash"
-#~ msgstr "Hash utente"
-
-#~ msgid "Encrypted"
-#~ msgstr "Cifrato"
-
-#~ msgid "Loaded %d flag bitmaps."
-#~ msgstr "Caricati %d flag bitmap."
-
-#~ msgid "Shows Upload / Up-queue"
-#~ msgstr "Mostra Upload / Coda Upload"
-
-#~ msgid "Clients on queue :"
-#~ msgstr "Client in coda:"
-
-#~ msgid "Current Session"
-#~ msgstr "Sessione corrente"
-
-#~ msgid "Total"
-#~ msgstr "Totale"
-
-#~ msgid "Requested :"
-#~ msgstr "Richiesto:"
-
-#~ msgid "Create backup for preview"
-#~ msgstr "Crea una copia per l'anteprima"
-
-#~ msgid "Files Transfers Window"
-#~ msgstr "Finestra trasferimenti"
-
-#~ msgid "Total Users: %s | Total Files: %s"
-#~ msgstr "Utenti totali: %s | File totali: %s"
-
-#~ msgid "HTTP download thread ended"
-#~ msgstr "Processo di download HTTP terminato"
-
-#~ msgid "Host: %s:%i\n"
-#~ msgstr "Host: %s:%i\n"
-
-#~ msgid "Response: %i (Error: %i)"
-#~ msgstr "Risposta: %i (Errore: %i)"
-
-#~ msgid "WARNING: Void response on stream creation"
-#~ msgstr "ATTENZIONE: Errore nella creazione del flusso"
-
-#~ msgid "ERROR: Redirection code received with no URL"
-#~ msgstr "ERRORE: Codice di reindirizzamento ricevuto senza URL"
-
-#~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-#~ msgstr ""
-#~ "CIP2Country::CIP2Country(): Impossibile ottenere i dati sul Paese da "
-
-#~ msgid "Get IPFilter level."
-#~ msgstr "Visualizza livello del filtro IP."
-
-#~ msgid "Makes a search."
-#~ msgstr "Effettua una ricerca."
-
-#~ msgid "Killed!"
-#~ msgstr "Terminato!"
-
-#~ msgid "Using amuleweb in '%s'."
-#~ msgstr "Utilizzando amuleweb in '%s'."
-
-#~ msgid "Shutting down aMule..."
-#~ msgstr "aMule in chiusura..."
-
-#~ msgid ""
-#~ "The following options have been changed in this release for security "
-#~ "reasons:\n"
-#~ msgstr ""
-#~ "Le seguenti opzioni sono state modificate in questa release per motivi di "
-#~ "sicurezza:\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Enabled Protocol Obfuscation support for incoming and outgoing "
-#~ "connections.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Attiva Offuscamento del protocollo per connessioni in ingresso e in "
-#~ "uscita.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Disabled updating the server list from other server and clients.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Disattivato l'aggiornamento automatico della serverlist dagli altri "
-#~ "client e server.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "For more information on the reason for this changes, seach\n"
-#~ "the aMule wiki at http://wiki.amule.org for \"fake servers\" info.\n"
-#~ "It's important that you clear any fake server from your server list for "
-#~ "aMule to work properly."
-#~ msgstr ""
-#~ "\n"
-#~ "Per ulteriori informazioni sui motivi di queste modifiche, vedere il\n"
-#~ " wiki di aMule su http://wiki.amule.org alla voce \"fake servers\".\n"
-#~ "È importante eliminare tutti i fake server dalla tua lista perché aMule "
-#~ "funzioni correttamente."
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Additionally, the browser settings have been reset to the system default. "
-#~ "Please configure your browser options again if needed.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "In aggiunta, le impostazioni del browser son state riportate a quelle "
-#~ "predefinite di sistema. Se lo desideri, riconfigura le opzioni del tuo "
-#~ "browser\n"
-
-#~ msgid "Fetching status..."
-#~ msgstr "Verifica stato..."
-
-#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
-#~ msgstr "Utenti: E: %s K: %s | File E: %s K: %s"
-
-#~ msgid "Client %s on IP:Port %s:%d using %s %s %s"
-#~ msgstr "Client %s con IP:Porta %s:%d utilizza %s %s %s"
-
-#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "theApp->serverlist->GetServerByAddress() ha restituito NULL"
-
-#~ msgid "Firewalled"
-#~ msgstr "Firewalled"
