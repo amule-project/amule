@@ -23,15 +23,15 @@ msgstr ""
 "Project-Id-Version: aMule 2.3.2\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2017-01-19 12:20+0100\n"
-"Last-Translator: Sebastiano Pistore <sebastiano.pistore.info@aol.com>\n"
-"Language-Team: it@li.org; Sebastiano Pistore; <sebastiano.pistore.info@aol."
-"com>\n"
+"PO-Revision-Date: 2017-03-16 10:35+0100\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
+"Language-Team: it@li.org; Sebastiano Pistore; <SebastianoPistore."
+"info@protonmail.ch>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: it\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0beta4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/AddFriend.cpp:45
@@ -559,7 +559,7 @@ msgstr "Disconnetti"
 
 #: src/amuleDlg.cpp:781
 msgid "Disconnect from the currently connected networks"
-msgstr "Disconnettiti dalla rete"
+msgstr "Disconnettiti dalle reti a cui sei connesso"
 
 #: src/amuleDlg.cpp:786 src/MuleTrayIcon.cpp:499 src/muuli_wdr.cpp:2755
 #: src/muuli_wdr.cpp:3143 src/muuli_wdr.cpp:3530
@@ -1671,7 +1671,7 @@ msgid ""
 "You cannot connect to a release version from an arbitrary development "
 "snapshot! *sigh* possible crash prevented"
 msgstr ""
-"Non puoi connetterti a una versione finale da una versione CVS qualsiasi! "
+"Non puoi connetterti a una versione stabile da una versione CVS qualsiasi! "
 "*fiuu!* possibile crash evitato"
 
 #: src/ExternalConn.cpp:487
@@ -2301,7 +2301,7 @@ msgid ""
 "Bootstrap from \n"
 "known clients"
 msgstr ""
-"Bootstrap da\n"
+"Bootstrap dai\n"
 "client noti"
 
 #: src/KadDlg.cpp:151
@@ -4903,7 +4903,7 @@ msgstr "Portoghese (Brasile)"
 
 #: src/Preferences.cpp:659
 msgid "Romanian"
-msgstr "Rumeno"
+msgstr "Romeno"
 
 #: src/Preferences.cpp:660
 msgid "Russian"
@@ -7098,14 +7098,14 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
-"aLinkCreator, il creatore di link eD2k per aMule\n"
+"aLinkCreator, il generatore di link eD2k per aMule\n"
 "\n"
 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
 "\n"
 "Pixmaps da http://www.everaldo.com e http://www.icomania.com\n"
 "e http://jimmac.musichall.cz/ikony.php3\n"
 "\n"
-"Distribuito sotto licenza GPL"
+"sono distribuiti sotto licenza GPL"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:512
 #: src/utils/aLinkCreator/src/alcframe.cpp:513
