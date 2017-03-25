@@ -3,6 +3,7 @@ Name=aMule Plasma Applet
 Comment=Prints Information about aMule
 Comment[fr]=Affiche des informations sur aMule
 Comment[tr]=aMule hakkında bilgi görüntüler
+Comment[zh_CN]=输出aMule的相关信息
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=application-x-emulecollection
