@@ -1,56 +1,83 @@
-//this file is part of aMule
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 #ifndef FRIENDLIST_H
 #define FRIENDLIST_H
 
-#include <wx/list.h>		// Needed for WX_DECLARE_LIST
 
-#include "types.h"		// Needed for uint16 and uint32
-#include "CTypedPtrList.h"  // Needed for list.
+#include "Types.h"	// Needed for uint32
 
+class wxString;
 class CFriend;
-class CFriendListCtrl;
-class CUpDownClient;
+class CMD4Hash;
+class CClientRef;
 
-
-
-class CFriendList {
+class CFriendList
+{
+	typedef std::list<CFriend*> FriendList;
 public:
 	CFriendList();
 	~CFriendList();
 
-	bool		IsAlreadyFriend( uint32 dwLastUsedIP, uint32 nLastUsedPort ); 
+	bool		IsAlreadyFriend(uint32 dwLastUsedIP, uint32 nLastUsedPort);
 	void		SaveList();
-	bool		LoadList();
-	void		RefreshFriend(CFriend* torefresh);
-	void		SetWindow(CFriendListCtrl* NewWnd)	{m_wndOutput = NewWnd;}
-	void		ShowFriends();
-	CFriend*	SearchFriend(const uchar* achUserHash, uint32 dwIP, uint16 nPort) const;	
-	void		AddFriend(CUpDownClient* toadd);
-	void		RemoveFriend(CUpDownClient* todel);
-	void		AddFriend( unsigned char tm_abyUserhash[16], uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, wxString tm_strName, uint32 tm_dwHasHash);
-	void		RemoveFriend(CFriend* todel);
+	void		LoadList();
+	CFriend*	FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);
+	CFriend*	FindFriend(uint32 ecid);
+	void		AddFriend(CFriend* toadd, bool notify = true);
+	void		AddFriend(const CClientRef& toadd);
+	void		AddFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 lastUsedPort, const wxString& name, uint32 lastSeen = 0, uint32 lastChatted = 0);
+	void		RemoveFriend(CFriend* toremove);
+	void		RequestSharedFileList(CFriend* Friend);
+
+	void		SetFriendSlot(CFriend* Friend, bool new_state);
+	void		StartChatSession(CFriend* Friend);
 	void		RemoveAllFriendSlots();
-	void		Process();
+
+	// Iterator class
+	class const_iterator {
+		// iterator for internal list
+		FriendList::const_iterator m_it;
+	public:
+		// constructs
+		const_iterator() {};
+		const_iterator(const FriendList::const_iterator& it) { m_it = it; };
+		// operators
+		bool operator != (const const_iterator& it) const { return m_it != it.m_it; }
+		const_iterator& operator ++ ()	{ ++ m_it; return *this; }	// prefix  (assignable)
+		void operator ++ (int)			{ ++ m_it; }				// postfix (not assignable)
+		const CFriend* operator * () { return *m_it; }
+	};
+	// begin/end iterators for looping
+	const_iterator begin() const { return const_iterator(m_FriendList.begin()); }
+	const_iterator end() const { return const_iterator(m_FriendList.end()); }
+
+
 private:
-	CTypedPtrList<CPtrList, CFriend*>	m_listFriends;
-	CFriendListCtrl*	m_wndOutput;
-	uint32			m_nLastSaved;
+	FriendList m_FriendList;
 };
 
-#endif // FRIENDLIST_H
+#endif
+// File_checked_for_headers

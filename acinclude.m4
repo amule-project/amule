@@ -1,505 +1,643 @@
-dnl ----------------------------------------------------
-dnl CHECK_WX_BUILT_WITH_GTK2
-dnl check gtk version wx windows was compiled
-dnl ----------------------------------------------------
+#							-*- Autoconf -*-
+# This file is part of the aMule Project.
+#
+# Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+#
+# Any parts of this program derived from the xMule, lMule or eMule project,
+# or contributed by third-party developers are copyrighted by their
+# respective authors.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+#
 
-AC_DEFUN(CHECK_WX_BUILT_WITH_GTK2,
+m4_pattern_forbid(MULE_)dnl Check for unexpanded *MULE_* macros
+m4_pattern_allow(AMULE_)dnl Allow the *AMULE_* names
+m4_pattern_forbid(__mule_)dnl Check for unexpanded internal macros
+
+
+# -------------------- #
+# Common useful macros #
+# -------------------- #
+
+dnl MULE_APPEND(VARNAME, VALUE)
+AC_DEFUN([MULE_APPEND], [$1="$$1 $2"])
+
+dnl MULE_PREPEND(VARNAME, VALUE)
+AC_DEFUN([MULE_PREPEND], [$1="$2 $$1"])
+
+dnl MULE_ADDFLAG(FLAGTYPE, VALUE)
+AC_DEFUN([MULE_ADDFLAG], [MULE_APPEND([MULE[]$1[]FLAGS], [$2])])
+
+dnl MULE_ADDCCXXFLAG(VALUE)
+AC_DEFUN([MULE_ADDCCXXFLAG],
 [
-  AC_MSG_CHECKING(if wxWindows was linked with GTK2)
-  if $WX_CONFIG_NAME --cppflags | grep -q 'gtk2' ; then
-     GTK_USEDVERSION=2
-     AC_MSG_RESULT(yes)
-  else
-     AC_MSG_RESULT(no)
-  fi
-
-  AC_SUBST(GTK_USEDVERSION)
+	MULE_ADDFLAG([C], [$1])
+	MULE_ADDFLAG([CXX], [$1])
 ])
 
-dnl ----------------------------------------------------
-dnl CHECK_WX_PARTIAL_VERSION
-dnl check wx windows 2.x version
-dnl ----------------------------------------------------
+dnl MULE_BACKUP(VAR)
+AC_DEFUN([MULE_BACKUP], [mule_backup_$1="$$1"])
 
-AC_DEFUN(CHECK_WX_PARTIAL_VERSION,
-[
-  AC_MSG_CHECKING(if wxWindows version >=2.5.0 )
-  if $WX_CONFIG_NAME --version | grep -q '2.5' ; then
-     WX_PARTIAL_VERSION=5
-     AC_MSG_RESULT(yes)
-  else
-     AC_MSG_RESULT(no)
-  fi
-  AC_SUBST(WX_PARTIAL_VERSION)
-])
-
-dnl ----------------------------------------------------
-dnl GET_WXGTK_VERSION
-dnl get wx windows
-dnl ----------------------------------------------------
-
-AC_DEFUN(GET_WXGTK_VERSION,
-[
-  WXGTK_VERSION=`$WX_CONFIG_NAME --version`
-  AC_SUBST(WXGTK_VERSION)
-])
+dnl MULE_RESTORE(VAR)
+AC_DEFUN([MULE_RESTORE], [$1="$mule_backup_$1"])
 
 
-dnl ----------------------------------------------------
-dnl GET_GTK_VERSION
-dnl get gtk 1.x version
-dnl ----------------------------------------------------
+# ------------------- #
+# Issuing diagnostics #
+# ------------------- #
 
-AC_DEFUN(GET_GTK_VERSION,
-[
-  GTK_VERSION=`$GTK_CONFIG --version`
-  AC_SUBST(GTK_VERSION)
-])
+# -----------------------------------------------------------------------------
+# __mule_print_final_warning(section, condition, message)
+# -----------------------------------------------------------------------------
+m4_define([__mule_print_final_warning],
+[m4_divert_push($1)dnl
+if test [$2]; then
+cat <<_MULEEOT
 
-dnl ----------------------------------------------------
-dnl GET_GTK2_VERSION
-dnl get gtk 2.x version
-dnl ----------------------------------------------------
-
-AC_DEFUN(GET_GTK2_VERSION,
-[
-  GTK2_VERSION=`$PKG_CONFIG --modversion gtk+-2.0`
-  AC_SUBST(GTK_VERSION)
-])
-
-dnl ----------------------------------------------------
-dnl CHECK_ZLIB
-dnl check if zlib is on the system
-dnl ----------------------------------------------------
-AC_DEFUN(CHECK_ZLIB,
-[
-wv_zlib=""
-found_zlib="no"
-
-ZLIB_DIR=""
-AC_ARG_WITH(zlib,[  --with-zlib=DIR       use zlib in DIR],[
-	if [ test "$withval" = "no" ]; then
-		AC_MSG_ERROR([zlib is required by amule])
-        elif [ test "$withval" = "yes" ]; then
-		zlib=check
-        elif [ test "$withval" = "peer" ]; then
-		zlib=peer
-	else
-		zlib=sys
-		ZLIB_DIR="$withval"
-		wv_zlib="--with-zlib=$withval"
-        fi
-],[	zlib=check
-])
-
-if test $zlib = peer; then
-	z=peer
-else
-	if test $zlib = sys; then
-		_cppflags="$CPPFLAGS"
-		CPPFLAGS="$CPPFLAGS -I$ZLIB_DIR/include"
-	fi
-	AC_CHECK_HEADER(zlib.h,[
-		z=sys
-	],[	if test $zlib = sys; then
-			AC_MSG_ERROR([zlib not found in system location])
-		fi
-		z=peer
-	])
-	if test $zlib = sys; then
-		CPPFLAGS="$_cppflags"
-	fi
+m4_pushdef([__mule_Prefix1], [* ])dnl
+m4_pushdef([__mule_Prefix], [  ])dnl
+m4_foreach([__mule_Line], m4_quote(m4_split([$3], [
+])), [m4_text_wrap(m4_defn([__mule_Line]), __mule_Prefix, __mule_Prefix1)
+m4_define([__mule_Prefix1], __mule_Prefix)dnl
+])[]dnl
+m4_popdef([__mule_Prefix])dnl
+m4_popdef([__mule_Prefix1])dnl
+_MULEEOT
 fi
+m4_divert_pop()])
 
-if test $z = peer; then
-	AC_MSG_CHECKING(for zlib in peer directory)
-	if test -d ../zlib; then
-		if test -r ../zlib/libz.a; then
+dnl ---------------------------------------------------------------------------
+dnl MULE_WARNING(MESSAGE)
+dnl
+dnl Works like AC_MSG_WARN(), but the warning will be reproduced at the end of
+dnl the configure run. An empty line is prepended at the final output and a
+dnl newline is appended for free.
+dnl ---------------------------------------------------------------------------
+m4_ifndef([_MULE_WARNINGS],[
+m4_define([_m4_divert(_MULE_WARNINGS)], m4_incr(_m4_divert([BODY])))])
+m4_define([_MULE_WARNCOUNT], [0])
+
+m4_divert_push(_MULE_WARNINGS)dnl
+if test ${_mule_has_warnings:-no} = yes; then
+echo ""
+echo ""
+echo " *** Warnings during configuration ***"
+fi
+m4_divert_pop()dnl
+
+m4_define([MULE_WARNING],
+[AC_MSG_WARN(
+m4_pushdef([__mule_Prefix], [        ])dnl
+m4_foreach([__mule_Line], m4_quote(m4_split([$1], [
+])), [
+m4_text_wrap(m4_defn([__mule_Line]), __mule_Prefix)])[]dnl
+m4_popdef([__mule_Prefix])dnl
+)
+_mule_warning_[]_MULE_WARNCOUNT[]=yes
+_mule_has_warnings=yes
+__mule_print_final_warning([_MULE_WARNINGS], [${_mule_warning_]_MULE_WARNCOUNT[:-no} = yes], [$1])dnl
+m4_define([_MULE_WARNCOUNT], incr(_MULE_WARNCOUNT))])
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_DEPRECATED(OLDFLAG [, NEWFLAG])
+dnl
+dnl Marks OLDFLAG as deprecated and produces an appropriate warning. If NEWFLAG
+dnl is specified and is unset the value of OLDFLAG is assigned to NEWFLAG (i.e.
+dnl if the user specified both OLDFLAG and NEWFLAG, NEWFLAG takes precedence;
+dnl if only OLDFLAG is specified it will be redirected to NEWFLAG).
+dnl
+dnl There should be no AC_ARG_* for the deprecated flag, and if the old flag is
+dnl deprecated in favour of a new one, MULE_DEPRECATED *MUST* precede the
+dnl AC_ARG_* definition of the new flag (otherwise redirection may not work).
+dnl ---------------------------------------------------------------------------
+m4_define([_MULE_DEPRECATIONWARNINGS], [incr(_MULE_WARNINGS)])
+m4_define([__mule_display_option_name], [m4_if(m4_substr([$1], 0, 1), [-],, [--])m4_bpatsubst([$1], [_], [-])])
+m4_define([__mule_ac_option_name], [m4_bpatsubst(m4_bpatsubst(m4_bpatsubst(m4_bpatsubst([$1], [^-+], []), [-], [_]), [^disable], [enable]), [^without], [with])])
+
+m4_define([MULE_DEPRECATED],
+[if test "${__mule_ac_option_name([$1])+set}" = "set"; then
+  _mule_has_warnings=yes
+m4_ifvaln([$2], [  if test "${__mule_ac_option_name([$2]):-unset}" = "unset"; then
+    __mule_ac_option_name([$2])=$__mule_ac_option_name([$1])
+  fi])fi
+__mule_print_final_warning([_MULE_DEPRECATIONWARNINGS], ["${]__mule_ac_option_name([$1])[+set}" = set], __mule_display_option_name([$1])[ is now deprecated and ]m4_ifval([$2], [might be removed in the future without further notice. Please use ]__mule_display_option_name([$2])[ instead.], [not supported anymore.]))])
+
+
+# ----------------- #
+# Argument handling #
+# ----------------- #
+m4_define([__mule_arg_default], [__mule_arg_[]m4_translit([$1], [-], [_])[]_default])
+m4_define([__mule_arg_value], [${enable_[]m4_translit([$1], [-], [_])[]:-[]__mule_arg_default([$1])[]}])
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_ARG_ENABLE(FEATURE, DEFAULT-VALUE, HELP-STRING [, AUTOMAKE-CONDITIONAL])
+dnl
+dnl Wrapper around AC_ARG_ENABLE() that supports automatically setting up a
+dnl conditional variable for automake, remembering default value for
+dnl conditionals and supplying the help string based on the default value (i.e.
+dnl it produce "--enable-FEATURE   HELP-STRING" if the default is no, and
+dnl "--disable-FEATURE    HELP-STRING" if the default is yes. The default value
+dnl *MUST* be either `yes' or `no'.
+dnl ---------------------------------------------------------------------------
+m4_define([MULE_ARG_ENABLE],
+[m4_if([$2], [yes],, [m4_if([$2], [no],, [m4_fatal([Default value must be either `yes' or `no'!])])])dnl
+m4_define(__mule_arg_default([$1]), [$2])dnl
+AC_ARG_ENABLE([$1], [AS_HELP_STRING(m4_if([$2], [yes], [--disable-$1], [--enable-$1]), [$3])])
+m4_ifvaln([$4], [AM_CONDITIONAL([$4], [test ]__mule_arg_value([$1])[ = yes])])])
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_IS_ENABLED(FEATURE)
+dnl
+dnl Used in shell conditionals, tests whether the named feature is enabled or
+dnl not, considering also the default value. FEATURE *must* have been set up
+dnl using MULE_ARG_ENABLE().
+dnl ---------------------------------------------------------------------------
+m4_define([MULE_IS_ENABLED],
+[m4_ifdef(__mule_arg_default([$1]), __mule_arg_value([$1])[ = yes], [m4_fatal([Unknown feature `$1'!])])])
+
+m4_define([MULE_IS_ENABLED_ANY], [__mule_if_multi([$1], [-o])])
+m4_define([MULE_IS_ENABLED_ALL], [__mule_if_multi([$1], [-a])])
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_ENABLEVAR(FEATURE)
+dnl
+dnl Expands to the name of the shell variable holding the enabled/disabled
+dnl status of FEATURE. FEATRUE *must* have been set up using MULE_ARG_ENABLE().
+dnl ---------------------------------------------------------------------------
+m4_define([MULE_ENABLEVAR],
+[m4_ifdef(__mule_arg_default([$1]), [enable_[]m4_translit([$1], [-], [_])], [m4_fatal([Unknown feature `$1'!])])])
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_STATUSOF(FEATURE)
+dnl
+dnl Expands to the value of the shell variable holding the status of FEATURE,
+dnl considering default values. FEATURE *must* have been set up using
+dnl MULE_ARG_ENABLE().
+dnl ---------------------------------------------------------------------------
+m4_define([MULE_STATUSOF],
+[m4_ifdef(__mule_arg_default([$1]), __mule_arg_value([$1]), [m4_fatal([Unknown feature `$1'!])])])
+
+
+# ---------------------- #
+# Conditional processing #
+# ---------------------- #
+m4_define([__mule_if_multi],
+[m4_define([__mule_if_logic], [])dnl
+m4_foreach([__mule_condition], [$1], [__mule_if_logic MULE_IS_ENABLED(__mule_condition) ][m4_define([__mule_if_logic], [$2])])dnl
+m4_undefine([__mule_if_logic])])
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_IF_ENABLED(FEATURE, [ACTION-IF-ENABLED], [ACTION-IF-DISABLED])
+dnl
+dnl Basically a wrapper around AS_IF(), the test being if FEATURE is enabled.
+dnl FEATURE must have been set up by MULE_ARG_ENABLE().
+dnl ---------------------------------------------------------------------------
+m4_define([MULE_IF_ENABLED],
+[AS_IF([test MULE_IS_ENABLED([$1])], [$2], [$3])])
+
+m4_define([MULE_IF_ENABLED_ALL],
+[AS_IF([test]__mule_if_multi([$1], [-a]), [$2], [$3])])
+
+m4_define([MULE_IF_ENABLED_ANY],
+[AS_IF([test]__mule_if_multi([$1], [-o]), [$2], [$3])])
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_IF(CONDITION, [IF-TRUE] [, ELIF-CONDITION, [IF-TRUE]]... [, ELSE-BRANCH])
+dnl
+dnl Works like AS_IF(), but allows elif-branches too.
+dnl ---------------------------------------------------------------------------
+m4_define([__mule_if_helper],
+[m4_if( [$#], 0,,
+	[$#], 1, [m4_ifvaln([$1], [m4_n([else])  $1])],
+	[m4_n([elif $1; then])  m4_ifvaln([$2], [$2], :)])dnl
+m4_if(m4_eval([$# > 2]), 1, [$0(m4_shiftn(2, $@))])])
+
+m4_define([MULE_IF],
+[m4_if( [$#], 0,,
+	[$#], 1,,
+	[m4_n([if $1; then])  m4_ifval([$2],[$2], :)
+m4_if(m4_eval([$# > 2]), 1, [__mule_if_helper(m4_shiftn(2, $@))])m4_n([fi])])])
+
+
+# ------------------------ #
+# High level helper macros #
+# ------------------------ #
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_COMBINATE(ARGS, ...)
+dnl
+dnl Creates all possible combinations of ARGS, enclosed in double quotes. Order
+dnl of arguments is preserved during expansion, and shorter sequences always
+dnl come before longer ones.
+dnl
+dnl Example:
+dnl	MULE_COMBINATE([a], [b], [c])
+dnl expands to
+dnl	"" "a" "b" "c" "a b" "a c" "b c" "a b c"
+dnl ---------------------------------------------------------------------------
+m4_define([__mule_combinate_append],
+	[m4_if( [$#], [0],,
+		[$#], [1], [$1],
+		[m4_ifblank([$1], [$0(m4_shift($@))], [$1 $0(m4_shift($@))])])])
+
+m4_define([__mule_combinate_print], ["__mule_combinate_append($@)" ])
+m4_define([__mule_combinate_helper],
+	[m4_if( [$1], [0], [__mule_combinate_print([$2])],
+		[$1], m4_eval([$# - 2]), [__mule_combinate_print(m4_shift($@))],
+		[$0(m4_decr([$1]), __mule_combinate_append([$2], [$3]), m4_shiftn([3], $@))$0([$1], [$2], m4_shiftn([3], $@))])])
+
+m4_define([__mule_combinate_for],
+	[m4_if([$1], [$2],, [__mule_combinate_helper([$1], [], m4_shiftn([2], $@))$0(m4_incr([$1]), m4_shift($@))])])
+
+m4_define([MULE_COMBINATE],
+	[__mule_combinate_for([0], m4_incr([$#]), $@)])
+
+
+# ------------------- #
+# Feature test macros #
+# ------------------- #
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_CHECK_SYSTEM
+dnl
+dnl Checks host system type, and sets system-specific flags accordingly.
+dnl Sets $SYS to the name of the host os.
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([MULE_CHECK_SYSTEM],
+[AC_REQUIRE([AC_CANONICAL_HOST])dnl
+
+	case "${host_os}" in
+	darwin*)
+		SYS=darwin
+		MULECPPFLAGS="-no-cpp-precomp -D_INTL_REDIRECT_MACROS -DNOPCH";
+		MULELDFLAGS="-bind_at_load"
+		touch src/Scanner.cpp
+		;;
+	openbsd*)
+		SYS=openbsd
+		LIBS="$LIBS -L/usr/local/lib"
+		MULECPPFLAGS="-D__OPENBSD__"
+		;;
+	*cygwin* | *mingw32*)
+		SYS=win32
+		MULECPPFLAGS="-DNOMINMAX"
+		;;
+	solaris*)
+		SYS=solaris
+		RESOLV_LIB="-lresolv -lnsl"
+		LIBS="$LIBS -lrt"
+		;;
+	*netbsd*)
+		SYS=netbsd
+		# Now this is against autoconf recommendation that configure should not modify CPPFLAGS and LDFLAGS
+		# However, these values in NetBSD are required even to run the tests, and this is the easiest way to do it.
+		# Still, we prepend them, instead of adding, so the user may override them.
+		MULE_PREPEND([CPPFLAGS], [-I/usr/pkg/include])
+		MULE_PREPEND([LDFLAGS], [-R/usr/pkg/lib -L/usr/pkg/lib])
+		;;
+	*irix*)
+		SYS=irix
+		MULECPPFLAGS="-D__IRIX__"
+		;;
+	*)
+		SYS=unknown
+		;;
+	esac
+
+	# -lpthread is needed by Debian but FreeBSD < 5 doesn't support it
+	AS_IF([test ${SYS:-unknown} != win32],
+	[
+		AC_MSG_CHECKING([if this is a FreeBSD 4 or earlier system])
+		AS_IF([test x"`uname -s`" = xFreeBSD && test 0`uname -r | cut -c 1` -lt 5],
+		[
+			MULE_ADDFLAG([LD], [-pthread])
 			AC_MSG_RESULT(yes)
-		else
+		], [
+			MULE_ADDFLAG([LD], [-lpthread])
 			AC_MSG_RESULT(no)
-			AC_MSG_ERROR([unable to use peer zlib - zlib/libz.a not found])
-		fi
-	else
-		AC_MSG_RESULT(no)
-		AC_MSG_ERROR([unable to use zlib - no peer found])
-	fi
-
-	zlib_message="peer zlib"
-	ZLIB_CFLAGS='-I$(top_srcdir)/../zlib'
-	ZLIB_LIBS='$(top_srcdir)/../zlib/libz.a'
-
-	wv_cppflags="$wv_cppflags -I$ZLIB_PEERDIR"
-else
-	if test $zlib = sys; then
-		zlib_message="zlib in -L$ZLIB_DIR/lib -lz"
-		ZLIB_CFLAGS="-I$ZLIB_DIR/include"
-		ZLIB_LIBS="-L$ZLIB_DIR/lib -lz"
-	else
-		zlib_message="zlib in -lz"
-		ZLIB_CFLAGS=""
-		ZLIB_LIBS="-lz"
-	fi
-fi
-
-AC_SUBST(ZLIB_CFLAGS)
-AC_SUBST(ZLIB_LIBS)
-
-])
-
-dnl ---------------------------------------------------------------------------
-dnl Macros for wxWindows base detection. Typically used in configure.in as:
-dnl
-dnl 	AC_ARG_ENABLE(...)
-dnl 	AC_ARG_WITH(...)
-dnl	...
-dnl	AM_OPTIONS_WXBASECONFIG
-dnl	...
-dnl	...
-dnl	AM_PATH_WXBASECONFIG(2.3.4, wxWin=1)
-dnl     if test "$wxWin" != 1; then
-dnl        AC_MSG_ERROR([
-dnl     	   wxWindows must be installed on your system
-dnl     	   but wx-config script couldn't be found.
-dnl     
-dnl     	   Please check that wx-config is in path, the directory
-dnl     	   where wxWindows libraries are installed (returned by
-dnl     	   'wx-config --libs' command) is in LD_LIBRARY_PATH or
-dnl     	   equivalent variable and wxWindows version is 2.3.4 or above.
-dnl        ])
-dnl     fi
-dnl     CPPFLAGS="$CPPFLAGS $WXBASE_CPPFLAGS"
-dnl     CXXFLAGS="$CXXFLAGS $WXBASE_CXXFLAGS_ONLY"
-dnl     CFLAGS="$CFLAGS $WXBASE_CFLAGS_ONLY"
-dnl     
-dnl     LIBS="$LIBS $WX_LIBS"
-dnl ---------------------------------------------------------------------------
-
-dnl ---------------------------------------------------------------------------
-dnl AM_OPTIONS_WXBASECONFIG
-dnl
-dnl adds support for --wx-prefix, --wx-exec-prefix and --wx-config
-dnl command line options
-dnl ---------------------------------------------------------------------------
-
-AC_DEFUN(AM_OPTIONS_WXBASECONFIG,
-[
-   AC_ARG_WITH(wxbase-prefix, [  --with-wxbase-prefix=PREFIX   Prefix where wxWindows base is installed (optional)],
-               wxbase_config_prefix="$withval", wx_config_prefix="")
-   AC_ARG_WITH(wxbase-exec-prefix,[  --with-wxbase-exec-prefix=PREFIX Exec prefix where wxWindowsbase  is installed (optional)],
-               wxbase_config_exec_prefix="$withval", wxbase_config_exec_prefix="")
-   AC_ARG_WITH(wxbase-config,[  --with-wxbase-config=CONFIG   wxbase-config script to use (optional)],
-               wxbase_config_name="$withval", wxbase_config_name="")
-])
-
-dnl ---------------------------------------------------------------------------
-dnl AM_PATH_WXBASECONFIG(VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl Test for wxWindows, and define WX_C*FLAGS, WX_LIBS and WX_LIBS_STATIC
-dnl (the latter is for static linking against wxWindows). Set WX_CONFIG_NAME
-dnl environment variable to override the default name of the wx-config script
-dnl to use. Set WX_CONFIG_PATH to specify the full path to wx-config - in this
-dnl case the macro won't even waste time on tests for its existence.
-dnl ---------------------------------------------------------------------------
-
-dnl
-dnl Get the cflags and libraries from the wxbase-config script
-dnl
-AC_DEFUN(AM_PATH_WXBASECONFIG,
-[
-  dnl do we have wxbase-config name: it can be wxbase-config or wxd-config or ...
-  if test x${WXBASE_CONFIG_NAME+set} != xset ; then
-     WXBASE_CONFIG_NAME=wxbase-2.4-config
-  fi
-  if test "x$wxbase_config_name" != x ; then
-     WXBASE_CONFIG_NAME="$wxbase_config_name"
-  fi
-
-  dnl deal with optional prefixes
-  if test x$wxbase_config_exec_prefix != x ; then
-     wxbase_config_args="$wxbase_config_args --exec-prefix=$wxbase_config_exec_prefix"
-     WXBASE_LOOKUP_PATH="$wxbase_config_exec_prefix/bin"
-  fi
-  if test x$wxbase_config_prefix != x ; then
-     wxbase_config_args="$wxbase_config_args --prefix=$wxbase_config_prefix"
-     WXBASE_LOOKUP_PATH="$WXBASE_LOOKUP_PATH:$wxbase_config_prefix/bin"
-  fi
-
-  dnl don't search the PATH if WX_CONFIG_NAME is absolute filename
-  if test -x "$WX_CONFIG_NAME" ; then
-     AC_MSG_CHECKING(for wxbase-config)
-     WXBASE_CONFIG_PATH="$WXBASE_CONFIG_NAME"
-     AC_MSG_RESULT($WXBASE_CONFIG_PATH)
-  else
-     AC_PATH_PROG(WXBASE_CONFIG_PATH, $WXBASE_CONFIG_NAME, no, "$WXBASE_LOOKUP_PATH:$PATH")
-  fi
-
-  if test "$WXBASE_CONFIG_PATH" != "no" ; then
-    WXBASE_VERSION=""
-    no_wxbase=""
-
-    min_wxbase_version=ifelse([$1], ,2.2.1,$1)
-    AC_MSG_CHECKING(for wxWindows base version >= $min_wxbase_version)
-
-    WXBASE_CONFIG_WITH_ARGS="$WXBASE_CONFIG_PATH $wxbase_config_args"
-
-    WXBASE_VERSION=`$WXBASE_CONFIG_WITH_ARGS --version`
-    wxbase_config_major_version=`echo $WXBASE_VERSION | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-    wxbase_config_minor_version=`echo $WXBASE_VERSION | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-    wxbase_config_micro_version=`echo $WXBASE_VERSION | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
-
-    wxbase_requested_major_version=`echo $min_wxbase_version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-    wxbase_requested_minor_version=`echo $min_wxbase_version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-    wxbase_requested_micro_version=`echo $min_wxbase_version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
-
-    wxbase_ver_ok=""
-    if test $wxbase_config_major_version -gt $wxbase_requested_major_version; then
-      wxbase_ver_ok=yes
-    else
-      if test $wxbase_config_major_version -eq $wxbase_requested_major_version; then
-         if test $wxbase_config_minor_version -gt $wxbase_requested_minor_version; then
-            wxbase_ver_ok=yes
-         else
-            if test $wxbase_config_minor_version -eq $wxbase_requested_minor_version; then
-               if test $wxbase_config_micro_version -ge $wxbase_requested_micro_version; then
-                  wxbase_ver_ok=yes
-               fi
-            fi
-         fi
-      fi
-    fi
-
-    if test "x$wxbase_ver_ok" = x ; then
-      no_wxbase=yes
-    else
-      WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --libs`
-      WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static --libs`
-
-      dnl starting with version 2.2.6 wxbase-config has --cppflags argument
-      wxbase_has_cppflags=""
-      if test $wxbase_config_major_version -gt 2; then
-        wxbase_has_cppflags=yes
-      else
-        if test $wxbase_config_major_version -eq 2; then
-           if test $wxbase_config_minor_version -gt 2; then
-              wxbase_has_cppflags=yes
-           else
-              if test $wxbase_config_minor_version -eq 2; then
-                 if test $wxbase_config_micro_version -ge 6; then
-                    wxbase_has_cppflags=yes
-                 fi
-              fi
-           fi
-        fi
-      fi
-
-      if test "x$wxbase_has_cppflags" = x ; then
-         dnl no choice but to define all flags like CFLAGS
-         WXBASE_CFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cflags`
-         WXBASE_CPPFLAGS=$WXBASE_CFLAGS
-         WXBASE_CXXFLAGS=$WXBASE_CFLAGS
-
-         WXBASE_CFLAGS_ONLY=$WXBASE_CFLAGS
-         WXBASE_CXXFLAGS_ONLY=$WXBASE_CFLAGS
-      else
-         dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
-         WXBASE_CPPFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cppflags`
-         WXBASE_CXXFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cxxflags`
-         WXBASE_CFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cflags`
-
-         WXBASE_CFLAGS_ONLY=`echo $WXBASE_CFLAGS | sed "s@^$WXBASE_CPPFLAGS *@@"`
-         WXBASE_CXXFLAGS_ONLY=`echo $WXBASE_CXXFLAGS | sed "s@^$WXBASE_CFLAGS *@@"`
-      fi
-    fi
-
-    if test "x$no_wxbase" = x ; then
-       AC_MSG_RESULT(yes (version $WXBASE_VERSION))
-       ifelse([$2], , :, [$2])
-    else
-       if test "x$WXBASE_VERSION" = x; then
-	  dnl no wxbase-config at all
-	  AC_MSG_RESULT(no)
-       else
-	  AC_MSG_RESULT(no (version $WXBASE_VERSION is not new enough))
-       fi
-
-       WXBASE_CFLAGS=""
-       WXBASE_CPPFLAGS=""
-       WXBASE_CXXFLAGS=""
-       WXBASE_LIBS=""
-       WXBASE_LIBS_STATIC=""
-       ifelse([$3], , :, [$3])
-    fi
-  fi
-
-  AC_SUBST(WXBASE_CPPFLAGS)
-  AC_SUBST(WXBASE_CFLAGS)
-  AC_SUBST(WXBASE_CXXFLAGS)
-  AC_SUBST(WXBASE_CFLAGS_ONLY)
-  AC_SUBST(WXBASE_CXXFLAGS_ONLY)
-  AC_SUBST(WXBASE_LIBS)
-  AC_SUBST(WXBASE_LIBS_STATIC)
-  AC_SUBST(WXBASE_VERSION)
-])
-
-dnl **************************
-dnl ---------------------------------------------------------------------------
-dnl AM_OPTIONS_CURLCONFIG
-dnl
-dnl adds support for curl-config
-dnl command line options
-dnl ---------------------------------------------------------------------------
-
-AC_DEFUN(AM_OPTIONS_CURLCONFIG,
-[
-   AC_ARG_WITH(curl-config,[  --with-curl-config=CONFIG   curl-config script to use (optional)],
-               curl_config_name="$withval", curl_config_name="")
-
-   AC_ARG_WITH(curl-prefix,[  --with-curl-prefix=PFX   Prefix where curl is installed (optional) (unused)],
-            curl_config_prefix="$withval", curl_config_prefix="")
-])
-
-
-dnl ---------------------------------------------------------------------------
-dnl AM_PATH_CURLCONFIG(VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl Check curl-config
-dnl ---------------------------------------------------------------------------
-
-dnl
-dnl Get the cflags and libraries from the curl-config script
-dnl
-
-AC_DEFUN(AM_PATH_CURLCONFIG,[
- AC_CACHE_VAL(my_cv_curl_vers,[
- my_cv_curl_vers=NONE
- dnl check is the plain-text version of the required version
- check="7.9.7"
- dnl check_hex must be UPPERCASE if any hex letters are present
- check_hex="070907"
-
-
- AC_MSG_CHECKING([for curl >= $check])
-
-  if test x${CURL_CONFIG_NAME+set} != xset ; then
-     CURL_CONFIG_NAME=curl-config
-  fi
-  if test "x$curl_config_name" != x ; then
-     CURL_CONFIG_NAME="$curl_config_name"
-  fi
-
-  if test x$curl_config_prefix != x ; then
-     curl_config_args="$curl_config_args --prefix=$curl_config_prefix"
-     if test x${CURL_CONFIG_NAME+set} != xset ; then
-        CURL_CONFIG_NAME="$curl_config_prefix/bin/curl-config"
-     fi
-  fi
-
-## We cannot do that until curl-config allow us to use --prefix=PFX
-##  CURL_LIBS="`$CURL_CONFIG_NAME $curl_config_args --libs`"
-##  CURL_FLAGS="`$CURL_CONFIG_NAME $curl_config_args --cflags`"
-
-# Fix for buggy curl config on non-i386
-  CURL_LIBS="`$CURL_CONFIG_NAME --libs | sed "s/-arch i386//g"`"
-  CURL_FLAGS="`$CURL_CONFIG_NAME --cflags`"
-
- if eval $CURL_CONFIG_NAME --version 2>/dev/null >/dev/null; then
-   ver=`$CURL_CONFIG_NAME --version | sed -e "s/libcurl //g"`
-   hex_ver=`$CURL_CONFIG_NAME --vernum | tr 'a-f' 'A-F'`
-   ok=`echo "ibase=16; if($hex_ver>=$check_hex) $hex_ver else 0" | bc`
-
-   if test x$ok != x0; then
-     my_cv_curl_vers="$ver"
-     AC_MSG_RESULT(yes (version $my_cv_curl_vers))
-     CURLFOUND=1
-     AC_SUBST(CURL_LIBS)
-     AC_SUBST(CURL_FLAGS)
-   else
-     AC_MSG_RESULT(no)
-     CURLFOUND=0
-     AC_MSG_WARN([Curl version $ver is too old. Need version $check or higher.])
-   fi
- else
-   AC_MSG_RESULT(no)
-   CURLFOUND=0
-   AC_MSG_WARN([curl-config was not found])
- fi
- AC_SUBST(CURLFOUND)
- ])
-])
-
-
-dnl --------------------------------------------------------------------------
-dnl Check for crypto++ library
-dnl --------------------------------------------------------------------------
-
-AC_DEFUN(CHECK_CRYPTO,
-	[
-      AC_MSG_CHECKING([for crypto++ version >= 5.1])
-	OWN_CRYPTO="yes"
-	if test x$crypto_prefix == x ; then
-	crypto_prefix="/usr/include/"
-	OWN_CRYPTO="no"
-	fi
-	grep "5.1" $crypto_prefix/crypto++/cryptlib.h > /dev/null 2>&1
-	CRYPTO=$?
-	if test "$CRYPTO" != 0; then
-	grep "5.1" $crypto_prefix/cryptopp/cryptlib.h > /dev/null 2>&1
-	CRYPTO=$?
-	fi
-	if test "$CRYPTO" != 0; then
-		result="no"
-	else
-		result="yes"
-	fi
-	AC_MSG_RESULT($result)
-	AC_SUBST(CRYPTO)
-	AC_SUBST(OWN_CRYPTO)
-	AC_SUBST(crypto_prefix)
+		])
 	])
 
-AC_DEFUN(AM_OPTIONS_CRYPTO,
-[
-   AC_ARG_WITH( crypto-prefix,[  --with-crypto-prefix=PFX   Prefix where crypto++ is installed (optional)],
-            crypto_prefix="$withval", crypto_prefix="")
+AC_SUBST([RESOLV_LIB])dnl
+AC_SUBST([MULECPPFLAGS])dnl
+AC_SUBST([MULECFLAGS])dnl
+AC_SUBST([MULECXXFLAGS])dnl
+AC_SUBST([MULELDFLAGS])dnl
+AC_SUBST([MULERCFLAGS])dnl
 ])
 
-dnl --------------------------------------------------------------------------
-dnl CCache support
-dnl --------------------------------------------------------------------------
+dnl ---------------------------------------------------------------------------
+dnl MULE_COMPILATION_FLAGS
+dnl
+dnl Checks type of compilation requested by user, and sets various flags
+dnl accordingly.
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([MULE_COMPILATION_FLAGS],
+[dnl AC_REQUIRE([MULE_CHECK_GLIBCXX])dnl
 
-AC_DEFUN(CHECK_CCACHE,
+	MULE_ARG_ENABLE([debug],	[yes],	[disable additional debugging output])
+	MULE_ARG_ENABLE([profile],	[no],	[enable code profiling])
+	MULE_ARG_ENABLE([optimize],	[no],	[enable code optimization])
+
+	MULE_IF_ENABLED([debug],
 	[
-	if test x$ccache_prefix == x ; then
-	ccache_prefix="/usr/bin"
-	fi
-	$ccache_prefix/ccache-config --version > /dev/null 2>&1
-	CCACHE=$?
-	if test "$CCACHE" != 0; then
-        ccache_prefix="/usr/local/bin"
-	fi
-	$ccache_prefix/ccache-config --version > /dev/null 2>&1
-	CCACHE=$?
-	if test "$CCACHE" != 0; then
-		result="no"
-	else
-		result="yes"
-	fi
-        AC_MSG_CHECKING([for ccache presence])
-	AC_MSG_RESULT($result)
-	AC_SUBST(CCACHE)
-	AC_SUBST(ccache_prefix)
+		MULE_ADDFLAG([CPP], [-D__DEBUG__])
+		MULE_ADDCCXXFLAG([-g])
+		AS_IF([test ${GCC:-no} = yes],		[MULE_ADDCCXXFLAG([-W -Wall -Wshadow -Wundef -ggdb -fno-inline -fmessage-length=0])])
+		AS_IF([test ${SYS:-unknown} = win32],	[MULE_ADDFLAG([RC], [-D__DEBUG__])])
+	], [
+		AS_IF([test ${GCC:-no} = yes], [MULE_ADDCCXXFLAG([-W -Wall -Wshadow -Wundef])])
 	])
 
+	MULE_IF_ENABLED([profile],
+	[
+		MULE_ADDCCXXFLAG([-pg])
+		MULE_ADDFLAG([LD], [-pg])
+	])
 
-AC_DEFUN(AM_OPTIONS_CCACHE_PFX,
+	MULE_IF_ENABLED([optimize],	[MULE_ADDCCXXFLAG([-O2])])
+
+	MULE_ADDFLAG([CPP], [-DUSE_WX_EXTENSIONS])
+])
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_CHECK_GLIBCXX
+dnl
+dnl Checks whether we use the GNU C++ Library.
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([MULE_CHECK_GLIBCXX],
+[dnl
+AC_REQUIRE([AC_PROG_EGREP])dnl
+AC_REQUIRE([AC_PROG_CXXCPP])dnl
+AC_LANG_ASSERT([C++])dnl
+
+	AC_MSG_CHECKING([if we're using the GNU C++ library])
+	AC_PREPROC_IFELSE([
+		AC_LANG_SOURCE([[
+			#include <string>
+			#ifndef __GLIBCXX__
+			#error Non-GNU C++ library found.
+			#endif
+		]])
+	], [GLIBCXX=yes], [GLIBCXX=no])
+	AC_MSG_RESULT([$GLIBCXX])
+])
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_CHECK_STRICT_ALIASING
+dnl
+dnl Checks whether the C++ compiler uses strict aliasing.
+dnl This check could use the C compiler, but the source is C++ and the two
+dnl compilers are not necessarily the same, or they might use different
+dnl compiler flags...
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([MULE_CHECK_STRICT_ALIASING],
+[AC_LANG_ASSERT([C++])dnl
+
+	AH_TEMPLATE([GCC_USES_STRICT_ALIASING], [Define to 1 if the C++ compiler is the GNU C++ compiler and it is using strict aliasing.])
+
+	AS_IF([test ${GCC:-no} = yes],
+	[
+		dnl Backup current flags and turn warnings into errors
+		MULE_BACKUP([CXXFLAGS])
+		MULE_APPEND([CXXFLAGS], [$MULECPPFLAGS $MULECFLAGS $MULECXXFLAGS -Werror])
+
+		AC_MSG_CHECKING([whether the C++ compiler ($CXX) uses strict aliasing])
+		AC_COMPILE_IFELSE([
+			AC_LANG_PROGRAM([], [[
+				int a;
+				short *b = (short*)&a;
+				short c = *b;
+
+				return c;
+			]])
+		], [
+			AC_MSG_RESULT([no])
+		], [
+			AC_MSG_RESULT([yes])
+			AC_DEFINE([GCC_USES_STRICT_ALIASING])
+		])
+
+		dnl Restore flags
+		MULE_RESTORE([CXXFLAGS])
+	])
+])
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_CHECK_WX_SUPPORTS_LARGEFILE
+dnl
+dnl Test that wxWidgets is built with support for large-files. If not
+dnl configure is terminated.
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([MULE_CHECK_WX_SUPPORTS_LARGEFILE],
+[AC_LANG_ASSERT([C++])dnl
+
+	dnl Backup current flags and setup flags for testing
+	MULE_BACKUP([CPPFLAGS])
+	MULE_APPEND([CPPFLAGS], [$WX_CPPFLAGS])
+
+	AC_MSG_CHECKING([that wxWidgets has support for large files])
+	AC_PREPROC_IFELSE([
+		AC_LANG_SOURCE([[
+			#include <wx/wx.h>
+			#include <wx/filefn.h>
+			#ifndef wxHAS_LARGE_FILES
+				#error No LargeFile support!
+			#endif
+		]])
+	], [
+		AC_MSG_RESULT([yes])
+	], [
+		AC_MSG_RESULT([no])
+		AC_MSG_ERROR([
+	Support for large files in wxWidgets is required by aMule.
+	To continue you must recompile wxWidgets with support for
+	large files enabled.])
+	])
+
+	dnl Restore backup'd flags
+	MULE_RESTORE([CPPFLAGS])
+])
+
+
+dnl --------------------------------------------------------------------------
+dnl MULE_CHECK_CCACHE
+dnl
+dnl Checks if ccache is requested and available, and makes use of it
+dnl --------------------------------------------------------------------------
+AC_DEFUN([MULE_CHECK_CCACHE],
 [
-   AC_ARG_WITH( ccache-prefix,[  --with-ccache-prefix=PFX   Prefix where ccache is installed (optional)],
-            ccache_prefix="$withval", ccache_prefix="")
+	MULE_ARG_ENABLE([ccache], [no], [enable ccache support for fast recompilation])
+
+	AC_ARG_WITH([ccache-prefix],
+		[AS_HELP_STRING([--with-ccache-prefix=PREFIX], [prefix where ccache is installed])])
+
+	AC_MSG_CHECKING([whether ccache support should be added])
+	AC_MSG_RESULT([MULE_STATUSOF([ccache])])
+
+	MULE_IF_ENABLED([ccache], [
+		AC_MSG_CHECKING([for ccache presence])
+		AS_IF([test -z "$with_ccache_prefix"], [
+			ccache_full=`which ccache`
+			with_ccache_prefix=`dirname ${ccache_full}`
+		])
+		AS_IF([$with_ccache_prefix/ccache -V >/dev/null 2>&1], [
+			CC="$with_ccache_prefix/ccache $CC"
+			CXX="$with_ccache_prefix/ccache $CXX"
+			BUILD_CC="$with_ccache_prefix/ccache $BUILD_CC"
+		], [MULE_ENABLEVAR([ccache])=no])
+		AC_MSG_RESULT([MULE_STATUSOF([ccache])])
+	])
+])
+
+
+dnl ----------------------------------------------------
+dnl MULE_CHECK_FLEX_EXTENDED
+dnl check if flex can produce header files
+dnl ----------------------------------------------------
+AC_DEFUN([MULE_CHECK_FLEX_EXTENDED],
+[
+	AC_MSG_CHECKING([for extended flex capabilities])
+
+	extended_flex=`flex --help | grep header-file`
+	AS_IF([test -n "$extended_flex"], [HAVE_FLEX_EXTENDED=yes], [HAVE_FLEX_EXTENDED=no])
+	AC_MSG_RESULT($HAVE_FLEX_EXTENDED)
+
+	AS_IF([test $HAVE_FLEX_EXTENDED = no], [AC_MSG_NOTICE([Your flex version doesn't support --header-file flag. This is not critical, but an upgrade is recommended])])
+])
+
+
+dnl ----------------------------------------------------
+dnl MULE_CHECK_EXCEPTIONS
+dnl Checks for broken exception-handling. This is needed
+dnl because exception handling is broken for some archs/
+dnl compilers.
+dnl ----------------------------------------------------
+AC_DEFUN([MULE_CHECK_EXCEPTIONS],
+[AC_LANG_ASSERT([C++])dnl
+
+	AC_MSG_CHECKING([for exception-handling])
+	AC_RUN_IFELSE([
+		AC_LANG_PROGRAM(, [[
+			try {
+				throw 1;
+			} catch (int) {
+				return 0;
+			}
+			return 1;
+		]])
+	], [
+		AC_MSG_RESULT([yes])
+	], [
+		AC_MSG_RESULT([no])
+		AC_MSG_ERROR([Exception handling does not work. Broken compiler?])
+	], [
+		AC_MSG_RESULT([undeterminable])
+		MULE_WARNING(
+			[Cross-compilation detected, so exception handling cannot be tested.
+			Note that broken exception handling in your compiler may lead to unexpected crashes.])
+	])
+])
+
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_CHECK_CXXABI
+dnl
+dnl This function will test the header <cxxabi.h> and abi::__cxa_demangle()
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([MULE_CHECK_CXXABI],
+[AC_LANG_ASSERT([C++])dnl
+
+	AC_CHECK_HEADERS([typeinfo])
+	AC_MSG_CHECKING([for <cxxabi.h> and __cxa_demangle()])
+	AC_LINK_IFELSE([
+		AC_LANG_PROGRAM([[
+			#ifdef HAVE_TYPEINFO
+			#	include <typeinfo>
+			#endif
+			#include <cxxabi.h>
+		]], [[
+			int status;
+			char * demangled = abi::__cxa_demangle("", 0, 0, &status);
+			std::type_info *ti = abi::__cxa_current_exception_type();
+		]])
+	], [
+		AH_TEMPLATE([HAVE_CXXABI], [Define to 1 if you have the <cxxabi.h> header which declares abi::__cxa_demangle()])
+		AC_DEFINE([HAVE_CXXABI])
+		AC_MSG_RESULT([yes])
+	], [
+		AC_MSG_RESULT([no])
+	])
+])
+
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_CHECK_EXECINFO
+dnl
+dnl This function will test the header <execinfo.h> and backtrace()
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([MULE_CHECK_EXECINFO],
+[
+	AC_MSG_CHECKING([for <execinfo.h> and backtrace()])
+	AC_LINK_IFELSE([
+		AC_LANG_PROGRAM([[
+			#include <execinfo.h>
+		]], [[
+			void *bt[1];
+			int n = backtrace((void **)&bt, 1);
+			char **bt_syms = backtrace_symbols(bt, n);
+		]])
+	], [
+		AH_TEMPLATE([HAVE_EXECINFO], [Define to 1 if you have the <execinfo.h> header which declares backtrace()])
+		AC_DEFINE([HAVE_EXECINFO])
+		AC_MSG_RESULT([yes])
+	], [
+		AC_MSG_RESULT([no])
+	])
+])
+
+
+dnl ---------------------------------------------------------------------------
+dnl MULE_DENOISER
+dnl
+dnl Test for denoising level and add denoiser commands to config.status
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([MULE_DENOISER],
+[
+	AC_ARG_WITH([denoise-level],
+		[AS_HELP_STRING([--with-denoise-level=<level>], [Specifies denoising level (0-4):])
+		AS_HELP_STRING([], [0 - Do nothing])
+		AS_HELP_STRING([], [4 - Suppress all normal output])
+		AS_HELP_STRING([], [(for more information see src/utils/scripts/denoiser.rules)])
+	])
+
+	AC_MSG_CHECKING([denoising level])
+	AS_IF([test ${with_denoise_level:-5} = yes], [with_denoise_level=5])
+	AS_IF([test ${with_denoise_level:-5} = no], [with_denoise_level=0])
+	AS_IF([test ${with_denoise_level:-5} -gt 4],
+		[AS_IF([test "${svndate:+set}" = "set"], [with_denoise_level=0], [with_denoise_level=4])])
+	AC_MSG_RESULT([$with_denoise_level])
+
+	AC_CONFIG_COMMANDS([denoiser], [[if test $denoiserlevel -gt 0; then
+		if test ! -d src/utils/scripts; then mkdir -p src/utils/scripts; fi
+		sed -e "1{x;s/.*/1/;x;};/^[	 ]*\$/d;/^#if /{/level.*$denoiserlevel/{x;s/^/1/;x;b0;};x;s/^/0/;x;:0;d;};/^#else/{x;/^1/{s/1/0/;b1;};s/0/1/;:1;x;d;};/^#endif/{x;s/.//;x;d;};/^[	 ]*#/d;x;/^1/{x;b;};x;d" \
+			$srcdir/src/utils/scripts/denoiser.rules > src/utils/scripts/denoiser.sed
+		for i in `find . -name 'Makefile' -print`; do
+			if test -n "`head -n 1 $i | grep '^#'`"; then
+				sed -f src/utils/scripts/denoiser.sed $i > $i.tmp && mv $i.tmp $i
+			fi
+		done
+	fi]], [denoiserlevel=$with_denoise_level])
 ])

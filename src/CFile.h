@@ -1,146 +1,220 @@
-/////////////////////////////////////////////////////////////////////////////
-// Name:        file.h
-// Purpose:     CFile - encapsulates low-level "file descriptor"
-//              wxTempFile - safely replace the old file
-// Author:      Vadim Zeitlin
-// Modified by:
-// Created:     29/01/98
-// RCS-ID:      $Id$
-// Copyright:   (c) 1998 Vadim Zeitlin <zeitlin@dptmaths.ens-cachan.fr>
-// Licence:     wxWindows license
-/////////////////////////////////////////////////////////////////////////////
+//
+// This file is part of the aMule Project.
+//
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 1998-2011 Vadim Zeitlin ( zeitlin@dptmaths.ens-cachan.fr )
+//
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 #ifndef CFILE_H
 #define CFILE_H
 
-#include <wx/string.h>		// Needed for wxString
-#include <wx/filefn.h>		// Needed for wxSeekMode and seek related stuff.
+#include <common/Path.h>	// Needed for CPath
+#include "SafeFile.h"		// Needed for CFileDataIO
 
-#include "CString.h"		// Needed for CString
+#include <wx/file.h>		// Needed for constants
 
+#ifdef _MSC_VER  // silly warnings about deprecated functions
+#pragma warning(disable:4996)
+#endif
 
-// ----------------------------------------------------------------------------
-// constants
-// ----------------------------------------------------------------------------
-
-// we redefine these constants here because S_IREAD &c are _not_ standard
-// however, we do assume that the values correspond to the Unix umask bits
-#define wxS_IRUSR 00400
-#define wxS_IWUSR 00200
-#define wxS_IXUSR 00100
-
-#define wxS_IRGRP 00040
-#define wxS_IWGRP 00020
-#define wxS_IXGRP 00010
-
-#define wxS_IROTH 00004
-#define wxS_IWOTH 00002
-#define wxS_IXOTH 00001
-
-// default mode for the new files: corresponds to umask 022
-#define wxS_DEFAULT   (wxS_IRUSR | wxS_IWUSR | wxS_IRGRP | wxS_IWGRP |\
-                       wxS_IROTH | wxS_IWOTH)
-
-// ----------------------------------------------------------------------------
-// class CFile: raw file IO
-//
-// NB: for space efficiency this class has no virtual functions, including
-//     dtor which is _not_ virtual, so it shouldn't be used as a base class.
-// ----------------------------------------------------------------------------
-class CFile {
+/**
+ * This class is a modified version of the wxFile class.
+ *
+ * In addition to implementing the CFileDataIO interface,
+ * it offers improved support for UTF8 filenames and 64b
+ * file-IO on both windows and unix-like systems.
+ *
+ * @see wxFile
+ */
+class CFile : public CFileDataIO
+{
 public:
-  // more file constants
-  // -------------------
-    // opening mode
-  enum OpenMode { read, write, read_write, write_append, write_excl };
-    // standard values for file descriptor
-  enum { fd_invalid = -1, fd_stdin, fd_stdout, fd_stderr };
+	//! Standard values for file descriptor
+	enum { fd_invalid = -1, fd_stdin, fd_stdout, fd_stderr };
 
-  // static functions
-  // ----------------
-    // check whether a regular file by this name exists
-  static bool Exists(const wxChar *name);
-    // check whetther we can access the given file in given mode
-    // (only read and write make sense here)
-  static bool Access(const wxChar *name, OpenMode mode);
+	/** @see wxFile::OpenMode */
+	enum OpenMode { read, write, read_write, write_append, write_excl, write_safe };
 
-  // ctors
-  // -----
-    // def ctor
-  CFile() { m_fd = fd_invalid; }
-    // open specified file (may fail, use IsOpened())
-  CFile(const wxChar *szFileName, OpenMode mode = read);
-    // attach to (already opened) file
-  CFile(int fd) { m_fd = fd; }
 
-  wxString GetFilePath() {return fFilePath;}; 
+	/**
+	 * Creates a closed file.
+	 */
+	CFile();
 
-  // open/close
-    // create a new file (with the default value of bOverwrite, it will fail if
-    // the file already exists, otherwise it will overwrite it and succeed)
-  virtual bool Create(const wxChar *szFileName, bool bOverwrite = FALSE,
-              int access = wxS_DEFAULT);
-  virtual bool Open(const wxChar *szFileName, OpenMode mode = read,
-            int access = wxS_DEFAULT);
-  // Kry -Added for windoze compatibility.
-  off_t GetLength( ) { return Length(); }
-  
-  bool Open(CString szFileName, OpenMode mode = read, int access = wxS_DEFAULT) {
-    return Open(szFileName.GetData(),mode,access);
-  };
-  virtual bool Close();  // Close is a NOP if not opened
+	/**
+	 * Constructor, calls Open on the specified file.
+	 *
+	 * To check if the file was successfully opened, a
+	 * call to IsOpened() is required.
+	 */
+	CFile(const CPath& path, OpenMode mode = read);
+	CFile(const wxString& path, OpenMode mode = read);
 
-  // assign an existing file descriptor and get it back from CFile object
-  void Attach(int fd) { Close(); m_fd = fd; }
-  void Detach()       { m_fd = fd_invalid;  }
-  int  fd() const { return m_fd; }
+	/**
+	 * Destructor, closes the file if opened.
+	 */
+	virtual ~CFile();
 
-  // read/write (unbuffered)
-    // returns number of bytes read or ofsInvalid on error
-  virtual off_t Read(void *pBuf, off_t nCount);
-    // returns the number of bytes written
-  virtual size_t Write(const void *pBuf, size_t nCount);
-    // returns true on success
-  virtual bool Write(const wxString& s, wxMBConv& conv = wxConvLocal)
-  {
-      const wxWX2MBbuf buf = s.mb_str(conv);
-      size_t size = strlen(buf);
-      return Write((const char *) buf, size) == size;
-  }
-    // flush data not yet written
-  virtual bool Flush();
 
-  // file pointer operations (return ofsInvalid on failure)
-    // move ptr ofs bytes related to start/current off_t/end of file
-  virtual off_t Seek(off_t ofs, wxSeekMode mode = wxFromStart);
-    // move ptr to ofs bytes before the end
-  virtual off_t SeekEnd(off_t ofs = 0) { return Seek(ofs, wxFromEnd); }
-    // get current off_t
-  virtual off_t Tell() const;
-    // get current file length
-  virtual off_t Length() const;
+	/**
+	 * Opens a file.
+	 *
+	 * @param path The full or relative path to the file.
+	 * @param mode The opening mode.
+	 * @param accessMode The permissions in case a new file is created.
+	 * @return True if the file was opened, false otherwise.
+	 *
+	 * Calling Open with the openmodes 'write' or 'write_append' will
+	 * create the specified file if it does not already exist.
+	 *
+	 * Calling Open with the openmode 'write_safe' will append ".new"
+	 * to the file name and otherwise work like 'write'.
+	 * On close it will be renamed to the original name.
+	 * Close() has to be called manually - destruct won't rename the file!
+	 *
+	 * If an accessMode is not explicitly specified, the accessmode
+	 * specified via CPreferences::GetFilePermissions will be used.
+	 */
+	bool Open(const CPath& path, OpenMode mode = read, int accessMode = wxS_DEFAULT);
+	bool Open(const wxString& path, OpenMode mode = read, int accessMode = wxS_DEFAULT);
 
-  // simple accessors
-    // is file opened?
-  bool IsOpened() const { return m_fd != fd_invalid; }
-    // is end of file reached?
-  bool Eof() const;
-    // has an error occured?
-  bool Error() const { return m_error; }
+	/**
+	 * Reopens a file which was opened and closed before.
+	 *
+	 * @param mode The opening mode.
+	 *
+	 * The filename used for last open is used again.
+	 * No return value - function throws on failure.
+	 */
+	void Reopen(OpenMode mode);
 
-  // dtor closes the file if opened
-  virtual ~CFile() { Close(); }
+	/**
+	 * Calling Create is equivilant of calling open with OpenMode 'write'.
+	 *
+	 * @param overwrite Specifies if the target file should be overwritten,
+	 *                  in case that it already exists.
+	 *
+	 * @see CFile::Open
+	 */
+	bool Create(const CPath& path, bool overwrite = false, int accessMode = wxS_DEFAULT);
+	bool Create(const wxString& path, bool overwrite = false, int accessMode = wxS_DEFAULT);
+
+	/**
+	 * Closes the file.
+	 *
+	 * Note that calling Close on an closed file
+	 * is an illegal operation.
+	 */
+	bool Close();
+
+
+	/**
+	 * Returns the file descriptior assosiated with the file.
+	 *
+	 * Note that direct manipulation of the descriptor should
+	 * be avoided! That's what this class is for.
+	 */
+	int  fd() const;
+
+	/**
+	 * Flushes data not yet written.
+	 *
+	 * Note that calling Flush on an closed file
+	 * is an illegal operation.
+	 */
+	bool Flush();
+
+
+	/**
+	 * @see CSafeFileIO::GetLength
+	 *
+	 * Note that calling GetLength on a closed file
+	 * is an illegal operation.
+	 */
+	virtual uint64 GetLength() const;
+
+	/**
+	 * Resizes the file to the specified length.
+	 */
+	bool SetLength(uint64 newLength);
+
+	/**
+	 * @see CSafeFileIO::GetPosition
+	 *
+	 * Note that calling GetPosition on a closed file
+	 * is an illegal operation.
+	 */
+	virtual uint64 GetPosition() const;
+
+	/**
+	 * Returns the current available bytes to read on the file before EOF
+	 *
+	 */
+	virtual uint64 GetAvailable() const;
+
+	/**
+	 * Returns the path of the currently opened file.
+	 *
+	 */
+	const CPath& GetFilePath() const;
+
+
+	/**
+	 * Returns true if the file is opened, false otherwise.
+	 */
+	bool IsOpened() const;
+
+protected:
+	/** @see CFileDataIO::doRead **/
+	virtual sint64 doRead(void* buffer, size_t count) const;
+	/** @see CFileDataIO::doWrite **/
+	virtual sint64 doWrite(const void* buffer, size_t count);
+	/** @see CFileDataIO::doSeek **/
+	virtual sint64 doSeek(sint64 offset) const;
 
 private:
-  // copy ctor and assignment operator are private because
-  // it doesn't make sense to copy files this way:
-  // attempt to do it will provoke a compile-time error.
-  CFile(const CFile&);
-  CFile& operator=(const CFile&);
+	//! A CFile is neither copyable nor assignable.
+	//@{
+	CFile(const CFile&);
+	CFile& operator=(const CFile&);
+	//@}
 
-  int m_fd; // file descriptor or INVALID_FD if not opened
-  bool m_error; // error memory
-  wxString fFilePath;
+	//! File descriptor or 'fd_invalid' if not opened
+	int m_fd;
+
+	//! The full path to the current file.
+	CPath m_filePath;
+
+	//! Are we using safe write mode?
+	bool m_safeWrite;
 };
 
+
+/**
+ * This exception is thrown by CFile if a seek or tell fails.
+ */
+struct CSeekFailureException : public CIOFailureException {
+	CSeekFailureException(const wxString& desc);
+};
+
+
 #endif // CFILE_H
+// File_checked_for_headers

@@ -1,147 +1,95 @@
-//this file is part of aMule
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 #ifndef UPLOADQUEUE_H
 #define UPLOADQUEUE_H
 
-#include <cstring>		// Needed for std::memset
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/timer.h>		// Needed for wxTimer
+#include "ClientRef.h"		// Needed for CClientRefList
+#include "MD4Hash.h"		// Needed for CMD4Hash
 
-#include "types.h"		// Needed for uint16, uint32 and uint64
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "position.h"		// Needed for POSITION
+// Experimental extended upload queue population
+//
+// When a client is set up from scratch (no shares, all downloads empty)
+// it takes a while after completion of the first downloaded chunks until
+// uploads start. Problem is, upload queue is empty, because clients that
+// find nothing to download don't stay queued.
+//
+// Set this to 1 for faster finding of upload slots in this case.
+// aMule will then try to contact its sources for uploading if the
+// upload queue is empty.
+#define EXTENDED_UPLOADQUEUE 0
 
-class CPreferences;
 class CUpDownClient;
+class CKnownFile;
 
-// Helper class holding a copy of a filehash
-// The CCKey class is similiar but not useable here.
-class CFileHash {
+class CUploadQueue
+{
 public:
-	CFileHash()			{ std::memset(m_hash, 0, 16); }
-	CFileHash(const unsigned char* k)	{ std::memcpy(m_hash, k, 16); }
-	CFileHash(const CFileHash& s)	{ std::memcpy(m_hash, s.m_hash,16); }
-
-	friend bool operator==(const CFileHash& h1, const CFileHash& h2)
-			{ return !std::memcmp(h1.m_hash, h2.m_hash,16); }
-
-	operator const unsigned char*() const	{ return m_hash; }
-
-private:
-	unsigned char	m_hash[16];
-};
-
-class CUploadQueue{
-public:
-	CUploadQueue(CPreferences* in_prefs);
+	CUploadQueue();
 	~CUploadQueue();
 	void	Process();
-	void	AddClientToQueue(CUpDownClient* client,bool bIgnoreTimelimit = false);
-	bool	RemoveFromUploadQueue(CUpDownClient* client,bool updatewindow = true);
-	bool	RemoveFromWaitingQueue(CUpDownClient* client,bool updatewindow = true);
-	bool	IsOnUploadQueue(CUpDownClient* client)	{return GetWaitingClient(client);}
-	bool	IsDownloading(CUpDownClient* client)	{return GetDownloadingClient(client);}
-	float	GetKBps()								{return kBpsUp;}
+	void	AddClientToQueue(CUpDownClient* client);
+	bool	RemoveFromUploadQueue(CUpDownClient* client);
+	bool	RemoveFromWaitingQueue(CUpDownClient* client);
+	bool	IsOnUploadQueue(const CUpDownClient* client) const;
+	bool	IsDownloading(const CUpDownClient* client) const;
 	bool	CheckForTimeOver(CUpDownClient* client);
-	int		GetWaitingUserCount()					{return waitinglist.GetCount();}
-	int		GetUploadQueueLength()					{return uploadinglist.GetCount();}
-        POSITION GetFirstFromUploadList()                               {return
-uploadinglist.GetHeadPosition();}
-        CUpDownClient* GetNextFromUploadList(POSITION &curpos)  {return uploadinglist.GetNext(curpos);}
-        CUpDownClient* GetQueueClientAt(POSITION &curpos)       {return uploadinglist.GetAt(curpos);}
- 
-        POSITION GetFirstFromWaitingList()                              {return
-waitinglist.GetHeadPosition();}
-        CUpDownClient* GetNextFromWaitingList(POSITION &curpos) {return waitinglist.GetNext(curpos);}
-        CUpDownClient* GetWaitClientAt(POSITION &curpos)        {return waitinglist.GetAt(curpos);}
- 
+	void	ResortQueue() { SortGetBestClient(); }
 
-	void	UpdateBanCount();
-	CUpDownClient*	GetWaitingClientByIP(uint32 dwIP);
-	CUpDownClient*	GetNextClient(CUpDownClient* update);
+	const CClientRefList& GetWaitingList() const { return m_waitinglist; }
+	const CClientRefList& GetUploadingList() const { return m_uploadinglist; }
 
-	
-	void	DeleteAll();
-	uint16	GetWaitingPosition(CUpDownClient* client);
-	void	SetBanCount(uint32 in_count)			{bannedcount = in_count;}
-	uint32	GetBanCount()							{return bannedcount;}
-	uint32	GetSuccessfullUpCount()					{return successfullupcount;}
-	uint32	GetFailedUpCount()						{return failedupcount;}
-	uint32	GetAverageUpTime();
-	void	FindSourcesForFileById(CTypedPtrList<CPtrList, CUpDownClient*>* srclist, unsigned char* filehash);
-	void	AddUpDataOverheadSourceExchange(uint32 data)	{ m_nUpDataRateMSOverhead += data;
-															  m_nUpDataOverheadSourceExchange += data;
-															  m_nUpDataOverheadSourceExchangePackets++;}
-	void	AddUpDataOverheadFileRequest(uint32 data)		{ m_nUpDataRateMSOverhead += data;
-															  m_nUpDataOverheadFileRequest += data;
-															  m_nUpDataOverheadFileRequestPackets++;}
-	void	AddUpDataOverheadServer(uint32 data)			{ m_nUpDataRateMSOverhead += data;
-															  m_nUpDataOverheadServer += data;
-															  m_nUpDataOverheadServerPackets++;}
-	void	AddUpDataOverheadOther(uint32 data)				{ m_nUpDataRateMSOverhead += data;
-															  m_nUpDataOverheadOther += data;
-															  m_nUpDataOverheadOtherPackets++;}
-	uint32	GetUpDatarateOverhead()						{return m_nUpDatarateOverhead;}
-	uint64	GetUpDataOverheadSourceExchange()			{return m_nUpDataOverheadSourceExchange;}
-	uint64	GetUpDataOverheadFileRequest()				{return m_nUpDataOverheadFileRequest;}
-	uint64	GetUpDataOverheadServer()					{return m_nUpDataOverheadServer;}
-	uint64	GetUpDataOverheadOther()					{return m_nUpDataOverheadOther;}
-	uint64	GetUpDataOverheadSourceExchangePackets()	{return m_nUpDataOverheadSourceExchangePackets;}
-	uint64	GetUpDataOverheadFileRequestPackets()		{return m_nUpDataOverheadFileRequestPackets;}
-	uint64	GetUpDataOverheadServerPackets()			{return m_nUpDataOverheadServerPackets;}
-	uint64	GetUpDataOverheadOtherPackets()				{return m_nUpDataOverheadOtherPackets;}
-	void	CompUpDatarateOverhead();
-	void	SuspendUpload( const CFileHash& );
-	void	ResumeUpload( const CFileHash& );
-protected:
-	void	RemoveFromWaitingQueue(POSITION pos, bool updatewindow);
-	POSITION	GetWaitingClient(CUpDownClient* client);
-//	POSITION	GetWaitingClientByID(CUpDownClient* client);
-	POSITION	GetDownloadingClient(CUpDownClient* client);
-	bool		AcceptNewClient();
-	void		AddUpNextClient(CUpDownClient* directadd = 0);
+	CUpDownClient* GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs = NULL);
+
+	uint16	SuspendUpload(const CMD4Hash &, bool terminate);
+	void	ResumeUpload(const CMD4Hash &);
+	CKnownFile* GetAllUploadingKnownFile() { return m_allUploadingKnownFile; }
+
 private:
-	CTypedPtrList<CPtrList, CUpDownClient*> waitinglist;
-	CTypedPtrList<CPtrList, CUpDownClient*> uploadinglist;
-	CList<CFileHash> suspended_uploads_list;  //list for suspended uploads
-	uint32	msPrevProcess;
-	float	kBpsUp;
-	float	kBpsEst;
-	CPreferences* app_prefs;
-	wxTimer* h_timer;
-	uint32	bannedcount;
-	uint32	successfullupcount;
-	uint32	failedupcount;
-	uint32	totaluploadtime;
-	uint32	m_nLastStartUpload;
-	uint32	m_nUpDatarateOverhead;
-	uint32	m_nUpDataRateMSOverhead;
-	uint64	m_nUpDataOverheadSourceExchange;
-	uint64	m_nUpDataOverheadFileRequest;
-	uint64	m_nUpDataOverheadServer;
-	uint64	m_nUpDataOverheadOther;
-	uint64	m_nUpDataOverheadSourceExchangePackets;
-	uint64	m_nUpDataOverheadFileRequestPackets;
-	uint64	m_nUpDataOverheadServerPackets;
-	uint64	m_nUpDataOverheadOtherPackets;
-	bool	lastupslotHighID; // VQB lowID alternation
-	CList<int, int>	m_AvarageUDRO_list;
+	void	RemoveFromWaitingQueue(CClientRefList::iterator pos);
+	uint16	GetMaxSlots() const;
+	void	AddUpNextClient(CUpDownClient* directadd = 0);
+	bool	IsSuspended(const CMD4Hash& hash) { return suspendedUploadsSet.find(hash) != suspendedUploadsSet.end(); }
+	void	SortGetBestClient(CClientRef * bestClient = NULL);
 
+	CClientRefList m_waitinglist;
+	CClientRefList m_uploadinglist;
+
+#if EXTENDED_UPLOADQUEUE
+	CClientRefList m_possiblyWaitingList;
+	int		PopulatePossiblyWaitingList();
+#endif
+
+	std::set<CMD4Hash> suspendedUploadsSet;  // set for suspended uploads
+	uint32	m_nLastStartUpload;
+	uint32	m_lastSort;
+	bool	lastupslotHighID; // VQB lowID alternation
+	bool	m_allowKicking;
+	// This KnownFile collects all currently uploading clients for display in the upload list control
+	CKnownFile * m_allUploadingKnownFile;
 };
 
 #endif // UPLOADQUEUE_H
+// File_checked_for_headers

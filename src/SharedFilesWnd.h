@@ -1,73 +1,140 @@
-//this file is part of aMule
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 #ifndef SHAREDFILESWND_H
 #define SHAREDFILESWND_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
-#include <wx/gauge.h>		// Needed for wxGauge
-#include <wx/statbmp.h>		// Needed for wxStaticBitmap
-#include <wx/listbase.h>	// Needed for wxListEvent
 
-#include "resource.h"		// Needed for IDD_FILES
 
 class CKnownFile;
 class CSharedFilesCtrl;
+class CSharedFilePeersListCtrl;
+class wxListEvent;
+class wxGauge;
+class wxSplitterEvent;
+class wxRadioBox;
 
-class CSharedFilesWnd : public wxPanel //CResizableDialog
+/**
+ * This class represents the window containing the list of shared files.
+ */
+class CSharedFilesWnd : public wxPanel
 {
-  //DECLARE_DYNAMIC(CSharedFilesWnd)
-
 public:
-	CSharedFilesWnd(wxWindow* pParent = NULL);   // standard constructor
-	virtual ~CSharedFilesWnd();
-	void Localize();
-	void Check4StatUpdate(CKnownFile* file);
-// Dialog Data
-	enum { IDD = IDD_FILES };
+	/**
+	 * Constructor.
+	 */
+	CSharedFilesWnd(wxWindow* pParent = NULL);
+
+	/**
+	 * Destructor.
+	 */
+	~CSharedFilesWnd();
+
+
+	/**
+	 * This function updates the statistics of the selected items.
+	 *
+	 * Call this function when an item has been selected, or when a
+	 * selected item changes. It
+	 */
+	void SelectionUpdated();
+
+
+	/**
+	 * Deletes all files and updates widget
+	 */
+	void RemoveAllSharedFiles();
+
+	/**
+	 * Call this function before displaying the dialog.
+	 *
+	 * This functions does a few tasks to ensure that the dialog is looking the right way.
+	 */
+	void	Prepare();
+
+	//! Pointer to the widget containing the list of shared files.
 	CSharedFilesCtrl* sharedfilesctrl;
 
-protected:
-	//virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//virtual bool OnInitDialog();
-	//virtual bool	PreTranslateMessage(MSG* pMsg);
-	//DECLARE_MESSAGE_MAP()
-	DECLARE_EVENT_TABLE()
+	//! Pointer to the list of clients.
+	CSharedFilePeersListCtrl*	peerslistctrl;
 
-	void OnLvnItemActivateSflist(wxListEvent& evt);
-	void OnBnClickedReloadsharedfiles();
-	//afx_msg void OnLvnItemActivateSflist(NMHDR *pNMHDR, LRESULT *pResult);
-	//afx_msg void OnNMClickSflist(NMHDR *pNMHDR, LRESULT *pResult);
+	//! Contains the current (or last if the clientlist is hidden) position of the splitter.
+	int m_splitter;
 private:
-	void ShowDetails(CKnownFile* cur_file);
-#if 0
-	CProgressCtrlX pop_bar;
-	CProgressCtrlX pop_baraccept;
-	CProgressCtrlX pop_bartrans;
-#endif
-	wxGauge* pop_bar;
-	wxGauge* pop_baraccept;
-	wxGauge* pop_bartrans;
+	/**
+	 * Event-handler for reloading the list of shared files.
+	 */
+	void OnBtnReloadShared(wxCommandEvent &evt);
 
-	wxFont bold;
-	unsigned char shownFileHash[16];
-	wxStaticBitmap m_ctrlStatisticsFrm;
+	/**
+	 * Event-handler for showing details about a shared file(s).
+	 */
+	void OnItemSelectionChanged(wxListEvent& evt);
+
+	/**
+	 * Event-handler for the list-toggle button.
+	 */
+	void OnToggleClientList( wxCommandEvent& event );
+
+	/**
+	 * Event-handler for changes in the sash divider position.
+	 */
+	void OnSashPositionChanging(wxSplitterEvent& evt);
+
+	/**
+	 * Event-handler for changes in the clients mode radio box.
+	 */
+	void OnSelectClientsMode( wxCommandEvent& WXUNUSED(evt) );
+
+	//! Pointer to the gauge used for showing requests ratio.
+	wxGauge* m_bar_requests;
+	//! Pointer to the gauge used for showing accepted-requests ratio.
+	wxGauge* m_bar_accepted;
+	//! Pointer to the gauge used for showing the transferred ratio.
+	wxGauge* m_bar_transfer;
+	//! Pointer to the radio box selecting the client mode.
+	wxRadioBox* m_radioClientMode;
+	//! Flag if window has been prepared
+	bool	m_prepared;
+	//! Minimum position of splitter bar
+	static const int s_splitterMin = 90;
+
+	/**
+	 * Mode which clients are shown
+	 */
+	enum EClientShow {
+		ClientShowAll = 0,
+		ClientShowSelected,
+		ClientShowUploading
+	};
+	EClientShow m_clientShow;
+
+
+	DECLARE_EVENT_TABLE()
 };
 
-#endif // SHAREDFILESWND_H
+#endif
+// File_checked_for_headers

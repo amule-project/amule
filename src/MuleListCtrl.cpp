@@ -1,805 +1,796 @@
-// This file is part of the aMule project.
 //
-// Copyright (c) 2003,
+// This file is part of the aMule Project.
 //
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either
-// version 2 of the License, or (at your option) any later version.
-// 
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+//
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/menu.h>			// Needed for wxMenu
+#include <wx/fileconf.h>		// Needed for wxConfig
+#include <wx/tokenzr.h>			// Needed for wxStringTokenizer
+#include <wx/imaglist.h>		// Needed for wxImageList
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/menu.h>		// Needed for wxMenu
-#include <wx/window.h>
-#include <wx/msgdlg.h>
+#include <common/MuleDebug.h>			// Needed for MULE_VALIDATE_
+#include <common/StringFunctions.h>		// Needed for StrToLong
 
-#include "MuleListCtrl.h"	// Interface declarations
-#include "opcodes.h"		// Needed for MP_LISTCOL_1
-#include "CamuleAppBase.h"	// Needed for theApp
+#include <common/MenuIDs.h>
 
-#if 0
-#define MLC_BLEND(A, B, X) ((A + B * (X-1) + ((X+1)/2)) / X)
+#include "MuleListCtrl.h"		// Interface declarations
+#include "GetTickCount.h"		// Needed for GetTickCount()
+#include "OtherFunctions.h"
 
-#define MLC_RGBBLEND(A, B, X) (                   \
-	RGB(MLC_BLEND(GetRValue(A), GetRValue(B), X), \
-	MLC_BLEND(GetGValue(A), GetGValue(B), X),     \
-	MLC_BLEND(GetBValue(A), GetBValue(B), X))     \
-)
 
-#define MLC_DT_TEXT (DT_SINGLELINE | DT_NOPREFIX | DT_VCENTER | DT_END_ELLIPSIS)
-#endif
+// For arrow-pixmaps
+#include "pixmaps/sort_dn.xpm"
+#include "pixmaps/sort_up.xpm"
+#include "pixmaps/sort_dnx2.xpm"
+#include "pixmaps/sort_upx2.xpm"
 
-#define MLC_MENU 650
 
-//////////////////////////////////
-// CMuleListCtrl
-
-//IMPLEMENT_DYNAMIC(CMuleListCtrl, wxODListCtrl)
-#ifdef __WXMSW__
-IMPLEMENT_DYNAMIC_CLASS(CMuleListCtrl, wxListCtrl)
+// Global constants
+#ifdef __WXGTK__
+	const int COL_SIZE_MIN = 10;
+#elif defined(__WINDOWS__) || defined(__WXMAC__) || defined(__WXCOCOA__)
+	const int COL_SIZE_MIN = 0;
 #else
-IMPLEMENT_DYNAMIC_CLASS(CMuleListCtrl,wxODListCtrl)
+	#error Need to define COL_SIZE_MIN for your OS
 #endif
 
-CMuleListCtrl::CMuleListCtrl()
-{
-	m_bCustomDraw = false;
-	m_iCurrentSortItem = -1;
-	m_iColumnsTracked = 0;
-	m_aColumns = NULL;
 
-	#if defined(__WXGTK__)
-		m_col_minsize = 10;
-	#elif defined(__WXMSW__)
-		m_col_minsize = 0;
-	#elif defined(__WXMAC__)
-		m_col_minsize = 0;
-	#else
-		#error Need to set col_minsize for ur OS
-	#endif
+BEGIN_EVENT_TABLE(CMuleListCtrl, MuleExtern::wxGenericListCtrl)
+	EVT_LIST_COL_CLICK( -1,			CMuleListCtrl::OnColumnLClick)
+	EVT_LIST_COL_RIGHT_CLICK( -1,	CMuleListCtrl::OnColumnRClick)
+	EVT_LIST_ITEM_SELECTED(-1,		CMuleListCtrl::OnItemSelected)
+	EVT_LIST_ITEM_DESELECTED(-1,	CMuleListCtrl::OnItemSelected)
+	EVT_LIST_DELETE_ITEM(-1,		CMuleListCtrl::OnItemDeleted)
+	EVT_LIST_DELETE_ALL_ITEMS(-1,	CMuleListCtrl::OnAllItemsDeleted)
+	EVT_CHAR(						CMuleListCtrl::OnChar)
+	EVT_MENU_RANGE(MP_LISTCOL_1, MP_LISTCOL_15, CMuleListCtrl::OnMenuSelected)
+	EVT_MOUSEWHEEL(CMuleListCtrl::OnMouseWheel)
+END_EVENT_TABLE()
+
+
+//! Shared list of arrow-pixmaps
+static wxImageList imgList(16, 16, true, 0);
+
+
+CMuleListCtrl::CMuleListCtrl(wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
+	: MuleExtern::wxGenericListCtrl(parent, winid, pos, size, style, validator, name)
+{
+	m_sort_func = NULL;
+	m_tts_time = 0;
+	m_tts_item = -1;
+	m_isSorting = false;
+
+	if (imgList.GetImageCount() == 0) {
+		imgList.Add(wxBitmap(sort_dn_xpm));
+		imgList.Add(wxBitmap(sort_up_xpm));
+		imgList.Add(wxBitmap(sort_dnx2_xpm));
+		imgList.Add(wxBitmap(sort_upx2_xpm));
+	}
+
+	// Default sort-order is to sort by the first column (asc).
+	m_sort_orders.push_back(CColPair(0, 0));
+
+	SetImageList(&imgList, wxIMAGE_LIST_SMALL);
 }
 
-#ifdef __WXMSW__
-CMuleListCtrl::CMuleListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags)
-: wxListCtrl(parent,id,pos,siz,flags)
-#else
-CMuleListCtrl::CMuleListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags)
-: wxODListCtrl(parent,id,pos,siz,flags)
-#endif
-{
-	m_bCustomDraw = false;
-	m_iCurrentSortItem = -1;
-	m_iColumnsTracked = 0;
-	m_aColumns = NULL;
-	#if defined(__WXGTK__)
-		m_col_minsize = 10;
-	#elif defined(__WXMSW__)
-		m_col_minsize = 0;
-	#elif defined(__WXMAC__)
-		m_col_minsize = 0;
-	#else
-		#error Need to set col_minsize for ur OS
-	#endif
-}
 
 CMuleListCtrl::~CMuleListCtrl()
 {
-	if(m_aColumns != NULL) {
-		delete[] m_aColumns;
+	if (!m_name.IsEmpty()) {
+		SaveSettings();
 	}
 }
 
-void CMuleListCtrl::SetNamaMule(LPCTSTR lpszName)
+long CMuleListCtrl::InsertColumn(long col, const wxString& heading, int format, int width, const wxString& name)
 {
-	m_Name = lpszName;
-}
+	if (!name.IsEmpty()) {
+#ifdef __DEBUG__
+		// Check for valid names
+		wxASSERT_MSG(name.Find(wxT(':')) == wxNOT_FOUND, wxT("Column name \"") + name + wxT("\" contains invalid characters!"));
+		wxASSERT_MSG(name.Find(wxT(',')) == wxNOT_FOUND, wxT("Column name \"") + name + wxT("\" contains invalid characters!"));
 
-//new fix for old problem... normally Update(int) causes entire list to redraw
-void CMuleListCtrl::Update(int iItem)
-{
-#if 0
-	RECT rcItem;
-	bool bResult = this->GetItemRect(iItem, &rcItem, LVIR_BOUNDS);
-	if(bResult) {
-		InvalidateRect(&rcItem, FALSE);
-	}
-	return bResult;
-#endif
-}
-
-void CMuleListCtrl::PreSubclassWindow()
-{
-	#if 0
-	SetColors();
-	CListCtrl::PreSubclassWindow();
-	ModifyStyle(LVS_SINGLESEL|LVS_LIST|LVS_ICON|LVS_SMALLICON,LVS_REPORT|TVS_LINESATROOT|TVS_HASBUTTONS); 
-	SetExtendedStyle(LVS_EX_HEADERDRAGDROP);
-	#endif
-}
-
-#if 0
-int CMuleListCtrl::IndexToOrder(CHeaderCtrl* pHeader, int iIndex)
-{
-	int iCount = pHeader->GetItemCount();
-	int *piArray = new int[iCount];
-	Header_GetOrderArray( pHeader->m_hWnd, iCount, piArray);
-	for(int i=0; i < iCount; i++ ) {
-		if(piArray[i] == iIndex) {
-			delete[] piArray;
-			return i;
+		// Check for uniqueness of names.
+		for (ColNameList::const_iterator it = m_column_names.begin(); it != m_column_names.end(); ++it) {
+			if (name == it->name) {
+				wxFAIL_MSG(wxT("Column name \"") + name + wxT("\" is not unique!"));
+			}
 		}
-	}
-	delete[] piArray;
-	return -1;
-}
 #endif
-
-void CMuleListCtrl::HideColumn(int iColumn)
-{
-	#if 0
-	CHeaderCtrl* pHeaderCtrl = GetHeaderCtrl();
-	int iCount = pHeaderCtrl->GetItemCount();
-	if(iColumn < 1 || iColumn >= iCount || m_aColumns[iColumn].bHidden) {
-		return;
-	}
-	//stop it from redrawing
-	SetRedraw(FALSE);
-
-	//shrink width to 0
-	HDITEM item;
-	item.mask = HDI_WIDTH;
-	pHeaderCtrl->GetItem(iColumn, &item);
-	m_aColumns[iColumn].iWidth = item.cxy;
-	item.cxy = 0;
-	pHeaderCtrl->SetItem(iColumn, &item);
-
-	//move to front of list
-	INT *piArray = new INT[m_iColumnsTracked];
-	pHeaderCtrl->GetOrderArray(piArray, m_iColumnsTracked);
-
-	int iFrom = m_aColumns[iColumn].iLocation;
-	for(int i = 0; i < m_iColumnsTracked; i++) {
-		if(m_aColumns[i].iLocation > m_aColumns[iColumn].iLocation && m_aColumns[i].bHidden) {
-			iFrom++;
+		// Insert name at position col.
+		ColNameList::iterator it = m_column_names.begin();
+		while (it != m_column_names.end() && it->index < col) {
+			++it;
+		}
+		m_column_names.insert(it, ColNameEntry(col, width, name));
+		while (it != m_column_names.end()) {
+			++it;
+			++(it->index);
 		}
 	}
 
-	for(int i = iFrom; i > 0; i--) {
-		piArray[i] = piArray[i - 1];
-	}
-	piArray[0] = iColumn;
-	pHeaderCtrl->SetOrderArray(m_iColumnsTracked, piArray);
-	delete[] piArray;
-
-	//update entry
-	m_aColumns[iColumn].bHidden = true;
-
-	//redraw
-	SetRedraw(TRUE);
-	Invalidate(FALSE);
-	#endif
-}
-
-void CMuleListCtrl::ShowColumn(int iColumn)
-{
-	#if 0
-	CHeaderCtrl* pHeaderCtrl = GetHeaderCtrl();
-	int iCount = pHeaderCtrl->GetItemCount();
-	if(iColumn < 1 || iColumn >= iCount || !m_aColumns[iColumn].bHidden) {
-		return;
-	}
-
-	//stop it from redrawing
-	SetRedraw(FALSE);
-
-	//restore position in list
-	INT *piArray = new INT[m_iColumnsTracked];
-	pHeaderCtrl->GetOrderArray(piArray, m_iColumnsTracked);
-	int iCurrent = IndexToOrder(pHeaderCtrl, iColumn);
-
-	for(; iCurrent < IndexToOrder(pHeaderCtrl, 0) && iCurrent < m_iColumnsTracked - 1; iCurrent++) {
-		piArray[iCurrent] = piArray[iCurrent + 1];
-	}
-	for(; m_aColumns[iColumn].iLocation > m_aColumns[pHeaderCtrl->OrderToIndex(iCurrent + 1)].iLocation && iCurrent < m_iColumnsTracked - 1; iCurrent++) {
-		piArray[iCurrent] = piArray[iCurrent + 1];
-	}
-	piArray[iCurrent] = iColumn;
-	pHeaderCtrl->SetOrderArray(m_iColumnsTracked, piArray);
-	delete[] piArray;
-
-	//and THEN restore original width
-	HDITEM item;
-	item.mask = HDI_WIDTH;
-	item.cxy = m_aColumns[iColumn].iWidth;
-	pHeaderCtrl->SetItem(iColumn, &item);
-
-	//update entry
-	m_aColumns[iColumn].bHidden = false;
-
-	//redraw
-	SetRedraw(TRUE);
-	Invalidate(FALSE);
-	#endif
+	return MuleExtern::wxGenericListCtrl::InsertColumn(col, heading, format, width);
 }
 
 void CMuleListCtrl::SaveSettings()
 {
-	CPreferences::Table tID = TablePrefs();
-	int colTrack=GetColumnCount();
+	wxCHECK_RET(!m_name.IsEmpty(), wxT("Cannot save settings for unnamed list"));
 
-	INT *piArray = new INT[colTrack];
+	wxConfigBase* cfg = wxConfigBase::Get();
 
-	for(int i = 0; i < colTrack; i++) {
-		wxListItem mycol;
-		GetColumn(i,mycol);
-		// wxMessageBox(wxString::Format("%s - %i",mycol.GetText().c_str(), mycol.GetWidth()));
-		theApp.glob_prefs->SetColumnWidth(tID, i, mycol.GetWidth());
-		//theApp.glob_prefs->SetColumnHidden(tID, i, IsColumnHidden(i));
-		//piArray[i] = m_aColumns[i].iLocation;
+	// Save sorting, column and order
+	wxString sortOrder;
+	for (CSortingList::iterator it = m_sort_orders.begin(); it != m_sort_orders.end();) {
+		wxString columnName = GetColumnName(it->first);
+		if (!columnName.IsEmpty()) {
+			sortOrder += columnName;
+			sortOrder += wxT(":");
+			sortOrder += it->second & SORT_DES ? wxT("1") : wxT("0");
+			sortOrder += wxT(":");
+			sortOrder += it->second & SORT_ALT ? wxT("1") : wxT("0");
+			if (++it != m_sort_orders.end()) {
+				sortOrder += wxT(",");
+			}
+		} else {
+			++it;
+		}
 	}
 
-	//theApp.glob_prefs->SetColumnOrder(tID, piArray);
-	delete[] piArray;
+	cfg->Write(wxT("/eMule/TableOrdering") + m_name, sortOrder);
+
+	// Save column widths. ATM this is also used to signify hidden columns.
+	wxString buffer;
+	for (int i = 0; i < GetColumnCount(); ++i) {
+		wxString columnName = GetColumnName(i);
+		if (!columnName.IsEmpty()) {
+			if (!buffer.IsEmpty()) {
+				buffer << wxT(",");
+			}
+			int currentwidth = GetColumnWidth(i);
+			int savedsize = (m_column_sizes.size() && (i < (int) m_column_sizes.size())) ? m_column_sizes[i] : 0;
+			buffer << columnName << wxT(":") << ((currentwidth > 0) ? currentwidth : (-1 * savedsize));
+		}
+	}
+
+	cfg->Write(wxT("/eMule/TableWidths") + m_name, buffer);
+}
+
+void CMuleListCtrl::ParseOldConfigEntries(const wxString& sortOrders, const wxString& columnWidths)
+{
+	// Set sort order (including sort column)
+	wxStringTokenizer tokens(sortOrders, wxT(","));
+	while (tokens.HasMoreTokens()) {
+		wxString token = tokens.GetNextToken();
+
+		long column = 0;
+		unsigned long order = 0;
+
+		if (token.BeforeFirst(wxT(' ')).Strip(wxString::both).ToLong(&column)) {
+			if (token.AfterFirst(wxT(' ')).Strip(wxString::both).ToULong(&order)) {
+				column = GetNewColumnIndex(column);
+				// Sanity checking, to avoid asserting if column count changes.
+				if (column >= 0 && column < GetColumnCount()) {
+					// Sanity checking, to avoid asserting if data-format changes.
+					if ((order & ~SORTING_MASK) == 0) {
+						// SetSorting will take care of duplicate entries
+						SetSorting(column, order);
+					}
+				}
+			}
+		}
+	}
+
+	// Set column widths
+	int counter = 0;
+	wxStringTokenizer tokenizer(columnWidths, wxT(","));
+	while (tokenizer.HasMoreTokens()) {
+		long idx = GetNewColumnIndex(counter++);
+		long width = StrToLong(tokenizer.GetNextToken());
+		if (idx >= 0) {
+			SetColumnWidth(idx, width);
+		}
+	}
 }
 
 void CMuleListCtrl::LoadSettings()
 {
-	//CHeaderCtrl* pHeaderCtrl = GetHeaderCtrl();
+	wxCHECK_RET(!m_name.IsEmpty(), wxT("Cannot load settings for unnamed list"));
 
-	CPreferences::Table tID = TablePrefs();
-	int colTrack=GetColumnCount();
+	wxConfigBase* cfg = wxConfigBase::Get();
 
-	INT *piArray = new INT[colTrack];
-	for(int i = 0; i < colTrack; i++) {
-		int iWidth = theApp.glob_prefs->GetColumnWidth(tID, i);
-		if(iWidth != DEFAULT_COL_SIZE) {
-			SetColumnWidth(i, iWidth);
-			//wxListItem mycol;
-			//mycol.SetWidth(iWidth);
-			//SetColumn(i,mycol);
+	// Load sort order (including sort-column)
+	m_sort_orders.clear();
+	wxString sortOrders = cfg->Read(wxT("/eMule/TableOrdering") + m_name, wxEmptyString);
+	wxString columnWidths = cfg->Read(wxT("/eMule/TableWidths") + m_name, wxEmptyString);
+
+	// Prevent sorting from occuring when calling SetSorting
+	MuleListCtrlCompare sortFunc = m_sort_func;
+	m_sort_func = NULL;
+
+	if (columnWidths.Find(wxT(':')) == wxNOT_FOUND) {
+		// Old-style config entries...
+		ParseOldConfigEntries(sortOrders, columnWidths);
+	} else {
+		// Sort orders
+		wxStringTokenizer tokens(sortOrders, wxT(","));
+		// Sort orders are stored in order primary, secondary, ...
+		// We want to apply them with SetSorting(), so we have to apply them in reverse order,
+		// so that the primary order is applied last and wins.
+		// Read them with tokenizer and store them in a list in reverse order.
+		CStringList tokenList;
+		while (tokens.HasMoreTokens()) {
+			tokenList.push_front(tokens.GetNextToken());
 		}
-		if(i == 0) {
-			piArray[0] = 0;
-		} else {
-			int iOrder = theApp.glob_prefs->GetColumnOrder(tID, i);
-			if(iOrder == 0) {
-				piArray[i] = i;
+		for (CStringList::iterator it = tokenList.begin(); it != tokenList.end(); ++it) {
+			wxString token = *it;
+			wxString name = token.BeforeFirst(wxT(':'));
+			long order = StrToLong(token.AfterFirst(wxT(':')).BeforeLast(wxT(':')));
+			long alt = StrToLong(token.AfterLast(wxT(':')));
+			int col = GetColumnIndex(name);
+			if (col >= 0) {
+				SetSorting(col, (order ? SORT_DES : 0) | (alt ? SORT_ALT : 0));
+			}
+		}
+
+		// Column widths
+		wxStringTokenizer tkz(columnWidths, wxT(","));
+		while (tkz.HasMoreTokens()) {
+			wxString token = tkz.GetNextToken();
+			wxString name = token.BeforeFirst(wxT(':'));
+			long width = StrToLong(token.AfterFirst(wxT(':')));
+			int col = GetColumnIndex(name);
+			if (col >= 0) {
+				if (col >= (int) m_column_sizes.size()) {
+					m_column_sizes.resize(col + 1, 0);
+				}
+				m_column_sizes[col] = abs(width);
+				SetColumnWidth(col, (width > 0) ? width : 0);
+			}
+		}
+	}
+
+	// Must have at least one sort-order specified
+	if (m_sort_orders.empty()) {
+		m_sort_orders.push_back(CColPair(0, 0));
+	}
+
+	// Re-enable sorting and resort the contents (if any).
+	m_sort_func = sortFunc;
+	SortList();
+}
+
+
+const wxString& CMuleListCtrl::GetColumnName(int index) const
+{
+	for (ColNameList::const_iterator it = m_column_names.begin(); it != m_column_names.end(); ++it) {
+		if (it->index == index) {
+			return it->name;
+		}
+	}
+	return EmptyString;
+}
+
+int CMuleListCtrl::GetColumnDefaultWidth(int index) const
+{
+	for (ColNameList::const_iterator it = m_column_names.begin(); it != m_column_names.end(); ++it) {
+		if (it->index == index) {
+			return it->defaultWidth;
+		}
+	}
+	return wxLIST_AUTOSIZE;
+}
+
+int CMuleListCtrl::GetColumnIndex(const wxString& name) const
+{
+	for (ColNameList::const_iterator it = m_column_names.begin(); it != m_column_names.end(); ++it) {
+		if (it->name == name) {
+			return it->index;
+		}
+	}
+	return -1;
+}
+
+int CMuleListCtrl::GetNewColumnIndex(int oldindex) const
+{
+	wxStringTokenizer oldcolumns(GetOldColumnOrder(), wxT(","), wxTOKEN_RET_EMPTY_ALL);
+
+	while (oldcolumns.HasMoreTokens()) {
+		wxString name = oldcolumns.GetNextToken();
+		if (oldindex == 0) {
+			return GetColumnIndex(name);
+		}
+		--oldindex;
+	}
+	return -1;
+}
+
+long CMuleListCtrl::GetInsertPos(wxUIntPtr data)
+{
+	// Find the best place to position the item through a binary search
+	int Min = 0;
+	int Max = GetItemCount();
+
+	// Only do this if there are any items and a sorter function.
+	// Otherwise insert at end.
+	if (Max && m_sort_func) {
+		// This search will find the place to position the new item
+		// so it matches current sorting.
+		// The result will be the position the new item will have
+		// after insertion, which is the format expected by the InsertItem function.
+		// If the item equals another item it will be inserted after it.
+		do {
+			int cur_pos = ( Max - Min ) / 2 + Min;
+			int cmp = CompareItems(data, GetItemData(cur_pos));
+
+			// Value is less than the one at the current pos
+			if ( cmp < 0 ) {
+				Max = cur_pos;
 			} else {
-				piArray[i] = iOrder;
+				Min = cur_pos + 1;
 			}
-		}
-		//m_aColumns[i].iLocation = piArray[i];
+		} while ((Min != Max));
 	}
 
-	//pHeaderCtrl->SetOrderArray(m_iColumnsTracked, piArray);
-	delete[] piArray;
-
-	#if 0
-	for(int i = 1; i < m_iColumnsTracked; i++) {
-		if(theApp.glob_prefs->GetColumnHidden(tID, i)) {
-			HideColumn(i);
-		}
-	}
-	#endif
+	return Max;
 }
 
-void CMuleListCtrl::SetColors()
-{
-	#if 0
-	m_crWindow      = ::GetSysColor(COLOR_WINDOW);
-	m_crWindowText  = ::GetSysColor(COLOR_WINDOWTEXT);
 
-	COLORREF crHighlight = ::GetSysColor(COLOR_HIGHLIGHT);
-	m_crFocusLine   = crHighlight;
-	m_crNoHighlight = MLC_RGBBLEND(crHighlight, m_crWindow, 8);
-	m_crNoFocusLine = MLC_RGBBLEND(crHighlight, m_crWindow, 2);
-	m_crHighlight   = MLC_RGBBLEND(crHighlight, m_crWindow, 4);
-	#endif
+int CMuleListCtrl::CompareItems(wxUIntPtr item1, wxUIntPtr item2)
+{
+	CSortingList::const_iterator it = m_sort_orders.begin();
+	for (; it != m_sort_orders.end(); ++it) {
+		int result = m_sort_func(item1, item2, it->first | it->second);
+		if (result != 0) {
+			return result;
+		}
+	}
+
+	// Ensure that different items are never considered equal.
+	return CmpAny(item1, item2);
 }
 
-void CMuleListCtrl::SetSortArrow(int iColumn, ArrowType atType)
+int CMuleListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long data)
 {
-	// integrated in listctrl..
-	switch(atType) {
-		case 263:
-			#ifndef __WXMSW__
-			wxODListCtrl::SetSortArrow(iColumn,(int)1);
-			#endif
-			break;
-		default:
-			#ifndef __WXMSW__
-			wxODListCtrl::SetSortArrow(iColumn,(int)2);
-			#endif
-			break;
-	}
-	#if 0
-	HDITEM headerItem;
-	headerItem.mask = HDI_FORMAT | HDI_BITMAP;
-	CHeaderCtrl* pHeaderCtrl = GetHeaderCtrl();
+	MuleSortData* sortdata = reinterpret_cast<MuleSortData*>(data);
+	const CSortingList& orders = sortdata->m_sort_orders;
 
-	//delete old image if column has changed
-	if(iColumn != m_iCurrentSortItem) {
-		pHeaderCtrl->GetItem(m_iCurrentSortItem, &headerItem);
-		headerItem.fmt &= ~(HDF_BITMAP | HDF_BITMAP_ON_RIGHT);
-		if (headerItem.hbm != 0) {
-			DeleteObject(headerItem.hbm);
-			headerItem.hbm = 0;
+	CSortingList::const_iterator it = orders.begin();
+	for (; it != orders.end(); ++it) {
+		int result = sortdata->m_sort_func(item1, item2, it->first | it->second);
+		if (result != 0) {
+			return result;
 		}
-		pHeaderCtrl->SetItem(m_iCurrentSortItem, &headerItem);
-		m_iCurrentSortItem = iColumn;
 	}
 
-	//place new arrow unless we were given an invalid column
-	if(iColumn >= 0 && pHeaderCtrl->GetItem(iColumn, &headerItem)) {
-		m_atSortArrow = atType;
-		if (headerItem.hbm != 0) {
-			DeleteObject(headerItem.hbm);
-			headerItem.hbm = 0;
-		}
-		headerItem.fmt |= HDF_BITMAP | HDF_BITMAP_ON_RIGHT;
-		headerItem.hbm = (HBITMAP)LoadImage(AfxGetInstanceHandle(),MAKEINTRESOURCE(m_atSortArrow), IMAGE_BITMAP, 0, 0,LR_LOADMAP3DCOLORS);
-		pHeaderCtrl->SetItem(iColumn, &headerItem);
-	}
-	#endif
+	// Ensure that different items are never considered equal.
+	return CmpAny(item1, item2);
 }
 
-#if 0
-//lower level than everything else so poorly overriden functions don't break us
-bool CMuleListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+void CMuleListCtrl::SortList()
 {
-	//lets look for the important messages that are essential to handle
-	switch(message) {
-	case WM_NOTIFY:
-		if(wParam == 0) {
-			if(((NMHDR*)lParam)->code == NM_RCLICK) {
-				//catch right click on headers and show column menu
+	if (!IsSorting() && (m_sort_func && GetColumnCount())) {
 
-				POINT point;
-				GetCursorPos (&point);
+		m_isSorting = true;
 
-				CTitleMenu tmColumnMenu;
-				tmColumnMenu.CreatePopupMenu();
-				if(m_Name.GetLength() != 0)
-					tmColumnMenu.AddMenuTitle(m_Name);
+		MuleSortData sortdata(m_sort_orders, m_sort_func);
 
-				CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
-				int iCount = pHeaderCtrl->GetItemCount();
-				for(int iCurrent = 1; iCurrent < iCount; iCurrent++) {
-					HDITEM item;
-					char text[255];
-					item.pszText = text;
-					item.mask = HDI_TEXT;
-					item.cchTextMax = 255;
-					pHeaderCtrl->GetItem(iCurrent, &item);
-
-					tmColumnMenu.AppendMenu(MF_STRING | m_aColumns[iCurrent].bHidden ? 0 : MF_CHECKED,
-						MLC_MENU + iCurrent, item.pszText);
-				}
-				tmColumnMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this); 
-				tmColumnMenu.DestroyMenu();
-
-				return *pResult = TRUE;
-
-			} else if(((NMHDR*)lParam)->code == HDN_BEGINTRACKA || ((NMHDR*)lParam)->code == HDN_BEGINTRACKW) {
-				//stop them from changeing the size of anything "before" first column
-
-				HD_NOTIFY *pHDN = (HD_NOTIFY*)lParam;
-				if(m_aColumns[pHDN->iItem].bHidden)
-					return *pResult = TRUE;
-
-			} else if(((NMHDR*)lParam)->code == HDN_ENDDRAG) {
-				//stop them from moving first column
-
-				NMHEADER *pHeader = (NMHEADER*)lParam;
-				if(pHeader->iItem != 0 && pHeader->pitem->iOrder != 0) {
-
-					int iNewLoc = pHeader->pitem->iOrder - GetHiddenColumnCount();
-					if(iNewLoc > 0) {
-
-						if(m_aColumns[pHeader->iItem].iLocation != iNewLoc) {
-
-							if(m_aColumns[pHeader->iItem].iLocation > iNewLoc) {
-								int iMax = m_aColumns[pHeader->iItem].iLocation;
-								int iMin = iNewLoc;
-								for(int i = 0; i < m_iColumnsTracked; i++) {
-									if(m_aColumns[i].iLocation >= iMin && m_aColumns[i].iLocation < iMax)
-										m_aColumns[i].iLocation++;
-								}
-							}
-
-							else if(m_aColumns[pHeader->iItem].iLocation < iNewLoc) {
-								int iMin = m_aColumns[pHeader->iItem].iLocation;
-								int iMax = iNewLoc;
-								for(int i = 0; i < m_iColumnsTracked; i++) {
-									if(m_aColumns[i].iLocation > iMin && m_aColumns[i].iLocation <= iMax)
-										m_aColumns[i].iLocation--;
-								}
-							}
-
-							m_aColumns[pHeader->iItem].iLocation = iNewLoc;
-
-							Invalidate(FALSE);
-							break;
-						}
-					}
-				}
-
-				return *pResult = 1;
-			}
+		// In many cases control already has correct order, and sorting causes nasty flickering.
+		// Make one pass through it to check if sorting is necessary at all.
+		int nrItems = GetItemCount();
+		bool clean = true;
+		long lastItemdata = 0;
+		if (nrItems > 1) {
+			lastItemdata = GetItemData(0);
 		}
-
-
-	case WM_COMMAND:
-		//deal with menu clicks
-
-		if(wParam >= MLC_MENU) {
-
-			CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
-			int iCount = pHeaderCtrl->GetItemCount();
-
-			int iToggle = wParam - MLC_MENU;
-			if(iToggle >= iCount)
+		for (int i = 1; i < nrItems; i++) {
+			long nextItemdata = GetItemData(i);
+			if (SortProc(lastItemdata, nextItemdata, (long int)&sortdata) > 0) {
+				// ok - we need to sort
+				clean = false;
 				break;
-
-			if(m_aColumns[iToggle].bHidden)
-				ShowColumn(iToggle);
-			else
-				HideColumn(iToggle);
-
-			return *pResult = 1;
+			}
+			lastItemdata = nextItemdata;
 		}
-		break;
-
-
-	case LVM_DELETECOLUMN:
-		//book keeping!
-
-		if(m_aColumns != NULL) {
-			for(int i = 0; i < m_iColumnsTracked; i++)
-				if(m_aColumns[i].bHidden)
-					ShowColumn(i);
-
-			delete[] m_aColumns;
+		if (clean) {
+			// no need to sort
+			m_isSorting = false;
+			return;
 		}
-		m_aColumns = new MULE_COLUMN[--m_iColumnsTracked];
-		for(int i = 0; i < m_iColumnsTracked; i++) {
-			m_aColumns[i].iLocation = i;
-			m_aColumns[i].bHidden = false;
+
+		// Positions are likely to be invalid after sorting.
+		ResetTTS();
+
+		// Store the current selected items
+		ItemDataList selectedItems = GetSelectedItems();
+		// Store the focused item
+		long pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_FOCUSED );
+		wxUIntPtr focused = (pos == -1) ? 0 : GetItemData(pos);
+
+		SortItems(SortProc, (long int)&sortdata);
+
+		// Re-select the selected items.
+		for (unsigned i = 0; i < selectedItems.size(); ++i) {
+			long it_pos = FindItem(-1, selectedItems[i]);
+			if (it_pos != -1) {
+				SetItemState(it_pos, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+			}
 		}
-		break;
 
-	//case LVM_INSERTCOLUMN:
-	case LVM_INSERTCOLUMNA:
-	case LVM_INSERTCOLUMNW:
-		//book keeping!
-
-		if(m_aColumns != NULL) {
-			for(int i = 0; i < m_iColumnsTracked; i++)
-				if(m_aColumns[i].bHidden)
-					ShowColumn(i);
-
-			delete[] m_aColumns;
+		// Set focus on item if any was focused
+		if (focused) {
+			long it_pos = FindItem(-1, focused);
+			if (it_pos != -1) {
+				SetItemState(it_pos, wxLIST_STATE_FOCUSED, wxLIST_STATE_FOCUSED);
+			}
 		}
-		m_aColumns = new MULE_COLUMN[++m_iColumnsTracked];
-		for(int i = 0; i < m_iColumnsTracked; i++) {
-			m_aColumns[i].iLocation = i;
-			m_aColumns[i].bHidden = false;
-		}
-		break;
 
+		m_isSorting = false;
+	}
+}
+
+CMuleListCtrl::ItemDataList CMuleListCtrl::GetSelectedItems() const
+{
+	// Create the initial vector with as many items as are selected
+	ItemDataList list( GetSelectedItemCount() );
+
+	// Current item being located
+	unsigned int current = 0;
+
+	long pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	while ( pos != -1 ) {
+		wxASSERT( current < list.size() );
+
+		list[ current++ ] = GetItemData( pos );
+
+		pos = GetNextItem( pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
 
-	return CListCtrl::OnWndMsg(message, wParam, lParam, pResult);
+	return list;
 }
-#endif
 
-#if 0
-bool CMuleListCtrl::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+
+void CMuleListCtrl::OnColumnRClick(wxListEvent& evt)
 {
-	if(message != WM_DRAWITEM) {
-		//catch the prepaint and copy struct
-		if(message == WM_NOTIFY && ((NMHDR*)lParam)->code == NM_CUSTOMDRAW &&
-		  ((LPNMLVCUSTOMDRAW)lParam)->nmcd.dwDrawStage == CDDS_ITEMPREPAINT) {
+	wxMenu menu;
+	wxListItem item;
 
-			m_bCustomDraw = CListCtrl::OnChildNotify(message, wParam, lParam, pResult);
-			if(m_bCustomDraw)
-				memcpy(&m_lvcd, (void*)lParam, sizeof(NMLVCUSTOMDRAW));
+	for ( int i = 0; i < GetColumnCount() && i < 15; ++i) {
+		GetColumn(i, item);
 
-			return m_bCustomDraw;
-		}
-
-		return CListCtrl::OnChildNotify(message, wParam, lParam, pResult);
+		menu.AppendCheckItem(i + MP_LISTCOL_1, item.GetText() );
+		menu.Check( i + MP_LISTCOL_1, GetColumnWidth(i) > COL_SIZE_MIN );
 	}
 
-	ASSERT(pResult == NULL); // no return value expected
-	UNUSED(pResult);         // unused in release builds
-
-	DrawItem((LPDRAWITEMSTRUCT)lParam);
-	return TRUE;
+	PopupMenu(&menu, evt.GetPoint());
 }
-#endif
 
-//////////////////////////////////
-// CMuleListCtrl message map
 
-#if 0
-BEGIN_MESSAGE_MAP(CMuleListCtrl, CListCtrl)
-	ON_WM_DRAWITEM()
-	ON_WM_ERASEBKGND()
-	ON_WM_SYSCOLORCHANGE()
-END_MESSAGE_MAP()
-#endif
-
-//////////////////////////////////
-// CMuleListCtrl message handlers
-
-#if 0
-void CMuleListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
+void CMuleListCtrl::OnMenuSelected( wxCommandEvent& evt )
 {
-	//set up our ficker free drawing
-	CRect rcItem(lpDrawItemStruct->rcItem);
-	CDC *oDC = CDC::FromHandle(lpDrawItemStruct->hDC);
-	oDC->SetBkColor(m_crWindow);
-	CMemDC pDC(oDC, &rcItem);
-	pDC->SelectObject(GetFont());
-	if(m_bCustomDraw)
-		pDC->SetTextColor(m_lvcd.clrText);
-	else
-		pDC->SetTextColor(m_crWindowText);
+	unsigned int col = evt.GetId() - MP_LISTCOL_1;
 
-	int iOffset = pDC->GetTextExtent(_T(" "), 1 ).cx*2;
-	int iItem = lpDrawItemStruct->itemID;
-	CImageList* pImageList;
-	CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
+	if (col >= m_column_sizes.size()) {
+		m_column_sizes.resize(col + 1, 0);
+	}
 
-	//gets the item image and state info
-	LV_ITEM lvi;
-	lvi.mask = LVIF_IMAGE | LVIF_STATE;
-	lvi.iItem = iItem;
-	lvi.iSubItem = 0;
-	lvi.stateMask = LVIS_DROPHILITED | LVIS_FOCUSED | LVIS_SELECTED;
-	GetItem(&lvi);
+	if (GetColumnWidth(col) > COL_SIZE_MIN) {
+		m_column_sizes[col] = GetColumnWidth(col);
+		SetColumnWidth(col, 0);
+	} else {
+		int oldsize = m_column_sizes[col];
+		SetColumnWidth(col, (oldsize > 0) ? oldsize : GetColumnDefaultWidth(col));
+	}
+}
 
-	//see if the item be highlighted
-	bool bHighlight = ((lvi.state & LVIS_DROPHILITED) || (lvi.state & LVIS_SELECTED));
-	bool bCtrlFocused = ((GetFocus() == this) || (GetStyle() & LVS_SHOWSELALWAYS));
 
-	//get rectangles for drawing
-	CRect rcBounds, rcLabel, rcIcon;
-	GetItemRect(iItem, rcBounds, LVIR_BOUNDS);
-	GetItemRect(iItem, rcLabel, LVIR_LABEL);
-	GetItemRect(iItem, rcIcon, LVIR_ICON);
-	CRect rcCol(rcBounds);
+void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
+{
+	// Stop if no sorter-function has been defined
+	if (!m_sort_func) {
+		return;
+	} else if (evt.GetColumn() == -1) {
+		// This happens if a user clicks past the last column header.
+		return;
+	}
 
-	//the label!
-	CString sLabel = GetItemText(iItem, 0);
-	//labels are offset by a certain amount 
-	//this offset is related to the width of a space character
-	CRect rcHighlight;
-	CRect rcWnd;
+	unsigned sort_order = 0;
+	if (m_sort_orders.front().first == (unsigned)evt.GetColumn()) {
+		// Same column as before, flip the sort-order
+		sort_order = m_sort_orders.front().second;
 
-	//should I check (GetExtendedStyle() & LVS_EX_FULLROWSELECT) ?
-	rcHighlight.top    = rcBounds.top;
-	rcHighlight.bottom = rcBounds.bottom;
-	rcHighlight.left   = rcBounds.left  + 1;
-	rcHighlight.right  = rcBounds.right - 1;
-
-	//draw the background color
-	if(bHighlight) {
-		if(bCtrlFocused) {
-			pDC->FillRect(rcHighlight, &CBrush(m_crHighlight));
-			pDC->SetBkColor(m_crHighlight);
+		if (sort_order & SORT_DES) {
+			if (AltSortAllowed(evt.GetColumn())) {
+				sort_order = (~sort_order) & SORT_ALT;
+			} else {
+				sort_order = 0;
+			}
 		} else {
-			pDC->FillRect(rcHighlight, &CBrush(m_crNoHighlight));
-			pDC->SetBkColor(m_crNoHighlight);
+			sort_order = SORT_DES | (sort_order & SORT_ALT);
+		}
+
+		m_sort_orders.pop_front();
+	} else {
+		// Check if the column has already been set
+		CSortingList::iterator it = m_sort_orders.begin();
+		for (; it != m_sort_orders.end(); ++it) {
+			if ((unsigned)evt.GetColumn() == it->first) {
+				sort_order = it->second;
+				break;
+			}
+		}
+	}
+
+
+	SetSorting(evt.GetColumn(), sort_order);
+}
+
+
+void CMuleListCtrl::ClearSelection()
+{
+	if (GetSelectedItemCount()) {
+		long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		while (index != -1) {
+			SetItemState(index, 0, wxLIST_STATE_SELECTED);
+			index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		}
+	}
+}
+
+
+bool CMuleListCtrl::AltSortAllowed(unsigned WXUNUSED(column)) const
+{
+	return false;
+}
+
+
+void CMuleListCtrl::SetSorting(unsigned column, unsigned order)
+{
+	MULE_VALIDATE_PARAMS(column < (unsigned)GetColumnCount(), wxT("Invalid column to sort by."));
+	MULE_VALIDATE_PARAMS(!(order & ~SORTING_MASK), wxT("Sorting order contains invalid data."));
+
+	if (!m_sort_orders.empty()) {
+		SetColumnImage(m_sort_orders.front().first, -1);
+
+		CSortingList::iterator it = m_sort_orders.begin();
+		for (; it != m_sort_orders.end(); ++it) {
+			if (it->first == column) {
+				m_sort_orders.erase(it);
+				break;
+			}
+		}
+	}
+
+	m_sort_orders.push_front(CColPair(column, order));
+
+	if (order & SORT_DES) {
+		SetColumnImage(column, (order & SORT_ALT) ? 2 : 0);
+	} else {
+		SetColumnImage(column, (order & SORT_ALT) ? 3 : 1);
+	}
+
+	SortList();
+}
+
+
+bool CMuleListCtrl::IsItemSorted(long item)
+{
+	wxCHECK_MSG(m_sort_func, true, wxT("No sort function specified!"));
+	wxCHECK_MSG((item >= 0) && (item < GetItemCount()), true, wxT("Invalid item"));
+
+	bool sorted = true;
+	wxUIntPtr data = GetItemData(item);
+
+	// Check that the item before the current item is smaller (or equal)
+	if (item > 0) {
+		sorted &= (CompareItems(GetItemData(item - 1), data) <= 0);
+	}
+
+	// Check that the item after the current item is greater (or equal)
+	if (sorted && (item < GetItemCount() - 1)) {
+		sorted &= (CompareItems(GetItemData(item + 1), data) >= 0);
+	}
+
+	return sorted;
+}
+
+
+void CMuleListCtrl::OnMouseWheel(wxMouseEvent &event)
+{
+	// This enables scrolling with the mouse wheel
+	event.Skip();
+}
+
+
+void CMuleListCtrl::SetColumnImage(unsigned col, int image)
+{
+	wxListItem item;
+	item.SetMask(wxLIST_MASK_IMAGE);
+	item.SetImage(image);
+	SetColumn(col, item);
+}
+
+
+long CMuleListCtrl::CheckSelection(wxMouseEvent& event)
+{
+	int flags = 0;
+	wxListEvent evt;
+	evt.m_itemIndex = HitTest(event.GetPosition(), flags);
+
+	return CheckSelection(evt);
+}
+
+
+long CMuleListCtrl::CheckSelection(wxListEvent& event)
+{
+	long item = event.GetIndex();
+
+	// Check if clicked item is selected. If not, unselect all and select it.
+	if ((item != -1) && !GetItemState(item, wxLIST_STATE_SELECTED)) {
+		ClearSelection();
+
+		SetItemState(item, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+	}
+
+	return item;
+}
+
+
+wxString CMuleListCtrl::GetTTSText(unsigned item) const
+{
+	MULE_VALIDATE_PARAMS(item < (unsigned)GetItemCount(), wxT("Invalid row."));
+	MULE_VALIDATE_STATE((GetWindowStyle() & wxLC_OWNERDRAW) == 0,
+		wxT("GetTTSText must be overwritten for owner-drawn lists."));
+
+	return GetItemText(item);
+}
+
+
+void CMuleListCtrl::OnChar(wxKeyEvent& evt)
+{
+	int key = evt.GetKeyCode();
+	if (key == 0) {
+		// We prefer GetKeyCode() to GetUnicodeKey(), in order to work
+		// around a bug in the GetUnicodeKey(), that causes values to
+		// be returned untranslated. This means for instance, that if
+		// shift and '1' is pressed, the result is '1' rather than '!'
+		// (as it should be on my keyboard). This has been reported:
+		// http://sourceforge.net/tracker/index.php?func=detail&aid=1864810&group_id=9863&atid=109863
+		key = evt.GetUnicodeKey();
+	} else if (key >= WXK_START) {
+		// wxKeycodes are ignored, as they signify events such as the 'home'
+		// button. Unicoded chars are not checked as there is an overlap valid
+		// chars and the wx keycodes.
+		evt.Skip();
+		return;
+	}
+
+	// We wish to avoid handling shortcuts, with the exception of 'select-all'.
+	if (evt.AltDown() || evt.ControlDown() || evt.MetaDown()) {
+		if (evt.CmdDown() && (evt.GetKeyCode() == 0x01)) {
+			// Ctrl+a (Command+a on Mac) was pressed, select all items
+			for (int i = 0; i < GetItemCount(); ++i) {
+				SetItemState(i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+			}
+		}
+
+		evt.Skip();
+		return;
+	} else if (m_tts_time + 1500u < GetTickCount()) {
+		m_tts_text.Clear();
+	}
+
+	m_tts_time = GetTickCount();
+	m_tts_text.Append(wxTolower(key));
+
+	// May happen if the subclass does not forward deletion events.
+	// Or rather when single-char-repeated (see below) wraps around, so don't assert.
+	if (m_tts_item >= GetItemCount()) {
+		m_tts_item = -1;
+	}
+
+	unsigned next = (m_tts_item == -1) ? 0 : m_tts_item;
+	for (unsigned i = 0, count = GetItemCount(); i < count; ++i) {
+		wxString text = GetTTSText((next + i) % count).MakeLower();
+
+		if (text.StartsWith(m_tts_text)) {
+			ClearSelection();
+
+			m_tts_item = (next + i) % count;
+			SetItemState(m_tts_item, wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED,
+					wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
+			EnsureVisible(m_tts_item);
+
+			return;
+		}
+	}
+
+	if (m_tts_item != -1) {
+		// Crop the string so that it matches the old item (avoid typos).
+		wxString text = GetTTSText(m_tts_item).MakeLower();
+
+		// If the last key didn't result in a hit, then we skip the event.
+		if (!text.StartsWith(m_tts_text)) {
+			if ((m_tts_text.Length() == 2) && (m_tts_text[0] == m_tts_text[1])) {
+				// Special case, single-char, repeated. This allows toggeling
+				// between items starting with a specific letter.
+				m_tts_text.Clear();
+				// Increment, so the next will be selected (or wrap around).
+				m_tts_item++;
+				OnChar(evt);
+			} else {
+				m_tts_text.RemoveLast();
+				evt.Skip(true);
+			}
 		}
 	} else {
-		pDC->FillRect(rcHighlight, &CBrush(m_crWindow));
-		pDC->SetBkColor(GetBkColor());
-	}
-
-	//update column
-	rcCol.right = rcCol.left + GetColumnWidth(0);
-
-	//draw state icon
-	if(lvi.state & LVIS_STATEIMAGEMASK) {
-		int nImage = ((lvi.state & LVIS_STATEIMAGEMASK)>>12) - 1;
-		pImageList = GetImageList(LVSIL_STATE);
-		if (pImageList) {
-			COLORREF crOld = pImageList->SetBkColor(CLR_NONE);
-			pImageList->Draw(pDC, nImage, rcCol.TopLeft(), ILD_NORMAL);
-			pImageList->SetBkColor(crOld);
-		}
-	}
-
-	//draw the item's icon
-	pImageList = GetImageList(LVSIL_SMALL);
-	if(pImageList) {
-		COLORREF crOld = pImageList->SetBkColor(CLR_NONE);
-		pImageList->Draw(pDC, lvi.iImage, rcIcon.TopLeft(), ILD_NORMAL);
-		pImageList->SetBkColor(crOld);
-	}
-
-	//draw item label (column 0)
-	rcLabel.left += iOffset / 2;
-	rcLabel.right -= iOffset;
-	pDC->DrawText(sLabel, -1, rcLabel, MLC_DT_TEXT | DT_LEFT | DT_NOCLIP);
-
-	//draw labels for remaining columns
-	LV_COLUMN lvc;
-	lvc.mask = LVCF_FMT | LVCF_WIDTH;
-	rcBounds.right = rcHighlight.right > rcBounds.right ? rcHighlight.right : rcBounds.right;
-
-	int iCount = pHeaderCtrl->GetItemCount();
-	for(int iCurrent = 1; iCurrent < iCount; iCurrent++) {
-		
-		int iColumn = pHeaderCtrl->OrderToIndex(iCurrent);
-		//don't draw column 0 again
-		if(iColumn == 0)
-			continue;
-
-		GetColumn(iColumn, &lvc);
-		//don't draw anything with 0 width
-		if(lvc.cx == 0)
-			continue;
-
-		rcCol.left = rcCol.right;
-		rcCol.right += lvc.cx;
-
-		sLabel = GetItemText(iItem, iColumn);
-		if (sLabel.GetLength() == 0)
-			continue;
-
-		//get the text justification
-		UINT nJustify = DT_LEFT;
-		switch(lvc.fmt & LVCFMT_JUSTIFYMASK) {
-		case LVCFMT_RIGHT:
-			nJustify = DT_RIGHT;
-			break;
-		case LVCFMT_CENTER:
-			nJustify = DT_CENTER;
-			break;
-		default:
-			break;
-		}
-
-		rcLabel = rcCol;
-		rcLabel.left += iOffset;
-		rcLabel.right -= iOffset;
-
-		pDC->DrawText(sLabel, -1, rcLabel, MLC_DT_TEXT | nJustify);
-	}
-
-	//draw focus rectangle if item has focus
-	if((lvi.state & LVIS_FOCUSED) && (bCtrlFocused || (lvi.state & LVIS_SELECTED))) {
-		if(!bCtrlFocused || !(lvi.state & LVIS_SELECTED))
-			pDC->FrameRect(rcHighlight, &CBrush(m_crNoFocusLine));
-		else
-			pDC->FrameRect(rcHighlight, &CBrush(m_crFocusLine));
+		evt.Skip(true);
 	}
 }
-#endif
 
-#if 0
-bool CMuleListCtrl::OnEraseBkgnd(CDC* pDC)
+
+void CMuleListCtrl::OnItemSelected(wxListEvent& evt)
 {
-	int itemCount = GetItemCount();
-	if (!itemCount)
-		return CListCtrl::OnEraseBkgnd(pDC);
+	if (IsSorting()) {
+		// Selection/Deselection that happened while sorting.
+		evt.Veto();
+	} else {
+			// We reset the current TTS session if the user manually changes the selection
+		if (m_tts_item != evt.GetIndex()) {
+			ResetTTS();
 
-	RECT clientRect;
-	RECT itemRect;
-	int topIndex = GetTopIndex();
-	int maxItems = GetCountPerPage();
-	int drawnItems = itemCount < maxItems ? itemCount : maxItems;
-
-	//draw top portion
-	GetClientRect(&clientRect);
-	GetItemRect(topIndex, &itemRect, LVIR_BOUNDS);
-	clientRect.bottom = itemRect.top;
-	pDC->FillSolidRect(&clientRect,GetBkColor());
-
-	//draw bottom portion if we have to
-	if(topIndex + maxItems >= itemCount) {
-		GetClientRect(&clientRect);
-		GetItemRect(topIndex + drawnItems - 1, &itemRect, LVIR_BOUNDS);
-		clientRect.top = itemRect.bottom;
-		pDC->FillSolidRect(&clientRect, GetBkColor());
-	}
-
-	//draw right half if we need to
-	if (itemRect.right < clientRect.right) {
-		GetClientRect(&clientRect);
-		clientRect.left = itemRect.right;
-		pDC->FillSolidRect(&clientRect, GetBkColor());
-	}
-
-	return TRUE;
-}
-#endif
-
-#if 0
-void CMuleListCtrl::OnSysColorChange()
-{
-	//adjust colors
-	CListCtrl::OnSysColorChange();
-	SetColors();
-
-	//redraw the up/down sort arrow (if it's there)
-	if(m_iCurrentSortItem >= 0) {
-		CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
-		HDITEM headerItem;
-		headerItem.mask = HDI_FORMAT | HDI_BITMAP;
-		if(pHeaderCtrl->GetItem(m_iCurrentSortItem, &headerItem) && headerItem.hbm != 0) {
-			DeleteObject(headerItem.hbm);
-			headerItem.fmt |= HDF_BITMAP | HDF_BITMAP_ON_RIGHT;
-			headerItem.hbm = (HBITMAP)LoadImage(AfxGetInstanceHandle(),
-				MAKEINTRESOURCE(m_atSortArrow), IMAGE_BITMAP, 0, 0,
-				LR_LOADMAP3DCOLORS);
-			pHeaderCtrl->SetItem(m_iCurrentSortItem, &headerItem);
+			// The item is changed so that the next TTS starts from the selected item.
+			m_tts_item = evt.GetIndex();
 		}
+		evt.Skip();
 	}
 }
-#endif
 
-bool CMuleListCtrl::ProcessEvent(wxEvent& evt)
+
+void CMuleListCtrl::OnItemDeleted(wxListEvent& evt)
 {
-	if ((evt.GetEventType()==wxEVT_COMMAND_MENU_SELECTED) && (evt.GetId() >= MP_LISTCOL_1) && (evt.GetId() <= MP_LISTCOL_15)) {
-		int col = evt.GetId() - MP_LISTCOL_1;
-
-		#ifdef __WXMSW__
-		if (wxListCtrl::GetColumnWidth(col) > m_col_minsize) {
-		#else
-		if (wxODListCtrl::GetColumnWidth(col) > m_col_minsize) {
-		#endif
-			SetColumnWidth(col, 0);
-		} else {
-			SetColumnWidth(col, wxLIST_AUTOSIZE);
-		}
-	} else if (evt.GetEventType()==wxEVT_COMMAND_LIST_COL_END_DRAG) {
-		// Lazy code to save space, saving all column widths when only one was resized.
-		// Should we be changing the widths of existing covered search lists?  
-		// Let's say no and the user won't get surprised.
-		SaveSettings();	
+	if (evt.GetIndex() <= m_tts_item) {
+		m_tts_item--;
 	}
-	#ifdef __WXMSW__
-	return wxListCtrl::ProcessEvent(evt);
-	#else
-	return wxODListCtrl::ProcessEvent(evt);
-	#endif
+
+	evt.Skip();
 }
 
-void CMuleListCtrl::OnColumnRclick(wxListEvent& evt)
+
+void CMuleListCtrl::OnAllItemsDeleted(wxListEvent& evt)
 {
-	m_ColumnMenu = new wxMenu();
-	wxListItem item;
-	for (int a=0; a<GetColumnCount(); a++) {
-		GetColumn(a, item);
-		m_ColumnMenu->AppendCheckItem(a+MP_LISTCOL_1, item.GetText());
-		#ifdef __WXMSW__
-		m_ColumnMenu->Check(a+MP_LISTCOL_1, wxListCtrl::GetColumnWidth(a)>m_col_minsize ? true : false);
-		#else
-		m_ColumnMenu->Check(a+MP_LISTCOL_1, wxODListCtrl::GetColumnWidth(a)>m_col_minsize ? true : false);
-		#endif
-	}
+	ResetTTS();
 
-	PopupMenu(m_ColumnMenu, evt.GetPoint());
+	evt.Skip();
 }
 
-#ifdef __WXMSW__
-BEGIN_EVENT_TABLE(CMuleListCtrl, wxListCtrl)
-#else
-BEGIN_EVENT_TABLE(CMuleListCtrl, wxODListCtrl)
-#endif
-	EVT_LIST_COL_RIGHT_CLICK(-1, CMuleListCtrl::OnColumnRclick)
-END_EVENT_TABLE()
+
+void CMuleListCtrl::ResetTTS()
+{
+	m_tts_item = -1;
+	m_tts_time =  0;
+}
+
+wxString CMuleListCtrl::GetOldColumnOrder() const
+{
+	return wxEmptyString;
+}
+// File_checked_for_headers

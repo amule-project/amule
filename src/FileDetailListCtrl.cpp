@@ -1,98 +1,82 @@
-//this file is part of aMule
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-// FileDetailDialog.cpp : implementation file
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
 //
-
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWNDFD
 #include "FileDetailListCtrl.h"	// Interface declarations
 
-#define LVCFMT_LEFT wxLIST_FORMAT_LEFT
 #define wxLIST_STATE_DESELECTED 0x0000
 
 BEGIN_EVENT_TABLE(CFileDetailListCtrl, CMuleListCtrl)
-	EVT_LIST_COL_CLICK(IDC_LISTCTRLFILENAMES, CFileDetailListCtrl::OnColumnClick) // Change sorting
 	EVT_LIST_ITEM_SELECTED(IDC_LISTCTRLFILENAMES, CFileDetailListCtrl::OnSelect) // Care for single selection
 END_EVENT_TABLE()
 
 
 CFileDetailListCtrl::CFileDetailListCtrl(wxWindow * &parent, int id, const wxPoint & pos, wxSize siz, int flags):CMuleListCtrl(parent, id, pos, siz, flags)
 {
+	// Set sorter function
+	SetSortFunc(SortProc);
+
 	// Initial sorting: Sources descending
-	sortItem = 1;
-	m_SortAscending[0] =true;
-	m_SortAscending[1] =false; 
- 
-	InsertColumn(0, _("File Name"), LVCFMT_LEFT, 370);
-	InsertColumn(1, _("Sources"), LVCFMT_LEFT, 70);
-	SetSortArrow(1, 1);
-	SortItems(CompareListNameItems, 11);
+	InsertColumn(0, _("File Name"), wxLIST_FORMAT_LEFT, 370);
+	InsertColumn(1, _("Sources"), wxLIST_FORMAT_LEFT, 70);
+
+	SetSorting(1, CMuleListCtrl::SORT_DES);
+
+	SortList();
 }
 
-int CFileDetailListCtrl::CompareListNameItems(long lParam1, long lParam2, long lParamSort)
-{ 
+int CFileDetailListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
+{
 	// Comparison for different sortings
-	SourcenameItem *item1 = (SourcenameItem *) lParam1; 
-	SourcenameItem *item2 = (SourcenameItem *) lParam2; 
-	switch (lParamSort){
-		case 1: return (item1->count - item2->count); break;       // Sources descending
-		case 11: return (item2->count - item1->count); break;      // Sources ascending
-		case 0: return item1->name.CmpNoCase(item2->name); break;  // Name descending
-		case 10: return item2->name.CmpNoCase(item1->name); break; // Name ascending
+	SourcenameItem *item1 = reinterpret_cast<SourcenameItem*>(param1);
+	SourcenameItem *item2 = reinterpret_cast<SourcenameItem*>(param2);
+
+	int mod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
+
+	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
+		case 1: return mod * (item1->count - item2->count);			// Sources descending
+		case 0: return mod * item1->name.CmpNoCase(item2->name);	// Name descending
 		default: return 0;
 	}
-} 
-
-
-void CFileDetailListCtrl::UpdateSort()
-{
-	SortItems(CompareListNameItems,sortItem+((m_SortAscending[sortItem])? 0:10));
 }
 
-
-void CFileDetailListCtrl::OnColumnClick(wxListEvent & evt)
-{
-	int newSortItem = evt.GetColumn();
-	if (newSortItem == sortItem) {
-		// Sort by same column -> only change the order
-		m_SortAscending[sortItem] = !m_SortAscending[sortItem];
-	} else {
-		// Sort by other column 
-		sortItem = newSortItem;
-	}
-	SetSortArrow(sortItem, m_SortAscending[sortItem]);
-	SortItems(CompareListNameItems,sortItem+((m_SortAscending[sortItem])? 0:10));
-}
 
 void CFileDetailListCtrl::OnSelect(wxListEvent& event)
 {
 	// Damn wxLC_SINGLE_SEL does not work! So we have to care for single selection ourselfs:
 	long realpos = event.m_itemIndex;
-	long pos=-1;
-	for(;;) {
+	long pos = -1;
+	do {
 		// Loop through all selected items
-		pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-		if(pos==-1) {
-			// No more selected items left
-			break;
-		} else if (pos != realpos) {
+		pos = GetNextItem(pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		if (pos != realpos && pos != -1) {
 			// Deselect all items except the one we have just clicked
 			SetItemState(pos, wxLIST_STATE_DESELECTED, wxLIST_STATE_SELECTED);
 		}
-	}
+	} while (pos != -1);
+
+	event.Skip();
 }
+// File_checked_for_headers

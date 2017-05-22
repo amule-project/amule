@@ -1,69 +1,86 @@
-//this file is part of aMule
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
+//
 // Client to Server communication
+//
 
 #ifndef SERVERSOCKET_H
 #define SERVERSOCKET_H
 
-#include "types.h"		// Needed for int8 and int32
 #include "EMSocket.h"		// Needed for CEMSocket
-#include "CString.h"		// Needed for CString
+#include "ServerConnect.h"
+
+//------------------------------------------------------------------------------
+// CServerSocket
+//------------------------------------------------------------------------------
 
 class CServer;
 
-#ifndef ID_SOKETTI
-#define ID_SOKETTI 7772
-#endif
-
 class CServerSocket : public CEMSocket
 {
-  DECLARE_DYNAMIC_CLASS(CServerSocket)
-    friend class CServerConnect;
-
-    CServerSocket() {};
+	friend class CServerConnect;
 public:
-	CServerSocket(CServerConnect* in_serverconnect);
-	~CServerSocket();
 
-	void	ConnectToServer(CServer* server);
-	sint8	GetConnectionState()	{return connectionstate;} 
- 	DWORD   GetLastTransmission() const { return m_dwLastTransmission; }
-	CString info;
+	CServerSocket(CServerConnect* in_serverconnect, const CProxyData *ProxyData = NULL);
+	virtual ~CServerSocket();
 
- public:
+	void	ConnectToServer(CServer* server, bool bNoCrypt = false);
+	sint8	GetConnectionState()	const	{ return connectionstate; }
+	uint32  GetLastTransmission() const	{ return m_dwLastTransmission; }
+	wxString info;
+
 	void	OnClose(int nErrorCode);
 	void	OnConnect(int nErrorCode);
 	void	OnReceive(int nErrorCode);
 	void	OnError(int nErrorCode);
-	void	PacketReceived(Packet* packet);
-	bool   SendPacket(Packet* packet, bool delpacket = true,bool controlpacket = true);
+	bool	PacketReceived(CPacket* packet);
+	void	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
+	bool	IsSolving() const { return m_IsSolving;};
+	void	OnHostnameResolved(uint32 ip);
+	CServer *GetServerConnected() const { return serverconnect->GetCurrentServer(); }
+
+	uint32 GetServerIP() const;
+
 private:
-	bool	ProcessPacket(char* packet, uint32 size, int8 opcode);
+	bool	ProcessPacket(const byte* packet, uint32 size, int8 opcode);
 	void	SetConnectionState(sint8 newstate);
-	CServerConnect*	serverconnect; 
+	CServerConnect*	serverconnect;
 	sint8	connectionstate;
 	CServer*	cur_server;
+	bool m_bNoCrypt;
 	bool	headercomplete;
 	int32	sizetoget;
 	int32	sizereceived;
 	char*	rbuffer;
 	bool	m_bIsDeleting;	// true: socket is already in deletion phase, don't destroy it in ::StopConnectionTry
-    DWORD	m_dwLastTransmission;
+	uint32	m_dwLastTransmission;
+
+	bool m_IsSolving;
+
 };
 
 #endif // SERVERSOCKET_H
+// File_checked_for_headers

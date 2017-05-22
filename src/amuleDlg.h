@@ -1,192 +1,255 @@
-//this file is part of aMule
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 #ifndef AMULEDLG_H
 #define AMULEDLG_H
 
-#ifdef __WXMSW__
-	#include <wx/msw/winundef.h> // Needed to be able to include wx headers
-#endif
 
-#include <wx/defs.h>		// Needed before any other wx/*.h.
-#include <wx/menu.h>		// Needed for wxMenu
-#include <wx/button.h>		// Needed for wxButton
-#include <wx/statusbr.h>	// Needed for wxStatusBar
-#include <wx/frame.h>		// Needed for wxFrame
-#include <wx/imaglist.h>	// Needed for wxImageList
-#include <wx/socket.h>		// Needed for wxSocketEvent
-#include <wx/timer.h>		// Needed for wxTimerEvent
-#include <wx/textctrl.h>	// Needed for wxTextCtrl
+#include <wx/archive.h>
+#include <wx/filename.h>
+#include <wx/frame.h>			// Needed for wxFrame
+#include <wx/imaglist.h>
+#include <wx/timer.h>
+#include <wx/wfstream.h>
+#include <wx/zipstrm.h>
 
-#include "types.h"		// Needed for uint32
-#include "resource.h"		// Needed for IDD_EMULE_DIALOG
-#include "PrefsUnifiedDlg.h"
+#include "Types.h"			// Needed for uint32
+#include "StatisticsDlg.h"
 
+class wxTimerEvent;
+class wxTextCtrl;
+
+class CIP2Country;
 class CTransferWnd;
 class CServerWnd;
-class CPreferencesDlg;
 class CSharedFilesWnd;
 class CSearchDlg;
 class CChatWnd;
-class CStatisticsDlg;
+class CKadDlg;
+class PrefsUnifiedDlg;
 
-#ifndef __SYSTRAY_DISABLED__
-class CSysTray;
-#endif
 
-#define MP_RESTORE		4001
-#define MP_CONNECT		4002
-#define MP_DISCONNECT		4003
-#define MP_EXIT			4004
+class CMuleTrayIcon;
 
-enum APPState {
-  APP_STATE_RUNNING = 0,
-  APP_STATE_SHUTINGDOWN,
-  APP_STATE_DONE,
-  APP_STATE_STARTING
+struct PageType {
+	wxWindow* page;
+	wxString name;
 };
 
+#define MP_RESTORE	4001
+#define MP_CONNECT	4002
+#define MP_DISCONNECT	4003
+#define MP_EXIT		4004
+
+
+#define DEFAULT_SIZE_X  800
+#define DEFAULT_SIZE_Y  600
+
+
+enum ClientSkinEnum {
+	Client_Green_Smiley = 0,
+	Client_Red_Smiley,
+	Client_Yellow_Smiley,
+	Client_Grey_Smiley,
+	Client_White_Smiley,
+	Client_ExtendedProtocol_Smiley,
+	Client_SecIdent_Smiley,
+	Client_BadGuy_Smiley,
+	Client_CreditsGrey_Smiley,
+	Client_CreditsYellow_Smiley,
+	Client_Upload_Smiley,
+	Client_Friend_Smiley,
+	Client_eMule_Smiley,
+	Client_mlDonkey_Smiley,
+	Client_eDonkeyHybrid_Smiley,
+	Client_aMule_Smiley,
+	Client_lphant_Smiley,
+	Client_Shareaza_Smiley,
+	Client_xMule_Smiley,
+	Client_Unknown,
+	Client_InvalidRating_Smiley,
+	Client_PoorRating_Smiley,
+	Client_FairRating_Smiley,
+	Client_GoodRating_Smiley,
+	Client_ExcellentRating_Smiley,
+	Client_CommentOnly_Smiley,
+	Client_Encryption_Smiley,
+	// Add items here.
+	CLIENT_SKIN_SIZE
+};
+
+
 // CamuleDlg Dialogfeld
-class CamuleDlg :public wxFrame {
+class CamuleDlg : public wxFrame
+{
 public:
-	CamuleDlg(wxWindow* pParent=NULL, wxString title=wxT(""));
+	CamuleDlg(
+		wxWindow *pParent = NULL,
+		const wxString &title = wxEmptyString,
+		wxPoint where = wxDefaultPosition,
+		wxSize dlg_size = wxSize(DEFAULT_SIZE_X,DEFAULT_SIZE_Y));
 	~CamuleDlg();
-	enum { IDD = IDD_EMULE_DIALOG };
 
-	void AddLogLine(bool addtostatusbar,const wxChar* line,...);
-	void AddDebugLogLine(bool addtostatusbar,const wxChar* line,...);
-	void AddServerMessageLine(char* line,...);
-	void ShowConnectionState(bool connected);
-	void ShowConnectionState(bool connected,wxString server,bool iconOnly=false);
-	void ShowNotifier(wxString Text, int MsgType, bool ForceSoundOFF = false);
-	void ShowUserCount(uint32 toshow,uint32 filetoshow);
-	void ShowMessageState(uint8 iconnr);
-	void SetActiveDialog(wxWindow* dlg);
-	void ShowTransferRate(bool forceAll=true);
-	void ShowStatistics();
-	bool StatisticsWindowActive()	{return (activewnd == (wxWindow*)statisticswnd);}
-	void ResetLog();
-	void ResetDebugLog();
-	void StopTimer();
-	// Barry - To find out if app is running or shutting/shut down
-	bool IsRunning();
-	void DoVersioncheck(bool manual);
-	void Hide_aMule(bool iconize = true);
-	void Show_aMule(bool uniconize = true);
-	// has to be done in own method
-	void CreateSystray(const wxString& title);
-	void RemoveSystray();
-	void changeDesktopMode();
+	void AddLogLine(const wxString& line);
+	void AddServerMessageLine(wxString& message);
+	void ResetLog(int id);
 
-	// Madcat - Toggles Fast ED2K Links Handler on/off.
-	void ToggleFastED2KLinksHandler();
+	void ShowUserCount(const wxString& info = wxEmptyString);
+	void ShowConnectionState(bool skinChanged = false);
+	void ShowTransferRate();
 
-	// Refresh timing
-	void Thaw_AllTransfering();
-	void Freeze_AllTransfering();
-	void UpdateLists(DWORD msCur);
+	bool StatisticsWindowActive()
+		{ return (m_activewnd == static_cast<wxWindow*>(m_statisticswnd)); }
 
-	/* Public function to check which tab is active. Needed to check what to redraw. */
-	int GetActiveDialog()	{return m_nActiveDialog;}
+	/* Returns the active dialog. Needed to check what to redraw. */
+	enum DialogType {
+		DT_TRANSFER_WND,
+		DT_NETWORKS_WND,
+		DT_SEARCH_WND,
+		DT_SHARED_WND,
+		DT_CHAT_WND,
+		DT_STATS_WND,
+		DT_KAD_WND	// this one is still unused
+	};
+	DialogType GetActiveDialog()
+		{ return m_nActiveDialog; }
+	void SetActiveDialog(DialogType type, wxWindow* dlg);
 
-	void StartFast(wxTextCtrl *ctl);
+	/**
+	 * Helper function for deciding if a certian dlg is visible.
+	 *
+	 * @return True if the dialog is visible to the user, false otherwise.
+	 */
+	bool IsDialogVisible( DialogType dlg )
+	{
+		return m_nActiveDialog == dlg && m_is_safe_state /* && !IsIconized() */;
+	}
+
+	void ShowED2KLinksHandler( bool show );
+
+	void DlgShutDown();
 	void OnClose(wxCloseEvent& evt);
-	void OnBnConnect(wxEvent& evt);
-	void InitDialog();
+	void OnBnConnect(wxCommandEvent& evt);
 
-	CTransferWnd*		transferwnd;
-	CServerWnd*		serverwnd;
-	CPreferencesDlg*	preferenceswnd;
-	PrefsUnifiedDlg*	prefsunifiedwnd;
-	CSharedFilesWnd*	sharedfileswnd;
-	CSearchDlg*		searchwnd;
-	CChatWnd*		chatwnd;
-	wxStatusBar  		statusbar;
-	wxWindow		*activewnd;
-	CStatisticsDlg*  statisticswnd;
-#ifndef __SYSTRAY_DISABLED__
-	CSysTray *m_wndTaskbarNotifier;
-#endif // __SYSTRAY_DISABLED__
-	volatile APPState	m_app_state;	// added volatile to get some more security when accessing this as a shared object...
-	uint8			status;
-	uint16                  lastbutton;
+	void DoIconize(bool iconize);
 
-	DWORD			m_lastRefreshedQDisplay;
-	bool			transfers_frozen;
+	bool SafeState()	{ return m_is_safe_state; }
 
-	bool list_no_refresh;
-	int split_pos;
-	int srv_split_pos;
+	void LaunchUrl(const wxString &url);
+
+	//! These are the currently known web-search providers
+	enum WebSearch {
+		WS_FILEHASH
+	};
+	// websearch function
+	wxString GenWebSearchUrl( const wxString &filename, WebSearch provider );
+
+	void CreateSystray();
+	void RemoveSystray();
+
+	void StartGuiTimer()	{ gui_timer->Start(100); }
+	void StopGuiTimer()	{ gui_timer->Stop(); }
+
+	/**
+	 * This function ensures that _all_ list widgets are properly sorted.
+	 */
+	void InitSort();
+
+	void SetMessageBlink(bool state) { m_BlinkMessages = state; }
+	void Create_Toolbar(bool orientation);
+
+	void DoNetworkRearrange();
+
+	CIP2Country*		m_IP2Country;
+	void IP2CountryDownloadFinished(uint32 result);
+	void EnableIP2Country();
+
+	wxWindow*		m_activewnd;
+	CTransferWnd*		m_transferwnd;
+	CServerWnd*		m_serverwnd;
+	CSharedFilesWnd*	m_sharedfileswnd;
+	CSearchDlg*		m_searchwnd;
+	CChatWnd*		m_chatwnd;
+	CStatisticsDlg*		m_statisticswnd;
+	CKadDlg*		m_kademliawnd;
+	//! Pointer to the current preference dialog, if any.
+	PrefsUnifiedDlg*	m_prefsDialog;
+
+	int			m_srv_split_pos;
+
+	wxImageList m_imagelist;
+	wxImageList m_tblist;
 
 protected:
-	void socketHandler(wxSocketEvent& event);
-	void OnUQTimer(wxTimerEvent& evt);
-	void OnUDPTimer(wxTimerEvent& evt);
-	void OnSocketTimer(wxTimerEvent& evt);
-	void OnQLTimer(wxTimerEvent& evt);
+	void OnToolBarButton(wxCommandEvent& ev);
+	void OnAboutButton(wxCommandEvent& ev);
+	void OnPrefButton(wxCommandEvent& ev);
+	void OnImportButton(wxCommandEvent& ev);
+	void OnMinimize(wxIconizeEvent& evt);
+	void OnBnClickedFast(wxCommandEvent& evt);
+	void OnGUITimer(wxTimerEvent& evt);
+	void OnMainGUISizeChange(wxSizeEvent& evt);
+	void OnExit(wxCommandEvent& evt);
 
-	void btnServers(wxEvent& ev);
-	void btnSearch(wxEvent& ev);
-	void btnTransfer(wxEvent& ev);
-	void btnPreferences(wxEvent& ev);
-	void OnBnNewPreferences(wxEvent& ev);
-	void OnBnClickedPrefOk(wxCommandEvent &event);
-	void OnBnClickedCancel(wxCommandEvent &event);
-	void OnBnShared(wxEvent& ev);
-	void OnBnStats(wxEvent& ev);
-	void OnBnMessages(wxEvent& ev);
-	void OnFinishedHashing(wxCommandEvent& evt);
-	void OnDnsDone(wxCommandEvent& evt);
-	void OnSourcesDnsDone(wxCommandEvent& evt);
-	void OnMinimize(wxEvent& evt);
-	void OnHashingShutdown(wxCommandEvent&);
-	void OnBnClickedFast(wxEvent& evt);
 private:
-	wxString	logtext;
-	bool		ready;
-	wxBitmap 	transicons[4];
-	uint32		lastuprate;
-	uint32		lastdownrate;
-	wxImageList	imagelist;
-	wxMenu		trayPopup;
+	//! Specifies if the prefs-dialog was shown before minimizing.
+	bool m_prefsVisible;
+	wxToolBar *m_wndToolbar;
+	wxTimer *gui_timer;
+	CMuleTrayIcon *m_wndTaskbarNotifier;
+	DialogType m_nActiveDialog;
+	bool m_is_safe_state;
+	bool m_BlinkMessages;
+	int m_CurrentBlinkBitmap;
+	uint32 m_last_iconizing;
+	wxFileName m_skinFileName;
+	std::vector<wxString> m_clientSkinNames;
+	bool m_GeoIPavailable;
 
-	wxButton	m_btnConnect;
-	wxButton	m_btnDownloads;
-	wxButton	m_btnServers;
-	wxButton	m_btnSearch;
-	wxButton	m_btnFiles;
-	wxButton	m_btnPreferences;
-	wxButton	m_btnMessages;
-	wxButton	m_btnStatistics;
-	wxButton	m_btnIrc;
-	wxToolBar	*m_wndToolbar;
-	wxPanel 	*p_cnt;
-	void		StartConnection();
-	void		CloseConnection();
-	void		RestoreWindow();
-	void		UpdateTrayIcon(int procent);
-	void		CreateMuleToolBar();
-	bool		LoadRazorPrefs();
+	WX_DECLARE_STRING_HASH_MAP(wxZipEntry*, ZipCatalog);
+	ZipCatalog cat;
 
-	int		m_nActiveDialog;
-	DWORD 		old_list_refresh;
-	bool		old_update_queue_list;
-	bool		switch_thaw_hide_mutex;
+	PageType m_logpages[4];
+	PageType m_networkpages[2];
+
+	bool LoadGUIPrefs(bool override_pos, bool override_size);
+	bool SaveGUIPrefs();
+
+	void UpdateTrayIcon(int percent);
+
+	void Apply_Clients_Skin();
+	void Apply_Toolbar_Skin(wxToolBar *wndToolbar);
+	bool Check_and_Init_Skin();
+	void Add_Skin_Icon(const wxString &iconName, const wxBitmap &stdIcon, bool useSkins);
+	void ToogleED2KLinksHandler();
+	void SetMessagesTool();
+	void OnKeyPressed(wxKeyEvent& evt);
+
 	DECLARE_EVENT_TABLE()
 };
 
-#endif // AMULEDLG_H
+#endif
+
+// File_checked_for_headers

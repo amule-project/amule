@@ -1,381 +1,493 @@
-//this file is part of aMule
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-
-// TransferWnd.cpp : implementation file
-
-#include <wx/settings.h>
-#include <wx/splitter.h>
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/sizer.h>		// Needed for wxSizer
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 #include "TransferWnd.h"	// Interface declarations
-#include "amuleDlg.h"		// Needed for CamuleDlg
-#include "PartFile.h"		// Needed for PR_LOW
-#include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "CatDialog.h"		// Needed for CCatDialog
-#include "opcodes.h"		// Needed for MP_CAT_SET0
-#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
-#include "UploadListCtrl.h"	// Needed for CUploadListCtrl
-#include "UploadQueue.h"	// Needed for CUploadQueue
-#include "otherfunctions.h"	// Needed for GetCatTitle
-#include "CamuleAppBase.h"	// Needed for theApp
-#include "QueueListCtrl.h"	// Needed for CQueueListCtrl
-#include "muuli_wdr.h"		// Needed for ID_CATEGORIES
-#include "SearchDlg.h"		// Needed for CSearchDlg->UpdateCatChoice()
+
+#include <common/MenuIDs.h>
+
+#include <wx/config.h>
+
+
+// This include must be before amuleDlg.h
+#ifdef __WINDOWS__
+    #include <wx/msw/winundef.h>	// Needed for windows compilation
+#endif
+
+
+#include "amuleDlg.h"			// Needed for CamuleDlg
+#include "PartFile.h"			// Needed for PR_LOW
+#include "DownloadQueue.h"		// Needed for CDownloadQueue
+#include "CatDialog.h"			// Needed for CCatDialog
+#include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
+#include "SourceListCtrl.h"		// Needed for CSourceListCtrl
+#include "amule.h"			// Needed for theApp
+#include "muuli_wdr.h"			// Needed for ID_CATEGORIES
+#include "SearchDlg.h"			// Needed for CSearchDlg->UpdateCatChoice()
 #include "MuleNotebook.h"
+#include "Preferences.h"
+#include "Statistics.h"			// Needed for theStats
+#include "SharedFileList.h"		// Needed for CSharedFileList
+#include "GuiEvents.h"			// Needed for CoreNotify_*
 
-// CTransferWnd dialog
 
-IMPLEMENT_DYNAMIC_CLASS(CTransferWnd,wxPanel)
-
-BEGIN_EVENT_TABLE(CTransferWnd,wxPanel)
-	EVT_NOTEBOOK_PAGE_CHANGED(ID_CATEGORIES,CTransferWnd::OnSelchangeDltab)
+BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
 	EVT_RIGHT_DOWN(CTransferWnd::OnNMRclickDLtab)
-	EVT_SPLITTER_SASH_POS_CHANGED(ID_SPLATTER, CTransferWnd::OnSashPositionChanged)
+	EVT_NOTEBOOK_PAGE_CHANGED(ID_CATEGORIES,	CTransferWnd::OnCategoryChanged)
+
+	EVT_SPLITTER_SASH_POS_CHANGING(ID_DOWNLOADSSPLATTER, CTransferWnd::OnSashPositionChanging)
+
+	EVT_BUTTON(ID_BTNCLRCOMPL,		CTransferWnd::OnBtnClearDownloads)
+	EVT_BUTTON(ID_CLIENTTOGGLE,		CTransferWnd::OnToggleClientList)
+
+	EVT_MENU_RANGE(MP_CAT_SET0, MP_CAT_SET0 + 15, CTransferWnd::OnSetDefaultCat)
+	EVT_MENU(MP_CAT_ADD,			CTransferWnd::OnAddCategory)
+	EVT_MENU(MP_CAT_EDIT,			CTransferWnd::OnEditCategory)
+	EVT_MENU(MP_CAT_REMOVE,			CTransferWnd::OnDelCategory)
+	EVT_MENU(MP_PRIOLOW,			CTransferWnd::OnSetCatPriority)
+	EVT_MENU(MP_PRIONORMAL,			CTransferWnd::OnSetCatPriority)
+	EVT_MENU(MP_PRIOHIGH,			CTransferWnd::OnSetCatPriority)
+	EVT_MENU(MP_PRIOAUTO,			CTransferWnd::OnSetCatPriority)
+	EVT_MENU(MP_PAUSE,			CTransferWnd::OnSetCatStatus)
+	EVT_MENU(MP_STOP,			CTransferWnd::OnSetCatStatus)
+	EVT_MENU(MP_CANCEL,			CTransferWnd::OnSetCatStatus)
+	EVT_MENU(MP_RESUME,			CTransferWnd::OnSetCatStatus)
 END_EVENT_TABLE()
 
 
-//IMPLEMENT_DYNAMIC(CTransferWnd, CDialog)
-CTransferWnd::CTransferWnd(wxWindow* pParent /*=NULL*/)
-: wxPanel(pParent,CTransferWnd::IDD)
-{
-	wxSizer* content=transferDlg(this,TRUE);
-	content->Show(this,TRUE);
 
-	uploadlistctrl=(CUploadListCtrl*)FindWindowByName("uploadList");
-	downloadlistctrl=(CDownloadListCtrl*)FindWindowByName("downloadList");
-	queuelistctrl=(CQueueListCtrl*)FindWindowByName("uploadQueue");
-	// let's hide the queue
-	queueSizer->Remove(queuelistctrl);
-	Layout();
-	queuelistctrl->Show(FALSE);
-	// allow notebook to dispatch right mouse clicks to us
-	CMuleNotebook* nb=(CMuleNotebook*)FindWindowById(ID_CATEGORIES);
-	nb->SetMouseListener(GetEventHandler());
-	windowtransferstate=false;
-	CatMenu=false;
+CTransferWnd::CTransferWnd( wxWindow* pParent )
+	: wxPanel( pParent, -1 )
+{
+	wxSizer* content = transferDlg(this, true);
+	content->Show(this, true);
+
+	downloadlistctrl = CastChild( wxT("downloadList"), CDownloadListCtrl );
+	clientlistctrl   = CastChild( ID_CLIENTLIST, CSourceListCtrl );
+	m_dlTab          = CastChild( ID_CATEGORIES, CMuleNotebook );
+
+	// Set disabled image for clear complete button
+	CastChild(ID_BTNCLRCOMPL, wxBitmapButton)->SetBitmapDisabled(amuleDlgImages(34));
+
+	// We want to use our own popup
+	m_dlTab->SetPopupHandler( this );
+
+	// Set default category
+	theApp->glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatFilter());
+	theApp->glob_prefs->GetCategory(0)->path = thePrefs::GetIncomingDir();
+
+	// Show default + userdefined categories
+	for ( uint32 i = 0; i < theApp->glob_prefs->GetCatCount(); i++ ) {
+		m_dlTab->AddPage( new wxPanel(m_dlTab), theApp->glob_prefs->GetCategory(i)->title );
+	}
+
+	m_menu = NULL;
+	m_splitter = 0;
+
+	wxConfigBase *config = wxConfigBase::Get();
+
+	// Check if the clientlist is hidden
+	bool show = true;
+	config->Read( wxT("/GUI/TransferWnd/ShowClientList"), &show, true );
+	clientlistctrl->SetShowing(show);
+	// Load the last used splitter position
+	m_splitter = config->Read( wxT("/GUI/TransferWnd/Splitter"), 463l );
 }
+
 
 CTransferWnd::~CTransferWnd()
 {
-}
+	wxConfigBase *config = wxConfigBase::Get();
 
-bool CTransferWnd::OnInitDialog()
-{
-	m_dlTab=(CMuleNotebook*)FindWindowById(ID_CATEGORIES);
+	if ( !clientlistctrl->GetShowing() ) {
+		// Save the splitter position
+		config->Write( wxT("/GUI/TransferWnd/Splitter"), m_splitter );
 
-	// show & cat-tabs
-	sprintf(theApp.glob_prefs->GetCategory(0)->title, "%s",GetCatTitle(theApp.glob_prefs->GetAllcatType()).GetBuffer());
-
-	sprintf(theApp.glob_prefs->GetCategory(0)->incomingpath,"%s",theApp.glob_prefs->GetIncomingDir());
-	for (int ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
-		wxPanel* nullPanel=new wxPanel(m_dlTab);
-		wxString tmpstrstr(theApp.glob_prefs->GetCategory(ix)->title);
-		m_dlTab->AddPage(nullPanel,"-"); // just temporary string.
-		// for some odd reason, wxwin2.5 and gtk2 will not allow non utf strings for AddPage()
-		// but they will be accepted in SetPageText().. so let's use this as a countermeasure
-		m_dlTab->SetPageText(ix,tmpstrstr);
-	}
-	theApp.amuledlg->searchwnd->UpdateCatChoice();
-	return true;
-}
-
-void CTransferWnd::ShowQueueCount(uint32 number)
-{
-	char buffer[100];
-	wxString fmtstr="%u (%u "+ CString(_("Banned")).MakeLower() +")";
-	sprintf(buffer,fmtstr.GetData(),number,theApp.uploadqueue->GetBanCount());
-	wxStaticCast(FindWindowByName("clientCount"),wxStaticText)->SetLabel(buffer);
-	//this->GetDlgItem(IDC_QUEUECOUNT)->SetWindowText(buffer);
-}
-
-void CTransferWnd::SwitchUploadList(wxCommandEvent& evt)
-{
-	if( windowtransferstate == false) {
-		windowtransferstate=true;
-		// hide the upload list
-		queueSizer->Remove(uploadlistctrl);
-		uploadlistctrl->Show(FALSE);
-		queueSizer->Add(queuelistctrl,1,wxGROW|wxALIGN_CENTER_VERTICAL ,5);
-		queuelistctrl->Show();
-		queueSizer->Layout();
-		wxStaticCast(FindWindowByName("uploadTitle"),wxStaticText)->SetLabel(CString(_("On Queue")));
+		// Save the visible status of the list
+		config->Write( wxT("/GUI/TransferWnd/ShowClientList"), false );
 	} else {
-		windowtransferstate=false;
-		// hide the queuelist
-		queueSizer->Remove(queuelistctrl);
-		queuelistctrl->Show(FALSE);
-		queueSizer->Add(uploadlistctrl,1,wxGROW|wxALIGN_CENTER_VERTICAL, 5);
-		uploadlistctrl->Show();
-		queueSizer->Layout();
-		wxStaticCast(FindWindowByName("uploadTitle"),wxStaticText)->SetLabel(CString(_("Uploads")));
+		wxSplitterWindow* splitter = CastChild( wxT("splitterWnd"), wxSplitterWindow );
+
+		// Save the splitter position
+		config->Write( wxT("/GUI/TransferWnd/Splitter"), splitter->GetSashPosition() );
+
+		// Save the visible status of the list
+		config->Write( wxT("/GUI/TransferWnd/ShowClientList"), true );
 	}
 }
 
-void CTransferWnd::Localize()
+
+void CTransferWnd::AddCategory( Category_Struct* category )
 {
+	// Add the initial page
+	m_dlTab->AddPage( new wxPanel(m_dlTab), category->title );
+
+	// Update the title
+	UpdateCategory( m_dlTab->GetPageCount() - 1 );
+
+	theApp->amuledlg->m_searchwnd->UpdateCatChoice();
 }
 
-
-void CTransferWnd::OnSelchangeDltab(wxNotebookEvent& evt)
+void CTransferWnd::UpdateCategory(int index)
 {
-  downloadlistctrl->ChangeCategory(evt.GetSelection());
-  downloadlistctrl->InitSort();
-}
+	uint32 nrCats = theApp->glob_prefs->GetCatCount();
+	std::vector<uint16> files, downloads;
+	bool showCatTabInfos = thePrefs::ShowCatTabInfos();
+	if (showCatTabInfos) {
+		files.insert(files.begin(), nrCats, 0);
+		downloads.insert(downloads.begin(), nrCats, 0);
 
-void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt) {
-	CMuleNotebook* nb=(CMuleNotebook*)FindWindowById(ID_CATEGORIES);
-	if(nb->GetSelection()==-1) {
-		return;
-	}
-	
-	// Avoid opening another menu when it's already open
-	if (CatMenu==false) {  
-		
-		CatMenu=true;
-		wxMenu* menu=new wxMenu(CString(_("Category")));
-
-		if(nb->GetSelection()==0) {
-			wxMenu* m_CatMenu=new wxMenu();
-
-			m_CatMenu->Append(MP_CAT_SET0,CString(_("all")) );
-			m_CatMenu->Append(MP_CAT_SET0+1,CString(_("all others")) );
-			m_CatMenu->AppendSeparator();
-			m_CatMenu->Append(MP_CAT_SET0+2,CString(_("Incomplete")) );
-			m_CatMenu->Append(MP_CAT_SET0+3,CString(_("Completed")) );
-			m_CatMenu->Append(MP_CAT_SET0+4,CString(_("Waiting")) );
-			m_CatMenu->Append(MP_CAT_SET0+5,CString(_("Downloading")) );
-			m_CatMenu->Append(MP_CAT_SET0+6,CString(_("Erroneous")) );
-			m_CatMenu->Append(MP_CAT_SET0+7,CString(_("Paused")) );
-			m_CatMenu->Append(MP_CAT_SET0+8,CString(_("Stopped")) );
-			m_CatMenu->AppendSeparator();
-			m_CatMenu->Append(MP_CAT_SET0+9,CString(_("Video")) );
-			m_CatMenu->Append(MP_CAT_SET0+10,CString(_("Audio")) );
-			m_CatMenu->Append(MP_CAT_SET0+11,CString(_("Archive")) );
-			m_CatMenu->Append(MP_CAT_SET0+12,CString(_("CD-Images")) );
-			m_CatMenu->Append(MP_CAT_SET0+13,CString(_("Pictures")) );
-			m_CatMenu->Append(MP_CAT_SET0+14,CString(_("Text")) );
-			//m_CatMenu.CheckMenuItem( MP_CAT_SET0+theApp.glob_prefs->GetAllcatType() ,MF_CHECKED | MF_BYCOMMAND);
-			menu->Append(47321,CString(_("Select view filter")),m_CatMenu);
-		}
-
-		menu->Append(MP_CAT_ADD,CString(_("Add category")));
-		menu->Append(MP_CAT_EDIT,CString(_("Edit category")));
-		menu->Append(MP_CAT_REMOVE, CString(_("Remove category")));
-		menu->AppendSeparator();
-		//menu->Append(472834,CString(_("Priority")),m_PrioMenu);
-
-		menu->Append(MP_CANCEL,CString(_("Cancel")) );
-		menu->Append(MP_STOP, CString(_("&Stop")));
-		menu->Append(MP_PAUSE, CString(_("&Pause")));
-		menu->Append(MP_RESUME, CString(_("&Resume")));
-		//menu->Append(MP_RESUMENEXT, CString(_("Resume next paused")));
-		// the point coming from mulenotebook control isn't in screen coordinates
-		// (unlike std mouse event, which always returns screen coordinates)
-		// so we must do the conversion here
-		wxPoint pt=evt.GetPosition();
-		wxPoint newpt=nb->ClientToScreen(pt);
-		newpt=ScreenToClient(newpt);
-		//evt.Skip();
-		PopupMenu(menu,newpt);
-		delete menu;
-
-		CatMenu=false;
-	}
-}
-
-bool CTransferWnd::ProcessEvent(wxEvent& evt)
-{
-	if(evt.GetEventType()!=wxEVT_COMMAND_MENU_SELECTED) {
-		return wxPanel::ProcessEvent(evt);
-	}
-	/*
-	if(evt.GetEventObject()!=this)
-	return wxPanel::ProcessEvent(evt);
-	*/
-	wxCommandEvent& event=(wxCommandEvent&)evt;
-	switch(event.GetId()) {
-		case MP_CAT_SET0: 
-		case MP_CAT_SET0+1: 
-		case MP_CAT_SET0+2:
-		case MP_CAT_SET0+3: 
-		case MP_CAT_SET0+4: 
-		case MP_CAT_SET0+5: 
-		case MP_CAT_SET0+6:
-		case MP_CAT_SET0+7:
-		case MP_CAT_SET0+8: 
-		case MP_CAT_SET0+9:
-		case MP_CAT_SET0+10: 
-		case MP_CAT_SET0+11:
-		case MP_CAT_SET0+12: 
-		case MP_CAT_SET0+13: 
-		case MP_CAT_SET0+14: {
-			theApp.glob_prefs->SetAllcatType(event.GetId()-MP_CAT_SET0);
-			sprintf(theApp.glob_prefs->GetCategory(0)->title, "%s", GetCatTitle(theApp.glob_prefs->GetAllcatType()).GetBuffer());
-			CString csName;
-			csName.Format("%s", theApp.glob_prefs->GetCategory(0)->title );
-			EditCatTabLabel(0,csName);
-			downloadlistctrl->ChangeCategory(0);
-			downloadlistctrl->InitSort();
-			break;
-		}
-
-		case MP_CAT_ADD: {
-			int newindex=AddCategorie("?",theApp.glob_prefs->GetIncomingDir(),"",false);
-			//m_dlTab.InsertItem(newindex,theApp.glob_prefs->GetCatego
-			//	       ry(newindex)->title);
-			wxPanel* nullPanel=new wxPanel(m_dlTab,-1);
-			m_dlTab->AddPage(nullPanel,theApp.glob_prefs->GetCategory(newindex)->title);
-			CCatDialog dialog(this,newindex);
-			dialog.OnInitDialog();
-			dialog.ShowModal();
-
-			EditCatTabLabel(newindex,theApp.glob_prefs->GetCategory(newindex)->title);
-			theApp.glob_prefs->SaveCats();
-			break;
-		}
-		case MP_CAT_EDIT: {
-			CCatDialog dialog(this,m_dlTab->GetSelection());
-			dialog.OnInitDialog();
-			dialog.ShowModal();
-
-			CString csName;
-			csName.Format("%s", theApp.glob_prefs->GetCategory(m_dlTab->GetSelection())->title );
-			EditCatTabLabel(m_dlTab->GetSelection(),csName);
-
-			theApp.glob_prefs->SaveCats();
-			break;
-		}
-		case MP_CAT_REMOVE: {
-			theApp.downloadqueue->ResetCatParts(m_dlTab->GetSelection());
-			theApp.glob_prefs->RemoveCat(m_dlTab->GetSelection());
-			m_dlTab->RemovePage(m_dlTab->GetSelection());
-			m_dlTab->SetSelection(0);
-			downloadlistctrl->ChangeCategory(0);
-			theApp.glob_prefs->SaveCats();
-			if (theApp.glob_prefs->GetCatCount()==1) {
-				theApp.glob_prefs->SetAllcatType(0);
+#ifdef CLIENT_GUI
+		for (CDownQueueRem::const_iterator it = theApp->downloadqueue->begin(); it != theApp->downloadqueue->end(); ++it) {
+			CPartFile *cur_file = it->second;
+#else
+		std::vector<CPartFile*> fileList;
+		theApp->downloadqueue->CopyFileList(fileList, true);
+		int size = fileList.size();
+		for (int i = 0; i < size; ++i ) {
+			CPartFile *cur_file = fileList[i];
+#endif
+			bool downloading = cur_file->GetTransferingSrcCount() > 0;
+			int fileCat = cur_file->GetCategory();
+			if ((index == -1 || fileCat == index) && cur_file->CheckShowItemInGivenCat(fileCat)) {
+				files[fileCat]++;
+				if (downloading) {
+					downloads[fileCat]++;
+				}
 			}
-			theApp.amuledlg->searchwnd->UpdateCatChoice();
-			break;
-		}
-		case MP_PRIOLOW: {
-			theApp.downloadqueue->SetCatPrio(m_dlTab->GetSelection(),PR_LOW);
-			break;
-		}
-		case MP_PRIONORMAL: {
-			theApp.downloadqueue->SetCatPrio(m_dlTab->GetSelection(),PR_NORMAL);
-			break;
-		}
-		case MP_PRIOHIGH: {
-			theApp.downloadqueue->SetCatPrio(m_dlTab->GetSelection(),PR_HIGH );
-			break;
-		}
-		case MP_PRIOAUTO: {
-			theApp.downloadqueue->SetCatPrio(m_dlTab->GetSelection(),PR_AUTO );
-			break;
-		}
-		case MP_PAUSE: {
-			theApp.downloadqueue->SetCatStatus(m_dlTab->GetSelection(),MP_PAUSE);
-			break;
-		}
-		case MP_STOP : {
-			theApp.downloadqueue->SetCatStatus(m_dlTab->GetSelection(),MP_STOP);
-			break;
-		}
-
-		case MP_CANCEL:
-			if (wxMessageBox(CString(_("Are you sure you wish to cancel and delete all files in this category?")),CString(_("Confirmation Required")),
-			   wxYES_NO|wxCENTRE|wxICON_EXCLAMATION) == wxYES) {
-				theApp.downloadqueue->SetCatStatus(m_dlTab->GetSelection(),MP_CANCEL);
-			}
-			break;
-
-		case MP_RESUME: {
-			theApp.downloadqueue->SetCatStatus(m_dlTab->GetSelection(),MP_RESUME);
-			break;
-		}
-		#if 0
-		case MP_RESUMENEXT:
-			theApp.downloadqueue->StartNextFile(m_dlTab->GetSelection());
-			break;
-		#endif
-		case IDC_UPLOAD_ICO: {
-			wxCommandEvent nullEvt;
-			SwitchUploadList(nullEvt);
-			break;
-		}
-		case IDC_QUEUE_REFRESH_BUTTON: {
-			#warning TODO: fix this
-			//OnBnClickedQueueRefreshButton();
-			break;
-		}
-		default: {
-			return wxPanel::ProcessEvent(evt);
-		}
-	}
-	return false;
-}
-
-int CTransferWnd::AddCategorie(CString newtitle,CString newincoming,CString newcomment,bool addTab){
-        Category_Struct* newcat=new Category_Struct;
-
-        sprintf(newcat->title,"%s",newtitle.GetBuffer());
-        newcat->prio=0;
-        sprintf(newcat->incomingpath,"%s",newincoming.GetBuffer());
-        sprintf(newcat->comment,"%s",newcomment.GetBuffer());
-        int index=theApp.glob_prefs->AddCat(newcat);
-
-        if (addTab) {
-	  //m_dlTab.InsertItem(index,newtitle);
-	  wxPanel* nullPanel=new wxPanel(m_dlTab,-1);
-	  m_dlTab->AddPage(nullPanel,newtitle);
-	}
-	theApp.amuledlg->searchwnd->UpdateCatChoice();
-        return index;
-}
-
-void CTransferWnd::EditCatTabLabel(int index,CString newlabel)
-{
-	if (theApp.glob_prefs->ShowCatTabInfos()) {
-		CPartFile* cur_file;
-		uint16 count,dwl;
-		count=dwl=0;
-		for (int i=0;i<theApp.downloadqueue->GetFileCount();i++) {
-			cur_file=theApp.downloadqueue->GetFileByIndex(i);
-			if (cur_file==0) {
-				continue;
-			}
-			if (CheckShowItemInGivenCat(cur_file,index)) {
-				count++;
-				if (cur_file->GetTransferingSrcCount()>0) {
-					dwl++;
+			if (index == -1 && fileCat > 0 && cur_file->CheckShowItemInGivenCat(0)) {
+				files[0]++;
+				if (downloading) {
+					downloads[0]++;
 				}
 			}
 		}
-		CString title=newlabel;
-		newlabel.Format("%s (%i/%i)",title.GetData(),dwl,count);
+
 	}
-	m_dlTab->SetPageText(index,newlabel);
-	theApp.amuledlg->searchwnd->UpdateCatChoice();
+	int start, end;
+	if (index == -1) {
+		start = 0;
+		end = nrCats - 1;
+	} else {
+		start = index;
+		end = index;
+	}
+	for (int i = start; i <= end; i++) {
+		wxString label = theApp->glob_prefs->GetCategory(i)->title;
+		if (showCatTabInfos) {
+			label += CFormat(wxT(" (%u/%u)")) % downloads[i] % files[i];
+		}
+		m_dlTab->SetPageText(i, label);
+	}
 }
 
-void CTransferWnd::OnSashPositionChanged()
+
+void CTransferWnd::OnSetCatStatus( wxCommandEvent& event )
 {
-	theApp.amuledlg->split_pos = ((wxSplitterWindow*)FindWindow("splitterWnd"))->GetSashPosition();
+	if ( event.GetId() == MP_CANCEL ) {
+		if ( wxMessageBox(_("Are you sure you wish to cancel and delete all files in this category?"),_("Confirmation Required"), wxYES_NO|wxCENTRE|wxICON_EXCLAMATION, this) == wxNO) {
+			return;
+		}
+	}
+
+	CoreNotify_Download_Set_Cat_Status( m_dlTab->GetSelection(), event.GetId() );
 }
+
+
+void CTransferWnd::OnSetCatPriority( wxCommandEvent& event )
+{
+	int priority = 0;
+
+	switch ( event.GetId() ) {
+		case MP_PRIOLOW:	priority = PR_LOW;	break;
+		case MP_PRIONORMAL:	priority = PR_NORMAL;	break;
+		case MP_PRIOHIGH:	priority = PR_HIGH;	break;
+		case MP_PRIOAUTO:	priority = PR_AUTO;	break;
+		default:
+			return;
+	}
+
+	CoreNotify_Download_Set_Cat_Prio( m_dlTab->GetSelection(), priority );
+}
+
+
+void CTransferWnd::OnAddCategory(wxCommandEvent& WXUNUSED(event))
+{
+	if (theApp->glob_prefs->GetCatCount() >= 99) {
+		wxMessageBox(_("Only 99 categories are supported."), _("Too many categories!"), wxOK | wxICON_EXCLAMATION);
+		return;
+	}
+	CCatDialog dialog( this,
+	// Allow browse?
+#ifdef CLIENT_GUI
+	false
+#else
+	true
+#endif
+	);
+	dialog.ShowModal();
+}
+
+
+void CTransferWnd::OnDelCategory(wxCommandEvent& WXUNUSED(event))
+{
+	RemoveCategory(m_dlTab->GetSelection());
+}
+
+
+void CTransferWnd::RemoveCategory(int index)
+{
+	if ( index > 0 ) {
+		theApp->downloadqueue->ResetCatParts(index);
+		theApp->glob_prefs->RemoveCat(index);
+		RemoveCategoryPage(index);
+		if ( theApp->glob_prefs->GetCatCount() == 1 ) {
+			thePrefs::SetAllcatFilter( acfAll );
+		}
+		theApp->glob_prefs->SaveCats();
+		theApp->amuledlg->m_searchwnd->UpdateCatChoice();
+	}
+}
+
+
+void CTransferWnd::RemoveCategoryPage(int index)
+{
+	m_dlTab->RemovePage(index);
+	m_dlTab->SetSelection(0);
+	downloadlistctrl->ChangeCategory(0);
+}
+
+
+void CTransferWnd::OnEditCategory( wxCommandEvent& WXUNUSED(event) )
+{
+	CCatDialog dialog( this,
+	// Allow browse?
+#ifdef CLIENT_GUI
+	false
+#else
+	true
+#endif
+		, m_dlTab->GetSelection());
+
+	dialog.ShowModal();
+}
+
+
+void CTransferWnd::OnSetDefaultCat( wxCommandEvent& event )
+{
+	thePrefs::SetAllcatFilter( static_cast<AllCategoryFilter>(event.GetId() - MP_CAT_SET0) );
+	theApp->glob_prefs->GetCategory(0)->title = GetCatTitle( thePrefs::GetAllcatFilter() );
+
+	UpdateCategory( 0 );
+
+	downloadlistctrl->ChangeCategory( 0 );
+
+	theApp->glob_prefs->SaveCats();
+
+	downloadlistctrl->SortList();
+}
+
+
+void CTransferWnd::OnCategoryChanged(wxNotebookEvent& evt)
+{
+	// First remove currently showing sources (switching cat will deselect all)
+	CKnownFileVector filesVector;
+	clientlistctrl->ShowSources(filesVector);
+	// Then change cat
+	downloadlistctrl->ChangeCategory(evt.GetSelection());
+	downloadlistctrl->SortList();
+}
+
+
+void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt)
+{
+	// Only handle events from the category-notebook
+	if ( evt.GetEventObject() != (wxObject*)m_dlTab )
+		return;
+
+	if ( m_dlTab->GetSelection() == -1 ) {
+		return;
+	}
+
+	// Avoid opening another menu when it's already open
+	if ( m_menu == NULL ) {
+		m_menu = new wxMenu( _("Category") );
+
+		if ( m_dlTab->GetSelection() == 0 ) {
+			wxMenu* catmenu = new wxMenu();
+
+			catmenu->Append( MP_CAT_SET0,      _("All") );
+			catmenu->Append( MP_CAT_SET0 + 1,  _("All others") );
+
+			catmenu->AppendSeparator();
+
+			catmenu->Append( MP_CAT_SET0 + 2,  _("Incomplete") );
+			catmenu->Append( MP_CAT_SET0 + 3,  _("Completed") );
+			catmenu->Append( MP_CAT_SET0 + 4,  _("Waiting") );
+			catmenu->Append( MP_CAT_SET0 + 5,  _("Downloading") );
+			catmenu->Append( MP_CAT_SET0 + 6,  _("Erroneous") );
+			catmenu->Append( MP_CAT_SET0 + 7,  _("Paused") );
+			catmenu->Append( MP_CAT_SET0 + 8,  _("Stopped") );
+			catmenu->Append( MP_CAT_SET0 + 15, _("Active") );
+
+			catmenu->AppendSeparator();
+
+			catmenu->Append( MP_CAT_SET0 + 9,  _("Video") );
+			catmenu->Append( MP_CAT_SET0 + 10, _("Audio") );
+			catmenu->Append( MP_CAT_SET0 + 11, _("Archive") );
+			catmenu->Append( MP_CAT_SET0 + 12, _("CD-Images") );
+			catmenu->Append( MP_CAT_SET0 + 13, _("Pictures") );
+			catmenu->Append( MP_CAT_SET0 + 14, _("Text") );
+
+			m_menu->Append(0, _("Select view filter"), catmenu);
+		}
+
+		m_menu->Append( MP_CAT_ADD, _("Add category") );
+
+		if ( m_dlTab->GetSelection() ) {
+			m_menu->Append(MP_CAT_EDIT,_("Edit category"));
+			m_menu->Append(MP_CAT_REMOVE, _("Remove category"));
+		}
+
+		m_menu->AppendSeparator();
+
+		m_menu->Append( MP_CANCEL, _("Cancel"));
+		m_menu->Append( MP_STOP,   _("&Stop"));
+		m_menu->Append( MP_PAUSE,  _("&Pause"));
+		m_menu->Append( MP_RESUME, _("&Resume"));
+
+		PopupMenu(m_menu, evt.GetPosition());
+
+		delete m_menu;
+		m_menu = NULL;
+	}
+}
+
+
+void CTransferWnd::OnBtnClearDownloads( wxCommandEvent& WXUNUSED(evt) )
+{
+    downloadlistctrl->Freeze();
+    downloadlistctrl->ClearCompleted();
+    downloadlistctrl->Thaw();
+}
+
+
+void CTransferWnd::Prepare()
+{
+	wxSplitterWindow* splitter = CastChild( wxT("splitterWnd"), wxSplitterWindow );
+	int height = splitter->GetSize().GetHeight();
+	int header_height = s_clientlistHeader->GetSize().GetHeight();
+
+	if ( m_splitter ) {
+		// Some sanity checking
+		if ( m_splitter < s_splitterMin ) {
+			m_splitter = s_splitterMin;
+		} else if ( m_splitter > height - header_height * 2 ) {
+			m_splitter = height - header_height * 2;
+		}
+		splitter->SetSashPosition( m_splitter );
+		m_splitter = 0;
+	}
+
+	if ( !clientlistctrl->GetShowing() ) {
+		// use a toggle event to close it (calculate size, change button)
+		clientlistctrl->SetShowing( true );	// so it will be toggled to false
+		wxCommandEvent evt1;
+		OnToggleClientList( evt1 );
+	}
+}
+
+void CTransferWnd::OnToggleClientList(wxCommandEvent& WXUNUSED(evt))
+{
+	wxSplitterWindow* splitter = CastChild( wxT("splitterWnd"), wxSplitterWindow );
+	wxBitmapButton*   button = CastChild( ID_CLIENTTOGGLE, wxBitmapButton );
+
+	if ( !clientlistctrl->GetShowing() ) {
+		splitter->SetSashPosition( m_splitter );
+		m_splitter = 0;
+
+		clientlistctrl->SetShowing( true );
+
+		button->SetBitmapLabel( amuleDlgImages( 10 ) );
+		button->SetBitmapFocus( amuleDlgImages( 10 ) );
+		button->SetBitmapSelected( amuleDlgImages( 10 ) );
+		button->SetBitmapHover( amuleDlgImages( 10 ) );
+	} else {
+		clientlistctrl->SetShowing( false );
+
+		m_splitter = splitter->GetSashPosition();
+
+		// Add the height of the listctrl to the top-window
+		int height = clientlistctrl->GetSize().GetHeight()
+					 + splitter->GetWindow1()->GetSize().GetHeight();
+
+		splitter->SetSashPosition( height );
+
+		button->SetBitmapLabel( amuleDlgImages( 11 ) );
+		button->SetBitmapFocus( amuleDlgImages( 11 ) );
+		button->SetBitmapSelected( amuleDlgImages( 11 ) );
+		button->SetBitmapHover( amuleDlgImages( 11 ) );
+	}
+}
+
+
+void CTransferWnd::OnSashPositionChanging(wxSplitterEvent& evt)
+{
+	if ( evt.GetSashPosition() < s_splitterMin ) {
+		evt.SetSashPosition( s_splitterMin );
+	} else {
+		wxSplitterWindow* splitter = wxStaticCast( evt.GetEventObject(), wxSplitterWindow);
+		wxCHECK_RET(splitter, wxT("ERROR: NULL splitter in CTransferWnd::OnSashPositionChanging"));
+
+		int height = splitter->GetSize().GetHeight();
+		int header_height = s_clientlistHeader->GetSize().GetHeight();
+		int mousey = wxGetMousePosition().y - splitter->GetScreenRect().GetTop();
+
+		if ( !clientlistctrl->GetShowing() ) {
+			// lower window hidden
+			if ( height - mousey < header_height * 2 ) {
+				// no moving down if already hidden
+				evt.Veto();
+			} else {
+				// show it
+				m_splitter = mousey;	// prevent jumping if it was minimized and is then shown by dragging the sash
+				wxCommandEvent event;
+				OnToggleClientList( event );
+			}
+		} else {
+			// lower window showing
+			if ( height - mousey < header_height * 2 ) {
+				// hide it
+				wxCommandEvent event;
+				OnToggleClientList( event );
+			} else {
+				// normal resize
+				// If several events queue up, setting the sash to the current mouse position
+				// will speed up things and make sash moving more smoothly.
+				evt.SetSashPosition( mousey );
+			}
+		}
+	}
+}
+// File_checked_for_headers

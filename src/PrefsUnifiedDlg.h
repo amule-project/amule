@@ -1,106 +1,138 @@
-//this file is part of aMule
-//Copyright (C)2004 The aMule Project
-//Original author: Emilio Sandoz
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2004-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Original author: Emilio Sandoz
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 #ifndef __PrefsUnifiedDlg_H__
 #define __PrefsUnifiedDlg_H__
 
-#ifdef __GNUG__
-    #pragma interface "PrefsUnifiedDlg.cpp"
-#endif
-
-#ifndef WX_PRECOMP
-    #include "wx/wx.h"
-#endif
-
-#define UNIFIED_PREF_HANDLING
-//#define DISABLE_OLDPREFS	
-
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dialog.h>		// Needed for wxDialog
-#include "muuli_wdr.h"
-#include "ini2.h"
-#include "Preferences.h"
-#include "DirectoryTreeCtrl.h"	// Needed for CDirectoryTreeCtrl
 
-// WDR: class declarations
 
-//----------------------------------------------------------------------------
-// PrefsUnifiedDlg
-//----------------------------------------------------------------------------
+class Cfg_Base;
+class CDirectoryTreeCtrl;
 
-class PrefsUnifiedDlg: public wxDialog
+class wxWindow;
+class wxChoice;
+class wxButton;
+class wxPanel;
+class wxListCtrl;
+
+class wxCommandEvent;
+class wxListEvent;
+class wxSpinEvent;
+class wxScrollEvent;
+class wxInitDialogEvent;
+
+
+/**
+ * This class represents a dialog used to display preferences.
+ */
+class PrefsUnifiedDlg : public wxDialog
 {
-	DECLARE_DYNAMIC_CLASS(PrefsUnifiedDlg)
-	PrefsUnifiedDlg()  {}
-		
 public:
-    // constructors and destructors
+	/**
+	 * Constructor.
+	 *
+	 * @param parent The parent window.
+	 *
+	 * This constructor is a much more simple version of the wxDialog one,
+	 * which only needs to know the parent of the dialog. Please note that
+	 * it is private so that we can ensure that only one dialog has been
+	 * created at one time.
+	 */
 	PrefsUnifiedDlg(wxWindow* parent);
-	virtual ~PrefsUnifiedDlg();
-    
-    // WDR: method declarations for PrefsUnifiedDlg
-    virtual bool Validate();
-    virtual bool TransferDataToWindow();
-    virtual bool TransferDataFromWindow();
 
-	static void ForceUlDlRateCorrelation(int id);
-	static void CheckRateUnlimited(Rse* prse);
+	/**
+	 * Updates the widgets with the values of the preference-variables.
+	 */
+	bool TransferFromWindow();
+	/**
+	 * Updates the prefernce-variables with the values of the widgets.
+	 */
+	bool TransferToWindow();
 
-	static void BuildItemList(Preferences_Struct *prefs, char * appdir);
-	static void LoadAllItems(CIni& ini);
-	static void SaveAllItems(CIni& ini);
 
-	Rse	*Prse(int id);	// returns the Rse* corresponding to an item ID
+protected:
+	/**
+	 * Helper functions which checks if a Cfg has has changed.
+	 */
+	bool			CfgChanged(int id);
 
-	int GetColorIndex()  { return pchoiceColor->GetSelection(); }
-    
-private:
-    // WDR: member variable declarations for PrefsUnifiedDlg
-	int	idMin;	// lowest dlg item ID
-	int	idMax;	// highest
-	Rse	**trse;	// pointer to table of Rse's from idMin to idMax
-	CDirectoryTreeCtrl* pdtcShareSelector;
-	wxChoice*	pchoiceColor;
-	wxButton*	pbuttonColor;
+	/**
+	 * Helper functions which returns the Cfg assosiated with the specified id.
+	 */
+	Cfg_Base*		GetCfg(int id);
 
-private:
-    // WDR: handler declarations for PrefsUnifiedDlg
-    void OnOk(wxCommandEvent &event);
+
+	//! Pointer to the shared-files list
+	CDirectoryTreeCtrl*	m_ShareSelector;
+
+	//! Pointer to the color-selector
+	wxChoice*		m_choiceColor;
+
+	//! Pointer to the color-selection button
+	wxButton*		m_buttonColor;
+
+	//! Pointer to the currently shown preference-page
+	wxPanel*		m_CurrentPanel;
+
+	//! hide/show server tab
+	int				m_IndexServerTab;
+	bool			m_ServerTabVisible;
+	wxPanel*		m_ServerWidget;
+	wxListCtrl*		m_PrefsIcons;
+	void EnableServerTab(bool enable);
+
+	void OnOk(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
-	void OnButtonBrowseWav(wxEvent &event);
-	void OnButtonBrowseVideoplayer(wxEvent &event);
-	void OnButtonWizard(wxEvent &event);
-	void OnButtonDir(wxEvent& event);
-	void OnButtonSystray(wxEvent& event);
-	void OnButtonEditAddr(wxEvent& event);
+	void OnClose(wxCloseEvent &event);
+
+	void OnButtonBrowseApplication(wxCommandEvent &event);
+	void OnButtonDir(wxCommandEvent& event);
+	void OnButtonEditAddr(wxCommandEvent& event);
 	void OnButtonColorChange(wxCommandEvent &event);
-	void OnSpinMaxDLR(wxCommandEvent &event);
+	void OnButtonIPFilterReload(wxCommandEvent &event);
+	void OnButtonIPFilterUpdate(wxCommandEvent &event);
 	void OnColorCategorySelected(wxCommandEvent &event);
-	void OnCheckBoxChange(wxEvent &event);
-	void OnScroll(wxCommandEvent &event);
+	void OnCheckBoxChange(wxCommandEvent &event);
+	void OnPrefsPageChange(wxListEvent& event);
+	void OnToolTipDelayChange(wxSpinEvent& event);
+	void OnScrollBarChange( wxScrollEvent& event );
+	void OnRateLimitChanged( wxSpinEvent& event );
+	void OnTCPClientPortChange(wxSpinEvent& event);
+	void OnUserEventSelected(wxListEvent& event);
+	void OnLanguageChoice(wxCommandEvent &event);
+	void CreateEventPanels(const int idx, const wxString& vars, wxWindow* parent);
+
+	void OnInitDialog( wxInitDialogEvent& evt );
+
+	DECLARE_EVENT_TABLE()
 
 private:
-    DECLARE_EVENT_TABLE()
+	bool	m_verticalToolbar;
+	bool	m_toolbarOrientationChanged;
 };
 
-
-
-
 #endif
+// File_checked_for_headers

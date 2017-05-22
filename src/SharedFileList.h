@@ -1,173 +1,133 @@
-//this file is part of aMule
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 #ifndef SHAREDFILELIST_H
 #define SHAREDFILELIST_H
 
+#include <list>
 #include <map>
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/thread.h>		// Needed for wxMutex
 
-#include "types.h"		// Needed for uint16 and uint64
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
+#include "Types.h"		// Needed for uint16 and uint64
 
-/*
-struct UnknownFile_Struct{
-	char* name;
-	char* directory;
-	CPartFile* partfile_Owner;
-};
-*/
 struct UnknownFile_Struct;
 
 class CKnownFileList;
-class CAddFileThread;
-class CCKey;
 class CKnownFile;
-class CServerConnect;
-class CPreferences;
 class CMemFile;
+class CMD4Hash;
+class CServer;
+class CPublishKeywordList;
+class CPath;
+class CAICHHash;
+class CThreadTask;
 
-#if 0
-WX_DECLARE_LIST(UnknownFileStruct,UnknownList);
 
-class CFilePtrList : public UnknownList
-{
+typedef std::map<CMD4Hash,CKnownFile*> CKnownFileMap;
+typedef std::map<wxString, CPath> StringPathMap;
+typedef std::list<CPath> PathList;
+
+class CSharedFileList {
 public:
-  CFilePtrList() : UnknownList()
-    { };
-  virtual ~CFilePtrList() 
-    { };
-  
-  int GetCount()	{ int nResult;
-  wxMutexLocker locker(m_lockFilePtrList);
-  nResult = UnknownList::GetCount();
-  return nResult; };
-  
-  bool IsEmpty()		{ bool bResult;
-  wxMutexLocker locker(m_lockFilePtrList);
-  bResult = UnknownList::IsEmpty();
-  return bResult; };
-  
-  UnknownList::Node* AddTail(UnknownFileStruct* pNewElement) 
-    { UnknownList::Node* pos;
-    wxMutexLocker locker(m_lockFilePtrList);
-    pos = UnknownList::Append(pNewElement);
-    return pos; };
-  
-  UnknownFileStruct* RemoveHead() 
-    { UnknownFileStruct* pFile;
-    wxMutexLocker locker(m_lockFilePtrList);
-    pFile = UnknownList::GetFirst()->GetData();
-    UnknownList::DeleteNode(UnknownList::GetFirst());
-    return pFile; };
-  
-  //CRITICAL_SECTION 	m_lockFilePtrList;
-  wxMutex m_lockFilePtrList;
-};
-#endif
-
-typedef std::map<CCKey,CKnownFile*> CKnownFileMap;
-
-class CSharedFileList{
-	friend class CSharedFilesCtrl;
-	friend class CClientReqSocket;
-public:
-	CSharedFileList(CPreferences* in_prefs,CServerConnect* in_server, CKnownFileList* in_filelist);
+	CSharedFileList(CKnownFileList* in_filelist);
 	~CSharedFileList();
-	void	SendListToServer();
-	void 	Reload(bool sendtoserver = true, bool firstload = false);
+	void	Reload();
 	void	SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd = false);
-	void	SetOutputCtrl(CSharedFilesCtrl* in_ctrl);
 	void	RemoveFile(CKnownFile* toremove);
-	wxMutex	list_mut;
-	CKnownFile*	GetFileByID(unsigned char* filehash);
-	short	GetFilePriorityByID(unsigned char* filehash);
-	CKnownFile*     GetFileByIndex(int index);
-	CKnownFileList*		filelist;
-	void	CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* files);
-	uint64	GetDatasize();
-	uint16	GetCount()	{return m_Files_map.size(); }
+	CKnownFile*	GetFileByID(const CMD4Hash& filehash);
+	short	GetFilePriorityByID(const CMD4Hash& filehash);
+	const CKnownFile* GetFileByIndex(unsigned int index) const;
+	size_t	GetCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
+	size_t  GetFileCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
+	void	CopyFileList(std::vector<CKnownFile*>& out_list) const;
 	void	UpdateItem(CKnownFile* toupdate);
-	void	AddFilesFromDirectory(char* directory);
-	void    GetSharedFilesByDirectory(const char *directory,CTypedPtrList<CPtrList, CKnownFile*>& list);
+	void    GetSharedFilesByDirectory(const wxString& directory, CKnownFilePtrList& list);
 	void	ClearED2KPublishInfo();
-	
+	void	RepublishFile(CKnownFile* pFile);
+	void	Process();
+	void	PublishNextTurn()	{ m_lastPublishED2KFlag = true; }
+	bool	RenameFile(CKnownFile* pFile, const CPath& newName);
+
+	/**
+	 * Returns the name of a folder visible to the public.
+	 *
+	 * @param dir The full path to a shared directory.
+	 * @return The name of the shared directory that will be visible to the public.
+	 *
+	 * This function is used to hide sensitive data considering the directory structure of the client.
+	 * The returned public name consists of only subdirectories that are shared.
+	 * Example: /ed2k/shared/games/tetris -> "games/tetris" if /ed2k/shared are not marked as shared
+	 */
+	wxString		GetPublicSharedDirName(const CPath& dir);
+	const CPath*	GetDirForPublicSharedDirName(const wxString& strSharedDir) const;
+
+	/**
+	 * Returns true, if the specified path points to a shared directory or single shared file.
+	 */
+	bool			IsShared(const CPath& path) const;
+
+	/* Kad Stuff */
+	void	Publish();
+	void	AddKeywords(CKnownFile* pFile);
+	void	RemoveKeywords(CKnownFile* pFile);
+	// This is actually unused, but keep it here - will be needed later.
+	void	ClearKadSourcePublishInfo();
+
+	/**
+	 * Checks for files which missing or wrong AICH hashes.
+	 * Those that are found are scheduled for ACIH hashing.
+	 */
+	void CheckAICHHashes(const std::list<CAICHHash>& hashes);
+
 private:
+	typedef std::list<CThreadTask *> TaskList;
+
+	bool	AddFile(CKnownFile* pFile);
+	unsigned	AddFilesFromDirectory(const CPath& directory, TaskList & hashTasks);
 	void	FindSharedFiles();
+	bool	reloading;
+
+	void	SendListToServer();
+	uint32 m_lastPublishED2K;
+	bool	 m_lastPublishED2KFlag;
+
+	CKnownFileList*	filelist;
 
 	CKnownFileMap		m_Files_map;
-	CPreferences*		app_prefs;
-	CServerConnect*		server;
-	CSharedFilesCtrl*	output;
-	CAddFileThread*		m_Thread;
+	mutable wxMutex		list_mut;
+
+	StringPathMap m_PublicSharedDirNames;  //! used for mapping strings to shared directories
+
+	/* Kad Stuff */
+	CPublishKeywordList* m_keywords;
+	unsigned int m_currFileSrc;
+	unsigned int m_currFileNotes;
+	unsigned int m_currFileKey;
+	uint32 m_lastPublishKadSrc;
+	uint32 m_lastPublishKadNotes;
 };
-
-#if 0
-WX_DECLARE_HASH_MAP(wxString,CKnownFile*,wxStringHash,wxStringEqual,FilesMap);
-WX_DECLARE_LIST(UnknownFileStruct,WaitingForList);
-
-class CSharedFileList{
-	friend class CSharedFilesCtrl;
-	friend class CClientReqSocket;
-public:
-	CSharedFileList(CPreferences* in_prefs,CServerConnect* in_server, CKnownFileList* in_filelist);
-	~CSharedFileList();
-	void	SendListToServer();
-	void	Reload(bool sendtoserver = true);
-	void	SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd = false);
-	void	SetOutputCtrl(CSharedFilesCtrl* in_ctrl);
-	void	RemoveFile(CKnownFile* toremove);
-	wxMutex	list_mut;
-	CKnownFile*	GetFileByID(unsigned char* filehash);
-	short	GetFilePriorityByID(unsigned char* filehash);
-	CKnownFileList*		filelist;
-	void	CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* files);
-	uint64	GetDatasize();
-	uint16	GetCount()	{return m_Files_map.size(); }
-	void	UpdateItem(CKnownFile* toupdate);
-private:
-	void	FindSharedFiles();
-	void	AddFilesFromDirectory(char* directory);
-	void	HashNextFile();
-
-	//CMap<CCKey,CCKey&,CKnownFile*,CKnownFile*> m_Files_map;
-	FilesMap m_Files_map;
-	//CTypedPtrList<CPtrList, UnknownFileStruct*> waitingforhash_list;
-	WaitingForList waitingforhash_list;
-	CPreferences*		app_prefs;
-	CServerConnect*		server;
-	CSharedFilesCtrl*	output;
-};
-#endif
-
-/*
-class CAddFileThread : public wxThread
-{
-public:
-	CAddFileThread();
-public:
-	virtual	bool	InitInstance() {return true;}
-	virtual ExitCode Entry();
-	virtual void OnExit() {}
-
-private:
-};
-*/
 
 #endif // SHAREDFILELIST_H
+// File_checked_for_headers

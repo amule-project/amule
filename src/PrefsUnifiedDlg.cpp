@@ -1,1319 +1,1283 @@
-//this file is part of aMule
-//Copyright (C)2004 The aMule Project
-//Original author: Emilio Sandoz
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2004-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Original author: Emilio Sandoz
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 
-// Unified handling of file I/O and dialog I/O for Preferences
-// =================== Under Construction ====================
-
-#ifdef __GNUG__
-    #pragma implementation "PrefsUnifiedDlg.cpp"
-#endif
-
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-    #pragma hdrstop
-#endif
-
-
-#include <wx/object.h>
-#include <wx/checkbox.h>
-#include <wx/slider.h>
-#include <wx/spinctrl.h>
-#include <wx/colordlg.h>
-#include <wx/button.h>
-#include <wx/filedlg.h>
-
-#include "ini2.h"			// Needed for CIni
-#include "amule.h"			// Needed for theApp
-#include "otherfunctions.h"	// Needed for MakeFoldername
-#include "Preferences.h"	// Needed for GetAppDir
 #include "PrefsUnifiedDlg.h"
-#include "CTypedPtrList.h"	// Needed for CList
-#include "EditServerListDlg.h"
+
+#include <common/Constants.h>
+#include <common/Macros.h>		// Needed for itemsof()
+
+#include <wx/colordlg.h>
+#include <wx/tooltip.h>
+
+#include "amule.h"				// Needed for theApp
 #include "amuleDlg.h"
-#include "SharedFileList.h"	// Needed for CSharedFileList
-#include "StatisticsDlg.h"	// Needed for graph parameters, colors
-#include "Wizard.h"			// Needed for Wizard
-
-
-
-// The following classes are used for table-driven access to user-definable settings,
-// most of which appear in the Preferences dialog.  All other items in the preference file
-// (e.g. window column widths) use the same mechanism and the same table for consistency.
-//
-// The Rse classes defined below are used only by class PrefsUnifiedDlg; they are here in 
-// a .cpp file for now because it facilitates the migration from the exiting code, which 
-// is an evolving, interactive process.  Also, most (all) methods are currently defined 
-// inline because it speeds up the design process to not have to edit both definition 
-// and implementation (most Rse methods are virtual and called from very few places, so 
-// there is actually very little price to pay in terms of code size).
-//
-// Note: currently all prefs are stored in a common struct which gets filled before 
-// instances of the classes that use them are created.  The code here does not depend on
-// this struct, and eventually it may be more advantageous to move the prefs vars into
-// the classes they really belong to, as static members (which do not require an instance).
-
-
-class Rse: public wxObject {  // Remembered Settings Element - root class
-friend class PrefsUnifiedDlg;
-friend class RseInt;
-public:
-	Rse(int ID, char * szIniName, char * szIniSection=NULL) 
-		: id(ID), strName(szIniName), szSection(szIniSection), pctrl(NULL), wxc(wxcNone), prseLink(NULL)  {}
-	Rse(char * szIniName, char * szIniSection=NULL) 
-		: id(0), strName(szIniName), szSection(szIniSection), pctrl(NULL), wxc(wxcNone), prseLink(NULL)  {}
-	virtual ~Rse() {}
-
-	virtual void LoadFromFile(CIni &ini)	{}
-	virtual void SaveToFile(CIni &ini)  	{}
-		
-	void TransferToDlg() 					
-	{ 
-		SetPrevValue();   
-		if (id!=0)  
-			SetDlgValue(); 
-	}
-	
-	void TransferFromDlg() 					
-	{ 
-		if (id!=0)  
-			StoreDlgValue(); 
-	}
-	
-	virtual void SetDlgValue() 				{}
-	virtual void SetPrevValue()				{}
-	virtual void RestorePrevValue()			{}
-	virtual void StoreDlgValue()			{}
-	virtual bool WasChanged()				{ return false; }
-	virtual void SetWxControl(wxControl *pc){}
-		
-	int Id() 								{ return id; }
-	virtual int GetMemValue()				{ return 0; }
-	virtual void SetMemValue(int val)		{}
-	virtual int GetCtrlValue()				{ return 0; }
-	virtual void SetCtrlValue(int val)		{}
-	virtual void SetCtrlValue(wxString str)	{}
-	virtual void SetCtrlRange(int iMin, int iMax) {}
-	virtual int GetDefaultValue()			{ return 0; }
-	virtual int GetPrevValue()				{ return 0; }
-
-	void Propagate()						{ if (prseLink!=NULL) prseLink->SetCtrlValue(GetCtrlValue()); }
-	void SetLink(Rse *prse)					{ prseLink = prse;}
-	virtual int IdLinkedTo()				{ return 0; }
-		
-	#ifdef __DEBUG__	
-	const char * GetIniName() 				{ return strName.c_str(); }
-
-	void CheckCtrlType()
-	{
-		if (pctrl == NULL)
-			printf("MISSING CONTROL for %s \n", GetIniName());
-		else if (wxc == wxcNone)
-			printf("unsupported wxControl type for item %s [ID=%i]\n", GetIniName(), id);
-//		else
-//			printf("found control of type %s for item %s  [ID=%i]\n", SzCtrlTypeName(), GetIniName(), id);
-	}
-
-	char * SzCtrlTypeName()
-	{
-		static char * aszWxc[] = { "unknown", "wxCheckBox", "wxSlider", "wxSpinCtrl", "wxTextCtrl", 
-								"wxChoice", "wxStaticText", "wxButton", "wxRadioButton" };
-		return aszWxc[wxc];
-	}
-	#endif
-	
-protected:
-	enum wxcType { wxcNone, wxcCheck, wxcSlider, wxcSpin, wxcText, wxcChoice, wxcStatic, 
-					wxcButton, wxcRadioButton };	
-
-	Rse()  {}
-
-	int			id;				// item ID in the prefs dlg
-	wxString	strName;		// name of item in the ini file
-	char		*szSection;		// (optional) section in the ini file
-	wxControl	*pctrl;			// pointer to wxControl in dlg
-	wxcType		wxc;			// the type of control
-	Rse			*prseLink;		// points to a linked dlg item, e.g. a dynamic label
-};
-
-
-
-class RseBool: public Rse {
-// Handles all bool and pseudo-bool (int8 and uint8 used like bool) preference vars
-public:
-	RseBool(int ID, bool& bSetting, char * szIniName, bool bDefault, char * szIniSection=NULL)
-		: Rse(ID, szIniName, szIniSection), pbSet(&bSetting), bDef(bDefault)  {}
-
-	RseBool(int ID, sint8& bSetting, char * szIniName, bool bDefault, char * szIniSection=NULL)
-		: Rse(ID, szIniName, szIniSection), pbSet((bool*)&bSetting), bDef(bDefault) 
-			{ wxASSERT(sizeof(bool)==sizeof(sint8)); }
-
-	RseBool(int ID, uint8& bSetting, char * szIniName, bool bDefault, char * szIniSection=NULL)
-		: Rse(ID, szIniName, szIniSection), pbSet((bool*)&bSetting), bDef(bDefault) 
-			{ wxASSERT(sizeof(bool)==sizeof(uint8)); }
-
-	virtual void LoadFromFile(CIni &ini)	{ *pbSet = (ini.GetInt(strName, bDef, szSection) ? true : false); }
-	virtual void SaveToFile(CIni &ini)		{ ini.WriteInt(strName, (*pbSet ? 1 : 0), szSection); }
-	
-	virtual void SetDlgValue() 				{ SetCtrlValue(*pbSet);  Propagate(); }
-	virtual void SetPrevValue()				{ bPrev = *pbSet; }
-	virtual void RestorePrevValue() 		{ *pbSet = bPrev; }
-	virtual void StoreDlgValue() 			{ *pbSet = GetCtrlValue(); }
-	virtual bool WasChanged()				{ return (*pbSet != bPrev); }
-	
-	virtual void SetWxControl(wxControl *pc)
-	{ 
-		pctrl=pc;  
-// Note: a bool should always be represented by a checkbox; but we currently have some
-// radiobuttons used for that purpose, so for now that control type is supported here too
-#ifndef CLEAN_BOOLS
-		if (pctrl->IsKindOf(CLASSINFO(wxCheckBox))) 
-			wxc = wxcCheck; 
-		else if (pctrl->IsKindOf(CLASSINFO(wxRadioButton))) 
-			wxc = wxcRadioButton;
-		wxASSERT(wxc!=wxcNone);
-#else
-		wxASSERT(pctrl->IsKindOf(CLASSINFO(wxCheckBox))); 
-		wxc = wxcCheck;	
-#endif
-	}
-	
-	virtual int GetCtrlValue()				
-	{ 
-#ifndef CLEAN_BOOLS
-		if (wxc == wxcRadioButton)
-			return ((wxRadioButton *)pctrl)->GetValue();
-		else
-#endif
-		return ((wxCheckBox *)pctrl)->GetValue(); 
-	}
-	
-	virtual void SetCtrlValue(int val)		
-	{ 
-#ifndef CLEAN_BOOLS
-		if (wxc == wxcRadioButton)
-			((wxRadioButton *)pctrl)->SetValue((val != 0)); 
-		else
-#endif
-		((wxCheckBox *)pctrl)->SetValue((val != 0)); 
-	}
-	
-	virtual int GetMemValue()				{ return *pbSet; }
-	virtual void SetMemValue(int val)		{ *pbSet = (val != 0); }
-	
-	virtual int GetDefaultValue()			{ return bDef; }
-	virtual int GetPrevValue()				{ return bPrev; }
-	
-private:
-	bool	*pbSet;
-	bool	bDef;
-	bool	bPrev;
-};
-
-
-
-class RseInt: public Rse {
-// Handles all signed and unsigned integer preference vars
-public:
-	RseInt(int ID, sint8& iSetting, char *szIniName, sint8 iDefault, char *szIniSection=NULL)
-		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
-
-	RseInt(int ID, sint16& iSetting, char *szIniName, sint16 iDefault, char *szIniSection=NULL)
-		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
-
-	RseInt(int ID, sint32& iSetting, char *szIniName, sint32 iDefault, char *szIniSection=NULL)
-		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
-
-	RseInt(int ID, uint8& iSetting, char *szIniName, uint8 iDefault, char *szIniSection=NULL)
-		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
-
-	RseInt(int ID, uint16& iSetting, char *szIniName, uint16 iDefault, char *szIniSection=NULL)
-		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
-
-	RseInt(int ID, uint32& iSetting, char *szIniName, uint32 iDefault, char *szIniSection=NULL)
-		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
-#ifdef __WXMSW__
-	RseInt(int ID, COLORREF& iSetting, char *szIniName, COLORREF iDefault, char *szIniSection=NULL)
-		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
-#endif
-//	RseInt(int ID, int& iSetting, char *szIniName, int32 iDefault, char *szIniSection=NULL)
-//		: Rse(ID, szIniName, szIniSection), cb(sizeof(iSetting)), piSet(&iSetting), iDef(iDefault)  {}
-
-	virtual void LoadFromFile(CIni &ini)	{ WriteMem(ini.GetInt(strName, iDef, szSection)); }
-	virtual void SaveToFile(CIni &ini)		{ ini.WriteInt(strName, ReadMem(), szSection); }
-	
-	virtual void RestorePrevValue() 		{ WriteMem(iPrev); }
-	virtual void SetPrevValue()				{ iPrev = ReadMem(); }
-	virtual void SetDlgValue() 				{ SetCtrlValue(ReadMem());  Propagate(); }
-	virtual void StoreDlgValue() 			{ WriteMem(GetCtrlValue()); }
-	virtual bool WasChanged()				{ return (ReadMem() != iPrev); }
-	virtual int GetMemValue()				{ return ReadMem(); }
-	virtual void SetMemValue(int val)		{ WriteMem(val); }
-	virtual int GetDefaultValue()			{ return iDef; }
-	virtual int GetPrevValue()				{ return iPrev; }
-	
-	virtual int GetCtrlValue()
-	{
-		switch (wxc) {
-			case wxcChoice:		return ((wxChoice*)pctrl)->GetSelection();
-			case wxcSlider:		return ((wxSlider *)pctrl)->GetValue(); 
-			case wxcSpin:		return ((wxSpinCtrl *)pctrl)->GetValue(); 
-			case wxcRadioButton: {
-				int val = 0;
-				for (Rse* prse=this; prse!=NULL; prse=prse->prseLink) {
-					if (((wxRadioButton*)(prse->pctrl))->GetValue())
-						return val;
-					else
-						val++;
-				return -1;  // should never get here if the buttons are set up correctly
-				}
-			}
-			default:	wxASSERT(false);		
-		}
-		return 0;  // stop the compiler from complaining about missing return from function
-	}
-	
-	virtual void SetCtrlValue(int val) 
-	{
-		switch (wxc) {
-			case wxcChoice:	
-				((wxChoice*)pctrl)->SetSelection((val < ((wxChoice*)pctrl)->GetCount()) ? val : 1);
-				break;
-			case wxcSlider:	
-				((wxSlider *)pctrl)->SetValue(val); 
-				break;
-			case wxcSpin:	
-				((wxSpinCtrl*)pctrl)->SetValue(val);
-				break;
-			case wxcRadioButton: 	
-				for (Rse* prse=this; prse!=NULL; prse=prse->prseLink)
-					((wxRadioButton*)(prse->pctrl))->SetValue((val-- == 0));
-				break;
-			default:
-				wxASSERT(false);
-				break;
-		}
-}
-	
-	virtual void SetCtrlRange(int iMin, int iMax) 
-	{
-		if (wxc==wxcSlider)
-			((wxSlider *)pctrl)->SetRange(iMin, iMax); 
-		else if (wxc==wxcSpin)
-			((wxSpinCtrl*)pctrl)->SetRange(iMin, iMax);
-		else
-			wxASSERT(false);
-	}
-	
-	virtual void SetWxControl(wxControl *pc)	
-	{ 
-		pctrl=pc;  
-		if (pctrl->IsKindOf(CLASSINFO(wxSlider))) 
-			wxc = wxcSlider; 
-		else if (pctrl->IsKindOf(CLASSINFO(wxSpinCtrl))) 
-			wxc = wxcSpin;
-		else if (pctrl->IsKindOf(CLASSINFO(wxRadioButton))) 
-			wxc = wxcRadioButton;
-		else if (pctrl->IsKindOf(CLASSINFO(wxChoice))) 
-			wxc = wxcChoice; 
-		wxASSERT(wxc != wxcNone);
-	}
-
-private:
-	void WriteMem(int32 i)
-	{
-		switch (cb) {
-			case sizeof(int32): *(int32*)piSet = i;  break;
-			case sizeof(int16): *(int16*)piSet = i;  break;
-			case sizeof(int8):	*(int8*)piSet = i;   break;
-			default:			wxASSERT(false);	 break;  
-				// if this assert is triggered by a "int" on 64bit system, then
-				// it's probably time to reduce the size of the underlying pref var
-		}
-	}
-
-	int32 ReadMem() 
-	{
-		switch (cb) {
-			case sizeof(int32):  return *(int32*)piSet;
-			case sizeof(int16):  return *(int16*)piSet;
-			case sizeof(int8):	 return *(int8*)piSet;
-			default:			 wxASSERT(false);	  return 0;
-		}
-	}
-
-	int			cb;
-	void		*piSet;
-	int32		iDef;
-	int32		iPrev;
-};
-
-
-
-class RseRadio: public Rse {
-// A special item type for the semi-independent radio buttons we currently use in aMule.
-// The items will disappear when we convert all radio groups to wxRadioBox (which will
-// provide a simpler interface).  All control access handled by parent RseInt.
-	
-public:
-	RseRadio(int ID, int ID_predecessor): Rse(ID, "radio follower", NULL), idPred(ID_predecessor)  {}
-		
-	virtual void SetWxControl(wxControl *pc)
-	{ 
-		pctrl=pc;  
-		wxASSERT(pctrl->IsKindOf(CLASSINFO(wxRadioButton))); 
-		wxc = wxcRadioButton;	
-	}
-
-	virtual int	IdLinkedTo()	{ return idPred; }
-		
-private:
-	int idPred;
-};
-
-
-
-class RseDynLabel: public Rse {
-// A special item type that creates a dynamic label for a slider or similar control.  No file I/O.
-// It can appear anywhere in listRse, but it is recommended to put it immediately after
-// the control it is linked to, for reasons of code maintainability.
-
-public:
-	RseDynLabel(int ID_label, 		// dlg ID of wxStaticText
-			  int ID_ctrl, 			// dlg ID of linked control
-			  int iMultiplier, 		// ctrl val * iMultiplier = output in string
-			  wxString strSeveral, 	// format string to use for val*multiplier > 1
-			  wxString strOne,	 	//							ditto == 1 ("" if not used)
-			  wxString strZero)		//							ditto == 0 ("" if not used)
-		: Rse(ID_label, "label", NULL), idLinkedTo(ID_ctrl), iMult(iMultiplier), 
-			strSev(strSeveral), str1(strOne), str0(strZero)  {}
-				
-	virtual void SetWxControl(wxControl *pc)
-	{ 
-		pctrl=pc;  
-		wxASSERT(pctrl->IsKindOf(CLASSINFO(wxStaticText))); 
-		wxc = wxcStatic;	
-	}
-
-	virtual void SetCtrlValue(int val)		
-	{
-		int i = val * iMult;
-		const char * sz;
-		
-		if (i == 0) 
-			sz = (strcmp(str0.c_str(), "") ? str0.c_str() : strSev.c_str());
-		else if (i == 1)
-			sz = (strcmp(str1.c_str(), "") ? str1.c_str() : strSev.c_str());
-		else
-			sz = strSev.c_str();
-		
-		((wxStaticText*)pctrl)->SetLabel(wxString::Format(sz, i));
-	}
-	
-	virtual int IdLinkedTo()	{ return idLinkedTo; }
-	
-private:
-	int	idLinkedTo;
-	int iMult;
-	wxString strSev;
-	wxString str1;
-	wxString str0;
-};
-
-
-
-class RseCounter: public Rse {
-// Used for long-term statistics counters, e.g. for total bytes received; no dlg use
-public:
-	RseCounter(uint64& iSetting, char * szIniName, char *szIniSection=NULL)
-		: Rse(szIniName, szIniSection), piSet(&iSetting)  {}
-
-	virtual void LoadFromFile(CIni &ini)	{ 
-		char buffer[100];
-		sprintf(buffer ,"%s", ini.GetString(strName, NULL ,szSection).c_str());
-		*piSet = atoll(buffer);
-	}
-	virtual void SaveToFile(CIni &ini)		{ 
-		CString str; 
-		str.Format("%llu",(unsigned long long)*piSet);
-		ini.WriteString(strName, str, szSection);
-	}
-	
-private:
-	uint64	*piSet;
-};
-
-
-
-class RseString: public Rse {
-// all settable strings, e.g. name of video viewer
-public:
-	RseString(int ID, char * pchSetting, int cchMax, char * szIniName, char *szDefault, char *szIniSection=NULL)
-		: Rse(ID, szIniName, szIniSection), pchSet(pchSetting), szDef(szDefault), cch(cchMax)  {}
-
-	virtual void LoadFromFile(CIni &ini)	{ snprintf(pchSet, cch, "%s", ini.GetString(strName, szDef, szSection).GetData()); }
-	virtual void SaveToFile(CIni &ini)		{ ini.WriteString(strName, pchSet, szSection); }	
-
-	virtual void SetDlgValue() 				
-	{
-		bWasChanged = false;
-		if (wxc==wxcText)
-			((wxTextCtrl*)pctrl)->SetValue(pchSet);
-	}
-	
-	virtual void RestorePrevValue()			
-	{
-#ifdef __DEBUG__
-		printf("restore on Cancel not yet supported in RseString\n");
-#endif
-	}
-		
-	virtual void StoreDlgValue()			
-	{
-		const char * sz = ((wxTextCtrl*)pctrl)->GetValue().c_str();
-		bWasChanged = (strcmp(pchSet, sz) != 0);
-		if (wxc==wxcText)
-			snprintf(pchSet, cch, "%s", sz);		
-	}
-		
-	virtual bool WasChanged()					{ return bWasChanged; }
-	
-	virtual void SetCtrlValue(wxString str)		{ ((wxTextCtrl*)pctrl)->SetValue(str); }
-
-	virtual void SetWxControl(wxControl *pc)
-	{ 
-		pctrl=pc;  
-		if (pctrl->IsKindOf(CLASSINFO(wxTextCtrl)))
-			wxc = wxcText; 
-	}
-	
-protected:
-	RseString() {};
-	char	*pchSet;
-	char	*szDef;
-	int		cch;
-
-private:
-	char	*szPrev;
-	bool	bWasChanged;
-};
-
-	
-
-class RseStringEncrypted: public RseString {
-// used for passwords, which should not appear in clear text on disk - no default value
-// the password will be encrypted on disk, in the clear in memory.
-public:
-	RseStringEncrypted(int ID, char * pchSetting, int cchMax, char * szIniName, char *szIniSection=NULL)
-		: RseString(ID, pchSetting, cchMax, szIniName, "", szIniSection)  {}
-
-	virtual void LoadFromFile(CIni &ini)	
-	{ 
-		char buffer[cch];
-		snprintf(buffer, cch, "%s", ini.GetString(strName, szDef, szSection).GetData()); 
-		pchSet[0]=0;// call your de-cryption routine here, with "buffer" for input, "pchSet" for output
-	}
-	
-	virtual void SaveToFile(CIni &ini)		
-	{ 
-		char buffer[cch];
-		buffer[0]=0; // call your en-cryption routine here, with "pchSet" as input and "buffer" as "output"
-		ini.WriteString(strName, buffer, szSection); 
-	}	
-};
-
-
-
-class RseDirAssured: public RseString {
-// A special string: the name of a directory which will be created if it does not already exist
-// (used for Temp and Incoming directories) the name gets prepended with the app dir
-public:
-	RseDirAssured(int ID, char * pchSetting, char * szAppDir, char * szIniName, char *szDefault, char *szIniSection=NULL)
-		: RseString(ID, pchSetting, MAX_PATH, szIniName, szDefault, szIniSection), strAppDir(szAppDir)  {}
-		
-	virtual void LoadFromFile(CIni &ini)  {
-		char sz[MAX_PATH];
-		sprintf(sz,"%s%s", strAppDir.c_str(), szDef);
-		sprintf(pchSet,"%s", ini.GetString(strName, sz, szSection).c_str());
-		MakeFoldername(pchSet);
-	}
-	
-	void SelectDir()
-	{
-		wxString str = wxDirSelector(_("Choose a folder for ")+wxString(szDef), "");
-		if (!str.IsEmpty())
-			SetCtrlValue(str);
-	}
-
-private:
-	wxString	strAppDir;
-};	
-
-
-
-class RseColumns: public Rse {  
-// Window column widths / order / hidden state; used for .ini file only, no dlg interface.
-// Note: the individual values here are declared as "int16", but the character sequence written
-// to the .ini file for "default column width" is "65535", NOT "-1" as one would expect - this
-// behavior appears to rely on a bug in CIni::SerGet, which now is a feature - we need to keep 
-// doing it because we have always done it that way, and eMule does it that way.
-public:
-	RseColumns(int16 *piSetting, int count, char * szIniName, int16 iDefault=0, char * szIniSection=NULL)
-		: Rse(szIniName, szIniSection), piSet(piSetting), iDef(iDefault), cnt(count)  {}
-
-	virtual void LoadFromFile(CIni &ini)	{ ini.SerGet(true, piSet, cnt, strName, szSection, iDef); }
-	virtual void SaveToFile(CIni &ini)		{ ini.SerGet(false, piSet, cnt, strName, szSection, iDef); }
-	
-private:
-	int16	*piSet;  
-	int16	iDef;
-	int		cnt;
-};
-
-
-
-//========================================================================================
-//
-// The following list drives loading/saving preferences in the ini file as well as getting
-// values in and out of the new Preferences dialog.  The order in the list determines the 
-// order in the ini file.  New items are normally added to the end of the list.
-//
-// When you decide to make variable XYZ in class ABC user-settable (i.e. making it a 
-// "preference"), this is the recommended way of going about it:
-//
-// (1) make class PrefsUnifiedDlg a friend of class ABC to give it direct access;
-// (2) make XYZ a "static" member of class ABC and put it in the "protected" section 
-//     of ABC so that a friend class has access to it;
-// (3) define XYZ in the class definition file and give it the desired default value;
-// (4) use wxDesigner (or ask a team member to do this for you) to create a dialog control 
-//     that will allow changing XYZ;  name the control something like IDC_XYZ and write 
-//     down that ID for the next step;  generate the new muuli_wdr.cpp/.h pair;
-// (5) add an entry of the appropriate type to the list below, using the ID from step (4) -
-//     specify the value of the variable itself as the default value (so that the 
-//     initialized value of the static member is the default)
-//
-// The basic idea is that "preferences" are just like other variables: even though we 
-// make them persistent and give the user access to them, the principles of information
-// hiding in object-oriented design still apply - variables should be defined where 
-// they are normally used.  If you follow these recommendations then some day the aMule
-// code will no longer be littered with references of the type "theApp.glob_prefs->xyz" ...
-// [Emilio]
-//
-// WARNING:  do not, I repeat, DO NOT use casts like "(int32&)prefs->xyz" in the statements
-// creating new table entries below.  Preventing the compiler from recognizing a variable
-// according to its true type here may result in corruption of memory neighboring "prefs->xyz"!!!
-
-
-// The list needs to be accessible before the dialog constructor gets called because we load 
-// the preferences from file before setting up the rest of the app (so we use static methods).
-
-static 	CTypedPtrList<CPtrList, Rse*> listRse;
-
-Rse*	prseMaxUp;		// these pointers are needed before 
-Rse*	prseMaxDown;	// PrefsUnifiedDlg constructor gets called
-Rse*	aprseColor[cntStatColors];  // this array helps in accessing stat colors through RseInt's
-    
-
-
-void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  // gets called at init time
-{
-	listRse.AddTail(new Rse("Missing ID of dlg item in listRse"));  // LEAVE AT HEAD OF LIST - handles missing dlg IDs gracefully
-	
-	listRse.AddTail(new RseString(IDC_NICK, prefs->nick, sizeof(prefs->nick), "Nick", "Someone using aMule (http://amule.sourceforge.net)"));
-	listRse.AddTail(new RseDirAssured(IDC_INCFILES, prefs->incomingdir, appdir, "IncomingDir", "Incoming"));
-	listRse.AddTail(new RseDirAssured(IDC_TEMPFILES, prefs->tempdir, appdir, "TempDir", "Temp"));
-
-	listRse.AddTail(prseMaxUp = new RseInt(IDC_MAXUP, prefs->maxupload, "MaxUpload", UNLIMITED)); // see note in ForceUlDlRateCorrelation
-	listRse.AddTail(prseMaxDown = new RseInt(IDC_MAXDOWN, prefs->maxdownload, "MaxDownload", UNLIMITED)); // ditto
-
-	listRse.AddTail(new RseInt(IDC_SLOTALLOC, prefs->slotallocation, "SlotAllocation", 2));
-	listRse.AddTail(new RseInt(IDC_MAXCON, prefs->maxconnections, "MaxConnections", CPreferences::GetRecommendedMaxConnections()));
-	listRse.AddTail(new RseBool(IDC_REMOVEDEAD, prefs->deadserver, "RemoveDeadServer", 1));
-	listRse.AddTail(new RseInt(IDC_PORT, prefs->port, "Port", 4662));
-	listRse.AddTail(new RseInt(IDC_UDPPORT, prefs->udpport, "UDPPort", 4672));
-	listRse.AddTail(new RseInt(IDC_MAXSOURCEPERFILE, prefs->maxsourceperfile, "MaxSourcesPerFile", 300));
-	listRse.AddTail(new RseInt(IDC_LANGUAGE, prefs->languageID, "Language", 0));
-
-	listRse.AddTail(new RseInt(IDC_SEESHARE1, prefs->m_iSeeShares, "SeeShare", 2));
-	listRse.AddTail(new RseRadio(IDC_SEESHARE2, IDC_SEESHARE1));  // to be subsumed by wxRadioBox
-	listRse.AddTail(new RseRadio(IDC_SEESHARE3, IDC_SEESHARE2));  // to be subsumed by wxRadioBox
-	listRse.AddTail(new RseInt(IDC_TOOLTIPDELAY, prefs->m_iToolDelayTime, "ToolTipDelay", 1));
-
-	listRse.AddTail(new RseInt(IDC_SLIDER, prefs->trafficOMeterInterval, "StatGraphsInterval", 3));
-	listRse.AddTail(new RseDynLabel(IDC_SLIDERINFO, IDC_SLIDER, 1, _("Update period: %i secs"), _("Update period: %i sec"), _("Update: Disabled")));
-	listRse.AddTail(new RseInt(IDC_SLIDER2, prefs->statsInterval, "statsInterval", 30));
-	listRse.AddTail(new RseDynLabel(IDC_SLIDERINFO2, IDC_SLIDER2, 1, _("Update period: %i secs"), _("Update period: %i sec"), _("Update: Disabled")));
-
-	listRse.AddTail(new RseInt(IDC_DOWNLOAD_CAP, prefs->maxGraphDownloadRate, "DownloadCapacity", 3)); // see note in ForceUlDlRateCorrelation
-	listRse.AddTail(new RseInt(IDC_UPLOAD_CAP, prefs->maxGraphUploadRate, "UploadCapacity", 3)); // ditto
-	listRse.AddTail(new RseInt(IDC_SERVERRETRIES, prefs->deadserverretries, "DeadServerRetry", 2));
-
-	listRse.AddTail(new RseInt(IDC_SERVERKEEPALIVE, prefs->m_dwServerKeepAliveTimeoutMins, "ServerKeepAliveTimeout", 0));
-	listRse.AddTail(new RseDynLabel(IDC_SERVERKEEPALIVE_LABEL, IDC_SERVERKEEPALIVE, 1,
-		_("Server connection refresh interval %i mins"), _("Server connection refresh interval %i min"), _("Server connection refresh interval: Disabled")));
-
-	listRse.AddTail(new RseInt(IDC_LISTREFRESH, prefs->m_dwListRefreshSecs, "ListRefresh", 1));
-	listRse.AddTail(new RseDynLabel(IDC_LISTREFRESH_LABEL, IDC_LISTREFRESH, 1, _("Upload/Download list refresh time: %i secs"),
-		_("Upload/Download list refresh time: %i sec"),	_("Upload/Download list refresh time: Realtime")));
-	listRse.AddTail(new RseInt(0, prefs->splitterbarPosition, "SplitterbarPosition", 75));	// no GUI needed (window layout)
-
-	listRse.AddTail(new RseInt(0, prefs->statsMax, "VariousStatisticsMaxValue", 100));	// no GUI yet (should be wxSpinCtrl to set scale of Connections graph)
-
-	listRse.AddTail(new RseInt(IDC_SLIDER3, prefs->statsAverageMinutes, "StatsAverageMinutes", 5)); 
-	listRse.AddTail(new RseDynLabel(IDC_SLIDERINFO3, IDC_SLIDER3, 1, _("Time for running averages: %i mins"), "", ""));
-
-	listRse.AddTail(new RseInt(IDC_MAXCON5SEC, prefs->MaxConperFive, "MaxConnectionsPerFiveSeconds",prefs->MaxConperFive));
-
-	listRse.AddTail(new RseBool(IDC_RECONN, prefs->reconnect, "Reconnect", true));
-	listRse.AddTail(new RseBool(IDC_SCORE, prefs->scorsystem, "Scoresystem", true));
-	listRse.AddTail(new RseBool(IDC_ICH, prefs->ICH, "ICH", true ));
-	listRse.AddTail(new RseBool(IDC_AUTOSERVER, prefs->autoserverlist, "Serverlist", false));
-
-	listRse.AddTail(new RseString(0, prefs->m_szLRUServermetURL,sizeof(prefs->m_szLRUServermetURL), "LRUServermetURL", NULL)); // no GUI yet
-
-	listRse.AddTail(new RseBool(IDC_CHECK4UPDATE, prefs->updatenotify, "UpdateNotify", false));
-	listRse.AddTail(new RseBool(IDC_MINTRAY, prefs->mintotray, "MinToTray", false));
-	listRse.AddTail(new RseBool(IDC_UPDATESERVERCONNECT, prefs->addserversfromserver, "AddServersFromServer", true));
-	listRse.AddTail(new RseBool(IDC_UPDATESERVERCLIENT, prefs->addserversfromclient, "AddServersFromClient", true));
-	listRse.AddTail(new RseBool(IDC_SPLASHON, prefs->splashscreen, "Splashscreen", true));
-	listRse.AddTail(new RseBool(IDC_BRINGTOFOREGROUND, prefs->bringtoforeground, "BringToFront", true));
-	listRse.AddTail(new RseBool(IDC_DBLCLICK, prefs->transferDoubleclick, "TransferDoubleClick", true));
-	listRse.AddTail(new RseBool(IDC_BEEPER, prefs->beepOnError, "BeepOnError", true));
-	listRse.AddTail(new RseBool(IDC_EXIT, prefs->confirmExit, "ConfirmExit",false));
-	listRse.AddTail(new RseBool(IDC_FILTER, prefs->filterBadIP, "FilterBadIPs", true));
-	listRse.AddTail(new RseBool(IDC_AUTOCONNECT, prefs->autoconnect, "Autoconnect", false));
-	listRse.AddTail(new RseBool(IDC_SHOWRATEONTITLE, prefs->showRatesInTitle, "ShowRatesOnTitle", false));
-
-	listRse.AddTail(new RseBool(IDC_ONLINESIG, prefs->onlineSig, "OnlineSignature", false));
-	listRse.AddTail(new RseBool(IDC_STARTMIN, prefs->startMinimized, "StartupMinimized", false));
-	listRse.AddTail(new RseBool(IDC_SAFESERVERCONNECT, prefs->safeServerConnect, "SafeServerConnect", false));
-
-	listRse.AddTail(new RseBool(0, prefs->filterserverbyip, "FilterServersByIP", false));	// no GUI yet
-	listRse.AddTail(new RseInt(0, prefs->filterlevel, "FilterLevel", 127));					// no GUI yet
-	listRse.AddTail(new RseBool(0, prefs->checkDiskspace, "CheckDiskspace", true));			// no GUI yet
-	listRse.AddTail(new RseInt(0, prefs->m_uMinFreeDiskSpace, "MinFreeDiskSpace", 0));		// no GUI yet
-	listRse.AddTail(new RseString(0, prefs->yourHostname,sizeof(prefs->yourHostname), "YourHostname", "")); // no GUI yet
-
-	listRse.AddTail(new RseBool(IDC_AUTOCONNECTSTATICONLY, prefs->autoconnectstaticonly, "AutoConnectStaticOnly", false)); 
-	listRse.AddTail(new RseBool(IDC_AUTOTAKEED2KLINKS, prefs->autotakeed2klinks, "AutoTakeED2KLinks", true)); 
-	listRse.AddTail(new RseBool(IDC_ADDNEWFILESPAUSED, prefs->addnewfilespaused, "AddNewFilesPaused", false)); 
-	listRse.AddTail(new RseInt(IDC_3DDEPTH, prefs->depth3D, "3DDepth", 0));
-
-	listRse.AddTail(new RseBool(IDC_CB_TBN_USESOUND, prefs->useSoundInNotifier, "NotifierUseSound", false));
-	listRse.AddTail(new RseBool(IDC_CB_TBN_ONLOG, prefs->useLogNotifier, "NotifyOnLog", false));
-	listRse.AddTail(new RseBool(IDC_CB_TBN_ONCHAT, prefs->useChatNotifier, "NotifyOnChat", false));
-	listRse.AddTail(new RseBool(IDC_CB_TBN_POP_ALWAYS, prefs->notifierPopsEveryChatMsg, "NotifierPopEveryChatMessage", false));
-	listRse.AddTail(new RseBool(IDC_CB_TBN_ONDOWNLOAD, prefs->useDownloadNotifier, "NotifyOnDownload", false));
-	listRse.AddTail(new RseBool(IDC_CB_TBN_ONNEWVERSION, prefs->notifierNewVersion, "NotifierPopNewVersion", false));
-	listRse.AddTail(new RseBool(IDC_CB_TBN_IMPORTATNT, prefs->notifierImportantError, "NotifyOnImportantError", false));
-	listRse.AddTail(new RseBool(IDC_SENDMAIL, prefs->sendEmailNotifier, "NotifyByMail", false));
-	listRse.AddTail(new RseString(IDC_EDIT_TBN_WAVFILE, prefs->notifierSoundFilePath, sizeof(prefs->notifierSoundFilePath), "NotifierSoundPath",""));
-
-	listRse.AddTail(new RseString(0, prefs->notifierConfiguration, sizeof(prefs->notifierConfiguration), "NotifierConfiguration",""));  // no GUI yet
-	listRse.AddTail(new RseString(0, prefs->datetimeformat, sizeof(prefs->datetimeformat), "DateTimeFormat","%A, %x, %X"));    // no GUI yet
-
-/* We don't import irc shitty stuff from eMule so no need to handle ... */
-	listRse.AddTail(new RseString(0, prefs->m_sircserver, sizeof(prefs->m_sircserver), "DefaultIRCServer", "irc.emule-project.net"));
-	listRse.AddTail(new RseString(0, prefs->m_sircnick, sizeof(prefs->m_sircnick), "IRCNick", "eMule"));
-	listRse.AddTail(new RseBool(0, prefs->m_bircaddtimestamp, "IRCAddTimestamp", true));
-	listRse.AddTail(new RseString(0, prefs->m_sircchannamefilter, sizeof(prefs->m_sircchannamefilter), "IRCFilterName", ""));
-	listRse.AddTail(new RseBool(0, prefs->m_bircusechanfilter, "IRCUseFilter", false));
-	listRse.AddTail(new RseInt(0, prefs->m_iircchanneluserfilter, "IRCFilterUser", 0));
-	listRse.AddTail(new RseString(0, prefs->m_sircperformstring, sizeof(prefs->m_sircperformstring), "IRCPerformString", "/join #emule"));
-	listRse.AddTail(new RseBool(0, prefs->m_bircuseperform, "IRCUsePerform", false));
-	listRse.AddTail(new RseBool(0, prefs->m_birclistonconnect, "IRCListOnConnect", true));
-	listRse.AddTail(new RseBool(0, prefs->m_bircacceptlinks, "IRCAcceptLinks", false));
-	listRse.AddTail(new RseBool(0, prefs->m_bircignoreinfomessage, "IRCIgnoreInfoMessage", false));
-	listRse.AddTail(new RseBool(0, prefs->m_bircignoreemuleprotoinfomessage, "IRCIgnoreEmuleProtoInfoMessage", true));
-/* end of irc stuff */
-
-	listRse.AddTail(new RseBool(IDC_SMARTIDCHECK, prefs->smartidcheck, "SmartIdCheck", true));
-	listRse.AddTail(new RseBool(IDC_VERBOSE, prefs->m_bVerbose, "Verbose", false));
-	listRse.AddTail(new RseBool(IDC_PREVIEWPRIO, prefs->m_bpreviewprio, "PreviewPrio", false));
-	listRse.AddTail(new RseBool(IDC_UPDATEQUEUE, prefs->m_bupdatequeuelist, "UpdateQueueListPref", false));
-	listRse.AddTail(new RseBool(IDC_MANUALSERVERHIGHPRIO, prefs->m_bmanualhighprio, "ManualHighPrio", false));
-	listRse.AddTail(new RseBool(IDC_FULLCHUNKTRANS, prefs->m_btransferfullchunks, "FullChunkTransfers", true));
-	listRse.AddTail(new RseBool(IDC_STARTNEXTFILE, prefs->m_bstartnextfile, "StartNextFile", false));
-	listRse.AddTail(new RseBool(IDC_SHOWOVERHEAD, prefs->m_bshowoverhead, "ShowOverhead", false));
-	listRse.AddTail(new RseBool(IDC_VIDEOBACKUP, prefs->moviePreviewBackup, "VideoPreviewBackupped", true));
-	listRse.AddTail(new RseInt(IDC_FILEBUFFERSIZE, prefs->m_iFileBufferSize, "FileBufferSizePref", 16));
-	listRse.AddTail(new RseDynLabel(IDC_FILEBUFFERSIZE_STATIC, IDC_FILEBUFFERSIZE, 15000, _("File Buffer Size %i bytes"), "", ""));
-	listRse.AddTail(new RseInt(IDC_QUEUESIZE, prefs->m_iQueueSize, "QueueSizePref", 50));
-	listRse.AddTail(new RseDynLabel(IDC_QUEUESIZE_STATIC, IDC_QUEUESIZE, 100, _("Upload Queue Size %i clients"), "", ""));
-	listRse.AddTail(new RseInt(IDC_CHECKDAYS, prefs->versioncheckdays, "Check4NewVersionDelay", 5));
-	listRse.AddTail(new RseDynLabel(IDC_DAYS, IDC_CHECKDAYS, 1, _("%i days"), _("%i day"), ""));
-	listRse.AddTail(new RseBool(IDC_DAP, prefs->m_bDAP, "DAPPref", true));
-	listRse.AddTail(new RseBool(IDC_UAP, prefs->m_bUAP, "UAPPref", true));
-
-/* No traces of evidence for theses in old GUI prefs handling :-) */
-	listRse.AddTail(new RseBool(0, prefs->indicateratings, "IndicateRatings", true));
-	listRse.AddTail(new RseInt(0, prefs->allcatType, "AllcatType", 0));
-	listRse.AddTail(new RseBool(0, prefs->showAllNotCats, "ShowAllNotCats", false));
-	listRse.AddTail(new RseBool(0, prefs->watchclipboard, "WatchClipboard4ED2kFilelinks", false));
-	listRse.AddTail(new RseBool(0, prefs->log2disk, "SaveLogToDisk", false));
-	listRse.AddTail(new RseBool(0, prefs->debug2disk, "SaveDebugToDisk", false));
-	listRse.AddTail(new RseInt(0, prefs->iMaxLogMessages, "MaxLogMessages", 1000));
-	listRse.AddTail(new RseBool(0, prefs->showCatTabInfos, "ShowInfoOnCatTabs", false));
-	listRse.AddTail(new RseBool(0, prefs->resumeSameCat, "ResumeNextFromSameCat", false));
-	listRse.AddTail(new RseBool(0, prefs->resumeSameCat, "DontRecreateStatGraphsOnResize", false));
-	listRse.AddTail(new RseInt(0, prefs->versioncheckLastAutomatic, "VersionCheckLastAutomatic", 0));
-	listRse.AddTail(new RseBool(0, prefs->m_bDisableKnownClientList, "DisableKnownClientList", false));
-	listRse.AddTail(new RseBool(0, prefs->m_bDisableQueueList, "DisableQueueList", false));
-	listRse.AddTail(new RseBool(0, prefs->m_bCreditSystem, "UseCreditSystem", true));
-	listRse.AddTail(new RseBool(0, prefs->scheduler, "EnableScheduler", false));
-	listRse.AddTail(new RseBool(0, prefs->msgonlyfriends, "MessagesFromFriendsOnly", false));
-	listRse.AddTail(new RseBool(0, prefs->msgsecure, "MessageFromValidSourcesOnly", true));
-	listRse.AddTail(new RseInt(0, prefs->maxmsgsessions, "MaxMessageSessions", 50));
-	listRse.AddTail(new RseString(0, prefs->TxtEditor, sizeof(prefs->TxtEditor), "TxtEditor", ""));
-	listRse.AddTail(new RseString(0, prefs->m_sTemplateFile, sizeof(prefs->m_sTemplateFile), "WebTemplateFile", "eMule.tmpl"));
-	listRse.AddTail(new RseString(0, prefs->messageFilter, sizeof(prefs->messageFilter), "MessageFilter", "Your client has an infinite queue"));
-	listRse.AddTail(new RseString(0, prefs->commentFilter, sizeof(prefs->commentFilter), "CommentFilter", "http://"));
-
-	listRse.AddTail(new RseString(IDC_VIDEOPLAYER, prefs->VideoPlayer, sizeof(prefs->VideoPlayer), "VideoPlayer", ""));
-	
-/* window colum widths, no dialog interaction - BEGIN */
-	listRse.AddTail(new RseColumns(prefs->downloadColumnWidths, ELEMENT_COUNT(prefs->downloadColumnWidths), "DownloadColumnWidths", DEFAULT_COL_SIZE));
-	listRse.AddTail(new RseColumns(prefs->downloadColumnHidden, ELEMENT_COUNT(prefs->downloadColumnHidden), "DownloadColumnHidden"));
-	listRse.AddTail(new RseColumns(prefs->downloadColumnOrder, ELEMENT_COUNT(prefs->downloadColumnOrder), "DownloadColumnOrder"));
-	listRse.AddTail(new RseColumns(prefs->uploadColumnWidths, ELEMENT_COUNT(prefs->uploadColumnWidths), "UploadColumnWidths", DEFAULT_COL_SIZE));
-	listRse.AddTail(new RseColumns(prefs->uploadColumnHidden, ELEMENT_COUNT(prefs->uploadColumnHidden), "UploadColumnHidden"));
-	listRse.AddTail(new RseColumns(prefs->uploadColumnOrder, ELEMENT_COUNT(prefs->uploadColumnOrder), "UploadColumnOrder"));
-	listRse.AddTail(new RseColumns(prefs->queueColumnWidths, ELEMENT_COUNT(prefs->queueColumnWidths), "QueueColumnWidths", DEFAULT_COL_SIZE));
-	listRse.AddTail(new RseColumns(prefs->queueColumnHidden, ELEMENT_COUNT(prefs->queueColumnHidden), "QueueColumnHidden"));
-	listRse.AddTail(new RseColumns(prefs->queueColumnOrder, ELEMENT_COUNT(prefs->queueColumnOrder), "QueueColumnOrder"));
-	listRse.AddTail(new RseColumns(prefs->searchColumnWidths, ELEMENT_COUNT(prefs->searchColumnWidths), "SearchColumnWidths", DEFAULT_COL_SIZE));
-	listRse.AddTail(new RseColumns(prefs->searchColumnHidden, ELEMENT_COUNT(prefs->searchColumnHidden), "SearchColumnHidden"));
-	listRse.AddTail(new RseColumns(prefs->searchColumnOrder, ELEMENT_COUNT(prefs->searchColumnOrder), "SearchColumnOrder"));
-	listRse.AddTail(new RseColumns(prefs->sharedColumnWidths, ELEMENT_COUNT(prefs->sharedColumnWidths), "SharedColumnWidths", DEFAULT_COL_SIZE));
-	listRse.AddTail(new RseColumns(prefs->sharedColumnHidden, ELEMENT_COUNT(prefs->sharedColumnHidden), "SharedColumnHidden"));
-	listRse.AddTail(new RseColumns(prefs->sharedColumnOrder, ELEMENT_COUNT(prefs->sharedColumnOrder), "SharedColumnOrder"));
-	listRse.AddTail(new RseColumns(prefs->serverColumnWidths, ELEMENT_COUNT(prefs->serverColumnWidths), "ServerColumnWidths", DEFAULT_COL_SIZE));
-	listRse.AddTail(new RseColumns(prefs->serverColumnHidden, ELEMENT_COUNT(prefs->serverColumnHidden), "ServerColumnHidden"));
-	listRse.AddTail(new RseColumns(prefs->serverColumnOrder, ELEMENT_COUNT(prefs->serverColumnOrder), "ServerColumnOrder"));
-	listRse.AddTail(new RseColumns(prefs->clientListColumnWidths, ELEMENT_COUNT(prefs->clientListColumnWidths), "ClientListColumnWidths", DEFAULT_COL_SIZE));
-	listRse.AddTail(new RseColumns(prefs->clientListColumnHidden, ELEMENT_COUNT(prefs->clientListColumnHidden), "ClientListColumnHidden"));
-	listRse.AddTail(new RseColumns(prefs->clientListColumnOrder, ELEMENT_COUNT(prefs->clientListColumnOrder), "ClientListColumnOrder"));
-/*  window colum widths - END */
-
-	// Barry - Provide a mechanism for all tables to store/retrieve sort order
-	listRse.AddTail(new RseInt(0, prefs->tableSortItemDownload, "TableSortItemDownload", 0));
-	listRse.AddTail(new RseInt(0, prefs->tableSortItemUpload, "TableSortItemUpload", 0));
-	listRse.AddTail(new RseInt(0, prefs->tableSortItemQueue, "TableSortItemQueue", 0));
-	listRse.AddTail(new RseInt(0, prefs->tableSortItemSearch, "TableSortItemSearch", 0));
-	listRse.AddTail(new RseInt(0, prefs->tableSortItemShared, "TableSortItemShared", 0));
-	listRse.AddTail(new RseInt(0, prefs->tableSortItemServer, "TableSortItemServer", 0));
-	listRse.AddTail(new RseInt(0, prefs->tableSortItemClientList, "TableSortItemClientList", 0));
-	listRse.AddTail(new RseBool(0, prefs->tableSortAscendingDownload, "TableSortAscendingDownload", true));
-	listRse.AddTail(new RseBool(0, prefs->tableSortAscendingUpload, "TableSortAscendingUpload", true));
-	listRse.AddTail(new RseBool(0, prefs->tableSortAscendingQueue, "TableSortAscendingQueue", true));
-	listRse.AddTail(new RseBool(0, prefs->tableSortAscendingSearch, "TableSortAscendingSearch", true));
-	listRse.AddTail(new RseBool(0, prefs->tableSortAscendingShared, "TableSortAscendingShared", true));
-	listRse.AddTail(new RseBool(0, prefs->tableSortAscendingServer, "TableSortAscendingServer", true));
-	listRse.AddTail(new RseBool(0, prefs->tableSortAscendingClientList, "TableSortAscendingClientList", true));
-
-	// deadlake PROXYSUPPORT - no GUI in aMule yet
-	listRse.AddTail(new RseBool(0, prefs->proxy.EnablePassword, "ProxyEnablePassword", false, "Proxy"));
-	listRse.AddTail(new RseBool(0, prefs->proxy.UseProxy, "ProxyEnableProxy", false, "Proxy"));
-	listRse.AddTail(new RseString(0, prefs->proxy.name, sizeof(prefs->proxy.name), "ProxyName", "", "Proxy"));
-	listRse.AddTail(new RseStringEncrypted(0, prefs->proxy.password, sizeof(prefs->proxy.password), "ProxyPassword", "Proxy"));
-	listRse.AddTail(new RseString(0, prefs->proxy.user, sizeof(prefs->proxy.user), "ProxyUser", "", "Proxy"));
-	listRse.AddTail(new RseInt(0, prefs->proxy.port, "ProxyPort", 1080, "Proxy"));
-	listRse.AddTail(new RseInt(0, prefs->proxy.type, "ProxyType", PROXYTYPE_NOPROXY, "Proxy"));
-
-	for (int i=0; i<cntStatColors; i++) {  // colors have been moved from global prefs to CStatisticsDlg
-		wxString str = wxString::Format("StatColor%i",i);
-		listRse.AddTail(aprseColor[i] = new RseInt(0, CStatisticsDlg::acrStat[i], (char*)(str.c_str()), CStatisticsDlg::acrStat[i], "eMule"));
-	}
-
-	listRse.AddTail(new RseCounter(prefs->totalDownloadedBytes, "TotalDownloadedBytes", "Statistics")); // no GUI needed
-	listRse.AddTail(new RseCounter(prefs->totalUploadedBytes, "TotalUploadedBytes", "Statistics"));		// no GUI needed
-	
-	listRse.AddTail(new RseInt(0, prefs->desktopMode, "DesktopMode", 4));
-
-	// Web Server info - no GUI in aMule yet
-	listRse.AddTail(new RseStringEncrypted(IDC_WEB_PASSWD, prefs->m_sWebPassword, sizeof(prefs->m_sWebPassword), "Password", "WebServer"));
-	listRse.AddTail(new RseStringEncrypted(IDC_WEB_PASSWD_LOW, prefs->m_sWebLowPassword, sizeof(prefs->m_sWebLowPassword), "PasswordLow"));
-	listRse.AddTail(new RseInt(IDC_WEB_PORT, prefs->m_nWebPort, "Port", 4711));
-	listRse.AddTail(new RseBool(IDC_ENABLE_WEB, prefs->m_bWebEnabled, "Enabled", false));
-	listRse.AddTail(new RseBool(IDC_WEB_GZIP, prefs->m_bWebUseGzip, "UseGzip", true));
-	listRse.AddTail(new RseBool(IDC_ENABLE_WEB_LOW, prefs->m_bWebLowEnabled, "UseLowRightsUser", false));
-	listRse.AddTail(new RseInt(IDC_WEB_REFRESH_TIMEOUT, prefs->m_nWebPageRefresh, "PageRefreshTime", 120));
-
-	listRse.AddTail(new RseBool(0, prefs->dontcompressavi, "DontCompressAvi", false));  // no GUI yet
-
-	listRse.AddTail(new RseBool(IDC_ENABLE_AUTO_NNS, prefs->DropNoNeededSources, "NoNeededSources", false, "Razor_Preferences"));
-/* These two wxRadioButtons are handled like : if one checked then the other unchecked */
-/* Note: two mutually exclusive bool vars should be combined into one, and shown as a checkbox [Emilio] */
-/* Addendum:  something is wrong in muuli.wdr: a checkbox AND a radio button with the same ID=IDC_ENABLE_AUTO_NNS */ 
-	listRse.AddTail(new RseBool(IDC_AUTO_NNS_EXTENDED_RADIO, prefs->SwapNoNeededSources, "SwapNoNeededSources", false));
-
-	listRse.AddTail(new RseBool(IDC_ENABLE_AUTO_FQS, prefs->DropFullQueueSources, "FullQueueSources", false));
-	listRse.AddTail(new RseBool(IDC_ENABLE_AUTO_HQRS, prefs->DropHighQueueRankingSources, "HighQueueRankingSources", false));
-	listRse.AddTail(new RseInt(IDC_HQR_VALUE, prefs->HighQueueRanking, "HighQueueRanking", 1200));
-	listRse.AddTail(new RseInt(IDC_AUTO_DROP_TIMER, prefs->AutoDropTimer, "AutoDropTimer", 240));
-	listRse.AddTail(new RseBool(IDC_FED2KLH, prefs->FastED2KLinksHandler, "FastED2KLinksHandler", true));
-
-	/* new items - supply IDs when added to dialog (they should need no special code as it looks)  */
-	listRse.AddTail(new RseBool(IDC_EXT_CONN_ACCEPT, prefs->AcceptExternalConnections, "AcceptExternalConnections", true,"ExternalConnect"));
-	listRse.AddTail(new RseBool(IDC_EXT_CONN_USETCP, prefs->ECUseTCPPort, "ECUseTCPPort", false,"ExternalConnect"));
-	listRse.AddTail(new RseInt(IDC_EXT_CONN_TCP_PORT, prefs->ECPort, "ECPort", 4712, "ExternalConnect"));
-	listRse.AddTail(new RseStringEncrypted(IDC_EXT_CONN_PASSWD, prefs->ECPassword, sizeof(prefs->ECPassword), "ECPassword", "ExternalConnect"));
-	listRse.AddTail(new RseBool(0, prefs->bDlgTabsOnTop, "DlgTabsOnTop", false));  // no GUI yet
-
-}
-
-//==============================================================================
-//
-//  Dialog implementation
-
-// WDR: class implementations
-
-//----------------------------------------------------------------------------
-// PrefsUnifiedDlg
-//----------------------------------------------------------------------------
-
-IMPLEMENT_DYNAMIC_CLASS(PrefsUnifiedDlg,wxDialog)
-
-// WDR: event table for PrefsUnifiedDlg
+#include "MuleColour.h"
+#include "EditServerListDlg.h"
+#include "SharedFileList.h"		// Needed for CSharedFileList
+#include "StatisticsDlg.h"		// Needed for graph parameters, colors
+#include "IPFilter.h"			// Needed for CIPFilter
+#include "ClientList.h"
+#include "DirectoryTreeCtrl.h"	// Needed for CDirectoryTreeCtrl
+#include "Preferences.h"
+#include "muuli_wdr.h"
+#include "Logger.h"
+#include <common/Format.h>				// Needed for CFormat
+#include "TransferWnd.h"		// Needed for CTransferWnd::UpdateCatTabTitles()
+#include "KadDlg.h"				// Needed for CKadDlg
+#include "OScopeCtrl.h"			// Needed for OScopeCtrl
+#include "ServerList.h"
+#include "Statistics.h"
+#include "UserEvents.h"
+#include "PlatformSpecific.h"		// Needed for PLATFORMSPECIFIC_CAN_PREVENT_SLEEP_MODE
 
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
-	EVT_SCROLL(PrefsUnifiedDlg::OnScroll)
-	EVT_SPINCTRL(IDC_MAXUP, PrefsUnifiedDlg::OnSpinMaxDLR)
-	EVT_SPINCTRL(IDC_MAXDOWN, PrefsUnifiedDlg::OnSpinMaxDLR)
-	EVT_CHECKBOX(IDC_UDPDISABLE, PrefsUnifiedDlg::OnCheckBoxChange)
-	EVT_CHECKBOX(IDC_UPDATEQUEUE, PrefsUnifiedDlg::OnCheckBoxChange)
-	
-	EVT_BUTTON(ID_PREFS_OK_TOP, PrefsUnifiedDlg::OnOk)
-	EVT_BUTTON(ID_PREFS_OK_LEFT, PrefsUnifiedDlg::OnOk)
-	EVT_BUTTON(ID_OK, PrefsUnifiedDlg::OnOk)
-	
-	EVT_BUTTON(ID_PREFS_CANCEL_TOP, PrefsUnifiedDlg::OnCancel)
-	EVT_BUTTON(ID_PREFS_CANCEL_LEFT, PrefsUnifiedDlg::OnCancel)
-	EVT_BUTTON(ID_CANCEL, PrefsUnifiedDlg::OnCancel)
-	
-	EVT_BUTTON(IDC_SELTEMPDIR, PrefsUnifiedDlg::OnButtonDir)
-	EVT_BUTTON(IDC_SELINCDIR,  PrefsUnifiedDlg::OnButtonDir)
-	EVT_BUTTON(IDC_BTN_BROWSE_WAV, PrefsUnifiedDlg::OnButtonBrowseWav)
-	EVT_BUTTON(IDC_BROWSEV, PrefsUnifiedDlg::OnButtonBrowseVideoplayer)
-	EVT_BUTTON(IDC_EDITADR, PrefsUnifiedDlg::OnButtonEditAddr)
-	EVT_BUTTON(ID_DESKTOPMODE, PrefsUnifiedDlg::OnButtonSystray)
-	EVT_BUTTON(IDC_WIZARD, PrefsUnifiedDlg::OnButtonWizard)
-	EVT_BUTTON(IDC_COLOR_BUTTON, PrefsUnifiedDlg::OnButtonColorChange)
-	EVT_CHOICE(IDC_COLORSELECTOR, PrefsUnifiedDlg::OnColorCategorySelected)
+	// Events
+#define USEREVENTS_EVENT(ID, NAME, VARS) \
+	EVT_CHECKBOX(USEREVENTS_FIRST_ID + CUserEvents::ID * USEREVENTS_IDS_PER_EVENT + 1,	PrefsUnifiedDlg::OnCheckBoxChange) \
+	EVT_CHECKBOX(USEREVENTS_FIRST_ID + CUserEvents::ID * USEREVENTS_IDS_PER_EVENT + 3,	PrefsUnifiedDlg::OnCheckBoxChange)
+	USEREVENTS_EVENTLIST()
+#undef USEREVENTS_EVENT
+
+	// Proxy
+	EVT_CHECKBOX(ID_PROXY_ENABLE_PROXY,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(ID_PROXY_ENABLE_PASSWORD,	PrefsUnifiedDlg::OnCheckBoxChange)
+//	EVT_CHECKBOX(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY,	PrefsUnifiedDlg::OnCheckBoxChange)
+
+	// Connection
+	EVT_SPINCTRL(IDC_PORT,			PrefsUnifiedDlg::OnTCPClientPortChange)
+
+	// The rest. Organize it!
+	EVT_CHECKBOX(IDC_UDPENABLE,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_CHECKDISKSPACE,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_ONLINESIG,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_REMOVEDEAD,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_AUTOSERVER,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_AUTOIPFILTER,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_MSGFILTER,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_MSGFILTER_ALL,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_MSGFILTER_WORD,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_FILTERCOMMENTS,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_STARTNEXTFILE,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_ENABLETRAYICON,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_MACHIDEONCLOSE,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_VERTTOOLBAR,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_SUPPORT_PO,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_ENABLE_PO_OUTGOING,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_ENFORCE_PO_INCOMING,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_SHOWRATEONTITLE,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_NETWORKED2K,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_NETWORKKAD,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_UPNP_ENABLED,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_UPNP_WEBSERVER_ENABLED,PrefsUnifiedDlg::OnCheckBoxChange)
+
+
+	EVT_BUTTON(ID_PREFS_OK_TOP,		PrefsUnifiedDlg::OnOk)
+	EVT_BUTTON(ID_PREFS_CANCEL_TOP,		PrefsUnifiedDlg::OnCancel)
+
+	// Browse buttons
+//	EVT_BUTTON(IDC_SELSKIN,		PrefsUnifiedDlg::OnButtonDir)
+	EVT_BUTTON(IDC_BROWSEV,			PrefsUnifiedDlg::OnButtonBrowseApplication)
+	EVT_BUTTON(IDC_SELTEMPDIR,		PrefsUnifiedDlg::OnButtonDir)
+	EVT_BUTTON(IDC_SELINCDIR,		PrefsUnifiedDlg::OnButtonDir)
+	EVT_BUTTON(IDC_SELOSDIR,		PrefsUnifiedDlg::OnButtonDir)
+	EVT_BUTTON(IDC_SELBROWSER,		PrefsUnifiedDlg::OnButtonBrowseApplication)
+
+	EVT_SPINCTRL(IDC_TOOLTIPDELAY,		PrefsUnifiedDlg::OnToolTipDelayChange)
+
+	EVT_BUTTON(IDC_EDITADR,			PrefsUnifiedDlg::OnButtonEditAddr)
+	EVT_BUTTON(IDC_IPFRELOAD,		PrefsUnifiedDlg::OnButtonIPFilterReload)
+	EVT_BUTTON(IDC_COLOR_BUTTON,		PrefsUnifiedDlg::OnButtonColorChange)
+	EVT_BUTTON(IDC_IPFILTERUPDATE,		PrefsUnifiedDlg::OnButtonIPFilterUpdate)
+	EVT_CHOICE(IDC_COLORSELECTOR,		PrefsUnifiedDlg::OnColorCategorySelected)
+	EVT_LIST_ITEM_SELECTED(ID_PREFSLISTCTRL,PrefsUnifiedDlg::OnPrefsPageChange)
+
+	EVT_INIT_DIALOG(PrefsUnifiedDlg::OnInitDialog)
+
+	EVT_COMMAND_SCROLL(IDC_SLIDER,		PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_SLIDER3,		PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_SLIDER4,		PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_SLIDER2,		PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_FILEBUFFERSIZE,	PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_QUEUESIZE,	PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_SERVERKEEPALIVE,	PrefsUnifiedDlg::OnScrollBarChange)
+
+	EVT_SPINCTRL(IDC_MAXUP,			PrefsUnifiedDlg::OnRateLimitChanged)
+
+	EVT_LIST_ITEM_SELECTED(IDC_EVENTLIST,	PrefsUnifiedDlg::OnUserEventSelected)
+
+	EVT_CHOICE(IDC_LANGUAGE,		PrefsUnifiedDlg::OnLanguageChoice)
+
+	EVT_CLOSE(PrefsUnifiedDlg::OnClose)
+
 END_EVENT_TABLE()
 
 
+/**
+ * Creates an command-event for the given checkbox.
+ *
+ * This can be used enforce logical constraints by passing by
+ * sending a check-box event for each checkbox, when transfering
+ * to the UI. However, it should also be used for checkboxes that
+ * have no side-effects other than enabling/disabling other
+ * widgets in the preferences dialogs.
+ */
+void SendCheckBoxEvent(wxWindow* parent, int id)
+{
+	wxCheckBox* widget = CastByID(id, parent, wxCheckBox);
+	wxCHECK_RET(widget, wxT("Invalid widget in CreateEvent"));
+
+	wxCommandEvent evt(wxEVT_COMMAND_CHECKBOX_CLICKED, id);
+	evt.SetInt(widget->IsChecked() ? 1 : 0);
+
+	parent->GetEventHandler()->ProcessEvent(evt);
+}
+
+
+
+/**
+ * This struct provides a general way to represent config-tabs.
+ */
+struct PrefsPage
+{
+	//! The title of the page, used on the listctrl.
+	wxString	m_title;
+	//! Function pointer to the wxDesigner function creating the dialog.
+	wxSizer*	(*m_function)(wxWindow*, bool, bool );
+	//! The index of the image used on the list.
+	int		m_imageidx;
+};
+
+
+PrefsPage pages[] =
+{
+	{ wxTRANSLATE("General"),			PreferencesGeneralTab,		13 },
+	{ wxTRANSLATE("Connection"),		PreferencesConnectionTab,	14 },
+	{ wxTRANSLATE("Directories"),		PreferencesDirectoriesTab,	17 },
+	{ wxTRANSLATE("Servers"),			PreferencesServerTab,		15 },
+	{ wxTRANSLATE("Files"),				PreferencesFilesTab,		16 },
+	{ wxTRANSLATE("Security"),			PreferencesSecurityTab,		22 },
+	{ wxTRANSLATE("Interface"),			PreferencesGuiTweaksTab,	19 },
+	{ wxTRANSLATE("Statistics"),		PreferencesStatisticsTab,	10 },
+	{ wxTRANSLATE("Proxy"),				PreferencesProxyTab,		24 },
+	{ wxTRANSLATE("Filters"),			PreferencesFilteringTab,	23 },
+	{ wxTRANSLATE("Remote Controls"),	PreferencesRemoteControlsTab,	11 },
+	{ wxTRANSLATE("Online Signature"),	PreferencesOnlineSigTab,	21 },
+	{ wxTRANSLATE("Advanced"),			PreferencesaMuleTweaksTab,	12 },
+	{ wxTRANSLATE("Events"),			PreferencesEventsTab,		5 }
+#ifdef __DEBUG__
+	,{ wxTRANSLATE("Debugging"),		PreferencesDebug,			25 }
+#endif
+};
+
+
 PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
-	: wxDialog(parent,9990, _("Preferences"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
+:
+wxDialog(parent, -1, _("Preferences"),
+	wxDefaultPosition, wxDefaultSize,
+	wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
-	Rse *prse;
-	int id;
+	preferencesDlgTop(this, false);
 
-	if (theApp.glob_prefs->BDlgTabsOnTop())
-		preferencesDlgTop( this, TRUE ); 
-	else
-    	preferencesDlgLeft( this, TRUE ); 
-	CentreOnParent();
-	pdtcShareSelector = ((CDirectoryTreeCtrl*)FindWindowById(IDC_SHARESELECTOR, this));
-	pbuttonColor = (wxButton*)FindWindowById(IDC_COLOR_BUTTON, this);
-	pchoiceColor = (wxChoice*)FindWindowById(IDC_COLORSELECTOR, this);
+	m_PrefsIcons = CastChild(ID_PREFSLISTCTRL, wxListCtrl);
+	wxImageList *icon_list = new wxImageList(16, 16);
+	m_PrefsIcons->AssignImageList(icon_list, wxIMAGE_LIST_SMALL);
 
-	// Link up the dlg items and listRse
-	// First pass: get wxControl pointers and identify range of IDs
-	idMax = 0;
-	idMin = 0x7fffffff;
-	for (POSITION pos=listRse.GetHeadPosition();  pos!=NULL;  pos=listRse.NextAt(pos)) {
-		prse = listRse.GetAt(pos);
-		if ((id=prse->Id()) != 0) {
-			if (id < idMin)
-				idMin = id;
-			if (id > idMax)
-				idMax = id;
-			// if the code crashes on the following line after you've added a new item to
-			// listRse, then the ID used in the new list entry is probably wrong - wxWindows
-			// does not seem to handle a non-existent ID gracefully inside FindWindowById().
-			wxControl *pctrl = (wxControl *)FindWindowById(id, this);
-			prse->SetWxControl(pctrl);
-	#ifdef __DEBUG__
-			prse->CheckCtrlType();
+	// Add the single column used
+	m_PrefsIcons->InsertColumn(
+		0, wxEmptyString, wxLIST_FORMAT_LEFT,
+		m_PrefsIcons->GetSize().GetWidth()-5);
+
+	// Temp variables for finding the smallest height and width needed
+	int width = 0;
+	int height = 0;
+
+	// Add each page to the page-list
+	for (unsigned int i = 0; i < itemsof(pages); ++i) {
+		// Add the icon and label associated with the page
+		icon_list->Add(amuleSpecial(pages[i].m_imageidx));
+		m_PrefsIcons->InsertItem(i, wxGetTranslation(pages[i].m_title), i);
+	}
+
+	// Set list-width so that there aren't any scrollers
+	m_PrefsIcons->SetColumnWidth(0, wxLIST_AUTOSIZE);
+	m_PrefsIcons->SetMinSize(wxSize(m_PrefsIcons->GetColumnWidth(0) + 10, -1));
+	m_PrefsIcons->SetMaxSize(wxSize(m_PrefsIcons->GetColumnWidth(0) + 10, -1));
+
+	// Now add the pages and calculate the minimum size
+	wxPanel * DefaultWidget = NULL;
+	for (unsigned int i = 0; i < itemsof(pages); ++i) {
+		// Create a container widget and the contents of the page
+		wxPanel * Widget = new wxPanel(this, -1);
+		// Widget is stored as user data in the list control
+		m_PrefsIcons->SetItemPtrData(i, (wxUIntPtr) Widget);
+		pages[i].m_function(Widget, true, true);
+		if (i == 0) {
+			DefaultWidget = Widget;
+		}
+
+		// Add it to the sizer
+		prefs_sizer->Add(Widget, 0, wxGROW|wxEXPAND);
+
+		if (pages[i].m_function == PreferencesGeneralTab) {
+			// This must be done now or pages won't Fit();
+			#ifdef __WINDOWS__
+				CastChild(IDC_BROWSERTABS, wxCheckBox)->Enable(false);
+			#endif /* __WINDOWS__ */
+			CastChild(IDC_PREVIEW_NOTE, wxStaticText)->SetLabel(_("The following variables will be substituted:\n    %PARTFILE - full path to the file\n    %PARTNAME - file name only"));
+			#ifdef __WXMAC__
+				FindWindow(IDC_ENABLETRAYICON)->Show(false);
+				FindWindow(IDC_MINTRAY)->Show(false);
+			#else
+				FindWindow(IDC_MACHIDEONCLOSE)->Show(false);
+				thePrefs::SetHideOnClose(false);
+			#endif
+		} else if (pages[i].m_function == PreferencesEventsTab) {
+
+#define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	+ wxString(wxT("\n  %") VAR wxT(" - ")) + wxGetTranslation(DESC)
+#define USEREVENTS_EVENT(ID, NAME, VARS) case CUserEvents::ID: CreateEventPanels(idx, wxEmptyString VARS, Widget); break;
+
+			wxListCtrl *list = CastChild(IDC_EVENTLIST, wxListCtrl);
+			list->InsertColumn(0, wxEmptyString);
+			for (unsigned int idx = 0; idx < CUserEvents::GetCount(); ++idx) {
+				long lidx = list->InsertItem(idx,
+					wxGetTranslation(CUserEvents::GetDisplayName(
+						static_cast<enum CUserEvents::EventType>(idx))));
+				if (lidx != -1) {
+					list->SetItemData(lidx,
+						USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT);
+					switch (idx) {
+						USEREVENTS_EVENTLIST()
+						/* This macro expands to handle all user event types. Here is an example:
+						   case CUserEvents::NewChatSession: {
+						       CreateEventPanels(idx, wxString(wxT("\n %SENDER - ")) + wxTRANSLATE("Message sender."), Widget);
+						       break;
+						   } */
+					}
+				}
+			}
+			list->SetColumnWidth(0, wxLIST_AUTOSIZE);
+		}
+		else if (pages[i].m_function == PreferencesServerTab) {
+			m_IndexServerTab = i;
+			m_ServerWidget = Widget;
+		}
+		else if (pages[i].m_function == PreferencesaMuleTweaksTab) {
+			wxStaticText *txt = CastChild(IDC_AMULE_TWEAKS_WARNING, wxStaticText);
+			// Do not wrap this line, Windows _() can't handle wrapped strings
+			txt->SetLabel(_("Do not change these setting unless you know\nwhat you are doing, otherwise you can easily\nmake things worse for yourself.\n\naMule will run fine without adjusting any of\nthese settings."));
+			#if defined CLIENT_GUI || !PLATFORMSPECIFIC_CAN_PREVENT_SLEEP_MODE
+				CastChild(IDC_PREVENT_SLEEP, wxCheckBox)->Enable(false);
+				thePrefs::SetPreventSleepWhileDownloading(false);
+			#endif
+		}
+#ifdef __DEBUG__
+		else if (pages[i].m_function == PreferencesDebug) {
+			int count = theLogger.GetDebugCategoryCount();
+			wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
+
+			for ( int j = 0; j < count; j++ ) {
+				list->Append( theLogger.GetDebugCategory( j ).GetName() );
+			}
+		}
+#endif
+
+		// Align and resize the page
+		Fit();
+		Layout();
+
+		// Find the greatest sizes
+		wxSize size = prefs_sizer->GetSize();
+		if (size.GetWidth() > width) {
+			width = size.GetWidth();
+		}
+
+		if (size.GetHeight() > height) {
+			height = size.GetHeight();
+		}
+
+		// Hide it for now
+		prefs_sizer->Detach(Widget);
+		Widget->Show(false);
+	}
+
+	// Default to the General tab
+	m_CurrentPanel = DefaultWidget;
+	prefs_sizer->Add(DefaultWidget, 0, wxGROW|wxEXPAND);
+	m_CurrentPanel->Show( true );
+
+	// Select the first item
+	m_PrefsIcons->SetItemState(0, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+
+	// We now have the needed minimum height and width
+	prefs_sizer->SetMinSize(width, height);
+
+	// Don't show server prefs if ED2K is disabled
+	m_ServerTabVisible = true;
+	EnableServerTab(thePrefs::GetNetworkED2K());
+
+	// Store some often used pointers
+	m_ShareSelector = CastChild(IDC_SHARESELECTOR, CDirectoryTreeCtrl);
+	m_buttonColor   = CastChild(IDC_COLOR_BUTTON, wxButton);
+	m_choiceColor   = CastChild(IDC_COLORSELECTOR, wxChoice);
+
+	// Connect the Cfgs with their widgets
+	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
+	for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
+		// Checking for failures
+		if ( !it->second->ConnectToWidget(it->first, this) ) {
+			AddLogLineNS(CFormat(_("Failed to connect Cfg to widget with the ID %d and key %s"))
+				% it->first % it->second->GetKey());
+		}
+	}
+	Fit();
+
+	// It must not be resized to something smaller than what it currently is
+	wxSize size = GetClientSize();
+	SetSizeHints(size.GetWidth(), size.GetHeight());
+
+	// Position the dialog.
+	Center();
+}
+
+
+void PrefsUnifiedDlg::EnableServerTab(bool enable)
+{
+	if (enable && !m_ServerTabVisible) {
+	// turn server widget on
+		m_PrefsIcons->InsertItem(m_IndexServerTab, wxGetTranslation(pages[m_IndexServerTab].m_title), m_IndexServerTab);
+		m_PrefsIcons->SetItemPtrData(m_IndexServerTab, (wxUIntPtr) m_ServerWidget);
+		m_ServerTabVisible = true;
+	} else if (!enable && m_ServerTabVisible) {
+	// turn server widget off
+		m_PrefsIcons->DeleteItem(m_IndexServerTab);
+		m_ServerTabVisible = false;
+	}
+}
+
+
+Cfg_Base* PrefsUnifiedDlg::GetCfg(int id)
+{
+	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.find( id );
+
+	if ( it != thePrefs::s_CfgList.end() ) {
+		return it->second;
+	}
+
+	return NULL;
+}
+
+
+bool PrefsUnifiedDlg::TransferToWindow()
+{
+	// Connect the Cfgs with their widgets
+	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
+	for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
+		// Checking for failures
+		if ( !it->second->TransferToWindow() ) {
+			AddLogLineNS(CFormat(_("Failed to transfer data from Cfg to Widget with the ID %d and key %s"))
+				% it->first % it->second->GetKey());
+		}
+	}
+
+	m_ShareSelector->SetSharedDirectories(&theApp->glob_prefs->shareddir_list);
+
+	for ( int i = 0; i < cntStatColors; i++ ) {
+		thePrefs::s_colors[i] = CMuleColour(CStatisticsDlg::acrStat[i]).GetULong();
+		thePrefs::s_colors_ref[i] = CMuleColour(CStatisticsDlg::acrStat[i]).GetULong();
+	}
+
+	// Connection tab
+	wxSpinEvent e;
+	OnTCPClientPortChange(e);
+
+	// Proxy tab initialization
+	FindWindow(ID_PROXY_TYPE)->SetToolTip(_("The type of proxy you are connecting to"));
+	if (!CastChild(ID_PROXY_ENABLE_PROXY, wxCheckBox)->IsChecked()) {
+		FindWindow(ID_PROXY_TYPE)->Enable(false);
+		FindWindow(ID_PROXY_NAME)->Enable(false);
+		FindWindow(ID_PROXY_PORT)->Enable(false);
+	}
+	if (!CastChild(ID_PROXY_ENABLE_PASSWORD, wxCheckBox)->IsChecked()) {
+		FindWindow(ID_PROXY_USER)->Enable(false);
+		FindWindow(ID_PROXY_PASSWORD)->Enable(false);
+	}
+	// This option from the proxy tab is currently unused
+	FindWindow(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY)->Enable(false);
+
+	// Enable/Disable some controls
+	FindWindow( IDC_MINDISKSPACE )->Enable( thePrefs::IsCheckDiskspaceEnabled() );
+	FindWindow( IDC_OSDIR )->Enable( thePrefs::IsOnlineSignatureEnabled() );
+	FindWindow( IDC_OSUPDATE )->Enable( thePrefs::IsOnlineSignatureEnabled() );
+	FindWindow( IDC_UDPENABLE )->Enable( !thePrefs::GetNetworkKademlia());
+	FindWindow( IDC_UDPPORT )->Enable( thePrefs::s_UDPEnable );
+	FindWindow( IDC_SERVERRETRIES )->Enable( thePrefs::DeadServer() );
+	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
+	FindWindow( IDC_STARTNEXTFILE_ALPHA )->Enable(thePrefs::StartNextFile());
+
+	FindWindow(IDC_MACHIDEONCLOSE)->Enable(true);
+	FindWindow(IDC_EXIT)->Enable(!thePrefs::HideOnClose());
+	if (thePrefs::HideOnClose()) {
+		CastChild(IDC_EXIT, wxCheckBox)->SetValue(false);
+	}
+
+	FindWindow(IDC_MINTRAY)->Enable(thePrefs::UseTrayIcon());
+
+	if (!CastChild(IDC_MSGFILTER, wxCheckBox)->IsChecked()) {
+		FindWindow(IDC_MSGFILTER_ALL)->Enable(false);
+		FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(false);
+		FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(false);
+		FindWindow(IDC_MSGFILTER_WORD)->Enable(false);
+		FindWindow(IDC_MSGWORD)->Enable(false);
+	} else if (CastChild(IDC_MSGFILTER_ALL, wxCheckBox)->IsChecked()) {
+		FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(false);
+		FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(false);
+		FindWindow(IDC_MSGFILTER_WORD)->Enable(false);
+		FindWindow(IDC_MSGWORD)->Enable(false);
+	}
+
+	FindWindow(IDC_MSGWORD)->Enable(CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());
+	FindWindow(IDC_COMMENTWORD)->Enable(CastChild(IDC_FILTERCOMMENTS, wxCheckBox)->IsChecked());
+
+#ifdef CLIENT_GUI
+	// Disable dirpickers unless it's a localhost connection
+	if (!theApp->m_connect->IsConnectedToLocalHost()) {
+		FindWindow(IDC_SELINCDIR)->Enable(false);
+		FindWindow(IDC_SELTEMPDIR)->Enable(false);
+	}
+#endif
+
+	// Protocol obfuscation
+	::SendCheckBoxEvent(this, IDC_SUPPORT_PO);
+	::SendCheckBoxEvent(this, IDC_ENABLE_PO_OUTGOING);
+	::SendCheckBoxEvent(this, IDC_ENFORCE_PO_INCOMING);
+
+#ifndef ENABLE_IP2COUNTRY
+	CastChild(IDC_SHOW_COUNTRY_FLAGS, wxCheckBox)->Enable(false);
+	thePrefs::SetGeoIPEnabled(false);
+#endif
+
+#ifdef __SVN__
+	// Version is always shown on the title in development versions
+	CastChild(IDC_SHOWVERSIONONTITLE, wxCheckBox)->SetValue(true);
+	CastChild(IDC_SHOWVERSIONONTITLE, wxCheckBox)->Enable(false);
+#endif
+
+	// Show rates on title
+	FindWindow(IDC_RATESBEFORETITLE)->Enable(thePrefs::GetShowRatesOnTitle() != 0);
+	FindWindow(IDC_RATESAFTERTITLE)->Enable(thePrefs::GetShowRatesOnTitle() != 0);
+	CastChild(IDC_SHOWRATEONTITLE, wxCheckBox)->SetValue(thePrefs::GetShowRatesOnTitle() != 0);
+	CastChild(IDC_RATESBEFORETITLE, wxRadioButton)->SetValue(thePrefs::GetShowRatesOnTitle() == 2);
+	CastChild(IDC_RATESAFTERTITLE, wxRadioButton)->SetValue(thePrefs::GetShowRatesOnTitle() != 2);
+
+	// UPNP
+#ifndef ENABLE_UPNP
+	FindWindow(IDC_UPNP_ENABLED)->Enable(false);
+	FindWindow(IDC_UPNPTCPPORT)->Enable(false);
+	FindWindow(IDC_UPNPTCPPORTTEXT)->Enable(false);
+	thePrefs::SetUPnPEnabled(false);
+	FindWindow(IDC_UPNP_WEBSERVER_ENABLED)->Enable(false);
+	FindWindow(IDC_WEBUPNPTCPPORT)->Enable(false);
+	FindWindow(IDC_WEBUPNPTCPPORTTEXT)->Enable(false);
+	thePrefs::SetUPnPWebServerEnabled(false);
+	FindWindow(IDC_UPNP_EC_ENABLED)->Enable(false);
+	thePrefs::SetUPnPECEnabled(false);
+#else
+	FindWindow(IDC_UPNPTCPPORT)->Enable(thePrefs::GetUPnPEnabled());
+	FindWindow(IDC_UPNPTCPPORTTEXT)->Enable(thePrefs::GetUPnPEnabled());
+	FindWindow(IDC_WEBUPNPTCPPORT)->Enable(thePrefs::GetUPnPWebServerEnabled());
+	FindWindow(IDC_WEBUPNPTCPPORTTEXT)->Enable(thePrefs::GetUPnPWebServerEnabled());
+#endif
+
+#ifdef __DEBUG__
+	// Set debugging toggles
+	int count = theLogger.GetDebugCategoryCount();
+	wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
+
+	for ( int i = 0; i < count; i++ ) {
+		list->Check( i, theLogger.GetDebugCategory( i ).IsEnabled() );
+	}
+#endif
+
+	m_verticalToolbar = thePrefs::VerticalToolbar();
+	m_toolbarOrientationChanged = false;
+
+	return true;
+}
+
+
+bool PrefsUnifiedDlg::TransferFromWindow()
+{
+	// Connect the Cfgs with their widgets
+	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
+	for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
+		// Checking for failures
+		if ( !it->second->TransferFromWindow() ) {
+			AddLogLineNS(CFormat(_("Failed to transfer data from Widget to Cfg with the ID %d and key %s"))
+				% it->first % it->second->GetKey());
+		}
+	}
+
+	theApp->glob_prefs->shareddir_list.clear();
+	m_ShareSelector->GetSharedDirectories(&theApp->glob_prefs->shareddir_list);
+
+	for ( int i = 0; i < cntStatColors; i++ ) {
+		if ( thePrefs::s_colors[i] != thePrefs::s_colors_ref[i] ) {
+			CStatisticsDlg::acrStat[i] = thePrefs::s_colors[i];
+			theApp->amuledlg->m_statisticswnd->ApplyStatsColor(i);
+		}
+
+		theApp->amuledlg->m_kademliawnd->SetGraphColors();
+	}
+
+#ifdef __DEBUG__
+	// Get debugging toggles
+	int count = theLogger.GetDebugCategoryCount();
+	wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
+
+	for ( int i = 0; i < count; i++ ) {
+		theLogger.SetEnabled( theLogger.GetDebugCategory( i ).GetType(), list->IsChecked( i ) );
+	}
+#endif
+
+	thePrefs::SetShowRatesOnTitle(CastChild(IDC_SHOWRATEONTITLE, wxCheckBox)->GetValue() ? (CastChild(IDC_RATESBEFORETITLE, wxRadioButton)->GetValue() ? 2 : 1) : 0);
+
+	#ifdef CLIENT_GUI
+	// Send preferences to core.
+	theApp->glob_prefs->SendToRemote();
 	#endif
-		}
-	}
-	wxASSERT(idMin<=idMax);
-#ifdef __DEBUG__
-//	printf("%i elements in access array, indexed %i...%i\n", idMax-idMin+1, idMin, idMax);
-#endif
-	// Second pass: build an array of pointers into listRse for fast access
-	// [Note: the wxControl class lacks a "backpointer" facility - as a kludge
-	// one could in principle use SetName / GetName with bent pointers, but that
-	// would be very, very ugly and might break on future versions of wxWindows]
-	trse = new Rse*[idMax-idMin+1];
-	Rse** pprse;
-	int i;
-	for (pprse=trse, i=idMax-idMin+1;  i>0;  pprse++, i--)
-		*pprse = listRse.GetHead();  // dummy used for non-consecutive IDs
-	for (POSITION pos=listRse.GetHeadPosition();  pos!=NULL;  pos=listRse.NextAt(pos)) {
-		prse = listRse.GetAt(pos);
-		if ((id = prse->Id()) > 0)  {
-			wxASSERT(id>=idMin && id<=idMax);
-			trse[id-idMin] = prse;
-		}
-	}
-	
-	// Third pass: establish links between items, e.g. dynamic labels of sliders
-	for (POSITION pos=listRse.GetHeadPosition();  pos!=NULL;  pos=listRse.NextAt(pos)) {
-		prse = listRse.GetAt(pos);
-		if ((id = prse->IdLinkedTo()) != 0)
-			Prse(id)->SetLink(prse);	
-	}
-	wxASSERT(prseMaxUp == Prse(IDC_MAXUP));
-	wxASSERT(prseMaxDown = Prse(IDC_MAXDOWN));
+
+	return true;
 }
 
 
-
-PrefsUnifiedDlg::~PrefsUnifiedDlg()
+bool PrefsUnifiedDlg::CfgChanged(int ID)
 {
-	delete[] trse;
-	for (POSITION pos=listRse.GetHeadPosition();  pos!=NULL;  pos=listRse.NextAt(pos))
-		delete listRse.GetAt(pos);
-	listRse.RemoveAll();
-}
+	Cfg_Base* cfg = GetCfg(ID);
 
-
-
-Rse* PrefsUnifiedDlg::Prse(int id)	// returns the Rse* corresponding to an item ID
-{ 
-	wxASSERT(id>=idMin && id<=idMax);
-	return trse[id-idMin]; 
-}	
-
-
-bool PrefsUnifiedDlg::Validate()
-{
-    return TRUE;
-}
-
-
-
-bool PrefsUnifiedDlg::TransferDataToWindow()
-{
-	for (POSITION pos=listRse.GetHeadPosition();  pos!=NULL;  pos=listRse.NextAt(pos))
-		(listRse.GetAt(pos))->TransferToDlg();
-	pdtcShareSelector->SetSharedDirectories(&theApp.glob_prefs->shareddir_list);
-	CheckRateUnlimited(prseMaxUp);
-	CheckRateUnlimited(prseMaxDown);
-    return TRUE;
-}
-
-
-
-bool PrefsUnifiedDlg::TransferDataFromWindow()
-{
-	for (POSITION pos=listRse.GetHeadPosition();  pos!=NULL;  pos=listRse.NextAt(pos)) {
-		(listRse.GetAt(pos))->TransferFromDlg();
-#ifdef __DEBUG__
-//		Rse * prse=listRse.GetAt(pos);
-//		if (prse->Id() != 0)
-//			printf("%s set to %i \n", prse->GetIniName(), prse->GetValue());
-#endif
+	if ( cfg ) {
+		return cfg->HasChanged();
 	}
 
-	theApp.glob_prefs->shareddir_list.Clear();
-	pdtcShareSelector->GetSharedDirectories(&theApp.glob_prefs->shareddir_list);
-    return TRUE;
+	return false;
 }
 
 
-void PrefsUnifiedDlg::CheckRateUnlimited(Rse* prse)
+void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 {
-	if (prse->GetMemValue() == 0)
-		prse->SetMemValue(UNLIMITED);
-	if (prse->GetMemValue() == UNLIMITED)
-		prse->SetCtrlValue(0);
-}
+	TransferFromWindow();
 
+	bool restart_needed = false;
+	wxString restart_needed_msg = _("aMule must be restarted to enable these changes:\n\n");
 
-
-void PrefsUnifiedDlg::ForceUlDlRateCorrelation(int id)
-// Here we slightly limit the users' ability to be a bad citizen: for very low upload rates
-// we force a low download rate, so as to discourage this type of leeching.  
-// We're Open Source, and whoever wants it can do his own mod to get around this, but the 
-// packaged product will try to enforce good behavior. 
-//
-// Also please note: Upload & Download Line "Capacities" are misnamed in the dlg right now: 
-// as the eMule FAQ explains (and our code follows eMule in this respect), these values 
-// are used only for scaling the statistics graphs and have no influence on network 
-// I/O speeds, which are set set separately.  The old prefs limited the max line speeds to
-// the values set as "capacities", the new prefs no longer do this for the following reason:
-// My actual line capacity may be very high, say 256kB/s, but my DL rates may be much lower
-// most of the time; if I want the graph to display with a useful scale, I will then set
-// the "capacity" to the limit of actual experienced DL rates, say 60kB/s, yet I may not 
-// want to limit my DLs to that rate, if I'm lucky enough to be sent data at a high rate 
-// occasionally.  The confusion will go away when we move the spin controls for graph scaling 
-// into the Statistics window, together with the sliders for update rate and averaging time.
-{
-	if (id == 0) {  // at init time no dlg exists yet, but check values loaded from file
-		if (prseMaxUp->GetMemValue() < 4  && prseMaxUp->GetMemValue()*3 < prseMaxDown->GetMemValue())
-			prseMaxDown->SetMemValue(prseMaxUp->GetMemValue()*3);
-		else if (prseMaxUp->GetMemValue() < 10  && prseMaxUp->GetMemValue()*4 < prseMaxDown->GetMemValue())
-			prseMaxDown->SetMemValue(prseMaxUp->GetMemValue()*4);
-	} else {
-		int kBpsUpMax = prseMaxUp->GetCtrlValue();
-		int kBpsDownMax = prseMaxDown->GetCtrlValue();
-
-		if (kBpsUpMax == 0  ||  kBpsUpMax >= 10) {
-			prseMaxDown->SetCtrlRange(0, 19375 /* a magic number ?*/);
-		} else if (kBpsUpMax < 4) {
-			prseMaxDown->SetCtrlRange(1, kBpsUpMax*3);
-			if (kBpsDownMax==0  ||  kBpsDownMax>kBpsUpMax*3)
-				prseMaxDown->SetCtrlValue(kBpsUpMax*3);
-		} else {
-			prseMaxDown->SetCtrlRange(1, kBpsUpMax*4);
-			if (kBpsDownMax==0  ||  kBpsDownMax>kBpsUpMax*4)
-				prseMaxDown->SetCtrlValue(kBpsUpMax*4);
-		}
-	}
-}
-
-
-
-void PrefsUnifiedDlg::OnSpinMaxDLR(wxCommandEvent &event)
-{
-	ForceUlDlRateCorrelation(((wxControl*)event.GetEventObject())->GetId());
-}
-
-
-
-void PrefsUnifiedDlg::OnScroll(wxCommandEvent &event)
-{
-	wxControl*	pctrl = (wxControl*)event.GetEventObject();
-	int			id = pctrl->GetId();
-	Rse*		prse = Prse(id);
-
-	if (id!=IDC_LISTREFRESH  ||  !Prse(IDC_UPDATEQUEUE)->GetCtrlValue())	
-		prse->Propagate();
-	
-	// dynamic interactions
-	switch (id) {
-		case IDC_SLIDER:	prse->TransferFromDlg();
-					 		theApp.amuledlg->statisticswnd->SetUpdatePeriod();	
-							break;
-		case IDC_SLIDER2:	prse->TransferFromDlg();	
-							// tree update time needs no special function call
-							break;
-		case IDC_SLIDER3:	prse->TransferFromDlg();
-							theApp.amuledlg->statisticswnd->ResetAveragingTime();
-							break;
-
-		default:	break;
-	}
-}
-
-
-
-void PrefsUnifiedDlg::OnOk(wxCommandEvent &event)
-{
-	TransferDataFromWindow();
-	
 	// do sanity checking, special processing, and user notifications here
-	ForceUlDlRateCorrelation(0);
-	CheckRateUnlimited(prseMaxUp);
-	CheckRateUnlimited(prseMaxDown);
-	if (Prse(IDC_UPDATEQUEUE)->GetCtrlValue()) {
-		theApp.amuledlg->transfers_frozen = false;
-  		theApp.amuledlg->Thaw_AllTransfering();
-	}
-	if (Prse(IDC_FED2KLH)->WasChanged()) 
-		theApp.amuledlg->ToggleFastED2KLinksHandler();
-	if (Prse(IDC_LANGUAGE)->WasChanged())
-		wxMessageBox(wxString::wxString(_("Language change will not be applied until aMule is restarted.")));
+	thePrefs::CheckUlDlRatio();
 
-	if (Prse(IDC_INCFILES)->WasChanged() || Prse(IDC_TEMPFILES)->WasChanged() || pdtcShareSelector->HasChanged) {
-		theApp.sharedfiles->Reload(true, false);
+	if (CfgChanged(IDC_PORT)) {
+		restart_needed = true;
+		restart_needed_msg += _("- TCP port changed.\n");
 	}
 
-    EndModal(ID_PREFS_OK_LEFT);
+	if (CfgChanged(IDC_UDPPORT)) {
+		restart_needed = true;
+		restart_needed_msg += _("- UDP port changed.\n");
+	}
+
+	if (CfgChanged(IDC_EXT_CONN_TCP_PORT)) {
+		restart_needed = true;
+		restart_needed_msg += _("- External connect port changed.\n");
+	}
+	if (CfgChanged(IDC_EXT_CONN_ACCEPT)) {
+		restart_needed = true;
+		restart_needed_msg += _("- External connect acceptance changed.\n");
+	}
+	if (CfgChanged(IDC_EXT_CONN_IP)) {
+		restart_needed = true;
+		restart_needed_msg += _("- External connect interface changed.\n");
+	}
+	if (CfgChanged(IDC_SUPPORT_PO)) {
+		restart_needed = true;
+		restart_needed_msg += _("- Protocol obfuscation support changed.\n");
+	}
+
+	// Force port checking
+	thePrefs::SetPort(thePrefs::GetPort());
+
+	if ((CPath::GetFileSize(thePrefs::GetConfigDir() + wxT("addresses.dat")) == 0) &&
+		CastChild(IDC_AUTOSERVER, wxCheckBox)->IsChecked() ) {
+		thePrefs::UnsetAutoServerStart();
+		wxMessageBox(_("Your Auto-update server list is empty.\n'Auto-update server list at startup' will be disabled."),
+			_("Message"), wxOK | wxICON_INFORMATION, this);
+	}
+
+	if (thePrefs::AcceptExternalConnections() && thePrefs::ECPassword().IsEmpty()) {
+		thePrefs::EnableExternalConnections( false );
+
+		wxMessageBox( _("You have enabled external connections but have not specified a password.\nExternal connections cannot be enabled unless a valid password is specified."));
+	}
+
+	// save the preferences on ok
+	theApp->glob_prefs->Save();
+
+	if (CfgChanged(IDC_FED2KLH) && theApp->amuledlg->GetActiveDialog() != CamuleDlg::DT_SEARCH_WND) {
+		theApp->amuledlg->ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
+	}
+
+	if (CfgChanged(IDC_LANGUAGE)) {
+		restart_needed = true;
+		restart_needed_msg += _("- Language changed.\n");
+	}
+
+	if (CfgChanged(IDC_TEMPFILES)) {
+		restart_needed = true;
+		restart_needed_msg += _("- Temp folder changed.\n");
+	}
+
+	if (CfgChanged(IDC_NETWORKED2K) && thePrefs::GetNetworkED2K()) {
+		restart_needed = true;
+		restart_needed_msg += _("- ED2K network enabled.\n");
+	}
+
+	if (CfgChanged(IDC_INCFILES) || CfgChanged(IDC_TEMPFILES) || m_ShareSelector->HasChanged ) {
+		theApp->sharedfiles->Reload();
+	}
+
+	if (CfgChanged(IDC_OSDIR) || CfgChanged(IDC_ONLINESIG)) {
+		wxTextCtrl* widget = CastChild( IDC_OSDIR, wxTextCtrl );
+
+		// Build the filenames for the two OS files
+		theApp->SetOSFiles( widget->GetValue() );
+	}
+
+	if (CfgChanged(IDC_IPFCLIENTS) && thePrefs::IsFilteringClients()) {
+		theApp->clientlist->FilterQueues();
+	}
+
+	if (CfgChanged(IDC_IPFSERVERS) && thePrefs::IsFilteringServers()) {
+		theApp->serverlist->FilterServers();
+	}
+
+	if (CfgChanged(ID_IPFILTERLEVEL)) {
+		theApp->ipfilter->Reload();
+	}
+
+	theApp->ResetTitle();
+
+	if (thePrefs::GetShowRatesOnTitle()) {
+		// This avoids a 5 seconds delay to show the title
+		theApp->amuledlg->ShowTransferRate();
+	} else {
+		// This resets the title
+		theApp->amuledlg->SetTitle(theApp->m_FrameTitle);
+	}
+
+	if (CfgChanged(IDC_EXTCATINFO)) {
+		theApp->amuledlg->m_transferwnd->UpdateCatTabTitles();
+	}
+
+	// Changes related to the statistics-dlg
+	if (CfgChanged(IDC_SLIDER)) {
+		theApp->amuledlg->m_statisticswnd->SetUpdatePeriod(thePrefs::GetTrafficOMeterInterval());
+		theApp->amuledlg->m_kademliawnd->SetUpdatePeriod(thePrefs::GetTrafficOMeterInterval());
+	}
+
+	if ( CfgChanged(IDC_SLIDER3) ) {
+		theApp->amuledlg->m_statisticswnd->ResetAveragingTime();
+	}
+
+	if (CfgChanged(IDC_DOWNLOAD_CAP)) {
+		theApp->amuledlg->m_statisticswnd->SetARange( true, thePrefs::GetMaxGraphDownloadRate() );
+	}
+
+	if (CfgChanged(IDC_UPLOAD_CAP)) {
+		theApp->amuledlg->m_statisticswnd->SetARange( false, thePrefs::GetMaxGraphUploadRate() );
+	}
+
+	if (CfgChanged(IDC_SKIN)) {
+		theApp->amuledlg->Create_Toolbar(thePrefs::VerticalToolbar());
+	}
+
+	if (!thePrefs::GetNetworkED2K() && theApp->IsConnectedED2K()) {
+		theApp->DisconnectED2K();
+	}
+
+	if (!thePrefs::GetNetworkKademlia() && theApp->IsConnectedKad()) {
+		theApp->StopKad();
+	}
+
+	if (!thePrefs::GetNetworkED2K() && !thePrefs::GetNetworkKademlia()) {
+		wxMessageBox(
+			_("Both eD2k and Kad network are disabled.\nYou won't be able to connect until you enable at least one of them."));
+	}
+
+	if (thePrefs::GetNetworkKademlia() && thePrefs::IsUDPDisabled()) {
+		wxMessageBox(_("Kad will not start if your UDP port is disabled.\nEnable UDP port or disable Kad."),
+			 _("Message"), wxOK | wxICON_INFORMATION, this);
+	}
+
+	if (CfgChanged(IDC_NETWORKKAD) || CfgChanged(IDC_NETWORKED2K)) {
+		theApp->amuledlg->DoNetworkRearrange();
+	}
+
+	if (CfgChanged(IDC_SHOW_COUNTRY_FLAGS)) {
+		theApp->amuledlg->EnableIP2Country();
+	}
+
+	if (restart_needed) {
+		wxMessageBox(restart_needed_msg + _("\nYou MUST restart aMule now.\nIf you do not restart now, don't complain if anything bad happens.\n"),
+			_("WARNING"), wxOK | wxICON_EXCLAMATION, this);
+	}
+
+	Show(false);
 }
 
 
-void PrefsUnifiedDlg::OnCancel(wxCommandEvent &event)
+void PrefsUnifiedDlg::OnClose(wxCloseEvent& event)
 {
-	// undo interactive changes here, e.g. stats graphs parameter settings
-	Prse(IDC_SLIDER)->RestorePrevValue();
-	Prse(IDC_SLIDER3)->RestorePrevValue();
-	Prse(IDC_SLIDER2)->RestorePrevValue();
-	Prse(IDC_COLOR_BUTTON)->RestorePrevValue();
-	theApp.amuledlg->statisticswnd->SetUpdatePeriod();	
-	theApp.amuledlg->statisticswnd->ResetAveragingTime();
-	for (int i=0; i<cntStatColors; i++) {
-		aprseColor[i]->RestorePrevValue();
-		theApp.amuledlg->statisticswnd->ApplyStatsColor(i);
+	Show(false);
+
+	// Try to keep the window alive when possible
+	if (event.CanVeto()) {
+		event.Veto();
+	} else {
+		if (theApp->amuledlg) {
+			theApp->amuledlg->m_prefsDialog = NULL;
+		}
+
+		// Un-Connect the Cfgs
+		thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
+		for (; it != thePrefs::s_CfgList.end(); ++it) {
+			// Checking for failures
+			it->second->ConnectToWidget( 0 );
+		}
+
+		Destroy();
 	}
-	
-    EndModal(ID_PREFS_CANCEL_LEFT);
 }
 
 
-
-void PrefsUnifiedDlg::OnCheckBoxChange(wxEvent& event)
+void PrefsUnifiedDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
 {
-	wxCheckBox*	pbox = (wxCheckBox*)event.GetEventObject();
-	int			id = pbox->GetId();
-	bool		bIsChecked = pbox->GetValue();
+	Show(false);
+	// restore state of server tab if necessary
+	EnableServerTab(thePrefs::GetNetworkED2K());
 
-	switch (id) {
-		case IDC_UDPDISABLE: {
-			Rse* prse = Prse(IDC_UDPPORT);
-			if (bIsChecked) {
-				prse->SetCtrlRange(0,0);
-				prse->SetCtrlValue(0);
+	if (m_toolbarOrientationChanged) {
+			theApp->amuledlg->Create_Toolbar(m_verticalToolbar);
+			// Update the first tool (conn button)
+			theApp->amuledlg->ShowConnectionState();
+			theApp->amuledlg->Layout();
+	}
+}
+
+
+void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
+{
+	bool	value = event.IsChecked();
+	int	id = event.GetId();
+
+	// Check if this checkbox is one of the User Events checkboxes
+	if (id >= USEREVENTS_FIRST_ID &&
+	    id < USEREVENTS_FIRST_ID +
+		(int)CUserEvents::GetCount() * USEREVENTS_IDS_PER_EVENT) {
+		// The corresponding text control always has
+		// an ID one greater than the checkbox
+		FindWindow(id + 1)->Enable(value);
+		return;
+	}
+
+	switch ( id ) {
+		case IDC_UDPENABLE:
+			FindWindow( IDC_UDPPORT )->Enable(value);
+			break;
+
+		case IDC_UPNP_ENABLED:
+			FindWindow(IDC_UPNPTCPPORT)->Enable(value);
+			FindWindow(IDC_UPNPTCPPORTTEXT)->Enable(value);
+			break;
+
+		case IDC_UPNP_WEBSERVER_ENABLED:
+			FindWindow(IDC_WEBUPNPTCPPORT)->Enable(value);
+			FindWindow(IDC_WEBUPNPTCPPORTTEXT)->Enable(value);
+			break;
+
+		case IDC_NETWORKKAD: {
+			wxCheckBox * udpPort = (wxCheckBox *) FindWindow(IDC_UDPENABLE);
+			if (value) {
+				// Kad enabled: disable check box, turn UDP on, enable port spin control
+				udpPort->Enable(false);
+				udpPort->SetValue(true);
+				FindWindow(IDC_UDPPORT)->Enable(true);
 			} else {
-				prse->SetCtrlRange(1025,65535);
-				int iPrev = prse->GetPrevValue();
-				prse->SetCtrlValue(iPrev ? iPrev : Prse(IDC_PORT)->GetCtrlValue()+10);
+				// Kad disabled: enable check box
+				udpPort->Enable(true);
 			}
 			break;
 		}
-		
-		case IDC_UPDATEQUEUE:
-			if (bIsChecked)
-				((wxStaticText*)Prse(IDC_LISTREFRESH_LABEL)->pctrl)->SetLabel(_("Upload/Download list refresh time: Disable"));
-			else
-				Prse(IDC_LISTREFRESH)->Propagate();
+
+		case IDC_CHECKDISKSPACE:
+			FindWindow( IDC_MINDISKSPACE )->Enable(value);
 			break;
-			
-		default:	break;
+
+		case IDC_ONLINESIG:
+			FindWindow( IDC_OSDIR )->Enable(value);;
+			FindWindow(IDC_OSUPDATE)->Enable(value);
+			break;
+
+		case IDC_REMOVEDEAD:
+			FindWindow( IDC_SERVERRETRIES )->Enable(value);;
+			break;
+
+		case IDC_AUTOSERVER:
+			if ((CPath::GetFileSize(thePrefs::GetConfigDir() + wxT("addresses.dat")) == 0) &&
+				CastChild(event.GetId(), wxCheckBox)->IsChecked() ) {
+				wxMessageBox(_("Your Auto-update servers list is in blank.\nPlease fill in at least one URL to point to a valid server.met file.\nClick on the button \"List\" by this checkbox to enter an URL."),
+					_("Message"), wxOK | wxICON_INFORMATION);
+				CastChild(event.GetId(), wxCheckBox)->SetValue(false);
+			}
+			break;
+
+		case IDC_MSGFILTER:
+			// Toogle All filter options
+			FindWindow(IDC_MSGFILTER_ALL)->Enable(value);
+			FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(value);
+			FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(value);
+			FindWindow(IDC_MSGFILTER_WORD)->Enable(value);
+			if (value) {
+				FindWindow(IDC_MSGWORD)->Enable(
+					CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());
+			} else {
+				FindWindow(IDC_MSGWORD)->Enable(false);
+			}
+			break;
+
+		case IDC_MSGFILTER_ALL:
+			// Toogle filtering by data.
+			FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(!value);
+			FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(!value);
+			FindWindow(IDC_MSGFILTER_WORD)->Enable(!value);
+			if (!value) {
+				FindWindow(IDC_MSGWORD)->Enable(
+					CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());
+			} else {
+				FindWindow(IDC_MSGWORD)->Enable(false);
+			}
+			break;
+
+		case IDC_MSGFILTER_WORD:
+			// Toogle filter word list.
+			FindWindow(IDC_MSGWORD)->Enable(value);
+			break;
+
+		case IDC_FILTERCOMMENTS:
+			FindWindow(IDC_COMMENTWORD)->Enable(value);
+			break;
+
+		case ID_PROXY_ENABLE_PROXY:
+			FindWindow(ID_PROXY_TYPE)->Enable(value);
+			FindWindow(ID_PROXY_NAME)->Enable(value);
+			FindWindow(ID_PROXY_PORT)->Enable(value);
+			break;
+
+		case ID_PROXY_ENABLE_PASSWORD:
+			FindWindow(ID_PROXY_USER)->Enable(value);
+			FindWindow(ID_PROXY_PASSWORD)->Enable(value);
+			break;
+
+		case IDC_STARTNEXTFILE:
+			FindWindow(IDC_STARTNEXTFILE_SAME)->Enable(value);
+			FindWindow(IDC_STARTNEXTFILE_ALPHA)->Enable(value);
+			break;
+
+		case IDC_MACHIDEONCLOSE:
+			FindWindow(IDC_EXIT)->Enable(!value);
+			CastChild(IDC_EXIT, wxCheckBox)->SetValue(!value && thePrefs::IsConfirmExitEnabled());
+			break;
+
+		case IDC_ENABLETRAYICON:
+			FindWindow(IDC_MINTRAY)->Enable(value);
+			if (value) {
+				theApp->amuledlg->CreateSystray();
+			} else {
+				theApp->amuledlg->RemoveSystray();
+			}
+			thePrefs::SetUseTrayIcon(value);
+			break;
+
+		case ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY:
+			break;
+
+		case IDC_VERTTOOLBAR:
+			m_toolbarOrientationChanged = (m_verticalToolbar != value);
+			theApp->amuledlg->Create_Toolbar(value);
+			// Update the first tool (conn button)
+			theApp->amuledlg->ShowConnectionState();
+			theApp->amuledlg->Layout();
+			break;
+
+		case IDC_ENFORCE_PO_INCOMING:
+			FindWindow(IDC_ENABLE_PO_OUTGOING)->Enable(!value);
+			break;
+
+		case IDC_ENABLE_PO_OUTGOING:
+			FindWindow(IDC_SUPPORT_PO)->Enable(!value);
+			FindWindow(IDC_ENFORCE_PO_INCOMING)->Enable(value);
+			break;
+
+		case IDC_SUPPORT_PO:
+			FindWindow(IDC_ENABLE_PO_OUTGOING)->Enable(value);
+			break;
+
+		case IDC_SHOWRATEONTITLE:
+			FindWindow(IDC_RATESBEFORETITLE)->Enable(value);
+			FindWindow(IDC_RATESAFTERTITLE)->Enable(value);
+			break;
+
+		case IDC_NETWORKED2K: {
+			EnableServerTab(value);
+			wxSpinEvent e;
+			OnTCPClientPortChange(e);
+			break;
+		}
+
+		default:
+			break;
 	}
 }
 
-	
-	
-void PrefsUnifiedDlg::OnButtonColorChange(wxCommandEvent &event)
+
+void PrefsUnifiedDlg::OnButtonColorChange(wxCommandEvent& WXUNUSED(event))
 {
-	int index = GetColorIndex();
-	wxColour col = WxColourFromCr(aprseColor[index]->GetMemValue());
-	col = wxGetColourFromUser(this, col);
-	if(col.Ok()) {
-		pbuttonColor->SetBackgroundColour(col);
-		aprseColor[index]->SetMemValue(CrFromWxColour(col));
-		theApp.amuledlg->statisticswnd->ApplyStatsColor(index);
+	int index = m_choiceColor->GetSelection();
+	wxColour col = wxGetColourFromUser( this, CMuleColour(thePrefs::s_colors[index]) );
+	if ( col.Ok() ) {
+		m_buttonColor->SetBackgroundColour( col );
+		thePrefs::s_colors[index] = CMuleColour(col).GetULong();
 	}
 }
 
 
-void PrefsUnifiedDlg::OnColorCategorySelected(wxCommandEvent& evt)
+void PrefsUnifiedDlg::OnColorCategorySelected(wxCommandEvent& WXUNUSED(evt))
 {
-	pbuttonColor->SetBackgroundColour(WxColourFromCr(aprseColor[GetColorIndex()]->GetMemValue()));
+	m_buttonColor->SetBackgroundColour(CMuleColour(thePrefs::s_colors[ m_choiceColor->GetSelection() ] ) );
 }
 
 
-
-void PrefsUnifiedDlg::OnButtonWizard(wxEvent& evt)
+void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 {
-	Wizard test(this);
-	test.SetPrefs(theApp.glob_prefs);
-	test.OnInitDialog();
-	test.ShowModal();
+	wxString type;
+
+	int id = 0;
+	switch ( event.GetId() ) {
+	case IDC_SELTEMPDIR:
+		id = IDC_TEMPFILES;
+		type = _("Temporary files");
+		break;
+
+	case IDC_SELINCDIR:
+		id = IDC_INCFILES;
+		type = _("Incoming files");
+		break;
+
+	case IDC_SELOSDIR:
+		id = IDC_OSDIR;
+		type = _("Online Signatures");
+		break;
+
+//	case IDC_SELSKIN:
+//		id = IDC_SKIN;
+//		type = _("Skins directory");
+//		break;
+
+	default:
+		wxFAIL;
+		return;
+	}
+
+	type = CFormat(_("Choose a folder for %s")) % type;
+	wxTextCtrl* widget = CastChild( id, wxTextCtrl );
+	wxString dir = widget->GetValue();
+	wxString str = wxDirSelector(
+		type, dir,
+		wxDD_DEFAULT_STYLE,
+		wxDefaultPosition, this);
+	if (!str.IsEmpty()) {
+		widget->SetValue(str);
+	}
 }
 
 
-void PrefsUnifiedDlg::OnButtonSystray(wxEvent& evt)
+void PrefsUnifiedDlg::OnButtonBrowseApplication(wxCommandEvent& event)
 {
-	theApp.amuledlg->changeDesktopMode();
+	wxString title;
+	int id = 0;
+	switch ( event.GetId() ) {
+		case IDC_BROWSEV:
+			id = IDC_VIDEOPLAYER;
+			title = _("Browse for videoplayer");
+			break;
+		case IDC_SELBROWSER:
+			id = IDC_BROWSERSELF;
+			title = _("Select browser");
+			break;
+		default:
+			wxFAIL;
+			return;
+	}
+	wxString wildcard = CFormat(_("Executable%s"))
+#ifdef __WINDOWS__
+		% wxT(" (*.exe)|*.exe");
+#else
+		% wxT("|*");
+#endif
+
+	wxString str = wxFileSelector( title, wxEmptyString, wxEmptyString,
+		wxEmptyString, wildcard, 0, this );
+
+	if ( !str.IsEmpty() ) {
+		wxTextCtrl* widget = CastChild( id, wxTextCtrl );
+		widget->SetValue( str );
+	}
 }
 
 
-
-void PrefsUnifiedDlg::OnButtonDir(wxEvent& event)
+void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& WXUNUSED(evt))
 {
-	wxControl*	pctrl = (wxControl*)event.GetEventObject();
-	int			idButton = pctrl->GetId();
-	Rse*		prse;
-	
-	if 	(idButton == IDC_SELTEMPDIR)
-		prse = Prse(IDC_TEMPFILES);
-	else if (idButton == IDC_SELINCDIR)
-		prse = Prse(IDC_INCFILES);
-	else
-		wxASSERT(false);
-	((RseDirAssured*)prse)->SelectDir();
-}
+	wxString fullpath( thePrefs::GetConfigDir() + wxT("addresses.dat") );
 
+	EditServerListDlg* test = new EditServerListDlg(this, _("Edit server list"),
+		_("Add here URL's to download server.met files.\nOnly one url on each line."),
+		fullpath );
 
-
-void PrefsUnifiedDlg::OnButtonBrowseWav(wxEvent& evt)
-{
-	wxString str = wxFileSelector(_("Browse wav"),"","","*.wav",_("File wav (*.wav)|*.wav||"));
-	Prse(IDC_EDIT_TBN_WAVFILE)->SetCtrlValue(str);
-}
-
-
-
-void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxEvent& e)
-{
-	wxString str=wxFileSelector(_("Browse for videoplayer"),"","","",_("Executable (*)|*||"));
-	if(!str.IsEmpty()) 
-		Prse(IDC_VIDEOPLAYER)->SetCtrlValue(str);
-}
-
-
-
-void PrefsUnifiedDlg::OnButtonEditAddr(wxEvent& evt)
-{
-	char* fullpath = new char[strlen(theApp.glob_prefs->GetAppDir())+13];
-	sprintf(fullpath,"%saddresses.dat",theApp.glob_prefs->GetAppDir());
-
-	EditServerListDlg* test=new EditServerListDlg(this, _("Edit Serverlist"),
-	_("Add here URL's to download server.met files.\nOnly one url on each line."), fullpath);
 	test->ShowModal();
-  
-	delete[] fullpath;
 	delete test;
 }
 
 
-
-void PrefsUnifiedDlg::LoadAllItems(CIni& ini)
+void PrefsUnifiedDlg::OnButtonIPFilterReload(wxCommandEvent& WXUNUSED(event))
 {
-	for (POSITION pos=listRse.GetHeadPosition();  pos!=NULL;  pos=listRse.NextAt(pos)) {
-		listRse.GetAt(pos)->LoadFromFile(ini);
-#ifdef __DEBUG__
-//		static int c;
-//		printf(" %i [%s] loaded = %i\n", ++c, listRse.GetAt(pos)->GetIniName(), listRse.GetAt(pos)->GetMemValue());
-#endif
-	}
-	
-	// Now do some post-processing / sanity checking on the values we just loaded
-	ForceUlDlRateCorrelation(0);
+	theApp->ipfilter->Reload();
 }
 
 
-
-void PrefsUnifiedDlg::SaveAllItems(CIni& ini)
+void PrefsUnifiedDlg::OnButtonIPFilterUpdate(wxCommandEvent& WXUNUSED(event))
 {
-	for (POSITION pos=listRse.GetHeadPosition();  pos!=NULL;  pos=listRse.NextAt(pos)) {
-#ifdef __DEBUG__
-//		static int c;
-//		printf(" %i [%s] saved = %i\n", ++c, listRse.GetAt(pos)->GetIniName(), listRse.GetAt(pos)->GetMemValue());
-#endif
-		listRse.GetAt(pos)->SaveToFile(ini);
+	theApp->ipfilter->Update( CastChild( IDC_IPFILTERURL, wxTextCtrl )->GetValue() );
+}
+
+
+void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
+{
+	prefs_sizer->Detach( m_CurrentPanel );
+	m_CurrentPanel->Show( false );
+
+	m_CurrentPanel = reinterpret_cast<wxPanel*>(m_PrefsIcons->GetItemData(event.GetIndex()));
+	if (pages[event.GetIndex()].m_function == PreferencesDirectoriesTab) {
+		CastChild(IDC_SHARESELECTOR, CDirectoryTreeCtrl)->Init();
+	}
+
+	prefs_sizer->Add( m_CurrentPanel, 0, wxGROW|wxEXPAND );
+	m_CurrentPanel->Show( true );
+
+	Layout();
+
+	event.Skip();
+}
+
+
+void PrefsUnifiedDlg::OnToolTipDelayChange(wxSpinEvent& event)
+{
+	wxToolTip::SetDelay( event.GetPosition() * 1000 );
+}
+
+
+void PrefsUnifiedDlg::OnInitDialog( wxInitDialogEvent& WXUNUSED(evt) )
+{
+// This function exists solely to avoid automatic transfer-to-widget calls
+}
+
+
+void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
+{
+	int id = 0;
+	wxString label;
+
+	switch ( event.GetId() ) {
+	case IDC_SLIDER:
+		id = IDC_SLIDERINFO;
+		label = CFormat(wxPLURAL("Update delay: %d second", "Update delay: %d seconds", event.GetPosition())) % event.GetPosition();
+		theApp->amuledlg->m_statisticswnd->SetUpdatePeriod(event.GetPosition());
+		theApp->amuledlg->m_kademliawnd->SetUpdatePeriod(event.GetPosition());
+		break;
+
+	case IDC_SLIDER3:
+		id = IDC_SLIDERINFO3;
+		label = CFormat(wxPLURAL("Time for average graph: %d minute", "Time for average graph: %d minutes", event.GetPosition())) % event.GetPosition();
+		theApp->m_statistics->SetAverageMinutes(event.GetPosition());
+		break;
+
+	case IDC_SLIDER4:
+		id = IDC_SLIDERINFO4;
+		label = CFormat(_("Connections Graph Scale: %d")) % event.GetPosition();
+		theApp->amuledlg->m_statisticswnd->GetConnScope()->SetRanges(0, event.GetPosition());
+		break;
+
+	case IDC_SLIDER2:
+		id = IDC_SLIDERINFO2;
+		label = CFormat(wxPLURAL("Update delay: %d second", "Update delay: %d seconds", event.GetPosition())) % event.GetPosition();
+		break;
+
+	case IDC_FILEBUFFERSIZE:
+		id = IDC_FILEBUFFERSIZE_STATIC;
+		// Yes, it seems odd to add the singular form here, but other languages might need to know the number to select the appropriate translation
+		label = CFormat(wxPLURAL("File Buffer Size: %d byte", "File Buffer Size: %d bytes", event.GetPosition() * 15000)) % (event.GetPosition() * 15000);
+		break;
+
+	case IDC_QUEUESIZE:
+		id = IDC_QUEUESIZE_STATIC;
+		// Yes, it seems odd to add the singular form here, but other languages might need to know the number to select the appropriate translation
+		label = CFormat(wxPLURAL("Upload Queue Size: %d client", "Upload Queue Size: %d clients", event.GetPosition() * 100)) % (event.GetPosition() * 100);
+		break;
+
+	case IDC_SERVERKEEPALIVE:
+		id = IDC_SERVERKEEPALIVE_LABEL;
+
+		if ( event.GetPosition() ) {
+			label = CFormat(wxPLURAL("Server connection refresh interval: %d minute", "Server connection refresh interval: %d minutes", event.GetPosition())) % event.GetPosition();
+		} else {
+			label = _("Server connection refresh interval: Disabled");
+		}
+		break;
+
+	default:
+		return;
+	}
+
+	wxStaticText* widget = CastChild( id, wxStaticText );
+
+	if (widget) {
+		widget->SetLabel( label );
+		widget->GetParent()->Layout();
 	}
 }
+
+
+void PrefsUnifiedDlg::OnRateLimitChanged( wxSpinEvent& event )
+{
+	// Here we do immediate sanity checking of the up/down ratio,
+	// so that the user can see if his choice is illegal
+
+	// We only do checks if the rate is limited
+	if ( event.GetPosition() != (int)UNLIMITED ) {
+		wxSpinCtrl* dlrate = CastChild( IDC_MAXDOWN, wxSpinCtrl );
+
+		if ( event.GetPosition() < 4 ) {
+			if (	( event.GetPosition() * 3 < dlrate->GetValue() ) ||
+				( dlrate->GetValue() == (int)UNLIMITED ) ) {
+				dlrate->SetValue( event.GetPosition() * 3 );
+			}
+		} else if ( event.GetPosition() < 10  ) {
+			if (	( event.GetPosition() * 4 < dlrate->GetValue() ) ||
+				( dlrate->GetValue() == (int)UNLIMITED ) ) {
+				dlrate->SetValue( event.GetPosition() * 4 );
+			}
+		}
+	}
+}
+
+
+void PrefsUnifiedDlg::OnTCPClientPortChange(wxSpinEvent& WXUNUSED(event))
+{
+	CastChild(ID_TEXT_CLIENT_UDP_PORT, wxStaticText)->SetLabel(
+		m_ServerTabVisible ? (wxString() << (CastChild(IDC_PORT, wxSpinCtrl)->GetValue() + 3))
+							: wxString(_("disabled")));
+}
+
+void PrefsUnifiedDlg::OnUserEventSelected(wxListEvent& event)
+{
+	for (unsigned int i = 0; i < CUserEvents::GetCount(); ++i) {
+		IDC_PREFS_EVENTS_PAGE->Hide(i+1);
+	}
+
+	IDC_PREFS_EVENTS_PAGE->Show((event.GetData() - USEREVENTS_FIRST_ID) / USEREVENTS_IDS_PER_EVENT + 1, true);
+
+	IDC_PREFS_EVENTS_PAGE->Layout();
+
+	event.Skip();
+}
+
+void PrefsUnifiedDlg::OnLanguageChoice(wxCommandEvent &evt)
+{
+	thePrefs::GetCfgLang()->UpdateChoice(evt.GetSelection());
+}
+
+void PrefsUnifiedDlg::CreateEventPanels(const int idx, const wxString& vars, wxWindow* parent)
+{
+	wxStaticBox *item8 = new wxStaticBox( parent, -1, CFormat(_("Execute command on '%s' event")) % wxGetTranslation(CUserEvents::GetDisplayName(static_cast<enum CUserEvents::EventType>(idx))) );
+	wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
+
+	wxCheckBox *item9 = new wxCheckBox( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 1, _("Enable command execution on core"), wxDefaultPosition, wxDefaultSize, 0 );
+	item7->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+
+	wxFlexGridSizer *item10 = new wxFlexGridSizer( 3, 0, 0 );
+	item10->AddGrowableCol( 2 );
+
+	item10->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 0 );
+
+	wxStaticText *item11 = new wxStaticText( parent, -1, _("Core command:"), wxDefaultPosition, wxDefaultSize, 0 );
+	item10->Add( item11, 0, wxALIGN_CENTER|wxALL, 5 );
+
+	wxTextCtrl *item12 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 2, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+	item12->Enable(CUserEvents::IsCoreCommandEnabled(static_cast<enum CUserEvents::EventType>(idx)));
+	item10->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+	item7->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+
+	wxCheckBox *item14 = new wxCheckBox( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 3, _("Enable command execution on GUI"), wxDefaultPosition, wxDefaultSize, 0 );
+	item7->Add( item14, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+
+	wxFlexGridSizer *item15 = new wxFlexGridSizer( 3, 0, 0 );
+	item15->AddGrowableCol( 2 );
+
+	item15->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 0 );
+
+	wxStaticText *item16 = new wxStaticText( parent, -1, _("GUI command:"), wxDefaultPosition, wxDefaultSize, 0 );
+	item15->Add( item16, 0, wxALIGN_CENTER|wxALL, 5 );
+
+	wxTextCtrl *item17 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 4, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+	item17->Enable(CUserEvents::IsGUICommandEnabled(static_cast<enum CUserEvents::EventType>(idx)));
+	item15->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+	item7->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+
+	wxStaticText *item13 = new wxStaticText( parent, -1, _("The following variables will be replaced:") + vars, wxDefaultPosition, wxDefaultSize, 0 );
+	item7->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+	IDC_PREFS_EVENTS_PAGE->Add(item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+
+	IDC_PREFS_EVENTS_PAGE->Layout();
+	IDC_PREFS_EVENTS_PAGE->Hide(idx + 1);
+}
+// File_checked_for_headers

@@ -1,170 +1,166 @@
-//this file is part of aMule
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 
-#include <ctime>		// Needed for time(2)
+#include "Friend.h"			// Interface declarations.
+#include "SafeFile.h"		// Needed for CFileDataIO
+#include "GuiEvents.h"		// Needed for Notify_*
 
-#include "Friend.h"		// Interface declarations.
-#include "packets.h"		// Needed for CInvalidPacket
-#include "PartFile.h"		// Needed for CPartFile
-#include "updownclient.h"	// Needed for CUpDownClient
-#include "otherfunctions.h"
 
-const char CFriend::sm_abyNullHash[16] = {0};
-
-CFriend::CFriend(void)
+void CFriend::Init()
 {
 	m_dwLastSeen = 0;
 	m_dwLastUsedIP = 0;
 	m_nLastUsedPort = 0;
 	m_dwLastChatted = 0;
-	m_strName = "";
-	m_LinkedClient = 0;
-	m_dwHasHash = 0;
-	memset( m_abyUserhash, 0, 16);
 }
 
-CFriend::CFriend( uchar tm_abyUserhash[16], uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, wxString tm_strName, uint32 tm_dwHasHash){
+
+CFriend::CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, const wxString& tm_strName)
+{
 	m_dwLastSeen = tm_dwLastSeen;
 	m_dwLastUsedIP = tm_dwLastUsedIP;
 	m_nLastUsedPort = tm_nLastUsedPort;
 	m_dwLastChatted = tm_dwLastChatted;
-	if( tm_dwHasHash ){
-		memcpy(m_abyUserhash,tm_abyUserhash,16);
-		m_dwHasHash = 1;
+	m_UserHash = userhash;
+
+	if (tm_strName.IsEmpty()) {
+		m_strName = wxT("?");
 	} else {
-		m_dwHasHash = 0;
+		m_strName = tm_strName;
 	}
-	m_strName = tm_strName;
-	m_LinkedClient = 0;
 }
 
-CFriend::CFriend(CUpDownClient* client) {
-	assert ( client );
-	m_dwLastSeen = time(NULL);//mktime(lwtime.GetLocalTm());
-	m_dwLastUsedIP = client->GetIP();
-	m_nLastUsedPort = client->GetUserPort();
+
+CFriend::CFriend(CClientRef client)
+{
+	LinkClient(client);
+
 	m_dwLastChatted = 0;
-	if (client->GetUserName()) {
-		m_strName = client->GetUserName();
-	} else {
-		m_strName = "";
-	}
-	memcpy(m_abyUserhash,client->GetUserHash(),16);
-	m_LinkedClient = client;
-	m_dwHasHash = 1;
 }
 
-CFriend::~CFriend(void)
+
+void CFriend::LinkClient(CClientRef client)
 {
+	wxASSERT(client.IsLinked());
+
+	// Link the friend to that client
+	if (m_LinkedClient != client) {		// do nothing if already linked to this client
+		bool hadFriendslot = false;
+		if (m_LinkedClient.IsLinked()) { // What, is already linked?
+			hadFriendslot = m_LinkedClient.GetFriendSlot();
+			UnLinkClient(false);
+		}
+		m_LinkedClient = client;
+		m_LinkedClient.SetFriend(this);
+		if (hadFriendslot) {
+			// move an assigned friend slot between different client instances which are/were also friends
+			m_LinkedClient.SetFriendSlot(true);
+		}
+	}
+
+	// always update (even if client stays the same)
+	if ( !client.GetUserName().IsEmpty() ) {
+		m_strName = client.GetUserName();
+	} else if (m_strName.IsEmpty()) {
+		m_strName = wxT("?");
+	}
+	m_UserHash = client.GetUserHash();
+	m_dwLastUsedIP = client.GetIP();
+	m_nLastUsedPort = client.GetUserPort();
+	m_dwLastSeen = time(NULL);
+	// This will update the Link status also on GUI.
+	Notify_ChatUpdateFriend(this);
 }
 
 
-
-void CFriend::LoadFromFile(CFile* file){
-	file->Read(m_abyUserhash,16);
-	m_dwHasHash = md4cmp(m_abyUserhash, sm_abyNullHash) ? 1 : 0;
-	file->Read(&m_dwLastUsedIP,4);
-	file->Read(&m_nLastUsedPort,2);
-	file->Read(&m_dwLastSeen,4);
-	file->Read(&m_dwLastChatted,4);
-	uint32 tagcount;
-	file->Read(&tagcount,4);
-	for (uint32 j = 0; j != tagcount;j++){
-		CTag* newtag = new CTag(file);
-		switch(newtag->tag.specialtag){
-			case FF_NAME:{
-				m_strName = newtag->tag.stringvalue;
-				break;
-			}
-		}	
-		delete newtag;
+void CFriend::UnLinkClient(bool notify)
+{
+	if (m_LinkedClient.IsLinked()) {
+		// avoid that an unwanted client instance keeps a friend slot
+		if (m_LinkedClient.GetFriendSlot()) {
+			m_LinkedClient.SetFriendSlot(false);
+			CoreNotify_Upload_Resort_Queue();
+		}
+		m_LinkedClient.SetFriend(NULL);
+		m_LinkedClient.Unlink();
+		if (notify) {
+			Notify_ChatUpdateFriend(this);
+		}
 	}
 }
 
-#if 0
-void CFriend::LoadFromFile(CFile* file)
+
+void CFriend::LoadFromFile(CFileDataIO* file)
 {
-	try {
-		if ( 16 != file->Read(m_abyUserhash,16) ) {
-			throw CInvalidPacket();
-		}
-		if ( 4 != file->Read(&m_dwLastUsedIP,4) ) {
-			throw CInvalidPacket();
-		}
-		if ( 2 != file->Read(&m_nLastUsedPort,2) ) {
-			throw CInvalidPacket();
-		}
-		if ( 4 != file->Read(&m_dwLastSeen,4) ) {
-			throw CInvalidPacket();
-		}
-		if ( 4 != file->Read(&m_dwLastChatted,4) ) {
-			throw CInvalidPacket();
-		}
-		m_dwHasHash = 1;
-		uint32 tagcount;
-		if ( 4 != file->Read(&tagcount,4) ) {
-			throw CInvalidPacket();
-		}
-		for (uint32 j = 0; j < tagcount;j++) {
-			try {
-				CTag* newtag = new CTag(file);
-				switch(newtag->tag->specialtag) {
-					case FF_NAME:
-						if ( newtag->GetType() != TAG_STRING ) {
-							throw CInvalidPacket("Invalid data type for friend name");
-						}
-						m_strName= newtag->tag->stringvalue;
-						delete newtag;
-						break;
-					}
+	wxASSERT( file );
+
+	m_UserHash = file->ReadHash();
+	m_dwLastUsedIP = file->ReadUInt32();
+	m_nLastUsedPort = file->ReadUInt16();
+	m_dwLastSeen = file->ReadUInt32();
+	m_dwLastChatted = file->ReadUInt32();
+
+	uint32 tagcount = file->ReadUInt32();
+	for ( uint32 j = 0; j != tagcount; j++) {
+		CTag newtag(*file, true);
+		switch ( newtag.GetNameID() ) {
+			case FF_NAME:
+				if (m_strName.IsEmpty()) {
+					m_strName = newtag.GetStr();
 				}
-			catch ( CStrangePacket ) {
-			}
-		}	
-	}
-	catch ( CInvalidPacket ) {
-		m_dwLastSeen = 0;
-		m_dwLastUsedIP = 0;
-		m_nLastUsedPort = 0;
-		m_dwLastChatted = 0;
-		m_strName = "";
-		m_LinkedClient = 0;
-		m_dwHasHash = 0;
-		memset(m_abyUserhash, 0, 16);
-		throw;
+				break;
+		}
 	}
 }
-#endif
 
-void CFriend::WriteToFile(CFile* file)
+
+void CFriend::WriteToFile(CFileDataIO* file)
 {
-	file->Write(m_abyUserhash,16);
-	file->Write(&m_dwLastUsedIP,4);
-	file->Write(&m_nLastUsedPort,2);
-	file->Write(&m_dwLastSeen,4);
-	file->Write(&m_dwLastChatted,4);
-	uint32 tagcount = 0;
-	if (!m_strName.IsEmpty()) {
-		tagcount++;
-	}
-	file->Write(&tagcount,4);
-	if (!m_strName.IsEmpty()) {
-		CTag nametag(FF_NAME,(char*)m_strName.GetData());
+	wxASSERT( file );
+	file->WriteHash(m_UserHash);
+	file->WriteUInt32(m_dwLastUsedIP);
+	file->WriteUInt16(m_nLastUsedPort);
+	file->WriteUInt32(m_dwLastSeen);
+	file->WriteUInt32(m_dwLastChatted);
+
+	uint32 tagcount = ( m_strName.IsEmpty() ? 0 : 2 );
+	file->WriteUInt32(tagcount);
+	if ( !m_strName.IsEmpty() ) {
+		CTagString nametag(FF_NAME, m_strName);
+		nametag.WriteTagToFile(file, utf8strOptBOM);
 		nametag.WriteTagToFile(file);
 	}
 }
+
+
+bool CFriend::HasFriendSlot() {
+	if (m_LinkedClient.IsLinked()) {
+		return m_LinkedClient.GetFriendSlot();
+	} else {
+		return false;
+	}
+}
+// File_checked_for_headers

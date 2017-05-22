@@ -1,760 +1,639 @@
-//this file is part of aMule
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-
-// ServerListCtrl.cpp : implementation file
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-
-#include <wx/event.h>
-
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "ServerListCtrl.h"	// Interface declarations
-#include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "PartFile.h"		// Needed for SRV_PR_LOW
-#include "ServerList.h"		// Needed for CServerList
-#include "ServerWnd.h"		// Needed for CServerWnd
-#include "sockets.h"		// Needed for CServerConnect
+
+#include <common/MenuIDs.h>
+
+#include <wx/menu.h>
+#include <wx/stattext.h>
+#include <wx/msgdlg.h>
+#include <wx/settings.h>
+
 #include "amule.h"		// Needed for theApp
-#include "server.h"		// Needed for CServer
-#include "opcodes.h"		// Needed for MP_PRIOLOW
-#include "muuli_wdr.h"		// Needed for ID_SERVERLIST
+#include "DownloadQueue.h"	// Needed for CDownloadQueue
+#ifdef ENABLE_IP2COUNTRY
+	#include "IP2Country.h"	// Needed for IP2Country
+	#include "amuleDlg.h"	// Needed for IP2Country
+#endif
+#include "ServerList.h"		// Needed for CServerList
+#include "ServerConnect.h"	// Needed for CServerConnect
+#include "Server.h"		// Needed for CServer and SRV_PR_*
+#include "Logger.h"
+#include <common/Format.h>	// Needed for CFormat
+#include "Preferences.h"	// Needed for thePrefs
 
-// CServerListCtrl
 
-#define SYSCOLOR(x) (wxSystemSettings::GetColour(x))
+#define CMuleColour(x) (wxSystemSettings::GetColour(x))
+
 
 BEGIN_EVENT_TABLE(CServerListCtrl,CMuleListCtrl)
-	EVT_LIST_ITEM_RIGHT_CLICK(ID_SERVERLIST,CServerListCtrl::OnRclickServlist)
-	EVT_LIST_COL_CLICK(ID_SERVERLIST,CServerListCtrl::OnLvnColumnclickServlist)
-	EVT_LEFT_DCLICK(CServerListCtrl::OnLDclick)
+	EVT_LIST_ITEM_RIGHT_CLICK( -1,	CServerListCtrl::OnItemRightClicked)
+	EVT_LIST_ITEM_ACTIVATED( -1,	CServerListCtrl::OnItemActivated )
+
+	EVT_MENU( MP_PRIOLOW,			CServerListCtrl::OnPriorityChange )
+	EVT_MENU( MP_PRIONORMAL,		CServerListCtrl::OnPriorityChange )
+	EVT_MENU( MP_PRIOHIGH,			CServerListCtrl::OnPriorityChange )
+
+	EVT_MENU( MP_ADDTOSTATIC,		CServerListCtrl::OnStaticChange )
+	EVT_MENU( MP_REMOVEFROMSTATIC,	CServerListCtrl::OnStaticChange )
+
+	EVT_MENU( MP_CONNECTTO,			CServerListCtrl::OnConnectToServer )
+
+	EVT_MENU( MP_REMOVE,			CServerListCtrl::OnRemoveServers )
+	EVT_MENU( MP_REMOVEALL,			CServerListCtrl::OnRemoveServers )
+
+	EVT_MENU( MP_GETED2KLINK,		CServerListCtrl::OnGetED2kURL )
+
+	EVT_CHAR( CServerListCtrl::OnKeyPressed )
 END_EVENT_TABLE()
 
-//IMPLEMENT_DYNAMIC(CServerListCtrl, CMuleListCtrl/*CTreeCtrl*/)
 
-CServerListCtrl::CServerListCtrl()
+
+CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size,
+                                  long style, const wxValidator& validator, const wxString& name )
+	: CMuleListCtrl( parent, winid, pos, size, style, validator, name )
 {
-	memset(&asc_sort,0,8);
+	// Setting the sorter function.
+	SetSortFunc( SortProc );
+
+	// Set the table-name (for loading and saving preferences).
+	SetTableName( wxT("Server") );
+
+	m_connected = 0;
+
+	InsertColumn( COLUMN_SERVER_NAME,	_("Server Name"),	wxLIST_FORMAT_LEFT, 150, wxT("N") );
+	InsertColumn( COLUMN_SERVER_ADDR,	_("Address"),		wxLIST_FORMAT_LEFT, 140, wxT("A") );
+	InsertColumn( COLUMN_SERVER_PORT,	_("Port"),		wxLIST_FORMAT_LEFT,  25, wxT("P") );
+	InsertColumn( COLUMN_SERVER_DESC,	_("Description"),	wxLIST_FORMAT_LEFT, 150, wxT("D") );
+	InsertColumn( COLUMN_SERVER_PING,	_("Ping"),		wxLIST_FORMAT_LEFT,  25, wxT("p") );
+	InsertColumn( COLUMN_SERVER_USERS,	_("Users"),		wxLIST_FORMAT_LEFT,  40, wxT("U") );
+	InsertColumn( COLUMN_SERVER_FILES,	_("Files"),		wxLIST_FORMAT_LEFT,  45, wxT("F") );
+	InsertColumn( COLUMN_SERVER_PRIO,	_("Priority"),		wxLIST_FORMAT_LEFT,  60, wxT("r") );
+	InsertColumn( COLUMN_SERVER_FAILS,	_("Failed"),		wxLIST_FORMAT_LEFT,  40, wxT("f") );
+	InsertColumn( COLUMN_SERVER_STATIC,	_("Static"),		wxLIST_FORMAT_LEFT,  40, wxT("S") );
+	InsertColumn( COLUMN_SERVER_VERSION,	_("Version"),		wxLIST_FORMAT_LEFT,  80, wxT("V") );
+	#ifdef __DEBUG__
+	InsertColumn( COLUMN_SERVER_TCPFLAGS,	wxT("TCP Flags"),	wxLIST_FORMAT_LEFT,  80, wxT("t") );
+	InsertColumn( COLUMN_SERVER_UDPFLAGS,	wxT("UDP Flags"),	wxLIST_FORMAT_LEFT,  80, wxT("u") );
+	#endif
+
+
+	LoadSettings();
 }
 
-CServerListCtrl::CServerListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags)
-: CMuleListCtrl(parent,id,pos,siz,flags)
+
+wxString CServerListCtrl::GetOldColumnOrder() const
 {
-	memset(&asc_sort,0,8);
-	m_ServerPrioMenu=NULL;
-	m_ServerMenu=NULL;
+	return wxT("N,A,P,D,p,U,F,r,f,S,V,t,u");
 }
 
-void CServerListCtrl::OnLDclick(wxMouseEvent& event)
+
+CServerListCtrl::~CServerListCtrl()
 {
-	int lips=0;
-	int index=HitTest(event.GetPosition(),lips);
-	if(index>=0) {
-		SetItemState(index,wxLIST_STATE_SELECTED,wxLIST_STATE_SELECTED);
+}
+
+
+void CServerListCtrl::AddServer( CServer* toadd )
+{
+	// RefreshServer will add the server.
+	// This also means that we have simple duplicity checking. ;)
+	RefreshServer( toadd );
+
+	ShowServerCount();
+}
+
+
+void CServerListCtrl::RemoveServer(CServer* server)
+{
+	long result = FindItem(-1, reinterpret_cast<wxUIntPtr>(server));
+	if ( result != -1 ) {
+		DeleteItem(result);
+		ShowServerCount();
 	}
-	wxCommandEvent nulEvt;
-	OnConnectTo(nulEvt);
 }
 
-void CServerListCtrl::OnRclickServlist(wxListEvent& event)
+
+void CServerListCtrl::RemoveAllServers(int state)
+{
+	int pos = GetNextItem( -1, wxLIST_NEXT_ALL, state);
+	bool connected = theApp->IsConnectedED2K() ||
+	  theApp->serverconnect->IsConnecting();
+
+	while ( pos != -1 ) {
+		CServer* server = reinterpret_cast<CServer*>(GetItemData(pos));
+
+		if (server == m_connected && connected) {
+			wxMessageBox(_("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), _("Info"), wxOK, this);
+			++pos;
+		} else if (server->IsStaticMember()) {
+			const wxString name = (!server->GetListName() ? wxString(_("(Unknown name)")) : server->GetListName());
+
+			if (wxMessageBox(CFormat(_("Are you sure you want to delete the static server %s")) % name, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES) {
+				theApp->serverlist->SetStaticServer(server, false);
+				DeleteItem( pos );
+				theApp->serverlist->RemoveServer( server );
+			} else {
+				++pos;
+			}
+		} else {
+			DeleteItem( pos );
+			theApp->serverlist->RemoveServer( server );
+		}
+
+		pos = GetNextItem(pos - 1, wxLIST_NEXT_ALL, state);
+	}
+
+	ShowServerCount();
+}
+
+
+void CServerListCtrl::RefreshServer( CServer* server )
+{
+	// Cant really refresh a NULL server
+	if (!server) {
+		return;
+	}
+
+	wxUIntPtr ptr = reinterpret_cast<wxUIntPtr>(server);
+	long itemnr = FindItem( -1, ptr );
+	if ( itemnr == -1 ) {
+		// We are not at the sure that the server isn't in the list, so we can re-add
+		itemnr = InsertItem( GetInsertPos( ptr ), server->GetListName() );
+		SetItemPtrData( itemnr, ptr );
+
+		wxListItem item;
+		item.SetId( itemnr );
+		item.SetBackgroundColour(CMuleColour(wxSYS_COLOUR_LISTBOX));
+		SetItem( item );
+	}
+
+	wxString serverName;
+#ifdef ENABLE_IP2COUNTRY
+	// Get the country name
+	if (theApp->amuledlg->m_IP2Country->IsEnabled() && thePrefs::IsGeoIPEnabled()) {
+		const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(server->GetFullIP());
+		serverName << countrydata.Name;
+		serverName << wxT(" - ");
+	}
+#endif // ENABLE_IP2COUNTRY
+	serverName << server->GetListName();
+	SetItem(itemnr, COLUMN_SERVER_NAME, serverName);
+	SetItem(itemnr, COLUMN_SERVER_ADDR, server->GetAddress());
+	if (server->GetAuxPortsList().IsEmpty()) {
+		SetItem( itemnr, COLUMN_SERVER_PORT,
+			CFormat(wxT("%u")) % server->GetPort());
+	} else {
+		SetItem( itemnr, COLUMN_SERVER_PORT,
+			CFormat(wxT("%u (%s)")) % server->GetPort() % server->GetAuxPortsList());
+	}
+	SetItem( itemnr, COLUMN_SERVER_DESC, server->GetDescription() );
+
+	if ( server->GetPing() ) {
+		SetItem( itemnr, COLUMN_SERVER_PING,
+			CastSecondsToHM(server->GetPing()/1000, server->GetPing() % 1000 ) );
+	} else {
+		SetItem( itemnr, COLUMN_SERVER_PING, wxEmptyString );
+	}
+
+	if ( server->GetUsers() ) {
+		SetItem( itemnr, COLUMN_SERVER_USERS,
+			CFormat(wxT("%u")) % server->GetUsers());
+	} else {
+		SetItem( itemnr, COLUMN_SERVER_USERS, wxEmptyString );
+	}
+
+	if ( server->GetFiles() ) {
+		SetItem( itemnr, COLUMN_SERVER_FILES,
+			CFormat(wxT("%u")) % server->GetFiles());
+	} else {
+		SetItem( itemnr, COLUMN_SERVER_FILES, wxEmptyString );
+	}
+
+	switch ( server->GetPreferences() ) {
+		case SRV_PR_LOW:	SetItem(itemnr, COLUMN_SERVER_PRIO, _("Low"));		break;
+		case SRV_PR_NORMAL:	SetItem(itemnr, COLUMN_SERVER_PRIO, _("Normal"));	break;
+		case SRV_PR_HIGH:	SetItem(itemnr, COLUMN_SERVER_PRIO, _("High") );	break;
+		default:		SetItem(itemnr, COLUMN_SERVER_PRIO, wxT("---"));	// this should never happen
+	}
+
+	SetItem( itemnr, COLUMN_SERVER_FAILS, CFormat(wxT("%u")) % server->GetFailedCount());
+	SetItem( itemnr, COLUMN_SERVER_STATIC, ( server->IsStaticMember() ? _("Yes") : _("No") ) );
+	SetItem( itemnr, COLUMN_SERVER_VERSION, server->GetVersion() );
+
+	#if defined(__DEBUG__) && !defined(CLIENT_GUI)
+	wxString flags;
+	/* TCP */
+	if (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION) {
+		flags += wxT("c");
+	}
+	if (server->GetTCPFlags() & SRV_TCPFLG_NEWTAGS) {
+		flags += wxT("n");
+	}
+	if (server->GetTCPFlags() & SRV_TCPFLG_UNICODE) {
+		flags += wxT("u");
+	}
+	if (server->GetTCPFlags() & SRV_TCPFLG_RELATEDSEARCH) {
+		flags += wxT("r");
+	}
+	if (server->GetTCPFlags() & SRV_TCPFLG_TYPETAGINTEGER) {
+		flags += wxT("t");
+	}
+	if (server->GetTCPFlags() & SRV_TCPFLG_LARGEFILES) {
+		flags += wxT("l");
+	}
+	if (server->GetTCPFlags() & SRV_TCPFLG_TCPOBFUSCATION) {
+		flags += wxT("o");
+	}
+
+	SetItem( itemnr, COLUMN_SERVER_TCPFLAGS, flags );
+
+	/* UDP */
+	flags.Clear();
+	if (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES) {
+		flags += wxT("g");
+	}
+	if (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETFILES) {
+		flags += wxT("f");
+	}
+	if (server->GetUDPFlags() & SRV_UDPFLG_NEWTAGS) {
+		flags += wxT("n");
+	}
+	if (server->GetUDPFlags() & SRV_UDPFLG_UNICODE) {
+		flags += wxT("u");
+	}
+	if (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2) {
+		flags += wxT("G");
+	}
+	if (server->GetUDPFlags() & SRV_UDPFLG_LARGEFILES) {
+		flags += wxT("l");
+	}
+	if (server->GetUDPFlags() & SRV_UDPFLG_UDPOBFUSCATION) {
+		flags += wxT("o");
+	}
+	if (server->GetUDPFlags() & SRV_UDPFLG_TCPOBFUSCATION) {
+		flags += wxT("O");
+	}
+	SetItem( itemnr, COLUMN_SERVER_UDPFLAGS, flags );
+
+	#endif
+
+	// Deletions of items causes rather large ammount of flicker, so to
+	// avoid this, we resort the list to ensure correct ordering.
+	if (!IsItemSorted(itemnr)) {
+		SortList();
+	}
+}
+
+
+void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
+{
+	// Unset the old highlighted server if we are going to set a new one
+	if ( m_connected && highlight ) {
+		// A recursive call to do the real work.
+		HighlightServer( m_connected, false );
+
+		m_connected = 0;
+	}
+
+	long itemnr = FindItem( -1,  reinterpret_cast<wxUIntPtr>(server) );
+	if ( itemnr > -1 ) {
+		wxListItem item;
+		item.SetId( itemnr );
+
+		if ( GetItem( item ) ) {
+			wxFont font = GetFont();
+
+			if ( highlight ) {
+				font.SetWeight( wxBOLD );
+
+				m_connected = server;
+			}
+
+			item.SetFont( font );
+
+			SetItem( item );
+		}
+	}
+}
+
+
+void CServerListCtrl::ShowServerCount()
+{
+	wxStaticText* label = CastByName( wxT("serverListLabel"), GetParent(), wxStaticText );
+
+	if ( label ) {
+		label->SetLabel(CFormat(_("Servers (%i)")) % GetItemCount());
+		label->GetParent()->Layout();
+	}
+}
+
+
+void CServerListCtrl::OnItemActivated( wxListEvent& event )
+{
+	// Unselect all items but the activated one
+	long item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	while ( item > -1 ) {
+		SetItemState( item, 0, wxLIST_STATE_SELECTED);
+
+		item = GetNextItem( item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	}
+
+	SetItemState( event.GetIndex(), wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+
+	wxCommandEvent nulEvt;
+	OnConnectToServer( nulEvt );
+}
+
+
+void CServerListCtrl::OnItemRightClicked(wxListEvent& event)
 {
 	// Check if clicked item is selected. If not, unselect all and select it.
-	long item=-1;
-	if (!GetItemState(event.GetIndex(), wxLIST_STATE_SELECTED)) {
-		for (;;) {
-			item = GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-			if (item==-1) {
-				break;
-			}
-			SetItemState(item, 0, wxLIST_STATE_SELECTED);
+	long index = CheckSelection(event);
+
+	bool enable_reconnect = false;
+	bool enable_static_on = false;
+	bool enable_static_off = false;
+
+	// Gather information on the selected items
+	while ( index > -1 ) {
+		CServer* server = reinterpret_cast<CServer*>(GetItemData(index));
+
+		// The current server is selected, so we might display the reconnect option
+		if (server == m_connected) {
+			enable_reconnect = true;
 		}
-		SetItemState(event.GetIndex(), wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
-	}
- 
-	// Create up-to-date popupmenu
-	if(m_ServerMenu==NULL) {
-		m_ServerMenu=new wxMenu(_("Server"));
-		m_ServerPrioMenu=new wxMenu();
-		m_ServerPrioMenu->Append(MP_PRIOLOW,_("Low"));
-		m_ServerPrioMenu->Append(MP_PRIONORMAL,_("Normal"));
-		m_ServerPrioMenu->Append(MP_PRIOHIGH,_("High"));
 
-		m_ServerMenu->Append(MP_CONNECTTO,_("Connect to this server"));
-		m_ServerMenu->Append(999999,_("Priority"),m_ServerPrioMenu);
-		m_ServerMenu->Append(MP_ADDTOSTATIC,_("Add to static"));
-		m_ServerMenu->Append(MP_REMOVEFROMSTATIC, CString(_("Remove from static server list")));
-		m_ServerMenu->Enable(MP_ADDTOSTATIC,FALSE);
-		m_ServerMenu->Enable(MP_REMOVEFROMSTATIC,FALSE);
-		m_ServerMenu->AppendSeparator();
-		m_ServerMenu->Append(MP_REMOVE,_("Remove server"));
-		m_ServerMenu->Append(MP_REMOVEALL,_("Remove all servers"));
-		m_ServerMenu->AppendSeparator();
-		m_ServerMenu->Append(MP_GETED2KLINK,_("Copy ED2k &link to clipboard"));
+		// We want to know which options should be enabled, either one or both
+		enable_static_on	|= !server->IsStaticMember();
+		enable_static_off	|=  server->IsStaticMember();
+
+		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
 
-	// set states
-	CServer* test=NULL;
-	int selidx;
-	selidx=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-	if(selidx!=-1) {
-		m_ServerMenu->Enable(999999,TRUE);
+
+	wxMenu* serverMenu = new wxMenu(_("Server"));
+	wxMenu* serverPrioMenu = new wxMenu();
+	serverPrioMenu->Append( MP_PRIOLOW, _("Low") );
+	serverPrioMenu->Append( MP_PRIONORMAL, _("Normal") );
+	serverPrioMenu->Append( MP_PRIOHIGH, _("High") );
+	serverMenu->Append( MP_CONNECTTO, _("Connect to server") );
+	serverMenu->Append( 12345, _("Priority"), serverPrioMenu );
+
+	serverMenu->AppendSeparator();
+
+	if (GetSelectedItemCount() == 1) {
+		serverMenu->Append( MP_ADDTOSTATIC, _("Mark server as static") );
+		serverMenu->Append( MP_REMOVEFROMSTATIC, _("Mark server as non-static") );
 	} else {
-		m_ServerMenu->Enable(999999,FALSE);
+		serverMenu->Append( MP_ADDTOSTATIC, _("Mark servers as static") );
+		serverMenu->Append( MP_REMOVEFROMSTATIC, _("Mark servers as non-static") );
 	}
-	if(selidx!=-1) {
-		test=(CServer*)GetItemData(selidx);
-		if(test) {
-			if(test->IsStaticMember()) {
-				m_ServerMenu->Enable(MP_REMOVEFROMSTATIC,TRUE);
-				m_ServerMenu->Enable(MP_ADDTOSTATIC,FALSE);
-			} else {
-				m_ServerMenu->Enable(MP_REMOVEFROMSTATIC,FALSE);
-				m_ServerMenu->Enable(MP_ADDTOSTATIC,TRUE);
-			}
-		} else {
-			m_ServerMenu->Enable(MP_REMOVEFROMSTATIC,FALSE);
-			m_ServerMenu->Enable(MP_ADDTOSTATIC,FALSE);
-		}
+
+	serverMenu->AppendSeparator();
+
+	if (GetSelectedItemCount() == 1) {
+		serverMenu->Append( MP_REMOVE, _("Remove server") );
 	} else {
-		m_ServerMenu->Enable(MP_REMOVEFROMSTATIC,FALSE);
-		m_ServerMenu->Enable(MP_ADDTOSTATIC,FALSE);
+		serverMenu->Append( MP_REMOVE, _("Remove servers") );
 	}
-	PopupMenu(m_ServerMenu,event.GetPoint());
-}
+	serverMenu->Append( MP_REMOVEALL, _("Remove all servers") );
 
-void CServerListCtrl::OnConnectTo(wxCommandEvent& event)
-{
-	int connectcounter=0;
-	long item=-1;
+	serverMenu->AppendSeparator();
 
-	if (this->GetSelectedItemCount()>1) {
-		theApp.serverconnect->Disconnect();
-		item=-1;
-		do {
-			item=GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-			if(item>-1) {
-				connectcounter++;
-				theApp.serverconnect->ConnectToServer((CServer*)this->GetItemData(item),true);
-			}
-		} while(item!=-1 && connectcounter<10);
+	if (GetSelectedItemCount() == 1) {
+		serverMenu->Append( MP_GETED2KLINK, _("Copy eD2k link to clipboard") );
 	} else {
-		item=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-		if(item>-1) {
-			theApp.serverconnect->ConnectToServer((CServer*)GetItemData(item));
-		}
+		serverMenu->Append( MP_GETED2KLINK, _("Copy eD2k links to clipboard") );
 	}
-	theApp.amuledlg->ShowConnectionState(false);
-}
 
-void CServerListCtrl::OnRemove(wxEvent& event)
-{
-	long item=-1;
-	if (this->GetSelectedItemCount()>1) {
-		item=-1;
-		do {
-			item=GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-			if(item>-1) {
-				theApp.amuledlg->serverwnd->serverlistctrl->RemoveServer((CServer*)this->GetItemData(item));
-			}
-		} while(item!=-1);
+	serverMenu->Enable( MP_REMOVEFROMSTATIC,	enable_static_off );
+	serverMenu->Enable( MP_ADDTOSTATIC,			enable_static_on  );
+
+	if ( GetSelectedItemCount() == 1 ) {
+		if ( enable_reconnect )
+			serverMenu->SetLabel( MP_CONNECTTO, _("Reconnect to server") );
 	} else {
-		item=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-		if(item>-1) {
-			theApp.amuledlg->serverwnd->serverlistctrl->RemoveServer((CServer*)this->GetItemData(item));
-		}
+		serverMenu->Enable( MP_CONNECTTO, false );
 	}
+
+
+	PopupMenu( serverMenu, event.GetPoint() );
+	delete serverMenu;
 }
 
-void CServerListCtrl::OnCopyLink(wxCommandEvent& event)
+
+void CServerListCtrl::OnPriorityChange( wxCommandEvent& event )
 {
-	long item=-1;
-	wxString buffer,link;
-	while((item=GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED)) != -1) {
-		CServer* change = (CServer*) this->GetItemData(item);
-		buffer=buffer.Format("ed2k:|server|%s|%d|", change->GetFullIP(), change->GetPort());
-		if(link.Length()>0) {
-			buffer="\n"+buffer;
-		}
-		link += buffer;
-	}
-	theApp.CopyTextToClipboard(link);
-}
+	uint32 priority = 0;
 
-void CServerListCtrl::InitSort()
-{
-	LoadSettings();
+	switch ( event.GetId() ) {
+		case MP_PRIOLOW:		priority = SRV_PR_LOW;		break;
+		case MP_PRIONORMAL:		priority = SRV_PR_NORMAL;	break;
+		case MP_PRIOHIGH:		priority = SRV_PR_HIGH;		break;
 
-	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableServer);
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableServer);
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
-	ShowFilesCount();
-}
-
-bool CServerListCtrl::Init(CServerList* in_list)
-{
-	printf("Serverlist loaded.\n");
-	server_list = in_list;
-
-	InsertColumn(0,_("Server Name"),wxLIST_FORMAT_LEFT,150);
-	InsertColumn(1,_("IP"),wxLIST_FORMAT_LEFT,140);
-	InsertColumn(2,_("Description") ,wxLIST_FORMAT_LEFT, 150);
-	InsertColumn(3,_("Ping"),wxLIST_FORMAT_LEFT, 50);
-	InsertColumn(4,_("Users"),wxLIST_FORMAT_LEFT, 50);
-	InsertColumn(5,_("Files"),wxLIST_FORMAT_LEFT, 50);
-	InsertColumn(6,_("Preference"),wxLIST_FORMAT_LEFT, 60);
-	InsertColumn(7,_("Failed"),wxLIST_FORMAT_LEFT, 50);
-	InsertColumn(8,_("Static"),wxLIST_FORMAT_LEFT, 50);
-
-	asc_sort[3]=true;asc_sort[4]=true;asc_sort[5]=true;asc_sort[7]=true;
-	// perhaps not yet
-	//LoadSettings(CPreferences::tableServer);
-	return true;
-}
-
-void CServerListCtrl::Localize()
-{
-}
-
-/*void CServerListCtrl::ShowServers()
-{
-	DeleteAllItems();
-	int i=0;
-	CString temp;
-	for(POSITION pos = server_list->list.GetHeadPosition(); pos != NULL;server_list->list.GetNext(pos)) {
-		CServer* cur_server = server_list->list.GetAt(pos);
-		InsertItem(LVIF_TEXT|LVIF_PARAM,i,cur_server->GetListName(),0,0,0,(LPARAM)cur_server);
-		RefreshServer( cur_server );
-		i++;
-	}
-}
-*/
-
-void CServerListCtrl::RemoveServer(CServer* todel,bool bDelToList)
-{
-	//LVFINDINFO find;
-	//find.flags = LVFI_PARAM;
-	//find.lParam = (LPARAM)todel;
-	sint32 result = FindItem(-1,(long)todel);
-	if (result != (-1) ) {
-		server_list->RemoveServer((CServer*)GetItemData(result));
-		DeleteItem(result);
-	}
-	return;
-}
-
-// Remove Dead Servers
-void CServerListCtrl::RemoveDeadServer()
-{
-	if(theApp.glob_prefs->DeadServer()) {
-		for(POSITION pos = server_list->list.GetHeadPosition(); pos != NULL;server_list->list.GetNext(pos)) {
-			CServer* cur_server = server_list->list.GetAt(pos);
-			if(cur_server->GetFailedCount() > theApp.glob_prefs->GetDeadserverRetries()) {	// MAX_SERVERFAILCOUNT
-				RemoveServer(cur_server);
-				pos = server_list->list.GetHeadPosition();
-			}
-		}
-	}
-}
-
-bool CServerListCtrl::AddServer(CServer* toadd,bool bAddToList)
-{
-	if (!server_list->AddServer(toadd)) {
-		return false;
-	}
-	if (bAddToList) {
-		uint32 itemnr=GetItemCount();
-		uint32 newid=InsertItem(itemnr,toadd->GetListName());
-		SetItemData(newid,(long)toadd);
-		wxListItem myitem;
-		myitem.m_itemId=newid;
-		myitem.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
-		SetItem(myitem);
-		RefreshServer(toadd);
-	}
-	ShowFilesCount();
-	return true;
-}
-
-void CServerListCtrl::HighlightServer(const CServer* server)
-// Copyright (C) 2004 pure_ascii ( pure_ascii@users.sourceforge.net / http://www.amule.org )
-{
-	long itemnr=FindItem(-1,(long)server);
-	for(long pos = 0; pos < GetItemCount(); ++pos) {
-		wxListItem myitem;
-		myitem.SetId(pos);
-		GetItem(myitem);
-		wxFont myfont = myitem.GetFont();
-		myfont.SetWeight((pos==itemnr) ? wxBOLD : wxNORMAL);
-		myitem.SetFont(myfont);
-		SetItem(myitem);
-	} 
-}
-
-void CServerListCtrl::RefreshServer(CServer* server)
-{
-	long itemnr=FindItem(-1,(long)server);
-	if(itemnr==(-1)) {
-		return;
-	}
-	wxString temp;
-	if(!server) {
-		return;
-	}
-	temp=wxString::Format( "%s : %i",server->GetAddress(),server->GetPort());
-	SetItem(itemnr,1,temp);
-	if(server->GetListName()) {
-		temp=server->GetListName();
-		SetItem(itemnr,0,temp);
-	}
-	if(server->GetDescription()) {
-		temp=server->GetDescription();
-		SetItem(itemnr,2,temp);
-	}
-	if(1) {
-		if(server->GetPing()) {
-			temp=wxString::Format( "%i",server->GetPing());
-		} else {
-			temp="";
-		}
-		SetItem(itemnr,3,temp);
-	} else {
-		printf("%lx: ei ping\n",(long)server);
-		SetItem(itemnr,3,"Ei ei");
-	}
-	if(server->GetUsers()) {
-		temp=wxString::Format( "%i",server->GetUsers());
-		SetItem(itemnr,4,temp);
-	}
-	if(server->GetFiles()) {
-		temp=wxString::Format( "%i",server->GetFiles());
-		SetItem(itemnr,5,temp);
-	}
-	if(server->GetPreferences()) {
-		temp=wxString::Format( "%i",server->GetPreferences());
-		SetItem(itemnr,6,temp);
-	}
-	switch(server->GetPreferences()) {
-		case SRV_PR_LOW:
-			temp.Printf( CString(_("Low")));
-			SetItem(itemnr,6,temp);
-			break;
-		case SRV_PR_NORMAL:
-			temp.Printf( CString(_("Normal")));
-			SetItem(itemnr,6,temp);
-			break;
-		case SRV_PR_HIGH:
-			temp.Printf( CString(_("High")));
-			SetItem(itemnr,6,temp);
-			break;
 		default:
-			temp.Format( CString(_("No Pref")));
-			SetItem(itemnr,6,temp);
+			return;
 	}
-	if(server->GetFailedCount() < 0) {
-		server->ResetFailedCount();
+
+
+	ItemDataList items = GetSelectedItems();
+
+	for ( unsigned int i = 0; i < items.size(); ++i ) {
+		CServer* server = reinterpret_cast<CServer*>(items[i]);
+		theApp->serverlist->SetServerPrio(server, priority);
 	}
-	temp=wxString::Format( "%i",server->GetFailedCount());
-	SetItem(itemnr,7,temp);
-	if (server->IsStaticMember()) {
-		SetItem(itemnr,8,_("Yes"));
+}
+
+
+void CServerListCtrl::OnStaticChange( wxCommandEvent& event )
+{
+	bool isStatic = ( event.GetId() == MP_ADDTOSTATIC );
+
+	ItemDataList items = GetSelectedItems();
+
+	for ( unsigned int i = 0; i < items.size(); ++i ) {
+		CServer* server = reinterpret_cast<CServer*>(items[i]);
+
+		// Only update items that have the wrong setting
+		if ( server->IsStaticMember() != isStatic ) {
+			theApp->serverlist->SetStaticServer(server, isStatic);
+		}
+	}
+}
+
+
+void CServerListCtrl::OnConnectToServer( wxCommandEvent& WXUNUSED(event) )
+{
+	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+
+	if ( item > -1 ) {
+		if ( theApp->IsConnectedED2K() ) {
+			theApp->serverconnect->Disconnect();
+		}
+
+		theApp->serverconnect->ConnectToServer( reinterpret_cast<CServer*>(GetItemData(item)) );
+	}
+}
+
+
+void CServerListCtrl::OnGetED2kURL( wxCommandEvent& WXUNUSED(event) )
+{
+	int pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+
+	wxString URL;
+
+	while ( pos != -1 ) {
+		CServer* server = reinterpret_cast<CServer*>(GetItemData(pos));
+
+		URL += CFormat(wxT("ed2k://|server|%s|%d|/\n"))	% server->GetFullIP() % server->GetPort();
+
+		pos = GetNextItem( pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	}
+
+	URL.RemoveLast();
+
+	theApp->CopyTextToClipboard( URL );
+}
+
+
+void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
+{
+	if ( event.GetId() == MP_REMOVEALL ) {
+		if ( GetItemCount() ) {
+			wxString question = _("Are you sure that you wish to delete all servers?");
+
+			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ) {
+				if ( theApp->serverconnect->IsConnecting() ) {
+					theApp->downloadqueue->StopUDPRequests();
+					theApp->serverconnect->StopConnectionTry();
+					theApp->serverconnect->Disconnect();
+				}
+
+				RemoveAllServers(wxLIST_STATE_DONTCARE);
+			}
+		}
+	} else if ( event.GetId() == MP_REMOVE ) {
+		if ( GetSelectedItemCount() ) {
+			wxString question;
+			if (GetSelectedItemCount() == 1) {
+				question = _("Are you sure that you wish to delete the selected server?");
+			} else {
+				question = _("Are you sure that you wish to delete the selected servers?");
+			}
+
+			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ) {
+				RemoveAllServers(wxLIST_STATE_SELECTED);
+			}
+		}
+	}
+}
+
+
+void CServerListCtrl::OnKeyPressed( wxKeyEvent& event )
+{
+	// Check if delete was pressed
+	if ((event.GetKeyCode() == WXK_DELETE) || (event.GetKeyCode() == WXK_NUMPAD_DELETE)) {
+		wxCommandEvent evt;
+		evt.SetId( MP_REMOVE );
+		OnRemoveServers( evt );
 	} else {
-		SetItem(itemnr,8,_("No"));
+		event.Skip();
 	}
 }
 
-bool CServerListCtrl::ProcessEvent(wxEvent& evt)
-{
-	if(evt.GetEventType()!=wxEVT_COMMAND_MENU_SELECTED) {
-		return CMuleListCtrl::ProcessEvent(evt);
-	}
-		
-	wxCommandEvent& event=(wxCommandEvent&)evt;
-	int item=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-	if (event.GetId()==MP_REMOVEALL) {
-		if(theApp.serverconnect->IsConnecting()) {
-			theApp.downloadqueue->StopUDPRequests();
-			theApp.serverconnect->StopConnectionTry();
-			theApp.serverconnect->Disconnect();
-			theApp.amuledlg->ShowConnectionState(false);
-		}
-		server_list->RemoveAllServers();
-		DeleteAllItems();
-		ShowFilesCount();
-		return true;
-	}
-	
-	if (item != -1) {
-		if (((CServer*)GetItemData(item)) != NULL) {
-			switch (event.GetId()) {
-				case MP_CONNECTTO: {
-					if (this->GetSelectedItemCount()>1) {
-						CServer* aServer;
-						theApp.serverconnect->Disconnect();
-						int pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-						while (pos != -1) {
-							item = pos;
-							if (item>-1) {
-								aServer=(CServer*)this->GetItemData(item);
-								theApp.serverlist->MoveServerDown(aServer);
-							}
-							pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-						}
-						theApp.serverconnect->ConnectToAnyServer(theApp.serverlist->GetServerCount() - this->GetSelectedItemCount(),false, false);
-					} else {
-						theApp.serverconnect->ConnectToServer((CServer*)GetItemData(item));
-					}
-					theApp.amuledlg->ShowConnectionState(false);
-					return true;
-					break;
-				}
-				case MP_REMOVE: {
-					int pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					while (pos != -1) {
-						item = pos;
-						server_list->RemoveServer((CServer*)this->GetItemData(item));
-						DeleteItem(item);
-						pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					}
-					ShowFilesCount();
-					return true;					
-					break;
-				}
-				case MP_ADDTOSTATIC: {
-					int pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					while(pos != -1) {
-						CServer* change = (CServer*)this->GetItemData(pos);
-						if (!StaticServerFileAppend(change)) {
-							return false;
-						}
-						change->SetIsStaticMember(true);
-						theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(change);
-						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					}
-					return true;					
-					break;
-				}
-				// Remove Static Servers [Barry]
-				case MP_REMOVEFROMSTATIC: {
-					int pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					while(pos != -1) {
-						CServer* change = (CServer*)this->GetItemData(pos);
-						if (!StaticServerFileRemove(change)) {							
-							return false;
-						}
-						change->SetIsStaticMember(false);
-						theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(change);
-						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					}
-					return true;					
-					break;
-				}
-				case MP_PRIOLOW: {
-					int pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					while(pos != -1) {
-						CServer* change = (CServer*)this->GetItemData(pos);
-						change->SetPreference( SRV_PR_LOW);
-						// if (change->IsStaticMember()) {
-							// StaticServerFileAppend(change); //Why are you adding to static when changing prioity? If I want it static I set it static.. I set server to LOW because I HATE this server, not because I like it!!!
-						// }
-						theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(change);
-						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					}
-					return true;					
-					break;
-				}
-				case MP_PRIONORMAL: {
-					int pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					while(pos != -1) {
-						CServer* change = (CServer*)this->GetItemData(pos);
-						change->SetPreference(SRV_PR_NORMAL);
-						// if (change->IsStaticMember()) {
-							// StaticServerFileAppend(change);
-						// }
-						theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(change);
-						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					}
-					return true;					
-					break;
-				}
-				case MP_PRIOHIGH: {
-					int pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					while(pos != -1) {
-						CServer* change = (CServer*)this->GetItemData(pos);
-						change->SetPreference( SRV_PR_HIGH );
-						// if (change->IsStaticMember()) {
-							// StaticServerFileAppend(change);
-						// }
-						theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(change);
-						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					}
-					return true;					
-					break;
-				}
-				case MP_GETED2KLINK: {
-					int pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					wxString buffer, link;
-					while(pos != -1) {
-						CServer* change = (CServer*)this->GetItemData(pos);
-						buffer.Printf("ed2k://|server|%s|%d|/", change->GetFullIP(), change->GetPort());
-						if (link.Length()>0) {
-							buffer="\n"+buffer;
-						}
-						link += buffer;
-						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					}
-					theApp.CopyTextToClipboard(link);
-					return true;					
-					break;
-				}
-			}
-		}
-	}
-	// Column hiding & misc events
-	return CMuleListCtrl::ProcessEvent(evt);
-}
 
-bool CServerListCtrl::AddServermetToList(wxString strFile) 
+int CServerListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 {
-	Freeze();
-	bool flag=server_list->AddServermetToList(CString(strFile.GetData()));
-	RemoveDeadServer();
-	ShowFilesCount();
-	Thaw();
-	return flag;
-}
+	CServer* server1 = reinterpret_cast<CServer*>(item1);
+	CServer* server2 = reinterpret_cast<CServer*>(item2);
 
-void CServerListCtrl::OnLvnColumnclickServlist(wxListEvent& evt) //NMHDR *pNMHDR, LRESULT *pResult) 
-{
-	// Barry - Store sort order in preferences
-	// Determine ascending based on whether already sorted on this column
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableServer);
-	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableServer);
-	bool sortAscending = (sortItem != evt.GetColumn()) ? true : !m_oldSortAscending;
-	// Item is column clicked
-	sortItem = evt.GetColumn();
-	// Save new preferences
-	theApp.glob_prefs->SetColumnSortItem(CPreferences::tableServer, sortItem);
-	theApp.glob_prefs->SetColumnSortAscending(CPreferences::tableServer, sortAscending);
-	// Sort table
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
-}
+	int mode = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 
-int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
-{
-	CServer* item1 = (CServer*)lParam1;
-	CServer* item2 = (CServer*)lParam2;
-	if((item1 == NULL) || (item2 == NULL)) {
-		return 0;
-	}
-	int iTemp=0;
-	int counter1;
-	int counter2;
-	switch(lParamSort) {
-		case 0: //(List) Server-name asc
-			return CString(item1->GetListName()).CmpNoCase(item2->GetListName());
-		case 100: //(List) Server-name desc
-			return CString(item2->GetListName()).CmpNoCase(item1->GetListName());
-		case 1: { //IP asc
-			if (item1->HasDynIP() && item2->HasDynIP()) {
-				return CString(item1->GetDynIP()).CmpNoCase(item2->GetDynIP());
-			} else if (item1->HasDynIP()) {
-				return 1;
-			} else if (item2->HasDynIP()) {
-				return 0;
-			} else {
-				CString sIP1, sIP2, sTemp1, sTemp2;
-				counter1 = counter2 = iTemp = 0;
-				sIP1 = item2->GetFullIP();
-				sIP2 = item1->GetFullIP();
-				int a[4],b[4];
-				sscanf(sIP1.GetData(),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
-				sscanf(sIP2.GetData(),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
-				for(int i=0;iTemp==0;i++) {
-					iTemp=b[i]-a[i];
-					if(i>3) {
-						return item1->GetPort()-item2->GetPort();
-					}
+	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
+		// Sort by server-name
+		case COLUMN_SERVER_NAME:
+			return mode * server1->GetListName().CmpNoCase(server2->GetListName());
+
+		// Sort by address
+		case COLUMN_SERVER_ADDR:
+			{
+				if ( server1->HasDynIP() && server2->HasDynIP()) {
+					return mode * server1->GetDynIP().CmpNoCase( server2->GetDynIP() );
+				} else if (server1->HasDynIP()) {
+					return mode * -1;
+				} else if (server2->HasDynIP()) {
+					return mode * 1;
+				} else {
+					uint32 a = wxUINT32_SWAP_ALWAYS(server1->GetIP());
+					uint32 b = wxUINT32_SWAP_ALWAYS(server2->GetIP());
+					return mode * CmpAny(a, b);
 				}
-				return iTemp;
-			  }
-		}
-		case 101: { //IP desc
-			if(item1->HasDynIP() && item2->HasDynIP()) {
-				return CString(item2->GetDynIP()).CmpNoCase(item1->GetDynIP());
-			} else if(item1->HasDynIP()) {
-				return 0;
-			} else if(item2->HasDynIP()) {
-				return 1;
-			} else {
-				CString s2IP1, s2IP2, s2Temp1, s2Temp2;
-				counter1 = counter2 = iTemp = 0;
-				s2IP1 = item2->GetFullIP();
-				s2IP2 = item1->GetFullIP();
-				int a[4],b[4];
-				sscanf(s2IP1.GetData(),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
-				sscanf(s2IP2.GetData(),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
-				for(int i=0;iTemp==0;i++) {
-					iTemp=a[i]-b[i];
-					if(i>3) {
-						return item2->GetPort()-item1->GetPort();
-					}
+			}
+		// Sort by port
+		case COLUMN_SERVER_PORT: return mode * CmpAny( server1->GetPort(), server2->GetPort() );
+		// Sort by description
+		case COLUMN_SERVER_DESC: return mode * server1->GetDescription().CmpNoCase( server2->GetDescription() );
+		// Sort by Ping
+		// The -1 ensures that a value of zero (no ping known) is sorted last.
+		case COLUMN_SERVER_PING: return mode * CmpAny( server1->GetPing() - 1, server2->GetPing() -1 );
+		// Sort by user-count
+		case COLUMN_SERVER_USERS: return mode * CmpAny( server1->GetUsers(), server2->GetUsers() );
+		// Sort by file-count
+		case COLUMN_SERVER_FILES: return mode * CmpAny( server1->GetFiles(), server2->GetFiles() );
+		// Sort by priority
+		case COLUMN_SERVER_PRIO:
+			{
+				uint32 srv_pr1 = server1->GetPreferences();
+				uint32 srv_pr2 = server2->GetPreferences();
+				switch ( srv_pr1 ) {
+					case SRV_PR_HIGH:	srv_pr1 = SRV_PR_MAX; break;
+					case SRV_PR_NORMAL:	srv_pr1 = SRV_PR_MID; break;
+					case SRV_PR_LOW:	srv_pr1 = SRV_PR_MIN; break;
+					default:		return 0;
 				}
-				return iTemp; 
+				switch ( srv_pr2 ) {
+					case SRV_PR_HIGH:	srv_pr2 = SRV_PR_MAX; break;
+					case SRV_PR_NORMAL:	srv_pr2 = SRV_PR_MID; break;
+					case SRV_PR_LOW:	srv_pr2 = SRV_PR_MIN; break;
+					default:		return 0;
+				}
+				return mode * CmpAny( srv_pr1, srv_pr2 );
 			}
-		}
-		case 2: { //Description asc
-			if((item1->GetDescription() != NULL) && (item2->GetDescription() != NULL)) {
-				//the 'if' is necessary, because the Description-String is not
-				//always initialisized in server.cpp
-				return CString(item2->GetDescription()).CmpNoCase(item1->GetDescription());
-			} else if (item1->GetDescription() == NULL) {
-				return 1;
-			} else {
-				return 0;
+		// Sort by failure-count
+		case COLUMN_SERVER_FAILS: return mode * CmpAny( server1->GetFailedCount(), server2->GetFailedCount() );
+		// Sort by static servers
+		case COLUMN_SERVER_STATIC:
+			{
+				return mode * CmpAny( server2->IsStaticMember(), server1->IsStaticMember() );
 			}
-		}
-		case 102: { //Desciption desc
-			if((item1->GetDescription() != NULL) && (item2->GetDescription() != NULL)) {
-				return CString(item1->GetDescription()).CmpNoCase(item2->GetDescription());
-			} else if (item1->GetDescription() == NULL) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
-		case 3: //Ping asc 
-			return item1->GetPing() - item2->GetPing();
-		case 103: //Ping desc
-			return item2->GetPing() - item1->GetPing();
-		case 4: //Users asc
-			return item1->GetUsers() - item2->GetUsers();
-		case 104: //Users desc
-			return item2->GetUsers() - item1->GetUsers();
-		case 5: //Files asc
-			return item1->GetFiles() - item2->GetFiles();
-		case 105: //Files desc
-			return item2->GetFiles() - item1->GetFiles();
-		case 6: //Preferences asc
-			return item2->GetPreferences() - item1->GetPreferences();
-		case 106: //Preferences desc
-			return item1->GetPreferences() - item2->GetPreferences();
-		case 7: //failed asc
-			return item1->GetFailedCount() - item2->GetFailedCount();
-		case 107: //failed desc
-			return item2->GetFailedCount() - item1->GetFailedCount();
-		case 8: //staticservers
-			return item2->IsStaticMember() - item1->IsStaticMember();
-		case 108: //staticservers-
-			return item1->IsStaticMember() - item2->IsStaticMember();
+		// Sort by version
+		case COLUMN_SERVER_VERSION: return mode * FuzzyStrCmp(server1->GetVersion(), server2->GetVersion());
+
 		default:
-			return 0; 
+			return 0;
 	}
 }
-
-bool CServerListCtrl::StaticServerFileAppend(CServer *server)
-{
-	try {
-		// Remove any entry before writing to avoid duplicates
-		StaticServerFileRemove(server);
-		FILE* staticservers = fopen(theApp.glob_prefs->GetAppDir() + wxString("staticservers.dat"), "a");
-		if (staticservers==NULL) {
-			theApp.amuledlg->AddLogLine( false, CString(_("Failed to open staticservers.dat")));
-			return false;
-		}
-		if (fprintf(staticservers,
-		"%s:%i,%i,%s\n",
-		server->GetAddress(),
-		server->GetPort(), 
-		server->GetPreferences(),
-		server->GetListName()) != EOF) {
-			theApp.amuledlg->AddLogLine(false, CString(wxT("'%s:%i,%s' %s")), server->GetAddress(), server->GetPort(), server->GetListName(), CString(_("Added to static server list")).GetData());
-			server->SetIsStaticMember(true);
-			theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(server);
-		}
-		fclose(staticservers);
-	}
-	catch (...)
-	{
-		return false;
-	}
-	return true;
-}
-
-bool CServerListCtrl::StaticServerFileRemove(CServer *server)
-{
-	try {
-		if (!server->IsStaticMember()) {
-			return true;
-		}
-		wxString strLine;
-		wxString strTest;
-		char buffer[1024];
-		int lenBuf = 1024;
-		int pos;
-		wxString StaticFilePath = theApp.glob_prefs->GetAppDir() + wxString("staticservers.dat");
-		wxString StaticTempPath = theApp.glob_prefs->GetAppDir() + wxString("statictemp.dat");
-		FILE* staticservers = fopen(StaticFilePath , "r");
-		FILE* statictemp = fopen(StaticTempPath , "w");
-		if ((staticservers == NULL) || (statictemp == NULL)) {
-			theApp.amuledlg->AddLogLine( false, CString(_("Failed to open staticservers.dat")));
-			return false;
-		}
-		while (!feof(staticservers)) {
-			if (fgets(buffer, lenBuf, staticservers) == 0) {
-				break;
-			}
-			strLine = buffer;
-			// ignore comments or invalid lines
-			if (strLine.GetChar(0) == '#' || strLine.GetChar(0) == '/') {
-				continue;
-			}
-			if (strLine.Length() < 5) {
-				continue;
-			}
-			// Only interested in "host:port"
-			pos = strLine.Find(",");
-			if (pos == -1) {
-				continue;
-			}
-			strLine = strLine.Left(pos);
-			// Get host and port from given server
-			strTest.Printf("%s:%i", server->GetAddress(), server->GetPort());
-			// Compare, if not the same server write original line to temp file
-			if (strLine.Cmp(strTest) != 0) {
-				fprintf(statictemp, "%s", buffer);
-			}
-		}
-		fclose(staticservers);
-		fclose(statictemp);
-		// All ok, remove the existing file and replace with the new one
-		wxRemoveFile( StaticFilePath );
-		wxRenameFile( StaticTempPath, StaticFilePath );
-	}
-	catch (...) {
-		return false;
-	}
-	return true;
-}
-
-void CServerListCtrl::ShowFilesCount()
-{
-	wxString fmtstr = wxString::Format(_("Servers (%i)"), GetItemCount());
-	wxStaticCast(FindWindowByName(wxT("serverListLabel")),wxStaticText)->SetLabel(fmtstr);
-}
+// File_checked_for_headers

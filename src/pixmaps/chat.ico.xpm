@@ -1,5 +1,5 @@
 /* XPM */
-static char * chat_ico_xpm[] = {
+static const char * chat_ico_xpm[] = {
 "16 16 59 1",
 " 	c None",
 ".	c #6B5600",

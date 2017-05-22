@@ -1,39 +1,38 @@
-// This file is part of the aMule project.
 //
-// Copyright (c) 2003,
+// This file is part of the aMule Project.
 //
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either
-// version 2 of the License, or (at your option) any later version.
-// 
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+//
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifdef __WXMAC__
-	#include <wx/wx.h>
-#endif
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/intl.h>		// Needed for _
-#include <wx/settings.h>
 
 #include "CommentDialog.h"	// Interface declarations
+#include "GuiEvents.h"
 #include "KnownFile.h"		// Needed for CKnownFile
-#include "CString.h"	// Needed for CString
 #include "muuli_wdr.h"		// Needed for commentDlg
-
-// CommentDialog dialog 
+// CommentDialog dialog
 
 //IMPLEMENT_DYNAMIC(CCommentDialog, CDialog)
-CCommentDialog::CCommentDialog(wxWindow* parent,CKnownFile* file) 
-: wxDialog(parent,CCommentDialog::IDD,_("File Comments"),
+CCommentDialog::CCommentDialog(wxWindow* parent,CKnownFile* file)
+: wxDialog(parent,-1,_("File Comments"),
 wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 {
 	m_file = file;
@@ -41,7 +40,7 @@ wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 	content->SetSizeHints(this);
 	content->Show(this,TRUE);
 	Center();
-	ratebox=((wxChoice*)FindWindowById(IDC_RATELIST));
+	ratebox = CastChild( IDC_RATELIST, wxChoice );
 	OnInitDialog();
 }
 
@@ -56,29 +55,28 @@ BEGIN_EVENT_TABLE(CCommentDialog,wxDialog)
 	EVT_BUTTON(IDCCANCEL, CCommentDialog::OnBnClickedCancel)
 END_EVENT_TABLE()
 
-void CCommentDialog::OnBnClickedApply(wxEvent& evt)
+void CCommentDialog::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString SValue;
-	SValue=((wxTextCtrl*)FindWindowById(IDC_CMT_TEXT))->GetValue();
-	m_file->SetFileComment(CString(SValue));
-	m_file->SetFileRate((int8)ratebox->GetSelection());
+	wxString comment = CastChild( IDC_CMT_TEXT, wxTextCtrl )->GetValue();
+	CoreNotify_KnownFile_Comment_Set(m_file, comment, (int8)ratebox->GetSelection());
 	EndModal(0);
 }
 
-void CCommentDialog::OnBnClickedClear(wxEvent& evt)
+void CCommentDialog::OnBnClickedClear(wxCommandEvent& WXUNUSED(evt))
 {
-	((wxTextCtrl*)FindWindowById(IDC_CMT_TEXT))->SetValue("");
-} 
+	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetValue(wxEmptyString);
+}
 
-void CCommentDialog::OnBnClickedCancel(wxEvent& evt)
+void CCommentDialog::OnBnClickedCancel(wxCommandEvent& WXUNUSED(evt))
 {
 	EndModal(0);
-} 
+}
 
 bool CCommentDialog::OnInitDialog()
 {
-	((wxTextCtrl*)FindWindowById(IDC_CMT_TEXT))->SetValue(m_file->GetFileComment());
-	((wxTextCtrl*)FindWindowById(IDC_CMT_TEXT))->SetMaxLength(50);
-	ratebox->SetSelection(m_file->GetFileRate());
+	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetValue(m_file->GetFileComment());
+	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetMaxLength(MAXFILECOMMENTLEN);
+	ratebox->SetSelection(m_file->GetFileRating());
 	return TRUE;
 }
+// File_checked_for_headers

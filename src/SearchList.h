@@ -1,149 +1,238 @@
-//this file is part of aMule
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 #ifndef SEARCHLIST_H
 #define SEARCHLIST_H
 
-#include "types.h"		// Needed for uint8, uint16 and uint32
-#include "KnownFile.h"		// Needed for CAbstractFile
-#include "mfc.h"		// Needed for CMap
-#include "CMemFile.h"		// Needed for CMemFile
-
-class CSafeMemFile;
-
-class CSearchFile : public CAbstractFile {
-	friend class CPartFile;
-public:
-	//CSearchFile() {};
-	CSearchFile(CMemFile* in_data, uint32 nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, LPCTSTR pszDirectory = NULL);
-	CSearchFile(uint32 nSearchID, const uchar* pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int iFileType, int iAvailability);
-	CSearchFile(CSearchFile* copyfrom);
-	//CSearchFile(CFile* in_data, uint32 nSearchID);
-	~CSearchFile();
-
-	uint32	GetIntTagValue(uint8 tagname);
-	char*	GetStrTagValue(uint8 tagname);
-	uint32	AddSources(uint32 count);
-	uint32	GetSourceCount();
-	uint32	GetSearchID() {return m_nSearchID;}
-
-	uint32	GetClientID() const			{ return m_nClientID; }
-	void		SetClientID(uint32 nClientID)	{ m_nClientID = nClientID; }
-	uint16	GetClientPort() const			{ return m_nClientPort; }
-	void		SetClientPort(uint16 nPort)		{ m_nClientPort = nPort; }
-	uint32	GetClientServerIP() const		{ return m_nClientServerIP; }
-	void		SetClientServerIP(uint32 uIP)   	{ m_nClientServerIP = uIP; }
-	uint16	GetClientServerPort() const		{ return m_nClientServerPort; }
-	void		SetClientServerPort(uint16 nPort) { m_nClientServerPort = nPort; }
-	int		GetClientsCount() const		{ return ((GetClientID() && GetClientPort()) ? 1 : 0) + m_aClients.GetSize(); }
-	
-	CSearchFile* GetListParent() const		{ return m_list_parent; }
-	
-	struct SClient {
-		SClient() {
-			m_nIP = m_nPort = m_nServerIP = m_nServerPort = 0;
-		}
-		SClient(uint32 nIP, unsigned int nPort, uint32 nServerIP, unsigned int nServerPort) {
-			m_nIP = nIP;
-			m_nPort = nPort;
-			m_nServerIP = nServerIP;
-			m_nServerPort = nServerPort;
-		}
-		uint32 m_nIP;
-		uint32 m_nServerIP;
-		uint16 m_nPort;
-		uint16 m_nServerPort;
-	};
-	void AddClient(SClient* client) { m_aClients.Add(client); }
-	const CArray<SClient*,SClient*>& GetClients() { return m_aClients; }
-
-	struct SServer {
-		SServer() {
-			m_nIP = m_nPort = 0;
-			m_uAvail = 0;
-		}
-		SServer(uint32 nIP, unsigned int nPort) {
-			m_nIP = nIP;
-			m_nPort = nPort;
-			m_uAvail = 0;
-		}
-		uint32 m_nIP;
-		uint16 m_nPort;
-		unsigned int m_uAvail;
-	};
-	void AddServer(SServer* server) { m_aServers.Add(server); }
-	const CArray<SServer*,SServer*>& GetServers() const { return m_aServers; }
-	SServer* GetServer(int iServer) { return m_aServers[iServer]; }
+#include "Timer.h"				// Needed for CTimer
+#include "ObservableQueue.h"	// Needed for CQueueObserver
+#include "SearchFile.h"			// Needed for CSearchFile
+#include <memory>		// Do_not_auto_remove (lionel's Mac, 10.3)
 
 
-private:
-	uint8	clientip[4];
-	uint16	clientport;
-	uint32	m_nSearchID;
-	CArray<CTag*,CTag*> taglist;
+class CMemFile;
+class CMD4Hash;
+class CPacket;
+class CServer;
+class CSearchFile;
 
-	uint32	m_nClientID;
-	uint16	m_nClientPort;
-	uint32	m_nClientServerIP;
-	uint16	m_nClientServerPort;
-	CArray<SClient*,SClient*> m_aClients;
-	CArray<SServer*,SServer*> m_aServers;
-	bool		 m_list_bExpanded;
-	uint16	 m_list_childcount;
-	CSearchFile* m_list_parent;
-	bool		 m_bPreviewPossible;
-	//CArray<CxImage*,CxImage*> m_listImages;
-	LPSTR m_pszDirectory;
+namespace Kademlia {
+	class CUInt128;
+}
 
+
+enum SearchType {
+	LocalSearch,
+	GlobalSearch,
+	KadSearch
 };
 
-class CSearchList
+
+typedef std::vector<CSearchFile*> CSearchResultList;
+
+
+class CSearchList : public wxEvtHandler
 {
-friend class CSearchListCtrl;
 public:
-	CSearchList();
-	~CSearchList();
-	void	Clear();
-	void	NewSearch(CString resTypes, uint16 nSearchID);
-	uint16	ProcessSearchanswer(char* packet, uint32 size, CUpDownClient* Sender = NULL);
-	uint16	ProcessSearchanswer(char* packet, uint32 size, uint32 nServerIP, uint16 nServerPort);
-	uint16	ProcessSearchanswer(char* in_packet, uint32 size, CUpDownClient* Sender, bool* pbMoreResultsAvailable, LPCTSTR pszDirectory);
-    	uint16	ProcessUDPSearchanswer(CSafeMemFile* packet, uint32 nServerIP, uint16 nServerPort);	
-   // uint16	ProcessUDPSearchanswer(char* packet, uint32 size);
+	//! Structure used to pass search-parameters.
+	struct CSearchParams
+	{
+		/** Prevents accidential use of uninitialized variables. */
+		CSearchParams() { minSize = maxSize = availability = 0; }
 
-	uint16	GetResultCount();
-	uint16	GetResultCount(uint32 nSearchID);
-	void	RemoveResults(  uint32 nSearchID );
-	void	RemoveResults( CSearchFile* todel );
-	void	ShowResults(uint32 nSearchID);
-	CString GetWebList(CString linePattern,int sortby,bool asc) const;
-	void	AddFileToDownloadByHash(const uchar* hash)		{AddFileToDownloadByHash(hash,0);}
-	void	AddFileToDownloadByHash(const uchar* hash, uint8 cat);
-	uint16	GetFoundFiles(uint32 searchID);
+		//! The actual string to search for.
+		wxString searchString;
+		//! The keyword selected for Kad search
+		wxString strKeyword;
+		//! The type of files to search for (may be empty), one of ED2KFTSTR_*
+		wxString typeText;
+		//! The filename extension. May be empty.
+		wxString extension;
+		//! The smallest filesize in bytes to accept, zero for any.
+		uint64_t minSize;
+		//! The largest filesize in bytes to accept, zero for any.
+		uint64_t maxSize;
+		//! The minumum available (source-count), zero for any.
+		uint32_t availability;
+	};
+
+	/** Constructor. */
+	CSearchList();
+
+	/** Frees any remaining search-results. */
+	~CSearchList();
+
+	/**
+	 * Starts a new search.
+	 *
+	 * @param searchID The ID of the search, which may be modified.
+	 * @param type The type of search, see SearchType.
+	 * @param params The search parameters, see CSearchParams.
+	 * @return An empty string on success, otherwise an error-message.
+	 */
+	wxString StartNewSearch(uint32* searchID, SearchType type, CSearchParams& params);
+
+	/** Stops the current search (global or Kad), if any is in progress. */
+	void StopSearch(bool globalOnly = false);
+
+	/** Returns the completion percentage of the current search. */
+	uint32 GetSearchProgress() const;
+
+	/** This function is called once the local (ed2k) search has ended. */
+	void	LocalSearchEnd();
+
+
+	/**
+	 * Returns the list of results for the specified search.
+	 *
+	 * If the search is not valid, an empty list is returned.
+	 */
+	const	CSearchResultList& GetSearchResults(long searchID) const;
+
+	/** Removes all results for the specified search. */
+	void	RemoveResults(long searchID);
+
+
+	/** Finds the search-result (by hash) and downloads it in the given category. */
+	void	AddFileToDownloadByHash(const CMD4Hash& hash, uint8 category = 0);
+
+
+	/**
+	 * Processes a list of shared files from a client.
+	 *
+	 * @param packet The raw packet received from the client.
+	 * @param size the length of the packet.
+	 * @param sender The sender of the packet.
+	 * @param moreResultsAvailable Set to a value specifying if more results are available.
+	 * @param directory The directory containing the shared files.
+	 */
+	void	ProcessSharedFileList(const byte* packet, uint32 size, CUpDownClient* sender, bool* moreResultsAvailable, const wxString& directory);
+
+	/**
+	 * Processes a search-result sent via TCP from the local server. All results are added.
+	 *
+	 * @param packet The packet containing one or more search-results.
+	 * @param size the length of the packet.
+	 * @param optUTF8 Specifies if the server supports UTF8.
+	 * @param serverIP The IP of the server sending the results.
+	 * @param serverPort The Port of the server sending the results.
+	 */
+	void	ProcessSearchAnswer(const uint8_t* packet, uint32_t size, bool optUTF8, uint32_t serverIP, uint16_t serverPort);
+
+	/**
+	 * Processes a search-result sent via UDP. Only one result is read from the packet.
+	 *
+	 * @param packet The packet containing one or more search-results.
+	 * @param optUTF8 Specifies if the server supports UTF8.
+	 * @param serverIP The IP of the server sending the results.
+	 * @param serverPort The Port of the server sending the results.
+	 */
+	void	ProcessUDPSearchAnswer(const CMemFile& packet, bool optUTF8, uint32 serverIP, uint16 serverPort);
+
+
+	/**
+	 * Adds a result in the form of a kad search-keyword to the specified result-list.
+	 *
+	 * @param searchID The search to which this result belongs.
+	 * @param fileID The hash of the result-file.
+	 * @param name The filename of the result.
+	 * @param size The filesize of the result.
+	 * @param type The filetype of the result (TODO: Not used?)
+	 * @param kadPublishInfo The kademlia publish information of the result.
+	 * @param taglist List of additional tags associated with the search-result.
+	 */
+	void	KademliaSearchKeyword(uint32_t searchID, const Kademlia::CUInt128 *fileID, const wxString& name, uint64_t size, const wxString& type, uint32_t kadPublishInfo, const TagPtrList& taglist);
+
+	/** Update a certain search result in all lists */
+	void UpdateSearchFileByHash(const CMD4Hash& hash);
+
+	/** Mark current KAD search as finished */
+	void SetKadSearchFinished() { m_KadSearchFinished = true; }
 
 private:
-	bool AddToList(CSearchFile* toadd, bool bClientResponse = false);
-	CTypedPtrList<CPtrList, CSearchFile*> list;
-	CMap<uint32, uint32, uint16, uint16> foundFilesCount;
+	/** Event-handler for global searches. */
+	void OnGlobalSearchTimer(CTimerEvent& evt);
 
-	CString myHashList;
-	CString resultType;
-	uint32	m_nCurrentSearch;
+	/**
+	 * Adds the specified file to the current search's results.
+	 *
+	 * @param toadd The result to add.
+	 * @param clientResponse Is the result sent by a client (shared-files list).
+	 * @return True if the results were added, false otherwise.
+	 *
+	 * Note that this function takes ownership of the CSearchFile object,
+	 * regardless of whenever or not it was actually added to the results list.
+	 */
+	bool AddToList(CSearchFile* toadd, bool clientResponse = false);
+
+	//! This auto-pointer is used to safely prevent leaks.
+	typedef std::auto_ptr<CMemFile> CMemFilePtr;
+
+	/** Create a basic search-packet for the given search-type. */
+	CMemFilePtr CreateSearchData(CSearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit);
+
+
+	//! Timer used for global search intervals.
+	CTimer	m_searchTimer;
+
+	//! The current search-type, regarding the last/current search.
+	SearchType	m_searchType;
+
+	//! Specifies if a search is being performed.
+	bool		m_searchInProgress;
+
+	//! The ID of the current search.
+	long		m_currentSearch;
+
+	//! The current packet used for searches.
+	CPacket*	m_searchPacket;
+
+	//! Does the current search packet contain 64bit values?
+	bool		m_64bitSearchPacket;
+
+	//! If the current search is a KAD search this signals if it is finished.
+	bool		m_KadSearchFinished;
+
+	//! Queue of servers to ask when doing global searches.
+	//! TODO: Replace with 'cookie' system.
+	CQueueObserver<CServer*> m_serverQueue;
+
+	//! Shorthand for the map of results (key is a SearchID).
+	typedef std::map<long, CSearchResultList> ResultMap;
+
+	//! Map of all search-results added.
+	ResultMap	m_results;
+
+	//! Contains the results type desired in the current search.
+	//! If not empty, results of different types are filtered.
+	wxString	m_resultType;
+
+
+	DECLARE_EVENT_TABLE()
 };
+
 
 #endif // SEARCHLIST_H
+// File_checked_for_headers

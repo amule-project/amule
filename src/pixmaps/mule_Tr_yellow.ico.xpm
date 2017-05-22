@@ -1,5 +1,5 @@
 /* XPM */
-static char * mule_Tr_yellow_ico[] = {
+static const char * mule_Tr_yellow_ico[] = {
 "16 16 51 1",
 " 	c None",
 ".	c #624E09",

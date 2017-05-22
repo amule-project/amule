@@ -1,202 +1,410 @@
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 #ifndef DOWNLOADQUEUE_H
 #define DOWNLOADQUEUE_H
 
-#include "types.h"		// Needed for uint8, uint16, uint32 and uint64
-#include "CString.h"		// Needed for CString
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
+#include "MD4Hash.h"		// Needed for CMD4Hash
+#include "ObservableQueue.h"	// Needed for CObservableQueue
+#include "GetTickCount.h"	// Needed fot GetTickCount
+
+
+#include <deque>
+
 
 class CSharedFileList;
-class CPreferences;
 class CSearchFile;
 class CPartFile;
 class CUpDownClient;
 class CServer;
-class CSafeMemFile;
+class CMemFile;
+class CKnownFile;
+class CED2KLink;
+class CED2KFileLink;
+class CED2KServerLink;
+class CED2KServerListLink;
+class CPath;
 
-#define TM_SOURCESDNSDONE 17869
+namespace Kademlia {
+	class CUInt128;
+}
 
-struct Hostname_Entry {
-		unsigned char fileid[16];
-		CString strHostname;
-		uint16 port;
-};
-
-
-/*
-// SLUGFILLER: hostnameSources
-#define WM_HOSTNAMERESOLVED		(WM_USER + 0x101)
-
-class CSourceHostnameResolveWnd : public CWnd
+/**
+ * The download queue houses all active downloads.
+ *
+ *
+ * This class should be thread-safe.
+ */
+class CDownloadQueue : public CObservableQueue<CPartFile*>
 {
-// Construction
 public:
-	CSourceHostnameResolveWnd();
-	virtual ~CSourceHostnameResolveWnd();
+	/**
+	 * Constructor.
+	 */
+	CDownloadQueue();
 
-	void AddToResolve(const unsigned char* fileid, LPCTSTR pszHostname, uint16 port);
-
-protected:
-	//DECLARE_MESSAGE_MAP()
-	 DECLARE_EVENT_TABLE()
-	afx_msg LRESULT OnHostnameResolved(WPARAM wParam, LPARAM lParam);
-
-private:
-	struct Hostname_Entry {
-		unsigned char fileid[16];
-		CString strHostname;
-		uint16 port;
-	};
-	CTypedPtrList<CPtrList, Hostname_Entry*> m_toresolve;
-	char m_aucHostnameBuffer[MAXGETHOSTSTRUCT];
-};
-// SLUGFILLER: hostnameSources
-*/
-
-class CDownloadQueue
-{
-	friend class CAddFileThread;
-	friend class CServerSocket;
-public:
-	CDownloadQueue(CPreferences* in_prefs, CSharedFileList* in_sharedfilelist);
+	/**
+	 * Destructor.
+	 */
 	~CDownloadQueue();
+
+	/** Loads met-files from the specified directory. */
+	void	LoadMetFiles(const CPath& path);
+
+	/**
+	 * Main worker function.
+	 */
 	void	Process();
-	void	Init();
-	void	AddSearchToDownload(CSearchFile* toadd,uint8 paused=2);
-	void	AddSearchToDownload(CString link,uint8 paused=2);
-	void	AddFileLinkToDownload(class CED2KFileLink* pLink);
-	bool	IsFileExisting(unsigned char* fileid);
-	bool	IsPartFile(void* totest);
-	CPartFile*	GetFileByID(unsigned char* filehash);
-	CPartFile* GetFileByIndex(int idx);
-	void    CheckAndAddSource(CPartFile* sender,CUpDownClient* source);
-	void    CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* source);
-	// bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true);
-	bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true, bool bDoStatsUpdate = true); // delete later ->{ return RemoveSource(toremove,NULL,updatewindow);}
-	void	DeleteAll();
-	void	RemoveFile(CPartFile* toremove);
-	float	GetKBps()								{return datarate/1024.0;}
-	void	SortByPriority();
-	void	CheckDiskspace(bool bNotEnoughSpaceLeft = false);
-	void	StopUDPRequests();
-	CServer*	cur_udpserver;
-	void	GetDownloadStats(int results[]);
-	void	AddPartFilesToShare();
-	void	AddDownload(CPartFile* newfile, bool paused);
-	CUpDownClient* 	GetDownloadClientByIP(uint32 dwIP);
-	void	UpdateDisplayedInfo(bool force=false);
-	void	StartNextFile();
-	void	AddDownDataOverheadSourceExchange(uint32 data)	{ m_nDownDataRateMSOverhead += data;
-															  m_nDownDataOverheadSourceExchange += data;
-															  m_nDownDataOverheadSourceExchangePackets++;}
-	void	AddDownDataOverheadFileRequest(uint32 data)		{ m_nDownDataRateMSOverhead += data;
-															  m_nDownDataOverheadFileRequest += data;
-															  m_nDownDataOverheadFileRequestPackets++;}
-	void	AddDownDataOverheadServer(uint32 data)			{ m_nDownDataRateMSOverhead += data;
-															  m_nDownDataOverheadServer += data;
-															  m_nDownDataOverheadServerPackets++;}
-	void	AddDownDataOverheadOther(uint32 data)			{ m_nDownDataRateMSOverhead += data;
-															  m_nDownDataOverheadOther += data;
-															  m_nDownDataOverheadOtherPackets++;}
-	void	AddLinksFromFile();
-	
-	uint32	GetDownDatarateOverhead()			{return m_nDownDatarateOverhead;}
-	uint64	GetDownDataOverheadSourceExchange()		{return m_nDownDataOverheadSourceExchange;}
-	uint64	GetDownDataOverheadFileRequest()		{return m_nDownDataOverheadFileRequest;}
-	uint64	GetDownDataOverheadServer()			{return m_nDownDataOverheadServer;}
-	uint64	GetDownDataOverheadOther()			{return m_nDownDataOverheadOther;}
-	uint64	GetDownDataOverheadSourceExchangePackets()	{return m_nDownDataOverheadSourceExchangePackets;}
-	uint64	GetDownDataOverheadFileRequestPackets()		{return m_nDownDataOverheadFileRequestPackets;}
-	uint64	GetDownDataOverheadServerPackets()		{return m_nDownDataOverheadServerPackets;}
-	uint64	GetDownDataOverheadOtherPackets()		{return m_nDownDataOverheadOtherPackets;}
-	void	CompDownDatarateOverhead();
-	int	GetFileCount()					{return filelist.GetCount();}
-	void	ResetCatParts(int cat);
-	void	SavePartFiles(bool del = false);	// InterCeptor
-	void	SetCatPrio(int cat, uint8 newprio);
-	void	SetCatStatus(int cat, int newstatus);
+
+
+	/**
+	 * Returns a pointer to the file with the specified hash, or NULL.
+	 *
+	 * @param filehash The hash to search for.
+	 * @return The corresponding file or NULL.
+	 */
+	CPartFile* GetFileByID(const CMD4Hash& filehash) const;
+
+	/**
+	 * Returns the file at the specified position in the file-list, or NULL if invalid.
+	 *
+	 * @param A valid position in the file-list.
+	 * @return A valid pointer or NULL if the index was invalid.
+	 */
+	CPartFile* GetFileByIndex(unsigned int idx) const;
+
+
+	/**
+	 * Returns true if the file is currently being shared or downloaded
+	 */
+	bool	IsFileExisting(const CMD4Hash& fileid) const;
+
+	/**
+	 * Returns true if the specified file is on the download-queue.
+	 */
+	bool	IsPartFile(const CKnownFile* file) const;
+
+	/**
+	 * Updates the file's download active time
+	 */
+	void OnConnectionState(bool bConnected);
+
+	/**
+	 * Starts a new download based on the specified search-result.
+	 *
+	 * @param toadd The search-result to add.
+	 * @param category The category to assign to the new download.
+	 *
+	 * The download will only be started if no identical files are either
+	 * being downloaded or shared currently.
+	 */
+	void	AddSearchToDownload(CSearchFile* toadd, uint8 category);
+
+
+	/**
+	 * Adds an existing partfile to the queue.
+	 *
+	 * @param newfile The file to add.
+	 * @param paused If the file should be stopped when added.
+	 * @param category The category to assign to the file.
+	 */
+	void	AddDownload(CPartFile* newfile, bool paused, uint8 category);
+
+
+	/**
+	 * Removes the specified file from the queue.
+	 *
+	 * @param toremove A pointer to the file object to be removed.
+	 * @param keepAsCompleted If true add the removed file to the list of completed files.
+	 */
+	void	RemoveFile(CPartFile* toremove, bool keepAsCompleted = false);
+
+
+	/**
+	 * Saves the source-seeds of every file on the queue.
+	 */
+	void	SaveSourceSeeds();
+
+	/**
+	 * Loads the source-seeds of every file on the queue.
+	 */
+	void	LoadSourceSeeds();
+
+
+	/**
+	 * Adds a potiential new client to the specified file.
+	 *
+	 * @param sender The owner of the new source.
+	 * @param source The client in question, might be deleted!
+	 *
+	 * This function will check the new client against the already existing
+	 * clients. The source will then be queued as is appropriate, or deleted
+	 * if it is duplicate of an existing client.
+	 */
+	void    CheckAndAddSource(CPartFile* sender, CUpDownClient* source);
+
+	/**
+	 * This function adds already known source to the specified file.
+	 *
+	 * @param sender The owner fo the new source.
+	 * @param source The client in question.
+	 *
+	 * This function acts like CheckAndAddSource, with the exception that no
+	 * checks are made to see if the client is a duplicate. It is assumed that
+	 * it is in fact a valid client.
+	 */
+	void    CheckAndAddKnownSource(CPartFile* sender, CUpDownClient* source);
+
+
+	/**
+	 * Removes the specified client completly.
+	 *
+	 * @param toremove The client to be removed.
+	 * @param updatewindow NOT USED!
+	 * @param bDoStatsUdpate Specifies if the affected files should update their statistics.
+	 * @return True if the sources was found and removed.
+	 *
+	 * This function will remove the specified source from both normal source
+	 * lists, A4AF lists and the downloadqueue-widget. The requestfile of the
+	 * source is also reset.
+	 */
+	bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true, bool bDoStatsUpdate = true);
+
+
+	/**
+	 * Finds the queued client by IP and UDP-port, by looking at file-sources.
+	 *
+	 * @param dwIP The IP-address of the client.
+	 * @param nUDPPort The UDP-port of the client.
+	 * @return The matching client or NULL if none was found.
+	 */
+	CUpDownClient* GetDownloadClientByIP_UDP(uint32 dwIP, uint16 nUDPPort) const;
+
+
+	/**
+	 * Queues the specified file for source-requestion from the connected server.
+	 */
 	void	SendLocalSrcRequest(CPartFile* sender);
+
+	/**
+	 * Removes the specified server from the request-queue.
+	 */
 	void	RemoveLocalServerRequest(CPartFile* pFile);
+
+	/**
+	 * Resets all queued server-requests.
+	 */
 	void	ResetLocalServerRequests();
-	uint16	GetDownloadingFileCount();
-	uint16	GetPausedFileCount();
-	// Kry - HostNameSources
-	void AddToResolve(unsigned char* fileid, CString pszHostname, uint16 port);
-	bool OnHostnameResolved(struct sockaddr_in* inaddr);
-	CTypedPtrList<CPtrList, Hostname_Entry*> m_toresolve;
-	
-protected:
-	bool	SendNextUDPPacket();
-	void	ProcessLocalRequests();
-	int	GetMaxFilesPerUDPServerPacket() const;
-	bool	SendGlobGetSourcesUDPPacket(CSafeMemFile& data);
+
+
+	/**
+	 * Starts the next paused file on the queue, going after priority.
+	 * Also checks for categories if enabled on preferences.
+	 */
+	void	StartNextFile(CPartFile* oldfile);
+
+
+	/**
+	 * Resets the category of all files with the specified category.
+	 */
+	void	ResetCatParts(uint8 cat);
+
+	/**
+	 * Sets the priority of all files with the specified category.
+	 */
+	void	SetCatPrio(uint8 cat, uint8 newprio);
+
+	/**
+	 * Sets the status of all files with the specified category.
+	 */
+	void	SetCatStatus(uint8 cat, int newstatus);
+
+	/**
+	 * Returns the current number of queued files.
+	 */
+	uint16	GetFileCount() const;
+
+	/**
+	 * Makes a copy of the file list.
+	 */
+	void	CopyFileList(std::vector<CPartFile*>& out_list, bool includeCompleted = false) const;
+
+	/**
+	 * Returns the current number of downloading files.
+	 */
+	uint16	GetDownloadingFileCount() const;
+
+	/**
+	 * Returns the current number of paused files.
+	 */
+	uint16	GetPausedFileCount() const;
+
+
+	/**
+	 * This function is called when a DNS lookup is finished.
+	 */
+	void	OnHostnameResolved(uint32 ip);
+
+
+	/**
+	 * Adds an ed2k or magnet link to download queue.
+	 */
+	bool	AddLink( const wxString& link, uint8 category = 0 );
+
+	bool	AddED2KLink( const wxString& link, uint8 category = 0 );
+	bool	AddED2KLink( const CED2KLink* link, uint8 category = 0 );
+	bool	AddED2KLink( const CED2KFileLink* link, uint8 category = 0 );
+	bool	AddED2KLink( const CED2KServerLink* link );
+	bool	AddED2KLink( const CED2KServerListLink* link );
+
+
+	/**
+	 * Returns the current server which is beening queried by UDP packets.
+	 */
+	CServer* GetUDPServer() const;
+
+	/**
+	 * Set the server to query through UDP packest.
+	 */
+	void	SetUDPServer( CServer* server );
+
+
+	/**
+	 * Stop the source-requests from non-connected servers.
+	 */
+	void	StopUDPRequests();
+
+	/* Kad Stuff */
+
+	/**
+	 * Add a Kad source to a download
+	 */
+	 void	KademliaSearchFile(uint32_t searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pkadID, uint8_t type, uint32_t ip, uint16_t tcp, uint16_t udp, uint32_t buddyip, uint16_t buddyport, uint8_t byCryptOptions);
+
+	CPartFile* GetFileByKadFileSearchID(uint32 id) const;
+
+	bool	DoKademliaFileRequest();
+
+	void	SetLastKademliaFileRequest()	{lastkademliafilerequest = ::GetTickCount();}
+
+	uint32	GetRareFileThreshold() const { return m_rareFileThreshold; }
+	uint32	GetCommonFileThreshold() const { return m_commonFileThreshold; }
+
+	/**
+	 * Remove a file from the list of completed downloads.
+	 */
+	void	ClearCompleted(const ListOfUInts32 & ecids);
 
 private:
-	bool	CompareParts(POSITION pos1, POSITION pos2);
-	void	SwapParts(POSITION pos1, POSITION pos2);
-	void	HeapSort(uint16 first, uint16 last);
-	CTypedPtrList<CPtrList, CPartFile*> filelist;
-	CTypedPtrList<CPtrList, CPartFile*> m_localServerReqQueue;
-	CSharedFileList* sharedfilelist;
-	CPreferences*	 app_prefs;
-	uint16	filesrdy;
-	uint32	datarate;
+	/**
+	 * This function initializes new observers with the current contents of the queue.
+	 */
+	virtual void ObserverAdded( ObserverType* o );
 
-	CPartFile*	lastfile;
-	uint32		lastcheckdiskspacetime; // (Creteil) checkDiskspace
-	uint32		lastudpsearchtime;
-	uint32		lastudpstattime;
+
+	/**
+	 * Helper-function, sorts the filelist so that high-priority files are first.
+	 */
+	void	DoSortByPriority();
+
+	/** Checks that there is enough free spaces for temp-files at that specified path. */
+	void	CheckDiskspace(const CPath& path);
+
+	/**
+	 * Stops performing UDP requests.
+	 */
+	void	DoStopUDPRequests();
+
+
+	void	ProcessLocalRequests();
+
+	bool	SendNextUDPPacket();
+	int		GetMaxFilesPerUDPServerPacket() const;
+	bool	SendGlobGetSourcesUDPPacket(CMemFile& data);
+
+	void	AddToResolve(const CMD4Hash& fileid, const wxString& pszHostname, uint16 port, const wxString& hash, uint8 cryptoptions);
+
+	//! The mutex assosiated with this class, mutable to allow for const functions.
+	mutable wxMutex m_mutex;
+
+
+	uint32		m_datarate;
+	uint32		m_lastDiskCheck;
+	uint32		m_lastudpsearchtime;
+	uint32		m_lastsorttime;
+	uint32		m_lastudpstattime;
 	uint32		m_nLastED2KLinkCheck;
 	uint8		m_cRequestsSentToServer;
 	uint32		m_dwNextTCPSrcReq;
-	int		m_iSearchedServers;
-	uint8		udcounter;
+	uint8		m_udcounter;
+	CServer*	m_udpserver;
 
-	uint64		m_datarateMS;
-	uint32		m_nDownDatarateOverhead;
-	uint32		m_nDownDataRateMSOverhead;
-	uint64		m_nDownDataOverheadSourceExchange;
-	uint64		m_nDownDataOverheadSourceExchangePackets;
-	uint64		m_nDownDataOverheadFileRequest;
-	uint64		m_nDownDataOverheadFileRequestPackets;
-	uint64		m_nDownDataOverheadServer;
-	uint64		m_nDownDataOverheadServerPackets;
-	uint64		m_nDownDataOverheadOther;
-	uint64		m_nDownDataOverheadOtherPackets;
-	CList<int,int>	m_AvarageDDRO_list;
 
-	// CList<TransferredData> avarage_dr_list;
-	// CList<TransferredData>  m_AvarageDDRO_list;
-	// uint32 sumavgDDRO;
+	/**
+	 * Structure used to store sources with dynamic hostnames.
+	 */
+	struct Hostname_Entry
+	{
+		//! The ID of the file the source provides.
+		CMD4Hash fileid;
+		//! The dynamic hostname.
+		wxString strHostname;
+		//! The user-port of the source.
+		uint16 port;
+		//! The hash of the source
+		wxString hash;
+		//! The cryptoptions for the source
+		uint8 cryptoptions;
+	};
 
-	DWORD m_lastRefreshedDLDisplay;
+	std::deque<Hostname_Entry>	m_toresolve;
 
-/* Razor 1a - Modif by MikaelB */
-public:
+	typedef std::deque<CPartFile*> FileQueue;
+	FileQueue m_filelist;
 
-	/* RemoveSourceFromPartFile function */
-	void  RemoveSourceFromPartFile(CPartFile* file, CUpDownClient* client, POSITION position);
+	typedef std::list<CPartFile*> FileList;
+	FileList		m_localServerReqQueue;
 
-	/* DisableAnyA4AFAuto function */
-	void  DisableAllA4AFAuto(void);
+	//! List of downloads completed and still on display
+	FileList		m_completedDownloads;
 
-/* End Modif */
+	//! Observer used to keep track of which servers have yet to be asked for sources
+	CQueueObserver<CServer*>	m_queueServers;
 
+	//! Observer used to keep track of which file to send UDP requests for
+	CQueueObserver<CPartFile*>	m_queueFiles;
+
+	/* Kad Stuff */
+	uint32		lastkademliafilerequest;
+
+	//! Threshold for rare files, dynamically based on the sources for each.
+	uint32		m_rareFileThreshold;
+
+	//! Threshold for common files, dynamically based on the sources for each.
+	uint32		m_commonFileThreshold;
 };
 
 #endif // DOWNLOADQUEUE_H
+// File_checked_for_headers

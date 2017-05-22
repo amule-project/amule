@@ -1,350 +1,435 @@
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 #ifndef PARTFILE_H
 #define PARTFILE_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/thread.h>		// Needed for wxMutex
-#include <wx/dcmemory.h>	// Needed for wxMemoryDC
 
-#include "types.h"		// Needed for uint8
 #include "KnownFile.h"		// Needed for CKnownFile
-#include "CFile.h"		// Needed for CFile
-#include "GetTickCount.h"	// Needed for GetTickCount
+#include "FileAutoClose.h"	// Needed for CFileAutoClose
 
-#include "updownclient.h"  // temporarily needed for #define DOWNLOADRATE_FILTERED
-
-#define	PS_READY			0
-#define	PS_EMPTY			1
-#define PS_WAITINGFORHASH		2
-#define PS_HASHING			3
-#define PS_ERROR			4
-#define	PS_INSUFFICIENT			5
-#define	PS_UNKNOWN			6
-#define PS_PAUSED			7
-#define PS_COMPLETING			8
-#define PS_COMPLETE			9
-
-#define PR_VERYLOW			4 // I Had to change this because it didn't save negative number correctly.. Had to modify the sort function for this change..
-#define PR_LOW				0 //*
-#define PR_NORMAL			1 // Don't change this - needed for edonkey clients and server!
-#define	PR_HIGH				2 //*
-#define PR_VERYHIGH			3
-#define PR_AUTO				5
-#define PR_POWERSHARE                   6 //added for powershare (deltaHF)
-#define SRV_PR_LOW			2
-#define SRV_PR_NORMAL			0
-#define SRV_PR_HIGH			1
-
-//#define BUFFER_SIZE_LIMIT	500000 // Max bytes before forcing a flush
-#define BUFFER_TIME_LIMIT	5000   // Max milliseconds before forcing a flush
-
-#define	STATES_COUNT			13
+#include "OtherStructs.h"	// Needed for Requested_Block_Struct
+#include "DeadSourceList.h"	// Needed for CDeadSourceList
+#include "GapList.h"
 
 class CSearchFile;
-class CUpDownClient;
-class completingThread;
-class Requested_Block_Struct;
 class CMemFile;
-class Gap_Struct;
+class CFileDataIO;
+class CED2KFileLink;
 
-// Ok, eMule and aMule are building incompatible backup files because 
-// of the different name. aMule was using ".BAK" and eMule ".bak". 
+//#define BUFFER_SIZE_LIMIT	500000 // Max bytes before forcing a flush
+#define BUFFER_TIME_LIMIT	60000   // Max milliseconds before forcing a flush
+
+// Ok, eMule and aMule are building incompatible backup files because
+// of the different name. aMule was using ".BAK" and eMule ".bak".
 // This should fix it.
-#define   PARTMET_BAK_EXT _T(".bak")
+#define   PARTMET_BAK_EXT wxT(".bak")
 
-
-struct PartFileBufferedData
-{
-	BYTE *data;						// Barry - This is the data to be written
-	uint32 start;					// Barry - This is the start offset of the data
-	uint32 end;						// Barry - This is the end offset of the data
-	Requested_Block_Struct *block;	// Barry - This is the requested block that this data relates to
+enum EPartFileFormat {
+	PMT_UNKNOWN	= 0,
+	PMT_DEFAULTOLD,
+	PMT_SPLITTED,
+	PMT_NEWOLD,
+	PMT_SHAREAZA,
+	PMT_BADFORMAT
 };
+
+
+class SFileRating
+{
+public:
+	wxString UserName;
+	wxString FileName;
+	sint16   Rating;
+	wxString Comment;
+public:
+	SFileRating(const wxString &u, const wxString &f, sint16 r, const wxString &c);
+	SFileRating(const SFileRating &fr);
+	SFileRating(const CUpDownClient &client);
+	~SFileRating();
+};
+
+typedef std::list<SFileRating> FileRatingList;
+
+class SourcenameItem
+{
+public:
+	wxString	name;
+	int			count;
+public:
+	SourcenameItem(const wxString &n = EmptyString, int c = 0)
+	:
+	name(n), count(c) {}
+};
+
+typedef std::map<uint32,SourcenameItem> SourcenameItemMap;
 
 class CPartFile : public CKnownFile {
 public:
+	typedef std::list<Requested_Block_Struct*> CReqBlockPtrList;
+
 	CPartFile();
+#ifdef CLIENT_GUI
+	CPartFile(const CEC_PartFile_Tag *tag);
+#else
+	virtual void	SetFileName(const CPath& filename);
+#endif
 	CPartFile(CSearchFile* searchresult);  //used when downloading a new file
-	CPartFile(CString edonkeylink);
-	CPartFile(class CED2KFileLink* fileLink);
-	void InitializeFromLink(CED2KFileLink* fileLink);
+	CPartFile(const CED2KFileLink* fileLink);
 	virtual ~CPartFile();
 
-	void 	SetPartFileStatus(uint8 newstatus);
-	bool	CreateFromFile(char* directory,char* filename)	{return false;}// not supported in this class
-	bool	LoadFromFile(FILE* file)						{return false;}
-	bool	WriteToFile(FILE* file)							{return false;}
-	bool	IsPartFile()									{return !(status == PS_COMPLETE);}
-	uint32	Process(uint32 reducedownload);
-	uint8	LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsizeonly=false);
-	bool	SavePartFile(bool Initial=false);
+	virtual bool LoadFromFile(const CFileDataIO* WXUNUSED(file)) { return false; }
+	bool	WriteToFile(CFileDataIO* WXUNUSED(file))	{ return false; }
+
+	// virtual functions for CKnownFile and CPartFile:
+	bool	IsPartFile() const		{ return status != PS_COMPLETE; }	// true if not completed
+	bool	IsCompleted() const		{ return status == PS_COMPLETE; }	// true if completed
+	bool	IsCPartFile() const		{ return true; }					// true if it's a CPartFile
+
+	uint32	Process(uint32 reducedownload, uint8 m_icounter);
+	uint8	LoadPartFile(const CPath& in_directory, const CPath& filename, bool from_backup = false, bool getsizeonly = false);
+	bool	SavePartFile(bool Initial = false);
 	void	PartFileHashFinished(CKnownFile* result);
 	bool	HashSinglePart(uint16 partnumber); // true = ok , false = corrupted
-	uint64	GetRealFileSize();
-	
-	// TODO: check files atributes
-	//bool	IsNormalFile() const { return (m_dwFileAttributes & (FILE_ATTRIBUTE_COMPRESSED | FILE_ATTRIBUTE_SPARSE_FILE)) == 0; }
-	bool	IsNormalFile() const { return true; }
-	
-	void	AddGap(uint32 start, uint32 end);
-	void	FillGap(uint32 start, uint32 end);
-	void	DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat);
-	void    DrawShareStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool bFlat);
-	bool	IsComplete(uint32 start, uint32 end);
-	bool	IsPureGap(uint32 start, uint32 end);
-	bool	IsCorruptedPart(uint16 partnumber);
+
+	bool    CheckShowItemInGivenCat(int inCategory);
+
+	bool	IsComplete(uint64 start, uint64 end)	{ return m_gaplist.IsComplete(start, end); }
+	bool	IsComplete(uint16 part)			{ return m_gaplist.IsComplete(part); }
+
 	void	UpdateCompletedInfos();
 
-	bool	GetNextRequestedBlock(CUpDownClient* sender,Requested_Block_Struct** newblocks,uint16* count);
+	bool	GetNextRequestedBlock(CUpDownClient* sender, std::vector<Requested_Block_Struct*>& toadd, uint16& count);
 	void	WritePartStatus(CMemFile* file);
 	void	WriteCompleteSourcesCount(CMemFile* file);
-	bool 	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped);
-	void	AddSources(CMemFile* sources,uint32 serverip, uint16 serverport);
-	uint8	GetStatus(bool ignorepause = false);
-	void	NewSrcPartsInfo();	
-	char*	GetPartMetFileName()							{return m_partmetfilename;}
-	uint32	GetTransfered()								{return transfered;}
-	char*	GetFullName()								{return fullname;}
-	uint16	GetSourceCount();
-	uint16	GetSrcA4AFCount()							{return A4AFsrclist.GetCount();}
-	uint16	GetTransferingSrcCount()						{return transferingsrc;}
-#ifdef DOWNLOADRATE_FILTERED
-	float	GetKBpsDown()									{ return kBpsDown; }
+	static bool	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped = NULL, bool ed2kID = true);
+	void	AddSources(CMemFile& sources, uint32 serverip, uint16 serverport, unsigned origin, bool bWithObfuscationAndHash);
+#ifdef CLIENT_GUI
+	uint8	GetStatus() const { return status; }
+	uint8	GetStatus(bool /*ignorepause = false*/) const { return status; }
 #else
-	uint32	GetDatarate()								{return datarate;}
+	uint8	GetStatus(bool ignorepause = false) const;
 #endif
-	float	GetPercentCompleted()							{return percentcompleted;}
-	uint16  GetNotCurrentSourcesCount();
-	int	GetValidSourcesCount();
-	uint32	GetNeededSpace();
-	bool	IsMovie();
-	bool	IsSound();
-	bool	IsArchive(); 
-	bool	IsCDImage(); 
-	bool 	IsImage();
-	bool 	IsText();
-	
-	
-	CString CPartFile::getPartfileStatus(); //<<--9/21/02
-	sint32	CPartFile::getTimeRemaining(); //<<--9/21/02
+	virtual void	UpdatePartsInfo();
+	const CPath& GetPartMetFileName() const { return m_partmetfilename; }
+	uint16	GetPartMetNumber() const;
+	uint64	GetTransferred() const		{ return transferred; }
+	const CPath& GetFullName() const	{ return m_fullname; }
+	float	GetKBpsDown() const			{ return kBpsDown; }
+	double	GetPercentCompleted() const	{ return percentcompleted; }
+
+#ifndef CLIENT_GUI
+	uint16	GetSourceCount() const		{ return (uint16)m_SrcList.size(); }
+	uint16	GetSrcA4AFCount() const		{ return (uint16)m_A4AFsrclist.size(); }
+#else
+	uint16	m_source_count, m_a4af_source_count;
+	uint16	GetSourceCount() const		{ return m_source_count; }
+	uint16	GetSrcA4AFCount() const		{ return m_a4af_source_count; }
+#endif
+	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
+	uint16  GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
+	uint16	GetValidSourcesCount() const	{ return m_validSources; };
+
+	uint64	GetNeededSpace();
+
+	virtual wxString GetFeedback() const;
+
+	wxString getPartfileStatus() const; //<<--9/21/02
+	sint32	getTimeRemaining() const; //<<--9/21/02
 	time_t	lastseencomplete;
-	int		getPartfileStatusRang();
-        CString GetDownloadFileInfo();
+	int	getPartfileStatusRang() const;
 
 	// Barry - Added as replacement for BlockReceived to buffer data before writing to disk
-	uint32	WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint32 end, Requested_Block_Struct *block);
-	void	FlushBuffer(void);
-	// Barry - This will invert the gap list, up to caller to delete gaps when done
-	// 'Gaps' returned are really the filled areas, and guaranteed to be in order
-	void	GetFilledList(CTypedPtrList<CPtrList, Gap_Struct*> *filled);
-
-	// Barry - Is archive recovery in progress
-	volatile bool m_bRecoveringArchive;
+	uint32	WriteToBuffer(uint32 transize, byte *data, uint64 start, uint64 end, Requested_Block_Struct *block, const CUpDownClient* client);
+	void	FlushBuffer(bool fromAICHRecoveryDataAvailable = false);
 
 	// Barry - Added to prevent list containing deleted blocks on shutdown
 	void	RemoveAllRequestedBlocks(void);
 
-	void	RemoveBlockFromList(uint32 start,uint32 end);
+	void	RemoveBlockFromList(uint64 start,uint64 end);
 	void	RemoveAllSources(bool bTryToSwap);
 	void	Delete();
 	void	StopFile(bool bCancel = false);
 	void	PauseFile(bool bInsufficient = false);
 	void	ResumeFile();
-	void	PauseFileInsufficient();
-	void	ResumeFileInsufficient();
 
-	virtual	Packet* CreateSrcInfoPacket(CUpDownClient* forClient);
-	//void	AddClientSources(CMemFile* sources);
-	void    AddClientSources(CMemFile* sources,uint8 sourceexchangeversion);
+	virtual	CPacket* CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byRequestedVersion, uint16 nRequestedOptions);
+	void    AddClientSources(CMemFile* sources, unsigned nSourceFrom, uint8 uClientSXVersion, bool bSourceExchange2, const CUpDownClient* pClient = NULL);
 
-	void	PreviewFile();
 	bool	PreviewAvailable();
-	uint8   GetAvailablePartCount()			{return availablePartsCount;}
-	void	UpdateAvailablePartsCount();
-
-	uint32	GetLastAnsweredTime()			{ return m_ClientSrcAnswered; }
-	void	SetLastAnsweredTime()			{ m_ClientSrcAnswered = ::GetTickCount(); }
-	void	SetLastAnsweredTimeTimeout()		{ m_ClientSrcAnswered = 2 * CONNECTION_LATENCY +
-											                        ::GetTickCount() - SOURCECLIENTREASK; }
-	uint64	GetLostDueToCorruption()		{return m_iLostDueToCorruption;}
-	uint64	GetGainDueToCompression()		{return m_iGainDueToCompression;}
-	uint32	TotalPacketsSavedDueToICH()		{return m_iTotalPacketsSavedDueToICH;}
-	bool	IsStopped() 				{return stopped;}
-	bool	HasComment()				{return hasComment;}
-	bool	HasRating()				{return hasRating;}
-	bool	HasBadRating()				{return hasBadRating;}
-	void	SetHasComment(bool in)			{hasComment=in;}
-	void	SetHasRating(bool in)			{hasRating=in;}
+	uint16	GetAvailablePartCount() const	{ return m_availablePartsCount; }
+	uint32	GetLastAnsweredTime() const	{ return m_ClientSrcAnswered; }
+	void	SetLastAnsweredTime();
+	void	SetLastAnsweredTimeTimeout();
+	uint64	GetLostDueToCorruption() const	{ return m_iLostDueToCorruption; }
+	uint64	GetGainDueToCompression() const	{ return m_iGainDueToCompression; }
+	uint32	TotalPacketsSavedDueToICH()const{ return m_iTotalPacketsSavedDueToICH; }
+	bool	IsStopped() const		{ return this ? m_stopped : true; }
+	bool	IsPaused() const		{ return m_paused; }
 	void	UpdateFileRatingCommentAvail();
 
-        wxString GetProgressString(uint16 size);
-
 	int	GetCommonFilePenalty();
-	void	UpdateDisplayedInfo(bool force=false);
-	time_t	GetLastChangeDatetime(bool forcecheck=false);
-	uint8	GetCategory();
-	void	SetCategory(uint8 cat)			{m_category=cat;SavePartFile();}
+	void	UpdateDisplayedInfo(bool force = false);
 
-	CFile	m_hpartfile;	//permanent opened handle to avoid write conflicts
-	volatile bool m_bPreviewing;
-	CTypedPtrList<CPtrList, CUpDownClient*> A4AFsrclist; //<<-- enkeyDEV(Ottavio84) -A4AF-
-	void	SetDownPriority(uint8 newDownPriority);
-	bool	IsAutoDownPriority()	{ return m_bAutoDownPriority; }
-	void	SetAutoDownPriority(bool flag) { m_bAutoDownPriority = flag; }
+	uint8	GetCategory() const { return m_category; }
+	void	SetCategory(uint8 cat);
+	void	RemoveCategory(uint8 cat);
+
+	void	SetDownPriority(uint8 newDownPriority, bool bSave = true, bool bRefresh = true);
+	bool	IsAutoDownPriority() const	{ return m_bAutoDownPriority; }
+	void	SetAutoDownPriority(bool flag)	{ m_bAutoDownPriority = flag; }
 	void	UpdateAutoDownPriority();
-	uint8	GetDownPriority()	{ return m_iDownPriority; }
-	completingThread* cthread;
-	bool GetInsufficient() { return insufficient; }
-		
-protected:
-	bool	GetNextEmptyBlockInPart(uint16 partnumber,Requested_Block_Struct* result);
-	bool	IsAlreadyRequested(uint32 start, uint32 end);
-	void	CompleteFile(bool hashingdone);
-	void	CreatePartFile();
-	void	Init();
-	wxMutex 	m_FileCompleteMutex; // Lord KiRon - Mutex for file completion
+	uint8	GetDownPriority() const		{ return m_iDownPriority; }
+	void	SetActive(bool bActive);
+	uint32	GetDlActiveTime() const;
+	bool	GetInsufficient() const		{ return m_insufficient; }
+
+	void	CompleteFileEnded(bool errorOccured, const CPath& newname);
+
+	bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true, bool bDoStatsUpdate = true);
+
+	void	RequestAICHRecovery(uint16 nPart);
+	void	AICHRecoveryDataAvailable(uint16 nPart);
+
+	/**
+	 * This function is used to update source-counts.
+	 *
+	 * @param oldState The old state of the client, or -1 to ignore.
+	 * @param newState The new state of the client, or -1 to ignore.
+	 *
+	 * Call this function for a client belonging to this file, which has changed
+	 * its state. The value -1 can be used to make the function ignore one of
+	 * the two states.
+	 *
+	 * AddSource and DelSource takes care of calling this function when a source is
+	 * removed, so there's no need to call this function when calling either of those.
+	 */
+	void	ClientStateChanged( int oldState, int newState );
+
+	bool	AddSource( CUpDownClient* client );
+	bool	DelSource( CUpDownClient* client );
+
+	/**
+	 * Updates the requency of avilable parts from with the data the client provides.
+	 *
+	 * @param client The clients whoose available parts should be considered.
+	 * @param increment If true, the counts are incremented, otherwise they are decremented.
+	 *
+	 * This functions updates the frequency list of file-parts, using the clients
+	 * parts-status. This function should be called by clients every time they update their
+	 * parts-status, or when they are added or removed from the file.
+	 */
+	void	UpdatePartsFrequency( CUpDownClient* client, bool increment );
+
+	ArrayOfUInts16	m_SrcpartFrequency;
+
+	const SourceSet& GetSourceList()	const { return m_SrcList; }
+	const SourceSet& GetA4AFList()		const { return m_A4AFsrclist; }
+	void	ClearA4AFList()				{ m_A4AFsrclist.clear(); }
+
+	const CReqBlockPtrList	GetRequestedBlockList() const { return m_requestedblocks_list; }
+
+	const CGapList& GetGapList() const { return m_gaplist; }
+
+	/**
+	 * Adds a source to the list of dead sources.
+	 *
+	 * @param client The source to be recorded as dead for this file.
+	 */
+	void		AddDeadSource(const CUpDownClient* client);
+
+	/**
+	 * Set the current progress of hashing and display it in the download list control.
+	 *
+	 * @param part Number of part currently being hashed. 0 for no hashing in progress.
+	 */
+	virtual	void SetHashingProgress(uint16 part) const;
+
+	/**
+	 * Checks if a source is recorded as being dead for this file.
+	 *
+	 * @param client The client to evaluate.
+	 * @return True if dead, false otherwise.
+	 *
+	 * Sources that are dead are not to be considered valid
+	 * sources and should not be added to the partfile.
+	 */
+	bool		IsDeadSource(const CUpDownClient* client);
+
+	/* Kad Stuff */
+	uint16	GetMaxSources() const;
+	uint16	GetMaxSourcePerFileSoft() const;
+	uint16	GetMaxSourcePerFileUDP() const;
+
+	void GetRatingAndComments(FileRatingList & list) const;
+
+	void	AllocationFinished();
 private:
+#ifndef CLIENT_GUI
+	// partfile handle (opened on demand)
+	CFileAutoClose	m_hpartfile;
+	//! A local list of sources that are invalid for this file.
+	CDeadSourceList	m_deadSources;
+
+	class CCorruptionBlackBox* m_CorruptionBlackBox;
+#endif
+
+	uint16	m_notCurrentSources;
+
+	uint32	m_validSources;
+
+	void	AddGap(uint64 start, uint64 end);
+	void	AddGap(uint16 part);
+	void	FillGap(uint64 start, uint64 end);
+	void	FillGap(uint16 part);
+	bool	GetNextEmptyBlockInPart(uint16 partnumber,Requested_Block_Struct* result);
+	bool	IsAlreadyRequested(uint64 start, uint64 end);
+	void	CompleteFile(bool hashingdone);
+	void	CreatePartFile(bool isImporting = false);
+	void	Init();
+
+	bool	CheckFreeDiskSpace( uint64 neededSpace = 0 );
+
+	bool	IsCorruptedPart(uint16 partnumber);
+
 	uint32	m_iLastPausePurge;
-	uint16	count;
-	uint16	m_anStates[STATES_COUNT];
+	uint16	m_count;
 	uint16	transferingsrc;
-	uint32  completedsize;
+	uint64  completedsize;
+	uint64	transferred;
+
 	uint64	m_iLostDueToCorruption;
 	uint64	m_iGainDueToCompression;
 	uint32  m_iTotalPacketsSavedDueToICH;
-#ifdef DOWNLOADRATE_FILTERED
-	float 	kBpsDown;
-#else
-	uint32	datarate;
-#endif
-	char*	fullname;
-	char*	m_partmetfilename;
-	uint32	transfered;
-	bool	paused;
-	bool	stopped;
-	bool	insufficient;
+	float	kBpsDown;
+	CPath	m_fullname;			// path/name of the met file
+	CPath	m_partmetfilename;	// name of the met file
+	CPath	m_PartPath;		// path/name of the partfile
+	bool	m_paused;
+	bool	m_stopped;
+	bool	m_insufficient;
 	uint8   m_iDownPriority;
 	bool    m_bAutoDownPriority;
 	uint8	status;
-	bool	newdate;	// indicates if there was a writeaccess to the .part file
 	uint32	lastpurgetime;
 	uint32	m_LastNoNeededCheck;
-	CTypedPtrList<CPtrList, Gap_Struct*> gaplist;
-	CTypedPtrList<CPtrList, Requested_Block_Struct*> requestedblocks_list;
-	CArray<uint16, uint16> m_SrcpartFrequency;
-	float	percentcompleted;
-	CList<uint16, uint16> corrupted_list;
-	uint8	availablePartsCount;
+	CGapList m_gaplist;
+	CReqBlockPtrList m_requestedblocks_list;
+	double	percentcompleted;
+	std::list<uint16> m_corrupted_list;
+	uint16	m_availablePartsCount;
 	uint32	m_ClientSrcAnswered;
-	uint32	m_nSavedReduceDownload;
 	bool	m_bPercentUpdated;
-	static	CBarShader s_LoadBar;
-	static	CBarShader s_ChunkBar;
-	bool	hasRating;
-	bool	hasBadRating;
-	bool	hasComment;
-	bool 	PerformFileComplete(); // Lord KiRon
-	//static unsigned int CompleteThreadProc(CPartFile* pFile); // Lord KiRon - Used as separate thread to complete file
-	void    CharFillRange(wxString* buffer,uint32 start, uint32 end, char color);
 
-	DWORD	m_lastRefreshedDLDisplay;
-	DWORD   m_lastdatetimecheck;
-	time_t	m_lastdatecheckvalue;
+	void	PerformFileComplete();
 
-	// Barry - Buffered data to be written
-	CTypedPtrList<CPtrList, PartFileBufferedData*> m_BufferedData_list;
+	uint32		m_lastRefreshedDLDisplay;
+
+	// Buffered data to be written
+	std::list<class PartFileBufferedData*> m_BufferedData_list;
+
 	uint32 m_nTotalBufferData;
 	uint32 m_nLastBufferFlushTime;
+
 	uint8	m_category;
+	uint32	m_nDlActiveTime;
+	time_t  m_tActivated;
 	bool	m_is_A4AF_auto;
 
-	DWORD	m_LastSourceDropTime;
+	SourceSet	m_SrcList;
+	SourceSet	m_A4AFsrclist;
+	bool		m_hashsetneeded;
+	uint32		m_lastsearchtime;
+	bool		m_localSrcReqQueued;
 
+#ifdef CLIENT_GUI
+	FileRatingList m_FileRatingList;
+	const FileRatingList &GetFileRatingList() { return m_FileRatingList; }
+	void ClearFileRatingList() { m_FileRatingList.clear(); }
+	void AddFileRatingList(const wxString & u, const wxString & f, sint16 r, const wxString & c) {
+	       m_FileRatingList.push_back(SFileRating(u, f, r, c)); }
+
+	uint32	m_kbpsDown;
+	uint8   m_iDownPriorityEC;
+	bool	m_isShared;
+	SourcenameItemMap m_SourcenameItemMap;
+
+	ListOfUInts32	m_A4AFClientIDs;
+	ListOfUInts32 & GetA4AFClientIDs()			{ return m_A4AFClientIDs; }
 public:
-	CTypedPtrList<CPtrList, CUpDownClient*> srclists[SOURCESSLOTS];
-	
-	// Kry - Avoid counting again and again (mayor cpu leak)
-	bool	IsCountDirty;
-	uint16	CleanCount;
+	bool	IsShared() const					{ return m_isShared; }
+	SourcenameItemMap &GetSourcenameItemMap()	{ return m_SourcenameItemMap; }
+	PartFileEncoderData m_PartFileEncoderData;
+#endif
+public:
+	bool IsHashSetNeeded() const				{ return m_hashsetneeded; }
+	void SetHashSetNeeded(bool value)			{ m_hashsetneeded = value; }
 
-	bool	srcarevisible;		// used for downloadlistctrl
-	bool	m_bShowOnlyDownloading;	// used for downloadlistctrl
-	bool	hashsetneeded;
-	uint32  GetCompletedSize()   {return completedsize;}
+	uint64  GetCompletedSize() const			{ return completedsize; }
+	void	SetCompletedSize(uint64 size)		{ completedsize = size; }
 
-	uint32	lastsearchtime;
-	bool	m_bLocalSrcReqQueued;
+	bool IsLocalSrcRequestQueued() const		{ return m_localSrcReqQueued; }
+	void SetLocalSrcRequestQueued(bool value)	{ m_localSrcReqQueued = value; }
 
-	/* Razor 1a - Modif by MikaelB */
+	void AddA4AFSource(CUpDownClient* src)		{ m_A4AFsrclist.insert(CCLIENTREF(src, wxT("A4AFSource"))); }
+	bool RemoveA4AFSource(CUpDownClient* src)	{ return (m_A4AFsrclist.erase(CCLIENTREF(src, wxEmptyString)) > 0); }
 
-          /* RemoveNoNeededSources function */
-          void	RemoveNoNeededSources();
+	uint32 GetLastSearchTime() const			{ return m_lastsearchtime; }
+	void SetLastSearchTime(uint32 time)			{ m_lastsearchtime = time; }
 
-          /* RemoveFullQueueSources function */
-          void	RemoveFullQueueSources();
+	void AddDownloadingSource(CUpDownClient* client);
 
-          /* RemoveHighQueueRatingSources function */
-          void	RemoveHighQueueRatingSources();
+	void RemoveDownloadingSource(CUpDownClient* client);
+	void SetStatus(uint8 in);
+	void StopPausedFile();
 
-          /* CleanUpSources function */
-          void	CleanUpSources();
+	// [sivka / Tarod] Imported from eMule 0.30c (Creteil) ...
+	void SetA4AFAuto(bool in)		{ m_is_A4AF_auto = in; }
+	bool IsA4AFAuto() const			{ return m_is_A4AF_auto; }
 
-          /* AddDownloadingSource function */
-          void AddDownloadingSource(CUpDownClient* client);
-          
-          /* RemoveDownloadingSource function */
-          void RemoveDownloadingSource(CUpDownClient* client);
-          void	SetStatus(uint8 in);
-          void	StopPausedFile();
+	// Kry -Sources seeds
+	void SaveSourceSeeds();
+	void LoadSourceSeeds();
 
-          /* A4AF sources list */
-          CTypedPtrList<CPtrList, CUpDownClient*> A4AFSourcesList;
+	// Dropping slow sources
+	CUpDownClient* GetSlowerDownloadingClient(uint32 speed, CUpDownClient* caller);
 
-	// void SetA4AFAuto(bool A4AFauto)
-	void	SetA4AFAuto(bool in)			{m_is_A4AF_auto = in;} // [sivka / Tarod] Imported from eMule 0.30c (Creteil) ...
-	bool	IsA4AFAuto()				{return m_is_A4AF_auto;} // [sivka / Tarod] Imported from eMule 0.30c (Creteil) ...
+  // Read data for sharing
+	bool ReadData(class CFileArea & area, uint64 offset, uint32 toread);
 
 private:
+	/* downloading sources list */
+	CClientRefList m_downloadingSourcesList;
 
-          /* downloading sources list */
-          CTypedPtrList<CPtrList, CUpDownClient*> m_downloadingSourcesList;
+	/* Kad Stuff */
+	uint32	m_LastSearchTimeKad;
+	uint8	m_TotalSearchesKad;
 
-
-/* End modif */
-friend class completingThread;
-};
-
-class completingThread : public wxThread
-{
-  private:
-  void* Entry();
-  int result;
-  CPartFile* completing;
-
-  public:
-
-  ~completingThread();
-  completingThread::completingThread(CPartFile*);
-  completingThread();
-
-  void setFile(CPartFile*);
-  void OnExit();
-
+friend class CKnownFilesRem;
+friend class CPartFileConvert;
 };
 
 #endif // PARTFILE_H
+// File_checked_for_headers

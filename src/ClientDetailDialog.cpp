@@ -1,45 +1,36 @@
-//this file is part of aMule
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
-// ClientDetailDialog.cpp : implementation file
-//
-
-
-#if defined(__WXMAC__)
-	#include <wx/wx.h>
-#endif
-#ifdef __WXMSW__
-	#include <winsock.h>
-#else
-	#include <sys/socket.h>
-	#include <netinet/in.h>
-	#include <arpa/inet.h>
-	#include <netdb.h>
-#endif
 #include "ClientDetailDialog.h"	// Interface declarations
-#include "otherfunctions.h"	// Needed for CastItoIShort
-#include "ClientCredits.h"	// Needed for GetDownloadedTotal
 #include "PartFile.h"		// Needed for CPartFile
-#include "SharedFileList.h"	// Needed for CSharedFileList
+#include "UploadQueue.h"	// Needed for CUploadQueue
 #include "ServerList.h"		// Needed for CServerList
-#include "CamuleAppBase.h"	// Needed for theApp
-#include "server.h"		// Needed for CServer
-#include "updownclient.h"	// Needed for CUpDownClient
+#include "amule.h"			// Needed for theApp
+#include "Server.h"			// Needed for CServer
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWND
+#include "Preferences.h"	// Needed for thePrefs
 
 // CClientDetailDialog dialog
 
@@ -47,199 +38,154 @@ BEGIN_EVENT_TABLE(CClientDetailDialog,wxDialog)
 	EVT_BUTTON(ID_CLOSEWND,CClientDetailDialog::OnBnClose)
 END_EVENT_TABLE()
 
-//IMPLEMENT_DYNAMIC(CClientDetailDialog, CDialog)
 
-CClientDetailDialog::CClientDetailDialog(wxWindow* parent,CUpDownClient* client)
-: wxDialog(parent,9997,CString(_("Client Details")),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE)
+CClientDetailDialog::CClientDetailDialog(
+	wxWindow *parent,
+	const CClientRef& client)
+:
+wxDialog(
+	parent,
+	9997,
+	_("Client Details"),
+	wxDefaultPosition,
+	wxDefaultSize,
+	wxDEFAULT_DIALOG_STYLE)
 {
 	m_client = client;
-	wxSizer* content=clientDetails(this,TRUE);
+	wxSizer* content = clientDetails(this, true);
 	OnInitDialog();
 	content->SetSizeHints(this);
-	content->Show(this,TRUE);
-	Centre();
+	content->Show(this, true);
 }
 
 CClientDetailDialog::~CClientDetailDialog()
 {
 }
 
-void CClientDetailDialog::OnBnClose(wxEvent& evt)
+void CClientDetailDialog::OnBnClose(wxCommandEvent& WXUNUSED(evt))
 {
 	EndModal(0);
 }
 
-#define GetDlgItem(a,b) wxStaticCast(FindWindowById((a)),b)
-
 bool CClientDetailDialog::OnInitDialog() {
-	char buffer[100];
-	
-	if (m_client->GetUserName()) {
-		GetDlgItem(ID_DNAME,wxStaticText)->SetLabel(m_client->GetUserName());
+	// Username, Userhash
+	if (!m_client.GetUserName().IsEmpty()) {
+		CastChild(ID_DNAME, wxStaticText)->SetLabel(
+			m_client.GetUserName());
+		// if we have client name we have userhash
+		wxASSERT(!m_client.GetUserHash().IsEmpty());
+		CastChild(ID_DHASH, wxStaticText)->SetLabel(
+			m_client.GetUserHash().Encode());
 	} else {
-		GetDlgItem(ID_DNAME,wxStaticText)->SetLabel(CString(_("Unknown")));
-	}	
-
-	if (m_client->GetUserName()) {
-		buffer[0] = 0;
-		for (uint16 i = 0;i != 16;i++) {
-			sprintf(buffer,"%s%02X",buffer,m_client->GetUserHash()[i]);
-		}
-		GetDlgItem(ID_DHASH,wxStaticText)->SetLabel(buffer);
-	} else {
-		GetDlgItem(ID_DHASH,wxStaticText)->SetLabel(CString(_("Unknown")));
-	}
-	
-	wxString software=_("ClientSoftware ->")+(CastItoIShort(m_client->GetClientSoft()))+_("<- ClientVersion ->v")+(CastItoIShort(m_client->GetMuleVersion()))+_("<- ClientModString ->")+(m_client->GetClientModString().c_str())+"<-";
-	printf("%s\n", software.c_str());
-
-	switch(m_client->GetClientSoft()) {
-		case SO_UNKNOWN:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel(_("Unknown"));
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(_("Unknown"));
-			break;
-		case SO_EMULE:
-		case SO_OLDEMULE:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("eMule");
-			if (m_client->GetMuleVersion()) {
-				sprintf(buffer,"v%X",m_client->GetMuleVersion());
-				if(m_client->GetClientModString().IsEmpty() == false) {
-					sprintf(buffer, "[ %s ]", m_client->GetClientModString().c_str());
-				}
-				GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			} else {
-				GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(_("Unknown"));
-			}
-			break;
-		case SO_LXMULE:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("lMule/xMule");
-			sprintf(buffer,"v0.%02X",m_client->GetMuleVersion());
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			break;
-		case SO_AMULE:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("aMule");
-			if(m_client->GetClientModString().IsEmpty() == false) {
-				sprintf(buffer, "[ %s ]", m_client->GetClientModString().c_str());
-			} else {
-				sprintf(buffer,"v0.%02X",m_client->GetMuleVersion());
-			}
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			break;
-		case SO_EDONKEY:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("eDonkey");
-			sprintf(buffer,"v%i",m_client->GetVersion());
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			break;
-		case SO_MLDONKEY:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("Old MlDonkey");
-			sprintf(buffer,"v%i",m_client->GetVersion());
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			break;
-		case SO_NEW_MLDONKEY:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("New MlDonkey");
-			sprintf(buffer,"v%i",m_client->GetVersion());
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			break;
-		case SO_EDONKEYHYBRID:
-			GetDlgItem(ID_DSOFT,wxStaticText)->SetLabel("Hybrid");
-			sprintf(buffer,"v%i",m_client->GetVersion());
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(buffer);
-			break;
-		default:
-			GetDlgItem(ID_DVERSION,wxStaticText)->SetLabel(_("Unknown"));
+		CastChild(ID_DNAME, wxStaticText)->SetLabel(_("Unknown"));
+		CastChild(ID_DHASH, wxStaticText)->SetLabel(_("Unknown"));
 	}
 
-	sprintf(buffer,"%u (%s)",m_client->GetUserID(),(m_client->HasLowID() ? CString(_("Low")).GetData():CString(_("High")).GetData()));
-	GetDlgItem(ID_DID,wxStaticText)->SetLabel(buffer);
-	
-	sprintf(buffer,"%s:%i",m_client->GetFullIP(),m_client->GetUserPort());
-	GetDlgItem(ID_DIP,wxStaticText)->SetLabel(buffer);
-
-	if (m_client->GetServerIP()) {
-		in_addr server;
-		server.s_addr = m_client->GetServerIP();
-		GetDlgItem(ID_DSIP,wxStaticText)->SetLabel(inet_ntoa(server));
-		
-		CServer* cserver = theApp.serverlist->GetServerByAddress(inet_ntoa(server), m_client->GetServerPort()); 
-		if (cserver) {
-			GetDlgItem(ID_DSNAME,wxStaticText)->SetLabel(cserver->GetListName());
-		} else {
-			GetDlgItem(ID_DSNAME,wxStaticText)->SetLabel(_("Unknown"));
-		}
+	// Client Software
+	wxString OSInfo = m_client.GetClientOSInfo();
+	if (!OSInfo.IsEmpty()) {
+		CastChild(ID_DSOFT, wxStaticText)->SetLabel(
+			m_client.GetSoftStr()+wxT(" (")+OSInfo+wxT(")"));
 	} else {
-		GetDlgItem(ID_DSIP,wxStaticText)->SetLabel(_("Unknown"));
-		GetDlgItem(ID_DSNAME,wxStaticText)->SetLabel(_("Unknown"));
+		CastChild(ID_DSOFT, wxStaticText)->SetLabel(
+			m_client.GetSoftStr());
 	}
 
-	CKnownFile* file = theApp.sharedfiles->GetFileByID(m_client->GetUploadFileID());
+	// Client Version
+	CastChild(ID_DVERSION, wxStaticText)->SetLabel(
+		m_client.GetSoftVerStr());
 
+	// User ID
+	CastChild(ID_DID, wxStaticText)->SetLabel(
+		CFormat(wxT("%u (%s)")) % m_client.GetUserIDHybrid() % (m_client.HasLowID() ? _("LowID") : _("HighID")));
+
+	// Client IP/Port
+	CastChild(ID_DIP, wxStaticText)->SetLabel(
+		CFormat(wxT("%s:%i")) % m_client.GetFullIP() % m_client.GetUserPort());
+
+	// Server IP/Port/Name
+	if (m_client.GetServerIP()) {
+		wxString srvaddr = Uint32toStringIP(m_client.GetServerIP());
+		CastChild(ID_DSIP, wxStaticText)->SetLabel(
+			CFormat(wxT("%s:%i")) % srvaddr % m_client.GetServerPort());
+		CastChild(ID_DSNAME, wxStaticText)->SetLabel(
+			m_client.GetServerName());
+	} else {
+		CastChild(ID_DSIP, wxStaticText)->SetLabel(_("Unknown"));
+		CastChild(ID_DSNAME, wxStaticText)->SetLabel(_("Unknown"));
+	}
+
+	// Obfuscation
+	wxString buffer;
+	switch (m_client.GetObfuscationStatus()) {
+		case OBST_ENABLED:			buffer = _("Enabled"); break;
+		case OBST_SUPPORTED:		buffer = _("Supported"); break;
+		case OBST_NOT_SUPPORTED:	buffer = _("Not supported"); break;
+		case OBST_DISABLED:			buffer = _("Disabled"); break;
+		default:					buffer = _("Unknown"); break;
+	}
+	CastChild(IDT_OBFUSCATION, wxStaticText)->SetLabel(buffer);
+
+	// Kad
+	if (m_client.GetKadPort()) {
+		CastChild(IDT_KAD, wxStaticText)->SetLabel(_("Connected"));
+	} else {
+		CastChild(IDT_KAD, wxStaticText)->SetLabel(_("Disconnected"));
+	}
+
+	// File Name
+	const CKnownFile* file = m_client.GetUploadFile();
 	if (file) {
-		GetDlgItem(ID_DDOWNLOADING,wxStaticText)->SetLabel(file->GetFileName());
+		wxString filename = MakeStringEscaped(file->GetFileName().TruncatePath(60));
+		CastChild(ID_DDOWNLOADING, wxStaticText)->SetLabel(filename);
 	} else {
-		GetDlgItem(ID_DDOWNLOADING,wxStaticText)->SetLabel("-");
+		CastChild(ID_DDOWNLOADING, wxStaticText)->SetLabel(wxT("-"));
 	}
 
-	GetDlgItem(ID_DDUP,wxStaticText)->SetLabel(CastItoXBytes(m_client->GetTransferedDown()));
-	GetDlgItem(ID_DDOWN,wxStaticText)->SetLabel(CastItoXBytes(m_client->GetTransferedUp()));
-	sprintf(buffer,"%.1f %s",m_client->GetKBpsDown(),CString(_("kB/s")).GetData());
-	GetDlgItem(ID_DAVUR,wxStaticText)->SetLabel(buffer);
-	sprintf(buffer,"%.1f %s",m_client->GetKBpsUp(),CString(_("kB/s")).GetData());
-	GetDlgItem(ID_DAVDR,wxStaticText)->SetLabel(buffer);
+	// Upload
+	CastChild(ID_DDUP, wxStaticText)->SetLabel(
+		CastItoXBytes(m_client.GetTransferredDown()));
 
-	if (m_client->Credits()) {
-		GetDlgItem(ID_DUPTOTAL,wxStaticText)->SetLabel(CastItoXBytes(m_client->Credits()->GetDownloadedTotal()));		
-		GetDlgItem(ID_DDOWNTOTAL,wxStaticText)->SetLabel(CastItoXBytes(m_client->Credits()->GetUploadedTotal()));
-		sprintf(buffer,"%.1f",(float)m_client->Credits()->GetScoreRatio(m_client->GetIP()));
-		GetDlgItem(ID_DRATIO,wxStaticText)->SetLabel(buffer);
-		
-		if (theApp.clientcredits->CryptoAvailable()){
-			printf("Crypto available\n");
-			switch(m_client->Credits()->GetCurrentIdentState(m_client->GetIP())){
-				case IS_NOTAVAILABLE:
-					printf("CurrentIdentState not available\n");
-					GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(CString(_("Not Supported")));
-					break;
-				case IS_IDFAILED:
-					printf("CurrentIdentState failed\n");
-					GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(CString(_("Failed")));
-					break;
-				case IS_IDNEEDED:
-					printf("CurrentIdentState needed\n");
-					GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(CString(_("Not complete")));
-					break;
-				case IS_IDBADGUY:
-					printf("CurrentIdentState badguy\n");
-					GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(CString(_("Bad Guy")));
-					break;
-				case IS_IDENTIFIED:
-					printf("CurrentIdentState Ident OK\n");
-					GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(CString(_("Verified - OK")));
-					break;
-			}
-		} else {
-			printf("Crypto not available\n");
-			GetDlgItem(IDC_CDIDENT,wxStaticText)->SetLabel(CString(_("Not Avaiable")));
-		}
-		
-		
+	// Download
+	CastChild(ID_DDOWN, wxStaticText)->SetLabel(
+		CastItoXBytes(m_client.GetTransferredUp()));
+
+	// Average Upload Rate
+	CastChild(ID_DAVUR, wxStaticText)->SetLabel(
+		CFormat(_("%.1f kB/s")) % m_client.GetKBpsDown());
+
+	// Average Download Rate
+	CastChild(ID_DAVDR, wxStaticText)->SetLabel(
+		CFormat(_("%.1f kB/s")) % (m_client.GetUploadDatarate() / 1024.0f));
+
+	// Total Upload
+	CastChild(ID_DUPTOTAL, wxStaticText)->SetLabel(
+		CastItoXBytes(m_client.GetDownloadedTotal()));
+
+	// Total Download
+	CastChild(ID_DDOWNTOTAL, wxStaticText)->SetLabel(
+		CastItoXBytes(m_client.GetUploadedTotal()));
+
+	// DL/UP Modifier
+	CastChild(ID_DRATIO, wxStaticText)->SetLabel(
+		CFormat(wxT("%.1f")) % m_client.GetScoreRatio());
+
+	// Secure Ident
+	CastChild(IDC_CDIDENT, wxStaticText)->SetLabel(
+		m_client.GetSecureIdentTextStatus());
+
+	// Queue Score
+	if (m_client.GetUploadState() != US_NONE) {
+		CastChild(ID_QUEUERANK, wxStaticText)->SetLabel(
+			CFormat(wxT("%u")) % m_client.GetUploadQueueWaitingPosition());
+		CastChild(ID_DSCORE, wxStaticText)->SetLabel(
+			CFormat(wxT("%u")) % m_client.GetScore());
 	} else {
-		GetDlgItem(ID_DDOWNTOTAL,wxStaticText)->SetLabel(_("Unknown"));
-		GetDlgItem(ID_DUPTOTAL,wxStaticText)->SetLabel(_("Unknown"));
-		GetDlgItem(ID_DRATIO,wxStaticText)->SetLabel(_("Unknown"));
-	}
-	
-	if (m_client->GetUserName()) {
-		sprintf(buffer,"%.1f",(float)m_client->GetScore(false,m_client->IsDownloading(),true));
-		GetDlgItem(ID_DRATING,wxStaticText)->SetLabel(buffer);
-	} else {
-		GetDlgItem(ID_DRATING,wxStaticText)->SetLabel(_("Unknown"));;
-	}
-	if (m_client->GetUploadState() != US_NONE) {
-		sprintf(buffer,"%u",m_client->GetScore(m_client->IsDownloading(),false));
-		GetDlgItem(ID_DSCORE,wxStaticText)->SetLabel(buffer);
-	} else {
-		GetDlgItem(ID_DSCORE,wxStaticText)->SetLabel("-");
+		CastChild(ID_QUEUERANK, wxStaticText)->SetLabel(wxT("-"));
+		CastChild(ID_DSCORE, wxStaticText)->SetLabel(wxT("-"));
 	}
 	Layout();
+
 	return true;
 }
+// File_checked_for_headers

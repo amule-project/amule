@@ -1,536 +1,853 @@
-//this file is part of aMule
-//Copyright (C)2002 Merkur ( merkur-@users.sourceforge.net / http://www.amule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This file is part of the aMule Project.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+//
 
 #ifndef UPDOWNCLIENT_H
 #define UPDOWNCLIENT_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/string.h>		// Needed for wxString
-#include <wx/dcmemory.h>	// Needed for wxMemoryDC
-#include <wx/gdicmn.h>		// Needed for wxRect
-#include "types.h"		// Needed for int8, int16, uint8, uint16, uint32 and uint64
-#include "CString.h"		// Needed for CString
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
+#include "Constants.h"		// Needed for ESourceFrom
 #include "GetTickCount.h"	// Needed for GetTickCount
+#include "MD4Hash.h"
+#include <common/StringFunctions.h>
+#include <common/Macros.h>
+#include "NetworkFunctions.h"
+#include "OtherStructs.h"
+#include "ClientCredits.h"	// Needed for EIdentState
+#include <ec/cpp/ECID.h>	// Needed for CECID
+#include "BitVector.h"		// Needed for BitVector
+#include "ClientRef.h"		// Needed for debug defines
+
+#include <map>
+
 
 class CPartFile;
-class CClientReqSocket;
-class CClientCredits;
-class Packet;
+class CClientTCPSocket;
+class CPacket;
 class CFriend;
-class Requested_Block_Struct;
 class CKnownFile;
-class Pending_Block_Struct;
-class CSafeMemFile;
 class CMemFile;
-class CBarShader;
-class Requested_File_Struct;
-class TransferredData;
+class CAICHHash;
 
-// uploadstate
-#define	US_UPLOADING			0
-#define	US_ONUPLOADQUEUE		1
-#define	US_WAITCALLBACK			2
-#define	US_CONNECTING			3
-#define	US_PENDING			4
-#define	US_LOWTOLOWIP			5
-#define US_BANNED			6
-#define US_ERROR			7
-#define US_NONE				8
 
-// downloadstate
-#define	DS_DOWNLOADING			0
-#define	DS_ONQUEUE			1
-#define	DS_CONNECTED			2
-#define	DS_CONNECTING			3
-#define	DS_WAITCALLBACK			4
-#define	DS_REQHASHSET			5
-#define	DS_NONEEDEDPARTS		6
-#define	DS_TOOMANYCONNS			7
-#define	DS_LOWTOLOWIP			8
-#define DS_BANNED			9
-#define DS_ERROR			10
-#define	DS_NONE				11
+enum EChatCaptchaState {
+	CA_NONE				= 0,
+	CA_CHALLENGESENT,
+	CA_CAPTCHASOLVED,
+	CA_ACCEPTING,
+	CA_CAPTCHARECV,
+	CA_SOLUTIONSENT
+};
 
-// m_byChatstate
-#define	MS_NONE				0
-#define	MS_CHATTING			1
-#define	MS_CONNECTING			2
-#define	MS_UNABLETOCONNECT		3
+enum ESecureIdentState {
+	IS_UNAVAILABLE		= 0,
+	IS_ALLREQUESTSSEND	= 0,
+	IS_SIGNATURENEEDED	= 1,
+	IS_KEYANDSIGNEEDED	= 2
+};
 
-#if 0
-// clientsoft
-#define SO_EMULE			0
-#define SO_CDONKEY			1
-#define SO_LXMULE			2
-#define SO_AMULE			3
-#define	SO_SHAREAZA			4
-#define SO_EDONKEYHYBRID		50
-#define	SO_EDONKEY			51
-#define SO_MLDONKEY			52
-#define SO_NEW_MLDONKEY			152
-#define SO_OLDEMULE			53
-#define SO_UNKNOWN			54
+enum EInfoPacketState {
+	IP_NONE			= 0,
+	IP_EDONKEYPROTPACK	= 1,
+	IP_EMULEPROTPACK	= 2,
+	IP_BOTH			= 3
+};
+
+enum EKadState {
+	KS_NONE,
+	KS_QUEUED_FWCHECK,
+	KS_CONNECTING_FWCHECK,
+	KS_CONNECTED_FWCHECK,
+	KS_QUEUED_BUDDY,
+	KS_INCOMING_BUDDY,
+	KS_CONNECTING_BUDDY,
+	KS_CONNECTED_BUDDY,
+	KS_QUEUED_FWCHECK_UDP,
+	KS_FWCHECK_UDP,
+	KS_CONNECTING_FWCHECK_UDP
+};
+
+//! Used to keep track of the state of the client
+enum ClientState
+{
+	//! New is for clients that have just been created.
+	CS_NEW = 0,
+	//! Listed is for clients that are on the clientlist
+	CS_LISTED,
+	//! Dying signifies clients that have been queued for deletion
+	CS_DYING
+};
+
+// This is fixed on ed2k v1, but can be any number on ED2Kv2
+#define STANDARD_BLOCKS_REQUEST 3
+
+class CUpDownClient : public CECID
+{
+	friend class CClientList;
+	friend class CClientRef;
+private:
+	/**
+	 * Please note that only the ClientList is allowed to delete the clients.
+	 * To schedule a client for deletion, call the CClientList::AddToDeleteQueue
+	 * funtion, which will safely remove dead clients once every second.
+	 */
+	~CUpDownClient();
+
+	/**
+	 * Reference count which is increased whenever client is linked to a clientref.
+	 * Clients are to be stored only by ClientRefs, CUpDownClient * are for temporary
+	 * use only.
+	 * Linking is done only by CClientRef which is friend, so methods are private.
+	 */
+	uint16 m_linked;
+#ifdef DEBUG_ZOMBIE_CLIENTS
+	bool	m_linkedDebug;
+	std::multiset<wxString> m_linkedFrom;
+	void	Link(const wxString& from)		{ m_linked++; m_linkedFrom.insert(from); }
+	void	Unlink(const wxString& from);
+	wxString GetLinkedFrom() {
+		wxString ret;
+		for (std::multiset<wxString>::iterator it = m_linkedFrom.begin(); it != m_linkedFrom.end(); ++it) {
+			ret += *it + wxT(", ");
+		}
+		return ret;
+	}
+#else
+	void	Link()		{ m_linked++; }
+	void	Unlink();
 #endif
 
-enum EClientSoftware{
-	SO_EMULE			= 0,
-	SO_CDONKEY			= 1,
-	SO_LXMULE			= 2,
-	SO_AMULE			= 3,
-	SO_SHAREAZA			= 4,
-	SO_EDONKEYHYBRID	= 50,
-	SO_EDONKEY			= 51,
-	SO_MLDONKEY			= 52,
-	SO_OLDEMULE			= 53,
-	SO_UNKNOWN			= 54,
-	SO_NEW_MLDONKEY		= 152
-};
-
-enum ESecureIdentState{
-	IS_UNAVAILABLE		= 0,
-	IS_ALLREQUESTSSEND  = 0,
-	IS_SIGNATURENEEDED	= 1,
-	IS_KEYANDSIGNEEDED	= 2,
-};
-enum EInfoPacketState{
-	IP_NONE				= 0,
-	IP_EDONKEYPROTPACK  = 1,
-	IP_EMULEPROTPACK	= 2,
-	IP_BOTH				= 3,
-};
-
-#define DOWNLOADRATE_FILTERED  // see note in CUpDownClient::CalculateDownloadRate if you undefine this
-
-
-struct PartFileStamp {
-	CPartFile*			file;
-	DWORD				timestamp;
-};
-
-class CUpDownClient {
-	friend class CUploadQueue;
 public:
 	//base
-	CUpDownClient(CClientReqSocket* sender = 0);
-	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile);
-	~CUpDownClient();
-	void			Destroy();
-	void			Disconnected();
-	bool			TryToConnect(bool bIgnoreMaxCon = false);
-	void			ConnectionEstablished();
-	uint32			GetUserID()					{return m_nUserID;}
-	void			SetUserID(uint32 nUserID)	{m_nUserID = nUserID;}	
-	char*			GetUserName()				{return m_pszUsername;}
-	uint32			GetIP()						{return m_dwUserIP;}
-	bool			HasLowID()					{return (m_nUserID < 16777216);}
-	char*			GetFullIP()					{return m_szFullUserIP;}
-	uint32			GetUserPort()				{return m_nUserPort;}
-	uint32			GetTransferedUp()			{return m_nTransferedUp;}
-	uint32			GetTransferedDown()			{return m_nTransferedDown;}
-	uint32			GetServerIP()				{return m_dwServerIP;}
-	void			SetServerIP(uint32 nIP)		{m_dwServerIP = nIP;}
-	uint16			GetServerPort()				{return m_nServerPort;}
-	void			SetServerPort(uint16 nPort)	{m_nServerPort = nPort;}	
-	unsigned char*		GetUserHash()				{return (unsigned char*)m_achUserHash;}
-	void			SetUserHash(unsigned char* achUserHash)		{if(achUserHash) memcpy(m_achUserHash,achUserHash,16); else memset(m_achUserHash,0,16); }
-	bool			HasValidHash()				{return ((int*)m_achUserHash)[0] != 0 || ((int*)m_achUserHash)[1] != 0 ||
-												        ((int*)m_achUserHash)[2] != 0 || ((int*)m_achUserHash)[3] != 0; }
-	uint32			GetVersion()				{return m_nClientVersion;}
-	uint8			GetMuleVersion()			{return m_byEmuleVersion;}
-	bool			ExtProtocolAvailable()		{return m_bEmuleProtocol;}
-	bool			IsEmuleClient()				{return m_byEmuleVersion;}
-	CClientCredits* Credits()					{return credits;}
-	bool			IsBanned()					{return (m_bBanned && m_nDownloadState != DS_DOWNLOADING);}
-	char*			GetClientFilename()			{return m_pszClientFilename;}
-	bool			SupportsUDP()				{return m_byUDPVer != 0 && m_nUDPPort != 0;}
-	uint16			GetUDPPort()				{return m_nUDPPort;}
-	void			SetUDPPort(uint16 nPort)	{ m_nUDPPort = nPort; }
-	uint8			GetUDPVersion()				{return m_byUDPVer;}
-	uint8			GetExtendedRequestsVersion(){return m_byExtendedRequestsVer;}
-	bool			IsFriend()					{return m_Friend != NULL;}
-	float			GetCompression()	{return (float)compressiongain/notcompressed*100.0f;} // Add rod show compression
-	void			ResetCompressionGain() {compressiongain = 0; notcompressed=1;} // Add show compression
+	CUpDownClient(CClientTCPSocket* sender = 0);
+	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile, bool ed2kID, bool checkfriend);
 
-	void			RequestSharedFileList();
-	void			ProcessSharedFileList(char* pachPacket, uint32 nSize, LPCTSTR pszDirectory = NULL);
-	
-        wxString                 GetUploadFileInfo();
+	/**
+	 * This function is to be called when the client object is to be deleted.
+	 * It'll close the socket of the client and remove it from various lists
+	 * that can own it.
+	 *
+	 * The client will really be deleted only after thelast reference to it
+	 * is unlinked;
+	 */
+	void		Safe_Delete();
 
-	void			SetUserName(char* pszNewName);
-	uint8			GetClientSoft()				{return m_clientSoft;}
-	void			ReGetClientSoft();
-	void			ProcessHelloAnswer(char* pachPacket, uint32 nSize);
-	void			ProcessHelloPacket(char* pachPacket, uint32 nSize);
-	void			SendHelloAnswer();
-	void			SendHelloPacket();
-	void			SendMuleInfoPacket(bool bAnswer);
-	void			ProcessMuleInfoPacket(char* pachPacket, uint32 nSize);
-	void			ProcessMuleCommentPacket(char* pachPacket, uint32 nSize);
-	bool			Compare(CUpDownClient* tocomp, bool bIgnoreUserhash = false);	
-	void			SetLastSrcReqTime()			{m_dwLastSourceRequest = ::GetTickCount();}
-	void			SetLastSrcAnswerTime()		{m_dwLastSourceAnswer = ::GetTickCount();}
-	void			SetLastAskedForSources()	{m_dwLastAskedForSources = ::GetTickCount();}
-	uint32		GetLastSrcReqTime()			{return m_dwLastSourceRequest;}
-	uint32		GetLastSrcAnswerTime()		{return m_dwLastSourceAnswer;}
-	uint32		GetLastAskedForSources()	{return m_dwLastAskedForSources;}	
-	DWORD			GetEnteredConnectedState()	{return m_dwEnteredConnectedState;}
-	bool			GetFriendSlot()				{return m_bFriendSlot;}
-	void			SetFriendSlot(bool bNV)		{m_bFriendSlot = bNV;}
-	void			SetCommentDirty(bool bDirty = true) {m_bCommentDirty = bDirty;}
-	uint8			GetSourceExchangeVersion()	{return m_bySourceExchangeVer;}
-	bool			SafeSendPacket(Packet* packet);
-	
-	void			SendPublicKeyPacket();
-	void			SendSignaturePacket();
-	void			ProcessPublicKeyPacket(uchar* pachPacket, uint32 nSize);
-	void			ProcessSignaturePacket(uchar* pachPacket, uint32 nSize);
-	uint8			GetSecureIdentState()		{return m_SecureIdentState;}
-	void			SendSecIdentStatePacket();
-	void			ProcessSecIdentStatePacket(uchar* pachPacket, uint32 nSize);
+	/**
+	 * Specifies if the client has been queued for deletion.
+	 *
+	 * @return True if Safe_Delete has been called, false otherwise.
+	 */
+	bool		HasBeenDeleted()		{ return m_clientState == CS_DYING; }
 
-	void			InfoPacketsReceived();
+	ClientState	GetClientState()		{ return m_clientState; }
 
-	CClientReqSocket*	socket;
-	CClientCredits*		credits;
-	CFriend*			m_Friend;
+	bool		Disconnected(const wxString& strReason, bool bFromSocket = false);
+	bool		TryToConnect(bool bIgnoreMaxCon = false);
+	bool		Connect();
+	void		ConnectionEstablished();
+	const wxString&	GetUserName() const		{ return m_Username; }
+	//Only use this when you know the real IP or when your clearing it.
+	void		SetIP( uint32 val );
+	uint32		GetIP() const			{ return m_dwUserIP; }
+	bool		HasLowID() const		{ return IsLowID(m_nUserIDHybrid); }
+	wxString	GetFullIP() const		{ return Uint32toStringIP(m_FullUserIP); }
+	uint32		GetConnectIP() const		{ return m_nConnectIP; }
+	uint32		GetUserIDHybrid() const		{ return m_nUserIDHybrid; }
+	void		SetUserIDHybrid(uint32 val);
+	uint16_t	GetUserPort() const		{ return m_nUserPort; }
+	void		SetUserPort(uint16_t port)	{ m_nUserPort = port; }
+	uint64		GetTransferredDown() const	{ return m_nTransferredDown; }
+	uint32		GetServerIP() const		{ return m_dwServerIP; }
+	void		SetServerIP(uint32 nIP)		{ m_dwServerIP = nIP; }
+	uint16		GetServerPort()	const		{ return m_nServerPort; }
+	void		SetServerPort(uint16 nPort)	{ m_nServerPort = nPort; }
+	const CMD4Hash&	GetUserHash() const		{ return m_UserHash; }
+	void		SetUserHash(const CMD4Hash& userhash);
+	void		ValidateHash()			{ m_HasValidHash = !m_UserHash.IsEmpty(); }
+	bool		HasValidHash() const		{ return m_HasValidHash; }
+	uint32		GetVersion() const		{ return m_nClientVersion;}
+	uint8		GetMuleVersion() const		{ return m_byEmuleVersion;}
+	bool		ExtProtocolAvailable() const	{ return m_bEmuleProtocol;}
+	bool		IsEmuleClient()	const		{ return (m_byEmuleVersion > 0);}
+	bool		IsBanned() const;
+	const wxString&	GetClientFilename() const	{ return m_clientFilename; }
+	uint16		GetUDPPort() const		{ return m_nUDPPort; }
+	void		SetUDPPort(uint16 nPort)	{ m_nUDPPort = nPort; }
+	uint8		GetUDPVersion() const		{ return m_byUDPVer; }
+	uint8		GetExtendedRequestsVersion() const { return m_byExtendedRequestsVer; }
+	bool		IsFriend() const		{ return m_Friend != NULL; }
+	bool		IsML() const			{ return m_bIsML; }
+	bool		IsHybrid() const		{ return m_bIsHybrid; }
+	uint32		GetCompatibleClient() const	{ return m_byCompatibleClient; }
+
+	void		ClearDownloadBlockRequests();
+	void		RequestSharedFileList();
+	void		ProcessSharedFileList(const byte* pachPacket, uint32 nSize, wxString& pszDirectory);
+	void		SendSharedDirectories();
+	void		SendSharedFilesOfDirectory(const wxString& strReqDir);
+
+	wxString	GetUploadFileInfo();
+
+	void		SetUserName(const wxString& NewName) { m_Username = NewName; }
+
+	uint8		GetClientSoft() const		{ return m_clientSoft; }
+	void		ReGetClientSoft();
+	bool		ProcessHelloAnswer(const byte* pachPacket, uint32 nSize);
+	bool		ProcessHelloPacket(const byte* pachPacket, uint32 nSize);
+	void		SendHelloAnswer();
+	bool		SendHelloPacket();
+	void		SendMuleInfoPacket(bool bAnswer, bool OSInfo = false);
+	bool		ProcessMuleInfoPacket(const byte* pachPacket, uint32 nSize);
+	void		ProcessMuleCommentPacket(const byte* pachPacket, uint32 nSize);
+	bool		Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash = false) const;
+	void		SetLastSrcReqTime()		{ m_dwLastSourceRequest = ::GetTickCount(); }
+	void		SetLastSrcAnswerTime()		{ m_dwLastSourceAnswer = ::GetTickCount(); }
+	void		SetLastAskedForSources()	{ m_dwLastAskedForSources = ::GetTickCount(); }
+	uint32		GetLastSrcReqTime() const	{ return m_dwLastSourceRequest; }
+	uint32		GetLastSrcAnswerTime() const	{ return m_dwLastSourceAnswer; }
+	uint32		GetLastAskedForSources() const	{ return m_dwLastAskedForSources; }
+	bool		GetFriendSlot() const		{ return m_bFriendSlot; }
+	void		SetFriendSlot(bool bNV)		{ m_bFriendSlot = bNV; }
+	void		SetCommentDirty(bool bDirty = true)	{ m_bCommentDirty = bDirty; }
+	uint8		GetSourceExchange1Version() const	{ return m_bySourceExchange1Ver; }
+	bool		SupportsSourceExchange2() const		{ return m_fSupportsSourceEx2; }
+
+	bool		SafeSendPacket(CPacket* packet);
+
+	void		ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSize, bool largeblocks);
+	void		ProcessRequestPartsPacketv2(const CMemFile& data);
+
+	void		SendPublicKeyPacket();
+	void		SendSignaturePacket();
+	void		ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize);
+	void		ProcessSignaturePacket(const byte* pachPacket, uint32 nSize);
+	uint8		GetSecureIdentState();
+
+	void		SendSecIdentStatePacket();
+	void		ProcessSecIdentStatePacket(const byte* pachPacket, uint32 nSize);
+
+	uint8		GetInfoPacketsReceived() const	{ return m_byInfopacketsReceived; }
+	void		InfoPacketsReceived();
 
 	//upload
-	uint32			compressiongain; // Add show compression
-	uint32  		notcompressed; // Add show compression
-	uint8			GetUploadState()			{return m_byUploadState;}
-	void			SetUploadState(uint8 news)	{m_byUploadState = news;}
-	uint32			GetWaitStartTime()			{return m_dwWaitTime;}
-	uint32			GetWaitTime()				{return m_dwUploadTime-m_dwWaitTime;}
-	bool			IsDownloading()				{return (m_byUploadState == US_UPLOADING);}
-	bool			HasBlocks()					{return !(m_BlockSend_queue.IsEmpty() && m_BlockRequests_queue.IsEmpty());}
-	float			GetKBpsUp()					{return kBpsUp;}
-	uint32			GetScore(bool sysvalue, bool isdownloading = false, bool onlybasevalue = false);
-	void			AddReqBlock(Requested_Block_Struct* reqblock);
-	bool			CreateNextBlockPackage();
-	void			SetUpStartTime(uint32 dwTime = 0);
-	uint32			GetUpStartTimeDelay()		{return ::GetTickCount() - m_dwUploadTime;}
-	void			SetWaitStartTime(uint32 dwTime = 0);
-	void			SendHashsetPacket(char* forfileid);
-	void			SetUploadFileID(unsigned char* tempreqfileid);
-	unsigned char*			GetUploadFileID()       {return requpfileid;}
-	CPartFile*		GetDownloadFile()	{return reqfile;}
-	uint32			SendBlockData(float kBpsToSend);
-	void			ClearUploadBlockRequests();
-	void			SendRankingInfo();
-	void			SendCommentInfo(CKnownFile *file);
-	uint32			GetLastAskedDelay();
-	void			AddRequestCount(unsigned char* fileid);
-	bool 			IsDifferentPartBlock();
-	void			UnBan();
-	void			Ban();
-	bool			m_bAddNextConnect;  // VQB Fix for LowID slots only on connection	
-	uint32			GetBanTime()				{return m_dwBanTime;}
-	uint32			GetAskedCount()				{return m_cAsked;}
-	void			AddAskedCount()				{m_cAsked++;}
-	void			SetAskedCount( uint32 m_cInAsked)				{m_cAsked = m_cInAsked;}
-	void			FlushSendBlocks();			// call this when you stop upload, or the socket might be not able to send
-	void			SetLastUpRequest()			{m_dwLastUpRequest = ::GetTickCount();}
-	uint32			GetLastUpRequest()			{return m_dwLastUpRequest;}
-	void			UDPFileReasked();
-	uint32			GetSessionUp()			{return m_nTransferedUp - m_nCurSessionUp;}
-	void			ResetSessionUp()		{m_nCurSessionUp = m_nTransferedUp;} 
-	void			ProcessUpFileStatus(char* packet,uint32 size);
-	uint16			GetUpPartCount()			{return m_nUpPartCount;}
-	void			DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat);
+	uint8		GetUploadState() const		{ return m_nUploadState; }
+	void		SetUploadState(uint8 news);
+	uint64		GetTransferredUp() const	{ return m_nTransferredUp; }
+	uint64		GetSessionUp() const		{ return m_nTransferredUp - m_nCurSessionUp; }
+	void		ResetSessionUp();
+	uint32		GetUploadDatarate() const	{ return m_nUpDatarate; }
+
+	//uint32		GetWaitTime() const		{ return m_dwUploadTime - GetWaitStartTime(); }
+	uint32		GetUpStartTimeDelay() const	{ return ::GetTickCount() - m_dwUploadTime; }
+	uint32		GetWaitStartTime() const;
+
+	bool		IsDownloading()	const		{ return (m_nUploadState == US_UPLOADING); }
+
+	uint32		GetScore() const	{ return m_score; }
+	uint32		CalculateScore()	{ m_score = CalculateScoreInternal(); return m_score; }
+	void		ClearScore()		{ m_score = 0; }
+	uint16		GetUploadQueueWaitingPosition() const	{ return m_waitingPosition; }
+	void		SetUploadQueueWaitingPosition(uint16 pos)	{ m_waitingPosition = pos; }
+	uint8		GetObfuscationStatus() const;
+	uint16		GetNextRequestedPart() const;
+
+	void		AddReqBlock(Requested_Block_Struct* reqblock);
+	void		CreateNextBlockPackage();
+	void		SetUpStartTime()		{ m_dwUploadTime = ::GetTickCount(); }
+	void		SetWaitStartTime();
+	void		ClearWaitStartTime();
+	void		SendHashsetPacket(const CMD4Hash& forfileid);
+	bool		SupportMultiPacket() const	{ return m_bMultiPacket; }
+	bool		SupportExtMultiPacket() const	{ return m_fExtMultiPacket; }
+
+	void		SetUploadFileID(CKnownFile *newreqfile);
+
+	/**
+	 *Gets the file actually on upload
+	 *
+	 */
+	const CKnownFile* GetUploadFile() const		{ return m_uploadingfile; }
+
+	void		SendOutOfPartReqsAndAddToWaitingQueue();
+	void		ProcessExtendedInfo(const CMemFile *data, CKnownFile *tempreqfile);
+	void		ProcessFileInfo(const CMemFile* data, const CPartFile* file);
+	void		ProcessFileStatus(bool bUdpPacket, const CMemFile* data, const CPartFile* file);
+
+	const CMD4Hash&	GetUploadFileID() const		{ return m_requpfileid; }
+	void		SetUploadFileID(const CMD4Hash& new_id);
+	void		ClearUploadFileID()		{ m_requpfileid.Clear(); m_uploadingfile = NULL;}
+	uint32		SendBlockData();
+	void		ClearUploadBlockRequests();
+	void		SendRankingInfo();
+	void		SendCommentInfo(CKnownFile *file);
+	bool		IsDifferentPartBlock() const;
+	void		UnBan();
+	void		Ban();
+	bool		m_bAddNextConnect;      // VQB Fix for LowID slots only on connection
+	uint32		GetAskedCount() const		{ return m_cAsked; }
+	void		AddAskedCount()			{ m_cAsked++; }
+	void		ClearAskedCount()		{ m_cAsked = 1; }	// 1, because it's cleared *after* the first request...
+	void		FlushSendBlocks();	// call this when you stop upload,
+						// or the socket might be not able to send
+	void		SetLastUpRequest()		{ m_dwLastUpRequest = ::GetTickCount(); }
+	uint32		GetLastUpRequest() const	{ return m_dwLastUpRequest; }
+	size_t		GetUpPartCount() const		{ return m_upPartStatus.size(); }
+
 
 	//download
-	uint32			GetAskedCountDown()				{return m_cDownAsked;} //<<--
-	void			AddAskedCountDown()				{m_cDownAsked++;}
-	void			SetAskedCountDown( uint32 m_cInDownAsked)				{m_cDownAsked = m_cInDownAsked;}
-	uint8			GetDownloadState()			{return m_nDownloadState;}
-	void			SetDownloadState(uint8 byNewState);
-	uint32			GetLastAskedTime()			{return m_dwLastAskedTime;}
-	inline bool		IsPartAvailable(uint16 iPart)	{return	( (iPart >= m_nPartCount) || (!m_abyPartStatus) )? 0:m_abyPartStatus[iPart];}
-	bool			IsUpPartAvailable(uint16 iPart) {return ( (iPart >= m_nUpPartCount) || (!m_abyUpPartStatus) )? 0:m_abyUpPartStatus[iPart];}
-	uint8*			GetPartStatus()				{return m_abyPartStatus;}
-#ifdef DOWNLOADRATE_FILTERED
-	float			GetKBpsDown()				{return kBpsDown;}	// Emilio
-	float			CalculateKBpsDown();
-#else
-	float			GetKBpsDown()				{return m_nDownDatarate/1024.0;}
-	uint32			CalculateDownloadRate();  // replaced by CalculateKBpsDown
-#endif
-	uint16			GetRemoteQueueRank()		{return m_nRemoteQueueRank;}
-	void			SetRemoteQueueFull( bool flag )	{m_bRemoteQueueFull = flag;}
-	bool			IsRemoteQueueFull()			{return m_bRemoteQueueFull;}
-	void			SetRemoteQueueRank(uint16 nr);
-	void			DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat);
-	void			AskForDownload();
-	void			SendStartupLoadReq();
-	void			SendFileRequest();
-	void			ProcessFileInfo(char* packet,uint32 size);
-	void			ProcessFileStatus(char* packet,uint32 size);
-	void			ProcessHashSet(char* packet,uint32 size);
-	bool			AddRequestForAnotherFile(CPartFile* file);
-	void			SendBlockRequests();
-	void			ProcessBlockPacket(char* packet, uint32 size, bool packed = false);
-	uint16			GetAvailablePartCount();
-	bool			SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensions, bool bRemoveCompletely, CPartFile* toFile = NULL);
-	void			DontSwapTo(CPartFile* file);
-	bool			IsSwapSuspended(CPartFile* file);
-	bool			DoSwap(CPartFile* SwapTo, bool anotherfile=false);
-	void			UDPReaskACK(uint16 nNewQR);
-	void			UDPReaskFNF();
-	void			UDPReaskForDownload();
-	bool			IsSourceRequestAllowed();
-	// -khaos--+++> Download Sessions Stuff Imported from eMule 0.30c (Creteil) BEGIN ...
-	void			SetDownStartTime()			{m_dwDownStartTime = ::GetTickCount();}
-	uint32			GetDownTimeDifference()			{uint32 myTime = m_dwDownStartTime; m_dwDownStartTime = 0; return ::GetTickCount() - myTime;}
-	bool			GetTransferredDownMini()		{return m_bTransferredDownMini;}
-	void			SetTransferredDownMini()		{m_bTransferredDownMini=true;}
-	void			InitTransferredDownMini()		{m_bTransferredDownMini=false;}
-	//
-	//	A4AF Stats Stuff:
-	//		In CPartFile::Process, I am going to keep a tally of how many clients
-	//		in that PF's source list are A4AF for other files.  This tally is worthless
-	//		to the PartFile that it belongs to, but when we add all of these counts up for
-	//		each PartFile, we will get an accurate count of how many A4AF requests there are
-	//		total.  This is for the Found Sources section of the tree.  This is a better, faster
-	//		option than looping through the lists for unavailable sources.
-	//
-	uint16			GetA4AFCount()				{return m_OtherRequests_list.GetCount();}
-	// -khaos--+++> Download Sessions Stuff Imported from eMule 0.30c (Creteil) END ...
+	void		SetRequestFile(CPartFile* reqfile);
+	CPartFile*	GetRequestFile() const		{ return m_reqfile; }
 
-	uint16			GetUpCompleteSourcesCount()	{return m_nUpCompleteSourcesCount;}
-	void			SetUpCompleteSourcesCount(uint16 n)	{m_nUpCompleteSourcesCount= n;}
-	
-	int				sourcesslot;
+	uint8		GetDownloadState() const	{ return m_nDownloadState; }
+	void		SetDownloadState(uint8 byNewState);
+	uint32		GetLastAskedTime() const	{ return m_dwLastAskedTime; }
+	void		ResetLastAskedTime()		{ m_dwLastAskedTime = 0; }
+
+	bool		IsPartAvailable(uint16 iPart) const
+					{ return ( iPart < m_downPartStatus.size() ) ? m_downPartStatus.get(iPart) : 0; }
+	bool		IsUpPartAvailable(uint16 iPart) const
+					{ return ( iPart < m_upPartStatus.size() ) ? m_upPartStatus.get(iPart) : 0;}
+
+	const BitVector& GetPartStatus() const		{ return m_downPartStatus; }
+	const BitVector& GetUpPartStatus() const	{ return m_upPartStatus; }
+	float		GetKBpsDown() const				{ return kBpsDown; }
+	float		CalculateKBpsDown();
+	uint16		GetRemoteQueueRank() const	{ return m_nRemoteQueueRank; }
+	uint16		GetOldRemoteQueueRank() const	{ return m_nOldRemoteQueueRank; }
+	void		SetRemoteQueueFull(bool flag)	{ m_bRemoteQueueFull = flag; }
+	bool		IsRemoteQueueFull() const	{ return m_bRemoteQueueFull; }
+	void		SetRemoteQueueRank(uint16 nr);
+	bool		AskForDownload();
+	void		SendStartupLoadReq();
+	void		SendFileRequest();
+	void		ProcessHashSet(const byte* packet, uint32 size);
+	bool		AddRequestForAnotherFile(CPartFile* file);
+	bool		DeleteFileRequest(CPartFile* file);
+	void		DeleteAllFileRequests();
+	void		SendBlockRequests();
+	void		ProcessBlockPacket(const byte* packet, uint32 size, bool packed, bool largeblocks);
+	uint16		GetAvailablePartCount() const;
+
+	bool		SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensions, bool bRemoveCompletely, CPartFile* toFile = NULL);
+	void		UDPReaskACK(uint16 nNewQR);
+	void		UDPReaskFNF();
+	void		UDPReaskForDownload();
+	bool		IsSourceRequestAllowed();
+	uint16		GetUpCompleteSourcesCount() const	{ return m_nUpCompleteSourcesCount; }
+	void		SetUpCompleteSourcesCount(uint16 n)	{ m_nUpCompleteSourcesCount = n; }
 
 	//chat
-	uint8			GetChatState()				{return m_byChatstate;}
-	void			SetChatState(uint8 nNewS)		{m_byChatstate = nNewS;}
+	uint8		GetChatState()			{ return m_byChatstate; }
+	void		SetChatState(uint8 nNewS)	{ m_byChatstate = nNewS; }
+	EChatCaptchaState GetChatCaptchaState() const	{ return (EChatCaptchaState)m_nChatCaptchaState; }
+	void		ProcessCaptchaRequest(CMemFile* data);
+	void		ProcessCaptchaReqRes(uint8 nStatus);
+	void		ProcessChatMessage(wxString message);
+	// message filtering
+	uint8		GetMessagesReceived() const	{ return m_cMessagesReceived; }
+	void		IncMessagesReceived()		{ m_cMessagesReceived < 255 ? ++m_cMessagesReceived : 255; }
+	uint8		GetMessagesSent() const		{ return m_cMessagesSent; }
+	void		IncMessagesSent()		{ m_cMessagesSent < 255 ? ++m_cMessagesSent : 255; }
+	bool		IsSpammer() const		{ return m_fIsSpammer; }
+	void		SetSpammer(bool bVal);
+	bool		IsMessageFiltered(const wxString& message);
 
-	//File Comment 
-	CString			GetFileComment()			{return m_strComment;} 
-	void			SetFileComment(char *desc)		{m_strComment.Format("%s",desc);}
-	uint8			GetFileRate()				{return m_iRate;}
-	void			SetFileRate(int8 iNewRate)		{m_iRate=iNewRate;}
+	//File Comment
+	const wxString&	GetFileComment() const		{ return m_strComment; }
+	uint8		GetFileRating() const		{ return m_iRating; }
+
+	const wxString&	GetSoftStr() const		{ return m_clientSoftString; }
+	const wxString&	GetSoftVerStr() const		{ return m_clientVerString; }
+	const wxString GetServerName() const;
+
+	uint16		GetKadPort() const		{ return m_nKadPort; }
+	void		SetKadPort(uint16 nPort)	{ m_nKadPort = nPort; }
+
+	// Kry - AICH import
+	void		SetReqFileAICHHash(CAICHHash* val);
+	CAICHHash*	GetReqFileAICHHash() const	{return m_pReqFileAICHHash;}
+	bool		IsSupportingAICH() const	{return m_fSupportsAICH & 0x01;}
+	void		SendAICHRequest(CPartFile* pForFile, uint16 nPart);
+	bool		IsAICHReqPending() const	{return m_fAICHRequested; }
+	void		ProcessAICHAnswer(const byte* packet, uint32 size);
+	void		ProcessAICHRequest(const byte* packet, uint32 size);
+	void		ProcessAICHFileHash(CMemFile* data, const CPartFile* file);
+
+	EUtf8Str	GetUnicodeSupport() const;
 
 	// Barry - Process zip file as it arrives, don't need to wait until end of block
-	int unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZipped, BYTE **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
-	// Barry - Sets string to show parts downloading, eg NNNYNNNNYYNYN
-	void 			ShowDownloadingParts(CString *partsYN);
-	void 			UpdateDisplayedInfo(bool force=false);
-	int 			GetFileListRequested() { return m_iFileListRequested; }
-	void 			SetFileListRequested(int iFileListRequested) { m_iFileListRequested = iFileListRequested; }
-	
-	void			ResetFileStatusInfo();
-	
-	CPartFile*		reqfile;
-	
+	int		unzip(Pending_Block_Struct *block, byte *zipped, uint32 lenZipped, byte **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
+	void		UpdateDisplayedInfo(bool force = false);
+	int		GetFileListRequested() const	{ return m_iFileListRequested; }
+	void		SetFileListRequested(int iFileListRequested) { m_iFileListRequested = iFileListRequested; }
+
+	void		ResetFileStatusInfo();
+
+	bool		CheckHandshakeFinished() const;
+
+	bool		GetSentCancelTransfer() const	{ return m_fSentCancelTransfer; }
+	void		SetSentCancelTransfer(bool bVal)	{ m_fSentCancelTransfer = bVal; }
+
+	DEBUG_ONLY( wxString	GetClientFullInfo(); )
+	wxString	GetClientShortInfo();
+
+	const wxString& GetClientOSInfo() const		{ return m_sClientOSInfo; }
+
+	void		ProcessPublicIPAnswer(const byte* pbyData, uint32 uSize);
+	void		SendPublicIPRequest();
+
+	/**
+	 * Sets the current socket of the client.
+	 *
+	 * @param socket The pointer to the new socket, can be NULL.
+	 *
+	 * Please note that this function DOES NOT delete the old socket.
+	 */
+	void		SetSocket(CClientTCPSocket* socket);
+
+	/**
+	 * Function for accessing the socket owned by a client.
+	 *
+	 * @return The pointer (can be NULL) to the socket used by this client.
+	 *
+	 * Please note that the socket object is quite volatile and can be removed
+	 * from one function call to the next, therefore, you should normally use
+	 * the safer functions below, which all check if the socket is valid before
+	 * deferring it.
+	 */
+	CClientTCPSocket* GetSocket() const		{ return m_socket; }
+
+	/**
+	 * Safe function for checking if the socket is connected.
+	 *
+	 * @return True if the socket exists and is connected, false otherwise.
+	 */
+	bool		IsConnected() const;
+
+	/**
+	 * Safe function for sending packets.
+	 *
+	 * @return True if the socket exists and the packet was sent, false otherwise.
+	 */
+	bool		SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true);
+
+	/**
+	 * Safe function for setting the download limit of the socket.
+	 *
+	 * @return Current download speed of the client.
+	 */
+	float		SetDownloadLimit(uint32 reducedownload);
+
+	/**
+	 * Sends a message to a client
+	 *
+	 * @return True if sent, false if connecting
+	 */
+	bool		SendChatMessage(const wxString& message);
+
+	bool		HasBlocks() const		{ return !m_BlockRequests_queue.empty(); }
+
+	/* Source comes from? */
+	ESourceFrom		GetSourceFrom() const	{ return m_nSourceFrom; }
+	void			SetSourceFrom(ESourceFrom val)	{ m_nSourceFrom = val; }
+
+	/* Kad buddy support */
+	// ID
+	const byte*	GetBuddyID() const		{ return m_achBuddyID; }
+	void		SetBuddyID(const byte* m_achTempBuddyID);
+	bool		HasValidBuddyID() const		{ return m_bBuddyIDValid; }
+	/* IP */
+	void		SetBuddyIP( uint32 val )	{ m_nBuddyIP = val; }
+	uint32		GetBuddyIP() const		{ return m_nBuddyIP; }
+	/* Port */
+	void		SetBuddyPort( uint16 val )	{ m_nBuddyPort = val; }
+	uint16		GetBuddyPort() const		{ return m_nBuddyPort; }
+
+	//KadIPCheck
+	bool		SendBuddyPingPong()		{ return m_dwLastBuddyPingPongTime < ::GetTickCount(); }
+	bool		AllowIncomeingBuddyPingPong()	{ return m_dwLastBuddyPingPongTime < (::GetTickCount()-(3*60*1000)); }
+	void		SetLastBuddyPingPongTime()	{ m_dwLastBuddyPingPongTime = (::GetTickCount()+(10*60*1000)); }
+	EKadState	GetKadState() const		{ return m_nKadState; }
+	void		SetKadState(EKadState nNewS)	{ m_nKadState = nNewS; }
+	uint8		GetKadVersion()			{ return m_byKadVersion; }
+	void		ProcessFirewallCheckUDPRequest(CMemFile *data);
+	// Kad added by me
+	bool		SendBuddyPing();
+
+	/* Returns the client hash type (SO_EMULE, mldonkey, etc) */
+	int		GetHashType() const;
+
+	/**
+	 * Checks that a client isn't aggressively re-asking for files.
+	 *
+	 * Call this when a file is requested. If the time since the last request is
+	 * less than MIN_REQUESTTIME, 3 is added to the m_Aggressiveness variable.
+	 * If the time since the last request is >= MIN_REQUESTTIME, the variable is
+	 * decremented by 1. The client is banned if the variable reaches 10 or above.
+	 *
+	 * To check if a client is aggressive use the IsClientAggressive() function.
+	 *
+	 * Currently this function is called when the following packets are received:
+	 *  - OP_STARTUPLOADREQ
+	 *  - OP_REASKFILEPING
+	 */
+	void		CheckForAggressive();
+
+	const wxString&	GetClientModString() const	{ return m_strModVersion; }
+
+	const wxString&	GetClientVerString() const	{ return m_fullClientVerString; }
+
+	const wxString&	GetVersionString() const	{ return m_clientVersionString; }
+
+	void		UpdateStats();
+
+	/* Returns a pointer to the credits, only for hash purposes */
+	void*		GetCreditsHash() const { return (void*)credits; }
+
+	uint16		GetLastDownloadingPart() const { return m_lastDownloadingPart; }
+
+	bool		GetOSInfoSupport() const { return m_fOsInfoSupport; }
+
+	bool		GetVBTTags() const { return m_fValueBasedTypeTags; }
+
+	uint16		GetLastPartAsked() const { return m_lastPartAsked; }
+
+	void		SetLastPartAsked(uint16 nPart) { m_lastPartAsked = nPart; }
+
+	CFriend*	GetFriend() const { return m_Friend; }
+
+	void		SetFriend(CFriend* newfriend) { m_Friend = newfriend; }
+
+	bool		IsIdentified() const;
+
+	bool		IsBadGuy() const;
+
+	bool		SUIFailed() const;
+
+	bool		SUINeeded() const;
+
+	bool		SUINotSupported() const;
+
+	uint64		GetDownloadedTotal() const;
+
+	uint64		GetUploadedTotal() const;
+
+	double		GetScoreRatio() const;
+
+	uint32		GetCreationTime() const { return m_nCreationTime; }
+
+	bool		SupportsLargeFiles() const { return m_fSupportsLargeFiles; }
+
+	EIdentState	GetCurrentIdentState() const { return credits ? credits->GetCurrentIdentState(GetIP()) : IS_NOTAVAILABLE; }
+
+#ifdef __DEBUG__
+	/* Kry - Debug. See connection_reason definition comment below */
+	void		SetConnectionReason(const wxString& reason) { connection_reason = reason; }
+#endif
+
+	// Encryption / Obfuscation / ConnectOptions
+	bool		SupportsCryptLayer() const			{ return m_fSupportsCryptLayer; }
+	bool		RequestsCryptLayer() const			{ return SupportsCryptLayer() && m_fRequestsCryptLayer; }
+	bool		RequiresCryptLayer() const			{ return RequestsCryptLayer() && m_fRequiresCryptLayer; }
+	bool		SupportsDirectUDPCallback() const		{ return m_fDirectUDPCallback != 0 && HasValidHash() && GetKadPort() != 0; }
+	uint32_t	GetDirectCallbackTimeout() const		{ return m_dwDirectCallbackTimeout; }
+	bool		HasObfuscatedConnectionBeenEstablished() const	{ return m_hasbeenobfuscatinglately; }
+
+	void		SetCryptLayerSupport(bool bVal)			{ m_fSupportsCryptLayer = bVal ? 1 : 0; }
+	void		SetCryptLayerRequest(bool bVal)			{ m_fRequestsCryptLayer = bVal ? 1 : 0; }
+	void		SetCryptLayerRequires(bool bVal)		{ m_fRequiresCryptLayer = bVal ? 1 : 0; }
+	void		SetDirectUDPCallbackSupport(bool bVal)		{ m_fDirectUDPCallback = bVal ? 1 : 0; }
+	void		SetConnectOptions(uint8_t options, bool encryption = true, bool callback = true); // shortcut, sets crypt, callback, etc from the tagvalue we receive
+	bool		ShouldReceiveCryptUDPPackets() const;
+
+	bool		HasDisabledSharedFiles() const { return m_fNoViewSharedFiles; }
+
 private:
 
+	CClientCredits	*credits;
+	CFriend		*m_Friend;
+
+	uint64		m_nTransferredUp;
+	sint64		m_nCurQueueSessionPayloadUp;
+	sint64		m_addedPayloadQueueSession;
+
+	struct TransferredData {
+		uint32	datalen;
+		uint32	timestamp;
+	};
+
+	//////////////////////////////////////////////////////////
+	// Upload data rate computation
+	//
+	uint32		m_nUpDatarate;
+	uint32		m_nSumForAvgUpDataRate;
+	std::list<TransferredData> m_AvarageUDR_list;
+
+
+	/**
+	 * This struct is used to keep track of CPartFiles which this source shares.
+	 */
+	struct A4AFStamp {
+		//! Signifies if this sources has needed parts for this file.
+		bool NeededParts;
+		//! This is set when we wish to avoid swapping to this file for a while.
+		uint32 timestamp;
+	};
+
+	//! I typedef in the name of readability!
+	typedef std::map<CPartFile*, A4AFStamp> A4AFList;
+	//! This list contains all PartFiles which this client can be used as a source for.
+	A4AFList m_A4AF_list;
+
+	/**
+	 * Helper function used by SwapToAnotherFile().
+	 *
+	 * @param it The iterator of the PartFile to be examined.
+	 * @param ignorenoneeded Do not check for the status NoNeededParts when checking the file.
+	 * @param ignoresuspended Do not check the timestamp when checking the file.
+	 * @return True if the file is a viable target, false otherwise.
+	 *
+	 * This function is used to perform checks to see if we should consider
+	 * this file a viable target for A4AF swapping. Unless ignoresuspended is
+	 * true, it will examine the timestamp of the file and reset it if needed.
+	 */
+	bool		IsValidSwapTarget( A4AFList::iterator it, bool ignorenoneeded = false, bool ignoresuspended = false );
+
+	CPartFile*	m_reqfile;
+
 	// base
-	void	Init();
-	void	ProcessHelloTypePacket(CSafeMemFile* data);
-	void	SendHelloTypePacket(CMemFile* data);
-	bool	m_bIsBotuser;
-//	bool	isfriend;
-	uint32	m_dwUserIP;
-	uint32	m_dwServerIP;
-	uint32	m_nUserID;
-	int16	m_nUserPort;
-	int16	m_nServerPort;
-	uint32	m_nClientVersion;
-	uint32	m_cSendblock;
-	uint8	m_byEmuleVersion;
-	uint8	m_byDataCompVer;
-	bool	m_bEmuleProtocol;
-	char*	m_pszUsername;
-	char	m_szFullUserIP[21];
-	char	m_achUserHash[16];
-	uint16	m_nUDPPort;
-	uint8	m_byUDPVer;
-	uint8	m_bySourceExchangeVer;
-	uint8	m_byAcceptCommentVer;
-	uint8	m_byExtendedRequestsVer;
-	uint8	m_cFailed;
-	uint8	m_clientSoft;
-	uint32	m_dwLastSourceRequest;
-	uint32	m_dwLastSourceAnswer;
-	uint32	m_dwLastAskedForSources;
-	int	m_iFileListRequested;
-	bool	m_bFriendSlot;
-	bool	m_bCommentDirty;
-	bool	m_bIsHybrid;
-	bool	m_bIsNewMLD;
-	bool	m_bIsML;
-	bool	m_bGPLEvildoer;
- 	bool	m_bSupportsPreview;
- 	bool	m_bPreviewReqPending;
- 	bool	m_bPreviewAnsPending;	
- 	
-	// Kry - Secure Hash import
-	ESecureIdentState	m_SecureIdentState; 
-	uint8	m_byInfopacketsReceived;			// have we received the edonkeyprot and emuleprot packet already (see InfoPacketsReceived() )
-	uint32	m_dwLastSignatureIP;
-	uint8	m_bySupportSecIdent;
-	
-	uint32	m_byCompatibleClient;
-	CTypedPtrList<CPtrList, Packet*>				m_WaitingPackets_list;
-	CList<PartFileStamp, PartFileStamp>				m_DontSwap_list;
-	DWORD	m_lastRefreshedDLDisplay;
+	void		Init();
+	bool		ProcessHelloTypePacket(const CMemFile& data);
+	void		SendHelloTypePacket(CMemFile* data);
+	void		SendFirewallCheckUDPRequest();
+	void		ClearHelloProperties(); // eMule 0.42
+
+	uint32		m_dwUserIP;
+	uint32		m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
+	uint32		m_dwServerIP;
+	uint32		m_nUserIDHybrid;
+	uint16_t	m_nUserPort;
+	int16		m_nServerPort;
+	uint32		m_nClientVersion;
+	uint32		m_cSendblock;
+	uint8		m_byEmuleVersion;
+	uint8		m_byDataCompVer;
+	bool		m_bEmuleProtocol;
+	wxString	m_Username;
+	uint32		m_FullUserIP;
+	CMD4Hash	m_UserHash;
+	bool		m_HasValidHash;
+	uint16		m_nUDPPort;
+	uint8		m_byUDPVer;
+	uint8		m_bySourceExchange1Ver;
+	uint8		m_byAcceptCommentVer;
+	uint8		m_byExtendedRequestsVer;
+	uint8		m_clientSoft;
+	uint32		m_dwLastSourceRequest;
+	uint32		m_dwLastSourceAnswer;
+	uint32		m_dwLastAskedForSources;
+	int		m_iFileListRequested;
+	bool		m_bFriendSlot;
+	bool		m_bCommentDirty;
+	bool		m_bIsHybrid;
+	bool		m_bIsML;
+	bool		m_bSupportsPreview;
+	bool		m_bUnicodeSupport;
+	uint16		m_nKadPort;
+	bool		m_bMultiPacket;
+	ClientState	m_clientState;
+	CClientTCPSocket*	m_socket;
+	bool		m_fNeedOurPublicIP; // we requested our IP from this client
+
+	// Kry - Secure User Ident import
+	ESecureIdentState	m_SecureIdentState;
+	uint8		m_byInfopacketsReceived;		// have we received the edonkeyprot and emuleprot packet already (see InfoPacketsReceived() )
+	uint32		m_dwLastSignatureIP;
+	uint8		m_bySupportSecIdent;
+
+	uint32		m_byCompatibleClient;
+	std::list<CPacket*>	m_WaitingPackets_list;
+	uint32		m_lastRefreshedDLDisplay;
 
 	//upload
-	void CreateStandartPackets(unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
-	void CreatePackedPackets(unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
-	float		kBpsUp;
-	uint32		msSentPrev;
-	bool		m_bBanned;
-	uint32		m_nTransferedUp;
-	uint8		m_byUploadState;
-	uint32		m_dwWaitTime;
+	void CreateStandardPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
+	void CreatePackedPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
+	uint32 CalculateScoreInternal();
+
+	uint8		m_nUploadState;
 	uint32		m_dwUploadTime;
-	uint32		m_nMaxSendAllowed;
 	uint32		m_cAsked;
 	uint32		m_dwLastUpRequest;
-	uint32		m_dwBanTime;
-	bool		m_bUsedComprUp;	//only used for interface output
 	uint32		m_nCurSessionUp;
 	uint16		m_nUpPartCount;
-	static		CBarShader s_UpStatusBar;
-	unsigned char		requpfileid[16];
+	CMD4Hash	m_requpfileid;
 	uint16		m_nUpCompleteSourcesCount;
-	public:
-	uint8*		m_abyUpPartStatus;
-	uint16		m_lastPartAsked;
-	DWORD		m_dwEnteredConnectedState;
+	uint32		m_score;
+	uint16		m_waitingPosition;
 
-	private:
-	CTypedPtrList<CPtrList, Packet*>				 m_BlockSend_queue;
-	CTypedPtrList<CPtrList, Requested_Block_Struct*> m_BlockRequests_queue;
-	CTypedPtrList<CPtrList, Requested_Block_Struct*> m_DoneBlocks_list;
-	CTypedPtrList<CPtrList, Requested_File_Struct*>	 m_RequestedFiles_list;
+	//! This vector contains the avilability of parts for the file that the user
+	//! is requesting. When changing it, be sure to call CKnownFile::UpdatePartsFrequency
+	//! so that the files know the actual availability of parts.
+	BitVector	m_upPartStatus;
+	uint16		m_lastPartAsked;
+	wxString	m_strModVersion;
+
+	std::list<Requested_Block_Struct*>	m_BlockRequests_queue;
+	std::list<Requested_Block_Struct*>	m_DoneBlocks_list;
+
 	//download
 	bool		m_bRemoteQueueFull;
-	bool		usedcompressiondown; //only used for interface output
 	uint8		m_nDownloadState;
 	uint16		m_nPartCount;
-	uint32		m_cDownAsked;
-	uint8*		m_abyPartStatus;
 	uint32		m_dwLastAskedTime;
-	char*		m_pszClientFilename;
-	uint32		m_nTransferedDown;
-	// -khaos--+++> Download Session Stats Imported from eMule 0.30c (Creteil) BEGIN ...
-	bool		m_bTransferredDownMini;
-	uint32		m_dwDownStartTime;
-	// -khaos--+++> Download Session Stats Imported from eMule 0.30c (Creteil) END ...
-	uint32      m_nLastBlockOffset;   // Patch for show parts that you download [Cax2]
+	wxString	m_clientFilename;
+	uint64		m_nTransferredDown;
+	uint16		m_lastDownloadingPart;   // last Part that was downloading
 	uint16		m_cShowDR;
 	uint32		m_dwLastBlockReceived;
 	uint16		m_nRemoteQueueRank;
+	uint16		m_nOldRemoteQueueRank;
 	bool		m_bCompleteSource;
 	bool		m_bReaskPending;
 	bool		m_bUDPPending;
 	bool		m_bHashsetRequested;
 
-	CTypedPtrList<CPtrList,Pending_Block_Struct*>	m_PendingBlocks_list;
-	CTypedPtrList<CPtrList,Requested_Block_Struct*>	m_DownloadBlocks_list;
-#ifdef DOWNLOADRATE_FILTERED
-// Emilio: simplified download rate calculation
+	std::list<Pending_Block_Struct*>	m_PendingBlocks_list;
+	std::list<Requested_Block_Struct*>	m_DownloadBlocks_list;
+
+	// download speed calculation
 	float		kBpsDown;
-	float		fDownAvgFilter;
 	uint32		msReceivedPrev;
 	uint32		bytesReceivedCycle;
-#else
-	uint32		m_nDownDatarate;
-	uint32		m_nDownDataRateMS;
-	uint32		m_nAvDownDatarate;  // unused
-	uint32		m_nSumForAvgDownDataRate;
-	CList<TransferredData>					m_AvarageDDR_list;
-	sint32	sumavgDDR;	// unused
-	sint32	sumavgUDR;	// unused
-#endif
-	static CBarShader s_StatusBar;
 	// chat
-	uint8 m_byChatstate;
-	CString m_strComment;
-	int8 m_iRate;
-	unsigned int m_fHashsetRequesting : 1, // we have sent a hashset request to this client
-	m_fSharedDirectories : 1; // client supports OP_ASKSHAREDIRS opcodes
+	wxString	m_strComment;
+	uint8		m_byChatstate;
+	uint8		m_nChatCaptchaState;
+	uint8		m_cCaptchasSent;
+	int8		m_iRating;
+	uint8		m_cMessagesReceived;		// count of chatmessages he sent to me
+	uint8		m_cMessagesSent;			// count of chatmessages I sent to him
+	wxString	m_strCaptchaChallenge;
+	wxString	m_strCaptchaPendingMsg;
+
+	unsigned int
+		m_fHashsetRequesting : 1, // we have sent a hashset request to this client
+		m_fNoViewSharedFiles : 1, // client has disabled the 'View Shared Files' feature,
+					  // if this flag is not set, we just know that we don't know
+					  // for sure if it is enabled
+		m_fSupportsPreview   : 1,
+		m_fIsSpammer	     : 1,
+		m_fSentCancelTransfer: 1, // we have sent an OP_CANCELTRANSFER in the current connection
+		m_fSharedDirectories : 1, // client supports OP_ASKSHAREDIRS opcodes
+		m_fSupportsAICH      : 3,
+		m_fAICHRequested     : 1,
+		m_fSupportsLargeFiles: 1,
+		m_fSentOutOfPartReqs : 1,
+		m_fExtMultiPacket    : 1,
+		m_fRequestsCryptLayer: 1,
+		m_fSupportsCryptLayer: 1,
+		m_fRequiresCryptLayer: 1,
+		m_fSupportsSourceEx2 : 1,
+		m_fSupportsCaptcha   : 1,
+		m_fDirectUDPCallback : 1;
+
+	unsigned int
+		m_fOsInfoSupport : 1,
+		m_fValueBasedTypeTags : 1;
 
 	/* Razor 1a - Modif by MikaelB */
 
-public:
+	bool		m_bHelloAnswerPending;
 
-	/* m_OtherRequests_list --> public instead of private */
-	CTypedPtrList<CPtrList, CPartFile*>	m_OtherRequests_list;
-	/* Same for m_OtherNoNeeded_list --> public instead of private (Creteil) */
-	CTypedPtrList<CPtrList, CPartFile*>	m_OtherNoNeeded_list;
+	//! This vector contains the avilability of parts for the file we requested
+	//! from this user. When changing it, be sure to call CPartFile::UpdatePartsFrequency
+	//! so that the files know the actual availability of parts.
+	BitVector	m_downPartStatus;
 
-	/* IsValidSource function
-	 * @return true id it's valid source
-	*/
-	bool IsValidSource() const
-	{
-		return m_ValidSource;
-	};
+	CAICHHash*	m_pReqFileAICHHash;
 
-	/* SetValidSource function
-	 * @param boolean - set valid source
-	*/
-	void SetValidSource(bool in)
-	{
-		m_ValidSource = in;
-	};
+	ESourceFrom	m_nSourceFrom;
 
-	/* SwapToThisFile function
-	 * @param CPartFile* - the file
-	*/
-	void SwapToThisFile(CPartFile* file);
+	/* Kad Stuff */
+	byte		m_achBuddyID[16];
+	bool		m_bBuddyIDValid;
+	uint32		m_nBuddyIP;
+	uint16		m_nBuddyPort;
 
-private:
+	EKadState	m_nKadState;
 
-	/* valid source attribute */
-	bool m_ValidSource;
+	uint8		m_byKadVersion;
+	uint32		m_dwLastBuddyPingPongTime;
+	uint32_t	m_dwDirectCallbackTimeout;
 
-	/* End modif */
+	//! This keeps track of aggressive requests for files.
+	uint16		m_Aggressiveness;
+	//! This tracks the time of the last time since a file was requested
+	uint32		m_LastFileRequest;
 
-	// Support for tag ET_MOD_VERSION [BlackRat]
-public:
+	bool		m_OSInfo_sent;
 
-	const wxString	GetClientModString() const { return m_clientModString; }
-	const wxString	GetClientVerString() const { return m_clientVerString; }
+	wxString	m_clientSoftString;	/* software name */
+	wxString	m_clientVerString;	/* version + optional mod name */
+	wxString	m_clientVersionString;	/* version string */
+	wxString	m_fullClientVerString;	/* full info string */
+	wxString	m_sClientOSInfo;
+	wxString	m_pendingMessage;
 
-private:
+	int		SecIdentSupRec;
 
-	wxString		m_clientModString; 
-	wxString		m_clientVerString;
-	
-	// Hash anti-thief from HoaX_69 [BlackRat]
-public:
+	CKnownFile*	m_uploadingfile;
 
-	bool			thief;  // is a thief ?
-	uint64	getUID() 
-	{
-		uint64 ip = ((uint64) m_dwUserIP) << 32;
-		uint64 port = ((uint64) m_nUserPort) << 16;
-		uint64 uid = ip + port;
-		return uid;
-	}
-	//return ((uint64)m_dwUserIP<<32)+((uint64)m_nUserPort<<16); }
-	int	leechertype; // what kind of leecher is it ?
-  
+	uint8		m_MaxBlockRequests;
+
+	// needed for stats
+	uint32		m_lastClientSoft;
+	uint32		m_lastClientVersion;
+	wxString	m_lastOSInfo;
+
+	/* For buddies timeout */
+	uint32		m_nCreationTime;
+
+	/* Calculation of last average speed */
+	uint32		m_lastaverage;
+	uint32		m_last_block_start;
+
+	/* Save the encryption status for display when disconnected */
+	bool		m_hasbeenobfuscatinglately;
+
+	/* Kry - Debug thing. Clients created just to check their data
+	   have this string set to the reason we want to check them.
+	   Obviously, once checked, we disconnect them. Take that, sucker.
+	   This debug code is just for me I'm afraid. */
+#ifdef __DEBUG__
+	wxString	connection_reason;
+#endif
 };
 
+
+#define	MAKE_CLIENT_VERSION(mjr, min, upd) \
+	((uint32)(mjr)*100U*10U*100U + (uint32)(min)*100U*10U + (uint32)(upd)*100U)
+
+
 #endif // UPDOWNCLIENT_H
+// File_checked_for_headers
