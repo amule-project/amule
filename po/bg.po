@@ -11,14 +11,14 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2017-03-17 12:13+0100\n"
+"PO-Revision-Date: 2017-05-24 12:00+0200\n"
 "Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: bg\n"
-"X-Generator: Poedit 2.0beta4\n"
+"X-Generator: Poedit 2.0.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/AddFriend.cpp:45
@@ -31,7 +31,7 @@ msgstr "Трябва да въведете валиден адрес и порт
 
 #: src/AddFriend.cpp:61 src/AddFriend.cpp:67
 msgid "Information"
-msgstr "Информация:"
+msgstr ""
 
 #: src/AddFriend.cpp:67
 msgid "The specified userhash is not valid!"
@@ -88,14 +88,13 @@ msgstr ""
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:346
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
-msgstr "Инфо"
+msgstr ""
 
 #: src/amule.cpp:449
-#, fuzzy
 msgid ""
 "\n"
 "EC configuration"
-msgstr "Потвърждение за изход"
+msgstr ""
 
 #: src/amule.cpp:452
 msgid "Password set and external connections enabled."
@@ -104,7 +103,7 @@ msgstr ""
 #: src/amule.cpp:463 src/KadDlg.cpp:183 src/KadDlg.cpp:189
 #: src/PrefsUnifiedDlg.cpp:750 src/SharedFilesCtrl.cpp:318
 msgid "WARNING"
-msgstr "ПРЕДУПРЕЖДЕНИЕ"
+msgstr ""
 
 #: src/amule.cpp:589
 msgid ""
@@ -132,7 +131,7 @@ msgstr ""
 #: src/amule-remote-gui.cpp:308 src/amule-remote-gui.cpp:330
 #: src/amule-remote-gui.cpp:332 src/amule-remote-gui.cpp:644
 msgid "ERROR"
-msgstr "ГРЕШКА"
+msgstr ""
 
 #: src/amule.cpp:746
 #, c-format
@@ -371,7 +370,7 @@ msgstr ""
 #: src/amuled.cpp:780
 #, c-format
 msgid "ERROR: %s"
-msgstr "ГРЕШКА: %s"
+msgstr ""
 
 #: src/amuleDlg.cpp:238
 #, c-format
@@ -407,19 +406,17 @@ msgstr ""
 
 #: src/amuleDlg.cpp:502
 msgid "Website: http://www.amule.org \n"
-msgstr "уебсайт: http://www.amule.org \n"
+msgstr ""
 
 #: src/amuleDlg.cpp:503
 msgid "Forum: http://forum.amule.org \n"
-msgstr "форум: http://forum.amule.org \n"
+msgstr "форум: http://forum.amule.org\n"
 
 #: src/amuleDlg.cpp:504
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
 msgstr ""
-"Отговори: http://wiki.amule.org\n"
-"\n"
 
 #: src/amuleDlg.cpp:505
 msgid "Contact: admin@amule.org (administrative issues) \n"
@@ -451,7 +448,7 @@ msgstr "http://kademlia.scs.cs.nyu.edu\n"
 #: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
 #: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
-msgstr "Съобщение"
+msgstr ""
 
 #: src/amuleDlg.cpp:550
 msgid "aMule dialog destroyed"
@@ -570,7 +567,7 @@ msgstr ""
 #: src/amuleDlg.cpp:1337 src/amuleDlg.cpp:1473 src/muuli_wdr.cpp:1673
 #: src/muuli_wdr.cpp:3532
 msgid "Networks"
-msgstr "Мрежи"
+msgstr ""
 
 #: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3532
 msgid "Networks Window"
@@ -578,7 +575,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:3533
 msgid "Searches"
-msgstr "Търсения"
+msgstr ""
 
 #: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:3533
 msgid "Searches Window"
@@ -587,7 +584,7 @@ msgstr ""
 #: src/amuleDlg.cpp:1339 src/DownloadListCtrl.cpp:643 src/muuli_wdr.cpp:426
 #: src/muuli_wdr.cpp:1788 src/muuli_wdr.cpp:3534 src/Statistics.cpp:757
 msgid "Downloads"
-msgstr "Файлове за сваляне"
+msgstr ""
 
 #: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3534
 #, fuzzy
@@ -631,7 +628,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3541
 msgid "Import"
-msgstr "Вмъкване"
+msgstr ""
 
 #: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3541
 msgid "The partfile importer tool"
@@ -640,7 +637,7 @@ msgstr ""
 #: src/amuleDlg.cpp:1348 src/muuli_wdr.cpp:3542
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 msgid "About"
-msgstr "За"
+msgstr ""
 
 #: src/amuleDlg.cpp:1348 src/muuli_wdr.cpp:3542
 msgid "About/Help"
@@ -690,7 +687,7 @@ msgstr "Свързване..."
 
 #: src/amule-remote-gui.cpp:308
 msgid "Connection failed "
-msgstr "Неуспех при свързване"
+msgstr "Неуспех при свързване "
 
 #: src/amule-remote-gui.cpp:319
 msgid "Remote GUI EC event handler"
@@ -711,11 +708,11 @@ msgstr ""
 
 #: src/amule-remote-gui.cpp:419
 msgid "Ready"
-msgstr "Готов"
+msgstr ""
 
 #: src/amule-remote-gui.cpp:596 src/TransferWnd.cpp:340
 msgid "All"
-msgstr "всички"
+msgstr "Всички"
 
 #: src/amule-remote-gui.cpp:642
 #, c-format
@@ -847,7 +844,7 @@ msgstr "Категория"
 
 #: src/CatDialog.cpp:87
 msgid "New Category"
-msgstr "Нова категория"
+msgstr ""
 
 #: src/CatDialog.cpp:125
 msgid "Choose a folder for incoming files"
@@ -949,15 +946,15 @@ msgstr ""
 
 #: src/ClientDetailDialog.cpp:121
 msgid "Enabled"
-msgstr "Активирай"
+msgstr ""
 
 #: src/ClientDetailDialog.cpp:122
 msgid "Supported"
-msgstr "Поддържа се"
+msgstr ""
 
 #: src/ClientDetailDialog.cpp:123 src/ClientRef.cpp:192
 msgid "Not supported"
-msgstr "Не се поддържа"
+msgstr ""
 
 #: src/ClientDetailDialog.cpp:124
 msgid "Disabled"
@@ -1110,7 +1107,7 @@ msgstr "Автоматичен [Hi]"
 
 #: src/DataToText.cpp:40 src/SharedFilesCtrl.cpp:137
 msgid "Very low"
-msgstr "Много нисък"
+msgstr ""
 
 #: src/DataToText.cpp:41 src/DownloadListCtrl.cpp:646 src/muuli_wdr.cpp:2393
 #: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
@@ -1132,11 +1129,11 @@ msgstr "Високо"
 
 #: src/DataToText.cpp:44 src/SharedFilesCtrl.cpp:141
 msgid "Very High"
-msgstr "Много висок"
+msgstr ""
 
 #: src/DataToText.cpp:45 src/SharedFilesCtrl.cpp:142
 msgid "Release"
-msgstr "Пусни"
+msgstr ""
 
 #: src/DataToText.cpp:59
 msgid "Asking"
@@ -1219,7 +1216,7 @@ msgstr ""
 #: src/DataToText.cpp:127 src/muuli_wdr.cpp:198 src/muuli_wdr.cpp:3287
 #: src/SearchDlg.cpp:109 src/TextClient.cpp:717
 msgid "Kad"
-msgstr "Kad"
+msgstr ""
 
 #: src/DataToText.cpp:128
 msgid "Source Exchange"
@@ -1227,7 +1224,7 @@ msgstr ""
 
 #: src/DataToText.cpp:129
 msgid "Passive"
-msgstr "Пасивно"
+msgstr ""
 
 #: src/DataToText.cpp:130
 msgid "Link"
@@ -1327,16 +1324,12 @@ msgid "Last Reception"
 msgstr ""
 
 #: src/DownloadListCtrl.cpp:411
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected file?"
 msgstr ""
-"Сигурни ли сте,че желаете да откажете свалянето и изтриете тези файлове ?\n"
 
 #: src/DownloadListCtrl.cpp:413
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr ""
-"Сигурни ли сте,че желаете да откажете свалянето и изтриете тези файлове ?\n"
 
 #: src/DownloadListCtrl.cpp:554 src/SharedFilesCtrl.cpp:203
 #, c-format
@@ -1686,7 +1679,7 @@ msgstr ""
 
 #: src/ExternalConn.cpp:1450
 msgid "File not found."
-msgstr "Файлът не бе открит."
+msgstr ""
 
 #: src/ExternalConn.cpp:1455
 msgid "Invalid file name."
@@ -1975,10 +1968,8 @@ msgstr ""
 "Сигурни ли сте,че желаете да откажете свалянето и изтриете тези файлове ?"
 
 #: src/FriendListCtrl.cpp:171
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected friends?"
 msgstr ""
-"Сигурни ли сте,че желаете да откажете свалянето и изтриете тези файлове ?\n"
 
 #: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:530
 msgid ""
@@ -2004,7 +1995,7 @@ msgstr ""
 
 #: src/GenericClientListCtrl.cpp:598
 msgid "Send message"
-msgstr "Изпращане на съобщение"
+msgstr ""
 
 #: src/GenericClientListCtrl.cpp:600
 msgid "Swap to this file"
@@ -2034,6 +2025,7 @@ msgid "On Queue: %u"
 msgstr "На опашката"
 
 #: src/GenericClientListCtrl.cpp:1029
+#, fuzzy
 msgid "Uploading"
 msgstr "Качване"
 
@@ -2076,9 +2068,9 @@ msgid "Critical error while writing downloaded file"
 msgstr ""
 
 #: src/HTTPDownload.cpp:277
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %d bytes"
-msgstr "Свален:"
+msgstr ""
 
 #: src/HTTPDownload.cpp:281
 #, c-format
@@ -2270,11 +2262,11 @@ msgstr ""
 
 #: src/KnownFile.cpp:1548 src/muuli_wdr.cpp:3340
 msgid "Requested"
-msgstr "Поискани"
+msgstr ""
 
 #: src/KnownFile.cpp:1549
 msgid "Accepted"
-msgstr "признат"
+msgstr "Прието"
 
 #: src/KnownFile.cpp:1551
 msgid "Complete sources"
@@ -2322,12 +2314,12 @@ msgstr "Пауза"
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:635
 #: src/PartFile.cpp:3711 src/TransferWnd.cpp:349
 msgid "Erroneous"
-msgstr "Неправилни"
+msgstr ""
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:633
 #: src/PartFile.cpp:3720 src/TransferWnd.cpp:347
 msgid "Waiting"
-msgstr "Изчакване"
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:119 src/libs/ec/cpp/RemoteConnect.cpp:127
 msgid "You must specify a non-empty password."
@@ -2380,11 +2372,11 @@ msgstr ""
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "ERROR: "
-msgstr "ГРЕШКА: "
+msgstr ""
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
-msgstr "ПРЕДУПРЕЖДЕНИЕ:"
+msgstr ""
 
 #: src/MuleNotebook.cpp:185 src/muuli_wdr.cpp:901 src/muuli_wdr.cpp:1430
 #: src/muuli_wdr.cpp:3235 src/muuli_wdr.cpp:3505
@@ -2402,7 +2394,7 @@ msgstr "копие"
 
 #: src/MuleTextCtrl.cpp:81
 msgid "Paste"
-msgstr "Постави"
+msgstr ""
 
 #: src/MuleTextCtrl.cpp:82 src/muuli_wdr.cpp:385 src/muuli_wdr.cpp:832
 #: src/utils/aLinkCreator/src/alcframe.cpp:152
@@ -2411,7 +2403,7 @@ msgstr "Изчисти"
 
 #: src/MuleTextCtrl.cpp:86
 msgid "Select All"
-msgstr "Избери всичко"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:82 src/MuleTrayIcon.cpp:464 src/MuleTrayIcon.cpp:485
 #: src/muuli_wdr.cpp:1576 src/muuli_wdr.cpp:1585 src/muuli_wdr.cpp:1594
@@ -2423,7 +2415,7 @@ msgstr "кБ/с"
 #: src/MuleTrayIcon.cpp:98 src/MuleTrayIcon.cpp:124 src/MuleTrayIcon.cpp:451
 #: src/MuleTrayIcon.cpp:472
 msgid "Unlimited"
-msgstr "неограничен"
+msgstr "Неограничено"
 
 #: src/MuleTrayIcon.cpp:290
 msgid "aMule Tray Menu"
@@ -2499,7 +2491,7 @@ msgstr ""
 #: src/MuleTrayIcon.cpp:365
 #, c-format
 msgid "IP: %s"
-msgstr "IP: %s"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:374
 #, c-format
@@ -2700,7 +2692,7 @@ msgstr "Програми"
 
 #: src/muuli_wdr.cpp:235 src/OtherFunctions.cpp:185
 msgid "Texts"
-msgstr "Текстове"
+msgstr ""
 
 #: src/muuli_wdr.cpp:236 src/OtherFunctions.cpp:150
 msgid "Videos"
@@ -2741,7 +2733,7 @@ msgstr "Наличност"
 
 #: src/muuli_wdr.cpp:319
 msgid "Filter:"
-msgstr "Филтър:"
+msgstr ""
 
 #: src/muuli_wdr.cpp:328
 msgid "Filter Results"
@@ -2761,7 +2753,7 @@ msgstr "Старт"
 
 #: src/muuli_wdr.cpp:356
 msgid "More"
-msgstr "Още"
+msgstr ""
 
 #: src/muuli_wdr.cpp:357
 msgid "Searches for more results on eD2k. Not supported for Kad yet."
@@ -2769,7 +2761,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:364
 msgid "Stop"
-msgstr "Стоп"
+msgstr ""
 
 #: src/muuli_wdr.cpp:371 src/muuli_wdr.cpp:1570 src/SearchListCtrl.cpp:625
 msgid "Download"
@@ -2781,7 +2773,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:393
 msgid "Results"
-msgstr "Резултати"
+msgstr ""
 
 #: src/muuli_wdr.cpp:422
 msgid "Clears completed downloads"
@@ -2907,7 +2899,7 @@ msgstr "Потвърди"
 
 #: src/muuli_wdr.cpp:798
 msgid "Ok"
-msgstr "Добре"
+msgstr ""
 
 #: src/muuli_wdr.cpp:823
 msgid "Comment/Rate file (Text will be visible to all users)"
@@ -3054,7 +3046,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1274
 msgid "User ID:"
-msgstr "Потребителско ID:"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1281
 msgid "Server IP:"
@@ -3070,7 +3062,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1306
 msgid "Kad:"
-msgstr "Kad:"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1317
 msgid "Transfers to client"
@@ -3139,7 +3131,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr "език: "
+msgstr "Език:"
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -3301,11 +3293,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1676
 msgid "Kademlia"
-msgstr "Kademlia"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1680 src/muuli_wdr.cpp:3282
 msgid "ED2K"
-msgstr "ED2K"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1689
 msgid "Autoconnect on startup"
@@ -3365,7 +3357,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1779
 msgid "Enable"
-msgstr "Активирай"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1783
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
@@ -3423,7 +3415,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1837 src/Statistics.cpp:736
 msgid "Uploads"
-msgstr "Качване"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1840
 msgid "Add new shared files with auto priority"
@@ -3662,7 +3654,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:2211 src/muuli_wdr.cpp:3127
 #: src/utils/wxCas/src/wxcasprefs.cpp:201
 msgid "Password"
-msgstr "парола"
+msgstr "Парола"
 
 #: src/muuli_wdr.cpp:2221
 msgid "Web server parameters"
@@ -3939,7 +3931,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2870
 msgid "URL:"
-msgstr "URL:"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2876
 msgid "Update now"
@@ -4034,7 +4026,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2998
 msgid "Comments"
-msgstr ""
+msgstr "Коментари"
 
 #: src/muuli_wdr.cpp:3001
 msgid "Filter comments containing (use ',' as separator):"
@@ -4106,7 +4098,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3120
 msgid "User name"
-msgstr "Потребителско име"
+msgstr ""
 
 #: src/muuli_wdr.cpp:3137
 msgid "Remember those settings"
@@ -4242,11 +4234,10 @@ msgid "T"
 msgstr "T"
 
 #: src/OtherFunctions.cpp:95
-#, fuzzy
 msgid "byte/sec"
 msgid_plural "bytes/sec"
-msgstr[0] "Байта"
-msgstr[1] "Байта"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/OtherFunctions.cpp:99
 msgid "MB/s"
@@ -4266,7 +4257,7 @@ msgstr "часа"
 
 #: src/OtherFunctions.cpp:121
 msgid "Days"
-msgstr "дни"
+msgstr "Дни"
 
 #: src/OtherFunctions.cpp:629
 msgid "all"
@@ -4572,11 +4563,11 @@ msgstr ""
 
 #: src/Preferences.cpp:629
 msgid "Albanian"
-msgstr "албанец"
+msgstr "Албански"
 
 #: src/Preferences.cpp:630
 msgid "Arabic"
-msgstr "арабски"
+msgstr "Арабски"
 
 #: src/Preferences.cpp:631
 msgid "Asturian"
@@ -4584,7 +4575,7 @@ msgstr "Астурия"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
-msgstr "баска"
+msgstr "Бакски"
 
 #: src/Preferences.cpp:633
 msgid "Bulgarian"
@@ -4604,31 +4595,31 @@ msgstr "Китайски (традиционен)"
 
 #: src/Preferences.cpp:637
 msgid "Croatian"
-msgstr "хърватски"
+msgstr "Хърватски"
 
 #: src/Preferences.cpp:638
 msgid "Czech"
-msgstr "чешки"
+msgstr "Чешки"
 
 #: src/Preferences.cpp:639
 msgid "Danish"
-msgstr "датски"
+msgstr "Датски"
 
 #: src/Preferences.cpp:640
 msgid "Dutch"
-msgstr "холандски"
+msgstr "Холандски"
 
 #: src/Preferences.cpp:641
 msgid "English (U.K.)"
-msgstr "Английски (Великобритания)"
+msgstr ""
 
 #: src/Preferences.cpp:642
 msgid "Estonian"
-msgstr "естонски"
+msgstr "Естонски"
 
 #: src/Preferences.cpp:643
 msgid "Finnish"
-msgstr "фински"
+msgstr "Финландски"
 
 #: src/Preferences.cpp:644
 msgid "French"
@@ -4636,7 +4627,7 @@ msgstr "Френски"
 
 #: src/Preferences.cpp:645
 msgid "Galician"
-msgstr "галисийски"
+msgstr "Галисийски"
 
 #: src/Preferences.cpp:646
 msgid "German"
@@ -4648,11 +4639,11 @@ msgstr "Гръцки"
 
 #: src/Preferences.cpp:648
 msgid "Hebrew"
-msgstr "иврит"
+msgstr "Иврит"
 
 #: src/Preferences.cpp:649
 msgid "Hungarian"
-msgstr "унгарски"
+msgstr "Унгарски"
 
 #: src/Preferences.cpp:650
 msgid "Italian"
@@ -4664,27 +4655,27 @@ msgstr "Италиански (швейцарски)"
 
 #: src/Preferences.cpp:652
 msgid "Japanese"
-msgstr "японски"
+msgstr "Японски"
 
 #: src/Preferences.cpp:653
 msgid "Korean"
-msgstr "корейски"
+msgstr "Корейски"
 
 #: src/Preferences.cpp:654
 msgid "Lithuanian"
-msgstr "литовски"
+msgstr "Литовски"
 
 #: src/Preferences.cpp:655
 msgid "Norwegian (Nynorsk)"
-msgstr "норвежки (Съвременен)"
+msgstr "Норвежки (Нинорск)"
 
 #: src/Preferences.cpp:656
 msgid "Polish"
-msgstr "полски"
+msgstr "Полски"
 
 #: src/Preferences.cpp:657
 msgid "Portuguese"
-msgstr "португалски"
+msgstr "Португалски"
 
 #: src/Preferences.cpp:658
 msgid "Portuguese (Brazilian)"
@@ -4708,7 +4699,7 @@ msgstr "Spanish"
 
 #: src/Preferences.cpp:663
 msgid "Swedish"
-msgstr "шведски"
+msgstr "Шведски"
 
 #: src/Preferences.cpp:664
 msgid "Turkish"
@@ -4716,7 +4707,7 @@ msgstr "Турски"
 
 #: src/Preferences.cpp:665
 msgid "Ukrainian"
-msgstr "украински"
+msgstr "Украински"
 
 #: src/Preferences.cpp:728
 msgid "Change Language"
@@ -4728,7 +4719,7 @@ msgstr ""
 
 #: src/Preferences.cpp:771
 msgid "No languages available"
-msgstr "Няма налични езици"
+msgstr ""
 
 #: src/Preferences.cpp:902
 msgid "no options available"
@@ -4771,11 +4762,11 @@ msgstr "Файлове"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Security"
-msgstr "Сигурност и защита"
+msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:182
 msgid "Interface"
-msgstr "Интерфейс"
+msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:184
 msgid "Proxy"
@@ -4783,7 +4774,7 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:185
 msgid "Filters"
-msgstr "Филтри"
+msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:186
 msgid "Remote Controls"
@@ -4795,11 +4786,11 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:188
 msgid "Advanced"
-msgstr "напреднал"
+msgstr "Напреднал"
 
 #: src/PrefsUnifiedDlg.cpp:189
 msgid "Events"
-msgstr "Събития"
+msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:191
 msgid "Debugging"
@@ -4923,7 +4914,7 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:996
 msgid "Temporary files"
-msgstr "Временни файлове"
+msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1001
 msgid "Incoming files"
@@ -5008,8 +4999,9 @@ msgid "Server connection refresh interval: Disabled"
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1215
+#, fuzzy
 msgid "disabled"
-msgstr "дезактивиран"
+msgstr "деактивиране"
 
 #: src/PrefsUnifiedDlg.cpp:1238
 #, c-format
@@ -5046,7 +5038,7 @@ msgstr ""
 
 #: src/SearchDlg.cpp:626 src/SearchListCtrl.cpp:628
 msgid "Main"
-msgstr "Главен"
+msgstr ""
 
 #: src/SearchList.cpp:311
 msgid "Kad search can't be done if Kad is not running"
@@ -5094,12 +5086,13 @@ msgid "Copy eD2k link to clipboard"
 msgstr ""
 
 #: src/SearchListCtrl.cpp:1014
+#, fuzzy
 msgid "Canceled"
-msgstr "Отменен"
+msgstr "Отказ"
 
 #: src/SearchListCtrl.cpp:1017
 msgid "New"
-msgstr "Нов"
+msgstr ""
 
 #: src/ServerConnect.cpp:74
 msgid ""
@@ -5305,7 +5298,7 @@ msgstr "Име на сървър"
 
 #: src/ServerListCtrl.cpp:88
 msgid "Address"
-msgstr "адрес"
+msgstr "Адрес"
 
 #: src/ServerListCtrl.cpp:89
 msgid "Port"
@@ -5330,7 +5323,7 @@ msgstr "Статичен"
 #: src/ServerListCtrl.cpp:97 src/SharedFilePeersListCtrl.cpp:34
 #: src/SourceListCtrl.cpp:33 src/Statistics.cpp:959
 msgid "Version"
-msgstr "версия"
+msgstr "Версия"
 
 #: src/ServerListCtrl.cpp:149
 msgid ""
@@ -5405,12 +5398,10 @@ msgstr ""
 #: src/ServerListCtrl.cpp:542
 msgid "Are you sure that you wish to delete the selected server?"
 msgstr ""
-"Сигурни ли сте,че желаете да откажете свалянето и изтриете тези файлове ?"
 
 #: src/ServerListCtrl.cpp:544
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr ""
-"Сигурни ли сте,че желаете да откажете свалянето и изтриете тези файлове ?"
 
 #: src/ServerSocket.cpp:273
 #, c-format
@@ -5520,7 +5511,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:207
 msgid "Running"
-msgstr "Работещи"
+msgstr ""
 
 #: src/ServerWnd.cpp:210
 msgid "Kademlia client ID:"
@@ -5540,9 +5531,8 @@ msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr ""
 
 #: src/ServerWnd.cpp:219
-#, fuzzy
 msgid "UDP Connection State:"
-msgstr "Максимален брой връзки (изчисляване)"
+msgstr ""
 
 #: src/ServerWnd.cpp:222
 #, c-format
@@ -5571,9 +5561,9 @@ msgid "Connecting to buddy"
 msgstr "Свързва"
 
 #: src/ServerWnd.cpp:243
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to buddy at %s"
-msgstr "Свързан към %s (%s:%i)"
+msgstr ""
 
 #: src/ServerWnd.cpp:253
 #, fuzzy
@@ -5639,6 +5629,7 @@ msgid "No shareable files found in directory: %s"
 msgstr ""
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:28
+#, fuzzy
 msgid "User Name"
 msgstr "Потребителско име"
 
@@ -5677,9 +5668,8 @@ msgid "Local File Name"
 msgstr "Име на файл"
 
 #: src/SharedFilePeersListCtrl.cpp:39 src/SourceListCtrl.cpp:38
-#, fuzzy
 msgid "Shares File List"
-msgstr "Споделени файлове (%i)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:107
 msgid "Requests"
@@ -5765,7 +5755,7 @@ msgstr "Споделени файлове (%i)"
 
 #: src/SharedFilesCtrl.cpp:600 src/TextClient.cpp:829
 msgid "[PartFile]"
-msgstr ""
+msgstr "[PartFile]"
 
 #: src/SourceListCtrl.cpp:37
 #, fuzzy
@@ -6011,7 +6001,7 @@ msgstr "Активни връзки (1:%u)"
 
 #: src/StatTree.cpp:550
 msgid "Not available"
-msgstr "Не се прилага"
+msgstr ""
 
 #: src/StatTree.cpp:594 src/StatTree.cpp:605
 msgid "Never"
@@ -6067,7 +6057,7 @@ msgstr ""
 #: src/TextClient.cpp:554
 #, c-format
 msgid "Download File: %lu %s\n"
-msgstr "Файлове за сваляне %lu %s\n"
+msgstr ""
 
 #: src/TextClient.cpp:646 src/webserver/src/WebServer.cpp:409
 msgid "Request failed with an unknown error."
@@ -6089,11 +6079,11 @@ msgstr ""
 
 #: src/TextClient.cpp:671 src/TextClient.cpp:677
 msgid "OFF"
-msgstr "ИЗКЛ"
+msgstr ""
 
 #: src/TextClient.cpp:671 src/TextClient.cpp:677
 msgid "ON"
-msgstr "ВКЛ"
+msgstr ""
 
 #: src/TextClient.cpp:676
 #, c-format
@@ -6112,7 +6102,7 @@ msgstr ""
 
 #: src/TextClient.cpp:702
 msgid "eD2k"
-msgstr "eD2k"
+msgstr ""
 
 #: src/TextClient.cpp:707
 #, c-format
@@ -6505,9 +6495,8 @@ msgid "Show servers list."
 msgstr ""
 
 #: src/TextClient.cpp:994
-#, fuzzy
 msgid "Show shared files list."
-msgstr "Споделени файлове (%i)"
+msgstr ""
 
 #: src/TextClient.cpp:996
 msgid "Reset log."
@@ -6559,13 +6548,12 @@ msgid "Only 99 categories are supported."
 msgstr ""
 
 #: src/TransferWnd.cpp:238
-#, fuzzy
 msgid "Too many categories!"
-msgstr "Твърде много връзки"
+msgstr ""
 
 #: src/TransferWnd.cpp:341
 msgid "All others"
-msgstr ""
+msgstr "Всички други страни"
 
 #: src/TransferWnd.cpp:363
 msgid "Select view filter"
@@ -6725,15 +6713,15 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:231
 msgid "Save"
-msgstr "Спести"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:233
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "Копирай в клипборда"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open"
-msgstr "Отворен"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:261
 msgid "Open a file to compute its eD2k link"
@@ -6745,7 +6733,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save as"
-msgstr "Запишете като"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:267
 msgid "Save computed eD2k link to file"
@@ -6819,9 +6807,8 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:567
 #: src/utils/aLinkCreator/src/alcframe.cpp:568
 #: src/utils/aLinkCreator/src/md4.cpp:352
-#, fuzzy
 msgid "Cancelled !"
-msgstr "Отказ"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:576
 #, c-format
@@ -6909,7 +6896,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:142
 msgid "System"
-msgstr "Система"
+msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:206
 #: src/utils/wxCas/src/wxcasframe.cpp:335
@@ -7002,7 +6989,7 @@ msgstr ""
 #: src/utils/wxCas/src/wxcasframe.cpp:1019
 #: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid "aMule "
-msgstr "aMule"
+msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1008
 msgid " has been running for "
@@ -7037,7 +7024,7 @@ msgstr " Kad: "
 #: src/utils/wxCas/src/wxcasframe.cpp:1053
 #: src/utils/wxCas/src/wxcasframe.cpp:1075
 msgid "off"
-msgstr "изкл"
+msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1059
 msgid " is on "
@@ -7045,7 +7032,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1066
 msgid " with "
-msgstr ""
+msgstr "като"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1084
 msgid "Total Download: "
@@ -7087,7 +7074,7 @@ msgstr ""
 #: src/utils/wxCas/src/wxcasframe.cpp:1140
 #: src/utils/wxCas/src/wxcasframe.cpp:1150
 msgid " on "
-msgstr ""
+msgstr "на"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1160
 msgid "System Load Average (1-5-15 min): "
@@ -7139,7 +7126,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:197
 msgid "User"
-msgstr "Потребител"
+msgstr ""
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:212
 msgid "Enter here the User name to log into your FTP server"
@@ -7293,3 +7280,560 @@ msgstr ""
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr ""
+
+#, fuzzy
+#~ msgid "Download status"
+#~ msgstr "Изтегляне"
+
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgid "Transferring"
+#~ msgstr "Сваляне"
+
+#, fuzzy
+#~ msgid "Queue Rank"
+#~ msgstr "Опашката е пълна"
+
+#, fuzzy
+#~ msgid "Downloads window"
+#~ msgstr "Изтегляне"
+
+#~ msgid "Show Queue"
+#~ msgstr "Показване на опашка"
+
+#~ msgid "Waited"
+#~ msgstr "Изчакал"
+
+#~ msgid "Total"
+#~ msgstr "Общо"
+
+#, fuzzy
+#~ msgid "Killed!"
+#~ msgstr "Грешка"
+
+#~ msgid "Misc Options"
+#~ msgstr "Допълнителни Опции"
+
+#, fuzzy
+#~ msgid "ED2K: Connecting"
+#~ msgstr "Свързва"
+
+#, fuzzy
+#~ msgid "ED2K: Disconnected"
+#~ msgstr "Връзката е разпадната"
+
+#~ msgid "Edit Serverlist"
+#~ msgstr "Редактиране на списъка със сървъри"
+
+#~ msgid "Average filesize: %s"
+#~ msgstr "Среден размер на файловете: %s"
+
+#~ msgid "Error"
+#~ msgstr "Грешка"
+
+#~ msgid "No valid servers to connect in serverlist found"
+#~ msgstr "Не са намерени валидни сървъри в списъка"
+
+#~ msgid "Error: Socket invalid at timeoutcheck"
+#~ msgstr "Грешка:Невалиден сокет при проверка"
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "Download Limit"
+#~ msgstr "Лимит за сваляне"
+
+#~ msgid "Browse wav"
+#~ msgstr "Търсене на wav"
+
+#~ msgid "File wav (*.wav)|*.wav||"
+#~ msgstr "wav файлове (*.wav)|*.wav||"
+
+#~ msgid ":"
+#~ msgstr ":"
+
+#~ msgid "Sources Dropping"
+#~ msgstr "Намаляване на източниците"
+
+#~ msgid "Port %d is not available. You will be LOWID"
+#~ msgstr "Порт %d е недостъпен : ще бъдете с LOWID"
+
+#~ msgid ""
+#~ "Port %d is not available !!\n"
+#~ "\n"
+#~ "This will mean that you will be LOWID.\n"
+#~ "\n"
+#~ "Use netstat to determine when port becomes available\n"
+#~ "and try starting amule again."
+#~ msgstr ""
+#~ "Порт %d е недостъпен !!\n"
+#~ "\n"
+#~ "Това означава,че ще бъдете с LOWID.\n"
+#~ "\n"
+#~ "Използвайте netstat, за да раберете кои портове са достъпни\n"
+#~ "и опитайте да пуснете програмата отново."
+
+#~ msgid "Failed to save"
+#~ msgstr "Грешка при запис"
+
+#~ msgid " OnlineSig File"
+#~ msgstr " Файл с онлайн подпис"
+
+#~ msgid "Desktop integration"
+#~ msgstr "Интегриране с работното място"
+
+#~ msgid "Connection established on:"
+#~ msgstr "Връзката установена на:"
+
+#~ msgid "Connect to any server"
+#~ msgstr "Свързване към който и да е сървър"
+
+#~ msgid "S&earch"
+#~ msgstr "Т&ърсене"
+
+#~ msgid "&Messages"
+#~ msgstr "&Съобщения"
+
+#~ msgid "This ed2k link is invalid (%s)"
+#~ msgstr "Този ed2k линк не е валиден (%s)"
+
+#~ msgid "Invalid link: %s"
+#~ msgstr "Невалиден линк: %s"
+
+#~ msgid "Filtered IP: %s (%s)"
+#~ msgstr "Филтрирани адреси: %s (%s)"
+
+#~ msgid "Rating for file '%s' received: %i"
+#~ msgstr "Рейтинг за файл '%s' получени: %i  "
+
+#~ msgid "Description for file '%s' received: %s"
+#~ msgstr "Описанието на файл '%s' получено: %s"
+
+#~ msgid "Unable to retrieve shared files from '%s'"
+#~ msgstr "Получаването на споделени файлове от '%s' е невъзможно"
+
+#~ msgid "Requesting shared files from user %s (%u) is already in progress"
+#~ msgstr "Вече е поискан списъкът със споделени файлове на %s (%u)"
+
+#~ msgid "NickName: %s\n"
+#~ msgstr "Псевдоним:%s\n"
+
+#~ msgid "Filestats for all sessions: Accepted %d of %d requests"
+#~ msgstr "Статистика за всички сесии : Приети %d от %d заявки"
+
+#~ msgid "can't create file '%s'"
+#~ msgstr "не е възможно създаването на файл '%s'"
+
+#~ msgid "Can't open file '%s'"
+#~ msgstr "Файлът '%s' не може да бъде отворен"
+
+#~ msgid "can't close file descriptor %d"
+#~ msgstr "грешка при затваряне описателя на файл %d"
+
+#~ msgid "can't read from file descriptor %d"
+#~ msgstr "грешка при четене описателя на файла %d"
+
+#~ msgid "can't write to file descriptor %d"
+#~ msgstr "грешка при записване описателя на файла %d"
+
+#~ msgid "can't flush file descriptor %d"
+#~ msgstr "описателят на файла %d не може да бъде изтрит"
+
+#~ msgid ""
+#~ "Instant Messaging\n"
+#~ "  \n"
+#~ "Right-click on any client and select 'Send Message' to start a chatsession"
+#~ msgstr ""
+#~ "Моментни съобщения\n"
+#~ "  \n"
+#~ "Щракнете с десен бутон на кой да е клиент и изберете \"Изпращане на "
+#~ "съобщение\", за да започнете разговор"
+
+#~ msgid "*** Chatsession Start : "
+#~ msgstr "*** Начало на разговор : "
+
+#~ msgid "Message from"
+#~ msgstr "Съобщение от"
+
+#~ msgid "failed"
+#~ msgstr "провал"
+
+#~ msgid "*** Disconnected"
+#~ msgstr "*** Изключен"
+
+#~ msgid "Creditfile is out of date and will be replaced"
+#~ msgstr "Файлът с кредити е остарял и ще бъде заменен"
+
+#~ msgid "Creditfile loaded"
+#~ msgstr "Файлът с кредити зареден"
+
+#~ msgid ""
+#~ "Error while processing incoming UDP Packet (Most likely a misconfigured "
+#~ "server)"
+#~ msgstr ""
+#~ "Грешка при обработването на входящ UDP пакет. (Най-вероятно неправилно "
+#~ "конфигуриран сървър)"
+
+#~ msgid "eDonkey v%i"
+#~ msgstr "eDonkey в%i"
+
+#~ msgid "eDonkeyHybrid v%i"
+#~ msgstr "eDonkeyHybrid в%i"
+
+#~ msgid "eMule v%02X"
+#~ msgstr "eМуле в%02X"
+
+#~ msgid "aMule [ %s ]"
+#~ msgstr "aМуле [ %s ]"
+
+#~ msgid "aMule v0.%02X"
+#~ msgstr "aМуле в0.%02X"
+
+#~ msgid "lMule/xMule v0.%02X"
+#~ msgstr "lМуле/xМуле в0.%02X"
+
+#~ msgid "Old MLdonkey"
+#~ msgstr "Старо MLdonkey"
+
+#~ msgid "New MLdonkey"
+#~ msgstr "Ново MLdonkey"
+
+#~ msgid "Are you sure that you want to cancel and delete this file ?\n"
+#~ msgstr ""
+#~ "Сигурни ли сте,че желаете да откажете свалянето и изтриете този файл ?\n"
+
+#~ msgid "You already have the file %s"
+#~ msgstr "Имате го файла %s"
+
+#~ msgid "Bad link."
+#~ msgstr "Лош линк."
+
+#~ msgid "not a well-formed ed2k link"
+#~ msgstr "ed2k линкът не е написан правилно"
+
+#~ msgid "Not an ED2K server or file link"
+#~ msgstr "Не е ed2k сървър или линк към файл"
+
+#~ msgid "can't write file '%s'"
+#~ msgstr "писането във файла '%s' е невъзможно"
+
+#~ msgid "Loaded ipfilter with %d IP addresses."
+#~ msgstr "Зареден е ip филтър с %d ip адреса."
+
+#~ msgid "accepted"
+#~ msgstr "приет"
+
+#~ msgid "denied"
+#~ msgstr "отказан"
+
+#~ msgid "Connection Type"
+#~ msgstr "Тип на Връзка"
+
+#~ msgid "Unit:"
+#~ msgstr "Измервателна единица:"
+
+#~ msgid "Desktop"
+#~ msgstr "Работно място"
+
+#~ msgid "Name"
+#~ msgstr "Име"
+
+#~ msgid "Clear All"
+#~ msgstr "Изчисти всичко"
+
+#~ msgid "Search Results"
+#~ msgstr "Резултати от Търсене"
+
+#~ msgid ")"
+#~ msgstr ")"
+
+#~ msgid "("
+#~ msgstr "("
+
+#~ msgid "English"
+#~ msgstr "Английски"
+
+#~ msgid "Startup"
+#~ msgstr "Стартиране"
+
+#~ msgid "5 Days"
+#~ msgstr "5 дни"
+
+#~ msgid "Font"
+#~ msgstr "Шрифт"
+
+#~ msgid "Notify"
+#~ msgstr "Известяване"
+
+#~ msgid "h"
+#~ msgstr "ч"
+
+#~ msgid "D"
+#~ msgstr "дн."
+
+#~ msgid "?"
+#~ msgstr "?"
+
+#~ msgid "Executable (*)|*||"
+#~ msgstr "Изпълними (*)|*||"
+
+#~ msgid "Description: %s"
+#~ msgstr "Описание: %s"
+
+#~ msgid "IP"
+#~ msgstr "IP адрес"
+
+#~ msgid "User: %i"
+#~ msgstr "Потребител: %i"
+
+#~ msgid "Invalid versiontag in server.met (0x%X)!"
+#~ msgstr "Невалиден етикет за версия в server.met (0x%X)!"
+
+#~ msgid "Server added: "
+#~ msgstr "Добавен сървър:"
+
+#~ msgid "Connect to this server"
+#~ msgstr "Свързване с този сървър"
+
+#~ msgid "Add to static"
+#~ msgstr "Добавяне в статичния"
+
+#~ msgid "Remove from static server list"
+#~ msgstr "Премахване от статичния списък със сървъри"
+
+#~ msgid "Preference"
+#~ msgstr "Предпочитание"
+
+#~ msgid "No Pref"
+#~ msgstr "Няма предпочитания"
+
+#~ msgid "Failed to open staticservers.dat"
+#~ msgstr "Грешка при отваряне на staticservers.dat"
+
+#~ msgid "Added to static server list"
+#~ msgstr "Добавен към статични списък със сървъри"
+
+#~ msgid "Unknown server info received !"
+#~ msgstr "Получена е информация за сървъра,която не може да бъде разпозната"
+
+#~ msgid "Connecting to %s (%s:%i)..."
+#~ msgstr "Свързване с %s (%s:%i)..."
+
+#~ msgid "This is "
+#~ msgstr "Това е"
+
+#~ msgid " (based on "
+#~ msgstr " (на основата на "
+
+#~ msgid "Visit http://www.amule.org to check if a new version is available.\n"
+#~ msgstr "Посетете http://www.amule.org ,за да проверите за нова версия.\n"
+
+#~ msgid "Please enter a serveradress"
+#~ msgstr "Моля въведете адрес на сървър"
+
+#~ msgid "Incomplete serverport: Please enter a serverport"
+#~ msgstr "Не е въведен порт,моля въведете го "
+
+#~ msgid "Server not added!"
+#~ msgstr "Сървърът не е добавен"
+
+#~ msgid "Low ID"
+#~ msgstr "Low ID"
+
+#~ msgid "High ID"
+#~ msgstr "High ID"
+
+#~ msgid "Loading..."
+#~ msgstr "Зареждам..."
+
+#~ msgid "Permission"
+#~ msgstr "Права"
+
+#~ msgid "Public"
+#~ msgstr "Публичен"
+
+#~ msgid "Friends only"
+#~ msgstr "Само приятели"
+
+#~ msgid "Locked"
+#~ msgstr "Заключен"
+
+#~ msgid "Permissions"
+#~ msgstr "Права"
+
+#~ msgid "Change this file's comment..."
+#~ msgstr "Промяна на коментарите за този файл ..."
+
+#~ msgid "Auto [Re]"
+#~ msgstr "Автоматично[Re]"
+
+#~ msgid "Hidden"
+#~ msgstr "Скрит"
+
+#~ msgid "You cannot change permissions while a file is still downloading!"
+#~ msgstr "Не можете да промените правата на файл,който се сваля в момента!"
+
+#~ msgid "%s (%s:%i) appears to be full"
+#~ msgstr "%s (%s:%i) изглежда е пълен"
+
+#~ msgid "Connecting to %s (%s:%i ) failed."
+#~ msgstr "Свързването към %s (%s:%i ) не бе осъществено."
+
+#~ msgid "Connection attempt to %s (%s:%i ) timed out"
+#~ msgstr "Времето за свързване към %s (%s:%i ) изтече"
+
+#~ msgid "Refreshing server connection"
+#~ msgstr "Опресняване на връзката"
+
+#~ msgid "Active Downloads (chunks): %i"
+#~ msgstr "Активни сваляния (парчета) : %i"
+
+#~ msgid "Uploaded Data (Session (Total)): %s (%s)"
+#~ msgstr "Качена информация (На сесия (Общо)): %s (%s)"
+
+#~ msgid "Total successful upload sessions: %i"
+#~ msgstr "Общо успешни сесии на качване: %i"
+
+#~ msgid "Total failed upload sessions: %i"
+#~ msgstr "Общо провалени сесии на качване: %i"
+
+#~ msgid "Average Downloadrate (Session): %.2f kB/s"
+#~ msgstr "Средна скорост на сваляне (на сесия): %.2f kB/s"
+
+#~ msgid "Average Uploadrate (Session): %.2f kB/s"
+#~ msgstr "Средна скорост на качване (на сесия): %.2f кБ/с"
+
+#~ msgid "Max Downloadrate Average (Session): %.2f kB/s"
+#~ msgstr "Максимална средна скорост на сваляне (за сесия):  %.2f кБ/с"
+
+#~ msgid "Max Downloadrate (Session): %.2f kB/s"
+#~ msgstr "Максимална скорост на сваляне (за сесия):  %.2f кБ/с"
+
+#~ msgid "waiting for transfer..."
+#~ msgstr "изчакване за трансфер..."
+
+#~ msgid "Session UL:DL Ratio (Total):"
+#~ msgstr "UL:DL съотношение (общо)"
+
+#~ msgid "Number of Shared Files: %i"
+#~ msgstr "Брой споделени файлове : %i"
+
+#~ msgid "eMule: %i (%1.1f%%)"
+#~ msgstr "eМуле: %i (%1.1f%%)"
+
+#~ msgid "aMule: %i (%1.1f%%)"
+#~ msgstr "aМуле: %i (%1.1f%%)"
+
+#~ msgid "lMule/xMule: %i (%1.1f%%)"
+#~ msgstr "lМуле/xМуле: %i (%1.1f%%)"
+
+#~ msgid "eDonkeyHybrid: %i (%1.1f%%)"
+#~ msgstr "eDonkeyHybrid: %i (%1.1f%%)"
+
+#~ msgid "eDonkey: %i (%1.1f%%)"
+#~ msgstr "eDonkey: %i (%1.1f%%)"
+
+#~ msgid "cDonkey: %i (%1.1f%%)"
+#~ msgstr "cDonkey: %i (%1.1f%%)"
+
+#~ msgid "Old MLDonkey: %i (%1.1f%%)"
+#~ msgstr "Старо MlDonkey:%i (%1.1f%%)"
+
+#~ msgid "New MLDonkey: %i (%1.1f%%)"
+#~ msgstr "Ново MlDonkey: %i (%1.1f%%)"
+
+#~ msgid "Working Servers"
+#~ msgstr "Работещи сървъри"
+
+#~ msgid "Failed Servers"
+#~ msgstr "Неуспешни сървъри"
+
+#~ msgid "Deleted Servers"
+#~ msgstr "Изтрити сървъри"
+
+#~ msgid "Users on Working Servers"
+#~ msgstr "Потребители на работещи сървъри"
+
+#~ msgid "Files on Working Servers"
+#~ msgstr "Файлове на работещи сървъри"
+
+#~ msgid "Total Users"
+#~ msgstr "Общо потребители"
+
+#~ msgid "Active Connections (estimate)"
+#~ msgstr "Активни връзки (изчисляване)"
+
+#~ msgid "Max Connection Limit Reached"
+#~ msgstr "Максималният лимит за връзка е достигнат"
+
+#~ msgid "Average Connections (estimate)"
+#~ msgstr "Среден брой връзки (изчисляване)"
+
+#~ msgid "Show"
+#~ msgstr "Показва"
+
+#~ msgid "Hide"
+#~ msgstr "Скрива"
+
+#~ msgid "All To Max Speed"
+#~ msgstr "Всичко на максимална скорост"
+
+#~ msgid "All To Min Speed"
+#~ msgstr "Всичко на минимална скорост"
+
+#~ msgid "Disconnect from server"
+#~ msgstr "Връзката със сървъра прекъсната"
+
+#~ msgid "aMule for Linux"
+#~ msgstr "aМуле за Линукс"
+
+#~ msgid "requested file not found"
+#~ msgstr "пожелания файл не е намерен"
+
+#~ msgid ""
+#~ "Client '%s' seems to be an aggressive client and is banned from the "
+#~ "uploadqueue"
+#~ msgstr "Клиент '%s' изглежда е агресивен и бе махнат от опашката"
+
+#~ msgid "Wizard"
+#~ msgstr "Магьосник"
+
+#~ msgid "Down (kbit/s)"
+#~ msgstr "Вход. (kbit/s)"
+
+#~ msgid "Up (kbit/s)"
+#~ msgstr "Изх. (kbit/s)"
+
+#~ msgid "Custom"
+#~ msgstr "Потребителски"
+
+#~ msgid "(enter below!)"
+#~ msgstr "(въведете долу!)"
+
+#~ msgid "56-k Modem"
+#~ msgstr "56-k модем"
+
+#~ msgid "ISDN"
+#~ msgstr "ISDN"
+
+#~ msgid "ISDN 2x"
+#~ msgstr "ISDN 2x"
+
+#~ msgid "xDSL"
+#~ msgstr "xDSL"
+
+#~ msgid "Cable"
+#~ msgstr "Кабел"
+
+#~ msgid "T1"
+#~ msgstr "T1"
+
+#~ msgid "T3+"
+#~ msgstr "T3+"
+
+#~ msgid "100 Mbits"
+#~ msgstr "100 Mbits"
+
+#~ msgid "155 Mbits (ATM)"
+#~ msgstr "155 Mbits (ATM)"

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2017-03-17 11:51+0100\n"
+"PO-Revision-Date: 2017-05-24 13:22+0200\n"
 "Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: da\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0beta4\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -373,7 +373,7 @@ msgstr ""
 #: src/amuled.cpp:780
 #, c-format
 msgid "ERROR: %s"
-msgstr ""
+msgstr "FEJL: %s"
 
 #: src/amuleDlg.cpp:238
 #, c-format
@@ -413,7 +413,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:503
 msgid "Forum: http://forum.amule.org \n"
-msgstr "Forum: http://forum.amule.org \n"
+msgstr ""
 
 #: src/amuleDlg.cpp:504
 msgid ""
@@ -443,7 +443,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:509
 msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
-msgstr " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
+msgstr ""
 
 #: src/amuleDlg.cpp:510
 msgid "http://kademlia.scs.cs.nyu.edu\n"
@@ -453,7 +453,7 @@ msgstr "http://kademlia.scs.cs.nyu.edu\n"
 #: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
 #: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
-msgstr "Besked"
+msgstr ""
 
 #: src/amuleDlg.cpp:550
 msgid "aMule dialog destroyed"
@@ -574,7 +574,7 @@ msgstr ""
 #: src/amuleDlg.cpp:1337 src/amuleDlg.cpp:1473 src/muuli_wdr.cpp:1673
 #: src/muuli_wdr.cpp:3532
 msgid "Networks"
-msgstr "Net"
+msgstr ""
 
 #: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:3532
 msgid "Networks Window"
@@ -599,9 +599,8 @@ msgid "Downloads Window"
 msgstr "Henter"
 
 #: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:3412
-#, fuzzy
 msgid "Shared files"
-msgstr "Delte Filer"
+msgstr ""
 
 #: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:3536
 msgid "Shared Files Window"
@@ -636,7 +635,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3541
 msgid "Import"
-msgstr ""
+msgstr "Importer"
 
 #: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3541
 msgid "The partfile importer tool"
@@ -645,7 +644,7 @@ msgstr ""
 #: src/amuleDlg.cpp:1348 src/muuli_wdr.cpp:3542
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 msgid "About"
-msgstr "Om"
+msgstr ""
 
 #: src/amuleDlg.cpp:1348 src/muuli_wdr.cpp:3542
 msgid "About/Help"
@@ -653,11 +652,11 @@ msgstr "Hjælp"
 
 #: src/amuleDlg.cpp:1477
 msgid "eD2k network"
-msgstr "eD2k netværk"
+msgstr ""
 
 #: src/amuleDlg.cpp:1481
 msgid "Kad network"
-msgstr "Kad netværk"
+msgstr ""
 
 #: src/amuleDlg.cpp:1481
 msgid "No network"
@@ -696,7 +695,7 @@ msgstr "Forbinder"
 
 #: src/amule-remote-gui.cpp:308
 msgid "Connection failed "
-msgstr "Forbindelsen blev afbrudt."
+msgstr ""
 
 #: src/amule-remote-gui.cpp:319
 msgid "Remote GUI EC event handler"
@@ -722,7 +721,7 @@ msgstr "Opdater"
 
 #: src/amule-remote-gui.cpp:596 src/TransferWnd.cpp:340
 msgid "All"
-msgstr "Alle"
+msgstr ""
 
 #: src/amule-remote-gui.cpp:642
 #, c-format
@@ -850,7 +849,7 @@ msgstr "Kategori"
 
 #: src/CatDialog.cpp:87
 msgid "New Category"
-msgstr "Ny kategori"
+msgstr ""
 
 #: src/CatDialog.cpp:125
 msgid "Choose a folder for incoming files"
@@ -960,11 +959,11 @@ msgstr "Supporteret"
 
 #: src/ClientDetailDialog.cpp:123 src/ClientRef.cpp:192
 msgid "Not supported"
-msgstr "Ikke understøttet"
+msgstr ""
 
 #: src/ClientDetailDialog.cpp:124
 msgid "Disabled"
-msgstr "Ikke aktiveret"
+msgstr "Deaktiveret"
 
 #: src/ClientDetailDialog.cpp:131 src/ServerWnd.cpp:164 src/ServerWnd.cpp:213
 #: src/TextClient.cpp:720
@@ -1076,11 +1075,11 @@ msgstr "Fil Navn"
 
 #: src/CommentDialogLst.cpp:57
 msgid "Rating"
-msgstr "Karakter"
+msgstr ""
 
 #: src/CommentDialogLst.cpp:58
 msgid "Comment"
-msgstr "Kommenter"
+msgstr ""
 
 #: src/CommentDialogLst.cpp:103 src/muuli_wdr.cpp:891
 msgid "No comments"
@@ -1193,7 +1192,7 @@ msgstr "Banlyst"
 
 #: src/DataToText.cpp:71
 msgid "Connection Error"
-msgstr "Fejl ved tilslutning"
+msgstr ""
 
 #: src/DataToText.cpp:72
 msgid "Remote Queue Full"
@@ -1242,7 +1241,7 @@ msgstr ""
 
 #: src/DataToText.cpp:132
 msgid "Search Result"
-msgstr "Søgeresultat"
+msgstr ""
 
 #: src/DataToText.cpp:142 src/DownloadListCtrl.cpp:162
 #: src/OtherFunctions.cpp:632 src/TransferWnd.cpp:346
@@ -1691,7 +1690,7 @@ msgstr "Filen blev ikke fundet."
 
 #: src/ExternalConn.cpp:1455
 msgid "Invalid file name."
-msgstr "Ugyldigt filnavn."
+msgstr ""
 
 #: src/ExternalConn.cpp:1463
 msgid "Unable to rename file."
@@ -1899,7 +1898,7 @@ msgstr ""
 
 #: src/ExternalConnector.cpp:439
 msgid "Sets program locale (language)."
-msgstr "Indstiller program locale (sprog)."
+msgstr ""
 
 #: src/ExternalConnector.cpp:442
 msgid "Write command line options to config file."
@@ -1915,7 +1914,7 @@ msgstr ""
 
 #: src/FileDetailDialog.cpp:60
 msgid "File Details"
-msgstr "Fil Detaljer"
+msgstr ""
 
 #: src/FileDetailDialog.cpp:111
 #, c-format
@@ -2002,7 +2001,7 @@ msgstr ""
 
 #: src/GenericClientListCtrl.cpp:598
 msgid "Send message"
-msgstr "Send besked"
+msgstr ""
 
 #: src/GenericClientListCtrl.cpp:600
 msgid "Swap to this file"
@@ -2037,7 +2036,6 @@ msgid "Uploading"
 msgstr "Upload"
 
 #: src/GenericClientListCtrl.cpp:1031
-#, fuzzy
 msgid "None"
 msgstr "Ingen"
 
@@ -2210,7 +2208,7 @@ msgstr ""
 
 #: src/KadDlg.cpp:214
 msgid "Continue?"
-msgstr "Fortsæt?"
+msgstr ""
 
 #: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
@@ -2255,11 +2253,11 @@ msgstr[1] ""
 
 #: src/KnownFile.cpp:1544 src/PartFileConvertDlg.cpp:91
 msgid "File name"
-msgstr "Filnavn"
+msgstr ""
 
 #: src/KnownFile.cpp:1545
 msgid "File size"
-msgstr "Filstørrelse"
+msgstr ""
 
 #: src/KnownFile.cpp:1546
 msgid "Share ratio"
@@ -2268,11 +2266,11 @@ msgstr ""
 #: src/KnownFile.cpp:1547 src/SharedFilePeersListCtrl.cpp:31
 #: src/SourceListCtrl.cpp:31
 msgid "Uploaded"
-msgstr "Uploadet"
+msgstr ""
 
 #: src/KnownFile.cpp:1548 src/muuli_wdr.cpp:3340
 msgid "Requested"
-msgstr "Forespurgt"
+msgstr ""
 
 #: src/KnownFile.cpp:1549
 msgid "Accepted"
@@ -2388,7 +2386,7 @@ msgstr "FEJL:"
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
-msgstr "ADVARSEL:"
+msgstr "ADVARSEL: "
 
 #: src/MuleNotebook.cpp:185 src/muuli_wdr.cpp:901 src/muuli_wdr.cpp:1430
 #: src/muuli_wdr.cpp:3235 src/muuli_wdr.cpp:3505
@@ -2467,7 +2465,7 @@ msgstr ""
 
 #: src/MuleTrayIcon.cpp:326
 msgid "Client Information"
-msgstr "Kundeinformation"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:330
 #, c-format
@@ -2645,7 +2643,7 @@ msgstr "Søg"
 
 #: src/muuli_wdr.cpp:183
 msgid "Name:"
-msgstr "Navn:"
+msgstr ""
 
 #: src/muuli_wdr.cpp:191 src/SearchListCtrl.cpp:90 src/SharedFilesCtrl.cpp:104
 msgid "Type"
@@ -2653,11 +2651,11 @@ msgstr "Type"
 
 #: src/muuli_wdr.cpp:196 src/SearchDlg.cpp:108
 msgid "Local"
-msgstr "Lokal"
+msgstr ""
 
 #: src/muuli_wdr.cpp:197
 msgid "Global"
-msgstr "Global"
+msgstr ""
 
 #: src/muuli_wdr.cpp:199
 msgid "FileHash"
@@ -2673,7 +2671,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:224
 msgid "File Type"
-msgstr "Filtype"
+msgstr ""
 
 #: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:199
 msgid "Any"
@@ -2704,7 +2702,7 @@ msgstr "Programer"
 
 #: src/muuli_wdr.cpp:235 src/OtherFunctions.cpp:185
 msgid "Texts"
-msgstr ""
+msgstr "Tekster"
 
 #: src/muuli_wdr.cpp:236 src/OtherFunctions.cpp:150
 msgid "Videos"
@@ -2745,11 +2743,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:319
 msgid "Filter:"
-msgstr "Filter:"
+msgstr ""
 
 #: src/muuli_wdr.cpp:328
 msgid "Filter Results"
-msgstr "Filtrer resultater"
+msgstr ""
 
 #: src/muuli_wdr.cpp:334
 msgid "Invert Result"
@@ -2765,7 +2763,7 @@ msgstr "Start"
 
 #: src/muuli_wdr.cpp:356
 msgid "More"
-msgstr "Mere"
+msgstr ""
 
 #: src/muuli_wdr.cpp:357
 msgid "Searches for more results on eD2k. Not supported for Kad yet."
@@ -2773,7 +2771,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:364
 msgid "Stop"
-msgstr "Stop"
+msgstr ""
 
 #: src/muuli_wdr.cpp:371 src/muuli_wdr.cpp:1570 src/SearchListCtrl.cpp:625
 msgid "Download"
@@ -2911,7 +2909,7 @@ msgstr "Anvend"
 
 #: src/muuli_wdr.cpp:798
 msgid "Ok"
-msgstr "Ok"
+msgstr ""
 
 #: src/muuli_wdr.cpp:823
 msgid "Comment/Rate file (Text will be visible to all users)"
@@ -3018,7 +3016,7 @@ msgstr "Upload-Hastighed"
 
 #: src/muuli_wdr.cpp:1144
 msgid "Connections"
-msgstr "Forbindelser"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1162 src/muuli_wdr.cpp:1972
 msgid "Active downloads"
@@ -3143,7 +3141,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr "Sprog"
+msgstr "Sprog: "
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -3251,7 +3249,7 @@ msgstr "Slot Tildeling"
 
 #: src/muuli_wdr.cpp:1601
 msgid "Ports"
-msgstr "Havne"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1607
 msgid "Standard TCP Port "
@@ -3539,7 +3537,7 @@ msgstr "Vælg"
 
 #: src/muuli_wdr.cpp:1989
 msgid "Tree"
-msgstr "Træ"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2000
 msgid "Number of Client Versions shown (0=unlimited)"
@@ -3902,7 +3900,7 @@ msgstr "Alle"
 
 #: src/muuli_wdr.cpp:2834
 msgid "No one"
-msgstr "Ingen"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2836
 msgid "Who can see my shared files:"
@@ -3936,7 +3934,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2861
 msgid "Reload List"
-msgstr "Genindlæs liste"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2862
 msgid "Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat"
@@ -4039,7 +4037,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2998
 msgid "Comments"
-msgstr "Kommentarer"
+msgstr ""
 
 #: src/muuli_wdr.cpp:3001
 msgid "Filter comments containing (use ',' as separator):"
@@ -4059,7 +4057,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3036
 msgid "Username: "
-msgstr "Brugernavn:"
+msgstr ""
 
 #: src/muuli_wdr.cpp:3040
 msgid "The username to use to connect to the proxy"
@@ -4103,7 +4101,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3101
 msgid "Connect to:"
-msgstr "Forbind til:"
+msgstr ""
 
 #: src/muuli_wdr.cpp:3115
 msgid "Login to remote amule"
@@ -4111,7 +4109,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3120
 msgid "User name"
-msgstr "Brugernavn"
+msgstr ""
 
 #: src/muuli_wdr.cpp:3137
 msgid "Remember those settings"
@@ -4219,10 +4217,11 @@ msgid "Disabled [%s]"
 msgstr "Inaktiv [%s]"
 
 #: src/OtherFunctions.cpp:64
+#, fuzzy
 msgid "byte"
 msgid_plural "bytes"
-msgstr[0] "byte"
-msgstr[1] "bytes"
+msgstr[0] "Bytes"
+msgstr[1] "Bytes"
 
 #: src/OtherFunctions.cpp:66
 msgid "kB"
@@ -4269,7 +4268,7 @@ msgstr "min"
 
 #: src/OtherFunctions.cpp:118 src/OtherFunctions.cpp:122
 msgid "hours"
-msgstr "timer"
+msgstr ""
 
 #: src/OtherFunctions.cpp:121
 msgid "Days"
@@ -4361,7 +4360,7 @@ msgstr ""
 
 #: src/PartFileConvertDlg.cpp:94
 msgid "Filehash"
-msgstr "Filehash"
+msgstr ""
 
 #: src/PartFileConvertDlg.cpp:177
 #, c-format
@@ -4558,7 +4557,7 @@ msgstr ""
 
 #: src/PartFile.cpp:3698
 msgid "Allocating"
-msgstr "Allokering"
+msgstr ""
 
 #: src/PartFile.cpp:3714
 msgid "Insufficient disk space"
@@ -4727,18 +4726,16 @@ msgid "Ukrainian"
 msgstr "Ukrainsk"
 
 #: src/Preferences.cpp:728
-#, fuzzy
 msgid "Change Language"
-msgstr "Sprog"
+msgstr "Skift sprog"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
 msgstr ""
 
 #: src/Preferences.cpp:771
-#, fuzzy
 msgid "No languages available"
-msgstr "Ikke tilgængelig"
+msgstr "Ingen sprog tilgængelige"
 
 #: src/Preferences.cpp:902
 msgid "no options available"
@@ -4785,7 +4782,7 @@ msgstr "Sikkerhed"
 
 #: src/PrefsUnifiedDlg.cpp:182
 msgid "Interface"
-msgstr "Grænseflade"
+msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:184
 msgid "Proxy"
@@ -4793,7 +4790,7 @@ msgstr "Proxy"
 
 #: src/PrefsUnifiedDlg.cpp:185
 msgid "Filters"
-msgstr "Filtere"
+msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:186
 msgid "Remote Controls"
@@ -4809,7 +4806,7 @@ msgstr "Avanceret"
 
 #: src/PrefsUnifiedDlg.cpp:189
 msgid "Events"
-msgstr "Events"
+msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:191
 msgid "Debugging"
@@ -5022,9 +5019,8 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Server forbindelses opdaterings interval: Inaktiv"
 
 #: src/PrefsUnifiedDlg.cpp:1215
-#, fuzzy
 msgid "disabled"
-msgstr "deaktiver"
+msgstr "Deaktiveret"
 
 #: src/PrefsUnifiedDlg.cpp:1238
 #, c-format
@@ -5061,7 +5057,7 @@ msgstr ""
 
 #: src/SearchDlg.cpp:626 src/SearchListCtrl.cpp:628
 msgid "Main"
-msgstr "Primær"
+msgstr ""
 
 #: src/SearchList.cpp:311
 msgid "Kad search can't be done if Kad is not running"
@@ -5109,9 +5105,8 @@ msgid "Copy eD2k link to clipboard"
 msgstr ""
 
 #: src/SearchListCtrl.cpp:1014
-#, fuzzy
 msgid "Canceled"
-msgstr "Afbryd"
+msgstr "Annulleret"
 
 #: src/SearchListCtrl.cpp:1017
 msgid "New"
@@ -5431,12 +5426,12 @@ msgstr "Er du sikker på at du ønsker at slette de(n) valgt(e) ven(ner)?"
 #: src/ServerSocket.cpp:273
 #, c-format
 msgid "ERROR: %s (%s) - %s"
-msgstr ""
+msgstr "FEJL: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:288
 #, c-format
 msgid "WARNING: %s (%s) - %s"
-msgstr ""
+msgstr "ADVARSEL: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:427
 #, c-format
@@ -5534,7 +5529,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:207
 msgid "Running"
-msgstr ""
+msgstr "Løbende"
 
 #: src/ServerWnd.cpp:210
 msgid "Kademlia client ID:"
@@ -5542,7 +5537,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:212
 msgid "Status:"
-msgstr ""
+msgstr "Status:"
 
 #: src/ServerWnd.cpp:215
 msgid "Connection State:"
@@ -5654,7 +5649,6 @@ msgid "No shareable files found in directory: %s"
 msgstr ""
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:28
-#, fuzzy
 msgid "User Name"
 msgstr "Brugernavn"
 
@@ -6107,11 +6101,11 @@ msgstr ""
 
 #: src/TextClient.cpp:671 src/TextClient.cpp:677
 msgid "OFF"
-msgstr "OFF"
+msgstr ""
 
 #: src/TextClient.cpp:671 src/TextClient.cpp:677
 msgid "ON"
-msgstr "ON"
+msgstr ""
 
 #: src/TextClient.cpp:676
 #, c-format
@@ -6584,7 +6578,7 @@ msgstr "For mange forbindelser"
 
 #: src/TransferWnd.cpp:341
 msgid "All others"
-msgstr "Alt andet"
+msgstr ""
 
 #: src/TransferWnd.cpp:363
 msgid "Select view filter"
@@ -6718,7 +6712,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:150
 msgid "Remove"
-msgstr ""
+msgstr "Fjern"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:161
 msgid "Create link with part-hashes"
@@ -6744,7 +6738,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:231
 msgid "Save"
-msgstr ""
+msgstr "Gem"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:233
 msgid "Copy to clipboard"
@@ -6764,7 +6758,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save as"
-msgstr ""
+msgstr "Gem som"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:267
 msgid "Save computed eD2k link to file"
@@ -7323,3 +7317,1362 @@ msgstr "Logout anmodning\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "Udfører forespørgsel [omledt]: "
+
+#, fuzzy
+#~ msgid "Download status"
+#~ msgstr "Downloads"
+
+#~ msgid "( %s / %s )"
+#~ msgstr "( %s / %s )"
+
+#, fuzzy
+#~ msgid "Update delay : %d second"
+#~ msgid_plural "Update delay : %d seconds"
+#~ msgstr[0] "Opdaterings interval : 5 sek"
+#~ msgstr[1] "Opdaterings interval : 5 sek"
+
+#~ msgid "Transferring"
+#~ msgstr "Overfører"
+
+#, fuzzy
+#~ msgid "Only files currently uploading"
+#~ msgstr "Downloader Nu :"
+
+#, fuzzy
+#~ msgid "Queue Rank"
+#~ msgstr "Kø Fuld"
+
+#~ msgid "Starting to create MD4 and AICH hash for file: %s"
+#~ msgstr "Begynder at lave MD4 og AICH hash for fil: %s"
+
+#~ msgid "Starting to create MD4 hash for file: %s"
+#~ msgstr "Begynder at lave MD4 hash for fil: %s"
+
+#~ msgid "Starting to create AICH hash for file: %s"
+#~ msgstr "Begynder at lave AICH hash for fil: %s"
+
+#~ msgid "WARNING: Could not remove original '%s' after creating backup"
+#~ msgstr "ADVARSEL: Kunne ikke fjerne orginal '%s' efter oprettelse af backup"
+
+#~ msgid "WARNING: Failed to delete %s"
+#~ msgstr "ADVARSEL: Kunne ikke slette '%s'"
+
+#~ msgid "Try to transfer full chunks to all uploads"
+#~ msgstr "Prøv at overføre hele dele til uploads"
+
+#, fuzzy
+#~ msgid "Downloads window"
+#~ msgstr "Henter"
+
+#~ msgid "Transfers"
+#~ msgstr "Overførsler"
+
+#~ msgid "Show Uploads"
+#~ msgstr "Vis Uploads"
+
+#~ msgid "Show Queue"
+#~ msgstr "Vis Køen"
+
+#~ msgid "Waited"
+#~ msgstr "Ventet"
+
+#~ msgid "Upload Time"
+#~ msgstr "Upload Tid"
+
+#~ msgid "File Priority"
+#~ msgstr "Fil Priotet"
+
+#~ msgid "Score"
+#~ msgstr "Point"
+
+#~ msgid "Asked"
+#~ msgstr "Spurgte"
+
+#~ msgid "Last Seen"
+#~ msgstr "Sidst Set"
+
+#~ msgid "Entered Queue"
+#~ msgstr "Kom I Kø"
+
+#~ msgid "Clients on queue :"
+#~ msgstr "Klienter i kø :"
+
+#~ msgid "Current Session"
+#~ msgstr "Nuværende Session"
+
+#~ msgid "Total"
+#~ msgstr "Total"
+
+#~ msgid "Requested :"
+#~ msgstr "Anmodet :"
+
+#~ msgid "Files Transfers Window"
+#~ msgstr "Fil Overførsel Vindue"
+
+#, fuzzy
+#~ msgid "HTTP download thread ended"
+#~ msgstr "Max download grÃŠnse"
+
+#, fuzzy
+#~ msgid "WARNING: Void response on stream creation"
+#~ msgstr "ADVARSEL: Kunne ikke fjerne orginal '%s' efter oprettelse af backup"
+
+#, fuzzy
+#~ msgid "Killed!"
+#~ msgstr "Fejlede"
+
+#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
+#~ msgstr "Brugere E: %s K: %s | Filer E: %s K: %s"
+
+#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
+#~ msgstr "Filen %s er for stor til Donkey: maksimum tilladt er 4GB."
+
+#~ msgid "File was not saved"
+#~ msgstr "Fil ikke gemt"
+
+#~ msgid "Line Capacities"
+#~ msgstr "Linie Kapasitet"
+
+#~ msgid "Max Sources per File"
+#~ msgstr "Max Kilder Pr Fil"
+
+#~ msgid "Start next paused file when a file completed"
+#~ msgstr "Start næste pausede fil når en fil er færdig"
+
+#~ msgid "Show percentage"
+#~ msgstr "Vis procent"
+
+#~ msgid "I.C.H. active"
+#~ msgstr "I.C.H. aktiv"
+
+#~ msgid "Progressbar Style"
+#~ msgstr "Forløbs Stil"
+
+#~ msgid ""
+#~ "For a film you can say its length, its story, language ...\n"
+#~ "and if it's a fake, you can tell that to other users of aMule."
+#~ msgstr ""
+#~ "For en film kan du sige den længde, dens histori, sprog ...\n"
+#~ "og hvis den er falsk, kan du også fortælle det til andre aMule brugere."
+
+#~ msgid "Misc Options"
+#~ msgstr "Andre Indstillinger"
+
+#~ msgid "Max Connections"
+#~ msgstr "Max Forbindelser"
+
+#~ msgid "EC Connection Failed. Empty reply."
+#~ msgstr "EC-Forbindelse-fejlede. Tomt svar"
+
+#~ msgid "ExternalConn: Access denied because: "
+#~ msgstr "ExternalConn: Adgang afvist fordi:"
+
+#~ msgid "ExternalConn: Access denied"
+#~ msgstr "ExternalConn: Adgang afvist"
+
+#~ msgid "Copy ED2k &link to clipboard"
+#~ msgstr "Kopier ED2k-Link til udklipsholder"
+
+#, fuzzy
+#~ msgid "Copy ED2k link to clipboard (&Source)"
+#~ msgstr "Kopier eD2k link til udklipsholder (&Source)"
+
+#, fuzzy
+#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
+#~ msgstr "Kopier eD2k link til udklips holder (Kilde) (&With Crypt options)"
+
+#, fuzzy
+#~ msgid "Copy ED2k link to clipboard (&Hostname)"
+#~ msgstr "Kopier eD2k link til udklipsholder (&Hostname)"
+
+#, fuzzy
+#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
+#~ msgstr "Kopier eD2k link til udklipsholder (Hostname) (With &Crypt options)"
+
+#~ msgid "Warning"
+#~ msgstr "Advarsel"
+
+#~ msgid "Error: Could not listen to TCP port."
+#~ msgstr "Fejl: Kunne ikke lytte til TCP-port"
+
+#~ msgid "Webserver HTTP port"
+#~ msgstr "Webserver HTTP port"
+
+#~ msgid "Use UPnP port forwarding on webserver port"
+#~ msgstr "Brug UPnP port forwarding til webserver port"
+
+#~ msgid "Full access password for webserver"
+#~ msgstr "Fuldt adgangs password til webserver"
+
+#~ msgid "Guest password for webserver"
+#~ msgstr "Bruger password til webserver"
+
+#~ msgid "Load/save webserver settings from/to remote aMule"
+#~ msgstr "Hent/gem webserver instillinger fra/til fjern aMule"
+
+#~ msgid "Copy ED2k link to clipboard"
+#~ msgstr "Kopier ED2k-Link til udklipsholder"
+
+#, fuzzy
+#~ msgid "Copy ED2k links to clipboard"
+#~ msgstr "Kopier ED2k-Link til udklipsholder"
+
+#, fuzzy
+#~ msgid "ED2K: Connecting"
+#~ msgstr "Forbinder"
+
+#, fuzzy
+#~ msgid "ED2K: Disconnected"
+#~ msgstr "Afbrudt"
+
+#~ msgid "Edit Serverlist"
+#~ msgstr "Ændre Serverlisten"
+
+#~ msgid "Average filesize: %s"
+#~ msgstr "Gennemsnitlig filstørrelse: %s"
+
+#~ msgid "Error"
+#~ msgstr "Fejl"
+
+#~ msgid ""
+#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
+#~ "should never happen"
+#~ msgstr ""
+#~ "Fejl: Kunne ikke hashe downloadede del - hashsæt ikke færdig (%s). Dette "
+#~ "skulle aldrig ske"
+
+#~ msgid "No valid servers to connect in serverlist found"
+#~ msgstr "Ingen brugbare servere i serverliste"
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "Bandwith Limits"
+#~ msgstr "Tilladte Hastigheder"
+
+#~ msgid "Hard Limit"
+#~ msgstr "Fast Grænse"
+
+#~ msgid "Connection Limits"
+#~ msgstr "Forbindelses Grænser"
+
+#~ msgid "Auto-update serverlist at startup"
+#~ msgstr "Opdater serverliste ved start"
+
+#~ msgid "Update serverlist when connecting to a server"
+#~ msgstr "Opdater serverliste ved forbindelse til server"
+
+#~ msgid "Update serverlist when a client connect"
+#~ msgstr "Opdater serverliste når en klient forbinder"
+
+#~ msgid "Incoming Directory :"
+#~ msgstr "Indkommende Mappe :"
+
+#~ msgid "Temporary Directory :"
+#~ msgstr "Midlertidig Mappe :"
+
+#~ msgid "Shared Directories"
+#~ msgstr "Delte Mapper"
+
+#~ msgid "Create Backup to preview"
+#~ msgstr "Opret backup for smug kig"
+
+#~ msgid "Show Fast ED2K Links Handler"
+#~ msgstr "Vis hurtig ED2K link håndtering"
+
+#~ msgid "Webserver Parameters"
+#~ msgstr "Webserver Parametre"
+
+#~ msgid "Webserver port"
+#~ msgstr "Webserver port"
+
+#~ msgid "Serverlist"
+#~ msgstr "Serverliste"
+
+#~ msgid "Manual Server Add : Name"
+#~ msgstr "Tilføj Manuelt en server : Navn"
+
+#~ msgid "TCP Port: Not Ready"
+#~ msgstr "TCP Port: Ikke Klar"
+
+#~ msgid "UDP Port: Not Ready"
+#~ msgstr "UDP Port: Ikke Klar"
+
+#~ msgid "Upload Limit"
+#~ msgstr "Upload Grænse"
+
+#~ msgid "Download Limit"
+#~ msgstr "Download Grænse"
+
+#~ msgid "Disconnected from ED2K"
+#~ msgstr "Afbrudt fra ED2K"
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
+#~ msgstr "Fejl ved åbning af venneliste fil 'emfriends.met' ved læsning!"
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
+#~ msgstr "Fejl ved åbing af venneliste fil 'emfriends.met' ved skrivning!"
+
+#~ msgid "Can't create web socket thread\n"
+#~ msgstr "Kan ikke oprette web socket tråd\n"
+
+#~ msgid "Web Server: Started\n"
+#~ msgstr "Web Server: Startet\n"
+
+#~ msgid "Not Supported"
+#~ msgstr "Ikke Understøttet"
+
+#~ msgid "Browse wav"
+#~ msgstr "Find wav"
+
+#~ msgid "File wav (*.wav)|*.wav||"
+#~ msgstr "Fil wav (*.wav)|*.wav||"
+
+#~ msgid "No comment(s)"
+#~ msgstr "Ingen Kommentar(er)"
+
+#~ msgid "Messages popup"
+#~ msgstr "Besked popup"
+
+#~ msgid "Use sound"
+#~ msgstr "Brug lyd"
+
+#~ msgid "Pop out when :"
+#~ msgstr "Popop når :"
+
+#~ msgid "New entry on log"
+#~ msgstr "Ny tekst i log"
+
+#~ msgid "Starts a new chat session"
+#~ msgstr "Starter en ny chat session"
+
+#~ msgid "A new chat message is received"
+#~ msgstr "En ny chat besked er modtaget"
+
+#~ msgid "A download is added or finished"
+#~ msgstr "En download er tilføjet eller færdig"
+
+#~ msgid "New aMule version detected"
+#~ msgstr "Ny aMule version fundet"
+
+#~ msgid "Urgent OOD, serverconnection lost"
+#~ msgstr "Vigtig OOD serverforbindelse mistet"
+
+#~ msgid "Notify by Mail"
+#~ msgstr "Underret via Mail"
+
+#~ msgid "Send an Email when transfer complete."
+#~ msgstr "Send en Email når overførsel er færdig."
+
+#~ msgid "SMTP server :"
+#~ msgstr "SMTP server :"
+
+#~ msgid "Email Address :"
+#~ msgstr "Email Adresse :"
+
+#~ msgid ":"
+#~ msgstr ":"
+
+#~ msgid " ["
+#~ msgstr " ["
+
+#~ msgid " | Kad: "
+#~ msgstr " | Kad: "
+
+#~ msgid "Masterhashes of known files have been loaded."
+#~ msgstr "Masterhashes af kendte filer er indlæst."
+
+#, fuzzy
+#~ msgid "Error while reading Kad contacts - 0 entries"
+#~ msgstr "Fejl under indlæsning af Kad kontakter - 0 indtastninger"
+
+#~ msgid "Merge attempt"
+#~ msgstr "Samlings forsøg"
+
+#~ msgid "Sucessful merge!"
+#~ msgstr "Succesfuld samling"
+
+#~ msgid "No merge possible"
+#~ msgstr "Samling ikke mulig"
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "Send sources to any other file before dropping (High CPU)"
+#~ msgstr "Send kilder til en anden fil før droppelse (Høj CPU)"
+
+#~ msgid "Full Queue Sources Handling"
+#~ msgstr "Kilder i fyldt kø håndtering"
+
+#~ msgid "Enable auto drop Full Queue Sources"
+#~ msgstr "Drop kilder som er i en fuld kø"
+
+#~ msgid "High Queue Rating Sources Handling"
+#~ msgstr "Kilder i lang kø håndtering"
+
+#~ msgid "Enable auto drop High Queue Rating Sources"
+#~ msgstr "Drop automatisk kilder i lang kø"
+
+#~ msgid "High Queue Rating value"
+#~ msgstr "For køer som er over"
+
+#~ msgid "(Min 300 / Max 3000)"
+#~ msgstr "(Min 300 / Max 3000)"
+
+#~ msgid "Auto Drop Sources Timer"
+#~ msgstr "Interval for auto dropning af kilder"
+
+#~ msgid "Timer (in secs)"
+#~ msgstr "Tid (i sek)"
+
+#~ msgid "(Min 60 / 3600 Max)"
+#~ msgstr "(Min 60 / 3600 Max)"
+
+#~ msgid "Minimize to trayicon"
+#~ msgstr "Minimer til statusomrÃ¥de"
+
+#~ msgid "Port %d is not available. You will be LOWID"
+#~ msgstr "Port %d er ikke tilgÃŠngelig. Du fÃ¥r LAVID"
+
+#~ msgid ""
+#~ "Port %d is not available !!\n"
+#~ "\n"
+#~ "This will mean that you will be LOWID.\n"
+#~ "\n"
+#~ "Use netstat to determine when port becomes available\n"
+#~ "and try starting amule again."
+#~ msgstr ""
+#~ "Port %d er ikke tilgÃŠngelig !!\n"
+#~ "\n"
+#~ "Dette vil sige du fÃ¥r et LAV ID.\n"
+#~ "\n"
+#~ "Brug netstat for at finde ud af nÃ¥r porten er fri\n"
+#~ "og start aMule igen."
+
+#~ msgid "Failed to save"
+#~ msgstr "Kunne ikke gemme"
+
+#~ msgid " OnlineSig File"
+#~ msgstr " OnlineSig Fil"
+
+#~ msgid ""
+#~ "Unable to launch browser. Please set correct browserexecutable path in "
+#~ "Preferences."
+#~ msgstr ""
+#~ "Kunne ikke starte din browser. VÃŠlg venligt en korekt sti til den under "
+#~ "indstillinger."
+
+#~ msgid ""
+#~ " --- This is the first time you run aMule %s ---\n"
+#~ "\n"
+#~ msgstr ""
+#~ " --- Dette er fÃžrste fanf du kÃžrer aMule %s ---\n"
+#~ "\n"
+
+#~ msgid "This version is a testing version, updated daily, and \n"
+#~ msgstr "Denne version er en test version, opdateret daglig, og \n"
+
+#~ msgid "or kill your dog. But it *should* be safe to use anyway. \n"
+#~ msgstr "eller drÃŠbe din hund, Men det skulle vÃŠre sikkert at bruge. \n"
+
+#~ msgid "client credits will be lost on this first run. \n"
+#~ msgstr "klient kredits vil gÃ¥ tabt ved denne fÃžrste kÃžrsel \n"
+
+#~ msgid "Feel free to report any bugs to forum.amule.org"
+#~ msgstr "Reporter gerne alle fejl pÃ¥ forum.amule.org"
+
+#~ msgid "Desktop integration"
+#~ msgstr "Desktop integration"
+
+#~ msgid "Connection established on:"
+#~ msgstr "Forbindelse etableret til: "
+
+#~ msgid "Connect to any server"
+#~ msgstr "Forbind til en tilfÃŠldig server"
+
+#~ msgid "This ed2k link is invalid (%s)"
+#~ msgstr "Dette ed2k link er invalid (%s)"
+
+#~ msgid "Invalid link: %s"
+#~ msgstr "Invalid Link: %s"
+
+#~ msgid "Filtered IP: %s (%s)"
+#~ msgstr "Filtreret IP: %s (%s)"
+
+#~ msgid "Description for file '%s' received: %s"
+#~ msgstr "Beskrivelse af fil '%s' modtaget: %s"
+
+#~ msgid "Unable to retrieve shared files from '%s'"
+#~ msgstr "Kunne ikke modtage delte filer fra '%s'"
+
+#~ msgid "Requesting shared files from user %s (%u) is already in progress"
+#~ msgstr "Anmoder bruger %s (%u) om delte filer, allerede igang."
+
+#~ msgid "NickName: %s\n"
+#~ msgstr "BrugerNavn: %s\n"
+
+#~ msgid "can't create file '%s'"
+#~ msgstr "kan ikke oprette fil '%s'"
+
+#~ msgid "Can't open file '%s'"
+#~ msgstr "Kan ikke Ã¥bne fil '%s'"
+
+#~ msgid "can't close file descriptor %d"
+#~ msgstr "kan ikke lukke fil beskrivelse %d"
+
+#~ msgid "can't read from file descriptor %d"
+#~ msgstr "kan ikke lÃŠse fil beskrivelse %d"
+
+#~ msgid "can't write to file descriptor %d"
+#~ msgstr "kan ikke skrive til fil beskrivelse %d"
+
+#~ msgid "can't flush file descriptor %d"
+#~ msgstr "kan ikke tÃžmme fil beskrivelse %d"
+
+#~ msgid "unknown seek origin"
+#~ msgstr "ikke kendt sÃžge oprindelse"
+
+#~ msgid "can't get seek position on file descriptor %d"
+#~ msgstr "kan ikke sÃžge position i fil beskrivelse %d"
+
+#~ msgid "can't find length of file on file descriptor %d"
+#~ msgstr "kan ikke finde lÃŠngde af fil i fil beskrivelse %d"
+
+#~ msgid "can't determine if the end of file is reached on descriptor %d"
+#~ msgstr "kan ikke afgÃžre om enden af filen er nÃ¥et i beskrivelse %d"
+
+#~ msgid "invalid eof() return value."
+#~ msgstr "invalid eof() tilbage melding."
+
+#~ msgid "*** Chatsession Start : "
+#~ msgstr "*** Chat Begyndt : "
+
+#~ msgid "Message from"
+#~ msgstr "Besked fra"
+
+#~ msgid "failed"
+#~ msgstr "fejlede"
+
+#~ msgid "*** Disconnected"
+#~ msgstr "*** Ikke Forbundet"
+
+#~ msgid "Failed to save creditfile"
+#~ msgstr "Kunne ikke gemme kreditfil"
+
+#~ msgid "ClientSoftware ->"
+#~ msgstr "KlientSoftware  >"
+
+#~ msgid "<- ClientVersion ->v"
+#~ msgstr "<- Klient Version ->v"
+
+#~ msgid "Not Avaiable"
+#~ msgstr "Ikke TilgÃŠngelig"
+
+#~ msgid "Corrupted compressed packet for %s received (error %i)"
+#~ msgstr "Beskadiget pakket pakke fra %s modtaget (fejl %i)"
+
+#~ msgid "Check Fake"
+#~ msgstr "Tjek om filen er falsk"
+
+#~ msgid "Copy ED2k link to clipboard (&HTML)"
+#~ msgstr "Kopier ED2k-Link til udklipsholder (&HTML)"
+
+#~ msgid "Hide Lists"
+#~ msgstr "Skjul Liste"
+
+#~ msgid "Preview ["
+#~ msgstr "Smug Kig ["
+
+#~ msgid "eDonkey v%i"
+#~ msgstr "eDonkey v%i"
+
+#~ msgid "eDonkeyHybrid v%i"
+#~ msgstr "eDonkeyHybrid v%i"
+
+#~ msgid "eMule v%02X"
+#~ msgstr "eMule v%02X"
+
+#~ msgid "aMule [ %s ]"
+#~ msgstr "aMule [ %s ]"
+
+#~ msgid "aMule v0.%02X"
+#~ msgstr "aMule v0.%02X"
+
+#~ msgid "lMule/xMule v0.%02X"
+#~ msgstr "lMule/xMule v0.%02X"
+
+#~ msgid "Old MLdonkey"
+#~ msgstr "Gammel MLdonkey"
+
+#~ msgid "New MLdonkey"
+#~ msgstr "Ny MLdonkey"
+
+#~ msgid "Are you sure that you want to cancel and delete this file ?\n"
+#~ msgstr "Er du sikker pÃ¥ du vil annullere og slette denne fil ?\n"
+
+#~ msgid "Are you sure that you want to cancel and delete these files ?\n"
+#~ msgstr "Er du sikker pÃ¥ du vil annullere og slette denne fil ?\n"
+
+#~ msgid "You already have the file %s"
+#~ msgstr "Du har allerede filen %s"
+
+#~ msgid "Bad link."
+#~ msgstr "DÃ¥rligt link."
+
+#~ msgid "not a well-formed ed2k link"
+#~ msgstr "ikke et odentligt ed2k link"
+
+#~ msgid "Not an ED2K server or file link"
+#~ msgstr "Ikke en ED2K server eller fil link"
+
+#~ msgid "can't write file '%s'"
+#~ msgstr "kan ikke skrive fil '%s'"
+
+#~ msgid "done"
+#~ msgstr "fÃŠrdig"
+
+#~ msgid "Failed to copy the file '%s' to '%s'"
+#~ msgstr "Fejlede ved kopiering af fil '%s' til '%s'"
+
+#~ msgid "Loaded ipfilter with %d IP addresses."
+#~ msgstr "IndlÃŠste ipfilter med IP adresse %d."
+
+#~ msgid ""
+#~ "Unexpected file error while reading known.met: %s, unable to load known "
+#~ "files"
+#~ msgstr ""
+#~ "Uventet fejl ved lÃŠsning af known.met: %s, kunne ikke hente kendte filer"
+
+#~ msgid "accepted"
+#~ msgstr "accepteret"
+
+#~ msgid "denied"
+#~ msgstr "nÃŠgtet"
+
+#~ msgid "Client '%s' (IP:%s) caused an error: %s. Disconnecting client!"
+#~ msgstr "Klient '%s' (IP:%s) lavede en fejl: %s. Afbryder Klient"
+
+#~ msgid ""
+#~ "A client caused an error or did something bad: %s. Disconnecting client!"
+#~ msgstr ""
+#~ "En klient lavede en fejl eller gjode noget slemt: %s. Afbryder klient!"
+
+#~ msgid "Concurrent Downloads"
+#~ msgstr "Samtidige Downloads"
+
+#~ msgid "1-5"
+#~ msgstr "1-5"
+
+#~ msgid "6-15"
+#~ msgstr "6-15"
+
+#~ msgid "16+"
+#~ msgstr "16+"
+
+#~ msgid "Connection Type"
+#~ msgstr "Forbindelses Type"
+
+#~ msgid "Select your connection type here :"
+#~ msgstr "VÃŠlg din forbindelse type her :"
+
+#~ msgid "True upload bandwidth"
+#~ msgstr "Max upload grÃŠnse"
+
+#~ msgid "Unit:"
+#~ msgstr "Enhed:"
+
+#~ msgid "kbits/sec"
+#~ msgstr "kbits/sek"
+
+#~ msgid ""
+#~ "For system tray integration to work,\n"
+#~ "you must specify which desktop you are using.\n"
+#~ "You can change this later from preferences."
+#~ msgstr ""
+#~ "For at fÃ¥ amule til at integrere med statusomrÃ¥det,\n"
+#~ "skal du vÃŠlge hvilken desktop du bruger.\n"
+#~ "du kan ÃŠndre dette senere."
+
+#~ msgid "Desktop"
+#~ msgstr "Desktop"
+
+#~ msgid "Gnome 2.x (or other XEMBED compatible)"
+#~ msgstr "Gnome 2.x (eller andre XEMBED-kompatible)"
+
+#~ msgid "KDE 3.x"
+#~ msgstr "KDE 3.x"
+
+#~ msgid "KDE 2.x / Gnome 1.2 "
+#~ msgstr "KDE 2.x / Gnome 1.2 "
+
+#~ msgid "No systray integration, please"
+#~ msgstr "Ingen integration til statusomrÃ¥de"
+
+#~ msgid "Fast ED2K Links Handler (Direct Download)"
+#~ msgstr "Hurtig ED2K Link HÃ¥ndtering (Direkte Download)"
+
+#~ msgid "Name"
+#~ msgstr "Navn"
+
+#~ msgid "Min Availability"
+#~ msgstr "Min TilgÃŠngelighed"
+
+#~ msgid "Search global"
+#~ msgstr "SÃžg globalt"
+
+#~ msgid "Clear All"
+#~ msgstr "Ryd Alt"
+
+#~ msgid "Download selected"
+#~ msgstr "Download markerede"
+
+#~ msgid "Codec:"
+#~ msgstr "Codec:"
+
+#~ msgid "Length:"
+#~ msgstr "LÃŠngde:"
+
+#~ msgid " / ("
+#~ msgstr " / ("
+
+#~ msgid ")"
+#~ msgstr ")"
+
+#~ msgid "Source Names"
+#~ msgstr "Kilde Navne"
+
+#~ msgid "Clientsoftware :"
+#~ msgstr "Klientsoftware :"
+
+#~ msgid "Server IP :"
+#~ msgstr "Server IP :"
+
+#~ msgid "Clientversion :"
+#~ msgstr "Klientversion :"
+
+#~ msgid "ID :"
+#~ msgstr "ID :"
+
+#~ msgid "Downloaded (this session) :"
+#~ msgstr "Downloaded (denne session) :"
+
+#~ msgid "Average downloadrate :"
+#~ msgstr "Gennemsnits downloadhastighed :"
+
+#~ msgid "Downloaded total :"
+#~ msgstr "Downloaded total :"
+
+#~ msgid "Uploaded (this session) :"
+#~ msgstr "Uploaded (denne session) :"
+
+#~ msgid "Average Uploadrate :"
+#~ msgstr "Gennemsnitlig Uploadshastighed :"
+
+#~ msgid "Uploaded total :"
+#~ msgstr "Uploaded total :"
+
+#~ msgid "http://www.aMule.org"
+#~ msgstr "http://www.aMule.org"
+
+#~ msgid "Chinese"
+#~ msgstr "Chinese"
+
+#~ msgid "English"
+#~ msgstr "Dansk"
+
+#~ msgid "Galego"
+#~ msgstr "Galego"
+
+#~ msgid "German (Swiss)"
+#~ msgstr "German (Swiss)"
+
+#~ msgid "Portuguese (Brazil)"
+#~ msgstr "Portuguese (Brazil)"
+
+#~ msgid "Spanish (Chile)"
+#~ msgstr "Spanish (Chile)"
+
+#~ msgid "Spanish (Mexico)"
+#~ msgstr "Spanish (Mexico)"
+
+#~ msgid "Turkey"
+#~ msgstr "Turkey"
+
+#~ msgid "Beep on errors"
+#~ msgstr "Bip ved fejl"
+
+#~ msgid "Bring to front on link click"
+#~ msgstr "Bring frem ved link klik"
+
+#~ msgid "Downloadlist doubleclick to expand"
+#~ msgstr "Dobbeltklik for udfoldelse af downloadlist"
+
+#~ msgid "Tooltip Delay Time in secs (1s to 5s)"
+#~ msgstr "StatusomrÃ¥de ikons opdaterings tid i sekunder (1s til 5s)"
+
+#~ msgid "Systray Integration"
+#~ msgstr "StatusomrÃ¥de Integration"
+
+#~ msgid "Startup"
+#~ msgstr "Programm start"
+
+#~ msgid "5 Days"
+#~ msgstr "5 Dage"
+
+#~ msgid "Check for new version"
+#~ msgstr "Se efter ny version"
+
+#~ msgid "Show Splashscreen"
+#~ msgstr "Vis velkomstskÃŠrm"
+
+#~ msgid "Clientport"
+#~ msgstr "Klient Port"
+
+#~ msgid "TCP"
+#~ msgstr "TCP"
+
+#~ msgid "UDP"
+#~ msgstr "UDP"
+
+#~ msgid "Connection Wizard"
+#~ msgstr "Forbindelses Assistent"
+
+#~ msgid "IP-Filter"
+#~ msgstr "IP-Filter"
+
+#~ msgid "IP-Filter ON / OFF"
+#~ msgstr "IP-Filter Aktiv / Inaktiv"
+
+#~ msgid "Always filter bad IPs"
+#~ msgstr "Filtrer dÃ¥rlige IPer"
+
+#~ msgid "See my shares"
+#~ msgstr "Kan se mine delte filer"
+
+#~ msgid "mplayer -idx"
+#~ msgstr "mplayer -idx"
+
+#~ msgid "Autotake ED2K Links only during runtime"
+#~ msgstr "Overtag kun ED2K links nÃ¥r amule kÃžrer"
+
+#~ msgid "Arrange Downloads"
+#~ msgstr "Arranger Downloads"
+
+#~ msgid "Enable auto-arranging download list "
+#~ msgstr "Aktiver auto arrangering af download liste"
+
+#~ msgid "Download speed"
+#~ msgstr "Downloads hastighed"
+
+#~ msgid "Number of sources"
+#~ msgstr "Antal kilder"
+
+#~ msgid "GTK Theme Selector"
+#~ msgstr "GTK Tema VÃŠlger"
+
+#~ msgid "Theme :"
+#~ msgstr "Tema :"
+
+#~ msgid "Use Font "
+#~ msgstr "Brug Font "
+
+#~ msgid "Font"
+#~ msgstr "Font"
+
+#~ msgid "No Needed Sources Handling"
+#~ msgstr "Ikke Brugbar Kilde HÃ¥ndtering"
+
+#~ msgid "Enable auto drop No Needed Sources"
+#~ msgstr "Aktiver auto dropning af ikke brugbare kilder"
+
+#~ msgid "Extended Dropping"
+#~ msgstr "Udvidet Droppelse"
+
+#~ msgid "Drop sources anyway"
+#~ msgstr "Drop kilde alligevel"
+
+#~ msgid "Enable Webserver"
+#~ msgstr "Aktiver Webserver"
+
+#~ msgid "Use TCP ports instead of unix local sockets"
+#~ msgstr "Brug TCP istedet for unix lokal socket"
+
+#~ msgid "External TCP port"
+#~ msgstr "Ydre TCP port"
+
+#~ msgid "Enable password"
+#~ msgstr "Aktiver kodeord"
+
+#~ msgid "Notify"
+#~ msgstr "PÃ¥mind"
+
+#~ msgid ""
+#~ "http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good."
+#~ "met"
+#~ msgstr ""
+#~ "http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good."
+#~ "met"
+
+#~ msgid "Servers List Window"
+#~ msgstr "Server Vindue"
+
+#~ msgid "SharedFiles"
+#~ msgstr "Delte Filer"
+
+#~ msgid "New Prefs"
+#~ msgstr "Nye Indstillinger"
+
+#~ msgid "K"
+#~ msgstr "K"
+
+#~ msgid "h"
+#~ msgstr "t"
+
+#~ msgid "D"
+#~ msgstr "D"
+
+#~ msgid "Error: Failed to open part.met file! (%s => %s)"
+#~ msgstr "Kunne ikke Ã¥bne part.met fil! (%s => %s)"
+
+#~ msgid "Error: Invalid part.met fileversion! (%s => %s)"
+#~ msgstr "Fejl: Invalid part.met filversion! (%s => %s)"
+
+#~ msgid "Error: %s (%s) is corrupt"
+#~ msgstr "Fejl: %s (%s) er beskadiget"
+
+#~ msgid "Warning: %s might be corrupted"
+#~ msgstr "Advarsel: %s er mÃ¥ske beskadiget"
+
+#~ msgid ".part file not found"
+#~ msgstr ".part fil ikke fundet"
+
+#~ msgid "Unable to open %s file - using .bak file.\n"
+#~ msgstr "Kunne ikke indlÃŠse %s - bruger .bak fil.\n"
+
+#~ msgid "Found corrupted part (%i) in %s"
+#~ msgstr "Fandt beskadigede dele (%i) i %s"
+
+#~ msgid "Failed to delete %s"
+#~ msgstr "Kunne ikke slette %s"
+
+#~ msgid "Finished downloading %s :-)"
+#~ msgstr "FÃŠrdig med downloading af %s :-)"
+
+#~ msgid "A file with that name already exists, the file has been saved as %s"
+#~ msgstr "En fil med dette navn findes allerede, filen er blevet gemt som %s"
+
+#~ msgid "Warning: Unable to hash downloaded part - hashset incomplete (%s)"
+#~ msgstr ""
+#~ "Advarsel: kunne ikke hashe downloadede del - hashsÃŠt ikke fÃŠrdig (%s)"
+
+#~ msgid "ERROR: Cannot write to disk"
+#~ msgstr "Fejl: Kan ikke skrive til disk"
+
+#~ msgid "Downloaded part %i is corrupt :(  (%s)"
+#~ msgstr "Downloadet del %i er beskadiget :(  (%s)"
+
+#~ msgid "ICH: Recovered corrupted part %i  (%s)"
+#~ msgstr "I.C.H.: Reddede beskadiget del %i (%s)"
+
+#~ msgid ""
+#~ "Partfilename: %s\n"
+#~ "Parts: %d , %s: %d (%.1f%%)\n"
+#~ msgstr ""
+#~ "Partfilnavn: %s\n"
+#~ "Dele: %d , %s: %d (%.1f%%)\n"
+
+#~ msgid "%d%% done (%s) - Transferring from %d sources"
+#~ msgstr "%d%% fÃŠrdig (%s) - OverfÃžrer fra %d kilder"
+
+#~ msgid "Available"
+#~ msgstr "TilgÃŠngelig"
+
+#~ msgid "Last Seen Complete :"
+#~ msgstr "Sidst FÃŠrdig :"
+
+#~ msgid "Last Reception:"
+#~ msgstr "Sidst Aktiv"
+
+#~ msgid "Executable (*)|*||"
+#~ msgstr "Program (*)|*||"
+
+#~ msgid "Language change will not be applied until aMule is restarted."
+#~ msgstr "Sprog ÃŠndringer vil ikke blive aktiveret fÃžr du genstarter aMule."
+
+#~ msgid "Update: Disabled"
+#~ msgstr "Opdater: Inaktiv"
+
+#~ msgid "Update period: %i sec"
+#~ msgstr "Opdaterings interval: %i sek"
+
+#~ msgid "Update period: %i secs"
+#~ msgstr "Opdaterings interval: %i sek"
+
+#~ msgid "Tweaks"
+#~ msgstr "Tuning"
+
+#~ msgid "Choose a folder for "
+#~ msgstr "VÃŠlg en mappe til "
+
+#~ msgid "%i days"
+#~ msgstr "%i dage"
+
+#~ msgid "%i day"
+#~ msgstr "%i dag"
+
+#~ msgid "Copy ED2k link to clipboard (HTML)"
+#~ msgstr "Kopier ED2k-Link til udklipsholder (HTML)"
+
+#~ msgid "Close this search result"
+#~ msgstr "Luk dette sÃžge resultat"
+
+#~ msgid "Description: %s"
+#~ msgstr "Beskrivelse: %s"
+
+#~ msgid "IP"
+#~ msgstr "IP"
+
+#~ msgid "User: %i"
+#~ msgstr "Bruger: %i"
+
+#~ msgid "Unable to retrieve serverlist"
+#~ msgstr "Kunne ikke modtage serverliste"
+
+#~ msgid "Failed to load server.met!"
+#~ msgstr "Fejl ved indlÃŠsning af server.met!"
+
+#~ msgid "Invalid versiontag in server.met (0x%i , size %i)!"
+#~ msgstr "Invalid versionsnummer i server.met (0x%i , stÃžrrelse %i)!"
+
+#~ msgid "Connect to this server"
+#~ msgstr "Forbind til denne server"
+
+#~ msgid "Add to static"
+#~ msgstr "TilfÃžj til statitik"
+
+#~ msgid "Remove from static server list"
+#~ msgstr "Fjern fra static server liste"
+
+#~ msgid "Preference"
+#~ msgstr "Indstilling"
+
+#~ msgid "No Pref"
+#~ msgstr "Ingen Indstilling"
+
+#~ msgid "Failed to open staticservers.dat"
+#~ msgstr "Kunne ikke Ã¥bne staticservers.dat"
+
+#~ msgid "Added to static server list"
+#~ msgstr "TilfÃžj til statik server liste"
+
+#~ msgid "Unknown server info received !"
+#~ msgstr "Ukendt server info modtaget !"
+
+#~ msgid "Connecting to %s (%s:%i)..."
+#~ msgstr "Forbinder til %s (%s:%i)..."
+
+#~ msgid "Error in serversocket: %s (%s:%i): %u"
+#~ msgstr "Fejl i Serversocket: %s (%s:%i): %u"
+
+#~ msgid "This is "
+#~ msgstr "Dette er "
+
+#~ msgid " (based on "
+#~ msgstr " (baseret pÃ¥ "
+
+#~ msgid "Visit http://www.amule.org to check if a new version is available.\n"
+#~ msgstr ""
+#~ "BesÃžg http://www.amule.org for at tjekke om der er en ny version "
+#~ "tilgÃŠngelig.\n"
+
+#~ msgid "Please enter a serveraddress"
+#~ msgstr "Indtast venligst en serveradresse"
+
+#~ msgid "Incomplete serverport: Please enter a serverport"
+#~ msgstr "forkert serverport: IndsÃŠt en serverport"
+
+#~ msgid "Server not added!"
+#~ msgstr "Server ikke tilfÃžjet!"
+
+#~ msgid "Low ID"
+#~ msgstr "Lav ID"
+
+#~ msgid "High ID"
+#~ msgstr "hÃžj ID"
+
+#~ msgid "Loading..."
+#~ msgstr "Henter..."
+
+#~ msgid "Permission"
+#~ msgstr "Rettighed"
+
+#~ msgid "Public"
+#~ msgstr "Offentlig"
+
+#~ msgid "Friends only"
+#~ msgstr "Kun venner"
+
+#~ msgid "Locked"
+#~ msgstr "LÃ¥st"
+
+#~ msgid "Permissions"
+#~ msgstr "Tilladelser"
+
+#~ msgid "Change this file's comment..."
+#~ msgstr "Ãndre kommentaren til denne fil"
+
+#~ msgid "Auto [Re]"
+#~ msgstr "Auto [Re]"
+
+#~ msgid "Hidden"
+#~ msgstr "Skjult"
+
+#~ msgid "You cannot change permissions while a file is still downloading!"
+#~ msgstr "Du kan ikke ÃŠndre rettigheder mens filen stadig downloader!"
+
+#~ msgid "%s (%s:%i) appears to be full"
+#~ msgstr "%s (%s:%i) ser ud til at vÃŠre fuld"
+
+#~ msgid "Connecting to %s (%s:%i ) failed."
+#~ msgstr "Forbindelse til %s (%s:%i ) fejlede."
+
+#~ msgid "Connection attempt to %s (%s:%i ) timed out"
+#~ msgstr "Forbindelses forsÃžg til %s (%s:%i ) tid gik"
+
+#~ msgid "Downloaded Data (Session (Total)): %s (%s)"
+#~ msgstr "Downloadet Data (session (Total)): %s (%s)"
+
+#~ msgid "Found Sources: %i"
+#~ msgstr "Fundne Kilder: %i"
+
+#~ msgid "Active Downloads (chunks): %i"
+#~ msgstr "Aktive Downloades: %i"
+
+#~ msgid "Uploaded Data (Session (Total)): %s (%s)"
+#~ msgstr "Uploadet Data (Session (Total)): %s (%s)"
+
+#~ msgid "Active Uploads: %i"
+#~ msgstr "Aktive Uploads: %i"
+
+#~ msgid "Total successful upload sessions: %i"
+#~ msgstr "FÃŠrdige upload sessioner (Total): %i"
+
+#~ msgid "Total failed upload sessions: %i"
+#~ msgstr "Fejlede upload sessioner (Total): %i"
+
+#~ msgid "Average Downloadrate (Session): %.2f kB/s"
+#~ msgstr "Gennemsnitlig Downloadhastighed (Session): %.2f kB/s"
+
+#~ msgid "Average Uploadrate (Session): %.2f kB/s"
+#~ msgstr "Gennemsnitlig Uploadhastighed (Session): %.2f kB/s"
+
+#~ msgid "Max Downloadrate Average (Session): %.2f kB/s"
+#~ msgstr "Max Gennemsnitlig Download Hastighed (Session): %.2f kB/s"
+
+#~ msgid "Max Downloadrate (Session): %.2f kB/s"
+#~ msgstr "Max Download Hastighed (Session): %.2f kB/s"
+
+#~ msgid "waiting for transfer..."
+#~ msgstr "Venter pÃ¥ overfÃžrsel..."
+
+#~ msgid "Number of Shared Files: %i"
+#~ msgstr "Antal Delte Filer: %i"
+
+#~ msgid "eMule: %i (%1.1f%%)"
+#~ msgstr "eMule: %i (%1.1f%%)"
+
+#~ msgid "aMule: %i (%1.1f%%)"
+#~ msgstr "aMule: %i (%1.1f%%)"
+
+#~ msgid "lMule/xMule: %i (%1.1f%%)"
+#~ msgstr "lMule/xMule: %i (%1.1f%%)"
+
+#~ msgid "eDonkeyHybrid: %i (%1.1f%%)"
+#~ msgstr "eDonkeyHybrid: %i (%1.1f%%)"
+
+#~ msgid "eDonkey: %i (%1.1f%%)"
+#~ msgstr "eDonkey: %i (%1.1f%%)"
+
+#~ msgid "cDonkey: %i (%1.1f%%)"
+#~ msgstr "cDonkey: %i (%1.1f%%)"
+
+#~ msgid "Old MLDonkey: %i (%1.1f%%)"
+#~ msgstr "Gammel MLDonkey: %i (%1.1f%%)"
+
+#~ msgid "New MLDonkey: %i (%1.1f%%)"
+#~ msgstr "Ny MLDonkey: %i (%1.1f%%)"
+
+#~ msgid "Working Servers"
+#~ msgstr "Virkende Servere"
+
+#~ msgid "Failed Servers"
+#~ msgstr "Fejlede Servere"
+
+#~ msgid "Users on Working Servers"
+#~ msgstr "Brugere PÃ¥ Virkende Servere"
+
+#~ msgid "Files on Working Servers"
+#~ msgstr "Filer PÃ¥ Virkende Servere"
+
+#~ msgid "Total Users"
+#~ msgstr "Antal Brugere Total"
+
+#~ msgid "Active Connections (estimate)"
+#~ msgstr "Aktive Forbindelser (anslÃ¥et)"
+
+#~ msgid "Max Connection Limit Reached"
+#~ msgstr "Max Forbindelses GrÃŠnse NÃ¥et"
+
+#~ msgid "Average Connections (estimate)"
+#~ msgstr "Gennemsnitlige Forbindelser (anslÃ¥et)"
+
+#~ msgid "Not Found"
+#~ msgstr "Ikke Fundet"
+
+#~ msgid "Actual Speed Limits:"
+#~ msgstr "NuvÃŠrende Hastigheds GrÃŠnser:"
+
+#~ msgid "DL: "
+#~ msgstr "DL: "
+
+#~ msgid " kb/s "
+#~ msgstr " kb/s "
+
+#~ msgid "UP: "
+#~ msgstr "UP: "
+
+#~ msgid " kb/s"
+#~ msgstr " kb/s"
+
+#~ msgid "Nick: "
+#~ msgstr "Brugernavn: "
+
+#~ msgid "Nick: Not Ready"
+#~ msgstr "Brugernavn: Ikke Klar"
+
+#~ msgid "Hash: "
+#~ msgstr "Hash: "
+
+#~ msgid "Hash: Not Ready"
+#~ msgstr "Hash: Ikke Klar"
+
+#~ msgid "ID: Not Connected"
+#~ msgstr "ID: Ikke Forbundet"
+
+#~ msgid "IP: "
+#~ msgstr "IP: "
+
+#~ msgid "TCP Port: "
+#~ msgstr "TCP Port: "
+
+#~ msgid "UDP Port: "
+#~ msgstr "UDP Port: "
+
+#~ msgid "ServerName: Not Connected"
+#~ msgstr "ServerNavn: Ikke Forbundet"
+
+#~ msgid "ServerIP: Not Connected"
+#~ msgstr "ServerIP: Ikke Forbundet"
+
+#~ msgid "Shared Files: "
+#~ msgstr "Delte Filer"
+
+#~ msgid "Queued Clients: "
+#~ msgstr "Klienter i KÃž: "
+
+#~ msgid "Total DL: "
+#~ msgstr "Total DL: "
+
+#~ msgid " GB"
+#~ msgstr " GB"
+
+#~ msgid "Total UP: "
+#~ msgstr "Total UP: "
+
+#~ msgid "Personal Infos"
+#~ msgstr "Personlig Info"
+
+#~ msgid "Show"
+#~ msgstr "Vis"
+
+#~ msgid "Hide"
+#~ msgstr "Skjul"
+
+#~ msgid "All To Max Speed"
+#~ msgstr "Alt Til Max Hastighed"
+
+#~ msgid "All To Min Speed"
+#~ msgstr "Alt Til Min Hastighed"
+
+#~ msgid "Disconnect from server"
+#~ msgstr "Afbryd fra server"
+
+#~ msgid "aMule for Linux"
+#~ msgstr "aMule til Linux"
+
+#~ msgid "Error while processing incoming extended protocol UDP Packet"
+#~ msgstr "Fejl i inkomende protocol UDP pak"
+
+#~ msgid ""
+#~ "Client '%s' caused error while creating package (%s) - disconnecting "
+#~ "client"
+#~ msgstr ""
+#~ "Klient '%s' lavede fejl ved oprettelse af pakker (%s) - afbryder klient"
+
+#~ msgid "requested file not found"
+#~ msgstr "anmodet fil ikke fundet"
+
+#~ msgid ""
+#~ "Client '%s' seems to be an aggressive client and is banned from the "
+#~ "uploadqueue"
+#~ msgstr ""
+#~ "Klient '%s' ser ud til at være en aggresiv klient og er banlyst fra "
+#~ "upload køen"
+
+#~ msgid "%s [%s:%i] using %s removed : invalide eMule client"
+#~ msgstr "%s [%s:%i] bruger %s fjernet : invalid eMule klient"
+
+#~ msgid "%s [%s:%i] using %s removed : suspicious mod string change"
+#~ msgstr "%s [%s:%i] bruger %s fjernet : mÃŠrklig mod string ÃŠndring"
+
+#~ msgid "Wizard"
+#~ msgstr "Assistent"
+
+#~ msgid "Down (kbit/s)"
+#~ msgstr "Ned (kbit/s)"
+
+#~ msgid "Up (kbit/s)"
+#~ msgstr "Up (kbit/s)"
+
+#~ msgid "Custom"
+#~ msgstr "manuel"
+
+#~ msgid "(enter below!)"
+#~ msgstr "(indsÃŠt nedenfor!)"
+
+#~ msgid "56-k Modem"
+#~ msgstr "56k-Modem"
+
+#~ msgid "ISDN"
+#~ msgstr "ISDN"
+
+#~ msgid "ISDN 2x"
+#~ msgstr "ISDN 2x"
+
+#~ msgid "xDSL"
+#~ msgstr "xDSL"
+
+#~ msgid "Cable"
+#~ msgstr "Kabelmodem"
+
+#~ msgid "T1"
+#~ msgstr "T1"
+
+#~ msgid "T3+"
+#~ msgstr "T3+"
+
+#~ msgid "100 Mbits"
+#~ msgstr "100 Mbits"
+
+#~ msgid "155 Mbits (ATM)"
+#~ msgstr "155 Mbits (ATM)"

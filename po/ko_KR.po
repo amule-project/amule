@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2017-03-16 10:58+0100\n"
+"PO-Revision-Date: 2017-05-25 12:12+0200\n"
 "Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Language: ko\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 2.0beta4\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -162,7 +162,7 @@ msgstr ""
 "\n"
 "이것은 낮은아이디를 가질것이라는걸 의미합니다.\n"
 "\n"
-"나가고 들어오는것에 대해 포트가 열려있는지 통신망을 체크하세요. "
+"나가고 들어오는것에 대해 포트가 열려있는지 통신망을 체크하세요."
 
 #: src/amule.cpp:855
 msgid "Failed to create OnlineSig File"
@@ -183,7 +183,7 @@ msgstr ""
 #: src/amule.cpp:1044
 #, c-format
 msgid "This is the first time you run aMule %s"
-msgstr "이번에 어뮬 %s를 처음 실행했습니다."
+msgstr "이번에 어뮬 %s를 처음 실행했습니다"
 
 #: src/amule.cpp:1046
 msgid "This version is a testing version, updated daily, and\n"
@@ -210,7 +210,7 @@ msgstr "(irc.freenode.net의 #aMule)에서 찾을 수 있습니다.\n"
 
 #: src/amule.cpp:1056
 msgid "Feel free to report any bugs to http://forum.amule.org"
-msgstr "버그는 http://forum.amule.org로 보고해 주십시오."
+msgstr "버그는 http://forum.amule.org로 보고해 주십시오"
 
 #: src/amule.cpp:1069
 msgid ""
@@ -240,7 +240,7 @@ msgstr "경고: 로그파일이 비어있습니다. 뭔가 잘못되어 있습�
 
 #: src/amule.cpp:1508
 msgid "Log has been reset"
-msgstr "로그가 초기화되었습니다."
+msgstr "로그가 초기화되었습니다"
 
 #: src/amule.cpp:1534
 #, c-format
@@ -259,7 +259,7 @@ msgstr "노드 목록을 내려받지 못했습니다."
 
 #: src/amule.cpp:1598
 msgid "Failed to open the downloaded version check file"
-msgstr "내려받은 버젼 검사 파일을 열지 못했습니다."
+msgstr "내려받은 버젼 검사 파일을 열지 못했습니다"
 
 #: src/amule.cpp:1601 src/amule.cpp:1611 src/amule.cpp:1617
 msgid "Corrupted version check file"
@@ -272,11 +272,11 @@ msgstr "오래된 어뮬 버젼을 사용하고 있습니다!"
 #: src/amule.cpp:1629
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
-msgstr "어뮬 버젼은 %i.%i.%i이며 최신 버젼은 %li.%li.%li입니다."
+msgstr "어뮬 버젼은 %i.%i.%i이며 최신 버젼은 %li.%li.%li입니다"
 
 #: src/amule.cpp:1630
 msgid "The latest version can always be found at http://www.amule.org"
-msgstr "최신 버젼은 항상 http://www.amule.org 에서 찾을 수 있습니다."
+msgstr "최신 버젼은 항상 http://www.amule.org 에서 찾을 수 있습니다"
 
 #: src/amule.cpp:1632
 #, c-format
@@ -289,7 +289,7 @@ msgstr "어뮬은 최신 버전입니다."
 
 #: src/amule.cpp:1643
 msgid "Failed to download the version check file"
-msgstr "버젼 검사 파일을 내려받지 못했습니다."
+msgstr "버젼 검사 파일을 내려받지 못했습니다"
 
 #: src/amule.cpp:1813 src/amule-remote-gui.cpp:530
 #, c-format
@@ -421,7 +421,7 @@ msgstr "어뮬 원격제어"
 
 #: src/amuleDlg.cpp:499
 msgid "Snapshot:"
-msgstr "스냅삿"
+msgstr "스냅삿:"
 
 #: src/amuleDlg.cpp:501
 msgid ""
@@ -431,19 +431,17 @@ msgstr ""
 
 #: src/amuleDlg.cpp:502
 msgid "Website: http://www.amule.org \n"
-msgstr "웹 사이트 : http://www.amule.org\n"
+msgstr ""
 
 #: src/amuleDlg.cpp:503
 msgid "Forum: http://forum.amule.org \n"
-msgstr "포럼 : http://forum.amule.org\n"
+msgstr ""
 
 #: src/amuleDlg.cpp:504
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
 msgstr ""
-"FAQ : http://wiki.amule.org\n"
-"\n"
 
 #: src/amuleDlg.cpp:505
 msgid "Contact: admin@amule.org (administrative issues) \n"
@@ -469,7 +467,7 @@ msgstr " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 
 #: src/amuleDlg.cpp:510
 msgid "http://kademlia.scs.cs.nyu.edu\n"
-msgstr "http://kademlia.scs.cs.nyu.edu\n"
+msgstr ""
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
 #: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
@@ -588,7 +586,7 @@ msgstr "- 기본 설정 -"
 #: src/amuleDlg.cpp:1233
 #, c-format
 msgid "Skin directory '%s' does not exist"
-msgstr "외형 폴더 '%s'가 없습니다."
+msgstr "외형 폴더 '%s'가 없습니다"
 
 #: src/amuleDlg.cpp:1238
 #, c-format
@@ -714,12 +712,13 @@ msgid "Going to event loop..."
 msgstr "파일 정보를 복구하려고 하고있습니다..."
 
 #: src/amule-remote-gui.cpp:304
+#, fuzzy
 msgid "Connecting..."
-msgstr "연결 중..."
+msgstr "연결중"
 
 #: src/amule-remote-gui.cpp:308
 msgid "Connection failed "
-msgstr "연결 실패"
+msgstr "연결 실패 "
 
 #: src/amule-remote-gui.cpp:319
 msgid "Remote GUI EC event handler"
@@ -740,7 +739,7 @@ msgstr ""
 
 #: src/amule-remote-gui.cpp:419
 msgid "Ready"
-msgstr "준비"
+msgstr ""
 
 #: src/amule-remote-gui.cpp:596 src/TransferWnd.cpp:340
 msgid "All"
@@ -770,7 +769,7 @@ msgstr "알수없는"
 #: src/BaseClient.cpp:1365
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
-msgstr "사용자 %s로부터 공유파일을 찾지 못했습니다."
+msgstr "사용자 %s로부터 공유파일을 찾지 못했습니다"
 
 #: src/BaseClient.cpp:1577
 msgid "Searching buddy for lowid connection"
@@ -828,7 +827,7 @@ msgstr[1] ""
 
 #: src/BaseClient.cpp:2026
 msgid "Requested unknown file"
-msgstr "알 수 없는 파일이 요청되었습니다."
+msgstr "알 수 없는 파일이 요청되었습니다"
 
 #: src/BaseClient.cpp:2702
 #, c-format
@@ -887,16 +886,16 @@ msgstr "저장할 폴더를 선택"
 
 #: src/CatDialog.cpp:140
 msgid "You must specify a name for the category!"
-msgstr "분류 이름을 정하세요."
+msgstr "분류 이름을 정하세요!"
 
 #: src/CatDialog.cpp:150
 msgid "You must specify a path for the category!"
-msgstr "분류 경로를 정하세요"
+msgstr "분류 경로를 정하세요!"
 
 #: src/CatDialog.cpp:162
 msgid ""
 "Failed to create incoming dir for category. Please specify a valid path!"
-msgstr "분류를 저장할 폴더를 생성하지 못했습니다. 유효한 경로를 지정하세요."
+msgstr "분류를 저장할 폴더를 생성하지 못했습니다. 유효한 경로를 지정하세요!"
 
 #: src/ChatSelector.cpp:129
 #, c-format
@@ -985,7 +984,7 @@ msgstr "활성화됨"
 
 #: src/ClientDetailDialog.cpp:122
 msgid "Supported"
-msgstr ""
+msgstr "지원"
 
 #: src/ClientDetailDialog.cpp:123 src/ClientRef.cpp:192
 msgid "Not supported"
@@ -1077,17 +1076,17 @@ msgstr "사용자 %s (%u)는 %s 폴더의 공유파일 목록을 보냅니다."
 #: src/ClientTCPSocket.cpp:985
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
-msgstr "사용자 %s (%u)는 공유파일 목록 전송을 마쳤습니다."
+msgstr "사용자 %s (%u)는 공유파일 목록 전송을 마쳤습니다"
 
 #: src/ClientTCPSocket.cpp:990
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
-msgstr "사용자 %s (%u)는 공유파일 목록을 원하지않습니다."
+msgstr "사용자 %s (%u)는 공유파일 목록을 원하지않습니다"
 
 #: src/ClientTCPSocket.cpp:1002
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
-msgstr "사용자 %s (%u)는 공유파일이나 공유폴더 목록에 접근하는것을 거부합니다."
+msgstr "사용자 %s (%u)는 공유파일이나 공유폴더 목록에 접근하는것을 거부합니다"
 
 #: src/CommentDialog.cpp:35 src/CommentDialogLst.cpp:47
 msgid "File Comments"
@@ -1194,7 +1193,7 @@ msgstr "받는중"
 
 #: src/DataToText.cpp:63
 msgid "Receiving hashset"
-msgstr "해시설정을 받는중입니다."
+msgstr "해시설정을 받는중입니다"
 
 #: src/DataToText.cpp:64
 msgid "No needed parts"
@@ -1202,7 +1201,7 @@ msgstr "필요없는 부분"
 
 #: src/DataToText.cpp:65
 msgid "Cannot connect LowID to LowID"
-msgstr "낮은아이디에서 낮은아이디로 연결할수 없습니다."
+msgstr "낮은아이디에서 낮은아이디로 연결할수 없습니다"
 
 #: src/DataToText.cpp:66
 msgid "Too many connections"
@@ -1574,15 +1573,15 @@ msgstr "외부연결 끊겼습니다."
 
 #: src/ExternalConn.cpp:320
 msgid "External connections disabled due to empty password!"
-msgstr "빈암호 때문에 외부연결이 불가능합니다."
+msgstr "빈암호 때문에 외부연결이 불가능합니다!"
 
 #: src/ExternalConn.cpp:345
 msgid "External connections disabled in config file"
-msgstr "이 환경설정에서 외부연결은 불가능합니다."
+msgstr "이 환경설정에서 외부연결은 불가능합니다"
 
 #: src/ExternalConn.cpp:414
 msgid "New external connection accepted"
-msgstr "새로운 외부연결이 승인되었습니다."
+msgstr "새로운 외부연결이 승인되었습니다"
 
 #: src/ExternalConn.cpp:417
 msgid "ERROR: couldn't accept a new external connection"
@@ -1590,7 +1589,7 @@ msgstr ""
 
 #: src/ExternalConn.cpp:435
 msgid "External connection refused due to empty password in preferences!"
-msgstr "환경설정의 빈암호로 인해 외부연결이 거부되었습니다."
+msgstr "환경설정의 빈암호로 인해 외부연결이 거부되었습니다!"
 
 #: src/ExternalConn.cpp:446
 #, c-format
@@ -1620,11 +1619,11 @@ msgstr ""
 
 #: src/ExternalConn.cpp:487
 msgid "Invalid protocol version."
-msgstr "유효하지 않은 프로토콜 버젼입니다"
+msgstr "유효하지 않은 프로토콜 버젼입니다."
 
 #: src/ExternalConn.cpp:492
 msgid "Missing protocol version tag."
-msgstr "프로토콜 버젼 태그 없음"
+msgstr "프로토콜 버젼 태그 없음."
 
 #: src/ExternalConn.cpp:499
 msgid "Authentication failed: invalid hash specified as EC password."
@@ -1662,7 +1661,7 @@ msgstr "허락되지않은 접속입니다. 연결이 끊깁니다."
 #: src/ExternalConn.cpp:810
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
-msgstr "원격 부분파일 명령 실패: 파일해시를 찾을 수 없음: %s "
+msgstr "원격 부분파일 명령 실패: 파일해시를 찾을 수 없음: %s"
 
 #: src/ExternalConn.cpp:812
 #, c-format
@@ -1684,7 +1683,7 @@ msgstr "서버가 발견되지 않음: %s"
 
 #: src/ExternalConn.cpp:921
 msgid "need to define server to be removed"
-msgstr "제거할 서버의 정의가 필요합니다."
+msgstr "제거할 서버의 정의가 필요합니다"
 
 #: src/ExternalConn.cpp:935
 msgid "eD2k is disabled in preferences."
@@ -1692,7 +1691,7 @@ msgstr ""
 
 #: src/ExternalConn.cpp:1113
 msgid "Search in progress. Refetch results in a moment!"
-msgstr "검색중입니다. 금방 결과를 다시 가져옵니다."
+msgstr "검색중입니다. 금방 결과를 다시 가져옵니다!"
 
 #: src/ExternalConn.cpp:1119
 msgid "WebSearch from remote interface makes no sense."
@@ -1946,7 +1945,7 @@ msgstr "외부연결을 위한 어뮬 포트. (기본: 4712)"
 
 #: src/ExternalConnector.cpp:427
 msgid "External Connection password."
-msgstr "외부연결 암호"
+msgstr "외부연결 암호."
 
 #: src/ExternalConnector.cpp:430
 msgid "Read configuration from file."
@@ -1981,9 +1980,9 @@ msgid "File Details"
 msgstr "파일 세부내역"
 
 #: src/FileDetailDialog.cpp:111
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f%% done"
-msgstr "%.2f%% 완료"
+msgstr "%.1f%% 완료"
 
 #: src/FileDetailDialog.cpp:113 src/utils/wxCas/src/wxcasframe.cpp:1139
 #: src/utils/wxCas/src/wxcasframe.cpp:1149
@@ -2139,9 +2138,9 @@ msgid "Critical error while writing downloaded file"
 msgstr ""
 
 #: src/HTTPDownload.cpp:277
-#, c-format
+#, fuzzy, c-format
 msgid "Downloaded %d bytes"
-msgstr "%d 바이트를 다운로드했습니다."
+msgstr "내려받기 %s"
 
 #: src/HTTPDownload.cpp:281
 #, c-format
@@ -2266,7 +2265,7 @@ msgstr "초기적재에 유효하지 않은 포트"
 
 #: src/KadDlg.cpp:193
 msgid "Please fill all fields required"
-msgstr "모든 항목을 채워주세요."
+msgstr "모든 항목을 채워주세요"
 
 #: src/KadDlg.cpp:212
 msgid "Are you sure you want to download a new nodes.dat file?\n"
@@ -2283,7 +2282,7 @@ msgstr "계속할까요?"
 
 #: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
-msgstr "카뎀리아: 검색어가 너무 짧습니다."
+msgstr "카뎀리아: 검색어가 너무 짧습니다"
 
 #: src/kademlia/kademlia/SearchManager.cpp:138
 msgid "Kademlia: Search keyword is already on search list: "
@@ -2341,7 +2340,7 @@ msgstr "업로드됨"
 
 #: src/KnownFile.cpp:1548 src/muuli_wdr.cpp:3340
 msgid "Requested"
-msgstr "요청"
+msgstr ""
 
 #: src/KnownFile.cpp:1549
 msgid "Accepted"
@@ -2406,7 +2405,7 @@ msgstr "반드시 암호를 설정해야 합니다."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:124
 msgid "Invalid password, not a MD5 hash!"
-msgstr "잘못된 패스워드, MD5 해시가 아닙니다."
+msgstr "잘못된 패스워드, MD5 해시가 아닙니다!"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:187
 msgid "Connection failure"
@@ -2453,11 +2452,11 @@ msgstr ""
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "ERROR: "
-msgstr "오류:"
+msgstr "오류: "
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
-msgstr "경고:"
+msgstr "경고: "
 
 #: src/MuleNotebook.cpp:185 src/muuli_wdr.cpp:901 src/muuli_wdr.cpp:1430
 #: src/muuli_wdr.cpp:3235 src/muuli_wdr.cpp:3505
@@ -2567,7 +2566,7 @@ msgstr "서버 IP: "
 #: src/MuleTrayIcon.cpp:357 src/ServerWnd.cpp:188
 #: src/utils/wxCas/src/onlinesig.cpp:263
 msgid "Not Connected"
-msgstr "아직 연결되지 않았습니다."
+msgstr "아직 연결되지 않았습니다"
 
 #: src/MuleTrayIcon.cpp:365
 #, c-format
@@ -2631,7 +2630,7 @@ msgstr ""
 
 #: src/MuleTrayIcon.cpp:447
 msgid "Download limit"
-msgstr "내려받기 한도"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:507
 msgid "Hide aMule"
@@ -2664,7 +2663,7 @@ msgid ""
 "in the Servers-tab."
 msgstr ""
 "사건은 이곳에 보여집니다. 사건 목록의 전체를 보기위해 서버텝에 있는 로그파일"
-"을 참조하세요"
+"을 참조하세요."
 
 #: src/muuli_wdr.cpp:94
 msgid "Loading ..."
@@ -2903,7 +2902,7 @@ msgstr "메타파일 :"
 
 #: src/muuli_wdr.cpp:547
 msgid "Hash :"
-msgstr "해시"
+msgstr "해시:"
 
 #: src/muuli_wdr.cpp:562
 msgid "Filesize :"
@@ -3151,7 +3150,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1306
 msgid "Kad:"
-msgstr ""
+msgstr "Kad:"
 
 #: src/muuli_wdr.cpp:1317
 msgid "Transfers to client"
@@ -3171,19 +3170,19 @@ msgstr "평균 내려받기율:"
 
 #: src/muuli_wdr.cpp:1351
 msgid "Uploaded (session):"
-msgstr "올려주기 (세션)"
+msgstr "올려주기 (세션):"
 
 #: src/muuli_wdr.cpp:1360
 msgid "Downloaded (session):"
-msgstr "내려받기 (세션)"
+msgstr "내려받기 (세션):"
 
 #: src/muuli_wdr.cpp:1367
 msgid "Uploaded (total):"
-msgstr "올려주기 (전체)"
+msgstr "올려주기 (전체):"
 
 #: src/muuli_wdr.cpp:1376
 msgid "Downloaded (total):"
-msgstr "내려받기 (전체)"
+msgstr "내려받기 (전체):"
 
 #: src/muuli_wdr.cpp:1387
 msgid "Scores"
@@ -3238,7 +3237,7 @@ msgstr "시작할때 새 버젼이 있는지 확인"
 #: src/muuli_wdr.cpp:1472
 msgid "Enabling this will make aMule check for new version at startup"
 msgstr ""
-"이것을 활성화하면 어뮬은 시작할때마다 새로운 버젼이 있는지 확인할것 입니다."
+"이것을 활성화하면 어뮬은 시작할때마다 새로운 버젼이 있는지 확인할것 입니다"
 
 #: src/muuli_wdr.cpp:1475
 msgid "Start minimized"
@@ -3309,7 +3308,7 @@ msgstr "가능하면 새로운 탭을 생성함"
 
 #: src/muuli_wdr.cpp:1527
 msgid "Open the web page in a new tab instead of in a new window when possible"
-msgstr "가능하면 새로운 창을 여는것 대신 새로운 탭을 생성합니다."
+msgstr "가능하면 새로운 창을 여는것 대신 새로운 탭을 생성합니다"
 
 #: src/muuli_wdr.cpp:1532
 msgid "Video Player"
@@ -3329,7 +3328,7 @@ msgstr "칸 배분"
 
 #: src/muuli_wdr.cpp:1601
 msgid "Ports"
-msgstr "포트"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1607
 msgid "Standard TCP Port "
@@ -3545,7 +3544,7 @@ msgstr "평균 그래프 시간 : 100 분"
 
 #: src/muuli_wdr.cpp:1926
 msgid "Connections Graph Scale: 100 "
-msgstr "연결 그래프 크기 : 100"
+msgstr "연결 그래프 크기 : 100 "
 
 #: src/muuli_wdr.cpp:1935
 msgid "Download graph scale:"
@@ -3617,7 +3616,7 @@ msgstr "선택"
 
 #: src/muuli_wdr.cpp:1989
 msgid "Tree"
-msgstr "나무"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2000
 msgid "Number of Client Versions shown (0=unlimited)"
@@ -3698,7 +3697,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2140
 msgid "Show progress bar"
-msgstr "진행 바 표시하기"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2144
 msgid "Flat"
@@ -3714,7 +3713,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2157
 msgid "aMule will sort the columns in your download list automatically"
-msgstr "어뮬은 내려받는 목록의 항목을 자동으로 정렬합니다."
+msgstr "어뮬은 내려받는 목록의 항목을 자동으로 정렬합니다"
 
 #: src/muuli_wdr.cpp:2176
 msgid "External Connection Parameters"
@@ -3859,7 +3858,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2548
 msgid "Enter the name of the new server here"
-msgstr "새로운 서버의 이름을 입력하세요."
+msgstr "새로운 서버의 이름을 입력하세요"
 
 #: src/muuli_wdr.cpp:2551 src/ServerWnd.cpp:168
 msgid "IP:Port"
@@ -3964,7 +3963,7 @@ msgid ""
 "connections from other clients."
 msgstr ""
 "이 선택은 프로토콜 난독화를 활성화하며, 어뮬이 다른 클라이언트로부터 난독화"
-"된 연결을 받아들이도록 합니다. "
+"된 연결을 받아들이도록 합니다."
 
 #: src/muuli_wdr.cpp:2819
 msgid "Use obfuscation for outgoing connections"
@@ -3988,7 +3987,7 @@ msgid ""
 "less sources, but all your traffic will be obfuscated"
 msgstr ""
 "이 선택은 어뮬이 난독화된 연결만 받아들이도록 합니다. 더 작은 자료를 가지지"
-"만 자료교환은 난독화됩니다."
+"만 자료교환은 난독화됩니다"
 
 #: src/muuli_wdr.cpp:2832
 msgid "Everybody"
@@ -4109,7 +4108,7 @@ msgstr "온라인서명 파일을 포함하는 폴더를 선택하려면 클릭�
 
 #: src/muuli_wdr.cpp:2974
 msgid "Filter incoming messages (except current chat):"
-msgstr "받는 메시지 차단(현재 채팅은 제외)"
+msgstr "받는 메시지 차단(현재 채팅은 제외):"
 
 #: src/muuli_wdr.cpp:2977
 msgid "Filter all messages"
@@ -4129,7 +4128,7 @@ msgstr "다음 내용이 포함된 메시지를 차단 (쉼표로 분리):"
 
 #: src/muuli_wdr.cpp:2990 src/muuli_wdr.cpp:3005
 msgid "add here the words amule should filter and block messages including it"
-msgstr "이곳에 어뮬이 차단하고 막을 메시지에 포함될 단어를 추가하세요."
+msgstr "이곳에 어뮬이 차단하고 막을 메시지에 포함될 단어를 추가하세요"
 
 #: src/muuli_wdr.cpp:2993
 msgid "Show received messages in the log"
@@ -4157,7 +4156,7 @@ msgstr "사용자이름/암호 인증을 활성화/비활성화"
 
 #: src/muuli_wdr.cpp:3036
 msgid "Username: "
-msgstr "사용자명:"
+msgstr "사용자명: "
 
 #: src/muuli_wdr.cpp:3040
 msgid "The username to use to connect to the proxy"
@@ -4217,7 +4216,7 @@ msgstr "설정을 기억"
 
 #: src/muuli_wdr.cpp:3166
 msgid "Enable Verbose Debug-Logging."
-msgstr "상세한 디버그-로깅 활성화"
+msgstr "상세한 디버그-로깅 활성화."
 
 #: src/muuli_wdr.cpp:3169
 #, fuzzy
@@ -4487,7 +4486,7 @@ msgstr "오류: 부분파일을 생성하지 못했습니다.)"
 #: src/PartFile.cpp:333
 #, c-format
 msgid "Trying to load backup of met-file from %s"
-msgstr "%s로부터 met파일의 백업을 읽을려고 합니다."
+msgstr "%s로부터 met파일의 백업을 읽을려고 합니다"
 
 #: src/PartFile.cpp:340
 #, c-format
@@ -4521,7 +4520,7 @@ msgstr "파일 정보를 복구하려고 하고있습니다..."
 
 #: src/PartFile.cpp:622
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
-msgstr "이름없는 파일을 복구합니다. - RecoveredFile.dat로 복구합니다."
+msgstr "이름없는 파일을 복구합니다. - RecoveredFile.dat로 복구합니다"
 
 #: src/PartFile.cpp:626
 msgid "Recovered all available file info :D - Trying to use it..."
@@ -4534,7 +4533,7 @@ msgstr "파일정보 복구가 불가능합니다. :("
 #: src/PartFile.cpp:663
 #, c-format
 msgid "Failed to open %s (%s)"
-msgstr "%s(%s)을 열지 못했습니다."
+msgstr "%s(%s)을 열지 못했습니다"
 
 #: src/PartFile.cpp:713
 #, c-format
@@ -4564,7 +4563,7 @@ msgstr "'%s'은 어찌된일인지 크기가 0입니다. - %s 파일을 사용�
 #: src/PartFile.cpp:992
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
-msgstr "%s에 대한 part.met.seeds 파일을 저장하지 못했습니다."
+msgstr "%s에 대한 part.met.seeds 파일을 저장하지 못했습니다"
 
 #: src/PartFile.cpp:1018
 #, fuzzy, c-format
@@ -4606,7 +4605,7 @@ msgstr "완료된 부분(%i)이 발견되었습니다.  (%s에 있는)"
 #: src/PartFile.cpp:1207
 #, c-format
 msgid "Finished rehashing %s"
-msgstr "%s의 재해시가 완료되었습니다."
+msgstr "%s의 재해시가 완료되었습니다"
 
 #: src/PartFile.cpp:2127
 #, c-format
@@ -4659,7 +4658,7 @@ msgstr "ICH: 손상된 부분 %i를 복구했습니다. (%s의) -> 저장된 바
 
 #: src/PartFile.cpp:3698
 msgid "Allocating"
-msgstr "할당"
+msgstr ""
 
 #: src/PartFile.cpp:3714
 msgid "Insufficient disk space"
@@ -4785,7 +4784,7 @@ msgstr "리투아니아 사람"
 
 #: src/Preferences.cpp:655
 msgid "Norwegian (Nynorsk)"
-msgstr "노르웨이어(니노르스크)"
+msgstr ""
 
 #: src/Preferences.cpp:656
 msgid "Polish"
@@ -4836,8 +4835,9 @@ msgid "There are no translations installed for aMule"
 msgstr ""
 
 #: src/Preferences.cpp:771
+#, fuzzy
 msgid "No languages available"
-msgstr "사용 가능한 언어 없음"
+msgstr "유효하지 않음"
 
 #: src/Preferences.cpp:902
 msgid "no options available"
@@ -4851,7 +4851,7 @@ msgstr ""
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
-"서버 UDP 소켓이 TCP+3이 되기위해서 TCP 포트가 65532보다 커서는 안됩니다."
+"서버 UDP 소켓이 TCP+3이 되기위해서 TCP 포트가 65532보다 커서는 안됩니다"
 
 #: src/Preferences.cpp:1769
 #, c-format
@@ -5069,7 +5069,7 @@ msgstr "온라인 서명"
 #: src/PrefsUnifiedDlg.cpp:1019
 #, c-format
 msgid "Choose a folder for %s"
-msgstr "%s하기 위한 폴더를 선택하세요."
+msgstr "%s하기 위한 폴더를 선택하세요"
 
 #: src/PrefsUnifiedDlg.cpp:1039
 msgid "Browse for videoplayer"
@@ -5183,7 +5183,7 @@ msgstr "주"
 
 #: src/SearchList.cpp:311
 msgid "Kad search can't be done if Kad is not running"
-msgstr "Kad를 실행 중이 아니면 Kad 검색을 할 수 없습니다."
+msgstr "Kad를 실행 중이 아니면 Kad 검색을 할 수 없습니다"
 
 #: src/SearchList.cpp:313
 msgid "eD2k search can't be done if eD2k is not connected"
@@ -5227,12 +5227,13 @@ msgid "Copy eD2k link to clipboard"
 msgstr ""
 
 #: src/SearchListCtrl.cpp:1014
+#, fuzzy
 msgid "Canceled"
 msgstr "취소"
 
 #: src/SearchListCtrl.cpp:1017
 msgid "New"
-msgstr "새로 만들기"
+msgstr ""
 
 #: src/ServerConnect.cpp:74
 msgid ""
@@ -5255,7 +5256,7 @@ msgstr ""
 #: src/ServerConnect.cpp:198
 #, c-format
 msgid "Connected to %s (%s:%i)"
-msgstr "%s (%s:%i)에 연결되었습니다."
+msgstr "%s (%s:%i)에 연결되었습니다"
 
 #: src/ServerConnect.cpp:274
 #, c-format
@@ -5265,12 +5266,12 @@ msgstr "다음에 연결이 되었습니다: %s"
 #: src/ServerConnect.cpp:346
 msgid "Fatal Error while trying to connect. Internet connection might be down"
 msgstr ""
-"연결하는 동안 치명적 오류가 발생하였습니다. 인터넷 연결이 끊긴것 같습니다."
+"연결하는 동안 치명적 오류가 발생하였습니다. 인터넷 연결이 끊긴것 같습니다"
 
 #: src/ServerConnect.cpp:350
 #, c-format
 msgid "Lost connection to %s (%s:%i)"
-msgstr "%s(%s:%i)에 연결이 끊김."
+msgstr "%s(%s:%i)에 연결이 끊김"
 
 #: src/ServerConnect.cpp:360
 #, c-format
@@ -5318,7 +5319,7 @@ msgstr "server.met 파일을 읽음: %s"
 
 #: src/ServerList.cpp:93
 msgid "Server.met file not found!"
-msgstr "server.met 파일을 찾을 수 없습니다.!"
+msgstr "server.met 파일을 찾을 수 없습니다!"
 
 #: src/ServerList.cpp:101
 #, c-format
@@ -5376,7 +5377,7 @@ msgstr "서버 추가되지 않음: IP:포트[%s:%d]와 같은 서버가 목록�
 #: src/ServerList.cpp:251
 #, c-format
 msgid "Server added: Server at [%s:%d] using the name '%s'."
-msgstr "서버 추가됨: [%s:%d]서버 '%s'이름을 사용"
+msgstr "서버 추가됨: [%s:%d]서버 '%s'이름을 사용."
 
 #: src/ServerList.cpp:346
 msgid ""
@@ -5387,7 +5388,7 @@ msgstr "삭제하려고하는 서버에 접속되어있습니다. 부디 먼저 
 #: src/ServerList.cpp:518
 #, c-format
 msgid "Failed to open '%s'"
-msgstr "'%s'을(를) 열지 못했습니다."
+msgstr "'%s'을(를) 열지 못했습니다"
 
 #: src/ServerList.cpp:686
 msgid "Failed to save server.met!"
@@ -5395,7 +5396,7 @@ msgstr "server.met을 저장하지 못함!"
 
 #: src/ServerList.cpp:833
 msgid "Invalid URL"
-msgstr "유효하지 않는 주소입니다."
+msgstr "유효하지 않는 주소입니다"
 
 #: src/ServerList.cpp:856
 #, fuzzy, c-format
@@ -5420,7 +5421,7 @@ msgstr ""
 
 #: src/ServerList.cpp:900
 msgid "No valid server.met auto-download url on addresses.dat"
-msgstr "adrresses.dat에 유효한 server.met 자동갱신 주소가 없습니다."
+msgstr "adrresses.dat에 유효한 server.met 자동갱신 주소가 없습니다"
 
 #: src/ServerList.cpp:916
 #, c-format
@@ -5431,7 +5432,7 @@ msgstr "%s로부터 서버 목록를 내려받지 못함"
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
-msgstr "지역 서버가 IPFilter에 의해 차단되어, 다른 서버로 재연결 합니다."
+msgstr "지역 서버가 IPFilter에 의해 차단되어, 다른 서버로 재연결 합니다!"
 
 #: src/ServerListCtrl.cpp:87
 msgid "Server Name"
@@ -5481,7 +5482,7 @@ msgstr "(알수없는 이름)"
 #: src/ServerListCtrl.cpp:154
 #, c-format
 msgid "Are you sure you want to delete the static server %s"
-msgstr "정적 서버 %s를 삭제하시겠습니까?"
+msgstr "정적 서버 %s를 삭제하시겠습니까"
 
 #: src/ServerListCtrl.cpp:348
 #, c-format
@@ -5556,7 +5557,7 @@ msgstr "선택된 서버를 삭제하시겠습니까?"
 #: src/ServerSocket.cpp:273
 #, c-format
 msgid "ERROR: %s (%s) - %s"
-msgstr ""
+msgstr "ERROR: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:288
 #, c-format
@@ -5626,7 +5627,7 @@ msgstr "프로토콜 난독화를 사용합니다."
 #: src/ServerSocket.cpp:761
 #, c-format
 msgid "Connecting to %s (%s - %s:%i) %s"
-msgstr "%s (%s - %s:%i) %s에 연결합니다."
+msgstr "%s (%s - %s:%i) %s에 연결합니다"
 
 #: src/ServerSocket.cpp:774
 #, c-format
@@ -5692,7 +5693,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:226
 msgid "Firewalled state: "
-msgstr "방화벽 상태:"
+msgstr "방화벽 상태: "
 
 #: src/ServerWnd.cpp:232
 msgid "No buddy required - TCP port open"
@@ -5795,8 +5796,9 @@ msgid "Upload Speed"
 msgstr "올려주기 속도"
 
 #: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:32
+#, fuzzy
 msgid "Available Parts"
-msgstr "부품 사용 가능"
+msgstr "가능함 :"
 
 #: src/SharedFilePeersListCtrl.cpp:35
 #, fuzzy
@@ -5809,7 +5811,7 @@ msgstr "내려받기 상태"
 
 #: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
 msgid "Origin"
-msgstr "원본"
+msgstr ""
 
 #: src/SharedFilePeersListCtrl.cpp:38 src/SourceListCtrl.cpp:36
 #, fuzzy
@@ -5896,7 +5898,7 @@ msgstr "ED2k 링크를 클립보드에 복사(&AICH info)"
 
 #: src/SharedFilesCtrl.cpp:318
 msgid "You need a HighID to create a valid sourcelink"
-msgstr "유효한 자료 링크를 만들기 위해서 높은아이디가 필요합니다."
+msgstr "유효한 자료 링크를 만들기 위해서 높은아이디가 필요합니다"
 
 #: src/SharedFilesCtrl.cpp:465
 #, c-format
@@ -6330,7 +6332,7 @@ msgstr ""
 #: src/TextClient.cpp:876
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
-msgstr "서버로부터 알수없는 반응을 수신했습니다. 실행코드 =  %#x"
+msgstr "서버로부터 알수없는 반응을 수신했습니다. 실행코드 = %#x."
 
 #: src/TextClient.cpp:889
 msgid "Show short status information."
@@ -6414,8 +6416,7 @@ msgid ""
 msgstr ""
 "설정되어 있는 가능한 모든 통신망에 연결할 것입니다.\n"
 "또한, 부가적으로 연결할 서버를 IP:포트 형식으로 지정할수 있습니다.\n"
-"IP는 점과 십진수의 IPv4 주소이거나, 해석 할 수 있는 DNS이름 이어야 합니다.\n"
-" "
+"IP는 점과 십진수의 IPv4 주소이거나, 해석 할 수 있는 DNS이름 이어야 합니다."
 
 #: src/TextClient.cpp:908
 msgid "Connect to eD2k only."
@@ -6794,7 +6795,7 @@ msgstr "파일의 올려주기를 정지합니다: %s"
 #: src/UserEvents.cpp:138
 #, c-format
 msgid "Failed to execute command `%s' on `%s' event."
-msgstr "`%s' 명령을 실행하는데 실패했습니다. (`%s' 사건에대해)"
+msgstr "`%s' 명령을 실행하는데 실패했습니다. (`%s' 사건에대해)."
 
 #: src/UserEvents.h:60
 msgid "Download completed"
@@ -6873,7 +6874,7 @@ msgstr "파일을 해시"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:120
 msgid "Add Optional URLs for this file"
-msgstr "이 파일의 추가주소를 더합니다."
+msgstr "이 파일의 추가주소를 더합니다"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:128
 msgid "Enter here the file you want to compute the eD2k link"
@@ -6891,7 +6892,7 @@ msgstr "삭제"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:161
 msgid "Create link with part-hashes"
-msgstr "부분해시의 링크를 생성합니다."
+msgstr "부분해시의 링크를 생성합니다"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:167
 msgid ""
@@ -6899,7 +6900,7 @@ msgid ""
 "size"
 msgstr ""
 "링크의 크기를 증가시키는 대신 새 파일 및 희귀한 파일을 빠르게 퍼지는 데에 도"
-"움을 줍니다."
+"움을 줍니다"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:193
 msgid "MD4 File Hash"
@@ -6923,7 +6924,7 @@ msgstr "클립보드로 복사"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open"
-msgstr "열림"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:261
 msgid "Open a file to compute its eD2k link"
@@ -6935,7 +6936,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save as"
-msgstr "다른 이름으로 저장"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:267
 msgid "Save computed eD2k link to file"
@@ -6964,12 +6965,12 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:450
 msgid "Unable to open "
-msgstr "열수 없음"
+msgstr "열수 없음 "
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:457
 #: src/utils/aLinkCreator/src/alcframe.cpp:582
 msgid "Please, enter a non empty file name"
-msgstr "제발, 파일이름을 비우지 마세요."
+msgstr "제발, 파일이름을 비우지 마세요"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:462
 msgid "Nothing to save for now !"
@@ -7024,12 +7025,12 @@ msgstr "이미 이 주소가 추가되어 있습니다!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:619
 msgid "Please, enter a non empty URL"
-msgstr "주소를 비우지 마세요."
+msgstr "주소를 비우지 마세요"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:58
 #, c-format
 msgid "Unable to open %s"
-msgstr "%s를 열수없음."
+msgstr "%s를 열수없음"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:147
 msgid "Out of memory while calculating ed2k hash!"
@@ -7171,7 +7172,7 @@ msgstr ""
 "\n"
 "페드로 드 올리베이라 <falso@rdk.homeip.net>의 CAS에 기본을 두고있습니다.\n"
 "\n"
-"GPL로 배포합니다."
+"GPL로 배포합니다"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:575
 msgid "Oh Oh, aMule is not running..."
@@ -7181,11 +7182,11 @@ msgstr "어어, 어뮬이 실행중이 아닙니다..."
 #: src/utils/wxCas/src/wxcasframe.cpp:721
 #: src/utils/wxCas/src/wxcasframe.cpp:790
 msgid "aMule is running"
-msgstr "어뮬은 실행중입니다."
+msgstr "어뮬은 실행중입니다"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:860
 msgid "aMule is running, but disconnected"
-msgstr "어뮬은 실행중이나 연결이 끊겨 있습니다."
+msgstr "어뮬은 실행중이나 연결이 끊겨 있습니다"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:931
 msgid "aMule is connecting..."
@@ -7209,12 +7210,12 @@ msgstr " 위해 실행되고있는 "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1013
 msgid " is stopped !"
-msgstr " 은 멈추어져 있습니다."
+msgstr " 은 멈추어져 있습니다!"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1017
 #: src/utils/wxCas/src/wxcasframe.cpp:1041
 msgid " is not connected !"
-msgstr " 은 연결되지 않았습니다."
+msgstr " 은 연결되지 않았습니다!"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1021
 msgid " is connecting..."
@@ -7240,11 +7241,12 @@ msgstr "끔"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1059
 msgid " is on "
-msgstr "켜졌습니다."
+msgstr " 켜졌습니다 "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1066
+#, fuzzy
 msgid " with "
-msgstr ""
+msgstr "] with "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1084
 msgid "Total Download: "
@@ -7265,7 +7267,7 @@ msgstr "내려받기: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1108
 msgid " kB/s, Upload: "
-msgstr "올려주기, kB/s: "
+msgstr " 올려주기, kB/s: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1110
 msgid " kB/s"
@@ -7277,16 +7279,16 @@ msgstr "공유함: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1120
 msgid " file(s), Clients on queue: "
-msgstr "대기열에있는 파일, 클라이언트: "
+msgstr " 대기열에있는 파일, 클라이언트: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1130
 msgid "Time: "
-msgstr "시간:"
+msgstr "시간: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1140
 #: src/utils/wxCas/src/wxcasframe.cpp:1150
 msgid " on "
-msgstr "켬"
+msgstr " 켬 "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1160
 msgid "System Load Average (1-5-15 min): "
@@ -7302,7 +7304,7 @@ msgstr "amulesig.dat 파일을 포함한 폴더"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:71
 msgid "Enter here the directory where your amulesig.dat file is"
-msgstr "amulesig.dat 파일이 있는 폴더를 이곳에 입력하세요."
+msgstr "amulesig.dat 파일이 있는 폴더를 이곳에 입력하세요"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:90
 msgid "Refresh rate interval in seconds"
@@ -7310,15 +7312,15 @@ msgstr "갱신율 초당 간격"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:106
 msgid "Generate a stat image at every refresh event"
-msgstr "매회 갱신할 때 통계 이미지를 생성합니다."
+msgstr "매회 갱신할 때 통계 이미지를 생성합니다"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:130
 msgid "Enter here the directory where you want to generate the statistic image"
-msgstr "통계 이미지를 생성하는것을 원하는 장소 폴더를 이곳에 입력하세요."
+msgstr "통계 이미지를 생성하는것을 원하는 장소 폴더를 이곳에 입력하세요"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:157
 msgid "Upload periodicaly your stat image to FTP server"
-msgstr "FTP 서버의 통계 이미지를 정기적으로 올려줍니다."
+msgstr "FTP 서버의 통계 이미지를 정기적으로 올려줍니다"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:165
 msgid "FTP Url"
@@ -7330,11 +7332,11 @@ msgstr "FTP 경로"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:179
 msgid "Enter here the URL of your FTP server"
-msgstr "FTP 서버의 URL을 이곳에 입력하세요."
+msgstr "FTP 서버의 URL을 이곳에 입력하세요"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:191
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr "FTP 서버에 통계 이미지가 위치할 폴더를 이곳에 입력하세요."
+msgstr "FTP 서버에 통계 이미지가 위치할 폴더를 이곳에 입력하세요"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:197
 msgid "User"
@@ -7342,11 +7344,11 @@ msgstr "사용자"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:212
 msgid "Enter here the User name to log into your FTP server"
-msgstr "FTP 서버로 로그인하기 위한 사용자이름을 이곳에 입력하세요."
+msgstr "FTP 서버로 로그인하기 위한 사용자이름을 이곳에 입력하세요"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:224
 msgid "Enter here the User password to log into your FTP server"
-msgstr "FTP 서버로 로그인하기 위한 암호를 이곳에 입력하세요."
+msgstr "FTP 서버로 로그인하기 위한 암호를 이곳에 입력하세요"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:243
 msgid "FTP update rate interval in minutes"
@@ -7435,7 +7437,7 @@ msgstr "다음과 같은 오류로 요청 실패함: %s."
 
 #: src/webserver/src/WebServer.cpp:1740
 msgid "Index file not found: "
-msgstr "인덱스 파일을 찾을 수 없음:"
+msgstr "인덱스 파일을 찾을 수 없음: "
 
 #: src/webserver/src/WebServer.cpp:1819
 msgid "Session expired - requesting login\n"
@@ -7492,3 +7494,1333 @@ msgstr "로그아웃이 요청됨\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "요청 처리중[redirected]: "
+
+#~ msgid "Partfile %s (%s) has no seeds file"
+#~ msgstr "부분파일 %s(%s)은 핵심파일을 가지고 있지 않습니다."
+
+#~ msgid "Partfile %s (%s) has a void seeds file"
+#~ msgstr "부분파일 %s(%s)은 빈 핵심파일을 가지고 있습니다."
+
+#, fuzzy
+#~ msgid "Download status"
+#~ msgstr "내려받기 상태"
+
+#~ msgid "( %s / %s )"
+#~ msgstr "( %s / %s )"
+
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgid "SOCKS5"
+#~ msgstr "SOCKS5"
+
+#~ msgid "SOCKS4"
+#~ msgstr "SOCKS4"
+
+#~ msgid "HTTP"
+#~ msgstr "HTTP"
+
+#~ msgid "SOCKS4a"
+#~ msgstr "SOCKS4a"
+
+#, fuzzy
+#~ msgid "Update delay : %d second"
+#~ msgid_plural "Update delay : %d seconds"
+#~ msgstr[0] "갱신 지연: %d 초"
+#~ msgstr[1] "갱신 지연: %d 초"
+
+#~ msgid "Transferring"
+#~ msgstr "전송중"
+
+#, fuzzy
+#~ msgid "QR: ???"
+#~ msgstr "QR: %u"
+
+#~ msgid "QR: %u"
+#~ msgstr "QR: %u"
+
+#, fuzzy
+#~ msgid "Queue Rank"
+#~ msgstr "대기열에 있음"
+
+#~ msgid "TODO - show progress of a search"
+#~ msgstr "TODO - 검색의 진행을 보여줌"
+
+#~ msgid "Starting to create MD4 and AICH hash for file: %s"
+#~ msgstr "다음 파일에 대해 MD4 및 AICH 해시를 만듭니다: %s"
+
+#~ msgid "Starting to create MD4 hash for file: %s"
+#~ msgstr "다음 파일에 대해 MD4 해시를 만듭니다: %s"
+
+#~ msgid "Starting to create AICH hash for file: %s"
+#~ msgstr "다음 파일에 대해 AICH 해시를 만듭니다: %s"
+
+#~ msgid "WARNING: Could not remove original '%s' after creating backup"
+#~ msgstr "경고: 백업을 생성한 후 원본 '%s'를 제거할수 없습니다."
+
+#~ msgid "WARNING: Failed to delete %s"
+#~ msgstr "경고: %s를 삭제하지 못했습니다."
+
+#, fuzzy
+#~ msgid "%u (QR: %u)"
+#~ msgstr "QR: %u"
+
+#~ msgid "Rating (total):"
+#~ msgstr "평가 (전체)"
+
+#~ msgid "Try to transfer full chunks to all uploads"
+#~ msgstr "모든 올려주기에 전체부분 전송을 시도"
+
+#, fuzzy
+#~ msgid "Downloads window"
+#~ msgstr "받는중"
+
+#~ msgid "Transfers"
+#~ msgstr "전송"
+
+#~ msgid "Unban"
+#~ msgstr "폐기"
+
+#~ msgid "Show Uploads"
+#~ msgstr "올려주기 보기"
+
+#~ msgid "Show Queue"
+#~ msgstr "대기열 보기"
+
+#~ msgid "Select View"
+#~ msgstr "보기 선택"
+
+#~ msgid "Client Software"
+#~ msgstr "클라이언트 소프트웨어"
+
+#~ msgid "Waited"
+#~ msgstr "대기됨"
+
+#~ msgid "Upload Time"
+#~ msgstr "올려주기 시간"
+
+#~ msgid "Upload/Download"
+#~ msgstr "올려주기/내려받기"
+
+#~ msgid "Remote Status"
+#~ msgstr "원격 상태"
+
+#~ msgid "File Priority"
+#~ msgstr "파일 우선권"
+
+#~ msgid "Score"
+#~ msgstr "점수"
+
+#~ msgid "Asked"
+#~ msgstr "요청됨"
+
+#~ msgid "Last Seen"
+#~ msgstr "마지막으로 보임"
+
+#~ msgid "Entered Queue"
+#~ msgstr "입력된 대기열"
+
+#~ msgid "Transferred Up"
+#~ msgstr "위로 이양하기"
+
+#~ msgid "Transferred Down"
+#~ msgstr "아래로 이양하기"
+
+#~ msgid "Userhash"
+#~ msgstr "사용자 해시"
+
+#~ msgid "Encrypted"
+#~ msgstr "암호화됨"
+
+#~ msgid "Shows Upload / Up-queue"
+#~ msgstr "올려주기 / 올려주기 대기열 보이기"
+
+#~ msgid "Clients on queue :"
+#~ msgstr "대기열속의 클라이언트 :"
+
+#~ msgid "Current Session"
+#~ msgstr "현재 세션"
+
+#~ msgid "Total"
+#~ msgstr "전체"
+
+#~ msgid "Requested :"
+#~ msgstr "요청됨 :"
+
+#~ msgid "Files Transfers Window"
+#~ msgstr "파일 전송 창"
+
+#~ msgid "Total Users: %s | Total Files: %s"
+#~ msgstr "전체 사용자: %s | 전체 파일: %s"
+
+#, fuzzy
+#~ msgid "WARNING: Void response on stream creation"
+#~ msgstr "경고: 백업을 생성한 후 원본 '%s'를 제거할수 없습니다."
+
+#~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
+#~ msgstr "CIP2Country::CIP2Country(): 국가 정보를 읽을 수 없습니다."
+
+#~ msgid "Get IPFilter level."
+#~ msgstr "IP 차단 수준을 가져옵니다."
+
+#~ msgid "Makes a search."
+#~ msgstr "검색을 합니다."
+
+#, fuzzy
+#~ msgid "Killed!"
+#~ msgstr "실패"
+
+#, fuzzy
+#~ msgid "Using amuleweb in '%s'."
+#~ msgstr "시작시 어뮬웹 구동"
+
+#, fuzzy
+#~ msgid "Shutting down aMule..."
+#~ msgstr "어뮬 종료."
+
+#~ msgid ""
+#~ "The following options have been changed in this release for security "
+#~ "reasons:\n"
+#~ msgstr "다음 선택사항은 보안문제로 인해 이번 배포판에서 변경되었습니다:\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "* Enabled Protocol Obfuscation support for incoming and outgoing "
+#~ "connections.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "* 들어오고 나가는 연결에 프로토콜 난독화가 지원됐습니다.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "* Disabled updating the server list from other server and clients.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "* 다른 서버와 클라이언트로부터 서버목록의 갱신이 불가능합니다.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "For more information on the reason for this changes, seach\n"
+#~ "the aMule wiki at http://wiki.amule.org for \"fake servers\" info.\n"
+#~ "It's important that you clear any fake server from your server list for "
+#~ "aMule to work properly."
+#~ msgstr ""
+#~ "\n"
+#~ "이 변경에 대한 더 많은 정보는 어뮬 위키(http://wiki.amule.org)의\n"
+#~ "\"가짜서버(fake servers)\"에서 찾으십시요.\n"
+#~ "어뮬이 잘 실행되기 위해서는 서버목록에서 가짜서버를 제거하는것이 중요합니"
+#~ "다."
+
+#~ msgid "Fetching status..."
+#~ msgstr "상태를 받는 중..."
+
+#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
+#~ msgstr "사용자: E: %s K: %s | 파일 E: %s K: %s"
+
+#~ msgid "Client %s on IP:Port %s:%d using %s %s %s"
+#~ msgstr "클라이언트 %s, IP:포트 %s:%d, %s %s %s 사용"
+
+#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
+#~ msgstr "theApp->serverlist->GetServerByAddress()이 NULL값을 반환했습니다."
+
+#~ msgid "Firewalled"
+#~ msgstr "방화벽"
+
+#, fuzzy
+#~ msgid "Loaded %d flag bitmap."
+#~ msgid_plural "Loaded %d flag bitmaps."
+#~ msgstr[0] "Loaded %d flag bitmaps."
+#~ msgstr[1] "Loaded %d flag bitmaps."
+
+#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
+#~ msgstr "%s 파일은 당나기로 쓰기엔 큽니다: 최대 허용은 4 GB입니다."
+
+#~ msgid "No handler for this file type."
+#~ msgstr "이 파일 종류의 처리기가 없습니다."
+
+#~ msgid "File was not saved"
+#~ msgstr "파일은 저장되지 않았습니다."
+
+#~ msgid "Connection Failed. Unable to connect to the specified host\n"
+#~ msgstr "연결 실패. 특정 호스트에 연결할 수 없습니다\n"
+
+#~ msgid "Message Filter"
+#~ msgstr "메시지 차단"
+
+#~ msgid "Gui Tweaks"
+#~ msgstr "GUI 조정"
+
+#~ msgid "Core Tweaks"
+#~ msgstr "코어 조정"
+
+#~ msgid "Tooltip Delay Time in secs"
+#~ msgstr "도구도움의 지연 시간 (초)"
+
+#~ msgid "Show part file number before file name"
+#~ msgstr "파일이름 앞에 부분파일 번호를 보여줌"
+
+#~ msgid "Skin Support"
+#~ msgstr "외형 지원"
+
+#~ msgid "- no skins available -"
+#~ msgstr "- 가능한 외형이 없음 -"
+
+#~ msgid "Online Signature Directory:"
+#~ msgstr "온라인 서명 폴더:"
+
+#~ msgid "Filtering Options:"
+#~ msgstr "차단 설정:"
+
+#~ msgid "Line Capacities"
+#~ msgstr "라인 용량"
+
+#~ msgid ""
+#~ "Note: These values are\n"
+#~ " only used for statistics."
+#~ msgstr ""
+#~ "알림: 이 값은 오직\n"
+#~ " 통계 목적으로 사용함."
+
+#~ msgid "Standard client TCP Port:"
+#~ msgstr "표준 클라이언트 TCP 포트:"
+
+#~ msgid "Extended client UDP Port:"
+#~ msgstr "확장된 클라이언트 UDP 포트:"
+
+#~ msgid "UDP port for extended server requests (TCP+3): 4665"
+#~ msgstr "확장된 서버 요청을 위한 UDP 포트 (TCP+3): 4665"
+
+#~ msgid "Max Sources per File"
+#~ msgstr "파일당 최대자료수"
+
+#~ msgid "Universal Plug and Play"
+#~ msgstr "Universal Plug and Play"
+
+#~ msgid "Enable UPnP"
+#~ msgstr "UPnP 활성화"
+
+#~ msgid "UPnP TCP Port:"
+#~ msgstr "UPnP TCP 포트:"
+
+#~ msgid "Start next paused file when a file completed"
+#~ msgstr "파일이 완료되었을때 멈춤상태인 다음파일을 시작"
+
+#~ msgid "Select Statistics Colors"
+#~ msgstr "통계색 선택"
+
+#~ msgid "Download Queue Files Progress"
+#~ msgstr "내려받기 대기열 파일 진행"
+
+#~ msgid "Show percentage"
+#~ msgstr "퍼센트로 보기"
+
+#~ msgid "Show progressbar "
+#~ msgstr "진행바로 보기"
+
+#~ msgid "Enable skin support "
+#~ msgstr "외형지원 활성화"
+
+#~ msgid "Skin:"
+#~ msgstr "외형:"
+
+#~ msgid "Auto-sort files in the download queue (high CPU)"
+#~ msgstr "내려받기 대기열 자동 정렬 (높은 CPU)"
+
+#~ msgid ""
+#~ "IP of the listening interface\n"
+#~ "(empty for any)"
+#~ msgstr ""
+#~ "수신대기 인터페이스의 IP\n"
+#~ "(모두를 위해서는 비움)"
+
+#~ msgid "TCP port"
+#~ msgstr "TCP 포트"
+
+#~ msgid "Who can see shared files:"
+#~ msgstr "공유 파일을 볼 수 있는 사람:"
+
+#~ msgid "Event types"
+#~ msgstr "사건 종류"
+
+#~ msgid "Makes aMule promt before exiting."
+#~ msgstr "종료하기 전에 확인창을 보여줍니다."
+
+#~ msgid "Show overhead bandwith"
+#~ msgstr "추가자원 대역폭을 보여줌"
+
+#~ msgid "I.C.H. active"
+#~ msgstr "I.C.H. 활성화"
+
+#~ msgid "AICH trusts every hash (not recomended)"
+#~ msgstr "AICH가 모든 해시를 신뢰 (추천안함)"
+
+#~ msgid "Advanced Settings"
+#~ msgstr "고급 설정"
+
+#~ msgid "Progressbar Style"
+#~ msgstr "진행바 모양"
+
+#~ msgid "Column Sorting"
+#~ msgstr "열 정렬"
+
+#~ msgid "Misc Gui Tweaks"
+#~ msgstr "기타 GUI 조정"
+
+#~ msgid "File Options"
+#~ msgstr "파일 설정"
+
+#~ msgid "Status text"
+#~ msgstr "상태 문장"
+
+#~ msgid "Pop-up status text"
+#~ msgstr "팝업 상태 문장"
+
+#~ msgid ""
+#~ "For a film you can say its length, its story, language ...\n"
+#~ "and if it's a fake, you can tell that to other users of aMule."
+#~ msgstr ""
+#~ "영화의 상영시간, 줄거리, 언어등을 말할수 있습니다.\n"
+#~ "만약 가짜 파일이라면 다른 어뮬 사용자에게 알려줄 수 있습니다."
+
+#~ msgid "Misc Options"
+#~ msgstr "기타 설정"
+
+#~ msgid "Server Options"
+#~ msgstr "서버 선택사항"
+
+#~ msgid "Display server motd when connected ..."
+#~ msgstr "연결되었을때 서버 motd를 보여줌..."
+
+#~ msgid "Disable/Enable"
+#~ msgstr "비활성화/활성화"
+
+#~ msgid "Authentication"
+#~ msgstr "인증"
+
+#~ msgid "General Settings"
+#~ msgstr "일반 설정"
+
+#~ msgid "Max Connections"
+#~ msgstr "최대 연결"
+
+#~ msgid "GUI Tweaks"
+#~ msgstr "GUI 조정"
+
+#~ msgid "Remote Control"
+#~ msgstr "원격 조정"
+
+#~ msgid "Unable to determine selected browser!"
+#~ msgstr "선택된 브라우저를 판단할수 없습니다!"
+
+#~ msgid "User Defined"
+#~ msgstr "사용자 설정"
+
+#~ msgid "http://www.aMule.org - the Linux Mule"
+#~ msgstr "http://www.amule.org - 리눅스 뮬"
+
+#~ msgid "Konqueror"
+#~ msgstr "컨커러"
+
+#~ msgid "Mozilla"
+#~ msgstr "모질라"
+
+#~ msgid "Firefox"
+#~ msgstr "불여우"
+
+#~ msgid "Firebird"
+#~ msgstr "불사조"
+
+#~ msgid "Opera"
+#~ msgstr "오페라"
+
+#~ msgid "Netscape"
+#~ msgstr "넷스케이프"
+
+#~ msgid "Galeon"
+#~ msgstr "갈레온"
+
+#~ msgid "Epiphany"
+#~ msgstr "에피파니"
+
+#~ msgid "Select your browser here"
+#~ msgstr "브라우저 선택"
+
+#~ msgid "Custom Browser:"
+#~ msgstr "특정 브라우저:"
+
+#~ msgid ""
+#~ "Enter your browser name here. To use the custom browser, select the "
+#~ "Custom menu-item from the dropdown-menu above."
+#~ msgstr ""
+#~ "브라우저 이름을 입력하세요. 특정 브라우저를 사용하기 위해서는 위의 메뉴중"
+#~ "에서'특정 브라우저'를 선택하세요."
+
+#~ msgid "Please wait... "
+#~ msgstr "잠시 기다리세요..."
+
+#~ msgid "Could not determine the command for running the browser."
+#~ msgstr "기본 브라우저가 선택되지 않았습니다."
+
+#~ msgid "EC Connection Failed. Empty reply."
+#~ msgstr "외부연결 실패. 응답없음."
+
+#~ msgid "ExternalConn: Access denied because: "
+#~ msgstr "외부연결: 다음 이유로 연결이 거부됨: "
+
+#~ msgid "ExternalConn: Access denied"
+#~ msgstr "외부연결: 접근이 거부됨"
+
+#~ msgid "Copy ED2k &link to clipboard"
+#~ msgstr "ED2k 링크를 클립보드로 복사(&l)"
+
+#~ msgid "Copy ED2k link to clipboard (&Source)"
+#~ msgstr "ED2k 링크를 클립보드에 복사(&Source)"
+
+#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
+#~ msgstr "ED2k 링크를 클립보드로 복사 (Source) (&With Crypt options)"
+
+#~ msgid "Copy ED2k link to clipboard (&Hostname)"
+#~ msgstr "ED2k 링크를 클립보드로 복사 (&Hostname)"
+
+#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
+#~ msgstr "ED2k 링크를 클립보드로 복사 (Hostname) (With &Crypt options)"
+
+#~ msgid "Warning"
+#~ msgstr "경고"
+
+#~ msgid "Error: Could not listen to TCP port."
+#~ msgstr "오류: TCP포트를 열수없습니다."
+
+#~ msgid "Webserver HTTP port"
+#~ msgstr "웹서버 HTTP 포트"
+
+#~ msgid "Use UPnP port forwarding on webserver port"
+#~ msgstr "웹서버 포트에 UPnP 포트포워딩을 사용"
+
+#~ msgid "Full access password for webserver"
+#~ msgstr "웹서버 전체접근 암호"
+
+#~ msgid "Guest password for webserver"
+#~ msgstr "웹서버 손님 암호"
+
+#~ msgid "Load/save webserver settings from/to remote aMule"
+#~ msgstr "원격 어뮬로부터 웹서버 설정을 불러오거나 저장합니다."
+
+#~ msgid "Enter here the file you want to compute the Ed2k link"
+#~ msgstr "ED2k 링크를 계산하기 원하는 파일을 이곳에 입력하세요."
+
+#~ msgid ""
+#~ "Enter here the URL you want to add to the Ed2k link: Add / at the end to "
+#~ "let aLinkCreator append the current file name"
+#~ msgstr ""
+#~ "ED2k 링크를 추가하기 원하는 주소를 이곳에 입력하세요: aLinkCreator가 현재 "
+#~ "파일 이름을 덧붙이게 하려면 끝에 '/'를 추가하세요."
+
+#~ msgid "Ed2k File Hash"
+#~ msgstr "ED2k 파일 해시"
+
+#~ msgid "Ed2k link"
+#~ msgstr "ED2k 링크"
+
+#~ msgid "Open a file to compute its ed2k link"
+#~ msgstr "ED2k 링크를 계산하기 위한 파일을 엽니다."
+
+#~ msgid "Copy computed ed2k link to clipboard"
+#~ msgstr "계산된 ED2k 링크를 클립보드에 복사합니다."
+
+#~ msgid "Save computed ed2k link to file"
+#~ msgstr "계산된 ED2k 링크를 파일로 저장합니다."
+
+#~ msgid "Select the file you want to compute the ed2k link"
+#~ msgstr "ED2k 링크를 계산하기 원하는 파일을 선택하세요."
+
+#~ msgid "Select the file to your computed ed2k link"
+#~ msgstr "계산된 ED2k 링크파일을 선택하세요."
+
+#~ msgid ""
+#~ "aLinkCreator, the aMule ed2k link creator\n"
+#~ "\n"
+#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+#~ "\n"
+#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
+#~ "and http://jimmac.musichall.cz/ikony.php3\n"
+#~ "\n"
+#~ "Distributed under GPL"
+#~ msgstr ""
+#~ "aLinkCreator, 어뮬 ED2k 링크 생성자\n"
+#~ "\n"
+#~ "(c) 2004 더폴리시 <thepolish@vipmail.ru>\n"
+#~ "\n"
+#~ "http://jimmac.musichall.cz/ikony.php3 과\n"
+#~ "http://www.everaldo.com 과 http://www.icomania.com 으로부터 아이콘\n"
+#~ "\n"
+#~ "GPL로 배포합니다."
+
+#~ msgid "aLinkCreator, the aMule ed2k link creator"
+#~ msgstr "aLinkCreator, 어뮬 ED2k 링크 생성자"
+
+#~ msgid "Copy ED2k link to clipboard"
+#~ msgstr "클립보드에 ED2k링크를 복사"
+
+#, fuzzy
+#~ msgid "Copy ED2k links to clipboard"
+#~ msgstr "클립보드에 ED2k링크를 복사"
+
+#, fuzzy
+#~ msgid "ED2K: Connecting"
+#~ msgstr "연결중"
+
+#, fuzzy
+#~ msgid "ED2K: Disconnected"
+#~ msgstr "연결이 끊김"
+
+#~ msgid ""
+#~ "Your Auto-update servers list is in blank.\n"
+#~ "'Auto-update serverlist at startup' will be disabled."
+#~ msgstr ""
+#~ "자동갱신 서버 목록이 비어있습니다.\n"
+#~ "'시작시 서버목록 자동갱신'은 비활성화될 것입니다."
+
+#~ msgid ""
+#~ "Both ED2K and Kad network are disabled.\n"
+#~ "You won't be able to connect until you enable at least one of them."
+#~ msgstr ""
+#~ "ED2k와 Kad 네트워크 모두가 비활성화되어 있습니다.\n"
+#~ "적어도 하나를 활성화 할때까지 연결할 수 없습니다."
+
+#~ msgid "Edit Serverlist"
+#~ msgstr "서버 목록 편집"
+
+#~ msgid "Error: couldn't accept a new external connection"
+#~ msgstr "오류: 외부연결이 승인되지않았습니다."
+
+#~ msgid "ED2K is disabled in preferences."
+#~ msgstr "ED2k가 환경설정에서 비활성화되어 있습니다."
+
+#~ msgid "ExternalConn: shutdown requested"
+#~ msgstr "외부연결: 종료가 요청됨"
+
+#~ msgid "Already connected to ED2K."
+#~ msgstr "이미 ED2k에 연결되었습니다."
+
+#~ msgid "Connecting to ED2K..."
+#~ msgstr "ED2k에 연결중..."
+
+#~ msgid "Disconnected from ED2K."
+#~ msgstr "ED2k로부터 연결이 끊겼습니다."
+
+#~ msgid "ExternalConn: invalid opcode received: %#x"
+#~ msgstr "외부연결: 유효하지 않은 실행코드를 받았음: %#x"
+
+#~ msgid "ED2K Status:"
+#~ msgstr "ED2k 상태:"
+
+#~ msgid "Average Downloadrate (Session): %s"
+#~ msgstr "평균 내려받기율 (세션): %s"
+
+#~ msgid "Average Uploadrate (Session): %s"
+#~ msgstr "평균 올려주기율 (세션): %s"
+
+#~ msgid "Max Downloadrate (Session): %s"
+#~ msgstr "최대 내려받기율 (세션): %s"
+
+#~ msgid "Max Uploadrate (Session): %s"
+#~ msgstr "최대 올려주기율 (세션): %s"
+
+#~ msgid "Average filesize: %s"
+#~ msgstr "평균 파일 크기: %s"
+
+#~ msgid "ED2K search can't be done if ED2K is not connected"
+#~ msgstr "ED2k가 연결되어 있지 않으면 ED2k 검색을 할 수 없습니다."
+
+#~ msgid "Error: "
+#~ msgstr "오류: "
+
+#~ msgid "Warning: "
+#~ msgstr "경고: "
+
+#~ msgid "Search related files (ED2k, local server)"
+#~ msgstr "관련 파일 검색 (ED2k, 지역서버)"
+
+#~ msgid "Error"
+#~ msgstr "오류"
+
+#~ msgid ""
+#~ "WARNING: You can't add yourself as a source for a ed2k link while being "
+#~ "lowid."
+#~ msgstr ""
+#~ "경고: 낮은아이디를 가지고 있는 동안에는 스스로를 ed2k 링크에 자료로 추가"
+#~ "할 수 없습니다."
+
+#, fuzzy
+#~ msgid ""
+#~ "Please set your preferred video player on preferences.\n"
+#~ "Meanwhile, aMule will attempt to use mplayer and you will get this "
+#~ "warning on every preview"
+#~ msgstr ""
+#~ "환경설정에서 비디오 재생 프로그램을 선택하세요.\n"
+#~ "그 동안 어뮬에서 미리보기를 할때마다 mplayer를 사용하도록 시도하며 미리보"
+#~ "기할 때마다 이 경고를 받을 것입니다."
+
+#~ msgid "Error: Failed to open part.met file: %s ==> %s"
+#~ msgstr "오류: part.met 파일을 열지 못했습니다: %s ==> %s"
+
+#~ msgid "Error: part.met file is 0 size: %s ==> %s"
+#~ msgstr "오류: part.met파일은 크기가 0입니다: %s ==> %s"
+
+#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
+#~ msgstr "오류: 유효하지 않은 part.met 파일버젼: %s ==> %s"
+
+#~ msgid "Warning: %s might be corrupted (%i)"
+#~ msgstr "경고: %s는 손상되었습니다. (%i)"
+
+#~ msgid "Unexpected file error while completing %s. File paused"
+#~ msgstr "%s가 완료되는중 예상되지 않은 파일오류가 발생하였습니다. 파일 중지"
+
+#~ msgid ""
+#~ "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
+#~ msgstr "경고: 내려받은 부분의 해시가 불가능합니다. - %s의 해시설정 비완료"
+
+#~ msgid ""
+#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
+#~ "should never happen"
+#~ msgstr ""
+#~ "오류: 내려받은 부분의 해시가 불가능합니다. - 해시설정 비완료 (%s). 발생되"
+#~ "어서는 안됩니다."
+
+#~ msgid "Insufficient Diskspace"
+#~ msgstr "불충분한 디스크공간"
+
+#~ msgid "ERROR! Attempted to share %s"
+#~ msgstr "오류! %s 공유를 시도"
+
+#~ msgid "ED2K network disabled on preferences, not connecting."
+#~ msgstr "ED2k 통신망이 환경설정에서 비활성화되어 있으므로 연결하지 않습니다."
+
+#~ msgid "No valid servers to connect in serverlist found"
+#~ msgstr "발견된 서버 목록에서 연결할수 있는 유효한 서버가 없습니다."
+
+#~ msgid "Error: Socket invalid at timeoutcheck"
+#~ msgstr "오류: 시간초과 검사에 유효하지 않은 소켓"
+
+#~ msgid "Cannot convert magnet link to ed2k: %s"
+#~ msgstr "magnet 링크를 ed2k로 변환할 수 없음: %s"
+
+#~ msgid "Invalid ed2k link! Error: %s"
+#~ msgstr "유효하지 않은 ED2k링크! 오류: %s"
+
+#~ msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
+#~ msgstr "대역폭 제한: 올려주기: %u kB/초, 내려받기: %u kB/초\n"
+
+#~ msgid ""
+#~ "Shutdown the remote running core (amule/amuled).\n"
+#~ "This will also shut down the text client, since it is unusable without a\n"
+#~ "running core.\n"
+#~ msgstr ""
+#~ "원격으로 동작하는 코어(어뮬)를 종료합니다.\n"
+#~ "동작하는 코어없이는 불안정하기 때문에,\n"
+#~ "문자기반 클라이언트도 종료될것입니다.\n"
+
+#~ msgid "Connect to ED2K only."
+#~ msgstr "ED2k에만 연결합니다."
+
+#~ msgid "Disconnect from ED2K only."
+#~ msgstr "ED2k에서만 연결을 끊습니다."
+
+#~ msgid ""
+#~ "The ed2k link to be added can be:\n"
+#~ "*) a file link (ed2k://|file|...), it will be added to the download "
+#~ "queue,\n"
+#~ "*) a server link (ed2k://|server|...), it will be added to the server "
+#~ "list,\n"
+#~ "*) or a serverlist link, in which case all servers in the list will be "
+#~ "added to the\n"
+#~ "   server list.\n"
+#~ "\n"
+#~ "The magnet link must contain the ed2k hash and file length.\n"
+#~ msgstr ""
+#~ "다음의 ed2k 링크가 추가될 수 있습니다.:\n"
+#~ "*) 파일 링크 (ed2k://|file|...), 내려받기 대기열에 추가되고,\n"
+#~ "*) 서버 링크 (ed2k://|server|...), 서버목록에 추가되고,\n"
+#~ "*) 서버목록 링크, 목록에 포함된 모든 서버들이 서버목록에 추가됩니다.\n"
+#~ "\n"
+#~ "magnet 링크는 ed2k 해시와 파일 길이를 포함해야 합니다.\n"
+
+#~ msgid "Error: %s (%s) - %s"
+#~ msgstr "오류: %s(%s) - %s"
+
+#~ msgid "Warning: %s (%s) - %s"
+#~ msgstr "경고: %s(%s) - %s"
+
+#~ msgid "Error: Out of diskspace"
+#~ msgstr "에러: 디스크 공간 부족"
+
+#~ msgid "Error: Partmet not found"
+#~ msgstr "오류: Partmet을 찾을 수 없음"
+
+#~ msgid "Error: IO error!"
+#~ msgstr "오류: 입출력 오류!"
+
+#~ msgid "Error: Failed!"
+#~ msgstr "오류: 실패함!"
+
+#~ msgid "ED2K Link: "
+#~ msgstr "ED2K 링크: "
+
+#~ msgid ""
+#~ "Click here to add the ed2k link in the text control to your download "
+#~ "queue."
+#~ msgstr ""
+#~ "문장 컨트롤내의 ed2k 링크를 내려받기 대기열에 추가하려면 여기를 클릭하세"
+#~ "요."
+
+#~ msgid "Searches for more results on ED2K. Not supported for Kad yet."
+#~ msgstr "ED2K에서 더 많은 결과를 찾습니다. Kad는 아직 지원되지 않습니다."
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "Bandwith Limits"
+#~ msgstr "대역폭 제한"
+
+#~ msgid "This is the standard ED2K port and cannot be disabled."
+#~ msgstr "이것은 표준 ED2k 포트이며 비활성화 할수 없습니다."
+
+#~ msgid "This UDP port is used for extended Ed2K requests and Kad network"
+#~ msgstr "이 UDP 포트는 확장된 Ed2k 요청과 Kad 통신망에 사용됩니다."
+
+#~ msgid "Hard Limit"
+#~ msgstr "강한 제한"
+
+#~ msgid "Connection Limits"
+#~ msgstr "연결 제한"
+
+#~ msgid "Auto-update serverlist at startup"
+#~ msgstr "시작시 서버 목록을 자동갱신"
+
+#~ msgid "Update serverlist when connecting to a server"
+#~ msgstr "서버에 연결할때 서버 목록을 갱신"
+
+#~ msgid "Update serverlist when a client connect"
+#~ msgstr "클라이언트가 연결할때 서버 목록을 갱신"
+
+#~ msgid "Disk Space"
+#~ msgstr "디스크 공간"
+
+#~ msgid "Check Disk Space"
+#~ msgstr "디스크 공간검사"
+
+#~ msgid "Select this if you want aMule to check your Disk Space"
+#~ msgstr "어뮬이 디스크공간을 검사하도록 함"
+
+#~ msgid "Min Disk Space:"
+#~ msgstr "최소 디스크 공간:"
+
+#~ msgid "Incoming Directory :"
+#~ msgstr "내려받는 폴더 :"
+
+#~ msgid "Temporary Directory :"
+#~ msgstr "임시 폴더 :"
+
+#~ msgid "Shared Directories"
+#~ msgstr "공유 폴더"
+
+#~ msgid "Create Backup to preview"
+#~ msgstr "미리보기를 위해 백업파일을 만듦"
+
+#~ msgid "Show Fast ED2K Links Handler"
+#~ msgstr "빠른 ED2k링크 처리기를 보여줌"
+
+#~ msgid "Webserver Parameters"
+#~ msgstr "웹서버 설정"
+
+#~ msgid "Webserver port"
+#~ msgstr "웹서버 포트"
+
+#~ msgid "Enable UPnP port forwarding on the Webserver port"
+#~ msgstr "웹서버 포트로 UPnP 포트포워딩 활성화"
+
+#~ msgid "Webserver UPnP TCP port"
+#~ msgstr "웹서버 UPnP TCP 포트"
+
+#~ msgid "Serverlist"
+#~ msgstr "서버 목록"
+
+#~ msgid "Manual Server Add : Name"
+#~ msgstr "수동 서버추가 : 이름"
+
+#~ msgid "Speed Limits:"
+#~ msgstr "속도 제한:"
+
+#~ msgid "Download Speed: %.1f"
+#~ msgstr "내려받기 속도: %.1f"
+
+#~ msgid "Upload Speed: %.1f"
+#~ msgstr "올려주기 속도: %.1f"
+
+#~ msgid "TCP Port: %d"
+#~ msgstr "TCP 포트: %d"
+
+#~ msgid "TCP Port: Not Ready"
+#~ msgstr "TCP 포트: 준비되지 않음"
+
+#~ msgid "UDP Port: %d"
+#~ msgstr "UDP 포트: %d"
+
+#~ msgid "UDP Port: Not Ready"
+#~ msgstr "UDP 포트: 준비되지 않음"
+
+#~ msgid "Shared Files: %d"
+#~ msgstr "공유된 파일: %d"
+
+#~ msgid "Queued Clients: %d"
+#~ msgstr "대기열에 있는 클라이언트: %d"
+
+#~ msgid "Upload Limit"
+#~ msgstr "올려주기 제한"
+
+#~ msgid "Download Limit"
+#~ msgstr "내려받기 제한"
+
+#~ msgid ""
+#~ "No serverlist address entry in 'addresses.dat' found. Please paste a "
+#~ "valid serverlist address into this file in order to auto-update your "
+#~ "serverlist"
+#~ msgstr ""
+#~ "'addresses.dat'에 서버 목록 주소 항목이 없습니다. 서버 목록을 자동갱신하려"
+#~ "면 유효한 서버 목록 주소를 이 파일에 붙여넣어 주세요."
+
+#~ msgid "Warning, invalid URL specified for auto-updating of servers: %s"
+#~ msgstr "경고, 서버의 자동 갱신을 위한 URL이 유효하지 않음: %s"
+
+#~ msgid "webserver running on pid %d"
+#~ msgstr "웝서버가 PID %d로 작동중"
+
+#~ msgid ""
+#~ "You requested to run webserver from startup, but the amuleweb binary "
+#~ "cannot be run. Please install the package containing aMule webserver, or "
+#~ "compile aMule using --enable-webserver and run make install"
+#~ msgstr ""
+#~ "시작과 동시에 웹서버 구동을 요청했으나, amuleweb 파일을 실행할 수 없습니"
+#~ "다. 어뮬 웹서버를 포함한 꾸러미를 설치하거나 , --enable-webserver 옵션 이"
+#~ "용하여 어뮬을 컴파일 후 make install을 실행하세요."
+
+#~ msgid "Disconnected from ED2K"
+#~ msgstr "ED2k로부터 연결이 끊김"
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
+#~ msgstr "'emfriends.met'파일을 읽기 위해 열지 못했습니다."
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
+#~ msgstr "'emfriends.met'파일을 기록하기 위해 열지 못했습니다."
+
+#~ msgid "ERROR: Failed to open partfile)"
+#~ msgstr "오류: 부분파일을 열지 못했습니다.)"
+
+#~ msgid "Mb"
+#~ msgstr "Mb"
+
+#~ msgid "Can't create web socket thread\n"
+#~ msgstr "웹 소켓 스레드를 생성할수 없음\n"
+
+#~ msgid "Web Server: Started\n"
+#~ msgstr "웹 서버: 시작함\n"
+
+#~ msgid "Not Supported"
+#~ msgstr "지원하지 않음"
+
+#~ msgid "LowID: %u (%.2f%% Total %.2f%% Known)"
+#~ msgstr "낮은아이디: %u(%.2f%% 전체 %.2f%% 알려진)"
+
+#~ msgid "SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"
+#~ msgstr "구간식별 켬/끔: %u(%.2f%%) : %u(%.2f%%)"
+
+#~ msgid "Browse wav"
+#~ msgstr "탐색 효과음"
+
+#~ msgid "File wav (*.wav)|*.wav||"
+#~ msgstr "웨이브 파일(*.wav)|*.wav||"
+
+#~ msgid "No comment(s)"
+#~ msgstr "의견이 없음"
+
+#~ msgid "Notifications"
+#~ msgstr "통지"
+
+#~ msgid "Messages popup"
+#~ msgstr "메시지 팝업"
+
+#~ msgid "Use sound"
+#~ msgstr "소리 이용"
+
+#~ msgid "Pop out when :"
+#~ msgstr "팝아웃 할때 :"
+
+#~ msgid "New entry on log"
+#~ msgstr "로그의 새로운 항목"
+
+#~ msgid "Starts a new chat session"
+#~ msgstr "새로운 채팅 세션을 시작"
+
+#~ msgid "A new chat message is received"
+#~ msgstr "새로운 채팅 메시지가 수신됨"
+
+#~ msgid "A download is added or finished"
+#~ msgstr "내려받기가 추가되거나 완료됨"
+
+#~ msgid "New aMule version detected"
+#~ msgstr "새로운 어뮬 버젼이 발견됨"
+
+#~ msgid "Urgent OOD, serverconnection lost"
+#~ msgstr "긴급한 OOD, 서버연결이 끊김"
+
+#~ msgid "Notify by Mail"
+#~ msgstr "메일로 통보"
+
+#~ msgid "Send an Email when transfer complete."
+#~ msgstr "전송이 완료되었을때 메일을 보냅니다."
+
+#~ msgid "SMTP server :"
+#~ msgstr "SMTP 서버 :"
+
+#~ msgid "Email Address :"
+#~ msgstr "이메일 주소 :"
+
+#~ msgid ":"
+#~ msgstr ":"
+
+#~ msgid ""
+#~ "The selected locale seems not to be installed on your box\n"
+#~ "You must generate it to use this language.\n"
+#~ "A good start on linux systems is the file /etc/locale.gen and the package "
+#~ "'locales'\n"
+#~ "Good luck!\n"
+#~ "(Note: I'll try to set it anyway)"
+#~ msgstr ""
+#~ "컴퓨터에 선택한 지역정보(로케일)가 설치 않된것 같습니다.\n"
+#~ "이 언어를 사용하기 위해서는 지역정보(로케일)를 생성해야 합니다.\n"
+#~ "리눅스 시스템에서 좋은 시작지점은 /etc/local.gen 파일과 'locales' 꾸러미입"
+#~ "니다.\n"
+#~ "행운을 빕니다!\n"
+#~ "(주의: 어쨌든 설정하겠습니다)"
+
+#~ msgid "Never show this again"
+#~ msgstr "다시 보여주지 않음"
+
+#~ msgid "Enable/Disable"
+#~ msgstr "활성화/비활성화"
+
+#~ msgid "You can't bootstrap an specific ip from remote GUI yet."
+#~ msgstr "원격 GUI에서 특정 IP를 초기적재할 수 없습니다."
+
+#~ msgid "You can't update server.met from remote GUI yet."
+#~ msgstr "아직 원격 GUI로부터 server.met를 갱신할수 없습니다."
+
+#~ msgid "Disconnect from "
+#~ msgstr "다음으로부터 연결이 끊김 "
+
+#~ msgid "current server"
+#~ msgstr "현재 서버"
+
+#~ msgid " and "
+#~ msgstr "와 "
+
+#~ msgid "Disconnect from any server and/or Kad"
+#~ msgstr "서버 또는 Kad 접속이 끊겼습니다."
+
+#~ msgid " ["
+#~ msgstr " ["
+
+#~ msgid " | Kad: "
+#~ msgstr " | Kad: "
+
+#~ msgid "TCP Flags"
+#~ msgstr "TCP 플래그"
+
+#~ msgid "UDP Flags"
+#~ msgstr "UDP 플래그"
+
+#~ msgid "Copy ED2k link(s) to clipboard"
+#~ msgstr "ED2k 링크를 클립보드에 복사"
+
+#~ msgid "Client requests %u"
+#~ msgstr "클라이언트가 %u를 요청합니다."
+
+#~ msgid "File block %u-%u (%d bytes):"
+#~ msgstr "파일 블럭 %u-%u (%d 바이트):"
+
+#~ msgid "Client request is invalid!"
+#~ msgstr "클라이언트 요청이 유효하지 않습니다."
+
+#~ msgid "Client request is invalid! %i / %i"
+#~ msgstr "클라이언트 요청이 유효하지 않습니다. %i / %i"
+
+#~ msgid "Unable to open %s file - using %s file."
+#~ msgstr "%s파일을 열수 없습니다. - %s 파일을 사용합니다."
+
+#~ msgid "Warning: known.met does not exist."
+#~ msgstr "경고: known.met이 없습니다."
+
+#~ msgid ""
+#~ "CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
+#~ "directory not found."
+#~ msgstr ""
+#~ "CSharedFileList::FindSharedFiles: 공유폴더 목록에서 %s를 제거합니다: 폴더"
+#~ "를 찾을수 없습니다."
+
+#~ msgid "Waiting for subprocess termination failed"
+#~ msgstr "부 프로세스 종료 대기에 실패"
+
+#~ msgid "doesn't work"
+#~ msgstr "작동하지 않습니다."
+
+#~ msgid "remote gui"
+#~ msgstr "원격 gui"
+
+#~ msgid ""
+#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
+#~ "part.met recovery solutions"
+#~ msgstr ""
+#~ "오류: 백업파일을 읽지 못했습니다. .part.met 복구 방법을 http://forum."
+#~ "amule.org에서 검색하세요."
+
+#~ msgid ""
+#~ "Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
+#~ "part.met recovery solutions"
+#~ msgstr ""
+#~ "오류: 백업 part.met파일은 크기가 0입니다. .part.met회복 방법을 위해 "
+#~ "http://forum.amule.org에서 검색하세요."
+
+#~ msgid "Error: part.met backup file is 0 size: %s ==> %s"
+#~ msgstr "오류: part.met 백업파일은 크기가 0입니다: %s ==> %s"
+
+#~ msgid ""
+#~ " 'All-Platform' p2p client based on eMule \n"
+#~ "\n"
+#~ " Website: http://www.amule.org \n"
+#~ " Forum: http://forum.amule.org \n"
+#~ " FAQ: http://wiki.amule.org \n"
+#~ "\n"
+#~ " Contact: admin@amule.org (administrative issues) \n"
+#~ " Copyright (C) 2003-2008 aMule Team \n"
+#~ "\n"
+#~ " Part of aMule is based on \n"
+#~ " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
+#~ " Copyright (C) 2002 Petar Maymounkov\n"
+#~ " http://kademlia.scs.cs.nyu.edu\n"
+#~ msgstr ""
+#~ " 'All-Platform' 이뮬기반 p2p 클라이언트 \n"
+#~ "\n"
+#~ " 웹사이트: http://www.amule.org \n"
+#~ " 게시판: http://forum.amule.org \n"
+#~ " 자주하는 질문: http://wiki.amule.org \n"
+#~ "\n"
+#~ " 연락: admin@amule.org (관리상의 문제)  \n"
+#~ " Copyright (C) 2003-2008 aMule Team \n"
+#~ "\n"
+#~ " 어뮬의 일부분은 카뎀리아기반입니다. \n"
+#~ " 카뎀리아: XOR 측정 기반으로 개개인을 연결합니다..\n"
+#~ " Copyright (C) 2002 Petar Maymounkov\n"
+#~ " http://kademlia.scs.cs.nyu.edu\n"
+
+#~ msgid "WARNING: You have recieved Low-ID!"
+#~ msgstr "경고: 낮은아이디를 받았습니다."
+
+#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+#~ msgstr "이 명령은 인수를 필요로 합니다. 올바른 인수들: 파일 해시.\n"
+
+#~ msgid "Deprecated command, now 'Status'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Status'를 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Status' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만간 제거될것입니다.\n"
+#~ "대신에 'Status'를 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Set IPFilter'를 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만간 제거될것입니다.\n"
+#~ "대신에 'Set IPFilter'를 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Get IPFilter Level'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Get IPFilter Level'을 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Get IPFilter Level'을 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter Level'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Set IPFilter Level'을 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Set IPFilter Level'을 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Get/Set IPFilter Level'을 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get/Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Get/Set IPFilter Level'을 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Show Servers'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Show Severs'를 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Show Servers' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Show Servers'를 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Get BwLimits'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Get BwLimits'를 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get BwLimits' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Get BwLimits'를 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Up'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Set BwLimit Up'을 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Up' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Set BwLimit Up'을 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Down'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Set BwLimit Down'을 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Down' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Set BwLimit Down'을 사용하세요.\n"
+
+#~ msgid "Masterhashes of known files have been loaded."
+#~ msgstr "알려진 파일의 마스터 해시를 읽었습니다."
+
+#~ msgid "Error while reading Kad contacts - 0 entries"
+#~ msgstr "Kad 접속을 읽는동안 오류가생겼습니다. - 0 참가자"
+
+#~ msgid "Merge attempt"
+#~ msgstr "병합 시도"
+
+#~ msgid "Recursive merge"
+#~ msgstr "재귀적 병합"
+
+#~ msgid "Sucessful merge!"
+#~ msgstr "병합 성공!"
+
+#~ msgid "No merge possible"
+#~ msgstr "병합 가능한 것이 없음"
+
+#~ msgid "Buddy address: "
+#~ msgstr "친구 주소:"
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "     %d"
+#~ msgstr "     %d"
+
+#~ msgid ".%d"
+#~ msgstr ".%d"
+
+#~ msgid "Search warning."
+#~ msgstr "검색 경고."
+
+#~ msgid "Client Identification:"
+#~ msgstr "클라인트 확인:"
+
+#~ msgid "Use Secure Identification"
+#~ msgstr "안전한 확인을 사용"
+
+#~ msgid ""
+#~ "Secure Identification uses a handshake approch to safely identify clients "
+#~ "for use with the credit system."
+#~ msgstr ""
+#~ "안전한 확인은 신용시스템을 사용함에 있어서 클라이언트를 안전하게 확인하기 "
+#~ "위해 핸드쉐이크 접근을 사용합니다."
+
+#~ msgid "Sources Dropping"
+#~ msgstr "자료 버림"
+
+#~ msgid "Source Dropping"
+#~ msgstr "자료 버리기"
+
+#~ msgid "Drop sources"
+#~ msgstr "자료 버림"
+
+#~ msgid "Send sources to any other file before dropping (High CPU)"
+#~ msgstr "버리기 전에 다른 파일로 자료를 보냄 (높은 CPU)"
+
+#~ msgid "Sources with no needed file-parts."
+#~ msgstr "필요없는 파일부분을 가진 자료"
+
+#~ msgid "Full Queue Sources Handling"
+#~ msgstr "가득찬 대기열 자료 처리"
+
+#~ msgid "Enable auto drop Full Queue Sources"
+#~ msgstr "가득찬 대기열 자료 자동 버림을 활성화"
+
+#~ msgid "High Queue Rating Sources Handling"
+#~ msgstr "높은 대기열율 자료 처리"
+
+#~ msgid "Enable auto drop High Queue Rating Sources"
+#~ msgstr "높은 대기열율 자료 자동 버림을 활성화"
+
+#~ msgid "High Queue Rating value"
+#~ msgstr "높은 대기열율 값"
+
+#~ msgid "(Min 300 / Max 3000)"
+#~ msgstr "(최소 300 / 최대 3000)"
+
+#~ msgid "Auto Drop Sources Timer"
+#~ msgstr "자동 자료버림 타이머"
+
+#~ msgid "Timer (in secs)"
+#~ msgstr "타이머 (초)"
+
+#~ msgid "(Min 60 / 3600 Max)"
+#~ msgstr "(최소 60 / 3600 최대)"
+
+#~ msgid "Drop No Needed Sources now"
+#~ msgstr "불필요한 자료를 버림"
+
+#~ msgid "Drop Full Queue Sources now"
+#~ msgstr "가득찬 대기열 자료를 버림"
+
+#~ msgid "Drop High Queue Rating Sources now"
+#~ msgstr "대기열 사용이 많은 자료를 버림"
+
+#~ msgid "Clean Up Sources now (NNS, FQS && HQRS)"
+#~ msgstr "자료를 정리 (NNS, FQS && HQRS)"
+
+#~ msgid "English (U.S.)"
+#~ msgstr "영어(미국)"
+
+#~ msgid "Spanish (Mexican)"
+#~ msgstr "스페인어(멕시코)"

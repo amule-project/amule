@@ -15,14 +15,15 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2011-06-18 14:15+0000\n"
-"Last-Translator: Luís Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"PO-Revision-Date: 2017-05-26 10:07+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -491,8 +492,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "Mensagem"
 
@@ -532,9 +533,9 @@ msgstr "Kad: Desligado"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -879,7 +880,7 @@ msgstr "Erro ao gravar ficheiro %s: %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr "Escrever 'Captcha'"
+msgstr "Digite o Captcha"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:693 src/muuli_wdr.cpp:244
 #: src/SearchListCtrl.cpp:627 src/TransferWnd.cpp:335
@@ -1093,8 +1094,8 @@ msgstr "O utilizador %s (%u) enviou pastas partilhadas não requisitadas."
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory '%s'"
 msgstr ""
-"O utilizador %s (%u) enviou a lista de ficheiros partilhados para a pasta '%"
-"s'"
+"O utilizador %s (%u) enviou a lista de ficheiros partilhados para a pasta "
+"'%s'"
 
 #: src/ClientTCPSocket.cpp:985
 #, c-format
@@ -1369,8 +1370,7 @@ msgstr "Fontes"
 msgid "Priority"
 msgstr "Prioridade"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Estado"
 
@@ -1562,7 +1562,7 @@ msgstr ""
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr ""
 "O sistema de ficheiros da pasta de ficheiros completos não suporta ficheiros "
-"grandes"
+"grandes."
 
 #: src/DownloadQueue.cpp:377
 #, c-format
@@ -1665,7 +1665,7 @@ msgstr "Elemento de versão de protocolo em falta."
 #: src/ExternalConn.cpp:499
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr ""
-"Falha de autenticação: chave inválida indicada como palavra-passe para LE"
+"Falha de autenticação: chave inválida indicada como palavra-passe para LE."
 
 #: src/ExternalConn.cpp:516
 msgid "Authentication failed: wrong password."
@@ -2020,9 +2020,9 @@ msgid "File Details"
 msgstr "Detalhes do ficheiro"
 
 #: src/FileDetailDialog.cpp:111
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f%% done"
-msgstr "%.2f%% terminado"
+msgstr "%.1f%% concluído"
 
 #: src/FileDetailDialog.cpp:113 src/utils/wxCas/src/wxcasframe.cpp:1139
 #: src/utils/wxCas/src/wxcasframe.cpp:1149
@@ -2409,7 +2409,7 @@ msgstr ""
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
 "Entrada inválida na lista de ficheiros conhecidos, o ficheiro pode estar "
-"corrompido"
+"corrompido: "
 
 #: src/libs/common/Format.cpp:307
 #, c-format
@@ -2852,7 +2852,7 @@ msgstr "Bytes"
 
 #: src/muuli_wdr.cpp:271 src/muuli_wdr.cpp:294
 msgid "KB"
-msgstr "kB"
+msgstr "KB"
 
 #: src/muuli_wdr.cpp:272 src/muuli_wdr.cpp:295 src/muuli_wdr.cpp:1826
 #: src/OtherFunctions.cpp:68
@@ -2950,7 +2950,7 @@ msgstr "N/D"
 
 #: src/muuli_wdr.cpp:536
 msgid "met-File :"
-msgstr "Ficheiro de servidores conhecidos :"
+msgstr "arquivo-met :"
 
 #: src/muuli_wdr.cpp:547
 msgid "Hash :"
@@ -3310,7 +3310,7 @@ msgstr "Faz com que o aMule peça uma confirmação ao sair."
 
 #: src/muuli_wdr.cpp:1484
 msgid "Hide application window when close button is pressed"
-msgstr ""
+msgstr "Fechar aplicação quando o botão fechar for pressionado"
 
 #: src/muuli_wdr.cpp:1487
 msgid "Enable Tray Icon"
@@ -3355,8 +3355,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Procurar"
 
@@ -3609,7 +3608,7 @@ msgstr "Tempo para gráfico de média: 100 minutos"
 
 #: src/muuli_wdr.cpp:1926
 msgid "Connections Graph Scale: 100 "
-msgstr "Escala do Gráfico de Ligações: 100"
+msgstr "Escala do Gráfico de Ligações: 100 "
 
 #: src/muuli_wdr.cpp:1935
 msgid "Download graph scale:"
@@ -3617,7 +3616,7 @@ msgstr "Escala do gráfico de download:"
 
 #: src/muuli_wdr.cpp:1944
 msgid "Upload graph scale:"
-msgstr "Escala do gráfico de upload"
+msgstr "Escala do gráfico de upload:"
 
 #: src/muuli_wdr.cpp:1958
 msgid "Colours: "
@@ -3724,9 +3723,8 @@ msgid "Show extended info on categories tabs"
 msgstr "Mostrar informação extra nos separadores de categorias"
 
 #: src/muuli_wdr.cpp:2107
-#, fuzzy
 msgid "Show application version on title"
-msgstr "Mostrar velocidades de transferência na barra de título"
+msgstr "Exibir versão do aplicativo no título"
 
 #: src/muuli_wdr.cpp:2110
 msgid "Show transfer rates on title"
@@ -4179,7 +4177,7 @@ msgstr "Gravar a assinatura Online em: "
 msgid ""
 "Click here to select the directory containing the the Online Signature files."
 msgstr ""
-"Clique para seleccionar a pasta que contém os ficheiros de Assinatura Online"
+"Clique para seleccionar a pasta que contém os ficheiros de Assinatura Online."
 
 #: src/muuli_wdr.cpp:2974
 msgid "Filter incoming messages (except current chat):"
@@ -4722,8 +4720,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 "EOF ao gerar a chave da parte transferida %u de comprimento %u (máximo %u) "
 "do ficheiro de partes '%s' com comprimento %u: %s"
@@ -4815,7 +4813,7 @@ msgstr "Holandês"
 
 #: src/Preferences.cpp:641
 msgid "English (U.K.)"
-msgstr "Inglês"
+msgstr "Inglês (UK)"
 
 #: src/Preferences.cpp:642
 msgid "Estonian"
@@ -4919,12 +4917,11 @@ msgstr "Alterar Idioma"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
-msgstr ""
+msgstr "Não há traduções instaladas no aMule"
 
 #: src/Preferences.cpp:771
-#, fuzzy
 msgid "No languages available"
-msgstr "Indisponível"
+msgstr "Nenhum idioma disponível"
 
 #: src/Preferences.cpp:902
 msgid "no options available"
@@ -5077,9 +5074,8 @@ msgid "- External connect interface changed.\n"
 msgstr "- Alterada interface para ligações externas.\n"
 
 #: src/PrefsUnifiedDlg.cpp:622
-#, fuzzy
 msgid "- Protocol obfuscation support changed.\n"
-msgstr "Ofuscação do Protocolo"
+msgstr "Ofuscação do Protocolo\n"
 
 #: src/PrefsUnifiedDlg.cpp:631
 msgid ""
@@ -5598,8 +5594,8 @@ msgstr "Tem a certeza que deseja eliminar o servidor estático %s"
 msgid "Servers (%i)"
 msgstr "Servidores (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Servidor"
 
@@ -5682,7 +5678,7 @@ msgstr ""
 
 #: src/ServerSocket.cpp:431
 msgid "\tFor more information, please refer to http://wiki.amule.org"
-msgstr "\tPara mais informação, por favor consulte http://wiki.amule.org"
+msgstr "\tPara maiores informações, vá até http://wiki.amule.org"
 
 #: src/ServerSocket.cpp:487
 msgid "Unknown server info received! - too short"
@@ -6307,9 +6303,9 @@ msgid ""
 msgstr "Escreva '%s' para obter mais ajuda.\n"
 
 #: src/TextClient.cpp:554
-#, fuzzy, c-format
+#, c-format
 msgid "Download File: %lu %s\n"
-msgstr "A transferir %s"
+msgstr "Download do arquivo: %lu %s\n"
 
 #: src/TextClient.cpp:646 src/webserver/src/WebServer.cpp:409
 msgid "Request failed with an unknown error."
@@ -6844,7 +6840,7 @@ msgstr "Confirmação Necessária"
 
 #: src/TransferWnd.cpp:238
 msgid "Only 99 categories are supported."
-msgstr "Só são suportadas 99 categorias"
+msgstr "Só são suportadas 99 categorias."
 
 #: src/TransferWnd.cpp:238
 msgid "Too many categories!"
@@ -7354,7 +7350,7 @@ msgstr " está em "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1066
 msgid " with "
-msgstr "com "
+msgstr " com "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1084
 msgid "Total Download: "
@@ -7379,7 +7375,7 @@ msgstr " kB/s, Upload: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1110
 msgid " kB/s"
-msgstr "kB/s"
+msgstr " kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1118
 msgid "Sharing: "
@@ -7576,7 +7572,7 @@ msgstr "A processar pedido [original]: "
 
 #: src/webserver/src/WebServer.cpp:1870
 msgid "No password specified, login will not be allowed."
-msgstr "Não foi indicada uma palavra-passe, a entrada não será permitida"
+msgstr "Não foi indicada uma palavra-passe, a entrada não será permitida."
 
 #: src/webserver/src/WebServer.cpp:1872
 msgid "Checking password\n"

@@ -22,16 +22,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.3.2\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
-"POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2017-03-16 10:35+0100\n"
+"POT-Creation-Date: 2017-05-24 11:10+0200\n"
+"PO-Revision-Date: 2017-05-24 11:10+0200\n"
 "Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
-"Language-Team: it@li.org; Sebastiano Pistore; <SebastianoPistore."
-"info@protonmail.ch>\n"
+"Language-Team: SebastianoPistore.info@protonmail.ch\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it\n"
-"X-Generator: Poedit 2.0beta4\n"
+"X-Generator: Poedit 2.0.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/AddFriend.cpp:45
@@ -82,11 +81,11 @@ msgstr "Fallito"
 
 #: src/amule.cpp:260
 msgid "aMule OnExit: Terminating core."
-msgstr "aMule OnExit: Chiusura core."
+msgstr "aMule in fase di chiusura: Il core sta venendo terminato."
 
 #: src/amule.cpp:333
 msgid "aMule shutdown completed."
-msgstr "Chiusura di aMule completata."
+msgstr "Arresto di aMule completato."
 
 #: src/amule.cpp:337
 msgid "Memory debug results for aMule exit:"
@@ -113,7 +112,7 @@ msgid ""
 "EC configuration"
 msgstr ""
 "\n"
-"Configurazione EC (External Connection)"
+"Configurazione EC"
 
 #: src/amule.cpp:452
 msgid "Password set and external connections enabled."
@@ -269,7 +268,7 @@ msgstr "Messaggio del server: %s"
 #: src/ServerList.cpp:860
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
-msgstr "Download saltato di %s, poichè il file richiesto non è il più recente."
+msgstr "Download di %s saltato, perché il file richiesto non è il più recente."
 
 #: src/amule.cpp:1578
 msgid "Failed to download the nodes list."
@@ -509,7 +508,7 @@ msgstr "Messaggio"
 
 #: src/amuleDlg.cpp:550
 msgid "aMule dialog destroyed"
-msgstr "Finestra di aMule distrutta"
+msgstr "Finestra di aMule chiusa"
 
 #: src/amuleDlg.cpp:574 src/DataToText.cpp:58 src/IPFilter.cpp:544
 msgid "Connecting"
@@ -568,7 +567,7 @@ msgstr "Connetti"
 
 #: src/amuleDlg.cpp:787
 msgid "Connect to the currently enabled networks"
-msgstr "Connettiti alle rete"
+msgstr "Connetti alle reti attualmente abilitate"
 
 #: src/amuleDlg.cpp:846
 #, c-format
@@ -697,7 +696,7 @@ msgstr "Informazioni/Aiuto"
 
 #: src/amuleDlg.cpp:1477
 msgid "eD2k network"
-msgstr "rete eD2k"
+msgstr "Rete eD2k"
 
 #: src/amuleDlg.cpp:1481
 msgid "Kad network"
@@ -799,11 +798,11 @@ msgstr "Ricerca amico per connessione con ID basso"
 #: src/BaseClient.cpp:1791
 #, c-format
 msgid " (Fake eMule version %#x)"
-msgstr " (falso eMule versione %#x)"
+msgstr " (eMule fake versione %#x)"
 
 #: src/BaseClient.cpp:1802
 msgid " (Fake eMule)"
-msgstr " (falso eMule)"
+msgstr " (eMule fake)"
 
 #: src/BaseClient.cpp:1804
 msgid "xMule (Fake eMule)"
@@ -939,7 +938,7 @@ msgstr "*** Connessione al client in corso ***"
 
 #: src/ChatSelector.cpp:282
 msgid "*** Failed to Connect to client / Connection lost ***"
-msgstr "*** Impossibile connettersi al client / Connessione persa ***"
+msgstr "*** Impossibile connettersi al client / Connessione caduta ***"
 
 #: src/ChatSelector.cpp:335
 msgid ""
@@ -954,8 +953,8 @@ msgid ""
 "*** Your response to the captcha was wrong and your message has been "
 "ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
-"*** La tua risposta al captcha era errata ed il tuo messaggio è stato "
-"ignorato. Puoi chiedere un nuovo captcha inviando un nuovo messaggio. ***"
+"*** La tua risposta al captcha era errata ed il tuo messaggio è stata "
+"ignorata. Puoi chiedere un nuovo captcha inviando un nuovo messaggio. ***"
 
 #: src/ChatWnd.cpp:99
 msgid "Chat"
@@ -1274,7 +1273,7 @@ msgstr "Errore di connessione"
 
 #: src/DataToText.cpp:72
 msgid "Remote Queue Full"
-msgstr "Coda piena"
+msgstr "Coda remota piena"
 
 #: src/DataToText.cpp:102
 msgid "Old MLDonkey"
@@ -1524,7 +1523,7 @@ msgstr ""
 
 #: src/DownloadListCtrl.cpp:1429
 msgid "File preview"
-msgstr "Anteprima"
+msgstr "Anteprima file"
 
 #: src/DownloadListCtrl.cpp:1477
 #, c-format
@@ -1544,7 +1543,7 @@ msgstr "Tutti i file part sono stati salvati."
 #: src/DownloadQueue.cpp:113
 #, c-format
 msgid "Loading temp files from %s."
-msgstr "Caricamento dei file Part da: %s"
+msgstr "Caricamento dei file Part da: %s."
 
 #: src/DownloadQueue.cpp:132
 #, c-format
@@ -1602,7 +1601,7 @@ msgstr "Hai già il file '%s'"
 #: src/DownloadQueue.cpp:402
 #, c-format
 msgid "You are already trying to download the file %s"
-msgstr "Stai già cercando di scaricare il file '%s'"
+msgstr "Stai già cercando di scaricare il file %s"
 
 #: src/DownloadQueue.cpp:1404
 #, c-format
@@ -1998,7 +1997,7 @@ msgstr "Host su cui aMule è in esecuzione (default: localhost)"
 
 #: src/ExternalConnector.cpp:424
 msgid "aMule's port for External Connection. (default: 4712)"
-msgstr "Porta di aMule per le connessioni esterne (default: 4712)"
+msgstr "Porta di aMule per le connessioni esterne. (default: 4712)"
 
 #: src/ExternalConnector.cpp:427
 msgid "External Connection password."
@@ -2563,7 +2562,7 @@ msgstr "Illimitato"
 
 #: src/MuleTrayIcon.cpp:290
 msgid "aMule Tray Menu"
-msgstr "Menu di aMule nel systray"
+msgstr "Menu di aMule nella barra di sistema"
 
 #: src/MuleTrayIcon.cpp:296
 msgid "Speed limits:"
@@ -3055,7 +3054,7 @@ msgstr "Ok"
 
 #: src/muuli_wdr.cpp:823
 msgid "Comment/Rate file (Text will be visible to all users)"
-msgstr "Commenta/Giudica il file (il testo sarà visibile a tutti gli utenti)"
+msgstr "Commenta/Valuta il file (il testo sarà visibile a tutti gli utenti)"
 
 #: src/muuli_wdr.cpp:829
 msgid ""
@@ -3328,29 +3327,29 @@ msgstr "Fa in modo che aMule chieda conferma prima di uscire."
 
 #: src/muuli_wdr.cpp:1484
 msgid "Hide application window when close button is pressed"
-msgstr "Nascondi la finestra quando viene premuto il pulsante di chiusura."
+msgstr "Nascondi la finestra quando viene premuto il pulsante di chiusura"
 
 #: src/muuli_wdr.cpp:1487
 msgid "Enable Tray Icon"
-msgstr "Abilita icona nel systray"
+msgstr "Abilita icona nella barra"
 
 #: src/muuli_wdr.cpp:1488
 msgid "This Enables/Disables the system tray (or taskbar) icon."
 msgstr ""
-"Abilita o disabilita l'icona nella system tray o nella barra delle "
+"Abilita o disabilita l'icona nella barra di sistema o nella barra delle "
 "applicazioni."
 
 #: src/muuli_wdr.cpp:1491
 msgid "Minimize to Tray Icon"
-msgstr "Icona per la system tray"
+msgstr "Icona nella barra di sistema"
 
 #: src/muuli_wdr.cpp:1492
 msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
 msgstr ""
-"Abilitando questa opzione aMule verrà minimizzato nella system tray invece "
-"che nella barra delle applicazioni."
+"Abilitando questa opzione aMule verrà minimizzato nella barra di sistema "
+"invece che nella barra delle applicazioni."
 
 #: src/muuli_wdr.cpp:1497
 msgid "Tooltip delay time: "
@@ -3411,7 +3410,7 @@ msgstr "Porte"
 
 #: src/muuli_wdr.cpp:1607
 msgid "Standard TCP Port "
-msgstr "Porta TCP standard"
+msgstr "Porta TCP standard "
 
 #: src/muuli_wdr.cpp:1611
 msgid "This is the standard eD2k port and cannot be disabled."
@@ -3468,7 +3467,7 @@ msgstr "Kademlia"
 
 #: src/muuli_wdr.cpp:1680 src/muuli_wdr.cpp:3282
 msgid "ED2K"
-msgstr "ed2k"
+msgstr "ED2K"
 
 #: src/muuli_wdr.cpp:1689
 msgid "Autoconnect on startup"
@@ -3682,7 +3681,7 @@ msgstr "Connessioni attive"
 
 #: src/muuli_wdr.cpp:1974
 msgid "Systray Icon Speedbar"
-msgstr "Barra della velocità nell'icona systray"
+msgstr "Barra della velocità nell'icona sulla barra di sistema"
 
 #: src/muuli_wdr.cpp:1975
 msgid "Kad-nodes current"
@@ -3826,7 +3825,7 @@ msgstr "Porta TCP:"
 
 #: src/muuli_wdr.cpp:2206
 msgid "Enable UPnP port forwarding on the EC port"
-msgstr "Abilita il port forwarding UPnP sulla porta EC"
+msgstr "Abilita il port forwarding tramite UPnP sulla porta EC"
 
 #: src/muuli_wdr.cpp:2211 src/muuli_wdr.cpp:3127
 #: src/utils/wxCas/src/wxcasprefs.cpp:201
@@ -3859,7 +3858,7 @@ msgstr "Password per diritti limitati"
 
 #: src/muuli_wdr.cpp:2267
 msgid "Enable UPnP port forwarding of the web server port"
-msgstr "Abilita il port forwarding UPnP sulla porta del server web"
+msgstr "Abilita il port forwarding tramite UPnP sulla porta del server web"
 
 #: src/muuli_wdr.cpp:2272
 msgid "Web server UPnP TCP port (Optional)"
@@ -4454,7 +4453,7 @@ msgstr "ore"
 
 #: src/OtherFunctions.cpp:121
 msgid "Days"
-msgstr "giorni"
+msgstr "Giorni"
 
 #: src/OtherFunctions.cpp:629
 msgid "all"
@@ -4478,7 +4477,7 @@ msgstr "Video"
 
 #: src/OtherFunctions.cpp:640 src/TransferWnd.cpp:358
 msgid "Archive"
-msgstr "Archivi"
+msgstr "Archivio"
 
 #: src/OtherFunctions.cpp:643 src/TransferWnd.cpp:361
 msgid "Text"
@@ -4653,7 +4652,7 @@ msgstr ""
 #: src/PartFile.cpp:923
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
-msgstr "'%s' è per qualche motivo di dimensione 0 - uso il file %s."
+msgstr "'%s' per qualche motivo è di dimensione 0 - uso il file %s."
 
 #: src/PartFile.cpp:992
 #, c-format
@@ -4715,7 +4714,7 @@ msgstr "Download completato: %s"
 #: src/PartFile.cpp:2221
 #, c-format
 msgid "Deleting file: %s"
-msgstr "Cancellazione file: %s"
+msgstr "Cancellazione file in corso: %s"
 
 #: src/PartFile.cpp:2290
 #, c-format
@@ -4831,7 +4830,7 @@ msgstr "Olandese"
 
 #: src/Preferences.cpp:641
 msgid "English (U.K.)"
-msgstr "Inglese (U.K.)"
+msgstr "Inglese (Regno Unito)"
 
 #: src/Preferences.cpp:642
 msgid "Estonian"
@@ -5121,7 +5120,7 @@ msgstr "- Modifica della cartella Temp.\n"
 
 #: src/PrefsUnifiedDlg.cpp:660
 msgid "- ED2K network enabled.\n"
-msgstr "- Rete ed2k abilitata.\n"
+msgstr "- Rete ED2K abilitata.\n"
 
 #: src/PrefsUnifiedDlg.cpp:732
 msgid ""
@@ -5252,7 +5251,7 @@ msgstr "disattivato"
 #: src/PrefsUnifiedDlg.cpp:1238
 #, c-format
 msgid "Execute command on '%s' event"
-msgstr "Esegui un comando se si verifica l'evento '%s'"
+msgstr "Esegui comando se si verifica l'evento '%s'"
 
 #: src/PrefsUnifiedDlg.cpp:1241
 msgid "Enable command execution on core"
@@ -5357,7 +5356,7 @@ msgstr ""
 
 #: src/ServerConnect.cpp:94 src/ServerConnect.cpp:148
 msgid "eD2k network disabled on preferences, not connecting."
-msgstr "La rete eD2k è disabilitata nelle preferenze, non mi connetto."
+msgstr "Rete eD2k disabilitata nelle preferenze, connessione impossibile."
 
 #: src/ServerConnect.cpp:122 src/ServerConnect.cpp:135
 msgid "No valid servers to which to connect found in server list"
@@ -5464,7 +5463,7 @@ msgstr[1] "%d server aggiunti"
 
 #: src/ServerList.cpp:179
 msgid "Error: the file 'server.met' is corrupted: "
-msgstr "Errore: il file 'server.met' è corrotto:"
+msgstr "Errore: il file 'server.met' è corrotto: "
 
 #: src/ServerList.cpp:183
 msgid "IO error while reading 'server.met': "
@@ -5601,7 +5600,7 @@ msgstr "(nome sconosciuto)"
 #: src/ServerListCtrl.cpp:154
 #, c-format
 msgid "Are you sure you want to delete the static server %s"
-msgstr "Sei sicuro di voler eliminare il server statico %s?"
+msgstr "Sei sicuro di voler eliminare il server statico %s"
 
 #: src/ServerListCtrl.cpp:348
 #, c-format
@@ -5832,7 +5831,7 @@ msgstr "Fonti indicizzate:"
 
 #: src/ServerWnd.cpp:255
 msgid "Indexed keywords:"
-msgstr "Parole chiave indicizzate"
+msgstr "Parole chiave indicizzate:"
 
 #: src/ServerWnd.cpp:257
 msgid "Indexed notes:"
@@ -6009,7 +6008,7 @@ msgstr "File condivisi (%i)"
 
 #: src/SharedFilesCtrl.cpp:600 src/TextClient.cpp:829
 msgid "[PartFile]"
-msgstr "File in scaricamento"
+msgstr "[Partfile]"
 
 #: src/SourceListCtrl.cpp:37
 msgid "Remote File Name"
@@ -6509,7 +6508,7 @@ msgstr "Se l'URL è omesso verrà utilizzato quello inserito nelle Preferenze."
 
 #: src/TextClient.cpp:906
 msgid "Connect to the network."
-msgstr "Connessione al network."
+msgstr "Connettiti alla rete."
 
 #: src/TextClient.cpp:907
 msgid ""
@@ -6521,7 +6520,7 @@ msgid ""
 msgstr ""
 "Questo connetterà aMule a tutte le reti attualmente abilitate nelle "
 "Preferenze.\n"
-"E' anche possibile specificare l'indirizzo IP, nella forma IP:Porta, di un "
+"È anche possibile specificare l'indirizzo IP, nella forma IP:Porta, di un "
 "server e\n"
 "connettersi solamente a quello. Si può utilizzare un indirizzo IPv4 oppure\n"
 "un nome risolvibile da un server DNS."
@@ -6536,7 +6535,7 @@ msgstr "Connetti solo alla rete Kad."
 
 #: src/TextClient.cpp:911
 msgid "Disconnect from the network."
-msgstr "Disconnetti dalla rete."
+msgstr "Disconnettiti dalla rete."
 
 #: src/TextClient.cpp:912
 msgid "This will disconnect from all networks that are currently connected.\n"
@@ -7011,7 +7010,7 @@ msgid ""
 "size"
 msgstr ""
 "Aiuta a diffondere più in fretta i file nuovi e rari, al costo di una "
-"connessione più lunga"
+"connessione più dimensione maggiore dei link"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:193
 msgid "MD4 File Hash"
@@ -7019,11 +7018,11 @@ msgstr "Hash del File MD4"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:205
 msgid "eD2k File Hash"
-msgstr "Hash del file eD2k"
+msgstr "hash file eD2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:216
 msgid "eD2k link"
-msgstr "Collegamento eD2k"
+msgstr "link D2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:231
 msgid "Save"
@@ -7262,7 +7261,7 @@ msgstr "Salva immagine statistiche"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:386
 msgid "aMule Online Statistics"
-msgstr "Statistiche in linea di aMule"
+msgstr "Statistiche online di aMule"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:390
 msgid ""
@@ -7306,7 +7305,7 @@ msgstr "aMule è in funzione"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:860
 msgid "aMule is running, but disconnected"
-msgstr "aMule è in esecuzione, ma è disconnesso"
+msgstr "aMule è in esecuzione, ma non connesso"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:931
 msgid "aMule is connecting..."
@@ -7539,7 +7538,7 @@ msgstr "Ricompila pagine PHP ad ogni richiesta"
 
 #: src/webserver/src/WebInterface.cpp:716
 msgid "aMule Web Server"
-msgstr "Server web di aMule "
+msgstr "Server web di aMule"
 
 #: src/webserver/src/WebServer.cpp:333
 msgid "web client connection accepted\n"

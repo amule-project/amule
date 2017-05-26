@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2009-11-04 21:31+0100\n"
-"Last-Translator: astur <malditoastur@gmail.com>\n"
+"PO-Revision-Date: 2017-05-24 11:41+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Language ast <malditoastur@gmail.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ast\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Language: Asturian\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -425,7 +425,7 @@ msgstr "FALLU GRAVE: Nun pudo criase'l temporizador"
 
 #: src/amuleDlg.cpp:493
 msgid "aMule remote control "
-msgstr "Control remotu de aMule"
+msgstr "Control remotu de aMule "
 
 #: src/amuleDlg.cpp:499
 msgid "Snapshot:"
@@ -484,8 +484,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "Mensax"
 
@@ -525,9 +525,9 @@ msgstr "Kad: Apagada"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Encaboxar"
 
@@ -579,11 +579,11 @@ msgstr "Daveres quies colar de aMule?"
 
 #: src/amuleDlg.cpp:914
 msgid "Exit confirmation"
-msgstr "Confirmar colar."
+msgstr "Confirmar colar"
 
 #: src/amuleDlg.cpp:1174
 msgid "Launch Command: "
-msgstr "Llanzar comandu:"
+msgstr "Llanzar comandu: "
 
 #: src/amuleDlg.cpp:1210 src/muuli_wdr.cpp:2092 src/Preferences.cpp:842
 msgid "- default -"
@@ -720,7 +720,7 @@ msgstr "Coneutando..."
 
 #: src/amule-remote-gui.cpp:308
 msgid "Connection failed "
-msgstr "Conexón fallida"
+msgstr "Conexón fallida "
 
 #: src/amule-remote-gui.cpp:319
 msgid "Remote GUI EC event handler"
@@ -851,8 +851,8 @@ msgid ""
 "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
 "Ignored"
 msgstr ""
-"Usuariu %s (%u) solicitó la to llista de ficheros compartíos del direutoriu %"
-"s-> Refugada"
+"Usuariu %s (%u) solicitó la to llista de ficheros compartíos del direutoriu "
+"%s-> Refugada"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:86
 #, fuzzy, c-format
@@ -1067,16 +1067,16 @@ msgstr ""
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
 msgstr ""
-"Usuariu %s (%u) solicitó la to llista de ficheros compartíos del direutoriu %"
-"s -> Aceutada"
+"Usuariu %s (%u) solicitó la to llista de ficheros compartíos del direutoriu "
+"%s -> Aceutada"
 
 #: src/ClientTCPSocket.cpp:929
 #, fuzzy, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
 msgstr ""
-"Usuariu %s (%u) solicitó la to llista de ficheros compartíos del direutoriu %"
-"s-> Refugada"
+"Usuariu %s (%u) solicitó la to llista de ficheros compartíos del direutoriu "
+"%s-> Refugada"
 
 #: src/ClientTCPSocket.cpp:948
 #, fuzzy, c-format
@@ -1365,8 +1365,7 @@ msgstr "Fontes"
 msgid "Priority"
 msgstr "Prioridá"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Estáu"
 
@@ -1454,7 +1453,7 @@ msgstr "Copiar la URL magnético al cartafueyos"
 
 #: src/DownloadListCtrl.cpp:686 src/SharedFilesCtrl.cpp:164
 msgid "Copy eD2k &link to clipboard"
-msgstr "Copiar l'en&llaz eD2k al cartafueyos."
+msgstr "Copiar l'en&llaz eD2k al cartafueyos"
 
 #: src/DownloadListCtrl.cpp:688 src/SharedFilesCtrl.cpp:171
 msgid "Copy feedback to clipboard"
@@ -1657,7 +1656,7 @@ msgstr "Versión de protocolu non válida"
 
 #: src/ExternalConn.cpp:492
 msgid "Missing protocol version tag."
-msgstr "Marcador de versión de protocolu inesistente"
+msgstr "Marcador de versión de protocolu inesistente."
 
 #: src/ExternalConn.cpp:499
 msgid "Authentication failed: invalid hash specified as EC password."
@@ -1725,11 +1724,11 @@ msgstr "eD2k ta desabilitáu nes preferencies"
 
 #: src/ExternalConn.cpp:1113
 msgid "Search in progress. Refetch results in a moment!"
-msgstr "Gueta en procesu. Resultaos obteníos aína! "
+msgstr "Gueta en procesu. Resultaos obteníos aína!"
 
 #: src/ExternalConn.cpp:1119
 msgid "WebSearch from remote interface makes no sense."
-msgstr "Gueta web dende un interface remotu nun tien xacíu"
+msgstr "Gueta web dende un interface remotu nun tien xacíu."
 
 #: src/ExternalConn.cpp:1317
 msgid "No points for graph."
@@ -1758,15 +1757,15 @@ msgstr "Enllaz non válidu o yá ta na llista."
 
 #: src/ExternalConn.cpp:1450
 msgid "File not found."
-msgstr "Ficheru non alcontráu"
+msgstr "Ficheru non alcontráu."
 
 #: src/ExternalConn.cpp:1455
 msgid "Invalid file name."
-msgstr "Nome de ficheru incorreutu"
+msgstr "Nome de ficheru incorreutu."
 
 #: src/ExternalConn.cpp:1463
 msgid "Unable to rename file."
-msgstr "Nun ye dable renomar ficheru"
+msgstr "Nun ye dable renomar ficheru."
 
 #: src/ExternalConn.cpp:1761 src/ExternalConn.cpp:1788
 msgid "Kad is disabled in preferences."
@@ -1872,7 +1871,7 @@ msgstr "Colar de l'aplicación."
 
 #: src/ExternalConnector.cpp:229
 msgid "Show help."
-msgstr "Amosar aida"
+msgstr "Amosar aida."
 
 #. TRANSLATORS:
 #. Do not translate the word 'help', it is a command to the program!
@@ -1907,7 +1906,7 @@ msgstr ""
 
 #: src/ExternalConnector.cpp:289
 msgid "This command should not have any parameters."
-msgstr "Esti comandu nun tendría de tener dengún parámetru"
+msgstr "Esti comandu nun tendría de tener dengún parámetru."
 
 #: src/ExternalConnector.cpp:292
 msgid "This command must have a parameter."
@@ -1981,7 +1980,7 @@ msgstr "Puertu de conexón esterna de aMule. (por defeutu: 4712)"
 
 #: src/ExternalConnector.cpp:427
 msgid "External Connection password."
-msgstr "Contraseña de conexones esternes"
+msgstr "Contraseña de conexones esternes."
 
 #: src/ExternalConnector.cpp:430
 msgid "Read configuration from file."
@@ -1993,7 +1992,7 @@ msgstr "Nun amueses denguna salida."
 
 #: src/ExternalConnector.cpp:436
 msgid "Be verbose - show also debug messages."
-msgstr "Mou Estendíu - amuesa tamién los mensaxes de depuración"
+msgstr "Mou Estendíu - amuesa tamién los mensaxes de depuración."
 
 #: src/ExternalConnector.cpp:439
 msgid "Sets program locale (language)."
@@ -2017,9 +2016,9 @@ msgid "File Details"
 msgstr "Detalles del ficheru"
 
 #: src/FileDetailDialog.cpp:111
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f%% done"
-msgstr "%.2f%% fináu."
+msgstr "%.2f%% fináu"
 
 #: src/FileDetailDialog.cpp:113 src/utils/wxCas/src/wxcasframe.cpp:1139
 #: src/utils/wxCas/src/wxcasframe.cpp:1149
@@ -2235,9 +2234,9 @@ msgid "Failed to download %s from %s"
 msgstr "Fallu al descargar GeoIP.dat dende %s"
 
 #: src/IP2Country.cpp:173
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to load country data for '%s'."
-msgstr "Fallu al descargar GeoIP.dat dende %s"
+msgstr "Fallu al descargar GeoIP.dat dende %s."
 
 #: src/IPFilter.cpp:113
 #, fuzzy
@@ -2265,8 +2264,8 @@ msgstr[1] "Cargáu %u rangos IP dende '%s'."
 #, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
-msgstr[0] "%u llinia malformada descartóse"
-msgstr[1] "%u llinies malformaes descartáronse"
+msgstr[0] "%u llinia malformada descartóse."
+msgstr[1] "%u llinies malformaes descartáronse."
 
 #: src/IPFilter.cpp:503
 #, fuzzy, c-format
@@ -2323,7 +2322,7 @@ msgstr "Kademlia: pallabra de gueta enforma curtia"
 
 #: src/kademlia/kademlia/SearchManager.cpp:138
 msgid "Kademlia: Search keyword is already on search list: "
-msgstr "Kademlia: Pallabra de gueta enforma curtia:"
+msgstr "Kademlia: Pallabra de gueta enforma curtia: "
 
 #: src/kademlia/routing/RoutingZone.cpp:171
 msgid ""
@@ -2461,7 +2460,7 @@ msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:266
 msgid "Succeeded! Connection established to aMule "
-msgstr "¡Fecho! Conexón afitada con aMule"
+msgstr "¡Fecho! Conexón afitada con aMule "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:269
 msgid "Succeeded! Connection established."
@@ -2469,7 +2468,7 @@ msgstr "¡Fecho! Conexón afitada."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:275
 msgid "External Connection: Access denied because: "
-msgstr "Conexón esterna: Accesu denegáu, xida:"
+msgstr "Conexón esterna: Accesu denegáu, xida: "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:278
 msgid "External Connection: Handshake failed."
@@ -2490,11 +2489,11 @@ msgstr "FALLU: Nun pue escuchase nel puertu TCP."
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "ERROR: "
-msgstr "FALLU:"
+msgstr "FALLU: "
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
-msgstr "AVISU:"
+msgstr "AVISU: "
 
 #: src/MuleNotebook.cpp:185 src/muuli_wdr.cpp:901 src/muuli_wdr.cpp:1430
 #: src/muuli_wdr.cpp:3235 src/muuli_wdr.cpp:3505
@@ -2541,7 +2540,7 @@ msgstr "Menú aMule"
 
 #: src/MuleTrayIcon.cpp:296
 msgid "Speed limits:"
-msgstr "Llímites de velocidá"
+msgstr "Llímites de velocidá:"
 
 #: src/MuleTrayIcon.cpp:301
 msgid "UL: None"
@@ -2554,7 +2553,7 @@ msgstr "XU: %u"
 
 #: src/MuleTrayIcon.cpp:311
 msgid "DL: None"
-msgstr "DE: Denguna, "
+msgstr "DE: Denguna"
 
 #: src/MuleTrayIcon.cpp:314
 #, c-format
@@ -2586,7 +2585,7 @@ msgstr "¡Dengún nomatu conseñáu!"
 
 #: src/MuleTrayIcon.cpp:337
 msgid "ClientID: "
-msgstr "ID Veceru:"
+msgstr "ID Veceru: "
 
 #: src/MuleTrayIcon.cpp:342 src/MuleTrayIcon.cpp:356 src/TextClient.cpp:715
 #: src/TextClient.cpp:728
@@ -2684,7 +2683,7 @@ msgstr "Colar"
 
 #: src/muuli_wdr.cpp:75
 msgid "eD2k Link: "
-msgstr "Enllaz eD2k:"
+msgstr "Enllaz eD2k: "
 
 #: src/muuli_wdr.cpp:82
 msgid "Commit"
@@ -2910,9 +2909,8 @@ msgid "Clears completed downloads"
 msgstr "Llimpiar descargues completaes"
 
 #: src/muuli_wdr.cpp:466
-#, fuzzy
 msgid "File sources:"
-msgstr "Fontes completes"
+msgstr "Fontes completes:"
 
 #: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1216 src/PrefsUnifiedDlg.cpp:176
 msgid "General"
@@ -3245,9 +3243,8 @@ msgid "Secure ident:"
 msgstr "Ident Segura:"
 
 #: src/muuli_wdr.cpp:1410
-#, fuzzy
 msgid "Queue rank:"
-msgstr "En cola"
+msgstr "En cola:"
 
 #: src/muuli_wdr.cpp:1419
 msgid "Queue score:"
@@ -3352,8 +3349,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Desaminar"
 
@@ -3393,7 +3389,7 @@ msgstr "Puertu TCP estándar "
 
 #: src/muuli_wdr.cpp:1611
 msgid "This is the standard eD2k port and cannot be disabled."
-msgstr "Esti ye'l puertu eD2k estándar y nun pue deshabilitase"
+msgstr "Esti ye'l puertu eD2k estándar y nun pue deshabilitase."
 
 #: src/muuli_wdr.cpp:1614
 msgid "UDP port for server requests (TCP+3):"
@@ -3549,7 +3545,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1818
 msgid "Stop downloads when free disk space reaches "
-msgstr "Detener descargues cuando s'algame l'espaciu llibre en discu"
+msgstr "Detener descargues cuando s'algame l'espaciu llibre en discu "
 
 #: src/muuli_wdr.cpp:1819
 msgid "Select this if you want aMule to check your disk space"
@@ -3605,7 +3601,7 @@ msgstr "Tiempu de promediu del gráficu: 100 min"
 
 #: src/muuli_wdr.cpp:1926
 msgid "Connections Graph Scale: 100 "
-msgstr "Escala del gráficu de les conexones: 100"
+msgstr "Escala del gráficu de les conexones: 100 "
 
 #: src/muuli_wdr.cpp:1935
 msgid "Download graph scale:"
@@ -3786,7 +3782,7 @@ msgstr "Aceutar conexones esternes"
 
 #: src/muuli_wdr.cpp:2186
 msgid "IP of the listening interface:"
-msgstr "IP de la interface que ta escuchando"
+msgstr "IP de la interface que ta escuchando:"
 
 #: src/muuli_wdr.cpp:2190
 msgid ""
@@ -3868,7 +3864,7 @@ msgstr "Títulu :"
 
 #: src/muuli_wdr.cpp:2364
 msgid "Comment :"
-msgstr "Comentariu : "
+msgstr "Comentariu :"
 
 #: src/muuli_wdr.cpp:2374
 msgid "Incoming Dir :"
@@ -3932,7 +3928,7 @@ msgstr "Introduz la IP del sirvidor, usando'l formatu X.X.X.X."
 
 #: src/muuli_wdr.cpp:2562
 msgid "Enter the port of the server here."
-msgstr "Introduz el puertu del sirvidor"
+msgstr "Introduz el puertu del sirvidor."
 
 #: src/muuli_wdr.cpp:2566
 msgid "Add manually a server (fill fields to the left before) ..."
@@ -4051,7 +4047,7 @@ msgid ""
 "less sources, but all your traffic will be obfuscated"
 msgstr ""
 "Esa opción fai que aMule namái aceute conexones ofuscaes. Tendrá menos "
-"fontes, pero tol so tráficu sedrá ofuscáu."
+"fontes, pero tol so tráficu sedrá ofuscáu"
 
 #: src/muuli_wdr.cpp:2832
 msgid "Everybody"
@@ -4232,7 +4228,7 @@ msgstr "Habilita/deshabilita autentificación usuariu/contraseña"
 
 #: src/muuli_wdr.cpp:3036
 msgid "Username: "
-msgstr "Nome d'usuariu:"
+msgstr "Nome d'usuariu: "
 
 #: src/muuli_wdr.cpp:3040
 msgid "The username to use to connect to the proxy"
@@ -4284,7 +4280,7 @@ msgstr "Conexón a aMule remotu"
 
 #: src/muuli_wdr.cpp:3120
 msgid "User name"
-msgstr "Nome usuariu:"
+msgstr "Nome usuariu"
 
 #: src/muuli_wdr.cpp:3137
 msgid "Remember those settings"
@@ -4292,7 +4288,7 @@ msgstr "Remembrar estes opciones"
 
 #: src/muuli_wdr.cpp:3166
 msgid "Enable Verbose Debug-Logging."
-msgstr "Habilita mou estendíu de depuración al aniciu"
+msgstr "Habilita mou estendíu de depuración al aniciu."
 
 #: src/muuli_wdr.cpp:3169
 #, fuzzy
@@ -4328,9 +4324,8 @@ msgid "Statistics and queued clients for selected file(s) : Session / All time"
 msgstr ""
 
 #: src/muuli_wdr.cpp:3351
-#, fuzzy
 msgid "Active Uploads"
-msgstr "Xubes aceutaes :"
+msgstr "Xubes aceutaes"
 
 #: src/muuli_wdr.cpp:3371
 msgid "Percent of total files"
@@ -4357,9 +4352,8 @@ msgid "Show Clients for"
 msgstr "Amosar Veceros"
 
 #: src/muuli_wdr.cpp:3425
-#, fuzzy
 msgid "Reload:"
-msgstr "Recargar llista"
+msgstr "Recargar llista:"
 
 #: src/muuli_wdr.cpp:3430
 msgid "Reload your shared files"
@@ -4723,8 +4717,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 
 #: src/PartFile.cpp:2971
@@ -4885,9 +4879,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "Portugués (Brasil)"
 
 #: src/Preferences.cpp:659
-#, fuzzy
 msgid "Romanian"
-msgstr "Albanés"
+msgstr "Rumanu"
 
 #: src/Preferences.cpp:660
 msgid "Russian"
@@ -5067,14 +5060,12 @@ msgid "- UDP port changed.\n"
 msgstr "- Puertu UDP camudáu.\n"
 
 #: src/PrefsUnifiedDlg.cpp:610
-#, fuzzy
 msgid "- External connect port changed.\n"
-msgstr "Conexón esterna zarrada."
+msgstr "Conexón esterna zarrada.\n"
 
 #: src/PrefsUnifiedDlg.cpp:614
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "Nueva conexón esterna, aceutada"
+msgstr "Nueva conexón esterna, aceutada.\n"
 
 #: src/PrefsUnifiedDlg.cpp:618
 #, fuzzy
@@ -5082,9 +5073,8 @@ msgid "- External connect interface changed.\n"
 msgstr "Conexón esterna zarrada."
 
 #: src/PrefsUnifiedDlg.cpp:622
-#, fuzzy
 msgid "- Protocol obfuscation support changed.\n"
-msgstr "Ofuscación de protocolu"
+msgstr "Ofuscación de protocolu\n"
 
 #: src/PrefsUnifiedDlg.cpp:631
 msgid ""
@@ -5261,7 +5251,7 @@ msgstr "Habilitar execución de comandu na Interface"
 
 #: src/PrefsUnifiedDlg.cpp:1266
 msgid "GUI command:"
-msgstr "Comandu de la Interface: "
+msgstr "Comandu de la Interface:"
 
 #: src/PrefsUnifiedDlg.cpp:1275
 msgid "The following variables will be replaced:"
@@ -5601,8 +5591,8 @@ msgstr "De xuru quies desaniciar el sirvidor fixu %s"
 msgid "Servers (%i)"
 msgstr "Sirvidores (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Sirvidor"
 
@@ -5736,7 +5726,7 @@ msgstr "Coneutando a %s (%s - %s:%i) %s"
 #: src/ServerSocket.cpp:774
 #, c-format
 msgid "Could not solve dns for server %s: Unable to connect!"
-msgstr "Imposible resolver dns pal sirvidor %s: ¡Imposible coneutar! "
+msgstr "Imposible resolver dns pal sirvidor %s: ¡Imposible coneutar!"
 
 #: src/ServerWnd.cpp:103
 msgid "Server not added: No IP or hostname specified."
@@ -5796,7 +5786,7 @@ msgstr "Tres torgafueos - abre'l puertu UDP %d nel to router o torgafueos"
 
 #: src/ServerWnd.cpp:226
 msgid "Firewalled state: "
-msgstr "Estáu tres tornafueos:"
+msgstr "Estáu tres tornafueos: "
 
 #: src/ServerWnd.cpp:232
 msgid "No buddy required - TCP port open"
@@ -5821,7 +5811,7 @@ msgstr "Coneutáu a collaciu en %s"
 
 #: src/ServerWnd.cpp:253
 msgid "Indexed sources:"
-msgstr "Fontes indizaes: %s"
+msgstr "Fontes indizaes:"
 
 #: src/ServerWnd.cpp:255
 msgid "Indexed keywords:"
@@ -5829,7 +5819,7 @@ msgstr "Pallabres clave indizaes:"
 
 #: src/ServerWnd.cpp:257
 msgid "Indexed notes:"
-msgstr "Notes indizaes: "
+msgstr "Notes indizaes:"
 
 #: src/ServerWnd.cpp:259
 msgid "Indexed load:"
@@ -5882,9 +5872,8 @@ msgid "No shareable files found in directory: %s"
 msgstr "Ensin ficheros que compartir en direutoriu: %s"
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:28
-#, fuzzy
 msgid "User Name"
-msgstr "Nome usuariu:"
+msgstr "Nome usuariu"
 
 #: src/SharedFilePeersListCtrl.cpp:30
 #, fuzzy
@@ -6314,9 +6303,9 @@ msgid ""
 msgstr "Teclea '%s' pa tener más aida.\n"
 
 #: src/TextClient.cpp:554
-#, fuzzy, c-format
+#, c-format
 msgid "Download File: %lu %s\n"
-msgstr "Tamañu de descarga: %i"
+msgstr "Tamañu de descarga: %lu %s\n"
 
 #: src/TextClient.cpp:646 src/webserver/src/WebServer.cpp:409
 msgid "Request failed with an unknown error."
@@ -6498,9 +6487,8 @@ msgid "Reload IP filtering table."
 msgstr "Recargar tabla de fieltru de IP dende ficheru."
 
 #: src/TextClient.cpp:902
-#, fuzzy
 msgid "Reload current IP filtering table."
-msgstr "Seleición nivel de fieltráu de IP"
+msgstr "Seleición nivel de fieltráu de IP."
 
 #: src/TextClient.cpp:903
 #, fuzzy
@@ -6534,7 +6522,7 @@ msgstr "Coneutar namái a eD2k."
 
 #: src/TextClient.cpp:909
 msgid "Connect to Kad only."
-msgstr "Coneutar namái a Kad"
+msgstr "Coneutar namái a Kad."
 
 #: src/TextClient.cpp:911
 msgid "Disconnect from the network."
@@ -6580,7 +6568,7 @@ msgstr ""
 
 #: src/TextClient.cpp:919
 msgid "Set a preference value."
-msgstr "Asigna un valor d'opción"
+msgstr "Asigna un valor d'opción."
 
 #: src/TextClient.cpp:922
 #, fuzzy
@@ -6657,9 +6645,8 @@ msgid "Get and display a preference value."
 msgstr "Obtener y amosar un valor d'opciones"
 
 #: src/TextClient.cpp:944
-#, fuzzy
 msgid "Get IP filtering preferences."
-msgstr "Obtener opciones de fieltráu de IP"
+msgstr "Obtener opciones de fieltráu de IP."
 
 #: src/TextClient.cpp:945
 #, fuzzy
@@ -6677,9 +6664,8 @@ msgid "Get IP filtering state for servers only."
 msgstr "Obtener estáu del fieltru IP pa sirvidores."
 
 #: src/TextClient.cpp:948
-#, fuzzy
 msgid "Get IP filtering level."
-msgstr "Seleición nivel de fieltráu de IP"
+msgstr "Seleición nivel de fieltráu de IP."
 
 #: src/TextClient.cpp:950
 msgid "Get bandwidth limits."
@@ -6710,14 +6696,12 @@ msgid "Execute a global search."
 msgstr "Fai una gueta global."
 
 #: src/TextClient.cpp:955
-#, fuzzy
 msgid "Execute a local search"
-msgstr "Fai una gueta llocal."
+msgstr "Fai una gueta llocal"
 
 #: src/TextClient.cpp:956
-#, fuzzy
 msgid "Execute a kad search"
-msgstr "Fai una gueta en kad."
+msgstr "Fai una gueta en kad"
 
 #: src/TextClient.cpp:958
 #, fuzzy
@@ -6802,7 +6786,7 @@ msgstr ""
 
 #: src/TextClient.cpp:990
 msgid "Show upload queue."
-msgstr "Amosar cola de xuba"
+msgstr "Amosar cola de xuba."
 
 #: src/TextClient.cpp:991
 msgid "Show download queue."
@@ -6871,9 +6855,8 @@ msgid "Only 99 categories are supported."
 msgstr ""
 
 #: src/TransferWnd.cpp:238
-#, fuzzy
 msgid "Too many categories!"
-msgstr "Abondes conexones"
+msgstr "Abondes conexones!"
 
 #: src/TransferWnd.cpp:341
 msgid "All others"
@@ -7091,7 +7074,7 @@ msgstr "Seleiciona'l ficheru pal enllaz eD2k calculáu"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:450
 msgid "Unable to open "
-msgstr "Imposible abrir"
+msgstr "Imposible abrir "
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:457
 #: src/utils/aLinkCreator/src/alcframe.cpp:582
@@ -7225,7 +7208,7 @@ msgstr "wxCas, Estadístiques aMule en llinia"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:115
 msgid "Maximum DL rate since wxCas is running"
-msgstr "Máximu índiz Desc dende que wxCas ta executándose: "
+msgstr "Máximu índiz Desc dende que wxCas ta executándose"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:119
 msgid "Absolute Maximum DL rate during wxCas previous runs"
@@ -7387,15 +7370,15 @@ msgstr "Total Descargáu: "
 #: src/utils/wxCas/src/wxcasframe.cpp:1086
 #: src/utils/wxCas/src/wxcasframe.cpp:1097
 msgid ", Upload: "
-msgstr ", Xubío:"
+msgstr ", Xubío: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1095
 msgid "Session Download: "
-msgstr "Descarga de sesión"
+msgstr "Descarga de sesión: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1106
 msgid "Download: "
-msgstr "Descargáu:"
+msgstr "Descargáu: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1108
 msgid " kB/s, Upload: "
@@ -7407,7 +7390,7 @@ msgstr " kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1118
 msgid "Sharing: "
-msgstr "Compartiendo:"
+msgstr "Compartiendo: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1120
 msgid " file(s), Clients on queue: "

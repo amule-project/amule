@@ -11,15 +11,15 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2008-06-10 23:09+0200\n"
-"Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
-"Language-Team:  <i18n-nn@lister.ping.uio.no>\n"
+"PO-Revision-Date: 2017-05-25 12:44+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
+"Language-Team: <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: nn\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -180,7 +180,7 @@ msgstr "Greidde ikkje å lage OnlineSigfil"
 
 #: src/amule.cpp:863
 msgid "Failed to create aMule OnlineSig File"
-msgstr "Greidde ikkje å lage aMule si OnlineSigfil."
+msgstr "Greidde ikkje å lage aMule si OnlineSigfil"
 
 #: src/amule.cpp:1035
 msgid ""
@@ -339,7 +339,7 @@ msgstr "Fråkopla eD2k"
 
 #: src/amule.cpp:1904
 msgid "Kad started."
-msgstr "Kad starta"
+msgstr "Kad starta."
 
 #: src/amule.cpp:1906
 msgid "Kad stopped."
@@ -443,7 +443,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:502
 msgid "Website: http://www.amule.org \n"
-msgstr ""
+msgstr "Nettsted: http://www.amule.org\n"
 
 #: src/amuleDlg.cpp:503
 msgid "Forum: http://forum.amule.org \n"
@@ -464,6 +464,8 @@ msgid ""
 "Copyright (c) 2003-2011 aMule Team \n"
 "\n"
 msgstr ""
+"Copyright (c) 2003-2011 aMule Team\n"
+"\n"
 
 #: src/amuleDlg.cpp:507
 msgid "Part of aMule is based on \n"
@@ -475,15 +477,15 @@ msgstr "Kademlia: P2P brukarruting bygd på XOR metric.\n"
 
 #: src/amuleDlg.cpp:509
 msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
-msgstr ""
+msgstr " Copyright (c) 2002-2011 Petar Maymounkov (petar@post.harvard.edu)\n"
 
 #: src/amuleDlg.cpp:510
 msgid "http://kademlia.scs.cs.nyu.edu\n"
-msgstr ""
+msgstr "http://kademlia.SCS.cs.NYU.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "Melding"
 
@@ -523,9 +525,9 @@ msgstr "Kad: Av"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -873,7 +875,7 @@ msgstr "Feil under lagring av known.met fila: %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Skriv inn Captcha koden"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:693 src/muuli_wdr.cpp:244
 #: src/SearchListCtrl.cpp:627 src/TransferWnd.cpp:335
@@ -934,7 +936,7 @@ msgstr ""
 
 #: src/ChatWnd.cpp:99
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: src/ChatWnd.cpp:101 src/MuleNotebook.cpp:186
 msgid "Close tab"
@@ -1349,8 +1351,7 @@ msgstr "Kjelder"
 msgid "Priority"
 msgstr "Prioritet"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Status"
 
@@ -1701,7 +1702,7 @@ msgstr "treng å velje tenar for fjerning"
 
 #: src/ExternalConn.cpp:935
 msgid "eD2k is disabled in preferences."
-msgstr "eD2k er deaktivert i innstillingar"
+msgstr "eD2k er deaktivert i innstillingar."
 
 #: src/ExternalConn.cpp:1113
 msgid "Search in progress. Refetch results in a moment!"
@@ -2114,7 +2115,6 @@ msgid "Uploading"
 msgstr "Opplasting"
 
 #: src/GenericClientListCtrl.cpp:1031
-#, fuzzy
 msgid "None"
 msgstr "Ingen"
 
@@ -2443,7 +2443,7 @@ msgstr "Vellukka! Kopling oppretta."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:275
 msgid "External Connection: Access denied because: "
-msgstr "Ekstern kopling: Tilgang nekta fordi:"
+msgstr "Ekstern kopling: Tilgang nekta fordi: "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:278
 #, fuzzy
@@ -3188,7 +3188,7 @@ msgstr "Opplasta (økt):"
 
 #: src/muuli_wdr.cpp:1360
 msgid "Downloaded (session):"
-msgstr "Lasta ned (økt)"
+msgstr "Lasta ned (økt):"
 
 #: src/muuli_wdr.cpp:1367
 msgid "Uploaded (total):"
@@ -3196,7 +3196,7 @@ msgstr "Opplasta (totalt):"
 
 #: src/muuli_wdr.cpp:1376
 msgid "Downloaded (total):"
-msgstr "Lasta ned (totalt)"
+msgstr "Lasta ned (totalt):"
 
 #: src/muuli_wdr.cpp:1387
 msgid "Scores"
@@ -3217,7 +3217,7 @@ msgstr "I kø"
 
 #: src/muuli_wdr.cpp:1419
 msgid "Queue score:"
-msgstr "Køscore"
+msgstr "Køscore: "
 
 #: src/muuli_wdr.cpp:1448
 msgid "Nick"
@@ -3233,7 +3233,7 @@ msgstr "Dette er namnet andre brukarar vil sjå når dei koplar til  maskina di.
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr ""
+msgstr "Språk: "
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -3251,7 +3251,7 @@ msgstr "Sjå etter ny utgåve ved oppstart"
 #: src/muuli_wdr.cpp:1472
 msgid "Enabling this will make aMule check for new version at startup"
 msgstr ""
-"Aktivering av denne vil få aMule til å sjå etter ei ny utgåve ved oppstart."
+"Aktivering av denne vil få aMule til å sjå etter ei ny utgåve ved oppstart"
 
 #: src/muuli_wdr.cpp:1475
 msgid "Start minimized"
@@ -3300,7 +3300,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1505
 msgid "seconds"
-msgstr ""
+msgstr "sekunder"
 
 #: src/muuli_wdr.cpp:1511
 msgid "Browser Selection"
@@ -3315,8 +3315,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Bla"
 
@@ -3346,7 +3345,7 @@ msgstr "Opningsdistribusjon"
 
 #: src/muuli_wdr.cpp:1601
 msgid "Ports"
-msgstr ""
+msgstr "Porter"
 
 #: src/muuli_wdr.cpp:1607
 msgid "Standard TCP Port "
@@ -3354,7 +3353,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1611
 msgid "This is the standard eD2k port and cannot be disabled."
-msgstr "Dette er standardporten for eD2k og kan ikkje deaktiverast"
+msgstr "Dette er standardporten for eD2k og kan ikkje deaktiverast."
 
 #: src/muuli_wdr.cpp:1614
 msgid "UDP port for server requests (TCP+3):"
@@ -3362,7 +3361,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1617
 msgid "4665"
-msgstr ""
+msgstr "4665"
 
 #: src/muuli_wdr.cpp:1620
 msgid "Extended UDP port (Kad / global search) "
@@ -3464,7 +3463,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1779
 msgid "Enable"
-msgstr ""
+msgstr "Aktiver"
 
 #: src/muuli_wdr.cpp:1783
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
@@ -3492,7 +3491,7 @@ msgstr "Frå same kategori"
 
 #: src/muuli_wdr.cpp:1808
 msgid "In alphabetic order"
-msgstr ""
+msgstr "I alfabetisk rekkefølge"
 
 #: src/muuli_wdr.cpp:1811
 msgid "Preallocate disk space for new files"
@@ -3574,7 +3573,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1958
 msgid "Colours: "
-msgstr ""
+msgstr "Farger: "
 
 #: src/muuli_wdr.cpp:1963
 msgid "Background"
@@ -3842,7 +3841,7 @@ msgstr "Ikkje endre"
 
 #: src/muuli_wdr.cpp:2406
 msgid "Select color for this Category (currently selected) :"
-msgstr "Vel farge for denne kategprien (no valt)"
+msgstr "Vel farge for denne kategprien (no valt): "
 
 #: src/muuli_wdr.cpp:2480 src/muuli_wdr.cpp:2505
 #: src/utils/wxCas/src/wxcasframe.cpp:133
@@ -4179,7 +4178,7 @@ msgstr "Aktivér/deaktivér godkjenning av brukarnamn/passord"
 
 #: src/muuli_wdr.cpp:3036
 msgid "Username: "
-msgstr ""
+msgstr "Brukernavn: "
 
 #: src/muuli_wdr.cpp:3040
 msgid "The username to use to connect to the proxy"
@@ -4619,8 +4618,8 @@ msgid_plural ""
 msgstr[0] ""
 "Fann korrupt del (%d) i %d delfil %s - Filresultathash |%s| Filhash | %s"
 msgstr[1] ""
-"Fann korrupt del (%d) i %d deler i fila %s - Filresultathash |%s| Filhash |%"
-"s|"
+"Fann korrupt del (%d) i %d deler i fila %s - Filresultathash |%s| Filhash |"
+"%s|"
 
 #: src/PartFile.cpp:1172
 #, c-format
@@ -4651,8 +4650,8 @@ msgstr "Slettar fila: %s"
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
-"ÅTVARING: Greier ikkje å hashe nedlasta del - hashsett ikkje komplett for '%"
-"s'"
+"ÅTVARING: Greier ikkje å hashe nedlasta del - hashsett ikkje komplett for "
+"'%s'"
 
 #: src/PartFile.cpp:2295
 #, c-format
@@ -4666,8 +4665,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 
 #: src/PartFile.cpp:2971
@@ -4716,9 +4715,8 @@ msgid "Arabic"
 msgstr "Arabisk"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "Estisk"
+msgstr ""
 
 #: src/Preferences.cpp:632
 msgid "Basque"
@@ -4829,9 +4827,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "Portugisisk (Brasil)"
 
 #: src/Preferences.cpp:659
-#, fuzzy
 msgid "Romanian"
-msgstr "Albansk"
+msgstr "Rumensk"
 
 #: src/Preferences.cpp:660
 msgid "Russian"
@@ -4855,12 +4852,11 @@ msgstr "Tyrkisk"
 
 #: src/Preferences.cpp:665
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainsk"
 
 #: src/Preferences.cpp:728
-#, fuzzy
 msgid "Change Language"
-msgstr "Språk"
+msgstr "Endre språk"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
@@ -4917,7 +4913,7 @@ msgstr "Tryggleik"
 
 #: src/PrefsUnifiedDlg.cpp:182
 msgid "Interface"
-msgstr ""
+msgstr "Grensesnitt"
 
 #: src/PrefsUnifiedDlg.cpp:184
 msgid "Proxy"
@@ -4937,7 +4933,7 @@ msgstr "Nettsignatur"
 
 #: src/PrefsUnifiedDlg.cpp:188
 msgid "Advanced"
-msgstr ""
+msgstr "Avansert"
 
 #: src/PrefsUnifiedDlg.cpp:189
 msgid "Events"
@@ -5011,14 +5007,12 @@ msgid "- External connect port changed.\n"
 msgstr "Ekstern kopling lukka."
 
 #: src/PrefsUnifiedDlg.cpp:614
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "Ny ekstern kopling akseptert"
+msgstr "Ny ekstern kopling akseptert\n"
 
 #: src/PrefsUnifiedDlg.cpp:618
-#, fuzzy
 msgid "- External connect interface changed.\n"
-msgstr "Ekstern kopling lukka."
+msgstr "Ekstern kopling lukka.\n"
 
 #: src/PrefsUnifiedDlg.cpp:622
 #, fuzzy
@@ -5048,9 +5042,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- Mellombels mappe endra.\n"
 
 #: src/PrefsUnifiedDlg.cpp:660
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "Alle nettverk er deaktiverte."
+msgstr "Alle nettverk er deaktiverte.\n"
 
 #: src/PrefsUnifiedDlg.cpp:732
 msgid ""
@@ -5175,9 +5168,8 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Oppfriskingsintervall for tenarkopling: Deaktivert"
 
 #: src/PrefsUnifiedDlg.cpp:1215
-#, fuzzy
 msgid "disabled"
-msgstr "deaktivere"
+msgstr "deaktivert"
 
 #: src/PrefsUnifiedDlg.cpp:1238
 #, fuzzy, c-format
@@ -5262,9 +5254,8 @@ msgid "Copy eD2k link to clipboard"
 msgstr "Kopier eD2k lenkje til skrivebordet"
 
 #: src/SearchListCtrl.cpp:1014
-#, fuzzy
 msgid "Canceled"
-msgstr "Avbryt"
+msgstr "Kansellert"
 
 #: src/SearchListCtrl.cpp:1017
 msgid "New"
@@ -5285,7 +5276,7 @@ msgstr ""
 
 #: src/ServerConnect.cpp:94 src/ServerConnect.cpp:148
 msgid "eD2k network disabled on preferences, not connecting."
-msgstr "eD2k nettverket deaktivert i innstillingar, koplar ikkje til"
+msgstr "eD2k nettverket deaktivert i innstillingar, koplar ikkje til."
 
 #: src/ServerConnect.cpp:122 src/ServerConnect.cpp:135
 msgid "No valid servers to which to connect found in server list"
@@ -5529,8 +5520,8 @@ msgstr "Er du sikker på at du vil slette den statiske tenaren %s"
 msgid "Servers (%i)"
 msgstr "Tenarar (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Tenar"
 
@@ -5580,7 +5571,7 @@ msgstr "Er du sikker på at du vil slette alle tenarane?"
 
 #: src/ServerListCtrl.cpp:542
 msgid "Are you sure that you wish to delete the selected server?"
-msgstr "Er du viss på at du vil slette den valde tenaren."
+msgstr "Er du viss på at du vil slette den valde tenaren?"
 
 #: src/ServerListCtrl.cpp:544
 msgid "Are you sure that you wish to delete the selected servers?"
@@ -5684,7 +5675,7 @@ msgstr "ID"
 
 #: src/ServerWnd.cpp:204
 msgid "Kademlia Status:"
-msgstr "Kademlia status"
+msgstr "Kademlia status:"
 
 #: src/ServerWnd.cpp:207
 #, fuzzy
@@ -5814,9 +5805,8 @@ msgid "No shareable files found in directory: %s"
 msgstr ""
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:28
-#, fuzzy
 msgid "User Name"
-msgstr "Brukarnamn"
+msgstr "Brukernavn"
 
 #: src/SharedFilePeersListCtrl.cpp:30
 #, fuzzy
@@ -6215,11 +6205,11 @@ msgstr ""
 
 #: src/TextClient.cpp:356
 msgid "Processing by hash: "
-msgstr "Handsamar etter hash"
+msgstr "Handsamar etter hash: "
 
 #: src/TextClient.cpp:370
 msgid "Processing by filename: "
-msgstr "Handsamar etter filnamn"
+msgstr "Handsamar etter filnamn: "
 
 #: src/TextClient.cpp:392
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
@@ -6254,7 +6244,7 @@ msgstr "Etterspurnaden mislukka med ukjend feil."
 
 #: src/TextClient.cpp:650
 msgid "Operation was successful."
-msgstr "Operasjonen var vellukka"
+msgstr "Operasjonen var vellukka."
 
 #: src/TextClient.cpp:656
 #, c-format
@@ -6400,7 +6390,7 @@ msgstr ""
 
 #: src/TextClient.cpp:895
 msgid "Shut down aMule."
-msgstr "Avslutt aMule"
+msgstr "Avslutt aMule."
 
 #: src/TextClient.cpp:896
 msgid ""
@@ -6550,7 +6540,7 @@ msgstr "Slå IP-filtréring av for tenarar."
 
 #: src/TextClient.cpp:931
 msgid "Select IP filtering level."
-msgstr "Vel Ipfilternivå"
+msgstr "Vel Ipfilternivå."
 
 #: src/TextClient.cpp:932
 msgid ""
@@ -6684,11 +6674,11 @@ msgstr ""
 
 #: src/TextClient.cpp:972
 msgid "Pause download."
-msgstr "Set nedlasting på pause"
+msgstr "Set nedlasting på pause."
 
 #: src/TextClient.cpp:975
 msgid "Resume download."
-msgstr "Hald fram nedlasting"
+msgstr "Hald fram nedlasting."
 
 #: src/TextClient.cpp:978
 msgid "Cancel download."
@@ -6730,7 +6720,7 @@ msgstr ""
 
 #: src/TextClient.cpp:990
 msgid "Show upload queue."
-msgstr "Syne opplastingskø"
+msgstr "Syne opplastingskø."
 
 #: src/TextClient.cpp:991
 msgid "Show download queue."
@@ -6751,7 +6741,7 @@ msgstr "Lastar inn att lista over delte filer."
 
 #: src/TextClient.cpp:996
 msgid "Reset log."
-msgstr "Nullstill logg"
+msgstr "Nullstill logg."
 
 #: src/TextClient.cpp:1003
 #, c-format
@@ -6856,7 +6846,7 @@ msgstr "Nedlasting fullført"
 
 #: src/UserEvents.h:63 src/UserEvents.h:97
 msgid "The full path to the file."
-msgstr "Fullstendig sti til fila"
+msgstr "Fullstendig sti til fila."
 
 #: src/UserEvents.h:67
 msgid "The name of the file without path component."
@@ -6864,7 +6854,7 @@ msgstr "Namnet til fila utan stikomponent."
 
 #: src/UserEvents.h:71
 msgid "The eD2k hash of the file."
-msgstr "eD2k hash på fila"
+msgstr "eD2k hash på fila."
 
 #: src/UserEvents.h:75
 msgid "The size of the file in bytes."
@@ -6888,7 +6878,7 @@ msgstr "Tom for plass"
 
 #: src/UserEvents.h:91
 msgid "Disk partition."
-msgstr "Diskpartisjon,"
+msgstr "Diskpartisjon."
 
 #: src/UserEvents.h:94
 msgid "Error on completion"
@@ -6939,7 +6929,7 @@ msgid ""
 "aLinkCreator append the current file name"
 msgstr ""
 "Skriv inn internettadressa du vil leggje til eD2k lenka: Legg til / på "
-"slutten for å la aLinkCreator leggje til det noverande filnamnet "
+"slutten for å la aLinkCreator leggje til det noverande filnamnet"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:150
 msgid "Remove"
@@ -6947,7 +6937,7 @@ msgstr "Ta bort"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:161
 msgid "Create link with part-hashes"
-msgstr "Lag lenkje "
+msgstr "Lag lenkje"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:167
 msgid ""
@@ -7020,7 +7010,7 @@ msgstr "Vel fila til den utrekna eD2k lenka"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:450
 msgid "Unable to open "
-msgstr "Ikkje i stand til å opne"
+msgstr "Ikkje i stand til å opne "
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:457
 #: src/utils/aLinkCreator/src/alcframe.cpp:582
@@ -7264,7 +7254,7 @@ msgstr "Å nei, ukjend status for aMule..."
 #: src/utils/wxCas/src/wxcasframe.cpp:1019
 #: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid "aMule "
-msgstr "aMule"
+msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1008
 msgid " has been running for "
@@ -7316,7 +7306,7 @@ msgstr "Total nedlasting: "
 #: src/utils/wxCas/src/wxcasframe.cpp:1086
 #: src/utils/wxCas/src/wxcasframe.cpp:1097
 msgid ", Upload: "
-msgstr " Opplasting: "
+msgstr "Opplasting: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1095
 msgid "Session Download: "

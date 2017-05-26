@@ -6,16 +6,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
-"POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2016-04-11 20:35+0100\n"
-"Last-Translator: Balla Marcell <marcell.balla@gmx.at>\n"
+"POT-Creation-Date: 2017-05-25 11:13+0200\n"
+"PO-Revision-Date: 2017-05-25 11:22+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
+"Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: hu\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -132,7 +133,7 @@ msgstr ""
 "A web kiszolgáló indítását kérted induláskor, de az amuleweb program nem "
 "futtatható. Kérlek telepítsd az aMule web kiszolgálót tartalmazó csomagot, "
 "vagy fordítsd az aMule-t a --enable-webserver kapcsolóval és futtasd a make "
-"install parancsot."
+"install parancsot"
 
 #: src/amule.cpp:664 src/amule.cpp:778 src/amule.cpp:1069
 #: src/amule-remote-gui.cpp:308 src/amule-remote-gui.cpp:330
@@ -143,7 +144,7 @@ msgstr "HIBA"
 #: src/amule.cpp:746
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
-msgstr "Nem tudom a portokat a megadott címhez (%s) rendelni."
+msgstr "Nem tudom a portokat a megadott címhez (%s) rendelni"
 
 #: src/amule.cpp:770
 #, c-format
@@ -277,7 +278,7 @@ msgstr "A te aMule verziód %i.%i.%i, a legújabb verzió pedig %li.%li.%li"
 
 #: src/amule.cpp:1630
 msgid "The latest version can always be found at http://www.amule.org"
-msgstr "A legújabb verzió mindig megtalálható a http://www.amule.org honlapon."
+msgstr "A legújabb verzió mindig megtalálható a http://www.amule.org honlapon"
 
 #: src/amule.cpp:1632
 #, c-format
@@ -290,7 +291,7 @@ msgstr "Az aMule verziód naprakész."
 
 #: src/amule.cpp:1643
 msgid "Failed to download the version check file"
-msgstr "Verzió-ellenőrzés fájl letöltése sikertelen."
+msgstr "Verzió-ellenőrzés fájl letöltése sikertelen"
 
 #: src/amule.cpp:1813 src/amule-remote-gui.cpp:530
 #, c-format
@@ -371,7 +372,7 @@ msgstr ""
 "tiltva. A Külső Kapcsolatok engedélyezéséhez használd a normál aMule-t, vagy "
 "indítsd az amuled-t a --ec-config paraméterrel, vagy állítsd az "
 "\"AcceptExternalConnections\" kulcs értékét 1-re a ~/.aMule/amule.conf "
-"fájlban."
+"fájlban"
 
 #: src/amuled.cpp:595
 msgid ""
@@ -386,7 +387,7 @@ msgstr ""
 "futtatásához, az \"ECPassword\" nevű mezőt a ~/.aMule/amule.conf nevű "
 "fájlban egy megfelelő értékre kell állítanod. Indítsd az amuled-t a --ec-"
 "config paraméterrel, a jelszó beállításához. További információk http://wiki."
-"amule.org alatt találhatóak."
+"amule.org alatt találhatóak"
 
 #: src/amuled.cpp:652
 msgid "amuled: OnInit - starting timer"
@@ -484,8 +485,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "Üzenet"
 
@@ -525,9 +526,9 @@ msgstr "Kad: Nincs kapcsolat"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Mégsem"
 
@@ -541,7 +542,7 @@ msgstr "Szétkapcsolás"
 
 #: src/amuleDlg.cpp:781
 msgid "Disconnect from the currently connected networks"
-msgstr "Leválaszt az éppen kapcsolódott hálózatokról."
+msgstr "Leválaszt az éppen kapcsolódott hálózatokról"
 
 #: src/amuleDlg.cpp:786 src/MuleTrayIcon.cpp:499 src/muuli_wdr.cpp:2755
 #: src/muuli_wdr.cpp:3143 src/muuli_wdr.cpp:3530
@@ -550,7 +551,7 @@ msgstr "Kapcsolatfelvétel"
 
 #: src/amuleDlg.cpp:787
 msgid "Connect to the currently enabled networks"
-msgstr "Kapcsolódás a pillanatnyilag engedélyezett hálózatokhoz."
+msgstr "Kapcsolódás a pillanatnyilag engedélyezett hálózatokhoz"
 
 #: src/amuleDlg.cpp:846
 #, c-format
@@ -695,7 +696,7 @@ msgstr "aMule távoli vezérlő"
 
 #: src/amule-gui.cpp:213 src/utils/wxCas/src/wxcasframe.cpp:111
 msgid "aMule"
-msgstr "aMule "
+msgstr "aMule"
 
 #: src/amule-gui.cpp:295
 msgid "Fatal Error: Failed to create Core Timer"
@@ -1146,7 +1147,7 @@ msgid ""
 "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
 msgstr ""
 "Kliens %s kitiltva az összesen %s adatból %s hibás adat küldése miatt a '%s' "
-"fájlt illetően."
+"fájlt illetően"
 
 #: src/DataToText.cpp:34
 msgid "Auto [Lo]"
@@ -1362,8 +1363,7 @@ msgstr "Források"
 msgid "Priority"
 msgstr "Prioritás"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Állapot"
 
@@ -1574,7 +1574,7 @@ msgstr "Már megvan ez a fájl: '%s'"
 #: src/DownloadQueue.cpp:402
 #, c-format
 msgid "You are already trying to download the file %s"
-msgstr "Már próbálod letölteni a(z) '%s' fájlt."
+msgstr "Már próbálod letölteni a(z) '%s' fájlt"
 
 #: src/DownloadQueue.cpp:1404
 #, c-format
@@ -2212,11 +2212,11 @@ msgstr "%s fájl átnevezése sikertelen, frissítés megszakítása."
 #: src/IP2Country.cpp:147 src/IPFilter.cpp:506
 #, c-format
 msgid "Successfully updated %s"
-msgstr "%s frissítése sikerrel járt."
+msgstr "%s frissítése sikerrel járt"
 
 #: src/IP2Country.cpp:149
 msgid "Error updating GeoIP.dat"
-msgstr "Hiba a GeoIP.dat frissítése közben."
+msgstr "Hiba a GeoIP.dat frissítése közben"
 
 #: src/IP2Country.cpp:154 src/IPFilter.cpp:512 src/ServerList.cpp:862
 #, c-format
@@ -2235,12 +2235,12 @@ msgstr "IP-szűrők 'ipfilter.dat' és 'ipfilter_static.dat' betöltése."
 #: src/IPFilter.cpp:299
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
-msgstr "ipfilter.dat fájl '%s' betöltése sikertelen, ismeretlen formátum."
+msgstr "ipfilter.dat fájl '%s' betöltése sikertelen, ismeretlen formátum"
 
 #: src/IPFilter.cpp:325
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
-msgstr "ipfilter.dat fájl '%s' betöltése sikertelen, nem nyitható meg a fájl."
+msgstr "ipfilter.dat fájl '%s' betöltése sikertelen, nem nyitható meg a fájl"
 
 #: src/IPFilter.cpp:329
 #, c-format
@@ -3271,7 +3271,7 @@ msgstr "Indításkor új verzió keresése"
 
 #: src/muuli_wdr.cpp:1472
 msgid "Enabling this will make aMule check for new version at startup"
-msgstr "Engedélyezve indításnál az aMule új verziót fog keresni."
+msgstr "Engedélyezve indításnál az aMule új verziót fog keresni"
 
 #: src/muuli_wdr.cpp:1475
 msgid "Start minimized"
@@ -3336,8 +3336,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Tallóz"
 
@@ -3589,7 +3588,7 @@ msgstr "Grafikon átlagos ideje: 100 perc"
 
 #: src/muuli_wdr.cpp:1926
 msgid "Connections Graph Scale: 100 "
-msgstr "Kapcsolatok grafikon skálája: 100"
+msgstr "Kapcsolatok grafikon skálája: 100 "
 
 #: src/muuli_wdr.cpp:1935
 msgid "Download graph scale:"
@@ -4147,7 +4146,7 @@ msgstr "Online aláírás frissítési gyakoriságának módosítása (mp-ben)."
 
 #: src/muuli_wdr.cpp:2945
 msgid "Save online signature file in: "
-msgstr "Online aláírási fájl kimentési helye:"
+msgstr "Online aláírási fájl kimentési helye: "
 
 #: src/muuli_wdr.cpp:2952
 msgid ""
@@ -4268,7 +4267,7 @@ msgstr "Emlékezzen ezekre a beállításokra"
 
 #: src/muuli_wdr.cpp:3166
 msgid "Enable Verbose Debug-Logging."
-msgstr "Bőbeszédű hiba-naplózás engedélyezése"
+msgstr "Bőbeszédű hiba-naplózás engedélyezése."
 
 #: src/muuli_wdr.cpp:3169
 msgid "Only to Logfile"
@@ -4326,7 +4325,7 @@ msgstr "Csak aktív feltöltések"
 
 #: src/muuli_wdr.cpp:3422
 msgid "Show Clients for"
-msgstr "Kliensek megjelenítése ehhez:"
+msgstr "Kliensek megjelenítése ehhez"
 
 #: src/muuli_wdr.cpp:3425
 msgid "Reload:"
@@ -4622,7 +4621,7 @@ msgstr[0] "%i forrás elmentve a részfájlnak: %s (%s)"
 #: src/PartFile.cpp:1048
 #, c-format
 msgid "Can't read seeds file for Partfile %s (%s)"
-msgstr " A %s (%s) részfájl forrás fájlja nem olvasható"
+msgstr "A %s (%s) részfájl forrás fájlja nem olvasható"
 
 #: src/PartFile.cpp:1107
 #, c-format
@@ -4654,7 +4653,7 @@ msgstr "%s újra algoritmizálása befejeződött"
 #: src/PartFile.cpp:2127
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
-msgstr "Váratlan hiba a %s fájl befejezése közben. A fájl szüneteltetve."
+msgstr "Váratlan hiba a %s fájl befejezése közben. A fájl szüneteltetve"
 
 #: src/PartFile.cpp:2164
 #, c-format
@@ -4685,8 +4684,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 "EOF hiba tördelőalgoritmizáláskor a %u. letöltött résznél, amely %u (max %u) "
 "hosszú és a(z) '%s' részfájlhoz tartozik, amely %u hosszú: %s"
@@ -4722,7 +4721,7 @@ msgstr "Letöltve"
 #: src/PartFile.cpp:4013
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
-msgstr "HIBA: A(z) '%s' részfájl megnyitása sikertelen."
+msgstr "HIBA: A(z) '%s' részfájl megnyitása sikertelen"
 
 #: src/Preferences.cpp:628
 msgid "System default"
@@ -4998,7 +4997,7 @@ msgstr "Cfg csatolása a widget-hez (ID-je: %d, kulcsa: %s) sikertelen"
 #: src/PrefsUnifiedDlg.cpp:400
 #, c-format
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
-msgstr "Adatátvitel a Cfg-ből a Widget-be (ID-je: %d, kulcsa: %s) sikertelen."
+msgstr "Adatátvitel a Cfg-ből a Widget-be (ID-je: %d, kulcsa: %s) sikertelen"
 
 #: src/PrefsUnifiedDlg.cpp:417
 msgid "The type of proxy you are connecting to"
@@ -5007,15 +5006,15 @@ msgstr "A proxy típusa amihez kapcsolódsz"
 #: src/PrefsUnifiedDlg.cpp:538
 #, c-format
 msgid "Failed to transfer data from Widget to Cfg with the ID %d and key %s"
-msgstr "Adatátvitel a Widget-ből a Cfg-be (ID-je: %d, kulcsa: %s) sikertelen."
+msgstr "Adatátvitel a Widget-ből a Cfg-be (ID-je: %d, kulcsa: %s) sikertelen"
 
 #: src/PrefsUnifiedDlg.cpp:593
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
 msgstr ""
-"Újra kell indítani az aMule-t, hogy az alábbi változás(ok) érvénybe lépjen"
-"(ek):\n"
+"Újra kell indítani az aMule-t, hogy az alábbi változás(ok) érvénybe "
+"lépjen(ek):\n"
 "\n"
 
 #: src/PrefsUnifiedDlg.cpp:600
@@ -5306,7 +5305,7 @@ msgstr "Az eD2k hálózat le van tiltva a beállításokban, nem kapcsolódom."
 msgid "No valid servers to which to connect found in server list"
 msgstr ""
 "A kiszolgáló listában nem található érvényes kiszolgáló, amelyhez "
-"csatlakozni lehetne."
+"csatlakozni lehetne"
 
 #: src/ServerConnect.cpp:198
 #, c-format
@@ -5379,7 +5378,7 @@ msgstr "Server.met fájl nem található!"
 #: src/ServerList.cpp:101
 #, c-format
 msgid "Failed to load server.met file '%s', unknown format encountered."
-msgstr "server.met fájl '%s' betöltése sikertelen: ismeretlen formátum."
+msgstr "server.met fájl '%s' betöltése sikertelen: ismeretlen formátum"
 
 #: src/ServerList.cpp:107
 msgid "Failed to open server.met!"
@@ -5467,12 +5466,12 @@ msgid ""
 msgstr ""
 "Az addresses.dat fájlban nem található kiszolgáló-lista cím bejegyzés. "
 "Kérlek írj be egy érvényes kiszolgáló-lista címet ebbe a fájlba, hogy "
-"automatikusan tudjam frissíteni a kiszolgáló listát."
+"automatikusan tudjam frissíteni a kiszolgáló listát"
 
 #: src/ServerList.cpp:887
 #, c-format
 msgid "Start downloading server list from %s"
-msgstr "Kiszolgáló lista letöltése %s-ről megkezdve."
+msgstr "Kiszolgáló lista letöltése %s-ről megkezdve"
 
 #: src/ServerList.cpp:896
 #, c-format
@@ -5554,8 +5553,8 @@ msgstr "Biztos, hogy törlöd az állandó %s kiszolgálót"
 msgid "Servers (%i)"
 msgstr "Kiszolgálók száma (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Kiszolgáló"
 
@@ -5800,7 +5799,7 @@ msgstr "Átlagos fájlszám:"
 
 #: src/ServerWnd.cpp:270 src/TextClient.cpp:731
 msgid "Not running"
-msgstr "nem fut"
+msgstr "Nem fut"
 
 #: src/SharedFileList.cpp:332
 #, c-format
@@ -6648,11 +6647,11 @@ msgstr "Globális keresés végrehajtása."
 
 #: src/TextClient.cpp:955
 msgid "Execute a local search"
-msgstr "Helyi keresés végrehajtása."
+msgstr "Helyi keresés végrehajtása"
 
 #: src/TextClient.cpp:956
 msgid "Execute a kad search"
-msgstr "Kad hálózaton való keresés végrehajtása."
+msgstr "Kad hálózaton való keresés végrehajtása"
 
 #: src/TextClient.cpp:958
 msgid "Show the results of the last search."
@@ -6672,7 +6671,7 @@ msgstr "Egy keresés állapotának megjelenítése.\n"
 
 #: src/TextClient.cpp:964
 msgid "Start downloading a file"
-msgstr "Fájl letöltése."
+msgstr "Fájl letöltése"
 
 #: src/TextClient.cpp:965
 msgid ""
@@ -6943,7 +6942,7 @@ msgid ""
 msgstr ""
 "Itt add meg az URL-t amit az eD2k hivatkozáshoz szeretnél adni; ha a "
 "végére / jelet teszel, az aLinkCreator automatikusan hozzáfűzi az aktuális "
-"fájlnevet."
+"fájlnevet"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:150
 msgid "Remove"
@@ -7024,7 +7023,7 @@ msgstr "Válaszd ki a fájlt a számított eD2k hivatkozásodnak"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:450
 msgid "Unable to open "
-msgstr "Nem lehet megnyitni"
+msgstr "Nem lehet megnyitni "
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:457
 #: src/utils/aLinkCreator/src/alcframe.cpp:582
@@ -7091,7 +7090,7 @@ msgstr "Ezt az URL-t már felvette a letöltési listába !"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:619
 msgid "Please, enter a non empty URL"
-msgstr "Kérlek, ne üres URL-t adj meg "
+msgstr "Kérlek, ne üres URL-t adj meg"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:58
 #, c-format
@@ -7100,7 +7099,7 @@ msgstr "%s-t nem lehet megnyitni"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:147
 msgid "Out of memory while calculating ed2k hash!"
-msgstr "Elfogyott a memória az ed2k hash kiszámítása közben"
+msgstr "Elfogyott a memória az ed2k hash kiszámítása közben!"
 
 #: src/utils/wxCas/src/linuxmon.cpp:77
 #, c-format

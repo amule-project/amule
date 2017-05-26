@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2017-03-16 10:34+0100\n"
+"PO-Revision-Date: 2017-05-25 12:22+0200\n"
 "Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Euskara <librezale@librezale.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: eu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0beta4\n"
+"X-Generator: Poedit 2.0.2\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: src/AddFriend.cpp:45
@@ -4344,7 +4344,7 @@ msgstr "Igoera aktiboak bakarrik"
 
 #: src/muuli_wdr.cpp:3422
 msgid "Show Clients for"
-msgstr "Erakutsi bezeroak:"
+msgstr "Erakutsi bezeroak"
 
 #: src/muuli_wdr.cpp:3425
 msgid "Reload:"
@@ -5560,7 +5560,7 @@ msgstr "Ping"
 
 #: src/ServerListCtrl.cpp:92
 msgid "Users"
-msgstr "Erabi."
+msgstr "Erabi"
 
 #: src/ServerListCtrl.cpp:96
 msgid "Static"
