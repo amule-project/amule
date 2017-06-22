@@ -79,7 +79,7 @@ MULE_ARG_ENABLE([ed2k],		[yes],	[don't compile aMule ed2k links handler], [ED2K]
 MULE_ARG_ENABLE([alc],		[no],	[compile aMuleLinkCreator GUI version], [ALC])
 MULE_ARG_ENABLE([alcc],		[no],	[compile aMuleLinkCreator for console], [ALCC])
 MULE_ARG_ENABLE([xas],		[no],	[install xas XChat2 plugin], [XAS])
-MULE_ARG_ENABLE([fileview],	[no],	[compile aMule file viewer for console (EXPERIMENTAL)], [FILEVIEW])
+MULE_ARG_ENABLE([fileview],	[no],	[compile aMule file viewer for console], [FILEVIEW])
 MULE_ARG_ENABLE([plasmamule],	[no],	[compile aMule plasma applet and engine])
 
 # Run all the tests with static linkage if we want a statically linked binary
@@ -544,6 +544,7 @@ echo "  Should plasmaMule plasma-applet be built?                  MULE_STATUSOF
 echo
 echo "  **** General Libraries and Tools ****"
 echo "  Should ccache support be enabled?                          MULE_STATUSOF([ccache])"
+echo "  Should aMule file viewer for console be built?             MULE_STATUSOF([fileview])"
 echo "  Libraries aMule will use to build:"
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver, alc, alcc, wxcas, fileview], [
 	wxinfo="$WX_PORT"

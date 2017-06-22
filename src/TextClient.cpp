@@ -611,10 +611,10 @@ void CamulecmdApp::ShowResults(CResultMap results_map)
 		id = (*iter).first;
 		SearchFile* file = (*iter).second;
 
-		output.Printf(wxT("%i.      "), id);
+		output.Printf(wxT("%lu.      "), id);
 		output = output.SubString(0, nr_max).Append(file->sFileName).Append(' ', name_max);
-		mb.Printf(wxT("     %d"), file->lFileSize/1024/1024);
-		kb.Printf(wxT(".%d"), file->lFileSize/1024%1024);
+		mb.Printf(wxT("     %ld"), file->lFileSize/1024/1024);
+		kb.Printf(wxT(".%03ld"), file->lFileSize/1024%1024);
 		output = output.SubString(0, nr_max + name_max + mb_max - mb.Length() ).Append(mb).Append(kb);
 		printf("%s     %ld\n",(const char*)unicode2char(output), file->lSourceCount );
 	}
