@@ -8,13 +8,15 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2007-10-13 18:09+0200\n"
-"Last-Translator: Alex Thomsen Leth <alexl@stofanet.dk>\n"
+"PO-Revision-Date: 2017-05-24 13:22+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: da\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -100,7 +102,7 @@ msgstr "Accepter ydre forbindelser"
 #: src/amule.cpp:463 src/KadDlg.cpp:183 src/KadDlg.cpp:189
 #: src/PrefsUnifiedDlg.cpp:750 src/SharedFilesCtrl.cpp:318
 msgid "WARNING"
-msgstr ""
+msgstr "ADVARSEL"
 
 #: src/amule.cpp:589
 msgid ""
@@ -128,7 +130,7 @@ msgstr ""
 #: src/amule-remote-gui.cpp:308 src/amule-remote-gui.cpp:330
 #: src/amule-remote-gui.cpp:332 src/amule-remote-gui.cpp:644
 msgid "ERROR"
-msgstr ""
+msgstr "FEJL"
 
 #: src/amule.cpp:746
 #, c-format
@@ -371,7 +373,7 @@ msgstr ""
 #: src/amuled.cpp:780
 #, c-format
 msgid "ERROR: %s"
-msgstr ""
+msgstr "FEJL: %s"
 
 #: src/amuleDlg.cpp:238
 #, c-format
@@ -428,6 +430,8 @@ msgid ""
 "Copyright (c) 2003-2011 aMule Team \n"
 "\n"
 msgstr ""
+"Copyright (c) 2003-2011 aMule Team \n"
+"\n"
 
 #: src/amuleDlg.cpp:507
 msgid "Part of aMule is based on \n"
@@ -443,11 +447,11 @@ msgstr ""
 
 #: src/amuleDlg.cpp:510
 msgid "http://kademlia.scs.cs.nyu.edu\n"
-msgstr ""
+msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr ""
 
@@ -491,9 +495,9 @@ msgstr " Kad: "
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Afbryd"
 
@@ -631,7 +635,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3541
 msgid "Import"
-msgstr ""
+msgstr "Importer"
 
 #: src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:3541
 msgid "The partfile importer tool"
@@ -644,7 +648,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:1348 src/muuli_wdr.cpp:3542
 msgid "About/Help"
-msgstr ""
+msgstr "Hjælp"
 
 #: src/amuleDlg.cpp:1477
 msgid "eD2k network"
@@ -895,7 +899,7 @@ msgstr ""
 
 #: src/ChatWnd.cpp:99
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: src/ChatWnd.cpp:101 src/MuleNotebook.cpp:186
 msgid "Close tab"
@@ -947,11 +951,11 @@ msgstr "HøjtID"
 
 #: src/ClientDetailDialog.cpp:121
 msgid "Enabled"
-msgstr ""
+msgstr "Aktiveret"
 
 #: src/ClientDetailDialog.cpp:122
 msgid "Supported"
-msgstr ""
+msgstr "Supporteret"
 
 #: src/ClientDetailDialog.cpp:123 src/ClientRef.cpp:192
 msgid "Not supported"
@@ -959,7 +963,7 @@ msgstr ""
 
 #: src/ClientDetailDialog.cpp:124
 msgid "Disabled"
-msgstr ""
+msgstr "Deaktiveret"
 
 #: src/ClientDetailDialog.cpp:131 src/ServerWnd.cpp:164 src/ServerWnd.cpp:213
 #: src/TextClient.cpp:720
@@ -991,7 +995,7 @@ msgstr ""
 
 #: src/ClientRef.cpp:203
 msgid "Not Available"
-msgstr ""
+msgstr "Ikke tilgængelig"
 
 #: src/ClientTCPSocket.cpp:840
 #, c-format
@@ -1217,7 +1221,7 @@ msgstr ""
 #: src/DataToText.cpp:127 src/muuli_wdr.cpp:198 src/muuli_wdr.cpp:3287
 #: src/SearchDlg.cpp:109 src/TextClient.cpp:717
 msgid "Kad"
-msgstr ""
+msgstr "Kad"
 
 #: src/DataToText.cpp:128
 msgid "Source Exchange"
@@ -1246,7 +1250,7 @@ msgstr "Færdig"
 
 #: src/DataToText.cpp:143
 msgid "In progress"
-msgstr ""
+msgstr "Arbejder"
 
 #: src/DataToText.cpp:144
 msgid "ERROR: Out of diskspace"
@@ -1278,7 +1282,7 @@ msgstr ""
 
 #: src/DownloadListCtrl.cpp:158
 msgid "Part"
-msgstr ""
+msgstr "Part"
 
 #: src/DownloadListCtrl.cpp:160 src/PartFileConvertDlg.cpp:93
 #: src/SearchListCtrl.cpp:88 src/SharedFilesCtrl.cpp:103
@@ -1308,8 +1312,7 @@ msgstr "Kilder"
 msgid "Priority"
 msgstr "Priotet"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Status"
 
@@ -1683,7 +1686,7 @@ msgstr ""
 
 #: src/ExternalConn.cpp:1450
 msgid "File not found."
-msgstr ""
+msgstr "Filen blev ikke fundet."
 
 #: src/ExternalConn.cpp:1455
 msgid "Invalid file name."
@@ -2006,7 +2009,7 @@ msgstr ""
 
 #: src/GenericClientListCtrl.cpp:943
 msgid "A4AF"
-msgstr ""
+msgstr "A4AF"
 
 #: src/GenericClientListCtrl.cpp:995
 #, fuzzy, c-format
@@ -2033,7 +2036,6 @@ msgid "Uploading"
 msgstr "Upload"
 
 #: src/GenericClientListCtrl.cpp:1031
-#, fuzzy
 msgid "None"
 msgstr "Ingen"
 
@@ -2272,7 +2274,7 @@ msgstr ""
 
 #: src/KnownFile.cpp:1549
 msgid "Accepted"
-msgstr ""
+msgstr "Accepteret"
 
 #: src/KnownFile.cpp:1551
 msgid "Complete sources"
@@ -2380,11 +2382,11 @@ msgstr ""
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "ERROR: "
-msgstr ""
+msgstr "FEJL:"
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
-msgstr ""
+msgstr "ADVARSEL: "
 
 #: src/MuleNotebook.cpp:185 src/muuli_wdr.cpp:901 src/muuli_wdr.cpp:1430
 #: src/muuli_wdr.cpp:3235 src/muuli_wdr.cpp:3505
@@ -2393,16 +2395,16 @@ msgstr "Luk"
 
 #: src/MuleTextCtrl.cpp:79
 msgid "Cut"
-msgstr ""
+msgstr "Klip"
 
 #: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:388
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
 msgid "Copy"
-msgstr ""
+msgstr "Kopier"
 
 #: src/MuleTextCtrl.cpp:81
 msgid "Paste"
-msgstr ""
+msgstr "Indsæt"
 
 #: src/MuleTextCtrl.cpp:82 src/muuli_wdr.cpp:385 src/muuli_wdr.cpp:832
 #: src/utils/aLinkCreator/src/alcframe.cpp:152
@@ -2411,7 +2413,7 @@ msgstr "Ryd"
 
 #: src/MuleTextCtrl.cpp:86
 msgid "Select All"
-msgstr ""
+msgstr "Vælg alle"
 
 #: src/MuleTrayIcon.cpp:82 src/MuleTrayIcon.cpp:464 src/MuleTrayIcon.cpp:485
 #: src/muuli_wdr.cpp:1576 src/muuli_wdr.cpp:1585 src/muuli_wdr.cpp:1594
@@ -2499,7 +2501,7 @@ msgstr "Ingen Forbindelse"
 #: src/MuleTrayIcon.cpp:365
 #, c-format
 msgid "IP: %s"
-msgstr ""
+msgstr "IP: %s"
 
 #: src/MuleTrayIcon.cpp:374
 #, c-format
@@ -2700,7 +2702,7 @@ msgstr "Programer"
 
 #: src/muuli_wdr.cpp:235 src/OtherFunctions.cpp:185
 msgid "Texts"
-msgstr ""
+msgstr "Tekster"
 
 #: src/muuli_wdr.cpp:236 src/OtherFunctions.cpp:150
 msgid "Videos"
@@ -2781,7 +2783,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:393
 msgid "Results"
-msgstr ""
+msgstr "Resultater"
 
 #: src/muuli_wdr.cpp:422
 msgid "Clears completed downloads"
@@ -2961,7 +2963,7 @@ msgstr "Henter, vent venligst"
 
 #: src/muuli_wdr.cpp:931
 msgid "Unknown size"
-msgstr ""
+msgstr "Ukendt størrelse"
 
 #: src/muuli_wdr.cpp:955
 msgid "Required Information"
@@ -3050,7 +3052,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1265 src/ServerWnd.cpp:249
 msgid "IP address:"
-msgstr ""
+msgstr "IP adresse:"
 
 #: src/muuli_wdr.cpp:1274
 msgid "User ID:"
@@ -3062,7 +3064,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1290
 msgid "Server name:"
-msgstr ""
+msgstr "Server Navn:"
 
 #: src/muuli_wdr.cpp:1297
 msgid "Obfuscation:"
@@ -3070,7 +3072,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1306
 msgid "Kad:"
-msgstr ""
+msgstr "Kad:"
 
 #: src/muuli_wdr.cpp:1317
 msgid "Transfers to client"
@@ -3139,7 +3141,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr ""
+msgstr "Sprog: "
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -3202,7 +3204,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1505
 msgid "seconds"
-msgstr ""
+msgstr "sekunder"
 
 #: src/muuli_wdr.cpp:1511
 msgid "Browser Selection"
@@ -3217,8 +3219,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Gennemse"
 
@@ -3264,7 +3265,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1617
 msgid "4665"
-msgstr ""
+msgstr "4665"
 
 #: src/muuli_wdr.cpp:1620
 msgid "Extended UDP port (Kad / global search) "
@@ -3302,11 +3303,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1676
 msgid "Kademlia"
-msgstr ""
+msgstr "Kademlia"
 
 #: src/muuli_wdr.cpp:1680 src/muuli_wdr.cpp:3282
 msgid "ED2K"
-msgstr ""
+msgstr "ED2K"
 
 #: src/muuli_wdr.cpp:1689
 msgid "Autoconnect on startup"
@@ -3366,7 +3367,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1779
 msgid "Enable"
-msgstr ""
+msgstr "Aktiver"
 
 #: src/muuli_wdr.cpp:1783
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
@@ -3476,7 +3477,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1958
 msgid "Colours: "
-msgstr ""
+msgstr "Farver:"
 
 #: src/muuli_wdr.cpp:1963
 msgid "Background"
@@ -3827,7 +3828,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2710
 msgid "Bootstrap"
-msgstr ""
+msgstr "Bootstrap"
 
 #: src/muuli_wdr.cpp:2713
 msgid "New node"
@@ -3835,7 +3836,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2718
 msgid "IP:"
-msgstr ""
+msgstr "IP:"
 
 #: src/muuli_wdr.cpp:2747
 msgid "Port:"
@@ -3941,11 +3942,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2870
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: src/muuli_wdr.cpp:2876
 msgid "Update now"
-msgstr ""
+msgstr "Opdater nu"
 
 #: src/muuli_wdr.cpp:2881
 msgid "Auto-update ipfilter at startup"
@@ -4064,7 +4065,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3043
 msgid "Password:"
-msgstr ""
+msgstr "Kodeord:"
 
 #: src/muuli_wdr.cpp:3047
 msgid "The password to use to connect to the proxy"
@@ -4072,7 +4073,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3050
 msgid "Enable Proxy"
-msgstr ""
+msgstr "Aktivér proxy"
 
 #: src/muuli_wdr.cpp:3051
 msgid "Enable/disable proxy support"
@@ -4224,7 +4225,7 @@ msgstr[1] "Bytes"
 
 #: src/OtherFunctions.cpp:66
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 #: src/OtherFunctions.cpp:72
 msgid "TB"
@@ -4232,7 +4233,7 @@ msgstr "TB"
 
 #: src/OtherFunctions.cpp:82
 msgid "k"
-msgstr ""
+msgstr "k"
 
 #: src/OtherFunctions.cpp:84
 msgid "M"
@@ -4255,7 +4256,7 @@ msgstr[1] "kB/s"
 
 #: src/OtherFunctions.cpp:99
 msgid "MB/s"
-msgstr ""
+msgstr "MB/s"
 
 #: src/OtherFunctions.cpp:108 src/OtherFunctions.cpp:111
 msgid "secs"
@@ -4271,7 +4272,7 @@ msgstr ""
 
 #: src/OtherFunctions.cpp:121
 msgid "Days"
-msgstr ""
+msgstr "Dage"
 
 #: src/OtherFunctions.cpp:629
 msgid "all"
@@ -4303,7 +4304,7 @@ msgstr "Tekst"
 
 #: src/OtherFunctions.cpp:644 src/TransferWnd.cpp:352
 msgid "Active"
-msgstr ""
+msgstr "Aktivt"
 
 #: src/OtherFunctions.cpp:1062
 #, c-format
@@ -4535,8 +4536,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 
 #: src/PartFile.cpp:2971
@@ -4565,7 +4566,7 @@ msgstr ""
 #: src/PartFile.cpp:3764 src/SearchListCtrl.cpp:1006
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
-msgstr ""
+msgstr "Downloadet"
 
 #: src/PartFile.cpp:4013
 #, c-format
@@ -4578,16 +4579,15 @@ msgstr "System standard"
 
 #: src/Preferences.cpp:629
 msgid "Albanian"
-msgstr ""
+msgstr "Albansk"
 
 #: src/Preferences.cpp:630
 msgid "Arabic"
 msgstr "Arabic"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "Estonian"
+msgstr "Asturisk"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
@@ -4603,19 +4603,19 @@ msgstr "Catalan"
 
 #: src/Preferences.cpp:635
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "Kinesisk (Simplificeret)"
 
 #: src/Preferences.cpp:636
 msgid "Chinese (Traditional)"
-msgstr ""
+msgstr "Kinesisk (Traditionel)"
 
 #: src/Preferences.cpp:637
 msgid "Croatian"
-msgstr ""
+msgstr "Kroatisk"
 
 #: src/Preferences.cpp:638
 msgid "Czech"
-msgstr ""
+msgstr "Tjekkisk"
 
 #: src/Preferences.cpp:639
 msgid "Danish"
@@ -4627,7 +4627,7 @@ msgstr "Dutch"
 
 #: src/Preferences.cpp:641
 msgid "English (U.K.)"
-msgstr ""
+msgstr "Engelsk (UK)"
 
 #: src/Preferences.cpp:642
 msgid "Estonian"
@@ -4651,15 +4651,15 @@ msgstr "German"
 
 #: src/Preferences.cpp:647
 msgid "Greek"
-msgstr ""
+msgstr "Græsk"
 
 #: src/Preferences.cpp:648
 msgid "Hebrew"
-msgstr ""
+msgstr "Hebraisk"
 
 #: src/Preferences.cpp:649
 msgid "Hungarian"
-msgstr ""
+msgstr "Ungarsk"
 
 #: src/Preferences.cpp:650
 msgid "Italian"
@@ -4667,11 +4667,11 @@ msgstr "Italian"
 
 #: src/Preferences.cpp:651
 msgid "Italian (Swiss)"
-msgstr ""
+msgstr "Italiensk (Swiss)"
 
 #: src/Preferences.cpp:652
 msgid "Japanese"
-msgstr ""
+msgstr "Japansk"
 
 #: src/Preferences.cpp:653
 msgid "Korean"
@@ -4695,12 +4695,11 @@ msgstr "Portuguese"
 
 #: src/Preferences.cpp:658
 msgid "Portuguese (Brazilian)"
-msgstr ""
+msgstr "Portugisisk (brasiliansk)"
 
 #: src/Preferences.cpp:659
-#, fuzzy
 msgid "Romanian"
-msgstr "Estonian"
+msgstr "Rumænsk"
 
 #: src/Preferences.cpp:660
 msgid "Russian"
@@ -4708,7 +4707,7 @@ msgstr "Russian"
 
 #: src/Preferences.cpp:661
 msgid "Slovenian"
-msgstr ""
+msgstr "Slovensk"
 
 #: src/Preferences.cpp:662
 msgid "Spanish"
@@ -4716,29 +4715,27 @@ msgstr "Spanish"
 
 #: src/Preferences.cpp:663
 msgid "Swedish"
-msgstr ""
+msgstr "Svensk"
 
 #: src/Preferences.cpp:664
 msgid "Turkish"
-msgstr ""
+msgstr "Tyrkisk"
 
 #: src/Preferences.cpp:665
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainsk"
 
 #: src/Preferences.cpp:728
-#, fuzzy
 msgid "Change Language"
-msgstr "Sprog"
+msgstr "Skift sprog"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
 msgstr ""
 
 #: src/Preferences.cpp:771
-#, fuzzy
 msgid "No languages available"
-msgstr "Ikke tilgængelig"
+msgstr "Ingen sprog tilgængelige"
 
 #: src/Preferences.cpp:902
 msgid "no options available"
@@ -4781,7 +4778,7 @@ msgstr "Filer"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Security"
-msgstr ""
+msgstr "Sikkerhed"
 
 #: src/PrefsUnifiedDlg.cpp:182
 msgid "Interface"
@@ -4789,7 +4786,7 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:184
 msgid "Proxy"
-msgstr ""
+msgstr "Proxy"
 
 #: src/PrefsUnifiedDlg.cpp:185
 msgid "Filters"
@@ -4805,7 +4802,7 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:188
 msgid "Advanced"
-msgstr ""
+msgstr "Avanceret"
 
 #: src/PrefsUnifiedDlg.cpp:189
 msgid "Events"
@@ -5022,9 +5019,8 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "Server forbindelses opdaterings interval: Inaktiv"
 
 #: src/PrefsUnifiedDlg.cpp:1215
-#, fuzzy
 msgid "disabled"
-msgstr "deaktiver"
+msgstr "Deaktiveret"
 
 #: src/PrefsUnifiedDlg.cpp:1238
 #, c-format
@@ -5109,9 +5105,8 @@ msgid "Copy eD2k link to clipboard"
 msgstr ""
 
 #: src/SearchListCtrl.cpp:1014
-#, fuzzy
 msgid "Canceled"
-msgstr "Afbryd"
+msgstr "Annulleret"
 
 #: src/SearchListCtrl.cpp:1017
 msgid "New"
@@ -5321,7 +5316,7 @@ msgstr "Servernavn"
 
 #: src/ServerListCtrl.cpp:88
 msgid "Address"
-msgstr ""
+msgstr "Adresse"
 
 #: src/ServerListCtrl.cpp:89
 msgid "Port"
@@ -5346,7 +5341,7 @@ msgstr "Statistik"
 #: src/ServerListCtrl.cpp:97 src/SharedFilePeersListCtrl.cpp:34
 #: src/SourceListCtrl.cpp:33 src/Statistics.cpp:959
 msgid "Version"
-msgstr ""
+msgstr "Version"
 
 #: src/ServerListCtrl.cpp:149
 msgid ""
@@ -5368,8 +5363,8 @@ msgstr ""
 msgid "Servers (%i)"
 msgstr "Servere (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Server"
 
@@ -5431,12 +5426,12 @@ msgstr "Er du sikker på at du ønsker at slette de(n) valgt(e) ven(ner)?"
 #: src/ServerSocket.cpp:273
 #, c-format
 msgid "ERROR: %s (%s) - %s"
-msgstr ""
+msgstr "FEJL: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:288
 #, c-format
 msgid "WARNING: %s (%s) - %s"
-msgstr ""
+msgstr "ADVARSEL: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:427
 #, c-format
@@ -5534,7 +5529,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:207
 msgid "Running"
-msgstr ""
+msgstr "Løbende"
 
 #: src/ServerWnd.cpp:210
 msgid "Kademlia client ID:"
@@ -5542,7 +5537,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:212
 msgid "Status:"
-msgstr ""
+msgstr "Status:"
 
 #: src/ServerWnd.cpp:215
 msgid "Connection State:"
@@ -5654,7 +5649,6 @@ msgid "No shareable files found in directory: %s"
 msgstr ""
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:28
-#, fuzzy
 msgid "User Name"
 msgstr "Brugernavn"
 
@@ -6015,7 +6009,7 @@ msgstr ""
 
 #: src/Statistics.cpp:960
 msgid "Operating System"
-msgstr ""
+msgstr "Operativsystem"
 
 #: src/Statistics.cpp:985
 msgid "Not Received"
@@ -6130,7 +6124,7 @@ msgstr ""
 
 #: src/TextClient.cpp:702
 msgid "eD2k"
-msgstr ""
+msgstr "eD2k"
 
 #: src/TextClient.cpp:707
 #, c-format
@@ -6718,7 +6712,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:150
 msgid "Remove"
-msgstr ""
+msgstr "Fjern"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:161
 msgid "Create link with part-hashes"
@@ -6744,7 +6738,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:231
 msgid "Save"
-msgstr ""
+msgstr "Gem"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:233
 msgid "Copy to clipboard"
@@ -6764,7 +6758,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save as"
-msgstr ""
+msgstr "Gem som"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:267
 msgid "Save computed eD2k link to file"

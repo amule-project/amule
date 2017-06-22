@@ -12,20 +12,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
-"POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2010-08-19 01:21+0100\n"
-"Last-Translator: Michał Trzebiatowski <hippie_1968@hotmail.com>\n"
+"POT-Creation-Date: 2017-05-25 12:45+0200\n"
+"PO-Revision-Date: 2017-05-25 12:49+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: translationproject.org/team/pl.html <translation-team-"
 "pl@lists.sourceforge.net>\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pl\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Poedit 2.0.2\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Poedit-Language: Polish\n"
-"X-Poedit-Country: POLAND\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -495,8 +493,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "Wiadomość"
 
@@ -536,9 +534,9 @@ msgstr "Kad: Wyłączony"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -1380,8 +1378,7 @@ msgstr "Źródła"
 msgid "Priority"
 msgstr "Priorytet"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Status"
 
@@ -2026,9 +2023,9 @@ msgid "File Details"
 msgstr "Szczegóły pliku"
 
 #: src/FileDetailDialog.cpp:111
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f%% done"
-msgstr "%.2f%% skończone"
+msgstr "%.1f%% skończone"
 
 #: src/FileDetailDialog.cpp:113 src/utils/wxCas/src/wxcasframe.cpp:1139
 #: src/utils/wxCas/src/wxcasframe.cpp:1149
@@ -3362,8 +3359,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Przeglądaj"
 
@@ -4339,9 +4335,8 @@ msgid "Percent of total files"
 msgstr "procent wszystkich plików"
 
 #: src/muuli_wdr.cpp:3418
-#, fuzzy
 msgid "All files"
-msgstr "Wszystkie udostępnione pliki"
+msgstr "Wszystkie pliki"
 
 #: src/muuli_wdr.cpp:3419
 #, fuzzy
@@ -4680,11 +4675,11 @@ msgstr[0] ""
 "Znaleziono uszkodzoną część (%d) w %d pliku części %s - FileResultHash |%s| "
 "FileHash |%s|"
 msgstr[1] ""
-"Znaleziono uszkodzoną część (%d) w %d plikach części %s - FileResultHash |%"
-"s| FileHash |%s|"
+"Znaleziono uszkodzoną część (%d) w %d plikach części %s - FileResultHash |"
+"%s| FileHash |%s|"
 msgstr[2] ""
-"Znaleziono uszkodzoną część (%d) w %d plikach części %s - FileResultHash |%"
-"s| FileHash |%s|"
+"Znaleziono uszkodzoną część (%d) w %d plikach części %s - FileResultHash |"
+"%s| FileHash |%s|"
 
 #: src/PartFile.cpp:1172
 #, c-format
@@ -4730,8 +4725,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 
 #: src/PartFile.cpp:2971
@@ -5612,8 +5607,8 @@ msgstr "Na pewno chcesz usunąć serwer statyczny %s"
 msgid "Servers (%i)"
 msgstr "Serwery (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Serwer"
 
@@ -6322,9 +6317,9 @@ msgid ""
 msgstr "Wpisz '%s' , aby uzyskać więcej pomocy.\n"
 
 #: src/TextClient.cpp:554
-#, fuzzy, c-format
+#, c-format
 msgid "Download File: %lu %s\n"
-msgstr "Rozmiar pobierania: %i"
+msgstr "Rozmiar pobierania: %lu %s\n"
 
 #: src/TextClient.cpp:646 src/webserver/src/WebServer.cpp:409
 msgid "Request failed with an unknown error."
@@ -7167,7 +7162,7 @@ msgstr ""
 #: src/utils/wxCas/src/linuxmon.cpp:77
 #, c-format
 msgid "%i day(s) %i hour(s) %i min %i s"
-msgstr "%i dni %i godzin %i minut %i "
+msgstr "%i dni %i godzin %i minut %i"
 
 #: src/utils/wxCas/src/onlinesig.cpp:225
 #, c-format

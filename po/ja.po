@@ -7,14 +7,15 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2008-05-31 01:09+0900\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2017-05-25 12:20+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -136,7 +137,7 @@ msgstr ""
 #: src/amule-remote-gui.cpp:308 src/amule-remote-gui.cpp:330
 #: src/amule-remote-gui.cpp:332 src/amule-remote-gui.cpp:644
 msgid "ERROR"
-msgstr ""
+msgstr "エラー"
 
 #: src/amule.cpp:746
 #, c-format
@@ -470,11 +471,11 @@ msgstr ""
 
 #: src/amuleDlg.cpp:510
 msgid "http://kademlia.scs.cs.nyu.edu\n"
-msgstr ""
+msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "メッセージ"
 
@@ -514,9 +515,9 @@ msgstr "Kad: オフ"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -577,7 +578,7 @@ msgstr "コマンド： %s"
 
 #: src/amuleDlg.cpp:1210 src/muuli_wdr.cpp:2092 src/Preferences.cpp:842
 msgid "- default -"
-msgstr ""
+msgstr "- 規定値-"
 
 #: src/amuleDlg.cpp:1233
 #, c-format
@@ -921,7 +922,7 @@ msgstr ""
 
 #: src/ChatWnd.cpp:99
 msgid "Chat"
-msgstr ""
+msgstr "チャット"
 
 #: src/ChatWnd.cpp:101 src/MuleNotebook.cpp:186
 msgid "Close tab"
@@ -1343,8 +1344,7 @@ msgstr "ソース数"
 msgid "Priority"
 msgstr "優先度"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "ステータス"
 
@@ -1990,9 +1990,9 @@ msgid "File Details"
 msgstr "ファイルの詳細"
 
 #: src/FileDetailDialog.cpp:111
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f%% done"
-msgstr "%.2f%%終わりました"
+msgstr "%.1f%% 終わりました"
 
 #: src/FileDetailDialog.cpp:113 src/utils/wxCas/src/wxcasframe.cpp:1139
 #: src/utils/wxCas/src/wxcasframe.cpp:1149
@@ -2102,9 +2102,8 @@ msgid "On Queue: %u"
 msgstr "キューに入っています"
 
 #: src/GenericClientListCtrl.cpp:1029
-#, fuzzy
 msgid "Uploading"
-msgstr "アップロード"
+msgstr "アップロード中…"
 
 #: src/GenericClientListCtrl.cpp:1031
 #, fuzzy
@@ -2455,11 +2454,11 @@ msgstr ""
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "ERROR: "
-msgstr ""
+msgstr "エラー: "
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
-msgstr ""
+msgstr "警告 : "
 
 #: src/MuleNotebook.cpp:185 src/muuli_wdr.cpp:901 src/muuli_wdr.cpp:1430
 #: src/muuli_wdr.cpp:3235 src/muuli_wdr.cpp:3505
@@ -2633,7 +2632,7 @@ msgstr ""
 
 #: src/MuleTrayIcon.cpp:447
 msgid "Download limit"
-msgstr ""
+msgstr "ダウンロード制限"
 
 #: src/MuleTrayIcon.cpp:507
 msgid "Hide aMule"
@@ -3119,7 +3118,7 @@ msgstr "統計木"
 
 #: src/muuli_wdr.cpp:1223
 msgid "Username:"
-msgstr "ユーザ名："
+msgstr "ユーザー名:"
 
 #: src/muuli_wdr.cpp:1226
 msgid "Userhash:"
@@ -3224,7 +3223,7 @@ msgstr "接続してくるユーザはこの名前を見ることになります
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr ""
+msgstr "言語: "
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -3290,7 +3289,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1505
 msgid "seconds"
-msgstr ""
+msgstr "秒"
 
 #: src/muuli_wdr.cpp:1511
 msgid "Browser Selection"
@@ -3305,8 +3304,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "閲覧"
 
@@ -3353,7 +3351,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1617
 msgid "4665"
-msgstr ""
+msgstr "4665"
 
 #: src/muuli_wdr.cpp:1620
 msgid "Extended UDP port (Kad / global search) "
@@ -3455,7 +3453,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1779
 msgid "Enable"
-msgstr ""
+msgstr "有効化"
 
 #: src/muuli_wdr.cpp:1783
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
@@ -4181,7 +4179,7 @@ msgstr "ユーザ名／パスワード認証を有効／無効にする"
 
 #: src/muuli_wdr.cpp:3036
 msgid "Username: "
-msgstr ""
+msgstr "ユーザー名: "
 
 #: src/muuli_wdr.cpp:3040
 msgid "The username to use to connect to the proxy"
@@ -4286,9 +4284,8 @@ msgid "Percent of total files"
 msgstr ""
 
 #: src/muuli_wdr.cpp:3418
-#, fuzzy
 msgid "All files"
-msgstr "共有ファイルを隠す"
+msgstr "すべてのファイル"
 
 #: src/muuli_wdr.cpp:3419
 #, fuzzy
@@ -4661,8 +4658,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 
 #: src/PartFile.cpp:2971
@@ -4712,9 +4709,8 @@ msgid "Arabic"
 msgstr "アラブ語"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "エストニア語"
+msgstr "アストゥリアス"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
@@ -4825,9 +4821,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "ポルトガル語（ブラジル）"
 
 #: src/Preferences.cpp:659
-#, fuzzy
 msgid "Romanian"
-msgstr "アルバニア語"
+msgstr "ルーマニア語"
 
 #: src/Preferences.cpp:660
 msgid "Russian"
@@ -4851,7 +4846,7 @@ msgstr "トルコ語"
 
 #: src/Preferences.cpp:665
 msgid "Ukrainian"
-msgstr ""
+msgstr "ウクライナ語"
 
 #: src/Preferences.cpp:728
 #, fuzzy
@@ -4913,7 +4908,7 @@ msgstr "セキュリティ"
 
 #: src/PrefsUnifiedDlg.cpp:182
 msgid "Interface"
-msgstr ""
+msgstr "インタフェース"
 
 #: src/PrefsUnifiedDlg.cpp:184
 msgid "Proxy"
@@ -4921,7 +4916,7 @@ msgstr "プロクシ"
 
 #: src/PrefsUnifiedDlg.cpp:185
 msgid "Filters"
-msgstr ""
+msgstr "フィルター"
 
 #: src/PrefsUnifiedDlg.cpp:186
 msgid "Remote Controls"
@@ -4933,7 +4928,7 @@ msgstr "オンライン署名"
 
 #: src/PrefsUnifiedDlg.cpp:188
 msgid "Advanced"
-msgstr ""
+msgstr "上級者用の"
 
 #: src/PrefsUnifiedDlg.cpp:189
 msgid "Events"
@@ -5162,9 +5157,8 @@ msgid "Server connection refresh interval: Disabled"
 msgstr "サーバ接続リフレッシュ遅延時間： 無効"
 
 #: src/PrefsUnifiedDlg.cpp:1215
-#, fuzzy
 msgid "disabled"
-msgstr "無効にする"
+msgstr "身体障碍者"
 
 #: src/PrefsUnifiedDlg.cpp:1238
 #, fuzzy, c-format
@@ -5250,7 +5244,6 @@ msgid "Copy eD2k link to clipboard"
 msgstr ""
 
 #: src/SearchListCtrl.cpp:1014
-#, fuzzy
 msgid "Canceled"
 msgstr "キャンセル"
 
@@ -5518,8 +5511,8 @@ msgstr "スタティックサーバ %s を本当に削除しますか？"
 msgid "Servers (%i)"
 msgstr "サーバ （%i）"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "サーバ"
 
@@ -5578,12 +5571,12 @@ msgstr "全ての選択されたサーバを本当に削除しますか？"
 #: src/ServerSocket.cpp:273
 #, c-format
 msgid "ERROR: %s (%s) - %s"
-msgstr ""
+msgstr "エラー: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:288
 #, c-format
 msgid "WARNING: %s (%s) - %s"
-msgstr ""
+msgstr "WARNING: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:427
 #, c-format
@@ -5801,9 +5794,8 @@ msgid "No shareable files found in directory: %s"
 msgstr ""
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:28
-#, fuzzy
 msgid "User Name"
-msgstr "ユーザ名"
+msgstr "ユーザー名"
 
 #: src/SharedFilePeersListCtrl.cpp:30
 #, fuzzy
@@ -6277,7 +6269,7 @@ msgstr ""
 
 #: src/TextClient.cpp:702
 msgid "eD2k"
-msgstr ""
+msgstr "eD2k"
 
 #: src/TextClient.cpp:707
 #, c-format

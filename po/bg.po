@@ -11,14 +11,14 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2016-05-31 11:44+0200\n"
-"Last-Translator: Sebastiano Pistore <olatusrooc@virgilio.it>\n"
+"PO-Revision-Date: 2017-05-24 12:00+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: bg\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 2.0.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/AddFriend.cpp:45
@@ -91,11 +91,10 @@ msgid "Info"
 msgstr ""
 
 #: src/amule.cpp:449
-#, fuzzy
 msgid ""
 "\n"
 "EC configuration"
-msgstr "Потвърждение за изход"
+msgstr ""
 
 #: src/amule.cpp:452
 msgid "Password set and external connections enabled."
@@ -411,7 +410,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:503
 msgid "Forum: http://forum.amule.org \n"
-msgstr "форум: http://forum.amule.org \n"
+msgstr "форум: http://forum.amule.org\n"
 
 #: src/amuleDlg.cpp:504
 msgid ""
@@ -446,8 +445,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr ""
 
@@ -489,9 +488,9 @@ msgstr ""
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Отказ"
 
@@ -662,7 +661,7 @@ msgstr ""
 
 #: src/amule-gui.cpp:213 src/utils/wxCas/src/wxcasframe.cpp:111
 msgid "aMule"
-msgstr ""
+msgstr "aMule"
 
 #: src/amule-gui.cpp:295
 #, fuzzy
@@ -683,13 +682,12 @@ msgid "Going to event loop..."
 msgstr ""
 
 #: src/amule-remote-gui.cpp:304
-#, fuzzy
 msgid "Connecting..."
-msgstr "Свързва"
+msgstr "Свързване..."
 
 #: src/amule-remote-gui.cpp:308
 msgid "Connection failed "
-msgstr ""
+msgstr "Неуспех при свързване "
 
 #: src/amule-remote-gui.cpp:319
 msgid "Remote GUI EC event handler"
@@ -714,7 +712,7 @@ msgstr ""
 
 #: src/amule-remote-gui.cpp:596 src/TransferWnd.cpp:340
 msgid "All"
-msgstr "всички"
+msgstr "Всички"
 
 #: src/amule-remote-gui.cpp:642
 #, c-format
@@ -1185,7 +1183,7 @@ msgstr ""
 
 #: src/DataToText.cpp:70
 msgid "Banned"
-msgstr ""
+msgstr "Забранени"
 
 #: src/DataToText.cpp:71
 msgid "Connection Error"
@@ -1309,8 +1307,7 @@ msgstr "Източници"
 msgid "Priority"
 msgstr "Приоритет"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Статус"
 
@@ -1327,16 +1324,12 @@ msgid "Last Reception"
 msgstr ""
 
 #: src/DownloadListCtrl.cpp:411
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected file?"
 msgstr ""
-"Сигурни ли сте,че желаете да откажете свалянето и изтриете тези файлове ?\n"
 
 #: src/DownloadListCtrl.cpp:413
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr ""
-"Сигурни ли сте,че желаете да откажете свалянето и изтриете тези файлове ?\n"
 
 #: src/DownloadListCtrl.cpp:554 src/SharedFilesCtrl.cpp:203
 #, c-format
@@ -1975,10 +1968,8 @@ msgstr ""
 "Сигурни ли сте,че желаете да откажете свалянето и изтриете тези файлове ?"
 
 #: src/FriendListCtrl.cpp:171
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected friends?"
 msgstr ""
-"Сигурни ли сте,че желаете да откажете свалянето и изтриете тези файлове ?\n"
 
 #: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:530
 msgid ""
@@ -2012,7 +2003,7 @@ msgstr ""
 
 #: src/GenericClientListCtrl.cpp:943
 msgid "A4AF"
-msgstr ""
+msgstr "A4AF"
 
 #: src/GenericClientListCtrl.cpp:995
 #, fuzzy, c-format
@@ -2077,9 +2068,9 @@ msgid "Critical error while writing downloaded file"
 msgstr ""
 
 #: src/HTTPDownload.cpp:277
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %d bytes"
-msgstr "Свален:"
+msgstr ""
 
 #: src/HTTPDownload.cpp:281
 #, c-format
@@ -2209,7 +2200,7 @@ msgstr ""
 
 #: src/KadDlg.cpp:214
 msgid "Continue?"
-msgstr ""
+msgstr "Да продължи ли?"
 
 #: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
@@ -2275,7 +2266,7 @@ msgstr ""
 
 #: src/KnownFile.cpp:1549
 msgid "Accepted"
-msgstr "признат"
+msgstr "Прието"
 
 #: src/KnownFile.cpp:1551
 msgid "Complete sources"
@@ -2394,7 +2385,7 @@ msgstr "Затвори"
 
 #: src/MuleTextCtrl.cpp:79
 msgid "Cut"
-msgstr ""
+msgstr "Изрежи"
 
 #: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:388
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
@@ -2424,7 +2415,7 @@ msgstr "кБ/с"
 #: src/MuleTrayIcon.cpp:98 src/MuleTrayIcon.cpp:124 src/MuleTrayIcon.cpp:451
 #: src/MuleTrayIcon.cpp:472
 msgid "Unlimited"
-msgstr "неограничен"
+msgstr "Неограничено"
 
 #: src/MuleTrayIcon.cpp:290
 msgid "aMule Tray Menu"
@@ -2738,7 +2729,7 @@ msgstr "Максимален размер"
 
 #: src/muuli_wdr.cpp:306
 msgid "Availability"
-msgstr ""
+msgstr "Наличност"
 
 #: src/muuli_wdr.cpp:319
 msgid "Filter:"
@@ -2978,7 +2969,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:976
 msgid "Additional Information"
-msgstr ""
+msgstr "Допълнителна информация"
 
 #: src/muuli_wdr.cpp:981
 msgid "Username :"
@@ -3140,7 +3131,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr "език: "
+msgstr "Език:"
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -3218,8 +3209,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Избери"
 
@@ -3664,7 +3654,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:2211 src/muuli_wdr.cpp:3127
 #: src/utils/wxCas/src/wxcasprefs.cpp:201
 msgid "Password"
-msgstr "парола"
+msgstr "Парола"
 
 #: src/muuli_wdr.cpp:2221
 msgid "Web server parameters"
@@ -4036,7 +4026,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2998
 msgid "Comments"
-msgstr ""
+msgstr "Коментари"
 
 #: src/muuli_wdr.cpp:3001
 msgid "Filter comments containing (use ',' as separator):"
@@ -4244,11 +4234,10 @@ msgid "T"
 msgstr "T"
 
 #: src/OtherFunctions.cpp:95
-#, fuzzy
 msgid "byte/sec"
 msgid_plural "bytes/sec"
-msgstr[0] "Байта"
-msgstr[1] "Байта"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/OtherFunctions.cpp:99
 msgid "MB/s"
@@ -4268,7 +4257,7 @@ msgstr "часа"
 
 #: src/OtherFunctions.cpp:121
 msgid "Days"
-msgstr "дни"
+msgstr "Дни"
 
 #: src/OtherFunctions.cpp:629
 msgid "all"
@@ -4531,8 +4520,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 
 #: src/PartFile.cpp:2971
@@ -4574,11 +4563,11 @@ msgstr ""
 
 #: src/Preferences.cpp:629
 msgid "Albanian"
-msgstr "албанец"
+msgstr "Албански"
 
 #: src/Preferences.cpp:630
 msgid "Arabic"
-msgstr "арабски"
+msgstr "Арабски"
 
 #: src/Preferences.cpp:631
 msgid "Asturian"
@@ -4586,7 +4575,7 @@ msgstr "Астурия"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
-msgstr "баска"
+msgstr "Бакски"
 
 #: src/Preferences.cpp:633
 msgid "Bulgarian"
@@ -4606,19 +4595,19 @@ msgstr "Китайски (традиционен)"
 
 #: src/Preferences.cpp:637
 msgid "Croatian"
-msgstr "хърватски"
+msgstr "Хърватски"
 
 #: src/Preferences.cpp:638
 msgid "Czech"
-msgstr "чешки"
+msgstr "Чешки"
 
 #: src/Preferences.cpp:639
 msgid "Danish"
-msgstr "датски"
+msgstr "Датски"
 
 #: src/Preferences.cpp:640
 msgid "Dutch"
-msgstr "холандски"
+msgstr "Холандски"
 
 #: src/Preferences.cpp:641
 msgid "English (U.K.)"
@@ -4626,11 +4615,11 @@ msgstr ""
 
 #: src/Preferences.cpp:642
 msgid "Estonian"
-msgstr "естонски"
+msgstr "Естонски"
 
 #: src/Preferences.cpp:643
 msgid "Finnish"
-msgstr "фински"
+msgstr "Финландски"
 
 #: src/Preferences.cpp:644
 msgid "French"
@@ -4638,7 +4627,7 @@ msgstr "Френски"
 
 #: src/Preferences.cpp:645
 msgid "Galician"
-msgstr "галисийски"
+msgstr "Галисийски"
 
 #: src/Preferences.cpp:646
 msgid "German"
@@ -4650,11 +4639,11 @@ msgstr "Гръцки"
 
 #: src/Preferences.cpp:648
 msgid "Hebrew"
-msgstr "иврит"
+msgstr "Иврит"
 
 #: src/Preferences.cpp:649
 msgid "Hungarian"
-msgstr "унгарски"
+msgstr "Унгарски"
 
 #: src/Preferences.cpp:650
 msgid "Italian"
@@ -4666,27 +4655,27 @@ msgstr "Италиански (швейцарски)"
 
 #: src/Preferences.cpp:652
 msgid "Japanese"
-msgstr "японски"
+msgstr "Японски"
 
 #: src/Preferences.cpp:653
 msgid "Korean"
-msgstr "корейски"
+msgstr "Корейски"
 
 #: src/Preferences.cpp:654
 msgid "Lithuanian"
-msgstr "литовски"
+msgstr "Литовски"
 
 #: src/Preferences.cpp:655
 msgid "Norwegian (Nynorsk)"
-msgstr "норвежки (Съвременен)"
+msgstr "Норвежки (Нинорск)"
 
 #: src/Preferences.cpp:656
 msgid "Polish"
-msgstr "полски"
+msgstr "Полски"
 
 #: src/Preferences.cpp:657
 msgid "Portuguese"
-msgstr "португалски"
+msgstr "Португалски"
 
 #: src/Preferences.cpp:658
 msgid "Portuguese (Brazilian)"
@@ -4710,7 +4699,7 @@ msgstr "Spanish"
 
 #: src/Preferences.cpp:663
 msgid "Swedish"
-msgstr "шведски"
+msgstr "Шведски"
 
 #: src/Preferences.cpp:664
 msgid "Turkish"
@@ -4718,7 +4707,7 @@ msgstr "Турски"
 
 #: src/Preferences.cpp:665
 msgid "Ukrainian"
-msgstr "украински"
+msgstr "Украински"
 
 #: src/Preferences.cpp:728
 msgid "Change Language"
@@ -4797,7 +4786,7 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:188
 msgid "Advanced"
-msgstr "напреднал"
+msgstr "Напреднал"
 
 #: src/PrefsUnifiedDlg.cpp:189
 msgid "Events"
@@ -5309,7 +5298,7 @@ msgstr "Име на сървър"
 
 #: src/ServerListCtrl.cpp:88
 msgid "Address"
-msgstr "адрес"
+msgstr "Адрес"
 
 #: src/ServerListCtrl.cpp:89
 msgid "Port"
@@ -5334,7 +5323,7 @@ msgstr "Статичен"
 #: src/ServerListCtrl.cpp:97 src/SharedFilePeersListCtrl.cpp:34
 #: src/SourceListCtrl.cpp:33 src/Statistics.cpp:959
 msgid "Version"
-msgstr "версия"
+msgstr "Версия"
 
 #: src/ServerListCtrl.cpp:149
 msgid ""
@@ -5356,8 +5345,8 @@ msgstr ""
 msgid "Servers (%i)"
 msgstr "Сървъри (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Сървър"
 
@@ -5407,16 +5396,12 @@ msgid "Are you sure that you wish to delete all servers?"
 msgstr ""
 
 #: src/ServerListCtrl.cpp:542
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected server?"
 msgstr ""
-"Сигурни ли сте,че желаете да откажете свалянето и изтриете тези файлове ?\n"
 
 #: src/ServerListCtrl.cpp:544
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr ""
-"Сигурни ли сте,че желаете да откажете свалянето и изтриете тези файлове ?\n"
 
 #: src/ServerSocket.cpp:273
 #, c-format
@@ -5546,9 +5531,8 @@ msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr ""
 
 #: src/ServerWnd.cpp:219
-#, fuzzy
 msgid "UDP Connection State:"
-msgstr "Максимален брой връзки (изчисляване)"
+msgstr ""
 
 #: src/ServerWnd.cpp:222
 #, c-format
@@ -5577,9 +5561,9 @@ msgid "Connecting to buddy"
 msgstr "Свързва"
 
 #: src/ServerWnd.cpp:243
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to buddy at %s"
-msgstr "Свързан към %s (%s:%i)"
+msgstr ""
 
 #: src/ServerWnd.cpp:253
 #, fuzzy
@@ -5684,9 +5668,8 @@ msgid "Local File Name"
 msgstr "Име на файл"
 
 #: src/SharedFilePeersListCtrl.cpp:39 src/SourceListCtrl.cpp:38
-#, fuzzy
 msgid "Shares File List"
-msgstr "Споделени файлове (%i)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:107
 msgid "Requests"
@@ -5772,7 +5755,7 @@ msgstr "Споделени файлове (%i)"
 
 #: src/SharedFilesCtrl.cpp:600 src/TextClient.cpp:829
 msgid "[PartFile]"
-msgstr ""
+msgstr "[PartFile]"
 
 #: src/SourceListCtrl.cpp:37
 #, fuzzy
@@ -6072,9 +6055,9 @@ msgid ""
 msgstr ""
 
 #: src/TextClient.cpp:554
-#, fuzzy, c-format
+#, c-format
 msgid "Download File: %lu %s\n"
-msgstr "Файлове за сваляне (%i)"
+msgstr ""
 
 #: src/TextClient.cpp:646 src/webserver/src/WebServer.cpp:409
 msgid "Request failed with an unknown error."
@@ -6512,9 +6495,8 @@ msgid "Show servers list."
 msgstr ""
 
 #: src/TextClient.cpp:994
-#, fuzzy
 msgid "Show shared files list."
-msgstr "Споделени файлове (%i)"
+msgstr ""
 
 #: src/TextClient.cpp:996
 msgid "Reset log."
@@ -6566,13 +6548,12 @@ msgid "Only 99 categories are supported."
 msgstr ""
 
 #: src/TransferWnd.cpp:238
-#, fuzzy
 msgid "Too many categories!"
-msgstr "Твърде много връзки"
+msgstr ""
 
 #: src/TransferWnd.cpp:341
 msgid "All others"
-msgstr ""
+msgstr "Всички други страни"
 
 #: src/TransferWnd.cpp:363
 msgid "Select view filter"
@@ -6736,7 +6717,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:233
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "Копирай в клипборда"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open"
@@ -6826,9 +6807,8 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:567
 #: src/utils/aLinkCreator/src/alcframe.cpp:568
 #: src/utils/aLinkCreator/src/md4.cpp:352
-#, fuzzy
 msgid "Cancelled !"
-msgstr "Отказ"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:576
 #, c-format
@@ -7009,7 +6989,7 @@ msgstr ""
 #: src/utils/wxCas/src/wxcasframe.cpp:1019
 #: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid "aMule "
-msgstr ""
+msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1008
 msgid " has been running for "
@@ -7039,7 +7019,7 @@ msgstr ""
 #: src/utils/wxCas/src/wxcasframe.cpp:1047
 #: src/utils/wxCas/src/wxcasframe.cpp:1069
 msgid " Kad: "
-msgstr ""
+msgstr " Kad: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1053
 #: src/utils/wxCas/src/wxcasframe.cpp:1075
@@ -7052,7 +7032,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1066
 msgid " with "
-msgstr ""
+msgstr "като"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1084
 msgid "Total Download: "
@@ -7094,7 +7074,7 @@ msgstr ""
 #: src/utils/wxCas/src/wxcasframe.cpp:1140
 #: src/utils/wxCas/src/wxcasframe.cpp:1150
 msgid " on "
-msgstr ""
+msgstr "на"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1160
 msgid "System Load Average (1-5-15 min): "

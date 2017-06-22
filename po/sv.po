@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2016-05-18 09:44+0100\n"
-"Last-Translator: raffe <raffe@localhost.se>\n"
+"PO-Revision-Date: 2017-05-26 10:32+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -35,7 +35,7 @@ msgstr "Angiven userhash är inte giltig!"
 
 #: src/amuleAppCommon.cpp:129
 msgid "Failed to open ED2KLinks file."
-msgstr "Kunde inte öppna ED2KLinks-filen"
+msgstr "Kunde inte öppna ED2KLinks-filen."
 
 #: src/amuleAppCommon.cpp:202
 msgid ""
@@ -73,7 +73,7 @@ msgstr "aMules avslutning slutförd"
 
 #: src/amule.cpp:337
 msgid "Memory debug results for aMule exit:"
-msgstr "Minnes-debug-resultat för aMules avslut"
+msgstr "Minnes-debug-resultat för aMules avslut:"
 
 #: src/amule.cpp:443
 msgid ""
@@ -481,8 +481,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "Meddelande"
 
@@ -522,9 +522,9 @@ msgstr "Kad: Av"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -538,7 +538,7 @@ msgstr "Koppla från"
 
 #: src/amuleDlg.cpp:781
 msgid "Disconnect from the currently connected networks"
-msgstr "Koppla från de nätverk som nu är anslutna."
+msgstr "Koppla från de nätverk som nu är anslutna"
 
 #: src/amuleDlg.cpp:786 src/MuleTrayIcon.cpp:499 src/muuli_wdr.cpp:2755
 #: src/muuli_wdr.cpp:3143 src/muuli_wdr.cpp:3530
@@ -547,7 +547,7 @@ msgstr "Anslut"
 
 #: src/amuleDlg.cpp:787
 msgid "Connect to the currently enabled networks"
-msgstr "Anslut till de nätverk som är aktiverade."
+msgstr "Anslut till de nätverk som är aktiverade"
 
 #: src/amuleDlg.cpp:846
 #, c-format
@@ -580,7 +580,7 @@ msgstr "Bekräfta avslutning"
 
 #: src/amuleDlg.cpp:1174
 msgid "Launch Command: "
-msgstr "Kör kommando:"
+msgstr "Kör kommando: "
 
 #: src/amuleDlg.cpp:1210 src/muuli_wdr.cpp:2092 src/Preferences.cpp:842
 msgid "- default -"
@@ -733,7 +733,7 @@ msgstr "Anslutning misslyckades. Kan inte ansluta till %s:%d\n"
 
 #: src/amule-remote-gui.cpp:332
 msgid "Connection closed - aMule has terminated probably."
-msgstr "Anslutning stängd - troligen har aMule avslutats"
+msgstr "Anslutning stängd - troligen har aMule avslutats."
 
 #: src/amule-remote-gui.cpp:419
 msgid "Ready"
@@ -1294,7 +1294,7 @@ msgstr "FEL: Hittade inte Partmet"
 
 #: src/DataToText.cpp:146
 msgid "ERROR: IO error!"
-msgstr "FEL: IO-fel"
+msgstr "FEL: IO-fel!"
 
 #: src/DataToText.cpp:147
 msgid "ERROR: Failed!"
@@ -1310,7 +1310,7 @@ msgstr "Laddar redan ner"
 
 #: src/DataToText.cpp:150
 msgid "Unknown or bad tempfile format."
-msgstr "Okänd eller trasig temp-fil-format"
+msgstr "Okänd eller trasig temp-fil-format."
 
 #: src/DownloadListCtrl.cpp:158
 msgid "Part"
@@ -1344,8 +1344,7 @@ msgstr "Källor"
 msgid "Priority"
 msgstr "Prioritet"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Status"
 
@@ -1441,7 +1440,7 @@ msgstr "Kopiera återkoppling till urklipp"
 
 #: src/DownloadListCtrl.cpp:697
 msgid "unassign"
-msgstr "Otilldela"
+msgstr "otilldela"
 
 #: src/DownloadListCtrl.cpp:704
 msgid "Assign to category"
@@ -1572,7 +1571,7 @@ msgstr "Felaktig eD2k-länk! FEL: %s"
 
 #: src/ExternalConn.cpp:261
 msgid "Client sent packet after authentication failed."
-msgstr "Klienten skickade paket efter att autentisering misslyckades. "
+msgstr "Klienten skickade paket efter att autentisering misslyckades."
 
 #: src/ExternalConn.cpp:279
 msgid "External connection closed."
@@ -1621,27 +1620,27 @@ msgid ""
 "snapshot! *sigh* possible crash prevented"
 msgstr ""
 "Du kan inte ansluta en release-version från en godtycklig utvecklings-"
-"snapshot! *suck* Trolig krasch förhindrad "
+"snapshot! *suck* Trolig krasch förhindrad"
 
 #: src/ExternalConn.cpp:487
 msgid "Invalid protocol version."
-msgstr "Fel protokoll-version"
+msgstr "Fel protokoll-version."
 
 #: src/ExternalConn.cpp:492
 msgid "Missing protocol version tag."
-msgstr "Saknar tag för protokoll-version"
+msgstr "Saknar tag för protokoll-version."
 
 #: src/ExternalConn.cpp:499
 msgid "Authentication failed: invalid hash specified as EC password."
-msgstr "Autentisering misslyckades: fel hash specificerad som EC-lösenord"
+msgstr "Autentisering misslyckades: fel hash specificerad som EC-lösenord."
 
 #: src/ExternalConn.cpp:516
 msgid "Authentication failed: wrong password."
-msgstr "Autentisering misslyckades: fel lösenord"
+msgstr "Autentisering misslyckades: fel lösenord."
 
 #: src/ExternalConn.cpp:518
 msgid "Authentication failed: missing password."
-msgstr "Autentisering misslyckades: saknar lösenord"
+msgstr "Autentisering misslyckades: saknar lösenord."
 
 #: src/ExternalConn.cpp:528
 msgid "Invalid request, please authenticate first."
@@ -1951,7 +1950,7 @@ msgstr "aMules port for extern anslutning. (standard: 4712)"
 
 #: src/ExternalConnector.cpp:427
 msgid "External Connection password."
-msgstr "Lösenord för extern anslutning"
+msgstr "Lösenord för extern anslutning."
 
 #: src/ExternalConnector.cpp:430
 msgid "Read configuration from file."
@@ -2050,7 +2049,7 @@ msgid ""
 " Only one slot was assigned."
 msgstr ""
 "Du kan endast ha ett vän-spår.\n"
-" Endast ett spår tilldelades. "
+" Endast ett spår tilldelades."
 
 #: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:530
 msgid "Multiple selection"
@@ -3143,7 +3142,7 @@ msgstr "IP-adress:"
 
 #: src/muuli_wdr.cpp:1274
 msgid "User ID:"
-msgstr "Användar-ID"
+msgstr "Användar-ID:"
 
 #: src/muuli_wdr.cpp:1281
 msgid "Server IP:"
@@ -3250,7 +3249,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1475
 msgid "Start minimized"
-msgstr "Starta minimerad."
+msgstr "Starta minimerad"
 
 #: src/muuli_wdr.cpp:1476
 msgid "Enabling this makes aMule minimize itself upon start."
@@ -3312,8 +3311,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Bläddra"
 
@@ -3736,7 +3734,7 @@ msgstr "aMule sorterar kolumnerna i din nedladdningslista automatiskt"
 
 #: src/muuli_wdr.cpp:2176
 msgid "External Connection Parameters"
-msgstr "Externa Anslutningsparametrar "
+msgstr "Externa Anslutningsparametrar"
 
 #: src/muuli_wdr.cpp:2179
 msgid "Accept external connections"
@@ -4012,7 +4010,7 @@ msgstr "Alla"
 
 #: src/muuli_wdr.cpp:2834
 msgid "No one"
-msgstr "Ingen."
+msgstr "Ingen"
 
 #: src/muuli_wdr.cpp:2836
 msgid "Who can see my shared files:"
@@ -4038,7 +4036,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2852
 msgid "Filter servers"
-msgstr "Filtrera servrar:"
+msgstr "Filtrera servrar"
 
 #: src/muuli_wdr.cpp:2854
 msgid ""
@@ -4300,7 +4298,7 @@ msgstr "Visa klienter för"
 
 #: src/muuli_wdr.cpp:3425
 msgid "Reload:"
-msgstr "Återladda: "
+msgstr "Återladda:"
 
 #: src/muuli_wdr.cpp:3430
 msgid "Reload your shared files"
@@ -4612,11 +4610,11 @@ msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
 msgstr[0] ""
-"Hittade skadade delen (%d) i %d del fil %s - FileResultHash |%s| FileHash |%"
-"s|"
+"Hittade skadade delen (%d) i %d del fil %s - FileResultHash |%s| FileHash |"
+"%s|"
 msgstr[1] ""
-"Hittade skadade delen (%d) i %d dels fil %s - FileResultHash |%s| FileHash |%"
-"s|"
+"Hittade skadade delen (%d) i %d dels fil %s - FileResultHash |%s| FileHash |"
+"%s|"
 
 #: src/PartFile.cpp:1172
 #, c-format
@@ -4662,8 +4660,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 "EOF medan hashning av hämtade del %u med längd %u (max %u) av partfile %s "
 "med längd %u: %s"
@@ -5244,7 +5242,7 @@ msgstr "Nedladdning i kategori"
 #: src/SearchListCtrl.cpp:639
 #, c-format
 msgid "Get %s for this file"
-msgstr "Hämta %s för den här filen:"
+msgstr "Hämta %s för den här filen"
 
 #: src/SearchListCtrl.cpp:643
 msgid "Search related files (eD2k, local server)"
@@ -5529,8 +5527,8 @@ msgstr "Är du säker på att du vill ta bort den statiska servern %s"
 msgid "Servers (%i)"
 msgstr "Servrar (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Server"
 
@@ -6989,7 +6987,7 @@ msgstr "Välj filen för din beräknade ED2K-länk"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:450
 msgid "Unable to open "
-msgstr "Kunde inte öppna"
+msgstr "Kunde inte öppna "
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:457
 #: src/utils/aLinkCreator/src/alcframe.cpp:582

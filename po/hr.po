@@ -8,13 +8,16 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2004-04-08 00:30+0100\n"
-"Last-Translator: Tea Lorenzmeier <tea1@gmx.net>\n"
+"PO-Revision-Date: 2017-05-25 11:04+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: www.aMule.org <forum@aMule.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: hr\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -128,7 +131,7 @@ msgstr ""
 #: src/amule-remote-gui.cpp:308 src/amule-remote-gui.cpp:330
 #: src/amule-remote-gui.cpp:332 src/amule-remote-gui.cpp:644
 msgid "ERROR"
-msgstr ""
+msgstr "GREŠKA"
 
 #: src/amule.cpp:746
 #, c-format
@@ -369,7 +372,7 @@ msgstr ""
 #: src/amuled.cpp:780
 #, c-format
 msgid "ERROR: %s"
-msgstr ""
+msgstr "POGREŠKA: %s"
 
 #: src/amuleDlg.cpp:238
 #, c-format
@@ -441,11 +444,11 @@ msgstr ""
 
 #: src/amuleDlg.cpp:510
 msgid "http://kademlia.scs.cs.nyu.edu\n"
-msgstr ""
+msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr ""
 
@@ -487,9 +490,9 @@ msgstr ""
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Otkaz"
 
@@ -681,9 +684,8 @@ msgid "Going to event loop..."
 msgstr ""
 
 #: src/amule-remote-gui.cpp:304
-#, fuzzy
 msgid "Connecting..."
-msgstr "Spajanje"
+msgstr "Spajanje..."
 
 #: src/amule-remote-gui.cpp:308
 msgid "Connection failed "
@@ -770,9 +772,9 @@ msgid "NickName: %s ID: %u"
 msgstr ""
 
 #: src/BaseClient.cpp:2018
-#, fuzzy, c-format
+#, c-format
 msgid "Requested: %s\n"
-msgstr "Zahtijevan:"
+msgstr "Zahtijevan: %s\n"
 
 #: src/BaseClient.cpp:2020
 #, fuzzy, c-format
@@ -783,6 +785,7 @@ msgstr[0] ""
 "Fajl statistike za ovu misiju: Prihvaceno %d od %d zahtjeva, %s preneseno\n"
 msgstr[1] ""
 "Fajl statistike za ovu misiju: Prihvaceno %d od %d zahtjeva, %s preneseno\n"
+msgstr[2] ""
 
 #: src/BaseClient.cpp:2023
 #, fuzzy, c-format
@@ -793,6 +796,7 @@ msgstr[0] ""
 "Fajl statistike za ovu misiju: Prihvaceno %d od %d zahtjeva, %s preneseno\n"
 msgstr[1] ""
 "Fajl statistike za ovu misiju: Prihvaceno %d od %d zahtjeva, %s preneseno\n"
+msgstr[2] ""
 
 #: src/BaseClient.cpp:2026
 msgid "Requested unknown file"
@@ -921,6 +925,7 @@ msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/ClientCreditsList.cpp:161
 #, fuzzy, c-format
@@ -928,6 +933,7 @@ msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
 msgstr[0] "Krediti istekli!"
 msgstr[1] "Krediti istekli!"
+msgstr[2] ""
 
 #: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
@@ -1093,6 +1099,7 @@ msgid "%u comment"
 msgid_plural "%u comments"
 msgstr[0] "Bez komentara"
 msgstr[1] "Bez komentara"
+msgstr[2] ""
 
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
@@ -1223,7 +1230,7 @@ msgstr ""
 #: src/DataToText.cpp:127 src/muuli_wdr.cpp:198 src/muuli_wdr.cpp:3287
 #: src/SearchDlg.cpp:109 src/TextClient.cpp:717
 msgid "Kad"
-msgstr ""
+msgstr "Kad"
 
 #: src/DataToText.cpp:128
 msgid "Source Exchange"
@@ -1314,8 +1321,7 @@ msgstr "Izvori"
 msgid "Priority"
 msgstr "Prioritet"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Status"
 
@@ -1492,6 +1498,7 @@ msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "Nadjeno %i pocetih fajlova"
 msgstr[1] "Nadjeno %i pocetih fajlova"
+msgstr[2] ""
 
 #: src/DownloadQueue.cpp:244 src/DownloadQueue.cpp:1470
 msgid "Filesystem for Temp directory cannot handle large files."
@@ -2161,6 +2168,7 @@ msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/IPFilter.cpp:331
 #, c-format
@@ -2168,6 +2176,7 @@ msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/IPFilter.cpp:503
 #, c-format
@@ -2235,6 +2244,7 @@ msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/kademlia/routing/RoutingZone.cpp:221
 #: src/kademlia/routing/RoutingZone.cpp:287
@@ -2247,6 +2257,7 @@ msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/kademlia/routing/RoutingZone.cpp:336
 #, c-format
@@ -2254,6 +2265,7 @@ msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/KnownFile.cpp:1544 src/PartFileConvertDlg.cpp:91
 msgid "File name"
@@ -2385,7 +2397,7 @@ msgstr ""
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "ERROR: "
-msgstr ""
+msgstr "POGREŠKA: "
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
@@ -2403,7 +2415,7 @@ msgstr ""
 #: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:388
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
 msgid "Copy"
-msgstr ""
+msgstr "Kopiraj"
 
 #: src/MuleTextCtrl.cpp:81
 msgid "Paste"
@@ -3075,7 +3087,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1306
 msgid "Kad:"
-msgstr ""
+msgstr "Kad:"
 
 #: src/muuli_wdr.cpp:1317
 msgid "Transfers to client"
@@ -3144,7 +3156,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr ""
+msgstr "Jezik: "
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -3222,8 +3234,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Pretrazi :"
 
@@ -3311,7 +3322,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1680 src/muuli_wdr.cpp:3282
 msgid "ED2K"
-msgstr ""
+msgstr "ED2K"
 
 #: src/muuli_wdr.cpp:1689
 msgid "Autoconnect on startup"
@@ -3371,7 +3382,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1779
 msgid "Enable"
-msgstr ""
+msgstr "Omogućiti"
 
 #: src/muuli_wdr.cpp:1783
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
@@ -3481,7 +3492,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1958
 msgid "Colours: "
-msgstr ""
+msgstr "Boje: "
 
 #: src/muuli_wdr.cpp:1963
 msgid "Background"
@@ -3669,7 +3680,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:2211 src/muuli_wdr.cpp:3127
 #: src/utils/wxCas/src/wxcasprefs.cpp:201
 msgid "Password"
-msgstr ""
+msgstr "Lozinka"
 
 #: src/muuli_wdr.cpp:2221
 msgid "Web server parameters"
@@ -3841,7 +3852,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2718
 msgid "IP:"
-msgstr ""
+msgstr "IP:"
 
 #: src/muuli_wdr.cpp:2747
 msgid "Port:"
@@ -3947,7 +3958,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2870
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: src/muuli_wdr.cpp:2876
 msgid "Update now"
@@ -4188,9 +4199,8 @@ msgid "Show Clients for"
 msgstr "Pokazi liste"
 
 #: src/muuli_wdr.cpp:3425
-#, fuzzy
 msgid "Reload:"
-msgstr "Ponovno ucitati"
+msgstr "Ponovno ucitati:"
 
 #: src/muuli_wdr.cpp:3430
 msgid "Reload your shared files"
@@ -4227,10 +4237,11 @@ msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "Bytes"
 msgstr[1] "Bytes"
+msgstr[2] ""
 
 #: src/OtherFunctions.cpp:66
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 #: src/OtherFunctions.cpp:72
 msgid "TB"
@@ -4258,10 +4269,11 @@ msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "kBytes/sec"
 msgstr[1] "kBytes/sec"
+msgstr[2] ""
 
 #: src/OtherFunctions.cpp:99
 msgid "MB/s"
-msgstr ""
+msgstr "MB/s"
 
 #: src/OtherFunctions.cpp:108 src/OtherFunctions.cpp:111
 msgid "secs"
@@ -4479,6 +4491,7 @@ msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "Spaseni %i seeds izvora za poceti fajl: %s (%s)"
 msgstr[1] "Spaseni %i seeds izvora za poceti fajl: %s (%s)"
+msgstr[2] ""
 
 #: src/PartFile.cpp:1048
 #, fuzzy, c-format
@@ -4504,6 +4517,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Nadjen koruptan dio (%i) u %i pocetom fajlu %s - FileResultHash |%s| "
 "FileHash |%s|"
+msgstr[2] ""
 
 #: src/PartFile.cpp:1172
 #, c-format
@@ -4545,8 +4559,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 
 #: src/PartFile.cpp:2971
@@ -4595,9 +4609,8 @@ msgid "Arabic"
 msgstr "Arabic"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "Estonian"
+msgstr "Asturleonski"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
@@ -4617,7 +4630,7 @@ msgstr ""
 
 #: src/Preferences.cpp:636
 msgid "Chinese (Traditional)"
-msgstr ""
+msgstr "Kinesko (tradicionalno)"
 
 #: src/Preferences.cpp:637
 msgid "Croatian"
@@ -4625,7 +4638,7 @@ msgstr ""
 
 #: src/Preferences.cpp:638
 msgid "Czech"
-msgstr ""
+msgstr "Češki"
 
 #: src/Preferences.cpp:639
 msgid "Danish"
@@ -4637,7 +4650,7 @@ msgstr "Dutch"
 
 #: src/Preferences.cpp:641
 msgid "English (U.K.)"
-msgstr ""
+msgstr "Engleski (U.K.)"
 
 #: src/Preferences.cpp:642
 msgid "Estonian"
@@ -4653,7 +4666,7 @@ msgstr "French"
 
 #: src/Preferences.cpp:645
 msgid "Galician"
-msgstr ""
+msgstr "Galješki"
 
 #: src/Preferences.cpp:646
 msgid "German"
@@ -4665,7 +4678,7 @@ msgstr ""
 
 #: src/Preferences.cpp:648
 msgid "Hebrew"
-msgstr ""
+msgstr "Hebrejski"
 
 #: src/Preferences.cpp:649
 msgid "Hungarian"
@@ -4677,11 +4690,11 @@ msgstr "Italian"
 
 #: src/Preferences.cpp:651
 msgid "Italian (Swiss)"
-msgstr ""
+msgstr "Talijanski (Švicarska)"
 
 #: src/Preferences.cpp:652
 msgid "Japanese"
-msgstr ""
+msgstr "Japanski"
 
 #: src/Preferences.cpp:653
 msgid "Korean"
@@ -4693,7 +4706,7 @@ msgstr "Lithuanian"
 
 #: src/Preferences.cpp:655
 msgid "Norwegian (Nynorsk)"
-msgstr ""
+msgstr "Norveški (Nynorsk)"
 
 #: src/Preferences.cpp:656
 msgid "Polish"
@@ -4705,12 +4718,11 @@ msgstr "Portuguese"
 
 #: src/Preferences.cpp:658
 msgid "Portuguese (Brazilian)"
-msgstr ""
+msgstr "Portugalski (Brazil)"
 
 #: src/Preferences.cpp:659
-#, fuzzy
 msgid "Romanian"
-msgstr "Estonian"
+msgstr "Rumunjski"
 
 #: src/Preferences.cpp:660
 msgid "Russian"
@@ -4726,7 +4738,7 @@ msgstr "Spanish"
 
 #: src/Preferences.cpp:663
 msgid "Swedish"
-msgstr ""
+msgstr "Švedski"
 
 #: src/Preferences.cpp:664
 msgid "Turkish"
@@ -4734,12 +4746,11 @@ msgstr ""
 
 #: src/Preferences.cpp:665
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrajinski"
 
 #: src/Preferences.cpp:728
-#, fuzzy
 msgid "Change Language"
-msgstr "Jezik"
+msgstr "Promijeniti jezik"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
@@ -4886,9 +4897,8 @@ msgid "- External connect port changed.\n"
 msgstr "Parametri za spoljasnju vezu"
 
 #: src/PrefsUnifiedDlg.cpp:614
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "Parametri za spoljasnju vezu"
+msgstr "Parametri za spoljasnju vezu\n"
 
 #: src/PrefsUnifiedDlg.cpp:618
 #, fuzzy
@@ -4998,6 +5008,7 @@ msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Obnovi kasnjenje : 5 sekundi"
 msgstr[1] "Obnovi kasnjenje : 5 sekundi"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1137
 #, fuzzy, c-format
@@ -5005,6 +5016,7 @@ msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Vrijeme za prosjecni graf: 100 minuta"
 msgstr[1] "Vrijeme za prosjecni graf: 100 minuta"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1143
 #, c-format
@@ -5017,6 +5029,7 @@ msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Velicina fajl buffera %i bytes"
 msgstr[1] "Velicina fajl buffera %i bytes"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1161
 #, fuzzy, c-format
@@ -5024,6 +5037,7 @@ msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Duzina liste cekanja %i klienata"
 msgstr[1] "Duzina liste cekanja %i klienata"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1168
 #, fuzzy, c-format
@@ -5031,6 +5045,7 @@ msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Interval obnavljanja veze servera %i minuta"
 msgstr[1] "Interval obnavljanja veze servera %i minuta"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1170
 msgid "Server connection refresh interval: Disabled"
@@ -5186,6 +5201,7 @@ msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "Automatsko spajanje sa serverom ce ponovo poceti za %d sekundi"
 msgstr[1] "Automatsko spajanje sa serverom ce ponovo poceti za %d sekundi"
+msgstr[2] ""
 
 #: src/ServerConnect.cpp:412
 msgid "Connection lost"
@@ -5238,6 +5254,7 @@ msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] "%i servera pronadjeno u server.met"
 msgstr[1] "%i servera pronadjeno u server.met"
+msgstr[2] ""
 
 #: src/ServerList.cpp:176
 #, fuzzy, c-format
@@ -5245,6 +5262,7 @@ msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] "%d servera dodato"
 msgstr[1] "%d servera dodato"
+msgstr[2] ""
 
 #: src/ServerList.cpp:179
 #, fuzzy
@@ -5384,8 +5402,8 @@ msgstr ""
 msgid "Servers (%i)"
 msgstr "Serveri (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Server"
 
@@ -5447,7 +5465,7 @@ msgstr "Da li zaist zelis otkazati i obrisati ove fajlove ?\n"
 #: src/ServerSocket.cpp:273
 #, c-format
 msgid "ERROR: %s (%s) - %s"
-msgstr ""
+msgstr "POGREŠKA:%s (%s) - %s"
 
 #: src/ServerSocket.cpp:288
 #, c-format
@@ -5481,6 +5499,7 @@ msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] "Primljeno %d novih servera"
 msgstr[1] "Primljeno %d novih servera"
+msgstr[2] ""
 
 #: src/ServerSocket.cpp:551
 msgid "Saving of server-list completed."
@@ -5645,6 +5664,7 @@ msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] "Pronadjeno %i poznatih dijeljenih fajlova"
 msgstr[1] "Pronadjeno %i poznatih dijeljenih fajlova"
+msgstr[2] ""
 
 #: src/SharedFileList.cpp:377
 #, fuzzy, c-format
@@ -5652,6 +5672,7 @@ msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "Pronadjeno %i poznatih dijeljenih fajlova, %i nepoznatih"
 msgstr[1] "Pronadjeno %i poznatih dijeljenih fajlova, %i nepoznatih"
+msgstr[2] ""
 
 #: src/SharedFileList.cpp:386
 #, c-format
@@ -6046,7 +6067,7 @@ msgstr ""
 
 #: src/StatTree.cpp:594 src/StatTree.cpp:605
 msgid "Never"
-msgstr ""
+msgstr "Nikad"
 
 #: src/TerminationProcess.cpp:47
 #, c-format
@@ -6143,7 +6164,7 @@ msgstr ""
 
 #: src/TextClient.cpp:702
 msgid "eD2k"
-msgstr ""
+msgstr "eD2k"
 
 #: src/TextClient.cpp:707
 #, c-format
@@ -7100,9 +7121,8 @@ msgid " kB/s, Upload: "
 msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1110
-#, fuzzy
 msgid " kB/s"
-msgstr "kB/s"
+msgstr " kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1118
 msgid "Sharing: "
@@ -7892,8 +7912,8 @@ msgstr ""
 #~ "Ignoring %u bytes of block %u-%u because of errornous zstream state for "
 #~ "file \"%s\""
 #~ msgstr ""
-#~ "Ignorisanje %u bytes bloka %u-%u zbog pogresnog zstreama stanja za fajl\"%"
-#~ "s\""
+#~ "Ignorisanje %u bytes bloka %u-%u zbog pogresnog zstreama stanja za fajl"
+#~ "\"%s\""
 
 #~ msgid "Corrupted compressed packet for %s received (error %i)"
 #~ msgstr "Koruptan komprimirani paket za %s dobiven (error %i)"
