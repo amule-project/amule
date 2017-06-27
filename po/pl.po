@@ -12,9 +12,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+<<<<<<< HEAD
+"POT-Creation-Date: 2017-05-25 12:45+0200\n"
+"PO-Revision-Date: 2017-06-26 10:27+0200\n"
+"Last-Translator: Sebastiano Pistore <sebastianopistore.info@protonmail.ch>\n"
+=======
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
 "PO-Revision-Date: 2010-08-19 01:21+0100\n"
 "Last-Translator: Michał Trzebiatowski <hippie_1968@hotmail.com>\n"
+>>>>>>> f0dc7d5747d562ba5c91dfe58082794c47f6b82e
 "Language-Team: translationproject.org/team/pl.html <translation-team-"
 "pl@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -59,14 +65,14 @@ msgid "Now, exiting main app..."
 msgstr "Teraz, zakańczam główną aplikację..."
 
 #: src/amule.cpp:249
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid '%ld' ... "
-msgstr "Zakańczam instancję amuleweb z pid `%ld' ... "
+msgstr "Zakańczam instancję amuleweb z pid '%ld' ... "
 
 #: src/amule.cpp:252
-#, fuzzy, c-format
+#, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "Zabiłam instancję amuleweb z pid `%ld' ... "
+msgstr "Zabiłam instancję amuleweb z pid '%ld' ... "
 
 #: src/amule.cpp:254 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
@@ -859,13 +865,13 @@ msgid "New message from '%s' (IP:%s)"
 msgstr "Nowa wiadomość od '%s' (IP:%s)"
 
 #: src/BaseClient.cpp:2901
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
 "Ignored"
 msgstr ""
-"Użytkownik %s (%u) zażądał twojej listy plików udostępnionych w katalogu %s -"
-"> Odmówiono"
+"Użytkownik %s (%u) zażądał twojej listy plików udostępnionych w katalogu "
+"'%s' -> Odmówiono"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:86
 #, c-format
@@ -1079,20 +1085,20 @@ msgstr ""
 "Użytkownik %s (%u) żążądał twojej listy udostępnionych katalogów -> Odmówiono"
 
 #: src/ClientTCPSocket.cpp:924
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
 msgstr ""
-"Użytkownik %s (%u) zażądał twojej listy plików udostępnionych w katalogu %s -"
-"> Zaakceptowano"
+"Użytkownik %s (%u) zażądał twojej listy plików udostępnionych w katalogu "
+"'%s' -> Zaakceptowano"
 
 #: src/ClientTCPSocket.cpp:929
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
 msgstr ""
-"Użytkownik %s (%u) zażądał twojej listy plików udostępnionych w katalogu %s -"
-"> Odmówiono"
+"Użytkownik %s (%u) zażądał twojej listy plików udostępnionych w katalogu "
+"'%s' -> Odmówiono"
 
 #: src/ClientTCPSocket.cpp:948
 #, fuzzy, c-format
@@ -4928,9 +4934,8 @@ msgid "There are no translations installed for aMule"
 msgstr ""
 
 #: src/Preferences.cpp:771
-#, fuzzy
 msgid "No languages available"
-msgstr "Niedostępny"
+msgstr "Brak dostępnych języków"
 
 #: src/Preferences.cpp:902
 msgid "no options available"
@@ -6272,9 +6277,9 @@ msgid "Never"
 msgstr "Nigdy"
 
 #: src/TerminationProcess.cpp:47
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' with pid '%d' has finished with status code '%d'."
-msgstr "Komenda `%s' z pid `%d' zakończyła działanie ze statusem `%d'."
+msgstr "Komenda '%s' z pid '%d' zakończyła działanie ze statusem '%d'."
 
 #: src/TextClient.cpp:131
 msgid "Execute <str> and exit."

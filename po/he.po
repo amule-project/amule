@@ -9,14 +9,15 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2008-04-11 00:21+0300\n"
-"Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
+"PO-Revision-Date: 2017-05-25 11:12+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Hebrew\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: he\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -131,7 +132,7 @@ msgstr ""
 #: src/amule-remote-gui.cpp:308 src/amule-remote-gui.cpp:330
 #: src/amule-remote-gui.cpp:332 src/amule-remote-gui.cpp:644
 msgid "ERROR"
-msgstr ""
+msgstr "שְׁגִיאָה"
 
 #: src/amule.cpp:746
 #, c-format
@@ -214,7 +215,7 @@ msgstr ""
 
 #: src/amule.cpp:1486
 msgid "ERROR: can't open logfile"
-msgstr "שגיאה: לא יכול לפתוח קובץ יומן."
+msgstr "שגיאה: לא יכול לפתוח קובץ יומן"
 
 #: src/amule.cpp:1490
 msgid "WARNING: logfile is empty. Something is wrong."
@@ -222,7 +223,7 @@ msgstr ""
 
 #: src/amule.cpp:1508
 msgid "Log has been reset"
-msgstr "היומן אופס."
+msgstr "היומן אופס"
 
 #: src/amule.cpp:1534
 #, c-format
@@ -327,7 +328,7 @@ msgstr "קאד מחובר (מאחורי חומת אש)"
 
 #: src/amule.cpp:1919
 msgid "Disconnected from Kad"
-msgstr "מנותק מקאד."
+msgstr "מנותק מקאד"
 
 #: src/amule.cpp:1988
 msgid ""
@@ -371,7 +372,7 @@ msgstr ""
 #: src/amuled.cpp:780
 #, c-format
 msgid "ERROR: %s"
-msgstr ""
+msgstr "אירעה שגיאה: %s"
 
 #: src/amuleDlg.cpp:238
 #, c-format
@@ -446,8 +447,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "הודעה"
 
@@ -487,9 +488,9 @@ msgstr "קאד: מכובה"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "ביטול"
 
@@ -707,7 +708,7 @@ msgstr ""
 
 #: src/amule-remote-gui.cpp:419
 msgid "Ready"
-msgstr ""
+msgstr "מוכן"
 
 #: src/amule-remote-gui.cpp:596 src/TransferWnd.cpp:340
 msgid "All"
@@ -746,11 +747,11 @@ msgstr ""
 #: src/BaseClient.cpp:1791
 #, c-format
 msgid " (Fake eMule version %#x)"
-msgstr "(חיקוי אימיול בגרסת %#x)"
+msgstr " (חיקוי אימיול בגרסת %#x)"
 
 #: src/BaseClient.cpp:1802
 msgid " (Fake eMule)"
-msgstr "(חיקוי אימיול)"
+msgstr " (חיקוי אימיול)"
 
 #: src/BaseClient.cpp:1804
 msgid "xMule (Fake eMule)"
@@ -830,7 +831,7 @@ msgstr "שגיאה במהלך שמירת הקובץ known.met: %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "הכנס את הקוד המוצג בתמונה"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:693 src/muuli_wdr.cpp:244
 #: src/SearchListCtrl.cpp:627 src/TransferWnd.cpp:335
@@ -889,7 +890,7 @@ msgstr ""
 
 #: src/ChatWnd.cpp:99
 msgid "Chat"
-msgstr ""
+msgstr "צ’אט"
 
 #: src/ChatWnd.cpp:101 src/MuleNotebook.cpp:186
 msgid "Close tab"
@@ -941,7 +942,7 @@ msgstr "מ\"ז גבוה (HighID)"
 
 #: src/ClientDetailDialog.cpp:121
 msgid "Enabled"
-msgstr ""
+msgstr "פעיל"
 
 #: src/ClientDetailDialog.cpp:122
 msgid "Supported"
@@ -953,7 +954,7 @@ msgstr ""
 
 #: src/ClientDetailDialog.cpp:124
 msgid "Disabled"
-msgstr ""
+msgstr "ביטול"
 
 #: src/ClientDetailDialog.cpp:131 src/ServerWnd.cpp:164 src/ServerWnd.cpp:213
 #: src/TextClient.cpp:720
@@ -1302,8 +1303,7 @@ msgstr "מקורות"
 msgid "Priority"
 msgstr "עדיפות"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "מצב"
 
@@ -1470,7 +1470,7 @@ msgstr ""
 
 #: src/DownloadQueue.cpp:166
 msgid "No part files found"
-msgstr "לא נמצא קובץ-חלקים."
+msgstr "לא נמצא קובץ-חלקים"
 
 #: src/DownloadQueue.cpp:168
 #, fuzzy, c-format
@@ -1983,7 +1983,7 @@ msgstr ""
 
 #: src/FriendListCtrl.cpp:229 src/GenericClientListCtrl.cpp:530
 msgid "Multiple selection"
-msgstr "בחירה מרובה."
+msgstr "בחירה מרובה"
 
 #: src/GenericClientListCtrl.cpp:547
 msgid "Send message to user"
@@ -2256,7 +2256,7 @@ msgstr "שם הקובץ"
 
 #: src/KnownFile.cpp:1545
 msgid "File size"
-msgstr ""
+msgstr "גודל הקובץ"
 
 #: src/KnownFile.cpp:1546
 msgid "Share ratio"
@@ -2273,7 +2273,7 @@ msgstr ""
 
 #: src/KnownFile.cpp:1549
 msgid "Accepted"
-msgstr ""
+msgstr "התקבל"
 
 #: src/KnownFile.cpp:1551
 msgid "Complete sources"
@@ -2334,7 +2334,7 @@ msgstr "אתה חייב לציין סיסמא שאינה רקה."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:124
 msgid "Invalid password, not a MD5 hash!"
-msgstr "סיסמא לא תקינה היא איננה מגובבת בפורמט MD5"
+msgstr "סיסמא לא תקינה היא איננה מגובבת בפורמט !MD5"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:187
 msgid "Connection failure"
@@ -2381,7 +2381,7 @@ msgstr ""
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "ERROR: "
-msgstr ""
+msgstr "אירעה שגיאה: "
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
@@ -2424,7 +2424,7 @@ msgstr "ק\"ב/ש"
 #: src/MuleTrayIcon.cpp:98 src/MuleTrayIcon.cpp:124 src/MuleTrayIcon.cpp:451
 #: src/MuleTrayIcon.cpp:472
 msgid "Unlimited"
-msgstr ""
+msgstr "ללא הגבלה"
 
 #: src/MuleTrayIcon.cpp:290
 msgid "aMule Tray Menu"
@@ -2694,7 +2694,7 @@ msgstr "אודיו"
 #: src/muuli_wdr.cpp:232 src/OtherFunctions.cpp:171 src/OtherFunctions.cpp:641
 #: src/TransferWnd.cpp:359
 msgid "CD-Images"
-msgstr "אימג' של סי.די."
+msgstr "אימג' של סי.די"
 
 #: src/muuli_wdr.cpp:233 src/OtherFunctions.cpp:178 src/OtherFunctions.cpp:642
 #: src/TransferWnd.cpp:360
@@ -3077,7 +3077,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1306
 msgid "Kad:"
-msgstr ""
+msgstr "Kad:"
 
 #: src/muuli_wdr.cpp:1317
 msgid "Transfers to client"
@@ -3146,7 +3146,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr ""
+msgstr "שפה: "
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -3209,7 +3209,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1505
 msgid "seconds"
-msgstr ""
+msgstr "שניות"
 
 #: src/muuli_wdr.cpp:1511
 msgid "Browser Selection"
@@ -3224,8 +3224,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "דפדף"
 
@@ -3271,7 +3270,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1617
 msgid "4665"
-msgstr ""
+msgstr "4665"
 
 #: src/muuli_wdr.cpp:1620
 msgid "Extended UDP port (Kad / global search) "
@@ -3309,7 +3308,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1676
 msgid "Kademlia"
-msgstr ""
+msgstr "Kademlia"
 
 #: src/muuli_wdr.cpp:1680 src/muuli_wdr.cpp:3282
 msgid "ED2K"
@@ -3373,7 +3372,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1779
 msgid "Enable"
-msgstr ""
+msgstr "אפשר"
 
 #: src/muuli_wdr.cpp:1783
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
@@ -3487,7 +3486,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1963
 msgid "Background"
-msgstr ""
+msgstr "רקע"
 
 #: src/muuli_wdr.cpp:1964
 msgid "Grid"
@@ -3551,7 +3550,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2028
 msgid "!!! WARNING !!!"
-msgstr ""
+msgstr "!!! אזהרה!!!"
 
 #: src/muuli_wdr.cpp:2042
 msgid "Max new connections / 5 secs"
@@ -3727,7 +3726,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2354
 msgid "Title :"
-msgstr ""
+msgstr "כותרת:"
 
 #: src/muuli_wdr.cpp:2364
 msgid "Comment :"
@@ -3902,7 +3901,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2832
 msgid "Everybody"
-msgstr ""
+msgstr "כולם"
 
 #: src/muuli_wdr.cpp:2834
 msgid "No one"
@@ -3948,7 +3947,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2870
 msgid "URL:"
-msgstr ""
+msgstr "כתובת:"
 
 #: src/muuli_wdr.cpp:2876
 msgid "Update now"
@@ -4063,7 +4062,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3036
 msgid "Username: "
-msgstr ""
+msgstr "שם משתמש: "
 
 #: src/muuli_wdr.cpp:3040
 msgid "The username to use to connect to the proxy"
@@ -4115,7 +4114,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3120
 msgid "User name"
-msgstr ""
+msgstr "שם משתמש"
 
 #: src/muuli_wdr.cpp:3137
 msgid "Remember those settings"
@@ -4152,7 +4151,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3304
 msgid "Event Types"
-msgstr ""
+msgstr "סוגי אירועים"
 
 #: src/muuli_wdr.cpp:3324
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
@@ -4540,8 +4539,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 
 #: src/PartFile.cpp:2971
@@ -4570,7 +4569,7 @@ msgstr ""
 #: src/PartFile.cpp:3764 src/SearchListCtrl.cpp:1006
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
-msgstr ""
+msgstr "הורדה"
 
 #: src/PartFile.cpp:4013
 #, c-format
@@ -4660,7 +4659,7 @@ msgstr "יוונית"
 
 #: src/Preferences.cpp:648
 msgid "Hebrew"
-msgstr ""
+msgstr "עִברִית"
 
 #: src/Preferences.cpp:649
 msgid "Hungarian"
@@ -4729,11 +4728,11 @@ msgstr "טורקית"
 
 #: src/Preferences.cpp:665
 msgid "Ukrainian"
-msgstr ""
+msgstr "אוקראיני"
 
 #: src/Preferences.cpp:728
 msgid "Change Language"
-msgstr ""
+msgstr "שנה שפה"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
@@ -4791,7 +4790,7 @@ msgstr "אבטחה"
 
 #: src/PrefsUnifiedDlg.cpp:182
 msgid "Interface"
-msgstr ""
+msgstr "ממשק"
 
 #: src/PrefsUnifiedDlg.cpp:184
 msgid "Proxy"
@@ -4811,7 +4810,7 @@ msgstr "חתימה מקוונת"
 
 #: src/PrefsUnifiedDlg.cpp:188
 msgid "Advanced"
-msgstr ""
+msgstr "מתקדם"
 
 #: src/PrefsUnifiedDlg.cpp:189
 msgid "Events"
@@ -4916,9 +4915,8 @@ msgid "- Temp folder changed.\n"
 msgstr "- הפסרייה הזמנית שונתה.\n"
 
 #: src/PrefsUnifiedDlg.cpp:660
-#, fuzzy
 msgid "- ED2K network enabled.\n"
-msgstr "כל הרשתות מנוטרלות."
+msgstr "כל הרשתות מנוטרלות.\n"
 
 #: src/PrefsUnifiedDlg.cpp:732
 msgid ""
@@ -5134,7 +5132,7 @@ msgstr "ביטול"
 
 #: src/SearchListCtrl.cpp:1017
 msgid "New"
-msgstr ""
+msgstr "חדש"
 
 #: src/ServerConnect.cpp:74
 msgid ""
@@ -5192,12 +5190,12 @@ msgstr[1] "התחברות אוטומטית לשרת ינוסה שוב תוך %d 
 
 #: src/ServerConnect.cpp:412
 msgid "Connection lost"
-msgstr "החיבור אבד."
+msgstr "החיבור אבד"
 
 #: src/ServerConnect.cpp:419
 #, c-format
 msgid "Connecting to %s (%s:%i) failed."
-msgstr "ההתחברות ל %s·(%s:%i) כשלה"
+msgstr "ההתחברות ל %s·(%s:%i) כשלה."
 
 #: src/ServerConnect.cpp:461
 msgid "ERROR: Socket invalid at timeout check"
@@ -5386,8 +5384,8 @@ msgstr "האם אתה בטוח שאתה רוצה למחוק את השרת הקב
 msgid "Servers (%i)"
 msgstr "שרתים (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "שרת"
 
@@ -6105,7 +6103,7 @@ msgstr "הורדות (%i)"
 
 #: src/TextClient.cpp:646 src/webserver/src/WebServer.cpp:409
 msgid "Request failed with an unknown error."
-msgstr "הבקשה נכשלה עם שגיאה לא ידועה"
+msgstr "הבקשה נכשלה עם שגיאה לא ידועה."
 
 #: src/TextClient.cpp:650
 msgid "Operation was successful."
@@ -6146,7 +6144,7 @@ msgstr ""
 
 #: src/TextClient.cpp:702
 msgid "eD2k"
-msgstr ""
+msgstr "eD2k"
 
 #: src/TextClient.cpp:707
 #, c-format
@@ -6632,7 +6630,7 @@ msgstr "האם אתה בטוח שברצונך לבטל ולמחוק את כל ה
 
 #: src/TransferWnd.cpp:209
 msgid "Confirmation Required"
-msgstr "זקוק לאישור."
+msgstr "זקוק לאישור"
 
 #: src/TransferWnd.cpp:238
 msgid "Only 99 categories are supported."
@@ -6714,11 +6712,11 @@ msgstr "זמן מצטבר של פעולת הורדה."
 
 #: src/UserEvents.h:82
 msgid "New chat session started"
-msgstr "צ'אט חדש החל."
+msgstr "צ'אט חדש החל"
 
 #: src/UserEvents.h:85
 msgid "Message sender."
-msgstr "שולח ההודעה"
+msgstr "שולח ההודעה."
 
 #: src/UserEvents.h:88
 msgid "Out of space"
@@ -6730,7 +6728,7 @@ msgstr "מחיצת דיסק."
 
 #: src/UserEvents.h:94
 msgid "Error on completion"
-msgstr "שגיאה בעת הסיום."
+msgstr "שגיאה בעת הסיום"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:67
 #, c-format
@@ -7323,7 +7321,7 @@ msgstr "הבקשה נכשלה עם השגיאות הבאות: %s."
 
 #: src/webserver/src/WebServer.cpp:1740
 msgid "Index file not found: "
-msgstr "קובץ האינדקס לא נמצא"
+msgstr "קובץ האינדקס לא נמצא: "
 
 #: src/webserver/src/WebServer.cpp:1819
 msgid "Session expired - requesting login\n"
@@ -7953,8 +7951,8 @@ msgstr "מעבד בקשה [הופנתה מחדש]: "
 #~ "FileResultHash |%s| FileHash |%s|"
 #~ msgstr ""
 #~ "נמצא חלק פגום (%d) בתוך %d קובץ-החלקים %s גיבוב-קובץ-התוצאות |%s| גיבוב-"
-#~ "הקובץ |%s|נמצא חלק פגום (%d) בתוך %d קבציי-החלקים %s גיבוב-קובץ-התוצאות |%"
-#~ "s| גיבוב-הקובץ |%s|"
+#~ "הקובץ |%s|נמצא חלק פגום (%d) בתוך %d קבציי-החלקים %s גיבוב-קובץ-התוצאות |"
+#~ "%s| גיבוב-הקובץ |%s|"
 
 #~ msgid "No comment(s)"
 #~ msgstr "רין הערות"

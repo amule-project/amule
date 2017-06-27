@@ -8,8 +8,13 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
+<<<<<<< HEAD
+"PO-Revision-Date: 2017-06-26 10:30+0200\n"
+"Last-Translator: Sebastiano Pistore <sebastianopistore.info@protonmail.ch>\n"
+=======
 "PO-Revision-Date: 2004-04-08 00:30+0100\n"
 "Last-Translator: Tea Lorenzmeier <tea1@gmx.net>\n"
+>>>>>>> f0dc7d5747d562ba5c91dfe58082794c47f6b82e
 "Language-Team: www.aMule.org <forum@aMule.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2490,7 +2495,7 @@ msgstr ""
 
 #: src/MuleTrayIcon.cpp:349
 msgid "ServerName: "
-msgstr "Ime servera:"
+msgstr "Ime servera: "
 
 #: src/MuleTrayIcon.cpp:350
 msgid "ServerIP: "
@@ -3225,7 +3230,7 @@ msgstr ""
 #: src/utils/wxCas/src/wxcasprefs.cpp:56
 #: src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
-msgstr "Pretrazi :"
+msgstr "Pretrazi"
 
 #: src/muuli_wdr.cpp:1525
 msgid "Open in new tab if possible"
@@ -4222,11 +4227,16 @@ msgid "Disabled [%s]"
 msgstr "Onemoguceno [%s]"
 
 #: src/OtherFunctions.cpp:64
-#, fuzzy
 msgid "byte"
 msgid_plural "bytes"
+<<<<<<< HEAD
+msgstr[0] "byte"
+msgstr[1] "bytes"
+msgstr[2] "bytes"
+=======
 msgstr[0] "Bytes"
 msgstr[1] "Bytes"
+>>>>>>> f0dc7d5747d562ba5c91dfe58082794c47f6b82e
 
 #: src/OtherFunctions.cpp:66
 msgid "kB"
@@ -4253,11 +4263,16 @@ msgid "T"
 msgstr "T"
 
 #: src/OtherFunctions.cpp:95
-#, fuzzy
 msgid "byte/sec"
 msgid_plural "bytes/sec"
+<<<<<<< HEAD
+msgstr[0] "byte/sec"
+msgstr[1] "bytes/sec"
+msgstr[2] "bytes/sec"
+=======
 msgstr[0] "kBytes/sec"
 msgstr[1] "kBytes/sec"
+>>>>>>> f0dc7d5747d562ba5c91dfe58082794c47f6b82e
 
 #: src/OtherFunctions.cpp:99
 msgid "MB/s"
@@ -4993,11 +5008,17 @@ msgstr ""
 "Samo jedna URL po liniji."
 
 #: src/PrefsUnifiedDlg.cpp:1130 src/PrefsUnifiedDlg.cpp:1149
-#, fuzzy, c-format
+#, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
+<<<<<<< HEAD
+msgstr[0] "Obnovi kasnjenje : %d sekundi"
+msgstr[1] "Obnovi kasnjenje : %d sekundi"
+msgstr[2] "Obnovi kasnjenje : %d sekundi"
+=======
 msgstr[0] "Obnovi kasnjenje : 5 sekundi"
 msgstr[1] "Obnovi kasnjenje : 5 sekundi"
+>>>>>>> f0dc7d5747d562ba5c91dfe58082794c47f6b82e
 
 #: src/PrefsUnifiedDlg.cpp:1137
 #, fuzzy, c-format
