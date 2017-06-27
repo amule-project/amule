@@ -20,7 +20,7 @@
  */
 
 $text["dayabbr"]	= "g";
-$text["hourabbr"]	= "h";
+$text["hourabbr"]	= "o";
 $text["minabbr"]	= "m";
 $text["secabbr"]	= "s";
 $text["runtimemsg"]	= "&#232; in funzione da";
@@ -47,13 +47,13 @@ $text["nick"]		= "Nick";
 $text["localtime"]	= "Ora locale";
 $text["rxspeed"]	= "Velocit&#224; DL";
 $text["txspeed"]	= "Velocit&#224; UL";
-$text["rxtotal"]	= "DL Totale";
-$text["txtotal"]	= "UL Totale";
+$text["rxtotal"]	= "Totale DL";
+$text["txtotal"]	= "Totale UL";
 $text["osversion"]	= "Versione OS";
 $text["hostuptime"]	= "Uptime";
 $text["servername"]	= "Nome server";
 $text["serveraddr"]	= "Indirizzo server:porta";
-$text["ed2klink"]	= "Link ed2k";
+$text["ed2klink"]	= "Link eD2k";
 $text["general"]	= "Generale";
 $text["server"]		= "Server";
 $text["signature"]	= "Firma";
