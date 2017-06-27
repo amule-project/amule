@@ -7,9 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+<<<<<<< HEAD
+"POT-Creation-Date: 2017-05-24 11:10+0200\n"
+"PO-Revision-Date: 2017-06-26 10:59+0200\n"
+"Last-Translator: Sebastiano Pistore <sebastianopistore.info@protonmail.ch>\n"
+=======
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
 "PO-Revision-Date: 2004-03-28 22:15+0300\n"
 "Last-Translator: saleh alhathal <hathalsal@hotmail.com>\n"
+>>>>>>> f0dc7d5747d562ba5c91dfe58082794c47f6b82e
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -404,11 +410,11 @@ msgstr ""
 
 #: src/amuleDlg.cpp:502
 msgid "Website: http://www.amule.org \n"
-msgstr ""
+msgstr "الموقع الإلكتروني: http://www.amule.org \n"
 
 #: src/amuleDlg.cpp:503
 msgid "Forum: http://forum.amule.org \n"
-msgstr ""
+msgstr "الموقع الإلكتروني: http://www.amule.org \n"
 
 #: src/amuleDlg.cpp:504
 msgid ""
@@ -440,7 +446,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:510
 msgid "http://kademlia.scs.cs.nyu.edu\n"
-msgstr ""
+msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
 #: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
@@ -550,7 +556,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:1210 src/muuli_wdr.cpp:2092 src/Preferences.cpp:842
 msgid "- default -"
-msgstr ""
+msgstr " - اﻹفتراضية بالنظام - "
 
 #: src/amuleDlg.cpp:1233
 #, c-format
@@ -1213,7 +1219,7 @@ msgstr ""
 #: src/DataToText.cpp:127 src/muuli_wdr.cpp:198 src/muuli_wdr.cpp:3287
 #: src/SearchDlg.cpp:109 src/TextClient.cpp:717
 msgid "Kad"
-msgstr ""
+msgstr "Kad"
 
 #: src/DataToText.cpp:128
 msgid "Source Exchange"
@@ -2002,7 +2008,7 @@ msgstr ""
 
 #: src/GenericClientListCtrl.cpp:943
 msgid "A4AF"
-msgstr ""
+msgstr "A4AF"
 
 #: src/GenericClientListCtrl.cpp:995
 #, fuzzy, c-format
@@ -2644,11 +2650,11 @@ msgstr "نوع"
 
 #: src/muuli_wdr.cpp:196 src/SearchDlg.cpp:108
 msgid "Local"
-msgstr ""
+msgstr "محلي"
 
 #: src/muuli_wdr.cpp:197
 msgid "Global"
-msgstr ""
+msgstr "شامل"
 
 #: src/muuli_wdr.cpp:199
 msgid "FileHash"
@@ -2660,11 +2666,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:213
 msgid "Filtering"
-msgstr ""
+msgstr "مرشح"
 
 #: src/muuli_wdr.cpp:224
 msgid "File Type"
-msgstr ""
+msgstr "نوع الملف"
 
 #: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:199
 msgid "Any"
@@ -2695,7 +2701,7 @@ msgstr "برامج"
 
 #: src/muuli_wdr.cpp:235 src/OtherFunctions.cpp:185
 msgid "Texts"
-msgstr ""
+msgstr "النصوص"
 
 #: src/muuli_wdr.cpp:236 src/OtherFunctions.cpp:150
 msgid "Videos"
@@ -2732,15 +2738,15 @@ msgstr "اكبر حجم"
 
 #: src/muuli_wdr.cpp:306
 msgid "Availability"
-msgstr ""
+msgstr "توفر"
 
 #: src/muuli_wdr.cpp:319
 msgid "Filter:"
-msgstr ""
+msgstr "مرشح:"
 
 #: src/muuli_wdr.cpp:328
 msgid "Filter Results"
-msgstr ""
+msgstr "فلترة النتائج"
 
 #: src/muuli_wdr.cpp:334
 msgid "Invert Result"
@@ -2756,7 +2762,7 @@ msgstr "ابدء"
 
 #: src/muuli_wdr.cpp:356
 msgid "More"
-msgstr ""
+msgstr "المزيد"
 
 #: src/muuli_wdr.cpp:357
 msgid "Searches for more results on eD2k. Not supported for Kad yet."
@@ -2776,7 +2782,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:393
 msgid "Results"
-msgstr ""
+msgstr "النتائج"
 
 #: src/muuli_wdr.cpp:422
 msgid "Clears completed downloads"
@@ -3049,7 +3055,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1274
 msgid "User ID:"
-msgstr ""
+msgstr "معرف المستخدم :"
 
 #: src/muuli_wdr.cpp:1281
 msgid "Server IP:"
@@ -3065,7 +3071,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1306
 msgid "Kad:"
-msgstr ""
+msgstr ":Kad"
 
 #: src/muuli_wdr.cpp:1317
 msgid "Transfers to client"
@@ -3134,7 +3140,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr ""
+msgstr "x اللغة: ترجمة صادق"
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -3243,7 +3249,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1601
 msgid "Ports"
-msgstr ""
+msgstr "الموانئ"
 
 #: src/muuli_wdr.cpp:1607
 msgid "Standard TCP Port "
@@ -3259,7 +3265,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1617
 msgid "4665"
-msgstr ""
+msgstr "4665"
 
 #: src/muuli_wdr.cpp:1620
 msgid "Extended UDP port (Kad / global search) "
@@ -3297,11 +3303,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1676
 msgid "Kademlia"
-msgstr ""
+msgstr "Kademlia"
 
 #: src/muuli_wdr.cpp:1680 src/muuli_wdr.cpp:3282
 msgid "ED2K"
-msgstr ""
+msgstr "ED2K"
 
 #: src/muuli_wdr.cpp:1689
 msgid "Autoconnect on startup"
@@ -3361,7 +3367,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1779
 msgid "Enable"
-msgstr ""
+msgstr "تفعيل"
 
 #: src/muuli_wdr.cpp:1783
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
@@ -3471,7 +3477,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1958
 msgid "Colours: "
-msgstr ""
+msgstr "اللـون:"
 
 #: src/muuli_wdr.cpp:1963
 msgid "Background"
@@ -3895,7 +3901,7 @@ msgstr "الكل"
 
 #: src/muuli_wdr.cpp:2834
 msgid "No one"
-msgstr ""
+msgstr "لا أحد"
 
 #: src/muuli_wdr.cpp:2836
 msgid "Who can see my shared files:"
@@ -3937,11 +3943,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2870
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: src/muuli_wdr.cpp:2876
 msgid "Update now"
-msgstr ""
+msgstr "التحديث الآن"
 
 #: src/muuli_wdr.cpp:2881
 msgid "Auto-update ipfilter at startup"
@@ -4691,7 +4697,7 @@ msgstr "البرتغاليه"
 
 #: src/Preferences.cpp:658
 msgid "Portuguese (Brazilian)"
-msgstr ""
+msgstr "البرتغالية (البرازيلية)"
 
 #: src/Preferences.cpp:659
 #, fuzzy
@@ -4809,7 +4815,7 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:191
 msgid "Debugging"
-msgstr ""
+msgstr "تصحيح الأخطاء"
 
 #: src/PrefsUnifiedDlg.cpp:249
 msgid ""
@@ -6104,7 +6110,7 @@ msgstr ""
 
 #: src/TextClient.cpp:671 src/TextClient.cpp:677
 msgid "ON"
-msgstr ""
+msgstr "نشط"
 
 #: src/TextClient.cpp:676
 #, c-format
@@ -6123,7 +6129,7 @@ msgstr ""
 
 #: src/TextClient.cpp:702
 msgid "eD2k"
-msgstr ""
+msgstr "eD2k"
 
 #: src/TextClient.cpp:707
 #, c-format
@@ -7043,7 +7049,7 @@ msgstr ""
 #: src/utils/wxCas/src/wxcasframe.cpp:1047
 #: src/utils/wxCas/src/wxcasframe.cpp:1069
 msgid " Kad: "
-msgstr ""
+msgstr ":Kad"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1053
 #: src/utils/wxCas/src/wxcasframe.cpp:1075
@@ -7150,7 +7156,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:197
 msgid "User"
-msgstr ""
+msgstr "المستخدم"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:212
 msgid "Enter here the User name to log into your FTP server"

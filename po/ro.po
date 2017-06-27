@@ -7,13 +7,13 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2014-12-27 10:03+0200\n"
-"Last-Translator: Angelescu Constantin <titus0818@yahoo.com>\n"
+"PO-Revision-Date: 2017-05-26 10:37+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Angelescu Constantin <titus0818@yahoo.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 2.0.2\n"
 "Language: ro\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
@@ -278,8 +278,8 @@ msgstr "Utilizați o versiune învechită de aMule!"
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
-"Versiunea dumneavoastră de aMule este %i.%i.%i iar ultima versiune este %li.%"
-"li.%li"
+"Versiunea dumneavoastră de aMule este %i.%i.%i iar ultima versiune este %li."
+"%li.%li"
 
 #: src/amule.cpp:1630
 msgid "The latest version can always be found at http://www.amule.org"
@@ -289,8 +289,8 @@ msgstr "Ultima versiune poate fi găsită mereu la http://www.amule.org"
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr ""
-"ATENȚIE: Versiunea dumneavoastră aMuled este învechită: %i.%i.%i < %li.%li.%"
-"li"
+"ATENȚIE: Versiunea dumneavoastră aMuled este învechită: %i.%i.%i < %li.%li."
+"%li"
 
 #: src/amule.cpp:1636
 msgid "Your copy of aMule is up to date."
@@ -434,7 +434,7 @@ msgstr "EROARE FATALĂ: A eșuat crearea temporizatorului"
 
 #: src/amuleDlg.cpp:493
 msgid "aMule remote control "
-msgstr "control distant aMule"
+msgstr "control distant aMule "
 
 #: src/amuleDlg.cpp:499
 msgid "Snapshot:"
@@ -494,8 +494,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "Mesaj"
 
@@ -535,9 +535,9 @@ msgstr "Kad: Închis"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Renunță"
 
@@ -593,7 +593,7 @@ msgstr "Confirmare ieșire"
 
 #: src/amuleDlg.cpp:1174
 msgid "Launch Command: "
-msgstr "Lansare comandă:"
+msgstr "Lansare comandă: "
 
 #: src/amuleDlg.cpp:1210 src/muuli_wdr.cpp:2092 src/Preferences.cpp:842
 msgid "- default -"
@@ -729,7 +729,7 @@ msgstr "Conectare..."
 
 #: src/amule-remote-gui.cpp:308
 msgid "Connection failed "
-msgstr "Conectare eșuată"
+msgstr "Conectare eșuată "
 
 #: src/amule-remote-gui.cpp:319
 msgid "Remote GUI EC event handler"
@@ -1083,16 +1083,16 @@ msgstr ""
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
 msgstr ""
-"Utilizatorul %s (%u) solicită lista fișierelor partajate pentru directorul '%"
-"s' -> acceptat"
+"Utilizatorul %s (%u) solicită lista fișierelor partajate pentru directorul "
+"'%s' -> acceptat"
 
 #: src/ClientTCPSocket.cpp:929
 #, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
 msgstr ""
-"Utilizatorul %s (%u) solicită lista fișierelor partajate pentru directorul '%"
-"s' -> interzis"
+"Utilizatorul %s (%u) solicită lista fișierelor partajate pentru directorul "
+"'%s' -> interzis"
 
 #: src/ClientTCPSocket.cpp:948
 #, c-format
@@ -1108,8 +1108,8 @@ msgstr "Utilizatorul %s (%u) trimite directoare partajate nesolicitate."
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory '%s'"
 msgstr ""
-"Utilizatorul %s (%u) trimite lista fișierelor partajate pentru directorul '%"
-"s'"
+"Utilizatorul %s (%u) trimite lista fișierelor partajate pentru directorul "
+"'%s'"
 
 #: src/ClientTCPSocket.cpp:985
 #, c-format
@@ -1384,8 +1384,7 @@ msgstr "Surse"
 msgid "Priority"
 msgstr "Prioritate"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Stare"
 
@@ -1550,7 +1549,7 @@ msgid ""
 "met recovery solutions."
 msgstr ""
 "EROARE: A eșuat încărcarea fișierului de backup. Căutați pe http://forum."
-"amule.org soluții de recuperare pentru .part.met"
+"amule.org soluții de recuperare pentru .part.met."
 
 #: src/DownloadQueue.cpp:163
 msgid "All PartFiles Loaded."
@@ -2342,7 +2341,7 @@ msgstr "Kademlia: cuvântul cheie căutat este prea scurt"
 
 #: src/kademlia/kademlia/SearchManager.cpp:138
 msgid "Kademlia: Search keyword is already on search list: "
-msgstr "Kademlia: Cuvântul cheie căutat este deja în lista de căutare:"
+msgstr "Kademlia: Cuvântul cheie căutat este deja în lista de căutare: "
 
 #: src/kademlia/routing/RoutingZone.cpp:171
 msgid ""
@@ -2425,7 +2424,7 @@ msgstr ""
 #: src/KnownFileList.cpp:115
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
-"Intrare nevalidă în lista de fișiere cunoscute, fișierul poate fi corupt:"
+"Intrare nevalidă în lista de fișiere cunoscute, fișierul poate fi corupt: "
 
 #: src/libs/common/Format.cpp:307
 #, c-format
@@ -2488,7 +2487,7 @@ msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:266
 msgid "Succeeded! Connection established to aMule "
-msgstr "Succes! Conexiune stabilită la aMule"
+msgstr "Succes! Conexiune stabilită la aMule "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:269
 msgid "Succeeded! Connection established."
@@ -2496,7 +2495,7 @@ msgstr "Succes! Conexiune stabilită."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:275
 msgid "External Connection: Access denied because: "
-msgstr "Conexiune externă; Acces interzis fiindcă:"
+msgstr "Conexiune externă; Acces interzis fiindcă: "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:278
 msgid "External Connection: Handshake failed."
@@ -2517,11 +2516,11 @@ msgstr "EROARE: Nu se poate asculta portul TCP."
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "ERROR: "
-msgstr "EROARE:"
+msgstr "EROARE: "
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
-msgstr "ATENȚIE:"
+msgstr "ATENȚIE: "
 
 #: src/MuleNotebook.cpp:185 src/muuli_wdr.cpp:901 src/muuli_wdr.cpp:1430
 #: src/muuli_wdr.cpp:3235 src/muuli_wdr.cpp:3505
@@ -2613,7 +2612,7 @@ msgstr "Nu este selectată nici o poreclă!"
 
 #: src/MuleTrayIcon.cpp:337
 msgid "ClientID: "
-msgstr "ID client:"
+msgstr "ID client: "
 
 #: src/MuleTrayIcon.cpp:342 src/MuleTrayIcon.cpp:356 src/TextClient.cpp:715
 #: src/TextClient.cpp:728
@@ -2622,11 +2621,11 @@ msgstr "Neconectat"
 
 #: src/MuleTrayIcon.cpp:349
 msgid "ServerName: "
-msgstr "Nume server:"
+msgstr "Nume server: "
 
 #: src/MuleTrayIcon.cpp:350
 msgid "ServerIP: "
-msgstr "IP server"
+msgstr "IP server: "
 
 #: src/MuleTrayIcon.cpp:357 src/ServerWnd.cpp:188
 #: src/utils/wxCas/src/onlinesig.cpp:263
@@ -2711,7 +2710,7 @@ msgstr "Ieşire"
 
 #: src/muuli_wdr.cpp:75
 msgid "eD2k Link: "
-msgstr "Legătură eD2k:"
+msgstr "Legătură eD2k: "
 
 #: src/muuli_wdr.cpp:82
 msgid "Commit"
@@ -3011,7 +3010,7 @@ msgstr "Rată date :"
 
 #: src/muuli_wdr.cpp:661
 msgid "Download Active Time: "
-msgstr "Timp activ de descărcare:"
+msgstr "Timp activ de descărcare: "
 
 #: src/muuli_wdr.cpp:672
 msgid "Transferred :"
@@ -3247,11 +3246,11 @@ msgstr "Încărcare (sesiune):"
 
 #: src/muuli_wdr.cpp:1360
 msgid "Downloaded (session):"
-msgstr "Descărcare (sesiune)"
+msgstr "Descărcare (sesiune):"
 
 #: src/muuli_wdr.cpp:1367
 msgid "Uploaded (total):"
-msgstr "Încărcat (total)"
+msgstr "Încărcat (total):"
 
 #: src/muuli_wdr.cpp:1376
 msgid "Downloaded (total):"
@@ -3293,7 +3292,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr "Limbă:"
+msgstr "Limbă: "
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -3357,7 +3356,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1497
 msgid "Tooltip delay time: "
-msgstr "Timp de întârziere balon de ajutor:"
+msgstr "Timp de întârziere balon de ajutor: "
 
 #: src/muuli_wdr.cpp:1505
 msgid "seconds"
@@ -3378,8 +3377,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Browse"
 
@@ -3415,7 +3413,7 @@ msgstr "Porturi"
 
 #: src/muuli_wdr.cpp:1607
 msgid "Standard TCP Port "
-msgstr "Port TCP standard"
+msgstr "Port TCP standard "
 
 #: src/muuli_wdr.cpp:1611
 msgid "This is the standard eD2k port and cannot be disabled."
@@ -3423,7 +3421,7 @@ msgstr "Acesta este portul standard eD2k și nu poate fi dezactivat."
 
 #: src/muuli_wdr.cpp:1614
 msgid "UDP port for server requests (TCP+3):"
-msgstr "Port UDP pentru cererile serverului (TCP+3)"
+msgstr "Port UDP pentru cererile serverului (TCP+3):"
 
 #: src/muuli_wdr.cpp:1617
 msgid "4665"
@@ -3431,7 +3429,7 @@ msgstr "4665"
 
 #: src/muuli_wdr.cpp:1620
 msgid "Extended UDP port (Kad / global search) "
-msgstr "Port UDP extins (Kad / căutare globală)"
+msgstr "Port UDP extins (Kad / căutare globală) "
 
 #: src/muuli_wdr.cpp:1624
 msgid "This UDP port is used for extended eD2k requests and Kad network"
@@ -3576,7 +3574,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1818
 msgid "Stop downloads when free disk space reaches "
-msgstr "Oprește descărcarea când s-a atins limita spațiului disponibil"
+msgstr "Oprește descărcarea când s-a atins limita spațiului disponibil "
 
 #: src/muuli_wdr.cpp:1819
 msgid "Select this if you want aMule to check your disk space"
@@ -3632,7 +3630,7 @@ msgstr "Timp pentru media graficului: 100 minute"
 
 #: src/muuli_wdr.cpp:1926
 msgid "Connections Graph Scale: 100 "
-msgstr "Scală grafic conexiuni: 100"
+msgstr "Scală grafic conexiuni: 100 "
 
 #: src/muuli_wdr.cpp:1935
 msgid "Download graph scale:"
@@ -3644,7 +3642,7 @@ msgstr "Scală grafic încărcare:"
 
 #: src/muuli_wdr.cpp:1958
 msgid "Colours: "
-msgstr "Colori:"
+msgstr "Colori: "
 
 #: src/muuli_wdr.cpp:1963
 msgid "Background"
@@ -3736,7 +3734,7 @@ msgstr "Dezactivează temporizarea modului de st-by al computerului"
 
 #: src/muuli_wdr.cpp:2087
 msgid "Skin to use: "
-msgstr "Aspect interfață de utilizat:"
+msgstr "Aspect interfață de utilizat: "
 
 #: src/muuli_wdr.cpp:2099
 msgid "Show \"Fast eD2k Links Handler\" in every window."
@@ -4184,7 +4182,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2932
 msgid "Update Frequency (Secs):"
-msgstr "Frecvență actualizare (secunde)"
+msgstr "Frecvență actualizare (secunde):"
 
 #: src/muuli_wdr.cpp:2936
 msgid "Change the frequency (in seconds) of Online Signature updates."
@@ -4192,7 +4190,7 @@ msgstr "Schimbați frecvența (în secunde) a actualizărilor semnăturii online
 
 #: src/muuli_wdr.cpp:2945
 msgid "Save online signature file in: "
-msgstr "Salvează fișierul semnăturii online în:"
+msgstr "Salvează fișierul semnăturii online în: "
 
 #: src/muuli_wdr.cpp:2952
 msgid ""
@@ -4253,7 +4251,7 @@ msgstr "Activează/dezactivează autentificarea cu nume utilizator/parolă"
 
 #: src/muuli_wdr.cpp:3036
 msgid "Username: "
-msgstr "Utilizator:"
+msgstr "Utilizator: "
 
 #: src/muuli_wdr.cpp:3040
 msgid "The username to use to connect to the proxy"
@@ -4387,7 +4385,7 @@ msgstr "Trimite"
 
 #: src/muuli_wdr.cpp:3501
 msgid "Sends the specified message."
-msgstr "Trimite mesajul specificat"
+msgstr "Trimite mesajul specificat."
 
 #: src/muuli_wdr.cpp:3506
 msgid "Close this chat-session."
@@ -4653,7 +4651,7 @@ msgstr "EROARE în timpul salvării fișierului parțial: %s (%s ==> %s)"
 
 #: src/PartFile.cpp:902
 msgid "IO failure while saving partfile: "
-msgstr "Eșuare IO în timpul salvării fișierului parțial:"
+msgstr "Eșuare IO în timpul salvării fișierului parțial: "
 
 #: src/PartFile.cpp:915
 #, c-format
@@ -4736,8 +4734,8 @@ msgstr "Se șterge fișierul: %s"
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
-"Atenție: Nu se poate indexa partea descărcată - indexare incompletă pentru '%"
-"s'"
+"Atenție: Nu se poate indexa partea descărcată - indexare incompletă pentru "
+"'%s'"
 
 #: src/PartFile.cpp:2295
 #, c-format
@@ -4751,8 +4749,8 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 "EOF  în timpul indexării părții descărcate %u cu lungimea %u (max %u) de "
 "fișiere parțiale '%s' cu lungimea %u: %s"
@@ -4901,7 +4899,7 @@ msgstr "Lituaniană"
 
 #: src/Preferences.cpp:655
 msgid "Norwegian (Nynorsk)"
-msgstr "Norvegian"
+msgstr "Norvegiană (Nynorsk)"
 
 #: src/Preferences.cpp:656
 msgid "Polish"
@@ -5272,7 +5270,7 @@ msgstr "dezactivată"
 #: src/PrefsUnifiedDlg.cpp:1238
 #, c-format
 msgid "Execute command on '%s' event"
-msgstr "Execută comanda la evenimentul '%s' "
+msgstr "Execută comanda la evenimentul '%s'"
 
 #: src/PrefsUnifiedDlg.cpp:1241
 msgid "Enable command execution on core"
@@ -5323,7 +5321,7 @@ msgstr "Cuvinte cheie de căutat: %s"
 
 #: src/SearchList.cpp:371
 msgid "Unexpected error while attempting Kad search: "
-msgstr "Eroare neașteptată în timp ce se încerca o căutare Kad:"
+msgstr "Eroare neașteptată în timp ce se încerca o căutare Kad: "
 
 #: src/SearchListCtrl.cpp:91 src/SharedFilesCtrl.cpp:106
 msgid "FileID"
@@ -5487,7 +5485,7 @@ msgstr[2] "%d de servere adăugate"
 
 #: src/ServerList.cpp:179
 msgid "Error: the file 'server.met' is corrupted: "
-msgstr "Eroare: fișierul 'server.met' este corupt:"
+msgstr "Eroare: fișierul 'server.met' este corupt: "
 
 #: src/ServerList.cpp:183
 msgid "IO error while reading 'server.met': "
@@ -5636,8 +5634,8 @@ msgstr "Sigur doriți să ștergeți serverul static %s"
 msgid "Servers (%i)"
 msgstr "Servere (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Server"
 
@@ -5834,7 +5832,7 @@ msgstr "Cu firewall - deschideți portul UDP %d în ruter sau firewall"
 
 #: src/ServerWnd.cpp:226
 msgid "Firewalled state: "
-msgstr "Stare firewall:"
+msgstr "Stare firewall: "
 
 #: src/ServerWnd.cpp:232
 msgid "No buddy required - TCP port open"
@@ -6316,11 +6314,11 @@ msgstr ""
 
 #: src/TextClient.cpp:356
 msgid "Processing by hash: "
-msgstr "Se procesează după index:"
+msgstr "Se procesează după index: "
 
 #: src/TextClient.cpp:370
 msgid "Processing by filename: "
-msgstr "Se procesează după nume fișier:"
+msgstr "Se procesează după nume fișier: "
 
 #: src/TextClient.cpp:392
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
@@ -6966,7 +6964,7 @@ msgstr "Dimensiunea fișierului în octeți."
 
 #: src/UserEvents.h:79
 msgid "Cumulative download activity time."
-msgstr "Timp cumulat activitate de descărcare:"
+msgstr "Timp cumulat activitate de descărcare."
 
 #: src/UserEvents.h:82
 msgid "New chat session started"
@@ -7117,7 +7115,7 @@ msgstr "Selectați fișierul link-ului calculat eD2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:450
 msgid "Unable to open "
-msgstr "Nu se poate deschide"
+msgstr "Nu se poate deschide "
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:457
 #: src/utils/aLinkCreator/src/alcframe.cpp:582
@@ -7362,32 +7360,32 @@ msgstr "Vai vai, starea aMule este necunoscută..."
 #: src/utils/wxCas/src/wxcasframe.cpp:1019
 #: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid "aMule "
-msgstr "aMule"
+msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1008
 msgid " has been running for "
-msgstr "a rulat pentru"
+msgstr " a rulat pentru "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1013
 msgid " is stopped !"
-msgstr "este oprit !"
+msgstr " este oprit !"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1017
 #: src/utils/wxCas/src/wxcasframe.cpp:1041
 msgid " is not connected !"
-msgstr "nu este conectat !"
+msgstr " nu este conectat !"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1021
 msgid " is connecting..."
-msgstr "se conectează..."
+msgstr " se conectează..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1025
 msgid " is doing something strange, check it !"
-msgstr "se întâmplă ceva ciudat, verificați !"
+msgstr " se întâmplă ceva ciudat, verificați !"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1046
 msgid " is connected to "
-msgstr "este conectat la"
+msgstr " este conectat la "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1047
 #: src/utils/wxCas/src/wxcasframe.cpp:1069
@@ -7401,15 +7399,15 @@ msgstr "dezactivat"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1059
 msgid " is on "
-msgstr "este pornit"
+msgstr " este pornit "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1066
 msgid " with "
-msgstr "cu"
+msgstr " cu "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1084
 msgid "Total Download: "
-msgstr "Descărcat în total:"
+msgstr "Descărcat în total: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1086
 #: src/utils/wxCas/src/wxcasframe.cpp:1097
@@ -7418,15 +7416,15 @@ msgstr ", Încărcat: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1095
 msgid "Session Download: "
-msgstr "Descărcat în această sesiune:"
+msgstr "Descărcat în această sesiune: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1106
 msgid "Download: "
-msgstr "Descărcare:"
+msgstr "Descărcare: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1108
 msgid " kB/s, Upload: "
-msgstr " kB/s, Încărcare:"
+msgstr " kB/s, Încărcare: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1110
 msgid " kB/s"
@@ -7434,15 +7432,15 @@ msgstr " kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1118
 msgid "Sharing: "
-msgstr "Partajare:"
+msgstr "Partajare: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1120
 msgid " file(s), Clients on queue: "
-msgstr " fișier(ere), Clienți în coadă:"
+msgstr " fișier(ere), Clienți în coadă: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1130
 msgid "Time: "
-msgstr "Timp:"
+msgstr "Timp: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1140
 #: src/utils/wxCas/src/wxcasframe.cpp:1150
@@ -7455,7 +7453,7 @@ msgstr "Medie încărcare sistem (1-5-15 min): "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1171
 msgid "System uptime: "
-msgstr "Sistem activ:"
+msgstr "Sistem activ: "
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:51
 msgid "Directory containing amulesig.dat file"
@@ -7596,11 +7594,11 @@ msgstr "EROARE: nu se poate accepta conexiunea clientului web\n"
 #: src/webserver/src/WebServer.cpp:406
 #, c-format
 msgid "Request failed with the following error: %s."
-msgstr "Solicitare eșuată cu următoarea eroare: %s. "
+msgstr "Solicitare eșuată cu următoarea eroare: %s."
 
 #: src/webserver/src/WebServer.cpp:1740
 msgid "Index file not found: "
-msgstr "Fișierul index nu a fost găsit:"
+msgstr "Fișierul index nu a fost găsit: "
 
 #: src/webserver/src/WebServer.cpp:1819
 msgid "Session expired - requesting login\n"

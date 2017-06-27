@@ -11,14 +11,15 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2011-11-11 10:38+0200\n"
-"Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
+"PO-Revision-Date: 2017-05-25 10:50+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fi\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -489,8 +490,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "Viesti"
 
@@ -530,9 +531,9 @@ msgstr "Kad: Pois päältä"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -1101,7 +1102,7 @@ msgstr "Käyttäjä %s (%u) lähetti pyytämättä jaettujen tiedostojen listan"
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr ""
-"Käyttäjä %s (%u) on estänyt jaettujen kansioiden/tiedostojen listaamisen."
+"Käyttäjä %s (%u) on estänyt jaettujen kansioiden/tiedostojen listaamisen"
 
 #: src/CommentDialog.cpp:35 src/CommentDialogLst.cpp:47
 msgid "File Comments"
@@ -1358,8 +1359,7 @@ msgstr "Lähteet"
 msgid "Priority"
 msgstr "Tärkeys"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Tila"
 
@@ -1780,7 +1780,7 @@ msgstr "Kaikki verkot ovat pois päältä."
 
 #: src/ExternalConn.cpp:1829
 msgid "Disconnected from eD2k."
-msgstr "eD2k-yhteys katkaistu"
+msgstr "eD2k-yhteys katkaistu."
 
 #: src/ExternalConn.cpp:1833
 msgid "Disconnected from Kad."
@@ -2307,7 +2307,7 @@ msgstr "Kademlia: hakusana on liian lyhyt"
 
 #: src/kademlia/kademlia/SearchManager.cpp:138
 msgid "Kademlia: Search keyword is already on search list: "
-msgstr "Kademlia: Hakusana on jo hakulistalla:"
+msgstr "Kademlia: Hakusana on jo hakulistalla: "
 
 #: src/kademlia/routing/RoutingZone.cpp:171
 msgid ""
@@ -2463,7 +2463,7 @@ msgstr "Etäyhteys: Pääsy evättiin: "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:278
 msgid "External Connection: Handshake failed."
-msgstr "Etäyhteys: Kättely epäonnistui"
+msgstr "Etäyhteys: Kättely epäonnistui."
 
 #: src/LibSocketAsio.cpp:1257
 #, fuzzy, c-format
@@ -2518,7 +2518,7 @@ msgstr "Valitse kaikki"
 #: src/muuli_wdr.cpp:1941 src/muuli_wdr.cpp:1950 src/OtherFunctions.cpp:97
 #: src/StatisticsDlg.cpp:101 src/StatisticsDlg.cpp:103
 msgid "kB/s"
-msgstr "KB/s"
+msgstr "kB/s"
 
 #: src/MuleTrayIcon.cpp:98 src/MuleTrayIcon.cpp:124 src/MuleTrayIcon.cpp:451
 #: src/MuleTrayIcon.cpp:472
@@ -3251,7 +3251,7 @@ msgstr "Tämä on nimi jonka muut käyttäjät näkevät yhdistäessään sinuun
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr "Kieli:"
+msgstr "Kieli: "
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -3269,8 +3269,7 @@ msgstr "Tarkista uuden version saatavuus käynnistettäessä"
 #: src/muuli_wdr.cpp:1472
 msgid "Enabling this will make aMule check for new version at startup"
 msgstr ""
-"aMule tarkistaa käynnistyessään uuden version olemassaolon kun tämä on "
-"päällä."
+"aMule tarkistaa käynnistyessään uuden version olemassaolon kun tämä on päällä"
 
 #: src/muuli_wdr.cpp:1475
 msgid "Start minimized"
@@ -3313,7 +3312,7 @@ msgstr "Tämä päällä aMule pienentyy järjestelmäpalkkiin tehtäväpalkin s
 
 #: src/muuli_wdr.cpp:1497
 msgid "Tooltip delay time: "
-msgstr "Työkaluvihjeiden viive:"
+msgstr "Työkaluvihjeiden viive: "
 
 #: src/muuli_wdr.cpp:1505
 msgid "seconds"
@@ -3334,8 +3333,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Selaa"
 
@@ -3371,7 +3369,7 @@ msgstr "Portit"
 
 #: src/muuli_wdr.cpp:1607
 msgid "Standard TCP Port "
-msgstr "Vakio TCP-portti"
+msgstr "Vakio TCP-portti "
 
 #: src/muuli_wdr.cpp:1611
 msgid "This is the standard eD2k port and cannot be disabled."
@@ -3387,7 +3385,7 @@ msgstr "4665"
 
 #: src/muuli_wdr.cpp:1620
 msgid "Extended UDP port (Kad / global search) "
-msgstr "Laajennettu UDP-portti (Kad / haku kaikkialta)."
+msgstr "Laajennettu UDP-portti (Kad / haku kaikkialta) "
 
 #: src/muuli_wdr.cpp:1624
 msgid "This UDP port is used for extended eD2k requests and Kad network"
@@ -3601,7 +3599,7 @@ msgstr "Lähetyskuvaajan skaala:"
 
 #: src/muuli_wdr.cpp:1958
 msgid "Colours: "
-msgstr "Värit:"
+msgstr "Värit: "
 
 #: src/muuli_wdr.cpp:1963
 msgid "Background"
@@ -3693,7 +3691,7 @@ msgstr "Poista käytöstä tietokoneen ajastettu siirtyminen valmiustilaan"
 
 #: src/muuli_wdr.cpp:2087
 msgid "Skin to use: "
-msgstr "Käytettävä teema:"
+msgstr "Käytettävä teema: "
 
 #: src/muuli_wdr.cpp:2099
 msgid "Show \"Fast eD2k Links Handler\" in every window."
@@ -4029,7 +4027,7 @@ msgid ""
 "less sources, but all your traffic will be obfuscated"
 msgstr ""
 "Tämä valittuna aMule hyväksyy vain kätketyt yhteydet. Lähteitä on vähemmän "
-"saatavilla mutta kaikki liikenteesi on kätketyllä protokollalla."
+"saatavilla mutta kaikki liikenteesi on kätketyllä protokollalla"
 
 #: src/muuli_wdr.cpp:2832
 msgid "Everybody"
@@ -4081,7 +4079,7 @@ msgstr "Uudelleenlataa lista"
 #: src/muuli_wdr.cpp:2862
 msgid "Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat"
 msgstr ""
-"Uudelleenlataa suodatettavien IP:den lista tiedostosta ~/.aMule/ipfilter.dat."
+"Uudelleenlataa suodatettavien IP:den lista tiedostosta ~/.aMule/ipfilter.dat"
 
 #: src/muuli_wdr.cpp:2870
 msgid "URL:"
@@ -4149,7 +4147,7 @@ msgstr "Muuttaa Online-Signeerauksen päivitysväliä, annetaan sekunteina."
 
 #: src/muuli_wdr.cpp:2945
 msgid "Save online signature file in: "
-msgstr "Online-signeeraus-tiedoston tallennuspaikka:"
+msgstr "Online-signeeraus-tiedoston tallennuspaikka: "
 
 #: src/muuli_wdr.cpp:2952
 msgid ""
@@ -4208,7 +4206,7 @@ msgstr "Kytkee päälle/pois käyttäjänimellä/salasanalla tunnistautumisen"
 
 #: src/muuli_wdr.cpp:3036
 msgid "Username: "
-msgstr "Käyttäjänimi:"
+msgstr "Käyttäjänimi: "
 
 #: src/muuli_wdr.cpp:3040
 msgid "The username to use to connect to the proxy"
@@ -4370,7 +4368,7 @@ msgstr[1] "tavua"
 
 #: src/OtherFunctions.cpp:66
 msgid "kB"
-msgstr "KB"
+msgstr "kB"
 
 #: src/OtherFunctions.cpp:72
 msgid "TB"
@@ -4688,16 +4686,16 @@ msgid ""
 "never happen"
 msgstr ""
 "VIRHE: Ei voitu luoda tarkistetta ladatulle osalle - tarkistejoukko on "
-"puutteellinen (%s). Näin ei pitäisi koskaan tapahtua."
+"puutteellinen (%s). Näin ei pitäisi koskaan tapahtua"
 
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
-"Data loppui (EOF) luotaessa tarkistetta ladatulle osalle %u jonka pituus on %"
-"u (maksimi on %u) osatiedostosta '%s' jonka pituus on %u: %s"
+"Data loppui (EOF) luotaessa tarkistetta ladatulle osalle %u jonka pituus on "
+"%u (maksimi on %u) osatiedostosta '%s' jonka pituus on %u: %s"
 
 #: src/PartFile.cpp:2971
 #, c-format
@@ -4803,7 +4801,7 @@ msgstr "Ranska"
 
 #: src/Preferences.cpp:645
 msgid "Galician"
-msgstr "Galicia (Galego)"
+msgstr "Galicia"
 
 #: src/Preferences.cpp:646
 msgid "German"
@@ -5010,8 +5008,8 @@ msgstr "Asetuksen kytkeminen widgettiin epäonnistui ID:llä %d ja avaimella %s"
 #, c-format
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
 msgstr ""
-"Datan siirtäminen asetuksesta widgettiin epäonnistui ID:llä %d ja avaimella %"
-"s"
+"Datan siirtäminen asetuksesta widgettiin epäonnistui ID:llä %d ja avaimella "
+"%s"
 
 #: src/PrefsUnifiedDlg.cpp:417
 msgid "The type of proxy you are connecting to"
@@ -5567,8 +5565,8 @@ msgstr "Oletko varma että haluat poistaa pysyvän palvelimen %s"
 msgid "Servers (%i)"
 msgstr "Palvelimet (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Palvelin"
 
@@ -5647,7 +5645,7 @@ msgstr "VAROITUS: Sinulla on Low-ID!"
 msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr ""
 "\tTodennäköisimmin tämä johtuu siitä että olet palomuurin tai reitittimen "
-"takana"
+"takana."
 
 #: src/ServerSocket.cpp:431
 msgid "\tFor more information, please refer to http://wiki.amule.org"
@@ -6418,8 +6416,8 @@ msgid ""
 "Example: 'statistics 5' will show only the top 5 versions for each client "
 "type.\n"
 msgstr ""
-"Tälle komennolle voidaan antaa valinnaisesti parametrina luku väliltä 0-"
-"255,\n"
+"Tälle komennolle voidaan antaa valinnaisesti parametrina luku väliltä "
+"0-255,\n"
 "joka määrää kuinka monta merkintää asiakkaiden versiopuusta näytetään.\n"
 "Luku 0 tai ei parametria tarkoittaa rajoittamattomasti.\n"
 "\n"
@@ -6633,7 +6631,7 @@ msgstr "Hae kaistankäytön rajat."
 
 #: src/TextClient.cpp:952
 msgid "Execute a search."
-msgstr "Suorittaa haun"
+msgstr "Suorittaa haun."
 
 #: src/TextClient.cpp:953
 msgid ""
@@ -7537,7 +7535,7 @@ msgstr "Käsittelee pyyntöä [alkuperäinen]: "
 
 #: src/webserver/src/WebServer.cpp:1870
 msgid "No password specified, login will not be allowed."
-msgstr "Salasanaa ei annettu, kirjautumista ei sallita"
+msgstr "Salasanaa ei annettu, kirjautumista ei sallita."
 
 #: src/webserver/src/WebServer.cpp:1872
 msgid "Checking password\n"

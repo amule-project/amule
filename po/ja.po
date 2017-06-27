@@ -7,8 +7,13 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
+<<<<<<< HEAD
+"PO-Revision-Date: 2017-06-26 10:12+0200\n"
+"Last-Translator: Sebastiano Pistore <sebastianopistore.info@protonmail.ch>\n"
+=======
 "PO-Revision-Date: 2008-05-31 01:09+0900\n"
 "Last-Translator: \n"
+>>>>>>> f0dc7d5747d562ba5c91dfe58082794c47f6b82e
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,11 +49,8 @@ msgid ""
 msgstr ""
 
 #: src/amule.cpp:230
-#, fuzzy
 msgid "Now, exiting main app..."
-msgstr ""
-"\n"
-"OK、%s を終了中です…\n"
+msgstr "OK、%s を終了中です"
 
 #: src/amule.cpp:249
 #, c-format
@@ -434,17 +436,19 @@ msgstr ""
 
 #: src/amuleDlg.cpp:502
 msgid "Website: http://www.amule.org \n"
-msgstr ""
+msgstr "ウェブサイト http://www.amule.org \n"
 
 #: src/amuleDlg.cpp:503
 msgid "Forum: http://forum.amule.org \n"
-msgstr ""
+msgstr "フォーラム: http://forum.amule.org \n"
 
 #: src/amuleDlg.cpp:504
 msgid ""
 "FAQ: http://wiki.amule.org \n"
 "\n"
 msgstr ""
+"よくある質問: http://wiki.amule.org \n"
+"\n"
 
 #: src/amuleDlg.cpp:505
 msgid "Contact: admin@amule.org (administrative issues) \n"
@@ -530,7 +534,7 @@ msgstr "切断する"
 
 #: src/amuleDlg.cpp:781
 msgid "Disconnect from the currently connected networks"
-msgstr "ネットワークから切断します。"
+msgstr "ネットワークから切断します"
 
 #: src/amuleDlg.cpp:786 src/MuleTrayIcon.cpp:499 src/muuli_wdr.cpp:2755
 #: src/muuli_wdr.cpp:3143 src/muuli_wdr.cpp:3530
@@ -539,7 +543,7 @@ msgstr "接続する"
 
 #: src/amuleDlg.cpp:787
 msgid "Connect to the currently enabled networks"
-msgstr "ネットワークへ接続します。"
+msgstr "ネットワークへ接続します"
 
 #: src/amuleDlg.cpp:846
 #, c-format
@@ -708,9 +712,8 @@ msgid "Going to event loop..."
 msgstr "ファイル情報を回復しようとしています…"
 
 #: src/amule-remote-gui.cpp:304
-#, fuzzy
 msgid "Connecting..."
-msgstr "接続中"
+msgstr "接続中…"
 
 #: src/amule-remote-gui.cpp:308
 msgid "Connection failed "
@@ -735,7 +738,7 @@ msgstr ""
 
 #: src/amule-remote-gui.cpp:419
 msgid "Ready"
-msgstr ""
+msgstr "利用可能"
 
 #: src/amule-remote-gui.cpp:596 src/TransferWnd.cpp:340
 msgid "All"
@@ -1082,14 +1085,14 @@ msgstr "ユーザ %s（%u）は共有ファイル・リストの送信を終了�
 #: src/ClientTCPSocket.cpp:990
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
-msgstr "ユーザ %s（%u）は無用の共有ファイル・リストを送りました。"
+msgstr "ユーザ %s（%u）は無用の共有ファイル・リストを送りました"
 
 #: src/ClientTCPSocket.cpp:1002
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr ""
 "ユーザ %s（%u）は共有ファイルまたはディレクトリ・リストへのアクセスを拒否しま"
-"した。"
+"した"
 
 #: src/CommentDialog.cpp:35 src/CommentDialogLst.cpp:47
 msgid "File Comments"
@@ -1272,7 +1275,7 @@ msgstr "ソースシード"
 
 #: src/DataToText.cpp:132
 msgid "Search Result"
-msgstr ""
+msgstr "検索結果"
 
 #: src/DataToText.cpp:142 src/DownloadListCtrl.cpp:162
 #: src/OtherFunctions.cpp:632 src/TransferWnd.cpp:346
@@ -2104,12 +2107,15 @@ msgstr "キューに入っています"
 #: src/GenericClientListCtrl.cpp:1029
 #, fuzzy
 msgid "Uploading"
+<<<<<<< HEAD
+msgstr "アップロード中"
+=======
 msgstr "アップロード"
+>>>>>>> f0dc7d5747d562ba5c91dfe58082794c47f6b82e
 
 #: src/GenericClientListCtrl.cpp:1031
-#, fuzzy
 msgid "None"
-msgstr "誰も許可しない"
+msgstr "なし"
 
 #: src/GenericClientListCtrl.cpp:1089 src/ServerListCtrl.cpp:243
 msgid "No"
@@ -3337,7 +3343,7 @@ msgstr "スロット割り当て"
 
 #: src/muuli_wdr.cpp:1601
 msgid "Ports"
-msgstr ""
+msgstr "ポート"
 
 #: src/muuli_wdr.cpp:1607
 msgid "Standard TCP Port "
@@ -3407,7 +3413,7 @@ msgstr "接続を失う時に再接続する"
 
 #: src/muuli_wdr.cpp:1716
 msgid "Remove dead server after"
-msgstr "再試行後、応答のないサーバを削除する。再試行回数："
+msgstr "再試行後、応答のないサーバを削除する。再試行回数"
 
 #: src/muuli_wdr.cpp:1722
 msgid "retries"
@@ -3495,7 +3501,7 @@ msgid ""
 "fragmentation"
 msgstr ""
 "新しいファイルのためにファイル全体が格納できるディスク領域を事前に確保し、断"
-"片化を防ぎます。"
+"片化を防ぎます"
 
 #: src/muuli_wdr.cpp:1818
 msgid "Stop downloads when free disk space reaches "
@@ -4009,7 +4015,7 @@ msgstr "全員"
 
 #: src/muuli_wdr.cpp:2834
 msgid "No one"
-msgstr ""
+msgstr "誰もできません。"
 
 #: src/muuli_wdr.cpp:2836
 msgid "Who can see my shared files:"
@@ -4854,9 +4860,8 @@ msgid "Ukrainian"
 msgstr ""
 
 #: src/Preferences.cpp:728
-#, fuzzy
 msgid "Change Language"
-msgstr "言語"
+msgstr "言語を変えてください"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
@@ -5256,7 +5261,7 @@ msgstr "キャンセル"
 
 #: src/SearchListCtrl.cpp:1017
 msgid "New"
-msgstr ""
+msgstr "新しい"
 
 #: src/ServerConnect.cpp:74
 msgid ""
@@ -5831,7 +5836,7 @@ msgstr "ダウンロードの状態"
 
 #: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
 msgid "Origin"
-msgstr ""
+msgstr "立場"
 
 #: src/SharedFilePeersListCtrl.cpp:38 src/SourceListCtrl.cpp:36
 #, fuzzy

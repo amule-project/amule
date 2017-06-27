@@ -9,17 +9,16 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2008-12-17 11:21+0200\n"
-"Last-Translator: Oleksandr Kovalenko <alx.kovalenko@gmail.com>\n"
+"PO-Revision-Date: 2017-06-27 10:49+0200\n"
+"Last-Translator: Sebastiano Pistore <sebastianopistore.info@protonmail.ch>\n"
 "Language-Team: Ukrainian <translation@linux.org.ua>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: uk\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Poedit-Language: Ukrainian\n"
-"X-Poedit-Country: UKRAINE\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -54,14 +53,14 @@ msgid "Now, exiting main app..."
 msgstr "Тепер, виходимо з головної програми..."
 
 #: src/amule.cpp:249
-#, fuzzy, c-format
+#, c-format
 msgid "Terminating amuleweb instance with pid '%ld' ... "
-msgstr "Вбиваю екземпляр amuleweb з pid `%ld' ... "
+msgstr "Вбиваю екземпляр amuleweb з pid '%ld' ... "
 
 #: src/amule.cpp:252
-#, fuzzy, c-format
+#, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "Вбиваю екземпляр amuleweb з pid `%ld' ... "
+msgstr "Вбиваю екземпляр amuleweb з pid '%ld' ... "
 
 #: src/amule.cpp:254 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
@@ -486,8 +485,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "Повідомлення"
 
@@ -527,9 +526,9 @@ msgstr "Kad: вимкнена"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -575,9 +574,9 @@ msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Від'єднано)"
 
 #: src/amuleDlg.cpp:913
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to exit %s?"
-msgstr "Ви справді хочете вийти з aMule?"
+msgstr "Ви справді хочете вийти з %s?"
 
 #: src/amuleDlg.cpp:914
 msgid "Exit confirmation"
@@ -773,7 +772,7 @@ msgstr "Невідомо"
 #: src/BaseClient.cpp:1365
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
-msgstr "Неможливо отримати спільні файли користувача %s"
+msgstr "Неможливо отримати спільні файли користувача '%s'"
 
 #: src/BaseClient.cpp:1577
 msgid "Searching buddy for lowid connection"
@@ -878,7 +877,7 @@ msgstr "Помилка під час збереження файлу known.met: 
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Введіть капчу"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:693 src/muuli_wdr.cpp:244
 #: src/SearchListCtrl.cpp:627 src/TransferWnd.cpp:335
@@ -939,7 +938,7 @@ msgstr ""
 
 #: src/ChatWnd.cpp:99
 msgid "Chat"
-msgstr ""
+msgstr "Чат"
 
 #: src/ChatWnd.cpp:101 src/MuleNotebook.cpp:186
 msgid "Close tab"
@@ -1076,9 +1075,9 @@ msgstr ""
 "відмовлено"
 
 #: src/ClientTCPSocket.cpp:948
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) shares directory '%s'"
-msgstr "Користувач %s (%u) зробив спільною теку %s"
+msgstr "Користувач %s (%u) зробив спільною теку '%s'"
 
 #: src/ClientTCPSocket.cpp:963
 #, c-format
@@ -1086,9 +1085,9 @@ msgid "User %s (%u) sent unrequested shared dirs."
 msgstr "Користувач %s (%u) надіслав незапитані спільні теки."
 
 #: src/ClientTCPSocket.cpp:978
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory '%s'"
-msgstr "Користувач %s (%u) надіслав перелік спільних файлів для теки %s"
+msgstr "Користувач %s (%u) надіслав перелік спільних файлів для теки '%s'"
 
 #: src/ClientTCPSocket.cpp:985
 #, c-format
@@ -1363,8 +1362,7 @@ msgstr "Джерела"
 msgid "Priority"
 msgstr "Перевага"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Стан"
 
@@ -1718,7 +1716,7 @@ msgstr "потрібно визначити сервер для видаленн
 
 #: src/ExternalConn.cpp:935
 msgid "eD2k is disabled in preferences."
-msgstr "eD2k вимкнена у налаштуваннях"
+msgstr "eD2k вимкнена у налаштуваннях."
 
 #: src/ExternalConn.cpp:1113
 msgid "Search in progress. Refetch results in a moment!"
@@ -1747,7 +1745,7 @@ msgstr "Вже вимикається."
 #: src/ExternalConn.cpp:1377
 #, c-format
 msgid "ExternalConn: adding link '%s'."
-msgstr "Зовнішнє з'єднання: додається посилання '%s'"
+msgstr "Зовнішнє з'єднання: додається посилання '%s'."
 
 #: src/ExternalConn.cpp:1383
 msgid "Invalid link or already on list."
@@ -1771,7 +1769,7 @@ msgstr "Kad вимкнена в налаштуваннях."
 
 #: src/ExternalConn.cpp:1800
 msgid "Already connected to eD2k."
-msgstr "Вже з'єднано з eD2k"
+msgstr "Вже з'єднано з eD2k."
 
 #: src/ExternalConn.cpp:1803
 msgid "Connecting to eD2k..."
@@ -1783,7 +1781,7 @@ msgstr "Вже з'єднано з Kad."
 
 #: src/ExternalConn.cpp:1814
 msgid "Connecting to Kad..."
-msgstr "З'єднується з Kad"
+msgstr "З'єднується з Kad..."
 
 #: src/ExternalConn.cpp:1821
 msgid "All networks are disabled."
@@ -1917,7 +1915,7 @@ msgstr "Невірний аргумент."
 
 #: src/ExternalConnector.cpp:298
 msgid "This is an incomplete command."
-msgstr "Це незавершена команда"
+msgstr "Це незавершена команда."
 
 #: src/ExternalConnector.cpp:307
 #, c-format
@@ -2014,9 +2012,9 @@ msgid "File Details"
 msgstr "Подробиці файлу"
 
 #: src/FileDetailDialog.cpp:111
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f%% done"
-msgstr "%.2f%% виконано"
+msgstr "%.1f%% виконано"
 
 #: src/FileDetailDialog.cpp:113 src/utils/wxCas/src/wxcasframe.cpp:1139
 #: src/utils/wxCas/src/wxcasframe.cpp:1149
@@ -2231,9 +2229,9 @@ msgid "Failed to download %s from %s"
 msgstr "Не вдалося звантажити GeoIP.dat з %s"
 
 #: src/IP2Country.cpp:173
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to load country data for '%s'."
-msgstr "Не вдалося звантажити GeoIP.dat з %s"
+msgstr "Не вдалося звантажити GeoIP.dat з '%s'."
 
 #: src/IPFilter.cpp:113
 #, fuzzy
@@ -2465,7 +2463,7 @@ msgstr "Зовнішнє з'єднання: невірна відповідь с
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:266
 msgid "Succeeded! Connection established to aMule "
-msgstr "Успіх! Встановлене з'єднання до aMule"
+msgstr "Успіх! Встановлене з'єднання до aMule."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:269
 msgid "Succeeded! Connection established."
@@ -2491,7 +2489,7 @@ msgstr "ListenSocket: Гаразд."
 
 #: src/ListenSocket.cpp:69
 msgid "ERROR: Could not listen to TCP port."
-msgstr "ПОМИЛКА: неможливо відкрити TCP-порт"
+msgstr "ПОМИЛКА: неможливо відкрити TCP-порт."
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "ERROR: "
@@ -2591,7 +2589,7 @@ msgstr "Не вибрано прізвисько!"
 
 #: src/MuleTrayIcon.cpp:337
 msgid "ClientID: "
-msgstr "ID клієнта:"
+msgstr "ID клієнта: "
 
 #: src/MuleTrayIcon.cpp:342 src/MuleTrayIcon.cpp:356 src/TextClient.cpp:715
 #: src/TextClient.cpp:728
@@ -2600,7 +2598,7 @@ msgstr "Не з'єднаний"
 
 #: src/MuleTrayIcon.cpp:349
 msgid "ServerName: "
-msgstr "Назва серверу:"
+msgstr "Назва серверу: "
 
 #: src/MuleTrayIcon.cpp:350
 msgid "ServerIP: "
@@ -2689,7 +2687,7 @@ msgstr "Вийти"
 
 #: src/muuli_wdr.cpp:75
 msgid "eD2k Link: "
-msgstr "eD2k-посилання:"
+msgstr "eD2k-посилання: "
 
 #: src/muuli_wdr.cpp:82
 msgid "Commit"
@@ -2988,7 +2986,7 @@ msgstr "Швидкість передачі:"
 
 #: src/muuli_wdr.cpp:661
 msgid "Download Active Time: "
-msgstr "Чинний час звантаження:"
+msgstr "Чинний час звантаження: "
 
 #: src/muuli_wdr.cpp:672
 msgid "Transferred :"
@@ -3292,7 +3290,7 @@ msgstr "Розпочати зменшеним"
 
 #: src/muuli_wdr.cpp:1476
 msgid "Enabling this makes aMule minimize itself upon start."
-msgstr "Зменшитись після запуску"
+msgstr "Зменшитись після запуску."
 
 #: src/muuli_wdr.cpp:1479
 msgid "Prompt on exit"
@@ -3347,8 +3345,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Переглянути"
 
@@ -3383,7 +3380,7 @@ msgstr "Порти"
 
 #: src/muuli_wdr.cpp:1607
 msgid "Standard TCP Port "
-msgstr "Зразковий TCP-порт"
+msgstr "Зразковий TCP-порт "
 
 #: src/muuli_wdr.cpp:1611
 msgid "This is the standard eD2k port and cannot be disabled."
@@ -3399,7 +3396,7 @@ msgstr "4665"
 
 #: src/muuli_wdr.cpp:1620
 msgid "Extended UDP port (Kad / global search) "
-msgstr "Розширений порт UDP (Kad / глобальний пошук)"
+msgstr "Розширений порт UDP (Kad / глобальний пошук) "
 
 #: src/muuli_wdr.cpp:1624
 msgid "This UDP port is used for extended eD2k requests and Kad network"
@@ -3439,7 +3436,7 @@ msgstr "Kademlia"
 
 #: src/muuli_wdr.cpp:1680 src/muuli_wdr.cpp:3282
 msgid "ED2K"
-msgstr "eD2k"
+msgstr "ED2K"
 
 #: src/muuli_wdr.cpp:1689
 msgid "Autoconnect on startup"
@@ -3550,7 +3547,7 @@ msgstr "Виберіть це якщо хочете, щоб aMule перевір
 
 #: src/muuli_wdr.cpp:1823
 msgid "Enter here the min disk space desired."
-msgstr "Введіть найменше бажане місце на диску"
+msgstr "Введіть найменше бажане місце на диску."
 
 #: src/muuli_wdr.cpp:1831
 msgid "Save 10 sources on rare files (< 20 sources)"
@@ -3598,7 +3595,7 @@ msgstr "Час для середніх графіків: 100 хв"
 
 #: src/muuli_wdr.cpp:1926
 msgid "Connections Graph Scale: 100 "
-msgstr "Шкала графіку з'єднань: 100"
+msgstr "Шкала графіку з'єднань: 100 "
 
 #: src/muuli_wdr.cpp:1935
 msgid "Download graph scale:"
@@ -3610,7 +3607,7 @@ msgstr "Шкала графіку вивантаження"
 
 #: src/muuli_wdr.cpp:1958
 msgid "Colours: "
-msgstr "Кольори:"
+msgstr "Кольори: "
 
 #: src/muuli_wdr.cpp:1963
 msgid "Background"
@@ -3960,7 +3957,7 @@ msgid ""
 "update the list of known nodes."
 msgstr ""
 "Введіть адресу файлу nodes.dat та натисніть кнопку ліворуч щоб оновити "
-"перелік відомих вузлів. "
+"перелік відомих вузлів."
 
 #: src/muuli_wdr.cpp:2659
 msgid "Nodes stats"
@@ -4664,14 +4661,14 @@ msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
 msgstr[0] ""
-"Знайдена підробна частина (%d) в (%d) частковому файлі %s - FileResultHash |%"
-"s| FileHash |%s|"
+"Знайдена підробна частина (%d) в (%d) частковому файлі %s - FileResultHash |"
+"%s| FileHash |%s|"
 msgstr[1] ""
-"Знайдена підробна частина (%d) в (%d) часткових файлах %s - FileResultHash |%"
-"s| FileHash |%s|"
+"Знайдена підробна частина (%d) в (%d) часткових файлах %s - FileResultHash |"
+"%s| FileHash |%s|"
 msgstr[2] ""
-"Знайдена підробна частина (%d) в (%d) часткових файлах %s - FileResultHash |%"
-"s| FileHash |%s|"
+"Знайдена підробна частина (%d) в (%d) часткових файлах %s - FileResultHash |"
+"%s| FileHash |%s|"
 
 #: src/PartFile.cpp:1172
 #, c-format
@@ -4711,14 +4708,14 @@ msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
-"ПОМИЛКА: неможливо обчислити хеш звантаженого файлу - набір хешів неповний (%"
-"s). Такого ніколи не повинно бути"
+"ПОМИЛКА: неможливо обчислити хеш звантаженого файлу - набір хешів неповний "
+"(%s). Такого ніколи не повинно бути"
 
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 
 #: src/PartFile.cpp:2971
@@ -4881,9 +4878,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "Португальська (Бразилія)"
 
 #: src/Preferences.cpp:659
-#, fuzzy
 msgid "Romanian"
-msgstr "Албанська"
+msgstr "Румунська"
 
 #: src/Preferences.cpp:660
 msgid "Russian"
@@ -5112,7 +5108,7 @@ msgid ""
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
 "Обидві eD2k та Kad-мережі вимкнені.\n"
-"Ви не зможете з'єднатися поки не увімкнете хоча б одну з них"
+"Ви не зможете з'єднатися поки не увімкнете хоча б одну з них."
 
 #: src/PrefsUnifiedDlg.cpp:736
 msgid ""
@@ -5120,7 +5116,7 @@ msgid ""
 "Enable UDP port or disable Kad."
 msgstr ""
 "Kad не розпочне роботу, якщо UDP-порт вимкнено.\n"
-"Увімкніть UDP-порт або вимкніть Kad"
+"Увімкніть UDP-порт або вимкніть Kad."
 
 #: src/PrefsUnifiedDlg.cpp:749
 msgid ""
@@ -5292,7 +5288,7 @@ msgstr "Ключове слово для пошуку: %s"
 
 #: src/SearchList.cpp:371
 msgid "Unexpected error while attempting Kad search: "
-msgstr "Неочікувана помилка, коли намагаюсь шукати в Kad:"
+msgstr "Неочікувана помилка, коли намагаюсь шукати в Kad: "
 
 #: src/SearchListCtrl.cpp:91 src/SharedFilesCtrl.cpp:106
 msgid "FileID"
@@ -5603,8 +5599,8 @@ msgstr "Ви впевнені, що хочете видалити постійн
 msgid "Servers (%i)"
 msgstr "Сервери (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Сервер"
 
@@ -5803,7 +5799,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:226
 msgid "Firewalled state: "
-msgstr "Стан фаєрволу:"
+msgstr "Стан фаєрволу: "
 
 #: src/ServerWnd.cpp:232
 msgid "No buddy required - TCP port open"
@@ -5891,7 +5887,6 @@ msgid "No shareable files found in directory: %s"
 msgstr "Не знайдені спільні файли в теці: %s"
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:28
-#, fuzzy
 msgid "User Name"
 msgstr "Ім'я користувача"
 
@@ -6345,11 +6340,11 @@ msgstr "Фільтрування IP для клієнтів %s.\n"
 
 #: src/TextClient.cpp:671 src/TextClient.cpp:677
 msgid "OFF"
-msgstr "Вимк."
+msgstr "Вимк"
 
 #: src/TextClient.cpp:671 src/TextClient.cpp:677
 msgid "ON"
-msgstr "Ввімк."
+msgstr "Ввімк"
 
 #: src/TextClient.cpp:676
 #, c-format
@@ -6751,7 +6746,7 @@ msgstr "Показати перебіг пошуку.\n"
 
 #: src/TextClient.cpp:964
 msgid "Start downloading a file"
-msgstr "Почати звантаження файлу."
+msgstr "Почати звантаження файлу"
 
 #: src/TextClient.cpp:965
 msgid ""
@@ -6777,7 +6772,7 @@ msgstr "Відмінити звантаження."
 
 #: src/TextClient.cpp:981
 msgid "Set download priority."
-msgstr "Встановити перевагу звантаження"
+msgstr "Встановити перевагу звантаження."
 
 #: src/TextClient.cpp:982
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
@@ -7349,7 +7344,7 @@ msgstr "Стан aMule невідомий..."
 #: src/utils/wxCas/src/wxcasframe.cpp:1019
 #: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid "aMule "
-msgstr "aMule"
+msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1008
 msgid " has been running for "
@@ -7585,7 +7580,7 @@ msgstr "Запит невдалий з наступною помилкою: %s."
 
 #: src/webserver/src/WebServer.cpp:1740
 msgid "Index file not found: "
-msgstr "Файл індексу не знайдено:"
+msgstr "Файл індексу не знайдено: "
 
 #: src/webserver/src/WebServer.cpp:1819
 msgid "Session expired - requesting login\n"
@@ -7641,7 +7636,7 @@ msgstr "Запитано вихід\n"
 
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
-msgstr "Обробляється запит [перенаправлений]:"
+msgstr "Обробляється запит [перенаправлений]: "
 
 #~ msgid "Partfile %s (%s) has no seeds file"
 #~ msgstr "Частковий файл %s (%s) не має джерел"

@@ -14,16 +14,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
-"POT-Creation-Date: 2016-11-21 15:20+0100\n"
-"PO-Revision-Date: 2010-01-15 03:38+0200\n"
-"Last-Translator: simkin <simkin@ono.com>\n"
+"POT-Creation-Date: 2017-05-24 12:50+0200\n"
+"PO-Revision-Date: 2017-05-24 12:58+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Català\n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ca\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Poedit-Language: Catalan\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -484,15 +484,15 @@ msgstr "Kademlia: Encaminament p2p basat en la mètrica XOR.\n"
 
 #: src/amuleDlg.cpp:509
 msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
-msgstr "Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
+msgstr " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 
 #: src/amuleDlg.cpp:510
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "Missatge"
 
@@ -532,9 +532,9 @@ msgstr "Kad: Inativa"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Cancel·la"
 
@@ -548,7 +548,7 @@ msgstr "Desconnecta"
 
 #: src/amuleDlg.cpp:781
 msgid "Disconnect from the currently connected networks"
-msgstr "Desconnecta de les xarxes on s'està connectat actualment."
+msgstr "Desconnecta de les xarxes on s'està connectat actualment"
 
 #: src/amuleDlg.cpp:786 src/MuleTrayIcon.cpp:499 src/muuli_wdr.cpp:2755
 #: src/muuli_wdr.cpp:3143 src/muuli_wdr.cpp:3530
@@ -557,7 +557,7 @@ msgstr "Connecta"
 
 #: src/amuleDlg.cpp:787
 msgid "Connect to the currently enabled networks"
-msgstr "Connecta a la xarxa habilitades."
+msgstr "Connecta a la xarxa habilitades"
 
 #: src/amuleDlg.cpp:846
 #, c-format
@@ -824,8 +824,8 @@ msgstr[0] ""
 "Estadístiques dels fitxers per a aquesta sessió: %d petició acceptada de %d, "
 "%s transferida\n"
 msgstr[1] ""
-"Estadístiques dels fitxers per a aquesta sessió: %d peticions acceptades de %"
-"d, %s transferides\n"
+"Estadístiques dels fitxers per a aquesta sessió: %d peticions acceptades de "
+"%d, %s transferides\n"
 
 #: src/BaseClient.cpp:2023
 #, c-format
@@ -859,8 +859,8 @@ msgid ""
 "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
 "Ignored"
 msgstr ""
-"L'usuari %s (%u) ha demanat la llista de fitxers compartits del directori %"
-"s  -> Denegada"
+"L'usuari %s (%u) ha demanat la llista de fitxers compartits del directori "
+"%s  -> Denegada"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:86
 #, c-format
@@ -885,7 +885,7 @@ msgstr "Error mentre es desava el fitxer %s: %s"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr "Entra "
+msgstr "Entra captcha"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:693 src/muuli_wdr.cpp:244
 #: src/SearchListCtrl.cpp:627 src/TransferWnd.cpp:335
@@ -1077,16 +1077,16 @@ msgstr ""
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
 msgstr ""
-"L'usuari %s (%u) ha demanat la llista de fitxers compartits del directori %"
-"s  -> Acceptada"
+"L'usuari %s (%u) ha demanat la llista de fitxers compartits del directori "
+"%s  -> Acceptada"
 
 #: src/ClientTCPSocket.cpp:929
 #, fuzzy, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
 msgstr ""
-"L'usuari %s (%u) ha demanat la llista de fitxers compartits del directori %"
-"s  -> Denegada"
+"L'usuari %s (%u) ha demanat la llista de fitxers compartits del directori "
+"%s  -> Denegada"
 
 #: src/ClientTCPSocket.cpp:948
 #, fuzzy, c-format
@@ -1378,8 +1378,7 @@ msgstr "Fonts"
 msgid "Priority"
 msgstr "Prioritat"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Estat"
 
@@ -1545,7 +1544,7 @@ msgid ""
 "met recovery solutions."
 msgstr ""
 "ERROR: No s'ha pogut carregar la còpia de seguretat. Cerqueu '.part.met "
-"recovery solutions' a http://forum.amule.org"
+"recovery solutions' a http://forum.amule.org."
 
 #: src/DownloadQueue.cpp:163
 msgid "All PartFiles Loaded."
@@ -1766,7 +1765,7 @@ msgstr "Ja s'està aturant."
 #: src/ExternalConn.cpp:1377
 #, c-format
 msgid "ExternalConn: adding link '%s'."
-msgstr "ExternalConn: afegint l'enllaç '%s'"
+msgstr "ExternalConn: afegint l'enllaç '%s'."
 
 #: src/ExternalConn.cpp:1383
 msgid "Invalid link or already on list."
@@ -2201,7 +2200,7 @@ msgstr "S'han baixat %d bytes"
 #: src/HTTPDownload.cpp:281
 #, c-format
 msgid "Expected %d bytes, but downloaded %d bytes"
-msgstr "Esperats %d bytes, però %d bytes descarregats."
+msgstr "Esperats %d bytes, però %d bytes descarregats"
 
 #: src/HTTPDownload.cpp:338
 msgid ""
@@ -2935,9 +2934,8 @@ msgid "Clears completed downloads"
 msgstr "Neteja les baixades completades"
 
 #: src/muuli_wdr.cpp:466
-#, fuzzy
 msgid "File sources:"
-msgstr "Fonts completes"
+msgstr "Fonts completes:"
 
 #: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1216 src/PrefsUnifiedDlg.cpp:176
 msgid "General"
@@ -3022,7 +3020,7 @@ msgstr "Completats:"
 
 #: src/muuli_wdr.cpp:710
 msgid "Intelligent Corruption Handling"
-msgstr "Gestió intel·ligent de la Corrupció "
+msgstr "Gestió intel·ligent de la Corrupció"
 
 #: src/muuli_wdr.cpp:719
 msgid "Lost to corruption :"
@@ -3371,8 +3369,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Explora"
 
@@ -3424,7 +3421,7 @@ msgstr "4665"
 
 #: src/muuli_wdr.cpp:1620
 msgid "Extended UDP port (Kad / global search) "
-msgstr "Port UDP extès (Kad / cerca global)"
+msgstr "Port UDP extès (Kad / cerca global) "
 
 #: src/muuli_wdr.cpp:1624
 msgid "This UDP port is used for extended eD2k requests and Kad network"
@@ -3440,7 +3437,7 @@ msgstr "UPnP Port TCP (Opcional):"
 
 #: src/muuli_wdr.cpp:1645
 msgid "Bind local address to IP (empty for any):"
-msgstr "Vincula l'adreça local a l'IP (buit per qualsevol): "
+msgstr "Vincula l'adreça local a l'IP (buit per qualsevol):"
 
 #: src/muuli_wdr.cpp:1649
 msgid ""
@@ -3628,7 +3625,7 @@ msgstr "Escala del Gràfic de Connexions: 100 "
 
 #: src/muuli_wdr.cpp:1935
 msgid "Download graph scale:"
-msgstr "Escala del gràfic de descàrrega: "
+msgstr "Escala del gràfic de descàrrega:"
 
 #: src/muuli_wdr.cpp:1944
 msgid "Upload graph scale:"
@@ -3920,7 +3917,7 @@ msgstr "Feu clic per a reiniciar el registre."
 msgid "Click on this button to update the servers list from URL ..."
 msgstr ""
 "Feu clic en aquest botó per a actualitzar la llista de servidors des d'una "
-"URL ... "
+"URL ..."
 
 #: src/muuli_wdr.cpp:2532
 msgid "Server list"
@@ -4226,7 +4223,7 @@ msgstr "Filtra els missatges que continguin (useu ',' per a separar):"
 #: src/muuli_wdr.cpp:2990 src/muuli_wdr.cpp:3005
 msgid "add here the words amule should filter and block messages including it"
 msgstr ""
-"Els missatges que continguin aquestes paraules seran filtrats i bloquejats "
+"els missatges que continguin aquestes paraules seran filtrats i bloquejats "
 "per l'aMule"
 
 #: src/muuli_wdr.cpp:2993
@@ -4746,13 +4743,13 @@ msgid ""
 "never happen"
 msgstr ""
 "ERROR: No ha estat possible fer el resum de la part descarregada - conjunt "
-"de resums incomplet (%s). Açò no hauria de passar mai."
+"de resums incomplet (%s). Açò no hauria de passar mai"
 
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
 
 #: src/PartFile.cpp:2971
@@ -5003,7 +5000,7 @@ msgstr "Seguretat"
 
 #: src/PrefsUnifiedDlg.cpp:182
 msgid "Interface"
-msgstr "Interfície "
+msgstr "Interfície"
 
 #: src/PrefsUnifiedDlg.cpp:184
 msgid "Proxy"
@@ -5011,7 +5008,7 @@ msgstr "Servidor intermediari"
 
 #: src/PrefsUnifiedDlg.cpp:185
 msgid "Filters"
-msgstr "Filtres "
+msgstr "Filtres"
 
 #: src/PrefsUnifiedDlg.cpp:186
 msgid "Remote Controls"
@@ -5023,7 +5020,7 @@ msgstr "Signatura en línia"
 
 #: src/PrefsUnifiedDlg.cpp:188
 msgid "Advanced"
-msgstr "Avançat "
+msgstr "Avançat"
 
 #: src/PrefsUnifiedDlg.cpp:189
 msgid "Events"
@@ -5097,9 +5094,8 @@ msgid "- External connect port changed.\n"
 msgstr "Connexió externa tancada."
 
 #: src/PrefsUnifiedDlg.cpp:614
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "Nova connexió externa acceptada"
+msgstr "Nova connexió externa acceptada\n"
 
 #: src/PrefsUnifiedDlg.cpp:618
 #, fuzzy
@@ -5464,8 +5460,8 @@ msgstr "No s'ha pogut obrir el server.met!"
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
 msgstr ""
-"Fitxer server.met corrupte, s'ha trobat una etiqueta de versió invàlida: 0x%"
-"x, mida %i"
+"Fitxer server.met corrupte, s'ha trobat una etiqueta de versió invàlida: 0x"
+"%x, mida %i"
 
 #: src/ServerList.cpp:174
 #, c-format
@@ -5528,7 +5524,7 @@ msgstr "No s'ha pogut obrir '%s'"
 
 #: src/ServerList.cpp:686
 msgid "Failed to save server.met!"
-msgstr "No s'ha pogut desar el server.met"
+msgstr "No s'ha pogut desar el server.met!"
 
 #: src/ServerList.cpp:833
 msgid "Invalid URL"
@@ -5633,8 +5629,8 @@ msgstr "Esteu segur que voleu esborrar el servidor estàtic %s"
 msgid "Servers (%i)"
 msgstr "Servidors (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Servidor"
 
@@ -5863,7 +5859,7 @@ msgstr "Fonts indexades:"
 
 #: src/ServerWnd.cpp:255
 msgid "Indexed keywords:"
-msgstr "Paraules clau indexades: "
+msgstr "Paraules clau indexades:"
 
 #: src/ServerWnd.cpp:257
 msgid "Indexed notes:"
@@ -5871,7 +5867,7 @@ msgstr "Notes indexades:"
 
 #: src/ServerWnd.cpp:259
 msgid "Indexed load:"
-msgstr "Càrrega indexada: "
+msgstr "Càrrega indexada:"
 
 #: src/ServerWnd.cpp:262
 msgid "Average Users:"
@@ -5920,9 +5916,8 @@ msgid "No shareable files found in directory: %s"
 msgstr "No s'ha trobat cap fitxer en el directori: %s"
 
 #: src/SharedFilePeersListCtrl.cpp:28 src/SourceListCtrl.cpp:28
-#, fuzzy
 msgid "User Name"
-msgstr "Nom d'usuari"
+msgstr "Nom d’usuari"
 
 #: src/SharedFilePeersListCtrl.cpp:30
 #, fuzzy
@@ -6637,7 +6632,7 @@ msgstr "Atura el filtre IP per a clients i servidors"
 
 #: src/TextClient.cpp:925
 msgid "Enable/Disable IP filtering for clients."
-msgstr "Activa/Desactiva el filtre IP per a clients"
+msgstr "Activa/Desactiva el filtre IP per a clients."
 
 #: src/TextClient.cpp:926
 msgid "Turn IP filtering on for clients."
@@ -6649,7 +6644,7 @@ msgstr "Atura el filtre IP per a clients"
 
 #: src/TextClient.cpp:928
 msgid "Enable/Disable IP filtering for servers."
-msgstr "Activa/Desactiva el filtre IP per a servidors"
+msgstr "Activa/Desactiva el filtre IP per a servidors."
 
 #: src/TextClient.cpp:929
 msgid "Turn IP filtering on for servers."
@@ -6703,15 +6698,15 @@ msgstr "Obté les preferències del filtratge IP."
 
 #: src/TextClient.cpp:945
 msgid "Get IP filtering state for both clients and servers."
-msgstr "Obtenir l'estat del filtre IP per a clients i servidors"
+msgstr "Obtenir l'estat del filtre IP per a clients i servidors."
 
 #: src/TextClient.cpp:946
 msgid "Get IP filtering state for clients only."
-msgstr "Obtenir l'estat del filtre IP només per a clients"
+msgstr "Obtenir l'estat del filtre IP només per a clients."
 
 #: src/TextClient.cpp:947
 msgid "Get IP filtering state for servers only."
-msgstr "Obtenir l'estat del filtre IP només per a servidors"
+msgstr "Obtenir l'estat del filtre IP només per a servidors."
 
 #: src/TextClient.cpp:948
 msgid "Get IP filtering level."
@@ -6723,7 +6718,7 @@ msgstr "Obté els límits d'ample de banda."
 
 #: src/TextClient.cpp:952
 msgid "Execute a search."
-msgstr "Realitza una cerca"
+msgstr "Realitza una cerca."
 
 #: src/TextClient.cpp:953
 msgid ""
@@ -6741,7 +6736,7 @@ msgstr ""
 
 #: src/TextClient.cpp:954
 msgid "Execute a global search."
-msgstr "Realitza una cerca global"
+msgstr "Realitza una cerca global."
 
 #: src/TextClient.cpp:955
 msgid "Execute a local search"
@@ -6886,8 +6881,8 @@ msgstr ""
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr ""
-"AVÍS: El fitxer '%s' ja existeix, el fitxer nou ha estat reanomenat com a '%"
-"s'."
+"AVÍS: El fitxer '%s' ja existeix, el fitxer nou ha estat reanomenat com a "
+"'%s'."
 
 #: src/TransferWnd.cpp:209
 msgid "Are you sure you wish to cancel and delete all files in this category?"
@@ -6953,7 +6948,7 @@ msgstr "S'està suspenent la pujada del fitxer: %s"
 #: src/UserEvents.cpp:138
 #, c-format
 msgid "Failed to execute command `%s' on `%s' event."
-msgstr "Error en executar l'ordre '%s' per a l'esdeveniment '%s'"
+msgstr "Error en executar l'ordre '%s' per a l'esdeveniment '%s'."
 
 #: src/UserEvents.h:60
 msgid "Download completed"
@@ -7370,7 +7365,7 @@ msgstr "L'estat de l'aMule és desconegut..."
 #: src/utils/wxCas/src/wxcasframe.cpp:1019
 #: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid "aMule "
-msgstr "aMule"
+msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1008
 msgid " has been running for "
@@ -7434,7 +7429,7 @@ msgstr "Baixant: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1108
 msgid " kB/s, Upload: "
-msgstr "kB/s, pujant: "
+msgstr " kB/s, pujant: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1110
 msgid " kB/s"
@@ -7606,7 +7601,7 @@ msgstr "Ha fallat la petició amb el següent error: %s."
 
 #: src/webserver/src/WebServer.cpp:1740
 msgid "Index file not found: "
-msgstr "No s'ha trobat el fitxer d'índex:"
+msgstr "No s'ha trobat el fitxer d'índex: "
 
 #: src/webserver/src/WebServer.cpp:1819
 msgid "Session expired - requesting login\n"

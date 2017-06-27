@@ -11,9 +11,15 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2016-11-21 15:20+0100\n"
+<<<<<<< HEAD
+"PO-Revision-Date: 2017-06-26 10:34+0200\n"
+"Last-Translator: Sebastiano Pistore <sebastianopistore.info@protonmail.ch>\n"
+"Language-Team: <i18n-nn@lister.ping.uio.no>\n"
+=======
 "PO-Revision-Date: 2008-06-10 23:09+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team:  <i18n-nn@lister.ping.uio.no>\n"
+>>>>>>> f0dc7d5747d562ba5c91dfe58082794c47f6b82e
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -51,11 +57,8 @@ msgstr ""
 "medan du har ein lågid."
 
 #: src/amule.cpp:230
-#, fuzzy
 msgid "Now, exiting main app..."
-msgstr ""
-"\n"
-"Ok,·avsluttar·%s...\n"
+msgstr "Ok,·avsluttar·%s..."
 
 #: src/amule.cpp:249
 #, c-format
@@ -76,9 +79,8 @@ msgid "aMule OnExit: Terminating core."
 msgstr ""
 
 #: src/amule.cpp:333
-#, fuzzy
 msgid "aMule shutdown completed."
-msgstr "Nedlasting fullført"
+msgstr "Nedlasting fullført."
 
 #: src/amule.cpp:337
 msgid "Memory debug results for aMule exit:"
@@ -571,9 +573,9 @@ msgid "aMule (%s | Disconnected)"
 msgstr "aMule·(%s·|·Fråkopla)"
 
 #: src/amuleDlg.cpp:913
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to exit %s?"
-msgstr "Vil du verkeleg avslutte aMule?"
+msgstr "Vil du verkeleg avslutte %s?"
 
 #: src/amuleDlg.cpp:914
 msgid "Exit confirmation"
@@ -716,9 +718,8 @@ msgid "Going to event loop..."
 msgstr "Freistar å hente fram att filinformasjon..."
 
 #: src/amule-remote-gui.cpp:304
-#, fuzzy
 msgid "Connecting..."
-msgstr "Koplar til"
+msgstr "Kobler til …"
 
 #: src/amule-remote-gui.cpp:308
 msgid "Connection failed "
@@ -1067,9 +1068,9 @@ msgstr ""
 "Brukar·%s (%u)·etterspurte·lista·over·delte·filer·for·katalogen·%s ->·nekta"
 
 #: src/ClientTCPSocket.cpp:948
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) shares directory '%s'"
-msgstr "Brukar %s·(%u) deler katalogen %s"
+msgstr "Brukar %s·(%u) deler katalogen '%s'"
 
 #: src/ClientTCPSocket.cpp:963
 #, c-format
@@ -1077,9 +1078,9 @@ msgid "User %s (%u) sent unrequested shared dirs."
 msgstr "Brukar %s·(%u) sende ikkje etterspurte delte kataloger."
 
 #: src/ClientTCPSocket.cpp:978
-#, fuzzy, c-format
+#, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory '%s'"
-msgstr "Brukar %s·(%u) sende liste over delte filer for katalogen %s"
+msgstr "Brukar %s·(%u) sende liste over delte filer for katalogen '%s'"
 
 #: src/ClientTCPSocket.cpp:985
 #, c-format
@@ -1500,9 +1501,9 @@ msgid "All PartFiles Saved."
 msgstr ""
 
 #: src/DownloadQueue.cpp:113
-#, fuzzy, c-format
+#, c-format
 msgid "Loading temp files from %s."
-msgstr "Lastar server.met fila: %s"
+msgstr "Lastar server.met fila: %s."
 
 #: src/DownloadQueue.cpp:132
 #, fuzzy, c-format
@@ -2211,9 +2212,9 @@ msgid "Failed to download %s from %s"
 msgstr "Greidde ikkje å laste ned tenarlista frå %s"
 
 #: src/IP2Country.cpp:173
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to load country data for '%s'."
-msgstr "Greidde ikkje å laste ned tenarlista frå %s"
+msgstr "Greidde ikkje å laste ned tenarlista frå '%s'."
 
 #: src/IPFilter.cpp:113
 #, fuzzy
@@ -4718,7 +4719,11 @@ msgstr "Arabisk"
 #: src/Preferences.cpp:631
 #, fuzzy
 msgid "Asturian"
+<<<<<<< HEAD
+msgstr "Asturisk"
+=======
 msgstr "Estisk"
+>>>>>>> f0dc7d5747d562ba5c91dfe58082794c47f6b82e
 
 #: src/Preferences.cpp:632
 msgid "Basque"
@@ -5829,9 +5834,8 @@ msgid "Upload Speed"
 msgstr "Opplastingsfart"
 
 #: src/SharedFilePeersListCtrl.cpp:33 src/SourceListCtrl.cpp:32
-#, fuzzy
 msgid "Available Parts"
-msgstr "Tilgjengeleg:"
+msgstr "Tilgjengeleg"
 
 #: src/SharedFilePeersListCtrl.cpp:35
 #, fuzzy
@@ -6979,7 +6983,7 @@ msgstr "Kopiér til utklippstavle"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open"
-msgstr ""
+msgstr "Åpen"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:261
 msgid "Open a file to compute its eD2k link"
