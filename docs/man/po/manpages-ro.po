@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2016-09-15 11:10+0200\n"
-"PO-Revision-Date: 2014-10-26 21:58+0200\n"
-"Last-Translator: Angelescu Constantin <titus0818@yahoo.com>\n"
+"PO-Revision-Date: 2017-05-24 10:01+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Romanian <kde-i18n-doc@kde.org>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #. type: TH
 #: amule.1:1
@@ -56,7 +56,7 @@ msgstr "NUME"
 #. type: Plain text
 #: amule.1:6
 msgid "amule - the all-platform eMule p2p client"
-msgstr "amule - client eMule p2p pentru toate platformele "
+msgstr "amule - client eMule p2p pentru toate platformele"
 
 #. type: SH
 #: amule.1:6 amulecmd.1:7 amuled.1:6 amulegui.1:6 amuleweb.1:6 ed2k.1:6
@@ -197,7 +197,7 @@ msgstr "Link-ul eD2k de adăugat poate fi:"
 #: amule.1:63 amulecmd.1:78 amuled.1:71 ed2k.1:47
 msgid "a file link (ed2k://|file|...), it will be added to the download queue;"
 msgstr ""
-"un link fișier (ed2k://|file|...), va fi adăugat la coada descărcărilor,"
+"un link fișier (ed2k://|file|...), va fi adăugat la coada descărcărilor;"
 
 #. type: Plain text
 #: amule.1:65 amulecmd.1:80 amuled.1:73 ed2k.1:49
@@ -205,7 +205,7 @@ msgid ""
 "a server link (ed2k://|server|...), it will be added to the server list;"
 msgstr ""
 "o legătură server (ed2k://|server|...), care va fi adăugată la lista "
-"serverelor,"
+"serverelor;"
 
 #. type: Plain text
 #: amule.1:67 amuled.1:75 ed2k.1:51
@@ -1073,7 +1073,7 @@ msgstr ""
 #. type: Plain text
 #: amuled.1:39
 msgid "Configure EC (External Connections)."
-msgstr "Configurează EC (conexiuni externe)"
+msgstr "Configurează EC (conexiuni externe)."
 
 #. type: TH
 #: amulegui.1:1
@@ -1413,7 +1413,7 @@ msgstr "Analizor aMule de link-uri eD2k v1.5.1"
 #. type: Plain text
 #: ed2k.1:6
 msgid "ed2k - aMule eD2k link parser"
-msgstr "ed2k - analizor aMule de linkuri eD2k "
+msgstr "ed2k - analizor aMule de linkuri eD2k"
 
 #. type: Plain text
 #: ed2k.1:10
@@ -1509,7 +1509,7 @@ msgstr ""
 #: ../../src/utils/aLinkCreator/docs/alc.1:11
 #: ../../src/utils/wxCas/docs/wxcas.1:16
 msgid "This app doesn't take any arguments."
-msgstr "Această aplicație nu ia nici un argument"
+msgstr "Această aplicație nu ia nici un argument."
 
 #. type: TH
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1
