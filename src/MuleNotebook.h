@@ -130,9 +130,9 @@ private:
 
 protected:
 	/**
-	 * Event handler for left or middle mouse button release (for closing pages)
+	 * Event handler for left or middle mouse button to press or release (for closing pages)
 	 */
-	void OnMouseButtonRelease(wxMouseEvent &event);
+	void OnMouseButton(wxMouseEvent &event);
 
 	/**
 	 * Event handler for mouse motion (for highlighting the 'x')
