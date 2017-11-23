@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
-"POT-Creation-Date: 2016-11-21 15:20+0100\n"
+"POT-Creation-Date: 2017-11-23 11:51+0100\n"
 "PO-Revision-Date: 2011-04-26 01:08+0200\n"
 "Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
+"Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sl\n"
 "X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
@@ -135,8 +135,8 @@ msgid ""
 msgstr ""
 "Zahtevali ste zagon spletnega strežnika ob zagonu programa, a programa "
 "amuleweb ni moč zagnati. Namestite paket, ki vsebuje spletni strežnik aMule, "
-"ali pa prevedite aMule z možnostjo »--enable-webserver« in ga znova namestite "
-"z »make install«."
+"ali pa prevedite aMule z možnostjo »--enable-webserver« in ga znova "
+"namestite z »make install«."
 
 #: src/amule.cpp:664 src/amule.cpp:778 src/amule.cpp:1069
 #: src/amule-remote-gui.cpp:308 src/amule-remote-gui.cpp:330
@@ -489,8 +489,8 @@ msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
-#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632
-#: src/PrefsUnifiedDlg.cpp:737 src/PrefsUnifiedDlg.cpp:857
+#: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
+#: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
 msgstr "Sporočilo"
 
@@ -530,9 +530,9 @@ msgstr "Kad: izklopljen"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:803 src/muuli_wdr.cpp:863 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1003 src/muuli_wdr.cpp:2329 src/muuli_wdr.cpp:2431
-#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154
-#: src/ServerListCtrl.cpp:528 src/ServerListCtrl.cpp:547
-#: src/TransferWnd.cpp:375 src/utils/wxCas/src/wxcasprefs.cpp:285
+#: src/muuli_wdr.cpp:3147 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/utils/wxCas/src/wxcasprefs.cpp:285
 msgid "Cancel"
 msgstr "Prekliči"
 
@@ -949,15 +949,15 @@ msgstr ""
 msgid "Chat"
 msgstr "Klepet"
 
-#: src/ChatWnd.cpp:101 src/MuleNotebook.cpp:186
+#: src/ChatWnd.cpp:101 src/MuleNotebook.cpp:188
 msgid "Close tab"
 msgstr "Zapri zavihek"
 
-#: src/ChatWnd.cpp:102 src/MuleNotebook.cpp:187
+#: src/ChatWnd.cpp:102 src/MuleNotebook.cpp:189
 msgid "Close all tabs"
 msgstr "Zapri vse zavihke"
 
-#: src/ChatWnd.cpp:103 src/MuleNotebook.cpp:188
+#: src/ChatWnd.cpp:103 src/MuleNotebook.cpp:190
 msgid "Close other tabs"
 msgstr "Zapri druge zavihke"
 
@@ -1081,7 +1081,8 @@ msgstr ""
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
 msgstr ""
-"Uporabnik %s (%u) je zahteval seznam deljenih datotek za mapo »%s« → zavrnjeno"
+"Uporabnik %s (%u) je zahteval seznam deljenih datotek za mapo »%s« → "
+"zavrnjeno"
 
 #: src/ClientTCPSocket.cpp:948
 #, c-format
@@ -1370,8 +1371,7 @@ msgstr "Viri"
 msgid "Priority"
 msgstr "Prednost"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766
-#: src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Stanje"
 
@@ -2032,7 +2032,8 @@ msgstr "%.2f kB/s"
 #: src/FriendList.cpp:123
 msgid "Failed to open friend list file 'emfriends.met' for reading!"
 msgstr ""
-"Datoteke s seznamom prijateljev »emfriends.met« ni bilo moč odpreti za branje."
+"Datoteke s seznamom prijateljev »emfriends.met« ni bilo moč odpreti za "
+"branje."
 
 #: src/FriendList.cpp:149
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
@@ -2513,7 +2514,7 @@ msgstr "NAPAKA: "
 msgid "WARNING: "
 msgstr "OPOZORILO: "
 
-#: src/MuleNotebook.cpp:185 src/muuli_wdr.cpp:901 src/muuli_wdr.cpp:1430
+#: src/MuleNotebook.cpp:187 src/muuli_wdr.cpp:901 src/muuli_wdr.cpp:1430
 #: src/muuli_wdr.cpp:3235 src/muuli_wdr.cpp:3505
 msgid "Close"
 msgstr "Zapri"
@@ -3363,8 +3364,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1520 src/muuli_wdr.cpp:1540 src/muuli_wdr.cpp:1865
 #: src/muuli_wdr.cpp:1876 src/muuli_wdr.cpp:2951
 #: src/utils/aLinkCreator/src/alcframe.cpp:142
-#: src/utils/wxCas/src/wxcasprefs.cpp:56
-#: src/utils/wxCas/src/wxcasprefs.cpp:133
+#: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:133
 msgid "Browse"
 msgstr "Brskanje"
 
@@ -4732,11 +4732,11 @@ msgstr ""
 #: src/PartFile.cpp:2305 src/PartFile.cpp:2310
 #, c-format
 msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile '%"
-"s' with length %u: %s"
+"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
+"'%s' with length %u: %s"
 msgstr ""
-"Konec datoteke med ustvarjanjem kode prejetega dela %u z dolžino %u (maks. %"
-"u) delne datoteke »%s« z dolžino %u: %s"
+"Konec datoteke med ustvarjanjem kode prejetega dela %u z dolžino %u (maks. "
+"%u) delne datoteke »%s« z dolžino %u: %s"
 
 #: src/PartFile.cpp:2971
 #, c-format
@@ -5460,8 +5460,8 @@ msgstr "Ni bilo mogoče odpreti server.met."
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
 msgstr ""
-"Datoteka server.met je pokvarjena, napačna oznaka različice: 0x%x, velikost %"
-"i"
+"Datoteka server.met je pokvarjena, napačna oznaka različice: 0x%x, velikost "
+"%i"
 
 #: src/ServerList.cpp:174
 #, c-format
@@ -5541,9 +5541,9 @@ msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
 msgstr ""
-"V »addresses.dat« ni bil najden noben vnos za seznam strežnikov. Za samodejno "
-"posodobitev seznama strežnikov morate v to datoteko vnesti veljaven naslov "
-"seznama strežnikov."
+"V »addresses.dat« ni bil najden noben vnos za seznam strežnikov. Za "
+"samodejno posodobitev seznama strežnikov morate v to datoteko vnesti "
+"veljaven naslov seznama strežnikov."
 
 #: src/ServerList.cpp:887
 #, c-format
@@ -5629,8 +5629,8 @@ msgstr "Ali res želite izbrisati statičen strežnik %s?"
 msgid "Servers (%i)"
 msgstr "Strežniki (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271
-#: src/ServerSocket.cpp:286 src/ServerWnd.cpp:179
+#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:271 src/ServerSocket.cpp:286
+#: src/ServerWnd.cpp:179
 msgid "Server"
 msgstr "Strežnik"
 
@@ -5813,8 +5813,8 @@ msgstr "Stanje povezave:"
 #, c-format
 msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr ""
-"Za požarnim zidom – v požarnem zidu ali na usmerjevalniku odprite vrata TCP %"
-"d"
+"Za požarnim zidom – v požarnem zidu ali na usmerjevalniku odprite vrata TCP "
+"%d"
 
 #: src/ServerWnd.cpp:219
 msgid "UDP Connection State:"
@@ -5824,8 +5824,8 @@ msgstr "Stanje povezave UDP:"
 #, c-format
 msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr ""
-"Za požarnim zidom – v požarnem zidu ali na usmerjevalniku odprite vrata UDP %"
-"d"
+"Za požarnim zidom – v požarnem zidu ali na usmerjevalniku odprite vrata UDP "
+"%d"
 
 #: src/ServerWnd.cpp:226
 msgid "Firewalled state: "
@@ -6856,7 +6856,8 @@ msgstr "Pretvarjanje starih kod NIRP v »%s« v 64b v »%s«."
 #: src/ThreadTasks.cpp:455
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
-msgstr "OPOZORILO: ime datoteke »%s« ni veljavno in je bilo spremenjeno v »%s«."
+msgstr ""
+"OPOZORILO: ime datoteke »%s« ni veljavno in je bilo spremenjeno v »%s«."
 
 #: src/ThreadTasks.cpp:467
 #, c-format
