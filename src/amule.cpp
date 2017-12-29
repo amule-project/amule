@@ -816,6 +816,12 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 				thePrefs::GetUPnPEnabled(),
 				"aMule UDP Extended eMule Socket");
 			m_upnp = new CUPnPControlPoint(thePrefs::GetUPnPTCPPort());
+
+			int count = 0;
+			while (count < 3 && !m_upnp->WanServiceDetected()) {
+				sleep(1);
+				count += 1;
+			}
 			m_upnp->AddPortMappings(m_upnpMappings);
 		} catch(CUPnPException &e) {
 			wxString error_msg;
