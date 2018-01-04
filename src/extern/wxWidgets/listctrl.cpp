@@ -5803,16 +5803,6 @@ bool wxGenericListCtrl::DoPopupMenu( wxMenu *menu, int x, int y )
 #endif
 }
 
-void wxGenericListCtrl::DoClientToScreen( int *x, int *y ) const
-{
-    m_mainWin->DoClientToScreen(x, y);
-}
-
-void wxGenericListCtrl::DoScreenToClient( int *x, int *y ) const
-{
-    m_mainWin->DoScreenToClient(x, y);
-}
-
 void wxGenericListCtrl::SetFocus()
 {
     // The test in window.cpp fails as we are a composite
