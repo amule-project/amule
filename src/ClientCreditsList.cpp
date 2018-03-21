@@ -312,7 +312,7 @@ void CClientCreditsList::InitalizeCrypting()
 		// calculate and store public key
 		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(*static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey));
 		CryptoPP::ArraySink asink(m_abyMyPublicKey, 80);
-		pubkey.AccessMaterial().Save(asink);
+		pubkey.GetMaterial().Save(asink);
 		m_nMyPublicKeyLen = asink.TotalPutLength();
 		asink.MessageEnd();
 	} catch (const CryptoPP::Exception& e) {
