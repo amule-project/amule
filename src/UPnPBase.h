@@ -489,9 +489,9 @@ public:
 
 	// Callback function
 	static int Callback(
-		Upnp_EventType EventType,
-		void* Event,
-		void* Cookie);
+		Upnp_EventType_e EventType,
+		const void *Event,
+		void *Cookie);
 
 private:
 	void OnEventReceived(
