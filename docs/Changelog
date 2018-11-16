@@ -28,6 +28,9 @@ Version 2.3.3 - The "what do you want?" version.
 	Vollstrecker:
 		* Initial support for detecting pkg-config based gdlib versions
 
+	xinhuang:
+		* Fix crash when shared files changed on Shared files tab
+
 --------------------------------------------------------------------------------
 
 Version 2.3.2 - The "don't close tabs" version.
