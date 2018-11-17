@@ -1103,6 +1103,7 @@ void php_exp_tree_free(PHP_EXP_NODE *tree)
 			break;
 		case PHP_OP_MUX:
 			php_exp_tree_free(tree->exp_node);
+		/* fall through */
 		default:
 			// all other things using left/right
 			php_exp_tree_free(tree->tree_node.left);
@@ -1695,6 +1696,7 @@ void php_eval_int_math(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, 
 		case PHP_OP_LOG_XOR:
 			op1->int_val = op1->int_val ? 1 : 0;
 			op2->int_val = op2->int_val ? 1 : 0;
+	/* fall through */
 	case PHP_OP_XOR:
 		result->int_val = op1->int_val ^ op2->int_val;
 		break;

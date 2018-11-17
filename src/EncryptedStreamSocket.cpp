@@ -533,6 +533,7 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen)
 						break;
 					}
 				}
+				/* fall through */
 				case ONS_BASIC_CLIENTA_PADDING: {
 					//printf("Negotiating on padding, completing\n");
 					// ignore the random bytes, send the response, set status complete
@@ -579,6 +580,7 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen)
 						break;
 					}
 				}
+				/* fall through */
 				case ONS_BASIC_CLIENTB_PADDING:
 					//printf("Negotiating on client B padding, handshake complete\n");
 					// ignore the random bytes, the handshake is complete
@@ -637,6 +639,7 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen)
 					if (m_nReceiveBytesWanted > 0) {
 						break;
 					}
+				/* fall through */
 				case ONS_BASIC_SERVER_PADDING: {
 					// ignore the random bytes (they are decrypted already), send the response, set status complete
 					CMemFile fileResponse(26);

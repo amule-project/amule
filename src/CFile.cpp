@@ -251,6 +251,7 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 			//else: fall through as write_append is the same as write if the
 			//      file doesn't exist
 
+		/* fall through */
 		case write:
 			flags |= O_WRONLY | O_CREAT | O_TRUNC;
 			break;

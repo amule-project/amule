@@ -131,6 +131,7 @@ wxString DoCleanup(const wxString& filename, bool keepSpaces, bool isFAT32)
 					continue;
 				}
 
+			/* fall through */
 			default:
 				if ((c == wxT(' ')) && !keepSpaces) {
 					result += wxT("%20");

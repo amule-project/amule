@@ -199,6 +199,7 @@ void CFormat::Init(const wxString& str)
 			switch (state) {
 				case esInvalidFormat:
 					wxFAIL_MSG(wxT("Invalid format specifier: ") + str.Mid(formatStart, pos - formatStart + 1));
+				/* fall through */
 				case esFormatStart:
 					formatStart = pos;
 					break;

@@ -1037,6 +1037,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 	switch(opcode) {
 		case OP_MULTIPACKET_EXT:
 			AddDebugLogLineN( logRemoteClient, wxT("Remote Client: OP_MULTIPACKET_EXT from ") + m_client->GetFullIP());
+		/* fall through */
 		case OP_MULTIPACKET: {
 			if (opcode == OP_MULTIPACKET) AddDebugLogLineN( logRemoteClient, wxT("Remote Client: OP_MULTIPACKET from ") + m_client->GetFullIP() );
 
@@ -1346,8 +1347,10 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 		}
 		case OP_SENDINGPART_I64:
 			AddDebugLogLineN( logRemoteClient, wxT("Remote Client: OP_SENDINGPART_I64 from ") + m_client->GetFullIP() );
+		/* fall through */
 		case OP_COMPRESSEDPART_I64:
 			if (opcode == OP_COMPRESSEDPART_I64) AddDebugLogLineN( logRemoteClient, wxT("Remote Client: OP_COMPRESSEDPART_I64 from ") + m_client->GetFullIP() );
+		/* fall through */
 		case OP_COMPRESSEDPART: {	// 0.47a
 			if (opcode == OP_COMPRESSEDPART) AddDebugLogLineN( logRemoteClient, wxT("Remote Client: OP_COMPRESSEDPART from ") + m_client->GetFullIP() );
 
