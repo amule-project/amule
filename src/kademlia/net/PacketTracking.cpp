@@ -148,6 +148,7 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32_t ip, uint8_t opcode, bo
 			break;
 		case KADEMLIA_FIREWALLED2_REQ:
 			opcode = KADEMLIA_FIREWALLED_REQ;
+		/* fall through */
 		case KADEMLIA_FIREWALLED_REQ:
 			allowedPacketsPerMinute = 2;
 			break;

@@ -1465,6 +1465,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 
 					// No break here, since the next case takes care of asking for downloads.
 				}
+				/* fall through */
 				case DS_CONNECTING:
 				case DS_TOOMANYCONNS:
 				case DS_NONE:

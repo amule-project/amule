@@ -259,6 +259,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		case CMD_ID_SET_IPFILTER_CLIENTS_ON:
 		case CMD_ID_SET_IPFILTER_SERVERS_ON:
 			tmp_int = 1;
+		/* fall through */
 		case CMD_ID_SET_IPFILTER_OFF:
 		case CMD_ID_SET_IPFILTER_CLIENTS_OFF:
 		case CMD_ID_SET_IPFILTER_SERVERS_OFF:
@@ -282,6 +283,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				request->AddTag(prefs);
 				request_list.push_back(request);
 			}
+		/* fall through */
 		case CMD_ID_GET_IPFILTER:
 		case CMD_ID_GET_IPFILTER_STATE:
 		case CMD_ID_GET_IPFILTER_STATE_CLIENTS:
@@ -306,6 +308,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				}
 			}
 			CmdId = CMD_ID_GET_IPFILTER_LEVEL;
+		/* fall through */
 		case CMD_ID_GET_IPFILTER_LEVEL:
 			request = new CECPacket(EC_OP_GET_PREFERENCES);
 			request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_SECURITY));
@@ -467,6 +470,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 
 		case CMD_ID_SET_BWLIMIT_UP:
 			tmp_int = EC_TAG_CONN_MAX_UL - EC_TAG_CONN_MAX_DL;
+		/* fall through */
 		case CMD_ID_SET_BWLIMIT_DOWN:
 			tmp_int += EC_TAG_CONN_MAX_DL;
 			{
@@ -481,6 +485,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 					return CMD_ERR_INVALID_ARG;
 				}
 			}
+		/* fall through */
 		case CMD_ID_GET_BWLIMITS:
 			request = new CECPacket(EC_OP_GET_PREFERENCES);
 			request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CONNECTIONS));
@@ -507,10 +512,12 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 		case CMD_ID_SEARCH_GLOBAL:
 			search_type = EC_SEARCH_GLOBAL;
+		/* fall through */
 		case CMD_ID_SEARCH_LOCAL:
 			if (search_type != EC_SEARCH_GLOBAL){
 				search_type = EC_SEARCH_LOCAL;
 			}
+		/* fall through */
 		case CMD_ID_SEARCH_KAD:
 			if (search_type != EC_SEARCH_GLOBAL && search_type != EC_SEARCH_LOCAL){
 				search_type = EC_SEARCH_KAD;

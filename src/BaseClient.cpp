@@ -1321,6 +1321,7 @@ bool CUpDownClient::Disconnected(const wxString& DEBUG_ONLY(strReason), bool bFr
 	switch (m_nDownloadState) {
 		case DS_ONQUEUE:
 			source_type = A4AF_SOURCE; // Will be checked.
+		/* fall through */
 		case DS_TOOMANYCONNS:
 		case DS_NONEEDEDPARTS:
 		case DS_LOWTOLOWIP:

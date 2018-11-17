@@ -421,6 +421,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender)
 				% sender->cur_server->GetFullIP()
 				% sender->cur_server->GetPort() );
 		}
+		/* fall through */
 		case CS_SERVERDEAD:
 		case CS_SERVERFULL:{
 			if (!connecting) {

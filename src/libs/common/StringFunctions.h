@@ -171,6 +171,7 @@ inline size_t GetRawSize(const wxString& rstr, EUtf8Str eEncode)
 	switch (eEncode) {
 		case utf8strOptBOM:
 			RealLen = 3;
+		/* fall through */
 		case utf8strRaw: {
 			Unicode2CharBuf s(unicode2UTF8(rstr));
 			if (s) {
@@ -180,6 +181,7 @@ inline size_t GetRawSize(const wxString& rstr, EUtf8Str eEncode)
 				RealLen = 0;
 			}
 		}
+		/* fall through */
 		default: {
 			Unicode2CharBuf s(unicode2char(rstr));
 			if (s) {
