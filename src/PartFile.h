@@ -186,7 +186,7 @@ public:
 	uint64	GetLostDueToCorruption() const	{ return m_iLostDueToCorruption; }
 	uint64	GetGainDueToCompression() const	{ return m_iGainDueToCompression; }
 	uint32	TotalPacketsSavedDueToICH()const{ return m_iTotalPacketsSavedDueToICH; }
-	bool	IsStopped() const		{ return this ? m_stopped : true; }
+	bool	IsStopped() const		{ return m_stopped; }
 	bool	IsPaused() const		{ return m_paused; }
 	void	UpdateFileRatingCommentAvail();
 
