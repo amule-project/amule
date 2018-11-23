@@ -546,8 +546,7 @@ void COScopeCtrl::OnTimer(wxTimerEvent& WXUNUSED(evt))
 		return;
 	}
 	bRecreateAll = false;
-	wxPaintEvent paint;
-	ProcessEvent(paint);
+	Refresh();
 }
 
 // File_checked_for_headers
