@@ -86,14 +86,12 @@ function init_package_versions {
     #
     # single quotes have to be used here to avoid expansion
     #
-    lookup_distro 'cryptopp*'  CRYPTOPP_FILENAME CRYPTOPP_DISTRO
     lookup_distro 'libupnp-*' LIBUPNP_FILENAME LIBUPNP_DISTRO
     lookup_distro 'wxWidgets-*.*.*.tar.*' WXWIDGETS_FILENAME WXWIDGETS_DISTRO
     lookup_distro 'aMule-*' AMULE_FILENAME AMULE_DISTRO
 
     echo
     echo "Software packacge versions:"
-    echo "    cryptopp  : $CRYPTOPP_DISTRO"
     echo "    libupnp   : $LIBUPNP_DISTRO"
     echo "    wxWidgets : $WXWIDGETS_DISTRO"
     echo "    aMule     : $AMULE_DISTRO"
@@ -149,25 +147,6 @@ function init_environment {
 
     # Initialize package version variables
     init_package_versions
-}
-
-
-#
-# cryptopp
-#
-function build_cryptopp {
-	CRYPTOPP_INSTALL_DIR="${PREFIX}/cryptopp"
-	CRYPTOPP_SOURCES_DIR="cryptopp_tmpdir"
-
-	rm -rf ${CRYPTOPP_SOURCES_DIR}
-	mkdir -p ${CRYPTOPP_SOURCES_DIR}
-	cd ${CRYPTOPP_SOURCES_DIR}
-
-	untar_distro ${CRYPTOPP_FILENAME}
-
-	make -f GNUmakefile -j${JOBS}
-	PREFIX=${CRYPTOPP_INSTALL_DIR} make install
-	cd ..
 }
 
 
@@ -239,7 +218,6 @@ function build_amule {
 		--enable-amule-daemon \
 		--with-wx-config=${WXWIDGETS_INSTALL_DIR}/bin/wx-config \
 		--prefix=${AMULE_INSTALL_DIR} \
-		--with-crypto-prefix=${CRYPTOPP_INSTALL_DIR} \
 		--with-libupnp-prefix=${LIBUPNP_INSTALL_DIR} \
 		&& \
 		LD_LIBRARY_PATH=${WXWIDGETS_INSTALL_DIR}/lib make -j${JOBS} && \
@@ -260,7 +238,6 @@ cd ${UNTARDIR}
 #
 # Build stuff
 #
-build_cryptopp
 build_libupnp
 build_wxwidgets
 build_amule

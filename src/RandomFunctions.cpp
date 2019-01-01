@@ -26,38 +26,45 @@
 // You can check libYaMa at http://personal.pavanashree.org/libyama/
 
 #include "RandomFunctions.h"	// Interface declarations
-#include "CryptoPP_Inc.h"	// Needed for Crypto functions
+#include <openssl/rand.h>
 
-static CryptoPP::AutoSeededRandomPool cryptRandomGen;
-
-const CryptoPP::AutoSeededRandomPool& GetRandomPool() { return cryptRandomGen; }
+namespace
+{
+template<typename T>
+T GetRandom()
+{
+	T bytes[1];
+	wxASSERT(RAND_bytes(reinterpret_cast<uint8_t*>(bytes), sizeof(bytes)));
+	return bytes[0];
+}
+}
 
 uint8_t GetRandomUint8()
 {
-	return cryptRandomGen.GenerateByte();
+	return GetRandom<uint8_t>();
 }
 
 uint16_t GetRandomUint16()
 {
-	return (uint16_t)cryptRandomGen.GenerateWord32(0x0000, 0xFFFF);
+	return GetRandom<uint16_t>();
 }
 
 uint32_t GetRandomUint32()
 {
-	return cryptRandomGen.GenerateWord32();
+	return GetRandom<uint32_t>();
 }
 
 uint64_t GetRandomUint64()
 {
-	return ((uint64_t)GetRandomUint32() << 32) + GetRandomUint32();
+	return GetRandom<uint64_t>();
 }
 
 namespace Kademlia {
 	CUInt128 GetRandomUint128()
 	{
-		uint8_t randomBytes[16];
-		cryptRandomGen.GenerateBlock(randomBytes, 16);
-		return CUInt128(randomBytes);
+		uint8_t bytes[16];
+		wxASSERT(RAND_bytes(bytes, sizeof(bytes)));
+		return CUInt128(bytes);
 	}
 }
 

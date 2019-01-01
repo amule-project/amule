@@ -59,7 +59,6 @@ private:
 	typedef std::map<CMD4Hash, CClientCredits*> ClientMap;
 	ClientMap	m_mapClients;
 	uint32		m_nLastSaved;
-	// A void* to avoid having to include the large CryptoPP.h file
 	void*		m_pSignkey;
 	byte		m_abyMyPublicKey[80];
 	uint8		m_nMyPublicKeyLen;

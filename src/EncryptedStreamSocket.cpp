@@ -112,6 +112,8 @@ static unsigned char dh768_p[] = {
 	0x8F, 0x05, 0x15, 0x0F, 0x54, 0x8B, 0x5F, 0x43, 0x6A, 0xF7, 0x0D, 0xF3
 };
 
+static BIGNUM* cryptDHPrime;
+
 // winsock2.h already defines it
 #ifdef SOCKET_ERROR
 #undef SOCKET_ERROR
@@ -131,11 +133,13 @@ CEncryptedStreamSocket::CEncryptedStreamSocket(muleSocketFlags flags, const CPro
 	m_EncryptionMethod = ENM_OBFUSCATION;
 	m_nRandomKeyPart = 0;
 	m_bServerCrypt = false;
+	m_cryptDHA = 0;
 }
 
 CEncryptedStreamSocket::~CEncryptedStreamSocket()
-{}
-
+{
+	BN_free(m_cryptDHA);
+}
 
 /* External interface */
 
@@ -401,15 +405,27 @@ void CEncryptedStreamSocket::StartNegotiation(bool bOutgoing)
 		const uint8_t bySemiRandomNotProtocolMarker = GetSemiRandomNotProtocolMarker();
 		fileRequest.WriteUInt8(bySemiRandomNotProtocolMarker);
 
-		m_cryptDHA.Randomize((CryptoPP::AutoSeededRandomPool&)GetRandomPool(), DHAGREEMENT_A_BITS); // our random a
-		wxASSERT( m_cryptDHA.MinEncodedSize() <= DHAGREEMENT_A_BITS / 8 );
-		CryptoPP::Integer cryptDHPrime((byte*)dh768_p, PRIMESIZE_BYTES);  // our fixed prime
-		// calculate g^a % p
-		CryptoPP::Integer cryptDHGexpAmodP = a_exp_b_mod_c(CryptoPP::Integer(2), m_cryptDHA, cryptDHPrime);
-		wxASSERT( m_cryptDHA.MinEncodedSize() <= PRIMESIZE_BYTES );
+		if (!m_cryptDHA)
+			m_cryptDHA = BN_new();
+		if (!cryptDHPrime)
+			cryptDHPrime = BN_bin2bn(dh768_p, PRIMESIZE_BYTES, 0); // our fixed prime
+		wxASSERT( BN_rand(m_cryptDHA, DHAGREEMENT_A_BITS, 0, 0) ); // our random a
+		wxASSERT( BN_num_bytes(m_cryptDHA) <= DHAGREEMENT_A_BITS / 8 );
+		static const byte val[1] = {2};
+		BIGNUM *a = BN_bin2bn(val, 1, 0);
+
+		// calculate 2^m_cryptDHA % cryptDHPrime
+		BN_CTX *c = BN_CTX_new();
+		wxASSERT( BN_mod_exp(a, a, m_cryptDHA, cryptDHPrime, c) );
+		BN_CTX_free(c);
+
 		// put the result into a buffer
 		uint8_t aBuffer[PRIMESIZE_BYTES];
-		cryptDHGexpAmodP.Encode(aBuffer, PRIMESIZE_BYTES);
+		const int num = BN_num_bytes(a);
+		wxASSERT( num <= PRIMESIZE_BYTES );
+		wxASSERT( BN_bn2bin(a, aBuffer) );
+		BN_free(a);
+		memset(aBuffer + num, 0, PRIMESIZE_BYTES - num);
 
 		fileRequest.Write(aBuffer, PRIMESIZE_BYTES);
 		uint8 byPadding = (uint8)(GetRandomUint8() % 16); // add random padding
@@ -589,19 +605,23 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen)
 					//DEBUG_ONLY( DebugLog(_T("CEncryptedStreamSocket: Finished Obufscation handshake with client %s (outgoing)"), GetPeer()) );
 					break;
 				case ONS_BASIC_SERVER_DHANSWER: {
-					wxASSERT( !m_cryptDHA.IsZero() );
+					wxASSERT( m_cryptDHA );
+					wxASSERT( cryptDHPrime );
 					uint8_t aBuffer[PRIMESIZE_BYTES + 1];
 					m_pfiReceiveBuffer.Read(aBuffer, PRIMESIZE_BYTES);
-					CryptoPP::Integer cryptDHAnswer((byte*)aBuffer, PRIMESIZE_BYTES);
-					CryptoPP::Integer cryptDHPrime((byte*)dh768_p, PRIMESIZE_BYTES);  // our fixed prime
-					CryptoPP::Integer cryptResult = a_exp_b_mod_c(cryptDHAnswer, m_cryptDHA, cryptDHPrime);
-
+					BIGNUM* cryptDHAnswer = BN_bin2bn(aBuffer, PRIMESIZE_BYTES, 0);
+					BN_CTX *c = BN_CTX_new();
+					wxASSERT( BN_mod_exp(cryptDHAnswer, cryptDHAnswer, m_cryptDHA, cryptDHPrime, c) );
+					BN_CTX_free(c);
+					BN_free(m_cryptDHA);
 					m_cryptDHA = 0;
 					//DEBUG_ONLY( ZeroMemory(aBuffer, sizeof(aBuffer)) );
-					wxASSERT( cryptResult.MinEncodedSize() <= PRIMESIZE_BYTES );
-
+					const int num = BN_num_bytes(cryptDHAnswer);
+					wxASSERT( num <= PRIMESIZE_BYTES );
 					// create the keys
-					cryptResult.Encode(aBuffer, PRIMESIZE_BYTES);
+					wxASSERT( BN_bn2bin(cryptDHAnswer, aBuffer) );
+					BN_free(cryptDHAnswer);
+					memset(aBuffer + num, 0, PRIMESIZE_BYTES - num);
 					aBuffer[PRIMESIZE_BYTES] = MAGICVALUE_REQUESTER;
 					MD5Sum md5(aBuffer, sizeof(aBuffer));
 					m_pfiSendBuffer.SetKey(md5);

@@ -38,13 +38,193 @@
 #include "amule.h"		// Needed for theApp
 #include "CFile.h"		// Needed for CFile
 #include "Logger.h"		// Needed for Add(Debug)LogLine
-#include "CryptoPP_Inc.h"	// Needed for Crypto functions
 
+#include <openssl/bio.h>
+#include <openssl/err.h>
+#include <openssl/pem.h>
+#include <openssl/sha.h>
+#include <openssl/rsa.h>
+#include <openssl/rand.h>
+#include <openssl/ossl_typ.h>
+#include <openssl/opensslv.h>
+
+#include <errno.h>
+#include <string.h>
 
 #define CLIENTS_MET_FILENAME		wxT("clients.met")
 #define CLIENTS_MET_BAK_FILENAME	wxT("clients.met.bak")
-#define CRYPTKEY_FILENAME		wxT("cryptkey.dat")
+#define CRYPTKEY_STR			"cryptkey.pem"
+#define CRYPTKEY_FILENAME		wxT(CRYPTKEY_STR)
 
+namespace
+{
+
+// Current versions of OpenSSL doesn't allow generation of keys lesser than 512 bits
+int rsa_keygen(RSA *r, int bits, unsigned long e)
+{
+	BIGNUM *r0 = NULL, *r1 = NULL, *r2 = NULL, *r3 = NULL, *tmp;
+	BIGNUM *pr0, *d, *p;
+	int i, bitsp, bitsq, ok = -1;
+#if OPENSSL_VERSION_NUMBER < 0x10100000
+#define rsa r
+#else
+	struct
+	{
+		BIGNUM *n;
+		BIGNUM *e;
+		BIGNUM *d;
+		BIGNUM *p;
+		BIGNUM *q;
+		BIGNUM *dmp1;
+		BIGNUM *dmq1;
+		BIGNUM *iqmp;
+	} rsa[1] = {0, 0, 0, 0, 0, 0, 0, 0};
+#endif
+	BN_CTX *ctx = BN_CTX_new();
+	wxASSERT( ctx );
+	BN_CTX_start(ctx);
+	r0 = BN_CTX_get(ctx);
+	r1 = BN_CTX_get(ctx);
+	r2 = BN_CTX_get(ctx);
+	r3 = BN_CTX_get(ctx);
+	wxASSERT( r3 );
+
+	bitsp = (bits + 1) / 2;
+	bitsq = bits - bitsp;
+
+	/* We need the RSA components non-NULL */
+	if (!rsa->n && ((rsa->n = BN_new()) == NULL))
+		goto err;
+	if (!rsa->d && ((rsa->d = BN_new()) == NULL))
+		goto err;
+	if (!rsa->e && ((rsa->e = BN_new()) == NULL))
+		goto err;
+	if (!rsa->p && ((rsa->p = BN_new()) == NULL))
+		goto err;
+	if (!rsa->q && ((rsa->q = BN_new()) == NULL))
+		goto err;
+	if (!rsa->dmp1 && ((rsa->dmp1 = BN_new()) == NULL))
+		goto err;
+	if (!rsa->dmq1 && ((rsa->dmq1 = BN_new()) == NULL))
+		goto err;
+	if (!rsa->iqmp && ((rsa->iqmp = BN_new()) == NULL))
+		goto err;
+
+	for (i = 0; i < (int)sizeof(unsigned long) * 8; i++) {
+		if (e & (1UL << i))
+			if (BN_set_bit(rsa->e, i) == 0)
+				goto err;
+	}
+
+	/* generate p and q */
+	for (;;) {
+		if (!BN_generate_prime_ex(rsa->p, bitsp, 0, NULL, NULL, NULL))
+			goto err;
+		if (!BN_sub(r2, rsa->p, BN_value_one()))
+			goto err;
+		if (!BN_gcd(r1, r2, rsa->e, ctx))
+			goto err;
+		if (BN_is_one(r1))
+			break;
+	}
+	for (;;) {
+		/*
+		 * When generating ridiculously small keys, we can get stuck
+		 * continually regenerating the same prime values. Check for this and
+		 * bail if it happens 3 times.
+		 */
+		unsigned int degenerate = 0;
+		do {
+			if (!BN_generate_prime_ex(rsa->q, bitsq, 0, NULL, NULL, NULL))
+				goto err;
+		} while ((BN_cmp(rsa->p, rsa->q) == 0) && (++degenerate < 3));
+		if (degenerate == 3) {
+			ok = 0;             /* we set our own err */
+			RSAerr(RSA_F_RSA_BUILTIN_KEYGEN, RSA_R_KEY_SIZE_TOO_SMALL);
+			goto err;
+		}
+		if (!BN_sub(r2, rsa->q, BN_value_one()))
+			goto err;
+		if (!BN_gcd(r1, r2, rsa->e, ctx))
+			goto err;
+		if (BN_is_one(r1))
+			break;
+	}
+	if (BN_cmp(rsa->p, rsa->q) < 0) {
+		tmp = rsa->p;
+		rsa->p = rsa->q;
+		rsa->q = tmp;
+	}
+
+	/* calculate n */
+	if (!BN_mul(rsa->n, rsa->p, rsa->q, ctx))
+		goto err;
+
+	/* calculate d */
+	if (!BN_sub(r1, rsa->p, BN_value_one()))
+		goto err;               /* p-1 */
+	if (!BN_sub(r2, rsa->q, BN_value_one()))
+		goto err;               /* q-1 */
+	if (!BN_mul(r0, r1, r2, ctx))
+		goto err;               /* (p-1)(q-1) */
+	pr0 = r0;
+	if (!BN_mod_inverse(rsa->d, rsa->e, pr0, ctx))
+		goto err;               /* d */
+
+	d = rsa->d;
+
+	/* calculate d mod (p-1) */
+	if (!BN_mod(rsa->dmp1, d, r1, ctx))
+		goto err;
+
+	/* calculate d mod (q-1) */
+	if (!BN_mod(rsa->dmq1, d, r2, ctx))
+		goto err;
+
+	/* calculate inverse of q mod p */
+	p = rsa->p;
+	if (!BN_mod_inverse(rsa->iqmp, rsa->q, p, ctx))
+		goto err;
+
+	ok = 1;
+#if OPENSSL_VERSION_NUMBER >= 0x10100000
+	wxASSERT( RSA_set0_key(r, rsa->n, rsa->e, rsa->d) );
+	wxASSERT( RSA_set0_factors(r, rsa->p, rsa->q) );
+	wxASSERT( RSA_set0_crt_params(r, rsa->dmp1, rsa->dmq1, rsa->iqmp) );
+#endif
+err:
+	if (ok == -1) {
+		RSAerr(RSA_F_RSA_BUILTIN_KEYGEN, ERR_LIB_BN);
+		ok = 0;
+#if OPENSSL_VERSION_NUMBER >= 0x10100000
+		BN_free(rsa->n);
+		BN_free(rsa->d);
+		BN_free(rsa->e);
+		BN_free(rsa->p);
+		BN_free(rsa->q);
+		BN_free(rsa->dmp1);
+		BN_free(rsa->dmq1);
+		BN_free(rsa->iqmp);
+#endif
+	}
+	if (ctx != NULL) {
+		BN_CTX_end(ctx);
+		BN_CTX_free(ctx);
+	}
+	return ok;
+}
+
+RSA* key2rsa(void* key)
+{
+	return static_cast<RSA*>(key);
+}
+
+wxString CryptoError()
+{
+	return wxString(char2unicode(ERR_error_string(ERR_get_error(), NULL)));
+}
+
+};
 
 CClientCreditsList::CClientCreditsList()
 {
@@ -58,7 +238,7 @@ CClientCreditsList::CClientCreditsList()
 CClientCreditsList::~CClientCreditsList()
 {
 	DeleteContents(m_mapClients);
-	delete static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey);
+	RSA_free(key2rsa(m_pSignkey));
 }
 
 
@@ -248,34 +428,34 @@ void CClientCreditsList::Process()
 
 bool CClientCreditsList::CreateKeyPair()
 {
-	try {
-		CryptoPP::AutoSeededX917RNG<CryptoPP::DES_EDE3> rng;
-		CryptoPP::InvertibleRSAFunction privkey;
-		privkey.Initialize(rng, RSAKEYSIZE);
-
-		// Nothing we can do against this filename2char :/
-		wxCharBuffer filename = filename2char(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME);
-		CryptoPP::FileSink *fileSink = new CryptoPP::FileSink(filename);
-		CryptoPP::Base64Encoder *privkeysink = new CryptoPP::Base64Encoder(fileSink);
-		privkey.DEREncode(*privkeysink);
-		privkeysink->MessageEnd();
-
-		// Do not delete these pointers or it will blow in your face.
-		// cryptopp semantics is giving ownership of these objects.
-		//
-		// delete privkeysink;
-		// delete fileSink;
-
-		AddDebugLogLineN(logCredits, wxT("Created new RSA keypair"));
-	} catch(const CryptoPP::Exception& e) {
+	RSA *keypair = RSA_new();
+	if (!rsa_keygen(keypair, RSAKEYSIZE, 3)) {
 		AddDebugLogLineC(logCredits,
-			wxString(wxT("Failed to create new RSA keypair: ")) +
-			wxString(char2unicode(e.what())));
-		wxFAIL;
+			wxString(wxT("Failed to create new RSA keypair: ")) + CryptoError());
+		RSA_free(keypair);
 		return false;
 	}
 
-	return true;
+	FILE *fp = fopen(unicode2UTF8(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME), "w");
+	if (!fp) {
+		AddDebugLogLineC(logCredits,
+			wxString(wxT("Failed to open '" CRYPTKEY_STR "': ")) +
+			wxString(char2unicode(strerror(errno))));
+		RSA_free(keypair);
+		return false;
+	}
+
+	bool res = !!PEM_write_RSAPrivateKey(fp, keypair, 0, 0, 0, 0, 0);
+	if (res) {
+		AddDebugLogLineN(logCredits, wxT("Created new RSA keypair"));
+	} else {
+		AddDebugLogLineC(logCredits,
+			wxString(wxT("Failed to write RSA keypair: ")) + CryptoError());
+		wxFAIL;
+	}
+	RSA_free(keypair);
+	fclose(fp);
+	return res;
 }
 
 
@@ -289,89 +469,132 @@ void CClientCreditsList::InitalizeCrypting()
 		return;
 	}
 
-	try {
-		// check if keyfile is there
-		if (wxFileExists(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME)) {
-			off_t keySize = CPath::GetFileSize(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME);
+	// check if keyfile is there
+	if (wxFileExists(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME)) {
+		off_t keySize = CPath::GetFileSize(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME);
 
-			if (keySize == wxInvalidOffset) {
-				AddDebugLogLineC(logCredits, wxT("Cannot access 'cryptkey.dat', please check permissions."));
-				return;
-			} else if (keySize == 0) {
-				AddDebugLogLineC(logCredits, wxT("'cryptkey.dat' is empty, recreating keypair."));
-				CreateKeyPair();
-			}
-		} else {
-			AddLogLineN(_("No 'cryptkey.dat' file found, creating.") );
+		if (keySize == wxInvalidOffset) {
+			AddDebugLogLineC(logCredits, wxT("Cannot access '" CRYPTKEY_STR "', please check permissions."));
+			return;
+		} else if (keySize == 0) {
+			AddDebugLogLineC(logCredits, wxT("'" CRYPTKEY_STR ".dat' is empty, recreating keypair."));
 			CreateKeyPair();
 		}
-
-		// load private key
-		CryptoPP::FileSource filesource(filename2char(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME), true, new CryptoPP::Base64Decoder);
-		m_pSignkey = new CryptoPP::RSASSA_PKCS1v15_SHA_Signer(filesource);
-		// calculate and store public key
-		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(*static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey));
-		CryptoPP::ArraySink asink(m_abyMyPublicKey, 80);
-		pubkey.GetMaterial().Save(asink);
-		m_nMyPublicKeyLen = asink.TotalPutLength();
-		asink.MessageEnd();
-	} catch (const CryptoPP::Exception& e) {
-		delete static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey);
-		m_pSignkey = NULL;
-
-		AddDebugLogLineC(logCredits,
-			wxString(wxT("Error while initializing encryption keys: ")) +
-			wxString(char2unicode(e.what())));
+	} else {
+		AddLogLineN(_("No '" CRYPTKEY_STR "' file found, creating.") );
+		CreateKeyPair();
 	}
+
+	// load private key
+	FILE *fp = fopen(unicode2UTF8(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME), "r");
+	if (!fp) {
+		AddDebugLogLineC(logCredits,
+			wxString(wxT("Failed to open '" CRYPTKEY_STR "': ")) +
+			wxString(char2unicode(strerror(errno))));
+		return;
+	}
+
+	RSA* rsa = PEM_read_RSAPrivateKey(fp, 0, 0, 0);
+	fclose(fp);
+	if (!rsa) {
+		AddDebugLogLineC(logCredits,
+			wxString(wxT("Failed to read '" CRYPTKEY_STR "': ")) + CryptoError());
+		return;
+	}
+
+	byte *p = m_abyMyPublicKey;
+	m_nMyPublicKeyLen = i2d_RSA_PUBKEY(rsa, &p);
+	wxASSERT( m_nMyPublicKeyLen );
+	wxASSERT( m_nMyPublicKeyLen <= 80 );
+	m_pSignkey = rsa;
 }
 
 
 uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey)
 {
-	CryptoPP::RSASSA_PKCS1v15_SHA_Signer* signer =
-		static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(sigkey);
 	// signer param is used for debug only
-	if (signer == NULL)
-		signer = static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey);
+	RSA* rsa = sigkey
+		? static_cast<RSA*>(sigkey)
+		: key2rsa(m_pSignkey);
 
 	// create a signature of the public key from pTarget
 	wxASSERT( pTarget );
 	wxASSERT( pachOutput );
 
-	if ( !CryptoAvailable() ) {
+	if ( !CryptoAvailable() )
 		return 0;
+
+	byte abyBuffer[MAXPUBKEYSIZE+9];
+	const uint32 keylen = pTarget->GetSecIDKeyLen();
+	memcpy(abyBuffer,pTarget->GetSecureIdent(),keylen);
+	// 4 additional bytes random data send from this client
+	const uint32 challenge = pTarget->m_dwCryptRndChallengeFrom;
+	wxASSERT ( challenge != 0 );
+	PokeUInt32(abyBuffer+keylen,challenge);
+
+	uint16 ChIpLen = 0;
+	if ( byChaIPKind != 0) {
+		ChIpLen = 5;
+		PokeUInt32(abyBuffer+keylen+4, ChallengeIP);
+		PokeUInt8(abyBuffer+keylen+4+4,byChaIPKind);
 	}
 
-	try {
-		CryptoPP::SecByteBlock sbbSignature(signer->SignatureLength());
-		CryptoPP::AutoSeededX917RNG<CryptoPP::DES_EDE3> rng;
-		byte abyBuffer[MAXPUBKEYSIZE+9];
-		uint32 keylen = pTarget->GetSecIDKeyLen();
-		memcpy(abyBuffer,pTarget->GetSecureIdent(),keylen);
-		// 4 additional bytes random data send from this client
-		uint32 challenge = pTarget->m_dwCryptRndChallengeFrom;
-		wxASSERT ( challenge != 0 );
-		PokeUInt32(abyBuffer+keylen,challenge);
+	// first calculate message digest
+	byte md[SHA_DIGEST_LENGTH];
+	SHA1(abyBuffer, keylen+4+ChIpLen, md);
 
-		uint16 ChIpLen = 0;
-		if ( byChaIPKind != 0){
-			ChIpLen = 5;
-			PokeUInt32(abyBuffer+keylen+4, ChallengeIP);
-			PokeUInt8(abyBuffer+keylen+4+4,byChaIPKind);
-		}
-		signer->SignMessage(rng, abyBuffer ,keylen+4+ChIpLen , sbbSignature.begin());
-		CryptoPP::ArraySink asink(pachOutput, nMaxSize);
-		asink.Put(sbbSignature.begin(), sbbSignature.size());
+	unsigned int siglen = RSA_size(rsa);
+	wxASSERT( nMaxSize >= siglen );
+	wxASSERT( RSA_sign(NID_sha1, md, sizeof(md), pachOutput, &siglen, rsa) );
 
-		return asink.TotalPutLength();
-	} catch (const CryptoPP::Exception& e) {
-		AddDebugLogLineC(logCredits, wxString(wxT("Error while creating signature: ")) + wxString(char2unicode(e.what())));
-		wxFAIL;
-
-		return 0;
-	}
+	return siglen;
 }
 
+namespace
+{
+bool Verify(const byte* myIdent, uint8 myIdentLen,
+	const byte* targetIdent, uint8 targeIdenttLen,
+	const byte* signature, uint8 signatureSize,
+	uint32 challenge, uint32 ChallengeIP, uint8 byChaIPKind)
+{
+	const byte *k = targetIdent;
+	RSA* rsa = d2i_RSA_PUBKEY(0, &k, targeIdenttLen);
+	if (!rsa) {
+		AddDebugLogLineC(logCredits, wxString(wxT("Error while verifying identity: ")) + CryptoError());
+		return false;
+	}
+
+	if (RSA_size(rsa) != signatureSize) {
+		AddDebugLogLineC(logCredits, CFormat(wxT("Wrong signature size %u, must be %i")) % signatureSize % RSA_size(rsa));
+		RSA_free(rsa);
+		return false;
+	}
+
+	byte abyBuffer[MAXPUBKEYSIZE+9];
+	memcpy(abyBuffer,myIdent,myIdentLen);
+	wxASSERT ( challenge != 0 );
+	PokeUInt32(abyBuffer+myIdentLen, challenge);
+
+	// v2 security improvments (not supported by 29b, not used as default by 29c)
+	uint8 nChIpSize = 0;
+	if (byChaIPKind != 0){
+		nChIpSize = 5;
+		PokeUInt32(abyBuffer+myIdentLen+4, ChallengeIP);
+		PokeUInt8(abyBuffer+myIdentLen+4+4, byChaIPKind);
+	}
+	//v2 end
+
+	byte md[SHA_DIGEST_LENGTH];
+	SHA1(abyBuffer, myIdentLen+4+nChIpSize, md);
+	bool valid = !!RSA_verify(NID_sha1, md, sizeof(md), signature, RSA_size(rsa), rsa);
+	RSA_free(rsa);
+	if (!valid) {
+		AddDebugLogLineC(logCredits, wxString(wxT("Error while verifying identity: ")) + CryptoError());
+	}
+	return valid;
+}
+
+};
 
 bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind)
 {
@@ -381,54 +604,34 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSi
 		pTarget->SetIdentState(IS_NOTAVAILABLE);
 		return false;
 	}
-	bool bResult;
-	try {
-		CryptoPP::StringSource ss_Pubkey((byte*)pTarget->GetSecureIdent(),pTarget->GetSecIDKeyLen(),true,0);
-		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(ss_Pubkey);
-		// 4 additional bytes random data send from this client +5 bytes v2
-		byte abyBuffer[MAXPUBKEYSIZE+9];
-		memcpy(abyBuffer,m_abyMyPublicKey,m_nMyPublicKeyLen);
-		uint32 challenge = pTarget->m_dwCryptRndChallengeFor;
-		wxASSERT ( challenge != 0 );
-		PokeUInt32(abyBuffer+m_nMyPublicKeyLen, challenge);
 
-		// v2 security improvments (not supported by 29b, not used as default by 29c)
-		uint8 nChIpSize = 0;
-		if (byChaIPKind != 0){
-			nChIpSize = 5;
-			uint32 ChallengeIP = 0;
-			switch (byChaIPKind) {
-				case CRYPT_CIP_LOCALCLIENT:
-					ChallengeIP = dwForIP;
-					break;
-				case CRYPT_CIP_REMOTECLIENT:
-					// Ignore local ip...
-					if (!theApp->GetPublicIP(true)) {
-						if (::IsLowID(theApp->GetED2KID())){
-							AddDebugLogLineN(logCredits, wxT("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
-							// Fallback to local ip...
-							ChallengeIP = theApp->GetPublicIP();
-						} else {
-							ChallengeIP = theApp->GetED2KID();
-						}
-					} else {
-						ChallengeIP = theApp->GetPublicIP();
-					}
-					break;
-				case CRYPT_CIP_NONECLIENT: // maybe not supported in future versions
-					ChallengeIP = 0;
-					break;
+	uint32 ChallengeIP = 0;
+	switch (byChaIPKind) {
+		case 0:
+		case CRYPT_CIP_NONECLIENT: // maybe not supported in future versions
+			break;
+		case CRYPT_CIP_LOCALCLIENT:
+			ChallengeIP = dwForIP;
+			break;
+		case CRYPT_CIP_REMOTECLIENT:
+			// Ignore local ip...
+			if (!theApp->GetPublicIP(true)) {
+				if (::IsLowID(theApp->GetED2KID())){
+					AddDebugLogLineN(logCredits, wxT("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
+					// Fallback to local ip...
+					ChallengeIP = theApp->GetPublicIP();
+				} else {
+					ChallengeIP = theApp->GetED2KID();
+				}
+			} else {
+				ChallengeIP = theApp->GetPublicIP();
 			}
-			PokeUInt32(abyBuffer+m_nMyPublicKeyLen+4, ChallengeIP);
-			PokeUInt8(abyBuffer+m_nMyPublicKeyLen+4+4, byChaIPKind);
-		}
-		//v2 end
-
-		bResult = pubkey.VerifyMessage(abyBuffer, m_nMyPublicKeyLen+4+nChIpSize, pachSignature, nInputSize);
-	} catch (const CryptoPP::Exception& e) {
-		AddDebugLogLineC(logCredits, wxString(wxT("Error while verifying identity: ")) + wxString(char2unicode(e.what())));
-		bResult = false;
+			break;
 	}
+	const bool bResult = Verify(m_abyMyPublicKey, m_nMyPublicKeyLen,
+		pTarget->GetSecureIdent(), pTarget->GetSecIDKeyLen(),
+		pachSignature, nInputSize,
+		pTarget->m_dwCryptRndChallengeFor, ChallengeIP, byChaIPKind);
 
 	if (!bResult){
 		if (pTarget->GetIdentState() == IS_IDNEEDED)
@@ -436,7 +639,6 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSi
 	} else {
 		pTarget->Verified(dwForIP);
 	}
-
 	return bResult;
 }
 

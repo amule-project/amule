@@ -228,18 +228,8 @@ MULE_IF_ENABLED([upnp], [
 ])dnl
 
 
-# Check for Crypto++ (requires C++)
-MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
-[MULE_CHECK_CRYPTOPP([5.1], [
-	# Check for CryptoPP >= 5.5
-	AS_IF([test $CRYPTOPP_VERSION_NUMBER -ge "5005000"], [MULE_APPEND([CRYPTOPP_CPPFLAGS], [-D__WEAK_CRYPTO__])])
-], [
-	AC_MSG_ERROR([
-	Could not find crypto++ installation or sources.
-	Please try again with --with-crypto-prefix=/my_crypto_prefix
-	(replace /my_crypto_prefix with a valid path to your crypto++
-	installation or source directory).])
-])])
+# Check for OpenSSL
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview], [AX_CHECK_OPENSSL([], [AC_MSG_ERROR([Could not find OpenSSL.])])])
 
 
 MULE_COMPILATION_FLAGS
@@ -561,7 +551,7 @@ AS_IF([test ${with_boost:-no} != no],
 		[echo "                             boost                 `echo ${boost_cv_lib_version} | sed -e 's/_/./g'`"],
 )])
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
-	[echo "                             crypto++              ${CRYPTOPP_VERSION_STRING} (in ${CRYPTOPP_PREFIX})"])
+	[echo "                             OpenSSL               ${OPENSSL_LIBS}"])
 MULE_IF_ENABLED([upnp], [
 	AS_IF([test -n "$with_libupnp_prefix"], [libupnp_place=" (in $with_libupnp_prefix)"])
 	echo "                             libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"

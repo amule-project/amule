@@ -57,7 +57,7 @@
 #include "FileAutoClose.h"	// Needed for CFileAutoClose
 #include "Server.h"			// Needed for CServer
 
-#include "CryptoPP_Inc.h"       // Needed for MD4
+#include <openssl/md4.h>
 
 #include <common/Format.h>
 
@@ -887,12 +887,7 @@ void CKnownFile::CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash*
 	}
 
 	if (Output != NULL){
-		#ifdef __WEAK_CRYPTO__
-			CryptoPP::Weak::MD4 md4_hasher;
-		#else
-			CryptoPP::MD4 md4_hasher;
-		#endif
-		 md4_hasher.CalculateDigest(Output->GetHash(), input, Length);
+		MD4(input, Length, Output->GetHash());
 	}
 }
 

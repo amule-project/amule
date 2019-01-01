@@ -89,7 +89,7 @@ libmuleappcommon_a_SOURCES = \
 	Timer.cpp \
 	kademlia/utils/UInt128.cpp
 
-libmuleappcommon_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
+libmuleappcommon_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(LIBUPNP_CPPFLAGS) $(OPENSSL_INCLUDES)
 
 
 # Common to core/monolithic
@@ -115,7 +115,7 @@ libmuleappcore_a_SOURCES = \
 	kademlia/kademlia/SearchManager.cpp \
 	kademlia/routing/RoutingBin.cpp
 
-libmuleappcore_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
+libmuleappcore_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(LIBUPNP_CPPFLAGS) $(OPENSSL_INCLUDES)
 
 
 # Common to gui/monolithic
@@ -135,7 +135,7 @@ libmuleappgui_a_SOURCES = \
 	MuleCollection.cpp \
 	muuli_wdr.cpp
 
-libmuleappgui_a_CPPFLAGS = $(AM_CPPFLAGS) $(WX_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(LIBUPNP_CPPFLAGS) $(GEOIP_CPPFLAGS)
+libmuleappgui_a_CPPFLAGS = $(AM_CPPFLAGS) $(WX_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(LIBUPNP_CPPFLAGS) $(GEOIP_CPPFLAGS) $(OPENSSL_INCLUDES)
 
 core_sources = \
 	amule.cpp \
@@ -232,7 +232,7 @@ common_sources = \
 core_libs = -L. -lmuleappcore $(LIBUPNP_LDFLAGS) $(LIBUPNP_LIBS)
 gui_libs = -L. -lmuleappgui $(WX_LIBS) $(GEOIP_LDFLAGS) $(GEOIP_LIBS)
 remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(BFD_LIBS) $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB)
-common_libs = -L. -lmuleappcommon $(remote_common_libs) -lmulesocket $(BOOST_SYSTEM_LDFLAGS) $(BOOST_SYSTEM_LIBS) $(CRYPTOPP_LDFLAGS) $(CRYPTOPP_LIBS)
+common_libs = -L. -lmuleappcommon $(remote_common_libs) -lmulesocket $(BOOST_SYSTEM_LDFLAGS) $(BOOST_SYSTEM_LIBS) $(OPENSSL_LDFLAGS) $(OPENSSL_LIBS)
 
 core_deps = libmuleappcore.a
 gui_deps = libmuleappgui.a
@@ -248,7 +248,7 @@ endif
 #
 core_flags = $(BOOST_CPPFLAGS) $(LIBUPNP_CPPFLAGS) $(LIBUPNP_CFLAGS)
 gui_flags = $(WX_CPPFLAGS) $(GEOIP_CPPFLAGS)
-common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS)
+common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include
 
 # --------- Apps ---------
 
@@ -318,7 +318,7 @@ amulecmd_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(common_flags)
 amulecmd_CXXFLAGS = $(AM_CXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 #amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
 amulecmd_LDADD = -Llibs/common -Llibs/ec/cpp -L. -lmulecommon -lec -lmulesocket \
-	$(WXBASE_LIBS) $(READLINE_LIBS) $(BFD_LIBS) $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BOOST_SYSTEM_LDFLAGS) $(BOOST_SYSTEM_LIBS)
+	$(WXBASE_LIBS) $(READLINE_LIBS) $(BFD_LIBS) $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BOOST_SYSTEM_LDFLAGS) $(BOOST_SYSTEM_LIBS) $(OPENSSL_LDFLAGS) $(OPENSSL_LIBS)
 
 noinst_HEADERS = \
 		AddFriend.h \
@@ -350,7 +350,6 @@ noinst_HEADERS = \
 		CompilerSpecific.h \
 		Constants.h \
 		CorruptionBlackBox.h \
-		CryptoPP_Inc.h \
 		DataToText.h \
 		DeadSourceList.h \
 		DirectoryTreeCtrl.h \

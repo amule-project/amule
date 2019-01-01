@@ -144,35 +144,6 @@ echo -e "\tDone"
 
 popd >> $STDOUT_FILE
 
-CRYPTOPP_FOLDER="cryptopp-source"
-CRYPTOPP_FOLDER_INST="cryptopp"
-CRYPTOPP_URL=`curl -sS http://www.cryptopp.com/ | grep -oE "http://.*/cryptopp/cryptopp[0-9]+\.zip" | sort -r | head -1`
-
-echo -e "\tGetting cryptopp sources..."
-
-if [ -d $CRYPTOPP_FOLDER_INST ]; then
-	echo -e "\t\t$CRYPTOPP_FOLDER_INST already exists, skipping (delete and rerun script to get new sources)"
-else
-	mkdir $CRYPTOPP_FOLDER
-	mkdir $CRYPTOPP_FOLDER_INST
-	curl -L -o cryptopp.zip $CRYPTOPP_URL >> $STDOUT_FILE 2>> $ERROR_FILE
-	unzip cryptopp.zip -d $CRYPTOPP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
-	pushd $CRYPTOPP_FOLDER >> $STDOUT_FILE
-	#./configure
-	for i in $AMULE_FOLDER/src/utils/patches/cryptopp/*.patch; do
-		echo -e "\t\tAppying \"$i\""
-		patch -p0 < $i >> $STDOUT_FILE 2>> $ERROR_FILE
-	done
-	#cp ../GNUMakefile .
-	echo -e "\t\tCompiling cryptopp..."
-	CC=gcc$CCVERSION CXX=g++$CCVERSION CPP=cpp$CCVERSION LD=g++$CCVERSION \
-		CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" make > $STDOUT_FILE 2> $ERROR_FILE
-	PREFIX=${ROOT_FOLDER}/$CRYPTOPP_FOLDER_INST make install >> $STDOUT_FILE 2>> $ERROR_FILE
-	popd >> $STDOUT_FILE
-	rm cryptopp.zip >> $STDOUT_FILE 2>> $ERROR_FILE
-	rm -rf $CRYPTOPP_FOLDER >> $STDOUT_FILE 2>> $ERROR_FILE
-fi
-
 echo -e "\tDone"
 
 # Gettext
@@ -337,7 +308,6 @@ if [ "$MULECLEAN" == "YES" ]; then
 	CXXFLAGS="-pthread $ARCHCPPFLAGS $SDK" CFLAGS="-pthread $ARCHCPPFLAGS $SDK" LDFLAGS="-pthread $SDK" \
 	--enable-nls --disable-dependency-tracking --enable-ccache \
 	--with-wxdir=${ROOT_FOLDER}/${WXFOLDER}/ \
-	--with-crypto-prefix=${ROOT_FOLDER}/$CRYPTOPP_FOLDER_INST \
 	--with-libintl-prefix=${ROOT_FOLDER}/${GETTEXT_FOLDER_INST} \
 	--with-libupnp-prefix=${ROOT_FOLDER}/${LIBUPNP_FOLDER_INST} \
 	--with-geoip-static --with-geoip-headers=${ROOT_FOLDER}/${LIBGEOIP_FOLDER_INST}/include --with-geoip-lib=${ROOT_FOLDER}/${LIBGEOIP_FOLDER_INST}/lib/ \

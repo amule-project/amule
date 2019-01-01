@@ -496,22 +496,16 @@ bool CKademlia::IsRunningInLANMode()
 
 // Global function.
 
-#include "../../CryptoPP_Inc.h"
+#include <openssl/md4.h>
 void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 {
 	byte Output[16];
-
-	#ifdef __WEAK_CRYPTO__
-		CryptoPP::Weak::MD4 md4_hasher;
-	#else
-		CryptoPP::MD4 md4_hasher;
-	#endif
 
 	// This should be safe - we assume rstrKeyword is ANSI anyway.
 	char* ansi_buffer = strdup(unicode2UTF8(rstrKeyword));
 
 	//printf("Kad keyword hash: UTF8 %s\n",ansi_buffer);
-	md4_hasher.CalculateDigest(Output,(const unsigned char*)ansi_buffer,strlen(ansi_buffer));
+	MD4(reinterpret_cast<byte*>(ansi_buffer),strlen(ansi_buffer), Output);
 	//DumpMem(Output,16);
 	free(ansi_buffer);
 

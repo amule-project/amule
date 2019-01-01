@@ -37,8 +37,7 @@
 #include <wx/wx.h>
 #include <wx/string.h>
 
-// cryptoPP used for DH integer calculations
-#include "CryptoPP_Inc.h"	// Needed for Crypto functions
+#include <openssl/bn.h>
 #include "Proxy.h"
 #include "Types.h"
 
@@ -130,7 +129,7 @@ private:
 	uint32_t		m_nReceiveBytesWanted;
 	CRC4EncryptableBuffer	m_pfiSendBuffer;
 	uint32_t		m_nRandomKeyPart;
-	CryptoPP::Integer	m_cryptDHA;
+	BIGNUM*	m_cryptDHA;
 };
 
 #endif // __ENCRYPTEDSTREAMSOCKET_H__

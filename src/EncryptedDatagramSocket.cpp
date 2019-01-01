@@ -103,9 +103,6 @@
 #include <protocol/Protocols.h>
 #include <common/MD5Sum.h>
 
-// random generator
-#include "CryptoPP_Inc.h"	// Needed for Crypto functions
-
 #define CRYPT_HEADER_WITHOUTPADDING		    8
 #define	MAGICVALUE_UDP						91
 #define MAGICVALUE_UDP_SYNC_CLIENT			0x395F2EC1

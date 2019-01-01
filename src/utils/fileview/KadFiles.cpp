@@ -49,20 +49,14 @@ void DecodeLoadIndexDat(const CFileDataIO& file)
 }
 
 // from Kademlia.cpp
-#include "../../CryptoPP_Inc.h"
+#include <openssl/md4.h>
 void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 {
 	byte Output[16];
-#ifdef CRYPTOPP_ENABLE_NAMESPACE_WEAK
-	CryptoPP::Weak::MD4 md4_hasher;
-#else
-	CryptoPP::MD4 md4_hasher;
-#endif
-
 	// This should be safe - we assume rstrKeyword is ANSI anyway.
 	Unicode2CharBuf ansi_buffer(unicode2UTF8(rstrKeyword));
 
-	md4_hasher.CalculateDigest(Output, (const byte *) (const char *) ansi_buffer, strlen(ansi_buffer));
+	MD4(reinterpret_cast<const byte*>(ansi_buffer.data()), strlen(ansi_buffer), Output);
 
 	pKadID->SetValueBE(Output);
 }

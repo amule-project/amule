@@ -28,11 +28,6 @@
 #include "Types.h"			// Needed for uint16, uint32 and uint64
 #include "kademlia/utils/UInt128.h"	// Needed for CUInt128
 
-namespace CryptoPP {
-	class AutoSeededRandomPool;
-}
-const CryptoPP::AutoSeededRandomPool& GetRandomPool();
-
 /*
  * Random numbers generation
  */
