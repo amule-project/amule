@@ -37,6 +37,7 @@ ifeq ("binary", "$(findstring binary, $(flags))")
 	ALC = --enable-alc
 	AMULECMD = --enable-amulecmd
 	DEBUGGING = --enable-debug --disable-optimize --disable-profile
+	DEBUGBUILD = yes
 	LANGFLAG = --with-language=all
 
 else ifeq ("build", "$(findstring build, $(flags))")
@@ -52,6 +53,7 @@ else ifeq ("build", "$(findstring build, $(flags))")
 	ALC = --enable-alc
 	AMULECMD = --enable-amulecmd
 	DEBUGGING = --enable-debug --disable-optimize --disable-profile
+	DEBUGBUILD = yes
 	LANGFLAG = --with-language=all
 
 else
@@ -277,7 +279,7 @@ else
 	LANGFLAG = --with-language=$(LANGUAGE)
 
 	#And at Last, find out if we compile a debug-package or not.
-	ifeq ("dbg", "$(findstring dbg, $(flags))")
+	ifeq ("dbgsym", "$(findstring dbgsym, $(flags))")
 		DEBUGGING = --enable-debug --disable-optimize --disable-profile
 	else
 		DEBUGGING = --disable-debug --enable-optimize --disable-profile
@@ -285,37 +287,28 @@ else
 endif
 
 #Before we start, I want to introduce two sequences for building the packages
-#I define two, so I can put the commands for the *-dbg packages between them
-define stage1
-	dh_testdir -p$(subst -stage1,,$@)
-	dh_testroot -p$(subst -stage1,,$@)
-	dh_installdirs -p$(subst -stage1,,$@)
-	dh_installchangelogs docs/Changelog -p$(subst -stage1,,$@)
-	dh_installdocs -p$(subst -stage1,,$@)
-	dh_install -Xlicense.txt -p$(subst -stage1,,$@)
-	dh_installmenu -p$(subst -stage1,,$@)
-	dh_installdebconf -p$(subst -stage1,,$@)
-	dh_installman -p$(subst -stage1,,$@)
-	dh_installmime -p$(subst -stage1,,$@)
-	dh_link -p$(subst -stage1,,$@)
-	dh_lintian -p$(subst -stage1,,$@)
-	touch $@
-endef
-
-define strip-stage
-	dh_strip -p$(subst -dbg,,$@) --dbg-package=$@
-endef
-
-define stage2
-	dh_compress -X.pl -p$(subst -stage2,,$@)
-	dh_perl -p$(subst -stage2,,$@)
-	dh_makeshlibs -p$(subst -stage2,,$@)
-	dh_installdeb -p$(subst -stage2,,$@)
-	dh_shlibdeps -p$(subst -stage2,,$@)
-	dh_gencontrol -p$(subst -stage2,,$@)
-	dh_md5sums -p$(subst -stage2,,$@)
-	dh_fixperms -p$(subst -stage2,,$@)
-	dh_builddeb -p$(subst -stage2,,$@)
+define package
+	dh_testdir -p$(subst -package,,$@)
+	dh_testroot -p$(subst -package,,$@)
+	dh_installdirs -p$(subst -package,,$@)
+	dh_installchangelogs docs/Changelog -p$(subst -package,,$@)
+	dh_installdocs -p$(subst -package,,$@)
+	dh_install -Xlicense.txt -p$(subst -package,,$@)
+	dh_installdebconf -p$(subst -package,,$@)
+	dh_installman -p$(subst -package,,$@)
+	dh_installmime -p$(subst -package,,$@)
+	dh_link -p$(subst -package,,$@)
+	dh_lintian -p$(subst -package,,$@)
+	dh_compress -X.pl -p$(subst -package,,$@)
+	dh_perl -p$(subst -package,,$@)
+	dh_makeshlibs -p$(subst -package,,$@)
+	dh_installdeb -p$(subst -package,,$@)
+	dh_shlibdeps -p$(subst -package,,$@)
+	dh_strip --dbgsym-migration='$(subst -package,,$@) (<< 2.3.1+svn-10712~)'
+	dh_gencontrol -p$(subst -package,,$@)
+	dh_md5sums -p$(subst -package,,$@)
+	dh_fixperms -p$(subst -package,,$@)
+	dh_builddeb -p$(subst -package,,$@)
 	touch $@
 endef
 
@@ -373,9 +366,9 @@ amule-common: install
 		dh_testdir -p$$pkg; \
 		dh_testroot -p$$pkg; \
 		dh_installdirs -p$$pkg; \
-		dh_installchangelogs docs/Changelog -p$$pkg; \
+		dh_installchangelogs -p$$pkg; \
 		dh_installdocs -p$$pkg; \
-		dh_install -Xlicense.txt -p$$pkg; \
+		dh_install -Xlicense.txt -XChangelog -p$$pkg; \
 		dh_installmenu -p$$pkg; \
 		dh_installdebconf -p$$pkg; \
 		dh_installman -p$$pkg; \
@@ -393,112 +386,100 @@ amule-common: install
 	done
 	touch amule-common
 
-%-stage1: amule-common
-	${stage1}
+%-package: amule-common
+	${package}
 
-%-stage2: %-stage1
-	${stage2}
+amule-%-dbgsym: amule-%-package
+	${dbgsympackage}
 
-amule-%-dbg: amule-%-stage1
-	${stage1}
-	$(strip-stage)
-	${stage2}
+amule-dbgsym: amule-package
+	${dbgsympackage}
 
-amule-dbg: amule-stage1
-	${stage1}
-	$(strip-stage)
-	${stage2}
-
-amuleweb-dbg: amuleweb-stage1
-	${stage1}
-	$(strip-stage)
-	${stage2}
+amuleweb-dbgsym: amuleweb-package
+	${dbgsympackage}
 
 #Now just the targets to map the Commandline Name to the package names
-amule: amule-stage2
+amule: amule-package
 	touch @
 
-ed2k: amule-ed2k-stage2
+ed2k: amule-ed2k-package
 	touch @
 
-cas: amule-cas-stage2
+cas: amule-cas-package
 	touch @
 
-wxcas: amule-wxcas-stage2
+wxcas: amule-wxcas-package
 	touch @
 
-webserver: amuleweb-stage2 amule-theme-default-stage2
+webserver: amuleweb-package amule-theme-default-package
 	touch @
 
-remotegui: amule-remote-gui-stage2
+remotegui: amule-remote-gui-package
 	touch @
 
-daemon: amule-daemon-stage2
+daemon: amule-daemon-package
 	touch @
 
-alc: amule-alc-stage2
+alc: amule-alc-package
 	touch @
 
-alcc: amule-alcc-stage2
+alcc: amule-alcc-package
 	touch @
 
-amulecmd: amule-cmd-stage2
+amulecmd: amule-cmd-package
 	touch @
 
-xas: amule-xas-stage2
+xas: amule-xas-package
 	touch @
 
-ed2k-dbg: amule-ed2k-dbg
+ed2k-dbgsym: amule-ed2k-dbgsym
 	touch @
 
-cas-dbg: amule-cas-dbg
+cas-dbgsym: amule-cas-dbgsym
 	touch @
 
-wxcas-dbg: amule-wxcas-dbg
+wxcas-dbgsym: amule-wxcas-dbgsym
 	touch @
 
-webserver-dbg: amuleweb-dbg
+webserver-dbgsym: amuleweb-dbgsym
 	touch @
 
-remotegui-dbg: amule-remote-gui-dbg
+remotegui-dbgsym: amule-remote-gui-dbgsym
 	touch @
 
-daemon-dbg: amule-daemon-dbg
+daemon-dbgsym: amule-daemon-dbgsym
 	touch @
 
-alc-dbg: amule-alc-dbg
+alc-dbgsym: amule-alc-dbgsym
 	touch @
 
-alcc-dbg: amule-alcc-dbg
+alcc-dbgsym: amule-alcc-dbgsym
 	touch @
 
-amulecmd-dbg: amule-cmd-dbg
+amulecmd-dbgsym: amule-cmd-dbgsym
 	touch @
 
 plasmamule: amule-plasmamule-stage2
 	touch @
 
-plasmamule-dbg: amule-plasmamule-dbg
+plasmamule-dbgsym: amule-plasmamule-dbgsym
 	touch @
 
 #Here come the Targets for the langauge packages
 i18n-%: amule-i18n-% ;
 
 amule-i18n-%: amule-common
-	${stage1}
-	${stage2}
+	${package}
 
 #They are just metapackages
 amule-utils: alcc amulecmd cas
-	${stage1}
-	${stage2}
+	${package}
 
 amule-utils-gui: alc remotegui wxcas
-	${stage1}
-	${stage2}
+	${package}
 
 #These are empty (Space after Semicolon)
-debug-packages: amule-dbg ed2k-dbg cas-dbg wxcas-dbg webserver-dbg remotegui-dbg daemon-dbg alc-dbg alcc-dbg amulecmd-dbg plasmamule-dbg;
+debug-packages: amule-dbgsym ed2k-dbgsym cas-dbgsym wxcas-dbgsym webserver-dbgsym remotegui-dbgsym daemon-dbgsym alc-dbgsym alcc-dbgsym amulecmd-dbgsym plasmamule-dbgsym;
 normal-packages: amule-utils amule-utils-gui amule ed2k webserver daemon xas plasmamule ;
 language-packages: i18n-ar i18n-ast i18n-bg i18n-ca i18n-cs i18n-da i18n-de i18n-el i18n-en-gb i18n-es i18n-et-ee i18n-eu i18n-fi i18n-fr i18n-gl i18n-he i18n-hr i18n-hu i18n-it-ch i18n-it i18n-ja i18n-ko-kr i18n-lt i18n-nn i18n-nl i18n-pl i18n-pt-br i18n-pt-pt i18n-ru i18n-sl i18n-sq i18n-sv i18n-tr i18n-uk i18n-zh-cn i18n-zh-tw ;
 i18n-en-only: ;
