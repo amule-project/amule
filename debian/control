@@ -124,7 +124,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, amule-i18n-en-gb (= ${binary:Version}) | amule-i18n, ${misc:Depends}
 Conflicts: amule-utils-gui (<< ${binary:Version})
 Replaces: amule-utils-gui (<< ${binary:Version})
-Description: amule eD2k- link creator for console
+Description: amule eD2k- link creator (gui-version)
  amule-link-creator lets you create ed2k-links and hashes for a given file.
 
 Package: amule-alcc
