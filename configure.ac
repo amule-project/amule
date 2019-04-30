@@ -106,7 +106,7 @@ AC_ARG_WITH(
 MULE_IF_ENABLED([cas], [
 	MULE_CHECK_GDLIB([2.0.0], [
 		CAS_DEFS="-D__GD__"
-		MULE_PREPEND([GDLIB_LIBS], [-lgd])
+		GDLIB_LIBS="-lgd"
 	], [CAS_DEFS=])
 	AS_IF([test -z "$CAS_DEFS"],
 		[MULE_WARNING(
