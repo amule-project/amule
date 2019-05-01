@@ -170,11 +170,6 @@ public:
     void RefreshItem(long item);
     void RefreshItems(long itemFrom, long itemTo);
 
-#if WXWIN_COMPATIBILITY_2_6
-    // obsolete, don't use
-    wxDEPRECATED( int GetItemSpacing( bool isSmall ) const );
-#endif // WXWIN_COMPATIBILITY_2_6
-
     virtual wxVisualAttributes GetDefaultAttributes() const
     {
         return GetClassDefaultAttributes(GetWindowVariant());

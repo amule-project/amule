@@ -5321,13 +5321,6 @@ wxSize wxGenericListCtrl::GetItemSpacing() const
     return wxSize(spacing, spacing);
 }
 
-#if WXWIN_COMPATIBILITY_2_6
-int wxGenericListCtrl::GetItemSpacing( bool isSmall ) const
-{
-    return m_mainWin->GetItemSpacing( isSmall );
-}
-#endif // WXWIN_COMPATIBILITY_2_6
-
 void wxGenericListCtrl::OnDrawItem(int WXUNUSED(item), wxDC* WXUNUSED(dc), const wxRect& WXUNUSED(rect), const wxRect& WXUNUSED(rectHL), bool WXUNUSED(highlighted))
 {
 	// do nothing here, this is just a stub
