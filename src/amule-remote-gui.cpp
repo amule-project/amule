@@ -27,6 +27,7 @@
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>		// Needed for wxFileConfig
+#include <wx/socket.h>			// Needed for wxSocketBase
 
 
 #include <common/Format.h>
@@ -137,6 +138,8 @@ IMPLEMENT_APP(CamuleRemoteGuiApp)
 int CamuleRemoteGuiApp::OnExit()
 {
 	StopTickTimer();
+
+	wxSocketBase::Shutdown();	// needed because we also called Initialize() manually
 
 	return wxApp::OnExit();
 }
@@ -252,6 +255,9 @@ bool CamuleRemoteGuiApp::OnInit()
 	if (!InitCommon(AMULE_APP_BASE::argc, AMULE_APP_BASE::argv)) {
 		return false;
 	}
+
+	// Initialize wx sockets (needed for http download in background with Asio sockets)
+	wxSocketBase::Initialize();
 
 	// Create the polling timer
 	poll_timer = new wxTimer(this,ID_CORE_TIMER_EVENT);
