@@ -27,6 +27,7 @@
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>		// Needed for wxFileConfig
+#include <wx/socket.h>			// Needed for wxSocketBase
 
 
 #include <common/Format.h>
@@ -137,6 +138,8 @@ IMPLEMENT_APP(CamuleRemoteGuiApp)
 int CamuleRemoteGuiApp::OnExit()
 {
 	StopTickTimer();
+
+	wxSocketBase::Shutdown();	// needed because we also called Initialize() manually
 
 	return wxApp::OnExit();
 }
@@ -259,6 +262,9 @@ bool CamuleRemoteGuiApp::OnInit()
 		AddLogLineCS(_("Fatal Error: Failed to create Poll Timer"));
 		OnExit();
 	}
+
+	// Initialize wx sockets (needed for http download in background with Asio sockets)
+	wxSocketBase::Initialize();
 
 	m_connect = new CRemoteConnect(this);
 
