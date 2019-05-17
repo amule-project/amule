@@ -6,10 +6,6 @@ Version 2.3.3 - The "what do you want?" version.
 		* Added mimetype-hanlder to amule.desktop
 		  originally in debian
 
-	Adeodato Simó:
-		* use xdg-open as default instead of mplayer
-		  originally in debian
-
 	Sandro Tosi:
 		* remove garbage from gdlib
 		  originally in debian

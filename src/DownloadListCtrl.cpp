@@ -1429,7 +1429,7 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 			_("File preview"), wxOK, this);
 		// Since newer versions for some reason mplayer does not automatically
 		// select video output device and needs a parameter, go figure...
-		command = wxT("xterm -T \"aMule Preview\" -iconic -e xdg-open ") QUOTE wxT("$file") QUOTE;
+		command = wxT("xterm -T \"aMule Preview\" -iconic -e mplayer ") QUOTE wxT("$file") QUOTE;
 	} else {
 		command = thePrefs::GetVideoPlayer();
 	}
