@@ -43,6 +43,7 @@ CEC_Category_Tag::CEC_Category_Tag(uint32 cat_index, EC_DETAIL_LEVEL detail_leve
 			AddTag(CECTag(EC_TAG_CATEGORY_COMMENT, cat->comment));
 			AddTag(CECTag(EC_TAG_CATEGORY_COLOR, (uint32)cat->color));
 			AddTag(CECTag(EC_TAG_CATEGORY_PRIO, cat->prio));
+		/* fall through */
 		case EC_DETAIL_CMD:
 			AddTag(CECTag(EC_TAG_CATEGORY_TITLE, cat->title));
 		}

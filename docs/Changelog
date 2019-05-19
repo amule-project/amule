@@ -2,6 +2,17 @@ Version 2.3.3 - The "what do you want?" version.
 ----------
 201?-??-??
 
+	jEsuSdA:
+		* Added papirus theme
+
+	Dmitry Smirnov:
+		* Added mimetype-hanlder to amule.desktop
+		  originally in debian
+
+	Sandro Tosi:
+		* remove garbage from gdlib
+		  originally in debian
+
 	gaffatape:
 		* Workaround for bug in wxWidgets causing aMule to crash on
 		  closing the last search tab
@@ -13,16 +24,25 @@ Version 2.3.3 - The "what do you want?" version.
 		* Various fixes to gdlib detection
 		* Support for compiling aMule with wxGTK under Cygwin
 		* Various small fixes to the MacOSX packager script
+		* Workaround for wxWidgets bug #17740 (Wrong path used to
+		  search for translations), fixes GitHub issue #74 (.mo files
+		  for translation are not loaded if amule is built to install
+		  to a prefix other than /usr (e.g. /usr/local).)
 
 	persmule:
 		* Fix sharing directories with non-ASCII names with aMule daemon
 		* Fix potential invalid detection for empty wxCharBuffer
 
 	scow:
+		* Fixed compilation with upnp-1.8
 		* C++11 fixes
 
 	Vollstrecker:
 		* Initial support for detecting pkg-config based gdlib versions
+		* Fixed compilation with wx-3.1
+
+	xinhuang:
+		* Fix crash when shared files changed on Shared files tab
 
 --------------------------------------------------------------------------------
 

@@ -2,7 +2,7 @@ Source: amule
 Section: net
 Priority: optional
 Maintainer: Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>
-Build-Depends: debhelper (>= 8), libglib2.0-dev, libgtk2.0-dev, zlib1g-dev, libwxgtk2.8-dev (>= 2.8.12), libgd2-xpm-dev, bison, flex, libcrypto++-dev, libreadline-dev, libgeoip-dev, libupnp-dev (>> 1.6.6), binutils-dev, autoconf, libqt4-dev, kdelibs5-dev, gettext
+Build-Depends: debhelper (>= 10), libglib2.0-dev, zlib1g-dev, libwxgtk3.0-dev, libgd2-xpm-dev, bison, flex, libcrypto++-dev, libreadline-dev, libgeoip-dev, libupnp-dev (>> 1.6.6), binutils-dev, autoconf, libqt4-dev, kdelibs5-dev, gettext
 Standards-Version: 3.9.1
 Homepage: http://www.amule.org
 
@@ -11,8 +11,8 @@ Architecture: any
 Depends: ${shlibs:Depends}, amule-common (= ${binary:Version}), amule-i18n-en-gb (= ${binary:Version}) | amule-i18n, ${misc:Depends}
 Recommends: amule-utils, amule-cas, amule-wxcas
 Suggests: amule-xas, amule-ed2k
-Description: aNOTHER eMule P2P Client
- aMule stand for another eMule file-sharing program, it is also
+Description: client for eD2k and Kad networks
+ aMule stands for another eMule file-sharing program, it is also
  another fork of the xMule project. It connects to eDonkey2000
  network, supports Linux, *BSD and MacOS X platforms, and has
  a new vision of the GUI
@@ -86,7 +86,7 @@ Architecture: any
 Provides: amule-web-templates
 Depends: amuleweb (= ${binary:Version}), ${misc:Depends}
 Conflicts: amule-common (<< ${binary:Version}), amule (<< ${binary:Version})
-Description: the default template for the webserver
+Description: default template for the webserver
  this package contains the default template for amulewebserver
  atm the litoral theme is the default one, and the only one
  included in aMule
@@ -96,7 +96,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, amule-web-templates, amule-i18n-en-gb (= ${binary:Version}) | amule-i18n, ${misc:Depends}
 Recommends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version})
 Conflicts: amule (<< ${binary:Version}), amule-daemon (<< ${binary:Version})
-Description: the webserver for amule
+Description: webserver for amule
  this is the webserver, which gives you full access to your amule client with
  any webbrowser you want
 
@@ -105,7 +105,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, amule-i18n-en-gb (= ${binary:Version}) | amule-i18n, ${misc:Depends}
 Replaces: amule-utils-gui (<< ${binary:Version})
 Conflicts: amule-utils-gui (<< ${binary:Version})
-Description: the remote gui for amule
+Description: remote gui for amule
  this is the remote GUI for amule. You can use it on every machine to execute
  commands on the main prog. You need a running amule or amuled on at least one
  machine on the net.
@@ -115,7 +115,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, amule-i18n-en-gb (= ${binary:Version}) | amule-i18n, ${misc:Depends}
 Replaces: amuled (<< ${binary:Version})
 Conflicts: amule-daemon (<< ${binary:Version})
-Description: the amule daemon
+Description: amule daemon for headless or remote use
  amule-daemon can be used on computers, that don't have X11. You can connect to
  it with the remote-GUI, the webserver or the commandline interface.
 
@@ -124,7 +124,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, amule-i18n-en-gb (= ${binary:Version}) | amule-i18n, ${misc:Depends}
 Conflicts: amule-utils-gui (<< ${binary:Version})
 Replaces: amule-utils-gui (<< ${binary:Version})
-Description: the amule-link-creator
+Description: amule eD2k- link creator (gui-version)
  amule-link-creator lets you create ed2k-links and hashes for a given file.
 
 Package: amule-alcc
@@ -132,7 +132,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: amule-utils (<< ${binary:Version})
 Replaces: amule-utils (<< ${binary:Version})
-Description: the amule-link-creator (commandline-version)
+Description: amule-link-creator (commandline-version)
  amule-link-creator lets you create ed2k-links and hashes for a given file
  from the commandline.
 
@@ -141,7 +141,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: amule-utils (<< ${binary:Version})
 Replaces: amule-utils (<< ${binary:Version})
-Description: the amule-commandline-client
+Description: remote control amule(d) from commandline
  amulecmd gives you control over a running amule-daemon or amule from
  commandline.
 
@@ -469,100 +469,12 @@ Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Chinese (zh_TW) internationalized (i18n) files for amule
  This package contains the Chinese internationalized files for amule.
 
-Package: amule-dbg
-Priority: extra
-Architecture: any
-Section: debug
-Depends: amule (= ${binary:Version}), ${misc:Depends}
-Description: aNOTHER eMule P2P Client debugging symbols
- this package contains the debugging symbols for the amule binary
-
-Package: amule-ed2k-dbg
-Priority: extra
-Architecture: any
-Section: debug
-Depends: amule-ed2k (= ${binary:Version}), ${misc:Depends}
-Description: amule ed2k link-handler debugging symbols
- The debugging symbols for the ed2k binary
-
-Package: amule-cas-dbg
-Priority: extra
-Architecture: any
-Section: debug
-Depends: amule-cas (= ${binary:Version}), ${misc:Depends}
-Description: reporting module for amule debugging symbols
- the debugging symbols for the cas binary
-
-Package: amule-wxcas-dbg
-Priority: extra
-Architecture: any
-Section: debug
-Depends: amule-wxcas (= ${binary:Version}), ${misc:Depends}
-Description: reporting module for amule (graphical) debugging symbols
- the debugging symbols for the wxcas binary
-
-Package: amuleweb-dbg
-Priority: extra
-Architecture: any
-Section: debug
-Depends: amuleweb (= ${binary:Version}), ${misc:Depends}
-Description: the webserver for amule debugging symbols
- the debugging symbols for the amuleweb binary
-
-Package: amule-remote-gui-dbg
-Priority: extra
-Architecture: any
-Section: debug
-Depends: amule-remote-gui (= ${binary:Version}), ${misc:Depends}
-Description: the remote gui for amule debugging symbols
- the debugging symbols for the amulegui binary
-
-Package: amule-daemon-dbg
-Priority: extra
-Architecture: any
-Section: debug
-Depends: amule-daemon (= ${binary:Version}), ${misc:Depends}
-Description: the amule daemon debugging symbols
- the debugging symbols for the amuled binary
-
-Package: amule-alc-dbg
-Priority: extra
-Architecture: any
-Section: debug
-Depends: amule-alc (= ${binary:Version}), ${misc:Depends}
-Description: the amule-link-creator debugging symbols
- the debugging symbols for the alc binary
-
-Package: amule-alcc-dbg
-Priority: extra
-Architecture: any
-Section: debug
-Depends: amule-alcc (= ${binary:Version}), ${misc:Depends}
-Description: the amule-link-creator (commandline-version) debugging symbols
- the debugging symbols for the alcc binary
-
-Package: amule-cmd-dbg
-Priority: extra
-Architecture: any
-Section: debug
-Depends: amule-cmd (= ${binary:Version}), ${misc:Depends}
-Description: the amule-commandline-client-dbg
- the debugging symbols for the amulecmd binary
-
 Package: amule-plasmamule
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: kde plasmoid to control amule
  plasmoid to control the amule application and helper apps and mimetype
  for handling emulecollections
-
-Package: amule-plasmamule-dbg
-Priority: extra
-Architecture: any
-Section: debug
-Depends: amule-plasmamule (= ${binary:Version}), ${misc:Depends}
-Description: kde plasmoid to control amule debugging symbols
- the debugging symbols for the stuff in amule-plasmamule
 
 Package: amule-skin-gnome
 Architecture: any
@@ -587,6 +499,14 @@ Provides: amule-skin
 Conflicts: amule (<< ${binary:Version})
 Description: Mac Gray Skin files for amule
  This package contains the Mac Gray Skin files for amule.
+
+Package: amule-skin-papirus
+Architecture: any
+Depends: amule (= ${binary:Version}), ${misc:Depends}
+Provides: amule-skin
+Conflicts: amule (<< ${binary:Version})
+Description: Papirus Skin files for amule
+ This package contains the Papirus Skin files for amule.
 
 Package: amule-skin-priscilla
 Architecture: any

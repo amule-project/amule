@@ -5,16 +5,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "POT-Creation-Date: 2016-09-15 11:10+0200\n"
-"PO-Revision-Date: 2012-03-23 10:36+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2017-05-24 10:09+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: \n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: tr\n"
-"X-Poedit-Language: Turkish\n"
-"X-Poedit-Country: TURKEY\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #. type: TH
 #: amule.1:1
@@ -243,7 +242,7 @@ msgid ""
 msgstr ""
 "I<E<lt>yolE<gt>> değeri alan  tüm seçenekler için eğer I<yol> hiçbir dizin "
 "içermiyorsa (yani sadece bir dosya ismiyse) aMule yapılandırma dizini (I<~/."
-"aMule>) varsayılır. "
+"aMule>) varsayılır."
 
 #. type: SH
 #: amule.1:75 amulecmd.1:240 amuled.1:78 amuleweb.1:171 ed2k.1:60
@@ -258,8 +257,8 @@ msgid "~/.aMule/*"
 msgstr "~/.aMule/*"
 
 #. type: SH
-#: amule.1:77 amulecmd.1:256 amuled.1:80 amulegui.1:48 amuleweb.1:191
-#: ed2k.1:62 ../../src/utils/aLinkCreator/docs/alc.1:11
+#: amule.1:77 amulecmd.1:256 amuled.1:80 amulegui.1:48 amuleweb.1:191 ed2k.1:62
+#: ../../src/utils/aLinkCreator/docs/alc.1:11
 #: ../../src/utils/aLinkCreator/docs/alcc.1:26
 #: ../../src/utils/cas/docs/cas.1:42 ../../src/utils/wxCas/docs/wxcas.1:16
 #: ../../src/utils/xas/docs/xas.1:16
@@ -268,8 +267,8 @@ msgid "REPORTING BUGS"
 msgstr "GERİBİLDİRİM"
 
 #. type: Plain text
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194
-#: ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14
+#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: ../../src/utils/aLinkCreator/docs/alc.1:14
 #: ../../src/utils/aLinkCreator/docs/alcc.1:29
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
@@ -284,8 +283,8 @@ msgstr ""
 "doğrudan bildirmemenizi rica ederiz."
 
 #. type: SH
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194
-#: ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14
+#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: ../../src/utils/aLinkCreator/docs/alc.1:14
 #: ../../src/utils/aLinkCreator/docs/alcc.1:29
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
@@ -294,8 +293,8 @@ msgid "COPYRIGHT"
 msgstr "TELİF HAKKI"
 
 #. type: Plain text
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196
-#: ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16
+#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: ../../src/utils/aLinkCreator/docs/alc.1:16
 #: ../../src/utils/aLinkCreator/docs/alcc.1:31
 #: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
 #: ../../src/utils/xas/docs/xas.1:21
@@ -307,8 +306,8 @@ msgstr ""
 "dağıtılmaktadır."
 
 #. type: SH
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196
-#: ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16
+#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: ../../src/utils/aLinkCreator/docs/alc.1:16
 #: ../../src/utils/aLinkCreator/docs/alcc.1:31
 #: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
 #: ../../src/utils/xas/docs/xas.1:21
@@ -317,8 +316,8 @@ msgid "SEE ALSO"
 msgstr "İLGİLİ BELGELER"
 
 #. type: SH
-#: amule.1:84 amulecmd.1:263 amuled.1:87 amulegui.1:55 amuleweb.1:198
-#: ed2k.1:69 ../../src/utils/aLinkCreator/docs/alc.1:18
+#: amule.1:84 amulecmd.1:263 amuled.1:87 amulegui.1:55 amuleweb.1:198 ed2k.1:69
+#: ../../src/utils/aLinkCreator/docs/alc.1:18
 #: ../../src/utils/aLinkCreator/docs/alcc.1:33
 #: ../../src/utils/cas/docs/cas.1:49 ../../src/utils/wxCas/docs/wxcas.1:23
 #: ../../src/utils/xas/docs/xas.1:23
@@ -351,8 +350,7 @@ msgid "aMuleCmd v2.3.2"
 msgstr "aMuleCmd v2.3.2"
 
 #. type: TH
-#: amulecmd.1:1 amuleweb.1:1 ed2k.1:1
-#: ../../src/utils/aLinkCreator/docs/alc.1:1
+#: amulecmd.1:1 amuleweb.1:1 ed2k.1:1 ../../src/utils/aLinkCreator/docs/alc.1:1
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
@@ -376,8 +374,8 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1:17
 msgid ""
-"[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> I<E<lt>commandE<gt>>]"
-"B< >}"
+"[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> "
+"I<E<lt>commandE<gt>>]B< >}"
 msgstr ""
 "[B<-l> I<E<lt>dilE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> I<E<lt>komutE<gt>>]B< >}"
 
@@ -880,7 +878,7 @@ msgstr ""
 #: amulecmd.1:196
 #, no-wrap
 msgid "Statistics [ I<E<lt>numberE<gt>> ]"
-msgstr "İstatistikler [ I<E<lt>sayıE<gt>> ] "
+msgstr "İstatistikler [ I<E<lt>sayıE<gt>> ]"
 
 #. type: Plain text
 #: amulecmd.1:198
@@ -1069,7 +1067,7 @@ msgstr ""
 #. type: Plain text
 #: amuled.1:39
 msgid "Configure EC (External Connections)."
-msgstr "DB (Dış Bağlantılar) Kurulumu"
+msgstr "DB (Dış Bağlantılar) Kurulumu."
 
 #. type: TH
 #: amulegui.1:1
@@ -1123,7 +1121,7 @@ msgid ""
 "DOT orgE<gt>"
 msgstr ""
 "Bu man sayfası Debian için Julien Delange E<lt>julien AT gunnm DOT orgE<gt> "
-"tarafından yazılmıştır."
+"tarafından yazılmıştır"
 
 #. type: Plain text
 #: amulegui.1:58
@@ -1217,7 +1215,7 @@ msgid ""
 "(default: I<4711>)."
 msgstr ""
 "Web sunucusunun HTTP portu. Bu ağ tarayıcınızda kullanmanız gereken port "
-"numarasıdır (varsayılan: I<4711>). "
+"numarasıdır (varsayılan: I<4711>)."
 
 #. type: Plain text
 #: amuleweb.1:84
@@ -1535,7 +1533,7 @@ msgid ""
 "I<E<lt>inputfiles_listE<gt>> (There can be one or more files)."
 msgstr ""
 "I<E<lt>girdidosya_listesiE<gt>>nde girilen tüm dosyaların eD2k "
-"bağlantılarını hesaplar (bir ya da birden fazla dosya olabilir)"
+"bağlantılarını hesaplar (bir ya da birden fazla dosya olabilir)."
 
 #. type: Plain text
 #: ../../src/utils/aLinkCreator/docs/alcc.1:19

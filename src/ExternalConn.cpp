@@ -584,6 +584,7 @@ static CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerA
 			response->AddTag(CECTag(EC_TAG_STATS_TOTAL_SENT_BYTES, theStats::GetTotalSentBytes()));
 			response->AddTag(CECTag(EC_TAG_STATS_TOTAL_RECEIVED_BYTES, theStats::GetTotalReceivedBytes()));
 			response->AddTag(CECTag(EC_TAG_STATS_SHARED_FILE_COUNT, theStats::GetSharedFileCount()));
+		/* fall through */
 		case EC_DETAIL_WEB:
 		case EC_DETAIL_CMD:
 			response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, (uint32)theStats::GetUploadRate()));
@@ -1100,10 +1101,12 @@ static CECPacket *Get_EC_Response_Search(const CECPacket *request)
 	switch (search_type) {
 		case EC_SEARCH_GLOBAL:
 			core_search_type = GlobalSearch;
+		/* fall through */
 		case EC_SEARCH_KAD:
 			if (core_search_type != GlobalSearch) { // Not a global search obviously
 				core_search_type = KadSearch;
 			}
+		/* fall through */
 		case EC_SEARCH_LOCAL: {
 			uint32 search_id = 0xffffffff;
 			wxString error = theApp->searchlist->StartNewSearch(&search_id, core_search_type, params);

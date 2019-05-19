@@ -94,6 +94,7 @@ CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_lev
 			if ((tmpInt = server->GetFiles()) != 0) {
 				AddTag(CECTag(EC_TAG_SERVER_FILES, tmpInt));
 			}
+		/* fall through */
 		case EC_DETAIL_CMD:
 			if (!(tmpStr = server->GetListName()).IsEmpty()) {
 				AddTag(CECTag(EC_TAG_SERVER_NAME, tmpStr));

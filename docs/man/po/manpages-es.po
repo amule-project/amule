@@ -11,6 +11,7 @@ msgstr ""
 "PO-Revision-Date: 2010-03-21 19:37+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <es_ES@li.org>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -82,7 +83,6 @@ msgstr "[B<-w> I<E<lt>pathE<gt>>]"
 #. type: Plain text
 #: amule.1:17 amuled.1:19
 #, fuzzy
-#| msgid "[B<-t> I<E<lt>numE<gt>>] [I<eD2k-Link>]"
 msgid "[B<-t> I<E<lt>numE<gt>>] [I<eD2k-link>]"
 msgstr "[B<-t> I<E<lt>numE<gt>>] [I<eD2k-Link>]"
 
@@ -183,7 +183,6 @@ msgstr "Imprime una breve descripción de uso."
 #. type: TP
 #: amule.1:55 amuled.1:63 ed2k.1:39
 #, fuzzy, no-wrap
-#| msgid "B<[ eD2k-Link ]>"
 msgid "B<[ eD2k-link ]>"
 msgstr "B<[ eD2k-Link ]>"
 
@@ -262,8 +261,8 @@ msgid "~/.aMule/*"
 msgstr "~/.aMule/*"
 
 #. type: SH
-#: amule.1:77 amulecmd.1:256 amuled.1:80 amulegui.1:48 amuleweb.1:191
-#: ed2k.1:62 ../../src/utils/aLinkCreator/docs/alc.1:11
+#: amule.1:77 amulecmd.1:256 amuled.1:80 amulegui.1:48 amuleweb.1:191 ed2k.1:62
+#: ../../src/utils/aLinkCreator/docs/alc.1:11
 #: ../../src/utils/aLinkCreator/docs/alcc.1:26
 #: ../../src/utils/cas/docs/cas.1:42 ../../src/utils/wxCas/docs/wxcas.1:16
 #: ../../src/utils/xas/docs/xas.1:16
@@ -272,8 +271,8 @@ msgid "REPORTING BUGS"
 msgstr "INFORMANDO ERRORES"
 
 #. type: Plain text
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194
-#: ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14
+#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: ../../src/utils/aLinkCreator/docs/alc.1:14
 #: ../../src/utils/aLinkCreator/docs/alcc.1:29
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
@@ -288,8 +287,8 @@ msgstr ""
 "correo de algun miembro del equipo."
 
 #. type: SH
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194
-#: ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14
+#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: ../../src/utils/aLinkCreator/docs/alc.1:14
 #: ../../src/utils/aLinkCreator/docs/alcc.1:29
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
@@ -298,8 +297,8 @@ msgid "COPYRIGHT"
 msgstr "COPYRIGHT"
 
 #. type: Plain text
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196
-#: ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16
+#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: ../../src/utils/aLinkCreator/docs/alc.1:16
 #: ../../src/utils/aLinkCreator/docs/alcc.1:31
 #: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
 #: ../../src/utils/xas/docs/xas.1:21
@@ -311,8 +310,8 @@ msgstr ""
 "General Public License."
 
 #. type: SH
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196
-#: ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16
+#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: ../../src/utils/aLinkCreator/docs/alc.1:16
 #: ../../src/utils/aLinkCreator/docs/alcc.1:31
 #: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
 #: ../../src/utils/xas/docs/xas.1:21
@@ -321,8 +320,8 @@ msgid "SEE ALSO"
 msgstr "VEASE TAMBIEN"
 
 #. type: SH
-#: amule.1:84 amulecmd.1:263 amuled.1:87 amulegui.1:55 amuleweb.1:198
-#: ed2k.1:69 ../../src/utils/aLinkCreator/docs/alc.1:18
+#: amule.1:84 amulecmd.1:263 amuled.1:87 amulegui.1:55 amuleweb.1:198 ed2k.1:69
+#: ../../src/utils/aLinkCreator/docs/alc.1:18
 #: ../../src/utils/aLinkCreator/docs/alcc.1:33
 #: ../../src/utils/cas/docs/cas.1:49 ../../src/utils/wxCas/docs/wxcas.1:23
 #: ../../src/utils/xas/docs/xas.1:23
@@ -355,8 +354,7 @@ msgid "aMuleCmd v2.3.2"
 msgstr "aMuleCmd v2.3.2"
 
 #. type: TH
-#: amulecmd.1:1 amuleweb.1:1 ed2k.1:1
-#: ../../src/utils/aLinkCreator/docs/alc.1:1
+#: amulecmd.1:1 amuleweb.1:1 ed2k.1:1 ../../src/utils/aLinkCreator/docs/alc.1:1
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
@@ -380,11 +378,11 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1:17
 msgid ""
-"[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> I<E<lt>commandE<gt>>]"
-"B< >}"
+"[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> "
+"I<E<lt>commandE<gt>>]B< >}"
 msgstr ""
-"[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> I<E<lt>commandE<gt>>]"
-"B< >}"
+"[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> "
+"I<E<lt>commandE<gt>>]B< >}"
 
 #. type: Plain text
 #: amulecmd.1:20 amuleweb.1:31
@@ -1347,7 +1345,6 @@ msgstr "[B<-c> I<E<lt>pathE<gt>>] [B<-t> I<E<lt>numE<gt>>]"
 #. type: Plain text
 #: ed2k.1:13
 #, fuzzy
-#| msgid "I<E<lt>eD2k-LinkE<gt>>"
 msgid "I<E<lt>eD2k-linkE<gt>>"
 msgstr "I<E<lt>eD2k-LinkE<gt>>"
 
@@ -1586,12 +1583,6 @@ msgstr "B<none>"
 #. type: Plain text
 #: ../../src/utils/xas/docs/xas.1:12
 #, fuzzy
-#| msgid ""
-#| "B<xas> is a plugin for xchat. For loading see your xchat documentation. "
-#| "After loading type /xas and it will send statistics to the channel you "
-#| "are in. These are taken from your Online Signature file.  For this to "
-#| "work, you must enable the \"Online Signature\" option in aMules "
-#| "preferences."
 msgid ""
 "B<xas> is a plugin for xchat. For loading see your xchat documentation. "
 "After loading type /xas and it will send statistics to the channel you are "

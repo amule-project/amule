@@ -8,13 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule SVN\n"
 "POT-Creation-Date: 2016-09-15 11:10+0200\n"
-"PO-Revision-Date: 2011-11-04 12:11+0100\n"
-"Last-Translator: Stefano Corti <iz0bbz@libero.it>\n"
+"PO-Revision-Date: 2017-05-24 09:59+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: none\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.2\n"
 
 # type: TH
 #. type: TH
@@ -116,7 +118,7 @@ msgstr "B<[ -c> I<E<lt>percorsoE<gt>>, B<--config-dir>=I<E<lt>percorsoE<gt>> B<]
 msgid "Read config from I<E<lt>pathE<gt>> instead of home"
 msgstr ""
 "Legge la configurazione dal I<E<lt>percorsoE<gt>> invece che dalla directory "
-"dell'utente."
+"dell'utente"
 
 # type: TP
 #. type: TP
@@ -299,8 +301,8 @@ msgstr "~/.aMule/*"
 
 # type: SH
 #. type: SH
-#: amule.1:77 amulecmd.1:256 amuled.1:80 amulegui.1:48 amuleweb.1:191
-#: ed2k.1:62 ../../src/utils/aLinkCreator/docs/alc.1:11
+#: amule.1:77 amulecmd.1:256 amuled.1:80 amulegui.1:48 amuleweb.1:191 ed2k.1:62
+#: ../../src/utils/aLinkCreator/docs/alc.1:11
 #: ../../src/utils/aLinkCreator/docs/alcc.1:26
 #: ../../src/utils/cas/docs/cas.1:42 ../../src/utils/wxCas/docs/wxcas.1:16
 #: ../../src/utils/xas/docs/xas.1:16
@@ -310,8 +312,8 @@ msgstr "SEGNALARE I BUG"
 
 # type: Plain text
 #. type: Plain text
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194
-#: ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14
+#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: ../../src/utils/aLinkCreator/docs/alc.1:14
 #: ../../src/utils/aLinkCreator/docs/alcc.1:29
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
@@ -327,8 +329,8 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194
-#: ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14
+#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: ../../src/utils/aLinkCreator/docs/alc.1:14
 #: ../../src/utils/aLinkCreator/docs/alcc.1:29
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
@@ -338,8 +340,8 @@ msgstr "COPYRIGHT"
 
 # type: Plain text
 #. type: Plain text
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196
-#: ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16
+#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: ../../src/utils/aLinkCreator/docs/alc.1:16
 #: ../../src/utils/aLinkCreator/docs/alcc.1:31
 #: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
 #: ../../src/utils/xas/docs/xas.1:21
@@ -348,12 +350,12 @@ msgid ""
 "Public License."
 msgstr ""
 "aMule e tutti i programmi di utilità correlati sono distribuiti in accordo "
-"alla GNU General Public License. "
+"alla GNU General Public License."
 
 # type: SH
 #. type: SH
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196
-#: ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16
+#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: ../../src/utils/aLinkCreator/docs/alc.1:16
 #: ../../src/utils/aLinkCreator/docs/alcc.1:31
 #: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
 #: ../../src/utils/xas/docs/xas.1:21
@@ -363,8 +365,8 @@ msgstr "VEDI ANCHE"
 
 # type: SH
 #. type: SH
-#: amule.1:84 amulecmd.1:263 amuled.1:87 amulegui.1:55 amuleweb.1:198
-#: ed2k.1:69 ../../src/utils/aLinkCreator/docs/alc.1:18
+#: amule.1:84 amulecmd.1:263 amuled.1:87 amulegui.1:55 amuleweb.1:198 ed2k.1:69
+#: ../../src/utils/aLinkCreator/docs/alc.1:18
 #: ../../src/utils/aLinkCreator/docs/alcc.1:33
 #: ../../src/utils/cas/docs/cas.1:49 ../../src/utils/wxCas/docs/wxcas.1:23
 #: ../../src/utils/xas/docs/xas.1:23
@@ -401,13 +403,12 @@ msgstr "aMuleCmd v2.3.2"
 
 # type: TH
 #. type: TH
-#: amulecmd.1:1 amuleweb.1:1 ed2k.1:1
-#: ../../src/utils/aLinkCreator/docs/alc.1:1
+#: amulecmd.1:1 amuleweb.1:1 ed2k.1:1 ../../src/utils/aLinkCreator/docs/alc.1:1
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
 msgid "aMule utilities"
-msgstr "Utilità di aMule"
+msgstr "utilità di aMule"
 
 # type: Plain text
 #. type: Plain text
@@ -429,8 +430,8 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1:17
 msgid ""
-"[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> I<E<lt>commandE<gt>>]"
-"B< >}"
+"[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> "
+"I<E<lt>commandE<gt>>]B< >}"
 msgstr ""
 "[B<-l> I<E<lt>linguaggioE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> "
 "I<E<lt>comandoE<gt>>]B< >}"
@@ -462,7 +463,7 @@ msgid ""
 "might be an IP address or a DNS name"
 msgstr ""
 "Computer dove è in esecuzione aMule (default: I<localhost>). "
-"I<E<lt>hostE<gt>> può essere un indirizzo IP o un nome DNS."
+"I<E<lt>hostE<gt>> può essere un indirizzo IP o un nome DNS"
 
 # type: TP
 #. type: TP
@@ -478,8 +479,8 @@ msgid ""
 "aMule's port for External Connections, as set in Preferences-E<gt>Remote "
 "Controls (default: I<4712>)"
 msgstr ""
-"Porta di aMule per le connessioni esterne, come impostata nelle preferenze-"
-"E<gt>controllo remoto (default: I<4712>) "
+"porta di aMule per le connessioni esterne, come impostata nelle preferenze-"
+"E<gt>controllo remoto (default: I<4712>)"
 
 # type: TP
 #. type: TP
@@ -545,7 +546,7 @@ msgstr ""
 #: amulecmd.1:57 amuleweb.1:74
 msgid "Write command line options to config file and exit"
 msgstr ""
-"Scrive le opzioni della riga di comando nel file di configurazione ed esce."
+"Scrive le opzioni della riga di comando nel file di configurazione ed esce"
 
 # type: TP
 #. type: TP
@@ -763,7 +764,7 @@ msgid ""
 msgstr ""
 "Visualizza una breve descrizione dell'uso. Se chiamato senza parametro, "
 "mostra una lista dei comandi disponibili. Se chiamato con il parametro "
-"I<E<lt>commandE<gt>>, mostra una breve descrizione del comando dato"
+"I<E<lt>commandE<gt>>, mostra una breve descrizione del comando dato."
 
 # type: SS
 #. type: SS
@@ -852,7 +853,7 @@ msgstr "Reload I<E<lt>oggettoE<gt>>"
 #. type: Plain text
 #: amulecmd.1:142
 msgid "Reloads a given object."
-msgstr "Ricarica un dato oggetto"
+msgstr "Ricarica un dato oggetto."
 
 # type: Plain text
 #. type: Plain text
@@ -1524,7 +1525,7 @@ msgid ""
 "line and config-file settings to be ignored, preferences to be read from the "
 "given config file, and also implies the B<-q -L> options."
 msgstr ""
-"Percorso del file di configurazione di aMule. B<NON USARE DIRETTAMENTE!> "
+"percorso del file di configurazione di aMule. B<NON USARE DIRETTAMENTE!> "
 "aMule usa questa opzione quando lancia amuleweb all'avvio di aMule. Questa "
 "opzione fa sì che tutte le altre impostazioni in riga di comando e nel file "
 "di configurazione vengano ignorate, le preferenze vengano lette dal file di "
@@ -1621,7 +1622,7 @@ msgstr "ED2K"
 #: ed2k.1:1
 #, no-wrap
 msgid "aMule eD2k link parser v1.5.1"
-msgstr "Analizzatore di collegamenti eD2k per aMule v1.5.1"
+msgstr "analizzatore di collegamenti eD2k per aMule v1.5.1"
 
 # type: Plain text
 #. type: Plain text
@@ -1752,7 +1753,7 @@ msgstr "ALCC"
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1
 #, no-wrap
 msgid "aMule eD2k links calculator"
-msgstr "Calcolatore di collegamenti eD2k di aMule"
+msgstr "calcolatore di collegamenti eD2k di aMule"
 
 # type: Plain text
 #. type: Plain text
@@ -1967,7 +1968,7 @@ msgid ""
 "script (in /usr/bin if you installed with --prefix=/usr)."
 msgstr ""
 "Per abilitarlo ad ogni avvio di xchat dovete eseguire lo script autostart-"
-"xas (presente in /usr/bin se avete installato con --prefix=/usr)"
+"xas (presente in /usr/bin se avete installato con --prefix=/usr)."
 
 # type: Plain text
 #. type: Plain text

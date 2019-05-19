@@ -7,18 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manpages-ru\n"
 "POT-Creation-Date: 2016-09-15 11:10+0200\n"
-"PO-Revision-Date: 2011-04-11 19:02+0100\n"
-"Last-Translator: Radist Morse <radist.morse@gmail.com>\n"
+"PO-Revision-Date: 2017-05-24 10:02+0200\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Russian <LL@li.org>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: RU\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Poedit-Language: Russian\n"
-"X-Poedit-Country: RUSSIAN FEDERATION\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 2.0.2\n"
 
 #. type: TH
 #: amule.1:1
@@ -167,7 +166,7 @@ msgstr "B<[ -t>, B<--category>=I<E<lt>номерE<gt>> B<]>"
 #. type: Plain text
 #: amule.1:49 amuled.1:57 amulegui.1:42 ed2k.1:27
 msgid "Set category for passed eD2k links to I<E<lt>numE<gt>>"
-msgstr "Указать I<E<lt>номерE<gt>> категории для eD2k ссылок."
+msgstr "Указать I<E<lt>номерE<gt>> категории для eD2k ссылок"
 
 #. type: Plain text
 #: amule.1:52 amulecmd.1:66 amuled.1:60 amulegui.1:48 amuleweb.1:126 ed2k.1:39
@@ -260,8 +259,8 @@ msgid "~/.aMule/*"
 msgstr "~/.aMule/*"
 
 #. type: SH
-#: amule.1:77 amulecmd.1:256 amuled.1:80 amulegui.1:48 amuleweb.1:191
-#: ed2k.1:62 ../../src/utils/aLinkCreator/docs/alc.1:11
+#: amule.1:77 amulecmd.1:256 amuled.1:80 amulegui.1:48 amuleweb.1:191 ed2k.1:62
+#: ../../src/utils/aLinkCreator/docs/alc.1:11
 #: ../../src/utils/aLinkCreator/docs/alcc.1:26
 #: ../../src/utils/cas/docs/cas.1:42 ../../src/utils/wxCas/docs/wxcas.1:16
 #: ../../src/utils/xas/docs/xas.1:16
@@ -270,8 +269,8 @@ msgid "REPORTING BUGS"
 msgstr "СООБЩЕНИЕ ОБ ОШИБКАХ"
 
 #. type: Plain text
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194
-#: ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14
+#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: ../../src/utils/aLinkCreator/docs/alc.1:14
 #: ../../src/utils/aLinkCreator/docs/alcc.1:29
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
@@ -286,8 +285,8 @@ msgstr ""
 "напрямую участникам."
 
 #. type: SH
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194
-#: ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14
+#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: ../../src/utils/aLinkCreator/docs/alc.1:14
 #: ../../src/utils/aLinkCreator/docs/alcc.1:29
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
@@ -296,8 +295,8 @@ msgid "COPYRIGHT"
 msgstr "АВТОРСКИЕ ПРАВА"
 
 #. type: Plain text
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196
-#: ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16
+#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: ../../src/utils/aLinkCreator/docs/alc.1:16
 #: ../../src/utils/aLinkCreator/docs/alcc.1:31
 #: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
 #: ../../src/utils/xas/docs/xas.1:21
@@ -309,8 +308,8 @@ msgstr ""
 "Лицензионным Соглашением GNU (GNU GPL)."
 
 #. type: SH
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196
-#: ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16
+#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: ../../src/utils/aLinkCreator/docs/alc.1:16
 #: ../../src/utils/aLinkCreator/docs/alcc.1:31
 #: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
 #: ../../src/utils/xas/docs/xas.1:21
@@ -319,8 +318,8 @@ msgid "SEE ALSO"
 msgstr "СМ. ТАКЖЕ"
 
 #. type: SH
-#: amule.1:84 amulecmd.1:263 amuled.1:87 amulegui.1:55 amuleweb.1:198
-#: ed2k.1:69 ../../src/utils/aLinkCreator/docs/alc.1:18
+#: amule.1:84 amulecmd.1:263 amuled.1:87 amulegui.1:55 amuleweb.1:198 ed2k.1:69
+#: ../../src/utils/aLinkCreator/docs/alc.1:18
 #: ../../src/utils/aLinkCreator/docs/alcc.1:33
 #: ../../src/utils/cas/docs/cas.1:49 ../../src/utils/wxCas/docs/wxcas.1:23
 #: ../../src/utils/xas/docs/xas.1:23
@@ -353,8 +352,7 @@ msgid "aMuleCmd v2.3.2"
 msgstr "aMuleCmd v2.3.2"
 
 #. type: TH
-#: amulecmd.1:1 amuleweb.1:1 ed2k.1:1
-#: ../../src/utils/aLinkCreator/docs/alc.1:1
+#: amulecmd.1:1 amuleweb.1:1 ed2k.1:1 ../../src/utils/aLinkCreator/docs/alc.1:1
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
 #: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
@@ -378,11 +376,11 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1:17
 msgid ""
-"[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> I<E<lt>commandE<gt>>]"
-"B< >}"
+"[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> "
+"I<E<lt>commandE<gt>>]B< >}"
 msgstr ""
-"[B<-l> I<E<lt>языкE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> I<E<lt>командаE<gt>>]"
-"B< >}"
+"[B<-l> I<E<lt>языкE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> "
+"I<E<lt>командаE<gt>>]B< >}"
 
 #. type: Plain text
 #: amulecmd.1:20 amuleweb.1:31
@@ -407,7 +405,7 @@ msgid ""
 "might be an IP address or a DNS name"
 msgstr ""
 "Адрес компьютера на котором работает aMule (по умолчанию: I<localhost>). "
-"I<E<lt>ХостE<gt>> может быть IP-адресом или DNS-именем."
+"I<E<lt>ХостE<gt>> может быть IP-адресом или DNS-именем"
 
 #. type: TP
 #: amulecmd.1:33 amuleweb.1:50
@@ -696,7 +694,7 @@ msgid ""
 "I<E<lt>numberE<gt>>."
 msgstr ""
 "Указывает приоритет закачки указанной по I<E<lt>хэшуE<gt>> или "
-"I<E<lt>номеруE<gt>>"
+"I<E<lt>номеруE<gt>>."
 
 #. type: Plain text
 #: amulecmd.1:126
@@ -929,11 +927,11 @@ msgid ""
 "character set to use and I<modifier> allows the user to select a specific "
 "instance of localization data within a single category."
 msgstr ""
-"Параметр I<E<lt>языкE<gt>> для опции B<-l> имеет следующую форму: I<язык>"
-"[B<_>I<ЯЗЫК>][B<.>I<кодировка>][B<@>I<модификатор>], где I<язык> является "
-"основным языком, I<ЯЗЫК> - диалект/территория, I<кодировка> - используемая "
-"кодировка символов и I<модификатор> позволяет пользователю использовать "
-"определенный вариант локализации в данной категории."
+"Параметр I<E<lt>языкE<gt>> для опции B<-l> имеет следующую форму: "
+"I<язык>[B<_>I<ЯЗЫК>][B<.>I<кодировка>][B<@>I<модификатор>], где I<язык> "
+"является основным языком, I<ЯЗЫК> - диалект/территория, I<кодировка> - "
+"используемая кодировка символов и I<модификатор> позволяет пользователю "
+"использовать определенный вариант локализации в данной категории."
 
 #. type: Plain text
 #: amulecmd.1:220 amuleweb.1:145
@@ -1051,7 +1049,7 @@ msgstr "[B<-p> I<E<lt>путьE<gt>>]"
 #. type: Plain text
 #: amuled.1:32
 msgid "Forks to background."
-msgstr "Уйти в фоновый режим"
+msgstr "Уйти в фоновый режим."
 
 #. type: TP
 #: amuled.1:32

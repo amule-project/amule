@@ -43,9 +43,11 @@
 #	define ENABLE_MMAP	0
 #endif
 
-#define USE_MMAP	(ENABLE_MMAP && defined(HAVE_MMAP) && defined(HAVE_SYSCONF) && (defined(HAVE__SC_PAGESIZE) || defined(HAVE__SC_PAGE_SIZE)))
+#if ENABLE_MMAP && defined(HAVE_MMAP) && defined(HAVE_SYSCONF) && (defined(HAVE__SC_PAGESIZE) || defined(HAVE__SC_PAGE_SIZE))
+#	define USE_MMAP
+#endif
 
-#if USE_MMAP
+#ifdef USE_MMAP
 
 #include <sys/mman.h>
 
@@ -57,7 +59,7 @@ static const long gs_pageSize = sysconf(_SC_PAGE_SIZE);
 
 #endif /* USE_MMAP */
 
-#if !defined(HAVE_SIGACTION) || !defined(SA_SIGINFO) || !USE_MMAP || defined(__UCLIBC__)
+#if !defined(HAVE_SIGACTION) || !defined(SA_SIGINFO) || !defined(USE_MMAP) || defined(__UCLIBC__)
 
 class CFileAreaSigHandler
 {
@@ -200,7 +202,7 @@ bool CFileArea::Close()
 		delete[] m_buffer;
 		m_buffer = NULL;
 	}
-#if USE_MMAP
+#ifdef USE_MMAP
 	if (m_mmap_buffer)
 	{
 		munmap(m_mmap_buffer, m_length);
@@ -222,7 +224,7 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 {
 	Close();
 
-#if USE_MMAP
+#ifdef USE_MMAP
 	uint64 offEnd = offset + count;
 	if (gs_pageSize > 0 && offEnd < 0x100000000ull) {
 		uint64 offStart = offset & (~((uint64)gs_pageSize-1));
@@ -244,7 +246,7 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 	file.ReadAt(m_buffer, offset, count);
 }
 
-#if USE_MMAP
+#ifdef USE_MMAP
 void CFileArea::StartWriteAt(CFileAutoClose& file, uint64 offset, size_t count)
 {
 	Close();
@@ -282,7 +284,7 @@ bool CFileArea::FlushAt(CFileAutoClose& file, uint64 offset, size_t count)
 	if (!m_buffer)
 		return false;
 
-#if USE_MMAP
+#ifdef USE_MMAP
 	if (m_mmap_buffer) {
 		if (msync(m_mmap_buffer, m_length, MS_SYNC))
 			return false;

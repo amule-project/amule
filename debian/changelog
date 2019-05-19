@@ -1,3 +1,41 @@
+amule (2.3.2+git-20190519) stable; urgency=low
+
+  * git-rev: f8520e7 + 1
+  * added papirus skin
+  * corrected stamp-file name of plasmamule
+  * removed useless amule.post[inst|rm]
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Sun, 19 May 2019 14:49:18 +0200
+ 
+amule (2.3.2+git-20190423) stable; urgency=low
+
+  * git-rev: 20afd75
+  * d/amule-cas.README.Debian: switched spelling of cas to avoid word repeat
+  * d/amule-common.docs: removed docs/changelog to avoid double install
+  * d/amule-i18n-uk.install: added locale, package was empty
+  * d/amule-plasmamule.lintian-overrides: desktop-entry is now known
+  * d/amule-xas.install: use multiarch format
+  * d/amule-xas.lintian-overrides: use multiarch format
+  * d/clean:
+    + switched to use reflect new dbgsym-packages
+    + removed stage1 und stage2 stamps
+  * d/compat: switched to dh 10
+  * d/control:
+    + adjusted build-deps for stable
+    + changed description of amule-package to satisfy lintian
+    + changed description of amule-theme-default-package to satisfy lintian
+    + changed description of amuleweb-package to satisfy lintian
+    + changed description of amule-remote-gui-package to satisfy lintian
+    + changed description of amule-daemon-package to satisfy lintian
+    + changed description of amule-alc-package to satisfy lintian
+    + changed description of amule-alcc-package to satisfy lintian
+    + removed *-dbg as they are not needed for dbgsym-packages
+  * d/rules:
+    + switched to build dbgsym-packages
+    + avoid installing the changelog twice in amule-common-package
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Tue, 23 Apr 2019 21:31:11 +0200
+
 amule (2.3.1+svn-10712) testing; urgency=low
 
   * Added Chinese (Traditional) manpages
