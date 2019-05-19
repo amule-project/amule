@@ -1,4 +1,13 @@
-amule (2.3.2+git-20190423) Stable; urgency=low
+amule (2.3.2+git-20190519) stable; urgency=low
+
+  * git-rev: f8520e7 + 1
+  * added papirus skin
+  * corrected stamp-file name of plasmamule
+  * removed useless amule.post[inst|rm]
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Sun, 19 May 2019 14:49:18 +0200
+ 
+amule (2.3.2+git-20190423) stable; urgency=low
 
   * git-rev: 20afd75
   * d/amule-cas.README.Debian: switched spelling of cas to avoid word repeat

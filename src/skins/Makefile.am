@@ -4,7 +4,8 @@ dist_skin_DATA = \
 		tango.zip \
 		xfce.zip \
 		Mac_Gray.zip \
-		priscilla.zip
+		priscilla.zip \
+		papirus.zip
 
 skindir = $(pkgdatadir)/skins
 

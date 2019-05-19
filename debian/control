@@ -500,6 +500,14 @@ Conflicts: amule (<< ${binary:Version})
 Description: Mac Gray Skin files for amule
  This package contains the Mac Gray Skin files for amule.
 
+Package: amule-skin-papirus
+Architecture: any
+Depends: amule (= ${binary:Version}), ${misc:Depends}
+Provides: amule-skin
+Conflicts: amule (<< ${binary:Version})
+Description: Papirus Skin files for amule
+ This package contains the Papirus Skin files for amule.
+
 Package: amule-skin-priscilla
 Architecture: any
 Depends: amule (= ${binary:Version}), ${misc:Depends}

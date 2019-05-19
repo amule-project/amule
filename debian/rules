@@ -15,6 +15,7 @@ general_pkgs = "amule-common"\
 	"amule-skin-gnome"\
 	"amule-skin-kde4"\
 	"amule-skin-mac-gray"\
+	"amule-skin-papirus"\
 	"amule-skin-priscilla"\
 	"amule-skin-tango"\
 	"amule-skin-xfce"
@@ -459,7 +460,7 @@ alcc-dbgsym: amule-alcc-dbgsym
 amulecmd-dbgsym: amule-cmd-dbgsym
 	touch @
 
-plasmamule: amule-plasmamule-stage2
+plasmamule: amule-plasmamule-package
 	touch @
 
 plasmamule-dbgsym: amule-plasmamule-dbgsym
