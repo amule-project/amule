@@ -58,9 +58,6 @@
    declares uintmax_t. */
 #cmakedefine HAVE_INTTYPES_H_WITH_UINTMAX 1
 
-/* Define if you have the <libintl.h> header file. */
-#cmakedefine HAVE_LIBINTL_H
-
 /* Define if you have a readline compatible library */
 #cmakedefine HAVE_LIBREADLINE
 
