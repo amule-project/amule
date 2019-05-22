@@ -2,9 +2,9 @@ ADD_SUBDIRECTORY (docs)
 ADD_SUBDIRECTORY (src)
 
 INSTALL (FILES wxcas.xpm
-	DESTINATION "${DATADIR}/pixmaps"
+	DESTINATION "${CMAKE_INSTALL_DATADIR}/pixmaps"
 )
 
 INSTALL (FILES wxcas.desktop
-	DESTINATION "${DATADIR}/applications"
+	DESTINATION "${CMAKE_INSTALL_DATADIR}/applications"
 )

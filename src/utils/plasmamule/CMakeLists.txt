@@ -62,7 +62,7 @@ INSTALL (TARGETS plasmamule-engine-feeder
 )
 
 INSTALL (FILES plasmamule-engine-feeder.desktop
-		DESTINATION "${DATADIR}/applications"
+		DESTINATION "${CMAKE_INSTALL_DATADIR}/applications"
 )
 
 KDE4_INSTALL_ICONS (${ICON_INSTALL_DIR})
