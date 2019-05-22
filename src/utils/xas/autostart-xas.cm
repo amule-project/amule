@@ -20,9 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 #
 
-prefix=@prefix@
-exec_prefix=@exec_prefix@
-xas_bin=@libdir@/xchat/plugins/xas.pl
+xas_bin=${CMAKE_INSTALL_FULL_LIBDIR}/xchat/plugins/xas.pl
 
 if [ -z $xas_bin ] ; then
 	echo "xas.pl: Plugin not found"
