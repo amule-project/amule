@@ -146,3 +146,57 @@ ENDIF (BUILD_REMOTEGUI)
 
 ADD_SUBDIRECTORY (docs)
 ADD_SUBDIRECTORY (src)
+
+IF (BUILD_TESTING)
+	ADD_SUBDIRECTORY (unittests)
+	ENABLE_TESTING()
+
+	ADD_CUSTOM_TARGET (tests ALL 
+		COMMAND ${CMAKE_CTEST_COMMAND}
+		DEPENDS CTagTest
+		CUInt128Test
+		FileDataIOTest
+		FormatTest
+		NetworkFunctionsTest
+		PathTest
+		RangeMapTest
+		StringFunctionsTest
+		TextFileTest
+	)
+
+	ADD_TEST (NAME CTagTest
+		COMMAND CTagTest
+	)
+
+	ADD_TEST (NAME CUInt128Test
+		COMMAND CUInt128Test
+	)
+
+	ADD_TEST (NAME FileDataIOTest
+		COMMAND FileDataIOTest
+	)
+
+	ADD_TEST (NAME FormatTest
+		COMMAND FormatTest
+	)
+
+	ADD_TEST (NAME NetworkFunctionsTest
+		COMMAND NetworkFunctionsTest
+	)
+
+	ADD_TEST (NAME PathTest
+		COMMAND PathTest
+	)
+
+	ADD_TEST (NAME RangeMapTest
+		COMMAND RangeMapTest
+	)
+
+	ADD_TEST (NAME StringFunctionsTest
+		COMMAND StringFunctionsTest
+	)
+
+	ADD_TEST (NAME TextFileTest
+		COMMAND TextFileTest
+	)
+ENDIF (BUILD_TESTING)

@@ -46,6 +46,7 @@ OPTION (BUILD_REMOTEGUI "compile aMule remote GUI")
 OPTION (BUILD_WEBSERVER "compile aMule WebServer")
 OPTION (BUILD_WXCAS "compile aMule GUI Statistics")
 OPTION (BUILD_XAS "install xas XChat2 plugin")
+OPTION (BUILD_TESTING "Run Tests after compile" OFF)
 
 IF (PREFIX)
 	SET (CMAKE_INSTALL_PREFIX "${PREFIX}")
