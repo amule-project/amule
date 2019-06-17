@@ -9,6 +9,11 @@ FIND_PACKAGE (Boost ${MIN_BOOST_VERSION} COMPONENTS system)
 IF (Boost_FOUND)
 	CHECK_INCLUDE_FILE_CXX (boost/asio.hpp ASIO_SOCKETS -lboost_system)
 
+	IF (NOT ASIO_SOCKETS)
+		UNSET (ASIO_SOCKETS CACHE)
+		CHECK_INCLUDE_FILE_CXX (boost/asio.hpp ASIO_SOCKETS -lboost_system -lpthread)
+	ENDIF (NOT ASIO_SOCKETS)
+
 	IF (ASIO_SOCKETS)
 		CHECK_INCLUDE_FILE_CXX (boost/system/error_code.hpp HAVE_BOOST_SYSTEM_ERROR_CODE_HPP -lboost_system)
 
