@@ -48,46 +48,46 @@
 #    gdlib_CFLAGS -- cflags reportet by gdlib-config
 #
 
-FIND_PROGRAM (gdlib_CONFIG_EXECUTABLE gdlib-config
-	ONLY_CMAKE_FIND_ROOT_PATH
-)
+IF (NOT WIN32)
+	FIND_PACKAGE (PkgConfig REQUIRED)
+	pkg_search_module (gdlib REQUIRED gdlib)
+	MESSAGE (STATUS "gdlib version: ${gdlib_VERSION} -- OK")
+ENDIF(NOT WIN32)
 
-SET (gdlib_FOUND FALSE)
+IF (NOT gdlib_FOUND)
+    FIND_PROGRAM (gdlib_CONFIG_EXECUTABLE gdlib-config
+        ONLY_CMAKE_FIND_ROOT_PATH
+    )
 
-IF (gdlib_CONFIG_EXECUTABLE)
-	EXECUTE_PROCESS (COMMAND ${gdlib_CONFIG_EXECUTABLE} --version
-		OUTPUT_VARIABLE gdlib_VERSION
-	)
-	STRING (REGEX REPLACE "(\r?\n)+$" "" gdlib_VERSION "${gdlib_VERSION}")
+    IF (gdlib_CONFIG_EXECUTABLE)
+        EXECUTE_PROCESS (COMMAND ${gdlib_CONFIG_EXECUTABLE} --version
+            OUTPUT_VARIABLE gdlib_VERSION
+        )
+        STRING (REGEX REPLACE "(\r?\n)+$" "" gdlib_VERSION "${gdlib_VERSION}")
 
-	IF (${gdlib_VERSION} VERSION_LESS ${MIN_GDLIB_VERSION})
-		MESSAGE (FATAL_ERROR "gdlib version ${gdlib_VERSION} -- too old")
-	ELSE (${gdlib_VERSION} VERSION_LESS ${MIN_GDLIB_VERSION})
-		MESSAGE (STATUS "gdlib version ${gdlib_VERSION} -- OK")
-		SET (gdlib_FOUND TRUE)
-		EXECUTE_PROCESS (COMMAND ${gdlib_CONFIG_EXECUTABLE} --libdir
-			OUTPUT_VARIABLE gdlib_LIB_DIR
-		)
-		EXECUTE_PROCESS (COMMAND ${gdlib_CONFIG_EXECUTABLE} --includedir
-			OUTPUT_VARIABLE gdlib_INCLUDE_DIR
-		)
-		EXECUTE_PROCESS (COMMAND ${gdlib_CONFIG_EXECUTABLE} --ldflags
-			OUTPUT_VARIABLE gdlib_LDFLAGS
-		)
-		EXECUTE_PROCESS (COMMAND ${gdlib_CONFIG_EXECUTABLE} --libs
-			OUTPUT_VARIABLE gdlib_LIBRARIES
-		)
-		EXECUTE_PROCESS (COMMAND ${gdlib_CONFIG_EXECUTABLE} --cflags
-			OUTPUT_VARIABLE gdlib_CFLAGS
-		)
-	ENDIF (${gdlib_VERSION} VERSION_LESS ${MIN_GDLIB_VERSION})
-ELSE (gdlib_CONFIG_EXECUTABLE)
-	IF (NOT WIN32)
-		FIND_PACKAGE (PkgConfig REQUIRED)
-		pkg_search_module (gdlib REQUIRED gdlib)
-		MESSAGE (STATUS "gdlib version: ${gdlib_VERSION} -- OK")
-	ENDIF(NOT WIN32)
-ENDIF (gdlib_CONFIG_EXECUTABLE)
+        IF (${gdlib_VERSION} VERSION_LESS ${MIN_GDLIB_VERSION})
+            MESSAGE (FATAL_ERROR "gdlib version ${gdlib_VERSION} -- too old")
+        ELSE (${gdlib_VERSION} VERSION_LESS ${MIN_GDLIB_VERSION})
+            MESSAGE (STATUS "gdlib version ${gdlib_VERSION} -- OK")
+            SET (gdlib_FOUND TRUE)
+            EXECUTE_PROCESS (COMMAND ${gdlib_CONFIG_EXECUTABLE} --libdir
+                OUTPUT_VARIABLE gdlib_LIB_DIR
+            )
+            EXECUTE_PROCESS (COMMAND ${gdlib_CONFIG_EXECUTABLE} --includedir
+                OUTPUT_VARIABLE gdlib_INCLUDE_DIR
+            )
+            EXECUTE_PROCESS (COMMAND ${gdlib_CONFIG_EXECUTABLE} --ldflags
+                OUTPUT_VARIABLE gdlib_LDFLAGS
+            )
+            EXECUTE_PROCESS (COMMAND ${gdlib_CONFIG_EXECUTABLE} --libs
+                OUTPUT_VARIABLE gdlib_LIBRARIES
+            )
+            EXECUTE_PROCESS (COMMAND ${gdlib_CONFIG_EXECUTABLE} --cflags
+                OUTPUT_VARIABLE gdlib_CFLAGS
+            )
+        ENDIF (${gdlib_VERSION} VERSION_LESS ${MIN_GDLIB_VERSION})
+    ENDIF (gdlib_CONFIG_EXECUTABLE)
+ENDIF (NOT gdlib_FOUND)
 
 IF (gdlib_FOUND)
 	SET (gdlib_CFLAGS "${gdlib_CFLAGS} __GD__")
