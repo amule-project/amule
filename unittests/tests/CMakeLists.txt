@@ -20,13 +20,9 @@ TARGET_INCLUDE_DIRECTORIES (CTagTest
 )
 
 TARGET_LINK_LIBRARIES (CTagTest
-	libmuleunit
+	muleunit
 	${wxWidgets_BASE_LIBRARIES}
 )
-
-IF (HAVE_BFD)
-	TARGET_LINK_LIBRARIES (CTagTest ${LIBBFD})
-ENDIF (HAVE_BFD)
 
 ADD_EXECUTABLE (CUInt128Test
 	CUInt128Test.cpp
@@ -47,13 +43,9 @@ TARGET_INCLUDE_DIRECTORIES (CUInt128Test
 )
 
 TARGET_LINK_LIBRARIES (CUInt128Test
-	libmuleunit
+	muleunit
 	${wxWidgets_BASE_LIBRARIES}
 )
-
-IF (HAVE_BFD)
-	TARGET_LINK_LIBRARIES (CUInt128Test ${LIBBFD})
-ENDIF (HAVE_BFD)
 
 ADD_EXECUTABLE (FileDataIOTest
 	FileDataIOTest.cpp
@@ -69,7 +61,7 @@ ADD_EXECUTABLE (FileDataIOTest
 )
 
 TARGET_LINK_LIBRARIES (FileDataIOTest
-	libmuleunit
+	muleunit
 	${wxWidgets_BASE_LIBRARIES}
 )
 
@@ -77,10 +69,6 @@ TARGET_COMPILE_DEFINITIONS (FileDataIOTest
 	PRIVATE "-DMULEUNIT"
 	PRIVATE ${wxWidgets_BASE_DEFS}
 )
-
-IF (HAVE_BFD)
-	TARGET_LINK_LIBRARIES (FileDataIOTest ${LIBBFD})
-ENDIF (HAVE_BFD)
 
 TARGET_INCLUDE_DIRECTORIES (FileDataIOTest
 	PRIVATE "${CMAKE_SOURCE_DIR}/src"
@@ -107,13 +95,9 @@ TARGET_INCLUDE_DIRECTORIES (FormatTest
 )
 
 TARGET_LINK_LIBRARIES (FormatTest
-	libmuleunit
+	muleunit
 	${wxWidgets_BASE_LIBRARIES}
 )
-
-IF (HAVE_BFD)
-	TARGET_LINK_LIBRARIES (FormatTest ${LIBBFD})
-ENDIF (HAVE_BFD)
 
 ADD_EXECUTABLE (NetworkFunctionsTest
 	NetworkFunctionsTest.cpp
@@ -138,17 +122,13 @@ TARGET_INCLUDE_DIRECTORIES (NetworkFunctionsTest
 )
 
 TARGET_LINK_LIBRARIES (NetworkFunctionsTest
-	libmuleunit
+	muleunit
 	${wxWidgets_NET_LIBRARIES}
 )
 
 IF (ENABLE_BOOST)
 	TARGET_LINK_LIBRARIES (NetworkFunctionsTest boost_system)
 ENDIF (ENABLE_BOOST)
-
-IF (HAVE_BFD)
-	TARGET_LINK_LIBRARIES (NetworkFunctionsTest ${LIBBFD})
-ENDIF (HAVE_BFD)
 
 ADD_EXECUTABLE (PathTest
 	PathTest.cpp
@@ -169,13 +149,9 @@ TARGET_INCLUDE_DIRECTORIES (PathTest
 )
 
 TARGET_LINK_LIBRARIES (PathTest
-	libmuleunit
+	muleunit
 	${wxWidgets_BASE_LIBRARIES}
 )
-
-IF (HAVE_BFD)
-	TARGET_LINK_LIBRARIES (PathTest ${LIBBFD})
-ENDIF (HAVE_BFD)
 
 ADD_EXECUTABLE (RangeMapTest
 	RangeMapTest.cpp
@@ -195,13 +171,9 @@ TARGET_INCLUDE_DIRECTORIES (RangeMapTest
 )
 
 TARGET_LINK_LIBRARIES (RangeMapTest
-	libmuleunit
+	muleunit
 	${wxWidgets_BASE_LIBRARIES}
 )
-
-IF (HAVE_BFD)
-	TARGET_LINK_LIBRARIES (RangeMapTest ${LIBBFD})
-ENDIF (HAVE_BFD)
 
 ADD_EXECUTABLE (StringFunctionsTest
 	StringFunctionsTest.cpp
@@ -222,13 +194,9 @@ TARGET_INCLUDE_DIRECTORIES (StringFunctionsTest
 )
 
 TARGET_LINK_LIBRARIES (StringFunctionsTest
-	libmuleunit
+	muleunit
 	${wxWidgets_BASE_LIBRARIES}
 )
-
-IF (HAVE_BFD)
-	TARGET_LINK_LIBRARIES (StringFunctionsTest ${LIBBFD})
-ENDIF (HAVE_BFD)
 
 ADD_EXECUTABLE (TextFileTest
 	TextFileTest.cpp
@@ -253,10 +221,6 @@ TARGET_INCLUDE_DIRECTORIES (TextFileTest
 )
 
 TARGET_LINK_LIBRARIES (TextFileTest
-	libmuleunit
+	muleunit
 	${wxWidgets_BASE_LIBRARIES}
 )
-
-IF (HAVE_BFD)
-	TARGET_LINK_LIBRARIES (TextFileTest ${LIBBFD})
-ENDIF (HAVE_BFD)

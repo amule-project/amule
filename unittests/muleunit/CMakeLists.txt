@@ -1,4 +1,4 @@
-ADD_LIBRARY (libmuleunit STATIC
+ADD_LIBRARY (muleunit STATIC
 	test.cpp
 	main.cpp
 	testcase.cpp
@@ -7,10 +7,14 @@ ADD_LIBRARY (libmuleunit STATIC
 	${CMAKE_SOURCE_DIR}/src/libs/common/StringFunctions.cpp
 )
 
-TARGET_COMPILE_DEFINITIONS (libmuleunit
+TARGET_COMPILE_DEFINITIONS (muleunit
 	PRIVATE "-DMULEUNIT" ${wxWidgets_BASE_DEFS}
 )
 
-TARGET_INCLUDE_DIRECTORIES (libmuleunit
+TARGET_INCLUDE_DIRECTORIES (muleunit
 	PRIVATE "${CMAKE_SOURCE_DIR}/src/libs"
 )
+
+IF (HAVE_BFD)
+	TARGET_LINK_LIBRARIES (muleunit ${LIBBFD})
+ENDIF (HAVE_BFD)
