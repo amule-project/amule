@@ -4,7 +4,7 @@
 # The location, where the bison executable can be found
 #SET (BISON_EXECUTABLE "${CMAKE_SOURCE_DIR}/../win_flex_bison-latest/win_bison.exe")
 
-# The location, where to find the boost header-files
+# The location, where to find the crypto++ header-files
 #SET (BOOSTROOT "${CMAKE_SOURCE_DIR}/../boost_1_70_0")
 
 # The location, where to find the crypto++ header-files
@@ -71,11 +71,11 @@ IF (ZLIB_ROOT)
 	SET (SEARCH_DIR_ZLIB ${ZLIB_ROOT})
 ENDIF (ZLIB_ROOT)
 
-SET (SEARCH_DIR_BISON ${SEARCH_DIR_BISON} CACHE FILEPATH "Search hint for bison executable" FORCE)
+SET (SEARCH_DIR_BISON ${SEARCH_DIR_BISON} CACHE FILEPATH "Location of the bison executable" FORCE)
 SET (SEARCH_DIR_BOOST ${SEARCH_DIR_BOOST} CACHE PATH "Search hint for boost" FORCE)
 SET (SEARCH_DIR_CRYPTOPP_HEADER ${SEARCH_DIR_CRYPTOPP_HEADER} CACHE PATH "Search hint for crypto++ headers" FORCE)
 SET (SEARCH_DIR_CRYPTOPP_LIB ${SEARCH_DIR_CRYPTOPP_LIB} CACHE PATH "Search hint for crypto++ library" FORCE)
-SET (SEARCH_DIR_FLEX ${SEARCH_DIR_FLEX} CACHE FILEPATH "Search hint for flex executable" FORCE)
+SET (SEARCH_DIR_FLEX ${SEARCH_DIR_FLEX} CACHE FILEPATH "Location of the flex executable" FORCE)
 SET (SEARCH_DIR_GEOIP ${SEARCH_DIR_GEOIP} CACHE PATH "Search hint for geoip" FORCE)
 SET (SEARCH_DIR_PNG_HEADER ${SEARCH_DIR_PNG_HEADER} CACHE PATH "Search hint for libpng headers" FORCE)
 SET (SEARCH_DIR_PNG_LIB ${SEARCH_DIR_PNG_LIB} CACHE PATH "Search hint for libpng library" FORCE)
