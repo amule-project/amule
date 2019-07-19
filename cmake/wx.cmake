@@ -31,33 +31,9 @@
 
 MACRO (CHECK_WX)
 	SET (wxWidgets_USE_LIBS base)
-	FIND_PACKAGE (wxWidgets REQUIRED)
-
-	IF (UNIX)
-		EXECUTE_PROCESS (COMMAND ${wxWidgets_CONFIG_EXECUTABLE} --version
-			OUTPUT_VARIABLE wx_Version
-		)
-
-		STRING (REGEX REPLACE "(\r?\n)+$" "" wx_Version "${wx_Version}")
-	ELSE (UNIX)
-		IF (_filename)
-			FILE (STRINGS ${_filename} wx_Version REGEX "wxVERSION_STRING")
-			STRING (REGEX MATCH "[0-9].[0-9].[0-9]" wx_Version ${wx_Version})
-		ENDIF (_filename)
-	ENDIF (UNIX)
-
-	IF (${wx_Version} VERSION_LESS ${MIN_WX_VERSION})
-
-		MESSAGE (FATAL_ERROR "wx version ${wx_Version} -- too old")
-
-	ELSE (${wx_Version} VERSION_LESS ${MIN_WX_VERSION})
-
-		MESSAGE (STATUS "wx version ${wx_Version} -- OK")
-
-	ENDIF (${wx_Version} VERSION_LESS ${MIN_WX_VERSION})
+	FIND_PACKAGE (wxWidgets ${MIN_WX_VERSION} REQUIRED)
 
 	IF (wx_NEED_BASE)
-		SET (wxWidgets_USE_LIBS base)
 		STRING (REGEX REPLACE "-L[^;]*;" ";" wxWidgets_BASE_LIBRARIES "${wxWidgets_LIBRARIES}")
 		SET (wxWidgets_BASE_LIBRARY_DIRS ${wxWidgets_LIBRARY_DIRS})
 		SET (wxWidgets_BASE_DEFS "${wxWidgets_DEFINITIONS};wxUSE_GUI=0;USE_WX_EXTENSIONS")
@@ -67,7 +43,7 @@ MACRO (CHECK_WX)
 
 	IF (wx_NEED_GUI)
 		SET (wxWidgets_USE_LIBS core)
-		FIND_PACKAGE (wxWidgets REQUIRED)
+		FIND_PACKAGE (wxWidgets ${MIN_WX_VERSION} REQUIRED)
 		STRING (REGEX REPLACE "-L[^;]*;" ";" wxWidgets_GUI_LIBRARIES "${wxWidgets_LIBRARIES}")
 		SET (wxWidgets_GUI_LIBRARY_DIRS ${wxWidgets_LIBRARY_DIRS})
 		SET (wxWidgets_GUI_DEFS "${wxWidgets_DEFINITIONS};USE_WX_EXTENSIONS")
@@ -81,7 +57,7 @@ MACRO (CHECK_WX)
 
 	IF (wx_NEED_NET)
 		SET (wxWidgets_USE_LIBS net)
-		FIND_PACKAGE (wxWidgets REQUIRED)
+		FIND_PACKAGE (wxWidgets ${MIN_WX_VERSION} REQUIRED)
 		STRING (REGEX REPLACE "-L[^;]*;" ";" wxWidgets_NET_LIBRARIES "${wxWidgets_LIBRARIES}")
 		SET (wxWidgets_NET_LIBRARY_DIRS ${wxWidgets_LIBRARY_DIRS})
 		SET (wxWidgets_NET_DEFS ${wxWidgets_DEFINITIONS})
@@ -95,7 +71,7 @@ MACRO (CHECK_WX)
 
 	IF (wx_NEED_ADV)
 		SET (wxWidgets_USE_LIBS adv)
-		FIND_PACKAGE (wxWidgets REQUIRED)
+		FIND_PACKAGE (wxWidgets ${MIN_WX_VERSION} REQUIRED)
 		STRING (REGEX REPLACE "-L[^;]*;" ";" wxWidgets_ADV_LIBRARIES "${wxWidgets_LIBRARIES}")
 		SET (wxWidgets_ADV_LIBRARY_DIRS ${wxWidgets_LIBRARY_DIRS})
 		UNSET (wxWidgets_LIBRARIES)
