@@ -131,10 +131,6 @@ TARGET_LINK_LIBRARIES (NetworkFunctionsTest
 	${wxWidgets_NET_LIBRARIES}
 )
 
-IF (ENABLE_BOOST)
-	TARGET_LINK_LIBRARIES (NetworkFunctionsTest boost_system)
-ENDIF (ENABLE_BOOST)
-
 ADD_EXECUTABLE (PathTest
 	PathTest.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/Format.cpp
