@@ -29,9 +29,17 @@
 # This can be controled by setting wx_NEED_BASE and wx_NEED_GUI vars.
 #
 
+INCLUDE (ExternalProject)
+
+IF (NOT DOWNLOAD_AND_BUILD_DEPS)
+	SET (wx_REQUIRED "REQUIRED")
+ELSE (NOT DOWNLOAD_AND_BUILD_DEPS)
+	UNSET (wx_REQUIRED)
+ENDIF (NOT DOWNLOAD_AND_BUILD_DEPS)
+
 IF (wx_NEED_BASE AND NOT wxWidgets_BASE_LIBRARIES)
-	SET (wxWidgets_USE_LIBS base)
-	FIND_PACKAGE (wxWidgets ${MIN_WX_VERSION} REQUIRED)
+	SET (wxWidgets_USE_LIBS base ${wx_REQUIRED})
+	FIND_PACKAGE (wxWidgets ${MIN_WX_VERSION} )
 	STRING (REGEX REPLACE "-L[^;]*;" ";" wxWidgets_BASE_LIBRARIES "${wxWidgets_LIBRARIES}")
 	SET (wxWidgets_BASE_LIBRARIES ${wxWidgets_BASE_LIBRARIES} CACHE STRING "Libs to use when linking to wxBase" FORCE)
 	SET (wxWidgets_BASE_LIBRARY_DIRS ${wxWidgets_LIBRARY_DIRS} CACHE STRING "Where to find the libs to use when linking to wxBase" FORCE)
@@ -43,7 +51,7 @@ ENDIF (wx_NEED_BASE AND NOT wxWidgets_BASE_LIBRARIES)
 
 IF (wx_NEED_GUI AND NOT wxWidgets_GUI_LIBRARIES)
 	SET (wxWidgets_USE_LIBS core)
-	FIND_PACKAGE (wxWidgets ${MIN_WX_VERSION} REQUIRED)
+	FIND_PACKAGE (wxWidgets ${MIN_WX_VERSION} ${wx_REQUIRED})
 	STRING (REGEX REPLACE "-L[^;]*;" ";" wxWidgets_GUI_LIBRARIES "${wxWidgets_LIBRARIES}")
 	SET (wxWidgets_GUI_LIBRARIES ${wxWidgets_GUI_LIBRARIES} CACHE STRING "Libs to use when linking to wx<GUI-type>" FORCE)
 	SET (wxWidgets_GUI_LIBRARY_DIRS ${wxWidgets_LIBRARY_DIRS} CACHE STRING "Where to find the libs to use when linking to wx<GUI-type>" FORCE)
@@ -59,7 +67,7 @@ ENDIF (wx_NEED_GUI AND NOT wxWidgets_GUI_LIBRARIES)
 
 IF (wx_NEED_NET AND NOT wxWidgets_NET_LIBRARIES)
 	SET (wxWidgets_USE_LIBS net)
-	FIND_PACKAGE (wxWidgets ${MIN_WX_VERSION} REQUIRED)
+	FIND_PACKAGE (wxWidgets ${MIN_WX_VERSION} ${wx_REQUIRED})
 	STRING (REGEX REPLACE "-L[^;]*;" ";" wxWidgets_NET_LIBRARIES "${wxWidgets_LIBRARIES}")
 	SET (wxWidgets_NET_LIBRARIES ${wxWidgets_NET_LIBRARIES} CACHE STRING "Libs to use when linking to wxNet" FORCE)
 	SET (wxWidgets_NET_LIBRARY_DIRS ${wxWidgets_LIBRARY_DIRS} CACHE STRING "where to find the libs to use when linking to wxNet" FORCE)
@@ -75,7 +83,7 @@ ENDIF (wx_NEED_NET AND NOT wxWidgets_NET_LIBRARIES)
 
 IF (wx_NEED_ADV AND NOT wxWidgets_ADV_LIBRARIES)
 	SET (wxWidgets_USE_LIBS adv)
-	FIND_PACKAGE (wxWidgets ${MIN_WX_VERSION} REQUIRED)
+	FIND_PACKAGE (wxWidgets ${MIN_WX_VERSION} ${wx_REQUIRED})
 	STRING (REGEX REPLACE "-L[^;]*;" ";" wxWidgets_ADV_LIBRARIES "${wxWidgets_LIBRARIES}")
 	SET (wxWidgets_ADV_LIBRARIES ${wxWidgets_ADV_LIBRARIES} CACHE STRING "Libs to use when linking to wxADV" FORCE)
 	SET (wxWidgets_ADV_LIBRARY_DIRS ${wxWidgets_LIBRARY_DIRS} CACHE STRING "where to find the libs to use when linking to wxADV" FORCE)
@@ -87,3 +95,18 @@ IF (wx_NEED_ADV AND NOT wxWidgets_ADV_LIBRARIES)
 		SET (wxWidgets_ADV_LIBRARIES "${wxWidgets_ADV_LIBRARIES};${wxWidgets_BASE_LIBRARIES}" CACHE STRING "Libs to use when linking to wxADV" FORCE)
 	ENDIF (WIN32)
 ENDIF (wx_NEED_ADV AND NOT wxWidgets_ADV_LIBRARIES)
+
+IF (DOWNLOAD_AND_BUILD_DEPS AND NOT wxWidgets_CONFIG_EXECUTABLE AND NOT WX_BUILT)
+	EXTERNALPROJECT_ADD (wxWidgets
+		GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
+		GIT_TAG v3.1.2
+		GIT_PROGRESS TRUE
+		CMAKE_ARGS "wxUSE_SOCKETS=TRUE"
+		INSTALL_COMMAND ${CMAKE_COMMAND} ${amule_BINARY_DIR} -DwxWidgets_CONFIG_EXECUTABLE=<BINARY_DIR>/wx-config -DWX_BUILT=TRUE
+		TEST_COMMAND ${CMAKE_COMMAND} --build ${amule_BINARY_DIR}
+	)
+
+	EXTERNALPROJECT_GET_PROPERTY (wxWidgets BINARY_DIR)
+	INSTALL (CODE ${CMAKE_COMMAND} --build ${BINARY_DIR} --target install)
+	SET (WAIT_FOR_WX TRUE)
+ENDIF (DOWNLOAD_AND_BUILD_DEPS AND NOT wxWidgets_CONFIG_EXECUTABLE AND NOT WX_BUILT)
