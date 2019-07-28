@@ -48,6 +48,8 @@ OPTION (BUILD_WXCAS "compile aMule GUI Statistics")
 OPTION (BUILD_XAS "install xas XChat2 plugin")
 OPTION (BUILD_TESTING "Run Tests after compile" OFF)
 
+OPTION (DOWNLOAD_AND_BUILD_DEPS "Get all missing stuff" OFF)
+
 IF (PREFIX)
 	SET (CMAKE_INSTALL_PREFIX "${PREFIX}")
 ENDIF (PREFIX)

@@ -23,7 +23,7 @@ SET (DEFAULT_BUILD_TYPE "Release")
 IF (EXISTS "${CMAKE_SOURCE_DIR}/.git")
 	SET (DEFAULT_BUILD_TYPE "Debug")
 ENDIF (EXISTS "${CMAKE_SOURCE_DIR}/.git")
- 
+
 IF (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	MESSAGE (STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
 	SET (CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE
@@ -143,59 +143,61 @@ IF (BUILD_REMOTEGUI)
 	)
 ENDIF (BUILD_REMOTEGUI)
 
-ADD_SUBDIRECTORY (docs)
-ADD_SUBDIRECTORY (src)
+IF (NOT WAIT_FOR_WX)
+	ADD_SUBDIRECTORY (docs)
+	ADD_SUBDIRECTORY (src)
 
-IF (BUILD_TESTING)
-	ADD_SUBDIRECTORY (unittests)
-	ENABLE_TESTING()
+	IF (BUILD_TESTING)
+		ADD_SUBDIRECTORY (unittests)
+		ENABLE_TESTING()
 
-	ADD_CUSTOM_TARGET (tests ALL 
-		COMMAND ${CMAKE_CTEST_COMMAND}
-		DEPENDS CTagTest
-		CUInt128Test
-		FileDataIOTest
-		FormatTest
-		NetworkFunctionsTest
-		PathTest
-		RangeMapTest
-		StringFunctionsTest
-		TextFileTest
-	)
+		ADD_CUSTOM_TARGET (tests ALL
+			COMMAND ${CMAKE_CTEST_COMMAND}
+			DEPENDS CTagTest
+			CUInt128Test
+			FileDataIOTest
+			FormatTest
+			NetworkFunctionsTest
+			PathTest
+			RangeMapTest
+			StringFunctionsTest
+			TextFileTest
+		)
 
-	ADD_TEST (NAME CTagTest
-		COMMAND CTagTest
-	)
+		ADD_TEST (NAME CTagTest
+			COMMAND CTagTest
+		)
 
-	ADD_TEST (NAME CUInt128Test
-		COMMAND CUInt128Test
-	)
+		ADD_TEST (NAME CUInt128Test
+			COMMAND CUInt128Test
+		)
 
-	ADD_TEST (NAME FileDataIOTest
-		COMMAND FileDataIOTest
-	)
+		ADD_TEST (NAME FileDataIOTest
+			COMMAND FileDataIOTest
+		)
 
-	ADD_TEST (NAME FormatTest
-		COMMAND FormatTest
-	)
+		ADD_TEST (NAME FormatTest
+			COMMAND FormatTest
+		)
 
-	ADD_TEST (NAME NetworkFunctionsTest
-		COMMAND NetworkFunctionsTest
-	)
+		ADD_TEST (NAME NetworkFunctionsTest
+			COMMAND NetworkFunctionsTest
+		)
 
-	ADD_TEST (NAME PathTest
-		COMMAND PathTest
-	)
+		ADD_TEST (NAME PathTest
+			COMMAND PathTest
+		)
 
-	ADD_TEST (NAME RangeMapTest
-		COMMAND RangeMapTest
-	)
+		ADD_TEST (NAME RangeMapTest
+			COMMAND RangeMapTest
+		)
 
-	ADD_TEST (NAME StringFunctionsTest
-		COMMAND StringFunctionsTest
-	)
+		ADD_TEST (NAME StringFunctionsTest
+			COMMAND StringFunctionsTest
+		)
 
-	ADD_TEST (NAME TextFileTest
-		COMMAND TextFileTest
-	)
-ENDIF (BUILD_TESTING)
+		ADD_TEST (NAME TextFileTest
+			COMMAND TextFileTest
+		)
+	ENDIF (BUILD_TESTING)
+ENDIF (NOT WAIT_FOR_WX)

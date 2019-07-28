@@ -56,15 +56,7 @@ TARGET_LINK_LIBRARIES (amuleweb
 	ec
 	mulecommon
 	mulesocket
-	${wxWidgets_BASE_LIBRARIES}
-	${ZLIB_LIBRARIES}
 )
-
-IF (NOT ENABLE_BOOST)
-	TARGET_LINK_LIBRARIES (amuleweb
-		${wxWidgets_NET_LIBRARIES}
-	)
-ENDIF (NOT ENABLE_BOOST)
 
 IF (ENABLE_UPNP)
 	TARGET_LINK_LIBRARIES (amuleweb
