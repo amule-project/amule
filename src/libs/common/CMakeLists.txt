@@ -10,7 +10,7 @@ ADD_LIBRARY (mulecommon STATIC
 )
 
 TARGET_COMPILE_DEFINITIONS (mulecommon
-	PRIVATE "${wxWidgets_BASE_DEFS}"
+	PRIVATE ${wxWidgets_BASE_DEFS}
 )
 
 TARGET_INCLUDE_DIRECTORIES (mulecommon
