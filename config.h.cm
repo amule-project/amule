@@ -1,6 +1,3 @@
-/* Define if cryptlib is newer than 5.5.0 */
-#cmakedefine __WEAK_CRYPTO__
-
 /* Define to 1 if you have <boost/asio.hpp> and are using Boost.Asio for
    networking. */
 #cmakedefine ASIO_SOCKETS 1
@@ -40,7 +37,7 @@
 #cmakedefine HAVE_FALLOCATE
 
 /* Define if you have the <fcntl.h> header file. */
-#cmakedefine HAVE_FCNTL_H
+#cmakedefine HAVE_FCNTL_H 1
 
 /* Define if you have the `getopt_long' function. */
 #cmakedefine HAVE_GETOPT_LONG
