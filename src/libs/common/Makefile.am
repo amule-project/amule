@@ -24,6 +24,7 @@ noinst_HEADERS =  \
 	MD5Sum.h \
 	MuleDebug.h \
 	Path.h \
+	SmartPtr.h \
 	strerror_r.h \
 	StringFunctions.h \
 	TextFile.h

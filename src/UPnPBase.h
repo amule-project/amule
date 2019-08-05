@@ -32,9 +32,11 @@
 #include <map>
 #include <string>
 #include <sstream>
-#include <memory>
 
 #include "UPnPCompatibility.h"
+
+#include <common/SmartPtr.h>		// Needed for CSmartPtr
+
 
 extern std::string stdEmptyString;
 
@@ -327,7 +329,7 @@ private:
 	std::string m_absEventSubURL;
 	int m_timeout;
 	Upnp_SID m_SID;
-	std::auto_ptr<CUPnPSCPD> m_SCPD;
+	CSmartPtr<CUPnPSCPD> m_SCPD;
 
 public:
 	CUPnPService(

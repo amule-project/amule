@@ -28,7 +28,6 @@
 
 
 #include <deque>	// Needed for std::deque
-#include <memory>	// Needed for std::auto_ptr	// Do_not_auto_remove (mingw-gcc-3.4.5)
 #include <string>
 #include <vector>
 
@@ -37,6 +36,8 @@
 
 #include <wx/defs.h>	// Needed for wx/debug.h
 #include <wx/debug.h>	// Needed for wxASSERT
+
+#include <common/SmartPtr.h>	// Needed for CSmartPtr
 
 enum ECSocketErrors {
 	EC_ERROR_NOERROR,
@@ -77,8 +78,8 @@ private:
 	// zlib (deflation) buffers
 	std::vector<unsigned char> m_in_ptr;
 	std::vector<unsigned char> m_out_ptr;
-	std::auto_ptr<CQueuedData> m_curr_rx_data;
-	std::auto_ptr<CQueuedData> m_curr_tx_data;
+	CSmartPtr<CQueuedData> m_curr_rx_data;
+	CSmartPtr<CQueuedData> m_curr_tx_data;
 
 	// This transfer only
 	uint32_t m_rx_flags;

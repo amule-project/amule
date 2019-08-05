@@ -26,10 +26,10 @@
 #ifndef SEARCHLIST_H
 #define SEARCHLIST_H
 
-#include "Timer.h"				// Needed for CTimer
+#include "Timer.h"		// Needed for CTimer
 #include "ObservableQueue.h"	// Needed for CQueueObserver
-#include "SearchFile.h"			// Needed for CSearchFile
-#include <memory>		// Do_not_auto_remove (lionel's Mac, 10.3)
+#include "SearchFile.h"		// Needed for CSearchFile
+#include <common/SmartPtr.h>	// Needed for CSmartPtr
 
 
 class CMemFile;
@@ -187,8 +187,8 @@ private:
 	 */
 	bool AddToList(CSearchFile* toadd, bool clientResponse = false);
 
-	//! This auto-pointer is used to safely prevent leaks.
-	typedef std::auto_ptr<CMemFile> CMemFilePtr;
+	//! This smart pointer is used to safely prevent leaks.
+	typedef CSmartPtr<CMemFile> CMemFilePtr;
 
 	/** Create a basic search-packet for the given search-type. */
 	CMemFilePtr CreateSearchData(CSearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit);

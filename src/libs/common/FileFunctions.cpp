@@ -34,11 +34,11 @@
 #ifdef __WXMAC__
 #include <zlib.h> // Do_not_auto_remove
 #endif
-#include <memory>		// Needed for std::auto_ptr
-#include <algorithm>	// Needed for std::min
+#include <algorithm>		// Needed for std::min
 
 #include "FileFunctions.h"
 #include "StringFunctions.h"
+#include "SmartPtr.h"		// Needed for CSmartPtr
 
 //
 // This class assumes that the following line has been executed:
@@ -135,7 +135,7 @@ EFileType GuessFiletype(const wxString& file)
 bool UnpackZipFile(const wxString& file, const wxChar* files[])
 {
 	wxTempFile target(file);
-	std::auto_ptr<wxZipEntry> entry;
+	CSmartPtr<wxZipEntry> entry;
 	wxFFileInputStream fileInputStream(file);
 	wxZipInputStream zip(fileInputStream);
 	bool run = true;

@@ -702,13 +702,13 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(CSearchParams& params, Se
 			AddLogLineNS(CFormat(wxT("Error %u: %s\n")) % i % _astrParserErrors[i]);
 		}
 
-		return CMemFilePtr(NULL);
+		return CMemFilePtr(nullptr);
 	}
 
 	if (iParseResult != 0) {
 		_astrParserErrors.Add(CFormat(wxT("Undefined error %i on search expression")) % iParseResult);
 
-		return CMemFilePtr(NULL);
+		return CMemFilePtr(nullptr);
 	}
 
 	if (type == KadSearch && s_strCurKadKeyword != params.strKeyword) {

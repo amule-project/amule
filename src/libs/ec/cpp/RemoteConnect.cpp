@@ -25,13 +25,12 @@
 
 #include "RemoteConnect.h"
 
+#include <common/SmartPtr.h>	// Needed for CSmartPtr
 #include <common/MD5Sum.h>
 #include <common/Format.h>
 #include "../../../amuleIPV4Address.h"
 
 #include <wx/intl.h>
-
-using std::auto_ptr;
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION)
 
@@ -139,14 +138,14 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 		// Otherwise we continue in OnConnect.
 		CECLoginPacket login_req(m_client, m_version, m_canZLIB, m_canUTF8numbers, m_canNotify);
 
-		std::auto_ptr<const CECPacket> getSalt(SendRecvPacket(&login_req));
+		CSmartPtr<const CECPacket> getSalt(SendRecvPacket(&login_req));
 		m_ec_state = EC_REQ_SENT;
 
 		ProcessAuthPacket(getSalt.get());
 
 		CECAuthPacket passwdPacket(m_connectionPassword);
 
-		std::auto_ptr<const CECPacket> reply(SendRecvPacket(&passwdPacket));
+		CSmartPtr<const CECPacket> reply(SendRecvPacket(&passwdPacket));
 		m_ec_state = EC_PASSWD_SENT;
 
 		return ProcessAuthPacket(reply.get());
