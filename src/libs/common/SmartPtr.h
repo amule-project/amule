@@ -56,7 +56,9 @@
 template<typename T> using CSmartPtr = std::unique_ptr<T>;
 #else
 #	define CSmartPtr std::auto_ptr
-#	define nullptr	 NULL
+#	ifndef nullptr
+#		define nullptr	 NULL
+#	endif
 #endif
 
 #undef HAVE_UNIQUE_PTR
