@@ -826,7 +826,11 @@ void CSearchListCtrl::OnDrawItem(
 
 	// Define the border of the drawn area
 	if (highlighted) {
+#if wxCHECK_VERSION(3, 0, 0)
+		dc->SetPen(*(wxThePenList->FindOrCreatePen(CMuleColour(dc->GetBackground().GetColour()).Blend(65), 1, wxPENSTYLE_SOLID)));
+#else		
 		dc->SetPen(*(wxThePenList->FindOrCreatePen(CMuleColour(dc->GetBackground().GetColour()).Blend(65), 1, wxSOLID)));
+#endif
 	} else {
 		dc->SetPen(*wxTRANSPARENT_PEN);
 		dc->SetTextForeground(GetItemTextColour(item));
@@ -912,7 +916,12 @@ void CSearchListCtrl::OnDrawItem(
 		const int middle = cur_rec.y + ( cur_rec.height + 1 ) / 2;
 
 		// Set up a new pen for drawing the tree
+#if wxCHECK_VERSION(3, 0, 0)
+		dc->SetPen( *(wxThePenList->FindOrCreatePen(dc->GetTextForeground(), 1, wxPENSTYLE_SOLID)) );
+#else
 		dc->SetPen( *(wxThePenList->FindOrCreatePen(dc->GetTextForeground(), 1, wxSOLID)) );
+#endif
+
 
 		if (file->GetParent()) {
 			// Draw the line to the filename

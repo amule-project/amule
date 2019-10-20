@@ -2027,7 +2027,11 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
 
     wxStaticText *item2 = new wxStaticText( parent, -1, _("!!! WARNING !!!"), wxDefaultPosition, wxDefaultSize, 0 );
     item2->SetForegroundColour( *wxRED );
+#if wxCHECK_VERSION(3, 1, 0)
+    item2->SetFont( wxFont( 24, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
+#else 
     item2->SetFont( wxFont( 24, wxROMAN, wxNORMAL, wxNORMAL ) );
+#endif
     item1->Add( item2, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item3 = new wxStaticText( parent, IDC_AMULE_TWEAKS_WARNING, wxT(""), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );

@@ -850,7 +850,12 @@ void CDownloadListCtrl::OnDrawItem(
 		dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		dc->SetPen( colour.Blend(65).GetPen() );
 	} else {
+#if wxCHECK_VERSION(3, 0, 0)		
+		dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxBRUSHSTYLE_SOLID)));
+#else
 		dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxSOLID)));
+#endif
+
 		dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
@@ -1407,7 +1412,12 @@ void CDownloadListCtrl::DrawFileStatusBar(
 		dc->DrawLine( rect.x, rect.y + 2, rect.x + width, rect.y + 2 );
 
 		// Draw the green line
+#if wxCHECK_VERSION(3, 0, 0)
+		dc->SetPen( *(wxThePenList->FindOrCreatePen( crProgress , 1, wxPENSTYLE_SOLID ) ));
+#else
 		dc->SetPen( *(wxThePenList->FindOrCreatePen( crProgress , 1, wxSOLID ) ));
+#endif
+
 		dc->DrawLine( rect.x, rect.y + 1, rect.x + width, rect.y + 1 );
 	}
 }

@@ -167,7 +167,12 @@ void MuleGifCtrl::OnPaint(wxPaintEvent& WXUNUSED(event))
 	int x = (clientsize.GetWidth()-gifsize.GetWidth())/2;
 	int y = (clientsize.GetHeight()-gifsize.GetHeight())/2;
 
+#if wxCHECK_VERSION(3, 0, 0)
+	dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
+#else
 	dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID)));
+#endif
+
 	dc.Clear();
 	dc.DrawBitmap(m_frame, x, y, true);
 }
