@@ -767,7 +767,11 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 	if ( (true == skinChanged) || (currentState != s_oldState) ) {
 		wxWindowUpdateLocker freezer(m_wndToolbar);
 
+#if wxCHECK_VERSION(3, 1, 0)
+		wxToolBarToolBase* toolbarTool = m_wndToolbar->FindById(ID_BUTTONCONNECT);
+#else
 		wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONCONNECT);
+#endif
 
 		switch (currentState) {
 			case ECS_Connecting:
@@ -788,8 +792,10 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 				toolbarTool->SetNormalBitmap(m_tblist.GetBitmap(0));
 		}
 
+#if !wxCHECK_VERSION(3, 1, 0)
 		m_wndToolbar->InsertTool(0, toolbarTool);
 		m_wndToolbar->Realize();
+#endif
 		m_wndToolbar->EnableTool(ID_BUTTONCONNECT, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()) && theApp->ipfilter->IsReady());
 
 		s_oldState = currentState;
@@ -1443,7 +1449,11 @@ void CamuleDlg::DoNetworkRearrange()
 	wxWindowUpdateLocker freezer(this);
 #endif
 
+#if wxCHECK_VERSION(3, 1, 0)
+	wxToolBarToolBase* toolbarTool = m_wndToolbar->FindById(ID_BUTTONNETWORKS);
+#else
 	wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONNETWORKS);
+#endif
 
 	// set the log windows
 	wxNotebook* logs_notebook = CastChild( ID_SRVLOG_NOTEBOOK, wxNotebook);
@@ -1534,11 +1544,15 @@ void CamuleDlg::DoNetworkRearrange()
 
 	// Tool bar
 
+#if!wxCHECK_VERSION(3, 1, 0)
 	m_wndToolbar->InsertTool(2, toolbarTool);
+#endif
 	m_wndToolbar->EnableTool(ID_BUTTONNETWORKS, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()));
 	m_wndToolbar->EnableTool(ID_BUTTONCONNECT, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()) && theApp->ipfilter->IsReady());
 
+# if !wxCHECK_VERSION(3, 1, 0)
 	m_wndToolbar->Realize();
+# endif
 
 	ShowConnectionState();	// status in the bottom right
 	m_searchwnd->FixSearchTypes();

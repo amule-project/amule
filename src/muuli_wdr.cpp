@@ -77,7 +77,11 @@ wxSizer *muleDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, -1, wxT(""), wxDefaultPosition, wxSize(-1,20), wxTE_MULTILINE );
     item4->SetName( wxT("FastEd2kLinks") );
+#if wxCHECK_VERSION(3, 1, 0)
+    item2->Add( item4, 1, wxALL|wxEXPAND, 5 );
+#else
     item2->Add( item4, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 0 );
+#endif
 
     wxButton *item5 = new wxButton( parent, ID_BUTTON_FAST, _("Commit"), wxDefaultPosition, wxDefaultSize, 0 );
     item5->SetToolTip( _("Click here to add the eD2k link in the text control to your download queue.") );
@@ -475,7 +479,11 @@ wxSizer *transferBottomPane( wxWindow *parent, bool call_fit, bool set_sizer )
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     CSourceListCtrl *item6 = new CSourceListCtrl( parent, ID_CLIENTLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
+#if wxCHECK_VERSION(3, 1, 0)
+    item0->Add( item6, 1, wxGROW, 5 );
+#else     
     item0->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+#endif
 
     if (set_sizer)
     {
@@ -1049,7 +1057,11 @@ wxSizer *statsDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxWindow *item3 = new COScopeCtrl(3,1,GRAPH_DOWN,parent);
 item3->SetName(wxT("dloadScope"));
     wxASSERT( item3 );
+# if wxCHECK_VERSION(3, 1, 0)
+    item1->Add( item3, 1, wxGROW|wxALL, 5 );
+# else
     item1->Add( item3, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+# endif
 
     wxFlexGridSizer *item4 = new wxFlexGridSizer( 2, 0, 0 );
     item4->AddGrowableCol( 0 );
@@ -1090,7 +1102,11 @@ item3->SetName(wxT("dloadScope"));
 
     item1->Add( item4, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
 
+#if wxCHECK_VERSION(3, 1 ,0)
+    item0->Add( item1, 1, wxGROW|wxBOTTOM, 5 );
+#else
     item0->Add( item1, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5 );
+#endif
 
     wxStaticBox *item15 = new wxStaticBox( parent, -1, _("Upload-Speed") );
     wxStaticBoxSizer *item14 = new wxStaticBoxSizer( item15, wxVERTICAL );
@@ -1098,7 +1114,11 @@ item3->SetName(wxT("dloadScope"));
     wxWindow *item16 = new COScopeCtrl(3,1,GRAPH_UP,parent);
 item16->SetName(wxT("uloadScope"));
     wxASSERT( item16 );
+#if wxCHECK_VERSION(3, 1 ,0)
+    item14->Add( item16, 1, wxGROW|wxALL, 5 );
+#else
     item14->Add( item16, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+#endif
 
     wxFlexGridSizer *item17 = new wxFlexGridSizer( 2, 0, 0 );
     item17->AddGrowableCol( 0 );
@@ -1139,7 +1159,11 @@ item16->SetName(wxT("uloadScope"));
 
     item14->Add( item17, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
 
+#if wxCHECK_VERSION(3, 1 ,0)
+    item0->Add( item14, 1, wxGROW|wxBOTTOM, 5 );
+#else
     item0->Add( item14, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5 );
+#endif
 
     wxStaticBox *item28 = new wxStaticBox( parent, -1, _("Connections") );
     wxStaticBoxSizer *item27 = new wxStaticBoxSizer( item28, wxVERTICAL );
@@ -1147,7 +1171,11 @@ item16->SetName(wxT("uloadScope"));
     wxWindow *item29 = new COScopeCtrl(3,0,GRAPH_CONN,parent);
 item29->SetName(wxT("otherScope"));
     wxASSERT( item29 );
+#if wxCHECK_VERSION(3, 1 ,0)
+    item27->Add( item29, 1, wxGROW|wxALL, 5 );
+#else
     item27->Add( item29, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+#endif
 
     wxFlexGridSizer *item30 = new wxFlexGridSizer( 2, 0, 0 );
     item30->AddGrowableCol( 0 );
@@ -1188,16 +1216,24 @@ item29->SetName(wxT("otherScope"));
 
     item27->Add( item30, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
 
+#if wxCHECK_VERSION(3, 1, 0)
+    item0->Add( item27, 1, wxGROW|wxALL, 5 );
+#else
     item0->Add( item27, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+#endif
 
     wxStaticBox *item41 = new wxStaticBox( parent, -1, _("Statistics Tree") );
     wxStaticBoxSizer *item40 = new wxStaticBoxSizer( item41, wxVERTICAL );
 
     wxTreeCtrl *item42 = new wxTreeCtrl( parent, -1, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS|wxSUNKEN_BORDER );
     item42->SetName( wxT("statTree") );
+#if wxCHECK_VERSION(3, 1, 0)
+    item40->Add( item42, 1, wxGROW|wxALL, 5 );
+    item0->Add( item40, 1, wxGROW|wxALL, 5 );
+#else
     item40->Add( item42, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
     item0->Add( item40, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+#endif
 
     if (set_sizer)
     {
