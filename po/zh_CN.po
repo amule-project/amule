@@ -446,11 +446,12 @@ msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr "联系邮件：admin@amule.org (管理问题) \n"
 
 #: src/amuleDlg.cpp:506
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2019 aMule Team \n"
 "\n"
-msgstr "版权所有 (C) 2003-2008 aMule 团队 \n"
+msgstr ""
+"版权所有 (C) 2003-2019 aMule 团队 \n"
+"\n"
 
 #: src/amuleDlg.cpp:507
 msgid "Part of aMule is based on \n"

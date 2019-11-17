@@ -451,12 +451,11 @@ msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr ""
 
 #: src/amuleDlg.cpp:506
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2019 aMule Team \n"
 "\n"
 msgstr ""
-"  著作権2003-2008、aMuleのチーム\n"
+"  著作権2003-2019、aMuleのチーム\n"
 "\n"
 
 #: src/amuleDlg.cpp:507

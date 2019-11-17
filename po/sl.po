@@ -464,12 +464,11 @@ msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr "Stik: admin@amule.org (administrativne zadeve) \n"
 
 #: src/amuleDlg.cpp:506
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2019 aMule Team \n"
 "\n"
 msgstr ""
-"Avtorske pravice © 2003–2011 ekipa aMule\n"
+"Avtorske pravice © 2003–2019 ekipa aMule\n"
 "\n"
 
 #: src/amuleDlg.cpp:507

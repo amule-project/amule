@@ -475,12 +475,11 @@ msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr "Contacto: admin@amule.org (problemas administrativos) \n"
 
 #: src/amuleDlg.cpp:506
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2019 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (c) 2003-2011 El equipo de aMule \n"
+"Copyright (c) 2003-2019 El equipo de aMule \n"
 "\n"
 
 #: src/amuleDlg.cpp:507
