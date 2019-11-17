@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
-"POT-Creation-Date: 2017-11-23 11:51+0100\n"
+"POT-Creation-Date: 2019-11-17 15:55+0100\n"
 "PO-Revision-Date: 2011-04-21 12:10+1000\n"
 "Last-Translator: YiQi <u4781098@anu.edu.au>\n"
 "Language-Team: Chinese Simplified <kde-i18n-doc@kde.org>\n"
@@ -135,8 +135,8 @@ msgstr ""
 "install 进行安装"
 
 #: src/amule.cpp:664 src/amule.cpp:778 src/amule.cpp:1069
-#: src/amule-remote-gui.cpp:308 src/amule-remote-gui.cpp:330
-#: src/amule-remote-gui.cpp:332 src/amule-remote-gui.cpp:644
+#: src/amule-remote-gui.cpp:314 src/amule-remote-gui.cpp:336
+#: src/amule-remote-gui.cpp:338 src/amule-remote-gui.cpp:650
 msgid "ERROR"
 msgstr "错误"
 
@@ -288,25 +288,25 @@ msgstr "您的aMule是最新版本。"
 msgid "Failed to download the version check file"
 msgstr "下载版本检查文件失败"
 
-#: src/amule.cpp:1813 src/amule-remote-gui.cpp:530
+#: src/amule.cpp:1813 src/amule-remote-gui.cpp:536
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "用户：%s | 文件：%s"
 
-#: src/amule.cpp:1814 src/amule-remote-gui.cpp:531
+#: src/amule.cpp:1814 src/amule-remote-gui.cpp:537
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "用户：E：%s K：%s | 文件：E：%s K：%s"
 
-#: src/amule.cpp:1823 src/amule-remote-gui.cpp:540
+#: src/amule.cpp:1823 src/amule-remote-gui.cpp:546
 msgid "No networks selected"
 msgstr "没有选择网络"
 
-#: src/amule.cpp:1888 src/TextClient.cpp:710
+#: src/amule.cpp:1888 src/TextClient.cpp:717
 msgid "with LowID"
 msgstr "有低 ID"
 
-#: src/amule.cpp:1888 src/TextClient.cpp:710
+#: src/amule.cpp:1888 src/TextClient.cpp:717
 msgid "with HighID"
 msgstr "有高 ID"
 
@@ -446,8 +446,9 @@ msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr "联系邮件：admin@amule.org (管理问题) \n"
 
 #: src/amuleDlg.cpp:506
+#, fuzzy
 msgid ""
-"Copyright (c) 2003-2011 aMule Team \n"
+"Copyright (c) 2003-2019 aMule Team \n"
 "\n"
 msgstr "版权所有 (C) 2003-2008 aMule 团队 \n"
 
@@ -583,7 +584,7 @@ msgstr "皮肤目录 %s 不存在"
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "警告：无法打开皮肤文件 %s 进行读取"
 
-#: src/amuleDlg.cpp:1337 src/amuleDlg.cpp:1473 src/muuli_wdr.cpp:1673
+#: src/amuleDlg.cpp:1337 src/amuleDlg.cpp:1479 src/muuli_wdr.cpp:1673
 #: src/muuli_wdr.cpp:3532
 msgid "Networks"
 msgstr "网络"
@@ -661,15 +662,15 @@ msgstr "关于"
 msgid "About/Help"
 msgstr "关于/帮助"
 
-#: src/amuleDlg.cpp:1477
+#: src/amuleDlg.cpp:1483
 msgid "eD2k network"
 msgstr "eD2k 网络"
 
-#: src/amuleDlg.cpp:1481
+#: src/amuleDlg.cpp:1487
 msgid "Kad network"
 msgstr "Kad 网络"
 
-#: src/amuleDlg.cpp:1481
+#: src/amuleDlg.cpp:1487
 msgid "No network"
 msgstr "无网络"
 
@@ -685,58 +686,58 @@ msgstr "aMule"
 msgid "Fatal Error: Failed to create Core Timer"
 msgstr "严重错误：无法创建核心计时器"
 
-#: src/amule-remote-gui.cpp:71
+#: src/amule-remote-gui.cpp:72
 msgid "Connect to remote amule"
 msgstr "连接到远程 amule"
 
-#: src/amule-remote-gui.cpp:259
+#: src/amule-remote-gui.cpp:265
 msgid "Fatal Error: Failed to create Poll Timer"
 msgstr "严重错误：无法建立轮询计时器"
 
-#: src/amule-remote-gui.cpp:278
+#: src/amule-remote-gui.cpp:284
 msgid "Going to event loop..."
 msgstr "准备事件循环..."
 
-#: src/amule-remote-gui.cpp:304
+#: src/amule-remote-gui.cpp:310
 msgid "Connecting..."
 msgstr "正在连接..."
 
-#: src/amule-remote-gui.cpp:308
+#: src/amule-remote-gui.cpp:314
 msgid "Connection failed "
 msgstr "连接失败"
 
-#: src/amule-remote-gui.cpp:319
+#: src/amule-remote-gui.cpp:325
 msgid "Remote GUI EC event handler"
 msgstr "远程 GUI 外部连接事件处理程序"
 
-#: src/amule-remote-gui.cpp:326
+#: src/amule-remote-gui.cpp:332
 msgid "Going down"
 msgstr "下降"
 
-#: src/amule-remote-gui.cpp:329 src/ExternalConnector.cpp:389
+#: src/amule-remote-gui.cpp:335 src/ExternalConnector.cpp:389
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr "连接失败。不能连接到 %s:%d\n"
 
-#: src/amule-remote-gui.cpp:332
+#: src/amule-remote-gui.cpp:338
 msgid "Connection closed - aMule has terminated probably."
 msgstr "连接关闭 - aMule 可能已经终止运行。"
 
-#: src/amule-remote-gui.cpp:419
+#: src/amule-remote-gui.cpp:425
 msgid "Ready"
 msgstr "准备"
 
-#: src/amule-remote-gui.cpp:596 src/TransferWnd.cpp:340
+#: src/amule-remote-gui.cpp:602 src/TransferWnd.cpp:340
 msgid "All"
 msgstr "全部"
 
-#: src/amule-remote-gui.cpp:642
+#: src/amule-remote-gui.cpp:648
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr "不能为分类 '%2$s' 创建目录 '%1$s'，保持目录 '%3$s'。"
 
-#: src/amule-remote-gui.cpp:1355 src/BaseClient.cpp:1774
-#: src/BaseClient.cpp:2313 src/BaseClient.cpp:2329 src/BaseClient.cpp:2624
+#: src/amule-remote-gui.cpp:1361 src/BaseClient.cpp:1775
+#: src/BaseClient.cpp:2314 src/BaseClient.cpp:2330 src/BaseClient.cpp:2625
 #: src/ClientDetailDialog.cpp:80 src/ClientDetailDialog.cpp:81
 #: src/ClientDetailDialog.cpp:114 src/ClientDetailDialog.cpp:115
 #: src/ClientDetailDialog.cpp:125 src/DataToText.cpp:51 src/DataToText.cpp:67
@@ -746,49 +747,49 @@ msgstr "不能为分类 '%2$s' 创建目录 '%1$s'，保持目录 '%3$s'。"
 #: src/FileDetailDialog.cpp:127 src/GenericClientListCtrl.cpp:1050
 #: src/GenericClientListCtrl.cpp:1061 src/GenericClientListCtrl.cpp:1071
 #: src/HTTPDownload.cpp:83 src/KnownFile.cpp:916 src/KnownFile.cpp:922
-#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2524 src/PartFile.cpp:2530
+#: src/MuleTrayIcon.cpp:365 src/PartFile.cpp:2525 src/PartFile.cpp:2531
 #: src/Server.cpp:133 src/Server.cpp:208 src/Statistics.cpp:972
 msgid "Unknown"
 msgstr "未知"
 
-#: src/BaseClient.cpp:1365
+#: src/BaseClient.cpp:1366
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "无法获取用户 %s 的共享文件"
 
-#: src/BaseClient.cpp:1577
+#: src/BaseClient.cpp:1578
 msgid "Searching buddy for lowid connection"
 msgstr "正在搜索用户用于低 ID 连接"
 
-#: src/BaseClient.cpp:1791
+#: src/BaseClient.cpp:1792
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (假冒 eMule 版本 %#x)"
 
-#: src/BaseClient.cpp:1802
+#: src/BaseClient.cpp:1803
 msgid " (Fake eMule)"
 msgstr " (假冒 eMule)"
 
-#: src/BaseClient.cpp:1804
+#: src/BaseClient.cpp:1805
 msgid "xMule (Fake eMule)"
 msgstr "xMule (假冒 eMule)"
 
-#: src/BaseClient.cpp:1843
+#: src/BaseClient.cpp:1844
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (基于 eMule v0.%u)"
 
-#: src/BaseClient.cpp:2016
+#: src/BaseClient.cpp:2017
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "昵称：%s ID：%u"
 
-#: src/BaseClient.cpp:2018
+#: src/BaseClient.cpp:2019
 #, c-format
 msgid "Requested: %s\n"
 msgstr "已请求： %s\n"
 
-#: src/BaseClient.cpp:2020
+#: src/BaseClient.cpp:2021
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -796,7 +797,7 @@ msgid_plural ""
 msgstr[0] "本次运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 msgstr[1] "本次运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 
-#: src/BaseClient.cpp:2023
+#: src/BaseClient.cpp:2024
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -804,21 +805,21 @@ msgid_plural ""
 msgstr[0] "历史运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 msgstr[1] "历史运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 
-#: src/BaseClient.cpp:2026
+#: src/BaseClient.cpp:2027
 msgid "Requested unknown file"
 msgstr "请求了未知文件"
 
-#: src/BaseClient.cpp:2702
+#: src/BaseClient.cpp:2703
 #, c-format
 msgid "Message filtered from '%s' (IP:%s)"
 msgstr "来自 %s（IP：%s）的消息被过滤掉了"
 
-#: src/BaseClient.cpp:2809
+#: src/BaseClient.cpp:2810
 #, c-format
 msgid "New message from '%s' (IP:%s)"
 msgstr "新消息来自于 %s（IP：%s）"
 
-#: src/BaseClient.cpp:2901
+#: src/BaseClient.cpp:2902
 #, fuzzy, c-format
 msgid ""
 "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
@@ -974,7 +975,7 @@ msgid "Disabled"
 msgstr "已禁用"
 
 #: src/ClientDetailDialog.cpp:131 src/ServerWnd.cpp:164 src/ServerWnd.cpp:213
-#: src/TextClient.cpp:720
+#: src/TextClient.cpp:727
 msgid "Connected"
 msgstr "已连接"
 
@@ -1167,7 +1168,7 @@ msgid "On Queue"
 msgstr "正在排队"
 
 #: src/DataToText.cpp:62 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:634 src/PartFile.cpp:3718 src/TransferWnd.cpp:348
+#: src/OtherFunctions.cpp:634 src/PartFile.cpp:3719 src/TransferWnd.cpp:348
 msgid "Downloading"
 msgstr "正在下载"
 
@@ -1228,7 +1229,7 @@ msgid "Remote Server"
 msgstr "远程服务器"
 
 #: src/DataToText.cpp:127 src/muuli_wdr.cpp:198 src/muuli_wdr.cpp:3287
-#: src/SearchDlg.cpp:109 src/TextClient.cpp:717
+#: src/SearchDlg.cpp:109 src/TextClient.cpp:724
 msgid "Kad"
 msgstr "Kad"
 
@@ -1311,7 +1312,7 @@ msgid "Progress"
 msgstr "进度"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:3764 src/SearchListCtrl.cpp:89
+#: src/PartFile.cpp:3765 src/SearchListCtrl.cpp:89
 msgid "Sources"
 msgstr "源"
 
@@ -1321,7 +1322,7 @@ msgstr "源"
 msgid "Priority"
 msgstr "优先级"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3766 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:3767 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "状态"
 
@@ -1632,120 +1633,120 @@ msgstr "发送错误消息喔 \"%s\"到客户端。"
 msgid "Unauthorized access attempt from %s. Connection closed."
 msgstr "来自%s的非法登录尝试，已关闭连接。"
 
-#: src/ExternalConn.cpp:810
+#: src/ExternalConn.cpp:811
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "远程 Part 文件命令失败：文件校验码不存在：%s"
 
-#: src/ExternalConn.cpp:812
+#: src/ExternalConn.cpp:813
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "文件校验码不存在：%s"
 
-#: src/ExternalConn.cpp:859 src/ExternalConn.cpp:941 src/ExternalConn.cpp:1012
+#: src/ExternalConn.cpp:860 src/ExternalConn.cpp:942 src/ExternalConn.cpp:1013
 msgid "OOPS! OpCode processing error!"
 msgstr "OpCode 处理错误！"
 
-#: src/ExternalConn.cpp:887
+#: src/ExternalConn.cpp:888
 msgid "Server not added"
 msgstr "服务器没有被添加"
 
-#: src/ExternalConn.cpp:905
+#: src/ExternalConn.cpp:906
 #, c-format
 msgid "server not found: %s"
 msgstr "找不到服务器：%s"
 
-#: src/ExternalConn.cpp:921
+#: src/ExternalConn.cpp:922
 msgid "need to define server to be removed"
 msgstr "必须定义需删除的服务器"
 
-#: src/ExternalConn.cpp:935
+#: src/ExternalConn.cpp:936
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k 被设为禁用"
 
-#: src/ExternalConn.cpp:1113
+#: src/ExternalConn.cpp:1116
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "正在搜索，请稍等然后重新获取结果！"
 
-#: src/ExternalConn.cpp:1119
+#: src/ExternalConn.cpp:1122
 msgid "WebSearch from remote interface makes no sense."
 msgstr "远程界面使用网络搜索没有意义。"
 
-#: src/ExternalConn.cpp:1317
+#: src/ExternalConn.cpp:1320
 msgid "No points for graph."
 msgstr "此图没有节点"
 
-#: src/ExternalConn.cpp:1326
+#: src/ExternalConn.cpp:1329
 msgid "Your client is not configured for this detail level."
 msgstr "您的客户端没有为详细级别进行配置。"
 
-#: src/ExternalConn.cpp:1353
+#: src/ExternalConn.cpp:1356
 msgid "External Connection: shutdown requested"
 msgstr "远程连接：已请求关闭"
 
-#: src/ExternalConn.cpp:1365
+#: src/ExternalConn.cpp:1368
 msgid "Already shutting down."
 msgstr "已经在关闭。"
 
-#: src/ExternalConn.cpp:1377
+#: src/ExternalConn.cpp:1380
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "远程连接：正在添加链接 '%s'。"
 
-#: src/ExternalConn.cpp:1383
+#: src/ExternalConn.cpp:1386
 msgid "Invalid link or already on list."
 msgstr "非法链接或已经存在列表中。"
 
-#: src/ExternalConn.cpp:1450
+#: src/ExternalConn.cpp:1453
 msgid "File not found."
 msgstr "文件未找到。"
 
-#: src/ExternalConn.cpp:1455
+#: src/ExternalConn.cpp:1458
 msgid "Invalid file name."
 msgstr "非法文件名。"
 
-#: src/ExternalConn.cpp:1463
+#: src/ExternalConn.cpp:1466
 msgid "Unable to rename file."
 msgstr "无法重命名文件。"
 
-#: src/ExternalConn.cpp:1761 src/ExternalConn.cpp:1788
+#: src/ExternalConn.cpp:1764 src/ExternalConn.cpp:1791
 msgid "Kad is disabled in preferences."
 msgstr "Kad 被设为禁用"
 
-#: src/ExternalConn.cpp:1800
+#: src/ExternalConn.cpp:1803
 msgid "Already connected to eD2k."
 msgstr "已经连接至 eD2k。"
 
-#: src/ExternalConn.cpp:1803
+#: src/ExternalConn.cpp:1806
 msgid "Connecting to eD2k..."
 msgstr "正在连接至 eD2k..."
 
-#: src/ExternalConn.cpp:1811
+#: src/ExternalConn.cpp:1814
 msgid "Already connected to Kad."
 msgstr "已连接至 Kad。"
 
-#: src/ExternalConn.cpp:1814
+#: src/ExternalConn.cpp:1817
 msgid "Connecting to Kad..."
 msgstr "正在连接至 Kad..."
 
-#: src/ExternalConn.cpp:1821
+#: src/ExternalConn.cpp:1824
 msgid "All networks are disabled."
 msgstr "全部网络都被禁用了。"
 
-#: src/ExternalConn.cpp:1829
+#: src/ExternalConn.cpp:1832
 msgid "Disconnected from eD2k."
 msgstr "已从 eD2k 断开连接。"
 
-#: src/ExternalConn.cpp:1833
+#: src/ExternalConn.cpp:1836
 msgid "Disconnected from Kad."
 msgstr "已从 Kad 断开连接。"
 
-#: src/ExternalConn.cpp:1842
+#: src/ExternalConn.cpp:1845
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "远程连接：非法 opcode：%#x"
 
-#: src/ExternalConn.cpp:1845
+#: src/ExternalConn.cpp:1848
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "非法的 opcode（错误的协议版本？)"
 
@@ -2325,76 +2326,76 @@ msgstr "在已知文件列表载入条目失败，文件可能损坏"
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr "已知文件列表包含非法条目，文件可能损坏："
 
-#: src/libs/common/Format.cpp:307
+#: src/libs/common/Format.cpp:308
 #, fuzzy, c-format
 msgid "Unknown error %d"
 msgstr "未知版本"
 
-#: src/libs/common/Format.cpp:312 src/libs/common/Format.cpp:321
+#: src/libs/common/Format.cpp:313 src/libs/common/Format.cpp:322
 #, fuzzy, c-format
 msgid "Unable to get error description for error %d"
 msgstr "无法为下载创建目标文件%s"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3696
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:3697
 msgid "Hashing"
 msgstr "正在校检"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3702
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:3703
 msgid "Completing"
 msgstr "正在完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3705
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:3706
 msgid "Complete"
 msgstr "完成"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:636
-#: src/PartFile.cpp:3708 src/TransferWnd.cpp:350
+#: src/PartFile.cpp:3709 src/TransferWnd.cpp:350
 msgid "Paused"
 msgstr "已暂停"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:635
-#: src/PartFile.cpp:3711 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:3712 src/TransferWnd.cpp:349
 msgid "Erroneous"
 msgstr "已出错"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:633
-#: src/PartFile.cpp:3720 src/TransferWnd.cpp:347
+#: src/PartFile.cpp:3721 src/TransferWnd.cpp:347
 msgid "Waiting"
 msgstr "等待中"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:119 src/libs/ec/cpp/RemoteConnect.cpp:127
+#: src/libs/ec/cpp/RemoteConnect.cpp:118 src/libs/ec/cpp/RemoteConnect.cpp:126
 msgid "You must specify a non-empty password."
 msgstr "您必须输入非空密码。"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:124
+#: src/libs/ec/cpp/RemoteConnect.cpp:123
 msgid "Invalid password, not a MD5 hash!"
 msgstr "非法密码，不是合法的MD5校验码！"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:187
+#: src/libs/ec/cpp/RemoteConnect.cpp:186
 msgid "Connection failure"
 msgstr "连接失败"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:247
+#: src/libs/ec/cpp/RemoteConnect.cpp:246
 msgid "EC connection failed. Empty reply."
 msgstr "远程连接失败，回复为空。"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:258
+#: src/libs/ec/cpp/RemoteConnect.cpp:257
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
 msgstr "远程连接：错误回应，握手失败。连接已经关闭。"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:266
+#: src/libs/ec/cpp/RemoteConnect.cpp:265
 msgid "Succeeded! Connection established to aMule "
 msgstr "成功！已连接至 aMule"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:269
+#: src/libs/ec/cpp/RemoteConnect.cpp:268
 msgid "Succeeded! Connection established."
 msgstr "成功！已经建立连接。"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:275
+#: src/libs/ec/cpp/RemoteConnect.cpp:274
 msgid "External Connection: Access denied because: "
 msgstr "远程连接：访问被拒绝，原因："
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:278
+#: src/libs/ec/cpp/RemoteConnect.cpp:277
 msgid "External Connection: Handshake failed."
 msgstr "远程连接：握手失败。"
 
@@ -2511,8 +2512,8 @@ msgstr "未选择昵称"
 msgid "ClientID: "
 msgstr "客户端 ID："
 
-#: src/MuleTrayIcon.cpp:342 src/MuleTrayIcon.cpp:356 src/TextClient.cpp:715
-#: src/TextClient.cpp:728
+#: src/MuleTrayIcon.cpp:342 src/MuleTrayIcon.cpp:356 src/TextClient.cpp:722
+#: src/TextClient.cpp:735
 msgid "Not connected"
 msgstr "未连接"
 
@@ -4321,7 +4322,7 @@ msgstr "其它"
 msgid "Incomplete"
 msgstr "未完成"
 
-#: src/OtherFunctions.cpp:637 src/PartFile.cpp:3725 src/TransferWnd.cpp:351
+#: src/OtherFunctions.cpp:637 src/PartFile.cpp:3726 src/TransferWnd.cpp:351
 msgid "Stopped"
 msgstr "已停止"
 
@@ -4542,27 +4543,27 @@ msgstr "发现了已完成的数据段 %i 在%s"
 msgid "Finished rehashing %s"
 msgstr "重新校验 %s 完成"
 
-#: src/PartFile.cpp:2127
+#: src/PartFile.cpp:2128
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
 msgstr "在完成文件%s时遇到意外文件错误，文件已暂停"
 
-#: src/PartFile.cpp:2164
+#: src/PartFile.cpp:2165
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "完成下载：%s"
 
-#: src/PartFile.cpp:2221
+#: src/PartFile.cpp:2222
 #, c-format
 msgid "Deleting file: %s"
 msgstr "正在删除文件：%s "
 
-#: src/PartFile.cpp:2290
+#: src/PartFile.cpp:2291
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "警告：无法为已下载的数据段计算校检码 - 校检码集不完整 '%s'"
 
-#: src/PartFile.cpp:2295
+#: src/PartFile.cpp:2296
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -4570,42 +4571,42 @@ msgid ""
 msgstr ""
 "警告：无法生成校检码 - 校检码集不完整（%s）， 正常情况下这是不应该发生的"
 
-#: src/PartFile.cpp:2305 src/PartFile.cpp:2310
+#: src/PartFile.cpp:2306 src/PartFile.cpp:2311
 #, c-format
 msgid ""
 "EOF while hashing downloaded part %u with length %u (max %u) of partfile "
 "'%s' with length %u: %s"
 msgstr "文件结束 当下载  %u 长度 %u (最大 %u) partfile '%s'长度 %u: %s"
 
-#: src/PartFile.cpp:2971
+#: src/PartFile.cpp:2972
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "警告：硬盘空间不足！暂停文件：%s"
 
-#: src/PartFile.cpp:3041
+#: src/PartFile.cpp:3042
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "下载的数据段 %i 已损坏 文件： (%s)"
 
-#: src/PartFile.cpp:3093
+#: src/PartFile.cpp:3094
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH：修复了损坏的数据段 %i（%s），挽救数据（字节）： %s"
 
-#: src/PartFile.cpp:3698
+#: src/PartFile.cpp:3699
 msgid "Allocating"
 msgstr "正在分配"
 
-#: src/PartFile.cpp:3714
+#: src/PartFile.cpp:3715
 msgid "Insufficient disk space"
 msgstr "磁盘空间不足"
 
-#: src/PartFile.cpp:3764 src/SearchListCtrl.cpp:1006
+#: src/PartFile.cpp:3765 src/SearchListCtrl.cpp:1006
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
 msgstr "已下载"
 
-#: src/PartFile.cpp:4013
+#: src/PartFile.cpp:4014
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr "错误：打开part文件'%s'失败"
@@ -5236,16 +5237,16 @@ msgstr "连接已断"
 msgid "Connecting to %s (%s:%i) failed."
 msgstr "连接失败 %s（%s：%i）"
 
-#: src/ServerConnect.cpp:461
+#: src/ServerConnect.cpp:462
 msgid "ERROR: Socket invalid at timeout check"
 msgstr "错误：连接超时，端口无效"
 
-#: src/ServerConnect.cpp:471
+#: src/ServerConnect.cpp:472
 #, c-format
 msgid "Connection attempt to %s (%s:%i) timed out."
 msgstr "连接超时 %s（%s：%i）"
 
-#: src/ServerConnect.cpp:646
+#: src/ServerConnect.cpp:647
 msgid "Received late result of DNS lookup, discarding."
 msgstr "获取更新的DNS查询结果，丢弃。"
 
@@ -5668,7 +5669,7 @@ msgstr "平均用户："
 msgid "Average Files:"
 msgstr "平均文件："
 
-#: src/ServerWnd.cpp:270 src/TextClient.cpp:731
+#: src/ServerWnd.cpp:270 src/TextClient.cpp:738
 msgid "Not running"
 msgstr "没有运行"
 
@@ -5827,7 +5828,7 @@ msgstr "你需要高ID来产生源链接"
 msgid "Shared Files (%i)"
 msgstr "共享文件 (%i)"
 
-#: src/SharedFilesCtrl.cpp:600 src/TextClient.cpp:829
+#: src/SharedFilesCtrl.cpp:600 src/TextClient.cpp:836
 msgid "[PartFile]"
 msgstr "[part 文件]"
 
@@ -6094,111 +6095,111 @@ msgstr "执行 <str> 然后退出。"
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "无效 IP 地址格式，请使用 xxx.xxx.xxx.xxx:xxxx\n"
 
-#: src/TextClient.cpp:320
+#: src/TextClient.cpp:323
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
 msgstr "此命令需要一个参数，合法参数为 'all'、文件名或一个数字。\n"
 
-#: src/TextClient.cpp:356
+#: src/TextClient.cpp:359
 msgid "Processing by hash: "
 msgstr "正在用此校验码处理："
 
-#: src/TextClient.cpp:370
+#: src/TextClient.cpp:373
 msgid "Processing by filename: "
 msgstr "正在用此文件名处理："
 
-#: src/TextClient.cpp:392
+#: src/TextClient.cpp:395
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
 msgstr "此命令需要一个参数，合法参数为文件校验码。\n"
 
-#: src/TextClient.cpp:418
+#: src/TextClient.cpp:421
 msgid "Not a valid number\n"
 msgstr "非有效数字\n"
 
-#: src/TextClient.cpp:422
+#: src/TextClient.cpp:425
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "无效的校验值（长度必须为32个字符）\n"
 
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
-#: src/TextClient.cpp:535
+#: src/TextClient.cpp:542
 #, fuzzy
 msgid ""
 "No search type defined.\n"
 "Type 'help search' to get more help.\n"
 msgstr "输入 '%s' 显示更多帮助信息。\n"
 
-#: src/TextClient.cpp:554
+#: src/TextClient.cpp:561
 #, fuzzy, c-format
 msgid "Download File: %lu %s\n"
 msgstr "下载大小：%i"
 
-#: src/TextClient.cpp:646 src/webserver/src/WebServer.cpp:409
+#: src/TextClient.cpp:653 src/webserver/src/WebServer.cpp:409
 msgid "Request failed with an unknown error."
 msgstr "请求失败，错误未知。"
 
-#: src/TextClient.cpp:650
+#: src/TextClient.cpp:657
 msgid "Operation was successful."
 msgstr "操作成功。"
 
-#: src/TextClient.cpp:656
+#: src/TextClient.cpp:663
 #, c-format
 msgid "Request failed with the following error: %s"
 msgstr "请求失败，错误为：%s"
 
-#: src/TextClient.cpp:670
+#: src/TextClient.cpp:677
 #, c-format
 msgid "IP filtering for clients is %s.\n"
 msgstr "用户的IP过滤器是：%s。\n"
 
-#: src/TextClient.cpp:671 src/TextClient.cpp:677
+#: src/TextClient.cpp:678 src/TextClient.cpp:684
 msgid "OFF"
 msgstr "关"
 
-#: src/TextClient.cpp:671 src/TextClient.cpp:677
+#: src/TextClient.cpp:678 src/TextClient.cpp:684
 msgid "ON"
 msgstr "开"
 
-#: src/TextClient.cpp:676
+#: src/TextClient.cpp:683
 #, c-format
 msgid "IP filtering for servers is %s.\n"
 msgstr "服务器的IP过滤器是%s。\n"
 
-#: src/TextClient.cpp:681
+#: src/TextClient.cpp:688
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
 msgstr "当前IP过滤级别时 %d.\n"
 
-#: src/TextClient.cpp:688
+#: src/TextClient.cpp:695
 #, c-format
 msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr "带宽限制：上传：%u kB/s，下载：%u kB/s。\n"
 
-#: src/TextClient.cpp:702
+#: src/TextClient.cpp:709
 msgid "eD2k"
 msgstr "eD2k"
 
-#: src/TextClient.cpp:707
+#: src/TextClient.cpp:714
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "已连接到 %s %s %s"
 
-#: src/TextClient.cpp:713
+#: src/TextClient.cpp:720
 msgid "Now connecting"
 msgstr "正在连接"
 
-#: src/TextClient.cpp:722 src/utils/wxCas/src/wxcasframe.cpp:1051
+#: src/TextClient.cpp:729 src/utils/wxCas/src/wxcasframe.cpp:1051
 #: src/utils/wxCas/src/wxcasframe.cpp:1073
 msgid "firewalled"
 msgstr "被防火墙阻挡"
 
-#: src/TextClient.cpp:724 src/utils/wxCas/src/wxcasframe.cpp:1049
+#: src/TextClient.cpp:731 src/utils/wxCas/src/wxcasframe.cpp:1049
 #: src/utils/wxCas/src/wxcasframe.cpp:1071
 msgid "ok"
 msgstr "确定"
 
-#: src/TextClient.cpp:737
+#: src/TextClient.cpp:744
 #, c-format
 msgid ""
 "\n"
@@ -6207,7 +6208,7 @@ msgstr ""
 "\n"
 "下载：\t%s"
 
-#: src/TextClient.cpp:740
+#: src/TextClient.cpp:747
 #, c-format
 msgid ""
 "\n"
@@ -6216,7 +6217,7 @@ msgstr ""
 "\n"
 "上传：\t%s"
 
-#: src/TextClient.cpp:743
+#: src/TextClient.cpp:750
 #, c-format
 msgid ""
 "\n"
@@ -6225,7 +6226,7 @@ msgstr ""
 "\n"
 "队列长度：\t%d\n"
 
-#: src/TextClient.cpp:746
+#: src/TextClient.cpp:753
 #, c-format
 msgid ""
 "\n"
@@ -6234,39 +6235,39 @@ msgstr ""
 "\n"
 "源总数：\t%d\n"
 
-#: src/TextClient.cpp:855
+#: src/TextClient.cpp:862
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr "搜索结果数量：%i\n"
 
-#: src/TextClient.cpp:869
+#: src/TextClient.cpp:876
 #, c-format
 msgid "Search progress: %u %% \n"
 msgstr "搜索进度: %u %% \n"
 
-#: src/TextClient.cpp:871
+#: src/TextClient.cpp:878
 #, fuzzy
 msgid "Search progress not available"
 msgstr "显示进度百分比"
 
-#: src/TextClient.cpp:876
+#: src/TextClient.cpp:883
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "从服务器收到未知的回复，操作码是 %#x."
 
-#: src/TextClient.cpp:889
+#: src/TextClient.cpp:896
 msgid "Show short status information."
 msgstr "显示简短的状态信息。"
 
-#: src/TextClient.cpp:890
+#: src/TextClient.cpp:897
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr "显示连接状态，当前上传下载速度等等。\n"
 
-#: src/TextClient.cpp:892
+#: src/TextClient.cpp:899
 msgid "Show full statistics tree."
 msgstr "显示全部统计树。"
 
-#: src/TextClient.cpp:893
+#: src/TextClient.cpp:900
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -6282,11 +6283,11 @@ msgstr ""
 "\n"
 "示例： 'statistics 5' 将显示每个用户软件的5个版本。\n"
 
-#: src/TextClient.cpp:895
+#: src/TextClient.cpp:902
 msgid "Shut down aMule."
 msgstr "关闭aMule。"
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:903
 msgid ""
 "Shut down the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
@@ -6295,35 +6296,35 @@ msgstr ""
 "关闭远程运行的服务程序（amule/amuled）,\n"
 "当远程服务程序不可用时，文本客户端也将关闭。\n"
 
-#: src/TextClient.cpp:898
+#: src/TextClient.cpp:905
 msgid "Reload the given object."
 msgstr "重新载入所给的对象。"
 
-#: src/TextClient.cpp:899
+#: src/TextClient.cpp:906
 msgid "Reload shared files list."
 msgstr "重新载入共享文件列表。"
 
-#: src/TextClient.cpp:901
+#: src/TextClient.cpp:908
 msgid "Reload IP filtering table."
 msgstr "重新载入IP过滤表。"
 
-#: src/TextClient.cpp:902
+#: src/TextClient.cpp:909
 msgid "Reload current IP filtering table."
 msgstr "重新载入当前IP过滤表。"
 
-#: src/TextClient.cpp:903
+#: src/TextClient.cpp:910
 msgid "Update IP filtering table from URL."
 msgstr "从URL更新IP过滤表。"
 
-#: src/TextClient.cpp:904
+#: src/TextClient.cpp:911
 msgid "If URL is omitted the URL from the preferences is used."
 msgstr "如果URL省略了则将使用设置的URL。"
 
-#: src/TextClient.cpp:906
+#: src/TextClient.cpp:913
 msgid "Connect to the network."
 msgstr "连接至网络。"
 
-#: src/TextClient.cpp:907
+#: src/TextClient.cpp:914
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -6336,35 +6337,35 @@ msgstr ""
 "此IP必须是用点分隔的十进制IPv4地址，\n"
 "或者是可以解析的DNS名称。"
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:915
 msgid "Connect to eD2k only."
 msgstr "只连接eD2k。"
 
-#: src/TextClient.cpp:909
+#: src/TextClient.cpp:916
 msgid "Connect to Kad only."
 msgstr "只连接Kad。"
 
-#: src/TextClient.cpp:911
+#: src/TextClient.cpp:918
 msgid "Disconnect from the network."
 msgstr "断开网络。"
 
-#: src/TextClient.cpp:912
+#: src/TextClient.cpp:919
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "这将断开当前已连接的全部网络。\n"
 
-#: src/TextClient.cpp:913
+#: src/TextClient.cpp:920
 msgid "Disconnect from eD2k only."
 msgstr "只断开eD2k。"
 
-#: src/TextClient.cpp:914
+#: src/TextClient.cpp:921
 msgid "Disconnect from Kad only."
 msgstr "只断开 Kad 连接。"
 
-#: src/TextClient.cpp:916
+#: src/TextClient.cpp:923
 msgid "Add an eD2k or magnet link to core."
 msgstr "添加一个eD2k或magnet链接到核心。"
 
-#: src/TextClient.cpp:917
+#: src/TextClient.cpp:924
 msgid ""
 "The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -6383,51 +6384,51 @@ msgstr ""
 "magnet链接必须包含eD2k校验码和文件大小。\n"
 "\n"
 
-#: src/TextClient.cpp:919
+#: src/TextClient.cpp:926
 msgid "Set a preference value."
 msgstr "设置一个参数值。"
 
-#: src/TextClient.cpp:922
+#: src/TextClient.cpp:929
 msgid "Set IP filtering preferences."
 msgstr "设置IP过滤参数。"
 
-#: src/TextClient.cpp:923
+#: src/TextClient.cpp:930
 msgid "Turn IP filtering on for both clients and servers."
 msgstr "开启用户和服务器的 IP 过滤。"
 
-#: src/TextClient.cpp:924
+#: src/TextClient.cpp:931
 msgid "Turn IP filtering off for both clients and servers."
 msgstr "关闭用户和服务器的 IP 过滤。"
 
-#: src/TextClient.cpp:925
+#: src/TextClient.cpp:932
 msgid "Enable/Disable IP filtering for clients."
 msgstr "启动/禁用用户 IP 过滤。"
 
-#: src/TextClient.cpp:926
+#: src/TextClient.cpp:933
 msgid "Turn IP filtering on for clients."
 msgstr "开启用户 IP 过滤。"
 
-#: src/TextClient.cpp:927
+#: src/TextClient.cpp:934
 msgid "Turn IP filtering off for clients."
 msgstr "关闭用户 IP 过滤。"
 
-#: src/TextClient.cpp:928
+#: src/TextClient.cpp:935
 msgid "Enable/Disable IP filtering for servers."
 msgstr "启用/禁用服务器 IP 过滤。"
 
-#: src/TextClient.cpp:929
+#: src/TextClient.cpp:936
 msgid "Turn IP filtering on for servers."
 msgstr "开启服务器 IP 过滤。"
 
-#: src/TextClient.cpp:930
+#: src/TextClient.cpp:937
 msgid "Turn IP filtering off for servers."
 msgstr "关闭服务器 IP 过滤。"
 
-#: src/TextClient.cpp:931
+#: src/TextClient.cpp:938
 msgid "Select IP filtering level."
 msgstr "选择 IP 过滤级别。"
 
-#: src/TextClient.cpp:932
+#: src/TextClient.cpp:939
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
@@ -6435,60 +6436,60 @@ msgstr ""
 "正确的 IP 过滤级别是在0-255之间，\n"
 "默认（初始）值是127。\n"
 
-#: src/TextClient.cpp:934
+#: src/TextClient.cpp:941
 msgid "Set bandwidth limits."
 msgstr "设置带宽限制。"
 
-#: src/TextClient.cpp:935
+#: src/TextClient.cpp:942
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr "给此命令的值必须使用kB/s。\n"
 
-#: src/TextClient.cpp:936
+#: src/TextClient.cpp:943
 msgid "Set upload bandwidth limit."
 msgstr "设置上传带宽限制。"
 
-#: src/TextClient.cpp:937 src/TextClient.cpp:939
+#: src/TextClient.cpp:944 src/TextClient.cpp:946
 #, fuzzy
 msgid "The given value must be in kilobytes/sec.\n"
 msgstr "给此命令的值必须使用kB/s。\n"
 
-#: src/TextClient.cpp:938
+#: src/TextClient.cpp:945
 msgid "Set download bandwidth limit."
 msgstr "设置下载带宽限制。"
 
-#: src/TextClient.cpp:941
+#: src/TextClient.cpp:948
 msgid "Get and display a preference value."
 msgstr "获取并显示设置值。"
 
-#: src/TextClient.cpp:944
+#: src/TextClient.cpp:951
 msgid "Get IP filtering preferences."
 msgstr "获取 IP 过滤器设置。"
 
-#: src/TextClient.cpp:945
+#: src/TextClient.cpp:952
 msgid "Get IP filtering state for both clients and servers."
 msgstr "获取用户和服务器的 IP 过滤器状态。"
 
-#: src/TextClient.cpp:946
+#: src/TextClient.cpp:953
 msgid "Get IP filtering state for clients only."
 msgstr "只获取用户的 IP 过滤器状态。"
 
-#: src/TextClient.cpp:947
+#: src/TextClient.cpp:954
 msgid "Get IP filtering state for servers only."
 msgstr "只获取服务器的 IP 过滤器状态。"
 
-#: src/TextClient.cpp:948
+#: src/TextClient.cpp:955
 msgid "Get IP filtering level."
 msgstr "获取 IP 过滤级别。"
 
-#: src/TextClient.cpp:950
+#: src/TextClient.cpp:957
 msgid "Get bandwidth limits."
 msgstr "获取带宽限制。"
 
-#: src/TextClient.cpp:952
+#: src/TextClient.cpp:959
 msgid "Execute a search."
 msgstr "执行搜索"
 
-#: src/TextClient.cpp:953
+#: src/TextClient.cpp:960
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
@@ -6502,39 +6503,39 @@ msgstr ""
 "    KAD\n"
 "示例： 'search kad 文件' 将对 \"文件\"执行 Kad 搜索。\n"
 
-#: src/TextClient.cpp:954
+#: src/TextClient.cpp:961
 msgid "Execute a global search."
 msgstr "执行全面搜索。"
 
-#: src/TextClient.cpp:955
+#: src/TextClient.cpp:962
 msgid "Execute a local search"
 msgstr "执行本地搜索"
 
-#: src/TextClient.cpp:956
+#: src/TextClient.cpp:963
 msgid "Execute a kad search"
 msgstr "执行 Kad 搜索"
 
-#: src/TextClient.cpp:958
+#: src/TextClient.cpp:965
 msgid "Show the results of the last search."
 msgstr "显示上次搜索的结果。"
 
-#: src/TextClient.cpp:959
+#: src/TextClient.cpp:966
 msgid "Return the results of the previous search.\n"
 msgstr "返回以前搜索的结果。\n"
 
-#: src/TextClient.cpp:961
+#: src/TextClient.cpp:968
 msgid "Show the progress of a search."
 msgstr "显示搜索进度。"
 
-#: src/TextClient.cpp:962
+#: src/TextClient.cpp:969
 msgid "Show the progress of a search.\n"
 msgstr "显示搜索进度。\n"
 
-#: src/TextClient.cpp:964
+#: src/TextClient.cpp:971
 msgid "Start downloading a file"
 msgstr "开始下载文件"
 
-#: src/TextClient.cpp:965
+#: src/TextClient.cpp:972
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
@@ -6543,81 +6544,81 @@ msgstr ""
 "必须指定上次搜索的文件数量。\n"
 "示例：'download 12' 将开始下载上次搜索结果中的12个文件。\n"
 
-#: src/TextClient.cpp:972
+#: src/TextClient.cpp:979
 msgid "Pause download."
 msgstr "停止下载。"
 
-#: src/TextClient.cpp:975
+#: src/TextClient.cpp:982
 msgid "Resume download."
 msgstr "继续下载。"
 
-#: src/TextClient.cpp:978
+#: src/TextClient.cpp:985
 msgid "Cancel download."
 msgstr "取消下载。"
 
-#: src/TextClient.cpp:981
+#: src/TextClient.cpp:988
 msgid "Set download priority."
 msgstr "设置下载优先级。"
 
-#: src/TextClient.cpp:982
+#: src/TextClient.cpp:989
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr "设置下载的优先级为低、正常、高或自动。\n"
 
-#: src/TextClient.cpp:983
+#: src/TextClient.cpp:990
 msgid "Set priority to low."
 msgstr "设为低优先级。"
 
-#: src/TextClient.cpp:984
+#: src/TextClient.cpp:991
 msgid "Set priority to normal."
 msgstr "设为正常优先级。"
 
-#: src/TextClient.cpp:985
+#: src/TextClient.cpp:992
 msgid "Set priority to high."
 msgstr "设为高优先级。"
 
-#: src/TextClient.cpp:986
+#: src/TextClient.cpp:993
 msgid "Set priority to auto."
 msgstr "设为自动优先级。"
 
-#: src/TextClient.cpp:988
+#: src/TextClient.cpp:995
 msgid "Show queues/lists."
 msgstr "显示队列/列表。"
 
-#: src/TextClient.cpp:989
+#: src/TextClient.cpp:996
 msgid "Show upload/download queue, server list or shared files list.\n"
 msgstr "显示上传/下载队列，服务器列表或共享文件列表。\n"
 
-#: src/TextClient.cpp:990
+#: src/TextClient.cpp:997
 msgid "Show upload queue."
 msgstr "显示上传队列。"
 
-#: src/TextClient.cpp:991
+#: src/TextClient.cpp:998
 msgid "Show download queue."
 msgstr "显示下载队列。"
 
-#: src/TextClient.cpp:992
+#: src/TextClient.cpp:999
 msgid "Show log."
 msgstr "显示日志。"
 
-#: src/TextClient.cpp:993
+#: src/TextClient.cpp:1000
 msgid "Show servers list."
 msgstr "显示服务器列表。"
 
-#: src/TextClient.cpp:994
+#: src/TextClient.cpp:1001
 #, fuzzy
 msgid "Show shared files list."
 msgstr "重新载入共享文件列表。"
 
-#: src/TextClient.cpp:996
+#: src/TextClient.cpp:1003
 msgid "Reset log."
 msgstr "重设日志。"
 
-#: src/TextClient.cpp:1003
+#: src/TextClient.cpp:1010
 #, c-format
 msgid "Deprecated command, use '%s' instead."
 msgstr "废弃的命令，请使用%s代替。"
 
-#: src/TextClient.cpp:1004
+#: src/TextClient.cpp:1011
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
