@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2016-08-24 17:06+0200\n"
+"PO-Revision-Date: 2019-09-29 18:22+0300\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
 "Language: tr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -54,12 +54,12 @@ msgstr "Ana uygulamadan çıkılıyor..."
 #: src/amule.cpp:249
 #, c-format
 msgid "Terminating amuleweb instance with pid '%ld' ... "
-msgstr "Amuleweb oturumu pid `%ld' ile sonlandırılıyor..."
+msgstr "Amuleweb oturumu pid `%ld' ile sonlandırılıyor... "
 
 #: src/amule.cpp:252
 #, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "Amuleweb oturumu pid `%ld' ile öldürülüyor..."
+msgstr "Amuleweb oturumu pid `%ld' ile öldürülüyor... "
 
 #: src/amule.cpp:254 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
@@ -209,7 +209,8 @@ msgstr "Daha fazla bilgi, destek ve yeni sürümler ana sayfamızda bulunabilir\
 
 #: src/amule.cpp:1054
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr "www.aMule.org veya IRC Kanalımız: #aMule at irc.freenode.net.\n"
+msgstr ""
+"www.aMule.org veya IRC Kanalımız: irc.freenode.net sunucusundq #aMule \n"
 
 #: src/amule.cpp:1056
 msgid "Feel free to report any bugs to http://forum.amule.org"
@@ -460,12 +461,11 @@ msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr "İletişim: admin@amule.org (yönetimsel konular) \n"
 
 #: src/amuleDlg.cpp:506
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2019 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (c) 2003-2011 aMule Ekibi \n"
+"Copyright (c) 2003-2019 aMule Ekibi \n"
 "\n"
 
 #: src/amuleDlg.cpp:507
@@ -474,7 +474,7 @@ msgstr "aMule'nin üzerinde kurulduğu parçalar: \n"
 
 #: src/amuleDlg.cpp:508
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-msgstr "Kademlia: XOR matrisi üzerine kurulu bire-bir iletişim.\n"
+msgstr "Kademlia: XOR matrisi üzerine kurulu eşten eşe iletişim.\n"
 
 #: src/amuleDlg.cpp:509
 msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
@@ -5225,9 +5225,8 @@ msgid "eD2k search can't be done if eD2k is not connected"
 msgstr "eD2k ağına bağlanılmamışsa eD2k araması yapılamaz"
 
 #: src/SearchList.cpp:334
-#, fuzzy
 msgid "No keyword for Kad search - aborting"
-msgstr "Arama için anahtar kelime: %s"
+msgstr "Kad araması için anahtar kelime yok - iptal ediliyor"
 
 #: src/SearchList.cpp:371
 msgid "Unexpected error while attempting Kad search: "
@@ -5458,7 +5457,8 @@ msgstr "Sunucu listesini %s adresinden indirmeye başla."
 #: src/ServerList.cpp:896
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
-msgstr "UYARI: sunucuların otomatik güncellenmesi için geçersi URL girildi: %s"
+msgstr ""
+"UYARI: sunucuların otomatik güncellenmesi için geçersiz URL girildi: %s"
 
 #: src/ServerList.cpp:900
 msgid "No valid server.met auto-download url on addresses.dat"
@@ -6753,12 +6753,14 @@ msgstr ""
 #: src/ThreadTasks.cpp:455
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
-msgstr "UYARI: '%s' dosya adı geçersiz ve'%s'olarak yeniden adlandırıldı."
+msgstr ""
+"UYARI: '%s' dosya adı geçersiz ve'%s' "
+"deskteklenirdeskteklenirdeskteklenirolarak yeniden adlandırıldı."
 
 #: src/ThreadTasks.cpp:467
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
-msgstr "UYARI: '%s' dosyası zaten var ve '%s'olarak yeniden adlandırıldı."
+msgstr "UYARI: '%s' dosyası zaten var ve '%s' olarak yeniden adlandırıldı."
 
 #: src/TransferWnd.cpp:209
 msgid "Are you sure you wish to cancel and delete all files in this category?"
@@ -6772,7 +6774,7 @@ msgstr "Onaylama Gerekiyor"
 
 #: src/TransferWnd.cpp:238
 msgid "Only 99 categories are supported."
-msgstr "Sadece 99 kategori deskteklenir."
+msgstr "Sadece 99 kategori desteklenir."
 
 #: src/TransferWnd.cpp:238
 msgid "Too many categories!"
