@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2016-04-11 20:35+0100\n"
-"Last-Translator: Balla Marcell <marcell.balla@gmx.at>\n"
+"PO-Revision-Date: 2019-11-17 16:25+0100\n"
+"Last-Translator: Dévai Tamás <gonosztopi@amule.org>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -460,12 +461,11 @@ msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr "Kapcsolat: admin@amule.org (adminisztratív ügyekben) \n"
 
 #: src/amuleDlg.cpp:506
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2019 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (c) 2003-2011 aMule Team \n"
+"Copyright (c) 2003-2019 aMule Team \n"
 "\n"
 
 #: src/amuleDlg.cpp:507
@@ -5238,9 +5238,8 @@ msgid "eD2k search can't be done if eD2k is not connected"
 msgstr "eD2k keresést nem lehet végrehajtani, ha nincs kapcsolódva az eD2k-hoz"
 
 #: src/SearchList.cpp:334
-#, fuzzy
 msgid "No keyword for Kad search - aborting"
-msgstr "Kulcsszó a kereséshez: %s"
+msgstr "A Kad kereséshez nincs kulcsszó - megszakítva"
 
 #: src/SearchList.cpp:371
 msgid "Unexpected error while attempting Kad search: "
