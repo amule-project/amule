@@ -1,3 +1,10 @@
+amule (2.3.2+git-20191216) stable; urgency=low
+
+  * git-rev: d157fe8 + 1
+  * changed build-deps and rules to use boost-asio
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Mon, 16 Dec 2019 15:27:18 +0100
+
 amule (2.3.2+git-20190521) stable; urgency=low
 
   * git-rev: 6080da6 + 1
