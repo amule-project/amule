@@ -14,7 +14,7 @@ jobs:
     - name: autogen
       run: ./autogen.sh
     - name: install build deps
-      run: sudo apt install devscripts && sudo mk-build-deps -i
+      run: sudo apt install devscripts equivs && sudo mk-build-deps -i
     - name: configure
       run: ./configure
     - name: make
