@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: install deps
-      run: sudo apt update && sudo apt upgrade && apt install autopoint
+      run: sudo apt remove --purge unattended-upgrades && sudo apt update && sudo apt upgrade && apt install autopoint
     - name: autogen
       run: ./autogen.sh
     - name: install build deps
