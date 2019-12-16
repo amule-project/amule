@@ -13,6 +13,8 @@ jobs:
       run: sudo apt install autopoint
     - name: autogen
       run: ./autogen.sh
+    - name: install build deps
+      run: sudo apt install devscripts && sudo mk-build-deps -i
     - name: configure
       run: ./configure
     - name: make
