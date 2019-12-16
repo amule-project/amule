@@ -9,6 +9,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: install deps
+      run: sudo apt install autopoint
     - name: autogen
       run: ./autogen.sh
     - name: configure
