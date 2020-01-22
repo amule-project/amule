@@ -397,10 +397,10 @@ void CECSocket::OnInput()
 					return;
 				}
 			} else {
-				std::auto_ptr<const CECPacket> packet(ReadPacket());
+				CSmartPtr<const CECPacket> packet(ReadPacket());
 				m_curr_rx_data->Rewind();
 				if (packet.get()) {
-					std::auto_ptr<const CECPacket> reply(OnPacketReceived(packet.get(), m_curr_packet_len));
+					CSmartPtr<const CECPacket> reply(OnPacketReceived(packet.get(), m_curr_packet_len));
 					if (reply.get()) {
 						SendPacket(reply.get());
 					}

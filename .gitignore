@@ -1,35 +1,39 @@
-*.a
-*.o
-*.gmo
-*.swp
-*~
-.*~
-Makefile
-Makefile.in
-Makefile.in.in
-Makefile.user
-.deps
-POTFILES
-
-
+# Files created by the auto* tools
 ABOUT-NLS
 aclocal.m4
 autom4te.cache/
 compile
 config.guess
-config.h
 config.h.in
-config.log
 config.rpath
-config.status
 config.sub
 configure
 depcomp
 install-sh
 intl/
+Makefile.in
 missing
 mkinstalldirs
+po/Makefile.in.in
+src/pixmaps/flags_xpm/CountryFlags.h
+src/pixmaps/flags_xpm/Makefile.am
+test-driver
 
+# Files created by building the project
+# in a directory other than where the sources live
+po/*.gmo
+
+# Files created by building the project
+# in the source directory
+*.a
+*.o
+*.swp
+.deps
+config.h
+config.log
+config.status
+Makefile
+po/POTFILES
 src/amule
 src/amulecmd
 src/amuled
@@ -39,13 +43,31 @@ src/libs/ec/ECGeneratedFiles
 src/libs/ec/cpp/EC-timestamp
 src/libs/ec/cpp/ECVersion.h
 src/libs/ec/cpp/mkFileSum
-src/pixmaps/flags_xpm/CountryFlags.h
-src/pixmaps/flags_xpm/Makefile.am
 src/utils/cas/cas
 src/utils/scripts/denoiser.sed
 src/utils/wxCas/src/wxcas
 src/utils/xas/autostart-xas
 src/webserver/src/amuleweb
 stamp-h1
-test-driver
 
+# Files created by the Visual Studio build process
+platforms/Windows/**/Debug30ALC
+platforms/Windows/**/Debug
+platforms/Windows/**/Debug30
+platforms/Windows/**/Release
+platforms/Windows/**/Release30
+platforms/Windows/**/UpgradeLog.htm
+platforms/Windows/*/libs/libGeoIP/GeoIP.c
+platforms/Windows/*/libs/libGeoIP/GeoIP.h
+platforms/Windows/*/libs/libGeoIP/GeoIP_X.c
+*.suo
+
+# Other files created by various editors
+.*~
+*~
+*.orig
+**/#*#
+.#*
+
+# User files (should go into .git/info/exclude)
+Makefile.user

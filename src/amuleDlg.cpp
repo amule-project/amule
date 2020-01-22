@@ -503,7 +503,7 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 		_("Forum: http://forum.amule.org \n") <<
 		_("FAQ: http://wiki.amule.org \n\n") <<
 		_("Contact: admin@amule.org (administrative issues) \n") <<
-		_("Copyright (c) 2003-2011 aMule Team \n\n") <<
+		_("Copyright (c) 2003-2019 aMule Team \n\n") <<
 		_("Part of aMule is based on \n") <<
 		_("Kademlia: Peer-to-peer routing based on the XOR metric.\n") <<
                 _(" Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n") <<

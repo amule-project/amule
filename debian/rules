@@ -320,6 +320,7 @@ config.status: configure
 		LDFLAGS="-Wl,--as-needed ${LDFLAGS}"\
 		--enable-ccache\
 		--enable-geoip\
+		--with-boost\
 		${PLASMAMULE}\
 		${AMULECMD}\
 		${DEBUGGING}\

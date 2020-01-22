@@ -436,7 +436,7 @@ m_SCPDURL    (IXML::Element::GetChildValueByTag(service, "SCPDURL")),
 m_controlURL (IXML::Element::GetChildValueByTag(service, "controlURL")),
 m_eventSubURL(IXML::Element::GetChildValueByTag(service, "eventSubURL")),
 m_timeout(1801),
-m_SCPD(NULL)
+m_SCPD(nullptr)
 {
 	std::ostringstream msg;
 	int errcode;
@@ -552,7 +552,7 @@ bool CUPnPService::Execute(
 	const std::vector<CUPnPArgumentValue> &ArgValue) const
 {
 	std::ostringstream msg;
-	if (m_SCPD.get() == NULL) {
+	if (m_SCPD.get() == nullptr) {
 		msg << "Service without SCPD Document, cannot execute action '" << ActionName <<
 			"' for service '" << GetServiceType() << "'.";
 		AddDebugLogLineN(logUPnP, msg);

@@ -1,0 +1,23 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: install deps
+      run: sudo apt remove --purge unattended-upgrades && sudo apt update && sudo apt upgrade && sudo apt install autopoint
+    - name: autogen
+      run: ./autogen.sh
+    - name: install build deps
+      run: sudo apt install devscripts equivs && sudo mk-build-deps -i
+    - name: configure
+      run: ./configure --enable-wxcas --enable-cas --enable-webserver --enable-amule-gui --enable-amule-daemon --enable-alcc --enable-alc --enable-amulecmd --enable-geoip --with-boost
+    - name: make
+      run: make
+    - name: make check
+      run: make check
