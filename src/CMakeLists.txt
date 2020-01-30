@@ -230,6 +230,7 @@ IF (BUILD_MONOLITHIC)
 		mulecommon
 		mulesocket
 		${wxWidgets_GUI_LIBRARIES}
+		${wxWidgets_ADV_LIBRARIES}
 		${ZLIB_LIBRARIES}
 	)
 
