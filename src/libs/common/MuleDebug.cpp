@@ -268,14 +268,14 @@ void get_file_line_info(bfd *abfd, asection *section, void* _address)
 		return;
 	}
 
-	bfd_vma vma = bfd_get_section_vma(abfd, section);
+	bfd_vma vma = section->vma;
 
 	unsigned long address = (unsigned long)_address;
 	if (address < vma) {
 		return;
 	}
 
-	bfd_size_type size = bfd_section_size(abfd, section);
+	bfd_size_type size = section->size;
 	if (address > (vma + size)) {
 		return;
 	}
