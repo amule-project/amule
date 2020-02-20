@@ -1,16 +1,17 @@
-# translation of aMule to Estonian
+# Translation of amule interface to Estonian
 # aMule i18n resource file.
-# Copyright (C) 2006 aMule Team
+# Copyright (c) 2003-2020 aMule Team
 # This file is distributed under the same license as the aMule package.
 #
 # Kry <elkry@users.sourceforge.net>, 2004.
 # Hans <herringfish@hot.ee>, 2006, 2007, 2008, 2009, 2010, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2011-01-01 19:46+0200\n"
+"PO-Revision-Date: 2020-02-18 15:05+0100\n"
 "Last-Translator: \n"
 "Language-Team: Estonian <kde-i18n-doc@kde.org>\n"
 "Language: et\n"
@@ -18,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -107,7 +108,7 @@ msgstr "Parool on määratud ja välised ühendused võimalikud."
 #: src/amule.cpp:463 src/KadDlg.cpp:183 src/KadDlg.cpp:189
 #: src/PrefsUnifiedDlg.cpp:750 src/SharedFilesCtrl.cpp:318
 msgid "WARNING"
-msgstr "!!! HOIATUS !!!"
+msgstr "HOIATUS"
 
 #: src/amule.cpp:589
 msgid ""
@@ -5328,7 +5329,7 @@ msgstr[1] "Proovin %d sekundi pärast uuesti serveriga automaatselt ühenduda."
 
 #: src/ServerConnect.cpp:412
 msgid "Connection lost"
-msgstr "Ühendus kadunud."
+msgstr "Ühendus kadunud"
 
 #: src/ServerConnect.cpp:419
 #, c-format
@@ -6395,7 +6396,7 @@ msgstr ""
 
 #: src/TextClient.cpp:902
 msgid "Shut down aMule."
-msgstr "Seiska aMule"
+msgstr "Seiska aMule."
 
 #: src/TextClient.cpp:903
 msgid ""
@@ -6432,7 +6433,7 @@ msgstr "Kui URL puudub siis kasutatakseseadetes määratud URL'i."
 
 #: src/TextClient.cpp:913
 msgid "Connect to the network."
-msgstr "Ühendu võrguga"
+msgstr "Ühendu võrguga."
 
 #: src/TextClient.cpp:914
 msgid ""
@@ -6594,7 +6595,7 @@ msgstr "Vali IP filtreerimise tase."
 
 #: src/TextClient.cpp:957
 msgid "Get bandwidth limits."
-msgstr "Kehtiv Ribalaiuse piirang"
+msgstr "Kehtiv Ribalaiuse piirang."
 
 #: src/TextClient.cpp:959
 msgid "Execute a search."
@@ -7527,206 +7528,3 @@ msgstr "Nõuti väljalogimist\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "Töötlen päringut [ümbersuunatud]: "
-
-#~ msgid "Partfile %s (%s) has no seeds file"
-#~ msgstr "Osafail %s (%s) ei oma toitefaili"
-
-#~ msgid "Partfile %s (%s) has a void seeds file"
-#~ msgstr "Osafailil %s (%s) on kehtetu toitefail"
-
-#~ msgid "Download status"
-#~ msgstr "Tõmbamise olek"
-
-#~ msgid "( %s / %s )"
-#~ msgstr "( %s / %s )"
-
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgid "SOCKS5"
-#~ msgstr "SOCKS5"
-
-#~ msgid "SOCKS4"
-#~ msgstr "SOCKS4"
-
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgid "SOCKS4a"
-#~ msgstr "SOCKS4a"
-
-#~ msgid "Update delay : %d second"
-#~ msgid_plural "Update delay : %d seconds"
-#~ msgstr[0] "Värskenduse viide: %d sekundit"
-#~ msgstr[1] "Värskenduse viide: %d sekundit"
-
-#~ msgid "Comments and ratings are not supported on remote gui yet"
-#~ msgstr "Võrguversioonis pole kommmentaarid ja hinnangud veel toetatud"
-
-#~ msgid "Transferring"
-#~ msgstr "Saadan"
-
-#~ msgid "QR: ???"
-#~ msgstr "JK: ???"
-
-#~ msgid "QR: %u"
-#~ msgstr "JK: %u"
-
-#~ msgid "Only files currently uploading"
-#~ msgstr "Ainult failid käimasolevast saatmisest"
-
-#~ msgid "Queue Rank"
-#~ msgstr "Järjekorras"
-
-#~ msgid "TODO - show progress of a search"
-#~ msgstr "TODO - näita otsingu edenemist"
-
-#~ msgid "Starting to create MD4 and AICH hash for file: %s"
-#~ msgstr "Alustan faili '%s' MD4 ja AICH kontrollsumma loomist"
-
-#~ msgid "Starting to create MD4 hash for file: %s"
-#~ msgstr "Alustan faili '%s' MD4 kontrollsumma loomist"
-
-#~ msgid "Starting to create AICH hash for file: %s"
-#~ msgstr "Alustan faili '%s' AICH kontrollsumma loomist"
-
-#~ msgid "WARNING: Could not remove original '%s' after creating backup"
-#~ msgstr ""
-#~ "HOIATUS: peale varukoopia tegemist ei suuda '%s' originaali eemaldada"
-
-#~ msgid "WARNING: Failed to delete %s"
-#~ msgstr "HOIATUS: Ei suutnud %s kustutada"
-
-#~ msgid "%u"
-#~ msgstr "%u"
-
-#~ msgid "%u (QR: %u)"
-#~ msgstr "%u (JK: %u)"
-
-#~ msgid "Rating (total):"
-#~ msgstr "Reiting (kokku):"
-
-#~ msgid "Try to transfer full chunks to all uploads"
-#~ msgstr "Proovi saatmisel siirata täielikud tükid"
-
-#~ msgid "Networks window"
-#~ msgstr "Võrgud"
-
-#~ msgid "Searches window"
-#~ msgstr "Otsingu aken"
-
-#~ msgid "Downloads window"
-#~ msgstr "Tõmbamised"
-
-#~ msgid "Shared files window"
-#~ msgstr "Jagatud failide aken"
-
-#~ msgid "Messages window"
-#~ msgstr "Teadete aken"
-
-#~ msgid "Statistics graph window"
-#~ msgstr "Statistiliste graafikute aken"
-
-#~ msgid "Preferences settings window"
-#~ msgstr "Seadete aken"
-
-#~ msgid "Transfers"
-#~ msgstr "Liiklus"
-
-#~ msgid "Files transfers window"
-#~ msgstr "Failide siirdamise aken"
-
-#~ msgid "Unban"
-#~ msgstr "Lõpeta blokeering"
-
-#~ msgid "Show Uploads"
-#~ msgstr "Näita Saatmisi"
-
-#~ msgid "Show Queue"
-#~ msgstr "Näita Järjekorda"
-
-#~ msgid "Select View"
-#~ msgstr "Vali Vaade"
-
-#~ msgid "Client Software"
-#~ msgstr "Kliendi Tarkvara"
-
-#~ msgid "Waited"
-#~ msgstr "Oodanud"
-
-#~ msgid "Upload Time"
-#~ msgstr "Saadetud"
-
-#~ msgid "Upload/Download"
-#~ msgstr "Saatmine/Tõmbamine"
-
-#~ msgid "Remote Status"
-#~ msgstr "Staatus eemalt"
-
-#~ msgid "File Priority"
-#~ msgstr "Prioriteet"
-
-#~ msgid "Score"
-#~ msgstr "Skoor"
-
-#~ msgid "Asked"
-#~ msgstr "Küsitud"
-
-#~ msgid "Last Seen"
-#~ msgstr "Viimati nähtud"
-
-#~ msgid "Entered Queue"
-#~ msgstr "Võetud järjekorda"
-
-#~ msgid "Transferred Up"
-#~ msgstr "Saadetud"
-
-#~ msgid "Transferred Down"
-#~ msgstr "Tõmmatud"
-
-#~ msgid "Userhash"
-#~ msgstr "Kasutaja kontrollsumma"
-
-#~ msgid "Encrypted"
-#~ msgstr "Krüpteeritud"
-
-#~ msgid ""
-#~ "Client capabilities: ZLIB: %s  UTF8 numbers: %s  Push notification: %s"
-#~ msgstr ""
-#~ "Kliendi võimalused : ZLIB: %s UTF8 numbrid: %s Tõukamise märgend: %s"
-
-#~ msgid "yes"
-#~ msgstr "jah"
-
-#~ msgid "no"
-#~ msgstr "ei"
-
-#~ msgid "Loaded %d flag bitmaps."
-#~ msgstr "Laetud %d riigilipu pilti."
-
-#~ msgid "Traybar-icon lost, trying to recreate ..."
-#~ msgstr "Tööriistaribe ikoon on kadunud, proovin taastada ...."
-
-#~ msgid "Shows Upload / Up-queue"
-#~ msgstr "Näita saatmisi/saba"
-
-#~ msgid "Clients on queue :"
-#~ msgstr "Kliente sabas :"
-
-#~ msgid "Current Session"
-#~ msgstr "Käimasolev seanss"
-
-#~ msgid "Total"
-#~ msgstr "Kokku"
-
-#~ msgid "Requested :"
-#~ msgstr "Küsitud :"
-
-#~ msgid "Create backup for preview"
-#~ msgstr "Loo eelvaateks koopia"
-
-#~ msgid "Files Transfers Window"
-#~ msgstr "Failide siirdamise aken"
-
-#~ msgid "Total Users: %s | Total Files: %s"
-#~ msgstr "Kokku Kasutajaid: %s | Kokku Faile: %s"

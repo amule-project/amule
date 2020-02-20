@@ -1,5 +1,6 @@
-# aMule Translation file.
-# Copyright (c) 2003-2011 aMule Team
+# Translation of amule interface to Traditional Chinese
+# aMule i18n resource file.
+# Copyright (c) 2003-2020 aMule Team
 # This file is distributed under the same license as the aMule package.
 #
 # Simplified Chinese translation by:
@@ -9,19 +10,12 @@
 # Traditional Chinese translation converted and updated by:
 # Wayne Su <mstarmstar@gmail.com>, 2008-2010.
 #
-# =============================================================================
-# How to translate:
-# http://www.amule.org/wiki/index.php/Translations-tw
-#
-# Please give any advice here:
-# http://www.ubuntu-tw.org/modules/newbb/viewtopic.php?topic_id=12208&forum=15
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2011-11-11 01:29+0800\n"
+"PO-Revision-Date: 2020-02-20 10:02+0100\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
 "Language: zh_TW\n"
@@ -29,9 +23,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Poedit-Language: Chinese\n"
-"X-Poedit-Country: TAIWAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -66,12 +59,12 @@ msgstr "正在離開主程式..."
 #: src/amule.cpp:249
 #, c-format
 msgid "Terminating amuleweb instance with pid '%ld' ... "
-msgstr "正在終止 pid %ld 的 amuleweb 執行緒..."
+msgstr "正在終止 pid %ld 的 amuleweb 執行緒... "
 
 #: src/amule.cpp:252
 #, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "正在強行終止 pid %ld 的 amuleweb 執行緒..."
+msgstr "正在強行終止 pid %ld 的 amuleweb 執行緒... "
 
 #: src/amule.cpp:254 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
@@ -234,7 +227,7 @@ msgstr "已通伺服器主機名稱"
 #: src/amule.cpp:1351
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
-msgstr "無法為檔案 %s 預先分配磁碟空間：%s "
+msgstr "無法為檔案 %s 預先分配磁碟空間：%s"
 
 #: src/amule.cpp:1486
 msgid "ERROR: can't open logfile"
@@ -718,7 +711,7 @@ msgstr "正在連線..."
 
 #: src/amule-remote-gui.cpp:314
 msgid "Connection failed "
-msgstr "無法連線"
+msgstr "無法連線 "
 
 #: src/amule-remote-gui.cpp:325
 msgid "Remote GUI EC event handler"
@@ -2330,7 +2323,7 @@ msgstr "無法載入已知檔案清單內的項目，檔案可能有損壞"
 
 #: src/KnownFileList.cpp:115
 msgid "Invalid entry in known file list, file may be corrupt: "
-msgstr "已知檔案清單內有無效的項目，檔案可能有損壞："
+msgstr "已知檔案清單內有無效的項目，檔案可能有損壞： "
 
 #: src/libs/common/Format.cpp:308
 #, c-format
@@ -2399,7 +2392,7 @@ msgstr "連線成功。"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:274
 msgid "External Connection: Access denied because: "
-msgstr "外部連線：拒絕存取，原因："
+msgstr "外部連線：拒絕存取，原因： "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:277
 msgid "External Connection: Handshake failed."
@@ -2420,7 +2413,7 @@ msgstr "錯誤：無法監聽 TCP 埠。"
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "ERROR: "
-msgstr "錯誤："
+msgstr "錯誤： "
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
@@ -7165,7 +7158,7 @@ msgstr " KB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1118
 msgid "Sharing: "
-msgstr "分享："
+msgstr "分享： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1120
 msgid " file(s), Clients on queue: "
@@ -7384,365 +7377,3 @@ msgstr "已要求登出\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "正在處理 [已重定向] 的要求："
-
-#~ msgid "Partfile %s (%s) has no seeds file"
-#~ msgstr "暫存檔 %s (%s) 沒有種子檔案"
-
-#~ msgid "Partfile %s (%s) has a void seeds file"
-#~ msgstr "ha暫存檔 %s (%s) 的種子檔案沒有內容"
-
-#~ msgid "Download status"
-#~ msgstr "下載狀態"
-
-#~ msgid "( %s / %s )"
-#~ msgstr "( %s / %s )"
-
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgid "SOCKS5"
-#~ msgstr "SOCKS5"
-
-#~ msgid "SOCKS4"
-#~ msgstr "SOCKS4"
-
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgid "SOCKS4a"
-#~ msgstr "SOCKS4a"
-
-#~ msgid "Update delay : %d second"
-#~ msgid_plural "Update delay : %d seconds"
-#~ msgstr[0] "更新延遲時間：%d 秒"
-
-#~ msgid "Comments and ratings are not supported on remote gui yet"
-#~ msgstr "遠端圖形介面尚未支援註解與評價功能"
-
-#~ msgid "Transferring"
-#~ msgstr "正在傳輸"
-
-#~ msgid "QR: ???"
-#~ msgstr "QR：???"
-
-#~ msgid "QR: %u"
-#~ msgstr "QR：%u"
-
-#~ msgid "Only files currently uploading"
-#~ msgstr "只有目前正在上傳的檔案"
-
-#~ msgid "Queue Rank"
-#~ msgstr "等候排名"
-
-#~ msgid "TODO - show progress of a search"
-#~ msgstr "待辦事項 - 顯示搜尋進度"
-
-#~ msgid "Starting to create MD4 and AICH hash for file: %s"
-#~ msgstr "開始爲檔案 %s 計算 MD4 和 AICH hash 值"
-
-#~ msgid "Starting to create MD4 hash for file: %s"
-#~ msgstr "開始爲檔案 %s 計算 MD4 hash 值"
-
-#~ msgid "Starting to create AICH hash for file: %s"
-#~ msgstr "開始爲檔案 %s 計算 AICH hash 值"
-
-#~ msgid "WARNING: Could not remove original '%s' after creating backup"
-#~ msgstr "警告：爲 %s 建立備份後無法刪除原檔案"
-
-#~ msgid "WARNING: Failed to delete %s"
-#~ msgstr "警告：無法刪除 %s"
-
-#~ msgid "%u (QR: %u)"
-#~ msgstr "%u (QR：%u)"
-
-#~ msgid "Rating (total):"
-#~ msgstr "評價 (總計)："
-
-#~ msgid "Try to transfer full chunks to all uploads"
-#~ msgstr "嘗試傳送完整資料區塊給所有人"
-
-#~ msgid "Networks window"
-#~ msgstr "網路 視窗"
-
-#~ msgid "Searches window"
-#~ msgstr "搜尋 視窗"
-
-#, fuzzy
-#~ msgid "Downloads window"
-#~ msgstr "正在下載"
-
-#~ msgid "Shared files window"
-#~ msgstr "檔案分享 視窗"
-
-#~ msgid "Messages window"
-#~ msgstr "訊息 視窗"
-
-#~ msgid "Statistics graph window"
-#~ msgstr "統計 視窗"
-
-#~ msgid "Preferences settings window"
-#~ msgstr "偏好設定 視窗"
-
-#~ msgid "Traybar-icon lost, trying to recreate ..."
-#~ msgstr "狀態列圖示遺失，正在重新建立..."
-
-#~ msgid "Transfers"
-#~ msgstr "檔案傳輸"
-
-#~ msgid "Files transfers window"
-#~ msgstr "檔案傳輸 視窗"
-
-#~ msgid "Unban"
-#~ msgstr "取消封鎖"
-
-#~ msgid "Show Uploads"
-#~ msgstr "顯示上傳"
-
-#~ msgid "Show Queue"
-#~ msgstr "顯示等候區"
-
-#~ msgid "Select View"
-#~ msgstr "切換顯示"
-
-#~ msgid "Client Software"
-#~ msgstr "客戶端軟體"
-
-#~ msgid "Waited"
-#~ msgstr "已等候"
-
-#~ msgid "Upload Time"
-#~ msgstr "上傳時間"
-
-#~ msgid "Upload/Download"
-#~ msgstr "上傳/下載"
-
-#~ msgid "Remote Status"
-#~ msgstr "遠端狀態"
-
-#~ msgid "File Priority"
-#~ msgstr "檔案優先等級"
-
-#~ msgid "Score"
-#~ msgstr "分數"
-
-#~ msgid "Asked"
-#~ msgstr "已要求"
-
-#~ msgid "Last Seen"
-#~ msgstr "最後看到"
-
-#~ msgid "Entered Queue"
-#~ msgstr "已進等候區"
-
-#~ msgid "Transferred Up"
-#~ msgstr "已傳輸"
-
-#~ msgid "Transferred Down"
-#~ msgstr "已傳輸"
-
-#~ msgid "Userhash"
-#~ msgstr "使用者 hash 值"
-
-#~ msgid "Encrypted"
-#~ msgstr "已加密"
-
-#~ msgid "Loaded %d flag bitmaps."
-#~ msgstr "已載入 %d 個國旗圖片。"
-
-#~ msgid "Shows Upload / Up-queue"
-#~ msgstr "顯示上傳/上傳等候區"
-
-#~ msgid "Clients on queue :"
-#~ msgstr "等候區人數："
-
-#~ msgid "Current Session"
-#~ msgstr "本次執行"
-
-#~ msgid "Total"
-#~ msgstr "總計"
-
-#~ msgid "Requested :"
-#~ msgstr "已要求："
-
-#~ msgid "Create backup for preview"
-#~ msgstr "建立備份檔案以供預覽"
-
-#~ msgid "Files Transfers Window"
-#~ msgstr "傳輸 視窗"
-
-#~ msgid "Total Users: %s | Total Files: %s"
-#~ msgstr "使用者總數：%s | 檔案總數：%s"
-
-#~ msgid "Download size not received, downloading until connection is closed"
-#~ msgstr "未收到下載大小資料，持續下載至連線關閉時"
-
-#~ msgid "HTTP download thread ended"
-#~ msgstr "已啟用 HTTP 下載執行緒"
-
-#~ msgid "Host: %s:%i\n"
-#~ msgstr "主機：%s:%i\n"
-
-#~ msgid "Response: %i (Error: %i)"
-#~ msgstr "回應：%i (錯誤：%i)"
-
-#~ msgid "WARNING: Void response on stream creation"
-#~ msgstr "警告：建立串流時沒有回應"
-
-#~ msgid "ERROR: Redirection code received with no URL"
-#~ msgstr "錯誤：接收到沒有網址的重新導向碼"
-
-#~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-#~ msgstr "CIP2Country::CIP2Country()：無法載入國家資訊 ("
-
-#~ msgid "Get IPFilter level."
-#~ msgstr "取得 IP 過濾等級。"
-
-#~ msgid "Makes a search."
-#~ msgstr "開始搜尋。"
-
-#~ msgid "Killed!"
-#~ msgstr "已終止！"
-
-#~ msgid "Using amuleweb in '%s'."
-#~ msgstr "在 '%s' 使用 amuleweb 。"
-
-#~ msgid "Shutting down aMule..."
-#~ msgstr "關閉 aMule 中..."
-
-#~ msgid ""
-#~ "The following options have been changed in this release for security "
-#~ "reasons:\n"
-#~ msgstr "因爲安全問題，此版本中以下的選項已經被變更：\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Enabled Protocol Obfuscation support for incoming and outgoing "
-#~ "connections.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* 已啓用模糊協定。\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Disabled updating the server list from other server and clients.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* 已停用從其他伺服器和客戶端更新伺服器清單。\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "For more information on the reason for this changes, seach\n"
-#~ "the aMule wiki at http://wiki.amule.org for \"fake servers\" info.\n"
-#~ "It's important that you clear any fake server from your server list for "
-#~ "aMule to work properly."
-#~ msgstr ""
-#~ "\n"
-#~ "想瞭解更多改版原因， 請到 aMule wiki 搜尋「fake servers」 。\n"
-#~ "網址是：http://wiki.amule.org \n"
-#~ "爲了讓 aMule 正常工作，從伺服器清單中清除假伺服器非常重要。"
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Additionally, the browser settings have been reset to the system default. "
-#~ "Please configure your browser options again if needed.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "瀏覽器設定已恢復為系統預設值。如果有需要，請設定您的瀏覽器。\n"
-
-#~ msgid "Fetching status..."
-#~ msgstr "正在取得狀態..."
-
-#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
-#~ msgstr "使用者：E:%s K:%s | 檔案 E:%s K:%s"
-
-#~ msgid "Client %s on IP:Port %s:%d using %s %s %s"
-#~ msgstr "客戶端 %s：位址 %s:%d，使用 %s %s %s"
-
-#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "theApp->serverlist->GetServerByAddress() 傳回  NULL"
-
-#~ msgid "Do you really want to exit aMule?"
-#~ msgstr "您確定要離開 aMule 嗎？"
-
-#~ msgid "Failed to remove GeoIP.dat file, aborting update."
-#~ msgstr "無法移除 GeoIP.dat，停止更新。"
-
-#~ msgid "Failed to rename new GeoIP.dat file, aborting update."
-#~ msgstr "無法重新命名 GeoIP.dat，停止更新。"
-
-#~ msgid "Successfully updated GeoIP.dat"
-#~ msgstr "成功更新 GeoIP.dat"
-
-#~ msgid "Failed to download GeoIP.dat from %s"
-#~ msgstr "無法自 %s 下載 GeoIP.dat"
-
-#~ msgid "Finished to download the server list from %s"
-#~ msgstr "完成從 %s 下載伺服器清單"
-
-#~ msgid "WARNING: known.met cannot be opened."
-#~ msgstr "警告：無法開啟 known.met 。"
-
-#~ msgid "IO error while reading known.met file: %s"
-#~ msgstr "讀取 known.net 檔案時發生 IO 錯誤：%s"
-
-#~ msgid "Error while saving known.met file: %s"
-#~ msgstr "儲存 known.met 時發生錯誤：%s"
-
-#~ msgid "Reloads the given object."
-#~ msgstr "重新載入指定的項目。"
-
-#~ msgid "Reloads shared files list."
-#~ msgstr "重新載入分享檔案清單。"
-
-#~ msgid "Reloads IP Filter table from file."
-#~ msgstr "重新從檔案載入 IP 過濾表。"
-
-#~ msgid "Adds an eD2k or magnet link to core."
-#~ msgstr "加入 eD2k 或 magnet 連結到主程式。"
-
-#~ msgid "Set IPFilter preferences."
-#~ msgstr "設定 IP 過濾參數。"
-
-#~ msgid "Get IPFilter preferences."
-#~ msgstr "取得 IP 過濾器設定。"
-
-#~ msgid "Get IPFilter state for both clients and servers."
-#~ msgstr "取得對客戶端和伺服器的 IP 過濾器狀態。"
-
-#~ msgid "Get IPFilter state for clients only."
-#~ msgstr "只取得對客戶端的 IP 過濾器狀態。"
-
-#~ msgid "Get IPFilter state for servers only."
-#~ msgstr "只取得對伺服器的 IP 過濾器狀態。"
-
-#~ msgid "Executes a global search."
-#~ msgstr "執行全球搜尋。"
-
-#~ msgid "Executes a local search"
-#~ msgstr "執行本地搜尋"
-
-#~ msgid "Executes a kad search"
-#~ msgstr "執行 Kad 搜尋"
-
-#~ msgid "Shows the results of the last search."
-#~ msgstr "顯示上一次的搜尋結果。"
-
-#~ msgid "Returns the results of the previous search.\n"
-#~ msgstr "傳回前幾次的搜尋結果。\n"
-
-#~ msgid "Shows the progress of a search."
-#~ msgstr "顯示搜尋進度。"
-
-#~ msgid "Shows the progress of a search.\n"
-#~ msgstr "顯示搜尋進度。\n"
-
-#~ msgid "Shows upload/download queue, server list or shared files list.\n"
-#~ msgstr "顯示上傳/下載等候區，伺服器清單或分享檔案清單。\n"
-
-#~ msgid "Authentication failed."
-#~ msgstr "登入驗證失敗。"
-
-#~ msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
-#~ msgstr "正在載入 IP 過濾檔 ipfilter.dat 與 ipfilter_static.dat 。"

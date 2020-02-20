@@ -1,6 +1,8 @@
+# Translation of amule interface to Croatian
 # aMule i18n resource file.
-# Copyright (c) 2003-2011 aMule Team
+# Copyright (c) 2003-2020 aMule Team
 # This file is distributed under the same license as the aMule package.
+#
 # Kry <elkry@users.sourceforge.net>, 2004.
 #
 msgid ""
@@ -8,13 +10,16 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2004-04-08 00:30+0100\n"
+"PO-Revision-Date: 2020-02-18 16:00+0100\n"
 "Last-Translator: Tea Lorenzmeier <tea1@gmx.net>\n"
 "Language-Team: www.aMule.org <forum@aMule.org>\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -783,6 +788,7 @@ msgstr[0] ""
 "Fajl statistike za ovu misiju: Prihvaceno %d od %d zahtjeva, %s preneseno\n"
 msgstr[1] ""
 "Fajl statistike za ovu misiju: Prihvaceno %d od %d zahtjeva, %s preneseno\n"
+msgstr[2] ""
 
 #: src/BaseClient.cpp:2024
 #, fuzzy, c-format
@@ -793,6 +799,7 @@ msgstr[0] ""
 "Fajl statistike za ovu misiju: Prihvaceno %d od %d zahtjeva, %s preneseno\n"
 msgstr[1] ""
 "Fajl statistike za ovu misiju: Prihvaceno %d od %d zahtjeva, %s preneseno\n"
+msgstr[2] ""
 
 #: src/BaseClient.cpp:2027
 msgid "Requested unknown file"
@@ -921,6 +928,7 @@ msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/ClientCreditsList.cpp:161
 #, fuzzy, c-format
@@ -928,6 +936,7 @@ msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
 msgstr[0] "Krediti istekli!"
 msgstr[1] "Krediti istekli!"
+msgstr[2] ""
 
 #: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
@@ -1093,6 +1102,7 @@ msgid "%u comment"
 msgid_plural "%u comments"
 msgstr[0] "Bez komentara"
 msgstr[1] "Bez komentara"
+msgstr[2] ""
 
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
@@ -1491,6 +1501,7 @@ msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "Nadjeno %i pocetih fajlova"
 msgstr[1] "Nadjeno %i pocetih fajlova"
+msgstr[2] ""
 
 #: src/DownloadQueue.cpp:244 src/DownloadQueue.cpp:1470
 msgid "Filesystem for Temp directory cannot handle large files."
@@ -2160,6 +2171,7 @@ msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/IPFilter.cpp:331
 #, c-format
@@ -2167,6 +2179,7 @@ msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/IPFilter.cpp:503
 #, c-format
@@ -2234,6 +2247,7 @@ msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/kademlia/routing/RoutingZone.cpp:221
 #: src/kademlia/routing/RoutingZone.cpp:287
@@ -2246,6 +2260,7 @@ msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/kademlia/routing/RoutingZone.cpp:336
 #, c-format
@@ -2253,6 +2268,7 @@ msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/KnownFile.cpp:1544 src/PartFileConvertDlg.cpp:91
 msgid "File name"
@@ -4225,6 +4241,7 @@ msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "Bytes"
 msgstr[1] "Bytes"
+msgstr[2] ""
 
 #: src/OtherFunctions.cpp:66
 msgid "kB"
@@ -4256,6 +4273,7 @@ msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "kBytes/sec"
 msgstr[1] "kBytes/sec"
+msgstr[2] ""
 
 #: src/OtherFunctions.cpp:99
 msgid "MB/s"
@@ -4477,6 +4495,7 @@ msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "Spaseni %i seeds izvora za poceti fajl: %s (%s)"
 msgstr[1] "Spaseni %i seeds izvora za poceti fajl: %s (%s)"
+msgstr[2] ""
 
 #: src/PartFile.cpp:1048
 #, fuzzy, c-format
@@ -4502,6 +4521,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Nadjen koruptan dio (%i) u %i pocetom fajlu %s - FileResultHash |%s| "
 "FileHash |%s|"
+msgstr[2] ""
 
 #: src/PartFile.cpp:1172
 #, c-format
@@ -4996,6 +5016,7 @@ msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Obnovi kasnjenje : 5 sekundi"
 msgstr[1] "Obnovi kasnjenje : 5 sekundi"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1137
 #, fuzzy, c-format
@@ -5003,6 +5024,7 @@ msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Vrijeme za prosjecni graf: 100 minuta"
 msgstr[1] "Vrijeme za prosjecni graf: 100 minuta"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1143
 #, c-format
@@ -5015,6 +5037,7 @@ msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Velicina fajl buffera %i bytes"
 msgstr[1] "Velicina fajl buffera %i bytes"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1161
 #, fuzzy, c-format
@@ -5022,6 +5045,7 @@ msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Duzina liste cekanja %i klienata"
 msgstr[1] "Duzina liste cekanja %i klienata"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1168
 #, fuzzy, c-format
@@ -5029,6 +5053,7 @@ msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Interval obnavljanja veze servera %i minuta"
 msgstr[1] "Interval obnavljanja veze servera %i minuta"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1170
 msgid "Server connection refresh interval: Disabled"
@@ -5184,6 +5209,7 @@ msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "Automatsko spajanje sa serverom ce ponovo poceti za %d sekundi"
 msgstr[1] "Automatsko spajanje sa serverom ce ponovo poceti za %d sekundi"
+msgstr[2] ""
 
 #: src/ServerConnect.cpp:412
 msgid "Connection lost"
@@ -5236,6 +5262,7 @@ msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] "%i servera pronadjeno u server.met"
 msgstr[1] "%i servera pronadjeno u server.met"
+msgstr[2] ""
 
 #: src/ServerList.cpp:176
 #, fuzzy, c-format
@@ -5243,6 +5270,7 @@ msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] "%d servera dodato"
 msgstr[1] "%d servera dodato"
+msgstr[2] ""
 
 #: src/ServerList.cpp:179
 #, fuzzy
@@ -5479,6 +5507,7 @@ msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] "Primljeno %d novih servera"
 msgstr[1] "Primljeno %d novih servera"
+msgstr[2] ""
 
 #: src/ServerSocket.cpp:551
 msgid "Saving of server-list completed."
@@ -5643,6 +5672,7 @@ msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] "Pronadjeno %i poznatih dijeljenih fajlova"
 msgstr[1] "Pronadjeno %i poznatih dijeljenih fajlova"
+msgstr[2] ""
 
 #: src/SharedFileList.cpp:377
 #, fuzzy, c-format
@@ -5650,6 +5680,7 @@ msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "Pronadjeno %i poznatih dijeljenih fajlova, %i nepoznatih"
 msgstr[1] "Pronadjeno %i poznatih dijeljenih fajlova, %i nepoznatih"
+msgstr[2] ""
 
 #: src/SharedFileList.cpp:386
 #, c-format
@@ -6848,9 +6879,8 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:567
 #: src/utils/aLinkCreator/src/alcframe.cpp:568
 #: src/utils/aLinkCreator/src/md4.cpp:352
-#, fuzzy
 msgid "Cancelled !"
-msgstr "Otkaz"
+msgstr "Otkaz!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:576
 #, c-format
@@ -7098,9 +7128,8 @@ msgid " kB/s, Upload: "
 msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1110
-#, fuzzy
 msgid " kB/s"
-msgstr "kB/s"
+msgstr " kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1118
 msgid "Sharing: "
@@ -7323,1575 +7352,3 @@ msgstr ""
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr ""
-
-#~ msgid "Partfile %s (%s) has no seeds file"
-#~ msgstr "Poceti fajl %s (%s) nema seesd fajlova"
-
-#, fuzzy
-#~ msgid "Download status"
-#~ msgstr "Downloads"
-
-#~ msgid "..."
-#~ msgstr "..."
-
-#, fuzzy
-#~ msgid "Update delay : %d second"
-#~ msgid_plural "Update delay : %d seconds"
-#~ msgstr[0] "Obnovi kasnjenje : 5 sekundi"
-#~ msgstr[1] "Obnovi kasnjenje : 5 sekundi"
-
-#~ msgid "Transferring"
-#~ msgstr "Prenosi"
-
-#, fuzzy
-#~ msgid "Only files currently uploading"
-#~ msgstr "Trenutno downloading :"
-
-#, fuzzy
-#~ msgid "Queue Rank"
-#~ msgstr "Pun red cekanja"
-
-#~ msgid "Try to transfer full chunks to all uploads"
-#~ msgstr "Pokusaj uploadovati kompletne chunks"
-
-#, fuzzy
-#~ msgid "Downloads window"
-#~ msgstr "Downloading"
-
-#~ msgid "Transfers"
-#~ msgstr "Transferi"
-
-#~ msgid "Unban"
-#~ msgstr "Dozvoli"
-
-#~ msgid "Show Uploads"
-#~ msgstr "Pokazi uploadove"
-
-#~ msgid "Show Queue"
-#~ msgstr "Pokazi red cekanja"
-
-#~ msgid "Waited"
-#~ msgstr "Cekao"
-
-#~ msgid "Upload Time"
-#~ msgstr "Vriejeme uploada"
-
-#~ msgid "File Priority"
-#~ msgstr "Prioritet fajla"
-
-#~ msgid "Score"
-#~ msgstr "Rezultat"
-
-#~ msgid "Asked"
-#~ msgstr "Upitan"
-
-#~ msgid "Last Seen"
-#~ msgstr "Posljednji put vidjen"
-
-#~ msgid "Entered Queue"
-#~ msgstr "Usao u red cekanja"
-
-#~ msgid "Clients on queue :"
-#~ msgstr "Klienti na cekanju :"
-
-#~ msgid "Current Session"
-#~ msgstr "Trenutna misija"
-
-#~ msgid "Total"
-#~ msgstr "Ukupno"
-
-#~ msgid "Requested :"
-#~ msgstr "Zahtjevano :"
-
-#~ msgid "Files Transfers Window"
-#~ msgstr "Prozor transfera fajlova"
-
-#, fuzzy
-#~ msgid "HTTP download thread ended"
-#~ msgstr "Istinska sirina pojasa downloada"
-
-#, fuzzy
-#~ msgid "Killed!"
-#~ msgstr "Neuspjesno"
-
-#~ msgid "Gui Tweaks"
-#~ msgstr "Gui Tweaks"
-
-#~ msgid "Line Capacities"
-#~ msgstr "Kapacitet linije"
-
-#~ msgid "Max Sources per File"
-#~ msgstr "Maksimalni izvor po fajlu"
-
-#~ msgid "Start next paused file when a file completed"
-#~ msgstr "Nastavi iduci pauziran fajl cim je jedan fajl gotov"
-
-#~ msgid "Select Statistics Colors"
-#~ msgstr "Izaberi boje statistike"
-
-#~ msgid "Download Queue Files Progress"
-#~ msgstr "Napredak fajlova u redu cekanja"
-
-#~ msgid "Show percentage"
-#~ msgstr "Pokazi procente"
-
-#~ msgid "Show overhead bandwith"
-#~ msgstr "Pokazi sirinu pojasa overheada"
-
-#~ msgid "I.C.H. active"
-#~ msgstr "I.C.H. aktiviran"
-
-#~ msgid "Progressbar Style"
-#~ msgstr "Vrsta poluge napredka"
-
-#~ msgid "Misc Gui Tweaks"
-#~ msgstr "Vershiedene GUI Tweaks"
-
-#~ msgid ""
-#~ "For a film you can say its length, its story, language ...\n"
-#~ "and if it's a fake, you can tell that to other users of aMule."
-#~ msgstr ""
-#~ "Za film mozes opisati njegovu duzinu, pricu, jezik ... \n"
-#~ "i da li je falsifikat i to ovim putem reci drugim korisnicima aMule."
-
-#~ msgid "Misc Options"
-#~ msgstr "Razne mogucnosti"
-
-#~ msgid "Display server motd when connected ..."
-#~ msgstr "Pokazi server motd kad je povezan ..."
-
-#~ msgid "Max Connections"
-#~ msgstr "Maksimalne veze"
-
-#~ msgid "http://www.aMule.org - the Linux Mule"
-#~ msgstr "http://www.aMule.org - the Linux Mule"
-
-#~ msgid "Could not determine the command for running the browser."
-#~ msgstr "Nije utvrdjena komanda za rad brausera."
-
-#~ msgid "Copy ED2k &link to clipboard"
-#~ msgstr "Kopiraj ed2k &linkove u klipbord"
-
-#~ msgid "Copy ED2k link to clipboard"
-#~ msgstr "Kopiraj ED2k link u klipbord"
-
-#, fuzzy
-#~ msgid "Copy ED2k links to clipboard"
-#~ msgstr "Kopiraj ED2k link u klipbord"
-
-#, fuzzy
-#~ msgid "ED2K: Connecting"
-#~ msgstr "Spajanje"
-
-#, fuzzy
-#~ msgid "ED2K: Disconnected"
-#~ msgstr "Prekinuta veza"
-
-#~ msgid "Edit Serverlist"
-#~ msgstr "Editiraj listu servera"
-
-#~ msgid "Average filesize: %s"
-#~ msgstr "Prosjecna velicina fajla: %s"
-
-#~ msgid "Error"
-#~ msgstr "Greska"
-
-#~ msgid "Unexpected file error while completing %s. File paused"
-#~ msgstr "Neocekivana fajl greska prilikom zavrsavanja %s. Fajl pauziran"
-
-#~ msgid ""
-#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
-#~ "should never happen"
-#~ msgstr ""
-#~ "Upozorenje: Nemoguce hashovanje gotovog dijela - hashset nedovrsen (%s). "
-#~ "Ovo ne smije da se desi"
-
-#~ msgid "No valid servers to connect in serverlist found"
-#~ msgstr "Ni jedan vezeci server u listi nije pronadjen"
-
-#~ msgid "Error: Socket invalid at timeoutcheck"
-#~ msgstr "Greska: neispravan socket u vrijeme timeouta"
-
-#~ msgid "0"
-#~ msgstr "0"
-
-#~ msgid "Bandwith Limits"
-#~ msgstr "Limit sirine pojasa"
-
-#~ msgid "Hard Limit"
-#~ msgstr "Hard Limit"
-
-#~ msgid "Connection Limits"
-#~ msgstr "Limit veza"
-
-#~ msgid "Auto-update serverlist at startup"
-#~ msgstr "Automatski obnovi listu servera pri pocetku"
-
-#~ msgid "Update serverlist when connecting to a server"
-#~ msgstr "Obnovi listu servera kad si povezan sa serverom"
-
-#~ msgid "Update serverlist when a client connect"
-#~ msgstr "Obnovi listu servera kad si povezan sa klientom"
-
-#~ msgid "Incoming Directory :"
-#~ msgstr "Prijemni direktorij :"
-
-#~ msgid "Temporary Directory :"
-#~ msgstr "Privremeni direktorij :"
-
-#~ msgid "Shared Directories"
-#~ msgstr "Dijeljeni direktoriji :"
-
-#~ msgid "Create Backup to preview"
-#~ msgstr "Stvori backup za preuvid"
-
-#~ msgid "Show Fast ED2K Links Handler"
-#~ msgstr "Pokazi brzog ED2K rukovatelja"
-
-#~ msgid "Webserver Parameters"
-#~ msgstr "Webserver Parametri"
-
-#~ msgid "Webserver port"
-#~ msgstr "Port Webservera"
-
-#~ msgid "Serverlist"
-#~ msgstr "Lista servera"
-
-#~ msgid "Manual Server Add : Name"
-#~ msgstr "Rucni dodatak servera : Ime"
-
-#~ msgid "TCP Port: Not Ready"
-#~ msgstr "TCP Port: Nije spreman"
-
-#~ msgid "UDP Port: Not Ready"
-#~ msgstr "UDP Port: Nije spreman"
-
-#~ msgid "Upload Limit"
-#~ msgstr "Limit uploada"
-
-#~ msgid "Download Limit"
-#~ msgstr "Limit downloada"
-
-#~ msgid ""
-#~ "No serverlist address entry in 'addresses.dat' found. Please paste a "
-#~ "valid serverlist address into this file in order to auto-update your "
-#~ "serverlist"
-#~ msgstr ""
-#~ "U 'addresses.dat' nije nadjen upis server liste. Molim upisitevazecu "
-#~ "adresu u ovaj fajl zbog auto obnavljanja server liste"
-
-#~ msgid "Not Supported"
-#~ msgstr "Bez podrske"
-
-#~ msgid "Browse wav"
-#~ msgstr "Potrazi wav"
-
-#~ msgid "File wav (*.wav)|*.wav||"
-#~ msgstr "Fajl wav (*.wav)|*.wav||"
-
-#~ msgid "No comment(s)"
-#~ msgstr "Bez komentara"
-
-#~ msgid "Messages popup"
-#~ msgstr "Popup poruka"
-
-#~ msgid "Use sound"
-#~ msgstr "Koristi ton"
-
-#~ msgid "Pop out when :"
-#~ msgstr "Iskoci kad :"
-
-#~ msgid "New entry on log"
-#~ msgstr "Novi upis u logu"
-
-#~ msgid "Starts a new chat session"
-#~ msgstr "Pocetak novog razgovora"
-
-#~ msgid "A new chat message is received"
-#~ msgstr "Nova poruka primljena"
-
-#~ msgid "A download is added or finished"
-#~ msgstr "Download je dodat ili gotov"
-
-#~ msgid "New aMule version detected"
-#~ msgstr "Otkrivena nova aMule verzija"
-
-#~ msgid "Urgent OOD, serverconnection lost"
-#~ msgstr "Hitno OOD, izgubljena veza sa serverom"
-
-#~ msgid "Notify by Mail"
-#~ msgstr "Obavijesti mailom"
-
-#~ msgid "Send an Email when transfer complete."
-#~ msgstr "Posalji email kad je transfer gotov."
-
-#~ msgid "SMTP server :"
-#~ msgstr "SMTP server :"
-
-#~ msgid "Email Address :"
-#~ msgstr "Email Adresa :"
-
-#~ msgid ":"
-#~ msgstr ":"
-
-#~ msgid "Sources Dropping"
-#~ msgstr "Odbacivanje izvora"
-
-#~ msgid "Send sources to any other file before dropping (High CPU)"
-#~ msgstr "Posalji izvore nekom drugom fajlu prije odbacivanja (visoka CPU)"
-
-#~ msgid "Full Queue Sources Handling"
-#~ msgstr "Rukovanje punih izvora"
-
-#~ msgid "Enable auto drop Full Queue Sources"
-#~ msgstr "Omoguci auto odbacivanje punih izvora"
-
-#~ msgid "High Queue Rating Sources Handling"
-#~ msgstr "Rukovanje izvora sa visokim redom cekanja"
-
-#~ msgid "Enable auto drop High Queue Rating Sources"
-#~ msgstr "Omguci auto odbacivanje izvora sa visokim redom cekanja"
-
-#~ msgid "High Queue Rating value"
-#~ msgstr "Vrijednost ocjene visokog reda cekanja"
-
-#~ msgid "(Min 300 / Max 3000)"
-#~ msgstr "(Min 300 / Max 3000)"
-
-#~ msgid "Auto Drop Sources Timer"
-#~ msgstr "Tajmer za auto odbacivanje"
-
-#~ msgid "Timer (in secs)"
-#~ msgstr "Tajmer (u sekundama)"
-
-#~ msgid "(Min 60 / 3600 Max)"
-#~ msgstr "(Min 60 / 3600 Max)"
-
-#~ msgid "Drop No Needed Sources now"
-#~ msgstr "Odbaci nepotrebne izvore sada"
-
-#~ msgid "Drop Full Queue Sources now"
-#~ msgstr "Odbaci pune izvore sada"
-
-#~ msgid "Drop High Queue Rating Sources now"
-#~ msgstr "Odbaci izvore sa previsokim mjestom u redu cekanja"
-
-#~ msgid "Clean Up Sources now (NNS, FQS && HQRS)"
-#~ msgstr "Pocisti izvore sada (NNS, FQS && HQRS)"
-
-#~ msgid "Copy ED2k link to clipboard (Hostname)"
-#~ msgstr "Kopiraj ed2k &linkove u klipbord (Hostname)"
-
-#~ msgid "Minimize to trayicon"
-#~ msgstr "Minimiraj u ikonu korita"
-
-#~ msgid "Port %d is not available. You will be LOWID"
-#~ msgstr "Port %d nije dostupan. Imas LOWID"
-
-#~ msgid ""
-#~ "Port %d is not available !!\n"
-#~ "\n"
-#~ "This will mean that you will be LOWID.\n"
-#~ "\n"
-#~ "Use netstat to determine when port becomes available\n"
-#~ "and try starting amule again."
-#~ msgstr ""
-#~ "Port %d nije dostupan!!\n"
-#~ "\n"
-#~ "To znaci da ces imati LOWID.\n"
-#~ "\n"
-#~ "Koristi netstat da saznas kad ce port postati slobodan\n"
-#~ "i startaj amule iznova."
-
-#~ msgid "Failed to save"
-#~ msgstr "Neuspjesno pohranjivanje"
-
-#~ msgid " OnlineSig File"
-#~ msgstr "Fajl online potpisa"
-
-#~ msgid ""
-#~ "The selected locale seems not to be installed on your box\n"
-#~ " You must generate it to use this language.\n"
-#~ "A good start on linux systems is the file /etc/locale.gen and the package "
-#~ "'locales'\n"
-#~ "Good luck!\n"
-#~ "(Note: I'll try to set it anyway)"
-#~ msgstr ""
-#~ "Izabrani lokal nije pronadjen na tvom sistemu\n"
-#~ "Moras ga stvoriti da bi koristio ovaj jezik. \n"
-#~ "Dobar pocetak na linux sistemima je fajl /etc/locale.gen i "
-#~ "paket'locales'\n"
-#~ "Mnogo srece!\n"
-#~ "(Nota: Pokusat cu u svakom slucaju)"
-
-#~ msgid ""
-#~ "Unable to launch browser. Please set correct browserexecutable path in "
-#~ "Preferences."
-#~ msgstr ""
-#~ "Neuspjeh pri ukljucenju brausera. U postavkama se moze namjestititrag "
-#~ "egsekutivnog fajla brausera."
-
-#~ msgid ""
-#~ " --- This is the first time you run aMule %s ---\n"
-#~ "\n"
-#~ msgstr ""
-#~ "--- Ovo je prvi put da koristis aMule %s ---\n"
-#~ "\n"
-
-#~ msgid "This version is a testing version, updated daily, and \n"
-#~ msgstr "Ovo je test verzija, koja se dnevno obnavlja, mi \n"
-
-#~ msgid "or kill your dog. But it *should* be safe to use anyway. \n"
-#~ msgstr ""
-#~ "ili ubiti tvog psa. *Trebalo* bi biti sigurno za koriscenje u svakom "
-#~ "slucaju. \n"
-
-#~ msgid "This version has new SecureHash support, so your \n"
-#~ msgstr "Ova verzija ima novu sigurnosnu hash podrsku, tako da \n"
-
-#~ msgid "client credits will be lost on this first run. \n"
-#~ msgstr "ce klient krediti biti izgubljeni prilikom prvog rada. \n"
-
-#~ msgid "There is no way to fix that, and eMule did the same.\n"
-#~ msgstr ""
-#~ "Ne postoji mogucnost da se to ispravi i sa eMule je bio isti slucaj. \n"
-
-#~ msgid "But your hash will be safe against stealers now, and your\n"
-#~ msgstr "Tvoj hash ce ovim putem biti siguran protiv hash lopova, a tvoj\n"
-
-#~ msgid "cryptokey.dat and clients.met are eMule compatible now.\n"
-#~ msgstr "cryptokey.dat i clients.met su sada sa eMule kompatibilni. \n"
-
-#~ msgid ""
-#~ "Just take them from your eMule config dir and put then on ~/.aMule.\n"
-#~ msgstr ""
-#~ "Samo ih preuzmi iz svog eMule config direktorija i stavi na ~/.aMule. \n"
-
-#~ msgid "If your language is changed now, please set it again on preferences."
-#~ msgstr ""
-#~ "Ako je vas jezik ovim promijenjen, molim namjesti ga ponovo pod opcijama."
-
-#~ msgid "Feel free to report any bugs to forum.amule.org"
-#~ msgstr "Slobodno prijavi bilo kakve greske ili bugove u forum.amule.org"
-
-#~ msgid "Desktop integration"
-#~ msgstr "Integracija desktopa"
-
-#~ msgid "Connection established on:"
-#~ msgstr "Veza uspostavljena sa:"
-
-#~ msgid "Connect to any server"
-#~ msgstr "Spoji sa bilo kojim serverom"
-
-#~ msgid "This ed2k link is invalid (%s)"
-#~ msgstr "Ovaj ed2k link nije vazeci (%s)"
-
-#~ msgid "Invalid link: %s"
-#~ msgstr "Nevazeci link: %s"
-
-#~ msgid "Filtered IP: %s (%s)"
-#~ msgstr "Filterovane IP: %s (%s)"
-
-#~ msgid "Rating for file '%s' received: %i"
-#~ msgstr "Ocjena za fajl'%s' primljeno: %i"
-
-#~ msgid "Description for file '%s' received: %s"
-#~ msgstr "Opis fajla '%s' primljeno: %s"
-
-#~ msgid "Unable to retrieve shared files from '%s'"
-#~ msgstr "Neuspjesan prikaz dijeljenjih fajlova od '%s'"
-
-#~ msgid "Requesting shared files from user %s (%u) is already in progress"
-#~ msgstr "Zahtjev dijeljenih fajlova od korisnika %s (%u) je vec u toku"
-
-#~ msgid "NickName: %s\n"
-#~ msgstr "Nadimak: %s\n"
-
-#~ msgid "Filestats for all sessions: Accepted %d of %d requests"
-#~ msgstr "Fajl statistike za sve misije: Prihvaceno %d od %d zahtjeva"
-
-#~ msgid "can't create file '%s'"
-#~ msgstr "ne moze naciniti fajl '%s'"
-
-#~ msgid "Can't open file '%s'"
-#~ msgstr "Ne moze otvoriti fajl '%s'"
-
-#~ msgid "can't close file descriptor %d"
-#~ msgstr "Ne moze zatvoriti opisivaca %d"
-
-#~ msgid "can't read from file descriptor %d"
-#~ msgstr "Ne moze citati iz opisivaca fajla %d"
-
-#~ msgid "can't write to file descriptor %d"
-#~ msgstr "Ne moze pisati u poisivaca fajla %d"
-
-#~ msgid "can't flush file descriptor %d"
-#~ msgstr "Ne moze poplaviti opisivaca fajla %d"
-
-#~ msgid "unknown seek origin"
-#~ msgstr "Nepoznato porijeklo trazenja"
-
-#~ msgid "can't get seek position on file descriptor %d"
-#~ msgstr "Ne moze naci poziciju trazenja na opisivacu fajla %d"
-
-#~ msgid "can't find length of file on file descriptor %d"
-#~ msgstr "Ne moze naci duzinu fajla na opisivacu fajla %d"
-
-#~ msgid "can't determine if the end of file is reached on descriptor %d"
-#~ msgstr "Ne moze potvrditi da li je kraj fajla pronadjen na opisivacu %d"
-
-#~ msgid "invalid eof() return value."
-#~ msgstr "Nevazeca eof() vrijednost"
-
-#~ msgid "*** Chatsession Start : "
-#~ msgstr "*** Pocetak razgovora :"
-
-#~ msgid "Message from"
-#~ msgstr "Poruka od"
-
-#~ msgid "failed"
-#~ msgstr "neuspjesno"
-
-#~ msgid "*** Disconnected"
-#~ msgstr "*** Veza prekinuta"
-
-#~ msgid "Failed to save creditfile"
-#~ msgstr "Neuspjesno spasavanje kreditnog fajla"
-
-#~ msgid "IDS_CRYPT_INITFAILED\n"
-#~ msgstr "IDS_CRYPT_INITFAILED\n"
-
-#~ msgid "ClientSoftware ->"
-#~ msgstr "Klientov Software ->"
-
-#~ msgid "<- ClientVersion ->v"
-#~ msgstr "<- ClientVersion ->v"
-
-#~ msgid "<- ClientModString ->"
-#~ msgstr "<- ClientModString ->"
-
-#~ msgid "Not Avaiable"
-#~ msgstr "Nedostupan"
-
-#~ msgid ""
-#~ "WARNING! Found matching client, to a currently connected client: %s (%s) "
-#~ "and with %s"
-#~ msgstr ""
-#~ "UPOZORENJE! Nadjen isti klient sa trenutno povezanim klientom: %s (%s) i "
-#~ "sa %s"
-
-#~ msgid ""
-#~ "Error while processing incoming UDP Packet (Most likely a misconfigured "
-#~ "server)"
-#~ msgstr ""
-#~ "Greska prilikom prijema UDP paketa (vjerovatno lose konfiguriran server)"
-
-#~ msgid ""
-#~ "Ignoring %u bytes of block %u-%u because of errornous zstream state for "
-#~ "file \"%s\""
-#~ msgstr ""
-#~ "Ignorisanje %u bytes bloka %u-%u zbog pogresnog zstreama stanja za fajl"
-#~ "\"%s\""
-
-#~ msgid "Corrupted compressed packet for %s received (error %i)"
-#~ msgstr "Koruptan komprimirani paket za %s dobiven (error %i)"
-
-#~ msgid "Unknown exception in %s: file \"%s\""
-#~ msgstr "Nepoznata iznimka u %s: fajlu \"%s\""
-
-#~ msgid "Check Fake"
-#~ msgstr "Provjera o podvali"
-
-#~ msgid "Copy ED2k link to clipboard (&HTML)"
-#~ msgstr "Kopiraj ed2k &linkove u klipbord (&HTML)"
-
-#~ msgid "Hide Lists"
-#~ msgstr "Sakrij liste"
-
-#~ msgid "Preview ["
-#~ msgstr "Preuvid ["
-
-#~ msgid "eDonkey v%i"
-#~ msgstr "eDonkey v%i"
-
-#~ msgid "eDonkeyHybrid v%i"
-#~ msgstr "eDonkeyHybrid v%i"
-
-#~ msgid "eMule v%02X"
-#~ msgstr "eMule v%02X"
-
-#~ msgid "aMule [ %s ]"
-#~ msgstr "aMule [ %s ]"
-
-#~ msgid "aMule v0.%02X"
-#~ msgstr "aMule v0.%02X"
-
-#~ msgid "lMule/xMule v0.%02X"
-#~ msgstr "lMule/xMule v0.%02X"
-
-#~ msgid "Old MLdonkey"
-#~ msgstr "Old MLdonkey"
-
-#~ msgid "New MLdonkey"
-#~ msgstr "New MLdonkey"
-
-#~ msgid "Are you sure that you want to cancel and delete this file ?\n"
-#~ msgstr "Da li zaist zelis otkazati i obrisati ovaj fajl ?\n"
-
-#~ msgid "You already have the file %s"
-#~ msgstr "Vec imate fajl %s"
-
-#~ msgid "Bad link."
-#~ msgstr "Los link."
-
-#~ msgid "not a well-formed ed2k link"
-#~ msgstr "nije dobro formiran ed2k link"
-
-#~ msgid "Not an ED2K server or file link"
-#~ msgstr "Nije ed2k server ili fajl link"
-
-#~ msgid "can't write file '%s'"
-#~ msgstr "Ne moze pisati fajl '%s'"
-
-#~ msgid ""
-#~ "Error: couldn't accept a new external connection\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Greska: nemoze prihvatiti novu vanjsku vezu\n"
-#~ "\n"
-
-#~ msgid "done"
-#~ msgstr "gotovo"
-
-#~ msgid "Failed to copy the file '%s' to '%s'"
-#~ msgstr "Greska u kopiranju fajla '%s' u '%s'"
-
-#~ msgid "Impossible to get permissions for file '%s'"
-#~ msgstr "Nemoguce je dobiti dozvolu za fajl '%s'"
-
-#~ msgid "Impossible to overwrite the file '%s'"
-#~ msgstr "Nemguce je prepisati fajl '%s'"
-
-#~ msgid "Impossible to set permissions for the file '%s'"
-#~ msgstr "Nemoguce je postaviti dozvole za fajl '%s'"
-
-#~ msgid "Loaded ipfilter with %d IP addresses."
-#~ msgstr "Ucitan ipfilter sa %d IP adresa."
-
-#~ msgid ""
-#~ "Unexpected file error while reading known.met: %s, unable to load known "
-#~ "files"
-#~ msgstr ""
-#~ "Neocekivana fajl greska prilikom citanja known.met: %s, nemoguce citati "
-#~ "poznate fajlove"
-
-#~ msgid "User %s (%u) requested your sharedfiles-list -> %s"
-#~ msgstr "Korisnik %s (%u) ja zahtio tvoju listu dijeljenih fajlova -> %s"
-
-#~ msgid "accepted"
-#~ msgstr "prihvaceno"
-
-#~ msgid "denied"
-#~ msgstr "odbijeno"
-
-#~ msgid "User %s (%u) requested your shareddirectories-list -> %s"
-#~ msgstr ""
-#~ "Korisnik %s (%u) je zahtio tvoju listu zajednickih direktorija -> %s"
-
-#~ msgid "User %s (%u) denied access to shareddirectories/files-list"
-#~ msgstr "Korisnik %s (%u) ja zabranio dostup liste dijeljenih fajlova"
-
-#~ msgid "Client '%s' (IP:%s) caused an error: %s. Disconnecting client!"
-#~ msgstr ""
-#~ "Klient '%s' (IP:%s) je prouzrocio gresku: %s. Prekidanje veze klienta!"
-
-#~ msgid ""
-#~ "A client caused an error or did something bad: %s. Disconnecting client!"
-#~ msgstr ""
-#~ "Klient je prouzrokovao gresku ili nacinio nesto lose: %s. Prekidanje veze "
-#~ "klienta!"
-
-#~ msgid "Client '%s' (IP:%s) caused an error: %u. Disconnecting client!"
-#~ msgstr ""
-#~ "Klient '%s' (IP:%s) je prouzrocio gresku: %u. Prekidanje veze klienta!"
-
-#~ msgid "Unknown client (IP:%s) caused an error: %u. Disconnecting client!"
-#~ msgstr ""
-#~ "Nepoznat klient (IP:%s) je prouzrocio gresku: %u. Prekidanje veze klienta!"
-
-#~ msgid ""
-#~ "A client caused an error or did something bad. Disconnecting client !"
-#~ msgstr ""
-#~ "Klient je prouzrokovao gresku ili nacinio nesto lose. Prekidanje veze "
-#~ "klienta!"
-
-#~ msgid "Concurrent Downloads"
-#~ msgstr "Konkurentni downloadi"
-
-#~ msgid "1-5"
-#~ msgstr "1-5"
-
-#~ msgid "6-15"
-#~ msgstr "6-15"
-
-#~ msgid "16+"
-#~ msgstr "16+"
-
-#~ msgid "Connection Type"
-#~ msgstr "Vrsta veze"
-
-#~ msgid "Select your connection type here :"
-#~ msgstr "Izaberite vrstu vase veze ovdje:"
-
-#~ msgid "True upload bandwidth"
-#~ msgstr "Istinska sirina pojasa uploada"
-
-#~ msgid "Unit:"
-#~ msgstr "Jedinica:"
-
-#~ msgid "kbits/sec"
-#~ msgstr "kbits/sec"
-
-#~ msgid ""
-#~ "For system tray integration to work,\n"
-#~ "you must specify which desktop you are using.\n"
-#~ "You can change this later from preferences."
-#~ msgstr ""
-#~ "Da bi sistemsko korito moglo da radi,\n"
-#~ "moras navesti koji desktop koristis. \n"
-#~ "Ovo mozes kasnije promijeniti u postavkama."
-
-#~ msgid "Desktop"
-#~ msgstr "Desktop"
-
-#~ msgid "Gnome 2.x (or other XEMBED compatible)"
-#~ msgstr "Gnome 2.x (or other XEMBED compatible)"
-
-#~ msgid "KDE 3.x"
-#~ msgstr "KDE 3.x"
-
-#~ msgid "KDE 2.x / Gnome 1.2 "
-#~ msgstr "KDE 2.x / Gnome 1.2 "
-
-#~ msgid "No systray integration, please"
-#~ msgstr "Molim, ne integraciju u sistemskom koritu."
-
-#~ msgid "Fast ED2K Links Handler (Direct Download)"
-#~ msgstr "Brzi ED2K rukovatelj (Direktan download)"
-
-#~ msgid "Name"
-#~ msgstr "Ime"
-
-#~ msgid "Automatically assign new downloads to selected category"
-#~ msgstr "Automatski primijeni nove downloade izabranim kategorijama"
-
-#~ msgid "Min Availability"
-#~ msgstr "Najmanja raspolozivost"
-
-#~ msgid "Search global"
-#~ msgstr "Globalna pretraga"
-
-#~ msgid "Clear All"
-#~ msgstr "Obrisi sve"
-
-#~ msgid "Download selected"
-#~ msgstr "Downloaduj izabrano"
-
-#~ msgid "Media Info"
-#~ msgstr "Media Info"
-
-#~ msgid "Codec:"
-#~ msgstr "Codec:"
-
-#~ msgid "Bitrate:"
-#~ msgstr "Bitrate:"
-
-#~ msgid "Length:"
-#~ msgstr "Duzina :"
-
-#~ msgid " / ("
-#~ msgstr " / ("
-
-#~ msgid ")"
-#~ msgstr ")"
-
-#~ msgid "Source Names"
-#~ msgstr "Ime izvora"
-
-#~ msgid "Comment this file (this text will be show by all users)"
-#~ msgstr "Komentiraj ovaj fajl (ovaj tekst vide svi korisnici)"
-
-#~ msgid "("
-#~ msgstr "("
-
-#~ msgid "Clientsoftware :"
-#~ msgstr "Klientov software :"
-
-#~ msgid "Server IP :"
-#~ msgstr "Server IP :"
-
-#~ msgid "Clientversion :"
-#~ msgstr "Verzija klienta :"
-
-#~ msgid "ID :"
-#~ msgstr "ID :"
-
-#~ msgid "Downloaded (this session) :"
-#~ msgstr "Downloaded (ova misija)"
-
-#~ msgid "Average downloadrate :"
-#~ msgstr "Prosjecna brzina downloada :"
-
-#~ msgid "Downloaded total :"
-#~ msgstr "Downloaded ukupno :"
-
-#~ msgid "Uploaded (this session) :"
-#~ msgstr "Uploaded (ova misija) :"
-
-#~ msgid "Average Uploadrate :"
-#~ msgstr "Prosjecna brzina uploada :"
-
-#~ msgid "Uploaded total :"
-#~ msgstr "Uploaded ukupno :"
-
-#~ msgid "DL/UP Modifier :"
-#~ msgstr "DL/UP Modifikator :"
-
-#~ msgid "Rating (total) :"
-#~ msgstr "Ocjena (ukupno) :"
-
-#~ msgid "Secure Ident :"
-#~ msgstr "Sigurna identifikacija :"
-
-#~ msgid "Uploadqueue score :"
-#~ msgstr "Ocjena upload reda cekanja :"
-
-#~ msgid "Chinese"
-#~ msgstr "Chinese"
-
-#~ msgid "English"
-#~ msgstr "English"
-
-#~ msgid "Galego"
-#~ msgstr "Galego"
-
-#~ msgid "German (Swiss)"
-#~ msgstr "German (Swiss)"
-
-#~ msgid "Portuguese (Brazil)"
-#~ msgstr "Portuguese (Brazil)"
-
-#~ msgid "Spanish (Chile)"
-#~ msgstr "Spanish (Chile)"
-
-#~ msgid "Spanish (Mexico)"
-#~ msgstr "Spanish (Mexico)"
-
-#~ msgid "Turkey"
-#~ msgstr "Turkey"
-
-#~ msgid "Beep on errors"
-#~ msgstr "Pip na greskama"
-
-#~ msgid "Bring to front on link click"
-#~ msgstr "Naprijed dovesti na pritisak linka"
-
-#~ msgid "Downloadlist doubleclick to expand"
-#~ msgstr "Duplim pritiskom sirenje liste"
-
-#~ msgid "Tooltip Delay Time in secs (1s to 5s)"
-#~ msgstr "Tooltip kasnjenje u sekundama (1s to 5s)"
-
-#~ msgid "Systray Integration"
-#~ msgstr "Integracija u sistem koritu"
-
-#~ msgid "Startup"
-#~ msgstr "Pocetak"
-
-#~ msgid "5 Days"
-#~ msgstr "5 Dana"
-
-#~ msgid "Check for new version"
-#~ msgstr "Provjeri o novoj verziji"
-
-#~ msgid "Show Splashscreen"
-#~ msgstr "Pokazi logo"
-
-#~ msgid "Clientport"
-#~ msgstr "Port klienta"
-
-#~ msgid "TCP"
-#~ msgstr "TCP"
-
-#~ msgid "UDP"
-#~ msgstr "UDP"
-
-#~ msgid "Use Secure Ident"
-#~ msgstr "Koristi sigurnu identifikaciju"
-
-#~ msgid "Connection Wizard"
-#~ msgstr "Wizard za veze"
-
-#~ msgid "IP-Filter"
-#~ msgstr "IP-Filter"
-
-#~ msgid "IP-Filter ON / OFF"
-#~ msgstr "IP-Filter ON / OFF"
-
-#~ msgid "Always filter bad IPs"
-#~ msgstr "Uvijek filtriraj lose IPs"
-
-#~ msgid "See my shares"
-#~ msgstr "Smiju vidjeti moje fajlove"
-
-#~ msgid "Save 5 sources on rare files (< 20 sources)"
-#~ msgstr "Pohrani izvore za rijetke fajlove (< 20 izvora)"
-
-#~ msgid "Extract Meta Data Tags"
-#~ msgstr "Prosiri Meta Data Tags"
-
-#~ msgid "mplayer -idx"
-#~ msgstr "mplayer -idx"
-
-#~ msgid "aMule Tweaks Advertisements && Parameters"
-#~ msgstr "aMule Tweaks Advertisements && Parameters"
-
-#~ msgid "Verbose (additional program feedback)"
-#~ msgstr "Verbose (dodatna obavjestenja programa)"
-
-#~ msgid "Autotake ED2K Links only during runtime"
-#~ msgstr "Prihvati linkove samo dok program radi"
-
-#~ msgid "Upload/Download list refresh when updated"
-#~ msgstr "Obnovi listu Uploada/Downloada kod obnavljanja"
-
-#~ msgid "Upload/Download list refresh time: Realtime"
-#~ msgstr "Interval obnavljanja Upload/Download liste: tekuce vrijeme"
-
-#~ msgid "Arrange Downloads"
-#~ msgstr "Grupiraj downloadove"
-
-#~ msgid "Enable auto-arranging download list "
-#~ msgstr "odobri auto grupiranje liste downloada"
-
-#~ msgid "Download speed"
-#~ msgstr "Brzina downloada"
-
-#~ msgid "Number of sources"
-#~ msgstr "Broj izvora"
-
-#~ msgid "GTK Theme Selector"
-#~ msgstr "GTK izabirac teme"
-
-#~ msgid "Theme :"
-#~ msgstr "Tema :"
-
-#~ msgid "Use Font "
-#~ msgstr "Koristi font "
-
-#~ msgid "Font"
-#~ msgstr "Font"
-
-#~ msgid "Use old style tabs on preferences"
-#~ msgstr "Koristi stare tabove kod opcija"
-
-#~ msgid "No Needed Sources Handling"
-#~ msgstr "Rukovanje nepotrebnig izvora"
-
-#~ msgid "Enable auto drop No Needed Sources"
-#~ msgstr "Omoguci auto odbacivanje nepotrebnih izvora"
-
-#~ msgid "Extended Dropping"
-#~ msgstr "Prosireno odbacivanje"
-
-#~ msgid "Drop sources anyway"
-#~ msgstr "Odbaci izvore u svakom slucaju"
-
-#~ msgid "Enable Webserver"
-#~ msgstr "Omoguci Webservera"
-
-#~ msgid "Use TCP ports instead of unix local sockets"
-#~ msgstr "Koristi TCP portove umjesto unix local sockets"
-
-#~ msgid "External TCP port"
-#~ msgstr "Spoljascnji TCP port"
-
-#~ msgid "Enable password"
-#~ msgstr "Omoguci sifru"
-
-#~ msgid "Notify"
-#~ msgstr "Obavijesti"
-
-#~ msgid "aMule Tweaks"
-#~ msgstr "aMule Tweaks"
-
-#~ msgid ""
-#~ "http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good."
-#~ "met"
-#~ msgstr ""
-#~ "http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good."
-#~ "met"
-
-#~ msgid "Servers List Window"
-#~ msgstr "Prozor liste servera"
-
-#~ msgid "SharedFiles"
-#~ msgstr "Dijeljeni fajlovi"
-
-#~ msgid "New Prefs"
-#~ msgstr "Nove opcije"
-
-#~ msgid "News Preferences Work in Progress"
-#~ msgstr "nove opcije rade u napretku"
-
-#~ msgid "K"
-#~ msgstr "K"
-
-#~ msgid "h"
-#~ msgstr "h"
-
-#~ msgid "D"
-#~ msgstr "D"
-
-#~ msgid "?"
-#~ msgstr "?"
-
-#~ msgid "Error: Failed to open part.met file! (%s => %s)"
-#~ msgstr "greska: neuspjelo otvaranje part.met fajla! (%s => %s)"
-
-#~ msgid "Error: Invalid part.met fileversion! (%s => %s)"
-#~ msgstr "Greska: Neispravna part.met fajl verzija! (%s => %s)"
-
-#~ msgid "Error: %s (%s) is corrupt"
-#~ msgstr "Greska: %s (%s) ja koruptan"
-
-#~ msgid "Warning: %s might be corrupted"
-#~ msgstr "Upozorenje: %s je moguce koruptan"
-
-#~ msgid ".part file not found"
-#~ msgstr ".part fajl nije nadjen"
-
-#~ msgid "Unable to open %s file - using .bak file.\n"
-#~ msgstr "Neuspjelo otvaranje %s fajla koristeci .bak fajl. \n"
-
-#~ msgid ""
-#~ "%s file is 0 size somehow - using .bak file.\n"
-#~ " Please report on http://forum.amule.org\n"
-#~ msgstr ""
-#~ "%s fajl je 0 velicine nekako - koristeci .bak fajl.\n"
-#~ " Molim javite na http://forum.amule.org\n"
-
-#~ msgid "Partfile %s (%s) has void seeds file"
-#~ msgstr "Poceti fajl %s (%s) je izbjegao seeds fajlove"
-
-#~ msgid ""
-#~ "Found corrupted part (%i) in 0 parts file %s - FileResultHash |%s| "
-#~ "FileHash |%s|"
-#~ msgstr ""
-#~ "Nadjen koruptan dio (%i) u 0 pocetom fajlu %s - FileResultHash |%s| "
-#~ "FileHash |%s|"
-
-#~ msgid "Failed to delete %s"
-#~ msgstr "Neuspjelo brisanje %s"
-
-#~ msgid "Finished downloading %s :-)"
-#~ msgstr "Zavrsen download %s :-)"
-
-#~ msgid "A file with that name already exists, the file has been saved as %s"
-#~ msgstr "Fajl sa istim imenom vec postoji, fajl je spasen pod imenom %s"
-
-#~ msgid "Warning: Unable to hash downloaded part - hashset incomplete (%s)"
-#~ msgstr ""
-#~ "Upozorenje: Nemoguce hashovanje gotovog dijela - hashset nedovrsen (%s)"
-
-#~ msgid "ERROR: Cannot write to disk"
-#~ msgstr "GRESKA: ne moze pisati na disk"
-
-#~ msgid "Downloaded part %i is corrupt :(  (%s)"
-#~ msgstr "Downloaded dio %i je koruptan :(  (%s)"
-
-#~ msgid "ICH: Recovered corrupted part %i  (%s)"
-#~ msgstr "ICH: Koruptan dio je popravljen %i  (%s)"
-
-#~ msgid ""
-#~ "Partfilename: %s\n"
-#~ "Parts: %d , %s: %d (%.1f%%)\n"
-#~ msgstr ""
-#~ "Ime pocetog fajla: %s\n"
-#~ "Poceti fajlovi: %d , %s: %d (%.1f%%)\n"
-
-#~ msgid "%d%% done (%s) - Transferring from %d sources"
-#~ msgstr "%d%% gotov (%s) - Transfer od %d izvora"
-
-#~ msgid "Available"
-#~ msgstr "Dostupnost"
-
-#~ msgid "Last Seen Complete :"
-#~ msgstr "Posljednji put vidjen kompletno :"
-
-#~ msgid "Last Reception:"
-#~ msgstr "Posljednji prijem:"
-
-#~ msgid "Executable (*)|*||"
-#~ msgstr "Egzekutivno (*)|*||"
-
-#~ msgid "Language change will not be applied until aMule is restarted."
-#~ msgstr "Promjena jezika nece biti izvrsena prije ponovnog startanja aMule"
-
-#~ msgid "Update: Disabled"
-#~ msgstr "Obnavljanje: Onemoguceno"
-
-#~ msgid "Update period: %i sec"
-#~ msgstr "Period obnavljanja: %i sekundi"
-
-#~ msgid "Update period: %i secs"
-#~ msgstr "Period obnavljanja: %i sekundi"
-
-#~ msgid "Time for running averages: %i mins"
-#~ msgstr "Vrijeme rada prosjeka: %i minuta"
-
-#~ msgid "Tweaks"
-#~ msgstr "Tweaks"
-
-#~ msgid "Server connection refresh interval %i mins"
-#~ msgstr "Interval obnavljanja veze servera %i minuta"
-
-#~ msgid "Upload/Download list refresh time: Disable"
-#~ msgstr "Interval obnavljanja Upload/Download liste: onemogucen"
-
-#~ msgid "Upload/Download list refresh time: %i sec"
-#~ msgstr "Interval obnavljanja Upload/Download liste: %i sekundi"
-
-#~ msgid "Upload/Download list refresh time: %i secs"
-#~ msgstr "Interval obnavljanja Upload/Download liste: %i sekundi"
-
-#~ msgid "OLD Preferences"
-#~ msgstr "Stare postavke"
-
-#~ msgid "Choose a folder for "
-#~ msgstr "Izaberi mapu (folder) za"
-
-#~ msgid "%i days"
-#~ msgstr "%i dana"
-
-#~ msgid "%i day"
-#~ msgstr "%i dan"
-
-#~ msgid "PowerShare[Release]"
-#~ msgstr "Power dijeljenje[Release]"
-
-#~ msgid "Copy ED2k link to clipboard (HTML)"
-#~ msgstr "Kopiraj ED2k link u klipbord (HTML)"
-
-#~ msgid "Close this search result"
-#~ msgstr "Zatvori ovaj rezultat pretrage"
-
-#~ msgid "Description: %s"
-#~ msgstr "Opis: %s"
-
-#~ msgid "IP"
-#~ msgstr "IP"
-
-#~ msgid "User: %i"
-#~ msgstr "Korisnik: %i"
-
-#~ msgid "Unable to retrieve serverlist"
-#~ msgstr "Nije u stanju pronaci server listu"
-
-#~ msgid "Failed to load server.met!"
-#~ msgstr "Neuspjelo ucitavanje server.met!"
-
-#~ msgid "Invalid versiontag in server.met (0x%i , size %i)!"
-#~ msgstr "Neispravan versiontag u  server.met (0x%i , size %i)!"
-
-#~ msgid "Server added: "
-#~ msgstr "Dodati serveri:"
-
-#~ msgid "Connect to this server"
-#~ msgstr "Spoji sa ovim serverom"
-
-#~ msgid "Add to static"
-#~ msgstr "Ucini staticnim"
-
-#~ msgid "Remove from static server list"
-#~ msgstr "Odstrani sa liste staticnih"
-
-#~ msgid "Preference"
-#~ msgstr "Opcija"
-
-#~ msgid "No Pref"
-#~ msgstr "Bez opcija"
-
-#~ msgid "Failed to open staticservers.dat"
-#~ msgstr "Neuspjelo otvaranje staticservers.dat"
-
-#~ msgid "Added to static server list"
-#~ msgstr "Dodat listi staticnih servera"
-
-#~ msgid "Unknown server info received !"
-#~ msgstr "Primljena nepoznata server informacija !"
-
-#~ msgid "Connecting to %s (%s:%i)..."
-#~ msgstr "Spajanje sa %s (%s:%i)..."
-
-#~ msgid "Error in serversocket: %s (%s:%i): %u"
-#~ msgstr "Greska u server soketu: %s (%s:%i): %u"
-
-#~ msgid "This is "
-#~ msgstr "Ovo je"
-
-#~ msgid " (based on "
-#~ msgstr "(na osnovi"
-
-#~ msgid "Visit http://www.amule.org to check if a new version is available.\n"
-#~ msgstr ""
-#~ "Posjetite http://www.amule.org da provjerite da li je nova verzija "
-#~ "dostupna. \n"
-
-#~ msgid "Please enter a serveraddress"
-#~ msgstr "Molim upisite adresu servera"
-
-#~ msgid "Incomplete serverport: Please enter a serverport"
-#~ msgstr "Nepotpun port server: Molim upisite port servera"
-
-#~ msgid "Server not added!"
-#~ msgstr "Server nije dodat!"
-
-#~ msgid "Low ID"
-#~ msgstr "Low ID"
-
-#~ msgid "High ID"
-#~ msgstr "High ID"
-
-#~ msgid "Loading..."
-#~ msgstr "Ucitava..."
-
-#~ msgid "Permission"
-#~ msgstr "Dozvola"
-
-#~ msgid "Public"
-#~ msgstr "Javno"
-
-#~ msgid "Friends only"
-#~ msgstr "Samo prijatelji"
-
-#~ msgid "Locked"
-#~ msgstr "Zakljucano"
-
-#~ msgid "Permissions"
-#~ msgstr "Dozvole"
-
-#~ msgid "Change this file's comment..."
-#~ msgstr "Promijeni komentar ovog fajla"
-
-#~ msgid "Auto [Re]"
-#~ msgstr "Auto [Re]"
-
-#~ msgid "Hidden"
-#~ msgstr "Sakriven"
-
-#~ msgid "You cannot change permissions while a file is still downloading!"
-#~ msgstr "Ne mozete promijeniti dozvole za vriejme downloada!"
-
-#~ msgid "%s (%s:%i) appears to be full"
-#~ msgstr "%s (%s:%i) je pun"
-
-#~ msgid "Connecting to %s (%s:%i ) failed."
-#~ msgstr "Spajanje sa %s (%s:%i ) nije uspjelo."
-
-#~ msgid "Connection attempt to %s (%s:%i ) timed out"
-#~ msgstr "Pokusaj spajanja sa %s (%s:%i ) istekao"
-
-#~ msgid "Refreshing server connection"
-#~ msgstr "Obnavljanje veze servera"
-
-#~ msgid "Uptime: "
-#~ msgstr "Vrijeme korisnika:"
-
-#~ msgid "Downloaded Data (Session (Total)): %s (%s)"
-#~ msgstr "Podatak downloada (misija (ukupno)): %s (%s)"
-
-#~ msgid "Total Overhead (Packets): %s (%s)"
-#~ msgstr "Ukupan overheas (Paketi): %s (%s)"
-
-#~ msgid "File Request Overhead (Packets): %s (%s)"
-#~ msgstr "Zahtjev fajl overheada (Paketi): %s (%s)"
-
-#~ msgid "Source Exchange Overhead (Packets): %s (%s)"
-#~ msgstr "Overhead razmjene izvora (Paketa): %s (%s)"
-
-#~ msgid "Server Overhead (Packets): %s (%s)"
-#~ msgstr "Overhead servera (Paketa): %s (%s)"
-
-#~ msgid "Found Sources: %i"
-#~ msgstr "Pronadjeni izvori: %i"
-
-#~ msgid "Active Downloads (chunks): %i"
-#~ msgstr "Aktivni downloadovi (chunks): %i"
-
-#~ msgid "Uploaded Data (Session (Total)): %s (%s)"
-#~ msgstr "Podatak uploada (misija (ukupno)): %s (%s)"
-
-#~ msgid "Active Uploads: %i"
-#~ msgstr "Aktivni uploadovi: %i"
-
-#~ msgid "Total successful upload sessions: %i"
-#~ msgstr "Ukupne uspjesne upload misije: %i"
-
-#~ msgid "Total failed upload sessions: %i"
-#~ msgstr "Ukupne neuspjesne upload misije: %i"
-
-#~ msgid "Average Downloadrate (Session): %.2f kB/s"
-#~ msgstr "Prosjecna brzina downloada (misija): %.2f kB/s"
-
-#~ msgid "Average Uploadrate (Session): %.2f kB/s"
-#~ msgstr "Prosjecna brzina uploada (misija): %.2f kB/s"
-
-#~ msgid "Max Downloadrate Average (Session): %.2f kB/s"
-#~ msgstr "Maksimalna prosjecna brzina downloada (misija): %.2f kB/s"
-
-#~ msgid "Max Downloadrate (Session): %.2f kB/s"
-#~ msgstr "Maksimalna brzina downloada (misija): %.2f kB/s"
-
-#~ msgid "waiting for transfer..."
-#~ msgstr "ceka na transfer..."
-
-#~ msgid "Session UL:DL Ratio (Total):"
-#~ msgstr "Odnos UL:DL misije (ukupno):"
-
-#~ msgid "Number of Shared Files: %i"
-#~ msgstr "Broj dijeljenih fajlova: %i"
-
-#~ msgid "eMule: %i (%1.1f%%)"
-#~ msgstr "eMule: %i (%1.1f%%)"
-
-#~ msgid "aMule: %i (%1.1f%%)"
-#~ msgstr "aMule: %i (%1.1f%%)"
-
-#~ msgid "lMule/xMule: %i (%1.1f%%)"
-#~ msgstr "lMule/xMule: %i (%1.1f%%)"
-
-#~ msgid "eDonkeyHybrid: %i (%1.1f%%)"
-#~ msgstr "eDonkeyHybrid: %i (%1.1f%%)"
-
-#~ msgid "eDonkey: %i (%1.1f%%)"
-#~ msgstr "eDonkey: %i (%1.1f%%)"
-
-#~ msgid "cDonkey: %i (%1.1f%%)"
-#~ msgstr "cDonkey: %i (%1.1f%%)"
-
-#~ msgid "Old MLDonkey: %i (%1.1f%%)"
-#~ msgstr "Old MLDonkey: %i (%1.1f%%)"
-
-#~ msgid "New MLDonkey: %i (%1.1f%%)"
-#~ msgstr "New MLDonkey: %i (%1.1f%%)"
-
-#~ msgid "Working Servers"
-#~ msgstr "Ispravni serveri"
-
-#~ msgid "Failed Servers"
-#~ msgstr "Neuspjeli serveri"
-
-#~ msgid "Deleted Servers"
-#~ msgstr "Obrisani serveri"
-
-#~ msgid "Users on Working Servers"
-#~ msgstr "Korisnici na ispravnim serverima"
-
-#~ msgid "Files on Working Servers"
-#~ msgstr "Fajlovi na ispravnim serverima"
-
-#~ msgid "Total Users"
-#~ msgstr "Ukupno korisnika"
-
-#~ msgid "Active Connections (estimate)"
-#~ msgstr "Aktivne veze (procjena)"
-
-#~ msgid "Max Connection Limit Reached"
-#~ msgstr "Limit maksimalnih veza dostignut"
-
-#~ msgid "Average Connections (estimate)"
-#~ msgstr "Prosjecne veze (procjena)"
-
-#~ msgid "Detection Disabled"
-#~ msgstr "Otkrivanje onemoguceno"
-
-#~ msgid "Not Found"
-#~ msgstr "Nije pronasao"
-
-#~ msgid "Actual Speed Limits:"
-#~ msgstr "Trenutni limit brzine:"
-
-#~ msgid "DL: "
-#~ msgstr "DL: "
-
-#~ msgid " kb/s "
-#~ msgstr " kb/s "
-
-#~ msgid "UP: "
-#~ msgstr "UP: "
-
-#~ msgid " kb/s"
-#~ msgstr " kb/s"
-
-#~ msgid "aMule Tray Menu Info"
-#~ msgstr "aMule izbor informacija u koritu"
-
-#~ msgid "Nick: "
-#~ msgstr "Nadimak:"
-
-#~ msgid "Nick: Not Ready"
-#~ msgstr "Nadimak: Nije spreman"
-
-#~ msgid "Hash: "
-#~ msgstr "Hash: "
-
-#~ msgid "Hash: Not Ready"
-#~ msgstr "Hash: Nije spreman"
-
-#~ msgid "ID: Not Connected"
-#~ msgstr "ID: Nije spojen"
-
-#~ msgid "IP: "
-#~ msgstr "IP: "
-
-#~ msgid "TCP Port: "
-#~ msgstr "TCP Port: "
-
-#~ msgid "UDP Port: "
-#~ msgstr "UDP Port: "
-
-#~ msgid "Uptime: None"
-#~ msgstr "Vrijeme korisnika: Nepostoji"
-
-#~ msgid "ServerName: Not Connected"
-#~ msgstr "Ime servera: Nije spojen"
-
-#~ msgid "ServerIP: Not Connected"
-#~ msgstr "ServerIP: Nije spojen"
-
-#~ msgid "Shared Files: "
-#~ msgstr "Dijeljeni fajlovi:"
-
-#~ msgid "Queued Clients: "
-#~ msgstr "Klienti u redu cekanja:"
-
-#~ msgid "Total DL: "
-#~ msgstr "Ukupno DL:"
-
-#~ msgid " GB"
-#~ msgstr " GB"
-
-#~ msgid "Total UP: "
-#~ msgstr "Ukupno UL:"
-
-#~ msgid "Personal Infos"
-#~ msgstr "Licne informacije"
-
-#~ msgid "Show"
-#~ msgstr "Pokazi"
-
-#~ msgid "Hide"
-#~ msgstr "Sakrij"
-
-#~ msgid "All To Max Speed"
-#~ msgstr "Sve na maksimalnu brzinu"
-
-#~ msgid "All To Min Speed"
-#~ msgstr "Sve na minimalnu brzinu"
-
-#~ msgid "Disconnect from server"
-#~ msgstr "Prekini vezu sa serverom"
-
-#~ msgid "aMule for Linux"
-#~ msgstr "aMule za Linux"
-
-#~ msgid "Error while processing incoming extended protocol UDP Packet"
-#~ msgstr "Greska prilikom procesa ulazeceg spoljasnjeg UDP paketa"
-
-#~ msgid ""
-#~ "Client '%s' caused error while creating package (%s) - disconnecting "
-#~ "client"
-#~ msgstr ""
-#~ "Klient '%s' je prouzrokovao gresku prilikom kreiranja paketa (%s) - "
-#~ "prekidanje veze"
-
-#~ msgid "requested file not found"
-#~ msgstr "trazeni fajl nije nadjen"
-
-#~ msgid ""
-#~ "Client '%s' seems to be an aggressive client and is banned from the "
-#~ "uploadqueue"
-#~ msgstr ""
-#~ "Klient '%s' je ocigledno agresivan klient i bit ce izbacen iz reda cekanja"
-
-#~ msgid "%s [%s:%i] using %s removed : invalide eMule client"
-#~ msgstr "%s [%s:%i] koristeci %s odstranjen : neispravan eMule klient"
-
-#~ msgid "%s [%s:%i] using %s removed : suspicious mod string change"
-#~ msgstr ""
-#~ "%s [%s:%i] koristeci %s odstranjen : sumnjivo mijenjanje dodatke na imenu"
-
-#~ msgid "%s [%s:%i] using %s removed : known leecher"
-#~ msgstr "%s [%s:%i] koristeci %s odstranjen : poznati leecher"
-
-#~ msgid "%s [%s:%i] using %s removed : suspicious hash change"
-#~ msgstr "%s [%s:%i] koristeci %s odstranjen : sumnjiva promjena hasha"
-
-#~ msgid "%s [%s:%i] using %s removed : use your own hash"
-#~ msgstr "%s [%s:%i] koristeci %s odstranjen : koristi vas licni hash"
-
-#~ msgid "%s [%s:%i] using %s removed : suspicious name change"
-#~ msgstr "%s [%s:%i] koristeci %s odstranjen : sumnjivo mijenjanje imena"
-
-#~ msgid ""
-#~ "%s [%s:%i] using %s removed : leecher, invalid eMule or irregular Donkey"
-#~ msgstr ""
-#~ "%s [%s:%i] koristeci %s odstranjen : leecher, neispravan eMule ili "
-#~ "iregularan Donkey"
-
-#~ msgid "Client '%s' and '%s' have the same userhash or IP - removed '%s'"
-#~ msgstr ""
-#~ "Klienti '%s' i '%s' imaju ist hash korisnika ili IP - odstranjen '%s'"
-
-#~ msgid "Wizard"
-#~ msgstr "Carobnjak"
-
-#~ msgid "Down (kbit/s)"
-#~ msgstr "Dole (kbit/s)"
-
-#~ msgid "Up (kbit/s)"
-#~ msgstr "Gore (kbit/s)"
-
-#~ msgid "Custom"
-#~ msgstr "Vlastiti"
-
-#~ msgid "(enter below!)"
-#~ msgstr "(upisite ispod!)"
-
-#~ msgid "56-k Modem"
-#~ msgstr "56-k Modem"
-
-#~ msgid "ISDN"
-#~ msgstr "ISDN"
-
-#~ msgid "ISDN 2x"
-#~ msgstr "ISDN 2x"
-
-#~ msgid "xDSL"
-#~ msgstr "xDSL"
-
-#~ msgid "Cable"
-#~ msgstr "Cable"
-
-#~ msgid "T1"
-#~ msgstr "T1"
-
-#~ msgid "T3+"
-#~ msgstr "T3+"
-
-#~ msgid "100 Mbits"
-#~ msgstr "100 Mbits"
-
-#~ msgid "155 Mbits (ATM)"
-#~ msgstr "155 Mbits (ATM)"

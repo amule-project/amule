@@ -1,5 +1,8 @@
-# Swedish tranlation for aMule
-# This file is distributed under the same license as the amule package.
+# Translation of amule interface to Swedish
+# aMule i18n resource file.
+# Copyright (c) 2003-2020 aMule Team
+# This file is distributed under the same license as the aMule package.
+#
 # raffe, 2016.
 #
 msgid ""
@@ -7,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2016-05-18 09:44+0100\n"
+"PO-Revision-Date: 2020-02-20 09:53+0100\n"
 "Last-Translator: raffe <raffe@localhost.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -15,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -4036,7 +4039,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2852
 msgid "Filter servers"
-msgstr "Filtrera servrar:"
+msgstr "Filtrera servrar"
 
 #: src/muuli_wdr.cpp:2854
 msgid ""
@@ -4298,7 +4301,7 @@ msgstr "Visa klienter för"
 
 #: src/muuli_wdr.cpp:3425
 msgid "Reload:"
-msgstr "Återladda: "
+msgstr "Återladda:"
 
 #: src/muuli_wdr.cpp:3430
 msgid "Reload your shared files"
@@ -6987,7 +6990,7 @@ msgstr "Välj filen för din beräknade ED2K-länk"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:450
 msgid "Unable to open "
-msgstr "Kunde inte öppna"
+msgstr "Kunde inte öppna "
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:457
 #: src/utils/aLinkCreator/src/alcframe.cpp:582
@@ -7522,406 +7525,3 @@ msgstr "Utloggning begärd\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "Bearbetar begäran [omdirigerad]: "
-
-#, fuzzy
-#~ msgid "Download status"
-#~ msgstr "Hämtningsstatus"
-
-#~ msgid "( %s / %s )"
-#~ msgstr "( %s / %s )"
-
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgid "SOCKS5"
-#~ msgstr "SOCKS5"
-
-#~ msgid "SOCKS4"
-#~ msgstr "SOCKS4"
-
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgid "SOCKS4a"
-#~ msgstr "SOCKS4a"
-
-#~ msgid "Transferring"
-#~ msgstr "Överför"
-
-#~ msgid "WARNING: Failed to delete %s"
-#~ msgstr "VARNING: Misslyckades med att ta bort %s"
-
-#, fuzzy
-#~ msgid "Downloads window"
-#~ msgstr "Hämtar"
-
-#~ msgid "Transfers"
-#~ msgstr "Överföringar"
-
-#~ msgid "Unban"
-#~ msgstr "Avbannlys"
-
-#~ msgid "Show Uploads"
-#~ msgstr "Visa sändningar"
-
-#~ msgid "Show Queue"
-#~ msgstr "Visa kö"
-
-#~ msgid "Client Software"
-#~ msgstr "Klientprogramvara"
-
-#~ msgid "Waited"
-#~ msgstr "Väntande"
-
-#~ msgid "Upload Time"
-#~ msgstr "Sändningstid"
-
-#~ msgid "Upload/Download"
-#~ msgstr "Skicka/Hämta"
-
-#~ msgid "Remote Status"
-#~ msgstr "Fjärrstatus"
-
-#~ msgid "File Priority"
-#~ msgstr "Filprioritet"
-
-#~ msgid "Score"
-#~ msgstr "Betyg"
-
-#~ msgid "Last Seen"
-#~ msgstr "Senast sedd"
-
-#~ msgid "Current Session"
-#~ msgstr "Aktuell session"
-
-#~ msgid "Total Users: %s | Total Files: %s"
-#~ msgstr "Totalt antal användare: %s | Totalt antal filer: %s"
-
-#, fuzzy
-#~ msgid "Killed!"
-#~ msgstr "Misslyckades"
-
-#, fuzzy
-#~ msgid "Shutting down aMule..."
-#~ msgstr "Stäng av aMule."
-
-#~ msgid "Fetching status..."
-#~ msgstr "Hämtar status..."
-
-#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
-#~ msgstr "Användare: E: %s K: %s | Filer E: %s K: %s"
-
-#~ msgid "Message Filter"
-#~ msgstr "Meddelandefilter"
-
-#, fuzzy
-#~ msgid "Bind Address"
-#~ msgstr "Adress"
-
-#, fuzzy
-#~ msgid "Enable UPnP"
-#~ msgstr "Aktivera proxy"
-
-#, fuzzy
-#~ msgid "UPnP TCP Port:"
-#~ msgstr "TCP-port: %d"
-
-#~ msgid "Show percentage"
-#~ msgstr "Visa procentandel"
-
-#~ msgid "TCP port"
-#~ msgstr "TCP-port"
-
-#~ msgid "Column Sorting"
-#~ msgstr "Kolumnsortering"
-
-#~ msgid "File Options"
-#~ msgstr "Filalternativ"
-
-#~ msgid "Status text"
-#~ msgstr "Statustext"
-
-#~ msgid "Disable/Enable"
-#~ msgstr "Inaktivera/Aktivera"
-
-#~ msgid "Authentication"
-#~ msgstr "Autentisering"
-
-#~ msgid "Max Connections"
-#~ msgstr "Max anslutningar"
-
-#~ msgid "Konqueror"
-#~ msgstr "Konqueror"
-
-#~ msgid "Mozilla"
-#~ msgstr "Mozilla"
-
-#~ msgid "Firefox"
-#~ msgstr "Firefox"
-
-#~ msgid "Firebird"
-#~ msgstr "Firebird"
-
-#~ msgid "Opera"
-#~ msgstr "Opera"
-
-#~ msgid "Netscape"
-#~ msgstr "Netscape"
-
-#~ msgid "Galeon"
-#~ msgstr "Galeon"
-
-#~ msgid "Epiphany"
-#~ msgstr "Epiphany"
-
-#~ msgid "Please wait... "
-#~ msgstr "Vänta..."
-
-#~ msgid "Could not determine the command for running the browser."
-#~ msgstr "Kunde inte fastställa kommandot för att köra webbläsaren."
-
-#~ msgid "Copy ED2k &link to clipboard"
-#~ msgstr "Kopiera ED2k-&länk till urklipp"
-
-#~ msgid "Warning"
-#~ msgstr "Varning"
-
-#~ msgid "Guest password for webserver"
-#~ msgstr "Gästlösenord för webbserver"
-
-#, fuzzy
-#~ msgid "Copy ED2k links to clipboard"
-#~ msgstr "Kopiera ED2k-länk till urklipp"
-
-#, fuzzy
-#~ msgid "ED2K: Connecting"
-#~ msgstr "Ansluter"
-
-#, fuzzy
-#~ msgid "ED2K: Disconnected"
-#~ msgstr "Frånkopplad"
-
-#~ msgid "Edit Serverlist"
-#~ msgstr "Redigera serverlista"
-
-#~ msgid "Already connected to ED2K."
-#~ msgstr "Redan ansluten till ED2K."
-
-#~ msgid "Connecting to ED2K..."
-#~ msgstr "Ansluter till ED2K..."
-
-#~ msgid "ED2K Status:"
-#~ msgstr "ED2K-status:"
-
-#~ msgid "Error: "
-#~ msgstr "Fel: "
-
-#~ msgid "Warning: "
-#~ msgstr "Varning: "
-
-#~ msgid "Error"
-#~ msgstr "Fel"
-
-#~ msgid "Insufficient Diskspace"
-#~ msgstr "Otillräckligt diskutrymme"
-
-#~ msgid "No valid servers to connect in serverlist found"
-#~ msgstr "Inga giltiga servrar att ansluta till hittades i serverlista"
-
-#~ msgid "Connect to ED2K only."
-#~ msgstr "Anslut endast till ED2K."
-
-#~ msgid "Disconnect from ED2K only."
-#~ msgstr "Koppla endast från ED2K."
-
-#~ msgid "Error: %s (%s) - %s"
-#~ msgstr "Fel: %s (%s) - %s"
-
-#~ msgid "Warning: %s (%s) - %s"
-#~ msgstr "Varning: %s (%s) - %s"
-
-#, fuzzy
-#~ msgid "ED2K Link: "
-#~ msgstr "ED2K-info"
-
-#~ msgid "0"
-#~ msgstr "0"
-
-#~ msgid "Incoming Directory :"
-#~ msgstr "Katalog för inkommande :"
-
-#~ msgid "Temporary Directory :"
-#~ msgstr "Temporär katalog :"
-
-#~ msgid "Shared Directories"
-#~ msgstr "Utdelade kataloger"
-
-#~ msgid "Serverlist"
-#~ msgstr "Serverlista"
-
-#~ msgid "Manual Server Add : Name"
-#~ msgstr "Lägg till server manuellt : Namn"
-
-#~ msgid "TCP Port: %d"
-#~ msgstr "TCP-port: %d"
-
-#~ msgid "UDP Port: %d"
-#~ msgstr "UDP-port: %d"
-
-#~ msgid "Shared Files: %d"
-#~ msgstr "Utdelade filer: %d"
-
-#~ msgid "webserver running on pid %d"
-#~ msgstr "webbserver kör på pid %d"
-
-#~ msgid "Disconnected from ED2K"
-#~ msgstr "Frånkopplad från ED2K"
-
-#~ msgid "Mb"
-#~ msgstr "Mb"
-
-#~ msgid "Web Server: Started\n"
-#~ msgstr "Webbserver: Startad\n"
-
-#~ msgid "Not Supported"
-#~ msgstr "Stöds inte"
-
-#~ msgid "Notifications"
-#~ msgstr "Notifieringar"
-
-#~ msgid "Use sound"
-#~ msgstr "Använd ljud"
-
-#~ msgid "Starts a new chat session"
-#~ msgstr "Startar en ny chattsession"
-
-#~ msgid "Email Address :"
-#~ msgstr "E-postadress :"
-
-#~ msgid ":"
-#~ msgstr ":"
-
-#~ msgid "Never show this again"
-#~ msgstr "Visa aldrig det här igen"
-
-#~ msgid "Enable/Disable"
-#~ msgstr "Aktivera/Inaktivera"
-
-#~ msgid "Disconnect from "
-#~ msgstr "Koppla från "
-
-#~ msgid "current server"
-#~ msgstr "aktuell server"
-
-#~ msgid " and "
-#~ msgstr " och "
-
-#~ msgid " ["
-#~ msgstr " ["
-
-#~ msgid " | Kad: "
-#~ msgstr " | Kad: "
-
-#~ msgid "doesn't work"
-#~ msgstr "fungerar inte"
-
-#~ msgid "WARNING: You have recieved Low-ID!"
-#~ msgstr "VARNING: Du har tagit emot Low-ID!"
-
-#~ msgid "%d"
-#~ msgstr "%d"
-
-#~ msgid "     %d"
-#~ msgstr "     %d"
-
-#~ msgid ".%d"
-#~ msgstr ".%d"
-
-#~ msgid "(Min 60 / 3600 Max)"
-#~ msgstr "(Min 60 / 3600 Max)"
-
-#~ msgid "English (U.S.)"
-#~ msgstr "Engelska (U.S.A)"
-
-#~ msgid "Spanish (Mexican)"
-#~ msgstr "Spanska (Mexiko)"
-
-#~ msgid "Set riority to low."
-#~ msgstr "Ställ in prioritet till låg."
-
-#~ msgid "Set riority to normal."
-#~ msgstr "Ställ in prioritet till normal."
-
-#~ msgid "Set riority to high."
-#~ msgstr "Ställ in prioritet till hög."
-
-#~ msgid "Set riority to auto."
-#~ msgstr "Ställ in prioritet till auto."
-
-#~ msgid "Sources: %u"
-#~ msgstr "Källor: %u"
-
-#~ msgid "Client: aMule %s"
-#~ msgstr "Klient: aMule %s"
-
-#~ msgid "File Name: %s"
-#~ msgstr "Filnamn: %s"
-
-#~ msgid "File size: %s"
-#~ msgstr "Filstorlek: %s"
-
-#~ msgid ""
-#~ " 'All-Platform' p2p client based on eMule \n"
-#~ "\n"
-#~ " Website: http://www.amule.org \n"
-#~ " Forum: http://forum.amule.org \n"
-#~ " FAQ: http://wiki.amule.org \n"
-#~ "\n"
-#~ " Contact: admin@amule.org (administrative issues) \n"
-#~ " Copyright (C) 2003-2006 aMule Team \n"
-#~ "\n"
-#~ " Part of aMule is based on \n"
-#~ " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-#~ " Copyright (C) 2002 Petar Maymounkov\n"
-#~ " http://kademlia.scs.cs.nyu.edu\n"
-#~ msgstr ""
-#~ " Plattformsoberoende P2P-klient baserad på eMule \n"
-#~ "\n"
-#~ " Webbplats: http://www.amule.org \n"
-#~ " Forum: http://forum.amule.org \n"
-#~ " Vanliga frågor: http://wiki.amule.org \n"
-#~ "\n"
-#~ " Kontakt: admin@amule.org (administrativa frågor) \n"
-#~ " Copyright © 2003-2006 aMule Team \n"
-#~ "\n"
-#~ " Del av aMule är baserad på \n"
-#~ " Kademlia: Peer-to-peer-routing baserad på XOR metric.\n"
-#~ " Copyright © 2002 Petar Maymounkov\n"
-#~ " http://kademlia.scs.cs.nyu.edu\n"
-
-#~ msgid "http://download.overnet2000.de/nodes.dat"
-#~ msgstr "http://download.overnet2000.de/nodes.dat"
-
-#~ msgid "Skin file name is empty"
-#~ msgstr "Skalfilnamnet är tomt"
-
-#~ msgid "Skin file %s does not exist"
-#~ msgstr "Skalfilen %s finns inte"
-
-#~ msgid " - loading defaults"
-#~ msgstr " - läser in standardvärden"
-
-#~ msgid " - loading toolbar defaults"
-#~ msgstr " - läser in standardvärden för verktygsrad"
-
-#~ msgid "Skin file:"
-#~ msgstr "Skalfil:"
-
-#~ msgid "theApp.serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "theApp.serverlist->GetServerByAddress() returnerade NULL"
-
-#~ msgid "Default Permissions"
-#~ msgstr "Standardrättigheter"
-
-#~ msgid "Enable IP-Filtering"
-#~ msgstr "Aktivera IP-filtrering"

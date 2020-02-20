@@ -1,17 +1,18 @@
+# Translation of amule interface to Finnish
 # aMule i18n resource file.
-# Copyright (c) 2003-2011 aMule Team
+# Copyright (c) 2003-2020 aMule Team
 # This file is distributed under the same license as the aMule package.
+#
 # Kry <elkry@users.sourceforge.net>, 2004.
 # Tapio Rantala <tapio.rantala@iki.fi>, 2007-2008.
 # Tapio Rantala <tapio.rantala@nomovok.com>, 2010.
-#
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2011-11-11 10:38+0200\n"
+"PO-Revision-Date: 2020-02-18 15:09+0100\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
 "Language: fi\n"
@@ -19,6 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -4206,7 +4208,7 @@ msgstr "Kytkee päälle/pois käyttäjänimellä/salasanalla tunnistautumisen"
 
 #: src/muuli_wdr.cpp:3036
 msgid "Username: "
-msgstr "Käyttäjänimi:"
+msgstr "Käyttäjänimi: "
 
 #: src/muuli_wdr.cpp:3040
 msgid "The username to use to connect to the proxy"
@@ -4368,7 +4370,7 @@ msgstr[1] "tavua"
 
 #: src/OtherFunctions.cpp:66
 msgid "kB"
-msgstr "KB"
+msgstr "kB"
 
 #: src/OtherFunctions.cpp:72
 msgid "TB"
@@ -4414,7 +4416,7 @@ msgstr "tuntia"
 
 #: src/OtherFunctions.cpp:121
 msgid "Days"
-msgstr "päivää"
+msgstr "Päivää"
 
 #: src/OtherFunctions.cpp:629
 msgid "all"
@@ -4856,9 +4858,8 @@ msgid "Portuguese (Brazilian)"
 msgstr "Portugali (Brazilia)"
 
 #: src/Preferences.cpp:659
-#, fuzzy
 msgid "Romanian"
-msgstr "Albania"
+msgstr "Romanian"
 
 #: src/Preferences.cpp:660
 msgid "Russian"
@@ -7564,217 +7565,3 @@ msgstr "Uloskirjautumista pyydetty\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "Käsittelee pyyntöä [uudelleenohjattu]: "
-
-#~ msgid "Partfile %s (%s) has no seeds file"
-#~ msgstr "Osatiedostolla %s (%s) ei ole lähdetiedostoa"
-
-#~ msgid "Partfile %s (%s) has a void seeds file"
-#~ msgstr "Osatiedostolla %s (%s) on tyhjä lähdetiedosto"
-
-#, fuzzy
-#~ msgid "Download status"
-#~ msgstr "Latauksen tilanne"
-
-#~ msgid "( %s / %s )"
-#~ msgstr "( %s / %s )"
-
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgid "SOCKS5"
-#~ msgstr "SOCKS5"
-
-#~ msgid "SOCKS4"
-#~ msgstr "SOCKS4"
-
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgid "SOCKS4a"
-#~ msgstr "SOCKS4a"
-
-#~ msgid "Update delay : %d second"
-#~ msgid_plural "Update delay : %d seconds"
-#~ msgstr[0] "Päivitysviive: %d sekunti"
-#~ msgstr[1] "Päivitysviive: %d sekuntia"
-
-#~ msgid "Comments and ratings are not supported on remote gui yet"
-#~ msgstr ""
-#~ "Kommentit ja luokitukset eivät ole vielä tuettuja graafisessa "
-#~ "etäkäyttöliittymässä"
-
-#~ msgid "Transferring"
-#~ msgstr "Siirtää"
-
-#, fuzzy
-#~ msgid "QR: ???"
-#~ msgstr "Jonossa: %u"
-
-#~ msgid "QR: %u"
-#~ msgstr "Jonossa: %u"
-
-#, fuzzy
-#~ msgid "Queue Rank"
-#~ msgstr "Jonossa"
-
-#~ msgid "TODO - show progress of a search"
-#~ msgstr "KESKENERÄINEN - haun edistymisen näyttö"
-
-#~ msgid "Starting to create MD4 and AICH hash for file: %s"
-#~ msgstr "Lasketaan MD4- sekä AICH-tarkistetta tiedostolle %s"
-
-#~ msgid "Starting to create MD4 hash for file: %s"
-#~ msgstr "Lasketaan MD4-tarkistetta tiedostolle %s"
-
-#~ msgid "Starting to create AICH hash for file: %s"
-#~ msgstr "Lasketaan AICH-tarkistetta tiedostolle %s"
-
-#~ msgid "WARNING: Could not remove original '%s' after creating backup"
-#~ msgstr ""
-#~ "VAROITUS: Alkuperäistä '%s' ei voitu poistaa varmuuskopion valmistuttua"
-
-#~ msgid "WARNING: Failed to delete %s"
-#~ msgstr "VAROITUS: Ei voitu poistaa %s"
-
-#~ msgid "%u (QR: %u)"
-#~ msgstr "%u (Jono: %u)"
-
-#~ msgid "Rating (total):"
-#~ msgstr "Luokitus (yhteensä):"
-
-#~ msgid "Try to transfer full chunks to all uploads"
-#~ msgstr "Yritä siirtää kokonaisia paloja lähetettäessä"
-
-#~ msgid "Networks window"
-#~ msgstr "Verkkoikkuna"
-
-#~ msgid "Searches window"
-#~ msgstr "Hakujen ikkuna"
-
-#, fuzzy
-#~ msgid "Downloads window"
-#~ msgstr "Lataa"
-
-#~ msgid "Shared files window"
-#~ msgstr "Jaettujen tiedostojen ikkuna"
-
-#~ msgid "Messages window"
-#~ msgstr "Viestien ikkuna"
-
-#~ msgid "Statistics graph window"
-#~ msgstr "Tilastokuvaajien ikkuna"
-
-#~ msgid "Preferences settings window"
-#~ msgstr "Asetuksien säätöikkuna"
-
-#~ msgid "Traybar-icon lost, trying to recreate ..."
-#~ msgstr "Tehtäväpalkin kuvake katosi, yritän uudelleenluoda..."
-
-#~ msgid "Transfers"
-#~ msgstr "Siirrot"
-
-#~ msgid "Files transfers window"
-#~ msgstr "Siirrettävien tiedostojen ikkuna"
-
-#~ msgid "Unban"
-#~ msgstr "Salli"
-
-#~ msgid "Show Uploads"
-#~ msgstr "Näytä lähetykset"
-
-#~ msgid "Show Queue"
-#~ msgstr "Näytä jono"
-
-#~ msgid "Select View"
-#~ msgstr "Valitse näkymä"
-
-#~ msgid "Client Software"
-#~ msgstr "Asiakasohjelma"
-
-#~ msgid "Waited"
-#~ msgstr "Odottanut"
-
-#~ msgid "Upload Time"
-#~ msgstr "Lähetysaika"
-
-#~ msgid "Upload/Download"
-#~ msgstr "Lähetetty/vastaanotettu"
-
-#~ msgid "Remote Status"
-#~ msgstr "Etäpään tilanne"
-
-#~ msgid "File Priority"
-#~ msgstr "Tiedoston tärkeys"
-
-#~ msgid "Score"
-#~ msgstr "Pisteet"
-
-#~ msgid "Asked"
-#~ msgstr "Kysytty"
-
-#~ msgid "Last Seen"
-#~ msgstr "Viimeksi nähty"
-
-#~ msgid "Entered Queue"
-#~ msgstr "Saapunut jonoon"
-
-#~ msgid "Transferred Up"
-#~ msgstr "Lähetetty"
-
-#~ msgid "Transferred Down"
-#~ msgstr "Ladattu"
-
-#~ msgid "Userhash"
-#~ msgstr "Käyttäjätarkiste"
-
-#~ msgid "Encrypted"
-#~ msgstr "Salattu"
-
-#~ msgid "Loaded %d flag bitmaps."
-#~ msgstr "Avattiin %d lippukuvaa."
-
-#~ msgid "Shows Upload / Up-queue"
-#~ msgstr "Näytä lähetykset / lähetysjono"
-
-#~ msgid "Clients on queue :"
-#~ msgstr "Asiakkaita jonossa :"
-
-#~ msgid "Current Session"
-#~ msgstr "Nykyinen sessio"
-
-#~ msgid "Total"
-#~ msgstr "Yhteensä"
-
-#~ msgid "Requested :"
-#~ msgstr "Pyydetty :"
-
-#~ msgid "Create backup for preview"
-#~ msgstr "Luo varmuuskopio esikatseluun"
-
-#~ msgid "Files Transfers Window"
-#~ msgstr "Siirrettävien tiedostojen ikkuna"
-
-#~ msgid "Total Users: %s | Total Files: %s"
-#~ msgstr "Käyttäjiä yhteensä: %s | Tiedostoja yhteensä: %s"
-
-#~ msgid "Download size not received, downloading until connection is closed"
-#~ msgstr "Latauksen kokoa ei saatu, ladataan kunnes yhteys suljetaan"
-
-#~ msgid "HTTP download thread ended"
-#~ msgstr "HTTP-lataussäie päättyi"
-
-#~ msgid "Host: %s:%i\n"
-#~ msgstr "Verkkonimi: %s:%i\n"
-
-#~ msgid "Response: %i (Error: %i)"
-#~ msgstr "Vastaus: %i (Virhe: %i)"
-
-#~ msgid "WARNING: Void response on stream creation"
-#~ msgstr "VAROITUS: Tyhjä vastaus yhteyttä muodostaessa"
-
-#~ msgid "ERROR: Redirection code received with no URL"
-#~ msgstr "VIRHE: Uudelleenohjauksen koodi vastaanotettu ilman URLia"
-
-#~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-#~ msgstr ""
-#~ "CIP2Country::CIP2Country(): Maatietojen avaaminen epäonnistui kohteesta  "

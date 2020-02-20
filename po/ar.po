@@ -1,20 +1,25 @@
-# Translation of amule interface to arabic
-# Copyright (c) 2003-2011 aMule Team
+# Translation of amule interface to Arabic
+# aMule i18n resource file.
+# Copyright (c) 2003-2020 aMule Team
 # This file is distributed under the same license as the aMule package.
-#  saleh alhathal <hathalsal@hotmail.com>, 2004.
+#
+# saleh alhathal <hathalsal@hotmail.com>, 2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2004-03-28 22:15+0300\n"
+"PO-Revision-Date: 2020-02-11 12:10+0100\n"
 "Last-Translator: saleh alhathal <hathalsal@hotmail.com>\n"
 "Language-Team: \n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -781,6 +786,10 @@ msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] "إحصائية الملفات لهذة الجلسة: قبل %d من %d طلب , %s تم نقله \n"
 msgstr[1] "إحصائية الملفات لهذة الجلسة: قبل %d من %d طلب , %s تم نقله \n"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/BaseClient.cpp:2024
 #, fuzzy, c-format
@@ -789,6 +798,10 @@ msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] "إحصائية الملفات لهذة الجلسة: قبل %d من %d طلب , %s تم نقله \n"
 msgstr[1] "إحصائية الملفات لهذة الجلسة: قبل %d من %d طلب , %s تم نقله \n"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/BaseClient.cpp:2027
 msgid "Requested unknown file"
@@ -915,6 +928,10 @@ msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
 msgstr[0] "حمل ملف الرصيد, تم التعرف على %u عميل"
 msgstr[1] "حمل ملف الرصيد, تم التعرف على %u عميل"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/ClientCreditsList.cpp:161
 #, fuzzy, c-format
@@ -922,6 +939,10 @@ msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
 msgstr[0] "الرصيد منتهى!"
 msgstr[1] "الرصيد منتهى!"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
@@ -1083,6 +1104,10 @@ msgid "%u comment"
 msgid_plural "%u comments"
 msgstr[0] "ﻻ تعليق "
 msgstr[1] "ﻻ تعليق "
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
@@ -1481,6 +1506,10 @@ msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "وجد %i جزء ملفات"
 msgstr[1] "وجد %i جزء ملفات"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/DownloadQueue.cpp:244 src/DownloadQueue.cpp:1470
 msgid "Filesystem for Temp directory cannot handle large files."
@@ -2150,6 +2179,10 @@ msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/IPFilter.cpp:331
 #, c-format
@@ -2157,6 +2190,10 @@ msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/IPFilter.cpp:503
 #, c-format
@@ -2224,6 +2261,10 @@ msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/kademlia/routing/RoutingZone.cpp:221
 #: src/kademlia/routing/RoutingZone.cpp:287
@@ -2236,6 +2277,10 @@ msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/kademlia/routing/RoutingZone.cpp:336
 #, c-format
@@ -2243,6 +2288,10 @@ msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/KnownFile.cpp:1544 src/PartFileConvertDlg.cpp:91
 msgid "File name"
@@ -4215,6 +4264,10 @@ msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "بايت"
 msgstr[1] "بايت"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/OtherFunctions.cpp:66
 msgid "kB"
@@ -4246,6 +4299,10 @@ msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "بايت"
 msgstr[1] "بايت"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/OtherFunctions.cpp:99
 msgid "MB/s"
@@ -4467,6 +4524,10 @@ msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/PartFile.cpp:1048
 #, c-format
@@ -4488,6 +4549,10 @@ msgid_plural ""
 "|%s|"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/PartFile.cpp:1172
 #, c-format
@@ -4977,6 +5042,10 @@ msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "تحيدث كل:5 ثواني"
 msgstr[1] "تحيدث كل:5 ثواني"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/PrefsUnifiedDlg.cpp:1137
 #, c-format
@@ -4984,6 +5053,10 @@ msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/PrefsUnifiedDlg.cpp:1143
 #, c-format
@@ -4996,6 +5069,10 @@ msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/PrefsUnifiedDlg.cpp:1161
 #, c-format
@@ -5003,6 +5080,10 @@ msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/PrefsUnifiedDlg.cpp:1168
 #, fuzzy, c-format
@@ -5010,6 +5091,10 @@ msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "فترة تحديث الإتصال بالخادم %i دقيقة"
 msgstr[1] "فترة تحديث الإتصال بالخادم %i دقيقة"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/PrefsUnifiedDlg.cpp:1170
 msgid "Server connection refresh interval: Disabled"
@@ -5164,6 +5249,10 @@ msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "اﻹتصال الذاتي بالخادم سيعيد المحاولة بعد %d ثانية"
 msgstr[1] "اﻹتصال الذاتي بالخادم سيعيد المحاولة بعد %d ثانية"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/ServerConnect.cpp:412
 msgid "Connection lost"
@@ -5216,6 +5305,10 @@ msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] "%i خادمات وجدت في server.met"
 msgstr[1] "%i خادمات وجدت في server.met"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/ServerList.cpp:176
 #, fuzzy, c-format
@@ -5223,6 +5316,10 @@ msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] "%d خادم مضاف"
 msgstr[1] "%d خادم مضاف"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/ServerList.cpp:179
 #, fuzzy
@@ -5459,6 +5556,10 @@ msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] "تلقي %d خادم جديد"
 msgstr[1] "تلقي %d خادم جديد"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/ServerSocket.cpp:551
 msgid "Saving of server-list completed."
@@ -5623,6 +5724,10 @@ msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] "وجد %i ملف مشاركة معرف"
 msgstr[1] "وجد %i ملف مشاركة معرف"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/SharedFileList.cpp:377
 #, fuzzy, c-format
@@ -5630,6 +5735,10 @@ msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "وجد %i ملفات مشاركة معروفة , %i غير معروفة"
 msgstr[1] "وجد %i ملفات مشاركة معروفة , %i غير معروفة"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: src/SharedFileList.cpp:386
 #, c-format
@@ -7302,1156 +7411,3 @@ msgstr ""
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr ""
-
-#, fuzzy
-#~ msgid "Download status"
-#~ msgstr "تحميل"
-
-#, fuzzy
-#~ msgid "Update delay : %d second"
-#~ msgid_plural "Update delay : %d seconds"
-#~ msgstr[0] "تحيدث كل:5 ثواني"
-#~ msgstr[1] "تحيدث كل:5 ثواني"
-
-#~ msgid "Transferring"
-#~ msgstr "نقل"
-
-#, fuzzy
-#~ msgid "Only files currently uploading"
-#~ msgstr "حاليا تحميل :"
-
-#, fuzzy
-#~ msgid "Queue Rank"
-#~ msgstr "اﻻنتظار ممتلئ"
-
-#, fuzzy
-#~ msgid "Downloads window"
-#~ msgstr "تحميل"
-
-#~ msgid "Transfers"
-#~ msgstr "نقل"
-
-#~ msgid "Unban"
-#~ msgstr "ﻻ تمنع"
-
-#~ msgid "Show Uploads"
-#~ msgstr "عرض الرفع"
-
-#~ msgid "Show Queue"
-#~ msgstr "أظهر المنتظرين"
-
-#~ msgid "Waited"
-#~ msgstr "إنتظار"
-
-#~ msgid "Upload Time"
-#~ msgstr "زمن الرفع"
-
-#~ msgid "File Priority"
-#~ msgstr "أولوية ملف"
-
-#~ msgid "Score"
-#~ msgstr "نتيجة"
-
-#~ msgid "Asked"
-#~ msgstr "طلب"
-
-#~ msgid "Last Seen"
-#~ msgstr "اخر مشاهدة"
-
-#~ msgid "Entered Queue"
-#~ msgstr "داخل اﻻنتظار"
-
-#~ msgid "Clients on queue :"
-#~ msgstr "عملاء في اﻻنتظار:"
-
-#~ msgid "Current Session"
-#~ msgstr "الجلسة الحالية"
-
-#~ msgid "Total"
-#~ msgstr "المجموع"
-
-#~ msgid "Requested :"
-#~ msgstr "طلب :"
-
-#~ msgid "Files Transfers Window"
-#~ msgstr "نافذة ملفات النقل"
-
-#, fuzzy
-#~ msgid "HTTP download thread ended"
-#~ msgstr "سعة نطاق التحميل الحقيقية"
-
-#, fuzzy
-#~ msgid "Killed!"
-#~ msgstr "فشل"
-
-#~ msgid "Line Capacities"
-#~ msgstr "قدرة الخط"
-
-#~ msgid "Max Sources per File"
-#~ msgstr "حد أعلى للمصادر لكل ملف"
-
-#~ msgid "Start next paused file when a file completed"
-#~ msgstr "إبدا الملف الموقف التالي عند اﻻنتهاء من ملف"
-
-#~ msgid "Select Statistics Colors"
-#~ msgstr "اختر لون اﻻحصائيات"
-
-#~ msgid "Download Queue Files Progress"
-#~ msgstr "تقدم طابور ملفات التحميل"
-
-#~ msgid "Show percentage"
-#~ msgstr "إظهار نسبة مئوية"
-
-#~ msgid "I.C.H. active"
-#~ msgstr "I.C.H. نشط"
-
-#~ msgid "Progressbar Style"
-#~ msgstr "سمة شريط التطور"
-
-#~ msgid "Misc Options"
-#~ msgstr "خيرات متفرقة"
-
-#~ msgid "Max Connections"
-#~ msgstr "أعلى أتصال"
-
-#~ msgid "Could not determine the command for running the browser."
-#~ msgstr "لم يحديد إمر لتشغيل المتصفح"
-
-#, fuzzy
-#~ msgid "Copy ED2k links to clipboard"
-#~ msgstr "نسخ رابط ED2k للحافظة"
-
-#, fuzzy
-#~ msgid "ED2K: Connecting"
-#~ msgstr "يتم الإتصال"
-
-#, fuzzy
-#~ msgid "ED2K: Disconnected"
-#~ msgstr "فصل الإتصال"
-
-#~ msgid "Edit Serverlist"
-#~ msgstr "حرر قائمة الخادمات"
-
-#~ msgid "Average filesize: %s"
-#~ msgstr "متوسط حجم الملف : %s"
-
-#~ msgid "Error"
-#~ msgstr "خطأ"
-
-#~ msgid "Unexpected file error while completing %s. File paused"
-#~ msgstr "خطأ غير متوقع أثناء إكمال ملف %s. الملف متوقف"
-
-#~ msgid "No valid servers to connect in serverlist found"
-#~ msgstr "ﻻ يوجد خادمات صحيحة في قائمة الخادمات"
-
-#~ msgid "0"
-#~ msgstr "0"
-
-#~ msgid "Bandwith Limits"
-#~ msgstr "حدود سعة النطاق"
-
-#~ msgid "Connection Limits"
-#~ msgstr "حدود اﻷتصال"
-
-#~ msgid "Auto-update serverlist at startup"
-#~ msgstr "حدث قائمة الخادمات عند بدء التشغيل تلقائي"
-
-#~ msgid "Update serverlist when connecting to a server"
-#~ msgstr "حدث قائمة الخادمات عند اﻻتصال بخادم"
-
-#~ msgid "Update serverlist when a client connect"
-#~ msgstr "حدث قائمة الخادمات عند اتصال عميل"
-
-#~ msgid "Incoming Directory :"
-#~ msgstr "مجلد الوصول :"
-
-#~ msgid "Temporary Directory :"
-#~ msgstr "مجلد المؤقت :"
-
-#~ msgid "Shared Directories"
-#~ msgstr "مجلدات المشاركة"
-
-#~ msgid "Webserver Parameters"
-#~ msgstr "متغيرلت خادم الشبكة"
-
-#~ msgid "Webserver port"
-#~ msgstr "منفذ خادم شبكة"
-
-#~ msgid "Serverlist"
-#~ msgstr "قائمة الخادمات"
-
-#~ msgid "Manual Server Add : Name"
-#~ msgstr "اضافة خادم يدويا : اسم"
-
-#~ msgid "TCP Port: Not Ready"
-#~ msgstr "منفذ TCP: غير جاهز"
-
-#~ msgid "UDP Port: Not Ready"
-#~ msgstr "منفذ UDP: غير جاهز"
-
-#~ msgid "Upload Limit"
-#~ msgstr "وقت رفع المعلومات"
-
-#~ msgid "Download Limit"
-#~ msgstr "وقت تنزيل المعلومات"
-
-#~ msgid "Not Supported"
-#~ msgstr "غير مدعوم"
-
-#~ msgid "Browse wav"
-#~ msgstr "تصفح wav"
-
-#~ msgid "File wav (*.wav)|*.wav||"
-#~ msgstr "ملف wav (*.wav)|*.wav||"
-
-#~ msgid "No comment(s)"
-#~ msgstr "ﻻ تعليق"
-
-#~ msgid "Messages popup"
-#~ msgstr "رسالة قافزة"
-
-#~ msgid "Use sound"
-#~ msgstr "استخدم صوت"
-
-#~ msgid "Pop out when :"
-#~ msgstr "قفز عندما :"
-
-#~ msgid "New entry on log"
-#~ msgstr "حدث جديد على السجل"
-
-#~ msgid "Starts a new chat session"
-#~ msgstr "ابدء جلسة محادثة جديدة"
-
-#~ msgid "A new chat message is received"
-#~ msgstr "تلقي رسالة محادثة جديدة"
-
-#~ msgid "A download is added or finished"
-#~ msgstr "تحميل أضيف او إنتها"
-
-#~ msgid "New aMule version detected"
-#~ msgstr "نسخة حديثة من aMule"
-
-#~ msgid "Notify by Mail"
-#~ msgstr "اشعار بالبريد"
-
-#~ msgid "Send an Email when transfer complete."
-#~ msgstr "قم بارسال رسالة بريدية عند اﻻتمام"
-
-#~ msgid "SMTP server :"
-#~ msgstr "خادم SMTP :"
-
-#~ msgid "Email Address :"
-#~ msgstr "عنوان البريد :"
-
-#~ msgid ":"
-#~ msgstr ":"
-
-#~ msgid "Sources Dropping"
-#~ msgstr "سقوط الخادم"
-
-#~ msgid "(Min 300 / Max 3000)"
-#~ msgstr "(حد أدنى 300 / حد أعلى 3000)"
-
-#~ msgid "Timer (in secs)"
-#~ msgstr "توقيت بثانية"
-
-#~ msgid "(Min 60 / 3600 Max)"
-#~ msgstr "(حد أدنى 60 / حد أعلى 3600)"
-
-#~ msgid "Global Search"
-#~ msgstr "بحث عالمي"
-
-#~ msgid "Port %d is not available. You will be LOWID"
-#~ msgstr "منفذ %d غير صحيح ستكون ذا هوية متدنية"
-
-#~ msgid "Failed to save"
-#~ msgstr "فشل في الحفظ"
-
-#~ msgid ""
-#~ "Unable to launch browser. Please set correct browser executable path in "
-#~ "Preferences."
-#~ msgstr "لم اتمكن من تشغيل المتصفح. رجاء ضع مسار صحيح للمتصفح في اﻹعدادات."
-
-#~ msgid ""
-#~ " --- This is the first time you run aMule %s ---\n"
-#~ "\n"
-#~ msgstr ""
-#~ " --- هذة أول مرة تقوم بتشغيل aMule %s ---\n"
-#~ "\n"
-
-#~ msgid "This version is a testing version, updated daily, and \n"
-#~ msgstr "هذا اﻹصدار إصدار تجريبي ويتم تحديثة يوميا و\n"
-
-#~ msgid "or kill your dog. But it *should* be safe to use anyway. \n"
-#~ msgstr "لكن المفترض انه يعمل بأمان.\n"
-
-#~ msgid "This version has new SecureIdent support, so your \n"
-#~ msgstr "هذة النسخة تدعم هوبة المصدر جديدة لذا \n"
-
-#~ msgid "client credits will be lost on this first run. \n"
-#~ msgstr "سيفقد العملاء ارصدتهم عند اول تشغيل \n"
-
-#~ msgid "There is no way to fix that, and eMule did the same.\n"
-#~ msgstr "ﻻ يوجد طريقة لحلها كما حصل مع eMule\n"
-
-#~ msgid "Feel free to report any bugs to forum.amule.org"
-#~ msgstr "يمكنك التبليغ عن اﻷخطاء في forum.amule.org"
-
-#~ msgid "Desktop integration"
-#~ msgstr "تبني سطح مكتب"
-
-#~ msgid "Connection established on:"
-#~ msgstr "تم الاتصال بي:"
-
-#~ msgid "Connect to any server"
-#~ msgstr "إتصل باي مستظيف"
-
-#~ msgid "This ed2k link is invalid (%s)"
-#~ msgstr "رابط ed2k غير صحيح (%s)"
-
-#~ msgid "Invalid link: %s"
-#~ msgstr "رابط غير صحيح: %s"
-
-#~ msgid "Filtered IP: %s (%s)"
-#~ msgstr "ترشيحIP: %s (%s)"
-
-#~ msgid "Rating for file '%s' received: %i"
-#~ msgstr "تقيم ملف '%s' تم تلقيه: %i"
-
-#~ msgid "Description for file '%s' received: %s"
-#~ msgstr "وصف لي ملف '%s' تولقي : %s"
-
-#~ msgid "Unable to retrieve shared files from '%s'"
-#~ msgstr "غير قادر علي استرجاعملف مشاركة من '%s'"
-
-#~ msgid "Requesting shared files from user %s (%u) is already in progress"
-#~ msgstr "طلب ملفات المشاركةمن المستخدم %s (%u) في طور العمل"
-
-#~ msgid "NickName: %s\n"
-#~ msgstr "إسم مستعار: %s\n"
-
-#~ msgid "Filestats for all sessions: Accepted %d of %d requests"
-#~ msgstr "إحصائية الملفات في كل الجلسات :قبل %d من %d طلب"
-
-#~ msgid "can't create file '%s'"
-#~ msgstr "غير قادر لتكوين ملف '%s'"
-
-#~ msgid "Can't open file '%s'"
-#~ msgstr "غير قادر لفتح ملف '%s'"
-
-#~ msgid "can't close file descriptor %d"
-#~ msgstr "غير قادر لغلق ملف وصف %d"
-
-#~ msgid "can't read from file descriptor %d"
-#~ msgstr "غير قادر قراءة ملف وصف %d"
-
-#~ msgid "can't write to file descriptor %d"
-#~ msgstr "غير قادر كتابة ملف وصف %d"
-
-#~ msgid "unknown seek origin"
-#~ msgstr "المرجع غير معرف"
-
-#~ msgid "can't find length of file on file descriptor %d"
-#~ msgstr "غير قادر للحصول على طول الملف من ملف الوصف %d"
-
-#~ msgid "can't determine if the end of file is reached on descriptor %d"
-#~ msgstr "غير قادر على التاكد من انتهاء الملف من ملف الوصف %d"
-
-#~ msgid "*** Chatsession Start : "
-#~ msgstr "*** بدء جلسة المحادثة :"
-
-#~ msgid "Message from"
-#~ msgstr "رسالة من"
-
-#~ msgid "failed"
-#~ msgstr "فشل"
-
-#~ msgid "*** Disconnected"
-#~ msgstr "*** فصل"
-
-#~ msgid "Failed to load creditfile"
-#~ msgstr "فشل في تحميل ملف الرصيد"
-
-#~ msgid "Creditfile is out of date and will be replaced"
-#~ msgstr "ملف الرصيد قديم وسيتم استبداله"
-
-#~ msgid "Failed to save creditfile"
-#~ msgstr "فشل في حفظ ملف الرصيد"
-
-#~ msgid "ClientSoftware ->"
-#~ msgstr "برنامج العميل ->"
-
-#~ msgid "<- ClientVersion ->v"
-#~ msgstr "<-نسخة العميل ->v"
-
-#~ msgid ""
-#~ "WARNING! Found matching client, to a currently connected client: %s (%s) "
-#~ "and with %s"
-#~ msgstr "تحذير! وجد عميل مطابق لعميل متصل:%s (%s) مع %s"
-
-#~ msgid "Check Fake"
-#~ msgstr "مراقبة المزيف"
-
-#~ msgid "Preview ["
-#~ msgstr "عرض ["
-
-#~ msgid "Are you sure that you want to cancel and delete this file ?\n"
-#~ msgstr "هل انت متاكد من الغاء وحذف هذا الملف ؟\n"
-
-#~ msgid "You already have the file %s"
-#~ msgstr "تمتلك هذا الملف مسبقا %s"
-
-#~ msgid "Bad link."
-#~ msgstr "رابط غير صالح"
-
-#~ msgid "not a well-formed ed2k link"
-#~ msgstr "رايط ed2k غير مكتمل"
-
-#~ msgid "Not an ED2K server or file link"
-#~ msgstr "ليس رابط خادم او ملف ED2K"
-
-#~ msgid "can't write file '%s'"
-#~ msgstr "غير قادر لكتابة ملف '%s'"
-
-#~ msgid "done"
-#~ msgstr "إنتها"
-
-#~ msgid "Failed to copy the file '%s' to '%s'"
-#~ msgstr "فشل في نسخ ملف '%s' الى '%s'"
-
-#~ msgid "Impossible to get permissions for file '%s'"
-#~ msgstr "مستحيل الحصول على سماحية لي ملف  '%s'"
-
-#~ msgid "Impossible to overwrite the file '%s'"
-#~ msgstr "مستحيل الكتابة فوق الملف '%s'"
-
-#~ msgid "Impossible to set permissions for the file '%s'"
-#~ msgstr "مستحيل وضع سماحية لي ملف '%s'"
-
-#~ msgid "Error: the file known.met is corrupted, unable to load known files"
-#~ msgstr "خطأ ملف known.met معطوب, لم اتمكن من تحميل الملفات المعروفة"
-
-#~ msgid "accepted"
-#~ msgstr "قبل"
-
-#~ msgid "denied"
-#~ msgstr "رفض"
-
-#~ msgid "Desktop"
-#~ msgstr "سطح المكتب"
-
-#~ msgid "No systray integration, please"
-#~ msgstr "فضلا بلا تبني لواجهة رسومية"
-
-#~ msgid "Name"
-#~ msgstr "اسم"
-
-#~ msgid "Min Availability"
-#~ msgstr "اقل توفر"
-
-#~ msgid "Search global"
-#~ msgstr "بحث عالمي"
-
-#~ msgid "Clear All"
-#~ msgstr "مسح الكل"
-
-#~ msgid "Download selected"
-#~ msgstr "حمل المختارات"
-
-#~ msgid "Media Info"
-#~ msgstr "معلومات الوسائط"
-
-#~ msgid "Bitrate:"
-#~ msgstr "معدل البت:"
-
-#~ msgid "Length:"
-#~ msgstr "طول:"
-
-#~ msgid "Source Names"
-#~ msgstr "اسماء المصادر"
-
-#~ msgid "Clientsoftware :"
-#~ msgstr "برنامج العميل :"
-
-#~ msgid "Server IP :"
-#~ msgstr "عنوان الخادم :"
-
-#~ msgid "Clientversion :"
-#~ msgstr "نسخة العميل"
-
-#~ msgid "ID :"
-#~ msgstr "هوية :"
-
-#~ msgid "Servername :"
-#~ msgstr "اسم الخادم :"
-
-#~ msgid "Downloaded (this session) :"
-#~ msgstr "حمل في الجلسة :"
-
-#~ msgid "Average downloadrate :"
-#~ msgstr "متوسط معدل التحميل :"
-
-#~ msgid "Downloaded total :"
-#~ msgstr "مجموع التحميل :"
-
-#~ msgid "Uploaded (this session) :"
-#~ msgstr "رفع في الجلسة :"
-
-#~ msgid "Average Uploadrate :"
-#~ msgstr "متوسط معدل الرفع :"
-
-#~ msgid "Uploaded total :"
-#~ msgstr "مجموع الرفع :"
-
-#~ msgid "Rating (total) :"
-#~ msgstr "تقييم (المجموع) :"
-
-#~ msgid "Chinese"
-#~ msgstr "الصينيه"
-
-#~ msgid "English"
-#~ msgstr "الإنجليزيه"
-
-#~ msgid "Portuguese (Brazil)"
-#~ msgstr "البرتغاليه (البرازيل)"
-
-#~ msgid "Spanish (Chile)"
-#~ msgstr "الإسبانيه (تشيلي)"
-
-#~ msgid "Spanish (Mexico)"
-#~ msgstr "الإسبانيه (المكسيك)"
-
-#~ msgid "Turkey"
-#~ msgstr "التركيه"
-
-#~ msgid "Beep on errors"
-#~ msgstr "صوت عند الخطاء"
-
-#~ msgid "Downloadlist doubleclick to expand"
-#~ msgstr "اضغط لعرض قائمة التحميل"
-
-#~ msgid "Startup"
-#~ msgstr "بدء التشغيل"
-
-#~ msgid "5 Days"
-#~ msgstr "5 أيام"
-
-#~ msgid "Check for new version"
-#~ msgstr "مراقبة لوجود إصدار أحدث"
-
-#~ msgid "Show Splashscreen"
-#~ msgstr "عرض شاشة ترحيب"
-
-#~ msgid "IP-Filter"
-#~ msgstr "فلتر -IP"
-
-#~ msgid "IP-Filter ON / OFF"
-#~ msgstr "فلتر -IP ON / OFF"
-
-#~ msgid "Always filter bad IPs"
-#~ msgstr "دائما فلتر IPs السيئة"
-
-#~ msgid "See my shares"
-#~ msgstr "مشاهدة المشاركة"
-
-#~ msgid "Arrange Downloads"
-#~ msgstr "رتب التحميل"
-
-#~ msgid "Enable auto-arranging download list "
-#~ msgstr "السماح للترتيب الذاتي لقائمة التحميل"
-
-#~ msgid "Download speed"
-#~ msgstr "سرحة التحميل"
-
-#~ msgid "Number of sources"
-#~ msgstr "عدد المصادر"
-
-#~ msgid "Theme :"
-#~ msgstr "سمه :"
-
-#~ msgid "Use Font "
-#~ msgstr " استخدم خط"
-
-#~ msgid "Font"
-#~ msgstr "خط"
-
-#~ msgid "Enable Webserver"
-#~ msgstr "تمكين خادم شبكة"
-
-#~ msgid "Enable password"
-#~ msgstr "السماح لي كلمة مرور"
-
-#~ msgid "Notify"
-#~ msgstr "أشعار"
-
-#~ msgid "Servers List Window"
-#~ msgstr "نافذة قائمة الخادمات"
-
-#~ msgid "SharedFiles"
-#~ msgstr "ملفات المشاركة"
-
-#~ msgid "New Prefs"
-#~ msgstr "إعدادات جديدة"
-
-#~ msgid "h"
-#~ msgstr "س"
-
-#~ msgid "D"
-#~ msgstr "ي"
-
-#~ msgid "Error: Failed to open part.met file! (%s => %s)"
-#~ msgstr "خطأ: فشل في فتح ملف part.met ! (%s => %s)"
-
-#~ msgid "Error: Invalid part.met fileversion! (%s => %s)"
-#~ msgstr "خطأ: نسخة ملف غير صحيحة part.met ! (%s => %s)"
-
-#~ msgid "Error: %s (%s) is corrupt"
-#~ msgstr "خطأ : %s (%s) معطوب"
-
-#~ msgid ""
-#~ "Unexpected file error while reading server.met: %s, unable to load "
-#~ "serverlist"
-#~ msgstr ""
-#~ "خطأ غير متوقع أثناء قراءة ملف server.met: %s,غير قادر على تحميل قائمة "
-#~ "الخادمات"
-
-#~ msgid "Warning: %s might be corrupted"
-#~ msgstr "تحذير : %sقد يكون معطوب"
-
-#~ msgid ".part file not found"
-#~ msgstr "ملف .partغير موجود"
-
-#~ msgid "Unable to open %s file - using .bak file.\n"
-#~ msgstr "لم اتمكن من فتح ملف %s بإستخدام ملف .bak \n"
-
-#~ msgid "Failed to delete %s"
-#~ msgstr "فشل لحذف %s"
-
-#~ msgid "Failed to delete %s%s"
-#~ msgstr "فشل لحذف %s%s"
-
-#~ msgid "A file with that name already exists, the file has been renamed"
-#~ msgstr "ملف بهذا اﻹسم موجود مسبقا, أعيد تسمية الملف"
-
-#~ msgid "Finished downloading %s :-)"
-#~ msgstr "انهاء تحميل %s :-)"
-
-#~ msgid "Downloaded:"
-#~ msgstr "تحميل :"
-
-#~ msgid "ERROR: Cannot write to disk"
-#~ msgstr "خطأ غير قادر على الكتابعلى القرص الصلب"
-
-#~ msgid "Downloaded part %i is corrupt :(  (%s)"
-#~ msgstr "جزء التحميل %i معطوب :(  (%s)"
-
-#~ msgid "ICH: Recovered corrupted part %i  (%s)"
-#~ msgstr "ICH: تم تصحيح الجزء المعطوب %i (%s)"
-
-#~ msgid ""
-#~ "Partfilename: %s\n"
-#~ "Parts: %d , %s: %d (%.1f%%)\n"
-#~ msgstr ""
-#~ "ملف اجزاء بإسم: %s\n"
-#~ "اجزاء: %d , %s: %d (%.1f%%)\n"
-
-#~ msgid "%d%% done (%s) - Transferring from %d sources"
-#~ msgstr "%d%% تم (%s) -نقل من %d مصادر"
-
-#~ msgid "Available"
-#~ msgstr "متوفر"
-
-#~ msgid "Last Seen Complete :"
-#~ msgstr "اخر اكتمال شوهد :"
-
-#~ msgid "Last Reception:"
-#~ msgstr "اخر إستقبال:"
-
-#~ msgid "Language change will not be applied until aMule is restarted."
-#~ msgstr "تغير اللغة لن يتم تفعيل اﻻ بإعادة تشغيل aMule."
-
-#~ msgid "Update: Disabled"
-#~ msgstr "تحيث: معطل"
-
-#~ msgid "Update period: %i sec"
-#~ msgstr "فترة التحديث: %i ثانية"
-
-#~ msgid "Update period: %i secs"
-#~ msgstr "فترة التحديث: %i ثانية"
-
-#~ msgid "Server connection refresh interval %i mins"
-#~ msgstr "فترة تحديث الإتصال بالخادم %i دقيقة"
-
-#~ msgid "OLD Preferences"
-#~ msgstr "إعدادات قديمة"
-
-#~ msgid "Choose a folder for "
-#~ msgstr "إختر مجلد لي "
-
-#~ msgid "%i days"
-#~ msgstr "%i يوم"
-
-#~ msgid "%i day"
-#~ msgstr "%i يوم"
-
-#~ msgid "Upload/Download list refresh time: Disable"
-#~ msgstr "زمن تحديث قائمة الرفع/التحميل : معطل"
-
-#~ msgid "Close this search result"
-#~ msgstr "اغلاق نتيجة البحث هذه"
-
-#~ msgid "Description: %s"
-#~ msgstr "وصف: %s"
-
-#~ msgid "User: %i"
-#~ msgstr "مستخدم: %i"
-
-#~ msgid "Unable to retrieve serverlist"
-#~ msgstr "غير قادر على إسترجاع قائمة الخادمات"
-
-#~ msgid "Failed to load server.met!"
-#~ msgstr "فشل في تحميل server.met!"
-
-#~ msgid "Server added: "
-#~ msgstr "خادم مضاف: "
-
-#~ msgid "Connect to this server"
-#~ msgstr "إتصال بهذا الخادم"
-
-#~ msgid "Add to static"
-#~ msgstr "أضف الى الثابتة"
-
-#~ msgid "Remove from static server list"
-#~ msgstr "حذف من قائمة الخادمات الثابتة"
-
-#~ msgid "Preference"
-#~ msgstr "أداء"
-
-#~ msgid "Failed to open staticservers.dat"
-#~ msgstr "فشل في فتح staticservers.dat"
-
-#~ msgid "Added to static server list"
-#~ msgstr "أضيف خادم للقائمة الثابتة"
-
-#~ msgid "Unknown server info received !"
-#~ msgstr "تلقي معلومات خادم غير معرفة !"
-
-#~ msgid "Connecting to %s (%s:%i)..."
-#~ msgstr "إتصال بي %s (%s:%i)..."
-
-#~ msgid "This is "
-#~ msgstr "هذا هو"
-
-#~ msgid " (based on "
-#~ msgstr "(مبني على"
-
-#~ msgid "Please enter a serveraddress"
-#~ msgstr "رجاء إدخل عنوان خادم"
-
-#~ msgid "Incomplete serverport: Please enter a serverport"
-#~ msgstr "منفذ الخادم غير مكتمل: رجاء إدخل منفذ للخادم"
-
-#~ msgid "Server not added!"
-#~ msgstr "خادم غير مضاف"
-
-#~ msgid "Low ID"
-#~ msgstr "هوية متدنية"
-
-#~ msgid "High ID"
-#~ msgstr "هوية مرتفعة"
-
-#~ msgid "Loading..."
-#~ msgstr "تحميل..."
-
-#~ msgid "Permission"
-#~ msgstr "رخصة"
-
-#~ msgid "Public"
-#~ msgstr "عام"
-
-#~ msgid "Friends only"
-#~ msgstr "اﻻصدقاء فقط"
-
-#~ msgid "Locked"
-#~ msgstr "مقفل"
-
-#~ msgid "Permissions"
-#~ msgstr "رخصة"
-
-#~ msgid "Change this file's comment..."
-#~ msgstr "تغير التعليق على هذا الملف..."
-
-#~ msgid "Auto [Re]"
-#~ msgstr "ذاتي"
-
-#~ msgid "Hidden"
-#~ msgstr "مخفي"
-
-#~ msgid "You cannot change permissions while a file is still downloading!"
-#~ msgstr "ﻻ يمكنك تغير سماحية ملف وهو قيد التحميل!"
-
-#~ msgid "%s (%s:%i) appears to be full"
-#~ msgstr "%s (%s:%i) يظهر انه ملي"
-
-#~ msgid "Connecting to %s (%s:%i ) failed."
-#~ msgstr "اﻹتصال بي %s (%s:%i) فشل."
-
-#~ msgid "Connection attempt to %s (%s:%i ) timed out"
-#~ msgstr "محاولت اﻹتصال بي %s (%s:%i ) إنتهى الوقت"
-
-#~ msgid "Refreshing server connection"
-#~ msgstr "إعادة تنشيط اﻹتصال بالخادم"
-
-#~ msgid "Uptime: "
-#~ msgstr "مدة التشغيل: "
-
-#~ msgid "Downloaded Data (Session (Total)): %s (%s)"
-#~ msgstr "بيانات التحميل (الجلسة (المجموع)): %s (%s)"
-
-#~ msgid "Found Sources: %i"
-#~ msgstr "وجد مصادر : %i"
-
-#~ msgid "Active Downloads (chunks): %i"
-#~ msgstr "التحميل النشط: %i"
-
-#~ msgid "Uploaded Data (Session (Total)): %s (%s)"
-#~ msgstr "بيانات الرفع (الجلسة (المجموع)): %s (%s)"
-
-#~ msgid "Active Uploads: %i"
-#~ msgstr "تحميل نشط : %i"
-
-#~ msgid "Total successful upload sessions: %i"
-#~ msgstr "مجموع الجلسات الناجحة للتحميل :%i"
-
-#~ msgid "Total failed upload sessions: %i"
-#~ msgstr "مجموع الجلسات الفاشلة للتحميل :%i"
-
-#~ msgid "Average Downloadrate (Session): %.2f kB/s"
-#~ msgstr "متوسط معدل التحميل)الجلسة(: %.2f kB/s"
-
-#~ msgid "Average Uploadrate (Session): %.2f kB/s"
-#~ msgstr "متوسط معدل الرفع )الجلسة(: %.2f kB/s"
-
-#~ msgid "Max Downloadrate Average (Session): %.2f kB/s"
-#~ msgstr "معدل أعلى مستوى تحميل (الجلسة): %.2f kB/s"
-
-#~ msgid "Max Downloadrate (Session): %.2f kB/s"
-#~ msgstr "أعلى مستوى تحميل (الجلسة): %.2f kB/s"
-
-#~ msgid "waiting for transfer..."
-#~ msgstr "بإنتظار التحميل ..."
-
-#~ msgid "Session UL:DL Ratio (Total):"
-#~ msgstr "نسبة الرفع للتحميل في الجلسة (المجموع):"
-
-#~ msgid "Number of Shared Files: %i"
-#~ msgstr "عدد ملفات المشاركة : %i"
-
-#~ msgid "Working Servers"
-#~ msgstr "خادم يعمل"
-
-#~ msgid "Failed Servers"
-#~ msgstr "خادم فاشل"
-
-#~ msgid "Deleted Servers"
-#~ msgstr "خادم محذوف"
-
-#~ msgid "Users on Working Servers"
-#~ msgstr "المستخدمين في الخادمات حاليا"
-
-#~ msgid "Files on Working Servers"
-#~ msgstr "ملفات في الخادمات حاليا"
-
-#~ msgid "Total Users"
-#~ msgstr "مجموع المستخدمين"
-
-#~ msgid "Active Connections (estimate)"
-#~ msgstr "إتصاﻻت نشطة تقديري"
-
-#~ msgid "Max Connection Limit Reached"
-#~ msgstr "وصل اقصى حد إتصالات"
-
-#~ msgid "Average Connections (estimate)"
-#~ msgstr "متوسط سرعة اﻻتصال تقديرية"
-
-#~ msgid "Detection Disabled"
-#~ msgstr "الكشف عن المعطل"
-
-#~ msgid "Not Found"
-#~ msgstr "غير موجود"
-
-#~ msgid "Actual Speed Limits:"
-#~ msgstr "حدود السرعة الحقيقية:"
-
-#~ msgid "DL: "
-#~ msgstr "تحميل: "
-
-#~ msgid "UP: "
-#~ msgstr "رفع: "
-
-#~ msgid "ID: Not Connected"
-#~ msgstr "هوية: غير متصل"
-
-#~ msgid "TCP Port: "
-#~ msgstr "منفذ TCP: "
-
-#~ msgid "UDP Port: "
-#~ msgstr "منفذ UDP:"
-
-#~ msgid "Uptime: None"
-#~ msgstr "فترة التشغيل: ﻻ شيئ"
-
-#~ msgid "ServerName: Not Connected"
-#~ msgstr "إسم الخادم: غير متصل"
-
-#~ msgid "ServerIP: Not Connected"
-#~ msgstr "عنوان الخادم: غير متصل"
-
-#~ msgid "Shared Files: "
-#~ msgstr "ملفات المشاركة: "
-
-#~ msgid "Queued Clients: "
-#~ msgstr "عملاء في اﻻنتظار: "
-
-#~ msgid "Total DL: "
-#~ msgstr "مجموع التحميل: "
-
-#~ msgid "Total UP: "
-#~ msgstr "مجموع الرفع: "
-
-#~ msgid "Personal Infos"
-#~ msgstr "معلومات شخصية"
-
-#~ msgid "Hide"
-#~ msgstr "إخفاء"
-
-#~ msgid "Show"
-#~ msgstr "إضهار"
-
-#~ msgid "All To Max Speed"
-#~ msgstr "الكل ﻷعلى سرعة"
-
-#~ msgid "All To Min Speed"
-#~ msgstr "الكل ﻷقل سرعة"
-
-#~ msgid "Disconnect from server"
-#~ msgstr "فصل من الخادم"
-
-#~ msgid "aMule for Linux"
-#~ msgstr "aMule لي لينكس"
-
-#~ msgid "requested file not found"
-#~ msgstr "لم يتم العثور على الملف المطلوب"
-
-#~ msgid "Access denied!"
-#~ msgstr "رفض الدخول!"
-
-#~ msgid "Web Control Panel"
-#~ msgstr "لوحة تحكم الويب"
-
-#~ msgid "ED2K Link(s)"
-#~ msgstr "رابط ED2K"
-
-#~ msgid "Log"
-#~ msgstr "سجل"
-
-#~ msgid "Serverinfo"
-#~ msgstr "معلومات الخادم"
-
-#~ msgid "Debug Log"
-#~ msgstr "سجل اﻷخطاء"
-
-#~ msgid "&Preferences"
-#~ msgstr "&أداء"
-
-#~ msgid "Logout"
-#~ msgstr "تسجيل الخروج"
-
-#~ msgid "users"
-#~ msgstr "مستخدمين"
-
-#~ msgid "Limits"
-#~ msgstr "حدود"
-
-#~ msgid "files"
-#~ msgstr "ملفات"
-
-#~ msgid "Actions"
-#~ msgstr "عمل"
-
-#~ msgid "Remove selected server"
-#~ msgstr "حذف الخادمات المختارة"
-
-#~ msgid "Are you sure to remove this server from list?"
-#~ msgstr "هل انت متاكد من حذف الخادم من القائمة؟"
-
-#~ msgid "Uploaded total"
-#~ msgstr "مجموع الرفع"
-
-#~ msgid "Are you sure that you want to cancel and delete this file?\\n"
-#~ msgstr "هل انت متاكد من الغاء وحذف هذا الملف؟\\n"
-
-#~ msgid "Increase Priority"
-#~ msgstr "زيادة اﻷولوية"
-
-#~ msgid "Decrease Priority"
-#~ msgstr "تقليل اﻷولوية"
-
-#~ msgid "Download Selected"
-#~ msgstr "تحميل المختار"
-
-#~ msgid "Time"
-#~ msgstr "الوقت"
-
-#~ msgid "Add to list"
-#~ msgstr "أضف الى القائمة"
-
-#~ msgid "URL"
-#~ msgstr "عنوان"
-
-#~ msgid "Web-based Search"
-#~ msgstr "بحث انترنت"
-
-#~ msgid "File Settings"
-#~ msgstr "إعدادات الملف"
-
-#~ msgid "Max Sources Per File"
-#~ msgstr "اقصى عدد مصادر للملف"
-
-#~ msgid "Max. Connections"
-#~ msgstr "اقصى عدد إتصالات"
-
-#~ msgid "max. new connections / 5secs"
-#~ msgstr "اقصى عدد إتصالات جديدة لكل 5 ثواني"
-
-#~ msgid "Gzip Compression"
-#~ msgstr "ضغط Gzip"
-
-#~ msgid "Refresh-Time of Pages"
-#~ msgstr "زمن تحديث الصفحة"
-
-#~ msgid "Time in seconds (zero=disabled):"
-#~ msgstr "الوقت بالثواني (صفر=للتعطيل):"
-
-#~ msgid "Speed Limits"
-#~ msgstr "حدود السرعة"
-
-#~ msgid "Bandwidth Limits"
-#~ msgstr "حدود النطاق"
-
-#~ msgid "Login"
-#~ msgstr "تسجيل الدخول"
-
-#~ msgid "Enter your password here"
-#~ msgstr "أدخل كلمة المرور هنا"
-
-#~ msgid "Webserver: Logout"
-#~ msgstr "خادم شبكة: تسجيل الخروج"
-
-#~ msgid "Search Results"
-#~ msgstr "نتيجت البحث"
-
-#~ msgid "Refetch Results"
-#~ msgstr "إعادة جلب النتيجة"
-
-#~ msgid "Method"
-#~ msgstr "طريقة"
-
-#~ msgid "Global (Server)"
-#~ msgstr "خادم عالمي"
-
-#~ msgid "Wizard"
-#~ msgstr "مساعداﻹعداد"
-
-#~ msgid "Down (kbit/s)"
-#~ msgstr "تحميل (kbit/s)"
-
-#~ msgid "Up (kbit/s)"
-#~ msgstr "رفع (kbit/s)"
-
-#~ msgid "Custom"
-#~ msgstr "مخصص"
-
-#~ msgid "(enter below!)"
-#~ msgstr "(أدخل في اﻷسفل)"
-
-#~ msgid ""
-#~ "Unable to launch browser. Please set correct browserexecutable path in "
-#~ "Preferences."
-#~ msgstr "لم أتمكن من تشغيل المتصفح. رجاء حدد مسار صحيح للمتصفح في اﻹعدادات."
-
-#~ msgid "Not Avaiable"
-#~ msgstr "غير متوفر"
-
-#~ msgid "Show Lists"
-#~ msgstr "اعرض قائمة"
-
-#~ msgid "Hide Lists"
-#~ msgstr "اخفاء القائمة"
-
-#~ msgid "Concurrent Downloads"
-#~ msgstr "تحميل متلاقي"
-
-#~ msgid "Connection Type"
-#~ msgstr "نوع اﻻتصال"
-
-#~ msgid "Select your connection type here :"
-#~ msgstr "اختر نوع اﻻتصال هنا:"
-
-#~ msgid "True upload bandwidth"
-#~ msgstr "سعة نطاق الرفع الحقيقية"
-
-#~ msgid "Unit:"
-#~ msgstr "الوحدة:"
-
-#~ msgid "Connection Wizard"
-#~ msgstr "مساعد إعداد اﻹتصال"
-
-#~ msgid ""
-#~ "http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good."
-#~ "met"
-#~ msgstr ""
-#~ "http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good."
-#~ "met"
-
-#~ msgid "A file with that name already exists, the file has been saved as %s"
-#~ msgstr "ملف بهذا اﻻسم موجود مسبقا, الملف حفظ باسم %s"
-
-#~ msgid "Upload/Download list refresh time: %i sec"
-#~ msgstr "زمن تحديث قائمة الرفع/التحميل : %i ثانية"
-
-#~ msgid "Upload/Download list refresh time: %i secs"
-#~ msgstr "زمن تحديث قائمة الرفع/التحميل : %i ثانية"
-
-#~ msgid "&Transfers"
-#~ msgstr "&نقل"
-
-#~ msgid "&Servers"
-#~ msgstr "&مستظيفات"
-
-#~ msgid "S&earch"
-#~ msgstr "ب&حث"
-
-#~ msgid "Shared &Files"
-#~ msgstr "مشاركة & ملفات"
-
-#~ msgid "&Messages"
-#~ msgstr "&رسائل"
-
-#~ msgid "St&atistics"
-#~ msgstr "اح&صائيات"
-
-#~ msgid "Creditfile loaded"
-#~ msgstr "تم تحميل ملف الرصيد"
-
-#~ msgid "Servers list"
-#~ msgstr "قائمة الخادمات"
-
-#~ msgid "Files Transfers"
-#~ msgstr "نقل الملفات"
-
-#~ msgid "Preferences Settings Windows"
-#~ msgstr "نافذة ادارة الاعدادت"
-
-#~ msgid "Please enter a serveradress"
-#~ msgstr "رجاء ادخل عنوان خادم"

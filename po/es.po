@@ -1,7 +1,7 @@
-# translation of es.po to Spanish
-# Copyright (c) 2003-2011 aMule Team
-# This file is distributed under the terms of the GNU General Public
-# License
+# Translation of amule interface to Spanish
+# aMule i18n resource file.
+# Copyright (c) 2003-2020 aMule Team
+# This file is distributed under the same license as the aMule package.
 #
 # FIRST AUTHOR <aquatroll@ADDRESS>, 2004.
 # Errico2 <errico2@terra.es>, 2011.
@@ -10,12 +10,13 @@
 # Carlos Diaz <cskyline@gmail.com>, 2007, 2008.
 # Festor Wailon Dacoba <festor90@gmail.com>, 2007.
 # micrococo, 2018.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2018-08-30 13:11+0100\n"
+"PO-Revision-Date: 2020-02-18 15:03+0100\n"
 "Last-Translator: micrococo\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -25,7 +26,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Language: es_ES\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -3369,7 +3370,7 @@ msgstr "Retardo de los mensajes emergentes: "
 
 #: src/muuli_wdr.cpp:1505
 msgid "seconds"
-msgstr "segundo(s)"
+msgstr "segundos"
 
 #: src/muuli_wdr.cpp:1511
 msgid "Browser Selection"
@@ -4474,7 +4475,7 @@ msgstr "horas"
 
 #: src/OtherFunctions.cpp:121
 msgid "Days"
-msgstr "días"
+msgstr "Días"
 
 #: src/OtherFunctions.cpp:629
 msgid "all"
@@ -7655,283 +7656,3 @@ msgstr "Desconexión solicitada\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "Procesando solicitud [redirigida]: "
-
-#~ msgid "Partfile %s (%s) has no seeds file"
-#~ msgstr "Archivo part %s (%s) no tiene archivo de fuentes"
-
-#~ msgid "Partfile %s (%s) has a void seeds file"
-#~ msgstr "Archivo part %s (%s) tiene un archivo de fuentes vacío"
-
-#~ msgid "Download status"
-#~ msgstr "Estado de la descarga"
-
-#~ msgid "( %s / %s )"
-#~ msgstr "( %s / %s )"
-
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgid "SOCKS5"
-#~ msgstr "SOCKS5"
-
-#~ msgid "SOCKS4"
-#~ msgstr "SOCKS4"
-
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgid "SOCKS4a"
-#~ msgstr "SOCKS4a"
-
-#~ msgid "Update delay : %d second"
-#~ msgid_plural "Update delay : %d seconds"
-#~ msgstr[0] "Intervalo de actualización: %d seg"
-#~ msgstr[1] "Intervalo de actualización: %d segs"
-
-#~ msgid "Comments and ratings are not supported on remote gui yet"
-#~ msgstr ""
-#~ "Comentarios y valoraciones todavía no están soportadas en la interfaz "
-#~ "remota"
-
-#~ msgid "Transferring"
-#~ msgstr "Transfiriendo"
-
-#, fuzzy
-#~ msgid "QR: ???"
-#~ msgstr "LC: %u"
-
-#~ msgid "QR: %u"
-#~ msgstr "LC: %u"
-
-#, fuzzy
-#~ msgid "Queue Rank"
-#~ msgstr "En cola"
-
-#~ msgid "TODO - show progress of a search"
-#~ msgstr "TODO - muestra el progreso de una búsqueda"
-
-#~ msgid "Starting to create MD4 and AICH hash for file: %s"
-#~ msgstr "Comenzando a crear el hash MD4 y AICH del archivo: %s"
-
-#~ msgid "Starting to create MD4 hash for file: %s"
-#~ msgstr "Comenzando a crear el hash MD4 del archivo: %s"
-
-#~ msgid "Starting to create AICH hash for file: %s"
-#~ msgstr "Comenzando a crear el hash AICH del archivo: %s"
-
-#~ msgid "WARNING: Could not remove original '%s' after creating backup"
-#~ msgstr "ALERTA: Imposible borrar '%s' original, creando copia de seguridad"
-
-#~ msgid "WARNING: Failed to delete %s"
-#~ msgstr "ALERTA: Error al borrar %s"
-
-#~ msgid "%u (QR: %u)"
-#~ msgstr "%u (QR: %u)"
-
-#~ msgid "Rating (total):"
-#~ msgstr "Calificación (total):"
-
-#~ msgid "Try to transfer full chunks to all uploads"
-#~ msgstr "Intentar transferir partes completas en todas las subidas"
-
-#~ msgid "Networks window"
-#~ msgstr "Ventana de redes"
-
-#~ msgid "Searches window"
-#~ msgstr "Ventana de búsquedas"
-
-#, fuzzy
-#~ msgid "Downloads window"
-#~ msgstr "Descargando"
-
-#~ msgid "Shared files window"
-#~ msgstr "Ventana de archivos compartidos"
-
-#~ msgid "Messages window"
-#~ msgstr "Ventana de mensajes"
-
-#~ msgid "Statistics graph window"
-#~ msgstr "Ventana del gráfico de las estadísticas"
-
-#~ msgid "Preferences settings window"
-#~ msgstr "Ventana de la configuración de las preferencias"
-
-#~ msgid "Traybar-icon lost, trying to recreate ..."
-#~ msgstr "Icono de sistema perdido, intentando recrearlo..."
-
-#~ msgid "Transfers"
-#~ msgstr "Tráfico"
-
-#~ msgid "Files transfers window"
-#~ msgstr "Ventana de transferencia de archivos"
-
-#~ msgid "Unban"
-#~ msgstr "Readmitir"
-
-#~ msgid "Show Uploads"
-#~ msgstr "Mostrar subidas"
-
-#~ msgid "Show Queue"
-#~ msgstr "Mostrar cola"
-
-#~ msgid "Select View"
-#~ msgstr "Seleccionar vista"
-
-#~ msgid "Client Software"
-#~ msgstr "Software Cliente"
-
-#~ msgid "Waited"
-#~ msgstr "En espera"
-
-#~ msgid "Upload Time"
-#~ msgstr "Subiendo"
-
-#~ msgid "Upload/Download"
-#~ msgstr "Subida/Descarga"
-
-#~ msgid "Remote Status"
-#~ msgstr "Estado remoto"
-
-#~ msgid "File Priority"
-#~ msgstr "Prioridad del archivo"
-
-#~ msgid "Score"
-#~ msgstr "Resultado"
-
-#~ msgid "Asked"
-#~ msgstr "Preguntado"
-
-#~ msgid "Last Seen"
-#~ msgstr "Última comprobación"
-
-#~ msgid "Entered Queue"
-#~ msgstr "Entrado en cola"
-
-#~ msgid "Transferred Up"
-#~ msgstr "Subido"
-
-#~ msgid "Transferred Down"
-#~ msgstr "Descargado"
-
-#~ msgid "Userhash"
-#~ msgstr "Hash de usuario"
-
-#~ msgid "Encrypted"
-#~ msgstr "Cifrado"
-
-#~ msgid "Loaded %d flag bitmaps."
-#~ msgstr "Cargadas %d fotos de banderas."
-
-#~ msgid "Shows Upload / Up-queue"
-#~ msgstr "Mostrar subida / Cola de subida"
-
-#~ msgid "Clients on queue :"
-#~ msgstr "Clientes en cola :"
-
-#~ msgid "Current Session"
-#~ msgstr "Sesión actual"
-
-#~ msgid "Total"
-#~ msgstr "Total"
-
-#~ msgid "Requested :"
-#~ msgstr "Peticiones:"
-
-#~ msgid "Create backup for preview"
-#~ msgstr "Crear un copia para la previsualización"
-
-#~ msgid "Files Transfers Window"
-#~ msgstr "Ventana de transferencias de archivos"
-
-#~ msgid "Total Users: %s | Total Files: %s"
-#~ msgstr "Total Usuarios: %s | Total Archivos: %s"
-
-#~ msgid "HTTP download thread ended"
-#~ msgstr "Descarga HTTP hilo finalizado"
-
-#~ msgid "Host: %s:%i\n"
-#~ msgstr "Host: %s:%i\n"
-
-#~ msgid "Response: %i (Error: %i)"
-#~ msgstr "Respuesta: %i (Error: %i)"
-
-#~ msgid "WARNING: Void response on stream creation"
-#~ msgstr "ALERTA: Repuesta vacía en la creación del medio"
-
-#~ msgid "ERROR: Redirection code received with no URL"
-#~ msgstr "ERROR: Código de redirección sin URL"
-
-#~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-#~ msgstr "CIP2Country::CIP2Country(): Error al cargar el dato del país desde "
-
-#~ msgid "Get IPFilter level."
-#~ msgstr "Obtener nivel de filtrado de IP."
-
-#~ msgid "Makes a search."
-#~ msgstr "Haz una búsqueda."
-
-#~ msgid "Killed!"
-#~ msgstr "¡Matado!"
-
-#~ msgid "Using amuleweb in '%s'."
-#~ msgstr "Usando amuleweb en '%s'."
-
-#~ msgid "Shutting down aMule..."
-#~ msgstr "Apagando aMule..."
-
-#~ msgid ""
-#~ "The following options have been changed in this release for security "
-#~ "reasons:\n"
-#~ msgstr ""
-#~ "Las siguientes opciones cambiaron en esta versión por razones de "
-#~ "seguridad:\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Enabled Protocol Obfuscation support for incoming and outgoing "
-#~ "connections.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Activado soporte de ofuscación de protocolo para conexiones entrantes y "
-#~ "salientes.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Disabled updating the server list from other server and clients.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Desactivada la actualización de la lista de servidores desde otro "
-#~ "cliente o servidor.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "For more information on the reason for this changes, seach\n"
-#~ "the aMule wiki at http://wiki.amule.org for \"fake servers\" info.\n"
-#~ "It's important that you clear any fake server from your server list for "
-#~ "aMule to work properly."
-#~ msgstr ""
-#~ "\n"
-#~ "Para más información de la razón de estés cambios, busque información\n"
-#~ "de \"fake servers\" en la wiki de aMule http://wiki.amule.org.\n"
-#~ "Es importante que limpie cualquier servidor falso de su lista de "
-#~ "servidores para que aMule funcione correctamente."
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Additionally, the browser settings have been reset to the system default. "
-#~ "Please configure your browser options again if needed.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Adicionalmente, las opciones del navegador han sido restauradas. Por "
-#~ "favor configura las opciones de tu navegador otra vez si es necesario.\n"
-
-#~ msgid "Fetching status..."
-#~ msgstr "Obteniendo estado..."
-
-#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
-#~ msgstr "Usuarios: E: %s K: %s | Archivos E: %s K: %s"
-
-#~ msgid "Client %s on IP:Port %s:%d using %s %s %s"
-#~ msgstr "Cliente %s en IP:Puerto %s:%d usando %s %s %s"
