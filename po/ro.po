@@ -1,20 +1,23 @@
-# Copyright (C) 2014 Free Software Foundation, Inc.
+# Translation of amule interface to Romanian
+# aMule i18n resource file.
+# Copyright (c) 2003-2020 Free Software Foundation, Inc.
 # This file is distributed under the same license as the aMule package.
 #
 # Angelescu Constantin <titus0818@yahoo.com>, 2014.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2014-12-27 10:03+0200\n"
+"PO-Revision-Date: 2020-03-04 15:07+0100\n"
 "Last-Translator: Angelescu Constantin <titus0818@yahoo.com>\n"
 "Language-Team: Angelescu Constantin <titus0818@yahoo.com>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
 
@@ -593,7 +596,7 @@ msgstr "Confirmare ieșire"
 
 #: src/amuleDlg.cpp:1174
 msgid "Launch Command: "
-msgstr "Lansare comandă:"
+msgstr "Lansare comandă: "
 
 #: src/amuleDlg.cpp:1210 src/muuli_wdr.cpp:2092 src/Preferences.cpp:842
 msgid "- default -"
@@ -729,7 +732,7 @@ msgstr "Conectare..."
 
 #: src/amule-remote-gui.cpp:314
 msgid "Connection failed "
-msgstr "Conectare eșuată"
+msgstr "Conectare eșuată "
 
 #: src/amule-remote-gui.cpp:325
 msgid "Remote GUI EC event handler"
@@ -2424,7 +2427,7 @@ msgstr ""
 #: src/KnownFileList.cpp:115
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
-"Intrare nevalidă în lista de fișiere cunoscute, fișierul poate fi corupt:"
+"Intrare nevalidă în lista de fișiere cunoscute, fișierul poate fi corupt: "
 
 #: src/libs/common/Format.cpp:308
 #, c-format
@@ -2487,7 +2490,7 @@ msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:265
 msgid "Succeeded! Connection established to aMule "
-msgstr "Succes! Conexiune stabilită la aMule"
+msgstr "Succes! Conexiune stabilită la aMule "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:268
 msgid "Succeeded! Connection established."
@@ -2516,11 +2519,11 @@ msgstr "EROARE: Nu se poate asculta portul TCP."
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "ERROR: "
-msgstr "EROARE:"
+msgstr "EROARE: "
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
-msgstr "ATENȚIE:"
+msgstr "ATENȚIE: "
 
 #: src/MuleNotebook.cpp:187 src/muuli_wdr.cpp:901 src/muuli_wdr.cpp:1430
 #: src/muuli_wdr.cpp:3235 src/muuli_wdr.cpp:3505
@@ -2612,7 +2615,7 @@ msgstr "Nu este selectată nici o poreclă!"
 
 #: src/MuleTrayIcon.cpp:337
 msgid "ClientID: "
-msgstr "ID client:"
+msgstr "ID client: "
 
 #: src/MuleTrayIcon.cpp:342 src/MuleTrayIcon.cpp:356 src/TextClient.cpp:722
 #: src/TextClient.cpp:735
@@ -2621,11 +2624,11 @@ msgstr "Neconectat"
 
 #: src/MuleTrayIcon.cpp:349
 msgid "ServerName: "
-msgstr "Nume server:"
+msgstr "Nume server: "
 
 #: src/MuleTrayIcon.cpp:350
 msgid "ServerIP: "
-msgstr "IP server"
+msgstr "IP server: "
 
 #: src/MuleTrayIcon.cpp:357 src/ServerWnd.cpp:188
 #: src/utils/wxCas/src/onlinesig.cpp:263
@@ -3010,7 +3013,7 @@ msgstr "Rată date :"
 
 #: src/muuli_wdr.cpp:661
 msgid "Download Active Time: "
-msgstr "Timp activ de descărcare:"
+msgstr "Timp activ de descărcare: "
 
 #: src/muuli_wdr.cpp:672
 msgid "Transferred :"
@@ -3292,7 +3295,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr "Limbă:"
+msgstr "Limbă: "
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -3413,7 +3416,7 @@ msgstr "Porturi"
 
 #: src/muuli_wdr.cpp:1607
 msgid "Standard TCP Port "
-msgstr "Port TCP standard"
+msgstr "Port TCP standard "
 
 #: src/muuli_wdr.cpp:1611
 msgid "This is the standard eD2k port and cannot be disabled."
@@ -3642,7 +3645,7 @@ msgstr "Scală grafic încărcare:"
 
 #: src/muuli_wdr.cpp:1958
 msgid "Colours: "
-msgstr "Colori:"
+msgstr "Colori: "
 
 #: src/muuli_wdr.cpp:1963
 msgid "Background"
@@ -4251,7 +4254,7 @@ msgstr "Activează/dezactivează autentificarea cu nume utilizator/parolă"
 
 #: src/muuli_wdr.cpp:3036
 msgid "Username: "
-msgstr "Utilizator:"
+msgstr "Utilizator: "
 
 #: src/muuli_wdr.cpp:3040
 msgid "The username to use to connect to the proxy"
@@ -4472,7 +4475,7 @@ msgstr "toți ceilalți"
 
 #: src/OtherFunctions.cpp:631 src/TransferWnd.cpp:345
 msgid "Incomplete"
-msgstr "incomplet"
+msgstr "Incomplet"
 
 #: src/OtherFunctions.cpp:637 src/PartFile.cpp:3726 src/TransferWnd.cpp:351
 msgid "Stopped"
@@ -5832,7 +5835,7 @@ msgstr "Cu firewall - deschideți portul UDP %d în ruter sau firewall"
 
 #: src/ServerWnd.cpp:226
 msgid "Firewalled state: "
-msgstr "Stare firewall:"
+msgstr "Stare firewall: "
 
 #: src/ServerWnd.cpp:232
 msgid "No buddy required - TCP port open"
@@ -6314,11 +6317,11 @@ msgstr ""
 
 #: src/TextClient.cpp:359
 msgid "Processing by hash: "
-msgstr "Se procesează după index:"
+msgstr "Se procesează după index: "
 
 #: src/TextClient.cpp:373
 msgid "Processing by filename: "
-msgstr "Se procesează după nume fișier:"
+msgstr "Se procesează după nume fișier: "
 
 #: src/TextClient.cpp:395
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
@@ -7360,7 +7363,7 @@ msgstr "Vai vai, starea aMule este necunoscută..."
 #: src/utils/wxCas/src/wxcasframe.cpp:1019
 #: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid "aMule "
-msgstr "aMule"
+msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1008
 msgid " has been running for "
@@ -7368,7 +7371,7 @@ msgstr "a rulat pentru"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1013
 msgid " is stopped !"
-msgstr "este oprit !"
+msgstr " este oprit !"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1017
 #: src/utils/wxCas/src/wxcasframe.cpp:1041

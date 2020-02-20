@@ -1,15 +1,16 @@
-# Ukrainian translations for aMule SVN package
-# Переклад українською для пакету aMule SVN.
-# Copyright (C) 2008-2011 Free Software Foundation, Inc.
-# This file is distributed under the same license as the aMule SVN.
+# Translation of amule interface to Ukrainian
+# aMule i18n resource file.
+# Copyright (c) 2003-2020 Free Software Foundation, Inc.
+# This file is distributed under the same license as the aMule package.
 #
 # okovalenko <alx.kovalenko@gmail.com>, 2008.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2008-12-17 11:21+0200\n"
+"PO-Revision-Date: 2020-03-04 15:39+0100\n"
 "Last-Translator: Oleksandr Kovalenko <alx.kovalenko@gmail.com>\n"
 "Language-Team: Ukrainian <translation@linux.org.ua>\n"
 "Language: uk\n"
@@ -18,8 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Poedit-Language: Ukrainian\n"
-"X-Poedit-Country: UKRAINE\n"
+"X-Generator: Poedit 2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -2590,7 +2590,7 @@ msgstr "Не вибрано прізвисько!"
 
 #: src/MuleTrayIcon.cpp:337
 msgid "ClientID: "
-msgstr "ID клієнта:"
+msgstr "ID клієнта: "
 
 #: src/MuleTrayIcon.cpp:342 src/MuleTrayIcon.cpp:356 src/TextClient.cpp:722
 #: src/TextClient.cpp:735
@@ -2599,7 +2599,7 @@ msgstr "Не з'єднаний"
 
 #: src/MuleTrayIcon.cpp:349
 msgid "ServerName: "
-msgstr "Назва серверу:"
+msgstr "Назва серверу: "
 
 #: src/MuleTrayIcon.cpp:350
 msgid "ServerIP: "
@@ -2688,7 +2688,7 @@ msgstr "Вийти"
 
 #: src/muuli_wdr.cpp:75
 msgid "eD2k Link: "
-msgstr "eD2k-посилання:"
+msgstr "eD2k-посилання: "
 
 #: src/muuli_wdr.cpp:82
 msgid "Commit"
@@ -2987,7 +2987,7 @@ msgstr "Швидкість передачі:"
 
 #: src/muuli_wdr.cpp:661
 msgid "Download Active Time: "
-msgstr "Чинний час звантаження:"
+msgstr "Чинний час звантаження: "
 
 #: src/muuli_wdr.cpp:672
 msgid "Transferred :"
@@ -3381,7 +3381,7 @@ msgstr "Порти"
 
 #: src/muuli_wdr.cpp:1607
 msgid "Standard TCP Port "
-msgstr "Зразковий TCP-порт"
+msgstr "Зразковий TCP-порт "
 
 #: src/muuli_wdr.cpp:1611
 msgid "This is the standard eD2k port and cannot be disabled."
@@ -3397,7 +3397,7 @@ msgstr "4665"
 
 #: src/muuli_wdr.cpp:1620
 msgid "Extended UDP port (Kad / global search) "
-msgstr "Розширений порт UDP (Kad / глобальний пошук)"
+msgstr "Розширений порт UDP (Kad / глобальний пошук) "
 
 #: src/muuli_wdr.cpp:1624
 msgid "This UDP port is used for extended eD2k requests and Kad network"
@@ -3608,7 +3608,7 @@ msgstr "Шкала графіку вивантаження"
 
 #: src/muuli_wdr.cpp:1958
 msgid "Colours: "
-msgstr "Кольори:"
+msgstr "Кольори: "
 
 #: src/muuli_wdr.cpp:1963
 msgid "Background"
@@ -5801,7 +5801,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:226
 msgid "Firewalled state: "
-msgstr "Стан фаєрволу:"
+msgstr "Стан фаєрволу: "
 
 #: src/ServerWnd.cpp:232
 msgid "No buddy required - TCP port open"
@@ -6343,11 +6343,11 @@ msgstr "Фільтрування IP для клієнтів %s.\n"
 
 #: src/TextClient.cpp:678 src/TextClient.cpp:684
 msgid "OFF"
-msgstr "Вимк."
+msgstr "Вимк"
 
 #: src/TextClient.cpp:678 src/TextClient.cpp:684
 msgid "ON"
-msgstr "Ввімк."
+msgstr "Ввімк"
 
 #: src/TextClient.cpp:683
 #, c-format
@@ -6749,7 +6749,7 @@ msgstr "Показати перебіг пошуку.\n"
 
 #: src/TextClient.cpp:971
 msgid "Start downloading a file"
-msgstr "Почати звантаження файлу."
+msgstr "Почати звантаження файлу"
 
 #: src/TextClient.cpp:972
 msgid ""
@@ -6775,7 +6775,7 @@ msgstr "Відмінити звантаження."
 
 #: src/TextClient.cpp:988
 msgid "Set download priority."
-msgstr "Встановити перевагу звантаження"
+msgstr "Встановити перевагу звантаження."
 
 #: src/TextClient.cpp:989
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
@@ -7347,7 +7347,7 @@ msgstr "Стан aMule невідомий..."
 #: src/utils/wxCas/src/wxcasframe.cpp:1019
 #: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid "aMule "
-msgstr "aMule"
+msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1008
 msgid " has been running for "
@@ -7583,7 +7583,7 @@ msgstr "Запит невдалий з наступною помилкою: %s."
 
 #: src/webserver/src/WebServer.cpp:1740
 msgid "Index file not found: "
-msgstr "Файл індексу не знайдено:"
+msgstr "Файл індексу не знайдено: "
 
 #: src/webserver/src/WebServer.cpp:1819
 msgid "Session expired - requesting login\n"
@@ -7640,285 +7640,3 @@ msgstr "Запитано вихід\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "Обробляється запит [перенаправлений]:"
-
-#~ msgid "Partfile %s (%s) has no seeds file"
-#~ msgstr "Частковий файл %s (%s) не має джерел"
-
-#~ msgid "Partfile %s (%s) has a void seeds file"
-#~ msgstr "Частковий файл %s (%s) має порожні файли-джерела "
-
-#, fuzzy
-#~ msgid "Download status"
-#~ msgstr "Стан звантаження"
-
-#~ msgid "( %s / %s )"
-#~ msgstr "( %s / %s )"
-
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgid "SOCKS5"
-#~ msgstr "SOCKS5"
-
-#~ msgid "SOCKS4"
-#~ msgstr "SOCKS4"
-
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgid "SOCKS4a"
-#~ msgstr "SOCKS4a"
-
-#~ msgid "Update delay : %d second"
-#~ msgid_plural "Update delay : %d seconds"
-#~ msgstr[0] "Затримка оновлення: %d секунда"
-#~ msgstr[1] "Затримка оновлення: %d секунди"
-#~ msgstr[2] "Затримка оновлення: %d секунд"
-
-#~ msgid "Transferring"
-#~ msgstr "Передавання"
-
-#, fuzzy
-#~ msgid "QR: ???"
-#~ msgstr "Рахунок черги: %u"
-
-#~ msgid "QR: %u"
-#~ msgstr "Рахунок черги: %u"
-
-#, fuzzy
-#~ msgid "Queue Rank"
-#~ msgstr "В черзі"
-
-#~ msgid "TODO - show progress of a search"
-#~ msgstr "TODO - показати поступ пошуку"
-
-#~ msgid "Starting to create MD4 and AICH hash for file: %s"
-#~ msgstr "Починається створення MD4 та AICH хешів для файлу: %s"
-
-#~ msgid "Starting to create MD4 hash for file: %s"
-#~ msgstr "Починається створення MD4 хеша для файлу: %s"
-
-#~ msgid "Starting to create AICH hash for file: %s"
-#~ msgstr "Починається створення AICH хеша для файлу: %s"
-
-#~ msgid "WARNING: Could not remove original '%s' after creating backup"
-#~ msgstr ""
-#~ "ЗАСТЕРЕЖЕННЯ: неможливо перенести початковий '%s' після створення "
-#~ "резервної копії"
-
-#~ msgid "WARNING: Failed to delete %s"
-#~ msgstr "ЗАСТЕРЕЖЕННЯ: неможливо видалити %s"
-
-#~ msgid "%u (QR: %u)"
-#~ msgstr "%u (рахунок черги: %u)"
-
-#~ msgid "Rating (total):"
-#~ msgstr "Оцінка (всього):"
-
-#~ msgid "Try to transfer full chunks to all uploads"
-#~ msgstr "Спробувати передати повні шматки до всіх вивантажень"
-
-#~ msgid "Networks window"
-#~ msgstr "Вікно мереж"
-
-#~ msgid "Searches window"
-#~ msgstr "Вікно пошуку"
-
-#, fuzzy
-#~ msgid "Downloads window"
-#~ msgstr "Звантажується"
-
-#~ msgid "Shared files window"
-#~ msgstr "Вікно спільних файлів"
-
-#~ msgid "Messages window"
-#~ msgstr "Вікно повідомлень"
-
-#~ msgid "Statistics graph window"
-#~ msgstr "Вікно статистики"
-
-#~ msgid "Preferences settings window"
-#~ msgstr "Вікно налаштувань"
-
-#~ msgid "Traybar-icon lost, trying to recreate ..."
-#~ msgstr "Піктограма в системному лотку втрачена, спроба створити знову ..."
-
-#~ msgid "Transfers"
-#~ msgstr "Передачі"
-
-#~ msgid "Files transfers window"
-#~ msgstr "Вікно передачі файлів"
-
-#~ msgid "Unban"
-#~ msgstr "Зняти заборону"
-
-#~ msgid "Show Uploads"
-#~ msgstr "Показати вивантаження"
-
-#~ msgid "Show Queue"
-#~ msgstr "Показати чергу"
-
-#~ msgid "Select View"
-#~ msgstr "Обрати вигляд"
-
-#~ msgid "Client Software"
-#~ msgstr "Програма клієнта"
-
-#~ msgid "Waited"
-#~ msgstr "Чекає"
-
-#~ msgid "Upload Time"
-#~ msgstr "Час вивантаження"
-
-#~ msgid "Upload/Download"
-#~ msgstr "Вивантаження/Звантаження"
-
-#~ msgid "Remote Status"
-#~ msgstr "Віддалений стан"
-
-#~ msgid "File Priority"
-#~ msgstr "Перевага файлу"
-
-#~ msgid "Score"
-#~ msgstr "Рахунок"
-
-#~ msgid "Asked"
-#~ msgstr "Запитаний"
-
-#~ msgid "Last Seen"
-#~ msgstr "Востаннє побачений"
-
-#~ msgid "Entered Queue"
-#~ msgstr "Увійшов в чергу"
-
-#~ msgid "Transferred Up"
-#~ msgstr "Вивантажується"
-
-#~ msgid "Transferred Down"
-#~ msgstr "Звантажується"
-
-#~ msgid "Userhash"
-#~ msgstr "Хеш користувача"
-
-#~ msgid "Encrypted"
-#~ msgstr "Зашифрований"
-
-#~ msgid "Loaded %d flag bitmaps."
-#~ msgstr "Завантажено %d зображень прапорів."
-
-#~ msgid "Shows Upload / Up-queue"
-#~ msgstr "Показати черги вивантаження/звантаження"
-
-#~ msgid "Clients on queue :"
-#~ msgstr "Клієнтів у черзі:"
-
-#~ msgid "Current Session"
-#~ msgstr "Поточна сесія"
-
-#~ msgid "Total"
-#~ msgstr "Всього"
-
-#~ msgid "Requested :"
-#~ msgstr "Запитані:"
-
-#~ msgid "Create backup for preview"
-#~ msgstr "Створити копію для перегляду"
-
-#~ msgid "Files Transfers Window"
-#~ msgstr "Вікно передавання файлів"
-
-#~ msgid "Total Users: %s | Total Files: %s"
-#~ msgstr "Вього користувачів: %s | Всього файлів: %s"
-
-#~ msgid "HTTP download thread ended"
-#~ msgstr "Потік звантаження HTTP завершений"
-
-#~ msgid "Host: %s:%i\n"
-#~ msgstr "Хост: %s:%i\n"
-
-#~ msgid "Response: %i (Error: %i)"
-#~ msgstr "Відповідь: %i (Помилка: %i)"
-
-#~ msgid "WARNING: Void response on stream creation"
-#~ msgstr "ЗАСТЕРЕЖЕННЯ: порожня відповідь під час створення потоку"
-
-#~ msgid "ERROR: Redirection code received with no URL"
-#~ msgstr "ПОМИЛКА: Отриманий код перенаправлення без URL-адреси"
-
-#~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-#~ msgstr "CIP2Country::CIP2Country(): неможливо завантажити дані країн з "
-
-#~ msgid "Get IPFilter level."
-#~ msgstr "Отримати рівень IP-фільтра."
-
-#~ msgid "Makes a search."
-#~ msgstr "Робить пошук."
-
-#~ msgid "Killed!"
-#~ msgstr "Вбитий!"
-
-#~ msgid "Using amuleweb in '%s'."
-#~ msgstr "Використовується amuleweb у '%s'."
-
-#~ msgid "Shutting down aMule..."
-#~ msgstr "Завершення роботи aMule..."
-
-#~ msgid ""
-#~ "The following options have been changed in this release for security "
-#~ "reasons:\n"
-#~ msgstr "Наступні опції були змінені в цьому випуску з причин безпеки:\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Enabled Protocol Obfuscation support for incoming and outgoing "
-#~ "connections.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Ввімкнено підтримку приховування протоколу для вхідних та вихідних "
-#~ "з'єднань.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Disabled updating the server list from other server and clients.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Вимкнено оновлення переліку серверів від іншого серверу та клієнтів.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "For more information on the reason for this changes, seach\n"
-#~ "the aMule wiki at http://wiki.amule.org for \"fake servers\" info.\n"
-#~ "It's important that you clear any fake server from your server list for "
-#~ "aMule to work properly."
-#~ msgstr ""
-#~ "\n"
-#~ "Для більш докладної інформації з питань цих змін, шукайте\n"
-#~ "\"fake servers\" на aMule wiki (http://wiki.amule.org).\n"
-#~ "Важливо, щоб ви видалили всі підробні сервери з переліку ваших\n"
-#~ "серверів для правильної роботи aMule."
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Additionally, the browser settings have been reset to the system default. "
-#~ "Please configure your browser options again if needed.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Додатково, налаштування переглядача тенет скинуті до за замовчуванням. "
-#~ "Будь ласка, якщо потрібно, налаштуйте його ще раз.\n"
-
-#~ msgid "Fetching status..."
-#~ msgstr "Отримується стан..."
-
-#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
-#~ msgstr "Користувачі: E: %s K: %s | Файли E: %s K: %s"
-
-#~ msgid "Client %s on IP:Port %s:%d using %s %s %s"
-#~ msgstr "Клієнт %s на IP:Port %s:%d використовує %s %s %s"
-
-#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "theApp->serverlist->GetServerByAddress() повернув NULL"
-
-#~ msgid "Firewalled"
-#~ msgstr "За фаєрволом"

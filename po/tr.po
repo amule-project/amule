@@ -1,7 +1,8 @@
-# translation of aMule to Turkish
+# Translation of amule interface to Turkish
+# aMule i18n resource file.
+# Copyright (c) 2003-2020 aMule Team
 # This file is distributed under the same license as the aMule package.
-# Atilla ÖNTAŞ <atilla_ontas@mandriva.org>, 2009.
-# Atilla ÖNTAŞ <atilla_ontas@mandriva.org>, 2009.
+#
 # Atilla ÖNTAŞ <atilla_ontas@mandriva.org>, 2009.
 #
 msgid ""
@@ -9,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2019-09-29 18:22+0300\n"
+"PO-Revision-Date: 2020-03-04 15:39+0100\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
 "Language: tr\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -243,7 +244,7 @@ msgstr "UYARI: Günlük dosyası boş, bir şeyler yanlış."
 
 #: src/amule.cpp:1508
 msgid "Log has been reset"
-msgstr "Günlük kaydı silindi."
+msgstr "Günlük kaydı silindi"
 
 #: src/amule.cpp:1534
 #, c-format
@@ -478,7 +479,7 @@ msgstr "Kademlia: XOR matrisi üzerine kurulu eşten eşe iletişim.\n"
 
 #: src/amuleDlg.cpp:509
 msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
-msgstr "Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
+msgstr " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 
 #: src/amuleDlg.cpp:510
 msgid "http://kademlia.scs.cs.nyu.edu\n"
@@ -593,7 +594,7 @@ msgstr "- ön tanımlı -"
 #: src/amuleDlg.cpp:1233
 #, c-format
 msgid "Skin directory '%s' does not exist"
-msgstr "Kaplama dizini '%s' yok."
+msgstr "Kaplama dizini '%s' yok"
 
 #: src/amuleDlg.cpp:1238
 #, c-format
@@ -784,7 +785,7 @@ msgstr " (Sahte eMule sürümü %#x)"
 
 #: src/BaseClient.cpp:1803
 msgid " (Fake eMule)"
-msgstr "(Sahte eMule)"
+msgstr " (Sahte eMule)"
 
 #: src/BaseClient.cpp:1805
 msgid "xMule (Fake eMule)"
@@ -1029,7 +1030,7 @@ msgstr "İncelendi - Tamam"
 
 #: src/ClientRef.cpp:203
 msgid "Not Available"
-msgstr "Uygun değil."
+msgstr "Uygun değil"
 
 #: src/ClientTCPSocket.cpp:840
 #, c-format
@@ -2472,7 +2473,7 @@ msgstr "HATA: "
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
-msgstr "UYARI:"
+msgstr "UYARI: "
 
 #: src/MuleNotebook.cpp:187 src/muuli_wdr.cpp:901 src/muuli_wdr.cpp:1430
 #: src/muuli_wdr.cpp:3235 src/muuli_wdr.cpp:3505
@@ -2573,11 +2574,11 @@ msgstr "Bağlı değil"
 
 #: src/MuleTrayIcon.cpp:349
 msgid "ServerName: "
-msgstr "Sunucu Adı:"
+msgstr "Sunucu Adı: "
 
 #: src/MuleTrayIcon.cpp:350
 msgid "ServerIP: "
-msgstr "SunucuIP:"
+msgstr "SunucuIP: "
 
 #: src/MuleTrayIcon.cpp:357 src/ServerWnd.cpp:188
 #: src/utils/wxCas/src/onlinesig.cpp:263
@@ -2662,7 +2663,7 @@ msgstr "Çıkış"
 
 #: src/muuli_wdr.cpp:75
 msgid "eD2k Link: "
-msgstr "eD2k Bağlantısı:"
+msgstr "eD2k Bağlantısı: "
 
 #: src/muuli_wdr.cpp:82
 msgid "Commit"
@@ -2846,7 +2847,7 @@ msgstr "Süzme Sonuçları"
 
 #: src/muuli_wdr.cpp:334
 msgid "Invert Result"
-msgstr "Sonuçları tersine çevir."
+msgstr "Sonuçları tersine çevir"
 
 #: src/muuli_wdr.cpp:340
 msgid "Hide Known Files"
@@ -2886,7 +2887,7 @@ msgstr "Tamamlanan aktarımları temizler."
 
 #: src/muuli_wdr.cpp:466
 msgid "File sources:"
-msgstr "Dosya kaynakları"
+msgstr "Dosya kaynakları:"
 
 #: src/muuli_wdr.cpp:520 src/muuli_wdr.cpp:1216 src/PrefsUnifiedDlg.cpp:176
 msgid "General"
@@ -7532,282 +7533,3 @@ msgstr "Çıkış istendi.\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "İstem işleniyor [yönlendirilmiş]: "
-
-#~ msgid "Partfile %s (%s) has no seeds file"
-#~ msgstr "%s (%s) parça dosyası girdi dosyasına sahip değil."
-
-#~ msgid "Partfile %s (%s) has a void seeds file"
-#~ msgstr "Parça dosyası %s (%s) geçersiz girdi dosyası içeriyor."
-
-#~ msgid "Download status"
-#~ msgstr "İndirme Durumu"
-
-#~ msgid "( %s / %s )"
-#~ msgstr "( %s / %s )"
-
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgid "SOCKS5"
-#~ msgstr "SOCKS5"
-
-#~ msgid "SOCKS4"
-#~ msgstr "SOCKS4"
-
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgid "SOCKS4a"
-#~ msgstr "SOCKS4a"
-
-#~ msgid "Update delay : %d second"
-#~ msgid_plural "Update delay : %d seconds"
-#~ msgstr[0] "Güncelleme gecikmesi: %d saniye"
-#~ msgstr[1] "Güncelleme gecikmesi: %d saniye"
-
-#~ msgid "Comments and ratings are not supported on remote gui yet"
-#~ msgstr "Uzak arayüzde yorum ve puanlama henüz desteklenmemektedir."
-
-#~ msgid "Transferring"
-#~ msgstr "Aktarılıyor"
-
-#~ msgid "QR: ???"
-#~ msgstr "SR: ???"
-
-#~ msgid "QR: %u"
-#~ msgstr "SR: %u"
-
-#~ msgid "Only files currently uploading"
-#~ msgstr "Şu anda sadece gönderilen dosyalar"
-
-#~ msgid "Queue Rank"
-#~ msgstr "Kuyruk Sırası"
-
-#~ msgid "TODO - show progress of a search"
-#~ msgstr "YAPILACAK - bir aramanın gidişatını göstermek."
-
-#~ msgid "Starting to create MD4 and AICH hash for file: %s"
-#~ msgstr "%s dosyası için MD4 ve AICH adreslemesi oluşturulmaya başlanıyor "
-
-#~ msgid "Starting to create MD4 hash for file: %s"
-#~ msgstr "%s dosyası için MD4 adreslemesi oluşturulmaya başlanıyor."
-
-#~ msgid "Starting to create AICH hash for file: %s"
-#~ msgstr "%s dosyası için AICH adreslemesi oluşturulmaya başlanıyor."
-
-#~ msgid "WARNING: Could not remove original '%s' after creating backup"
-#~ msgstr "UYARI: Yedekleme oluşturulduktan sonra özgün '%s' çıkartılamıyor"
-
-#~ msgid "WARNING: Failed to delete %s"
-#~ msgstr "UYARI: %s dosyası silinemiyor"
-
-#~ msgid "%u"
-#~ msgstr "%u"
-
-#~ msgid "%u (QR: %u)"
-#~ msgstr "%u (SR: %u)"
-
-#~ msgid "Rating (total):"
-#~ msgstr "Puanlama (toplam):"
-
-#~ msgid "Try to transfer full chunks to all uploads"
-#~ msgstr "Bütün gönderimlere tam parçaları yollamayı dene"
-
-#~ msgid "Networks window"
-#~ msgstr "Ağ Penceresi"
-
-#~ msgid "Searches window"
-#~ msgstr "Arama Penceresi"
-
-#~ msgid "Downloads window"
-#~ msgstr "İndirme penceresi"
-
-#~ msgid "Shared files window"
-#~ msgstr "Paylaşılan dosya penceresi"
-
-#~ msgid "Messages window"
-#~ msgstr "Sohbet penceresi"
-
-#~ msgid "Statistics graph window"
-#~ msgstr "İstatistik penceresi"
-
-#~ msgid "Preferences settings window"
-#~ msgstr "Ayar penceresi"
-
-#~ msgid "Traybar-icon lost, trying to recreate ..."
-#~ msgstr "Sistem tablası simgesi kayboldu, yeniden oluşturulma deneniyor..."
-
-#~ msgid "Transfers"
-#~ msgstr "Aktarımlar"
-
-#~ msgid "Files transfers window"
-#~ msgstr "Dosya aktarım penceresi"
-
-#~ msgid "Unban"
-#~ msgstr "Yasaklama"
-
-#~ msgid "Show Uploads"
-#~ msgstr "Gönderimleri Göster"
-
-#~ msgid "Show Queue"
-#~ msgstr "Sırayı Göster"
-
-#~ msgid "Select View"
-#~ msgstr "Görünüm Seçiniz"
-
-#~ msgid "Client Software"
-#~ msgstr "İstemci Yazılımı"
-
-#~ msgid "Waited"
-#~ msgstr "Beklenen"
-
-#~ msgid "Upload Time"
-#~ msgstr "Gönderme Süresi"
-
-#~ msgid "Upload/Download"
-#~ msgstr "Gönderme/İndirme"
-
-#~ msgid "Remote Status"
-#~ msgstr "Uzak Durumu"
-
-#~ msgid "File Priority"
-#~ msgstr "Dosya Önceliği"
-
-#~ msgid "Score"
-#~ msgstr "Skor"
-
-#~ msgid "Asked"
-#~ msgstr "Soruldu"
-
-#~ msgid "Last Seen"
-#~ msgstr "Son Görülme"
-
-#~ msgid "Entered Queue"
-#~ msgstr "Girilen Sıra"
-
-#~ msgid "Transferred Up"
-#~ msgstr "Gönderilen"
-
-#~ msgid "Transferred Down"
-#~ msgstr "İndirilen"
-
-#~ msgid "Userhash"
-#~ msgstr "Kullanıcı Adreslemesi"
-
-#~ msgid "Encrypted"
-#~ msgstr "Şifrelenmiş"
-
-#~ msgid "Loaded %d flag bitmaps."
-#~ msgstr "%d adet bit işlem bayrağı yüklendi."
-
-#~ msgid "Shows Upload / Up-queue"
-#~ msgstr "Gönderim/Gön-sırasını  Gösterir."
-
-#~ msgid "Clients on queue :"
-#~ msgstr "Sıradaki Kullanıcılar:"
-
-#~ msgid "Current Session"
-#~ msgstr "Şimdiki Oturum"
-
-#~ msgid "Total"
-#~ msgstr "Toplam"
-
-#~ msgid "Requested :"
-#~ msgstr "İstenilen :"
-
-#~ msgid "Create backup for preview"
-#~ msgstr "Ön izleme için yedekleme oluştur"
-
-#~ msgid "Files Transfers Window"
-#~ msgstr "Dosya Aktarım Penceresi"
-
-#~ msgid "Total Users: %s | Total Files: %s"
-#~ msgstr "Toplam Kullanıcılar: %s | Toplam Dosyalar: %s"
-
-#~ msgid "Download size not received, downloading until connection is closed"
-#~ msgstr ""
-#~ "İndirme boyutu alınamadı, bağlantı kesilinceye kadar indirme sürecek."
-
-#~ msgid "HTTP download thread ended"
-#~ msgstr "HTTP aktarımı bitti"
-
-#~ msgid "Host: %s:%i\n"
-#~ msgstr "Makine: %s:%i\n"
-
-#~ msgid "Response: %i (Error: %i)"
-#~ msgstr "Cevap:%i (Hata: %i)"
-
-#~ msgid "WARNING: Void response on stream creation"
-#~ msgstr "UYARI: Akış oluşumunda geçersiz cevap"
-
-#~ msgid "ERROR: Redirection code received with no URL"
-#~ msgstr "HATA: Yeniden yönlendirme kodu URL olmaksızın alındı"
-
-#~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-#~ msgstr "CIP2Country::CIP2Country(): Ülke verisi yükleme başarısız "
-
-#~ msgid "Get IPFilter level."
-#~ msgstr "IP Süzgeç seviyesini al."
-
-#~ msgid "Makes a search."
-#~ msgstr "Arama yapar."
-
-#~ msgid "Killed!"
-#~ msgstr "Öldürüldü!"
-
-#~ msgid "Using amuleweb in '%s'."
-#~ msgstr "'%s'te amuleweb kullanılıyor."
-
-#~ msgid "Shutting down aMule..."
-#~ msgstr "aMule Kapatılıyor..."
-
-#~ msgid ""
-#~ "The following options have been changed in this release for security "
-#~ "reasons:\n"
-#~ msgstr ""
-#~ "Aşağıdaki seçenekler güvenlik sebebiyle bu sürümde değiştirilmiştir:\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Enabled Protocol Obfuscation support for incoming and outgoing "
-#~ "connections.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Gelen ve giden bağlantılar için Protokol Gizleme \n"
-#~ "etkinleştirildi.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Disabled updating the server list from other server and clients.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Sunucu listesinin diğer sunucular ve kullanıcılardan güncellenmesi "
-#~ "devre dışı bırakıldı.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "For more information on the reason for this changes, seach\n"
-#~ "the aMule wiki at http://wiki.amule.org for \"fake servers\" info.\n"
-#~ "It's important that you clear any fake server from your server list for "
-#~ "aMule to work properly."
-#~ msgstr ""
-#~ "\n"
-#~ "Bu değişikliklerin sebepleri hakkında bilgi için;\n"
-#~ " http://wiki.amule.org adresindeki aMule Wiki \"sahte sunucular\" "
-#~ "bilgisini araştırın.\n"
-#~ "aMule'nin düzgün çalışabilmesi için sunucu listenizdeki sahte sunucuları "
-#~ "temizlemeniz çok önemlidir."
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Additionally, the browser settings have been reset to the system default. "
-#~ "Please configure your browser options again if needed.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Ayrıca, tarayıcı ayarları sistem ön tanımlısına ayarlanmıştır. Gerekirse, "
-#~ "lütfen tarayıcı seçeneklerini yeniden yapılandırın.\n"
-
-#~ msgid "Fetching status..."
-#~ msgstr "Durum alınıyor..."

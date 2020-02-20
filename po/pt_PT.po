@@ -1,21 +1,24 @@
-# Copyright (C) 2004 aMule Team
+# Translation of amule interface to Portuguese
+# aMule i18n resource file.
+# Copyright (c) 2003-2020 aMule Team
 # This file is distributed under the same license as the aMule package.
+#
 # Kry <elkry@users.sourceforge.net>, 2004.
 # IgoR <igor.spy@gmx.net>, 2004.
 # Fabio Jr. Beneditto <kamikazenh@yahoo.com.br>, 2004.
-# LPP <lpp@freeshell.org>
-# Helder Correia <helder.pereira.correia@gmail.com>, 2005
-# (special thanks to Pedro Rodrigues <fantasma_2001@yahoo.com>)
+# LPP <lpp@freeshell.org>.
+# Helder Correia <helder.pereira.correia@gmail.com>, 2005.
+# (special thanks to Pedro Rodrigues <fantasma_2001@yahoo.com>).
 # Helder Correia <helder.pereira.correia@gmail.com>, 2007.
 # Miguel Almeida <miguel@almeida.at>, 2008.
-# Luís Picciochi Oliveira <Pitxyoki@Gmail.com>, 2009-2011
+# Luís Picciochi Oliveira <Pitxyoki@Gmail.com>, 2009-2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2011-06-18 14:15+0000\n"
+"PO-Revision-Date: 2020-03-04 15:06+0100\n"
 "Last-Translator: Luís Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
 "Language: pt\n"
@@ -23,6 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -7352,7 +7356,7 @@ msgstr " está em "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1066
 msgid " with "
-msgstr "com "
+msgstr " com "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1084
 msgid "Total Download: "
@@ -7377,7 +7381,7 @@ msgstr " kB/s, Upload: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1110
 msgid " kB/s"
-msgstr "kB/s"
+msgstr " kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1118
 msgid "Sharing: "
@@ -7574,7 +7578,7 @@ msgstr "A processar pedido [original]: "
 
 #: src/webserver/src/WebServer.cpp:1870
 msgid "No password specified, login will not be allowed."
-msgstr "Não foi indicada uma palavra-passe, a entrada não será permitida"
+msgstr "Não foi indicada uma palavra-passe, a entrada não será permitida."
 
 #: src/webserver/src/WebServer.cpp:1872
 msgid "Checking password\n"
@@ -7604,406 +7608,3 @@ msgstr "Saída do sistema pedida\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "A processar pedido [redireccionado]: "
-
-#~ msgid "Partfile %s (%s) has no seeds file"
-#~ msgstr "O ficheiro de partes %s (%s) não tem ficheiro de sementes"
-
-#~ msgid "Partfile %s (%s) has a void seeds file"
-#~ msgstr "O ficheiro de partes %s (%s) tem um ficheiro de sementes indefinido"
-
-#~ msgid "Download status"
-#~ msgstr "Estado do Download"
-
-#~ msgid "Starting to create MD4 and AICH hash for file: %s"
-#~ msgstr "Início da criação de chaves MD4 e AICH para o ficheiro: %s"
-
-#~ msgid "Starting to create MD4 hash for file: %s"
-#~ msgstr "Início da criação da chave MD4 para o ficheiro: %s"
-
-#~ msgid "Starting to create AICH hash for file: %s"
-#~ msgstr "Início da criação da chave AICH para o ficheiro: %s"
-
-#~ msgid "WARNING: Could not remove original '%s' after creating backup"
-#~ msgstr ""
-#~ "AVISO: Não é possível remover o original '%s' após criar cópia de "
-#~ "segurança"
-
-#~ msgid "WARNING: Failed to delete %s"
-#~ msgstr "AVISO: Falha ao remover %s"
-
-#~ msgid "Client %s on IP:Port %s:%d using %s %s %s"
-#~ msgstr "Cliente %s com IP:Porto %s:%d a usar %s %s %s"
-
-#~ msgid "( %s / %s )"
-#~ msgstr "( %s / %s )"
-
-#~ msgid "Transferring"
-#~ msgstr "A Transferir"
-
-#~ msgid "Unable to determine selected browser!"
-#~ msgstr "Não é possível determinar o navegador seleccionado!"
-
-#~ msgid "Networks window"
-#~ msgstr "Janela de redes"
-
-#~ msgid "Searches window"
-#~ msgstr "Janela de Pesquisas"
-
-#~ msgid "Transfers"
-#~ msgstr "Transferências"
-
-#~ msgid "Files transfers window"
-#~ msgstr "Janela de transferências"
-
-#~ msgid "Shared files window"
-#~ msgstr "Janela de ficheiros partilhados"
-
-#~ msgid "Messages window"
-#~ msgstr "Janela de mensagens"
-
-#~ msgid "Statistics graph window"
-#~ msgstr "Janela de estatísticas"
-
-#~ msgid "Preferences settings window"
-#~ msgstr "Janela de preferências"
-
-#~ msgid "User Defined"
-#~ msgstr "Personalizado"
-
-#~ msgid "Update delay : %d second"
-#~ msgid_plural "Update delay : %d seconds"
-#~ msgstr[0] "Intervalo de actualização: %d segundo"
-#~ msgstr[1] "Intervalo de actualização: %d segundos"
-
-#~ msgid "Firewalled"
-#~ msgstr "Atrás de Firewall"
-
-#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
-#~ msgstr "Utilizadores: E: %s K: %s | Ficheiros E: %s K: %s"
-
-#~ msgid "Total Users: %s | Total Files: %s"
-#~ msgstr "Utilizadores: %s | Ficheiros: %s"
-
-#~ msgid "TODO - show progress of a search"
-#~ msgstr "A FAZER - mostrar o progresso de uma pesquisa"
-
-#~ msgid "Get IPFilter level."
-#~ msgstr "Obter nível de filtragem de IP."
-
-#~ msgid "Makes a search."
-#~ msgstr "Faz uma pesquisa."
-
-#~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-#~ msgstr ""
-#~ "CIP2Country::CIP2Country(): Carregamento dos dados do país falhou de "
-
-#~ msgid "Loaded %d flag bitmap."
-#~ msgid_plural "Loaded %d flag bitmaps."
-#~ msgstr[0] "Foi carregada a imagem de %d bandeira."
-#~ msgstr[1] "Foram carregadas %d imagens de bandeiras."
-
-#~ msgid "Shows Upload / Up-queue"
-#~ msgstr "Mostra Uploads / fila de espera de uploads"
-
-#~ msgid "Clients on queue :"
-#~ msgstr "Clientes na lista de espera :"
-
-#~ msgid "Current Session"
-#~ msgstr "Sessão actual"
-
-#~ msgid "Total"
-#~ msgstr "Total"
-
-#~ msgid "Requested :"
-#~ msgstr "Pedidos :"
-
-#~ msgid "Rating (total):"
-#~ msgstr "Classificação (total):"
-
-#~ msgid "Misc Options"
-#~ msgstr "Opções diversas"
-
-#~ msgid "System Default"
-#~ msgstr "Predefinição de Sistema"
-
-#~ msgid "Konqueror"
-#~ msgstr "Konqueror"
-
-#~ msgid "Mozilla"
-#~ msgstr "Mozilla"
-
-#~ msgid "Firefox"
-#~ msgstr "Firefox"
-
-#~ msgid "Firebird"
-#~ msgstr "Firebird"
-
-#~ msgid "Opera"
-#~ msgstr "Opera"
-
-#~ msgid "Netscape"
-#~ msgstr "Netscape"
-
-#~ msgid "Galeon"
-#~ msgstr "Galeon"
-
-#~ msgid "Epiphany"
-#~ msgstr "Epiphany"
-
-#~ msgid "Select your browser here"
-#~ msgstr "Seleccione o seu navegador"
-
-#~ msgid "Custom Browser:"
-#~ msgstr "Navegador personalizado:"
-
-#~ msgid ""
-#~ "Enter your browser name here. To use the custom browser, select the "
-#~ "Custom menu-item from the dropdown-menu above."
-#~ msgstr ""
-#~ "Insira o nome do seu navegador. Para usar o navegador personalizado, "
-#~ "seleccione o item Personalizado do menu acima."
-
-#~ msgid "Create Backup for preview"
-#~ msgstr "Criar cópia de segurança para pré-visualização"
-
-#~ msgid "Extended client UDP Port:"
-#~ msgstr "Porto UDP extendido do cliente:"
-
-#~ msgid "disable"
-#~ msgstr "desactivar"
-
-#~ msgid "Bind Address"
-#~ msgstr "Associar ao Endereço"
-
-#~ msgid "UDP port for extended server requests (TCP+3): 4665"
-#~ msgstr "Porto UDP para pedidos de servidor extendidos (TCP+3): 4665"
-
-#~ msgid "Hard limit"
-#~ msgstr "Limite máximo"
-
-#~ msgid "Connection limits"
-#~ msgstr "Limites de ligação"
-
-#~ msgid "Max Connections"
-#~ msgstr "Máximo de ligações"
-
-#~ msgid "Universal Plug and Play"
-#~ msgstr "Universal Plug and Play"
-
-#~ msgid "Enable UPnP"
-#~ msgstr "Activar UPnP"
-
-#~ msgid "Server Options"
-#~ msgstr "Opções de servidores"
-
-#~ msgid "I.C.H. active"
-#~ msgstr "M.I.C. activo"
-
-#~ msgid "Try to transfer full chunks to all uploads"
-#~ msgstr "Tentar enviar partes inteiras nos uploads"
-
-#~ msgid "Disk space"
-#~ msgstr "Espaço em disco"
-
-#~ msgid "Check disk space"
-#~ msgstr "Verificar espaço em disco"
-
-#~ msgid "Min disk space:"
-#~ msgstr "Espaço mínimo em disco:"
-
-#~ msgid "Incoming"
-#~ msgstr "Completos"
-
-#~ msgid "Temporary"
-#~ msgstr "Temporários"
-
-#~ msgid "Shared"
-#~ msgstr "Partilhados"
-
-#~ msgid "Select Statistics Colors"
-#~ msgstr "Seleccionar as Cores das Estatísticas"
-
-#~ msgid "Line Capacities"
-#~ msgstr "Capacidades da Ligação"
-
-#~ msgid "Note: These values are only used for statistics."
-#~ msgstr "Nota: estes valores são usados apenas nas estatísticas."
-
-#~ msgid "Advanced Settings"
-#~ msgstr "Preferências Avançadas"
-
-#~ msgid "Progressbar Style"
-#~ msgstr "Estilo da barra de progresso"
-
-#~ msgid "Skin Support"
-#~ msgstr "Suporte de temas"
-
-#~ msgid "Enable skin support "
-#~ msgstr "Activar supporte de temas"
-
-#~ msgid "Skin:"
-#~ msgstr "Tema:"
-
-#~ msgid "Column Sorting"
-#~ msgstr "Ordenação da coluna"
-
-#~ msgid "Misc Gui Tweaks"
-#~ msgstr "Ajustes de interface diversos"
-
-#~ msgid "Show part file number before file name"
-#~ msgstr "Mostrar o número do ficheiro parcial antes do nome do ficheiro"
-
-#~ msgid "Web server port"
-#~ msgstr "Porto do servidor web"
-
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgid "Display server motd when connected ..."
-#~ msgstr "Exibir a mensagem do dia ao ligar ao servidor..."
-
-#~ msgid "eD2k Info"
-#~ msgstr "Informação eD2k"
-
-#~ msgid "File Options"
-#~ msgstr "Opções de ficheiros"
-
-#~ msgid "Online Signature Directory:"
-#~ msgstr "Pasta de Assinatura Online:"
-
-#~ msgid "Disable/Enable"
-#~ msgstr "Desactivar/Activar"
-
-#~ msgid "Filtering Options:"
-#~ msgstr "Opções de filtragem:"
-
-#~ msgid "SOCKS5"
-#~ msgstr "SOCKS5"
-
-#~ msgid "SOCKS4"
-#~ msgstr "SOCKS4"
-
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgid "SOCKS4a"
-#~ msgstr "SOCKS4a"
-
-#~ msgid "Authentication"
-#~ msgstr "Autenticação"
-
-#~ msgid "Files Transfers Window"
-#~ msgstr "Janela de Transferências"
-
-#~ msgid "Unban"
-#~ msgstr "Remover Ban"
-
-#~ msgid "Show Uploads"
-#~ msgstr "Mostrar Uploads"
-
-#~ msgid "Show Queue"
-#~ msgstr "Mostrar a Lista de Espera"
-
-#~ msgid "Select View"
-#~ msgstr "Seleccionar a Vista"
-
-#~ msgid "Client Software"
-#~ msgstr "Programa Cliente"
-
-#~ msgid "Waited"
-#~ msgstr "Esperou"
-
-#~ msgid "Upload Time"
-#~ msgstr "Tempo de Upload"
-
-#~ msgid "Upload/Download"
-#~ msgstr "Upload/Download"
-
-#~ msgid "Remote Status"
-#~ msgstr "Estado remoto"
-
-#~ msgid "QR: %u"
-#~ msgstr "QR: %u"
-
-#~ msgid "File Priority"
-#~ msgstr "Prioridade do ficheiro"
-
-#~ msgid "Score"
-#~ msgstr "Pontuação"
-
-#~ msgid "Asked"
-#~ msgstr "Pedido"
-
-#~ msgid "Last Seen"
-#~ msgstr "Última vez visto"
-
-#~ msgid "Entered Queue"
-#~ msgstr "Entrou na Lista de Espera"
-
-#~ msgid "Transferred Up"
-#~ msgstr "Enviado"
-
-#~ msgid "Transferred Down"
-#~ msgstr "Recebido"
-
-#~ msgid "Userhash"
-#~ msgstr "Chave de Utilizador"
-
-#~ msgid "Encrypted"
-#~ msgstr "Cifrado"
-
-#~ msgid "Hide shared files"
-#~ msgstr "Esconder ficheiros partilhados"
-
-#~ msgid "%u (QR: %u)"
-#~ msgstr "%u (QR: %u)"
-
-#~ msgid ""
-#~ "The following options have been changed in this release for security "
-#~ "reasons:\n"
-#~ msgstr ""
-#~ "As seguintes opções foram mudadas nesta distribuição por motivos de "
-#~ "segurança:\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Enabled Protocol Obfuscation support for incoming and outgoing "
-#~ "connections.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Activada a Ofuscação do Protocolo para todas as ligações de entrada e "
-#~ "saída.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Disabled updating the server list from other server and clients.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Desactivada a actualização da lista de servidores de outros servidores "
-#~ "e clientes.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "For more information on the reason for this changes, seach\n"
-#~ "the aMule wiki at http://wiki.amule.org for \"fake servers\" info.\n"
-#~ "It's important that you clear any fake server from your server list for "
-#~ "aMule to work properly."
-#~ msgstr ""
-#~ "\n"
-#~ "Para mais informação acerca da razão para estas mudanças, procure\n"
-#~ "informação no wiki do aMule em http://wiki.amule.org sobre \"fake servers"
-#~ "\".\n"
-#~ "É importante que remova todos os servidores falsos da sua lista para que "
-#~ "o aMule funcione correctamente."
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Additionally, the browser settings have been reset to the system default. "
-#~ "Please configure your browser options again if needed.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Adicionalmente, as definições sobre o navegador foram repostas para a "
-#~ "predefinição do sistema. Por favor configure as suas opções do navegador "
-#~ "de novo, caso seja necessário.\n"

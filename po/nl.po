@@ -1,17 +1,18 @@
-# translation of nl.po to Dutch
+# Translation of amule interface to Dutch
 # aMule i18n resource file.
-# Copyright (c) 2003-2011 aMule Team
+# Copyright (c) 2003-2020 aMule Team
 # This file is distributed under the same license as the aMule package.
 #
 # Kry <elkry@users.sourceforge.net>, 2004.
 # Oliver Heesakkers <dev2@Heesakkers.info>, 2007.
 # Frank van der Loo <f.vanderloo@gmail.com>, 2008.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2011-11-11 03:26+0100\n"
+"PO-Revision-Date: 2020-03-04 14:50+0100\n"
 "Last-Translator: Frank van der Loo <f.vanderloo@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "Language: nl\n"
@@ -19,8 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Language: Dutch\n"
-"X-Poedit-Country: NETHERLANDS\n"
+"X-Generator: Poedit 2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -3188,7 +3188,7 @@ msgstr "Servernaam:"
 
 #: src/muuli_wdr.cpp:1297
 msgid "Obfuscation:"
-msgstr "Maskering"
+msgstr "Maskering:"
 
 #: src/muuli_wdr.cpp:1306
 msgid "Kad:"
@@ -6251,7 +6251,7 @@ msgstr ""
 
 #: src/TextClient.cpp:359
 msgid "Processing by hash: "
-msgstr "Verwerken per hash:"
+msgstr "Verwerken per hash: "
 
 #: src/TextClient.cpp:373
 msgid "Processing by filename: "
@@ -7336,7 +7336,7 @@ msgstr " is aan "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1066
 msgid " with "
-msgstr " met"
+msgstr " met "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1084
 msgid "Total Download: "
@@ -7587,280 +7587,3 @@ msgstr "Loguit aangevraagd\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "Aanvraag wordt verwerkt [omgeleid]: "
-
-#~ msgid "Partfile %s (%s) has no seeds file"
-#~ msgstr "Partbestand %s (%s) heeft geen seeds bestand"
-
-#~ msgid "Partfile %s (%s) has a void seeds file"
-#~ msgstr "Partbestand %s (%s) heeft een leeg seeds bestand"
-
-#, fuzzy
-#~ msgid "Download status"
-#~ msgstr "Download Status"
-
-#~ msgid "( %s / %s )"
-#~ msgstr "( %s / %s )"
-
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgid "SOCKS5"
-#~ msgstr "SOCKS5"
-
-#~ msgid "SOCKS4"
-#~ msgstr "SOCKS4"
-
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgid "SOCKS4a"
-#~ msgstr "SOCKS4a"
-
-#~ msgid "Update delay : %d second"
-#~ msgid_plural "Update delay : %d seconds"
-#~ msgstr[0] "Update vertraging : %d seconde"
-#~ msgstr[1] "Update vertraging : %d seconden"
-
-#~ msgid "Transferring"
-#~ msgstr "Overdragen"
-
-#, fuzzy
-#~ msgid "QR: ???"
-#~ msgstr "QR: %u"
-
-#~ msgid "QR: %u"
-#~ msgstr "QR: %u"
-
-#, fuzzy
-#~ msgid "Queue Rank"
-#~ msgstr "In Wachtrij"
-
-#~ msgid "TODO - show progress of a search"
-#~ msgstr "TODO - toon voortgang van een zoekopdracht"
-
-#~ msgid "Starting to create MD4 and AICH hash for file: %s"
-#~ msgstr "Begonnen met het maken van MD4 en AICH hash voor bestand: %s"
-
-#~ msgid "Starting to create MD4 hash for file: %s"
-#~ msgstr "Begonnen met het maken van MD4 hash voor bestand: %s"
-
-#~ msgid "Starting to create AICH hash for file: %s"
-#~ msgstr "Begonnen met het maken van AICH hash voor bestand: %s"
-
-#~ msgid "WARNING: Could not remove original '%s' after creating backup"
-#~ msgstr ""
-#~ "WAARSCHUWING: Kon origineel '%s' niet verwijderen na het maken van backup"
-
-#~ msgid "WARNING: Failed to delete %s"
-#~ msgstr "WAARSCHUWING: Kon %s niet verwijderen"
-
-# What is QR abbr for?
-#~ msgid "%u (QR: %u)"
-#~ msgstr "%u (QR: %u)"
-
-#~ msgid "Rating (total):"
-#~ msgstr "Waardering (totaal):"
-
-#~ msgid "Try to transfer full chunks to all uploads"
-#~ msgstr "Probeer om volledige delen naar alle uploads te overdragen"
-
-#~ msgid "Networks window"
-#~ msgstr "Netwerken venster"
-
-#~ msgid "Searches window"
-#~ msgstr "Zoekvenster"
-
-#, fuzzy
-#~ msgid "Downloads window"
-#~ msgstr "Downloaden"
-
-#~ msgid "Shared files window"
-#~ msgstr "Gedeelde bestanden venster"
-
-#~ msgid "Messages window"
-#~ msgstr "Berichtenvenster"
-
-#~ msgid "Statistics graph window"
-#~ msgstr "Statistiekenvenster (grafieken)"
-
-#~ msgid "Preferences settings window"
-#~ msgstr "Voorkeuren instellingen venster"
-
-#~ msgid "Traybar-icon lost, trying to recreate ..."
-#~ msgstr "Traybalk-pictogram kwijtgeraakt, poging tot opnieuw maken ..."
-
-#~ msgid "Transfers"
-#~ msgstr "Overdrachten"
-
-#~ msgid "Files transfers window"
-#~ msgstr "Bestands overdrachten venster"
-
-#~ msgid "Unban"
-#~ msgstr "Maak ban ongedaan"
-
-#~ msgid "Show Uploads"
-#~ msgstr "Laat Uploads zien"
-
-#~ msgid "Show Queue"
-#~ msgstr "Laat Wachtrij zien"
-
-#~ msgid "Select View"
-#~ msgstr "Selecteer Weergave"
-
-#~ msgid "Client Software"
-#~ msgstr "Client Software"
-
-#~ msgid "Waited"
-#~ msgstr "Gewacht"
-
-#~ msgid "Upload Time"
-#~ msgstr "Upload Tijd"
-
-#~ msgid "Upload/Download"
-#~ msgstr "Upload/Download"
-
-#~ msgid "Remote Status"
-#~ msgstr "Remote Status"
-
-#~ msgid "File Priority"
-#~ msgstr "Bestandsprioriteit"
-
-#~ msgid "Score"
-#~ msgstr "Score"
-
-#~ msgid "Asked"
-#~ msgstr "Gevraagd"
-
-#~ msgid "Last Seen"
-#~ msgstr "Laatst Gezien"
-
-#~ msgid "Entered Queue"
-#~ msgstr "In Wachtrij Gekomen"
-
-#~ msgid "Transferred Up"
-#~ msgstr "Ge-upload"
-
-#~ msgid "Transferred Down"
-#~ msgstr "Ge-download"
-
-#~ msgid "Userhash"
-#~ msgstr "Userhash"
-
-#~ msgid "Encrypted"
-#~ msgstr "Versleuteld"
-
-#~ msgid "Loaded %d flag bitmaps."
-#~ msgstr "%d vlaggen bitmaps geladen."
-
-#~ msgid "Shows Upload / Up-queue"
-#~ msgstr "Toont Upload / Up-wachtrij"
-
-#~ msgid "Clients on queue :"
-#~ msgstr "Clients in wachtrij :"
-
-#~ msgid "Current Session"
-#~ msgstr "Huidige Sessie"
-
-#~ msgid "Total"
-#~ msgstr "Totaal"
-
-#~ msgid "Requested :"
-#~ msgstr "Opgevraagd :"
-
-#~ msgid "Create backup for preview"
-#~ msgstr "Maak backup voor voorbeeld"
-
-#~ msgid "Files Transfers Window"
-#~ msgstr "Bestands Overdrachten Venster"
-
-#~ msgid "Total Users: %s | Total Files: %s"
-#~ msgstr "Totaal Gebruikers: %s | Totaal Bestanden: %s"
-
-#~ msgid "HTTP download thread ended"
-#~ msgstr "HTTP download thread beëindigd"
-
-#~ msgid "Host: %s:%i\n"
-#~ msgstr "Host: %s:%i\n"
-
-#~ msgid "Response: %i (Error: %i)"
-#~ msgstr "Antwoord: %i (Fout: %i)"
-
-#~ msgid "WARNING: Void response on stream creation"
-#~ msgstr "WAARSCHUWING: Leeg antwoord bij het aanmaken van stream"
-
-#~ msgid "ERROR: Redirection code received with no URL"
-#~ msgstr "FOUT: Redirection code ontvangen zonder URL"
-
-#~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-#~ msgstr "CIP2Country::CIP2Country(): Kon landengegevens niet laden uit "
-
-#~ msgid "Get IPFilter level."
-#~ msgstr "Verkrijg IPFilter niveau."
-
-#~ msgid "Makes a search."
-#~ msgstr "Voert een zoekopdracht uit."
-
-#~ msgid "Killed!"
-#~ msgstr "Gedood!"
-
-#~ msgid "Using amuleweb in '%s'."
-#~ msgstr "Amuleweb wordt gebruikt in '%s'"
-
-#~ msgid "Shutting down aMule..."
-#~ msgstr "aMule wordt afgesloten..."
-
-#~ msgid ""
-#~ "The following options have been changed in this release for security "
-#~ "reasons:\n"
-#~ msgstr ""
-#~ "De volgende opties zijn vanwege beveiligingsredenen gewijzigd in deze "
-#~ "versie:\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Enabled Protocol Obfuscation support for incoming and outgoing "
-#~ "connections.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Protocol Obfuscatie ingeschakeld voor binnenkomende en uitgaande "
-#~ "verbindingen.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "* Disabled updating the server list from other server and clients.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "* Serverlijst updaten van andere servers en clients uitgeschakeld.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "For more information on the reason for this changes, seach\n"
-#~ "the aMule wiki at http://wiki.amule.org for \"fake servers\" info.\n"
-#~ "It's important that you clear any fake server from your server list for "
-#~ "aMule to work properly."
-#~ msgstr ""
-#~ "\n"
-#~ "Voor meer informatie over de reden voor deze veranderingen, zoek\n"
-#~ "op de aMule wiki op http://wiki.amule.org naar \"fake servers\".\n"
-#~ "Het is belangrijk dat u alle nepservers uit uw serverlijst verwijderd om "
-#~ "aMule goed te laten werken."
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Additionally, the browser settings have been reset to the system default. "
-#~ "Please configure your browser options again if needed.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Verder zijn de browser instellingen gereset naar de systeem standaard. "
-#~ "Configureer a.u.b. uw browser opties opnieuw indien nodig.\n"
-
-#~ msgid "Fetching status..."
-#~ msgstr "Status wordt opgehaald..."
-
-#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
-#~ msgstr "Gebruikers: E: %s K: %s | Bestanden E: %s K: %s"
-
-#~ msgid "Client %s on IP:Port %s:%d using %s %s %s"
-#~ msgstr "Client %s op IP:Poort %s:%d gebruikt %s %s %s"

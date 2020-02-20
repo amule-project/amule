@@ -1,5 +1,8 @@
-# # Czech aMule 2.2.6 translation
+# Translation of amule interface to Czech
+# aMule i18n resource file.
+# Copyright (c) 2003-2020 aMule Team
 # This file is distributed under the same license as the aMule package.
+#
 # David Watzke <david@watzke.cz>, 2010.
 #
 msgid ""
@@ -7,16 +10,16 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2010-08-01 01:11+0100\n"
+"PO-Revision-Date: 2020-03-04 12:16+0100\n"
 "Last-Translator: David Watzke <david@watzke.cz>\n"
 "Language-Team: cs <cs@li.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Czech\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+"X-Generator: Poedit 2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -320,11 +323,11 @@ msgstr "Odpojen od eD2k"
 
 #: src/amule.cpp:1904
 msgid "Kad started."
-msgstr "Kad spuštěn"
+msgstr "Kad spuštěn."
 
 #: src/amule.cpp:1906
 msgid "Kad stopped."
-msgstr "Kad zastaven"
+msgstr "Kad zastaven."
 
 #: src/amule.cpp:1914
 msgid "Connected to Kad (ok)"
@@ -703,7 +706,7 @@ msgstr "Připojuji..."
 
 #: src/amule-remote-gui.cpp:314
 msgid "Connection failed "
-msgstr "Připojení selhalo"
+msgstr "Připojení selhalo "
 
 #: src/amule-remote-gui.cpp:325
 msgid "Remote GUI EC event handler"
@@ -797,6 +800,7 @@ msgstr[0] ""
 "Statistika souboru pro toto sezení: Přijat %d z %d požadavku, %s přeneseno\n"
 msgstr[1] ""
 "Statistika souboru pro toto sezení: Přijato %d z %d požadavků, %s přeneseno\n"
+msgstr[2] ""
 
 #: src/BaseClient.cpp:2024
 #, fuzzy, c-format
@@ -809,6 +813,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Statistika souboru pro všechna sezení: Přijato %d z %d požadavků, %s "
 "přeneseno\n"
+msgstr[2] ""
 
 #: src/BaseClient.cpp:2027
 msgid "Requested unknown file"
@@ -938,6 +943,7 @@ msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/ClientCreditsList.cpp:161
 #, c-format
@@ -945,6 +951,7 @@ msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
@@ -1112,6 +1119,7 @@ msgid "%u comment"
 msgid_plural "%u comments"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
@@ -1510,6 +1518,7 @@ msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/DownloadQueue.cpp:244 src/DownloadQueue.cpp:1470
 msgid "Filesystem for Temp directory cannot handle large files."
@@ -2187,6 +2196,7 @@ msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "Načteno %u IP rozsahů z '%s'. %u vadných řádků bylo vyřazeno."
 msgstr[1] "Načteno %u IP rozsahů z '%s'. %u vadných řádků bylo vyřazeno."
+msgstr[2] ""
 
 #: src/IPFilter.cpp:331
 #, fuzzy, c-format
@@ -2194,6 +2204,7 @@ msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] "Načteno %u IP rozsahů z '%s'. %u vadných řádků bylo vyřazeno."
 msgstr[1] "Načteno %u IP rozsahů z '%s'. %u vadných řádků bylo vyřazeno."
+msgstr[2] ""
 
 #: src/IPFilter.cpp:503
 #, c-format
@@ -2263,6 +2274,7 @@ msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "Přečteno %u Kad kontaktů"
 msgstr[1] "Přečteno %u Kad kontaktů"
+msgstr[2] ""
 
 #: src/kademlia/routing/RoutingZone.cpp:221
 #: src/kademlia/routing/RoutingZone.cpp:287
@@ -2275,6 +2287,7 @@ msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/kademlia/routing/RoutingZone.cpp:336
 #, c-format
@@ -2282,6 +2295,7 @@ msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/KnownFile.cpp:1544 src/PartFileConvertDlg.cpp:91
 msgid "File name"
@@ -4253,6 +4267,7 @@ msgid "byte"
 msgid_plural "bytes"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/OtherFunctions.cpp:66
 msgid "kB"
@@ -4283,6 +4298,7 @@ msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/OtherFunctions.cpp:99
 msgid "MB/s"
@@ -4506,6 +4522,7 @@ msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/PartFile.cpp:1048
 #, c-format
@@ -4527,6 +4544,7 @@ msgid_plural ""
 "|%s|"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/PartFile.cpp:1172
 #, c-format
@@ -5026,6 +5044,7 @@ msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1137
 #, fuzzy, c-format
@@ -5033,6 +5052,7 @@ msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Čas pro průměrný graf: %d minut"
 msgstr[1] "Čas pro průměrný graf: %d minut"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1143
 #, c-format
@@ -5045,6 +5065,7 @@ msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Velikost zásobníku pro soubory: %d bajtů"
 msgstr[1] "Velikost zásobníku pro soubory: %d bajtů"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1161
 #, fuzzy, c-format
@@ -5052,6 +5073,7 @@ msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Velikost fronty pro odesílání: %d klientů"
 msgstr[1] "Velikost fronty pro odesílání: %d klientů"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1168
 #, fuzzy, c-format
@@ -5059,6 +5081,7 @@ msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Interval pro obnovení připojení k serveru: %d minut"
 msgstr[1] "Interval pro obnovení připojení k serveru: %d minut"
+msgstr[2] ""
 
 #: src/PrefsUnifiedDlg.cpp:1170
 msgid "Server connection refresh interval: Disabled"
@@ -5215,6 +5238,7 @@ msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/ServerConnect.cpp:412
 msgid "Connection lost"
@@ -5268,6 +5292,7 @@ msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/ServerList.cpp:176
 #, c-format
@@ -5275,6 +5300,7 @@ msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/ServerList.cpp:179
 msgid "Error: the file 'server.met' is corrupted: "
@@ -5516,6 +5542,7 @@ msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/ServerSocket.cpp:551
 msgid "Saving of server-list completed."
@@ -5679,6 +5706,7 @@ msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/SharedFileList.cpp:377
 #, fuzzy, c-format
@@ -5686,6 +5714,7 @@ msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "Nalezeno %i známých a %i neznámých sdílených souborů"
 msgstr[1] "Nalezeno %i známých a %i neznámých sdílených souborů"
+msgstr[2] ""
 
 #: src/SharedFileList.cpp:386
 #, c-format
@@ -7382,1101 +7411,3 @@ msgstr "Bylo vyžádáno odhlášení\n"
 #: src/webserver/src/WebServer.cpp:1910
 msgid "Processing request [redirected]: "
 msgstr "Zpracování požadavku [přesměrovaný]:"
-
-#, fuzzy
-#~ msgid "Download status"
-#~ msgstr "Průběh stahování"
-
-#~ msgid "( %s / %s )"
-#~ msgstr "( %s / %s )"
-
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgid "SOCKS5"
-#~ msgstr "SOCKS5"
-
-#~ msgid "SOCKS4"
-#~ msgstr "SOCKS4"
-
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgid "SOCKS4a"
-#~ msgstr "SOCKS4a"
-
-#~ msgid "Transferring"
-#~ msgstr "Přenáším"
-
-#~ msgid "QR: ???"
-#~ msgstr "QR: ???"
-
-#~ msgid "QR: %u"
-#~ msgstr "QR: %u"
-
-#~ msgid "Only files currently uploading"
-#~ msgstr "Pouze soubory zrovna odesílané"
-
-#~ msgid "Queue Rank"
-#~ msgstr "Pořadí ve frontě"
-
-#~ msgid "TODO - show progress of a search"
-#~ msgstr "TODO - zobrazit průběh vyhledávání"
-
-#~ msgid "Starting to create MD4 and AICH hash for file: %s"
-#~ msgstr "Vytváří se MD4 a AICH hash pro soubor: %s"
-
-#~ msgid "Starting to create MD4 hash for file: %s"
-#~ msgstr "Vytváří se MD4 hash pro soubor: %s"
-
-#~ msgid "Starting to create AICH hash for file: %s"
-#~ msgstr "Vytváří se AICH hash pro soubor: %s"
-
-#~ msgid "WARNING: Could not remove original '%s' after creating backup"
-#~ msgstr "VAROVÁNÍ: Nelze smazat původní '%s' po vytvoření zálohy"
-
-#~ msgid "WARNING: Failed to delete %s"
-#~ msgstr "VAROVÁNÍ: Nelze smazat %s"
-
-#~ msgid "%u (QR: %u)"
-#~ msgstr "%u (QR: %u)"
-
-#~ msgid "Rating (total):"
-#~ msgstr "Hodnocení (celkové):"
-
-#~ msgid "Try to transfer full chunks to all uploads"
-#~ msgstr "Pokusit se odesílat celé části všem"
-
-#, fuzzy
-#~ msgid "Downloads window"
-#~ msgstr "Stahuji"
-
-#~ msgid "Transfers"
-#~ msgstr "Přenosy"
-
-#~ msgid "Unban"
-#~ msgstr "Odbanovat"
-
-#~ msgid "Show Uploads"
-#~ msgstr "Zobrazit odesílání"
-
-#~ msgid "Show Queue"
-#~ msgstr "Zobrazit frontu"
-
-#~ msgid "Client Software"
-#~ msgstr "Software klienta"
-
-#~ msgid "Waited"
-#~ msgstr "Čekání"
-
-#~ msgid "Upload Time"
-#~ msgstr "Čas odesílání"
-
-#~ msgid "Upload/Download"
-#~ msgstr "Odesláno/Staženo"
-
-#~ msgid "Remote Status"
-#~ msgstr "Vzdálený stav"
-
-#~ msgid "File Priority"
-#~ msgstr "Priorita souboru"
-
-#~ msgid "Score"
-#~ msgstr "Skóre"
-
-#~ msgid "Last Seen"
-#~ msgstr "Naposledy spatřen"
-
-#~ msgid "Transferred Up"
-#~ msgstr "Odesláno"
-
-#~ msgid "Transferred Down"
-#~ msgstr "Staženo"
-
-#~ msgid "Userhash"
-#~ msgstr "Userhash"
-
-#~ msgid "Clients on queue :"
-#~ msgstr "Klienti ve frontě"
-
-#~ msgid "Current Session"
-#~ msgstr "Současné sezení"
-
-#~ msgid "Total"
-#~ msgstr "Celkem"
-
-#~ msgid "Files Transfers Window"
-#~ msgstr "Okno s přenosy"
-
-#~ msgid "Total Users: %s | Total Files: %s"
-#~ msgstr "Celkem uživ.: %s | Celkem soub.: %s"
-
-#, fuzzy
-#~ msgid "WARNING: Void response on stream creation"
-#~ msgstr "VAROVÁNÍ: Nelze smazat původní '%s' po vytvoření zálohy"
-
-#~ msgid "Makes a search."
-#~ msgstr "Provede vyhledávání."
-
-#, fuzzy
-#~ msgid "Killed!"
-#~ msgstr "Selhal"
-
-#, fuzzy
-#~ msgid "Using amuleweb in '%s'."
-#~ msgstr "Spustit amuleweb po spuštění"
-
-#, fuzzy
-#~ msgid "Shutting down aMule..."
-#~ msgstr "Ukončit aMule."
-
-#~ msgid "Fetching status..."
-#~ msgstr "Zjišťuji stav..."
-
-#~ msgid "Users: E: %s K: %s | Files E: %s K: %s"
-#~ msgstr "Uživ.: E: %s K: %s | Soub. E: %s K: %s"
-
-#~ msgid "Client %s on IP:Port %s:%d using %s %s %s"
-#~ msgstr "Klient %s s IP %s na portu %d používá %s %s %s"
-
-#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "theApp->serverlist->GetServerByAddress() vrátila NULL"
-
-#~ msgid "Firewalled"
-#~ msgstr "Za firewallem"
-
-#~ msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-#~ msgstr "Soubor %s je pro Donkey příliš velký: maximum jsou 4 GB."
-
-#~ msgid "No handler for this file type."
-#~ msgstr "Nenalezen žádný obslužný program pro tento typ souboru."
-
-#~ msgid "File was not saved"
-#~ msgstr "Soubor nebyl uložen"
-
-#~ msgid "Connection Failed. Unable to connect to the specified host\n"
-#~ msgstr "Připojení selhalo. Nemohu se připojit k zadanému hostiteli\n"
-
-#~ msgid "Message Filter"
-#~ msgstr "Filtr zpráv"
-
-#~ msgid "Gui Tweaks"
-#~ msgstr "Vychytávky GUI"
-
-#~ msgid "Core Tweaks"
-#~ msgstr "Vychytávky jádra"
-
-#~ msgid "Tooltip Delay Time in secs"
-#~ msgstr "Prodleva mezi zobrazením nástrojových tipů"
-
-#~ msgid "Show part file number before file name"
-#~ msgstr "Zobrazit číslo částečného souboru před názvem"
-
-#~ msgid "Skin Support"
-#~ msgstr "Podpora skinů"
-
-#~ msgid "- no skins available -"
-#~ msgstr "- nejsou dostupné žádné skiny -"
-
-#~ msgid "Online Signature Directory:"
-#~ msgstr "Adresář s online podpisy:"
-
-#~ msgid "Filtering Options:"
-#~ msgstr "Nastavení filtrování:"
-
-#~ msgid "Line Capacities"
-#~ msgstr "Kapacita linky"
-
-#~ msgid ""
-#~ "Note: These values are\n"
-#~ " only used for statistics."
-#~ msgstr ""
-#~ "Pozn.: Tyto hodnoty používají\n"
-#~ " pouze statistiky."
-
-#~ msgid "Standard client TCP Port:"
-#~ msgstr "Standardní TCP port klienta:"
-
-#~ msgid "Extended client UDP Port:"
-#~ msgstr "Rozšířující UDP port klienta:"
-
-#~ msgid "UDP port for extended server requests (TCP+3): 4665"
-#~ msgstr "UDP port pro rozšířené požadavky serveru (TCP+3): 4665"
-
-#~ msgid "Max Sources per File"
-#~ msgstr "Maximum zdrojů na soubor"
-
-#~ msgid "Universal Plug and Play"
-#~ msgstr "Univerzální Plug and Play"
-
-#~ msgid "Enable UPnP"
-#~ msgstr "Povolit UPnP"
-
-#~ msgid "UPnP TCP Port:"
-#~ msgstr "UPnP TCP port:"
-
-#~ msgid "Select Statistics Colors"
-#~ msgstr "Zvolte barvy statistik"
-
-#~ msgid "Download Queue Files Progress"
-#~ msgstr "Průběh stahování souborů ve frontě"
-
-#~ msgid "Show percentage"
-#~ msgstr "Zobrazit procenta"
-
-#~ msgid "Show progressbar "
-#~ msgstr "Zobrazit ukazatel průběhu"
-
-#~ msgid "Enable skin support "
-#~ msgstr "Povolit skiny"
-
-#~ msgid "Skin:"
-#~ msgstr "Skin:"
-
-#~ msgid "Auto-sort files in the download queue (high CPU)"
-#~ msgstr "Automaticky řadit sloupce ve frontě stahování (žere CPU)"
-
-#~ msgid ""
-#~ "IP of the listening interface\n"
-#~ "(empty for any)"
-#~ msgstr ""
-#~ "IP naslouchajícího rozhraní\n"
-#~ "(prázdné = jakékoliv)"
-
-#~ msgid "TCP port"
-#~ msgstr "TCP port"
-
-#~ msgid "Who can see shared files:"
-#~ msgstr "Kdo může vidět sdílené soubory:"
-
-#~ msgid "Event types"
-#~ msgstr "Typy událostí"
-
-#~ msgid "Makes aMule promt before exiting."
-#~ msgstr "aMule se před ukončením zeptá."
-
-#~ msgid "Show overhead bandwith"
-#~ msgstr "Zobrazit šířku pásma režie"
-
-#~ msgid "I.C.H. active"
-#~ msgstr "I.C.H. aktivní"
-
-#~ msgid "Advanced Settings"
-#~ msgstr "Pokročilá nastavení"
-
-#~ msgid "Progressbar Style"
-#~ msgstr "Styl ukazatele průběhu"
-
-#~ msgid "Column Sorting"
-#~ msgstr "Řazení sloupců"
-
-#~ msgid "Misc Gui Tweaks"
-#~ msgstr "Různé vychytávky GUI"
-
-#~ msgid "File Options"
-#~ msgstr "Volby souboru"
-
-#~ msgid ""
-#~ "For a film you can say its length, its story, language ...\n"
-#~ "and if it's a fake, you can tell that to other users of aMule."
-#~ msgstr ""
-#~ "U filmu můžete sdělit jeho délku, příběh, jazyk ...\n"
-#~ "a pokud je to podfuk (fake), můžete o tom informovat ostatní."
-
-#~ msgid "Misc Options"
-#~ msgstr "Různá nastavení"
-
-#~ msgid "Server Options"
-#~ msgstr "Nastavení serverů"
-
-#~ msgid "Display server motd when connected ..."
-#~ msgstr "Zobrazit MOTD serveru po připojení ..."
-
-#~ msgid "Disable/Enable"
-#~ msgstr "Zakázat/povolit"
-
-#~ msgid "Authentication"
-#~ msgstr "Autentizace"
-
-#~ msgid "General Settings"
-#~ msgstr "Hlavní nastavení"
-
-#~ msgid "Max Connections"
-#~ msgstr "Maximum připojení"
-
-#~ msgid "GUI Tweaks"
-#~ msgstr "Vychytávky GUI"
-
-#~ msgid "Remote Control"
-#~ msgstr "Ovládání na dálku"
-
-#~ msgid "Unable to determine selected browser!"
-#~ msgstr "Nemohu rozpoznat vybraný prohlížeč!"
-
-#~ msgid "User Defined"
-#~ msgstr "Uživatelem definované"
-
-#~ msgid "http://www.aMule.org - the Linux Mule"
-#~ msgstr "http://www.aMule.org/ - Linuxová Mula"
-
-#~ msgid "Konqueror"
-#~ msgstr "Konqueror"
-
-#~ msgid "Mozilla"
-#~ msgstr "Mozilla"
-
-#~ msgid "Firefox"
-#~ msgstr "Firefox"
-
-#~ msgid "Firebird"
-#~ msgstr "Firebird"
-
-#~ msgid "Opera"
-#~ msgstr "Opera"
-
-#~ msgid "Netscape"
-#~ msgstr "Netscape"
-
-#~ msgid "Galeon"
-#~ msgstr "Galeon"
-
-#~ msgid "Epiphany"
-#~ msgstr "Epiphany"
-
-#~ msgid "Select your browser here"
-#~ msgstr "Select your browser here"
-
-#~ msgid "Custom Browser:"
-#~ msgstr "Vlastní prohlížeč:"
-
-#~ msgid "Please wait... "
-#~ msgstr "Prosím čekejte..."
-
-#~ msgid "Could not determine the command for running the browser."
-#~ msgstr "Nelze zjistit příkaz pro spuštění prohlížeče."
-
-#~ msgid "EC Connection Failed. Empty reply."
-#~ msgstr "Připojování selhalo. Nulová odpověď."
-
-#~ msgid "ExternalConn: Access denied because: "
-#~ msgstr "Přístup odepřen, protože: "
-
-#~ msgid "ExternalConn: Access denied"
-#~ msgstr "Přístup odepřen"
-
-#~ msgid "Copy ED2k &link to clipboard"
-#~ msgstr "Zkopírovat eD2k do &schránky"
-
-#~ msgid "Copy ED2k link to clipboard (&Source)"
-#~ msgstr "Zkopírovat ED2K odkaz do schránky (&zdroj)"
-
-#, fuzzy
-#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-#~ msgstr "Zkopírovat ED2K odkaz do schránky (&zdroj)"
-
-#~ msgid "Copy ED2k link to clipboard (&Hostname)"
-#~ msgstr "Zkopírovat ED2K odkaz do schránky (&hostname)"
-
-#, fuzzy
-#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-#~ msgstr "Zkopírovat ED2K odkaz do s&chránky (hostname)"
-
-#~ msgid "Warning"
-#~ msgstr "Varování"
-
-#~ msgid "Error: Could not listen to TCP port."
-#~ msgstr "Chyba: Nelze naslouchat na TCP portu."
-
-#~ msgid "Webserver HTTP port"
-#~ msgstr "HTTP port webserveru"
-
-#~ msgid "Full access password for webserver"
-#~ msgstr "Přístupové heslo k webserveru"
-
-#~ msgid "Guest password for webserver"
-#~ msgstr "Heslo pro hosta na webserveru"
-
-#~ msgid "Load/save webserver settings from/to remote aMule"
-#~ msgstr "Načítat/ukládat nastavení webserveru z/do vzdálené aMule"
-
-#~ msgid "Enter here the file you want to compute the Ed2k link"
-#~ msgstr "Zadejte soubor, kterému chcete vygenerovat Ed2k odkaz"
-
-#~ msgid "Ed2k File Hash"
-#~ msgstr "ED2K hash souboru"
-
-#~ msgid "Ed2k link"
-#~ msgstr "ED2K odkaz"
-
-#~ msgid "Open a file to compute its ed2k link"
-#~ msgstr "Otevřít soubor pro výpočet jeho ed2k odkazu"
-
-#~ msgid "Copy computed ed2k link to clipboard"
-#~ msgstr "Zkopírovat vygenerovaný ed2k odkaz do schránky"
-
-#~ msgid "Save computed ed2k link to file"
-#~ msgstr "Uložit vygenerovaný ed2k odkaz do souboru"
-
-#~ msgid ""
-#~ "aLinkCreator, the aMule ed2k link creator\n"
-#~ "\n"
-#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-#~ "\n"
-#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
-#~ "and http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "Distributed under GPL"
-#~ msgstr ""
-#~ "aLinkCreator, vytvářeč ED2K odkazů\n"
-#~ "\n"
-#~ "(c) 2004 ThePolish\n"
-#~ "Obrázky z http://www.everaldo.com/, http://www.icomania.com/\n"
-#~ "a http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "Distribuován pod GPL"
-
-#~ msgid "aLinkCreator, the aMule ed2k link creator"
-#~ msgstr "aLinkCreator, vytvářeč ED2K odkazů"
-
-#~ msgid "Copy ED2k link to clipboard"
-#~ msgstr "Zkopírovat ED2k odkaz do schránky"
-
-#, fuzzy
-#~ msgid "Copy ED2k links to clipboard"
-#~ msgstr "Zkopírovat ED2k odkaz do schránky"
-
-#, fuzzy
-#~ msgid "ED2K: Connecting"
-#~ msgstr "Připojuji"
-
-#, fuzzy
-#~ msgid "ED2K: Disconnected"
-#~ msgstr "Odpojeno"
-
-#~ msgid ""
-#~ "Your Auto-update servers list is in blank.\n"
-#~ "'Auto-update serverlist at startup' will be disabled."
-#~ msgstr ""
-#~ "Váš seznam serverů pro automatickou obnovu je prázdný.\n"
-#~ "Aktualizace seznamu serverů po spuštění bude zakázána."
-
-#~ msgid ""
-#~ "Both ED2K and Kad network are disabled.\n"
-#~ "You won't be able to connect until you enable at least one of them."
-#~ msgstr ""
-#~ "Sítě ED2K i Kademlia jsou zakázány.\n"
-#~ "Nebudete se moci připojit, dokud nepovolíte alespoň jednu z nich."
-
-#~ msgid "Edit Serverlist"
-#~ msgstr "Upravit seznam serverů"
-
-#~ msgid "Error: couldn't accept a new external connection"
-#~ msgstr "Chyba: nemohu přijmout nové externí připojení"
-
-#~ msgid "ED2K is disabled in preferences."
-#~ msgstr "ED2K je zakázaný v nastavení."
-
-#~ msgid "Already connected to ED2K."
-#~ msgstr "Již jste připojen k ED2K."
-
-#~ msgid "Connecting to ED2K..."
-#~ msgstr "Připojuji se k ED2K..."
-
-#~ msgid "Disconnected from ED2K."
-#~ msgstr "Odpojen od ED2K."
-
-#~ msgid "ED2K Status:"
-#~ msgstr "Stav ED2K:"
-
-#~ msgid "Average Downloadrate (Session): %s"
-#~ msgstr "Průměrná rychlost stahování (sezení): %s"
-
-#~ msgid "Average Uploadrate (Session): %s"
-#~ msgstr "Průměrná rychlost odesílání (sezení): %s"
-
-#~ msgid "Max Downloadrate (Session): %s"
-#~ msgstr "Maximální rychl. stahování (sezení): %s"
-
-#~ msgid "Max Uploadrate (Session): %s"
-#~ msgstr "Maximální rychl. odesílání (sezení): %s"
-
-#~ msgid "Average filesize: %s"
-#~ msgstr "Průměrná velikost souborů: %s"
-
-#~ msgid "ED2K search can't be done if ED2K is not connected"
-#~ msgstr "Nemohu vyhledávat přes ED2K, když neběží"
-
-#~ msgid "Error: "
-#~ msgstr "Chyba: "
-
-#~ msgid "Warning: "
-#~ msgstr "Varování: "
-
-#~ msgid "Error"
-#~ msgstr "Chyba"
-
-#, fuzzy
-#~ msgid ""
-#~ "Please set your preferred video player on preferences.\n"
-#~ "Meanwhile, aMule will attempt to use mplayer and you will get this "
-#~ "warning on every preview"
-#~ msgstr ""
-#~ "Zvolte si prosím v nastavení preferovaný video přehrávač.\n"
-#~ "Mezitím se aMule pokusí použít mplayer a vždy zobrazí toto varování."
-
-#~ msgid "Error: Failed to open part.met file: %s ==> %s"
-#~ msgstr "Chyba: Nelze otevřít soubor part.met: %s ==> %s"
-
-#~ msgid "Error: part.met file is 0 size: %s ==> %s"
-#~ msgstr "Chyba: Soubor part.met má nulovou velikost: %s ==> %s"
-
-#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
-#~ msgstr "Chyba: Neplatná verze souboru part.met: %s ==> %s"
-
-#~ msgid "Warning: %s might be corrupted (%i)"
-#~ msgstr "Varování: %s může být porušen (%i)"
-
-#~ msgid "Unexpected file error while completing %s. File paused"
-#~ msgstr "Neočekávaná chyba souboru při dokončování %s. Pozastaveno"
-
-#~ msgid "ERROR! Attempted to share %s"
-#~ msgstr "CHYBA! Pokus o sdílení %s"
-
-#~ msgid "ED2K network disabled on preferences, not connecting."
-#~ msgstr "Síť ED2K je zakázána v nastavení, nepřipojuji se."
-
-#~ msgid "No valid servers to connect in serverlist found"
-#~ msgstr "V seznamu nejsou žádné platné servery"
-
-#~ msgid "Invalid ed2k link! Error: %s"
-#~ msgstr "Neplatný ed2k odkaz! Chyba: %s"
-
-#~ msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-#~ msgstr "Omezení šířky pásma: Od: %u kB/s, St: %u kB/s.\n"
-
-#~ msgid "Connect to ED2K only."
-#~ msgstr "Připojit se pouze k ED2K."
-
-#~ msgid "Disconnect from ED2K only."
-#~ msgstr "Odpojit se pouze od ED2K."
-
-#~ msgid "Error: %s (%s) - %s"
-#~ msgstr "Chyba: %s (%s) - %s"
-
-#~ msgid "Warning: %s (%s) - %s"
-#~ msgstr "Varování: %s (%s) - %s"
-
-#~ msgid "Error: Out of diskspace"
-#~ msgstr "Error: Došlo místo na disku"
-
-#~ msgid "Error: Partmet not found"
-#~ msgstr "Chyba: part.met soubor nenalezen"
-
-#~ msgid "Error: IO error!"
-#~ msgstr "Chyba: I/O chyba!"
-
-#~ msgid "Error: Failed!"
-#~ msgstr "Chyba: Selhání!"
-
-#~ msgid "ED2K Link: "
-#~ msgstr "ED2K odkaz: "
-
-#~ msgid "Searches for more results on ED2K. Not supported for Kad yet."
-#~ msgstr "Vyhledává více výsledků na ED2K. Zatím nepodporováno na Kadu."
-
-#~ msgid "0"
-#~ msgstr "0"
-
-#~ msgid "Bandwith Limits"
-#~ msgstr "Limity šířky pásma"
-
-#~ msgid "This is the standard ED2K port and cannot be disabled."
-#~ msgstr "Toto je standardní port ED2K a nelze jej zakázat."
-
-#~ msgid "This UDP port is used for extended Ed2K requests and Kad network"
-#~ msgstr ""
-#~ "Tento UDP port je použit pro rozšiřující ED2K požadavky a pro síť Kad"
-
-#~ msgid "Hard Limit"
-#~ msgstr "Tvrdý limit"
-
-#~ msgid "Connection Limits"
-#~ msgstr "Limity připojení"
-
-#~ msgid "Auto-update serverlist at startup"
-#~ msgstr "Po spuštění aktualizovat seznam serverů"
-
-#~ msgid "Disk Space"
-#~ msgstr "Místo na disku"
-
-#~ msgid "Check Disk Space"
-#~ msgstr "Zkontrolovat místo na disku"
-
-#~ msgid "Select this if you want aMule to check your Disk Space"
-#~ msgstr "Zvolte, pokud chcete, aby aMule zkontrolovala místo na disku"
-
-#~ msgid "Min Disk Space:"
-#~ msgstr "Minimální místo na disku"
-
-#~ msgid "Incoming Directory :"
-#~ msgstr "Příchozí adresář:"
-
-#~ msgid "Temporary Directory :"
-#~ msgstr "Dočasný adresář:"
-
-#~ msgid "Shared Directories"
-#~ msgstr "Sdílené adresáře"
-
-#~ msgid "Create Backup to preview"
-#~ msgstr "Vytvořit zálohu pro náhled"
-
-#~ msgid "Show Fast ED2K Links Handler"
-#~ msgstr "Zobrazit rychlý obsluhovač ED2K odkazů"
-
-#~ msgid "Webserver Parameters"
-#~ msgstr "Parametry webserveru"
-
-#~ msgid "Webserver port"
-#~ msgstr "Port webserveru"
-
-#~ msgid "Webserver UPnP TCP port"
-#~ msgstr "UPnP TCP port webserveru"
-
-#~ msgid "Serverlist"
-#~ msgstr "Seznam serverů"
-
-#~ msgid "Manual Server Add : Name"
-#~ msgstr "Ruční přidání serveru : Název"
-
-#~ msgid "Speed Limits:"
-#~ msgstr "Rychlostní omezení:"
-
-#~ msgid "Download Speed: %.1f"
-#~ msgstr "Rychlost stahování: %.1f"
-
-#~ msgid "Upload Speed: %.1f"
-#~ msgstr "Rychlost odesílání: %.1f"
-
-#~ msgid "TCP Port: %d"
-#~ msgstr "TCP port: %d"
-
-#~ msgid "TCP Port: Not Ready"
-#~ msgstr "TCP port: Nepřipraven"
-
-#~ msgid "UDP Port: %d"
-#~ msgstr "UDP port: %d"
-
-#~ msgid "UDP Port: Not Ready"
-#~ msgstr "UDP port: Nepřipraven"
-
-#~ msgid "Shared Files: %d"
-#~ msgstr "Sdílené soubory: %d"
-
-#~ msgid "Queued Clients: %d"
-#~ msgstr "Klientů ve frontě: %d"
-
-#~ msgid "Upload Limit"
-#~ msgstr "Limit odesílání"
-
-#~ msgid "Download Limit"
-#~ msgstr "Limit stahování"
-
-#~ msgid "Warning, invalid URL specified for auto-updating of servers: %s"
-#~ msgstr ""
-#~ "Varování: byla zadána neplatná URL pro automatickou aktualizaci serverů: "
-#~ "%s"
-
-#~ msgid "webserver running on pid %d"
-#~ msgstr "webový server běží s PID %d"
-
-#~ msgid "Disconnected from ED2K"
-#~ msgstr "Odpojen od ED2K"
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
-#~ msgstr "Nelze otevřít soubor 'emfriends.met' pro čtení!"
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-#~ msgstr "Nelze otevřít soubor 'emfriends.met' pro zápis!"
-
-#~ msgid "ERROR: Failed to open partfile)"
-#~ msgstr "CHYBA: Částečný soubor nelze otevřít)"
-
-#~ msgid "Mb"
-#~ msgstr "Mb"
-
-#~ msgid "Web Server: Started\n"
-#~ msgstr "Webový server: spuštěn\n"
-
-#~ msgid "Not Supported"
-#~ msgstr "Nepodporovaný"
-
-#~ msgid "LowID: %u (%.2f%% Total %.2f%% Known)"
-#~ msgstr "LowID: %u (%.2f%% celkem %.2f%% známých)"
-
-#~ msgid "Browse wav"
-#~ msgstr "Zvolit wav"
-
-#~ msgid "File wav (*.wav)|*.wav||"
-#~ msgstr "WAV soubor (*.wav)|*.wav||"
-
-#~ msgid "No comment(s)"
-#~ msgstr "Žádné komentáře"
-
-#~ msgid "Notifications"
-#~ msgstr "Oznámení"
-
-#~ msgid "Messages popup"
-#~ msgstr "Vyskakovací zpráva"
-
-#~ msgid "Use sound"
-#~ msgstr "Použít zvuk"
-
-#~ msgid "Pop out when :"
-#~ msgstr "Vyskočit při:"
-
-#~ msgid "New entry on log"
-#~ msgstr "Nová záznam v logu"
-
-#~ msgid "Starts a new chat session"
-#~ msgstr "Začne nový chat"
-
-#~ msgid "A new chat message is received"
-#~ msgstr "Přijde do chatu nová zpráva"
-
-#~ msgid "A download is added or finished"
-#~ msgstr "Stahování bylo přidáno nebo dokončeno"
-
-#~ msgid "New aMule version detected"
-#~ msgstr "Byla detekována nová verze aMule"
-
-#~ msgid "Notify by Mail"
-#~ msgstr "Oznámit na e-mail"
-
-#~ msgid "Send an Email when transfer complete."
-#~ msgstr "Odeslat e-mail, když je přenos dokončen."
-
-#~ msgid "SMTP server :"
-#~ msgstr "SMTP server:"
-
-#~ msgid "Email Address :"
-#~ msgstr "E-mailová adresa:"
-
-#~ msgid ":"
-#~ msgstr ":"
-
-#~ msgid ""
-#~ "The selected locale seems not to be installed on your box\n"
-#~ "You must generate it to use this language.\n"
-#~ "A good start on linux systems is the file /etc/locale.gen and the package "
-#~ "'locales'\n"
-#~ "Good luck!\n"
-#~ "(Note: I'll try to set it anyway)"
-#~ msgstr ""
-#~ "Zdá se, že vaše locale není správně nainstalovaná\n"
-#~ "Musíte si ji vygenerovat, pro použití tohoto jazyka.\n"
-#~ "Na linuxových systémech hledejte soubor /etc/locale.gen a balíček "
-#~ "'locales'\n"
-#~ "Hodně štěstí!(Poznámka: Přesto se program pokusí nastavit ji)"
-
-#~ msgid "Never show this again"
-#~ msgstr "Toto již nezobrazovat"
-
-#~ msgid "Enable/Disable"
-#~ msgstr "Povolit/zakázat"
-
-#~ msgid "You can't update server.met from remote GUI yet."
-#~ msgstr "Zatím nelze aktualizovat server.met ze vzdálené GUI."
-
-#~ msgid "Disconnect from "
-#~ msgstr "Odpojit od "
-
-#, fuzzy
-#~ msgid "current server"
-#~ msgstr "současného serveru"
-
-#~ msgid " and "
-#~ msgstr " a "
-
-#~ msgid "Disconnect from any server and/or Kad"
-#~ msgstr "Odpojit se od serverů a/nebo Kadu"
-
-#~ msgid " ["
-#~ msgstr " ["
-
-#~ msgid " | Kad: "
-#~ msgstr " | Kad: "
-
-#~ msgid "TCP Flags"
-#~ msgstr "TCP příznaky"
-
-#~ msgid "UDP Flags"
-#~ msgstr "UDP příznaky"
-
-#~ msgid "Copy ED2k link(s) to clipboard"
-#~ msgstr "Zkopírovat ED2K odkaz(y) do schránky"
-
-#~ msgid "Client request is invalid!"
-#~ msgstr "Požadavek klienta je neplatný!"
-
-#~ msgid "Client request is invalid! %i / %i"
-#~ msgstr "Požadavek klienta je neplatný! %i / %i"
-
-#~ msgid "Unable to open %s file - using %s file."
-#~ msgstr "Nelze otevřít soubor %s - používám %s."
-
-#~ msgid "Warning: known.met does not exist."
-#~ msgstr "Varování: soubor known.met neexistuje."
-
-#~ msgid ""
-#~ "CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
-#~ "directory not found."
-#~ msgstr ""
-#~ "CSharedFileList::FindSharedFiles: Odstraňuji %s ze seznamu sdílených "
-#~ "adresářů: adresář nenalezen."
-
-#~ msgid "Masterhashes of known files have been loaded."
-#~ msgstr "Masterhashe známých souborů byly načteny."
-
-#~ msgid "Error while reading Kad contacts - 0 entries"
-#~ msgstr "Chyba při čtení Kad kontaktů - 0 záznamů"
-
-#~ msgid "Merge attempt"
-#~ msgstr "Pokus o sloučení"
-
-#~ msgid "Recursive merge"
-#~ msgstr "Rekurzivní sloučení"
-
-#~ msgid "Sucessful merge!"
-#~ msgstr "Sloučení proběhlo úspěšně!"
-
-#~ msgid "No merge possible"
-#~ msgstr "Sloučení není možné"
-
-#~ msgid "%d"
-#~ msgstr "%d"
-
-#~ msgid "English (U.S.)"
-#~ msgstr "Angličtina (americká)"
-
-#~ msgid "Spanish (Mexican)"
-#~ msgstr "Španělština (mexická)"
-
-#~ msgid ""
-#~ " 'All-Platform' p2p client based on eMule \n"
-#~ "\n"
-#~ " Website: http://www.amule.org \n"
-#~ " Forum: http://forum.amule.org \n"
-#~ " FAQ: http://wiki.amule.org \n"
-#~ "\n"
-#~ " Contact: admin@amule.org (administrative issues) \n"
-#~ " Copyright (C) 2003-2008 aMule Team \n"
-#~ "\n"
-#~ " Part of aMule is based on \n"
-#~ " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-#~ " Copyright (C) 2002 Petar Maymounkov\n"
-#~ " http://kademlia.scs.cs.nyu.edu\n"
-#~ msgstr ""
-#~ " P2P klient pro všechny platformy založený na eMule \n"
-#~ "\n"
-#~ " Web: http://www.amule.org/ \n"
-#~ " Fórum: http://forum.amule.org/ \n"
-#~ " FAQ: http://wiki.amule.org/ \n"
-#~ "\n"
-#~ " Kontakt: admin@amule.org (administrativní záležitosti)\n"
-#~ " Copyright (C) 2003-2008 Tým aMule \n"
-#~ "\n"
-#~ " Část aMule je založená na \n"
-#~ " Kademlia: P2P protokol založený na XOR metrice.\n"
-#~ " Copyright (C) 2002 Petar Maymounkov\n"
-#~ " http://kademlia.scs.cs.nyu.edu\n"
-
-#~ msgid "WARNING: You have recieved Low-ID!"
-#~ msgstr "VAROVÁNÍ: Bylo vám přiděleno Low-ID!"
-
-#~ msgid "Sources Dropping"
-#~ msgstr "Zahazování zdrojů"
-
-#~ msgid "Buddy address: "
-#~ msgstr "Adresa kamaráda: "
-
-#~ msgid "Drop No Needed Sources now"
-#~ msgstr "Odstranit zdroje bez potřebných částí"
-
-#~ msgid "Drop Full Queue Sources now"
-#~ msgstr "Odstranit zdroje s plnou frontou"
-
-#~ msgid "Drop High Queue Rating Sources now"
-#~ msgstr "Odstranit zdroje s dlouhou frontou"
-
-#~ msgid "Clean Up Sources now (NNS, FQS && HQRS)"
-#~ msgstr "Pročistit zdroje (NNS, FQS && HQRS)"
-
-#~ msgid ""
-#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
-#~ "part.met recovery solutions"
-#~ msgstr ""
-#~ "Chyba: Nelze načíst záložní soubor. Vyhledejte si na http://forum.amule."
-#~ "org/ řešení obnovy .part.met"
-
-#~ msgid ""
-#~ "Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
-#~ "part.met recovery solutions"
-#~ msgstr ""
-#~ "Chyba: Záložní soubor part.met má nulovou velikost! Vyhledejte si na "
-#~ "http://forum.amule.org/ řešení obnovy .part.met"
-
-#~ msgid "Error: part.met backup file is 0 size: %s ==> %s"
-#~ msgstr "Chyba: Záložní soubor part.met má nulovou velikost: %s ==> %s"
-
-#~ msgid "doesn't work"
-#~ msgstr "nefunguje"
-
-#~ msgid "remote gui"
-#~ msgstr "vzdálené gui"
-
-#~ msgid "     %d"
-#~ msgstr "     %d"
-
-#~ msgid ".%d"
-#~ msgstr ".%d"
-
-#~ msgid "Set riority to low."
-#~ msgstr "Nastaví nízkou prioritu."
-
-#~ msgid "Set riority to normal."
-#~ msgstr "Nastaví normální prioritu."
-
-#~ msgid "Set riority to high."
-#~ msgstr "Nastaví vysokou prioritu."
-
-#~ msgid "Set riority to auto."
-#~ msgstr "Nastaví automatickou prioritu."
-
-#~ msgid "Deprecated command, now 'Status'."
-#~ msgstr "Zastaralý příkaz, použijte 'Status'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Status' instead.\n"
-#~ msgstr ""
-#~ "Toto je zastaralý příkaz, který může být v budoucnosti odstraněn.\n"
-#~ "Používejte místo něj 'Status'.\n"
-
-#~ msgid "Deprecated command, now 'Set IPFilter'."
-#~ msgstr "Zastaralý příkaz, použijte 'Set IPFilter'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set IPFilter' instead.\n"
-#~ msgstr ""
-#~ "Toto je zastaralý příkaz, který může být v budoucnosti odstraněn.\n"
-#~ "Používejte místo něj 'Set IPFilter'.\n"
-
-#~ msgid "Deprecated command, now 'Get IPFilter Level'."
-#~ msgstr "Zastaralý příkaz, použijte 'Get IPFilter Level'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "Toto je zastaralý příkaz, který může být v budoucnosti odstraněn.\n"
-#~ "Používejte místo něj 'Get IPFilter Level'.\n"
-
-#~ msgid "Deprecated command, now 'Set IPFilter Level'."
-#~ msgstr "Zastaralý příkaz, použijte 'Set IPFilter Level'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "Toto je zastaralý příkaz, který může být v budoucnosti odstraněn.\n"
-#~ "Používejte místo něj 'Set IPFilter Level'.\n"
-
-#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-#~ msgstr "Zastaralý příkaz, použijte 'Get/Set IPFilter Level'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get/Set IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "Toto je zastaralý příkaz, který může být v budoucnosti odstraněn.\n"
-#~ "Používejte místo něj 'Get/Set IPFilter Level'.\n"
-
-#~ msgid "Deprecated command, now 'Show Servers'."
-#~ msgstr "Zastaralý příkaz, použijte 'Show Servers'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Show Servers' instead.\n"
-#~ msgstr ""
-#~ "Toto je zastaralý příkaz, který může být v budoucnosti odstraněn.\n"
-#~ "Používejte místo něj 'Show Servers'.\n"
-
-#~ msgid "Deprecated command, now 'Get BwLimits'."
-#~ msgstr "Zastaralý příkaz, použijte 'Get BwLimits'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get BwLimits' instead.\n"
-#~ msgstr ""
-#~ "Toto je zastaralý příkaz, který může být v budoucnosti odstraněn.\n"
-#~ "Používejte místo něj 'Get BwLimits'.\n"
-
-#~ msgid "Deprecated command, now 'Set BwLimit Up'."
-#~ msgstr "Zastaralý příkaz, použijte 'Set BwLimit Up'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set BwLimit Up' instead.\n"
-#~ msgstr ""
-#~ "Toto je zastaralý příkaz, který může být v budoucnosti odstraněn.\n"
-#~ "Používejte místo něj 'Get BwLimit Up'.\n"
-
-#~ msgid "Deprecated command, now 'Set BwLimit Down'."
-#~ msgstr "Zastaralý příkaz, použijte 'Set BwLimit Down'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set BwLimit Down' instead.\n"
-#~ msgstr ""
-#~ "Toto je zastaralý příkaz, který může být v budoucnosti odstraněn.\n"
-#~ "Používejte místo něj 'Get BwLimit Down'.\n"
-
-#~ msgid "Source Dropping"
-#~ msgstr "Zahazování zdrojů"
-
-#~ msgid "Drop sources"
-#~ msgstr "Zahodit zdroje"
-
-#~ msgid "Send sources to any other file before dropping (High CPU)"
-#~ msgstr "Poslat zdroje na jiný soubor před zahozením (žere CPU)"
-
-#~ msgid "Sources with no needed file-parts."
-#~ msgstr "Zdroje, které nemají potřebné části"
-
-#~ msgid "Full Queue Sources Handling"
-#~ msgstr "Zacházení se zdroji s plnou frontou"
-
-#~ msgid "Enable auto drop Full Queue Sources"
-#~ msgstr "Povolit automatické zahazování zdrojů s plnou frontou"
-
-#~ msgid "High Queue Rating Sources Handling"
-#~ msgstr "Zacházení se zdroji s dlouhou frontou"
-
-#~ msgid "Enable auto drop High Queue Rating Sources"
-#~ msgstr "Povolit automatické zahazování zdrojů s dlouhou frontou"
-
-#~ msgid "High Queue Rating value"
-#~ msgstr "Hodnota dlouhé fronty"
-
-#~ msgid "(Min 300 / Max 3000)"
-#~ msgstr "(min. 300 / max. 3000)"
-
-#~ msgid "Auto Drop Sources Timer"
-#~ msgstr "Časovač automatického zahození zdrojů"
-
-#~ msgid "Timer (in secs)"
-#~ msgstr "Časovač (v sekundách)"
-
-#~ msgid "(Min 60 / 3600 Max)"
-#~ msgstr "(min 60, max 3600)"
