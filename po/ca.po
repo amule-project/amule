@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2020-02-18 14:47+0100\n"
+"PO-Revision-Date: 2020-03-04 12:09+0100\n"
 "Last-Translator: simkin <simkin@ono.com>\n"
 "Language-Team: Català\n"
 "Language: ca\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -483,7 +483,7 @@ msgstr "Kademlia: Encaminament p2p basat en la mètrica XOR.\n"
 
 #: src/amuleDlg.cpp:509
 msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
-msgstr "Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
+msgstr " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 
 #: src/amuleDlg.cpp:510
 msgid "http://kademlia.scs.cs.nyu.edu\n"
@@ -3287,7 +3287,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr "Idioma:"
+msgstr "Idioma: "
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -5000,7 +5000,7 @@ msgstr "Seguretat"
 
 #: src/PrefsUnifiedDlg.cpp:182
 msgid "Interface"
-msgstr "Interfície "
+msgstr "Interfície"
 
 #: src/PrefsUnifiedDlg.cpp:184
 msgid "Proxy"
@@ -5008,7 +5008,7 @@ msgstr "Servidor intermediari"
 
 #: src/PrefsUnifiedDlg.cpp:185
 msgid "Filters"
-msgstr "Filtres "
+msgstr "Filtres"
 
 #: src/PrefsUnifiedDlg.cpp:186
 msgid "Remote Controls"
@@ -5020,7 +5020,7 @@ msgstr "Signatura en línia"
 
 #: src/PrefsUnifiedDlg.cpp:188
 msgid "Advanced"
-msgstr "Avançat "
+msgstr "Avançat"
 
 #: src/PrefsUnifiedDlg.cpp:189
 msgid "Events"

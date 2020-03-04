@@ -20,14 +20,14 @@ msgstr ""
 "Project-Id-Version: aMule 2.3.2\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2020-02-20 11:29+0100\n"
+"PO-Revision-Date: 2020-03-04 13:26+0100\n"
 "Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: SebastianoPistore.info@protonmail.ch\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/AddFriend.cpp:45
@@ -82,7 +82,7 @@ msgstr "aMule in fase di chiusura: Il core sta venendo terminato."
 
 #: src/amule.cpp:333
 msgid "aMule shutdown completed."
-msgstr "Arresto di aMule completato."
+msgstr "aMule, arresto completato."
 
 #: src/amule.cpp:337
 msgid "Memory debug results for aMule exit:"
@@ -2959,7 +2959,7 @@ msgstr "N/D"
 
 #: src/muuli_wdr.cpp:536
 msgid "met-File :"
-msgstr "File met:"
+msgstr "file met:"
 
 #: src/muuli_wdr.cpp:547
 msgid "Hash :"
@@ -3958,7 +3958,7 @@ msgstr "Aggiungi server (riempi campi a sinistra)..."
 
 #: src/muuli_wdr.cpp:2604
 msgid "aMule Log"
-msgstr "Log di aMule"
+msgstr "log di aMule"
 
 #: src/muuli_wdr.cpp:2608
 msgid "Server Info"

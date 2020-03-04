@@ -11,14 +11,14 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2020-02-18 16:37+0100\n"
+"PO-Revision-Date: 2020-03-04 14:48+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
 
@@ -467,7 +467,7 @@ msgid ""
 "Copyright (c) 2003-2019 aMule Team \n"
 "\n"
 msgstr ""
-" Autorinės teisės (C) 2003-2019 aMule komanda \n"
+"Autorinės teisės (C) 2003-2019 aMule komanda \n"
 "\n"
 
 #: src/amuleDlg.cpp:507
@@ -727,7 +727,7 @@ msgstr "Jungiamasi"
 
 #: src/amule-remote-gui.cpp:314
 msgid "Connection failed "
-msgstr "Prisijungti nepavyko"
+msgstr "Prisijungti nepavyko "
 
 #: src/amule-remote-gui.cpp:325
 msgid "Remote GUI EC event handler"
@@ -3587,11 +3587,11 @@ msgstr "Atnaujinimo dažnis: 5 s"
 
 #: src/muuli_wdr.cpp:1920
 msgid "Time for average graph: 100 mins"
-msgstr "Vidurkių grafiko dydis: 100 min."
+msgstr "Vidurkių grafiko dydis: 100 min"
 
 #: src/muuli_wdr.cpp:1926
 msgid "Connections Graph Scale: 100 "
-msgstr "Ryšių grafiko skalė: 100"
+msgstr "Ryšių grafiko skalė: 100 "
 
 #: src/muuli_wdr.cpp:1935
 msgid "Download graph scale:"
@@ -5791,7 +5791,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:226
 msgid "Firewalled state: "
-msgstr "Ugniasienės būsena:"
+msgstr "Ugniasienės būsena: "
 
 #: src/ServerWnd.cpp:232
 msgid "No buddy required - TCP port open"
@@ -7097,7 +7097,7 @@ msgstr "Nurodykite failą apskaičiuotai eD2k nuorodai"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:450
 msgid "Unable to open "
-msgstr "Nepavyko atverti"
+msgstr "Nepavyko atverti "
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:457
 #: src/utils/aLinkCreator/src/alcframe.cpp:582
@@ -7376,7 +7376,7 @@ msgstr " Kad: "
 #: src/utils/wxCas/src/wxcasframe.cpp:1053
 #: src/utils/wxCas/src/wxcasframe.cpp:1075
 msgid "off"
-msgstr "išj."
+msgstr "išj"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1059
 msgid " is on "

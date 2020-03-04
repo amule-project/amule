@@ -16,14 +16,14 @@ msgstr ""
 "Project-Id-Version: aMule 2.3.2\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2020-02-20 11:35+0100\n"
+"PO-Revision-Date: 2020-03-04 13:28+0100\n"
 "Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: SebastianoPistore.info@protonmail.ch\n"
 "Language: it_CH\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/AddFriend.cpp:45
@@ -78,7 +78,7 @@ msgstr "aMule in fase di chiusura: Il core sta venendo terminato."
 
 #: src/amule.cpp:333
 msgid "aMule shutdown completed."
-msgstr "Arresto di aMule completato."
+msgstr "aMule, arresto completato."
 
 #: src/amule.cpp:337
 msgid "Memory debug results for aMule exit:"
@@ -1854,8 +1854,7 @@ msgid ""
 "This command is incomplete, you must use one of the extensions below.\n"
 msgstr ""
 "\n"
-"Questo comando è incompleto, devi usare una delle estensioni qui "
-"riportate.\n"
+"Questo comando è incompleto, devi usare una delle estensioni qui riportate.\n"
 
 #: src/ExternalConnector.cpp:170
 msgid ""
@@ -2322,8 +2321,7 @@ msgstr "Sei sicuro di voler scaricare un nuovo file nodes.dat?\n"
 msgid ""
 "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
-"Così facendo, rimuoverai i nodi attuali e riavvierai la connessione "
-"Kademlia."
+"Così facendo, rimuoverai i nodi attuali e riavvierai la connessione Kademlia."
 
 #: src/KadDlg.cpp:214
 msgid "Continue?"
@@ -2557,7 +2555,7 @@ msgstr "Illimitato"
 
 #: src/MuleTrayIcon.cpp:290
 msgid "aMule Tray Menu"
-msgstr "Menu di aMule nella barra"
+msgstr "Menu di aMule nella barra di sistema"
 
 #: src/MuleTrayIcon.cpp:296
 msgid "Speed limits:"
@@ -2957,7 +2955,7 @@ msgstr "N/D"
 
 #: src/muuli_wdr.cpp:536
 msgid "met-File :"
-msgstr "File met:"
+msgstr "file met:"
 
 #: src/muuli_wdr.cpp:547
 msgid "Hash :"
@@ -3091,8 +3089,7 @@ msgstr "Eccellente"
 #: src/muuli_wdr.cpp:854
 msgid "Choose the file rating or advice users if the file is invalid ..."
 msgstr ""
-"Giudica il file o avvisa gli altri utenti se il file non è quello "
-"corretto..."
+"Giudica il file o avvisa gli altri utenti se il file non è quello corretto..."
 
 #: src/muuli_wdr.cpp:898
 msgid "Refresh"
@@ -3956,7 +3953,7 @@ msgstr "Aggiungi server (riempi campi a sinistra)..."
 
 #: src/muuli_wdr.cpp:2604
 msgid "aMule Log"
-msgstr "Log di aMule"
+msgstr "log di aMule"
 
 #: src/muuli_wdr.cpp:2608
 msgid "Server Info"
@@ -4024,8 +4021,8 @@ msgid ""
 "It is recommended to enable this option. You will not receive credits if SUI "
 "is not enabled."
 msgstr ""
-"È raccomandato abilitare questa opzione. Non riceverai crediti se la SUI "
-"non è abilitata."
+"È raccomandato abilitare questa opzione. Non riceverai crediti se la SUI non "
+"è abilitata."
 
 #: src/muuli_wdr.cpp:2811
 msgid "Protocol Obfuscation"
@@ -4945,8 +4942,8 @@ msgstr "Trovata categoria non valida, ignorata"
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
-"La porta TCP non può essere superiore a 65532 perché il socket UDP è "
-"fissato a TCP+3"
+"La porta TCP non può essere superiore a 65532 perché il socket UDP è fissato "
+"a TCP+3"
 
 #: src/Preferences.cpp:1769
 #, c-format
@@ -6828,8 +6825,7 @@ msgstr "Conversione dei vecchi hashset AICH in '%s' a 64b: '%s'."
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr ""
-"ATTENZIONE: '%s' non è un nome di file valido ed è stato rinominato in "
-"'%s'."
+"ATTENZIONE: '%s' non è un nome di file valido ed è stato rinominato in '%s'."
 
 #: src/ThreadTasks.cpp:467
 #, c-format

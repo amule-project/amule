@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2020-02-11 12:10+0100\n"
+"PO-Revision-Date: 2020-03-04 11:38+0100\n"
 "Last-Translator: saleh alhathal <hathalsal@hotmail.com>\n"
 "Language-Team: \n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -786,10 +786,6 @@ msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] "إحصائية الملفات لهذة الجلسة: قبل %d من %d طلب , %s تم نقله \n"
 msgstr[1] "إحصائية الملفات لهذة الجلسة: قبل %d من %d طلب , %s تم نقله \n"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/BaseClient.cpp:2024
 #, fuzzy, c-format
@@ -798,10 +794,6 @@ msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] "إحصائية الملفات لهذة الجلسة: قبل %d من %d طلب , %s تم نقله \n"
 msgstr[1] "إحصائية الملفات لهذة الجلسة: قبل %d من %d طلب , %s تم نقله \n"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/BaseClient.cpp:2027
 msgid "Requested unknown file"
@@ -928,10 +920,6 @@ msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
 msgstr[0] "حمل ملف الرصيد, تم التعرف على %u عميل"
 msgstr[1] "حمل ملف الرصيد, تم التعرف على %u عميل"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/ClientCreditsList.cpp:161
 #, fuzzy, c-format
@@ -939,10 +927,6 @@ msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
 msgstr[0] "الرصيد منتهى!"
 msgstr[1] "الرصيد منتهى!"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
@@ -1104,10 +1088,6 @@ msgid "%u comment"
 msgid_plural "%u comments"
 msgstr[0] "ﻻ تعليق "
 msgstr[1] "ﻻ تعليق "
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
@@ -1506,10 +1486,6 @@ msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "وجد %i جزء ملفات"
 msgstr[1] "وجد %i جزء ملفات"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/DownloadQueue.cpp:244 src/DownloadQueue.cpp:1470
 msgid "Filesystem for Temp directory cannot handle large files."
@@ -2179,10 +2155,6 @@ msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/IPFilter.cpp:331
 #, c-format
@@ -2190,10 +2162,6 @@ msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/IPFilter.cpp:503
 #, c-format
@@ -2261,10 +2229,6 @@ msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/kademlia/routing/RoutingZone.cpp:221
 #: src/kademlia/routing/RoutingZone.cpp:287
@@ -2277,10 +2241,6 @@ msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/kademlia/routing/RoutingZone.cpp:336
 #, c-format
@@ -2288,10 +2248,6 @@ msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/KnownFile.cpp:1544 src/PartFileConvertDlg.cpp:91
 msgid "File name"
@@ -4264,10 +4220,6 @@ msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "بايت"
 msgstr[1] "بايت"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/OtherFunctions.cpp:66
 msgid "kB"
@@ -4299,10 +4251,6 @@ msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "بايت"
 msgstr[1] "بايت"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/OtherFunctions.cpp:99
 msgid "MB/s"
@@ -4524,10 +4472,6 @@ msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/PartFile.cpp:1048
 #, c-format
@@ -4549,10 +4493,6 @@ msgid_plural ""
 "|%s|"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/PartFile.cpp:1172
 #, c-format
@@ -5042,10 +4982,6 @@ msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "تحيدث كل:5 ثواني"
 msgstr[1] "تحيدث كل:5 ثواني"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/PrefsUnifiedDlg.cpp:1137
 #, c-format
@@ -5053,10 +4989,6 @@ msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/PrefsUnifiedDlg.cpp:1143
 #, c-format
@@ -5069,10 +5001,6 @@ msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/PrefsUnifiedDlg.cpp:1161
 #, c-format
@@ -5080,10 +5008,6 @@ msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/PrefsUnifiedDlg.cpp:1168
 #, fuzzy, c-format
@@ -5091,10 +5015,6 @@ msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "فترة تحديث الإتصال بالخادم %i دقيقة"
 msgstr[1] "فترة تحديث الإتصال بالخادم %i دقيقة"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/PrefsUnifiedDlg.cpp:1170
 msgid "Server connection refresh interval: Disabled"
@@ -5249,10 +5169,6 @@ msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "اﻹتصال الذاتي بالخادم سيعيد المحاولة بعد %d ثانية"
 msgstr[1] "اﻹتصال الذاتي بالخادم سيعيد المحاولة بعد %d ثانية"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/ServerConnect.cpp:412
 msgid "Connection lost"
@@ -5305,10 +5221,6 @@ msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] "%i خادمات وجدت في server.met"
 msgstr[1] "%i خادمات وجدت في server.met"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/ServerList.cpp:176
 #, fuzzy, c-format
@@ -5316,10 +5228,6 @@ msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] "%d خادم مضاف"
 msgstr[1] "%d خادم مضاف"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/ServerList.cpp:179
 #, fuzzy
@@ -5556,10 +5464,6 @@ msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] "تلقي %d خادم جديد"
 msgstr[1] "تلقي %d خادم جديد"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/ServerSocket.cpp:551
 msgid "Saving of server-list completed."
@@ -5724,10 +5628,6 @@ msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] "وجد %i ملف مشاركة معرف"
 msgstr[1] "وجد %i ملف مشاركة معرف"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/SharedFileList.cpp:377
 #, fuzzy, c-format
@@ -5735,10 +5635,6 @@ msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "وجد %i ملفات مشاركة معروفة , %i غير معروفة"
 msgstr[1] "وجد %i ملفات مشاركة معروفة , %i غير معروفة"
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: src/SharedFileList.cpp:386
 #, c-format

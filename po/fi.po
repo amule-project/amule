@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2020-02-18 15:09+0100\n"
+"PO-Revision-Date: 2020-03-04 12:31+0100\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
 "Language: fi\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -3252,7 +3252,7 @@ msgstr "Tämä on nimi jonka muut käyttäjät näkevät yhdistäessään sinuun
 
 #: src/muuli_wdr.cpp:1460
 msgid "Language: "
-msgstr "Kieli:"
+msgstr "Kieli: "
 
 #: src/muuli_wdr.cpp:1461 src/muuli_wdr.cpp:1498 src/muuli_wdr.cpp:1502
 #: src/muuli_wdr.cpp:1506
@@ -3601,7 +3601,7 @@ msgstr "Lähetyskuvaajan skaala:"
 
 #: src/muuli_wdr.cpp:1958
 msgid "Colours: "
-msgstr "Värit:"
+msgstr "Värit: "
 
 #: src/muuli_wdr.cpp:1963
 msgid "Background"
@@ -3693,7 +3693,7 @@ msgstr "Poista käytöstä tietokoneen ajastettu siirtyminen valmiustilaan"
 
 #: src/muuli_wdr.cpp:2087
 msgid "Skin to use: "
-msgstr "Käytettävä teema:"
+msgstr "Käytettävä teema: "
 
 #: src/muuli_wdr.cpp:2099
 msgid "Show \"Fast eD2k Links Handler\" in every window."

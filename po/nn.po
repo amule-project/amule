@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2020-02-18 16:39+0100\n"
+"PO-Revision-Date: 2020-03-04 14:51+0100\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team: <i18n-nn@lister.ping.uio.no>\n"
 "Language: nn\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -339,7 +339,7 @@ msgstr "Fråkopla eD2k"
 
 #: src/amule.cpp:1904
 msgid "Kad started."
-msgstr "Kad starta"
+msgstr "Kad starta."
 
 #: src/amule.cpp:1906
 msgid "Kad stopped."
@@ -464,7 +464,7 @@ msgid ""
 "Copyright (c) 2003-2019 aMule Team \n"
 "\n"
 msgstr ""
-" Opphavsrett (c) 2003-2019 aMule Team \n"
+"Opphavsrett (c) 2003-2019 aMule Team \n"
 "\n"
 
 #: src/amuleDlg.cpp:507
@@ -5684,7 +5684,7 @@ msgstr "ID"
 
 #: src/ServerWnd.cpp:204
 msgid "Kademlia Status:"
-msgstr "Kademlia status"
+msgstr "Kademlia status:"
 
 #: src/ServerWnd.cpp:207
 #, fuzzy
@@ -6684,11 +6684,11 @@ msgstr ""
 
 #: src/TextClient.cpp:979
 msgid "Pause download."
-msgstr "Set nedlasting på pause"
+msgstr "Set nedlasting på pause."
 
 #: src/TextClient.cpp:982
 msgid "Resume download."
-msgstr "Hald fram nedlasting"
+msgstr "Hald fram nedlasting."
 
 #: src/TextClient.cpp:985
 msgid "Cancel download."

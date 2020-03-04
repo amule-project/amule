@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2019-11-17 15:55+0100\n"
-"PO-Revision-Date: 2020-02-18 16:37+0100\n"
+"PO-Revision-Date: 2020-03-04 14:50+0100\n"
 "Last-Translator: Frank van der Loo <f.vanderloo@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "Language: nl\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -3188,7 +3188,7 @@ msgstr "Servernaam:"
 
 #: src/muuli_wdr.cpp:1297
 msgid "Obfuscation:"
-msgstr "Maskering"
+msgstr "Maskering:"
 
 #: src/muuli_wdr.cpp:1306
 msgid "Kad:"
@@ -6251,7 +6251,7 @@ msgstr ""
 
 #: src/TextClient.cpp:359
 msgid "Processing by hash: "
-msgstr "Verwerken per hash:"
+msgstr "Verwerken per hash: "
 
 #: src/TextClient.cpp:373
 msgid "Processing by filename: "
@@ -7336,7 +7336,7 @@ msgstr " is aan "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1066
 msgid " with "
-msgstr " met"
+msgstr " met "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1084
 msgid "Total Download: "
