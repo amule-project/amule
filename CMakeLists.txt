@@ -24,15 +24,17 @@ IF (EXISTS "${CMAKE_SOURCE_DIR}/.git")
 	SET (DEFAULT_BUILD_TYPE "Debug")
 ENDIF (EXISTS "${CMAKE_SOURCE_DIR}/.git")
 
+# Set the possible values of build type for cmake-gui
+SET_PROPERTY (CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+	"Debug" "Release"
+)
+
 IF (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	MESSAGE (STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
 	SET (CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE
 		STRING "Choose the type of build." FORCE
 	)
-	# Set the possible values of build type for cmake-gui
-	SET_PROPERTY (CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
-		"Debug" "Release"
-	)
+
 ENDIF (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 
 CMAKE_POLICY (SET CMP0056 NEW)
