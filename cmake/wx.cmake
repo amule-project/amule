@@ -31,7 +31,8 @@
 
 INCLUDE (ExternalProject)
 
-IF (WX_BUILT)
+IF (BUILT_WX)
+	SET (BUILT_WX ${BUILT_WX} CACHE BOOL "Remeber that wx was built" FORCE)
 
 	EXTERNALPROJECT_ADD (wxWidgets
 		GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
@@ -61,7 +62,6 @@ IF (WX_BUILT)
 	)
 
 	SET (wxWidgets_CONFIG_EXECUTABLE ${SOURCE_DIR}/wx-config CACHE FILEPATH "Location of wxWidgets library configuration provider binary (wx-config)." FORCE)
-ENDIF (WX_BUILT)
 
 IF (NOT DOWNLOAD_AND_BUILD_DEPS)
 	SET (wx_REQUIRED "REQUIRED")
