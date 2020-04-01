@@ -173,6 +173,9 @@
 /* The checkout date or svn revision number. */
 #define SVNDATE "${SVNDATE}"
 
+/* There's no point in defining this on every cmd-line */
+#define USE_WX_EXTENSIONS
+
 /* Version number of package */
 #cmakedefine VERSION "${VERSION}"
 
