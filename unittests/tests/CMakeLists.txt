@@ -37,13 +37,11 @@ ADD_EXECUTABLE (FileDataIOTest
 	${CMAKE_SOURCE_DIR}/src/CFile.cpp
 	${CMAKE_SOURCE_DIR}/src/MemFile.cpp
 	${CMAKE_SOURCE_DIR}/src/kademlia/utils/UInt128.cpp
-	${CMAKE_SOURCE_DIR}/src/libs/common/StringFunctions.cpp
 	${CMAKE_SOURCE_DIR}/src/Tag.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/Path.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/Format.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/strerror_r.c
 )
-
 
 TARGET_LINK_LIBRARIES (FileDataIOTest
 	muleunit
@@ -102,8 +100,6 @@ ADD_EXECUTABLE (PathTest
 	${CMAKE_SOURCE_DIR}/src/libs/common/Format.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/strerror_r.c
 	${CMAKE_SOURCE_DIR}/src/libs/common/Path.cpp
-	${CMAKE_SOURCE_DIR}/src/libs/common/StringFunctions.cpp
-)
 )
 
 TARGET_LINK_LIBRARIES (PathTest
@@ -128,7 +124,6 @@ ADD_EXECUTABLE (StringFunctionsTest
 	StringFunctionsTest.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/Format.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/strerror_r.c
-	${CMAKE_SOURCE_DIR}/src/libs/common/StringFunctions.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/Path.cpp
 )
 
@@ -141,7 +136,6 @@ ADD_EXECUTABLE (TextFileTest
 	${CMAKE_SOURCE_DIR}/src/libs/common/Format.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/strerror_r.c
 	${CMAKE_SOURCE_DIR}/src/libs/common/Path.cpp
-	${CMAKE_SOURCE_DIR}/src/libs/common/StringFunctions.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/TextFile.cpp
 )
 
