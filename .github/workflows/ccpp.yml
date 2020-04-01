@@ -14,6 +14,6 @@ jobs:
     - name: install build deps
       run: sudo apt install devscripts equivs && sudo mk-build-deps -i
     - name: configure
-      run: cmake -DBUILT_EVERYTHING=ON -DENABLE_IP2COUNTRY=ON -DBUILD_TESTING
+      run: mkdir build && cd build $$ cmake ../ -DBUILT_EVERYTHING=ON -DENABLE_IP2COUNTRY=ON -DBUILD_TESTING=ON
     - name: make
       run: make
