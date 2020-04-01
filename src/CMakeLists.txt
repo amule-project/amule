@@ -85,7 +85,6 @@ IF (BUILD_AMULECMD)
 		mulecommon
 		mulesocket
 		ec
-		ZLIB::ZLIB
 	)
 
 	IF (HAVE_BFD)
@@ -135,7 +134,6 @@ IF (BUILD_DAEMON)
 		muleappcore
 		mulecommon
 		mulesocket
-		ZLIB::ZLIB
 	)
 
 	IF (ENABLE_BOOST)
@@ -228,7 +226,6 @@ IF (BUILD_MONOLITHIC)
 		mulesocket
 		${wxWidgets_GUI_LIBRARIES}
 		${wxWidgets_ADV_LIBRARIES}
-		ZLIB::ZLIB
 	)
 
 	IF (ENABLE_BOOST)
@@ -301,7 +298,6 @@ IF (BUILD_REMOTEGUI)
 		${wxWidgets_ADV_LIBRARIES}
 		${wxWidgets_GUI_LIBRARIES}
 		${wxWidgets_NET_LIBRARIES}
-		ZLIB::ZLIB
 	)
 
 	IF (ENABLE_IP2COUNTRY)
