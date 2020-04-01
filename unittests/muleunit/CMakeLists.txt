@@ -1,4 +1,4 @@
-ADD_LIBRARY (muleunit STATIC
+ADD_LIBRARY (muleunit OBJECT
 	test.cpp
 	main.cpp
 	testcase.cpp
