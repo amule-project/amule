@@ -1092,7 +1092,7 @@ void CamuleApp::OnAssertFailure(const wxChar* file, int line,
 	if (wxThread::IsMain() && IsRunning()) {
 		AMULE_APP_BASE::OnAssertFailure(file, line, func, cond, msg);
 	} else {
-#ifdef _MSC_VER
+#if defined (_MSC_VER) && !defined NDEBUG
 		wxString s = CFormat(wxT("%s in %s")) % cond % func;
 		if (msg) {
 			s << wxT(" : ") << msg;
