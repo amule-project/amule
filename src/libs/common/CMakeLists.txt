@@ -9,20 +9,8 @@ ADD_LIBRARY (mulecommon STATIC
 	TextFile.cpp
 )
 
-TARGET_COMPILE_DEFINITIONS (mulecommon
-	PRIVATE ${wxWidgets_BASE_DEFS}
-)
-
-TARGET_INCLUDE_DIRECTORIES (mulecommon
-	PRIVATE ${wxWidgets_INCLUDE_DIRS}
-)
-
-TARGET_LINK_DIRECTORIES (mulecommon
-	INTERFACE ${wxWidgets_BASE_LIBRARY_DIRS}
-)
-
 TARGET_LINK_LIBRARIES (mulecommon
-	${wxWidgets_BASE_LIBRARIES}
+	wxWidgets::BASE
 )
 
 IF (HAVE_BFD)
