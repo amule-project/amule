@@ -107,7 +107,7 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	wxASSERT(searchchoice);
 	wxASSERT(searchchoice->GetString(0) == _("Local"));
 	wxASSERT(searchchoice->GetString(2) == _("Kad"));
-	wxASSERT(searchchoice->GetCount() == 4);
+	wxASSERT(searchchoice->GetCount() == 3);
 
 	m_searchchoices = searchchoice->GetStrings();
 
@@ -149,8 +149,6 @@ void CSearchDlg::FixSearchTypes()
 	if (thePrefs::GetNetworkKademlia()) {
 		searchchoice->Insert(m_searchchoices[2], pos++);
 	}
-
-	searchchoice->Insert(m_searchchoices[3], pos++);
 
 	searchchoice->SetSelection(0);
 }
@@ -272,54 +270,19 @@ void CSearchDlg::OnSearchPageChanged(wxBookCtrlEvent& WXUNUSED(evt))
 
 void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString searchString = CastChild( IDC_SEARCHNAME, wxTextCtrl )->GetValue();
-	searchString.Trim(true);
-	searchString.Trim(false);
-
-	if ( searchString.IsEmpty() ) {
+	if (!thePrefs::GetNetworkED2K() && !thePrefs::GetNetworkKademlia()) {
+		wxMessageBox(_("It's impossible to search when both eD2k and Kademlia are disabled."),
+			     _("Search error"),
+			     wxOK|wxCENTRE|wxICON_ERROR
+			     );
 		return;
 	}
 
-	wxChoice* choice = CastChild( ID_SEARCHTYPE, wxChoice );
-
-	// Magic.
-
-	int searchtype = choice->GetSelection();
-
-	if (!thePrefs::GetNetworkED2K()) {
-		searchtype += 2;
-	}
-
-	if (!thePrefs::GetNetworkKademlia()) {
-		searchtype += 1;
-	}
-
-	switch ( searchtype ) {
-		// Local Search
-		case 0:
-		// Global Search
-		case 1:
-		// Kad Search
-		case 2:
-			// We musn't search more often than once every 2 secs
-			if ((GetTickCount() - m_last_search_time) > 2000) {
-				m_last_search_time = GetTickCount();
-
-				OnBnClickedStop(nullEvent);
-
-				StartNewSearch();
-			}
-
-			break;
-
-		// Web Search (FileHash.com)
-		case 3:
-			theApp->amuledlg->LaunchUrl(theApp->amuledlg->GenWebSearchUrl(searchString, CamuleDlg::WS_FILEHASH));
-			break;
-
-		// Error
-		default:
-			wxFAIL;
+	// We mustn't search more often than once every 2 secs
+	if ((GetTickCount() - m_last_search_time) > 2000) {
+		m_last_search_time = GetTickCount();
+		OnBnClickedStop(nullEvent);
+		StartNewSearch();
 	}
 }
 

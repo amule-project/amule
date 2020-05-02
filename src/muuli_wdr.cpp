@@ -195,10 +195,9 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     {
         _("Local"), 
         _("Global"), 
-        _("Kad"), 
-        _("FileHash")
+        _("Kad")
     };
-    wxChoice *item8 = new wxChoice( parent, ID_SEARCHTYPE, wxDefaultPosition, wxDefaultSize, 4, strs8, 0 );
+    wxChoice *item8 = new wxChoice( parent, ID_SEARCHTYPE, wxDefaultPosition, wxDefaultSize, 3, strs8, 0 );
     item6->Add( item8, 0, wxALIGN_CENTER|wxALL, 5 );
 
     wxStaticLine *item9 = new wxStaticLine( parent, -1, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );

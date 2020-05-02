@@ -159,13 +159,6 @@ public:
 
 	void LaunchUrl(const wxString &url);
 
-	//! These are the currently known web-search providers
-	enum WebSearch {
-		WS_FILEHASH
-	};
-	// websearch function
-	wxString GenWebSearchUrl( const wxString &filename, WebSearch provider );
-
 	void CreateSystray();
 	void RemoveSystray();
 

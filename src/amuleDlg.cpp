@@ -1186,22 +1186,6 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 }
 
 
-wxString CamuleDlg::GenWebSearchUrl(const wxString &filename, WebSearch wsProvider )
-{
-	wxString URL;
-	switch (wsProvider)  {
-		case WS_FILEHASH:
-			URL = wxT("http://www.filehash.com/search.html?pattern=FILENAME&submit=Find");
-			break;
-		default:
-			wxFAIL;
-	}
-	URL.Replace(wxT("FILENAME"), filename);
-
-	return URL;
-}
-
-
 bool CamuleDlg::Check_and_Init_Skin()
 {
 	bool ret = true;
