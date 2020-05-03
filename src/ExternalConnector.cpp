@@ -577,6 +577,12 @@ bool CaMuleExternalConnector::OnInit()
 	OnInitCommandSet();
 	InitCustomLanguages();
 	SetLocale(m_language);
+
+#ifdef HAVE_LIBREADLINE
+	// Disable completion with TAB key
+	rl_bind_key('\t', rl_insert);
+#endif
+
 	return retval;
 }
 
