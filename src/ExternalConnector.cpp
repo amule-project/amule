@@ -41,6 +41,7 @@
 		#include <readline.h> // Do_not_auto_remove
 	#else /* !defined(HAVE_READLINE_H) */
 		extern "C" char *readline (const char*);
+		extern const char *rl_readline_name;
 	#endif /* !defined(HAVE_READLINE_H) */
 #else /* !defined(HAVE_READLINE_READLINE_H) */
 	/* no readline */
@@ -579,6 +580,12 @@ bool CaMuleExternalConnector::OnInit()
 	SetLocale(m_language);
 
 #ifdef HAVE_LIBREADLINE
+	// Allow conditional parsing of the ~/.inputrc file.
+	//
+	// OnInitCmdLine() is called from wxApp::OnInit() above,
+	// thus m_appname is already set.
+	rl_readline_name = m_appname;
+
 	// Disable completion with TAB key
 	rl_bind_key('\t', rl_insert);
 #endif
