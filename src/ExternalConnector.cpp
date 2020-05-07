@@ -72,6 +72,8 @@
 
 //-------------------------------------------------------------------
 
+CaMuleExternalConnector* CCommandTree::m_app;
+
 CCommandTree::~CCommandTree()
 {
 	DeleteContents(m_subcommands);
@@ -109,7 +111,7 @@ int CCommandTree::FindCommandId(const wxString& command, wxString& args, wxStrin
 		return CMD_ERR_NO_PARAM;
 	} else {
 		if ((m_cmd_id >= 0) && (m_cmd_id & CMD_DEPRECATED)) {
-			m_app.Show(wxT('\n') + m_verbose + wxT('\n'));
+			m_app->Show(wxT('\n') + m_verbose + wxT('\n'));
 			return m_cmd_id & ~CMD_DEPRECATED;
 		} else {
 			return m_cmd_id;
@@ -143,34 +145,34 @@ void CCommandTree::PrintHelpFor(const wxString& command) const
 			}
 		}
 		if (m_parent) {
-			m_app.Show(CFormat(_("Unknown extension '%s' for the '%s' command.\n")) % command % GetFullCommand());
+			m_app->Show(CFormat(_("Unknown extension '%s' for the '%s' command.\n")) % command % GetFullCommand());
 		} else {
-			m_app.Show(CFormat(_("Unknown command '%s'.\n")) % command);
+			m_app->Show(CFormat(_("Unknown command '%s'.\n")) % command);
 		}
 	} else {
 		wxString fullcmd = GetFullCommand();
 		if (!fullcmd.IsEmpty()) {
-			m_app.Show(fullcmd.Upper() + wxT(": ") + wxGetTranslation(m_short) + wxT("\n"));
+			m_app->Show(fullcmd.Upper() + wxT(": ") + wxGetTranslation(m_short) + wxT("\n"));
 			if (!m_verbose.IsEmpty()) {
-				m_app.Show(wxT("\n"));
-				m_app.Show(wxGetTranslation(m_verbose));
+				m_app->Show(wxT("\n"));
+				m_app->Show(wxGetTranslation(m_verbose));
 			}
 		}
 		if (m_params == CMD_PARAM_NEVER) {
-			m_app.Show(_("\nThis command cannot have an argument.\n"));
+			m_app->Show(_("\nThis command cannot have an argument.\n"));
 		} else if (m_params == CMD_PARAM_ALWAYS) {
-			m_app.Show(_("\nThis command must have an argument.\n"));
+			m_app->Show(_("\nThis command must have an argument.\n"));
 		}
 		if (m_cmd_id == CMD_ERR_INCOMPLETE) {
-			m_app.Show(_("\nThis command is incomplete, you must use one of the extensions below.\n"));
+			m_app->Show(_("\nThis command is incomplete, you must use one of the extensions below.\n"));
 		}
 		if (!m_subcommands.empty()) {
 			CmdPosConst_t it;
 			int maxlen = 0;
 			if (m_parent) {
-				m_app.Show(_("\nAvailable extensions:\n"));
+				m_app->Show(_("\nAvailable extensions:\n"));
 			} else {
-				m_app.Show(_("Available commands:\n"));
+				m_app->Show(_("Available commands:\n"));
 			}
 			for (it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
 				if (!((*it)->m_cmd_id >= 0 && (*it)->m_cmd_id & CMD_DEPRECATED) || m_parent) {
@@ -183,15 +185,15 @@ void CCommandTree::PrintHelpFor(const wxString& command) const
 			maxlen += 4;
 			for (it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
 				if (!((*it)->m_cmd_id >= 0 && (*it)->m_cmd_id & CMD_DEPRECATED) || m_parent) {
-					m_app.Show((*it)->m_command + wxString(wxT(' '), maxlen - (*it)->m_command.Length()) + wxGetTranslation((*it)->m_short) + wxT("\n"));
+					m_app->Show((*it)->m_command + wxString(wxT(' '), maxlen - (*it)->m_command.Length()) + wxGetTranslation((*it)->m_short) + wxT("\n"));
 				}
 			}
 			if (!m_parent) {
-				m_app.Show(CFormat(_("\nAll commands are case insensitive.\nType '%s <command>' to get detailed info on <command>.\n")) % wxT("help"));
+				m_app->Show(CFormat(_("\nAll commands are case insensitive.\nType '%s <command>' to get detailed info on <command>.\n")) % wxT("help"));
 			}
 		}
 	}
-	m_app.Show(wxT("\n"));
+	m_app->Show(wxT("\n"));
 }
 
 //-------------------------------------------------------------------
