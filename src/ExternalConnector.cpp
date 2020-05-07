@@ -200,16 +200,21 @@ void CCommandTree::PrintHelpFor(const wxString& command) const
 
 #ifdef HAVE_LIBREADLINE
 
-const CmdList_t* CCommandTree::GetSubCommandsFor(const wxString& command) const
+const CmdList_t* CCommandTree::GetSubCommandsFor(const wxString& command, bool mayRestart) const
 {
 	if (command.IsEmpty()) {
 		return &m_subcommands;
 	}
 
 	wxString cmd = command.BeforeFirst(wxT(' ')).Lower();
+
+	if (mayRestart && cmd == wxT("help")) {
+		return GetSubCommandsFor(command.AfterFirst(wxT(' ')), false);
+	}
+
 	for (CmdPosConst_t it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
 		if ((*it)->m_command.Lower() == cmd) {
-			return (*it)->GetSubCommandsFor(command.AfterFirst(wxT(' ')).Trim(false));
+			return (*it)->GetSubCommandsFor(command.AfterFirst(wxT(' ')).Trim(false), mayRestart);
 		}
 	}
 

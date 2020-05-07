@@ -84,7 +84,7 @@ class CCommandTree {
 	void	PrintHelpFor(const wxString& command) const;
 
 #ifdef HAVE_LIBREADLINE
-	const CmdList_t*	GetSubCommandsFor(const wxString& command) const;
+	const CmdList_t*	GetSubCommandsFor(const wxString& command, bool mayRestart = true) const;
 	const wxString&		GetCommand() const { return m_command; }
 #endif
 
