@@ -198,6 +198,68 @@ void CCommandTree::PrintHelpFor(const wxString& command) const
 
 //-------------------------------------------------------------------
 
+#ifdef HAVE_LIBREADLINE
+
+const CmdList_t* CCommandTree::GetSubCommandsFor(const wxString& command) const
+{
+	if (command.IsEmpty()) {
+		return &m_subcommands;
+	}
+
+	wxString cmd = command.BeforeFirst(wxT(' ')).Lower();
+	for (CmdPosConst_t it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
+		if ((*it)->m_command.Lower() == cmd) {
+			return (*it)->GetSubCommandsFor(command.AfterFirst(wxT(' ')).Trim(false));
+		}
+	}
+
+	return NULL;
+}
+
+
+// Forward-declare the completion function to make sure it's declaration
+// matches the library requirements.
+rl_compentry_func_t command_completion;
+
+
+// File-scope pointer to the application's command set.
+static CCommandTree * theCommands;
+
+
+char *command_completion(const char *text, int state)
+{
+	static const CmdList_t*	curCommands;
+	static CmdPosConst_t	nextCommand;
+
+	if (state == 0) {
+		wxString lineBuffer(rl_line_buffer);
+		wxString prefix(lineBuffer.Left(rl_point).BeforeLast(wxT(' ')));
+
+		curCommands = theCommands->GetSubCommandsFor(prefix);
+		if (curCommands) {
+			nextCommand = curCommands->begin();
+		} else {
+			return NULL;
+		}
+	}
+
+	wxString test(wxString(text).Lower());
+	while (nextCommand != curCommands->end()) {
+		wxString curTest = (*nextCommand)->GetCommand();
+		++nextCommand;
+		if (curTest.Lower().StartsWith(test)) {
+			return strdup(static_cast<const char *>(unicode2char(curTest)));
+		}
+	}
+
+	return NULL;
+}
+
+
+#endif /* HAVE_LIBREADLINE */
+
+//-------------------------------------------------------------------
+
 CaMuleExternalConnector::CaMuleExternalConnector()
 	: m_configFile(NULL),
 	  m_port(-1),
@@ -588,8 +650,9 @@ bool CaMuleExternalConnector::OnInit()
 	// thus m_appname is already set.
 	rl_readline_name = m_appname;
 
-	// Disable completion with TAB key
-	rl_bind_key('\t', rl_insert);
+	// Allow completion of our commands
+	theCommands = &m_commands;
+	rl_completion_entry_function = &command_completion;
 #endif
 
 	return retval;

@@ -83,6 +83,11 @@ class CCommandTree {
 	wxString GetFullCommand() const;
 	void	PrintHelpFor(const wxString& command) const;
 
+#ifdef HAVE_LIBREADLINE
+	const CmdList_t*	GetSubCommandsFor(const wxString& command) const;
+	const wxString&		GetCommand() const { return m_command; }
+#endif
+
  private:
 	CCommandTree(const wxString& command, int cmd_id, const wxString& shortDesc, const wxString& longDesc, enum Params params)
 		: m_command(command), m_cmd_id(cmd_id), m_short(shortDesc), m_verbose(longDesc), m_params(params), m_parent(NULL)
