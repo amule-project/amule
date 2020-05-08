@@ -340,6 +340,9 @@ bool CaMuleExternalConnector::Parse_Command(const wxString& buffer)
 	}
 	cmd.Trim(false);
 	cmd.Trim(true);
+	if (cmd.IsEmpty()) {
+		return false;
+	}
 	int cmd_ID = GetIDFromString(cmd);
 	if ( cmd_ID >= 0 ) {
 		cmd_ID = ProcessCommand(cmd_ID);
