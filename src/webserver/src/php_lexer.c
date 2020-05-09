@@ -707,14 +707,14 @@ void php_set_input_buffer(char *buf, int len)
 	php_scan_bytes(buf,len);
 }
 
-int phpwrap();
+int phpwrap(void);
 
 
 #define MAX_INCLUDE_DEPTH 10
 YY_BUFFER_STATE php_include_stack[MAX_INCLUDE_DEPTH];
 int php_include_stack_ptr = 0;
 
-int phpwrap()
+int phpwrap(void)
 {
 	if ( --php_include_stack_ptr < 0 ) {
 		return 1;

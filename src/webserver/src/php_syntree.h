@@ -349,7 +349,7 @@ extern "C" {
  * lex/yacc stuff
  */
 	int phperror(char *err);
-	int phpparse();
+	int phpparse(void);
 
 	extern int pphdebug;
 	extern FILE *phpin;
@@ -392,7 +392,7 @@ extern "C" {
 	void array_add_to_int_key(PHP_VALUE_NODE *array, int key, PHP_VAR_NODE *node);
 	void array_set_by_key(PHP_VALUE_NODE *array, PHP_VALUE_NODE *key, PHP_VAR_NODE *node);
 
-	PHP_VAR_NODE *make_array_var();
+	PHP_VAR_NODE *make_array_var(void);
 
 	// signle operand expression:
 	// FIXME: prefix and postfix form not recognized
@@ -408,7 +408,7 @@ extern "C" {
 	PHP_EXP_NODE *make_func_call_exp(char *func_name, PHP_EXP_NODE *args);
 
 	// create func call param list
-	PHP_EXP_NODE *make_func_call_param_list();
+	PHP_EXP_NODE *make_func_call_param_list(void);
 
 	// add next argument to function call param list
 	void func_call_add_expr(PHP_VAR_NODE *paramlist, PHP_EXP_NODE *arg, int byref);
@@ -431,7 +431,7 @@ extern "C" {
 	PHP_SYN_NODE *make_for_syn_node(PHP_EXP_NODE *start, PHP_EXP_NODE *cond,
 		PHP_EXP_NODE *next, PHP_SYN_NODE *code);
 
-	PHP_SYN_NODE *make_class_decl_syn_node();
+	PHP_SYN_NODE *make_class_decl_syn_node(void);
 
 	PHP_SYN_NODE *make_func_decl_syn_node(const char *name, PHP_EXP_NODE *param_list);
 
@@ -443,7 +443,7 @@ extern "C" {
 	PHP_EXP_NODE *make_func_param(PHP_EXP_NODE *list, PHP_EXP_NODE *var_exp_node,
 		char *class_name, int byref);
 
-	PHP_VAR_NODE *make_var_node();
+	PHP_VAR_NODE *make_var_node(void);
 	PHP_EXP_NODE *get_var_node(const char *name);
 	// C can't call "delete"
 	void free_var_node(PHP_VAR_NODE *v);
@@ -452,7 +452,7 @@ extern "C" {
 	extern PHP_SCOPE_TABLE g_global_scope, g_current_scope;
 	extern PHP_SCOPE_STACK g_scope_stack;
 
-	PHP_SCOPE_TABLE make_scope_table();
+	PHP_SCOPE_TABLE make_scope_table(void);
 
 	void delete_scope_table(PHP_SCOPE_TABLE scope);
 
@@ -475,8 +475,8 @@ extern "C" {
 	PHP_SCOPE_ITEM *get_scope_item(PHP_SCOPE_TABLE scope, const char *name);
 
 	/* engine */
-	void php_engine_init();
-	void php_engine_free();
+	void php_engine_init(void);
+	void php_engine_free(void);
 
 	void php_syn_tree_free(PHP_SYN_NODE *tree);
 	void php_exp_tree_free(PHP_EXP_NODE *tree);
