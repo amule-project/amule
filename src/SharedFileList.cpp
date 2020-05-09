@@ -745,7 +745,7 @@ void CSharedFileList::SendListToServer(){
 	//   - this function is called once when connecting to a server and when a file becomes shareable - so, it's called rarely.
 	//   - if the compressed size is still >= the original size, we send the uncompressed packet
 	// therefor we always try to compress the packet
-	if (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION){
+	if (server && (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION)){
 		packet->PackPacket();
 	}
 

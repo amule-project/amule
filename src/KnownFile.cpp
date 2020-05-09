@@ -1153,7 +1153,7 @@ void CKnownFile::CreateOfferedFilePacket(
 					tags.push_back(new CTagInt32(FT_FILESIZE_HI, (uint32)(GetFileSize() >> 32)));
 				}
 			} else {
-				if (!pClient->SupportsLargeFiles()) {
+				if (pClient && (!pClient->SupportsLargeFiles())) {
 					wxFAIL;
 					tags.push_back(new CTagInt32(FT_FILESIZE, 0));
 				} else {
