@@ -424,6 +424,7 @@ void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
 				call_params[i] = php_expr_eval_lvalue((PHP_EXP_NODE *)curr_arg_val->value.ptr_val);
 				if ( !call_params[i] ) {
 					php_report_error(PHP_ERROR, "Byref parameter is not lvalue");
+					var_node_free(call_params[i]);
 					return;
 				}
 			} else {
