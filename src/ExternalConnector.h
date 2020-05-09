@@ -67,23 +67,30 @@ class CaMuleExternalConnector;
 class CCommandTree {
  public:
 	CCommandTree(CaMuleExternalConnector& app)
-		: m_command(wxEmptyString), m_cmd_id(CMD_ERR_SYNTAX), m_short(wxEmptyString), m_verbose(wxEmptyString), m_params(CMD_PARAM_OPTIONAL), m_parent(NULL), m_app(app)
-		{}
+		: m_command(wxEmptyString), m_cmd_id(CMD_ERR_SYNTAX), m_short(wxEmptyString), m_verbose(wxEmptyString), m_params(CMD_PARAM_OPTIONAL), m_parent(NULL)
+		{
+			m_app = &app;
+		}
 
 	~CCommandTree();
 
 	CCommandTree*	AddCommand(const wxString& command, int cmd_id, const wxString& shortDesc, const wxString& longDesc, enum Params params = CMD_PARAM_OPTIONAL)
 		{
-			return AddCommand(new CCommandTree(m_app, command, cmd_id, shortDesc, longDesc, params));
+			return AddCommand(new CCommandTree(command, cmd_id, shortDesc, longDesc, params));
 		}
 
 	int	FindCommandId(const wxString& command, wxString& args, wxString& cmdstr) const;
 	wxString GetFullCommand() const;
 	void	PrintHelpFor(const wxString& command) const;
 
+#ifdef HAVE_LIBREADLINE
+	const CmdList_t*	GetSubCommandsFor(const wxString& command, bool mayRestart = true) const;
+	const wxString&		GetCommand() const { return m_command; }
+#endif
+
  private:
-	CCommandTree(CaMuleExternalConnector& app, const wxString& command, int cmd_id, const wxString& shortDesc, const wxString& longDesc, enum Params params)
-		: m_command(command), m_cmd_id(cmd_id), m_short(shortDesc), m_verbose(longDesc), m_params(params), m_parent(NULL), m_app(app)
+	CCommandTree(const wxString& command, int cmd_id, const wxString& shortDesc, const wxString& longDesc, enum Params params)
+		: m_command(command), m_cmd_id(cmd_id), m_short(shortDesc), m_verbose(longDesc), m_params(params), m_parent(NULL)
 		{}
 
 	CCommandTree*	AddCommand(CCommandTree* cmdTree);
@@ -94,8 +101,9 @@ class CCommandTree {
 	wxString	m_verbose;
 	enum Params	m_params;
 	const CCommandTree*	m_parent;
-	CaMuleExternalConnector& m_app;
 	CmdList_t	m_subcommands;
+
+	static CaMuleExternalConnector*	m_app;
 };
 
 

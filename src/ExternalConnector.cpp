@@ -39,8 +39,6 @@
 		#include <readline/readline.h>  // Do_not_auto_remove
 	#elif defined(HAVE_READLINE_H)
 		#include <readline.h> // Do_not_auto_remove
-	#else /* !defined(HAVE_READLINE_H) */
-		extern "C" char *readline (const char*);
 	#endif /* !defined(HAVE_READLINE_H) */
 #else /* !defined(HAVE_READLINE_READLINE_H) */
 	/* no readline */
@@ -52,8 +50,6 @@
 		#include <readline/history.h> // Do_not_auto_remove
 	#elif defined(HAVE_HISTORY_H)
 		#include <history.h> // Do_not_auto_remove
-	#else /* !defined(HAVE_HISTORY_H) */
-		extern "C" void add_history (const char*);
 	#endif /* defined(HAVE_READLINE_HISTORY_H) */
 #else
 	/* no history */
@@ -70,6 +66,8 @@
 #endif
 
 //-------------------------------------------------------------------
+
+CaMuleExternalConnector* CCommandTree::m_app;
 
 CCommandTree::~CCommandTree()
 {
@@ -108,7 +106,7 @@ int CCommandTree::FindCommandId(const wxString& command, wxString& args, wxStrin
 		return CMD_ERR_NO_PARAM;
 	} else {
 		if ((m_cmd_id >= 0) && (m_cmd_id & CMD_DEPRECATED)) {
-			m_app.Show(wxT('\n') + m_verbose + wxT('\n'));
+			m_app->Show(wxT('\n') + m_verbose + wxT('\n'));
 			return m_cmd_id & ~CMD_DEPRECATED;
 		} else {
 			return m_cmd_id;
@@ -142,34 +140,34 @@ void CCommandTree::PrintHelpFor(const wxString& command) const
 			}
 		}
 		if (m_parent) {
-			m_app.Show(CFormat(_("Unknown extension '%s' for the '%s' command.\n")) % command % GetFullCommand());
+			m_app->Show(CFormat(_("Unknown extension '%s' for the '%s' command.\n")) % command % GetFullCommand());
 		} else {
-			m_app.Show(CFormat(_("Unknown command '%s'.\n")) % command);
+			m_app->Show(CFormat(_("Unknown command '%s'.\n")) % command);
 		}
 	} else {
 		wxString fullcmd = GetFullCommand();
 		if (!fullcmd.IsEmpty()) {
-			m_app.Show(fullcmd.Upper() + wxT(": ") + wxGetTranslation(m_short) + wxT("\n"));
+			m_app->Show(fullcmd.Upper() + wxT(": ") + wxGetTranslation(m_short) + wxT("\n"));
 			if (!m_verbose.IsEmpty()) {
-				m_app.Show(wxT("\n"));
-				m_app.Show(wxGetTranslation(m_verbose));
+				m_app->Show(wxT("\n"));
+				m_app->Show(wxGetTranslation(m_verbose));
 			}
 		}
 		if (m_params == CMD_PARAM_NEVER) {
-			m_app.Show(_("\nThis command cannot have an argument.\n"));
+			m_app->Show(_("\nThis command cannot have an argument.\n"));
 		} else if (m_params == CMD_PARAM_ALWAYS) {
-			m_app.Show(_("\nThis command must have an argument.\n"));
+			m_app->Show(_("\nThis command must have an argument.\n"));
 		}
 		if (m_cmd_id == CMD_ERR_INCOMPLETE) {
-			m_app.Show(_("\nThis command is incomplete, you must use one of the extensions below.\n"));
+			m_app->Show(_("\nThis command is incomplete, you must use one of the extensions below.\n"));
 		}
 		if (!m_subcommands.empty()) {
 			CmdPosConst_t it;
 			int maxlen = 0;
 			if (m_parent) {
-				m_app.Show(_("\nAvailable extensions:\n"));
+				m_app->Show(_("\nAvailable extensions:\n"));
 			} else {
-				m_app.Show(_("Available commands:\n"));
+				m_app->Show(_("Available commands:\n"));
 			}
 			for (it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
 				if (!((*it)->m_cmd_id >= 0 && (*it)->m_cmd_id & CMD_DEPRECATED) || m_parent) {
@@ -182,16 +180,83 @@ void CCommandTree::PrintHelpFor(const wxString& command) const
 			maxlen += 4;
 			for (it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
 				if (!((*it)->m_cmd_id >= 0 && (*it)->m_cmd_id & CMD_DEPRECATED) || m_parent) {
-					m_app.Show((*it)->m_command + wxString(wxT(' '), maxlen - (*it)->m_command.Length()) + wxGetTranslation((*it)->m_short) + wxT("\n"));
+					m_app->Show((*it)->m_command + wxString(wxT(' '), maxlen - (*it)->m_command.Length()) + wxGetTranslation((*it)->m_short) + wxT("\n"));
 				}
 			}
 			if (!m_parent) {
-				m_app.Show(CFormat(_("\nAll commands are case insensitive.\nType '%s <command>' to get detailed info on <command>.\n")) % wxT("help"));
+				m_app->Show(CFormat(_("\nAll commands are case insensitive.\nType '%s <command>' to get detailed info on <command>.\n")) % wxT("help"));
 			}
 		}
 	}
-	m_app.Show(wxT("\n"));
+	m_app->Show(wxT("\n"));
 }
+
+//-------------------------------------------------------------------
+
+#ifdef HAVE_LIBREADLINE
+
+const CmdList_t* CCommandTree::GetSubCommandsFor(const wxString& command, bool mayRestart) const
+{
+	if (command.IsEmpty()) {
+		return &m_subcommands;
+	}
+
+	wxString cmd = command.BeforeFirst(wxT(' ')).Lower();
+
+	if (mayRestart && cmd == wxT("help")) {
+		return GetSubCommandsFor(command.AfterFirst(wxT(' ')), false);
+	}
+
+	for (CmdPosConst_t it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
+		if ((*it)->m_command.Lower() == cmd) {
+			return (*it)->GetSubCommandsFor(command.AfterFirst(wxT(' ')).Trim(false), mayRestart);
+		}
+	}
+
+	return NULL;
+}
+
+
+// Forward-declare the completion function to make sure it's declaration
+// matches the library requirements.
+rl_compentry_func_t command_completion;
+
+
+// File-scope pointer to the application's command set.
+static CCommandTree * theCommands;
+
+
+char *command_completion(const char *text, int state)
+{
+	static const CmdList_t*	curCommands;
+	static CmdPosConst_t	nextCommand;
+
+	if (state == 0) {
+		wxString lineBuffer(rl_line_buffer);
+		wxString prefix(lineBuffer.Left(rl_point).BeforeLast(wxT(' ')));
+
+		curCommands = theCommands->GetSubCommandsFor(prefix);
+		if (curCommands) {
+			nextCommand = curCommands->begin();
+		} else {
+			return NULL;
+		}
+	}
+
+	wxString test(wxString(text).Lower());
+	while (nextCommand != curCommands->end()) {
+		wxString curTest = (*nextCommand)->GetCommand();
+		++nextCommand;
+		if (curTest.Lower().StartsWith(test)) {
+			return strdup(static_cast<const char *>(unicode2char(curTest)));
+		}
+	}
+
+	return NULL;
+}
+
+
+#endif /* HAVE_LIBREADLINE */
 
 //-------------------------------------------------------------------
 
@@ -270,6 +335,9 @@ bool CaMuleExternalConnector::Parse_Command(const wxString& buffer)
 	}
 	cmd.Trim(false);
 	cmd.Trim(true);
+	if (cmd.IsEmpty()) {
+		return false;
+	}
 	int cmd_ID = GetIDFromString(cmd);
 	if ( cmd_ID >= 0 ) {
 		cmd_ID = ProcessCommand(cmd_ID);
@@ -577,6 +645,19 @@ bool CaMuleExternalConnector::OnInit()
 	OnInitCommandSet();
 	InitCustomLanguages();
 	SetLocale(m_language);
+
+#ifdef HAVE_LIBREADLINE
+	// Allow conditional parsing of the ~/.inputrc file.
+	//
+	// OnInitCmdLine() is called from wxApp::OnInit() above,
+	// thus m_appname is already set.
+	rl_readline_name = m_appname;
+
+	// Allow completion of our commands
+	theCommands = &m_commands;
+	rl_completion_entry_function = &command_completion;
+#endif
+
 	return retval;
 }
 
