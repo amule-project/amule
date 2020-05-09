@@ -94,7 +94,7 @@ public:
 	public:
 		// constructs
 		const_iterator() {};
-		const_iterator(const ListType::const_iterator& it) { m_it = it; };
+		const_iterator(const ListType::const_iterator& it) : m_it(it) { };
 		// operators
 		bool operator != (const const_iterator& it) const { return m_it != it.m_it; }
 		const_iterator& operator ++ () { ++ m_it; return *this; }

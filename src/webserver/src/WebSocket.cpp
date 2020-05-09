@@ -33,6 +33,10 @@
 #endif
 
 CWebSocket::CWebSocket(CWebServerBase *parent)
+	: m_dwBufSize(4096)
+	, m_dwRecv(0)
+	, m_dwHttpHeaderLen(0)
+	, m_dwHttpContentLen(0)
 {
 	m_pHead = 0;
 	m_pTail = 0;
@@ -46,10 +50,6 @@ CWebSocket::CWebSocket(CWebServerBase *parent)
 	// `m_dwBufSize - m_dwRecv` reads below still leave the spare slot
 	// free for the terminator.
 	m_pBuf = new char [4096 + 1];
-	m_dwBufSize = 4096;
-	m_dwRecv = 0;
-	m_dwHttpHeaderLen = 0;
-	m_dwHttpContentLen = 0;
 	m_Cookie = 0;
 	m_IsGet = false;
 	m_IsPost = false;
