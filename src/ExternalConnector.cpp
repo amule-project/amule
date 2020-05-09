@@ -39,9 +39,6 @@
 		#include <readline/readline.h>  // Do_not_auto_remove
 	#elif defined(HAVE_READLINE_H)
 		#include <readline.h> // Do_not_auto_remove
-	#else /* !defined(HAVE_READLINE_H) */
-		extern "C" char *readline (const char*);
-		extern const char *rl_readline_name;
 	#endif /* !defined(HAVE_READLINE_H) */
 #else /* !defined(HAVE_READLINE_READLINE_H) */
 	/* no readline */
@@ -53,8 +50,6 @@
 		#include <readline/history.h> // Do_not_auto_remove
 	#elif defined(HAVE_HISTORY_H)
 		#include <history.h> // Do_not_auto_remove
-	#else /* !defined(HAVE_HISTORY_H) */
-		extern "C" void add_history (const char*);
 	#endif /* defined(HAVE_READLINE_HISTORY_H) */
 #else
 	/* no history */
