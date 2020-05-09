@@ -380,7 +380,7 @@ void CSharedFileList::FindSharedFiles()
 
 
 // Checks if the dir a is the same as b. If they are, then logs the message and returns true.
-bool CheckDirectory(const wxString& a, const CPath& b)
+static bool CheckDirectory(const wxString& a, const CPath& b)
 {
 	if (CPath(a).IsSameDir(b)) {
 		AddLogLineC(CFormat( _("ERROR: Attempted to share %s") ) % a);
@@ -662,7 +662,7 @@ void CSharedFileList::RepublishFile(CKnownFile* pFile)
 	}
 }
 
-uint8 GetRealPrio(uint8 in)
+static uint8 GetRealPrio(uint8 in)
 {
 	switch(in) {
 		case 4 : return 0;
@@ -674,7 +674,7 @@ uint8 GetRealPrio(uint8 in)
 	return 0;
 }
 
-bool SortFunc( const CKnownFile* fileA, const CKnownFile* fileB )
+static bool SortFunc( const CKnownFile* fileA, const CKnownFile* fileB )
 {
     return GetRealPrio(fileA->GetUpPriority()) < GetRealPrio(fileB->GetUpPriority());
 }

@@ -286,7 +286,7 @@ void get_file_line_info(bfd *abfd, asection *section, void* _address)
 
 #endif // HAVE_BFD
 
-wxString demangle(const wxString& function)
+static wxString demangle(const wxString& function)
 {
 #ifdef HAVE_CXXABI
 	wxString result;

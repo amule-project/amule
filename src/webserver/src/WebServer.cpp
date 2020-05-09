@@ -80,7 +80,7 @@ wxString _SpecialChars(wxString str) {
 	return str;
 }
 
-uint8 GetHigherPrio(uint32 prio, bool autoprio)
+static uint8 GetHigherPrio(uint32 prio, bool autoprio)
 {
 	if (autoprio) {
 		return PR_LOW;
@@ -95,7 +95,7 @@ uint8 GetHigherPrio(uint32 prio, bool autoprio)
 	}
 }
 
-uint8 GetHigherPrioShared(uint32 prio, bool autoprio)
+static uint8 GetHigherPrioShared(uint32 prio, bool autoprio)
 {
 	if (autoprio) {
 		return PR_VERYLOW;
@@ -114,7 +114,7 @@ uint8 GetHigherPrioShared(uint32 prio, bool autoprio)
 }
 
 
-uint8 GetLowerPrio(uint32 prio, bool autoprio)
+static uint8 GetLowerPrio(uint32 prio, bool autoprio)
 {
 	if (autoprio) {
 		return PR_HIGH;
@@ -129,7 +129,7 @@ uint8 GetLowerPrio(uint32 prio, bool autoprio)
 	}
 }
 
-uint8 GetLowerPrioShared(uint32 prio, bool autoprio)
+static uint8 GetLowerPrioShared(uint32 prio, bool autoprio)
 {
 	if (autoprio) {
 		return PR_POWERSHARE;
@@ -2005,16 +2005,5 @@ void CNoTemplateWebServer::ProcessURL(ThreadData Data)
 	Data.pSocket->SendHttpHeaders("text/html", false, httpOutLen, 0);
 	Data.pSocket->SendData(httpOut, httpOutLen);
 }
-
-// Dummy functions for EC logging
-bool ECLogIsEnabled()
-{
-	return false;
-}
-
-void DoECLogLine(const wxString &)
-{
-}
-
 
 // File_checked_for_headers

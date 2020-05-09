@@ -419,6 +419,10 @@ bool CLoggerAccess::GetString(wxString & s)
 }
 
 // Functions for EC logging
+
+#ifdef __DEBUG__
+#include "ec/cpp/ECLog.h"
+
 bool ECLogIsEnabled()
 {
 	return theLogger.IsEnabled(logEC);
@@ -430,4 +434,5 @@ void DoECLogLine(const wxString &line)
 	theLogger.AddLogLine(wxEmptyString, 0, false, logStandard, line, false, false);
 }
 
+#endif /* __DEBUG__ */
 // File_checked_for_headers

@@ -977,6 +977,8 @@ bool CECTag::AssignIfExist(ec_tagname_t tagname, wxString &target) const
 
 
 #ifdef	__DEBUG__
+#include "ECLog.h"
+
 void CECTag::DebugPrint(int level, bool print_empty) const
 {
 	if (m_dataLen || print_empty) {

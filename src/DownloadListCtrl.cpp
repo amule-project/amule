@@ -371,7 +371,7 @@ uint8 CDownloadListCtrl::GetCategory() const
  * @param list A pointer to the list to gather items from.
  * @return A list containing the selected items.
  */
-ItemList GetSelectedItems( CDownloadListCtrl* list)
+static ItemList GetSelectedItems( CDownloadListCtrl* list)
 {
 	ItemList results;
 

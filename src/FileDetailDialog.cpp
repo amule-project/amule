@@ -308,7 +308,7 @@ void CFileDetailDialog::OnBnClickedNextFile(wxCommandEvent&)
 }
 
 
-bool IsDigit(const wxChar ch)
+static bool IsDigit(const wxChar ch)
 {
 	switch (ch) {
 		case '0':
@@ -325,7 +325,7 @@ bool IsDigit(const wxChar ch)
 	return false;
 }
 
-bool IsWordSeparator(const wxChar ch)
+static bool IsWordSeparator(const wxChar ch)
 {
 	switch (ch) {
 		case '.':
@@ -343,7 +343,7 @@ bool IsWordSeparator(const wxChar ch)
 	return false;
 }
 
-void ReplaceWord(wxString& str, const wxString& replaceFrom, const wxString& replaceTo, bool numbers = false)
+static void ReplaceWord(wxString& str, const wxString& replaceFrom, const wxString& replaceTo, bool numbers = false)
 {
 	unsigned int i = 0;
 	unsigned int l = replaceFrom.Length();

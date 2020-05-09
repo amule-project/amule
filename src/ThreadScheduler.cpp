@@ -121,7 +121,7 @@ bool CThreadScheduler::AddTask(CThreadTask* task, bool overwrite)
 
 
 /** Returns string representation of error code. */
-wxString GetErrMsg(wxThreadError err)
+static wxString GetErrMsg(wxThreadError err)
 {
 	switch (err) {
 		case wxTHREAD_NO_ERROR:		return wxT("wxTHREAD_NO_ERROR");

@@ -84,6 +84,8 @@ public:
 	wxArrayString m_aExpr;
 };
 
+void ParsedSearchExpression(const CSearchExpr* pexpr);
+
 #ifdef _MSC_VER
 #define YY_NO_UNISTD_H
 #define DEBUG_NEW new

@@ -81,7 +81,7 @@ CEC_Search_Tag::CEC_Search_Tag(const wxString &name, EC_SEARCH_TYPE search_type,
 	}
 }
 
-void FormatValue(CFormat& format, const CECTag* tag)
+static void FormatValue(CFormat& format, const CECTag* tag)
 {
 	wxASSERT(tag->GetTagName() == EC_TAG_STAT_NODE_VALUE);
 

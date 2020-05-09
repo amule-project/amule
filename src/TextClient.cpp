@@ -629,7 +629,7 @@ void CamulecmdApp::ShowResults(CResultMap results_map)
 
 
 // Formats a statistics (sub)tree to text
-wxString StatTree2Text(const CEC_StatTree_Node_Tag *tree, int depth)
+static wxString StatTree2Text(const CEC_StatTree_Node_Tag *tree, int depth)
 {
 	if (!tree) {
 		return wxEmptyString;
@@ -1027,16 +1027,7 @@ int CamulecmdApp::OnRun()
 	return 0;
 }
 
-// Dummy functions for EC logging
-bool ECLogIsEnabled()
-{
-	return false;
-}
-
-void DoECLogLine(const wxString &)
-{
-}
-
+#include "GuiEvents.h" // Stub functions needed by the linker in ASIO builds
 
 namespace MuleNotify
 {
