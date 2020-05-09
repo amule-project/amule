@@ -37,18 +37,14 @@
 OnLineSig::OnLineSig ( const wxFileName& file,
                        const double absoluteMaxDL,
                        const wxDateTime absoluteMaxDlDate )
+	: m_sessionMaxDL(0.0)
+	, m_sessionMaxDLDate(wxDateTime::Now())
+	, m_isSessionMaxDlReseted(false)
+	, m_absoluteMaxDL(absoluteMaxDL)
+	, m_absoluteMaxDlDate(absoluteMaxDlDate)
+	, m_isAbsoluteMaxDlReseted(false)
+	, m_amulesig(file)
 {
-	m_amulesig = file;
-
-	m_sessionMaxDL = 0.0;
-	m_sessionMaxDLDate = wxDateTime::Now();
-
-	m_absoluteMaxDL = absoluteMaxDL;
-	m_absoluteMaxDlDate = absoluteMaxDlDate;
-
-	m_isSessionMaxDlReseted = false;
-	m_isAbsoluteMaxDlReseted = false;
-
 	Refresh ();
 }
 

@@ -111,8 +111,8 @@ enum {
 
 // method to create a SearchFile
 SearchFile::SearchFile(const CEC_SearchFile_Tag *tag)
+	: nHash(tag->FileHash())
 {
-	nHash = tag->FileHash();
 	sHash = nHash.Encode();
 	sFileName = tag->FileName();
 	lFileSize = tag->SizeFull();
