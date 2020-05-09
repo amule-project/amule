@@ -225,7 +225,7 @@ void php_native_count(PHP_VALUE_NODE *result)
 		PHP_VALUE_NODE *param = &si->var->value;
 		if ( result ) {
 			cast_value_dnum(result);
-			if ( (si->var->value.type == PHP_VAL_NONE) || (si->var->value.type != PHP_VAL_ARRAY) ) {
+			if ( si->var->value.type != PHP_VAL_ARRAY ) {
 				result->int_val = 0;
 			} else {
 				result->int_val = array_get_size(param);
