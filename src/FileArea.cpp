@@ -232,7 +232,7 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 		void *p = mmap(NULL, m_length, PROT_READ, MAP_SHARED, file.fd(), offStart);
 		if (p != MAP_FAILED) {
 			m_file = &file;
-			m_mmap_buffer = (byte*) p;
+			m_mmap_buffer = (mule_byte*) p;
 			m_buffer = m_mmap_buffer + (offset - offStart);
 
 			// add to list to catch errors correctly
@@ -242,7 +242,7 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 	}
 	file.Unlock();
 #endif
-	m_buffer = new byte[count];
+	m_buffer = new mule_byte[count];
 	file.ReadAt(m_buffer, offset, count);
 }
 
@@ -259,7 +259,7 @@ void CFileArea::StartWriteAt(CFileAutoClose& file, uint64 offset, size_t count)
 		if (p != MAP_FAILED)
 		{
 			m_file = &file;
-			m_mmap_buffer = (byte*) p;
+			m_mmap_buffer = (mule_byte*) p;
 			m_buffer = m_mmap_buffer + (offset - offStart);
 
 			// add to list to catch errors correctly
@@ -268,13 +268,13 @@ void CFileArea::StartWriteAt(CFileAutoClose& file, uint64 offset, size_t count)
 		}
 		file.Unlock();
 	}
-	m_buffer = new byte[count];
+	m_buffer = new mule_byte[count];
 }
 #else
 void CFileArea::StartWriteAt(CFileAutoClose&, uint64, size_t count)
 {
 	Close();
-	m_buffer = new byte[count];
+	m_buffer = new mule_byte[count];
 }
 #endif
 

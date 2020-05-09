@@ -668,7 +668,7 @@ DECLARE_SIMPLE(CMemFile);
 TEST(CMemFile, AttachedBuffer)
 {
 	const size_t BufferLength = 1024;
-	byte buffer[BufferLength];
+	mule_byte buffer[BufferLength];
 
 	for (size_t i = 0; i < BufferLength; ++i) {
 		buffer[i] = i & 0xFF;
@@ -694,15 +694,15 @@ TEST(CMemFile, AttachedBuffer)
 	ASSERT_RAISES(CRunTimeException, file.WriteUInt8(0));
 
 	// Init with invalid buffer should fail
-	ASSERT_RAISES(CRunTimeException, new CMemFile(static_cast<const byte*>(NULL), 1024));
-	ASSERT_RAISES(CRunTimeException, new CMemFile(static_cast<byte*>(NULL), 1024));
+	ASSERT_RAISES(CRunTimeException, new CMemFile(static_cast<const mule_byte*>(NULL), 1024));
+	ASSERT_RAISES(CRunTimeException, new CMemFile(static_cast<mule_byte*>(NULL), 1024));
 }
 
 
 TEST(CMemFile, ConstBuffer)
 {
-	byte arr[10];
-	CMemFile file(const_cast<const byte*>(arr), sizeof(arr));
+	mule_byte arr[10];
+	CMemFile file(const_cast<const mule_byte*>(arr), sizeof(arr));
 
 	ASSERT_RAISES(CRunTimeException, file.WriteUInt8(0));
 	ASSERT_RAISES(CRunTimeException, file.WriteUInt16(0));

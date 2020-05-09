@@ -26,16 +26,16 @@
 
 public interface ECTagTypes {
 
-public final static byte EC_TAGTYPE_UNKNOWN = 0;
-public final static byte EC_TAGTYPE_CUSTOM = 1;
-public final static byte EC_TAGTYPE_UINT8 = 2;
-public final static byte EC_TAGTYPE_UINT16 = 3;
-public final static byte EC_TAGTYPE_UINT32 = 4;
-public final static byte EC_TAGTYPE_UINT64 = 5;
-public final static byte EC_TAGTYPE_STRING = 6;
-public final static byte EC_TAGTYPE_DOUBLE = 7;
-public final static byte EC_TAGTYPE_IPV4 = 8;
-public final static byte EC_TAGTYPE_HASH16 = 9;
-public final static byte EC_TAGTYPE_UINT128 = 10;
+public final static mule_byte EC_TAGTYPE_UNKNOWN = 0;
+public final static mule_byte EC_TAGTYPE_CUSTOM = 1;
+public final static mule_byte EC_TAGTYPE_UINT8 = 2;
+public final static mule_byte EC_TAGTYPE_UINT16 = 3;
+public final static mule_byte EC_TAGTYPE_UINT32 = 4;
+public final static mule_byte EC_TAGTYPE_UINT64 = 5;
+public final static mule_byte EC_TAGTYPE_STRING = 6;
+public final static mule_byte EC_TAGTYPE_DOUBLE = 7;
+public final static mule_byte EC_TAGTYPE_IPV4 = 8;
+public final static mule_byte EC_TAGTYPE_HASH16 = 9;
+public final static mule_byte EC_TAGTYPE_UINT128 = 10;
 
 }

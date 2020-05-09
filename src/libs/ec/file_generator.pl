@@ -413,7 +413,7 @@ sub write_java_define_line {
 	my $second = $_[2];
 
 	if ($_[3]) {
-		if ($_[3] =~ /int8/) { $datatype = "byte"; }
+		if ($_[3] =~ /int8/) { $datatype = "mule_byte"; }
 		elsif ($_[3] =~ /(uint8|int16)/) { $datatype = "short"; }
 		elsif ($_[3] =~  /(uint16|int32)/) { $datatype = "int"; }
 		elsif ($_[3] =~ /(uint32|int64)/) { $datatype = "long"; }

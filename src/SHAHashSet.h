@@ -104,12 +104,12 @@ class CUpDownClient;
 class CAICHHash
 {
 private:
-	byte m_abyBuffer[HASHSIZE];
+	mule_byte m_abyBuffer[HASHSIZE];
 
 public:
 	CAICHHash()				{ memset(m_abyBuffer, 0, HASHSIZE); }
 	CAICHHash(CFileDataIO* file)		{ Read(file); }
-	CAICHHash(byte* data)			{ Read(data); }
+	CAICHHash(mule_byte* data)		{ Read(data); }
 	CAICHHash(const CAICHHash& k1)		{ *this = k1; }
 	~CAICHHash() {}
 	CAICHHash& operator=(const CAICHHash& k1)
@@ -124,9 +124,9 @@ public:
 	friend bool operator!=(const CAICHHash& k1,const CAICHHash& k2)	{ return !(k1 == k2); }
 	void Read(CFileDataIO* file);
 	void Write(CFileDataIO* file) const;
-	void Read(byte* data)			{ memcpy(m_abyBuffer, data, HASHSIZE); }
+	void Read(mule_byte* data)		{ memcpy(m_abyBuffer, data, HASHSIZE); }
 	wxString GetString() const;
-	byte* GetRawHash()			{ return m_abyBuffer; }
+	mule_byte* GetRawHash()			{ return m_abyBuffer; }
 	static uint32 GetHashSize()		{ return HASHSIZE;}
 	unsigned int DecodeBase32(const wxString &base32);
 };

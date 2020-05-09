@@ -282,7 +282,7 @@ void CUpDownClient::CreateNextBlockPackage()
 }
 
 
-void CUpDownClient::CreateStandardPackets(const byte* buffer, uint32 togo, Requested_Block_Struct* currentblock)
+void CUpDownClient::CreateStandardPackets(const mule_byte* buffer, uint32 togo, Requested_Block_Struct* currentblock)
 {
 	uint32 nPacketSize;
 
@@ -330,10 +330,10 @@ void CUpDownClient::CreateStandardPackets(const byte* buffer, uint32 togo, Reque
 }
 
 
-void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Requested_Block_Struct* currentblock)
+void CUpDownClient::CreatePackedPackets(const mule_byte* buffer, uint32 togo, Requested_Block_Struct* currentblock)
 {
 	uLongf newsize = togo+300;
-	CScopedArray<byte> output(newsize);
+	CScopedArray<mule_byte> output(newsize);
 	uint16 result = compress2(output.get(), &newsize, buffer, togo, 9);
 	if (result != Z_OK || togo <= newsize){
 		CreateStandardPackets(buffer, togo, currentblock);
@@ -836,7 +836,7 @@ void CUpDownClient::SetUploadFileID(const CMD4Hash& new_id)
 	SetUploadFileID(uploadingfile); // This will update queue count on old and new file.
 }
 
-void CUpDownClient::ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSize, bool largeblocks) {
+void CUpDownClient::ProcessRequestPartsPacket(const mule_byte* pachPacket, uint32 nSize, bool largeblocks) {
 
 	CMemFile data(pachPacket, nSize);
 

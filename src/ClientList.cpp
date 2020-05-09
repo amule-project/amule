@@ -923,7 +923,7 @@ bool CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
 	CUpDownClient* pNewClient = new CUpDownClient(contact->GetTCPPort(), contact->GetIPAddress(), 0, 0, NULL, false, true );
 	pNewClient->SetKadPort(contact->GetUDPPort());
 	pNewClient->SetKadState(KS_INCOMING_BUDDY);
-	byte ID[16];
+	mule_byte ID[16];
 	contact->GetClientID().ToByteArray(ID);
 	pNewClient->SetUserHash(CMD4Hash(ID));
 	buddyID->ToByteArray(ID);

@@ -284,14 +284,14 @@ static wxChar base16Lookup[BASE16_LOOKUP_MAX][2] = {
 };
 
 
-// Returns a BASE16 encoded byte array
+// Returns a BASE16 encoded mule_byte array
 //
 // [In]
-//   buffer: Pointer to byte array
+//   buffer: Pointer to mule_byte array
 //   bufLen: Lenght of buffer array
 //
 // [Return]
-//   wxString object with BASE16 encoded byte array
+//   wxString object with BASE16 encoded mule_byte array
 wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen)
 {
 	wxString Base16Buff;
@@ -305,15 +305,15 @@ wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen)
 }
 
 
-// Decodes a BASE16 string into a byte array
+// Decodes a BASE16 string into a mule_byte array
 //
 // [In]
 //   base16Buffer: String containing BASE16
 //   base16BufLen: Lenght BASE16 coded string's length
 //
 // [Out]
-//   buffer: byte array containing decoded string
-unsigned int DecodeBase16(const wxString &base16Buffer, unsigned int base16BufLen, byte *buffer)
+//   buffer: mule_byte array containing decoded string
+unsigned int DecodeBase16(const wxString &base16Buffer, unsigned int base16BufLen, mule_byte *buffer)
 {
 	if (base16BufLen & 1) {
 		return 0;
@@ -323,7 +323,7 @@ unsigned int DecodeBase16(const wxString &base16Buffer, unsigned int base16BufLe
 	for(unsigned int i = 0; i < base16BufLen; ++i) {
 		int lookup = toupper(base16Buffer[i]) - wxT('0');
 		// Check to make sure that the given word falls inside a valid range
-		byte word = (lookup < 0 || lookup >= BASE16_LOOKUP_MAX) ?
+		mule_byte word = (lookup < 0 || lookup >= BASE16_LOOKUP_MAX) ?
 			0xFF : base16Lookup[lookup][1];
 		unsigned idx = i >> 1;
 		buffer[idx] = (i & 1) ? // odd or even?
@@ -334,14 +334,14 @@ unsigned int DecodeBase16(const wxString &base16Buffer, unsigned int base16BufLe
 }
 
 
-// Returns a BASE32 encoded byte array
+// Returns a BASE32 encoded mule_byte array
 //
 // [In]
-//   buffer: Pointer to byte array
+//   buffer: Pointer to mule_byte array
 //   bufLen: Lenght of buffer array
 //
 // [Return]
-//   wxString object with BASE32 encoded byte array
+//   wxString object with BASE32 encoded mule_byte array
 wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen)
 {
 	wxString Base32Buff;
@@ -349,7 +349,7 @@ wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen)
 	unsigned char word;
 
 	for(i = 0, index = 0; i < bufLen;) {
-		// Is the current word going to span a byte boundary?
+		// Is the current word going to span a mule_byte boundary?
 		if (index > 3) {
 			word = (buffer[i] & (0xFF >> index));
 			index = (index + 5) % 8;
@@ -372,14 +372,14 @@ wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen)
 }
 
 
-// Decodes a BASE32 string into a byte array
+// Decodes a BASE32 string into a mule_byte array
 //
 // [In]
 //   base32Buffer: String containing BASE32
 //   base32BufLen: Lenght BASE32 coded string's length
 //
 // [Out]
-//   buffer: byte array containing decoded string
+//   buffer: mule_byte array containing decoded string
 // [Return]
 //   nDecodeLen:
 unsigned int DecodeBase32(const wxString &base32Buffer, unsigned int base32BufLen, unsigned char *buffer)
@@ -414,7 +414,7 @@ unsigned int DecodeBase32(const wxString &base32Buffer, unsigned int base32BufLe
 		nCount += 5;
 		if (nCount >= 8)
 		{
-			*buffer++ = (byte)( nBits >> (nCount - 8) );
+			*buffer++ = (mule_byte)( nBits >> (nCount - 8) );
 			nCount -= 8;
 		}
 		nBits <<= 5;

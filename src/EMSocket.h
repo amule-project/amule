@@ -99,17 +99,17 @@ private:
 	bool	pendingOnReceive;
 
 	// Download partial header
-	byte	pendingHeader[PACKET_HEADER_SIZE];
-	uint32	pendingHeaderSize;
+	mule_byte	pendingHeader[PACKET_HEADER_SIZE];
+	uint32		pendingHeaderSize;
 
 	// Download partial packet
-	byte*	pendingPacket;
-	uint32  pendingPacketSize;
+	mule_byte*	pendingPacket;
+	uint32  	pendingPacketSize;
 
 	// Upload control
-	byte*	sendbuffer;
-	uint32	sendblen;
-	uint32	sent;
+	mule_byte*	sendbuffer;
+	uint32		sendblen;
+	uint32		sent;
 
 	typedef std::list<CPacket*> CPacketQueue;
 	CPacketQueue m_control_queue;

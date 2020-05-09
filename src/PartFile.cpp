@@ -126,7 +126,7 @@ public:
 	uint64 end;						// This is the end offset of the data
 	Requested_Block_Struct *block;	// This is the requested block that this data relates to
 
-	PartFileBufferedData(CFileAutoClose& file, byte * data, uint64 _start, uint64 _end, Requested_Block_Struct *_block)
+	PartFileBufferedData(CFileAutoClose& file, mule_byte * data, uint64 _start, uint64 _end, Requested_Block_Struct *_block)
 		: start(_start), end(_end), block(_block)
 	{
 		area.StartWriteAt(file, start, end-start+1);
@@ -2877,7 +2877,7 @@ int CPartFile::GetCommonFilePenalty()
 // Kry - transize is 32bits, no packet can be more than that (this is
 // compressed size). Even 32bits is too much imho.As for the return size,
 // look at the lenData below.
-uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint64 end, Requested_Block_Struct *block, const CUpDownClient* client)
+uint32 CPartFile::WriteToBuffer(uint32 transize, mule_byte* data, uint64 start, uint64 end, Requested_Block_Struct *block, const CUpDownClient* client)
 {
 	// Increment transferred bytes counter for this file
 	transferred += transize;

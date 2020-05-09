@@ -286,7 +286,7 @@ uint32 CTag::GetBlobSize() const
 }
 
 
-const byte* CTag::GetBlob() const
+const mule_byte* CTag::GetBlob() const
 {
 	CHECK_TAG_TYPE(IsBlob(), Blob);
 
@@ -302,7 +302,7 @@ uint32 CTag::GetBsobSize() const
 }
 
 
-const byte* CTag::GetBsob() const
+const mule_byte* CTag::GetBsob() const
 {
 	CHECK_TAG_TYPE(IsBsob(), Bsob);
 

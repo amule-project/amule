@@ -199,7 +199,7 @@ void CEMSocket::OnReceive(int nErrorCode)
 		}
 
 		uint32 readMax;
-		byte *buf;
+		mule_byte *buf;
 		if (pendingHeaderSize < PACKET_HEADER_SIZE) {
 			delete[] pendingPacket;
 			pendingPacket = NULL;
@@ -213,7 +213,7 @@ void CEMSocket::OnReceive(int nErrorCode)
 				OnError(ERR_TOOBIG);
 				return;
 			}
-			pendingPacket = new byte[readMax + 1];
+			pendingPacket = new mule_byte[readMax + 1];
 			buf = pendingPacket;
 		} else {
 			buf = pendingPacket + pendingPacketSize;
@@ -529,7 +529,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 				sent = 0;
 				delete curPacket;
 
-				CryptPrepareSendData((byte*)sendbuffer, sendblen);
+				CryptPrepareSendData((mule_byte*)sendbuffer, sendblen);
 			}
 
 			// At this point we've got a packet to send in sendbuffer. Try to send it. Loop until entire packet

@@ -39,13 +39,13 @@ public:
 	~CClientCreditsList();
 
 	// return signature size, 0 = Failed | use sigkey param for debug only
-	uint8	CreateSignature(CClientCredits* pTarget, byte* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey = NULL);
-	bool	VerifyIdent(CClientCredits* pTarget, const byte* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind);
+	uint8	CreateSignature(CClientCredits* pTarget, mule_byte* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey = NULL);
+	bool	VerifyIdent(CClientCredits* pTarget, const mule_byte* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind);
 
 	CClientCredits* GetCredit(const CMD4Hash& key);
 	void	Process();
 	uint8	GetPubKeyLen() const			{return m_nMyPublicKeyLen;}
-	const byte*	GetPublicKey() const		{return m_abyMyPublicKey;}
+	const mule_byte*	GetPublicKey() const	{return m_abyMyPublicKey;}
 	bool	CryptoAvailable() const;
 	void	SaveList();
 protected:
@@ -61,7 +61,7 @@ private:
 	uint32		m_nLastSaved;
 	// A void* to avoid having to include the large CryptoPP.h file
 	void*		m_pSignkey;
-	byte		m_abyMyPublicKey[80];
+	mule_byte	m_abyMyPublicKey[80];
 	uint8		m_nMyPublicKeyLen;
 };
 

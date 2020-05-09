@@ -52,7 +52,7 @@ void DecodeLoadIndexDat(const CFileDataIO& file)
 #include "../../CryptoPP_Inc.h"
 void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 {
-	byte Output[16];
+	mule_byte Output[16];
 #ifdef CRYPTOPP_ENABLE_NAMESPACE_WEAK
 	CryptoPP::Weak::MD4 md4_hasher;
 #else
@@ -62,7 +62,7 @@ void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 	// This should be safe - we assume rstrKeyword is ANSI anyway.
 	Unicode2CharBuf ansi_buffer(unicode2UTF8(rstrKeyword));
 
-	md4_hasher.CalculateDigest(Output, (const byte *) (const char *) ansi_buffer, strlen(ansi_buffer));
+	md4_hasher.CalculateDigest(Output, (const mule_byte *) (const char *) ansi_buffer, strlen(ansi_buffer));
 
 	pKadID->SetValueBE(Output);
 }

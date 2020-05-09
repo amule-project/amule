@@ -37,8 +37,8 @@ protected:
 	void	OnReceive(int errorCode);
 
 private:
-	void	OnPacketReceived(uint32 ip, uint16 port, byte* buffer, size_t length);
-	void	ProcessPacket(byte* packet, int16 size, int8 opcode, uint32 host, uint16 port);
+	void	OnPacketReceived(uint32 ip, uint16 port, mule_byte* buffer, size_t length);
+	void	ProcessPacket(mule_byte* packet, int16 size, int8 opcode, uint32 host, uint16 port);
 };
 
 #endif // CLIENTUDPSOCKET_H

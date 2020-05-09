@@ -333,7 +333,7 @@ protected:
 	CPath	m_filePath;
 
 	static void CreateHashFromFile(class CFileAutoClose& file, uint64 offset, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
-	static void CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
+	static void CreateHashFromInput(const mule_byte* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
 
 	mutable bool	m_bCommentLoaded;
 	uint16	m_iPartCount;

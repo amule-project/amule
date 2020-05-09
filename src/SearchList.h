@@ -128,7 +128,7 @@ public:
 	 * @param moreResultsAvailable Set to a value specifying if more results are available.
 	 * @param directory The directory containing the shared files.
 	 */
-	void	ProcessSharedFileList(const byte* packet, uint32 size, CUpDownClient* sender, bool* moreResultsAvailable, const wxString& directory);
+	void	ProcessSharedFileList(const mule_byte* packet, uint32 size, CUpDownClient* sender, bool* moreResultsAvailable, const wxString& directory);
 
 	/**
 	 * Processes a search-result sent via TCP from the local server. All results are added.

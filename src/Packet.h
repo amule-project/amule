@@ -41,19 +41,19 @@ class CPacket {
 public:
 	CPacket(CPacket &p);
 	CPacket(uint8 protocol);
-	CPacket(byte* header, byte *buf); // only used for receiving packets
+	CPacket(mule_byte* header, mule_byte *buf); // only used for receiving packets
 	CPacket(const CMemFile& datafile, uint8 protocol, uint8 ucOpcode);
 	CPacket(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF = true);
-	CPacket(byte* pPacketPart, uint32 nSize, bool bLast, bool bFromPF = true); // only used for splitted packets!
+	CPacket(mule_byte* pPacketPart, uint32 nSize, bool bLast, bool bFromPF = true); // only used for splitted packets!
 
 	~CPacket();
 
-	byte*			GetHeader();
-	byte*			GetUDPHeader();
-	byte*			GetPacket();
-	byte*			DetachPacket();
+	mule_byte*		GetHeader();
+	mule_byte*		GetUDPHeader();
+	mule_byte*		GetPacket();
+	mule_byte*		DetachPacket();
 	uint32			GetRealPacketSize() const	{ return size + 6; }
-	static uint32		GetPacketSizeFromHeader(const byte* rawHeader);
+	static uint32		GetPacketSizeFromHeader(const mule_byte* rawHeader);
 	bool			IsSplitted()		{ return m_bSplitted; }
 	bool			IsLastSplitted()	{ return m_bLastSplitted; }
 	void			PackPacket();
@@ -66,9 +66,9 @@ public:
 	uint32			GetPacketSize() const	{ return size; }
 	uint8			GetProtocol() const	{ return prot; }
 	void			SetProtocol(uint8 p)	{ prot = p; }
-	const byte*	GetDataBuffer(void) const { return pBuffer; }
+	const mule_byte*	GetDataBuffer(void) const { return pBuffer; }
 	void			Copy16ToDataBuffer(const void* data);
-	void			CopyToDataBuffer(unsigned int offset, const byte* data, unsigned int n);
+	void			CopyToDataBuffer(unsigned int offset, const mule_byte* data, unsigned int n);
 	void			CopyUInt32ToDataBuffer(uint32 data, unsigned int offset = 0);
 
 private:
@@ -82,10 +82,10 @@ private:
 	bool		m_bLastSplitted;
 	bool		m_bPacked;
 	bool		m_bFromPF;
-	byte		head[6];
-	byte*		tempbuffer;
-	byte*		completebuffer;
-	byte*		pBuffer;
+	mule_byte	head[6];
+	mule_byte*	tempbuffer;
+	mule_byte*	completebuffer;
+	mule_byte*	pBuffer;
 };
 
 #endif // PACKET_H

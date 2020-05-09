@@ -788,8 +788,8 @@ void CKnownFile::CreateHashFromHashlist(const ArrayOfCMD4Hash& hashes, CMD4Hash*
 {
 	wxCHECK_RET(hashes.size(), wxT("No input to hash from in CreateHashFromHashlist"));
 
-	std::vector<byte> buffer(hashes.size() * MD4HASH_LENGTH);
-	std::vector<byte>::iterator it = buffer.begin();
+	std::vector<mule_byte> buffer(hashes.size() * MD4HASH_LENGTH);
+	std::vector<mule_byte>::iterator it = buffer.begin();
 
 	for (size_t i = 0; i < hashes.size(); ++i) {
 		it = STLCopy_n(hashes[i].GetHash(), MD4HASH_LENGTH, it);
@@ -811,7 +811,7 @@ void CKnownFile::CreateHashFromFile(CFileAutoClose& file, uint64 offset, uint32 
 }
 
 
-void CKnownFile::CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut )
+void CKnownFile::CreateHashFromInput(const mule_byte* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut )
 {
 	wxASSERT_MSG(Output || pShaHashOut, wxT("Nothing to do in CreateHashFromInput"));
 	{ wxCHECK_RET(input, wxT("No input to hash from in CreateHashFromInput")); }
@@ -820,7 +820,7 @@ void CKnownFile::CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash*
 	CMemFile data(input, Length);
 
 	uint32 Required = Length;
-	byte   X[64*128];
+	mule_byte   X[64*128];
 
 	uint32	posCurrentEMBlock = 0;
 	uint32	nIACHPos = 0;

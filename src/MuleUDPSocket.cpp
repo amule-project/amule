@@ -180,7 +180,7 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 		AddDebugLogLineN(logMuleUDP, (m_name + wxT(": Packet received ("))
 			<< addr.IPAddress() << wxT(":") << port << wxT("): ")
 			<< length << wxT("b"));
-		OnPacketReceived(ip, port, (byte*)buffer, length);
+		OnPacketReceived(ip, port, (mule_byte*)buffer, length);
 	}
 }
 

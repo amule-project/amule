@@ -403,7 +403,7 @@ void CEncryptedStreamSocket::StartNegotiation(bool bOutgoing)
 
 		m_cryptDHA.Randomize((CryptoPP::AutoSeededRandomPool&)GetRandomPool(), DHAGREEMENT_A_BITS); // our random a
 		wxASSERT( m_cryptDHA.MinEncodedSize() <= DHAGREEMENT_A_BITS / 8 );
-		CryptoPP::Integer cryptDHPrime((byte*)dh768_p, PRIMESIZE_BYTES);  // our fixed prime
+		CryptoPP::Integer cryptDHPrime((mule_byte*)dh768_p, PRIMESIZE_BYTES);  // our fixed prime
 		// calculate g^a % p
 		CryptoPP::Integer cryptDHGexpAmodP = a_exp_b_mod_c(CryptoPP::Integer(2), m_cryptDHA, cryptDHPrime);
 		wxASSERT( m_cryptDHA.MinEncodedSize() <= PRIMESIZE_BYTES );
@@ -592,8 +592,8 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen)
 					wxASSERT( !m_cryptDHA.IsZero() );
 					uint8_t aBuffer[PRIMESIZE_BYTES + 1];
 					m_pfiReceiveBuffer.Read(aBuffer, PRIMESIZE_BYTES);
-					CryptoPP::Integer cryptDHAnswer((byte*)aBuffer, PRIMESIZE_BYTES);
-					CryptoPP::Integer cryptDHPrime((byte*)dh768_p, PRIMESIZE_BYTES);  // our fixed prime
+					CryptoPP::Integer cryptDHAnswer((mule_byte*)aBuffer, PRIMESIZE_BYTES);
+					CryptoPP::Integer cryptDHPrime((mule_byte*)dh768_p, PRIMESIZE_BYTES);  // our fixed prime
 					CryptoPP::Integer cryptResult = a_exp_b_mod_c(cryptDHAnswer, m_cryptDHA, cryptDHPrime);
 
 					m_cryptDHA = 0;

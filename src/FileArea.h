@@ -22,7 +22,7 @@
 #ifndef FILEAREA_H
 #define FILEAREA_H
 
-#include "Types.h"		// Needed for byte
+#include "Types.h"		// Needed for mule_byte
 
 class CFileAreaSigHandler;
 class CFileAutoClose;
@@ -78,7 +78,7 @@ public:
 	 * Get buffer that contains data readed or to write.
 	 * @return allocated buffer or NULL if not initialized
 	 */
-	byte *GetBuffer() const { return m_buffer; };
+	mule_byte *GetBuffer() const { return m_buffer; };
 
 	/**
 	 * Report error pending
@@ -97,11 +97,11 @@ private:
 	 * If mapped points inside m_mmap_buffer area otherwise
 	 * point to an allocated buffer to be freed.
 	 */
-	byte *m_buffer;
+	mule_byte *m_buffer;
 	/**
 	 * Pointer to memory mapped area or NULL if not mapped.
 	 */
-	byte *m_mmap_buffer;
+	mule_byte *m_mmap_buffer;
 	/**
 	 * Length of the mapped region, currently used only for munmap.
 	 */

@@ -78,9 +78,9 @@ protected:
 private:
 	CUpDownClient*	m_client;
 
-	bool	ProcessPacket(const byte* packet, uint32 size, uint8 opcode);
-	bool	ProcessExtPacket(const byte* packet, uint32 size, uint8 opcode);
-	bool	ProcessED2Kv2Packet(const byte* packet, uint32 size, uint8 opcode);
+	bool	ProcessPacket(const mule_byte* packet, uint32 size, uint8 opcode);
+	bool	ProcessExtPacket(const mule_byte* packet, uint32 size, uint8 opcode);
+	bool	ProcessED2Kv2Packet(const mule_byte* packet, uint32 size, uint8 opcode);
 	void	ResetTimeOutTimer();
 	void	SetClient(CUpDownClient* client);
 

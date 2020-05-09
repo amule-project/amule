@@ -86,10 +86,10 @@ public:
 	 *
 	 * The buffer is _not_ freed by CMemFile upon destruction.
 	 *
-	 * If the buffer is a const byte*, the memfile is read-only.
+	 * If the buffer is a const mule_byte*, the memfile is read-only.
 	 */
-	CMemFile(byte* buffer, size_t bufferSize);
-	CMemFile(const byte* buffer, size_t bufferSize);
+	CMemFile(mule_byte* buffer, size_t bufferSize);
+	CMemFile(const mule_byte* buffer, size_t bufferSize);
 
 	/** Destructor. */
 	virtual ~CMemFile();
@@ -132,7 +132,7 @@ public:
 	virtual void ResetData();
 
 	// Sometimes it's useful to get the buffer and do stuff with it.
-	byte* GetRawBuffer() const { return m_buffer; }
+	mule_byte* GetRawBuffer() const { return m_buffer; }
 
 protected:
 	/** @see CFileDataIO::doRead */
@@ -167,7 +167,7 @@ private:
 	//! read-only mark.
 	bool	m_readonly;
 	//! The actual buffer.
-	byte*	m_buffer;
+	mule_byte*	m_buffer;
 };
 
 #endif // MEMFILE_H

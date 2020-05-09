@@ -298,7 +298,7 @@ void CClientTCPSocket::Safe_Delete_Client()
 }
 
 
-bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opcode)
+bool CClientTCPSocket::ProcessPacket(const mule_byte* buffer, uint32 size, uint8 opcode)
 {
 	#ifdef __PACKET_RECV_DUMP__
 	//printf("Rec: OPCODE %x \n",opcode);
@@ -1016,7 +1016,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 }
 
 
-bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 opcode)
+bool CClientTCPSocket::ProcessExtPacket(const mule_byte* buffer, uint32 size, uint8 opcode)
 {
 	#ifdef __PACKET_RECV_DUMP__
 	//printf("Rec: OPCODE %x \n",opcode);
@@ -1640,7 +1640,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 				break;
 			}
 			CUInt128 fileid = data.ReadUInt128();
-			byte fileid2[16];
+			mule_byte fileid2[16];
 			fileid.ToByteArray(fileid2);
 			const CMD4Hash fileHash(fileid2);
 			if (theApp->sharedfiles->GetFileByID(fileHash) == NULL) {
@@ -1819,7 +1819,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 	return true;
 }
 
-bool CClientTCPSocket::ProcessED2Kv2Packet(const byte* buffer, uint32 size, uint8 opcode)
+bool CClientTCPSocket::ProcessED2Kv2Packet(const mule_byte* buffer, uint32 size, uint8 opcode)
 {
 	#ifdef __PACKET_RECV_DUMP__
 	//printf("Rec: OPCODE %x ED2Kv2\n",opcode);
