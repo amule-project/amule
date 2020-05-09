@@ -608,13 +608,13 @@ void CamulecmdApp::ShowResults(CResultMap results_map)
 	unsigned int name_max = 80;
 	unsigned int mb_max = 5;
 	unsigned int nr_max = 5;
-	unsigned long int id = 0;
 	wxString output, name, sources, mb , kb;
 
 	printf("Nr.    Filename:                                                                        Size(MB):  Sources: \n");
 	printf("-----------------------------------------------------------------------------------------------------------\n");
 
 	for( std::map<unsigned long int,SearchFile*>::iterator iter = results_map.begin(); iter != results_map.end(); ++iter ) {
+		unsigned long int id = 0;
 		id = (*iter).first;
 		SearchFile* file = (*iter).second;
 

@@ -176,7 +176,6 @@ bool UnpackZipFile(const wxString& file, const wxChar* files[])
  */
 bool UnpackGZipFile(const wxString& file)
 {
-	char buffer[10240];
 	wxTempFile target(file);
 
 	bool write = false;
@@ -186,6 +185,7 @@ bool UnpackGZipFile(const wxString& file)
 
 	gzFile inputFile = gzopen(filename2char(file), "rb");
 	if (inputFile != NULL) {
+		char buffer[10240];
 		write = true;
 
 		while (int bytesRead = gzread(inputFile, buffer, sizeof(buffer))) {
@@ -221,6 +221,7 @@ bool UnpackGZipFile(const wxString& file)
 		wxZlibInputStream inputStream(source);
 
 		while (!inputStream.Eof()) {
+			char buffer[10240];
 			inputStream.Read(buffer, sizeof(buffer));
 
 			// AddDebugLogLineN(logFileIO, CFormat(wxT("Read %u bytes")) % inputStream.LastRead());

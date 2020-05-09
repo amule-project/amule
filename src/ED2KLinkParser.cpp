@@ -89,11 +89,11 @@ string GetLinksFilePath(const string& configDir)
 
 	std::string strDir;
 	LPITEMIDLIST pidl;
-	char buffer[MAX_PATH + 1];
 
 	HRESULT hr = SHGetSpecialFolderLocation(NULL, CSIDL_APPDATA, &pidl);
 
 	if (SUCCEEDED(hr)) {
+		char buffer[MAX_PATH + 1];
 		if (SHGetPathFromIDListA(pidl, buffer)) {
 			if (PathAppendA(buffer, "aMule\\ED2KLinks")) {
 				strDir.assign(buffer);

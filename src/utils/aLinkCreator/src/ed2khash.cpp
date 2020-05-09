@@ -65,7 +65,6 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
 
       size_t read;
       size_t partcount;
-      size_t dataread;
       wxFileOffset totalread;
 
       char *buf = new char[BUFSIZE];
@@ -87,7 +86,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
       partcount = 0;
       while (!file.Eof())
         {
-          dataread = 0;
+          size_t dataread = 0;
           MD4Init(&hdc);
           while (dataread < PARTSIZE && !file.Eof())
             {

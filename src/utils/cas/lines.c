@@ -27,7 +27,7 @@
 void CreateLine(char *lines[], int line, const char *format, ...)
 {
 	/* Guess we need no more than 80 bytes. */
-	int n, size = 100;
+	int size = 100;
 	char *p;
 	char *tmp;
 	va_list ap;
@@ -36,6 +36,7 @@ void CreateLine(char *lines[], int line, const char *format, ...)
 		return;
 	}
 	while (1) {
+		int n;
 		/* Try to print in the allocated space. */
 		va_start(ap, format);
 		n = vsnprintf(p, size, format, ap);

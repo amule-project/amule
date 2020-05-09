@@ -248,7 +248,6 @@ void replace(char *tmpl, const char *search, const char *to_replace)
 {
 	char *dest   = NULL;
 	char *retStr = NULL;
-	int	befLen,srchLen,repLen,totLen;
 
 	/* returning the 'tmpl' if 'search' is NULL */
   if (NULL == tmpl || NULL == search) /* || NULL == to_replace) */
@@ -258,6 +257,7 @@ void replace(char *tmpl, const char *search, const char *to_replace)
 
 	while (1)
 	{
+		int befLen,srchLen,repLen,totLen;
 		/* if 'search' is found in 'tmpl' */
 		retStr = strstr(tmpl, search);
 		if (NULL == retStr)

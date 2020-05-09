@@ -288,7 +288,7 @@ void php_native_split(PHP_VALUE_NODE *result)
 	} else {
 		return;
 	}
-	PHP_VALUE_NODE *pattern, *string_to_split, *split_limit;
+	PHP_VALUE_NODE *pattern, *string_to_split;
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	if ( si ) {
 		pattern = &si->var->value;
@@ -307,7 +307,7 @@ void php_native_split(PHP_VALUE_NODE *result)
 	}
 	si = get_scope_item(g_current_scope, "__param_2");
 	if ( si ) {
-		split_limit = &si->var->value;
+		PHP_VALUE_NODE *split_limit = &si->var->value;
 		cast_value_dnum(split_limit);
 	} else {
 		php_report_error(PHP_ERROR, "Invalid or missing argument: string");
@@ -315,9 +315,9 @@ void php_native_split(PHP_VALUE_NODE *result)
 	}
 #ifdef PHP_STANDALONE_EN
 	regex_t preg;
-	char error_buff[256];
 	int reg_result = regcomp(&preg, pattern->str_val, REG_EXTENDED);
 	if ( reg_result ) {
+		char error_buff[256];
 		regerror(reg_result, &preg, error_buff, sizeof(error_buff));
 		php_report_error(PHP_ERROR, "Failed in regcomp: %s", error_buff);
 #else

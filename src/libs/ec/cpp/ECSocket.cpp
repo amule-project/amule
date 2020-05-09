@@ -78,13 +78,14 @@ static const struct utf8_table utf8_table[] =
 int utf8_mbtowc(uint32_t *p, const unsigned char *s, int n)
 {
 	uint32_t l;
-	int c0, c, nc;
+	int c0, nc;
 	const struct utf8_table *t;
 
 	nc = 0;
 	c0 = *s;
 	l = c0;
 	for (t = utf8_table; t->cmask; t++) {
+		int c;
 		nc++;
 		if ((c0 & t->cmask) == t->cval) {
 			l &= t->lmask;

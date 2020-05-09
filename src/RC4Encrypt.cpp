@@ -67,9 +67,9 @@ void CRC4EncryptableBuffer::RC4Crypt( const uint8 *pachIn, uint8 *pachOut, uint3
 		uint8 byX = m_key.byX;;
 		uint8 byY = m_key.byY;
 		uint8* pabyState = &m_key.abyState[0];;
-		uint8 byXorIndex;
 
 		for (uint32 i = 0; i < nLen; ++i) {
+			uint8 byXorIndex;
 			byX = (byX + 1) % 256;
 			byY = (pabyState[byX] + byY) % 256;
 			std::swap(pabyState[byX], pabyState[byY]);

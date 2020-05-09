@@ -48,9 +48,9 @@
 // Note: this code is harmless on little-endian machines.
 void MD4::byteReverse(unsigned char *buf, unsigned longs)
 {
-  uint32_t t;
   do
     {
+      uint32_t t;
       t = (uint32_t) ((unsigned) buf[3] << 8 | buf[2]) << 16 |
           ((unsigned) buf[1] << 8 | buf[0]);
       *(uint32_t *) buf = t;
@@ -311,7 +311,6 @@ wxString MD4::calcMd4FromString(const wxString &buf)
 /// Get Md4 hash from a file
 wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
 {
-  unsigned char ret[MD4_HASHLEN_BYTE];
   MD4Context hdc;
 
   // Open file and let wxFFile destructor close the file
@@ -323,6 +322,7 @@ wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
     }
   else
     {
+      unsigned char ret[MD4_HASHLEN_BYTE];
       unsigned int bufSize = calcBufSize(file.Length());
       char *buf = new char[bufSize];
 

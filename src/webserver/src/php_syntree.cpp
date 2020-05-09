@@ -1784,9 +1784,8 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 	if ( !node ) {
 		return 0;
 	}
-	int curr_exec_result;
 	while ( node ) {
-		curr_exec_result = 0;
+		int curr_exec_result = 0;
 		PHP_VALUE_NODE cond_result;
 		cond_result.type = PHP_VAL_NONE;
 		switch (node->type) {
