@@ -303,7 +303,6 @@ static int yy_start = 0;	/* start state number */
  */
 static int yy_did_buffer_switch_on_eof;
 
-void yyiprestart (FILE *input_file  );
 void yyip_switch_to_buffer (YY_BUFFER_STATE new_buffer  );
 YY_BUFFER_STATE yyip_create_buffer (FILE *file,int size  );
 void yyip_delete_buffer (YY_BUFFER_STATE b  );

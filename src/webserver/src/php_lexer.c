@@ -60,6 +60,8 @@
 #endif
 
 #include <inttypes.h>
+#include "php_syntree.h"
+
 typedef int8_t flex_int8_t;
 typedef uint8_t flex_uint8_t;
 typedef int16_t flex_int16_t;
@@ -174,7 +176,7 @@ typedef struct yy_buffer_state *YY_BUFFER_STATE;
 
 extern int phpleng;
 
-extern FILE *phpin, *phpout;
+extern FILE *phpout;
 
 #define EOB_ACT_CONTINUE_SCAN 0
 #define EOB_ACT_END_OF_FILE 1
@@ -368,11 +370,8 @@ FILE *phpin = (FILE *) 0, *phpout = (FILE *) 0;
 
 typedef int yy_state_type;
 
-extern int phplineno;
-
 int phplineno = 1;
 
-extern char *phptext;
 #define yytext_ptr phptext
 
 static yy_state_type yy_get_previous_state (void );
@@ -698,7 +697,6 @@ char *phptext;
 
 #include <string.h>
 
-#include "php_syntree.h"
 #include "php_parser.h"
 
 void php_set_input_buffer(char *buf, int len)
@@ -785,8 +783,6 @@ void phpset_lineno (int line_number  );
 #ifndef YY_SKIP_YYWRAP
 #ifdef __cplusplus
 extern "C" int phpwrap (void );
-#else
-extern int phpwrap (void );
 #endif
 #endif
 
@@ -2047,10 +2043,6 @@ static void php_load_buffer_state  (void)
 	phpfree((void *) b  );
 }
 
-#ifndef __cplusplus
-extern int isatty (int );
-#endif /* __cplusplus */
-    
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
  * such as during a phprestart() or at EOF.
