@@ -76,7 +76,7 @@ static const struct utf8_table utf8_table[] =
     {0,     0,      0,      0,              0,         /* end of table    */}
 };
 
-int utf8_mbtowc(uint32_t *p, const unsigned char *s, int n)
+static int utf8_mbtowc(uint32_t *p, const unsigned char *s, int n)
 {
 	uint32_t l;
 	int c0, nc;
@@ -106,7 +106,7 @@ int utf8_mbtowc(uint32_t *p, const unsigned char *s, int n)
 	return -1;
 }
 
-int utf8_wctomb(unsigned char *s, uint32_t wc, int maxlen)
+static int utf8_wctomb(unsigned char *s, uint32_t wc, int maxlen)
 {
 	uint32_t l;
 	int c, nc;
@@ -507,7 +507,7 @@ void CECSocket::WriteBufferToSocket(const void *buffer, size_t len)
 // ZLib "error handler"
 //
 
-void ShowZError(int zerror, z_streamp strm)
+static void ShowZError(int zerror, z_streamp strm)
 {
 	const char *p = NULL;
 

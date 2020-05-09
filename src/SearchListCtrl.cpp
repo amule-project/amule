@@ -799,7 +799,7 @@ void CSearchListCtrl::DownloadSelected(int category)
 }
 
 
-const wxBrush& GetBrush(wxSystemColour index)
+static const wxBrush& GetBrush(wxSystemColour index)
 {
 	return CMuleColour(index).GetBrush();
 }

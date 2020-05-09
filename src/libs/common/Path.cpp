@@ -58,7 +58,7 @@ inline wxString DeepCopy(const wxString& str)
 }
 
 
-wxString Demangle(const wxCharBuffer& fn, const wxString& filename)
+static wxString Demangle(const wxCharBuffer& fn, const wxString& filename)
 {
 	wxString result = wxConvUTF8.cMB2WC(fn);
 
@@ -109,7 +109,7 @@ inline void DoSplitPath(const wxString& strPath, wxString* path, wxString* name)
 
 
 /** Removes invalid chars from a filename. */
-wxString DoCleanup(const wxString& filename, bool keepSpaces, bool isFAT32)
+static wxString DoCleanup(const wxString& filename, bool keepSpaces, bool isFAT32)
 {
 	wxString result;
 	for (size_t i = 0; i < filename.Length(); i++) {
@@ -148,7 +148,7 @@ wxString DoCleanup(const wxString& filename, bool keepSpaces, bool isFAT32)
 
 
 /** Does the actual work of adding a postfix ... */
-wxString DoAddPostfix(const wxString& src, const wxString& postfix)
+static wxString DoAddPostfix(const wxString& src, const wxString& postfix)
 {
 	wxFileName fn(src);
 
@@ -158,7 +158,7 @@ wxString DoAddPostfix(const wxString& src, const wxString& postfix)
 }
 
 /** Removes the last extension of a filename. */
-wxString DoRemoveExt(const wxString& path)
+static wxString DoRemoveExt(const wxString& path)
 {
 	// Using wxFilename which handles paths, etc.
 	wxFileName tmp(path);
@@ -169,7 +169,7 @@ wxString DoRemoveExt(const wxString& path)
 
 
 /** Readies a path for use with wxAccess.. */
-wxString DoCleanPath(const wxString& path)
+static wxString DoCleanPath(const wxString& path)
 {
 #ifdef __WINDOWS__
 	// stat fails on windows if there are trailing path-separators.
@@ -189,7 +189,7 @@ wxString DoCleanPath(const wxString& path)
 
 
 /** Returns true if the two paths are equal. */
-bool IsSameAs(const wxString& a, const wxString& b)
+static bool IsSameAs(const wxString& a, const wxString& b)
 {
 	// Cache the current directory
 	const wxString cwd = wxGetCwd();

@@ -286,7 +286,7 @@ CStatistics::~CStatistics()
 }
 
 
-uint64_t ReadUInt64FromCfg(wxConfigBase* cfg, const wxString& key)
+static uint64_t ReadUInt64FromCfg(wxConfigBase* cfg, const wxString& key)
 {
 	wxString buffer;
 
@@ -869,7 +869,7 @@ void CStatistics::RemoveSourceOrigin(unsigned origin)
 	--(*counter);
 }
 
-uint32 GetSoftID(uint8 SoftType)
+static uint32 GetSoftID(uint8 SoftType)
 {
 	// prevent appearing multiple tree entries with the same name
 	// this should be kept in sync with GetSoftName().
@@ -922,7 +922,7 @@ inline bool SupportsOSInfo(unsigned clientSoft)
 }
 
 // Do some random black magic to strings to get a relatively unique number for them.
-uint32 GetIdFromString(const wxString& str)
+static uint32 GetIdFromString(const wxString& str)
 {
 	uint32 id = 0;
 	for (unsigned i = 0; i < str.Length(); ++i) {

@@ -629,7 +629,7 @@ void CamulecmdApp::ShowResults(CResultMap results_map)
 
 
 // Formats a statistics (sub)tree to text
-wxString StatTree2Text(const CEC_StatTree_Node_Tag *tree, int depth)
+static wxString StatTree2Text(const CEC_StatTree_Node_Tag *tree, int depth)
 {
 	if (!tree) {
 		return wxEmptyString;
@@ -1027,6 +1027,8 @@ int CamulecmdApp::OnRun()
 	return 0;
 }
 
+// Stub functions needed by the linker in ASIO builds
+#include "GuiEvents.h"
 namespace MuleNotify
 {
 	void HandleNotification(const class CMuleNotiferBase&) {}

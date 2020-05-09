@@ -36,6 +36,9 @@ static void FatalLexError(yyconst char msg[]);
 static char* _pszLexBuff;
 static char* _pszLexStr;
 
+void LexInit(const wxString& pszInput);
+void LexFree();
+
 %}
 
 %option noyywrap

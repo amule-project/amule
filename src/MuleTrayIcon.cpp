@@ -77,7 +77,7 @@ END_EVENT_TABLE()
 /************ Constructor / Destructor **************/
 /****************************************************/
 
-long GetSpeedFromString(wxString label){
+static long GetSpeedFromString(wxString label){
 	long temp;
 	label.Replace(_("kB/s"),wxT(""),TRUE);
 	label.Trim(FALSE);

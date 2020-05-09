@@ -24,6 +24,7 @@
 
 #include <wx/intl.h>
 
+#include "DataToText.h"
 #include "Constants.h"
 #include <protocol/ed2k/ClientSoftware.h>
 

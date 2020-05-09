@@ -1464,7 +1464,7 @@ void CKnownFile::ClearPriority() {
 	UpdateAutoUpPriority();
 }
 
-void GuessAndRemoveExt(CPath& name)
+static void GuessAndRemoveExt(CPath& name)
 {
 	wxString ext = name.GetExt();
 

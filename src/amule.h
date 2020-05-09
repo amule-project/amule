@@ -117,6 +117,9 @@ namespace Kademlia {
 #define CONNECTED_KAD_FIREWALLED (1<<3)
 
 
+void OnShutdownSignal( int /* sig */ );
+
+
 // Base class common to amule, aamuled and amulegui
 class CamuleAppCommon
 {

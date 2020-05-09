@@ -83,7 +83,6 @@ static char THIS_FILE[] = __FILE__;
 
 extern wxArrayString _astrParserErrors;
 
-void ParsedSearchExpression(const CSearchExpr* pexpr);
 int yyerror(const char* errstr);
 int yyerror(wxString errstr);
 

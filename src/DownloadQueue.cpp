@@ -852,7 +852,7 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(uint32 dwIP, uint16 nUD
 /**
  * Checks if the specified server is the one we are connected to.
  */
-bool IsConnectedServer(const CServer* server)
+static bool IsConnectedServer(const CServer* server)
 {
 	if (server && theApp->serverconnect->GetCurrentServer()) {
 		wxString srvAddr = theApp->serverconnect->GetCurrentServer()->GetAddress();
@@ -976,7 +976,7 @@ void CDownloadQueue::DoStopUDPRequests()
 
 
 // Comparison function needed by sort. Returns true if file1 preceeds file2
-bool ComparePartFiles(const CPartFile* file1, const CPartFile* file2) {
+static bool ComparePartFiles(const CPartFile* file1, const CPartFile* file2) {
 	if (file1->GetDownPriority() != file2->GetDownPriority()) {
 		// To place high-priority files before low priority files we have to
 		// invert this test, since PR_LOW is lower than PR_HIGH, and since

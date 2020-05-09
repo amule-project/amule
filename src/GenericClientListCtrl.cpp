@@ -459,7 +459,7 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
  * @param list A pointer to the list to gather items from.
  * @return A list containing the selected items of the choosen types.
  */
-ItemList GetSelectedItems( CGenericClientListCtrl* list )
+static ItemList GetSelectedItems( CGenericClientListCtrl* list )
 {
 	ItemList results;
 

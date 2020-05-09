@@ -4828,7 +4828,7 @@ int wxListMainWindow::GetItemWidthWithImage(wxListItem * item)
 MuleListCtrlCompare list_ctrl_compare_func_2;
 long              list_ctrl_compare_data;
 
-int LINKAGEMODE list_ctrl_compare_func_1( wxListLineData **arg1, wxListLineData **arg2 )
+static int LINKAGEMODE list_ctrl_compare_func_1( wxListLineData **arg1, wxListLineData **arg2 )
 {
     wxListLineData *line1 = *arg1;
     wxListLineData *line2 = *arg2;

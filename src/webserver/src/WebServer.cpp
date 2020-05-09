@@ -80,7 +80,7 @@ wxString _SpecialChars(wxString str) {
 	return str;
 }
 
-uint8 GetHigherPrio(uint32 prio, bool autoprio)
+static uint8 GetHigherPrio(uint32 prio, bool autoprio)
 {
 	if (autoprio) {
 		return PR_LOW;
@@ -95,7 +95,7 @@ uint8 GetHigherPrio(uint32 prio, bool autoprio)
 	}
 }
 
-uint8 GetHigherPrioShared(uint32 prio, bool autoprio)
+static uint8 GetHigherPrioShared(uint32 prio, bool autoprio)
 {
 	if (autoprio) {
 		return PR_VERYLOW;
@@ -114,7 +114,7 @@ uint8 GetHigherPrioShared(uint32 prio, bool autoprio)
 }
 
 
-uint8 GetLowerPrio(uint32 prio, bool autoprio)
+static uint8 GetLowerPrio(uint32 prio, bool autoprio)
 {
 	if (autoprio) {
 		return PR_HIGH;
@@ -129,7 +129,7 @@ uint8 GetLowerPrio(uint32 prio, bool autoprio)
 	}
 }
 
-uint8 GetLowerPrioShared(uint32 prio, bool autoprio)
+static uint8 GetLowerPrioShared(uint32 prio, bool autoprio)
 {
 	if (autoprio) {
 		return PR_POWERSHARE;

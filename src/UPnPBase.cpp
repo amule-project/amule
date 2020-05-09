@@ -63,7 +63,7 @@ const char s_deviceList[] = "deviceList";
 /**
  * Case insensitive std::string comparison
  */
-bool stdStringIsEqualCI(const std::string &s1, const std::string &s2)
+static bool stdStringIsEqualCI(const std::string &s1, const std::string &s2)
 {
 	std::string ns1(s1);
 	std::string ns2(s2);

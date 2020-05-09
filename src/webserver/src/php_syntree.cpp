@@ -51,7 +51,7 @@ PHP_SCOPE_STACK g_scope_stack = 0;
 // Known named constant values
 std::map<std::string, int> g_known_const;
 
-PHP_EXP_NODE *make_zero_exp_node()
+static PHP_EXP_NODE *make_zero_exp_node()
 {
 	PHP_EXP_NODE *node = new PHP_EXP_NODE;
 	memset(node, 0, sizeof(PHP_EXP_NODE));
@@ -468,7 +468,7 @@ void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
  *  1. Memory will not leak
  *  2. Next call may be using same params by-value, so it need independent varnode
  */
-void func_scope_copy_back(PHP_FUNC_PARAM_DEF *params, int param_count,
+static void func_scope_copy_back(PHP_FUNC_PARAM_DEF *params, int param_count,
 	PHP_SCOPE_TABLE_TYPE * /*scope_map*/, PHP_VALUE_NODE *arg_array,
 	std::map<std::string, PHP_VAR_NODE *> &saved_vars)
 {
@@ -598,7 +598,7 @@ void add_class_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *class_node)
 	}
 }
 
-PHP_SCOPE_ITEM *make_named_scope_item(PHP_SCOPE_TABLE scope, const char *name)
+static PHP_SCOPE_ITEM *make_named_scope_item(PHP_SCOPE_TABLE scope, const char *name)
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
 	PHP_SCOPE_ITEM *it = new PHP_SCOPE_ITEM;
@@ -1212,7 +1212,7 @@ void php_engine_free()
  *  1,2. Target is scalar variable or variable by name ${xxx}
  *  3. Target is member of array.
  */
-void exp_set_ref(PHP_EXP_NODE *expr, PHP_VAR_NODE *var, PHP_VALUE_NODE *key)
+static void exp_set_ref(PHP_EXP_NODE *expr, PHP_VAR_NODE *var, PHP_VALUE_NODE *key)
 {
 	switch ( expr->op ) {
 		case PHP_OP_VAR: {
@@ -1536,7 +1536,7 @@ PHP_VAR_NODE *php_expr_eval_lvalue(PHP_EXP_NODE *expr)
 	return lval_node;
 }
 
-PHP_VALUE_TYPE cast_type_resolve(PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2)
+static PHP_VALUE_TYPE cast_type_resolve(PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2)
 {
 	if ( (op1->type == PHP_VAL_FLOAT) || (op2->type == PHP_VAL_FLOAT) ) {
 		cast_value_fnum(op1);
