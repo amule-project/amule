@@ -365,7 +365,7 @@ PHP_2_EC_OPT_DEF g_coretweak_opt_defs[] = {
 	{0, (ECTagNames)0, 0}
 };
 
-void set_array_int_val(PHP_VALUE_NODE *array, std::string arrkey, int value)
+void set_array_int_val(PHP_VALUE_NODE *array, const std::string &arrkey, int value)
 {
 	PHP_VAR_NODE *key = array_get_by_str_key(array, arrkey);
 	PHP_VALUE_NODE intval;
