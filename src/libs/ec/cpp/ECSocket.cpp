@@ -34,6 +34,7 @@ using namespace std;
 #include "ECPacket.h"		// Needed for CECPacket
 #include "../../../Logger.h"
 #include <common/Format.h>	// Needed for CFormat
+#include "ECLog.h"
 
 #define EC_COMPRESSION_LEVEL	Z_DEFAULT_COMPRESSION
 #define EC_MAX_UNCOMPRESSED	1024

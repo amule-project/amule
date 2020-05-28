@@ -1027,17 +1027,6 @@ int CamulecmdApp::OnRun()
 	return 0;
 }
 
-// Dummy functions for EC logging
-bool ECLogIsEnabled()
-{
-	return false;
-}
-
-void DoECLogLine(const wxString &)
-{
-}
-
-
 namespace MuleNotify
 {
 	void HandleNotification(const class CMuleNotiferBase&) {}

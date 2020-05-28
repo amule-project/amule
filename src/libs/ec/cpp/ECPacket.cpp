@@ -47,6 +47,8 @@ bool CECPacket::WritePacket(CECSocket& socket) const
 
 #ifdef __DEBUG__
 #include <common/Format.h>  // Needed for CFormat
+#include "ECLog.h"
+
 void CECPacket::DebugPrint(bool incoming, uint32 trueSize) const
 {
 	wxString GetDebugNameECOpCodes(uint8 arg);

@@ -65,8 +65,5 @@ class CECPacket : public CECEmptyTag {
 		ec_opcode_t	m_opCode;
 };
 
-bool ECLogIsEnabled();
-void DoECLogLine(const wxString &line);
-
 #endif /* ECPACKET_H */
 // File_checked_for_headers

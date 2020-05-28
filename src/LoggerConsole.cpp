@@ -31,12 +31,21 @@
 
 DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE)
 
+
 #ifdef __DEBUG__
+
 bool CLogger::IsEnabled(DebugType /*type*/) const
 {
 	return true;
 }
-#endif
+
+// Dummy functions for EC logging
+#include "ec/cpp/ECLog.h"
+
+bool ECLogIsEnabled() { return false; }
+void DoECLogLine(const wxString &) {}
+
+#endif /* __DEBUG__ */
 
 
 void CLogger::AddLogLine(
