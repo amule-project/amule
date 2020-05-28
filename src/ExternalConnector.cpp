@@ -232,7 +232,7 @@ char *command_completion(const char *text, int state)
 	static CmdPosConst_t	nextCommand;
 
 	if (state == 0) {
-		wxString lineBuffer(rl_line_buffer);
+		wxString lineBuffer(rl_line_buffer, *wxConvCurrent);
 		wxString prefix(lineBuffer.Left(rl_point).BeforeLast(wxT(' ')));
 
 		curCommands = theCommands->GetSubCommandsFor(prefix);
@@ -243,7 +243,7 @@ char *command_completion(const char *text, int state)
 		}
 	}
 
-	wxString test(wxString(text).Lower());
+	wxString test(wxString(text, *wxConvCurrent).Lower());
 	while (nextCommand != curCommands->end()) {
 		wxString curTest = (*nextCommand)->GetCommand();
 		++nextCommand;
