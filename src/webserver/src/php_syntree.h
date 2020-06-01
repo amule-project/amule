@@ -551,9 +551,9 @@ typedef std::map<std::string, PHP_SCOPE_ITEM *> PHP_SCOPE_TABLE_TYPE;
 typedef std::list<PHP_SCOPE_TABLE_TYPE *> PHP_SCOPE_STACK_TYPE;
 
 const std::string &array_get_ith_key(PHP_VALUE_NODE *array, int i);
-PHP_VAR_NODE *array_get_by_str_key(PHP_VALUE_NODE *array, std::string key);
-void array_add_to_str_key(PHP_VALUE_NODE *array, std::string key, PHP_VAR_NODE *node);
-void array_remove_at_str_key(PHP_VALUE_NODE *array, std::string key);
+PHP_VAR_NODE *array_get_by_str_key(PHP_VALUE_NODE *array, const std::string &key);
+void array_add_to_str_key(PHP_VALUE_NODE *array, const std::string &key, PHP_VAR_NODE *node);
+void array_remove_at_str_key(PHP_VALUE_NODE *array, const std::string &key);
 
 void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
 	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array,
