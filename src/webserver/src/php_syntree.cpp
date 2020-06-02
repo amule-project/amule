@@ -667,7 +667,7 @@ const std::string &array_get_ith_key(PHP_VALUE_NODE *array, int i)
 }
 
 
-PHP_VAR_NODE *array_get_by_str_key(PHP_VALUE_NODE *array, std::string key)
+PHP_VAR_NODE *array_get_by_str_key(PHP_VALUE_NODE *array, const std::string &key)
 {
 	if ( array->type != PHP_VAL_ARRAY ) {
 		return 0;
@@ -717,7 +717,7 @@ void array_set_by_key(PHP_VALUE_NODE *array, PHP_VALUE_NODE *key, PHP_VAR_NODE *
 	value_value_free(&s_key);
 }
 
-void array_add_to_str_key(PHP_VALUE_NODE *array, std::string key, PHP_VAR_NODE *node)
+void array_add_to_str_key(PHP_VALUE_NODE *array, const std::string &key, PHP_VAR_NODE *node)
 {
 	if ( array->type != PHP_VAL_ARRAY ) {
 		return ;
@@ -730,7 +730,7 @@ void array_add_to_str_key(PHP_VALUE_NODE *array, std::string key, PHP_VAR_NODE *
 	}
 }
 
-void array_remove_at_str_key(PHP_VALUE_NODE *array, std::string key)
+void array_remove_at_str_key(PHP_VALUE_NODE *array, const std::string &key)
 {
 	if ( array->type != PHP_VAL_ARRAY ) {
 		return ;
