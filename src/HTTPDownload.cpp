@@ -329,13 +329,16 @@ void CHTTPDownloadThread::OnExit()
 //! This function's purpose is to handle redirections in a proper way.
 wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP * & url_handler, const wxString& location, bool proxy)
 {
+	// Extract the protocol name
+	wxString protocol(location.BeforeFirst(wxT(':')));
+
 	if (TestDestroy()) {
 		return NULL;
 	}
 
-	if (!location.StartsWith(wxT("http://"))) {
+	if (protocol != wxT("http")) {
 		// This is not a http url
-		throw wxString(_("Invalid URL for HTTP download or HTTP redirection (did you forget 'http://' ?)"));
+		throw wxString(CFormat(_("Protocol not supported for HTTP download: %s")) % protocol);
 	}
 
 	// Get the host
@@ -411,6 +414,7 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP * & url_handler, const
 		delete url_read_stream;
 
 		wxString new_location = url_handler->GetHeader(wxT("Location"));
+		AddDebugLogLineN(logHTTP, CFormat(wxT("Redirecting to: %s")) % new_location);
 
 		url_handler->Destroy();
 		if (!new_location.IsEmpty()) {
