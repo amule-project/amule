@@ -149,14 +149,6 @@ MULE_IF_ENABLED([webserver],
 AC_SUBST([AMULEWEB_DEFS])dnl
 
 
-# Check for perl File::Copy
-AC_MSG_CHECKING([for File::Copy])
-AS_IF([perl -e "require File::Copy" 2>/dev/null], [AC_MSG_RESULT([ok])],
-	[MULE_WARNING(
-		[File::Copy perl module is required by the mldonkey_importer script.
-		If you want to use this script please install File::Copy from CPAN.])])
-
-
 # Check for GeoIP (required for IP2Country capability)
 MULE_IF_ENABLED_ANY([monolithic, amule-gui], [MULE_CHECK_GEOIP])
 
