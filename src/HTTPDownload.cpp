@@ -24,10 +24,17 @@
 //
 
 
-#include <wx/wfstream.h>
-#include <wx/protocol/http.h>
+#ifdef HAVE_CONFIG_H
+#	include "config.h"				// Needed for HAVE_LIBCURL
+#endif
 
+#ifdef HAVE_LIBCURL
+#	include <curl/curl.h>
+#else
+#	include <wx/protocol/http.h>
+#endif
 
+#include <wx/wfstream.h>				// Needed for wxFFileOutputStream
 #include "HTTPDownload.h"				// Interface declarations
 #include <common/StringFunctions.h>		// Needed for unicode2char
 #include "OtherFunctions.h"				// Needed for CastChild
@@ -185,13 +192,33 @@ wxString CHTTPDownloadThread::FormatDateHTTP(const wxDateTime& date)
 }
 
 
+#ifdef HAVE_LIBCURL
+
+size_t mule_curl_write_callback(char *ptr, size_t WXUNUSED(size), size_t nmemb, void *userdata)
+{
+	wxFFileOutputStream *outstream = static_cast<wxFFileOutputStream *>(userdata);
+
+	// According to the documentation size will always be 1.
+	outstream->Write(ptr, nmemb);
+
+	return outstream->LastWrite();
+}
+
+#endif /* HAVE_LIBCURL */
+
+
 CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 {
 	if (TestDestroy()) {
 		return NULL;
 	}
 
+#ifdef HAVE_LIBCURL
+	CURL *curl;
+	CURLcode res;
+#else
 	wxHTTP* url_handler = NULL;
+#endif
 
 	AddDebugLogLineN(logHTTP, wxT("HTTP download thread started"));
 
@@ -209,6 +236,35 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 			// Nowhere to download from!
 			throw wxString(_("The URL to download can't be empty"));
 		}
+
+#ifdef HAVE_LIBCURL
+
+		curl = curl_easy_init();
+		if (curl) {
+			curl_easy_setopt(curl, CURLOPT_URL, (const char *)unicode2char(m_url));
+
+			// follow redirects
+			curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+
+			// set write callback
+			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, mule_curl_write_callback);
+			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &outfile);
+
+			// perform the action
+			res = curl_easy_perform(curl);
+
+			curl_easy_cleanup(curl);
+
+			// check the result
+			if (res != CURLE_OK) {
+				m_result = HTTP_Error;
+				throw wxString(CFormat(_("HTTP download failed: %s")) % wxString(curl_easy_strerror(res)));
+			} else {
+				m_result = HTTP_Success;
+			}
+		}
+
+#else /* == not HAVE_LIBCURL */
 
 		url_handler = new wxHTTP;
 		url_handler->SetProxyMode(use_proxy);
@@ -284,6 +340,9 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 				m_result = HTTP_Success;
 			}
 		}
+
+#endif /* ifelse HAVE_LIBCURL */
+
 	} catch (const wxString& error) {
 		if (wxFileExists(m_tempfile)) {
 			wxRemoveFile(m_tempfile);
@@ -297,9 +356,11 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		thePrefs::SetLastHTTPDownloadURL(m_file_id, m_url);
 	}
 
+#ifndef HAVE_LIBCURL
 	if (url_handler) {
 		url_handler->Destroy();
 	}
+#endif
 
 	AddDebugLogLineN(logHTTP, wxT("HTTP download thread ended"));
 
@@ -326,6 +387,7 @@ void CHTTPDownloadThread::OnExit()
 }
 
 
+#ifndef HAVE_LIBCURL
 //! This function's purpose is to handle redirections in a proper way.
 wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP * & url_handler, const wxString& location, bool proxy)
 {
@@ -440,6 +502,7 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP * & url_handler, const
 
 	return url_read_stream;
 }
+#endif /* !HAVE_LIBCURL */
 
 void CHTTPDownloadThread::StopAll()
 {

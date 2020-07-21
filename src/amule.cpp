@@ -33,8 +33,9 @@
 
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
-					//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H, VERSION
-					//   and ENABLE_NLS
+					//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H,
+					//   HAVE_LIBCURL, ASIO_SOCKETS,
+					//   VERSION and ENABLE_NLS
 #endif
 
 #include <common/ClientVersion.h>
@@ -42,10 +43,15 @@
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>
-#include <wx/socket.h>
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
 
+#ifdef HAVE_LIBCURL
+#	include <curl/curl.h>
+#endif
+#if !(defined(HAVE_LIBCURL) && defined(ASIO_SOCKETS))
+#	include <wx/socket.h>
+#endif
 
 #include <common/Format.h>		// Needed for CFormat
 #include "kademlia/kademlia/Kademlia.h"
@@ -327,7 +333,13 @@ int CamuleApp::OnExit()
 	m_AsioService = NULL;
 #endif
 
+#ifdef HAVE_LIBCURL
+	curl_global_cleanup();
+#endif
+
+#if !(defined(HAVE_LIBCURL) && defined(ASIO_SOCKETS))
 	wxSocketBase::Shutdown();	// needed because we also called Initialize() manually
+#endif
 
 	if (m_app_state!=APP_STATE_STARTING) {
 		AddLogLineNS(_("aMule shutdown completed."));
@@ -415,8 +427,16 @@ bool CamuleApp::OnInit()
 		return false;
 	}
 
-	// Initialize wx sockets (needed for http download in background with Asio sockets)
+#ifdef HAVE_LIBCURL
+	if (curl_global_init(CURL_GLOBAL_ALL) != 0) {
+		return false;
+	}
+#endif
+
+#if !(defined(HAVE_LIBCURL) && defined(ASIO_SOCKETS))
+	// Initialize wx sockets only if we actually use wx networking
 	wxSocketBase::Initialize();
+#endif
 
 	// Some sanity check
 	if (!thePrefs::UseTrayIcon()) {
