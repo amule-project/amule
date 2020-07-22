@@ -1,6 +1,5 @@
 %{
 #include "SearchExpr.h"
-#include "Scanner.h.in"
 #include "Scanner.h"
 #include "OtherFunctions.h"
 

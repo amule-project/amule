@@ -58,7 +58,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 21 "./Parser.y" /* yacc.c:1909  */
+#line 20 "./Parser.y" /* yacc.c:1909  */
 
 	wxString*		pstr;
 	CSearchExpr*	pexpr;
