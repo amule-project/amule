@@ -571,14 +571,14 @@ void delete_scope_table(PHP_SCOPE_TABLE scope)
 void add_func_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *func)
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
-	PHP_SCOPE_ITEM *it = new PHP_SCOPE_ITEM;
-	it->type = PHP_SCOPE_FUNC;
-	it->func = func;
 	std::string key(func->func_decl->name);
 	if ( scope_map->count(key) ) {
 		// error - function already defined
 		php_report_error(PHP_ERROR, "Can not add function to scope table - already present");
 	} else {
+		PHP_SCOPE_ITEM *it = new PHP_SCOPE_ITEM;
+		it->type = PHP_SCOPE_FUNC;
+		it->func = func;
 		(*scope_map)[key] = it;
 	}
 }
@@ -586,14 +586,14 @@ void add_func_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *func)
 void add_class_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *class_node)
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
-	PHP_SCOPE_ITEM *it = new PHP_SCOPE_ITEM;
-	it->type = PHP_SCOPE_CLASS;
-	it->class_decl = class_node;
 	std::string key(class_node->class_decl->name);
 	if ( scope_map->count(key) ) {
 		// error - function already defined
 		php_report_error(PHP_ERROR, "Can not add function to scope table - already present");
 	} else {
+		PHP_SCOPE_ITEM *it = new PHP_SCOPE_ITEM;
+		it->type = PHP_SCOPE_CLASS;
+		it->class_decl = class_node;
 		(*scope_map)[key] = it;
 	}
 }
