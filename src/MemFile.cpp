@@ -106,7 +106,7 @@ void CMemFile::enlargeBuffer(size_t size)
 	MULE_VALIDATE_STATE(m_delete, wxT("CMemFile: Attempted to grow an attached buffer."));
 	MULE_VALIDATE_STATE(!m_readonly, wxT("CMemFile: Attempted to grow a read-only buffer."));
 
-	size_t newsize = m_BufferSize;
+	size_t newsize;
 
 	if (m_growthRate) {
 		newsize = ((size + m_growthRate - 1) / m_growthRate) * m_growthRate;
