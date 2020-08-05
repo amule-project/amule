@@ -798,8 +798,6 @@ extern int phpwrap (void );
 #endif
 #endif
 
-    static void yyunput (int c,char *buf_ptr  );
-
 #ifndef yytext_ptr
 static void yy_flex_strncpy (char *,yyconst char *,int );
 #endif
@@ -821,12 +819,6 @@ static int input (void );
         static int yy_start_stack_ptr = 0;
         static int yy_start_stack_depth = 0;
         static int *yy_start_stack = NULL;
-
-    static void yy_push_state (int new_state );
-
-    static void yy_pop_state (void );
-
-    static int yy_top_state (void );
 
 /* Amount of stuff to slurp up with each read. */
 #ifndef YY_READ_BUF_SIZE
@@ -961,7 +953,7 @@ YY_DECL
 #line 73 "php_lexer.l"
 
 
-#line 965 "php_lexer.c"
+#line 957 "php_lexer.c"
 
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
@@ -1494,7 +1486,7 @@ YY_RULE_SETUP
 #line 251 "php_lexer.l"
 ECHO;
 	YY_BREAK
-#line 1498 "php_lexer.c"
+#line 1490 "php_lexer.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(BLOCK_COMMENT):
 case YY_STATE_EOF(LINE_COMMENT):
@@ -1825,47 +1817,6 @@ static int yy_get_next_buffer (void)
 	yy_is_jam = (yy_current_state == 275);
 
 		return yy_is_jam ? 0 : yy_current_state;
-}
-
-    static void yyunput (int c, register char * yy_bp )
-{
-	register char *yy_cp;
-
-    yy_cp = (yy_c_buf_p);
-
-	/* undo effects of setting up phptext */
-	*yy_cp = (yy_hold_char);
-
-	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-		{ /* need to shift things up to make room */
-		/* +2 for EOB chars. */
-		register yy_size_t number_to_move = (yy_n_chars) + 2;
-		register char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
-					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
-		register char *source =
-				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move];
-
-		while ( source > YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
-			*--dest = *--source;
-
-		yy_cp += (int) (dest - source);
-		yy_bp += (int) (dest - source);
-		YY_CURRENT_BUFFER_LVALUE->yy_n_chars =
-			(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_buf_size;
-
-		if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-			YY_FATAL_ERROR( "flex scanner push-back overflow" );
-		}
-
-	*--yy_cp = (char) c;
-
-    if ( c == '\n' ){
-        --phplineno;
-    }
-
-	(yytext_ptr) = yy_bp;
-	(yy_hold_char) = *yy_cp;
-	(yy_c_buf_p) = yy_cp;
 }
 
 #ifndef YY_NO_INPUT
@@ -2294,43 +2245,6 @@ YY_BUFFER_STATE php_scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_len
 	b->yy_is_our_buffer = 1;
 
 	return b;
-}
-
-    static void yy_push_state (int  new_state )
-{
-    	if ( (yy_start_stack_ptr) >= (yy_start_stack_depth) )
-		{
-		yy_size_t new_size;
-
-		(yy_start_stack_depth) += YY_START_STACK_INCR;
-		new_size = (yy_start_stack_depth) * sizeof( int );
-
-		if ( ! (yy_start_stack) )
-			(yy_start_stack) = (int *) phpalloc(new_size  );
-
-		else
-			(yy_start_stack) = (int *) phprealloc((void *) (yy_start_stack),new_size  );
-
-		if ( ! (yy_start_stack) )
-			YY_FATAL_ERROR( "out of memory expanding start-condition stack" );
-		}
-
-	(yy_start_stack)[(yy_start_stack_ptr)++] = YY_START;
-
-	BEGIN(new_state);
-}
-
-    static void yy_pop_state  (void)
-{
-    	if ( --(yy_start_stack_ptr) < 0 )
-		YY_FATAL_ERROR( "start-condition stack underflow" );
-
-	BEGIN((yy_start_stack)[(yy_start_stack_ptr)]);
-}
-
-    static int yy_top_state  (void)
-{
-    	return (yy_start_stack)[(yy_start_stack_ptr) - 1];
 }
 
 #ifndef YY_EXIT_FAILURE

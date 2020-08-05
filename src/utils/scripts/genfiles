@@ -52,8 +52,8 @@ fi
 
 
 if [ IPFilterScanner.l -nt IPFilterScanner.cpp ]; then
-	echo "${FLEX}" -P yyip -o IPFilterScanner.cpp ./IPFilterScanner.l
-	"${FLEX}" -P yyip -o IPFilterScanner.cpp ./IPFilterScanner.l
+	echo "${FLEX}" -P yyip --nounput -o IPFilterScanner.cpp ./IPFilterScanner.l
+	"${FLEX}" -P yyip --nounput -o IPFilterScanner.cpp ./IPFilterScanner.l
 	sed -e 's/[ 	]*$//' -i IPFilterScanner.cpp
 fi
 
@@ -73,8 +73,8 @@ fi
 cd webserver/src
 
 if [ php_lexer.l -nt php_lexer.c ]; then
-	echo "${FLEX}" -P php -o php_lexer.c php_lexer.l
-	"${FLEX}" -P php -o php_lexer.c php_lexer.l
+	echo "${FLEX}" -P php --nounput --noyy_top_state --noyy_pop_state --noyy_push_state -o php_lexer.c php_lexer.l
+	"${FLEX}" -P php --nounput --noyy_top_state --noyy_pop_state --noyy_push_state -o php_lexer.c php_lexer.l
 	sed -e 's/[ 	]*$//' -i php_lexer.c
 fi
 
