@@ -7,8 +7,8 @@
 # scripts directory or from the source tree root, or from the src subdirectory.
 #
 # The script will update only those files whose source (.l or .y file) is newer
-# than the generated C/C++ files. The generated files are then post-processed
-# to remove trailing whitespace from lines.
+# than the generated C/C++ files (and the ones that are missing, of course).
+# The generated files are then post-processed to remove trailing whitespace.
 #
 # The script will automatically try to find the flex and bison executables,
 # however, you can specify their location in the FLEX and YACC environment
@@ -51,19 +51,19 @@ if [ -z "${YACC}" ]; then
 fi
 
 
-if [ IPFilterScanner.l -nt IPFilterScanner.cpp ]; then
+if [ ! -e IPFilterScanner.cpp -o IPFilterScanner.l -nt IPFilterScanner.cpp ]; then
 	echo "${FLEX}" -P yyip --nounput -o IPFilterScanner.cpp ./IPFilterScanner.l
 	"${FLEX}" -P yyip --nounput -o IPFilterScanner.cpp ./IPFilterScanner.l
 	sed -e 's/[ 	]*$//' -i IPFilterScanner.cpp
 fi
 
-if [ Scanner.l -nt Scanner.cpp -o Scanner.l -nt Scanner.h ]; then
+if [ ! -e Scanner.cpp -o ! -e Scanner.h -o Scanner.l -nt Scanner.cpp -o Scanner.l -nt Scanner.h ]; then
 	echo "${FLEX}" --header-file=./Scanner.h -o Scanner.cpp ./Scanner.l
 	"${FLEX}" --header-file=./Scanner.h -o Scanner.cpp ./Scanner.l
 	sed -e 's/[ 	]*$//' -i Scanner.cpp Scanner.h
 fi
 
-if [ Parser.y -nt Parser.cpp -o Parser.y -nt Parser.hpp ]; then
+if [ ! -e Parser.cpp -o ! -e Parser.hpp -o Parser.y -nt Parser.cpp -o Parser.y -nt Parser.hpp ]; then
 	echo "${YACC}" --debug -t -d -v -o Parser.cpp ./Parser.y
 	"${YACC}" --debug -t -d -v -o Parser.cpp ./Parser.y
 	rm -f Parser.output
@@ -72,13 +72,13 @@ fi
 
 cd webserver/src
 
-if [ php_lexer.l -nt php_lexer.c ]; then
+if [ ! -e php_lexer.c -o php_lexer.l -nt php_lexer.c ]; then
 	echo "${FLEX}" -P php --nounput --noyy_top_state --noyy_pop_state --noyy_push_state -o php_lexer.c php_lexer.l
 	"${FLEX}" -P php --nounput --noyy_top_state --noyy_pop_state --noyy_push_state -o php_lexer.c php_lexer.l
 	sed -e 's/[ 	]*$//' -i php_lexer.c
 fi
 
-if [ php_parser.y -nt php_parser.c -o php_parser.y -nt php_parser.h ]; then
+if [ ! -e php_parser.c -o ! -e php_parser.h -o php_parser.y -nt php_parser.c -o php_parser.y -nt php_parser.h ]; then
 	echo "${YACC}" --debug -t -d -v -p php -o php_parser.c php_parser.y
 	"${YACC}" --debug -t -d -v -p php -o php_parser.c php_parser.y
 	rm -f php_parser.output
