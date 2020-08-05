@@ -504,22 +504,6 @@ AC_DEFUN([MULE_CHECK_CCACHE],
 
 
 dnl ----------------------------------------------------
-dnl MULE_CHECK_FLEX_EXTENDED
-dnl check if flex can produce header files
-dnl ----------------------------------------------------
-AC_DEFUN([MULE_CHECK_FLEX_EXTENDED],
-[
-	AC_MSG_CHECKING([for extended flex capabilities])
-
-	extended_flex=`flex --help | grep header-file`
-	AS_IF([test -n "$extended_flex"], [HAVE_FLEX_EXTENDED=yes], [HAVE_FLEX_EXTENDED=no])
-	AC_MSG_RESULT($HAVE_FLEX_EXTENDED)
-
-	AS_IF([test $HAVE_FLEX_EXTENDED = no], [AC_MSG_NOTICE([Your flex version doesn't support --header-file flag. This is not critical, but an upgrade is recommended])])
-])
-
-
-dnl ----------------------------------------------------
 dnl MULE_CHECK_EXCEPTIONS
 dnl Checks for broken exception-handling. This is needed
 dnl because exception handling is broken for some archs/

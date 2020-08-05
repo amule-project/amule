@@ -54,11 +54,9 @@ MULE_RESTORE([BUILD_CFLAGS])
 AC_PROG_AWK
 AC_PROG_EGREP
 AC_PROG_MAKE_SET
-AC_PROG_LEX
 AC_PROG_INSTALL
 AC_PROG_RANLIB
 AC_PROG_SED
-AC_PROG_YACC
 
 dnl Find the right ranlib, even when cross-compiling
 dnl And for some other tools for cross compilation
@@ -253,7 +251,6 @@ MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver], 
 ])
 
 # Ok, we have all needed libs, now checking for other stuff
-AS_IF([test "$LEX" = "flex"], [MULE_CHECK_FLEX_EXTENDED], [HAVE_FLEX_EXTENDED=no])
 
 
 # Checks for header files.
@@ -446,7 +443,6 @@ AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
 AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32 -a "$RC" != ":" -a x$WX_PORT = xmsw)
 AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
 AM_CONDITIONAL(COMPILE_NLS, test x$USE_NLS = xyes)
-AM_CONDITIONAL(GENERATE_FLEX_HEADER, test x$HAVE_FLEX_EXTENDED = xyes)
 AM_CONDITIONAL(INSTALL_SKINS, test MULE_IS_ENABLED_ANY([monolithic, amule-gui]))
 AM_CONDITIONAL(PLASMAMULE, test MULE_IS_ENABLED([plasmamule]))
 

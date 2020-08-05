@@ -1,4 +1,0 @@
-int yylex();
-int yylex_destroy();
-void LexInit(const wxString& pszInput);
-void LexFree();

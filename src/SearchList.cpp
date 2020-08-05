@@ -53,12 +53,14 @@
 #include "kademlia/kademlia/Search.h"
 
 #include "SearchExpr.h"
-#include "Scanner.h.in"
 
+#include "Scanner.h"
+void LexInit(const wxString& pszInput);
+void LexFree();
 
-extern int yyparse();
-extern int yyerror(const char* errstr);
-extern int yyerror(wxString errstr);
+#include "Parser.hpp"
+int yyerror(wxString errstr);
+
 
 static wxString s_strCurKadKeyword;
 

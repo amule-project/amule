@@ -16,16 +16,10 @@ amuleweb_SOURCES =  \
 	php_amule_lib.cpp \
 	php_core_lib.cpp
 
-php_parser.c: php_parser.y
-	bison --debug -t -d -v -p php -o $@ $<
-
-php_lexer.c: php_lexer.l
-	$(LEX) -P php -o$@ $<
-
 amuleweb_DEPENDENCIES = ../../libs/common/libmulecommon.a ../../libs/ec/cpp/libec.a ../../libmulesocket.a
 amuleweb_CPPFLAGS = -I../.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include \
 	$(MULECPPFLAGS) $(AMULEWEB_DEFS) $(BFD_CPPFLAGS) $(WXBASE_CPPFLAGS) \
-	-DWEBSERVERDIR="\"$(pkgdatadir)/webserver\"" \
+	-DWEBSERVERDIR="\"$(pkgdatadir)/webserver\"" -DYY_NO_INPUT \
 	$(INCINTL) $(ZLIB_CPPFLAGS) $(LIBUPNP_CPPFLAGS)
 amuleweb_CFLAGS = $(MULECFLAGS) $(WX_CFLAGS_ONLY) $(LIBPNG_CFLAGS) $(LIBUPNP_CFLAGS)
 amuleweb_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY) $(LIBPNG_CFLAGS) $(LIBUPNP_CFLAGS)
