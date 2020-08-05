@@ -581,7 +581,6 @@ extern int yyerror(wxString errstr);
 #define	YY_FATAL_ERROR		FatalLexError
 
 static void ReadLexBuff(char* pcBuff, size_t& riResult, size_t uMaxSize);
-static void ReadLexBuff(char* pcBuff, int& riResult, size_t uMaxSize);
 static void FatalLexError(yyconst char msg[]);
 
 static char* _pszLexBuff;
@@ -590,7 +589,7 @@ static char* _pszLexStr;
 void LexInit(const wxString& pszInput);
 void LexFree();
 
-#line 594 "Scanner.cpp"
+#line 593 "Scanner.cpp"
 
 #define INITIAL 0
 
@@ -799,10 +798,10 @@ YY_DECL
 		}
 
 	{
-#line 48 "./Scanner.l"
+#line 47 "./Scanner.l"
 
 
-#line 806 "Scanner.cpp"
+#line 805 "Scanner.cpp"
 
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
@@ -861,27 +860,27 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 50 "./Scanner.l"
+#line 49 "./Scanner.l"
 { /* Skip blanks. */ }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 51 "./Scanner.l"
+#line 50 "./Scanner.l"
 { return TOK_OR; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 52 "./Scanner.l"
+#line 51 "./Scanner.l"
 { return TOK_AND; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 53 "./Scanner.l"
+#line 52 "./Scanner.l"
 { return TOK_NOT; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 55 "./Scanner.l"
+#line 54 "./Scanner.l"
 {
 					yylval.pstr = new wxString(UTF82unicode(yytext));
 					return TOK_ED2K_LINK;
@@ -890,7 +889,7 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 60 "./Scanner.l"
+#line 59 "./Scanner.l"
 {
 					yylval.pstr = new wxString(UTF82unicode(yytext));
 					return TOK_STRING;
@@ -898,7 +897,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 65 "./Scanner.l"
+#line 64 "./Scanner.l"
 {
 					int l = 128;
 					char* psz = (char*)malloc(l);
@@ -1006,15 +1005,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 170 "./Scanner.l"
+#line 169 "./Scanner.l"
 { return yytext[0]; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 172 "./Scanner.l"
+#line 171 "./Scanner.l"
 ECHO;
 	YY_BREAK
-#line 1018 "Scanner.cpp"
+#line 1017 "Scanner.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2009,7 +2008,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 172 "./Scanner.l"
+#line 171 "./Scanner.l"
 
 
 
@@ -2027,13 +2026,6 @@ static void ReadLexBuff(char* pcBuff, size_t& riResult, size_t uMaxSize)
 	riResult = uCharsRead;
 	memcpy(pcBuff, _pszLexBuff, uCharsRead);
 	_pszLexBuff += uCharsRead;
-}
-
-static void ReadLexBuff(char* pcBuff, int& riResult, size_t uMaxSize)
-{
-	size_t st_result = static_cast<size_t>(riResult);
-	ReadLexBuff(pcBuff, st_result, uMaxSize);
-	riResult = static_cast<int>(st_result);
 }
 
 static void FatalLexError(yyconst char msg[])
@@ -2066,12 +2058,6 @@ void LexFree()
 	yy_did_buffer_switch_on_eof = 0;
 	yy_last_accepting_state = 0;
 	yy_last_accepting_cpos = NULL;
-
-#if YY_STACK_USED
-	yy_start_stack_ptr = 0;
-	yy_start_stack_depth = 0;
-	yy_start_stack = NULL;
-#endif
 
 	free(_pszLexStr);
 }
