@@ -1378,6 +1378,9 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 					category = cattag->GetInt();
 				}
 				AddLogLineC(CFormat(_("ExternalConn: adding link '%s'.")) % link);
+				if (response) {
+					delete response;
+				}
 				if ( theApp->downloadqueue->AddLink(link, category) ) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
