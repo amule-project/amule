@@ -60,6 +60,8 @@ int createimage(CONF *config, char *lines[IMG_TEXTLINES], char *path_for_picture
 	}
 
 	im = gdImageCreateFromPng(in);
+	fclose(in);
+
 	if( NULL == im) {
 		perror("Error loading source image (not a valid png image file?).\n");
 		return 0;

@@ -89,6 +89,7 @@ int alcc::OnRun ()
                 }
         }
     }
+  delete stdoutLog;
   return 0;
 }
 

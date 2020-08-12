@@ -519,6 +519,10 @@ void CWebServerBase::Send_AddServer_Cmd(wxString addr, wxString port, wxString n
 
 void CWebServerBase::Send_Server_Cmd(uint32 ip, uint16 port, wxString cmd)
 {
+	if ( !ip ) {
+		return;
+	}
+
 	CECPacket *ec_cmd = 0;
 	if ( cmd == wxT("connect") ) {
 		ec_cmd = new CECPacket(EC_OP_SERVER_CONNECT);
@@ -527,7 +531,7 @@ void CWebServerBase::Send_Server_Cmd(uint32 ip, uint16 port, wxString cmd)
 	} else if ( cmd == wxT("disconnect") ) {
 		ec_cmd = new CECPacket(EC_OP_SERVER_DISCONNECT);
 	}
-	if ( ec_cmd && ip ) {
+	if ( ec_cmd ) {
 		ec_cmd->AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
 		Send_Discard_V2_Request(ec_cmd);
 		delete ec_cmd;
