@@ -63,8 +63,6 @@ TestRegistry& TestRegistry::instance()
 void TestRegistry::add(Test *test)
 {
 	const wxString tcName = test->getTestCaseName();
-	const wxString tName = test->getTestName();
-
 
 	if (m_testCases.empty() || m_testCases.back()->getName() != tcName) {
 		m_testCases.push_back(new TestCase(tcName));

@@ -327,7 +327,6 @@ wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
       char *buf = new char[bufSize];
 
       bool keep_going = true;
-      size_t read = 0;
       size_t totalread = 0;
 
       bool goAhead = true;
@@ -341,7 +340,7 @@ wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
             }
           if (goAhead)
             {
-              read = file.Read(buf, bufSize);
+              size_t read = file.Read(buf, bufSize);
               MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
                         read );
               totalread += read;

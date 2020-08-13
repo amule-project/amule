@@ -89,7 +89,7 @@ int readconfig(CONF *config)
 {
 	char buffer[120], option[15], *path;
 	FILE *conf;
-	int i = 0;
+	int i;
 	char lines[IMG_TEXTLINES][13] = {
 		"first_line",
 		"second_line",
