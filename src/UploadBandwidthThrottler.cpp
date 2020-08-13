@@ -268,7 +268,7 @@ void* UploadBandwidthThrottler::Entry()
 	uint32 lastLoopTick = GetTickCountFullRes();
 	// Bytes to spend in current cycle. If we spend more this becomes negative and causes a wait next time.
 	sint32 bytesToSpend = 0;
-	uint32 allowedDataRate = 0;
+	uint32 allowedDataRate;
 	uint32 rememberedSlotCounter = 0;
 	uint32 extraSleepTime = TIME_BETWEEN_UPLOAD_LOOPS;
 
