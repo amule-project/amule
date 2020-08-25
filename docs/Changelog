@@ -33,6 +33,9 @@ Version 2.3.3 - The "what do you want?" version.
 		* Fix sharing directories with non-ASCII names with aMule daemon
 		* Fix potential invalid detection for empty wxCharBuffer
 
+	Phoenix:
+		* Fixed libupnp API breakage.
+
 	scow:
 		* Fixed compilation with upnp-1.8
 		* C++11 fixes

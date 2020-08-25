@@ -826,15 +826,13 @@ m_WanService(NULL)
 
 	// Start UPnP
 	int ret;
-	char *ipAddress = NULL;
-	unsigned short port = 0;
-	ret = UpnpInit(ipAddress, udpPort);
+	ret = UpnpInit2(0, udpPort);
 	if (ret != UPNP_E_SUCCESS) {
-		msg << "error(UpnpInit): Error code ";
+		msg << "error(UpnpInit2): Error code ";
 		goto error;
 	}
-	port = UpnpGetServerPort();
-	ipAddress = UpnpGetServerIpAddress();
+	unsigned short port = UpnpGetServerPort();
+	char *ipAddress = UpnpGetServerIpAddress();
 	msg << "bound to " << ipAddress << ":" <<
 		port << ".";
 	AddDebugLogLineN(logUPnP, msg);
