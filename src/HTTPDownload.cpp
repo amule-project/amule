@@ -204,6 +204,16 @@ size_t mule_curl_write_callback(char *ptr, size_t WXUNUSED(size), size_t nmemb, 
 	return outstream->LastWrite();
 }
 
+#ifdef __DEBUG__
+int mule_curl_debug_callback(CURL* WXUNUSED(handle), curl_infotype type, char *data, size_t WXUNUSED(size), void* WXUNUSED(userptr))
+{
+	if (type == CURLINFO_TEXT) {
+		AddDebugLogLineN(logHTTP, CFormat(wxT("curl: %s")) % wxString(data));
+	}
+
+	return 0;
+}
+#endif
 #endif /* HAVE_LIBCURL */
 
 
@@ -249,6 +259,12 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 			// set write callback
 			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, mule_curl_write_callback);
 			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &outfile);
+
+#ifdef __DEBUG__
+			// send libcurl verbose messages to aMule debug log
+			curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, mule_curl_debug_callback);
+			curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+#endif
 
 			// perform the action
 			res = curl_easy_perform(curl);
