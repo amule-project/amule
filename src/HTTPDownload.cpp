@@ -30,6 +30,7 @@
 
 #ifdef HAVE_LIBCURL
 #	include <curl/curl.h>
+#	include <common/ClientVersion.h>		// Needed for the VERSION_ defines
 #else
 #	include <wx/protocol/http.h>
 #endif
@@ -265,6 +266,10 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 			curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, mule_curl_debug_callback);
 			curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 #endif
+
+			// some servers don't like requests without a user-agent, so set one
+			// always use a numerical version value, that's why we don't use VERSION
+			curl_easy_setopt(curl, CURLOPT_USERAGENT, "aMule/" wxSTRINGIZE(VERSION_MJR) "." wxSTRINGIZE(VERSION_MIN) "." wxSTRINGIZE(VERSION_UPDATE));
 
 			// perform the action
 			res = curl_easy_perform(curl);
