@@ -252,6 +252,8 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 
 		curl = curl_easy_init();
 		if (curl) {
+			struct curl_slist *list = NULL;
+
 			curl_easy_setopt(curl, CURLOPT_URL, (const char *)unicode2char(m_url));
 
 			// follow redirects
@@ -267,6 +269,17 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 			curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 #endif
 
+			// Build a conditional get request if the last modified date of the file being updated is known
+			if (m_lastmodified.IsValid()) {
+				// Set a flag in the HTTP header that we only download if the file is newer.
+				// see: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.25
+				AddDebugLogLineN(logHTTP, wxT("If-Modified-Since: ") + FormatDateHTTP(m_lastmodified));
+				list = curl_slist_append(list, (const char *)unicode2char(wxT("If-Modified-Since: ") + FormatDateHTTP(m_lastmodified)));
+			}
+
+			// set custom header(s)
+			curl_easy_setopt(curl, CURLOPT_HTTPHEADER, list);
+
 			// some servers don't like requests without a user-agent, so set one
 			// always use a numerical version value, that's why we don't use VERSION
 			curl_easy_setopt(curl, CURLOPT_USERAGENT, "aMule/" wxSTRINGIZE(VERSION_MJR) "." wxSTRINGIZE(VERSION_MIN) "." wxSTRINGIZE(VERSION_UPDATE));
@@ -274,15 +287,35 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 			// perform the action
 			res = curl_easy_perform(curl);
 
-			curl_easy_cleanup(curl);
+			// clean up
+			curl_slist_free_all(list);
 
 			// check the result
 			if (res != CURLE_OK) {
 				m_result = HTTP_Error;
+				curl_easy_cleanup(curl);
 				throw wxString(CFormat(_("HTTP download failed: %s")) % wxString(curl_easy_strerror(res)));
 			} else {
-				m_result = HTTP_Success;
+				long response_code;
+				res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
+				if (res != CURLE_OK) {
+					// getinfo() failed, but perform() succeeded. Let's assume the transfer was O.K.
+					AddDebugLogLineN(logHTTP, wxT("curl_easy_getinfo() failed: ") + wxString(curl_easy_strerror(res)));
+					m_result = HTTP_Success;
+				} else {
+					AddDebugLogLineN(logHTTP, CFormat(wxT("Response code: %d")) % response_code);
+					if (response_code == 304) {		// "Not Modified"
+						m_result = HTTP_Skipped;
+					} else if (response_code == 200) {	// "OK"
+						m_result = HTTP_Success;
+					} else {
+						m_result = HTTP_Error;
+					}
+				}
 			}
+
+			// clean up
+			curl_easy_cleanup(curl);
 		}
 
 #else /* == not HAVE_LIBCURL */
