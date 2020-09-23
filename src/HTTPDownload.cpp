@@ -215,6 +215,21 @@ int mule_curl_debug_callback(CURL* WXUNUSED(handle), curl_infotype type, char *d
 	return 0;
 }
 #endif
+
+#ifndef AMULE_DAEMON
+int mule_curl_xferinfo_callback(void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t WXUNUSED(ultotal), curl_off_t WXUNUSED(ulnow))
+{
+	wxEvtHandler *dialog = static_cast<wxEvtHandler *>(clientp);
+
+	CMuleInternalEvent evt(wxEVT_HTTP_PROGRESS);
+	evt.SetInt(dlnow);
+	evt.SetExtraLong(dltotal);
+	wxPostEvent(dialog, evt);
+
+	return 0;
+}
+#endif
+
 #endif /* HAVE_LIBCURL */
 
 
@@ -267,6 +282,21 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 			// send libcurl verbose messages to aMule debug log
 			curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, mule_curl_debug_callback);
 			curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+#endif
+
+#ifndef AMULE_DAEMON
+			// show download progress
+			if (m_companion) {
+				// CURLOPT_XFERINFOFUNCTION was introduced in 7.32.0.
+				// We're not planning to support older libcurl versions, thus if
+				// the runtime library doesn't support CURLOPT_XFERINFOFUNCTION
+				// (probably because it's too old) we simply won't have a progress meter.
+				res = curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, mule_curl_xferinfo_callback);
+				if (res == CURLE_OK) {
+					curl_easy_setopt(curl, CURLOPT_XFERINFODATA, m_companion);
+					curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
+				}
+			}
 #endif
 
 			// Build a conditional get request if the last modified date of the file being updated is known
