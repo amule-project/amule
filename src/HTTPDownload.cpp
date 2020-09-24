@@ -314,6 +314,11 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 			// always use a numerical version value, that's why we don't use VERSION
 			curl_easy_setopt(curl, CURLOPT_USERAGENT, "aMule/" wxSTRINGIZE(VERSION_MJR) "." wxSTRINGIZE(VERSION_MIN) "." wxSTRINGIZE(VERSION_UPDATE));
 
+			// set the outgoing address
+			if (!thePrefs::GetAddress().empty()) {
+				curl_easy_setopt(curl, CURLOPT_INTERFACE, (const char *)unicode2char(thePrefs::GetAddress()));
+			}
+
 			// perform the action
 			res = curl_easy_perform(curl);
 
