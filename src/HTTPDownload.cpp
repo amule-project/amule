@@ -343,6 +343,53 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 						m_result = HTTP_Skipped;
 					} else if (response_code == 200) {	// "OK"
 						m_result = HTTP_Success;
+						/* TRANSLATORS: parameters are 'size transferred', 'URL' and 'download time' */
+						CFormat message(_("HTTP: Downloaded %s from '%s' in %s"));
+						curl_version_info_data *data = curl_version_info(CURLVERSION_NOW);
+
+						// get downloaded size
+#if LIBCURL_VERSION_NUM >= 0x073700
+						/* CURLINFO_SIZE_DOWNLOAD_T was introduced in 7.55.0 */
+						/* check the runtime version, too */
+						if (data->version_num >= 0x073700) {
+							curl_off_t dl;
+							curl_easy_getinfo(curl, CURLINFO_SIZE_DOWNLOAD_T, &dl);
+							message % CastItoXBytes(dl);
+						} else
+#endif
+						{
+							double dl;
+							curl_easy_getinfo(curl, CURLINFO_SIZE_DOWNLOAD, &dl);
+							message % CastItoXBytes((uint64)dl);
+						}
+
+						// get effective URL
+						{
+							char *url = NULL;
+							curl_easy_getinfo(curl, CURLINFO_EFFECTIVE_URL, &url);
+							message % wxString(url);
+						}
+
+						// get download time
+#if LIBCURL_VERSION_NUM >= 0x073d00
+						/* In libcurl 7.61.0, support was added for extracting the time in plain
+						   microseconds. Older libcurl versions are stuck in using 'double' for this
+						   information. */
+						if (data->version_num >= 0x073d00) {
+							curl_off_t tm;
+							curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME_T, &tm);
+							// CastSecondsToHM() uses milliseconds while we have microseconds now
+							message % CastSecondsToHM(tm / 1000000, (tm / 1000) % 1000);
+						} else
+#endif
+						{
+							double tm;
+							curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &tm);
+							message % CastSecondsToHM((uint32)tm, (uint16)(tm * 1000));
+						}
+
+						// Summarize transfer details
+						AddLogLineN(message);
 					} else {
 						m_result = HTTP_Error;
 					}
