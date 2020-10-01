@@ -55,14 +55,6 @@ m_proxyEnable(proxyEnable),
 m_proxyType(proxyType),
 m_proxyHostName(proxyHostName),
 m_proxyPort(proxyPort),
-/*
- * The flag m_enablePassword is currently not used. The first
- * authentication method tryed is No-Authentication, the second
- * is username/password. If there is no username/password in
- * CProxyData, a NULL username/password is sent. That will probably
- * lead to a failure, but at least we tryed. Maybe this behaviour
- * could be altered later.
- */
 m_enablePassword(enablePassword),
 m_userName(userName),
 m_password(password)
@@ -601,13 +593,16 @@ void CSocks5StateMachine::process_send_query_authentication_method(bool entry)
 	if (entry) {
 		// Prepare the authentication method negotiation packet
 		m_buffer[0] = SOCKS5_VERSION;
-		m_buffer[1] = 2; // Number of supported methods
-		//m_buffer[1] = 3; // Number of supported methods
+		m_buffer[1] = 1; // Number of supported methods
 		m_buffer[2] = SOCKS5_AUTH_METHOD_NO_AUTH_REQUIRED;
-		m_buffer[3] = SOCKS5_AUTH_METHOD_USERNAME_PASSWORD;
-		m_buffer[4] = SOCKS5_AUTH_METHOD_GSSAPI;
-		m_packetLenght = 4;
-		//m_packetLenght = 5;
+		m_packetLenght = 3;
+		if (m_proxyData.m_enablePassword) {
+			// add SOCKS5_AUTH_METHOD_GSSAPI here if we ever implement
+			// GSS-API authentication
+			m_buffer[1] = 2;
+			m_buffer[3] = SOCKS5_AUTH_METHOD_USERNAME_PASSWORD;
+			m_packetLenght = 4;
+		}
 
 		// Send the authentication method negotiation packet
 		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLenght);
@@ -930,9 +925,11 @@ void CSocks4StateMachine::process_send_command_request(bool entry)
 		}
 		// Common processing for SOCKS4/SOCKS4a
 		unsigned int offsetUser = 8;
-		unsigned char lenUser = m_proxyData.m_userName.Len();
-		memcpy(m_buffer + offsetUser,
-			unicode2char(m_proxyData.m_userName), lenUser);
+		unsigned char lenUser = 0;
+		if (m_proxyData.m_enablePassword) {
+			lenUser = m_proxyData.m_userName.Len();
+			memcpy(m_buffer + offsetUser, unicode2char(m_proxyData.m_userName), lenUser);
+		}
 		m_buffer[offsetUser + lenUser] = 0;
 		// Special processing for SOCKS4a
 		switch (m_proxyData.m_proxyType) {
@@ -1103,7 +1100,7 @@ void CHttpStateMachine::process_send_command_request(bool entry)
 		if (m_proxyData.m_enablePassword) {
 			userPass = m_proxyData.m_userName + wxT(":") + m_proxyData.m_password;
 			userPassEncoded =
-				EncodeBase64(unicode2char(userPass), userPass.Length());
+				EncodeBase64(unicode2char(userPass), userPass.Length()).Trim();
 		}
 		wxString msg;
 
@@ -1113,9 +1110,7 @@ void CHttpStateMachine::process_send_command_request(bool entry)
 			wxT("CONNECT ") << ip << wxT(":") << port << wxT(" HTTP/1.1\r\n") <<
 			wxT("Host: ")   << ip << wxT(":") << port << wxT("\r\n");
 			if (m_proxyData.m_enablePassword) {
-				msg <<
-				wxT("Authorization: Basic ")       << userPassEncoded << wxT("\r\n") <<
-				wxT("Proxy-Authorization: Basic ") << userPassEncoded << wxT("\r\n");
+				msg << wxT("Proxy-Authorization: Basic ") << userPassEncoded << wxT("\r\n");
 			}
 			msg << wxT("\r\n");
 			break;
