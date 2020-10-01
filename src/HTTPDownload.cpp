@@ -319,6 +319,47 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 				curl_easy_setopt(curl, CURLOPT_INTERFACE, (const char *)unicode2char(thePrefs::GetAddress()));
 			}
 
+			// proxy
+			if (use_proxy) {
+				switch (proxy_data->m_proxyType) {
+					case PROXY_SOCKS5:
+						curl_easy_setopt(curl, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+#if LIBCURL_VERSION_NUM >= 0x073700
+						// CURLOPT_SOCKS5_AUTH was added in 7.55.0
+						if (proxy_data->m_enablePassword) {
+							curl_easy_setopt(curl, CURLOPT_SOCKS5_AUTH, CURLAUTH_BASIC);
+						} else {
+							curl_easy_setopt(curl, CURLOPT_SOCKS5_AUTH, CURLAUTH_NONE);
+						}
+#endif
+						break;
+					case PROXY_SOCKS4:
+						curl_easy_setopt(curl, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS4);
+						break;
+					case PROXY_HTTP:
+						curl_easy_setopt(curl, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+						// Using only "Basic" authentication as the rest of the code
+						// (in Proxy.cpp) supports only that
+						curl_easy_setopt(curl, CURLOPT_PROXYAUTH, CURLAUTH_BASIC);
+						// Not tunneling through the proxy on purpose, let it cache
+						// HTTP traffic if possible (this is the default behaviour).
+						//curl_easy_setopt(curl, CURLOPT_HTTPPROXYTUNNEL, 0L);
+						break;
+					case PROXY_SOCKS4a:
+						curl_easy_setopt(curl, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS4A);
+						break;
+					default:
+						goto noProxy;
+				}
+				curl_easy_setopt(curl, CURLOPT_PROXY, (const char *)unicode2char(proxy_data->m_proxyHostName));
+				curl_easy_setopt(curl, CURLOPT_PROXYPORT, proxy_data->m_proxyPort);
+				if (proxy_data->m_enablePassword) {
+					curl_easy_setopt(curl, CURLOPT_PROXYUSERNAME, (const char *)unicode2char(proxy_data->m_userName));
+					curl_easy_setopt(curl, CURLOPT_PROXYPASSWORD, (const char *)unicode2char(proxy_data->m_password));
+				}
+			}
+noProxy:
+
 			// perform the action
 			res = curl_easy_perform(curl);
 
