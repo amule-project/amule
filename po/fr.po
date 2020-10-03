@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2020-07-15 02:02+0200\n"
-"PO-Revision-Date: 2020-03-04 12:32+0100\n"
+"PO-Revision-Date: 2020-09-14 22:08+0300\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "Language: fr\n"
@@ -2217,7 +2217,7 @@ msgstr "%d octets attendus, mais %d octets téléchargés"
 #: src/HTTPDownload.cpp:341
 #, c-format
 msgid "Protocol not supported for HTTP download: %s"
-msgstr ""
+msgstr "Protocole non pris en charge pour le téléchargement HTTP : %s"
 
 #: src/HTTPDownload.cpp:384
 msgid "Unable to connect to HTTP download server"
@@ -5308,11 +5308,12 @@ msgstr "Les variables suivantes seront remplacées :"
 #: src/SearchDlg.cpp:274
 msgid "It's impossible to search when both eD2k and Kademlia are disabled."
 msgstr ""
+"Lorsque eD2k et Kademlia sont désactivés tous les deux, il est impossible "
+"d'effectuer une recherche."
 
 #: src/SearchDlg.cpp:275
-#, fuzzy
 msgid "Search error"
-msgstr "Recherches"
+msgstr "Erreur de recherche"
 
 #: src/SearchDlg.cpp:469
 msgid "Min size must be smaller than max size. Max size ignored."
