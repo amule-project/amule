@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2020-07-15 02:02+0200\n"
-"PO-Revision-Date: 2020-03-04 12:35+0100\n"
-"Last-Translator: Tea Lorenzmeier <tea1@gmx.net>\n"
+"PO-Revision-Date: 2017-01-11 21:23+0100\n"
+"Last-Translator: Sebastiano Pistore <sebastiano.pistore.info@aol.com>\n"
 "Language-Team: www.aMule.org <forum@aMule.org>\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
-"X-Generator: Poedit 2.3\n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 2.0beta1\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -31,7 +31,7 @@ msgstr "Ukucaj vazecu IP adresu i port!"
 
 #: src/AddFriend.cpp:61 src/AddFriend.cpp:67
 msgid "Information"
-msgstr ""
+msgstr "Informacije"
 
 #: src/AddFriend.cpp:67
 msgid "The specified userhash is not valid!"
@@ -105,7 +105,7 @@ msgstr "Nova vanjska veza prihvacena\n"
 #: src/amule.cpp:463 src/KadDlg.cpp:183 src/KadDlg.cpp:189
 #: src/PrefsUnifiedDlg.cpp:750 src/SharedFilesCtrl.cpp:318
 msgid "WARNING"
-msgstr ""
+msgstr "UPOZORENJE"
 
 #: src/amule.cpp:589
 msgid ""
@@ -133,7 +133,7 @@ msgstr ""
 #: src/amule-remote-gui.cpp:314 src/amule-remote-gui.cpp:336
 #: src/amule-remote-gui.cpp:338 src/amule-remote-gui.cpp:650
 msgid "ERROR"
-msgstr ""
+msgstr "GREŠKA"
 
 #: src/amule.cpp:746
 #, c-format
@@ -374,7 +374,7 @@ msgstr ""
 #: src/amuled.cpp:780
 #, c-format
 msgid "ERROR: %s"
-msgstr ""
+msgstr "POGREŠKA: %s"
 
 #: src/amuleDlg.cpp:238
 #, c-format
@@ -410,11 +410,11 @@ msgstr ""
 
 #: src/amuleDlg.cpp:502
 msgid "Website: http://www.amule.org \n"
-msgstr ""
+msgstr "Web stranica: http://www.amule.org \n"
 
 #: src/amuleDlg.cpp:503
 msgid "Forum: http://forum.amule.org \n"
-msgstr ""
+msgstr "Forum: http://forum.amule.org \n"
 
 #: src/amuleDlg.cpp:504
 msgid ""
@@ -431,6 +431,8 @@ msgid ""
 "Copyright (c) 2003-2019 aMule Team \n"
 "\n"
 msgstr ""
+"Autorsko pravo (c) 2003-2019 aMule Team \n"
+"\n"
 
 #: src/amuleDlg.cpp:507
 msgid "Part of aMule is based on \n"
@@ -443,16 +445,17 @@ msgstr ""
 #: src/amuleDlg.cpp:509
 msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr ""
+"Autorsko pravo (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 
 #: src/amuleDlg.cpp:510
 msgid "http://kademlia.scs.cs.nyu.edu\n"
-msgstr ""
+msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:513 src/KadDlg.cpp:193 src/PartFile.cpp:918
 #: src/PartFile.cpp:926 src/PrefsUnifiedDlg.cpp:632 src/PrefsUnifiedDlg.cpp:737
 #: src/PrefsUnifiedDlg.cpp:857
 msgid "Message"
-msgstr ""
+msgstr "Poruka"
 
 #: src/amuleDlg.cpp:550
 msgid "aMule dialog destroyed"
@@ -632,7 +635,7 @@ msgstr "Prozor postavke opcija"
 
 #: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3540
 msgid "Import"
-msgstr ""
+msgstr "Uvezi"
 
 #: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3540
 msgid "The partfile importer tool"
@@ -641,7 +644,7 @@ msgstr ""
 #: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:3541
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 msgid "About"
-msgstr ""
+msgstr "O autoru:"
 
 #: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:3541
 msgid "About/Help"
@@ -665,7 +668,7 @@ msgstr ""
 
 #: src/amule-gui.cpp:213 src/utils/wxCas/src/wxcasframe.cpp:111
 msgid "aMule"
-msgstr ""
+msgstr "aMule"
 
 #: src/amule-gui.cpp:295
 #, fuzzy
@@ -692,7 +695,7 @@ msgstr "Spajanje"
 
 #: src/amule-remote-gui.cpp:314
 msgid "Connection failed "
-msgstr ""
+msgstr "Neuspjelo povezivanje"
 
 #: src/amule-remote-gui.cpp:325
 msgid "Remote GUI EC event handler"
@@ -712,13 +715,12 @@ msgid "Connection closed - aMule has terminated probably."
 msgstr ""
 
 #: src/amule-remote-gui.cpp:425
-#, fuzzy
 msgid "Ready"
-msgstr "Ponovno ucitati"
+msgstr "Spreman"
 
 #: src/amule-remote-gui.cpp:602 src/TransferWnd.cpp:340
 msgid "All"
-msgstr ""
+msgstr "Sve"
 
 #: src/amule-remote-gui.cpp:648
 #, c-format
@@ -845,7 +847,7 @@ msgstr "Greska prilikom spajanja sa %s (%s:%i): %d"
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Pisati captcha"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:693 src/muuli_wdr.cpp:243
 #: src/SearchListCtrl.cpp:627 src/TransferWnd.cpp:335
@@ -904,7 +906,7 @@ msgstr ""
 
 #: src/ChatWnd.cpp:99
 msgid "Chat"
-msgstr ""
+msgstr "Brbljanje"
 
 #: src/ChatWnd.cpp:101 src/MuleNotebook.cpp:188
 msgid "Close tab"
@@ -958,19 +960,19 @@ msgstr ""
 
 #: src/ClientDetailDialog.cpp:121
 msgid "Enabled"
-msgstr ""
+msgstr "Omogućeno"
 
 #: src/ClientDetailDialog.cpp:122
 msgid "Supported"
-msgstr ""
+msgstr "Podržano"
 
 #: src/ClientDetailDialog.cpp:123 src/ClientRef.cpp:192
 msgid "Not supported"
-msgstr ""
+msgstr "Nije podržano"
 
 #: src/ClientDetailDialog.cpp:124
 msgid "Disabled"
-msgstr ""
+msgstr "Onemogućeno"
 
 #: src/ClientDetailDialog.cpp:131 src/ServerWnd.cpp:164 src/ServerWnd.cpp:213
 #: src/TextClient.cpp:727
@@ -1002,7 +1004,7 @@ msgstr "Priznat - OK"
 
 #: src/ClientRef.cpp:203
 msgid "Not Available"
-msgstr ""
+msgstr "Nije dostupno"
 
 #: src/ClientTCPSocket.cpp:840
 #, c-format
@@ -1090,7 +1092,7 @@ msgstr "Ocjena"
 
 #: src/CommentDialogLst.cpp:58
 msgid "Comment"
-msgstr ""
+msgstr "Komentiraj"
 
 #: src/CommentDialogLst.cpp:103 src/muuli_wdr.cpp:890
 msgid "No comments"
@@ -1212,11 +1214,11 @@ msgstr ""
 
 #: src/DataToText.cpp:103
 msgid "Old MLDonkey"
-msgstr ""
+msgstr "Star MLDonkey"
 
 #: src/DataToText.cpp:106
 msgid "New MLDonkey"
-msgstr ""
+msgstr "Novi MLDonkey"
 
 #: src/DataToText.cpp:116
 msgid "eMule Compatible"
@@ -1233,7 +1235,7 @@ msgstr ""
 #: src/DataToText.cpp:128 src/muuli_wdr.cpp:198 src/muuli_wdr.cpp:3286
 #: src/SearchDlg.cpp:109 src/TextClient.cpp:724
 msgid "Kad"
-msgstr ""
+msgstr "Kad"
 
 #: src/DataToText.cpp:129
 msgid "Source Exchange"
@@ -1253,7 +1255,7 @@ msgstr ""
 
 #: src/DataToText.cpp:133
 msgid "Search Result"
-msgstr ""
+msgstr "Rezultati pretrage"
 
 #: src/DataToText.cpp:143 src/DownloadListCtrl.cpp:162
 #: src/OtherFunctions.cpp:632 src/TransferWnd.cpp:346
@@ -1699,11 +1701,11 @@ msgstr ""
 
 #: src/ExternalConn.cpp:1453
 msgid "File not found."
-msgstr ""
+msgstr "Datoteka nije pronađena."
 
 #: src/ExternalConn.cpp:1458
 msgid "Invalid file name."
-msgstr ""
+msgstr "Nepravilan naziv datoteke."
 
 #: src/ExternalConn.cpp:1466
 msgid "Unable to rename file."
@@ -1798,7 +1800,7 @@ msgstr ""
 
 #: src/ExternalConnector.cpp:292 src/ExternalConnector.cpp:293
 msgid "Exits from the application."
-msgstr ""
+msgstr "Izlaz iz aplikacije."
 
 #: src/ExternalConnector.cpp:294
 msgid "Show help."
@@ -1822,7 +1824,7 @@ msgstr ""
 
 #: src/ExternalConnector.cpp:351
 msgid "Syntax error!"
-msgstr ""
+msgstr "Sintaktička pogreška!"
 
 #: src/ExternalConnector.cpp:354
 msgid "Error processing command - should never happen! Report bug, please\n"
@@ -2014,7 +2016,7 @@ msgstr ""
 
 #: src/GenericClientListCtrl.cpp:598
 msgid "Send message"
-msgstr ""
+msgstr "Pošalji poruku"
 
 #: src/GenericClientListCtrl.cpp:600
 msgid "Swap to this file"
@@ -2022,7 +2024,7 @@ msgstr ""
 
 #: src/GenericClientListCtrl.cpp:943
 msgid "A4AF"
-msgstr ""
+msgstr "A4AF"
 
 #: src/GenericClientListCtrl.cpp:995
 #, fuzzy, c-format
@@ -2044,14 +2046,12 @@ msgid "On Queue: %u"
 msgstr "U redu cekanja"
 
 #: src/GenericClientListCtrl.cpp:1029
-#, fuzzy
 msgid "Uploading"
-msgstr "Upload"
+msgstr "Prijenos"
 
 #: src/GenericClientListCtrl.cpp:1031
-#, fuzzy
 msgid "None"
-msgstr "Niko"
+msgstr "Nijedno"
 
 #: src/GenericClientListCtrl.cpp:1089 src/ServerListCtrl.cpp:243
 msgid "No"
@@ -2223,7 +2223,7 @@ msgstr ""
 
 #: src/KadDlg.cpp:214
 msgid "Continue?"
-msgstr ""
+msgstr "Nastaviti?"
 
 #: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
@@ -2271,11 +2271,11 @@ msgstr[2] ""
 
 #: src/KnownFile.cpp:1544 src/PartFileConvertDlg.cpp:91
 msgid "File name"
-msgstr ""
+msgstr "Naziv datoteke"
 
 #: src/KnownFile.cpp:1545
 msgid "File size"
-msgstr ""
+msgstr "Veličina datoteke"
 
 #: src/KnownFile.cpp:1546
 msgid "Share ratio"
@@ -2399,11 +2399,11 @@ msgstr ""
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "ERROR: "
-msgstr ""
+msgstr "POGREŠKA: "
 
 #: src/Logger.cpp:321 src/Logger.cpp:345
 msgid "WARNING: "
-msgstr ""
+msgstr "UPOZORENJE: "
 
 #: src/MuleNotebook.cpp:187 src/muuli_wdr.cpp:900 src/muuli_wdr.cpp:1429
 #: src/muuli_wdr.cpp:3234 src/muuli_wdr.cpp:3504
@@ -2417,11 +2417,11 @@ msgstr ""
 #: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:388
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
 msgid "Copy"
-msgstr ""
+msgstr "Kopiraj"
 
 #: src/MuleTextCtrl.cpp:81
 msgid "Paste"
-msgstr ""
+msgstr "Staviti"
 
 #: src/MuleTextCtrl.cpp:82 src/muuli_wdr.cpp:384 src/muuli_wdr.cpp:831
 #: src/utils/aLinkCreator/src/alcframe.cpp:152
@@ -2430,7 +2430,7 @@ msgstr "Ocisti"
 
 #: src/MuleTextCtrl.cpp:86
 msgid "Select All"
-msgstr ""
+msgstr "Izaberite sve"
 
 #: src/MuleTrayIcon.cpp:82 src/MuleTrayIcon.cpp:464 src/MuleTrayIcon.cpp:485
 #: src/muuli_wdr.cpp:1575 src/muuli_wdr.cpp:1584 src/muuli_wdr.cpp:1593
@@ -2487,7 +2487,7 @@ msgstr ""
 #: src/MuleTrayIcon.cpp:330
 #, c-format
 msgid "Nickname: %s"
-msgstr ""
+msgstr "Nadimak: %s"
 
 #: src/MuleTrayIcon.cpp:330
 msgid "No Nickname Selected!"
@@ -2500,7 +2500,7 @@ msgstr "KlientID: "
 #: src/MuleTrayIcon.cpp:342 src/MuleTrayIcon.cpp:356 src/TextClient.cpp:722
 #: src/TextClient.cpp:735
 msgid "Not connected"
-msgstr ""
+msgstr "Nije povezano"
 
 #: src/MuleTrayIcon.cpp:349
 msgid "ServerName: "
@@ -2518,7 +2518,7 @@ msgstr "Veza nije uspostavljena"
 #: src/MuleTrayIcon.cpp:365
 #, c-format
 msgid "IP: %s"
-msgstr ""
+msgstr "IP: %s"
 
 #: src/MuleTrayIcon.cpp:374
 #, c-format
@@ -2660,7 +2660,7 @@ msgstr "Pretraga"
 
 #: src/muuli_wdr.cpp:183
 msgid "Name:"
-msgstr ""
+msgstr "Naziv:"
 
 #: src/muuli_wdr.cpp:191 src/SearchListCtrl.cpp:90 src/SharedFilesCtrl.cpp:104
 msgid "Type"
@@ -2715,7 +2715,7 @@ msgstr "Programi"
 
 #: src/muuli_wdr.cpp:234 src/OtherFunctions.cpp:185
 msgid "Texts"
-msgstr ""
+msgstr "Tekstovi"
 
 #: src/muuli_wdr.cpp:235 src/OtherFunctions.cpp:150
 msgid "Videos"
@@ -2752,11 +2752,11 @@ msgstr "Maksimalna velicina"
 
 #: src/muuli_wdr.cpp:305
 msgid "Availability"
-msgstr ""
+msgstr "Dostupnost"
 
 #: src/muuli_wdr.cpp:318
 msgid "Filter:"
-msgstr ""
+msgstr "Filtar:"
 
 #: src/muuli_wdr.cpp:327
 msgid "Filter Results"
@@ -2784,7 +2784,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:363
 msgid "Stop"
-msgstr ""
+msgstr "Stop"
 
 #: src/muuli_wdr.cpp:370 src/muuli_wdr.cpp:1569 src/SearchListCtrl.cpp:625
 msgid "Download"
@@ -2796,7 +2796,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:392
 msgid "Results"
-msgstr ""
+msgstr "Rezultati"
 
 #: src/muuli_wdr.cpp:421
 msgid "Clears completed downloads"
@@ -2922,7 +2922,7 @@ msgstr "Primijeni"
 
 #: src/muuli_wdr.cpp:797
 msgid "Ok"
-msgstr ""
+msgstr "Dobro!"
 
 #: src/muuli_wdr.cpp:822
 msgid "Comment/Rate file (Text will be visible to all users)"
@@ -3065,7 +3065,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1264 src/ServerWnd.cpp:249
 msgid "IP address:"
-msgstr ""
+msgstr "IP adresa:"
 
 #: src/muuli_wdr.cpp:1273
 msgid "User ID:"
@@ -3085,7 +3085,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1305
 msgid "Kad:"
-msgstr ""
+msgstr "Kad:"
 
 #: src/muuli_wdr.cpp:1316
 msgid "Transfers to client"
@@ -3154,7 +3154,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1459
 msgid "Language: "
-msgstr ""
+msgstr "Jezik: "
 
 #: src/muuli_wdr.cpp:1460 src/muuli_wdr.cpp:1497 src/muuli_wdr.cpp:1501
 #: src/muuli_wdr.cpp:1505
@@ -3217,7 +3217,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1504
 msgid "seconds"
-msgstr ""
+msgstr "sekundi"
 
 #: src/muuli_wdr.cpp:1510
 msgid "Browser Selection"
@@ -3278,7 +3278,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1616
 msgid "4665"
-msgstr ""
+msgstr "4665"
 
 #: src/muuli_wdr.cpp:1619
 msgid "Extended UDP port (Kad / global search) "
@@ -3316,11 +3316,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1675
 msgid "Kademlia"
-msgstr ""
+msgstr "Kademlia"
 
 #: src/muuli_wdr.cpp:1679 src/muuli_wdr.cpp:3281
 msgid "ED2K"
-msgstr ""
+msgstr "ED2K"
 
 #: src/muuli_wdr.cpp:1688
 msgid "Autoconnect on startup"
@@ -3380,7 +3380,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1778
 msgid "Enable"
-msgstr ""
+msgstr "Omogućiti"
 
 #: src/muuli_wdr.cpp:1782
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
@@ -3490,7 +3490,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1957
 msgid "Colours: "
-msgstr ""
+msgstr "Boje: "
 
 #: src/muuli_wdr.cpp:1962
 msgid "Background"
@@ -3678,7 +3678,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:2210 src/muuli_wdr.cpp:3126
 #: src/utils/wxCas/src/wxcasprefs.cpp:201
 msgid "Password"
-msgstr ""
+msgstr "Lozinka"
 
 #: src/muuli_wdr.cpp:2220
 msgid "Web server parameters"
@@ -3850,7 +3850,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2717
 msgid "IP:"
-msgstr ""
+msgstr "IP:"
 
 #: src/muuli_wdr.cpp:2746
 msgid "Port:"
@@ -3914,7 +3914,7 @@ msgstr "Svi"
 
 #: src/muuli_wdr.cpp:2833
 msgid "No one"
-msgstr ""
+msgstr "Nitko"
 
 #: src/muuli_wdr.cpp:2835
 msgid "Who can see my shared files:"
@@ -4071,7 +4071,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3035
 msgid "Username: "
-msgstr ""
+msgstr "Korisničko ime:"
 
 #: src/muuli_wdr.cpp:3039
 msgid "The username to use to connect to the proxy"
@@ -4079,7 +4079,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3042
 msgid "Password:"
-msgstr ""
+msgstr "Lozinka:"
 
 #: src/muuli_wdr.cpp:3046
 msgid "The password to use to connect to the proxy"
@@ -4123,7 +4123,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3119
 msgid "User name"
-msgstr ""
+msgstr "Korisničko ime"
 
 #: src/muuli_wdr.cpp:3136
 msgid "Remember those settings"
@@ -4240,7 +4240,7 @@ msgstr[2] ""
 
 #: src/OtherFunctions.cpp:66
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 #: src/OtherFunctions.cpp:72
 msgid "TB"
@@ -4248,7 +4248,7 @@ msgstr "TB"
 
 #: src/OtherFunctions.cpp:82
 msgid "k"
-msgstr ""
+msgstr "k"
 
 #: src/OtherFunctions.cpp:84
 msgid "M"
@@ -4272,7 +4272,7 @@ msgstr[2] ""
 
 #: src/OtherFunctions.cpp:99
 msgid "MB/s"
-msgstr ""
+msgstr "MB/s"
 
 #: src/OtherFunctions.cpp:108 src/OtherFunctions.cpp:111
 msgid "secs"
@@ -4284,11 +4284,11 @@ msgstr "minuta"
 
 #: src/OtherFunctions.cpp:118 src/OtherFunctions.cpp:122
 msgid "hours"
-msgstr ""
+msgstr "sati"
 
 #: src/OtherFunctions.cpp:121
 msgid "Days"
-msgstr ""
+msgstr "Dani"
 
 #: src/OtherFunctions.cpp:629
 msgid "all"
@@ -4320,7 +4320,7 @@ msgstr "Tekst"
 
 #: src/OtherFunctions.cpp:644 src/TransferWnd.cpp:352
 msgid "Active"
-msgstr ""
+msgstr "Aktivan"
 
 #: src/OtherFunctions.cpp:1062
 #, c-format
@@ -4601,158 +4601,155 @@ msgstr "Standard sistema"
 
 #: src/Preferences.cpp:629
 msgid "Albanian"
-msgstr ""
+msgstr "Albanski"
 
 #: src/Preferences.cpp:630
 msgid "Arabic"
-msgstr "Arabic"
+msgstr "Arapski"
 
 #: src/Preferences.cpp:631
-#, fuzzy
 msgid "Asturian"
-msgstr "Estonian"
+msgstr "Asturleonski"
 
 #: src/Preferences.cpp:632
 msgid "Basque"
-msgstr "Basque"
+msgstr "Baskijski"
 
 #: src/Preferences.cpp:633
 msgid "Bulgarian"
-msgstr "Bulgarian"
+msgstr "Bugarski"
 
 #: src/Preferences.cpp:634
 msgid "Catalan"
-msgstr "Catalan"
+msgstr "Katalonski"
 
 #: src/Preferences.cpp:635
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "Kineski"
 
 #: src/Preferences.cpp:636
 msgid "Chinese (Traditional)"
-msgstr ""
+msgstr "Kinesko (tradicionalno)"
 
 #: src/Preferences.cpp:637
 msgid "Croatian"
-msgstr ""
+msgstr "Hrvatski"
 
 #: src/Preferences.cpp:638
 msgid "Czech"
-msgstr ""
+msgstr "Češki"
 
 #: src/Preferences.cpp:639
 msgid "Danish"
-msgstr "Danish"
+msgstr "Danski"
 
 #: src/Preferences.cpp:640
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "Nizozemski"
 
 #: src/Preferences.cpp:641
 msgid "English (U.K.)"
-msgstr ""
+msgstr "Engleski (U.K.)"
 
 #: src/Preferences.cpp:642
 msgid "Estonian"
-msgstr "Estonian"
+msgstr "Estonski"
 
 #: src/Preferences.cpp:643
 msgid "Finnish"
-msgstr "Finnish"
+msgstr "Finski"
 
 #: src/Preferences.cpp:644
 msgid "French"
-msgstr "French"
+msgstr "Francuski"
 
 #: src/Preferences.cpp:645
 msgid "Galician"
-msgstr ""
+msgstr "Galješki"
 
 #: src/Preferences.cpp:646
 msgid "German"
-msgstr "German"
+msgstr "Njemački"
 
 #: src/Preferences.cpp:647
 msgid "Greek"
-msgstr ""
+msgstr "Grčki"
 
 #: src/Preferences.cpp:648
 msgid "Hebrew"
-msgstr ""
+msgstr "Hebrejski"
 
 #: src/Preferences.cpp:649
 msgid "Hungarian"
-msgstr "Hungarian"
+msgstr "Mađarski"
 
 #: src/Preferences.cpp:650
 msgid "Italian"
-msgstr "Italian"
+msgstr "Talijanski"
 
 #: src/Preferences.cpp:651
 msgid "Italian (Swiss)"
-msgstr ""
+msgstr "Talijanski (Švicarska)"
 
 #: src/Preferences.cpp:652
 msgid "Japanese"
-msgstr ""
+msgstr "Japanski"
 
 #: src/Preferences.cpp:653
 msgid "Korean"
-msgstr "Korean"
+msgstr "Korejski"
 
 #: src/Preferences.cpp:654
 msgid "Lithuanian"
-msgstr "Lithuanian"
+msgstr "Litavski"
 
 #: src/Preferences.cpp:655
 msgid "Norwegian (Nynorsk)"
-msgstr ""
+msgstr "Norveški (Nynorsk)"
 
 #: src/Preferences.cpp:656
 msgid "Polish"
-msgstr "Polish"
+msgstr "Poljski"
 
 #: src/Preferences.cpp:657
 msgid "Portuguese"
-msgstr "Portuguese"
+msgstr "Portugalski"
 
 #: src/Preferences.cpp:658
 msgid "Portuguese (Brazilian)"
-msgstr ""
+msgstr "Portugalski (Brazil)"
 
 #: src/Preferences.cpp:659
-#, fuzzy
 msgid "Romanian"
-msgstr "Estonian"
+msgstr "Rumunjski"
 
 #: src/Preferences.cpp:660
 msgid "Russian"
-msgstr "Russian"
+msgstr "Ruski"
 
 #: src/Preferences.cpp:661
 msgid "Slovenian"
-msgstr ""
+msgstr "Slovenski"
 
 #: src/Preferences.cpp:662
 msgid "Spanish"
-msgstr "Spanish"
+msgstr "Španjolski"
 
 #: src/Preferences.cpp:663
 msgid "Swedish"
-msgstr ""
+msgstr "Švedski"
 
 #: src/Preferences.cpp:664
 msgid "Turkish"
-msgstr ""
+msgstr "Turski"
 
 #: src/Preferences.cpp:665
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrajinski"
 
 #: src/Preferences.cpp:728
-#, fuzzy
 msgid "Change Language"
-msgstr "Jezik"
+msgstr "Promijeniti jezik"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
@@ -4760,7 +4757,7 @@ msgstr ""
 
 #: src/Preferences.cpp:771
 msgid "No languages available"
-msgstr ""
+msgstr "Nema dostupnih jezika"
 
 #: src/Preferences.cpp:902
 msgid "no options available"
@@ -4803,15 +4800,15 @@ msgstr "Fajlovi"
 
 #: src/PrefsUnifiedDlg.cpp:181
 msgid "Security"
-msgstr ""
+msgstr "Sigurnost"
 
 #: src/PrefsUnifiedDlg.cpp:182
 msgid "Interface"
-msgstr ""
+msgstr "Sučelje"
 
 #: src/PrefsUnifiedDlg.cpp:184
 msgid "Proxy"
-msgstr ""
+msgstr "Proxy"
 
 #: src/PrefsUnifiedDlg.cpp:185
 msgid "Filters"
@@ -4827,15 +4824,15 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:188
 msgid "Advanced"
-msgstr ""
+msgstr "Napredno"
 
 #: src/PrefsUnifiedDlg.cpp:189
 msgid "Events"
-msgstr ""
+msgstr "Događaji"
 
 #: src/PrefsUnifiedDlg.cpp:191
 msgid "Debugging"
-msgstr ""
+msgstr "Debugiranje"
 
 #: src/PrefsUnifiedDlg.cpp:249
 msgid ""
@@ -4965,7 +4962,7 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:996
 msgid "Temporary files"
-msgstr ""
+msgstr "Privremene datoteke"
 
 #: src/PrefsUnifiedDlg.cpp:1001
 msgid "Incoming files"
@@ -5157,7 +5154,7 @@ msgstr "Otkaz"
 
 #: src/SearchListCtrl.cpp:1017
 msgid "New"
-msgstr ""
+msgstr "Novo"
 
 #: src/ServerConnect.cpp:74
 msgid ""
@@ -5367,7 +5364,7 @@ msgstr "Ime servera"
 
 #: src/ServerListCtrl.cpp:88
 msgid "Address"
-msgstr ""
+msgstr "Adresa"
 
 #: src/ServerListCtrl.cpp:89
 msgid "Port"
@@ -5392,7 +5389,7 @@ msgstr "Staticni"
 #: src/ServerListCtrl.cpp:97 src/SharedFilePeersListCtrl.cpp:34
 #: src/SourceListCtrl.cpp:33 src/Statistics.cpp:959
 msgid "Version"
-msgstr ""
+msgstr "Verzija"
 
 #: src/ServerListCtrl.cpp:149
 msgid ""
@@ -5581,7 +5578,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:207
 msgid "Running"
-msgstr ""
+msgstr "Radi"
 
 #: src/ServerWnd.cpp:210
 msgid "Kademlia client ID:"
@@ -5663,7 +5660,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:270 src/TextClient.cpp:738
 msgid "Not running"
-msgstr ""
+msgstr "Ne radi"
 
 #: src/SharedFileList.cpp:332
 #, c-format
@@ -6075,11 +6072,11 @@ msgstr "Aktivne veze (1:%u)"
 
 #: src/StatTree.cpp:550
 msgid "Not available"
-msgstr ""
+msgstr "Nije dostupno"
 
 #: src/StatTree.cpp:594 src/StatTree.cpp:605
 msgid "Never"
-msgstr ""
+msgstr "Nikad"
 
 #: src/TerminationProcess.cpp:47
 #, c-format
@@ -6153,11 +6150,11 @@ msgstr ""
 
 #: src/TextClient.cpp:678 src/TextClient.cpp:684
 msgid "OFF"
-msgstr ""
+msgstr "Iskljuceno"
 
 #: src/TextClient.cpp:678 src/TextClient.cpp:684
 msgid "ON"
-msgstr ""
+msgstr "Uključen"
 
 #: src/TextClient.cpp:683
 #, c-format
@@ -6176,7 +6173,7 @@ msgstr ""
 
 #: src/TextClient.cpp:709
 msgid "eD2k"
-msgstr ""
+msgstr "eD2k"
 
 #: src/TextClient.cpp:714
 #, c-format
@@ -6195,7 +6192,7 @@ msgstr ""
 #: src/TextClient.cpp:731 src/utils/wxCas/src/wxcasframe.cpp:1049
 #: src/utils/wxCas/src/wxcasframe.cpp:1071
 msgid "ok"
-msgstr ""
+msgstr "Dobro!"
 
 #: src/TextClient.cpp:744
 #, c-format
@@ -6763,7 +6760,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:150
 msgid "Remove"
-msgstr ""
+msgstr "Ukloni"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:161
 msgid "Create link with part-hashes"
@@ -6789,7 +6786,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:231
 msgid "Save"
-msgstr ""
+msgstr "Spremi"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:233
 msgid "Copy to clipboard"
@@ -6797,7 +6794,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open"
-msgstr ""
+msgstr "Otvori"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:261
 msgid "Open a file to compute its eD2k link"
@@ -6809,7 +6806,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save as"
-msgstr ""
+msgstr "Spremi kao"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:267
 msgid "Save computed eD2k link to file"
@@ -6883,8 +6880,9 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:567
 #: src/utils/aLinkCreator/src/alcframe.cpp:568
 #: src/utils/aLinkCreator/src/md4.cpp:352
+#, fuzzy
 msgid "Cancelled !"
-msgstr "Otkaz!"
+msgstr "Otkaz"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:576
 #, c-format
@@ -6972,7 +6970,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:142
 msgid "System"
-msgstr ""
+msgstr "Sustav"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:206
 #: src/utils/wxCas/src/wxcasframe.cpp:335
@@ -7095,7 +7093,7 @@ msgstr ""
 #: src/utils/wxCas/src/wxcasframe.cpp:1047
 #: src/utils/wxCas/src/wxcasframe.cpp:1069
 msgid " Kad: "
-msgstr ""
+msgstr " Kad: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1053
 #: src/utils/wxCas/src/wxcasframe.cpp:1075
