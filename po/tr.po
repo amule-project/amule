@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2020-07-15 02:02+0200\n"
-"PO-Revision-Date: 2020-03-04 15:39+0100\n"
+"PO-Revision-Date: 2020-09-14 21:59+0300\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
 "Language: tr\n"
@@ -211,7 +211,7 @@ msgstr "Daha fazla bilgi, destek ve yeni sürümler ana sayfamızda bulunabilir\
 #: src/amule.cpp:1054
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
-"www.aMule.org veya IRC Kanalımız: irc.freenode.net sunucusundq #aMule \n"
+"www.aMule.org veya IRC Kanalımız: irc.freenode.net sunucusunda #aMule \n"
 
 #: src/amule.cpp:1056
 msgid "Feel free to report any bugs to http://forum.amule.org"
@@ -427,7 +427,7 @@ msgstr "ÖNEMLİ HATA: Zamanlayıcı oluşturulamadı"
 
 #: src/amuleDlg.cpp:493
 msgid "aMule remote control "
-msgstr "aMule uzak denetimi"
+msgstr "aMule uzak denetimi "
 
 #: src/amuleDlg.cpp:499
 msgid "Snapshot:"
@@ -1450,7 +1450,7 @@ msgstr "Geri beslemeyi panoya kopyala"
 
 #: src/DownloadListCtrl.cpp:697
 msgid "unassign"
-msgstr "Ekleme"
+msgstr "atamayı kaldır"
 
 #: src/DownloadListCtrl.cpp:704
 msgid "Assign to category"
@@ -1846,7 +1846,7 @@ msgid ""
 msgstr ""
 "\n"
 "Tüm komutlar büyük-küçük harf duyarlıdır.\n"
-"'%s <command>' tuşlayarak <command> hakkında detaylı bilgi alabilirsiniz.\n"
+"'%s <komut>' tuşlayarak <komut> hakkında detaylı bilgi alabilirsiniz.\n"
 
 #: src/ExternalConnector.cpp:292 src/ExternalConnector.cpp:293
 msgid "Exits from the application."
@@ -1863,7 +1863,7 @@ msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
 msgstr ""
-"Bir komut hakkında yardım çağırmak için 'help <command>' yazınız.\n"
+"Bir komut hakkında yardım çağırmak için 'help <komut>' yazınız.\n"
 "Tüm komutları görmek için 'help' yazınız.\n"
 
 #: src/ExternalConnector.cpp:318
@@ -2165,7 +2165,7 @@ msgstr "%d bayt bekleniyordu; fakat %d bayt indirildi"
 #: src/HTTPDownload.cpp:341
 #, c-format
 msgid "Protocol not supported for HTTP download: %s"
-msgstr ""
+msgstr "HTTP indirmesi için desteklenmeyen protokol: %s"
 
 #: src/HTTPDownload.cpp:384
 msgid "Unable to connect to HTTP download server"
@@ -2262,7 +2262,7 @@ msgstr ""
 #: src/KadDlg.cpp:151
 #, c-format
 msgid "Nodes (%u)"
-msgstr "Nodlar (%u)"
+msgstr "Düğümler (%u)"
 
 #: src/KadDlg.cpp:183
 msgid "Invalid ip to bootstrap"
@@ -2284,7 +2284,7 @@ msgstr "Yeni bir nodes.dat dosyası indirmek istediğinizden emin misiniz?\n"
 msgid ""
 "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
-"Bunu yapmanız şu anki nodları silecek ve Kademlia bağlantısını baştan "
+"Bunu yapmanız şu anki düğümleri silecek ve Kademlia bağlantısını baştan "
 "başlatacaktır."
 
 #: src/KadDlg.cpp:214
@@ -2449,7 +2449,7 @@ msgstr "Dış Bağlantı: Erişim engellendi çünkü: "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:277
 msgid "External Connection: Handshake failed."
-msgstr "Dış Bağlantı: Tanılama engellendi"
+msgstr "Dış Bağlantı: Tanılama engellendi."
 
 #: src/LibSocketAsio.cpp:1257
 #, c-format
@@ -2778,7 +2778,7 @@ msgstr "Ses"
 #: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:171 src/OtherFunctions.cpp:641
 #: src/TransferWnd.cpp:359
 msgid "CD-Images"
-msgstr "CD-İmajı"
+msgstr "CD-Kalıbı"
 
 #: src/muuli_wdr.cpp:232 src/OtherFunctions.cpp:178 src/OtherFunctions.cpp:642
 #: src/TransferWnd.cpp:360
@@ -2807,7 +2807,7 @@ msgstr "En Az Boyut"
 
 #: src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
 msgid "Bytes"
-msgstr "bayt"
+msgstr "Bayt"
 
 #: src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
 msgid "KB"
@@ -3323,7 +3323,7 @@ msgstr "Mümkünse yeni sekmede aç"
 
 #: src/muuli_wdr.cpp:1526
 msgid "Open the web page in a new tab instead of in a new window when possible"
-msgstr "Web sayfasını ,yeni pencere yerine mümkünse yeni sekmede açar."
+msgstr "Web sayfasını, yeni pencere yerine mümkünse yeni sekmede açar."
 
 #: src/muuli_wdr.cpp:1531
 msgid "Video Player"
@@ -3347,7 +3347,7 @@ msgstr "Portlar"
 
 #: src/muuli_wdr.cpp:1606
 msgid "Standard TCP Port "
-msgstr "Standard TCP Portu "
+msgstr "Standart TCP Portu "
 
 #: src/muuli_wdr.cpp:1610
 msgid "This is the standard eD2k port and cannot be disabled."
@@ -3371,7 +3371,7 @@ msgstr "Bu UDP portu genişletilmiş eD2k istemleri ve Kad ağı için kullanıl
 
 #: src/muuli_wdr.cpp:1626
 msgid "Enable UPnP for router port forwarding"
-msgstr "Router port iletimi için UPnP'yi etkinleştir"
+msgstr "Yönlendirici port iletimi için UPnP'yi etkinleştir"
 
 #: src/muuli_wdr.cpp:1631
 msgid "UPnP TCP Port (Optional):"
@@ -3563,7 +3563,7 @@ msgstr "Ortalama grafiği için süre: 100 dk"
 
 #: src/muuli_wdr.cpp:1925
 msgid "Connections Graph Scale: 100 "
-msgstr "Bağlantı Grafik Ölçüsü: 100"
+msgstr "Bağlantı Grafik Ölçüsü: 100 "
 
 #: src/muuli_wdr.cpp:1934
 msgid "Download graph scale:"
@@ -3619,15 +3619,15 @@ msgstr "Sistem Tablası Simgesi Hız Göstergesi"
 
 #: src/muuli_wdr.cpp:1974
 msgid "Kad-nodes current"
-msgstr "Şu anki Kad nodları"
+msgstr "Şu anki Kad düğümleri"
 
 #: src/muuli_wdr.cpp:1975
 msgid "Kad-nodes running"
-msgstr "İşlemdeki Kad-nodları"
+msgstr "İşlemdeki Kad-düğümleri"
 
 #: src/muuli_wdr.cpp:1976
 msgid "Kad-nodes session"
-msgstr "Oturumdaki Kad-nodları"
+msgstr "Oturumdaki Kad-düğümleri"
 
 #: src/muuli_wdr.cpp:1981 src/muuli_wdr.cpp:2416
 msgid "Select"
@@ -3663,7 +3663,7 @@ msgstr "Sunucu bağlantısı yenileme sıklığı :Devre dışı"
 
 #: src/muuli_wdr.cpp:2065
 msgid "Disable computer's timed standby mode"
-msgstr "Bilgisayarın devre dışı kalma modunu etkisiz hale getir"
+msgstr "Bilgisayarın devre dışı kalma kipini etkisiz hale getir"
 
 #: src/muuli_wdr.cpp:2086
 msgid "Skin to use: "
@@ -3833,7 +3833,7 @@ msgstr "Gelen Dosyalar Dizini :"
 
 #: src/muuli_wdr.cpp:2386
 msgid "Change priority for new assigned files :"
-msgstr "Yeni eklenen dosyalar için öncelikleri değiştir."
+msgstr "Yeni eklenen dosyalar için öncelikleri değiştir:"
 
 #: src/muuli_wdr.cpp:2391
 msgid "Don't change"
@@ -3841,7 +3841,7 @@ msgstr "Değiştirme"
 
 #: src/muuli_wdr.cpp:2405
 msgid "Select color for this Category (currently selected) :"
-msgstr "Bu sınıf için renk seçiniz. (varsayılan) :"
+msgstr "Bu sınıf için renk seçiniz (varsayılan) :"
 
 #: src/muuli_wdr.cpp:2479 src/muuli_wdr.cpp:2504
 #: src/utils/wxCas/src/wxcasframe.cpp:133
@@ -3855,7 +3855,7 @@ msgstr "Günlük kayıtlarını silmek için bu düğmeye basınız."
 
 #: src/muuli_wdr.cpp:2527
 msgid "Click on this button to update the servers list from URL ..."
-msgstr "Sunucu listesini İnternet'ten güncellemek için bu düğmeye basınız..."
+msgstr "Sunucu listesini İnternet'den güncellemek için bu düğmeye basınız..."
 
 #: src/muuli_wdr.cpp:2531
 msgid "Server list"
@@ -3911,23 +3911,23 @@ msgstr "Kademlia Bilgileri"
 
 #: src/muuli_wdr.cpp:2644
 msgid "Click on this button to update the nodes list from URL ..."
-msgstr "Nod listesini İnternet'ten güncellemek için bu düğmeye tıklayınız."
+msgstr "Düğüm listesini İnternet'den güncellemek için bu düğmeye tıklayınız."
 
 #: src/muuli_wdr.cpp:2648
 msgid "Nodes (0)"
-msgstr "Nodlar (0)"
+msgstr "Düğümler (0)"
 
 #: src/muuli_wdr.cpp:2653
 msgid ""
 "Enter the url to a nodes.dat file here and press the button to the left to "
 "update the list of known nodes."
 msgstr ""
-"Bilinen nodları güncellemek için buraya adresi giriniz ve soldaki düğmeye "
+"Bilinen düğümleri güncellemek için buraya adresi giriniz ve soldaki düğmeye "
 "tıklayınız."
 
 #: src/muuli_wdr.cpp:2658
 msgid "Nodes stats"
-msgstr "Nod Durumu"
+msgstr "Düğüm istatistikleri"
 
 #: src/muuli_wdr.cpp:2709
 msgid "Bootstrap"
@@ -3935,7 +3935,7 @@ msgstr "Ön Yükleme"
 
 #: src/muuli_wdr.cpp:2712
 msgid "New node"
-msgstr "Yeni nod"
+msgstr "Yeni düğüm"
 
 #: src/muuli_wdr.cpp:2717
 msgid "IP:"
@@ -4083,8 +4083,8 @@ msgid ""
 "Rejects packet if the client ip is different from the ip where the packet is "
 "received from. Use with caution."
 msgstr ""
-"Paketin alındığı ip ile kullanıcı ip numarası farklıysa paket reddedilir."
-"(Dikkatli kullanın)"
+"Paketin alındığı ip ile kullanıcı ip numarası farklıysa paket reddedilir. "
+"Dikkatli kullanın."
 
 #: src/muuli_wdr.cpp:2904
 msgid "Use system-wide ipfilter.dat if available"
@@ -4301,7 +4301,7 @@ msgstr "Kullanıcıları Göster"
 
 #: src/muuli_wdr.cpp:3424
 msgid "Reload:"
-msgstr "Yeniden yükle"
+msgstr "Yeniden yükle:"
 
 #: src/muuli_wdr.cpp:3429
 msgid "Reload your shared files"
@@ -4729,11 +4729,11 @@ msgstr "Katalanca"
 
 #: src/Preferences.cpp:635
 msgid "Chinese (Simplified)"
-msgstr "Çince (Simplified)"
+msgstr "Çince (Basitleştirilmiş)"
 
 #: src/Preferences.cpp:636
 msgid "Chinese (Traditional)"
-msgstr "Çince (Traditional)"
+msgstr "Çince (Geleneksel)"
 
 #: src/Preferences.cpp:637
 msgid "Croatian"
@@ -4809,7 +4809,7 @@ msgstr "Litvanyaca"
 
 #: src/Preferences.cpp:655
 msgid "Norwegian (Nynorsk)"
-msgstr "Norveççe(Nynorsk)"
+msgstr "Norveççe (Nynorsk)"
 
 #: src/Preferences.cpp:656
 msgid "Polish"
@@ -4853,7 +4853,7 @@ msgstr "Ukraynaca"
 
 #: src/Preferences.cpp:728
 msgid "Change Language"
-msgstr "Dili Değiştirin "
+msgstr "Dili Değiştirin"
 
 #: src/Preferences.cpp:771
 msgid "There are no translations installed for aMule"
@@ -5051,7 +5051,7 @@ msgid ""
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
 "Hem eD2k hem de Kad ağları devre dışı bırakılmış.\n"
-"En az birini etkinleştirmeden bağlanamaycaksınız."
+"En az birini etkinleştirmeden bağlanamayacaksınız."
 
 #: src/PrefsUnifiedDlg.cpp:736
 msgid ""
@@ -5199,11 +5199,12 @@ msgstr "Şu girdiler değiştirilecek:"
 #: src/SearchDlg.cpp:274
 msgid "It's impossible to search when both eD2k and Kademlia are disabled."
 msgstr ""
+"Hem eD2k hem de Kademlia devre dışı bırakıldığında arama yapmak mümkün "
+"değildir."
 
 #: src/SearchDlg.cpp:275
-#, fuzzy
 msgid "Search error"
-msgstr "Aramalar"
+msgstr "Arama hatası"
 
 #: src/SearchDlg.cpp:469
 msgid "Min size must be smaller than max size. Max size ignored."
@@ -5614,7 +5615,8 @@ msgstr "UYARI: Düşük ID aldınız!"
 
 #: src/ServerSocket.cpp:430
 msgid "\tMost likely this is because you're behind a firewall or router."
-msgstr "\tBüyük ihtimalle bir güvenlik duvarı veya router arkasındasınız."
+msgstr ""
+"\tBüyük ihtimalle bir güvenlik duvarı veya yönlendirici arkasındasınız."
 
 #: src/ServerSocket.cpp:431
 msgid "\tFor more information, please refer to http://wiki.amule.org"
@@ -5716,7 +5718,8 @@ msgstr "Bağlantı Durumu:"
 #: src/ServerWnd.cpp:217
 #, c-format
 msgid "Firewalled - open TCP port %d in your router or firewall"
-msgstr "Güvenlik Duvarı - router veya güvenlik duvarınızda %d TCP portunu açın"
+msgstr ""
+"Güvenlik Duvarı - yönlendirici veya güvenlik duvarınızda %d TCP portunu açın"
 
 #: src/ServerWnd.cpp:219
 msgid "UDP Connection State:"
@@ -5725,7 +5728,8 @@ msgstr "UDP Bağlantı Durumu:"
 #: src/ServerWnd.cpp:222
 #, c-format
 msgid "Firewalled - open UDP port %d in your router or firewall"
-msgstr "Güvenlik Duvarı - router veya güvenlik duvarınızda %d UDP portunu açın"
+msgstr ""
+"Güvenlik Duvarı - yönlendirici veya güvenlik duvarınızda %d UDP portunu açın"
 
 #: src/ServerWnd.cpp:226
 msgid "Firewalled state: "
@@ -5915,7 +5919,7 @@ msgstr "eD2k bağlantısını panoya kopyala (&Makine Adı)"
 #: src/SharedFilesCtrl.cpp:168
 msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
 msgstr ""
-"eD2k bağlantısını panoya kopyala (Makine adı) (&Şifrelem seçenekleriyle "
+"eD2k bağlantısını panoya kopyala (Makine adı) (&Şifreleme seçenekleriyle "
 "birlikte)"
 
 #: src/SharedFilesCtrl.cpp:169
@@ -6756,9 +6760,7 @@ msgstr ""
 #: src/ThreadTasks.cpp:455
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
-msgstr ""
-"UYARI: '%s' dosya adı geçersiz ve'%s' "
-"deskteklenirdeskteklenirdeskteklenirolarak yeniden adlandırıldı."
+msgstr "UYARI: '%s' dosya adı geçersiz ve '%s' olarak yeniden adlandırıldı."
 
 #: src/ThreadTasks.cpp:467
 #, c-format
@@ -7028,13 +7030,13 @@ msgstr ""
 "Pixmapler: http://www.everaldo.com ve http://www.icomania.com\n"
 "ve http://jimmac.musichall.cz/ikony.php3\n"
 "\n"
-"GPL altında dağıtılır."
+"GPL kapsamında dağıtılır."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:512
 #: src/utils/aLinkCreator/src/alcframe.cpp:513
 #: src/utils/aLinkCreator/src/alcframe.cpp:519
 msgid "Hashing..."
-msgstr "Adresleniyor."
+msgstr "Adresleniyor..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:517
 #: src/utils/aLinkCreator/src/alcframe.cpp:532
@@ -7214,11 +7216,11 @@ msgstr ""
 " Pedro de Oliveira' nın <falso@rdk.homeip.net> geliştirdiği CAS üzerine "
 "kurulmuştur.\n"
 "\n"
-"GPL altında dağıtımı yapılır."
+"GPL kapsamında dağıtımı yapılır."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:575
 msgid "Oh Oh, aMule is not running..."
-msgstr "Aman Aman, aMule çalışmıyor..."
+msgstr "Aman aman, aMule çalışmıyor..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:651
 #: src/utils/wxCas/src/wxcasframe.cpp:721
@@ -7248,7 +7250,7 @@ msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1008
 msgid " has been running for "
-msgstr "çalışıyor"
+msgstr " çalışıyor"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1013
 msgid " is stopped !"
@@ -7261,11 +7263,11 @@ msgstr " bağlı değil !"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1021
 msgid " is connecting..."
-msgstr "bağlanıyor..."
+msgstr " bağlanıyor..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1025
 msgid " is doing something strange, check it !"
-msgstr "garip şeyler yapıyor, denetleyiniz !"
+msgstr " garip şeyler yapıyor, denetleyiniz!"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1046
 msgid " is connected to "
@@ -7283,11 +7285,11 @@ msgstr "bağlı değil"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1059
 msgid " is on "
-msgstr "bağlı"
+msgstr " bağlı"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1066
 msgid " with "
-msgstr "ile"
+msgstr " ile "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1084
 msgid "Total Download: "
@@ -7312,7 +7314,7 @@ msgstr " kB/s, Gönderme "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1110
 msgid " kB/s"
-msgstr "kB"
+msgstr " kB/sn"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1118
 msgid "Sharing: "
@@ -7413,11 +7415,11 @@ msgstr "Şablonu yükler <str>"
 
 #: src/webserver/src/WebInterface.cpp:562
 msgid "Web server HTTP port"
-msgstr "web sunucusu HTTP portu"
+msgstr "Web sunucusu HTTP portu"
 
 #: src/webserver/src/WebInterface.cpp:566
 msgid "Use UPnP port forwarding on web server port"
-msgstr "Web sunucu portu üzerine iletmek için UPnP portunu kullanın"
+msgstr "Web sunucu portu üzerine iletmek için UPnP portunu kullan"
 
 #: src/webserver/src/WebInterface.cpp:570
 msgid "UPnP port"
@@ -7453,7 +7455,7 @@ msgstr "aMule yapılandırma yolu: DOĞRUDAN KULLANMAYINIZ!"
 
 #: src/webserver/src/WebInterface.cpp:610
 msgid "Disable PHP interpreter (deprecated)"
-msgstr "PHP yorumcusunu devreden çıkar. (onaylanmamış)"
+msgstr "PHP yorumcusunu devreden çıkar (eskimiş)"
 
 #: src/webserver/src/WebInterface.cpp:618
 msgid "Recompile PHP pages on each request"
