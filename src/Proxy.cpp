@@ -33,6 +33,14 @@
 #include <common/StringFunctions.h>	/* for unicode2char */
 #include "GuiEvents.h"
 
+// Define it to 1 to debug proxy communication and state machine design. If
+// enabled messages sent to and received from proxies will be dumped to stdout.
+// Has effect only in debug-enabled builds.
+#ifndef DEBUG_DUMP_PROXY_MSG
+#define DEBUG_DUMP_PROXY_MSG	0
+#endif
+
+
 //------------------------------------------------------------------------------
 // CProxyData
 //------------------------------------------------------------------------------
@@ -406,7 +414,9 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
 	/* Ok, the syntax is terrible, but this is correct. This is a
 	 * pointer to a member function. No C equivalent for that. */
 	(this->*m_process_state[state])(entry);
+
 #ifdef __DEBUG__
+#if DEBUG_DUMP_PROXY_MSG
 	int n = 0;
 
 	switch (state) {
@@ -437,10 +447,9 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
 
 	if (entry) {
 		DumpMem(m_buffer, n, m_state_name[state], m_ok);
-	} else {
-		AddDebugLogLineN(logProxy,
-			wxString(wxT("wait state -- ")) << m_state_name[state]);
 	}
+#endif
+	AddDebugLogLineN(logProxy, CFormat(wxString(wxT("state: %s clocks: %u"))) % m_state_name[state] % GetClocksInCurrentState());
 #endif // __DEBUG__
 }
 
@@ -819,7 +828,9 @@ CProxyStateMachine(
 void CSocks4StateMachine::process_state(t_sm_state state, bool entry)
 {
 	(this->*m_process_state[state])(entry);
+
 #ifdef __DEBUG__
+#if DEBUG_DUMP_PROXY_MSG
 	int n = 0;
 
 	switch (state) {
@@ -841,10 +852,9 @@ void CSocks4StateMachine::process_state(t_sm_state state, bool entry)
 
 	if (entry) {
 		DumpMem(m_buffer, n, m_state_name[state], m_ok);
-	} else {
-		AddDebugLogLineN(logProxy,
-			wxString(wxT("wait state -- ")) << m_state_name[state]);
 	}
+#endif
+	AddDebugLogLineN(logProxy, CFormat(wxString(wxT("state: %s clocks: %u"))) % m_state_name[state] % GetClocksInCurrentState());
 #endif // __DEBUG__
 }
 
@@ -1015,7 +1025,9 @@ CProxyStateMachine(
 void CHttpStateMachine::process_state(t_sm_state state, bool entry)
 {
 	(this->*m_process_state[state])(entry);
+
 #ifdef __DEBUG__
+#if DEBUG_DUMP_PROXY_MSG
 	int n = 0;
 
 	switch (state) {
@@ -1037,10 +1049,9 @@ void CHttpStateMachine::process_state(t_sm_state state, bool entry)
 
 	if (entry) {
 		DumpMem(m_buffer, n, m_state_name[state], m_ok);
-	} else {
-		AddDebugLogLineN(logProxy,
-			wxString(wxT("wait state -- ")) << m_state_name[state]);
 	}
+#endif
+	AddDebugLogLineN(logProxy, CFormat(wxString(wxT("state: %s clocks: %u"))) % m_state_name[state] % GetClocksInCurrentState());
 #endif // __DEBUG__
 }
 

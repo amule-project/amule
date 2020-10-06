@@ -66,19 +66,16 @@ void CStateMachine::Clock()
 	wxMutexLocker lock(m_stateMutex);
 	m_state = next_state( event );
 
-//#if 0
-	/* Debug */
 	++m_clockCounter;
 	state_entry = ( m_state != old_state ) || ( m_clockCounter == 1 );
 	if( state_entry )
 	{
 		m_clocksInCurrentState = 0;
-		printf( "%s(%04d): %d -> %d\n",
-			(const char *)unicode2char(m_name),
-			m_clockCounter, old_state, m_state);
+		// Uncomment here to debug the state machine.
+		// State changes will be printed to stdout.
+		//printf("%s(%04d): %d -> %d\n", (const char *)unicode2char(m_name), m_clockCounter, old_state, m_state);
 	}
 	++m_clocksInCurrentState;
-//#endif
 
 	/* Process new state entry */
 	if( m_state < m_maxStates )
