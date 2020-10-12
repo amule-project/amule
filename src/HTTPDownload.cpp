@@ -31,6 +31,7 @@
 #ifdef HAVE_LIBCURL
 #	include <curl/curl.h>
 #	include <common/ClientVersion.h>		// Needed for the VERSION_ defines
+#	include <common/MacrosProgramSpecific.h>	// Needed for GUI_ONLY()
 #else
 #	include <wx/protocol/http.h>
 #endif
@@ -216,19 +217,31 @@ int mule_curl_debug_callback(CURL* WXUNUSED(handle), curl_infotype type, char *d
 }
 #endif
 
-#ifndef AMULE_DAEMON
-int mule_curl_xferinfo_callback(void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t WXUNUSED(ultotal), curl_off_t WXUNUSED(ulnow))
+int mule_curl_xferinfo_callback(void *clientp, curl_off_t GUI_ONLY(dltotal), curl_off_t GUI_ONLY(dlnow), curl_off_t WXUNUSED(ultotal), curl_off_t WXUNUSED(ulnow))
 {
-	wxEvtHandler *dialog = static_cast<wxEvtHandler *>(clientp);
+	CHTTPDownloadThread *thread = static_cast<CHTTPDownloadThread *>(clientp);
 
-	CMuleInternalEvent evt(wxEVT_HTTP_PROGRESS);
-	evt.SetInt(dlnow);
-	evt.SetExtraLong(dltotal);
-	wxPostEvent(dialog, evt);
+	if (thread->TestDestroy()) {
+		// returning nonzero will abort the current transfer
+		return 1;
+	}
+
+#ifndef AMULE_DAEMON
+	if (thread->GetProgressDialog()) {
+		CMuleInternalEvent evt(wxEVT_HTTP_PROGRESS);
+		evt.SetInt(dlnow);
+		evt.SetExtraLong(dltotal);
+		wxPostEvent(thread->GetProgressDialog(), evt);
+	}
+#endif
 
 	return 0;
 }
-#endif
+
+int mule_curl_progress_callback(void *clientp, double dltotal, double dlnow, double WXUNUSED(ultotal), double WXUNUSED(ulnow))
+{
+	return mule_curl_xferinfo_callback(clientp, (curl_off_t)dltotal, (curl_off_t)dlnow, 0, 0);
+}
 
 #endif /* HAVE_LIBCURL */
 
@@ -242,6 +255,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 #ifdef HAVE_LIBCURL
 	CURL *curl;
 	CURLcode res;
+	static unsigned int curl_version = 0;
 #else
 	wxHTTP* url_handler = NULL;
 #endif
@@ -265,6 +279,10 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 
 #ifdef HAVE_LIBCURL
 
+		if (curl_version == 0) {
+			curl_version = curl_version_info(CURLVERSION_NOW)->version_num;
+		}
+
 		curl = curl_easy_init();
 		if (curl) {
 			struct curl_slist *list = NULL;
@@ -284,20 +302,21 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 			curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 #endif
 
-#ifndef AMULE_DAEMON
 			// show download progress
-			if (m_companion) {
-				// CURLOPT_XFERINFOFUNCTION was introduced in 7.32.0.
-				// We're not planning to support older libcurl versions, thus if
-				// the runtime library doesn't support CURLOPT_XFERINFOFUNCTION
-				// (probably because it's too old) we simply won't have a progress meter.
-				res = curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, mule_curl_xferinfo_callback);
-				if (res == CURLE_OK) {
-					curl_easy_setopt(curl, CURLOPT_XFERINFODATA, m_companion);
-					curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
-				}
-			}
+			// This callback is used to cancel an ongoing transfer.
+#if LIBCURL_VERSION_NUM >= 0x072000
+			// CURLOPT_XFERINFOFUNCTION was introduced in 7.32.0.
+			if (curl_version >= 0x072000) {
+				curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, mule_curl_xferinfo_callback);
+				curl_easy_setopt(curl, CURLOPT_XFERINFODATA, this);
+			} else
 #endif
+			{
+				// CURLOPT_PROGRESSFUNCTION is deprecated in favour of CURLOPT_XFERINFOFUNCTION
+				curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, mule_curl_progress_callback);
+				curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, this);
+			}
+			curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
 
 			// Build a conditional get request if the last modified date of the file being updated is known
 			if (m_lastmodified.IsValid()) {
@@ -386,13 +405,12 @@ noProxy:
 						m_result = HTTP_Success;
 						/* TRANSLATORS: parameters are 'size transferred', 'URL' and 'download time' */
 						CFormat message(_("HTTP: Downloaded %s from '%s' in %s"));
-						curl_version_info_data *data = curl_version_info(CURLVERSION_NOW);
 
 						// get downloaded size
 #if LIBCURL_VERSION_NUM >= 0x073700
 						/* CURLINFO_SIZE_DOWNLOAD_T was introduced in 7.55.0 */
 						/* check the runtime version, too */
-						if (data->version_num >= 0x073700) {
+						if (curl_version >= 0x073700) {
 							curl_off_t dl;
 							curl_easy_getinfo(curl, CURLINFO_SIZE_DOWNLOAD_T, &dl);
 							message % CastItoXBytes(dl);
@@ -416,7 +434,7 @@ noProxy:
 						/* In libcurl 7.61.0, support was added for extracting the time in plain
 						   microseconds. Older libcurl versions are stuck in using 'double' for this
 						   information. */
-						if (data->version_num >= 0x073d00) {
+						if (curl_version >= 0x073d00) {
 							curl_off_t tm;
 							curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME_T, &tm);
 							// CastSecondsToHM() uses milliseconds while we have microseconds now

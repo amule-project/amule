@@ -234,7 +234,7 @@ MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
 
 # Check for libcurl
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui],
-[LIBCURL_CHECK_CONFIG(, [7.32.0],, [MULE_WARNING([libcurl not found or disabled. Reverting to using wxHTTP for http download, but beware, https won't be supported.])])])
+[LIBCURL_CHECK_CONFIG(, [7.19.1],, [MULE_WARNING([libcurl not found or disabled. Reverting to using wxHTTP for http download, but beware, https won't be supported.])])])
 
 
 MULE_COMPILATION_FLAGS
