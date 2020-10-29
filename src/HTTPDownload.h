@@ -50,6 +50,8 @@ public:
 						bool showDialog, bool checkDownloadNewer);
 
 	static void StopAll();
+	wxEvtHandler *		GetProgressDialog() const { return m_companion; }
+
 private:
 	ExitCode		Entry();
 	virtual void		OnExit();
