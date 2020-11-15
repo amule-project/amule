@@ -40,6 +40,9 @@
 
 #include <wx/utils.h>
 #include <wx/tokenzr.h>		// Needed for wxStringTokenizer
+#ifndef AMULE_DAEMON
+#include <wx/notifmsg.h>	// Needed for wxNotificationMessage
+#endif
 
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "CanceledFileList.h"
@@ -2163,6 +2166,14 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 		m_CorruptionBlackBox->Free();
 
 		AddLogLineC(CFormat( _("Finished downloading: %s") ) % GetFileName() );
+#ifndef AMULE_DAEMON
+		wxNotificationMessage *notification = new wxNotificationMessage ();
+		notification->SetTitle("aMule");
+		notification->SetMessage(CFormat( _("Finished downloading:\n%s") ) % GetFileName() );
+		notification->SetFlags(wxICON_INFORMATION);
+		notification->Show(7);
+		delete notification;
+#endif
 	}
 
 	theApp->downloadqueue->StartNextFile(this);
