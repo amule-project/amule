@@ -111,6 +111,7 @@ uint8		CPreferences::s_depth3D;
 bool		CPreferences::s_scorsystem;
 bool		CPreferences::s_hideonclose;
 bool		CPreferences::s_mintotray;
+bool		CPreferences::s_notify;
 bool		CPreferences::s_trayiconenabled;
 bool		CPreferences::s_addnewfilespaused;
 bool		CPreferences::s_addserversfromserver;
@@ -1130,6 +1131,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_MACHIDEONCLOSE,	(new Cfg_Bool( wxT("/GUI/HideOnClose"), s_hideonclose, false )));
 	NewCfgItem(IDC_ENABLETRAYICON,	(new Cfg_Bool( wxT("/eMule/EnableTrayIcon"), s_trayiconenabled, false )));
 	NewCfgItem(IDC_MINTRAY,		(new Cfg_Bool( wxT("/eMule/MinToTray"), s_mintotray, false )));
+	NewCfgItem(IDC_NOTIF,		(new Cfg_Bool( wxT("/eMule/Notifications"), s_notify, false )));
 	NewCfgItem(IDC_EXIT,		(new Cfg_Bool( wxT("/eMule/ConfirmExit"), s_confirmExit, true )));
 	NewCfgItem(IDC_STARTMIN,	(new Cfg_Bool( wxT("/eMule/StartupMinimized"), s_startMinimized, false )));
 

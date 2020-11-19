@@ -233,6 +233,7 @@ public:
 	static bool		AutoServerlist()		{ return s_autoserverlist; }
 	static void		SetAutoServerlist(bool val)	{ s_autoserverlist = val; }
 	static bool		DoMinToTray()			{ return s_mintotray; }
+	static bool		ShowNotifications()		{ return s_notify; }
 	static void		SetMinToTray(bool val)		{ s_mintotray = val; }
 	static bool		UseTrayIcon()			{ return s_trayiconenabled; }
 	static void		SetUseTrayIcon(bool val)	{ s_trayiconenabled = val; }
@@ -646,6 +647,7 @@ protected:
 	static bool	s_scorsystem;
 	static bool	s_hideonclose;
 	static bool	s_mintotray;
+	static bool	s_notify;
 	static bool	s_trayiconenabled;
 	static bool	s_addnewfilespaused;
 	static bool	s_addserversfromserver;

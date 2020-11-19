@@ -2167,12 +2167,14 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 
 		AddLogLineC(CFormat( _("Finished downloading: %s") ) % GetFileName() );
 #ifndef AMULE_DAEMON
-		wxNotificationMessage *notification = new wxNotificationMessage ();
-		notification->SetTitle("aMule");
-		notification->SetMessage(CFormat( _("Finished downloading:\n%s") ) % GetFileName() );
-		notification->SetFlags(wxICON_INFORMATION);
-		notification->Show(7);
-		delete notification;
+		if (thePrefs::ShowNotifications()) {
+			wxNotificationMessage *notification = new wxNotificationMessage ();
+			notification->SetTitle("aMule");
+			notification->SetMessage(CFormat( _("Finished downloading:\n%s") ) % GetFileName() );
+			notification->SetFlags(wxICON_INFORMATION);
+			notification->Show(7);
+			delete notification;
+		}
 #endif
 	}
 
