@@ -153,8 +153,6 @@ public:
 	void OnClose(wxCloseEvent& evt);
 	void OnBnConnect(wxCommandEvent& evt);
 
-	void DoIconize(bool iconize);
-
 	bool SafeState()	{ return m_is_safe_state; }
 
 	void LaunchUrl(const wxString &url);
