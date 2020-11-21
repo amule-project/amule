@@ -301,7 +301,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	Show(true);
 	// Must we start minimized?
 	if (thePrefs::GetStartMinimized()) {
-		DoIconize(true);
+		Iconize(true);
 	}
 
 	// Set shortcut keys
@@ -1038,25 +1038,6 @@ bool CamuleDlg::SaveGUIPrefs()
 }
 
 
-void CamuleDlg::DoIconize(bool iconize)
-{
-	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
-		if (iconize) {
-			// Skip() will do it.
-			//Iconize(true);
-			if (SafeState()) {
-				Show(false);
-			}
-		} else {
-			Show(true);
-			Raise();
-		}
-	} else {
-		// Will be done by Skip();
-		//Iconize(iconize);
-	}
-}
-
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
 // Evil Hack: check if the mouse is inside the window
@@ -1067,14 +1048,16 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 		if (m_prefsDialog && m_prefsDialog->IsShown()) {
 			// Veto.
 		} else {
-			if (m_wndTaskbarNotifier) {
+			if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
 #if wxCHECK_VERSION(2, 9, 0)
-				DoIconize(evt.IsIconized());
+				Show(!evt.IsIconized());
 #else
-				DoIconize(evt.Iconized());
+				Show(!evt.Iconized());
 #endif
 			}
-			evt.Skip();
+			else {
+				evt.Skip();
+			}
 		}
 	}
 }
