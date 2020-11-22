@@ -38,6 +38,7 @@
 #include <wx/zipstrm.h>
 #include <wx/sysopt.h>
 #include <wx/wupdlock.h>	// Needed for wxWindowUpdateLocker
+#include <wx/utils.h>		// Needed for wxFindWindowAtPoint
 
 #include <common/EventIDs.h>
 
@@ -1042,7 +1043,7 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
 // Evil Hack: check if the mouse is inside the window
 #ifndef __WINDOWS__
-	if (GetScreenRect().Contains(wxGetMousePosition()))
+	if (wxFindWindowAtPoint(wxGetMousePosition()))
 #endif
 	{
 		if (m_prefsDialog && m_prefsDialog->IsShown()) {

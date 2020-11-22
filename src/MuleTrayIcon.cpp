@@ -149,6 +149,7 @@ void CMuleTrayIcon::ServerConnection(wxCommandEvent& WXUNUSED(event))
 void CMuleTrayIcon::ShowHide(wxCommandEvent& WXUNUSED(event))
 {
 	theApp->amuledlg->Iconize(theApp->amuledlg->IsShown());
+	theApp->amuledlg->Show(!theApp->amuledlg->IsShown());
 }
 
 
@@ -522,5 +523,6 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 void CMuleTrayIcon::SwitchShow(wxTaskBarIconEvent&)
 {
 	theApp->amuledlg->Iconize(theApp->amuledlg->IsShown());
+	theApp->amuledlg->Show(!theApp->amuledlg->IsShown());
 }
 // File_checked_for_headers
