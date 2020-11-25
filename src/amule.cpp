@@ -45,6 +45,7 @@
 #include <wx/socket.h>
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
+#include <wx/stopwatch.h>		// Needed for wxStopWatch
 
 
 #include <common/Format.h>		// Needed for CFormat
@@ -816,6 +817,10 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 				thePrefs::GetUPnPEnabled(),
 				"aMule UDP Extended eMule Socket");
 			m_upnp = new CUPnPControlPoint(thePrefs::GetUPnPTCPPort());
+
+			wxStopWatch count; // Wait UPnP service responses for 3s before add port mappings
+			while (count.Time() < 3000 && !m_upnp->WanServiceDetected());
+
 			m_upnp->AddPortMappings(m_upnpMappings);
 		} catch(CUPnPException &e) {
 			wxString error_msg;
