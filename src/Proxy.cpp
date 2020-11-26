@@ -338,7 +338,9 @@ uint32 CProxyStateMachine::ProxyRead(CLibSocket &socket, void *buffer)
 	m_ok = true;
 	if (m_proxyClientSocket->BlocksRead()) {
 		m_lastError = 0;
+#ifndef ASIO_SOCKETS // m_canReceive is already assigned later
 		m_canReceive = false;
+#endif
 	} else if ((m_lastError = m_proxyClientSocket->LastError()) != 0) {
 		m_ok = false;
 	}
