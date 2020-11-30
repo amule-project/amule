@@ -876,14 +876,22 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 			break;
 		case ColumnUserSpeedDown:
 			if (item->GetType() != A4AF_SOURCE && client.GetKBpsDown() > 0.001) {
-				buffer = CFormat(_("%.1f kB/s")) % client.GetKBpsDown();
+				if (client.GetKBpsDown() >= 1024) {
+					buffer = CFormat(_("%.1f MB/s")) % (client.GetKBpsDown() / 1024.0);
+				} else {
+					buffer = CFormat(_("%.1f kB/s")) % client.GetKBpsDown();
+				}
 				dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			}
 			break;
 		case ColumnUserSpeedUp:
 			// Datarate is in bytes.
-			if (item->GetType() != A4AF_SOURCE && client.GetUploadDatarate() > 1024) {
-				buffer = CFormat(_("%.1f kB/s")) % (client.GetUploadDatarate() / 1024.0);
+			if (item->GetType() != A4AF_SOURCE && client.GetUploadDatarate() >= 1024) {
+				if (client.GetUploadDatarate() >= 1048576) {
+					buffer = CFormat(_("%.1f MB/s")) % (client.GetUploadDatarate() / 1048576.0);
+				} else {
+					buffer = CFormat(_("%.1f kB/s")) % (client.GetUploadDatarate() / 1024.0);
+				}
 				dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			}
 			break;
