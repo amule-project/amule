@@ -840,12 +840,20 @@ void CamuleDlg::ShowTransferRate()
 {
 	float kBpsUp = theStats::GetUploadRate() / 1024.0;
 	float kBpsDown = theStats::GetDownloadRate() / 1024.0;
+	float MBpsUp = kBpsUp / 1024.0;
+	float MBpsDown = kBpsDown / 1024.0;
+	bool showMBpsUp = (MBpsUp >= 1);
+	bool showMBpsDown = (MBpsDown >= 1);
 	wxString buffer;
 	if( thePrefs::ShowOverhead() )
 	{
-		buffer = CFormat(_("Up: %.1f(%.1f) | Down: %.1f(%.1f)")) % kBpsUp % (theStats::GetUpOverheadRate() / 1024.0) % kBpsDown % (theStats::GetDownOverheadRate() / 1024.0);
+		buffer = CFormat(_("Up: %.1f%s (%.1f) | Down: %.1f%s (%.1f)"))
+				 % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : "")) % (theStats::GetUpOverheadRate() / 1024.0)
+				 % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : "")) % (theStats::GetDownOverheadRate() / 1024.0);
 	} else {
-		buffer = CFormat(_("Up: %.1f | Down: %.1f")) % kBpsUp % kBpsDown;
+		buffer = CFormat(_("Up: %.1f%s | Down: %.1f%s"))
+				 % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : ""))
+				 % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : ""));
 	}
 	buffer.Truncate(50); // Max size 50
 
@@ -855,7 +863,9 @@ void CamuleDlg::ShowTransferRate()
 
 	// Show upload/download speed in title
 	if (thePrefs::GetShowRatesOnTitle()) {
-		wxString UpDownSpeed = CFormat(wxT("Up: %.1f | Down: %.1f")) % kBpsUp % kBpsDown;
+		wxString UpDownSpeed = CFormat(wxT("Up: %.1f%s | Down: %.1f%s"))
+						   % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : ""))
+						   % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : ""));
 		if (thePrefs::GetShowRatesOnTitle() == 1) {
 			SetTitle(theApp->m_FrameTitle + wxT(" -- ") + UpDownSpeed);
 		} else {
