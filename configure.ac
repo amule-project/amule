@@ -25,6 +25,7 @@
 #
 
 AC_INIT([aMule],[SVN],[admin@amule.org])
+AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 
