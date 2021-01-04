@@ -26,7 +26,7 @@
 
 AC_INIT([aMule],[SVN],[admin@amule.org])
 AC_CONFIG_AUX_DIR([config])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([subdir-objects])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 
 AC_PREREQ(2.62)
