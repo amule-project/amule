@@ -1,0 +1,12 @@
+CONFIGURE_FILE (
+	autostart-xas.cm
+	autostart-xas
+)
+
+INSTALL (FILES xas.pl
+	DESTINATION "${CMAKE_INSTALL_LIBDIR}/xchat/plugins/"
+)
+
+INSTALL (FILES ${CMAKE_CURRENT_BINARY_DIR}/autostart-xas
+	DESTINATION "${CMAKE_INSTALL_BINDIR}/"
+)
