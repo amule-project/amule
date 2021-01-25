@@ -43,6 +43,7 @@ Version 2.3.3 - The "what do you want?" version.
 	Vollstrecker:
 		* Initial support for detecting pkg-config based gdlib versions
 		* Fixed compilation with wx-3.1
+		* Added cmake-support (Linux and Windows tested)
 
 	xinhuang:
 		* Fix crash when shared files changed on Shared files tab
