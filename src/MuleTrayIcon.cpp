@@ -324,10 +324,10 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 	traymenu->Append(TRAY_MENU_INFO, label);
 	label = CFormat(_("Download speed: %.1f%s"))
-			% (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : ""));
+			% (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : wxT("")));
 	traymenu->Append(TRAY_MENU_INFO, label);
 	label = CFormat(_("Upload speed: %.1f%s"))
-			% (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : ""));
+			% (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : wxT("")));
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
 

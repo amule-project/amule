@@ -849,12 +849,12 @@ void CamuleDlg::ShowTransferRate()
 	if( thePrefs::ShowOverhead() )
 	{
 		buffer = CFormat(_("Up: %.1f%s (%.1f) | Down: %.1f%s (%.1f)"))
-				 % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : "")) % (theStats::GetUpOverheadRate() / 1024.0)
-				 % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : "")) % (theStats::GetDownOverheadRate() / 1024.0);
+				 % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : wxT(""))) % (theStats::GetUpOverheadRate() / 1024.0)
+				 % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : wxT(""))) % (theStats::GetDownOverheadRate() / 1024.0);
 	} else {
 		buffer = CFormat(_("Up: %.1f%s | Down: %.1f%s"))
-				 % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : ""))
-				 % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : ""));
+				 % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : wxT("")))
+				 % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : wxT("")));
 	}
 	buffer.Truncate(50); // Max size 50
 
@@ -865,8 +865,8 @@ void CamuleDlg::ShowTransferRate()
 	// Show upload/download speed in title
 	if (thePrefs::GetShowRatesOnTitle()) {
 		wxString UpDownSpeed = CFormat(wxT("Up: %.1f%s | Down: %.1f%s"))
-						   % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : ""))
-						   % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : ""));
+						   % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : wxT("")))
+						   % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : wxT("")));
 		if (thePrefs::GetShowRatesOnTitle() == 1) {
 			SetTitle(theApp->m_FrameTitle + wxT(" -- ") + UpDownSpeed);
 		} else {
