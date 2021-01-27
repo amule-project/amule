@@ -27,7 +27,7 @@ flags = ${MAKECMDGOALS}
 
 ifeq ("binary", "$(findstring binary, $(flags))")
 
-	PLASMAMULE = --enable-plasmamule
+#	PLASMAMULE = --enable-plasmamule
 	WXCAS = --enable-wxcas
 	XAS = --enable-xas
 	CAS = --enable-cas
@@ -43,7 +43,7 @@ ifeq ("binary", "$(findstring binary, $(flags))")
 
 else ifeq ("build", "$(findstring build, $(flags))")
 
-	PLASMAMULE = --enable-plasmamule
+#	PLASMAMULE = --enable-plasmamule
 	WXCAS = --enable-wxcas
 	XAS = --enable-xas
 	CAS = --enable-cas
@@ -67,9 +67,9 @@ else
 	wo_all_other_amules = $(subst amulecmd,,$(subst amule-utils-gui,,$(subst amule-utils,,${flags})))
 	LANGUAGE := en_GB
 
-	ifeq ("plasmamule", "$(findstring plasmamule, $(flags))")
-		PLASMAMULE = --enable-plasmamule
-	endif
+#	ifeq ("plasmamule", "$(findstring plasmamule, $(flags))")
+#		PLASMAMULE = --enable-plasmamule
+#	endif
 
 	ifeq ("wxcas", "$(findstring wxcas, $(flags))")
 		WXCAS = --enable-wxcas
@@ -481,8 +481,10 @@ amule-utils-gui: alc remotegui wxcas
 	${package}
 
 #These are empty (Space after Semicolon)
-debug-packages: amule-dbgsym ed2k-dbgsym cas-dbgsym wxcas-dbgsym webserver-dbgsym remotegui-dbgsym daemon-dbgsym alc-dbgsym alcc-dbgsym amulecmd-dbgsym plasmamule-dbgsym;
-normal-packages: amule-utils amule-utils-gui amule ed2k webserver daemon xas plasmamule ;
+debug-packages: amule-dbgsym ed2k-dbgsym cas-dbgsym wxcas-dbgsym webserver-dbgsym remotegui-dbgsym daemon-dbgsym alc-dbgsym alcc-dbgsym amulecmd-dbgsym;
+#plasmamule-dbgsym;
+normal-packages: amule-utils amule-utils-gui amule ed2k webserver daemon xas;
+#plasmamule ;
 language-packages: i18n-ar i18n-ast i18n-bg i18n-ca i18n-cs i18n-da i18n-de i18n-el i18n-en-gb i18n-es i18n-et-ee i18n-eu i18n-fi i18n-fr i18n-gl i18n-he i18n-hr i18n-hu i18n-it-ch i18n-it i18n-ja i18n-ko-kr i18n-lt i18n-nn i18n-nl i18n-pl i18n-pt-br i18n-pt-pt i18n-ru i18n-sl i18n-sq i18n-sv i18n-tr i18n-uk i18n-zh-cn i18n-zh-tw ;
 i18n-en-only: ;
 
