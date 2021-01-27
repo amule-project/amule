@@ -1,11 +1,10 @@
 SUBDIRS = man
 
 dist_doc_DATA = \
-	ABOUT-NLS \
 	amulesig.txt \
 	Changelog \
 	INSTALL \
-	license.txt \
+	COPYING \
 	README \
 	TODO \
 	EC_Protocol.txt
