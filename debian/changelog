@@ -2,6 +2,7 @@ amule (2.3.2+git-20210127) stable; urgency=low
 
   * git-rev: 0e9e3efc + 1
   * disabled plasmamule
+  * Tighten Build-Deps
 
  -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Wed, 27 Jan 2021 12:52:21 +0100
  
