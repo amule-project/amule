@@ -3,7 +3,7 @@ if (SEARCH_DIR_UPNP)
 	set (CMAKE_PREFIX_PATH ${SEARCH_DIR_UPNP})
 endif()
 
-find_package (UPNP)
+find_package (UPNP CONFIG)
 
 if (NOT UPNP_CONFIG)
 	include (FindPkgConfig)
