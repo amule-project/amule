@@ -24,6 +24,7 @@
 
 #include "ExternalConnector.h"
 #include "amule-config.h"	// Needed for VERSION and readline detection
+#include <common/Format.h>	// Needed for CFormat
 #include <wx/tokenzr.h>		// For wxStringTokenizer
 
 // For readline

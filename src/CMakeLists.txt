@@ -300,7 +300,6 @@ if (NEED_LIB_MULEAPPCOMMON)
 	)
 
 	target_compile_definitions (muleappcommon
-		PUBLIC HAVE_CONFIG_H
 		PRIVATE wxUSE_GUI=0
 		PRIVATE WXUSINGDLL
 	)
@@ -391,7 +390,6 @@ if (NEED_LIB_MULEAPPCORE)
 	)
 
 	target_compile_definitions (muleappcore
-		PRIVATE HAVE_CONFIG_H
 		PRIVATE wxUSE_GUI=0
 		PRIVATE WXUSINGDLL
 	)
@@ -444,6 +442,7 @@ if (NEED_LIB_MULEAPPGUI)
 	)
 
 	target_include_directories (muleappgui
+		PRIVATE ${amule_BINARY_DIR}
 		PRIVATE ${INCLUDE_INCLUDE_DIR}
 		PRIVATE ${LIBS_INCLUDE_DIR}
 	)
@@ -468,6 +467,7 @@ IF (NEED_LIB_MULESOCKET)
 	)
 	
 	target_include_directories (mulesocket
+		PRIVATE ${amule_BINARY_DIR}
 		PUBLIC ${INCLUDE_INCLUDE_DIR}
 		PUBLIC ${LIBS_INCLUDE_DIR}
 	)

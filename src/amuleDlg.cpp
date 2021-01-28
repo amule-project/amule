@@ -26,47 +26,47 @@
 #include <wx/app.h>
 
 #include <wx/archive.h>
-#include <wx/config.h>		// Do_not_auto_remove (MacOS 10.3, wx 2.7)
-#include <wx/confbase.h>	// Do_not_auto_remove (MacOS 10.3, wx 2.7)
+#include <wx/config.h>				// Do_not_auto_remove (MacOS 10.3, wx 2.7)
+#include <wx/confbase.h>			// Do_not_auto_remove (MacOS 10.3, wx 2.7)
 #include <wx/html/htmlwin.h>
-#include <wx/mimetype.h>	// Do_not_auto_remove (win32)
+#include <wx/mimetype.h>			// Do_not_auto_remove (win32)
 #include <wx/stattext.h>
 #include <wx/stdpaths.h>
-#include <wx/textfile.h>	// Do_not_auto_remove (win32)
+#include <wx/textfile.h>			// Do_not_auto_remove (win32)
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
 #include <wx/zipstrm.h>
 #include <wx/sysopt.h>
-#include <wx/wupdlock.h>	// Needed for wxWindowUpdateLocker
-#include <wx/utils.h>		// Needed for wxFindWindowAtPoint
+#include <wx/wupdlock.h>			// Needed for wxWindowUpdateLocker
+#include <wx/utils.h>				// Needed for wxFindWindowAtPoint
 
 #include <common/EventIDs.h>
 
 #include "amule-config.h"			// Needed for SVNDATE, PACKAGE, VERSION
-#include "amuleDlg.h"		// Interface declarations.
+#include "amuleDlg.h"				// Interface declarations.
 
-#include <common/Format.h>	// Needed for CFormat
-#include "amule.h"		// Needed for theApp
-#include "ChatWnd.h"		// Needed for CChatWnd
-#include "SourceListCtrl.h"	// Needed for CSourceListCtrl
-#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
-#include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "KadDlg.h"		// Needed for CKadDlg
+#include <common/Format.h>			// Needed for CFormat
+#include "amule.h"					// Needed for theApp
+#include "ChatWnd.h"				// Needed for CChatWnd
+#include "SourceListCtrl.h"			// Needed for CSourceListCtrl
+#include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
+#include "DownloadQueue.h"			// Needed for CDownloadQueue
+#include "KadDlg.h"					// Needed for CKadDlg
 #include "Logger.h"
 #include "MuleTrayIcon.h"
-#include "muuli_wdr.h"		// Needed for ID_BUTTON*
-#include "Preferences.h"	// Needed for CPreferences
+#include "muuli_wdr.h"				// Needed for ID_BUTTON*
+#include "Preferences.h"			// Needed for CPreferences
 #include "PrefsUnifiedDlg.h"
-#include "SearchDlg.h"		// Needed for CSearchDlg
-#include "Server.h"		// Needed for CServer
-#include "ServerConnect.h"	// Needed for CServerConnect
-#include "ServerWnd.h"		// Needed for CServerWnd
-#include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
+#include "SearchDlg.h"				// Needed for CSearchDlg
+#include "Server.h"					// Needed for CServer
+#include "ServerConnect.h"			// Needed for CServerConnect
+#include "ServerWnd.h"				// Needed for CServerWnd
+#include "SharedFilesWnd.h"			// Needed for CSharedFilesWnd
 #include "SharedFilePeersListCtrl.h" // Needed for CSharedFilePeersListCtrl
-#include "Statistics.h"		// Needed for theStats
-#include "StatisticsDlg.h"	// Needed for CStatisticsDlg
-#include "TerminationProcess.h"	// Needed for CTerminationProcess
-#include "TransferWnd.h"	// Needed for CTransferWnd
+#include "Statistics.h"				// Needed for theStats
+#include "StatisticsDlg.h"			// Needed for CStatisticsDlg
+#include "TerminationProcess.h"		// Needed for CTerminationProcess
+#include "TransferWnd.h"			// Needed for CTransferWnd
 #ifndef CLIENT_GUI
 #include "PartFileConvertDlg.h"
 #endif
@@ -77,14 +77,14 @@
 #endif
 
 #include "kademlia/kademlia/Kademlia.h"
-#include "MuleVersion.h"	// Needed for GetMuleVersion()
+#include "MuleVersion.h"			// Needed for GetMuleVersion()
 
 #ifdef ENABLE_IP2COUNTRY
-#include "IP2Country.h"		// Needed for IP2Country
+#include "IP2Country.h"				// Needed for IP2Country
 #endif
 
-#ifdef ENABLE_IP2COUNTRY	// That's no bug. MSVC has ENABLE_IP2COUNTRY always on,
-							// but dummy GeoIP.h turns ENABLE_IP2COUNTRY off again.
+#ifdef ENABLE_IP2COUNTRY			// That's no bug. MSVC has ENABLE_IP2COUNTRY always on,
+									// but dummy GeoIP.h turns ENABLE_IP2COUNTRY off again.
 void CamuleDlg::IP2CountryDownloadFinished(uint32 result)
 {
 	m_IP2Country->DownloadFinished(result);

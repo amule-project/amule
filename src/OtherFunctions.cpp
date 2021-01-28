@@ -28,19 +28,19 @@
 
 #include <tags/FileTags.h>
 
-#include <wx/filename.h>	// Needed for wxFileName
-#include <wx/log.h>		// Needed for wxLogNull
+#include <wx/filename.h>			// Needed for wxFileName
+#include <wx/log.h>					// Needed for wxLogNull
 #include "amule-config.h"			// Needed for a number of defines
 
-#include <wx/stdpaths.h> // Do_not_auto_remove
+#include <wx/stdpaths.h>			// Do_not_auto_remove
 #include <common/StringFunctions.h>
 #include <common/ClientVersion.h>
 #include <common/MD5Sum.h>
 #include <common/Path.h>
 #include "Logger.h"
-#include "BitVector.h"		// Needed for BitVector
+#include "BitVector.h"				// Needed for BitVector
 
-#include "OtherFunctions.h"	// Interface declarations
+#include "OtherFunctions.h"			// Interface declarations
 
 #include <map>
 

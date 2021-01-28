@@ -23,25 +23,25 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <cstdlib>			// Needed for std::abort()
+#include <cstdlib>				// Needed for std::abort()
 
 #include "amule-config.h"		// Needed for HAVE_CXXABI and HAVE_EXECINFO
 
 #include "MuleDebug.h"			// Interface declaration
-#include "StringFunctions.h"		// Needed for unicode2char
-#include "Format.h"			// Needed for CFormat
+#include "StringFunctions.h"	// Needed for unicode2char
+#include "Format.h"				// Needed for CFormat
 
 #ifdef HAVE_EXECINFO
 #	include <execinfo.h>
-#	include <wx/utils.h>			// Needed for wxArrayString
+#	include <wx/utils.h>		// Needed for wxArrayString
 #	ifndef HAVE_BFD
-#		include <wx/thread.h>		// Needed for wxThread
+#		include <wx/thread.h>	// Needed for wxThread
 #	endif
 #endif
 
 #ifdef HAVE_CXXABI
 #	ifdef HAVE_TYPEINFO
-#		include <typeinfo>	// Needed for some MacOSX versions with broken system headers
+#		include <typeinfo>		// Needed for some MacOSX versions with broken system headers
 #	endif
 #	include <cxxabi.h>
 #endif

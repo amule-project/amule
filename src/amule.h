@@ -28,11 +28,11 @@
 #define AMULE_H
 
 
-#include <wx/app.h>		// Needed for wxApp
+#include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
 
 
-#include "Types.h"		// Needed for int32, uint16 and uint64
+#include "Types.h"			// Needed for int32, uint16 and uint64
 #include <map>
 #ifndef __WINDOWS__
 	#include <signal.h>

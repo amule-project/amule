@@ -26,28 +26,28 @@
 
 #include "amule-config.h"			// Needed for VERSION
 
-#include <ec/cpp/ECMuleSocket.h>		// Needed for CECSocket
+#include <ec/cpp/ECMuleSocket.h>	// Needed for CECSocket
 
-#include <common/Format.h>		// Needed for CFormat
+#include <common/Format.h>			// Needed for CFormat
 
 #include <common/ClientVersion.h>
 #include <common/MD5Sum.h>
 
-#include "ExternalConn.h"	// Interface declarations
-#include "updownclient.h"	// Needed for CUpDownClient
-#include "Server.h"		// Needed for CServer
-#include "ServerList.h"		// Needed for CServerList
-#include "PartFile.h"		// Needed for CPartFile
-#include "ServerConnect.h"	// Needed for CServerConnect
-#include "UploadQueue.h"	// Needed for CUploadQueue
-#include "amule.h"		// Needed for theApp
-#include "SearchList.h"		// Needed for GetSearchResults
+#include "ExternalConn.h"			// Interface declarations
+#include "updownclient.h"			// Needed for CUpDownClient
+#include "Server.h"					// Needed for CServer
+#include "ServerList.h"				// Needed for CServerList
+#include "PartFile.h"				// Needed for CPartFile
+#include "ServerConnect.h"			// Needed for CServerConnect
+#include "UploadQueue.h"			// Needed for CUploadQueue
+#include "amule.h"					// Needed for theApp
+#include "SearchList.h"				// Needed for GetSearchResults
 #include "ClientList.h"
-#include "Preferences.h"	// Needed for CPreferences
+#include "Preferences.h"			// Needed for CPreferences
 #include "Logger.h"
-#include "GuiEvents.h"		// Needed for Notify_* macros
-#include "Statistics.h"		// Needed for theStats
-#include "KnownFileList.h"	// Needed for CKnownFileList
+#include "GuiEvents.h"				// Needed for Notify_* macros
+#include "Statistics.h"				// Needed for theStats
+#include "KnownFileList.h"			// Needed for CKnownFileList
 #include "Friend.h"
 #include "FriendList.h"
 #include "RandomFunctions.h"

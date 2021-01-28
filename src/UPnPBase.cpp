@@ -29,7 +29,7 @@
 
 // check for broken Debian-hacked libUPnP
 #include <upnp.h>
-#ifdef STRING_H			// defined in UpnpString.h Yes, I would have liked UPNPSTRING_H much better.
+#ifdef STRING_H				// defined in UpnpString.h Yes, I would have liked UPNPSTRING_H much better.
 #define BROKEN_DEBIAN_LIBUPNP
 #endif
 

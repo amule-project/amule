@@ -34,8 +34,8 @@
 #endif
 
 #include "WebInterface.h"
-#include <map>			// Needed for std::map
-#include <set>			// Needed for std::set
+#include <map>				// Needed for std::map
+#include <set>				// Needed for std::set
 #include "RLE.h"
 #include "OtherStructs.h"
 #include <ec/cpp/ECID.h>	// Needed for CECID
@@ -44,7 +44,7 @@
 #	include "UPnPBase.h"
 #endif
 
-#include <wx/datetime.h>  // For DownloadFile::wxtLastSeenComplete
+#include <wx/datetime.h>	// For DownloadFile::wxtLastSeenComplete
 
 #ifdef _MSC_VER
 #define strncasecmp _strnicmp

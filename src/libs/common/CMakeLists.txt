@@ -9,6 +9,10 @@ add_library (mulecommon STATIC
 	TextFile.cpp
 )
 
+target_include_directories (mulecommon
+	PRIVATE ${amule_BINARY_DIR}
+)
+
 target_link_libraries (mulecommon
 	wxWidgets::BASE
 )
