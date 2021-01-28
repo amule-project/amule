@@ -1,5 +1,5 @@
-IF (BUILD_ALCC)
-	ADD_EXECUTABLE (alcc
+if (BUILD_ALCC)
+	add_executable (alcc
 		alcc.cpp
 		ed2khash.cpp
 		md4.cpp
@@ -9,27 +9,27 @@ IF (BUILD_ALCC)
 		PRIVATE ${amule_BINARY_DIR}
 	)
 
-	IF (WIN32)
-		TARGET_SOURCES (alcc
+	if (WIN32)
+		target_sources (alcc
 			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
 		)
-	ENDIF (WIN32)
+	endif()
 
-	TARGET_COMPILE_DEFINITIONS (alcc
+	target_compile_definitions (alcc
 		PRIVATE wxUSE_GUI=0
 	)
 
-	TARGET_LINK_LIBRARIES (alcc
+	target_link_libraries (alcc
 		wxWidgets::BASE
 	)
 
-	INSTALL (TARGETS alcc
+	install (TARGETS alcc
 		RUNTIME DESTINATION bin
 	)
-ENDIF (BUILD_ALCC)
+endif()
 
-IF (BUILD_ALC)
-	ADD_EXECUTABLE (alc
+if (BUILD_ALC)
+	add_executable (alc
 		alc.cpp
 		alcframe.cpp
 		alcpix.cpp
@@ -41,21 +41,21 @@ IF (BUILD_ALC)
 		PRIVATE ${amule_BINARY_DIR}
 	)
 
-	IF (WIN32)
-		TARGET_SOURCES (alc
+	if (WIN32)
+		target_sources (alc
 			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
 		)
 
-		SET_TARGET_PROPERTIES (alc
+		set_target_properties (alc
 			PROPERTIES WIN32_EXECUTABLE TRUE
 		)
-	ENDIF (WIN32)
+	endif()
 
-	TARGET_LINK_LIBRARIES (alc
+	target_link_libraries (alc
 		wxWidgets::CORE
 	)
 
-	INSTALL (TARGETS alc
-            RUNTIME DESTINATION bin
+	install (TARGETS alc
+		RUNTIME DESTINATION bin
 	)
-ENDIF (BUILD_ALC)
+endif()

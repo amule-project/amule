@@ -1,4 +1,4 @@
-ADD_EXECUTABLE (wxcas
+add_executable (wxcas
 	linuxmon.cpp
 	onlinesig.cpp
 	wxcas.cpp
@@ -13,21 +13,21 @@ target_include_directories (wxcas
 	PRIVATE ${amule_BINARY_DIR}
 )
 
-IF (WIN32)
-	TARGET_SOURCES (wxcas
+if (WIN32)
+	target_sources (wxcas
 		PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
 	)
 
-	SET_TARGET_PROPERTIES (wxcas
+	set_target_properties (wxcas
 		PROPERTIES WIN32_EXECUTABLE TRUE
 	)
-ENDIF (WIN32)
+endif()
 
-TARGET_LINK_LIBRARIES (wxcas
+target_link_libraries (wxcas
 	wxWidgets::CORE
 	wxWidgets::NET
 )
 
-INSTALL (TARGETS wxcas
+install (TARGETS wxcas
 	RUNTIME DESTINATION bin
 )
