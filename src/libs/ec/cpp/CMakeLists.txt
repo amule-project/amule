@@ -14,7 +14,6 @@ add_dependencies (ec
 )
 
 target_compile_definitions (ec
-	PUBLIC HAVE_CONFIG_H
 	PRIVATE wxUSE_GUI=0
 )
 

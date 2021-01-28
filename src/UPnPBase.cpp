@@ -23,9 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifdef HAVE_CONFIG_H
-#	include "config.h"		// Needed for ENABLE_UPNP
-#endif
+#include "amule-config.h"	// Needed for ENABLE_UPNP
 
 #ifdef ENABLE_UPNP
 

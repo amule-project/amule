@@ -29,10 +29,7 @@
 #include <common/Path.h>	// Needed for CPath
 
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"             // Needed for HAVE_SYS_PARAM_H
-#endif
-
+#include "amule-config.h"	// Needed for HAVE_SYS_PARAM_H
 
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>

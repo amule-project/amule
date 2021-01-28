@@ -5,6 +5,10 @@ IF (BUILD_ALCC)
 		md4.cpp
 	)
 
+	target_include_directories (alcc
+		PRIVATE ${amule_BINARY_DIR}
+	)
+
 	IF (WIN32)
 		TARGET_SOURCES (alcc
 			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
@@ -31,6 +35,10 @@ IF (BUILD_ALC)
 		alcpix.cpp
 		ed2khash.cpp
 		md4.cpp
+	)
+
+	target_include_directories (alc
+		PRIVATE ${amule_BINARY_DIR}
 	)
 
 	IF (WIN32)

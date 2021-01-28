@@ -47,7 +47,7 @@ MAINTAINERCLEANFILES = ABOUT-NLS \
 					   Makefile.in \
 					   aclocal.m4 \
 					   config.guess \
-					   config.h.in \
+					   amule-config.h.in \
 					   config.rpath \
 					   config.sub \
 					   configure \

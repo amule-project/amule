@@ -30,10 +30,7 @@
 
 #include <wx/filename.h>	// Needed for wxFileName
 #include <wx/log.h>		// Needed for wxLogNull
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for a number of defines
-#endif
+#include "amule-config.h"			// Needed for a number of defines
 
 #include <wx/stdpaths.h> // Do_not_auto_remove
 #include <common/StringFunctions.h>

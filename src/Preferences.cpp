@@ -38,9 +38,7 @@
 #include <wx/utils.h>		// Needed for wxBusyCursor
 
 #include "amule.h"
-#ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for PACKAGE_STRING
-#endif
+#include "amule-config.h"			// Needed for PACKAGE_STRING
 
 #include "CFile.h"
 #include <common/MD5Sum.h>

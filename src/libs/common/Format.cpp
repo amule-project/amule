@@ -24,9 +24,7 @@
 
 #include "Format.h"
 
-#ifdef HAVE_CONFIG_H
-#	include "config.h"
-#endif
+#include "amule-config.h"
 
 #if defined HAVE_STDINT_H
 #	include <stdint.h>

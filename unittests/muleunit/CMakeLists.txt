@@ -13,6 +13,7 @@ target_compile_definitions (muleunit
 )
 
 target_include_directories (muleunit
+	PUBLIC ${amule_BINARY_DIR}
 	PUBLIC ${CMAKE_SOURCE_DIR}/src/libs
 	INTERFACE ${CMAKE_SOURCE_DIR}/unittests
 )

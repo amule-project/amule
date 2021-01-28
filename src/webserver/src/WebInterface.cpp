@@ -25,13 +25,9 @@
 //
 
 
-#ifdef HAVE_CONFIG_H
-	#include "config.h"	// For VERSION and ENABLE_NLS
-#endif
-
+#include "amule-config.h"	// For VERSION and ENABLE_NLS
 
 #include <wx/stdpaths.h>
-
 
 #ifdef __WXMAC__
 	#include <CoreFoundation/CFBundle.h> // Do_not_auto_remove

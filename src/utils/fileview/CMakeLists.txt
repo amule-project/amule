@@ -17,7 +17,6 @@ if (WIN32)
 endif()
 
 target_compile_definitions (fileview
-	PRIVATE HAVE_CONFIG_H
 	PRIVATE wxUSE_GUI=0
 )
 

@@ -28,9 +28,7 @@
 
 #include <sys/types.h>
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#include "amule-config.h"
 
 #include "WebServer.h"
 #include <ec/cpp/ECSpecialTags.h>

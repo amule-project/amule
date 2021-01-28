@@ -27,9 +27,7 @@
 #ifndef WEBSERVER_H
 #define WEBSERVER_H
 
-#ifdef HAVE_CONFIG_H
-	#include "config.h"	// Needed for ASIO_SOCKETS
-#endif
+#include "amule-config.h"	// Needed for ASIO_SOCKETS
 
 #ifdef WITH_LIBPNG
 	#include <png.h>

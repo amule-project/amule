@@ -42,12 +42,7 @@
 
 #include <common/EventIDs.h>
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for SVNDATE, PACKAGE, VERSION
-#else
-#include <common/ClientVersion.h>
-#endif // HAVE_CONFIG_H
-
+#include "amule-config.h"			// Needed for SVNDATE, PACKAGE, VERSION
 #include "amuleDlg.h"		// Interface declarations.
 
 #include <common/Format.h>	// Needed for CFormat

@@ -17,7 +17,6 @@ endif()
 
 target_compile_definitions (cas
 		PRIVATE ${gdlib_CFLAGS}
-		PRIVATE HAVE_CONFIG_H
 )
 
 target_include_directories (cas

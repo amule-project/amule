@@ -30,13 +30,9 @@
 #include <cstring>
 #include <wx/process.h>
 #include <wx/sstream.h>
-
-#ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
-					//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H, VERSION
-					//   and ENABLE_NLS
-#endif
-
+#include "amule-config.h"	// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
+							//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H, VERSION
+							//   and ENABLE_NLS
 #include <common/ClientVersion.h>
 
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser

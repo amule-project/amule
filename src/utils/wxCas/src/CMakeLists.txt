@@ -9,6 +9,10 @@ ADD_EXECUTABLE (wxcas
 	wxcasprint.cpp
 )
 
+target_include_directories (wxcas
+	PRIVATE ${amule_BINARY_DIR}
+)
+
 IF (WIN32)
 	TARGET_SOURCES (wxcas
 		PRIVATE ${CMAKE_SOURCE_DIR}/version.rc

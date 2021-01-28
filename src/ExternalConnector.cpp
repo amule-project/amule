@@ -23,14 +23,7 @@
 //
 
 #include "ExternalConnector.h"
-
-#ifdef HAVE_CONFIG_H
-	#include "config.h"	// Needed for VERSION and readline detection
-#else
-	#include <common/ClientVersion.h>
-#endif
-
-#include <common/Format.h>		// Needed for CFormat
+#include "amule-config.h"	// Needed for VERSION and readline detection
 #include <wx/tokenzr.h>		// For wxStringTokenizer
 
 // For readline

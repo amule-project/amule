@@ -24,9 +24,7 @@
 //
 
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#include "amule-config.h"
 
 #ifdef HAVE_ERRNO_H
 #include <errno.h>

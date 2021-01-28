@@ -11,10 +11,6 @@ add_test (NAME CTagTest
 	COMMAND CTagTest
 )
 
-target_compile_definitions (CTagTest
-	PRIVATE HAVE_CONFIG_H
-)
-
 target_include_directories (CTagTest
 	PRIVATE ${CMAKE_BINARY_DIR}
 	PRIVATE ${CMAKE_SOURCE_DIR}/src
@@ -58,10 +54,6 @@ add_executable (FileDataIOTest
 
 add_test (NAME FileDataIOTest
 	COMMAND FileDataIOTest
-)
-
-target_compile_definitions (FileDataIOTest
-	PRIVATE HAVE_CONFIG_H
 )
 
 target_include_directories (FileDataIOTest

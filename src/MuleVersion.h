@@ -25,11 +25,7 @@
 #ifndef MULEVERSION_H
 #define MULEVERSION_H
 
-#ifdef HAVE_CONFIG_H
-#	include "config.h"			// Needed for VERSION and ASIO_SOCKETS
-#else
-#	include "common/ClientVersion.h"	// Needed for VERSION otherwise
-#endif
+#include "amule-config.h"	// Needed for VERSION and ASIO_SOCKETS
 
 #ifdef ASIO_SOCKETS
 #	define MULEVERSION_RETVAL_BEGIN		wxString ver(

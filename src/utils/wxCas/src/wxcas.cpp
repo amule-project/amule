@@ -28,11 +28,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"             // Needed for PACKAGE
-#else
-#define PACKAGE "amule"
-#endif
+#include "amule-config.h"		// Needed for PACKAGE
 
 #include <wx/config.h>
 #include <wx/image.h>

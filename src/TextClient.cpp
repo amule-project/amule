@@ -24,13 +24,6 @@
 //
 
 
-#ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for VERSION
-#else
-	#include <common/ClientVersion.h>
-#endif
-
-
 #include "TextClient.h"
 
 #ifndef __WINDOWS__

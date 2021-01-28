@@ -25,9 +25,7 @@
 
 #include <cstdlib>			// Needed for std::abort()
 
-#ifdef HAVE_CONFIG_H
-#	include "config.h"		// Needed for HAVE_CXXABI and HAVE_EXECINFO
-#endif
+#include "amule-config.h"		// Needed for HAVE_CXXABI and HAVE_EXECINFO
 
 #include "MuleDebug.h"			// Interface declaration
 #include "StringFunctions.h"		// Needed for unicode2char

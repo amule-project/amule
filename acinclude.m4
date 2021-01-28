@@ -614,14 +614,12 @@ AC_DEFUN([MULE_DENOISER],
 		[AS_IF([test "${svndate:+set}" = "set"], [with_denoise_level=0], [with_denoise_level=4])])
 	AC_MSG_RESULT([$with_denoise_level])
 
-	AC_CONFIG_COMMANDS([denoiser], [[if test $denoiserlevel -gt 0; then
-		if test ! -d src/utils/scripts; then mkdir -p src/utils/scripts; fi
+	AC_CONFIG_COMMANDS([denoiser], [[if test ! -d src/utils/scripts; then mkdir -p src/utils/scripts; fi
 		sed -e "1{x;s/.*/1/;x;};/^[	 ]*\$/d;/^#if /{/level.*$denoiserlevel/{x;s/^/1/;x;b0;};x;s/^/0/;x;:0;d;};/^#else/{x;/^1/{s/1/0/;b1;};s/0/1/;:1;x;d;};/^#endif/{x;s/.//;x;d;};/^[	 ]*#/d;x;/^1/{x;b;};x;d" \
 			$srcdir/src/utils/scripts/denoiser.rules > src/utils/scripts/denoiser.sed
 		for i in `find . -name 'Makefile' -print`; do
 			if test -n "`head -n 1 $i | grep '^#'`"; then
 				sed -f src/utils/scripts/denoiser.sed $i > $i.tmp && mv $i.tmp $i
 			fi
-		done
-	fi]], [denoiserlevel=$with_denoise_level])
+		done]], [denoiserlevel=$with_denoise_level])
 ])

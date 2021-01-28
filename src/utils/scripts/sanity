@@ -23,7 +23,7 @@
 # This function returns true if a file is filtered
 # and shound't be included in the sanity testing.
 def IsFiltered(filename)
-	(["./config.h", "./configWIN32.h"].index(filename) != nil) or
+	(["./amule-config.h", "./configWIN32.h"].index(filename) != nil) or
 	(filename =~ /^.\/intl\//) or
 	(filename =~ /CryptoPP/)
 end

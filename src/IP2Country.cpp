@@ -40,9 +40,7 @@
 // Contact: mjames@gmail.com
 //
 
-#ifdef HAVE_CONFIG_H
-#	include "config.h"		// Needed for ENABLE_IP2COUNTRY
-#endif
+#include "amule-config.h"	// Needed for ENABLE_IP2COUNTRY
 
 #ifdef _MSC_VER
 // For MSVC we need to check here if geoip is available at all. MinGW needs the include below however.

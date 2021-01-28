@@ -88,6 +88,8 @@ MAKEFLAGS=-w -s
 # delete empty lines
 /^[ 	]*$/ d
 
+# delete HAVE_CONFIG_H
+s/-DHAVE_CONFIG_H//
 
 # take precedence over automake's silent rules feature
 #if levels 2,3,4
