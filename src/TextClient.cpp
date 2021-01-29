@@ -24,7 +24,7 @@
 //
 
 
-#include "amule-config.h"	// Needed for VERSION
+#include "config.h"			// Needed for VERSION
 #include "TextClient.h"
 
 #ifndef __WINDOWS__

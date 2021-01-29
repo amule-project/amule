@@ -23,7 +23,7 @@
 //
 
 #include "ExternalConnector.h"
-#include "amule-config.h"	// Needed for VERSION and readline detection
+#include "config.h"		// Needed for VERSION and readline detection
 #include <common/Format.h>	// Needed for CFormat
 #include <wx/tokenzr.h>		// For wxStringTokenizer
 
@@ -34,8 +34,6 @@
 	#elif defined(HAVE_READLINE_H)
 		#include <readline.h> // Do_not_auto_remove
 	#endif /* !defined(HAVE_READLINE_H) */
-#else /* !defined(HAVE_READLINE_READLINE_H) */
-	/* no readline */
 #endif /* HAVE_LIBREADLINE */
 
 // For history
@@ -45,8 +43,6 @@
 	#elif defined(HAVE_HISTORY_H)
 		#include <history.h> // Do_not_auto_remove
 	#endif /* defined(HAVE_READLINE_HISTORY_H) */
-#else
-	/* no history */
 #endif /* HAVE_READLINE_HISTORY */
 
 

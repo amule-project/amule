@@ -110,7 +110,7 @@ include (cmake/bfd.cmake)
 
 configure_file (
 	config.h.cm
-	amule-config.h
+	config.h
 )
 
 if (WIN32)

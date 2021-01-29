@@ -26,8 +26,8 @@
 
 #include "CFile.h"			// Interface declarations.
 #include "Logger.h"			// Needed for AddDebugLogLineC
-#include <common/Path.h>	// Needed for CPath
-#include "amule-config.h"	// Needed for HAVE_SYS_PARAM_H
+#include <common/Path.h>		// Needed for CPath
+#include "config.h"			// Needed for HAVE_SYS_PARAM_H
 
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>

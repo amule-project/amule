@@ -39,7 +39,7 @@ dnl	Something like 5005002
 dnl - CRYPTOPP_LIB_NAME
 dnl	"cryptopp" or "crypto++"
 dnl
-dnl Exported variables (to amule-config.h, to be used in C++ source files):
+dnl Exported variables (to config.h, to be used in C++ source files):
 dnl - CRYPTOPP_INCLUDE_PREFIX
 dnl	The string that goes here: #include <CRYPTOPP_INCLUDE_PREFIX/rsa.h>
 dnl

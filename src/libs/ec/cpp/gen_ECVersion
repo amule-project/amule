@@ -38,7 +38,7 @@ cat > ECVersion.h.new <<EOT
 #ifndef ECVERSION_H
 #define ECVERSION_H
 
-#include "amule-config.h"
+#include "config.h"
 
 #ifdef SVNDATE
 #define EC_VERSION_ID "$final_hash"

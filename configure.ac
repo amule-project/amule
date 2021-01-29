@@ -35,7 +35,7 @@ AC_PREREQ(2.62)
 m4_if(m4_version_compare(m4_defn([AC_AUTOCONF_VERSION]), [2.70]), [-1],, [m4_fatal([autoconf ]m4_defn([AC_AUTOCONF_VERSION])[ is known to not work with aMule. Please use 2.69 instead.])])
 
 AC_CONFIG_SRCDIR([src/amule.cpp])
-AC_CONFIG_HEADERS([amule-config.h])
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AM_MAINTAINER_MODE
 

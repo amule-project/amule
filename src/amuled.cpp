@@ -27,7 +27,7 @@
 
 #include <include/common/EventIDs.h>
 
-#include "amule-config.h"	// Needed for HAVE_SYS_RESOURCE_H, etc
+#include "config.h"			// Needed for HAVE_SYS_RESOURCE_H, etc
 
 
 // Include the necessary headers for select(2), properly guarded

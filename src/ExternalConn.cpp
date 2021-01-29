@@ -24,9 +24,9 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include "amule-config.h"			// Needed for VERSION
+#include "config.h"				// Needed for VERSION
 
-#include <ec/cpp/ECMuleSocket.h>	// Needed for CECSocket
+#include <ec/cpp/ECMuleSocket.h>		// Needed for CECSocket
 
 #include <common/Format.h>			// Needed for CFormat
 
@@ -35,12 +35,12 @@
 
 #include "ExternalConn.h"			// Interface declarations
 #include "updownclient.h"			// Needed for CUpDownClient
-#include "Server.h"					// Needed for CServer
+#include "Server.h"				// Needed for CServer
 #include "ServerList.h"				// Needed for CServerList
 #include "PartFile.h"				// Needed for CPartFile
 #include "ServerConnect.h"			// Needed for CServerConnect
 #include "UploadQueue.h"			// Needed for CUploadQueue
-#include "amule.h"					// Needed for theApp
+#include "amule.h"				// Needed for theApp
 #include "SearchList.h"				// Needed for GetSearchResults
 #include "ClientList.h"
 #include "Preferences.h"			// Needed for CPreferences

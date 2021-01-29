@@ -25,11 +25,10 @@
 #ifndef CRYPTOPP_INC_H
 #define CRYPTOPP_INC_H
 
-#define __WEAK_CRYPTO__ 1
 #define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
 
 #ifndef CRYPTOPP_INCLUDE_PREFIX
-	#include "amule-config.h"	// Needed for CRYPTOPP_INCLUDE_PREFIX
+	#include "config.h"		// Needed for CRYPTOPP_INCLUDE_PREFIX
 #endif
 
 #define noinline	noinline

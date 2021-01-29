@@ -25,7 +25,7 @@
 //
 
 
-#include "amule-config.h"	// For VERSION and ENABLE_NLS
+#include "config.h"		// For VERSION and ENABLE_NLS
 
 #include <wx/stdpaths.h>
 

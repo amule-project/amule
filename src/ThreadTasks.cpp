@@ -36,7 +36,7 @@
 #include "Preferences.h"		// Needed for thePrefs
 #include "ScopedPtr.h"			// Needed for CScopedPtr and CScopedArray
 #include "PlatformSpecific.h"		// Needed for CanFSHandleSpecialChars
-#include "amule-config.h"
+#include "config.h"
 
 //! This hash represents the value for an empty MD4 hashing
 const byte g_emptyMD4Hash[16] = {

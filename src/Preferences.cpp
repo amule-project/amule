@@ -38,13 +38,13 @@
 #include <wx/utils.h>				// Needed for wxBusyCursor
 
 #include "amule.h"
-#include "amule-config.h"			// Needed for PACKAGE_STRING
+#include "config.h"				// Needed for PACKAGE_STRING
 
 #include "CFile.h"
 #include <common/MD5Sum.h>
 #include "Logger.h"
 #include <common/Format.h>			// Needed for CFormat
-#include <common/TextFile.h>		// Needed for CTextFile
+#include <common/TextFile.h>			// Needed for CTextFile
 #include <common/ClientVersion.h>
 
 #include "UserEvents.h"

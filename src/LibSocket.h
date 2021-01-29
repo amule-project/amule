@@ -27,7 +27,7 @@
 #ifndef __LIBSOCKET_H__
 #define __LIBSOCKET_H__
 
-#include "amule-config.h"	// Needed for ASIO_SOCKETS
+#include "config.h"		// Needed for ASIO_SOCKETS
 #include "Types.h"
 class amuleIPV4Address;
 

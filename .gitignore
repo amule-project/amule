@@ -4,7 +4,7 @@ aclocal.m4
 autom4te.cache/
 compile
 config.guess
-amule-config.h.in
+config.h.in
 config.rpath
 config.sub
 configure
@@ -29,7 +29,7 @@ po/*.gmo
 *.o
 *.swp
 .deps
-amule-config.h
+config.h
 config.log
 config.status
 Makefile

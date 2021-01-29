@@ -29,8 +29,8 @@
 #include <tags/FileTags.h>
 
 #include <wx/filename.h>			// Needed for wxFileName
-#include <wx/log.h>					// Needed for wxLogNull
-#include "amule-config.h"			// Needed for a number of defines
+#include <wx/log.h>				// Needed for wxLogNull
+#include "config.h"				// Needed for a number of defines
 
 #include <wx/stdpaths.h>			// Do_not_auto_remove
 #include <common/StringFunctions.h>

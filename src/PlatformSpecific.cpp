@@ -23,7 +23,7 @@
 //
 
 #include "PlatformSpecific.h"
-#include "amule-config.h"
+#include "config.h"
 
 // NTFS Sparse Files (only for MSW)
 #ifdef __WINDOWS__

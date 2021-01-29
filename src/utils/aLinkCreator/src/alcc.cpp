@@ -25,7 +25,7 @@
 
 
 
-#include "amule-config.h"	// Needed for PACKAGE
+#include "config.h"		// Needed for PACKAGE
 
 #include <wx/log.h>
 

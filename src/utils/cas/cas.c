@@ -39,7 +39,7 @@
 #include "graphics.h"
 #include "html.h"
 #include "lines.h"
-#include "amule-config.h"	// For HAVE_GETOPT_LONG
+#include "config.h"		// For HAVE_GETOPT_LONG
 
 #ifndef HAVE_GETOPT_LONG
 /* Code from getopt_long.h - getopt_long() for systems that lack it

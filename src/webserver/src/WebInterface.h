@@ -37,7 +37,7 @@
 
 	// wx 2.8 also needs extra socket code, unless we have ASIO sockets
 	//
-	#include "amule-config.h"	// defines ASIO_SOCKETS
+	#include "config.h"		// defines ASIO_SOCKETS
 
 	#ifndef ASIO_SOCKETS
 		// MSW: can't run amuled with 2.8 without ASIO sockets, just get it compiled

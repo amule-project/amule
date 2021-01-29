@@ -42,30 +42,30 @@
 
 #include <common/EventIDs.h>
 
-#include "amule-config.h"			// Needed for SVNDATE, PACKAGE, VERSION
+#include "config.h"				// Needed for SVNDATE, PACKAGE, VERSION
 #include "amuleDlg.h"				// Interface declarations.
 
 #include <common/Format.h>			// Needed for CFormat
-#include "amule.h"					// Needed for theApp
+#include "amule.h"				// Needed for theApp
 #include "ChatWnd.h"				// Needed for CChatWnd
 #include "SourceListCtrl.h"			// Needed for CSourceListCtrl
-#include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
+#include "DownloadListCtrl.h"			// Needed for CDownloadListCtrl
 #include "DownloadQueue.h"			// Needed for CDownloadQueue
-#include "KadDlg.h"					// Needed for CKadDlg
+#include "KadDlg.h"				// Needed for CKadDlg
 #include "Logger.h"
 #include "MuleTrayIcon.h"
 #include "muuli_wdr.h"				// Needed for ID_BUTTON*
 #include "Preferences.h"			// Needed for CPreferences
 #include "PrefsUnifiedDlg.h"
 #include "SearchDlg.h"				// Needed for CSearchDlg
-#include "Server.h"					// Needed for CServer
+#include "Server.h"				// Needed for CServer
 #include "ServerConnect.h"			// Needed for CServerConnect
 #include "ServerWnd.h"				// Needed for CServerWnd
 #include "SharedFilesWnd.h"			// Needed for CSharedFilesWnd
-#include "SharedFilePeersListCtrl.h" // Needed for CSharedFilePeersListCtrl
+#include "SharedFilePeersListCtrl.h"		// Needed for CSharedFilePeersListCtrl
 #include "Statistics.h"				// Needed for theStats
 #include "StatisticsDlg.h"			// Needed for CStatisticsDlg
-#include "TerminationProcess.h"		// Needed for CTerminationProcess
+#include "TerminationProcess.h"			// Needed for CTerminationProcess
 #include "TransferWnd.h"			// Needed for CTransferWnd
 #ifndef CLIENT_GUI
 #include "PartFileConvertDlg.h"
@@ -84,7 +84,7 @@
 #endif
 
 #ifdef ENABLE_IP2COUNTRY			// That's no bug. MSVC has ENABLE_IP2COUNTRY always on,
-									// but dummy GeoIP.h turns ENABLE_IP2COUNTRY off again.
+						// but dummy GeoIP.h turns ENABLE_IP2COUNTRY off again.
 void CamuleDlg::IP2CountryDownloadFinished(uint32 result)
 {
 	m_IP2Country->DownloadFinished(result);

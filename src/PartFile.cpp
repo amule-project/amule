@@ -26,7 +26,7 @@
 #include <wx/wx.h>
 
 #include "PartFile.h"		// Interface declarations.
-#include "amule-config.h"	// Needed for VERSION
+#include "config.h"		// Needed for VERSION
 #include <protocol/kad/Constants.h>
 #include <protocol/ed2k/Client2Client/TCP.h>
 #include <protocol/Protocols.h>

@@ -29,17 +29,16 @@
 
 
 #include <wx/app.h>			// Needed for wxApp
-#include <wx/intl.h>		// Needed for wxLocale
+#include <wx/intl.h>			// Needed for wxLocale
 
 
 #include "Types.h"			// Needed for int32, uint16 and uint64
 #include <map>
 #ifndef __WINDOWS__
 	#include <signal.h>
-//	#include <wx/unix/execute.h>
 #endif // __WINDOWS__
 
-#include "amule-config.h"	// Needed for ASIO_SOCKETS
+#include "config.h"			// Needed for ASIO_SOCKETS
 
 class CAbstractFile;
 class CKnownFile;
