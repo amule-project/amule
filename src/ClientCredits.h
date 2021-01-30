@@ -45,7 +45,7 @@ public:
 	uint32		nLastSeen;
 	uint16		nReserved3;
 	uint8		nKeySize;
-	byte		abySecureIdent[MAXPUBKEYSIZE];
+	uint8_t		abySecureIdent[MAXPUBKEYSIZE];
 };
 
 enum EIdentState{
@@ -65,7 +65,7 @@ public:
 	~CClientCredits();
 
 	const CMD4Hash& GetKey() const			{return m_pCredits->key;}
-	const byte*	GetSecureIdent() const	{return m_abyPublicKey;}
+	const uint8_t*	GetSecureIdent() const	{return m_abyPublicKey;}
 	uint8	GetSecIDKeyLen() const			{return m_nPublicKeyLen;}
 	const CreditStruct* GetDataStruct() const	{return m_pCredits;}
 	void	ClearWaitStartTime();
@@ -75,7 +75,7 @@ public:
 	uint64	GetDownloadedTotal() const;
 	float	GetScoreRatio(uint32 dwForIP, bool cryptoavail);
 	void	SetLastSeen();
-	bool	SetSecureIdent(const byte* pachIdent, uint8 nIdentLen); // Public key cannot change, use only if there is not public key yet
+	bool	SetSecureIdent(const uint8_t* pachIdent, uint8 nIdentLen); // Public key cannot change, use only if there is not public key yet
 	uint32	m_dwCryptRndChallengeFor;
 	uint32	m_dwCryptRndChallengeFrom;
 	EIdentState	GetCurrentIdentState(uint32 dwForIP) const; // can be != m_identState
@@ -88,8 +88,8 @@ public:
 private:
 	EIdentState		m_identState;
 	void			InitalizeIdent();
-	CreditStruct*	m_pCredits;
-	byte			m_abyPublicKey[80];			// even keys which are not verified will be stored here, and - if verified - copied into the struct
+	CreditStruct*		m_pCredits;
+	uint8_t			m_abyPublicKey[80];		// even keys which are not verified will be stored here, and - if verified - copied into the struct
 	uint8			m_nPublicKeyLen;
 	uint32			m_dwIdentIP;
 	uint32			m_dwSecureWaitTime;

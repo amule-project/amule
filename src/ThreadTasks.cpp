@@ -39,7 +39,7 @@
 #include "config.h"
 
 //! This hash represents the value for an empty MD4 hashing
-const byte g_emptyMD4Hash[16] = {
+const uint8_t g_emptyMD4Hash[16] = {
 	0x31, 0xD6, 0xCF, 0xE0, 0xD1, 0x6A, 0xE9, 0x31,
 	0xB7, 0x3C, 0x59, 0xD7, 0xE0, 0xC0, 0x89, 0xC0 };
 
@@ -380,7 +380,7 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 			CAICHHash aichHash(&oldfile);
 			uint32 nHashCount = oldfile.ReadUInt16();
 
-			CScopedArray<byte> buffer(nHashCount * CAICHHash::GetHashSize());
+			CScopedArray<uint8_t> buffer(nHashCount * CAICHHash::GetHashSize());
 
 			oldfile.Read(buffer.get(), nHashCount * CAICHHash::GetHashSize());
 			newfile.Write(aichHash.GetRawHash(), CAICHHash::GetHashSize());

@@ -205,7 +205,7 @@ void CClientCredits::Verified(uint32 dwForIP)
 }
 
 
-bool CClientCredits::SetSecureIdent(const byte* pachIdent, uint8 nIdentLen)
+bool CClientCredits::SetSecureIdent(const uint8_t* pachIdent, uint8 nIdentLen)
 { // verified Public key cannot change, use only if there is not public key yet
 	if (MAXPUBKEYSIZE < nIdentLen || m_pCredits->nKeySize != 0 ) {
 		return false;

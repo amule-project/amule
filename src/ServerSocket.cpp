@@ -226,7 +226,7 @@ void CServerSocket::OnReceive(int nErrorCode)
 	m_dwLastTransmission = GetTickCount();
 }
 
-bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
+bool CServerSocket::ProcessPacket(const uint8_t* packet, uint32 size, int8 opcode)
 {
 	try {
 		AddDebugLogLineN( logServer, wxT("Processing Server Packet: ") );

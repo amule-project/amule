@@ -499,7 +499,7 @@ bool CKademlia::IsRunningInLANMode()
 #include "../../CryptoPP_Inc.h"
 void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 {
-	byte Output[16];
+	uint8_t Output[16];
 
 	CryptoPP::Weak::MD4 md4_hasher;
 

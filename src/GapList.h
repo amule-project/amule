@@ -52,7 +52,7 @@ private:
 		incomplete,
 		unknown
 	};
-	std::vector<byte> m_partsComplete;
+	std::vector<uint8_t> m_partsComplete;
 
 	// get size of any part
 	uint32 GetPartSize(uint16 part) const { return part == m_iPartCount - 1 ? m_sizeLastPart : PARTSIZE; }

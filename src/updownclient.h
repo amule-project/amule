@@ -202,7 +202,7 @@ public:
 
 	void		ClearDownloadBlockRequests();
 	void		RequestSharedFileList();
-	void		ProcessSharedFileList(const byte* pachPacket, uint32 nSize, wxString& pszDirectory);
+	void		ProcessSharedFileList(const uint8_t* pachPacket, uint32 nSize, wxString& pszDirectory);
 	void		SendSharedDirectories();
 	void		SendSharedFilesOfDirectory(const wxString& strReqDir);
 
@@ -212,13 +212,13 @@ public:
 
 	uint8		GetClientSoft() const		{ return m_clientSoft; }
 	void		ReGetClientSoft();
-	bool		ProcessHelloAnswer(const byte* pachPacket, uint32 nSize);
-	bool		ProcessHelloPacket(const byte* pachPacket, uint32 nSize);
+	bool		ProcessHelloAnswer(const uint8_t* pachPacket, uint32 nSize);
+	bool		ProcessHelloPacket(const uint8_t* pachPacket, uint32 nSize);
 	void		SendHelloAnswer();
 	bool		SendHelloPacket();
 	void		SendMuleInfoPacket(bool bAnswer, bool OSInfo = false);
-	bool		ProcessMuleInfoPacket(const byte* pachPacket, uint32 nSize);
-	void		ProcessMuleCommentPacket(const byte* pachPacket, uint32 nSize);
+	bool		ProcessMuleInfoPacket(const uint8_t* pachPacket, uint32 nSize);
+	void		ProcessMuleCommentPacket(const uint8_t* pachPacket, uint32 nSize);
 	bool		Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash = false) const;
 	void		SetLastSrcReqTime()		{ m_dwLastSourceRequest = ::GetTickCount(); }
 	void		SetLastSrcAnswerTime()		{ m_dwLastSourceAnswer = ::GetTickCount(); }
@@ -234,17 +234,17 @@ public:
 
 	bool		SafeSendPacket(CPacket* packet);
 
-	void		ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSize, bool largeblocks);
+	void		ProcessRequestPartsPacket(const uint8_t* pachPacket, uint32 nSize, bool largeblocks);
 	void		ProcessRequestPartsPacketv2(const CMemFile& data);
 
 	void		SendPublicKeyPacket();
 	void		SendSignaturePacket();
-	void		ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize);
-	void		ProcessSignaturePacket(const byte* pachPacket, uint32 nSize);
+	void		ProcessPublicKeyPacket(const uint8_t* pachPacket, uint32 nSize);
+	void		ProcessSignaturePacket(const uint8_t* pachPacket, uint32 nSize);
 	uint8		GetSecureIdentState();
 
 	void		SendSecIdentStatePacket();
-	void		ProcessSecIdentStatePacket(const byte* pachPacket, uint32 nSize);
+	void		ProcessSecIdentStatePacket(const uint8_t* pachPacket, uint32 nSize);
 
 	uint8		GetInfoPacketsReceived() const	{ return m_byInfopacketsReceived; }
 	void		InfoPacketsReceived();
@@ -340,12 +340,12 @@ public:
 	bool		AskForDownload();
 	void		SendStartupLoadReq();
 	void		SendFileRequest();
-	void		ProcessHashSet(const byte* packet, uint32 size);
+	void		ProcessHashSet(const uint8_t* packet, uint32 size);
 	bool		AddRequestForAnotherFile(CPartFile* file);
 	bool		DeleteFileRequest(CPartFile* file);
 	void		DeleteAllFileRequests();
 	void		SendBlockRequests();
-	void		ProcessBlockPacket(const byte* packet, uint32 size, bool packed, bool largeblocks);
+	void		ProcessBlockPacket(const uint8_t* packet, uint32 size, bool packed, bool largeblocks);
 	uint16		GetAvailablePartCount() const;
 
 	bool		SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensions, bool bRemoveCompletely, CPartFile* toFile = NULL);
@@ -389,14 +389,14 @@ public:
 	bool		IsSupportingAICH() const	{return m_fSupportsAICH & 0x01;}
 	void		SendAICHRequest(CPartFile* pForFile, uint16 nPart);
 	bool		IsAICHReqPending() const	{return m_fAICHRequested; }
-	void		ProcessAICHAnswer(const byte* packet, uint32 size);
-	void		ProcessAICHRequest(const byte* packet, uint32 size);
+	void		ProcessAICHAnswer(const uint8_t* packet, uint32 size);
+	void		ProcessAICHRequest(const uint8_t* packet, uint32 size);
 	void		ProcessAICHFileHash(CMemFile* data, const CPartFile* file);
 
 	EUtf8Str	GetUnicodeSupport() const;
 
 	// Barry - Process zip file as it arrives, don't need to wait until end of block
-	int		unzip(Pending_Block_Struct *block, byte *zipped, uint32 lenZipped, byte **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
+	int		unzip(Pending_Block_Struct *block, uint8_t *zipped, uint32 lenZipped, uint8_t **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
 	void		UpdateDisplayedInfo(bool force = false);
 	int		GetFileListRequested() const	{ return m_iFileListRequested; }
 	void		SetFileListRequested(int iFileListRequested) { m_iFileListRequested = iFileListRequested; }
@@ -413,7 +413,7 @@ public:
 
 	const wxString& GetClientOSInfo() const		{ return m_sClientOSInfo; }
 
-	void		ProcessPublicIPAnswer(const byte* pbyData, uint32 uSize);
+	void		ProcessPublicIPAnswer(const uint8_t* pbyData, uint32 uSize);
 	void		SendPublicIPRequest();
 
 	/**
@@ -473,8 +473,8 @@ public:
 
 	/* Kad buddy support */
 	// ID
-	const byte*	GetBuddyID() const		{ return m_achBuddyID; }
-	void		SetBuddyID(const byte* m_achTempBuddyID);
+	const uint8_t*	GetBuddyID() const	{ return m_achBuddyID; }
+	void		SetBuddyID(const uint8_t* m_achTempBuddyID);
 	bool		HasValidBuddyID() const		{ return m_bBuddyIDValid; }
 	/* IP */
 	void		SetBuddyIP( uint32 val )	{ m_nBuddyIP = val; }
@@ -789,7 +789,7 @@ private:
 	ESourceFrom	m_nSourceFrom;
 
 	/* Kad Stuff */
-	byte		m_achBuddyID[16];
+	uint8_t		m_achBuddyID[16];
 	bool		m_bBuddyIDValid;
 	uint32		m_nBuddyIP;
 	uint16		m_nBuddyPort;

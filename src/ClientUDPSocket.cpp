@@ -75,7 +75,7 @@ void CClientUDPSocket::OnReceive(int errorCode)
 }
 
 
-void CClientUDPSocket::OnPacketReceived(uint32 ip, uint16 port, byte* buffer, size_t length)
+void CClientUDPSocket::OnPacketReceived(uint32 ip, uint16 port, uint8_t* buffer, size_t length)
 {
 	wxCHECK_RET(length >= 2, wxT("Invalid packet."));
 
@@ -137,7 +137,7 @@ void CClientUDPSocket::OnPacketReceived(uint32 ip, uint16 port, byte* buffer, si
 }
 
 
-void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint32 host, uint16 port)
+void CClientUDPSocket::ProcessPacket(uint8_t* packet, int16 size, int8 opcode, uint32 host, uint16 port)
 {
 	switch (opcode) {
 		case OP_REASKCALLBACKUDP: {

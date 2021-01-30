@@ -65,7 +65,7 @@ public:
 	uint32 GetServerIP() const;
 
 private:
-	bool	ProcessPacket(const byte* packet, uint32 size, int8 opcode);
+	bool	ProcessPacket(const uint8_t* packet, uint32 size, int8 opcode);
 	void	SetConnectionState(sint8 newstate);
 	CServerConnect*	serverconnect;
 	sint8	connectionstate;

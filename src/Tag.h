@@ -70,10 +70,10 @@ public:
 
 	const CMD4Hash& GetHash() const;
 
-	const byte* GetBlob() const;
+	const uint8_t* GetBlob() const;
 	uint32 GetBlobSize() const;
 
-	const byte* GetBsob() const;
+	const uint8_t* GetBsob() const;
 	uint32 GetBsobSize() const;
 
 	CTag* CloneTag()		{ return new CTag(*this); }
@@ -268,11 +268,11 @@ public:
 class CTagBsob : public CTag
 {
 public:
-	CTagBsob(const wxString& name, const byte* value, uint8 nSize)
+	CTagBsob(const wxString& name, const uint8_t* value, uint8 nSize)
 		: CTag(name)
 	{
 		m_uType = TAGTYPE_BSOB;
-		m_pData = new byte[nSize];
+		m_pData = new uint8_t[nSize];
 		memcpy(m_pData, value, nSize);
 		m_nSize = nSize;
 	}
@@ -281,11 +281,11 @@ public:
 class CTagBlob : public CTag
 {
 public:
-	CTagBlob(const wxString& name, const byte* value, uint8 nSize)
+	CTagBlob(const wxString& name, const uint8_t* value, uint8 nSize)
 		: CTag(name)
 	{
 		m_uType = TAGTYPE_BLOB;
-		m_pData = new byte[nSize];
+		m_pData = new uint8_t[nSize];
 		memcpy(m_pData, value, nSize);
 		m_nSize = nSize;
 	}

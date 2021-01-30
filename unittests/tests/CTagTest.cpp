@@ -14,7 +14,7 @@ using namespace muleunit;
 
 DECLARE_SIMPLE(CTag)
 
-void test_taglist_serialization(TagPtrList & taglist, byte* packet, uint64 packet_len);
+void test_taglist_serialization(TagPtrList & taglist, uint8_t* packet, uint64 packet_len);
 
 template <class T1, class T2>
 void AssertEquals(const T1& a, const T2& b)
@@ -22,17 +22,17 @@ void AssertEquals(const T1& a, const T2& b)
 	ASSERT_EQUALS(a, b);
 }
 
-struct BLOBValue : std::vector<byte>
+struct BLOBValue : std::vector<uint8_t>
 {
-	BLOBValue(uint32 _length, const byte* _ptr)
-		: std::vector<byte > (_ptr, _ptr + _length)
+	BLOBValue(uint32 _length, const uint8_t* _ptr)
+		: std::vector<uint8_t > (_ptr, _ptr + _length)
 	{}
 };
 
-struct BSOBValue : std::vector<byte>
+struct BSOBValue : std::vector<uint8_t>
 {
-	BSOBValue(uint8 _length, const byte* _ptr)
-		: std::vector<byte > (_ptr, _ptr + _length)
+	BSOBValue(uint8 _length, const uint8_t* _ptr)
+		: std::vector<uint8_t > (_ptr, _ptr + _length)
 	{}
 };
 
@@ -249,7 +249,7 @@ void CheckTagData(CTag* tag, TName tagName, const V& tagValue)
 	CheckTagValue(valid_tag_value(tagValue), tag);
 }
 
-void test_taglist_serialization(TagPtrList& taglist, byte* packet, uint64 packet_len)
+void test_taglist_serialization(TagPtrList& taglist, uint8_t* packet, uint64 packet_len)
 {
 	CMemFile fout;
 
@@ -267,7 +267,7 @@ void test_taglist_serialization(TagPtrList& taglist, byte* packet, uint64 packet
 		ASSERT_EQUALS(packet_len, fout.GetLength());
 	}
 
-	std::vector<byte> buf(packet_len);
+	std::vector<uint8_t> buf(packet_len);
 
 	{
 		CONTEXT(wxT("Reading back serialized taglist bytes from CMemFile"));
@@ -281,7 +281,7 @@ void test_taglist_serialization(TagPtrList& taglist, byte* packet, uint64 packet
 	}
 }
 
-void ReadTagPtrList(TagPtrList& taglist, byte* packet, uint64 packet_len)
+void ReadTagPtrList(TagPtrList& taglist, uint8_t* packet, uint64 packet_len)
 {
 
 	CONTEXT(wxT("Reading taglist from buffer"));
@@ -296,7 +296,7 @@ void ReadTagPtrList(TagPtrList& taglist, byte* packet, uint64 packet_len)
 
 TEST_M(CTag, ReadTagList1, wxT("Kad: Parse taglist from Kad packet with UTF8 string #1"))
 {
-	byte packet[] = {
+	uint8_t packet[] = {
 		0x07,
 		/*Tag1*/ 0x02, 0x01, 0x00, 0x01, 0x22, 0x00, 0x47, 0x65, 0x6d, 0x20, 0x42, 0x6f, 0x79, 0x20, 0x2d,
 		0x20, 0x53, 0x61, 0x72, 0xc3, 0xa0, 0x20, 0x70, 0x65, 0x72, 0x63, 0x68, 0xc3, 0xa8, 0x20, 0x74,
@@ -328,7 +328,7 @@ TEST_M(CTag, ReadTagList1, wxT("Kad: Parse taglist from Kad packet with UTF8 str
 
 TEST_M(CTag, ReadTagList2, wxT("Kad: Parse taglist from Kad packet with UTF8 string #2"))
 {
-	byte packet[] = {
+	uint8_t packet[] = {
 		0x05,
 		/*Tag1*/0x02, 0x01, 0x00, 0x01, 0x33, 0x00, 0x53, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x61,
 		0x74, 0x69, 0x6f, 0x6e, 0x20, 0x54, 0x65, 0x73, 0x74, 0x20, 0x46, 0x69, 0x6c, 0x65, 0x20, 0x31,
@@ -358,7 +358,7 @@ TEST_M(CTag, ReadTagList2, wxT("Kad: Parse taglist from Kad packet with UTF8 str
 
 TEST_M(CTag, Float, wxT("Kad: Read/Write floats"))
 {
-	byte packet[] = {
+	uint8_t packet[] = {
 		0x02,
 		/*Tag1*/0x04, 0x01, 0x00, 0xFF, 0x79, 0xe9, 0xf6, 0x42,
 		/*Tag2*/0x04, 0x01, 0x00, 0xFF, 0x79, 0xd9, 0xd6, 0x42,
@@ -378,7 +378,7 @@ TEST_M(CTag, Float, wxT("Kad: Read/Write floats"))
 
 TEST_M(CTag, CMD4Hash, wxT("Kad: Read/Write CMD4Hash"))
 {
-	byte packet[] = {
+	uint8_t packet[] = {
 		0x01,
 		/*Tag1*/0x01,
 		0x01, 0x00, 0xFF,
@@ -401,7 +401,7 @@ TEST_M(CTag, CMD4Hash, wxT("Kad: Read/Write CMD4Hash"))
 }
 
 template<class T, class V>
-void check_single_kad_tag(byte* packet, size_t packet_len, T tagName, V tagValue)
+void check_single_kad_tag(uint8_t* packet, size_t packet_len, T tagName, V tagValue)
 {
 	CMemFile buf(packet, packet_len);
 	CONTEXT(wxT("Starting buffer: ") + toString(buf));
@@ -433,10 +433,10 @@ void check_single_kad_tag(byte* packet, size_t packet_len, T tagName, V tagValue
 
 TEST_M(CTag, KadBsob, wxT("Kad: Read/Write BSOB"))
 {
-	byte packet[] = {
+	uint8_t packet[] = {
 		/*Tag1*/ 0x0A, 0x01, 0x00, 0x02, 0x04, 0x01, 0x02, 0x03, 0x04,
 	};
-	byte raw_data[] = {0x01, 0x02, 0x03, 0x04};
+	uint8_t raw_data[] = {0x01, 0x02, 0x03, 0x04};
 	{
 		CONTEXT(wxT("Create BSOBValue"));
 		BSOBValue bsob(sizeof (raw_data), raw_data);
@@ -448,7 +448,7 @@ TEST_M(CTag, KadBsob, wxT("Kad: Read/Write BSOB"))
 
 TEST_M(CTag, KadInt64, wxT("Kad: Read/Write integer 64bit"))
 {
-	byte packet[] = {
+	uint8_t packet[] = {
 		/*Tag1*/ 0x0b, 0x01, 0x00, 0x02, 0x10, 0x11, 0x12, 0x13, 0x20, 0x21, 0x22, 0x23, // 64 bit int
 	};
 	check_single_kad_tag(packet, sizeof (packet), TAG_FILESIZE, 0x2322212013121110LL);
@@ -456,7 +456,7 @@ TEST_M(CTag, KadInt64, wxT("Kad: Read/Write integer 64bit"))
 
 TEST_M(CTag, KadInt32, wxT("Kad: Read/Write integer 32bit"))
 {
-	byte packet[] = {
+	uint8_t packet[] = {
 		/*Tag1*/ 0x03, 0x01, 0x00, 0x02, 0x12, 0x34, 0x56, 0x78, // 32 bit int
 	};
 	check_single_kad_tag(packet, sizeof (packet), TAG_FILESIZE, 0x78563412);
@@ -464,7 +464,7 @@ TEST_M(CTag, KadInt32, wxT("Kad: Read/Write integer 32bit"))
 
 TEST_M(CTag, KadInt16, wxT("Kad: Read/Write integer 16bit"))
 {
-	byte packet[] = {
+	uint8_t packet[] = {
 		/*Tag1*/ 0x08, 0x01, 0x00, 0x02, 0x12, 0x34, // 16 bit int
 	};
 	check_single_kad_tag(packet, sizeof (packet), TAG_FILESIZE, 0x3412);
@@ -472,7 +472,7 @@ TEST_M(CTag, KadInt16, wxT("Kad: Read/Write integer 16bit"))
 
 TEST_M(CTag, KadInt8, wxT("Kad: Read/Write integer  8bit"))
 {
-	byte packet[] = {
+	uint8_t packet[] = {
 		/*Tag1*/ 0x09, 0x01, 0x00, 0x02, 0x12, //  8 bit int
 	};
 	check_single_kad_tag(packet, sizeof (packet), TAG_FILESIZE, 0x12);
@@ -480,7 +480,7 @@ TEST_M(CTag, KadInt8, wxT("Kad: Read/Write integer  8bit"))
 
 TEST_M(CTag, ReadIntegers, wxT("Kad: Read/Write multiple integers"))
 {
-	byte packet[] = {
+	uint8_t packet[] = {
 		0x08,
 		/*Tag1*/ 0x03, 0x01, 0x00, 0x02, 0x12, 0x34, 0x56, 0x78, // 32 bit int
 		/*Tag2*/ 0x08, 0x01, 0x00, 0x02, 0x12, 0x34, // 16 bit int
@@ -589,7 +589,7 @@ TEST_M(CTag, KadTagNames, wxT("Kad: Test Kad tags (name=string) - write/read eve
 	TagPtrList taglist;
 	buf.Seek(0, wxFromStart);
 	size_t packet_len = buf.GetLength();
-	std::vector<byte> packet(packet_len);
+	std::vector<uint8_t> packet(packet_len);
 	buf.Read(&packet[0], packet_len);
 
 	ReadTagPtrList(taglist, &packet[0], packet_len);
@@ -681,14 +681,14 @@ TEST_M(CTag, ED2kTagNames, wxT("Ed2k: Test ed2k tags (name=id) - write/read ever
 
 TEST_M(CTag, Ed2kBlob1, wxT("Ed2k: Read/Write BLOB - numeric tagname"))
 {
-	byte packet[] = {
+	uint8_t packet[] = {
 		/*Tag1*/ 0x87, 0xFF, 0x04, 0x00, 0x00, 0x00,
 		0x01, 0x02, 0x03, 0x04,
 	};
 
 	CMemFile buf(packet, sizeof (packet));
 	buf.Seek(0, wxFromStart);
-	byte raw_data[] = {0x01, 0x02, 0x03, 0x04};
+	uint8_t raw_data[] = {0x01, 0x02, 0x03, 0x04};
 	{
 		CONTEXT(wxT("Create BLOBValue"));
 		BLOBValue blob(sizeof (raw_data), raw_data);
@@ -701,14 +701,14 @@ TEST_M(CTag, Ed2kBlob1, wxT("Ed2k: Read/Write BLOB - numeric tagname"))
 
 TEST_M(CTag, Ed2kBlob2, wxT("Ed2k: Read/Write BLOB - string tagname"))
 {
-	byte packet[] = {
+	uint8_t packet[] = {
 		/*Tag1*/ 0x07, 0x02, 0x00, 'A', 'A', 0x04, 0x00, 0x00, 0x00,
 		0x01, 0x02, 0x03, 0x04,
 	};
 
 	CMemFile buf(packet, sizeof (packet));
 	buf.Seek(0, wxFromStart);
-	byte raw_data[] = {0x01, 0x02, 0x03, 0x04};
+	uint8_t raw_data[] = {0x01, 0x02, 0x03, 0x04};
 	{
 		CONTEXT(wxT("Create BLOBValue"));
 		BLOBValue blob(sizeof (raw_data), raw_data);

@@ -500,7 +500,7 @@ void CSearchList::OnGlobalSearchTimer(CTimerEvent& WXUNUSED(evt))
 }
 
 
-void CSearchList::ProcessSharedFileList(const byte* in_packet, uint32 size,
+void CSearchList::ProcessSharedFileList(const uint8_t* in_packet, uint32 size,
 	CUpDownClient* sender, bool *moreResultsAvailable, const wxString& directory)
 {
 	wxCHECK_RET(sender, wxT("No sender in search-results from client."));
@@ -991,7 +991,7 @@ void CSearchList::KademliaSearchKeyword(uint32_t searchID, const Kademlia::CUInt
 	EUtf8Str eStrEncode = utf8strRaw;
 
 	CMemFile temp(250);
-	byte fileid[16];
+	uint8_t fileid[16];
 	fileID->ToByteArray(fileid);
 	temp.WriteHash(CMD4Hash(fileid));
 

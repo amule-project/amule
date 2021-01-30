@@ -1114,7 +1114,7 @@ void CDownloadQueue::ProcessLocalRequests()
 		if (iSize > 0) {
 			// create one 'packet' which contains all buffered OP_GETSOURCES ED2K packets to be sent with one TCP frame
 			// server credits: (16+4)*regularfiles + (16+4+8)*largefiles +1
-			CScopedPtr<CPacket> packet(new CPacket(new byte[iSize], dataTcpFrame.GetLength(), true, false));
+			CScopedPtr<CPacket> packet(new CPacket(new uint8_t[iSize], dataTcpFrame.GetLength(), true, false));
 			dataTcpFrame.Seek(0, wxFromStart);
 			dataTcpFrame.Read(packet->GetPacket(), iSize);
 			uint32 size = packet->GetPacketSize();
@@ -1591,7 +1591,7 @@ void CDownloadQueue::KademliaSearchFile(uint32_t searchID, const Kademlia::CUInt
 			//ctemp->SetServerIP(serverip);
 			//ctemp->SetServerPort(serverport);
 			ctemp->SetKadPort(udp);
-			byte cID[16];
+			uint8_t cID[16];
 			pcontactID->ToByteArray(cID);
 			ctemp->SetUserHash(CMD4Hash(cID));
 			break;
@@ -1609,7 +1609,7 @@ void CDownloadQueue::KademliaSearchFile(uint32_t searchID, const Kademlia::CUInt
 			// from this firewalled source, the compare method will match them.
 			ctemp->SetSourceFrom(SF_KADEMLIA);
 			ctemp->SetKadPort(udp);
-			byte cID[16];
+			uint8_t cID[16];
 			pcontactID->ToByteArray(cID);
 			ctemp->SetUserHash(CMD4Hash(cID));
 			pbuddyID->ToByteArray(cID);
@@ -1634,7 +1634,7 @@ void CDownloadQueue::KademliaSearchFile(uint32_t searchID, const Kademlia::CUInt
 			ctemp->SetSourceFrom(SF_KADEMLIA);
 			ctemp->SetKadPort(udp);
 			ctemp->SetIP(ED2KID); // need to set the IP address, which cannot be used for TCP but for UDP
-			byte cID[16];
+			uint8_t cID[16];
 			pcontactID->ToByteArray(cID);
 			ctemp->SetUserHash(CMD4Hash(cID));
 		}

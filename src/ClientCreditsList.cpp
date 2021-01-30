@@ -326,7 +326,7 @@ void CClientCreditsList::InitalizeCrypting()
 }
 
 
-uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey)
+uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uint8_t* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey)
 {
 	CryptoPP::RSASSA_PKCS1v15_SHA_Signer* signer =
 		static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(sigkey);
@@ -345,7 +345,7 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOut
 	try {
 		CryptoPP::SecByteBlock sbbSignature(signer->SignatureLength());
 		CryptoPP::AutoSeededX917RNG<CryptoPP::DES_EDE3> rng;
-		byte abyBuffer[MAXPUBKEYSIZE+9];
+		uint8_t abyBuffer[MAXPUBKEYSIZE+9];
 		uint32 keylen = pTarget->GetSecIDKeyLen();
 		memcpy(abyBuffer,pTarget->GetSecureIdent(),keylen);
 		// 4 additional bytes random data send from this client
@@ -373,7 +373,7 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOut
 }
 
 
-bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind)
+bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uint8_t* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind)
 {
 	wxASSERT( pTarget );
 	wxASSERT( pachSignature );
@@ -383,10 +383,10 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSi
 	}
 	bool bResult;
 	try {
-		CryptoPP::StringSource ss_Pubkey((byte*)pTarget->GetSecureIdent(),pTarget->GetSecIDKeyLen(),true,0);
+		CryptoPP::StringSource ss_Pubkey((uint8_t*)pTarget->GetSecureIdent(),pTarget->GetSecIDKeyLen(),true,0);
 		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(ss_Pubkey);
 		// 4 additional bytes random data send from this client +5 bytes v2
-		byte abyBuffer[MAXPUBKEYSIZE+9];
+		uint8_t abyBuffer[MAXPUBKEYSIZE+9];
 		memcpy(abyBuffer,m_abyMyPublicKey,m_nMyPublicKeyLen);
 		uint32 challenge = pTarget->m_dwCryptRndChallengeFor;
 		wxASSERT ( challenge != 0 );
@@ -455,7 +455,7 @@ bool CClientCreditsList::Debug_CheckCrypting(){
 	CryptoPP::RSASSA_PKCS1v15_SHA_Signer priv(rng, 384);
 	CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pub(priv);
 
-	byte abyPublicKey[80];
+	uint8_t abyPublicKey[80];
 	CryptoPP::ArraySink asink(abyPublicKey, 80);
 	pub.DEREncode(asink);
 	int8 PublicKeyLen = asink.TotalPutLength();
@@ -467,7 +467,7 @@ bool CClientCreditsList::Debug_CheckCrypting(){
 	newcredits.SetSecureIdent(m_abyMyPublicKey,m_nMyPublicKeyLen);
 	newcredits.m_dwCryptRndChallengeFrom = challenge;
 	// create signature with fake priv key
-	byte pachSignature[200];
+	uint8_t pachSignature[200];
 	memset(pachSignature,0,200);
 	uint8 sigsize = CreateSignature(&newcredits,pachSignature,200,0,false, &priv);
 

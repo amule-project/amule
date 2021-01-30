@@ -112,7 +112,7 @@ bool CServerList::LoadServerMet(const CPath& path)
 	try {
 		Notify_ServerFreeze();
 
-		byte version = servermet.ReadUInt8();
+		uint8_t version = servermet.ReadUInt8();
 
 		if (version != 0xE0 && version != MET_HEADER) {
 			AddLogLineC(CFormat(_("Server.met file corrupt, found invalid versiontag: 0x%x, size %i")) % version % sizeof(version));
@@ -290,7 +290,7 @@ void CServerList::ServerStats()
 			// if it doesn't get responsed, we don't count it as error but continue with a normal ping
 			ping_server->SetCryptPingReplyPending(true);
 			uint32 nPacketLen = 4 + (uint8)(rand() % 16); // max padding 16 bytes
-			CScopedArray<byte> pRawPacket(nPacketLen);
+			CScopedArray<uint8_t> pRawPacket(nPacketLen);
 			uint32 dwChallenge = (rand() << 17) | (rand() << 2) | (rand() & 0x03);
 			if (dwChallenge == 0) {
 				dwChallenge++;

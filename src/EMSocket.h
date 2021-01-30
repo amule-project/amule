@@ -99,15 +99,15 @@ private:
 	bool	pendingOnReceive;
 
 	// Download partial header
-	byte	pendingHeader[PACKET_HEADER_SIZE];
+	uint8	pendingHeader[PACKET_HEADER_SIZE];
 	uint32	pendingHeaderSize;
 
 	// Download partial packet
-	byte*	pendingPacket;
-	uint32  pendingPacketSize;
+	uint8*	pendingPacket;
+	uint32	pendingPacketSize;
 
 	// Upload control
-	byte*	sendbuffer;
+	uint8*	sendbuffer;
 	uint32	sendblen;
 	uint32	sent;
 

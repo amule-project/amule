@@ -60,12 +60,12 @@ CServerUDPSocket::CServerUDPSocket(amuleIPV4Address &address, const CProxyData *
 }
 
 
-void CServerUDPSocket::OnPacketReceived(uint32 serverip, uint16 serverport, byte* buffer, size_t length)
+void CServerUDPSocket::OnPacketReceived(uint32 serverip, uint16 serverport, uint8_t* buffer, size_t length)
 {
 	wxCHECK_RET(length >= 2, wxT("Invalid packet."));
 
 	size_t nPayLoadLen = length;
-	byte* pBuffer = buffer;
+	uint8_t* pBuffer = buffer;
 	CServer* pServer = theApp->serverlist->GetServerByIPUDP(serverip, serverport, true);
 	if (pServer && thePrefs::IsServerCryptLayerUDPEnabled() &&
 		((pServer->GetServerKeyUDP() != 0 && pServer->SupportsObfuscationUDP()) || (pServer->GetCryptPingReplyPending() && pServer->GetChallenge() != 0)))
@@ -365,7 +365,7 @@ void CServerUDPSocket::SendPacket(CPacket* packet, CServer* host, bool delPacket
 	// We might need to encrypt the packet for this server.
 	if (!rawpacket && thePrefs::IsServerCryptLayerUDPEnabled() && host->GetServerKeyUDP() != 0 && host->SupportsObfuscationUDP()) {
 		uint16 uRawPacketSize = packet->GetPacketSize() + 2;
-		byte* pRawPacket = new byte[uRawPacketSize];
+		uint8_t* pRawPacket = new uint8_t[uRawPacketSize];
 		memcpy(pRawPacket, packet->GetUDPHeader(), 2);
 		memcpy(pRawPacket + 2, packet->GetDataBuffer(), packet->GetPacketSize());
 

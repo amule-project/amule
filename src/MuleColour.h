@@ -40,7 +40,7 @@ public:
 
 	CMuleColour() { Init(); Set(0,0,0); }
 	CMuleColour(const wxColour& colour) { Init(); Set(colour.Red(), colour.Green(), colour.Blue()); }
-	CMuleColour(byte r, byte g, byte b) { Init(); Set(r,g,b); }
+	CMuleColour(uint8_t r, uint8_t g, uint8_t b) { Init(); Set(r,g,b); }
 	CMuleColour(unsigned long rgb)
 	{
 		Init();
@@ -61,13 +61,13 @@ public:
 
 	~CMuleColour() { }
 
-	void Set(byte red, byte green, byte blue) { m_red = red; m_green = green; m_blue = blue; }
+	void Set(uint8_t red, uint8_t green, uint8_t blue) { m_red = red; m_green = green; m_blue = blue; }
 
-	inline byte Red() const { return m_red; }
-	inline byte Green() const { return m_green; }
-	inline byte Blue() const { return m_blue; }
+	inline uint8_t Red() const { return m_red; }
+	inline uint8_t Green() const { return m_green; }
+	inline uint8_t Blue() const { return m_blue; }
 
-	const CMuleColour& Blend(byte percentage, ColourComponent flags = (ColourComponent)(COLOUR_R | COLOUR_G | COLOUR_B) )
+	const CMuleColour& Blend(uint8_t percentage, ColourComponent flags = (ColourComponent)(COLOUR_R | COLOUR_G | COLOUR_B) )
 	{
 		unsigned int red = (unsigned int)(Red() * ((flags & COLOUR_R) ? ((float)percentage/(float)100) : (float)1));
 		unsigned int green = (unsigned int)(Green() * ((flags & COLOUR_G) ? ((float)percentage/(float)100) : (float)1));
@@ -99,9 +99,9 @@ public:
 	const wxBrush& GetBrush(int style = wxSOLID) const;
 
 private:
-	byte m_red;
-	byte m_green;
-	byte m_blue;
+	uint8_t m_red;
+	uint8_t m_green;
+	uint8_t m_blue;
 
 	mutable wxPen* m_cachedpen;
 	mutable wxBrush* m_cachedbrush;

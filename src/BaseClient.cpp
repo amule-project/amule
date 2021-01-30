@@ -361,7 +361,7 @@ void CUpDownClient::ClearHelloProperties()
 	m_bUnicodeSupport = false;
 }
 
-bool CUpDownClient::ProcessHelloPacket(const byte* pachPacket, uint32 nSize)
+bool CUpDownClient::ProcessHelloPacket(const uint8_t* pachPacket, uint32 nSize)
 {
 	const CMemFile data(pachPacket,nSize);
 	uint8 hashsize = data.ReadUInt8();
@@ -459,7 +459,7 @@ void CUpDownClient::Safe_Delete()
 }
 
 
-bool CUpDownClient::ProcessHelloAnswer(const byte* pachPacket, uint32 nSize)
+bool CUpDownClient::ProcessHelloAnswer(const uint8_t* pachPacket, uint32 nSize)
 {
 	const CMemFile data(pachPacket,nSize);
 	bool bIsMule = ProcessHelloTypePacket(data);
@@ -840,7 +840,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo)
 	}
 }
 
-bool CUpDownClient::ProcessMuleInfoPacket(const byte* pachPacket, uint32 nSize)
+bool CUpDownClient::ProcessMuleInfoPacket(const uint8_t* pachPacket, uint32 nSize)
 {
 	uint8 protocol_version;
 
@@ -1173,7 +1173,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 }
 
 
-void CUpDownClient::ProcessMuleCommentPacket(const byte* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessMuleCommentPacket(const uint8_t* pachPacket, uint32 nSize)
 {
 	if (!m_reqfile) {
 		throw CInvalidPacket(wxT("Comment packet for unknown file"));
@@ -1978,7 +1978,7 @@ void CUpDownClient::RequestSharedFileList()
 }
 
 
-void CUpDownClient::ProcessSharedFileList(const byte* pachPacket, uint32 nSize, wxString& pszDirectory)
+void CUpDownClient::ProcessSharedFileList(const uint8_t* pachPacket, uint32 nSize, wxString& pszDirectory)
 {
 	if (m_iFileListRequested > 0) {
 		m_iFileListRequested--;
@@ -2104,7 +2104,7 @@ void CUpDownClient::SendSignaturePacket()
 		}
 	}
 	//end v2
-	byte achBuffer[250];
+	uint8_t achBuffer[250];
 
 	uint8 siglen = theApp->clientcredits->CreateSignature(credits, achBuffer,  250, ChallengeIP, byChaIPKind );
 	wxCHECK2(siglen != 0, return);
@@ -2125,7 +2125,7 @@ void CUpDownClient::SendSignaturePacket()
 }
 
 
-void CUpDownClient::ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessPublicKeyPacket(const uint8_t* pachPacket, uint32 nSize)
 {
 	theApp->clientlist->AddTrackClient(this);
 
@@ -2161,7 +2161,7 @@ void CUpDownClient::ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize)
 }
 
 
-void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessSignaturePacket(const uint8_t* pachPacket, uint32 nSize)
 {
 	// here we spread the good guys from the bad ones ;)
 
@@ -2249,7 +2249,7 @@ void CUpDownClient::SendSecIdentStatePacket()
 }
 
 
-void CUpDownClient::ProcessSecIdentStatePacket(const byte* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessSecIdentStatePacket(const uint8_t* pachPacket, uint32 nSize)
 {
 	if ( nSize != 5 ) {
 		return;
@@ -2345,7 +2345,7 @@ void CUpDownClient::SendPublicIPRequest()
 	}
 }
 
-void CUpDownClient::ProcessPublicIPAnswer(const byte* pbyData, uint32 uSize)
+void CUpDownClient::ProcessPublicIPAnswer(const uint8_t* pbyData, uint32 uSize)
 {
 	if (uSize != 4) {
 		throw wxString(wxT("Wrong Packet size on Public IP answer"));
@@ -2528,7 +2528,7 @@ bool CUpDownClient::SendChatMessage(const wxString& message)
 
 /* Kad stuff */
 
-void CUpDownClient::SetBuddyID(const byte* pucBuddyID)
+void CUpDownClient::SetBuddyID(const uint8_t* pucBuddyID)
 {
 	if( pucBuddyID == NULL ){
 		md4clr(m_achBuddyID);
@@ -2723,7 +2723,7 @@ void CUpDownClient::ProcessChatMessage(wxString message)
 							m_strCaptchaChallenge = captcha.GetCaptchaText();
 							m_nChatCaptchaState = CA_CHALLENGESENT;
 							m_cCaptchasSent++;
-							CMemFile fileAnswer((byte*) memstr.GetOutputStreamBuffer()->GetBufferStart(), memstr.GetLength());
+							CMemFile fileAnswer((uint8_t*) memstr.GetOutputStreamBuffer()->GetBufferStart(), memstr.GetLength());
 							CPacket* packet = new CPacket(fileAnswer, OP_EMULEPROT, OP_CHATCAPTCHAREQ);
 							theStats::AddUpOverheadOther(packet->GetPacketSize());
 							AddLogLineN(CFormat(wxT("sent Captcha %s (%d)")) % m_strCaptchaChallenge % packet->GetPacketSize());
@@ -2757,7 +2757,7 @@ void CUpDownClient::ProcessChatMessage(wxString message)
 					m_cCaptchasSent = 0;
 					m_strCaptchaChallenge.Clear();
 					CPacket* packet = new CPacket(OP_CHATCAPTCHARES, 1, OP_EMULEPROT, false);
-					byte statusResponse = 0; // status response
+					uint8_t statusResponse = 0; // status response
 					packet->CopyToDataBuffer(0, &statusResponse, 1);
 					theStats::AddUpOverheadOther(packet->GetPacketSize());
 					SafeSendPacket(packet);
@@ -2767,7 +2767,7 @@ void CUpDownClient::ProcessChatMessage(wxString message)
 					m_strCaptchaChallenge.Clear();
 					m_strCaptchaPendingMsg.Clear();
 					CPacket* packet = new CPacket(OP_CHATCAPTCHARES, 1, OP_EMULEPROT, false);
-					byte statusResponse = (m_cCaptchasSent < 3) ? 1 : 2; // status response
+					uint8_t statusResponse = (m_cCaptchasSent < 3) ? 1 : 2; // status response
 					packet->CopyToDataBuffer(0, &statusResponse, 1);
 					theStats::AddUpOverheadOther(packet->GetPacketSize());
 					SafeSendPacket(packet);

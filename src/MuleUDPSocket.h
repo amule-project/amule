@@ -131,7 +131,7 @@ protected:
 	 * @param buffer The data that has been received.
 	 * @param length The length of the data buffer.
 	 */
-	virtual void OnPacketReceived(uint32 ip, uint16 port, byte* buffer, size_t length) = 0;
+	virtual void OnPacketReceived(uint32 ip, uint16 port, uint8_t* buffer, size_t length) = 0;
 
 
 	/** See ThrottledControlSocket::SendControlData */

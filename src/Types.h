@@ -41,7 +41,6 @@
 	#define LONGLONG(x) x##ll
 	#define ULONGLONG(x) x##llu
 #else
-	typedef unsigned __int8 byte;
 	typedef unsigned __int8 uint8_t;
 	typedef unsigned __int16 uint16_t;
 	typedef unsigned __int32 uint32_t;
@@ -107,7 +106,6 @@ typedef int8_t		sint8;
 typedef int16_t		sint16;
 typedef int32_t		sint32;
 typedef int64_t		sint64;
-typedef uint8_t		byte;
 
 
 class CKnownFile;

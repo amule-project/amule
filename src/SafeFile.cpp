@@ -397,7 +397,7 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 {
 	CTag *retVal = NULL;
 	wxString name;
-	byte type = 0;
+	uint8_t type = 0;
 	try {
 		type = ReadUInt8();
 		name = ReadString(false);

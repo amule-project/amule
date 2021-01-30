@@ -38,7 +38,7 @@ CMemFile::CMemFile(unsigned int growthRate)
 }
 
 
-CMemFile::CMemFile(byte* buffer, size_t bufferSize)
+CMemFile::CMemFile(uint8* buffer, size_t bufferSize)
 {
 	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempted to attach invalid buffer."));
 
@@ -51,11 +51,11 @@ CMemFile::CMemFile(byte* buffer, size_t bufferSize)
 	m_readonly		= false;
 }
 
-CMemFile::CMemFile(const byte* buffer, size_t bufferSize)
+CMemFile::CMemFile(const uint8* buffer, size_t bufferSize)
 {
 	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempted to attach invalid buffer."));
 
-	m_buffer		= const_cast<byte*>(buffer);
+	m_buffer		= const_cast<uint8*>(buffer);
 	m_BufferSize	= bufferSize;
 	m_fileSize		= bufferSize;
 	m_growthRate	= 0;
@@ -115,7 +115,7 @@ void CMemFile::enlargeBuffer(size_t size)
 		newsize = size;
 	}
 
-	byte *tmp = (byte*)realloc(m_buffer, newsize);
+	uint8 *tmp = (uint8*)realloc(m_buffer, newsize);
 	if (tmp) {
 		m_buffer = tmp;
 		m_BufferSize = newsize;

@@ -44,7 +44,7 @@ public:
 	virtual void OnReceiveError(int errorCode, uint32 ip, uint16 port);
 
 private:
-	void	OnPacketReceived(uint32 ip, uint16 port, byte* buffer, size_t length);
+	void	OnPacketReceived(uint32 ip, uint16 port, uint8_t* buffer, size_t length);
 	void	ProcessPacket(CMemFile& packet, uint8 opcode, uint32 ip, uint16 port);
 	void	SendQueue();
 
