@@ -1,9 +1,9 @@
 /* Define to 1 if you have <boost/asio.hpp> and are using Boost.Asio for
    networking. */
-#cmakedefine ASIO_SOCKETS 1
+#cmakedefine01 ASIO_SOCKETS
 
 /* Define to 1 if error_code handling should be handled internally */
-#cmakedefine BOOST_ERROR_CODE_HEADER_ONLY 1
+#cmakedefine01 BOOST_ERROR_CODE_HEADER_ONLY
 
 /* Define this to the include prefix of crypto++ */
 #cmakedefine CRYPTOPP_INCLUDE_PREFIX ${CRYPTOPP_INCLUDE_PREFIX}
@@ -13,7 +13,7 @@
 
 /* Define to 1  if translation of program messages to the user's
    native language is requested. */
-#cmakedefine ENABLE_NLS 1
+#cmakedefine01 ENABLE_NLS
 
 /* Define if you have the _SC_PAGESIZE constant in <unistd.h> */
 #cmakedefine HAVE__SC_PAGESIZE
@@ -37,7 +37,7 @@
 #cmakedefine HAVE_FALLOCATE
 
 /* Define if you have the <fcntl.h> header file. */
-#cmakedefine HAVE_FCNTL_H 1
+#cmakedefine01 HAVE_FCNTL_H
 
 /* Define if you have the `getopt_long' function. */
 #cmakedefine HAVE_GETOPT_LONG
@@ -49,11 +49,11 @@
 #cmakedefine HAVE_HISTORY_H
 
 /* Define if <inttypes.h> exists and doesn't clash with <sys/types.h>. */
-#cmakedefine HAVE_INTTYPES_H 1
+#cmakedefine01 HAVE_INTTYPES_H
 
 /* Define if <inttypes.h> exists, doesn't clash with <sys/types.h>, and
    declares uintmax_t. */
-#cmakedefine HAVE_INTTYPES_H_WITH_UINTMAX 1
+#cmakedefine01 HAVE_INTTYPES_H_WITH_UINTMAX
 
 /* Define if you have a readline compatible library */
 #cmakedefine HAVE_LIBREADLINE
@@ -102,7 +102,7 @@
 
 /* Define if <stdint.h> exists, doesn't clash with <sys/types.h>, and declares
    uintmax_t. */
-#cmakedefine HAVE_STDINT_H_WITH_UINTMAX 1
+#cmakedefine01 HAVE_STDINT_H_WITH_UINTMAX
 
 /* Define if you have the <stdlib.h> header file. */
 #cmakedefine HAVE_STDLIB_H
@@ -114,7 +114,7 @@
 #cmakedefine HAVE_STRING_H
 
 /* Define to 1 if you have the `sysconf' function. */
-#cmakedefine HAVE_SYSCONF 1
+#cmakedefine01 HAVE_SYSCONF
 
 /* Define if you have the <sys/mman.h> header file. */
 #cmakedefine HAVE_SYS_MMAN_H
@@ -129,7 +129,7 @@
 #cmakedefine HAVE_SYS_STATVFS_H
 
 /* Define if you have the <sys/select.h> header file. */
-#cmakedefine HAVE_SYS_SELECT_H 1
+#cmakedefine01 HAVE_SYS_SELECT_H
 
 /* Define if you have the <sys/time.h> header file. */
 #cmakedefine HAVE_SYS_TIME_H
@@ -141,7 +141,7 @@
 #cmakedefine HAVE_SYS_WAIT_H
 
 /* Define if you have the <unistd.h> header file. */
-#cmakedefine HAVE_UNISTD_H 1
+#cmakedefine01 HAVE_UNISTD_H
 
 /* Name of package */
 #cmakedefine PACKAGE "${PACKAGE}"
@@ -186,4 +186,4 @@
 #cmakedefine WITH_LIBPNG
 
 /* Define if ENABLE_NLS is set. */
-#cmakedefine YYENABLE_NLS 1
+#cmakedefine01 YYENABLE_NLS
