@@ -1,10 +1,6 @@
-# Recreation of our old glib check. Don't know what to do with it
-# so leaving as is now. It's detected by nothin more.
-
 include (CheckFunctionExists)
 include (CheckIncludeFile)
 include (CheckIncludeFileCXX)
-
 
 if (BUILD_MONOLITHIC OR BUILD_DAEMON)
 	check_function_exists (fallocate HAVE_FALLOCATE)
@@ -81,30 +77,12 @@ if (NEED_LIB_MULEAPPCORE)
 				check_function_exists (sysconf HAVE_SYSCONF)
 
 				if (HAVE_SYSCONF AND STDC_HEADERS)
-#					set (TEST_APP "#include <unistd.h>
-#						main ()
-#						{
-#							return sysconf (_SC_PAGESIZE)\;
-#						}"
-#					)
-
-#					EXECUTE_PROCESS (COMMAND echo ${TEST_APP}
-#						COMMAND ${CMAKE_C_COMPILER} -xc -
-#						ERROR_VARIABLE SC_PAGESIZE_ERROR
-#					)
-
 					try_run (PS_RUN_RESULT PS_COMPILE_RESULT
 						${CMAKE_BINARY_DIR}
 						${amule_SOURCE_DIR}/cmake/mmap-test.cpp
 						RUN_OUTPUT_VARIABLE PS_OUTPUT
 					)
 
-#					if (SC_PAGESIZE_ERROR)
-#						MESSAGE (STATUS "_SC_PAGESIZE not defined, mmap support is disabled")
-#					else()
-#						message (STATUS "_SC_PAGESIZE found")
-#						set (HAVE__SC_PAGESIZE TRUE)
-#					endif()
 					if (PS_RUN_RESULT EQUAL 0)
 						message (STATUS "_SC_PAGESIZE found")
 						set (HAVE__SC_PAGESIZE TRUE)
