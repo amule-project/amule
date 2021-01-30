@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.11)
+cmake_minimum_required (VERSION 3.13)
 project (amule)
 set (MIN_BOOST_VERSION 1.47)
 set (MIN_CRYPTOPP_VERSION 5.6)
