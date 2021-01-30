@@ -139,3 +139,82 @@ if (BUILD_TESTING)
 	enable_testing()
 	add_subdirectory (unittests)
 endif()
+
+message (STATUS "
+
+	Configured aMule ${PACKAGE_VERSION}${SVN_REVISION} for '${CMAKE_SYSTEM}' on '${CMAKE_SYSTEM_PROCESSOR}'.
+
+	aMule enabled options:
+
+	**** aMule Core ****
+	Prefix where aMule should be installed?				${CMAKE_PREFIX_PATH}
+	Should aMule be compiled with i18n support?			${ENABLE_NLS}
+	Which mode should aMule be compiled in?				${CMAKE_BUILD_TYPE}
+	Should aMule be compiled with UPnP support?			${ENABLE_UPNP}
+	Should aMule be compiled with IP2country support?		${ENABLE_IP2COUNTRY}
+	Should aMule monolithic application be built?			${BUILD_MONOLITHIC}
+	Should aMule daemon version be built?				${BUILD_DAEMON}
+	Should aMule remote gui be built?				${BUILD_REMOTEGUI}
+
+	**** aMule TextClient ****
+	Should aMule Command Line Client be built?			${BUILD_AMULECMD}
+
+	**** aMule WebServer ****
+	Should aMule WebServer be built?				${BUILD_WEBSERVER}
+
+	**** aMule ED2K Links Handler ****
+	Should aMule ED2K Links Handler be built?			${BUILD_ED2K}
+
+	**** aMuleLinkCreator ****
+	Should aMuleLinkCreator GUI version (alc) be built?		${BUILD_ALC}
+	Should aMuleLinkCreator for console (alcc) be built?		${BUILD_ALCC}
+
+	**** aMule Statistics ****
+	Should C aMule Statistics (CAS) be built?			${BUILD_CAS}
+	Should aMule GUI Statistics (wxCas) be built?			${BUILD_WXCAS}"
+)
+
+if (UNIX)
+	message ("	Should xas XChat2 plugin be installed?				${BUILD_XAS}")
+endif()
+
+message ("
+	**** General Libraries and Tools ****
+	Should aMule file viewer for console be built?			${BUILD_FILEVIEW}
+
+	Libraries aMule will use to build:"
+)
+
+if (NEED_WX)
+	message (STATUS "			wxWidgets				${WX_VERSION}")
+endif()
+
+if (ASIO_SOCKETS)
+	message ("			boost				${Boost_VERSION}")
+endif()
+
+if (NEED_LIB_CRYPTO)
+	message ("			crypto++			${CRYPTOPP_VERSION} in ${CRYPTOPP_INCLUDE_PREFIX}")
+endif()
+
+if (ENABLE_UPNP)
+	message ("			libupnp				${LIBUPNP_VERSION}")
+endif()
+
+message ("			libintl				${ENABLE_NLS}")
+
+if (ENABLE_IP2COUNTRY)
+	message ("			libGeoIP			${GEOIP_LIB}")
+endif()
+
+if (BUILD_WEBSERVER)
+	message ("			libpng				${PNG_VERSION_STRING}")
+endif()
+
+if (BUILD_CAS)
+	message ("			libgd				${gdlib_VERSION}")
+endif()
+
+if (NEED_ZLIB)
+	message ("			zlib				${ZLIB_VERSION_STRING}")
+endif()
