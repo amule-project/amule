@@ -250,16 +250,6 @@ if (BUILD_REMOTEGUI)
 		wxWidgets::NET
 	)
 
-	if (ENABLE_IP2COUNTRY)
-		target_compile_definitions (amulegui
-			PRIVATE ENABLE_IP2COUNTRY
-		)
-
-	target_link_directories (amulegui
-		${LIBGEOIP}
-	)
-	endif()
-
 	if (HAVE_BFD)
 		target_link_libraries (amulegui
 			${LIBBFD}
@@ -431,9 +421,9 @@ if (NEED_LIB_MULEAPPGUI)
 		muuli_wdr.cpp
 	)
 
-	if (IP2COUNTRY AND GEOIP_INCLUDE_DIR)
-		target_include_directories (muleappgui
-			PRIVATE ${GEOIP_INCLUDE_DIR}
+	if (ENABLE_IP2COUNTRY)
+		target_link_libraries (muleappgui
+			PUBLIC GeoIP::Shared
 		)
 	endif()
 
@@ -448,7 +438,7 @@ if (NEED_LIB_MULEAPPGUI)
 	)
 
 	target_link_libraries (muleappgui
-		wxWidgets::CORE
+		PRIVATE wxWidgets::CORE
 	)
 
 	if (ENABLE_IP2COUNTRY)
