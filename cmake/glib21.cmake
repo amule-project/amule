@@ -5,6 +5,7 @@ include (CheckFunctionExists)
 include (CheckIncludeFile)
 include (CheckIncludeFileCXX)
 
+
 if (BUILD_MONOLITHIC OR BUILD_DAEMON)
 	check_function_exists (fallocate HAVE_FALLOCATE)
 	check_function_exists (getrlimit HAVE_GETRLIMIT)
@@ -54,7 +55,21 @@ endif()
 
 if (NEED_LIB_MULEAPPCORE)
 	check_include_file (errno.h HAVE_ERRNO_H)
+	check_include_file (float.h HAVE_FLOAT_H)
 	check_include_file (signal.h HAVE_SIGNAL_H)
+	check_include_file (stdarg.h HAVE_STDARG_H)
+	check_include_file (stdlib.h HAVE_STDLIB_H)
+	check_include_file (string.h HAVE_STRING_H)
+
+	if (HAVE_STDLIB_H)
+		set (CMAKE_REQUIRED_INCLUDES stdlib.h)
+		check_function_exists (free HAVE_FREE)
+		unset (CMAKE_REQUIRED_INCLUDES)
+	endif()
+
+	if (HAVE_FREE AND HAVE_FLOAT_H AND HAVE_STDARG_H AND HAVE_STRING_H)
+		set (STDC_HEADERS TRUE)
+	endif()
 
 	if (ENABLE_MMAP)
 		check_include_file (sys/mman.h HAVE_SYS_MMAN_H)
@@ -65,27 +80,39 @@ if (NEED_LIB_MULEAPPCORE)
 			if (HAVE_MUNMAP)
 				check_function_exists (sysconf HAVE_SYSCONF)
 
-				if (HAVE_SYSCONF)
-					set (TEST_APP "#include <unistd.h>
-						main ()
-						{
-							return sysconf (_SC_PAGESIZE)\;
-						}"
+				if (HAVE_SYSCONF AND STDC_HEADERS)
+#					set (TEST_APP "#include <unistd.h>
+#						main ()
+#						{
+#							return sysconf (_SC_PAGESIZE)\;
+#						}"
+#					)
+
+#					EXECUTE_PROCESS (COMMAND echo ${TEST_APP}
+#						COMMAND ${CMAKE_C_COMPILER} -xc -
+#						ERROR_VARIABLE SC_PAGESIZE_ERROR
+#					)
+
+					try_run (PS_RUN_RESULT PS_COMPILE_RESULT
+						${CMAKE_BINARY_DIR}
+						${amule_SOURCE_DIR}/cmake/mmap-test.cpp
+						RUN_OUTPUT_VARIABLE PS_OUTPUT
 					)
 
-					EXECUTE_PROCESS (COMMAND echo ${TEST_APP}
-						COMMAND ${CMAKE_C_COMPILER} -xc -
-						ERROR_VARIABLE SC_PAGESIZE_ERROR
-					)
-
-					if (SC_PAGESIZE_ERROR)
-						MESSAGE (STATUS "_SC_PAGESIZE not defined, mmap support is disabled")
-					else()
+#					if (SC_PAGESIZE_ERROR)
+#						MESSAGE (STATUS "_SC_PAGESIZE not defined, mmap support is disabled")
+#					else()
+#						message (STATUS "_SC_PAGESIZE found")
+#						set (HAVE__SC_PAGESIZE TRUE)
+#					endif()
+					if (PS_RUN_RESULT EQUAL 0)
 						message (STATUS "_SC_PAGESIZE found")
 						set (HAVE__SC_PAGESIZE TRUE)
+					else()
+						message (STATUS "_SC_PAGESIZE not defined, mmap support is disabled")
 					endif()
 				else()
-					message (STATUS "sysconf function not fouind, mmap support is disabled")
+					message (STATUS "sysconf function not found, mmap support is disabled")
 				endif()
 			else()
 				message (STATUS "munmap function not found, mmap support is disabled")
