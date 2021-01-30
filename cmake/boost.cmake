@@ -1,4 +1,5 @@
 include (FindThreads)
+find_package (Boost ${MIN_BOOST_VERSION})
 
 if (NOT ASIO_SOCKETS)
 	include (CheckIncludeFiles)
@@ -6,8 +7,6 @@ if (NOT ASIO_SOCKETS)
 	if (WIN32)
 		set (Boost_USE_STATIC_LIBS TRUE)
 	endif()
-
-	find_package (Boost ${MIN_BOOST_VERSION})
 
 	if (Boost_FOUND)
 		set (CMAKE_REQUIRED_INCLUDES ${Boost_INCLUDE_DIRS})
