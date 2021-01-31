@@ -32,10 +32,10 @@ m4_pattern_forbid(__mule_)dnl Check for unexpanded internal macros
 # -------------------- #
 
 dnl MULE_APPEND(VARNAME, VALUE)
-AC_DEFUN([MULE_APPEND], [$1="$$1 $2"])
+AC_DEFUN([MULE_APPEND], [m4_if([$2],, [m4_warn([syntax], [Appending nothing to $1 is a do-nothing!])], [$1="$$1 $2"])])
 
 dnl MULE_PREPEND(VARNAME, VALUE)
-AC_DEFUN([MULE_PREPEND], [$1="$2 $$1"])
+AC_DEFUN([MULE_PREPEND], [m4_if([$2],, [m4_warn([syntax], [Prepending nothing to $1 is a do-nothing!])], [$1="$2 $$1"])])
 
 dnl MULE_ADDFLAG(FLAGTYPE, VALUE)
 AC_DEFUN([MULE_ADDFLAG], [MULE_APPEND([MULE[]$1[]FLAGS], [$2])])

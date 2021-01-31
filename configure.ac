@@ -222,12 +222,9 @@ MULE_IF_ENABLED([upnp], [
 ])dnl
 
 
-# Check for Crypto++ (requires C++)
+# Check for Crypto++ (requires C++) >= 5.5
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
-# Check for CryptoPP >= 5.5
-[MULE_CHECK_CRYPTOPP([5.5], [
-	MULE_APPEND([CRYPTOPP_CPPFLAGS])
-], [
+[MULE_CHECK_CRYPTOPP([5.5],, [
 	AC_MSG_ERROR([
 	Could not find crypto++ installation or sources.
 	Please try again with --with-crypto-prefix=/my_crypto_prefix
