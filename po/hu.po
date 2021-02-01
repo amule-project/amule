@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2021-01-31 08:26+0100\n"
-"PO-Revision-Date: 2020-03-04 12:35+0100\n"
+"PO-Revision-Date: 2021-02-01 22:01+0100\n"
 "Last-Translator: Dévai Tamás <gonosztopi@amule.org>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "Language: hu\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -71,7 +71,7 @@ msgstr "aMule OnExit: Mag leállítása."
 
 #: src/amule.cpp:330
 msgid "aMule shutdown completed."
-msgstr "Az aMule leállítása befejezve"
+msgstr "Az aMule leállítása befejeződött."
 
 #: src/amule.cpp:334
 msgid "Memory debug results for aMule exit:"
@@ -427,7 +427,7 @@ msgstr "VÉGZETES HIBA: Időzítő létrehozása sikertelen"
 
 #: src/amuleDlg.cpp:489
 msgid "aMule remote control "
-msgstr "aMule távoli vezérlő"
+msgstr "aMule távoli vezérlő "
 
 #: src/amuleDlg.cpp:495
 msgid "Snapshot:"
@@ -555,16 +555,15 @@ msgid "Connect to the currently enabled networks"
 msgstr "Kapcsolódás a pillanatnyilag engedélyezett hálózatokhoz."
 
 #: src/amuleDlg.cpp:846
-#, fuzzy, c-format
+#, c-format
 msgid "Up: %.1f%s (%.1f) | Down: %.1f%s (%.1f)"
-msgstr "Fel: %.1f(%.1f) | Le: %.1f(%.1f)"
+msgstr "Fel: %.1f%s (%.1f) | Le: %.1f%s (%.1f)"
 
 #: src/amuleDlg.cpp:847 src/amuleDlg.cpp:848 src/amuleDlg.cpp:851
 #: src/amuleDlg.cpp:852 src/amuleDlg.cpp:863 src/amuleDlg.cpp:864
 #: src/MuleTrayIcon.cpp:327 src/MuleTrayIcon.cpp:330
-#, fuzzy
 msgid " MB/s"
-msgstr "MB/mp"
+msgstr " MB/s"
 
 #: src/amuleDlg.cpp:847 src/amuleDlg.cpp:848 src/amuleDlg.cpp:851
 #: src/amuleDlg.cpp:852 src/amuleDlg.cpp:863 src/amuleDlg.cpp:864
@@ -574,9 +573,9 @@ msgid " kB/s"
 msgstr " kB/s"
 
 #: src/amuleDlg.cpp:850
-#, fuzzy, c-format
+#, c-format
 msgid "Up: %.1f%s | Down: %.1f%s"
-msgstr "Fel: %.1f | Le: %.1f"
+msgstr "Fel: %.1f%s | Le: %.1f%s"
 
 #: src/amuleDlg.cpp:880
 #, c-format
@@ -1494,9 +1493,9 @@ msgstr "Fájl átnevezés"
 
 #: src/DownloadListCtrl.cpp:965 src/GenericClientListCtrl.cpp:880
 #: src/GenericClientListCtrl.cpp:891
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f MB/s"
-msgstr "%.1f kB/s"
+msgstr "%.1f MB/s"
 
 #: src/DownloadListCtrl.cpp:1098 src/DownloadListCtrl.cpp:1109
 msgid "%y/%m/%d %H:%M:%S"
@@ -2198,7 +2197,7 @@ msgstr "Az elvárt %d bájt helyett %d bájt lett letöltve"
 #: src/HTTPDownload.cpp:341
 #, c-format
 msgid "Protocol not supported for HTTP download: %s"
-msgstr ""
+msgstr "A HTTP letöltéshez a(z) %s protokoll nem támogatott."
 
 #: src/HTTPDownload.cpp:384
 msgid "Unable to connect to HTTP download server"
@@ -2569,14 +2568,14 @@ msgid "DL: %u"
 msgstr "Le: %u"
 
 #: src/MuleTrayIcon.cpp:326
-#, fuzzy, c-format
+#, c-format
 msgid "Download speed: %.1f%s"
-msgstr "Letöltési sebesség: %.1f"
+msgstr "Letöltési sebesség: %.1f%s"
 
 #: src/MuleTrayIcon.cpp:329
-#, fuzzy, c-format
+#, c-format
 msgid "Upload speed: %.1f%s"
-msgstr "Feltöltési sebesség: %.1f"
+msgstr "Feltöltési sebesség: %.1f%s"
 
 #: src/MuleTrayIcon.cpp:336
 msgid "Client Information"
@@ -3329,13 +3328,15 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1494
 msgid "Show notifications when finished downloading"
-msgstr ""
+msgstr "Értesítések megjelenítése a letöltés befejezésekor"
 
 #: src/muuli_wdr.cpp:1495
 msgid ""
 "Enabling this will make aMule to show notifications when finished "
 "downloading."
 msgstr ""
+"Ezt engedélyezve az aMule értesítéseket fog megjeleníteni a befejezett "
+"letöltésekről."
 
 #: src/muuli_wdr.cpp:1500
 msgid "Tooltip delay time: "
@@ -3612,7 +3613,7 @@ msgstr "Grafikon átlagos ideje: 100 perc"
 
 #: src/muuli_wdr.cpp:1929
 msgid "Connections Graph Scale: 100 "
-msgstr "Kapcsolatok grafikon skálája: 100"
+msgstr "Kapcsolatok grafikon skálája: 100 "
 
 #: src/muuli_wdr.cpp:1938
 msgid "Download graph scale:"
@@ -4170,7 +4171,7 @@ msgstr "Online aláírás frissítési gyakoriságának módosítása (mp-ben)."
 
 #: src/muuli_wdr.cpp:2948
 msgid "Save online signature file in: "
-msgstr "Online aláírási fájl kimentési helye:"
+msgstr "Online aláírási fájl kimentési helye: "
 
 #: src/muuli_wdr.cpp:2955
 msgid ""
@@ -4203,7 +4204,7 @@ msgstr ""
 msgid "add here the words amule should filter and block messages including it"
 msgstr ""
 "Azon szavak felvétele, amelyeket az amule-nak ki kellene szűrni és blokkolni "
-"az ezeket tartalmazó üzneteket"
+"az ezeket tartalmazó üzeneteket"
 
 #: src/muuli_wdr.cpp:2996
 msgid "Show received messages in the log"
@@ -4291,7 +4292,7 @@ msgstr "Emlékezzen ezekre a beállításokra"
 
 #: src/muuli_wdr.cpp:3169
 msgid "Enable Verbose Debug-Logging."
-msgstr "Bőbeszédű hiba-naplózás engedélyezése"
+msgstr "Bőbeszédű hiba-naplózás engedélyezése."
 
 #: src/muuli_wdr.cpp:3172
 msgid "Only to Logfile"
@@ -4420,7 +4421,7 @@ msgstr[0] "bájt/mp"
 
 #: src/OtherFunctions.cpp:96
 msgid "MB/s"
-msgstr "MB/mp"
+msgstr "MB/s"
 
 #: src/OtherFunctions.cpp:105 src/OtherFunctions.cpp:108
 msgid "secs"
@@ -4685,11 +4686,13 @@ msgid "Finished downloading: %s"
 msgstr "Letöltés befejeződött: %s"
 
 #: src/PartFile.cpp:2172
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Finished downloading:\n"
 "%s"
-msgstr "Letöltés befejeződött: %s"
+msgstr ""
+"Letöltés befejeződött:\n"
+"%s"
 
 #: src/PartFile.cpp:2235
 #, c-format
@@ -5248,12 +5251,11 @@ msgstr "A következő változók lesznek behelyettesítve:"
 
 #: src/SearchDlg.cpp:274
 msgid "It's impossible to search when both eD2k and Kademlia are disabled."
-msgstr ""
+msgstr "Nem lehet keresni, ha az eD2k és a Kademlia hálózat is le van tiltva."
 
 #: src/SearchDlg.cpp:275
-#, fuzzy
 msgid "Search error"
-msgstr "Keresések"
+msgstr "Keresési hiba"
 
 #: src/SearchDlg.cpp:469
 msgid "Min size must be smaller than max size. Max size ignored."
@@ -5426,7 +5428,7 @@ msgstr "A server.met megnyitása sikertelen!"
 #: src/ServerList.cpp:118
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
-msgstr "server.met fájl sérült, érvénytelen verzió-tag: 0x%x, mérete %i"
+msgstr "A server.met fájl sérült, érvénytelen verzió-tag: 0x%x, mérete %i"
 
 #: src/ServerList.cpp:174
 #, c-format
@@ -7062,7 +7064,7 @@ msgstr "Válaszd ki a fájlt a számított eD2k hivatkozásodnak"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:450
 msgid "Unable to open "
-msgstr "Nem lehet megnyitni"
+msgstr "Nem lehet megnyitni: "
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:457
 #: src/utils/aLinkCreator/src/alcframe.cpp:582
@@ -7129,7 +7131,7 @@ msgstr "Ezt az URL-t már felvette a letöltési listába !"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:619
 msgid "Please, enter a non empty URL"
-msgstr "Kérlek, ne üres URL-t adj meg "
+msgstr "Kérlek, ne üres URL-t adj meg"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:58
 #, c-format
@@ -7138,7 +7140,7 @@ msgstr "%s-t nem lehet megnyitni"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:146
 msgid "Out of memory while calculating ed2k hash!"
-msgstr "Elfogyott a memória az ed2k hash kiszámítása közben"
+msgstr "Elfogyott a memória az ed2k hash kiszámítása közben!"
 
 #: src/utils/wxCas/src/linuxmon.cpp:77
 #, c-format
@@ -7500,12 +7502,12 @@ msgstr "Vendég felhasználó engedélyezése"
 
 #: src/webserver/src/WebInterface.cpp:590
 msgid "Deny guest access"
-msgstr "vendég felhasználó tiltása"
+msgstr "Vendég felhasználó tiltása"
 
 #: src/webserver/src/WebInterface.cpp:594
 msgid "Load/save web server settings from/to remote aMule"
 msgstr ""
-"A web kiszolgáló beálításait a távoli aMule-től kéri, illetve oda menti"
+"A web kiszolgáló beállításait a távoli aMule-től kéri, illetve oda menti"
 
 #: src/webserver/src/WebInterface.cpp:598
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
