@@ -81,8 +81,8 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;__DEBUG__;_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;__DEBUG__;_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -105,8 +105,8 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -129,8 +129,8 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets30\include;$(SolutionDir)..\..\..\..\wxWidgets30\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;__DEBUG__;_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets30\include;$(SolutionDir)..\..\..\..\wxWidgets30\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;__DEBUG__;_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -153,8 +153,8 @@
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets30\include;$(SolutionDir)..\..\..\..\wxWidgets30\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;MULEUNIT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets30\include;$(SolutionDir)..\..\..\..\wxWidgets30\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;wxUSE_GUI=0;USE_WX_EXTENSIONS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>

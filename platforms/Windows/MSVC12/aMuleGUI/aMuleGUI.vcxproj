@@ -84,7 +84,7 @@
       <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;__DEBUG__;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;CLIENT_GUI;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;__DEBUG__;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;CLIENT_GUI;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -112,7 +112,7 @@
       <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets\include;$(SolutionDir)..\..\..\..\wxWidgets\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;CLIENT_GUI;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;CLIENT_GUI;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>$(SolutionDir)PCH.h</PrecompiledHeaderFile>
@@ -141,7 +141,7 @@
       <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets30\include;$(SolutionDir)..\..\..\..\wxWidgets30\lib\vc_lib\mswud;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets30\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;__DEBUG__;USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;CLIENT_GUI;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;__DEBUG__;USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;CLIENT_GUI;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -169,7 +169,7 @@
       <AdditionalOptions>/MP /Zm120 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\..\..\wxWidgets30\include;$(SolutionDir)..\..\..\..\wxWidgets30\lib\vc_lib\mswu;$(SolutionDir)..\..\..\src\libs;$(SolutionDir)..\..\..\src;$(SolutionDir)..\..\..\src\include;$(SolutionDir)..\..\..\;$(SolutionDir)..\..\..\..\wxWidgets30\src\zlib;$(SolutionDir)libs\libGeoIP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>USE_WX_EXTENSIONS;CONVAMULE_CPP;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;CLIENT_GUI;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_WX_EXTENSIONS;_CRT_SECURE_NO_WARNINGS;CLIENT_GUI;ENABLE_NLS;ENABLE_IP2COUNTRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>$(SolutionDir)PCH.h</PrecompiledHeaderFile>
