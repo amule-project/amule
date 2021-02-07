@@ -7,7 +7,7 @@ endif
 SUBDIRS += docs src unittests
 
 EXTRA_DIST = amule.rc amule.ico amule.png convert.ico \
-	README.Debian-Packages aMule-CVS.spec aMule.spec \
+	aMule.spec \
 	amule_build_install.sh autogen.sh \
 	po/l10n.xsl
 
@@ -56,5 +56,5 @@ MAINTAINERCLEANFILES = ABOUT-NLS \
 					   missing \
 					   mkinstalldirs
 
-EXTRA__DIST__SUBDIRS = aMule.app debian
+EXTRA__DIST__SUBDIRS = aMule.app
 include $(top_srcdir)/automake/dist-hook.am
