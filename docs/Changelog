@@ -1,16 +1,12 @@
-Version 2.3.3 - The "what do you want?" version.
+Version 2.3.3 - The "delayed too many times, but still not too late" version.
 ----------
-201?-??-??
+2021-02-07
 
-	jEsuSdA:
-		* Added papirus theme
+	alesnav:
+		* Permit amuleweb in an iframe
 
 	Dmitry Smirnov:
 		* Added mimetype-hanlder to amule.desktop
-		  originally in debian
-
-	Sandro Tosi:
-		* remove garbage from gdlib
 		  originally in debian
 
 	gaffatape:
@@ -28,6 +24,39 @@ Version 2.3.3 - The "what do you want?" version.
 		  search for translations), fixes GitHub issue #74 (.mo files
 		  for translation are not loaded if amule is built to install
 		  to a prefix other than /usr (e.g. /usr/local).)
+		* Portability fixes
+		* Handle the deprecation of std::auto_ptr in C++11 by using
+		  std::unique_ptr instead.
+		* Fix linking with readline if configure uses caching
+		* Remove 'web search' search type as there are no search
+		  engines to support
+		* Readline related fixes and improvements in amulecmd:
+			- Set the proper application name (amulecmd) for
+			  readline. This allows conditional parsing of the
+			  readline configuration files (like ~/.inputrc). See
+			  the GNU Readline Library documentation (section 1.3.2)
+			  for more details.
+			- Set up command completion on pressing the TAB key.
+			  Since command names are case insensitive, completion
+			  uses the default capitalization (shown by the 'Help'
+			  command). Completion also works for the
+			  'Help <command name>' construct.
+			- Pressing <Enter> on an empty line won't give 'Syntax
+			  error!' anymore, the empty line is silently ignored.
+		* Flex and bison generated files will no longer be regenerated
+		  occasionally on the user's system.
+		* Proxy authorization fixes
+		* Explicitly disable support for autoconf >= 2.70
+		* Fix compilation using C++17
+
+	jEsuSdA:
+		* Added papirus theme
+
+	KeyofBlueS:
+		* Fix compilation with newer bfd
+
+	kinote:
+		* Fix integer conversions in amulecmd
 
 	persmule:
 		* Fix sharing directories with non-ASCII names with aMule daemon
@@ -36,14 +65,51 @@ Version 2.3.3 - The "what do you want?" version.
 	Phoenix:
 		* Fixed libupnp API breakage.
 
-	scow:
+	poplite:
+		* Fixed issue #99 by properly initializing wxSockets in the
+		  remote gui
+
+	Sandro Tosi:
+		* remove garbage from gdlib
+		  originally in debian
+
+	sc0w:
 		* Fixed compilation with upnp-1.8
 		* C++11 fixes
+		* Only handle mouse-up events if the mouse-down event happened
+		  on the same tab
+		* Fix issue #114: Switching search result tabs doesn't work
+		* Fix a number of build warnings
+		* Fix a few memory leaks
+		* Various small code improvements
+		* Add option to show notifications when finished downloading
+		* Fixed issue #54: the minimize button doesn't work propertly
+		  when "minimize to tray icon" is activated on preferences
+		* Fixed issue #59: start minimized doesn't work
+		* Fixed issue #225: amule shows wrong 100% when files aren't
+		  downloaded
+		* Show speeds in MB/s instead of kB/s when appropriate
+
+	Sebastiano Pistore:
+		* Unified translation file headers to make it easier to identify
+		  contributors
+
+	Thibaut Lassalle:
+		* Add README.md
+
+	Tom Li:
+		* OScopeCtrl.cpp: use Refresh() instead of ProcessEvent() to
+		  refresh the UI, fix issue #146.
+
+	Tommy Jerry Mairo:
+		* Fixed issue #119: API mismatch with Crypto++ 6.0.0
 
 	Vollstrecker:
 		* Initial support for detecting pkg-config based gdlib versions
+		* Compilation fixes for VS2015
 		* Fixed compilation with wx-3.1
 		* Added cmake-support (Linux and Windows tested)
+		* Dropped support for cryptopp versions before 5.5
 
 	xinhuang:
 		* Fix crash when shared files changed on Shared files tab
