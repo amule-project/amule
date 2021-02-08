@@ -214,7 +214,7 @@ MULE_ARG_ENABLE([upnp], [yes], [do not compile UPnP code])
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon],, [MULE_ENABLEVAR([upnp])=no])
 MULE_IF_ENABLED([upnp], [
 	LIBUPNP_CHECK(
-		[1.6.6],
+		[1.6.7],
 		[MULE_APPEND([LIBUPNP_CPPFLAGS], [-DENABLE_UPNP=1])],
 		[MULE_ENABLEVAR([upnp])=disabled
 		MULE_WARNING([UPnP code has been disabled because ${libupnp_error}.])]
