@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2021-01-31 08:26+0100\n"
-"PO-Revision-Date: 2020-09-14 22:08+0300\n"
+"PO-Revision-Date: 2021-02-12 21:09+0300\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "Language: fr\n"
@@ -569,16 +569,15 @@ msgid "Connect to the currently enabled networks"
 msgstr "Se connecter aux réseaux actuellement activés"
 
 #: src/amuleDlg.cpp:846
-#, fuzzy, c-format
+#, c-format
 msgid "Up: %.1f%s (%.1f) | Down: %.1f%s (%.1f)"
-msgstr "E : %.1f(%.1f) | R : %.1f(%.1f)"
+msgstr "E : %.1f%s (%.1f) | R : %.1f%s (%.1f)"
 
 #: src/amuleDlg.cpp:847 src/amuleDlg.cpp:848 src/amuleDlg.cpp:851
 #: src/amuleDlg.cpp:852 src/amuleDlg.cpp:863 src/amuleDlg.cpp:864
 #: src/MuleTrayIcon.cpp:327 src/MuleTrayIcon.cpp:330
-#, fuzzy
 msgid " MB/s"
-msgstr "Mo/s"
+msgstr " Mo/s"
 
 #: src/amuleDlg.cpp:847 src/amuleDlg.cpp:848 src/amuleDlg.cpp:851
 #: src/amuleDlg.cpp:852 src/amuleDlg.cpp:863 src/amuleDlg.cpp:864
@@ -588,9 +587,9 @@ msgid " kB/s"
 msgstr " Ko/s"
 
 #: src/amuleDlg.cpp:850
-#, fuzzy, c-format
+#, c-format
 msgid "Up: %.1f%s | Down: %.1f%s"
-msgstr "E : %.1f | R : %.1f"
+msgstr "E : %.1f%s | R : %.1f%s"
 
 #: src/amuleDlg.cpp:880
 #, c-format
@@ -1519,9 +1518,9 @@ msgstr "Renommer"
 
 #: src/DownloadListCtrl.cpp:965 src/GenericClientListCtrl.cpp:880
 #: src/GenericClientListCtrl.cpp:891
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f MB/s"
-msgstr "%.1f Ko/s"
+msgstr "%.1f Mo/s"
 
 #: src/DownloadListCtrl.cpp:1098 src/DownloadListCtrl.cpp:1109
 msgid "%y/%m/%d %H:%M:%S"
@@ -2618,14 +2617,14 @@ msgid "DL: %u"
 msgstr "Réception : %u"
 
 #: src/MuleTrayIcon.cpp:326
-#, fuzzy, c-format
+#, c-format
 msgid "Download speed: %.1f%s"
-msgstr "Vitesse de téléchargement : %.1f"
+msgstr "Vitesse de téléchargement : %.1f%s"
 
 #: src/MuleTrayIcon.cpp:329
-#, fuzzy, c-format
+#, c-format
 msgid "Upload speed: %.1f%s"
-msgstr "Vitesse d'émission : %.1f"
+msgstr "Vitesse d'émission : %.1f%s"
 
 #: src/MuleTrayIcon.cpp:336
 msgid "Client Information"
@@ -3382,13 +3381,15 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1494
 msgid "Show notifications when finished downloading"
-msgstr ""
+msgstr "Afficher des notifications lorsque le téléchargement est terminé"
 
 #: src/muuli_wdr.cpp:1495
 msgid ""
 "Enabling this will make aMule to show notifications when finished "
 "downloading."
 msgstr ""
+"Si vous activez cette option, aMule affichera des notifications une fois le "
+"téléchargement terminé."
 
 #: src/muuli_wdr.cpp:1500
 msgid "Tooltip delay time: "
@@ -4765,11 +4766,13 @@ msgid "Finished downloading: %s"
 msgstr "Téléchargement terminé : %s"
 
 #: src/PartFile.cpp:2172
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Finished downloading:\n"
 "%s"
-msgstr "Téléchargement terminé : %s"
+msgstr ""
+"Téléchargement suivant terminé :\n"
+"%s"
 
 #: src/PartFile.cpp:2235
 #, c-format
