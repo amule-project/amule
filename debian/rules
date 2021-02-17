@@ -239,6 +239,10 @@ else
 			LANGUAGE := $(LANGUAGE),pt_PT
 		endif
 
+		ifeq ("i18n-ro", "$(findstring i18n-ro, $(flags))")
+			LANGUAGE := $(LANGUAGE),ro
+		endif
+
 		ifeq ("i18n-ru", "$(findstring i18n-ru, $(flags))")
 			LANGUAGE := $(LANGUAGE),ru
 		endif
