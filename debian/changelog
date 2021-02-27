@@ -1,3 +1,11 @@
+amule (2.3.3+git-20210227) stable; urgency=low
+
+  * git-rev: d442b256 + 1
+  * add Romanian translation
+  * spelling fixes
+
+ -- Dévai Tamás (gonosztopi) <gonosztopi@amule.org>  Sat, 27 Feb 2021 19:17:59 +0100
+
 amule (2.3.2+git-20210127) stable; urgency=low
 
   * git-rev: 0e9e3efc + 1
