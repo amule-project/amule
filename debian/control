@@ -12,7 +12,7 @@ Depends: ${shlibs:Depends}, amule-common (= ${binary:Version}), amule-i18n-en-gb
 Recommends: amule-utils, amule-cas, amule-wxcas
 Suggests: amule-xas, amule-ed2k
 Description: client for eD2k and Kad networks
- aMule stands for another eMule file-sharing program, it is also
+ aMule stands for all-platform eMule file-sharing program, it is also
  another fork of the xMule project. It connects to eDonkey2000
  network, supports Linux, *BSD and MacOS X platforms, and has
  a new vision of the GUI
@@ -24,9 +24,9 @@ Recommends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version})
 Description: utilities for amule
  amule-utils is a meta-package for a set of tools to control amule.
  .
- alcc lets you created ed2k-links and hashes from the commandline
- cas is a remplacement software for astats. It produces statistic from amule.
- amulecmd is a software which helps you to control amule trough a terminal.
+ alcc lets you create ed2k-links and hashes from the commandline.
+ cas is a replacement software for astats. It produces statistic from amule.
+ amulecmd is a software which helps you to control amule through a terminal.
 
 Package: amule-utils-gui
 Architecture: any
@@ -38,8 +38,7 @@ Description: utilities for amule
  This is a meta-package that depends on useful programs using GUI to control
  aMule.
  .
- alc is a software to created ed2k-links and hashes
- amule trough a terminal.
+ alc is a software to create ed2k-links and hashes
  amulegui lets you control amule or amuled from a remote machine
  wxcas shows you statistics about your amule usage
 
@@ -50,7 +49,7 @@ Recommends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version})
 Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version}), xmule (<= 1.10.0b-1), amule-utils (<< ${binary:Version})
 Replaces: amule-utils (<< ${binary:Version})
 Description: amule ed2k link-handler
- ed2k let you use ed2k Links with your amule-app
+ ed2k lets you use ed2k Links with your amule-app
 
 Package: amule-cas
 Architecture: any
@@ -87,7 +86,7 @@ Provides: amule-web-templates
 Depends: amuleweb (= ${binary:Version}), ${misc:Depends}
 Conflicts: amule-common (<< ${binary:Version}), amule (<< ${binary:Version})
 Description: default template for the webserver
- this package contains the default template for amulewebserver
+ this package contains the default template for amule webserver
  atm the litoral theme is the default one, and the only one
  included in aMule
 
@@ -277,8 +276,8 @@ Architecture: any
 Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version}), ${misc:Depends}
 Provides: amule-i18n
 Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
-Description: Gallegan (gl) internationalized (i18n) files for amule
- This package contains the Gallegan internationalized files for amule.
+Description: Galician (gl) internationalized (i18n) files for amule
+ This package contains the Galician internationalized files for amule.
 
 Package: amule-i18n-he
 Section: localization
@@ -314,7 +313,7 @@ Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amul
 Provides: amule-i18n
 Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Italian (it_CH) internationalized (i18n) files for amule
- This package contains the Italian internationalized files for amule.
+ This package contains the Italian (Swiss) internationalized files for amule.
 
 Package: amule-i18n-it
 Section: localization
@@ -349,8 +348,8 @@ Architecture: any
 Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version}), ${misc:Depends}
 Provides: amule-i18n
 Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
-Description: Lithunian (lt) internationalized (i18n) files for amule
- This package contains the Lithunian internationalized files for amule.
+Description: Lithuanian (lt) internationalized (i18n) files for amule
+ This package contains the Lithuanian internationalized files for amule.
 
 Package: amule-i18n-nn
 Section: localization
@@ -358,8 +357,8 @@ Architecture: any
 Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version}), ${misc:Depends}
 Provides: amule-i18n
 Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
-Description: Norwegian (Nyorsk) (nn) internationalized (i18n) files for amule
- This package contains the Norwegian (Nyorsk) internationalized files for amule.
+Description: Norwegian (Nynorsk) (nn) internationalized (i18n) files for amule
+ This package contains the Norwegian (Nynorsk) internationalized files for amule.
 
 Package: amule-i18n-nl
 Section: localization
@@ -386,7 +385,7 @@ Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amul
 Provides: amule-i18n
 Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Portuguese (pt_BR) internationalized (i18n) files for amule
- This package contains the Portuguese internationalized files for amule.
+ This package contains the Portuguese (Brazilian) internationalized files for amule.
 
 Package: amule-i18n-pt-pt
 Section: localization
@@ -396,6 +395,15 @@ Provides: amule-i18n
 Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Portuguese (pt_PT) internationalized (i18n) files for amule
  This package contains the Portuguese internationalized files for amule.
+
+Package: amule-i18n-ro
+Section: localization
+Architecture: any
+Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version}), ${misc:Depends}
+Provides: amule-i18n
+Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
+Description: Romanian (ro) internationalized (i18n) files for amule
+ This package contains the Romanian internationalized files for amule.
 
 Package: amule-i18n-ru
 Section: localization
@@ -449,7 +457,7 @@ Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amul
 Provides: amule-i18n
 Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Ukrainian (uk) internationalized (i18n) files for amule
- This package contains the Catalan internationalized files for amule.
+ This package contains the Ukrainian internationalized files for amule.
 
 Package: amule-i18n-zh-cn
 Section: localization
@@ -458,7 +466,7 @@ Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amul
 Provides: amule-i18n
 Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Chinese (zh_CN) internationalized (i18n) files for amule
- This package contains the Chinese internationalized files for amule.
+ This package contains the Chinese (Simplified) internationalized files for amule.
 
 Package: amule-i18n-zh-tw
 Section: localization
@@ -467,7 +475,7 @@ Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amul
 Provides: amule-i18n
 Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Chinese (zh_TW) internationalized (i18n) files for amule
- This package contains the Chinese internationalized files for amule.
+ This package contains the Chinese (Traditional) internationalized files for amule.
 
 #Package: amule-plasmamule
 #Architecture: any
