@@ -1,6 +1,36 @@
 name: C/C++ CI
 
-on: [push]
+on:
+  push:
+    paths:
+    - automake/*
+    - m4/*
+    - src/**
+    - unittests/**
+    - '**/*.am'
+    - acinclude.m4
+    - configure.ac
+    - '!**/*.txt'
+    - '!src/skins/*'
+    - '!src/utils/amps/**'
+    - '!src/utils/scripts/**'
+    - '!src/utils/xas/**'
+    - '!src/webserver/default/**'
+  pull_request:
+    paths:
+    - automake/*
+    - m4/*
+    - src/**
+    - unittests/**
+    - '**/*.am'
+    - acinclude.m4
+    - configure.ac
+    - '!**/*.txt'
+    - '!src/skins/*'
+    - '!src/utils/amps/**'
+    - '!src/utils/scripts/**'
+    - '!src/utils/xas/**'
+    - '!src/webserver/default/**'
 
 jobs:
   build:
@@ -10,13 +40,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install deps
-      run: |
-        sudo apt-get remove --purge mssql-tools msodbcsql17
-        sudo apt update && sudo apt upgrade && sudo apt install autopoint
+      run: sudo apt-get install autopoint
     - name: autogen
       run: ./autogen.sh
     - name: install build deps
-      run: sudo apt install devscripts equivs && sudo mk-build-deps -i
+      run: sudo apt-get install devscripts equivs && sudo mk-build-deps -i
     - name: configure
       run: ./configure --enable-wxcas --enable-cas --enable-webserver --enable-amule-gui --enable-amule-daemon --enable-alcc --enable-alc --enable-amulecmd --enable-geoip --with-boost
     - name: make
