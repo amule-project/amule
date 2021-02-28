@@ -23,12 +23,20 @@
 //
 
 
+#include "config.h"			// Needed for HAVE_LIBCURL, ASIO_SOCKETS
+
 #include <wx/ipc.h>
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>		// Needed for wxFileConfig
-#include <wx/socket.h>			// Needed for wxSocketBase
 
+#ifdef HAVE_LIBCURL
+#	include <curl/curl.h>
+#endif
+
+#if !(defined(HAVE_LIBCURL) && defined(ASIO_SOCKETS))
+#	include <wx/socket.h>		// Needed for wxSocketBase
+#endif
 
 #include <common/Format.h>
 #include <common/StringFunctions.h>
@@ -139,7 +147,13 @@ int CamuleRemoteGuiApp::OnExit()
 {
 	StopTickTimer();
 
+#ifdef HAVE_LIBCURL
+	curl_global_cleanup();
+#endif
+
+#if !(defined(HAVE_LIBCURL) && defined(ASIO_SOCKETS))
 	wxSocketBase::Shutdown();	// needed because we also called Initialize() manually
+#endif
 
 	return wxApp::OnExit();
 }
@@ -256,8 +270,16 @@ bool CamuleRemoteGuiApp::OnInit()
 		return false;
 	}
 
-	// Initialize wx sockets (needed for http download in background with Asio sockets)
+#ifdef HAVE_LIBCURL
+	if (curl_global_init(CURL_GLOBAL_ALL) != 0) {
+		return false;
+	}
+#endif
+
+#if !(defined(HAVE_LIBCURL) && defined(ASIO_SOCKETS))
+	// Initialize wx sockets only if we actually use wx networking
 	wxSocketBase::Initialize();
+#endif
 
 	// Create the polling timer
 	poll_timer = new wxTimer(this,ID_CORE_TIMER_EVENT);

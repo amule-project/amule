@@ -233,6 +233,11 @@ MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
 ])])
 
 
+# Check for libcurl
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui],
+[LIBCURL_CHECK_CONFIG(, [7.19.1],, [MULE_WARNING([libcurl not found or disabled. Reverting to using wxHTTP for http download, but beware, https won't be supported.])])])
+
+
 MULE_COMPILATION_FLAGS
 
 
@@ -556,6 +561,8 @@ AS_IF([test ${with_boost:-no} != no],
 )])
 MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, fileview],
 	[echo "                             crypto++              ${CRYPTOPP_VERSION_STRING} (in ${CRYPTOPP_PREFIX})"])
+MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui],
+	[echo "                             libcurl               ${libcurl_cv_lib_curl_version:-Not detected}"])
 MULE_IF_ENABLED([upnp], [
 	AS_IF([test -n "$with_libupnp_prefix"], [libupnp_place=" (in $with_libupnp_prefix)"])
 	echo "                             libupnp               ${LIBUPNP_VERSION:-Not detected}${libupnp_place:-}"

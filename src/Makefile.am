@@ -231,7 +231,7 @@ common_sources = \
 core_libs = -L. -lmuleappcore $(LIBUPNP_LDFLAGS) $(LIBUPNP_LIBS)
 gui_libs = -L. -lmuleappgui $(WX_LIBS) $(GEOIP_LDFLAGS) $(GEOIP_LIBS)
 remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(BFD_LIBS) $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB)
-common_libs = -L. -lmuleappcommon $(remote_common_libs) -lmulesocket $(BOOST_SYSTEM_LDFLAGS) $(BOOST_SYSTEM_LIBS) $(CRYPTOPP_LDFLAGS) $(CRYPTOPP_LIBS)
+common_libs = -L. -lmuleappcommon $(remote_common_libs) -lmulesocket $(BOOST_SYSTEM_LDFLAGS) $(BOOST_SYSTEM_LIBS) $(CRYPTOPP_LDFLAGS) $(CRYPTOPP_LIBS) $(LIBCURL)
 
 core_deps = libmuleappcore.a
 gui_deps = libmuleappgui.a
@@ -247,7 +247,7 @@ endif
 #
 core_flags = $(BOOST_CPPFLAGS) $(LIBUPNP_CPPFLAGS) $(LIBUPNP_CFLAGS)
 gui_flags = $(WX_CPPFLAGS) $(GEOIP_CPPFLAGS)
-common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS)
+common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS) $(LIBCURL_CPPFLAGS)
 
 # --------- Apps ---------
 

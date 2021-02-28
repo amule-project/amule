@@ -38,11 +38,16 @@
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>
-#include <wx/socket.h>
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
 #include <wx/stopwatch.h>		// Needed for wxStopWatch
 
+#ifdef HAVE_LIBCURL
+#	include <curl/curl.h>
+#endif
+#if !(defined(HAVE_LIBCURL) && defined(ASIO_SOCKETS))
+#	include <wx/socket.h>
+#endif
 
 #include <common/Format.h>		// Needed for CFormat
 #include "kademlia/kademlia/Kademlia.h"
@@ -324,7 +329,13 @@ int CamuleApp::OnExit()
 	m_AsioService = NULL;
 #endif
 
+#ifdef HAVE_LIBCURL
+	curl_global_cleanup();
+#endif
+
+#if !(defined(HAVE_LIBCURL) && defined(ASIO_SOCKETS))
 	wxSocketBase::Shutdown();	// needed because we also called Initialize() manually
+#endif
 
 	if (m_app_state!=APP_STATE_STARTING) {
 		AddLogLineNS(_("aMule shutdown completed."));
@@ -412,8 +423,16 @@ bool CamuleApp::OnInit()
 		return false;
 	}
 
-	// Initialize wx sockets (needed for http download in background with Asio sockets)
+#ifdef HAVE_LIBCURL
+	if (curl_global_init(CURL_GLOBAL_ALL) != 0) {
+		return false;
+	}
+#endif
+
+#if !(defined(HAVE_LIBCURL) && defined(ASIO_SOCKETS))
+	// Initialize wx sockets only if we actually use wx networking
 	wxSocketBase::Initialize();
+#endif
 
 	// Some sanity check
 	if (!thePrefs::UseTrayIcon()) {
@@ -813,10 +832,6 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 				thePrefs::GetUPnPEnabled(),
 				"aMule UDP Extended eMule Socket");
 			m_upnp = new CUPnPControlPoint(thePrefs::GetUPnPTCPPort());
-
-			wxStopWatch count; // Wait UPnP service responses for 3s before add port mappings
-			while (count.Time() < 3000 && !m_upnp->WanServiceDetected());
-
 			m_upnp->AddPortMappings(m_upnpMappings);
 		} catch(CUPnPException &e) {
 			wxString error_msg;

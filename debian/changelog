@@ -1,3 +1,10 @@
+amule (2.3.3+git-20201029) UNRELEASED; urgency=low
+
+  * git-rev: 34a2941 + 1
+  * added libcurl dependency
+
+ -- Dévai Tamás (gonosztopi) <gonosztopi@amule.org>  Thu, 29 Oct 2020 10:30:02 +0100
+
 amule (2.3.3+git-20210227) stable; urgency=low
 
   * git-rev: d442b256 + 1
