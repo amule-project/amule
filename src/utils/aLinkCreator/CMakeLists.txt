@@ -1,12 +1,12 @@
-ADD_SUBDIRECTORY (docs)
-ADD_SUBDIRECTORY (src)
+add_subdirectory (docs)
+add_subdirectory (src)
 
-IF (BUILD_ALC)
-	INSTALL (FILES alc.xpm
+if (BUILD_ALC)
+	install (FILES alc.xpm
 		DESTINATION "${CMAKE_INSTALL_DATADIR}/pixmaps"
 	)
 
-	INSTALL (FILES alc.desktop
+	install (FILES alc.desktop
 		DESTINATION "${CMAKE_INSTALL_DATADIR}/applications"
 	)
-ENDIF (BUILD_ALC)
+endif()
