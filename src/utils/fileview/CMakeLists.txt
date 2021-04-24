@@ -27,8 +27,8 @@ target_include_directories (fileview
 )
 
 target_link_libraries (fileview
-	mulecommon
-	CRYPTOPP::CRYPTOPP
+	PRIVATE mulecommon
+	PRIVATE CRYPTOPP::CRYPTOPP
 )
 
 install (TARGETS fileview

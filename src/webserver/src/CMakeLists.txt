@@ -49,27 +49,27 @@ target_include_directories (amuleweb
 )
 
 target_link_libraries (amuleweb
-	ec
-	mulecommon
-	mulesocket
-	wxWidgets::NET
+	PRIVATE ec
+	PRIVATE mulecommon
+	PRIVATE mulesocket
+	PRIVATE wxWidgets::NET
 )
 
 if (ENABLE_UPNP)
 	target_link_libraries (amuleweb
-		UPNP::Shared
+		PRIVATE UPNP::Shared
 	)
 endif()
 
 if (HAVE_BFD)
 	target_link_libraries (amuleweb
-		${LIBBFD}
+		PRIVATE ${LIBBFD}
 	)
 endif()
 
 if (HAVE_LIBREADLINE)
 	target_link_libraries (amuleweb
-		${READLINE_LIBRARIES}
+		PRIVATE ${READLINE_LIBRARIES}
 	)
 endif()
 
@@ -79,7 +79,7 @@ if (WITH_LIBPNG)
 	)
 
 	target_link_libraries (amuleweb
-		${PNG_LIBRARIES}
+		PRIVATE ${PNG_LIBRARIES}
 	)
 endif()
 

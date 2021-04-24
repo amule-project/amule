@@ -77,17 +77,21 @@ if (BUILD_AMULECMD)
 	)
 
 	target_link_libraries (amulecmd
-		mulecommon
-		mulesocket
-		ec
+		PRIVATE mulecommon
+		PRIVATE mulesocket
+		PRIVATE ec
 	)
 
 	if (HAVE_BFD)
-		target_link_libraries (amulecmd ${LIBBFD})
+		target_link_libraries (amulecmd 
+			PRIVATE ${LIBBFD}
+		)
 	endif (HAVE_BFD)
 
 	if (HAVE_LIBREADLINE)
-		target_link_libraries (amulecmd ${READLINE_LIBRARIES})
+		target_link_libraries (amulecmd
+			PRIVATE ${READLINE_LIBRARIES}
+		)
 	endif()
 
 	install (TARGETS amulecmd
@@ -118,17 +122,17 @@ if (BUILD_DAEMON)
 	)
 
 	target_link_libraries (amuled
-		ec
-		muleappcommon
-		muleappcore
-		mulecommon
-		mulesocket
-		wxWidgets::NET
+		PRIVATE ec
+		PRIVATE muleappcommon
+		PRIVATE muleappcore
+		PRIVATE mulecommon
+		PRIVATE mulesocket
+		PRIVATE wxWidgets::NET
 	)
 
 	if (HAVE_BFD)
 		target_link_libraries (amuled
-			${LIBBFD}
+			PRIVATE ${LIBBFD}
 		)
 	endif()
 
@@ -162,7 +166,7 @@ if (BUILD_ED2K)
 
 	if (WIN32)
 		target_link_libraries (ed2k
-			shlwapi.lib
+			PRIVATE shlwapi.lib
 		)
 	endif()
 
@@ -189,27 +193,29 @@ if (BUILD_MONOLITHIC)
 	endif()
 
 	target_link_libraries (amule
-		ec
-		muleappcommon
-		muleappcore
-		muleappgui
-		mulecommon
-		mulesocket
-		$<$<VERSION_LESS:${wxWidgets_VERSION_STRING},3.1.2>:wxWidgets::ADV>
-		wxWidgets::NET
+		PRIVATE ec
+		PRIVATE muleappcommon
+		PRIVATE muleappcore
+		PRIVATE muleappgui
+		PRIVATE mulecommon
+		PRIVATE mulesocket
+		PRIVATE $<$<VERSION_LESS:${wxWidgets_VERSION_STRING},3.1.2>:wxWidgets::ADV>
+		PRIVATE wxWidgets::NET
 	)
 
 	if (HAVE_BFD)
-		target_link_libraries (amule ${LIBBFD})
+		target_link_libraries (amule
+			PRIVATE ${LIBBFD}
+		)
 	endif()
 
 	if (WIN32)
 		target_link_libraries (amule
-			shlwapi.lib
+			PRIVATE shlwapi.lib
 		)
 
-		set_target_properties (amule
-			PROPERTIES WIN32_EXECUTABLE TRUE
+		set_target_properties (amule PROPERTIES
+			WIN32_EXECUTABLE TRUE
 		)
 	endif()
 
@@ -241,24 +247,24 @@ if (BUILD_REMOTEGUI)
 	)
 
 	target_link_libraries (amulegui
-		ec
-		muleappcommon
-		muleappgui
-		mulecommon
-		mulesocket
-		$<$<VERSION_LESS:${wxWidgets_VERSION_STRING},3.1.2>:wxWidgets::ADV>
-		wxWidgets::NET
+		PRIVATE ec
+		PRIVATE muleappcommon
+		PRIVATE muleappgui
+		PRIVATE mulecommon
+		PRIVATE mulesocket
+		PRIVATE $<$<VERSION_LESS:${wxWidgets_VERSION_STRING},3.1.2>:wxWidgets::ADV>
+		PRIVATE wxWidgets::NET
 	)
 
 	if (HAVE_BFD)
 		target_link_libraries (amulegui
-			${LIBBFD}
+			PRIVATE ${LIBBFD}
 		)
 	endif()
 
 	if (WIN32)
-		set_target_properties (amulegui
-			PROPERTIES WIN32_EXECUTABLE TRUE
+		set_target_properties (amulegui PROPERTIES
+			WIN32_EXECUTABLE TRUE
 		)
 	endif()
 
@@ -289,6 +295,11 @@ if (NEED_LIB_MULEAPPCOMMON)
 		Timer.cpp
 	)
 
+	add_dependencies (muleappcommon
+		generate_ECCodes.h
+		generate_ECTagTypes.h
+	)
+
 	target_compile_definitions (muleappcommon
 		PRIVATE wxUSE_GUI=0
 		PRIVATE WXUSINGDLL
@@ -299,13 +310,11 @@ if (NEED_LIB_MULEAPPCOMMON)
 		PUBLIC ${EC_INCLUDE_DIR}
 		PRIVATE ${INCLUDE_INCLUDE_DIR}
 		PRIVATE ${LIBS_INCLUDE_DIR}
-		PRIVATE ${wxWidgets_INCLUDE_DIRS}
 		PRIVATE ${ZLIB_INCLUDE_DIR}
 	)
 
-	add_dependencies (muleappcommon
-		generate_ECCodes.h
-		generate_ECTagTypes.h
+	target_link_libraries(muleappcommon
+		PUBLIC wxWidgets::BASE
 	)
 
 	if (ENABLE_UPNP)
@@ -390,7 +399,6 @@ if (NEED_LIB_MULEAPPCORE)
 		PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
 		PRIVATE ${INCLUDE_INCLUDE_DIR}
 		PRIVATE ${LIBS_INCLUDE_DIR}
-		PRIVATE ${wxWidgets_INCLUDE_DIRS}
 	)
 
 	if (ENABLE_UPNP)
@@ -400,7 +408,8 @@ if (NEED_LIB_MULEAPPCORE)
 	endif()
 
 	target_link_libraries (muleappcore
-		CRYPTOPP::CRYPTOPP
+		PUBLIC wxWidgets::BASE
+		PRIVATE CRYPTOPP::CRYPTOPP
 	)
 endif()
 
@@ -432,9 +441,9 @@ if (NEED_LIB_MULEAPPGUI)
 	)
 
 	target_include_directories (muleappgui
-		PRIVATE ${amule_BINARY_DIR}
-		PRIVATE ${INCLUDE_INCLUDE_DIR}
-		PRIVATE ${LIBS_INCLUDE_DIR}
+		PUBLIC ${amule_BINARY_DIR}
+		PUBLIC ${INCLUDE_INCLUDE_DIR}
+		PUBLIC ${LIBS_INCLUDE_DIR}
 	)
 
 	target_link_libraries (muleappgui
@@ -457,24 +466,19 @@ IF (NEED_LIB_MULESOCKET)
 	)
 	
 	target_include_directories (mulesocket
-		PRIVATE ${amule_BINARY_DIR}
+		PUBLIC ${amule_BINARY_DIR}
 		PUBLIC ${INCLUDE_INCLUDE_DIR}
 		PUBLIC ${LIBS_INCLUDE_DIR}
 	)
 
 	if (ENABLE_BOOST)
-		target_include_directories (mulesocket
-			PRIVATE ${Boost_INCLUDE_DIR}
-			PRIVATE ${wxWidgets_INCLUDE_DIRS}
-		)
-
 		target_link_libraries (mulesocket
-			${Boost_LIBRARIES}
-			wxWidgets::BASE
+			PRIVATE ${Boost_LIBRARIES}
+			PUBLIC wxWidgets::BASE
 		)
 	else()
 		target_link_libraries (mulesocket
-			wxWidgets::NET
+			PUBLIC wxWidgets::NET
 		)
 	endif()
 endif()
