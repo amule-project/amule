@@ -29,241 +29,274 @@
 # This can be controled by setting wx_NEED_BASE and wx_NEED_GUI vars.
 #
 
-INCLUDE (CheckCXXSymbolExists)
-INCLUDE (ExternalProject)
+include (CheckCXXSymbolExists)
 
-#IF (BUILT_WX)
-	#SET (BUILT_WX ${BUILT_WX} CACHE BOOL "Remeber that wx was built" FORCE)
+if (wx_NEED_BASE)
+	set (BASE "base")
+	list (APPEND WX_COMPONENTS BASE)
 
-	#EXTERNALPROJECT_ADD (WX
-		#GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
-		#GIT_TAG v3.1.2
-		#CONFIGURE_COMMAND ""
-		#BUILD_COMMAND ""
-		#INSTALL_COMMAND ""
-		#EXCLUDE_FROM_ALL TRUE
-	#)
-
-	#EXTERNALPROJECT_GET_PROPERTY (WX SOURCE_DIR)
-
-	#IF (WIN32)
-		#SET (wxWidgets_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
-	#ELSE (WIN32)
-		#INSTALL (CODE
-			#"EXECUTE_PROCESS (
-				#COMMAND ${CMAKE_MAKE_PROGRAM} clean
-				#WORKING_DIRECTORY ${SOURCE_DIR}
-			#)
-
-			#EXECUTE_PROCESS (
-				#COMMAND ./configure --prefix=${CMAKE_INSTALL_PREFIX}
-				#WORKING_DIRECTORY ${SOURCE_DIR}
-			#)
-
-			#EXECUTE_PROCESS (
-				#COMMAND ${CMAKE_MAKE_PROGRAM} install
-				#WORKING_DIRECTORY ${SOURCE_DIR}
-			#)"
-		#)
-
-		#SET (wxWidgets_CONFIG_EXECUTABLE ${SOURCE_DIR}/wx-config CACHE FILEPATH "Location of wxWidgets library configuration provider binary (wx-config)." FORCE)
-	#ENDIF (WIN32)
-#ENDIF (BUILT_WX)
-
-#IF (NOT DOWNLOAD_AND_BUILD_DEPS)
-	SET (wx_REQUIRED "REQUIRED")
-#ELSE (NOT DOWNLOAD_AND_BUILD_DEPS)
-#	UNSET (wx_REQUIRED)
-#ENDIF (NOT DOWNLOAD_AND_BUILD_DEPS)
-
-IF (wx_NEED_BASE)
-	SET (BASE "base")
-	LIST (APPEND WX_COMPONENTS BASE)
-
-	ADD_LIBRARY (wxWidgets::BASE
+	add_library (wxWidgets::BASE
 		UNKNOWN
 		IMPORTED
 	)
-ENDIF (wx_NEED_BASE)
+endif()
 
-IF (wx_NEED_ADV)
-	SET (ADV "adv")
-	LIST (APPEND WX_COMPONENTS ADV)
+if (wx_NEED_ADV)
+	set (ADV "adv")
+	list (APPEND WX_COMPONENTS ADV)
 
-	ADD_LIBRARY (wxWidgets::ADV
+	add_library (wxWidgets::ADV
 		UNKNOWN
 		IMPORTED
 	)
-ENDIF (wx_NEED_ADV)
+endif()
 
-IF (wx_NEED_GUI)
-	SET (CORE "core")
-	LIST (APPEND WX_COMPONENTS CORE)
+if (wx_NEED_GUI)
+	set (CORE "core")
+	list (APPEND WX_COMPONENTS CORE)
 
-	ADD_LIBRARY (wxWidgets::CORE
+	add_library (wxWidgets::CORE
 		UNKNOWN
 		IMPORTED
 	)
-ENDIF (wx_NEED_GUI)
+endif()
 
-IF (wx_NEED_NET)
-	SET (NET "net")
-	LIST (APPEND WX_COMPONENTS NET)
+if (wx_NEED_NET)
+	set (NET "net")
+	list (APPEND WX_COMPONENTS NET)
 
-	ADD_LIBRARY (wxWidgets::NET
+	add_library (wxWidgets::NET
 		UNKNOWN
 		IMPORTED
 	)
-ENDIF (wx_NEED_NET)
+endif()
 
-#IF (DOWNLOAD_AND_BUILD_DEPS)
-#	UNSET (WX_REQUIRED)
-#ELSE (DOWNLOAD_AND_BUILD_DEPS)
-	SET (WX_REQUIRED "REQUIRED")
-#ENDIF (DOWNLOAD_AND_BUILD_DEPS)
+if (WX_COMPONENTS)
+	foreach (COMPONENT ${WX_COMPONENTS})
+		if (${COMPONENT} STREQUAL ADV AND wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL 3.1.2 AND NOT WX_QUIET)
+			message (STATUS "wx_Version 3.1.2 or newer detected. Disabling wx_ADV")
+			continue()
+		endif()
 
-IF (wxWidgets_BASE_DEFINITIONS)
-	SET (WX_QUIET QUIET)
-ENDIF (wxWidgets_BASE_DEFINITIONS)
+		if (NOT ${${COMPONENT}}_COMPLETE AND NOT (wxWidgets_${COMPONENT}_LIBRARY_RELEASE AND wxWidgets_${COMPONENT}_LIBRARY_DEBUG))
+			message (STATUS "Searching for wx-${COMPONENT}")
+			find_package (wxWidgets ${MIN_WX_VERSION} QUIET REQUIRED COMPONENTS ${${COMPONENT}})
+			message(STATUS "Found usable wx-${COMPONENT}: ${wxWidgets_VERSION_STRING}")
+		endif()
 
-IF (WX_COMPONENTS)
-	FOREACH (COMPONENT ${WX_COMPONENTS})
-		IF (${COMPONENT} STREQUAL ADV AND wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL 3.1.2 AND NOT WX_QUIET)
-			MESSAGE (STATUS "wx_Version 3.1.2 or newer detected. Disabling wx_ADV")
-			CONTINUE()
-		ENDIF (${COMPONENT} STREQUAL ADV AND wxWidgets_VERSION_STRING VERSION_GREATER_EQUAL 3.1.2 AND NOT WX_QUIET)
-
-		IF (NOT wxWidgets_${COMPONENT}_LIBRARY AND NOT (wxWidgets_${COMPONENT}_LIBRARY_RELEASE AND wxWidgets_${COMPONENT}_LIBRARY_DEBUG))
-			FIND_PACKAGE (wxWidgets ${MIN_WX_VERSION} ${WX_QUIET} ${WX_REQUIRED} COMPONENTS ${${COMPONENT}})
-		ENDIF (NOT wxWidgets_${COMPONENT}_LIBRARY AND NOT (wxWidgets_${COMPONENT}_LIBRARY_RELEASE AND wxWidgets_${COMPONENT}_LIBRARY_DEBUG))
-
-		IF (WIN32)
-			SET_PROPERTY (TARGET wxWidgets::${COMPONENT}
-							PROPERTY IMPORTED_LOCATION_RELEASE ${WX_${${COMPONENT}}}
+		if (WIN32)
+			set_property (TARGET wxWidgets::${COMPONENT}
+				PROPERTY IMPORTED_LOCATION_RELEASE ${WX_${${COMPONENT}}}
 			)
 
-			SET_PROPERTY (TARGET wxWidgets::${COMPONENT}
-							PROPERTY IMPORTED_LOCATION_DEBUG ${WX_${${COMPONENT}}d}
+			set_property (TARGET wxWidgets::${COMPONENT}
+				PROPERTY IMPORTED_LOCATION_DEBUG ${WX_${${COMPONENT}}d}
 			)
 
-			SET (wxWidgets_DEFINITIONS ${wxWidgets_DEFINITIONS} WXUSINGDLL)
+			set (wxWidgets_DEFINITIONS ${wxWidgets_DEFINITIONS} WXUSINGDLL)
 
-			IF (${COMPONENT} STREQUAL CORE)
-				SET (wxWidgets_DEFINITIONS ${wxWidgets_DEFINITIONS} wxUSE_GUI=1)
-				SET (CMAKE_REQUIRED_INCLUDES ${wxWidgets_INCLUDE_DIRS})
+			if (${COMPONENT} STREQUAL CORE)
+				set (wxWidgets_DEFINITIONS ${wxWidgets_DEFINITIONS} wxUSE_GUI=1)
+				set (CMAKE_REQUIRED_INCLUDES ${wxWidgets_INCLUDE_DIRS})
 
-				IF (NOT UNICODE_SUPPORT)
-					UNSET (UNICODE_SUPPORT CACHE)
+				if (NOT UNICODE_SUPPORT)
+					unset (UNICODE_SUPPORT CACHE)
 
 					CHECK_CXX_SYMBOL_EXISTS (wxUSE_UNICODE
 						wx/setup.h
 						UNICODE_SUPPORT
 					)
-				ENDIF (NOT UNICODE_SUPPORT)
+				endif()
 
-				UNSET (CMAKE_REQUIRED_INCLUDES)
+				unset (CMAKE_REQUIRED_INCLUDES)
 
-				IF (UNICODE_SUPPORT)
-					SET (wxWidgets_DEFINITIONS ${wxWidgets_DEFINITIONS} _UNICODE)
-				ENDIF (UNICODE_SUPPORT)
-			ENDIF (${COMPONENT} STREQUAL CORE)
+				if (UNICODE_SUPPORT)
+					set (wxWidgets_DEFINITIONS ${wxWidgets_DEFINITIONS} _UNICODE)
+				endif()
+			endif()
 
-			SET (wxWidgets_${COMPONENT}_LIBRARY_RELEASE ${WX_${${COMPONENT}}} CACHE STRING "Libs to use when linking to ${COMPONENT}" FORCE)
-			SET (wxWidgets_${COMPONENT}_LIBRARY_DEBUG ${WX_${${COMPONENT}}d} CACHE STRING "Libs to use when linking to ${COMPONENT}" FORCE)
+			set (wxWidgets_${COMPONENT}_LIBRARY_RELEASE ${WX_${${COMPONENT}}} CACHE STRING "Libs to use when linking to ${COMPONENT}" FORCE)
+			set (wxWidgets_${COMPONENT}_LIBRARY_DEBUG ${WX_${${COMPONENT}}d} CACHE STRING "Libs to use when linking to ${COMPONENT}" FORCE)
 
-			MARK_AS_ADVANCED (wxWidgets_${COMPONENT}_LIBRARY_RELEASE
+			mark_as_advanced (wxWidgets_${COMPONENT}_LIBRARY_RELEASE
 				wxWidgets_${COMPONENT}_LIBRARY_DEBUG
 			)
-		ELSE (WIN32)
-			FOREACH (LIB IN LISTS wxWidgets_LIBRARIES)
-				IF ("${LIB}" MATCHES "^-l(.*)$")
-					SET (LIB_TO_SEARCH ${CMAKE_MATCH_1})
+		else()
+			if (${${${COMPONENT}}_COMPLETE})
+				set_property (TARGET wxWidgets::${COMPONENT} PROPERTY
+					IMPORTED_LOCATION ${${${COMPONENT}}_LOC}
+				)
 
-					FIND_LIBRARY (${LIB_TO_SEARCH}_SEARCH
-						${LIB_TO_SEARCH}
-						PATHS ${wxWidgets_LIBRARY_DIRS}
+				if (${${COMPONENT}}_DEPS)
+					if ("Threads::Threads" IN_LIST ${${COMPONENT}}_DEPS)
+						include (FindThreads)
+					endif()
+
+					target_link_libraries (wxWidgets::${COMPONENT}
+						INTERFACE ${${${COMPONENT}}_DEPS}
+					)
+				endif()
+
+				if (${${COMPONENT}}_INCS)
+					set_property (TARGET wxWidgets::${COMPONENT} PROPERTY
+						INTERFACE_INCLUDE_DIRECTORIES ${${${COMPONENT}}_INCS}
+					)
+				endif()
+
+				if (${${COMPONENT}}_DEFS)
+					set_property (TARGET wxWidgets::${COMPONENT} PROPERTY
+						INTERFACE_COMPILE_DEFINITIONS ${${${COMPONENT}}_DEFS}
+					)
+				endif()
+			else()
+				foreach (LIB IN LISTS wxWidgets_LIBRARIES)
+					if ("${LIB}" MATCHES "^-l(.*)$")
+						if (${CMAKE_MATCH_1})
+							list (APPEND ${COMPONENT}_DEPS wxWidgets::${${CMAKE_MATCH_1}})
+							list (REMOVE_ITEM wxWidgets_LIBRARIES "${LIB}")
+
+							foreach (entry IN LISTS wxWidgets_LIBRARIES)
+								if (DEFINED ${${CMAKE_MATCH_1}}_DEPS AND "${entry}" IN_LIST "${${CMAKE_MATCH_1}}_DEPS")
+									list (REMOVE_ITEM ${${CMAKE_MATCH_1}}_DEPS "${entry}")
+									list (REMOVE_ITEM wxWidgets_LIBRARIES "${entry}")
+								endif()
+
+								if (DEFINED ${${CMAKE_MATCH_1}}_REMAINS AND "${entry}" IN_LIST "${${CMAKE_MATCH_1}}_REMAINS")
+									list (REMOVE_ITEM ${${CMAKE_MATCH_1}}_REMAINS "${entry}")
+									list (REMOVE_ITEM wxWidgets_LIBRARIES "${entry}")
+								endif()
+							endforeach()
+						else()
+							set (LIB_TO_SEARCH ${CMAKE_MATCH_1})
+
+							find_library (${LIB_TO_SEARCH}_SEARCH
+								${LIB_TO_SEARCH}
+								PATHS ${wxWidgets_LIBRARY_DIRS}
+							)
+
+							if (${LIB_TO_SEARCH}_SEARCH)
+								set (${${COMPONENT}}_LOC ${${LIB_TO_SEARCH}_SEARCH}
+									CACHE
+									INTERNAL
+									"location of ${COMPONENT} lib"
+									FORCE
+								)
+
+								set (${LIB_TO_SEARCH} ${COMPONENT})
+								list (REMOVE_ITEM wxWidgets_LIBRARIES "${LIB}")
+							endif()
+						endif()
+					endif()
+				endforeach()
+
+				foreach (LIB IN LISTS wxWidgets_LIBRARIES)
+					if ("${LIB}" MATCHES "^-L.*")
+						list (REMOVE_ITEM wxWidgets_LIBRARIES "${LIB}")
+					elseif ("${LIB}" STREQUAL "")
+						continue()
+					else()
+						if (${LIB} STREQUAL "-pthread")
+							if (NOT TARGET Threads::Threads)
+								include (FindThreads)
+							endif()
+
+							if (TARGET Threads::Threads)
+								list (APPEND ${COMPONENT}_DEPS "Threads::Threads")
+								list (REMOVE_ITEM wxWidgets_LIBRARIES "${LIB}")
+							else()
+								message (FATAL_ERROR "wxWidgets::${COMPONENT} needs threads, but it was not found")
+							endif()
+						else()
+							message ("${LIB} nicht behandelt")
+						endif()
+					endif()
+				endforeach()
+
+				foreach (dep IN LISTS ${COMPONENT}_DEPS)
+					get_target_property (int_deps
+						${dep}
+						INTERFACE_LINK_LIBRARIES
 					)
 
-					IF (${LIB_TO_SEARCH}_SEARCH AND ${${LIB_TO_SEARCH}_SEARCH} MATCHES ${${COMPONENT}})
-						SET_PROPERTY (TARGET wxWidgets::${COMPONENT}
-							PROPERTY IMPORTED_LOCATION ${${LIB_TO_SEARCH}_SEARCH}
-						)
-					ELSE (${LIB_TO_SEARCH}_SEARCH AND ${${LIB_TO_SEARCH}_SEARCH} MATCHES ${${COMPONENT}})
-						FOREACH (TGT ${WX_COMPONENTS})
-							IF (${${LIB_TO_SEARCH}_SEARCH} MATCHES ${${TGT}} AND TARGET wxWidgets::${TGT})
-								TARGET_LINK_LIBRARIES (wxWidgets::${COMPONENT}
-									INTERFACE wxWidgets::${TGT}
-								)
-							ELSEIF (NOT TARGET wxWidgets::${TGT})
-								MESSAGE (FATAL_ERROR "Tried to add dependency for wxWidgets::${TGT} but didn't find a target wxWidgets::${COMPONENT}")
-							ENDIF (${${LIB_TO_SEARCH}_SEARCH} MATCHES ${${TGT}} AND TARGET wxWidgets::${TGT})
-						ENDFOREACH (TGT ${WX_COMPONENTS})
-					ENDIF (${LIB_TO_SEARCH}_SEARCH AND ${${LIB_TO_SEARCH}_SEARCH} MATCHES ${${COMPONENT}})
-				ENDIF ("${LIB}" MATCHES "^-l(.*)$")
-			ENDFOREACH (LIB IN LISTS wxWidgets_LIBRARIES)
+					if (${int_deps} IN_LIST ${COMPONENT}_DEPS)
+						list (REMOVE_ITEM ${COMPONENT}_DEPS ${int_deps})
+					endif()
 
-			SET (wxWidgets_${COMPONENT}_LIBRARY ${wxWidgets_${COMPONENT}_LIBRARY} CACHE STRING "Libs to use when linking to ${COMPONENT}" FORCE)
+					get_target_property (int_incs
+						${dep}
+						INTERFACE_INCLUDE_DIRECTORIES
+					)
 
-			MARK_AS_ADVANCED (wxWidgets_${COMPONENT_NAME}_LIBRARY
-				wxWidgets_${COMPONENT_NAME}_DEFINITIONS
-			)
-		ENDIF (WIN32)
+					if (int_incs)
+						foreach (inc IN LISTS int_incs)
+							if (${inc} IN_LIST wxWidgets_INCLUDE_DIRS)
+								list (REMOVE_ITEM wxWidgets_INCLUDE_DIRS ${int_incs})
+							endif()
+						endforeach()
+					endif()
 
-		SET_TARGET_PROPERTIES (wxWidgets::${COMPONENT} PROPERTIES
-			INTERFACE_COMPILE_DEFINITIONS "${wxWidgets_DEFINITIONS};$<$<CONFIG:Debug>:__WXDEBUG__>"
-			INTERFACE_INCLUDE_DIRECTORIES "${wxWidgets_INCLUDE_DIRS}"
-		)
+					get_target_property (int_defs
+						${dep}
+						INTERFACE_COMPILE_DEFINITIONS
+					)
 
-		UNSET (wxWidgets_DEFINITIONS)
-	ENDFOREACH (COMPONENT ${WX_COMPONENTS})
+					if (int_defs)
+						foreach (def IN LISTS int_defs)
+							if (${def} IN_LIST wxWidgets_DEFINITIONS)
+								list (REMOVE_ITEM wxWidgets_DEFINITIONS ${int_defs})
+							endif()
+						endforeach()
+					endif()
+				endforeach()
 
-	IF (wxWidgets_VERSION_STRING VERSION_LESS 3.1.2)
-		TARGET_LINK_LIBRARIES (wxWidgets::ADV
-			INTERFACE wxWidgets::BASE
-		)
-	ENDIF (wxWidgets_VERSION_STRING VERSION_LESS 3.1.2)
+				set_property (TARGET wxWidgets::${COMPONENT} PROPERTY
+					IMPORTED_LOCATION ${${${COMPONENT}}_LOC}
+				)
 
-	TARGET_LINK_LIBRARIES (wxWidgets::CORE
-		INTERFACE wxWidgets::BASE
-	)
-	TARGET_LINK_LIBRARIES (wxWidgets::NET
-		INTERFACE wxWidgets::BASE
-	)
+				set (${${COMPONENT}}_DEPS ${${COMPONENT}_DEPS}
+					CACHE
+					INTERNAL
+					"Deps of ${COMPONENT}"
+					FORCE
+				)
 
-	SET (wxWidgets_INCLUDE_DIRS ${wxWidgets_INCLUDE_DIRS} CACHE STRING "Where to find wx header files" FORCE)
+				target_link_libraries (wxWidgets::${COMPONENT}
+					INTERFACE ${${COMPONENT}_DEPS}
+				)
 
-	MARK_AS_ADVANCED (wxWidgets_INCLUDE_DIRS
-		wxWidgets_BASE_DEFINITIONS
-	)
-ENDIF (WX_COMPONENTS)
+				set (${${COMPONENT}}_INCS ${wxWidgets_INCLUDE_DIRS}
+					CACHE
+					INTERNAL
+					"Incs of ${COMPONENT}"
+					FORCE
+				)
 
-#IF (DOWNLOAD_AND_BUILD_DEPS AND NOT wxWidgets_FOUND AND NOT BUILT_WX)
-	#IF (WIN32)
-		#EXTERNALPROJECT_ADD (WX
-			#GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
-			#GIT_TAG v3.1.2
-			#GIT_PROGRESS TRUE
-			#BUILD_IN_SOURCE FALSE
-			#CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DwxUSE_IPV6=OFF -DwxBUILD_COMPATIBILITY=2.8
-			#BUILD_COMMAND ${CMAKE_COMMAND} --build . --config Debug
-			#COMMAND ${CMAKE_COMMAND} --build . --config Release
-			#INSTALL_COMMAND ${CMAKE_COMMAND} --install . --config Debug
-			#COMMAND ${CMAKE_COMMAND} --install . --config Release
-		#)
-	#ELSE (WIN32)
-		#EXTERNALPROJECT_ADD (WX
-			#GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
-			#GIT_TAG v3.1.2
-			#GIT_PROGRESS TRUE
-			#BUILD_IN_SOURCE TRUE
-			#CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-			#CONFIGURE_COMMAND ./autogen.sh
-			#BUILD_COMMAND ./configure --enable-debug --prefix=<SOURCE_DIR>
-			#INSTALL_COMMAND ${CMAKE_MAKE_PROGRAM}
-		#)
-	#ENDIF (WIN32)
+				if (wxWidgets_INCLUDE_DIRS)
+					set_property (TARGET wxWidgets::${COMPONENT} PROPERTY
+						INTERFACE_INCLUDE_DIRECTORIES ${wxWidgets_INCLUDE_DIRS}
+					)
+				endif()
 
+				set (${${COMPONENT}}_DEFS ${wxWidgets_DEFINITIONS}
+					CACHE
+					INTERNAL
+					"Defs of ${COMPONENT}"
+					FORCE
+				)
 
-	#LIST (APPEND EXTERNAL_DEPS WX)
-	#SET (RECONF_COMMAND ${RECONF_COMMAND} -DBUILT_WX=TRUE)
-#ENDIF (DOWNLOAD_AND_BUILD_DEPS AND NOT wxWidgets_FOUND AND NOT BUILT_WX)
+				if (wxWidgets_DEFINITIONS)
+					set_property (TARGET wxWidgets::${COMPONENT} PROPERTY
+						INTERFACE_COMPILE_DEFINITIONS ${wxWidgets_DEFINITIONS}
+					)
+				endif()
+
+				set (${${COMPONENT}}_COMPLETE TRUE
+					CACHE
+					INTERNAL
+					"${COMPONENT} is complete"
+					FORCE
+				)
+			endif()
+		endif()
+	endforeach()
+endif()

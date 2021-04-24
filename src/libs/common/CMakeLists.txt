@@ -14,11 +14,11 @@ target_include_directories (mulecommon
 )
 
 target_link_libraries (mulecommon
-	wxWidgets::BASE
+	PUBLIC wxWidgets::BASE
 )
 
 if (HAVE_BFD)
 	target_link_libraries (mulecommon
-		${BFD_LIBRARY}
+		PUBLIC ${BFD_LIBRARY}
 	)
 endif()
