@@ -16,7 +16,7 @@ set (DEFAULT_BUILD_TYPE "Release")
 set (RECONF_COMMAND ${CMAKE_COMMAND})
 
 if (EXISTS "${CMAKE_SOURCE_DIR}/.git")
-	SET (DEFAULT_BUILD_TYPE "Debug")
+	set (DEFAULT_BUILD_TYPE "Debug")
 endif()
 
 # Set the possible values of build type for cmake-gui

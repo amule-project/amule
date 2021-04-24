@@ -1,3 +1,3 @@
-IF (NEED_LIB_EC)
-	ADD_SUBDIRECTORY (cpp)
-ENDIF (NEED_LIB_EC)
+if (NEED_LIB_EC)
+	add_subdirectory (cpp)
+endif()

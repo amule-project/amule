@@ -1,7 +1,7 @@
-IF (NEED_LIB_EC)
-	ADD_SUBDIRECTORY (ec)
-ENDIF (NEED_LIB_EC)
+if (NEED_LIB_EC)
+	add_subdirectory (ec)
+endif()
 
-IF (NEED_LIB_MULECOMMON)
-	ADD_SUBDIRECTORY (common)
-ENDIF (NEED_LIB_MULECOMMON)
+if (NEED_LIB_MULECOMMON)
+	add_subdirectory (common)
+endif()
