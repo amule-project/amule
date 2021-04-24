@@ -1,5 +1,4 @@
-include (FindThreads)
-find_package (Boost ${MIN_BOOST_VERSION})
+include (FindBoost)
 
 if (NOT ASIO_SOCKETS)
 	include (CheckIncludeFiles)
@@ -17,7 +16,6 @@ if (NOT ASIO_SOCKETS)
 			set (CMAKE_REQUIRED_FLAGS " -DBOOST_DATE_TIME_NO_LIB -DBOOST_REGEX_NO_LIB -DBOOST_SYSTEM_NO_LIB -DBOOST_ERROR_CODE_HEADER_ONLY")
 		endif (NOT WIN32)
 
-		set (CMAKE_REQUIRED_LIBRARIES "Threads::Threads")
 		check_include_files ("boost/system/error_code.hpp;boost/asio.hpp" ASIO_SOCKETS LANGUAGE CXX)
 
 		if (ASIO_SOCKETS)
