@@ -51,7 +51,12 @@
 if (NOT gdlib_FOUND)
 	if (NOT WIN32)
 		find_package (PkgConfig REQUIRED)
-		pkg_search_module (gdlib REQUIRED gdlib)
+
+		pkg_search_module (gdlib REQUIRED
+			IMPORTED_TARGET GLOBAL
+			gdlib
+		)
+
 		message (STATUS "gdlib version: ${gdlib_VERSION} -- OK")
 	endif()
 
