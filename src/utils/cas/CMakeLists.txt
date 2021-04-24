@@ -16,7 +16,7 @@ if (WIN32)
 endif()
 
 target_compile_definitions (cas
-		PRIVATE ${gdlib_CFLAGS}
+	PRIVATE ${gdlib_CFLAGS}
 )
 
 target_include_directories (cas
