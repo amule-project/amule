@@ -27,8 +27,6 @@ install (TARGETS cas
 	RUNTIME DESTINATION bin
 )
 
-
 install (FILES tmp.html stat.png
 	DESTINATION "${CMAKE_INSTALL_DATADIR}/cas"
 )
-
