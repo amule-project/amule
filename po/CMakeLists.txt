@@ -63,9 +63,9 @@ foreach (PO_FILE ${PO_FILES})
 
 		install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${PO_FILE}.gmo
 			DESTINATION ${CMAKE_INSTALL_LOCALEDIR}/${PO_FILE}/LC_MESSAGES/
-			RENAME ${PO_FILE}.mo
+			RENAME amule.mo
 		)
 	endif()
 endforeach()
 
-gettext_process_po_files ("" ALL INSTALL_DESTINATION ${CMAKE_INSTALL_LOCALEDIR} PO_FILES ${PO_BUILD})
+gettext_process_po_files ("" ALL PO_FILES ${PO_BUILD})
