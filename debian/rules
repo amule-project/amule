@@ -2,10 +2,6 @@
 # -*- makefile -*-
 # This file was originally written by Vollstrecker
 
-# Uncomment this to turn on verbose mode.
-export DH_VERBOSE=1
-export DEB_BUILD_OPTIONS_PARALLEL=3
-
 # These are used for cross-compiling and for saving the configure script
 # from having to guess our platform (since we know it already)
 DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
@@ -28,34 +24,32 @@ flags = ${MAKECMDGOALS}
 ifeq ("binary", "$(findstring binary, $(flags))")
 
 #	PLASMAMULE = --enable-plasmamule
-	WXCAS = --enable-wxcas
-	XAS = --enable-xas
-	CAS = --enable-cas
-	WEBSERVER = --enable-webserver
-	REMOTEGUI = --enable-amule-gui
-	DAEMON = --enable-amule-daemon
-	ALCC = --enable-alcc
-	ALC = --enable-alc
-	AMULECMD = --enable-amulecmd
-	DEBUGGING = --enable-debug --disable-optimize --disable-profile
+	WXCAS = -DBUILD_WXCAS=ON
+	XAS = -DBUILD_XAS=ON
+	CAS = -DBUILD_CAS=ON
+	WEBSERVER = -DBUILD_WEBSERVER=ON
+	REMOTEGUI = -DBUILD_REMOTEGUI=ON
+	DAEMON = -DBUILD_DAEMON=ON
+	ALCC = -DBUILD_ALCC=ON
+	ALC = -DBUILD_ALC=ON
+	AMULECMD = -DBUILD_AMULECMD=ON
+	DEBUGGING = -DCMAKE_BUILD_TYPE=Debug
 	DEBUGBUILD = yes
-	LANGFLAG = --with-language=all
 
 else ifeq ("build", "$(findstring build, $(flags))")
 
 #	PLASMAMULE = --enable-plasmamule
-	WXCAS = --enable-wxcas
-	XAS = --enable-xas
-	CAS = --enable-cas
-	WEBSERVER = --enable-webserver
-	REMOTEGUI = --enable-amule-gui
-	DAEMON = --enable-amule-daemon
-	ALCC = --enable-alcc
-	ALC = --enable-alc
-	AMULECMD = --enable-amulecmd
-	DEBUGGING = --enable-debug --disable-optimize --disable-profile
+	WXCAS = -DBUILD_WXCAS=ON
+	XAS = -DBUILD_XAS=ON
+	CAS = -DBUILD_CAS=ON
+	WEBSERVER = -DBUILD_WEBSERVER=ON
+	REMOTEGUI = -DBUILD_REMOTEGUI=ON
+	DAEMON = -DBUILD_DAEMON=ON
+	ALCC = -DBUILD_ALCC=ON
+	ALC = -DBUILD_ALC=ON
+	AMULECMD = -DBUILD_AMULECMD=ON
+	DEBUGGING = -DCMAKE_BUILD_TYPE=Debug
 	DEBUGBUILD = yes
-	LANGFLAG = --with-language=all
 
 else
 	#Now we have to check what packages are build to configure only them
@@ -65,229 +59,299 @@ else
 	wo_alcc = $(subst alcc,, ${flags})
 	wo_amule_utils_gui = $(subst amule-utils-gui,,${flags})
 	wo_all_other_amules = $(subst amulecmd,,$(subst amule-utils-gui,,$(subst amule-utils,,${flags})))
-	LANGUAGE := en_GB
+	LANGUAGE := -DTRANSLATION_en_GB=ON
 
 #	ifeq ("plasmamule", "$(findstring plasmamule, $(flags))")
 #		PLASMAMULE = --enable-plasmamule
 #	endif
 
 	ifeq ("wxcas", "$(findstring wxcas, $(flags))")
-		WXCAS = --enable-wxcas
+		WXCAS = -DBUILD_WXCAS=ON
 	endif
 
 	ifeq ("cas", "$(findstring cas, $(wo_wxcas))")
-		CAS = --enable-cas
+		CAS = -DBUILD_CAS=ON
 	endif
 
 	ifeq ("webserver", "$(findstring webserver, $(flags))")
-		WEBSERVER = --enable-webserver
+		WEBSERVER = -DBUILD_WEBSERVER=ON
 	endif
 
 	ifeq ("remotegui", "$(findstring remotegui, $(flags))")
-		REMOTEGUI = --enable-amule-gui
+		REMOTEGUI = -DBUILD_REMOTEGUI=ON
 	endif
 
 	ifeq ("daemon", "$(findstring daemon, $(flags))")
-		DAEMON = --enable-amule-daemon
+		DAEMON = -DBUILD_DAEMON=ON
 	endif
 
 	ifeq ("alcc", "$(findstring alcc, $(flags))")
-		ALCC = --enable-alcc
+		ALCC = -DBUILD_ALCC=ON
 	endif
 
 	ifeq ("alc", "$(findstring alc, $(wo_alcc))")
-		ALC = --enable-alc
+		ALC = -DBUILD_ALC=ON
 	endif
 
 	ifeq ("amulecmd", "$(findstring amulecmd, $(flags))")
-		AMULECMD = --enable-amulecmd
+		AMULECMD = -DBUILD_AMULECMD=ON
 	endif
 
 	ifneq ("amule", "$(findstring amule, $(wo_all_other_amules))")
-		AMULE = --disable-monolithic
+		AMULE = -DBUILD_MONOLITHIC=OFF
 	endif
 
 	ifneq ("ed2k", "$(findstring ed2k, $(flags))")
-		ED2K = --disable-ed2k
+		ED2K = -DBUILD_ED2K=OFF
 	endif
 
 	ifeq ("xas", "$(findstring xas, $(flags))")
-		XAS = --enable-xas
+		XAS = -DBUILD_XAS
 	endif
 
 	#Now find out if a Metapackage should be build
 	ifeq ("amule-utils-gui", "$(findstring amule-utils-gui, $(flags))")
-		ALC = --enable-alc
-		REMOTEGUI = --enable-amule-gui
-		WXCAS = --enable-wxcas
+		ALC = -DBUILD_ALC=ON
+		REMOTEGUI = -DBUILD_REMOTEGUI=ON
+		WXCAS = -DBUILD_WXCAS=ON
 	endif
 
 	ifeq ("amule-utils", "$(findstring amule-utils, $(wo_amule_utils_gui))")
-		ALCC = --enable-alcc
-		AMULECMD = --enable-amulecmd
-		CAS = --enable-cas
+		ALCC = -DBUILD_ALCC=ON
+		AMULECMD = -DBUILD_AMULECMD=ON
+		CAS = -DBUILD_CAS=ON
 	endif
 
 	#Find this whole i18n stuff
 	ifneq ("i18n-en-only", "$(findstring i18n-en-only, $(flags))")
-
 		ifeq ("i18n-ar", "$(findstring i18n-ar, $(flags))")
-			LANGUAGE := $(LANGUAGE),ar
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ar=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ar=OFF
 		endif
 
 		ifeq ("i18n-ast", "$(findstring i18n-ast, $(flags))")
-			LANGUAGE := $(LANGUAGE),ast
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ast=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ast=OFF
 		endif
 
 		ifeq ("i18n-bg", "$(findstring i18n-bg, $(flags))")
-			LANGUAGE := $(LANGUAGE),bg
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_bg=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_bg=OFF
 		endif
 
 		ifeq ("i18n-ca", "$(findstring i18n-ca, $(flags))")
-			LANGUAGE := $(LANGUAGE),ca
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ca=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ca=OFF
 		endif
 
 		ifeq ("i18n-cs", "$(findstring i18n-cs, $(flags))")
-			LANGUAGE := $(LANGUAGE),cs
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_cs=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_cs=OFF
 		endif
 
 		ifeq ("i18n-da", "$(findstring i18n-da, $(flags))")
-			LANGUAGE := $(LANGUAGE),da
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_da=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_da=OFF
 		endif
 
 		ifeq ("i18n-de", "$(findstring i18n-de, $(flags))")
-			LANGUAGE := $(LANGUAGE),de
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_de=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_de=OFF
 		endif
 
 		ifeq ("i18n-el", "$(findstring i18n-el, $(flags))")
-			LANGUAGE := $(LANGUAGE),el
-		endif
-
-		ifeq ("i18n-es", "$(findstring i18n-es, $(flags))")
-			LANGUAGE := $(LANGUAGE),es
-		endif
-
-		ifeq ("i18n-et-ee", "$(findstring i18n-et-ee, $(flags))")
-			LANGUAGE := $(LANGUAGE),et_EE
-		endif
-
-		ifeq ("i18n-eu", "$(findstring i18n-eu, $(flags))")
-			LANGUAGE := $(LANGUAGE),eu
-		endif
-
-		ifeq ("i18n-fi", "$(findstring i18n-fi, $(flags))")
-			LANGUAGE := $(LANGUAGE),fi
-		endif
-
-		ifeq ("i18n-fr", "$(findstring i18n-fr, $(flags))")
-			LANGUAGE := $(LANGUAGE),fr
-		endif
-
-		ifeq ("i18n-gl", "$(findstring i18n-gl, $(flags))")
-			LANGUAGE := $(LANGUAGE),gl
-		endif
-
-		ifeq ("i18n-he", "$(findstring i18n-he, $(flags))")
-			LANGUAGE := $(LANGUAGE),he
-		endif
-
-		ifeq ("i18n-hr", "$(findstring i18n-hr, $(flags))")
-			LANGUAGE := $(LANGUAGE),hr
-		endif
-
-		ifeq ("i18n-hu", "$(findstring i18n-hu, $(flags))")
-			LANGUAGE := $(LANGUAGE),hu
-		endif
-
-		ifeq ("i18n-it", "$(findstring i18n-it, $(flags))")
-			LANGUAGE := $(LANGUAGE),it
-		endif
-
-		ifeq ("i18n-it-ch", "$(findstring i18n-it-ch, $(flags))")
-			LANGUAGE := $(LANGUAGE),it_CH
-		endif
-
-		ifeq ("i18n-ja", "$(findstring i18n-ja, $(flags))")
-			LANGUAGE := $(LANGUAGE),ja
-		endif
-
-		ifeq ("i18n-ko-kr", "$(findstring i18n-ko-kr, $(flags))")
-			LANGUAGE := $(LANGUAGE),ko_KR
-		endif
-
-		ifeq ("i18n-lt", "$(findstring i18n-lt, $(flags))")
-			LANGUAGE := $(LANGUAGE),lt
-		endif
-
-		ifeq ("i18n-nl", "$(findstring i18n-nl, $(flags))")
-			LANGUAGE := $(LANGUAGE),hl
-		endif
-
-		ifeq ("i18n-nn", "$(findstring i18n-nn, $(flags))")
-			LANGUAGE := $(LANGUAGE),nn
-		endif
-
-		ifeq ("i18n-pl", "$(findstring i18n-pl, $(flags))")
-			LANGUAGE := $(LANGUAGE),pl
-		endif
-
-		ifeq ("i18n-pt-br", "$(findstring i18n-pt-br, $(flags))")
-			LANGUAGE := $(LANGUAGE),pt_BR
-		endif
-
-		ifeq ("i18n-pt-pt", "$(findstring i18n-pt-pt, $(flags))")
-			LANGUAGE := $(LANGUAGE),pt_PT
-		endif
-
-		ifeq ("i18n-ro", "$(findstring i18n-ro, $(flags))")
-			LANGUAGE := $(LANGUAGE),ro
-		endif
-
-		ifeq ("i18n-ru", "$(findstring i18n-ru, $(flags))")
-			LANGUAGE := $(LANGUAGE),ru
-		endif
-
-		ifeq ("i18n-sl", "$(findstring i18n-sl, $(flags))")
-			LANGUAGE := $(LANGUAGE),sl
-		endif
-
-		ifeq ("i18n-sq", "$(findstring i18n-sq, $(flags))")
-			LANGUAGE := $(LANGUAGE),sq
-		endif
-
-		ifeq ("i18n-sv", "$(findstring i18n-sv, $(flags))")
-			LANGUAGE := $(LANGUAGE),sv
-		endif
-
-		ifeq ("i18n-tr", "$(findstring i18n-tr, $(flags))")
-			LANGUAGE := $(LANGUAGE),tr
-		endif
-
-		ifeq ("i18n-uk", "$(findstring i18n-uk, $(flags))")
-			LANGUAGE := $(LANGUAGE),uk
-		endif
-
-		ifeq ("i18n-zh-cn", "$(findstring i18n-zh-cn, $(flags))")
-			LANGUAGE := $(LANGUAGE),zh_CN
-		endif
-
-		ifeq ("i18n-zh-tw", "$(findstring i18n-zh-tw, $(flags))")
-			LANGUAGE := $(LANGUAGE),zh_TW
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_el=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_el=OFF
 		endif
 
 		ifeq ($(LANGUAGE),en_GB)
-			LANGUAGE = all
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_en_GB=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_en_GB=OFF
 		endif
 
-	endif
+		ifeq ("i18n-es", "$(findstring i18n-es, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_es=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_es=OFF
+		endif
 
-	LANGFLAG = --with-language=$(LANGUAGE)
+		ifeq ("i18n-et-ee", "$(findstring i18n-et-ee, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_et_EE=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_et_EE=OFF
+		endif
+
+		ifeq ("i18n-eu", "$(findstring i18n-eu, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_eu=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_eu=OFF
+		endif
+
+		ifeq ("i18n-fi", "$(findstring i18n-fi, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_fi=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_fi=OFF
+		endif
+
+		ifeq ("i18n-fr", "$(findstring i18n-fr, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_fr=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_fr=OFF
+		endif
+
+		ifeq ("i18n-gl", "$(findstring i18n-gl, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_gl=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_gl=OFF
+		endif
+
+		ifeq ("i18n-he", "$(findstring i18n-he, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_he=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_he=OFF
+		endif
+
+		ifeq ("i18n-hr", "$(findstring i18n-hr, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_hr=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_hr=OFF
+		endif
+
+		ifeq ("i18n-hu", "$(findstring i18n-hu, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_hu=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_hu=OFF
+		endif
+
+		ifeq ("i18n-it", "$(findstring i18n-it, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_it=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_it=OFF
+		endif
+
+		ifeq ("i18n-it-ch", "$(findstring i18n-it-ch, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_it_CH=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_it_CH=OFF
+		endif
+
+		ifeq ("i18n-ja", "$(findstring i18n-ja, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ja=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ja=OFF
+		endif
+
+		ifeq ("i18n-ko-kr", "$(findstring i18n-ko-kr, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ko_KR=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ko_KR=OFF
+		endif
+
+		ifeq ("i18n-lt", "$(findstring i18n-lt, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_lt=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_lt=OFF
+		endif
+
+		ifeq ("i18n-nl", "$(findstring i18n-nl, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_hl=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_hl=OFF
+		endif
+
+		ifeq ("i18n-nn", "$(findstring i18n-nn, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_nn=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_nn=OFF
+		endif
+
+		ifeq ("i18n-pl", "$(findstring i18n-pl, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_pl=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_pl=OFF
+		endif
+
+		ifeq ("i18n-pt-br", "$(findstring i18n-pt-br, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_pt_BR=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_pt_BR=OFF
+		endif
+
+		ifeq ("i18n-pt-pt", "$(findstring i18n-pt-pt, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_pt_PT=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_pt_PT=OFF
+		endif
+
+		ifeq ("i18n-ro", "$(findstring i18n-ro, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ro=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ro=OFF
+		endif
+
+		ifeq ("i18n-ru", "$(findstring i18n-ru, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ru=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_ru=OFF
+		endif
+
+		ifeq ("i18n-sl", "$(findstring i18n-sl, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_sl=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_sl=OFF
+		endif
+
+		ifeq ("i18n-sq", "$(findstring i18n-sq, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_sq=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_sq=OFF
+		endif
+
+		ifeq ("i18n-sv", "$(findstring i18n-sv, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_sv=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_sv=OFF
+		endif
+
+		ifeq ("i18n-tr", "$(findstring i18n-tr, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_tr=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_tr=OFF
+		endif
+
+		ifeq ("i18n-uk", "$(findstring i18n-uk, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_uk=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_uk=OFF
+		endif
+
+		ifeq ("i18n-zh-cn", "$(findstring i18n-zh-cn, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_zh_CN=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_zh_CN=OFF
+		endif
+
+		ifeq ("i18n-zh-tw", "$(findstring i18n-zh-tw, $(flags))")
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_zh_TW=ON
+		else
+			LANGUAGE := $(LANGUAGE) -DTRANSLATION_zh_TW=OFF
+		endif
+	endif
 
 	#And at Last, find out if we compile a debug-package or not.
 	ifeq ("dbgsym", "$(findstring dbgsym, $(flags))")
-		DEBUGGING = --enable-debug --disable-optimize --disable-profile
+		DEBUGGING = -DCMAKE_BUILD_TYPE=Debug
 	else
-		DEBUGGING = --disable-debug --enable-optimize --disable-profile
+		DEBUGGING = -DCMAKE_BUILD_TYPE=Release
 	endif
 endif
 
@@ -317,14 +381,22 @@ define package
 	touch $@
 endef
 
-#Now we configure this whole thing
-config.status: configure
+#And here is the well known clean target
+clean:
 	dh_testdir
-	CFLAGS="$(CFLAGS)" dh_auto_configure -- --host=$(DEB_HOST_GNU_TYPE)\
-		LDFLAGS="-Wl,--as-needed ${LDFLAGS}"\
-		--enable-ccache\
-		--enable-geoip\
-		--with-boost\
+	dh_testroot
+	dh_clean
+	dh_auto_clean
+	dh_prep
+
+#Some generic targets to check the build process
+build: build-stamp
+
+build-stamp:
+	dh_testdir
+	dh_auto_configure -Scmake -- \
+		-DENABLE_IP2COUNTRY=ON\
+		-DENABLE_BOOST=ON\
 		${PLASMAMULE}\
 		${AMULECMD}\
 		${DEBUGGING}\
@@ -337,37 +409,22 @@ config.status: configure
 		${DAEMON}\
 		${AMULE}\
 		${ED2K}\
-		$(LANGFLAG)\
+		$(LANGUAGE)\
 		$(XAS)
-
-#And here is the well known clean target
-clean:
-	dh_testdir
-	dh_testroot
-	dh_clean
-	dh_auto_clean
-	dh_prep
-
-#Some generic targets to check the build process
-build: build-stamp
-
-build-stamp:  config.status
-	dh_testdir
-
 	dh_auto_build
-
 	touch build-stamp
 
 #Now we install the packages all together to the tmp-dir inside of debian/
-install: build
+install: install-stamp
+
+install-stamp:
 	dh_testdir
 	dh_testroot
-
 	dh_auto_install
+	touch install-stamp
 
 #Now first build the packages that are compiled and installed on every build
 amule-common: install
-
 	for pkg in $(general_pkgs); do \
 		dh_testdir -p$$pkg; \
 		dh_testroot -p$$pkg; \
@@ -491,10 +548,6 @@ normal-packages: amule-utils amule-utils-gui amule ed2k webserver daemon xas;
 #plasmamule ;
 language-packages: i18n-ar i18n-ast i18n-bg i18n-ca i18n-cs i18n-da i18n-de i18n-el i18n-en-gb i18n-es i18n-et-ee i18n-eu i18n-fi i18n-fr i18n-gl i18n-he i18n-hr i18n-hu i18n-it-ch i18n-it i18n-ja i18n-ko-kr i18n-lt i18n-nn i18n-nl i18n-pl i18n-pt-br i18n-pt-pt i18n-ru i18n-sl i18n-sq i18n-sv i18n-tr i18n-uk i18n-zh-cn i18n-zh-tw ;
 i18n-en-only: ;
-
-#If we build from a svn checkout, we need to generate configure
-configure:
-	./autogen.sh
 
 #Now the targets for dpkg-buildpackage
 binary-indep: build install

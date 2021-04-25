@@ -1,3 +1,11 @@
+amule (1:2.3.3-1+git-20210424) stable; urgency=low
+
+  * Adapted new versioning
+  * switched to building by cmake
+  * Removed the configure target
+
+ -- Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>  Sat, 24 Apr 2021 16:19:21 +0200
+
 amule (2.3.3+git-20210228) stable; urgency=low
 
   * git-rev: 1e95a16b + 1
