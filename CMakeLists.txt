@@ -135,6 +135,10 @@ endif()
 add_subdirectory (docs)
 add_subdirectory (src)
 
+if (ENABLE_NLS)
+	add_subdirectory (po)
+endif()
+
 if (BUILD_TESTING)
 	enable_testing()
 	add_subdirectory (unittests)
