@@ -486,56 +486,56 @@ Description: Chinese (zh_TW) internationalized (i18n) files for amule
 
 Package: amule-skin-gnome
 Architecture: any
-Depends: amule (= ${binary:Version}), ${misc:Depends}
+Depends: amule (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}), ${misc:Depends}
 Provides: amule-skin
-Conflicts: amule (<< ${binary:Version})
+Conflicts: amule (<< ${binary:Version}), amule-remote-gui (<< ${binary:Version})
 Description: GNOME Skin files for amule
  This package contains the GNOME Skin files for amule.
 
 Package: amule-skin-kde4
 Architecture: any
-Depends: amule (= ${binary:Version}), ${misc:Depends}
+Depends: amule (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}), ${misc:Depends}
 Provides: amule-skin
-Conflicts: amule (<< ${binary:Version})
+Conflicts: amule (<< ${binary:Version}), amule-remote-gui (<< ${binary:Version})
 Description: KDE4 Skin files for amule
  This package contains the KDE4 Skin files for amule.
 
 Package: amule-skin-mac-gray
 Architecture: any
-Depends: amule (= ${binary:Version}), ${misc:Depends}
+Depends: amule (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}), ${misc:Depends}
 Provides: amule-skin
-Conflicts: amule (<< ${binary:Version})
+Conflicts: amule (<< ${binary:Version}), amule-remote-gui (<< ${binary:Version})
 Description: Mac Gray Skin files for amule
  This package contains the Mac Gray Skin files for amule.
 
 Package: amule-skin-papirus
 Architecture: any
-Depends: amule (= ${binary:Version}), ${misc:Depends}
+Depends: amule (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}), ${misc:Depends}
 Provides: amule-skin
-Conflicts: amule (<< ${binary:Version})
+Conflicts: amule (<< ${binary:Version}), amule-remote-gui (<< ${binary:Version})
 Description: Papirus Skin files for amule
  This package contains the Papirus Skin files for amule.
 
 Package: amule-skin-priscilla
 Architecture: any
-Depends: amule (= ${binary:Version}), ${misc:Depends}
+Depends: amule (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}), ${misc:Depends}
 Provides: amule-skin
-Conflicts: amule (<< ${binary:Version})
+Conflicts: amule (<< ${binary:Version}), amule-remote-gui (<< ${binary:Version})
 Description: Priscilla Skin files for amule
  This package contains the Priscilla Skin files for amule.
 
 Package: amule-skin-tango
 Architecture: any
-Depends: amule (= ${binary:Version}), ${misc:Depends}
+Depends: amule (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}), ${misc:Depends}
 Provides: amule-skin
-Conflicts: amule (<< ${binary:Version})
+Conflicts: amule (<< ${binary:Version}), amule-remote-gui (<< ${binary:Version})
 Description: Tango Skin files for amule
  This package contains the Tango Skin files for amule.
 
 Package: amule-skin-xfce
 Architecture: any
-Depends: amule (= ${binary:Version}), ${misc:Depends}
+Depends: amule (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}), ${misc:Depends}
 Provides: amule-skin
-Conflicts: amule (<< ${binary:Version})
+Conflicts: amule (<< ${binary:Version}), amule-remote-gui (<< ${binary:Version})
 Description: Xfce Skin files for amule
  This package contains the Xfce Skin files for amule.
