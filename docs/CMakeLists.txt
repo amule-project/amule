@@ -1,6 +1,6 @@
-ADD_SUBDIRECTORY (man)
+add_subdirectory (man)
 
-INSTALL (FILES
+install (FILES
 	ABOUT-NLS
 	amulesig.txt
 	Changelog

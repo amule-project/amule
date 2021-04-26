@@ -1,7 +1,7 @@
-IF (BUILD_ALC)
-	CHECK_MANPAGE ("alc")
-ENDIF (BUILD_ALC)
+if (BUILD_ALC)
+	check_manpage ("alc")
+endif()
 
-IF (BUILD_ALCC)
-	CHECK_MANPAGE ("alcc")
-ENDIF (BUILD_ALCC)
+if (BUILD_ALCC)
+	check_manpage ("alcc")
+endif()

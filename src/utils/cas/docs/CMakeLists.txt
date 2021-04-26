@@ -1,1 +1,1 @@
-CHECK_MANPAGE ("cas")
+check_manpage ("cas")

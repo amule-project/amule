@@ -1,1 +1,1 @@
-CHECK_MANPAGE ("wxcas")
+check_manpage ("wxcas")
