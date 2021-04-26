@@ -1,3 +1,5 @@
+add_subdirectory (docs)
+
 configure_file (
 	autostart-xas.cm
 	autostart-xas
