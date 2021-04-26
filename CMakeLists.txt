@@ -132,12 +132,13 @@ if (BUILD_REMOTEGUI)
 	)
 endif()
 
-add_subdirectory (docs)
-add_subdirectory (src)
-
 if (ENABLE_NLS)
+	include (FindGettext)
 	add_subdirectory (po)
 endif()
+
+add_subdirectory (docs)
+add_subdirectory (src)
 
 if (BUILD_TESTING)
 	enable_testing()
