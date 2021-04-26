@@ -278,13 +278,16 @@ WxCasFrame::GetStatImage () const
 	memdc.SelectObject ( statBitmap );
 
 #ifdef __WINDOWS__
-
-	memdc.
-	SetFont ( wxFont ( 6, wxSWISS, wxNORMAL, wxBOLD ) );
+	int font_size = 6;
 #else
+	int font_size = 8;
+#endif
 
-	memdc.
-	SetFont ( wxFont ( 8, wxSWISS, wxNORMAL, wxBOLD ) );
+
+#if wxCHECK_VERSION(3, 1, 0)
+	memdc.SetFont( wxFont ( font_size, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD ) );
+#else
+	memdc.SetFont( wxFont ( font_size, wxSWISS, wxNORMAL, wxBOLD ) );
 #endif
 
 	memdc.

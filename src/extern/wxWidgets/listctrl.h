@@ -16,7 +16,10 @@
 #include <wx/textctrl.h>
 
 #define wxLC_OWNERDRAW 0x10000
+
+#if !defined(WXWIN_COMPATIBILITY_2_8)
 #define WXWIN_COMPATIBILITY_2_8 1
+#endif
 
 #include <wx/imaglist.h>
 
