@@ -59,14 +59,14 @@ public:
 	CFileLock(const std::string& file)
 #ifdef _WIN32
 		: m_ok(false)
-	{
-		hd = CreateFileA((file + "_lock").c_str(),
+		, hd(CreateFileA((file + "_lock").c_str(),
 			GENERIC_READ | GENERIC_WRITE,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,		// share - shareable
 			NULL,									// security - not inheritable
 			CREATE_ALWAYS,
 			FILE_ATTRIBUTE_ARCHIVE,
-			NULL);
+			NULL))
+	{
 		if (hd != INVALID_HANDLE_VALUE) {
 			m_ok = SetLock(true);
 		}
