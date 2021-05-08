@@ -234,7 +234,7 @@ char *command_completion(const char *text, int state)
 	}
 
 	wxString test(wxString(text, *wxConvCurrent).Lower());
-	while (nextCommand != curCommands->end()) {
+	while (curCommands && (nextCommand != curCommands->end())) {
 		wxString curTest = (*nextCommand)->GetCommand();
 		++nextCommand;
 		if (curTest.Lower().StartsWith(test)) {
