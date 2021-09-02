@@ -1056,7 +1056,7 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 	info += wxT("\n");
 	info += _("Feel free to report any bugs to http://forum.amule.org");
 
-	ShowAlert(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
+	ShowAlert(info, _("Info"), wxCENTRE | wxOK | wxICON_INFORMATION);
 }
 
 
