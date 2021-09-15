@@ -153,7 +153,7 @@ void CKadDlg::UpdateNodeCount(unsigned nodeCount)
 }
 
 
-// Enables or disables the node connect button depending on the conents of the text fields
+// Enables or disables the node connect button depending on the contents of the text fields
 void CKadDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 {
 	// These are the IDs of the search-fields

@@ -59,7 +59,7 @@
  ADVANCED OPTIONS
 ------------------
 
-  These are some of the availabe configure options:
+  These are some of the available configure options:
 
     --disable-debug           disable additional debugging output
     --enable-optimize         enable code optimizing

@@ -102,7 +102,7 @@ public:
 	 * @param colour The colour of the new span.
 	 *
 	 * Calling this function fill the specified range with the specified color.
-	 * Any spans completly or partially covered by the new span are either
+	 * Any spans completely or partially covered by the new span are either
 	 * removed or resized. If the value of end is larger than the current
 	 * filesize, the filesize is increased to the value of end.
 	 */
@@ -120,7 +120,7 @@ public:
 	}
 
 	/**
-	 * Draws the bar on the specifed wxDC.
+	 * Draws the bar on the specified wxDC.
 	 *
 	 * @param dc The wxDC upon which the bar should be drawn.
 	 * @param iLeft The left position from where to start drawing.
@@ -128,7 +128,7 @@ public:
 	 * @param bFlat 3D effect is not applied if this is true.
 	 *
 	 * This functions draws the bar with the height and width specified
-	 * through either the contructor or with SetWidth() and SetHeight().
+	 * through either the constructor or with SetWidth() and SetHeight().
 	 */
 	void Draw( wxDC* dc, int iLeft, int iTop, bool bFlat );
 
@@ -142,9 +142,9 @@ private:
 	unsigned	m_Width;
 	//! The height of the drawn bar
 	unsigned	m_Height;
-	//! The virtual filesize assosiated with the bar
+	//! The virtual filesize associated with the bar
 	uint64	m_FileSize;
-	//! Pointer to array of modifers used to create 3D effect. Size is (m_Height+1)/2 when set.
+	//! Pointer to array of modifiers used to create 3D effect. Size is (m_Height+1)/2 when set.
 	double*	m_Modifiers;
 	//! The current 3d level
 	uint16	m_used3dlevel;

@@ -138,7 +138,7 @@ public:
 	void SetActiveDialog(DialogType type, wxWindow* dlg);
 
 	/**
-	 * Helper function for deciding if a certian dlg is visible.
+	 * Helper function for deciding if a certain dlg is visible.
 	 *
 	 * @return True if the dialog is visible to the user, false otherwise.
 	 */

@@ -1,5 +1,5 @@
 # If any tests uses more than a cpp/h fileset, then
-# make a seperate subfolder for it to reduce clutter.
+# make a separate subfolder for it to reduce clutter.
 #SUBDIRS =
 EXTRA_DIST =
 

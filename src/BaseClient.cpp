@@ -127,7 +127,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serveri
 		} else {
 			m_nConnectIP = wxUINT32_SWAP_ALWAYS(in_userid);
 		}
-		// Will be on right endianess now
+		// Will be on right endianness now
 		m_FullUserIP = m_nConnectIP;
 	}
 
@@ -1299,8 +1299,8 @@ bool CUpDownClient::Disconnected(const wxString& DEBUG_ONLY(strReason), bool bFr
 		CAICHHashSet::ClientAICHRequestFailed(this);
 	}
 
-	// The remote client does not have to answer with OP_HASHSETANSWER *immediatly*
-	// after we've sent OP_HASHSETREQUEST. It may occure that a (buggy) remote client
+	// The remote client does not have to answer with OP_HASHSETANSWER *immediately*
+	// after we've sent OP_HASHSETREQUEST. It may occur that a (buggy) remote client
 	// is sending use another OP_FILESTATUS which would let us change to DL-state to DS_ONQUEUE.
 	if (((GetDownloadState() == DS_REQHASHSET) || m_fHashsetRequesting) && (m_reqfile)) {
 		m_reqfile->SetHashSetNeeded(true);
@@ -1422,7 +1422,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	}
 
 	if (uClientIP) {
-		// Although we filter all received IPs (server sources, source exchange) and all incomming connection attempts,
+		// Although we filter all received IPs (server sources, source exchange) and all incoming connection attempts,
 		// we do have to filter outgoing connection attempts here too, because we may have updated the ip filter list
 		if (theApp->ipfilter->IsFiltered(uClientIP)) {
 			AddDebugLogLineN(logIPFilter, CFormat(wxT("Filtered ip %u (%s) on TryToConnect\n")) % uClientIP % Uint32toStringIP(uClientIP));
@@ -2145,7 +2145,7 @@ void CUpDownClient::ProcessPublicKeyPacket(const uint8_t* pachPacket, uint32 nSi
 	}
 	if (!theApp->CryptoAvailable())
 		return;
-	// the function will handle everything (mulitple key etc)
+	// the function will handle everything (multiple key etc)
 	if (credits->SetSecureIdent(pachPacket+1, pachPacket[0])){
 		// if this client wants a signature, now we can send him one
 		if (m_SecureIdentState == IS_SIGNATURENEEDED){
@@ -2200,7 +2200,7 @@ void CUpDownClient::ProcessSignaturePacket(const uint8_t* pachPacket, uint32 nSi
 		AddDebugLogLineN( logClient, wxT("received signature for client without public key") );
 		return;
 	}
-	// and one more check: did we ask for a signature and sent a challange packet?
+	// and one more check: did we ask for a signature and sent a challenge packet?
 	if (credits->m_dwCryptRndChallengeFor == 0){
 		AddDebugLogLineN( logClient, wxT("received signature for client with invalid challenge value - User ") + GetUserName() );
 		return;
@@ -2487,7 +2487,7 @@ bool CUpDownClient::SendChatMessage(const wxString& message)
 	if (GetChatCaptchaState() == CA_CAPTCHARECV) {
 		m_nChatCaptchaState = CA_SOLUTIONSENT;
 	} else if (GetChatCaptchaState() == CA_SOLUTIONSENT) {
-		wxFAIL; // we responsed to a captcha but didn't heard from the client afterwards - hopefully its just lag and this message will get through
+		wxFAIL; // we responded to a captcha but didn't hear from the client afterwards - hopefully it's just lag and this message will get through
 	} else {
 		m_nChatCaptchaState = CA_ACCEPTING;
 	}

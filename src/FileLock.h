@@ -106,10 +106,10 @@ private:
 	}
 
 
-	//! Desriptor of the file being locked.
+	//! Descriptor of the file being locked.
 	HANDLE hd;
 
-	//! Specifies if the file-lock was aquired.
+	//! Specifies if the file-lock was acquired.
 	bool m_ok;
 #else
 		: m_fd(-1),
@@ -166,7 +166,7 @@ private:
 	//! Desribtor of the file being locked.
 	int m_fd;
 
-	//! Specifies if the file-lock was aquired.
+	//! Specifies if the file-lock was acquired.
 	bool m_ok;
 #endif
 };

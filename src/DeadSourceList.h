@@ -39,9 +39,9 @@ class CUpDownClient;
  * This class keeps track of "invalid" sources.
  *
  * A dead source is a source that has been evaluated as being useles
- * which can be due to serveral reasons, such as not responding to
+ * which can be due to several reasons, such as not responding to
  * queries. This list then allows for those sources to be ignored
- * for an set ammount of time in order to avoid the overhead of
+ * for an set amount of time in order to avoid the overhead of
  * trying to connect to them.
  *
  * This is important, since these sources would be removed and readded

@@ -164,7 +164,7 @@ enum ECharType {
 
 inline wxString GetNextField(const wxString& str, size_t& cookie)
 {
-	// These are taken to seperate "fields"
+	// These are taken to separate "fields"
 	static const wxChar* s_delims = wxT("\t\n\x0b\x0c\r !\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~");
 
 	wxString field;

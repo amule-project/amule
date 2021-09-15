@@ -158,7 +158,7 @@ protected:
 private:
 	/**
      *
-	 * Must be overriden by the derived class and return the dialog where this list is.
+	 * Must be overridden by the derived class and return the dialog where this list is.
      * @see CamuleDlg::DialogType
 	 *
      */

@@ -73,11 +73,11 @@ DECLARE(RangeMap);
 	TestRangeMap m_map;
 	TestRangeMap m_mmaps[3];
 
-	// Identifers for the multirange maps
+	// Identifiers for the multirange maps
 	enum Maps {
 		CONT  = 0, // Continues ranges, IE no gap
-		SSAME = 1, // Seperated but equal
-		SDIFF = 2  // Seperated and not equal
+		SSAME = 1, // Separated but equal
+		SDIFF = 2  // Separated and not equal
 	};
 
 	// Sets up a few maps with predefined ranges.

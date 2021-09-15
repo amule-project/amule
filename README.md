@@ -96,7 +96,7 @@ You can contribute to aMule several ways:
   [translate aMule's documentation][9] to your language.
 * Fixing the wiki. aMule's wiki contains a lot of old, outdated information,
   that is simply not true anymore. One should read through the pages, update
-  manuals and references and remove obsolate information.
+  manuals and references and remove obsolete information.
 
 [6]: https://github.com/amule-project/amule/pulls  "aMule Pull Requests"
 [7]: http://wiki.amule.org/wiki/Translations	   "Translating aMule"

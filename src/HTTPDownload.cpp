@@ -273,14 +273,14 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 
 		if (current_read == 0) {
 			if (download_size == -1) {
-				// Download was probably succesful.
+				// Download was probably successful.
 				AddLogLineN(CFormat(_("Downloaded %d bytes")) % total_read);
 				m_result = HTTP_Success;
 			} else if (total_read != download_size) {
 				m_result = HTTP_Error;
 				throw wxString(CFormat(_("Expected %d bytes, but downloaded %d bytes")) % download_size % total_read);
 			} else {
-				// Download was succesful.
+				// Download was successful.
 				m_result = HTTP_Success;
 			}
 		}
@@ -346,7 +346,7 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP * & url_handler, const
 	// Remove the "http://"
 	wxString host = location.Right(location.Len() - 7); // strlen("http://") -> 7
 
-	// I belive this is a bug...
+	// I believe this is a bug...
 	// Sometimes "Location" header looks like this:
 	// "http://www.whatever.com:8080http://www.whatever.com/downloads/something.zip"
 	// So let's clean it...

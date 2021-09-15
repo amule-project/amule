@@ -42,7 +42,7 @@ function lookup_distro {
     #echo $2    # evaluates to XXX_FILENAME
     #echo ${!2} # evaluates to /home/user/dir/xxx-y.z.t.tar.gz
 
-    # remove the directory and the extension parts and assing it
+    # remove the directory and the extension parts and assign it
     # to XXX_DISTRO in $3
     case ${!2} in
 	*.gz)
@@ -92,7 +92,7 @@ function init_package_versions {
     lookup_distro 'aMule-*' AMULE_FILENAME AMULE_DISTRO
 
     echo
-    echo "Software packacge versions:"
+    echo "Software package versions:"
     echo "    cryptopp  : $CRYPTOPP_DISTRO"
     echo "    libupnp   : $LIBUPNP_DISTRO"
     echo "    wxWidgets : $WXWIDGETS_DISTRO"

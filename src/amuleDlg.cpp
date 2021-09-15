@@ -1323,7 +1323,7 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	wndToolbar->ToggleTool(ID_BUTTONDOWNLOADS, true);
 
 	// Needed for non-GTK platforms, where the
-	// items don't get added immediatly.
+	// items don't get added immediately.
 	wndToolbar->Realize();
 
 	// Updates the "Connect" button, and so on.

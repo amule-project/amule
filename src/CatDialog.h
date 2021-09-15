@@ -39,7 +39,7 @@ class wxBitmap;
  * the user can add or change them.
  *
  * It is a self-contained entity, and does not rely on the categories staying
- * the same while the dialog is visble, though it will overwrite any changes
+ * the same while the dialog is visible, though it will overwrite any changes
  * made to the selected category in the mean time. Also, if the selected category
  * has been deleted then it will simply be readded.
  *
@@ -83,7 +83,7 @@ private:
 
 
 	/**
-	 * Event-handler for selecting incomming dir.
+	 * Event-handler for selecting incoming dir.
 	 */
 	void OnBnClickedBrowse(wxCommandEvent& evt);
 

@@ -35,7 +35,7 @@ static wxMutex s_lock;
 static CThreadScheduler* s_scheduler = NULL;
 //! Specifies if the scheduler is running.
 static bool	s_running = false;
-//! Specifies if the gobal scheduler has been terminated.
+//! Specifies if the global scheduler has been terminated.
 static bool s_terminated = false;
 
 /**
@@ -43,7 +43,7 @@ static bool s_terminated = false;
  *
  * The reason for not using wxThreadHelper are as follows:
  *  - wxThreadHelper makes use of wxThread:Kill, which is warned against
- *    serveral times in the docs, and even calls it in its destructor.
+ *    several times in the docs, and even calls it in its destructor.
  *  - Managing the thread-object is difficult, since the only way to
  *    destroy it is to create a new thread.
  */
@@ -299,7 +299,7 @@ void* CThreadScheduler::Entry()
 
 			// If the task has been aborted, the entry now refers to
 			// a different task, so dont remove it. That also means
-			// that it cant be the last task of this type.
+			// that it can't be the last task of this type.
 			if (!task->m_abort) {
 				AddDebugLogLineN(logThreads,
 					CFormat(wxT("Completed task '%s%s', %u tasks remaining."))

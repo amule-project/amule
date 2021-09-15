@@ -70,7 +70,7 @@ public:
 	bool Open(const CPath& path, CFile::OpenMode mode = CFile::read);
 
 	/**
-	 * Calling Create is equivilant of calling open with OpenMode 'write'.
+	 * Calling Create is equivalent of calling open with OpenMode 'write'.
 	 *
 	 * @param overwrite Specifies if the target file should be overwritten,
 	 *                  in case that it already exists.
@@ -140,7 +140,7 @@ public:
 	bool Eof();
 
 	/**
-	 * Returns the file descriptior assosiated with the file.
+	 * Returns the file descriptor associated with the file.
 	 *
 	 * This breaks the purpose of this class of course.
 	 * Therefore the AutoClose mechanism is disabled when fd() is called.

@@ -100,7 +100,7 @@ TEST(Format, SetStringAndGetString)
 
 
 
-//! Test the two boundaries and a middle value of the specificed format
+//! Test the two boundaries and a middle value of the specified format
 #define STANDARD_TYPE_TESTS(cformat, wxformat, type) \
 	STANDARD_TEST(cformat, wxformat, MIN(type)); \
 	STANDARD_TEST(cformat, wxformat, (type)(MAX(type) / 2)); \

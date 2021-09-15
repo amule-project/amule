@@ -1668,7 +1668,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		case EC_OP_DELETE_CATEGORY:
 			if ( request->GetTagCount() == 1 ) {
 				uint32 cat = request->GetFirstTagSafe()->GetInt();
-				// this noes not only update the gui, but actually deletes the cat
+				// this does not only update the gui, but actually deletes the cat
 				Notify_CategoryDelete(cat);
 			}
 			response = new CECPacket(EC_OP_NOOP);

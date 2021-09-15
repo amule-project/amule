@@ -113,7 +113,7 @@ public:
 	/**
 	 * Sets an external widget to handle the popup-event.
 	 *
-	 * @param widget The widget which would recieve the event or NULL to disable.
+	 * @param widget The widget which would receive the event or NULL to disable.
 	 *
 	 * Setting the handler to a non-NULL pointer means that upon right-clicks, a
 	 * right click event will be sent to that widget, so that it can create a
@@ -145,24 +145,24 @@ protected:
 	void OnRMButton(wxMouseEvent& event);
 
 	/**
-	 * Event-handler fo the Close item on the popup-menu.
+	 * Event-handler of the Close item on the popup-menu.
 	 */
 	void OnPopupClose(wxCommandEvent& evt);
 
 	/**
-	 * Event-handler fo the CloseAll item on the popup-menu.
+	 * Event-handler of the CloseAll item on the popup-menu.
 	 */
 	void OnPopupCloseAll(wxCommandEvent& evt);
 
 	/**
-	 * Event-handler fo the CloseOthers item on the popup-menu.
+	 * Event-handler of the CloseOthers item on the popup-menu.
 	 */
 	void OnPopupCloseOthers(wxCommandEvent& evt);
 
 	//! Keeps track of the popup-menu being enabled or not.
 	bool		m_popup_enable;
 
-	//! The pointer to the widget which would recieve right-click events or NULL.
+	//! The pointer to the widget which would receive right-click events or NULL.
 	wxWindow*	m_popup_widget;
 
 	DECLARE_EVENT_TABLE()

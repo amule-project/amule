@@ -235,7 +235,7 @@ const uint8 * RLE_Data::Encode(const ArrayOfUInts64 &data, int &outlen, bool &ch
 {
 	// uint64 is copied to a uint8 buffer
 	// first all low bytes, then all second low bytes and so on
-	// so inital RLE will benefit from high bytes being equal (zero)
+	// so initial RLE will benefit from high bytes being equal (zero)
 	// 0x000003045A6A7A8A, 0x000003045B6B7B8B
 	// 8A8B7A7B6A6B5A5B0404030300000000
 	int size = (int) data.size();

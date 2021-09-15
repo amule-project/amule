@@ -107,7 +107,7 @@ public:
 	/** Adds a context with the specified information and description. */
 	CContext(const wxChar* file, int line, const wxString& desc);
 
-	/** Removes the context addded by the constructor. */
+	/** Removes the context added by the constructor. */
 	~CContext();
 };
 
@@ -170,7 +170,7 @@ public:
 	Test(const wxString& testCaseName, const wxString& testName);
 
 	/**
-	 * Main Test desctructor
+	 * Main Test destructor
 	 * Delete the testPartResult linked list. This is why the user should
 	 * only use the macro provided by muleunit to report a test result.
 	 */
@@ -241,7 +241,7 @@ protected:
 /**
  * Asserts that a condition is true.
  * If the condition is not true, a failure is generated.
- * @param condition Condition to fullfill for the assertion to pass
+ * @param condition Condition to fulfill for the assertion to pass
  * @param message Message that will be displayed if this assertion fails
  */
 #define ASSERT_TRUE_M(condition, message) \
@@ -361,7 +361,7 @@ protected:
 #define TEST(testCaseName, testName)	TEST_M(testCaseName, testName, wxT(#testName))
 
 /**
- * Location to declare variables and objets.
+ * Location to declare variables and objects.
  * This is where user should declare members accessible by TESTF,
  * SETUP and TEARDOWN.
  *

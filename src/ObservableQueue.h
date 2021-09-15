@@ -140,8 +140,8 @@ private:
  * object or position, instead just a "add/remove one of these" rule.
  *
  * The main purpose of this class is to allow another class to follow
- * a list or queue, regardles of changes in actual order of the items
- * and regardles of changes to the contents.
+ * a list or queue, regardless of changes in actual order of the items
+ * and regardless of changes to the contents.
  */
 template <typename ValueType>
 class CObservableQueue : public CObservable< CQueueEvent<ValueType> >
@@ -224,7 +224,7 @@ public:
 	 * Note: Objects will not be returned in the same order as
 	 * they were found in the original observable. Also, note
 	 * that calling GetNext() on an empty queue should only be
-	 * done if the default contructed value does not match a
+	 * done if the default constructed value does not match a
 	 * valid object and can be used to check for End of Queue.
 	 */
 	ValueType GetNext();

@@ -471,7 +471,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 					case FT_KADLASTPUBLISHSRC:{
 						SetLastPublishTimeKadSrc(newtag.GetInt(), 0);
 						if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
-							//There may be a posibility of an older client that saved a random number here.. This will check for that..
+							//There may be a possibility of an older client that saved a random number here.. This will check for that..
 							SetLastPublishTimeKadSrc(0,0);
 						}
 						break;
@@ -803,7 +803,7 @@ bool CPartFile::SavePartFile(bool Initial)
 
 		file.WriteUInt32(tagcount);
 
-		//#warning Kry - Where are lost by coruption and gained by compression?
+		//#warning Kry - Where are lost by corruption and gained by compression?
 
 		// 0 (unicoded part file name)
 		// We write it with BOM to keep eMule compatibility. Note that the 'printable' filename is saved,
@@ -839,7 +839,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		CTagInt32(FT_ATREQUESTED,    statistic.GetAllTimeRequests()).WriteTagToFile( &file );	// 13
 		CTagInt32(FT_ATACCEPTED,     statistic.GetAllTimeAccepts()).WriteTagToFile( &file );	// 14
 
-		// currupt part infos
+		// corrupt part infos
 		if (!m_corrupted_list.empty()) {
 			wxString strCorruptedParts;
 			std::list<uint16>::iterator it = m_corrupted_list.begin();
@@ -1868,7 +1868,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender,
 	// This algorithm usually selects first the rarest chunk(s). However, partially
 	// complete chunk(s) that is/are close to completion may overtake the priority
 	// (priority inversion).
-	// For the common chuncks, the algorithm tries to spread the dowload between
+	// For the common chunks, the algorithm tries to spread the download between
 	// the sources
 	//
 
@@ -1883,7 +1883,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender,
 	// Main loop
 	uint16 newBlockCount = 0;
 	while(newBlockCount != count) {
-		// Create a request block stucture if a chunk has been previously selected
+		// Create a request block structure if a chunk has been previously selected
 		if(sender->GetLastPartAsked() != 0xffff) {
 			Requested_Block_Struct* pBlock = new Requested_Block_Struct;
 			if(GetNextEmptyBlockInPart(sender->GetLastPartAsked(), pBlock) == true) {
@@ -1907,7 +1907,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender,
 			// Quantify all chunks (create list of chunks to download)
 			// This is done only one time and only if it is necessary (=> CPU load)
 			if(chunksList.empty()) {
-				// Indentify the locally missing part(s) that this source has
+				// Identify the locally missing part(s) that this source has
 				for(uint16 i=0; i < partCount; ++i) {
 					if(sender->IsPartAvailable(i) == true && GetNextEmptyBlockInPart(i, NULL) == true) {
 						// Create a new entry for this chunk and add it to the list
@@ -1918,7 +1918,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender,
 					}
 				}
 
-				// Check if any bloks(s) could be downloaded
+				// Check if any blocks(s) could be downloaded
 				if(chunksList.empty()) {
 					break; // Exit main loop while()
 				}
@@ -2019,7 +2019,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender,
 
 			// Select the next chunk to download
 			if(!chunksList.empty()) {
-				// Find and count the chunck(s) with the highest priority
+				// Find and count the chunk(s) with the highest priority
 				uint16 chunkCount = 0; // Number of found chunks with same priority
 				uint16 rank = 0xffff; // Highest priority found
 
@@ -2105,7 +2105,7 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 		StopFile();
 		m_is_A4AF_auto=false;
 		SetStatus(PS_COMPLETING);
-		// guess I was wrong about not need to spaw a thread ...
+		// guess I was wrong about not need to spawn a thread ...
 		// It is if the temp and incoming dirs are on different
 		// partitions/drives and the file is large...[oz]
 		//
@@ -2501,7 +2501,7 @@ bool CPartFile::CheckFreeDiskSpace( uint64 neededSpace )
 	if ( thePrefs::IsCheckDiskspaceEnabled() ) {
 		neededSpace += thePrefs::GetMinFreeDiskSpace();
 
-		// Due to the the existance of sparse files, we cannot assume that
+		// Due to the the existence of sparse files, we cannot assume that
 		// writes within the file doesn't cause new blocks to be allocated.
 		// Therefore, we have to simply stop writing the moment the limit has
 		// been exceeded.
@@ -2731,7 +2731,7 @@ void CPartFile::AddClientSources(CMemFile* sources, unsigned nSourceFrom, uint8 
 	} else {
 		// for SX2:
 		// We only check if the version is known by us and do a quick sanitize check on known version
-		// other then SX1, the packet will be ignored if any error appears, sicne it can't be a "misunderstanding" anymore
+		// other then SX1, the packet will be ignored if any error appears, since it can't be a "misunderstanding" anymore
 		if (uClientSXVersion > SOURCEEXCHANGE2_VERSION || uClientSXVersion == 0 ){
 			AddDebugLogLineN(logPartFile, CFormat(wxT("Invalid source exchange type version: %i")) % uClientSXVersion);
 			return;

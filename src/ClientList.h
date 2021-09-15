@@ -95,7 +95,7 @@ public:
 	 * Updates the recorded IP of the specified client.
 	 *
 	 * @param client The client to have its entry updated.
-	 * @param newIP The new IP adress of the client.
+	 * @param newIP The new IP address of the client.
 	 *
 	 * This function is to be called before the client actually changes its
 	 * IP-address, and will update the old entry with the new value. There
@@ -145,7 +145,7 @@ public:
 	 * Replaces a new client-instance with the an already existing client, if one such exist.
 	 *
 	 * @param client A pointer to the pointer of the new instance.
-	 * @param sender The socket assosiated with the new instance.
+	 * @param sender The socket associated with the new instance.
 	 *
 	 * Call this function when a new client-instance has been created. This function will then
 	 * compare it against all existing clients and see if we already have an instance matching
@@ -202,7 +202,7 @@ public:
 	 * Returns the number of tracked client.
 	 *
 	 * @param dwIP The IP-adress which of the clients.
-	 * @return The number of clients tracked at the specifed IP.
+	 * @return The number of clients tracked at the specified IP.
 	 */
 	uint16	GetClientsFromIP(uint32 dwIP);
 
@@ -211,7 +211,7 @@ public:
 	 *
 	 * @param dwIP The IP of the client.
 	 * @param nPort The port of the client.
-	 * @param pNewHash The userhash assosiated with the client.
+	 * @param pNewHash The userhash associated with the client.
 	 *
 	 */
 	bool	ComparePriorUserhash( uint32 dwIP, uint16 nPort, void* pNewHash );

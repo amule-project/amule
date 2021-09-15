@@ -201,8 +201,8 @@ static bool IsSameAs(const wxString& a, const wxString& b)
 
 	// Let wxFileName handle the tricky stuff involved in actually
 	// comparing two paths ... Currently, a path ending with a path-
-	// seperator will be unequal to the same path without a path-
-	// seperator, which is probably for the best, but can could
+	// separator will be unequal to the same path without a path-
+	// separator, which is probably for the best, but can could
 	// lead to some unexpected behavior.
 	wxFileName fn1(a);
 	wxFileName fn2(b);
@@ -530,7 +530,7 @@ bool CPath::StartsWith(const CPath& other) const
 		return false;
 	}
 
-	// Adding an seperator to avoid partial matches, such as
+	// Adding an separator to avoid partial matches, such as
 	// "/usr/bi" matching "/usr/bin". TODO: Paths should be
 	// normalized first (in the constructor).
 	const wxString a = StripSeparators(m_filesystem, wxString::trailing) + wxFileName::GetPathSeparator();

@@ -30,7 +30,7 @@ Please do not change anything here and release it..
 There is going to be a new forum created just for the Kademlia side of the client..
 If you feel there is an error or a way to improve something, please
 post it in the forum first and let us look at it.. If it is a real improvement,
-it will be added to the offical client.. Changing something without knowing
+it will be added to the official client.. Changing something without knowing
 what all it does can cause great harm to the network if released in mass form..
 Any mod that changes anything within the Kademlia side will not be allowed to advertise
 there client on the eMule forum..
@@ -450,7 +450,7 @@ uint32_t CKademlia::CalculateKadUsersNew()
 	}
 	float newRatio = CKademlia::GetPrefs()->StatsGetKadV8Ratio();
 	float firewalledModifyTotal = 0.0;
-	if (newRatio > 0 && firewalledModifyNew > 0) { // weigth the old and the new modifier based on how many new contacts we have
+	if (newRatio > 0 && firewalledModifyNew > 0) { // weigh the old and the new modifier based on how many new contacts we have
 		firewalledModifyTotal = (newRatio * firewalledModifyNew) + ((1 - newRatio) * firewalledModifyOld);
 	} else {
 		firewalledModifyTotal = firewalledModifyOld;

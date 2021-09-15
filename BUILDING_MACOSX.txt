@@ -9,7 +9,7 @@ WXVERSION=svn WXPORT=cocoa MULECLEAN=YES ../src/utils/scripts/MacOSX/full_build.
 
 
 Those commands would build a MacOSX 10.6 (Snow Leopard) compatible application bundle for aMule and aMuleGUI
-using the architecture of the build system ( i386 or x86_64 ), with the latest SVN vesion of wxWidgets.
+using the architecture of the build system ( i386 or x86_64 ), with the latest SVN version of wxWidgets.
 
 Other parameters are explained upon execution of the script.
 

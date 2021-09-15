@@ -51,7 +51,7 @@
 			  would be used and RC4 would create the same output. Since the key is a MD5 hash it doesn't weaken the key if that part is known
 			- Why DH-KeyAgreement isn't used as basic obfuscation key: It doesn't offer substantial more protection against passive connection based protocol identification, it has about 200 bytes more overhead,
 			  needs more CPU time, we cannot say if the received data is junk, unencrypted or part of the keyagreement before the handshake is finished without losing the complete randomness,
-			  it doesn't offer substantial protection against eavesdropping without added authentification
+			  it doesn't offer substantial protection against eavesdropping without added authentication
 
 Basic Obfuscated Handshake Protocol Client <-> Server:
 	- RC4 Keycreation:
@@ -506,7 +506,7 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen)
 						m_nReceiveBytesWanted = 3;
 					} else {
 						//printf("Wrong magic value: 0x%x != 0x%x on %s\n",dwValue, MAGICVALUE_SYNC, (const char*)unicode2char(GetPeer()));
-						//DebugLogError(_T("CEncryptedStreamSocket: Received wrong magic value from clientIP %s on a supposly encrytped stream / Wrong Header"), GetPeer());
+						//DebugLogError(_T("CEncryptedStreamSocket: Received wrong magic value from clientIP %s on a supposly encrypted stream / Wrong Header"), GetPeer());
 						OnError(ERR_ENCRYPTION);
 						return (-1);
 					}
@@ -522,7 +522,7 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen)
 
 					if (m_dbgbyEncryptionRequested != ENM_OBFUSCATION) {
 						//printf("Unsupported encryption method!\n");
-//						AddDebugLogLine(DLP_LOW, false, _T("CEncryptedStreamSocket: Client %s preffered unsupported encryption method (%i)"), GetPeer(), m_dbgbyEncryptionRequested);
+//						AddDebugLogLine(DLP_LOW, false, _T("CEncryptedStreamSocket: Client %s preferred unsupported encryption method (%i)"), GetPeer(), m_dbgbyEncryptionRequested);
 					}
 
 					m_nReceiveBytesWanted = m_pfiReceiveBuffer.ReadUInt8();
@@ -632,7 +632,7 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen)
 					m_dbgbyEncryptionSupported = m_pfiReceiveBuffer.ReadUInt8();
 					m_dbgbyEncryptionRequested = m_pfiReceiveBuffer.ReadUInt8();
 					if (m_dbgbyEncryptionRequested != ENM_OBFUSCATION) {
-	//					AddDebugLogLine(DLP_LOW, false, _T("CEncryptedStreamSocket: Server %s preffered unsupported encryption method (%i)"), GetPeer(), m_dbgbyEncryptionRequested);
+	//					AddDebugLogLine(DLP_LOW, false, _T("CEncryptedStreamSocket: Server %s preferred unsupported encryption method (%i)"), GetPeer(), m_dbgbyEncryptionRequested);
 					}
 					m_nReceiveBytesWanted = m_pfiReceiveBuffer.ReadUInt8();
 					m_NegotiatingState = ONS_BASIC_SERVER_PADDING;

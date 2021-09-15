@@ -50,7 +50,7 @@ DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY, -1)
 
 /**
  * This namespaces contains a number of functions and classes
- * related to defered function calls, allowing a notification
+ * related to deferred function calls, allowing a notification
  * call to be delayed till it can be initiated from the main
  * thread.
  */
@@ -386,7 +386,7 @@ namespace MuleNotify
 	/**
 	 * This function will execute or queue a given notification functor.
 	 *
-	 * If the caller is the main thread, the functor is executed immediatly,
+	 * If the caller is the main thread, the functor is executed immediately,
 	 * thus acting like a regular function call. OTOH, if the caller is a
 	 * worker thread, the functor is cloned and sent via an event to
 	 * wxTheApp.
@@ -396,7 +396,7 @@ namespace MuleNotify
 	/**
 	 * These functions take a function pointer and a set of arguments,
 	 * matching those of the function-pointer. A functor is created
-	 * from these and either executed immediatly, or sent as an event
+	 * from these and either executed immediately, or sent as an event
 	 * in the case of non-main threads calling the functions.
 	 *
 	 * Note that the return-value of the function must be void.

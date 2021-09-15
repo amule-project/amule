@@ -106,7 +106,7 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
 		// this is the searched hash
 		return this;
 	} else if (m_nDataSize <= m_nBaseSize) { // sanity
-		// this is already the last level, cant go deeper
+		// this is already the last level, can't go deeper
 		wxFAIL;
 		return NULL;
 	} else {
@@ -276,10 +276,10 @@ bool CAICHHashTree::CreatePartRecoveryData(uint64 nStartPos, uint64 nSize, CFile
 
 	if (nStartPos == 0 && nSize == m_nDataSize) {
 		// this is the searched part, now write all blocks of this part
-		// hashident for this level will be adjsuted by WriteLowestLevelHash
+		// hashident for this level will be adjusted by WriteLowestLevelHash
 		return WriteLowestLevelHashs(fileDataOut, wHashIdent, false, b32BitIdent);
 	} else if (m_nDataSize <= m_nBaseSize) { // sanity
-		// this is already the last level, cant go deeper
+		// this is already the last level, can't go deeper
 		wxFAIL;
 		return false;
 	} else {
@@ -415,7 +415,7 @@ bool CAICHHashTree::SetHash(CFileDataIO* fileInput, uint32 wHashIdent, sint8 nLe
 		m_bHashValid = true;
 		return true;
 	} else if (m_nDataSize <= m_nBaseSize) { // sanity
-		// this is already the last level, cant go deeper
+		// this is already the last level, can't go deeper
 		wxFAIL;
 		return false;
 	} else {
@@ -551,7 +551,7 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 	// read hashs with 16 bit identifier
 	uint16 nHashsAvailable = fileDataIn->ReadUInt16();
 	if (fileDataIn->GetLength()-fileDataIn->GetPosition() < nHashsToRead*(HASHSIZE+2u) || (nHashsToRead != nHashsAvailable && nHashsAvailable != 0)) {
-		// this check is redunant, CSafememfile would catch such an error too
+		// this check is redundant, CSafememfile would catch such an error too
 		AddDebugLogLineN(logSHAHashSet,
 			CFormat(wxT("Failed to read RecoveryData for '%s' - Received datasize/amounts of hashs was invalid"))
 				% m_pOwner->GetFileName());
@@ -575,7 +575,7 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 	if (nHashsAvailable == 0 && fileDataIn->GetLength() - fileDataIn->GetPosition() >= 2) {
 		nHashsAvailable = fileDataIn->ReadUInt16();
 		if (fileDataIn->GetLength()-fileDataIn->GetPosition() < nHashsToRead*(HASHSIZE+4u) || (nHashsToRead != nHashsAvailable && nHashsAvailable != 0)) {
-			// this check is redunant, CSafememfile would catch such an error too
+			// this check is redundant, CSafememfile would catch such an error too
 // TODO:			theApp->QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Received datasize/amounts of hashs was invalid (2)"), m_pOwner->GetFileName() );
 			return false;
 		}
@@ -684,13 +684,13 @@ bool CAICHHashSet::SaveHashSet()
 		}
 		file.WriteUInt32(nHashCount);
 		if (!m_pHashTree.WriteLowestLevelHashs(&file, 0, true, true)) {
-			// thats bad... really
+			// that's bad... really
 			file.SetLength(nExistingSize);
 			AddDebugLogLineC(logSHAHashSet, wxT("Failed to save HashSet: WriteLowestLevelHashs() failed!"));
 			return false;
 		}
 		if (file.GetLength() != nExistingSize + (nHashCount+1)*HASHSIZE + 4) {
-			// thats even worse
+			// that's even worse
 			file.SetLength(nExistingSize);
 			AddDebugLogLineC(logSHAHashSet, wxT("Failed to save HashSet: Calculated and real size of hashset differ!"));
 			return false;
@@ -778,7 +778,7 @@ bool CAICHHashSet::LoadHashSet()
 	return false;
 }
 
-// delete the hashset except the masterhash (we dont keep aich hashsets in memory to save ressources)
+// delete the hashset except the masterhash (we dont keep aich hashsets in memory to save resources)
 void CAICHHashSet::FreeHashSet()
 {
 	if (m_pHashTree.m_pLeftTree) {

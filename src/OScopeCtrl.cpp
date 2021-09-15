@@ -316,7 +316,7 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 	dc.DrawBitmap(m_bmapPlot, m_rectPlot.x, m_rectPlot.y, false);
 
 	// draw the dotted lines.
-	// This is done last because wxMAC does't support the wxOR logical
+	// This is done last because wxMAC doesn't support the wxOR logical
 	// operation, preventing us from simply blitting the plot on top of
 	// the grid bitmap.
 
@@ -404,7 +404,7 @@ void COScopeCtrl::DrawPoints(const std::vector<float *> &apf, unsigned cntPoints
 	// this appends a new set of data points to a graph; all of the plotting is
 	// directed to the memory based bitmap associated with dcPlot
 	// the will subsequently be BitBlt'd to the client in OnPaint
-	// draw the next line segement
+	// draw the next line segment
 	unsigned y, yPrev;
 	unsigned cntPixelOffset = std::min((unsigned)(m_rectPlot.GetWidth()-1), (cntPoints-1)*nShiftPixels);
 	PlotData_t* ppds = pdsTrends;

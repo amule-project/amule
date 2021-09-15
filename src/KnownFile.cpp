@@ -633,7 +633,7 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 				SetLastPublishTimeKadSrc( newtag.GetInt(), 0 );
 
 				if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
-					//There may be a posibility of an older client that saved a random number here.. This will check for that..
+					//There may be a possibility of an older client that saved a random number here.. This will check for that..
 					SetLastPublishTimeKadSrc(0, 0);
 				}
 				break;
@@ -695,7 +695,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 		tagcount++;
 	}
 	// Float meta tags are currently not written. All older eMule versions < 0.28a have
-	// a bug in the meta tag reading+writing code. To achive maximum backward
+	// a bug in the meta tag reading+writing code. To achieve maximum backward
 	// compatibility for met files with older eMule versions we just don't write float
 	// tags. This is OK, because we (eMule) do not use float tags. The only float tags
 	// we may have to handle is the '# Sent' tag from the Hybrid, which is pretty

@@ -1643,7 +1643,7 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 		msg.str("");
 
 		// Now try to subscribe to this service. If the subscription
-		// is not successfull, we will not be notified about events,
+		// is not successful, we will not be notified about events,
 		// but it may be possible to use the service anyway.
 		errcode = UpnpSubscribe(m_UPnPClientHandle,
 			service.GetAbsEventSubURL().c_str(),

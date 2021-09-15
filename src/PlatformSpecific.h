@@ -63,7 +63,7 @@ enum EFSType {
 	fsFAT,		//! File Allocation Table
 	fsNTFS,		//! New Technology File System
 	fsHFS,		//! Hierarchical File System
-	fsHPFS,		//! High Performace File System
+	fsHPFS,		//! High Performance File System
 	fsMINIX,	//! Minix file system
 	fsOther		//! Unknown, other
 };

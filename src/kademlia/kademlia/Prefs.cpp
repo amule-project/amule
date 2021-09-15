@@ -30,7 +30,7 @@ Please do not change anything here and release it..
 There is going to be a new forum created just for the Kademlia side of the client..
 If you feel there is an error or a way to improve something, please
 post it in the forum first and let us look at it.. If it is a real improvement,
-it will be added to the offical client.. Changing something without knowing
+it will be added to the official client.. Changing something without knowing
 what all it does can cause great harm to the network if released in mass form..
 Any mod that changes anything within the Kademlia side will not be allowed to advertise
 there client on the eMule forum..
@@ -149,7 +149,7 @@ void CPrefs::SetIPAddress(uint32_t val) throw()
 	}
 	//If the last check matches this one, reset our current IP.
 	//If the last check does not match, wait for our next incoming IP.
-	//This happens for two reasons.. We just changed our IP, or a client responsed with a bad IP.
+	//This happens for two reasons.. We just changed our IP, or a client responded with a bad IP.
 	if ( val == m_ipLast ) {
 		m_ip = val;
 	} else {

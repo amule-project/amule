@@ -125,7 +125,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
           partcount++;
 
 #ifdef WANT_STRING_IMPLEMENTATION
-          // MD4_HASHLEN_BYTE is ABSOLUTLY needed as we dont want NULL
+          // MD4_HASHLEN_BYTE is ABSOLUTELY needed as we dont want NULL
           // character to be interpreted as the end of the parthash string
 #if wxUSE_UNICODE
 

@@ -635,7 +635,7 @@ bool ServersInfo::ReQuery()
 		return false;
 	}
 	//
-	// query succeded - flush existing values and refill
+	// query succeeded - flush existing values and refill
 	EraseAll();
 	for (CECPacket::const_iterator it = srv_reply->begin(); it != srv_reply->end(); ++it) {
 		const CECTag *tag = & *it;
@@ -855,7 +855,7 @@ bool UploadsInfo::ReQuery()
 		return false;
 	}
 	//
-	// query succeded - flush existing values and refill
+	// query succeeded - flush existing values and refill
 	EraseAll();
 	for (CECPacket::const_iterator it = up_reply->begin(); it != up_reply->end(); ++it) {
 

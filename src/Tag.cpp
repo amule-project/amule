@@ -131,7 +131,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				break;
 
 			case TAGTYPE_FLOAT32:
-				//#warning Endianess problem?
+				//#warning Endianness problem?
 				data.Read(&m_fVal, 4);
 				break;
 
@@ -176,7 +176,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				} else {
 					// Since we cannot determine the length of this tag, we
 					// simply have to abort reading the file.
-					throw CInvalidPacket(CFormat(wxT("Unknown tag type encounted %x, cannot proceed!")) % m_uType);
+					throw CInvalidPacket(CFormat(wxT("Unknown tag type encountered %x, cannot proceed!")) % m_uType);
 				}
 		}
 	} catch (...) {
@@ -364,7 +364,7 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 			data->WriteUInt8(m_uVal);
 			break;
 		case TAGTYPE_FLOAT32:
-			//#warning Endianess problem?
+			//#warning Endianness problem?
 			data->Write(&m_fVal, 4);
 			break;
 		case TAGTYPE_HASH16:

@@ -67,7 +67,7 @@ TEST(SimpleParser, Constructor)
 		ASSERT_EQUALS(wxEmptyString, tkz1.next());
 	}
 
-	// String with no tokens should be return immediatly
+	// String with no tokens should be return immediately
 	{
 		CSimpleTokenizer tkz2(wxT(" abc "), wxT('-'));
 		ASSERT_EQUALS(wxT(" abc "), tkz2.remaining());

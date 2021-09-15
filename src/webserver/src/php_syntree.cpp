@@ -326,7 +326,7 @@ PHP_SYN_NODE *make_switch_syn_node(PHP_EXP_NODE *cond, PHP_EXP_NODE *case_list)
 
 	//
 	// Bind all statement lists into single one for
-	// simplier execution
+	// simpler execution
 	//
 	PHP_SYN_NODE *stat_list_tail = 0;
 	for(PHP_EXP_NODE *cur_case = case_list; cur_case; cur_case = cur_case->next) {
@@ -2005,7 +2005,7 @@ void php_report_error(PHP_MSG_TYPE err_type, const char *msg, ...)
 	// hope my error message will never be that big.
 	//
 	// security is ok, since _user_ errors are not reporting thru
-	// this function, but handled by scipt itself.
+	// this function, but handled by script itself.
 	// However, badly written script MAY force user-supplied data to
 	// leak here and create stack overrun exploit. Be warned.
 	//

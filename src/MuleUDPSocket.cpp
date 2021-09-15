@@ -324,7 +324,7 @@ bool CMuleUDPSocket::SendTo(uint8_t *buffer, uint32_t length, uint32_t ip, uint1
 		// flag so it gets resent when socket is ready.
 		m_busy = true;
 	} else if (uint32 error = m_socket->LastError()) {
-		// An error which we can't handle happended, so we drop
+		// An error which we can't handle happened, so we drop
 		// the packet rather than risk entering an infinite loop.
 		AddLogLineN((wxT("WARNING! ") + m_name + wxT(": Packet to "))
 			<< Uint32_16toStringIP_Port(ip, port)

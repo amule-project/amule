@@ -40,7 +40,7 @@
  *  - The @c "*" width-modifier, because only one argument is fed at a time.
  *  - The @c "n" type, just unsafe and won't be implemented.
  *  - The @c "C" and @c "S" types, which are considered obsolete.
- *  - The Long Double type, which is extremly slow and shouldn't be used.
+ *  - The Long Double type, which is extremely slow and shouldn't be used.
  *
  * Support for the C99 @c a, @c A conversions and the non-standard @c ', @c I
  * flags depend on the underlying C library. Do not use them.

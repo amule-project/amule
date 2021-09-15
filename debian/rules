@@ -528,7 +528,7 @@ plasmamule: amule-plasmamule-package
 plasmamule-dbgsym: amule-plasmamule-dbgsym
 	touch @
 
-#Here come the Targets for the langauge packages
+#Here come the Targets for the language packages
 i18n-%: amule-i18n-% ;
 
 amule-i18n-%: amule-common

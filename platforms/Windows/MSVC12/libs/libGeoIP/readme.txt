@@ -1,6 +1,6 @@
 How to build aMule with GeoIP support
 
-The MaxMind GeoIP library can detect the country an IP adress comes from. aMule uses this information
+The MaxMind GeoIP library can detect the country an IP address comes from. aMule uses this information
 to display a little country flag for each source or ed2k server.
 Since this is an external library it is disabled by default. This is how to enable it:
 

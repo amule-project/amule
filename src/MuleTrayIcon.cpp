@@ -235,7 +235,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		IconWithSpeed.SelectObject(TempBMP);
 
 
-		// Speed bar is: centered, taking 80% of the icon heigh, and
+		// Speed bar is: centered, taking 80% of the icon height, and
 		// right-justified taking a 10% of the icon width.
 
 		// X
@@ -293,7 +293,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	bool showMBpsUp = (MBpsUp >= 1);
 	bool showMBpsDown = (MBpsDown >= 1);
 
-	// Creates dinamically the menu to show the user.
+	// Dynamically creates the menu to show the user.
 	wxMenu *traymenu = new wxMenu();
 	traymenu->SetTitle(_("aMule Tray Menu"));
 

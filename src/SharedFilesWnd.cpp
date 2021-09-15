@@ -150,7 +150,7 @@ void CSharedFilesWnd::SelectionUpdated()
 			m_bar_requests->SetValue( 0 );
 			CastChild(IDC_SREQUESTED, wxStaticText)->SetLabel( wxT("- / -") );
 
-			// Accepted requets
+			// Accepted requests
 			m_bar_accepted->SetValue( 0 );
 			CastChild(IDC_SACCEPTED, wxStaticText)->SetLabel( wxT("- / -") );
 
@@ -169,7 +169,7 @@ void CSharedFilesWnd::SelectionUpdated()
 			wxString labelReq = CFormat(wxT("%d / %d")) % session_requests % all_requests;
 			CastChild(IDC_SREQUESTED, wxStaticText)->SetLabel(labelReq);
 
-			// Accepted requets
+			// Accepted requests
 			session_accepted = session_accepted > lAccepted ? lAccepted : session_accepted;
 			m_bar_accepted->SetValue( session_accepted );
 			wxString labelAcc = CFormat(wxT("%d / %d")) % session_accepted % all_accepted;

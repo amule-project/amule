@@ -247,7 +247,7 @@ protected:
 	 *
 	 * By default, this function simply returns the text in the first
 	 * column for the given item. However, when owner-drawing is
-	 * enabled, this function _must_ be overriden.
+	 * enabled, this function _must_ be overridden.
 	 */
 	virtual wxString GetTTSText(unsigned item) const;
 
@@ -446,7 +446,7 @@ private:
 	 * @param[in] oldindex Old column index which we want to turn into a
 	 * new index.
 	 *
-	 * @return The new index of the column, or -1 if an error occured.
+	 * @return The new index of the column, or -1 if an error occurred.
 	 */
 	int GetNewColumnIndex(int oldindex) const;
 

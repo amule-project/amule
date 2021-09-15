@@ -740,11 +740,11 @@ void CSharedFileList::SendListToServer(){
 
 	CPacket* packet = new CPacket(files, OP_EDONKEYPROT, OP_OFFERFILES);
 	// compress packet
-	//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
+	//   - this kind of data is highly compressible (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
 	//   - the min. amount of data needed for one published file is ~100 bytes
 	//   - this function is called once when connecting to a server and when a file becomes shareable - so, it's called rarely.
 	//   - if the compressed size is still >= the original size, we send the uncompressed packet
-	// therefor we always try to compress the packet
+	// therefore we always try to compress the packet
 	if (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION){
 		packet->PackPacket();
 	}
@@ -1008,7 +1008,7 @@ wxString CSharedFileList::GetPublicSharedDirName(const CPath& dir)
 		wxASSERT( strPublicName.GetChar(0) == cPathSepa );
 		strPublicName = strPublicName.Right(strPublicName.Length() - 1);
 	} else {
-		// must be a rootdirectory on Windos
+		// must be a rootdirectory on Windows
 		wxASSERT( strDirectoryTmp.Length() == 2 );
 		strPublicName = strDirectoryTmp;
 	}

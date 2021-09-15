@@ -140,7 +140,7 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 		long width = geometry_width;
 		long height = geometry_height;
 
-		// Get the avilable display area
+		// Get the available display area
 		wxRect display = wxGetClientDisplayRect();
 
 		// We want to place aMule inside the client area by default

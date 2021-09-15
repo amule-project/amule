@@ -40,7 +40,7 @@ enum CMTC_Events
 {
 	//! Cut text, uses provided ID
 	CMTCE_Cut	= wxID_CUT,
-	//! Copy text, uses privided ID
+	//! Copy text, uses provided ID
 	CMTCE_Copy	= wxID_COPY,
 	//! Paste text, uses custom ID
 	CMTCE_Paste = wxID_HIGHEST + 666,	// Random satanic ID
