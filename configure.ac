@@ -30,10 +30,6 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 
 AC_PREREQ(2.62)
 
-# autoconf 2.70 introduced some incompatibilities that will make the build fail
-# As a "workaround" reject 2.70 and above for now.
-m4_if(m4_version_compare(m4_defn([AC_AUTOCONF_VERSION]), [2.70]), [-1],, [m4_fatal([autoconf ]m4_defn([AC_AUTOCONF_VERSION])[ is known to not work with aMule. Please use 2.69 instead.])])
-
 AC_CONFIG_SRCDIR([src/amule.cpp])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
