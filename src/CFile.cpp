@@ -363,6 +363,10 @@ sint64 CFile::doWrite(const void* buffer, size_t nCount)
 
 sint64 CFile::doSeek(sint64 offset) const
 {
+	if (!IsOpened()) {
+		throw CSeekFailureException(wxT("Cannot seek on closed file."));
+	}
+
 	MULE_VALIDATE_PARAMS(offset >= 0, wxT("Invalid position, must be positive."));
 
 	sint64 result = SEEK_FD(m_fd, offset, SEEK_SET);
