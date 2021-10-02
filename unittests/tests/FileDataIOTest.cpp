@@ -762,7 +762,6 @@ TEST(CFile, Constructor)
 		ASSERT_TRUE(file.fd() == CFile::fd_invalid);
 		ASSERT_RAISES(CRunTimeException, file.WriteUInt8(0));
 		ASSERT_RAISES(CRunTimeException, file.ReadUInt8());
-		ASSERT_RAISES(CRunTimeException, file.Seek(0, wxFromStart));
 		ASSERT_RAISES(CRunTimeException, file.GetLength());
 		ASSERT_RAISES(CRunTimeException, file.GetPosition());
 		ASSERT_RAISES(CRunTimeException, file.SetLength(13));
