@@ -40,7 +40,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install deps
-      run: sudo apt-get install autopoint
+      run: sudo apt-get update && sudo apt-get upgrade && sudo apt-get install autopoint
     - name: autogen
       run: ./autogen.sh
     - name: install build deps
