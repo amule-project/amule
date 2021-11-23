@@ -4093,7 +4093,7 @@ int wxListMainWindow::GetSelectedItemCount() const
     if ( IsSingleSel() )
         return HasCurrent() ? IsHighlighted(m_current) : false;
 
-    // virtual controls rememebers all its selections itself
+    // virtual controls remembers all its selections itself
     if ( IsVirtual() )
         return m_selStore.GetSelectedCount();
 
