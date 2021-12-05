@@ -437,7 +437,7 @@ void CECSocket::OnOutput()
 				// Event driven logic: return, OnOutput() will be called again later
 				return;
 			}
-			// Syncronous call: wait (for max 10 secs)
+			// Synchronous call: wait (for max 10 secs)
 			if ( !WaitSocketWrite(10, 0) ) {
 				// Still not through ?
 				if (WouldBlock()) {
@@ -550,7 +550,7 @@ bool CECSocket::ReadHeader()
 	// b) way too large (free data again after receiving huge packets)
 		|| m_bytes_needed + EC_SOCKET_BUFFER_SIZE * 10 < currLength) {
 		// Client socket: IsAuthorized() is always true
-		// Server socket: do not allow growing of internal buffers before succesfull login.
+		// Server socket: do not allow growing of internal buffers before successful login.
 		// Otherwise sending a simple header with bogus length of 16MB-1 will crash an embedded
 		// client with memory exhaustion.
 		if (!IsAuthorized()) {

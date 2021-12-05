@@ -154,7 +154,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	m_ftpUpdateCheck =
 	    new wxCheckBox ( this, ID_FTP_UPDATE_CHECK,
 	                     _
-	                     ( "Upload periodicaly your stat image to FTP server" ) );
+	                     ( "Upload periodically your stat image to FTP server" ) );
 	m_ftpUpdateSBoxSizer->Add ( m_ftpUpdateCheck, 0,
 	                            wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5 );
 

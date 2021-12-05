@@ -184,7 +184,7 @@ void CClientCreditsList::SaveList()
 			uint32 count = 0;
 
 			file.WriteUInt8( CREDITFILE_VERSION );
-			// Temporary place-holder for number of stucts
+			// Temporary place-holder for number of structs
 			file.WriteUInt32( 0 );
 
 			ClientMap::iterator it = m_mapClients.begin();
@@ -392,7 +392,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uint8_t* pac
 		wxASSERT ( challenge != 0 );
 		PokeUInt32(abyBuffer+m_nMyPublicKeyLen, challenge);
 
-		// v2 security improvments (not supported by 29b, not used as default by 29c)
+		// v2 security improvements (not supported by 29b, not used as default by 29c)
 		uint8 nChIpSize = 0;
 		if (byChaIPKind != 0){
 			nChIpSize = 5;

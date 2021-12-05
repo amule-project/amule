@@ -271,7 +271,7 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 	m_fd = _wopen(m_filePath.GetRaw().c_str(), flags, accessMode);
 #else
 	Unicode2CharBuf tmpFileName = filename2char(m_filePath.GetRaw());
-	wxASSERT_MSG(tmpFileName, wxT("Convertion failed in CFile::Open"));
+	wxASSERT_MSG(tmpFileName, wxT("Conversion failed in CFile::Open"));
 	m_fd = open(tmpFileName, flags, accessMode);
 #endif
 	syscall_check(m_fd != fd_invalid, m_filePath, wxT("opening file"));

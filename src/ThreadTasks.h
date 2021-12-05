@@ -165,7 +165,7 @@ protected:
 	uint8		m_category;
 	//! Owner of the file, used when sending completion-event.
 	const CPartFile*	m_owner;
-	//! Specifies if an error occured during completion.
+	//! Specifies if an error occurred during completion.
 	bool		m_error;
 	//! The resulting full path. File may be be renamed.
 	CPath		m_newName;

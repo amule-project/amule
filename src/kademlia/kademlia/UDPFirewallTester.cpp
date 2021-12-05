@@ -60,7 +60,7 @@ bool CUDPFirewallTester::IsFirewalledUDP(bool lastStateIfTesting)
 	}
 	if (!m_timedOut && IsFWCheckUDPRunning()) {
 		if (!m_firewalledUDP && CKademlia::IsFirewalled() && m_testStart != 0 && ::GetTickCount() - m_testStart > MIN2MS(6)
-			&& !m_isFWVerifiedUDP /*For now we don't allow to get firewalled by timeouts if we have succeded a test before, might be changed later*/)
+			&& !m_isFWVerifiedUDP /*For now we don't allow to get firewalled by timeouts if we have succeeded a test before, might be changed later*/)
 		{
 			AddDebugLogLineN(logKadUdpFwTester, wxT("Timeout: Setting UDP status to firewalled after being unable to get results for 6 minutes"));
 			m_timedOut = true;
@@ -95,7 +95,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 			if (!IsFWCheckUDPRunning() && !m_firewalledUDP && m_isFWVerifiedUDP && m_lastSucceededTime + SEC2MS(10) > ::GetTickCount()
 			    && incomingPort == CKademlia::GetPrefs()->GetInternKadPort() && CKademlia::GetPrefs()->GetUseExternKadPort()) {
 				// our test finished already in the last 10 seconds with being open because we received a proper result packet before
-				// however we now receive another answer packet on our incoming port (which is not unusal as both resultpackets are sent
+				// however we now receive another answer packet on our incoming port (which is not unusual as both resultpackets are sent
 				// nearly at the same time and UDP doesn't cares if the order stays), while the one before was received on our extern port
 				// Because a proper forwarded intern port is more reliable to stay open than an extern port set by the NAT, we prefer
 				// intern ports and change the setting.
@@ -142,7 +142,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 			m_fwChecksRunningUDP = 0; // all other tests are cancelled
 			m_possibleTestClients.clear(); // clear list, keep used clients list though
 			CSearchManager::CancelNodeFWCheckUDPSearch(); // cancel firewallnode searches if any are still active
-			// if this packet came to our internal port, explict set the interal port as used port from now on
+			// if this packet came to our internal port, explicitly set the internal port as used port from now on
 			if (incomingPort == CKademlia::GetPrefs()->GetInternKadPort()) {
 				CKademlia::GetPrefs()->SetUseExternKadPort(false);
 				AddDebugLogLineN(logKadUdpFwTester, wxT("New Kad Firewallstate (UDP): Open, using intern port"));

@@ -407,7 +407,7 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 			// NOTE: This tag data type is accepted and stored only to give us the possibility to upgrade
 			// the net in some months.
 			//
-			// And still.. it doesnt't work this way without breaking backward compatibility. To properly
+			// And still.. it doesn't work this way without breaking backward compatibility. To properly
 			// do this without messing up the network the following would have to be done:
 			//	 -	those tag types have to be ignored by any client, otherwise those tags would also be sent (and
 			//		that's really the problem)
@@ -456,7 +456,7 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 			// NOTE: This tag data type is accepted and stored only to give us the possibility to upgrade
 			// the net in some months.
 			//
-			// And still.. it doesnt't work this way without breaking backward compatibility
+			// And still.. it doesn't work this way without breaking backward compatibility
 			case TAGTYPE_BSOB:
 			{
 				uint8 size = 0;

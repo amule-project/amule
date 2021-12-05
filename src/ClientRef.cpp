@@ -24,7 +24,7 @@
 //
 
 #include "ClientRef.h"
-#include "amule.h"				// Needed fot theApp
+#include "amule.h"				// Needed for theApp
 
 #ifdef CLIENT_GUI
 #include "UpDownClientEC.h"	// Needed for CUpDownClient

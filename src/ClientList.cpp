@@ -110,7 +110,7 @@ void CClientList::AddClient( CUpDownClient* toadd )
 
 		//Notify_ClientCtrlAddClient( toadd );
 
-		// We always add the ID/ptr pair, regardles of the actual ID value
+		// We always add the ID/ptr pair, regardless of the actual ID value
 		m_clientList.insert( IDMapPair( toadd->GetUserIDHybrid(), CCLIENTREF(toadd, wxT("CClientList::AddClient m_clientList.insert"))) );
 
 		// We only add the IP if it is valid
@@ -976,7 +976,7 @@ void CClientList::CleanUpClientList()
 {
 	// We remove clients which are not needed any more by time
 	// this check is also done on CUpDownClient::Disconnected, however it will not catch all
-	// cases (if a client changes the state without beeing connected
+	// cases (if a client changes the state without being connected
 	//
 	// Adding this check directly to every point where any state changes would be more effective,
 	// is however not compatible with the current code, because there are points where a client has

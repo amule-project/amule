@@ -61,22 +61,22 @@ protected:
 	 */
 	void	OnNMRclickChatTab(wxMouseEvent& evt);
 	/**
-	 * Event-handler fo the Close item on the popup-menu.
+	 * Event-handler of the Close item on the popup-menu.
 	 */
 	void	OnPopupClose(wxCommandEvent& evt);
 
 	/**
-	 * Event-handler fo the CloseAll item on the popup-menu.
+	 * Event-handler of the CloseAll item on the popup-menu.
 	 */
 	void	OnPopupCloseAll(wxCommandEvent& evt);
 
 	/**
-	 * Event-handler fo the CloseOthers item on the popup-menu.
+	 * Event-handler of the CloseOthers item on the popup-menu.
 	 */
 	void	OnPopupCloseOthers(wxCommandEvent& evt);
 
 	/**
-	 * Event-handler fo the AddFriend item on the popup-menu.
+	 * Event-handler of the AddFriend item on the popup-menu.
 	 */
 	void	OnAddFriend(wxCommandEvent& evt);
 

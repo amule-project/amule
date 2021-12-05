@@ -425,7 +425,7 @@ AC_DEFUN([AM_PO_SUBDIRS],
               test -n "$as_me" && echo "$as_me: setting ALL_LINGUAS in configure.in is obsolete" || echo "setting ALL_LINGUAS in configure.in is obsolete"
             fi
             ALL_LINGUAS_=`sed -e "/^#/d" "$ac_given_srcdir/$ac_dir/LINGUAS"`
-            # Hide the ALL_LINGUAS assigment from automake.
+            # Hide the ALL_LINGUAS assignment from automake.
             eval 'ALL_LINGUAS''=$ALL_LINGUAS_'
           fi
           case "$ac_given_srcdir" in

@@ -253,7 +253,7 @@ public:
 	}
 
 	//
-	// Following are like basicly same code as in webserver. Eventually it must
+	// Following are like basically same code as in webserver. Eventually it must
 	// be same class
 	//
 	void DoRequery(int cmd, int tag)

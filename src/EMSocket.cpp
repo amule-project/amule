@@ -662,7 +662,7 @@ uint32 CEMSocket::GetNeededBytes()
 		}
 
 		if (!((sendbuffer && !m_currentPacket_is_controlpacket) || !m_standard_queue.empty())) {
-			// No standard packet to send. Even if data needs to be sent to prevent timout, there's nothing to send.
+			// No standard packet to send. Even if data needs to be sent to prevent timeout, there's nothing to send.
 			return 0;
 		}
 

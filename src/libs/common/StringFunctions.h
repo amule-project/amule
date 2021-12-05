@@ -127,7 +127,7 @@ inline char* nstrdup(const char* src)
 inline long StrToLong(const wxString& str)
 {
 	long value = 0;
-	if (!str.ToLong(&value)) {	// value may be changed even if it failes according to wx docu
+	if (!str.ToLong(&value)) {	// value may be changed even if it fails according to wx docu
 		value = 0;
 	}
 	return value;
@@ -238,7 +238,7 @@ wxString validateURI(const wxString& url);
  * compared. This allows strings such as "a (2)" and "a (10)" to
  * be properly sorted for displaying.
  *
- * Currently does not handle floats (they are treated as to seperate
+ * Currently does not handle floats (they are treated as to separate
  * fields, nor negative numbers.
  */
 int FuzzyStrCmp(const wxString& a, const wxString& b);

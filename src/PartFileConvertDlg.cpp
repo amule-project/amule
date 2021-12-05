@@ -203,7 +203,7 @@ void CPartFileConvertDlg::OnAddFolder(wxCommandEvent& WXUNUSED(event))
 		wxStandardPaths::Get().GetDocumentsDir(), wxDD_DEFAULT_STYLE,
 		wxDefaultPosition, this);
 	if (!folder.IsEmpty()) {
-		int reply = wxMessageBox(_("Do you want the source files of succesfully imported downloads be deleted?"),
+		int reply = wxMessageBox(_("Do you want the source files of successfully imported downloads be deleted?"),
 					 _("Remove sources?"),
 					 wxYES_NO | wxCANCEL | wxICON_QUESTION, this);
 		if (reply != wxCANCEL) {

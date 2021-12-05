@@ -59,7 +59,7 @@ public:
 	//! Structure used to pass search-parameters.
 	struct CSearchParams
 	{
-		/** Prevents accidential use of uninitialized variables. */
+		/** Prevents accidental use of uninitialized variables. */
 		CSearchParams() { minSize = maxSize = availability = 0; }
 
 		//! The actual string to search for.
@@ -74,7 +74,7 @@ public:
 		uint64_t minSize;
 		//! The largest filesize in bytes to accept, zero for any.
 		uint64_t maxSize;
-		//! The minumum available (source-count), zero for any.
+		//! The minimum available (source-count), zero for any.
 		uint32_t availability;
 	};
 

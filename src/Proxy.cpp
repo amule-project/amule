@@ -188,7 +188,7 @@ bool CProxyStateMachine::Start(const amuleIPV4Address &peerAddress, CLibSocket *
 	//	const wxIPV4address &peer = dynamic_cast<const wxIPV4address &>(peerAddress);
 	//	m_peerAddress = new amuleIPV4Address(peer);
 	//} catch (const std::bad_cast& WXUNUSED(e)) {
-	//	// Should process other types of wxIPAddres before quitting
+	//	// Should process other types of wxIPAddress before quitting
 	//	AddDebugLogLineN(logProxy, wxT("(1)bad_cast exception!"));
 	//	wxFAIL;
 	//	return false;
@@ -265,7 +265,7 @@ void CProxyStateMachine::AddDummyEvent()
 
 void CProxyStateMachine::ReactivateSocket()
 {
-	/*    If proxy is beeing used, then the TCP socket handlers
+	/*    If proxy is being used, then the TCP socket handlers
 	 * (CServerSocketHandler and CClientTCPSocketHandler) will not
 	 * receive a wxSOCKET_CONNECTION event, because the connection has
 	 * already started with the proxy. So we must add a wxSOCKET_CONNECTION

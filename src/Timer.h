@@ -57,7 +57,7 @@ public:
 	 * Stops the timer.
 	 *
 	 * Note that this does not delete the actual thread
-	 * immediatly, but no new events will be queued after
+	 * immediately, but no new events will be queued after
 	 * calling this function.
 	 */
 	void Stop();

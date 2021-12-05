@@ -60,7 +60,7 @@ public:
 	 * @param name Name used when logging events.
 	 * @param id The ID used for events.
 	 * @param address The address where the socket will listen.
-	 * @param ProxyData ProxyData assosiated with the socket.
+	 * @param ProxyData ProxyData associated with the socket.
 	 */
 	CMuleUDPSocket(const wxString& name, int id, const amuleIPV4Address& address, const CProxyData* ProxyData = NULL);
 

@@ -105,7 +105,7 @@ void PlasmaMuleEngine::regDbus ()
 	new EngineAdaptor(this);
 	QDBusConnection dbus = QDBusConnection::sessionBus();
 	dbus.registerObject("/Link", this);
-	kDebug(m_debugChannel) << "Registerred dbus: " << dbus.registerService("org.amule.engine");
+	kDebug(m_debugChannel) << "Registered dbus: " << dbus.registerService("org.amule.engine");
 }
 
 void PlasmaMuleEngine::downloadFinished (KIO::Job* job,const QByteArray& data)

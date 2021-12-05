@@ -34,7 +34,7 @@
 #include "Preferences.h"	// Needed for thePrefs
 #include "Packet.h"		// Needed for CPacket
 #include "Statistics.h"		// Needed for theStats
-#include "Logger.h"		// Neeed for logRemoteClient
+#include "Logger.h"		// Needed for logRemoteClient
 #include "updownclient.h"	// Needed for CUpDownClient
 #include <common/Format.h>	// Needed for CFormat
 #include "amule.h"		// Needed for theApp
@@ -260,7 +260,7 @@ void CClientTCPSocket::Disconnect(const wxString& strReason)
 	byConnected = ES_DISCONNECTED;
 	if (m_client) {
 		if (m_client->Disconnected(strReason, true)) {
-			// Somehow, Safe_Delete() is beeing called by Disconnected(),
+			// Somehow, Safe_Delete() is being called by Disconnected(),
 			// or any other function that sets m_client to NULL,
 			// so we must check m_client first.
 			if (m_client) {
@@ -340,7 +340,7 @@ bool CClientTCPSocket::ProcessPacket(const uint8_t* buffer, uint32 size, uint8 o
 			theStats::AddDownOverheadOther(size);
 			bool bNewClient = !m_client;
 			if (bNewClient) {
-				// create new client to save standart informations
+				// create new client to save standard information
 				m_client = new CUpDownClient(this);
 			}
 
@@ -368,7 +368,7 @@ bool CClientTCPSocket::ProcessPacket(const uint8_t* buffer, uint32 size, uint8 o
 					m_client->Safe_Delete();
 					m_client = NULL;
 				}
-				Disconnect(wxT("Paranoid disconecting: ") + reason);
+				Disconnect(wxT("Paranoid disconnecting: ") + reason);
 				return false;
 			}
 
@@ -389,14 +389,14 @@ bool CClientTCPSocket::ProcessPacket(const uint8_t* buffer, uint32 size, uint8 o
 			// and the var. "client" will point to the known client.
 			// if not we keep our new-constructed client ;)
 			if (theApp->clientlist->AttachToAlreadyKnown(&m_client,this)) {
-				// update the old client informations
+				// update the old client information
 				bIsMuleHello = m_client->ProcessHelloPacket(buffer, size);
 			} else {
 				theApp->clientlist->AddClient(m_client);
 				m_client->SetCommentDirty();
 			}
 			Notify_SharedCtrlRefreshClient( m_client->ECID(), AVAILABLE_SOURCE );
-			// send a response packet with standart informations
+			// send a response packet with standard information
 			if ((m_client->GetHashType() == SO_EMULE) && !bIsMuleHello) {
 				m_client->SendMuleInfoPacket(false);
 			}
@@ -1023,7 +1023,7 @@ bool CClientTCPSocket::ProcessExtPacket(const uint8_t* buffer, uint32 size, uint
 	DumpMem(buffer,size);
 	#endif
 
-	// 0.42e - except the catchs on mem exception and file exception
+	// 0.42e - except the catches on mem exception and file exception
 	if (!m_client) {
 		throw wxString(wxT("Unknown clients sends extended protocol packet"));
 	}
@@ -1934,7 +1934,7 @@ void CClientTCPSocket::OnError(int nErrorCode)
 		}
 	} else {
 		if (theLogger.IsEnabled(logClient) && nErrorCode != 107) {
-			// 0    -> No Error / Disconect
+			// 0    -> No Error / Disconnect
 			// 107  -> Transport endpoint is not connected
 			if (m_client) {
 				if (!m_client->GetUserName().IsEmpty()) {

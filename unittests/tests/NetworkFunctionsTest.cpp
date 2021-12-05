@@ -126,7 +126,7 @@ TEST(NetworkFunctions, StringIPtoUint32)
 	ASSERT_FALSE(StringIPtoUint32(wxT("1.2.2147483648.4"), dummyIP));
 	ASSERT_FALSE(StringIPtoUint32(wxT("1.2.3.2147483648"), dummyIP));
 
-	// Values greater than 2 ** 32 - 1 (triggered overflow and becames x - (2 ** 32 - 1))
+	// Values greater than 2 ** 32 - 1 (triggered overflow and becomes x - (2 ** 32 - 1))
 	ASSERT_FALSE(StringIPtoUint32(wxT("4294967296.2.3.4"), dummyIP));
 	ASSERT_FALSE(StringIPtoUint32(wxT("1.4294967296.3.4"), dummyIP));
 	ASSERT_FALSE(StringIPtoUint32(wxT("1.2.4294967296.4"), dummyIP));

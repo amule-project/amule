@@ -92,7 +92,7 @@ public:
 	 * Merges the two results into one.
 	 *
 	 * Merges the other result into this one, updating
-	 * various informations.
+	 * various information.
 	 *
 	 * @param other The file to be merged into this.
 	 */

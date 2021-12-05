@@ -54,7 +54,7 @@ void CStateMachine::Clock()
 
 	old_state = m_state;
 
-	/* Process state change acording to event */
+	/* Process state change according to event */
 	if (!m_queue.empty()) {
 		event = m_queue.front();
 		m_queue.pop();

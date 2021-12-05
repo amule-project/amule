@@ -139,7 +139,7 @@ class CUserEvents {
 	static unsigned int	GetCount() ATTR(__const__);
 
 	/**
-	 * Returs the human-readable name of the event.
+	 * Returns the human-readable name of the event.
 	 */
 	static const wxString&	GetDisplayName(enum EventType event) ATTR(__pure__);
 

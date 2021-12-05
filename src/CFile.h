@@ -107,7 +107,7 @@ public:
 	void Reopen(OpenMode mode);
 
 	/**
-	 * Calling Create is equivilant of calling open with OpenMode 'write'.
+	 * Calling Create is equivalent of calling open with OpenMode 'write'.
 	 *
 	 * @param overwrite Specifies if the target file should be overwritten,
 	 *                  in case that it already exists.
@@ -127,7 +127,7 @@ public:
 
 
 	/**
-	 * Returns the file descriptior assosiated with the file.
+	 * Returns the file descriptor associated with the file.
 	 *
 	 * Note that direct manipulation of the descriptor should
 	 * be avoided! That's what this class is for.

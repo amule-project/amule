@@ -54,7 +54,7 @@ enum DebugType
 	logZLib,
 	//! Warnings/Errors for the AICH-syncronization thread.
 	logAICHThread,
-	//! Warnings/Errors for transfering AICH hash-sets.
+	//! Warnings/Errors for transferring AICH hash-sets.
 	logAICHTransfer,
 	//! Warnings/Errors when recovering with AICH.
 	logAICHRecovery,
@@ -82,7 +82,7 @@ enum DebugType
 	logSearch,
 	//! Warnings/Errors related to the server UDP socket.
 	logServerUDP,
-	//! Warning/Errors related to Kademlia UDP comunication on client
+	//! Warning/Errors related to Kademlia UDP communication on client
 	logClientKadUDP,
 	//! Warning/Errors related to Kademlia Search
 	logKadSearch,

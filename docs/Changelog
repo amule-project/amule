@@ -1733,7 +1733,7 @@ Version 2.1.2 - The "We're on fire!" version
 		  the sharedfiles list showing a 'has-comment' flag.
 		* Compilation fix for GCC 3.2.
 		* Fixed CheckDirExists not working for root-paths (on both windows and
-		  linux) and not handling all types of path-seperators on windows.
+		  linux) and not handling all types of path-separators on windows.
 		* Fixed security problems with aMuleWeb:
 			* All images could be accessed, even when not logged in, and this
 			  included dynamically generated images, such as progress bars and

@@ -335,7 +335,7 @@ bool CServerSocket::ProcessPacket(const uint8_t* packet, uint32 size, int8 opcod
 					if (size >= 4+4 /* uint32 (ID) + uint32 (TCP flags)*/) {
 						cur_server->SetTCPFlags(data.ReadUInt32());
 						if (size >= 4+4+4 /* uint32 (ID) + uint32 (TCP flags) + uint32 (aux port) */) {
-							// aux port login : we should use the 'standard' port of this server to advertize to other clients
+							// aux port login : we should use the 'standard' port of this server to advertise to other clients
 							ConnPort = data.ReadUInt32();
 							cur_server->SetPort(ConnPort);
 							if (cur_server->GetAuxPortsList().IsEmpty()) {
@@ -464,7 +464,7 @@ bool CServerSocket::ProcessPacket(const uint8_t* packet, uint32 size, int8 opcod
 			}
 			case OP_SERVERSTATUS: {
 				AddDebugLogLineN(logServer, wxT("Server: OP_SERVERSTATUS"));
-				// FIXME some statuspackets have a different size -> why? structur?
+				// FIXME some statuspackets have a different size -> why? structure?
 				if (size < 8) {
 					throw wxString(wxT("Invalid server status packet"));
 				}

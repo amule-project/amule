@@ -2074,7 +2074,7 @@ ELIAAAAAAAgACAAIAAgAAQABAAEAAQ</bytes>
 							<object class="NSTextFieldCell" key="NSCell" id="252325160">
 								<int key="NSCellFlags">68288064</int>
 								<int key="NSCellFlags2">272761856</int>
-								<string key="NSContents">Conection status</string>
+								<string key="NSContents">Connection status</string>
 								<reference key="NSSupport" ref="26"/>
 								<reference key="NSControlView" ref="264279150"/>
 								<reference key="NSBackgroundColor" ref="16080844"/>

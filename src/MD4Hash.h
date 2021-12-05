@@ -45,7 +45,7 @@ const size_t MD4HASH_LENGTH = 16;
  *
  * This is a safe representation of the MD4 hashes used in aMule. By transparently
  * wrapping the char array used to store the hash, we get the advantages of
- * assigment, equality and non-equality operators, plus other nifty features.
+ * assignment, equality and non-equality operators, plus other nifty features.
  *
  * Please remember that the hashes are arrays with length 16 WITHOUT a zero-terminator!
  */
@@ -126,7 +126,7 @@ public:
 	 *
 	 * This functions checks the contents of the hash and returns true
 	 * only if each field of the array contains the value zero.
-	 * To achive an empty hash, the function Clear() can be used.
+	 * To achieve an empty hash, the function Clear() can be used.
 	 */
 	bool IsEmpty() const {
 		return (
@@ -151,7 +151,7 @@ public:
 	 * Decodes a 32 char long hexadecimal representation of a MD4 hash.
 	 *
 	 * @param hash The hash representation to be converted. Length must be 32.
-	 * @return Return value specifies if the hash was succesfully decoded.
+	 * @return Return value specifies if the hash was successfully decoded.
 	 *
 	 * This function converts a hexadecimal representation of a MD4
 	 * hash and stores it in the m_hash data-member.

@@ -18,7 +18,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 
-# Wikifies lastest changelog entry. No sanity checking. Must be run from sources root folder.
+# Wikifies latest changelog entry. No sanity checking. Must be run from sources root folder.
 if test x"`ls docs/Changelog`" = x""; then
   echo "This script must be run on aMule base directory."
 else

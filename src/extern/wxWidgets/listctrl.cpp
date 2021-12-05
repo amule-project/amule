@@ -2554,7 +2554,7 @@ void wxListMainWindow::HighlightLines( size_t lineFrom,
         if ( !m_selStore.SelectRange(lineFrom, lineTo, highlight,
                                      &linesChanged) )
         {
-            // meny items changed state, refresh everything
+            // many items changed state, refresh everything
             RefreshLines(lineFrom, lineTo);
         }
         else // only a few items changed state, refresh only them
@@ -3930,8 +3930,8 @@ void wxListMainWindow::SetItemStateAll(long state, long stateMask)
 
     if ( HasCurrent() && (state == 0) && (stateMask & wxLIST_STATE_FOCUSED) )
     {
-        // unfocus all: only one item can be focussed, so clearing focus for
-        // all items is simply clearing focus of the focussed item.
+        // unfocus all: only one item can be focused, so clearing focus for
+        // all items is simply clearing focus of the focused item.
         SetItemState(m_current, state, stateMask);
     }
     //(setting focus to all items makes no sense, so it is not handled here.)
@@ -4093,7 +4093,7 @@ int wxListMainWindow::GetSelectedItemCount() const
     if ( IsSingleSel() )
         return HasCurrent() ? IsHighlighted(m_current) : false;
 
-    // virtual controls remmebers all its selections itself
+    // virtual controls remembers all its selections itself
     if ( IsVirtual() )
         return m_selStore.GetSelectedCount();
 

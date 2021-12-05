@@ -63,7 +63,7 @@ class CMuleTrayIcon : public wxTaskBarIcon
 {
 public:
 	/**
-	 * Contructor.
+	 * Constructor.
 	 */
 	CMuleTrayIcon();
 

@@ -75,7 +75,7 @@ public:
 	bool FlushAt(CFileAutoClose& file, uint64 offset, size_t count);
 
 	/**
-	 * Get buffer that contains data readed or to write.
+	 * Get buffer that contains data read or to write.
 	 * @return allocated buffer or NULL if not initialized
 	 */
 	uint8_t *GetBuffer() const { return m_buffer; };

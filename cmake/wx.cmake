@@ -26,7 +26,7 @@
 # findWX module supports check of version
 # 
 # Furthermore it sets the LIBS, LIBDIR and DEFS needed for compilation.
-# This can be controled by setting wx_NEED_BASE and wx_NEED_GUI vars.
+# This can be controlled by setting wx_NEED_BASE and wx_NEED_GUI vars.
 #
 
 include (CheckCXXSymbolExists)

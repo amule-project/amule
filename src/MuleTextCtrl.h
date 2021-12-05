@@ -69,7 +69,7 @@ protected:
 	 *
 	 * Please note that by using the RIGHT_DOWN event, I'm disabling the second
 	 * type of selection that the wxTextCtrl supports. However, I frankly only
-	 * noticed that second selection type while implementing this, so I doubth
+	 * noticed that second selection type while implementing this, so I doubt
 	 * that anyone will be missing it ...
 	 */
 	void OnRightDown( wxMouseEvent& evt );
@@ -77,7 +77,7 @@ protected:
 	/**
 	 * This function takes care of pasting text.
 	 *
-	 * Pleaes note that it is only needed because wxMenu disallows enabling and
+	 * Please note that it is only needed because wxMenu disallows enabling and
 	 * disabling of items that use the predefined wxID_PASTE id. This is the
 	 * only one of the already provided commands we need to override, since the
 	 * others already work just fine.

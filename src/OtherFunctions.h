@@ -155,7 +155,7 @@ template <typename STL_CONTAINER>
 void DeleteContents(STL_CONTAINER& container)
 {
 	// Ensure that the actual container wont contain dangling pointers during
-	// this operation, to ensure that the destructors cant access them.
+	// this operation, to ensure that the destructors can't access them.
 	STL_CONTAINER copy;
 
 	std::swap(copy, container);
@@ -226,7 +226,7 @@ unsigned int DecodeBase64(const wxString &base64Buffer, unsigned int base64BufLe
 
 // Converts the number of bytes to human readable form.
 wxString CastItoXBytes(uint64 count);
-// Converts the number to human readable form, abbreviating when nessecary.
+// Converts the number to human readable form, abbreviating when necessary.
 wxString CastItoIShort(uint64 number);
 // Converts a number of bytes to a human readable speed value.
 wxString CastItoSpeed(uint32 bytes);
@@ -240,7 +240,7 @@ wxString GetRateString(uint16 rate);
 
 // The following functions are used to identify and/or name the type of a file
 enum FileType { ftAny, ftVideo, ftAudio, ftArchive, ftCDImage, ftPicture, ftText, ftProgram };
-// Examins a filename and returns the enumerated value assosiated with it, or ftAny if unknown extension
+// Examins a filename and returns the enumerated value associated with it, or ftAny if unknown extension
 FileType GetFiletype(const CPath& filename);
 // Returns the description of a filetype: Movies, Audio, Pictures and so on...
 wxString GetFiletypeDesc(FileType type, bool translated = true);

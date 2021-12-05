@@ -54,7 +54,7 @@ esac
 # Adds a configure flag --with-boost[=DIR]. You may optionally specify the
 # location of boost headers (or sources), if they are in a non-standard
 # location. If --with-boost if not given, nothing is done. Otherwise it
-# checks for the required minumum Boost version, and Boost.Asio. If everything
+# checks for the required minimum Boost version, and Boost.Asio. If everything
 # is fine, defines ASIO_SOCKETS. If the Boost sources are found, also defines
 # HAVE_BOOST_SOURCES. Other flags defined for using Boost:
 #   - BOOST_CPPFLAGS

@@ -46,7 +46,7 @@
 #include "Preferences.h"		// Needed for thePrefs
 #include "amule.h"			// Needed for theApp
 #include "Statistics.h"			// Needed for theStats
-#include "Packet.h"			// Neeed for CPacket
+#include "Packet.h"			// Needed for CPacket
 #include "Logger.h"
 #include "ScopedPtr.h"
 #include <common/Format.h>
@@ -284,10 +284,10 @@ void CServerList::ServerStats()
 		}
 
 		srand((unsigned)time(NULL));
-		ping_server->SetRealLastPingedTime(tNow); // this is not used to calcualte the next ping, but only to ensure a minimum delay for premature pings
+		ping_server->SetRealLastPingedTime(tNow); // this is not used to calculate the next ping, but only to ensure a minimum delay for premature pings
 		if (!ping_server->GetCryptPingReplyPending() && (!ping_server->GetLastPingedTime() || (tNow - ping_server->GetLastPingedTime()) >= UDPSERVSTATREASKTIME) && theApp->GetPublicIP() && thePrefs::IsServerCryptLayerUDPEnabled()) {
 			// We try a obfsucation ping first and wait 20 seconds for an answer
-			// if it doesn't get responsed, we don't count it as error but continue with a normal ping
+			// if it doesn't get responded to, we don't count it as error but continue with a normal ping
 			ping_server->SetCryptPingReplyPending(true);
 			uint32 nPacketLen = 4 + (uint8)(rand() % 16); // max padding 16 bytes
 			CScopedArray<uint8_t> pRawPacket(nPacketLen);

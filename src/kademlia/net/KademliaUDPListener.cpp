@@ -26,7 +26,7 @@ Please do not change anything here and release it..
 There is going to be a new forum created just for the Kademlia side of the client..
 If you feel there is an error or a way to improve something, please
 post it in the forum first and let us look at it.. If it is a real improvement,
-it will be added to the offical client.. Changing something without knowing
+it will be added to the official client.. Changing something without knowing
 what all it does can cause great harm to the network if released in mass form..
 Any mod that changes anything within the Kademlia side will not be allowed to advertise
 there client on the eMule forum..
@@ -162,7 +162,7 @@ void CKademliaUDPListener::SendMyDetails(uint8_t opcode, uint32_t ip, uint16_t p
 void CKademliaUDPListener::FirewalledCheck(uint32_t ip, uint16_t port, const CKadUDPKey& senderKey, uint8_t kadVersion)
 {
 	if (kadVersion > 6) {
-		// new opcode since 0.49a with extended informations to support obfuscated connections properly
+		// new opcode since 0.49a with extended information to support obfuscated connections properly
 		CMemFile packetdata(19);
 		packetdata.WriteUInt16(thePrefs::GetPort());
 		packetdata.WriteUInt128(CKademlia::GetPrefs()->GetClientHash());
@@ -416,7 +416,7 @@ bool CKademliaUDPListener::AddContact2(const uint8_t *data, uint32_t lenData, ui
 		--tags;
 	}
 
-	// check if we are waiting for informations (nodeid) about this client and if so inform the requester
+	// check if we are waiting for information (nodeid) about this client and if so inform the requester
 	for (FetchNodeIDList::iterator it = m_fetchNodeIDRequests.begin(); it != m_fetchNodeIDRequests.end(); ++it) {
 		if (it->ip == ip && it->tcpPort == tport) {
 			//AddDebugLogLineN(logKadMain, wxT("Result Addcontact: ") + id.ToHexString());
@@ -735,7 +735,7 @@ void CKademliaUDPListener::ProcessKademlia2Response(const uint8_t *packetData, u
 						// UDP FirewallCheck searches are special. The point is we need an IP which we didn't sent a UDP message yet
 						// (or in the near future), so we do not try to add those contacts to our routingzone and we also don't
 						// deliver them back to the searchmanager (because he would UDP-ask them for further results), but only report
-						// them to FirewallChecker - this will of course cripple the search but thats not the point, since we only
+						// them to FirewallChecker - this will of course cripple the search but that's not the point, since we only
 						// care for IPs and not the random set target
 						CUDPFirewallTester::AddPossibleTestContact(id, contactIP, contactPort, tport, target, version, 0, false);
 					} else {

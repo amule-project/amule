@@ -551,7 +551,7 @@ private:
 	// does not, leaving wxConvFile being set to wxConvLibc. File
 	// name conversion should be set otherwise amuled will abort to
 	// handle non-ASCII file names which monolithic amule can handle.
-	// This function are overrided to perform this.
+	// This function are overridden to perform this.
 	virtual bool Initialize(int& argc_, wxChar **argv_);
 
 #ifdef AMULED_APPTRAITS

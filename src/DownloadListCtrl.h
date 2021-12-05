@@ -86,7 +86,7 @@ public:
 	 *
 	 * @param file A valid pointer of the file to be removed.
 	 *
-	 * This function also removes any sources assosiated with the file.
+	 * This function also removes any sources associated with the file.
 	 */
 	void RemoveFile( CPartFile* file );
 

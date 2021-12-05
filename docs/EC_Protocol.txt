@@ -311,7 +311,7 @@ Section 3: Clarifying things
         00 20 [...]                     EC_TAG_STATS_TOTAL_DL_COUNT
         00 26 [...]                     EC_TAG_STATS_UL_QUEUE_LEN
         00 24 [...]                     EC_TAG_STATS_BANNED_COUNT
-        And now the interesing part:
+        And now the interesting part:
         00 13                           EC_TAG_CONNSTATE. Note, that all tagnames are even numbers, so when
                                         we find an odd number, the true tag name is <found>-1. EC_TAG_CONNSTATE = 0x0012,
                                         and 0x0013 - 1 = 0x0012, so it is really this one. The tagname being an odd number

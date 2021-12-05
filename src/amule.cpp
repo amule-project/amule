@@ -206,7 +206,7 @@ CamuleApp::CamuleApp()
 
 	enable_daemon_fork = false;
 
-	// Apprently needed for *BSD
+	// Apparently needed for *BSD
 	SetResourceLimits();
 
 #ifdef _MSC_VER
@@ -332,7 +332,7 @@ int CamuleApp::OnExit()
 
 #if wxUSE_MEMORY_TRACING
 	AddLogLineNS(_("Memory debug results for aMule exit:"));
-	// Log mem debug mesages to wxLogStderr
+	// Log mem debug messages to wxLogStderr
 	wxLog* oldLog = wxLog::SetActiveTarget(new wxLogStderr);
 	//AddLogLineNS(wxT("**************Classes**************");
 	//wxDebugContext::PrintClasses();
@@ -347,7 +347,7 @@ int CamuleApp::OnExit()
 
 	StopTickTimer();
 
-	// Return 0 for succesful program termination
+	// Return 0 for successful program termination
 	return AMULE_APP_BASE::OnExit();
 }
 
@@ -484,7 +484,7 @@ bool CamuleApp::OnInit()
 			}
 		}
 
-		// We havent run this version before?
+		// We haven't run this version before?
 		if ( !found ) {
 			// Insert new at top to provide faster searches
 			vfile.InsertLine( newMule, 0 );
@@ -492,7 +492,7 @@ bool CamuleApp::OnInit()
 			Trigger_New_version( newMule );
 		}
 
-		// Keep at most 10 entires
+		// Keep at most 10 entries
 		while ( vfile.GetLineCount() > 10 )
 			vfile.RemoveLine( vfile.GetLineCount() - 1 );
 
@@ -760,7 +760,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	*msg << CFormat( wxT("*** TCP socket (TCP) listening on %s:%u\n") )
 		% ip % (unsigned int)(thePrefs::GetPort());
 	// Notify(true) has already been called to the ListenSocket, so events may
-	// be already comming in.
+	// be already coming in.
 	if (!listensocket->IsOk()) {
 		// If we wern't able to start listening, we need to warn the user
 		wxString err;
@@ -1250,7 +1250,7 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 	}
 
 
-	// Recomended by lugdunummaster himself - from emule 0.30c
+	// Recommended by lugdunummaster himself - from emule 0.30c
 	serverconnect->KeepConnectionAlive();
 
 	// Disarm recursion protection
@@ -1784,7 +1784,7 @@ bool CamuleApp::CanDoCallback(uint32 clientServerIP, uint16 clientServerPort)
 				//Only Kad Connected - Kad Firewalled
 				return false;
 			} else {
-				//Only Kad Conected - Kad Open
+				//Only Kad Connected - Kad Open
 				return true;
 			}
 		}
@@ -1839,7 +1839,7 @@ void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 		listensocket->OnAccept();
 	} else if (m_app_state == APP_STATE_STARTING) {
 		// When starting up, connection may be made before we are able
-		// to handle them. However, if these are ignored, no futher
+		// to handle them. However, if these are ignored, no further
 		// connection-events will be triggered, so we have to accept it.
 		CLibSocket* socket = listensocket->Accept(false);
 
@@ -2049,7 +2049,7 @@ uint32 CamuleApp::GetID() const {
 	} else if( theApp->serverconnect->IsConnected() ) {
 		ID = theApp->serverconnect->GetClientID();
 	} else if ( Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::IsFirewalled() ) {
-		// A firewalled Kad client get's a "1"
+		// A firewalled Kad client gets a "1"
 		ID = 1;
 	} else {
 		ID = 0;

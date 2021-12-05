@@ -305,7 +305,7 @@ public:
 			m_isDestroying = true;
 			SetNotify(0);
 			Notify(false);
-			Close(); // Destroy is suposed to call Close(), but.. it doesn't hurt.
+			Close(); // Destroy is supposed to call Close(), but.. it doesn't hurt.
 			wxSocketClient::Destroy();
 		}
 	}

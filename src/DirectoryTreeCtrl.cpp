@@ -114,7 +114,7 @@ void CDirectoryTreeCtrl::Init()
 		drives >>= 1;
 		for (char drive = 'C'; drive <= 'Z'; drive++) {
 			drives >>= 1;
-			if (! (drives & 1)) { // skip non existant drives
+			if (! (drives & 1)) { // skip non existent drives
 				continue;
 			}
 			wxString driveStr = CFormat(wxT("%c:")) % drive;
