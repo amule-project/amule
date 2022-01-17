@@ -136,28 +136,30 @@ static bool UnpackZipFile(const wxString& file, const wxChar* files[])
 {
 	wxTempFile target(file);
 	CSmartPtr<wxZipEntry> entry;
-	wxFFileInputStream fileInputStream(file);
-	wxZipInputStream zip(fileInputStream);
-	bool run = true;
-	while (run) {
-		entry.reset(zip.GetNextEntry());
-		if (entry.get() == NULL) {
-			break;
-		}
-		// access meta-data
-		wxString name = entry->GetName();
-		// We only care about the files specified in the array
-		// probably needed to weed out included nfos
-		for (int i = 0; run && files[i]; i++) {
-			if (name.CmpNoCase(files[i]) == 0) {
-				// we found the entry we want
-				// read 'zip' to access the entry's data
-				char buffer[10240];
-				while (!zip.Eof()) {
-					zip.Read(buffer, sizeof(buffer));
-					target.Write(buffer, zip.LastRead());
+	{
+		wxFFileInputStream fileInputStream(file);
+		wxZipInputStream zip(fileInputStream);
+		bool run = true;
+		while (run) {
+			entry.reset(zip.GetNextEntry());
+			if (entry.get() == NULL) {
+				break;
+			}
+			// access meta-data
+			wxString name = entry->GetName();
+			// We only care about the files specified in the array
+			// probably needed to weed out included nfos
+			for (int i = 0; run && files[i]; i++) {
+				if (name.CmpNoCase(files[i]) == 0) {
+					// we found the entry we want
+					// read 'zip' to access the entry's data
+					char buffer[10240];
+					while (!zip.Eof()) {
+						zip.Read(buffer, sizeof(buffer));
+						target.Write(buffer, zip.LastRead());
+					}
+					run = false;
 				}
-				run = false;
 			}
 		}
 	}
