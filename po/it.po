@@ -1,6 +1,6 @@
 # Translation of amule interface to Italian
 # aMule i18n resource file.
-# Copyright (c) 2003-2020 aMule Team
+# Copyright (c) 2003-2022 aMule Team
 # This file is distributed under the same license as the aMule package.
 #
 # Kry <elkry@users.sourceforge.net>, 2004,2005.
@@ -13,22 +13,22 @@
 # rik <rik_kornellatyahoo.com>, 2008.
 # briga <brigabrigante@yahoo.com>, 2009.
 # Giuliano Manzitti <giuliano1979@hotmail.com>, 2010.
-# Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>, 2016-2020.
+# Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>, 2016-2022.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: aMule 2.3.2\n"
+"Project-Id-Version: aMule 2.3.3\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2021-01-31 08:26+0100\n"
-"PO-Revision-Date: 2020-03-04 13:26+0100\n"
+"PO-Revision-Date: 2022-04-11 20:35+0200\n"
 "Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: SebastianoPistore.info@protonmail.ch\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -567,16 +567,15 @@ msgid "Connect to the currently enabled networks"
 msgstr "Connetti alle reti attualmente abilitate"
 
 #: src/amuleDlg.cpp:846
-#, fuzzy, c-format
+#, c-format
 msgid "Up: %.1f%s (%.1f) | Down: %.1f%s (%.1f)"
-msgstr "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
+msgstr "Up: %.1f%s (%.1f) | Down: %.1f%s (%.1f)"
 
 #: src/amuleDlg.cpp:847 src/amuleDlg.cpp:848 src/amuleDlg.cpp:851
 #: src/amuleDlg.cpp:852 src/amuleDlg.cpp:863 src/amuleDlg.cpp:864
 #: src/MuleTrayIcon.cpp:327 src/MuleTrayIcon.cpp:330
-#, fuzzy
 msgid " MB/s"
-msgstr "MB/s"
+msgstr " MB/s"
 
 #: src/amuleDlg.cpp:847 src/amuleDlg.cpp:848 src/amuleDlg.cpp:851
 #: src/amuleDlg.cpp:852 src/amuleDlg.cpp:863 src/amuleDlg.cpp:864
@@ -586,9 +585,9 @@ msgid " kB/s"
 msgstr " kB/s"
 
 #: src/amuleDlg.cpp:850
-#, fuzzy, c-format
+#, c-format
 msgid "Up: %.1f%s | Down: %.1f%s"
-msgstr "Up: %.1f | Down: %.1f"
+msgstr "Up: %.1f%s | Down: %.1f%s"
 
 #: src/amuleDlg.cpp:880
 #, c-format
@@ -1516,9 +1515,9 @@ msgstr "Rinomina file"
 
 #: src/DownloadListCtrl.cpp:965 src/GenericClientListCtrl.cpp:880
 #: src/GenericClientListCtrl.cpp:891
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f MB/s"
-msgstr "%.1f kB/s"
+msgstr "%.1f MB/s"
 
 #: src/DownloadListCtrl.cpp:1098 src/DownloadListCtrl.cpp:1109
 msgid "%y/%m/%d %H:%M:%S"
@@ -2223,7 +2222,7 @@ msgstr "Scaricati %d bytes invece dei %d attesi"
 #: src/HTTPDownload.cpp:341
 #, c-format
 msgid "Protocol not supported for HTTP download: %s"
-msgstr ""
+msgstr "Protocollo non supportato per il download HTTP: %s"
 
 #: src/HTTPDownload.cpp:384
 msgid "Unable to connect to HTTP download server"
@@ -2602,14 +2601,14 @@ msgid "DL: %u"
 msgstr "DL: %u"
 
 #: src/MuleTrayIcon.cpp:326
-#, fuzzy, c-format
+#, c-format
 msgid "Download speed: %.1f%s"
-msgstr "Velocità di scaricamento: %.1f"
+msgstr "Velocità di scaricamento: %.1f%s"
 
 #: src/MuleTrayIcon.cpp:329
-#, fuzzy, c-format
+#, c-format
 msgid "Upload speed: %.1f%s"
-msgstr "Velocità d'invio: %.1f"
+msgstr "Velocità d'invio: %.1f%s"
 
 #: src/MuleTrayIcon.cpp:336
 msgid "Client Information"
@@ -2912,7 +2911,7 @@ msgstr "Nascondi file conosciuti"
 
 #: src/muuli_wdr.cpp:348 src/utils/aLinkCreator/src/alcframe.cpp:229
 msgid "Start"
-msgstr "Inizia"
+msgstr "Cerca"
 
 #: src/muuli_wdr.cpp:355
 msgid "More"
@@ -3364,13 +3363,15 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1494
 msgid "Show notifications when finished downloading"
-msgstr ""
+msgstr "Mostra notifica al termine dello scaricamento"
 
 #: src/muuli_wdr.cpp:1495
 msgid ""
 "Enabling this will make aMule to show notifications when finished "
 "downloading."
 msgstr ""
+"Con questa funzione abilitata aMule mostrerà una notifica al termine di ogni "
+"download."
 
 #: src/muuli_wdr.cpp:1500
 msgid "Tooltip delay time: "
@@ -4733,11 +4734,13 @@ msgid "Finished downloading: %s"
 msgstr "Download completato: %s"
 
 #: src/PartFile.cpp:2172
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Finished downloading:\n"
 "%s"
-msgstr "Download completato: %s"
+msgstr ""
+"Download completato: \n"
+"%s"
 
 #: src/PartFile.cpp:2235
 #, c-format
@@ -5304,11 +5307,11 @@ msgstr "Le seguenti variabili saranno sostituite:"
 #: src/SearchDlg.cpp:274
 msgid "It's impossible to search when both eD2k and Kademlia are disabled."
 msgstr ""
+"Impossibile avviare ricerche con eD2k e Kademlia entrambi disabilitati."
 
 #: src/SearchDlg.cpp:275
-#, fuzzy
 msgid "Search error"
-msgstr "Ricerca"
+msgstr "Errore di ricerca"
 
 #: src/SearchDlg.cpp:469
 msgid "Min size must be smaller than max size. Max size ignored."
@@ -7298,7 +7301,7 @@ msgstr "Salva immagine statistiche"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:386
 msgid "aMule Online Statistics"
-msgstr "Statistiche online di aMule"
+msgstr "Statistiche online aMule"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:390
 msgid ""
@@ -7559,7 +7562,7 @@ msgstr "Carica/salva le impostazioni del web server da/su l'aMule remoto"
 
 #: src/webserver/src/WebInterface.cpp:598
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
-msgstr "Percorso del file di configurazione di aMule. NON USARE DIRETTAMENTE!"
+msgstr "Percorso file di configurazione di aMule. NON USARE DIRETTAMENTE!"
 
 #: src/webserver/src/WebInterface.cpp:606
 msgid "Disable PHP interpreter (deprecated)"
