@@ -124,6 +124,9 @@ if (BUILD_MONOLITHIC)
 	install (FILES amule.desktop
 		DESTINATION "${CMAKE_INSTALL_DATADIR}/applications"
 	)
+	install (FILES amule.png
+		DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps"
+	)
 endif()
 
 if (BUILD_REMOTEGUI)
