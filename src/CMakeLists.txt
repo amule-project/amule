@@ -225,11 +225,6 @@ if (BUILD_MONOLITHIC)
 
 	install (FILES aMule.xpm
 		DESTINATION "${CMAKE_INSTALL_DATADIR}/pixmaps"
-		RENAME amule.xpm
-	)
-
-	install (FILES aMule.xpm
-		DESTINATION "${CMAKE_INSTALL_DATADIR}/pixmaps"
 		RENAME amulegui.xpm
 	)
 endif (BUILD_MONOLITHIC)
