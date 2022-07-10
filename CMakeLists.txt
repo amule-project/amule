@@ -133,6 +133,9 @@ if (BUILD_REMOTEGUI)
 	install (FILES amulegui.desktop
 		DESTINATION "${CMAKE_INSTALL_DATADIR}/applications"
 	)
+	install (FILES amulegui.xpm
+		DESTINATION "${CMAKE_INSTALL_DATADIR}/pixmaps"
+	)
 endif()
 
 if (ENABLE_NLS)
