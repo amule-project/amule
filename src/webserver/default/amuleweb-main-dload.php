@@ -267,8 +267,8 @@ function formCommandSubmit(command)
                   <th><a href="amuleweb-main-dload.php?sort=prio">Priority</a></th>
           </tr><tr><td colspan="9" height="1" bgcolor="#000000"></td></tr>
           <?php
-		function CastToXBytes($size)
-		{
+		function CastToXBytes($size, &$count) {
+			$count += $size;
 			if ( $size < 1024 ) {
 				$result = $size . " b";
 			} elseif ( $size < 1048576 ) {
@@ -352,9 +352,11 @@ function formCommandSubmit(command)
 		}
 		if ( $_SESSION["filter_status"] == "") $_SESSION["filter_status"] = "all";
 		if ( $_SESSION["filter_cat"] == "") $_SESSION["filter_cat"] = "all";
-		
+		$countSize = 0;
+		$countCompleted = 0;
+		$countSpeed = 0;
 		$downloads = amule_load_vars("downloads");
-
+		$fakevar=0;
 		$sort_order = $HTTP_GET_VARS["sort"];
 
 		if ( $sort_order == "" ) {
@@ -396,12 +398,12 @@ function formCommandSubmit(command)
 	
 				echo "<td class='texte' height='22'>", $file->short_name, "</td>";
 				
-				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->size), "</td>";
+				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->size, $countSize), "</td>";
 
-				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->size_done), "&nbsp;(",
+				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->size_done, $countCompleted), "&nbsp;(",
 					((float)$file->size_done*100)/((float)$file->size), "%)</td>";
 
-				echo "<td class='texte' height='22' align='center'>", ($file->speed > 0) ? (CastToXBytes($file->speed) . "/s") : "-", "</td>";
+				echo "<td class='texte' height='22' align='center'>", ($file->speed > 0) ? (CastToXBytes($file->speed, $countSpeed) . "/s") : "-", "</td>";
 
 				echo "<td class='texte' height='22' align='center' align='center'>", $file->progress, "</td>";
 	
@@ -422,6 +424,18 @@ function formCommandSubmit(command)
 				print "</tr><tr><td colspan='9' height='1' bgcolor='#c0c0c0'></td></tr>";
 			}
 		}
+		print "<tr>";
+		echo "<td style='padding-bottom:0;'></td>";
+		echo "<td style='padding-bottom:0;'></td>";
+		echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countSize, $fakevar), "</td>";
+		echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countCompleted, $fakevar), "&nbsp;(",
+			((float)$countCompleted*100)/((float)$countSize), "%)</td>";
+		echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", ($countSpeed > 0) ? (CastToXBytes($countSpeed, $fakevar) . "/s" ) : "", "</td>";
+		echo "<td style='padding-bottom:0;'></td>";
+		echo "<td style='padding-bottom:0;'></td>";
+		echo "<td style='padding-bottom:0;'></td>";
+		echo "<td style='padding-bottom:0;'></td>";
+		echo "</tr>";
 	  ?>
         </table></td>
     <td width="24" background="images/tab_right.png">&nbsp;</td>
@@ -459,8 +473,8 @@ function formCommandSubmit(command)
                 <td>&nbsp;</td>
         </tr><tr><td colspan="9" height="1" bgcolor="#000000"></td></tr>
         <?php
-			function CastToXBytes($size)
-			{
+			function CastToXBytes($size, &$count) {
+				$count += $size;
 				if ( $size < 1024 ) {
 					$result = $size . " b";
 				} elseif ( $size < 1048576 ) {
@@ -472,7 +486,11 @@ function formCommandSubmit(command)
 				}
 				return $result;
 			}
+			$countUploadDimension = 0;
+			$countDownloadDimension = 0;
+			$countSpeed = 0;
 			$uploads = amule_load_vars("uploads");
+			$fakevar=0;
 			foreach ($uploads as $file) {
 				echo "<tr>";
 	
@@ -482,14 +500,23 @@ function formCommandSubmit(command)
 
 				echo "<td class='texte' height='22' align='center'>", $file->user_name, "</td>";
 	
-				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->xfer_up), "</td>";
-				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->xfer_down), "</td>";
+				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->xfer_up, $countUploadDimension), "</td>";
+				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->xfer_down, $countDownloadDimension), "</td>";
 				echo "<td class='texte' height='22' align='center'>", "</td>";
 				echo "<td class='texte' height='22' align='center'>", "</td>";
-				echo "<td class='texte' height='22' align='center'>", ($file->xfer_speed > 0) ? (CastToXBytes($file->xfer_speed) . "/s") : "-", "</td>";
+				echo "<td class='texte' height='22' align='center'>", ($file->xfer_speed > 0) ? (CastToXBytes($file->xfer_speed, $countSpeed) . "/s") : "-", "</td>";
 				echo "<td class='texte' height='22' align='center'>", "</td>";
 				echo "</tr><tr><td colspan='9' height='1' bgcolor='#c0c0c0'></td></tr>";
 			}
+			echo "<tr>";
+			echo "<td style='padding-bottom:0;'></td>";
+			echo "<td style='padding-bottom:0;'></td>";
+			echo "<td style='padding-bottom:0;'></td>";
+			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countUploadDimension, $fakevar), "</td>";
+			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countDownloadDimension, $fakevar), "</td>";
+			echo "<td style='padding-bottom:0;'></td>";
+			echo "<td style='padding-bottom:0;'></td>";
+			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countSpeed, $fakevar) . "/s", "</td>";
 		?>
       </table></td>
           <td width="24" background="images/tab_right.png">&nbsp;</td>
