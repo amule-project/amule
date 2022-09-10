@@ -75,6 +75,15 @@ label {
 	font-family: Helvetica;
 	font-size: 12px;
 	font-weight: normal;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	word-wrap: break-word;
+}
+.texte-full-name{
+	max-width: 0;
+	width: 75%;
 }
 label {
 font-family:"trebuchet ms",sans-serif;
@@ -311,7 +320,7 @@ function formCommandSubmit(command)
 
 			echo "<td class='texte'>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
 
-			echo "<td class='texte'>", $file->short_name, "</td>";
+			echo "<td class='texte texte-full-name'>", $file->name, "</td>";
 			
 			echo "<td class='texte' align='center'>", CastToXBytes($file->size), "</td>";
 
