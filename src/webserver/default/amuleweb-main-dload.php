@@ -424,18 +424,20 @@ function formCommandSubmit(command)
 				print "</tr><tr><td colspan='9' height='1' bgcolor='#c0c0c0'></td></tr>";
 			}
 		}
-		print "<tr>";
-		echo "<td style='padding-bottom:0;'></td>";
-		echo "<td style='padding-bottom:0;'></td>";
-		echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countSize, $fakevar), "</td>";
-		echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countCompleted, $fakevar), "&nbsp;(",
-			((float)$countCompleted*100)/((float)$countSize), "%)</td>";
-		echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", ($countSpeed > 0) ? (CastToXBytes($countSpeed, $fakevar) . "/s" ) : "", "</td>";
-		echo "<td style='padding-bottom:0;'></td>";
-		echo "<td style='padding-bottom:0;'></td>";
-		echo "<td style='padding-bottom:0;'></td>";
-		echo "<td style='padding-bottom:0;'></td>";
-		echo "</tr>";
+		if (count($downloads)>0) {
+			echo "<tr>";
+			echo "<td style='padding-bottom:0;'></td>";
+			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;text-align: right;padding-right: 20px;' height='22' align='center'>Total</td>";
+			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countSize, $fakevar), "</td>";
+			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countCompleted, $fakevar), "&nbsp;(",
+				((float)$countCompleted*100)/((float)$countSize), "%)</td>";
+			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", ($countSpeed > 0) ? (CastToXBytes($countSpeed, $fakevar) . "/s" ) : "", "</td>";
+			echo "<td style='padding-bottom:0;'></td>";
+			echo "<td style='padding-bottom:0;'></td>";
+			echo "<td style='padding-bottom:0;'></td>";
+			echo "<td style='padding-bottom:0;'></td>";
+			echo "</tr>";
+		}
 	  ?>
         </table></td>
     <td width="24" background="images/tab_right.png">&nbsp;</td>
@@ -508,15 +510,17 @@ function formCommandSubmit(command)
 				echo "<td class='texte' height='22' align='center'>", "</td>";
 				echo "</tr><tr><td colspan='9' height='1' bgcolor='#c0c0c0'></td></tr>";
 			}
-			echo "<tr>";
-			echo "<td style='padding-bottom:0;'></td>";
-			echo "<td style='padding-bottom:0;'></td>";
-			echo "<td style='padding-bottom:0;'></td>";
-			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countUploadDimension, $fakevar), "</td>";
-			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countDownloadDimension, $fakevar), "</td>";
-			echo "<td style='padding-bottom:0;'></td>";
-			echo "<td style='padding-bottom:0;'></td>";
-			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countSpeed, $fakevar) . "/s", "</td>";
+			if (count($uploads)>0) {
+				echo "<tr>";
+				echo "<td style='padding-bottom:0;'></td>";
+				echo "<td style='padding-bottom:0;'></td>";
+				echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;text-align: right;padding-right: 20px;' height='22' align='center'>Total</td>";
+				echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countUploadDimension, $fakevar), "</td>";
+				echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countDownloadDimension, $fakevar), "</td>";
+				echo "<td style='padding-bottom:0;'></td>";
+				echo "<td style='padding-bottom:0;'></td>";
+				echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countSpeed, $fakevar) . "/s", "</td>";
+			}
 		?>
       </table></td>
           <td width="24" background="images/tab_right.png">&nbsp;</td>
