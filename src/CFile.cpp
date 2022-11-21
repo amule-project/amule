@@ -117,10 +117,17 @@ char* mktemp( char * path ) { return path ;}
 		#define FLUSH_FD(x)		fsync(x)
 	#endif
 
-	#define SEEK_FD(x, y, z)		lseek(x, y, z)
-	#define TELL_FD(x)			wxTell(x)
-	#define STAT_FD(x, y)			fstat(x, y)
-	#define STAT_STRUCT			struct stat
+	#ifdef HAVE_FSTAT64
+		#define SEEK_FD(x, y, z)	lseek64(x, y, z)
+		#define TELL_FD(x)		lseek64(x, 0, SEEK_CUR)
+		#define STAT_FD(x, y)		fstat64(x, y)
+		#define STAT_STRUCT		struct stat64
+	#else
+		#define SEEK_FD(x, y, z)	lseek(x, y, z)
+		#define TELL_FD(x)		lseek(x, 0, SEEK_CUR)
+		#define STAT_FD(x, y)		fstat(x, y)
+		#define STAT_STRUCT		struct stat
+	#endif
 #endif
 
 
