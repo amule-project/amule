@@ -153,6 +153,7 @@ if (NEED_LIB_MULECOMMON)
 	endif()
 
 	check_function_exists (strerror_r HAVE_STRERROR_R)
+	check_function_exists (fstat64 HAVE_FSTAT64)
 
 	if (HAVE_STRERROR_R)
 		set (TEST_APP "int main ()
