@@ -72,3 +72,6 @@ platforms/Windows/*/libs/libGeoIP/GeoIP_X.c
 # User files (should go into .git/info/exclude)
 Makefile.user
 *.vcxproj.user
+/build/
+/.cproject
+/.project
