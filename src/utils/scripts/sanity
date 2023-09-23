@@ -1022,7 +1022,7 @@ end
 
 
 
-#TODO Improved parameter-handling, add =<file> for the outputing to a file
+#TODO Improved parameter-handling, add =<file> for the outputting to a file
 ARGV.each do |param|
 	case param
 		when "--text" then

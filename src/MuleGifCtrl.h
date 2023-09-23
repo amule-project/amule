@@ -64,7 +64,7 @@ private:
 
 public:
 	/**
-	 * Contructor. See wxWindow class documentation for more information.
+	 * Constructor. See wxWindow class documentation for more information.
 	 */
 	MuleGifCtrl(
 		wxWindow *parent, wxWindowID id,
@@ -107,9 +107,9 @@ public:
 	void Stop();
 
 	/**
-	 * Returns the prefered size of the widget.
+	 * Returns the preferred size of the widget.
 	 *
-	 * @return Prefered size, which is the size of the animation.
+	 * @return Preferred size, which is the size of the animation.
 	 */
 	virtual wxSize GetBestSize();
 

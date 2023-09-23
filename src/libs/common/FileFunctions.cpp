@@ -240,7 +240,7 @@ static bool UnpackGZipFile(const wxString& file)
 
 	if (write) {
 		target.Commit();
-		// AddDebugLogLineN( logFileIO, wxT("Commited gzip stream") );
+		// AddDebugLogLineN( logFileIO, wxT("Committed gzip stream") );
 	}
 
 	return write;

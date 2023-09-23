@@ -31,7 +31,7 @@ Please do not change anything here and release it..
 There is going to be a new forum created just for the Kademlia side of the client..
 If you feel there is an error or a way to improve something, please
 post it in the forum first and let us look at it.. If it is a real improvement,
-it will be added to the offical client.. Changing something without knowing
+it will be added to the official client.. Changing something without knowing
 what all it does can cause great harm to the network if released in mass form..
 Any mod that changes anything within the Kademlia side will not be allowed to advertise
 there client on the eMule forum..
@@ -1031,12 +1031,12 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 			codec = tag->GetStr();
 		} else if (tag->GetName() == TAG_SOURCES) {
 			availability = tag->GetInt();
-			// Some rouge client was setting a invalid availability, just set it to 0.
+			// Some rogue client was setting a invalid availability, just set it to 0.
 			if( availability > 65500 ) {
 				availability = 0;
 			}
 		} else if (tag->GetName() == TAG_PUBLISHINFO) {
-			// we don't keep this as tag, but as a member property of the searchfile, as we only need its informations
+			// we don't keep this as tag, but as a member property of the searchfile, as we only need its information
 			// in the search list and don't want to carry the tag over when downloading the file (and maybe even wrongly publishing it)
 			publishInfo = (uint32_t)tag->GetInt();
 #ifdef __DEBUG__

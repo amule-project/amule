@@ -39,7 +39,7 @@
  *    of the same packet.
  *  - Endian correction is handled transparently. When reading and
  *    writing values, CMemFile converts to and from little-endian,
- *    so that no explicit endian convertions are nescesarry.
+ *    so that no explicit endian conversions are necessary.
  *  - Strings of dynamic length can be read.
  *
  * Most of these advantages also hold for writing packets.
@@ -57,7 +57,7 @@ public:
 	 * The growth-rate specified by how much the buffer-size will
 	 * be increased when the memfile runs out of space. Normally
 	 * this means that the amount of re-allocations is cut down
-	 * at the expence of slightly higher mem-usage.
+	 * at the expense of slightly higher mem-usage.
 	 *
 	 * If the size of the entire file to be written is known
 	 * in advance, one can avoid needless re-allocations by
@@ -110,7 +110,7 @@ public:
 	 * If the current position is greater than the new length, it
 	 * will be set to the end of the file.
 	 *
-	 * Note that changing the lenght of a file with an attached buffer
+	 * Note that changing the length of a file with an attached buffer
 	 * to a value greater than the actual buffer size is an illegal
 	 * operation.
 	 */

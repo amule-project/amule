@@ -287,8 +287,7 @@ void CaMuleExternalConnector::OnInitCommandSet()
 			      wxTRANSLATE("To get help on a command, type 'help <command>'.\nTo get the full command list type 'help'.\n"));
 }
 
-void CaMuleExternalConnector::Show(const wxString &s)
-{
+void CaMuleExternalConnector::Show(const wxString &s) const {
 	if( !m_KeepQuiet ) {
 		printf("%s", (const char *)unicode2char(s));
 #ifdef __WINDOWS__

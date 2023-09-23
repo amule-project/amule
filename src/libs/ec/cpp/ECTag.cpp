@@ -1113,7 +1113,7 @@ void CECTag::DebugPrint(int level, bool print_empty) const
  * converted from UTF-8 to the internal application encoding.
  * Should be used with care (only on tags created with the
  * CECTag(ec_tagname_t, const wxString&) constructor),
- * becuse it does not perform any check to see if the tag really contains a
+ * because it does not perform any check to see if the tag really contains a
  * string object.
  *
  * \return The string data of the tag.

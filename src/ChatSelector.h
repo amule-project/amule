@@ -55,7 +55,7 @@ public:
 	 *
 	 * If newline is false, then no newlines will be at the end of added text,
 	 * even if the passed string ends with newlines. Multiline strings are
-	 * broken into indivudual lines and each are timestamped with the same date.
+	 * broken into individual lines and each are timestamped with the same date.
 	 */
 	void AddText( const wxString& text, const wxTextAttr& style, bool newline = true );
 };

@@ -329,7 +329,7 @@ private:
 	//! Children of this node.
 	std::list<CStatTreeItemBase*>	m_children;
 
-	//! Lock to protect list from simultanous access.
+	//! Lock to protect list from simultaneous access.
 	wxMutex m_lock;
 };
 

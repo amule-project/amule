@@ -1,0 +1,30 @@
+{
+   "C_Cpp.errorSquiggles": "disabled",
+   "cSpell.words": [
+      "ADDLINK",
+      "AICH",
+      "amuled",
+      "amuleweb",
+      "BWLIMIT",
+      "BWLIMITS",
+      "Camulecmd",
+      "CONNSTATE",
+      "DLOAD",
+      "donesize",
+      "firewalled",
+      "Firewalled",
+      "Kademlia",
+      "KNOWNFILE",
+      "NEWCMD",
+      "Notifer",
+      "OLDCMD",
+      "partfile",
+      "PARTFILE",
+      "SHAREDFILES",
+      "STATSTREE",
+      "STATTREE",
+      "TEXTCLIENT",
+      "ULOAD",
+      "Xferred"
+   ]
+}

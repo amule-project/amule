@@ -536,7 +536,7 @@ WxCasFrame::UpdateAll ( bool forceFitting )
 	bool needFit = UpdateStatsPanel ();
 
 	if ( needFit || forceFitting ) {
-		// Fit stats pannel
+		// Fit stats panel
 		m_mainPanel->Fit();
 
 		// Fit main frame

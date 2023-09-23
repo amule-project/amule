@@ -40,7 +40,7 @@ public:
 	 * Stops the thread.
 	 *
 	 * For detached threads, this function is equivalent
-	 * to Delete, but is also useable for joinable threads,
+	 * to Delete, but is also usable for joinable threads,
 	 * where Delete should not be used, due to crashes
 	 * experienced in that case. In the case of joinable
 	 * threads, Wait is called rather than Delete.
@@ -61,7 +61,7 @@ public:
 	virtual bool TestDestroy()
 	{
 		// m_stop is checked last, because some functionality is
-		// dependant upon wxThread::TestDestroy() being called,
+		// dependent upon wxThread::TestDestroy() being called,
 		// for instance Pause().
 		return wxThread::TestDestroy() || m_stop;
 	}

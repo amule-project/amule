@@ -160,7 +160,7 @@ void CLogger::AddLogLine(
 		CLoggingEvent Event(critical, toStdout, toGUI, msg);
 		AddPendingEvent(Event);
 	} else {
-		// Try to handle events immediatly when possible (to save to file).
+		// Try to handle events immediately when possible (to save to file).
 		DoLines(msg, critical, toStdout, toGUI);
 	}
 }

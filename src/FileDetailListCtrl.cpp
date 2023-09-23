@@ -65,7 +65,7 @@ int CFileDetailListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long sortD
 
 void CFileDetailListCtrl::OnSelect(wxListEvent& event)
 {
-	// Damn wxLC_SINGLE_SEL does not work! So we have to care for single selection ourselfs:
+	// Damn wxLC_SINGLE_SEL does not work! So we have to care for single selection ourselves:
 	long realpos = event.m_itemIndex;
 	long pos = -1;
 	do {

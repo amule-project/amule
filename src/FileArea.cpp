@@ -140,7 +140,7 @@ void CFileAreaSigHandler::Init()
 		return;
 
 	// Set our new signal handler.
-	// Note that we safe old handlers (propably wx ones) in order
+	// Note that we safe old handlers (probably wx ones) in order
 	// to be able to call them if signal not handled as desired.
 	// These handler will be removed by wx code when wx will restore
 	// old ones

@@ -39,8 +39,8 @@
 #include <wx/datetime.h>
 
 /*
- * Built-in php functions. Those are amule-specific funcions, accessing EC and internal
- * datastructre
+ * Built-in php functions. Those are amule-specific functions, accessing EC and internal
+ * datastructure
  *
  */
 

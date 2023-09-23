@@ -1,7 +1,7 @@
 /*
  *  Name:         Config file functions
  *
- *  Purpose:      Read info from casrc ou create one if it doesnt exist
+ *  Purpose:      Read info from casrc ou create one if it doesn't exist
  *
  *  Author:       Pedro de Oliveira <falso@rdk.homeip.net>
  *

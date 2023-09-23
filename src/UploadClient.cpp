@@ -248,7 +248,7 @@ void CUpDownClient::CreateNextBlockPackage()
 
 			SetUploadFileID(srcfile);
 
-			// check extention to decide whether to compress or not
+			// check extension to decide whether to compress or not
 			if (m_byDataCompVer == 1 && GetFiletype(srcfile->GetFileName()) != ftArchive) {
 				CreatePackedPackets(area.GetBuffer(), togo, currentblock);
 			} else {
@@ -277,7 +277,7 @@ void CUpDownClient::CreateNextBlockPackage()
 		AddDebugLogLineN(logClient, GetClientFullInfo() + wxT(" requested file-data at an invalid position - disconnecting"));
 	}
 
-	// Error occured.
+	// Error occurred.
 	theApp->uploadqueue->RemoveFromUploadQueue(this);
 }
 
@@ -651,7 +651,7 @@ void CUpDownClient::SendOutOfPartReqsAndAddToWaitingQueue()
 	//the downloader didn't send any request blocks. Then the connection times out..
 	//I did some tests with eDonkey also and it seems to work well with them also..
 
-	// Send this inmediately, don't queue.
+	// Send this immediately, don't queue.
 	CPacket* pPacket = new CPacket(OP_OUTOFPARTREQS, 0, OP_EDONKEYPROT);
 	theStats::AddUpOverheadFileRequest(pPacket->GetPacketSize());
 	AddDebugLogLineN( logLocalClient, wxT("Local Client: OP_OUTOFPARTREQS to ") + GetFullIP() );
@@ -796,7 +796,7 @@ void CUpDownClient::CheckForAggressive()
 {
 	uint32 cur_time = ::GetTickCount();
 
-	// First call, initalize
+	// First call, initialize
 	if ( !m_LastFileRequest ) {
 		m_LastFileRequest = cur_time;
 		return;

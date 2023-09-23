@@ -31,7 +31,7 @@
 // MOD Note: Do not change this part - Merkur
 
 // Timeouts & Reask times
-#define	CONNECTION_TIMEOUT			40000	// set this lower if you want less connections at once, set  it higher if you have enough sockets (edonkey has its own timout too, so a very high value won't effect this)
+#define	CONNECTION_TIMEOUT			40000	// set this lower if you want less connections at once, set  it higher if you have enough sockets (edonkey has its own timeout too, so a very high value won't effect this)
 #define	FILEREASKTIME				1300000	// 1300000 <- original value ***
 #define	SERVERREASKTIME				800000  // don't set this too low, it wont speed up anything, but it could kill amule or your internetconnection
 #define	UDPSERVERREASKTIME			1300000	// 1300000 <- original value ***
@@ -67,7 +67,7 @@
 #define	MIN_REQUESTTIME				590000
 #define	MAX_PURGEQUEUETIME			HR2MS(1)
 #define	PURGESOURCESWAPSTOP			MIN2MS(15)	// How long forbid swapping a source to a certain file (NNP,...)
-#define	CONNECTION_LATENCY			22050	// latency for responces
+#define	CONNECTION_LATENCY			22050	// latency for responses
 #define	CLIENTBANTIME				HR2MS(2) // 2h
 #define	TRACKED_CLEANUP_TIME			HR2MS(1)
 #define	KEEPTRACK_TIME				HR2MS(2) // how long to keep track of clients which were once in the uploadqueue

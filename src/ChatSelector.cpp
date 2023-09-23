@@ -189,7 +189,7 @@ bool CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 	bool newtab = !session;
 
 	if ( !session ) {
-		// This must be a mesage from a client that is not already chatting
+		// This must be a message from a client that is not already chatting
 		if (client_name.IsEmpty()) {
 			// Core did not send us the name.
 			// This must NOT happen.
@@ -310,7 +310,7 @@ void CChatSelector::EndSession(uint64 client_id)
 }
 
 
-// Refresh the tab assosiated with a client
+// Refresh the tab associated with a client
 void CChatSelector::RefreshFriend(uint64 toupdate_id, const wxString& new_name)
 {
 	wxASSERT( toupdate_id );

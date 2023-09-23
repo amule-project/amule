@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+               "/usr/include/wx-3.0",
+               "/usr/include/wx-3.0/wx",
+               "/home/aubin/Dev/git/amule/src",
+               "/home/aubin/Dev/git/amule/src/include",
+               "/home/aubin/Dev/git/amule/src/libs"
+            ],
+            "defines": [
+               "USE_WX_EXTENSIONS",
+               "HAVE_LIBREADLINE"
+            ],
+            "compilerPath": "/usr/bin/g++",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}

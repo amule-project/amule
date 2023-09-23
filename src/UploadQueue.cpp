@@ -239,7 +239,7 @@ void CUploadQueue::Process()
 	uint32 tick = GetTickCount();
 	// Nobody waiting or upload started recently
 	// (Actually instead of "empty" it should check for "no HighID clients queued",
-	//  but the cost for that outweights the benefit. As it is, a slot will be freed
+	//  but the cost for that outweighs the benefit. As it is, a slot will be freed
 	//  even if it can't be taken because all of the queue is LowID. But just one,
 	//  and the kicked client will instantly get it back if he has HighID.)
 	// Also, if we are running out of sockets, don't add new clients, but also don't kick existing ones,
@@ -600,10 +600,10 @@ void CUploadQueue::ResumeUpload( const CMD4Hash& filehash )
 /*
  * This function stops upload of a file indicated by filehash.
  *
- * a) teminate == false:
+ * a) terminate == false:
  *    File is suspended while a download completes. Then it is resumed after completion,
  *    so it makes sense to keep the client. Such files are kept in suspendedUploadsSet.
- * b) teminate == true:
+ * b) terminate == true:
  *    File is deleted. Then the client is not added to the waiting list.
  *    Waiting clients are swept out with next run of AddUpNextClient,
  *    because their file is not shared anymore.

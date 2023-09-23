@@ -222,7 +222,7 @@ void CMuleListCtrl::LoadSettings()
 	wxString sortOrders = cfg->Read(wxT("/eMule/TableOrdering") + m_name, wxEmptyString);
 	wxString columnWidths = cfg->Read(wxT("/eMule/TableWidths") + m_name, wxEmptyString);
 
-	// Prevent sorting from occuring when calling SetSorting
+	// Prevent sorting from occurring when calling SetSorting
 	MuleListCtrlCompare sortFunc = m_sort_func;
 	m_sort_func = NULL;
 

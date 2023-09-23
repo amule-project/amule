@@ -254,7 +254,7 @@ void CHashingTask::OnLastTask()
 {
 	if (GetType() == wxT("Hashing")) {
 		// To prevent rehashing in case of crashes, we
-		// explicity save the list of hashed files here.
+		// explicitly save the list of hashed files here.
 		theApp->knownfiles->Save();
 
 		// Make sure the AICH-hashes are up to date.
@@ -267,7 +267,7 @@ void CHashingTask::OnLastTask()
 // CAICHSyncTask
 
 CAICHSyncTask::CAICHSyncTask()
-	: CThreadTask(wxT("AICH Syncronizing"), wxEmptyString, ETP_Low)
+	: CThreadTask(wxT("AICH Synchronizing"), wxEmptyString, ETP_Low)
 {
 }
 
@@ -276,7 +276,7 @@ void CAICHSyncTask::Entry()
 {
 	ConvertToKnown2ToKnown264();
 
-	AddDebugLogLineN( logAICHThread, wxT("Syncronization thread started.") );
+	AddDebugLogLineN( logAICHThread, wxT("Synchronization thread started.") );
 
 	// We collect all masterhashs which we find in the known2.met and store them in a list
 	std::list<CAICHHash> hashlist;
@@ -429,7 +429,7 @@ void CCompletionTask::Entry()
 
 	{
 #ifndef AMULE_DAEMON
-		// Prevent the preference values from changing underneeth us.
+		// Prevent the preference values from changing underneath us.
 		wxMutexGuiLocker guiLock;
 #else
 		//#warning Thread-safety needed

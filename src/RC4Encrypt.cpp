@@ -47,7 +47,7 @@ void CRC4EncryptableBuffer::Append(const uint8* buffer, int n)
 	} else {
 		throw std::runtime_error(
 			"(CRC4EncryptableBuffer::Append): "
-			"Tryed to append data to an encrypted buffer.");
+			"Tried to append data to an encrypted buffer.");
 	}
 }
 

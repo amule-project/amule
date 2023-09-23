@@ -30,7 +30,7 @@
 #ifndef LISTENSOCKET_H
 #define LISTENSOCKET_H
 
-#include "Proxy.h"		// Needed fot CProxyData, CSocketServerProxy
+#include "Proxy.h"		// Needed for CProxyData, CSocketServerProxy
 
 #include <set>
 

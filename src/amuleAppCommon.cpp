@@ -24,7 +24,7 @@
 
 //
 // This file is for functions common to all three apps (amule, amuled, amulegui),
-// but preprocessor-dependent (using theApp, thePrefs), so it is compiled seperately for each app.
+// but preprocessor-dependent (using theApp, thePrefs), so it is compiled separately for each app.
 //
 
 
@@ -231,7 +231,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 #else
 
 #ifdef __WINDOWS__
-	// MSW shows help otions in a dialog box, and the formatting doesn't fit there
+	// MSW shows help options in a dialog box, and the formatting doesn't fit there
 #define HELPTAB wxT("\t")
 #else
 #define HELPTAB wxT("\t\t\t")

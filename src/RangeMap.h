@@ -33,7 +33,7 @@
 
 
 /**
- * Default helper structure for normal CRangeMap instantations.
+ * Default helper structure for normal CRangeMap instantiations.
  *
  * Specializations should must have the following properties.
  *  - The four value typedefs (see comments for details).
@@ -107,7 +107,7 @@ struct CRangeMapHelper<void, KEYTYPE>
  * than by erasing and then re-inserting them.
  *
  * A specialization of this class exists (typedef'd as CRangeSet), which does
- * not assosiate a value with each range.
+ * not associate a value with each range.
  *
  * NOTE: KEYTYPE is assumed to be an unsigned integer type!
  */
@@ -352,7 +352,7 @@ public:
 	 * @param key A value that may or may not be covered by a range.
 	 * @return end() or the iterator of the range covering key.
 	 *
-	 * A range is considered to cover a value if the value is greather than or
+	 * A range is considered to cover a value if the value is greater than or
 	 * equal to the start-key and less than or equal to the end-key.
 	 */
 	// Find the range which contains key (it->first <= key <= it->second->first)
@@ -395,7 +395,7 @@ public:
 	 *
 	 * @param startPos The start position of the range, also considered part of the range.
 	 * @param endPos The end position of the range, also considered part of the range.
-	 * @param object The user-data to be assosiated with the range.
+	 * @param object The user-data to be associated with the range.
 	 * @return An iterator pointing to the resulting range, covering at least the specified range.
 	 *
 	 * This function inserts the specified range into the map, while overwriting
@@ -531,7 +531,7 @@ protected:
 	 * Finds the optimal location to start looking for insertion points.
 	 *
 	 * This is the first range whose start comes after the new start. We check
-	 * the last element first, since sequential insertions are commen.
+	 * the last element first, since sequential insertions are common.
 	 */
 	RangeIterator get_insert_it(KEYTYPE start)
 	{

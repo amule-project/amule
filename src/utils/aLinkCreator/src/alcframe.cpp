@@ -603,7 +603,7 @@ AlcFrame::OnAddUrlButton (wxCommandEvent & WXUNUSED(event))
             }
         }
 
-      // Add only a not already existant URL
+      // Add only a not already existent URL
       if (UrlNotExists)
         {
 	  m_inputUrlListBox->Append(wxURI(url).BuildURI());

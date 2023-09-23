@@ -290,7 +290,7 @@ CSearchList::~CSearchList()
 
 void CSearchList::RemoveResults(long searchID)
 {
-	// A non-existant search id will just be ignored
+	// A non-existent search id will just be ignored
 	Kademlia::CSearchManager::StopSearch(searchID, true);
 
 	ResultMap::iterator it = m_results.find(searchID);
@@ -584,7 +584,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 	}
 
 
-	// Get, or implictly create, the map of results for this search
+	// Get, or implicitly create, the map of results for this search
 	CSearchResultList& results = m_results[toadd->GetSearchID()];
 
 	for (size_t i = 0; i < results.size(); ++i) {
@@ -725,7 +725,7 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(CSearchParams& params, Se
 
 	unsigned int iParameterCount = 0;
 	if (_SearchExpr.m_aExpr.GetCount() <= 1) {
-		// lugdunummaster requested that searchs without OR or NOT operators,
+		// lugdunummaster requested that searches without OR or NOT operators,
 		// and hence with no more expressions than the string itself, be sent
 		// using a series of ANDed terms, intersecting the ANDs on the terms
 		// (but prepending them) instead of putting the boolean tree at the start

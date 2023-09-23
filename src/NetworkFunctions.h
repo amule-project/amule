@@ -65,12 +65,12 @@ inline wxString KadIPPortToString(uint32_t ip, uint16_t port)
  * ip-address is ignored and the resulting IP is saved in
  * anti-host order.
  *
- * The reason for the existance of this function is the fact that
+ * The reason for the existence of this function is the fact that
  * the standard inet_aton function treats numbers with 0 prefixed
  * as octals, which is desirable.
  *
  * Note: The reference value will not be changed unless the string
- *       contains a valid IP adress.
+ *       contains a valid IP address.
  */
 bool	StringIPtoUint32(const wxString &strIP, uint32& Ip);
 

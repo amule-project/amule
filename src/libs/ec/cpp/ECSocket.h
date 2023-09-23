@@ -112,7 +112,7 @@ public:
 	 * This is an asynchronous call, the function returns
 	 * immediately and the packet is sent on idle time.
 	 *
-	 * @note It's the caller's responsibilty to \c delete
+	 * @note It's the caller's responsibility to \c delete
 	 * the \e packet.
 	 */
 	void SendPacket(const CECPacket *packet);
@@ -131,7 +131,7 @@ public:
 	 * The returned packet will be allocated on the heap with \c new,
 	 * or \c NULL is returned in case of an error (timeout).
 	 *
-	 * @note It's the caller's responsibilty to \c delete both
+	 * @note It's the caller's responsibility to \c delete both
 	 * request and reply.
 	 *
 	 * @note OnPacketReceived() won't be called for packets
@@ -160,7 +160,7 @@ public:
 	 * Get a message describing the error.
 	 *
 	 * @param error The code of the error for which a message should be returned.
-	 * @return The text descibing the error.
+	 * @return The text describing the error.
 	 */
 	virtual std::string	GetLastErrorMsg();
 
@@ -250,7 +250,7 @@ public:
 	virtual bool InternalIsConnected() = 0;
 	virtual void InternalDestroy() = 0;
 
-	// Was login succesfull ?
+	// Was login successful ?
 	virtual bool IsAuthorized() { return true; }
 };
 

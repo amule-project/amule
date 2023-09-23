@@ -31,7 +31,7 @@
 #include <wx/cmdline.h>
 
 //-----------------------------------------------------------------------------
-// This can be put in a separete include file
+// This can be put in a separate include file
 #include <wx/strconv.h>
 static wxCSConv aMuleConv(wxT("iso8859-1"));
 #ifdef wxUSE_UNICODE

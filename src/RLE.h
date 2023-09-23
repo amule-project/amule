@@ -68,7 +68,7 @@ private:
 	// data:	block to encode
 	// inlen:	number of bytes to encode. May be zero, then data can also be 0.
 	// outlen:	here the number of encoded bytes gets stored (0 if inlen is 0)
-	// changed:	becomes true if the size has changed or a change in the data occured,
+	// changed:	becomes true if the size has changed or a change in the data occurred,
 	//          so the differential data (before encoding) is not all zero
 	//
 	// return:	new buffer with encoded data, must be deleted after use!

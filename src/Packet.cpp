@@ -29,7 +29,7 @@
 
 #include <protocol/Protocols.h>
 
-#include "Logger.h"			// Neeed for AddDebugLogLineN
+#include "Logger.h"			// Needed for AddDebugLogLineN
 #include "MemFile.h"			// Needed for CMemFile
 #include "OtherStructs.h"		// Needed for Header_Struct
 #include "ArchSpecific.h"		// Needed for ENDIAN_*
@@ -275,7 +275,7 @@ void CPacket::PackPacket()
 bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 	wxASSERT( prot == OP_PACKEDPROT || prot == OP_ED2KV2PACKEDPROT);
 	// OP_ED2KV2PACKEDPROT is experimental aMule test code,
-	// this should not happen yet. Leave a warining in the log.
+	// this should not happen yet. Leave a warning in the log.
 	if (prot == OP_ED2KV2PACKEDPROT) {
 		AddDebugLogLineN(logPacketErrors,
 			wxT("Received OP_ED2KV2PACKEDPROT."));

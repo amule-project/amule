@@ -457,7 +457,7 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
  * Helper-function: This function is used to gather selected items.
  *
  * @param list A pointer to the list to gather items from.
- * @return A list containing the selected items of the choosen types.
+ * @return A list containing the selected items of the chosen types.
  */
 static ItemList GetSelectedItems( CGenericClientListCtrl* list )
 {
@@ -1113,8 +1113,8 @@ int CGenericClientListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long so
 	sortData &= CMuleListCtrl::COLUMN_MASK;
 	int comp = 0;
 
-	// Two sources, some different possibilites
-	// Avilable sources first, if we have both an
+	// Two sources, some different possibilities
+	// Available sources first, if we have both an
 	// available and an unavailable
 	comp = ( item2->GetType() - item1->GetType() );
 
@@ -1125,7 +1125,7 @@ int CGenericClientListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long so
 		comp = Compare(item1->GetSource(), item2->GetSource(), sortData);
 	}
 
-	// We modify the result so that it matches with ascending or decending
+	// We modify the result so that it matches with ascending or descending
 	return sortMod * comp;
 }
 

@@ -83,7 +83,7 @@ public:
 	/// Set amulesig.dat file name and path
 	void SetAmuleSig ( const wxFileName& file );
 
-	/// Refresh stored informations
+	/// Refresh stored information
 	void Refresh ();
 
 	/// Return TRUE if aMule is running

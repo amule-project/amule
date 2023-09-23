@@ -240,7 +240,7 @@ private:
 	 * @param IPstart The start of the IP-range.
 	 * @param IPend The end of the IP-range, must be less than or equal to IPstart.
 	 * @param AccessLevel The AccessLevel of this range.
-	 * @param Description The assosiated description of this range.
+	 * @param Description The associated description of this range.
 	 * @return true if the range was added, false if it was discarded.
 	 *
 	 * This function inserts the specified range into the IPMap. Invalid
@@ -388,7 +388,7 @@ CIPFilter::CIPFilter() :
 		<< wxT("# This file is used to store ipfilter-ranges that should\n")
 		<< wxT("# not be overwritten by aMule. If you wish to keep a custom\n")
 		<< wxT("# set of ipfilter-ranges that take precedence over ipfilter-\n")
-		<< wxT("# ranges aquired through the auto-update functionality, then\n")
+		<< wxT("# ranges acquired through the auto-update functionality, then\n")
 		<< wxT("# place them in this file. aMule will not change this file.");
 
 	CreateDummyFile(staticDat, staticMsg);

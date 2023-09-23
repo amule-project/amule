@@ -57,7 +57,7 @@ UploadBandwidthThrottler::UploadBandwidthThrottler()
 
 
 /**
- * The destructor stops the thread. If the thread has already stoppped, destructor does nothing.
+ * The destructor stops the thread. If the thread has already stopped, destructor does nothing.
  */
 UploadBandwidthThrottler::~UploadBandwidthThrottler()
 {
@@ -100,7 +100,7 @@ uint64 UploadBandwidthThrottler::GetNumberOfSentBytesOverheadSinceLastCallAndRes
 
 /**
  * Add a socket to the list of sockets that have upload slots. The main thread will
- * continously call send on these sockets, to give them chance to work off their queues.
+ * continuously call send on these sockets, to give them chance to work off their queues.
  * The sockets are called in the order they exist in the list, so the top socket (index 0)
  * will be given a chance first to use bandwidth, and then the next socket (index 1) etc.
  *

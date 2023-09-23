@@ -109,7 +109,7 @@ private:
 	/**
 	 * Please note that only the ClientList is allowed to delete the clients.
 	 * To schedule a client for deletion, call the CClientList::AddToDeleteQueue
-	 * funtion, which will safely remove dead clients once every second.
+	 * function, which will safely remove dead clients once every second.
 	 */
 	~CUpDownClient();
 
@@ -705,7 +705,7 @@ private:
 	uint32		m_score;
 	uint16		m_waitingPosition;
 
-	//! This vector contains the avilability of parts for the file that the user
+	//! This vector contains the availability of parts for the file that the user
 	//! is requesting. When changing it, be sure to call CKnownFile::UpdatePartsFrequency
 	//! so that the files know the actual availability of parts.
 	BitVector	m_upPartStatus;
@@ -779,7 +779,7 @@ private:
 
 	bool		m_bHelloAnswerPending;
 
-	//! This vector contains the avilability of parts for the file we requested
+	//! This vector contains the availability of parts for the file we requested
 	//! from this user. When changing it, be sure to call CPartFile::UpdatePartsFrequency
 	//! so that the files know the actual availability of parts.
 	BitVector	m_downPartStatus;

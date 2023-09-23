@@ -221,7 +221,7 @@ void CDownloadListCtrl::RemoveFile( CPartFile* file )
 	// Ensure that any list-entries are removed
 	ShowFile( file, false );
 
-	// Find the assosiated list-item
+	// Find the associated list-item
 	ListItems::iterator it = m_ListItems.find( file );
 
 	if ( it != m_ListItems.end() ) {
@@ -1132,7 +1132,7 @@ int CDownloadListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long sortDat
 	int sortMod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 	sortData &= CMuleListCtrl::COLUMN_MASK;
 
-	// We modify the result so that it matches with ascending or decending
+	// We modify the result so that it matches with ascending or descending
 	return sortMod * Compare( item1->GetFile(), item2->GetFile(), sortData);
 }
 

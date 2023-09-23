@@ -72,7 +72,7 @@ public:
 	virtual ~CSearchListCtrl();
 
 	/**
-	 * Adds ths specified file to the list.
+	 * Adds the specified file to the list.
 	 *
 	 * @param The new result to be shown.
 	 *
@@ -213,7 +213,7 @@ protected:
 	 * @param src The source list.
 	 * @param dst The list to be synced with the source list.
 	 *
-	 * This function syncronises the following settings of two lists:
+	 * This function synchronises the following settings of two lists:
 	 *  - Sort column
 	 *  - Sort direction
 	 *  - Column widths

@@ -902,7 +902,7 @@ void CUpDownClient::ProcessBlockPacket(const uint8_t* packet, uint32 size, bool 
 				// Found reserved block
 
 				if (cur_block->block->StartOffset == nStartPos) {
-					// This block just started transfering. Set the start time.
+					// This block just started transferring. Set the start time.
 					m_last_block_start = ::GetTickCountFullRes();
 				}
 
@@ -1155,7 +1155,7 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, uint8_t *zipped, uint32 le
 
 
 // Speed is now updated only when data was received, calculated as
-// (data received) / (time since last receiption)
+// (data received) / (time since last reception)
 // and slightly filtered (10s average).
 // Result is quite precise now and makes the DownloadRateAdjust workaround obsolete.
 
@@ -1403,7 +1403,7 @@ uint8 CUpDownClient::GetObfuscationStatus() const
 	return ret;
 }
 
-// IgnoreNoNeeded = will switch to files of which this source has no needed parts (if no better fiels found)
+// IgnoreNoNeeded = will switch to files of which this source has no needed parts (if no better files found)
 // ignoreSuspensions = ignore timelimit for A4Af jumping
 // bRemoveCompletely = do not readd the file which the source is swapped from to the A4AF lists (needed if deleting or stopping a file)
 // toFile = Try to swap to this partfile only
@@ -1480,7 +1480,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 
 			m_reqfile->RemoveDownloadingSource( this );
 
-			// Do we want to remove it completly? Say if the old file is getting deleted
+			// Do we want to remove it completely? Say if the old file is getting deleted
 			if ( !bRemoveCompletely ) {
 				m_reqfile->AddA4AFSource( this );
 
@@ -1624,7 +1624,7 @@ void CUpDownClient::ProcessAICHAnswer(const uint8_t* packet, uint32 size)
 			 && ahMasterHash == pPartFile->GetAICHHashset()->GetMasterHash())
 		{
 			if(pPartFile->GetAICHHashset()->ReadRecoveryData(request.m_nPart*PARTSIZE, &data)){
-				// finally all checks passed, everythings seem to be fine
+				// finally all checks passed, everything seems to be fine
 				AddDebugLogLineN(logAICHTransfer, wxT("AICH Packet Answer: Succeeded to read and validate received recoverydata"));
 				CAICHHashSet::RemoveClientAICHRequest(this);
 				pPartFile->AICHRecoveryDataAvailable(request.m_nPart);
@@ -1666,7 +1666,7 @@ void CUpDownClient::ProcessAICHRequest(const uint8_t* packet, uint32 size)
 			pKnownFile->GetAICHHashset()->GetMasterHash().Write(&fileResponse);
 			if (pKnownFile->GetAICHHashset()->CreatePartRecoveryData(nPart*PARTSIZE, &fileResponse)){
 				AddDebugLogLineN(logAICHTransfer,
-					CFormat(wxT("AICH Packet Request: Sucessfully created and send recoverydata for '%s' to %s"))
+					CFormat(wxT("AICH Packet Request: Successfully created and send recoverydata for '%s' to %s"))
 						% pKnownFile->GetFileName() % GetClientFullInfo());
 
 				CPacket* packAnswer = new CPacket(fileResponse, OP_EMULEPROT, OP_AICHANSWER);

@@ -222,7 +222,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Unable to open file %s\nCheck if you have amule online signature enabled.\n", path);
 		exit(2);
 	}
-	/* i believe this shouldnt be here.
+	/* i believe this shouldn't be here.
 	The freq of update could be higher than 60 seconds.
 	And it doesn't mean that the amule is not running.
 	*/

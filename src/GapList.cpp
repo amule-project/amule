@@ -152,7 +152,7 @@ void CGapList::FillGap(uint64 partstart, uint64 partend)
 
 		if (curGapStart >= partstart) {
 			if (curGapEnd <= partend) {
-				// our part fills this gap completly
+				// our part fills this gap completely
 				m_gaplist.erase(it2);
 			} else if (curGapStart <= partend) {
 				// lower part of this gap is in the part - shrink gap:

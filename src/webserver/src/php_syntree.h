@@ -394,7 +394,7 @@ extern "C" {
 
 	PHP_VAR_NODE *make_array_var(void);
 
-	// signle operand expression:
+	// single operand expression:
 	// FIXME: prefix and postfix form not recognized
 	PHP_EXP_NODE *make_exp_1(PHP_EXP_OP op, PHP_EXP_NODE *operand);
 
