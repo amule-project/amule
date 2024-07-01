@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Installing tools
-      run: sudo apt-get install gettext
+      run: sudo apt-get install gettext autoconf autopoint
 
     - name: Checking .po files
       run: |
