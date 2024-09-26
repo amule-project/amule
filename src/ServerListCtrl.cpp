@@ -327,7 +327,7 @@ void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
 			wxFont font = GetFont();
 
 			if ( highlight ) {
-				font.SetWeight( wxBOLD );
+				font.SetWeight( wxFONTWEIGHT_BOLD );
 
 				m_connected = server;
 			}

@@ -27,6 +27,9 @@
 
 #include <wx/colour.h>
 #include <wx/settings.h>
+#include <wx/pen.h>   // needed for wxPenStyle enum values
+#include <wx/brush.h> // needed for wxBrushStyle enum values
+#include <wx/font.h>  // needed for wxFontStyle enum values
 #include "Types.h"
 
 class wxPen;
@@ -95,8 +98,8 @@ public:
 		return wxColor(m_red, m_green, m_blue);
 	}
 
-	const wxPen& GetPen(int width = 1, int style = wxSOLID) const;
-	const wxBrush& GetBrush(int style = wxSOLID) const;
+	const wxPen& GetPen(int width = 1, wxPenStyle style = wxPENSTYLE_SOLID) const;
+	const wxBrush& GetBrush(wxBrushStyle style = wxBRUSHSTYLE_SOLID) const;
 
 private:
 	uint8_t m_red;
