@@ -15,7 +15,6 @@ SUBDIRS += skins
 endif
 
 EXTRA_DIST = \
-	aMule.xpm \
 	LibSocketAsio.cpp \
 	LibSocketWX.cpp \
 	Parser.y \
