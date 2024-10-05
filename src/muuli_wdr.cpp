@@ -2595,11 +2595,7 @@ wxSizer *serverListDlgDown( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticBoxSizer *item0 = new wxStaticBoxSizer( item1, wxVERTICAL );
 
     wxNotebook *item3 = new wxNotebook( parent, ID_SRVLOG_NOTEBOOK, wxDefaultPosition, wxDefaultSize, 0 );
-#if !wxCHECK_VERSION(2,5,2)
-    wxNotebookSizer *item2 = new wxNotebookSizer( item3 );
-#else
     wxWindow *item2 = item3;
-#endif
 
     wxPanel *item4 = new wxPanel( item3, -1 );
     aMuleLog( item4, FALSE );
@@ -3273,11 +3269,7 @@ wxSizer *NetDialog( wxWindow *parent, bool call_fit, bool set_sizer )
     m_networknotebooksizer = item0;
 
     wxNotebook *item2 = new wxNotebook( parent, ID_NETNOTEBOOK, wxDefaultPosition, wxDefaultSize, 0 );
-#if !wxCHECK_VERSION(2,5,2)
-    wxNotebookSizer *item1 = new wxNotebookSizer( item2 );
-#else
     wxWindow *item1 = item2;
-#endif
 
     wxPanel *item3 = new wxPanel( item2, -1 );
     serverListDlgUp( item3, FALSE );

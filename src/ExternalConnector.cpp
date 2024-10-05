@@ -665,31 +665,6 @@ wxString CaMuleExternalConnector::SetLocale(const wxString& language)
 	return m_locale == NULL ? wxString() : m_locale->GetCanonicalName();
 }
 
-#if !wxUSE_GUI && defined(__WXMAC__) && !wxCHECK_VERSION(2, 9, 0)
-
-#include <wx/apptrait.h> // Do_not_auto_remove
-#include <wx/stdpaths.h> // Do_not_auto_remove
-
-class CaMuleExternalConnectorTraits : public wxConsoleAppTraits
-{
-public:
-	virtual wxStandardPathsBase& GetStandardPaths()
-	{
-		return s_stdPaths;
-	}
-
-private:
-	static wxStandardPathsCF s_stdPaths;
-};
-
-wxStandardPathsCF CaMuleExternalConnectorTraits::s_stdPaths;
-
-wxAppTraits* CaMuleExternalConnector::CreateTraits()
-{
-	return new CaMuleExternalConnectorTraits;
-}
-
-#endif
 
 #if wxUSE_ON_FATAL_EXCEPTION
 // Gracefully handle fatal exceptions and print backtrace if possible

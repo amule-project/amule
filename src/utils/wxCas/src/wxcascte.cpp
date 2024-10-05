@@ -32,11 +32,7 @@
 
 #ifdef __WXMAC__
 	#include <CoreServices/CoreServices.h> // Do_not_auto_remove
-	#if wxCHECK_VERSION(2, 9, 0)
-		#include <wx/osx/core/cfstring.h>  // Do_not_auto_remove
-	#else
-		#include <wx/mac/corefoundation/cfstring.h>  // Do_not_auto_remove
-	#endif
+	#include <wx/osx/core/cfstring.h>  // Do_not_auto_remove
 	#include <wx/intl.h> // Do_not_auto_remove
 #elif defined(__WINDOWS__)
 	#include <winerror.h> // Do_not_auto_remove
@@ -133,13 +129,8 @@ wxString GetDefaultAmulesigPath()
 		CFURLRef	urlRef		= CFURLCreateFromFSRef(NULL, &fsRef);
 		CFStringRef	cfString	= CFURLCopyFileSystemPath(urlRef, kCFURLPOSIXPathStyle);
 		CFRelease(urlRef) ;
-		#if wxCHECK_VERSION(2, 9, 0)
-			strDir = wxCFStringRef(cfString).AsString(wxLocale::GetSystemEncoding())
-			+ wxFileName::GetPathSeparator() + wxT("aMule");
-		#else
-			strDir = wxMacCFStringHolder(cfString).AsString(wxLocale::GetSystemEncoding())
-			+ wxFileName::GetPathSeparator() + wxT("aMule");
-		#endif
+		strDir = wxCFStringRef(cfString).AsString(wxLocale::GetSystemEncoding())
+		+ wxFileName::GetPathSeparator() + wxT("aMule");
 	}
 
 #elif defined(__WINDOWS__)

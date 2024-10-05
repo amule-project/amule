@@ -27,10 +27,8 @@
 #include <wx/string.h>
 #include <list>
 #include <string>
-
-#if wxCHECK_VERSION(2, 9, 0)
 #include <wx/wxcrt.h>
-#endif
+
 
 /**
  * MuleUnit namespace.
@@ -219,11 +217,8 @@ public:
 		if (!(a == b)) {
 			wxString message = wxT("Expected '") + StringFrom(a) +
 								wxT("' but got '") + StringFrom(b) + wxT("'");
-            #if wxCHECK_VERSION(3, 1, 0)
-                throw CTestFailureException(message, file.c_str(), line);
-            #else
-                throw CTestFailureException(message, file, line);
-            #endif
+
+			throw CTestFailureException(message, file.c_str(), line);
 		}
 	}
 

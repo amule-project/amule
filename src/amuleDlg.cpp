@@ -211,7 +211,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	wxSystemOptions::SetOption(wxT("msw.remap"), 0);
 #endif
 
-#if !(wxCHECK_VERSION(2, 9, 0) && defined(__WXMAC__))
+#if !defined(__WXMAC__)
 	// this crashes on Mac with wx 2.9
 	SetIcon(wxICON(aMule));
 #endif
@@ -621,9 +621,7 @@ void CamuleDlg::AddLogLine(const wxString& line)
 		wxFont font = style.GetFont();
 		font.SetWeight(addtostatusbar ? wxFONTWEIGHT_BOLD : wxFONTWEIGHT_NORMAL);
 		style.SetFont(font);
-#if wxCHECK_VERSION(2, 9, 0)
 		style.SetFontSize(8);
-#endif
 		ct->SetDefaultStyle(style);
 		ct->AppendText(bufferline);
 		ct->ShowPosition( ct->GetLastPosition() - 1 );
@@ -1053,11 +1051,7 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 			// Veto.
 		} else {
 			if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
-#if wxCHECK_VERSION(2, 9, 0)
 				Show(!evt.IsIconized());
-#else
-				Show(!evt.Iconized());
-#endif
 			}
 			else {
 				evt.Skip();
@@ -1349,19 +1343,11 @@ void CamuleDlg::Create_Toolbar(bool orientation)
 	}
 
 	if (!m_wndToolbar) {
-        #if wxCHECK_VERSION(3, 1, 2)
-            m_wndToolbar = CreateToolBar(
-                (orientation ? wxTB_VERTICAL : wxTB_HORIZONTAL) |
-                wxNO_BORDER | wxTB_TEXT | wxTB_FLAT |
-                wxCLIP_CHILDREN | wxTB_NODIVIDER);
-        #else
-            m_wndToolbar = CreateToolBar(
-                (orientation ? wxTB_VERTICAL : wxTB_HORIZONTAL) |
-                wxNO_BORDER | wxTB_TEXT | wxTB_3DBUTTONS |
-                wxTB_FLAT | wxCLIP_CHILDREN | wxTB_NODIVIDER);
-        #endif
+		m_wndToolbar = CreateToolBar((orientation ? wxTB_VERTICAL : wxTB_HORIZONTAL) |
+					      wxNO_BORDER | wxTB_TEXT | wxTB_FLAT |
+					      wxCLIP_CHILDREN | wxTB_NODIVIDER);
 
-			m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
+		m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
 	}
 
 	Apply_Toolbar_Skin(m_wndToolbar);
