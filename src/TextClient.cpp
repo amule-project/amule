@@ -525,6 +525,17 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				uint32 min_size = 0;
 				uint32 max_size = 0;
 
+				if (args.Find('[') == 0) {
+					const int end   = args.find(']');
+					const int comma = args.find(':');
+					if ((end != wxNOT_FOUND)&&(comma > 0)&&(comma < end)) {
+						const wxString argtype = args.substr(1, comma-1);
+						if (argtype == "type") {
+							type   = args.substr (comma+1, end-comma-1 );
+							search = args.substr (end+1 ).Trim(true).Trim(false);
+						}
+					}
+				}
 				request = new CECPacket(EC_OP_SEARCH_START);
 				request->AddTag(CEC_Search_Tag (search, search_type, type, extention, avail, min_size, max_size));
 				request_list.push_back(request);
