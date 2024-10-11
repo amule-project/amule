@@ -536,19 +536,21 @@ wxString CStatTreeItemRatio::GetString() const
 		} else {
 			ret = CFormat(wxT("1 : %.2f")) % (v2 / v1);
 		}
-
-		if (m_totalfunc1 && m_totalfunc2) {
-			double t1 = m_totalfunc1() + v1;
-			double t2 = m_totalfunc2() + v2;
-			if (t2 < t1) {
-				ret += CFormat(wxT(" (%.2f : 1)")) % (t1 / t2);
-			} else {
-				ret += CFormat(wxT(" (1 : %.2f)")) % (t2 / t1);
-			}
-		}
 	} else {
 		ret = _("Not available");
 	}
+	
+	// show the total ratio
+	if (m_totalfunc1 && m_totalfunc2) {
+		double t1 = m_totalfunc1() + v1;
+		double t2 = m_totalfunc2() + v2;
+		if (t2 < t1) {
+			ret += CFormat(wxT(" (%.2f : 1)")) % (t1 / t2);
+		} else {
+			ret += CFormat(wxT(" (1 : %.2f)")) % (t2 / t1);
+		}
+	}
+	
 	return ret;
 }
 
