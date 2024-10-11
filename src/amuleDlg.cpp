@@ -72,10 +72,6 @@
 #endif
 #include "IPFilter.h"
 
-#ifndef __WINDOWS__
-#include "aMule.xpm"
-#endif
-
 #include "kademlia/kademlia/Kademlia.h"
 #include "MuleVersion.h"			// Needed for GetMuleVersion()
 
