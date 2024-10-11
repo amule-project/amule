@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.amule.amule</id>
+
+  <name>aMule</name>
+  <summary>P2P client based on eMule </summary>
+
+  <metadata_license>FSFAP</metadata_license>
+  <project_license>GPL-2.0-or-later</project_license>
+
+  <description>
+    <p>
+      aMule is a multi-platform client for the ED2K file sharing network and based on the windows client eMule. aMule is intended to be as user friendly and feature rich as eMule and to remain faithful to the look and feel of eMule so users familiar with either aMule or eMule will be able switch between the two easily. Since aMule is based upon the eMule codebase, new features in eMule tend to find their way into aMule soon after their inclusion into eMule so users of aMule can expect to ride the cutting-edge of ED2k clients.
+    </p>
+  </description>
+
+  <url type="homepage">https://www.amule.org/</url>
+  <url type="bugtracker">https://bugs.amule.org/my_view_page.php</url>
+  <url type="help">https://wiki.amule.org/wiki/Main_Page</url>
+
+  # TODO: Auto generate me from changelog!
+  <releases></releases>
+
+  <launchable type="desktop-id">amule.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/amule/amule/master/.github/amule-interface-search.png</image>
+      <caption>Screenshot of the aMule search interface</caption>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/amule/amule/master/.github/amule-preferences.png</image>
+      <caption>Screenshot of the aMule preferences interface</caption>
+    </screenshot>
+  </screenshots>
+
+  <provides>
+    <binary>amule</binary>
+  </provides>
+
+  <content_rating type="oars-1.1"/>
+</component>
