@@ -542,6 +542,9 @@ msgstr " Kad: Выключено"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:802 src/muuli_wdr.cpp:862 src/muuli_wdr.cpp:936
 #: src/muuli_wdr.cpp:1002 src/muuli_wdr.cpp:2332 src/muuli_wdr.cpp:2434
+#: src/muuli_wdr.cpp:1494
+msgid "Show notifications when finished downloading"
+msgstr "Показывать уведомления о завершении загрузки"
 #: src/muuli_wdr.cpp:3150 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
 #: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
 #: src/utils/wxCas/src/wxcasprefs.cpp:285
