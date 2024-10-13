@@ -40,14 +40,6 @@
 #include <wx/renderer.h>
 #include <wx/dcbuffer.h>
 
-#if wxCHECK_VERSION(2, 9, 0)
-// wxWidgets 2.9+ does not include a mac/private anymore.
-#else
-	#if defined( __WXMAC__ ) && !defined(__WXUNIVERSAL__) && (wxOSX_USE_CARBON || TARGET_CARBON)
-		#include <wx/mac/private.h>
-	#endif
-#endif
-
 
 // NOTE: If using the wxListBox visual attributes works everywhere then this can
 // be removed, as well as the #else case below.

@@ -87,10 +87,6 @@ char* mktemp( char * path ) { return path ;}
 #	define   O_BINARY    (0)
 #endif  //__UNIX__
 
-#if defined(__WINDOWS__) && !wxCHECK_VERSION(3, 1, 0)
-#include <wx/msw/mslu.h>
-#endif
-
 
 // The following defines handle different names across platforms,
 // and ensures that we use 64b IO on windows (only 32b by default).

@@ -320,13 +320,9 @@ public:
 	CLoggerTarget();
 
 	/**
-	 * @see wxLog::DoLogString
+	 * @see wxLog::DoLogText
 	 */
-#if wxCHECK_VERSION(2, 9, 0)
 	void DoLogText(const wxString &msg);
-#else
-	void DoLogString(const wxChar *msg, time_t);
-#endif
 };
 
 
