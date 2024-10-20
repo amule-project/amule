@@ -74,7 +74,7 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 	PlotData_t* ppds = pdsTrends;
 	for(unsigned i=0; i<nTrends; ++i, ++ppds){
 		ppds->crPlot = (i<15 ? crPreset[i] : *wxWHITE);
-		ppds->penPlot=*(wxThePenList->FindOrCreatePen(ppds->crPlot, 1, wxSOLID));
+		ppds->penPlot=*(wxThePenList->FindOrCreatePen(ppds->crPlot, 1, wxPENSTYLE_SOLID));
 		ppds->fPrev = ppds->fLowerLimit = ppds->fUpperLimit = 0.0;
 	}
 
@@ -166,7 +166,7 @@ void COScopeCtrl::SetPlotColor(const wxColour& cr, unsigned iTrend)
 	if (ppds->crPlot == cr)
 		return;
 	ppds->crPlot = cr;
-	ppds->penPlot=*(wxThePenList->FindOrCreatePen(ppds->crPlot, 1, wxSOLID));
+	ppds->penPlot=*(wxThePenList->FindOrCreatePen(ppds->crPlot, 1, wxPENSTYLE_SOLID));
 	InvalidateGraph();
 }
 
@@ -179,7 +179,7 @@ void COScopeCtrl::SetBackgroundColor(const wxColour& cr)
 	}
 
 	m_bgColour = cr;
-	brushBack= *(wxTheBrushList->FindOrCreateBrush(cr, wxSOLID));
+	brushBack= *(wxTheBrushList->FindOrCreateBrush(cr, wxBRUSHSTYLE_SOLID));
 	InvalidateCtrl() ;
 }
 
@@ -196,7 +196,7 @@ void COScopeCtrl::RecreateGrid()
 
 	wxMemoryDC dcGrid(m_bmapGrid);
 
-	wxPen solidPen = *(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxSOLID));
+	wxPen solidPen = *(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxPENSTYLE_SOLID));
 	wxString strTemp;
 
 	// fill the grid background
@@ -213,7 +213,7 @@ void COScopeCtrl::RecreateGrid()
 	dcGrid.SetPen(wxNullPen);
 
 	// create some fonts (horizontal and vertical)
-	wxFont axisFont(10, wxSWISS, wxNORMAL, wxNORMAL, false);
+	wxFont axisFont(10, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false);
 	dcGrid.SetFont(axisFont);
 
 	// y max
@@ -320,7 +320,7 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 	// operation, preventing us from simply blitting the plot on top of
 	// the grid bitmap.
 
-	dc.SetPen(*(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxLONG_DASH)));
+	dc.SetPen(*(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxPENSTYLE_LONG_DASH)));
 	for (unsigned j = 1; j < (nYGrids + 1); ++j) {
 		unsigned GridPos = (m_rectPlot.GetHeight())*j/( nYGrids + 1 ) + m_rectPlot.GetTop();
 

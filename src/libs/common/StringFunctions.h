@@ -144,25 +144,11 @@ inline unsigned long StrToULong(const wxString& str)
 
 inline unsigned long long StrToULongLong(const wxString& str)
 {
-#if wxCHECK_VERSION(2, 9, 0)
 	unsigned long long value = 0;
 	if (!str.ToULongLong(&value)) {
 		value = 0;
 	}
 	return value;
-
-#else	// wx 2.8
-
-	Unicode2CharBuf buf = unicode2char(str);
-	if (!buf) {		// something went wrong
-		return 0;
-	}
-#ifdef _MSC_VER
-	return _atoi64(buf);
-#else
-	return atoll(buf);
-#endif
-#endif	// wx 2.8
 }
 
 inline size_t GetRawSize(const wxString& rstr, EUtf8Str eEncode)

@@ -307,7 +307,6 @@ CLoggerTarget::CLoggerTarget()
 {
 }
 
-#if wxCHECK_VERSION(2, 9, 0)
 void CLoggerTarget::DoLogText(const wxString &msg)
 {
 	// prevent infinite recursion
@@ -326,31 +325,6 @@ void CLoggerTarget::DoLogText(const wxString &msg)
 
 	recursion = false;
 }
-#else
-void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
-{
-	// prevent infinite recursion
-	static bool recursion = false;
-	if (recursion) {
-		return;
-	}
-	recursion = true;
-
-	wxCHECK_RET(msg, wxT("Log message is NULL in DoLogString!"));
-
-	wxString str(msg);
-
-	// This is much simpler than manually handling all wx log-types.
-	// cppcheck-suppress duplicateBranch
-	if (str.StartsWith(_("ERROR: ")) || str.StartsWith(_("WARNING: "))) {
-		AddLogLineC(str);
-	} else {
-		AddLogLineN(str);
-	}
-
-	recursion = false;
-}
-#endif
 
 CLoggerAccess::CLoggerAccess()
 {

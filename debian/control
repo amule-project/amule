@@ -2,7 +2,7 @@ Source: amule
 Section: net
 Priority: optional
 Maintainer: Werner Mahr (Vollstrecker) <amule@vollstreckernet.de>
-Build-Depends: debhelper (>= 10), libglib2.0-dev, zlib1g-dev, libwxgtk3.0-dev | libwxgtk3.0-gtk3-dev, libgd-dev, libcrypto++-dev, libreadline-dev, libgeoip-dev, libupnp-dev (>> 1.6.6), binutils-dev, gettext, libasio-dev, cmake
+Build-Depends: debhelper (>= 10), libglib2.0-dev, zlib1g-dev, libwxgtk3.2-dev, libgd-dev, libcrypto++-dev, libreadline-dev, libgeoip-dev, libupnp-dev (>> 1.6.6), binutils-dev, gettext, libasio-dev, cmake
 Standards-Version: 3.9.1
 Homepage: http://www.amule.org
 

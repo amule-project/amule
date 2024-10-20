@@ -2,35 +2,9 @@ name: C/C++ CI
 
 on:
   push:
-    paths:
-    - automake/*
-    - m4/*
-    - src/**
-    - unittests/**
-    - '**/*.am'
-    - acinclude.m4
-    - configure.ac
-    - '!**/*.txt'
-    - '!src/skins/*'
-    - '!src/utils/amps/**'
-    - '!src/utils/scripts/**'
-    - '!src/utils/xas/**'
-    - '!src/webserver/default/**'
+    branches: [ "*" ]
   pull_request:
-    paths:
-    - automake/*
-    - m4/*
-    - src/**
-    - unittests/**
-    - '**/*.am'
-    - acinclude.m4
-    - configure.ac
-    - '!**/*.txt'
-    - '!src/skins/*'
-    - '!src/utils/amps/**'
-    - '!src/utils/scripts/**'
-    - '!src/utils/xas/**'
-    - '!src/webserver/default/**'
+    branches: [ "*" ]
 
 jobs:
   build:
@@ -38,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: install deps
       run: sudo apt-get update && sudo apt-get upgrade && sudo apt-get install autopoint
     - name: autogen

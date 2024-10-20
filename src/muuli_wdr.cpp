@@ -77,7 +77,7 @@ wxSizer *muleDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, -1, wxT(""), wxDefaultPosition, wxSize(-1,20), wxTE_MULTILINE );
     item4->SetName( wxT("FastEd2kLinks") );
-    item2->Add( item4, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 0 );
+    item2->Add( item4, 1, wxALL|wxEXPAND, 5 );
 
     wxButton *item5 = new wxButton( parent, ID_BUTTON_FAST, _("Commit"), wxDefaultPosition, wxDefaultSize, 0 );
     item5->SetToolTip( _("Click here to add the eD2k link in the text control to your download queue.") );
@@ -474,7 +474,7 @@ wxSizer *transferBottomPane( wxWindow *parent, bool call_fit, bool set_sizer )
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     CSourceListCtrl *item6 = new CSourceListCtrl( parent, ID_CLIENTLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
-    item0->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item6, 1, wxGROW, 5 );
 
     if (set_sizer)
     {
@@ -1048,7 +1048,7 @@ wxSizer *statsDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxWindow *item3 = new COScopeCtrl(3,1,GRAPH_DOWN,parent);
 item3->SetName(wxT("dloadScope"));
     wxASSERT( item3 );
-    item1->Add( item3, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item1->Add( item3, 1, wxGROW|wxALL, 5 );
 
     wxFlexGridSizer *item4 = new wxFlexGridSizer( 2, 0, 0 );
     item4->AddGrowableCol( 0 );
@@ -1089,7 +1089,7 @@ item3->SetName(wxT("dloadScope"));
 
     item1->Add( item4, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-    item0->Add( item1, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5 );
+    item0->Add( item1, 1, wxGROW|wxBOTTOM, 5 );
 
     wxStaticBox *item15 = new wxStaticBox( parent, -1, _("Upload-Speed") );
     wxStaticBoxSizer *item14 = new wxStaticBoxSizer( item15, wxVERTICAL );
@@ -1097,7 +1097,7 @@ item3->SetName(wxT("dloadScope"));
     wxWindow *item16 = new COScopeCtrl(3,1,GRAPH_UP,parent);
 item16->SetName(wxT("uloadScope"));
     wxASSERT( item16 );
-    item14->Add( item16, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item14->Add( item16, 1, wxGROW|wxALL, 5 );
 
     wxFlexGridSizer *item17 = new wxFlexGridSizer( 2, 0, 0 );
     item17->AddGrowableCol( 0 );
@@ -1138,7 +1138,7 @@ item16->SetName(wxT("uloadScope"));
 
     item14->Add( item17, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-    item0->Add( item14, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5 );
+    item0->Add( item14, 1, wxGROW|wxBOTTOM, 5 );
 
     wxStaticBox *item28 = new wxStaticBox( parent, -1, _("Connections") );
     wxStaticBoxSizer *item27 = new wxStaticBoxSizer( item28, wxVERTICAL );
@@ -1146,7 +1146,7 @@ item16->SetName(wxT("uloadScope"));
     wxWindow *item29 = new COScopeCtrl(3,0,GRAPH_CONN,parent);
 item29->SetName(wxT("otherScope"));
     wxASSERT( item29 );
-    item27->Add( item29, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item27->Add( item29, 1, wxGROW|wxALL, 5 );
 
     wxFlexGridSizer *item30 = new wxFlexGridSizer( 2, 0, 0 );
     item30->AddGrowableCol( 0 );
@@ -1187,16 +1187,15 @@ item29->SetName(wxT("otherScope"));
 
     item27->Add( item30, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-    item0->Add( item27, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item27, 1, wxGROW|wxALL, 5 );
 
     wxStaticBox *item41 = new wxStaticBox( parent, -1, _("Statistics Tree") );
     wxStaticBoxSizer *item40 = new wxStaticBoxSizer( item41, wxVERTICAL );
 
     wxTreeCtrl *item42 = new wxTreeCtrl( parent, -1, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS|wxSUNKEN_BORDER );
     item42->SetName( wxT("statTree") );
-    item40->Add( item42, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    item0->Add( item40, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item40->Add( item42, 1, wxGROW|wxALL, 5 );
+    item0->Add( item40, 1, wxGROW|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2030,7 +2029,7 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
 
     wxStaticText *item2 = new wxStaticText( parent, -1, _("!!! WARNING !!!"), wxDefaultPosition, wxDefaultSize, 0 );
     item2->SetForegroundColour( *wxRED );
-    item2->SetFont( wxFont( 24, wxROMAN, wxNORMAL, wxNORMAL ) );
+    item2->SetFont( wxFont( 24, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ) );
     item1->Add( item2, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item3 = new wxStaticText( parent, IDC_AMULE_TWEAKS_WARNING, wxT(""), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
@@ -2596,11 +2595,7 @@ wxSizer *serverListDlgDown( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticBoxSizer *item0 = new wxStaticBoxSizer( item1, wxVERTICAL );
 
     wxNotebook *item3 = new wxNotebook( parent, ID_SRVLOG_NOTEBOOK, wxDefaultPosition, wxDefaultSize, 0 );
-#if !wxCHECK_VERSION(2,5,2)
-    wxNotebookSizer *item2 = new wxNotebookSizer( item3 );
-#else
     wxWindow *item2 = item3;
-#endif
 
     wxPanel *item4 = new wxPanel( item3, -1 );
     aMuleLog( item4, FALSE );
@@ -3274,11 +3269,7 @@ wxSizer *NetDialog( wxWindow *parent, bool call_fit, bool set_sizer )
     m_networknotebooksizer = item0;
 
     wxNotebook *item2 = new wxNotebook( parent, ID_NETNOTEBOOK, wxDefaultPosition, wxDefaultSize, 0 );
-#if !wxCHECK_VERSION(2,5,2)
-    wxNotebookSizer *item1 = new wxNotebookSizer( item2 );
-#else
     wxWindow *item1 = item2;
-#endif
 
     wxPanel *item3 = new wxPanel( item2, -1 );
     serverListDlgUp( item3, FALSE );

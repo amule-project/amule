@@ -511,11 +511,6 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow(IDC_WEBUPNPTCPPORTTEXT)->Enable(thePrefs::GetUPnPWebServerEnabled());
 #endif
 
-#if !wxCHECK_VERSION(2,9,0)
-	CastChild(IDC_NOTIF, wxCheckBox)->SetValue(false);
-	FindWindow(IDC_NOTIF)->Enable(false);
-#endif
-
 #ifdef __DEBUG__
 	// Set debugging toggles
 	int count = theLogger.GetDebugCategoryCount();

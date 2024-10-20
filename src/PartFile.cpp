@@ -36,10 +36,9 @@
 
 #include <wx/utils.h>
 #include <wx/tokenzr.h>		// Needed for wxStringTokenizer
-#if wxCHECK_VERSION(2,9,0)
+
 #ifndef AMULE_DAEMON
 #include <wx/notifmsg.h>	// Needed for wxNotificationMessage
-#endif
 #endif
 
 #include "KnownFileList.h"	// Needed for CKnownFileList
@@ -2164,7 +2163,6 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 		m_CorruptionBlackBox->Free();
 
 		AddLogLineC(CFormat( _("Finished downloading: %s") ) % GetFileName() );
-#if wxCHECK_VERSION(2,9,0)
 #ifndef AMULE_DAEMON
 		if (thePrefs::ShowNotifications()) {
 			wxNotificationMessage *notification = new wxNotificationMessage ();
@@ -2174,7 +2172,6 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 			notification->Show(7);
 			delete notification;
 		}
-#endif
 #endif
 	}
 

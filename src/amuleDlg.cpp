@@ -211,7 +211,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	wxSystemOptions::SetOption(wxT("msw.remap"), 0);
 #endif
 
-#if !(wxCHECK_VERSION(2, 9, 0) && defined(__WXMAC__))
+#if !defined(__WXMAC__)
 	// this crashes on Mac with wx 2.9
 	SetIcon(wxICON(aMule));
 #endif
@@ -621,9 +621,7 @@ void CamuleDlg::AddLogLine(const wxString& line)
 		wxFont font = style.GetFont();
 		font.SetWeight(addtostatusbar ? wxFONTWEIGHT_BOLD : wxFONTWEIGHT_NORMAL);
 		style.SetFont(font);
-#if wxCHECK_VERSION(2, 9, 0)
 		style.SetFontSize(8);
-#endif
 		ct->SetDefaultStyle(style);
 		ct->AppendText(bufferline);
 		ct->ShowPosition( ct->GetLastPosition() - 1 );
@@ -763,7 +761,7 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 	if ( (true == skinChanged) || (currentState != s_oldState) ) {
 		wxWindowUpdateLocker freezer(m_wndToolbar);
 
-		wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONCONNECT);
+		wxToolBarToolBase* toolbarTool = m_wndToolbar->FindById(ID_BUTTONCONNECT);
 
 		switch (currentState) {
 			case ECS_Connecting:
@@ -784,8 +782,6 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 				toolbarTool->SetNormalBitmap(m_tblist.GetBitmap(0));
 		}
 
-		m_wndToolbar->InsertTool(0, toolbarTool);
-		m_wndToolbar->Realize();
 		m_wndToolbar->EnableTool(ID_BUTTONCONNECT, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()) && theApp->ipfilter->IsReady());
 
 		s_oldState = currentState;
@@ -1055,11 +1051,7 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 			// Veto.
 		} else {
 			if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
-#if wxCHECK_VERSION(2, 9, 0)
 				Show(!evt.IsIconized());
-#else
-				Show(!evt.Iconized());
-#endif
 			}
 			else {
 				evt.Skip();
@@ -1351,19 +1343,11 @@ void CamuleDlg::Create_Toolbar(bool orientation)
 	}
 
 	if (!m_wndToolbar) {
-        #if wxCHECK_VERSION(3, 1, 2)
-            m_wndToolbar = CreateToolBar(
-                (orientation ? wxTB_VERTICAL : wxTB_HORIZONTAL) |
-                wxNO_BORDER | wxTB_TEXT | wxTB_FLAT |
-                wxCLIP_CHILDREN | wxTB_NODIVIDER);
-        #else
-            m_wndToolbar = CreateToolBar(
-                (orientation ? wxTB_VERTICAL : wxTB_HORIZONTAL) |
-                wxNO_BORDER | wxTB_TEXT | wxTB_3DBUTTONS |
-                wxTB_FLAT | wxCLIP_CHILDREN | wxTB_NODIVIDER);
-        #endif
+		m_wndToolbar = CreateToolBar((orientation ? wxTB_VERTICAL : wxTB_HORIZONTAL) |
+					      wxNO_BORDER | wxTB_TEXT | wxTB_FLAT |
+					      wxCLIP_CHILDREN | wxTB_NODIVIDER);
 
-			m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
+		m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
 	}
 
 	Apply_Toolbar_Skin(m_wndToolbar);
@@ -1416,7 +1400,7 @@ void CamuleDlg::DoNetworkRearrange()
 	wxWindowUpdateLocker freezer(this);
 #endif
 
-	wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONNETWORKS);
+	wxToolBarToolBase* toolbarTool = m_wndToolbar->FindById(ID_BUTTONNETWORKS);
 
 	// set the log windows
 	wxNotebook* logs_notebook = CastChild( ID_SRVLOG_NOTEBOOK, wxNotebook);
@@ -1507,11 +1491,8 @@ void CamuleDlg::DoNetworkRearrange()
 
 	// Tool bar
 
-	m_wndToolbar->InsertTool(2, toolbarTool);
 	m_wndToolbar->EnableTool(ID_BUTTONNETWORKS, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()));
 	m_wndToolbar->EnableTool(ID_BUTTONCONNECT, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()) && theApp->ipfilter->IsReady());
-
-	m_wndToolbar->Realize();
 
 	ShowConnectionState();	// status in the bottom right
 	m_searchwnd->FixSearchTypes();

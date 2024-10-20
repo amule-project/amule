@@ -179,9 +179,6 @@ protected:
 	CCommandTree	m_commands;
 	const char *	m_appname;
 
-#if !wxUSE_GUI && defined(__WXMAC__) && !wxCHECK_VERSION(2, 9, 0)
-	virtual wxAppTraits* CreateTraits();
-#endif
 
 private:
 	wxString	m_configFileName;

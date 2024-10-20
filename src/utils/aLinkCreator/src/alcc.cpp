@@ -46,11 +46,7 @@ int alcc::OnRun ()
   wxLogStderr * stderrLog = new wxLogStderr;
   wxLogStderr * stdoutLog = new wxLogStderr(stdout);
   delete wxLog::SetActiveTarget(stderrLog); // Log on Stderr
-#if wxCHECK_VERSION(2, 9, 0)
   wxLog::SetTimestamp("");   // Disable timestamp on messages
-#else
-  wxLog::SetTimestamp(NULL); // Disable timestamp on messages
-#endif
 
   Ed2kHash hash;
   size_t i;
