@@ -81,6 +81,7 @@ __attribute__((__packed__));
 #endif
 
 struct Pending_Block_Struct{
+	bool isCompleted = false;
 	Requested_Block_Struct*	block;
 	struct z_stream_s*       zStream;       // Barry - Used to unzip packets
 	uint32		totalUnzipped; // Barry - This holds the total unzipped bytes for all packets so far

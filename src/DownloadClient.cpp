@@ -586,8 +586,23 @@ void CUpDownClient::ProcessHashSet(const uint8_t* packet, uint32 size)
 	SendStartupLoadReq();
 }
 
+void CUpDownClient::CleanCompletedBlocks() {
+    std::list<Pending_Block_Struct*>::iterator it = m_PendingBlocks_list.begin();
+    while (it != m_PendingBlocks_list.end()) {
+        Pending_Block_Struct* block = *it;
+        if (block->isCompleted) {
+            // Eliminar el bloque completado de la lista pendiente
+            it = m_PendingBlocks_list.erase(it);  // erase devuelve el siguiente iterador
+            delete block;
+        } else {
+            ++it;  // Solo avanzar si no se eliminó un bloque
+        }
+    }
+}
+
 void CUpDownClient::SendBlockRequests()
 {
+	CleanCompletedBlocks();
 	uint32 current_time = ::GetTickCount();
 	if (GetVBTTags()) {
 

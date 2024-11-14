@@ -151,7 +151,7 @@ public:
 	 * is unlinked;
 	 */
 	void		Safe_Delete();
-
+	void CleanCompletedBlocks();
 	/**
 	 * Specifies if the client has been queued for deletion.
 	 *
