@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2021-01-31 08:26+0100\n"
-"PO-Revision-Date: 2022-11-17 23:47+0800\n"
+"PO-Revision-Date: 2024-12-15 19:53+0100\n"
 "Last-Translator: Mike Akiba <mike2718@gmail.com>\n"
 "Language-Team: Chinese Simplified <kde-i18n-doc@kde.org>\n"
 "Language: zh_CN\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 3.2.1\n"
+"X-Generator: Poedit 3.5\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -419,7 +419,6 @@ msgstr "致命错误：创建计时器失败"
 msgid "aMule remote control "
 msgstr "aMule 远程控制 "
 
-# OK
 #: src/amuleDlg.cpp:495
 msgid "Snapshot:"
 msgstr "Snapshot:"
@@ -1363,7 +1362,6 @@ msgstr "您确定要删除选择的文件吗？"
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "您确定要删除选择的文件吗？"
 
-# OK
 #: src/DownloadListCtrl.cpp:554 src/SharedFilesCtrl.cpp:203
 #, c-format
 msgid ""
@@ -2471,7 +2469,6 @@ msgstr "清除"
 msgid "Select All"
 msgstr "全选"
 
-# 不用管
 #: src/MuleTrayIcon.cpp:82 src/MuleTrayIcon.cpp:474 src/MuleTrayIcon.cpp:495
 #: src/muuli_wdr.cpp:1579 src/muuli_wdr.cpp:1588 src/muuli_wdr.cpp:1597
 #: src/muuli_wdr.cpp:1944 src/muuli_wdr.cpp:1953 src/OtherFunctions.cpp:94
@@ -2712,7 +2709,6 @@ msgstr "类型"
 msgid "Local"
 msgstr "本地"
 
-# OK
 #: src/muuli_wdr.cpp:197
 msgid "Global"
 msgstr "全局"
@@ -2733,7 +2729,6 @@ msgstr "文件类型"
 msgid "Any"
 msgstr "任何"
 
-# OK
 #: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:161
 msgid "Archives"
 msgstr "归档"
@@ -2743,7 +2738,6 @@ msgstr "归档"
 msgid "Audio"
 msgstr "音频"
 
-# OK
 #: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:168 src/OtherFunctions.cpp:638
 #: src/TransferWnd.cpp:359
 msgid "CD-Images"
@@ -2984,7 +2978,6 @@ msgstr ""
 msgid "File Quality"
 msgstr "文件质量"
 
-# OK
 #: src/muuli_wdr.cpp:845 src/OtherFunctions.cpp:216 src/OtherFunctions.cpp:222
 msgid "Not rated"
 msgstr "未评价"
@@ -3275,7 +3268,6 @@ msgstr "工具提示延迟时间: "
 msgid "seconds"
 msgstr "秒"
 
-# OK
 #: src/muuli_wdr.cpp:1514
 msgid "Browser Selection"
 msgstr "浏览器"
@@ -3301,7 +3293,6 @@ msgstr "如果可能的话，在新标签页中打开"
 msgid "Open the web page in a new tab instead of in a new window when possible"
 msgstr "如果可能的话，在新的标签页中打开而不是新的窗口"
 
-# OK
 #: src/muuli_wdr.cpp:1535
 msgid "Video Player"
 msgstr "视频播放器"
@@ -3314,7 +3305,6 @@ msgstr "带宽限制"
 msgid "Upload"
 msgstr "上传"
 
-# OK
 #: src/muuli_wdr.cpp:1591
 msgid "Slot Allocation"
 msgstr "槽速度"
@@ -3389,12 +3379,10 @@ msgstr "启动后自动连接"
 msgid "Reconnect on loss"
 msgstr "断线后自动重连"
 
-# OK
 #: src/muuli_wdr.cpp:1719
 msgid "Remove dead server after"
 msgstr "如果"
 
-# OK
 #: src/muuli_wdr.cpp:1725
 msgid "retries"
 msgstr "次连接失败，则删除该服务器"
@@ -3419,12 +3407,10 @@ msgstr "与其他用户连接时更新服务器列表"
 msgid "Use priority system"
 msgstr "启用优先级系统"
 
-# OK
 #: src/muuli_wdr.cpp:1750
 msgid "Use smart LowID check on connect"
 msgstr "连接时启用智能 Low ID 检测"
 
-# OK
 #: src/muuli_wdr.cpp:1754
 msgid "Safe connect"
 msgstr "安全连接"
@@ -4190,7 +4176,6 @@ msgstr "登录远程 amule"
 msgid "User name"
 msgstr "用户名"
 
-# OK
 #: src/muuli_wdr.cpp:3140
 msgid "Remember those settings"
 msgstr "记住这些设置"
@@ -4294,7 +4279,6 @@ msgid_plural "bytes"
 msgstr[0] "字节"
 msgstr[1] "字节"
 
-# 不用管
 #: src/OtherFunctions.cpp:63
 msgid "kB"
 msgstr "KB"
@@ -5448,7 +5432,6 @@ msgstr "用户数"
 msgid "Static"
 msgstr "静态"
 
-#
 #: src/ServerListCtrl.cpp:97 src/SharedFilePeersListCtrl.cpp:34
 #: src/SourceListCtrl.cpp:33 src/Statistics.cpp:959
 msgid "Version"
