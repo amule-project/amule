@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2021-01-31 08:26+0100\n"
-"PO-Revision-Date: 2024-12-15 19:53+0100\n"
+"PO-Revision-Date: 2024-12-15 20:08+0100\n"
 "Last-Translator: Mike Akiba <mike2718@gmail.com>\n"
 "Language-Team: Chinese Simplified <kde-i18n-doc@kde.org>\n"
 "Language: zh_CN\n"
@@ -6152,7 +6152,7 @@ msgid ""
 "Type 'help search' to get more help.\n"
 msgstr ""
 "未定义搜索类型。\n"
-"输入“帮助搜索”以获得更多帮助。\n"
+"输入“help search”以获得更多帮助。\n"
 
 #: src/TextClient.cpp:555
 #, c-format
