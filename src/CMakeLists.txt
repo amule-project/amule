@@ -222,16 +222,6 @@ if (BUILD_MONOLITHIC)
 	install (TARGETS amule
 		RUNTIME DESTINATION bin
 	)
-
-	install (FILES aMule.xpm
-		DESTINATION "${CMAKE_INSTALL_DATADIR}/pixmaps"
-		RENAME amule.xpm
-	)
-
-	install (FILES aMule.xpm
-		DESTINATION "${CMAKE_INSTALL_DATADIR}/pixmaps"
-		RENAME amulegui.xpm
-	)
 endif (BUILD_MONOLITHIC)
 
 if (BUILD_REMOTEGUI)
