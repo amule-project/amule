@@ -38,24 +38,24 @@ fi
 # Force intl regeneration to get last update from installed gettext templates
 rm -rf intl/*
 #if [ ! -d intl ]; then
-    echo "Setting up internationalization files."
-    autopoint --force
-    if grep -q datarootdir po/Makefile.in.in; then
-        echo autopoint honors dataroot variable, not patching.
-    else
-	echo autopoint does not honor dataroot variable, patching.
-        sed -e '/^datadir *=/a\
-datarootdir = @datarootdir@' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in
-        sed -e '/^datadir *=/a\
-datarootdir = @datarootdir@' intl/Makefile.in > intl/Makefile.in.tmp && mv -f intl/Makefile.in.tmp intl/Makefile.in
-    fi
-UNAME=`uname`
-if [ x$UNAME = x"Darwin" ]; then
-    echo Not patching po/Makefile.in.in - sed is too old.
-else
-    sed -e '/^clean:/a\
-	rm -f *.gmo' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in
-fi
+#    echo "Setting up internationalization files."
+#    autopoint --force
+#    if grep -q datarootdir po/Makefile.in.in; then
+#        echo autopoint honors dataroot variable, not patching.
+#    else
+#	echo autopoint does not honor dataroot variable, patching.
+#        sed -e '/^datadir *=/a\
+#datarootdir = @datarootdir@' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in
+#        sed -e '/^datadir *=/a\
+#datarootdir = @datarootdir@' intl/Makefile.in > intl/Makefile.in.tmp && mv -f intl/Makefile.in.tmp intl/Makefile.in
+#    fi
+#UNAME=`uname`
+#if [ x$UNAME = x"Darwin" ]; then
+#    echo Not patching po/Makefile.in.in - sed is too old.
+#else
+#    sed -e '/^clean:/a\
+#	rm -f *.gmo' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in
+#fi
 #    if [ -f Makefile -a -x config.status ]; then
 #        CONFIG_FILES=intl/Makefile CONFIG_HEADERS= /bin/sh ./config.status
 #    fi
@@ -65,20 +65,11 @@ fi
 #   cp -f configure.ac~ configure.ac
 #fi
 
-echo "Running aclocal -I m4"
-aclocal -I m4
-
-echo "Running autoheader"
-autoheader
-
-echo "Running autoconf"
-autoconf
-
 echo "Creating pixmaps Makefile.am"
 OLDPWD="`pwd`"
 cd src/pixmaps/flags_xpm
 ./makeflags.sh
 cd "$OLDPWD"
 
-echo "Running automake --foreign -a -c -f"
-automake --foreign -a -c -f
+echo "Running autoreconf --install"
+autoreconf --install
