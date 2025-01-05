@@ -253,18 +253,18 @@ AlcFrame::AlcFrame (const wxString & title):
   m_toolbar->SetToolBitmapSize (wxSize (32, 32));
   m_toolbar->SetMargins (2, 2);
 
-  m_toolbar->AddTool (ID_BAR_OPEN, _("Open"), m_toolBarBitmaps[0],
+  m_toolbar->AddTool (ID_BAR_OPEN, _("Open"), wxBitmapBundle(m_toolBarBitmaps[0]),
                       _("Open a file to compute its eD2k link"));
 
-  m_toolbar->AddTool (ID_BAR_COPY, _("Copy"), m_toolBarBitmaps[1],
+  m_toolbar->AddTool (ID_BAR_COPY, _("Copy"), wxBitmapBundle(m_toolBarBitmaps[1]),
                       _("Copy computed eD2k link to clipboard"));
 
-  m_toolbar->AddTool (ID_BAR_SAVEAS, _("Save as"), m_toolBarBitmaps[2],
+  m_toolbar->AddTool (ID_BAR_SAVEAS, _("Save as"), wxBitmapBundle(m_toolBarBitmaps[2]),
                       _("Save computed eD2k link to file"));
 
   m_toolbar->AddSeparator ();
 
-  m_toolbar->AddTool (ID_BAR_ABOUT, _("About"), m_toolBarBitmaps[3],
+  m_toolbar->AddTool (ID_BAR_ABOUT, _("About"), wxBitmapBundle(m_toolBarBitmaps[3]),
                       _("About aLinkCreator"));
 
   m_toolbar->Realize ();
