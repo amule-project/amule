@@ -1465,7 +1465,7 @@ void wxListLineData::Draw( wxDC *dc )
     wxListItemAttr *attr = GetAttr();
 
     if ( SetAttributes(dc, attr, highlighted) )
-#if ( !defined(__WXGTK20__) && !defined(__WXMAC__) )
+#if ( !defined(__WXGTK2__) && !defined(__WXMAC__) )
     {
         dc->DrawRectangle( m_gi->m_rectHighlight );
     }
@@ -1528,7 +1528,7 @@ void wxListLineData::DrawInReportMode( wxDC *dc,
     //       GetAttr() and move these lines into the loop below
     wxListItemAttr *attr = GetAttr();
     if ( SetAttributes(dc, attr, highlighted) )
-#if ( !defined(__WXGTK20__) && !defined(__WXMAC__) )
+#if ( !defined(__WXGTK2__) && !defined(__WXMAC__) )
     {
         dc->DrawRectangle( rectHL );
     }
@@ -2859,7 +2859,7 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
         if ( m_hasFocus )
         {
             wxRect rect( GetLineHighlightRect( m_current ) );
-#ifndef __WXGTK20__
+#ifndef __WXGTK2__
             dc.SetPen( *wxBLACK_PEN );
             dc.SetBrush( *wxTRANSPARENT_BRUSH );
             dc.DrawRectangle( rect );
