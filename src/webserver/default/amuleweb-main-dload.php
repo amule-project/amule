@@ -115,6 +115,18 @@ label {
 	font-family: Helvetica;
 	font-size: 12px;
 	font-weight: normal;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	word-wrap: break-word;
+}
+.texte-full-name{
+	max-width: 0;
+	width: 45%;
+}
+.texte-full-name-upload{
+	width: 55%;
 }
 label {
 font-family:"trebuchet ms",sans-serif;
@@ -394,7 +406,7 @@ function formCommandSubmit(command)
 	
 				echo "<td class='texte' height='22'>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
 	
-				echo "<td class='texte' height='22'>", $file->short_name, "</td>";
+				echo "<td class='texte texte-full-name' height='22'>", $file->name, "</td>";
 				
 				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->size), "</td>";
 
@@ -478,7 +490,7 @@ function formCommandSubmit(command)
 	
 				echo "<td class='texte' height='22' align='center'>", "</td>";
 				
-				echo "<td class='texte' height='22'>", $file->short_name, "</td>";
+				echo "<td class='texte texte-full-name texte-full-name-upload' height='22'>", $file->name, "</td>";
 
 				echo "<td class='texte' height='22' align='center'>", $file->user_name, "</td>";
 	
