@@ -72,7 +72,7 @@ RLE_Data::~RLE_Data()
 
 void RLE_Data::ResetEncoder()
 {
-	delete m_buff;
+	delete [] m_buff;
 	m_len = 0;
 	m_buff = 0;
 }
