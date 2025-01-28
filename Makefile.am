@@ -17,8 +17,11 @@ icondir = $(datadir)/pixmaps
 dist_util_DATA =
 utildir = $(datadir)/applications
 
+dist_icon128_DATA =
+icon128dir = $(datadir)/icons/hicolor/128x128/apps
+
 if MONOLITHIC
-dist_icon_DATA += amule.xpm
+dist_icon128_DATA += amule.png
 dist_util_DATA += amule.desktop
 endif
 
