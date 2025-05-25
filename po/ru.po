@@ -3352,7 +3352,7 @@ msgstr "Сворачивать aMule в область уведомлений, �
 
 #: src/muuli_wdr.cpp:1494
 msgid "Show notifications when finished downloading"
-msgstr ""
+msgstr "Показывать уведомления о завершении загрузки"
 
 #: src/muuli_wdr.cpp:1495
 msgid ""

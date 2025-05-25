@@ -197,6 +197,7 @@ MULE_IF_ENABLED_ANY([monolithic, amule-gui, wxcas, alc],
 		enabled version of wxWidgets and then retry.
 	])]
 )])
+AS_IF([(test "${WX_PORT}" = gtk1 || test "${WX_PORT}" = gtk2)],[AC_MSG_ERROR([${WX_PORT} isn't supported.])])
 
 
 dnl Resource compiler for W32
