@@ -25,10 +25,11 @@
 #
 
 AC_INIT([aMule],[SVN],[admin@amule.org])
-AM_INIT_AUTOMAKE
+AC_CONFIG_AUX_DIR([config])
+AM_INIT_AUTOMAKE([subdir-objects])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 
-AC_PREREQ(2.62)
+AC_PREREQ([2.62])
 
 AC_CONFIG_SRCDIR([src/amule.cpp])
 AC_CONFIG_HEADERS([config.h])
@@ -254,7 +255,11 @@ MULE_IF_ENABLED_ANY([monolithic, amule-daemon, amule-gui, amulecmd, webserver], 
 # Checks for header files.
 AC_FUNC_ALLOCA
 AC_HEADER_DIRENT
-AC_HEADER_STDC
+# Autoupdate added the next two lines to ensure that your configure
+# script's behavior did not change.  They are probably safe to remove.
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
+
 AC_CHECK_HEADERS([argz.h arpa/inet.h errno.h fcntl.h inttypes.h langinfo.h libintl.h limits.h locale.h malloc.h mntent.h netdb.h netinet/in.h stddef.h nl_types.h signal.h stdint.h stdio_ext.h stdlib.h string.h strings.h sys/ioctl.h sys/mntent.h sys/mnttab.h sys/mount.h sys/param.h sys/resource.h sys/select.h sys/socket.h sys/statvfs.h sys/time.h sys/timeb.h sys/types.h unistd.h])
 AC_HEADER_SYS_WAIT
 
@@ -263,7 +268,14 @@ AC_HEADER_SYS_WAIT
 AC_TYPE_MODE_T
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
-AC_HEADER_TIME
+AC_CHECK_HEADERS_ONCE([sys/time.h])
+# Obsolete code to be removed.
+if test $ac_cv_header_sys_time_h = yes; then
+  AC_DEFINE([TIME_WITH_SYS_TIME],[1],[Define to 1 if you can safely include both <sys/time.h>
+	     and <time.h>.  This macro is obsolete.])
+fi
+# End of obsolete code.
+
 AC_STRUCT_TM
 AC_TYPE_UID_T
 AC_CHECK_TYPES([ptrdiff_t])
@@ -280,8 +292,9 @@ AS_IF([test x$SYS != xwin32], [
 ])
 AC_FUNC_MEMCMP
 AC_FUNC_SELECT_ARGTYPES
-AC_FUNC_SETVBUF_REVERSED
-AC_TYPE_SIGNAL
+AC_DEFINE_UNQUOTED([RETSIGTYPE],[$ac_cv_type_signal],[Define as the return type of signal handlers
+		    (`int' or `void').])
+
 AC_FUNC_STAT
 AC_FUNC_STRFTIME
 AC_FUNC_STRTOD
