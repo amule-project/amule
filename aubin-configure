@@ -1,0 +1,18 @@
+OPTIONS=
+OPTIONS="${OPTIONS} --prefix=/home/aubin/bin/amule"
+OPTIONS="${OPTIONS} --with-denoise-level=3"
+
+OPTIONS="${OPTIONS} --enable-optimize"
+OPTIONS="${OPTIONS} --enable-upnp"
+OPTIONS="${OPTIONS} --enable-geoip"
+OPTIONS="${OPTIONS} --enable-nls"
+OPTIONS="${OPTIONS} --enable-amule-daemon"
+OPTIONS="${OPTIONS} --enable-amulecmd"
+OPTIONS="${OPTIONS} --enable-mmap"
+OPTIONS="${OPTIONS} --enable-ccache"
+OPTIONS="${OPTIONS} --enable-fileview"
+
+OPTIONS="${OPTIONS} --disable-debug"
+OPTIONS="${OPTIONS} --disable-monolithic"
+
+./configure ${OPTIONS}

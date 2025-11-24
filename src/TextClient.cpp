@@ -203,6 +203,7 @@ void CamulecmdApp::addSearchRequest( const wxString & args, EC_SEARCH_TYPE searc
       uint32   min_size = 0;
       uint32   max_size = 0;
 
+      // Aubin
       if (args.Find('[') == 0) {
          const int end   = args.find(']');
          const int comma = args.find(':');
@@ -214,6 +215,13 @@ void CamulecmdApp::addSearchRequest( const wxString & args, EC_SEARCH_TYPE searc
             }
          }
       }
+      // fprintf( stderr, "Search parameters: search='%s' type='%s' extention='%s' avail=%u min_size=%u max_size=%u\n",
+      //    (const char *)search.c_str(),
+      //    (const char *)type.c_str(),
+      //    (const char *)extention.c_str(),
+      //    avail,
+      //    min_size,
+      //    max_size );
       CECPacket * request = new CECPacket(EC_OP_SEARCH_START);
       request->AddTag( CEC_Search_Tag( search, search_type, type, extention, avail, min_size, max_size ));
       request_list.push_back( request );

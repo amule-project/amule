@@ -290,9 +290,10 @@ void CaMuleExternalConnector::OnInitCommandSet()
 void CaMuleExternalConnector::Show(const wxString &s) const {
 	if( !m_KeepQuiet ) {
 		printf("%s", (const char *)unicode2char(s));
-#ifdef __WINDOWS__
+// #ifdef __WINDOWS__
+      // Aubin
 		fflush(stdout);
-#endif
+// #endif
 	}
 }
 

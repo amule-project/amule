@@ -75,3 +75,4 @@ Makefile.user
 /build/
 /.cproject
 /.project
+src/utils/fileview/mulefileview
