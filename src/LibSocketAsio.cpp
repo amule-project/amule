@@ -43,6 +43,7 @@
 #include <algorithm>	// Needed for std::min - Boost up to 1.54 fails to compile with MSVC 2013 otherwise
 
 #include <boost/asio.hpp>
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/bind.hpp>
 #include <boost/version.hpp>
 
