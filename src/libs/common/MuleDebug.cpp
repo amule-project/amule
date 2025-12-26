@@ -24,6 +24,7 @@
 //
 
 #include <cstdlib>			// Needed for std::abort()
+#include <exception>
 
 #include "config.h"			// Needed for HAVE_CXXABI and HAVE_EXECINFO
 
