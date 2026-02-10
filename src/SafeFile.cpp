@@ -241,14 +241,14 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 	if (CHECK_BOM(raw_len, val)) {
 		// This is a UTF8 string with a BOM header, skip header.
 		str = UTF82unicode(val + 3);
-		AddDebugLogLineN(logSearch, wxString::Format(wxT("Codec detected: UTF-8+BOM for string of length %d"), raw_len));
+		AddLogLineN(wxString::Format(wxT("Codec detected: UTF-8+BOM for string of length %d"), raw_len));
 	} else if (bOptUTF8) {
 		str = UTF82unicode(val);
-		AddDebugLogLineN(logSearch, wxString::Format(wxT("Codec detected: UTF-8 for string of length %d"), raw_len));
+		AddLogLineN(wxString::Format(wxT("Codec detected: UTF-8 for string of length %d"), raw_len));
 		if (str.IsEmpty()) {
 			// Fallback to Latin-1
 			str = wxString(val, wxConvISO8859_1, raw_len);
-			AddDebugLogLineN(logSearch, wxString::Format(wxT("Codec fallback: ISO-8859-1 for string of length %d"), raw_len));
+			AddLogLineN(wxString::Format(wxT("Codec fallback: ISO-8859-1 for string of length %d"), raw_len));
 		}
 	} else {
 		// Raw strings are written as Latin-1 (see CFileDataIO::WriteStringCore)
@@ -301,7 +301,7 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 		}
 		
 		if (isValidUTF8) {
-			AddDebugLogLineN(logSearch, wxString::Format(wxT("Codec detected: UTF-8 for string of length %d"), raw_len));
+			AddLogLineN(wxString::Format(wxT("Codec detected: UTF-8 for string of length %d"), raw_len));
 			return str;
 		}
 		
@@ -345,7 +345,7 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 								
 								// Check if the conversion produced valid results
 								if (!str.IsEmpty()) {
-									AddDebugLogLineN(logSearch, wxString::Format(wxT("Codec detected: %s (confidence %d%%) for string of length %d"), wxString(charset).Upper().c_str(), confidence, raw_len));
+									AddLogLineN(wxString::Format(wxT("Codec detected: %s (confidence %d%%) for string of length %d"), wxString(charset).Upper().c_str(), confidence, raw_len));
 									ucsdet_close(csd);
 									return str;
 								}
@@ -373,7 +373,7 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 				wxString replacementChar = wxChar(0xFFFD);
 				if (!str.Contains(replacementChar)) {
 					// Successfully decoded UTF-16 LE
-					AddDebugLogLineN(logSearch, wxString::Format(wxT("Codec detected: UTF-16LE for string of length %d"), raw_len));
+					AddLogLineN(wxString::Format(wxT("Codec detected: UTF-16LE for string of length %d"), raw_len));
 					return str;
 				}
 				str.Clear();
@@ -392,7 +392,7 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 					wxString replacementChar = wxChar(0xFFFD);
 					if (!str.Contains(replacementChar)) {
 						// Successfully decoded UTF-16 BE
-						AddDebugLogLineN(logSearch, wxString::Format(wxT("Codec detected: UTF-16BE for string of length %d"), raw_len));
+						AddLogLineN(wxString::Format(wxT("Codec detected: UTF-16BE for string of length %d"), raw_len));
 						return str;
 					}
 					str.Clear();
@@ -405,13 +405,13 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 		str = wxString(val + skipBytes, wxConvLocal);
 		
 		if (!str.IsEmpty()) {
-			AddDebugLogLineN(logSearch, wxString::Format(wxT("Codec fallback: LOCALE for string of length %d"), raw_len));
+			AddLogLineN(wxString::Format(wxT("Codec fallback: LOCALE for string of length %d"), raw_len));
 			return str;
 		}
 		
 		// Step 6: Latin-1 fallback
 		str = wxString(val + skipBytes, wxConvISO8859_1, raw_len - skipBytes);
-		AddDebugLogLineN(logSearch, wxString::Format(wxT("Codec fallback: ISO-8859-1 for string of length %d"), raw_len));
+		AddLogLineN(wxString::Format(wxT("Codec fallback: ISO-8859-1 for string of length %d"), raw_len));
 	}
 
 	return str;
