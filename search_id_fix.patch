@@ -1,0 +1,112 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: CodeArts Agent <agent@codearts.com>
+Date: Sun, 9 Feb 2026 00:00:00 +0000
+Subject: [PATCH] Fix search ID management issues
+
+This patch fixes several issues with search ID management:
+
+1. Adds better debugging when "Search ID is already in use" error occurs
+2. Fixes external connection to pass 0 instead of 0xffffffff
+3. Handles duplicate active searches properly (don't try to reserve already-active IDs)
+4. Releases search IDs when searches complete (OnSearchComplete)
+5. Releases search IDs for searches without results
+
+Fixes: #1 - "Search ID is already in use" error for Global/Local searches
+Fixes: #2 - First search fails unexpectedly
+Fixes: #3 - Search IDs are not properly released
+
+diff --git a/src/ExternalConn.cpp b/src/ExternalConn.cpp
+index abcdef1..1234567 100644
+--- a/src/ExternalConn.cpp
++++ b/src/ExternalConn.cpp
+@@ -1102,7 +1102,7 @@ wxString CECServer::ProcessPacket(const CECPacket *request_packet, CECPacket *re
+ 			}
+ 		/* fall through */
+ 		case EC_SEARCH_LOCAL: {
+-			uint32 search_id = 0xffffffff;
++			uint32 search_id = 0;  // Let SearchList generate a new ID
+ 			wxString error = theApp->searchlist->StartNewSearch(&search_id, core_search_type, params);
+ 			if (!error.IsEmpty()) {
+ 				response = error;
+diff --git a/src/SearchList.cpp b/src/SearchList.cpp
+index abcdef1..1234567 100644
+--- a/src/SearchList.cpp
++++ b/src/SearchList.cpp
+@@ -500,8 +500,15 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, CSearchP
+ 				*searchID = GetNextSearchID();
+ 			} else {
+ 				// If searchID was provided, reserve it in the generator to ensure uniqueness
+-				if (!search::SearchIdGenerator::Instance().reserveId(*searchID)) {
+-					return _("Search ID is already in use");
++				// First check if it's already active (e.g., from duplicate detection)
++				if (search::SearchIdGenerator::Instance().isValidId(*searchID)) {
++					// ID is already active - this happens for duplicate active searches
++					// Don't try to reserve it (it's already reserved)
++					AddDebugLogLineC(logSearch, CFormat(wxT("Reusing active search ID %u for Kad search")) % *searchID);
++				} else if (!search::SearchIdGenerator::Instance().reserveId(*searchID)) {
++					// Add debugging info
++					AddDebugLogLineC(logSearch, CFormat(wxT("Failed to reserve search ID %u for Kad search: already in use or invalid")) % *searchID);
++					return _("Search ID is already in use");
+ 				}
+ 			}
+ 
+@@ -559,8 +566,15 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, CSearchP
+ 			*searchID = GetNextSearchID();
+ 		} else {
+ 			// If searchID was provided, reserve it in the generator to ensure uniqueness
+-			if (!search::SearchIdGenerator::Instance().reserveId(*searchID)) {
+-				return _("Search ID is already in use");
++			// First check if it's already active (e.g., from duplicate detection)
++			if (search::SearchIdGenerator::Instance().isValidId(*searchID)) {
++				// ID is already active - this happens for duplicate active searches
++				// Don't try to reserve it (it's already reserved)
++				AddDebugLogLineC(logSearch, CFormat(wxT("Reusing active search ID %u for ED2K search")) % *searchID);
++			} else if (!search::SearchIdGenerator::Instance().reserveId(*searchID)) {
++				// Add debugging info
++				AddDebugLogLineC(logSearch, CFormat(wxT("Failed to reserve search ID %u for ED2K search: already in use or invalid")) % *searchID);
++				return _("Search ID is already in use");
+ 			}
+ 		}
+ 		
+@@ -735,6 +749,9 @@ void CSearchList::ProcessSearchAnswer(CServer* server, const CMemFile& answer, b
+ 		} else {
+ 			// No results - let the UI handle retry through SearchStateManager
+ 			// Just mark the search as finished internally
++			// Release the search ID since search is complete (no results)
++			search::SearchIdGenerator::Instance().releaseId(m_currentSearch);
++			AddDebugLogLineC(logSearch, CFormat(wxT("Released search ID %u (no results)")) % m_currentSearch);
+ 			m_searchInProgress = false;
+ 		}
+ 	}
+@@ -890,6 +907,9 @@ void CSearchList::ProcessGlobalSearchAnswer(CServer* server, const CMemFile& ans
+ 		} else {
+ 			// No results - let the UI handle retry through SearchStateManager
+ 			// Notify the UI that global search has ended
++			// Release the search ID since search is complete (no results)
++			search::SearchIdGenerator::Instance().releaseId(m_currentSearch);
++			AddDebugLogLineC(logSearch, CFormat(wxT("Released search ID %u (global search, no results)")) % m_currentSearch);
+ 			m_searchInProgress = false;
+ 			Notify_SearchLocalEnd();
+ 		}
+@@ -1645,6 +1665,11 @@ void CSearchList::OnSearchComplete(long searchId, SearchType type, bool hasResul
+ 	} else {
+ 		m_searchInProgress = false;
+ 		Notify_SearchLocalEnd();
++		
++		// Release the search ID for non-Kad searches
++		// Note: We keep the search state for displaying results, but release the ID
++		search::SearchIdGenerator::Instance().releaseId(searchId);
++		AddDebugLogLineC(logSearch, CFormat(wxT("Released search ID %u (search completed with results)")) % searchId);
+ 	}
+ }
+ 
+@@ -1658,6 +1683,9 @@ void CSearchList::OnSearchRetry(long searchId, SearchType type, int retryNum)
+ 	// Get original parameters
+ 	CSearchParams params = GetSearchParams(searchId);
+ 	
++	// Release the old search ID before retrying
++	search::SearchIdGenerator::Instance().releaseId(searchId);
++	
+ 	// Start a new search with the same parameters
+ 	uint32 newSearchId = searchId;  // Try to use the same ID
+ 	wxString error = StartNewSearch(&newSearchId, type, params);

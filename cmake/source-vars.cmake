@@ -1,0 +1,183 @@
+if (BUILD_MONOLITHIC OR BUILD_DAEMON OR BUILD_REMOTEGUI)
+	set (COMMON_SOURCES
+		amuleAppCommon.cpp
+		amuleDlg.cpp
+		ClientRef.cpp
+		ECSpecialMuleTags.cpp
+		GetTickCount.cpp
+		kademlia/utils/UInt128.cpp
+		UserEvents.cpp
+		PartFile.cpp
+		Preferences.cpp
+		SearchStateManager.cpp
+		Statistics.cpp
+		SearchLabelHelper.cpp
+		KnownFile.cpp
+		CatDialog.cpp
+		search/SearchLogging.cpp
+		Server.cpp
+		SearchTimeoutManager.cpp
+		SafeFile.cpp
+	)
+endif()
+
+if (BUILD_MONOLITHIC OR BUILD_DAEMON)
+	set (CORE_SOURCES
+		kademlia/kademlia/Kademlia.cpp
+		kademlia/kademlia/Prefs.cpp
+		kademlia/kademlia/Search.cpp
+		kademlia/kademlia/UDPFirewallTester.cpp
+		kademlia/net/KademliaUDPListener.cpp
+		kademlia/net/PacketTracking.cpp
+		kademlia/routing/Contact.cpp
+		kademlia/routing/RoutingZone.cpp
+		amule.cpp
+		BaseClient.cpp
+		ClientCreditsList.cpp
+		ClientList.cpp
+		ClientTCPSocket.cpp
+		ClientUDPSocket.cpp
+		CorruptionBlackBox.cpp
+		DownloadClient.cpp
+		DownloadQueue.cpp
+		ECSpecialCoreTags.cpp
+		EMSocket.cpp
+		EncryptedStreamSocket.cpp
+		EncryptedDatagramSocket.cpp
+		ExternalConn.cpp
+		FriendList.cpp
+		IPFilter.cpp
+		KnownFileList.cpp
+		ListenSocket.cpp
+		MuleUDPSocket.cpp
+		SearchFile.cpp
+		ServerConnect.cpp
+		ServerList.cpp
+		ServerSocket.cpp
+		ServerUDPSocket.cpp
+		SHAHashSet.cpp
+		SharedFileList.cpp
+		UploadBandwidthThrottler.cpp
+		UploadClient.cpp
+		UploadQueue.cpp
+		ThreadTasks.cpp
+		protocol/ProtocolCoordinator.cpp
+		SearchList.cpp
+		SearchTimeoutManager.cpp
+		Server.cpp
+		PartFileConvert.cpp
+		PartFileConvertDlg.cpp
+		StatTree.cpp
+		Proxy.cpp
+		search/SearchResultRouter.cpp
+		search/SearchControllerFactory.cpp
+		search/ED2KSearchController.cpp
+		search/KadSearchController.cpp
+		search/SearchControllerBase.cpp
+		search/ED2KSearchPacketBuilder.cpp
+		search/KadSearchPacketBuilder.cpp
+		search/PerSearchState.cpp
+		search/SearchIdGenerator.cpp
+		search/ED2KSearchHelper.cpp
+		search/KadSearchHelper.cpp
+		search/SearchAutoRetry.cpp
+		search/SearchPackageException.cpp
+		search/SearchPackageValidator.cpp
+		GuiEvents.cpp
+	)
+endif()
+
+if (BUILD_MONOLITHIC OR BUILD_REMOTEGUI)
+	set (GUI_SOURCES
+		AddFriend.cpp
+		amule-gui.cpp
+		amuleDlg.cpp
+		CatDialog.cpp
+		ChatSelector.cpp
+		ChatWnd.cpp
+		ClientDetailDialog.cpp
+		CommentDialog.cpp
+		CommentDialogLst.cpp
+		DirectoryTreeCtrl.cpp
+		DownloadListCtrl.cpp
+		FileDetailDialog.cpp
+		FriendListCtrl.cpp
+		GenericClientListCtrl.cpp
+		GuiEvents.cpp
+		HTTPDownload.cpp
+		KadDlg.cpp
+		MuleTrayIcon.cpp
+		OScopeCtrl.cpp
+		Preferences.cpp
+		PrefsUnifiedDlg.cpp
+		CaptchaDialog.cpp
+		CaptchaGenerator.cpp
+		ServerWnd.cpp
+		SearchDlg.cpp
+		TransferWnd.cpp
+		SharedFilesWnd.cpp
+		StatisticsDlg.cpp
+		SourceListCtrl.cpp
+		ServerListCtrl.cpp
+		SharedFilePeersListCtrl.cpp
+		SharedFilesCtrl.cpp
+		SearchListCtrl.cpp
+		search/SearchModel.cpp
+		search/UnifiedSearchManager.cpp
+		GeoIPConfigDlg.cpp
+	)
+endif()
+
+if (BUILD_REMOTEGUI)
+	set (GUI_REMOTE_SOURCES
+		MuleTrayIcon.cpp
+		OScopeCtrl.cpp
+		amule-gui.cpp
+		amule-remote-gui.cpp
+		ServerWnd.cpp
+		SearchDlg.cpp
+		TransferWnd.cpp
+		SharedFilesWnd.cpp
+		StatisticsDlg.cpp
+		GeoIPConfigDlg.cpp
+		SourceListCtrl.cpp
+		ServerListCtrl.cpp
+		SharedFilePeersListCtrl.cpp
+		SharedFilesCtrl.cpp
+		MuleListCtrl.cpp
+		extern/wxWidgets/listctrl.cpp
+		GenericClientListCtrl.cpp
+		DownloadListCtrl.cpp
+		FileDetailListCtrl.cpp
+		FriendListCtrl.cpp
+		ColorFrameCtrl.cpp
+		MuleGifCtrl.cpp
+		MuleNotebook.cpp
+		MuleTextCtrl.cpp
+		BarShader.cpp
+		MuleCollection.cpp
+		ChatWnd.cpp
+		ClientDetailDialog.cpp
+		AddFriend.cpp
+		DirectoryTreeCtrl.cpp
+		KadDlg.cpp
+		ChatSelector.cpp
+		CommentDialog.cpp
+		CommentDialogLst.cpp
+		FileDetailDialog.cpp
+		GuiEvents.cpp
+		search/SearchModel.cpp
+		SearchListCtrl.cpp
+		PrefsUnifiedDlg.cpp
+		Proxy.cpp
+		StatTree.cpp
+	)
+endif()
+
+if (ENABLE_IP2COUNTRY)
+	set (IP2COUNTRY IP2Country.cpp)
+endif()
+
+if (ENABLE_UPNP)
+	set (UPNP_SOURCES ${CMAKE_SOURCE_DIR}/src/UPnPBase.cpp)
+endif()

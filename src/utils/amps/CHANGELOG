@@ -1,0 +1,78 @@
+AMPS Changelog
+
+version 0.7.6
+
+- fulgas: added Kad info to amps
+
+version 0.7.5
+-------------
+- Fixed parsing of ps output to take into account other processes with 'amule'
+  in the process name. (thanks GonoszTopi)
+
+version 0.7.4
+-------------
+- Translation updates
+
+version 0.7.3
+-------------
+- Fixed minor bug in the language parsing
+
+version 0.7.2
+-------------
+- Added new 'connecting' connection status.
+- Catalan and Spanish translations updated by Jacobo221
+- Dutch translation updated by Supersnail
+- French translation updated by thepolish and efe
+- Hungarian translation updated by biger
+- Basque translation updated by piarres
+- Portuguese Brazilian translation added by IgoR <igor.spy@gmx.net>
+
+version 0.7.1
+-------------
+- Added setting to allow easy changing of the text color used in the signature
+  image. (you're welcome deltaHF)
+- Fixed BSD support (thanks to Stevil for the help)
+
+version 0.7
+-----------
+- Removed the requirement of register_globals being set in your php.ini (yay!)
+
+version 0.6
+-----------
+- Added support for writing the signature image in PNG, JPEG, and GIF format
+  (assuming the GD installation supports these). Default is now PNG.
+- Modified error images to use the same font as the signature image.
+- Made language selection non case-sensative.
+
+version 0.5
+-----------
+- Minor updates to allow AMPS to work with the signature file format used in
+  the current amule CVS (I developed AMPS with an older stable version).
+- Basque translation added by piarres
+
+version 0.4
+-----------
+- Improved multilingual support
+- Polish translation added by Ogon
+- Dutch translation added by Supersnail
+- Hungarian translation added by biger
+- Catalan translation added by pukyxd
+- Portuguese translation added by rommel
+- Italian translation added by GhePeU and ilbuio
+- French translation added by thepolish
+
+version 0.3
+-----------
+- Added drop-down list box that allows language selection
+
+version 0.2
+-----------
+- First public release
+- Multilanguage support
+- German translation added by Citroklar
+- Spanish translation added by Jacobo221
+- Finnish translation added by Nikerabbit
+
+version 0.1
+-----------
+- Initial unreleased testing version

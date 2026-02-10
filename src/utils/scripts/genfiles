@@ -1,0 +1,86 @@
+#!/bin/sh -eu
+
+###
+# (Re)generate parser and lexer files
+#
+# The script will regenerate lexers and parsers. Must be run from either the
+# scripts directory or from the source tree root, or from the src subdirectory.
+#
+# The script will update only those files whose source (.l or .y file) is newer
+# than the generated C/C++ files (and the ones that are missing, of course).
+# The generated files are then post-processed to remove trailing whitespace.
+#
+# The script will automatically try to find the flex and bison executables,
+# however, you can specify their location in the FLEX and YACC environment
+# variables, respectively. It's your responsibility to supply suitable versions
+# of the required programs that understand the passed flags.
+#
+
+file_to_test="Scanner.l"
+
+# Find the sources and cd to src
+if [ -f src/"${file_to_test}" ]; then
+	# We're in the source tree root
+	cd src
+elif [ -f ../../"${file_to_test}" ]; then
+	# The script is being run from the scripts directory
+	cd ../..
+fi
+
+# Check if we're at the right location
+if [ ! -f "${file_to_test}" ]; then
+	echo "Fatal error: Cannot find the sources" >&2
+	exit 1
+fi
+
+${FLEX+:} false || FLEX=`which flex 2>/dev/null` || true
+${FLEX+:} false || FLEX=`which lex 2>/dev/null` || true
+${YACC+:} false || YACC=`which bison 2>/dev/null` || true
+${YACC+:} false || YACC=`which yacc 2>/dev/null` || true
+
+if [ -z "${FLEX}" ]; then
+	echo "Fatal error: flex executable not found" >&2
+	echo "You can specify the flex executable to be used in the FLEX environment variable" >&2
+	exit 1
+fi
+
+if [ -z "${YACC}" ]; then
+	echo "Fatal error: bison/yacc executable not found" >&2
+	echo "You can specify the bison or yacc executable to be used in the YACC environment variable" >&2
+	exit 1
+fi
+
+
+if [ ! -e IPFilterScanner.cpp -o IPFilterScanner.l -nt IPFilterScanner.cpp ]; then
+	echo "${FLEX}" -P yyip --nounput -o IPFilterScanner.cpp ./IPFilterScanner.l
+	"${FLEX}" -P yyip --nounput -o IPFilterScanner.cpp ./IPFilterScanner.l
+	sed -e 's/[ 	]*$//' -i IPFilterScanner.cpp
+fi
+
+if [ ! -e Scanner.cpp -o ! -e Scanner.h -o Scanner.l -nt Scanner.cpp -o Scanner.l -nt Scanner.h ]; then
+	echo "${FLEX}" --header-file=./Scanner.h -o Scanner.cpp ./Scanner.l
+	"${FLEX}" --header-file=./Scanner.h -o Scanner.cpp ./Scanner.l
+	sed -e 's/[ 	]*$//' -i Scanner.cpp Scanner.h
+fi
+
+if [ ! -e Parser.cpp -o ! -e Parser.hpp -o Parser.y -nt Parser.cpp -o Parser.y -nt Parser.hpp ]; then
+	echo "${YACC}" --debug -t -d -v -o Parser.cpp ./Parser.y
+	"${YACC}" --debug -t -d -v -o Parser.cpp ./Parser.y
+	rm -f Parser.output
+	sed -e 's/[ 	]*$//' -i Parser.cpp Parser.hpp
+fi
+
+cd webserver/src
+
+if [ ! -e php_lexer.c -o php_lexer.l -nt php_lexer.c ]; then
+	echo "${FLEX}" -P php --nounput --noyy_top_state --noyy_pop_state --noyy_push_state -o php_lexer.c php_lexer.l
+	"${FLEX}" -P php --nounput --noyy_top_state --noyy_pop_state --noyy_push_state -o php_lexer.c php_lexer.l
+	sed -e 's/[ 	]*$//' -i php_lexer.c
+fi
+
+if [ ! -e php_parser.c -o ! -e php_parser.h -o php_parser.y -nt php_parser.c -o php_parser.y -nt php_parser.h ]; then
+	echo "${YACC}" --debug -t -d -v -p php -o php_parser.c php_parser.y
+	"${YACC}" --debug -t -d -v -p php -o php_parser.c php_parser.y
+	rm -f php_parser.output
+	sed -e 's/[ 	]*$//' -i php_parser.c php_parser.h
+fi

@@ -1,0 +1,8 @@
+amule	ICON	"amule.ico"
+convert	ICON	"convert.ico"
+
+#ifndef _MSC_VER
+#include <wx/msw/wx.rc>
+#endif
+
+
