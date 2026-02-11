@@ -1108,10 +1108,32 @@ void CSearchList::ProcessSearchAnswer(const uint8_t* in_packet, uint32_t size, b
 		return;
 	}
 
-	// Collect all results first
+	// Collect all results first with exception handling for corrupted packets
 	std::vector<CSearchFile*> resultVector;
+	uint32_t corruptedCount = 0;
 	for (; results > 0; --results) {
-		resultVector.push_back(new CSearchFile(packet, optUTF8, searchId, serverIP, serverPort));
+		try {
+			resultVector.push_back(new CSearchFile(packet, optUTF8, searchId, serverIP, serverPort));
+		} catch (const CInvalidPacket& e) {
+			// Log the error and skip this corrupted result
+			corruptedCount++;
+			AddDebugLogLineN(logSearch, CFormat(wxT("Dropped corrupted search result from %s: %s"))
+				% Uint32_16toStringIP_Port(serverIP, serverPort)
+				% e.what());
+		} catch (...) {
+			// Catch any other exceptions and skip this result
+			corruptedCount++;
+			AddDebugLogLineN(logSearch, CFormat(wxT("Dropped search result from %s due to unexpected error"))
+				% Uint32_16toStringIP_Port(serverIP, serverPort));
+		}
+	}
+
+	// Log summary of corrupted results if any were found
+	if (corruptedCount > 0) {
+		AddDebugLogLineN(logSearch, CFormat(wxT("Dropped %u corrupted search results out of %u total from %s"))
+			% corruptedCount
+			% (corruptedCount + resultVector.size())
+			% Uint32_16toStringIP_Port(serverIP, serverPort));
 	}
 
 	// Process results through validator (this adds them to SearchList)
@@ -1150,8 +1172,22 @@ void CSearchList::ProcessUDPSearchAnswer(const CMemFile& packet, bool optUTF8, u
 		return;
 	}
 
-	// Create result
-	CSearchFile* result = new CSearchFile(packet, optUTF8, searchId, serverIP, serverPort);
+	// Create result with exception handling for corrupted packets
+	CSearchFile* result = NULL;
+	try {
+		result = new CSearchFile(packet, optUTF8, searchId, serverIP, serverPort);
+	} catch (const CInvalidPacket& e) {
+		// Log the error and drop this corrupted result
+		AddDebugLogLineN(logSearch, CFormat(wxT("Dropped corrupted UDP search result from %s: %s"))
+			% Uint32_16toStringIP_Port(serverIP, serverPort)
+			% e.what());
+		return;
+	} catch (...) {
+		// Catch any other exceptions and drop the result
+		AddDebugLogLineN(logSearch, CFormat(wxT("Dropped UDP search result from %s due to unexpected error"))
+			% Uint32_16toStringIP_Port(serverIP, serverPort));
+		return;
+	}
 
 	// Process result through validator (this adds it to SearchList)
 	NOT_ON_REMOTEGUI(
@@ -1172,6 +1208,49 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 
 		delete toadd;
 		return false;
+	}
+
+	// Validate FileID - reject results with corrupted hashes
+	// This is a defense-in-depth check to catch any corrupted results
+	// that might slip through packet validation in CSearchFile constructor
+	const CMD4Hash& fileHash = toadd->GetFileHash();
+	if (fileHash.IsCorrupted()) {
+		AddDebugLogLineN(logSearch,
+				CFormat(wxT("Dropped result with corrupted FileID: %s, FileID: %s"))
+					% toadd->GetFileName().GetPrintable()
+					% fileHash.Encode());
+		delete toadd;
+		return false;
+	}
+
+	// Drop results with mojibake (corrupted filenames)
+	// Check for the 啐 character which is a common sign of UTF-8 encoding corruption
+	wxString fileName = toadd->GetFileName().GetPrintable();
+	if (fileName.Find(wxT("啐")) != wxNOT_FOUND || fileName.Find(wxT("")) != wxNOT_FOUND) {
+		// Check if there's already a clean version of this file (same hash)
+		bool hasCleanVersion = false;
+		CSearchResultList& results = m_results[toadd->GetSearchID()];
+		for (size_t i = 0; i < results.size(); ++i) {
+			CSearchFile* item = results.at(i);
+			if (toadd->GetFileHash() == item->GetFileHash() && toadd->GetFileSize() == item->GetFileSize()) {
+				wxString existingName = item->GetFileName().GetPrintable();
+				// Check if the existing version doesn't have mojibake
+				if (existingName.Find(wxT("啐")) == wxNOT_FOUND && existingName.Find(wxT("")) == wxNOT_FOUND) {
+					hasCleanVersion = true;
+					break;
+				}
+			}
+		}
+
+		if (hasCleanVersion) {
+			// Drop this corrupted version since we have a clean one
+			AddDebugLogLineN(logSearch,
+					CFormat(wxT("Dropped corrupted result (clean version exists): %s"))
+						% fileName);
+			delete toadd;
+			return false;
+		}
+		// Otherwise, keep it (better to show corrupted than nothing)
 	}
 
 	// Get the result type for this specific search (thread-safe)
@@ -1207,7 +1286,10 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 		CSearchFile* item = results.at(i);
 
 		if ((toadd->GetFileHash() == item->GetFileHash()) && (toadd->GetFileSize() == item->GetFileSize())) {
-			AddDebugLogLineN(logSearch, CFormat(wxT("Received duplicate results for '%s' : %s")) % item->GetFileName().GetPrintable() % item->GetFileHash().Encode());
+			AddDebugLogLineN(logSearch, CFormat(wxT("Received duplicate results for FileID %s: '%s' (existing) vs '%s' (new)"))
+				% toadd->GetFileHash().Encode()
+				% item->GetFileName().GetPrintable()
+				% toadd->GetFileName().GetPrintable());
 			// Add the child, possibly updating the parents filename.
 			item->AddChild(toadd);
 			Notify_Search_Update_Sources(item);
