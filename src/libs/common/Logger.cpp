@@ -262,14 +262,23 @@ static wxString SanitizeLogString(const wxString &str)
 	wxString result;
 	result.reserve(str.Length());
 
+	size_t replacementCharCount = 0; // Track consecutive replacement characters
+
 	for (size_t i = 0; i < str.Length(); ++i) {
 		wxChar c = str[i];
+
+		// U+FFFD is the Unicode replacement character - remove it
+		if (c == 0xFFFD) {
+			++replacementCharCount;
+			continue; // Skip this character
+		}
 
 		// Check if the character is valid Unicode
 		// Surrogate pairs (0xD800-0xDFFF) are invalid in UTF-8 outside of UTF-16
 		if (c >= 0xDC00 && c <= 0xDFFF) {
 			// Invalid low surrogate, replace with '?'
 			result += wxT('?');
+			replacementCharCount = 0;
 		} else if (c >= 0xD800 && c <= 0xDBFF) {
 			// Check if this is a valid high surrogate with following low surrogate
 			if (i + 1 < str.Length() && str[i + 1] >= 0xDC00 && str[i + 1] <= 0xDFFF) {
@@ -277,22 +286,28 @@ static wxString SanitizeLogString(const wxString &str)
 				result += c;
 				++i; // Skip the low surrogate
 				result += str[i];
+				replacementCharCount = 0;
 			} else {
 				// Invalid high surrogate without low surrogate, replace with '?'
 				result += wxT('?');
+				replacementCharCount = 0;
 			}
 		} else if (c >= 0xFDD0 && c <= 0xFDEF) {
 			// Non-characters (U+FDD0 to U+FDEF), replace with '?'
 			result += wxT('?');
+			replacementCharCount = 0;
 		} else if ((c & 0xFFFE) == 0xFFFE) {
 			// Non-characters U+FFFE, U+FFFF, U+1FFFE, U+1FFFF, etc.
 			// Any code point ending in FFFE or FFFF is a non-character
 			result += wxT('?');
+			replacementCharCount = 0;
 		} else if (c > 0x10FFFF) {
 			// Beyond Unicode maximum (U+10FFFF), replace with '?'
 			result += wxT('?');
+			replacementCharCount = 0;
 		} else {
 			result += c;
+			replacementCharCount = 0;
 		}
 	}
 
