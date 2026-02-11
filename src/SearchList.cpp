@@ -1167,7 +1167,7 @@ void CSearchList::ProcessSearchAnswer(const uint8_t* in_packet, uint32_t size, b
 
 	// If no valid search ID found, drop the results
 	if (searchId == -1) {
-		AddDebugLogLineN(logSearch, wxString::Format(wxT("Received search results from %s:%u but no matching active search found, dropping results"),
+		AddDebugLogLineN(logSearch, wxString::Format(wxT("Received search results from %u:%u but no matching active search found, dropping results"),
 			(uint32_t)serverIP, serverPort));
 		return;
 	}
