@@ -24,7 +24,6 @@
 //
 
 #include "SearchList.h"		// Interface declarations.
-#include "SearchTimeoutManager.h"	// Search timeout manager
 #include "search/SearchAutoRetry.h"	// Auto-retry manager
 #include "search/SearchPackageValidator.h"	// Package validator
 #include "search/SearchPackageException.h"	// Package exception
@@ -285,43 +284,9 @@ END_EVENT_TABLE()
 
 CSearchList::CSearchList()
 {
-	// Initialize search timeout manager
-	m_timeoutManager = std::make_unique<SearchTimeoutManager>();
-
-	// Set timeout callback to handle search timeouts
-	m_timeoutManager->setTimeoutCallback(
-		[this](uint32_t searchId, SearchTimeoutManager::SearchType type, const wxString& reason) {
-			// Convert SearchTimeoutManager::SearchType to SearchTimeoutType
-			SearchTimeoutType timeoutType;
-			switch (type) {
-				case SearchTimeoutManager::LocalSearch:
-					timeoutType = TimeoutLocalSearch;
-					break;
-				case SearchTimeoutManager::GlobalSearch:
-					timeoutType = TimeoutGlobalSearch;
-					break;
-				case SearchTimeoutManager::KadSearch:
-					timeoutType = TimeoutKadSearch;
-					break;
-				default:
-					timeoutType = TimeoutLocalSearch;
-					break;
-			}
-			OnSearchTimeout(searchId, timeoutType, reason);
-		}
-	);
-
-	// Configure timeouts for different search types
-	// Local searches: 30 seconds (quick response expected)
-	m_timeoutManager->setLocalSearchTimeout(30000);
-	// Global searches: 2 minutes (can take longer to query multiple servers)
-	m_timeoutManager->setGlobalSearchTimeout(120000);
-	// Kad searches: 3 minutes (Kad network can be slower)
-	m_timeoutManager->setKadSearchTimeout(180000);
-	// Heartbeat interval: 10 seconds (check for stalled searches)
-	m_timeoutManager->setHeartbeatInterval(10000);
-
-	AddDebugLogLineC(logSearch, wxT("CSearchList: SearchTimeoutManager initialized with callbacks"));
+	// Retry logic now handled by controllers
+	// Per-search state initialized on demand
+	// All legacy global state has been removed
 }
 
 
@@ -681,35 +646,6 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, CSearchP
 	if (type == KadSearch) {
 		AddDebugLogLineC(logSearch, CFormat(wxT("Kad search prepared: ID=%u, Keyword='%s'"))
 			% *searchID % params.strKeyword);
-	}
-
-	// RELIABLE RETRY FIX: Register search with timeout manager
-	// This ensures searches don't get stuck in [Searching] state
-	// The timeout manager will detect stalled searches and trigger recovery
-	if (m_timeoutManager) {
-		SearchTimeoutManager::SearchType timeoutType;
-		switch (type) {
-			case LocalSearch:
-				timeoutType = SearchTimeoutManager::LocalSearch;
-				break;
-			case GlobalSearch:
-				timeoutType = SearchTimeoutManager::GlobalSearch;
-				break;
-			case KadSearch:
-				timeoutType = SearchTimeoutManager::KadSearch;
-				break;
-			default:
-				timeoutType = SearchTimeoutManager::LocalSearch;
-				break;
-		}
-
-		if (!m_timeoutManager->registerSearch(*searchID, timeoutType)) {
-			AddDebugLogLineC(logSearch, CFormat(wxT("Failed to register search %u with timeout manager"))
-				% *searchID);
-		} else {
-			AddDebugLogLineC(logSearch, CFormat(wxT("Search %u registered with timeout manager (type=%d)"))
-				% *searchID % (int)timeoutType);
-		}
 	}
 
 	return wxEmptyString;
@@ -1167,8 +1103,8 @@ void CSearchList::ProcessSearchAnswer(const uint8_t* in_packet, uint32_t size, b
 
 	// If no valid search ID found, drop the results
 	if (searchId == -1) {
-		AddDebugLogLineN(logSearch, wxString::Format(wxT("Received search results from %u:%u but no matching active search found, dropping results"),
-			(uint32_t)serverIP, serverPort));
+		AddDebugLogLineN(logSearch, CFormat(wxT("Received search results from %s but no matching active search found, dropping results"))
+			% Uint32_16toStringIP_Port(serverIP, serverPort));
 		return;
 	}
 
@@ -1209,8 +1145,8 @@ void CSearchList::ProcessUDPSearchAnswer(const CMemFile& packet, bool optUTF8, u
 	// If no valid search ID found, drop the result
 	// UDP results should only go to global searches, not local searches
 	if (searchId == -1) {
-		AddDebugLogLineN(logSearch, wxString::Format(wxT("Received UDP search result from %s:%u but no active global search found, dropping result"),
-			(uint32_t)serverIP, serverPort));
+		AddDebugLogLineN(logSearch, CFormat(wxT("Received UDP search result from %s but no active global search found, dropping result"))
+			% Uint32_16toStringIP_Port(serverIP, serverPort));
 		return;
 	}
 
@@ -1287,14 +1223,6 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 	results.push_back(toadd);
 	Notify_Search_Add_Result(toadd);
 
-	// RELIABLE RETRY FIX: Update heartbeat when results are received
-	// This indicates the search is making progress and should not be timed out
-	if (m_timeoutManager) {
-		m_timeoutManager->updateHeartbeat(toadd->GetSearchID());
-		AddDebugLogLineC(logSearch, CFormat(wxT("Updated heartbeat for search %u (result received)"))
-			% toadd->GetSearchID());
-	}
-
 	return true;
 }
 
@@ -1341,13 +1269,6 @@ void CSearchList::StopSearch(bool globalOnly)
 
 void CSearchList::StopSearch(long searchID, bool globalOnly)
 {
-	// RELIABLE RETRY FIX: Unregister search from timeout manager
-	if (m_timeoutManager && m_timeoutManager->isSearchRegistered(searchID)) {
-		m_timeoutManager->unregisterSearch(searchID);
-		AddDebugLogLineC(logSearch, CFormat(wxT("Unregistered search %u from timeout manager"))
-			% searchID);
-	}
-
 	// Get the search state for this ID
 	auto* searchState = getSearchState(searchID);
 	if (!searchState) {
@@ -1867,13 +1788,6 @@ void CSearchList::SetKadSearchFinished()
 
 void CSearchList::OnSearchComplete(long searchId, SearchType type, bool hasResults)
 {
-	// RELIABLE RETRY FIX: Unregister search from timeout manager
-	if (m_timeoutManager && m_timeoutManager->isSearchRegistered(searchId)) {
-		m_timeoutManager->unregisterSearch(searchId);
-		AddDebugLogLineC(logSearch, CFormat(wxT("Unregistered search %u from timeout manager (on complete)"))
-			% searchId);
-	}
-
 	// Update result count
 	ResultMap::iterator it = m_results.find(searchId);
 	int resultCount = (it != m_results.end()) ? it->second.size() : 0;
@@ -1990,189 +1904,6 @@ void CSearchList::OnSearchRetry(long searchId, SearchType type, int retryNum)
 	AddDebugLogLineC(logSearch,
 		wxString::Format(wxT("Retry %d started for search %ld (new ID: %u)"),
 			retryNum, searchId, newSearchId));
-}
-
-
-// RELIABLE RETRY FIX: Handle search timeout from SearchTimeoutManager
-void CSearchList::OnSearchTimeout(uint32_t searchId, SearchTimeoutType type, const wxString& reason)
-{
-	AddDebugLogLineC(logSearch, CFormat(wxT("OnSearchTimeout: SearchID=%u, Type=%d, Reason='%s'"))
-		% searchId % (int)type % reason);
-
-	// Get the per-search state
-	::PerSearchState* state = getSearchState(searchId);
-	if (!state) {
-		AddDebugLogLineC(logSearch, CFormat(wxT("Search timeout for %u: state not found, already cleaned up"))
-			% searchId);
-		return;
-	}
-
-	// Check if search is still active
-	if (!state->isSearchActive()) {
-		AddDebugLogLineC(logSearch, CFormat(wxT("Search timeout for %u: search already inactive, ignoring"))
-			% searchId);
-		return;
-	}
-
-	// Check if we have results
-	ResultMap::iterator it = m_results.find(searchId);
-	bool hasResults = (it != m_results.end()) && !it->second.empty();
-
-	if (hasResults) {
-		// Search has results but didn't complete properly
-		// Mark it as complete with results
-		AddDebugLogLineC(logSearch, CFormat(wxT("Search timeout for %u: has %zu results, marking as complete"))
-			% searchId % it->second.size());
-
-		// Convert SearchTimeoutType to SearchType
-		SearchType searchType;
-		switch (type) {
-			case TimeoutLocalSearch:
-				searchType = LocalSearch;
-				break;
-			case TimeoutGlobalSearch:
-				searchType = GlobalSearch;
-				break;
-			case TimeoutKadSearch:
-				searchType = KadSearch;
-				break;
-			default:
-				searchType = LocalSearch;
-				break;
-		}
-
-		OnSearchComplete(searchId, searchType, true);
-	} else {
-		// Search has no results and timed out
-		// This is the critical case where searches get stuck in [Searching] state
-		AddDebugLogLineC(logSearch, CFormat(wxT("Search timeout for %u: no results, triggering recovery"))
-			% searchId);
-
-		// Convert SearchTimeoutType to SearchType
-		SearchType searchType;
-		switch (type) {
-			case TimeoutLocalSearch:
-				searchType = LocalSearch;
-				break;
-			case TimeoutGlobalSearch:
-				searchType = GlobalSearch;
-				break;
-			case TimeoutKadSearch:
-				searchType = KadSearch;
-				break;
-			default:
-				searchType = LocalSearch;
-				break;
-		}
-
-		// Check if we can retry
-		int maxRetries = 3;
-		int currentRetry = 0;
-
-		if (state) {
-			currentRetry = state->getKadSearchRetryCount();
-		}
-
-		if (currentRetry < maxRetries) {
-			// Trigger retry
-			AddDebugLogLineC(logSearch, CFormat(wxT("Search timeout for %u: triggering retry (%d/%d)"))
-				% searchId % (currentRetry + 1) % maxRetries);
-
-			OnSearchRetry(searchId, searchType, currentRetry + 1);
-		} else {
-			// Max retries reached, mark as complete with no results
-			AddDebugLogLineC(logSearch, CFormat(wxT("Search timeout for %u: max retries reached, marking as complete with no results"))
-				% searchId);
-
-			// Mark search as inactive
-			if (state) {
-				state->setSearchActive(false);
-			}
-
-			// Release the search ID
-			if (search::SearchIdGenerator::Instance().releaseId(searchId)) {
-				AddDebugLogLineC(logSearch, CFormat(wxT("Released search ID %u (timeout, max retries reached)"))
-					% searchId);
-			}
-
-			// Remove search state
-			removeSearchState(searchId, false);
-
-			// Notify that search ended with no results
-			// This will trigger the UI to show [No Results] instead of [Searching]
-			if (searchType == GlobalSearch) {
-				Notify_SearchLocalEnd();
-			}
-		}
-	}
-}
-
-
-// RELIABLE RETRY FIX: Validate and recover stuck searches
-void CSearchList::ValidateAndRecoverSearches()
-{
-	// This method can be called periodically to validate search states
-	// and recover any searches that might be stuck
-
-	wxMutexLocker lock(m_searchMutex);
-
-	for (auto it = m_searchStates.begin(); it != m_searchStates.end(); ) {
-		long searchId = it->first;
-		::PerSearchState* state = it->second.get();
-
-		if (!state || !state->isSearchActive()) {
-			// Skip inactive searches
-			++it;
-			continue;
-		}
-
-		// Check if search is registered with timeout manager
-		if (m_timeoutManager && !m_timeoutManager->isSearchRegistered(searchId)) {
-			// Search is active but not registered with timeout manager
-			// This is a bug - register it now
-			AddDebugLogLineC(logSearch, CFormat(wxT("Recovery: Active search %u not registered with timeout manager, registering now"))
-				% searchId);
-
-			SearchTimeoutManager::SearchType timeoutType;
-			switch (state->getSearchType()) {
-				case LocalSearch:
-					timeoutType = SearchTimeoutManager::LocalSearch;
-					break;
-				case GlobalSearch:
-					timeoutType = SearchTimeoutManager::GlobalSearch;
-					break;
-				case KadSearch:
-					timeoutType = SearchTimeoutManager::KadSearch;
-					break;
-				default:
-					timeoutType = SearchTimeoutManager::LocalSearch;
-					break;
-			}
-
-			m_timeoutManager->registerSearch(searchId, timeoutType);
-		}
-
-		// Check if timer is running for ED2K searches
-		uint8_t searchType = state->getSearchType();
-		if (searchType == LocalSearch || searchType == GlobalSearch) {
-			if (!state->isTimerRunning()) {
-				// Search is active but timer is not running
-				// This is a bug - restart the timer
-				AddDebugLogLineC(logSearch, CFormat(wxT("Recovery: Active search %u (type=%d) timer not running, restarting"))
-					% searchId % (int)searchType);
-
-				if (searchType == LocalSearch) {
-					// Restart timeout timer
-					state->startTimer(30000, true);
-				} else if (searchType == GlobalSearch) {
-					// Restart global search timer
-					state->startTimer(750, false);
-				}
-			}
-		}
-
-		++it;
-	}
 }
 
 

@@ -281,6 +281,7 @@ public:
 		applog = NULL;
 		m_StdoutLog = false;
 		m_count = 0;
+		m_inEmergency = false;
 	}
 
 private:
@@ -290,6 +291,7 @@ private:
 	bool m_StdoutLog;
 	int  m_count;			// output line counter
 	wxMutex m_lineLock;
+	bool m_inEmergency;		// Flag to prevent recursive crashes
 
 	/**
 	 * Write all waiting log info to the logfile

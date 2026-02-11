@@ -256,19 +256,66 @@ void CLogger::DoLines(const wxString & lines, bool critical, bool toStdout, bool
 }
 
 
+// Helper function to sanitize strings for logging by converting invalid Unicode characters
+static wxString SanitizeLogString(const wxString &str)
+{
+	wxString result;
+	result.reserve(str.Length());
+
+	for (size_t i = 0; i < str.Length(); ++i) {
+		wxChar c = str[i];
+
+		// Check if the character is valid Unicode
+		// Surrogate pairs (0xD800-0xDFFF) are invalid in UTF-8 outside of UTF-16
+		if (c >= 0xDC00 && c <= 0xDFFF) {
+			// Invalid low surrogate, replace with '?'
+			result += wxT('?');
+		} else if (c >= 0xD800 && c <= 0xDBFF) {
+			// Check if this is a valid high surrogate with following low surrogate
+			if (i + 1 < str.Length() && str[i + 1] >= 0xDC00 && str[i + 1] <= 0xDFFF) {
+				// Valid surrogate pair, keep both
+				result += c;
+				++i; // Skip the low surrogate
+				result += str[i];
+			} else {
+				// Invalid high surrogate without low surrogate, replace with '?'
+				result += wxT('?');
+			}
+		} else if (c >= 0xFDD0 && c <= 0xFDEF) {
+			// Non-characters (U+FDD0 to U+FDEF), replace with '?'
+			result += wxT('?');
+		} else if ((c & 0xFFFE) == 0xFFFE) {
+			// Non-characters U+FFFE, U+FFFF, U+1FFFE, U+1FFFF, etc.
+			// Any code point ending in FFFE or FFFF is a non-character
+			result += wxT('?');
+		} else if (c > 0x10FFFF) {
+			// Beyond Unicode maximum (U+10FFFF), replace with '?'
+			result += wxT('?');
+		} else {
+			result += c;
+		}
+	}
+
+	return result;
+}
+
+
 void CLogger::DoLine(const wxString & line, bool toStdout, bool GUI_ONLY(toGUI))
 {
+	// Sanitize the line to prevent crashes from invalid Unicode characters
+	wxString sanitizedLine = SanitizeLogString(line);
+
 	{
 		wxMutexLocker lock(m_lineLock);
 		++m_count;
 
 		// write to logfile
-		m_ApplogBuf += line;
+		m_ApplogBuf += sanitizedLine;
 		FlushApplog();
 
 		// write to Stdout
 		if (m_StdoutLog || toStdout) {
-			printf("%s", (const char*)unicode2char(line));
+			printf("%s", (const char*)unicode2char(sanitizedLine));
 		}
 	}
 #ifndef AMULE_DAEMON
@@ -276,7 +323,7 @@ void CLogger::DoLine(const wxString & line, bool toStdout, bool GUI_ONLY(toGUI))
 	if (toGUI) {
 		// ARCHITECTURAL PRINCIPLE: This is called from the main thread only
 		// (via the event queue). No mutex needed because we're single-threaded here.
-		theApp->AddGuiLogLine(line);
+		theApp->AddGuiLogLine(sanitizedLine);
 	}
 #endif
 }
@@ -285,8 +332,15 @@ void CLogger::DoLine(const wxString & line, bool toStdout, bool GUI_ONLY(toGUI))
 void CLogger::EmergencyLog(const wxString &message, bool closeLog)
 {
 	fprintf(stderr, "%s", (const char*)unicode2char(message));
-	m_ApplogBuf += message;
-	FlushApplog();
+
+	// Prevent recursive crashes during emergency logging
+	if (!m_inEmergency) {
+		m_inEmergency = true;
+		m_ApplogBuf += message;
+		FlushApplog();
+		m_inEmergency = false;
+	}
+
 	if (closeLog && applog) {
 		applog->Close();
 		applog = NULL;
@@ -297,9 +351,17 @@ void CLogger::EmergencyLog(const wxString &message, bool closeLog)
 void CLogger::FlushApplog()
 {
 	if (applog) { // Wait with output until logfile is actually opened
-		wxStringInputStream stream(m_ApplogBuf);
-		(*applog) << stream;
-		applog->Sync();
+		// Sanitize the buffer to prevent crashes from invalid Unicode characters
+		wxString sanitizedBuf = SanitizeLogString(m_ApplogBuf);
+
+		// Only create the stream if we're not already in an emergency state
+		// to prevent recursive crashes
+		if (!m_inEmergency) {
+			wxStringInputStream stream(sanitizedBuf);
+			(*applog) << stream;
+			applog->Sync();
+		}
+
 		m_ApplogBuf.Clear();
 	}
 }

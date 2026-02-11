@@ -36,15 +36,6 @@
 
 // Forward declarations
 class PerSearchState;
-class SearchTimeoutManager;
-
-// Forward declare SearchTimeoutManager::SearchType enum for use in method signatures
-// We need to use a separate enum to avoid circular dependency issues
-enum SearchTimeoutType {
-	TimeoutLocalSearch = 0,
-	TimeoutGlobalSearch,
-	TimeoutKadSearch
-};
 
 namespace search {
 	class SearchAutoRetry;
@@ -316,12 +307,6 @@ private:
 	/** Event-handler for search timers (both local timeout and global search). */
 	void OnSearchTimer(CTimerEvent& evt);
 
-	/** Handle search timeout from SearchTimeoutManager */
-	void OnSearchTimeout(uint32_t searchId, SearchTimeoutType type, const wxString& reason);
-
-	/** Validate and recover stuck searches */
-	void ValidateAndRecoverSearches();
-
 
 	//! Map of active searches and their per-search state
 	//! This is the single source of truth for active searches
@@ -345,9 +330,6 @@ private:
 	//! to the original search ID used by SearchResultRouter
 	typedef std::map<uint32_t, long> KadSearchIdMap;
 	KadSearchIdMap	m_kadSearchIdMap;
-
-	//! Search timeout manager for detecting and recovering stuck searches
-	std::unique_ptr<SearchTimeoutManager> m_timeoutManager;
 
 // Result handlers now managed by SearchResultRouter
 // Package validators now used by controllers directly
