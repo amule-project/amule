@@ -345,7 +345,8 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 								
 								// Check if the conversion produced valid results
 								if (!str.IsEmpty()) {
-									AddLogLineN(wxString::Format(wxT("Codec detected: %s (confidence %d%%) for string of length %d"), wxString(charset).Upper().c_str(), confidence, raw_len));
+									wxString charsetUpper = wxString(charset).Upper();
+									AddLogLineN(wxString::Format(wxT("Codec detected: %s (confidence %d%%) for string of length %d"), charsetUpper.wx_str(), confidence, raw_len));
 									ucsdet_close(csd);
 									return str;
 								}
