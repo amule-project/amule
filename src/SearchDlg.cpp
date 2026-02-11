@@ -881,133 +881,155 @@ void CSearchDlg::OnBnClickedClear(wxCommandEvent &WXUNUSED(event)) {
 
 void CSearchDlg::OnBnClickedMore(wxCommandEvent &WXUNUSED(event)) {
   // Get the currently selected search tab
-  if (m_notebook->GetPageCount() > 0) {
-    CSearchListCtrl *list = static_cast<CSearchListCtrl *>(
-        m_notebook->GetPage(m_notebook->GetSelection()));
-
-    // Get the search ID for this tab - this is atomic
-    long searchId = list->GetSearchId();
-
-    // Debug logging
-    AddDebugLogLineN(logSearch,
-                     CFormat(wxT("More button clicked: searchId=%ld")) %
-                         searchId);
-    AddDebugLogLineN(
-        logSearch,
-        CFormat(wxT("SearchManager has search: %s")) %
-            (m_stateManager.HasSearch(searchId) ? wxT("yes") : wxT("no")));
-
-    // Use SearchStateManager to get the search type instead of parsing tab text
-    wxString searchType = m_stateManager.GetSearchType(searchId);
-    AddDebugLogLineN(logSearch, CFormat(wxT("Search type: %s")) % searchType);
-
-    // The "More" button should only work for eD2k network searches
-    // (Local/Global), not for Kad
-    bool isKadSearch = (searchType == wxT("Kad"));
-    if (isKadSearch) {
-      wxMessageBox(_("The 'More' button does not work for Kad searches."),
-                   _("Search Information"), wxOK | wxICON_INFORMATION);
-      return;
-    }
-
-    // Determine if this is a Local or Global search
-    bool isLocalSearch = (searchType == wxT("Local"));
-    bool isGlobalSearch = (searchType == wxT("Global"));
-
-    // More button should work for both Local and Global searches
-    if (!isLocalSearch && !isGlobalSearch) {
-      // Unknown search type, try to determine from search parameters
-      CSearchList::CSearchParams params =
-          theApp->searchlist->GetSearchParams(searchId);
-      if (params.searchType == KadSearch) {
-        wxMessageBox(_("The 'More' button does not work for Kad searches."),
-                     _("Search Information"), wxOK | wxICON_INFORMATION);
-        return;
-      }
-    }
-
-    // Get search parameters from SearchStateManager
-    CSearchList::CSearchParams params;
-    AddDebugLogLineN(logSearch, wxT("Attempting to get search parameters..."));
-    if (!m_stateManager.GetSearchParams(searchId, params)) {
-      AddDebugLogLineN(logSearch, wxT("Failed to get search parameters!"));
-      wxMessageBox(_("No search parameters available for this search."),
-                   _("Search Error"), wxOK | wxICON_ERROR);
-      return;
-    }
-
-    if (params.searchString.IsEmpty()) {
-      wxMessageBox(_("No search parameters available for this search."),
-                   _("Search Error"), wxOK | wxICON_ERROR);
-      return;
-    }
-
-    // Store the original search ID before making any changes
-    long originalSearchId = searchId;
-
-    // Handle Local and Global searches differently
-    if (params.searchType == LocalSearch) {
-      // For Local searches, we need to convert to Global search
-      // This now reuses the same search ID and queries multiple servers
-      wxString error =
-          theApp->searchlist->RequestMoreResultsForSearch(searchId);
-      if (!error.IsEmpty()) {
-        wxMessageBox(error, _("Search Error"), wxOK | wxICON_ERROR);
-        return;
-      }
-
-      // The search ID remains the same, results will be appended to the
-      // existing list No need to update the list control since we're using the
-      // same search ID
-    } else if (params.searchType == GlobalSearch) {
-      // For Global searches, we continue querying additional servers
-      // The search ID remains the same, but we query more servers
-      wxString error =
-          theApp->searchlist->RequestMoreResultsForSearch(searchId);
-      if (!error.IsEmpty()) {
-        wxMessageBox(error, _("Search Error"), wxOK | wxICON_ERROR);
-        return;
-      }
-
-      // For Global searches, the search ID doesn't change
-      // Results will be appended to the existing list
-    } else {
-      // Kad searches don't support "More" button
-      wxMessageBox(_("The 'More' button does not work for Kad searches."),
-                   _("Search Information"), wxOK | wxICON_INFORMATION);
-      return;
-    }
-
-    // Disable buttons during the new search
-    FindWindow(IDC_STARTS)->Disable();
-    FindWindow(IDC_SDOWNLOAD)->Disable();
-    FindWindow(IDC_CANCELS)->Enable();
-
-    // Get the current tab index for text manipulation
-    int currentTab = m_notebook->GetSelection();
-    wxString originalTabText = m_notebook->GetPageText(currentTab);
-
-    // Save the original tab text before modifying it - use search ID as key
-    m_originalTabTexts[searchId] = originalTabText;
-
-    // Track this "More" button search for timeout detection - use search ID as key
-    m_moreButtonSearches[searchId] = wxDateTime::Now();
-
-    // Update the tab text to reflect that we're requesting more results
-    // Include the current hit count
-    size_t shown = list->GetItemCount();
-    size_t hidden = list->GetHiddenItemCount();
-
-    // Build the new tab text with hit count and "updating" status
-    wxString newText = originalTabText.BeforeLast(wxT('('));
-    if (hidden > 0) {
-      newText += wxString::Format(wxT(" (%zu + %zu hidden) (updating...)"),
-                                  shown, hidden);
-    } else {
-      newText += wxString::Format(wxT(" (%zu) (updating...)"), shown);
-    }
-    m_notebook->SetPageText(currentTab, newText);
+  if (m_notebook->GetPageCount() == 0) {
+    wxMessageBox(_("No search tabs available."), _("Search Error"), wxOK | wxICON_ERROR);
+    return;
   }
+
+  CSearchListCtrl *list = static_cast<CSearchListCtrl *>(
+      m_notebook->GetPage(m_notebook->GetSelection()));
+
+  // Get all information directly from the active tab
+  long searchId = list->GetSearchId();
+  wxString searchType = list->GetSearchType();
+
+  // Debug logging with detailed information
+  AddDebugLogLineN(logSearch,
+                   CFormat(wxT("More button clicked: searchId=%ld, searchType='%s'"))
+                       % searchId % searchType);
+  AddDebugLogLineN(logSearch,
+                   CFormat(wxT("SearchManager has search: %s"))
+                       % (m_stateManager.HasSearch(searchId) ? wxT("yes") : wxT("no")));
+
+  // Check if we have a valid search ID
+  if (searchId == 0) {
+    wxMessageBox(_("Invalid search ID. The selected tab may not be a valid search."),
+                 _("Search Error"), wxOK | wxICON_ERROR);
+    return;
+  }
+
+  // The "More" button should only work for eD2k network searches (Local/Global), not for Kad
+  bool isKadSearch = (searchType == wxT("Kad"));
+  if (isKadSearch) {
+    wxMessageBox(_("The 'More' button does not work for Kad searches.\n\n"
+                   "Kad searches automatically query the Kad network and cannot be "
+                   "manually expanded."),
+                 _("Search Information"), wxOK | wxICON_INFORMATION);
+    return;
+  }
+
+  // Determine if this is a Local or Global search
+  bool isLocalSearch = (searchType == wxT("Local"));
+  bool isGlobalSearch = (searchType == wxT("Global"));
+
+  // More button should work for both Local and Global searches
+  if (!isLocalSearch && !isGlobalSearch) {
+    wxMessageBox(CFormat(wxT("Unknown search type: '%s'.\n\n"
+                          "The 'More' button only works for Local and Global searches."))
+                % searchType,
+                _("Search Error"), wxOK | wxICON_ERROR);
+    return;
+  }
+
+  // Get search parameters from SearchStateManager
+  CSearchList::CSearchParams params;
+  AddDebugLogLineN(logSearch, wxT("Attempting to get search parameters..."));
+
+  if (!m_stateManager.GetSearchParams(searchId, params)) {
+    wxString errorMsg = CFormat(wxT("No search parameters available for this search.\n\n"
+                                   "Search ID: %ld\n"
+                                   "Search Type: %s\n\n"
+                                   "This may indicate that the search was not properly initialized "
+                                   "or has been removed from the search manager."))
+                       % searchId % searchType;
+    AddDebugLogLineN(logSearch, wxT("Failed to get search parameters!"));
+    wxMessageBox(errorMsg, _("Search Error"), wxOK | wxICON_ERROR);
+    return;
+  }
+
+  if (params.searchString.IsEmpty()) {
+    wxString errorMsg = CFormat(wxT("Search string is empty.\n\n"
+                                   "Search ID: %ld\n"
+                                   "Search Type: %s\n\n"
+                                   "Cannot request more results without a valid search string."))
+                       % searchId % searchType;
+    wxMessageBox(errorMsg, _("Search Error"), wxOK | wxICON_ERROR);
+    return;
+  }
+
+  // Store the original search ID before making any changes
+  long originalSearchId = searchId;
+
+  // Handle Local and Global searches differently
+  if (params.searchType == LocalSearch) {
+    // For Local searches, we need to convert to Global search
+    // This now reuses the same search ID and queries multiple servers
+    AddDebugLogLineN(logSearch, CFormat(wxT("Converting Local search to Global for search ID %ld"))
+        % searchId);
+
+    wxString error = theApp->searchlist->RequestMoreResultsForSearch(searchId);
+    if (!error.IsEmpty()) {
+      wxMessageBox(CFormat(wxT("Failed to request more results:\n\n%s")) % error,
+                   _("Search Error"), wxOK | wxICON_ERROR);
+      return;
+    }
+
+    // The search ID remains the same, results will be appended to the
+    // existing list No need to update the list control since we're using the
+    // same search ID
+  } else if (params.searchType == GlobalSearch) {
+    // For Global searches, we continue querying additional servers
+    // The search ID remains the same, but we query more servers
+    AddDebugLogLineN(logSearch, CFormat(wxT("Requesting more Global search results for search ID %ld"))
+        % searchId);
+
+    wxString error = theApp->searchlist->RequestMoreResultsForSearch(searchId);
+    if (!error.IsEmpty()) {
+      wxMessageBox(CFormat(wxT("Failed to request more results:\n\n%s")) % error,
+                   _("Search Error"), wxOK | wxICON_ERROR);
+      return;
+    }
+
+    // For Global searches, the search ID doesn't change
+    // Results will be appended to the existing list
+  } else {
+    // Kad searches don't support "More" button (this should not be reached due to earlier check)
+    wxMessageBox(_("The 'More' button does not work for Kad searches.\n\n"
+                   "Kad searches automatically query the Kad network and cannot be "
+                   "manually expanded."),
+                 _("Search Information"), wxOK | wxICON_INFORMATION);
+    return;
+  }
+
+  // Disable buttons during the new search
+  FindWindow(IDC_STARTS)->Disable();
+  FindWindow(IDC_SDOWNLOAD)->Disable();
+  FindWindow(IDC_CANCELS)->Enable();
+
+  // Get the current tab index for text manipulation
+  int currentTab = m_notebook->GetSelection();
+  wxString originalTabText = m_notebook->GetPageText(currentTab);
+
+  // Save the original tab text before modifying it - use search ID as key
+  m_originalTabTexts[searchId] = originalTabText;
+
+  // Track this "More" button search for timeout detection - use search ID as key
+  m_moreButtonSearches[searchId] = wxDateTime::Now();
+
+  // Update the tab text to reflect that we're requesting more results
+  // Include the current hit count
+  size_t shown = list->GetItemCount();
+  size_t hidden = list->GetHiddenItemCount();
+
+  // Build the new tab text with hit count and "updating" status
+  wxString newText = originalTabText.BeforeLast(wxT('('));
+  if (hidden > 0) {
+    newText += wxString::Format(wxT(" (%zu + %zu hidden) (updating...)"),
+                                shown, hidden);
+  } else {
+    newText += wxString::Format(wxT(" (%zu) (updating...)"), shown);
+  }
+  m_notebook->SetPageText(currentTab, newText);
 }
 
 void CSearchDlg::StartNewSearch() {
