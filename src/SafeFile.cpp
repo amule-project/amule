@@ -225,6 +225,55 @@ wxString CFileDataIO::ReadString(bool bOptUTF8, uint8 SizeLen, bool SafeRead) co
 }
 
 
+// Helper function to detect and fix double-encoded UTF-8
+// Returns true if the string appears to be double-encoded UTF-8
+static bool IsDoubleEncodedUTF8(const char* data, size_t len)
+{
+	// Check for patterns that indicate double-encoding
+	// Common patterns: "ï¿½" (0xEF 0xBF 0xBD) which is U+FFFD in UTF-8
+	// or sequences that look like UTF-8 bytes interpreted as latin-1
+	for (size_t i = 0; i < len; ++i) {
+		unsigned char c = static_cast<unsigned char>(data[i]);
+		
+		// Check for UTF-8 continuation bytes (0x80-0xBF) that shouldn't appear
+		// at the start of a latin-1 string
+		if ((c >= 0x80 && c <= 0xBF) && (i == 0 || (data[i-1] < 0xC2))) {
+			return true;
+		}
+		
+		// Check for the "ï¿½" pattern (0xEF 0xBF 0xBD)
+		if (i + 2 < len && 
+		    static_cast<unsigned char>(data[i]) == 0xEF &&
+		    static_cast<unsigned char>(data[i+1]) == 0xBF &&
+		    static_cast<unsigned char>(data[i+2]) == 0xBD) {
+			return true;
+		}
+	}
+	return false;
+}
+
+// Helper function to attempt to fix double-encoded UTF-8
+static wxString FixDoubleEncodedUTF8(const char* data, size_t len)
+{
+	// Try to decode as latin-1 first (this is what happens when UTF-8 is
+	// incorrectly interpreted as latin-1)
+	wxString latin1Str = wxString(data, wxConvISO8859_1, len);
+	
+	// Then try to convert the latin-1 string back to UTF-8 bytes
+	wxCharBuffer latin1Buf = latin1Str.mb_str(wxConvISO8859_1);
+	if (!latin1Buf.data()) {
+		return wxEmptyString;
+	}
+	
+	// Now try to decode those bytes as UTF-8
+	wxString utf8Str = wxString::FromUTF8(latin1Buf.data());
+	if (utf8Str.IsEmpty()) {
+		return wxEmptyString;
+	}
+	
+	return utf8Str;
+}
+
 wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 {
 	// We only need to set the the NULL terminator, since we know that
@@ -237,6 +286,15 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 
 	Read(val, raw_len);
 	wxString str;
+
+	// First, check if this looks like double-encoded UTF-8
+	if (IsDoubleEncodedUTF8(val, raw_len)) {
+		// Try to fix double-encoding
+		str = FixDoubleEncodedUTF8(val, raw_len);
+		if (!str.IsEmpty()) {
+			return str;
+		}
+	}
 
 	if (CHECK_BOM(raw_len, val)) {
 		// This is a UTF8 string with a BOM header, skip header.
