@@ -195,11 +195,27 @@ void KadSearchController::requestMoreResults()
     uint32_t searchId = m_model->getSearchId();
 
     // Check if Kad search is still active
-    if (!m_kadSearch) {
+    // Check both the kad search object AND the model state
+    bool isKadSearchActive = (m_kadSearch != nullptr);
+    bool isModelSearching = (m_model->getSearchState() == SearchState::Searching);
+    
+    AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::requestMoreResults: Search %u, m_kadSearch=%p, state=%d"))
+        % searchId % m_kadSearch % (int)m_model->getSearchState());
+
+    // If the search is not active, we can't request more results
+    // But we should update the state to prevent getting stuck at [Searching]
+    if (!isKadSearchActive && !isModelSearching) {
         // Search has already completed or was stopped
-        // Silently fail - no need to show error to user
-        AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::requestMoreResults: Search %u is not active"))
+        // Update the state to prevent getting stuck at [Searching]
+        AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::requestMoreResults: Search %u is not active, updating state"))
             % searchId);
+        
+        // If the model still thinks it's searching, update it
+        if (isModelSearching) {
+            m_model->setSearchState(SearchState::Idle);
+            // Notify observers that search has completed
+            notifySearchCompleted(searchId);
+        }
         return;
     }
 
