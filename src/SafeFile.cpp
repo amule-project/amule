@@ -240,12 +240,30 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 
 	if (CHECK_BOM(raw_len, val)) {
 		// This is a UTF8 string with a BOM header, skip header.
-		str = UTF82unicode(val + 3);
+		// Use wxString::FromUTF8 which is more lenient than UTF82unicode
+		str = wxString::FromUTF8(val + 3, raw_len - 3);
+		if (str.IsEmpty()) {
+			// Fallback to Latin-1 if UTF-8 conversion fails
+			str = wxString(val + 3, wxConvISO8859_1, raw_len - 3);
+		} else {
+			// Check if the conversion produced replacement characters (U+FFFD)
+			// which indicates partial failure - fall back to Latin-1
+			if (str.Find(wxChar(0xFFFD)) != wxNOT_FOUND) {
+				str = wxString(val + 3, wxConvISO8859_1, raw_len - 3);
+			}
+		}
 	} else if (bOptUTF8) {
-		str = UTF82unicode(val);
+		// Use wxString::FromUTF8 which is more lenient than UTF82unicode
+		str = wxString::FromUTF8(val, raw_len);
 		if (str.IsEmpty()) {
 			// Fallback to Latin-1
 			str = wxString(val, wxConvISO8859_1, raw_len);
+		} else {
+			// Check if the conversion produced replacement characters (U+FFFD)
+			// which indicates partial failure - fall back to Latin-1
+			if (str.Find(wxChar(0xFFFD)) != wxNOT_FOUND) {
+				str = wxString(val, wxConvISO8859_1, raw_len);
+			}
 		}
 	} else {
 		// Raw strings are written as Latin-1 (see CFileDataIO::WriteStringCore)
