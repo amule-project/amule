@@ -1379,6 +1379,20 @@ void CSearchDlg::StartNewSearch() {
           FindWindow(IDC_CANCELS)->Disable();
           // Update hit count
           UpdateHitCount(list);
+          
+          // CRITICAL FIX: Update search state to prevent getting stuck at [Searching]
+          // Get result count to determine if search has results
+          size_t shown = list->GetItemCount();
+          size_t hidden = list->GetHiddenItemCount();
+          
+          // Update result count in state manager
+          m_stateManager.UpdateResultCount(searchId, shown, hidden);
+          
+          // End the search in the state manager to update state to HAS_RESULTS or NO_RESULTS
+          m_stateManager.EndSearch(searchId);
+          
+          AddDebugLogLineN(logSearch, CFormat(wxT("Search completed callback: searchId=%u, shown=%zu, hidden=%zu"))
+              % searchId % shown % hidden);
           break;
         }
       }

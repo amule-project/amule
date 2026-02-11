@@ -813,22 +813,21 @@ void CSearchList::LocalSearchEnd()
 		ResultMap::iterator it = m_results.find(searchId);
 		bool hasResults = (it != m_results.end()) && !it->second.empty();
 
-		// Only mark the search as finished if we have results
-		if (hasResults) {
-			OnSearchComplete(searchId, static_cast<SearchType>(searchType), hasResults);
+		// CRITICAL FIX: Mark search as inactive BEFORE calling OnSearchComplete
+		// OnSearchComplete may delete the state object, so we must do this first
+		state->setSearchActive(false);
+		
+		// CRITICAL FIX: Always call OnSearchComplete to update search state
+		// This prevents tabs from getting stuck at [Searching] when there are no results
+		OnSearchComplete(searchId, static_cast<SearchType>(searchType), hasResults);
+		
+		// Release the search ID since search is complete
+		if (search::SearchIdGenerator::Instance().releaseId(searchId)) {
+			AddDebugLogLineC(logSearch, CFormat(wxT("Released search ID %u (search complete, hasResults=%d)"))
+				% searchId % hasResults);
 		} else {
-			// No results - let the UI handle retry through SearchStateManager
-			// Just mark the search as finished internally
-			// Release the search ID since search is complete (no results)
-			if (search::SearchIdGenerator::Instance().releaseId(searchId)) {
-				AddDebugLogLineC(logSearch, CFormat(wxT("Released search ID %u (no results)"))
-					% searchId);
-			} else {
-				AddDebugLogLineC(logSearch, CFormat(wxT("Failed to release search ID %u (no results) - already released?"))
-					% searchId);
-			}
-			// Mark search as inactive
-			state->setSearchActive(false);
+			AddDebugLogLineC(logSearch, CFormat(wxT("Failed to release search ID %u (search complete) - already released?"))
+				% searchId);
 		}
 	}
 }
@@ -915,21 +914,18 @@ void CSearchList::OnSearchTimer(CTimerEvent& ev)
 		// Stop the timer (it's a one-shot timer)
 		state->stopTimer();
 
-		// Mark the search as complete
-		if (hasResults) {
-			AddDebugLogLineC(logSearch, CFormat(wxT("Local search timeout with results for ID=%u"))
-				% searchId);
-			OnSearchComplete(searchId, LocalSearch, hasResults);
-		} else {
-			AddDebugLogLineC(logSearch, CFormat(wxT("Local search timeout with no results for ID=%u"))
-				% searchId);
-			// Release the search ID
-			if (search::SearchIdGenerator::Instance().releaseId(searchId)) {
-				AddDebugLogLineC(logSearch, CFormat(wxT("Released search ID %u (local search timeout, no results)"))
-					% searchId);
-			}
-			// Mark search as inactive
-			state->setSearchActive(false);
+		// CRITICAL FIX: Mark search as inactive BEFORE calling OnSearchComplete
+		// OnSearchComplete may delete the state object, so we must do this first
+		state->setSearchActive(false);
+		
+		// CRITICAL FIX: Always call OnSearchComplete to update search state
+		// This prevents tabs from getting stuck at [Searching] when there are no results
+		OnSearchComplete(searchId, LocalSearch, hasResults);
+		
+		// Release the search ID
+		if (search::SearchIdGenerator::Instance().releaseId(searchId)) {
+			AddDebugLogLineC(logSearch, CFormat(wxT("Released search ID %u (local search timeout, hasResults=%d)"))
+				% searchId % hasResults);
 		}
 		return;
 	}
@@ -1014,28 +1010,17 @@ void CSearchList::OnSearchTimer(CTimerEvent& ev)
 	ResultMap::iterator it = m_results.find(searchId);
 	bool hasResults = (it != m_results.end()) && !it->second.empty();
 
-	// Only mark the search as finished if we have results
-	if (hasResults) {
-		OnSearchComplete(searchId, GlobalSearch, hasResults);
-		// Only stop if not retrying
-		if (state->isSearchActive()) {
-			StopSearch(searchId, true);
-		}
-	} else {
-		// No results - let the UI handle retry through SearchStateManager
-		// Notify the UI that global search has ended
-		// Release the search ID since search is complete (no results)
-		if (search::SearchIdGenerator::Instance().releaseId(searchId)) {
-			AddDebugLogLineC(logSearch, CFormat(wxT("Released search ID %u (global search, no results)"))
-				% searchId);
-		} else {
-			AddDebugLogLineC(logSearch, CFormat(wxT("Failed to release search ID %u (global search, no results) - already released?"))
-				% searchId);
-		}
-
-		// Mark search as inactive
-		state->setSearchActive(false);
-		Notify_GlobalSearchEnd();
+	// CRITICAL FIX: Mark search as inactive BEFORE calling OnSearchComplete
+	// OnSearchComplete may delete the state object, so we must do this first
+	state->setSearchActive(false);
+	
+	// CRITICAL FIX: Always call OnSearchComplete to update search state
+	// This prevents tabs from getting stuck at [Searching] when there are no results
+	OnSearchComplete(searchId, GlobalSearch, hasResults);
+	
+	// Only stop if not retrying
+	if (state->isSearchActive()) {
+		StopSearch(searchId, true);
 	}
 }
 
@@ -1864,26 +1849,15 @@ void CSearchList::SetKadSearchFinished()
 	ResultMap::iterator it = m_results.find(searchId);
 	bool hasResults = (it != m_results.end()) && !it->second.empty();
 
+	// CRITICAL FIX: Mark search as inactive BEFORE calling OnSearchComplete
+	// OnSearchComplete may delete the state object, so we must do this first
+	state->setSearchActive(false);
+	
 	// Don't trigger retry here - let the UI (SearchDlg/SearchStateManager) handle it
 	// The retry mechanism is now managed by SearchStateManager to ensure proper state transitions
-	// Only mark the search as finished if we have results
-	if (hasResults) {
-		OnSearchComplete(searchId, KadSearch, hasResults);
-	} else {
-		// No results - let the UI handle retry through SearchStateManager
-		// Just mark the Kad search as finished internally in per-search state
-		state->setKadSearchFinished(true);
-		// Release the search ID since search is complete (no results)
-		if (search::SearchIdGenerator::Instance().releaseId(searchId)) {
-			AddDebugLogLineC(logSearch, CFormat(wxT("Released Kad search ID %u (no results)"))
-				% searchId);
-		} else {
-			AddDebugLogLineC(logSearch, CFormat(wxT("Failed to release Kad search ID %u (no results) - already released?"))
-				% searchId);
-		}
-		// Mark search as inactive
-		state->setSearchActive(false);
-	}
+	// CRITICAL FIX: Always call OnSearchComplete to update search state
+	// This prevents tabs from getting stuck at [Searching] when there are no results
+	OnSearchComplete(searchId, KadSearch, hasResults);
 }
 
 

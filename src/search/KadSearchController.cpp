@@ -197,17 +197,16 @@ void KadSearchController::requestMoreResults()
     // Check if Kad search is still active
     if (!m_kadSearch) {
         // Search has already completed or was stopped
-        // We can restart the search, but this would create a new search ID
-        // For now, just inform the user
+        // Silently fail - no need to show error to user
         AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::requestMoreResults: Search %u is not active"))
             % searchId);
-        handleSearchError(searchId, _("Kad search has completed. Cannot request more results for a completed search."));
         return;
     }
 
     // Check if Kad network is still running
     if (!Kademlia::CKademlia::IsRunning()) {
-        handleSearchError(searchId, _("Kad network is not available"));
+        AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::requestMoreResults: Kad network is not available for search %u"))
+            % searchId);
         return;
     }
 
@@ -224,15 +223,18 @@ void KadSearchController::requestMoreResults()
                 % searchId);
         } else {
             // Could not request more results (no nodes responded, already requesting, or search is stopping)
+            // Silently fail - no need to show error to user
             AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::requestMoreResults: Could not request more results for search ID %u (no suitable nodes)"))
                 % searchId);
-            handleSearchError(searchId, _("Cannot request more results. No nodes have responded yet or the search is already requesting more results."));
         }
     } catch (const wxString& e) {
-        wxString error = wxString::Format(_("Failed to request more Kad results: %s"), e.c_str());
-        handleSearchError(searchId, error);
+        // Log error but don't show popup to user
+        AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::requestMoreResults: Exception for search %u: %s"))
+            % searchId % e);
     } catch (...) {
-        handleSearchError(searchId, _("Failed to request more Kad results: Unknown error"));
+        // Log error but don't show popup to user
+        AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::requestMoreResults: Unknown exception for search %u"))
+            % searchId);
     }
 }
 
