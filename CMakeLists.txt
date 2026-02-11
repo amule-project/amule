@@ -257,7 +257,7 @@ message ("			libintl				${ENABLE_NLS}")
 
 if (ENABLE_IP2COUNTRY)
 	if (maxminddb_FOUND)
-		message ("			libmaxminddb			${maxminddb_VERSION}")
+		message ("			libmaxminddb		${maxminddb_VERSION}")
 	endif()
 endif()
 

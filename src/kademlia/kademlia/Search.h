@@ -79,6 +79,15 @@ public:
 
 	void	 SetSearchTermData(uint32_t searchTermsDataSize, const uint8_t *searchTermsData);
 
+	/**
+	 * Request more results for this search
+	 * This method allows manual triggering of additional result requests
+	 * from nodes that have already responded to the search.
+	 *
+	 * @return true if more results were requested, false if the search is not active or no more results can be requested
+	 */
+	bool RequestMoreResults();
+
 	CKadClientSearcher *	GetNodeSpecialSearchRequester() const throw()				{ return m_nodeSpecialSearchRequester; }
 	void			SetNodeSpecialSearchRequester(CKadClientSearcher *requester) throw()	{ m_nodeSpecialSearchRequester = requester; }
 

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libmulecommon.a CMakeFiles/mulecommon.dir/FileFunctions.cpp.o CMakeFiles/mulecommon.dir/Format.cpp.o CMakeFiles/mulecommon.dir/MD5Sum.cpp.o CMakeFiles/mulecommon.dir/MuleDebug.cpp.o CMakeFiles/mulecommon.dir/Path.cpp.o CMakeFiles/mulecommon.dir/strerror_r.c.o CMakeFiles/mulecommon.dir/StringFunctions.cpp.o CMakeFiles/mulecommon.dir/TextFile.cpp.o CMakeFiles/mulecommon.dir/Logger.cpp.o
+/usr/bin/ranlib libmulecommon.a

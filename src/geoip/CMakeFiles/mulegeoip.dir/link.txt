@@ -1,0 +1,2 @@
+/usr/bin/ar qc libmulegeoip.a CMakeFiles/mulegeoip.dir/IP2CountryManager.cpp.o CMakeFiles/mulegeoip.dir/MaxMindDBDatabase.cpp.o CMakeFiles/mulegeoip.dir/DatabaseFactory.cpp.o CMakeFiles/mulegeoip.dir/UpdateScheduler.cpp.o
+/usr/bin/ranlib libmulegeoip.a

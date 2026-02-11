@@ -1269,6 +1269,53 @@ void CSearch::SetSearchTermData(uint32_t searchTermsDataSize, const uint8_t *sea
 	memcpy(m_searchTermsData, searchTermsData, searchTermsDataSize);
 }
 
+bool CSearch::RequestMoreResults()
+{
+	// Check if search is still active
+	if (m_stopping) {
+		AddDebugLogLineN(logKadSearch, CFormat(wxT("CSearch::RequestMoreResults: Search %u is stopping"))
+			% GetSearchID());
+		return false;
+	}
+
+	// Check if we have any nodes that responded
+	if (m_responded.empty()) {
+		AddDebugLogLineN(logKadSearch, CFormat(wxT("CSearch::RequestMoreResults: No nodes have responded for search %u"))
+			% GetSearchID());
+		return false;
+	}
+
+	// Check if we already have a pending "more" request
+	if (m_requestedMoreNodesContact != NULL) {
+		AddDebugLogLineN(logKadSearch, CFormat(wxT("CSearch::RequestMoreResults: Already requesting more results for search %u"))
+			% GetSearchID());
+		return false;
+	}
+
+	// Find a node that responded and reask for more results
+	// We prefer nodes that are closest to the target
+	for (RespondedMap::const_iterator it = m_responded.begin(); it != m_responded.end(); ++it) {
+		const CUInt128& distance = it->first;
+
+		// Check if this node is in our tried list
+		if (m_tried.count(distance) > 0) {
+			CContact *contact = m_tried[distance];
+
+			// Reask this node for more results
+			AddDebugLogLineN(logKadSearch, CFormat(wxT("CSearch::RequestMoreResults: Reasking node %s for more results (search %u)"))
+				% KadIPToString(contact->GetIPAddress()) % GetSearchID());
+
+			// Send request with reaskMore=true
+			SendFindValue(contact, true);
+			return true;
+		}
+	}
+
+	AddDebugLogLineN(logKadSearch, CFormat(wxT("CSearch::RequestMoreResults: No suitable nodes found to reask for search %u"))
+		% GetSearchID());
+	return false;
+}
+
 uint8_t CSearch::GetRequestContactCount() const
 {
 	// Returns the amount of contacts we request on routing queries based on the search type

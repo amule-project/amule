@@ -192,10 +192,48 @@ void KadSearchController::stopSearch()
 
 void KadSearchController::requestMoreResults()
 {
-    // Kad searches don't support "more results" in the traditional sense
-    // as they are keyword-based and query the entire network
     uint32_t searchId = m_model->getSearchId();
-    handleSearchError(searchId, _("Kad searches query the entire network and don't support requesting more results"));
+
+    // Check if Kad search is still active
+    if (!m_kadSearch) {
+        // Search has already completed or was stopped
+        // We can restart the search, but this would create a new search ID
+        // For now, just inform the user
+        AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::requestMoreResults: Search %u is not active"))
+            % searchId);
+        handleSearchError(searchId, _("Kad search has completed. Cannot request more results for a completed search."));
+        return;
+    }
+
+    // Check if Kad network is still running
+    if (!Kademlia::CKademlia::IsRunning()) {
+        handleSearchError(searchId, _("Kad network is not available"));
+        return;
+    }
+
+    // Use the new RequestMoreResults() method in CSearch
+    // This will re-contact nodes and request additional results using KADEMLIA_FIND_VALUE_MORE
+    // Duplicate detection is handled by SearchModel::isDuplicate() which checks by hash and size
+    AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::requestMoreResults: Requesting more results for search ID %u"))
+        % searchId);
+
+    try {
+        bool requested = m_kadSearch->RequestMoreResults();
+        if (requested) {
+            AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::requestMoreResults: Successfully requested more results for search ID %u"))
+                % searchId);
+        } else {
+            // Could not request more results (no nodes responded, already requesting, or search is stopping)
+            AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::requestMoreResults: Could not request more results for search ID %u (no suitable nodes)"))
+                % searchId);
+            handleSearchError(searchId, _("Cannot request more results. No nodes have responded yet or the search is already requesting more results."));
+        }
+    } catch (const wxString& e) {
+        wxString error = wxString::Format(_("Failed to request more Kad results: %s"), e.c_str());
+        handleSearchError(searchId, error);
+    } catch (...) {
+        handleSearchError(searchId, _("Failed to request more Kad results: Unknown error"));
+    }
 }
 
 void KadSearchController::setMaxNodesToQuery(int maxNodes)

@@ -217,6 +217,9 @@ public:
 	/** Get the search parameters for a given search ID */
 	CSearchParams GetSearchParams(long searchID);
 
+	/** Store the search parameters for a given search ID */
+	void StoreSearchParams(long searchID, const CSearchParams& params);
+
 	/** Request more results for a given search ID */
 	wxString RequestMoreResults(long searchID);
 

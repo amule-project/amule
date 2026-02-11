@@ -1,0 +1,20 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/eli/git/amule/cmake_install.cmake",
+		"/home/eli/git/amule/po/cmake_install.cmake",
+		"/home/eli/git/amule/docs/cmake_install.cmake",
+		"/home/eli/git/amule/docs/man/cmake_install.cmake",
+		"/home/eli/git/amule/src/cmake_install.cmake",
+		"/home/eli/git/amule/src/skins/cmake_install.cmake",
+		"/home/eli/git/amule/src/libs/cmake_install.cmake",
+		"/home/eli/git/amule/src/libs/ec/cmake_install.cmake",
+		"/home/eli/git/amule/src/libs/ec/cpp/cmake_install.cmake",
+		"/home/eli/git/amule/src/libs/common/cmake_install.cmake",
+		"/home/eli/git/amule/src/geoip/cmake_install.cmake",
+		"/home/eli/git/amule/unittests/cmake_install.cmake",
+		"/home/eli/git/amule/unittests/muleunit/cmake_install.cmake",
+		"/home/eli/git/amule/unittests/tests/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

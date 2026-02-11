@@ -379,13 +379,14 @@ void CSearchDlg::OnSearchPageChanged(wxBookCtrlEvent &WXUNUSED(evt)) {
     bool enable = (ctrl->GetSelectedItemCount() > 0);
     FindWindow(IDC_SDOWNLOAD)->Enable(enable);
 
-    // Enable the More button only for eD2k searches (Local/Global), not for Kad
+    // Enable the More button for all search types (Local, Global, Kad)
+    // Kad searches now support requesting more results using the reaskMore mechanism
     // Use SearchStateManager to get the search type instead of parsing tab text
     long searchId = ctrl->GetSearchId();
     wxString searchType = m_stateManager.GetSearchType(searchId);
-    bool isEd2kSearch =
-        (searchType == wxT("Local") || searchType == wxT("Global"));
-    FindWindow(IDC_SEARCHMORE)->Enable(isEd2kSearch);
+    bool isValidSearchType =
+        (searchType == wxT("Local") || searchType == wxT("Global") || searchType == wxT("Kad"));
+    FindWindow(IDC_SEARCHMORE)->Enable(isValidSearchType);
   }
 }
 
@@ -725,10 +726,12 @@ void CSearchDlg::CreateNewTab(const wxString &searchString,
   Layout();
   FindWindow(IDC_CLEAR_RESULTS)->Enable(true);
 
-  // Enable the More button only for eD2k searches (Local/Global), not for Kad
+  // Enable the More button for all search types (Local, Global, Kad)
+  // Kad searches now support requesting more results using the reaskMore mechanism
   bool isEd2kSearch = (searchString.StartsWith(wxT("[Local] ")) ||
                        searchString.StartsWith(wxT("[Global] ")));
-  FindWindow(IDC_SEARCHMORE)->Enable(isEd2kSearch);
+  bool isKadSearch = searchString.StartsWith(wxT("[Kad] "));
+  FindWindow(IDC_SEARCHMORE)->Enable(isEd2kSearch || isKadSearch);
 }
 
 void CSearchDlg::OnBnClickedStop(wxCommandEvent &WXUNUSED(evt)) {
@@ -908,24 +911,15 @@ void CSearchDlg::OnBnClickedMore(wxCommandEvent &WXUNUSED(event)) {
     return;
   }
 
-  // The "More" button should only work for eD2k network searches (Local/Global), not for Kad
+  // Determine the search type
   bool isKadSearch = (searchType == wxT("Kad"));
-  if (isKadSearch) {
-    wxMessageBox(_("The 'More' button does not work for Kad searches.\n\n"
-                   "Kad searches automatically query the Kad network and cannot be "
-                   "manually expanded."),
-                 _("Search Information"), wxOK | wxICON_INFORMATION);
-    return;
-  }
-
-  // Determine if this is a Local or Global search
   bool isLocalSearch = (searchType == wxT("Local"));
   bool isGlobalSearch = (searchType == wxT("Global"));
 
-  // More button should work for both Local and Global searches
-  if (!isLocalSearch && !isGlobalSearch) {
+  // More button now works for all search types (Local, Global, Kad)
+  if (!isLocalSearch && !isGlobalSearch && !isKadSearch) {
     wxMessageBox(CFormat(wxT("Unknown search type: '%s'.\n\n"
-                          "The 'More' button only works for Local and Global searches."))
+                          "The 'More' button only works for Local, Global, and Kad searches."))
                 % searchType,
                 _("Search Error"), wxOK | wxICON_ERROR);
     return;
@@ -933,32 +927,121 @@ void CSearchDlg::OnBnClickedMore(wxCommandEvent &WXUNUSED(event)) {
 
   // Get search parameters from SearchStateManager
   CSearchList::CSearchParams params;
-  AddDebugLogLineN(logSearch, wxT("Attempting to get search parameters..."));
+  AddDebugLogLineN(logSearch, CFormat(wxT("Attempting to get search parameters for search ID %ld..."))
+      % searchId);
 
-  if (!m_stateManager.GetSearchParams(searchId, params)) {
-    wxString errorMsg = CFormat(wxT("No search parameters available for this search.\n\n"
-                                   "Search ID: %ld\n"
-                                   "Search Type: %s\n\n"
-                                   "This may indicate that the search was not properly initialized "
-                                   "or has been removed from the search manager."))
-                       % searchId % searchType;
-    AddDebugLogLineN(logSearch, wxT("Failed to get search parameters!"));
-    wxMessageBox(errorMsg, _("Search Error"), wxOK | wxICON_ERROR);
+  // Check if search exists in state manager
+  bool hasSearchInStateManager = m_stateManager.HasSearch(searchId);
+  AddDebugLogLineN(logSearch, CFormat(wxT("Search exists in StateManager: %s"))
+      % (hasSearchInStateManager ? wxT("yes") : wxT("no")));
+
+  // Try to get parameters from StateManager
+  bool gotParamsFromStateManager = m_stateManager.GetSearchParams(searchId, params);
+  AddDebugLogLineN(logSearch, CFormat(wxT("Got parameters from StateManager: %s"))
+      % (gotParamsFromStateManager ? wxT("yes") : wxT("no")));
+
+  // Also check if parameters exist in SearchList (for debugging)
+  CSearchList::CSearchParams paramsFromSearchList = theApp->searchlist->GetSearchParams(searchId);
+  bool hasParamsInSearchList = !paramsFromSearchList.searchString.IsEmpty();
+  AddDebugLogLineN(logSearch, CFormat(wxT("Has parameters in SearchList.m_searchParams: %s"))
+      % (hasParamsInSearchList ? wxT("yes") : wxT("no")));
+  if (hasParamsInSearchList) {
+    AddDebugLogLineN(logSearch, CFormat(wxT("  SearchList params: searchString='%s', searchType=%d"))
+        % paramsFromSearchList.searchString % (int)paramsFromSearchList.searchType);
+  }
+
+  if (!gotParamsFromStateManager) {
+    // Build detailed diagnostic information
+    wxString diagnosticInfo = CFormat(wxT(
+        "=== DIAGNOSTIC INFORMATION ===\n\n"
+        "Search ID: %ld\n"
+        "Search Type: %s\n"
+        "Search exists in StateManager: %s\n"
+        "Parameters exist in SearchList.m_searchParams: %s\n\n"
+        "=== POSSIBLE CAUSES ===\n\n"
+        "1. The search was not properly initialized\n"
+        "2. The search parameters were cleared when the search ended\n"
+        "3. The search was removed from the search manager\n"
+        "4. The tab may have been closed and reopened\n\n"
+        "=== RECOMMENDED ACTIONS ===\n\n"
+        "- Try starting a new search with the same parameters\n"
+        "- If this happens repeatedly, please report this bug\n"
+        "- Check the debug log for more details\n\n"
+        "=== DEBUG DETAILS ===\n\n"))
+        % searchId
+        % searchType
+        % (hasSearchInStateManager ? wxT("Yes") : wxT("No"))
+        % (hasParamsInSearchList ? wxT("Yes") : wxT("No"));
+
+    if (!hasParamsInSearchList) {
+      diagnosticInfo += CFormat(wxT(
+          "SearchList.m_searchParams does not contain an entry for search ID %ld\n"
+          "This suggests the parameters were never stored or were removed.\n\n"))
+          % searchId;
+    } else {
+      diagnosticInfo += CFormat(wxT(
+          "SearchList.m_searchParams contains an entry for search ID %ld\n"
+          "but StateManager could not retrieve it. This may indicate a\n"
+          "synchronization issue between SearchList and StateManager.\n\n"))
+          % searchId;
+    }
+
+    AddDebugLogLineN(logSearch, wxT("Failed to get search parameters from StateManager!"));
+    wxMessageBox(diagnosticInfo, _("Search Error - No Parameters Available"), wxOK | wxICON_ERROR);
     return;
   }
 
   if (params.searchString.IsEmpty()) {
-    wxString errorMsg = CFormat(wxT("Search string is empty.\n\n"
-                                   "Search ID: %ld\n"
-                                   "Search Type: %s\n\n"
-                                   "Cannot request more results without a valid search string."))
-                       % searchId % searchType;
-    wxMessageBox(errorMsg, _("Search Error"), wxOK | wxICON_ERROR);
+    // Build detailed diagnostic information for empty search string
+    wxString diagnosticInfo = CFormat(wxT(
+        "=== DIAGNOSTIC INFORMATION ===\n\n"
+        "Search ID: %ld\n"
+        "Search Type: %s\n"
+        "Search String: [EMPTY]\n\n"
+        "=== POSSIBLE CAUSES ===\n\n"
+        "1. The search was initialized with an empty search string\n"
+        "2. The search string was cleared after initialization\n"
+        "3. There is a bug in parameter storage/retrieval\n\n"
+        "=== RECOMMENDED ACTIONS ===\n\n"
+        "- Try starting a new search with valid parameters\n"
+        "- Check the debug log for more details\n\n"
+        "=== DEBUG DETAILS ===\n\n"))
+        % searchId
+        % searchType;
+
+    diagnosticInfo += CFormat(wxT(
+        "Retrieved parameters from StateManager:\n"
+        "  searchString: '%s'\n"
+        "  strKeyword: '%s'\n"
+        "  typeText: '%s'\n"
+        "  extension: '%s'\n"
+        "  minSize: %llu\n"
+        "  maxSize: %llu\n"
+        "  availability: %d\n"
+        "  searchType: %d\n\n"))
+        % params.searchString
+        % params.strKeyword
+        % params.typeText
+        % params.extension
+        % params.minSize
+        % params.maxSize
+        % params.availability
+        % (int)params.searchType;
+
+    AddDebugLogLineN(logSearch, CFormat(wxT("Search string is empty for search ID %ld"))
+        % searchId);
+    wxMessageBox(diagnosticInfo, _("Search Error - Empty Search String"), wxOK | wxICON_ERROR);
     return;
   }
 
   // Store the original search ID before making any changes
   long originalSearchId = searchId;
+
+  // Store the search parameters in SearchList's m_searchParams before requesting more results
+  // This ensures that RequestMoreResults can find the parameters
+  AddDebugLogLineN(logSearch, CFormat(wxT("Storing search parameters in SearchList for search ID %ld"))
+      % searchId);
+  theApp->searchlist->StoreSearchParams(searchId, params);
 
   // Handle Local and Global searches differently
   if (params.searchType == LocalSearch) {
@@ -992,12 +1075,37 @@ void CSearchDlg::OnBnClickedMore(wxCommandEvent &WXUNUSED(event)) {
 
     // For Global searches, the search ID doesn't change
     // Results will be appended to the existing list
+  } else if (isKadSearch) {
+    // For Kad searches, request more results using the Kad controller
+    AddDebugLogLineN(logSearch, CFormat(wxT("Requesting more Kad search results for search ID %ld"))
+        % searchId);
+
+    // Find the Kad controller for this search
+    auto it = m_searchControllers.find(searchId);
+    if (it != m_searchControllers.end() && it->second) {
+      // Call requestMoreResults on the controller
+      // Note: This will handle duplicate detection internally via SearchModel::isDuplicate()
+      it->second->requestMoreResults();
+      AddDebugLogLineN(logSearch, CFormat(wxT("Called requestMoreResults on Kad controller for search ID %ld"))
+          % searchId);
+    } else {
+      // Controller not found, try to use the legacy searchlist
+      wxString error = theApp->searchlist->RequestMoreResultsForSearch(searchId);
+      if (!error.IsEmpty()) {
+        wxMessageBox(CFormat(wxT("Failed to request more results:\n\n%s")) % error,
+                     _("Search Error"), wxOK | wxICON_ERROR);
+        return;
+      }
+    }
+
+    // For Kad searches, the search ID doesn't change
+    // Results will be appended to the existing list with duplicate detection
   } else {
-    // Kad searches don't support "More" button (this should not be reached due to earlier check)
-    wxMessageBox(_("The 'More' button does not work for Kad searches.\n\n"
-                   "Kad searches automatically query the Kad network and cannot be "
-                   "manually expanded."),
-                 _("Search Information"), wxOK | wxICON_INFORMATION);
+    // Unknown search type
+    wxMessageBox(CFormat(wxT("Unknown search type: '%s'.\n\n"
+                          "The 'More' button only works for Local, Global, and Kad searches."))
+                % searchType,
+                _("Search Error"), wxOK | wxICON_ERROR);
     return;
   }
 
@@ -1766,13 +1874,6 @@ void CSearchDlg::HandleMoreButtonTimeout(uint32 searchId) {
       m_notebook->SetPageText(tabIndex, tabText);
     }
   }
-
-  // Show message to user
-  wxMessageBox(_("The 'More' button request timed out. The search may have "
-                 "completed but the status was not updated.\n\n"
-                 "Please check the results in the current tab. If no new "
-                 "results appear, you can try clicking 'More' again."),
-               _("Search Timeout"), wxOK | wxICON_WARNING);
 
   // Re-enable buttons
   FindWindow(IDC_STARTS)->Enable();

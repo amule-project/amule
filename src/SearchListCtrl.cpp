@@ -900,21 +900,8 @@ void CSearchListCtrl::OnDrawItem(
 		if (safeRectHL.height <= 0) safeRectHL.height = safeRect.height;
 	}
 
-	// Fix zero x-coordinates that cause pixman errors by offsetting them to a valid position
-	if (safeRect.x == 0 && safeRectHL.x == 0) {
-		// Calculate a reasonable x-offset based on the control's client area
-		wxSize clientSize = GetClientSize();
-		if (clientSize.x > 20) {
-			safeRect.x = 4;  // Standard margin
-			safeRectHL.x = 4;
-		} else {
-			// If client size is not reliable, use a minimum offset
-			safeRect.x = 4;
-			safeRectHL.x = 4;
-		}
-	}
-
-	// Fix negative coordinates
+	// Fix negative coordinates only - don't modify zero x-coordinates
+	// as this causes misalignment between drawing position and clipping region
 	if (safeRect.x < 0) safeRect.x = 0;
 	if (safeRect.y < 0) safeRect.y = 0;
 	if (safeRectHL.x < 0) safeRectHL.x = 0;
@@ -937,6 +924,7 @@ void CSearchListCtrl::OnDrawItem(
 	// Debug output for item information
 	wxString safeFilename = SanitizeFilename(file->GetFileName().GetPrintable());
 	std::cout << "DEBUG: Drawing file: " << safeFilename.ToUTF8().data()
+		  << ", FileID: " << file->GetFileHash().Encode().ToUTF8().data()
 		  << ", search ID: " << file->GetSearchID() << std::endl;
 	#endif
 

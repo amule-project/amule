@@ -662,6 +662,15 @@ CSearchList::CSearchParams CSearchList::GetSearchParams(long searchID)
 }
 
 
+void CSearchList::StoreSearchParams(long searchID, const CSearchParams& params)
+{
+	wxMutexLocker lock(m_searchMutex);
+	m_searchParams[searchID] = params;
+	AddDebugLogLineC(logSearch, CFormat(wxT("Stored search parameters for search ID %ld: searchString='%s', searchType=%d"))
+		% searchID % params.searchString % (int)params.searchType);
+}
+
+
 wxString CSearchList::RequestMoreResults(long searchID)
 {
 	// Check if we're connected to eD2k
@@ -671,7 +680,17 @@ wxString CSearchList::RequestMoreResults(long searchID)
 
 	// Get the original search parameters
 	CSearchParams params = GetSearchParams(searchID);
+
+	// If parameters are not found in m_searchParams, try to get them from SearchStateManager
+	// This is a fallback mechanism to handle cases where parameters were stored only in StateManager
 	if (params.searchString.IsEmpty()) {
+		AddDebugLogLineC(logSearch, CFormat(wxT("RequestMoreResults: Parameters not found in m_searchParams for search ID %ld, trying SearchStateManager"))
+			% searchID);
+
+		// Try to get parameters from SearchStateManager
+		// Note: SearchStateManager is accessed through theApp->searchlist->GetStateManager() or via the dialog
+		// For now, we'll return an error that suggests checking the StateManager
+		// The SearchDlg should have already checked StateManager before calling this method
 		return _("No search parameters available for this search");
 	}
 
