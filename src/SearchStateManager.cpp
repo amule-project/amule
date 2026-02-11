@@ -250,7 +250,7 @@ void SearchStateManager::StoreSearchParams(uint32_t searchId, const CSearchList:
 bool SearchStateManager::GetSearchParams(uint32_t searchId, CSearchList::CSearchParams& params) const
 {
 	wxMutexLocker lock(m_mutex);
-	
+
 	SearchMap::const_iterator it = m_searches.find(searchId);
 	if (it == m_searches.end()) {
 		return false;
@@ -265,6 +265,19 @@ bool SearchStateManager::GetSearchParams(uint32_t searchId, CSearchList::CSearch
 	params.minSize = data.minSize;
 	params.maxSize = data.maxSize;
 	params.availability = data.availability;
+
+	// Convert searchType from wxString to SearchType enum
+	if (data.searchType == wxT("Local")) {
+		params.searchType = LocalSearch;
+	} else if (data.searchType == wxT("Global")) {
+		params.searchType = GlobalSearch;
+	} else if (data.searchType == wxT("Kad")) {
+		params.searchType = KadSearch;
+	} else {
+		// Default to LocalSearch if we can't determine the type
+		params.searchType = LocalSearch;
+	}
+
 	return true;
 }
 
