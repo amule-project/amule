@@ -200,6 +200,8 @@ target_link_libraries (TextFileTest
 # ModernLogging tests - compilation only, no runtime dependencies
 add_executable (ModernLoggingTest
 	ModernLoggingTest.cpp
+	${CMAKE_SOURCE_DIR}/src/libs/common/Format.cpp
+	${CMAKE_SOURCE_DIR}/src/libs/common/strerror_r.c
 )
 
 add_test (NAME ModernLoggingTest

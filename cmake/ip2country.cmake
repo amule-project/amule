@@ -16,6 +16,21 @@ else()
         set(maxminddb_FOUND TRUE)
         set(maxminddb_INCLUDE_DIRS ${MAXMINDDB_INCLUDE_DIR})
         set(maxminddb_LIBRARIES ${MAXMINDDB_LIBRARY})
+
+        # Get version from pkg-config
+        find_package(PkgConfig QUIET)
+        if(PKG_CONFIG_FOUND)
+            execute_process(
+                COMMAND pkg-config --modversion libmaxminddb
+                OUTPUT_VARIABLE maxminddb_VERSION
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                ERROR_QUIET
+            )
+            if(maxminddb_VERSION)
+                message(STATUS "MaxMind DB version from pkg-config: ${maxminddb_VERSION}")
+            endif()
+        endif()
+
         message(STATUS "MaxMind DB found manually")
     else()
         if (ENABLE_IP2COUNTRY)
