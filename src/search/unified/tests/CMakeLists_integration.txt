@@ -1,0 +1,38 @@
+# CMakeLists.txt for unified search integration tests
+
+# Integration tests
+add_executable(LocalSearchIntegrationTest
+    integration/LocalSearchIntegrationTest.cpp
+    ../manager/UnifiedSearchManager.cpp
+    ../engines/local/LocalSearchEngine.cpp
+    ../engines/global/GlobalSearchEngine.cpp
+    ../engines/kad/KadSearchEngine.cpp
+)
+
+add_executable(MultiSearchIntegrationTest
+    integration/MultiSearchIntegrationTest.cpp
+    ../manager/UnifiedSearchManager.cpp
+    ../engines/local/LocalSearchEngine.cpp
+    ../engines/global/GlobalSearchEngine.cpp
+    ../engines/kad/KadSearchEngine.cpp
+)
+
+# Link against gtest and wxWidgets
+target_link_libraries(LocalSearchIntegrationTest PRIVATE 
+    gtest 
+    gtest_main
+    ${wxWidgets_LIBRARIES}
+)
+
+target_link_libraries(MultiSearchIntegrationTest PRIVATE 
+    gtest 
+    gtest_main
+    ${wxWidgets_LIBRARIES}
+)
+
+# Enable testing
+enable_testing()
+
+# Add integration tests
+add_test(NAME LocalSearchIntegrationTest COMMAND LocalSearchIntegrationTest)
+add_test(NAME MultiSearchIntegrationTest COMMAND MultiSearchIntegrationTest)
