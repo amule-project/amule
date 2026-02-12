@@ -7,6 +7,7 @@ add_executable(LocalSearchIntegrationTest
     ../engines/local/LocalSearchEngine.cpp
     ../engines/global/GlobalSearchEngine.cpp
     ../engines/kad/KadSearchEngine.cpp
+    ../core/SearchId.cpp
 )
 
 add_executable(MultiSearchIntegrationTest
@@ -15,17 +16,33 @@ add_executable(MultiSearchIntegrationTest
     ../engines/local/LocalSearchEngine.cpp
     ../engines/global/GlobalSearchEngine.cpp
     ../engines/kad/KadSearchEngine.cpp
+    ../core/SearchId.cpp
+)
+
+add_executable(GlobalSearchIntegrationTest
+    integration/GlobalSearchIntegrationTest.cpp
+    ../manager/UnifiedSearchManager.cpp
+    ../engines/local/LocalSearchEngine.cpp
+    ../engines/global/GlobalSearchEngine.cpp
+    ../engines/kad/KadSearchEngine.cpp
+    ../core/SearchId.cpp
 )
 
 # Link against gtest and wxWidgets
-target_link_libraries(LocalSearchIntegrationTest PRIVATE 
-    gtest 
+target_link_libraries(LocalSearchIntegrationTest PRIVATE
+    gtest
     gtest_main
     ${wxWidgets_LIBRARIES}
 )
 
-target_link_libraries(MultiSearchIntegrationTest PRIVATE 
-    gtest 
+target_link_libraries(MultiSearchIntegrationTest PRIVATE
+    gtest
+    gtest_main
+    ${wxWidgets_LIBRARIES}
+)
+
+target_link_libraries(GlobalSearchIntegrationTest PRIVATE
+    gtest
     gtest_main
     ${wxWidgets_LIBRARIES}
 )
@@ -36,3 +53,4 @@ enable_testing()
 # Add integration tests
 add_test(NAME LocalSearchIntegrationTest COMMAND LocalSearchIntegrationTest)
 add_test(NAME MultiSearchIntegrationTest COMMAND MultiSearchIntegrationTest)
+add_test(NAME GlobalSearchIntegrationTest COMMAND GlobalSearchIntegrationTest)
