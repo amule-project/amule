@@ -47,6 +47,21 @@ target_link_libraries(GlobalSearchIntegrationTest PRIVATE
     ${wxWidgets_LIBRARIES}
 )
 
+add_executable(KadSearchIntegrationTest
+    integration/KadSearchIntegrationTest.cpp
+    ../manager/UnifiedSearchManager.cpp
+    ../engines/local/LocalSearchEngine.cpp
+    ../engines/global/GlobalSearchEngine.cpp
+    ../engines/kad/KadSearchEngine.cpp
+    ../core/SearchId.cpp
+)
+
+target_link_libraries(KadSearchIntegrationTest PRIVATE
+    gtest
+    gtest_main
+    ${wxWidgets_LIBRARIES}
+)
+
 # Enable testing
 enable_testing()
 
@@ -54,3 +69,4 @@ enable_testing()
 add_test(NAME LocalSearchIntegrationTest COMMAND LocalSearchIntegrationTest)
 add_test(NAME MultiSearchIntegrationTest COMMAND MultiSearchIntegrationTest)
 add_test(NAME GlobalSearchIntegrationTest COMMAND GlobalSearchIntegrationTest)
+add_test(NAME KadSearchIntegrationTest COMMAND KadSearchIntegrationTest)

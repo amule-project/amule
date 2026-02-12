@@ -31,6 +31,15 @@ add_executable(GlobalSearchEngineTest
     ../core/SearchParams.cpp
 )
 
+add_executable(KadSearchEngineTest
+    unit/KadSearchEngineTest.cpp
+    ../engines/kad/KadSearchEngine.cpp
+    ../engines/local/LocalSearchEngine.cpp
+    ../core/SearchId.cpp
+    ../core/SearchResult.cpp
+    ../core/SearchParams.cpp
+)
+
 # Link against gtest
 target_link_libraries(SearchIdTest PRIVATE gtest gtest_main)
 target_link_libraries(SearchResultTest PRIVATE gtest gtest_main)
@@ -38,6 +47,7 @@ target_link_libraries(SearchParamsTest PRIVATE gtest gtest_main)
 target_link_libraries(SearchCommandTest PRIVATE gtest gtest_main)
 target_link_libraries(SearchEventTest PRIVATE gtest gtest_main)
 target_link_libraries(GlobalSearchEngineTest PRIVATE gtest gtest_main)
+target_link_libraries(KadSearchEngineTest PRIVATE gtest gtest_main)
 
 # Enable testing
 enable_testing()
@@ -49,6 +59,7 @@ add_test(NAME SearchParamsTest COMMAND SearchParamsTest)
 add_test(NAME SearchCommandTest COMMAND SearchCommandTest)
 add_test(NAME SearchEventTest COMMAND SearchEventTest)
 add_test(NAME GlobalSearchEngineTest COMMAND GlobalSearchEngineTest)
+add_test(NAME KadSearchEngineTest COMMAND KadSearchEngineTest)
 
 # Include integration tests CMakeLists
 include(CMakeLists_integration.txt)
