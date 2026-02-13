@@ -28,6 +28,7 @@
 #include "../core/SearchCommand.h"
 #include "../core/SearchEvent.h"
 #include "../engines/ISearchEngine.h"
+#include "SearchCacheManager.h"
 
 #include <thread>
 #include <mutex>
@@ -53,6 +54,7 @@ public:
         std::chrono::milliseconds commandTimeout{5000};
         size_t maxConcurrentSearches{10};
         size_t maxResultsPerSearch{500};
+        bool enableSearchCache{true};  // Enable search reuse
     };
 
     explicit UnifiedSearchManager(const Config& config = Config{});
@@ -153,6 +155,9 @@ public:
     std::unique_ptr<ISearchEngine> m_localSearchEngine;
     std::unique_ptr<ISearchEngine> m_globalSearchEngine;
     std::unique_ptr<ISearchEngine> m_kadSearchEngine;
+
+    // Search cache manager
+    std::unique_ptr<SearchCacheManager> m_cacheManager;
 
     // Search tracking (only accessed in worker thread)
     std::unordered_map<SearchId, SearchState> m_searchStates;

@@ -156,6 +156,32 @@ void UnifiedSearchManager::ProcessCommand(const SearchCommand& command)
     try {
         switch (command.type) {
             case SearchCommand::Type::START_SEARCH: {
+                // Check if identical search already exists (if cache is enabled)
+                if (m_cacheManager && m_config.enableSearchCache) {
+                    SearchId existingSearchId;
+                    if (m_cacheManager->FindExistingSearch(command.params, existingSearchId)) {
+                        std::cout << "[UnifiedSearchManager] Reusing existing search: "
+                                  << existingSearchId.ToString() << std::endl;
+
+                        // Request more results from existing search
+                        ISearchEngine* engine = SelectEngine(command.params.type);
+                        if (engine) {
+                            engine->RequestMoreResults(existingSearchId);
+                            
+                            // Update command searchId to existing searchId
+                            const_cast<SearchCommand&>(command).searchId = existingSearchId;
+                        }
+
+                        SendEvent(SearchEvent::SearchStarted(existingSearchId));
+                        SendEvent(SearchEvent::ProgressUpdate(
+                            existingSearchId,
+                            100,
+                            "Requesting more results from existing search"
+                        ));
+                        return;
+                    }
+                }
+
                 ISearchEngine* engine = SelectEngine(command.params.type);
                 if (!engine) {
                     std::ostringstream oss;
@@ -171,6 +197,11 @@ void UnifiedSearchManager::ProcessCommand(const SearchCommand& command)
                 }
 
                 SearchId searchId = engine->StartSearch(command.params);
+
+                // Register search in cache
+                if (m_cacheManager && m_config.enableSearchCache) {
+                    m_cacheManager->RegisterSearch(searchId, command.params);
+                }
 
                 // Track search state
                 m_searchStates[searchId] = SearchState::STARTING;
@@ -427,6 +458,12 @@ void UnifiedSearchManager::InitializeEngines()
     m_localSearchEngine = std::make_unique<LocalSearchEngine>();
     m_globalSearchEngine = std::make_unique<GlobalSearchEngine>();
     m_kadSearchEngine = std::make_unique<KadSearchEngine>();
+
+    // Create cache manager if enabled
+    if (m_config.enableSearchCache) {
+        m_cacheManager = std::make_unique<SearchCacheManager>();
+        std::cout << "[UnifiedSearchManager] Search cache manager initialized" << std::endl;
+    }
 
     std::cout << "[UnifiedSearchManager] Search engines initialized" << std::endl;
 }
