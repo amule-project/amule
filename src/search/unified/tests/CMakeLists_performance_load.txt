@@ -1,0 +1,56 @@
+# CMakeLists.txt for performance and load tests
+
+# Performance tests
+add_executable(UnifiedSearchPerformanceTest
+    performance/UnifiedSearchPerformanceTest.cpp
+    ../manager/UnifiedSearchManager.cpp
+    ../engines/local/LocalSearchEngine.cpp
+    ../engines/global/GlobalSearchEngine.cpp
+    ../engines/kad/KadSearchEngine.cpp
+    ../core/SearchId.cpp
+    ../core/SearchResult.cpp
+    ../core/SearchParams.cpp
+)
+
+# Load tests
+add_executable(UnifiedSearchLoadTest
+    load/UnifiedSearchLoadTest.cpp
+    ../manager/UnifiedSearchManager.cpp
+    ../engines/local/LocalSearchEngine.cpp
+    ../engines/global/GlobalSearchEngine.cpp
+    ../engines/kad/KadSearchEngine.cpp
+    ../core/SearchId.cpp
+    ../core/SearchResult.cpp
+    ../core/SearchParams.cpp
+)
+
+# Link against gtest and wxWidgets
+target_link_libraries(UnifiedSearchPerformanceTest PRIVATE
+    gtest
+    gtest_main
+    ${wxWidgets_LIBRARIES}
+)
+
+target_link_libraries(UnifiedSearchLoadTest PRIVATE
+    gtest
+    gtest_main
+    ${wxWidgets_LIBRARIES}
+)
+
+# Enable testing
+enable_testing()
+
+# Add performance and load tests
+add_test(NAME UnifiedSearchPerformanceTest COMMAND UnifiedSearchPerformanceTest)
+add_test(NAME UnifiedSearchLoadTest COMMAND UnifiedSearchLoadTest)
+
+# Set test properties
+set_tests_properties(UnifiedSearchPerformanceTest PROPERTIES
+    TIMEOUT 300
+    LABELS "performance"
+)
+
+set_tests_properties(UnifiedSearchLoadTest PROPERTIES
+    TIMEOUT 600
+    LABELS "load"
+)
