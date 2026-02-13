@@ -73,6 +73,8 @@ SearchId KadSearchEngine::StartSearch(const SearchParams& params)
     SearchData data;
     data.params = params;
     data.state = SearchState::STARTING;
+    data.jumpStarted = false;  // Initialize jumpStarted flag
+    data.jumpStartCount = 0;   // Initialize jumpStartCount
 
     m_searches[searchId] = std::move(data);
     m_statistics.totalSearches++;
@@ -80,6 +82,8 @@ SearchId KadSearchEngine::StartSearch(const SearchParams& params)
 
     std::cout << "[KadSearchEngine] Starting Kad search " << searchId.ToString()
               << " for query: " << params.query << std::endl;
+    std::cout << "[KadSearchEngine] Kad connected: " << m_kadConnected << std::endl;
+    std::cout << "[KadSearchEngine] Contacts available: " << m_contacts.size() << std::endl;
 
     // Extract keywords and compute hashes
     auto keywords = ExtractKeywords(params.query);
@@ -527,6 +531,7 @@ void KadSearchEngine::SendSearchToNodes(SearchId searchId, const SearchParams& p
     // Extract keywords
     auto keywords = ExtractKeywords(params.query);
     if (keywords.empty()) {
+        std::cout << "[KadSearchEngine] No keywords extracted from query: " << params.query << std::endl;
         return;
     }
 
@@ -534,11 +539,13 @@ void KadSearchEngine::SendSearchToNodes(SearchId searchId, const SearchParams& p
     std::string keywordHash = ComputeKeywordHash(keywords[0]);
     it->second.params.kadParams = KadParams{keywordHash};
 
+    std::cout << "[KadSearchEngine] Keyword hash computed: " << keywordHash << std::endl;
+
+    // Select nodes to query (must be called AFTER kadParams is set)
+    SelectNodesForSearch(searchId, m_config.maxConcurrentRequests);
+
     // Build search request
     std::vector<uint8_t> requestData = BuildKadSearchPacket(params, keywordHash);
-
-    // Select nodes to query
-    SelectNodesForSearch(searchId, m_config.maxConcurrentRequests);
 
     // Send to selected nodes
     for (auto& request : it->second.activeRequests) {
@@ -575,8 +582,14 @@ void KadSearchEngine::SelectNodesForSearch(SearchId searchId, size_t maxNodes)
 {
     auto it = m_searches.find(searchId);
     if (it == m_searches.end()) {
+        std::cerr << "[KadSearchEngine] SelectNodesForSearch: Search not found: " << searchId.ToString() << std::endl;
         return;
     }
+
+    std::cout << "[KadSearchEngine] SelectNodesForSearch called for " << searchId.ToString() << std::endl;
+    std::cout << "[KadSearchEngine] Max nodes: " << maxNodes << std::endl;
+    std::cout << "[KadSearchEngine] Total contacts: " << m_contacts.size() << std::endl;
+    std::cout << "[KadSearchEngine] Already contacted nodes: " << it->second.contactedNodes.size() << std::endl;
 
     // Get responsive contacts
     std::vector<KadContact> responsiveContacts;
@@ -587,13 +600,21 @@ void KadSearchEngine::SelectNodesForSearch(SearchId searchId, size_t maxNodes)
         }
     }
 
+    std::cout << "[KadSearchEngine] Responsive contacts: " << responsiveContacts.size() << std::endl;
+
     // Sort by distance to target (keyword hash)
     if (it->second.params.kadParams) {
+        std::cout << "[KadSearchEngine] Sorting contacts by distance to: " 
+                  << it->second.params.kadParams->keywordHash.substr(0, 16) << "..." << std::endl;
         SortContactsByDistance(it->second.params.kadParams->keywordHash, responsiveContacts);
+    } else {
+        std::cerr << "[KadSearchEngine] WARNING: kadParams not set! Cannot sort by distance." << std::endl;
     }
 
     // Select top nodes
     size_t count = std::min(maxNodes, responsiveContacts.size());
+
+    std::cout << "[KadSearchEngine] Selecting " << count << " nodes" << std::endl;
 
     // Create search requests
     for (size_t i = 0; i < count; ++i) {
@@ -608,6 +629,9 @@ void KadSearchEngine::SelectNodesForSearch(SearchId searchId, size_t maxNodes)
         request.retryCount = 0;
 
         it->second.activeRequests.push_back(request);
+
+        std::cout << "[KadSearchEngine] Added request for node: "
+                  << request.contactNodeId.substr(0, 16) << "..." << std::endl;
     }
 
     std::cout << "[KadSearchEngine] Selected " << count << " nodes for search "
