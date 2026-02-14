@@ -1124,6 +1124,8 @@ private:
 	{
 		if (ec) {
 			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleReadError %s")) % ec.message());
+			// Don't restart read on error - socket may be invalid
+			return;
 		} else if (received == 0) {
 			AddDebugLogLineF(logAsio, wxT("UDP HandleReadError nothing available"));
 		} else if (m_muleSocket == NULL) {
@@ -1141,7 +1143,11 @@ private:
 			}
 			CoreNotify_UDPSocketReceive(m_muleSocket);
 		}
-		StartBackgroundRead();
+		
+		// Only restart background read if socket is still valid
+		if (m_OK && m_socket) {
+			StartBackgroundRead();
+		}
 	}
 
 	void HandleSendTo(const error_code & ec, size_t sent, CUDPData * recdata)
@@ -1186,6 +1192,12 @@ private:
 
 	void StartBackgroundRead()
 	{
+		// Safety check: ensure socket is valid before starting async operation
+		if (!m_OK || !m_socket) {
+			AddDebugLogLineN(logAsio, wxT("UDP StartBackgroundRead: socket not valid, skipping"));
+			return;
+		}
+		
 		m_socket->async_receive_from(buffer(static_cast<void*>(m_readBuffer.get()), CMuleUDPSocket::UDP_BUFFER_SIZE), m_receiveEndpoint,
 		m_strand.wrap([this](const error_code& error, size_t bytes_transferred) { HandleRead(error, bytes_transferred); }));
 	}
