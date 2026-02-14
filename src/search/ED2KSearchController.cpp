@@ -30,6 +30,7 @@
 #include "SearchResultRouter.h"
 #include "SearchIdGenerator.h"
 #include "SearchLogging.h"
+#include "PerSearchState.h"
 #include "../ServerList.h"
 #include "../Server.h"
 #include "../ServerConnect.h"
@@ -39,6 +40,8 @@
 #include "../Packet.h"
 #include "../Statistics.h"
 #include "../MemFile.h"
+#include "../Timer.h"
+#include "../ObservableQueue.h"
 #include <protocol/Protocols.h>
 #include <wx/utils.h>
 #include "../Logger.h"
@@ -152,29 +155,48 @@ std::pair<uint32_t, wxString> ED2KSearchController::executeSearch(const SearchPa
 	    
 	    // CRITICAL FIX: Initialize search state in CSearchList
 	    // This creates the PerSearchState and starts the timer for timeout/global search
-	    // Note: CSearchParams is a nested struct inside CSearchList class
-	    CSearchList::CSearchParams legacyParams;
-	    legacyParams.searchString = params.searchString;
-	    legacyParams.searchType = isLocalSearch ? LocalSearch : GlobalSearch;
+	    SearchType searchType = isLocalSearch ? LocalSearch : GlobalSearch;
+	    ::PerSearchState* searchState = theApp->searchlist->getOrCreateSearchState(searchId, searchType, params.searchString);
 	    
-	    uint32_t searchIdUint = searchId;
-	    wxString startError = theApp->searchlist->StartNewSearch(&searchIdUint, legacyParams.searchType, legacyParams);
-	    
-	    if (!startError.IsEmpty()) {
+	    if (!searchState) {
 		delete packet;
 		delete[] packetData;
-		error = startError;
+		error = _("Failed to create search state");
 		return {0, error};
+	    }
+	    
+	    // Start timeout timer for local search
+	    if (isLocalSearch) {
+		static const int LOCAL_SEARCH_TIMEOUT_MS = 30000;
+		auto timeoutTimer = std::make_unique<CTimer>(theApp->searchlist, searchId);
+		searchState->setTimer(std::move(timeoutTimer));
+		
+		if (!searchState->startTimer(LOCAL_SEARCH_TIMEOUT_MS, true)) {
+		    AddDebugLogLineC(logSearch, CFormat(wxT("Failed to start local search timeout timer for ID=%u"))
+			% searchId);
+		} else {
+		    AddDebugLogLineC(logSearch, CFormat(wxT("Local search timeout timer started for ID=%u (timeout=%dms)"))
+			% searchId % LOCAL_SEARCH_TIMEOUT_MS);
+		}
+	    } else {
+		// Global search: start timer for UDP queries
+		auto serverQueue = std::make_unique<CQueueObserver<CServer*>>();
+		searchState->setServerQueue(std::move(serverQueue));
+		
+		auto timer = std::make_unique<CTimer>(theApp->searchlist, searchId);
+		searchState->setTimer(std::move(timer));
+		searchState->setSearchPacket(std::unique_ptr<CPacket>(packet), supports64bit);
+		
+		if (!searchState->startTimer(750, false)) {
+		    AddDebugLogLineC(logSearch, CFormat(wxT("Failed to start global search timer for ID=%u"))
+			% searchId);
+		} else {
+		    AddDebugLogLineC(logSearch, CFormat(wxT("Global search timer started for ID=%u")) % searchId);
+		}
 	    }
 	    
 	    // Send the packet
 	    theApp->serverconnect->SendPacket(packet, isLocalSearch);
-	    
-	    // For global search, store packet for querying more servers
-	    if (!isLocalSearch) {
-		// Store packet for later use in querying more servers
-		// TODO: Implement global search server queue
-	    }
 	    
 	    // Clean up the packet data
 	    delete[] packetData;
