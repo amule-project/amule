@@ -4,13 +4,13 @@
 using namespace muleunit;
 
 DECLARE(ModernLogging)
-    // 简单的测试方法，验证 ModernLogging.h 可以正常编译
+    // Simple test method to verify ModernLogging.h compiles correctly
     void testHeaderCompilation() {
-        // 这个测试只验证头文件可以正常包含和编译
-        // 不实际调用 modern_log::Log 以避免链接问题
+        // This test only verifies the header can be included and compiled
+        // Does not actually call modern_log::Log to avoid linking issues
         #ifdef USE_CPP20
         std::string_view test = "C++20 compilation test passed";
-        #else  
+        #else
         const char* test = "Traditional compilation test passed";
         #endif
     }
@@ -18,15 +18,15 @@ END_DECLARE;
 
 TEST(ModernLogging, HeaderCompilation)
 {
-    // 测试 ModernLogging 头文件编译正常
+    // Test that ModernLogging header compiles correctly
 }
 
 TEST(ModernLogging, Cpp20FeatureDetection)
 {
-    // 测试 C++20 特性检测正常工作
+    // Test that C++20 feature detection works correctly
     #ifdef USE_CPP20
-    // C++20 特性可用性验证
+    // C++20 feature availability verification
     #else
-    // 传统模式验证
+    // Traditional mode verification
     #endif
 }
