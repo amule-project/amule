@@ -149,6 +149,25 @@ std::pair<uint32_t, wxString> ED2KSearchController::executeSearch(const SearchPa
 	    // Create a CMemFile from the raw data
 	    CMemFile dataFile(packetData, packetSize);
 	    CPacket* packet = new CPacket(dataFile, OP_EDONKEYPROT, OP_SEARCHREQUEST);
+	    
+	    // CRITICAL FIX: Initialize search state in CSearchList
+	    // This creates the PerSearchState and starts the timer for timeout/global search
+	    // Note: CSearchParams is a nested struct inside CSearchList class
+	    CSearchList::CSearchParams legacyParams;
+	    legacyParams.searchString = params.searchString;
+	    legacyParams.searchType = isLocalSearch ? LocalSearch : GlobalSearch;
+	    
+	    uint32_t searchIdUint = searchId;
+	    wxString startError = theApp->searchlist->StartNewSearch(&searchIdUint, legacyParams.searchType, legacyParams);
+	    
+	    if (!startError.IsEmpty()) {
+		delete packet;
+		delete[] packetData;
+		error = startError;
+		return {0, error};
+	    }
+	    
+	    // Send the packet
 	    theApp->serverconnect->SendPacket(packet, isLocalSearch);
 	    
 	    // For global search, store packet for querying more servers
