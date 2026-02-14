@@ -307,6 +307,13 @@ bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 			wxT("Received OP_ED2KV2PACKEDPROT."));
 	}
 
+	// Check for integer overflow before multiplication
+	if (size > (UINT32_MAX - 300) / 10) {
+		AddDebugLogLineN(logPacketErrors,
+			wxT("Packet size too large for decompression, potential overflow attack"));
+		return false;
+	}
+
 	uint32 nNewSize = size * 10 + 300;
 
 	if (nNewSize > uMaxDecompressedSize){

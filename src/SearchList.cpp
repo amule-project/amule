@@ -1143,7 +1143,27 @@ void CSearchList::ProcessSearchAnswer(const uint8_t* in_packet, uint32_t size, b
 	// Process results through validator (this adds them to SearchList)
 	NOT_ON_REMOTEGUI(
 		if (!resultVector.empty()) {
-			search::SearchResultRouter::Instance().RouteResults(searchId, resultVector);
+			// Validate that the search is still active before routing results
+			// This prevents race conditions where the search was cancelled
+			// while we were processing results
+			bool searchStillActive = false;
+			{
+				wxMutexLocker lock(m_searchMutex);
+				auto it = m_searchStates.find(searchId);
+				searchStillActive = (it != m_searchStates.end() && it->second && it->second->isSearchActive());
+			}
+
+			if (searchStillActive) {
+				search::SearchResultRouter::Instance().RouteResults(searchId, resultVector);
+			} else {
+				// Search was cancelled while we were processing results
+				// Clean up the results we created
+				AddDebugLogLineN(logSearch, CFormat(wxT("Search %d was cancelled while processing results, discarding %u results"))
+					% searchId % resultVector.size());
+				for (CSearchFile* result : resultVector) {
+					delete result;
+				}
+			}
 		}
 	)
 }
@@ -1195,7 +1215,24 @@ void CSearchList::ProcessUDPSearchAnswer(const CMemFile& packet, bool optUTF8, u
 
 	// Process result through validator (this adds it to SearchList)
 	NOT_ON_REMOTEGUI(
-		search::SearchResultRouter::Instance().RouteResult(searchId, result);
+		// Validate that the search is still active before routing result
+		// This prevents race conditions where the search was cancelled
+		// while we were processing the result
+		bool searchStillActive = false;
+		{
+			wxMutexLocker lock(m_searchMutex);
+			auto it = m_searchStates.find(searchId);
+			searchStillActive = (it != m_searchStates.end() && it->second && it->second->isSearchActive());
+		}
+
+		if (searchStillActive) {
+			search::SearchResultRouter::Instance().RouteResult(searchId, result);
+		} else {
+			// Search was cancelled while we were processing the result
+			AddDebugLogLineN(logSearch, CFormat(wxT("Search %d was cancelled while processing UDP result, discarding"))
+				% searchId);
+			delete result;
+		}
 	)
 }
 
