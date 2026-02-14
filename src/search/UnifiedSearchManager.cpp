@@ -51,27 +51,29 @@ UnifiedSearchManager::UnifiedSearchManager()
         AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Search %u timed out (type=%d): %s"))
             % searchId % (int)type % reason);
         
-        wxMutexLocker lock(m_mutex);
-        auto it = m_controllers.find(searchId);
-        if (it != m_controllers.end()) {
-            // Get result count before stopping
-            bool hasResults = (it->second->getResultCount() > 0);
-            
-            AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Timed out search %u has %zu results"))
-                % searchId % it->second->getResultCount());
-            
-            // Stop the search
-            it->second->stopSearch();
-            
-            // Mark as complete
-            markSearchComplete(searchId, hasResults);
-            
-            AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Timed out search %u marked as complete (hasResults=%d)"))
-                % searchId % hasResults);
-        } else {
-            AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Timed out search %u not found in controllers"))
-                % searchId);
+        // Get result count before stopping (without holding mutex)
+        size_t resultCount = 0;
+        bool hasResults = false;
+        {
+            wxMutexLocker lock(m_mutex);
+            auto it = m_controllers.find(searchId);
+            if (it != m_controllers.end()) {
+                resultCount = it->second->getResultCount();
+                hasResults = (resultCount > 0);
+            }
         }
+        
+        AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Timed out search %u has %zu results"))
+            % searchId % resultCount);
+        
+        // Stop the search (this will acquire its own mutex)
+        stopSearch(searchId);
+        
+        // Mark as complete
+        markSearchComplete(searchId, hasResults);
+        
+        AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Timed out search %u marked as complete (hasResults=%d)"))
+            % searchId % hasResults);
     });
 }
 

@@ -422,9 +422,14 @@ void CSearchDlg::OnBnClickedStart(wxCommandEvent &WXUNUSED(evt)) {
   }
 
   // We mustn't search more often than once every 2 secs
-  if ((GetTickCount() - m_last_search_time) > 2000) {
+  if ((GetTickCount() - m_last_search_time) >= 2000) {
     m_last_search_time = GetTickCount();
     StartNewSearch();
+  } else {
+    // Provide feedback to the user that they need to wait
+    uint32_t remainingTime = 2000 - (GetTickCount() - m_last_search_time);
+    AddDebugLogLineN(logSearch, CFormat(wxT("Please wait %u ms before starting another search"))
+        % remainingTime);
   }
 }
 

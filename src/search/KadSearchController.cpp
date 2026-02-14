@@ -87,23 +87,24 @@ void KadSearchController::startSearch(const SearchParams& params)
     KadSearchPacketBuilder packetBuilder;
     wxString error;
     
+    // Build Kad search packet
+    uint8_t* packetData = nullptr;
+    uint32_t packetSize = 0;
+    bool success = packetBuilder.CreateSearchPacket(params, packetData, packetSize);
+    
+    if (!success || !packetData) {
+	error = wxT("Failed to create Kad search packet");
+	return handleSearchError(0, error);
+    }
+    
     try {
-	// Build Kad search packet
-	uint8_t* packetData = nullptr;
-	uint32_t packetSize = 0;
-	bool success = packetBuilder.CreateSearchPacket(params, packetData, packetSize);
-	
-	if (!success || !packetData) {
-	    error = wxT("Failed to create Kad search packet");
-	    return handleSearchError(0, error);
-	}
-	
 	// Generate search ID
 	searchId = params.getSearchId();
 	if (searchId == 0 || searchId == static_cast<uint32_t>(-1)) {
 	    // No search ID provided - this should not happen with UnifiedSearchManager
 	    // Log an error and return
 	    AddDebugLogLineC(logSearch, wxT("KadSearchController::startSearch: No search ID provided!"));
+	    delete[] packetData;
 	    return;
 	}
 
@@ -153,19 +154,20 @@ void KadSearchController::startSearch(const SearchParams& params)
 	    } catch (const wxString& what) {
 		error = wxString::Format(_("Failed to start Kad search: %s"), what.c_str());
 		handleSearchError(searchId, error);
+		throw;  // Re-throw to ensure packetData is cleaned up
 	    }
-
-	    // Clean up packet data
-	    delete[] packetData;
 	} else {
-	    delete[] packetData;
 	    error = _("Kad network not available");
 	    handleSearchError(searchId, error);
 	}
-    } catch (const wxString& e) {
-	error = wxString::Format(_("Failed to execute Kad search: %s"), e.c_str());
-	handleSearchError(0, error);
+    } catch (...) {
+	// Clean up packet data on any exception
+	delete[] packetData;
+	throw;
     }
+    
+    // Clean up packet data on success
+    delete[] packetData;
 }
 
 void KadSearchController::stopSearch()
