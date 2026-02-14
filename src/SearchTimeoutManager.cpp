@@ -237,9 +237,10 @@ void SearchTimeoutManager::setTimeoutCallback(TimeoutCallback callback)
 void SearchTimeoutManager::checkTimeouts()
 {
     wxDateTime now = wxDateTime::Now();
-    std::vector<uint32_t> timedOutSearches;
 
     // Check all registered searches for timeout
+    std::vector<std::pair<uint32_t, SearchType>> timedOutSearchesWithType;
+    
     for (auto it = m_searchStates.begin(); it != m_searchStates.end(); ) {
         const SearchState& state = it->second;
 
@@ -253,8 +254,8 @@ void SearchTimeoutManager::checkTimeouts()
         }
 
         if (isSearchTimedOut(state.searchId)) {
-            // Search has timed out
-            timedOutSearches.push_back(state.searchId);
+            // Search has timed out - save type before erasing
+            timedOutSearchesWithType.push_back({state.searchId, state.type});
             m_totalTimeouts++;
 
             wxString typeStr;
@@ -278,12 +279,8 @@ void SearchTimeoutManager::checkTimeouts()
     }
 
     // Trigger timeout callbacks for all timed out searches
-    for (uint32_t searchId : timedOutSearches) {
+    for (const auto& [searchId, type] : timedOutSearchesWithType) {
         if (m_timeoutCallback) {
-            // We need to get the type before we trigger the callback
-            // since the search might have been removed from the map
-            SearchType type = getSearchType(searchId);
-
             wxString reason;
             switch (type) {
                 case LocalSearch:
