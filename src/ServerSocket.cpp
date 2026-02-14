@@ -457,6 +457,11 @@ theApp->searchlist->ProcessSearchAnswer(
 			}
 			case OP_FOUNDSOURCES_OBFU:
 			case OP_FOUNDSOURCES: {
+				// Validate minimum packet size (16 bytes hash + 1 byte count)
+				if (size < 17) {
+					AddDebugLogLineN(logServer, wxT("Invalid OP_FOUNDSOURCES packet size: too small"));
+					throw CInvalidPacket(wxT("OP_FOUNDSOURCES packet too small"));
+				}
 				AddDebugLogLineN(logServer, CFormat(wxT("ServerMsg - OP_FoundSources; sources = %u")) % packet[16]);
 				theStats::AddDownOverheadServer(size);
 				CMemFile sources(packet,size);
