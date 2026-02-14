@@ -39,6 +39,7 @@
 #include "Preferences.h"	// Needed for thePrefs
 #include "GuiEvents.h"		// Needed for CoreNotify_Search_Add_Download
 #include "MuleColour.h"
+#include "search/UnifiedSearchManager.h"	// Needed for unified search management
 
 BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_RIGHT_CLICK(-1, CSearchListCtrl::OnRightClick)
@@ -422,13 +423,23 @@ void CSearchListCtrl::ShowResults( long ResultsID )
 	DeleteAllItems();
 	m_nResultsID = ResultsID;
 	if (ResultsID) {
-		const CSearchResultList& list = theApp->searchlist->GetSearchResults(ResultsID);
+		// Try to get results from UnifiedSearchManager first (new architecture)
+		std::vector<CSearchFile*> list;
+		bool useUnifiedManager = false;
 
-		// Get the parent dialog to update state
+		// Check if we can access UnifiedSearchManager through SearchDlg
 		CSearchDlg* parentDlg = wxDynamicCast(GetParent(), CSearchDlg);
 		if (parentDlg) {
-			// The search should already be initialized in SearchStateManager
-			// from StartNewSearch or CreateNewTab, so we don't need to do it here
+			// Access UnifiedSearchManager from parent dialog
+			auto& unifiedManager = parentDlg->GetUnifiedSearchManager();
+			list = unifiedManager.getResults(ResultsID);
+			useUnifiedManager = true;
+		}
+
+		// Fallback to legacy CSearchList if unified manager not available or no results
+		if (!useUnifiedManager || list.empty()) {
+			const CSearchResultList& legacyList = theApp->searchlist->GetSearchResults(ResultsID);
+			list.assign(legacyList.begin(), legacyList.end());
 		}
 
 		Freeze();  // Freeze UI updates during bulk operations
@@ -790,11 +801,16 @@ void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 	}
 
 	CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(item));
-	theApp->searchlist->StopSearch(true);
-	theApp->amuledlg->m_searchwnd->ResetControls();
-	CastByID( IDC_SEARCHNAME, theApp->amuledlg->m_searchwnd, wxTextCtrl )->
-		SetValue(wxT("related::") + file->GetFileHash().Encode());
-	theApp->amuledlg->m_searchwnd->StartNewSearch();
+	
+	// Stop global searches using UnifiedSearchManager
+	CSearchDlg* searchDlg = wxDynamicCast(GetParent(), CSearchDlg);
+	if (searchDlg) {
+		searchDlg->GetUnifiedSearchManager().stopAllSearches();
+		searchDlg->ResetControls();
+		CastByID( IDC_SEARCHNAME, searchDlg, wxTextCtrl )->
+			SetValue(wxT("related::") + file->GetFileHash().Encode());
+		searchDlg->StartNewSearch();
+	}
 }
 
 

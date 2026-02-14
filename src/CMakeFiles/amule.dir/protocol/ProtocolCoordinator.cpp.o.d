@@ -515,6 +515,7 @@ src/CMakeFiles/amule.dir/protocol/ProtocolCoordinator.cpp.o: \
  /home/eli/git/amule/src/protocol/../kademlia/kademlia/Indexed.h \
  /home/eli/git/amule/src/protocol/../kademlia/kademlia/SearchManager.h \
  /home/eli/git/amule/src/protocol/../kademlia/kademlia/../../Tag.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/protocol/../kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/protocol/../FileAutoClose.h \
  /home/eli/git/amule/src/protocol/../CFile.h \

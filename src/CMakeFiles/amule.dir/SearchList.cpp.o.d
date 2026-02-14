@@ -437,6 +437,11 @@ src/CMakeFiles/amule.dir/SearchList.cpp.o: \
  /home/eli/git/amule/src/kademlia/kademlia/../../Tag.h \
  /home/eli/git/amule/src/include/tags/TagTypes.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../OtherFunctions.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/chrono.h \
+ /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
+ /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/std_mutex.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
  /home/eli/git/amule/src/libs/ec/cpp/../../../Types.h \
@@ -456,12 +461,12 @@ src/CMakeFiles/amule.dir/SearchList.cpp.o: \
  /usr/include/x86_64-linux-gnu/asm/unistd.h \
  /usr/include/x86_64-linux-gnu/asm/unistd_64.h \
  /usr/include/x86_64-linux-gnu/bits/syscall.h \
- /usr/include/c++/15/bits/std_mutex.h \
  /usr/include/c++/15/backward/auto_ptr.h \
  /usr/include/c++/15/bits/ranges_uninitialized.h \
  /usr/include/c++/15/pstl/glue_memory_defs.h \
  /home/eli/git/amule/src/search/SearchAutoRetry.h \
  /home/eli/git/amule/src/search/SearchModel.h \
+ /usr/include/wx-3.2/wx/regex.h \
  /home/eli/git/amule/src/search/SearchPackageValidator.h \
  /home/eli/git/amule/src/search/../SearchFile.h \
  /home/eli/git/amule/src/search/SearchPackageException.h \
@@ -500,9 +505,7 @@ src/CMakeFiles/amule.dir/SearchList.cpp.o: \
  /home/eli/git/amule/src/Tag.h /home/eli/git/amule/src/amule.h \
  /home/eli/git/amule/src/common/NetworkPerformanceMonitor.h \
  /home/eli/git/amule/src/common/PerformanceUtils.h \
- /usr/include/c++/15/chrono /usr/include/c++/15/bits/chrono.h \
- /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
- /usr/include/c++/15/bits/parse_numbers.h /usr/include/c++/15/sstream \
+ /usr/include/c++/15/chrono /usr/include/c++/15/sstream \
  /usr/include/c++/15/bits/sstream.tcc \
  /usr/include/c++/15/bits/chrono_io.h /usr/include/c++/15/iomanip \
  /usr/include/c++/15/locale \
@@ -541,10 +544,9 @@ src/CMakeFiles/amule.dir/SearchList.cpp.o: \
  /usr/include/wx-3.2/wx/bookctrl.h /usr/include/wx-3.2/wx/withimages.h \
  /usr/include/wx-3.2/wx/gtk/notebook.h \
  /home/eli/git/amule/src/SearchStateManager.h \
- /home/eli/git/amule/src/search/SearchController.h \
- /home/eli/git/amule/src/search/SearchControllerFactory.h \
- /home/eli/git/amule/src/search/SearchController.h \
  /home/eli/git/amule/src/search/UnifiedSearchManager.h \
+ /home/eli/git/amule/src/SearchTimeoutManager.h \
+ /home/eli/git/amule/src/SimpleSearchCache.h \
  /home/eli/git/amule/src/kademlia/kademlia/Kademlia.h \
  /home/eli/git/amule/src/kademlia/kademlia/Prefs.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../Preferences.h \

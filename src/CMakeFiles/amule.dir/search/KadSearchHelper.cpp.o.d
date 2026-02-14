@@ -243,7 +243,8 @@ src/CMakeFiles/amule.dir/search/KadSearchHelper.cpp.o: \
  /usr/include/c++/15/pstl/glue_memory_defs.h \
  /home/eli/git/amule/src/search/SearchController.h \
  /home/eli/git/amule/src/search/SearchModel.h \
- /usr/include/wx-3.2/wx/thread.h \
+ /usr/include/wx-3.2/wx/thread.h /usr/include/wx-3.2/wx/regex.h \
+ /usr/include/wx-3.2/wx/versioninfo.h \
  /home/eli/git/amule/src/search/../amule.h /usr/include/wx-3.2/wx/app.h \
  /usr/include/wx-3.2/wx/event.h /usr/include/wx-3.2/wx/object.h \
  /usr/include/wx-3.2/wx/memory.h /usr/include/wx-3.2/wx/msgout.h \
@@ -296,7 +297,7 @@ src/CMakeFiles/amule.dir/search/KadSearchHelper.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
- /usr/include/linux/falloc.h /usr/include/wx-3.2/wx/versioninfo.h \
+ /usr/include/linux/falloc.h \
  /usr/include/wx-3.2/wx/meta/implicitconversion.h \
  /usr/include/wx-3.2/wx/mousestate.h /usr/include/wx-3.2/wx/kbdstate.h \
  /usr/include/wx-3.2/wx/longlong.h /usr/include/wx-3.2/wx/platinfo.h \
@@ -488,6 +489,7 @@ src/CMakeFiles/amule.dir/search/KadSearchHelper.cpp.o: \
  /home/eli/git/amule/src/search/../kademlia/kademlia/../../Tag.h \
  /home/eli/git/amule/src/include/tags/TagTypes.h \
  /home/eli/git/amule/src/search/../kademlia/kademlia/../../OtherFunctions.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/search/../kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
  /home/eli/git/amule/src/libs/ec/cpp/../../../Types.h \

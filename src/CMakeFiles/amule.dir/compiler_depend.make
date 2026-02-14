@@ -2830,6 +2830,8 @@ src/CMakeFiles/amule.dir/CatDialog.cpp.o: src/CatDialog.cpp \
   src/SearchFile.h \
   src/SearchList.h \
   src/SearchStateManager.h \
+  src/SearchTimeoutManager.h \
+  src/SimpleSearchCache.h \
   src/StateMachine.h \
   src/StatisticsDlg.h \
   src/Timer.h \
@@ -2867,8 +2869,6 @@ src/CMakeFiles/amule.dir/CatDialog.cpp.o: src/CatDialog.cpp \
   src/Types.h \
   src/libs/ec/cpp/ECID.h \
   src/muuli_wdr.h \
-  src/search/SearchController.h \
-  src/search/SearchControllerFactory.h \
   src/search/SearchModel.h \
   src/search/UnifiedSearchManager.h \
   /usr/include/alloca.h \
@@ -2995,6 +2995,7 @@ src/CMakeFiles/amule.dir/CatDialog.cpp.o: src/CatDialog.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -3044,6 +3045,7 @@ src/CMakeFiles/amule.dir/CatDialog.cpp.o: src/CatDialog.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -3318,6 +3320,7 @@ src/CMakeFiles/amule.dir/CatDialog.cpp.o: src/CatDialog.cpp \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
   /usr/include/wx-3.2/wx/range.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -5847,6 +5850,7 @@ src/CMakeFiles/amule.dir/ClientDetailDialog.cpp.o: src/ClientDetailDialog.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -5896,6 +5900,7 @@ src/CMakeFiles/amule.dir/ClientDetailDialog.cpp.o: src/ClientDetailDialog.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -9334,6 +9339,7 @@ src/CMakeFiles/amule.dir/CommentDialog.cpp.o: src/CommentDialog.cpp \
   /usr/include/c++/15/bits/basic_string.tcc \
   /usr/include/c++/15/bits/char_traits.h \
   /usr/include/c++/15/bits/charconv.h \
+  /usr/include/c++/15/bits/chrono.h \
   /usr/include/c++/15/bits/concept_check.h \
   /usr/include/c++/15/bits/cpp_type_traits.h \
   /usr/include/c++/15/bits/cxxabi_forced.h \
@@ -9369,6 +9375,7 @@ src/CMakeFiles/amule.dir/CommentDialog.cpp.o: src/CommentDialog.cpp \
   /usr/include/c++/15/bits/ostream.h \
   /usr/include/c++/15/bits/ostream.tcc \
   /usr/include/c++/15/bits/ostream_insert.h \
+  /usr/include/c++/15/bits/parse_numbers.h \
   /usr/include/c++/15/bits/postypes.h \
   /usr/include/c++/15/bits/predefined_ops.h \
   /usr/include/c++/15/bits/ptr_traits.h \
@@ -9383,6 +9390,7 @@ src/CMakeFiles/amule.dir/CommentDialog.cpp.o: src/CommentDialog.cpp \
   /usr/include/c++/15/bits/specfun.h \
   /usr/include/c++/15/bits/std_abs.h \
   /usr/include/c++/15/bits/std_function.h \
+  /usr/include/c++/15/bits/std_mutex.h \
   /usr/include/c++/15/bits/stl_algo.h \
   /usr/include/c++/15/bits/stl_algobase.h \
   /usr/include/c++/15/bits/stl_bvector.h \
@@ -9411,6 +9419,7 @@ src/CMakeFiles/amule.dir/CommentDialog.cpp.o: src/CommentDialog.cpp \
   /usr/include/c++/15/bits/string_view.tcc \
   /usr/include/c++/15/bits/stringfwd.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
   /usr/include/c++/15/bits/uses_allocator_args.h \
@@ -9427,6 +9436,7 @@ src/CMakeFiles/amule.dir/CommentDialog.cpp.o: src/CommentDialog.cpp \
   /usr/include/c++/15/cstdint \
   /usr/include/c++/15/cstdio \
   /usr/include/c++/15/cstdlib \
+  /usr/include/c++/15/ctime \
   /usr/include/c++/15/cwchar \
   /usr/include/c++/15/cwctype \
   /usr/include/c++/15/debug/assertions.h \
@@ -9450,6 +9460,7 @@ src/CMakeFiles/amule.dir/CommentDialog.cpp.o: src/CommentDialog.cpp \
   /usr/include/c++/15/list \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/ostream \
@@ -9457,6 +9468,7 @@ src/CMakeFiles/amule.dir/CommentDialog.cpp.o: src/CommentDialog.cpp \
   /usr/include/c++/15/pstl/glue_algorithm_defs.h \
   /usr/include/c++/15/pstl/pstl_config.h \
   /usr/include/c++/15/queue \
+  /usr/include/c++/15/ratio \
   /usr/include/c++/15/set \
   /usr/include/c++/15/stdexcept \
   /usr/include/c++/15/stdlib.h \
@@ -10096,6 +10108,7 @@ src/CMakeFiles/amule.dir/CommentDialogLst.cpp.o: src/CommentDialogLst.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -10145,6 +10158,7 @@ src/CMakeFiles/amule.dir/CommentDialogLst.cpp.o: src/CommentDialogLst.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -12944,6 +12958,7 @@ src/CMakeFiles/amule.dir/DownloadListCtrl.cpp.o: src/DownloadListCtrl.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -12993,6 +13008,7 @@ src/CMakeFiles/amule.dir/DownloadListCtrl.cpp.o: src/DownloadListCtrl.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -13718,6 +13734,7 @@ src/CMakeFiles/amule.dir/DownloadQueue.cpp.o: src/DownloadQueue.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -13767,6 +13784,7 @@ src/CMakeFiles/amule.dir/DownloadQueue.cpp.o: src/DownloadQueue.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -14446,6 +14464,7 @@ src/CMakeFiles/amule.dir/ECSpecialCoreTags.cpp.o: src/ECSpecialCoreTags.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -14495,6 +14514,7 @@ src/CMakeFiles/amule.dir/ECSpecialCoreTags.cpp.o: src/ECSpecialCoreTags.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -18088,6 +18108,7 @@ src/CMakeFiles/amule.dir/ExternalConn.cpp.o: src/ExternalConn.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -18137,6 +18158,7 @@ src/CMakeFiles/amule.dir/ExternalConn.cpp.o: src/ExternalConn.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -18794,6 +18816,7 @@ src/CMakeFiles/amule.dir/FileDetailDialog.cpp.o: src/FileDetailDialog.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -18843,6 +18866,7 @@ src/CMakeFiles/amule.dir/FileDetailDialog.cpp.o: src/FileDetailDialog.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -22498,12 +22522,14 @@ src/CMakeFiles/amule.dir/GuiEvents.cpp.o: src/GuiEvents.cpp \
   src/SearchFile.h \
   src/SearchList.h \
   src/SearchStateManager.h \
+  src/SearchTimeoutManager.h \
   src/ServerList.h \
   src/ServerListCtrl.h \
   src/ServerWnd.h \
   src/SharedFilePeersListCtrl.h \
   src/SharedFilesCtrl.h \
   src/SharedFilesWnd.h \
+  src/SimpleSearchCache.h \
   src/SourceListCtrl.h \
   src/StatisticsDlg.h \
   src/Tag.h \
@@ -22563,8 +22589,6 @@ src/CMakeFiles/amule.dir/GuiEvents.cpp.o: src/GuiEvents.cpp \
   src/libs/ec/cpp/ECTag.h \
   src/libs/ec/cpp/ECTagTypes.h \
   src/muuli_wdr.h \
-  src/search/SearchController.h \
-  src/search/SearchControllerFactory.h \
   src/search/SearchModel.h \
   src/search/UnifiedSearchManager.h \
   /usr/include/alloca.h \
@@ -23085,6 +23109,7 @@ src/CMakeFiles/amule.dir/GuiEvents.cpp.o: src/GuiEvents.cpp \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
   /usr/include/wx-3.2/wx/range.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -26321,6 +26346,7 @@ src/CMakeFiles/amule.dir/KnownFileList.cpp.o: src/KnownFileList.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -26370,6 +26396,7 @@ src/CMakeFiles/amule.dir/KnownFileList.cpp.o: src/KnownFileList.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -29841,6 +29868,7 @@ src/CMakeFiles/amule.dir/PartFile.cpp.o: src/PartFile.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -29890,6 +29918,7 @@ src/CMakeFiles/amule.dir/PartFile.cpp.o: src/PartFile.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -30547,6 +30576,7 @@ src/CMakeFiles/amule.dir/PartFileConvert.cpp.o: src/PartFileConvert.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -30596,6 +30626,7 @@ src/CMakeFiles/amule.dir/PartFileConvert.cpp.o: src/PartFileConvert.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -33945,6 +33976,7 @@ src/CMakeFiles/amule.dir/SHAHashSet.cpp.o: src/SHAHashSet.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -33994,6 +34026,7 @@ src/CMakeFiles/amule.dir/SHAHashSet.cpp.o: src/SHAHashSet.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -35137,6 +35170,8 @@ src/CMakeFiles/amule.dir/SearchDlg.cpp.o: src/SearchDlg.cpp \
   src/SearchList.h \
   src/SearchListCtrl.h \
   src/SearchStateManager.h \
+  src/SearchTimeoutManager.h \
+  src/SimpleSearchCache.h \
   src/StateMachine.h \
   src/StatisticsDlg.h \
   src/Timer.h \
@@ -35155,15 +35190,24 @@ src/CMakeFiles/amule.dir/SearchDlg.cpp.o: src/SearchDlg.cpp \
   src/include/common/ClientVersion.h \
   src/include/common/Macros.h \
   src/include/protocol/ed2k/Constants.h \
+  src/include/protocol/kad/Constants.h \
   src/include/tags/FileTags.h \
   src/include/tags/TagTypes.h \
   src/OtherFunctions.h \
+  src/Preferences.h \
   src/Tag.h \
+  src/Tag.h \
+  src/Types.h \
+  src/kademlia/utils/UInt128.h \
+  src/kademlia/net/KademliaUDPListener.h \
+  src/kademlia/net/PacketTracking.h \
   src/kademlia/routing/Maps.h \
   src/Types.h \
   src/kademlia/utils/UInt128.h \
   src/kademlia/kademlia/Entry.h \
   src/kademlia/kademlia/Indexed.h \
+  src/kademlia/kademlia/Kademlia.h \
+  src/kademlia/kademlia/Prefs.h \
   src/kademlia/kademlia/SearchManager.h \
   src/Types.h \
   src/libs/common/Format.h \
@@ -35175,8 +35219,6 @@ src/CMakeFiles/amule.dir/SearchDlg.cpp.o: src/SearchDlg.cpp \
   src/libs/ec/cpp/ECID.h \
   src/muuli_wdr.h \
   src/Logger.h \
-  src/search/SearchController.h \
-  src/search/SearchControllerFactory.h \
   src/search/SearchIdGenerator.h \
   src/search/SearchLogging.h \
   src/search/SearchModel.h \
@@ -35305,6 +35347,7 @@ src/CMakeFiles/amule.dir/SearchDlg.cpp.o: src/SearchDlg.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -35355,6 +35398,7 @@ src/CMakeFiles/amule.dir/SearchDlg.cpp.o: src/SearchDlg.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -36032,6 +36076,7 @@ src/CMakeFiles/amule.dir/SearchFile.cpp.o: src/SearchFile.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -36081,6 +36126,7 @@ src/CMakeFiles/amule.dir/SearchFile.cpp.o: src/SearchFile.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -36579,6 +36625,8 @@ src/CMakeFiles/amule.dir/SearchLabelHelper.cpp.o: src/SearchLabelHelper.cpp \
   src/SearchList.h \
   src/SearchListCtrl.h \
   src/SearchStateManager.h \
+  src/SearchTimeoutManager.h \
+  src/SimpleSearchCache.h \
   src/StateMachine.h \
   src/Timer.h \
   src/Types.h \
@@ -36609,8 +36657,6 @@ src/CMakeFiles/amule.dir/SearchLabelHelper.cpp.o: src/SearchLabelHelper.cpp \
   src/Types.h \
   src/libs/ec/cpp/ECID.h \
   src/Logger.h \
-  src/search/SearchController.h \
-  src/search/SearchControllerFactory.h \
   src/search/SearchLogging.h \
   src/search/SearchModel.h \
   src/search/UnifiedSearchManager.h \
@@ -36738,6 +36784,7 @@ src/CMakeFiles/amule.dir/SearchLabelHelper.cpp.o: src/SearchLabelHelper.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -36788,6 +36835,7 @@ src/CMakeFiles/amule.dir/SearchLabelHelper.cpp.o: src/SearchLabelHelper.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -37282,9 +37330,11 @@ src/CMakeFiles/amule.dir/SearchList.cpp.o: src/SearchList.cpp \
   src/SearchFile.h \
   src/SearchList.h \
   src/SearchStateManager.h \
+  src/SearchTimeoutManager.h \
   src/Server.h \
   src/ServerConnect.h \
   src/ServerList.h \
+  src/SimpleSearchCache.h \
   src/StatTree.h \
   src/StateMachine.h \
   src/Statistics.h \
@@ -37346,8 +37396,6 @@ src/CMakeFiles/amule.dir/SearchList.cpp.o: src/SearchList.cpp \
   src/Types.h \
   src/search/PerSearchState.h \
   src/search/SearchAutoRetry.h \
-  src/search/SearchController.h \
-  src/search/SearchControllerFactory.h \
   src/search/SearchIdGenerator.h \
   src/search/SearchModel.h \
   src/search/SearchPackageException.h \
@@ -37480,6 +37528,7 @@ src/CMakeFiles/amule.dir/SearchList.cpp.o: src/SearchList.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -37529,6 +37578,7 @@ src/CMakeFiles/amule.dir/SearchList.cpp.o: src/SearchList.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -37801,6 +37851,7 @@ src/CMakeFiles/amule.dir/SearchList.cpp.o: src/SearchList.cpp \
   /usr/include/wx-3.2/wx/platinfo.h \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -38041,7 +38092,9 @@ src/CMakeFiles/amule.dir/SearchListCtrl.cpp.o: src/SearchListCtrl.cpp \
   src/SearchList.h \
   src/SearchListCtrl.h \
   src/SearchStateManager.h \
+  src/SearchTimeoutManager.h \
   src/SharedFileList.h \
+  src/SimpleSearchCache.h \
   src/StateMachine.h \
   src/StatisticsDlg.h \
   src/Timer.h \
@@ -38079,8 +38132,6 @@ src/CMakeFiles/amule.dir/SearchListCtrl.cpp.o: src/SearchListCtrl.cpp \
   src/Types.h \
   src/libs/ec/cpp/ECID.h \
   src/muuli_wdr.h \
-  src/search/SearchController.h \
-  src/search/SearchControllerFactory.h \
   src/search/SearchModel.h \
   src/search/UnifiedSearchManager.h \
   /usr/include/alloca.h \
@@ -38207,6 +38258,7 @@ src/CMakeFiles/amule.dir/SearchListCtrl.cpp.o: src/SearchListCtrl.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -38256,6 +38308,7 @@ src/CMakeFiles/amule.dir/SearchListCtrl.cpp.o: src/SearchListCtrl.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -38768,6 +38821,7 @@ src/CMakeFiles/amule.dir/SearchStateManager.cpp.o: src/SearchStateManager.cpp \
   src/Timer.h \
   src/Types.h \
   src/amuleIPV4Address.h \
+  src/Logger.h \
   src/include/common/ClientVersion.h \
   src/include/common/Macros.h \
   src/include/protocol/ed2k/Constants.h \
@@ -38788,6 +38842,8 @@ src/CMakeFiles/amule.dir/SearchStateManager.cpp.o: src/SearchStateManager.cpp \
   src/libs/common/StringFunctions.h \
   src/Types.h \
   src/libs/ec/cpp/ECID.h \
+  src/Logger.h \
+  src/search/SearchLogging.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/bitsperlong.h \
   /usr/include/asm-generic/errno-base.h \
@@ -38815,6 +38871,7 @@ src/CMakeFiles/amule.dir/SearchStateManager.cpp.o: src/SearchStateManager.cpp \
   /usr/include/c++/15/bits/basic_string.tcc \
   /usr/include/c++/15/bits/char_traits.h \
   /usr/include/c++/15/bits/charconv.h \
+  /usr/include/c++/15/bits/chrono.h \
   /usr/include/c++/15/bits/concept_check.h \
   /usr/include/c++/15/bits/cpp_type_traits.h \
   /usr/include/c++/15/bits/cxxabi_forced.h \
@@ -38850,6 +38907,7 @@ src/CMakeFiles/amule.dir/SearchStateManager.cpp.o: src/SearchStateManager.cpp \
   /usr/include/c++/15/bits/ostream.h \
   /usr/include/c++/15/bits/ostream.tcc \
   /usr/include/c++/15/bits/ostream_insert.h \
+  /usr/include/c++/15/bits/parse_numbers.h \
   /usr/include/c++/15/bits/postypes.h \
   /usr/include/c++/15/bits/predefined_ops.h \
   /usr/include/c++/15/bits/ptr_traits.h \
@@ -38898,6 +38956,7 @@ src/CMakeFiles/amule.dir/SearchStateManager.cpp.o: src/SearchStateManager.cpp \
   /usr/include/c++/15/bits/string_view.tcc \
   /usr/include/c++/15/bits/stringfwd.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -38916,6 +38975,7 @@ src/CMakeFiles/amule.dir/SearchStateManager.cpp.o: src/SearchStateManager.cpp \
   /usr/include/c++/15/cstdint \
   /usr/include/c++/15/cstdio \
   /usr/include/c++/15/cstdlib \
+  /usr/include/c++/15/ctime \
   /usr/include/c++/15/cwchar \
   /usr/include/c++/15/cwctype \
   /usr/include/c++/15/debug/assertions.h \
@@ -38941,6 +39001,7 @@ src/CMakeFiles/amule.dir/SearchStateManager.cpp.o: src/SearchStateManager.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/ostream \
@@ -38949,6 +39010,7 @@ src/CMakeFiles/amule.dir/SearchStateManager.cpp.o: src/SearchStateManager.cpp \
   /usr/include/c++/15/pstl/glue_memory_defs.h \
   /usr/include/c++/15/pstl/pstl_config.h \
   /usr/include/c++/15/queue \
+  /usr/include/c++/15/ratio \
   /usr/include/c++/15/set \
   /usr/include/c++/15/stdexcept \
   /usr/include/c++/15/stdlib.h \
@@ -43639,6 +43701,7 @@ src/CMakeFiles/amule.dir/ServerUDPSocket.cpp.o: src/ServerUDPSocket.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -43688,6 +43751,7 @@ src/CMakeFiles/amule.dir/ServerUDPSocket.cpp.o: src/ServerUDPSocket.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -45080,6 +45144,7 @@ src/CMakeFiles/amule.dir/SharedFileList.cpp.o: src/SharedFileList.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -45129,6 +45194,7 @@ src/CMakeFiles/amule.dir/SharedFileList.cpp.o: src/SharedFileList.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -45678,6 +45744,7 @@ src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o: src/SharedFilePeersListC
   /usr/include/c++/15/bits/basic_string.tcc \
   /usr/include/c++/15/bits/char_traits.h \
   /usr/include/c++/15/bits/charconv.h \
+  /usr/include/c++/15/bits/chrono.h \
   /usr/include/c++/15/bits/concept_check.h \
   /usr/include/c++/15/bits/cpp_type_traits.h \
   /usr/include/c++/15/bits/cxxabi_forced.h \
@@ -45713,6 +45780,7 @@ src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o: src/SharedFilePeersListC
   /usr/include/c++/15/bits/ostream.h \
   /usr/include/c++/15/bits/ostream.tcc \
   /usr/include/c++/15/bits/ostream_insert.h \
+  /usr/include/c++/15/bits/parse_numbers.h \
   /usr/include/c++/15/bits/postypes.h \
   /usr/include/c++/15/bits/predefined_ops.h \
   /usr/include/c++/15/bits/ptr_traits.h \
@@ -45761,6 +45829,7 @@ src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o: src/SharedFilePeersListC
   /usr/include/c++/15/bits/string_view.tcc \
   /usr/include/c++/15/bits/stringfwd.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -45779,6 +45848,7 @@ src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o: src/SharedFilePeersListC
   /usr/include/c++/15/cstdint \
   /usr/include/c++/15/cstdio \
   /usr/include/c++/15/cstdlib \
+  /usr/include/c++/15/ctime \
   /usr/include/c++/15/cwchar \
   /usr/include/c++/15/cwctype \
   /usr/include/c++/15/debug/assertions.h \
@@ -45804,6 +45874,7 @@ src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o: src/SharedFilePeersListC
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/ostream \
@@ -45812,6 +45883,7 @@ src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o: src/SharedFilePeersListC
   /usr/include/c++/15/pstl/glue_memory_defs.h \
   /usr/include/c++/15/pstl/pstl_config.h \
   /usr/include/c++/15/queue \
+  /usr/include/c++/15/ratio \
   /usr/include/c++/15/set \
   /usr/include/c++/15/stdexcept \
   /usr/include/c++/15/stdlib.h \
@@ -46465,6 +46537,7 @@ src/CMakeFiles/amule.dir/SharedFilesCtrl.cpp.o: src/SharedFilesCtrl.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -46514,6 +46587,7 @@ src/CMakeFiles/amule.dir/SharedFilesCtrl.cpp.o: src/SharedFilesCtrl.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -47203,6 +47277,7 @@ src/CMakeFiles/amule.dir/SharedFilesWnd.cpp.o: src/SharedFilesWnd.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -47252,6 +47327,7 @@ src/CMakeFiles/amule.dir/SharedFilesWnd.cpp.o: src/SharedFilesWnd.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -47746,6 +47822,652 @@ src/CMakeFiles/amule.dir/SharedFilesWnd.cpp.o: src/SharedFilesWnd.cpp \
   /usr/lib/gcc/x86_64-linux-gnu/15/include/syslimits.h \
   /usr/lib/x86_64-linux-gnu/wx/include/gtk3-unicode-3.2/wx/setup.h
 
+src/CMakeFiles/amule.dir/SimpleSearchCache.cpp.o: src/SimpleSearchCache.cpp \
+  config.h \
+  src/ArchSpecific.h \
+  src/ClientRef.h \
+  src/Constants.h \
+  src/KnownFile.h \
+  src/LibSocket.h \
+  src/MD4Hash.h \
+  src/NetworkFunctions.h \
+  src/Observable.h \
+  src/ObservableQueue.h \
+  src/OtherFunctions.h \
+  src/OtherStructs.h \
+  src/Preferences.h \
+  src/Proxy.h \
+  src/SHAHashSet.h \
+  src/SearchFile.h \
+  src/SearchList.h \
+  src/SimpleSearchCache.h \
+  src/StateMachine.h \
+  src/Timer.h \
+  src/Types.h \
+  src/amuleIPV4Address.h \
+  src/include/common/ClientVersion.h \
+  src/include/common/Macros.h \
+  src/include/protocol/ed2k/Constants.h \
+  src/include/tags/TagTypes.h \
+  src/OtherFunctions.h \
+  src/Tag.h \
+  src/kademlia/routing/Maps.h \
+  src/Types.h \
+  src/kademlia/utils/UInt128.h \
+  src/kademlia/kademlia/Entry.h \
+  src/kademlia/kademlia/Indexed.h \
+  src/kademlia/kademlia/SearchManager.h \
+  src/Types.h \
+  src/libs/common/Format.h \
+  src/libs/common/MuleDebug.h \
+  src/libs/common/Path.h \
+  src/libs/common/SmartPtr.h \
+  src/libs/common/StringFunctions.h \
+  src/Types.h \
+  src/libs/ec/cpp/ECID.h \
+  /usr/include/alloca.h \
+  /usr/include/asm-generic/bitsperlong.h \
+  /usr/include/asm-generic/errno-base.h \
+  /usr/include/asm-generic/errno.h \
+  /usr/include/asm-generic/int-ll64.h \
+  /usr/include/asm-generic/posix_types.h \
+  /usr/include/asm-generic/types.h \
+  /usr/include/assert.h \
+  /usr/include/c++/15/algorithm \
+  /usr/include/c++/15/array \
+  /usr/include/c++/15/backward/auto_ptr.h \
+  /usr/include/c++/15/backward/binders.h \
+  /usr/include/c++/15/bit \
+  /usr/include/c++/15/bits/algorithmfwd.h \
+  /usr/include/c++/15/bits/align.h \
+  /usr/include/c++/15/bits/alloc_traits.h \
+  /usr/include/c++/15/bits/allocated_ptr.h \
+  /usr/include/c++/15/bits/allocator.h \
+  /usr/include/c++/15/bits/atomic_base.h \
+  /usr/include/c++/15/bits/atomic_lockfree_defines.h \
+  /usr/include/c++/15/bits/atomic_wait.h \
+  /usr/include/c++/15/bits/basic_ios.h \
+  /usr/include/c++/15/bits/basic_ios.tcc \
+  /usr/include/c++/15/bits/basic_string.h \
+  /usr/include/c++/15/bits/basic_string.tcc \
+  /usr/include/c++/15/bits/char_traits.h \
+  /usr/include/c++/15/bits/charconv.h \
+  /usr/include/c++/15/bits/chrono.h \
+  /usr/include/c++/15/bits/concept_check.h \
+  /usr/include/c++/15/bits/cpp_type_traits.h \
+  /usr/include/c++/15/bits/cxxabi_forced.h \
+  /usr/include/c++/15/bits/cxxabi_init_exception.h \
+  /usr/include/c++/15/bits/deque.tcc \
+  /usr/include/c++/15/bits/enable_special_members.h \
+  /usr/include/c++/15/bits/erase_if.h \
+  /usr/include/c++/15/bits/exception.h \
+  /usr/include/c++/15/bits/exception_defines.h \
+  /usr/include/c++/15/bits/exception_ptr.h \
+  /usr/include/c++/15/bits/functexcept.h \
+  /usr/include/c++/15/bits/functional_hash.h \
+  /usr/include/c++/15/bits/hash_bytes.h \
+  /usr/include/c++/15/bits/hashtable.h \
+  /usr/include/c++/15/bits/hashtable_policy.h \
+  /usr/include/c++/15/bits/invoke.h \
+  /usr/include/c++/15/bits/ios_base.h \
+  /usr/include/c++/15/bits/istream.tcc \
+  /usr/include/c++/15/bits/iterator_concepts.h \
+  /usr/include/c++/15/bits/list.tcc \
+  /usr/include/c++/15/bits/locale_classes.h \
+  /usr/include/c++/15/bits/locale_classes.tcc \
+  /usr/include/c++/15/bits/locale_facets.h \
+  /usr/include/c++/15/bits/locale_facets.tcc \
+  /usr/include/c++/15/bits/localefwd.h \
+  /usr/include/c++/15/bits/max_size_type.h \
+  /usr/include/c++/15/bits/memory_resource.h \
+  /usr/include/c++/15/bits/memoryfwd.h \
+  /usr/include/c++/15/bits/move.h \
+  /usr/include/c++/15/bits/nested_exception.h \
+  /usr/include/c++/15/bits/new_allocator.h \
+  /usr/include/c++/15/bits/node_handle.h \
+  /usr/include/c++/15/bits/ostream.h \
+  /usr/include/c++/15/bits/ostream.tcc \
+  /usr/include/c++/15/bits/ostream_insert.h \
+  /usr/include/c++/15/bits/parse_numbers.h \
+  /usr/include/c++/15/bits/postypes.h \
+  /usr/include/c++/15/bits/predefined_ops.h \
+  /usr/include/c++/15/bits/ptr_traits.h \
+  /usr/include/c++/15/bits/range_access.h \
+  /usr/include/c++/15/bits/ranges_algo.h \
+  /usr/include/c++/15/bits/ranges_algobase.h \
+  /usr/include/c++/15/bits/ranges_base.h \
+  /usr/include/c++/15/bits/ranges_cmp.h \
+  /usr/include/c++/15/bits/ranges_uninitialized.h \
+  /usr/include/c++/15/bits/ranges_util.h \
+  /usr/include/c++/15/bits/refwrap.h \
+  /usr/include/c++/15/bits/requires_hosted.h \
+  /usr/include/c++/15/bits/shared_ptr.h \
+  /usr/include/c++/15/bits/shared_ptr_atomic.h \
+  /usr/include/c++/15/bits/shared_ptr_base.h \
+  /usr/include/c++/15/bits/specfun.h \
+  /usr/include/c++/15/bits/std_abs.h \
+  /usr/include/c++/15/bits/std_function.h \
+  /usr/include/c++/15/bits/std_mutex.h \
+  /usr/include/c++/15/bits/stl_algo.h \
+  /usr/include/c++/15/bits/stl_algobase.h \
+  /usr/include/c++/15/bits/stl_bvector.h \
+  /usr/include/c++/15/bits/stl_construct.h \
+  /usr/include/c++/15/bits/stl_deque.h \
+  /usr/include/c++/15/bits/stl_function.h \
+  /usr/include/c++/15/bits/stl_heap.h \
+  /usr/include/c++/15/bits/stl_iterator.h \
+  /usr/include/c++/15/bits/stl_iterator_base_funcs.h \
+  /usr/include/c++/15/bits/stl_iterator_base_types.h \
+  /usr/include/c++/15/bits/stl_list.h \
+  /usr/include/c++/15/bits/stl_map.h \
+  /usr/include/c++/15/bits/stl_multimap.h \
+  /usr/include/c++/15/bits/stl_multiset.h \
+  /usr/include/c++/15/bits/stl_pair.h \
+  /usr/include/c++/15/bits/stl_queue.h \
+  /usr/include/c++/15/bits/stl_raw_storage_iter.h \
+  /usr/include/c++/15/bits/stl_relops.h \
+  /usr/include/c++/15/bits/stl_set.h \
+  /usr/include/c++/15/bits/stl_tempbuf.h \
+  /usr/include/c++/15/bits/stl_tree.h \
+  /usr/include/c++/15/bits/stl_uninitialized.h \
+  /usr/include/c++/15/bits/stl_vector.h \
+  /usr/include/c++/15/bits/stream_iterator.h \
+  /usr/include/c++/15/bits/streambuf.tcc \
+  /usr/include/c++/15/bits/streambuf_iterator.h \
+  /usr/include/c++/15/bits/string_view.tcc \
+  /usr/include/c++/15/bits/stringfwd.h \
+  /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
+  /usr/include/c++/15/bits/unique_ptr.h \
+  /usr/include/c++/15/bits/unordered_map.h \
+  /usr/include/c++/15/bits/uses_allocator.h \
+  /usr/include/c++/15/bits/uses_allocator_args.h \
+  /usr/include/c++/15/bits/utility.h \
+  /usr/include/c++/15/bits/vector.tcc \
+  /usr/include/c++/15/bits/version.h \
+  /usr/include/c++/15/cctype \
+  /usr/include/c++/15/cerrno \
+  /usr/include/c++/15/climits \
+  /usr/include/c++/15/clocale \
+  /usr/include/c++/15/cmath \
+  /usr/include/c++/15/compare \
+  /usr/include/c++/15/concepts \
+  /usr/include/c++/15/cstddef \
+  /usr/include/c++/15/cstdint \
+  /usr/include/c++/15/cstdio \
+  /usr/include/c++/15/cstdlib \
+  /usr/include/c++/15/ctime \
+  /usr/include/c++/15/cwchar \
+  /usr/include/c++/15/cwctype \
+  /usr/include/c++/15/debug/assertions.h \
+  /usr/include/c++/15/debug/debug.h \
+  /usr/include/c++/15/deque \
+  /usr/include/c++/15/exception \
+  /usr/include/c++/15/ext/aligned_buffer.h \
+  /usr/include/c++/15/ext/alloc_traits.h \
+  /usr/include/c++/15/ext/atomicity.h \
+  /usr/include/c++/15/ext/concurrence.h \
+  /usr/include/c++/15/ext/numeric_traits.h \
+  /usr/include/c++/15/ext/string_conversions.h \
+  /usr/include/c++/15/ext/type_traits.h \
+  /usr/include/c++/15/functional \
+  /usr/include/c++/15/initializer_list \
+  /usr/include/c++/15/ios \
+  /usr/include/c++/15/iosfwd \
+  /usr/include/c++/15/iostream \
+  /usr/include/c++/15/istream \
+  /usr/include/c++/15/iterator \
+  /usr/include/c++/15/limits \
+  /usr/include/c++/15/list \
+  /usr/include/c++/15/map \
+  /usr/include/c++/15/math.h \
+  /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
+  /usr/include/c++/15/new \
+  /usr/include/c++/15/numbers \
+  /usr/include/c++/15/ostream \
+  /usr/include/c++/15/pstl/execution_defs.h \
+  /usr/include/c++/15/pstl/glue_algorithm_defs.h \
+  /usr/include/c++/15/pstl/glue_memory_defs.h \
+  /usr/include/c++/15/pstl/pstl_config.h \
+  /usr/include/c++/15/queue \
+  /usr/include/c++/15/ratio \
+  /usr/include/c++/15/set \
+  /usr/include/c++/15/stdexcept \
+  /usr/include/c++/15/stdlib.h \
+  /usr/include/c++/15/streambuf \
+  /usr/include/c++/15/string \
+  /usr/include/c++/15/string_view \
+  /usr/include/c++/15/system_error \
+  /usr/include/c++/15/tr1/bessel_function.tcc \
+  /usr/include/c++/15/tr1/beta_function.tcc \
+  /usr/include/c++/15/tr1/ell_integral.tcc \
+  /usr/include/c++/15/tr1/exp_integral.tcc \
+  /usr/include/c++/15/tr1/gamma.tcc \
+  /usr/include/c++/15/tr1/hypergeometric.tcc \
+  /usr/include/c++/15/tr1/legendre_function.tcc \
+  /usr/include/c++/15/tr1/modified_bessel_func.tcc \
+  /usr/include/c++/15/tr1/poly_hermite.tcc \
+  /usr/include/c++/15/tr1/poly_laguerre.tcc \
+  /usr/include/c++/15/tr1/riemann_zeta.tcc \
+  /usr/include/c++/15/tr1/special_function_util.h \
+  /usr/include/c++/15/tuple \
+  /usr/include/c++/15/type_traits \
+  /usr/include/c++/15/typeinfo \
+  /usr/include/c++/15/unordered_map \
+  /usr/include/c++/15/utility \
+  /usr/include/c++/15/vector \
+  /usr/include/ctype.h \
+  /usr/include/dirent.h \
+  /usr/include/dlfcn.h \
+  /usr/include/endian.h \
+  /usr/include/errno.h \
+  /usr/include/fcntl.h \
+  /usr/include/features-time64.h \
+  /usr/include/features.h \
+  /usr/include/inttypes.h \
+  /usr/include/limits.h \
+  /usr/include/linux/close_range.h \
+  /usr/include/linux/errno.h \
+  /usr/include/linux/falloc.h \
+  /usr/include/linux/limits.h \
+  /usr/include/linux/posix_types.h \
+  /usr/include/linux/sched/types.h \
+  /usr/include/linux/stat.h \
+  /usr/include/linux/stddef.h \
+  /usr/include/linux/types.h \
+  /usr/include/locale.h \
+  /usr/include/math.h \
+  /usr/include/pthread.h \
+  /usr/include/sched.h \
+  /usr/include/signal.h \
+  /usr/include/stdc-predef.h \
+  /usr/include/stdint.h \
+  /usr/include/stdio.h \
+  /usr/include/stdlib.h \
+  /usr/include/string.h \
+  /usr/include/strings.h \
+  /usr/include/syscall.h \
+  /usr/include/time.h \
+  /usr/include/unistd.h \
+  /usr/include/wchar.h \
+  /usr/include/wctype.h \
+  /usr/include/wx-3.2/wx/accel.h \
+  /usr/include/wx-3.2/wx/affinematrix2d.h \
+  /usr/include/wx-3.2/wx/affinematrix2dbase.h \
+  /usr/include/wx-3.2/wx/afterstd.h \
+  /usr/include/wx-3.2/wx/any.h \
+  /usr/include/wx-3.2/wx/anybutton.h \
+  /usr/include/wx-3.2/wx/anystr.h \
+  /usr/include/wx-3.2/wx/app.h \
+  /usr/include/wx-3.2/wx/arrstr.h \
+  /usr/include/wx-3.2/wx/atomic.h \
+  /usr/include/wx-3.2/wx/beforestd.h \
+  /usr/include/wx-3.2/wx/bitmap.h \
+  /usr/include/wx-3.2/wx/bmpbndl.h \
+  /usr/include/wx-3.2/wx/bmpbuttn.h \
+  /usr/include/wx-3.2/wx/brush.h \
+  /usr/include/wx-3.2/wx/buffer.h \
+  /usr/include/wx-3.2/wx/build.h \
+  /usr/include/wx-3.2/wx/button.h \
+  /usr/include/wx-3.2/wx/chartype.h \
+  /usr/include/wx-3.2/wx/checkbox.h \
+  /usr/include/wx-3.2/wx/checkeddelete.h \
+  /usr/include/wx-3.2/wx/checklst.h \
+  /usr/include/wx-3.2/wx/chkconf.h \
+  /usr/include/wx-3.2/wx/choicdlg.h \
+  /usr/include/wx-3.2/wx/choice.h \
+  /usr/include/wx-3.2/wx/clntdata.h \
+  /usr/include/wx-3.2/wx/cmdargs.h \
+  /usr/include/wx-3.2/wx/colour.h \
+  /usr/include/wx-3.2/wx/combobox.h \
+  /usr/include/wx-3.2/wx/compiler.h \
+  /usr/include/wx-3.2/wx/containr.h \
+  /usr/include/wx-3.2/wx/control.h \
+  /usr/include/wx-3.2/wx/cpp.h \
+  /usr/include/wx-3.2/wx/ctrlsub.h \
+  /usr/include/wx-3.2/wx/cursor.h \
+  /usr/include/wx-3.2/wx/dataobj.h \
+  /usr/include/wx-3.2/wx/datetime.h \
+  /usr/include/wx-3.2/wx/dc.h \
+  /usr/include/wx-3.2/wx/dcclient.h \
+  /usr/include/wx-3.2/wx/dcmemory.h \
+  /usr/include/wx-3.2/wx/dcprint.h \
+  /usr/include/wx-3.2/wx/dcscreen.h \
+  /usr/include/wx-3.2/wx/debug.h \
+  /usr/include/wx-3.2/wx/defs.h \
+  /usr/include/wx-3.2/wx/dialog.h \
+  /usr/include/wx-3.2/wx/dirdlg.h \
+  /usr/include/wx-3.2/wx/dlimpexp.h \
+  /usr/include/wx-3.2/wx/dynarray.h \
+  /usr/include/wx-3.2/wx/event.h \
+  /usr/include/wx-3.2/wx/eventfilter.h \
+  /usr/include/wx-3.2/wx/except.h \
+  /usr/include/wx-3.2/wx/features.h \
+  /usr/include/wx-3.2/wx/filectrl.h \
+  /usr/include/wx-3.2/wx/filedlg.h \
+  /usr/include/wx-3.2/wx/filefn.h \
+  /usr/include/wx-3.2/wx/flags.h \
+  /usr/include/wx-3.2/wx/font.h \
+  /usr/include/wx-3.2/wx/fontenc.h \
+  /usr/include/wx-3.2/wx/frame.h \
+  /usr/include/wx-3.2/wx/gauge.h \
+  /usr/include/wx-3.2/wx/gdicmn.h \
+  /usr/include/wx-3.2/wx/gdiobj.h \
+  /usr/include/wx-3.2/wx/generic/accel.h \
+  /usr/include/wx-3.2/wx/generic/choicdgg.h \
+  /usr/include/wx-3.2/wx/generic/icon.h \
+  /usr/include/wx-3.2/wx/generic/logg.h \
+  /usr/include/wx-3.2/wx/generic/msgdlgg.h \
+  /usr/include/wx-3.2/wx/generic/paletteg.h \
+  /usr/include/wx-3.2/wx/generic/panelg.h \
+  /usr/include/wx-3.2/wx/generic/statusbr.h \
+  /usr/include/wx-3.2/wx/generic/textdlgg.h \
+  /usr/include/wx-3.2/wx/geometry.h \
+  /usr/include/wx-3.2/wx/gtk/accel.h \
+  /usr/include/wx-3.2/wx/gtk/anybutton.h \
+  /usr/include/wx-3.2/wx/gtk/app.h \
+  /usr/include/wx-3.2/wx/gtk/bitmap.h \
+  /usr/include/wx-3.2/wx/gtk/bmpbuttn.h \
+  /usr/include/wx-3.2/wx/gtk/brush.h \
+  /usr/include/wx-3.2/wx/gtk/button.h \
+  /usr/include/wx-3.2/wx/gtk/checkbox.h \
+  /usr/include/wx-3.2/wx/gtk/checklst.h \
+  /usr/include/wx-3.2/wx/gtk/chkconf.h \
+  /usr/include/wx-3.2/wx/gtk/choice.h \
+  /usr/include/wx-3.2/wx/gtk/colour.h \
+  /usr/include/wx-3.2/wx/gtk/combobox.h \
+  /usr/include/wx-3.2/wx/gtk/control.h \
+  /usr/include/wx-3.2/wx/gtk/cursor.h \
+  /usr/include/wx-3.2/wx/gtk/dataform.h \
+  /usr/include/wx-3.2/wx/gtk/dataobj.h \
+  /usr/include/wx-3.2/wx/gtk/dataobj2.h \
+  /usr/include/wx-3.2/wx/gtk/dialog.h \
+  /usr/include/wx-3.2/wx/gtk/dirdlg.h \
+  /usr/include/wx-3.2/wx/gtk/filectrl.h \
+  /usr/include/wx-3.2/wx/gtk/filedlg.h \
+  /usr/include/wx-3.2/wx/gtk/font.h \
+  /usr/include/wx-3.2/wx/gtk/frame.h \
+  /usr/include/wx-3.2/wx/gtk/gauge.h \
+  /usr/include/wx-3.2/wx/gtk/listbox.h \
+  /usr/include/wx-3.2/wx/gtk/mdi.h \
+  /usr/include/wx-3.2/wx/gtk/menu.h \
+  /usr/include/wx-3.2/wx/gtk/menuitem.h \
+  /usr/include/wx-3.2/wx/gtk/msgdlg.h \
+  /usr/include/wx-3.2/wx/gtk/nonownedwnd.h \
+  /usr/include/wx-3.2/wx/gtk/pen.h \
+  /usr/include/wx-3.2/wx/gtk/radiobox.h \
+  /usr/include/wx-3.2/wx/gtk/radiobut.h \
+  /usr/include/wx-3.2/wx/gtk/region.h \
+  /usr/include/wx-3.2/wx/gtk/scrolbar.h \
+  /usr/include/wx-3.2/wx/gtk/scrolwin.h \
+  /usr/include/wx-3.2/wx/gtk/slider.h \
+  /usr/include/wx-3.2/wx/gtk/statbmp.h \
+  /usr/include/wx-3.2/wx/gtk/statbox.h \
+  /usr/include/wx-3.2/wx/gtk/stattext.h \
+  /usr/include/wx-3.2/wx/gtk/textctrl.h \
+  /usr/include/wx-3.2/wx/gtk/textentry.h \
+  /usr/include/wx-3.2/wx/gtk/toolbar.h \
+  /usr/include/wx-3.2/wx/gtk/toplevel.h \
+  /usr/include/wx-3.2/wx/gtk/window.h \
+  /usr/include/wx-3.2/wx/hash.h \
+  /usr/include/wx-3.2/wx/hashmap.h \
+  /usr/include/wx-3.2/wx/icon.h \
+  /usr/include/wx-3.2/wx/iconbndl.h \
+  /usr/include/wx-3.2/wx/iconloc.h \
+  /usr/include/wx-3.2/wx/imagbmp.h \
+  /usr/include/wx-3.2/wx/image.h \
+  /usr/include/wx-3.2/wx/imaggif.h \
+  /usr/include/wx-3.2/wx/imagiff.h \
+  /usr/include/wx-3.2/wx/imagjpeg.h \
+  /usr/include/wx-3.2/wx/imagpcx.h \
+  /usr/include/wx-3.2/wx/imagpng.h \
+  /usr/include/wx-3.2/wx/imagpnm.h \
+  /usr/include/wx-3.2/wx/imagtga.h \
+  /usr/include/wx-3.2/wx/imagtiff.h \
+  /usr/include/wx-3.2/wx/imagxpm.h \
+  /usr/include/wx-3.2/wx/init.h \
+  /usr/include/wx-3.2/wx/intl.h \
+  /usr/include/wx-3.2/wx/iosfwrap.h \
+  /usr/include/wx-3.2/wx/ioswrap.h \
+  /usr/include/wx-3.2/wx/kbdstate.h \
+  /usr/include/wx-3.2/wx/language.h \
+  /usr/include/wx-3.2/wx/layout.h \
+  /usr/include/wx-3.2/wx/list.h \
+  /usr/include/wx-3.2/wx/listbox.h \
+  /usr/include/wx-3.2/wx/localedefs.h \
+  /usr/include/wx-3.2/wx/log.h \
+  /usr/include/wx-3.2/wx/longlong.h \
+  /usr/include/wx-3.2/wx/math.h \
+  /usr/include/wx-3.2/wx/mdi.h \
+  /usr/include/wx-3.2/wx/memory.h \
+  /usr/include/wx-3.2/wx/menu.h \
+  /usr/include/wx-3.2/wx/menuitem.h \
+  /usr/include/wx-3.2/wx/meta/convertible.h \
+  /usr/include/wx-3.2/wx/meta/if.h \
+  /usr/include/wx-3.2/wx/meta/implicitconversion.h \
+  /usr/include/wx-3.2/wx/meta/int2type.h \
+  /usr/include/wx-3.2/wx/meta/movable.h \
+  /usr/include/wx-3.2/wx/meta/pod.h \
+  /usr/include/wx-3.2/wx/meta/removeref.h \
+  /usr/include/wx-3.2/wx/module.h \
+  /usr/include/wx-3.2/wx/mousestate.h \
+  /usr/include/wx-3.2/wx/msgdlg.h \
+  /usr/include/wx-3.2/wx/msgout.h \
+  /usr/include/wx-3.2/wx/nonownedwnd.h \
+  /usr/include/wx-3.2/wx/object.h \
+  /usr/include/wx-3.2/wx/palette.h \
+  /usr/include/wx-3.2/wx/panel.h \
+  /usr/include/wx-3.2/wx/pen.h \
+  /usr/include/wx-3.2/wx/peninfobase.h \
+  /usr/include/wx-3.2/wx/platform.h \
+  /usr/include/wx-3.2/wx/platinfo.h \
+  /usr/include/wx-3.2/wx/radiobox.h \
+  /usr/include/wx-3.2/wx/radiobut.h \
+  /usr/include/wx-3.2/wx/region.h \
+  /usr/include/wx-3.2/wx/rtti.h \
+  /usr/include/wx-3.2/wx/scopedptr.h \
+  /usr/include/wx-3.2/wx/scopeguard.h \
+  /usr/include/wx-3.2/wx/scrolbar.h \
+  /usr/include/wx-3.2/wx/scrolwin.h \
+  /usr/include/wx-3.2/wx/settings.h \
+  /usr/include/wx-3.2/wx/sharedptr.h \
+  /usr/include/wx-3.2/wx/sizer.h \
+  /usr/include/wx-3.2/wx/slider.h \
+  /usr/include/wx-3.2/wx/statbmp.h \
+  /usr/include/wx-3.2/wx/statbox.h \
+  /usr/include/wx-3.2/wx/stattext.h \
+  /usr/include/wx-3.2/wx/statusbr.h \
+  /usr/include/wx-3.2/wx/stockitem.h \
+  /usr/include/wx-3.2/wx/stopwatch.h \
+  /usr/include/wx-3.2/wx/strconv.h \
+  /usr/include/wx-3.2/wx/stream.h \
+  /usr/include/wx-3.2/wx/string.h \
+  /usr/include/wx-3.2/wx/stringimpl.h \
+  /usr/include/wx-3.2/wx/stringops.h \
+  /usr/include/wx-3.2/wx/strvararg.h \
+  /usr/include/wx-3.2/wx/tbarbase.h \
+  /usr/include/wx-3.2/wx/textctrl.h \
+  /usr/include/wx-3.2/wx/textdlg.h \
+  /usr/include/wx-3.2/wx/textentry.h \
+  /usr/include/wx-3.2/wx/thread.h \
+  /usr/include/wx-3.2/wx/time.h \
+  /usr/include/wx-3.2/wx/timer.h \
+  /usr/include/wx-3.2/wx/toolbar.h \
+  /usr/include/wx-3.2/wx/toplevel.h \
+  /usr/include/wx-3.2/wx/tracker.h \
+  /usr/include/wx-3.2/wx/translation.h \
+  /usr/include/wx-3.2/wx/typeinfo.h \
+  /usr/include/wx-3.2/wx/types.h \
+  /usr/include/wx-3.2/wx/unichar.h \
+  /usr/include/wx-3.2/wx/unix/app.h \
+  /usr/include/wx-3.2/wx/unix/chkconf.h \
+  /usr/include/wx-3.2/wx/utils.h \
+  /usr/include/wx-3.2/wx/validate.h \
+  /usr/include/wx-3.2/wx/valtext.h \
+  /usr/include/wx-3.2/wx/variant.h \
+  /usr/include/wx-3.2/wx/vector.h \
+  /usr/include/wx-3.2/wx/version.h \
+  /usr/include/wx-3.2/wx/versioninfo.h \
+  /usr/include/wx-3.2/wx/weakref.h \
+  /usr/include/wx-3.2/wx/window.h \
+  /usr/include/wx-3.2/wx/windowid.h \
+  /usr/include/wx-3.2/wx/wx.h \
+  /usr/include/wx-3.2/wx/wxcrt.h \
+  /usr/include/wx-3.2/wx/wxcrtbase.h \
+  /usr/include/wx-3.2/wx/wxcrtvararg.h \
+  /usr/include/wx-3.2/wx/xti.h \
+  /usr/include/wx-3.2/wx/xti2.h \
+  /usr/include/x86_64-linux-gnu/asm/bitsperlong.h \
+  /usr/include/x86_64-linux-gnu/asm/errno.h \
+  /usr/include/x86_64-linux-gnu/asm/posix_types.h \
+  /usr/include/x86_64-linux-gnu/asm/posix_types_64.h \
+  /usr/include/x86_64-linux-gnu/asm/types.h \
+  /usr/include/x86_64-linux-gnu/asm/unistd.h \
+  /usr/include/x86_64-linux-gnu/asm/unistd_64.h \
+  /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h \
+  /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+  /usr/include/x86_64-linux-gnu/bits/confname.h \
+  /usr/include/x86_64-linux-gnu/bits/cpu-set.h \
+  /usr/include/x86_64-linux-gnu/bits/dirent.h \
+  /usr/include/x86_64-linux-gnu/bits/dirent_ext.h \
+  /usr/include/x86_64-linux-gnu/bits/dl_find_object.h \
+  /usr/include/x86_64-linux-gnu/bits/dlfcn.h \
+  /usr/include/x86_64-linux-gnu/bits/endian.h \
+  /usr/include/x86_64-linux-gnu/bits/endianness.h \
+  /usr/include/x86_64-linux-gnu/bits/environments.h \
+  /usr/include/x86_64-linux-gnu/bits/errno.h \
+  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
+  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+  /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
+  /usr/include/x86_64-linux-gnu/bits/floatn.h \
+  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+  /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
+  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
+  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/locale.h \
+  /usr/include/x86_64-linux-gnu/bits/long-double.h \
+  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-macros.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+  /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+  /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h \
+  /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
+  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
+  /usr/include/x86_64-linux-gnu/bits/sched.h \
+  /usr/include/x86_64-linux-gnu/bits/select.h \
+  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+  /usr/include/x86_64-linux-gnu/bits/sigaction.h \
+  /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
+  /usr/include/x86_64-linux-gnu/bits/sigevent-consts.h \
+  /usr/include/x86_64-linux-gnu/bits/siginfo-arch.h \
+  /usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h \
+  /usr/include/x86_64-linux-gnu/bits/siginfo-consts.h \
+  /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
+  /usr/include/x86_64-linux-gnu/bits/signum-arch.h \
+  /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
+  /usr/include/x86_64-linux-gnu/bits/sigstack.h \
+  /usr/include/x86_64-linux-gnu/bits/sigstksz.h \
+  /usr/include/x86_64-linux-gnu/bits/sigthread.h \
+  /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
+  /usr/include/x86_64-linux-gnu/bits/stat.h \
+  /usr/include/x86_64-linux-gnu/bits/statx-generic.h \
+  /usr/include/x86_64-linux-gnu/bits/statx.h \
+  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
+  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
+  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
+  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
+  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
+  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h \
+  /usr/include/x86_64-linux-gnu/bits/struct_stat.h \
+  /usr/include/x86_64-linux-gnu/bits/syscall.h \
+  /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
+  /usr/include/x86_64-linux-gnu/bits/time.h \
+  /usr/include/x86_64-linux-gnu/bits/time64.h \
+  /usr/include/x86_64-linux-gnu/bits/timesize.h \
+  /usr/include/x86_64-linux-gnu/bits/timex.h \
+  /usr/include/x86_64-linux-gnu/bits/types.h \
+  /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/clock_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/sigval_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/stack_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_statx.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_statx_timestamp.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+  /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/timer_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
+  /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+  /usr/include/x86_64-linux-gnu/bits/uintn-identity.h \
+  /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
+  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+  /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
+  /usr/include/x86_64-linux-gnu/bits/wchar.h \
+  /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h \
+  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/atomic_word.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/c++allocator.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/c++config.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/c++locale.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/cpu_defines.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/ctype_base.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/ctype_inline.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/error_constants.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/gthr-default.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/gthr.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/os_defines.h \
+  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+  /usr/include/x86_64-linux-gnu/sys/select.h \
+  /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
+  /usr/include/x86_64-linux-gnu/sys/stat.h \
+  /usr/include/x86_64-linux-gnu/sys/syscall.h \
+  /usr/include/x86_64-linux-gnu/sys/types.h \
+  /usr/include/x86_64-linux-gnu/sys/ucontext.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/limits.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/stdarg.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/stddef.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/stdint.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/syslimits.h \
+  /usr/lib/x86_64-linux-gnu/wx/include/gtk3-unicode-3.2/wx/setup.h
+
 src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o: src/SourceListCtrl.cpp \
   config.h \
   src/ArchSpecific.h \
@@ -47821,6 +48543,7 @@ src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o: src/SourceListCtrl.cpp \
   /usr/include/c++/15/bits/basic_string.tcc \
   /usr/include/c++/15/bits/char_traits.h \
   /usr/include/c++/15/bits/charconv.h \
+  /usr/include/c++/15/bits/chrono.h \
   /usr/include/c++/15/bits/concept_check.h \
   /usr/include/c++/15/bits/cpp_type_traits.h \
   /usr/include/c++/15/bits/cxxabi_forced.h \
@@ -47856,6 +48579,7 @@ src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o: src/SourceListCtrl.cpp \
   /usr/include/c++/15/bits/ostream.h \
   /usr/include/c++/15/bits/ostream.tcc \
   /usr/include/c++/15/bits/ostream_insert.h \
+  /usr/include/c++/15/bits/parse_numbers.h \
   /usr/include/c++/15/bits/postypes.h \
   /usr/include/c++/15/bits/predefined_ops.h \
   /usr/include/c++/15/bits/ptr_traits.h \
@@ -47904,6 +48628,7 @@ src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o: src/SourceListCtrl.cpp \
   /usr/include/c++/15/bits/string_view.tcc \
   /usr/include/c++/15/bits/stringfwd.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -47922,6 +48647,7 @@ src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o: src/SourceListCtrl.cpp \
   /usr/include/c++/15/cstdint \
   /usr/include/c++/15/cstdio \
   /usr/include/c++/15/cstdlib \
+  /usr/include/c++/15/ctime \
   /usr/include/c++/15/cwchar \
   /usr/include/c++/15/cwctype \
   /usr/include/c++/15/debug/assertions.h \
@@ -47947,6 +48673,7 @@ src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o: src/SourceListCtrl.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/ostream \
@@ -47955,6 +48682,7 @@ src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o: src/SourceListCtrl.cpp \
   /usr/include/c++/15/pstl/glue_memory_defs.h \
   /usr/include/c++/15/pstl/pstl_config.h \
   /usr/include/c++/15/queue \
+  /usr/include/c++/15/ratio \
   /usr/include/c++/15/set \
   /usr/include/c++/15/stdexcept \
   /usr/include/c++/15/stdlib.h \
@@ -50519,6 +51247,7 @@ src/CMakeFiles/amule.dir/ThreadTasks.cpp.o: src/ThreadTasks.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -50568,6 +51297,7 @@ src/CMakeFiles/amule.dir/ThreadTasks.cpp.o: src/ThreadTasks.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -51075,7 +51805,9 @@ src/CMakeFiles/amule.dir/TransferWnd.cpp.o: src/TransferWnd.cpp \
   src/SearchFile.h \
   src/SearchList.h \
   src/SearchStateManager.h \
+  src/SearchTimeoutManager.h \
   src/SharedFileList.h \
+  src/SimpleSearchCache.h \
   src/SourceListCtrl.h \
   src/StatTree.h \
   src/Statistics.h \
@@ -51125,8 +51857,6 @@ src/CMakeFiles/amule.dir/TransferWnd.cpp.o: src/TransferWnd.cpp \
   src/Types.h \
   src/libs/ec/cpp/ECID.h \
   src/muuli_wdr.h \
-  src/search/SearchController.h \
-  src/search/SearchControllerFactory.h \
   src/search/SearchModel.h \
   src/search/UnifiedSearchManager.h \
   /usr/include/alloca.h \
@@ -51253,6 +51983,7 @@ src/CMakeFiles/amule.dir/TransferWnd.cpp.o: src/TransferWnd.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -51302,6 +52033,7 @@ src/CMakeFiles/amule.dir/TransferWnd.cpp.o: src/TransferWnd.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -51594,6 +52326,7 @@ src/CMakeFiles/amule.dir/TransferWnd.cpp.o: src/TransferWnd.cpp \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
   /usr/include/wx-3.2/wx/range.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -54072,6 +54805,7 @@ src/CMakeFiles/amule.dir/UserEvents.cpp.o: src/UserEvents.cpp \
   /usr/include/c++/15/bits/basic_string.tcc \
   /usr/include/c++/15/bits/char_traits.h \
   /usr/include/c++/15/bits/charconv.h \
+  /usr/include/c++/15/bits/chrono.h \
   /usr/include/c++/15/bits/concept_check.h \
   /usr/include/c++/15/bits/cpp_type_traits.h \
   /usr/include/c++/15/bits/cxxabi_forced.h \
@@ -54107,6 +54841,7 @@ src/CMakeFiles/amule.dir/UserEvents.cpp.o: src/UserEvents.cpp \
   /usr/include/c++/15/bits/ostream.h \
   /usr/include/c++/15/bits/ostream.tcc \
   /usr/include/c++/15/bits/ostream_insert.h \
+  /usr/include/c++/15/bits/parse_numbers.h \
   /usr/include/c++/15/bits/postypes.h \
   /usr/include/c++/15/bits/predefined_ops.h \
   /usr/include/c++/15/bits/ptr_traits.h \
@@ -54155,6 +54890,7 @@ src/CMakeFiles/amule.dir/UserEvents.cpp.o: src/UserEvents.cpp \
   /usr/include/c++/15/bits/string_view.tcc \
   /usr/include/c++/15/bits/stringfwd.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -54173,6 +54909,7 @@ src/CMakeFiles/amule.dir/UserEvents.cpp.o: src/UserEvents.cpp \
   /usr/include/c++/15/cstdint \
   /usr/include/c++/15/cstdio \
   /usr/include/c++/15/cstdlib \
+  /usr/include/c++/15/ctime \
   /usr/include/c++/15/cwchar \
   /usr/include/c++/15/cwctype \
   /usr/include/c++/15/debug/assertions.h \
@@ -54198,6 +54935,7 @@ src/CMakeFiles/amule.dir/UserEvents.cpp.o: src/UserEvents.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/ostream \
@@ -54206,6 +54944,7 @@ src/CMakeFiles/amule.dir/UserEvents.cpp.o: src/UserEvents.cpp \
   /usr/include/c++/15/pstl/glue_memory_defs.h \
   /usr/include/c++/15/pstl/pstl_config.h \
   /usr/include/c++/15/queue \
+  /usr/include/c++/15/ratio \
   /usr/include/c++/15/set \
   /usr/include/c++/15/stdexcept \
   /usr/include/c++/15/stdlib.h \
@@ -54856,6 +55595,7 @@ src/CMakeFiles/amule.dir/amule-gui.cpp.o: src/amule-gui.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -54905,6 +55645,7 @@ src/CMakeFiles/amule.dir/amule-gui.cpp.o: src/amule-gui.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -55677,6 +56418,7 @@ src/CMakeFiles/amule.dir/amule.cpp.o: src/amule.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -55728,6 +56470,7 @@ src/CMakeFiles/amule.dir/amule.cpp.o: src/amule.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -56436,6 +57179,7 @@ src/CMakeFiles/amule.dir/amuleAppCommon.cpp.o: src/amuleAppCommon.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -56485,6 +57229,7 @@ src/CMakeFiles/amule.dir/amuleAppCommon.cpp.o: src/amuleAppCommon.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -57001,11 +57746,13 @@ src/CMakeFiles/amule.dir/amuleDlg.cpp.o: src/amuleDlg.cpp \
   src/SearchFile.h \
   src/SearchList.h \
   src/SearchStateManager.h \
+  src/SearchTimeoutManager.h \
   src/Server.h \
   src/ServerConnect.h \
   src/ServerWnd.h \
   src/SharedFilePeersListCtrl.h \
   src/SharedFilesWnd.h \
+  src/SimpleSearchCache.h \
   src/SourceListCtrl.h \
   src/StatTree.h \
   src/StateMachine.h \
@@ -57062,8 +57809,6 @@ src/CMakeFiles/amule.dir/amuleDlg.cpp.o: src/amuleDlg.cpp \
   src/Types.h \
   src/libs/ec/cpp/ECID.h \
   src/muuli_wdr.h \
-  src/search/SearchController.h \
-  src/search/SearchControllerFactory.h \
   src/search/SearchModel.h \
   src/search/UnifiedSearchManager.h \
   /usr/include/alloca.h \
@@ -57190,6 +57935,7 @@ src/CMakeFiles/amule.dir/amuleDlg.cpp.o: src/amuleDlg.cpp \
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -57239,6 +57985,7 @@ src/CMakeFiles/amule.dir/amuleDlg.cpp.o: src/amuleDlg.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -57527,6 +58274,7 @@ src/CMakeFiles/amule.dir/amuleDlg.cpp.o: src/amuleDlg.cpp \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
   /usr/include/wx-3.2/wx/range.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -58699,6 +59447,7 @@ src/CMakeFiles/amule.dir/kademlia/kademlia/Prefs.cpp.o: src/kademlia/kademlia/Pr
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -58748,6 +59497,7 @@ src/CMakeFiles/amule.dir/kademlia/kademlia/Prefs.cpp.o: src/kademlia/kademlia/Pr
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -59434,6 +60184,7 @@ src/CMakeFiles/amule.dir/kademlia/kademlia/Search.cpp.o: src/kademlia/kademlia/S
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -59483,6 +60234,7 @@ src/CMakeFiles/amule.dir/kademlia/kademlia/Search.cpp.o: src/kademlia/kademlia/S
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -60135,6 +60887,7 @@ src/CMakeFiles/amule.dir/kademlia/kademlia/UDPFirewallTester.cpp.o: src/kademlia
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -60184,6 +60937,7 @@ src/CMakeFiles/amule.dir/kademlia/kademlia/UDPFirewallTester.cpp.o: src/kademlia
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -62971,6 +63725,7 @@ src/CMakeFiles/amule.dir/kademlia/routing/RoutingZone.cpp.o: src/kademlia/routin
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -63020,6 +63775,7 @@ src/CMakeFiles/amule.dir/kademlia/routing/RoutingZone.cpp.o: src/kademlia/routin
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -63943,6 +64699,7 @@ src/CMakeFiles/amule.dir/protocol/ProtocolCoordinator.cpp.o: src/protocol/Protoc
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -63992,6 +64749,7 @@ src/CMakeFiles/amule.dir/protocol/ProtocolCoordinator.cpp.o: src/protocol/Protoc
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/numeric \
@@ -64679,6 +65437,7 @@ src/CMakeFiles/amule.dir/search/ED2KSearchController.cpp.o: src/search/ED2KSearc
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -64728,6 +65487,7 @@ src/CMakeFiles/amule.dir/search/ED2KSearchController.cpp.o: src/search/ED2KSearc
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -64993,6 +65753,7 @@ src/CMakeFiles/amule.dir/search/ED2KSearchController.cpp.o: src/search/ED2KSearc
   /usr/include/wx-3.2/wx/platinfo.h \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -65387,6 +66148,7 @@ src/CMakeFiles/amule.dir/search/ED2KSearchHelper.cpp.o: src/search/ED2KSearchHel
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -65436,6 +66198,7 @@ src/CMakeFiles/amule.dir/search/ED2KSearchHelper.cpp.o: src/search/ED2KSearchHel
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -65701,6 +66464,7 @@ src/CMakeFiles/amule.dir/search/ED2KSearchHelper.cpp.o: src/search/ED2KSearchHel
   /usr/include/wx-3.2/wx/platinfo.h \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -66085,6 +66849,7 @@ src/CMakeFiles/amule.dir/search/ED2KSearchPacketBuilder.cpp.o: src/search/ED2KSe
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -66134,6 +66899,7 @@ src/CMakeFiles/amule.dir/search/ED2KSearchPacketBuilder.cpp.o: src/search/ED2KSe
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -66399,6 +67165,7 @@ src/CMakeFiles/amule.dir/search/ED2KSearchPacketBuilder.cpp.o: src/search/ED2KSe
   /usr/include/wx-3.2/wx/platinfo.h \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -66799,6 +67566,7 @@ src/CMakeFiles/amule.dir/search/KadSearchController.cpp.o: src/search/KadSearchC
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -66848,6 +67616,7 @@ src/CMakeFiles/amule.dir/search/KadSearchController.cpp.o: src/search/KadSearchC
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -67093,6 +67862,7 @@ src/CMakeFiles/amule.dir/search/KadSearchController.cpp.o: src/search/KadSearchC
   /usr/include/wx-3.2/wx/platinfo.h \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -67488,6 +68258,7 @@ src/CMakeFiles/amule.dir/search/KadSearchHelper.cpp.o: src/search/KadSearchHelpe
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -67537,6 +68308,7 @@ src/CMakeFiles/amule.dir/search/KadSearchHelper.cpp.o: src/search/KadSearchHelpe
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -67802,6 +68574,7 @@ src/CMakeFiles/amule.dir/search/KadSearchHelper.cpp.o: src/search/KadSearchHelpe
   /usr/include/wx-3.2/wx/platinfo.h \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -68188,6 +68961,7 @@ src/CMakeFiles/amule.dir/search/KadSearchPacketBuilder.cpp.o: src/search/KadSear
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -68237,6 +69011,719 @@ src/CMakeFiles/amule.dir/search/KadSearchPacketBuilder.cpp.o: src/search/KadSear
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
+  /usr/include/c++/15/new \
+  /usr/include/c++/15/numbers \
+  /usr/include/c++/15/optional \
+  /usr/include/c++/15/ostream \
+  /usr/include/c++/15/pstl/execution_defs.h \
+  /usr/include/c++/15/pstl/glue_algorithm_defs.h \
+  /usr/include/c++/15/pstl/glue_memory_defs.h \
+  /usr/include/c++/15/pstl/pstl_config.h \
+  /usr/include/c++/15/queue \
+  /usr/include/c++/15/ratio \
+  /usr/include/c++/15/set \
+  /usr/include/c++/15/span \
+  /usr/include/c++/15/sstream \
+  /usr/include/c++/15/stdexcept \
+  /usr/include/c++/15/stdlib.h \
+  /usr/include/c++/15/streambuf \
+  /usr/include/c++/15/string \
+  /usr/include/c++/15/string_view \
+  /usr/include/c++/15/system_error \
+  /usr/include/c++/15/tr1/bessel_function.tcc \
+  /usr/include/c++/15/tr1/beta_function.tcc \
+  /usr/include/c++/15/tr1/ell_integral.tcc \
+  /usr/include/c++/15/tr1/exp_integral.tcc \
+  /usr/include/c++/15/tr1/gamma.tcc \
+  /usr/include/c++/15/tr1/hypergeometric.tcc \
+  /usr/include/c++/15/tr1/legendre_function.tcc \
+  /usr/include/c++/15/tr1/modified_bessel_func.tcc \
+  /usr/include/c++/15/tr1/poly_hermite.tcc \
+  /usr/include/c++/15/tr1/poly_laguerre.tcc \
+  /usr/include/c++/15/tr1/riemann_zeta.tcc \
+  /usr/include/c++/15/tr1/special_function_util.h \
+  /usr/include/c++/15/tuple \
+  /usr/include/c++/15/type_traits \
+  /usr/include/c++/15/typeinfo \
+  /usr/include/c++/15/unordered_map \
+  /usr/include/c++/15/utility \
+  /usr/include/c++/15/vector \
+  /usr/include/ctype.h \
+  /usr/include/dirent.h \
+  /usr/include/dlfcn.h \
+  /usr/include/endian.h \
+  /usr/include/errno.h \
+  /usr/include/fcntl.h \
+  /usr/include/features-time64.h \
+  /usr/include/features.h \
+  /usr/include/inttypes.h \
+  /usr/include/libintl.h \
+  /usr/include/limits.h \
+  /usr/include/linux/close_range.h \
+  /usr/include/linux/errno.h \
+  /usr/include/linux/falloc.h \
+  /usr/include/linux/limits.h \
+  /usr/include/linux/posix_types.h \
+  /usr/include/linux/sched/types.h \
+  /usr/include/linux/stat.h \
+  /usr/include/linux/stddef.h \
+  /usr/include/linux/types.h \
+  /usr/include/locale.h \
+  /usr/include/math.h \
+  /usr/include/pthread.h \
+  /usr/include/sched.h \
+  /usr/include/signal.h \
+  /usr/include/stdc-predef.h \
+  /usr/include/stdint.h \
+  /usr/include/stdio.h \
+  /usr/include/stdlib.h \
+  /usr/include/string.h \
+  /usr/include/strings.h \
+  /usr/include/syscall.h \
+  /usr/include/time.h \
+  /usr/include/unicode/localpointer.h \
+  /usr/include/unicode/platform.h \
+  /usr/include/unicode/ptypes.h \
+  /usr/include/unicode/ucnv.h \
+  /usr/include/unicode/ucnv_err.h \
+  /usr/include/unicode/uconfig.h \
+  /usr/include/unicode/ucsdet.h \
+  /usr/include/unicode/uenum.h \
+  /usr/include/unicode/umachine.h \
+  /usr/include/unicode/urename.h \
+  /usr/include/unicode/utf.h \
+  /usr/include/unicode/utf16.h \
+  /usr/include/unicode/utf8.h \
+  /usr/include/unicode/utf_old.h \
+  /usr/include/unicode/utypes.h \
+  /usr/include/unicode/uvernum.h \
+  /usr/include/unicode/uversion.h \
+  /usr/include/unistd.h \
+  /usr/include/wchar.h \
+  /usr/include/wctype.h \
+  /usr/include/wx-3.2/wx/accel.h \
+  /usr/include/wx-3.2/wx/affinematrix2d.h \
+  /usr/include/wx-3.2/wx/affinematrix2dbase.h \
+  /usr/include/wx-3.2/wx/afterstd.h \
+  /usr/include/wx-3.2/wx/any.h \
+  /usr/include/wx-3.2/wx/anybutton.h \
+  /usr/include/wx-3.2/wx/anystr.h \
+  /usr/include/wx-3.2/wx/app.h \
+  /usr/include/wx-3.2/wx/arrstr.h \
+  /usr/include/wx-3.2/wx/atomic.h \
+  /usr/include/wx-3.2/wx/beforestd.h \
+  /usr/include/wx-3.2/wx/bitmap.h \
+  /usr/include/wx-3.2/wx/bmpbndl.h \
+  /usr/include/wx-3.2/wx/bmpbuttn.h \
+  /usr/include/wx-3.2/wx/brush.h \
+  /usr/include/wx-3.2/wx/buffer.h \
+  /usr/include/wx-3.2/wx/build.h \
+  /usr/include/wx-3.2/wx/button.h \
+  /usr/include/wx-3.2/wx/chartype.h \
+  /usr/include/wx-3.2/wx/checkbox.h \
+  /usr/include/wx-3.2/wx/checkeddelete.h \
+  /usr/include/wx-3.2/wx/checklst.h \
+  /usr/include/wx-3.2/wx/chkconf.h \
+  /usr/include/wx-3.2/wx/choicdlg.h \
+  /usr/include/wx-3.2/wx/choice.h \
+  /usr/include/wx-3.2/wx/clntdata.h \
+  /usr/include/wx-3.2/wx/cmdargs.h \
+  /usr/include/wx-3.2/wx/colour.h \
+  /usr/include/wx-3.2/wx/combobox.h \
+  /usr/include/wx-3.2/wx/compiler.h \
+  /usr/include/wx-3.2/wx/containr.h \
+  /usr/include/wx-3.2/wx/control.h \
+  /usr/include/wx-3.2/wx/convauto.h \
+  /usr/include/wx-3.2/wx/cpp.h \
+  /usr/include/wx-3.2/wx/ctrlsub.h \
+  /usr/include/wx-3.2/wx/cursor.h \
+  /usr/include/wx-3.2/wx/dataobj.h \
+  /usr/include/wx-3.2/wx/datetime.h \
+  /usr/include/wx-3.2/wx/dc.h \
+  /usr/include/wx-3.2/wx/dcclient.h \
+  /usr/include/wx-3.2/wx/dcmemory.h \
+  /usr/include/wx-3.2/wx/dcprint.h \
+  /usr/include/wx-3.2/wx/dcscreen.h \
+  /usr/include/wx-3.2/wx/debug.h \
+  /usr/include/wx-3.2/wx/defs.h \
+  /usr/include/wx-3.2/wx/dialog.h \
+  /usr/include/wx-3.2/wx/dirdlg.h \
+  /usr/include/wx-3.2/wx/dlimpexp.h \
+  /usr/include/wx-3.2/wx/dynarray.h \
+  /usr/include/wx-3.2/wx/event.h \
+  /usr/include/wx-3.2/wx/eventfilter.h \
+  /usr/include/wx-3.2/wx/except.h \
+  /usr/include/wx-3.2/wx/features.h \
+  /usr/include/wx-3.2/wx/file.h \
+  /usr/include/wx-3.2/wx/filectrl.h \
+  /usr/include/wx-3.2/wx/filedlg.h \
+  /usr/include/wx-3.2/wx/filefn.h \
+  /usr/include/wx-3.2/wx/filename.h \
+  /usr/include/wx-3.2/wx/flags.h \
+  /usr/include/wx-3.2/wx/font.h \
+  /usr/include/wx-3.2/wx/fontenc.h \
+  /usr/include/wx-3.2/wx/frame.h \
+  /usr/include/wx-3.2/wx/gauge.h \
+  /usr/include/wx-3.2/wx/gdicmn.h \
+  /usr/include/wx-3.2/wx/gdiobj.h \
+  /usr/include/wx-3.2/wx/generic/accel.h \
+  /usr/include/wx-3.2/wx/generic/choicdgg.h \
+  /usr/include/wx-3.2/wx/generic/icon.h \
+  /usr/include/wx-3.2/wx/generic/logg.h \
+  /usr/include/wx-3.2/wx/generic/msgdlgg.h \
+  /usr/include/wx-3.2/wx/generic/paletteg.h \
+  /usr/include/wx-3.2/wx/generic/panelg.h \
+  /usr/include/wx-3.2/wx/generic/statusbr.h \
+  /usr/include/wx-3.2/wx/generic/textdlgg.h \
+  /usr/include/wx-3.2/wx/geometry.h \
+  /usr/include/wx-3.2/wx/gtk/accel.h \
+  /usr/include/wx-3.2/wx/gtk/anybutton.h \
+  /usr/include/wx-3.2/wx/gtk/app.h \
+  /usr/include/wx-3.2/wx/gtk/bitmap.h \
+  /usr/include/wx-3.2/wx/gtk/bmpbuttn.h \
+  /usr/include/wx-3.2/wx/gtk/brush.h \
+  /usr/include/wx-3.2/wx/gtk/button.h \
+  /usr/include/wx-3.2/wx/gtk/checkbox.h \
+  /usr/include/wx-3.2/wx/gtk/checklst.h \
+  /usr/include/wx-3.2/wx/gtk/chkconf.h \
+  /usr/include/wx-3.2/wx/gtk/choice.h \
+  /usr/include/wx-3.2/wx/gtk/colour.h \
+  /usr/include/wx-3.2/wx/gtk/combobox.h \
+  /usr/include/wx-3.2/wx/gtk/control.h \
+  /usr/include/wx-3.2/wx/gtk/cursor.h \
+  /usr/include/wx-3.2/wx/gtk/dataform.h \
+  /usr/include/wx-3.2/wx/gtk/dataobj.h \
+  /usr/include/wx-3.2/wx/gtk/dataobj2.h \
+  /usr/include/wx-3.2/wx/gtk/dialog.h \
+  /usr/include/wx-3.2/wx/gtk/dirdlg.h \
+  /usr/include/wx-3.2/wx/gtk/filectrl.h \
+  /usr/include/wx-3.2/wx/gtk/filedlg.h \
+  /usr/include/wx-3.2/wx/gtk/font.h \
+  /usr/include/wx-3.2/wx/gtk/frame.h \
+  /usr/include/wx-3.2/wx/gtk/gauge.h \
+  /usr/include/wx-3.2/wx/gtk/listbox.h \
+  /usr/include/wx-3.2/wx/gtk/mdi.h \
+  /usr/include/wx-3.2/wx/gtk/menu.h \
+  /usr/include/wx-3.2/wx/gtk/menuitem.h \
+  /usr/include/wx-3.2/wx/gtk/msgdlg.h \
+  /usr/include/wx-3.2/wx/gtk/nonownedwnd.h \
+  /usr/include/wx-3.2/wx/gtk/pen.h \
+  /usr/include/wx-3.2/wx/gtk/radiobox.h \
+  /usr/include/wx-3.2/wx/gtk/radiobut.h \
+  /usr/include/wx-3.2/wx/gtk/region.h \
+  /usr/include/wx-3.2/wx/gtk/scrolbar.h \
+  /usr/include/wx-3.2/wx/gtk/scrolwin.h \
+  /usr/include/wx-3.2/wx/gtk/slider.h \
+  /usr/include/wx-3.2/wx/gtk/statbmp.h \
+  /usr/include/wx-3.2/wx/gtk/statbox.h \
+  /usr/include/wx-3.2/wx/gtk/stattext.h \
+  /usr/include/wx-3.2/wx/gtk/textctrl.h \
+  /usr/include/wx-3.2/wx/gtk/textentry.h \
+  /usr/include/wx-3.2/wx/gtk/toolbar.h \
+  /usr/include/wx-3.2/wx/gtk/toplevel.h \
+  /usr/include/wx-3.2/wx/gtk/window.h \
+  /usr/include/wx-3.2/wx/hash.h \
+  /usr/include/wx-3.2/wx/hashmap.h \
+  /usr/include/wx-3.2/wx/icon.h \
+  /usr/include/wx-3.2/wx/iconbndl.h \
+  /usr/include/wx-3.2/wx/iconloc.h \
+  /usr/include/wx-3.2/wx/imagbmp.h \
+  /usr/include/wx-3.2/wx/image.h \
+  /usr/include/wx-3.2/wx/imaggif.h \
+  /usr/include/wx-3.2/wx/imagiff.h \
+  /usr/include/wx-3.2/wx/imagjpeg.h \
+  /usr/include/wx-3.2/wx/imagpcx.h \
+  /usr/include/wx-3.2/wx/imagpng.h \
+  /usr/include/wx-3.2/wx/imagpnm.h \
+  /usr/include/wx-3.2/wx/imagtga.h \
+  /usr/include/wx-3.2/wx/imagtiff.h \
+  /usr/include/wx-3.2/wx/imagxpm.h \
+  /usr/include/wx-3.2/wx/init.h \
+  /usr/include/wx-3.2/wx/intl.h \
+  /usr/include/wx-3.2/wx/iosfwrap.h \
+  /usr/include/wx-3.2/wx/ioswrap.h \
+  /usr/include/wx-3.2/wx/kbdstate.h \
+  /usr/include/wx-3.2/wx/language.h \
+  /usr/include/wx-3.2/wx/layout.h \
+  /usr/include/wx-3.2/wx/list.h \
+  /usr/include/wx-3.2/wx/listbox.h \
+  /usr/include/wx-3.2/wx/localedefs.h \
+  /usr/include/wx-3.2/wx/log.h \
+  /usr/include/wx-3.2/wx/longlong.h \
+  /usr/include/wx-3.2/wx/math.h \
+  /usr/include/wx-3.2/wx/mdi.h \
+  /usr/include/wx-3.2/wx/memory.h \
+  /usr/include/wx-3.2/wx/menu.h \
+  /usr/include/wx-3.2/wx/menuitem.h \
+  /usr/include/wx-3.2/wx/meta/convertible.h \
+  /usr/include/wx-3.2/wx/meta/if.h \
+  /usr/include/wx-3.2/wx/meta/implicitconversion.h \
+  /usr/include/wx-3.2/wx/meta/int2type.h \
+  /usr/include/wx-3.2/wx/meta/movable.h \
+  /usr/include/wx-3.2/wx/meta/pod.h \
+  /usr/include/wx-3.2/wx/meta/removeref.h \
+  /usr/include/wx-3.2/wx/module.h \
+  /usr/include/wx-3.2/wx/mousestate.h \
+  /usr/include/wx-3.2/wx/msgdlg.h \
+  /usr/include/wx-3.2/wx/msgout.h \
+  /usr/include/wx-3.2/wx/nonownedwnd.h \
+  /usr/include/wx-3.2/wx/object.h \
+  /usr/include/wx-3.2/wx/palette.h \
+  /usr/include/wx-3.2/wx/panel.h \
+  /usr/include/wx-3.2/wx/pen.h \
+  /usr/include/wx-3.2/wx/peninfobase.h \
+  /usr/include/wx-3.2/wx/platform.h \
+  /usr/include/wx-3.2/wx/platinfo.h \
+  /usr/include/wx-3.2/wx/radiobox.h \
+  /usr/include/wx-3.2/wx/radiobut.h \
+  /usr/include/wx-3.2/wx/regex.h \
+  /usr/include/wx-3.2/wx/region.h \
+  /usr/include/wx-3.2/wx/rtti.h \
+  /usr/include/wx-3.2/wx/scopedptr.h \
+  /usr/include/wx-3.2/wx/scopeguard.h \
+  /usr/include/wx-3.2/wx/scrolbar.h \
+  /usr/include/wx-3.2/wx/scrolwin.h \
+  /usr/include/wx-3.2/wx/settings.h \
+  /usr/include/wx-3.2/wx/sharedptr.h \
+  /usr/include/wx-3.2/wx/sizer.h \
+  /usr/include/wx-3.2/wx/slider.h \
+  /usr/include/wx-3.2/wx/statbmp.h \
+  /usr/include/wx-3.2/wx/statbox.h \
+  /usr/include/wx-3.2/wx/stattext.h \
+  /usr/include/wx-3.2/wx/statusbr.h \
+  /usr/include/wx-3.2/wx/stockitem.h \
+  /usr/include/wx-3.2/wx/stopwatch.h \
+  /usr/include/wx-3.2/wx/strconv.h \
+  /usr/include/wx-3.2/wx/stream.h \
+  /usr/include/wx-3.2/wx/string.h \
+  /usr/include/wx-3.2/wx/stringimpl.h \
+  /usr/include/wx-3.2/wx/stringops.h \
+  /usr/include/wx-3.2/wx/strvararg.h \
+  /usr/include/wx-3.2/wx/tbarbase.h \
+  /usr/include/wx-3.2/wx/textctrl.h \
+  /usr/include/wx-3.2/wx/textdlg.h \
+  /usr/include/wx-3.2/wx/textentry.h \
+  /usr/include/wx-3.2/wx/thread.h \
+  /usr/include/wx-3.2/wx/time.h \
+  /usr/include/wx-3.2/wx/timer.h \
+  /usr/include/wx-3.2/wx/toolbar.h \
+  /usr/include/wx-3.2/wx/toplevel.h \
+  /usr/include/wx-3.2/wx/tracker.h \
+  /usr/include/wx-3.2/wx/translation.h \
+  /usr/include/wx-3.2/wx/typeinfo.h \
+  /usr/include/wx-3.2/wx/types.h \
+  /usr/include/wx-3.2/wx/unichar.h \
+  /usr/include/wx-3.2/wx/unix/app.h \
+  /usr/include/wx-3.2/wx/unix/chkconf.h \
+  /usr/include/wx-3.2/wx/utils.h \
+  /usr/include/wx-3.2/wx/validate.h \
+  /usr/include/wx-3.2/wx/valtext.h \
+  /usr/include/wx-3.2/wx/variant.h \
+  /usr/include/wx-3.2/wx/vector.h \
+  /usr/include/wx-3.2/wx/version.h \
+  /usr/include/wx-3.2/wx/versioninfo.h \
+  /usr/include/wx-3.2/wx/weakref.h \
+  /usr/include/wx-3.2/wx/window.h \
+  /usr/include/wx-3.2/wx/windowid.h \
+  /usr/include/wx-3.2/wx/wx.h \
+  /usr/include/wx-3.2/wx/wxcrt.h \
+  /usr/include/wx-3.2/wx/wxcrtbase.h \
+  /usr/include/wx-3.2/wx/wxcrtvararg.h \
+  /usr/include/wx-3.2/wx/xti.h \
+  /usr/include/wx-3.2/wx/xti2.h \
+  /usr/include/x86_64-linux-gnu/asm/bitsperlong.h \
+  /usr/include/x86_64-linux-gnu/asm/errno.h \
+  /usr/include/x86_64-linux-gnu/asm/posix_types.h \
+  /usr/include/x86_64-linux-gnu/asm/posix_types_64.h \
+  /usr/include/x86_64-linux-gnu/asm/types.h \
+  /usr/include/x86_64-linux-gnu/asm/unistd.h \
+  /usr/include/x86_64-linux-gnu/asm/unistd_64.h \
+  /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h \
+  /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+  /usr/include/x86_64-linux-gnu/bits/confname.h \
+  /usr/include/x86_64-linux-gnu/bits/cpu-set.h \
+  /usr/include/x86_64-linux-gnu/bits/dirent.h \
+  /usr/include/x86_64-linux-gnu/bits/dirent_ext.h \
+  /usr/include/x86_64-linux-gnu/bits/dl_find_object.h \
+  /usr/include/x86_64-linux-gnu/bits/dlfcn.h \
+  /usr/include/x86_64-linux-gnu/bits/endian.h \
+  /usr/include/x86_64-linux-gnu/bits/endianness.h \
+  /usr/include/x86_64-linux-gnu/bits/environments.h \
+  /usr/include/x86_64-linux-gnu/bits/errno.h \
+  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
+  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+  /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
+  /usr/include/x86_64-linux-gnu/bits/floatn.h \
+  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+  /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
+  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
+  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/locale.h \
+  /usr/include/x86_64-linux-gnu/bits/long-double.h \
+  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-macros.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+  /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+  /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h \
+  /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
+  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
+  /usr/include/x86_64-linux-gnu/bits/sched.h \
+  /usr/include/x86_64-linux-gnu/bits/select.h \
+  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+  /usr/include/x86_64-linux-gnu/bits/sigaction.h \
+  /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
+  /usr/include/x86_64-linux-gnu/bits/sigevent-consts.h \
+  /usr/include/x86_64-linux-gnu/bits/siginfo-arch.h \
+  /usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h \
+  /usr/include/x86_64-linux-gnu/bits/siginfo-consts.h \
+  /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
+  /usr/include/x86_64-linux-gnu/bits/signum-arch.h \
+  /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
+  /usr/include/x86_64-linux-gnu/bits/sigstack.h \
+  /usr/include/x86_64-linux-gnu/bits/sigstksz.h \
+  /usr/include/x86_64-linux-gnu/bits/sigthread.h \
+  /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
+  /usr/include/x86_64-linux-gnu/bits/stat.h \
+  /usr/include/x86_64-linux-gnu/bits/statx-generic.h \
+  /usr/include/x86_64-linux-gnu/bits/statx.h \
+  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
+  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
+  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
+  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
+  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
+  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h \
+  /usr/include/x86_64-linux-gnu/bits/struct_stat.h \
+  /usr/include/x86_64-linux-gnu/bits/syscall.h \
+  /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
+  /usr/include/x86_64-linux-gnu/bits/time.h \
+  /usr/include/x86_64-linux-gnu/bits/time64.h \
+  /usr/include/x86_64-linux-gnu/bits/timesize.h \
+  /usr/include/x86_64-linux-gnu/bits/timex.h \
+  /usr/include/x86_64-linux-gnu/bits/types.h \
+  /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/clock_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/sigval_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/stack_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_statx.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_statx_timestamp.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+  /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/timer_t.h \
+  /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
+  /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+  /usr/include/x86_64-linux-gnu/bits/uintn-identity.h \
+  /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
+  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
+  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+  /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
+  /usr/include/x86_64-linux-gnu/bits/wchar.h \
+  /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h \
+  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/atomic_word.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/c++allocator.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/c++config.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/c++locale.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/cpu_defines.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/ctype_base.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/ctype_inline.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/error_constants.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/gthr-default.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/gthr.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/messages_members.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/os_defines.h \
+  /usr/include/x86_64-linux-gnu/c++/15/bits/time_members.h \
+  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+  /usr/include/x86_64-linux-gnu/sys/select.h \
+  /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
+  /usr/include/x86_64-linux-gnu/sys/stat.h \
+  /usr/include/x86_64-linux-gnu/sys/syscall.h \
+  /usr/include/x86_64-linux-gnu/sys/types.h \
+  /usr/include/x86_64-linux-gnu/sys/ucontext.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/float.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/limits.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/stdarg.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/stdbool.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/stddef.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/stdint.h \
+  /usr/lib/gcc/x86_64-linux-gnu/15/include/syslimits.h \
+  /usr/lib/x86_64-linux-gnu/wx/include/gtk3-unicode-3.2/wx/setup.h
+
+src/CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.o: src/search/NetworkPacketHandler.cpp \
+  config.h \
+  src/include/common/ClientVersion.h \
+  src/include/common/Macros.h \
+  src/include/protocol/ed2k/Constants.h \
+  src/include/protocol/kad/Constants.h \
+  src/include/tags/TagTypes.h \
+  src/Types.h \
+  src/libs/common/Format.h \
+  src/libs/common/MuleDebug.h \
+  src/libs/common/Path.h \
+  src/libs/common/SmartPtr.h \
+  src/libs/common/StringFunctions.h \
+  src/Types.h \
+  src/libs/ec/cpp/ECID.h \
+  src/ArchSpecific.h \
+  src/ClientRef.h \
+  src/Constants.h \
+  src/KnownFile.h \
+  src/Logger.h \
+  src/MD4Hash.h \
+  src/MemFile.h \
+  src/Observable.h \
+  src/ObservableQueue.h \
+  src/OtherFunctions.h \
+  src/SHAHashSet.h \
+  src/SafeFile.h \
+  src/SearchFile.h \
+  src/SearchList.h \
+  src/Tag.h \
+  src/Timer.h \
+  src/Types.h \
+  src/amule.h \
+  src/common/NetworkPerformanceMonitor.h \
+  src/common/NetworkSummaryUtil.h \
+  src/common/PerformanceUtils.h \
+  src/LibSocket.h \
+  src/MD4Hash.h \
+  src/NetworkFunctions.h \
+  src/OtherFunctions.h \
+  src/OtherStructs.h \
+  src/Preferences.h \
+  src/Proxy.h \
+  src/StateMachine.h \
+  src/Tag.h \
+  src/Types.h \
+  src/amuleIPV4Address.h \
+  src/Tag.h \
+  src/Types.h \
+  src/kademlia/utils/UInt128.h \
+  src/kademlia/net/KademliaUDPListener.h \
+  src/kademlia/net/PacketTracking.h \
+  src/kademlia/routing/Maps.h \
+  src/Types.h \
+  src/kademlia/utils/UInt128.h \
+  src/kademlia/kademlia/Entry.h \
+  src/kademlia/kademlia/Indexed.h \
+  src/kademlia/kademlia/Kademlia.h \
+  src/kademlia/kademlia/Prefs.h \
+  src/kademlia/kademlia/SearchManager.h \
+  src/search/NetworkPacketHandler.h \
+  src/search/SearchLogging.h \
+  src/search/SearchResultRouter.h \
+  /usr/include/alloca.h \
+  /usr/include/asm-generic/bitsperlong.h \
+  /usr/include/asm-generic/errno-base.h \
+  /usr/include/asm-generic/errno.h \
+  /usr/include/asm-generic/int-ll64.h \
+  /usr/include/asm-generic/posix_types.h \
+  /usr/include/asm-generic/types.h \
+  /usr/include/assert.h \
+  /usr/include/c++/15/algorithm \
+  /usr/include/c++/15/array \
+  /usr/include/c++/15/atomic \
+  /usr/include/c++/15/backward/auto_ptr.h \
+  /usr/include/c++/15/backward/binders.h \
+  /usr/include/c++/15/bit \
+  /usr/include/c++/15/bits/algorithmfwd.h \
+  /usr/include/c++/15/bits/align.h \
+  /usr/include/c++/15/bits/alloc_traits.h \
+  /usr/include/c++/15/bits/allocated_ptr.h \
+  /usr/include/c++/15/bits/allocator.h \
+  /usr/include/c++/15/bits/atomic_base.h \
+  /usr/include/c++/15/bits/atomic_lockfree_defines.h \
+  /usr/include/c++/15/bits/atomic_wait.h \
+  /usr/include/c++/15/bits/basic_ios.h \
+  /usr/include/c++/15/bits/basic_ios.tcc \
+  /usr/include/c++/15/bits/basic_string.h \
+  /usr/include/c++/15/bits/basic_string.tcc \
+  /usr/include/c++/15/bits/char_traits.h \
+  /usr/include/c++/15/bits/charconv.h \
+  /usr/include/c++/15/bits/chrono.h \
+  /usr/include/c++/15/bits/chrono_io.h \
+  /usr/include/c++/15/bits/codecvt.h \
+  /usr/include/c++/15/bits/concept_check.h \
+  /usr/include/c++/15/bits/cpp_type_traits.h \
+  /usr/include/c++/15/bits/cxxabi_forced.h \
+  /usr/include/c++/15/bits/cxxabi_init_exception.h \
+  /usr/include/c++/15/bits/deque.tcc \
+  /usr/include/c++/15/bits/enable_special_members.h \
+  /usr/include/c++/15/bits/erase_if.h \
+  /usr/include/c++/15/bits/exception.h \
+  /usr/include/c++/15/bits/exception_defines.h \
+  /usr/include/c++/15/bits/exception_ptr.h \
+  /usr/include/c++/15/bits/formatfwd.h \
+  /usr/include/c++/15/bits/functexcept.h \
+  /usr/include/c++/15/bits/functional_hash.h \
+  /usr/include/c++/15/bits/hash_bytes.h \
+  /usr/include/c++/15/bits/hashtable.h \
+  /usr/include/c++/15/bits/hashtable_policy.h \
+  /usr/include/c++/15/bits/invoke.h \
+  /usr/include/c++/15/bits/ios_base.h \
+  /usr/include/c++/15/bits/istream.tcc \
+  /usr/include/c++/15/bits/iterator_concepts.h \
+  /usr/include/c++/15/bits/list.tcc \
+  /usr/include/c++/15/bits/locale_classes.h \
+  /usr/include/c++/15/bits/locale_classes.tcc \
+  /usr/include/c++/15/bits/locale_conv.h \
+  /usr/include/c++/15/bits/locale_facets.h \
+  /usr/include/c++/15/bits/locale_facets.tcc \
+  /usr/include/c++/15/bits/locale_facets_nonio.h \
+  /usr/include/c++/15/bits/locale_facets_nonio.tcc \
+  /usr/include/c++/15/bits/localefwd.h \
+  /usr/include/c++/15/bits/max_size_type.h \
+  /usr/include/c++/15/bits/memory_resource.h \
+  /usr/include/c++/15/bits/memoryfwd.h \
+  /usr/include/c++/15/bits/monostate.h \
+  /usr/include/c++/15/bits/move.h \
+  /usr/include/c++/15/bits/nested_exception.h \
+  /usr/include/c++/15/bits/new_allocator.h \
+  /usr/include/c++/15/bits/node_handle.h \
+  /usr/include/c++/15/bits/ostream.h \
+  /usr/include/c++/15/bits/ostream.tcc \
+  /usr/include/c++/15/bits/ostream_insert.h \
+  /usr/include/c++/15/bits/parse_numbers.h \
+  /usr/include/c++/15/bits/postypes.h \
+  /usr/include/c++/15/bits/predefined_ops.h \
+  /usr/include/c++/15/bits/ptr_traits.h \
+  /usr/include/c++/15/bits/quoted_string.h \
+  /usr/include/c++/15/bits/range_access.h \
+  /usr/include/c++/15/bits/ranges_algo.h \
+  /usr/include/c++/15/bits/ranges_algobase.h \
+  /usr/include/c++/15/bits/ranges_base.h \
+  /usr/include/c++/15/bits/ranges_cmp.h \
+  /usr/include/c++/15/bits/ranges_uninitialized.h \
+  /usr/include/c++/15/bits/ranges_util.h \
+  /usr/include/c++/15/bits/refwrap.h \
+  /usr/include/c++/15/bits/requires_hosted.h \
+  /usr/include/c++/15/bits/shared_ptr.h \
+  /usr/include/c++/15/bits/shared_ptr_atomic.h \
+  /usr/include/c++/15/bits/shared_ptr_base.h \
+  /usr/include/c++/15/bits/specfun.h \
+  /usr/include/c++/15/bits/sstream.tcc \
+  /usr/include/c++/15/bits/std_abs.h \
+  /usr/include/c++/15/bits/std_function.h \
+  /usr/include/c++/15/bits/std_mutex.h \
+  /usr/include/c++/15/bits/stl_algo.h \
+  /usr/include/c++/15/bits/stl_algobase.h \
+  /usr/include/c++/15/bits/stl_bvector.h \
+  /usr/include/c++/15/bits/stl_construct.h \
+  /usr/include/c++/15/bits/stl_deque.h \
+  /usr/include/c++/15/bits/stl_function.h \
+  /usr/include/c++/15/bits/stl_heap.h \
+  /usr/include/c++/15/bits/stl_iterator.h \
+  /usr/include/c++/15/bits/stl_iterator_base_funcs.h \
+  /usr/include/c++/15/bits/stl_iterator_base_types.h \
+  /usr/include/c++/15/bits/stl_list.h \
+  /usr/include/c++/15/bits/stl_map.h \
+  /usr/include/c++/15/bits/stl_multimap.h \
+  /usr/include/c++/15/bits/stl_multiset.h \
+  /usr/include/c++/15/bits/stl_pair.h \
+  /usr/include/c++/15/bits/stl_queue.h \
+  /usr/include/c++/15/bits/stl_raw_storage_iter.h \
+  /usr/include/c++/15/bits/stl_relops.h \
+  /usr/include/c++/15/bits/stl_set.h \
+  /usr/include/c++/15/bits/stl_tempbuf.h \
+  /usr/include/c++/15/bits/stl_tree.h \
+  /usr/include/c++/15/bits/stl_uninitialized.h \
+  /usr/include/c++/15/bits/stl_vector.h \
+  /usr/include/c++/15/bits/stream_iterator.h \
+  /usr/include/c++/15/bits/streambuf.tcc \
+  /usr/include/c++/15/bits/streambuf_iterator.h \
+  /usr/include/c++/15/bits/string_view.tcc \
+  /usr/include/c++/15/bits/stringfwd.h \
+  /usr/include/c++/15/bits/unicode-data.h \
+  /usr/include/c++/15/bits/unicode.h \
+  /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
+  /usr/include/c++/15/bits/unique_ptr.h \
+  /usr/include/c++/15/bits/unordered_map.h \
+  /usr/include/c++/15/bits/uses_allocator.h \
+  /usr/include/c++/15/bits/uses_allocator_args.h \
+  /usr/include/c++/15/bits/utility.h \
+  /usr/include/c++/15/bits/vector.tcc \
+  /usr/include/c++/15/bits/version.h \
+  /usr/include/c++/15/cctype \
+  /usr/include/c++/15/cerrno \
+  /usr/include/c++/15/charconv \
+  /usr/include/c++/15/chrono \
+  /usr/include/c++/15/climits \
+  /usr/include/c++/15/clocale \
+  /usr/include/c++/15/cmath \
+  /usr/include/c++/15/compare \
+  /usr/include/c++/15/concepts \
+  /usr/include/c++/15/cstddef \
+  /usr/include/c++/15/cstdint \
+  /usr/include/c++/15/cstdio \
+  /usr/include/c++/15/cstdlib \
+  /usr/include/c++/15/ctime \
+  /usr/include/c++/15/cwchar \
+  /usr/include/c++/15/cwctype \
+  /usr/include/c++/15/debug/assertions.h \
+  /usr/include/c++/15/debug/debug.h \
+  /usr/include/c++/15/deque \
+  /usr/include/c++/15/exception \
+  /usr/include/c++/15/ext/aligned_buffer.h \
+  /usr/include/c++/15/ext/alloc_traits.h \
+  /usr/include/c++/15/ext/atomicity.h \
+  /usr/include/c++/15/ext/concurrence.h \
+  /usr/include/c++/15/ext/numeric_traits.h \
+  /usr/include/c++/15/ext/string_conversions.h \
+  /usr/include/c++/15/ext/type_traits.h \
+  /usr/include/c++/15/format \
+  /usr/include/c++/15/functional \
+  /usr/include/c++/15/initializer_list \
+  /usr/include/c++/15/iomanip \
+  /usr/include/c++/15/ios \
+  /usr/include/c++/15/iosfwd \
+  /usr/include/c++/15/iostream \
+  /usr/include/c++/15/istream \
+  /usr/include/c++/15/iterator \
+  /usr/include/c++/15/limits \
+  /usr/include/c++/15/list \
+  /usr/include/c++/15/locale \
+  /usr/include/c++/15/map \
+  /usr/include/c++/15/math.h \
+  /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -68783,6 +70270,7 @@ src/CMakeFiles/amule.dir/search/PerSearchState.cpp.o: src/search/PerSearchState.
   /usr/include/c++/15/bits/basic_string.tcc \
   /usr/include/c++/15/bits/char_traits.h \
   /usr/include/c++/15/bits/charconv.h \
+  /usr/include/c++/15/bits/chrono.h \
   /usr/include/c++/15/bits/concept_check.h \
   /usr/include/c++/15/bits/cpp_type_traits.h \
   /usr/include/c++/15/bits/cxxabi_forced.h \
@@ -68818,6 +70306,7 @@ src/CMakeFiles/amule.dir/search/PerSearchState.cpp.o: src/search/PerSearchState.
   /usr/include/c++/15/bits/ostream.h \
   /usr/include/c++/15/bits/ostream.tcc \
   /usr/include/c++/15/bits/ostream_insert.h \
+  /usr/include/c++/15/bits/parse_numbers.h \
   /usr/include/c++/15/bits/postypes.h \
   /usr/include/c++/15/bits/predefined_ops.h \
   /usr/include/c++/15/bits/ptr_traits.h \
@@ -68866,6 +70355,7 @@ src/CMakeFiles/amule.dir/search/PerSearchState.cpp.o: src/search/PerSearchState.
   /usr/include/c++/15/bits/string_view.tcc \
   /usr/include/c++/15/bits/stringfwd.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -68884,6 +70374,7 @@ src/CMakeFiles/amule.dir/search/PerSearchState.cpp.o: src/search/PerSearchState.
   /usr/include/c++/15/cstdint \
   /usr/include/c++/15/cstdio \
   /usr/include/c++/15/cstdlib \
+  /usr/include/c++/15/ctime \
   /usr/include/c++/15/cwchar \
   /usr/include/c++/15/cwctype \
   /usr/include/c++/15/debug/assertions.h \
@@ -68909,6 +70400,7 @@ src/CMakeFiles/amule.dir/search/PerSearchState.cpp.o: src/search/PerSearchState.
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/ostream \
@@ -68917,6 +70409,7 @@ src/CMakeFiles/amule.dir/search/PerSearchState.cpp.o: src/search/PerSearchState.
   /usr/include/c++/15/pstl/glue_memory_defs.h \
   /usr/include/c++/15/pstl/pstl_config.h \
   /usr/include/c++/15/queue \
+  /usr/include/c++/15/ratio \
   /usr/include/c++/15/set \
   /usr/include/c++/15/stdexcept \
   /usr/include/c++/15/stdlib.h \
@@ -69605,6 +71098,7 @@ src/CMakeFiles/amule.dir/search/SearchAutoRetry.cpp.o: src/search/SearchAutoRetr
   /usr/include/wx-3.2/wx/object.h \
   /usr/include/wx-3.2/wx/platform.h \
   /usr/include/wx-3.2/wx/platinfo.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopeguard.h \
   /usr/include/wx-3.2/wx/stopwatch.h \
@@ -69935,6 +71429,7 @@ src/CMakeFiles/amule.dir/search/SearchControllerBase.cpp.o: src/search/SearchCon
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -69984,6 +71479,7 @@ src/CMakeFiles/amule.dir/search/SearchControllerBase.cpp.o: src/search/SearchCon
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -70229,6 +71725,7 @@ src/CMakeFiles/amule.dir/search/SearchControllerBase.cpp.o: src/search/SearchCon
   /usr/include/wx-3.2/wx/platinfo.h \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -70633,6 +72130,7 @@ src/CMakeFiles/amule.dir/search/SearchControllerFactory.cpp.o: src/search/Search
   /usr/include/wx-3.2/wx/gtk/chkconf.h \
   /usr/include/wx-3.2/wx/iosfwrap.h \
   /usr/include/wx-3.2/wx/platform.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/strconv.h \
   /usr/include/wx-3.2/wx/string.h \
   /usr/include/wx-3.2/wx/stringimpl.h \
@@ -70643,6 +72141,7 @@ src/CMakeFiles/amule.dir/search/SearchControllerFactory.cpp.o: src/search/Search
   /usr/include/wx-3.2/wx/unichar.h \
   /usr/include/wx-3.2/wx/unix/chkconf.h \
   /usr/include/wx-3.2/wx/version.h \
+  /usr/include/wx-3.2/wx/versioninfo.h \
   /usr/include/wx-3.2/wx/wxcrtbase.h \
   /usr/include/x86_64-linux-gnu/asm/bitsperlong.h \
   /usr/include/x86_64-linux-gnu/asm/errno.h \
@@ -71505,6 +73004,7 @@ src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: src/search/SearchModel.cpp \
   src/ClientRef.h \
   src/Constants.h \
   src/KnownFile.h \
+  src/Logger.h \
   src/MD4Hash.h \
   src/SHAHashSet.h \
   src/SearchFile.h \
@@ -71554,6 +73054,7 @@ src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: src/search/SearchModel.cpp \
   /usr/include/c++/15/bits/basic_string.tcc \
   /usr/include/c++/15/bits/char_traits.h \
   /usr/include/c++/15/bits/charconv.h \
+  /usr/include/c++/15/bits/chrono.h \
   /usr/include/c++/15/bits/concept_check.h \
   /usr/include/c++/15/bits/cpp_type_traits.h \
   /usr/include/c++/15/bits/cxxabi_forced.h \
@@ -71589,6 +73090,7 @@ src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: src/search/SearchModel.cpp \
   /usr/include/c++/15/bits/ostream.h \
   /usr/include/c++/15/bits/ostream.tcc \
   /usr/include/c++/15/bits/ostream_insert.h \
+  /usr/include/c++/15/bits/parse_numbers.h \
   /usr/include/c++/15/bits/postypes.h \
   /usr/include/c++/15/bits/predefined_ops.h \
   /usr/include/c++/15/bits/ptr_traits.h \
@@ -71637,6 +73139,7 @@ src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: src/search/SearchModel.cpp \
   /usr/include/c++/15/bits/string_view.tcc \
   /usr/include/c++/15/bits/stringfwd.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -71655,6 +73158,7 @@ src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: src/search/SearchModel.cpp \
   /usr/include/c++/15/cstdint \
   /usr/include/c++/15/cstdio \
   /usr/include/c++/15/cstdlib \
+  /usr/include/c++/15/ctime \
   /usr/include/c++/15/cwchar \
   /usr/include/c++/15/cwctype \
   /usr/include/c++/15/debug/assertions.h \
@@ -71680,6 +73184,7 @@ src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: src/search/SearchModel.cpp \
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/ostream \
@@ -71688,6 +73193,7 @@ src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: src/search/SearchModel.cpp \
   /usr/include/c++/15/pstl/glue_memory_defs.h \
   /usr/include/c++/15/pstl/pstl_config.h \
   /usr/include/c++/15/queue \
+  /usr/include/c++/15/ratio \
   /usr/include/c++/15/set \
   /usr/include/c++/15/stdexcept \
   /usr/include/c++/15/stdlib.h \
@@ -71920,6 +73426,7 @@ src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: src/search/SearchModel.cpp \
   /usr/include/wx-3.2/wx/platinfo.h \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -72570,6 +74077,7 @@ src/CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.o: src/search/SearchP
   /usr/include/c++/15/bits/basic_string.tcc \
   /usr/include/c++/15/bits/char_traits.h \
   /usr/include/c++/15/bits/charconv.h \
+  /usr/include/c++/15/bits/chrono.h \
   /usr/include/c++/15/bits/concept_check.h \
   /usr/include/c++/15/bits/cpp_type_traits.h \
   /usr/include/c++/15/bits/cxxabi_forced.h \
@@ -72605,6 +74113,7 @@ src/CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.o: src/search/SearchP
   /usr/include/c++/15/bits/ostream.h \
   /usr/include/c++/15/bits/ostream.tcc \
   /usr/include/c++/15/bits/ostream_insert.h \
+  /usr/include/c++/15/bits/parse_numbers.h \
   /usr/include/c++/15/bits/postypes.h \
   /usr/include/c++/15/bits/predefined_ops.h \
   /usr/include/c++/15/bits/ptr_traits.h \
@@ -72653,6 +74162,7 @@ src/CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.o: src/search/SearchP
   /usr/include/c++/15/bits/string_view.tcc \
   /usr/include/c++/15/bits/stringfwd.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -72671,6 +74181,7 @@ src/CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.o: src/search/SearchP
   /usr/include/c++/15/cstdint \
   /usr/include/c++/15/cstdio \
   /usr/include/c++/15/cstdlib \
+  /usr/include/c++/15/ctime \
   /usr/include/c++/15/cwchar \
   /usr/include/c++/15/cwctype \
   /usr/include/c++/15/debug/assertions.h \
@@ -72696,6 +74207,7 @@ src/CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.o: src/search/SearchP
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/ostream \
@@ -72704,6 +74216,7 @@ src/CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.o: src/search/SearchP
   /usr/include/c++/15/pstl/glue_memory_defs.h \
   /usr/include/c++/15/pstl/pstl_config.h \
   /usr/include/c++/15/queue \
+  /usr/include/c++/15/ratio \
   /usr/include/c++/15/set \
   /usr/include/c++/15/stdexcept \
   /usr/include/c++/15/stdlib.h \
@@ -72937,6 +74450,7 @@ src/CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.o: src/search/SearchP
   /usr/include/wx-3.2/wx/platinfo.h \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -73327,6 +74841,7 @@ src/CMakeFiles/amule.dir/search/SearchResultRouter.cpp.o: src/search/SearchResul
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -73376,6 +74891,7 @@ src/CMakeFiles/amule.dir/search/SearchResultRouter.cpp.o: src/search/SearchResul
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -73621,6 +75137,7 @@ src/CMakeFiles/amule.dir/search/SearchResultRouter.cpp.o: src/search/SearchResul
   /usr/include/wx-3.2/wx/platinfo.h \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -73829,8 +75346,10 @@ src/CMakeFiles/amule.dir/search/SearchResultRouter.cpp.o: src/search/SearchResul
 
 src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: src/search/UnifiedSearchManager.cpp \
   config.h \
+  src/SearchTimeoutManager.h \
   src/include/common/ClientVersion.h \
   src/include/common/Macros.h \
+  src/include/protocol/ed2k/Constants.h \
   src/include/protocol/kad/Constants.h \
   src/include/tags/TagTypes.h \
   src/Types.h \
@@ -73838,7 +75357,15 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: src/search/UnifiedSe
   src/libs/common/MuleDebug.h \
   src/libs/common/Path.h \
   src/libs/common/StringFunctions.h \
+  src/Types.h \
+  src/libs/ec/cpp/ECID.h \
+  src/ClientRef.h \
+  src/Constants.h \
+  src/KnownFile.h \
   src/Logger.h \
+  src/MD4Hash.h \
+  src/SHAHashSet.h \
+  src/SearchFile.h \
   src/Types.h \
   src/amule.h \
   src/common/NetworkPerformanceMonitor.h \
@@ -73866,13 +75393,19 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: src/search/UnifiedSe
   src/kademlia/routing/Maps.h \
   src/Types.h \
   src/kademlia/utils/UInt128.h \
+  src/kademlia/kademlia/Entry.h \
+  src/kademlia/kademlia/Indexed.h \
   src/kademlia/kademlia/Kademlia.h \
   src/kademlia/kademlia/Prefs.h \
   src/kademlia/kademlia/SearchManager.h \
+  src/search/NetworkPacketHandler.h \
   src/search/SearchController.h \
+  src/search/SearchControllerBase.h \
   src/search/SearchControllerFactory.h \
+  src/search/SearchIdGenerator.h \
   src/search/SearchLogging.h \
   src/search/SearchModel.h \
+  src/search/SearchResultHandler.h \
   src/search/UnifiedSearchManager.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/bitsperlong.h \
@@ -73998,6 +75531,7 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: src/search/UnifiedSe
   /usr/include/c++/15/bits/unicode-data.h \
   /usr/include/c++/15/bits/unicode.h \
   /usr/include/c++/15/bits/uniform_int_dist.h \
+  /usr/include/c++/15/bits/unique_lock.h \
   /usr/include/c++/15/bits/unique_ptr.h \
   /usr/include/c++/15/bits/unordered_map.h \
   /usr/include/c++/15/bits/uses_allocator.h \
@@ -74047,6 +75581,7 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: src/search/UnifiedSe
   /usr/include/c++/15/map \
   /usr/include/c++/15/math.h \
   /usr/include/c++/15/memory \
+  /usr/include/c++/15/mutex \
   /usr/include/c++/15/new \
   /usr/include/c++/15/numbers \
   /usr/include/c++/15/optional \
@@ -74292,6 +75827,7 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: src/search/UnifiedSe
   /usr/include/wx-3.2/wx/platinfo.h \
   /usr/include/wx-3.2/wx/radiobox.h \
   /usr/include/wx-3.2/wx/radiobut.h \
+  /usr/include/wx-3.2/wx/regex.h \
   /usr/include/wx-3.2/wx/region.h \
   /usr/include/wx-3.2/wx/rtti.h \
   /usr/include/wx-3.2/wx/scopedptr.h \
@@ -74569,6 +76105,7 @@ src/amule: /lib/x86_64-linux-gnu/libc.so.6 \
   /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0 \
   /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 \
   /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 \
+  /usr/lib/x86_64-linux-gnu/libglycin-2.so.0 \
   /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0 \
   /usr/lib/x86_64-linux-gnu/libgmp.so.10 \
   /usr/lib/x86_64-linux-gnu/libgnutls.so.30 \
@@ -74590,6 +76127,7 @@ src/amule: /lib/x86_64-linux-gnu/libc.so.6 \
   /usr/lib/x86_64-linux-gnu/libkrb5.so.3 \
   /usr/lib/x86_64-linux-gnu/libkrb5support.so.0 \
   /usr/lib/x86_64-linux-gnu/liblber.so.2 \
+  /usr/lib/x86_64-linux-gnu/liblcms2.so.2 \
   /usr/lib/x86_64-linux-gnu/libldap.so.2 \
   /usr/lib/x86_64-linux-gnu/liblzma.so.5 \
   /usr/lib/x86_64-linux-gnu/libm.so \
@@ -74617,6 +76155,7 @@ src/amule: /lib/x86_64-linux-gnu/libc.so.6 \
   /usr/lib/x86_64-linux-gnu/librtmp.so.1 \
   /usr/lib/x86_64-linux-gnu/libsamplerate.so.0 \
   /usr/lib/x86_64-linux-gnu/libsasl2.so.2 \
+  /usr/lib/x86_64-linux-gnu/libseccomp.so.2 \
   /usr/lib/x86_64-linux-gnu/libselinux.so.1 \
   /usr/lib/x86_64-linux-gnu/libsharpyuv.so.0 \
   /usr/lib/x86_64-linux-gnu/libsndfile.so.1 \
@@ -74713,6 +76252,7 @@ src/amule: /lib/x86_64-linux-gnu/libc.so.6 \
   src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o \
   src/CMakeFiles/amule.dir/SharedFilesCtrl.cpp.o \
   src/CMakeFiles/amule.dir/SharedFilesWnd.cpp.o \
+  src/CMakeFiles/amule.dir/SimpleSearchCache.cpp.o \
   src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o \
   src/CMakeFiles/amule.dir/StatTree.cpp.o \
   src/CMakeFiles/amule.dir/Statistics.cpp.o \
@@ -74743,6 +76283,7 @@ src/amule: /lib/x86_64-linux-gnu/libc.so.6 \
   src/CMakeFiles/amule.dir/search/KadSearchController.cpp.o \
   src/CMakeFiles/amule.dir/search/KadSearchHelper.cpp.o \
   src/CMakeFiles/amule.dir/search/KadSearchPacketBuilder.cpp.o \
+  src/CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.o \
   src/CMakeFiles/amule.dir/search/PerSearchState.cpp.o \
   src/CMakeFiles/amule.dir/search/SearchAutoRetry.cpp.o \
   src/CMakeFiles/amule.dir/search/SearchControllerBase.cpp.o \
@@ -74781,6 +76322,8 @@ src/CMakeFiles/amule.dir/search/SearchLogging.cpp.o:
 
 src/CMakeFiles/amule.dir/search/SearchIdGenerator.cpp.o:
 
+src/CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.o:
+
 src/CMakeFiles/amule.dir/search/ED2KSearchHelper.cpp.o:
 
 src/CMakeFiles/amule.dir/search/ED2KSearchController.cpp.o:
@@ -74810,6 +76353,8 @@ src/CMakeFiles/amule.dir/UserEvents.cpp.o:
 src/CMakeFiles/amule.dir/Statistics.cpp.o:
 
 src/CMakeFiles/amule.dir/StatTree.cpp.o:
+
+src/CMakeFiles/amule.dir/SimpleSearchCache.cpp.o:
 
 src/CMakeFiles/amule.dir/SharedFilesWnd.cpp.o:
 
@@ -74897,6 +76442,8 @@ src/CMakeFiles/amule.dir/BaseClient.cpp.o:
 
 /usr/lib/x86_64-linux-gnu/libselinux.so.1:
 
+/usr/lib/x86_64-linux-gnu/libseccomp.so.2:
+
 /usr/lib/x86_64-linux-gnu/libsasl2.so.2:
 
 /usr/lib/x86_64-linux-gnu/libresolv.so.2:
@@ -74939,6 +76486,8 @@ src/CMakeFiles/amule.dir/FriendList.cpp.o:
 
 /usr/lib/x86_64-linux-gnu/libldap.so.2:
 
+/usr/lib/x86_64-linux-gnu/liblcms2.so.2:
+
 /usr/lib/x86_64-linux-gnu/libkrb5.so.3:
 
 /usr/lib/x86_64-linux-gnu/libkeyutils.so.1:
@@ -74966,6 +76515,8 @@ src/CMakeFiles/amule.dir/ServerListCtrl.cpp.o:
 /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0:
 
 /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0:
+
+/usr/lib/x86_64-linux-gnu/libglycin-2.so.0:
 
 /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0:
 
@@ -75029,8 +76580,6 @@ src/CMakeFiles/amule.dir/search/KadSearchPacketBuilder.cpp.o:
 
 /usr/lib/x86_64-linux-gnu/libX11.so.6:
 
-/usr/lib/x86_64-linux-gnu/libSDL2-2.0.so.0:
-
 /usr/lib/x86_64-linux-gnu/libFLAC.so.14:
 
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.so:
@@ -75059,15 +76608,23 @@ src/search/SearchModel.cpp:
 
 src/search/SearchIdGenerator.cpp:
 
+src/search/SearchControllerFactory.h:
+
 src/search/SearchControllerFactory.cpp:
 
 src/search/SearchAutoRetry.cpp:
+
+src/search/NetworkPacketHandler.h:
+
+src/search/NetworkPacketHandler.cpp:
 
 src/search/KadSearchPacketBuilder.h:
 
 src/search/KadSearchController.h:
 
 src/search/ED2KSearchPacketBuilder.cpp:
+
+src/search/SearchController.h:
 
 src/search/ED2KSearchPacketBuilder.h:
 
@@ -75195,6 +76752,10 @@ src/TransferWnd.cpp:
 
 src/SourceListCtrl.cpp:
 
+/usr/lib/x86_64-linux-gnu/libSDL2-2.0.so.0:
+
+src/SimpleSearchCache.cpp:
+
 src/SharedFilesWnd.cpp:
 
 src/MuleCollection.h:
@@ -75218,6 +76779,8 @@ src/search/KadSearchHelper.cpp:
 src/CMakeFiles/amule.dir/GetTickCount.cpp.o:
 
 /usr/include/wx-3.2/wx/validate.h:
+
+src/SimpleSearchCache.h:
 
 /usr/include/wx-3.2/wx/unix/app.h:
 
@@ -77427,12 +78990,6 @@ src/SearchDlg.h:
 
 src/SearchStateManager.h:
 
-src/search/SearchController.h:
-
-src/search/SearchControllerFactory.h:
-
-/usr/local/include/boost/config/platform/linux.hpp:
-
 src/search/SearchModel.h:
 
 /usr/include/c++/15/tr1/beta_function.tcc:
@@ -77442,6 +78999,8 @@ src/search/UnifiedSearchManager.h:
 src/kademlia/routing/Contact.cpp:
 
 /usr/include/wx-3.2/wx/colordlg.h:
+
+/usr/include/wx-3.2/wx/regex.h:
 
 src/ChatSelector.h:
 
@@ -77667,8 +79226,6 @@ src/libs/common/Path.h:
 
 src/search/SearchLogging.h:
 
-/usr/include/wx-3.2/wx/regex.h:
-
 /usr/include/wx-3.2/wx/fontenc.h:
 
 /usr/include/c++/15/bits/ranges_base.h:
@@ -77717,6 +79274,8 @@ src/TerminationProcessAmuleweb.h:
 
 /usr/local/include/boost/config/detail/select_platform_config.hpp:
 
+/usr/local/include/boost/config/platform/linux.hpp:
+
 /usr/local/include/boost/config/pragma_message.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/sigthread.h:
@@ -77743,12 +79302,6 @@ src/ECSpecialMuleTags.cpp:
 
 /usr/local/include/boost/system/detail/error_code.hpp:
 
-src/CMakeFiles/amule.dir/ExternalConn.cpp.o:
-
-src/SharedFilesCtrl.cpp:
-
-/usr/local/include/boost/system/detail/generic_category.hpp:
-
 /usr/local/include/boost/system/detail/generic_category_message.hpp:
 
 /usr/include/c++/15/bits/chrono.h:
@@ -77770,3 +79323,9 @@ src/IPFilterScanner.h:
 /usr/local/include/boost/system/is_error_condition_enum.hpp:
 
 src/ServerUDPSocket.cpp:
+
+src/CMakeFiles/amule.dir/ExternalConn.cpp.o:
+
+/usr/local/include/boost/system/detail/generic_category.hpp:
+
+src/SharedFilesCtrl.cpp:

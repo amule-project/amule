@@ -25,12 +25,17 @@
 
 #include "SearchModel.h"
 #include "../SearchFile.h" // For CSearchFile
+#include "../MD4Hash.h" // For CMD4Hash
+#include "../Logger.h"
+#include <common/Format.h>
 
 namespace search {
 
 SearchModel::SearchModel()
     : m_state(SearchState::Idle)
     , m_searchId(-1)
+    , m_filterInvert(false)
+    , m_filterKnownOnly(false)
 {
 }
 
@@ -160,6 +165,132 @@ long SearchModel::getSearchIdThreadSafe() const
 {
     wxMutexLocker lock(m_mutex);
     return m_searchId;
+}
+
+// New methods for enhanced result management
+
+CSearchFile* SearchModel::getResultByIndex(size_t index) const
+{
+    wxMutexLocker lock(m_mutex);
+    if (index >= m_results.size()) {
+        return nullptr;
+    }
+    return m_results[index].get();
+}
+
+CSearchFile* SearchModel::getResultByHash(const CMD4Hash& hash) const
+{
+    wxMutexLocker lock(m_mutex);
+    for (const auto& result : m_results) {
+        if (result->GetFileHash() == hash) {
+            return result.get();
+        }
+    }
+    return nullptr;
+}
+
+std::vector<CSearchFile*> SearchModel::findResultsByString(const wxString& searchString) const
+{
+    wxMutexLocker lock(m_mutex);
+    std::vector<CSearchFile*> results;
+
+    wxString lowerSearch = searchString.Lower();
+    for (const auto& result : m_results) {
+        wxString fileName = result->GetFileName().GetPrintable().Lower();
+        if (fileName.Contains(lowerSearch)) {
+            results.push_back(result.get());
+        }
+    }
+
+    return results;
+}
+
+size_t SearchModel::getShownResultCount() const
+{
+    wxMutexLocker lock(m_mutex);
+    if (m_filterString.IsEmpty()) {
+        return m_results.size();
+    }
+
+    size_t count = 0;
+    for (const auto& result : m_results) {
+        if (matchesFilter(result.get())) {
+            count++;
+        }
+    }
+    return count;
+}
+
+size_t SearchModel::getHiddenResultCount() const
+{
+    wxMutexLocker lock(m_mutex);
+    if (m_filterString.IsEmpty()) {
+        return 0;
+    }
+
+    size_t count = 0;
+    for (const auto& result : m_results) {
+        if (!matchesFilter(result.get())) {
+            count++;
+        }
+    }
+    return count;
+}
+
+void SearchModel::filterResults(const wxString& filter, bool invert, bool knownOnly)
+{
+    wxMutexLocker lock(m_mutex);
+    m_filterString = filter;
+    m_filterInvert = invert;
+    m_filterKnownOnly = knownOnly;
+}
+
+void SearchModel::clearFilters()
+{
+    wxMutexLocker lock(m_mutex);
+    m_filterString.Clear();
+    m_filterInvert = false;
+    m_filterKnownOnly = false;
+}
+
+bool SearchModel::matchesFilter(const CSearchFile* result) const
+{
+    // If no filter is set, all results match
+    if (m_filterString.IsEmpty()) {
+        return true;
+    }
+
+    // Check known-only filter
+    if (m_filterKnownOnly) {
+        // Check if file is known (shared or downloading)
+        // This would need to check against known files list
+        // For now, we'll implement a basic check
+        // TODO: Implement proper known files check
+    }
+
+    // Check string filter
+    bool matches = false;
+    wxString fileName = result->GetFileName().GetPrintable().Lower();
+
+    try {
+        wxRegEx regex(m_filterString, wxRE_DEFAULT | wxRE_ICASE);
+        if (regex.IsValid()) {
+            matches = regex.Matches(fileName);
+        } else {
+            // If regex is invalid, treat as simple substring match
+            matches = fileName.Contains(m_filterString.Lower());
+        }
+    } catch (...) {
+        // If regex fails, treat as simple substring match
+        matches = fileName.Contains(m_filterString.Lower());
+    }
+
+    // Apply invert if needed
+    if (m_filterInvert) {
+        matches = !matches;
+    }
+
+    return matches;
 }
 
 } // namespace search

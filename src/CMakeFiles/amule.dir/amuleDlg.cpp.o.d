@@ -536,16 +536,17 @@ src/CMakeFiles/amule.dir/amuleDlg.cpp.o: \
  /home/eli/git/amule/src/kademlia/kademlia/../../Tag.h \
  /home/eli/git/amule/src/include/tags/TagTypes.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../OtherFunctions.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
  /home/eli/git/amule/src/libs/ec/cpp/../../../Types.h \
  /home/eli/git/amule/src/libs/common/SmartPtr.h \
  /home/eli/git/amule/src/SearchStateManager.h \
- /home/eli/git/amule/src/search/SearchController.h \
- /home/eli/git/amule/src/search/SearchModel.h \
- /home/eli/git/amule/src/search/SearchControllerFactory.h \
- /home/eli/git/amule/src/search/SearchController.h \
  /home/eli/git/amule/src/search/UnifiedSearchManager.h \
+ /home/eli/git/amule/src/search/SearchModel.h \
+ /usr/include/wx-3.2/wx/regex.h \
+ /home/eli/git/amule/src/SearchTimeoutManager.h \
+ /home/eli/git/amule/src/SimpleSearchCache.h \
  /home/eli/git/amule/src/Server.h /home/eli/git/amule/src/Tag.h \
  /home/eli/git/amule/src/include/protocol/ed2k/Client2Server/TCP.h \
  /home/eli/git/amule/src/include/protocol/ed2k/Client2Server/UDP.h \

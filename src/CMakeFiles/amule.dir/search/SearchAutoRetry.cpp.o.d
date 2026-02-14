@@ -305,5 +305,6 @@ src/CMakeFiles/amule.dir/search/SearchAutoRetry.cpp.o: \
  /usr/include/c++/15/bits/std_mutex.h \
  /usr/include/c++/15/backward/auto_ptr.h \
  /usr/include/c++/15/bits/ranges_uninitialized.h \
- /usr/include/c++/15/pstl/glue_memory_defs.h /usr/include/wx-3.2/wx/log.h \
+ /usr/include/c++/15/pstl/glue_memory_defs.h \
+ /usr/include/wx-3.2/wx/regex.h /usr/include/wx-3.2/wx/log.h \
  /usr/include/wx-3.2/wx/generic/logg.h

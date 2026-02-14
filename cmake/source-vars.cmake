@@ -83,6 +83,7 @@ if (BUILD_MONOLITHIC OR BUILD_DAEMON)
 		search/SearchAutoRetry.cpp
 		search/SearchPackageException.cpp
 		search/SearchPackageValidator.cpp
+		search/NetworkPacketHandler.cpp
 		GuiEvents.cpp
 	)
 endif()
@@ -124,6 +125,7 @@ if (BUILD_MONOLITHIC OR BUILD_REMOTEGUI)
 		SearchListCtrl.cpp
 		search/SearchModel.cpp
 		search/UnifiedSearchManager.cpp
+		SimpleSearchCache.cpp
 		GeoIPConfigDlg.cpp
 	)
 endif()
@@ -168,6 +170,7 @@ if (BUILD_REMOTEGUI)
 		GuiEvents.cpp
 		search/SearchModel.cpp
 		SearchListCtrl.cpp
+		SimpleSearchCache.cpp
 		PrefsUnifiedDlg.cpp
 		Proxy.cpp
 		StatTree.cpp

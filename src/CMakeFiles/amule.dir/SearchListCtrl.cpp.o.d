@@ -483,6 +483,7 @@ src/CMakeFiles/amule.dir/SearchListCtrl.cpp.o: \
  /home/eli/git/amule/src/kademlia/kademlia/../../Tag.h \
  /home/eli/git/amule/src/include/tags/TagTypes.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../OtherFunctions.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
  /home/eli/git/amule/src/libs/ec/cpp/../../../Types.h \
@@ -497,11 +498,10 @@ src/CMakeFiles/amule.dir/SearchListCtrl.cpp.o: \
  /home/eli/git/amule/src/SearchDlg.h /usr/include/wx-3.2/wx/notebook.h \
  /usr/include/wx-3.2/wx/bookctrl.h /usr/include/wx-3.2/wx/gtk/notebook.h \
  /home/eli/git/amule/src/SearchStateManager.h \
- /home/eli/git/amule/src/search/SearchController.h \
- /home/eli/git/amule/src/search/SearchModel.h \
- /home/eli/git/amule/src/search/SearchControllerFactory.h \
- /home/eli/git/amule/src/search/SearchController.h \
  /home/eli/git/amule/src/search/UnifiedSearchManager.h \
+ /home/eli/git/amule/src/search/SearchModel.h \
+ /home/eli/git/amule/src/SearchTimeoutManager.h \
+ /home/eli/git/amule/src/SimpleSearchCache.h \
  /home/eli/git/amule/src/amuleDlg.h /usr/include/wx-3.2/wx/archive.h \
  /usr/include/wx-3.2/wx/filename.h /usr/include/wx-3.2/wx/file.h \
  /usr/include/wx-3.2/wx/convauto.h /usr/include/wx-3.2/wx/wfstream.h \

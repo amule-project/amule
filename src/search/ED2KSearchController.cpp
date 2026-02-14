@@ -133,45 +133,18 @@ std::pair<uint32_t, wxString> ED2KSearchController::executeSearch(const SearchPa
 	    return {0, error};
 	}
 	
-	// Get search ID from model or generate new one
+	// Get search ID from params (provided by UnifiedSearchManager)
 	// IMPORTANT: When requesting more results, we MUST use the existing search ID
 	// to ensure results are routed to the correct search tag
-	if (m_model->getSearchId() == -1) {
-	    searchId = GenerateSearchId();
-	} else {
-	    // Use the existing search ID from the model
-	    // This is critical for "more results" functionality
-	    searchId = m_model->getSearchId();
+	searchId = params.getSearchId();
+	if (searchId == 0 || searchId == static_cast<uint32_t>(-1)) {
+	    // No search ID provided - this should not happen with UnifiedSearchManager
+	    AddDebugLogLineC(logSearch, wxT("ED2KSearchController::startSearch: No search ID provided!"));
+	    return std::make_pair(0, _("No search ID provided"));
 	}
 	
 	// Send packet to server
 	if (theApp && theApp->serverconnect) {
-	    // Register the search in SearchList's active searches map
-	    // This ensures results are properly routed to the correct search
-	    if (theApp->searchlist) {
-		// Use the legacy StartNewSearch method to register the search
-		// but with our pre-generated search ID
-		CSearchList::CSearchParams oldParams;
-		oldParams.searchString = params.searchString;
-		oldParams.strKeyword = params.strKeyword;
-		oldParams.typeText = params.typeText;
-		oldParams.extension = params.extension;
-		oldParams.minSize = params.minSize;
-		oldParams.maxSize = params.maxSize;
-		oldParams.availability = params.availability;
-		oldParams.searchType = isLocalSearch ? LocalSearch : GlobalSearch;
-
-		// Register the search with SearchList
-		// This ensures the search is tracked in the active searches map
-		wxString startError = theApp->searchlist->StartNewSearch(
-		    &searchId, oldParams.searchType, oldParams);
-		if (!startError.IsEmpty()) {
-		    delete[] packetData;
-		    error = startError;
-		    return {0, error};
-		}
-	    }
-
 	    theStats::AddUpOverheadServer(packetSize);
 	    // Create a CMemFile from the raw data
 	    CMemFile dataFile(packetData, packetSize);
@@ -425,12 +398,6 @@ void ED2KSearchController::handleResults(uint32_t searchId, const std::vector<CS
 	// Normal search handling - call base implementation
 	SearchControllerBase::handleResults(searchId, results);
     }
-}
-
-uint32_t ED2KSearchController::GenerateSearchId()
-{
-    // Use the centralized SearchIdGenerator for consistency across all search types
-    return search::SearchIdGenerator::Instance().generateId();
 }
 
 } // namespace search

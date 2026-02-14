@@ -63,6 +63,9 @@ public:
     std::vector<CSearchFile*> getResults() const override;
     size_t getResultCount() const override;
 
+    // Model access for advanced operations
+    SearchModel* getModel() const { return m_model.get(); }
+
     // Configuration validation
     bool validateConfiguration() const;
 

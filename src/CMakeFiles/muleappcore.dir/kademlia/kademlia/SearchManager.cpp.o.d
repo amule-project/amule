@@ -343,6 +343,11 @@ src/CMakeFiles/muleappcore.dir/kademlia/kademlia/SearchManager.cpp.o: \
  /home/eli/git/amule/src/include/common/ClientVersion.h \
  /usr/include/dlfcn.h /usr/include/x86_64-linux-gnu/bits/dlfcn.h \
  /usr/include/x86_64-linux-gnu/bits/dl_find_object.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/chrono.h \
+ /usr/include/c++/15/ratio /usr/include/c++/15/cstdint \
+ /usr/include/c++/15/ctime /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/std_mutex.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/include/common/Macros.h \
  /home/eli/git/amule/src/kademlia/kademlia/Indexed.h \
  /home/eli/git/amule/src/kademlia/kademlia/Entry.h \

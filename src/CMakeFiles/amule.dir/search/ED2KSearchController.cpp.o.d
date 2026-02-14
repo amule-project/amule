@@ -244,7 +244,8 @@ src/CMakeFiles/amule.dir/search/ED2KSearchController.cpp.o: \
  /usr/include/c++/15/backward/auto_ptr.h \
  /usr/include/c++/15/bits/ranges_uninitialized.h \
  /usr/include/c++/15/pstl/glue_memory_defs.h \
- /usr/include/wx-3.2/wx/thread.h \
+ /usr/include/wx-3.2/wx/thread.h /usr/include/wx-3.2/wx/regex.h \
+ /usr/include/wx-3.2/wx/versioninfo.h \
  /home/eli/git/amule/src/search/SearchResultHandler.h \
  /home/eli/git/amule/src/search/ED2KSearchPacketBuilder.h \
  /home/eli/git/amule/src/search/SearchPackageValidator.h \
@@ -339,7 +340,7 @@ src/CMakeFiles/amule.dir/search/ED2KSearchController.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
- /usr/include/linux/falloc.h /usr/include/wx-3.2/wx/versioninfo.h \
+ /usr/include/linux/falloc.h \
  /usr/include/wx-3.2/wx/meta/implicitconversion.h \
  /usr/include/wx-3.2/wx/mousestate.h /usr/include/wx-3.2/wx/kbdstate.h \
  /usr/include/wx-3.2/wx/platinfo.h /usr/include/wx-3.2/wx/tracker.h \
@@ -466,6 +467,10 @@ src/CMakeFiles/amule.dir/search/ED2KSearchController.cpp.o: \
  /home/eli/git/amule/src/include/common/ClientVersion.h \
  /usr/include/dlfcn.h /usr/include/x86_64-linux-gnu/bits/dlfcn.h \
  /usr/include/x86_64-linux-gnu/bits/dl_find_object.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/chrono.h \
+ /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
+ /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/search/../kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
  /home/eli/git/amule/src/libs/ec/cpp/../../../Types.h \
@@ -492,9 +497,7 @@ src/CMakeFiles/amule.dir/search/ED2KSearchController.cpp.o: \
  /home/eli/git/amule/src/search/../amule.h \
  /home/eli/git/amule/src/search/../common/NetworkPerformanceMonitor.h \
  /home/eli/git/amule/src/search/../common/PerformanceUtils.h \
- /usr/include/c++/15/chrono /usr/include/c++/15/bits/chrono.h \
- /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
- /usr/include/c++/15/bits/parse_numbers.h /usr/include/c++/15/sstream \
+ /usr/include/c++/15/chrono /usr/include/c++/15/sstream \
  /usr/include/c++/15/bits/sstream.tcc \
  /usr/include/c++/15/bits/chrono_io.h /usr/include/c++/15/iomanip \
  /usr/include/c++/15/locale \

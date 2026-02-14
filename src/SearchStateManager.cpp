@@ -24,6 +24,8 @@
 //
 
 #include "SearchStateManager.h"
+#include "search/SearchLogging.h"
+#include "../Logger.h"
 #include <common/Format.h>
 #include <cstdint>
 
@@ -139,6 +141,7 @@ void SearchStateManager::EndSearch(uint32_t searchId)
 {
 	bool shouldUpdateState = false;
 	bool hasResults = false;
+	bool shouldRetry = false;
 	int retryCount = 0;
 	
 	{
@@ -146,37 +149,57 @@ void SearchStateManager::EndSearch(uint32_t searchId)
 		
 		SearchMap::iterator it = m_searches.find(searchId);
 		if (it == m_searches.end()) {
+			AddDebugLogLineC(logSearch, CFormat(wxT("SearchStateManager::EndSearch: Search %u not found"))
+			 % searchId);
 			return;
 		}
 
 		SearchData& data = it->second;
+		retryCount = data.retryCount;
 
 		// Determine final state based on results
 		if (data.shownCount > 0 || data.hiddenCount > 0) {
+			// Results found - mark as completed
 			shouldUpdateState = true;
 			hasResults = true;
+			AddDebugLogLineC(logSearch, CFormat(wxT("SearchStateManager::EndSearch: Search %u has results (shown=%zu, hidden=%zu)"))
+				% searchId % data.shownCount % data.hiddenCount);
 		} else {
 			// No results - check if we should retry
 			if (data.retryCount < MAX_RETRIES) {
-				// Don't set to NO_RESULTS yet, let retry mechanism handle it
-				// The retry will be initiated by the caller
-				return;
+				// Update to Retrying state
+				shouldUpdateState = true;
+				shouldRetry = true;
+				AddDebugLogLineC(logSearch, CFormat(wxT("SearchStateManager::EndSearch: Search %u has no results, will retry (count=%d/%d)"))
+					% searchId % (data.retryCount + 1) % MAX_RETRIES);
 			} else {
 				// Max retries reached, set to NO_RESULTS
 				shouldUpdateState = true;
 				hasResults = false;
+				AddDebugLogLineC(logSearch, CFormat(wxT("SearchStateManager::EndSearch: Search %u has no results, max retries reached"))
+					% searchId);
 			}
 		}
-		retryCount = data.retryCount;
 	}
 	
 	// Update state outside the lock to avoid double lock
 	if (shouldUpdateState) {
 		if (hasResults) {
 			UpdateState(searchId, STATE_HAS_RESULTS);
+			AddDebugLogLineC(logSearch, CFormat(wxT("SearchStateManager::EndSearch: Search %u -> STATE_HAS_RESULTS"))
+				% searchId);
+		} else if (shouldRetry) {
+			UpdateState(searchId, STATE_RETRYING);
+			AddDebugLogLineC(logSearch, CFormat(wxT("SearchStateManager::EndSearch: Search %u -> STATE_RETRYING"))
+				% searchId);
 		} else {
 			UpdateState(searchId, STATE_NO_RESULTS);
+			AddDebugLogLineC(logSearch, CFormat(wxT("SearchStateManager::EndSearch: Search %u -> STATE_NO_RESULTS"))
+				% searchId);
 		}
+	} else {
+		AddDebugLogLineC(logSearch, CFormat(wxT("SearchStateManager::EndSearch: Search %u state not updated"))
+				% searchId);
 	}
 }
 

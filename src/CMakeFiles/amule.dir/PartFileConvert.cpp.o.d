@@ -479,6 +479,7 @@ src/CMakeFiles/amule.dir/PartFileConvert.cpp.o: \
  /home/eli/git/amule/src/kademlia/kademlia/../../Tag.h \
  /home/eli/git/amule/src/include/tags/TagTypes.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../OtherFunctions.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
  /home/eli/git/amule/src/libs/ec/cpp/../../../Types.h \

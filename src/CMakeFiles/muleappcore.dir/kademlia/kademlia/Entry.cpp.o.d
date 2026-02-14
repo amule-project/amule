@@ -346,7 +346,12 @@ src/CMakeFiles/muleappcore.dir/kademlia/kademlia/Entry.cpp.o: \
  /home/eli/git/amule/src/kademlia/kademlia/SearchManager.h \
  /home/eli/git/amule/src/kademlia/kademlia/../routing/Maps.h \
  /usr/include/c++/15/set /usr/include/c++/15/bits/stl_set.h \
- /usr/include/c++/15/bits/stl_multiset.h \
+ /usr/include/c++/15/bits/stl_multiset.h /usr/include/c++/15/mutex \
+ /usr/include/c++/15/bits/chrono.h /usr/include/c++/15/ratio \
+ /usr/include/c++/15/cstdint /usr/include/c++/15/ctime \
+ /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/std_mutex.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../SafeFile.h \
  /usr/include/wx-3.2/wx/filename.h /usr/include/wx-3.2/wx/file.h \
  /usr/include/wx-3.2/wx/convauto.h \

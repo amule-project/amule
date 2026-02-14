@@ -487,13 +487,15 @@ src/CMakeFiles/amule.dir/kademlia/kademlia/UDPFirewallTester.cpp.o: \
  /home/eli/git/amule/src/kademlia/kademlia/../routing/../utils/UInt128.h \
  /home/eli/git/amule/src/kademlia/kademlia/SearchManager.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../Tag.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/chrono.h \
+ /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
+ /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../Logger.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../amule.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../common/NetworkPerformanceMonitor.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../common/PerformanceUtils.h \
- /usr/include/c++/15/chrono /usr/include/c++/15/bits/chrono.h \
- /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
- /usr/include/c++/15/bits/parse_numbers.h /usr/include/c++/15/sstream \
+ /usr/include/c++/15/chrono /usr/include/c++/15/sstream \
  /usr/include/c++/15/bits/sstream.tcc \
  /usr/include/c++/15/bits/chrono_io.h /usr/include/c++/15/iomanip \
  /usr/include/c++/15/locale \

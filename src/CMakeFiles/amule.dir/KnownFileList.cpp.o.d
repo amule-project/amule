@@ -461,6 +461,10 @@ src/CMakeFiles/amule.dir/KnownFileList.cpp.o: \
  /home/eli/git/amule/src/include/common/ClientVersion.h \
  /usr/include/dlfcn.h /usr/include/x86_64-linux-gnu/bits/dlfcn.h \
  /usr/include/x86_64-linux-gnu/bits/dl_find_object.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/chrono.h \
+ /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
+ /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
  /home/eli/git/amule/src/libs/ec/cpp/../../../Types.h \
@@ -484,9 +488,7 @@ src/CMakeFiles/amule.dir/KnownFileList.cpp.o: \
  /home/eli/git/amule/src/GapList.h /home/eli/git/amule/src/amule.h \
  /home/eli/git/amule/src/common/NetworkPerformanceMonitor.h \
  /home/eli/git/amule/src/common/PerformanceUtils.h \
- /usr/include/c++/15/chrono /usr/include/c++/15/bits/chrono.h \
- /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
- /usr/include/c++/15/bits/parse_numbers.h /usr/include/c++/15/sstream \
+ /usr/include/c++/15/chrono /usr/include/c++/15/sstream \
  /usr/include/c++/15/bits/sstream.tcc \
  /usr/include/c++/15/bits/chrono_io.h /usr/include/c++/15/iomanip \
  /usr/include/c++/15/locale \

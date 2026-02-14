@@ -27,15 +27,19 @@
 #define UNIFIED_SEARCH_MANAGER_H
 
 #include "SearchModel.h"
+#include "SearchTimeoutManager.h"
 #include <wx/string.h>
 #include <memory>
 #include <cstdint>
 #include <functional>
+#include <map>
 
 // Forward declarations
 class CSearchFile;
+class CMD4Hash;
 namespace search {
 class SearchController;
+class SearchControllerBase;
 }
 
 namespace search {
@@ -92,6 +96,11 @@ public:
     void stopSearch(uint32_t searchId);
 
     /**
+     * Stop all active searches
+     */
+    void stopAllSearches();
+
+    /**
      * Request more results for a search (global ED2K only)
      *
      * @param searchId Search ID
@@ -125,6 +134,65 @@ public:
     size_t getResultCount(uint32_t searchId) const;
 
     /**
+     * Get shown result count (filtered)
+     *
+     * @param searchId Search ID
+     * @return Number of shown results
+     */
+    size_t getShownResultCount(uint32_t searchId) const;
+
+    /**
+     * Get hidden result count (filtered)
+     *
+     * @param searchId Search ID
+     * @return Number of hidden results
+     */
+    size_t getHiddenResultCount(uint32_t searchId) const;
+
+    /**
+     * Get result by index
+     *
+     * @param searchId Search ID
+     * @param index Result index
+     * @return Result pointer, or nullptr if not found
+     */
+    CSearchFile* getResultByIndex(uint32_t searchId, size_t index) const;
+
+    /**
+     * Get result by hash
+     *
+     * @param searchId Search ID
+     * @param hash File hash
+     * @return Result pointer, or nullptr if not found
+     */
+    CSearchFile* getResultByHash(uint32_t searchId, const CMD4Hash& hash) const;
+
+    /**
+     * Get search model for a search ID
+     *
+     * @param searchId Search ID
+     * @return Search model pointer, or nullptr if not found
+     */
+    SearchModel* getSearchModel(uint32_t searchId) const;
+
+    /**
+     * Filter results for a search
+     *
+     * @param searchId Search ID
+     * @param filter Filter string
+     * @param invert Invert filter
+     * @param knownOnly Show only known files
+     */
+    void filterResults(uint32_t searchId, const wxString& filter, bool invert, bool knownOnly);
+
+    /**
+     * Clear filters for a search
+     *
+     * @param searchId Search ID
+     */
+    void clearFilters(uint32_t searchId);
+
+    /**
      * Check if a search is active
      *
      * @param searchId Search ID
@@ -154,6 +222,13 @@ public:
      * @param callback Function to call when search completes
      */
     void setSearchCompletedCallback(std::function<void(uint32_t, bool)> callback);
+
+    /**
+     * Get the timeout manager
+     *
+     * @return Reference to the timeout manager
+     */
+    SearchTimeoutManager& getTimeoutManager() { return m_timeoutManager; }
 
 private:
     /**
@@ -185,6 +260,9 @@ private:
 
     // Search completion callback
     std::function<void(uint32_t, bool)> m_onSearchCompleted;
+
+    // Timeout manager for search timeout detection
+    SearchTimeoutManager m_timeoutManager;
 
     // Mutex for thread safety
     mutable wxMutex m_mutex;

@@ -476,6 +476,10 @@ src/CMakeFiles/amule.dir/ExternalConn.cpp.o: \
  /home/eli/git/amule/src/kademlia/kademlia/../../Tag.h \
  /home/eli/git/amule/src/include/tags/TagTypes.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../OtherFunctions.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/chrono.h \
+ /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
+ /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
  /home/eli/git/amule/src/Constants.h \
@@ -504,11 +508,8 @@ src/CMakeFiles/amule.dir/ExternalConn.cpp.o: \
  /home/eli/git/amule/src/UploadQueue.h /home/eli/git/amule/src/amule.h \
  /home/eli/git/amule/src/common/NetworkPerformanceMonitor.h \
  /home/eli/git/amule/src/common/PerformanceUtils.h \
- /usr/include/c++/15/chrono /usr/include/c++/15/bits/chrono.h \
- /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
- /usr/include/c++/15/bits/parse_numbers.h \
- /usr/include/c++/15/bits/chrono_io.h /usr/include/c++/15/iomanip \
- /usr/include/c++/15/locale \
+ /usr/include/c++/15/chrono /usr/include/c++/15/bits/chrono_io.h \
+ /usr/include/c++/15/iomanip /usr/include/c++/15/locale \
  /usr/include/c++/15/bits/locale_facets_nonio.h \
  /usr/include/x86_64-linux-gnu/c++/15/bits/time_members.h \
  /usr/include/x86_64-linux-gnu/c++/15/bits/messages_members.h \

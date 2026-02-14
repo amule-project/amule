@@ -8211,3 +8211,166 @@ events:
       Running the CXX compiler's linker: "/usr/bin/ld" "-v"
       GNU ld (GNU Binutils for Ubuntu) 2.45.50.20260119
 ...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/home/eli/jvenv313/lib/python3.13/site-packages/cmake/data/share/cmake-4.2/Modules/FindwxWidgets.cmake:1138 (find_library)"
+      - "cmake/wx.cmake:47 (find_package)"
+      - "CMakeLists.txt:127 (include)"
+    mode: "library"
+    variable: "_wx_lib_found"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "wx_baseu-3.2"
+    candidate_directories:
+      - "/usr/lib/x86_64-linux-gnu/"
+      - "/home/eli/Comate-linux-x64/bin/"
+      - "/usr/local/cuda/bin/"
+      - "/home/eli/.bin/"
+      - "/home/eli/.local/bin/"
+      - "/home/eli/jvenv313/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/usr/bin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+      - "/snap/bin/"
+      - "/home/eli/.dotnet/tools/"
+      - "/opt/onnxruntime-gpu/bin/"
+      - "/opt/onnxruntime/bin/"
+      - "/home/eli/.vscode-insiders/extensions/ms-python.debugpy-2025.19.2026012701-linux-x64/bundled/scripts/noConfigScripts/"
+      - "/usr/local/lib/x86_64-linux-gnu/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/x86_64-linux-gnu/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/lib/x86_64-linux-gnu/"
+      - "/lib/"
+      - "/home/eli/jvenv313/lib/python3.13/site-packages/cmake/data/lib/x86_64-linux-gnu/"
+      - "/home/eli/jvenv313/lib/python3.13/site-packages/cmake/data/lib/"
+      - "/home/eli/jvenv313/lib/python3.13/site-packages/cmake/data/"
+      - "/usr/X11R6/lib/x86_64-linux-gnu/"
+      - "/usr/X11R6/lib/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/lib/x86_64-linux-gnu/"
+      - "/usr/pkg/lib/"
+      - "/usr/pkg/"
+      - "/opt/lib/x86_64-linux-gnu/"
+      - "/opt/lib/"
+      - "/opt/"
+      - "/usr/lib/X11/"
+    found: "/usr/lib/x86_64-linux-gnu/libwx_baseu-3.2.so"
+    search_context:
+      ENV{PATH}:
+        - "/home/eli/Comate-linux-x64/bin"
+        - "/usr/local/cuda/bin"
+        - "/home/eli/.bin"
+        - "/home/eli/.local/bin"
+        - "/home/eli/jvenv313/bin"
+        - "/home/eli/Comate-linux-x64/bin"
+        - "/usr/local/cuda/bin"
+        - "/home/eli/.bin"
+        - "/home/eli/.local/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+        - "/home/eli/.dotnet/tools"
+        - "/opt/onnxruntime-gpu/bin"
+        - "/opt/onnxruntime/bin"
+        - "/home/eli/.vscode-insiders/extensions/ms-python.debugpy-2025.19.2026012701-linux-x64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/home/eli/jvenv313/lib/python3.13/site-packages/cmake/data"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/home/eli/jvenv313/lib/python3.13/site-packages/cmake/data/share/cmake-4.2/Modules/FindwxWidgets.cmake:374 (find_file)"
+      - "/home/eli/jvenv313/lib/python3.13/site-packages/cmake/data/share/cmake-4.2/Modules/FindwxWidgets.cmake:1157 (wx_extract_version)"
+      - "cmake/wx.cmake:47 (find_package)"
+      - "CMakeLists.txt:127 (include)"
+    mode: "file"
+    variable: "_wx_filename"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "wx/version.h"
+    candidate_directories:
+      - "/usr/lib/x86_64-linux-gnu/wx/include/gtk3-unicode-3.2/"
+      - "/usr/include/wx-3.2/"
+    searched_directories:
+      - "/usr/lib/x86_64-linux-gnu/wx/include/gtk3-unicode-3.2/wx/version.h"
+    found: "/usr/include/wx-3.2/wx/version.h"
+    search_context:
+      ENV{PATH}:
+        - "/home/eli/Comate-linux-x64/bin"
+        - "/usr/local/cuda/bin"
+        - "/home/eli/.bin"
+        - "/home/eli/.local/bin"
+        - "/home/eli/jvenv313/bin"
+        - "/home/eli/Comate-linux-x64/bin"
+        - "/usr/local/cuda/bin"
+        - "/home/eli/.bin"
+        - "/home/eli/.local/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+        - "/home/eli/.dotnet/tools"
+        - "/opt/onnxruntime-gpu/bin"
+        - "/opt/onnxruntime/bin"
+        - "/home/eli/.vscode-insiders/extensions/ms-python.debugpy-2025.19.2026012701-linux-x64/bundled/scripts/noConfigScripts"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/home/eli/jvenv313/lib/python3.13/site-packages/cmake/data"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+...

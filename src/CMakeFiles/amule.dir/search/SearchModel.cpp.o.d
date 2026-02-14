@@ -241,6 +241,7 @@ src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: \
  /usr/include/c++/15/bits/node_handle.h \
  /usr/include/c++/15/bits/erase_if.h /usr/include/c++/15/array \
  /usr/include/wx-3.2/wx/iosfwrap.h /usr/include/wx-3.2/wx/thread.h \
+ /usr/include/wx-3.2/wx/regex.h /usr/include/wx-3.2/wx/versioninfo.h \
  /home/eli/git/amule/src/search/../SearchFile.h \
  /home/eli/git/amule/src/search/../KnownFile.h \
  /home/eli/git/amule/src/search/../MD4Hash.h \
@@ -332,7 +333,7 @@ src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
- /usr/include/linux/falloc.h /usr/include/wx-3.2/wx/versioninfo.h \
+ /usr/include/linux/falloc.h \
  /usr/include/wx-3.2/wx/meta/implicitconversion.h \
  /usr/include/wx-3.2/wx/mousestate.h /usr/include/wx-3.2/wx/kbdstate.h \
  /usr/include/wx-3.2/wx/platinfo.h /usr/include/wx-3.2/wx/tracker.h \
@@ -459,7 +460,13 @@ src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: \
  /home/eli/git/amule/src/include/common/ClientVersion.h \
  /usr/include/dlfcn.h /usr/include/x86_64-linux-gnu/bits/dlfcn.h \
  /usr/include/x86_64-linux-gnu/bits/dl_find_object.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/chrono.h \
+ /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
+ /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/search/../kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
  /home/eli/git/amule/src/libs/ec/cpp/../../../Types.h \
- /home/eli/git/amule/src/search/../Constants.h
+ /home/eli/git/amule/src/search/../Constants.h \
+ /home/eli/git/amule/src/search/../MD4Hash.h \
+ /home/eli/git/amule/src/search/../Logger.h

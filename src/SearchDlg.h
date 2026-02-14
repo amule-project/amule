@@ -35,9 +35,8 @@
 #include "Types.h"		// Needed for uint16 and uint32
 #include "SearchList.h"		// Needed for SearchType
 #include "SearchStateManager.h"	// Needed for SearchStateManager and ISearchStateObserver
-#include "search/SearchController.h"	// Needed for SearchController
-#include "search/SearchControllerFactory.h"	// Needed for SearchControllerFactory
 #include "search/UnifiedSearchManager.h"	// Needed for UnifiedSearchManager
+#include "SimpleSearchCache.h"	// Needed for SimpleSearchCache (duplicate detection)
 
 
 class CMuleNotebook;
@@ -160,6 +159,11 @@ public:
 	SearchStateManager& GetStateManager() { return m_stateManager; }
 
 	/**
+	 * Gets the unified search manager.
+	 */
+	search::UnifiedSearchManager& GetUnifiedSearchManager() { return m_unifiedSearchManager; }
+
+	/**
 	 * Updates the enabled state of the start button based on connection status.
 	 */
 	void		UpdateStartButtonState();
@@ -247,30 +251,14 @@ private:
 	// Unified search manager - common abstraction layer for all search types
 	search::UnifiedSearchManager	m_unifiedSearchManager;
 
-	// Map of search ID to SearchController for active searches
-	std::map<uint32, std::unique_ptr<search::SearchController>> m_searchControllers;
+	// Simple search cache - handles duplicate search detection
+	SimpleSearchCache			m_searchCache;
 
-	// Map of search ID to search type for active searches
-	std::map<uint32, search::ModernSearchType> m_searchTypes;
-	
 	// Mutex to protect UI updates from concurrent network callbacks
 	mutable wxMutex m_uiUpdateMutex;
-	
+
 	// Mutex to protect search creation and prevent race conditions
 	mutable wxMutex m_searchCreationMutex;
-
-	// Helper function to find existing tab by search text and type
-	CSearchListCtrl* FindExistingTab(const wxString& searchString, search::ModernSearchType searchType);
-
-	/**
-	 * Thread-safe function to get existing search ID for duplicate search
-	 * 
-	 * @param searchType The type of search (Local, Global, Kad)
-	 * @param searchString The search string/keyword
-	 * @param[out] existingSearchId The existing search ID if found, 0 otherwise
-	 * @return true if an existing tab with same search was found, false otherwise
-	 */
-	bool GetExistingSearchId(SearchType searchType, const wxString& searchString, uint32& existingSearchId);
 
 	DECLARE_EVENT_TABLE()
 };

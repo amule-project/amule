@@ -488,6 +488,10 @@ src/CMakeFiles/amule.dir/DownloadQueue.cpp.o: \
  /home/eli/git/amule/src/kademlia/kademlia/../utils/../../Types.h \
  /home/eli/git/amule/src/kademlia/kademlia/../routing/Maps.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../Tag.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/chrono.h \
+ /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
+ /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/common/SmartPtr.h \
  /home/eli/git/amule/src/SharedFileList.h \
@@ -496,9 +500,7 @@ src/CMakeFiles/amule.dir/DownloadQueue.cpp.o: \
  /home/eli/git/amule/src/GapList.h /home/eli/git/amule/src/amule.h \
  /home/eli/git/amule/src/common/NetworkPerformanceMonitor.h \
  /home/eli/git/amule/src/common/PerformanceUtils.h \
- /usr/include/c++/15/chrono /usr/include/c++/15/bits/chrono.h \
- /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
- /usr/include/c++/15/bits/parse_numbers.h /usr/include/c++/15/sstream \
+ /usr/include/c++/15/chrono /usr/include/c++/15/sstream \
  /usr/include/c++/15/bits/sstream.tcc \
  /usr/include/c++/15/bits/chrono_io.h /usr/include/c++/15/iomanip \
  /usr/include/c++/15/locale \

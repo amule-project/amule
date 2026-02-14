@@ -461,33 +461,34 @@ src/CMakeFiles/amule.dir/SearchDlg.cpp.o: \
  /home/eli/git/amule/src/kademlia/kademlia/../../Tag.h \
  /home/eli/git/amule/src/include/tags/TagTypes.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../OtherFunctions.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/chrono.h \
+ /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
+ /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
  /home/eli/git/amule/src/libs/ec/cpp/../../../Types.h \
  /home/eli/git/amule/src/Constants.h \
  /home/eli/git/amule/src/libs/common/SmartPtr.h \
  /home/eli/git/amule/src/SearchStateManager.h \
- /home/eli/git/amule/src/search/SearchController.h \
- /home/eli/git/amule/src/search/SearchModel.h \
- /home/eli/git/amule/src/search/SearchControllerFactory.h \
- /home/eli/git/amule/src/search/SearchController.h \
  /home/eli/git/amule/src/search/UnifiedSearchManager.h \
- /usr/include/c++/15/cassert \
+ /home/eli/git/amule/src/search/SearchModel.h \
+ /usr/include/wx-3.2/wx/regex.h \
+ /home/eli/git/amule/src/SearchTimeoutManager.h \
+ /home/eli/git/amule/src/SimpleSearchCache.h /usr/include/c++/15/cassert \
  /home/eli/git/amule/src/include/tags/FileTags.h \
  /home/eli/git/amule/src/search/SearchModel.h \
  /home/eli/git/amule/src/GetTickCount.h /home/eli/git/amule/src/Logger.h \
  /home/eli/git/amule/src/MuleNotebook.h \
  /home/eli/git/amule/src/SearchLabelHelper.h \
- /home/eli/git/amule/src/SearchListCtrl.h /usr/include/wx-3.2/wx/regex.h \
+ /home/eli/git/amule/src/SearchListCtrl.h \
  /home/eli/git/amule/src/MuleListCtrl.h \
  /home/eli/git/amule/src/extern/wxWidgets/listctrl.h \
  /usr/include/wx-3.2/wx/listbase.h /usr/include/wx-3.2/wx/itemattr.h \
  /usr/include/wx-3.2/wx/systhemectrl.h /home/eli/git/amule/src/amule.h \
  /home/eli/git/amule/src/common/NetworkPerformanceMonitor.h \
  /home/eli/git/amule/src/common/PerformanceUtils.h \
- /usr/include/c++/15/chrono /usr/include/c++/15/bits/chrono.h \
- /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
- /usr/include/c++/15/bits/parse_numbers.h /usr/include/c++/15/sstream \
+ /usr/include/c++/15/chrono /usr/include/c++/15/sstream \
  /usr/include/c++/15/bits/sstream.tcc \
  /usr/include/c++/15/bits/chrono_io.h /usr/include/c++/15/iomanip \
  /usr/include/c++/15/locale \
@@ -530,4 +531,15 @@ src/CMakeFiles/amule.dir/SearchDlg.cpp.o: \
  /usr/include/wx-3.2/wx/tglbtn.h /usr/include/wx-3.2/wx/gtk/tglbtn.h \
  /home/eli/git/amule/src/search/SearchLogging.h \
  /home/eli/git/amule/src/search/../Logger.h \
- /home/eli/git/amule/src/search/SearchIdGenerator.h
+ /home/eli/git/amule/src/search/SearchIdGenerator.h \
+ /home/eli/git/amule/src/kademlia/kademlia/SearchManager.h \
+ /home/eli/git/amule/src/kademlia/kademlia/Kademlia.h \
+ /home/eli/git/amule/src/kademlia/kademlia/Prefs.h \
+ /home/eli/git/amule/src/kademlia/kademlia/../../Preferences.h \
+ /home/eli/git/amule/src/include/protocol/kad/Constants.h \
+ /home/eli/git/amule/src/kademlia/kademlia/Kademlia.h \
+ /home/eli/git/amule/src/kademlia/kademlia/../net/KademliaUDPListener.h \
+ /home/eli/git/amule/src/kademlia/kademlia/../net/../utils/UInt128.h \
+ /home/eli/git/amule/src/kademlia/kademlia/../net/../../Tag.h \
+ /home/eli/git/amule/src/kademlia/kademlia/../net/PacketTracking.h \
+ /home/eli/git/amule/src/kademlia/kademlia/../net/../../Types.h

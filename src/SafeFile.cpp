@@ -545,6 +545,23 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 			default:
 				throw wxString(CFormat(wxT("Invalid Kad tag type; type=0x%02x name=%s\n")) % type % name);
 		}
+
+		// Validate the created tag and fix if necessary
+		if (retVal && !retVal->IsValid()) {
+			AddDebugLogLineC(logKadIndex,
+				CFormat(wxT("ReadTag created invalid tag, fixing... type=0x%02X name=%s"))
+				% retVal->GetType() % retVal->GetName());
+
+			// Try to fix it by inferring type from state
+			if (retVal->FixInvalidType()) {
+				AddDebugLogLineN(logKadIndex,
+					CFormat(wxT("Fixed tag type from 0x00 to 0x%02X")) % retVal->GetType());
+			} else {
+				// Cannot fix, delete and throw
+				delete retVal;
+				throw wxString(CFormat(wxT("Cannot fix invalid tag type=0x00 name=%s")) % name);
+			}
+		}
 	} catch(const CMuleException& e) {
 		AddLogLineN(e.what());
 		delete retVal;
@@ -573,6 +590,20 @@ void CFileDataIO::ReadTagPtrList(TagPtrList* taglist, bool bOptACP) const
 
 void CFileDataIO::WriteTag(const CTag& tag)
 {
+	// Validate tag before writing
+	if (!tag.IsValid()) {
+		AddDebugLogLineC(logKadIndex,
+			CFormat(wxT("WriteTag: Attempting to write invalid tag, type=0x%02X name=%s"))
+			% tag.GetType() % tag.GetName());
+
+		// Try to fix it
+		if (tag.GetType() == 0) {
+			// Cannot fix const tag, throw exception
+			throw wxString(CFormat(wxT("WriteTag: Cannot write invalid tag type=0x00 name=%s"))
+				% tag.GetName());
+		}
+	}
+
 	try
 	{
 		WriteUInt8(tag.GetType());

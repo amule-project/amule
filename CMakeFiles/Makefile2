@@ -473,12 +473,12 @@ po/CMakeFiles/pofiles_1.dir/clean:
 src/CMakeFiles/generate_CountryFlags.h.dir/all:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/generate_CountryFlags.h.dir/build.make src/CMakeFiles/generate_CountryFlags.h.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/generate_CountryFlags.h.dir/build.make src/CMakeFiles/generate_CountryFlags.h.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=60 "Built target generate_CountryFlags.h"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num= "Built target generate_CountryFlags.h"
 .PHONY : src/CMakeFiles/generate_CountryFlags.h.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/generate_CountryFlags.h.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/generate_CountryFlags.h.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 0
 .PHONY : src/CMakeFiles/generate_CountryFlags.h.dir/rule
@@ -490,7 +490,7 @@ generate_CountryFlags.h: src/CMakeFiles/generate_CountryFlags.h.dir/rule
 # codegen rule for target.
 src/CMakeFiles/generate_CountryFlags.h.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/generate_CountryFlags.h.dir/build.make src/CMakeFiles/generate_CountryFlags.h.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=60 "Finished codegen for target generate_CountryFlags.h"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num= "Finished codegen for target generate_CountryFlags.h"
 .PHONY : src/CMakeFiles/generate_CountryFlags.h.dir/codegen
 
 # clean rule for target.
@@ -537,12 +537,12 @@ src/CMakeFiles/generate_ECCodes.h.dir/clean:
 src/CMakeFiles/generate_ECTagTypes.h.dir/all:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/generate_ECTagTypes.h.dir/build.make src/CMakeFiles/generate_ECTagTypes.h.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/generate_ECTagTypes.h.dir/build.make src/CMakeFiles/generate_ECTagTypes.h.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num= "Built target generate_ECTagTypes.h"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=61 "Built target generate_ECTagTypes.h"
 .PHONY : src/CMakeFiles/generate_ECTagTypes.h.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/generate_ECTagTypes.h.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/generate_ECTagTypes.h.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 0
 .PHONY : src/CMakeFiles/generate_ECTagTypes.h.dir/rule
@@ -554,7 +554,7 @@ generate_ECTagTypes.h: src/CMakeFiles/generate_ECTagTypes.h.dir/rule
 # codegen rule for target.
 src/CMakeFiles/generate_ECTagTypes.h.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/generate_ECTagTypes.h.dir/build.make src/CMakeFiles/generate_ECTagTypes.h.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num= "Finished codegen for target generate_ECTagTypes.h"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=61 "Finished codegen for target generate_ECTagTypes.h"
 .PHONY : src/CMakeFiles/generate_ECTagTypes.h.dir/codegen
 
 # clean rule for target.
@@ -569,12 +569,12 @@ src/CMakeFiles/generate_ECTagTypes.h.dir/clean:
 src/CMakeFiles/ed2k.dir/all:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/ed2k.dir/build.make src/CMakeFiles/ed2k.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/ed2k.dir/build.make src/CMakeFiles/ed2k.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=59 "Built target ed2k"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=59,60 "Built target ed2k"
 .PHONY : src/CMakeFiles/ed2k.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/ed2k.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/ed2k.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 0
 .PHONY : src/CMakeFiles/ed2k.dir/rule
@@ -586,7 +586,7 @@ ed2k: src/CMakeFiles/ed2k.dir/rule
 # codegen rule for target.
 src/CMakeFiles/ed2k.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/ed2k.dir/build.make src/CMakeFiles/ed2k.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=59 "Finished codegen for target ed2k"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=59,60 "Finished codegen for target ed2k"
 .PHONY : src/CMakeFiles/ed2k.dir/codegen
 
 # clean rule for target.
@@ -607,12 +607,12 @@ src/CMakeFiles/amule.dir/all: src/libs/common/CMakeFiles/mulecommon.dir/all
 src/CMakeFiles/amule.dir/all: src/geoip/CMakeFiles/mulegeoip.dir/all
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/amule.dir/build.make src/CMakeFiles/amule.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/amule.dir/build.make src/CMakeFiles/amule.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55 "Built target amule"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56 "Built target amule"
 .PHONY : src/CMakeFiles/amule.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/amule.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 64
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/amule.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 0
 .PHONY : src/CMakeFiles/amule.dir/rule
@@ -624,7 +624,7 @@ amule: src/CMakeFiles/amule.dir/rule
 # codegen rule for target.
 src/CMakeFiles/amule.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/amule.dir/build.make src/CMakeFiles/amule.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55 "Finished codegen for target amule"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56 "Finished codegen for target amule"
 .PHONY : src/CMakeFiles/amule.dir/codegen
 
 # clean rule for target.
@@ -640,7 +640,7 @@ src/CMakeFiles/muleappcommon.dir/all: src/CMakeFiles/generate_ECCodes.h.dir/all
 src/CMakeFiles/muleappcommon.dir/all: src/CMakeFiles/generate_ECTagTypes.h.dir/all
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/muleappcommon.dir/build.make src/CMakeFiles/muleappcommon.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/muleappcommon.dir/build.make src/CMakeFiles/muleappcommon.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=61,62,63,64,65,66,67 "Built target muleappcommon"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=62,63,64,65,66,67 "Built target muleappcommon"
 .PHONY : src/CMakeFiles/muleappcommon.dir/all
 
 # Build rule for subdir invocation for target.
@@ -658,7 +658,7 @@ muleappcommon: src/CMakeFiles/muleappcommon.dir/rule
 src/CMakeFiles/muleappcommon.dir/codegen: src/CMakeFiles/generate_ECCodes.h.dir/all
 src/CMakeFiles/muleappcommon.dir/codegen: src/CMakeFiles/generate_ECTagTypes.h.dir/all
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/muleappcommon.dir/build.make src/CMakeFiles/muleappcommon.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=61,62,63,64,65,66,67 "Finished codegen for target muleappcommon"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=62,63,64,65,66,67 "Finished codegen for target muleappcommon"
 .PHONY : src/CMakeFiles/muleappcommon.dir/codegen
 
 # clean rule for target.
@@ -712,7 +712,7 @@ src/CMakeFiles/muleappgui.dir/all: src/geoip/CMakeFiles/mulegeoip.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/muleappgui.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 11
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 10
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/muleappgui.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/eli/git/amule/CMakeFiles 0
 .PHONY : src/CMakeFiles/muleappgui.dir/rule
@@ -773,7 +773,7 @@ src/libs/ec/cpp/CMakeFiles/ec.dir/all: src/CMakeFiles/generate_ECCodes.h.dir/all
 src/libs/ec/cpp/CMakeFiles/ec.dir/all: src/CMakeFiles/generate_ECTagTypes.h.dir/all
 	$(MAKE) $(MAKESILENT) -f src/libs/ec/cpp/CMakeFiles/ec.dir/build.make src/libs/ec/cpp/CMakeFiles/ec.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/libs/ec/cpp/CMakeFiles/ec.dir/build.make src/libs/ec/cpp/CMakeFiles/ec.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=56,57,58 "Built target ec"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=57,58 "Built target ec"
 .PHONY : src/libs/ec/cpp/CMakeFiles/ec.dir/all
 
 # Build rule for subdir invocation for target.
@@ -791,7 +791,7 @@ ec: src/libs/ec/cpp/CMakeFiles/ec.dir/rule
 src/libs/ec/cpp/CMakeFiles/ec.dir/codegen: src/CMakeFiles/generate_ECCodes.h.dir/all
 src/libs/ec/cpp/CMakeFiles/ec.dir/codegen: src/CMakeFiles/generate_ECTagTypes.h.dir/all
 	$(MAKE) $(MAKESILENT) -f src/libs/ec/cpp/CMakeFiles/ec.dir/build.make src/libs/ec/cpp/CMakeFiles/ec.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=56,57,58 "Finished codegen for target ec"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=57,58 "Finished codegen for target ec"
 .PHONY : src/libs/ec/cpp/CMakeFiles/ec.dir/codegen
 
 # clean rule for target.

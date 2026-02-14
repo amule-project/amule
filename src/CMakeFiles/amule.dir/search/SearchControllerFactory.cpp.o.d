@@ -241,7 +241,8 @@ src/CMakeFiles/amule.dir/search/SearchControllerFactory.cpp.o: \
  /usr/include/c++/15/utility /usr/include/c++/15/bits/stl_relops.h \
  /usr/include/wx-3.2/wx/stringops.h /usr/include/wx-3.2/wx/iosfwrap.h \
  /home/eli/git/amule/src/search/SearchModel.h \
- /usr/include/wx-3.2/wx/thread.h \
+ /usr/include/wx-3.2/wx/thread.h /usr/include/wx-3.2/wx/regex.h \
+ /usr/include/wx-3.2/wx/versioninfo.h \
  /home/eli/git/amule/src/search/ED2KSearchController.h \
  /home/eli/git/amule/src/search/SearchControllerBase.h \
  /home/eli/git/amule/src/search/SearchResultHandler.h \

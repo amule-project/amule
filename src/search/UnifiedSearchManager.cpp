@@ -25,12 +25,17 @@
 
 #include "UnifiedSearchManager.h"
 #include "SearchController.h"
+#include "SearchControllerBase.h"
 #include "SearchControllerFactory.h"
+#include "SearchIdGenerator.h"
 #include "SearchLogging.h"
+#include "NetworkPacketHandler.h"
+#include "SearchTimeoutManager.h"
 #include "../amule.h"
 #include "../Logger.h"
 #include "../kademlia/kademlia/Kademlia.h"
 #include "../kademlia/kademlia/SearchManager.h"
+#include "../SearchFile.h"
 #include <common/Format.h>
 
 namespace search {
@@ -41,6 +46,33 @@ namespace search {
 
 UnifiedSearchManager::UnifiedSearchManager()
 {
+    // Set timeout callback to handle search timeouts
+    m_timeoutManager.setTimeoutCallback([this](uint32_t searchId, SearchTimeoutManager::SearchType type, const wxString& reason) {
+        AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Search %u timed out (type=%d): %s"))
+            % searchId % (int)type % reason);
+        
+        wxMutexLocker lock(m_mutex);
+        auto it = m_controllers.find(searchId);
+        if (it != m_controllers.end()) {
+            // Get result count before stopping
+            bool hasResults = (it->second->getResultCount() > 0);
+            
+            AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Timed out search %u has %zu results"))
+                % searchId % it->second->getResultCount());
+            
+            // Stop the search
+            it->second->stopSearch();
+            
+            // Mark as complete
+            markSearchComplete(searchId, hasResults);
+            
+            AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Timed out search %u marked as complete (hasResults=%d)"))
+                % searchId % hasResults);
+        } else {
+            AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Timed out search %u not found in controllers"))
+                % searchId);
+        }
+    });
 }
 
 UnifiedSearchManager::~UnifiedSearchManager()
@@ -70,18 +102,30 @@ uint32_t UnifiedSearchManager::startSearch(const SearchParams& params, wxString&
         }
     }
 
-    // Step 3: Create appropriate controller
+    // Step 3: Generate search ID BEFORE creating controller
+    // This ensures all controllers use the same ID generation mechanism
+    uint32_t searchId = SearchIdGenerator::Instance().generateId();
+    preparedParams.setSearchId(searchId);
+
+    // Step 4: Create appropriate controller
     auto controller = createSearchController(preparedParams);
     if (!controller) {
         error = _("Failed to create search controller");
         return 0;
     }
 
-    // Step 4: Start the search
+    // Step 5: Start the search
     controller->startSearch(preparedParams);
 
-    // Step 5: Get search ID
-    uint32_t searchId = controller->getSearchId();
+    // Verify the controller used the correct search ID
+    uint32_t controllerSearchId = controller->getSearchId();
+    if (controllerSearchId != searchId) {
+        AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Search ID mismatch! Expected %u, got %u"))
+            % searchId % controllerSearchId);
+        // Use the controller's ID instead
+        searchId = controllerSearchId;
+    }
+
     if (searchId == 0 || searchId == static_cast<uint32_t>(-1)) {
         error = _("Failed to generate search ID");
         return 0;
@@ -92,6 +136,19 @@ uint32_t UnifiedSearchManager::startSearch(const SearchParams& params, wxString&
         wxMutexLocker lock(m_mutex);
         m_controllers[searchId] = std::move(controller);
     }
+
+    // Step 7: Register search ID with NetworkPacketHandler for packet routing
+    bool isKadSearch = (preparedParams.searchType == ModernSearchType::KadSearch);
+    NetworkPacketHandler::Instance().RegisterSearchID(searchId, isKadSearch);
+
+    // Step 8: Register search with timeout manager
+    SearchTimeoutManager::SearchType timeoutType = SearchTimeoutManager::LocalSearch;
+    if (preparedParams.searchType == ModernSearchType::GlobalSearch) {
+        timeoutType = SearchTimeoutManager::GlobalSearch;
+    } else if (preparedParams.searchType == ModernSearchType::KadSearch) {
+        timeoutType = SearchTimeoutManager::KadSearch;
+    }
+    m_timeoutManager.registerSearch(searchId, timeoutType);
 
     AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Search started with ID=%u, Type=%d"))
         % searchId % (int)preparedParams.searchType);
@@ -109,6 +166,26 @@ void UnifiedSearchManager::stopSearch(uint32_t searchId)
         AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Search stopped ID=%u"))
             % searchId);
     }
+
+    // Unregister search ID from NetworkPacketHandler
+    NetworkPacketHandler::Instance().UnregisterSearchID(searchId);
+
+    // Unregister search from timeout manager
+    m_timeoutManager.unregisterSearch(searchId);
+}
+
+void UnifiedSearchManager::stopAllSearches()
+{
+    wxMutexLocker lock(m_mutex);
+
+    for (auto& pair : m_controllers) {
+        if (pair.second) {
+            pair.second->stopSearch();
+        }
+    }
+
+    AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Stopped all searches (%zu total)"))
+        % m_controllers.size());
 }
 
 bool UnifiedSearchManager::requestMoreResults(uint32_t searchId, wxString& error)
@@ -159,6 +236,114 @@ size_t UnifiedSearchManager::getResultCount(uint32_t searchId) const
     }
 
     return 0;
+}
+
+size_t UnifiedSearchManager::getShownResultCount(uint32_t searchId) const
+{
+    wxMutexLocker lock(m_mutex);
+
+    auto it = m_controllers.find(searchId);
+    if (it != m_controllers.end()) {
+        SearchControllerBase* baseCtrl = dynamic_cast<SearchControllerBase*>(it->second.get());
+        if (baseCtrl && baseCtrl->getModel()) {
+            return baseCtrl->getModel()->getShownResultCount();
+        }
+    }
+
+    return 0;
+}
+
+size_t UnifiedSearchManager::getHiddenResultCount(uint32_t searchId) const
+{
+    wxMutexLocker lock(m_mutex);
+
+    auto it = m_controllers.find(searchId);
+    if (it != m_controllers.end()) {
+        SearchControllerBase* baseCtrl = dynamic_cast<SearchControllerBase*>(it->second.get());
+        if (baseCtrl && baseCtrl->getModel()) {
+            return baseCtrl->getModel()->getHiddenResultCount();
+        }
+    }
+
+    return 0;
+}
+
+CSearchFile* UnifiedSearchManager::getResultByIndex(uint32_t searchId, size_t index) const
+{
+    wxMutexLocker lock(m_mutex);
+
+    auto it = m_controllers.find(searchId);
+    if (it != m_controllers.end()) {
+        // Get results from controller and return by index
+        auto results = it->second->getResults();
+        if (index < results.size()) {
+            return results[index];
+        }
+    }
+
+    return nullptr;
+}
+
+CSearchFile* UnifiedSearchManager::getResultByHash(uint32_t searchId, const CMD4Hash& hash) const
+{
+    wxMutexLocker lock(m_mutex);
+
+    auto it = m_controllers.find(searchId);
+    if (it != m_controllers.end()) {
+        auto results = it->second->getResults();
+        for (auto* result : results) {
+            if (result && result->GetFileHash() == hash) {
+                return result;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+SearchModel* UnifiedSearchManager::getSearchModel(uint32_t searchId) const
+{
+    wxMutexLocker lock(m_mutex);
+
+    auto it = m_controllers.find(searchId);
+    if (it != m_controllers.end()) {
+        SearchControllerBase* baseCtrl = dynamic_cast<SearchControllerBase*>(it->second.get());
+        if (baseCtrl) {
+            return baseCtrl->getModel();
+        }
+    }
+
+    return nullptr;
+}
+
+void UnifiedSearchManager::filterResults(uint32_t searchId, const wxString& filter, bool invert, bool knownOnly)
+{
+    wxMutexLocker lock(m_mutex);
+
+    auto it = m_controllers.find(searchId);
+    if (it != m_controllers.end()) {
+        SearchControllerBase* baseCtrl = dynamic_cast<SearchControllerBase*>(it->second.get());
+        if (baseCtrl && baseCtrl->getModel()) {
+            baseCtrl->getModel()->filterResults(filter, invert, knownOnly);
+            AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Filter applied for search %u: filter='%s', invert=%d, knownOnly=%d"))
+                % searchId % filter % invert % knownOnly);
+        }
+    }
+}
+
+void UnifiedSearchManager::clearFilters(uint32_t searchId)
+{
+    wxMutexLocker lock(m_mutex);
+
+    auto it = m_controllers.find(searchId);
+    if (it != m_controllers.end()) {
+        SearchControllerBase* baseCtrl = dynamic_cast<SearchControllerBase*>(it->second.get());
+        if (baseCtrl && baseCtrl->getModel()) {
+            baseCtrl->getModel()->clearFilters();
+            AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Filters cleared for search %u"))
+                % searchId);
+        }
+    }
 }
 
 bool UnifiedSearchManager::isSearchActive(uint32_t searchId) const

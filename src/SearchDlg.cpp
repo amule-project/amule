@@ -46,6 +46,8 @@
 #include "muuli_wdr.h"      // Needed for IDC_STARTS
 #include "search/SearchLogging.h"
 #include "search/SearchIdGenerator.h"  // Needed for search ID generation
+#include "kademlia/kademlia/SearchManager.h"  // Needed for Kademlia::CSearchManager::IsSearching
+#include "kademlia/kademlia/Kademlia.h"  // Needed for Kademlia::WordList
 
 #define ID_SEARCHLISTCTRL wxID_HIGHEST + 667
 
@@ -199,59 +201,6 @@ CSearchListCtrl *CSearchDlg::GetSearchList(wxUIntPtr id) {
   return NULL;
 }
 
-CSearchListCtrl* CSearchDlg::FindExistingTab(const wxString& searchString, search::ModernSearchType searchType)
-{
-  wxMutexLocker lock(m_searchCreationMutex);
-  
-  // Convert ModernSearchType to legacy SearchType for comparison
-  SearchType legacyType;
-  switch (searchType) {
-    case search::ModernSearchType::LocalSearch:
-      legacyType = LocalSearch;
-      break;
-    case search::ModernSearchType::GlobalSearch:
-      legacyType = GlobalSearch;
-      break;
-    case search::ModernSearchType::KadSearch:
-      legacyType = KadSearch;
-      break;
-    default:
-      return NULL;
-  }
-
-  // First, try to find by exact search string and type using CheckTabNameExists
-  if (CheckTabNameExists(legacyType, searchString)) {
-    // We found a tab with this search string and type
-    // Now we need to find the actual CSearchListCtrl
-    int nPages = m_notebook->GetPageCount();
-    for (int i = 0; i < nPages; i++) {
-      CSearchListCtrl *page = dynamic_cast<CSearchListCtrl *>(m_notebook->GetPage(i));
-      if (page) {
-        // Get the search ID for this tab
-        long searchId = page->GetSearchId();
-        if (searchId != 0) {
-          // Check if this search ID exists in the state manager
-          if (m_stateManager.HasSearch(searchId)) {
-            // Check if this search ID matches the type we're looking for
-            wxString tabSearchType = m_stateManager.GetSearchType(searchId);
-            if ((legacyType == LocalSearch && tabSearchType == wxT("Local")) ||
-                (legacyType == GlobalSearch && tabSearchType == wxT("Global")) ||
-                (legacyType == KadSearch && tabSearchType == wxT("Kad"))) {
-              // Check if the keyword matches
-              wxString keyword = m_stateManager.GetKeyword(searchId);
-              if (keyword == searchString) {
-                return page;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  return NULL;
-}
-
 void CSearchDlg::AddResult(CSearchFile *toadd) {
   CSearchListCtrl *outputwnd = GetSearchList(toadd->GetSearchID());
 
@@ -335,24 +284,22 @@ void CSearchDlg::OnSearchClosing(wxBookCtrlEvent &evt) {
       dynamic_cast<CSearchListCtrl *>(m_notebook->GetPage(evt.GetSelection()));
   wxASSERT(ctrl);
 
-  // Clean up the SearchController for this search
+  // Clean up the search
   long searchId = ctrl->GetSearchId();
-  auto it = m_searchControllers.find(searchId);
-  if (it != m_searchControllers.end()) {
-    // Stop the search before removing the controller
-    it->second->stopSearch();
-    m_searchControllers.erase(it);
-  }
+
+  // Stop the search using UnifiedSearchManager
+  m_unifiedSearchManager.stopSearch(searchId);
 
   // Zero to avoid results added while destructing.
   ctrl->ShowResults(0);
 
-  // Remove results and stop the search using atomic method
-  theApp->searchlist->StopSearch(searchId, false);
-  theApp->searchlist->RemoveResults(searchId);
-
   // Remove from SearchStateManager
   m_stateManager.RemoveSearch(searchId);
+
+  // Remove from search cache (allows future duplicate searches to create new tabs)
+  if (m_searchCache.IsEnabled()) {
+    m_searchCache.RemoveSearch(searchId);
+  }
 
   // Do cleanups if this was the last tab
   if (m_notebook->GetPageCount() == 1) {
@@ -477,7 +424,6 @@ void CSearchDlg::OnBnClickedStart(wxCommandEvent &WXUNUSED(evt)) {
   // We mustn't search more often than once every 2 secs
   if ((GetTickCount() - m_last_search_time) > 2000) {
     m_last_search_time = GetTickCount();
-    OnBnClickedStop(nullEvent);
     StartNewSearch();
   }
 }
@@ -641,49 +587,6 @@ bool CSearchDlg::CheckTabNameExists(SearchType searchType,
   return false;
 }
 
-bool CSearchDlg::GetExistingSearchId(SearchType searchType, const wxString& searchString, uint32& existingSearchId)
-{
-  wxMutexLocker lock(m_searchCreationMutex);
-  
-  // Convert SearchType to string for comparison with SearchStateManager
-  wxString searchTypeStr;
-  switch (searchType) {
-  case LocalSearch:
-    searchTypeStr = wxT("Local");
-    break;
-  case GlobalSearch:
-    searchTypeStr = wxT("Global");
-    break;
-  case KadSearch:
-    searchTypeStr = wxT("Kad");
-    break;
-  default:
-    return false;
-  }
-
-  // Check all tabs using SearchStateManager for reliable identification
-  int nPages = m_notebook->GetPageCount();
-  for (int i = 0; i < nPages; i++) {
-    CSearchListCtrl *page = dynamic_cast<CSearchListCtrl *>(m_notebook->GetPage(i));
-    if (page) {
-      long searchId = page->GetSearchId();
-      if (searchId != 0 && m_stateManager.HasSearch(searchId)) {
-        // Get search information from SearchStateManager
-        wxString tabSearchType = m_stateManager.GetSearchType(searchId);
-        wxString tabKeyword = m_stateManager.GetKeyword(searchId);
-        
-        // Check if type and keyword match
-        if (tabSearchType == searchTypeStr && tabKeyword == searchString) {
-          existingSearchId = static_cast<uint32>(searchId);
-          return true;
-        }
-      }
-    }
-  }
-
-  existingSearchId = 0;
-  return false;
-}
 
 void CSearchDlg::CreateNewTab(const wxString &searchString,
                               wxUIntPtr nSearchID) {
@@ -735,15 +638,8 @@ void CSearchDlg::CreateNewTab(const wxString &searchString,
 }
 
 void CSearchDlg::OnBnClickedStop(wxCommandEvent &WXUNUSED(evt)) {
-  // Stop all active searches using SearchControllers
-  for (auto &pair : m_searchControllers) {
-    if (pair.second) {
-      pair.second->stopSearch();
-    }
-  }
-
-  // Also call the legacy StopSearch for compatibility
-  theApp->searchlist->StopSearch();
+  // Stop all active searches using UnifiedSearchManager
+  m_unifiedSearchManager.stopAllSearches();
   ResetControls();
 }
 
@@ -785,6 +681,11 @@ void CSearchDlg::GlobalSearchEnd() {
 
         // End the search in the state manager (only if not retrying)
         m_stateManager.EndSearch(searchId);
+
+        // Mark search as inactive in cache (allows future duplicate searches)
+        if (m_searchCache.IsEnabled()) {
+          m_searchCache.UpdateSearch(searchId, false);
+        }
       }
     }
   }
@@ -822,6 +723,11 @@ void CSearchDlg::LocalSearchEnd() {
 
         // End the search in the state manager (only if not retrying)
         m_stateManager.EndSearch(searchId);
+
+        // Mark search as inactive in cache (allows future duplicate searches)
+        if (m_searchCache.IsEnabled()) {
+          m_searchCache.UpdateSearch(searchId, false);
+        }
       }
     }
   }
@@ -833,12 +739,30 @@ void CSearchDlg::KadSearchEnd(uint32 id) {
   for (int i = 0; i < nPages; ++i) {
     CSearchListCtrl *page =
         dynamic_cast<CSearchListCtrl *>(m_notebook->GetPage(i));
+    if (!page) {
+      continue;
+    }
+
     long searchId = page->GetSearchId();
     if (searchId == id || id == 0) { // 0: just update all pages (there is only
                                      // one KAD search running at a time anyway)
       // Check if this is a Kad search
       wxString searchType = m_stateManager.GetSearchType(searchId);
       if (searchType == wxT("Kad")) {
+        // Check if the search is still in "Searching" state
+        // If so, don't mark it as complete to avoid race conditions
+        SearchState currentState = STATE_IDLE;
+        if (m_stateManager.HasSearch(searchId)) {
+          currentState = m_stateManager.GetSearchState(searchId);
+        }
+
+        if (currentState == STATE_SEARCHING) {
+          // Search is still active, don't mark it as complete
+          AddDebugLogLineN(logSearch, CFormat(wxT("KadSearchEnd: Search %u is still searching, skipping completion"))
+              % searchId);
+          continue;
+        }
+
         // Update result count in state manager
         size_t shown = page->GetItemCount();
         size_t hidden = page->GetHiddenItemCount();
@@ -857,6 +781,11 @@ void CSearchDlg::KadSearchEnd(uint32 id) {
 
         // End the search in the state manager (only if not retrying)
         m_stateManager.EndSearch(searchId);
+
+        // Mark search as inactive in cache (allows future duplicate searches)
+        if (m_searchCache.IsEnabled()) {
+          m_searchCache.UpdateSearch(searchId, false);
+        }
       }
     }
   }
@@ -895,6 +824,9 @@ void CSearchDlg::OnBnClickedMore(wxCommandEvent &WXUNUSED(event)) {
   // Get all information directly from the active tab
   long searchId = list->GetSearchId();
   wxString searchType = list->GetSearchType();
+
+  AddDebugLogLineN(logSearch, CFormat(wxT("OnBnClickedMore: searchId=%ld, searchType='%s', list=%p"))
+      % searchId % searchType % (void*)list);
 
   // Debug logging with detailed information
   AddDebugLogLineN(logSearch,
@@ -940,24 +872,13 @@ void CSearchDlg::OnBnClickedMore(wxCommandEvent &WXUNUSED(event)) {
   AddDebugLogLineN(logSearch, CFormat(wxT("Got parameters from StateManager: %s"))
       % (gotParamsFromStateManager ? wxT("yes") : wxT("no")));
 
-  // Also check if parameters exist in SearchList (for debugging)
-  CSearchList::CSearchParams paramsFromSearchList = theApp->searchlist->GetSearchParams(searchId);
-  bool hasParamsInSearchList = !paramsFromSearchList.searchString.IsEmpty();
-  AddDebugLogLineN(logSearch, CFormat(wxT("Has parameters in SearchList.m_searchParams: %s"))
-      % (hasParamsInSearchList ? wxT("yes") : wxT("no")));
-  if (hasParamsInSearchList) {
-    AddDebugLogLineN(logSearch, CFormat(wxT("  SearchList params: searchString='%s', searchType=%d"))
-        % paramsFromSearchList.searchString % (int)paramsFromSearchList.searchType);
-  }
-
   if (!gotParamsFromStateManager) {
     // Build detailed diagnostic information
     wxString diagnosticInfo = CFormat(wxT(
         "=== DIAGNOSTIC INFORMATION ===\n\n"
         "Search ID: %ld\n"
         "Search Type: %s\n"
-        "Search exists in StateManager: %s\n"
-        "Parameters exist in SearchList.m_searchParams: %s\n\n"
+        "Search exists in StateManager: %s\n\n"
         "=== POSSIBLE CAUSES ===\n\n"
         "1. The search was not properly initialized\n"
         "2. The search parameters were cleared when the search ended\n"
@@ -970,21 +891,7 @@ void CSearchDlg::OnBnClickedMore(wxCommandEvent &WXUNUSED(event)) {
         "=== DEBUG DETAILS ===\n\n"))
         % searchId
         % searchType
-        % (hasSearchInStateManager ? wxT("Yes") : wxT("No"))
-        % (hasParamsInSearchList ? wxT("Yes") : wxT("No"));
-
-    if (!hasParamsInSearchList) {
-      diagnosticInfo += CFormat(wxT(
-          "SearchList.m_searchParams does not contain an entry for search ID %ld\n"
-          "This suggests the parameters were never stored or were removed.\n\n"))
-          % searchId;
-    } else {
-      diagnosticInfo += CFormat(wxT(
-          "SearchList.m_searchParams contains an entry for search ID %ld\n"
-          "but StateManager could not retrieve it. This may indicate a\n"
-          "synchronization issue between SearchList and StateManager.\n\n"))
-          % searchId;
-    }
+        % (hasSearchInStateManager ? wxT("Yes") : wxT("No"));
 
     AddDebugLogLineN(logSearch, wxT("Failed to get search parameters from StateManager!"));
     wxMessageBox(diagnosticInfo, _("Search Error - No Parameters Available"), wxOK | wxICON_ERROR);
@@ -1041,73 +948,22 @@ void CSearchDlg::OnBnClickedMore(wxCommandEvent &WXUNUSED(event)) {
   // This ensures that RequestMoreResults can find the parameters
   AddDebugLogLineN(logSearch, CFormat(wxT("Storing search parameters in SearchList for search ID %ld"))
       % searchId);
-  theApp->searchlist->StoreSearchParams(searchId, params);
+  // Use UnifiedSearchManager for all search types (Local, Global, Kad)
+  // This provides a consistent API for requesting more results
+  AddDebugLogLineN(logSearch, CFormat(wxT("Requesting more results via UnifiedSearchManager for search ID %ld, type='%s'"))
+      % searchId % searchType);
 
-  // Handle Local and Global searches differently
-  if (params.searchType == LocalSearch) {
-    // For Local searches, we need to convert to Global search
-    // This now reuses the same search ID and queries multiple servers
-    AddDebugLogLineN(logSearch, CFormat(wxT("Converting Local search to Global for search ID %ld"))
-        % searchId);
+  wxString error;
+  bool success = m_unifiedSearchManager.requestMoreResults(searchId, error);
 
-    wxString error = theApp->searchlist->RequestMoreResultsForSearch(searchId);
-    if (!error.IsEmpty()) {
-      wxMessageBox(CFormat(wxT("Failed to request more results:\n\n%s")) % error,
-                   _("Search Error"), wxOK | wxICON_ERROR);
-      return;
-    }
-
-    // The search ID remains the same, results will be appended to the
-    // existing list No need to update the list control since we're using the
-    // same search ID
-  } else if (params.searchType == GlobalSearch) {
-    // For Global searches, we continue querying additional servers
-    // The search ID remains the same, but we query more servers
-    AddDebugLogLineN(logSearch, CFormat(wxT("Requesting more Global search results for search ID %ld"))
-        % searchId);
-
-    wxString error = theApp->searchlist->RequestMoreResultsForSearch(searchId);
-    if (!error.IsEmpty()) {
-      wxMessageBox(CFormat(wxT("Failed to request more results:\n\n%s")) % error,
-                   _("Search Error"), wxOK | wxICON_ERROR);
-      return;
-    }
-
-    // For Global searches, the search ID doesn't change
-    // Results will be appended to the existing list
-  } else if (isKadSearch) {
-    // For Kad searches, request more results using the Kad controller
-    AddDebugLogLineN(logSearch, CFormat(wxT("Requesting more Kad search results for search ID %ld"))
-        % searchId);
-
-    // Find the Kad controller for this search
-    auto it = m_searchControllers.find(searchId);
-    if (it != m_searchControllers.end() && it->second) {
-      // Call requestMoreResults on the controller
-      // Note: This will handle duplicate detection internally via SearchModel::isDuplicate()
-      it->second->requestMoreResults();
-      AddDebugLogLineN(logSearch, CFormat(wxT("Called requestMoreResults on Kad controller for search ID %ld"))
-          % searchId);
-    } else {
-      // Controller not found, try to use the legacy searchlist
-      wxString error = theApp->searchlist->RequestMoreResultsForSearch(searchId);
-      if (!error.IsEmpty()) {
-        wxMessageBox(CFormat(wxT("Failed to request more results:\n\n%s")) % error,
-                     _("Search Error"), wxOK | wxICON_ERROR);
-        return;
-      }
-    }
-
-    // For Kad searches, the search ID doesn't change
-    // Results will be appended to the existing list with duplicate detection
-  } else {
-    // Unknown search type
-    wxMessageBox(CFormat(wxT("Unknown search type: '%s'.\n\n"
-                          "The 'More' button only works for Local, Global, and Kad searches."))
-                % searchType,
-                _("Search Error"), wxOK | wxICON_ERROR);
+  if (!success) {
+    wxMessageBox(CFormat(wxT("Failed to request more results:\n\n%s")) % error,
+                 _("Search Error"), wxOK | wxICON_ERROR);
     return;
   }
+
+  AddDebugLogLineN(logSearch, CFormat(wxT("Successfully requested more results for search ID %ld"))
+      % searchId);
 
   // Disable buttons during the new search
   FindWindow(IDC_STARTS)->Disable();
@@ -1275,229 +1131,52 @@ void CSearchDlg::StartNewSearch() {
     return;
   }
 
-  // CRITICAL FIX: Removed duplicate detection for per-search tab architecture
-  // In a per-search tab system, each search should get its own unique ID and tab
-  // Users should be able to run multiple searches with the same parameters
-  // (e.g., searching the same term at different times)
-  // The SearchIdGenerator now generates unique, non-reusable IDs
+  // Check if an identical search already exists
+  uint32_t existingSearchId = 0;
+  if (m_searchCache.IsEnabled() &&
+      m_searchCache.FindExistingSearch(search_type, params.searchString, params, existingSearchId)) {
+    // Duplicate search found - reuse existing tab and request more results
+    AddDebugLogLineN(logSearch, CFormat(wxT("Duplicate search detected: type=%d, query='%s', existingId=%u"))
+        % (int)search_type % params.searchString % existingSearchId);
 
-  // Determine the search type prefix
-  wxString prefix;
-  switch (search_type) {
-  case LocalSearch:
-    prefix = wxT("[Local] ");
-    break;
-  case GlobalSearch:
-    prefix = wxT("[Global] ");
-    break;
-  case KadSearch:
-    prefix = wxT("[Kad] ");
-    break;
-  default:
-    prefix = wxEmptyString;
-    break;
-  }
-
-  // Always create a new tab when clicking Start
-  // This ensures that each search request gets its own tab
-  // Users can have multiple tabs with the same search term and type
-  int existingTabIndex = -1;
-
-#ifndef CLIENT_GUI
-  // Create SearchController based on search type
-  search::ModernSearchType modernType;
-  switch (search_type) {
-  case LocalSearch:
-    modernType = search::ModernSearchType::LocalSearch;
-    break;
-  case GlobalSearch:
-    modernType = search::ModernSearchType::GlobalSearch;
-    break;
-  case KadSearch:
-    modernType = search::ModernSearchType::KadSearch;
-    break;
-  default:
-    modernType = search::ModernSearchType::LocalSearch;
-    break;
-  }
-
-  // Create SearchController using factory
-  auto controller =
-      search::SearchControllerFactory::createController(modernType);
-  if (!controller) {
-    wxMessageBox(_("Failed to create search controller"), _("Search error"),
-                 wxOK | wxCENTRE | wxICON_ERROR, this);
-    FindWindow(IDC_STARTS)->Enable();
-    FindWindow(IDC_SDOWNLOAD)->Disable();
-    FindWindow(IDC_CANCELS)->Disable();
-    return;
-  }
-
-  // Convert CSearchParams to SearchParams
-  search::SearchParams searchParams;
-  searchParams.searchString = params.searchString;
-  searchParams.strKeyword = params.searchString; // For Kad searches
-  searchParams.typeText = params.typeText;
-  searchParams.extension = params.extension;
-  searchParams.minSize = params.minSize;
-  searchParams.maxSize = params.maxSize;
-  searchParams.availability = params.availability;
-  searchParams.searchType = modernType;
-
-  // Set up callbacks for the controller BEFORE starting the search
-  // We'll capture the search ID after the controller creates it
-  controller->setOnSearchStarted([this](uint32_t searchId) {
-    wxMutexLocker lock(m_uiUpdateMutex);
-    
-    // Check if dialog still exists and is not being destroyed
-    if (!IsBeingDeleted() && m_notebook) {
-      // Search started - find the tab and update its state
-      for (size_t i = 0; i < m_notebook->GetPageCount(); ++i) {
-        CSearchListCtrl *list =
-            static_cast<CSearchListCtrl *>(m_notebook->GetPage(i));
-        if (list && list->GetSearchId() == (long)searchId) {
-          // Enable the cancel button
-          FindWindow(IDC_CANCELS)->Enable();
-          break;
-        }
+    // Find the existing tab
+    CSearchListCtrl* existingTab = GetSearchList(existingSearchId);
+    if (existingTab) {
+      // Switch to the existing tab
+      int tabIndex = m_notebook->FindPage(existingTab);
+      if (tabIndex != wxNOT_FOUND) {
+        m_notebook->SetSelection(tabIndex);
       }
-    }
-  });
 
-  controller->setOnSearchCompleted([this](uint32_t searchId) {
-    wxMutexLocker lock(m_uiUpdateMutex);
-    
-    // Check if dialog still exists and is not being destroyed
-    if (!IsBeingDeleted() && m_notebook) {
-      // Search completed - update UI state
-      for (size_t i = 0; i < m_notebook->GetPageCount(); ++i) {
-        CSearchListCtrl *list =
-            static_cast<CSearchListCtrl *>(m_notebook->GetPage(i));
-        if (list && list->GetSearchId() == (long)searchId) {
-          // Re-enable start button, disable cancel button
-          FindWindow(IDC_STARTS)->Enable();
-          FindWindow(IDC_CANCELS)->Disable();
-          // Update hit count
-          UpdateHitCount(list);
-          
-          // CRITICAL FIX: Update search state to prevent getting stuck at [Searching]
-          // Get result count to determine if search has results
-          size_t shown = list->GetItemCount();
-          size_t hidden = list->GetHiddenItemCount();
-          
-          // Update result count in state manager
-          m_stateManager.UpdateResultCount(searchId, shown, hidden);
-          
-          // End the search in the state manager to update state to HAS_RESULTS or NO_RESULTS
-          m_stateManager.EndSearch(searchId);
-          
-          AddDebugLogLineN(logSearch, CFormat(wxT("Search completed callback: searchId=%u, shown=%zu, hidden=%zu"))
-              % searchId % shown % hidden);
-          break;
-        }
+      // Check if the search is still in "Searching" state
+      // If so, don't request more results to avoid race conditions
+      SearchState currentState = STATE_IDLE;
+      if (m_stateManager.HasSearch(existingSearchId)) {
+        currentState = m_stateManager.GetSearchState(existingSearchId);
       }
-    }
-  });
 
-  // Instead of directly handling results, we'll let the SearchResultRouter
-  // handle them The controller will still receive results internally, but we
-  // won't process them here
+      if (currentState == STATE_SEARCHING) {
+        // Search is still active, just switch to the tab without requesting more results
+        AddDebugLogLineN(logSearch, CFormat(wxT("Duplicate search detected but search is still active (ID=%u), just switching tab"))
+            % existingSearchId);
+      } else {
+        // Search has completed, request more results
+        wxString error;
+        m_unifiedSearchManager.requestMoreResults(existingSearchId, error);
+      }
 
-  controller->setOnMoreResults(
-      [this](uint32_t searchId, bool success, const wxString &message) {
-        wxMutexLocker lock(m_uiUpdateMutex);
-        
-        // Check if dialog still exists and is not being destroyed
-        if (!IsBeingDeleted() && m_notebook) {
-          // More results received - update the hit count in the tab
-          if (success && !message.IsEmpty()) {
-            // Find the tab for this search
-            for (size_t i = 0; i < m_notebook->GetPageCount(); ++i) {
-              CSearchListCtrl *list =
-                  static_cast<CSearchListCtrl *>(m_notebook->GetPage(i));
-              if (list && list->GetSearchId() == (long)searchId) {
-                // Update the hit count
-                UpdateHitCount(list);
-                break;
-              }
-            }
-          }
-        }
-      });
+      // Re-enable the start button (since we're not creating a new search)
+      FindWindow(IDC_STARTS)->Enable();
+      FindWindow(IDC_SDOWNLOAD)->Disable();
+      FindWindow(IDC_CANCELS)->Disable();
 
-  // Track if an error occurred
-  auto searchError = std::make_shared<bool>(false);
-  auto errorMessage = std::make_shared<wxString>();
-
-  controller->setOnError([this, searchError, errorMessage](
-                             uint32_t searchId, const wxString &error) {
-    wxMutexLocker lock(m_uiUpdateMutex);
-    
-    // Check if dialog still exists and is not being destroyed
-    if (!IsBeingDeleted()) {
-      // Handle errors
-      *searchError = true;
-      *errorMessage = error;
-      wxMessageBox(error, _("Search error"), wxOK | wxCENTRE | wxICON_ERROR,
-                   this);
-    }
-  });
-
-  // Start the search using the controller
-  // The controller will create its own search ID and call the legacy system
-  controller->startSearch(searchParams);
-
-  // Get the search ID from the controller after starting
-  uint32 real_id = controller->getSearchId();
-  if (real_id == 0 || *searchError) {
-    if (!errorMessage->IsEmpty()) {
-      wxMessageBox(*errorMessage, _("Search error"),
-                   wxOK | wxCENTRE | wxICON_ERROR, this);
+      return;  // Don't create a new search
     } else {
-      wxMessageBox(_("Failed to get search ID from controller"),
-                   _("Search error"), wxOK | wxCENTRE | wxICON_ERROR, this);
+      // Tab not found (may have been closed), remove from cache and continue
+      m_searchCache.RemoveSearch(existingSearchId);
     }
-    FindWindow(IDC_STARTS)->Enable();
-    FindWindow(IDC_SDOWNLOAD)->Disable();
-    FindWindow(IDC_CANCELS)->Disable();
-    return;
   }
-
-  // CRITICAL FIX: Removed duplicate detection for per-search tab architecture
-  // Each search should get its own unique tab with a unique ID
-  // With non-reusable IDs from SearchIdGenerator, duplicate IDs are impossible
-
-  // Store the controller
-  m_searchControllers[real_id] = std::move(controller);
-
-  // Initialize the search in SearchStateManager
-  wxString searchTypeStr;
-  switch (search_type) {
-  case LocalSearch:
-    searchTypeStr = wxT("Local");
-    break;
-  case GlobalSearch:
-    searchTypeStr = wxT("Global");
-    break;
-  case KadSearch:
-    searchTypeStr = wxT("Kad");
-    break;
-  default:
-    searchTypeStr = wxT("Local");
-    break;
-  }
-  // Store search parameters for retry
-  m_stateManager.InitializeSearch(real_id, searchTypeStr, params.searchString,
-                                  params);
-
-  // Search started successfully, now create a new tab
-  // Always create a new tab to ensure each search gets its own tab
-  CreateNewTab(prefix + params.searchString, real_id);
-#else
-  // CLIENT_GUI mode: Use UnifiedSearchManager for all search types
-  // This provides a common abstraction layer for Local, Global, and Kad searches
-
-  // Convert legacy SearchType to ModernSearchType
+  // Use UnifiedSearchManager for all search types
   search::ModernSearchType modernSearchType;
   wxString searchTypeStr;
   wxString prefix;
@@ -1528,13 +1207,35 @@ void CSearchDlg::StartNewSearch() {
   // Create SearchParams for the new architecture
   search::SearchParams searchParams;
   searchParams.searchString = params.searchString;
-  searchParams.strKeyword = params.strKeyword;
   searchParams.typeText = params.typeText;
   searchParams.extension = params.extension;
   searchParams.minSize = params.minSize;
   searchParams.maxSize = params.maxSize;
   searchParams.availability = params.availability;
   searchParams.searchType = modernSearchType;
+
+  // For Kad searches, extract the keyword from the search string
+  if (search_type == KadSearch) {
+    Kademlia::WordList words;
+    Kademlia::CSearchManager::GetWords(params.searchString, &words);
+    if (!words.empty()) {
+      searchParams.strKeyword = words.front();
+      AddDebugLogLineC(logSearch, CFormat(wxT("SearchDlg::StartNewSearch: Kad keyword extracted: '%s' from search string: '%s'"))
+          % searchParams.strKeyword % params.searchString);
+    } else {
+      AddDebugLogLineC(logSearch, CFormat(wxT("SearchDlg::StartNewSearch: No keyword extracted from search string: '%s'"))
+          % params.searchString);
+      wxMessageBox(_("No keyword for Kad search - aborting"),
+                   _("Search error"), wxOK | wxCENTRE | wxICON_ERROR, this);
+      FindWindow(IDC_STARTS)->Enable();
+      FindWindow(IDC_SDOWNLOAD)->Disable();
+      FindWindow(IDC_CANCELS)->Disable();
+      return;
+    }
+  } else {
+    // For non-Kad searches, just use the search string as keyword
+    searchParams.strKeyword = params.searchString;
+  }
 
   // Start the search using UnifiedSearchManager
   wxString error;
@@ -1555,7 +1256,11 @@ void CSearchDlg::StartNewSearch() {
   // Initialize the search in SearchStateManager
   m_stateManager.InitializeSearch(real_id, searchTypeStr, params.searchString,
                                   params);
-#endif
+
+  // Register the search in the cache for duplicate detection
+  if (m_searchCache.IsEnabled()) {
+    m_searchCache.RegisterSearch(real_id, search_type, params.searchString, params);
+  }
 }
 
 void CSearchDlg::UpdateHitCount(CSearchListCtrl *page) {
@@ -1842,7 +1547,7 @@ void CSearchDlg::OnTimeoutCheck(wxTimerEvent &event) {
   // Check for timed-out "More" button searches
   for (auto it = m_moreButtonSearches.begin();
        it != m_moreButtonSearches.end();) {
-    uint32 searchId = it->first;
+    uint32_t searchId = it->first;
     wxDateTime startTime = it->second;
 
     wxTimeSpan elapsed = now - startTime;
@@ -1853,6 +1558,52 @@ void CSearchDlg::OnTimeoutCheck(wxTimerEvent &event) {
       it = m_moreButtonSearches.erase(it);
     } else {
       ++it;
+    }
+  }
+
+  // Check for Kad searches that have finished but not yet marked as complete
+  // Iterate through all notebook tabs to find active searches
+  for (size_t i = 0; i < m_notebook->GetPageCount(); ++i) {
+    CSearchListCtrl* list = static_cast<CSearchListCtrl*>(m_notebook->GetPage(i));
+    if (list) {
+      long searchId = list->GetSearchId();
+      if (searchId > 0) {
+        SearchState state = m_stateManager.GetSearchState(searchId);
+        wxString searchType = m_stateManager.GetSearchType(searchId);
+        
+        if (state == STATE_SEARCHING && searchType == wxT("Kad")) {
+          // Convert to Kad search ID format (0xffffff??)
+          uint32_t kadSearchId = 0xffffff00 | (searchId & 0xff);
+          
+          // Check if Kad search is still active in Kademlia subsystem
+          bool isKadStillSearching = Kademlia::CSearchManager::IsSearching(kadSearchId);
+          
+          if (!isKadStillSearching) {
+            // Kad search has finished in Kademlia subsystem
+            // Check if we have results
+            search::SearchModel* searchModel = m_unifiedSearchManager.getSearchModel(searchId);
+            if (searchModel) {
+              size_t resultCount = searchModel->getResultCount();
+              AddDebugLogLineC(logSearch, CFormat(wxT("SearchDlg::OnTimeoutCheck: Kad search %u finished in Kademlia, has %zu results"))
+                  % searchId % resultCount);
+              
+              // Update state manager with result count
+              m_stateManager.UpdateResultCount(searchId, resultCount, 0);
+              
+              // Mark search as complete
+              m_stateManager.EndSearch(searchId);
+              
+              AddDebugLogLineC(logSearch, CFormat(wxT("SearchDlg::OnTimeoutCheck: Kad search %u marked as complete"))
+                  % searchId);
+            } else {
+              AddDebugLogLineC(logSearch, CFormat(wxT("SearchDlg::OnTimeoutCheck: Kad search %u finished but no model found"))
+                  % searchId);
+              // Still mark as complete to avoid stuck state
+              m_stateManager.EndSearch(searchId);
+            }
+          }
+        }
+      }
     }
   }
 }

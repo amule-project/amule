@@ -243,24 +243,17 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: \
  /usr/include/c++/15/bits/node_handle.h \
  /usr/include/c++/15/bits/erase_if.h /usr/include/c++/15/array \
  /usr/include/wx-3.2/wx/iosfwrap.h /usr/include/wx-3.2/wx/thread.h \
- /home/eli/git/amule/src/search/SearchController.h \
- /home/eli/git/amule/src/search/SearchControllerFactory.h \
- /home/eli/git/amule/src/search/SearchLogging.h \
- /home/eli/git/amule/src/search/../Logger.h /usr/include/wx-3.2/wx/log.h \
- /usr/include/wx-3.2/wx/arrstr.h /usr/include/wx-3.2/wx/dynarray.h \
- /usr/include/wx-3.2/wx/vector.h /usr/include/wx-3.2/wx/scopeguard.h \
- /usr/include/wx-3.2/wx/except.h /usr/include/wx-3.2/wx/meta/movable.h \
- /usr/include/wx-3.2/wx/meta/pod.h /usr/include/wx-3.2/wx/meta/if.h \
- /usr/include/c++/15/iterator /usr/include/c++/15/bits/stream_iterator.h \
- /usr/include/wx-3.2/wx/hashmap.h /usr/include/wx-3.2/wx/wxcrt.h \
- /usr/include/wx-3.2/wx/msgout.h /usr/include/wx-3.2/wx/time.h \
- /usr/include/wx-3.2/wx/longlong.h /usr/include/c++/15/limits \
- /usr/include/wx-3.2/wx/generic/logg.h /usr/include/wx-3.2/wx/event.h \
- /usr/include/wx-3.2/wx/object.h /usr/include/wx-3.2/wx/memory.h \
+ /usr/include/wx-3.2/wx/regex.h /usr/include/wx-3.2/wx/versioninfo.h \
+ /home/eli/git/amule/src/SearchTimeoutManager.h \
+ /usr/include/wx-3.2/wx/timer.h /usr/include/wx-3.2/wx/object.h \
+ /usr/include/wx-3.2/wx/memory.h /usr/include/wx-3.2/wx/msgout.h \
  /usr/include/wx-3.2/wx/xti.h /usr/include/wx-3.2/wx/rtti.h \
  /usr/include/wx-3.2/wx/flags.h /usr/include/wx-3.2/wx/xti2.h \
- /usr/include/wx-3.2/wx/clntdata.h /usr/include/wx-3.2/wx/math.h \
- /usr/include/c++/15/math.h /usr/include/c++/15/cmath /usr/include/math.h \
+ /usr/include/wx-3.2/wx/longlong.h /usr/include/c++/15/limits \
+ /usr/include/wx-3.2/wx/event.h /usr/include/wx-3.2/wx/clntdata.h \
+ /usr/include/wx-3.2/wx/hashmap.h /usr/include/wx-3.2/wx/wxcrt.h \
+ /usr/include/wx-3.2/wx/math.h /usr/include/c++/15/math.h \
+ /usr/include/c++/15/cmath /usr/include/math.h \
  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
@@ -283,9 +276,15 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: \
  /usr/include/c++/15/tr1/poly_hermite.tcc \
  /usr/include/c++/15/tr1/poly_laguerre.tcc \
  /usr/include/c++/15/tr1/riemann_zeta.tcc /usr/include/wx-3.2/wx/gdicmn.h \
- /usr/include/wx-3.2/wx/list.h /usr/include/wx-3.2/wx/cursor.h \
- /usr/include/wx-3.2/wx/gdiobj.h /usr/include/wx-3.2/wx/gtk/cursor.h \
- /usr/include/wx-3.2/wx/utils.h /usr/include/wx-3.2/wx/filefn.h \
+ /usr/include/wx-3.2/wx/list.h /usr/include/wx-3.2/wx/vector.h \
+ /usr/include/wx-3.2/wx/scopeguard.h /usr/include/wx-3.2/wx/except.h \
+ /usr/include/wx-3.2/wx/meta/movable.h /usr/include/wx-3.2/wx/meta/pod.h \
+ /usr/include/wx-3.2/wx/meta/if.h /usr/include/c++/15/iterator \
+ /usr/include/c++/15/bits/stream_iterator.h \
+ /usr/include/wx-3.2/wx/cursor.h /usr/include/wx-3.2/wx/gdiobj.h \
+ /usr/include/wx-3.2/wx/gtk/cursor.h /usr/include/wx-3.2/wx/utils.h \
+ /usr/include/wx-3.2/wx/filefn.h /usr/include/wx-3.2/wx/arrstr.h \
+ /usr/include/wx-3.2/wx/dynarray.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/stat.h \
  /usr/include/x86_64-linux-gnu/bits/struct_stat.h \
@@ -298,7 +297,7 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
- /usr/include/linux/falloc.h /usr/include/wx-3.2/wx/versioninfo.h \
+ /usr/include/linux/falloc.h \
  /usr/include/wx-3.2/wx/meta/implicitconversion.h \
  /usr/include/wx-3.2/wx/mousestate.h /usr/include/wx-3.2/wx/kbdstate.h \
  /usr/include/wx-3.2/wx/platinfo.h /usr/include/wx-3.2/wx/tracker.h \
@@ -307,6 +306,23 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: \
  /usr/include/wx-3.2/wx/variant.h \
  /usr/include/wx-3.2/wx/meta/convertible.h \
  /usr/include/wx-3.2/wx/meta/removeref.h \
+ /usr/include/wx-3.2/wx/stopwatch.h /usr/include/wx-3.2/wx/time.h \
+ /usr/include/c++/15/map /usr/include/c++/15/bits/stl_tree.h \
+ /usr/include/c++/15/bits/stl_map.h \
+ /usr/include/c++/15/bits/stl_multimap.h \
+ /home/eli/git/amule/src/search/SearchController.h \
+ /home/eli/git/amule/src/search/SearchControllerBase.h \
+ /home/eli/git/amule/src/search/SearchResultHandler.h \
+ /home/eli/git/amule/src/search/SearchControllerFactory.h \
+ /home/eli/git/amule/src/search/SearchIdGenerator.h \
+ /usr/include/c++/15/set /usr/include/c++/15/bits/stl_set.h \
+ /usr/include/c++/15/bits/stl_multiset.h \
+ /home/eli/git/amule/src/search/SearchLogging.h \
+ /home/eli/git/amule/src/search/../Logger.h /usr/include/wx-3.2/wx/log.h \
+ /usr/include/wx-3.2/wx/generic/logg.h \
+ /home/eli/git/amule/src/search/NetworkPacketHandler.h \
+ /usr/include/c++/15/list /usr/include/c++/15/bits/stl_list.h \
+ /usr/include/c++/15/bits/list.tcc \
  /home/eli/git/amule/src/search/../amule.h /usr/include/wx-3.2/wx/app.h \
  /usr/include/wx-3.2/wx/eventfilter.h /usr/include/wx-3.2/wx/build.h \
  /usr/include/wx-3.2/wx/cmdargs.h /usr/include/wx-3.2/wx/init.h \
@@ -337,11 +353,8 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/sigthread.h \
  /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
  /usr/include/wx-3.2/wx/gtk/app.h \
- /home/eli/git/amule/src/search/../Types.h /usr/include/c++/15/list \
- /usr/include/c++/15/bits/stl_list.h /usr/include/c++/15/bits/list.tcc \
- /usr/include/inttypes.h /usr/include/c++/15/map \
- /usr/include/c++/15/bits/stl_tree.h /usr/include/c++/15/bits/stl_map.h \
- /usr/include/c++/15/bits/stl_multimap.h /home/eli/git/amule/config.h \
+ /home/eli/git/amule/src/search/../Types.h /usr/include/inttypes.h \
+ /home/eli/git/amule/config.h \
  /home/eli/git/amule/src/search/../common/NetworkPerformanceMonitor.h \
  /home/eli/git/amule/src/search/../common/PerformanceUtils.h \
  /usr/include/c++/15/chrono /usr/include/c++/15/bits/chrono.h \
@@ -379,8 +392,7 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: \
  /home/eli/git/amule/src/libs/common/../../Types.h \
  /home/eli/git/amule/src/search/../kademlia/kademlia/../../Proxy.h \
  /usr/include/wx-3.2/wx/wx.h /usr/include/wx-3.2/wx/hash.h \
- /usr/include/wx-3.2/wx/stream.h /usr/include/wx-3.2/wx/stopwatch.h \
- /usr/include/wx-3.2/wx/timer.h /usr/include/wx-3.2/wx/module.h \
+ /usr/include/wx-3.2/wx/stream.h /usr/include/wx-3.2/wx/module.h \
  /usr/include/wx-3.2/wx/wxcrtvararg.h /usr/include/wx-3.2/wx/window.h \
  /usr/include/wx-3.2/wx/font.h /usr/include/wx-3.2/wx/gtk/font.h \
  /usr/include/wx-3.2/wx/colour.h /usr/include/wx-3.2/wx/gtk/colour.h \
@@ -477,8 +489,6 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: \
  /home/eli/git/amule/src/include/common/Macros.h \
  /home/eli/git/amule/src/search/../kademlia/kademlia/Kademlia.h \
  /home/eli/git/amule/src/search/../kademlia/kademlia/../routing/Maps.h \
- /usr/include/c++/15/set /usr/include/c++/15/bits/stl_set.h \
- /usr/include/c++/15/bits/stl_multiset.h \
  /home/eli/git/amule/src/search/../kademlia/kademlia/../net/KademliaUDPListener.h \
  /home/eli/git/amule/src/search/../kademlia/kademlia/../net/../utils/UInt128.h \
  /home/eli/git/amule/src/search/../kademlia/kademlia/../net/../../Tag.h \
@@ -492,4 +502,17 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: \
  /home/eli/git/amule/src/search/../kademlia/kademlia/../net/PacketTracking.h \
  /home/eli/git/amule/src/search/../kademlia/kademlia/../net/../../Types.h \
  /home/eli/git/amule/src/search/../kademlia/kademlia/SearchManager.h \
- /home/eli/git/amule/src/search/../kademlia/kademlia/../../Tag.h
+ /home/eli/git/amule/src/search/../kademlia/kademlia/../../Tag.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/unique_lock.h \
+ /home/eli/git/amule/src/search/../SearchFile.h \
+ /home/eli/git/amule/src/search/../KnownFile.h \
+ /home/eli/git/amule/src/search/../MD4Hash.h \
+ /home/eli/git/amule/src/search/../SHAHashSet.h \
+ /home/eli/git/amule/src/search/../ClientRef.h \
+ /home/eli/git/amule/src/include/protocol/ed2k/Constants.h \
+ /home/eli/git/amule/src/search/../kademlia/kademlia/Indexed.h \
+ /home/eli/git/amule/src/search/../kademlia/kademlia/SearchManager.h \
+ /home/eli/git/amule/src/search/../kademlia/kademlia/Entry.h \
+ /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
+ /home/eli/git/amule/src/libs/ec/cpp/../../../Types.h \
+ /home/eli/git/amule/src/search/../Constants.h

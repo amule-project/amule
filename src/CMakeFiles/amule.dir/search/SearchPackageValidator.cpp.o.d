@@ -444,6 +444,11 @@ src/CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.o: \
  /home/eli/git/amule/src/include/common/ClientVersion.h \
  /usr/include/dlfcn.h /usr/include/x86_64-linux-gnu/bits/dlfcn.h \
  /usr/include/x86_64-linux-gnu/bits/dl_find_object.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/chrono.h \
+ /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
+ /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/std_mutex.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/search/../kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
  /home/eli/git/amule/src/libs/ec/cpp/../../../Types.h \
@@ -462,10 +467,10 @@ src/CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.o: \
  /usr/include/x86_64-linux-gnu/asm/unistd.h \
  /usr/include/x86_64-linux-gnu/asm/unistd_64.h \
  /usr/include/x86_64-linux-gnu/bits/syscall.h \
- /usr/include/c++/15/bits/std_mutex.h \
  /usr/include/c++/15/backward/auto_ptr.h \
  /usr/include/c++/15/bits/ranges_uninitialized.h \
  /usr/include/c++/15/pstl/glue_memory_defs.h \
+ /usr/include/wx-3.2/wx/regex.h \
  /home/eli/git/amule/src/search/SearchPackageException.h \
  /home/eli/git/amule/src/search/SearchLogging.h \
  /home/eli/git/amule/src/search/../Logger.h \

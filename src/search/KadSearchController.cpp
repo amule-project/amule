@@ -99,8 +99,14 @@ void KadSearchController::startSearch(const SearchParams& params)
 	}
 	
 	// Generate search ID
-	searchId = GenerateSearchId();
-	
+	searchId = params.getSearchId();
+	if (searchId == 0 || searchId == static_cast<uint32_t>(-1)) {
+	    // No search ID provided - this should not happen with UnifiedSearchManager
+	    // Log an error and return
+	    AddDebugLogLineC(logSearch, wxT("KadSearchController::startSearch: No search ID provided!"));
+	    return;
+	}
+
 	// Store search ID and state
 	m_model->setSearchParams(params);
 	m_model->setSearchId(searchId);
@@ -209,10 +215,12 @@ void KadSearchController::requestMoreResults()
         // Update the state to prevent getting stuck at [Searching]
         AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::requestMoreResults: Search %u is not active, updating state"))
             % searchId);
-        
+
         // If the model still thinks it's searching, update it
         if (isModelSearching) {
-            m_model->setSearchState(SearchState::Idle);
+            // Check if we have any results
+            bool hasResults = (m_model->getResultCount() > 0);
+            m_model->setSearchState(hasResults ? SearchState::Completed : SearchState::Completed);
             // Notify observers that search has completed
             notifySearchCompleted(searchId);
         }
@@ -349,15 +357,58 @@ bool KadSearchController::isValidKadNetwork() const
     }
 
     // Check if Kad is running
-    // TODO: Implement Kad network check
-    // For now, return true to allow testing
-    return true;
+    return Kademlia::CKademlia::IsRunning();
 }
 
-uint32_t KadSearchController::GenerateSearchId()
+void KadSearchController::onKadSearchComplete(uint32_t kadSearchId, bool hasResults)
 {
-    // Use the centralized SearchIdGenerator for consistency across all search types
-    return search::SearchIdGenerator::Instance().generateId();
+    uint32_t searchId = m_model->getSearchId();
+    
+    AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::onKadSearchComplete: Kad search ID=%u, our ID=%u, hasResults=%d"))
+        % kadSearchId % searchId % hasResults);
+    
+    // Update state to Completed
+    m_model->setSearchState(SearchState::Completed);
+    
+    // Notify completion
+    notifySearchCompleted(searchId);
+    
+    // Clear Kad search reference
+    m_kadSearch = nullptr;
+    
+    AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::onKadSearchComplete: Search %u marked as complete (hasResults=%d)"))
+        % searchId % hasResults);
+}
+
+void KadSearchController::checkKadSearchState()
+{
+    if (!m_kadSearch) {
+        // Search object is gone, mark as complete
+        uint32_t searchId = m_model->getSearchId();
+        bool hasResults = (m_model->getResultCount() > 0);
+        
+        AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::checkKadSearchState: Kad search object is null, marking search %u as complete"))
+            % searchId);
+        
+        // Only mark as complete if we're still in Searching state
+        if (m_model->getSearchState() == SearchState::Searching) {
+            onKadSearchComplete(searchId, hasResults);
+        }
+        return;
+    }
+    
+    // Check if Kad search is stopping
+    if (m_kadSearch->Stopping()) {
+        AddDebugLogLineC(logSearch, CFormat(wxT("KadSearchController::checkKadSearchState: Kad search is stopping")));
+        // Wait a bit for cleanup, then mark as complete
+        uint32_t searchId = m_model->getSearchId();
+        bool hasResults = (m_model->getResultCount() > 0);
+        
+        // Give it a moment to finish cleanup
+        if (m_model->getSearchState() == SearchState::Searching) {
+            onKadSearchComplete(searchId, hasResults);
+        }
+    }
 }
 
 } // namespace search

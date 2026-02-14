@@ -30,9 +30,11 @@
 #include <memory>
 #include <wx/string.h>
 #include <wx/thread.h>
+#include <wx/regex.h>
 
 // Forward declarations
 class CSearchFile;
+class CMD4Hash;
 
 namespace search {
 
@@ -59,11 +61,20 @@ struct SearchParams {
     uint64_t maxSize = 0;
     uint32_t availability = 0;
     ModernSearchType searchType = ModernSearchType::GlobalSearch;
+    long searchId = -1;
 
     SearchParams() = default;
 
     bool isValid() const {
 	return !searchString.IsEmpty();
+    }
+
+    void setSearchId(long id) {
+	searchId = id;
+    }
+
+    long getSearchId() const {
+	return searchId;
     }
 
     bool operator==(const SearchParams& other) const {
@@ -135,6 +146,19 @@ public:
     bool isCompleted() const;
     bool hasError() const;
 
+    // Result querying
+    CSearchFile* getResultByIndex(size_t index) const;
+    CSearchFile* getResultByHash(const CMD4Hash& hash) const;
+    std::vector<CSearchFile*> findResultsByString(const wxString& searchString) const;
+
+    // Result statistics
+    size_t getShownResultCount() const;
+    size_t getHiddenResultCount() const;
+
+    // Result filtering support
+    void filterResults(const wxString& filter, bool invert, bool knownOnly);
+    void clearFilters();
+
 private:
     mutable wxMutex m_mutex;
 
@@ -146,8 +170,14 @@ private:
     // This is now the SINGLE source of truth for search results
     std::vector<std::unique_ptr<CSearchFile>> m_results;
 
+    // Filter state
+    wxString m_filterString;
+    bool m_filterInvert = false;
+    bool m_filterKnownOnly = false;
+
     // Helper methods
     void validateSearchParams(const SearchParams& params) const;
+    bool matchesFilter(const CSearchFile* result) const;
 };
 
 } // namespace search

@@ -89,10 +89,13 @@ private:
     void updateProgress();
     void initializeProgress();
     bool isValidKadNetwork() const;
-    uint32_t GenerateSearchId();
 
     // Validation methods
     bool validatePrerequisites();
+
+    // Kad search completion handling
+    void onKadSearchComplete(uint32_t kadSearchId, bool hasResults);
+    void checkKadSearchState();
 };
 
 } // namespace search

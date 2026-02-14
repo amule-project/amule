@@ -436,6 +436,11 @@ src/CMakeFiles/amule.dir/kademlia/kademlia/Search.cpp.o: \
  /home/eli/git/amule/src/include/common/ClientVersion.h \
  /usr/include/dlfcn.h /usr/include/x86_64-linux-gnu/bits/dlfcn.h \
  /usr/include/x86_64-linux-gnu/bits/dl_find_object.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/chrono.h \
+ /usr/include/c++/15/ratio /usr/include/c++/15/cstdint \
+ /usr/include/c++/15/ctime /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/std_mutex.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/include/protocol/Protocols.h \
  /home/eli/git/amule/src/include/protocol/kad/Client2Client/UDP.h \
  /home/eli/git/amule/src/include/protocol/kad/Constants.h \
@@ -477,13 +482,11 @@ src/CMakeFiles/amule.dir/kademlia/kademlia/Search.cpp.o: \
  /usr/include/c++/15/bits/shared_ptr_atomic.h \
  /usr/include/c++/15/bits/atomic_base.h \
  /usr/include/c++/15/bits/atomic_lockfree_defines.h \
- /usr/include/c++/15/bits/atomic_wait.h /usr/include/c++/15/cstdint \
- /usr/include/c++/15/climits /usr/include/syscall.h \
- /usr/include/x86_64-linux-gnu/sys/syscall.h \
+ /usr/include/c++/15/bits/atomic_wait.h /usr/include/c++/15/climits \
+ /usr/include/syscall.h /usr/include/x86_64-linux-gnu/sys/syscall.h \
  /usr/include/x86_64-linux-gnu/asm/unistd.h \
  /usr/include/x86_64-linux-gnu/asm/unistd_64.h \
  /usr/include/x86_64-linux-gnu/bits/syscall.h \
- /usr/include/c++/15/bits/std_mutex.h \
  /usr/include/c++/15/backward/auto_ptr.h \
  /usr/include/c++/15/bits/ranges_uninitialized.h \
  /usr/include/c++/15/pstl/glue_memory_defs.h /usr/include/unicode/ucnv.h \
@@ -496,9 +499,7 @@ src/CMakeFiles/amule.dir/kademlia/kademlia/Search.cpp.o: \
  /home/eli/git/amule/src/kademlia/kademlia/../../amule.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../common/NetworkPerformanceMonitor.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../common/PerformanceUtils.h \
- /usr/include/c++/15/chrono /usr/include/c++/15/bits/chrono.h \
- /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
- /usr/include/c++/15/bits/parse_numbers.h /usr/include/c++/15/sstream \
+ /usr/include/c++/15/chrono /usr/include/c++/15/sstream \
  /usr/include/c++/15/bits/sstream.tcc \
  /usr/include/c++/15/bits/chrono_io.h /usr/include/c++/15/iomanip \
  /usr/include/c++/15/locale \

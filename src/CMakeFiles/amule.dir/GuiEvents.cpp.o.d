@@ -472,6 +472,7 @@ src/CMakeFiles/amule.dir/GuiEvents.cpp.o: \
  /home/eli/git/amule/src/include/common/ClientVersion.h \
  /usr/include/dlfcn.h /usr/include/x86_64-linux-gnu/bits/dlfcn.h \
  /usr/include/x86_64-linux-gnu/bits/dl_find_object.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
  /home/eli/git/amule/src/libs/ec/cpp/../../../Types.h \
@@ -538,11 +539,11 @@ src/CMakeFiles/amule.dir/GuiEvents.cpp.o: \
  /usr/include/wx-3.2/wx/generic/splitter.h \
  /home/eli/git/amule/src/SearchDlg.h \
  /home/eli/git/amule/src/SearchStateManager.h \
- /home/eli/git/amule/src/search/SearchController.h \
- /home/eli/git/amule/src/search/SearchModel.h \
- /home/eli/git/amule/src/search/SearchControllerFactory.h \
- /home/eli/git/amule/src/search/SearchController.h \
  /home/eli/git/amule/src/search/UnifiedSearchManager.h \
+ /home/eli/git/amule/src/search/SearchModel.h \
+ /usr/include/wx-3.2/wx/regex.h \
+ /home/eli/git/amule/src/SearchTimeoutManager.h \
+ /home/eli/git/amule/src/SimpleSearchCache.h \
  /home/eli/git/amule/src/TransferWnd.h \
  /home/eli/git/amule/src/SharedFilesWnd.h \
  /home/eli/git/amule/src/ServerListCtrl.h \
@@ -579,8 +580,7 @@ src/CMakeFiles/amule.dir/GuiEvents.cpp.o: \
  /usr/include/cryptopp/config_ns.h /usr/include/cryptopp/config_misc.h \
  /usr/include/cryptopp/md4.h /usr/include/cryptopp/iterhash.h \
  /usr/include/cryptopp/cryptlib.h /usr/include/cryptopp/config.h \
- /usr/include/cryptopp/stdcpp.h /usr/include/c++/15/mutex \
- /usr/include/c++/15/bits/unique_lock.h /usr/include/c++/15/cstring \
+ /usr/include/cryptopp/stdcpp.h /usr/include/c++/15/cstring \
  /usr/include/cryptopp/trap.h /usr/include/cryptopp/secblock.h \
  /usr/include/cryptopp/allocate.h /usr/include/cryptopp/misc.h \
  /usr/include/cryptopp/secblockfwd.h /usr/include/cryptopp/smartptr.h \

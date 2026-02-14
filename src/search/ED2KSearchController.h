@@ -93,7 +93,6 @@ private:
     void updateProgress();
     void initializeProgress();
     bool isValidServerList() const;
-    uint32_t GenerateSearchId();
 
     // Validation methods
     bool validatePrerequisites();

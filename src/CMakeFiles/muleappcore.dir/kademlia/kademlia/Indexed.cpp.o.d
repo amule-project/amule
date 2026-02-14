@@ -344,11 +344,15 @@ src/CMakeFiles/muleappcore.dir/kademlia/kademlia/Indexed.cpp.o: \
  /home/eli/git/amule/src/include/common/ClientVersion.h \
  /usr/include/dlfcn.h /usr/include/x86_64-linux-gnu/bits/dlfcn.h \
  /usr/include/x86_64-linux-gnu/bits/dl_find_object.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/chrono.h \
+ /usr/include/c++/15/ratio /usr/include/c++/15/cstdint \
+ /usr/include/c++/15/ctime /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/std_mutex.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/include/protocol/Protocols.h \
  /home/eli/git/amule/src/include/protocol/ed2k/Constants.h \
  /home/eli/git/amule/src/include/common/Macros.h \
- /usr/include/c++/15/cstdint \
  /home/eli/git/amule/src/include/protocol/kad/Constants.h \
  /home/eli/git/amule/src/include/protocol/kad/Client2Client/UDP.h \
  /home/eli/git/amule/src/include/protocol/kad2/Client2Client/UDP.h \
@@ -376,4 +380,5 @@ src/CMakeFiles/muleappcore.dir/kademlia/kademlia/Indexed.cpp.o: \
  /home/eli/git/amule/src/kademlia/kademlia/../../SafeFile.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../MemFile.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../Preferences.h \
- /home/eli/git/amule/src/kademlia/kademlia/../../Logger.h
+ /home/eli/git/amule/src/kademlia/kademlia/../../Logger.h \
+ /home/eli/git/amule/src/kademlia/kademlia/../../FileLock.h

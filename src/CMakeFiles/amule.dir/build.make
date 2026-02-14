@@ -1136,10 +1136,24 @@ src/CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.s"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/eli/git/amule/src/search/SearchPackageValidator.cpp -o CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.s
 
+src/CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.o: src/CMakeFiles/amule.dir/flags.make
+src/CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.o: src/search/NetworkPacketHandler.cpp
+src/CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_77) "Building CXX object src/CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.o"
+	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.o -MF CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.o.d -o CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.o -c /home/eli/git/amule/src/search/NetworkPacketHandler.cpp
+
+src/CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.i"
+	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/eli/git/amule/src/search/NetworkPacketHandler.cpp > CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.i
+
+src/CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.s"
+	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/eli/git/amule/src/search/NetworkPacketHandler.cpp -o CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.s
+
 src/CMakeFiles/amule.dir/GuiEvents.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/GuiEvents.cpp.o: src/GuiEvents.cpp
 src/CMakeFiles/amule.dir/GuiEvents.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_77) "Building CXX object src/CMakeFiles/amule.dir/GuiEvents.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_78) "Building CXX object src/CMakeFiles/amule.dir/GuiEvents.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/GuiEvents.cpp.o -MF CMakeFiles/amule.dir/GuiEvents.cpp.o.d -o CMakeFiles/amule.dir/GuiEvents.cpp.o -c /home/eli/git/amule/src/GuiEvents.cpp
 
 src/CMakeFiles/amule.dir/GuiEvents.cpp.i: cmake_force
@@ -1153,7 +1167,7 @@ src/CMakeFiles/amule.dir/GuiEvents.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/AddFriend.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/AddFriend.cpp.o: src/AddFriend.cpp
 src/CMakeFiles/amule.dir/AddFriend.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_78) "Building CXX object src/CMakeFiles/amule.dir/AddFriend.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_79) "Building CXX object src/CMakeFiles/amule.dir/AddFriend.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/AddFriend.cpp.o -MF CMakeFiles/amule.dir/AddFriend.cpp.o.d -o CMakeFiles/amule.dir/AddFriend.cpp.o -c /home/eli/git/amule/src/AddFriend.cpp
 
 src/CMakeFiles/amule.dir/AddFriend.cpp.i: cmake_force
@@ -1167,7 +1181,7 @@ src/CMakeFiles/amule.dir/AddFriend.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/amule-gui.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/amule-gui.cpp.o: src/amule-gui.cpp
 src/CMakeFiles/amule.dir/amule-gui.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_79) "Building CXX object src/CMakeFiles/amule.dir/amule-gui.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_80) "Building CXX object src/CMakeFiles/amule.dir/amule-gui.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/amule-gui.cpp.o -MF CMakeFiles/amule.dir/amule-gui.cpp.o.d -o CMakeFiles/amule.dir/amule-gui.cpp.o -c /home/eli/git/amule/src/amule-gui.cpp
 
 src/CMakeFiles/amule.dir/amule-gui.cpp.i: cmake_force
@@ -1181,7 +1195,7 @@ src/CMakeFiles/amule.dir/amule-gui.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/ChatSelector.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/ChatSelector.cpp.o: src/ChatSelector.cpp
 src/CMakeFiles/amule.dir/ChatSelector.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_80) "Building CXX object src/CMakeFiles/amule.dir/ChatSelector.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_81) "Building CXX object src/CMakeFiles/amule.dir/ChatSelector.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/ChatSelector.cpp.o -MF CMakeFiles/amule.dir/ChatSelector.cpp.o.d -o CMakeFiles/amule.dir/ChatSelector.cpp.o -c /home/eli/git/amule/src/ChatSelector.cpp
 
 src/CMakeFiles/amule.dir/ChatSelector.cpp.i: cmake_force
@@ -1195,7 +1209,7 @@ src/CMakeFiles/amule.dir/ChatSelector.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/ChatWnd.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/ChatWnd.cpp.o: src/ChatWnd.cpp
 src/CMakeFiles/amule.dir/ChatWnd.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_81) "Building CXX object src/CMakeFiles/amule.dir/ChatWnd.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_82) "Building CXX object src/CMakeFiles/amule.dir/ChatWnd.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/ChatWnd.cpp.o -MF CMakeFiles/amule.dir/ChatWnd.cpp.o.d -o CMakeFiles/amule.dir/ChatWnd.cpp.o -c /home/eli/git/amule/src/ChatWnd.cpp
 
 src/CMakeFiles/amule.dir/ChatWnd.cpp.i: cmake_force
@@ -1209,7 +1223,7 @@ src/CMakeFiles/amule.dir/ChatWnd.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/ClientDetailDialog.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/ClientDetailDialog.cpp.o: src/ClientDetailDialog.cpp
 src/CMakeFiles/amule.dir/ClientDetailDialog.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_82) "Building CXX object src/CMakeFiles/amule.dir/ClientDetailDialog.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_83) "Building CXX object src/CMakeFiles/amule.dir/ClientDetailDialog.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/ClientDetailDialog.cpp.o -MF CMakeFiles/amule.dir/ClientDetailDialog.cpp.o.d -o CMakeFiles/amule.dir/ClientDetailDialog.cpp.o -c /home/eli/git/amule/src/ClientDetailDialog.cpp
 
 src/CMakeFiles/amule.dir/ClientDetailDialog.cpp.i: cmake_force
@@ -1223,7 +1237,7 @@ src/CMakeFiles/amule.dir/ClientDetailDialog.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/CommentDialog.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/CommentDialog.cpp.o: src/CommentDialog.cpp
 src/CMakeFiles/amule.dir/CommentDialog.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_83) "Building CXX object src/CMakeFiles/amule.dir/CommentDialog.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_84) "Building CXX object src/CMakeFiles/amule.dir/CommentDialog.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/CommentDialog.cpp.o -MF CMakeFiles/amule.dir/CommentDialog.cpp.o.d -o CMakeFiles/amule.dir/CommentDialog.cpp.o -c /home/eli/git/amule/src/CommentDialog.cpp
 
 src/CMakeFiles/amule.dir/CommentDialog.cpp.i: cmake_force
@@ -1237,7 +1251,7 @@ src/CMakeFiles/amule.dir/CommentDialog.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/CommentDialogLst.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/CommentDialogLst.cpp.o: src/CommentDialogLst.cpp
 src/CMakeFiles/amule.dir/CommentDialogLst.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_84) "Building CXX object src/CMakeFiles/amule.dir/CommentDialogLst.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_85) "Building CXX object src/CMakeFiles/amule.dir/CommentDialogLst.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/CommentDialogLst.cpp.o -MF CMakeFiles/amule.dir/CommentDialogLst.cpp.o.d -o CMakeFiles/amule.dir/CommentDialogLst.cpp.o -c /home/eli/git/amule/src/CommentDialogLst.cpp
 
 src/CMakeFiles/amule.dir/CommentDialogLst.cpp.i: cmake_force
@@ -1251,7 +1265,7 @@ src/CMakeFiles/amule.dir/CommentDialogLst.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/DirectoryTreeCtrl.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/DirectoryTreeCtrl.cpp.o: src/DirectoryTreeCtrl.cpp
 src/CMakeFiles/amule.dir/DirectoryTreeCtrl.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_85) "Building CXX object src/CMakeFiles/amule.dir/DirectoryTreeCtrl.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_86) "Building CXX object src/CMakeFiles/amule.dir/DirectoryTreeCtrl.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/DirectoryTreeCtrl.cpp.o -MF CMakeFiles/amule.dir/DirectoryTreeCtrl.cpp.o.d -o CMakeFiles/amule.dir/DirectoryTreeCtrl.cpp.o -c /home/eli/git/amule/src/DirectoryTreeCtrl.cpp
 
 src/CMakeFiles/amule.dir/DirectoryTreeCtrl.cpp.i: cmake_force
@@ -1265,7 +1279,7 @@ src/CMakeFiles/amule.dir/DirectoryTreeCtrl.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/DownloadListCtrl.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/DownloadListCtrl.cpp.o: src/DownloadListCtrl.cpp
 src/CMakeFiles/amule.dir/DownloadListCtrl.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_86) "Building CXX object src/CMakeFiles/amule.dir/DownloadListCtrl.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_87) "Building CXX object src/CMakeFiles/amule.dir/DownloadListCtrl.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/DownloadListCtrl.cpp.o -MF CMakeFiles/amule.dir/DownloadListCtrl.cpp.o.d -o CMakeFiles/amule.dir/DownloadListCtrl.cpp.o -c /home/eli/git/amule/src/DownloadListCtrl.cpp
 
 src/CMakeFiles/amule.dir/DownloadListCtrl.cpp.i: cmake_force
@@ -1279,7 +1293,7 @@ src/CMakeFiles/amule.dir/DownloadListCtrl.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/FileDetailDialog.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/FileDetailDialog.cpp.o: src/FileDetailDialog.cpp
 src/CMakeFiles/amule.dir/FileDetailDialog.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_87) "Building CXX object src/CMakeFiles/amule.dir/FileDetailDialog.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_88) "Building CXX object src/CMakeFiles/amule.dir/FileDetailDialog.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/FileDetailDialog.cpp.o -MF CMakeFiles/amule.dir/FileDetailDialog.cpp.o.d -o CMakeFiles/amule.dir/FileDetailDialog.cpp.o -c /home/eli/git/amule/src/FileDetailDialog.cpp
 
 src/CMakeFiles/amule.dir/FileDetailDialog.cpp.i: cmake_force
@@ -1293,7 +1307,7 @@ src/CMakeFiles/amule.dir/FileDetailDialog.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/FriendListCtrl.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/FriendListCtrl.cpp.o: src/FriendListCtrl.cpp
 src/CMakeFiles/amule.dir/FriendListCtrl.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_88) "Building CXX object src/CMakeFiles/amule.dir/FriendListCtrl.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_89) "Building CXX object src/CMakeFiles/amule.dir/FriendListCtrl.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/FriendListCtrl.cpp.o -MF CMakeFiles/amule.dir/FriendListCtrl.cpp.o.d -o CMakeFiles/amule.dir/FriendListCtrl.cpp.o -c /home/eli/git/amule/src/FriendListCtrl.cpp
 
 src/CMakeFiles/amule.dir/FriendListCtrl.cpp.i: cmake_force
@@ -1307,7 +1321,7 @@ src/CMakeFiles/amule.dir/FriendListCtrl.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/GenericClientListCtrl.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/GenericClientListCtrl.cpp.o: src/GenericClientListCtrl.cpp
 src/CMakeFiles/amule.dir/GenericClientListCtrl.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_89) "Building CXX object src/CMakeFiles/amule.dir/GenericClientListCtrl.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_90) "Building CXX object src/CMakeFiles/amule.dir/GenericClientListCtrl.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/GenericClientListCtrl.cpp.o -MF CMakeFiles/amule.dir/GenericClientListCtrl.cpp.o.d -o CMakeFiles/amule.dir/GenericClientListCtrl.cpp.o -c /home/eli/git/amule/src/GenericClientListCtrl.cpp
 
 src/CMakeFiles/amule.dir/GenericClientListCtrl.cpp.i: cmake_force
@@ -1321,7 +1335,7 @@ src/CMakeFiles/amule.dir/GenericClientListCtrl.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/HTTPDownload.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/HTTPDownload.cpp.o: src/HTTPDownload.cpp
 src/CMakeFiles/amule.dir/HTTPDownload.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_90) "Building CXX object src/CMakeFiles/amule.dir/HTTPDownload.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_91) "Building CXX object src/CMakeFiles/amule.dir/HTTPDownload.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/HTTPDownload.cpp.o -MF CMakeFiles/amule.dir/HTTPDownload.cpp.o.d -o CMakeFiles/amule.dir/HTTPDownload.cpp.o -c /home/eli/git/amule/src/HTTPDownload.cpp
 
 src/CMakeFiles/amule.dir/HTTPDownload.cpp.i: cmake_force
@@ -1335,7 +1349,7 @@ src/CMakeFiles/amule.dir/HTTPDownload.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/KadDlg.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/KadDlg.cpp.o: src/KadDlg.cpp
 src/CMakeFiles/amule.dir/KadDlg.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_91) "Building CXX object src/CMakeFiles/amule.dir/KadDlg.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_92) "Building CXX object src/CMakeFiles/amule.dir/KadDlg.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/KadDlg.cpp.o -MF CMakeFiles/amule.dir/KadDlg.cpp.o.d -o CMakeFiles/amule.dir/KadDlg.cpp.o -c /home/eli/git/amule/src/KadDlg.cpp
 
 src/CMakeFiles/amule.dir/KadDlg.cpp.i: cmake_force
@@ -1349,7 +1363,7 @@ src/CMakeFiles/amule.dir/KadDlg.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/MuleTrayIcon.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/MuleTrayIcon.cpp.o: src/MuleTrayIcon.cpp
 src/CMakeFiles/amule.dir/MuleTrayIcon.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_92) "Building CXX object src/CMakeFiles/amule.dir/MuleTrayIcon.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_93) "Building CXX object src/CMakeFiles/amule.dir/MuleTrayIcon.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/MuleTrayIcon.cpp.o -MF CMakeFiles/amule.dir/MuleTrayIcon.cpp.o.d -o CMakeFiles/amule.dir/MuleTrayIcon.cpp.o -c /home/eli/git/amule/src/MuleTrayIcon.cpp
 
 src/CMakeFiles/amule.dir/MuleTrayIcon.cpp.i: cmake_force
@@ -1363,7 +1377,7 @@ src/CMakeFiles/amule.dir/MuleTrayIcon.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/OScopeCtrl.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/OScopeCtrl.cpp.o: src/OScopeCtrl.cpp
 src/CMakeFiles/amule.dir/OScopeCtrl.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_93) "Building CXX object src/CMakeFiles/amule.dir/OScopeCtrl.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_94) "Building CXX object src/CMakeFiles/amule.dir/OScopeCtrl.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/OScopeCtrl.cpp.o -MF CMakeFiles/amule.dir/OScopeCtrl.cpp.o.d -o CMakeFiles/amule.dir/OScopeCtrl.cpp.o -c /home/eli/git/amule/src/OScopeCtrl.cpp
 
 src/CMakeFiles/amule.dir/OScopeCtrl.cpp.i: cmake_force
@@ -1377,7 +1391,7 @@ src/CMakeFiles/amule.dir/OScopeCtrl.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/PrefsUnifiedDlg.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/PrefsUnifiedDlg.cpp.o: src/PrefsUnifiedDlg.cpp
 src/CMakeFiles/amule.dir/PrefsUnifiedDlg.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_94) "Building CXX object src/CMakeFiles/amule.dir/PrefsUnifiedDlg.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_95) "Building CXX object src/CMakeFiles/amule.dir/PrefsUnifiedDlg.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/PrefsUnifiedDlg.cpp.o -MF CMakeFiles/amule.dir/PrefsUnifiedDlg.cpp.o.d -o CMakeFiles/amule.dir/PrefsUnifiedDlg.cpp.o -c /home/eli/git/amule/src/PrefsUnifiedDlg.cpp
 
 src/CMakeFiles/amule.dir/PrefsUnifiedDlg.cpp.i: cmake_force
@@ -1391,7 +1405,7 @@ src/CMakeFiles/amule.dir/PrefsUnifiedDlg.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/CaptchaDialog.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/CaptchaDialog.cpp.o: src/CaptchaDialog.cpp
 src/CMakeFiles/amule.dir/CaptchaDialog.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_95) "Building CXX object src/CMakeFiles/amule.dir/CaptchaDialog.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_96) "Building CXX object src/CMakeFiles/amule.dir/CaptchaDialog.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/CaptchaDialog.cpp.o -MF CMakeFiles/amule.dir/CaptchaDialog.cpp.o.d -o CMakeFiles/amule.dir/CaptchaDialog.cpp.o -c /home/eli/git/amule/src/CaptchaDialog.cpp
 
 src/CMakeFiles/amule.dir/CaptchaDialog.cpp.i: cmake_force
@@ -1405,7 +1419,7 @@ src/CMakeFiles/amule.dir/CaptchaDialog.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/CaptchaGenerator.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/CaptchaGenerator.cpp.o: src/CaptchaGenerator.cpp
 src/CMakeFiles/amule.dir/CaptchaGenerator.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_96) "Building CXX object src/CMakeFiles/amule.dir/CaptchaGenerator.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_97) "Building CXX object src/CMakeFiles/amule.dir/CaptchaGenerator.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/CaptchaGenerator.cpp.o -MF CMakeFiles/amule.dir/CaptchaGenerator.cpp.o.d -o CMakeFiles/amule.dir/CaptchaGenerator.cpp.o -c /home/eli/git/amule/src/CaptchaGenerator.cpp
 
 src/CMakeFiles/amule.dir/CaptchaGenerator.cpp.i: cmake_force
@@ -1419,7 +1433,7 @@ src/CMakeFiles/amule.dir/CaptchaGenerator.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/ServerWnd.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/ServerWnd.cpp.o: src/ServerWnd.cpp
 src/CMakeFiles/amule.dir/ServerWnd.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_97) "Building CXX object src/CMakeFiles/amule.dir/ServerWnd.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_98) "Building CXX object src/CMakeFiles/amule.dir/ServerWnd.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/ServerWnd.cpp.o -MF CMakeFiles/amule.dir/ServerWnd.cpp.o.d -o CMakeFiles/amule.dir/ServerWnd.cpp.o -c /home/eli/git/amule/src/ServerWnd.cpp
 
 src/CMakeFiles/amule.dir/ServerWnd.cpp.i: cmake_force
@@ -1433,7 +1447,7 @@ src/CMakeFiles/amule.dir/ServerWnd.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/SearchDlg.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/SearchDlg.cpp.o: src/SearchDlg.cpp
 src/CMakeFiles/amule.dir/SearchDlg.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_98) "Building CXX object src/CMakeFiles/amule.dir/SearchDlg.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_99) "Building CXX object src/CMakeFiles/amule.dir/SearchDlg.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/SearchDlg.cpp.o -MF CMakeFiles/amule.dir/SearchDlg.cpp.o.d -o CMakeFiles/amule.dir/SearchDlg.cpp.o -c /home/eli/git/amule/src/SearchDlg.cpp
 
 src/CMakeFiles/amule.dir/SearchDlg.cpp.i: cmake_force
@@ -1447,7 +1461,7 @@ src/CMakeFiles/amule.dir/SearchDlg.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/TransferWnd.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/TransferWnd.cpp.o: src/TransferWnd.cpp
 src/CMakeFiles/amule.dir/TransferWnd.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_99) "Building CXX object src/CMakeFiles/amule.dir/TransferWnd.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_100) "Building CXX object src/CMakeFiles/amule.dir/TransferWnd.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/TransferWnd.cpp.o -MF CMakeFiles/amule.dir/TransferWnd.cpp.o.d -o CMakeFiles/amule.dir/TransferWnd.cpp.o -c /home/eli/git/amule/src/TransferWnd.cpp
 
 src/CMakeFiles/amule.dir/TransferWnd.cpp.i: cmake_force
@@ -1461,7 +1475,7 @@ src/CMakeFiles/amule.dir/TransferWnd.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/SharedFilesWnd.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/SharedFilesWnd.cpp.o: src/SharedFilesWnd.cpp
 src/CMakeFiles/amule.dir/SharedFilesWnd.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_100) "Building CXX object src/CMakeFiles/amule.dir/SharedFilesWnd.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_101) "Building CXX object src/CMakeFiles/amule.dir/SharedFilesWnd.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/SharedFilesWnd.cpp.o -MF CMakeFiles/amule.dir/SharedFilesWnd.cpp.o.d -o CMakeFiles/amule.dir/SharedFilesWnd.cpp.o -c /home/eli/git/amule/src/SharedFilesWnd.cpp
 
 src/CMakeFiles/amule.dir/SharedFilesWnd.cpp.i: cmake_force
@@ -1475,7 +1489,7 @@ src/CMakeFiles/amule.dir/SharedFilesWnd.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/StatisticsDlg.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/StatisticsDlg.cpp.o: src/StatisticsDlg.cpp
 src/CMakeFiles/amule.dir/StatisticsDlg.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_101) "Building CXX object src/CMakeFiles/amule.dir/StatisticsDlg.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_102) "Building CXX object src/CMakeFiles/amule.dir/StatisticsDlg.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/StatisticsDlg.cpp.o -MF CMakeFiles/amule.dir/StatisticsDlg.cpp.o.d -o CMakeFiles/amule.dir/StatisticsDlg.cpp.o -c /home/eli/git/amule/src/StatisticsDlg.cpp
 
 src/CMakeFiles/amule.dir/StatisticsDlg.cpp.i: cmake_force
@@ -1489,7 +1503,7 @@ src/CMakeFiles/amule.dir/StatisticsDlg.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o: src/SourceListCtrl.cpp
 src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_102) "Building CXX object src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_103) "Building CXX object src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/SourceListCtrl.cpp.o -MF CMakeFiles/amule.dir/SourceListCtrl.cpp.o.d -o CMakeFiles/amule.dir/SourceListCtrl.cpp.o -c /home/eli/git/amule/src/SourceListCtrl.cpp
 
 src/CMakeFiles/amule.dir/SourceListCtrl.cpp.i: cmake_force
@@ -1503,7 +1517,7 @@ src/CMakeFiles/amule.dir/SourceListCtrl.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/ServerListCtrl.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/ServerListCtrl.cpp.o: src/ServerListCtrl.cpp
 src/CMakeFiles/amule.dir/ServerListCtrl.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_103) "Building CXX object src/CMakeFiles/amule.dir/ServerListCtrl.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_104) "Building CXX object src/CMakeFiles/amule.dir/ServerListCtrl.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/ServerListCtrl.cpp.o -MF CMakeFiles/amule.dir/ServerListCtrl.cpp.o.d -o CMakeFiles/amule.dir/ServerListCtrl.cpp.o -c /home/eli/git/amule/src/ServerListCtrl.cpp
 
 src/CMakeFiles/amule.dir/ServerListCtrl.cpp.i: cmake_force
@@ -1517,7 +1531,7 @@ src/CMakeFiles/amule.dir/ServerListCtrl.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o: src/SharedFilePeersListCtrl.cpp
 src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_104) "Building CXX object src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_105) "Building CXX object src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o -MF CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o.d -o CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.o -c /home/eli/git/amule/src/SharedFilePeersListCtrl.cpp
 
 src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.i: cmake_force
@@ -1531,7 +1545,7 @@ src/CMakeFiles/amule.dir/SharedFilePeersListCtrl.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/SharedFilesCtrl.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/SharedFilesCtrl.cpp.o: src/SharedFilesCtrl.cpp
 src/CMakeFiles/amule.dir/SharedFilesCtrl.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_105) "Building CXX object src/CMakeFiles/amule.dir/SharedFilesCtrl.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_106) "Building CXX object src/CMakeFiles/amule.dir/SharedFilesCtrl.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/SharedFilesCtrl.cpp.o -MF CMakeFiles/amule.dir/SharedFilesCtrl.cpp.o.d -o CMakeFiles/amule.dir/SharedFilesCtrl.cpp.o -c /home/eli/git/amule/src/SharedFilesCtrl.cpp
 
 src/CMakeFiles/amule.dir/SharedFilesCtrl.cpp.i: cmake_force
@@ -1545,7 +1559,7 @@ src/CMakeFiles/amule.dir/SharedFilesCtrl.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/SearchListCtrl.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/SearchListCtrl.cpp.o: src/SearchListCtrl.cpp
 src/CMakeFiles/amule.dir/SearchListCtrl.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_106) "Building CXX object src/CMakeFiles/amule.dir/SearchListCtrl.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_107) "Building CXX object src/CMakeFiles/amule.dir/SearchListCtrl.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/SearchListCtrl.cpp.o -MF CMakeFiles/amule.dir/SearchListCtrl.cpp.o.d -o CMakeFiles/amule.dir/SearchListCtrl.cpp.o -c /home/eli/git/amule/src/SearchListCtrl.cpp
 
 src/CMakeFiles/amule.dir/SearchListCtrl.cpp.i: cmake_force
@@ -1559,7 +1573,7 @@ src/CMakeFiles/amule.dir/SearchListCtrl.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: src/search/SearchModel.cpp
 src/CMakeFiles/amule.dir/search/SearchModel.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_107) "Building CXX object src/CMakeFiles/amule.dir/search/SearchModel.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_108) "Building CXX object src/CMakeFiles/amule.dir/search/SearchModel.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/search/SearchModel.cpp.o -MF CMakeFiles/amule.dir/search/SearchModel.cpp.o.d -o CMakeFiles/amule.dir/search/SearchModel.cpp.o -c /home/eli/git/amule/src/search/SearchModel.cpp
 
 src/CMakeFiles/amule.dir/search/SearchModel.cpp.i: cmake_force
@@ -1573,7 +1587,7 @@ src/CMakeFiles/amule.dir/search/SearchModel.cpp.s: cmake_force
 src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: src/search/UnifiedSearchManager.cpp
 src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_108) "Building CXX object src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_109) "Building CXX object src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o -MF CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o.d -o CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o -c /home/eli/git/amule/src/search/UnifiedSearchManager.cpp
 
 src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.i: cmake_force
@@ -1584,10 +1598,24 @@ src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.s"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/eli/git/amule/src/search/UnifiedSearchManager.cpp -o CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.s
 
+src/CMakeFiles/amule.dir/SimpleSearchCache.cpp.o: src/CMakeFiles/amule.dir/flags.make
+src/CMakeFiles/amule.dir/SimpleSearchCache.cpp.o: src/SimpleSearchCache.cpp
+src/CMakeFiles/amule.dir/SimpleSearchCache.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_110) "Building CXX object src/CMakeFiles/amule.dir/SimpleSearchCache.cpp.o"
+	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/SimpleSearchCache.cpp.o -MF CMakeFiles/amule.dir/SimpleSearchCache.cpp.o.d -o CMakeFiles/amule.dir/SimpleSearchCache.cpp.o -c /home/eli/git/amule/src/SimpleSearchCache.cpp
+
+src/CMakeFiles/amule.dir/SimpleSearchCache.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/amule.dir/SimpleSearchCache.cpp.i"
+	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/eli/git/amule/src/SimpleSearchCache.cpp > CMakeFiles/amule.dir/SimpleSearchCache.cpp.i
+
+src/CMakeFiles/amule.dir/SimpleSearchCache.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/amule.dir/SimpleSearchCache.cpp.s"
+	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/eli/git/amule/src/SimpleSearchCache.cpp -o CMakeFiles/amule.dir/SimpleSearchCache.cpp.s
+
 src/CMakeFiles/amule.dir/GeoIPConfigDlg.cpp.o: src/CMakeFiles/amule.dir/flags.make
 src/CMakeFiles/amule.dir/GeoIPConfigDlg.cpp.o: src/GeoIPConfigDlg.cpp
 src/CMakeFiles/amule.dir/GeoIPConfigDlg.cpp.o: src/CMakeFiles/amule.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_109) "Building CXX object src/CMakeFiles/amule.dir/GeoIPConfigDlg.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_111) "Building CXX object src/CMakeFiles/amule.dir/GeoIPConfigDlg.cpp.o"
 	cd /home/eli/git/amule/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/amule.dir/GeoIPConfigDlg.cpp.o -MF CMakeFiles/amule.dir/GeoIPConfigDlg.cpp.o.d -o CMakeFiles/amule.dir/GeoIPConfigDlg.cpp.o -c /home/eli/git/amule/src/GeoIPConfigDlg.cpp
 
 src/CMakeFiles/amule.dir/GeoIPConfigDlg.cpp.i: cmake_force
@@ -1676,6 +1704,7 @@ amule_OBJECTS = \
 "CMakeFiles/amule.dir/search/SearchAutoRetry.cpp.o" \
 "CMakeFiles/amule.dir/search/SearchPackageException.cpp.o" \
 "CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.o" \
+"CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.o" \
 "CMakeFiles/amule.dir/GuiEvents.cpp.o" \
 "CMakeFiles/amule.dir/AddFriend.cpp.o" \
 "CMakeFiles/amule.dir/amule-gui.cpp.o" \
@@ -1708,6 +1737,7 @@ amule_OBJECTS = \
 "CMakeFiles/amule.dir/SearchListCtrl.cpp.o" \
 "CMakeFiles/amule.dir/search/SearchModel.cpp.o" \
 "CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o" \
+"CMakeFiles/amule.dir/SimpleSearchCache.cpp.o" \
 "CMakeFiles/amule.dir/GeoIPConfigDlg.cpp.o"
 
 # External object files for target amule
@@ -1789,6 +1819,7 @@ src/amule: src/CMakeFiles/amule.dir/search/KadSearchHelper.cpp.o
 src/amule: src/CMakeFiles/amule.dir/search/SearchAutoRetry.cpp.o
 src/amule: src/CMakeFiles/amule.dir/search/SearchPackageException.cpp.o
 src/amule: src/CMakeFiles/amule.dir/search/SearchPackageValidator.cpp.o
+src/amule: src/CMakeFiles/amule.dir/search/NetworkPacketHandler.cpp.o
 src/amule: src/CMakeFiles/amule.dir/GuiEvents.cpp.o
 src/amule: src/CMakeFiles/amule.dir/AddFriend.cpp.o
 src/amule: src/CMakeFiles/amule.dir/amule-gui.cpp.o
@@ -1821,6 +1852,7 @@ src/amule: src/CMakeFiles/amule.dir/SharedFilesCtrl.cpp.o
 src/amule: src/CMakeFiles/amule.dir/SearchListCtrl.cpp.o
 src/amule: src/CMakeFiles/amule.dir/search/SearchModel.cpp.o
 src/amule: src/CMakeFiles/amule.dir/search/UnifiedSearchManager.cpp.o
+src/amule: src/CMakeFiles/amule.dir/SimpleSearchCache.cpp.o
 src/amule: src/CMakeFiles/amule.dir/GeoIPConfigDlg.cpp.o
 src/amule: src/CMakeFiles/amule.dir/build.make
 src/amule: src/CMakeFiles/amule.dir/compiler_depend.ts
@@ -1840,7 +1872,7 @@ src/amule: /usr/lib/x86_64-linux-gnu/libmaxminddb.so
 src/amule: /usr/lib/x86_64-linux-gnu/libwx_gtk3u_core-3.2.so
 src/amule: /usr/lib/x86_64-linux-gnu/libwx_baseu-3.2.so
 src/amule: src/CMakeFiles/amule.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_110) "Linking CXX executable amule"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/eli/git/amule/CMakeFiles --progress-num=$(CMAKE_PROGRESS_112) "Linking CXX executable amule"
 	cd /home/eli/git/amule/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/amule.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

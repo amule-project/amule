@@ -491,6 +491,10 @@ src/CMakeFiles/amule.dir/kademlia/routing/RoutingZone.cpp.o: \
  /home/eli/git/amule/src/kademlia/routing/../kademlia/Defines.h \
  /home/eli/git/amule/src/kademlia/routing/../kademlia/SearchManager.h \
  /home/eli/git/amule/src/kademlia/routing/../kademlia/../../Tag.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/chrono.h \
+ /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
+ /usr/include/c++/15/bits/parse_numbers.h \
+ /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/routing/../kademlia/UDPFirewallTester.h \
  /home/eli/git/amule/src/kademlia/routing/../kademlia/../routing/Contact.h \
  /home/eli/git/amule/src/kademlia/routing/../net/KademliaUDPListener.h \
@@ -498,9 +502,7 @@ src/CMakeFiles/amule.dir/kademlia/routing/RoutingZone.cpp.o: \
  /home/eli/git/amule/src/kademlia/routing/../../Types.h \
  /home/eli/git/amule/src/kademlia/routing/../../common/NetworkPerformanceMonitor.h \
  /home/eli/git/amule/src/kademlia/routing/../../common/PerformanceUtils.h \
- /usr/include/c++/15/chrono /usr/include/c++/15/bits/chrono.h \
- /usr/include/c++/15/ratio /usr/include/c++/15/ctime \
- /usr/include/c++/15/bits/parse_numbers.h /usr/include/c++/15/sstream \
+ /usr/include/c++/15/chrono /usr/include/c++/15/sstream \
  /usr/include/c++/15/bits/sstream.tcc \
  /usr/include/c++/15/bits/chrono_io.h /usr/include/c++/15/iomanip \
  /usr/include/c++/15/locale \

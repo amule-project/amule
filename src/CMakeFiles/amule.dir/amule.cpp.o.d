@@ -542,6 +542,7 @@ src/CMakeFiles/amule.dir/amule.cpp.o: /home/eli/git/amule/src/amule.cpp \
  /home/eli/git/amule/src/kademlia/kademlia/Indexed.h \
  /home/eli/git/amule/src/kademlia/kademlia/SearchManager.h \
  /home/eli/git/amule/src/kademlia/kademlia/../../Tag.h \
+ /usr/include/c++/15/mutex /usr/include/c++/15/bits/unique_lock.h \
  /home/eli/git/amule/src/kademlia/kademlia/Entry.h \
  /home/eli/git/amule/src/libs/ec/cpp/ECID.h \
  /home/eli/git/amule/src/libs/ec/cpp/../../../Types.h \
