@@ -311,7 +311,7 @@ public:
 			// Close prevents creation of any more callbacks, but does not clear any callbacks already
 			// sitting in Asio's event queue (I have seen such a crash).
 			// So create a delay timer so they can be called until core is notified.
-			m_timer.expires_from_now(boost::posix_time::seconds(1));
+			m_timer.expires_after(std::chrono::seconds(1));
 			m_timer.async_wait(m_strand.wrap([this](const error_code&) { HandleDestroy(); }));
 		}
 	}
@@ -628,7 +628,7 @@ private:
 	bool			m_eventPending;
 	char *			m_sendBuffer;
 	io_context::strand	m_strand;		// handle synchronisation in io_context thread pool
-	deadline_timer	m_timer;
+	steady_timer	m_timer;
 	bool			m_connected;
 	bool			m_closed;
 	bool			m_isDestroying;		// true if Destroy() was called
@@ -1082,7 +1082,7 @@ public:
 			// Close prevents creation of any more callbacks, but does not clear any callbacks already
 			// sitting in Asio's event queue (I have seen such a crash).
 			// So create a delay timer so they can be called until core is notified.
-			m_timer.expires_from_now(boost::posix_time::seconds(1));
+			m_timer.expires_after(std::chrono::seconds(1));
 			m_timer.async_wait(m_strand.wrap([this](const error_code&) { HandleDestroy(); }));
 		}
 	}
@@ -1207,7 +1207,7 @@ private:
 	CMuleUDPSocket *	m_muleSocket;
 	bool				m_OK;
 	io_context::strand	m_strand;		// handle synchronisation in io_context thread pool
-	deadline_timer		m_timer;
+	steady_timer		m_timer;
 	amuleIPV4Address	m_address;
 
 	// One fix receive buffer
