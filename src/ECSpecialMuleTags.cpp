@@ -70,7 +70,7 @@ bool CEC_Category_Tag::Apply()
 
 bool CEC_Category_Tag::Create()
 {
-	Category_Struct * category = NULL;
+	Category_Struct * category = nullptr;
 	bool ret = theApp->glob_prefs->CreateCategory(category, Name(), CPath(Path()), Comment(), Color(), Prio());
 	if (!ret) {
 		GetTagByName(EC_TAG_CATEGORY_PATH)->SetStringData(theApp->glob_prefs->GetCatPath(
@@ -350,11 +350,11 @@ static void ApplyBoolean(bool use_tag, const CECTag *thisTab, void (applyFunc)(b
 {
 	const CECTag *boolTag = thisTab->GetTagByName(tagName);
 	if (use_tag) {
-		if (boolTag != NULL) {
+		if (boolTag != nullptr) {
 			applyFunc(boolTag->GetInt() != 0);
 		}
 	} else {
-		applyFunc(boolTag != NULL);
+		applyFunc(boolTag != nullptr);
 	}
 }
 
@@ -365,20 +365,20 @@ static void ApplyBoolean(bool use_tag, const CECTag *thisTab, void (applyFunc)(b
  */
 void CEC_Prefs_Packet::Apply() const
 {
-	const CECTag *thisTab = NULL;
-	const CECTag *oneTag = NULL;
+	const CECTag *thisTab = nullptr;
+	const CECTag *oneTag = nullptr;
 
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_GENERAL)) != NULL) {
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_USER_NICK)) != NULL) {
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_GENERAL)) != nullptr) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_USER_NICK)) != nullptr) {
 			thePrefs::SetUserNick(oneTag->GetStringData());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_USER_HASH)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_USER_HASH)) != nullptr) {
 			thePrefs::SetUserHash(oneTag->GetMD4Data());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_USER_HOST)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_USER_HOST)) != nullptr) {
 			thePrefs::SetYourHostname(oneTag->GetStringData());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_GENERAL_CHECK_NEW_VERSION)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_GENERAL_CHECK_NEW_VERSION)) != nullptr) {
 			thePrefs::SetCheckNewVersion(oneTag->GetInt() != 0);
 		}
 	}
@@ -388,33 +388,33 @@ void CEC_Prefs_Packet::Apply() const
 	//
 	bool use_tag = (GetDetailLevel() == EC_DETAIL_FULL);
 
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_CONNECTIONS)) != NULL) {
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_UL_CAP)) != NULL) {
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_CONNECTIONS)) != nullptr) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_UL_CAP)) != nullptr) {
 			thePrefs::SetMaxGraphUploadRate(oneTag->GetInt());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_DL_CAP)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_DL_CAP)) != nullptr) {
 			thePrefs::SetMaxGraphDownloadRate(oneTag->GetInt());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_MAX_UL)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_MAX_UL)) != nullptr) {
 			thePrefs::SetMaxUpload(oneTag->GetInt());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_MAX_DL)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_MAX_DL)) != nullptr) {
 			thePrefs::SetMaxDownload(oneTag->GetInt());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_SLOT_ALLOCATION)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_SLOT_ALLOCATION)) != nullptr) {
 			thePrefs::SetSlotAllocation(oneTag->GetInt());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_TCP_PORT)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_TCP_PORT)) != nullptr) {
 			thePrefs::SetPort(oneTag->GetInt());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_UDP_PORT)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_UDP_PORT)) != nullptr) {
 			thePrefs::SetUDPPort(oneTag->GetInt());
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetUDPDisable, EC_TAG_CONN_UDP_DISABLE);
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_MAX_FILE_SOURCES)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_MAX_FILE_SOURCES)) != nullptr) {
 			thePrefs::SetMaxSourcesPerFile(oneTag->GetInt());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_MAX_CONN)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_MAX_CONN)) != nullptr) {
 			thePrefs::SetMaxConnections(oneTag->GetInt());
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetAutoConnect, EC_TAG_CONN_AUTOCONNECT);
@@ -423,47 +423,47 @@ void CEC_Prefs_Packet::Apply() const
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetNetworkKademlia, EC_TAG_NETWORK_KADEMLIA);
 	}
 
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_MESSAGEFILTER)) != NULL) {
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_MESSAGEFILTER)) != nullptr) {
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetMustFilterMessages, EC_TAG_MSGFILTER_ENABLED);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetFilterAllMessages, EC_TAG_MSGFILTER_ALL);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetMsgOnlyFriends, EC_TAG_MSGFILTER_FRIENDS);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetMsgOnlySecure, EC_TAG_MSGFILTER_SECURE);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetFilterByKeywords, EC_TAG_MSGFILTER_BY_KEYWORD);
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_MSGFILTER_KEYWORDS)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_MSGFILTER_KEYWORDS)) != nullptr) {
 			thePrefs::SetMessageFilterString(oneTag->GetStringData());
 		}
 	}
 
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_REMOTECTRL)) != NULL) {
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_REMOTECTRL)) != nullptr) {
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetWSIsEnabled, EC_TAG_WEBSERVER_AUTORUN);
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_PORT)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_PORT)) != nullptr) {
 			thePrefs::SetWSPort(oneTag->GetInt());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_PASSWD_HASH)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_PASSWD_HASH)) != nullptr) {
 			thePrefs::SetWSPass(oneTag->GetMD4Data().Encode());
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetWSIsLowUserEnabled, EC_TAG_WEBSERVER_GUEST);
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_GUEST)) != NULL) {
-			if ((oneTag->GetTagByName(EC_TAG_PASSWD_HASH)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_GUEST)) != nullptr) {
+			if ((oneTag->GetTagByName(EC_TAG_PASSWD_HASH)) != nullptr) {
 				thePrefs::SetWSLowPass(oneTag->GetTagByName(EC_TAG_PASSWD_HASH)->GetMD4Data().Encode());
 			}
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetWebUseGzip, EC_TAG_WEBSERVER_USEGZIP);
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_REFRESH)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_REFRESH)) != nullptr) {
 			thePrefs::SetWebPageRefresh(oneTag->GetInt());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_TEMPLATE)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_TEMPLATE)) != nullptr) {
 			thePrefs::SetWebTemplate(oneTag->GetStringData());
 		}
 	}
 
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_ONLINESIG)) != NULL) {
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_ONLINESIG)) != nullptr) {
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetOnlineSignatureEnabled, EC_TAG_ONLINESIG_ENABLED);
 	}
 
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_SERVERS)) != NULL) {
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_SERVERS)) != nullptr) {
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetDeadServer, EC_TAG_SERVERS_REMOVE_DEAD);
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_DEAD_SERVER_RETRIES)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_DEAD_SERVER_RETRIES)) != nullptr) {
 			thePrefs::SetDeadserverRetries(oneTag->GetInt());
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetAutoServerlist, EC_TAG_SERVERS_AUTO_UPDATE);
@@ -475,12 +475,12 @@ void CEC_Prefs_Packet::Apply() const
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetSafeServerConnectEnabled, EC_TAG_SERVERS_SAFE_SERVER_CONNECT);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetAutoConnectStaticOnly, EC_TAG_SERVERS_AUTOCONN_STATIC_ONLY);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetManualHighPrio, EC_TAG_SERVERS_MANUAL_HIGH_PRIO);
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_UPDATE_URL)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_UPDATE_URL)) != nullptr) {
 			thePrefs::SetEd2kServersUrl(oneTag->GetStringData());
 		}
 	}
 
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_FILES)) != NULL) {
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_FILES)) != nullptr) {
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetICHEnabled, EC_TAG_FILES_ICH_ENABLED);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetTrustingEveryHash, EC_TAG_FILES_AICH_TRUST);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetAddNewFilesPaused, EC_TAG_FILES_NEW_PAUSED);
@@ -493,20 +493,20 @@ void CEC_Prefs_Packet::Apply() const
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetExtractMetaData, EC_TAG_FILES_EXTRACT_METADATA);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetAllocFullFile, EC_TAG_FILES_ALLOC_FULL_SIZE);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetCheckDiskspaceEnabled, EC_TAG_FILES_CHECK_FREE_SPACE);
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_FILES_MIN_FREE_SPACE)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_FILES_MIN_FREE_SPACE)) != nullptr) {
 			thePrefs::SetMinFreeDiskSpaceMB(oneTag->GetInt());
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::CreateFilesNormal, EC_TAG_FILES_CREATE_NORMAL);
 	}
 
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_DIRECTORIES)) != NULL) {
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_INCOMING)) != NULL) {
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_DIRECTORIES)) != nullptr) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_INCOMING)) != nullptr) {
 			thePrefs::SetIncomingDir(CPath(oneTag->GetStringData()));
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_TEMP)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_TEMP)) != nullptr) {
 			thePrefs::SetTempDir(CPath(oneTag->GetStringData()));
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_SHARED)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_DIRECTORIES_SHARED)) != nullptr) {
 			theApp->glob_prefs->shareddir_list.clear();
 			for (CECTag::const_iterator it = oneTag->begin(); it != oneTag->end(); ++it) {
 				theApp->glob_prefs->shareddir_list.push_back(CPath(it->GetStringData()));
@@ -515,21 +515,21 @@ void CEC_Prefs_Packet::Apply() const
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetShareHiddenFiles, EC_TAG_DIRECTORIES_SHARE_HIDDEN);
 	}
 
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_STATISTICS)) != NULL) {
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_STATISTICS)) != nullptr) {
 		//#warning TODO
 	}
 
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_SECURITY)) != NULL) {
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_SECURITY_CAN_SEE_SHARES)) != NULL) {
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_SECURITY)) != nullptr) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SECURITY_CAN_SEE_SHARES)) != nullptr) {
 			thePrefs::SetCanSeeShares(oneTag->GetInt());
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetFilteringClients, EC_TAG_IPFILTER_CLIENTS);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetFilteringServers, EC_TAG_IPFILTER_SERVERS);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetIPFilterAutoLoad, EC_TAG_IPFILTER_AUTO_UPDATE);
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_UPDATE_URL)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_UPDATE_URL)) != nullptr) {
 			thePrefs::SetIPFilterURL(oneTag->GetStringData());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_LEVEL)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_LEVEL)) != nullptr) {
 			thePrefs::SetIPFilterLevel(oneTag->GetInt());
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetFilterLanIPs, EC_TAG_IPFILTER_FILTER_LAN);
@@ -540,24 +540,24 @@ void CEC_Prefs_Packet::Apply() const
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetClientCryptLayerRequired,  EC_TAG_SECURITY_OBFUSCATION_REQUIRED);
 	}
 
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_CORETWEAKS)) != NULL) {
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_MAX_CONN_PER_FIVE)) != NULL) {
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_CORETWEAKS)) != nullptr) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_MAX_CONN_PER_FIVE)) != nullptr) {
 			thePrefs::SetMaxConsPerFive(oneTag->GetInt());
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetVerbose, EC_TAG_CORETW_VERBOSE);
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_FILEBUFFER)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_FILEBUFFER)) != nullptr) {
 			thePrefs::SetFileBufferSize(oneTag->GetInt());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_UL_QUEUE)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_UL_QUEUE)) != nullptr) {
 			thePrefs::SetQueueSize(oneTag->GetInt());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_SRV_KEEPALIVE_TIMEOUT)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_CORETW_SRV_KEEPALIVE_TIMEOUT)) != nullptr) {
 			thePrefs::SetServerKeepAliveTimeout(oneTag->GetInt());
 		}
 	}
 
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_KADEMLIA)) != NULL) {
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_KADEMLIA_UPDATE_URL)) != NULL) {
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_KADEMLIA)) != nullptr) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_KADEMLIA_UPDATE_URL)) != nullptr) {
 			thePrefs::SetKadNodesUrl(oneTag->GetStringData());
 		}
 	}

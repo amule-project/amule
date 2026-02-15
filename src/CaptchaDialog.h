@@ -25,7 +25,10 @@
 #ifndef CAPTCHADIALOG_H
 #define CAPTCHADIALOG_H
 
+#include <memory>            // For std::unique_ptr
 #include <wx/dialog.h>		// Needed for wxDialog
+#include <wx/textctrl.h>     // For wxTextCtrl
+#include <wx/bitmap.h>       // For wxBitmap
 #include "Types.h"
 
 /**
@@ -76,8 +79,8 @@ private:
 
 	wxSizer * captchaDlg( wxWindow *parent );
 
-	class wxBitmap * m_captchaBitmap;
-	class wxTextCtrl * m_TextCtrl;
+	std::unique_ptr<wxBitmap> m_captchaBitmap;
+	wxTextCtrl* m_TextCtrl;
 	uint64 m_id;
 };
 #endif // CAPTCHADIALOG_H

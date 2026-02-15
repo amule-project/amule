@@ -296,7 +296,7 @@ wxString CDirectoryTreeCtrl::GetKey(const CPath& path)
 
 	// Sanity check, see IsSameAs() in Path.cpp
 	const wxString cwd = wxGetCwd();
-	const int flags = (wxPATH_NORM_ALL | wxPATH_NORM_CASE) & ~wxPATH_NORM_ENV_VARS;
+	const int flags = (wxPATH_NORM_LONG | wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_CASE) & ~wxPATH_NORM_ENV_VARS;
 	wxFileName fn(path.GetRaw());
 	fn.Normalize(flags, cwd);
 	return fn.GetFullPath();

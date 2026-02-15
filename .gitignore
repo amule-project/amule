@@ -1,4 +1,31 @@
 # Files created by the auto* tools
+build*/
+
+# Files created by CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+
+# macOS app bundles
+aMule.app/
+aMuleGUI.app/
+
+# Build logs
+*.log
+
+# Test executables
+unittests/tests/CTagTest
+unittests/tests/CUInt128Test
+unittests/tests/FileDataIOTest
+unittests/tests/FormatTest
+unittests/tests/ModernLoggingTest
+unittests/tests/NetworkFunctionsTest
+unittests/tests/PathTest
+unittests/tests/RangeMapTest
+unittests/tests/StringFunctionsTest
+unittests/tests/TextFileTest
+
 ABOUT-NLS
 aclocal.m4
 autom4te.cache/
@@ -72,3 +99,7 @@ platforms/Windows/*/libs/libGeoIP/GeoIP_X.c
 # User files (should go into .git/info/exclude)
 Makefile.user
 *.vcxproj.user
+cpp20_build/
+.vscode/
+
+.codeartsdoer

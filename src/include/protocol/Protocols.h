@@ -26,6 +26,7 @@
 #ifndef ED2KPROTOCOLS_H
 #define ED2KPROTOCOLS_H
 
+
 // For MuleInfoPacket (OLD - DEPRECATED.)
 #define	EMULE_PROTOCOL				0x01
 
@@ -47,6 +48,7 @@ enum Protocols {
 	// Kry tests
 	OP_ED2KV2HEADER			= 0xF4,
 	OP_ED2KV2PACKEDPROT		= 0xF5,
+
 
 	OP_MLDONKEYPROT			= 0x00
 };

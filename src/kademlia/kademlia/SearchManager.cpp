@@ -61,6 +61,7 @@ SearchMap CSearchManager::m_searches;
 
 bool CSearchManager::IsSearching(uint32_t searchID) throw()
 {
+	std::lock_guard<std::mutex> lock(m_searchesMutex);
 	// Check if this searchID is within the searches
 	for (SearchMap::const_iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
 		if (it->second->GetSearchID() == searchID) {
@@ -72,6 +73,7 @@ bool CSearchManager::IsSearching(uint32_t searchID) throw()
 
 void CSearchManager::StopSearch(uint32_t searchID, bool delayDelete)
 {
+	std::lock_guard<std::mutex> lock(m_searchesMutex);
 	// Stop a specific searchID
 	for (SearchMap::iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
 		if (it->second->GetSearchID() == searchID) {
@@ -92,12 +94,14 @@ void CSearchManager::StopSearch(uint32_t searchID, bool delayDelete)
 
 void CSearchManager::StopAllSearches()
 {
+	std::lock_guard<std::mutex> lock(m_searchesMutex);
 	// Stop and delete all searches.
 	DeleteContents(m_searches);
 }
 
 bool CSearchManager::StartSearch(CSearch* search)
 {
+	std::lock_guard<std::mutex> lock(m_searchesMutex);
 	// A search object was created, now try to start the search.
 	if (AlreadySearchingFor(search->GetTarget())) {
 		// There was already a search in progress with this target.
@@ -113,6 +117,7 @@ bool CSearchManager::StartSearch(CSearch* search)
 
 CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t searchTermsDataSize, const uint8_t *searchTermsData, uint32_t searchid)
 {
+	std::lock_guard<std::mutex> lock(m_searchesMutex);
 	// Create a keyword search object.
 	CSearch *s = new CSearch;
 	try {
@@ -163,6 +168,7 @@ CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t s
 
 CSearch* CSearchManager::PrepareLookup(uint32_t type, bool start, const CUInt128& id)
 {
+	std::lock_guard<std::mutex> lock(m_searchesMutex);
 	// Prepare a kad lookup.
 	// Make sure this target is not already in progress.
 	if (AlreadySearchingFor(id)) {
@@ -219,6 +225,7 @@ void CSearchManager::FindNode(const CUInt128& id, bool complete)
 
 bool CSearchManager::IsFWCheckUDPSearch(const CUInt128& target)
 {
+	std::lock_guard<std::mutex> lock(m_searchesMutex);
 	// Check if this target is in the search map.
 	SearchMap::const_iterator it = m_searches.find(target);
 	if (it != m_searches.end()) {
@@ -251,6 +258,7 @@ void CSearchManager::GetWords(const wxString& str, WordList *words, bool allowDu
 
 void CSearchManager::JumpStart()
 {
+	std::lock_guard<std::mutex> lock(m_searchesMutex);
 	// Find any searches that has stalled and jumpstart them.
 	// This will also prune all searches.
 	time_t now = time(NULL);
@@ -397,6 +405,7 @@ void CSearchManager::JumpStart()
 
 void CSearchManager::UpdateStats() throw()
 {
+	std::lock_guard<std::mutex> lock(m_searchesMutex);
 	uint8_t m_totalFile = 0;
 	uint8_t m_totalStoreSrc = 0;
 	uint8_t m_totalStoreKey = 0;
@@ -448,9 +457,12 @@ void CSearchManager::ProcessPublishResult(const CUInt128& target, const uint8_t 
 {
 	// We tried to publish some info and got a result.
 	CSearch *s = NULL;
-	SearchMap::const_iterator it = m_searches.find(target);
-	if (it != m_searches.end()) {
-		s = it->second;
+	{
+		std::lock_guard<std::mutex> lock(m_searchesMutex);
+		SearchMap::const_iterator it = m_searches.find(target);
+		if (it != m_searches.end()) {
+			s = it->second;
+		}
 	}
 
 	// Result could be very late and store deleted, abort.
@@ -477,9 +489,12 @@ void CSearchManager::ProcessResponse(const CUInt128& target, uint32_t fromIP, ui
 {
 	// We got a response to a kad lookup.
 	CSearch *s = NULL;
-	SearchMap::const_iterator it = m_searches.find(target);
-	if (it != m_searches.end()) {
-		s = it->second;
+	{
+		std::lock_guard<std::mutex> lock(m_searchesMutex);
+		SearchMap::const_iterator it = m_searches.find(target);
+		if (it != m_searches.end()) {
+			s = it->second;
+		}
 	}
 
 	// If this search was deleted before this response, delete contacts and abort, otherwise process them.
@@ -497,9 +512,12 @@ void CSearchManager::ProcessResult(const CUInt128& target, const CUInt128& answe
 {
 	// We have results for a request for info.
 	CSearch *s = NULL;
-	SearchMap::const_iterator it = m_searches.find(target);
-	if (it != m_searches.end()) {
-		s = it->second;
+	{
+		std::lock_guard<std::mutex> lock(m_searchesMutex);
+		SearchMap::const_iterator it = m_searches.find(target);
+		if (it != m_searches.end()) {
+			s = it->second;
+		}
 	}
 
 	// If this search was deleted before these results, delete contacts and abort, otherwise process them.
@@ -535,6 +553,7 @@ bool CSearchManager::FindNodeFWCheckUDP()
 
 void CSearchManager::CancelNodeSpecial(CKadClientSearcher* requester)
 {
+	std::lock_guard<std::mutex> lock(m_searchesMutex);
 	// Stop a specific nodespecialsearch
 	for (SearchMap::iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
 		if (it->second->GetNodeSpecialSearchRequester() == requester) {
@@ -547,6 +566,7 @@ void CSearchManager::CancelNodeSpecial(CKadClientSearcher* requester)
 
 void CSearchManager::CancelNodeFWCheckUDPSearch()
 {
+	std::lock_guard<std::mutex> lock(m_searchesMutex);
 	// Stop node searches done for udp firewallcheck
 	for (SearchMap::iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
 		if (it->second->GetSearchTypes() == CSearch::NODEFWCHECKUDP) {
@@ -555,3 +575,6 @@ void CSearchManager::CancelNodeFWCheckUDPSearch()
 	}
 }
 // File_checked_for_headers
+
+// Initialize static mutex
+std::mutex CSearchManager::m_searchesMutex;

@@ -1,42 +1,65 @@
-if (GEOIP_INCLUDE_DIR)
-	set (CMAKE_REQUIRED_INCLUDES ${GEOIP_INCLUDE_DIR})
+# MaxMind DB implementation for IP2Country
+find_package(maxminddb QUIET)
+if (NOT maxminddb_FOUND)
+    # Try alternative spelling
+    find_package(MaxMindDB QUIET)
 endif()
 
-if (NOT GEOIP_LIB)
-	include (CheckIncludeFile)
+if (maxminddb_FOUND)
+    message(STATUS "MaxMind DB found: ${maxminddb_VERSION}")
+else()
+    # Try to find manually
+    find_path(MAXMINDDB_INCLUDE_DIR maxminddb.h)
+    find_library(MAXMINDDB_LIBRARY NAMES maxminddb)
 
+    if (MAXMINDDB_INCLUDE_DIR AND MAXMINDDB_LIBRARY)
+        set(maxminddb_FOUND TRUE)
+        set(maxminddb_INCLUDE_DIRS ${MAXMINDDB_INCLUDE_DIR})
+        set(maxminddb_LIBRARIES ${MAXMINDDB_LIBRARY})
 
-	check_include_file (GeoIP.h GEOIP_H)
+        # Get version from pkg-config
+        find_package(PkgConfig QUIET)
+        if(PKG_CONFIG_FOUND)
+            execute_process(
+                COMMAND pkg-config --modversion libmaxminddb
+                OUTPUT_VARIABLE maxminddb_VERSION
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                ERROR_QUIET
+            )
+            if(maxminddb_VERSION)
+                message(STATUS "MaxMind DB version from pkg-config: ${maxminddb_VERSION}")
+            endif()
+        endif()
 
-	if (GEOIP_H)
-		find_library (GEOIP_LIB GeoIP)
-
-		if (NOT GEOIP_LIB AND GEOIP_INCLUDE_DIR)
-			find_library (GEOIP_LIB GeoIP
-				PATHS ${GEOIP_INCLUDE_DIR}
-			)
-		endif()
-
-		if (NOT GEOIP_LIB)
-			set (ENABLE_IP2COUNTRY FALSE)
-			message (STATUS "GeoIP lib not found, disabling support")
-		else()
-			message (STATUS "GeoIP found useable")
-		endif()
-	else()
-		set (ENABLE_IP2COUNTRY FALSE)
-		message (STATUS "GeoIP headers not found, disabling support")
-	endif()
+        message(STATUS "MaxMind DB found manually")
+    else()
+        if (ENABLE_IP2COUNTRY)
+            message(FATAL_ERROR "**************************************************")
+            message(FATAL_ERROR "libmaxminddb not found but ENABLE_IP2COUNTRY is enabled")
+            message(FATAL_ERROR "Please install: sudo apt install libmaxminddb-dev")
+            message(FATAL_ERROR "**************************************************")
+        else()
+            message(STATUS "MaxMind DB not found - GeoIP/country flags will be disabled")
+            message(STATUS "To enable, install: sudo apt install libmaxminddb-dev")
+            set(maxminddb_FOUND FALSE)
+        endif()
+    endif()
 endif()
 
 if (ENABLE_IP2COUNTRY)
-	add_library (GeoIP::Shared UNKNOWN IMPORTED)
+    if (maxminddb_FOUND)
+        # MaxMind DB implementation
+        add_library(maxminddb::maxminddb UNKNOWN IMPORTED)
 
-	set_target_properties (GeoIP::Shared PROPERTIES
-		INTERFACE_COMPILE_DEFINITIONS "ENABLE_IP2COUNTRY"
-		INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_REQUIRED_INCLUDES}"
-		IMPORTED_LOCATION "${GEOIP_LIB}"
-	)
+        set_target_properties(maxminddb::maxminddb PROPERTIES
+            INTERFACE_COMPILE_DEFINITIONS "ENABLE_IP2COUNTRY"
+            INTERFACE_INCLUDE_DIRECTORIES "${maxminddb_INCLUDE_DIRS}"
+            IMPORTED_LOCATION "${maxminddb_LIBRARIES}"
+        )
+        message(STATUS "Using MaxMind DB implementation")
+    else()
+        # No MaxMind DB library found, disable support
+        set(ENABLE_IP2COUNTRY FALSE)
+        message(STATUS "MaxMind DB not found, disabling IP2Country support")
+    endif()
 endif()
-
-unset (CMAKE_REQUIRED_INCLUDES)

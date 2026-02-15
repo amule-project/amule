@@ -25,6 +25,11 @@
 
 #include "config.h"		// Needed for ENABLE_UPNP
 
+#ifdef USE_CPP20
+#include <ranges>
+#include <algorithm>
+#endif
+
 #ifdef ENABLE_UPNP
 
 // check for broken Debian-hacked libUPnP
@@ -63,11 +68,18 @@ const char s_deviceList[] = "deviceList";
  */
 static bool stdStringIsEqualCI(const std::string &s1, const std::string &s2)
 {
-	std::string ns1(s1);
-	std::string ns2(s2);
-	std::transform(ns1.begin(), ns1.end(), ns1.begin(), tolower);
-	std::transform(ns2.begin(), ns2.end(), ns2.begin(), tolower);
-	return ns1 == ns2;
+#ifdef USE_CPP20
+    // C++20 ranges version - more expressive and potentially more efficient
+    return std::ranges::equal(s1, s2, 
+        [](char a, char b) { return std::tolower(a) == std::tolower(b); });
+#else
+    // Traditional C++ version
+    std::string ns1(s1);
+    std::string ns2(s2);
+    std::transform(ns1.begin(), ns1.end(), ns1.begin(), tolower);
+    std::transform(ns2.begin(), ns2.end(), ns2.begin(), tolower);
+    return ns1 == ns2;
+#endif
 }
 
 

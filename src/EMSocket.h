@@ -50,6 +50,7 @@ public:
 	virtual ~CEMSocket();
 
 	virtual void	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
+	virtual void	SendPacket(std::shared_ptr<CPacket> packet, bool controlpacket = true, uint32 actualPayloadSize = 0);
 	bool	IsConnected() { return byConnected==ES_CONNECTED;};
 	uint8	GetConState()	{return byConnected;}
 	void	SetDownloadLimit(uint32 limit);
@@ -111,13 +112,13 @@ private:
 	uint32	sendblen;
 	uint32	sent;
 
-	typedef std::list<CPacket*> CPacketQueue;
+	typedef std::list<std::shared_ptr<CPacket>> CPacketQueue;
 	CPacketQueue m_control_queue;
 
 	struct StandardPacketQueueEntry
 	{
 		uint32 actualPayloadSize;
-		CPacket* packet;
+		std::shared_ptr<CPacket> packet;
 	};
 
 	typedef	std::list<StandardPacketQueueEntry> CStdPacketQueue;
@@ -142,6 +143,7 @@ private:
 
     bool m_bBusy;
     bool m_hasSent;
+    bool m_isSending;  // Flag to prevent destruction while sending
 };
 
 

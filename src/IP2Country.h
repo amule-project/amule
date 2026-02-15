@@ -23,7 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-
 //
 // Country flags are from FAMFAMFAM (http://www.famfamfam.com)
 //
@@ -50,32 +49,74 @@
 #include <wx/image.h>
 #include <wx/string.h>
 
+// Include the new manager header to get the CountryData definition
+#include "geoip/IP2CountryManager.h"
 
 typedef struct {
 	wxString Name;
 	wxImage  Flag;
-} CountryData;
+} CountryDataOld;
+
+typedef std::map<wxString, CountryDataOld> CountryDataMapOld;
 
 
-typedef std::map<wxString, CountryData> CountryDataMap;
-
-
+/**
+ * @brief Legacy CIP2Country class - now wraps IP2CountryManager
+ *
+ * This class provides backward compatibility while using the new
+ * modern IP2CountryManager implementation.
+ */
 class CIP2Country {
 public:
 	CIP2Country(const wxString& configDir);
 	~CIP2Country();
-	const CountryData& GetCountryData(const wxString& ip);
+
+	/**
+	 * @brief Get country data for IP address
+	 * @param ip IP address string
+	 * @return Country data with name and flag
+	 */
+	const CountryDataOld& GetCountryData(const wxString& ip);
+
+	/**
+	 * @brief Enable IP2Country functionality
+	 */
 	void Enable();
+
+	/**
+	 * @brief Disable IP2Country functionality
+	 */
 	void Disable();
+
+	/**
+	 * @brief Update database from remote server
+	 */
 	void Update();
-	bool IsEnabled() { return m_geoip != NULL; }
+
+	/**
+	 * @brief Check if functionality is enabled
+	 * @return true if enabled
+	 */
+	bool IsEnabled() { return m_enabled; }
+
+	/**
+	 * @brief Called when download finishes
+	 * @param result Download result code
+	 */
 	void DownloadFinished(uint32 result);
 
+	/**
+	 * @brief Get direct access to the new IP2Country manager
+	 * @return Pointer to the new manager or nullptr if not available
+	 */
+	IP2CountryManager* GetNewManager() { return m_manager; }
+
 private:
-	struct GeoIPTag *m_geoip;
-	CountryDataMap m_CountryDataMap;
+	IP2CountryManager* m_manager;    ///< Pointer to new manager (owned)
+	CountryDataMapOld m_CountryDataMap;  ///< Legacy flag map for compatibility
 	wxString m_DataBaseName;
 	wxString m_DataBasePath;
+	bool m_enabled;
 
 	void LoadFlags();
 };

@@ -43,8 +43,10 @@
 #include <algorithm>	// Needed for std::min - Boost up to 1.54 fails to compile with MSVC 2013 otherwise
 
 #include <boost/asio.hpp>
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/bind.hpp>
 #include <boost/version.hpp>
+#include <boost/asio/executor_work_guard.hpp>
 
 //
 // Do away with building Boost.System, adding lib paths...
@@ -62,6 +64,7 @@
 #include <common/Format.h>	// Needed for CFormat
 #include "Logger.h"
 #include "GuiEvents.h"
+#include "common/NetworkPerformanceMonitor.h"
 #include "amuleIPV4Address.h"
 #include "MuleUDPSocket.h"
 #include "OtherFunctions.h"	// DeleteContents
@@ -122,7 +125,7 @@ public:
 		m_sync = false;
 		m_IP = wxT("?");
 		m_IPint = 0;
-		m_socket = new ip::tcp::socket(s_io_service);
+		m_socket = std::make_unique<ip::tcp::socket>(s_io_service);
 
 		// Set socket to non blocking
 		m_socket->non_blocking();
@@ -147,7 +150,7 @@ public:
 		m_port = adr.Service();
 		m_closed = false;
 		m_OK = false;
-		m_sync = !m_notify;		// set this once for the whole lifetime of the socket
+		m_sync = !m_notify;
 		AddDebugLogLineF(logAsio, CFormat(wxT("Connect %s %p")) % m_IP % this);
 
 		if (wait || m_sync) {
@@ -158,8 +161,7 @@ public:
 			return m_OK;
 		} else {
 			m_socket->async_connect(adr.GetEndpoint(),
-				m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleConnect, this, placeholders::error)));
-			// m_OK and return are false because we are not connected yet
+				m_strand.wrap([this](const error_code& error) { HandleConnect(error); }));
 			return false;
 		}
 	}
@@ -238,6 +240,9 @@ public:
 		m_readBufferPtr		+= readCache;
 
 		AddDebugLogLineF(logAsio, CFormat(wxT("Read2 %s %d - %d")) % m_IP % bytesToRead % readCache);
+		
+		// Performance monitoring integration - use conditional macro
+		RECORD_NETWORK_RECEIVED(readCache);
 		if (m_readBufferContent) {
 			// Data left, post another event
 			PostReadEvent(1);
@@ -263,9 +268,15 @@ public:
 			return 0;
 		}
 		AddDebugLogLineF(logAsio, CFormat(wxT("Write %d %s")) % nbytes % m_IP);
+		
+		// Performance monitoring integration - use conditional macro
+		if (nbytes > 0) {
+			RECORD_NETWORK_SENT(nbytes);
+		}
+		
 		m_sendBuffer = new char[nbytes];
 		memcpy(m_sendBuffer, buf, nbytes);
-		dispatch(m_strand, boost::bind(& CAsioSocketImpl::DispatchWrite, this, nbytes));
+		m_strand.dispatch(boost::bind(& CAsioSocketImpl::DispatchWrite, this, nbytes), boost::asio::get_associated_allocator(boost::bind(& CAsioSocketImpl::DispatchWrite, this, nbytes)));
 		m_ErrorCode = 0;
 		return nbytes;
 	}
@@ -279,7 +290,7 @@ public:
 			if (m_sync || s_io_service.stopped()) {
 				DispatchClose();
 			} else {
-				dispatch(m_strand, boost::bind(& CAsioSocketImpl::DispatchClose, this));
+				m_strand.dispatch(boost::bind(& CAsioSocketImpl::DispatchClose, this), boost::asio::get_associated_allocator(boost::bind(& CAsioSocketImpl::DispatchClose, this)));
 			}
 		}
 	}
@@ -301,7 +312,7 @@ public:
 			// sitting in Asio's event queue (I have seen such a crash).
 			// So create a delay timer so they can be called until core is notified.
 			m_timer.expires_from_now(boost::posix_time::seconds(1));
-			m_timer.async_wait(m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleDestroy, this)));
+			m_timer.async_wait(m_strand.wrap([this](const error_code&) { HandleDestroy(); }));
 		}
 	}
 
@@ -445,9 +456,7 @@ private:
 		} else {
 			CoreNotify_LibSocketConnect(m_libSocket, err.value());
 			if (m_OK) {
-				// After connect also send a OUTPUT event to show data is available
 				CoreNotify_LibSocketSend(m_libSocket, 0);
-				// Start reading
 				StartBackgroundRead();
 				m_connected = true;
 			}
@@ -538,7 +547,7 @@ private:
 	{
 		m_readPending = true;
 		m_readBufferContent = 0;
-		dispatch(m_strand, boost::bind(& CAsioSocketImpl::DispatchBackgroundRead, this));
+		m_strand.dispatch(boost::bind(& CAsioSocketImpl::DispatchBackgroundRead, this), boost::asio::get_associated_allocator(boost::bind(& CAsioSocketImpl::DispatchBackgroundRead, this)));
 	}
 
 	void PostReadEvent(int DEBUG_ONLY(from) )
@@ -601,7 +610,7 @@ private:
 	}
 
 	CLibSocket	*	m_libSocket;
-	ip::tcp::socket	*	m_socket;
+	std::unique_ptr<ip::tcp::socket> m_socket;
 										// remote IP
 	wxString		m_IPstring;			// as String (use nowhere because of threading!)
 	const wxChar *	m_IP;				// as char*  (use in debug logs)
@@ -618,7 +627,7 @@ private:
 	uint32			m_readBufferContent;
 	bool			m_eventPending;
 	char *			m_sendBuffer;
-	io_context::strand	m_strand;		// handle synchronisation in io_service thread pool
+	io_context::strand	m_strand;		// handle synchronisation in io_context thread pool
 	deadline_timer	m_timer;
 	bool			m_connected;
 	bool			m_closed;
@@ -782,7 +791,8 @@ public:
 		: ip::tcp::acceptor(s_io_service),
 		  m_libSocketServer(libSocketServer),
 		  m_currentSocket(NULL),
-		  m_strand(s_io_service)
+		  m_strand(s_io_service),
+		  m_shutdown(false)
 	{
 		m_ok = false;
 		m_socketAvailable = false;
@@ -802,6 +812,22 @@ public:
 
 	~CAsioSocketServerImpl()
 	{
+		// Set shutdown flag to prevent new operations from being posted
+		m_shutdown = true;
+		
+		// Cancel all pending asynchronous operations to prevent callbacks
+		// from accessing this object after it's been destroyed
+		error_code ec;
+		cancel(ec);
+		if (ec) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("CAsioSocketServerImpl cancel failed: %s")) % ec.message());
+		}
+		
+		// Close the acceptor to release the socket
+		close(ec);
+		if (ec) {
+			AddDebugLogLineF(logAsio, CFormat(wxT("CAsioSocketServerImpl close failed: %s")) % ec.message());
+		}
 	}
 
 	// For wxSocketServer, Ok will return true if the server could bind to the specified address and is already listening for new connections.
@@ -855,7 +881,7 @@ private:
 	{
 		m_currentSocket.reset(new CAsioSocketImpl(NULL));
 		async_accept(m_currentSocket->GetAsioSocket(),
-			m_strand.wrap(boost::bind(& CAsioSocketServerImpl::HandleAccept, this, placeholders::error)));
+			m_strand.wrap([this](const error_code& error) { HandleAccept(error); }));
 	}
 
 	void HandleAccept(const error_code& error)
@@ -873,9 +899,15 @@ private:
 				AddDebugLogLineN(logAsio, wxT("Error in HandleAccept: invalid socket"));
 			}
 		}
+		
+		// Check if we're shutting down before posting new operations
+		if (m_shutdown) {
+			return;
+		}
+		
 		// We were not successful. Try again.
 		// Post the request to the event queue to make sure it doesn't get called immediately.
-		post(m_strand, boost::bind(& CAsioSocketServerImpl::StartAccept, this));
+		m_strand.post(boost::bind(& CAsioSocketServerImpl::StartAccept, this), boost::asio::get_associated_allocator(boost::bind(& CAsioSocketServerImpl::StartAccept, this)));
 	}
 
 	// The wrapper object
@@ -886,7 +918,9 @@ private:
 	CScopedPtr<CAsioSocketImpl> m_currentSocket;
 	// Is there a socket available?
 	bool m_socketAvailable;
-	io_context::strand	m_strand;		// handle synchronisation in io_service thread pool
+	io_context::strand	m_strand;		// handle synchronisation in io_context thread pool
+	bool m_shutdown;  // Flag to indicate shutdown has begun
+
 };
 
 
@@ -971,9 +1005,9 @@ public:
 		m_timer(s_io_service),
 		m_address(address)
 	{
-		m_muleSocket = NULL;
-		m_socket = NULL;
-		m_readBuffer = new char[CMuleUDPSocket::UDP_BUFFER_SIZE];
+		m_muleSocket = nullptr;
+		m_socket.reset();
+		m_readBuffer = std::make_unique<char[]>(CMuleUDPSocket::UDP_BUFFER_SIZE);
 		m_OK = true;
 		CreateSocket();
 	}
@@ -981,8 +1015,7 @@ public:
 	~CAsioUDPSocketImpl()
 	{
 		AddDebugLogLineF(logAsio, wxT("UDP ~CAsioUDPSocketImpl"));
-		delete m_socket;
-		delete[] m_readBuffer;
+		// Automatic deletion via unique_ptr
 		DeleteContents(m_receiveBuffers);
 	}
 
@@ -1021,7 +1054,7 @@ public:
 		// Collect data, make a copy of the buffer's content
 		CUDPData * recdata = new CUDPData(buf, nBytes, addr);
 		AddDebugLogLineF(logAsio, CFormat(wxT("UDP SendTo %d to %s")) % nBytes % addr.IPAddress());
-		dispatch(m_strand, boost::bind(& CAsioUDPSocketImpl::DispatchSendTo, this, recdata));
+		m_strand.dispatch(boost::bind(& CAsioUDPSocketImpl::DispatchSendTo, this, recdata), boost::asio::get_associated_allocator(boost::bind(& CAsioUDPSocketImpl::DispatchSendTo, this, recdata)));
 		return nBytes;
 	}
 
@@ -1035,7 +1068,7 @@ public:
 		if (s_io_service.stopped()) {
 			DispatchClose();
 		} else {
-			dispatch(m_strand, boost::bind(& CAsioUDPSocketImpl::DispatchClose, this));
+			m_strand.dispatch(boost::bind(& CAsioUDPSocketImpl::DispatchClose, this), boost::asio::get_associated_allocator(boost::bind(& CAsioUDPSocketImpl::DispatchClose, this)));
 		}
 	}
 
@@ -1050,7 +1083,7 @@ public:
 			// sitting in Asio's event queue (I have seen such a crash).
 			// So create a delay timer so they can be called until core is notified.
 			m_timer.expires_from_now(boost::posix_time::seconds(1));
-			m_timer.async_wait(m_strand.wrap(boost::bind(& CAsioUDPSocketImpl::HandleDestroy, this)));
+			m_timer.async_wait(m_strand.wrap([this](const error_code&) { HandleDestroy(); }));
 		}
 	}
 
@@ -1080,7 +1113,7 @@ private:
 		AddDebugLogLineF(logAsio, CFormat(wxT("UDP DispatchSendTo %d to %s:%d")) % recdata->size
 			% endpoint.address().to_string() % endpoint.port());
 		m_socket->async_send_to(buffer(recdata->buffer, recdata->size), endpoint,
-			m_strand.wrap(boost::bind(& CAsioUDPSocketImpl::HandleSendTo, this, placeholders::error, placeholders::bytes_transferred, recdata)));
+			m_strand.wrap([this, recdata](const error_code& error, size_t bytes_transferred) { HandleSendTo(error, bytes_transferred, recdata); }));
 	}
 
 	//
@@ -1091,6 +1124,8 @@ private:
 	{
 		if (ec) {
 			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleReadError %s")) % ec.message());
+			// Don't restart read on error - socket may be invalid
+			return;
 		} else if (received == 0) {
 			AddDebugLogLineF(logAsio, wxT("UDP HandleReadError nothing available"));
 		} else if (m_muleSocket == NULL) {
@@ -1101,14 +1136,18 @@ private:
 			AddDebugLogLineF(logAsio, CFormat(wxT("UDP HandleRead %d %s:%d")) % received % ipadr.IPAddress() % ipadr.Service());
 
 			// create our read buffer
-			CUDPData * recdata = new CUDPData(m_readBuffer, received, ipadr);
+			CUDPData * recdata = new CUDPData(m_readBuffer.get(), received, ipadr);
 			{
 				wxMutexLocker lock(m_receiveBuffersLock);
 				m_receiveBuffers.push_back(recdata);
 			}
 			CoreNotify_UDPSocketReceive(m_muleSocket);
 		}
-		StartBackgroundRead();
+		
+		// Only restart background read if socket is still valid
+		if (m_OK && m_socket) {
+			StartBackgroundRead();
+		}
 	}
 
 	void HandleSendTo(const error_code & ec, size_t sent, CUDPData * recdata)
@@ -1140,34 +1179,39 @@ private:
 	void CreateSocket()
 	{
 		try {
-			delete m_socket;
 			ip::udp::endpoint endpoint(m_address.GetEndpoint().address(), m_address.Service());
-			m_socket = new ip::udp::socket(s_io_service, endpoint);
+			m_socket = std::make_unique<ip::udp::socket>(s_io_service, endpoint);
 			AddDebugLogLineN(logAsio, CFormat(wxT("Created UDP socket %s %d")) % m_address.IPAddress() % m_address.Service());
 			StartBackgroundRead();
 		} catch (const system_error& err) {
 			AddLogLineC(CFormat(wxT("Error creating UDP socket %s %d : %s")) % m_address.IPAddress() % m_address.Service() % err.code().message());
-			m_socket = NULL;
+			m_socket.reset();
 			m_OK = false;
 		}
 	}
 
 	void StartBackgroundRead()
 	{
-		m_socket->async_receive_from(buffer(m_readBuffer, CMuleUDPSocket::UDP_BUFFER_SIZE), m_receiveEndpoint,
-			m_strand.wrap(boost::bind(& CAsioUDPSocketImpl::HandleRead, this, placeholders::error, placeholders::bytes_transferred)));
+		// Safety check: ensure socket is valid before starting async operation
+		if (!m_OK || !m_socket) {
+			AddDebugLogLineN(logAsio, wxT("UDP StartBackgroundRead: socket not valid, skipping"));
+			return;
+		}
+		
+		m_socket->async_receive_from(buffer(static_cast<void*>(m_readBuffer.get()), CMuleUDPSocket::UDP_BUFFER_SIZE), m_receiveEndpoint,
+		m_strand.wrap([this](const error_code& error, size_t bytes_transferred) { HandleRead(error, bytes_transferred); }));
 	}
 
 	CLibUDPSocket *		m_libSocket;
-	ip::udp::socket *	m_socket;
+	std::unique_ptr<ip::udp::socket> m_socket;
 	CMuleUDPSocket *	m_muleSocket;
 	bool				m_OK;
-	io_context::strand	m_strand;		// handle synchronisation in io_service thread pool
+	io_context::strand	m_strand;		// handle synchronisation in io_context thread pool
 	deadline_timer		m_timer;
 	amuleIPV4Address	m_address;
 
 	// One fix receive buffer
-	char *				m_readBuffer;
+	std::unique_ptr<char[]> m_readBuffer;
 	// and a list of dynamic buffers. UDP data may be coming in faster
 	// than the main loop can handle it.
 	std::list<CUDPData *>	m_receiveBuffers;
@@ -1254,7 +1298,7 @@ public:
 	void * Entry()
 	{
 		AddLogLineNS(CFormat(_("Asio thread %d started")) % m_threadNumber);
-		auto worker = make_work_guard(s_io_service);		// keep io_service running
+		executor_work_guard<io_context::executor_type> worker(s_io_service.get_executor());		// keep io_context running
 		s_io_service.run();
 		AddDebugLogLineN(logAsio, CFormat(wxT("Asio thread %d stopped")) % m_threadNumber);
 
@@ -1276,6 +1320,7 @@ CAsioService::CAsioService()
 
 CAsioService::~CAsioService()
 {
+	Stop();
 }
 
 
@@ -1352,17 +1397,12 @@ bool amuleIPV4Address::Hostname(const wxString& name)
 	// Try to resolve (sync). Normally not required. Unless you type in your hostname as "local IP address" or something.
 	error_code ec2;
 	ip::tcp::resolver res(s_io_service);
-	// We only want to get IPV4 addresses.
-	ip::tcp::resolver::results_type endpoint_iterator = res.resolve(sname, "", ec2);
-	if (ec2) {
-		AddDebugLogLineN(logAsio, CFormat(wxT("Hostname(\"%s\") resolve failed: %s")) % name % ec2.message());
-		return false;
-	}
-	if (endpoint_iterator == ip::tcp::resolver::results_type()) {
+	auto results = res.resolve(ip::tcp::v4(), sname, "", ec2);
+	if (ec2 || results.empty()) {
 		AddDebugLogLineN(logAsio, CFormat(wxT("Hostname(\"%s\") resolve failed: no address found")) % name);
 		return false;
 	}
-	m_endpoint->address(endpoint_iterator.begin()->endpoint().address());
+	m_endpoint->address(results.begin()->endpoint().address());
 	AddDebugLogLineN(logAsio, CFormat(wxT("Hostname(\"%s\") resolved to %s")) % name % IPAddress());
 	return true;
 }
@@ -1392,7 +1432,7 @@ wxString amuleIPV4Address::IPAddress() const
 }
 
 // "Set address to any of the addresses of the current machine."
-// This just sets the address to 0.0.0.0 .
+// This just sets the address to 0.0.0.0 .Minor changes to modernize the app
 // wx does the same.
 bool amuleIPV4Address::AnyAddress()
 {

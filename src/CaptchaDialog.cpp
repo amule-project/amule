@@ -46,7 +46,7 @@ wxDialog(
 	wxDefaultSize,
 	wxDEFAULT_DIALOG_STYLE)
 {
-	m_captchaBitmap = new wxBitmap(captchaImage);
+	m_captchaBitmap = std::make_unique<wxBitmap>(captchaImage);
 	m_id = id;
 	wxSizer* content = captchaDlg(this);
 	OnInitDialog();
@@ -55,10 +55,7 @@ wxDialog(
 	m_TextCtrl->SetFocus();
 }
 
-CCaptchaDialog::~CCaptchaDialog()
-{
-	delete m_captchaBitmap;
-}
+CCaptchaDialog::~CCaptchaDialog() = default;
 
 void CCaptchaDialog::OnBnClose(wxCommandEvent& WXUNUSED(evt))
 {

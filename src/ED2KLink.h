@@ -38,7 +38,7 @@ class CMemFile;
 class CED2KLink
 {
 public:
-	typedef enum { kServerList, kServer , kFile , kInvalid } LinkType;
+	typedef enum { kServerList, kServer , kFile , kInvalid, kMagnetLink } LinkType;
 
 	static CED2KLink* CreateLinkFromUrl(const wxString& link);
 
@@ -68,6 +68,10 @@ public:
 	wxString GetName() const;
 	uint64 GetSize() const;
 	const CMD4Hash& GetHashKey() const;
+
+	// Magnet link tracking
+	bool IsFromMagnet() const			{ return m_fromMagnet; }
+	void SetFromMagnet(bool fromMagnet)	{ m_fromMagnet = fromMagnet; }
 
 	// AICH data
 	bool	HasValidAICHHash() const;
@@ -103,6 +107,9 @@ private:
 	CMD4Hash	m_hash;
 	bool		m_bAICHHashValid;
 	CAICHHash	m_AICHHash;
+
+	// Magnet link tracking
+	bool		m_fromMagnet;
 };
 
 
@@ -143,6 +150,35 @@ private:
 	CED2KServerListLink& operator=(const CED2KFileLink&); // Not defined
 
 	wxString m_address;
+};
+
+
+class CMagnetLink : public CED2KLink
+{
+	friend class CED2KLink;
+	CMagnetLink(const wxString& link);
+
+public:
+	virtual ~CMagnetLink();
+
+	virtual wxString GetLink() const;
+
+	// Magnet link specific methods
+	wxString GetInfoHash() const { return m_infoHash; }
+	wxString GetDisplayName() const { return m_displayName; }
+	uint64 GetSize() const { return m_size; }
+
+	const std::vector<wxString>& GetTrackers() const { return m_trackers; }
+
+private:
+	CMagnetLink(); // Not defined
+	CMagnetLink(const CMagnetLink&); // Not defined
+	CMagnetLink& operator=(const CMagnetLink&); // Not defined
+
+	wxString m_infoHash;           // 40-character BTIH
+	wxString m_displayName;       // Display name from dn= parameter
+	uint64 m_size;               // File size from xl= parameter (optional)
+	std::vector<wxString> m_trackers;  // Tracker list from tr= parameters
 };
 
 

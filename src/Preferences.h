@@ -568,6 +568,7 @@ public:
 	static bool				IsGeoIPEnabled()		{return s_GeoIPEnabled;}
 	static void				SetGeoIPEnabled(bool v)	{s_GeoIPEnabled = v;}
 	static const wxString&	GetGeoIPUpdateUrl()		{return s_GeoIPUpdateUrl;}
+	static void				SetGeoIPUpdateUrl(const wxString& url)	{s_GeoIPUpdateUrl = url;}
 
 	// Stats server
 	static const wxString&	GetStatsServerName()		{return s_StatsServerName;}

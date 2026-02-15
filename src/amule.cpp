@@ -975,11 +975,11 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		amulesig_out.AddLine(wxT("0"));
 		amulesig_out.AddLine(wxT("0"));
 	} else {
-        // Total received bytes in session
+	// Total received bytes in session
 		amulesig_out.AddLine( CFormat( wxT("%llu") ) %
 			theStats::GetSessionReceivedBytes() );
 
-        // Total sent bytes in session
+	// Total sent bytes in session
 		amulesig_out.AddLine( CFormat( wxT("%llu") ) %
 			theStats::GetSessionSentBytes() );
 
@@ -1969,6 +1969,33 @@ void CamuleApp::OnUnhandledException()
 
 void CamuleApp::StartKad()
 {
+	// Check KAD prerequisites before starting
+	if (!thePrefs::IsUDPDisabled()) {
+		AddDebugLogLineN(logGeneral, wxT("KAD: Checking network prerequisites..."));
+
+		// Warn about essential KAD requirements
+		wxString kadWarnings;
+
+		if (thePrefs::GetNetworkKademlia()) {
+			AddDebugLogLineN(logGeneral, wxT("KAD: Network support enabled"));
+		} else {
+			kadWarnings += wxT("KAD network support disabled in preferences. ");
+		}
+
+		// Check if UDP port might be blocked (basic check)
+		if (thePrefs::GetUDPPort() == 0) {
+			kadWarnings += wxT("UDP port not configured. ");
+		}
+
+		// Display warnings if any
+		if (!kadWarnings.IsEmpty()) {
+			AddDebugLogLineC(logGeneral, wxT("KAD Warnings: ") + kadWarnings);
+			AddLogLineC(_("KAD prerequisites warning: ") + kadWarnings);
+		} else {
+			AddDebugLogLineN(logGeneral, wxT("KAD: All basic prerequisites met"));
+		}
+	}
+
 	if (!Kademlia::CKademlia::IsRunning() && thePrefs::GetNetworkKademlia()) {
 		// Kad makes no sense without the Client-UDP socket.
 		if (!thePrefs::IsUDPDisabled()) {

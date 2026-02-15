@@ -35,23 +35,23 @@
 
 inline wxString Uint32toStringIP(uint32 ip)
 {
-	return CFormat(wxT("%u.%u.%u.%u")) % (uint8)ip % (uint8)(ip>>8) % (uint8)(ip>>16) % (uint8)(ip>>24);
+	return CFormat(wxT("%u.%u.%u.%u")) % (unsigned int)(uint8)ip % (unsigned int)(uint8)(ip>>8) % (unsigned int)(uint8)(ip>>16) % (unsigned int)(uint8)(ip>>24);
 }
 
 inline wxString Uint32_16toStringIP_Port(uint32 ip, uint16 port)
 {
-	return CFormat(wxT("%u.%u.%u.%u:%u")) % (uint8)ip % (uint8)(ip>>8) % (uint8)(ip>>16) % (uint8)(ip>>24) % port;
+	return CFormat(wxT("%u.%u.%u.%u:%u")) % (unsigned int)(uint8)ip % (unsigned int)(uint8)(ip>>8) % (unsigned int)(uint8)(ip>>16) % (unsigned int)(uint8)(ip>>24) % (unsigned int)port;
 }
 
 // These functions take IPs in host-order
 inline wxString KadIPToString(uint32_t ip)
 {
-	return CFormat(wxT("%u.%u.%u.%u")) % (uint8_t)(ip >> 24) % (uint8_t)(ip >> 16) % (uint8_t)(ip >> 8) % (uint8_t)ip;
+	return CFormat(wxT("%u.%u.%u.%u")) % (unsigned int)(uint8_t)(ip >> 24) % (unsigned int)(uint8_t)(ip >> 16) % (unsigned int)(uint8_t)(ip >> 8) % (unsigned int)(uint8_t)ip;
 }
 
 inline wxString KadIPPortToString(uint32_t ip, uint16_t port)
 {
-	return CFormat(wxT("%u.%u.%u.%u:%u")) % (uint8_t)(ip >> 24) % (uint8_t)(ip >> 16) % (uint8_t)(ip >> 8) % (uint8_t)ip % port;
+	return CFormat(wxT("%u.%u.%u.%u:%u")) % (unsigned int)(uint8_t)(ip >> 24) % (unsigned int)(uint8_t)(ip >> 16) % (unsigned int)(uint8_t)(ip >> 8) % (unsigned int)(uint8_t)ip % (unsigned int)port;
 }
 
 /**

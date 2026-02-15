@@ -240,7 +240,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 
 		// X
 		int Bar_xSize = 4;
-		int Bar_xPos = CurrentIcon.GetWidth() - 5;
+		int Bar_xPos = std::max(0, CurrentIcon.GetWidth() - 5);
 
 		IconWithSpeed.SetBrush(*(wxTheBrushList->FindOrCreateBrush(CStatisticsDlg::getColors(11))));
 		IconWithSpeed.SetPen(*wxTRANSPARENT_PEN);

@@ -37,6 +37,7 @@
 #ifdef ENABLE_IP2COUNTRY
 	#include "IP2Country.h"	// Needed for IP2Country
 	#include "amuleDlg.h"	// Needed for IP2Country
+	#include "geoip/IP2CountryManager.h"  // Include for new manager and CountryData struct
 #endif
 #include "ServerList.h"		// Needed for CServerList
 #include "ServerConnect.h"	// Needed for CServerConnect
@@ -194,9 +195,13 @@ void CServerListCtrl::RefreshServer( CServer* server )
 #ifdef ENABLE_IP2COUNTRY
 	// Get the country name
 	if (theApp->amuledlg->m_IP2Country->IsEnabled() && thePrefs::IsGeoIPEnabled()) {
-		const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(server->GetFullIP());
-		serverName << countrydata.Name;
-		serverName << wxT(" - ");
+		// Access the new manager directly
+		IP2CountryManager* newMgr = theApp->amuledlg->m_IP2Country->GetNewManager();
+		if (newMgr) {
+			const CountryDataNew& countrydata = newMgr->GetCountryData(server->GetFullIP());
+			serverName << countrydata.Name;
+			serverName << wxT(" - ");
+		}
 	}
 #endif // ENABLE_IP2COUNTRY
 	serverName << server->GetListName();

@@ -57,6 +57,11 @@ CED2KLink::LinkType CED2KLink::GetKind() const
 
 CED2KLink* CED2KLink::CreateLinkFromUrl(const wxString& link)
 {
+	// Check for magnet link first
+	if (link.StartsWith(wxT("magnet:?"))) {
+		return new CMagnetLink(link);
+	}
+
 	wxRegEx re_type(wxT("ed2k://\\|(file|server|serverlist)\\|.*/"), wxRE_ICASE | wxRE_DEFAULT);
 	{ wxCHECK(re_type.IsValid(), NULL); }
 
@@ -311,5 +316,94 @@ bool CED2KFileLink::HasValidAICHHash() const
 const CAICHHash& CED2KFileLink::GetAICHHash() const
 {
 	return m_AICHHash;
+}
+
+
+/////////////////////////////////////////////
+// CMagnetLink implementation
+/////////////////////////////////////////////
+CMagnetLink::CMagnetLink(const wxString& link)
+	: CED2KLink(kMagnetLink),
+	  m_size(0)
+{
+	// Parse magnet link parameters
+	// Format: magnet:?xt=urn:btih:<infohash>&dn=<displayname>&tr=<tracker1>&tr=<tracker2>...
+
+	wxString params = link.AfterFirst('?');
+	wxStringTokenizer tokenizer(params, wxT("&"), wxTOKEN_RET_EMPTY_ALL);
+
+	while (tokenizer.HasMoreTokens()) {
+		wxString param = tokenizer.GetNextToken();
+		wxString paramLower = param.MakeLower();
+
+		if (paramLower.StartsWith(wxT("xt=urn:btih:"))) {
+			// Extract info hash - skip "xt=urn:btih:" prefix (12 chars to skip the colon too)
+			wxString xtValue = param.Mid(12);
+			xtValue = xtValue.BeforeFirst('&'); // Handle cases where there are extra parameters
+			m_infoHash = xtValue;
+		} else if (paramLower.StartsWith(wxT("dn="))) {
+			// Extract display name
+			m_displayName = param.AfterFirst('=');
+			// URL decode the name
+			m_displayName.Replace(wxT("%20"), wxT(" "));
+			m_displayName.Replace(wxT("%2B"), wxT("+"));
+		} else if (paramLower.StartsWith(wxT("xl="))) {
+			// Extract file size (optional)
+			wxString sizeStr = param.AfterFirst('=');
+			m_size = StrToULongLong(sizeStr);
+		} else if (paramLower.StartsWith(wxT("tr="))) {
+			// Extract tracker URL
+			wxString tracker = param.AfterFirst('=');
+			m_trackers.push_back(tracker);
+		}
+	}
+
+	// Validate info hash (BitTorrent info hashes are typically 40 hex chars, but we'll be flexible)
+	wxString debugHash = m_infoHash;
+	if (m_infoHash.length() < 32 || m_infoHash.length() > 40) {
+		throw wxString(wxT("Invalid magnet link: info hash must be 32-40 characters (got: ") + debugHash + wxT(")"));
+	}
+
+	// Make sure it's a valid hex string
+	for (size_t i = 0; i < m_infoHash.length(); i++) {
+		wxChar c = m_infoHash[i];
+		if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))) {
+			throw wxString(wxT("Invalid magnet link: info hash must contain only hex characters"));
+		}
+	}
+
+	// Use placeholder name if not provided
+	if (m_displayName.IsEmpty()) {
+		m_displayName = wxT("Unknown Torrent");
+	}
+}
+
+
+CMagnetLink::~CMagnetLink()
+{
+}
+
+
+wxString CMagnetLink::GetLink() const
+{
+	// Reconstruct the magnet link
+	wxString result = wxT("magnet:?xt=urn:btih:") + m_infoHash;
+
+	if (!m_displayName.IsEmpty()) {
+		wxString dn = m_displayName;
+		dn.Replace(wxT(" "), wxT("%20"));
+		dn.Replace(wxT("+"), wxT("%2B"));
+		result += wxT("&dn=") + dn;
+	}
+
+	if (m_size > 0) {
+		result += wxString::Format(wxT("&xl=%llu"), m_size);
+	}
+
+	for (const auto& tracker : m_trackers) {
+		result += wxT("&tr=") + tracker;
+	}
+
+	return result;
 }
 // File_checked_for_headers

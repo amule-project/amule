@@ -1008,30 +1008,30 @@ void CClientList::CleanUpClientList()
 				if (!(pCurClient->GetUploadState() == US_NONE || (pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned()))) {
 					AddDebugLogLineN(logProxy,
 						CFormat(wxT("Debug: Not deleted client %x with up state: %i "))
-							% (long int)pCurClient % pCurClient->GetUploadState());
+							% (size_t)pCurClient % pCurClient->GetUploadState());
 				}
 				if (!(pCurClient->GetDownloadState() == DS_NONE)) {
 					AddDebugLogLineN(logProxy,
 						CFormat(wxT("Debug: Not deleted client %x with down state: %i "))
-							% (long int)pCurClient % pCurClient->GetDownloadState());
+							% (size_t)pCurClient % pCurClient->GetDownloadState());
 				}
 				if (!(pCurClient->GetChatState() == MS_NONE)) {
 					AddDebugLogLineN(logProxy,
 						CFormat(wxT("Debug: Not deleted client %x with chat state: %i "))
-							% (long int)pCurClient % pCurClient->GetChatState());
+							% (size_t)pCurClient % pCurClient->GetChatState());
 				}
 				if (!(pCurClient->GetKadState() == KS_NONE)) {
 					AddDebugLogLineN(logProxy,
 						CFormat(wxT("Debug: Not deleted client %x with kad state: %i ip: %s"))
-							% (long int)pCurClient % (int)pCurClient->GetKadState() % pCurClient->GetFullIP());
+							% (size_t)pCurClient % (int)pCurClient->GetKadState() % pCurClient->GetFullIP());
 				}
 				if (!(pCurClient->GetSocket() == NULL)) {
 					AddDebugLogLineN(logProxy,
-						CFormat(wxT("Debug: Not deleted client %x: has socket")) % (long int)pCurClient);
+						CFormat(wxT("Debug: Not deleted client %x: has socket")) % (size_t)pCurClient);
 				}
 				AddDebugLogLineN(logProxy,
 					CFormat(wxT("Debug: Not deleted client %x with kad version: %i"))
-						% (long int)pCurClient % pCurClient->GetKadVersion());
+						% (size_t)pCurClient % pCurClient->GetKadVersion());
 #endif
 			}
 		}

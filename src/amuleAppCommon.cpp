@@ -332,6 +332,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 		}
 	}
 
+	FullMuleVersion += wxT(" [Modernized: C++20+Logging+GeoIP]");
 	AddLogLineNS(wxT("Initialising ") + FullMuleVersion);
 
 	// Ensure that "~/.aMule/" is accessible.
@@ -468,7 +469,7 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
  */
 const wxString CamuleAppCommon::GetFullMuleVersion() const
 {
-	return GetMuleAppName() + wxT(" ") + GetMuleVersion();
+	return GetMuleAppName() + wxT(" ") + GetMuleVersion() + wxT(" [Modernized: C++20+Logging+GeoIP]");
 }
 
 bool CamuleAppCommon::CheckPassedLink(const wxString &in, wxString &out, int cat)

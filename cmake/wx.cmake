@@ -42,13 +42,22 @@ if (wx_NEED_BASE)
 endif()
 
 if (wx_NEED_ADV)
-	set (ADV "adv")
-	list (APPEND WX_COMPONENTS ADV)
+	# Check if wxWidgets version is known, if not try to find it first
+	if (NOT wxWidgets_VERSION_STRING)
+		find_package (wxWidgets ${MIN_WX_VERSION} QUIET REQUIRED COMPONENTS base)
+	endif()
 
-	add_library (wxWidgets::ADV
-		UNKNOWN
-		IMPORTED
-	)
+	# Only create ADV target for wxWidgets < 3.1.2
+	# In wxWidgets 3.1.2+, ADV functionality was merged into CORE
+	if (wxWidgets_VERSION_STRING VERSION_LESS 3.1.2)
+		set (ADV "adv")
+		list (APPEND WX_COMPONENTS ADV)
+
+		add_library (wxWidgets::ADV
+			UNKNOWN
+			IMPORTED
+		)
+	endif()
 endif()
 
 if (wx_NEED_GUI)
@@ -84,7 +93,7 @@ if (WX_COMPONENTS)
 			message(STATUS "Found usable wx-${COMPONENT}: ${wxWidgets_VERSION_STRING}")
 		endif()
 
-		if (WIN32)
+		if (WIN32 AND NOT MINGW)
 			set_property (TARGET wxWidgets::${COMPONENT}
 				PROPERTY IMPORTED_LOCATION_RELEASE ${WX_${${COMPONENT}}}
 			)

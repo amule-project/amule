@@ -38,42 +38,42 @@
 
 class CECMuleSocketHandler: public wxEvtHandler {
  public:
-        CECMuleSocketHandler() {};
+	CECMuleSocketHandler() {};
 
  private:
-        void SocketHandler(wxSocketEvent& event);
+	void SocketHandler(wxSocketEvent& event);
 
-        DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 BEGIN_EVENT_TABLE(CECMuleSocketHandler, wxEvtHandler)
-        EVT_SOCKET(EC_SOCKET_HANDLER, CECMuleSocketHandler::SocketHandler)
+	EVT_SOCKET(EC_SOCKET_HANDLER, CECMuleSocketHandler::SocketHandler)
 END_EVENT_TABLE()
 
 void CECMuleSocketHandler::SocketHandler(wxSocketEvent& event)
 {
-        CECSocket *socket = dynamic_cast<CECSocket *>(event.GetSocket());
-        wxCHECK_RET(socket, wxT("Socket event with a NULL socket!"));
+	CECSocket *socket = dynamic_cast<CECSocket *>(event.GetSocket());
+	wxCHECK_RET(socket, wxT("Socket event with a NULL socket!"));
 
-        switch(event.GetSocketEvent()) {
-        case wxSOCKET_LOST:
-            socket->OnLost();
-            break;
-        case wxSOCKET_INPUT:
-            socket->OnInput();
-            break;
-        case wxSOCKET_OUTPUT:
-            socket->OnOutput();
-            break;
-        case wxSOCKET_CONNECTION:
-            socket->OnConnect();
-            break;
+	switch(event.GetSocketEvent()) {
+	case wxSOCKET_LOST:
+	    socket->OnLost();
+	    break;
+	case wxSOCKET_INPUT:
+	    socket->OnInput();
+	    break;
+	case wxSOCKET_OUTPUT:
+	    socket->OnOutput();
+	    break;
+	case wxSOCKET_CONNECTION:
+	    socket->OnConnect();
+	    break;
 
-        default:
-            // Nothing should arrive here...
-            wxFAIL;
-            break;
-        }
+	default:
+	    // Nothing should arrive here...
+	    wxFAIL;
+	    break;
+	}
 }
 
 static CECMuleSocketHandler	g_ECSocketHandler;
