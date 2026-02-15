@@ -31,6 +31,8 @@
 #include "search/SearchResultRouter.h"	// Result router
 #include "search/PerSearchState.h"	// Per-search state management
 #include "search/SearchIdGenerator.h"	// Search ID generation
+#include "search/SearchModel.h"	// For search::SearchParams
+#include "SearchTimeoutManager.h"	// For timeout manager singleton
 
 #include "include/common/MacrosProgramSpecific.h"	// Needed for NOT_ON_REMOTEGUI
 
@@ -378,10 +380,6 @@ void CSearchList::removeSearchState(long searchId, bool releaseId)
 	// Remove from search states map
 	m_searchStates.erase(searchId);
 
-	// Also remove from legacy active searches map for compatibility
-	// Remove search parameters
-	m_searchParams.erase(searchId);
-
 	// Release the search ID for reuse (if requested)
 	if (releaseId) {
 		search::SearchIdGenerator::Instance().releaseId(searchId);
@@ -539,7 +537,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, CSearchP
 			searchState->setKadKeyword(params.strKeyword);  // Store Kad keyword per-search
 
 			// Store search parameters for this search ID
-			m_searchParams[*searchID] = params;
+			StoreSearchParams(*searchID, params);
 		} catch (const wxString& what) {
 			AddLogLineC(what);
 			return _("Unexpected error while attempting Kad search: ") + what;
@@ -574,7 +572,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, CSearchP
 		}
 
 		// Store search parameters for this search ID
-		m_searchParams[*searchID] = params;
+		StoreSearchParams(*searchID, params);
 
 		CPacket* searchPacket = new CPacket(*data.get(), OP_EDONKEYPROT, OP_SEARCHREQUEST);
 
@@ -654,20 +652,27 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, CSearchP
 
 CSearchList::CSearchParams CSearchList::GetSearchParams(long searchID)
 {
-	ParamMap::iterator it = m_searchParams.find(searchID);
-	if (it != m_searchParams.end()) {
-		return it->second;
+#ifndef AMULE_DAEMON
+	// Get parameters from SearchStateManager instead of local storage
+	if (theApp->amuledlg && theApp->amuledlg->m_searchwnd) {
+		CSearchParams params;
+		if (theApp->amuledlg->m_searchwnd->GetStateManager().GetSearchParams(searchID, params)) {
+			return params;
+		}
 	}
+#endif
 	return CSearchParams(); // Return empty params if not found
 }
 
 
 void CSearchList::StoreSearchParams(long searchID, const CSearchParams& params)
 {
-	wxMutexLocker lock(m_searchMutex);
-	m_searchParams[searchID] = params;
-	AddDebugLogLineC(logSearch, CFormat(wxT("Stored search parameters for search ID %ld: searchString='%s', searchType=%d"))
-		% searchID % params.searchString % (int)params.searchType);
+#ifndef AMULE_DAEMON
+	// Store parameters in SearchStateManager instead of local storage
+	if (theApp->amuledlg && theApp->amuledlg->m_searchwnd) {
+		theApp->amuledlg->m_searchwnd->GetStateManager().StoreSearchParams(searchID, params);
+	}
+#endif
 }
 
 
@@ -819,16 +824,8 @@ void CSearchList::LocalSearchEnd()
 		
 		// CRITICAL FIX: Always call OnSearchComplete to update search state
 		// This prevents tabs from getting stuck at [Searching] when there are no results
+		// Note: OnSearchComplete handles releasing the search ID, so we don't do it here
 		OnSearchComplete(searchId, static_cast<SearchType>(searchType), hasResults);
-		
-		// Release the search ID since search is complete
-		if (search::SearchIdGenerator::Instance().releaseId(searchId)) {
-			AddDebugLogLineC(logSearch, CFormat(wxT("Released search ID %u (search complete, hasResults=%d)"))
-				% searchId % hasResults);
-		} else {
-			AddDebugLogLineC(logSearch, CFormat(wxT("Failed to release search ID %u (search complete) - already released?"))
-				% searchId);
-		}
 	}
 }
 
@@ -920,13 +917,8 @@ void CSearchList::OnSearchTimer(CTimerEvent& ev)
 		
 		// CRITICAL FIX: Always call OnSearchComplete to update search state
 		// This prevents tabs from getting stuck at [Searching] when there are no results
+		// Note: OnSearchComplete handles releasing the search ID, so we don't do it here
 		OnSearchComplete(searchId, LocalSearch, hasResults);
-		
-		// Release the search ID
-		if (search::SearchIdGenerator::Instance().releaseId(searchId)) {
-			AddDebugLogLineC(logSearch, CFormat(wxT("Released search ID %u (local search timeout, hasResults=%d)"))
-				% searchId % hasResults);
-		}
 		return;
 	}
 
@@ -1297,10 +1289,10 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 	// Get the result type for this specific search (thread-safe)
 	wxString resultTypeForSearch;
 	{
-		wxMutexLocker lock(m_searchMutex);
-		ParamMap::iterator it = m_searchParams.find(toadd->GetSearchID());
-		if (it != m_searchParams.end()) {
-			resultTypeForSearch = it->second.typeText;
+		// Get search parameters from SearchStateManager
+		CSearchParams params = GetSearchParams(toadd->GetSearchID());
+		if (!params.typeText.IsEmpty()) {
+			resultTypeForSearch = params.typeText;
 		}
 	}
 
@@ -1779,6 +1771,28 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(CSearchParams& params, Se
 }
 
 
+CSearchList::CMemFilePtr CSearchList::CreateSearchData(search::SearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit, const wxString& kadKeyword)
+{
+	// Convert search::SearchParams to CSearchParams and call the original implementation
+	CSearchParams legacyParams;
+	legacyParams.searchString = params.searchString;
+	legacyParams.strKeyword = params.strKeyword;
+	legacyParams.typeText = params.typeText;
+	legacyParams.extension = params.extension;
+	legacyParams.minSize = params.minSize;
+	legacyParams.maxSize = params.maxSize;
+	legacyParams.availability = params.availability;
+	legacyParams.searchType = type;
+
+	CMemFilePtr result = CreateSearchData(legacyParams, type, supports64bit, packetUsing64bit, kadKeyword);
+
+	// Copy back any modified fields (e.g., strKeyword may be rearranged by the parser)
+	params.strKeyword = legacyParams.strKeyword;
+
+	return result;
+}
+
+
 void CSearchList::KademliaSearchKeyword(uint32_t searchID, const Kademlia::CUInt128 *fileID,
 	const wxString& name, uint64_t size, const wxString& type, uint32_t kadPublishInfo, const TagPtrList& taglist)
 {
@@ -1908,6 +1922,10 @@ void CSearchList::OnSearchComplete(long searchId, SearchType type, bool hasResul
 	AddDebugLogLineC(logSearch, CFormat(wxT("Marking search finished: ID=%ld, Type=%d"))
 		% searchId % (int)type);
 
+	// CRITICAL FIX: Unregister from timeout manager to prevent spurious timeouts
+	// This must be done before releasing the search ID
+	SearchTimeoutManager::Instance().unregisterSearch(searchId);
+
 	// Get the per-search state
 	::PerSearchState* state = getSearchState(searchId);
 	if (state) {
@@ -1973,8 +1991,6 @@ void CSearchList::OnSearchRetry(long searchId, SearchType type, int retryNum)
 	if (state) {
 		state->setSearchActive(false);
 	}
-	// Remove search parameters (they will be recreated with new ID)
-	m_searchParams.erase(searchId);
 	// Remove per-search state
 	removeSearchState(searchId);
 

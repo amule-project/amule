@@ -43,6 +43,7 @@ namespace search {
 	class ED2KSearchPacketBuilder;
 	class KadSearchPacketBuilder;
 	class SearchResultHandler;
+	struct SearchParams;  // Forward declaration for new overload
 }
 
 
@@ -232,6 +233,9 @@ public:
 	/** Create a basic search-packet for the given search-type. */
 	CMemFilePtr CreateSearchData(CSearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit, const wxString& kadKeyword = wxEmptyString);
 
+	/** Create a basic search-packet using search::SearchParams (avoids legacy conversion). */
+	CMemFilePtr CreateSearchData(search::SearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit, const wxString& kadKeyword = wxEmptyString);
+
 	/** Per-search state management methods */
 	
 	/**
@@ -323,10 +327,6 @@ private:
 
 	//! Map of all search-results added.
 	ResultMap	m_results;
-
-	//! Map of search parameters for each search ID.
-	typedef std::map<long, CSearchParams> ParamMap;
-	ParamMap	m_searchParams;
 
 	//! Map of Kad search IDs to original search IDs
 	//! Kad uses special IDs in format 0xffffff??, but we need to route results

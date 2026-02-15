@@ -51,6 +51,12 @@ SearchTimeoutManager::SearchTimeoutManager()
     AddDebugLogLineC(logSearch, wxT("SearchTimeoutManager initialized"));
 }
 
+SearchTimeoutManager& SearchTimeoutManager::Instance()
+{
+    static SearchTimeoutManager instance;
+    return instance;
+}
+
 SearchTimeoutManager::~SearchTimeoutManager()
 {
     // Stop heartbeat timer

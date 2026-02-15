@@ -159,9 +159,9 @@ public:
 	SearchStateManager& GetStateManager() { return m_stateManager; }
 
 	/**
-	 * Gets the unified search manager.
+	 * Gets the unified search manager (now a singleton).
 	 */
-	search::UnifiedSearchManager& GetUnifiedSearchManager() { return m_unifiedSearchManager; }
+	search::UnifiedSearchManager& GetUnifiedSearchManager() { return search::UnifiedSearchManager::Instance(); }
 
 	/**
 	 * Updates the enabled state of the start button based on connection status.
@@ -248,8 +248,7 @@ private:
 	// Search state manager
 	SearchStateManager			m_stateManager;
 
-	// Unified search manager - common abstraction layer for all search types
-	search::UnifiedSearchManager	m_unifiedSearchManager;
+	// Unified search manager is now a singleton accessed via UnifiedSearchManager::Instance()
 
 	// Simple search cache - handles duplicate search detection
 	SimpleSearchCache			m_searchCache;

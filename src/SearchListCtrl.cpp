@@ -438,7 +438,7 @@ void CSearchListCtrl::ShowResults( long ResultsID )
 
 		// Fallback to legacy CSearchList if unified manager not available or no results
 		if (!useUnifiedManager || list.empty()) {
-			const CSearchResultList& legacyList = theApp->searchlist->GetSearchResults(ResultsID);
+			const CSearchResultList& legacyList = search::UnifiedSearchManager::Instance().getSearchResults(ResultsID);
 			list.assign(legacyList.begin(), legacyList.end());
 		}
 

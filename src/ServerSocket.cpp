@@ -37,6 +37,7 @@
 #include "MemFile.h"		// Needed for CMemFile
 #include "PartFile.h"		// Needed for CPartFile
 #include "SearchList.h"		// Needed for CSearchList
+#include "search/UnifiedSearchManager.h"	// Needed for UnifiedSearchManager
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "ServerList.h"		// Needed for CServerList
@@ -446,13 +447,13 @@ bool CServerSocket::ProcessPacket(const uint8_t* packet, uint32 size, int8 opcod
 				theStats::AddDownOverheadServer(size);
 				CServer* cur_srv = (serverconnect) ?
 					serverconnect->GetCurrentServer() : NULL;
-theApp->searchlist->ProcessSearchAnswer(
+search::UnifiedSearchManager::Instance().processSearchAnswer(
 					packet,
 					size,
 					cur_srv ? cur_srv->GetUnicodeSupport() : false,
 					cur_srv ? cur_srv->GetIP() : 0,
 					cur_srv ? cur_srv->GetPort() : 0);
-				theApp->searchlist->LocalSearchEnd();
+				search::UnifiedSearchManager::Instance().localSearchEnd();
 				break;
 			}
 			case OP_FOUNDSOURCES_OBFU:

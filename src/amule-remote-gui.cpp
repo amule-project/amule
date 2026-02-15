@@ -48,6 +48,7 @@
 #include "Friend.h"
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "GuiEvents.h"
+#include "search/UnifiedSearchManager.h"
 #ifdef ENABLE_IP2COUNTRY
 	#include "IP2Country.h"		// Needed for IP2Country
 #endif
@@ -2031,7 +2032,7 @@ m_kadPublishInfo(0)
 	m_searchID = theApp->searchlist->m_curr_search;
 	uint32 parentID = tag->ParentID();
 	if (parentID) {
-		CSearchFile * parent = theApp->searchlist->GetByID(parentID);
+		CSearchFile * parent = search::UnifiedSearchManager::Instance().getSearchFileById(parentID);
 		if (parent) {
 			parent->AddChild(this);
 		}

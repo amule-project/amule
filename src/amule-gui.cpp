@@ -313,6 +313,8 @@ int CamuleGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 
 int CamuleGuiApp::OnExit()
 {
+	// Call base class ShutDown to properly clean up resources
+	CamuleApp::ShutDown();
 	delete core_timer;
 
 	return CamuleApp::OnExit();

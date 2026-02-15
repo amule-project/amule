@@ -31,6 +31,8 @@
 #include <common/Format.h>
 #include "amule.h"
 #include "SearchList.h"
+#include "search/UnifiedSearchManager.h"
+#include "search/SearchModel.h"
 #include "Logger.h"
 #include "search/SearchLogging.h"
 #include <cassert>
@@ -238,26 +240,36 @@ bool RetrySearchWithState(CSearchListCtrl* page, CSearchDlg* parentDlg)
 
 	// Get the search parameters for this search
 	// clang-format off
-	CSearchList::CSearchParams params;
+	CSearchList::CSearchParams legacyParams;
 	// clang-format on
-	if (!parentDlg->GetStateManager().GetSearchParams(searchId, params)) {
+	if (!parentDlg->GetStateManager().GetSearchParams(searchId, legacyParams)) {
 		// No search parameters available - cannot retry
 		UpdateSearchState(page, parentDlg, wxT("Retry Failed"));
 		return false;
 	}
 
-	// Start a new ED2K search with the same parameters
-	// Use the same search ID to keep results in the same tab
-	uint32 newSearchId = searchId;
-	// Determine if this is a Local or Global search
-	SearchType searchType = LocalSearch;
-	if (tabText.StartsWith(wxT("[Global] "))) {
-		searchType = GlobalSearch;
-	}
-	
-	wxString error = theApp->searchlist->StartNewSearch(&newSearchId, searchType, params);
+	// Convert to search::SearchParams
+	search::SearchParams params;
+	params.searchString = legacyParams.searchString;
+	params.strKeyword = legacyParams.strKeyword;
+	params.typeText = legacyParams.typeText;
+	params.extension = legacyParams.extension;
+	params.minSize = legacyParams.minSize;
+	params.maxSize = legacyParams.maxSize;
+	params.availability = legacyParams.availability;
 
-	if (!error.IsEmpty()) {
+	// Determine if this is a Local or Global search
+	search::ModernSearchType searchType = search::ModernSearchType::LocalSearch;
+	if (tabText.StartsWith(wxT("[Global] "))) {
+		searchType = search::ModernSearchType::GlobalSearch;
+	}
+	params.searchType = searchType;
+
+	// Start a new ED2K search with the same parameters
+	wxString error;
+	uint32 newSearchId = search::UnifiedSearchManager::Instance().startSearch(params, error);
+
+	if (newSearchId == 0 || !error.IsEmpty()) {
 		// Retry failed - update state to show error
 		UpdateSearchState(page, parentDlg, wxT("Retry Failed"));
 		return false;
@@ -350,20 +362,30 @@ bool RetryKadSearchWithState(CSearchListCtrl* page, CSearchDlg* parentDlg)
 
 	// Get the search parameters for this search
 	// clang-format off
-	CSearchList::CSearchParams params;
+	CSearchList::CSearchParams legacyParams;
 	// clang-format on
-	if (!parentDlg->GetStateManager().GetSearchParams(searchId, params)) {
+	if (!parentDlg->GetStateManager().GetSearchParams(searchId, legacyParams)) {
 		// No search parameters available - cannot retry
 		UpdateSearchState(page, parentDlg, wxT("Retry Failed"));
 		return false;
 	}
 
-	// Start a new Kad search with the same parameters
-	// Use the same search ID to keep results in the same tab
-	uint32 newSearchId = searchId;
-	wxString error = theApp->searchlist->StartNewSearch(&newSearchId, KadSearch, params);
+	// Convert to search::SearchParams
+	search::SearchParams params;
+	params.searchString = legacyParams.searchString;
+	params.strKeyword = legacyParams.strKeyword;
+	params.typeText = legacyParams.typeText;
+	params.extension = legacyParams.extension;
+	params.minSize = legacyParams.minSize;
+	params.maxSize = legacyParams.maxSize;
+	params.availability = legacyParams.availability;
+	params.searchType = search::ModernSearchType::KadSearch;
 
-	if (!error.IsEmpty()) {
+	// Start a new Kad search with the same parameters
+	wxString error;
+	uint32 newSearchId = search::UnifiedSearchManager::Instance().startSearch(params, error);
+
+	if (newSearchId == 0 || !error.IsEmpty()) {
 		// Retry failed - update state to show error
 		UpdateSearchState(page, parentDlg, wxT("Retry Failed"));
 		return false;

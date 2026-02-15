@@ -33,6 +33,7 @@
 #include "Packet.h"		// Needed for CPacket
 #include "PartFile.h"		// Needed for CPartFile
 #include "SearchList.h"		// Needed for CSearchList
+#include "search/UnifiedSearchManager.h"	// Needed for UnifiedSearchManager
 #include "MemFile.h"		// Needed for CMemFile
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "ServerList.h"		// Needed for CServerList
@@ -123,7 +124,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, uint32 ip, 
 				// process all search result packets
 
 				do{
-					theApp->searchlist->ProcessUDPSearchAnswer(packet, true, ip, port - 4);
+					search::UnifiedSearchManager::Instance().processUDPSearchAnswer(packet, true, ip, port - 4);
 
 					if (packet.GetPosition() + 2 < size) {
 						// An additional packet?

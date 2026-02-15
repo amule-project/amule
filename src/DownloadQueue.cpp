@@ -42,6 +42,7 @@
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "ED2KLink.h"		// Needed for CED2KFileLink
 #include "SearchList.h"		// Needed for CSearchFile
+#include "search/UnifiedSearchManager.h"	// Needed for UnifiedSearchManager
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "PartFile.h"		// Needed for CPartFile
 #include "Preferences.h"	// Needed for thePrefs
@@ -384,7 +385,7 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 		AddDebugLogLineN( logDownloadQueue, wxT("Tried to add download into invalid category.") );
 	}
 	Notify_DownloadCtrlAddFile( file );
-	theApp->searchlist->UpdateSearchFileByHash(file->GetFileHash());	// Update file in the search dialog if it's still open
+	search::UnifiedSearchManager::Instance().updateSearchFileByHash(file->GetFileHash());	// Update file in the search dialog if it's still open
 	AddLogLineC(CFormat(_("Downloading %s")) % file->GetFileName() );
 }
 

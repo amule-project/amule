@@ -29,6 +29,7 @@
 #include "ServerList.h"
 #include "Preferences.h"
 #include "ExternalConn.h"
+#include "search/UnifiedSearchManager.h"
 #include "SearchFile.h"
 #include "SearchList.h"
 #include "IPFilter.h"
@@ -523,7 +524,7 @@ namespace MuleNotify
 			theApp->amuledlg->m_searchwnd->KadSearchEnd(id);
 		}
 #endif
-		theApp->searchlist->SetKadSearchFinished();
+		search::UnifiedSearchManager::Instance().setKadSearchFinished();
 	}
 
 	void Search_Update_Sources(CSearchFile* result)

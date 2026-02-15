@@ -61,6 +61,7 @@
 #include "ED2KLink.h"		// Needed for CED2KLink
 #include "Packet.h"		// Needed for CTag
 #include "SearchList.h"		// Needed for CSearchFile
+#include "search/UnifiedSearchManager.h"	// Needed for UnifiedSearchManager
 #include "ClientList.h"		// Needed for clientlist
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
@@ -2249,7 +2250,7 @@ void CPartFile::Delete()
 		theApp->canceledfiles->Save();
 	}
 	AddDebugLogLineN(logPartFile, wxT("\tAdded to canceled file list"));
-	theApp->searchlist->UpdateSearchFileByHash(GetFileHash());	// Update file in the search dialog if it's still open
+	search::UnifiedSearchManager::Instance().updateSearchFileByHash(GetFileHash());	// Update file in the search dialog if it's still open
 
 	if (m_hpartfile.IsOpened()) {
 		m_hpartfile.Close();

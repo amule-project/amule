@@ -73,6 +73,11 @@ public:
      */
     virtual ~SearchTimeoutManager();
 
+    /**
+     * Get singleton instance
+     */
+    static SearchTimeoutManager& Instance();
+
     // Configuration
     /**
      * Set timeout for local searches (in milliseconds)

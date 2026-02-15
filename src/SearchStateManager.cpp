@@ -109,6 +109,7 @@ void SearchStateManager::UpdateResultCount(uint32_t searchId, size_t shown, size
 		SearchData& data = it->second;
 		data.shownCount = shown;
 		data.hiddenCount = hidden;
+		AddDebugLogLineC(logSearch, CFormat(wxT("SearchStateManager::UpdateResultCount: Search %u updated (shown=%zu, hidden=%zu, state=%d, retryCount=%d)")) % searchId % shown % hidden % (int)data.state % data.retryCount);
 
 		// Update state based on result count
 		if (shown > 0 || hidden > 0) {
@@ -159,9 +160,12 @@ void SearchStateManager::EndSearch(uint32_t searchId)
 
 		// Determine final state based on results
 		if (data.shownCount > 0 || data.hiddenCount > 0) {
-			// Results found - mark as completed
+			// Results found - mark as completed and reset retry count
 			shouldUpdateState = true;
 			hasResults = true;
+			// Reset retry count when results are found
+			data.retryCount = 0;
+			retryCount = 0;
 			AddDebugLogLineC(logSearch, CFormat(wxT("SearchStateManager::EndSearch: Search %u has results (shown=%zu, hidden=%zu)"))
 				% searchId % data.shownCount % data.hiddenCount);
 		} else {

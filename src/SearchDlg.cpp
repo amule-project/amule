@@ -136,7 +136,7 @@ CSearchDlg::CSearchDlg(wxWindow *pParent) : wxPanel(pParent, -1) {
   m_stateManager.RegisterObserver(this);
 
   // Set up search completion callback for UnifiedSearchManager
-  m_unifiedSearchManager.setSearchCompletedCallback(
+  GetUnifiedSearchManager().setSearchCompletedCallback(
     [this](uint32_t searchId, bool hasResults) {
       // Notify the search state manager that the search completed
       if (hasResults) {
@@ -288,7 +288,7 @@ void CSearchDlg::OnSearchClosing(wxBookCtrlEvent &evt) {
   long searchId = ctrl->GetSearchId();
 
   // Stop the search using UnifiedSearchManager
-  m_unifiedSearchManager.stopSearch(searchId);
+  GetUnifiedSearchManager().stopSearch(searchId);
 
   // Zero to avoid results added while destructing.
   ctrl->ShowResults(0);
@@ -644,7 +644,7 @@ void CSearchDlg::CreateNewTab(const wxString &searchString,
 
 void CSearchDlg::OnBnClickedStop(wxCommandEvent &WXUNUSED(evt)) {
   // Stop all active searches using UnifiedSearchManager
-  m_unifiedSearchManager.stopAllSearches();
+  GetUnifiedSearchManager().stopAllSearches();
   ResetControls();
 }
 
@@ -959,7 +959,7 @@ void CSearchDlg::OnBnClickedMore(wxCommandEvent &WXUNUSED(event)) {
       % searchId % searchType);
 
   wxString error;
-  bool success = m_unifiedSearchManager.requestMoreResults(searchId, error);
+  bool success = GetUnifiedSearchManager().requestMoreResults(searchId, error);
 
   if (!success) {
     wxMessageBox(CFormat(wxT("Failed to request more results:\n\n%s")) % error,
@@ -1167,7 +1167,7 @@ void CSearchDlg::StartNewSearch() {
       } else {
         // Search has completed, request more results
         wxString error;
-        m_unifiedSearchManager.requestMoreResults(existingSearchId, error);
+        GetUnifiedSearchManager().requestMoreResults(existingSearchId, error);
       }
 
       // Re-enable the start button (since we're not creating a new search)
@@ -1244,7 +1244,7 @@ void CSearchDlg::StartNewSearch() {
 
   // Start the search using UnifiedSearchManager
   wxString error;
-  uint32 real_id = m_unifiedSearchManager.startSearch(searchParams, error);
+  uint32 real_id = GetUnifiedSearchManager().startSearch(searchParams, error);
 
   if (!error.IsEmpty() || real_id == 0) {
     wxMessageBox(error.IsEmpty() ? _("Failed to start search") : error,
@@ -1360,6 +1360,7 @@ void CSearchDlg::OnSearchStateChanged(uint32_t searchId, SearchState state,
 
   // Update the tab label with state information and correct counts
   UpdateSearchStateWithCount(list, this, stateStr, shown, hidden);
+	AddDebugLogLineC(logSearch, CFormat(wxT("CSearchDlg::OnSearchStateChanged: Updated tab label for search %u (state=%d, shown=%zu, hidden=%zu)")) % searchId % (int)state % shown % hidden);
 }
 
 bool CSearchDlg::OnRetryRequested(uint32_t searchId) {
@@ -1586,7 +1587,7 @@ void CSearchDlg::OnTimeoutCheck(wxTimerEvent &event) {
           if (!isKadStillSearching) {
             // Kad search has finished in Kademlia subsystem
             // Check if we have results
-            search::SearchModel* searchModel = m_unifiedSearchManager.getSearchModel(searchId);
+            search::SearchModel* searchModel = GetUnifiedSearchManager().getSearchModel(searchId);
             if (searchModel) {
               size_t resultCount = searchModel->getResultCount();
               AddDebugLogLineC(logSearch, CFormat(wxT("SearchDlg::OnTimeoutCheck: Kad search %u finished in Kademlia, has %zu results"))
