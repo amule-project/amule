@@ -1,2 +1,0 @@
-/usr/bin/ar qc libmulesocket.a CMakeFiles/mulesocket.dir/LibSocket.cpp.o
-/usr/bin/ranlib libmulesocket.a

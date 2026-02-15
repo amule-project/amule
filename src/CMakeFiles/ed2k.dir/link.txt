@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/ed2k.dir/link.d CMakeFiles/ed2k.dir/ED2KLinkParser.cpp.o CMakeFiles/ed2k.dir/MagnetURI.cpp.o CMakeFiles/ed2k.dir/MuleCollection.cpp.o -o ed2k

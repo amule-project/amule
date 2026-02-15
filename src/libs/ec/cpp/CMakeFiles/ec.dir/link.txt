@@ -1,2 +1,0 @@
-/usr/bin/ar qc libec.a CMakeFiles/ec.dir/ECMuleSocket.cpp.o CMakeFiles/ec.dir/ECPacket.cpp.o CMakeFiles/ec.dir/ECSpecialTags.cpp.o CMakeFiles/ec.dir/ECSocket.cpp.o CMakeFiles/ec.dir/ECTag.cpp.o CMakeFiles/ec.dir/ECUInt128.cpp.o CMakeFiles/ec.dir/RemoteConnect.cpp.o
-/usr/bin/ranlib libec.a
