@@ -40,33 +40,26 @@ bool ED2KSearchPacketBuilder::CreateSearchPacket(const SearchParams& params, boo
     if (!theApp || !theApp->searchlist) {
 	return false;
     }
-    
-    // Convert to old parameter format
-    CSearchList::CSearchParams oldParams;
-    oldParams.searchString = params.searchString;
-    oldParams.strKeyword = params.strKeyword;
-    oldParams.typeText = params.typeText;
-    oldParams.extension = params.extension;
-    oldParams.minSize = params.minSize;
-    oldParams.maxSize = params.maxSize;
-    oldParams.availability = params.availability;
-    
+
+    // Create a mutable copy for the search (keyword may be modified by parser)
+    SearchParams mutableParams = params;
+
     // Determine search type
     ::SearchType type = static_cast<SearchType>(static_cast<int>(ModernSearchType::LocalSearch));
-    
-    // Use SearchList's CreateSearchData method
+
+    // Use SearchList's CreateSearchData method with search::SearchParams
     bool packetUsing64bit = false;
     CSearchList::CMemFilePtr data = theApp->searchlist->CreateSearchData(
-	oldParams, type, supports64bit, packetUsing64bit);
-    
+	mutableParams, type, supports64bit, packetUsing64bit);
+
     if (data.get() == NULL) {
 	return false;
     }
-    
+
     // Store packet data
     packetSize = data->GetLength();
     packetData = new uint8_t[packetSize];
-    
+
     // Add bounds checking - ensure we have valid data
     wxASSERT(packetSize > 0);
     if (packetSize == 0) {
@@ -74,9 +67,9 @@ bool ED2KSearchPacketBuilder::CreateSearchPacket(const SearchParams& params, boo
         packetData = NULL;
         return false;
     }
-    
+
     memcpy(packetData, data->GetRawBuffer(), packetSize);
-    
+
     return true;
 }
 

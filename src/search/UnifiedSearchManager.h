@@ -33,10 +33,20 @@
 #include <cstdint>
 #include <functional>
 #include <map>
+#include <vector>
+#include <list>
 
 // Forward declarations
 class CSearchFile;
 class CMD4Hash;
+class CMemFile;
+class CUpDownClient;
+class CTag;
+typedef std::vector<CSearchFile*> CSearchResultList;
+typedef std::list<CTag*> TagPtrList;
+namespace Kademlia {
+class CUInt128;
+}
 namespace search {
 class SearchController;
 class SearchControllerBase;
@@ -65,6 +75,11 @@ namespace search {
  */
 class UnifiedSearchManager {
 public:
+    /**
+     * Get singleton instance
+     */
+    static UnifiedSearchManager& Instance();
+
     /**
      * Constructor
      */
@@ -226,9 +241,146 @@ public:
     /**
      * Get the timeout manager
      *
-     * @return Reference to the timeout manager
+     * @return Reference to the timeout manager singleton
      */
-    SearchTimeoutManager& getTimeoutManager() { return m_timeoutManager; }
+    SearchTimeoutManager& getTimeoutManager() { return SearchTimeoutManager::Instance(); }
+
+    /**
+     * Get all active search IDs
+     *
+     * @return Vector of active search IDs
+     */
+    std::vector<uint32_t> getActiveSearchIds() const;
+
+    /**
+     * Get search progress (0-100)
+     *
+     * @param searchId Search ID
+     * @return Progress percentage
+     */
+    uint32_t getSearchProgress(uint32_t searchId) const;
+
+    /**
+     * Remove results for a search
+     *
+     * @param searchId Search ID (0xffffffff for all)
+     */
+    void removeResults(uint32_t searchId);
+
+    /**
+     * Add a file to download by hash
+     *
+     * @param hash File hash
+     * @param category Download category
+     */
+    void addFileToDownloadByHash(const CMD4Hash& hash, uint8_t category);
+
+    /**
+     * Set Kad search as finished
+     */
+    void setKadSearchFinished();
+
+    /**
+     * Get search results for a search ID
+     *
+     * @param searchId Search ID (0xffffffff for all results)
+     * @return Reference to result list
+     */
+    const CSearchResultList& getSearchResults(uint32_t searchId) const;
+
+    /**
+     * Get a search file by parent ID
+     *
+     * @param parentId Parent file ID
+     * @return Search file pointer, or nullptr if not found
+     */
+    CSearchFile* getSearchFileById(uint32_t parentId) const;
+
+    /**
+     * Update search file by hash (e.g., when download status changes)
+     *
+     * @param hash File hash to update
+     */
+    void updateSearchFileByHash(const CMD4Hash& hash);
+
+    /**
+     * Process a search answer from a server
+     *
+     * @param packet Packet data
+     * @param size Packet size
+     * @param optUTF8 Whether UTF8 is used
+     * @param serverIP Server IP
+     * @param serverPort Server port
+     */
+    void processSearchAnswer(const uint8_t* packet, uint32_t size, bool optUTF8,
+                             uint32_t serverIP, uint16_t serverPort);
+
+    /**
+     * Process a UDP search answer
+     *
+     * @param packet Memory file containing the data
+     * @param optUTF8 Whether UTF8 is used
+     * @param serverIP Server IP
+     * @param serverPort Server port
+     */
+    void processUDPSearchAnswer(const CMemFile& packet, bool optUTF8,
+                                uint32_t serverIP, uint16_t serverPort);
+
+    /**
+     * Process a Kad search keyword result
+     *
+     * @param searchID Search ID
+     * @param fileID File ID (Kad UInt128)
+     * @param name File name
+     * @param size File size
+     * @param type File type
+     * @param kadPublishInfo Publish info
+     * @param taglist Tag list
+     */
+    void processKadSearchKeyword(uint32_t searchID, const Kademlia::CUInt128* fileID,
+                                 const wxString& name, uint64_t size,
+                                 const wxString& type, uint32_t kadPublishInfo,
+                                 const TagPtrList& taglist);
+
+    /**
+     * End a local search
+     */
+    void localSearchEnd();
+
+    /**
+     * Process a shared file list (from another client)
+     *
+     * @param packet Packet data
+     * @param size Packet size
+     * @param sender Sending client
+     * @param moreResultsAvailable Output parameter for more results flag
+     * @param directory Directory
+     */
+    void processSharedFileList(const uint8_t* packet, uint32_t size,
+                               CUpDownClient* sender, bool* moreResultsAvailable,
+                               const wxString& directory);
+
+    /**
+     * Add a search result to the list
+     *
+     * @param result Search result to add
+     * @param bClientResponse Whether this is a client response
+     */
+    void addToList(CSearchFile* result, bool bClientResponse = false);
+    /**
+     * Map Kad search ID to internal search ID
+     *
+     * @param kadSearchId Kad search ID
+     * @param searchId Internal search ID
+     */
+    void mapKadSearchId(uint32_t kadSearchId, uint32_t searchId);
+
+    /**
+     * Remove Kad search ID mapping
+     *
+     * @param kadSearchId Kad search ID
+     */
+    void removeKadSearchIdMapping(uint32_t kadSearchId);
 
 private:
     /**
@@ -261,8 +413,7 @@ private:
     // Search completion callback
     std::function<void(uint32_t, bool)> m_onSearchCompleted;
 
-    // Timeout manager for search timeout detection
-    SearchTimeoutManager m_timeoutManager;
+    // Timeout manager is now a singleton accessed via SearchTimeoutManager::Instance()
 
     // Mutex for thread safety
     mutable wxMutex m_mutex;

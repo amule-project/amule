@@ -32,10 +32,14 @@
 #include "NetworkPacketHandler.h"
 #include "SearchTimeoutManager.h"
 #include "../amule.h"
+#include "../SearchList.h"
 #include "../Logger.h"
 #include "../kademlia/kademlia/Kademlia.h"
 #include "../kademlia/kademlia/SearchManager.h"
 #include "../SearchFile.h"
+#include "../MemFile.h"
+#include "../updownclient.h"
+#include "../Tag.h"
 #include <common/Format.h>
 
 namespace search {
@@ -44,10 +48,16 @@ namespace search {
 
 namespace search {
 
+UnifiedSearchManager& UnifiedSearchManager::Instance()
+{
+    static UnifiedSearchManager instance;
+    return instance;
+}
+
 UnifiedSearchManager::UnifiedSearchManager()
 {
     // Set timeout callback to handle search timeouts
-    m_timeoutManager.setTimeoutCallback([this](uint32_t searchId, SearchTimeoutManager::SearchType type, const wxString& reason) {
+    SearchTimeoutManager::Instance().setTimeoutCallback([this](uint32_t searchId, SearchTimeoutManager::SearchType type, const wxString& reason) {
         AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Search %u timed out (type=%d): %s"))
             % searchId % (int)type % reason);
         
@@ -150,7 +160,7 @@ uint32_t UnifiedSearchManager::startSearch(const SearchParams& params, wxString&
     } else if (preparedParams.searchType == ModernSearchType::KadSearch) {
         timeoutType = SearchTimeoutManager::KadSearch;
     }
-    m_timeoutManager.registerSearch(searchId, timeoutType);
+    SearchTimeoutManager::Instance().registerSearch(searchId, timeoutType);
 
     AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Search started with ID=%u, Type=%d"))
         % searchId % (int)preparedParams.searchType);
@@ -167,13 +177,14 @@ void UnifiedSearchManager::stopSearch(uint32_t searchId)
         it->second->stopSearch();
         AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Search stopped ID=%u"))
             % searchId);
+        m_controllers.erase(it);
     }
 
     // Unregister search ID from NetworkPacketHandler
     NetworkPacketHandler::Instance().UnregisterSearchID(searchId);
 
     // Unregister search from timeout manager
-    m_timeoutManager.unregisterSearch(searchId);
+    SearchTimeoutManager::Instance().unregisterSearch(searchId);
 }
 
 void UnifiedSearchManager::stopAllSearches()
@@ -440,6 +451,152 @@ void UnifiedSearchManager::cleanupSearch(uint32_t searchId)
         m_controllers.erase(it);
         AddDebugLogLineC(logSearch, CFormat(wxT("UnifiedSearchManager: Cleaned up search ID=%u"))
             % searchId);
+    }
+}
+
+std::vector<uint32_t> UnifiedSearchManager::getActiveSearchIds() const
+{
+    wxMutexLocker lock(m_mutex);
+
+    std::vector<uint32_t> ids;
+    ids.reserve(m_controllers.size());
+
+    for (const auto& pair : m_controllers) {
+        if (pair.second && pair.second->getState() == SearchState::Searching) {
+            ids.push_back(pair.first);
+        }
+    }
+
+    return ids;
+}
+
+uint32_t UnifiedSearchManager::getSearchProgress(uint32_t searchId) const
+{
+    wxMutexLocker lock(m_mutex);
+
+    auto it = m_controllers.find(searchId);
+    if (it != m_controllers.end() && it->second) {
+        return it->second->getProgress();
+    }
+
+    return 0;
+}
+
+void UnifiedSearchManager::removeResults(uint32_t searchId)
+{
+    // Delegate to CSearchList for result removal
+    if (theApp && theApp->searchlist) {
+        theApp->searchlist->RemoveResults(searchId);
+    }
+}
+
+void UnifiedSearchManager::addFileToDownloadByHash(const CMD4Hash& hash, uint8_t category)
+{
+    // Delegate to CSearchList for download
+    if (theApp && theApp->searchlist) {
+        theApp->searchlist->AddFileToDownloadByHash(hash, category);
+    }
+}
+
+void UnifiedSearchManager::setKadSearchFinished()
+{
+    if (theApp && theApp->searchlist) {
+        theApp->searchlist->SetKadSearchFinished();
+    }
+}
+
+const CSearchResultList& UnifiedSearchManager::getSearchResults(uint32_t searchId) const
+{
+    static CSearchResultList emptyList;
+    if (theApp && theApp->searchlist) {
+        return theApp->searchlist->GetSearchResults(searchId);
+    }
+    return emptyList;
+}
+
+CSearchFile* UnifiedSearchManager::getSearchFileById(uint32_t parentId) const
+{
+    // Search through all results to find the file with the given ECID
+    // This is used by the remote GUI to find parent files
+    if (theApp && theApp->searchlist) {
+        // Get all results and search for the parent
+        const CSearchResultList& allResults = theApp->searchlist->GetSearchResults(0xffffffff);
+        for (CSearchFile* file : allResults) {
+            if (file && file->ECID() == parentId) {
+                return file;
+            }
+        }
+    }
+    return nullptr;
+}
+
+void UnifiedSearchManager::updateSearchFileByHash(const CMD4Hash& hash)
+{
+    if (theApp && theApp->searchlist) {
+        theApp->searchlist->UpdateSearchFileByHash(hash);
+    }
+}
+
+void UnifiedSearchManager::processSearchAnswer(const uint8_t* packet, uint32_t size, bool optUTF8,
+                                               uint32_t serverIP, uint16_t serverPort)
+{
+    if (theApp && theApp->searchlist) {
+        theApp->searchlist->ProcessSearchAnswer(packet, size, optUTF8, serverIP, serverPort);
+    }
+}
+
+void UnifiedSearchManager::processUDPSearchAnswer(const CMemFile& packet, bool optUTF8,
+                                                  uint32_t serverIP, uint16_t serverPort)
+{
+    if (theApp && theApp->searchlist) {
+        theApp->searchlist->ProcessUDPSearchAnswer(packet, optUTF8, serverIP, serverPort);
+    }
+}
+
+void UnifiedSearchManager::processKadSearchKeyword(uint32_t searchID, const Kademlia::CUInt128* fileID,
+                                                   const wxString& name, uint64_t size,
+                                                   const wxString& type, uint32_t kadPublishInfo,
+                                                   const TagPtrList& taglist)
+{
+    if (theApp && theApp->searchlist) {
+        theApp->searchlist->KademliaSearchKeyword(searchID, fileID, name, size, type, kadPublishInfo, taglist);
+    }
+}
+
+void UnifiedSearchManager::localSearchEnd()
+{
+    if (theApp && theApp->searchlist) {
+        theApp->searchlist->LocalSearchEnd();
+    }
+}
+
+void UnifiedSearchManager::processSharedFileList(const uint8_t* packet, uint32_t size,
+                                                 CUpDownClient* sender, bool* moreResultsAvailable,
+                                                 const wxString& directory)
+{
+    if (theApp && theApp->searchlist) {
+        theApp->searchlist->ProcessSharedFileList(packet, size, sender, moreResultsAvailable, directory);
+    }
+}
+
+void UnifiedSearchManager::addToList(CSearchFile* result, bool bClientResponse)
+{
+    if (theApp && theApp->searchlist) {
+        theApp->searchlist->AddToList(result, bClientResponse);
+    }
+}
+
+void UnifiedSearchManager::mapKadSearchId(uint32_t kadSearchId, uint32_t searchId)
+{
+    if (theApp && theApp->searchlist) {
+        theApp->searchlist->mapKadSearchId(kadSearchId, searchId);
+    }
+}
+
+void UnifiedSearchManager::removeKadSearchIdMapping(uint32_t kadSearchId)
+{
+    if (theApp && theApp->searchlist) {
+        theApp->searchlist->removeKadSearchIdMapping(kadSearchId);
     }
 }
 

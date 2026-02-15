@@ -29,6 +29,7 @@
 #include "SearchPackageValidator.h"
 #include "SearchResultRouter.h"
 #include "SearchLogging.h"
+#include "UnifiedSearchManager.h"
 #include "SearchIdGenerator.h"
 #include "../amule.h"
 #include "../SearchFile.h"
@@ -57,7 +58,7 @@ KadSearchController::~KadSearchController()
         uint32_t kadSearchId = m_kadSearch->GetSearchID();
         // Remove the Kad search ID mapping
         if (theApp && theApp->searchlist) {
-            theApp->searchlist->removeKadSearchIdMapping(kadSearchId);
+            UnifiedSearchManager::Instance().removeKadSearchIdMapping(kadSearchId);
         }
         Kademlia::CSearchManager::StopSearch(kadSearchId, false);
         m_kadSearch = nullptr;
@@ -144,7 +145,7 @@ void KadSearchController::startSearch(const SearchParams& params)
 
 		// Map Kad search ID to original search ID for result routing
 		if (theApp->searchlist) {
-		    theApp->searchlist->mapKadSearchId(kadSearchId, searchId);
+		    UnifiedSearchManager::Instance().mapKadSearchId(kadSearchId, searchId);
 		}
 
 		// Store the Kademlia search object for later reference
@@ -177,7 +178,7 @@ void KadSearchController::stopSearch()
         uint32_t kadSearchId = m_kadSearch->GetSearchID();
         // Remove the Kad search ID mapping
         if (theApp && theApp->searchlist) {
-            theApp->searchlist->removeKadSearchIdMapping(kadSearchId);
+            UnifiedSearchManager::Instance().removeKadSearchIdMapping(kadSearchId);
         }
         // CSearchManager owns the search object and will delete it
         Kademlia::CSearchManager::StopSearch(kadSearchId, false);

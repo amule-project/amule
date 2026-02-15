@@ -66,47 +66,24 @@ bool ED2KSearchHelper::CreateSearchPacket(const SearchParams& params, ModernSear
 
 	// Convert ModernSearchType to legacy SearchType
 	SearchType legacyType = static_cast<SearchType>(static_cast<int>(searchType));
-	
-	// Convert SearchParams to CSearchParams
-	CSearchList::CSearchParams legacyParams;
-	legacyParams.searchString = params.searchString;
-	legacyParams.strKeyword = params.strKeyword;
-	legacyParams.typeText = params.typeText;
-	legacyParams.extension = params.extension;
-	legacyParams.minSize = params.minSize;
-	legacyParams.maxSize = params.maxSize;
-	legacyParams.availability = params.availability;
-	legacyParams.searchType = legacyType;
-	
-	// Use the existing CreateSearchData function from SearchList
+
+	// Create a mutable copy for the search (keyword may be modified by parser)
+	SearchParams mutableParams = params;
+
+	// Use the new CreateSearchData overload that accepts search::SearchParams directly
 	bool supports64bit = SupportsLargeFiles();
 	bool packetUsing64bit = false;
-	legacyParams.searchString = params.searchString;
-	legacyParams.strKeyword = params.strKeyword;
-	legacyParams.typeText = params.typeText;
-	legacyParams.extension = params.extension;
-	legacyParams.minSize = params.minSize;
-	legacyParams.maxSize = params.maxSize;
-	legacyParams.availability = params.availability;
-	legacyParams.searchType = legacyType;
-	
-	// Use the existing CreateSearchData function from SearchList
-	// Note: This requires access to the SearchList instance
-	// For now, we'll use the global application instance
-	if (!theApp || !theApp->searchlist) {
-		return false;
-	}
-	
-	CSearchList::CMemFilePtr data = theApp->searchlist->CreateSearchData(legacyParams, legacyType, supports64bit, packetUsing64bit);
-	
+
+	CSearchList::CMemFilePtr data = theApp->searchlist->CreateSearchData(mutableParams, legacyType, supports64bit, packetUsing64bit);
+
 	if (!data.get()) {
 		return false;
 	}
-	
+
 	// Allocate memory for the packet data
 	packetSize = data->GetLength();
 	packetData = new uint8_t[packetSize];
-	
+
 	// Add bounds checking - ensure we have valid data
 	wxASSERT(packetSize > 0);
 	if (packetSize == 0) {
@@ -114,9 +91,9 @@ bool ED2KSearchHelper::CreateSearchPacket(const SearchParams& params, ModernSear
 		packetData = NULL;
 		return false;
 	}
-	
+
 	memcpy(packetData, data->GetRawBuffer(), packetSize);
-	
+
 	return true;
 }
 

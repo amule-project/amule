@@ -71,6 +71,9 @@ public:
     virtual std::vector<CSearchFile*> getResults() const = 0;
     virtual size_t getResultCount() const = 0;
 
+    // Progress access
+    virtual uint32_t getProgress() const = 0;
+
     // Callback setters with move semantics
     void setOnSearchStarted(SearchStartedCallback callback) { m_onSearchStarted = std::move(callback); }
     void setOnSearchCompleted(SearchCompletedCallback callback) { m_onSearchCompleted = std::move(callback); }

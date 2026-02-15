@@ -72,36 +72,24 @@ bool KadSearchHelper::CreateSearchPacket(const SearchParams& params,
 		return false;
 	}
 
-	// Convert to old parameter format
-	CSearchList::CSearchParams oldParams;
-	oldParams.searchString = params.searchString;
-	oldParams.strKeyword = params.strKeyword;
-	oldParams.typeText = params.typeText;
-	oldParams.extension = params.extension;
-	oldParams.minSize = params.minSize;
-	oldParams.maxSize = params.maxSize;
-	oldParams.availability = params.availability;
+	// Create a mutable copy for the search (keyword may be modified by parser)
+	SearchParams mutableParams = params;
 
-	// Use the existing CreateSearchData function from SearchList
+	// Use the new CreateSearchData overload that accepts search::SearchParams directly
 	// For Kad search, we always support 64-bit
 	bool supports64bit = true;
 	bool packetUsing64bit = false;
-	
-	// Use the global application instance to access SearchList
-	if (!theApp || !theApp->searchlist) {
-		return false;
-	}
-	
-	CSearchList::CMemFilePtr data = theApp->searchlist->CreateSearchData(oldParams, KadSearch, supports64bit, packetUsing64bit);
-	
+
+	CSearchList::CMemFilePtr data = theApp->searchlist->CreateSearchData(mutableParams, KadSearch, supports64bit, packetUsing64bit);
+
 	if (!data.get()) {
 		return false;
 	}
-	
+
 	// Allocate memory for the packet data
 	packetSize = data->GetLength();
 	packetData = new uint8_t[packetSize];
-	
+
 	// Add bounds checking - ensure we have valid data
 	wxASSERT(packetSize > 0);
 	if (packetSize == 0) {
@@ -109,9 +97,9 @@ bool KadSearchHelper::CreateSearchPacket(const SearchParams& params,
 		packetData = NULL;
 		return false;
 	}
-	
+
 	memcpy(packetData, data->GetRawBuffer(), packetSize);
-	
+
 	return true;
 }
 

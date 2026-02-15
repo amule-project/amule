@@ -56,6 +56,7 @@ there client on the eMule forum..
 #include "../../DownloadQueue.h"
 #include "../../PartFile.h"
 #include "../../SearchList.h"
+#include "../../search/UnifiedSearchManager.h"
 #include "../../MemFile.h"
 #include "../../ClientList.h"
 #include "../../updownclient.h"
@@ -1096,7 +1097,7 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 	}
 
 	m_answers++;
-	theApp->searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, publishInfo, taglist);
+	search::UnifiedSearchManager::Instance().processKadSearchKeyword(m_searchID, &answer, name, size, type, publishInfo, taglist);
 
 	// Free tags memory
 	deleteTagPtrListEntries(&taglist);

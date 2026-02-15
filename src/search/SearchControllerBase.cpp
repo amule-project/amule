@@ -25,6 +25,7 @@
 
 #include "SearchControllerBase.h"
 #include "SearchLogging.h"
+#include "UnifiedSearchManager.h"
 #include "../SearchFile.h"
 #include "../Logger.h"
 #include "../amule.h"
@@ -129,6 +130,16 @@ size_t SearchControllerBase::getResultCount() const
     return m_model->getResultCount();
 }
 
+uint32_t SearchControllerBase::getProgress() const
+{
+    // Default implementation - derived classes can override for more accurate progress
+    // Return progress from CSearchList if available
+    if (theApp && theApp->searchlist) {
+        return UnifiedSearchManager::Instance().getSearchProgress(m_model->getSearchId());
+    }
+    return 0;
+}
+
 void SearchControllerBase::handleResult(uint32_t searchId, CSearchFile* result)
 {
     // Only handle results for our search
@@ -146,7 +157,7 @@ void SearchControllerBase::handleResult(uint32_t searchId, CSearchFile* result)
 	// Create a copy for SearchList (SearchModel owns the original)
 	CSearchFile* resultCopy = new CSearchFile(*result);
 	resultCopy->SetSearchID(searchId);
-	theApp->searchlist->AddToList(resultCopy, false);
+	UnifiedSearchManager::Instance().addToList(resultCopy, false);
 	// Use the copy for UI notification to ensure consistency
 	resultForUI = resultCopy;
     }
@@ -175,7 +186,7 @@ void SearchControllerBase::handleResults(uint32_t searchId, const std::vector<CS
 	    // Create a copy for SearchList (SearchModel owns the original)
 	    CSearchFile* resultCopy = new CSearchFile(*result);
 	    resultCopy->SetSearchID(searchId);
-	    theApp->searchlist->AddToList(resultCopy, false);
+	    UnifiedSearchManager::Instance().addToList(resultCopy, false);
 	    // Use the copy for UI notification to ensure consistency
 	    resultsForUI.push_back(resultCopy);
 	}

@@ -24,6 +24,7 @@
 //
 
 #include "NetworkPacketHandler.h"
+#include "UnifiedSearchManager.h"
 #include "../SearchFile.h"
 #include "../MemFile.h"
 #include "../SearchList.h"
@@ -59,7 +60,7 @@ size_t NetworkPacketHandler::ProcessED2KTCPSearchResult(
     // For now, delegate to legacy CSearchList for compatibility
     // TODO: Migrate to unified packet processing
     if (theApp && theApp->searchlist) {
-        theApp->searchlist->ProcessSearchAnswer(packet, size, optUTF8, serverIP, serverPort);
+        search::UnifiedSearchManager::Instance().processSearchAnswer(packet, size, optUTF8, serverIP, serverPort);
         return 1; // Return count (legacy doesn't track this)
     }
     return 0;
@@ -75,7 +76,7 @@ size_t NetworkPacketHandler::ProcessED2KUDPSearchResult(
     // TODO: Migrate to unified packet processing
     CMemFile dataFile(const_cast<uint8_t*>(packet), 1024);
     if (theApp && theApp->searchlist) {
-        theApp->searchlist->ProcessUDPSearchAnswer(dataFile, optUTF8, serverIP, serverPort);
+        search::UnifiedSearchManager::Instance().processUDPSearchAnswer(dataFile, optUTF8, serverIP, serverPort);
         return 1; // Return count (legacy doesn't track this)
     }
     return 0;
@@ -98,7 +99,7 @@ size_t NetworkPacketHandler::ProcessKadSearchResult(
         for (auto* tag : tagList) {
             tagListConverted.push_back(reinterpret_cast<CTag*>(tag));
         }
-        theApp->searchlist->KademliaSearchKeyword(searchID, fileID, name, size, type, kadPublishInfo, tagListConverted);
+        search::UnifiedSearchManager::Instance().processKadSearchKeyword(searchID, fileID, name, size, type, kadPublishInfo, tagListConverted);
         return 1; // Return count (legacy doesn't track this)
     }
     return 0;

@@ -27,6 +27,7 @@
 #include "SearchController.h"
 #include "SearchResultHandler.h"
 #include "SearchLogging.h"
+#include "UnifiedSearchManager.h"
 #include "../Logger.h"
 #include <common/Format.h>
 #include "../amule.h"
@@ -84,7 +85,7 @@ bool SearchResultRouter::RouteResult(uint32_t searchId, CSearchFile* result)
     // Add result to SearchList for display
     if (theApp && theApp->searchlist) {
         result->SetSearchID(searchId);
-        theApp->searchlist->AddToList(result, false);
+        UnifiedSearchManager::Instance().addToList(result, false);
         return true;
     }
     // Clean up the result since no one will handle it
@@ -118,7 +119,7 @@ size_t SearchResultRouter::RouteResults(uint32_t searchId, const std::vector<CSe
     if (theApp && theApp->searchlist) {
         for (CSearchFile* result : results) {
             result->SetSearchID(searchId);
-            theApp->searchlist->AddToList(result, false);
+            UnifiedSearchManager::Instance().addToList(result, false);
         }
         return results.size();
     }
