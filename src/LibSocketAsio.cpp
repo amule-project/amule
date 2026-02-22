@@ -43,6 +43,8 @@
 #include <algorithm>	// Needed for std::min - Boost up to 1.54 fails to compile with MSVC 2013 otherwise
 
 #include <boost/asio.hpp>
+#include <boost/asio/deadline_timer.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/bind.hpp>
 #include <boost/version.hpp>
 
