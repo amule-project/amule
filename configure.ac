@@ -318,6 +318,7 @@ AC_LANG_POP([C++])
 dnl Sets gettext version.
 dnl AM_GNU_GETTEXT_VERSION *must not* be moved away from configure.ac!
 AM_GNU_GETTEXT_VERSION(0.11.5)
+AM_GNU_GETTEXT([no-libtool], [need-ngettext])
 MULE_CHECK_NLS
 AS_IF([test x$USE_INCLUDED_LIBINTL = xyes], [AC_CONFIG_COMMANDS([intl], [[
 	test -d intl || mkdir intl
