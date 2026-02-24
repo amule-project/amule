@@ -31,6 +31,7 @@
 #include <common/Format.h>		// Needed for CFormat
 #include "CompilerSpecific.h"		// Needed for __FUNCTION__
 
+#include <cstring>              // For std::memcpy
 
 #define CHECK_BOM(size, x) ((size >= 3)  && (x[0] == (char)0xEF) && (x[1] == (char)0xBB) && (x[2] == (char)0xBF))
 
@@ -189,6 +190,10 @@ float CFileDataIO::ReadFloat() const
 {
 	float retVal;
 	Read(&retVal, sizeof(float));
+	uint32_t toswap{};
+	std::memcpy(&toswap, &retVal, sizeof(toswap));
+	toswap = ENDIAN_SWAP_32(toswap);
+	std::memcpy(&retVal, &toswap, sizeof(retVal));
 	return retVal;
 }
 
@@ -306,6 +311,10 @@ void CFileDataIO::WriteHash(const CMD4Hash& value)
 
 void CFileDataIO::WriteFloat(float value)
 {
+	uint32_t toswap{};
+	std::memcpy(&toswap, &value, sizeof(toswap));
+	toswap = ENDIAN_SWAP_32(toswap);
+	std::memcpy(&value, &toswap, sizeof(value));
 	Write(&value, sizeof(float));
 }
 

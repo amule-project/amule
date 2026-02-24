@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.13)
+cmake_minimum_required (VERSION 3.5)
 project (amule)
 set (MIN_BOOST_VERSION 1.47)
 set (MIN_CRYPTOPP_VERSION 5.6)
@@ -131,6 +131,10 @@ if (BUILD_REMOTEGUI)
 		DESTINATION "${CMAKE_INSTALL_DATADIR}/applications"
 	)
 endif()
+
+install (FILES org.amule.amule.metainfo.xml
+	DESTINATION "${CMAKE_INSTALL_DATADIR}/metainfo"
+)
 
 if (ENABLE_NLS)
 	include (FindGettext)

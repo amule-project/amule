@@ -55,6 +55,7 @@
 #endif
 
 #include <vector>
+#include <exception>
 
 
 /**

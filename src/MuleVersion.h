@@ -70,9 +70,9 @@ inline wxString GetMuleVersion()
 
 // Figure out the toolkit used by wxWidgets...
 #if defined(__WXGTK__)
-#	if defined(__WXGTK30__)
+#	if defined(__WXGTK3__)
 #		define MULEVERSION_WXTOOLKIT	wxT("GTK3")
-#	elif defined(__WXGTK20__)
+#	elif defined(__WXGTK2__)
 #		define MULEVERSION_WXTOOLKIT	wxT("GTK2")
 #	else
 #		define MULEVERSION_WXTOOLKIT	wxT("GTK")
