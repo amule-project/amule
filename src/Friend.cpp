@@ -39,12 +39,12 @@ void CFriend::Init()
 
 
 CFriend::CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, const wxString& tm_strName)
+	: m_UserHash(userhash)
 {
 	m_dwLastSeen = tm_dwLastSeen;
 	m_dwLastUsedIP = tm_dwLastUsedIP;
 	m_nLastUsedPort = tm_nLastUsedPort;
 	m_dwLastChatted = tm_dwLastChatted;
-	m_UserHash = userhash;
 
 	if (tm_strName.IsEmpty()) {
 		m_strName = wxT("?");

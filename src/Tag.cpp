@@ -37,10 +37,10 @@
 // CTag
 
 CTag::CTag(const wxString& Name)
+	: m_Name(Name)
 {
 	m_uType = 0;
 	m_uName = 0;
-	m_Name = Name;
 	m_uVal = 0;
 	m_nSize = 0;
 }
@@ -54,10 +54,10 @@ CTag::CTag(uint8 uName)
 }
 
 CTag::CTag(const CTag& rTag)
+	: m_Name(rTag.m_Name)
 {
 	m_uType = rTag.m_uType;
 	m_uName = rTag.m_uName;
-	m_Name = rTag.m_Name;
 	m_nSize = 0;
 	if (rTag.IsStr()) {
 		m_pstrVal = new wxString(rTag.GetStr());
