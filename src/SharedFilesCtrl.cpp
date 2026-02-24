@@ -477,7 +477,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 
 	if ( highlighted ) {
 		CMuleColour newcol(GetFocus() ? wxSYS_COLOUR_HIGHLIGHT : wxSYS_COLOUR_BTNSHADOW);
-		dc->SetBackground(newcol/*.Blend(125)*/.GetBrush());
+		dc->SetBackground(newcol.Blend(125).GetBrush());
 		dc->SetTextForeground( CMuleColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		// The second blending goes over the first one.
 		dc->SetPen(newcol.Blend(65).GetPen());
