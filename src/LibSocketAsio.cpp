@@ -134,6 +134,7 @@ public:
 	{
 		delete[] m_readBuffer;
 		delete[] m_sendBuffer;
+		delete m_socket;
 	}
 
 	void Notify(bool notify)
