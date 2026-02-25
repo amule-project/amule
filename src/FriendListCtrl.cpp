@@ -28,6 +28,7 @@
 
 #include <common/MenuIDs.h>
 #include <common/MacrosProgramSpecific.h>
+#include "common/DimensionSafety.h"
 
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -57,7 +58,7 @@ END_EVENT_TABLE()
 CFriendListCtrl::CFriendListCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags)
 : CMuleListCtrl(parent, id, pos, siz, flags)
 {
-  InsertColumn(0, _("Username"), wxLIST_FORMAT_LEFT, siz.GetWidth() - 4);
+  InsertColumn(0, _("Username"), wxLIST_FORMAT_LEFT, DimensionSafety::SafeDimension(siz.GetWidth(), 4));
 }
 
 CFriendListCtrl::~CFriendListCtrl()

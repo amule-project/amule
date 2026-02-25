@@ -146,6 +146,35 @@ public:
 		RawPokeUInt64( m_hash + 8,		0 );
 	}
 
+	/**
+	 * Returns true if the hash appears to be corrupted.
+	 *
+	 * @return True if the hash shows signs of corruption, false otherwise.
+	 *
+	 * This function checks for common corruption patterns:
+	 * - Empty hash (all zeros)
+	 * - First 8 bytes all zeros (partial corruption from truncated packet)
+	 * - Last 8 bytes all zeros (partial corruption from truncated packet)
+	 */
+	bool IsCorrupted() const {
+		// Check if completely empty
+		if (IsEmpty()) {
+			return true;
+		}
+
+		// Check for partial corruption - all zeros in first or last half
+		// This happens when packets are truncated and ReadHash() doesn't
+		// read all 16 bytes, leaving some bytes as zero from Clear()
+		bool firstHalfZero = true;
+		bool lastHalfZero = true;
+		for (int i = 0; i < 8; ++i) {
+			if (m_hash[i] != 0) firstHalfZero = false;
+			if (m_hash[i + 8] != 0) lastHalfZero = false;
+		}
+
+		return (firstHalfZero || lastHalfZero);
+	}
+
 
 	/**
 	 * Decodes a 32 char long hexadecimal representation of a MD4 hash.

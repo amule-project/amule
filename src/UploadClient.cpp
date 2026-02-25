@@ -370,7 +370,7 @@ void CUpDownClient::CreatePackedPackets(const uint8_t* buffer, uint32 togo, Requ
 		data.WriteUInt32(newsize);
 		char *tempbuf = new char[nPacketSize];
 		memfile.Read(tempbuf, nPacketSize);
-		data.Write(tempbuf,nPacketSize);
+		data.Write(tempbuf, nPacketSize);
 		delete [] tempbuf;
 		CPacket* packet = new CPacket(data, OP_EMULEPROT, (isLargeBlock ? OP_COMPRESSEDPART_I64 : OP_COMPRESSEDPART));
 

@@ -69,6 +69,7 @@ CUInt128::CUInt128(const CUInt128 &value, unsigned numBits)
 	}
 
 	// Pad with random bytes
+	// NOTE: CUInt128 has 4 uint32 chunks (128 bits), so we need to pad up to index 3
 	for (unsigned i = numULONGs; i < 4; i++) {
 		Set32BitChunk(i, rand());
 	}

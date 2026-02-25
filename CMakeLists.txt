@@ -1,5 +1,15 @@
-cmake_minimum_required (VERSION 3.5)
-project (amule)
+cmake_minimum_required(VERSION 3.20)
+project(amule)
+
+# Modern C++ configuration
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Optional flag to disable 'register' keyword warnings
+option(DISABLE_REGISTER_WARNING "Disable warnings about deprecated 'register' keyword" OFF)
+if(DISABLE_REGISTER_WARNING AND (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang"))
+    add_compile_options(-Wno-register)
 set (MIN_BOOST_VERSION 1.47)
 set (MIN_CRYPTOPP_VERSION 5.6)
 set (MIN_GDLIB_VERSION 2.0.0)
@@ -19,28 +29,71 @@ if (EXISTS "${CMAKE_SOURCE_DIR}/.git")
 	set (DEFAULT_BUILD_TYPE "Debug")
 endif()
 
-# Set the possible values of build type for cmake-gui
-if (CMAKE_CONFIGURATION_TYPES)
-	set (CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE
-		STRING "Semicolon separated list of supported configuration types, only supports debug and release, anything else will be ignored" FORCE
-	)
-
-	set_property (CACHE CMAKE_CONFIGURATION_TYPES PROPERTY STRINGS
-		"Debug" "Release"
-	)
+# Coroutine support check
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    include(CheckCXXCompilerFlag)
+    check_cxx_compiler_flag(-fcoroutines HAS_COROUTINES)
+    if(HAS_COROUTINES)
+        add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fcoroutines>)
+        add_compile_definitions(USE_CPP20 HAS_COROUTINES)
+    else()
+        message(WARNING "Compiler does not support coroutines")
+    endif()
 endif()
 
-if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-	message (STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
-	set (CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE
-		STRING "Choose the type of build." FORCE
-	)
+# Suppress 'register' keyword warnings in generated C++ lexer files
+# if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+#    add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-Wno-register>")
+# endif()
+
+# Package configuration
+set(MIN_BOOST_VERSION 1.47)
+set(MIN_CRYPTOPP_VERSION 5.6)
+set(MIN_GDLIB_VERSION 2.0.0)
+set(MIN_WX_VERSION 3.1.0)
+set(PACKAGE "amule")
+set(PACKAGE_BUGREPORT "admin@amule.org")
+set(PACKAGE_NAME "aMule")
+set(PACKAGE_STRING "aMule SVN")
+set(PACKAGE_TARNAME "amule")
+set(PACKAGE_URL "")
+set(PACKAGE_VERSION "SVN")
+set(VERSION "GIT")
+set(DEFAULT_BUILD_TYPE "Release")
+set(RECONF_COMMAND ${CMAKE_COMMAND})
+
+if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
+    set(DEFAULT_BUILD_TYPE "Debug")
+endif()
+
+# Set the possible values of build type for cmake-gui
+if(CMAKE_CONFIGURATION_TYPES)
+    set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE
+        STRING "Semicolon separated list of supported configuration types, only supports debug and release, anything else will be ignored" FORCE
+    )
+
+    set_property(CACHE CMAKE_CONFIGURATION_TYPES PROPERTY STRINGS
+        "Debug" "Release"
+    )
+endif()
+
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
+    set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE
+        STRING "Choose the type of build." FORCE
+    )
 endif()
 
 include (cmake/CmDaB.cmake)
 include (cmake/manpage_install.cmake)
 include (cmake/options.cmake)
 include (cmake/search-dirs.cmake)
+
+# ICU for better encoding detection
+option(ENABLE_ICU "Enable ICU for better encoding detection" ON)
+if(ENABLE_ICU)
+    include(cmake/icu.cmake)
+endif()
 
 if (BUILD_AMULECMD OR BUILD_WEBSERVER)
 	include (cmake/FindReadline.cmake)
@@ -64,7 +117,7 @@ if (BUILD_WEBSERVER)
 endif()
 
 if (ENABLE_BOOST)
-	include (cmake/boost.cmake)
+    include (cmake/boost.cmake)
 endif()
 
 if (ENABLE_IP2COUNTRY)
@@ -112,6 +165,13 @@ configure_file (
 	config.h.cm
 	config.h
 )
+
+# Search window debug logging
+if(ENABLE_SEARCH_WINDOW_DEBUG)
+	add_compile_definitions(ENABLE_SEARCH_WINDOW_DEBUG=1)
+else()
+	add_compile_definitions(ENABLE_SEARCH_WINDOW_DEBUG=0)
+endif()
 
 if (WIN32)
 	configure_file (
@@ -213,7 +273,13 @@ endif()
 message ("			libintl				${ENABLE_NLS}")
 
 if (ENABLE_IP2COUNTRY)
-	message ("			libGeoIP			${GEOIP_LIB}")
+	if (maxminddb_FOUND)
+		message ("			libmaxminddb		${maxminddb_VERSION}")
+	endif()
+endif()
+
+if (ICU_FOUND)
+	message ("			libicu				${ICU_VERSION}")
 endif()
 
 if (BUILD_WEBSERVER)

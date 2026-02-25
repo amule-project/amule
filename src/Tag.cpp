@@ -59,6 +59,17 @@ CTag::CTag(const CTag& rTag)
 	m_uName = rTag.m_uName;
 	m_Name = rTag.m_Name;
 	m_nSize = 0;
+	
+	// Validate the source tag and fix if necessary
+	if (rTag.m_uType == 0) {
+		// Source tag has invalid type, try to infer it from state
+		uint8 inferredType = InferTypeFromState();
+		wxString nameStr = rTag.m_Name;
+		fprintf(stderr, "***WARNING: Tag has type 0x00, inferring type 0x%02X from state, name=%s\n",
+				inferredType, (const char*)unicode2char(nameStr));
+		m_uType = inferredType;
+	}
+	
 	if (rTag.IsStr()) {
 		m_pstrVal = new wxString(rTag.GetStr());
 	} else if (rTag.IsInt()) {
@@ -75,8 +86,15 @@ CTag::CTag(const CTag& rTag)
 		m_nSize = rTag.GetBsobSize();
 		m_pData = new unsigned char[rTag.GetBsobSize()];
 		memcpy(m_pData, rTag.GetBsob(), rTag.GetBsobSize());
+	} else if (rTag.m_uType == TAGTYPE_BOOL || rTag.m_uType == TAGTYPE_BOOLARRAY) {
+		// These tag types don't store any data, they're just skipped when reading from network
+		// Just copy the type and name, no data to copy
+		m_uVal = 0;
 	} else {
-		wxFAIL;
+		// Still unknown after inference
+		wxString nameStr = rTag.m_Name;
+		fprintf(stderr, "***WARNING: Unknown tag type 0x%02X in CTag copy constructor, name=%s\n",
+				rTag.m_uType, (const char*)unicode2char(nameStr));
 		m_uVal = 0;
 	}
 }
@@ -467,5 +485,117 @@ CTagHash::CTagHash(uint8 name, const CMD4Hash& value)
 void deleteTagPtrListEntries(TagPtrList* taglist)
 {
 	DeleteContents(*taglist);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Tag Validation and Type Inference
+
+uint8 CTag::InferTypeFromState() const
+{
+	// Check if we have a string pointer
+	if (m_pstrVal != nullptr && m_nSize == 0) {
+		// String tags have m_pstrVal set, m_nSize = 0
+		return TAGTYPE_STRING;
+	}
+
+	// Check if we have a hash pointer
+	if (m_hashVal != nullptr) {
+		return TAGTYPE_HASH16;
+	}
+
+	// Check if we have blob data
+	if (m_pData != nullptr && m_nSize > 0) {
+		// Could be BLOB or BSOB
+		// BSOB has size <= 255, BLOB can be larger
+		if (m_nSize <= 255) {
+			return TAGTYPE_BSOB;  // More likely for small data
+		} else {
+			return TAGTYPE_BLOB;
+		}
+	}
+
+	// If we have a value in m_uVal, it's an integer
+	// Determine the size based on the value
+	if (m_uVal <= 0xFF) {
+		return TAGTYPE_UINT8;
+	} else if (m_uVal <= 0xFFFF) {
+		return TAGTYPE_UINT16;
+	} else if (m_uVal <= 0xFFFFFFFF) {
+		return TAGTYPE_UINT32;
+	} else {
+		return TAGTYPE_UINT64;
+	}
+}
+
+bool CTag::IsValid() const
+{
+	// Check if type is valid
+	if (m_uType == 0) {
+		return false;  // Invalid type
+	}
+
+	// Validate type against state
+	switch (m_uType) {
+		case TAGTYPE_STRING:
+			return m_pstrVal != nullptr;
+
+		case TAGTYPE_HASH16:
+			return m_hashVal != nullptr;
+
+		case TAGTYPE_BLOB:
+			return m_pData != nullptr && m_nSize > 0;
+
+		case TAGTYPE_BSOB:
+			return m_pData != nullptr && m_nSize > 0 && m_nSize <= 255;
+
+		case TAGTYPE_UINT8:
+		case TAGTYPE_UINT16:
+		case TAGTYPE_UINT32:
+		case TAGTYPE_UINT64:
+			return true;  // m_uVal is always valid
+
+		case TAGTYPE_FLOAT32:
+			return true;  // m_fVal is always valid
+
+		case TAGTYPE_BOOL:
+		case TAGTYPE_BOOLARRAY:
+			return true;  // These don't store data
+
+		default:
+			// Check for string types
+			if (m_uType >= TAGTYPE_STR1 && m_uType <= TAGTYPE_STR22) {
+				return m_pstrVal != nullptr;
+			}
+			return false;
+	}
+}
+
+void CTag::ValidateOrThrow() const
+{
+	if (!IsValid()) {
+		if (m_uType == 0) {
+			// Try to infer the type
+			uint8 inferredType = InferTypeFromState();
+			throw wxString(CFormat(
+				wxT("Invalid tag: type=0x00, inferred type=0x%02X, name=%s"))
+				% inferredType % m_Name);
+		} else {
+			throw wxString(CFormat(
+				wxT("Invalid tag: type=0x%02X, name=%s"))
+				% m_uType % m_Name);
+		}
+	}
+}
+
+bool CTag::FixInvalidType()
+{
+	if (m_uType == 0) {
+		uint8 inferredType = InferTypeFromState();
+		if (inferredType != 0) {
+			m_uType = inferredType;
+			return true;
+		}
+	}
+	return false;
 }
 // File_checked_for_headers

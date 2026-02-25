@@ -22,25 +22,44 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 #include "GenericClientListCtrl.h"
+#include "ClientDetailDialog.h"  // For CClientDetailDialog
+#include "DownloadListCtrl.h" // For other download functions
+#include "geoip/IP2CountryManager.h" // For CountryDataNew
+#include "IP2Country.h" // For CountryDataOld
+#include "DataToText.h" // For DownloadStateToStr and OriginToText
 
 #include <protocol/ed2k/ClientSoftware.h>
 #include <common/MenuIDs.h>
 
 #include <common/Format.h>	// Needed for CFormat
-#include "amule.h"		// Needed for theApp
-#include "amuleDlg.h"		// Needed for CamuleDlg
-#include "BarShader.h"		// Needed for CBarShader
-#include "BitVector.h"
-#include "ClientDetailDialog.h"	// Needed for CClientDetailDialog
-#include "ChatWnd.h"		// Needed for CChatWnd
-#include "CommentDialogLst.h"	// Needed for CCommentDialogLst
-#include "DataToText.h"		// Needed for PriorityToStr
-#include "FileDetailDialog.h"	// Needed for CFileDetailDialog
-#include "GetTickCount.h"	// Needed for GetTickCount
-#include "GuiEvents.h"		// Needed for CoreNotify_*
+#include "common/DimensionSafety.h"
+#include "amule.h"
+#include "ClientRef.h"
+#include "ClientList.h"
+#include "ClientTCPSocket.h"
+#include "OtherFunctions.h"
+#include "MuleTextCtrl.h"
+#include "DownloadQueue.h"
+#include "KnownFile.h"
+#include "PartFile.h"
+#include "ClientCredits.h"
+#include "SafeFile.h"
+#include "Server.h"
+#include "ServerConnect.h"
+#include "Statistics.h"
+#include "IPFilter.h"
+#include "UserEvents.h"
+#include "ChatWnd.h"        // For CChatWnd
+#include "MuleColour.h"     // For CMuleColour
+#include "BarShader.h"      // For CBarShader
+#include "DownloadListCtrl.h" // For DownloadStateToStr and OriginToText
+#include "BitVector.h"      // For BitVector
+
 #ifdef ENABLE_IP2COUNTRY
-	#include "IP2Country.h"	// Needed for IP2Country
+	#include "IP2Country.h"
+	#include "geoip/IP2CountryManager.h"  // Include for new manager and CountryData struct
 #endif
+
 #include "Logger.h"
 #include "muuli_wdr.h"		// Needed for ID_DLOADLIST
 #include "PartFile.h"		// Needed for CPartFile
@@ -660,7 +679,7 @@ void CGenericClientListCtrl::OnDrawItem(
 		dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		dc->SetPen( colour.Blend(65).GetPen() );
 	} else {
-		dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxBRUSHSTYLE_SOLID)));
+		dc->SetBackground(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxBRUSHSTYLE_SOLID));
 		dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
@@ -837,19 +856,25 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 #ifdef ENABLE_IP2COUNTRY
 				if (theApp->amuledlg->m_IP2Country->IsEnabled() && thePrefs::IsGeoIPEnabled()) {
 					// Draw the flag. Size can't be precached.
-					const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(client.GetFullIP());
+					IP2CountryManager* newMgr = theApp->amuledlg->m_IP2Country->GetNewManager();
+					
+					if (newMgr) {
+						// Access new manager directly
+						CountryDataNew countrydata_new = newMgr->GetCountryData(client.GetFullIP());
+						
+						if (countrydata_new.Flag.IsOk()) {
+							int realY = point.y + (rect.GetHeight() - countrydata_new.Flag.GetHeight())/2 + 1 /* floor() */;
 
-					realY = point.y + (rect.GetHeight() - countrydata.Flag.GetHeight())/2 + 1 /* floor() */;
+							dc->DrawBitmap(countrydata_new.Flag,
+								point.x, realY,
+								true);
 
-					dc->DrawBitmap(countrydata.Flag,
-						point.x, realY,
-						true);
+							userName << countrydata_new.Name;
+							userName << wxT(" - ");
 
-					userName << countrydata.Name;
-
-					userName << wxT(" - ");
-
-					point.x += countrydata.Flag.GetWidth() + 2 /*Padding*/;
+							point.x += countrydata_new.Flag.GetWidth() + 2 /*Padding*/;
+						}
+					}
 				}
 #endif // ENABLE_IP2COUNTRY
 				if (client.GetUserName().IsEmpty()) {
@@ -897,8 +922,8 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 			break;
 		case ColumnUserProgress:
 			if ( thePrefs::ShowProgBar() ) {
-				int iWidth = rect.GetWidth() - 2;
-				int iHeight = rect.GetHeight() - 2;
+				int iWidth = DimensionSafety::SafeDimension(rect.GetWidth(), 2);
+				int iHeight = DimensionSafety::SafeDimension(rect.GetHeight(), 2);
 
 				// don't draw Text beyond the bar
 				dc->SetClippingRegion(rect.GetX(), rect.GetY() + 1, iWidth, iHeight);

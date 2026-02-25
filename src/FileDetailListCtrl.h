@@ -33,6 +33,7 @@ class CFileDetailListCtrl : public CMuleListCtrl
 
 public:
 	CFileDetailListCtrl(wxWindow * &parent, int id, const wxPoint & pos, wxSize siz, int flags);
+	virtual ~CFileDetailListCtrl();
 
 private:
 	struct SourcenameItem {

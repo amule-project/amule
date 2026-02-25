@@ -42,6 +42,8 @@
 #include "UploadQueue.h"			// Needed for CUploadQueue
 #include "amule.h"				// Needed for theApp
 #include "SearchList.h"				// Needed for GetSearchResults
+#include "search/UnifiedSearchManager.h"	// Needed for UnifiedSearchManager
+#include "search/SearchModel.h"			// Needed for SearchParams
 #include "ClientList.h"
 #include "Preferences.h"			// Needed for CPreferences
 #include "Logger.h"
@@ -1023,7 +1025,7 @@ static CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 	// request can contain list of queried items
 	CTagSet<uint32, EC_TAG_SEARCHFILE> queryitems(request);
 
-	const CSearchResultList& list = theApp->searchlist->GetSearchResults(0xffffffff);
+	const CSearchResultList& list = search::UnifiedSearchManager::Instance().getSearchResults(0xffffffff);
 	CSearchResultList::const_iterator it = list.begin();
 	while (it != list.end()) {
 		CSearchFile* sf = *it++;
@@ -1039,7 +1041,7 @@ static CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 {
 	CECPacket *response = new CECPacket(EC_OP_SEARCH_RESULTS);
 
-	const CSearchResultList& list = theApp->searchlist->GetSearchResults(0xffffffff);
+	const CSearchResultList& list = search::UnifiedSearchManager::Instance().getSearchResults(0xffffffff);
 	CSearchResultList::const_iterator it = list.begin();
 	while (it != list.end()) {
 		CSearchFile* sf = *it++;
@@ -1065,7 +1067,7 @@ static CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *reque
 		const CECTag &tag = *it;
 		CMD4Hash hash = tag.GetMD4Data();
 		uint8 category = tag.GetFirstTagSafe()->GetInt();
-		theApp->searchlist->AddFileToDownloadByHash(hash, category);
+		search::UnifiedSearchManager::Instance().addFileToDownloadByHash(hash, category);
 	}
 	return response;
 }
@@ -1073,7 +1075,7 @@ static CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *reque
 static CECPacket *Get_EC_Response_Search_Stop(const CECPacket *WXUNUSED(request))
 {
 	CECPacket *reply = new CECPacket(EC_OP_MISC_DATA);
-	theApp->searchlist->StopSearch();
+	search::UnifiedSearchManager::Instance().stopAllSearches();
 	return reply;
 }
 
@@ -1082,43 +1084,43 @@ static CECPacket *Get_EC_Response_Search(const CECPacket *request)
 	wxString response;
 
 	const CEC_Search_Tag *search_request = static_cast<const CEC_Search_Tag *>(request->GetFirstTagSafe());
-	theApp->searchlist->RemoveResults(0xffffffff);
+	search::UnifiedSearchManager::Instance().removeResults(0xffffffff);
 
-	CSearchList::CSearchParams params;
-	params.searchString	= search_request->SearchText();
-	params.typeText		= search_request->SearchFileType();
-	params.extension	= search_request->SearchExt();
-	params.minSize		= search_request->MinSize();
-	params.maxSize		= search_request->MaxSize();
-	params.availability	= search_request->Avail();
-
+	// Convert to search::SearchParams
+	search::SearchParams params;
+	params.searchString = search_request->SearchText();
+	params.typeText = search_request->SearchFileType();
+	params.extension = search_request->SearchExt();
+	params.minSize = search_request->MinSize();
+	params.maxSize = search_request->MaxSize();
+	params.availability = search_request->Avail();
 
 	EC_SEARCH_TYPE search_type = search_request->SearchType();
-	SearchType core_search_type = LocalSearch;
+	search::ModernSearchType modernSearchType = search::ModernSearchType::LocalSearch;
 	uint32 op = EC_OP_FAILED;
+
 	switch (search_type) {
 		case EC_SEARCH_GLOBAL:
-			core_search_type = GlobalSearch;
-		/* fall through */
+			modernSearchType = search::ModernSearchType::GlobalSearch;
+			break;
 		case EC_SEARCH_KAD:
-			if (core_search_type != GlobalSearch) { // Not a global search obviously
-				core_search_type = KadSearch;
-			}
-		/* fall through */
-		case EC_SEARCH_LOCAL: {
-			uint32 search_id = 0xffffffff;
-			wxString error = theApp->searchlist->StartNewSearch(&search_id, core_search_type, params);
-			if (!error.IsEmpty()) {
-				response = error;
-			} else {
-				response = wxTRANSLATE("Search in progress. Refetch results in a moment!");
-				op = EC_OP_STRINGS;
-			}
+			modernSearchType = search::ModernSearchType::KadSearch;
 			break;
-		}
-		case EC_SEARCH_WEB:
-				response = wxTRANSLATE("WebSearch from remote interface makes no sense.");
+		case EC_SEARCH_LOCAL:
+		default:
+			modernSearchType = search::ModernSearchType::LocalSearch;
 			break;
+	}
+
+	params.searchType = modernSearchType;
+
+	wxString error;
+	uint32 search_id = search::UnifiedSearchManager::Instance().startSearch(params, error);
+	if (search_id == 0 || !error.IsEmpty()) {
+		response = error.IsEmpty() ? wxT("Failed to start search") : error;
+	} else {
+		response = wxTRANSLATE("Search in progress. Refetch results in a moment!");
+		op = EC_OP_STRINGS;
 	}
 
 	CECPacket *reply = new CECPacket(op);
@@ -1604,8 +1606,19 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 
 		case EC_OP_SEARCH_PROGRESS:
 			response = new CECPacket(EC_OP_SEARCH_PROGRESS);
-			response->AddTag(CECTag(EC_TAG_SEARCH_STATUS,
-				theApp->searchlist->GetSearchProgress()));
+			// Get the most recent active search ID for progress
+			// Note: In the new per-search architecture, progress is tracked per-tab
+			// This returns progress of the most recently started active search
+			{
+				auto activeIds = search::UnifiedSearchManager::Instance().getActiveSearchIds();
+				uint32_t progress = 0;
+				if (!activeIds.empty()) {
+					// Get progress of the most recent active search
+					progress = search::UnifiedSearchManager::Instance().getSearchProgress(activeIds.back());
+				}
+				// Add progress status tag
+				response->AddTag(CECTag(EC_TAG_SEARCH_STATUS, progress));
+			}
 			break;
 
 		case EC_OP_DOWNLOAD_SEARCH_RESULT:

@@ -35,6 +35,7 @@
 #include "RLE.h"
 #include "SearchList.h"			// Needed for CSearchFile
 #include "kademlia/utils/UInt128.h"	// Needed for CUInt128
+#include "ServerSocket.h"		// Needed for CServerSocket
 
 class CED2KFileLink;
 class CServer;
@@ -411,6 +412,10 @@ public:
 	void ConnectToAnyServer();
 	void StopConnectionTry();
 	void Disconnect();
+
+	// Stub methods for remote GUI - these should be handled on the server side
+	void SendPacket(CPacket* packet, bool delpacket = true, CServerSocket* to = nullptr) {}
+	bool SendUDPPacket(CPacket* packet, CServer* host, bool delpacket = true, bool rawpacket = false, uint16 port_offset = 0) { return true; }
 };
 
 class CServerListRem : public CRemoteContainer<CServer, uint32, CEC_Server_Tag> {
@@ -439,6 +444,11 @@ public:
 	void SetServerPrio(CServer* server, uint32 prio);
 	void SaveServerMet() {}	// not needed here
 	void FilterServers() {}	// not needed here
+
+	// Stub methods for remote GUI - these should be handled on the server side  
+	void AddObserver(CQueueObserver<CServer*>* observer) {}
+	void RemoveObserver(CQueueObserver<CServer*>* observer) {}
+	size_t GetServerCount() { return GetCount(); }
 
 	//
 	// template
@@ -568,6 +578,11 @@ public:
 		const CSearchList::CSearchParams& params);
 
 	void StopSearch(bool globalOnly = false);
+	void StopSearch(long searchId, bool globalOnly = false);
+
+	// Stub methods for remote GUI - these should be handled on the server side
+	CSearchList::CSearchParams GetSearchParams(long searchId) { return CSearchList::CSearchParams(); }
+	wxString RequestMoreResultsForSearch(long searchId) { return wxEmptyString; }
 
 	//
 	// template
@@ -623,8 +638,11 @@ public:
 class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase, public CamuleAppCommon {
 	wxTimer*	poll_timer;
 
+public:
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
+	virtual void AddGuiLogLine(const wxString& line);
 
+private:
 	bool OnInit();
 
 	int OnExit();
@@ -717,7 +735,7 @@ public:
 	// Buddy status
 	uint8	GetBuddyStatus() const		{ return theStats::GetBuddyStatus(); }
 	uint32	GetBuddyIP() const			{ return theStats::GetBuddyIP(); }
-	uint32	GetBuddyPort() const		{ return theStats::GetBuddyPort(); }
+	uint32	GetBuddyPort() const	{ return theStats::GetBuddyPort(); }
 
 	void StartKad();
 	void StopKad();

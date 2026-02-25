@@ -58,13 +58,13 @@ public:
 	 * @see CMuleListCtrl::CMuleListCtrl for documentation of parameters.
 	 */
 	 CSearchListCtrl(
-	            wxWindow *parent,
-                wxWindowID winid = -1,
-                const wxPoint &pos = wxDefaultPosition,
-                const wxSize &size = wxDefaultSize,
-                long style = wxLC_ICON,
-                const wxValidator& validator = wxDefaultValidator,
-                const wxString &name = wxT("mulelistctrl") );
+		    wxWindow *parent,
+		wxWindowID winid = -1,
+		const wxPoint &pos = wxDefaultPosition,
+		const wxSize &size = wxDefaultSize,
+		long style = wxLC_ICON,
+		const wxValidator& validator = wxDefaultValidator,
+		const wxString &name = wxT("mulelistctrl") );
 
 	/**
 	 * Destructor.
@@ -102,6 +102,8 @@ public:
 	 */
 	void	ShowResults( long ResultsId );
 
+
+
 	/**
 	 * Updates the colors of item at the specified index.
 	 *
@@ -121,6 +123,20 @@ public:
 	 * @return The Search Id of the displayed results (set through ShowResults()).
 	 */
 	wxUIntPtr	GetSearchId();
+
+	/**
+	 * Returns the search type (Local, Global, Kad).
+	 *
+	 * @return The search type of the displayed results.
+	 */
+	wxString	GetSearchType() const { return m_searchType; }
+
+	/**
+	 * Sets the search type (Local, Global, Kad).
+	 *
+	 * @param type The search type to set.
+	 */
+	void		SetSearchType(const wxString& type) { m_searchType = type; }
 
 	/**
 	 * Sets the filter which decides which results should be shown.
@@ -239,6 +255,9 @@ protected:
 
 	//! The ID of the search-results which the list is displaying or zero if unset.
 	wxUIntPtr m_nResultsID;
+
+	//! The type of search (Local, Global, Kad) for validation
+	wxString m_searchType;
 
 	//! Custom drawing, needed to display children of search-results.
 	void OnDrawItem(int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted);

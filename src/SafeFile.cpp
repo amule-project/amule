@@ -230,6 +230,55 @@ wxString CFileDataIO::ReadString(bool bOptUTF8, uint8 SizeLen, bool SafeRead) co
 }
 
 
+// Helper function to detect and fix double-encoded UTF-8
+// Returns true if the string appears to be double-encoded UTF-8
+static bool IsDoubleEncodedUTF8(const char* data, size_t len)
+{
+	// Check for patterns that indicate double-encoding
+	// Common patterns: "ï¿½" (0xEF 0xBF 0xBD) which is U+FFFD in UTF-8
+	// or sequences that look like UTF-8 bytes interpreted as latin-1
+	for (size_t i = 0; i < len; ++i) {
+		unsigned char c = static_cast<unsigned char>(data[i]);
+		
+		// Check for UTF-8 continuation bytes (0x80-0xBF) that shouldn't appear
+		// at the start of a latin-1 string
+		if ((c >= 0x80 && c <= 0xBF) && (i == 0 || (data[i-1] < 0xC2))) {
+			return true;
+		}
+		
+		// Check for the "ï¿½" pattern (0xEF 0xBF 0xBD)
+		if (i + 2 < len && 
+		    static_cast<unsigned char>(data[i]) == 0xEF &&
+		    static_cast<unsigned char>(data[i+1]) == 0xBF &&
+		    static_cast<unsigned char>(data[i+2]) == 0xBD) {
+			return true;
+		}
+	}
+	return false;
+}
+
+// Helper function to attempt to fix double-encoded UTF-8
+static wxString FixDoubleEncodedUTF8(const char* data, size_t len)
+{
+	// Try to decode as latin-1 first (this is what happens when UTF-8 is
+	// incorrectly interpreted as latin-1)
+	wxString latin1Str = wxString(data, wxConvISO8859_1, len);
+	
+	// Then try to convert the latin-1 string back to UTF-8 bytes
+	wxCharBuffer latin1Buf = latin1Str.mb_str(wxConvISO8859_1);
+	if (!latin1Buf.data()) {
+		return wxEmptyString;
+	}
+	
+	// Now try to decode those bytes as UTF-8
+	wxString utf8Str = wxString::FromUTF8(latin1Buf.data());
+	if (utf8Str.IsEmpty()) {
+		return wxEmptyString;
+	}
+	
+	return utf8Str;
+}
+
 wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 {
 	// We only need to set the the NULL terminator, since we know that
@@ -243,14 +292,41 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 	Read(val, raw_len);
 	wxString str;
 
+	// First, check if this looks like double-encoded UTF-8
+	if (IsDoubleEncodedUTF8(val, raw_len)) {
+		// Try to fix double-encoding
+		str = FixDoubleEncodedUTF8(val, raw_len);
+		if (!str.IsEmpty()) {
+			return str;
+		}
+	}
+
 	if (CHECK_BOM(raw_len, val)) {
 		// This is a UTF8 string with a BOM header, skip header.
-		str = UTF82unicode(val + 3);
+		// Use wxString::FromUTF8 which is more lenient than UTF82unicode
+		str = wxString::FromUTF8(val + 3, raw_len - 3);
+		if (str.IsEmpty()) {
+			// Fallback to Latin-1 if UTF-8 conversion fails
+			str = wxString(val + 3, wxConvISO8859_1, raw_len - 3);
+		} else {
+			// Check if the conversion produced replacement characters (U+FFFD)
+			// which indicates partial failure - fall back to Latin-1
+			if (str.Find(wxChar(0xFFFD)) != wxNOT_FOUND) {
+				str = wxString(val + 3, wxConvISO8859_1, raw_len - 3);
+			}
+		}
 	} else if (bOptUTF8) {
-		str = UTF82unicode(val);
+		// Use wxString::FromUTF8 which is more lenient than UTF82unicode
+		str = wxString::FromUTF8(val, raw_len);
 		if (str.IsEmpty()) {
 			// Fallback to Latin-1
 			str = wxString(val, wxConvISO8859_1, raw_len);
+		} else {
+			// Check if the conversion produced replacement characters (U+FFFD)
+			// which indicates partial failure - fall back to Latin-1
+			if (str.Find(wxChar(0xFFFD)) != wxNOT_FOUND) {
+				str = wxString(val, wxConvISO8859_1, raw_len);
+			}
 		}
 	} else {
 		// Raw strings are written as Latin-1 (see CFileDataIO::WriteStringCore)
@@ -478,6 +554,23 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 			default:
 				throw wxString(CFormat(wxT("Invalid Kad tag type; type=0x%02x name=%s\n")) % type % name);
 		}
+
+		// Validate the created tag and fix if necessary
+		if (retVal && !retVal->IsValid()) {
+			AddDebugLogLineC(logKadIndex,
+				CFormat(wxT("ReadTag created invalid tag, fixing... type=0x%02X name=%s"))
+				% retVal->GetType() % retVal->GetName());
+
+			// Try to fix it by inferring type from state
+			if (retVal->FixInvalidType()) {
+				AddDebugLogLineN(logKadIndex,
+					CFormat(wxT("Fixed tag type from 0x00 to 0x%02X")) % retVal->GetType());
+			} else {
+				// Cannot fix, delete and throw
+				delete retVal;
+				throw wxString(CFormat(wxT("Cannot fix invalid tag type=0x00 name=%s")) % name);
+			}
+		}
 	} catch(const CMuleException& e) {
 		AddLogLineN(e.what());
 		delete retVal;
@@ -506,6 +599,20 @@ void CFileDataIO::ReadTagPtrList(TagPtrList* taglist, bool bOptACP) const
 
 void CFileDataIO::WriteTag(const CTag& tag)
 {
+	// Validate tag before writing
+	if (!tag.IsValid()) {
+		AddDebugLogLineC(logKadIndex,
+			CFormat(wxT("WriteTag: Attempting to write invalid tag, type=0x%02X name=%s"))
+			% tag.GetType() % tag.GetName());
+
+		// Try to fix it
+		if (tag.GetType() == 0) {
+			// Cannot fix const tag, throw exception
+			throw wxString(CFormat(wxT("WriteTag: Cannot write invalid tag type=0x00 name=%s"))
+				% tag.GetName());
+		}
+	}
+
 	try
 	{
 		WriteUInt8(tag.GetType());

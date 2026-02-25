@@ -77,6 +77,27 @@ CContact::CContact(const CContact& k1)
 	theStats::AddKadNode();
 }
 
+CContact& CContact::operator=(const CContact& k1)
+{
+	if (this != &k1) {
+		m_clientID = k1.m_clientID;
+		m_distance = k1.m_distance;
+		m_ip = k1.m_ip;
+		m_tcpPort = k1.m_tcpPort;
+		m_udpPort = k1.m_udpPort;
+		m_type = k1.m_type;
+		m_lastTypeSet = k1.m_lastTypeSet;
+		m_expires = k1.m_expires;
+		m_created = k1.m_created;
+		m_inUse = k1.m_inUse;
+		m_version = k1.m_version;
+		m_ipVerified = k1.m_ipVerified;
+		m_receivedHelloPacket = k1.m_receivedHelloPacket;
+		m_udpKey = k1.m_udpKey;
+	}
+	return *this;
+}
+
 void CContact::CheckingType() throw()
 {
 	time_t now = time(NULL);

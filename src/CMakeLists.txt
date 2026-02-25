@@ -52,6 +52,11 @@ if (NEED_LIB)
 	add_subdirectory (libs)
 endif()
 
+# GeoIP module (new implementation)
+if (ENABLE_IP2COUNTRY)
+	add_subdirectory (geoip)
+endif()
+
 if (BUILD_AMULECMD)
 	add_executable (amulecmd
 		DataToText.cpp
@@ -115,6 +120,7 @@ if (BUILD_DAEMON)
 	target_compile_definitions (amuled
 		PRIVATE AMULE_DAEMON
 		PRIVATE wxUSE_GUI=0
+		PRIVATE NETWORK_PERF_MONITORING
 	)
 
 	target_include_directories (amuled
@@ -174,16 +180,11 @@ if (BUILD_ED2K)
 		RUNTIME DESTINATION bin
 	)
 endif()
-
 if (BUILD_MONOLITHIC)
 	add_executable (amule
 		${COMMON_SOURCES}
 		${CORE_SOURCES}
 		${GUI_SOURCES}
-		CaptchaDialog.cpp
-		CaptchaGenerator.cpp
-		PartFileConvert.cpp
-		PartFileConvertDlg.cpp
 	)
 
 	if (WIN32)
@@ -192,6 +193,27 @@ if (BUILD_MONOLITHIC)
 		)
 	endif()
 
+	target_compile_definitions (amule
+		PRIVATE NETWORK_PERF_MONITORING
+	)
+
+	# Add ICU support if available
+	if (ICU_FOUND)
+		target_compile_definitions (amule
+			PRIVATE HAVE_ICU
+		)
+		target_include_directories (amule
+			PRIVATE ${ICU_INCLUDE_DIRS}
+		)
+		target_link_libraries (amule
+			PRIVATE ${ICU_LIBRARIES}
+		)
+	endif()
+
+	target_include_directories (amule
+		PRIVATE ${SRC_DIR}
+	)
+
 	target_link_libraries (amule
 		PRIVATE ec
 		PRIVATE muleappcommon
@@ -199,9 +221,15 @@ if (BUILD_MONOLITHIC)
 		PRIVATE muleappgui
 		PRIVATE mulecommon
 		PRIVATE mulesocket
-		PRIVATE $<$<VERSION_LESS:${wxWidgets_VERSION_STRING},3.1.2>:wxWidgets::ADV>
 		PRIVATE wxWidgets::NET
 	)
+
+	# wxWidgets::ADV was merged into CORE in version 3.1.2+
+	if (TARGET wxWidgets::ADV)
+		target_link_libraries (amule
+			PRIVATE wxWidgets::ADV
+		)
+	endif()
 
 	if (HAVE_BFD)
 		target_link_libraries (amule
@@ -237,9 +265,7 @@ endif (BUILD_MONOLITHIC)
 if (BUILD_REMOTEGUI)
 	add_executable (amulegui
 		${COMMON_SOURCES}
-		${GUI_SOURCES}
-		kademlia/utils/UInt128.cpp
-		amule-remote-gui.cpp
+		${GUI_REMOTE_SOURCES}
 	)
 
 	if (WIN32)
@@ -249,7 +275,8 @@ if (BUILD_REMOTEGUI)
 	endif()
 
 	target_compile_definitions (amulegui
-		PRIVATE "CLIENT_GUI"
+		PRIVATE CLIENT_GUI
+		PRIVATE wxUSE_GUI=1
 	)
 
 	target_include_directories (amulegui
@@ -259,22 +286,30 @@ if (BUILD_REMOTEGUI)
 	target_link_libraries (amulegui
 		PRIVATE ec
 		PRIVATE muleappcommon
+		PRIVATE muleappcore
 		PRIVATE muleappgui
 		PRIVATE mulecommon
 		PRIVATE mulesocket
-		PRIVATE $<$<VERSION_LESS:${wxWidgets_VERSION_STRING},3.1.2>:wxWidgets::ADV>
+		PRIVATE wxWidgets::CORE
 		PRIVATE wxWidgets::NET
 	)
 
-	if (HAVE_BFD)
+	# wxWidgets::ADV was merged into CORE in version 3.1.2+
+	if (TARGET wxWidgets::ADV)
 		target_link_libraries (amulegui
-			PRIVATE ${LIBBFD}
+			PRIVATE wxWidgets::ADV
 		)
 	endif()
 
+	if (HAVE_BFD)
+		target_link_libraries (amulegui 
+			PRIVATE ${LIBBFD}
+		)
+	endif (HAVE_BFD)
+
 	if (WIN32)
-		set_target_properties (amulegui PROPERTIES
-			WIN32_EXECUTABLE TRUE
+		target_link_libraries (amulegui
+			shlwapi.lib
 		)
 	endif()
 
@@ -284,10 +319,10 @@ if (BUILD_REMOTEGUI)
 endif()
 
 if (NEED_LIB_MULEAPPCOMMON)
-	add_library (muleappcommon STATIC
-		${UPNP_SOURCES}
+	set(MULEAPPCOMMON_SOURCES
 		CFile.cpp
 		ClientCredits.cpp
+		common/NetworkSummaryUtil.cpp
 		DataToText.cpp
 		ED2KLink.cpp
 		Friend.cpp
@@ -304,6 +339,12 @@ if (NEED_LIB_MULEAPPCOMMON)
 		TerminationProcess.cpp
 		Timer.cpp
 	)
+	
+	if(ENABLE_UPNP)
+		list(APPEND MULEAPPCOMMON_SOURCES ${UPNP_SOURCES})
+	endif()
+	
+	add_library (muleappcommon STATIC ${MULEAPPCOMMON_SOURCES})
 
 	add_dependencies (muleappcommon
 		generate_ECCodes.h
@@ -375,6 +416,12 @@ if (NEED_LIB_MULEAPPCORE)
 		set (IPFILTERSCANNER ${CMAKE_CURRENT_SOURCE_DIR}/IPFilterScanner.cpp)
 	endif()
 
+	# Disable register keyword warnings for generated scanner files
+	if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+		set_source_files_properties(${SCANNER} PROPERTIES COMPILE_FLAGS "-Wno-register")
+		set_source_files_properties(${IPFILTERSCANNER} PROPERTIES COMPILE_FLAGS "-Wno-register")
+	endif()
+
 	add_library (muleappcore STATIC
 		${IPFILTERSCANNER}
 		${PARSER}
@@ -382,6 +429,9 @@ if (NEED_LIB_MULEAPPCORE)
 		kademlia/kademlia/Entry.cpp
 		kademlia/kademlia/Indexed.cpp
 		kademlia/kademlia/SearchManager.cpp
+		kademlia/kademlia/ParallelSearch.cpp
+		kademlia/kademlia/SearchCache.cpp
+		kademlia/kademlia/BootstrapManager.cpp
 		kademlia/routing/RoutingBin.cpp
 		kademlia/utils/UInt128.cpp
 		AsyncDNS.cpp
@@ -421,11 +471,18 @@ if (NEED_LIB_MULEAPPCORE)
 		PUBLIC wxWidgets::BASE
 		PRIVATE CRYPTOPP::CRYPTOPP
 	)
+
+	# Use optimized UInt128 implementation if enabled and available
+	if (USE_OPTIMIZED_UINT128)
+		target_sources (muleappcore
+			PRIVATE kademlia/utils/UInt128Optimized.cpp
+		)
+	endif()
 endif()
 
 if (NEED_LIB_MULEAPPGUI)
 	add_library (muleappgui STATIC
-		${IP2COUNTRY}
+		IP2Country.cpp
 		extern/wxWidgets/listctrl.cpp
 		BarShader.cpp
 		ColorFrameCtrl.cpp
@@ -442,7 +499,8 @@ if (NEED_LIB_MULEAPPGUI)
 
 	if (ENABLE_IP2COUNTRY)
 		target_link_libraries (muleappgui
-			PUBLIC GeoIP::Shared
+			PUBLIC mulegeoip
+			PUBLIC maxminddb::maxminddb
 		)
 	endif()
 
@@ -462,11 +520,12 @@ if (NEED_LIB_MULEAPPGUI)
 
 	if (ENABLE_IP2COUNTRY)
 		add_dependencies (muleappgui
-			generate_CountryFlags.h)
+			generate_CountryFlags.h
+			mulegeoip)
 	endif()
 endif()
 
-IF (NEED_LIB_MULESOCKET)
+if (NEED_LIB_MULESOCKET)
 	add_library (mulesocket STATIC
 		LibSocket.cpp
 	)
@@ -492,3 +551,4 @@ IF (NEED_LIB_MULESOCKET)
 		)
 	endif()
 endif()
+

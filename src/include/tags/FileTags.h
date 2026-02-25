@@ -56,6 +56,7 @@
 						// complete version of the
 						// associated file (supported
 						// by eserver 16.46+) statistic
+#define	FT_SOURCEPROTOCOL		0x31	// protocol source (e.g. ED2K)
 
 #define	FT_PUBLISHINFO			0x33	// <uint32>
 #define	FT_ATTRANSFERRED		0x50	// <uint32>

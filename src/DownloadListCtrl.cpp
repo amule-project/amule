@@ -27,6 +27,7 @@
 
 #include <protocol/ed2k/ClientSoftware.h>
 #include <common/MenuIDs.h>
+#include "common/DimensionSafety.h"
 
 #include <common/Format.h>	// Needed for CFormat
 #include "amule.h"		// Needed for theApp
@@ -850,7 +851,7 @@ void CDownloadListCtrl::OnDrawItem(
 		dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		dc->SetPen( colour.Blend(65).GetPen() );
 	} else {
-		dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxBRUSHSTYLE_SOLID)));
+		dc->SetBackground(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxBRUSHSTYLE_SOLID));
 		dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
@@ -972,8 +973,8 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		// Progress
 		case ColumnProgress:{
 			if (thePrefs::ShowProgBar()) {
-				int iWidth  = rect.GetWidth() - 2;
-				int iHeight = rect.GetHeight() - 2;
+				int iWidth  = std::max(rect.GetWidth() - 2, 1);
+				int iHeight = std::max(rect.GetHeight() - 2, 1);
 
 				// DO NOT DRAW IT ALL THE TIME
 				uint32 dwTicks = GetTickCount();
@@ -1413,7 +1414,7 @@ void CDownloadListCtrl::DrawFileStatusBar(
 		dc->DrawLine( rect.x, rect.y + 2, rect.x + width, rect.y + 2 );
 
 		// Draw the green line
-		dc->SetPen( *(wxThePenList->FindOrCreatePen( crProgress , 1, wxPENSTYLE_SOLID ) ));
+		dc->SetPen(wxPen(crProgress, 1, wxPENSTYLE_SOLID));
 		dc->DrawLine( rect.x, rect.y + 1, rect.x + width, rect.y + 1 );
 	}
 }

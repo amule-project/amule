@@ -104,6 +104,8 @@ public:
 	uint32 GetCompleteSourceCount() const	{ return m_completeSourceCount; }
 	/** Returns the ID of the search, used to select the right list when displaying. */
 	wxUIntPtr GetSearchID() const			{ return m_searchID; }
+	/** Sets the ID of the search. Used when retrying a search. */
+	void SetSearchID(wxUIntPtr searchID)		{ m_searchID = searchID; }
 	/** Returns true if the result is from a Kademlia search. */
 	bool IsKademlia() const					{ return m_kademlia; }
 
@@ -173,6 +175,10 @@ public:
 	void	 SetClientServerPort(uint16_t port) throw()	{ m_clientServerPort = port; }
 	int	 GetClientsCount() const			{ return ((GetClientID() && GetClientPort()) ? 1 : 0) + m_clients.size(); }
 
+	// Magnet link tracking
+	bool IsFromMagnet() const throw()			{ return m_fromMagnet; }
+	void SetFromMagnet(bool fromMagnet) throw()		{ m_fromMagnet = fromMagnet; }
+
 	void	 SetKadPublishInfo(uint32_t val) throw()	{ m_kadPublishInfo = val; }
 	uint32_t GetKadPublishInfo() const throw()		{ return m_kadPublishInfo; }
 
@@ -218,6 +224,9 @@ private:
 
 	//! Kademlia publish information.
 	uint32_t		m_kadPublishInfo;
+
+	// Magnet link tracking
+	bool			m_fromMagnet;
 
 	friend class CPartFile;
 	friend class CSearchListRem;
