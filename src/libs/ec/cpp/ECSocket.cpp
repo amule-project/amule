@@ -575,7 +575,7 @@ bool CECSocket::ReadHeader()
 bool CECSocket::ReadNumber(void *buffer, size_t len)
 {
 	if (m_rx_flags & EC_FLAG_UTF8_NUMBERS) {
-		unsigned char mb[6];
+		unsigned char mb[16];
 		uint32_t wc;
 		if (!ReadBuffer(mb, 1)) return false;
 		int remains = utf8_mb_remain(mb[0]);
@@ -605,7 +605,7 @@ bool CECSocket::ReadNumber(void *buffer, size_t len)
 bool CECSocket::WriteNumber(const void *buffer, size_t len)
 {
 	if (m_tx_flags & EC_FLAG_UTF8_NUMBERS) {
-		unsigned char mb[6];
+		unsigned char mb[16];
 		uint32_t wc = 0;
 		int mb_len;
 		switch (len) {

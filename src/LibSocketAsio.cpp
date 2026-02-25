@@ -44,6 +44,8 @@
 
 #include <boost/asio.hpp>
 #define BOOST_BIND_GLOBAL_PLACEHOLDERS
+#include <boost/asio/deadline_timer.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/bind.hpp>
 #include <boost/version.hpp>
 #include <boost/asio/executor_work_guard.hpp>
@@ -135,6 +137,7 @@ public:
 	{
 		delete[] m_readBuffer;
 		delete[] m_sendBuffer;
+		delete m_socket;
 	}
 
 	void Notify(bool notify)
