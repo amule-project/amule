@@ -35,6 +35,7 @@
 #include "MemFile.h"
 #include "ScopedPtr.h"
 #include "SearchList.h"		// Needed for UpdateSearchFileByHash
+#include "search/UnifiedSearchManager.h"	// Needed for UnifiedSearchManager
 #include <common/Format.h>
 #include "Preferences.h"	// Needed for thePrefs
 
@@ -259,7 +260,7 @@ bool CKnownFileList::SafeAddKFile(CKnownFile* toadd, bool afterHashing)
 		ret = Append(toadd, afterHashing);
 	}
 	if (ret) {
-		theApp->searchlist->UpdateSearchFileByHash(toadd->GetFileHash());
+		search::UnifiedSearchManager::Instance().updateSearchFileByHash(toadd->GetFileHash());
 	}
 	return ret;
 }

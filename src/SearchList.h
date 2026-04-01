@@ -30,6 +30,21 @@
 #include "ObservableQueue.h"	// Needed for CQueueObserver
 #include "SearchFile.h"		// Needed for CSearchFile
 #include <common/SmartPtr.h>	// Needed for CSmartPtr
+#include <memory>		// Needed for std::unique_ptr
+#include <set>		// Needed for std::set
+#include <map>		// Needed for std::map
+
+// Forward declarations
+class PerSearchState;
+
+namespace search {
+	class SearchAutoRetry;
+	class SearchPackageValidator;
+	class ED2KSearchPacketBuilder;
+	class KadSearchPacketBuilder;
+	class SearchResultHandler;
+	struct SearchParams;  // Forward declaration for new overload
+}
 
 
 class CMemFile;
@@ -44,7 +59,7 @@ namespace Kademlia {
 
 
 enum SearchType {
-	LocalSearch,
+	LocalSearch = 0,
 	GlobalSearch,
 	KadSearch
 };
@@ -60,7 +75,7 @@ public:
 	struct CSearchParams
 	{
 		/** Prevents accidental use of uninitialized variables. */
-		CSearchParams() { minSize = maxSize = availability = 0; }
+		CSearchParams() { minSize = maxSize = availability = 0; searchType = LocalSearch; }
 
 		//! The actual string to search for.
 		wxString searchString;
@@ -76,6 +91,8 @@ public:
 		uint64_t maxSize;
 		//! The minimum available (source-count), zero for any.
 		uint32_t availability;
+		//! The type of search (Local, Global, or Kad)
+		SearchType searchType;
 	};
 
 	/** Constructor. */
@@ -96,9 +113,21 @@ public:
 
 	/** Stops the current search (global or Kad), if any is in progress. */
 	void StopSearch(bool globalOnly = false);
+	
+	/** Stops a specific search by ID. */
+	void StopSearch(long searchID, bool globalOnly = false);
 
-	/** Returns the completion percentage of the current search. */
-	uint32 GetSearchProgress() const;
+	/** Returns the completion percentage of a specific search. */
+	uint32 GetSearchProgress(long searchId) const;
+
+	/**
+	 * Requests more results for a specific search ID.
+	 * This is a thread-safe method that can be called from any thread.
+	 * 
+	 * @param searchId The search ID to request more results for
+	 * @return Empty string on success, error message on failure
+	 */
+	wxString RequestMoreResultsForSearch(long searchId);
 
 	/** This function is called once the local (ed2k) search has ended. */
 	void	LocalSearchEnd();
@@ -113,6 +142,18 @@ public:
 
 	/** Removes all results for the specified search. */
 	void	RemoveResults(long searchID);
+
+	/**
+	 * Adds the specified file to the current search's results.
+	 *
+	 * @param toadd The result to add.
+	 * @param clientResponse Is the result sent by a client (shared-files list).
+	 * @return True if the results were added, false otherwise.
+	 *
+	 * Note that this function takes ownership of the CSearchFile object,
+	 * regardless of whenever or not it was actually added to the results list.
+	 */
+	bool	AddToList(CSearchFile* toadd, bool clientResponse = false);
 
 
 	/** Finds the search-result (by hash) and downloads it in the given category. */
@@ -169,55 +210,117 @@ public:
 	void UpdateSearchFileByHash(const CMD4Hash& hash);
 
 	/** Mark current KAD search as finished */
-	void SetKadSearchFinished() { m_KadSearchFinished = true; }
+	void SetKadSearchFinished();
 
-private:
-	/** Event-handler for global searches. */
-	void OnGlobalSearchTimer(CTimerEvent& evt);
+	/** Get the next unique search ID */
+	uint32 GetNextSearchID();
 
-	/**
-	 * Adds the specified file to the current search's results.
-	 *
-	 * @param toadd The result to add.
-	 * @param clientResponse Is the result sent by a client (shared-files list).
-	 * @return True if the results were added, false otherwise.
-	 *
-	 * Note that this function takes ownership of the CSearchFile object,
-	 * regardless of whenever or not it was actually added to the results list.
-	 */
-	bool AddToList(CSearchFile* toadd, bool clientResponse = false);
+	/** Get the search parameters for a given search ID */
+	CSearchParams GetSearchParams(long searchID);
+
+	/** Store the search parameters for a given search ID */
+	void StoreSearchParams(long searchID, const CSearchParams& params);
+
+	/** Request more results for a given search ID */
+	wxString RequestMoreResults(long searchID);
+
+	/** Request more results from a specific server */
+	wxString RequestMoreResultsFromServer(const CServer* server, long searchID);
 
 	//! This smart pointer is used to safely prevent leaks.
 	typedef CSmartPtr<CMemFile> CMemFilePtr;
 
 	/** Create a basic search-packet for the given search-type. */
-	CMemFilePtr CreateSearchData(CSearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit);
+	CMemFilePtr CreateSearchData(CSearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit, const wxString& kadKeyword = wxEmptyString);
+
+	/** Create a basic search-packet using search::SearchParams (avoids legacy conversion). */
+	CMemFilePtr CreateSearchData(search::SearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit, const wxString& kadKeyword = wxEmptyString);
+
+	/** Per-search state management methods */
+	
+	/**
+	 * Create or get per-search state for a search ID
+	 * 
+	 * @param searchId The search ID
+	 * @param searchType The search type
+	 * @param searchString The search string
+	 * @return Pointer to the PerSearchState, or nullptr on error
+	 */
+	::PerSearchState* getOrCreateSearchState(long searchId, SearchType searchType, const wxString& searchString);
+	
+	/**
+	 * Get per-search state for a search ID
+	 * 
+	 * @param searchId The search ID
+	 * @return Pointer to the PerSearchState, or nullptr if not found
+	 */
+	::PerSearchState* getSearchState(long searchId);
+	
+	/**
+	 * Get per-search state for a search ID (const version)
+	 * 
+	 * @param searchId The search ID
+	 * @return Pointer to the PerSearchState, or nullptr if not found
+	 */
+	const ::PerSearchState* getSearchState(long searchId) const;
+	
+	/**
+	 * Remove per-search state for a search ID
+	 *
+	 * @param searchId The search ID to remove
+	 * @param releaseId Whether to release the search ID for reuse (default: true)
+	 */
+	void removeSearchState(long searchId, bool releaseId = true);
+
+	/**
+	 * Check if a search state exists
+	 *
+	 * @param searchId The search ID to check
+	 * @return true if the search state exists, false otherwise
+	 */
+	bool hasSearchState(long searchId) const;
+
+	/**
+	 * Get all active search IDs
+	 *
+	 * @return Vector of active search IDs
+	 */
+	std::vector<long> getActiveSearchIds() const;
+
+	/**
+	 * Map a Kad search ID to an original search ID
+	 *
+	 * @param kadSearchId The Kad search ID (0xffffff?? format)
+	 * @param originalSearchId The original search ID
+	 */
+	void mapKadSearchId(uint32_t kadSearchId, long originalSearchId);
+
+	/**
+	 * Get the original search ID for a Kad search ID
+	 *
+	 * @param kadSearchId The Kad search ID (0xffffff?? format)
+	 * @return The original search ID, or 0 if not found
+	 */
+	long getOriginalSearchId(uint32_t kadSearchId) const;
+
+	/**
+	 * Remove a Kad search ID mapping
+	 *
+	 * @param kadSearchId The Kad search ID to remove
+	 */
+	void removeKadSearchIdMapping(uint32_t kadSearchId);
+
+private:
+	/** Event-handler for search timers (both local timeout and global search). */
+	void OnSearchTimer(CTimerEvent& evt);
 
 
-	//! Timer used for global search intervals.
-	CTimer	m_searchTimer;
+	//! Map of active searches and their per-search state
+	//! This is the single source of truth for active searches
+	std::map<long, std::unique_ptr<::PerSearchState>>	m_searchStates;
 
-	//! The current search-type, regarding the last/current search.
-	SearchType	m_searchType;
-
-	//! Specifies if a search is being performed.
-	bool		m_searchInProgress;
-
-	//! The ID of the current search.
-	long		m_currentSearch;
-
-	//! The current packet used for searches.
-	CPacket*	m_searchPacket;
-
-	//! Does the current search packet contain 64bit values?
-	bool		m_64bitSearchPacket;
-
-	//! If the current search is a KAD search this signals if it is finished.
-	bool		m_KadSearchFinished;
-
-	//! Queue of servers to ask when doing global searches.
-	//! TODO: Replace with 'cookie' system.
-	CQueueObserver<CServer*> m_serverQueue;
+	//! Mutex for thread-safe access to search states
+	mutable wxMutex m_searchMutex;
 
 	//! Shorthand for the map of results (key is a SearchID).
 	typedef std::map<long, CSearchResultList> ResultMap;
@@ -225,10 +328,20 @@ private:
 	//! Map of all search-results added.
 	ResultMap	m_results;
 
-	//! Contains the results type desired in the current search.
-	//! If not empty, results of different types are filtered.
-	wxString	m_resultType;
+	//! Map of Kad search IDs to original search IDs
+	//! Kad uses special IDs in format 0xffffff??, but we need to route results
+	//! to the original search ID used by SearchResultRouter
+	typedef std::map<uint32_t, long> KadSearchIdMap;
+	KadSearchIdMap	m_kadSearchIdMap;
 
+// Result handlers now managed by SearchResultRouter
+// Package validators now used by controllers directly
+
+	//! Handle search completion with auto-retry
+	void OnSearchComplete(long searchId, SearchType type, bool hasResults);
+
+	//! Handle retry callback from auto-retry manager
+	void OnSearchRetry(long searchId, SearchType type, int retryNum);
 
 	DECLARE_EVENT_TABLE()
 };

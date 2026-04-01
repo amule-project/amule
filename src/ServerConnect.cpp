@@ -32,6 +32,7 @@
 #include <common/EventIDs.h>
 
 #include "SearchList.h"		// Needed for CSearchList
+#include "search/UnifiedSearchManager.h"	// Needed for UnifiedSearchManager
 #include "ServerUDPSocket.h"	// Needed for CServerUDPSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "Packet.h"		// Needed for CTag
@@ -402,7 +403,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender)
 				connectedsocket->Close();
 			}
 			connectedsocket = NULL;
-			theApp->searchlist->StopSearch(true);
+			search::UnifiedSearchManager::Instance().stopAllSearches();
 			Notify_SearchCancel();
 			theStats::GetServerConnectTimer()->StopTimer();
 			if (thePrefs::Reconnect() && !connecting){

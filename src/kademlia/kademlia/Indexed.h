@@ -42,6 +42,7 @@ there client on the eMule forum..
 
 #include "SearchManager.h"
 #include "Entry.h"
+#include <mutex>
 
 class wxArrayString;
 
@@ -134,6 +135,7 @@ public:
 	uint32_t m_totalIndexLoad;
 
 private:
+	mutable std::mutex m_mutex;  // Mutex for thread safety
 	time_t m_lastClean;
 	KeyHashMap m_Keyword_map;
 	SrcHashMap m_Sources_map;

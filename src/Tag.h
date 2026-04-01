@@ -86,6 +86,11 @@ public:
 
 	wxString GetFullInfo() const;
 
+	bool IsValid() const;
+	void ValidateOrThrow() const;
+	uint8 InferTypeFromState() const;
+	bool FixInvalidType();  // Returns true if type was fixed
+
 protected:
 	CTag(const wxString& Name);
 	CTag(uint8 uName);

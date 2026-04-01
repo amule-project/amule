@@ -29,6 +29,7 @@
 
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "FileAutoClose.h"	// Needed for CFileAutoClose
+#include <memory>		// Needed for std::unique_ptr
 
 #include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "DeadSourceList.h"	// Needed for CDeadSourceList
@@ -38,6 +39,7 @@ class CSearchFile;
 class CMemFile;
 class CFileDataIO;
 class CED2KFileLink;
+class CCorruptionBlackBox;
 
 //#define BUFFER_SIZE_LIMIT	500000 // Max bytes before forcing a flush
 #define BUFFER_TIME_LIMIT	60000   // Max milliseconds before forcing a flush
@@ -293,7 +295,8 @@ private:
 	//! A local list of sources that are invalid for this file.
 	CDeadSourceList	m_deadSources;
 
-	class CCorruptionBlackBox* m_CorruptionBlackBox;
+	// CorruptionBlackBox ownership managed by unique_ptr for automatic cleanup
+	std::unique_ptr<CCorruptionBlackBox> m_CorruptionBlackBox;
 #endif
 
 	uint16	m_notCurrentSources;
@@ -399,6 +402,14 @@ public:
 	uint32 GetLastSearchTime() const			{ return m_lastsearchtime; }
 	void SetLastSearchTime(uint32 time)			{ m_lastsearchtime = time; }
 
+	/* Magnet conversion tracking */
+	void SetFromMagnet(bool fromMagnet)		{ m_fromMagnet = fromMagnet; }
+	bool IsFromMagnet() const			{ return m_fromMagnet; }
+
+	/* Magnet conversion progress */
+	void SetMagnetConversionProgress(float progress)	{ m_magnetConversionProgress = progress; }
+	float GetMagnetConversionProgress() const		{ return m_magnetConversionProgress; }
+
 	void AddDownloadingSource(CUpDownClient* client);
 
 	void RemoveDownloadingSource(CUpDownClient* client);
@@ -426,6 +437,12 @@ private:
 	/* Kad Stuff */
 	uint32	m_LastSearchTimeKad;
 	uint8	m_TotalSearchesKad;
+
+	/* Magnet conversion tracking */
+	bool	m_fromMagnet;
+
+	/* Magnet conversion progress */
+	float	m_magnetConversionProgress;
 
 friend class CKnownFilesRem;
 friend class CPartFileConvert;

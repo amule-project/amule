@@ -279,14 +279,6 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
 	/*
-	 * In this mode, internal PHP interpreter is activated, and
-	 * amuleweb will forward there requests for .php pages
-	 */
-	amuleweb_parser.AddSwitch(wxEmptyString, wxT("no-php"),
-		_("Disable PHP interpreter (deprecated)"),
-		wxCMD_LINE_PARAM_OPTIONAL);
-
-	/*
 	 * Reload .php page each time it's requested - don't cache
 	 * compilation results. Used for script development.
 	 */

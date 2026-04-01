@@ -50,7 +50,20 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID,
 	  m_clientServerPort(serverPort),
 	  m_kadPublishInfo(0)
 {
+	// Validate we have enough data to read the FileID (16 bytes)
+	// This prevents corrupted hashes from truncated packets
+	if (data.GetLength() - data.GetPosition() < 16) {
+		throw CInvalidPacket(wxT("Search result packet too short to read FileID"));
+	}
+
 	m_abyFileHash = data.ReadHash();
+
+	// Validate the FileID is not corrupted
+	// Truncated packets can result in hashes with zeros in first/last half
+	if (m_abyFileHash.IsCorrupted()) {
+		throw CInvalidPacket(CFormat(wxT("Corrupted FileID in search result: %s"))
+			% m_abyFileHash.Encode());
+	}
 	SetDownloadStatus();
 	m_clientID = data.ReadUInt32();
 	m_clientPort = data.ReadUInt16();
@@ -233,6 +246,102 @@ void CSearchFile::AddChild(CSearchFile* file)
 }
 
 
+// Helper function to detect if a filename has mojibake (corrupted characters)
+static bool HasMojibake(const CPath& filename)
+{
+	wxString name = filename.GetPrintable();
+	
+	// Check for common mojibake patterns
+	// The 啐 character (U+5550) is a common sign of UTF-8 encoding corruption
+	if (name.Find(wxT("啐")) != wxNOT_FOUND) {
+		return true;
+	}
+	
+	// Check for other common corrupted characters
+	// These are replacement characters that appear when UTF-8 is incorrectly decoded
+	if (name.Find(wxT("")) != wxNOT_FOUND) {
+		return true;
+	}
+	
+	// Check for sequences of characters that look like incorrectly decoded UTF-8
+	// Multi-byte UTF-8 sequences decoded as ISO-8859-1 often produce these patterns
+	for (size_t i = 0; i < name.length(); ++i) {
+		wxChar c = name[i];
+		// Check for characters in the range that commonly appear in mojibake
+		// These are continuation bytes or start bytes that weren't properly handled
+		if ((c >= 0x80 && c <= 0x9F) || (c >= 0xC0 && c <= 0xFF)) {
+			// This might be a corrupted UTF-8 byte
+			// Check if it's followed by more suspicious characters
+			if (i + 1 < name.length()) {
+				wxChar next = name[i + 1];
+				if ((next >= 0x80 && next <= 0x9F) || (next >= 0xC0 && next <= 0xFF)) {
+					return true;
+				}
+			}
+		}
+	}
+	
+	return false;
+}
+
+// Helper function to score a filename for quality (higher is better)
+static int ScoreFilename(const CPath& filename, uint32_t sourceCount)
+{
+	wxString name = filename.GetPrintable();
+	int score = 0;
+	
+	// Penalty for mojibake (severe penalty)
+	if (HasMojibake(filename)) {
+		score -= 1000;
+	}
+	
+	// Bonus for longer filenames (more descriptive)
+	if (name.length() > 20) {
+		score += (name.length() - 20) / 5;  // +1 for every 5 chars over 20
+	}
+	
+	// Bonus for source count (more sources = more popular)
+	score += sourceCount / 10;  // +1 for every 10 sources
+	
+	// Bonus for having year (e.g., 2024, 2023, etc.)
+	if (name.Contains(wxT("202")) || name.Contains(wxT("201")) || name.Contains(wxT("200"))) {
+		score += 5;
+	}
+	
+	// Bonus for quality indicators
+	if (name.Contains(wxT("1080p")) || name.Contains(wxT("720p")) || 
+	    name.Contains(wxT("BluRay")) || name.Contains(wxT("HDR")) ||
+	    name.Contains(wxT("4K")) || name.Contains(wxT("UHD"))) {
+		score += 3;
+	}
+	
+	// Bonus for proper spacing (has spaces between words)
+	int spaceCount = 0;
+	for (size_t i = 0; i < name.length(); ++i) {
+		if (name[i] == wxT(' ')) {
+			spaceCount++;
+		}
+	}
+	if (spaceCount > 2) {
+		score += spaceCount;  // +1 for each space (max reasonable benefit)
+	}
+	
+	// Penalty for excessive punctuation (might indicate poor formatting)
+	int punctCount = 0;
+	for (size_t i = 0; i < name.length(); ++i) {
+		wxChar c = name[i];
+		if (c == wxT('.') || c == wxT('_') || c == wxT('-')) {
+			punctCount++;
+		}
+	}
+	if (punctCount > 10) {
+		score -= (punctCount - 10);  // Penalty for too much punctuation
+	}
+	
+	return score;
+}
+
+
 void CSearchFile::UpdateParent()
 {
 	wxCHECK_RET(!m_parent, wxT("UpdateParent called on child item"));
@@ -249,8 +358,12 @@ void CSearchFile::UpdateParent()
 	for (CSearchResultList::const_iterator it = m_children.begin(); it != m_children.end(); ++it) {
 		const CSearchFile* child = *it;
 
-		// Locate the most common name
-		if (child->GetSourceCount() > (*best)->GetSourceCount()) {
+		// Score each filename based on quality criteria
+		// Prefer filenames that are: clean, descriptive, popular, well-formatted
+		int bestScore = ScoreFilename((*best)->GetFileName(), (*best)->GetSourceCount());
+		int childScore = ScoreFilename(child->GetFileName(), child->GetSourceCount());
+		
+		if (childScore > bestScore) {
 			best = it;
 		}
 

@@ -59,8 +59,9 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 
 	serverlistctrl = CastChild( ID_SERVERLIST, CServerListCtrl );
 
-	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashPosition(splitter_pos, true);
-	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashGravity(0.5f);
+	wxSplitterWindow* splitter = CastChild( ID_SRV_SPLITTER, wxSplitterWindow );
+	splitter->SetSashPosition(splitter_pos, true);
+	splitter->SetSashGravity(0.5f);
 	CastChild( IDC_NODESLISTURL, wxTextCtrl )->SetValue(thePrefs::GetKadNodesUrl());
 	CastChild( IDC_SERVERLISTURL, wxTextCtrl )->SetValue(thePrefs::GetEd2kServersUrl());
 

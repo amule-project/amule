@@ -47,6 +47,7 @@
 #include <common/Format.h>	// Needed for CFormat
 
 #include "SearchList.h"		// Needed for CSearchList
+#include "search/UnifiedSearchManager.h"	// Needed for UnifiedSearchManager
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "IPFilter.h"		// Needed for CIPFilter
@@ -1982,7 +1983,7 @@ void CUpDownClient::ProcessSharedFileList(const uint8_t* pachPacket, uint32 nSiz
 {
 	if (m_iFileListRequested > 0) {
 		m_iFileListRequested--;
-		theApp->searchlist->ProcessSharedFileList(pachPacket, nSize, this, NULL, pszDirectory);
+		search::UnifiedSearchManager::Instance().processSharedFileList(pachPacket, nSize, this, NULL, pszDirectory);
 	}
 }
 

@@ -107,6 +107,8 @@ protected:
 	void OnOk(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnClose(wxCloseEvent &event);
+	
+	void OnGeoIPDownload(wxCommandEvent &event);
 
 	void OnButtonBrowseApplication(wxCommandEvent &event);
 	void OnButtonDir(wxCommandEvent& event);

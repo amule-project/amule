@@ -249,10 +249,28 @@ void CClientCreditsList::Process()
 bool CClientCreditsList::CreateKeyPair()
 {
 	try {
+		puts("xxxx");
+		//exit(1);
 		CryptoPP::AutoSeededX917RNG<CryptoPP::DES_EDE3> rng;
+		//CryptoPP::AutoSeededRandomPool rng;
+		puts("yyy");
 		CryptoPP::InvertibleRSAFunction privkey;
+		//CryptoPP::RSA::PrivateKey privkey;
 		privkey.Initialize(rng, RSAKEYSIZE);
-
+		//privkey.GenerateRandomWithKeySize( rng, RSAKEYSIZE );
+		puts("zzz");
+		//exit(1);
+		
+//		AutoSeededRandomPool rng;
+////Read private key
+//CryptoPP::ByteQueue bytes;
+//FileSource file("privkey.txt", true, new Base64Decoder);
+//file.TransferTo(bytes);
+//bytes.MessageEnd();
+//RSA::PrivateKey privateKey;
+//privateKey.Load(bytes);
+		
+		
 		// Nothing we can do against this filename2char :/
 		wxCharBuffer filename = filename2char(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME);
 		CryptoPP::FileSink *fileSink = new CryptoPP::FileSink(filename);

@@ -54,6 +54,7 @@ there client on the eMule forum..
 #include "../../MemFile.h"
 #include "../../Preferences.h"
 #include "../../Logger.h"
+#include "../../FileLock.h"
 
 ////////////////////////////////////////
 using namespace Kademlia;
@@ -78,6 +79,16 @@ CIndexed::CIndexed()
 
 void CIndexed::ReadFile()
 {
+	// Acquire file lock before reading to prevent multi-process corruption
+	CFileLock loadLock((const char*)unicode2char(m_loadfilename));
+	CFileLock kLock((const char*)unicode2char(m_kfilename));
+	CFileLock sLock((const char*)unicode2char(m_sfilename));
+
+	if (!loadLock.IsOk() || !kLock.IsOk() || !sLock.IsOk()) {
+		AddDebugLogLineC(logKadIndex,
+			wxT("Failed to acquire file locks for index files, proceeding without lock"));
+	}
+
 	try {
 		uint32_t totalLoad = 0;
 		uint32_t totalSource = 0;
@@ -246,6 +257,16 @@ void CIndexed::ReadFile()
 
 CIndexed::~CIndexed()
 {
+	// Acquire file lock before writing to prevent multi-process corruption
+	CFileLock loadLock((const char*)unicode2char(m_loadfilename));
+	CFileLock kLock((const char*)unicode2char(m_kfilename));
+	CFileLock sLock((const char*)unicode2char(m_sfilename));
+
+	if (!loadLock.IsOk() || !kLock.IsOk() || !sLock.IsOk()) {
+		AddDebugLogLineC(logKadIndex,
+			wxT("Failed to acquire file locks for writing index files, proceeding without lock"));
+	}
+
 	try
 	{
 		time_t now = time(NULL);
@@ -378,6 +399,8 @@ CIndexed::~CIndexed()
 
 void CIndexed::Clean()
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
+
 	time_t tNow = time(NULL);
 	if (m_lastClean > tNow) {
 		return;
@@ -473,6 +496,8 @@ void CIndexed::Clean()
 
 bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CKeyEntry* entry, uint8_t& load)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
+
 	if (!entry) {
 		return false;
 	}
@@ -562,6 +587,8 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 
 bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8_t& load)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
+
 	if (!entry) {
 		return false;
 	}
@@ -637,6 +664,8 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 
 bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8_t& load)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
+
 	if (!entry) {
 		return false;
 	}
@@ -711,6 +740,8 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 
 bool CIndexed::AddLoad(const CUInt128& keyID, uint32_t timet)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
+
 	Load* load = NULL;
 
 	if ((uint32_t)time(NULL) > timet) {
@@ -733,6 +764,8 @@ bool CIndexed::AddLoad(const CUInt128& keyID, uint32_t timet)
 
 void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32_t ip, uint16_t port, bool oldClient, uint16_t startPosition, const CKadUDPKey& senderKey)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
+
 	KeyHash* currKeyHash = NULL;
 	KeyHashMap::iterator itKeyHash = m_Keyword_map.find(keyID);
 	if (itKeyHash != m_Keyword_map.end()) {
@@ -814,6 +847,8 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 
 void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_t port, uint16_t startPosition, uint64_t fileSize, const CKadUDPKey& senderKey)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
+
 	SrcHash* currSrcHash = NULL;
 	SrcHashMap::iterator itSrcHash = m_Sources_map.find(keyID);
 	if (itSrcHash != m_Sources_map.end()) {
@@ -864,6 +899,8 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_
 
 void CIndexed::SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t port, uint64_t fileSize, const CKadUDPKey& senderKey)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
+
 	SrcHash* currNoteHash = NULL;
 	SrcHashMap::iterator itNote = m_Notes_map.find(keyID);
 	if (itNote != m_Notes_map.end()) {
@@ -909,6 +946,8 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t 
 
 bool CIndexed::SendStoreRequest(const CUInt128& keyID)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
+
 	Load* load = NULL;
 	LoadMap::iterator it = m_Load_map.find(keyID);
 	if (it != m_Load_map.end()) {

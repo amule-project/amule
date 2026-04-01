@@ -52,6 +52,10 @@
 #include "Statistics.h"
 #include "UserEvents.h"
 #include "PlatformSpecific.h"		// Needed for PLATFORMSPECIFIC_CAN_PREVENT_SLEEP_MODE
+#include <wx/progdlg.h>         // Needed for wxProgressDialog
+#include <wx/url.h>             // Needed for wxURL
+#include <wx/zstream.h>          // Needed for gzip decompression
+#include "IP2Country.h"         // Needed for CIP2Country
 
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	// Events
@@ -96,6 +100,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 
 	EVT_BUTTON(ID_PREFS_OK_TOP,		PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_PREFS_CANCEL_TOP,		PrefsUnifiedDlg::OnCancel)
+	EVT_BUTTON(IDC_GEOIP_DOWNLOAD,		PrefsUnifiedDlg::OnGeoIPDownload)
 
 	// Browse buttons
 //	EVT_BUTTON(IDC_SELSKIN,		PrefsUnifiedDlg::OnButtonDir)
@@ -475,8 +480,13 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	::SendCheckBoxEvent(this, IDC_ENFORCE_PO_INCOMING);
 
 #ifndef ENABLE_IP2COUNTRY
-	CastChild(IDC_SHOW_COUNTRY_FLAGS, wxCheckBox)->Enable(false);
-	thePrefs::SetGeoIPEnabled(false);
+	// Only disable if both legacy and new implementations are unavailable
+	if (!thePrefs::IsGeoIPEnabled()) {
+		CastChild(IDC_SHOW_COUNTRY_FLAGS, wxCheckBox)->Enable(false);
+	}
+#else
+	// With ENABLE_IP2COUNTRY defined, keep the option enabled
+	CastChild(IDC_SHOW_COUNTRY_FLAGS, wxCheckBox)->Enable(true);
 #endif
 
 #ifdef __SVN__
@@ -743,6 +753,122 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 
 	if (CfgChanged(IDC_SHOW_COUNTRY_FLAGS)) {
 		theApp->amuledlg->EnableIP2Country();
+	}
+
+	if (CfgChanged(IDC_GEOIP_DOWNLOAD)) {
+		// Download GeoIP database
+		wxWindow* parent = this;
+		wxString configDir = thePrefs::GetConfigDir();
+		wxString dbPath = configDir + "GeoLite2-Country.mmdb";
+		
+		// Show download in progress
+		wxProgressDialog progressDialog(
+			_("Downloading GeoIP Database"),
+			_("Connecting..."),
+			100,
+			parent,
+			wxPD_APP_MODAL | wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME
+		);
+		
+		// Download from GitHub mirror
+		wxString url = "https://raw.githubusercontent.com/8bitsaver/maxmind-geoip/release/GeoLite2-Country.mmdb";
+		wxString tempPath = dbPath + ".download";
+		
+                wxURL webUrl(url);
+                if (webUrl.GetError() == wxURL_NOERR) {
+                    wxInputStream* httpStream = webUrl.GetInputStream();
+			if (httpStream && httpStream->IsOk()) {
+				wxFileOutputStream outputStream(tempPath);
+				if (outputStream.IsOk()) {
+					char buffer[8192];
+					size_t totalRead = 0;
+					size_t lastRead = 0;
+					bool cancelled = false;
+					
+					while (!httpStream->Eof() && !cancelled) {
+						httpStream->Read(buffer, sizeof(buffer));
+						size_t read = httpStream->LastRead();
+						
+						if (read > 0) {
+							outputStream.Write(buffer, read);
+							totalRead += read;
+							
+							// Update progress every 64KB
+							if (totalRead - lastRead > 65536) {
+								lastRead = totalRead;
+								wxString msg = wxString::Format(_("Downloaded: %.1f MB"), totalRead / (1024.0 * 1024.0));
+								if (!progressDialog.Update(totalRead / 1024, msg)) {
+									cancelled = true;
+								}
+							}
+						}
+						
+						wxYield();
+					}
+					
+					outputStream.Close();
+					
+					if (!cancelled && totalRead > 0) {
+						// Rename to final location
+						if (wxFileExists(dbPath)) {
+							wxRemoveFile(dbPath);
+						}
+						
+						if (wxRenameFile(tempPath, dbPath)) {
+							wxMessageBox(
+								_("GeoIP database downloaded successfully!\n\nPlease restart aMule to enable country flags."),
+								_("Download Complete"),
+								wxOK | wxICON_INFORMATION,
+								parent
+							);
+							
+							// Reload if already enabled
+							if (theApp->amuledlg->m_IP2Country->IsEnabled()) {
+								theApp->amuledlg->m_IP2Country->Disable();
+								theApp->amuledlg->m_IP2Country->Enable();
+							}
+						} else {
+							wxMessageBox(
+								_("Failed to install the downloaded database."),
+								_("Error"),
+								wxOK | wxICON_ERROR,
+								parent
+							);
+						}
+					} else if (!cancelled) {
+						wxMessageBox(
+							_("Download failed. Please check your internet connection."),
+							_("Error"),
+							wxOK | wxICON_ERROR,
+							parent
+						);
+					}
+					// If cancelled, temp file will be cleaned up on next attempt
+				} else {
+					wxMessageBox(
+						_("Failed to create output file."),
+						_("Error"),
+						wxOK | wxICON_ERROR,
+						parent
+					);
+				}
+			} else {
+				wxMessageBox(
+					_("Failed to connect to download server."),
+					_("Error"),
+					wxOK | wxICON_ERROR,
+					parent
+				);
+			}
+			delete httpStream;
+		} else {
+			wxMessageBox(
+				_("Invalid download URL."),
+				_("Error"),
+				wxOK | wxICON_ERROR,
+				parent
+			);
+		}
 	}
 
 	if (restart_needed) {
@@ -1235,6 +1361,153 @@ void PrefsUnifiedDlg::OnUserEventSelected(wxListEvent& event)
 void PrefsUnifiedDlg::OnLanguageChoice(wxCommandEvent &evt)
 {
 	thePrefs::GetCfgLang()->UpdateChoice(evt.GetSelection());
+}
+
+void PrefsUnifiedDlg::OnGeoIPDownload(wxCommandEvent &WXUNUSED(event))
+{
+	wxString configDir = thePrefs::GetConfigDir();
+	wxString dbPath = configDir + "GeoLite2-Country.mmdb";
+	
+	// Show download in progress
+	wxProgressDialog progressDialog(
+		_("Downloading GeoIP Database"),
+		_("Connecting..."),
+		100,
+		this,
+		wxPD_APP_MODAL | wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME
+	);
+	
+	// Download from jsDelivr CDN using wget (supports HTTPS)
+	wxString url = "https://cdn.jsdelivr.net/npm/geolite2-country/GeoLite2-Country.mmdb.gz";
+	wxString tempGzPath = configDir + "GeoLite2-Country.mmdb.gz";
+	wxString tempExtractPath = configDir + "GeoLite2-Country.mmdb.extract";
+	
+	// Use wget to download the file (supports HTTPS)
+	wxString wgetCmd = wxString::Format("wget -q -O \"%s\" \"%s\"", tempGzPath, url);
+	
+	// Update progress
+	progressDialog.Update(10, _("Starting download..."));
+	
+	int result = wxExecute(wgetCmd, wxEXEC_SYNC);
+	
+	if (result != 0) {
+		wxMessageBox(
+			_("Failed to download GeoIP database.\nPlease check your internet connection."),
+			_("Download Error"),
+			wxOK | wxICON_ERROR,
+			this
+		);
+		if (wxFileExists(tempGzPath)) {
+			wxRemoveFile(tempGzPath);
+		}
+		return;
+	}
+	
+	// Check if file was downloaded
+	if (!wxFileExists(tempGzPath)) {
+		wxMessageBox(
+			_("Downloaded file not found."),
+			_("Error"),
+			wxOK | wxICON_ERROR,
+			this
+		);
+		return;
+	}
+	
+	// Get file size for progress
+	wxFile downloadedFile(tempGzPath);
+	size_t totalSize = downloadedFile.Length();
+	downloadedFile.Close();
+	
+	// Decompress the gzip file
+	progressDialog.Update(90, _("Decompressing database..."));
+	
+	wxFileInputStream gzInputStream(tempGzPath);
+	if (!gzInputStream.IsOk()) {
+		wxMessageBox(
+			_("Failed to open downloaded file."),
+			_("Error"),
+			wxOK | wxICON_ERROR,
+			this
+		);
+		wxRemoveFile(tempGzPath);
+		return;
+	}
+	
+	wxZlibInputStream zlibStream(gzInputStream, wxZLIB_GZIP);
+	wxFileOutputStream dbOutputStream(tempExtractPath);
+	
+	if (!zlibStream.IsOk() || !dbOutputStream.IsOk()) {
+		wxMessageBox(
+			_("Failed to decompress database."),
+			_("Error"),
+			wxOK | wxICON_ERROR,
+			this
+		);
+		wxRemoveFile(tempGzPath);
+		return;
+	}
+	
+	char buffer[8192];
+	size_t totalRead = 0;
+	while (!zlibStream.Eof()) {
+		zlibStream.Read(buffer, sizeof(buffer));
+		size_t read = zlibStream.LastRead();
+		if (read > 0) {
+			dbOutputStream.Write(buffer, read);
+			totalRead += read;
+		}
+		wxYield();
+	}
+	
+	dbOutputStream.Close();
+	wxRemoveFile(tempGzPath); // Clean up the compressed file
+	
+	// Check if decompressed file is valid
+	wxFile extractedFile(tempExtractPath);
+	if (!extractedFile.IsOpened() || extractedFile.Length() == 0) {
+		wxMessageBox(
+			_("Decompressed file is invalid or empty."),
+			_("Error"),
+			wxOK | wxICON_ERROR,
+			this
+		);
+		if (wxFileExists(tempExtractPath)) {
+			wxRemoveFile(tempExtractPath);
+		}
+		return;
+	}
+	
+	// Rename to final location
+	if (wxFileExists(dbPath)) {
+		wxRemoveFile(dbPath);
+	}
+	
+	if (!wxRenameFile(tempExtractPath, dbPath)) {
+		wxMessageBox(
+			_("Failed to install the downloaded database."),
+			_("Error"),
+			wxOK | wxICON_ERROR,
+			this
+		);
+		if (wxFileExists(tempExtractPath)) {
+			wxRemoveFile(tempExtractPath);
+		}
+		return;
+	}
+	
+	wxMessageBox(
+		_("GeoIP database downloaded successfully!\n\nPlease restart aMule to enable country flags."),
+		_("Download Complete"),
+		wxOK | wxICON_INFORMATION,
+		this
+	);
+	
+	// Reload if already enabled
+	if (theApp->amuledlg->m_IP2Country->IsEnabled()) {
+		theApp->amuledlg->m_IP2Country->Disable();
+		theApp->amuledlg->m_IP2Country->Enable();
+	}
 }
 
 void PrefsUnifiedDlg::CreateEventPanels(const int idx, const wxString& vars, wxWindow* parent)

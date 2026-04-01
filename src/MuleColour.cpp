@@ -49,7 +49,7 @@ const wxPen& CMuleColour::GetPen(int width, wxPenStyle style) const
 			result = it->second;
 			m_cachedpen = result;
 		} else {
-			result = wxThePenList->FindOrCreatePen(wxColour(m_red, m_green, m_blue), width, style);
+			result = new wxPen(wxColour(m_red, m_green, m_blue), width, wxPenStyle(style));
 			m_cachedpen = result;
 			wxPenCache.insert(std::pair<uint32_t, wxPen*>(hash, result));
 		}
@@ -57,7 +57,7 @@ const wxPen& CMuleColour::GetPen(int width, wxPenStyle style) const
 
 	return *result;
 #else
-	return *wxThePenList->FindOrCreatePen(wxColour(m_red, m_green, m_blue), width, style);
+	return wxPen(wxColour(m_red, m_green, m_blue), width, wxPenStyle(style));
 #endif
 }
 
@@ -75,7 +75,7 @@ const wxBrush& CMuleColour::GetBrush(wxBrushStyle style) const
 			result = it->second;
 			m_cachedbrush = result;
 		} else {
-			result = wxTheBrushList->FindOrCreateBrush(wxColour(m_red, m_green, m_blue), style);
+			result = new wxBrush(wxColour(m_red, m_green, m_blue), wxBrushStyle(style));
 			m_cachedbrush = result;
 			wxBrushCache.insert(std::pair<uint32_t, wxBrush*>(hash, result));
 		}
@@ -83,6 +83,6 @@ const wxBrush& CMuleColour::GetBrush(wxBrushStyle style) const
 
 	return *result;
 #else
-	return *wxTheBrushList->FindOrCreateBrush(wxColour(m_red, m_green, m_blue), style);
+	return wxBrush(wxColour(m_red, m_green, m_blue), wxBrushStyle(style));
 #endif
 }

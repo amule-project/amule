@@ -144,6 +144,12 @@ void CKademlia::Stop()
 	// Remove all active searches.
 	CSearchManager::StopAllSearches();
 
+	// Clean up bootstrap list before deleting instance
+	for (ContactList::iterator it = s_bootstrapList.begin(); it != s_bootstrapList.end(); ++it) {
+		delete *it;
+	}
+	s_bootstrapList.clear();
+
 	// Delete all Kad Objects.
 	delete instance->m_udpListener;
 	instance->m_udpListener = NULL;
@@ -159,11 +165,6 @@ void CKademlia::Stop()
 
 	delete instance;
 	instance = NULL;
-
-	for (ContactList::iterator it = s_bootstrapList.begin(); it != s_bootstrapList.end(); ++it) {
-		delete *it;
-	}
-	s_bootstrapList.clear();
 
 	// Make sure all zones are removed.
 	m_events.clear();

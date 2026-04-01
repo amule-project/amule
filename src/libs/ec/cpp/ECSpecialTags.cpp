@@ -36,27 +36,27 @@ wxString CEC_PartFile_Tag::GetFileStatusString() const
 {
 	uint8 nFileStatus = FileStatus();
 
-        if ((nFileStatus == PS_HASHING) || (nFileStatus == PS_WAITINGFORHASH)) {
-                return _("Hashing");
-        } else {
-                switch (nFileStatus) {
-                        case PS_COMPLETING:
-                                return _("Completing");
-                        case PS_COMPLETE:
-                                return _("Complete");
-                        case PS_PAUSED:
-                                return _("Paused");
-                        case PS_ERROR:
-                                return _("Erroneous");
-                        default:
-                                if (SourceXferCount() > 0) {
-                                        return _("Downloading");
-                                } else {
-                                        return _("Waiting");
-                                }
-                }
-                // if stopped
-        }
+	if ((nFileStatus == PS_HASHING) || (nFileStatus == PS_WAITINGFORHASH)) {
+		return _("Hashing");
+	} else {
+		switch (nFileStatus) {
+			case PS_COMPLETING:
+				return _("Completing");
+			case PS_COMPLETE:
+				return _("Complete");
+			case PS_PAUSED:
+				return _("Paused");
+			case PS_ERROR:
+				return _("Erroneous");
+			default:
+				if (SourceXferCount() > 0) {
+				        return _("Downloading");
+				} else {
+				        return _("Waiting");
+				}
+		}
+		// if stopped
+	}
 }
 
 //

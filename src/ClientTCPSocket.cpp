@@ -25,6 +25,9 @@
 #include "ClientTCPSocket.h"	// Interface declarations
 
 #include <protocol/Protocols.h>
+#include "include/common/MacrosProgramSpecific.h"	// Needed for NOT_ON_REMOTEGUI
+
+#include <protocol/Protocols.h>
 #include <protocol/ed2k/Client2Client/TCP.h>
 #include <protocol/ed2k/Client2Client/UDP.h> // Sometimes we reply with UDP packets.
 #include <protocol/ed2k/ClientSoftware.h>
@@ -38,6 +41,7 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include <common/Format.h>	// Needed for CFormat
 #include "amule.h"		// Needed for theApp
+#include "common/NetworkPerformanceMonitor.h"
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "ClientList.h"		// Needed for CClientList
 #include "UploadQueue.h"	// Needed for CUploadQueue
@@ -304,6 +308,10 @@ bool CClientTCPSocket::ProcessPacket(const uint8_t* buffer, uint32 size, uint8 o
 	//printf("Rec: OPCODE %x \n",opcode);
 	DumpMem(buffer, size);
 	#endif
+// Track received bytes
+if (m_remoteip) {
+	NOT_ON_DAEMON(theApp->networkPerformanceMonitor.record_tcp_received(size););
+}
 	if (!m_client && opcode != OP_HELLO) {
 		throw wxString(wxT("Asks for something without saying hello"));
 	} else if (m_client && opcode != OP_HELLO && opcode != OP_HELLOANSWER) {
@@ -2078,6 +2086,10 @@ SocketSentBytes CClientTCPSocket::SendFileAndControlData(uint32 maxNumberOfBytes
 void CClientTCPSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, uint32 actualPayloadSize)
 {
 	ResetTimeOutTimer();
-	CEMSocket::SendPacket(packet,delpacket,controlpacket, actualPayloadSize);
+	// Track sent bytes
+	if (m_remoteip) {
+		NOT_ON_DAEMON(theApp->networkPerformanceMonitor.record_tcp_sent(packet->GetPacketSize()););
+	}
+	CEMSocket::SendPacket(packet, delpacket, controlpacket, actualPayloadSize);
 }
 // File_checked_for_headers

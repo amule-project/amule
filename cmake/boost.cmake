@@ -1,4 +1,7 @@
-include (FindBoost)
+# Suppress CMP0167 warning about FindBoost module
+cmake_policy(SET CMP0167 NEW)
+# Use modern Boost find approach
+find_package(Boost REQUIRED)
 
 if (NOT ASIO_SOCKETS)
 	include (CheckIncludeFiles)

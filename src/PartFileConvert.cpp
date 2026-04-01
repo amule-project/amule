@@ -199,7 +199,9 @@ wxThread::ExitCode CPartFileConvert::Entry()
 
 			if (TestDestroy()) {
 				wxMutexLocker lock(s_mutex);
+				// Clean up all jobs including the one being converted
 				DeleteContents(s_jobs);
+				s_pfconverting = nullptr;  // Prevent dangling pointer
 				break;
 			}
 		} else {

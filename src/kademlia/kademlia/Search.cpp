@@ -56,6 +56,7 @@ there client on the eMule forum..
 #include "../../DownloadQueue.h"
 #include "../../PartFile.h"
 #include "../../SearchList.h"
+#include "../../search/UnifiedSearchManager.h"
 #include "../../MemFile.h"
 #include "../../ClientList.h"
 #include "../../updownclient.h"
@@ -75,6 +76,7 @@ CSearch::CSearch()
 	m_totalRequestAnswers = 0;
 	m_searchID = (uint32_t)-1;
 	m_stopping = false;
+	m_destructing = false;
 	m_totalLoad = 0;
 	m_totalLoadResponses = 0;
 	m_lastResponse = m_created;
@@ -87,6 +89,12 @@ CSearch::CSearch()
 
 CSearch::~CSearch()
 {
+	// Prevent recursive deletion
+	if (m_destructing) {
+		return;
+	}
+	m_destructing = true;
+
 	// remember the closest node we found and tried to contact (if any) during this search
 	// for statistical caluclations, but only if its a certain type
 	switch (m_type) {
@@ -121,15 +129,25 @@ CSearch::~CSearch()
 
 	// Decrease the use count for any contacts that are in our contact list.
 	for (ContactMap::iterator it = m_inUse.begin(); it != m_inUse.end(); ++it) {
-		it->second->DecUse();
+		if (it->second) {
+			it->second->DecUse();
+		}
 	}
 
 	// Delete any temp contacts...
 	for (ContactList::const_iterator it = m_delete.begin(); it != m_delete.end(); ++it) {
-		if (!(*it)->InUse()) {
+		if (*it && !(*it)->InUse()) {
 			delete *it;
 		}
 	}
+
+	// Clear all contact maps to prevent accessing invalid pointers
+	m_possible.clear();
+	m_tried.clear();
+	m_responded.clear();
+	m_best.clear();
+	m_delete.clear();
+	m_inUse.clear();
 
 	// Check if this search was containing an overload node and adjust time of next time we use that node.
 	if (CKademlia::IsRunning() && GetNodeLoad() > 20) {
@@ -1079,7 +1097,7 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 	}
 
 	m_answers++;
-	theApp->searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, publishInfo, taglist);
+	search::UnifiedSearchManager::Instance().processKadSearchKeyword(m_searchID, &answer, name, size, type, publishInfo, taglist);
 
 	// Free tags memory
 	deleteTagPtrListEntries(&taglist);
@@ -1250,6 +1268,53 @@ void CSearch::SetSearchTermData(uint32_t searchTermsDataSize, const uint8_t *sea
 	m_searchTermsDataSize = searchTermsDataSize;
 	m_searchTermsData = new uint8_t [searchTermsDataSize];
 	memcpy(m_searchTermsData, searchTermsData, searchTermsDataSize);
+}
+
+bool CSearch::RequestMoreResults()
+{
+	// Check if search is still active
+	if (m_stopping) {
+		AddDebugLogLineN(logKadSearch, CFormat(wxT("CSearch::RequestMoreResults: Search %u is stopping"))
+			% GetSearchID());
+		return false;
+	}
+
+	// Check if we have any nodes that responded
+	if (m_responded.empty()) {
+		AddDebugLogLineN(logKadSearch, CFormat(wxT("CSearch::RequestMoreResults: No nodes have responded for search %u"))
+			% GetSearchID());
+		return false;
+	}
+
+	// Check if we already have a pending "more" request
+	if (m_requestedMoreNodesContact != NULL) {
+		AddDebugLogLineN(logKadSearch, CFormat(wxT("CSearch::RequestMoreResults: Already requesting more results for search %u"))
+			% GetSearchID());
+		return false;
+	}
+
+	// Find a node that responded and reask for more results
+	// We prefer nodes that are closest to the target
+	for (RespondedMap::const_iterator it = m_responded.begin(); it != m_responded.end(); ++it) {
+		const CUInt128& distance = it->first;
+
+		// Check if this node is in our tried list
+		if (m_tried.count(distance) > 0) {
+			CContact *contact = m_tried[distance];
+
+			// Reask this node for more results
+			AddDebugLogLineN(logKadSearch, CFormat(wxT("CSearch::RequestMoreResults: Reasking node %s for more results (search %u)"))
+				% KadIPToString(contact->GetIPAddress()) % GetSearchID());
+
+			// Send request with reaskMore=true
+			SendFindValue(contact, true);
+			return true;
+		}
+	}
+
+	AddDebugLogLineN(logKadSearch, CFormat(wxT("CSearch::RequestMoreResults: No suitable nodes found to reask for search %u"))
+		% GetSearchID());
+	return false;
 }
 
 uint8_t CSearch::GetRequestContactCount() const

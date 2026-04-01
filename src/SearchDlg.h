@@ -28,8 +28,15 @@
 
 #include <wx/panel.h>		// Needed for wxPanel
 #include <wx/notebook.h>	// needed for wxBookCtrlEvent in wx 2.8
+#include <wx/timer.h>		// Needed for wxTimer
+#include <map>			// Needed for std::map
+#include <memory>		// Needed for std::unique_ptr
 
 #include "Types.h"		// Needed for uint16 and uint32
+#include "SearchList.h"		// Needed for SearchType
+#include "SearchStateManager.h"	// Needed for SearchStateManager and ISearchStateObserver
+#include "search/UnifiedSearchManager.h"	// Needed for UnifiedSearchManager
+#include "SimpleSearchCache.h"	// Needed for SimpleSearchCache (duplicate detection)
 
 
 class CMuleNotebook;
@@ -46,7 +53,7 @@ class CSearchFile;
  * enabling the user to search and to display results in a readable
  * manner.
  */
-class CSearchDlg : public wxPanel
+class CSearchDlg : public wxPanel, public ISearchStateObserver
 {
 public:
 	/**
@@ -86,7 +93,7 @@ public:
 	 *
 	 * @param searchString The heading to look for.
 	 */
-	bool		CheckTabNameExists(const wxString& searchString);
+	bool		CheckTabNameExists(SearchType searchType, const wxString& searchString);
 
 	/**
 	 * Creates a new tab and displays the specified results.
@@ -98,40 +105,93 @@ public:
 
 
 	/**
+	 * Call this function to signify that the global search is over.
+	 */
+	void		GlobalSearchEnd();
+
+	/**
 	 * Call this function to signify that the local search is over.
 	 */
 	void		LocalSearchEnd();
-
 
 	/**
 	 * Call this function to signify that the kad search is over.
 	 */
 	void		KadSearchEnd(uint32 id);
 
+	/**
+	 * Updates the hit count display for the given search list control.
+	 */
+	void		UpdateHitCount(CSearchListCtrl* list);
+
+	/**
+	 * Updates the tab label with state information for the given search list control.
+	 */
+	void		UpdateTabLabelWithState(CSearchListCtrl* list, const wxString& state);
+
+	/**
+	 * Implementation of ISearchStateObserver interface.
+	 * Called when the search state changes.
+	 *
+	 * @param searchId The search ID
+	 * @param state The new search state
+	 * @param retryCount The current retry count
+	 */
+	void		OnSearchStateChanged(uint32_t searchId, SearchState state, int retryCount);
+
+	/**
+	 * Implementation of ISearchStateObserver interface.
+	 * Called when a retry is requested for a search.
+	 *
+	 * @param searchId The search ID to retry
+	 * @return true if the retry was initiated, false otherwise
+	 */
+	bool		OnRetryRequested(uint32_t searchId);
+
+	/**
+	 * Gets the notebook widget containing search result tabs.
+	 */
+	CMuleNotebook* GetNotebook() const { return m_notebook; }
+
+	/**
+	 * Gets the search state manager.
+	 */
+	SearchStateManager& GetStateManager() { return m_stateManager; }
+
+	/**
+	 * Gets the unified search manager (now a singleton).
+	 */
+	search::UnifiedSearchManager& GetUnifiedSearchManager() { return search::UnifiedSearchManager::Instance(); }
+
+	/**
+	 * Updates the enabled state of the start button based on connection status.
+	 */
+	void		UpdateStartButtonState();
 
 	/**
 	 * This function updates the category list according to existing categories.
 	 */
 	void		UpdateCatChoice();
 
-
-	/**
-	 * This function displays the the hit-count in the heading for the specified page.
-	 *
-	 * @param page The page to have its heading updated.
-	 */
-	void		UpdateHitCount(CSearchListCtrl* page);
-
 	/**
 	 * Helper function which resets the controls.
 	 */
 	void		ResetControls();
 
+	/**
+	 * Helper function to get the search list control for a given ID.
+	 */
+	CSearchListCtrl* GetSearchList(wxUIntPtr id);
+
 	// Event handler and helper function
-	void		OnBnClickedDownload(wxCommandEvent& ev);
+	void		OnBnClickedDownload(wxCommandEvent& event);
+	void		OnBnClickedReset(wxCommandEvent& event);
+	void		OnBnClickedClear(wxCommandEvent& event);
+	void		OnBnClickedMore(wxCommandEvent& event);
 
-	CSearchListCtrl* GetSearchList( wxUIntPtr id );
-
+	/**
+	 * Updates the progress bar.
+	 */
 	void	UpdateProgress(uint32 new_value);
 
 	void	StartNewSearch();
@@ -143,8 +203,6 @@ private:
 	void		OnFieldChanged(wxEvent& evt);
 
 	void		OnListItemSelected(wxListEvent& ev);
-	void		OnBnClickedReset(wxCommandEvent& ev);
-	void		OnBnClickedClear(wxCommandEvent& ev);
 	void		OnExtendedSearchChange(wxCommandEvent& ev);
 	void		OnFilterCheckChange(wxCommandEvent& ev);
 	void		OnFilteringChange(wxCommandEvent& ev);
@@ -154,9 +212,13 @@ private:
 	void		OnBnClickedStart(wxCommandEvent& evt);
 	void		OnBnClickedStop(wxCommandEvent& evt);
 
+	/**
+	 * Called when the search type selection changes.
+	 */
+	void		OnSearchTypeChanged(wxCommandEvent& evt);
 
 	/**
-	 * Event-handler for page-chages which takes care of enabling/disabling the download button.
+	 * Event-handler for page-changes which takes care of enabling/disabling the download button.
 	 */
 	void		OnSearchPageChanged(wxBookCtrlEvent& evt);
 
@@ -167,6 +229,35 @@ private:
 	CMuleNotebook*	m_notebook;
 
 	wxArrayString m_searchchoices;
+
+	// Timer for checking "More" button timeouts
+	wxTimer		m_timeoutCheckTimer;
+
+	// Track active "More" button searches by search ID
+	std::map<uint32, wxDateTime> m_moreButtonSearches;
+
+	// Store original tab texts for "More" button searches by search ID
+	std::map<uint32, wxString> m_originalTabTexts;
+
+	// Handle timeout checks
+	void		OnTimeoutCheck(wxTimerEvent& event);
+
+	// Handle "More" button timeout
+	void		HandleMoreButtonTimeout(uint32 searchId);
+
+	// Search state manager
+	SearchStateManager			m_stateManager;
+
+	// Unified search manager is now a singleton accessed via UnifiedSearchManager::Instance()
+
+	// Simple search cache - handles duplicate search detection
+	SimpleSearchCache			m_searchCache;
+
+	// Mutex to protect UI updates from concurrent network callbacks
+	mutable wxMutex m_uiUpdateMutex;
+
+	// Mutex to protect search creation and prevent race conditions
+	mutable wxMutex m_searchCreationMutex;
 
 	DECLARE_EVENT_TABLE()
 };

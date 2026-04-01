@@ -56,6 +56,7 @@ public:
 		const CUInt128 &target = CKademlia::GetPrefs()->GetKadID());
 
 	CContact(const CContact& k1);
+	CContact& operator=(const CContact&);
 
 	const CUInt128& GetClientID() const throw()		{ return m_clientID; }
 	void SetClientID(const CUInt128& clientID) throw()	{ m_clientID = clientID; m_distance = CKademlia::GetPrefs()->GetKadID() ^ clientID; }
@@ -81,7 +82,7 @@ public:
 
 	bool	 InUse() const throw()				{ return m_inUse > 0; }
 	void	 IncUse() throw()				{ m_inUse++; }
-	void	 DecUse()					{ if (m_inUse) m_inUse--; else { wxFAIL; } }
+	void	 DecUse() throw()				{ if (m_inUse) m_inUse--; }
 
 	time_t	 GetCreatedTime() const throw()			{ return m_created; }
 

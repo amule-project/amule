@@ -83,6 +83,9 @@ public:
 		}
 	}
 
+	/** Returns true if the lock was successfully acquired. */
+	bool IsOk() const { return m_ok; }
+
 private:
 	//! Not copyable.
 	CFileLock(const CFileLock&);
@@ -132,6 +135,9 @@ private:
 			close(m_fd);
 		}
 	}
+
+	/** Returns true if the lock was successfully acquired. */
+	bool IsOk() const { return m_ok; }
 
 private:
 	//! Not copyable.

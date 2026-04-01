@@ -37,6 +37,7 @@
 #include "MemFile.h"		// Needed for CMemFile
 #include "PartFile.h"		// Needed for CPartFile
 #include "SearchList.h"		// Needed for CSearchList
+#include "search/UnifiedSearchManager.h"	// Needed for UnifiedSearchManager
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "ServerList.h"		// Needed for CServerList
@@ -235,6 +236,12 @@ bool CServerSocket::ProcessPacket(const uint8_t* packet, uint32 size, int8 opcod
 			case OP_SERVERMESSAGE: {
 				/* Kry import of lugdunum 16.40 new features */
 				AddDebugLogLineN( logServer, wxT("Server: OP_SERVERMESSAGE") );
+
+				// Validate packet size to prevent buffer overflow
+				if (size < 2) {
+					AddDebugLogLineN(logServer, wxT("Invalid OP_SERVERMESSAGE packet size: too small"));
+					throw CInvalidPacket(wxT("OP_SERVERMESSAGE packet too small"));
+				}
 
 				theStats::AddDownOverheadServer(size);
 				char* buffer = new char[size-1];
@@ -440,17 +447,22 @@ bool CServerSocket::ProcessPacket(const uint8_t* packet, uint32 size, int8 opcod
 				theStats::AddDownOverheadServer(size);
 				CServer* cur_srv = (serverconnect) ?
 					serverconnect->GetCurrentServer() : NULL;
-				theApp->searchlist->ProcessSearchAnswer(
+search::UnifiedSearchManager::Instance().processSearchAnswer(
 					packet,
 					size,
-					true /*(cur_srv && cur_srv->GetUnicodeSupport())*/,
+					cur_srv ? cur_srv->GetUnicodeSupport() : false,
 					cur_srv ? cur_srv->GetIP() : 0,
 					cur_srv ? cur_srv->GetPort() : 0);
-				theApp->searchlist->LocalSearchEnd();
+				search::UnifiedSearchManager::Instance().localSearchEnd();
 				break;
 			}
 			case OP_FOUNDSOURCES_OBFU:
 			case OP_FOUNDSOURCES: {
+				// Validate minimum packet size (16 bytes hash + 1 byte count)
+				if (size < 17) {
+					AddDebugLogLineN(logServer, wxT("Invalid OP_FOUNDSOURCES packet size: too small"));
+					throw CInvalidPacket(wxT("OP_FOUNDSOURCES packet too small"));
+				}
 				AddDebugLogLineN(logServer, CFormat(wxT("ServerMsg - OP_FoundSources; sources = %u")) % packet[16]);
 				theStats::AddDownOverheadServer(size);
 				CMemFile sources(packet,size);

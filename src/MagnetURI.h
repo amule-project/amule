@@ -36,6 +36,7 @@
 
 #include <list>		// Needed for std::list
 #include <utility>	// Needed for std::pair
+#include <vector>
 
 class CMagnetURI
 {

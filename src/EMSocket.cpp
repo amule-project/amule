@@ -26,6 +26,7 @@
 
 #include "EMSocket.h"		// Interface declarations.
 
+#include <memory>
 #include <protocol/Protocols.h>
 #include <protocol/ed2k/Constants.h>
 
@@ -94,6 +95,7 @@ CEMSocket::CEMSocket(const CProxyData *ProxyData)
 
     m_bBusy = false;
     m_hasSent = false;
+    m_isSending = false;
 
 	lastFinishedStandard = 0;
 }
@@ -102,10 +104,20 @@ CEMSocket::~CEMSocket()
 {
     // need to be locked here to know that the other methods
     // won't be in the middle of things
-    {
-	wxMutexLocker lock(m_sendLocker);
-		byConnected = ES_DISCONNECTED;
-	}
+    m_sendLocker.Lock();
+    byConnected = ES_DISCONNECTED;
+
+    // Wait for any ongoing send operation to complete
+    // This prevents race conditions where the socket is destroyed
+    // while Send() is still executing
+    while (m_isSending) {
+        // Release the lock and sleep briefly to allow Send() to complete
+        m_sendLocker.Unlock();
+        wxMilliSleep(1);
+        m_sendLocker.Lock();
+    }
+
+    m_sendLocker.Unlock();
 
     // now that we know no other method will keep adding to the queue
     // we can remove ourself from the queue
@@ -126,15 +138,9 @@ void CEMSocket::ClearQueues()
 {
 	wxMutexLocker lock(m_sendLocker);
 
-	DeleteContents(m_control_queue);
-
-	{
-		CStdPacketQueue::iterator it = m_standard_queue.begin();
-		for (; it != m_standard_queue.end(); ++it) {
-			delete it->packet;
-		}
-		m_standard_queue.clear();
-	}
+	// shared_ptr will automatically delete packets when cleared
+	m_control_queue.clear();
+	m_standard_queue.clear();
 
 	// Download (pseudo) rate control
 	downloadLimit = 0;
@@ -334,33 +340,76 @@ void CEMSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, 
 
 	if (byConnected == ES_DISCONNECTED) {
 		//printf("* Disconnected, drop packet\n");
-        if(delpacket) {
+		if(delpacket) {
 			delete packet;
-        }
-    } else {
-        if (!delpacket){
-            packet = new CPacket(*packet);
-	    }
+		}
+		return;
+	}
 
-        if (controlpacket) {
-			//printf("* Adding a control packet\n");
-	        m_control_queue.push_back(packet);
+	// Wrap raw pointer in shared_ptr for automatic memory management
+	std::shared_ptr<CPacket> sharedPacket;
+	if (delpacket) {
+		sharedPacket.reset(packet);  // Take ownership
+	} else {
+		// Create a copy, caller retains ownership of original
+		sharedPacket.reset(new CPacket(*packet));
+	}
 
-            // queue up for controlpacket
-            theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
-	    } else {
-			//printf("* Adding a normal packet to the queue\n");
-            bool first = !((sendbuffer && !m_currentPacket_is_controlpacket) || !m_standard_queue.empty());
-            StandardPacketQueueEntry queueEntry = { actualPayloadSize, packet };
-		    m_standard_queue.push_back(queueEntry);
+	if (controlpacket) {
+		//printf("* Adding a control packet\n");
+		m_control_queue.push_back(sharedPacket);
 
-            // reset timeout for the first time
-            if (first) {
-                lastFinishedStandard = ::GetTickCount();
-                m_bAccelerateUpload = true;	// Always accelerate first packet in a block
-            }
-	    }
-    }
+		// queue up for controlpacket
+		theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
+	} else {
+		//printf("* Adding a normal packet to the queue\n");
+		bool first = !((sendbuffer && !m_currentPacket_is_controlpacket) || !m_standard_queue.empty());
+		StandardPacketQueueEntry queueEntry = { actualPayloadSize, sharedPacket };
+		m_standard_queue.push_back(queueEntry);
+
+		// reset timeout for the first time
+		if (first) {
+			lastFinishedStandard = ::GetTickCount();
+			m_bAccelerateUpload = true;	// Always accelerate first packet in a block
+		}
+	}
+}
+
+
+/**
+ * SendPacket overload for shared_ptr.
+ * This version automatically manages packet ownership through shared_ptr,
+ * eliminating manual memory management and preventing double-free issues.
+ */
+void CEMSocket::SendPacket(std::shared_ptr<CPacket> packet, bool controlpacket, uint32 actualPayloadSize)
+{
+	//printf("* SendPacket(shared_ptr) called on socket %p\n", this);
+	wxMutexLocker lock(m_sendLocker);
+
+	if (byConnected == ES_DISCONNECTED) {
+		//printf("* Disconnected, drop packet\n");
+		// shared_ptr will automatically delete the packet when it goes out of scope
+		return;
+	}
+
+	if (controlpacket) {
+		//printf("* Adding a control packet\n");
+		m_control_queue.push_back(packet);
+
+		// queue up for controlpacket
+		theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
+	} else {
+		//printf("* Adding a normal packet to the queue\n");
+		bool first = !((sendbuffer && !m_currentPacket_is_controlpacket) || !m_standard_queue.empty());
+		StandardPacketQueueEntry queueEntry = { actualPayloadSize, packet };
+		m_standard_queue.push_back(queueEntry);
+
+		// reset timeout for the first time
+		if (first) {
+			lastFinishedStandard = ::GetTickCount();
+			m_bAccelerateUpload = true;	// Always accelerate first packet in a block
+		}
+	}
 }
 
 
@@ -422,7 +471,7 @@ void CEMSocket::OnSend(int nErrorCode)
 		byConnected = ES_CONNECTED;
 
 	    if (m_currentPacket_is_controlpacket) {
-	        // queue up for control packet
+		// queue up for control packet
 	    theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
 		}
     }
@@ -453,16 +502,21 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 {
 	wxMutexLocker lock(m_sendLocker);
 
+	// Mark socket as sending to prevent premature destruction
+	m_isSending = true;
+
 	//printf("* Attempt to send a packet on socket %p\n", this);
 
 	if (byConnected == ES_DISCONNECTED) {
 		//printf("* Disconnected socket %p\n", this);
-        SocketSentBytes returnVal = { false, 0, 0 };
-        return returnVal;
+		m_isSending = false;
+		SocketSentBytes returnVal = { false, 0, 0 };
+		return returnVal;
     } else if (m_bBusy && onlyAllowedToSendControlPacket) {
 		//printf("* Busy socket %p\n", this);
-        SocketSentBytes returnVal = { true, 0, 0 };
-        return returnVal;
+		m_isSending = false;
+		SocketSentBytes returnVal = { true, 0, 0 };
+		return returnVal;
     }
 
     bool anErrorHasOccured = false;
@@ -496,7 +550,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 
 			// If we are currently not in the progress of sending a packet, we will need to find the next one to send
 			if(sendbuffer == NULL) {
-				CPacket* curPacket = NULL;
+				std::shared_ptr<CPacket> curPacket;
 				if(!m_control_queue.empty()) {
 					// There's a control packet to send
 					m_currentPacket_is_controlpacket = true;
@@ -525,10 +579,31 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 				// We found a packet to send. Get the data to send from the
 				// package container and dispose of the container.
 				sendblen = curPacket->GetRealPacketSize();
-				sendbuffer = curPacket->DetachPacket();
-				sent = 0;
-				delete curPacket;
 
+				// Validate packet size before processing
+				if (sendblen == 0 || sendblen > MAX_PACKET_SIZE) {
+					AddDebugLogLineC(logGeneral, CFormat(wxT("CEMSocket::Send: Invalid packet size %u"))
+						% sendblen);
+					// shared_ptr will automatically delete the packet
+					SocketSentBytes returnVal = { true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
+					return returnVal;
+				}
+
+				sendbuffer = curPacket->DetachPacket();
+
+				// Validate buffer pointer
+				if (!sendbuffer) {
+					AddDebugLogLineC(logGeneral, wxT("CEMSocket::Send: DetachPacket returned NULL"));
+					// shared_ptr will automatically delete the packet
+					SocketSentBytes returnVal = { true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
+					return returnVal;
+				}
+
+				sent = 0;
+				// shared_ptr will automatically delete curPacket when it goes out of scope
+				// No need for manual delete
+
+				// Encrypt the buffer (if needed)
 				CryptPrepareSendData((uint8_t*)sendbuffer, sendblen);
 			}
 
@@ -625,6 +700,9 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 
 	//printf("* Finishing send debug on %p\n",this);
 
+	// Clear sending flag before returning
+	m_isSending = false;
+
 	SocketSentBytes returnVal = { !anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
 
     return returnVal;
@@ -634,9 +712,9 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 uint32 CEMSocket::GetNextFragSize(uint32 current, uint32 minFragSize)
 {
     if(current % minFragSize == 0) {
-        return current;
+	return current;
     } else {
-        return minFragSize*(current/minFragSize+1);
+	return minFragSize*(current/minFragSize+1);
     }
 }
 
@@ -716,10 +794,7 @@ void CEMSocket::TruncateQueues()
 	// Clear the standard queue totally
     // Please note! There may still be a standardpacket in the sendbuffer variable!
 	CStdPacketQueue::iterator it = m_standard_queue.begin();
-	for (; it != m_standard_queue.end(); ++it) {
-		delete it->packet;
-	}
-
+	// shared_ptr will automatically delete packets when cleared
 	m_standard_queue.clear();
 }
 

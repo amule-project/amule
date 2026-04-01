@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>org.amule.amule</id>
+  <id>org.amule.amulegui</id>
 
   <name>aMule</name>
   <summary>P2P client based on eMule</summary>

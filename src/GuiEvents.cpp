@@ -29,6 +29,7 @@
 #include "ServerList.h"
 #include "Preferences.h"
 #include "ExternalConn.h"
+#include "search/UnifiedSearchManager.h"
 #include "SearchFile.h"
 #include "SearchList.h"
 #include "IPFilter.h"
@@ -507,6 +508,15 @@ namespace MuleNotify
 #endif
 	}
 
+	void GlobalSearchEnd()
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_searchwnd) {
+			theApp->amuledlg->m_searchwnd->GlobalSearchEnd();
+		}
+#endif
+	}
+
 	void KadSearchEnd(uint32 NOT_ON_DAEMON(id))
 	{
 #ifndef AMULE_DAEMON
@@ -514,7 +524,7 @@ namespace MuleNotify
 			theApp->amuledlg->m_searchwnd->KadSearchEnd(id);
 		}
 #endif
-		theApp->searchlist->SetKadSearchFinished();
+		search::UnifiedSearchManager::Instance().setKadSearchFinished();
 	}
 
 	void Search_Update_Sources(CSearchFile* result)

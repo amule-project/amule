@@ -29,6 +29,12 @@
 
 #include <wx/filename.h>			// Needed for wxFileName
 #include <common/MuleDebug.h>			// Needef for CMuleException
+
+// ICU for better encoding detection
+#ifdef HAVE_ICU
+#include <unicode/ucsdet.h>
+#include <unicode/ucnv.h>
+#endif
 #include "Tag.h"
 
 namespace Kademlia {

@@ -48,6 +48,7 @@
 #include "Friend.h"
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "GuiEvents.h"
+#include "search/UnifiedSearchManager.h"
 #ifdef ENABLE_IP2COUNTRY
 	#include "IP2Country.h"		// Needed for IP2Country
 #endif
@@ -415,12 +416,21 @@ int CamuleRemoteGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 
 void CamuleRemoteGuiApp::AddRemoteLogLine(const wxString& line)
 {
-	amuledlg->AddLogLine(line);
+	// Remote GUI should use AddGuiLogLine instead of calling CamuleDlg directly
+	AddGuiLogLine(line);
 }
 
-int CamuleRemoteGuiApp::InitGui(bool geometry_enabled, wxString &geom_string)
+
+void CamuleRemoteGuiApp::AddGuiLogLine(const wxString& line)
 {
-	CamuleGuiBase::InitGui(geometry_enabled, geom_string);
+	// Stub implementation for remote GUI - log to console or ignore
+	wxLogDebug("Remote GUI Log: %s", line);
+}
+
+
+int CamuleRemoteGuiApp::InitGui(bool geometry_enable, wxString& geometry_string)
+{
+	CamuleGuiBase::InitGui(geometry_enable, geometry_string);
 	SetTopWindow(amuledlg);
 	AddLogLineN(_("Ready")); // The first log line after the window is up triggers output of all the ones before
 	return 0;
@@ -1972,6 +1982,25 @@ void CSearchListRem::StopSearch(bool)
 	}
 }
 
+void CSearchListRem::StopSearch(long searchId, bool)
+{
+	// For remote GUI, we need to set the current search first, then stop it
+	// Store the current search ID
+	long old_curr_search = m_curr_search;
+	
+	// Set the search to be stopped as current
+	m_curr_search = searchId;
+	
+	// Stop the current search
+	if (m_curr_search != -1) {
+		CECPacket search_req(EC_OP_SEARCH_STOP);
+		m_conn->SendPacket(&search_req);
+	}
+	
+	// Restore the old current search ID (or set to -1 if we stopped the current one)
+	m_curr_search = old_curr_search;
+}
+
 
 void CSearchListRem::HandlePacket(const CECPacket *packet)
 {
@@ -2003,7 +2032,7 @@ m_kadPublishInfo(0)
 	m_searchID = theApp->searchlist->m_curr_search;
 	uint32 parentID = tag->ParentID();
 	if (parentID) {
-		CSearchFile * parent = theApp->searchlist->GetByID(parentID);
+		CSearchFile * parent = search::UnifiedSearchManager::Instance().getSearchFileById(parentID);
 		if (parent) {
 			parent->AddChild(this);
 		}

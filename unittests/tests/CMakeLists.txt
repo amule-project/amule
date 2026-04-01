@@ -5,6 +5,7 @@ add_executable (CTagTest
 	${CMAKE_SOURCE_DIR}/src/Tag.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/Format.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/strerror_r.c
+	${CMAKE_SOURCE_DIR}/src/common/NetworkSummaryUtil.cpp
 )
 
 add_test (NAME CTagTest
@@ -39,6 +40,8 @@ target_include_directories (CUInt128Test
 target_link_libraries (CUInt128Test
 	muleunit
 )
+
+
 
 add_executable (FileDataIOTest
 	FileDataIOTest.cpp
@@ -90,6 +93,7 @@ add_executable (NetworkFunctionsTest
 	${CMAKE_SOURCE_DIR}/src/LibSocket.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/Format.cpp
 	${CMAKE_SOURCE_DIR}/src/libs/common/strerror_r.c
+	${CMAKE_SOURCE_DIR}/src/common/NetworkSummaryUtil.cpp
 )
 
 add_test (NAME NetworkFunctionsTest
@@ -190,5 +194,26 @@ target_include_directories (TextFileTest
 )
 
 target_link_libraries (TextFileTest
+	muleunit
+)
+
+# ModernLogging tests - compilation only, no runtime dependencies
+add_executable (ModernLoggingTest
+	ModernLoggingTest.cpp
+	${CMAKE_SOURCE_DIR}/src/libs/common/Format.cpp
+	${CMAKE_SOURCE_DIR}/src/libs/common/strerror_r.c
+)
+
+add_test (NAME ModernLoggingTest
+	COMMAND ModernLoggingTest
+)
+
+target_include_directories (ModernLoggingTest
+	PRIVATE ${CMAKE_SOURCE_DIR}/src
+	PRIVATE ${CMAKE_SOURCE_DIR}/src/include
+	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../muleunit
+)
+
+target_link_libraries (ModernLoggingTest
 	muleunit
 )

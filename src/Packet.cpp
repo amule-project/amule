@@ -44,10 +44,12 @@ CPacket::CPacket(CPacket &p)
 	m_bLastSplitted = p.m_bLastSplitted;
 	m_bPacked	= p.m_bPacked;
 	m_bFromPF	= p.m_bFromPF;
+	m_ownsBuffer	= true;  // Copy always owns its buffers
 	memcpy(head, p.head, sizeof head);
 	tempbuffer	= NULL;
 	if (p.completebuffer) {
-		completebuffer	= new uint8_t[size + 10];;
+		// Allocate enough space for header + data + 4 bytes for safety
+		completebuffer	= new uint8_t[sizeof(Header_Struct) + size + 4];
 		pBuffer	= completebuffer + sizeof(Header_Struct);
 	} else {
 		completebuffer	= NULL;
@@ -57,7 +59,7 @@ CPacket::CPacket(CPacket &p)
 			pBuffer = NULL;
 		}
 	}
-	if (pBuffer)
+	if (pBuffer && p.pBuffer)
 		memcpy( pBuffer, p.pBuffer, size );
 }
 
@@ -70,6 +72,7 @@ CPacket::CPacket(uint8 protocol)
 	m_bLastSplitted = false;
 	m_bPacked	= false;
 	m_bFromPF	= false;
+	m_ownsBuffer	= true;  // Empty packet owns its (non-existent) buffers
 	memset(head, 0, sizeof head);
 	tempbuffer	= NULL;
 	completebuffer	= NULL;
@@ -88,6 +91,7 @@ CPacket::CPacket(uint8_t* rawHeader, uint8_t *buf)
 	m_bLastSplitted = false;
 	m_bPacked	= false;
 	m_bFromPF	= false;
+	m_ownsBuffer	= true;  // Takes ownership of the buffer
 	tempbuffer	= NULL;
 	completebuffer	= NULL;
 	pBuffer	= buf;
@@ -102,9 +106,10 @@ CPacket::CPacket(const CMemFile& datafile, uint8 protocol, uint8 ucOpcode)
 	m_bLastSplitted = false;
 	m_bPacked	= false;
 	m_bFromPF	= false;
+	m_ownsBuffer	= true;  // Allocates its own buffer
 	memset(head, 0, sizeof head);
 	tempbuffer = NULL;
-	completebuffer = new uint8_t[size + sizeof(Header_Struct)/*Why this 4?*/];
+	completebuffer = new uint8_t[size + sizeof(Header_Struct) + 4 /* Extra 4 bytes for safety */];
 	pBuffer = completebuffer + sizeof(Header_Struct);
 
 	// Write contents of MemFile to buffer (while keeping original position in file)
@@ -123,6 +128,7 @@ CPacket::CPacket(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)
 	m_bLastSplitted = false;
 	m_bPacked	= false;
 	m_bFromPF	= bFromPF;
+	m_ownsBuffer	= true;  // Allocates its own buffer
 	memset(head, 0, sizeof head);
 	tempbuffer	= NULL;
 	if (in_size) {
@@ -145,6 +151,7 @@ CPacket::CPacket(uint8_t* pPacketPart, uint32 nSize, bool bLast, bool bFromPF)
 	m_bLastSplitted	= bLast;
 	m_bPacked	= false;
 	m_bFromPF	= bFromPF;
+	m_ownsBuffer	= true;  // Takes ownership of the buffer
 	memset(head, 0, sizeof head);
 	tempbuffer	= NULL;
 	completebuffer	= pPacketPart;
@@ -153,16 +160,22 @@ CPacket::CPacket(uint8_t* pPacketPart, uint32 nSize, bool bLast, bool bFromPF)
 
 CPacket::~CPacket()
 {
-	// Never deletes pBuffer when completebuffer is not NULL
-	if (completebuffer) {
-		delete [] completebuffer;
-	} else if (pBuffer) {
-	// On the other hand, if completebuffer is NULL and pBuffer is not NULL
-		delete [] pBuffer;
-	}
+	// Only delete buffers if this packet owns them
+	if (m_ownsBuffer) {
+		// Never deletes pBuffer when completebuffer is not NULL
+		if (completebuffer) {
+			delete [] completebuffer;
+			completebuffer = NULL;
+		} else if (pBuffer) {
+		// On the other hand, if completebuffer is NULL and pBuffer is not NULL
+			delete [] pBuffer;
+			pBuffer = NULL;
+		}
 
-	if (tempbuffer) {
-		delete [] tempbuffer;
+		if (tempbuffer) {
+			delete [] tempbuffer;
+			tempbuffer = NULL;
+		}
 	}
 }
 
@@ -177,7 +190,7 @@ uint32 CPacket::GetPacketSizeFromHeader(const uint8_t* rawHeader)
 
 void CPacket::CopyToDataBuffer(unsigned int offset, const uint8_t* data, unsigned int n)
 {
-	wxASSERT(offset + n <= size + 1);
+	wxASSERT(offset + n <= size);
 	memcpy(pBuffer + offset, data, n);
 }
 
@@ -206,8 +219,16 @@ uint8_t* CPacket::DetachPacket() {
 		}
 		uint8_t* result = completebuffer;
 		completebuffer = pBuffer = NULL;
+		// Ownership is transferred to the caller
+		m_ownsBuffer = false;
 		return result;
 	} else{
+		// Validate pBuffer before using it
+		if (!pBuffer) {
+			AddDebugLogLineC(logGeneral, wxT("CPacket::DetachPacket: pBuffer is NULL, cannot detach packet"));
+			return NULL;
+		}
+
 		if (tempbuffer){
 			delete[] tempbuffer;
 			tempbuffer = NULL;
@@ -217,6 +238,11 @@ uint8_t* CPacket::DetachPacket() {
 		memcpy(tempbuffer+sizeof(Header_Struct),pBuffer,size);
 		uint8_t* result = tempbuffer;
 		tempbuffer = 0;
+		pBuffer = NULL;  // Clear pBuffer to prevent double-free in destructor
+		// Also clear completebuffer to ensure it's NULL
+		completebuffer = NULL;
+		// Ownership is transferred to the caller
+		m_ownsBuffer = false;
 		return result;
 	}
 }
@@ -279,6 +305,13 @@ bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 	if (prot == OP_ED2KV2PACKEDPROT) {
 		AddDebugLogLineN(logPacketErrors,
 			wxT("Received OP_ED2KV2PACKEDPROT."));
+	}
+
+	// Check for integer overflow before multiplication
+	if (size > (UINT32_MAX - 300) / 10) {
+		AddDebugLogLineN(logPacketErrors,
+			wxT("Packet size too large for decompression, potential overflow attack"));
+		return false;
 	}
 
 	uint32 nNewSize = size * 10 + 300;

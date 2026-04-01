@@ -1,3 +1,26 @@
+if (BUILD_MONOLITHIC OR BUILD_DAEMON OR BUILD_REMOTEGUI)
+	set (COMMON_SOURCES
+		amuleAppCommon.cpp
+		amuleDlg.cpp
+		ClientRef.cpp
+		ECSpecialMuleTags.cpp
+		GetTickCount.cpp
+		kademlia/utils/UInt128.cpp
+		UserEvents.cpp
+		PartFile.cpp
+		Preferences.cpp
+		SearchStateManager.cpp
+		Statistics.cpp
+		SearchLabelHelper.cpp
+		KnownFile.cpp
+		CatDialog.cpp
+		search/SearchLogging.cpp
+		Server.cpp
+		SearchTimeoutManager.cpp
+		SafeFile.cpp
+	)
+endif()
+
 if (BUILD_MONOLITHIC OR BUILD_DAEMON)
 	set (CORE_SOURCES
 		kademlia/kademlia/Kademlia.cpp
@@ -28,7 +51,6 @@ if (BUILD_MONOLITHIC OR BUILD_DAEMON)
 		ListenSocket.cpp
 		MuleUDPSocket.cpp
 		SearchFile.cpp
-		SearchList.cpp
 		ServerConnect.cpp
 		ServerList.cpp
 		ServerSocket.cpp
@@ -39,6 +61,30 @@ if (BUILD_MONOLITHIC OR BUILD_DAEMON)
 		UploadClient.cpp
 		UploadQueue.cpp
 		ThreadTasks.cpp
+		protocol/ProtocolCoordinator.cpp
+		SearchList.cpp
+		SearchTimeoutManager.cpp
+		Server.cpp
+		PartFileConvert.cpp
+		PartFileConvertDlg.cpp
+		StatTree.cpp
+		Proxy.cpp
+		search/SearchResultRouter.cpp
+		search/SearchControllerFactory.cpp
+		search/ED2KSearchController.cpp
+		search/KadSearchController.cpp
+		search/SearchControllerBase.cpp
+		search/ED2KSearchPacketBuilder.cpp
+		search/KadSearchPacketBuilder.cpp
+		search/PerSearchState.cpp
+		search/SearchIdGenerator.cpp
+		search/ED2KSearchHelper.cpp
+		search/KadSearchHelper.cpp
+		search/SearchAutoRetry.cpp
+		search/SearchPackageException.cpp
+		search/SearchPackageValidator.cpp
+		search/NetworkPacketHandler.cpp
+		GuiEvents.cpp
 	)
 endif()
 
@@ -58,40 +104,76 @@ if (BUILD_MONOLITHIC OR BUILD_REMOTEGUI)
 		FileDetailDialog.cpp
 		FriendListCtrl.cpp
 		GenericClientListCtrl.cpp
+		GuiEvents.cpp
+		HTTPDownload.cpp
 		KadDlg.cpp
 		MuleTrayIcon.cpp
 		OScopeCtrl.cpp
+		Preferences.cpp
 		PrefsUnifiedDlg.cpp
-		SearchDlg.cpp
-		SearchListCtrl.cpp
-		ServerListCtrl.cpp
+		CaptchaDialog.cpp
+		CaptchaGenerator.cpp
 		ServerWnd.cpp
+		SearchDlg.cpp
+		TransferWnd.cpp
+		SharedFilesWnd.cpp
+		StatisticsDlg.cpp
+		SourceListCtrl.cpp
+		ServerListCtrl.cpp
 		SharedFilePeersListCtrl.cpp
 		SharedFilesCtrl.cpp
-		SharedFilesWnd.cpp
-		SourceListCtrl.cpp
-		StatisticsDlg.cpp
-		TransferWnd.cpp
+		SearchListCtrl.cpp
+		search/SearchModel.cpp
+		search/UnifiedSearchManager.cpp
+		SimpleSearchCache.cpp
+		GeoIPConfigDlg.cpp
 	)
 endif()
 
-if (BUILD_MONOLITHIC OR BUILD_DAEMON OR BUILD_REMOTEGUI)
-	set (COMMON_SOURCES
-		amuleAppCommon.cpp
-		ClientRef.cpp
-		ECSpecialMuleTags.cpp
-		GetTickCount.cpp
+if (BUILD_REMOTEGUI)
+	set (GUI_REMOTE_SOURCES
+		MuleTrayIcon.cpp
+		OScopeCtrl.cpp
+		amule-gui.cpp
+		amule-remote-gui.cpp
+		ServerWnd.cpp
+		SearchDlg.cpp
+		TransferWnd.cpp
+		SharedFilesWnd.cpp
+		StatisticsDlg.cpp
+		GeoIPConfigDlg.cpp
+		SourceListCtrl.cpp
+		ServerListCtrl.cpp
+		SharedFilePeersListCtrl.cpp
+		SharedFilesCtrl.cpp
+		MuleListCtrl.cpp
+		extern/wxWidgets/listctrl.cpp
+		GenericClientListCtrl.cpp
+		DownloadListCtrl.cpp
+		FileDetailListCtrl.cpp
+		FriendListCtrl.cpp
+		ColorFrameCtrl.cpp
+		MuleGifCtrl.cpp
+		MuleNotebook.cpp
+		MuleTextCtrl.cpp
+		BarShader.cpp
+		MuleCollection.cpp
+		ChatWnd.cpp
+		ClientDetailDialog.cpp
+		AddFriend.cpp
+		DirectoryTreeCtrl.cpp
+		KadDlg.cpp
+		ChatSelector.cpp
+		CommentDialog.cpp
+		CommentDialogLst.cpp
+		FileDetailDialog.cpp
 		GuiEvents.cpp
-		HTTPDownload.cpp
-		KnownFile.cpp
-		Logger.cpp
-		PartFile.cpp
-		Preferences.cpp
+		search/SearchModel.cpp
+		SearchListCtrl.cpp
+		SimpleSearchCache.cpp
+		PrefsUnifiedDlg.cpp
 		Proxy.cpp
-		Server.cpp
-		Statistics.cpp
 		StatTree.cpp
-		UserEvents.cpp
 	)
 endif()
 

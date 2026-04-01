@@ -403,7 +403,7 @@ void CMuleListCtrl::SortList()
 		}
 		for (int i = 1; i < nrItems; i++) {
 			long nextItemdata = GetItemData(i);
-			if (SortProc(lastItemdata, nextItemdata, (long int)&sortdata) > 0) {
+			if (SortProc(lastItemdata, nextItemdata, (size_t)&sortdata) > 0) {
 				// ok - we need to sort
 				clean = false;
 				break;
@@ -425,7 +425,7 @@ void CMuleListCtrl::SortList()
 		long pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_FOCUSED );
 		wxUIntPtr focused = (pos == -1) ? 0 : GetItemData(pos);
 
-		SortItems(SortProc, (long int)&sortdata);
+		SortItems(SortProc, (size_t)&sortdata);
 
 		// Re-select the selected items.
 		for (unsigned i = 0; i < selectedItems.size(); ++i) {

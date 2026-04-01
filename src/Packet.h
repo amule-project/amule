@@ -82,6 +82,7 @@ private:
 	bool		m_bLastSplitted;
 	bool		m_bPacked;
 	bool		m_bFromPF;
+	bool		m_ownsBuffer;  // Track whether this packet owns its buffers
 	uint8_t		head[6];
 	uint8_t*	tempbuffer;
 	uint8_t*	completebuffer;

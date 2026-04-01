@@ -26,6 +26,9 @@
 #include "SearchListCtrl.h"	// Interface declarations
 
 #include <common/MenuIDs.h>
+#include "Logger.h"	// Needed for AddDebugLogLineN
+#include <wx/thread.h>	// Needed for wxMutex (includes mutex functionality)
+#include "SearchLabelHelper.h"
 
 #include "amule.h"			// Needed for theApp
 #include "KnownFileList.h"	// Needed for CKnownFileList
@@ -36,6 +39,7 @@
 #include "Preferences.h"	// Needed for thePrefs
 #include "GuiEvents.h"		// Needed for CoreNotify_Search_Add_Download
 #include "MuleColour.h"
+#include "search/UnifiedSearchManager.h"	// Needed for unified search management
 
 BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_RIGHT_CLICK(-1, CSearchListCtrl::OnRightClick)
@@ -79,7 +83,9 @@ CSearchListCtrl::CSearchListCtrl(
 CMuleListCtrl(parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name),
 m_filterKnown(false),
 m_invert(false),
-m_filterEnabled(false)
+m_filterEnabled(false),
+m_nResultsID(0),
+m_searchType(wxEmptyString)
 {
 	// Setting the sorter function.
 	SetSortFunc( SortProc );
@@ -91,8 +97,6 @@ m_filterEnabled(false)
 	InsertColumn( ID_SEARCH_COL_FILEID,  _("FileID"),    wxLIST_FORMAT_LEFT, 280, wxT("I") );
 	InsertColumn( ID_SEARCH_COL_STATUS,  _("Status"),    wxLIST_FORMAT_LEFT, 100, wxT("S") );
 	InsertColumn( ID_SEARCH_COL_DIRECTORY,  _("Directories"),    wxLIST_FORMAT_LEFT, 280, wxT("D") );  // I would have preferred "Directory" but this is already translated
-
-	m_nResultsID = 0;
 
 	// Only load settings for first list, otherwise sync with current lists
 	if ( s_lists.empty() ) {
@@ -110,7 +114,10 @@ m_filterEnabled(false)
 
 	// Add the list so that it will be synced with the other lists
 	s_lists.push_back( this );
-}
+
+	}
+
+
 
 
 wxString CSearchListCtrl::GetOldColumnOrder() const
@@ -134,8 +141,36 @@ CSearchListCtrl::~CSearchListCtrl()
 }
 
 
+// Helper function to sanitize filenames with invalid Unicode characters
+static wxString SanitizeFilename(const wxString& filename)
+{
+	wxString result;
+	for (size_t i = 0; i < filename.length(); ++i) {
+		wxChar c = filename[i];
+		// Check if the character is valid UTF-8 and printable
+		// wxIsprint checks if the character is printable in the current locale
+		// We also allow common whitespace characters
+		if (wxIsprint(c) || c == wxT('\n') || c == wxT('\t') || c == wxT('\r')) {
+			// Check if the character is a valid Unicode code point
+			// Valid Unicode code points are in the range 0x0000-0x10FFFF
+			// Surrogate code points (0xD800-0xDFFF) are invalid in UTF-8
+			if ((c >= 0x0000 && c <= 0xD7FF) || (c >= 0xE000 && c <= 0x10FFFF)) {
+				result += c;
+			} else {
+				// Replace invalid Unicode code points
+				result += wxT('�');
+			}
+		} else {
+			// Replace non-printable characters
+			result += wxT('�');
+		}
+	}
+	return result;
+}
+
 void CSearchListCtrl::AddResult(CSearchFile* toshow)
 {
+
 	wxCHECK_RET(toshow->GetSearchID() == m_nResultsID, wxT("Wrong search-id for result-list"));
 
 	const wxUIntPtr toshowdata = reinterpret_cast<wxUIntPtr>(toshow);
@@ -182,7 +217,9 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	} else {
 		insertPos = GetInsertPos(toshowdata);
 	}
-	long newid = InsertItem(insertPos, toshow->GetFileName().GetPrintable());
+	// Sanitize filename to handle invalid Unicode characters
+	wxString safeFilename = SanitizeFilename(toshow->GetFileName().GetPrintable());
+	long newid = InsertItem(insertPos, safeFilename);
 
 	// Sanity checks to ensure that results/children are properly positioned.
 #ifdef __WXDEBUG__
@@ -243,11 +280,17 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	// File status
 	SetItem(newid, ID_SEARCH_COL_STATUS, DetermineStatusPrintable(toshow));
 
-	// Directory where file is located (has a value when search file comes from a "view shared files" request)
-	SetItem(newid, ID_SEARCH_COL_DIRECTORY, toshow->GetDirectory());
+	// Directory
+	if (toshow->GetDirectory().IsEmpty()) {
+		SetItem( newid, ID_SEARCH_COL_DIRECTORY, wxT("?") );
+	} else {
+		SetItem( newid, ID_SEARCH_COL_DIRECTORY, toshow->GetDirectory() );
+	}
 
 	// Set the color of the item
 	UpdateItemColor( newid );
+
+	// Note: Don't update hit count here - ShowResults handles it after all results are added
 }
 
 
@@ -264,15 +307,26 @@ void CSearchListCtrl::RemoveResult(CSearchFile* toremove)
 			m_filteredOut.erase(it);
 		}
 	}
+
+	// Note: Hit count will be updated by caller if needed
 }
 
 
 void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 {
+	AddDebugLogLineN(logSearch, wxT("Updating search result: ") + toupdate->GetFileName().GetPrintable());
+
 	long index = FindItem(-1, reinterpret_cast<wxUIntPtr>(toupdate));
 	if (index != -1) {
+		AddDebugLogLineN(logSearch, CFormat(wxT("Found item at index %d, updating display")) % index);
+
 		// Update the filename, which may be changed in case of multiple variants.
-		SetItem(index, ID_SEARCH_COL_NAME, toupdate->GetFileName().GetPrintable());
+		try {
+			wxString safeFilename = SanitizeFilename(toupdate->GetFileName().GetPrintable());
+			SetItem(index, ID_SEARCH_COL_NAME, safeFilename);
+		} catch (...) {
+			AddDebugLogLineC(logSearch, wxT("Pixman error while updating filename"));
+		}
 
 		wxString temp = CFormat(wxT("%d")) % toupdate->GetSourceCount();
 		if (toupdate->GetCompleteSourceCount()) {
@@ -303,6 +357,8 @@ void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 			SortList();
 		}
 	}
+
+	// Note: Hit count will be updated by caller if needed
 }
 
 
@@ -367,9 +423,35 @@ void CSearchListCtrl::ShowResults( long ResultsID )
 	DeleteAllItems();
 	m_nResultsID = ResultsID;
 	if (ResultsID) {
-		const CSearchResultList& list = theApp->searchlist->GetSearchResults(ResultsID);
+		// Try to get results from UnifiedSearchManager first (new architecture)
+		std::vector<CSearchFile*> list;
+		bool useUnifiedManager = false;
+
+		// Check if we can access UnifiedSearchManager through SearchDlg
+		CSearchDlg* parentDlg = wxDynamicCast(GetParent(), CSearchDlg);
+		if (parentDlg) {
+			// Access UnifiedSearchManager from parent dialog
+			auto& unifiedManager = parentDlg->GetUnifiedSearchManager();
+			list = unifiedManager.getResults(ResultsID);
+			useUnifiedManager = true;
+		}
+
+		// Fallback to legacy CSearchList if unified manager not available or no results
+		if (!useUnifiedManager || list.empty()) {
+			const CSearchResultList& legacyList = search::UnifiedSearchManager::Instance().getSearchResults(ResultsID);
+			list.assign(legacyList.begin(), legacyList.end());
+		}
+
+		Freeze();  // Freeze UI updates during bulk operations
 		for (unsigned int i = 0; i < list.size(); ++i) {
 			AddResult( list[i] );
+		}
+		Thaw();  // Thaw UI updates after bulk operations
+
+		// Update the hit count after populating to ensure accuracy
+		if (parentDlg) {
+			// Update hit count with state information
+			UpdateHitCountWithState(this, parentDlg);
 		}
 	}
 }
@@ -455,7 +537,8 @@ bool CSearchListCtrl::IsFiltered(const CSearchFile* file)
 	bool result = true;
 
 	if (m_filterEnabled && m_filter.IsValid()) {
-		result = m_filter.Matches(file->GetFileName().GetPrintable());
+		wxString safeFilename = SanitizeFilename(file->GetFileName().GetPrintable());
+		result = m_filter.Matches(safeFilename);
 		result = ((result && !m_invert) || (!result && m_invert));
 		if (result && m_filterKnown) {
 			result = file->GetDownloadStatus() == CSearchFile::NEW;
@@ -718,11 +801,16 @@ void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 	}
 
 	CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(item));
-	theApp->searchlist->StopSearch(true);
-	theApp->amuledlg->m_searchwnd->ResetControls();
-	CastByID( IDC_SEARCHNAME, theApp->amuledlg->m_searchwnd, wxTextCtrl )->
-		SetValue(wxT("related::") + file->GetFileHash().Encode());
-	theApp->amuledlg->m_searchwnd->StartNewSearch();
+	
+	// Stop global searches using UnifiedSearchManager
+	CSearchDlg* searchDlg = wxDynamicCast(GetParent(), CSearchDlg);
+	if (searchDlg) {
+		searchDlg->GetUnifiedSearchManager().stopAllSearches();
+		searchDlg->ResetControls();
+		CastByID( IDC_SEARCHNAME, searchDlg, wxTextCtrl )->
+			SetValue(wxT("related::") + file->GetFileHash().Encode());
+		searchDlg->StartNewSearch();
+	}
 }
 
 
@@ -808,7 +896,75 @@ static const wxBrush& GetBrush(wxSystemColour index)
 void CSearchListCtrl::OnDrawItem(
 	int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted)
 {
-	CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(item));
+	// Critical: Early exit if control is not properly initialized
+	// This can happen when items are added before the control is fully laid out
+	if (!this->IsShown() || this->GetSize().GetWidth() <= 0 || this->GetSize().GetHeight() <= 0) {
+		return;
+	}
+
+	// Critical: Fix invalid rectangle parameters that could cause pixman errors
+	// Instead of just returning, we'll adjust the rectangles to be valid
+	wxRect safeRect = rect;
+	wxRect safeRectHL = rectHL;
+
+	// Validate and fix rectangle dimensions
+	if (safeRect.width <= 0 || safeRect.height <= 0 || safeRectHL.width <= 0 || safeRectHL.height <= 0) {
+		// If dimensions are invalid, try to calculate reasonable defaults based on the control
+		if (safeRect.width <= 0) safeRect.width = std::max(1, GetSize().GetWidth()/2);
+		if (safeRect.height <= 0) safeRect.height = 20; // typical row height
+		if (safeRectHL.width <= 0) safeRectHL.width = safeRect.width;
+		if (safeRectHL.height <= 0) safeRectHL.height = safeRect.height;
+	}
+
+	// Fix negative coordinates only - don't modify zero x-coordinates
+	// as this causes misalignment between drawing position and clipping region
+	if (safeRect.x < 0) safeRect.x = 0;
+	if (safeRect.y < 0) safeRect.y = 0;
+	if (safeRectHL.x < 0) safeRectHL.x = 0;
+	if (safeRectHL.y < 0) safeRectHL.y = 0;
+
+	#ifdef __WXDEBUG__
+	// Force output to both debug log and console
+	std::cout << "DEBUG: Drawing item " << item
+		  << " - rect: " << safeRect.width << "x" << safeRect.height
+		  << " - highlight rect: " << safeRectHL.width << "x" << safeRectHL.height
+		  << std::endl;
+	AddDebugLogLineN(logSearch, CFormat(wxT("Drawing item %d - rect: %dx%d - highlight rect: %dx%d"))
+		% item % safeRect.width % safeRect.height % safeRectHL.width % safeRectHL.height);
+	#endif
+
+	try {
+		CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(item));
+
+	#ifdef __WXDEBUG__
+	// Debug output for item information
+	wxString safeFilename = SanitizeFilename(file->GetFileName().GetPrintable());
+	std::cout << "DEBUG: Drawing file: " << safeFilename.ToUTF8().data()
+		  << ", FileID: " << file->GetFileHash().Encode().ToUTF8().data()
+		  << ", search ID: " << file->GetSearchID() << std::endl;
+	#endif
+
+	// Additional rectangle validation - check for extreme values
+	if (safeRect.width < 0 || safeRect.height < 0 || safeRectHL.width < 0 || safeRectHL.height < 0 ||
+	    safeRect.width > 10000 || safeRect.height > 10000 || safeRectHL.width > 10000 || safeRectHL.height > 10000) {
+		#ifdef __WXDEBUG__
+		std::cout << "DEBUG: Invalid rectangle dimensions - rect: " << safeRect.width << "x" << safeRect.height
+			  << ", rectHL: " << safeRectHL.width << "x" << safeRectHL.height << std::endl;
+		#endif
+		AddDebugLogLineC(logSearch, wxT("Extreme rectangle dimensions detected"));
+		return;
+	}
+
+	// Validate coordinates
+	if (rect.x < 0 || rect.y < 0 || rectHL.x < 0 || rectHL.y < 0) {
+		#ifdef __WXDEBUG__
+		std::cout << "DEBUG: Negative coordinates detected - rect.x: " << rect.x
+			  << " rect.y: " << rect.y << " rectHL.x: " << rectHL.x
+			  << " rectHL.y: " << rectHL.y << std::endl;
+		#endif
+		AddDebugLogLineC(logSearch, wxT("Negative coordinates detected"));
+		return;
+	}
 
 	// Define text-color and background
 	if (highlighted) {
@@ -826,33 +982,65 @@ void CSearchListCtrl::OnDrawItem(
 
 	// Define the border of the drawn area
 	if (highlighted) {
-		dc->SetPen(*(wxThePenList->FindOrCreatePen(CMuleColour(dc->GetBackground().GetColour()).Blend(65), 1, wxPENSTYLE_SOLID)));
+		dc->SetPen(wxPen(CMuleColour(dc->GetBackground().GetColour()).Blend(65), 1, wxPENSTYLE_SOLID));
 	} else {
 		dc->SetPen(*wxTRANSPARENT_PEN);
 		dc->SetTextForeground(GetItemTextColour(item));
 	}
 
 	// Clear the background, not done automatically since the drawing is buffered.
-	dc->SetBrush( dc->GetBackground() );
-	dc->DrawRectangle( rectHL.x, rectHL.y, rectHL.width, rectHL.height );
+	// Use the corrected rectangle to avoid pixman errors
+	if (safeRectHL.width > 0 && safeRectHL.height > 0) {
+		dc->SetBrush( dc->GetBackground() );
+		// Using the corrected coordinates to prevent pixman errors
+		dc->DrawRectangle( safeRectHL.x, safeRectHL.y, safeRectHL.width, safeRectHL.height );
+	}
 
 	// Various constant values we use
-	const int iTextOffset = ( rect.GetHeight() - dc->GetCharHeight() ) / 2;
+	const int iTextOffset = ( safeRect.GetHeight() - dc->GetCharHeight() ) / 2;
 	const int iOffset = 4;
 	const int treeOffset = 11;
 	const int treeCenter = 6;
 	bool tree_show = false;
 
-	wxRect cur_rec(iOffset, rect.y, 0, rect.height );
+	// Safety check for rect dimensions before using them
+	if (safeRect.width <= 0 || safeRect.height <= 0) {
+		AddDebugLogLineC(logSearch, wxT("Invalid rect dimensions in OnDrawItem"));
+		return;
+	}
+
+	wxRect cur_rec(iOffset, safeRect.y, 0, safeRect.height );
 	for (int i = 0; i < GetColumnCount(); i++) {
 		wxListItem listitem;
 		GetColumn(i, listitem);
 
-		if ( listitem.GetWidth() > 0 ) {
+		// Debug output to track invalid rectangles
+		if (listitem.GetWidth() <= 0) {
+			std::cout << "DEBUG: Invalid column width: " << listitem.GetWidth()
+					  << " for column: " << i << std::endl;
+		}
+
+		if ( listitem.GetWidth() > 2*iOffset ) {
 			cur_rec.width = listitem.GetWidth() - 2*iOffset;
+
+			// Debug output for rectangle dimensions
+			if (cur_rec.width <= 0) {
+				std::cout << "DEBUG: Negative width after calculation: " << cur_rec.width
+						  << " (column width: " << listitem.GetWidth() << ", iOffset: " << iOffset << ")" << std::endl;
+			}
 
 			// Make a copy of the current rectangle so we can apply specific tweaks
 			wxRect target_rec = cur_rec;
+
+			// Ensure positive dimensions for drawing operations
+			if (target_rec.width < 1) {
+				std::cout << "DEBUG: Correcting invalid width: " << target_rec.width << " -> 1" << std::endl;
+				target_rec.width = 1;
+			}
+			if (target_rec.height < 1) {
+				std::cout << "DEBUG: Correcting invalid height: " << target_rec.height << " -> 1" << std::endl;
+				target_rec.height = 1;
+			}
 
 			// will ensure that text is about in the middle ;)
 			target_rec.y += iTextOffset;
@@ -876,8 +1064,11 @@ void CSearchListCtrl::OnDrawItem(
 
 					int imgWidth = 16;
 
-					theApp->amuledlg->m_imagelist.Draw(image, *dc, target_rec.GetX(),
-							target_rec.GetY() - 1, wxIMAGELIST_DRAW_TRANSPARENT);
+					// Validate image drawing parameters
+					if (target_rec.x >= 0 && target_rec.y >= 0) {
+						theApp->amuledlg->m_imagelist.Draw(image, *dc, target_rec.GetX(),
+								target_rec.GetY() - 1, wxIMAGELIST_DRAW_TRANSPARENT);
+					}
 
 					// Move the text past the icon.
 					target_rec.x += imgWidth + 4;
@@ -890,12 +1081,24 @@ void CSearchListCtrl::OnDrawItem(
 			cellitem.SetId(item);
 
 			// Force clipper (clip 2 px more than the rectangle from the right side)
-			wxDCClipper clipper(*dc, target_rec.x, target_rec.y, target_rec.width - 2, target_rec.height);
+			// Ensure clipper rectangle has valid dimensions
+			int clip_width = std::max(target_rec.width - 2, 1);  // Ensure positive width
+			int clip_height = std::max(target_rec.height, 1);   // Ensure positive height
 
-			if (GetItem(cellitem)) {
-				dc->DrawText(cellitem.GetText(), target_rec.GetX(), target_rec.GetY());
-			} else {
-				dc->DrawText(wxT("GetItem failed!"), target_rec.GetX(), target_rec.GetY());
+			// Validate clipper parameters
+			if (target_rec.x >= 0 && target_rec.y >= 0 && clip_width > 0 && clip_height > 0) {
+				wxDCClipper clipper(*dc, target_rec.x, target_rec.y, clip_width, clip_height);
+
+				if (GetItem(cellitem)) {
+					// Additional validation for DrawText parameters
+					if (target_rec.GetX() >= 0 && target_rec.GetY() >= 0) {
+						dc->DrawText(cellitem.GetText(), target_rec.GetX(), target_rec.GetY());
+					}
+				} else {
+					if (target_rec.GetX() >= 0 && target_rec.GetY() >= 0) {
+						dc->DrawText(wxT("GetItem failed!"), target_rec.GetX(), target_rec.GetY());
+					}
+				}
 			}
 
 			// Increment to the next column
@@ -912,19 +1115,25 @@ void CSearchListCtrl::OnDrawItem(
 		const int middle = cur_rec.y + ( cur_rec.height + 1 ) / 2;
 
 		// Set up a new pen for drawing the tree
-		dc->SetPen( *(wxThePenList->FindOrCreatePen(dc->GetTextForeground(), 1, wxPENSTYLE_SOLID)) );
+		dc->SetPen(wxPen(dc->GetTextForeground(), 1, wxPENSTYLE_SOLID));
 
 		if (file->GetParent()) {
 			// Draw the line to the filename
-			dc->DrawLine(treeCenter, middle, treeOffset + 4, middle);
+			// Ensure coordinates are valid
+			if (treeCenter >= 0 && middle >= 0 && treeOffset + 4 >= 0 && middle >= 0 &&
+			    cur_rec.x >= 0 && cur_rec.y >= 0) {
+				dc->DrawLine(treeCenter, middle, treeOffset + 4, middle);
+			}
 
 			// Draw the line to the child node
-			if (hasNext) {
+			if (hasNext && treeCenter >= 0 && middle >= 0 && cur_rec.y + cur_rec.height + 1 >= 0 &&
+			    cur_rec.x >= 0 && cur_rec.y >= 0) {
 				dc->DrawLine(treeCenter, middle, treeCenter, cur_rec.y + cur_rec.height + 1);
 			}
 
 			// Draw the line back up to parent node
-			if (notFirst) {
+			if (notFirst && treeCenter >= 0 && middle >= 0 && cur_rec.y - 1 >= 0 &&
+			    cur_rec.x >= 0 && cur_rec.y >= 0) {
 				dc->DrawLine(treeCenter, middle, treeCenter, cur_rec.y - 1);
 			}
 		} else if (file->HasChildren()) {
@@ -932,18 +1141,32 @@ void CSearchListCtrl::OnDrawItem(
 				// Draw empty circle
 				dc->SetBrush(*wxTRANSPARENT_BRUSH);
 			} else {
-				dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(GetItemTextColour(item))));
+				dc->SetBrush(wxBrush(GetItemTextColour(item), wxBRUSHSTYLE_SOLID));
 			}
 
-			dc->DrawCircle( treeCenter, middle, 3 );
+			// Ensure circle coordinates are valid
+			if (treeCenter >= 0 && middle >= 0 && cur_rec.x >= 0 && cur_rec.y >= 0) {
+				dc->DrawCircle( treeCenter, middle, 3 );
+			}
 
 			// Draw the line to the child node if there are any children
-			if (hasNext && file->ShowChildren()) {
+			if (hasNext && file->ShowChildren() && treeCenter >= 0 && middle + 3 >= 0 &&
+			    cur_rec.y + cur_rec.height + 1 >= 0 && cur_rec.x >= 0 && cur_rec.y >= 0) {
 				dc->DrawLine(treeCenter, middle + 3, treeCenter, cur_rec.y + cur_rec.height + 1);
 			}
 		}
 	}
 
+	// Trigger UI update to ensure counts stay synchronized
+	// This helps ensure the tab count updates properly after drawing operations
+	// Note: Removed unsafe Thaw calls that were causing "thawing unfrozen list control" assertion
+	// Thaw() calls should only happen when there's a corresponding Freeze() in the same scope
+	// if (item == GetItemCount() - 1) {  // Last item in list
+	// 	Thaw();  // Thaw temporarily frozen updates
+	// 	Thaw();  // Second thaw in case we had multiple Freeze calls
+	// }
+
+	// Instead, rely on the caller to handle freezing/thawing appropriately
 	// Sanity checks to ensure that results/children are properly positioned.
 #ifdef __WXDEBUG__
 	{
@@ -970,8 +1193,11 @@ void CSearchListCtrl::OnDrawItem(
 		}
 	}
 #endif
+	}
+	catch (...) {
+		AddDebugLogLineC(logSearch, wxT("Exception in OnDrawItem"));
+	}
 }
-
 
 void CSearchListCtrl::ShowChildren(CSearchFile* file, bool show)
 {

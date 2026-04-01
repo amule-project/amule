@@ -122,12 +122,22 @@ uint32 GetTickCountFullRes(void) {
 	}
 
 	uint32 GetTickCount(){
-		wxASSERT(mytimer != NULL);
+		// Fall back to direct time query if timer not initialized
+		// This can happen during exception handling or shutdown
+		if (mytimer == NULL) {
+			return GetTickCountFullRes();
+		}
 		return MyTimer::GetTickCountNow();
 	}
 
 	uint64 GetTickCount64(){
-		wxASSERT(mytimer != NULL);
+		// Fall back to direct time query if timer not initialized
+		// This can happen during exception handling or shutdown
+		if (mytimer == NULL) {
+			struct timeval aika;
+			gettimeofday(&aika,NULL);
+			return aika.tv_sec * (uint64)1000 + aika.tv_usec / 1000;
+		}
 		return MyTimer::GetTickCountNow64();
 	}
 

@@ -291,6 +291,7 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit = TRUE, bool
 #define IDC_VERTTOOLBAR 10207
 #define IDC_SHOW_COUNTRY_FLAGS 10208
 #define IDC_PERCENT 10209
+#define IDC_GEOIP_DOWNLOAD 10250
 #define IDC_PROGBAR 10210
 #define IDC_3DDEPTH 10211
 #define IDC_AUTOSORT 10212

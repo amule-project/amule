@@ -17,6 +17,8 @@
 
 #define wxLC_OWNERDRAW 0x10000
 
+// #define WXWIN_COMPATIBILITY_2_8 1  // Disabled to avoid conflict with system wxWidgets
+
 #include <wx/imaglist.h>
 
 #if wxUSE_DRAG_AND_DROP

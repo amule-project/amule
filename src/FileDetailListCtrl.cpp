@@ -25,6 +25,7 @@
 
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWNDFD
 #include "FileDetailListCtrl.h"	// Interface declarations
+#include <wx/listctrl.h>	// Needed for wxListCtrl
 
 #define wxLIST_STATE_DESELECTED 0x0000
 
@@ -32,6 +33,16 @@ BEGIN_EVENT_TABLE(CFileDetailListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_SELECTED(IDC_LISTCTRLFILENAMES, CFileDetailListCtrl::OnSelect) // Care for single selection
 END_EVENT_TABLE()
 
+
+CFileDetailListCtrl::~CFileDetailListCtrl()
+{
+	// Clean up all SourcenameItem objects
+	long pos = -1;
+	while ((pos = GetNextItem(pos, wxLIST_NEXT_ALL)) != -1) {
+		SourcenameItem *item = reinterpret_cast<SourcenameItem*>(GetItemData(pos));
+		delete item;
+	}
+}
 
 CFileDetailListCtrl::CFileDetailListCtrl(wxWindow * &parent, int id, const wxPoint & pos, wxSize siz, int flags):CMuleListCtrl(parent, id, pos, siz, flags)
 {

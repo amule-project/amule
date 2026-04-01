@@ -104,6 +104,7 @@ enum StatsGraphType {
 #define PS_COMPLETING			8
 #define PS_COMPLETE			9
 #define PS_ALLOCATING			10
+#define PS_CONVERTING_MAGNET		11
 
 
 #define PR_VERYLOW			4 // I Had to change this because
