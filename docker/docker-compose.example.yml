@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  amule:
+    image: amule:2.3.2
+    container_name: amule
+    ports:
+      - "4711:4711"
+      - "4712:4712"
+      - "4662:4662"
+      - "4665:4665"
+      - "4672:4672"
+      - "8004:8004"
+      - "8006:8006/udp"
+      - "8007:8007/udp"
+    environment:
+      - PUID=0
+      - GUID=0
+    networks:
+      amule:
+        aliases:
+          - amule
+    volumes:
+      - /storage/amule/conf:/home/amule/.aMule
+      - /storage/amule/incoming:/incoming
+      - /storage/amule/tmp:/temp
+      - /path/to/your/shared/data:/home/amule/shared-dir
+networks:
+  amule:
+
