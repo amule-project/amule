@@ -491,7 +491,11 @@ public:
 
 	// Callback function
 	static int Callback(
-#if UPNP_VERSION >= 10800
+#if UPNP_VERSION >= 11800
+		Upnp_EventType_e EventType,
+		void *Event,
+		void *Cookie);
+#elif UPNP_VERSION >= 10800
 		Upnp_EventType_e EventType,
 		const void *Event,
 		void *Cookie);
