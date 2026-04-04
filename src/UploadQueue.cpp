@@ -294,16 +294,16 @@ void CUploadQueue::Process()
 }
 
 
-uint16 CUploadQueue::GetMaxSlots() const
+uint32 CUploadQueue::GetMaxSlots() const
 {
-	uint16 nMaxSlots = 0;
+	uint32 nMaxSlots = 0;
 	float kBpsUpPerClient = (float)thePrefs::GetSlotAllocation();
 	if (thePrefs::GetMaxUpload() == UNLIMITED) {
 		float kBpsUp = theStats::GetUploadRate() / 1024.0f;
-		nMaxSlots = (uint16)(kBpsUp / kBpsUpPerClient) + 2;
+		nMaxSlots = (uint32)(kBpsUp / kBpsUpPerClient) + 2;
 	} else {
 		if (thePrefs::GetMaxUpload() >= 10) {
-			nMaxSlots = (uint16)floor((float)thePrefs::GetMaxUpload() / kBpsUpPerClient + 0.5);
+			nMaxSlots = (uint32)floor((float)thePrefs::GetMaxUpload() / kBpsUpPerClient + 0.5);
 				// floor(x + 0.5) is a way of doing round(x) that works with gcc < 3 ...
 			if (nMaxSlots < MIN_UP_CLIENTS_ALLOWED) {
 				nMaxSlots=MIN_UP_CLIENTS_ALLOWED;
@@ -413,7 +413,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 				//   have been kicked so a slot is free again)
 				// - or there is a free slot, which means there is no HighID client on queue
 				if (client->m_bAddNextConnect) {
-					uint16 maxSlots = GetMaxSlots();
+					uint32 maxSlots = GetMaxSlots();
 					if (lastupslotHighID) {
 						maxSlots++;
 					}
