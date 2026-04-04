@@ -284,9 +284,14 @@ void* UploadBandwidthThrottler::Entry()
 		}
 
 		uint32 minFragSize = 1300;
-		uint32 doubleSendSize = minFragSize*2; // send two packages at a time so they can share an ACK
 		if (allowedDataRate < 6*1024) {
 			minFragSize = 536;
+		} else if (allowedDataRate > 256*1024) {
+			// Fast connection: scale fragment size with data rate
+			minFragSize = allowedDataRate / 16;
+		}
+		uint32 doubleSendSize = minFragSize * 2; // send two packages at a time so they can share an ACK
+		if (allowedDataRate < 6*1024) {
 			doubleSendSize = minFragSize; // don't send two packages at a time at very low speeds to give them a smoother load
 		}
 
@@ -422,7 +427,10 @@ void* UploadBandwidthThrottler::Entry()
 			if (bytesToSpend < - minBytesToSpend) {
 				bytesToSpend = - minBytesToSpend;
 			} else {
-				sint32 bandwidthSavedTolerance = slots * 512 + 1;
+				sint32 bandwidthSavedTolerance = std::max<sint32>(
+					slots * 512 + 1,
+					(sint32)(allowedDataRate / 50)  // ~20ms worth of bandwidth
+				);
 				if (bytesToSpend > bandwidthSavedTolerance) {
 					bytesToSpend = bandwidthSavedTolerance;
 				}
