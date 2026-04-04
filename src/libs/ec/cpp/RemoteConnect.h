@@ -280,9 +280,9 @@ public:
 				   CMD4Hash userHash);
 	void SetPreferencesConnections(uint32 LineDownloadCapacity,
 				       uint32 LineUploadCapacity,
-				       uint16 MaxDownloadSpeed,
-				       uint16 MaxUploadSpeed,
-				       uint16 UploadSlotAllocation,
+				       uint32 MaxDownloadSpeed,
+				       uint32 MaxUploadSpeed,
+				       uint32 UploadSlotAllocation,
 				       uint16 TCPPort,
 				       uint16 UDPPort,
 				       bool DisableUDP,
