@@ -160,6 +160,7 @@ public:
 			m_connected = m_OK;
 			if (m_OK) {
 				m_socket->set_option(boost::asio::socket_base::send_buffer_size(512 * 1024), ec);
+				m_socket->set_option(boost::asio::socket_base::receive_buffer_size(512 * 1024), ec);
 			}
 			return m_OK;
 		} else {
@@ -453,6 +454,7 @@ private:
 			if (m_OK) {
 				error_code ec;
 				m_socket->set_option(boost::asio::socket_base::send_buffer_size(512 * 1024), ec);
+				m_socket->set_option(boost::asio::socket_base::receive_buffer_size(512 * 1024), ec);
 				// After connect also send a OUTPUT event to show data is available
 				CoreNotify_LibSocketSend(m_libSocket, 0);
 				// Start reading
