@@ -190,9 +190,9 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 void CUpDownClient::CreateNextBlockPackage()
 {
 	try {
-		// Buffer new data if current buffer is less than 100 KBytes
+		// Buffer new data if current buffer is less than 8 MBytes
 		while (!m_BlockRequests_queue.empty()
-			   && m_addedPayloadQueueSession - m_nCurQueueSessionPayloadUp < 100*1024) {
+			   && m_addedPayloadQueueSession - m_nCurQueueSessionPayloadUp < 8192*1024) {
 
 			Requested_Block_Struct* currentblock = m_BlockRequests_queue.front();
 			CKnownFile* srcfile = theApp->sharedfiles->GetFileByID(CMD4Hash(currentblock->FileID));
@@ -287,8 +287,8 @@ void CUpDownClient::CreateStandardPackets(const uint8_t* buffer, uint32 togo, Re
 	uint32 nPacketSize;
 
 	CMemFile memfile(buffer, togo);
-	if (togo > 10240) {
-		nPacketSize = togo/(uint32)(togo/10240);
+	if (togo > 131072) {
+		nPacketSize = togo/(uint32)(togo/131072);
 	} else {
 		nPacketSize = togo;
 	}
@@ -346,8 +346,8 @@ void CUpDownClient::CreatePackedPackets(const uint8_t* buffer, uint32 togo, Requ
 	uint32 oldSize = togo;
 	togo = newsize;
 	uint32 nPacketSize;
-	if (togo > 10240) {
-		nPacketSize = togo/(uint32)(togo/10240);
+	if (togo > 131072) {
+		nPacketSize = togo/(uint32)(togo/131072);
 	} else {
 		nPacketSize = togo;
 	}

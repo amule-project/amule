@@ -158,6 +158,9 @@ public:
 			m_socket->connect(adr.GetEndpoint(), ec);
 			m_OK = !ec;
 			m_connected = m_OK;
+			if (m_OK) {
+				m_socket->set_option(boost::asio::socket_base::send_buffer_size(512 * 1024), ec);
+			}
 			return m_OK;
 		} else {
 			m_socket->async_connect(adr.GetEndpoint(),
@@ -448,6 +451,8 @@ private:
 		} else {
 			CoreNotify_LibSocketConnect(m_libSocket, err.value());
 			if (m_OK) {
+				error_code ec;
+				m_socket->set_option(boost::asio::socket_base::send_buffer_size(512 * 1024), ec);
 				// After connect also send a OUTPUT event to show data is available
 				CoreNotify_LibSocketSend(m_libSocket, 0);
 				// Start reading
