@@ -71,9 +71,9 @@
 #include "IP2Country.h"
 
 CIP2Country::CIP2Country(const wxString& configDir)
+	: m_DataBaseName(wxT("GeoIP.dat"))
 {
 	m_geoip = NULL;
-	m_DataBaseName = wxT("GeoIP.dat");
 	m_DataBasePath = configDir + m_DataBaseName;
 }
 
