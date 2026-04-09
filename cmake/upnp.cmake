@@ -27,6 +27,10 @@ if (NOT _upnp_skip_config)
 endif()
 unset (_upnp_skip_config)
 
+if (UPNP_CONFIG)
+	set (LIBUPNP_VERSION ${UPNP_VERSION})
+endif()
+
 if (NOT UPNP_CONFIG)
 	include (FindPkgConfig)
 	pkg_check_modules (LIBUPNP libupnp)
