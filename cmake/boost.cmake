@@ -1,4 +1,4 @@
-include (FindBoost)
+find_package(Boost CONFIG REQUIRED)
 
 if (NOT ASIO_SOCKETS)
 	include (CheckIncludeFiles)
