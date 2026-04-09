@@ -78,7 +78,7 @@ void MD4::MD4Init(struct MD4Context *ctx)
 void MD4::MD4Update(struct MD4Context *ctx, unsigned char const *buf,
                     size_t len)
 {
-  register uint32_t t;
+  uint32_t t;
 
   // Update bitcount
   t = ctx->bits[0];
@@ -193,7 +193,7 @@ void MD4::MD4Final(struct MD4Context *ctx, unsigned char* digest)
 /// The core of the MD4 algorithm
 void MD4::MD4Transform(uint32_t buf[4], uint32_t const in[16])
 {
-  register uint32_t a, b, c, d;
+  uint32_t a, b, c, d;
 
   a = buf[0];
   b = buf[1];
