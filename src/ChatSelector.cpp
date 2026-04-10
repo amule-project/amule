@@ -126,7 +126,7 @@ CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& clie
 	chatsession->m_client_id = client_id;
 
 	wxString text;
-	text = wxT(" *** ") + (CFormat(_("Chat-Session Started: %s (%s:%u) - %s %s"))
+	text = wxString(wxT(" *** ")) + wxString(CFormat(_("Chat-Session Started: %s (%s:%u) - %s %s"))
 			% client_name
 			% Uint32toStringIP(IP_FROM_GUI_ID(client_id))
 			% PORT_FROM_GUI_ID(client_id)

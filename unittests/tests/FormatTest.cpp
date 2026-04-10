@@ -309,20 +309,20 @@ TEST(Format, MalformedFields)
 	{
 		CAssertOff null;
 
-		ASSERT_EQUALS(wxT("%"), CFormat(wxT("%")));
-		ASSERT_EQUALS(wxT(" -- %"), CFormat(wxT(" -- %")));
+		ASSERT_EQUALS(wxT("%"), wxString(CFormat(wxT("%"))));
+		ASSERT_EQUALS(wxT(" -- %"), wxString(CFormat(wxT(" -- %"))));
 
 		// Non-existing type
-		ASSERT_EQUALS(wxT("%q"), CFormat(wxT("%q")) % 1);
-		ASSERT_EQUALS(wxT(" -- %q"), CFormat(wxT(" -- %q")) % 1.0f);
-		ASSERT_EQUALS(wxT(" -- %q -- "), CFormat(wxT(" -- %q -- ")) % wxT("1"));
+		ASSERT_EQUALS(wxT("%q"), wxString(CFormat(wxT("%q")) % 1));
+		ASSERT_EQUALS(wxT(" -- %q"), wxString(CFormat(wxT(" -- %q")) % 1.0f));
+		ASSERT_EQUALS(wxT(" -- %q -- "), wxString(CFormat(wxT(" -- %q -- ")) % wxT("1")));
 
 		// Partially valid format strings
-		ASSERT_EQUALS(wxT("1%q"), CFormat(wxT("%i%q")) % 1);
-		ASSERT_EQUALS(wxT("%q1"), CFormat(wxT("%q%i")) % 1);
+		ASSERT_EQUALS(wxT("1%q"), wxString(CFormat(wxT("%i%q")) % 1));
+		ASSERT_EQUALS(wxT("%q1"), wxString(CFormat(wxT("%q%i")) % 1));
 
 		// Wrong and right arguments
-		ASSERT_EQUALS(wxT("%i -- 17"), CFormat(wxT("%i -- %i")) % 1.0 % 17);
+		ASSERT_EQUALS(wxT("%i -- 17"), wxString(CFormat(wxT("%i -- %i")) % 1.0 % 17));
 	}
 }
 
@@ -355,7 +355,7 @@ TEST(Format, WrongTypes)
 	{
 		CAssertOff null;
 
-		ASSERT_EQUALS(wxT("-- %d -- 42 --"), CFormat(wxT("-- %d -- %u --")) % 1.0f % 42);
+		ASSERT_EQUALS(wxT("-- %d -- 42 --"), wxString(CFormat(wxT("-- %d -- %u --")) % 1.0f % 42));
 	}
 }
 
@@ -373,9 +373,9 @@ TEST(Format, NotSupported)
 	{
 		CAssertOff null;
 
-		ASSERT_EQUALS(wxT("%*d"), CFormat(wxT("%*d")) % 1);
-		ASSERT_EQUALS(wxT("%*s"), CFormat(wxT("%*s")) % wxT(""));
-		ASSERT_EQUALS(wxT("%n"), CFormat(wxT("%n")) % wxT(""));
+		ASSERT_EQUALS(wxT("%*d"), wxString(CFormat(wxT("%*d")) % 1));
+		ASSERT_EQUALS(wxT("%*s"), wxString(CFormat(wxT("%*s")) % wxT("")));
+		ASSERT_EQUALS(wxT("%n"), wxString(CFormat(wxT("%n")) % wxT("")));
 	}
 }
 
@@ -493,16 +493,16 @@ TEST(Format, ReorderedArguments)
 TEST(Format, DifferentArguments)
 {
 	// Tests for default conversion with the 's' conversion type
-	ASSERT_EQUALS(wxT("a"), CFormat(wxT("%s")) % wxT('a'));
-	ASSERT_EQUALS(wxT("1"), CFormat(wxT("%s")) % 1u);
-	ASSERT_EQUALS(wxT("-1"), CFormat(wxT("%s")) % -1);
-	ASSERT_EQUALS(wxString::Format(wxT("%g"), 1.2), CFormat(wxT("%s")) % 1.2);
+	ASSERT_EQUALS(wxT("a"), wxString(CFormat(wxT("%s")) % wxT('a')));
+	ASSERT_EQUALS(wxT("1"), wxString(CFormat(wxT("%s")) % 1u));
+	ASSERT_EQUALS(wxT("-1"), wxString(CFormat(wxT("%s")) % -1));
+	ASSERT_EQUALS(wxString::Format(wxT("%g"), 1.2), wxString(CFormat(wxT("%s")) % 1.2));
 
 	// Test for changing the conversion type based on the argument type
-	ASSERT_EQUALS(wxT("-1"), CFormat(wxT("%u")) % -1);
+	ASSERT_EQUALS(wxT("-1"), wxString(CFormat(wxT("%u")) % -1));
 
 	// Tests for accepting mismatching argument type
-	ASSERT_EQUALS(wxT("C"), CFormat(wxT("%c")) % 67);
-	ASSERT_EQUALS(wxT("69"), CFormat(wxT("%i")) % wxT('E'));
-	ASSERT_EQUALS(wxString::Format(wxT("%.e"), 1.0), CFormat(wxT("%.e")) % 1u);
+	ASSERT_EQUALS(wxT("C"), wxString(CFormat(wxT("%c")) % 67));
+	ASSERT_EQUALS(wxT("69"), wxString(CFormat(wxT("%i")) % wxT('E')));
+	ASSERT_EQUALS(wxString::Format(wxT("%.e"), 1.0), wxString(CFormat(wxT("%.e")) % 1u));
 }

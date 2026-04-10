@@ -58,15 +58,15 @@ wxString CastItoXBytes( uint64 count )
 {
 
 	if (count < 1024)
-		return CFormat(wxT("%u ")) % count + wxPLURAL("byte", "bytes", count) ;
+		return wxString(CFormat(wxT("%u ")) % count) + wxPLURAL("byte", "bytes", count) ;
 	else if (count < 1048576)
-		return CFormat(wxT("%u ")) % (count >> 10) + _("kB") ;
+		return wxString(CFormat(wxT("%u ")) % (count >> 10)) + _("kB") ;
 	else if (count < 1073741824)
-		return CFormat(wxT("%.2f ")) % ((float)(uint32)count/1048576) + _("MB") ;
+		return wxString(CFormat(wxT("%.2f ")) % ((float)(uint32)count/1048576)) + _("MB") ;
 	else if (count < 1099511627776LL)
-		return CFormat(wxT("%.3f ")) % ((float)((uint32)(count/1024))/1048576) + _("GB") ;
+		return wxString(CFormat(wxT("%.3f ")) % ((float)((uint32)(count/1024))/1048576)) + _("GB") ;
 	else
-		return CFormat(wxT("%.3f ")) % ((float)count/1099511627776LL) + _("TB") ;
+		return wxString(CFormat(wxT("%.3f ")) % ((float)count/1099511627776LL)) + _("TB") ;
 }
 
 
@@ -76,24 +76,24 @@ wxString CastItoIShort(uint64 count)
 	if (count < 1000)
 		return CFormat(wxT("%u")) % count;
 	else if (count < 1000000)
-		return CFormat(wxT("%.0f")) % ((float)(uint32)count/1000) + _("k") ;
+		return wxString(CFormat(wxT("%.0f")) % ((float)(uint32)count/1000)) + _("k") ;
 	else if (count < 1000000000)
-		return CFormat(wxT("%.2f")) % ((float)(uint32)count/1000000) + _("M") ;
+		return wxString(CFormat(wxT("%.2f")) % ((float)(uint32)count/1000000)) + _("M") ;
 	else if (count < 1000000000000LL)
-		return CFormat(wxT("%.2f")) % ((float)((uint32)(count/1000))/1000000) + _("G") ;
+		return wxString(CFormat(wxT("%.2f")) % ((float)((uint32)(count/1000))/1000000)) + _("G") ;
 	else
-		return CFormat(wxT("%.2f")) % ((float)count/1000000000000LL) + _("T");
+		return wxString(CFormat(wxT("%.2f")) % ((float)count/1000000000000LL)) + _("T");
 }
 
 
 wxString CastItoSpeed(uint32 bytes)
 {
 	if (bytes < 1024)
-		return CFormat(wxT("%u ")) % bytes + wxPLURAL("byte/sec", "bytes/sec", bytes);
+		return wxString(CFormat(wxT("%u ")) % bytes) + wxPLURAL("byte/sec", "bytes/sec", bytes);
 	else if (bytes < 1048576)
-		return CFormat(wxT("%.2f ")) % (bytes / 1024.0) + _("kB/s");
+		return wxString(CFormat(wxT("%.2f ")) % (bytes / 1024.0)) + _("kB/s");
 	else
-		return CFormat(wxT("%.2f ")) % (bytes / 1048576.0) + _("MB/s");
+		return wxString(CFormat(wxT("%.2f ")) % (bytes / 1048576.0)) + _("MB/s");
 }
 
 

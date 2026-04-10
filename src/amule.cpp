@@ -1034,7 +1034,7 @@ void CamuleApp::Localize_mule()
 // Is called when the user runs a new version of aMule
 void CamuleApp::Trigger_New_version(wxString new_version)
 {
-	wxString info = wxT(" --- ") + CFormat(_("This is the first time you run aMule %s")) % new_version + wxT(" ---\n\n");
+	wxString info = wxString(wxT(" --- ")) + wxString(CFormat(_("This is the first time you run aMule %s")) % new_version) + wxT(" ---\n\n");
 	if (new_version == wxT("SVN")) {
 		info += _("This version is a testing version, updated daily, and\n");
 		info += _("we give no warranty it won't break anything, burn your house,\n");
