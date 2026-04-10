@@ -101,7 +101,7 @@ static void FormatValue(CFormat& format, const CECTag* tag)
 			default:
 				tmp_fmt = wxT("%s");
 		}
-		CFormat tmp_format(wxT(" (") + tmp_fmt + wxT(")"));
+		CFormat tmp_format(wxString(wxT(" (")) + tmp_fmt + wxT(")"));
 		FormatValue(tmp_format, tmp_tag);
 		extra = tmp_format.GetString();
 	}
