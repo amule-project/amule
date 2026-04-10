@@ -151,12 +151,6 @@ public:
 	 */
 	operator wxString() const		{ return GetString(); };
 
-	// wx3.3 removed implicit wchar_t* -> wxString conversions, so provide
-	// explicit operators to allow wxT("...") + CFormat(...) and comparisons.
-	wxString operator+(const wxString& rhs) const	{ return GetString() + rhs; }
-	bool operator==(const wxString& rhs) const		{ return GetString() == rhs; }
-	bool operator!=(const wxString& rhs) const		{ return GetString() != rhs; }
-
 private:
 	/**
 	 * Initialize internal structures.
@@ -199,11 +193,6 @@ template<> inline CFormat& CFormat::operator%(unsigned long value)	{ return *thi
 template<> inline CFormat& CFormat::operator%(float value)		{ return *this % (double)value; }
 template<> inline CFormat& CFormat::operator%(const wxChar* value)	{ return this->operator%<const wxString&>(wxString(value)); }
 
-
-// Free functions for wxString op CFormat (wx3.3: wchar_t* no longer implicitly converts to wxString)
-inline wxString operator+(const wxString& lhs, const CFormat& rhs)		{ return lhs + rhs.GetString(); }
-inline bool operator==(const wxString& lhs, const CFormat& rhs)		{ return lhs == rhs.GetString(); }
-inline bool operator!=(const wxString& lhs, const CFormat& rhs)		{ return lhs != rhs.GetString(); }
 
 #define WXLONGLONGFMTSPEC wxT(wxLongLongFmtSpec)
 
