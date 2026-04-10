@@ -85,9 +85,9 @@ CProxyData	CPreferences::s_ProxyData;
 /* The rest, organize it! */
 wxString	CPreferences::s_nick;
 Cfg_Lang_Base * CPreferences::s_cfgLang;
-uint16		CPreferences::s_maxupload;
-uint16		CPreferences::s_maxdownload;
-uint16		CPreferences::s_slotallocation;
+uint32		CPreferences::s_maxupload;
+uint32		CPreferences::s_maxdownload;
+uint32		CPreferences::s_slotallocation;
 wxString	CPreferences::s_Addr;
 uint16		CPreferences::s_port;
 uint16		CPreferences::s_udpport;
@@ -1394,7 +1394,7 @@ void CPreferences::SaveAllItems(wxConfigBase* cfg)
 #endif
 }
 
-void CPreferences::SetMaxUpload(uint16 in)
+void CPreferences::SetMaxUpload(uint32 in)
 {
 	if ( s_maxupload != in ) {
 		s_maxupload = in;
@@ -1405,7 +1405,7 @@ void CPreferences::SetMaxUpload(uint16 in)
 }
 
 
-void CPreferences::SetMaxDownload(uint16 in)
+void CPreferences::SetMaxDownload(uint32 in)
 {
 	if ( s_maxdownload != in ) {
 		s_maxdownload = in;

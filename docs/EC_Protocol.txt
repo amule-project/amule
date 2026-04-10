@@ -334,3 +334,31 @@ Section 3: Clarifying things
 
     Hopefully these examples helped enlightening the nature of OpCodes, Tags,
     nested tags.
+
+
+Section 4: Notable Tag Types
+-----------------------------
+
+    This section documents the data types of selected tags where the type
+    may not be immediately obvious or has changed across protocol versions.
+
+    Connection Preferences (EC_TAG_PREFS_CONNECTIONS = 0x1300)
+    ----------------------------------------------------------
+
+    The following subtags carry speed and slot values under
+    EC_TAG_PREFS_CONNECTIONS:
+
+    EC_TAG_CONN_DL_CAP          (0x1301)  uint32   Download line capacity (kB/s)
+    EC_TAG_CONN_UL_CAP          (0x1302)  uint32   Upload line capacity (kB/s)
+    EC_TAG_CONN_MAX_DL          (0x1303)  uint32   Max download speed (kB/s)
+    EC_TAG_CONN_MAX_UL          (0x1304)  uint32   Max upload speed (kB/s)
+    EC_TAG_CONN_SLOT_ALLOCATION (0x1305)  uint32   Upload slot allocation
+    EC_TAG_CONN_MAX_FILE_SOURCES (0x1309) uint16   Max sources per file
+    EC_TAG_CONN_MAX_CONN        (0x130A)  uint16   Max connections
+
+    Note: EC_TAG_CONN_MAX_DL, EC_TAG_CONN_MAX_UL, and
+    EC_TAG_CONN_SLOT_ALLOCATION were widened from uint16 to uint32 to
+    support speeds above 65534 kB/s (~524 Mbps) required on modern
+    gigabit connections. EC clients reading these tags should use
+    GetInt() (which handles any integer width); clients sending them
+    should encode them as 32-bit values.

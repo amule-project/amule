@@ -224,8 +224,8 @@ public:
 	static void		SetTempDir(const CPath& dir)	{ s_tempdir = dir; }
 	static const CMD4Hash&	GetUserHash()			{ return s_userhash; }
 	static void		SetUserHash(const CMD4Hash& h)	{ s_userhash = h; }
-	static uint16		GetMaxUpload()			{ return s_maxupload; }
-	static uint16		GetSlotAllocation()		{ return s_slotallocation; }
+	static uint32		GetMaxUpload()			{ return s_maxupload; }
+	static uint32		GetSlotAllocation()		{ return s_slotallocation; }
 	static bool		IsICHEnabled()			{ return s_ICH; }
 	static void		SetICHEnabled(bool val)		{ s_ICH = val; }
 	static bool		IsTrustingEveryHash()		{ return s_AICHTrustEveryHash; }
@@ -264,7 +264,7 @@ public:
 	static void		SetMaxGraphDownloadRate(uint32 in)
 						{ s_maxGraphDownloadRate = in; }
 
-	static uint16		GetMaxDownload()		{ return s_maxdownload; }
+	static uint32		GetMaxDownload()		{ return s_maxdownload; }
 	static uint16		GetMaxConnections()		{ return s_maxconnections; }
 	static uint16		GetMaxSourcePerFile()		{ return s_maxsourceperfile; }
 	static uint16		GetMaxSourcePerFileSoft() {
@@ -345,9 +345,9 @@ public:
 	static const wxString&	GetYourHostname()		{ return s_yourHostname; }
 	static void		SetYourHostname(const wxString& s)	{ s_yourHostname = s; }
 
-	static void		SetMaxUpload(uint16 in);
-	static void		SetMaxDownload(uint16 in);
-	static void		SetSlotAllocation(uint16 in)	{ s_slotallocation = (in >= 1) ? in : 1; };
+	static void		SetMaxUpload(uint32 in);
+	static void		SetMaxDownload(uint32 in);
+	static void		SetSlotAllocation(uint32 in)	{ s_slotallocation = (in >= 1) ? in : 1; };
 
 	typedef std::vector<CPath> PathList;
 	PathList shareddir_list;
@@ -612,9 +612,9 @@ protected:
 	static Cfg_Lang_Base * s_cfgLang;
 
 ////////////// CONNECTION
-	static uint16	s_maxupload;
-	static uint16	s_maxdownload;
-	static uint16	s_slotallocation;
+	static uint32	s_maxupload;
+	static uint32	s_maxdownload;
+	static uint32	s_slotallocation;
 	static wxString s_Addr;
 	static uint16	s_port;
 	static uint16	s_udpport;
