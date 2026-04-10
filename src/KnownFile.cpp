@@ -1539,12 +1539,12 @@ wxString CKnownFile::GetFeedback() const
 {
 	return	  wxString(_("File name")) + wxT(": ") + GetFileName().GetPrintable() + wxT("\n")
 		+ _("File size") + wxT(": ") + CastItoXBytes(GetFileSize()) + wxT("\n")
-		+ _("Share ratio") + CFormat(wxT(": %.2f%%\n")) % (((double)statistic.GetAllTimeTransferred() / (double)GetFileSize()) * 100.0)
+		+ _("Share ratio") + wxString(CFormat(wxT(": %.2f%%\n")) % (((double)statistic.GetAllTimeTransferred() / (double)GetFileSize()) * 100.0))
 		+ _("Uploaded") + wxT(": ") + CastItoXBytes(statistic.GetTransferred()) + wxT(" (") + CastItoXBytes(statistic.GetAllTimeTransferred()) + wxT(")\n")
-		+ _("Requested") + CFormat(wxT(": %u (%u)\n")) % statistic.GetRequests() % statistic.GetAllTimeRequests()
-		+ _("Accepted") + CFormat(wxT(": %u (%u)\n")) % statistic.GetAccepts() % statistic.GetAllTimeAccepts()
-		+ _("On Queue") + CFormat(wxT(": %u\n")) % GetQueuedCount()
-		+ _("Complete sources") + CFormat(wxT(": %u\n")) % m_nCompleteSourcesCount;
+		+ _("Requested") + wxString(CFormat(wxT(": %u (%u)\n")) % statistic.GetRequests() % statistic.GetAllTimeRequests())
+		+ _("Accepted") + wxString(CFormat(wxT(": %u (%u)\n")) % statistic.GetAccepts() % statistic.GetAllTimeAccepts())
+		+ _("On Queue") + wxString(CFormat(wxT(": %u\n")) % GetQueuedCount())
+		+ _("Complete sources") + wxString(CFormat(wxT(": %u\n")) % m_nCompleteSourcesCount);
 }
 
 // File_checked_for_headers

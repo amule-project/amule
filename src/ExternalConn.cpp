@@ -482,8 +482,8 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 					% (m_haveNotificationSupport ? wxT("yes") : wxT("no")));
 			} else {
 				response = new CECPacket(EC_OP_AUTH_FAIL);
-				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid protocol version.")
-					+ CFormat(wxT("( %#.4x != %#.4x )")) % proto_version % (uint16_t)EC_CURRENT_PROTOCOL_VERSION));
+				response->AddTag(CECTag(EC_TAG_STRING, wxString(wxTRANSLATE("Invalid protocol version."))
+					+ wxString(CFormat(wxT("( %#.4x != %#.4x )")) % proto_version % (uint16_t)EC_CURRENT_PROTOCOL_VERSION)));
 			}
 		} else {
 			response = new CECPacket(EC_OP_AUTH_FAIL);

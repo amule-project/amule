@@ -2014,7 +2014,7 @@ wxString CUpDownClient::GetUploadFileInfo()
 {
 	// build info text and display it
 	wxString sRet;
-	sRet = (CFormat(_("NickName: %s ID: %u")) % GetUserName() % GetUserIDHybrid()) + wxT(" ");
+	sRet = wxString(CFormat(_("NickName: %s ID: %u")) % GetUserName() % GetUserIDHybrid()) + wxT(" ");
 	if (m_reqfile) {
 		sRet += CFormat(_("Requested: %s\n")) % m_reqfile->GetFileName();
 		sRet += CFormat(
