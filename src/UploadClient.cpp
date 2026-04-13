@@ -290,8 +290,10 @@ void CUpDownClient::CreateStandardPackets(const uint8_t* buffer, uint32 togo, Re
 	uint32 nPacketSize;
 
 	CMemFile memfile(buffer, togo);
-	if (togo > 10240) {
-		nPacketSize = togo/(uint32)(togo/10240);
+	// Adaptive chunk size: scale with slot speed, floor 10 KiB, ceil 128 KiB.
+	const uint32 chunkSize = std::min(std::max(GetUploadDatarate() / 8u, 10240u), 131072u);
+	if (togo > chunkSize) {
+		nPacketSize = togo/(uint32)(togo/chunkSize);
 	} else {
 		nPacketSize = togo;
 	}
@@ -349,8 +351,10 @@ void CUpDownClient::CreatePackedPackets(const uint8_t* buffer, uint32 togo, Requ
 	uint32 oldSize = togo;
 	togo = newsize;
 	uint32 nPacketSize;
-	if (togo > 10240) {
-		nPacketSize = togo/(uint32)(togo/10240);
+	// Adaptive chunk size: scale with slot speed, floor 10 KiB, ceil 128 KiB.
+	const uint32 chunkSize = std::min(std::max(GetUploadDatarate() / 8u, 10240u), 131072u);
+	if (togo > chunkSize) {
+		nPacketSize = togo/(uint32)(togo/chunkSize);
 	} else {
 		nPacketSize = togo;
 	}
