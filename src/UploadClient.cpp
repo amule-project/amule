@@ -190,9 +190,12 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 void CUpDownClient::CreateNextBlockPackage()
 {
 	try {
-		// Buffer new data if current buffer is less than 100 KBytes
+		// Adaptive payload buffer: ~10 seconds worth of data at current slot speed,
+		// clamped between 180 KiB (eMule minimum) and 16 MiB (upper bound).
+		// Compensates for aMule's synchronous disk I/O until an async disk thread is in place.
+		const uint32 payloadBufferLimit = std::min(std::max(GetUploadDatarate() * 10u, 180u*1024u), 16u*1024u*1024u);
 		while (!m_BlockRequests_queue.empty()
-			   && m_addedPayloadQueueSession - m_nCurQueueSessionPayloadUp < 100*1024) {
+			   && m_addedPayloadQueueSession - m_nCurQueueSessionPayloadUp < payloadBufferLimit) {
 
 			Requested_Block_Struct* currentblock = m_BlockRequests_queue.front();
 			CKnownFile* srcfile = theApp->sharedfiles->GetFileByID(CMD4Hash(currentblock->FileID));
