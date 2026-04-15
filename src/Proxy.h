@@ -59,7 +59,7 @@ const unsigned char SOCKS4_REPLY_FAILED_DIFFERENT_USERIDS	= 93;
  * Also, for the future :) :
  * - RFC-1961: GSS-API Authentication Method for SOCKS Version 5
  * - RFC-1508: Generic Security Service Application Program Interface
- * - RFC-1509: Genecic Security Service API: C-bindings
+ * - RFC-1509: Generic Security Service API: C-bindings
  *
  */
 
@@ -288,7 +288,7 @@ protected:
 	// Temporary variables
 	//
 	unsigned char		m_lastReply;
-	unsigned int		m_packetLenght;
+	unsigned int		m_packetLength;
 };
 
 //------------------------------------------------------------------------------

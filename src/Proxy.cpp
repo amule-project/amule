@@ -152,7 +152,7 @@ m_proxyClientSocket(NULL),
 m_proxyBoundAddress(NULL),
 // Temporary variables
 m_lastReply(0),
-m_packetLenght(0)
+m_packetLength(0)
 {
 }
 
@@ -436,7 +436,7 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
 	case SOCKS5_STATE_SEND_AUTHENTICATION_GSSAPI:
 	case SOCKS5_STATE_SEND_AUTHENTICATION_USERNAME_PASSWORD:
 	case SOCKS5_STATE_SEND_COMMAND_REQUEST:
-		n = m_packetLenght;
+		n = m_packetLength;
 		break;
 
 	case SOCKS5_STATE_PROCESS_AUTHENTICATION_METHOD:
@@ -606,17 +606,17 @@ void CSocks5StateMachine::process_send_query_authentication_method(bool entry)
 		m_buffer[0] = SOCKS5_VERSION;
 		m_buffer[1] = 1; // Number of supported methods
 		m_buffer[2] = SOCKS5_AUTH_METHOD_NO_AUTH_REQUIRED;
-		m_packetLenght = 3;
+		m_packetLength = 3;
 		if (m_proxyData.m_enablePassword) {
 			// add SOCKS5_AUTH_METHOD_GSSAPI here if we ever implement
 			// GSS-API authentication
 			m_buffer[1] = 2;
 			m_buffer[3] = SOCKS5_AUTH_METHOD_USERNAME_PASSWORD;
-			m_packetLenght = 4;
+			m_packetLength = 4;
 		}
 
 		// Send the authentication method negotiation packet
-		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLenght);
+		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLength);
 	}
 }
 
@@ -624,7 +624,7 @@ void CSocks5StateMachine::process_receive_authentication_method(bool entry)
 {
 	if (entry) {
 		// Receive the method selection message
-		m_packetLenght = 2;
+		m_packetLength = 2;
 		ProxyRead(*m_proxyClientSocket, m_buffer);
 	}
 	/* This is added because there will be no more input events. If the
@@ -669,7 +669,7 @@ void CSocks5StateMachine::process_send_authentication_username_password(bool ent
 	if (entry) {
 		unsigned char lenUser = m_proxyData.m_userName.Len();
 		unsigned char lenPassword = m_proxyData.m_password.Len();
-		m_packetLenght = 1 + 1 + lenUser + 1 + lenPassword;
+		m_packetLength = 1 + 1 + lenUser + 1 + lenPassword;
 		unsigned int offsetUser = 2;
 		unsigned int offsetPassword = offsetUser + lenUser + 1;
 
@@ -683,7 +683,7 @@ void CSocks5StateMachine::process_send_authentication_username_password(bool ent
 			lenPassword);
 
 		// Send the username/password packet
-		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLenght);
+		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLength);
 	}
 }
 
@@ -691,7 +691,7 @@ void CSocks5StateMachine::process_receive_authentication_username_password(bool 
 {
 	if (entry) {
 		// Receive the server's authentication response
-		m_packetLenght = 2;
+		m_packetLength = 2;
 		ProxyRead(*m_proxyClientSocket, m_buffer);
 	}
 	AddDummyEvent();
@@ -733,8 +733,8 @@ void CSocks5StateMachine::process_send_command_request(bool entry)
 		RawPokeUInt16( m_buffer+8, ENDIAN_HTONS( m_peerAddress->Service() ) );
 
 		// Send the command packet
-		m_packetLenght = 10;
-		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLenght);
+		m_packetLength = 10;
+		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLength);
 	}
 }
 
@@ -743,7 +743,7 @@ void CSocks5StateMachine::process_receive_command_reply(bool entry)
 	if (entry) {
 		// The minimum number of bytes to read is 10 in the case of
 		// ATYP == SOCKS5_ATYP_IPV4_ADDRESS
-		m_packetLenght = 10;
+		m_packetLength = 10;
 		ProxyRead(*m_proxyClientSocket, m_buffer);
 	}
 	AddDummyEvent();
@@ -796,7 +796,7 @@ void CSocks5StateMachine::process_process_command_reply(bool entry)
 			}
 			}
 			// Set the packet length at last
-			m_packetLenght = portOffset + 2;
+			m_packetLength = portOffset + 2;
 			// Read BND.PORT
 			m_proxyBoundAddress->Service( ENDIAN_NTOHS( RawPeekUInt16( m_buffer+portOffset) ) );
 		}
@@ -844,7 +844,7 @@ void CSocks4StateMachine::process_state(t_sm_state state, bool entry)
 		break;
 
 	case SOCKS4_STATE_SEND_COMMAND_REQUEST:
-		n = m_packetLenght;
+		n = m_packetLength;
 		break;
 
 	case SOCKS4_STATE_PROCESS_COMMAND_REPLY:
@@ -954,16 +954,16 @@ void CSocks4StateMachine::process_send_command_request(bool entry)
 			memcpy(m_buffer + offsetDomain,
 				unicode2char(hostname), lenDomain);
 			m_buffer[offsetDomain + lenDomain] = 0;
-			m_packetLenght = 1 + 1 + 2 + 4 + lenUser + 1 + lenDomain + 1;
+			m_packetLength = 1 + 1 + 2 + 4 + lenUser + 1 + lenDomain + 1;
 			break;
 		}
 		case PROXY_SOCKS4:
 		default:
-			m_packetLenght = 1 + 1 + 2 + 4 + lenUser + 1;
+			m_packetLength = 1 + 1 + 2 + 4 + lenUser + 1;
 			break;
 		}
 		// Send the command packet
-		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLenght);
+		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLength);
 	}
 }
 
@@ -971,7 +971,7 @@ void CSocks4StateMachine::process_receive_command_reply(bool entry)
 {
 	if (entry) {
 		// Receive the server's reply
-		m_packetLenght = 8;
+		m_packetLength = 8;
 		ProxyRead(*m_proxyClientSocket, m_buffer);
 	}
 	AddDummyEvent();
@@ -1041,7 +1041,7 @@ void CHttpStateMachine::process_state(t_sm_state state, bool entry)
 		break;
 
 	case HTTP_STATE_SEND_COMMAND_REQUEST:
-		n = m_packetLenght;
+		n = m_packetLength;
 		break;
 
 	case HTTP_STATE_PROCESS_COMMAND_REPLY:
@@ -1138,9 +1138,9 @@ void CHttpStateMachine::process_send_command_request(bool entry)
 			break;
 		}
 		// Send the command packet
-		m_packetLenght = msg.Len();
-		memcpy(m_buffer, unicode2char(msg), m_packetLenght+1);
-		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLenght);
+		m_packetLength = msg.Len();
+		memcpy(m_buffer, unicode2char(msg), m_packetLength+1);
+		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLength);
 	}
 }
 
@@ -1149,7 +1149,7 @@ void CHttpStateMachine::process_receive_command_reply(bool entry)
 	if (entry) {
 		// Receive the server's reply -- Use a large number, but don't
 		// Expect to get it all. HTTP protocol does not have a fixed length.
-		m_packetLenght = PROXY_BUFFER_SIZE;
+		m_packetLength = PROXY_BUFFER_SIZE;
 		ProxyRead(*m_proxyClientSocket, m_buffer);
 	}
 	AddDummyEvent();
