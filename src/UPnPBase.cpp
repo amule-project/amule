@@ -33,6 +33,22 @@
 #define BROKEN_DEBIAN_LIBUPNP
 #endif
 
+/* Fix for broken UPNP_VERSION macro */
+#if UPNP_VERSION_MAJOR == 17
+
+#undef UPNP_VERSION_MAJOR
+#undef UPNP_VERSION_MINOR
+#undef UPNP_VERSION_PATCH
+#define UPNP_VERSION_MAJOR 1
+#define UPNP_VERSION_MINOR 14
+#define UPNP_VERSION_PATCH 18
+#define UPNP_VERSION (\
+	(UPNP_VERSION_MAJOR * 10000) + \
+	(UPNP_VERSION_MINOR * 100) + \
+	(UPNP_VERSION_PATCH))
+
+#endif /* UPNP_MAJOR_VERSION == 17 */
+
 #include "UPnPBase.h"
 
 #include <algorithm>		// For transform()
