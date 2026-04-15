@@ -26,11 +26,12 @@
 #ifndef __PROXY_H__
 #define __PROXY_H__
 
-#include <wx/wx.h>
-
 #include "amuleIPV4Address.h"	// For amuleIPV4address
 #include "StateMachine.h"	// For CStateMachine
 #include "LibSocket.h"
+
+#include <wx/wx.h>
+#include <wx/socket.h>
 
 /******************************************************************************/
 
@@ -502,6 +503,9 @@ private:
 
 class CSocketClientProxy : public CProxySocket
 {
+private:
+	bool Connect(const wxSockAddress &, bool = true) { return false; }
+
 public:
 	/* Constructor */
 	CSocketClientProxy(
