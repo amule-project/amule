@@ -108,7 +108,7 @@ namespace Service {
 }
 
 static std::string ProcessErrorMessage(
-	const std::string &messsage,
+	const std::string &message,
 	int errorCode,
 	const DOMString errorString,
 	IXML_Document *doc)
@@ -119,7 +119,7 @@ static std::string ProcessErrorMessage(
 	}
 	if (errorCode > 0) {
 		msg << "Error: " <<
-			messsage <<
+			message <<
 			": Error code :'";
 		if (doc) {
 			CUPnPError e(doc);
@@ -136,7 +136,7 @@ static std::string ProcessErrorMessage(
 		AddDebugLogLineN(logUPnP, msg);
 	} else {
 		msg << "Error: " <<
-			messsage <<
+			message <<
 			": UPnP SDK error: " <<
 			UpnpGetErrorMessage(errorCode) <<
 			" (" << errorCode << ").";
@@ -1290,7 +1290,7 @@ upnpDiscovery:
 	}
 	case UPNP_EVENT_RECEIVED: {
 		//fprintf(stderr, "Callback: UPNP_EVENT_RECEIVED\n");
-		// Event reveived
+		// Event received
 #if UPNP_VERSION >= 10800
 		UpnpEvent *e_event = (UpnpEvent *)Event;
 		int eventKey = UpnpEvent_get_EventKey(e_event);
@@ -1530,7 +1530,7 @@ eventSubscriptionRequest:
 		AddDebugLogLineC(logUPnP, msg);
 		break;
 	default:
-		// Humm, this is not good, we forgot to handle something...
+		// Hum, this is not good, we forgot to handle something...
 		fprintf(stderr,
 			"Callback: default... Unknown event:'%d', not good.\n",
 			EventType);
