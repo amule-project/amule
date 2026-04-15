@@ -246,6 +246,11 @@ typedef wxSocketFlags muleSocketFlags;
 
 class CLibSocket : public wxSocketClient
 {
+private:
+	bool Connect(const wxSockAddress &, bool = true) override { return false; }
+	bool GetPeer(wxSockAddress &) const override { return false; }
+	virtual bool SetLocal(const wxIPV4address &) override { return false; }
+
 public:
 	CLibSocket(wxSocketFlags flags = 0) : wxSocketClient(flags), m_isDestroying(false) {}
 
@@ -261,9 +266,11 @@ public:
 	virtual void OnProxyEvent(int) {}
 
 	// methods using amuleIPV4Address
-	bool Connect(amuleIPV4Address& adr, bool wait);		// Yes. adr is not const.
+	// Yes. adr is not const.
+	bool Connect(amuleIPV4Address& adr, bool wait);
 	bool GetPeer(amuleIPV4Address& adr);
-	void SetLocal(amuleIPV4Address& local);				// Same here.
+	// Same here.
+	void SetLocal(amuleIPV4Address& local);
 
 	// Get last error, 0 == no error
 	// BLOCK is also not an error!
