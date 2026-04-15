@@ -236,6 +236,10 @@ bool CServerSocket::ProcessPacket(const uint8_t* packet, uint32 size, int8 opcod
 				/* Kry import of lugdunum 16.40 new features */
 				AddDebugLogLineN( logServer, wxT("Server: OP_SERVERMESSAGE") );
 
+				if (size < 3) {
+					throw wxString(wxT("Corrupt or invalid server message received (size too small)"));
+				}
+
 				theStats::AddDownOverheadServer(size);
 				char* buffer = new char[size-1];
 				memcpy(buffer,&packet[2],size-2);
