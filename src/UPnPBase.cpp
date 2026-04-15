@@ -39,6 +39,8 @@
 #undef UPNP_VERSION_MAJOR
 #undef UPNP_VERSION_MINOR
 #undef UPNP_VERSION_PATCH
+#undef UPNP_VERSION
+
 #define UPNP_VERSION_MAJOR 1
 #define UPNP_VERSION_MINOR 14
 #define UPNP_VERSION_PATCH 18
@@ -1145,7 +1147,13 @@ bool CUPnPControlPoint::PrivateDeletePortMapping(
 
 
 // This function is static
-#if UPNP_VERSION >= 10800
+#if UPNP_VERSION >= 11800
+int CUPnPControlPoint::Callback(Upnp_EventType_e EventType, void *Event, void * /*Cookie*/)
+#elif UPNP_VERSION >= 11430
+int CUPnPControlPoint::Callback(Upnp_EventType_e EventType, const void *Event, void * /*Cookie*/)
+#elif UPNP_VERSION >= 11426
+int CUPnPControlPoint::Callback(Upnp_EventType_e EventType, void *Event, void * /*Cookie*/)
+#elif UPNP_VERSION >= 10800
 int CUPnPControlPoint::Callback(Upnp_EventType_e EventType, const void *Event, void * /*Cookie*/)
 #else
 int CUPnPControlPoint::Callback(Upnp_EventType EventType, void *Event, void * /*Cookie*/)
