@@ -7,9 +7,10 @@ on:
     branches: ["*"]
 
 jobs:
-  build:
+  build_autotools:
+    # Add this to temporarily suppress a build
+    # if: false
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v6
       - name: install deps
@@ -19,8 +20,68 @@ jobs:
       - name: install build deps
         run: sudo apt-get install devscripts equivs && sudo mk-build-deps -i
       - name: configure
-        run: ./configure --enable-wxcas --enable-cas --enable-webserver --enable-amule-gui --enable-amule-daemon --enable-alcc --enable-alc --enable-amulecmd --enable-geoip --with-boost
+        run: |
+          ./configure \
+          --enable-wxcas \
+          --enable-cas \
+          --enable-webserver \
+          --enable-amule-gui \
+          --enable-amule-daemon \
+          --enable-alcc \
+          --enable-alc \
+          --enable-amulecmd \
+          --enable-geoip \
+          --with-boost
       - name: make
         run: make
       - name: make check
         run: make check
+
+  build_cmake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            cmake \
+            build-essential \
+            libboost-all-dev \
+            libcrypto++-dev \
+            wx3.2-headers \
+            libupnp-dev \
+            libgeoip-dev \
+            libwxgtk3.2-dev \
+            libreadline-dev \
+            gettext \
+            libgd-dev \
+            pkg-config
+      # It seems to run faster without this, but we have to manually list the
+      # dependencies abobe.
+      #  run: |
+      #    sudo apt-get install devscripts equivs && sudo mk-build-deps -i
+      - name: create build system
+        run: |
+          # BUILD_PLASMAMULE requires Qt4
+          cmake -B build \
+            -DBUILD_ALC=YES \
+            -DBUILD_ALCC=YES \
+            -DBUILD_AMULECMD=YES \
+            -DBUILD_CAS=YES \
+            -DBUILD_DAEMON=YES \
+            -DBUILD_WXCAS=YES \
+            -DBUILD_ED2K=YES \
+            -DBUILD_MONOLITHIC=YES \
+            -DBUILD_PLASMAMULE=0 \
+            -DBUILD_REMOTEGUI=YES \
+            -DBUILD_TESTING=YES \
+            -DBUILD_WEBSERVER=YES \
+            -DENABLE_IP2COUNTRY=YES \
+            -DENABLE_NLS=YES \
+            -DENABLE_UPNP=YES
+      - name: make
+        run: cmake --build build
+      - name: run tests
+        run: |
+          ctest --test-dir build --output-on-failure --timeout 5
