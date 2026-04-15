@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 3.5)
 project (amule)
+
 set (MIN_BOOST_VERSION 1.47)
 set (MIN_CRYPTOPP_VERSION 5.6)
 set (MIN_GDLIB_VERSION 2.0.0)
@@ -36,6 +37,17 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	set (CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE
 		STRING "Choose the type of build." FORCE
 	)
+endif()
+
+# Try to use ccache
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    message(STATUS "ccache found: ${CCACHE_PROGRAM}")
+    set(CMAKE_C_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
+    set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
+    # Add other languages if needed, e.g., CMAKE_CUDA_COMPILER_LAUNCHER
+else()
+    message(STATUS "ccache not found.")
 endif()
 
 include (cmake/CmDaB.cmake)
