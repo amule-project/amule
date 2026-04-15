@@ -97,7 +97,7 @@ Recommends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version})
 Conflicts: amule (<< ${binary:Version}), amule-daemon (<< ${binary:Version})
 Description: webserver for amule
  this is the webserver, which gives you full access to your amule client with
- any webbrowser you want
+ any web browser you want
 
 Package: amule-remote-gui
 Architecture: any
