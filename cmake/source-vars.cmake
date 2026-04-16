@@ -37,6 +37,7 @@ if (BUILD_MONOLITHIC OR BUILD_DAEMON)
 		SharedFileList.cpp
 		UploadBandwidthThrottler.cpp
 		UploadClient.cpp
+		UploadDiskIOThread.cpp
 		UploadQueue.cpp
 		ThreadTasks.cpp
 	)

@@ -45,6 +45,7 @@
 #include "ScopedPtr.h"		// Needed for CScopedArray
 #include "GuiEvents.h"		// Needed for Notify_*
 #include "FileArea.h"		// Needed for CFileArea
+#include "UploadDiskIOThread.h"	// Needed for CUploadDiskIOThread
 
 
 //	members of CUpDownClient
@@ -61,6 +62,8 @@ void CUpDownClient::SetUploadState(uint8 eNewState)
 		}
 		if (eNewState == US_UPLOADING) {
 			m_fSentOutOfPartReqs = 0;
+			m_bDisableCompression = false;
+			m_bIOError = false;
 		}
 
 		// don't add any final cleanups for US_NONE here
@@ -187,213 +190,6 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 }
 
 
-void CUpDownClient::CreateNextBlockPackage()
-{
-	try {
-		// Buffer new data if current buffer is less than 100 KBytes
-		while (!m_BlockRequests_queue.empty()
-			   && m_addedPayloadQueueSession - m_nCurQueueSessionPayloadUp < 100*1024) {
-
-			Requested_Block_Struct* currentblock = m_BlockRequests_queue.front();
-			CKnownFile* srcfile = theApp->sharedfiles->GetFileByID(CMD4Hash(currentblock->FileID));
-
-			if (!srcfile) {
-				throw wxString(wxT("requested file not found"));
-			}
-
-			// Check if this know file is a CPartFile.
-			// For completed part files IsPartFile() returns false, so they are
-			// correctly treated as plain CKnownFile.
-			CPartFile* srcPartFile = srcfile->IsPartFile() ? static_cast<CPartFile*>(srcfile) : NULL;
-
-			// THIS EndOffset points BEHIND the last byte requested
-			// (other than the offsets used in the PartFile code)
-			if (currentblock->EndOffset > srcfile->GetFileSize()) {
-				throw wxString(CFormat(wxT("Asked for data up to %d beyond end of file (%d)"))
-									% currentblock->EndOffset % srcfile->GetFileSize());
-			} else if (currentblock->StartOffset > currentblock->EndOffset) {
-				throw wxString(CFormat(wxT("Asked for invalid block (start %d > end %d)"))
-									% currentblock->StartOffset % currentblock->EndOffset);
-			}
-
-			uint64 togo = currentblock->EndOffset - currentblock->StartOffset;
-
-			if (togo > EMBLOCKSIZE * 3) {
-				throw wxString(CFormat(wxT("Client requested too large block (%d > %d)"))
-									% togo % (EMBLOCKSIZE * 3));
-			}
-
-			CFileArea area;
-			if (srcPartFile) {
-				if (!srcPartFile->IsComplete(currentblock->StartOffset,currentblock->EndOffset-1)) {
-					throw wxString(CFormat(wxT("Asked for incomplete block (%d - %d)"))
-									% currentblock->StartOffset % (currentblock->EndOffset-1));
-				}
-				if (!srcPartFile->ReadData(area, currentblock->StartOffset, togo)) {
-					throw wxString(wxT("Failed to read from requested partfile"));
-				}
-			} else {
-				CFileAutoClose file;
-				CPath fullname = srcfile->GetFilePath().JoinPaths(srcfile->GetFileName());
-				if ( !file.Open(fullname, CFile::read) ) {
-					// The file was most likely moved/deleted. So remove it from the list of shared files.
-					AddLogLineN(CFormat( _("Failed to open file (%s), removing from list of shared files.") ) % srcfile->GetFileName() );
-					theApp->sharedfiles->RemoveFile(srcfile);
-
-					throw wxString(wxT("Failed to open requested file: Removing from list of shared files!"));
-				}
-				area.ReadAt(file, currentblock->StartOffset, togo);
-			}
-			area.CheckError();
-
-			SetUploadFileID(srcfile);
-
-			// check extension to decide whether to compress or not
-			if (m_byDataCompVer == 1 && GetFiletype(srcfile->GetFileName()) != ftArchive) {
-				CreatePackedPackets(area.GetBuffer(), togo, currentblock);
-			} else {
-				CreateStandardPackets(area.GetBuffer(), togo, currentblock);
-			}
-
-			// file statistic
-			srcfile->statistic.AddTransferred(togo);
-
-			m_addedPayloadQueueSession += togo;
-
-			Requested_Block_Struct* block = m_BlockRequests_queue.front();
-
-			m_BlockRequests_queue.pop_front();
-			m_DoneBlocks_list.push_front(block);
-		}
-
-		return;
-	} catch (const wxString& DEBUG_ONLY(error)) {
-		AddDebugLogLineN(logClient,
-			CFormat(wxT("Client '%s' (%s) caused error while creating packet (%s) - disconnecting client"))
-				% GetUserName() % GetFullIP() % error);
-	} catch (const CIOFailureException& error) {
-		AddDebugLogLineC(logClient, wxT("IO failure while reading requested file: ") + error.what());
-	} catch (const CEOFException& WXUNUSED(error)) {
-		AddDebugLogLineN(logClient, GetClientFullInfo() + wxT(" requested file-data at an invalid position - disconnecting"));
-	}
-
-	// Error occurred.
-	theApp->uploadqueue->RemoveFromUploadQueue(this);
-}
-
-
-void CUpDownClient::CreateStandardPackets(const uint8_t* buffer, uint32 togo, Requested_Block_Struct* currentblock)
-{
-	uint32 nPacketSize;
-
-	CMemFile memfile(buffer, togo);
-	if (togo > 10240) {
-		nPacketSize = togo/(uint32)(togo/10240);
-	} else {
-		nPacketSize = togo;
-	}
-
-	while (togo){
-		if (togo < nPacketSize*2) {
-			nPacketSize = togo;
-		}
-
-		wxASSERT(nPacketSize);
-		togo -= nPacketSize;
-
-		uint64 endpos = (currentblock->EndOffset - togo);
-		uint64 startpos = endpos - nPacketSize;
-
-		bool bLargeBlocks = (startpos > 0xFFFFFFFF) || (endpos > 0xFFFFFFFF);
-
-		CMemFile data(nPacketSize + 16 + 2 * (bLargeBlocks ? 8 :4));
-		data.WriteHash(GetUploadFileID());
-		if (bLargeBlocks) {
-			data.WriteUInt64(startpos);
-			data.WriteUInt64(endpos);
-		} else {
-			data.WriteUInt32(startpos);
-			data.WriteUInt32(endpos);
-		}
-		char *tempbuf = new char[nPacketSize];
-		memfile.Read(tempbuf, nPacketSize);
-		data.Write(tempbuf, nPacketSize);
-		delete [] tempbuf;
-		CPacket* packet = new CPacket(data, (bLargeBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bLargeBlocks ? (uint8)OP_SENDINGPART_I64 : (uint8)OP_SENDINGPART));
-		theStats::AddUpOverheadFileRequest(16 + 2 * (bLargeBlocks ? 8 :4));
-		theStats::AddUploadToSoft(GetClientSoft(), nPacketSize);
-		AddDebugLogLineN(logLocalClient,
-			CFormat(wxT("Local Client: %s to %s"))
-				% (bLargeBlocks ? wxT("OP_SENDINGPART_I64") : wxT("OP_SENDINGPART")) % GetFullIP() );
-		m_socket->SendPacket(packet,true,false, nPacketSize);
-	}
-}
-
-
-void CUpDownClient::CreatePackedPackets(const uint8_t* buffer, uint32 togo, Requested_Block_Struct* currentblock)
-{
-	uLongf newsize = togo+300;
-	CScopedArray<uint8_t> output(newsize);
-	uint16 result = compress2(output.get(), &newsize, buffer, togo, 9);
-	if (result != Z_OK || togo <= newsize){
-		CreateStandardPackets(buffer, togo, currentblock);
-		return;
-	}
-
-	CMemFile memfile(output.get(), newsize);
-
-	uint32 totalPayloadSize = 0;
-	uint32 oldSize = togo;
-	togo = newsize;
-	uint32 nPacketSize;
-	if (togo > 10240) {
-		nPacketSize = togo/(uint32)(togo/10240);
-	} else {
-		nPacketSize = togo;
-	}
-
-	while (togo) {
-		if (togo < nPacketSize*2) {
-			nPacketSize = togo;
-		}
-		togo -= nPacketSize;
-
-		bool isLargeBlock = (currentblock->StartOffset > 0xFFFFFFFF) || (currentblock->EndOffset > 0xFFFFFFFF);
-
-		CMemFile data(nPacketSize + 16 + (isLargeBlock ? 12 : 8));
-		data.WriteHash(GetUploadFileID());
-		if (isLargeBlock) {
-			data.WriteUInt64(currentblock->StartOffset);
-		} else {
-			data.WriteUInt32(currentblock->StartOffset);
-		}
-		data.WriteUInt32(newsize);
-		char *tempbuf = new char[nPacketSize];
-		memfile.Read(tempbuf, nPacketSize);
-		data.Write(tempbuf,nPacketSize);
-		delete [] tempbuf;
-		CPacket* packet = new CPacket(data, OP_EMULEPROT, (isLargeBlock ? OP_COMPRESSEDPART_I64 : OP_COMPRESSEDPART));
-
-		// approximate payload size
-		uint32 payloadSize = nPacketSize*oldSize/newsize;
-
-		if (togo == 0 && totalPayloadSize+payloadSize < oldSize) {
-			payloadSize = oldSize-totalPayloadSize;
-		}
-
-		totalPayloadSize += payloadSize;
-
-		// put packet directly on socket
-		theStats::AddUpOverheadFileRequest(24);
-		theStats::AddUploadToSoft(GetClientSoft(), nPacketSize);
-		AddDebugLogLineN(logLocalClient,
-			CFormat(wxT("Local Client: %s to %s"))
-				% (isLargeBlock ? wxT("OP_COMPRESSEDPART_I64") : wxT("OP_COMPRESSEDPART")) % GetFullIP() );
-		m_socket->SendPacket(packet,true,false, payloadSize);
-	}
-}
-
-
 void CUpDownClient::ProcessExtendedInfo(const CMemFile *data, CKnownFile *tempreqfile)
 {
 	m_uploadingfile->UpdateUpPartsFrequency( this, false ); // Decrement
@@ -492,7 +288,7 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 }
 
 
-void CUpDownClient::AddReqBlock(Requested_Block_Struct* reqblock)
+void CUpDownClient::AddReqBlock(Requested_Block_Struct* reqblock, bool bSignalIOThread)
 {
 	if (GetUploadState() != US_UPLOADING) {
 		AddDebugLogLineN(logRemoteClient, wxT("UploadClient: Client tried to add requested block when not in upload slot! Prevented requested blocks from being added."));
@@ -500,27 +296,79 @@ void CUpDownClient::AddReqBlock(Requested_Block_Struct* reqblock)
 		return;
 	}
 
-	{
-		std::list<Requested_Block_Struct*>::iterator it = m_DoneBlocks_list.begin();
-		for (; it != m_DoneBlocks_list.end(); ++it) {
-			if (reqblock->StartOffset == (*it)->StartOffset && reqblock->EndOffset == (*it)->EndOffset) {
-				delete reqblock;
-				return;
-			}
-		}
+	// eMule ref: UploadClient.cpp AddReqBlock — sanity checks before queuing
+	CKnownFile* srcfile = theApp->sharedfiles->GetFileByID(CMD4Hash(reqblock->FileID));
+	if (srcfile == NULL) {
+		AddDebugLogLineN(logRemoteClient, wxT("AddReqBlock: Requested file not found in shared files"));
+		delete reqblock;
+		return;
+	}
+
+	if (srcfile->IsPartFile() && !static_cast<CPartFile*>(srcfile)->IsComplete(reqblock->StartOffset, reqblock->EndOffset - 1)) {
+		AddDebugLogLineN(logRemoteClient, CFormat(wxT("AddReqBlock: Requested block not complete (%llu - %llu)"))
+			% reqblock->StartOffset % (reqblock->EndOffset - 1));
+		delete reqblock;
+		return;
+	}
+
+	if (reqblock->StartOffset >= reqblock->EndOffset || reqblock->EndOffset > srcfile->GetFileSize()) {
+		AddDebugLogLineN(logRemoteClient, wxT("AddReqBlock: Invalid block request (out of range or negative size)"));
+		delete reqblock;
+		return;
+	}
+
+	if (reqblock->EndOffset - reqblock->StartOffset > EMBLOCKSIZE * 3) {
+		AddDebugLogLineN(logRemoteClient, wxT("AddReqBlock: Block request too large"));
+		delete reqblock;
+		return;
+	}
+
+	if (!theApp->uploadqueue->IsDownloading(this)) {
+		AddDebugLogLineN(logRemoteClient, wxT("AddReqBlock: Client not in upload list"));
+		delete reqblock;
+		return;
+	}
+
+	if (m_bIOError) {
+		AddDebugLogLineN(logRemoteClient, wxT("AddReqBlock: Client has pending IO error"));
+		delete reqblock;
+		return;
 	}
 
 	{
-		std::list<Requested_Block_Struct*>::iterator it = m_BlockRequests_queue.begin();
-		for (; it != m_BlockRequests_queue.end(); ++it) {
-			if (reqblock->StartOffset == (*it)->StartOffset && reqblock->EndOffset == (*it)->EndOffset) {
-				delete reqblock;
-				return;
+		// Hold m_blockListLock for all reads/writes of the block queues.
+		// The disk I/O thread accesses m_DoneBlocks_list, m_BlockRequests_queue,
+		// and m_addedPayloadQueueSession under this same lock.
+		wxMutexLocker lock(m_blockListLock);
+
+		{
+			std::list<Requested_Block_Struct*>::iterator it = m_DoneBlocks_list.begin();
+			for (; it != m_DoneBlocks_list.end(); ++it) {
+				if (reqblock->StartOffset == (*it)->StartOffset && reqblock->EndOffset == (*it)->EndOffset) {
+					delete reqblock;
+					return;
+				}
 			}
 		}
-	}
 
-	m_BlockRequests_queue.push_back(reqblock);
+		{
+			std::list<Requested_Block_Struct*>::iterator it = m_BlockRequests_queue.begin();
+			for (; it != m_BlockRequests_queue.end(); ++it) {
+				if (reqblock->StartOffset == (*it)->StartOffset && reqblock->EndOffset == (*it)->EndOffset) {
+					delete reqblock;
+					return;
+				}
+			}
+		}
+
+		m_BlockRequests_queue.push_back(reqblock);
+	}	// release lock before signalling to avoid contention
+
+	// Notify disk I/O thread that new block requests are available.
+	// eMule ref: NewBlockRequestsAvailable() — UploadDiskIOThread.h:55
+	if (bSignalIOThread && theApp->uploadDiskIOThread) {
+		theApp->uploadDiskIOThread->NewBlockRequestsAvailable();
+	}
 }
 
 
@@ -595,12 +443,16 @@ uint32 CUpDownClient::SendBlockData()
         sentBytesPayload = s->GetSentPayloadSinceLastCallAndReset();
         m_nCurQueueSessionPayloadUp += sentBytesPayload;
 
+        // Wake the disk I/O thread so it can re-check its buffer condition with the
+        // freshly updated m_nCurQueueSessionPayloadUp. Without this, the thread might
+        // wait up to its WaitTimeout (100ms) before noticing curPayload advanced.
+        if (sentBytesPayload > 0 && theApp->uploadDiskIOThread) {
+            theApp->uploadDiskIOThread->SocketNeedsMoreData();
+        }
+
         if (theApp->uploadqueue->CheckForTimeOver(this)) {
             theApp->uploadqueue->RemoveFromUploadQueue(this);
 			SendOutOfPartReqsAndAddToWaitingQueue();
-        } else {
-            // read blocks from file and put on socket
-            CreateNextBlockPackage();
         }
     }
 
@@ -874,12 +726,15 @@ void CUpDownClient::ProcessRequestPartsPacket(const uint8_t* pachPacket, uint32 
 			reqblock->EndOffset = auEndOffsets[i];
 			md4cpy(reqblock->FileID, reqfilehash.GetHash());
 			reqblock->transferred = 0;
-			AddReqBlock(reqblock);
+			AddReqBlock(reqblock, false);
 		} else {
 			if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
 				AddDebugLogLineN(logClient, wxT("Client request is invalid!"));
 			}
 		}
+	}
+	if (theApp->uploadDiskIOThread) {
+		theApp->uploadDiskIOThread->NewBlockRequestsAvailable();
 	}
 }
 
@@ -908,11 +763,14 @@ void CUpDownClient::ProcessRequestPartsPacketv2(const CMemFile& data) {
 
 			md4cpy(reqblock->FileID, reqfilehash.GetHash());
 			reqblock->transferred = 0;
-			AddReqBlock(reqblock);
+			AddReqBlock(reqblock, false);
 		} catch (...) {
 			delete reqblock;
 			throw;
 		}
+	}
+	if (theApp->uploadDiskIOThread) {
+		theApp->uploadDiskIOThread->NewBlockRequestsAvailable();
 	}
 }
 // File_checked_for_headers

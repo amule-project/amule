@@ -76,6 +76,7 @@
 #include "ThreadTasks.h"
 #include "UploadQueue.h"		// Needed for CUploadQueue
 #include "UploadBandwidthThrottler.h"
+#include "UploadDiskIOThread.h"
 #include "UserEvents.h"
 #include "ScopedPtr.h"
 
@@ -190,6 +191,7 @@ CamuleApp::CamuleApp()
 	glob_prefs	= NULL;
 	m_statistics	= NULL;
 	uploadBandwidthThrottler = NULL;
+	uploadDiskIOThread = NULL;
 #ifdef ENABLE_UPNP
 	m_upnp		= NULL;
 	m_upnpMappings.resize(4);
@@ -311,6 +313,13 @@ int CamuleApp::OnExit()
 	delete glob_prefs;
 	glob_prefs = NULL;
 	CPreferences::EraseItemList();
+
+	// Shut down disk I/O thread before throttler — eMule ref: emule.cpp shutdown order
+	if (uploadDiskIOThread) {
+		uploadDiskIOThread->EndThread();
+		delete uploadDiskIOThread;
+		uploadDiskIOThread = NULL;
+	}
 
 	delete uploadBandwidthThrottler;
 	uploadBandwidthThrottler = NULL;
@@ -545,6 +554,10 @@ bool CamuleApp::OnInit()
 	// (when using posix threads) only replicates the mainthread,
 	// and the UBT constructor creates a thread.
 	uploadBandwidthThrottler = new UploadBandwidthThrottler();
+
+	// Start disk I/O thread — must be after uploadBandwidthThrottler.
+	// eMule ref: emule.cpp:748
+	uploadDiskIOThread = new CUploadDiskIOThread();
 
 #ifdef ASIO_SOCKETS
 	m_AsioService = new CAsioService;

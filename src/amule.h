@@ -63,6 +63,7 @@ class CFriendList;
 class CClientUDPSocket;
 class CIPFilter;
 class UploadBandwidthThrottler;
+class CUploadDiskIOThread;
 #ifdef ASIO_SOCKETS
 class CAsioService;
 #else
@@ -271,6 +272,7 @@ public:
 	CStatistics*		m_statistics;
 	CIPFilter*		ipfilter;
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
+	CUploadDiskIOThread*      uploadDiskIOThread;		// eMule ref: emule.h:92
 #ifdef ASIO_SOCKETS
 	CAsioService*		m_AsioService;
 #endif

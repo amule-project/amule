@@ -35,6 +35,8 @@
 #include "Logger.h"
 #include "Preferences.h"
 #include "Statistics.h"
+#include "amule.h"
+#include "UploadDiskIOThread.h"
 
 
 /////////////////////////////////////
@@ -45,6 +47,7 @@
  */
 UploadBandwidthThrottler::UploadBandwidthThrottler()
 		: wxThread( wxTHREAD_JOINABLE )
+		, m_newDataCondition( m_newDataMutex )
 {
 	m_SentBytesSinceLastCall = 0;
 	m_SentBytesSinceLastCallOverhead = 0;
@@ -62,6 +65,18 @@ UploadBandwidthThrottler::UploadBandwidthThrottler()
 UploadBandwidthThrottler::~UploadBandwidthThrottler()
 {
 	EndThread();
+}
+
+
+/**
+ * Called by the disk I/O thread when it has put new data on a socket queue.
+ * Wakes the throttler immediately instead of waiting for its next sleep interval.
+ * eMule ref: UploadBandwidthThrottler.cpp:795
+ */
+void UploadBandwidthThrottler::NewUploadDataAvailable()
+{
+	wxMutexLocker lock( m_newDataMutex );
+	m_newDataCondition.Signal();
 }
 
 
@@ -303,7 +318,10 @@ void* UploadBandwidthThrottler::Entry()
 		}
 
 		if (timeSinceLastLoop < sleepTime) {
-			Sleep(sleepTime-timeSinceLastLoop);
+			// eMule ref: UploadBandwidthThrottler.cpp:580 — WaitForSingleObject replaced with wxCondition::WaitTimeout
+			// Wakes early if disk I/O thread signals NewUploadDataAvailable()
+			wxMutexLocker lock( m_newDataMutex );
+			m_newDataCondition.WaitTimeout(sleepTime - timeSinceLastLoop);
 		}
 
 		// Check after sleep in case the thread has been signaled to end
@@ -435,6 +453,13 @@ void* UploadBandwidthThrottler::Entry()
 				extraSleepTime = std::min<uint32>(extraSleepTime * 5, 1000); // 1s at most
 			} else {
 				extraSleepTime = TIME_BETWEEN_UPLOAD_LOOPS;
+
+				// eMule ref: EMSocket.cpp:602 — SocketAvailable()
+				// Wake disk I/O thread whenever payload bytes were actually sent so it can
+				// refill the socket queue without waiting for its 100ms WaitTimeout.
+				if (spentBytes > spentOverhead && theApp->uploadDiskIOThread != NULL) {
+					theApp->uploadDiskIOThread->SocketNeedsMoreData();
+				}
 			}
 		}
 	}

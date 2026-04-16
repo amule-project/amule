@@ -39,6 +39,7 @@
 #include "ClientRef.h"		// Needed for debug defines
 
 #include <map>
+#include <wx/thread.h>		// Needed for wxMutex
 
 
 class CPartFile;
@@ -271,8 +272,7 @@ public:
 	uint8		GetObfuscationStatus() const;
 	uint16		GetNextRequestedPart() const;
 
-	void		AddReqBlock(Requested_Block_Struct* reqblock);
-	void		CreateNextBlockPackage();
+	void		AddReqBlock(Requested_Block_Struct* reqblock, bool bSignalIOThread = true);
 	void		SetUpStartTime()		{ m_dwUploadTime = ::GetTickCount(); }
 	void		SetWaitStartTime();
 	void		ClearWaitStartTime();
@@ -690,8 +690,6 @@ private:
 	uint32		m_lastRefreshedDLDisplay;
 
 	//upload
-	void CreateStandardPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
-	void CreatePackedPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
 	uint32 CalculateScoreInternal();
 
 	uint8		m_nUploadState;
@@ -714,6 +712,12 @@ private:
 
 	std::list<Requested_Block_Struct*>	m_BlockRequests_queue;
 	std::list<Requested_Block_Struct*>	m_DoneBlocks_list;
+	wxMutex								m_blockListLock;	// protects m_BlockRequests_queue, m_DoneBlocks_list, m_addedPayloadQueueSession
+	bool		m_bDisableCompression = false;
+	bool		m_bIOError = false;
+
+	friend class CUploadDiskIOThread;	// disk I/O thread needs direct access to block queues and session counters
+	friend class CUploadQueue;			// upload queue needs access to m_bIOError
 
 	//download
 	bool		m_bRemoteQueueFull;
