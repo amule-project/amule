@@ -31,11 +31,10 @@
 
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "ClientList.h"		// Needed for CClientList
 #include "ClientRef.h"		// Needed for CClientRef
 #include "FriendListCtrl.h"	// Needed for CFriendListCtrl
 #include "FriendList.h"		// Needed for CFriendList
-#include "Friend.h"			// Needed for CFriend
+#include "Friend.h"		// Needed for CFriend
 #include "ChatSelector.h"	// Needed for CChatSelector
 #include "muuli_wdr.h"		// Needed for messagePage
 #include "OtherFunctions.h"
