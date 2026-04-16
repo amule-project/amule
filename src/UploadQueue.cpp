@@ -218,8 +218,12 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 	newclient->SetUpStartTime();
 	newclient->ResetSessionUp();
 
-	theApp->uploadBandwidthThrottler->AddToStandardList(m_uploadinglist.size(), newclient->GetSocket());
-	m_uploadinglist.push_back(CCLIENTREF(newclient, wxT("CUploadQueue::AddUpNextClient")));
+	{
+		// Guard against concurrent iteration by the disk I/O thread.
+		wxMutexLocker lock(m_uploadingListMutex);
+		theApp->uploadBandwidthThrottler->AddToStandardList(m_uploadinglist.size(), newclient->GetSocket());
+		m_uploadinglist.push_back(CCLIENTREF(newclient, wxT("CUploadQueue::AddUpNextClient")));
+	}
 	m_allUploadingKnownFile->AddUploadingClient(newclient);
 	theStats::AddUploadingClient();
 
@@ -273,6 +277,9 @@ void CUploadQueue::Process()
 			if(cur_client->Disconnected(_T("CUploadQueue::Process"))){
 				cur_client->Safe_Delete();
 			}
+		} else if (cur_client->m_bIOError) {
+			// Disk I/O thread signaled an error for this client
+			RemoveFromUploadQueue(cur_client);
 		} else {
 			cur_client->SendBlockData();
 		}
@@ -524,11 +531,19 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client)
 	// Keep track of this client
 	theApp->clientlist->AddTrackClient(client);
 
-	CClientRefList::iterator it = std::find(m_uploadinglist.begin(),
-		m_uploadinglist.end(), CCLIENTREF(client, wxEmptyString));
+	// Guard the find+erase against concurrent iteration by the disk I/O thread.
+	bool found = false;
+	{
+		wxMutexLocker lock(m_uploadingListMutex);
+		CClientRefList::iterator it = std::find(m_uploadinglist.begin(),
+			m_uploadinglist.end(), CCLIENTREF(client, wxEmptyString));
+		if (it != m_uploadinglist.end()) {
+			m_uploadinglist.erase(it);
+			found = true;
+		}
+	}
 
-	if (it != m_uploadinglist.end()) {
-		m_uploadinglist.erase(it);
+	if (found) {
 		m_allUploadingKnownFile->RemoveUploadingClient(client);
 		theStats::RemoveUploadingClient();
 		if( client->GetTransferredUp() ) {

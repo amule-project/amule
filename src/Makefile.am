@@ -167,6 +167,7 @@ core_sources = \
 	ThreadTasks.cpp \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
+	UploadDiskIOThread.cpp \
 	UploadQueue.cpp \
 	PartFileWriteThread.cpp \
 	kademlia/kademlia/Kademlia.cpp \
@@ -459,6 +460,7 @@ noinst_HEADERS = \
 		updownclient.h \
 		UpDownClientEC.h \
 		UploadBandwidthThrottler.h \
+		UploadDiskIOThread.h \
 		UploadQueue.h \
 		UPnPBase.h \
 		UPnPCompatibility.h \

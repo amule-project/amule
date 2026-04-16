@@ -41,6 +41,7 @@
 #endif
 
 #include <algorithm>	// Needed for std::min - Boost up to 1.54 fails to compile with MSVC 2013 otherwise
+#include <atomic>
 
 #include <boost/asio.hpp>
 #include <boost/asio/deadline_timer.hpp>
@@ -68,6 +69,9 @@
 #include "MuleUDPSocket.h"
 #include "OtherFunctions.h"	// DeleteContents
 #include "ScopedPtr.h"
+#include <sys/socket.h>		// ::recv with MSG_PEEK | MSG_DONTWAIT
+#include <errno.h>
+#include <unistd.h>
 #include <common/Macros.h>
 
 using namespace boost::asio;
@@ -107,7 +111,7 @@ public:
 	{
 		m_OK = false;
 		m_blocksRead = false;
-		m_blocksWrite = false;
+		m_blocksWrite.store(false, std::memory_order_relaxed);
 		m_ErrorCode = 0;
 		m_readBuffer = NULL;
 		m_readBufferSize = 0;
@@ -115,7 +119,7 @@ public:
 		m_readBufferContent = 0;
 		m_eventPending = false;
 		m_port = 0;
-		m_sendBuffer = NULL;
+		m_sendBuffer.store(nullptr, std::memory_order_relaxed);
 		m_connected = false;
 		m_closed = false;
 		m_isDestroying = false;
@@ -133,7 +137,7 @@ public:
 	~CAsioSocketImpl()
 	{
 		delete[] m_readBuffer;
-		delete[] m_sendBuffer;
+		delete[] m_sendBuffer.load();
 		delete m_socket;
 	}
 
@@ -198,7 +202,7 @@ public:
 	// Is writing blocked?
 	bool BlocksWrite() const
 	{
-		return m_blocksWrite;
+		return m_blocksWrite.load(std::memory_order_acquire);
 	}
 
 	// Problem: wx sends an event when data gets available, so first there is an event, then Read() is called
@@ -260,15 +264,16 @@ public:
 			return WriteSync(buf, nbytes);
 		}
 
-		if (m_sendBuffer) {
-			m_blocksWrite = true;
-			AddDebugLogLineF(logAsio, CFormat(wxT("Write blocks %d %p %s")) % nbytes % m_sendBuffer % m_IP);
+		if (m_sendBuffer.load(std::memory_order_acquire)) {
+			m_blocksWrite.store(true, std::memory_order_relaxed);
+			AddDebugLogLineF(logAsio, CFormat(wxT("Write blocks %d %p %s")) % nbytes % m_sendBuffer.load() % m_IP);
 			return 0;
 		}
 		AddDebugLogLineF(logAsio, CFormat(wxT("Write %d %s")) % nbytes % m_IP);
-		m_sendBuffer = new char[nbytes];
-		memcpy(m_sendBuffer, buf, nbytes);
-		dispatch(m_strand, boost::bind(& CAsioSocketImpl::DispatchWrite, this, nbytes));
+		char* newBuf = new char[nbytes];
+		memcpy(newBuf, buf, nbytes);
+		m_sendBuffer.store(newBuf, std::memory_order_release);
+		dispatch(m_strand, boost::bind(& CAsioSocketImpl::DispatchWrite, this, newBuf, nbytes));
 		m_ErrorCode = 0;
 		return nbytes;
 	}
@@ -429,10 +434,14 @@ private:
 			m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleRead, this, placeholders::error)));
 	}
 
-	void DispatchWrite(uint32 nbytes)
+	// The buffer pointer is passed explicitly so each HandleSend knows
+	// which buffer it owns and must delete.  m_sendBuffer only tracks the
+	// currently-in-flight write and is cleared by HandleSend when the send
+	// completes — it cannot be used to identify the buffer to free.
+	void DispatchWrite(char* sendBuffer, uint32 nbytes)
 	{
-		async_write(*m_socket, buffer(m_sendBuffer, nbytes),
-			m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleSend, this, placeholders::error, placeholders::bytes_transferred)));
+		async_write(*m_socket, buffer(sendBuffer, nbytes),
+			m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleSend, this, sendBuffer, placeholders::error, placeholders::bytes_transferred)));
 	}
 
 	//
@@ -457,10 +466,13 @@ private:
 		}
 	}
 
-	void HandleSend(const error_code& err, size_t DEBUG_ONLY(bytes_transferred) )
+	void HandleSend(char* sentBuffer, const error_code& err, size_t bytes_transferred)
 	{
-		delete[] m_sendBuffer;
-		m_sendBuffer = NULL;
+		delete[] sentBuffer;
+		// Atomically clear m_sendBuffer only if it still points to the buffer
+		// we just finished sending.  A racing Write() on the throttler thread
+		// may have already swapped in a new buffer.
+		m_sendBuffer.compare_exchange_strong(sentBuffer, nullptr, std::memory_order_release);
 
 		if (m_isDestroying) {
 			AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend: socket pending for deletion %s")) % m_IP);
@@ -470,7 +482,7 @@ private:
 				PostLostEvent();
 			} else {
 				AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend %d %s")) % bytes_transferred % m_IP);
-				m_blocksWrite = false;
+				m_blocksWrite.store(false, std::memory_order_release);
 				CoreNotify_LibSocketSend(m_libSocket, m_ErrorCode);
 			}
 		}
@@ -497,29 +509,64 @@ private:
 			return;
 		}
 		if (avail == 0) {
-			// This is what we get in Linux when a connection gets closed from remote.
-			AddDebugLogLineF(logAsio, CFormat(wxT("HandleReadError nothing available %s")) % m_IP);
-			SetError();
-			PostLostEvent();
+			// Two cases indistinguishable from available() alone:
+			//   1. Peer closed — socket state has EOF pending
+			//   2. Spurious wakeup — boost.asio uses EPOLLET; after a
+			//      concurrent drain on another ASIO thread consumed the
+			//      data, a queued edge event still schedules this
+			//      handler with no data pending.
+			// Distinguish via non-blocking native recv with MSG_PEEK.
+			// We cannot call socket.read_some() synchronously — the
+			// socket is in *blocking* mode (the constructor's
+			// non_blocking() call is a getter, not a setter).
+			char peek;
+			ssize_t n = ::recv(m_socket->native_handle(), &peek, 1, MSG_PEEK | MSG_DONTWAIT);
+			bool eof = (n == 0) || (n < 0 && errno != EAGAIN && errno != EWOULDBLOCK);
+			if (eof) {
+				AddDebugLogLineF(logAsio, CFormat(wxT("HandleReadError nothing available %s")) % m_IP);
+				SetError();
+				PostLostEvent();
+				return;
+			}
+			// Spurious wakeup — re-arm without setting error.
+			m_socket->async_read_some(null_buffers(),
+				m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleRead, this, placeholders::error)));
 			return;
 		}
 		AddDebugLogLineF(logAsio, CFormat(wxT("HandleRead %d %s")) % avail % m_IP);
 
-		// adjust (or create) our read buffer
-		if (m_readBufferSize < avail) {
-			delete[] m_readBuffer;
-			m_readBuffer = new char[avail];
-			m_readBufferSize = avail;
+		// Drain loop: boost.asio uses EPOLLET.  If more data arrives
+		// between available() and read_some(), it stays in the kernel
+		// buffer and no new event fires until the buffer empties then
+		// refills.  Loop until available() returns 0.
+		uint32 totalRead = 0;
+		while (avail > 0) {
+			uint32 needed = totalRead + avail;
+			if (m_readBufferSize < needed) {
+				char* newBuf = new char[needed];
+				if (totalRead > 0) {
+					memcpy(newBuf, m_readBuffer, totalRead);
+				}
+				delete[] m_readBuffer;
+				m_readBuffer = newBuf;
+				m_readBufferSize = needed;
+			}
+			size_t got = m_socket->read_some(buffer(m_readBuffer + totalRead, avail), ec2);
+			if (SetError(ec2) || got == 0) {
+				AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError read %zu %s %s")) % got % m_IP % ec2.message());
+				PostLostEvent();
+				return;
+			}
+			totalRead += (uint32)got;
+			avail = m_socket->available(ec2);
+			if (SetError(ec2)) {
+				AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError availLoop %s %s")) % m_IP % ec2.message());
+				PostLostEvent();
+				return;
+			}
 		}
 		m_readBufferPtr = m_readBuffer;
-
-		// read available data
-		m_readBufferContent = m_socket->read_some(buffer(m_readBuffer, avail), ec2);
-		if (SetError(ec2) || m_readBufferContent == 0) {
-			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError read %d %s %s")) % m_readBufferContent % m_IP % ec2.message());
-			PostLostEvent();
-			return;
-		}
+		m_readBufferContent = totalRead;
 
 		m_readPending = false;
 		m_blocksRead = false;
@@ -613,14 +660,14 @@ private:
 	bool			m_OK;
 	int				m_ErrorCode;
 	bool			m_blocksRead;
-	bool			m_blocksWrite;
 	char *			m_readBuffer;
 	uint32			m_readBufferSize;
 	char *			m_readBufferPtr;
 	bool			m_readPending;
 	uint32			m_readBufferContent;
 	bool			m_eventPending;
-	char *			m_sendBuffer;
+	std::atomic<char*>	m_sendBuffer;	// atomic: shared between throttler thread (Write) and ASIO thread (HandleSend)
+	std::atomic<bool>	m_blocksWrite;	// atomic: shared between throttler thread (BlocksWrite) and ASIO thread (HandleSend)
 	io_context::strand	m_strand;		// handle synchronisation in io_service thread pool
 	deadline_timer	m_timer;
 	bool			m_connected;
