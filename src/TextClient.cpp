@@ -350,7 +350,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 							break;
 						} else if ( hash.Decode(token.Trim(false).Trim(true)) ) {
 							if ( !hash.IsEmpty() ) {
-								Show(_("Processing by hash: "+token+wxT("\n")));
+								Show(_("Processing by hash: ") + token + wxT("\n"));
 								request->AddTag(CECTag(EC_TAG_PARTFILE, hash));
 							}
 						} else {
@@ -364,7 +364,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 									partmetname == token ||
 									partmetname.Truncate(partmetname.Len()-4) == token ||
 									partmetname.Truncate(partmetname.Len()-5) == token) {
-									Show(_("Processing by filename: "+token+wxT("\n")));
+									Show(_("Processing by filename: ") + token + wxT("\n"));
 									request->AddTag(CECTag(EC_TAG_PARTFILE, tag->FileHash()));
 								}
 							}
