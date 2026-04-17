@@ -2000,6 +2000,11 @@ m_kadPublishInfo(0)
 	m_abyFileHash = tag->FileHash();
 	SetFileSize(tag->SizeFull());
 
+	uint8 rating = 0;
+	if (tag->GetRating(rating)) {
+		m_iUserRating = rating;
+	}
+
 	m_searchID = theApp->searchlist->m_curr_search;
 	uint32 parentID = tag->ParentID();
 	if (parentID) {
