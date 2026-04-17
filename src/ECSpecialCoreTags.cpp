@@ -366,6 +366,9 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(const CSearchFile *file, EC_DETAIL_LEVEL 
 	if (file->GetParent()) {
 		AddTag(EC_TAG_SEARCH_PARENT, file->GetParent()->ECID(), valuemap);
 	}
+	if (file->HasRating()) {
+		AddTag(CECTag(EC_TAG_KNOWNFILE_RATING, (uint8)file->UserRating()), valuemap);
+	}
 }
 
 //
