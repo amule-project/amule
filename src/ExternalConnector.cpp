@@ -641,11 +641,18 @@ bool CaMuleExternalConnector::OnInit()
 	//
 	// OnInitCmdLine() is called from wxApp::OnInit() above,
 	// thus m_appname is already set.
+	// macOS libedit's rl_readline_name is char* (not const char*) and
+	// rl_completion_entry_function is Function* (not rl_compentry_func_t*).
+	// GNU readline on Linux has the correct const types.
+#ifdef __WXMAC__
+	rl_readline_name = const_cast<char *>(m_appname);
+	theCommands = &m_commands;
+	rl_completion_entry_function = (Function *)&command_completion;
+#else
 	rl_readline_name = m_appname;
-
-	// Allow completion of our commands
 	theCommands = &m_commands;
 	rl_completion_entry_function = &command_completion;
+#endif
 #endif
 
 	return retval;

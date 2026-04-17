@@ -170,6 +170,12 @@ if (BUILD_ED2K)
 		)
 	endif()
 
+	if (APPLE)
+		target_link_libraries (ed2k
+			PRIVATE "-framework CoreServices"
+		)
+	endif()
+
 	install (TARGETS ed2k
 		RUNTIME DESTINATION bin
 	)
@@ -219,8 +225,33 @@ if (BUILD_MONOLITHIC)
 		)
 	endif()
 
+	if (APPLE)
+		set_target_properties (amule PROPERTIES
+			MACOSX_BUNDLE TRUE
+			MACOSX_BUNDLE_BUNDLE_NAME "aMule"
+			MACOSX_BUNDLE_GUI_IDENTIFIER "org.amule.aMule"
+			MACOSX_BUNDLE_ICON_FILE "amule.icns"
+			MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
+			MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
+			MACOSX_BUNDLE_COPYRIGHT "Copyright 2003-2026 aMule Project"
+			OUTPUT_NAME "aMule"
+		)
+
+		set (AMULE_ICNS "${CMAKE_SOURCE_DIR}/platforms/MacOSX/aMule-Xcode/amule.icns")
+		target_sources (amule PRIVATE ${AMULE_ICNS})
+		set_source_files_properties (${AMULE_ICNS} PROPERTIES
+			MACOSX_PACKAGE_LOCATION "Resources"
+		)
+
+		target_link_libraries (amule
+			PRIVATE "-framework CoreServices"
+			PRIVATE "-framework ApplicationServices"
+		)
+	endif()
+
 	install (TARGETS amule
 		RUNTIME DESTINATION bin
+		BUNDLE DESTINATION .
 	)
 
 	install (FILES aMule.xpm
@@ -421,6 +452,13 @@ if (NEED_LIB_MULEAPPCORE)
 		PUBLIC wxWidgets::BASE
 		PRIVATE CRYPTOPP::CRYPTOPP
 	)
+
+	if (APPLE)
+		target_link_libraries (muleappcore
+			PRIVATE "-framework IOKit"
+			PRIVATE "-framework CoreFoundation"
+		)
+	endif()
 endif()
 
 if (NEED_LIB_MULEAPPGUI)
