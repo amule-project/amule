@@ -624,7 +624,7 @@ bool CamuleApp::OnInit()
 			if (absoluteUrl) {
 				CFStringRef amulewebCfstr = CFURLCopyFileSystemPath(absoluteUrl, kCFURLPOSIXPathStyle);
 				CFRelease(absoluteUrl);
-				amulewebPath = wxCFStringRef(amulewebCfstr).AsString(wxLocale::GetSystemEncoding());
+				amulewebPath = wxCFStringRef(amulewebCfstr).AsString();
 			}
 		}
 #endif
