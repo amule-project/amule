@@ -47,6 +47,7 @@ class CamuleDlg;
 class CPreferences;
 class CDownloadQueue;
 class CUploadQueue;
+class CPartFileWriteThread;
 class CServerConnect;
 class CSharedFileList;
 class CServer;
@@ -257,6 +258,7 @@ public:
 	CPreferences*		glob_prefs;
 	CDownloadQueue*		downloadqueue;
 	CUploadQueue*		uploadqueue;
+	CPartFileWriteThread*	partFileWriteThread;
 	CServerConnect*		serverconnect;
 	CSharedFileList*	sharedfiles;
 	CServerList*		serverlist;
