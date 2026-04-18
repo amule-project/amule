@@ -75,6 +75,7 @@
 #include "TerminationProcessAmuleweb.h"	// Needed for CTerminationProcessAmuleweb
 #include "ThreadTasks.h"
 #include "UploadQueue.h"		// Needed for CUploadQueue
+#include "PartFileWriteThread.h"	// Needed for CPartFileWriteThread
 #include "UploadBandwidthThrottler.h"
 #include "UserEvents.h"
 #include "ScopedPtr.h"
@@ -301,6 +302,13 @@ int CamuleApp::OnExit()
 	delete uploadqueue;
 	uploadqueue = NULL;
 
+	// Stop write thread before deleting downloadqueue — must drain pending writes.
+	if (partFileWriteThread) {
+		partFileWriteThread->EndThread();
+		delete partFileWriteThread;
+		partFileWriteThread = NULL;
+	}
+
 	delete downloadqueue;
 	downloadqueue = NULL;
 
@@ -521,6 +529,7 @@ bool CamuleApp::OnInit()
 	// bugfix - do this before creating the uploadqueue
 	downloadqueue	= new CDownloadQueue();
 	uploadqueue	= new CUploadQueue();
+	partFileWriteThread = new CPartFileWriteThread();
 	ipfilter	= new CIPFilter();
 
 	// Creates all needed listening sockets

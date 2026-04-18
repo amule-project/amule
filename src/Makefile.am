@@ -219,6 +219,7 @@ common_sources = \
 	HTTPDownload.cpp \
 	Logger.cpp \
 	PartFile.cpp \
+	PartFileWriteThread.cpp \
 	Preferences.cpp \
 	Proxy.cpp \
 	Server.cpp \

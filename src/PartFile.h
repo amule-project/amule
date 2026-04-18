@@ -29,6 +29,7 @@
 
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "FileAutoClose.h"	// Needed for CFileAutoClose
+#include "FileArea.h"		// Needed for CFileArea (PartFileBufferedData)
 
 #include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "DeadSourceList.h"	// Needed for CDeadSourceList
@@ -86,7 +87,27 @@ public:
 
 typedef std::map<uint32,SourcenameItem> SourcenameItemMap;
 
+
+class PartFileBufferedData
+{
+public:
+	CFileArea area;				// File area to be written
+	uint64 start;					// This is the start offset of the data
+	uint64 end;						// This is the end offset of the data
+	Requested_Block_Struct *block;	// This is the requested block that this data relates to
+	uint8 flushed;					// eMule ref: 0=ready 1=pending 2=error 3=written
+
+	PartFileBufferedData(CFileAutoClose& file, uint8_t * data, uint64 _start, uint64 _end, Requested_Block_Struct *_block)
+		: start(_start), end(_end), block(_block), flushed(0)
+	{
+		area.StartWriteAt(file, start, end-start+1);
+		memcpy(area.GetBuffer(), data, end-start+1);
+	}
+};
+
+
 class CPartFile : public CKnownFile {
+	friend class CPartFileWriteThread;
 public:
 	typedef std::list<Requested_Block_Struct*> CReqBlockPtrList;
 
@@ -352,6 +373,8 @@ private:
 
 	uint32 m_nTotalBufferData;
 	uint32 m_nLastBufferFlushTime;
+	int32  m_iWrites;		// eMule ref: count of items queued to write thread (not yet PB_WRITTEN)
+	std::vector<bool> m_aChangedPart;	// eMule ref: persistent tracking of parts needing hash verification
 
 	uint8	m_category;
 	uint32	m_nDlActiveTime;

@@ -26,6 +26,7 @@
 #include <wx/wx.h>
 
 #include "PartFile.h"		// Interface declarations.
+#include "PartFileWriteThread.h"	// Needed for PB_READY etc.
 #include "config.h"		// Needed for VERSION
 #include <protocol/kad/Constants.h>
 #include <protocol/ed2k/Client2Client/TCP.h>
@@ -115,21 +116,7 @@ SFileRating::~SFileRating()
 }
 
 
-class PartFileBufferedData
-{
-public:
-	CFileArea area;				// File area to be written
-	uint64 start;					// This is the start offset of the data
-	uint64 end;						// This is the end offset of the data
-	Requested_Block_Struct *block;	// This is the requested block that this data relates to
-
-	PartFileBufferedData(CFileAutoClose& file, uint8_t * data, uint64 _start, uint64 _end, Requested_Block_Struct *_block)
-		: start(_start), end(_end), block(_block)
-	{
-		area.StartWriteAt(file, start, end-start+1);
-		memcpy(area.GetBuffer(), data, end-start+1);
-	}
-};
+// PartFileBufferedData is defined in PartFile.h
 
 
 typedef std::list<Chunk> ChunkList;
@@ -2973,8 +2960,12 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 
 
 	uint32 partCount = GetPartCount();
-	// Remember which parts need to be checked at the end of the flush
-	std::vector<bool> changedPart(partCount, false);
+	// Persistent tracking of parts needing hash verification (eMule ref: m_aChangedPart).
+	// Survives across FlushBuffer() calls so parts written by the background thread
+	// get hashed once all writes are complete.
+	if (m_aChangedPart.size() != partCount) {
+		m_aChangedPart.resize(partCount, false);
+	}
 
 	// Ensure file is big enough to write data to (the last item will be the furthest from the start)
 	if (!CheckFreeDiskSpace(m_nTotalBufferData)) {
@@ -2985,35 +2976,79 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		return;
 	}
 
-	// Loop through queue
-	while ( !m_BufferedData_list.empty() ) {
-		// Get top item and remove it from the queue
-		CScopedPtr<PartFileBufferedData> item(m_BufferedData_list.front());
-		m_BufferedData_list.pop_front();
-
-		// This is needed a few times
-		wxASSERT((item->end - item->start) < 0xFFFFFFFF);
-		uint32 lenData = (uint32)(item->end - item->start + 1);
-
-		// SLUGFILLER: SafeHash - could be more than one part
-		for (uint32 curpart = (item->start/PARTSIZE); curpart <= (item->end/PARTSIZE); ++curpart) {
-			wxASSERT(curpart < partCount);
-			changedPart[curpart] = true;
+	// eMule ref: PartFile.cpp:4102-4127 — Phase 1: queue PB_READY items to the write thread
+	CPartFileWriteThread* pThread = theApp->partFileWriteThread;
+	if (pThread && pThread->IsRunning()) {
+		for (std::list<PartFileBufferedData*>::iterator it = m_BufferedData_list.begin();
+			 it != m_BufferedData_list.end(); ++it)
+		{
+			PartFileBufferedData* item = *it;
+			if (item->flushed == PB_READY) {
+				item->flushed = PB_PENDING;
+				++m_iWrites;
+				pThread->QueueWrite(this, item);
+			}
 		}
-		// SLUGFILLER: SafeHash
+	}
 
-		// Go to the correct position in file and write block of data
-		try {
-			item->area.FlushAt(m_hpartfile, item->start, lenData);
-			// Decrease buffer size
-			m_nTotalBufferData -= lenData;
-		} catch (const CIOFailureException& e) {
-			AddDebugLogLineC(logPartFile, wxT("Error while saving part-file: ") + e.what());
-			SetStatus(PS_ERROR);
-			// No need to bang your head against it again and again if it has already failed.
-			DeleteContents(m_BufferedData_list);
-			m_nTotalBufferData = 0;
-			return;
+	// eMule ref: PartFile.cpp:4129-4145 — Phase 2: harvest completed writes
+	for (std::list<PartFileBufferedData*>::iterator it = m_BufferedData_list.begin();
+		 it != m_BufferedData_list.end(); )
+	{
+		PartFileBufferedData* item = *it;
+
+		switch (item->flushed) {
+		case PB_READY:
+			// Write thread not running — fall back to synchronous write
+			{
+				wxASSERT((item->end - item->start) < 0xFFFFFFFF);
+				uint32 lenData = (uint32)(item->end - item->start + 1);
+				for (uint32 curpart = (item->start/PARTSIZE); curpart <= (item->end/PARTSIZE); ++curpart) {
+					wxASSERT(curpart < partCount);
+					m_aChangedPart[curpart] = true;
+				}
+				try {
+					item->area.FlushAt(m_hpartfile, item->start, lenData);
+					m_nTotalBufferData -= lenData;
+				} catch (const CIOFailureException& e) {
+					AddDebugLogLineC(logPartFile, wxT("Error while saving part-file: ") + e.what());
+					SetStatus(PS_ERROR);
+					DeleteContents(m_BufferedData_list);
+					m_nTotalBufferData = 0;
+					m_iWrites = 0;
+					return;
+				}
+				delete item;
+				it = m_BufferedData_list.erase(it);
+			}
+			continue;
+
+		case PB_PENDING:
+			// Still in flight on the write thread — skip
+			++it;
+			continue;
+
+		case PB_ERROR:
+			// Write thread reported error — retry next time
+			item->flushed = PB_READY;
+			AddDebugLogLineC(logPartFile, wxT("Write thread reported error, will retry"));
+			++it;
+			continue;
+
+		case PB_WRITTEN:
+			// Successfully written by the write thread — harvest
+			{
+				uint32 lenData = (uint32)(item->end - item->start + 1);
+				for (uint32 curpart = (item->start/PARTSIZE); curpart <= (item->end/PARTSIZE); ++curpart) {
+					wxASSERT(curpart < partCount);
+					m_aChangedPart[curpart] = true;
+				}
+				m_nTotalBufferData -= lenData;
+				// m_iWrites already decremented by the write thread
+				delete item;
+				it = m_BufferedData_list.erase(it);
+			}
+			continue;
 		}
 	}
 
@@ -3036,11 +3071,18 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 
 
 
-	// Check each part of the file
+	// Check each part of the file.
+	// Skip hash verification if writes are still in flight — data isn't on disk yet.
+	// Hashing will run on the next FlushBuffer() call once all writes complete.
+	if (m_iWrites > 0) {
+		return;
+	}
+
 	for (uint16 partNumber = 0; partNumber < partCount; ++partNumber) {
-		if (changedPart[partNumber] == false) {
+		if (!m_aChangedPart[partNumber]) {
 			continue;
 		}
+		m_aChangedPart[partNumber] = false;
 
 		uint32 partRange = GetPartSize(partNumber) - 1;
 
@@ -3123,7 +3165,8 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 
 	if (theApp->IsRunning()) { // may be called during shutdown!
 		// Is this file finished ?
-		if (m_gaplist.IsComplete()) {
+		// eMule ref: line 4240 — also check m_iWrites and buffer list
+		if (m_gaplist.IsComplete() && m_iWrites <= 0 && m_BufferedData_list.empty()) {
 			CompleteFile(false);
 		}
 	}
@@ -3671,6 +3714,7 @@ void CPartFile::Init()
 	m_iRating = 0;
 	m_nTotalBufferData = 0;
 	m_nLastBufferFlushTime = 0;
+	m_iWrites = 0;
 	m_bPercentUpdated = false;
 	m_iGainDueToCompression = 0;
 	m_iLostDueToCorruption = 0;
