@@ -168,6 +168,7 @@ core_sources = \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
+	PartFileWriteThread.cpp \
 	kademlia/kademlia/Kademlia.cpp \
 	kademlia/kademlia/Prefs.cpp \
 	kademlia/kademlia/Search.cpp \
@@ -219,7 +220,6 @@ common_sources = \
 	HTTPDownload.cpp \
 	Logger.cpp \
 	PartFile.cpp \
-	PartFileWriteThread.cpp \
 	Preferences.cpp \
 	Proxy.cpp \
 	Server.cpp \

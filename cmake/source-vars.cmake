@@ -38,6 +38,7 @@ if (BUILD_MONOLITHIC OR BUILD_DAEMON)
 		UploadBandwidthThrottler.cpp
 		UploadClient.cpp
 		UploadQueue.cpp
+		PartFileWriteThread.cpp
 		ThreadTasks.cpp
 	)
 endif()
@@ -86,7 +87,6 @@ if (BUILD_MONOLITHIC OR BUILD_DAEMON OR BUILD_REMOTEGUI)
 		KnownFile.cpp
 		Logger.cpp
 		PartFile.cpp
-		PartFileWriteThread.cpp
 		Preferences.cpp
 		Proxy.cpp
 		Server.cpp
