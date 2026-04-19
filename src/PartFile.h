@@ -30,6 +30,7 @@
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "FileAutoClose.h"	// Needed for CFileAutoClose
 #include "FileArea.h"		// Needed for CFileArea (PartFileBufferedData)
+#include <atomic>			// Needed for std::atomic (m_iWrites)
 
 #include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "DeadSourceList.h"	// Needed for CDeadSourceList
@@ -373,7 +374,7 @@ private:
 
 	uint32 m_nTotalBufferData;
 	uint32 m_nLastBufferFlushTime;
-	int32  m_iWrites;		// eMule ref: count of items queued to write thread (not yet PB_WRITTEN)
+	std::atomic<int32> m_iWrites;	// eMule ref: count of items queued to write thread (not yet PB_WRITTEN)
 	std::vector<bool> m_aChangedPart;	// eMule ref: persistent tracking of parts needing hash verification
 
 	uint8	m_category;
