@@ -459,11 +459,13 @@ void CUploadDiskIOThread::CreateStandardPackets(const uint8_t* buffer, uint64 st
 	uint32 togo = (uint32)(endOffset - startOffset);
 
 	CMemFile memfile(buffer, togo);
-	// Adaptive chunk size: scale with per-slot speed, floor 10 KiB, ceil 128 KiB.
+	// Adaptive chunk size: scale with per-slot speed, floor 10 KiB, ceil EMBLOCKSIZE.
 	// /8 => ~125 ms of data per chunk; enough to saturate a TCP segment burst
 	// without making per-packet latency awful on slow peers.
 	// uploadDatarate is 0 at session start; the floor keeps behavior sane.
-	const uint32 chunkSize = std::min(std::max(uploadDatarate / 8u, 10240u), 131072u);
+	// Ceiling at EMBLOCKSIZE (180 KiB): one packet per block — no benefit
+	// in going higher since the receiver requests blocks of this size.
+	const uint32 chunkSize = std::min(std::max(uploadDatarate / 8u, 10240u), (uint32)EMBLOCKSIZE);
 	uint32 nPacketSize = (togo <= chunkSize + 2600u) ? togo : chunkSize;
 
 	while (togo){
@@ -519,7 +521,7 @@ void CUploadDiskIOThread::CreatePackedPackets(const uint8_t* buffer, uint64 star
 	uint32 oldSize = togo;
 	togo = newsize;
 	// Adaptive chunk size — see CreateStandardPackets for rationale.
-	const uint32 chunkSize = std::min(std::max(uploadDatarate / 8u, 10240u), 131072u);
+	const uint32 chunkSize = std::min(std::max(uploadDatarate / 8u, 10240u), (uint32)EMBLOCKSIZE);
 	uint32 nPacketSize = (togo <= chunkSize + 2600u) ? togo : chunkSize;
 
 	while (togo) {
