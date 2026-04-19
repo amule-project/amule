@@ -290,6 +290,15 @@ int CamuleApp::OnExit()
 	delete clientlist;
 	clientlist = NULL;
 
+	// Stop upload disk I/O thread before deleting uploadqueue — the thread
+	// iterates uploadqueue->GetUploadingList() and will crash if it runs
+	// after uploadqueue is freed.
+	if (uploadDiskIOThread) {
+		uploadDiskIOThread->EndThread();
+		delete uploadDiskIOThread;
+		uploadDiskIOThread = NULL;
+	}
+
 	delete uploadqueue;
 	uploadqueue = NULL;
 
