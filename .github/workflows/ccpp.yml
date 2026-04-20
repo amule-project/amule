@@ -54,6 +54,7 @@ jobs:
             libgeoip-dev \
             libwxgtk3.2-dev \
             libreadline-dev \
+            libcurl4-openssl-dev \
             gettext \
             libgd-dev \
             pkg-config
