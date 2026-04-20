@@ -280,6 +280,10 @@ if (BUILD_REMOTEGUI)
 		)
 	endif()
 
+	if (HAVE_LIBCURL)
+		target_link_libraries (amulegui PRIVATE CURL::libcurl)
+	endif()
+
 	if (WIN32)
 		set_target_properties (amulegui PROPERTIES
 			WIN32_EXECUTABLE TRUE
