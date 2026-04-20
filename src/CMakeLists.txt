@@ -136,6 +136,10 @@ if (BUILD_DAEMON)
 		)
 	endif()
 
+	if (HAVE_LIBCURL)
+		target_link_libraries (amuled PRIVATE CURL::libcurl)
+	endif()
+
 	if (WIN32)
 		target_link_libraries (amuled
 			shlwapi.lib
@@ -207,6 +211,10 @@ if (BUILD_MONOLITHIC)
 		target_link_libraries (amule
 			PRIVATE ${LIBBFD}
 		)
+	endif()
+
+	if (HAVE_LIBCURL)
+		target_link_libraries (amule PRIVATE CURL::libcurl)
 	endif()
 
 	if (WIN32)

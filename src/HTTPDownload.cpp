@@ -24,8 +24,14 @@
 //
 
 
+#include "config.h"		// Needed for HAVE_LIBCURL
+
 #include <wx/wfstream.h>
 #include <wx/protocol/http.h>
+
+#ifdef HAVE_LIBCURL
+	#include <curl/curl.h>
+#endif
 
 
 #include "HTTPDownload.h"				// Interface declarations
@@ -185,15 +191,160 @@ wxString CHTTPDownloadThread::FormatDateHTTP(const wxDateTime& date)
 }
 
 
+#ifdef HAVE_LIBCURL
+// libcurl-based implementation. Preferred over the wxHTTP fallback because
+// it supports HTTPS, follows redirects transparently, and has no interaction
+// with wxEpollDispatcher (which can cause an intermittent SIGSEGV in
+// libwx_baseu_net on wx 3.2 / Linux when a remote server forces an HTTPS
+// redirect during startup HTTP downloads).
+
+size_t CHTTPDownloadThread::CurlWriteCallback(void* ptr, size_t size, size_t nmemb, void* userdata)
+{
+	wxFFileOutputStream* out = (wxFFileOutputStream*)userdata;
+	const size_t bytes = size * nmemb;
+	out->Write(ptr, bytes);
+	return out->LastWrite();
+}
+
+int CHTTPDownloadThread::CurlProgressCallback(void* clientp,
+	curl_off_t dltotal, curl_off_t dlnow,
+	curl_off_t /*ultotal*/, curl_off_t /*ulnow*/)
+{
+	CHTTPDownloadThread* self = (CHTTPDownloadThread*)clientp;
+	if (self->TestDestroy()) {
+		return 1;  // abort transfer
+	}
+#ifndef AMULE_DAEMON
+	if (self->m_companion) {
+		CMuleInternalEvent evt(wxEVT_HTTP_PROGRESS);
+		evt.SetInt((int)dlnow);
+		evt.SetExtraLong((long)dltotal);
+		wxPostEvent(self->m_companion, evt);
+	}
+#else
+	(void)dltotal; (void)dlnow;
+#endif
+	return 0;
+}
+
+int CHTTPDownloadThread::DoDownloadCurl(int& out_response, int& out_error)
+{
+	wxFFileOutputStream outfile(m_tempfile);
+	if (!outfile.Ok()) {
+		AddLogLineC(CFormat(_("Unable to create destination file %s for download!")) % m_tempfile);
+		out_error = 1;
+		return HTTP_Error;
+	}
+
+	CURL* curl = curl_easy_init();
+	if (!curl) {
+		AddLogLineC(wxT("curl_easy_init() failed"));
+		out_error = 2;
+		return HTTP_Error;
+	}
+
+	const wxScopedCharBuffer url_utf8 = m_url.utf8_str();
+	curl_easy_setopt(curl, CURLOPT_URL, url_utf8.data());
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWriteCallback);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &outfile);
+	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 10L);
+	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 15L);
+	curl_easy_setopt(curl, CURLOPT_TIMEOUT, 300L);
+	curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, CurlProgressCallback);
+	curl_easy_setopt(curl, CURLOPT_XFERINFODATA, this);
+	curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
+	curl_easy_setopt(curl, CURLOPT_USERAGENT, "aMule");
+
+	const CProxyData* proxy = thePrefs::GetProxyData();
+	if (proxy != NULL && proxy->m_proxyEnable) {
+		const wxScopedCharBuffer proxy_host = proxy->m_proxyHostName.utf8_str();
+		curl_easy_setopt(curl, CURLOPT_PROXY, proxy_host.data());
+		curl_easy_setopt(curl, CURLOPT_PROXYPORT, (long)proxy->m_proxyPort);
+
+		long curl_proxy_type = CURLPROXY_HTTP;
+		switch (proxy->m_proxyType) {
+			case PROXY_SOCKS5:  curl_proxy_type = CURLPROXY_SOCKS5;  break;
+			case PROXY_SOCKS4:  curl_proxy_type = CURLPROXY_SOCKS4;  break;
+			case PROXY_SOCKS4a: curl_proxy_type = CURLPROXY_SOCKS4A; break;
+			case PROXY_HTTP:    curl_proxy_type = CURLPROXY_HTTP;    break;
+			default: break;
+		}
+		curl_easy_setopt(curl, CURLOPT_PROXYTYPE, curl_proxy_type);
+
+		if (proxy->m_enablePassword) {
+			const wxScopedCharBuffer user = proxy->m_userName.utf8_str();
+			const wxScopedCharBuffer pass = proxy->m_password.utf8_str();
+			curl_easy_setopt(curl, CURLOPT_PROXYUSERNAME, user.data());
+			curl_easy_setopt(curl, CURLOPT_PROXYPASSWORD, pass.data());
+		}
+	}
+
+	struct curl_slist* headers = NULL;
+	if (m_lastmodified.IsValid()) {
+		wxString ims = wxT("If-Modified-Since: ") + FormatDateHTTP(m_lastmodified);
+		const wxScopedCharBuffer ims_utf8 = ims.utf8_str();
+		headers = curl_slist_append(headers, ims_utf8.data());
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+	}
+
+	const CURLcode res = curl_easy_perform(curl);
+	long http_code = 0;
+	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
+	out_response = (int)http_code;
+	out_error    = (int)res;
+
+	if (headers) curl_slist_free_all(headers);
+	curl_easy_cleanup(curl);
+
+	int result = HTTP_Error;
+	if (res == CURLE_OK) {
+		if (http_code == 304) {
+			result = HTTP_Skipped;
+			AddDebugLogLineN(logHTTP, wxT("Skipped download because requested file is not newer."));
+		} else if (http_code >= 200 && http_code < 300) {
+			result = HTTP_Success;
+		} else {
+			AddLogLineC(CFormat(_("HTTP %d returned for %s")) % http_code % m_url);
+		}
+	} else if (res == CURLE_ABORTED_BY_CALLBACK) {
+		AddDebugLogLineN(logHTTP, wxT("HTTP download cancelled"));
+	} else {
+		AddLogLineC(CFormat(_("libcurl error %d: %s"))
+			% (int)res % wxString::FromUTF8(curl_easy_strerror(res)));
+	}
+
+	if (result != HTTP_Success && result != HTTP_Skipped) {
+		if (wxFileExists(m_tempfile)) {
+			wxRemoveFile(m_tempfile);
+		}
+	}
+	return result;
+}
+#endif // HAVE_LIBCURL
+
+
 CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 {
 	if (TestDestroy()) {
 		return NULL;
 	}
 
-	wxHTTP* url_handler = NULL;
-
 	AddDebugLogLineN(logHTTP, wxT("HTTP download thread started"));
+
+#ifdef HAVE_LIBCURL
+	int resp = 0, err = 0;
+	m_result = DoDownloadCurl(resp, err);
+	m_response = resp;
+	m_error    = err;
+	if (m_result == HTTP_Success) {
+		thePrefs::SetLastHTTPDownloadURL(m_file_id, m_url);
+	}
+	AddDebugLogLineN(logHTTP, wxT("HTTP download thread ended"));
+	return 0;
+#else
+
+	wxHTTP* url_handler = NULL;
 
 	const CProxyData* proxy_data = thePrefs::GetProxyData();
 	bool use_proxy = proxy_data != NULL && proxy_data->m_proxyEnable;
@@ -304,6 +455,7 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 	AddDebugLogLineN(logHTTP, wxT("HTTP download thread ended"));
 
 	return 0;
+#endif // HAVE_LIBCURL
 }
 
 

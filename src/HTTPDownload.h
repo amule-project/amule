@@ -27,10 +27,15 @@
 #ifndef HTTPDOWNLOAD_H
 #define HTTPDOWNLOAD_H
 
+#include "config.h"			// Needed for HAVE_LIBCURL
 #include "GuiEvents.h"		// Needed for HTTP_Download_File
 #include "MuleThread.h"		// Needed for CMuleThread
 #include <wx/datetime.h>	// Needed for wxDateTime
 #include <set>
+
+#ifdef HAVE_LIBCURL
+#include <curl/curl.h>		// Needed for curl_off_t in static callback signatures
+#endif
 
 class wxEvtHandler;
 class wxHTTP;
@@ -50,6 +55,7 @@ public:
 						bool showDialog, bool checkDownloadNewer);
 
 	static void StopAll();
+
 private:
 	ExitCode		Entry();
 	virtual void		OnExit();
@@ -68,6 +74,17 @@ private:
 
 	wxInputStream* GetInputStream(wxHTTP * & url_handler, const wxString& location, bool proxy);
 	static wxString FormatDateHTTP(const wxDateTime& date);
+
+#ifdef HAVE_LIBCURL
+	// Static → C-compatible function pointers for libcurl. They receive the
+	// thread pointer via userdata / clientp, which gives them access to
+	// private members without needing public accessors.
+	static size_t CurlWriteCallback(void* ptr, size_t size, size_t nmemb, void* userdata);
+	static int    CurlProgressCallback(void* clientp,
+		curl_off_t dltotal, curl_off_t dlnow,
+		curl_off_t ultotal, curl_off_t ulnow);
+	int DoDownloadCurl(int& response, int& error);
+#endif
 };
 
 #endif // HTTPDOWNLOAD_H

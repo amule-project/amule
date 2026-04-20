@@ -104,6 +104,18 @@ if (wx_NEEDED)
 	include (cmake/wx.cmake)
 endif()
 
+# Optional: libcurl is preferred for HTTP downloads (supports HTTPS, avoids a
+# wxWidgets 3.2 wxSocket/wxEpollDispatcher lifecycle race that caused
+# intermittent startup crashes when remote servers forced an HTTPS redirect).
+# Falls back to wxHTTP if libcurl is not available.
+find_package (CURL)
+if (CURL_FOUND)
+	message (STATUS "libcurl found (${CURL_VERSION_STRING}) — HTTP downloads will use libcurl")
+	set (HAVE_LIBCURL 1)
+else()
+	message (STATUS "libcurl not found — HTTP downloads will use wxHTTP (HTTPS unsupported)")
+endif()
+
 if (NOT SVNDATE)
 	find_package (Git)
 
