@@ -219,6 +219,16 @@ CamuleApp::~CamuleApp()
 
 int CamuleApp::OnExit()
 {
+	// Guard against double-entry: on macOS the EVT_END_SESSION handler calls
+	// OnExit() explicitly (so the destructor chain runs before Cocoa
+	// terminates the process), and wxEntry may also call it on event-loop
+	// teardown. Without the guard the queues would be double-freed.
+	static bool s_exitDone = false;
+	if (s_exitDone) {
+		return 0;
+	}
+	s_exitDone = true;
+
 	if (m_app_state!=APP_STATE_STARTING) {
 		AddLogLineNS(_("Now, exiting main app..."));
 	}
