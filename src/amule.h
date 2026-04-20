@@ -400,6 +400,11 @@ class CamuleGuiApp : public CamuleApp, public CamuleGuiBase
 	int OnExit();
 	bool OnInit();
 
+	// Catch alternate quit paths (macOS Dock right-click → Quit)
+	// so we can run ShutDown cleanup even when wxApp skips OnExit.
+	void OnEndSession(wxCloseEvent& evt);
+	void OnQueryEndSession(wxCloseEvent& evt);
+
 public:
 
 	virtual int ShowAlert(wxString msg, wxString title, int flags);

@@ -90,6 +90,13 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 
 	// Disk space preallocation finished
 	EVT_MULE_ALLOC_FINISHED(CamuleGuiApp::OnFinishedAllocation)
+
+	// macOS Dock right-click → Quit and system session end.
+	// Normal exit paths (red X, Cmd+Q, File > Quit) go through CamuleDlg::OnClose
+	// → ShutDown → OnExit. The Dock "Quit" path on macOS skips OnClose and
+	// requires an EVT_END_SESSION handler to ensure cleanup runs.
+	EVT_QUERY_END_SESSION(CamuleGuiApp::OnQueryEndSession)
+	EVT_END_SESSION(CamuleGuiApp::OnEndSession)
 END_EVENT_TABLE()
 
 
@@ -284,6 +291,28 @@ void CamuleGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 	amuledlg->DlgShutDown();
 	amuledlg->Destroy();
 	CamuleApp::ShutDown();
+}
+
+
+// macOS Dock right-click → Quit bypasses OnClose. wxWidgets posts a session-end
+// event for this path; drive the same ShutDown sequence so the destructor
+// chain (~CPartFile → FlushBuffer → SavePartFile) runs and download progress
+// is persisted.
+void CamuleGuiApp::OnQueryEndSession(wxCloseEvent& evt)
+{
+	evt.Skip();
+}
+
+void CamuleGuiApp::OnEndSession(wxCloseEvent& evt)
+{
+	// Run ShutDown if not already running (OnClose may already have triggered it).
+	if (!IsOnShutDown() && amuledlg) {
+		ShutDown(evt);
+	}
+	// wxWidgets may skip OnExit on this path, so explicitly run the exit
+	// cleanup to destroy downloadqueue → ~CPartFile → FlushBuffer → SavePartFile.
+	OnExit();
+	evt.Skip();
 }
 
 
