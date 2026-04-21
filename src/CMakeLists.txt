@@ -138,7 +138,7 @@ if (BUILD_DAEMON)
 
 	if (WIN32)
 		target_link_libraries (amuled
-			shlwapi.lib
+			PRIVATE shlwapi.lib
 		)
 	endif()
 
@@ -529,4 +529,38 @@ IF (NEED_LIB_MULESOCKET)
 			PUBLIC wxWidgets::NET
 		)
 	endif()
+endif()
+
+# On MinGW-built Windows targets, bundle the MSYS2 MinGW64 runtime DLLs
+# next to the installed executables so the install tree is self-contained.
+# Must live here (not in root CMakeLists.txt) because CMake appends
+# subdirectory install scripts at the END of the root cmake_install.cmake,
+# so a root-level install(CODE) would run before the exes are installed.
+if (WIN32 AND MINGW AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.16)
+	get_filename_component (MINGW_BIN_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+
+	install (CODE "
+		message (STATUS \"Resolving Windows runtime dependencies...\")
+		file (GLOB _exes \"\${CMAKE_INSTALL_PREFIX}/bin/*.exe\")
+		file (GET_RUNTIME_DEPENDENCIES
+			EXECUTABLES \${_exes}
+			RESOLVED_DEPENDENCIES_VAR _resolved
+			UNRESOLVED_DEPENDENCIES_VAR _unresolved
+			DIRECTORIES \"${MINGW_BIN_DIR}\"
+			PRE_EXCLUDE_REGEXES
+				\"api-ms-.*\"
+				\"ext-ms-.*\"
+			POST_EXCLUDE_REGEXES
+				\".*[Ss]ystem32.*\"
+				\".*SysWOW64.*\"
+		)
+		foreach (_dll \${_resolved})
+			file (INSTALL \${_dll} DESTINATION \"\${CMAKE_INSTALL_PREFIX}/bin\" FOLLOW_SYMLINK_CHAIN)
+		endforeach()
+		list (LENGTH _resolved _count)
+		message (STATUS \"Bundled \${_count} runtime DLL(s) into \${CMAKE_INSTALL_PREFIX}/bin\")
+		if (_unresolved)
+			message (WARNING \"Unresolved runtime dependencies:\\n  \${_unresolved}\")
+		endif()
+	")
 endif()

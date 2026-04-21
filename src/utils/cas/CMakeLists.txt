@@ -11,7 +11,7 @@ add_executable (cas
 
 if (WIN32)
 	target_sources (cas
-		${CMAKE_SOURCE_DIR}/version.rc
+		PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
 	)
 endif()
 
