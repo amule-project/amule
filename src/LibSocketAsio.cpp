@@ -69,9 +69,13 @@
 #include "MuleUDPSocket.h"
 #include "OtherFunctions.h"	// DeleteContents
 #include "ScopedPtr.h"
+#ifdef _WIN32
+#include <winsock2.h>
+#else
 #include <sys/socket.h>		// ::recv with MSG_PEEK | MSG_DONTWAIT
-#include <errno.h>
 #include <unistd.h>
+#endif
+#include <errno.h>
 #include <common/Macros.h>
 
 using namespace boost::asio;
@@ -519,9 +523,16 @@ private:
 			// We cannot call socket.read_some() synchronously — the
 			// socket is in *blocking* mode (the constructor's
 			// non_blocking() call is a getter, not a setter).
+#ifdef _WIN32
+			// boost::asio on Windows uses IOCP, not EPOLLET, so a read
+			// completion with 0 bytes available really means EOF. No
+			// spurious-wakeup scenario to distinguish.
+			bool eof = true;
+#else
 			char peek;
 			ssize_t n = ::recv(m_socket->native_handle(), &peek, 1, MSG_PEEK | MSG_DONTWAIT);
 			bool eof = (n == 0) || (n < 0 && errno != EAGAIN && errno != EWOULDBLOCK);
+#endif
 			if (eof) {
 				AddDebugLogLineF(logAsio, CFormat(wxT("HandleReadError nothing available %s")) % m_IP);
 				SetError();
