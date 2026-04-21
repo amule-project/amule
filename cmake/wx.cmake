@@ -84,7 +84,7 @@ if (WX_COMPONENTS)
 			message(STATUS "Found usable wx-${COMPONENT}: ${wxWidgets_VERSION_STRING}")
 		endif()
 
-		if (WIN32)
+		if (WIN32 AND NOT MINGW)
 			set_property (TARGET wxWidgets::${COMPONENT}
 				PROPERTY IMPORTED_LOCATION_RELEASE ${WX_${${COMPONENT}}}
 			)
@@ -122,6 +122,15 @@ if (WX_COMPONENTS)
 				wxWidgets_${COMPONENT}_LIBRARY_DEBUG
 			)
 		else()
+			if (MINGW)
+				# MSYS2's wx-config points at the unicode wx build but does
+				# not emit -DUNICODE/-D_UNICODE, so wx/msw/winundef.h gets
+				# into an ANSI/UNICODE-mixed state with LPCTSTR/LPCSTR type
+				# mismatches.  Propagate the defines via wxWidgets_DEFINITIONS
+				# like the MSVC branch above does for _UNICODE.
+				list (APPEND wxWidgets_DEFINITIONS UNICODE _UNICODE)
+			endif()
+
 			if (${${${COMPONENT}}_COMPLETE})
 				set_property (TARGET wxWidgets::${COMPONENT} PROPERTY
 					IMPORTED_LOCATION ${${${COMPONENT}}_LOC}
