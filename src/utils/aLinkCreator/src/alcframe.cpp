@@ -349,7 +349,7 @@ AlcFrame::SetFileToHash()
 		CFURLRef	urlRef		= CFURLCreateFromFSRef(NULL, &fsRef);
 		CFStringRef	cfString	= CFURLCopyFileSystemPath(urlRef, kCFURLPOSIXPathStyle);
 		CFRelease(urlRef) ;
-		browseroot = wxCFStringRef(cfString).AsString(wxLocale::GetSystemEncoding());
+		browseroot = wxCFStringRef(cfString).AsString();
 	} else {
 		browseroot = wxFileName::GetHomeDir();
 	}

@@ -129,7 +129,7 @@ wxString GetDefaultAmulesigPath()
 		CFURLRef	urlRef		= CFURLCreateFromFSRef(NULL, &fsRef);
 		CFStringRef	cfString	= CFURLCopyFileSystemPath(urlRef, kCFURLPOSIXPathStyle);
 		CFRelease(urlRef) ;
-		strDir = wxCFStringRef(cfString).AsString(wxLocale::GetSystemEncoding())
+		strDir = wxCFStringRef(cfString).AsString()
 		+ wxFileName::GetPathSeparator() + wxT("aMule");
 	}
 
