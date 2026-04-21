@@ -24,9 +24,15 @@ if (WIN32)
 endif()
 
 target_link_libraries (wxcas
-	wxWidgets::CORE
-	wxWidgets::NET
+	PRIVATE wxWidgets::CORE
+	PRIVATE wxWidgets::NET
 )
+
+if (APPLE)
+	target_link_libraries (wxcas
+		PRIVATE "-framework CoreServices"
+	)
+endif()
 
 install (TARGETS wxcas
 	RUNTIME DESTINATION bin
