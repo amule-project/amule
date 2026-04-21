@@ -153,7 +153,7 @@ public:
 protected:
 	// The columns with their attributes; MUST be defined by the derived class.
 	GenericColumnInfo m_columndata;
-	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
+	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData);
 
 private:
 	/**

@@ -123,7 +123,7 @@ void CCommentDialogLst::ClearList()
 }
 
 
-int CCommentDialogLst::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
+int CCommentDialogLst::SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData)
 {
 	SFileRating* file1 = reinterpret_cast<SFileRating*>(item1);
 	SFileRating* file2 = reinterpret_cast<SFileRating*>(item2);

@@ -391,7 +391,7 @@ private:
 	 * otherwise, parents may not end up properly located in
 	 * relation to child-items.
 	 */
-	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
+	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData);
 
 	/** Compares two items in the list, using the current sort sequence. */
 	int CompareItems(wxUIntPtr item1, wxUIntPtr item2);

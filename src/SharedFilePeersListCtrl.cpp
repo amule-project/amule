@@ -61,7 +61,7 @@ CSharedFilePeersListCtrl::~CSharedFilePeersListCtrl()
 {
 }
 
-int CSharedFilePeersListCtrl::SourceSortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
+int CSharedFilePeersListCtrl::SourceSortProc(wxUIntPtr param1, wxUIntPtr param2, wxIntPtr sortData)
 {
 	return CGenericClientListCtrl::SortProc(param1, param2, s_sources_column_info[sortData & CMuleListCtrl::COLUMN_MASK].cid | (sortData & CMuleListCtrl::SORT_DES));
 }

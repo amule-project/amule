@@ -1104,7 +1104,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 	}
 }
 
-int CGenericClientListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
+int CGenericClientListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, wxIntPtr sortData)
 {
 	ClientCtrlItem_Struct* item1 = reinterpret_cast<ClientCtrlItem_Struct*>(param1);
 	ClientCtrlItem_Struct* item2 = reinterpret_cast<ClientCtrlItem_Struct*>(param2);

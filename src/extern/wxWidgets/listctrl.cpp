@@ -683,7 +683,7 @@ public:
     void InsertItem( wxListItem &item );
     void InsertColumn( long col, wxListItem &item );
     int GetItemWidthWithImage(wxListItem * item);
-    void SortItems( MuleListCtrlCompare fn, long data );
+    void SortItems( MuleListCtrlCompare fn, wxIntPtr data );
 
     size_t GetItemCount() const;
     bool IsEmpty() const { return GetItemCount() == 0; }
@@ -4818,7 +4818,7 @@ int wxListMainWindow::GetItemWidthWithImage(wxListItem * item)
 // ----------------------------------------------------------------------------
 
 MuleListCtrlCompare list_ctrl_compare_func_2;
-long              list_ctrl_compare_data;
+wxIntPtr          list_ctrl_compare_data;
 
 static int LINKAGEMODE list_ctrl_compare_func_1( wxListLineData **arg1, wxListLineData **arg2 )
 {
@@ -4832,7 +4832,7 @@ static int LINKAGEMODE list_ctrl_compare_func_1( wxListLineData **arg1, wxListLi
     return list_ctrl_compare_func_2( data1, data2, list_ctrl_compare_data );
 }
 
-void wxListMainWindow::SortItems( MuleListCtrlCompare fn, long data )
+void wxListMainWindow::SortItems( MuleListCtrlCompare fn, wxIntPtr data )
 {
     // selections won't make sense any more after sorting the items so reset
     // them
@@ -5627,7 +5627,7 @@ bool wxGenericListCtrl::ScrollList( int WXUNUSED(dx), int WXUNUSED(dy) )
 // or zero if the two items are equivalent.
 // data is arbitrary data to be passed to the sort function.
 
-bool wxGenericListCtrl::SortItems( MuleListCtrlCompare fn, long data )
+bool wxGenericListCtrl::SortItems( MuleListCtrlCompare fn, wxIntPtr data )
 {
     m_mainWin->SortItems( fn, data );
     return true;

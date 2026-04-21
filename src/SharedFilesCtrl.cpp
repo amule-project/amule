@@ -359,7 +359,7 @@ void CSharedFilesCtrl::OnEditComment( wxCommandEvent& WXUNUSED(event) )
 }
 
 
-int CSharedFilesCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
+int CSharedFilesCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData)
 {
 	CKnownFile* file1 = reinterpret_cast<CKnownFile*>(item1);
 	CKnownFile* file2 = reinterpret_cast<CKnownFile*>(item2);

@@ -1124,7 +1124,7 @@ wxString CDownloadListCtrl::GetTTSText(unsigned item) const
 }
 
 
-int CDownloadListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
+int CDownloadListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, wxIntPtr sortData)
 {
 	FileCtrlItem_Struct* item1 = reinterpret_cast<FileCtrlItem_Struct*>(param1);
 	FileCtrlItem_Struct* item2 = reinterpret_cast<FileCtrlItem_Struct*>(param2);

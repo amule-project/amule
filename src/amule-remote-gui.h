@@ -554,12 +554,12 @@ public:
 	CSearchListRem(CRemoteConnect *);
 
 	int m_curr_search;
-	typedef std::map<long, CSearchResultList> ResultMap;
+	typedef std::map<wxUIntPtr, CSearchResultList> ResultMap;
 	ResultMap m_results;
 
-	const CSearchResultList& GetSearchResults(long nSearchID);
-	void RemoveResults(long nSearchID);
-	const CSearchResultList& GetSearchResults(long nSearchID) const;
+	const CSearchResultList& GetSearchResults(wxUIntPtr nSearchID);
+	void RemoveResults(wxUIntPtr nSearchID);
+	const CSearchResultList& GetSearchResults(wxUIntPtr nSearchID) const;
 	//
 	// Actions
 	//
