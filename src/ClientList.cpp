@@ -1007,31 +1007,31 @@ void CClientList::CleanUpClientList()
 			} else {
 				if (!(pCurClient->GetUploadState() == US_NONE || (pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned()))) {
 					AddDebugLogLineN(logProxy,
-						CFormat(wxT("Debug: Not deleted client %x with up state: %i "))
-							% (long int)pCurClient % pCurClient->GetUploadState());
+						CFormat(wxT("Debug: Not deleted client %p with up state: %i "))
+							% static_cast<void*>(pCurClient) % pCurClient->GetUploadState());
 				}
 				if (!(pCurClient->GetDownloadState() == DS_NONE)) {
 					AddDebugLogLineN(logProxy,
-						CFormat(wxT("Debug: Not deleted client %x with down state: %i "))
-							% (long int)pCurClient % pCurClient->GetDownloadState());
+						CFormat(wxT("Debug: Not deleted client %p with down state: %i "))
+							% static_cast<void*>(pCurClient) % pCurClient->GetDownloadState());
 				}
 				if (!(pCurClient->GetChatState() == MS_NONE)) {
 					AddDebugLogLineN(logProxy,
-						CFormat(wxT("Debug: Not deleted client %x with chat state: %i "))
-							% (long int)pCurClient % pCurClient->GetChatState());
+						CFormat(wxT("Debug: Not deleted client %p with chat state: %i "))
+							% static_cast<void*>(pCurClient) % pCurClient->GetChatState());
 				}
 				if (!(pCurClient->GetKadState() == KS_NONE)) {
 					AddDebugLogLineN(logProxy,
-						CFormat(wxT("Debug: Not deleted client %x with kad state: %i ip: %s"))
-							% (long int)pCurClient % (int)pCurClient->GetKadState() % pCurClient->GetFullIP());
+						CFormat(wxT("Debug: Not deleted client %p with kad state: %i ip: %s"))
+							% static_cast<void*>(pCurClient) % (int)pCurClient->GetKadState() % pCurClient->GetFullIP());
 				}
 				if (!(pCurClient->GetSocket() == NULL)) {
 					AddDebugLogLineN(logProxy,
-						CFormat(wxT("Debug: Not deleted client %x: has socket")) % (long int)pCurClient);
+						CFormat(wxT("Debug: Not deleted client %p: has socket")) % static_cast<void*>(pCurClient));
 				}
 				AddDebugLogLineN(logProxy,
-					CFormat(wxT("Debug: Not deleted client %x with kad version: %i"))
-						% (long int)pCurClient % pCurClient->GetKadVersion());
+					CFormat(wxT("Debug: Not deleted client %p with kad version: %i"))
+						% static_cast<void*>(pCurClient) % pCurClient->GetKadVersion());
 #endif
 			}
 		}

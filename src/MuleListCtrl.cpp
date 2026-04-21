@@ -368,7 +368,7 @@ int CMuleListCtrl::CompareItems(wxUIntPtr item1, wxUIntPtr item2)
 	return CmpAny(item1, item2);
 }
 
-int CMuleListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long data)
+int CMuleListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr data)
 {
 	MuleSortData* sortdata = reinterpret_cast<MuleSortData*>(data);
 	const CSortingList& orders = sortdata->m_sort_orders;
@@ -397,13 +397,13 @@ void CMuleListCtrl::SortList()
 		// Make one pass through it to check if sorting is necessary at all.
 		int nrItems = GetItemCount();
 		bool clean = true;
-		long lastItemdata = 0;
+		wxUIntPtr lastItemdata = 0;
 		if (nrItems > 1) {
 			lastItemdata = GetItemData(0);
 		}
 		for (int i = 1; i < nrItems; i++) {
-			long nextItemdata = GetItemData(i);
-			if (SortProc(lastItemdata, nextItemdata, (long int)&sortdata) > 0) {
+			wxUIntPtr nextItemdata = GetItemData(i);
+			if (SortProc(lastItemdata, nextItemdata, (wxIntPtr)&sortdata) > 0) {
 				// ok - we need to sort
 				clean = false;
 				break;
@@ -425,7 +425,7 @@ void CMuleListCtrl::SortList()
 		long pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_FOCUSED );
 		wxUIntPtr focused = (pos == -1) ? 0 : GetItemData(pos);
 
-		SortItems(SortProc, (long int)&sortdata);
+		SortItems(SortProc, (wxIntPtr)&sortdata);
 
 		// Re-select the selected items.
 		for (unsigned i = 0; i < selectedItems.size(); ++i) {

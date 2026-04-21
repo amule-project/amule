@@ -40,7 +40,7 @@ private:
 		long		count;
 	};
 
-	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
+	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData);
 	void OnSelect(wxListEvent& event);
 
 	DECLARE_EVENT_TABLE()

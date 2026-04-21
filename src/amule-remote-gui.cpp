@@ -2075,7 +2075,7 @@ bool CSearchListRem::Phase1Done(const CECPacket *WXUNUSED(reply))
 }
 
 
-void CSearchListRem::RemoveResults(long nSearchID)
+void CSearchListRem::RemoveResults(wxUIntPtr nSearchID)
 {
 	ResultMap::iterator it = m_results.find(nSearchID);
 	if (it != m_results.end()) {
@@ -2088,7 +2088,7 @@ void CSearchListRem::RemoveResults(long nSearchID)
 }
 
 
-const CSearchResultList& CSearchListRem::GetSearchResults(long nSearchID)
+const CSearchResultList& CSearchListRem::GetSearchResults(wxUIntPtr nSearchID)
 {
 	ResultMap::const_iterator it = m_results.find(nSearchID);
 	if (it != m_results.end()) {

@@ -288,7 +288,7 @@ CSearchList::~CSearchList()
 }
 
 
-void CSearchList::RemoveResults(long searchID)
+void CSearchList::RemoveResults(wxUIntPtr searchID)
 {
 	// A non-existent search id will just be ignored
 	Kademlia::CSearchManager::StopSearch(searchID, true);
@@ -505,7 +505,7 @@ void CSearchList::ProcessSharedFileList(const uint8_t* in_packet, uint32 size,
 {
 	wxCHECK_RET(sender, wxT("No sender in search-results from client."));
 
-	long searchID = reinterpret_cast<wxUIntPtr>(sender);
+	wxUIntPtr searchID = reinterpret_cast<wxUIntPtr>(sender);
 
 #ifndef AMULE_DAEMON
 	if (!theApp->amuledlg->m_searchwnd->CheckTabNameExists(sender->GetUserName())) {
@@ -611,7 +611,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 }
 
 
-const CSearchResultList& CSearchList::GetSearchResults(long searchID) const
+const CSearchResultList& CSearchList::GetSearchResults(wxUIntPtr searchID) const
 {
 	ResultMap::const_iterator it = m_results.find(searchID);
 	if (it != m_results.end()) {

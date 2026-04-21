@@ -565,7 +565,7 @@ void CServerListCtrl::OnKeyPressed( wxKeyEvent& event )
 }
 
 
-int CServerListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
+int CServerListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData)
 {
 	CServer* server1 = reinterpret_cast<CServer*>(item1);
 	CServer* server2 = reinterpret_cast<CServer*>(item2);

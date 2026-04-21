@@ -109,10 +109,10 @@ public:
 	 *
 	 * If the search is not valid, an empty list is returned.
 	 */
-	const	CSearchResultList& GetSearchResults(long searchID) const;
+	const	CSearchResultList& GetSearchResults(wxUIntPtr searchID) const;
 
 	/** Removes all results for the specified search. */
-	void	RemoveResults(long searchID);
+	void	RemoveResults(wxUIntPtr searchID);
 
 
 	/** Finds the search-result (by hash) and downloads it in the given category. */
@@ -220,7 +220,7 @@ private:
 	CQueueObserver<CServer*> m_serverQueue;
 
 	//! Shorthand for the map of results (key is a SearchID).
-	typedef std::map<long, CSearchResultList> ResultMap;
+	typedef std::map<wxUIntPtr, CSearchResultList> ResultMap;
 
 	//! Map of all search-results added.
 	ResultMap	m_results;

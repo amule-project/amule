@@ -362,7 +362,7 @@ void CSearchListCtrl::UpdateItemColor(long index)
 }
 
 
-void CSearchListCtrl::ShowResults( long ResultsID )
+void CSearchListCtrl::ShowResults( wxUIntPtr ResultsID )
 {
 	DeleteAllItems();
 	m_nResultsID = ResultsID;
@@ -466,7 +466,7 @@ bool CSearchListCtrl::IsFiltered(const CSearchFile* file)
 }
 
 
-int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
+int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData)
 {
 	CSearchFile* file1 = reinterpret_cast<CSearchFile*>(item1);
 	CSearchFile* file2 = reinterpret_cast<CSearchFile*>(item2);
