@@ -2,105 +2,158 @@ name: C/C++ CI
 
 on:
   push:
-    branches: ["**"]
+    branches: [ "**" ]
   pull_request:
-    branches: ["**"]
+    branches: [ "**" ]
+
+env:
+  # The minus sign removes the trailing new line in the last line
+  cmake_ubuntu_deps: |-
+    build-essential \
+    cmake \
+    gettext \
+    libboost-all-dev \
+    libcrypto++-dev \
+    libgd-dev \
+    libgeoip-dev \
+    libreadline-dev \
+    libupnp-dev \
+    libwxgtk3.2-dev \
+    pkg-config \
+    wx3.2-headers
+
+  cmake_macos_deps: |-
+    boost \
+    cryptopp \
+    gd \
+    gettext \
+    libupnp \
+    pkg-config \
+    wxwidgets
+
+  cmake_mingw_w64_deps: |
+    mingw-w64-x86_64-boost
+    mingw-w64-x86_64-cmake
+    mingw-w64-x86_64-crypto++
+    mingw-w64-x86_64-geoip
+    mingw-w64-x86_64-gettext
+    mingw-w64-x86_64-libgd
+    mingw-w64-x86_64-ninja
+    mingw-w64-x86_64-pkgconf
+    mingw-w64-x86_64-pupnp
+    mingw-w64-x86_64-readline
+    mingw-w64-x86_64-toolchain
+    mingw-w64-x86_64-wxwidgets3.2-msw
+    mingw-w64-x86_64-zlib
+
+  autotools_config_flags: |-
+    --enable-alc \
+    --enable-alcc \
+    --enable-amule-gui \
+    --enable-amule-daemon \
+    --enable-amulecmd \
+    --enable-cas \
+    --enable-geoip \
+    --enable-webserver \
+    --enable-wxcas \
+    --with-boost
+
+  # BUILD_PLASMAMULE requires Qt4
+  cmake_common_config_flags: |-
+    -B build \
+    -DBUILD_ALC=YES \
+    -DBUILD_ALCC=YES \
+    -DBUILD_AMULECMD=YES \
+    -DBUILD_CAS=YES \
+    -DBUILD_DAEMON=YES \
+    -DBUILD_WXCAS=YES \
+    -DBUILD_ED2K=YES \
+    -DBUILD_MONOLITHIC=YES \
+    -DBUILD_PLASMAMULE=0 \
+    -DBUILD_REMOTEGUI=YES \
+    -DBUILD_TESTING=YES \
+    -DBUILD_WEBSERVER=YES \
+    -DENABLE_NLS=YES \
+    -DENABLE_UPNP=YES
+
+  cmake_ubuntu_config_flags: |-
+    -DENABLE_IP2COUNTRY=YES
+
+  # ENABLE_IP2COUNTRY disabled: Homebrew dropped legacy libgeoip;
+  #   only libmaxminddb is available, which aMule doesn't use
+  # ENABLE_NLS will be auto-disabled by cmake/nls.cmake: argz.h is
+  #   a glibc-only header and isn't provided by macOS or Homebrew
+  cmake_macos_config_flags: |-
+    -DENABLE_IP2COUNTRY=NO
+
+  cmake_mingw_w64_config_flags: |-
+    -G Ninja \
+    -DENABLE_IP2COUNTRY=YES
+
+  ctest_flags: |-
+    --test-dir build \
+    --output-on-failure \
+    --timeout 10
 
 jobs:
-  build_autotools:
+  build_autotools_ubuntu:
+    name: Build Autotools Ubuntu
     # Add this to temporarily suppress a build
     # if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - name: install deps
-        run: sudo apt-get update && sudo apt-get upgrade && sudo apt-get install autopoint
+        run: |
+          sudo apt-get update
+          # Comment this to avoid intermittent problems with the Snap store.
+          # sudo apt-get upgrade
+          sudo apt-get install autopoint
       - name: autogen
         run: ./autogen.sh
       - name: install build deps
-        run: sudo apt-get install devscripts equivs && sudo mk-build-deps -i
-      - name: configure
         run: |
-          ./configure \
-          --enable-wxcas \
-          --enable-cas \
-          --enable-webserver \
-          --enable-amule-gui \
-          --enable-amule-daemon \
-          --enable-alcc \
-          --enable-alc \
-          --enable-amulecmd \
-          --enable-geoip \
-          --with-boost
+          sudo apt-get install devscripts equivs
+          sudo mk-build-deps -i
+      - name: configure
+        run: ./configure ${{ env.autotools_config_flags }}
       - name: make
         run: make
       - name: make check
         run: make check
 
-  build_cmake:
+  build_cmake_ubuntu:
+    name: Build CMake Ubuntu
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - name: install deps
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            cmake \
-            build-essential \
-            libboost-all-dev \
-            libcrypto++-dev \
-            wx3.2-headers \
-            libupnp-dev \
-            libgeoip-dev \
-            libwxgtk3.2-dev \
-            libreadline-dev \
-            gettext \
-            libgd-dev \
-            pkg-config
+          sudo apt-get install -y ${{ env.cmake_ubuntu_deps }}
       # It seems to run faster without this, but we have to manually list the
       # dependencies abobe.
       #  run: |
       #    sudo apt-get install devscripts equivs && sudo mk-build-deps -i
       - name: create build system
         run: |
-          # BUILD_PLASMAMULE requires Qt4
-          cmake -B build \
-            -DBUILD_ALC=YES \
-            -DBUILD_ALCC=YES \
-            -DBUILD_AMULECMD=YES \
-            -DBUILD_CAS=YES \
-            -DBUILD_DAEMON=YES \
-            -DBUILD_WXCAS=YES \
-            -DBUILD_ED2K=YES \
-            -DBUILD_MONOLITHIC=YES \
-            -DBUILD_PLASMAMULE=0 \
-            -DBUILD_REMOTEGUI=YES \
-            -DBUILD_TESTING=YES \
-            -DBUILD_WEBSERVER=YES \
-            -DENABLE_IP2COUNTRY=YES \
-            -DENABLE_NLS=YES \
-            -DENABLE_UPNP=YES
+          cmake \
+            ${{ env.cmake_common_config_flags }} \
+            ${{ env.cmake_ubuntu_config_flags }}
       - name: make
         run: cmake --build build
       - name: run tests
-        run: |
-          ctest --test-dir build --output-on-failure --timeout 5
+        run: ctest ${{ env.ctest_flags }}
 
   build_cmake_macos:
+    name: Build CMake MacOS
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v6
       - name: install deps
         run: |
           brew update
-          brew install \
-            boost \
-            cryptopp \
-            wxwidgets \
-            libupnp \
-            gd \
-            gettext \
-            pkg-config
+          brew install ${{ env.cmake_macos_deps }}
           # Homebrew installs into /opt/homebrew on Apple Silicon — not a
           # default compiler/linker/pkg-config search path. aMule's custom
           # cmake/cryptopp.cmake uses check_include_file_cxx which does NOT
@@ -113,80 +166,34 @@ jobs:
           echo "$(brew --prefix gettext)/bin" >> "$GITHUB_PATH"
       - name: create build system
         run: |
-          # BUILD_PLASMAMULE requires Qt4
-          # ENABLE_IP2COUNTRY disabled: Homebrew dropped legacy libgeoip;
-          #   only libmaxminddb is available, which aMule doesn't use
-          # ENABLE_NLS will be auto-disabled by cmake/nls.cmake: argz.h is
-          #   a glibc-only header and isn't provided by macOS or Homebrew
-          cmake -B build \
-            -DBUILD_ALC=YES \
-            -DBUILD_ALCC=YES \
-            -DBUILD_AMULECMD=YES \
-            -DBUILD_CAS=YES \
-            -DBUILD_DAEMON=YES \
-            -DBUILD_WXCAS=YES \
-            -DBUILD_ED2K=YES \
-            -DBUILD_MONOLITHIC=YES \
-            -DBUILD_PLASMAMULE=0 \
-            -DBUILD_REMOTEGUI=YES \
-            -DBUILD_TESTING=YES \
-            -DBUILD_WEBSERVER=YES \
-            -DENABLE_IP2COUNTRY=NO \
-            -DENABLE_NLS=YES \
-            -DENABLE_UPNP=YES
+          cmake \
+            ${{ env.cmake_common_config_flags }} \
+            ${{ env.cmake_macos_config_flags }}
       - name: make
         run: cmake --build build
       - name: run tests
-        run: |
-          ctest --test-dir build --output-on-failure --timeout 5
+        run: ctest ${{ env.ctest_flags }}
 
-  build_cmake_windows_mingw64:
+  build_cmake_windows_mingw_w64:
+    name: Build CMake mingw-w64
     runs-on: windows-latest
     defaults:
       run:
         shell: msys2 {0}
     steps:
       - uses: actions/checkout@v6
-      - name: set up MSYS2 MINGW64
+      - name: set up MSYS2 mingw-w64
         uses: msys2/setup-msys2@v2
         with:
           msystem: MINGW64
           update: true
-          install: >-
-            mingw-w64-x86_64-toolchain
-            mingw-w64-x86_64-cmake
-            mingw-w64-x86_64-ninja
-            mingw-w64-x86_64-pkgconf
-            mingw-w64-x86_64-wxwidgets3.2-msw
-            mingw-w64-x86_64-boost
-            mingw-w64-x86_64-crypto++
-            mingw-w64-x86_64-zlib
-            mingw-w64-x86_64-libgd
-            mingw-w64-x86_64-gettext
-            mingw-w64-x86_64-readline
-            mingw-w64-x86_64-geoip
-            mingw-w64-x86_64-pupnp
+          install: ${{ env.cmake_mingw_w64_deps }}
       - name: create build system
         run: |
-          # BUILD_PLASMAMULE requires Qt4
-          cmake -G Ninja -B build \
-            -DBUILD_ALC=YES \
-            -DBUILD_ALCC=YES \
-            -DBUILD_AMULECMD=YES \
-            -DBUILD_CAS=YES \
-            -DBUILD_DAEMON=YES \
-            -DBUILD_WXCAS=YES \
-            -DBUILD_ED2K=YES \
-            -DBUILD_MONOLITHIC=YES \
-            -DBUILD_PLASMAMULE=0 \
-            -DBUILD_REMOTEGUI=YES \
-            -DBUILD_TESTING=YES \
-            -DBUILD_WEBSERVER=YES \
-            -DENABLE_IP2COUNTRY=YES \
-            -DENABLE_NLS=YES \
-            -DENABLE_UPNP=YES
+          cmake \
+            ${{ env.cmake_common_config_flags }} \
+            ${{ env.cmake_mingw_w64_config_flags }}
       - name: make
         run: cmake --build build
       - name: run tests
-        run: |
-          ctest --test-dir build --output-on-failure --timeout 5
+        run: ctest ${{ env.ctest_flags }}
