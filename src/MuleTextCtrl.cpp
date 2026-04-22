@@ -97,7 +97,7 @@ void CMuleTextCtrl::OnRightDown( wxMouseEvent& evt )
 				wxTextDataObject data;
 				wxTheClipboard->GetData( data );
 
-				canpaste = (data.GetTextLength() > 0);
+				canpaste = !data.GetText().IsEmpty();
 			}
 			wxTheClipboard->Close();
 		}
