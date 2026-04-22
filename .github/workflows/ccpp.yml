@@ -85,3 +85,108 @@ jobs:
       - name: run tests
         run: |
           ctest --test-dir build --output-on-failure --timeout 5
+
+  build_cmake_macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: install deps
+        run: |
+          brew update
+          brew install \
+            boost \
+            cryptopp \
+            wxwidgets \
+            libupnp \
+            gd \
+            gettext \
+            pkg-config
+          # Homebrew installs into /opt/homebrew on Apple Silicon — not a
+          # default compiler/linker/pkg-config search path. aMule's custom
+          # cmake/cryptopp.cmake uses check_include_file_cxx which does NOT
+          # honour CMAKE_PREFIX_PATH, so export CPATH/LIBRARY_PATH directly.
+          BREW_PREFIX=$(brew --prefix)
+          echo "CPATH=$BREW_PREFIX/include" >> "$GITHUB_ENV"
+          echo "LIBRARY_PATH=$BREW_PREFIX/lib" >> "$GITHUB_ENV"
+          echo "PKG_CONFIG_PATH=$BREW_PREFIX/lib/pkgconfig:$(brew --prefix gd)/lib/pkgconfig:$(brew --prefix libupnp)/lib/pkgconfig:$(brew --prefix gettext)/lib/pkgconfig" >> "$GITHUB_ENV"
+          # gettext is keg-only on macOS; add msgfmt to PATH for NLS probe
+          echo "$(brew --prefix gettext)/bin" >> "$GITHUB_PATH"
+      - name: create build system
+        run: |
+          # BUILD_PLASMAMULE requires Qt4
+          # ENABLE_IP2COUNTRY disabled: Homebrew dropped legacy libgeoip;
+          #   only libmaxminddb is available, which aMule doesn't use
+          # ENABLE_NLS will be auto-disabled by cmake/nls.cmake: argz.h is
+          #   a glibc-only header and isn't provided by macOS or Homebrew
+          cmake -B build \
+            -DBUILD_ALC=YES \
+            -DBUILD_ALCC=YES \
+            -DBUILD_AMULECMD=YES \
+            -DBUILD_CAS=YES \
+            -DBUILD_DAEMON=YES \
+            -DBUILD_WXCAS=YES \
+            -DBUILD_ED2K=YES \
+            -DBUILD_MONOLITHIC=YES \
+            -DBUILD_PLASMAMULE=0 \
+            -DBUILD_REMOTEGUI=YES \
+            -DBUILD_TESTING=YES \
+            -DBUILD_WEBSERVER=YES \
+            -DENABLE_IP2COUNTRY=NO \
+            -DENABLE_NLS=YES \
+            -DENABLE_UPNP=YES
+      - name: make
+        run: cmake --build build
+      - name: run tests
+        run: |
+          ctest --test-dir build --output-on-failure --timeout 5
+
+  build_cmake_windows_mingw64:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v6
+      - name: set up MSYS2 MINGW64
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-pkgconf
+            mingw-w64-x86_64-wxwidgets3.2-msw
+            mingw-w64-x86_64-boost
+            mingw-w64-x86_64-crypto++
+            mingw-w64-x86_64-zlib
+            mingw-w64-x86_64-libgd
+            mingw-w64-x86_64-gettext
+            mingw-w64-x86_64-readline
+            mingw-w64-x86_64-geoip
+            mingw-w64-x86_64-pupnp
+      - name: create build system
+        run: |
+          # BUILD_PLASMAMULE requires Qt4
+          cmake -G Ninja -B build \
+            -DBUILD_ALC=YES \
+            -DBUILD_ALCC=YES \
+            -DBUILD_AMULECMD=YES \
+            -DBUILD_CAS=YES \
+            -DBUILD_DAEMON=YES \
+            -DBUILD_WXCAS=YES \
+            -DBUILD_ED2K=YES \
+            -DBUILD_MONOLITHIC=YES \
+            -DBUILD_PLASMAMULE=0 \
+            -DBUILD_REMOTEGUI=YES \
+            -DBUILD_TESTING=YES \
+            -DBUILD_WEBSERVER=YES \
+            -DENABLE_IP2COUNTRY=YES \
+            -DENABLE_NLS=YES \
+            -DENABLE_UPNP=YES
+      - name: make
+        run: cmake --build build
+      - name: run tests
+        run: |
+          ctest --test-dir build --output-on-failure --timeout 5
