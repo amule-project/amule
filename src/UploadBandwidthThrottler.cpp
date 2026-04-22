@@ -292,8 +292,9 @@ void* UploadBandwidthThrottler::Entry()
 
 		// Calculate data rate
 		if (thePrefs::GetMaxUpload() == UNLIMITED) {
-			// Try to increase the upload rate from UploadSpeedSense
-			allowedDataRate = (uint32)theStats::GetUploadRate() + 5 * 1024;
+			// MaxUpload=0 means literal unlimited — bypass the per-iteration rate cap
+			// so SendFileAndControlData() is never throttled.
+			allowedDataRate = UNLIMITED_RATE;
 		} else {
 			allowedDataRate = thePrefs::GetMaxUpload() * 1024;
 		}
@@ -341,8 +342,14 @@ void* UploadBandwidthThrottler::Entry()
 		}
 
 		// Calculate how many bytes we can spend
-
-		bytesToSpend += (sint32) (allowedDataRate / 1000.0 * timeSinceLastLoop);
+		// In UNLIMITED mode, allowedDataRate = UINT_MAX (~4 GB/s) would overflow the
+		// sint32 bytesToSpend accumulator when multiplied by timeSinceLastLoop.
+		// Cap the budget rate at 1 GB/s — still far above any real uplink, and every
+		// real socket send() will short-circuit far below this ceiling.
+		const uint32 bytesToSpendRate = (allowedDataRate == UNLIMITED_RATE)
+			? (1024u * 1024u * 1024u)
+			: allowedDataRate;
+		bytesToSpend += (sint32) (bytesToSpendRate / 1000.0 * timeSinceLastLoop);
 
 		if (bytesToSpend >= 1) {
 			sint32 spentBytes = 0;

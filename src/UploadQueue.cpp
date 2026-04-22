@@ -306,8 +306,15 @@ uint32 CUploadQueue::GetMaxSlots() const
 	uint32 nMaxSlots = 0;
 	float kBpsUpPerClient = (float)thePrefs::GetSlotAllocation();
 	if (thePrefs::GetMaxUpload() == UNLIMITED) {
+		// Speed-based formula plus a floor. The raw "currentRate / slotRate + 2"
+		// is a chicken-and-egg trap: with 0 B/s observed uplink we'd cap at 2 slots,
+		// which can't carry enough parallel TCP flows to break cold-start and let
+		// the uplink ramp up. Floor at N_FLOOR slots regardless of measured rate so
+		// there is always enough concurrency for the ramp.
+		const uint32 N_FLOOR = 20;
 		float kBpsUp = theStats::GetUploadRate() / 1024.0f;
-		nMaxSlots = (uint32)(kBpsUp / kBpsUpPerClient) + 2;
+		uint32 bySpeed = (uint32)(kBpsUp / kBpsUpPerClient) + 2;
+		nMaxSlots = bySpeed > N_FLOOR ? bySpeed : N_FLOOR;
 	} else {
 		if (thePrefs::GetMaxUpload() >= 10) {
 			nMaxSlots = (uint32)floor((float)thePrefs::GetMaxUpload() / kBpsUpPerClient + 0.5);
