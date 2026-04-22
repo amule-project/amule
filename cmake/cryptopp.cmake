@@ -71,6 +71,16 @@ if (WIN32)
 	else()
 		set (CRYPTO_COMPLETE FALSE)
 	endif()
+
+	# Packages that ship only the release variant (e.g. MSYS2
+	# mingw-w64-x86_64-crypto++ has libcryptopp.dll.a but no *d.dll.a) don't
+	# populate IMPORTED_LOCATION_DEBUG. Set plain IMPORTED_LOCATION so CMake
+	# falls back to the release library when building with CMAKE_BUILD_TYPE=Debug.
+	if (CRYPTOPP_LIBRARY_RELEASE AND NOT CRYPTOPP_LIBRARY_DEBUG)
+		set_property (TARGET CRYPTOPP::CRYPTOPP
+			PROPERTY IMPORTED_LOCATION ${CRYPTOPP_LIBRARY_RELEASE}
+		)
+	endif()
 else()
 	if (NOT CRYPTOPP_LIBRARY)
 		unset (CRYPTOPP_LIBRARY CACHE)

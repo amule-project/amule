@@ -1,4 +1,4 @@
-if (NOT WIN32)
+if (NOT MSVC)
 	find_package (PkgConfig REQUIRED)
 
 	pkg_search_module (gdlib REQUIRED
