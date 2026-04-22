@@ -3,15 +3,15 @@ if (SEARCH_DIR_UPNP)
 	set (CMAKE_PREFIX_PATH ${SEARCH_DIR_UPNP})
 endif()
 
-# Some distro packages (e.g. Ubuntu 25.10 libupnp-dev 1.14.x) ship a broken
-# UPNP.cmake that lists non-existent paths (e.g. /usr/COMPONENT) in
-# INTERFACE_INCLUDE_DIRECTORIES. Detect this before loading the broken config
-# by inspecting the targets file, and fall through to pkg-config if affected.
+# Some distro packages ship a broken UPNP.cmake that lists non-existent paths
+# (e.g. /usr/COMPONENT, /mingw64/COMPONENT) in INTERFACE_INCLUDE_DIRECTORIES.
+# Observed on Ubuntu 25.10 libupnp-dev 1.14.x and MSYS2 mingw-w64-pupnp 1.14.x.
+# Detect this before loading the broken config by inspecting the targets file,
+# and fall through to pkg-config if affected.
 find_file (_upnp_cmake_targets "UPNP.cmake"
-	PATH_SUFFIXES cmake/UPNP
-	NO_DEFAULT_PATH
-	PATHS /usr/lib /usr/lib64 /usr/local/lib
-	      /usr/lib/x86_64-linux-gnu /usr/lib/aarch64-linux-gnu)
+	PATH_SUFFIXES lib/cmake/UPNP lib64/cmake/UPNP
+	              lib/x86_64-linux-gnu/cmake/UPNP
+	              lib/aarch64-linux-gnu/cmake/UPNP)
 if (_upnp_cmake_targets)
 	file (READ "${_upnp_cmake_targets}" _upnp_cmake_content)
 	if (_upnp_cmake_content MATCHES "INTERFACE_INCLUDE_DIRECTORIES.*COMPONENT")
@@ -23,6 +23,10 @@ endif()
 unset (_upnp_cmake_targets CACHE)
 
 if (NOT _upnp_skip_config)
+	# MSYS2's pupnp UPNPConfig.cmake references Threads::Threads in its link
+	# interface without calling find_package(Threads) itself — load it first
+	# so the UPNP::Shared target resolves correctly.
+	find_package (Threads REQUIRED)
 	find_package (UPNP CONFIG)
 endif()
 unset (_upnp_skip_config)
@@ -37,7 +41,13 @@ if (NOT UPNP_CONFIG)
 	unset (CMAKE_PREFIX_PATH)
 
 	if (LIBUPNP_FOUND)
-		add_library (UPNP::Shared SHARED IMPORTED)
+		if (MINGW)
+			# On MinGW, SHARED IMPORTED without IMPORTED_IMPLIB makes
+			# Debug-config lookups resolve to UPNP::Shared-NOTFOUND.
+			add_library (UPNP::Shared UNKNOWN IMPORTED)
+		else()
+			add_library (UPNP::Shared SHARED IMPORTED)
+		endif()
 
 		set_target_properties (UPNP::Shared PROPERTIES
 			IMPORTED_LOCATION "${pkgcfg_lib_LIBUPNP_upnp}"
