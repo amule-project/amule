@@ -137,6 +137,12 @@ if (BUILD_MONOLITHIC)
 	install (FILES amule.desktop
 		DESTINATION "${CMAKE_INSTALL_DATADIR}/applications"
 	)
+	# Ship the PNG application icon in the XDG hicolor theme so
+	# desktop environments (GTK, KDE, Wayland shells, file managers)
+	# can resolve `Icon=amule` from amule.desktop.
+	install (FILES amule.png
+		DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps"
+	)
 endif()
 
 if (BUILD_REMOTEGUI)
