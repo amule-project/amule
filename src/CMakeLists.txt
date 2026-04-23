@@ -247,6 +247,22 @@ if (BUILD_MONOLITHIC)
 			PRIVATE "-framework CoreServices"
 			PRIVATE "-framework ApplicationServices"
 		)
+
+		# aMule performs HTTP downloads to user-configurable URLs
+		# (server.met, IP filter, Kad nodes) and the upstream defaults for
+		# some of these are plaintext http://. wxWebRequest is backed by
+		# NSURLSession on macOS, which enforces App Transport Security and
+		# blocks plaintext HTTP unless the bundle opts out. Inject the
+		# opt-out into the CMake-generated Info.plist. This matches the
+		# legacy wxHTTP/wxSocket path's behaviour, which bypassed ATS by
+		# going through raw BSD sockets.
+		add_custom_command (TARGET amule POST_BUILD
+			COMMAND /usr/bin/plutil -replace NSAppTransportSecurity
+				-json "{\"NSAllowsArbitraryLoads\": true}"
+				"$<TARGET_BUNDLE_CONTENT_DIR:amule>/Info.plist"
+			COMMENT "Opting aMule.app out of App Transport Security"
+			VERBATIM
+		)
 	endif()
 
 	install (TARGETS amule
@@ -563,4 +579,30 @@ if (WIN32 AND MINGW AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.16)
 			message (WARNING \"Unresolved runtime dependencies:\\n  \${_unresolved}\")
 		endif()
 	")
+
+	# MSYS2's libcurl is built with an absolute --with-ca-bundle path
+	# (e.g. /clangarm64/etc/ssl/certs/ca-bundle.crt) that does not exist
+	# on end-user machines, so wxWebRequest HTTPS fails with error 77
+	# anywhere outside the dev box. Ship the MSYS2 CA bundle next to the
+	# .exe so a portable install can find it; CamuleApp::OnInit points
+	# CURL_CA_BUNDLE at it on startup when the user has not set their own.
+	find_file (MINGW_CA_BUNDLE
+		NAMES cert.pem ca-bundle.crt
+		PATHS "${MINGW_BIN_DIR}/../etc/ssl/certs"
+		      "${MINGW_BIN_DIR}/../etc/ssl"
+		      "${MINGW_BIN_DIR}/../ssl/certs"
+		      "${MINGW_BIN_DIR}/../ssl"
+		NO_DEFAULT_PATH)
+	if (MINGW_CA_BUNDLE)
+		install (FILES "${MINGW_CA_BUNDLE}"
+			DESTINATION bin
+			RENAME ca-bundle.crt)
+		message (STATUS "Will bundle CA certificates from ${MINGW_CA_BUNDLE}")
+	else()
+		message (WARNING
+			"No MSYS2 CA bundle found under ${MINGW_BIN_DIR}/../etc/ssl; "
+			"libcurl HTTPS will fail at runtime unless CURL_CA_BUNDLE is "
+			"set externally. Install mingw-w64-*-ca-certificates and "
+			"re-run cmake to populate this.")
+	endif()
 endif()

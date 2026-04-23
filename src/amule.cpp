@@ -42,6 +42,10 @@
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
 #include <wx/stopwatch.h>		// Needed for wxStopWatch
+#ifdef __WINDOWS__
+#include <wx/stdpaths.h>		// Needed for wxStandardPaths (CA bundle lookup)
+#include <wx/filename.h>		// Needed for wxFileName (CA bundle lookup)
+#endif
 
 
 #include <common/Format.h>		// Needed for CFormat
@@ -379,6 +383,25 @@ int CamuleApp::OnExit()
 
 	StopTickTimer();
 
+#if defined(__APPLE__)
+	// wx 3.3.2 has a bug in wxWebSessionURLSession::~wxWebSessionURLSession:
+	// it releases the NSURLSession and the delegate separately without
+	// first calling -invalidateAndCancel. NSURLSession retains its
+	// delegate strongly, so the session's dealloc already drops the
+	// delegate ref — wx's subsequent release hits a freed object and the
+	// process aborts with "pointer being freed was not allocated". This
+	// fires in wx module cleanup / atexit / __cxa_finalize on any Mac
+	// build after any HTTP download (version check, server.met, ...).
+	//
+	// By this point in OnExit we have saved state, joined threads, and
+	// flushed logs — nothing aMule-owned remains to clean up. _Exit
+	// bypasses atexit and static destructors, so the buggy wx dtor never
+	// runs and the process terminates cleanly. Linux / Windows continue
+	// through wx's normal cleanup; remove this block once the upstream
+	// fix lands in a wx release we depend on.
+	std::_Exit(0);
+#endif
+
 	// Return 0 for successful program termination
 	return AMULE_APP_BASE::OnExit();
 }
@@ -420,6 +443,26 @@ bool CamuleApp::OnInit()
 #ifdef __WXMAC__
 	// For listctrl's to behave on Mac
 	wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), 1);
+#endif
+
+#ifdef __WINDOWS__
+	// wxWebRequest is backed by libcurl on MSYS2 (MINGW64 / CLANGARM64)
+	// builds. MSYS2 libcurl is compiled with `--with-ca-bundle=` pointing
+	// at an absolute MSYS2 path that does not exist on end-user machines,
+	// so HTTPS (and any HTTP→HTTPS redirect — e.g. SourceForge) fails
+	// with "libcurl error 77: Problem with the SSL CA cert". CMake's
+	// install step ships a ca-bundle.crt next to the .exe; point
+	// CURL_CA_BUNDLE at it here if the user has not set one explicitly.
+	{
+		wxString existing;
+		if (!wxGetEnv(wxT("CURL_CA_BUNDLE"), &existing) || existing.IsEmpty()) {
+			wxFileName caFile(wxStandardPaths::Get().GetExecutablePath());
+			caFile.SetFullName(wxT("ca-bundle.crt"));
+			if (caFile.FileExists()) {
+				wxSetEnv(wxT("CURL_CA_BUNDLE"), caFile.GetFullPath());
+			}
+		}
+	}
 #endif
 
 	// Handle uncaught exceptions
