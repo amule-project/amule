@@ -1572,7 +1572,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item4 = new wxStaticText( parent, -1, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item4, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxSpinCtrl *item5 = new wxSpinCtrl( parent, IDC_MAXDOWN, wxT("0"), wxDefaultPosition, wxSize(100,-1), 0, 0, 19375, 0 );
+    wxSpinCtrl *item5 = new wxSpinCtrl( parent, IDC_MAXDOWN, wxT("0"), wxDefaultPosition, wxSize(140,-1), 0, 0, 1000000, 0 );
     item3->Add( item5, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
     wxStaticText *item6 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1581,7 +1581,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item7 = new wxStaticText( parent, -1, _("Upload"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item7, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxSpinCtrl *item8 = new wxSpinCtrl( parent, IDC_MAXUP, wxT("10"), wxDefaultPosition, wxSize(100,-1), 0, 0, 19375, 10 );
+    wxSpinCtrl *item8 = new wxSpinCtrl( parent, IDC_MAXUP, wxT("10"), wxDefaultPosition, wxSize(140,-1), 0, 0, 1000000, 10 );
     item3->Add( item8, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item9 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1590,7 +1590,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item10 = new wxStaticText( parent, -1, _("Slot Allocation"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 20 );
 
-    wxSpinCtrl *item11 = new wxSpinCtrl( parent, IDC_SLOTALLOC, wxT("4"), wxDefaultPosition, wxSize(100,-1), 0, 1, 100, 4 );
+    wxSpinCtrl *item11 = new wxSpinCtrl( parent, IDC_SLOTALLOC, wxT("4"), wxDefaultPosition, wxSize(140,-1), 0, 1, 100000, 4 );
     item3->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item12 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1609,7 +1609,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item16 = new wxStaticText( parent, -1, _("Standard TCP Port "), wxDefaultPosition, wxDefaultSize, 0 );
     item15->Add( item16, 0, wxALIGN_CENTER_VERTICAL, 10 );
 
-    wxSpinCtrl *item17 = new wxSpinCtrl( parent, IDC_PORT, wxT("4662"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65531, 4662 );
+    wxSpinCtrl *item17 = new wxSpinCtrl( parent, IDC_PORT, wxT("4662"), wxDefaultPosition, wxDefaultSize, 0, 0, 65531, 4662 );
     item17->SetToolTip( _("This is the standard eD2k port and cannot be disabled.") );
     item15->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1622,7 +1622,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxCheckBox *item20 = new wxCheckBox( parent, IDC_UDPENABLE, _("Extended UDP port (Kad / global search) "), wxDefaultPosition, wxDefaultSize, 0 );
     item15->Add( item20, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSpinCtrl *item21 = new wxSpinCtrl( parent, IDC_UDPPORT, wxT("4672"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65535, 4672 );
+    wxSpinCtrl *item21 = new wxSpinCtrl( parent, IDC_UDPPORT, wxT("4672"), wxDefaultPosition, wxDefaultSize, 0, 0, 65535, 4672 );
     item21->SetToolTip( _("This UDP port is used for extended eD2k requests and Kad network") );
     item15->Add( item21, 0, wxALIGN_CENTER, 5 );
 
@@ -1634,7 +1634,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item23 = new wxStaticText( parent, IDC_UPNPTCPPORTTEXT, _("UPnP TCP Port (Optional):"), wxDefaultPosition, wxDefaultSize, 0 );
     item15->Add( item23, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 20 );
 
-    wxSpinCtrl *item24 = new wxSpinCtrl( parent, IDC_UPNPTCPPORT, wxT("50000"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65535, 50000 );
+    wxSpinCtrl *item24 = new wxSpinCtrl( parent, IDC_UPNPTCPPORT, wxT("50000"), wxDefaultPosition, wxDefaultSize, 0, 0, 65535, 50000 );
     item15->Add( item24, 0, wxALIGN_CENTER, 5 );
 
     item13->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
@@ -1659,13 +1659,13 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item29 = new wxStaticText( parent, ID_TEXT, _("Max sources per downloading file:"), wxDefaultPosition, wxDefaultSize, 0 );
     item28->Add( item29, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxSpinCtrl *item30 = new wxSpinCtrl( parent, IDC_MAXSOURCEPERFILE, wxT("300"), wxDefaultPosition, wxSize(100,-1), 0, 40, 5000, 300 );
+    wxSpinCtrl *item30 = new wxSpinCtrl( parent, IDC_MAXSOURCEPERFILE, wxT("300"), wxDefaultPosition, wxDefaultSize, 0, 40, 5000, 300 );
     item28->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
     wxStaticText *item31 = new wxStaticText( parent, ID_TEXT, _("Max simultaneous connections:"), wxDefaultPosition, wxDefaultSize, 0 );
     item28->Add( item31, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxSpinCtrl *item32 = new wxSpinCtrl( parent, IDC_MAXCON, wxT("500"), wxDefaultPosition, wxSize(100,-1), 0, 5, 7500, 500 );
+    wxSpinCtrl *item32 = new wxSpinCtrl( parent, IDC_MAXCON, wxT("500"), wxDefaultPosition, wxDefaultSize, 0, 5, 7500, 500 );
     item28->Add( item32, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0 );
 
     item0->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
@@ -1821,7 +1821,7 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
     item15->SetToolTip( _("Select this if you want aMule to check your disk space") );
     item14->Add( item15, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxSpinCtrl *item16 = new wxSpinCtrl( parent, IDC_MINDISKSPACE, wxT("1"), wxDefaultPosition, wxSize(100,-1), 0, 1, 1000000, 1 );
+    wxSpinCtrl *item16 = new wxSpinCtrl( parent, IDC_MINDISKSPACE, wxT("1"), wxDefaultPosition, wxDefaultSize, 0, 1, 1000000, 1 );
     item16->SetToolTip( _("Enter here the min disk space desired.") );
     item14->Add( item16, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
@@ -1937,7 +1937,7 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item10 = new wxStaticText( parent, -1, _("Download graph scale:"), wxDefaultPosition, wxDefaultSize, 0 );
     item9->Add( item10, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxSpinCtrl *item11 = new wxSpinCtrl( parent, IDC_DOWNLOAD_CAP, wxT("3"), wxDefaultPosition, wxSize(100,-1), 0, 3, 19375, 3 );
+    wxSpinCtrl *item11 = new wxSpinCtrl( parent, IDC_DOWNLOAD_CAP, wxT("3"), wxDefaultPosition, wxDefaultSize, 0, 3, 1000000, 3 );
     item9->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item12 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1946,7 +1946,7 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item13 = new wxStaticText( parent, -1, _("Upload graph scale:"), wxDefaultPosition, wxDefaultSize, 0 );
     item9->Add( item13, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
-    wxSpinCtrl *item14 = new wxSpinCtrl( parent, IDC_UPLOAD_CAP, wxT("3"), wxDefaultPosition, wxSize(100,-1), 0, 3, 19375, 3 );
+    wxSpinCtrl *item14 = new wxSpinCtrl( parent, IDC_UPLOAD_CAP, wxT("3"), wxDefaultPosition, wxDefaultSize, 0, 3, 1000000, 3 );
     item9->Add( item14, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
     wxStaticText *item15 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2044,7 +2044,7 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     wxStaticText *item6 = new wxStaticText( parent, -1, _("Max new connections / 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
-    wxSpinCtrl *item7 = new wxSpinCtrl( parent, IDC_MAXCON5SEC, wxT("20"), wxDefaultPosition, wxSize(100,-1), 0, 5, 500, 20 );
+    wxSpinCtrl *item7 = new wxSpinCtrl( parent, IDC_MAXCON5SEC, wxT("20"), wxDefaultPosition, wxDefaultSize, 0, 5, 500, 20 );
     item4->Add( item7, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item8 = new wxStaticText( parent, IDC_FILEBUFFERSIZE_STATIC, _("File Buffer Size: 240000 bytes"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2200,7 +2200,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     wxStaticText *item8 = new wxStaticText( parent, -1, _("TCP port:"), wxDefaultPosition, wxDefaultSize, 0 );
     item7->Add( item8, 1, wxALIGN_CENTER_VERTICAL|wxRIGHT, 0 );
 
-    wxSpinCtrl *item9 = new wxSpinCtrl( parent, IDC_EXT_CONN_TCP_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
+    wxSpinCtrl *item9 = new wxSpinCtrl( parent, IDC_EXT_CONN_TCP_PORT, wxT("10000"), wxDefaultPosition, wxDefaultSize, 0, 1025, 65535, 10000 );
     item7->Add( item9, 0, wxALIGN_CENTER, 5 );
 
     item1->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
@@ -2261,7 +2261,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     wxStaticText *item26 = new wxStaticText( parent, -1, _("TCP port:"), wxDefaultPosition, wxDefaultSize, 0 );
     item25->Add( item26, 1, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSpinCtrl *item27 = new wxSpinCtrl( parent, IDC_WEB_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
+    wxSpinCtrl *item27 = new wxSpinCtrl( parent, IDC_WEB_PORT, wxT("10000"), wxDefaultPosition, wxDefaultSize, 0, 1025, 65535, 10000 );
     item25->Add( item27, 0, wxALIGN_CENTER, 5 );
 
     item14->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
@@ -2274,7 +2274,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     wxStaticText *item30 = new wxStaticText( parent, IDC_WEBUPNPTCPPORTTEXT, _("Web server UPnP TCP port (Optional)"), wxDefaultPosition, wxDefaultSize, 0 );
     item29->Add( item30, 1, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    wxSpinCtrl *item31 = new wxSpinCtrl( parent, IDC_WEBUPNPTCPPORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
+    wxSpinCtrl *item31 = new wxSpinCtrl( parent, IDC_WEBUPNPTCPPORT, wxT("10000"), wxDefaultPosition, wxDefaultSize, 0, 1025, 65535, 10000 );
     item29->Add( item31, 0, wxALIGN_CENTER, 5 );
 
     item14->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 20 );
@@ -2284,7 +2284,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     wxStaticText *item33 = new wxStaticText( parent, -1, _("Page Refresh Time (in secs)"), wxDefaultPosition, wxDefaultSize, 0 );
     item32->Add( item33, 1, wxALIGN_CENTER, 5 );
 
-    wxSpinCtrl *item34 = new wxSpinCtrl( parent, IDC_WEB_REFRESH_TIMEOUT, wxT("120"), wxDefaultPosition, wxSize(100,-1), 0, 120, 600, 120 );
+    wxSpinCtrl *item34 = new wxSpinCtrl( parent, IDC_WEB_REFRESH_TIMEOUT, wxT("120"), wxDefaultPosition, wxDefaultSize, 0, 120, 600, 120 );
     item32->Add( item34, 0, wxALIGN_CENTER, 5 );
 
     item14->Add( item32, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
