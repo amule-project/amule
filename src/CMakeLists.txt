@@ -194,7 +194,7 @@ if (BUILD_MONOLITHIC)
 
 	if (WIN32)
 		target_sources (amule
-			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc ${CMAKE_SOURCE_DIR}/amule.rc
 		)
 	endif()
 
@@ -291,7 +291,7 @@ if (BUILD_REMOTEGUI)
 
 	if (WIN32)
 		target_sources (amulegui
-			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc ${CMAKE_SOURCE_DIR}/amule.rc
 		)
 	endif()
 
@@ -325,8 +325,50 @@ if (BUILD_REMOTEGUI)
 		)
 	endif()
 
+	if (APPLE)
+		# amulegui is a GUI wxApp (remote-control UI) — bundle it as a
+		# .app so macOS gives it an icon in the Dock, a menu bar and
+		# normal application lifecycle events, matching the monolithic
+		# aMule.app. Shares the same .icns because it's the same visual
+		# identity.
+		set_target_properties (amulegui PROPERTIES
+			MACOSX_BUNDLE TRUE
+			MACOSX_BUNDLE_BUNDLE_NAME "aMuleGUI"
+			MACOSX_BUNDLE_GUI_IDENTIFIER "org.amule.aMuleGUI"
+			MACOSX_BUNDLE_ICON_FILE "amule.icns"
+			MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
+			MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
+			MACOSX_BUNDLE_COPYRIGHT "Copyright 2003-2026 aMule Project"
+			OUTPUT_NAME "aMuleGUI"
+		)
+
+		set (AMULEGUI_ICNS "${CMAKE_SOURCE_DIR}/platforms/MacOSX/aMule-Xcode/amule.icns")
+		target_sources (amulegui PRIVATE ${AMULEGUI_ICNS})
+		set_source_files_properties (${AMULEGUI_ICNS} PROPERTIES
+			MACOSX_PACKAGE_LOCATION "Resources"
+		)
+
+		target_link_libraries (amulegui
+			PRIVATE "-framework CoreServices"
+			PRIVATE "-framework ApplicationServices"
+		)
+
+		# Same ATS opt-out as the monolithic amule.app: wxWebRequest on
+		# macOS is backed by NSURLSession which blocks plaintext HTTP
+		# by default; amulegui uses the same HTTP download path for its
+		# own version checks via CHTTPDownloadThread.
+		add_custom_command (TARGET amulegui POST_BUILD
+			COMMAND /usr/bin/plutil -replace NSAppTransportSecurity
+				-json "{\"NSAllowsArbitraryLoads\": true}"
+				"$<TARGET_BUNDLE_CONTENT_DIR:amulegui>/Info.plist"
+			COMMENT "Opting aMuleGUI.app out of App Transport Security"
+			VERBATIM
+		)
+	endif()
+
 	install (TARGETS amulegui
 		RUNTIME DESTINATION bin
+		BUNDLE DESTINATION .
 	)
 endif()
 
