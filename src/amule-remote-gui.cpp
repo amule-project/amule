@@ -119,6 +119,8 @@ DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_INIT_DONE)
 BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 	// Core timer
 	EVT_TIMER(ID_CORE_TIMER_EVENT, CamuleRemoteGuiApp::OnPollTimer)
+	// Watchdog on the initial EC connect attempt
+	EVT_TIMER(ID_REMOTE_CONNECT_TIMEOUT_TIMER, CamuleRemoteGuiApp::OnConnectTimeout)
 
 	EVT_CUSTOM(wxEVT_EC_CONNECTION, -1, CamuleRemoteGuiApp::OnECConnection)
 	EVT_CUSTOM(wxEVT_EC_INIT_DONE, -1, CamuleRemoteGuiApp::OnECInitDone)
@@ -219,6 +221,9 @@ void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 	delete poll_timer;
 	poll_timer = NULL;
 
+	delete connect_timeout_timer;
+	connect_timeout_timer = NULL;
+
 #ifdef ASIO_SOCKETS
 	m_AsioService->Stop();
 	delete m_AsioService;
@@ -244,6 +249,7 @@ bool CamuleRemoteGuiApp::OnInit()
 {
 	StartTickTimer();
 	amuledlg = NULL;
+	connect_timeout_timer = NULL;
 
 	// Get theApp
 	theApp = &wxGetApp();
@@ -281,10 +287,38 @@ bool CamuleRemoteGuiApp::OnInit()
 	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
 
 	if (ShowConnectionDialog()) {
+		// Watchdog on the EC connect. When the host is unreachable the TCP
+		// SYN can silently time out over several minutes while the main
+		// loop is running with no visible window, which the OS reports as
+		// "not responding". Fire a shorter timeout so we can show an error
+		// and shut down cleanly instead.
+		connect_timeout_timer = new wxTimer(this, ID_REMOTE_CONNECT_TIMEOUT_TIMER);
+		connect_timeout_timer->StartOnce(15000);
 		AddLogLineNS(_("Going to event loop..."));
 		return true;
 	}
 
+	// User cancelled (or ShowConnectionDialog failed before reaching the
+	// connect step). Tear down the partial init so the Asio thread pool,
+	// poll timer and remote-connect socket don't leak — wx will never
+	// call ShutDown() / OnExit() because the main loop isn't entered when
+	// OnInit() returns false, so we have to unwind manually here. Without
+	// this, wx reports "4 threads were not terminated by the application".
+#ifdef ASIO_SOCKETS
+	if (m_AsioService) {
+		m_AsioService->Stop();
+		delete m_AsioService;
+		m_AsioService = NULL;
+	}
+#endif
+	if (m_connect) {
+		m_connect->Destroy();
+		m_connect = NULL;
+	}
+	if (poll_timer) {
+		delete poll_timer;
+		poll_timer = NULL;
+	}
 	return false;
 }
 
@@ -321,6 +355,12 @@ bool CamuleRemoteGuiApp::ShowConnectionDialog()
 
 
 void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
+	// Connect attempt resolved one way or the other — kill the watchdog.
+	if (connect_timeout_timer) {
+		connect_timeout_timer->Stop();
+		delete connect_timeout_timer;
+		connect_timeout_timer = NULL;
+	}
 	wxECSocketEvent& evt = *((wxECSocketEvent*)&event);
 	AddLogLineNS(_("Remote GUI EC event handler"));
 	wxString reply = evt.GetServerReply();
@@ -341,6 +381,24 @@ void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
 		ShutDown(ev);
 		ExitMainLoop();
 	}
+}
+
+
+void CamuleRemoteGuiApp::OnConnectTimeout(wxTimerEvent&)
+{
+	delete connect_timeout_timer;
+	connect_timeout_timer = NULL;
+
+	wxString host = dialog ? dialog->Host() : wxString();
+	long     port = dialog ? dialog->Port() : 0;
+	wxMessageBox(
+		CFormat(_("Connection timed out. Unable to reach %s:%d within the allotted time.\nPlease check the host, port and that aMule is running with External Connections enabled."))
+			% host % port,
+		_("ERROR"), wxOK | wxICON_ERROR);
+
+	wxCloseEvent ev;
+	ShutDown(ev);
+	ExitMainLoop();
 }
 
 

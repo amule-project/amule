@@ -622,6 +622,12 @@ public:
 
 class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase, public CamuleAppCommon {
 	wxTimer*	poll_timer;
+	// Watchdog on the initial EC connect attempt. Started when the user
+	// clicks OK on the connection dialog; fires if no OnECConnection
+	// event has arrived within the timeout, so a wrong host / firewalled
+	// daemon doesn't leave amulegui "not responding" indefinitely with
+	// no visible window while TCP SYN silently times out over minutes.
+	wxTimer*	connect_timeout_timer;
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
@@ -630,6 +636,7 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase, public CamuleAppC
 	int OnExit();
 
 	void OnPollTimer(wxTimerEvent& evt);
+	void OnConnectTimeout(wxTimerEvent& evt);
 
 	void OnECConnection(wxEvent& event);
 	void OnECInitDone(wxEvent& event);
