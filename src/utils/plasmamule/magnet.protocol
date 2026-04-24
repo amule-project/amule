@@ -1,6 +1,0 @@
-[Protocol]
-exec=plasmamule-engine-feeder %U
-protocol=magnet
-input=none
-output=none
-helper=true

@@ -64,10 +64,6 @@ if (BUILD_CAS)
 	include (cmake/getopt_long.cmake)
 endif()
 
-if (BUILD_PLASMAMULE)
-	find_package (Qt4 COMPONENTS QtCore QtGUI REQUIRED)
-endif()
-
 if (BUILD_WEBSERVER OR NEED_ZLIB)
 	include (cmake/zlib.cmake)
 endif()
@@ -201,10 +197,6 @@ message (STATUS "
 	Should C aMule Statistics (CAS) be built?			${BUILD_CAS}
 	Should aMule GUI Statistics (wxCas) be built?			${BUILD_WXCAS}"
 )
-
-if (UNIX)
-	message ("	Should xas XChat2 plugin be installed?				${BUILD_XAS}")
-endif()
 
 message ("
 	**** General Libraries and Tools ****
