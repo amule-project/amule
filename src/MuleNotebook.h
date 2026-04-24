@@ -32,22 +32,12 @@
 wxDECLARE_EVENT(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING, wxEvent);
 wxDECLARE_EVENT(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED, wxEvent);
 
-#define EVT_MULENOTEBOOK_PAGE_CLOSING(id, fn)						\
-	DECLARE_EVENT_TABLE_ENTRY(							\
-		wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING,					\
-		id,									\
-		-1,									\
-		(wxObjectEventFunction)(wxEventFunction)(wxNotebookEventFunction) &fn,  \
-		NULL                                                                    \
-	),
-#define EVT_MULENOTEBOOK_ALL_PAGES_CLOSED(id, fn)					\
-	DECLARE_EVENT_TABLE_ENTRY(							\
-		wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED,				\
-		id,									\
-		-1,									\
-		(wxObjectEventFunction)(wxEventFunction)(wxNotebookEventFunction) &fn,  \
-		NULL                                                                    \
-	),
+#define EVT_MULENOTEBOOK_PAGE_CLOSING(id, fn) \
+	wx__DECLARE_EVT1(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING, id, \
+		wxEVENT_HANDLER_CAST(wxNotebookEventFunction, fn))
+#define EVT_MULENOTEBOOK_ALL_PAGES_CLOSED(id, fn) \
+	wx__DECLARE_EVT1(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED, id, \
+		wxEVENT_HANDLER_CAST(wxNotebookEventFunction, fn))
 
 
 class wxWindow;

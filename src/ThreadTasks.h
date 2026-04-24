@@ -311,27 +311,19 @@ typedef void (wxEvtHandler::*MuleAllocFinishedEventFunction)(CAllocFinishedEvent
 
 //! Event-handler for completed hashings of new shared files and partfiles.
 #define EVT_MULE_HASHING(func) \
-	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_HASHING, -1, -1, \
-	(wxObjectEventFunction) (wxEventFunction) \
-	wxStaticCastEvent(MuleHashingEventFunction, &func), (wxObject*) NULL),
+	wx__DECLARE_EVT0(MULE_EVT_HASHING, wxEVENT_HANDLER_CAST(MuleHashingEventFunction, func))
 
 //! Event-handler for completed hashings of files that were missing a AICH hash.
 #define EVT_MULE_AICH_HASHING(func) \
-	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_AICH_HASHING, -1, -1, \
-	(wxObjectEventFunction) (wxEventFunction) \
-	wxStaticCastEvent(MuleHashingEventFunction, &func), (wxObject*) NULL),
+	wx__DECLARE_EVT0(MULE_EVT_AICH_HASHING, wxEVENT_HANDLER_CAST(MuleHashingEventFunction, func))
 
 //! Event-handler for completion of part-files.
 #define EVT_MULE_FILE_COMPLETED(func) \
-	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_FILE_COMPLETED, -1, -1, \
-	(wxObjectEventFunction) (wxEventFunction) \
-	wxStaticCastEvent(MuleCompletionEventFunction, &func), (wxObject*) NULL),
+	wx__DECLARE_EVT0(MULE_EVT_FILE_COMPLETED, wxEVENT_HANDLER_CAST(MuleCompletionEventFunction, func))
 
 //! Event-handler for partfile preallocation finished events.
 #define EVT_MULE_ALLOC_FINISHED(func) \
-	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_ALLOC_FINISHED, -1, -1, \
-	(wxObjectEventFunction) (wxEventFunction) \
-	wxStaticCastEvent(MuleAllocFinishedEventFunction, &func), (wxObject*) NULL),
+	wx__DECLARE_EVT0(MULE_EVT_ALLOC_FINISHED, wxEVENT_HANDLER_CAST(MuleAllocFinishedEventFunction, func))
 
 
 #endif // TASKS_H

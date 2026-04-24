@@ -84,9 +84,7 @@ wxDECLARE_EVENT(MULE_EVT_TIMER, wxEvent);
 typedef void (wxEvtHandler::*MuleTimerEventFunction)(CTimerEvent&);
 
 #define EVT_MULE_TIMER(id, func) \
-	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_TIMER, id, -1, \
-	(wxObjectEventFunction) (wxEventFunction) \
-	wxStaticCastEvent(MuleTimerEventFunction, &func), (wxObject*) NULL),
+	wx__DECLARE_EVT1(MULE_EVT_TIMER, id, wxEVENT_HANDLER_CAST(MuleTimerEventFunction, func))
 
 #endif /* TIMER_H */
 // File_checked_for_headers

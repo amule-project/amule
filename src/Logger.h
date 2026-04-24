@@ -372,11 +372,9 @@ private:
 
 typedef void (wxEvtHandler::*MuleLogEventFunction)(CLoggingEvent&);
 
-//! Event-handler for completed hashings of new shared files and partfiles.
+//! Event-handler for log-line events dispatched to GUI / stdout sinks.
 #define EVT_MULE_LOGGING(func) \
-	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_LOGLINE, -1, -1, \
-	(wxObjectEventFunction) (wxEventFunction) \
-	wxStaticCastEvent(MuleLogEventFunction, &func), (wxObject*) NULL),
+	wx__DECLARE_EVT0(MULE_EVT_LOGLINE, wxEVENT_HANDLER_CAST(MuleLogEventFunction, func))
 
 
 // access the logfile for EC

@@ -82,11 +82,9 @@ private:
 
 typedef void (wxEvtHandler::*MuleInternalEventFunction)(CMuleInternalEvent&);
 
-//! Event-handler for completed hashings of new shared files and partfiles.
+//! Event-handler for internal core events.
 #define EVT_MULE_INTERNAL(event, id, func) \
-	DECLARE_EVENT_TABLE_ENTRY(event, id, -1, \
-	(wxObjectEventFunction) (wxEventFunction) \
-	wxStaticCastEvent(MuleInternalEventFunction, &func), (wxObject*) NULL),
+	wx__DECLARE_EVT1(event, id, wxEVENT_HANDLER_CAST(MuleInternalEventFunction, func))
 
 
 #endif /* INTERNALEVENTS_H */
