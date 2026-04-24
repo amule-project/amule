@@ -92,7 +92,7 @@ bool CMuleNotebook::DeletePage(int nPage)
 		if (page == GetPageCount()) {
 			page--;
 		}
-		wxNotebookEvent event( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, GetId(), page );
+		wxNotebookEvent event( wxEVT_NOTEBOOK_PAGE_CHANGED, GetId(), page );
 		event.SetEventObject(this);
 		ProcessEvent( event );
 	} else {

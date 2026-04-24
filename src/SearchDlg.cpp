@@ -65,10 +65,10 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_NOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK, CSearchDlg::OnSearchPageChanged)
 
 	// Event handlers for the parameter fields getting changed
-	EVT_CUSTOM( wxEVT_COMMAND_TEXT_UPDATED,     IDC_SEARCHNAME, CSearchDlg::OnFieldChanged)
-	EVT_CUSTOM( wxEVT_COMMAND_TEXT_UPDATED,     IDC_EDITSEARCHEXTENSION, CSearchDlg::OnFieldChanged)
-	EVT_CUSTOM( wxEVT_COMMAND_SPINCTRL_UPDATED, wxID_ANY, CSearchDlg::OnFieldChanged)
-	EVT_CUSTOM( wxEVT_COMMAND_CHOICE_SELECTED, wxID_ANY, CSearchDlg::OnFieldChanged)
+	EVT_CUSTOM( wxEVT_TEXT,     IDC_SEARCHNAME, CSearchDlg::OnFieldChanged)
+	EVT_CUSTOM( wxEVT_TEXT,     IDC_EDITSEARCHEXTENSION, CSearchDlg::OnFieldChanged)
+	EVT_CUSTOM( wxEVT_SPINCTRL, wxID_ANY, CSearchDlg::OnFieldChanged)
+	EVT_CUSTOM( wxEVT_CHOICE, wxID_ANY, CSearchDlg::OnFieldChanged)
 
 	// Event handlers for the filter fields getting changed.
 	EVT_TEXT_ENTER(ID_FILTER_TEXT,	CSearchDlg::OnFilteringChange)

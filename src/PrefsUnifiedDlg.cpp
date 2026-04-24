@@ -149,7 +149,7 @@ static void SendCheckBoxEvent(wxWindow* parent, int id)
 	wxCheckBox* widget = CastByID(id, parent, wxCheckBox);
 	wxCHECK_RET(widget, "Invalid widget in CreateEvent");
 
-	wxCommandEvent evt(wxEVT_COMMAND_CHECKBOX_CLICKED, id);
+	wxCommandEvent evt(wxEVT_CHECKBOX, id);
 	evt.SetInt(widget->IsChecked() ? 1 : 0);
 
 	parent->GetEventHandler()->ProcessEvent(evt);
