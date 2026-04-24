@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'aMule-Xcode' target in the 'aMule-Xcode' project
-//
-
-#ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
-#endif

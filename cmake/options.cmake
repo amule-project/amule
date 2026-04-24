@@ -37,15 +37,9 @@ option (BUILD_ED2K "compile aMule ed2k links handler" ON)
 option (BUILD_EVERYTHING "compile all parts of aMule")
 option (BUILD_FILEVIEW "compile aMule file viewer for console (EXPERIMENTAL)")
 option (BUILD_MONOLITHIC "enable building of the monolithic aMule app" ON)
-
-if (UNIX)
-	option (BUILD_PLASMAMULE "compile aMule plasma applet and engine")
-endif()
-
 option (BUILD_REMOTEGUI "compile aMule remote GUI")
 option (BUILD_WEBSERVER "compile aMule WebServer")
 option (BUILD_WXCAS "compile aMule GUI Statistics")
-option (BUILD_XAS "install xas XChat2 plugin")
 option (BUILD_TESTING "Run Tests after compile" ON)
 
 if (PREFIX)
@@ -67,15 +61,9 @@ if (BUILD_EVERYTHING)
 
 	set (BUILD_DAEMON ON CACHE BOOL "compile aMule daemon version" FORCE)
 	set (BUILD_FILEVIEW ON CACHE BOOL "compile aMule file viewer for console (EXPERIMENTAL)" FORCE)
-
-#	if (UNIX)
-#		set (BUILD_PLASMAMULE ON CACHE BOOL )
-#	endif()
-
 	set (BUILD_REMOTEGUI ON CACHE BOOL "compile aMule remote GUI" FORCE)
 	set (BUILD_WEBSERVER ON CACHE BOOL "compile aMule WebServer" FORCE)
 	set (BUILD_WXCAS ON CACHE BOOL "compile aMule GUI Statistics" FORCE)
-	set (BUILD_XAS ON CACHE BOOL "install xas XChat2 plugin" FORCE)
 endif()
 
 if (BUILD_AMULECMD)
@@ -98,10 +86,6 @@ endif()
 if (BUILD_ALC)
 	set (BUILD_UTIL TRUE)
 	set (wx_NEED_GUI TRUE)
-endif()
-
-if (BUILD_XAS)
-	set (BUILD_UTIL TRUE)
 endif()
 
 if (BUILD_DAEMON)
@@ -137,10 +121,6 @@ endif()
 
 if (BUILD_MONOLITHIC OR BUILD_REMOTEGUI)
 	set (INSTALL_SKINS TRUE)
-endif()
-
-if (BUILD_PLASMAMULE)
-	set (BUILD_UTIL TRUE)
 endif()
 
 if (BUILD_REMOTEGUI)

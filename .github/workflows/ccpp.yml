@@ -46,25 +46,6 @@ env:
     mingw-w64-x86_64-wxwidgets3.2-msw
     mingw-w64-x86_64-zlib
 
-  autotools_config_flags: |-
-    --enable-alc \
-    --enable-alcc \
-    --enable-amule-gui \
-    --enable-amule-daemon \
-    --enable-amulecmd \
-    --enable-cas \
-    --enable-geoip \
-    --enable-webserver \
-    --enable-wxcas \
-    --with-boost
-
-  # BUILD_PLASMAMULE requires Qt4
-  # CMAKE_BUILD_TYPE=Debug: the unit tests include ASSERT_RAISES() cases that
-  # exercise wxASSERT-gated code paths (e.g. CFormat's format-specifier type
-  # mismatch detection). wxASSERT is a no-op in Release, so the expected
-  # assertion exception never fires and those tests fail. CI has always been
-  # Debug in practice (the old .git-sniff in CMakeLists.txt kicked in here);
-  # make that explicit now that the default is Release.
   cmake_common_config_flags: |-
     -B build \
     -DCMAKE_BUILD_TYPE=Debug \
@@ -76,7 +57,6 @@ env:
     -DBUILD_WXCAS=YES \
     -DBUILD_ED2K=YES \
     -DBUILD_MONOLITHIC=YES \
-    -DBUILD_PLASMAMULE=0 \
     -DBUILD_REMOTEGUI=YES \
     -DBUILD_TESTING=YES \
     -DBUILD_WEBSERVER=YES \
@@ -103,32 +83,6 @@ env:
     --timeout 10
 
 jobs:
-  build_autotools_ubuntu:
-    name: Build Autotools Ubuntu
-    # Add this to temporarily suppress a build
-    # if: false
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: install deps
-        run: |
-          sudo apt-get update
-          # Comment this to avoid intermittent problems with the Snap store.
-          # sudo apt-get upgrade
-          sudo apt-get install autopoint
-      - name: autogen
-        run: ./autogen.sh
-      - name: install build deps
-        run: |
-          sudo apt-get install devscripts equivs
-          sudo mk-build-deps -i
-      - name: configure
-        run: ./configure ${{ env.autotools_config_flags }}
-      - name: make
-        run: make
-      - name: make check
-        run: make check
-
   build_cmake_ubuntu:
     name: Build CMake Ubuntu
     runs-on: ubuntu-latest

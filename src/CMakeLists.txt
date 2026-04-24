@@ -237,7 +237,7 @@ if (BUILD_MONOLITHIC)
 			OUTPUT_NAME "aMule"
 		)
 
-		set (AMULE_ICNS "${CMAKE_SOURCE_DIR}/platforms/MacOSX/aMule-Xcode/amule.icns")
+		set (AMULE_ICNS "${CMAKE_SOURCE_DIR}/platforms/MacOSX/amule.icns")
 		target_sources (amule PRIVATE ${AMULE_ICNS})
 		set_source_files_properties (${AMULE_ICNS} PROPERTIES
 			MACOSX_PACKAGE_LOCATION "Resources"
@@ -342,7 +342,7 @@ if (BUILD_REMOTEGUI)
 			OUTPUT_NAME "aMuleGUI"
 		)
 
-		set (AMULEGUI_ICNS "${CMAKE_SOURCE_DIR}/platforms/MacOSX/aMule-Xcode/amule.icns")
+		set (AMULEGUI_ICNS "${CMAKE_SOURCE_DIR}/platforms/MacOSX/amule.icns")
 		target_sources (amulegui PRIVATE ${AMULEGUI_ICNS})
 		set_source_files_properties (${AMULEGUI_ICNS} PROPERTIES
 			MACOSX_PACKAGE_LOCATION "Resources"
