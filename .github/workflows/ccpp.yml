@@ -48,6 +48,7 @@ env:
 
   cmake_common_config_flags: |-
     -B build \
+    -DCMAKE_BUILD_TYPE=Debug \
     -DBUILD_ALC=YES \
     -DBUILD_ALCC=YES \
     -DBUILD_AMULECMD=YES \
