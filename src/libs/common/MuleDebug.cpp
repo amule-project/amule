@@ -295,7 +295,7 @@ static wxString demangle(const wxString& function)
 		char *demangled = abi::__cxa_demangle(function.mb_str(), NULL, NULL, &status);
 
 		if (!status) {
-			result = wxConvCurrent->cMB2WX(demangled);
+			result = wxConvLibc.cMB2WX(demangled);
 		}
 
 		if (demangled) {
@@ -335,7 +335,7 @@ wxString get_backtrace(unsigned n)
 	wxString AllAddresses;
 
 	for (int i = 0; i < num_entries; ++i) {
-		wxString wxBtString = wxConvCurrent->cMB2WX(bt_strings[i]);
+		wxString wxBtString = wxConvLibc.cMB2WX(bt_strings[i]);
 		int posLPar = wxBtString.Find('(');
 		int posRPar = wxBtString.Find(')');
 		int posLBra = wxBtString.Find('[');
@@ -399,14 +399,14 @@ wxString get_backtrace(unsigned n)
 		bfd_map_over_sections(s_abfd, get_file_line_info, (void*)addr);
 
 		if (s_found) {
-			wxString function = wxConvCurrent->cMB2WX(s_function_name);
+			wxString function = wxConvLibc.cMB2WX(s_function_name);
 			wxString demangled = demangle(function);
 			if (!demangled.IsEmpty()) {
 				function = demangled;
 				funcname[i] = demangled;
 			}
-			out.Insert(wxConvCurrent->cMB2WX(s_function_name),i*2);
-			out.Insert(CFormat("%s:%u") % wxString(wxConvCurrent->cMB2WX(s_file_name)) % s_line_number, i*2+1);
+			out.Insert(wxConvLibc.cMB2WX(s_function_name),i*2);
+			out.Insert(CFormat("%s:%u") % wxString(wxConvLibc.cMB2WX(s_file_name)) % s_line_number, i*2+1);
 		} else {
 			out.Insert("??",i*2);
 			out.Insert("??",i*2+1);
