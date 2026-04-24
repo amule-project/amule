@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=aMule
-Exec=amule %u
+Exec=env GDK_BACKEND=x11 amule %u
 Icon=amule
 Terminal=false
 Type=Application
