@@ -68,9 +68,7 @@ public:
 	wxString Comment;
 public:
 	SFileRating(const wxString &u, const wxString &f, sint16 r, const wxString &c);
-	SFileRating(const SFileRating &fr);
 	SFileRating(const CUpDownClient &client);
-	~SFileRating();
 };
 
 typedef std::list<SFileRating> FileRatingList;

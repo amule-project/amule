@@ -56,6 +56,8 @@ class CMuleException
 public:
 	CMuleException(const wxString& type, const wxString& desc)
 		: m_what(type + ": " + desc) {}
+	CMuleException(const CMuleException&) = default;
+	CMuleException& operator=(const CMuleException&) = default;
 	virtual ~CMuleException() throw() {}
 	virtual const wxString& what() const throw() { return m_what; }
 

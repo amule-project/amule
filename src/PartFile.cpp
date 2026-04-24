@@ -89,16 +89,6 @@ Comment(c)
 }
 
 
-SFileRating::SFileRating(const SFileRating &fr)
-:
-UserName(fr.UserName),
-FileName(fr.FileName),
-Rating(fr.Rating),
-Comment(fr.Comment)
-{
-}
-
-
 #ifndef CLIENT_GUI
 SFileRating::SFileRating(const CUpDownClient &client)
 :
@@ -109,11 +99,6 @@ Comment(client.GetFileComment())
 {
 }
 #endif
-
-
-SFileRating::~SFileRating()
-{
-}
 
 
 // PartFileBufferedData is defined in PartFile.h

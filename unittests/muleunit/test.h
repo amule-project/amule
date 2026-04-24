@@ -23,6 +23,7 @@
 #define TEST_H
 
 #include <exception>
+#include <memory>
 
 #include <wx/string.h>
 #include <list>
@@ -62,16 +63,14 @@ struct CTestFailureException : public std::exception
 	/** Constructor, takes a snapshot of the current context, and adds the given information. */
 	CTestFailureException(const wxString& msg, const wxString& file, long lineNumber);
 
-	~CTestFailureException() throw();
-
 	/** Prints the context backtrace for the location where the exception was thrown. */
 	void PrintBT() const;
 
-	virtual const char* what () const throw ();
+	virtual const char* what () const noexcept;
 private:
 	//! Pointer to struct containing a snapshot of the contexts
 	//! taken at the time the exception was created.
-	struct BTList* m_bt;
+	std::shared_ptr<struct BTList> m_bt;
 
 	//! The message passed in the constructor.
 	std::string m_message;

@@ -56,6 +56,7 @@ public:
 		const CUInt128 &target = CKademlia::GetPrefs()->GetKadID());
 
 	CContact(const CContact& k1);
+	CContact& operator=(const CContact& k1) = default;
 
 	const CUInt128& GetClientID() const throw()		{ return m_clientID; }
 	void SetClientID(const CUInt128& clientID) throw()	{ m_clientID = clientID; m_distance = CKademlia::GetPrefs()->GetKadID() ^ clientID; }

@@ -191,6 +191,8 @@ protected:
 ///CAICHUntrustedHashs
 class CAICHUntrustedHash {
 public:
+	CAICHUntrustedHash() = default;
+	CAICHUntrustedHash(const CAICHUntrustedHash&) = default;
 	CAICHUntrustedHash& operator=(const CAICHUntrustedHash& k1)
 	{
 		m_adwIpsSigning = k1.m_adwIpsSigning;
@@ -212,6 +214,7 @@ public:
 		m_nPart = 0;
 		m_pPartFile = NULL;
 	}
+	CAICHRequestedData(const CAICHRequestedData&) = default;
 	CAICHRequestedData& operator=(const CAICHRequestedData& k1)
 	{
 		m_nPart = k1.m_nPart;
