@@ -161,8 +161,7 @@ protected:
 	void OnHitButton ( wxCommandEvent & event );
 	void OnAbsHitButton ( wxCommandEvent & event );
 
-	DECLARE_EVENT_TABLE ()
-
+	wxDECLARE_EVENT_TABLE();
 public:
 	/// Constructor
 	WxCasFrame ( const wxString& title );

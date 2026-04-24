@@ -52,7 +52,7 @@
 /******************* Event Table ********************/
 /****************************************************/
 
-BEGIN_EVENT_TABLE(CMuleTrayIcon, wxTaskBarIcon)
+wxBEGIN_EVENT_TABLE(CMuleTrayIcon, wxTaskBarIcon)
 	EVT_TASKBAR_LEFT_DCLICK(CMuleTrayIcon::SwitchShow)
 	EVT_MENU( TRAY_MENU_EXIT, CMuleTrayIcon::Close)
 	EVT_MENU( TRAY_MENU_CONNECT, CMuleTrayIcon::ServerConnection)
@@ -71,7 +71,7 @@ BEGIN_EVENT_TABLE(CMuleTrayIcon, wxTaskBarIcon)
 	EVT_MENU( DOWNLOAD_ITEM4, CMuleTrayIcon::SetDownloadSpeed)
 	EVT_MENU( DOWNLOAD_ITEM5, CMuleTrayIcon::SetDownloadSpeed)
 	EVT_MENU( DOWNLOAD_ITEM6, CMuleTrayIcon::SetDownloadSpeed)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 /****************************************************/
 /************ Constructor / Destructor **************/

@@ -94,9 +94,9 @@ CProxyEventHandler::CProxyEventHandler()
 {
 }
 
-BEGIN_EVENT_TABLE(CProxyEventHandler, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(CProxyEventHandler, wxEvtHandler)
 	EVT_SOCKET(ID_PROXY_SOCKET_EVENT, CProxyEventHandler::ProxySocketHandler)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 //
 // THE one and only Event Handler

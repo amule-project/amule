@@ -85,7 +85,7 @@ protected:
 	void	OnAllPagesClosed(wxNotebookEvent& evt);
 	void	CheckNewButtonsState();
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 
 	//! Variable used to ensure that the popup menu doesn't get displayed twice.
 	wxMenu* m_menu;

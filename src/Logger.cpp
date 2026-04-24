@@ -298,9 +298,9 @@ void CLogger::FlushApplog()
 
 CLogger theLogger;
 
-BEGIN_EVENT_TABLE(CLogger, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(CLogger, wxEvtHandler)
 	EVT_MULE_LOGGING(CLogger::OnLoggingEvent)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CLoggerTarget::CLoggerTarget()

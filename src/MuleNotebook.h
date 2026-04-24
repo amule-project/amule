@@ -145,7 +145,7 @@ protected:
 	//! The pointer to the widget which would receive right-click events or NULL.
 	wxWindow*	m_popup_widget;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #ifdef __WINDOWS__

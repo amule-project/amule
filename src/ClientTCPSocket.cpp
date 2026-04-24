@@ -69,12 +69,12 @@ public:
 
 private:
 	void ClientTCPSocketHandler(wxSocketEvent& event);
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
-BEGIN_EVENT_TABLE(CClientTCPSocketHandler, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(CClientTCPSocketHandler, wxEvtHandler)
 	EVT_SOCKET(ID_CLIENTTCPSOCKET_EVENT, CClientTCPSocketHandler::ClientTCPSocketHandler)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 void CClientTCPSocketHandler::ClientTCPSocketHandler(wxSocketEvent& event)
 {

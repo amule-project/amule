@@ -168,7 +168,7 @@ private:
 
 	wxArrayString m_searchchoices;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif

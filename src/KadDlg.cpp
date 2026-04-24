@@ -42,7 +42,7 @@
 #endif
 
 
-BEGIN_EVENT_TABLE(CKadDlg, wxPanel)
+wxBEGIN_EVENT_TABLE(CKadDlg, wxPanel)
 	EVT_TEXT(ID_NODE_IP1, CKadDlg::OnFieldsChange)
 	EVT_TEXT(ID_NODE_IP2, CKadDlg::OnFieldsChange)
 	EVT_TEXT(ID_NODE_IP3, CKadDlg::OnFieldsChange)
@@ -55,7 +55,7 @@ BEGIN_EVENT_TABLE(CKadDlg, wxPanel)
 	EVT_BUTTON(ID_KNOWNNODECONNECT, CKadDlg::OnBnClickedBootstrapKnown)
 	EVT_BUTTON(ID_KADDISCONNECT, CKadDlg::OnBnClickedDisconnectKad)
 	EVT_BUTTON(ID_UPDATEKADLIST, CKadDlg::OnBnClickedUpdateNodeList)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 

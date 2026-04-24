@@ -115,7 +115,7 @@ public:
 private:
 	// event handlers (these functions should _not_ be virtual)
 	void OnServerEvent(wxSocketEvent& event);
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 #endif
 };
 

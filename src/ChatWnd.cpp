@@ -39,7 +39,7 @@
 #include "muuli_wdr.h"		// Needed for messagePage
 #include "OtherFunctions.h"
 
-BEGIN_EVENT_TABLE(CChatWnd, wxPanel)
+wxBEGIN_EVENT_TABLE(CChatWnd, wxPanel)
 	EVT_RIGHT_DOWN(CChatWnd::OnNMRclickChatTab)
 
 	EVT_MENU(MP_CLOSE_TAB,			CChatWnd::OnPopupClose)
@@ -51,7 +51,7 @@ BEGIN_EVENT_TABLE(CChatWnd, wxPanel)
 	EVT_BUTTON(IDC_CSEND, CChatWnd::OnBnClickedCsend)
 	EVT_BUTTON(IDC_CCLOSE, CChatWnd::OnBnClickedCclose)
 	EVT_MULENOTEBOOK_ALL_PAGES_CLOSED(IDC_CHATSELECTOR, CChatWnd::OnAllPagesClosed)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CChatWnd::CChatWnd(wxWindow* pParent)

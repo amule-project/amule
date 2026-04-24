@@ -49,7 +49,7 @@ protected:
 	void OnPaint(wxPaintEvent& evt);
 	void OnSize(wxSizeEvent& evt);
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 
 	RECT m_rectClient;
 	wxBrush m_brushBack,m_brushFrame;

@@ -735,7 +735,7 @@ class CWebServerBase : public wxEvtHandler {
 #else
 		void OnWebSocketServerEvent(wxSocketEvent& event);
 		void OnWebSocketEvent(wxSocketEvent& event);
-		DECLARE_EVENT_TABLE();
+		wxDECLARE_EVENT_TABLE();
 #endif
 	public:
 		CWebServerBase(CamulewebApp *webApp, const wxString& templateDir);

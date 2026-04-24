@@ -54,7 +54,7 @@ protected:
 	void	RetrySel(wxCommandEvent& event);
 	void	RemoveSel(wxCommandEvent& event);
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 
 	static CPartFileConvertDlg*	s_convertgui;
 };

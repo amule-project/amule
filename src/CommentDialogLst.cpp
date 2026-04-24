@@ -33,10 +33,10 @@
 
 
 
-BEGIN_EVENT_TABLE(CCommentDialogLst,wxDialog)
+wxBEGIN_EVENT_TABLE(CCommentDialogLst,wxDialog)
 	EVT_BUTTON(IDCOK,CCommentDialogLst::OnBnClickedApply)
 	EVT_BUTTON(IDCREF,CCommentDialogLst::OnBnClickedRefresh)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 /*

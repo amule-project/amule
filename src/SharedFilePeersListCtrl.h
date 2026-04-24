@@ -61,7 +61,7 @@ private:
 
 	bool IsShowingDownloadSources() const { return false; }
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif

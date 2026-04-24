@@ -95,7 +95,7 @@ private:
 
 #define m_ImageList theApp->amuledlg->m_imagelist
 
-BEGIN_EVENT_TABLE(CGenericClientListCtrl, CMuleListCtrl)
+wxBEGIN_EVENT_TABLE(CGenericClientListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_ACTIVATED(wxID_ANY,	CGenericClientListCtrl::OnItemActivated)
 	EVT_LIST_ITEM_RIGHT_CLICK(wxID_ANY, CGenericClientListCtrl::OnMouseRightClick)
 	EVT_LIST_ITEM_MIDDLE_CLICK(wxID_ANY, CGenericClientListCtrl::OnMouseMiddleClick)
@@ -108,7 +108,7 @@ BEGIN_EVENT_TABLE(CGenericClientListCtrl, CMuleListCtrl)
 	EVT_MENU( MP_FRIENDSLOT,		CGenericClientListCtrl::OnSetFriendslot )
 	EVT_MENU( MP_SENDMESSAGE,		CGenericClientListCtrl::OnSendMessage )
 	EVT_MENU( MP_DETAIL,			CGenericClientListCtrl::OnViewClientInfo )
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 //! This listtype is used when gathering the selected items.
 typedef std::list<ClientCtrlItem_Struct*>	ItemList;

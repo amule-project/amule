@@ -79,7 +79,7 @@ public:
 	virtual wxString SetLocale(const wxString& language);
 
 	void OnNotifyEvent(CMuleGUIEvent& evt);
-	DECLARE_EVENT_TABLE();
+	wxDECLARE_EVENT_TABLE();
 
 private:
 	virtual bool	OnInit();

@@ -35,10 +35,10 @@
 #include <common/StringFunctions.h> // Needed for unicode2char
 
 
-BEGIN_EVENT_TABLE(CAddFriend, wxDialog)
+wxBEGIN_EVENT_TABLE(CAddFriend, wxDialog)
 	EVT_BUTTON(ID_ADDFRIEND, CAddFriend::OnAddBtn)
 	EVT_BUTTON(ID_CLOSEDLG, CAddFriend::OnCloseBtn)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CAddFriend::CAddFriend(wxWindow* parent)

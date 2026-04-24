@@ -94,7 +94,7 @@ private:
 
 	wxTreeItemId m_root;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #undef wxTreeItemId

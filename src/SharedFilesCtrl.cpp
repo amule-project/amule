@@ -44,7 +44,7 @@
 #include "TransferWnd.h"		// Needed for CTransferWnd
 
 
-BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
+wxBEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_LIST_ITEM_RIGHT_CLICK(-1, CSharedFilesCtrl::OnRightClick)
 
 	EVT_MENU( MP_PRIOVERYLOW,	CSharedFilesCtrl::OnSetPriority )
@@ -70,7 +70,7 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 
 
 	EVT_CHAR( CSharedFilesCtrl::OnKeyPressed )
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 enum SharedFilesListColumns {
 	ID_SHARED_COL_NAME = 0,

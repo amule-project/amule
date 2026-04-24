@@ -43,7 +43,7 @@ private:
 	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData);
 	void OnSelect(wxListEvent& event);
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 #endif // FILEDETAILLISTCTRL_H
 // File_checked_for_headers

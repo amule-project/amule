@@ -36,11 +36,11 @@
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 
 
-BEGIN_EVENT_TABLE(CDirectoryTreeCtrl, wxTreeCtrl)
+wxBEGIN_EVENT_TABLE(CDirectoryTreeCtrl, wxTreeCtrl)
 	EVT_TREE_ITEM_RIGHT_CLICK(wxID_ANY,	CDirectoryTreeCtrl::OnRButtonDown)
 	EVT_TREE_ITEM_ACTIVATED(wxID_ANY,	CDirectoryTreeCtrl::OnItemActivated)
 	EVT_TREE_ITEM_EXPANDED(wxID_ANY,	CDirectoryTreeCtrl::OnItemExpanding)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 class CItemData : public wxTreeItemData

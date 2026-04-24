@@ -95,7 +95,7 @@ protected:
 	void OnClear( wxCommandEvent& evt );
 
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif

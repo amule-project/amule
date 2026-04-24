@@ -238,7 +238,7 @@ private:
 	void SetMessagesTool();
 	void OnKeyPressed(wxKeyEvent& evt);
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif

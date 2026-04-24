@@ -31,9 +31,9 @@
 
 #include "EditServerListDlg.h"	// Interface declarations
 
-BEGIN_EVENT_TABLE(EditServerListDlg, wxDialog)
+wxBEGIN_EVENT_TABLE(EditServerListDlg, wxDialog)
     EVT_BUTTON(wxID_OK, EditServerListDlg::OnOK)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 EditServerListDlg::EditServerListDlg(wxWindow *parent,

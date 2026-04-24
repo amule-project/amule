@@ -483,7 +483,7 @@ private:
 	// True while sorting.
 	bool m_isSorting;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif // MULELISTCTRL_H

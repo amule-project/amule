@@ -39,7 +39,7 @@
 #include "SafeFile.h"
 #include "FriendList.h"		// Needed for the friends list
 
-BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
+wxBEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
 	EVT_RIGHT_DOWN(CFriendListCtrl::OnRightClick)
 	EVT_LIST_ITEM_ACTIVATED(ID_FRIENDLIST, CFriendListCtrl::OnItemActivated)
 
@@ -51,7 +51,7 @@ BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
 	EVT_MENU(MP_FRIENDSLOT, CFriendListCtrl::OnSetFriendslot)
 
 	EVT_CHAR(CFriendListCtrl::OnKeyPressed)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CFriendListCtrl::CFriendListCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags)

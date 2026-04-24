@@ -286,7 +286,7 @@ AlcFrame::~AlcFrame ()
 {}
 
 /// Events table
-BEGIN_EVENT_TABLE (AlcFrame, wxFrame)
+wxBEGIN_EVENT_TABLE (AlcFrame, wxFrame)
 EVT_TOOL (ID_BAR_OPEN, AlcFrame::OnBarOpen)
 EVT_TOOL (ID_BAR_SAVEAS, AlcFrame::OnBarSaveAs)
 EVT_TOOL (ID_BAR_COPY, AlcFrame::OnBarCopy)
@@ -299,7 +299,7 @@ EVT_BUTTON (ID_BROWSE_BUTTON, AlcFrame::OnBrowseButton)
 EVT_BUTTON (ID_ADD_BUTTON, AlcFrame::OnAddUrlButton)
 EVT_BUTTON (ID_REMOVE_BUTTON, AlcFrame::OnRemoveUrlButton)
 EVT_BUTTON (ID_CLEAR_BUTTON, AlcFrame::OnClearUrlButton)
-END_EVENT_TABLE ()
+wxEND_EVENT_TABLE ()
 
 /// Toolbar Open button
 void

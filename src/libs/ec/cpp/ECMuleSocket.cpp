@@ -43,12 +43,12 @@ class CECMuleSocketHandler: public wxEvtHandler {
  private:
         void SocketHandler(wxSocketEvent& event);
 
-        DECLARE_EVENT_TABLE()
+        wxDECLARE_EVENT_TABLE();
 };
 
-BEGIN_EVENT_TABLE(CECMuleSocketHandler, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(CECMuleSocketHandler, wxEvtHandler)
         EVT_SOCKET(EC_SOCKET_HANDLER, CECMuleSocketHandler::SocketHandler)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 void CECMuleSocketHandler::SocketHandler(wxSocketEvent& event)
 {

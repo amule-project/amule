@@ -246,7 +246,7 @@ private:
 	//! The files being shown, if any.
 	CKnownFileVector m_knownfiles;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 
 	bool m_showing;
 

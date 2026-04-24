@@ -28,9 +28,9 @@
 
 #define wxLIST_STATE_DESELECTED 0x0000
 
-BEGIN_EVENT_TABLE(CFileDetailListCtrl, CMuleListCtrl)
+wxBEGIN_EVENT_TABLE(CFileDetailListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_SELECTED(IDC_LISTCTRLFILENAMES, CFileDetailListCtrl::OnSelect) // Care for single selection
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CFileDetailListCtrl::CFileDetailListCtrl(wxWindow * &parent, int id, const wxPoint & pos, wxSize siz, int flags):CMuleListCtrl(parent, id, pos, siz, flags)

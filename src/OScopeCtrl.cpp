@@ -38,10 +38,10 @@
 #include "Statistics.h"
 
 
-BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
+wxBEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
 	EVT_PAINT(COScopeCtrl::OnPaint)
 	EVT_SIZE(COScopeCtrl::OnSize)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 const wxColour crPreset [ 16 ] = {

@@ -52,7 +52,7 @@
 #include "GuiEvents.h"			// Needed for CoreNotify_*
 
 
-BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
+wxBEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
 	EVT_RIGHT_DOWN(CTransferWnd::OnNMRclickDLtab)
 	EVT_NOTEBOOK_PAGE_CHANGED(ID_CATEGORIES,	CTransferWnd::OnCategoryChanged)
 
@@ -73,7 +73,7 @@ BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
 	EVT_MENU(MP_STOP,			CTransferWnd::OnSetCatStatus)
 	EVT_MENU(MP_CANCEL,			CTransferWnd::OnSetCatStatus)
 	EVT_MENU(MP_RESUME,			CTransferWnd::OnSetCatStatus)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 

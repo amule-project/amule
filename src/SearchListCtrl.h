@@ -297,7 +297,7 @@ protected:
 	 */
 	void OnPopupDownload( wxCommandEvent& event );
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif // SEARCHLISTCTRL_H

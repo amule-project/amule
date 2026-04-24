@@ -72,13 +72,13 @@ static const char * convert_xpm[] = {
 // Modeless Dialog Implementation
 // CPartFileConvertDlg dialog
 
-BEGIN_EVENT_TABLE(CPartFileConvertDlg, wxDialog)
+wxBEGIN_EVENT_TABLE(CPartFileConvertDlg, wxDialog)
 	EVT_BUTTON(IDC_ADDITEM,		CPartFileConvertDlg::OnAddFolder)
 	EVT_BUTTON(IDC_RETRY,		CPartFileConvertDlg::RetrySel)
 	EVT_BUTTON(IDC_CONVREMOVE,	CPartFileConvertDlg::RemoveSel)
 	EVT_BUTTON(wxID_CANCEL,		CPartFileConvertDlg::OnCloseButton)
 	EVT_CLOSE(CPartFileConvertDlg::OnClose)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 CPartFileConvertDlg::CPartFileConvertDlg(wxWindow* parent)
 	: wxDialog(parent, -1, _("Import partfiles"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)

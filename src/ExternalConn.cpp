@@ -300,9 +300,9 @@ enum
 };
 
 
-BEGIN_EVENT_TABLE(ExternalConn, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(ExternalConn, wxEvtHandler)
 	EVT_SOCKET(SERVER_ID, ExternalConn::OnServerEvent)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 #endif
 
 

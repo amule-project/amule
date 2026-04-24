@@ -32,11 +32,11 @@
 #include "Types.h"
 
 
-BEGIN_EVENT_TABLE(MuleGifCtrl, wxControl)
+wxBEGIN_EVENT_TABLE(MuleGifCtrl, wxControl)
 	EVT_TIMER(GIFTIMERID, MuleGifCtrl::OnTimer)
 	EVT_PAINT(MuleGifCtrl::OnPaint)
 	EVT_ERASE_BACKGROUND(MuleGifCtrl::OnErase)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 class MuleGIFDecoder : public wxGIFDecoder
 {

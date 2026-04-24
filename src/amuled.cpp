@@ -71,7 +71,7 @@
 	#include <wx/ffile.h>
 #endif
 
-BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
+wxBEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 
 #ifndef ASIO_SOCKETS
 	//
@@ -114,7 +114,7 @@ BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 
 	// Disk space preallocation finished
 	EVT_MULE_ALLOC_FINISHED(CamuleDaemonApp::OnFinishedAllocation)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 IMPLEMENT_APP(CamuleDaemonApp)
 
