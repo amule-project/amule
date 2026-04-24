@@ -63,8 +63,7 @@
 
 #include <common/MacrosProgramSpecific.h>
 
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY)
-
+wxDEFINE_EVENT(MULE_EVT_NOTIFY, wxEvent);
 
 namespace MuleNotify
 {

@@ -32,8 +32,7 @@
 
 #include <wx/intl.h>
 
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION)
-
+wxDEFINE_EVENT(wxEVT_EC_CONNECTION, wxEvent);
 CECLoginPacket::CECLoginPacket(const wxString& client, const wxString& version,
 							   bool canZLIB, bool canUTF8numbers, bool canNotify)
 :

@@ -29,8 +29,7 @@
 
 #include "Logger.h"				// for Add(Debug)LogLineM()
 
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE)
-
+wxDEFINE_EVENT(MULE_EVT_LOGLINE, wxEvent);
 
 #ifdef __DEBUG__
 

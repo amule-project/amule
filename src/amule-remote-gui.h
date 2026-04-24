@@ -73,8 +73,7 @@ public:
 	bool SaveUserPass() { return m_save_user_pass; }
 };
 
-DECLARE_LOCAL_EVENT_TYPE(wxEVT_EC_INIT_DONE, wxEVT_USER_FIRST + 1001)
-
+wxDECLARE_EVENT(wxEVT_EC_INIT_DONE, wxEvent);
 class wxECInitDoneEvent : public wxEvent {
 public:
 	wxECInitDoneEvent() : wxEvent(-1, wxEVT_EC_INIT_DONE)
