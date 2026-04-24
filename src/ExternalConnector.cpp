@@ -700,7 +700,10 @@ void CaMuleExternalConnector::OnFatalException()
 void CaMuleExternalConnector::OnAssertFailure(const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg)
 {
 #if !defined wxUSE_STACKWALKER || !wxUSE_STACKWALKER
-	wxString errmsg = CFormat( "%s:%s:%d: Assertion '%s' failed. %s" ) % file % func % line % cond % ( msg ? msg : "" );
+	// Wrap both ternary branches in wxString() so the conditional has a single
+	// pointer type — raw `msg ? msg : ""` is a const wxChar* / const char*
+	// mix that Alpine's GCC 14 (and stricter GCCs in general) rejects.
+	wxString errmsg = CFormat( "%s:%s:%d: Assertion '%s' failed. %s" ) % file % func % line % cond % ( msg ? wxString(msg) : wxString() );
 
 	fprintf(stderr, "Assertion failed: %s\n", (const char*)unicode2char(errmsg));
 
