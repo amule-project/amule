@@ -1,5 +1,3 @@
-
-
                               -------
                               INSTALL
                               -------
@@ -8,81 +6,78 @@
  Requirements
 --------------
 
-  To compile aMule, you'll need at least the following packages:
-    * zlib >= 1.1.4       (1.2.3 is recommended)
-    * wxWidgets >= 2.8.0  (2.8.9 is recommended)
-    * Crypto++ >= 5.1     (5.5.2 is recommended)
-    * the perl File::Copy module
+  aMule is built with CMake. You'll need at least the following
+  packages:
+    * CMake       >= 3.10
+    * zlib        >= 1.2.3
+    * wxWidgets   >= 3.2.0  (3.2 branch or newer)
+    * Crypto++    >= 5.6
+    * Boost       >= 1.47   (headers only; asio is used)
 
   For aMuleWeb you'll also need:
-    * a POSIX compliant regex library (like libgnurx or libregex, for most
-      GNU systems it's part of the standard C library).
+    * a POSIX-compliant regex library (part of the standard C library
+      on most GNU systems).
 
-  Optionally you may want to provide:
-    * libgd (or gdlib) >= 2.0.0, to let cas generate statistics images;
-    * libupnp >= 1.6.6 if you want to have UPnP support;
-    * libpng >= 1.2.0 to let aMuleWeb generate nice statistics graphs;
-    * libGeoIP >= 1.4.4 if you want colourful country flags and IP to country
-      mappings in the GUI;
-    * gettext >= 0.11.5 if you want to enable NLS (Native Language Support).
+  Optionally:
+    * libgd    >= 2.0.0  — statistics images in `cas`
+    * libupnp  >= 1.6.6  — UPnP port forwarding
+    * libGeoIP >= 1.4.4  — country flags and IP-to-country mapping
+    * gettext  >= 0.11.5 — native-language support (NLS)
 
-  It is known to compile with GCC 3.2, 3.3, 3.4, 4.1, 4.2 and 4.3;
-  Sun Studio 12 and MSVC. GCC 2.95 is not supported.
-
-  aMule requires a wxWidgets builds that supports unicode. Since wxWidgets
-  does not support unicode with GTK1, it is not possible to make aMule use
-  GTK1.
-
-  As Crypto++ is very sensitive to compiler defects, if you're compiling it
-  from source be sure to always test your compilation with `cryptest.exe v'.
-  (Yes, it's called cryptest.exe on all platforms.) Only when all tests
-  passed may you safely go on with compiling aMule.
-  Adding "-DCRYPTOPP_DISABLE_ASM -O1" to CXXFLAGS is known to resolve
-  these problems.
+  aMule is unicode-only; wxWidgets must be built with unicode support
+  (this is the default since wx 3.0).
 
 
  Compiling aMule
 -----------------
 
-  Compiling and installing aMule is as easy as running the usual
+  The typical build is:
 
-    ./configure
-    make
-    make install
+    cmake -B build -DBUILD_MONOLITHIC=YES -DBUILD_REMOTEGUI=YES
+    cmake --build build -j"$(nproc)"
+    sudo cmake --install build
 
-  commands (if you have all the above requirements fulfilled, of course).
+  Pass `--prefix=<dir>` to `cmake -B build` (or to `cmake --install`)
+  to install somewhere other than /usr/local.
 
-  Solutions for Microsoft Visual Studio 2008 and the free Express Edition
-  are included. Please see the readme file for more information.
+  Platform-specific notes (Homebrew paths on macOS, MSYS2 shells on
+  Windows, etc.) live in .github/workflows/ccpp.yml, which is the
+  authoritative reference used by CI.
 
 
- ADVANCED OPTIONS
-------------------
+ Build options
+---------------
 
-  These are some of the available configure options:
+  Common -D options (YES/NO):
 
-    --disable-debug           disable additional debugging output
-    --enable-optimize         enable code optimizing
-    --enable-amulecmd         compile aMule command line client
-    --enable-amule-gui        compile aMule remote GUI (EXPERIMENTAL)
-    --enable-amule-daemon     compile aMule daemon version
-    --enable-webserver        compile aMule WebServer
-    --enable-cas              compile C aMule Statistics
-    --enable-wxcas            compile aMule GUI Statistics
-    --disable-ed2k            don't compile aMule ed2k links handler
-    --enable-alc              compile aMuleLinkCreator GUI version
-    --enable-alcc             compile aMuleLinkCreator for console
-    --disable-monolithic      disable building of the monolithic aMule app
+    BUILD_MONOLITHIC   aMule GUI (on by default)
+    BUILD_REMOTEGUI    amulegui — remote control GUI
+    BUILD_DAEMON       amuled — headless daemon
+    BUILD_AMULECMD     amulecmd — CLI client for the daemon
+    BUILD_WEBSERVER    amuleweb — HTTP interface for the daemon
+    BUILD_ED2K         ed2k — handle ed2k:// links
+    BUILD_CAS          cas — C statistics tool
+    BUILD_WXCAS        wxCas — GUI statistics tool
+    BUILD_ALC          aMuleLinkCreator GUI
+    BUILD_ALCC         aMuleLinkCreator console
+    BUILD_FILEVIEW     console file viewer (experimental)
+    ENABLE_NLS         native-language support (gettext)
+    ENABLE_UPNP        UPnP port forwarding
+    ENABLE_IP2COUNTRY  libGeoIP country flags
 
-  For a full list of available options run `./configure --help' from the
-  aMule source directory.
+  For the full list:
+
+    cmake -LAH -B build | less
 
 
  Links
 -------
 
-  Detailed information on compiling and installing aMule:
+  Detailed build and usage information:
     http://www.amule.org/wiki/index.php/Main_Page
 
-  Forum to ask questions, report bugs, etc:
+  Forum for questions, bug reports, etc:
     http://forum.amule.org/
+
+  Upstream issue tracker:
+    https://github.com/amule-project/amule/issues
