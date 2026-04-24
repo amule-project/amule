@@ -287,6 +287,13 @@ public:
         delete m_gi;
     }
 
+    // rule-of-three — silence -Wdeprecated-copy-with-user-provided-dtor.
+    // Shallow copy of m_items / m_gi is the historical behaviour the fork
+    // relied on; preserve it explicitly rather than introducing deep-copy
+    // semantics that would change long-standing container behaviour.
+    wxListLineData(const wxListLineData&) = default;
+    wxListLineData& operator=(const wxListLineData&) = default;
+
     // are we in report mode?
     inline bool InReportView() const;
 
