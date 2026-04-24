@@ -58,7 +58,6 @@ env:
     --enable-wxcas \
     --with-boost
 
-  # BUILD_PLASMAMULE requires Qt4
   cmake_common_config_flags: |-
     -B build \
     -DBUILD_ALC=YES \
@@ -69,7 +68,6 @@ env:
     -DBUILD_WXCAS=YES \
     -DBUILD_ED2K=YES \
     -DBUILD_MONOLITHIC=YES \
-    -DBUILD_PLASMAMULE=0 \
     -DBUILD_REMOTEGUI=YES \
     -DBUILD_TESTING=YES \
     -DBUILD_WEBSERVER=YES \
