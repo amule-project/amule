@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "**" ]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 env:
   # The minus sign removes the trailing new line in the last line
   cmake_ubuntu_deps: |-
