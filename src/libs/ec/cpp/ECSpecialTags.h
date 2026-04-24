@@ -285,7 +285,7 @@ class CEC_PartFile_Tag : public CEC_SharedFile_Tag {
 		wxString	PartMetName() const
 		{
 			uint16 id = PartMetID();
-			return id ? (CFormat(wxT("%03u.part.met")) % id) : wxEmptyString;
+			return id ? wxString(CFormat("%03u.part.met") % id) : wxString();
 		}
 
 		wxString	GetFileStatusString() const;

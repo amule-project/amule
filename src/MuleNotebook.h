@@ -69,7 +69,7 @@ public:
 	 *
 	 * @see wxNotebook::wxNotebook
 	 */
-	CMuleNotebook( wxWindow *parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxString& name = wxT("notebook") );
+	CMuleNotebook( wxWindow *parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxString& name = "notebook" );
 
 	/**
 	 * Destructor.

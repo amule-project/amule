@@ -130,7 +130,7 @@ static BOOL CtrlHandler(DWORD fdwCtrlType)
 		case CTRL_CLOSE_EVENT:
 		case CTRL_BREAK_EVENT:
 			// handle these
-			AddLogLineNS(wxT("Received break event, exit main loop"));
+			AddLogLineNS("Received break event, exit main loop");
 			theApp->ExitMainLoop();
 			return TRUE;
 			break;
@@ -208,8 +208,8 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
 		// can easily manage the process
 		//
 		if (!m_PidFile.IsEmpty()) {
-			wxString temp = CFormat(wxT("%d\n")) % pid;
-			wxFFile ff(m_PidFile, wxT("w"));
+			wxString temp = CFormat("%d\n") % pid;
+			wxFFile ff(m_PidFile, "w");
 			if (!ff.Error()) {
 				ff.Write(temp);
 				ff.Close();
@@ -239,7 +239,7 @@ bool CamuleDaemonApp::Initialize(int& argc_, wxChar **argv_)
 
         // But don't consider ASCII in this case.
 	if ( !encName.empty() ) {
-		if ( encName == wxT("US-ASCII") ) {
+		if ( encName == "US-ASCII" ) {
 			// This means US-ASCII when returned
 			// from GetEncodingFromName().
 			encName.clear();
@@ -249,7 +249,7 @@ bool CamuleDaemonApp::Initialize(int& argc_, wxChar **argv_)
 
 	// in this case, UTF-8 is used by default.
         if ( encName.empty() ) {
-		encName = wxT("UTF-8");
+		encName = "UTF-8";
 	}
 
 	static wxConvBrokenFileNames fileconv(encName);
@@ -272,7 +272,7 @@ int CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
 	if ( flags | wxICON_ERROR ) {
 		title = CFormat(_("ERROR: %s")) % title;
 	}
-	AddLogLineCS(title + wxT(" ") + msg);
+	AddLogLineCS(title + " " + msg);
 
 	return 0;	// That's neither yes nor no, ok, cancel
 }

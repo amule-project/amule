@@ -46,7 +46,7 @@ CSharedFilePeersListCtrl::CSharedFilePeersListCtrl(
 	wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size,
 	long style, const wxValidator& validator, const wxString& name )
 :
-CGenericClientListCtrl( wxT("Peers"), parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name )
+CGenericClientListCtrl( "Peers", parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name )
 {
 	// Setting the sorter function.
 	SetSortFunc( SourceSortProc );

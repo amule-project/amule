@@ -58,7 +58,7 @@ CKnownFileList::CKnownFileList()
 	accepted = 0;
 	requested = 0;
 	transferred = 0;
-	m_filename = wxT("known.met");
+	m_filename = "known.met";
 	m_knownSizeMap = NULL;
 	m_duplicateSizeMap = NULL;
 	Init();
@@ -96,19 +96,19 @@ bool CKnownFileList::Init()
 
 		wxMutexLocker sLock(list_mut);
 		uint32 RecordsNumber = file.ReadUInt32();
-		AddDebugLogLineN(logKnownFiles, CFormat(wxT("Reading %i known files from file format 0x%2.2x."))
+		AddDebugLogLineN(logKnownFiles, CFormat("Reading %i known files from file format 0x%2.2x.")
 			% RecordsNumber % version);
 		for (uint32 i = 0; i < RecordsNumber; i++) {
 			CScopedPtr<CKnownFile> record;
 			if (record->LoadFromFile(&file)) {
 				AddDebugLogLineN(logKnownFiles,
-					CFormat(wxT("Known file read: %s")) % record->GetFileName());
+					CFormat("Known file read: %s") % record->GetFileName());
 				Append(record.release());
 			} else {
 				AddLogLineC(_("Failed to load entry in known file list, file may be corrupt"));
 			}
 		}
-		AddDebugLogLineN(logKnownFiles, wxT("Finished reading known files"));
+		AddDebugLogLineN(logKnownFiles, "Finished reading known files");
 
 		return true;
 	} catch (const CInvalidPacket& e) {
@@ -129,7 +129,7 @@ void CKnownFileList::Save()
 	}
 
 	wxMutexLocker sLock(list_mut);
-	AddDebugLogLineN(logKnownFiles, CFormat(wxT("start saving %s")) % m_filename);
+	AddDebugLogLineN(logKnownFiles, CFormat("start saving %s") % m_filename);
 
 	try {
 		// Kry - This is the version, but we don't know it till
@@ -164,7 +164,7 @@ void CKnownFileList::Save()
 	} catch (const CIOFailureException& e) {
 		AddLogLineC(CFormat(_("Error while saving %s file: %s")) % m_filename % e.what());
 	}
-	AddDebugLogLineN(logKnownFiles, CFormat(wxT("finished saving %s")) % m_filename);
+	AddDebugLogLineN(logKnownFiles, CFormat("finished saving %s") % m_filename);
 }
 
 
@@ -270,7 +270,7 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 	if (Record->GetFileSize() > 0) {
 		// sanity check if the number of part hashes is correct here
 		if (Record->GetHashCount() != Record->GetED2KPartHashCount()) {
-			AddDebugLogLineC(logKnownFiles, CFormat(wxT("%s with size %d should have %d part hashes, but only %d are available"))
+			AddDebugLogLineC(logKnownFiles, CFormat("%s with size %d should have %d part hashes, but only %d are available")
 				% Record->GetFileName().GetPrintable() % Record->GetFileSize() % Record->GetED2KPartHashCount() % Record->GetHashCount());
 			return false;
 		}
@@ -283,12 +283,12 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 			CKnownFile *existing = it->second;
 			if (KnownFileMatches(Record, existing->GetFileName(), existing->GetLastChangeDatetime(), existing->GetFileSize())) {
 				// The file is already on the list, ignore it.
-				AddDebugLogLineN(logKnownFiles, CFormat(wxT("%s is already on the list")) % Record->GetFileName().GetPrintable());
+				AddDebugLogLineN(logKnownFiles, CFormat("%s is already on the list") % Record->GetFileName().GetPrintable());
 				return false;
 			} else if (IsOnDuplicates(Record->GetFileName(), Record->GetLastChangeDatetime(), Record->GetFileSize())) {
 				// The file is on the duplicates list, ignore it.
 				// Should not happen, at least not after hashing. Or why did it get hashed in the first place then?
-				AddDebugLogLineN(logKnownFiles, CFormat(wxT("%s is on the duplicates list")) % Record->GetFileName().GetPrintable());
+				AddDebugLogLineN(logKnownFiles, CFormat("%s is on the duplicates list") % Record->GetFileName().GetPrintable());
 				return false;
 			} else {
 				if (afterHashing && existing->GetFileSize() == Record->GetFileSize()) {
@@ -302,7 +302,7 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 					f.Reset();
 					if (!Record->LoadFromFile(&f)) {
 						// this also shouldn't happen
-						AddDebugLogLineC(logKnownFiles, CFormat(wxT("error copying known file: existing: %s %d %d %d  Record: %s %d %d %d"))
+						AddDebugLogLineC(logKnownFiles, CFormat("error copying known file: existing: %s %d %d %d  Record: %s %d %d %d")
 							% existing->GetFileName().GetPrintable() % existing->GetFileSize() % existing->GetED2KPartHashCount() % existing->GetHashCount()
 							% Record->GetFileName().GetPrintable() % Record->GetFileSize() % Record->GetED2KPartHashCount() % Record->GetHashCount());
 						return false;
@@ -323,7 +323,7 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 		}
 	} else {
 		AddDebugLogLineN(logGeneral,
-			CFormat(wxT("%s is 0-size, not added")) %
+			CFormat("%s is 0-size, not added") %
 			Record->GetFileName());
 
 		return false;

@@ -32,29 +32,29 @@
 
 wxBitmap WxCasPix::getPixmap( const wxString& name )
 {
-	if ( name == wxT( "about" ) ) {
+	if ( name == "about" ) {
 		wxBitmap bitmap( m_about_xpm );
 		return bitmap;
-	} else if ( name == wxT( "prefs" ) ) {
+	} else if ( name == "prefs" ) {
 		wxBitmap bitmap( m_prefs_xpm );
 		return bitmap;
-	} else if ( name == wxT( "print" ) ) {
+	} else if ( name == "print" ) {
 		wxBitmap bitmap( m_print_xpm );
 		return bitmap;
-	} else if ( name == wxT( "refresh" ) ) {
+	} else if ( name == "refresh" ) {
 		wxBitmap bitmap( m_refresh_xpm );
 		return bitmap;
-	} else if ( name == wxT( "save" ) ) {
+	} else if ( name == "save" ) {
 		wxBitmap bitmap( m_save_xpm );
 		return bitmap;
-	} else if ( name == wxT( "stat" ) ) {
+	} else if ( name == "stat" ) {
 		wxBitmap bitmap( m_stat_xpm );
 		return bitmap;
-	} else if ( name == wxT( "stop" ) ) {
+	} else if ( name == "stop" ) {
 		wxBitmap bitmap( m_stop_xpm );
 		return bitmap;
 #ifndef __WINDOWS__
-	} else if ( name == wxT( "wxcas" ) ) {
+	} else if ( name == "wxcas" ) {
 		wxBitmap bitmap( m_wxcas_xpm );
 		return bitmap;
 #endif

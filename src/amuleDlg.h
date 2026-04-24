@@ -107,7 +107,7 @@ class CamuleDlg : public wxFrame
 public:
 	CamuleDlg(
 		wxWindow *pParent = NULL,
-		const wxString &title = wxEmptyString,
+		const wxString &title = "",
 		wxPoint where = wxDefaultPosition,
 		wxSize dlg_size = wxSize(DEFAULT_SIZE_X,DEFAULT_SIZE_Y));
 	~CamuleDlg();
@@ -116,7 +116,7 @@ public:
 	void AddServerMessageLine(wxString& message);
 	void ResetLog(int id);
 
-	void ShowUserCount(const wxString& info = wxEmptyString);
+	void ShowUserCount(const wxString& info = "");
 	void ShowConnectionState(bool skinChanged = false);
 	void ShowTransferRate();
 

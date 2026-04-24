@@ -28,7 +28,7 @@ using namespace muleunit;
 
 wxString GetFullMuleVersion()
 {
-	return wxT("UnitTest");
+	return "UnitTest";
 }
 
 
@@ -50,9 +50,9 @@ public:
 
 		wxString desc;
 		if (cond && msg) {
-			desc << cond << wxT(" -- ") << msg;
+			desc << cond << " -- " << msg;
 		} else if (cond) {
-			desc << wxT("Assertion: ") << cond;
+			desc << "Assertion: " << cond;
 		} else {
 			desc << msg;
 		}

@@ -51,7 +51,7 @@ class CMD4Hash;
 
 #ifdef DEBUG_ZOMBIE_CLIENTS
 #define LINKED_FROM , wxString from
-#define CLIENT_DEBUGSTRING(a) , wxT(a)
+#define CLIENT_DEBUGSTRING(a) , a
 #define CCLIENTREF(a, b) CClientRef(a, b)
 #else
 #define LINKED_FROM
@@ -75,7 +75,7 @@ public:
 	CClientRef& operator = (const CClientRef& ref)
 	{
 #ifdef DEBUG_ZOMBIE_CLIENTS
-		m_from = wxT("assigned from ") + ref.m_from;
+		m_from = "assigned from " + ref.m_from;
 		Link(ref.m_client, m_from);
 #else
 		Link(ref.m_client);

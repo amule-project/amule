@@ -64,7 +64,7 @@ void CCommentDialog::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 
 void CCommentDialog::OnBnClickedClear(wxCommandEvent& WXUNUSED(evt))
 {
-	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetValue(wxEmptyString);
+	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetValue("");
 }
 
 void CCommentDialog::OnBnClickedCancel(wxCommandEvent& WXUNUSED(evt))

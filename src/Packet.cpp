@@ -278,7 +278,7 @@ bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 	// this should not happen yet. Leave a warning in the log.
 	if (prot == OP_ED2KV2PACKEDPROT) {
 		AddDebugLogLineN(logPacketErrors,
-			wxT("Received OP_ED2KV2PACKEDPROT."));
+			"Received OP_ED2KV2PACKEDPROT.");
 	}
 
 	uint32 nNewSize = size * 10 + 300;
@@ -315,7 +315,7 @@ void CPacket::Copy16ToDataBuffer(const void* data)
 
 void CPacket::CopyUInt32ToDataBuffer(uint32 data, unsigned int offset)
 {
-	wxCHECK_RET(offset <= size - sizeof(uint32), wxT("Bad offset in CopyUInt32ToDataBuffer."));
+	wxCHECK_RET(offset <= size - sizeof(uint32), "Bad offset in CopyUInt32ToDataBuffer.");
 	PokeUInt32( pBuffer + offset, data );
 }
 // File_checked_for_headers

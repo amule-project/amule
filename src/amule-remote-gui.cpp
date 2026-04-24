@@ -74,9 +74,9 @@ wxDialog(theApp->amuledlg, -1, _("Connect to remote amule"), wxDefaultPosition)
 	CoreConnect(this, true);
 
 	wxString pref_host, pref_port;
-	wxConfig::Get()->Read(wxT("/EC/Host"), &pref_host, wxT("localhost"));
-	wxConfig::Get()->Read(wxT("/EC/Port"), &pref_port, wxT("4712"));
-	wxConfig::Get()->Read(wxT("/EC/Password"), &pwd_hash);
+	wxConfig::Get()->Read("/EC/Host", &pref_host, "localhost");
+	wxConfig::Get()->Read("/EC/Port", &pref_port, "4712");
+	wxConfig::Get()->Read("/EC/Password", &pwd_hash);
 
 	CastChild(ID_REMOTE_HOST, wxTextCtrl)->SetValue(pref_host);
 	CastChild(ID_REMOTE_PORT, wxTextCtrl)->SetValue(pref_port);
@@ -280,7 +280,7 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	glob_prefs = new CPreferencesRem(m_connect);
 	long enableZLIB;
-	wxConfig::Get()->Read(wxT("/EC/ZLIB"), &enableZLIB, 1);
+	wxConfig::Get()->Read("/EC/ZLIB", &enableZLIB, 1);
 	m_connect->SetCapabilities(enableZLIB != 0, true, false);	// ZLIB, UTF8 numbers, notification
 
 	InitCustomLanguages();
@@ -344,7 +344,7 @@ bool CamuleRemoteGuiApp::ShowConnectionDialog()
 	AddLogLineNS(_("Connecting..."));
 	if (!m_connect->ConnectToCore(dialog->Host(), dialog->Port(),
 		dialog->Login(), dialog->PassHash(),
-		wxT("amule-remote"), wxT("0x0001"))) {
+		"amule-remote", "0x0001")) {
 		wxMessageBox(_("Connection failed "),_("ERROR"),wxOK);
 
 		return false;
@@ -417,9 +417,9 @@ void CamuleRemoteGuiApp::OnNotifyEvent(CMuleGUIEvent& evt)
 void CamuleRemoteGuiApp::Startup() {
 
 	if (dialog->SaveUserPass()) {
-		wxConfig::Get()->Write(wxT("/EC/Host"), dialog->Host());
-		wxConfig::Get()->Write(wxT("/EC/Port"), dialog->Port());
-		wxConfig::Get()->Write(wxT("/EC/Password"), dialog->PassHash());
+		wxConfig::Get()->Write("/EC/Host", dialog->Host());
+		wxConfig::Get()->Write("/EC/Port", dialog->Port());
+		wxConfig::Get()->Write("/EC/Password", dialog->PassHash());
 	}
 	dialog->Destroy();
 	dialog = NULL;
@@ -504,20 +504,20 @@ wxString CamuleRemoteGuiApp::GetLog(bool reset)
 		CECPacket req(EC_OP_RESET_LOG);
 		m_connect->SendPacket(&req);
 	}
-	return wxEmptyString;
+	return "";
 }
 
 
 wxString CamuleRemoteGuiApp::GetServerLog(bool)
 {
-	return wxEmptyString;
+	return "";
 }
 
 
 bool CamuleRemoteGuiApp::AddServer(CServer * server, bool)
 {
 	CECPacket req(EC_OP_SERVER_ADD);
-	req.AddTag(CECTag(EC_TAG_SERVER_ADDRESS, CFormat(wxT("%s:%d")) % server->GetAddress() % server->GetPort()));
+	req.AddTag(CECTag(EC_TAG_SERVER_ADDRESS, CFormat("%s:%d") % server->GetAddress() % server->GetPort()));
 	req.AddTag(CECTag(EC_TAG_SERVER_NAME, server->GetListName()));
 	m_connect->SendPacket(&req);
 
@@ -1247,7 +1247,7 @@ CClientRef::CClientRef(const CEC_UpDownClient_Tag *tag)
 {
 	m_client = new CUpDownClient(tag);
 #ifdef DEBUG_ZOMBIE_CLIENTS
-	m_client->Link(wxT("TAG"));
+	m_client->Link("TAG");
 #else
 	m_client->Link();
 #endif
@@ -1307,7 +1307,7 @@ void CUpDownClient::Unlink(const wxString& from)
 	m_linked--;
 	if (!m_linked) {
 		if (m_linkedDebug) {
-			AddLogLineN(CFormat(wxT("Last reference to client %d %p unlinked, delete it.")) % ECID() % this);
+			AddLogLineN(CFormat("Last reference to client %d %p unlinked, delete it.") % ECID() % this);
 		}
 		delete this;
 	}
@@ -1383,7 +1383,7 @@ void CUpDownClientListRem::DeleteItem(CClientRef *clientref)
 
 #ifdef DEBUG_ZOMBIE_CLIENTS
 	if (client->m_linked > 1) {
-		AddLogLineC(CFormat(wxT("Client %d still linked in %d places: %s")) % client->ECID() % (client->m_linked - 1) % client->GetLinkedFrom());
+		AddLogLineC(CFormat("Client %d still linked in %d places: %s") % client->ECID() % (client->m_linked - 1) % client->GetLinkedFrom());
 		client->m_linkedDebug = true;
 	}
 #endif
@@ -1419,7 +1419,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 		if (client->m_clientSoftString == _("Unknown")) {
 			client->m_fullClientVerString = client->m_clientSoftString;
 		} else {
-			client->m_fullClientVerString = client->m_clientSoftString + wxT(" ") + client->m_clientVerString;
+			client->m_fullClientVerString = client->m_clientSoftString + " " + client->m_clientVerString;
 		}
 	}
 	// User hash
@@ -1506,7 +1506,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 			client->m_reqfile = static_cast<CPartFile *>(kf);
 			client->m_reqfile->AddSource(client);
 			client->m_downPartStatus.setsize(kf->GetPartCount(), 0);
-			Notify_SourceCtrlAddSource(client->m_reqfile, CCLIENTREF(client, wxT("AddSource")), A4AF_SOURCE);
+			Notify_SourceCtrlAddSource(client->m_reqfile, CCLIENTREF(client, "AddSource"), A4AF_SOURCE);
 			notified = true;
 		}
 	}
@@ -2018,7 +2018,7 @@ wxString CSearchListRem::StartNewSearch(
 
 	Flush();
 
-	return wxEmptyString; // EC reply will have the error mesg is needed.
+	return ""; // EC reply will have the error mesg is needed.
 }
 
 
@@ -2176,7 +2176,7 @@ void CStatsUpdaterRem::HandlePacket(const CECPacket *packet)
 
 void CUpDownClient::RequestSharedFileList()
 {
-	CClientRef ref = CCLIENTREF(this, wxEmptyString);
+	CClientRef ref = CCLIENTREF(this, "");
 	theApp->friendlist->RequestSharedFileList(ref);
 }
 

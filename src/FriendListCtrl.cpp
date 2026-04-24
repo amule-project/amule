@@ -88,7 +88,7 @@ void CFriendListCtrl::UpdateFriend(CFriend* toupdate)
 
 	sint32 itemnr = FindItem(-1, reinterpret_cast<wxUIntPtr>(toupdate));
 	if (itemnr == -1) {
-		itemnr = InsertItem(GetItemCount(), wxEmptyString);
+		itemnr = InsertItem(GetItemCount(), "");
 		SetItemPtrData(itemnr, reinterpret_cast<wxUIntPtr>(toupdate));
 	}
 

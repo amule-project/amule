@@ -86,7 +86,7 @@ wxDialog(parent, -1, _("Category"),
 		// Default values for new categories
 		CastChild(IDC_TITLE,	wxTextCtrl)->SetValue(_("New Category"));
 		CastChild(IDC_INCOMING,	wxTextCtrl)->SetValue(thePrefs::GetIncomingDir().GetRaw());
-		CastChild(IDC_COMMENT,	wxTextCtrl)->SetValue(wxEmptyString);
+		CastChild(IDC_COMMENT,	wxTextCtrl)->SetValue("");
 		CastChild(IDC_PRIOCOMBO,wxChoice)->SetSelection(0);
 
 		m_colour = CMuleColour(rand() % 255, rand() % 255, rand() % 255);

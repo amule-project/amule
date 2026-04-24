@@ -80,7 +80,7 @@ public:
 		wxUIntPtr searchID,
 		uint32_t serverIP = 0,
 		uint16_t serverPort = 0,
-		const wxString& directory = wxEmptyString,
+		const wxString& directory = "",
 		bool kademlia = false);
 
 

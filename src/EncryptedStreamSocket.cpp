@@ -291,7 +291,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, uint32_t nBufLen)
 			//printf("Encryption enabled on data receiving, decrypting and passing along\n");
 			// basic obfusication enabled and set, so decrypt and pass along
 			m_pfiReceiveBuffer.RC4Crypt((uint8_t*)lpBuf, (uint8_t*)lpBuf, m_nObfusicationBytesReceived);
-			//DumpMem(lpBuf, m_nObfusicationBytesReceived, wxT("Directly decrypted data:"));
+			//DumpMem(lpBuf, m_nObfusicationBytesReceived, "Directly decrypted data:");
 			return m_nObfusicationBytesReceived;
 		case ECS_NEGOTIATING:{
 			//printf("Negotiating on data receive\n");
@@ -352,9 +352,9 @@ void CEncryptedStreamSocket::CryptPrepareSendData(uint8* pBuffer, uint32 nLen)
 	}
 	if (m_StreamCryptState == ECS_ENCRYPTING) {
 		//printf("Preparing crypt data on %s\n", (const char*) unicode2char(GetPeer()));
-		//DumpMem(pBuffer, nLen, wxT("Before crypt prepare:\n"));
+		//DumpMem(pBuffer, nLen, "Before crypt prepare:\n");
 		m_pfiSendBuffer.RC4Crypt(pBuffer, pBuffer, nLen);
-		//DumpMem(pBuffer, nLen, wxT("After crypt prepare:\n"));
+		//DumpMem(pBuffer, nLen, "After crypt prepare:\n");
 	}
 }
 
@@ -436,7 +436,7 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen)
 	uint32_t nRead = 0;
 	wxASSERT( m_nReceiveBytesWanted > 0 );
 
-	//DumpMem(pBuffer, nLen, wxT("Negotiate buffer: "));
+	//DumpMem(pBuffer, nLen, "Negotiate buffer: ");
 
 	try {
 		while (m_NegotiatingState != ONS_COMPLETE && m_nReceiveBytesWanted > 0) {
@@ -447,7 +447,7 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen)
 
 			const uint32_t nToRead =  std::min(nLen - nRead, m_nReceiveBytesWanted);
 			//printf("Reading %i bytes, add from %i position on %i position\n",nToRead, nRead, (int)m_pfiReceiveBuffer.GetPosition());
-			//DumpMem(pBuffer + nRead, nToRead, wxT("Recv Buffer: "));
+			//DumpMem(pBuffer + nRead, nToRead, "Recv Buffer: ");
 			m_pfiReceiveBuffer.Write(pBuffer + nRead, nToRead);
 			nRead += nToRead;
 			m_nReceiveBytesWanted -= nToRead;
@@ -477,10 +477,10 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen)
 
 					achKeyData[16] = MAGICVALUE_REQUESTER;
 
-					//DumpMem(achKeyData, sizeof(achKeyData), wxT("ach:"));
+					//DumpMem(achKeyData, sizeof(achKeyData), "ach:");
 
 					MD5Sum md5(achKeyData, sizeof(achKeyData));
-					//DumpMem(md5.GetRawHash(), 16, wxT("Md5:"));
+					//DumpMem(md5.GetRawHash(), 16, "Md5:");
 					m_pfiReceiveBuffer.SetKey(md5);
 
 					achKeyData[16] = MAGICVALUE_SERVER;
@@ -689,7 +689,7 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, uint32_t nBuf
 	if (lpBuf != NULL) {
 		pBuffer = new uint8_t[nBufLen];
 		if (pBuffer == NULL) {
-			throw CMuleException(wxT("Memory exception"), wxT("Memory exception on TCP encrypted socket"));
+			throw CMuleException("Memory exception", "Memory exception on TCP encrypted socket");
 		}
 
 		if (nStartCryptFromByte > 0) {
@@ -698,9 +698,9 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, uint32_t nBuf
 
 		if (nBufLen - nStartCryptFromByte > 0) {
 			//printf("Crypting negotiation data on %s starting on byte %i\n", (const char*) unicode2char(GetPeer()), nStartCryptFromByte);
-			//DumpMem(lpBuf, nBufLen, wxT("Pre-encryption:"));
+			//DumpMem(lpBuf, nBufLen, "Pre-encryption:");
 			m_pfiSendBuffer.RC4Crypt((uint8*)lpBuf + nStartCryptFromByte, pBuffer + nStartCryptFromByte, nBufLen - nStartCryptFromByte);
-			//DumpMem(pBuffer, nBufLen, wxT("Post-encryption:"));
+			//DumpMem(pBuffer, nBufLen, "Post-encryption:");
 		}
 
 		if (!m_pfiSendBuffer.IsEmpty()) {

@@ -89,8 +89,8 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 	m_gridColour  = wxColour(  0, 255, 255) ;  // see also SetGridColor
 	brushBack = *wxBLACK_BRUSH;
 
-	strXUnits = wxT("X");  // can also be set with SetXUnits
-	strYUnits = wxT("Y");  // can also be set with SetYUnits
+	strXUnits = "X";  // can also be set with SetXUnits
+	strYUnits = "Y";  // can also be set with SetYUnits
 
 	nXGrids = 6;
 	nYGrids = 5;
@@ -219,7 +219,7 @@ void COScopeCtrl::RecreateGrid()
 	// y max
 	dcGrid.SetTextForeground(m_gridColour);
 	if( strYMax.IsEmpty() ) {
-		strTemp = wxString::Format(wxT("%.*f"), nYDecimals, pdsTrends[ 0 ].fUpperLimit);
+		strTemp = wxString::Format("%.*f", nYDecimals, pdsTrends[ 0 ].fUpperLimit);
 	} else {
 		strTemp = strYMax;
 	}
@@ -228,7 +228,7 @@ void COScopeCtrl::RecreateGrid()
 	dcGrid.DrawText(strTemp,m_rectPlot.GetLeft()-4-sizX,m_rectPlot.GetTop()-7);
 	// y min
 	if( strYMin.IsEmpty() ) {
-		strTemp = wxString::Format(wxT("%.*f"), nYDecimals, pdsTrends[ 0 ].fLowerLimit) ;
+		strTemp = wxString::Format("%.*f", nYDecimals, pdsTrends[ 0 ].fLowerLimit) ;
 	} else {
 		strTemp = strYMin;
 	}
@@ -467,8 +467,8 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 		} catch(std::bad_alloc) {
 			// Failed memory allocation
 			AddLogLineC(wxString(
-				wxT("Error: COScopeCtrl::PlotHistory: Insuficient memory, cntPoints == ")) <<
-				cntPoints << wxT("."));
+				"Error: COScopeCtrl::PlotHistory: Insuficient memory, cntPoints == ") <<
+				cntPoints << ".");
 			for (i = 0; i < nTrends; ++i) {
 				delete [] apf[i];
 			}

@@ -87,7 +87,7 @@ const uint32 EMBLOCKSIZE	= 184320u;
 
 // This 'identifier' is used for referencing shared part (incomplete) files with the OP_ASKSHAREDDIRS and related opcodes
 // it was introduced with eDonkeyHybrid and is considered as part of the protocol.
-#define OP_INCOMPLETE_SHARED_FILES wxT("!Incomplete Files")
+#define OP_INCOMPLETE_SHARED_FILES "!Incomplete Files"
 
 // ed2k search expression comparison operators
 // kad operators used to be different, but are the same since eMule 0.47a

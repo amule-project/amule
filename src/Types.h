@@ -27,7 +27,7 @@
 #define TYPES_H
 
 #ifndef USE_STD_STRING
-#include <wx/string.h>		// Needed for wxString and wxEmptyString
+#include <wx/string.h>		// Needed for wxString and ""
 #endif
 
 #include <list>			// Needed for std::list
@@ -132,7 +132,7 @@ typedef std::list<uint32>	ListOfUInts32;
 //
 
 #ifndef USE_STD_STRING
-static const wxString EmptyString = wxEmptyString;
+static const wxString EmptyString = "";
 #endif
 
 #ifndef __cplusplus

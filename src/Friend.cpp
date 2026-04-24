@@ -47,7 +47,7 @@ CFriend::CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLa
 	m_UserHash = userhash;
 
 	if (tm_strName.IsEmpty()) {
-		m_strName = wxT("?");
+		m_strName = "?";
 	} else {
 		m_strName = tm_strName;
 	}
@@ -85,7 +85,7 @@ void CFriend::LinkClient(CClientRef client)
 	if ( !client.GetUserName().IsEmpty() ) {
 		m_strName = client.GetUserName();
 	} else if (m_strName.IsEmpty()) {
-		m_strName = wxT("?");
+		m_strName = "?";
 	}
 	m_UserHash = client.GetUserHash();
 	m_dwLastUsedIP = client.GetIP();

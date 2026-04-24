@@ -61,7 +61,7 @@ wxThread::ExitCode CAsyncDNS::Entry()
 			event_data = m_socket;
 			break;
 		default:
-			AddLogLineN(wxT("WRONG TYPE ID ON ASYNC DNS SOLVING!!!"));
+			AddLogLineN("WRONG TYPE ID ON ASYNC DNS SOLVING!!!");
 	}
 
 	if (event_id) {

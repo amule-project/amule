@@ -14,7 +14,7 @@ typedef CRangeMap<int> TestRangeMap;
  */
 wxString StringFrom(const TestRangeMap::const_iterator& it)
 {
-	return wxString::Format(wxT("(%") wxLongLongFmtSpec wxT("u, %")  wxLongLongFmtSpec wxT("u, %i)"), it.keyStart(), it.keyEnd(), *it);
+	return wxString::Format("(%" wxLongLongFmtSpec "u, %"  wxLongLongFmtSpec "u, %i)", it.keyStart(), it.keyEnd(), *it);
 }
 
 /**
@@ -22,7 +22,7 @@ wxString StringFrom(const TestRangeMap::const_iterator& it)
  */
 wxString StringFrom(TestRangeMap::iterator it)
 {
-	return wxString::Format(wxT("(%") wxLongLongFmtSpec wxT("u, %")  wxLongLongFmtSpec wxT("u, %i)"), it.keyStart(), it.keyEnd(), *it);
+	return wxString::Format("(%" wxLongLongFmtSpec "u, %"  wxLongLongFmtSpec "u, %i)", it.keyStart(), it.keyEnd(), *it);
 }
 
 
@@ -31,7 +31,7 @@ wxString StringFrom(TestRangeMap::iterator it)
  */
 wxString StringFrom(const CRangeMap<void>::const_iterator& it)
 {
-	return wxString::Format(wxT("(%") wxLongLongFmtSpec wxT("u, %")  wxLongLongFmtSpec wxT("u)"), it.keyStart(), it.keyEnd());
+	return wxString::Format("(%" wxLongLongFmtSpec "u, %"  wxLongLongFmtSpec "u)", it.keyStart(), it.keyEnd());
 }
 
 /**
@@ -39,7 +39,7 @@ wxString StringFrom(const CRangeMap<void>::const_iterator& it)
  */
 wxString StringFrom(CRangeMap<void>::iterator it)
 {
-	return wxString::Format(wxT("(%") wxLongLongFmtSpec wxT("u, %")  wxLongLongFmtSpec wxT("u)"), it.keyStart(), it.keyEnd());
+	return wxString::Format("(%" wxLongLongFmtSpec "u, %"  wxLongLongFmtSpec "u)", it.keyStart(), it.keyEnd());
 }
 
 
@@ -58,13 +58,13 @@ wxString StringFrom(const CRangeMap<VALUE>& map)
 	typename CRangeMap<VALUE>::const_iterator it = map.begin();
 	for (; it != map.end(); ++it) {
 		if (it != map.begin()) {
-			stream << wxT(", ");
+			stream << ", ";
 		}
 
 		stream += StringFrom(it);
 	}
 
-	return wxT("[") + stream + wxT("]");
+	return "[" + stream + "]";
 }
 
 
@@ -93,10 +93,10 @@ DECLARE(RangeMap);
 		m_mmaps[SSAME].insert(100, 150, 1);
 		m_mmaps[SSAME].insert(160, 200, 1);
 
-		ASSERT_EQUALS(wxT("[(100, 150, 0)]"), StringFrom(m_map));
-		ASSERT_EQUALS(wxT("[(100, 150, 0), (151, 200, 1)]"), StringFrom(m_mmaps[CONT]));
-		ASSERT_EQUALS(wxT("[(100, 150, 0), (160, 200, 1)]"), StringFrom(m_mmaps[SDIFF]));
-		ASSERT_EQUALS(wxT("[(100, 150, 1), (160, 200, 1)]"), StringFrom(m_mmaps[SSAME]));
+		ASSERT_EQUALS("[(100, 150, 0)]", StringFrom(m_map));
+		ASSERT_EQUALS("[(100, 150, 0), (151, 200, 1)]", StringFrom(m_mmaps[CONT]));
+		ASSERT_EQUALS("[(100, 150, 0), (160, 200, 1)]", StringFrom(m_mmaps[SDIFF]));
+		ASSERT_EQUALS("[(100, 150, 1), (160, 200, 1)]", StringFrom(m_mmaps[SSAME]));
 	}
 
 	void tearDown() {
@@ -248,19 +248,19 @@ TEST(RangeMap, Iterators)
 	TestRangeMap::iterator it_orig = map.begin();
 	TestRangeMap::iterator it_other = map.end();
 
-	ASSERT_EQUALS(wxT("(100, 124, 0)"), StringFrom(it));
+	ASSERT_EQUALS("(100, 124, 0)", StringFrom(it));
 
 	it_other = ++it;
 
-	ASSERT_EQUALS(wxT("(125, 175, 2)"), StringFrom(it));
+	ASSERT_EQUALS("(125, 175, 2)", StringFrom(it));
 	ASSERT_EQUALS(it_other, it++);
-	ASSERT_EQUALS(wxT("(176, 200, 1)"), StringFrom(it));
+	ASSERT_EQUALS("(176, 200, 1)", StringFrom(it));
 
 	it_other = --it;
 
-	ASSERT_EQUALS(wxT("(125, 175, 2)"), StringFrom(it));
+	ASSERT_EQUALS("(125, 175, 2)", StringFrom(it));
 	ASSERT_EQUALS(it_other, it--);
-	ASSERT_EQUALS(wxT("(100, 124, 0)"), StringFrom(it));
+	ASSERT_EQUALS("(100, 124, 0)", StringFrom(it));
 }
 
 
@@ -272,10 +272,10 @@ TEST(RangeMap, Erase)
 	// The expected results from forwards deletion
 	TestRangeMap map(m_mmaps[CONT]);
 	wxString expectedFW[4];
-	expectedFW[0] = wxT("[(100, 124, 0), (125, 175, 2), (176, 200, 1)]");
-	expectedFW[1] = wxT("[(125, 175, 2), (176, 200, 1)]");
-	expectedFW[2] = wxT("[(176, 200, 1)]");
-	expectedFW[3] = wxT("[]");
+	expectedFW[0] = "[(100, 124, 0), (125, 175, 2), (176, 200, 1)]";
+	expectedFW[1] = "[(125, 175, 2), (176, 200, 1)]";
+	expectedFW[2] = "[(176, 200, 1)]";
+	expectedFW[3] = "[]";
 
 	for (int i = 0; i < 4; ++i) {
 		ASSERT_EQUALS(expectedFW[i], StringFrom(map));
@@ -288,10 +288,10 @@ TEST(RangeMap, Erase)
 	// Test the expected result from backwards deletion
 	map = m_mmaps[CONT];
 	wxString expectedBW[4];
-	expectedBW[0] = wxT("[(100, 124, 0), (125, 175, 2), (176, 200, 1)]");
-	expectedBW[1] = wxT("[(100, 124, 0), (125, 175, 2)]");
-	expectedBW[2] = wxT("[(100, 124, 0)]");
-	expectedBW[3] = wxT("[]");
+	expectedBW[0] = "[(100, 124, 0), (125, 175, 2), (176, 200, 1)]";
+	expectedBW[1] = "[(100, 124, 0), (125, 175, 2)]";
+	expectedBW[2] = "[(100, 124, 0)]";
+	expectedBW[3] = "[]";
 
 	for (int i = 0; i < 4; ++i) {
 		ASSERT_EQUALS(expectedBW[i], StringFrom(map));
@@ -308,13 +308,13 @@ TEST(RangeMap, Clear)
 	m_map.clear();
 	ASSERT_TRUE(m_map.empty());
 	ASSERT_EQUALS(0u, m_map.size());
-	ASSERT_EQUALS(wxT("[]"), StringFrom(m_map));
+	ASSERT_EQUALS("[]", StringFrom(m_map));
 
 	for (int i = 0; i < 3; ++i) {
 		m_mmaps[i].clear();
 		ASSERT_TRUE(m_mmaps[i].empty());
 		ASSERT_EQUALS(0u, m_mmaps[i].size());
-		ASSERT_EQUALS(wxT("[]"), StringFrom(m_mmaps[i]));
+		ASSERT_EQUALS("[]", StringFrom(m_mmaps[i]));
 	}
 }
 
@@ -329,17 +329,17 @@ TEST(RangeMap, FindRange)
 	ASSERT_EQUALS(map.end(), map.find_range(98));
 	ASSERT_EQUALS(map.end(), map.find_range(99));
 
-	ASSERT_EQUALS(wxT("(100, 124, 0)"), StringFrom(map.find_range(100)));
-	ASSERT_EQUALS(wxT("(100, 124, 0)"), StringFrom(map.find_range(112)));
-	ASSERT_EQUALS(wxT("(100, 124, 0)"), StringFrom(map.find_range(124)));
+	ASSERT_EQUALS("(100, 124, 0)", StringFrom(map.find_range(100)));
+	ASSERT_EQUALS("(100, 124, 0)", StringFrom(map.find_range(112)));
+	ASSERT_EQUALS("(100, 124, 0)", StringFrom(map.find_range(124)));
 
-	ASSERT_EQUALS(wxT("(125, 175, 2)"), StringFrom(map.find_range(125)));
-	ASSERT_EQUALS(wxT("(125, 175, 2)"), StringFrom(map.find_range(150)));
-	ASSERT_EQUALS(wxT("(125, 175, 2)"), StringFrom(map.find_range(175)));
+	ASSERT_EQUALS("(125, 175, 2)", StringFrom(map.find_range(125)));
+	ASSERT_EQUALS("(125, 175, 2)", StringFrom(map.find_range(150)));
+	ASSERT_EQUALS("(125, 175, 2)", StringFrom(map.find_range(175)));
 
-	ASSERT_EQUALS(wxT("(176, 200, 1)"), StringFrom(map.find_range(176)));
-	ASSERT_EQUALS(wxT("(176, 200, 1)"), StringFrom(map.find_range(186)));
-	ASSERT_EQUALS(wxT("(176, 200, 1)"), StringFrom(map.find_range(200)));
+	ASSERT_EQUALS("(176, 200, 1)", StringFrom(map.find_range(176)));
+	ASSERT_EQUALS("(176, 200, 1)", StringFrom(map.find_range(186)));
+	ASSERT_EQUALS("(176, 200, 1)", StringFrom(map.find_range(200)));
 
 	ASSERT_EQUALS(map.end(), map.find_range(201));
 	ASSERT_EQUALS(map.end(), map.find_range(202));
@@ -371,16 +371,16 @@ TEST(RangeMap, InvalidInsert)
 TEST(RangeMap, SingleInsert_BeforeStart_BeforeStart)
 {
 	// Test with same and different type
-	singleInsert(0, 90, 0, wxT("[(0, 90, 0), (100, 150, 0)]"));
-	singleInsert(0, 90, 1, wxT("[(0, 90, 1), (100, 150, 0)]"));
+	singleInsert(0, 90, 0, "[(0, 90, 0), (100, 150, 0)]");
+	singleInsert(0, 90, 1, "[(0, 90, 1), (100, 150, 0)]");
 }
 
 
 // Single insert before start <-> touching start.
 TEST(RangeMap, SingleInsert_BeforeStart_TouchingStart)
 {
-	singleInsert(0, 99, 0, wxT("[(0, 150, 0)]")); // Same type
-	singleInsert(0, 99, 1, wxT("[(0, 99, 1), (100, 150, 0)]")); // Different type
+	singleInsert(0, 99, 0, "[(0, 150, 0)]"); // Same type
+	singleInsert(0, 99, 1, "[(0, 99, 1), (100, 150, 0)]"); // Different type
 }
 
 
@@ -388,9 +388,9 @@ TEST(RangeMap, SingleInsert_BeforeStart_TouchingStart)
 TEST(RangeMap, SingleInsert_BeforeStart_AtStart_InSide)
 {
 	for (int offset = 0; offset < 3; ++offset) { // at start, inside, inside
-		singleInsert(0, 100 + offset, 0, wxT("[(0, 150, 0)]")); // Same type
+		singleInsert(0, 100 + offset, 0, "[(0, 150, 0)]"); // Same type
 
-		wxString expected = wxString::Format(wxT("[(0, %u, 1), (%u, 150, 0)]"), 100 + offset, 101 + offset);
+		wxString expected = wxString::Format("[(0, %u, 1), (%u, 150, 0)]", 100 + offset, 101 + offset);
 		singleInsert(0, 100 + offset, 1, expected); // Different type
 	}
 }
@@ -405,7 +405,7 @@ TEST(RangeMap, SingleInsert_BeforeStart_TouchingStart_AtEnd_TouchingEnd_AfterEnd
 		for (int end_offset = 0; end_offset < 3; ++end_offset) {
 			// (before start, touching start)
 			for (int start_offset = 0; start_offset < 2; ++start_offset) {
-				wxString expected = wxString::Format(wxT("[(%u, %u, %i)]"), 98 + start_offset, 150 + end_offset, type);
+				wxString expected = wxString::Format("[(%u, %u, %i)]", 98 + start_offset, 150 + end_offset, type);
 				singleInsert(98 + start_offset, 150 + end_offset, type, expected);
 			}
 		}
@@ -416,8 +416,8 @@ TEST(RangeMap, SingleInsert_BeforeStart_TouchingStart_AtEnd_TouchingEnd_AfterEnd
 // Single insert touching start <-> touching start.
 TEST(RangeMap, SingleInsert_TouchingStart_TouchingStart)
 {
-	singleInsert(99, 99, 0, wxT("[(99, 150, 0)]")); // Same
-	singleInsert(99, 99, 1, wxT("[(99, 99, 1), (100, 150, 0)]")); // Different
+	singleInsert(99, 99, 0, "[(99, 150, 0)]"); // Same
+	singleInsert(99, 99, 1, "[(99, 99, 1), (100, 150, 0)]"); // Different
 }
 
 
@@ -430,10 +430,10 @@ TEST(RangeMap, SingleInsert_TouchingStart_AtStart_AtStart_Inside)
 			int end   = 100 + offset_b;
 
 			// Same
-			singleInsert(start, end, 0, wxString::Format(wxT("[(%u, 150, 0)]"), 99 + offset_a));
+			singleInsert(start, end, 0, wxString::Format("[(%u, 150, 0)]", 99 + offset_a));
 
 			// Different
-			wxString exp = wxString::Format(wxT("[(%u, %u, 1), (%u, 150, 0)]"), start, end, 101 + offset_b);
+			wxString exp = wxString::Format("[(%u, %u, 1), (%u, 150, 0)]", start, end, 101 + offset_b);
 			singleInsert(start, end, 1, exp);
 		}
 	}
@@ -446,9 +446,9 @@ TEST(RangeMap, SingleInsert_AtStart_AtEnd_TouchingEnd_AfterEnd)
 	// (at end, touching end, after end)
 	for (int offset = 0; offset < 3; ++offset) {
 		// Same
-		singleInsert(100, 150 + offset, 0, wxString::Format(wxT("[(100, %u, 0)]"), 150 + offset));
+		singleInsert(100, 150 + offset, 0, wxString::Format("[(100, %u, 0)]", 150 + offset));
 		// Different
-		singleInsert(100, 150 + offset, 1, wxString::Format(wxT("[(100, %u, 1)]"), 150 + offset));
+		singleInsert(100, 150 + offset, 1, wxString::Format("[(100, %u, 1)]", 150 + offset));
 	}
 }
 
@@ -464,10 +464,10 @@ TEST(RangeMap, SingleInsert_Inside_AtEnd_AtEnd_TouchingEnd_AfterEnd)
 			int end   = 150 + offset_b;
 
 			// Same
-			singleInsert(start, end, 0, wxString::Format(wxT("[(100, %u, 0)]"), end));
+			singleInsert(start, end, 0, wxString::Format("[(100, %u, 0)]", end));
 
 			// Different
-			singleInsert(start, end, 1, wxString::Format(wxT("[(100, %u, 0), (%u, %u, 1)]"), 148 + offset_a, start, end));
+			singleInsert(start, end, 1, wxString::Format("[(100, %u, 0), (%u, %u, 1)]", 148 + offset_a, start, end));
 		}
 	}
 }
@@ -481,10 +481,10 @@ TEST(RangeMap, SingleInsert_TouchingEnd_TouchingEnd_AfterEnd)
 		int end = 151 + offset;
 
 		// Same
-		singleInsert(151, end, 0, wxString::Format(wxT("[(100, %u, 0)]"), end));
+		singleInsert(151, end, 0, wxString::Format("[(100, %u, 0)]", end));
 
 		// Different
-		singleInsert(151, end, 1, wxString::Format(wxT("[(100, 150, 0), (151, %u, 1)]"), end));
+		singleInsert(151, end, 1, wxString::Format("[(100, 150, 0), (151, %u, 1)]", end));
 	}
 }
 
@@ -492,8 +492,8 @@ TEST(RangeMap, SingleInsert_TouchingEnd_TouchingEnd_AfterEnd)
 // Single insert after end <-> after end.
 TEST(RangeMap, SingleInsert_AfterEnd_AfterEnd)
 {
-	singleInsert(152, 170, 0, wxT("[(100, 150, 0), (152, 170, 0)]")); // Same
-	singleInsert(152, 170, 1, wxT("[(100, 150, 0), (152, 170, 1)]")); // Different
+	singleInsert(152, 170, 0, "[(100, 150, 0), (152, 170, 0)]"); // Same
+	singleInsert(152, 170, 1, "[(100, 150, 0), (152, 170, 1)]"); // Different
 }
 
 
@@ -501,9 +501,9 @@ TEST(RangeMap, SingleInsert_AfterEnd_AfterEnd)
 TEST(RangeMap, MultiInsert_BeforeStart_BeforeStart)
 {
 	for (int type = 0; type < 2; ++type) { // Test with same and different type
-		multiInsert(CONT, 0, 90, type, wxString(wxT("[(0, 90, ")) << type << wxT("), (100, 150, 0), (151, 200, 1)]"));
-		multiInsert(SDIFF, 0, 90, type, wxString(wxT("[(0, 90, ")) << type << wxT("), (100, 150, 0), (160, 200, 1)]"));
-		multiInsert(SSAME, 0, 90, type, wxString(wxT("[(0, 90, ")) << type << wxT("), (100, 150, 1), (160, 200, 1)]"));
+		multiInsert(CONT, 0, 90, type, wxString("[(0, 90, ") << type << "), (100, 150, 0), (151, 200, 1)]");
+		multiInsert(SDIFF, 0, 90, type, wxString("[(0, 90, ") << type << "), (100, 150, 0), (160, 200, 1)]");
+		multiInsert(SSAME, 0, 90, type, wxString("[(0, 90, ") << type << "), (100, 150, 1), (160, 200, 1)]");
 	}
 }
 
@@ -511,13 +511,13 @@ TEST(RangeMap, MultiInsert_BeforeStart_BeforeStart)
 // Multi insert before start <-> touching start.
 TEST(RangeMap, MultiInsert_BeforeStart_TouchingStart)
 {
-	multiInsert(CONT, 0, 99, 0, wxT("[(0, 150, 0), (151, 200, 1)]"));
-	multiInsert(SDIFF, 0, 99, 0, wxT("[(0, 150, 0), (160, 200, 1)]"));
-	multiInsert(SSAME, 0, 99, 0, wxT("[(0, 99, 0), (100, 150, 1), (160, 200, 1)]"));
+	multiInsert(CONT, 0, 99, 0, "[(0, 150, 0), (151, 200, 1)]");
+	multiInsert(SDIFF, 0, 99, 0, "[(0, 150, 0), (160, 200, 1)]");
+	multiInsert(SSAME, 0, 99, 0, "[(0, 99, 0), (100, 150, 1), (160, 200, 1)]");
 
-	multiInsert(CONT, 0, 99, 1, wxT("[(0, 99, 1), (100, 150, 0), (151, 200, 1)]"));
-	multiInsert(SDIFF, 0, 99, 1, wxT("[(0, 99, 1), (100, 150, 0), (160, 200, 1)]"));
-	multiInsert(SSAME, 0, 99, 1, wxT("[(0, 150, 1), (160, 200, 1)]"));
+	multiInsert(CONT, 0, 99, 1, "[(0, 99, 1), (100, 150, 0), (151, 200, 1)]");
+	multiInsert(SDIFF, 0, 99, 1, "[(0, 99, 1), (100, 150, 0), (160, 200, 1)]");
+	multiInsert(SSAME, 0, 99, 1, "[(0, 150, 1), (160, 200, 1)]");
 }
 
 
@@ -527,13 +527,13 @@ TEST(RangeMap, MultiInsert_BeforeStart_AtStart_InSide)
 	for (int offset = 0; offset < 3; ++offset) { // (at start, inside, inside)
 		int end = 100 + offset;
 
-		multiInsert(CONT, 0, end, 0, wxT("[(0, 150, 0), (151, 200, 1)]"));
-		multiInsert(SDIFF, 0, end, 0, wxT("[(0, 150, 0), (160, 200, 1)]"));
-		multiInsert(SSAME, 0, end, 0, wxString::Format(wxT("[(0, %u, 0), (%u, 150, 1), (160, 200, 1)]"), end, 101 + offset));
+		multiInsert(CONT, 0, end, 0, "[(0, 150, 0), (151, 200, 1)]");
+		multiInsert(SDIFF, 0, end, 0, "[(0, 150, 0), (160, 200, 1)]");
+		multiInsert(SSAME, 0, end, 0, wxString::Format("[(0, %u, 0), (%u, 150, 1), (160, 200, 1)]", end, 101 + offset));
 
-		multiInsert(CONT, 0, end, 1, wxString::Format(wxT("[(0, %u, 1), (%u, 150, 0), (151, 200, 1)]"), end, 101 + offset));
-		multiInsert(SDIFF, 0, end, 1, wxString::Format(wxT("[(0, %u, 1), (%u, 150, 0), (160, 200, 1)]"), end, 101 + offset));
-		multiInsert(SSAME, 0, end, 1, wxT("[(0, 150, 1), (160, 200, 1)]"));
+		multiInsert(CONT, 0, end, 1, wxString::Format("[(0, %u, 1), (%u, 150, 0), (151, 200, 1)]", end, 101 + offset));
+		multiInsert(SDIFF, 0, end, 1, wxString::Format("[(0, %u, 1), (%u, 150, 0), (160, 200, 1)]", end, 101 + offset));
+		multiInsert(SSAME, 0, end, 1, "[(0, 150, 1), (160, 200, 1)]");
 	}
 }
 
@@ -546,13 +546,13 @@ TEST(RangeMap, MultiInsert_BeforeStart_TouchingStart_AtEnd_TouchingEnd_AfterEnd)
 			int start = 98 + start_offset;
 			int end   = 150 + end_offset;
 
-			multiInsert(CONT, start, end, 0, wxString::Format(wxT("[(%u, %u, 0), (%u, 200, 1)]"), start, end, end + 1));
-			multiInsert(SDIFF, start, end, 0, wxString::Format(wxT("[(%u, %u, 0), (160, 200, 1)]"), start, end));
-			multiInsert(SSAME, start, end, 0, wxString::Format(wxT("[(%u, %u, 0), (160, 200, 1)]"), start, end));
+			multiInsert(CONT, start, end, 0, wxString::Format("[(%u, %u, 0), (%u, 200, 1)]", start, end, end + 1));
+			multiInsert(SDIFF, start, end, 0, wxString::Format("[(%u, %u, 0), (160, 200, 1)]", start, end));
+			multiInsert(SSAME, start, end, 0, wxString::Format("[(%u, %u, 0), (160, 200, 1)]", start, end));
 
-			multiInsert(CONT, start, end, 1, wxString::Format(wxT("[(%u, 200, 1)]"), start));
-			multiInsert(SDIFF, start, end, 1, wxString::Format(wxT("[(%u, %u, 1), (160, 200, 1)]"), start, end));
-			multiInsert(SSAME, start, end, 1, wxString::Format(wxT("[(%u, %u, 1), (160, 200, 1)]"), start, end));
+			multiInsert(CONT, start, end, 1, wxString::Format("[(%u, 200, 1)]", start));
+			multiInsert(SDIFF, start, end, 1, wxString::Format("[(%u, %u, 1), (160, 200, 1)]", start, end));
+			multiInsert(SSAME, start, end, 1, wxString::Format("[(%u, %u, 1), (160, 200, 1)]", start, end));
 		}
 	}
 }
@@ -561,13 +561,13 @@ TEST(RangeMap, MultiInsert_BeforeStart_TouchingStart_AtEnd_TouchingEnd_AfterEnd)
 // Multi insert touching start <-> touching start.
 TEST(RangeMap, MultiInsert_TouchingStart_TouchingStart)
 {
-	multiInsert(CONT, 99, 99, 0, wxT("[(99, 150, 0), (151, 200, 1)]"));
-	multiInsert(SDIFF, 99, 99, 0, wxT("[(99, 150, 0), (160, 200, 1)]"));
-	multiInsert(SSAME, 99, 99, 0, wxT("[(99, 99, 0), (100, 150, 1), (160, 200, 1)]"));
+	multiInsert(CONT, 99, 99, 0, "[(99, 150, 0), (151, 200, 1)]");
+	multiInsert(SDIFF, 99, 99, 0, "[(99, 150, 0), (160, 200, 1)]");
+	multiInsert(SSAME, 99, 99, 0, "[(99, 99, 0), (100, 150, 1), (160, 200, 1)]");
 
-	multiInsert(CONT, 99, 99, 1, wxT("[(99, 99, 1), (100, 150, 0), (151, 200, 1)]"));
-	multiInsert(SDIFF, 99, 99, 1, wxT("[(99, 99, 1), (100, 150, 0), (160, 200, 1)]"));
-	multiInsert(SSAME, 99, 99, 1, wxT("[(99, 150, 1), (160, 200, 1)]"));
+	multiInsert(CONT, 99, 99, 1, "[(99, 99, 1), (100, 150, 0), (151, 200, 1)]");
+	multiInsert(SDIFF, 99, 99, 1, "[(99, 99, 1), (100, 150, 0), (160, 200, 1)]");
+	multiInsert(SSAME, 99, 99, 1, "[(99, 150, 1), (160, 200, 1)]");
 }
 
 
@@ -579,13 +579,13 @@ TEST(RangeMap, MultiInsert_TouchingStart_AtStart_AtStart_Inside)
 			int start = 99 + offset_a;
 			int end   = 100 + offset_b;
 
-			multiInsert(CONT, start, end, 0, wxString::Format(wxT("[(%u, 150, 0), (151, 200, 1)]"), start));
-			multiInsert(SDIFF, start, end, 0, wxString::Format(wxT("[(%u, 150, 0), (160, 200, 1)]"), start));
-			multiInsert(SSAME, start, end, 0, wxString::Format(wxT("[(%u, %u, 0), (%u, 150, 1), (160, 200, 1)]"), start, end, end + 1));
+			multiInsert(CONT, start, end, 0, wxString::Format("[(%u, 150, 0), (151, 200, 1)]", start));
+			multiInsert(SDIFF, start, end, 0, wxString::Format("[(%u, 150, 0), (160, 200, 1)]", start));
+			multiInsert(SSAME, start, end, 0, wxString::Format("[(%u, %u, 0), (%u, 150, 1), (160, 200, 1)]", start, end, end + 1));
 
-			multiInsert(CONT, start, end, 1, wxString::Format(wxT("[(%u, %u, 1), (%u, 150, 0), (151, 200, 1)]"), start, end, end + 1));
-			multiInsert(SDIFF, start, end, 1, wxString::Format(wxT("[(%u, %u, 1), (%u, 150, 0), (160, 200, 1)]"), start, end, end + 1));
-			multiInsert(SSAME, start, end, 1, wxString::Format(wxT("[(%u, 150, 1), (160, 200, 1)]"), start));
+			multiInsert(CONT, start, end, 1, wxString::Format("[(%u, %u, 1), (%u, 150, 0), (151, 200, 1)]", start, end, end + 1));
+			multiInsert(SDIFF, start, end, 1, wxString::Format("[(%u, %u, 1), (%u, 150, 0), (160, 200, 1)]", start, end, end + 1));
+			multiInsert(SSAME, start, end, 1, wxString::Format("[(%u, 150, 1), (160, 200, 1)]", start));
 		}
 	}
 }
@@ -598,13 +598,13 @@ TEST(RangeMap, MultiInsert_AtStart_AtEnd_TouchingEnd_AfterEnd)
 		int start = 100;
 		int end   = 150 + offset;
 
-		multiInsert(CONT, start, end, 0, wxString::Format(wxT("[(%u, %u, 0), (%u, 200, 1)]"), start, end, end + 1));
-		multiInsert(SDIFF, start, end, 0, wxString::Format(wxT("[(%u, %u, 0), (160, 200, 1)]"), start, end));
-		multiInsert(SSAME, start, end, 0, wxString::Format(wxT("[(%u, %u, 0), (160, 200, 1)]"), start, end));
+		multiInsert(CONT, start, end, 0, wxString::Format("[(%u, %u, 0), (%u, 200, 1)]", start, end, end + 1));
+		multiInsert(SDIFF, start, end, 0, wxString::Format("[(%u, %u, 0), (160, 200, 1)]", start, end));
+		multiInsert(SSAME, start, end, 0, wxString::Format("[(%u, %u, 0), (160, 200, 1)]", start, end));
 
-		multiInsert(CONT, start, end, 1, wxString::Format(wxT("[(%u, 200, 1)]"), start));
-		multiInsert(SDIFF, start, end, 1, wxString::Format(wxT("[(%u, %u, 1), (160, 200, 1)]"), start, end));
-		multiInsert(SSAME, start, end, 1, wxString::Format(wxT("[(%u, %u, 1), (160, 200, 1)]"), start, end));
+		multiInsert(CONT, start, end, 1, wxString::Format("[(%u, 200, 1)]", start));
+		multiInsert(SDIFF, start, end, 1, wxString::Format("[(%u, %u, 1), (160, 200, 1)]", start, end));
+		multiInsert(SSAME, start, end, 1, wxString::Format("[(%u, %u, 1), (160, 200, 1)]", start, end));
 	}
 }
 
@@ -612,13 +612,13 @@ TEST(RangeMap, MultiInsert_AtStart_AtEnd_TouchingEnd_AfterEnd)
 // Multi insert inside <-> inside.
 TEST(RangeMap, MultiInsert_Inside_Inside)
 {
-	multiInsert(CONT, 110, 140, 0, wxT("[(100, 150, 0), (151, 200, 1)]"));
-	multiInsert(SDIFF, 110, 140, 0, wxT("[(100, 150, 0), (160, 200, 1)]"));
-	multiInsert(SSAME, 110, 140, 0, wxT("[(100, 109, 1), (110, 140, 0), (141, 150, 1), (160, 200, 1)]"));
+	multiInsert(CONT, 110, 140, 0, "[(100, 150, 0), (151, 200, 1)]");
+	multiInsert(SDIFF, 110, 140, 0, "[(100, 150, 0), (160, 200, 1)]");
+	multiInsert(SSAME, 110, 140, 0, "[(100, 109, 1), (110, 140, 0), (141, 150, 1), (160, 200, 1)]");
 
-	multiInsert(CONT, 110, 140, 1, wxT("[(100, 109, 0), (110, 140, 1), (141, 150, 0), (151, 200, 1)]"));
-	multiInsert(SDIFF, 110, 140, 1, wxT("[(100, 109, 0), (110, 140, 1), (141, 150, 0), (160, 200, 1)]"));
-	multiInsert(SSAME, 110, 140, 1, wxT("[(100, 150, 1), (160, 200, 1)]"));
+	multiInsert(CONT, 110, 140, 1, "[(100, 109, 0), (110, 140, 1), (141, 150, 0), (151, 200, 1)]");
+	multiInsert(SDIFF, 110, 140, 1, "[(100, 109, 0), (110, 140, 1), (141, 150, 0), (160, 200, 1)]");
+	multiInsert(SSAME, 110, 140, 1, "[(100, 150, 1), (160, 200, 1)]");
 }
 
 
@@ -630,13 +630,13 @@ TEST(RangeMap, MultiInsert_Inside_AtEnd_AtEnd_TouchingEnd_AfterEnd)
 			int start = 149 + offset_a;
 			int end   = 150 + offset_b;
 
-			multiInsert(CONT, start, end, 0, wxString::Format(wxT("[(100, %u, 0), (%u, 200, 1)]"), end, end + 1));
-			multiInsert(SDIFF, start, end, 0, wxString::Format(wxT("[(100, %u, 0), (160, 200, 1)]"), end));
-			multiInsert(SSAME, start, end, 0, wxString::Format(wxT("[(100, %u, 1), (%u, %u, 0), (160, 200, 1)]"), start - 1, start, end));
+			multiInsert(CONT, start, end, 0, wxString::Format("[(100, %u, 0), (%u, 200, 1)]", end, end + 1));
+			multiInsert(SDIFF, start, end, 0, wxString::Format("[(100, %u, 0), (160, 200, 1)]", end));
+			multiInsert(SSAME, start, end, 0, wxString::Format("[(100, %u, 1), (%u, %u, 0), (160, 200, 1)]", start - 1, start, end));
 
-			multiInsert(CONT, start, end, 1, wxString::Format(wxT("[(100, %u, 0), (%u, 200, 1)]"), start - 1, start));
-			multiInsert(SDIFF, start, end, 1, wxString::Format(wxT("[(100, %u, 0), (%u, %u, 1), (160, 200, 1)]"), start - 1, start, end));
-			multiInsert(SSAME, start, end, 1, wxString::Format(wxT("[(100, %u, 1), (160, 200, 1)]"), end));
+			multiInsert(CONT, start, end, 1, wxString::Format("[(100, %u, 0), (%u, 200, 1)]", start - 1, start));
+			multiInsert(SDIFF, start, end, 1, wxString::Format("[(100, %u, 0), (%u, %u, 1), (160, 200, 1)]", start - 1, start, end));
+			multiInsert(SSAME, start, end, 1, wxString::Format("[(100, %u, 1), (160, 200, 1)]", end));
 		}
 	}
 }
@@ -649,13 +649,13 @@ TEST(RangeMap, MultiInsert_TouchingEnd_TouchingEnd_AfterEnd)
 		int start = 151;
 		int end   = 151 + offset;
 
-		multiInsert(CONT, start, end, 0, wxString::Format(wxT("[(100, %u, 0), (%u, 200, 1)]"), end, end + 1));
-		multiInsert(SDIFF, start, end, 0, wxString::Format(wxT("[(100, %u, 0), (160, 200, 1)]"), end));
-		multiInsert(SSAME, start, end, 0, wxString::Format(wxT("[(100, 150, 1), (%u, %u, 0), (160, 200, 1)]"), start, end));
+		multiInsert(CONT, start, end, 0, wxString::Format("[(100, %u, 0), (%u, 200, 1)]", end, end + 1));
+		multiInsert(SDIFF, start, end, 0, wxString::Format("[(100, %u, 0), (160, 200, 1)]", end));
+		multiInsert(SSAME, start, end, 0, wxString::Format("[(100, 150, 1), (%u, %u, 0), (160, 200, 1)]", start, end));
 
-		multiInsert(CONT, start, end, 1, wxString::Format(wxT("[(100, 150, 0), (%u, 200, 1)]"), start));
-		multiInsert(SDIFF, start, end, 1, wxString::Format(wxT("[(100, 150, 0), (%u, %u, 1), (160, 200, 1)]"), start, end));
-		multiInsert(SSAME, start, end, 1, wxString::Format(wxT("[(100, %u, 1), (160, 200, 1)]"), end));
+		multiInsert(CONT, start, end, 1, wxString::Format("[(100, 150, 0), (%u, 200, 1)]", start));
+		multiInsert(SDIFF, start, end, 1, wxString::Format("[(100, 150, 0), (%u, %u, 1), (160, 200, 1)]", start, end));
+		multiInsert(SSAME, start, end, 1, wxString::Format("[(100, %u, 1), (160, 200, 1)]", end));
 	}
 }
 
@@ -663,13 +663,13 @@ TEST(RangeMap, MultiInsert_TouchingEnd_TouchingEnd_AfterEnd)
 // Multi insert after end <-> after end.
 TEST(RangeMap, MultiInsert_AfterEnd_AfterEnd)
 {
-	multiInsert(CONT, 152, 170, 0, wxT("[(100, 150, 0), (151, 151, 1), (152, 170, 0), (171, 200, 1)]"));
-	multiInsert(SDIFF, 152, 170, 0, wxT("[(100, 150, 0), (152, 170, 0), (171, 200, 1)]"));
-	multiInsert(SSAME, 152, 170, 0, wxT("[(100, 150, 1), (152, 170, 0), (171, 200, 1)]"));
+	multiInsert(CONT, 152, 170, 0, "[(100, 150, 0), (151, 151, 1), (152, 170, 0), (171, 200, 1)]");
+	multiInsert(SDIFF, 152, 170, 0, "[(100, 150, 0), (152, 170, 0), (171, 200, 1)]");
+	multiInsert(SSAME, 152, 170, 0, "[(100, 150, 1), (152, 170, 0), (171, 200, 1)]");
 
-	multiInsert(CONT, 152, 170, 1, wxT("[(100, 150, 0), (151, 200, 1)]"));
-	multiInsert(SDIFF, 152, 170, 1, wxT("[(100, 150, 0), (152, 200, 1)]"));
-	multiInsert(SSAME, 152, 170, 1, wxT("[(100, 150, 1), (152, 200, 1)]"));
+	multiInsert(CONT, 152, 170, 1, "[(100, 150, 0), (151, 200, 1)]");
+	multiInsert(SDIFF, 152, 170, 1, "[(100, 150, 0), (152, 200, 1)]");
+	multiInsert(SSAME, 152, 170, 1, "[(100, 150, 1), (152, 200, 1)]");
 }
 
 
@@ -682,14 +682,14 @@ TEST(RangeMap, MultiInsert_AfterEnd_AfterEnd)
 TEST(RangeMap, Erase_BeforeStart_BeforeStart)
 {
 	// Test with same and different type
-	doErase(0, 90, wxT("[(100, 150, 0)]"));
+	doErase(0, 90, "[(100, 150, 0)]");
 }
 
 
 // Single erase before start <-> touching start.
 TEST(RangeMap, Erase_BeforeStart_TouchingStart)
 {
-	doErase(0, 99, wxT("[(100, 150, 0)]"));
+	doErase(0, 99, "[(100, 150, 0)]");
 }
 
 
@@ -697,7 +697,7 @@ TEST(RangeMap, Erase_BeforeStart_TouchingStart)
 TEST(RangeMap, Erase_BeforeStart_AtStart_InSide)
 {
 	for (int offset = 0; offset < 3; ++offset) { // at start, inside, inside
-		doErase(0, 100 + offset, wxString::Format(wxT("[(%u, 150, 0)]"), 100 + offset + 1));
+		doErase(0, 100 + offset, wxString::Format("[(%u, 150, 0)]", 100 + offset + 1));
 	}
 }
 
@@ -709,7 +709,7 @@ TEST(RangeMap, Erase_BeforeStart_TouchingStart_AtEnd_TouchingEnd_AfterEnd)
 	for (int end_offset = 0; end_offset < 3; ++end_offset) {
 		// (before start, touching start)
 		for (int start_offset = 0; start_offset < 2; ++start_offset) {
-			doErase(98 + start_offset, 150 + end_offset, wxT("[]"));
+			doErase(98 + start_offset, 150 + end_offset, "[]");
 		}
 	}
 }
@@ -718,7 +718,7 @@ TEST(RangeMap, Erase_BeforeStart_TouchingStart_AtEnd_TouchingEnd_AfterEnd)
 // Single erase touching start <-> touching start.
 TEST(RangeMap, Erase_TouchingStart_TouchingStart)
 {
-	doErase(99, 99, wxT("[(100, 150, 0)]"));
+	doErase(99, 99, "[(100, 150, 0)]");
 }
 
 
@@ -730,7 +730,7 @@ TEST(RangeMap, Erase_TouchingStart_AtStart_AtStart_Inside)
 			int start = 99 + offset_a;
 			int end   = 100 + offset_b;
 
-			doErase(start, end, wxString::Format(wxT("[(%u, 150, 0)]"), 100 + offset_b + 1));
+			doErase(start, end, wxString::Format("[(%u, 150, 0)]", 100 + offset_b + 1));
 		}
 	}
 }
@@ -741,7 +741,7 @@ TEST(RangeMap, Erase_AtStart_AtEnd_TouchingEnd_AfterEnd)
 {
 	// (at end, touching end, after end)
 	for (int offset = 0; offset < 3; ++offset) {
-		doErase(100, 150 + offset, wxT("[]"));
+		doErase(100, 150 + offset, "[]");
 	}
 }
 
@@ -756,7 +756,7 @@ TEST(RangeMap, Erase_Inside_AtEnd_AtEnd_TouchingEnd_AfterEnd)
 			int start = 149 + offset_a;
 			int end   = 150 + offset_b;
 
-			doErase(start, end, wxString::Format(wxT("[(100, %u, 0)]"), start - 1));
+			doErase(start, end, wxString::Format("[(100, %u, 0)]", start - 1));
 		}
 	}
 }
@@ -769,7 +769,7 @@ TEST(RangeMap, Erase_TouchingEnd_TouchingEnd_AfterEnd)
 	for (int offset = 0; offset < 2; ++offset) {
 		int end = 151 + offset;
 
-		doErase(151, end, wxT("[(100, 150, 0)]"));
+		doErase(151, end, "[(100, 150, 0)]");
 	}
 }
 
@@ -777,7 +777,7 @@ TEST(RangeMap, Erase_TouchingEnd_TouchingEnd_AfterEnd)
 // Single erase after end <-> after end.
 TEST(RangeMap, Erase_AfterEnd_AfterEnd)
 {
-	doErase(152, 170, wxT("[(100, 150, 0)]"));
+	doErase(152, 170, "[(100, 150, 0)]");
 }
 
 
@@ -823,7 +823,7 @@ TEST(RangeMap, RangeSet)
 	set.insert(20, 30);
 	set.insert(40, 50);
 
-	ASSERT_EQUALS(wxT("[(0, 10), (20, 30), (40, 50)]"), StringFrom(set));
+	ASSERT_EQUALS("[(0, 10), (20, 30), (40, 50)]", StringFrom(set));
 	ASSERT_EQUALS(3u, set.size());
 
 	{
@@ -839,7 +839,7 @@ TEST(RangeMap, RangeSet)
 
 	set.erase_range(5, 45);
 
-	ASSERT_EQUALS(wxT("[(0, 4), (46, 50)]"), StringFrom(set));
+	ASSERT_EQUALS("[(0, 4), (46, 50)]", StringFrom(set));
 	ASSERT_EQUALS(2u, set.size());
 }
 

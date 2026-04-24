@@ -560,7 +560,7 @@ namespace MuleNotify
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_chatwnd) {
-			theApp->amuledlg->m_chatwnd->SendMessage(captcha, wxEmptyString, to_id);
+			theApp->amuledlg->m_chatwnd->SendMessage(captcha, "", to_id);
 		}
 #endif
 	}

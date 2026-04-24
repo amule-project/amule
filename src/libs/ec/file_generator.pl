@@ -346,7 +346,7 @@ sub write_cpp_enum_end {
 
 	print OUTPUT "\n};\n";
 
-	push @debugOut, "\t\tdefault: return CFormat(wxT(\"unknown %d 0x%x\")) % arg % arg;\n\t}\n}\n";
+	push @debugOut, "\t\tdefault: return CFormat(\"unknown %d 0x%x\") % arg % arg;\n\t}\n}\n";
 }
 
 
@@ -362,7 +362,7 @@ sub write_cpp_enum_line {
 
 	my $arg = $_[1];
 	$arg =~ s/\s//g;	# remove whitespace
-	push @debugOut, "\t\tcase $_[2]: return wxT(\"$arg\");";
+	push @debugOut, "\t\tcase $_[2]: return \"$arg\";";
 
 }
 

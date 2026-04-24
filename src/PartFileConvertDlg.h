@@ -38,7 +38,7 @@ public:
 	CPartFileConvertDlg(wxWindow *parent);
 
 	static void	ShowGUI(wxWindow *parent);
-	static void	UpdateProgress(float percent, wxString text = wxEmptyString, wxString header = wxEmptyString);
+	static void	UpdateProgress(float percent, wxString text = "", wxString header = "");
 	static void	UpdateJobInfo(ConvertInfo& info);
 	static void	RemoveJobInfo(unsigned id);
 	static void	ClearInfo();

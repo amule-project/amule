@@ -906,7 +906,7 @@ YY_RULE_SETUP
 					{
 						if (c == EOF || c == '\n'){
 							unput(c);
-							yyerror(wxT("Search expression error: unterminated string"));
+							yyerror("Search expression error: unterminated string");
 							break;
 						}
 						if (c == '\\'){		/*Escape sequence*/

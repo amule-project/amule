@@ -74,7 +74,7 @@ wxString toString(CMemFile& buf)
 	wxString result;
 	buf.Seek(0, wxFromStart);
 	for (uint64 i = 0; i < buf.GetLength(); i++) {
-		result += wxString::Format(wxT("0x%02x,"), buf.ReadUInt8());
+		result += wxString::Format("0x%02x,", buf.ReadUInt8());
 	}
 	buf.Seek(curpos, wxFromStart);
 
@@ -86,7 +86,7 @@ wxString toString(const BSOBValue& buf)
 {
 	wxString result;
 	for (uint64 i = 0; i < buf.size(); i++) {
-		result += wxString::Format(wxT("0x%02x,"), buf[i]);
+		result += wxString::Format("0x%02x,", buf[i]);
 	}
 	return result;
 }
@@ -96,7 +96,7 @@ wxString toString(const BLOBValue& buf)
 {
 	wxString result;
 	for (uint64 i = 0; i < buf.size(); i++) {
-		result += wxString::Format(wxT("0x%02x,"), buf[i]);
+		result += wxString::Format("0x%02x,", buf[i]);
 	}
 	return result;
 }
@@ -104,33 +104,33 @@ wxString toString(const BLOBValue& buf)
 template<>
 void AssertEquals(const CMD4Hash& a, const CMD4Hash& b)
 {
-	CONTEXT(wxT("Compare CMD4Hashes"));
+	CONTEXT("Compare CMD4Hashes");
 	ASSERT_EQUALS(a.Encode(), b.Encode());
 }
 
 template<>
 void AssertEquals(const BSOBValue& a, const BSOBValue& b)
 {
-	CONTEXT(wxT("Compare BSOBValue"));
+	CONTEXT("Compare BSOBValue");
 	ASSERT_EQUALS(toString(a), toString(b));
 }
 
 template<>
 void AssertEquals(const BLOBValue& a, const BLOBValue& b)
 {
-	CONTEXT(wxT("Compare BLOBValue"));
+	CONTEXT("Compare BLOBValue");
 	ASSERT_EQUALS(toString(a), toString(b));
 }
 
 void CheckTagName(const wxString& tagName, CTag* tag)
 {
-	CONTEXT(wxT("Checking string tagname"));
+	CONTEXT("Checking string tagname");
 	ASSERT_EQUALS(tagName, tag->GetName());
 }
 
 void CheckTagName(uint8 tagName, CTag* tag)
 {
-	CONTEXT(wxT("Checking int tagname"));
+	CONTEXT("Checking int tagname");
 	ASSERT_EQUALS(tagName, tag->GetNameID());
 }
 
@@ -226,7 +226,7 @@ struct CTagAccess<BSOBValue>
 template<class V>
 void CheckTagValue(V tagValue, CTag* tag)
 {
-	CONTEXT(wxT("Check tag value"));
+	CONTEXT("Check tag value");
 
 	AssertEquals(tagValue, CTagAccess< V >::GetValue(tag));
 }
@@ -234,15 +234,15 @@ void CheckTagValue(V tagValue, CTag* tag)
 template<class V>
 void CheckTagType(V, CTag* tag)
 {
-	CONTEXT(wxT("Check tag type"));
+	CONTEXT("Check tag type");
 	ASSERT_EQUALS(true, CTagAccess<V>::IsRightType(tag));
 }
 
 template<class V, class TName>
 void CheckTagData(CTag* tag, TName tagName, const V& tagValue)
 {
-	CONTEXT(wxT("Expected tag value:") + toString(tagValue));
-	CONTEXT(wxT("Parsed tag info:") + tag->GetFullInfo());
+	CONTEXT("Expected tag value:" + toString(tagValue));
+	CONTEXT("Parsed tag info:" + tag->GetFullInfo());
 
 	CheckTagType(tagValue, tag);
 	CheckTagName(tagName, tag);
@@ -254,7 +254,7 @@ void test_taglist_serialization(TagPtrList& taglist, uint8_t* packet, uint64 pac
 	CMemFile fout;
 
 	{
-		CONTEXT(wxT("Writing taglist to CMemFile"));
+		CONTEXT("Writing taglist to CMemFile");
 
 		fout.WriteTagPtrList(taglist);
 	}
@@ -263,19 +263,19 @@ void test_taglist_serialization(TagPtrList& taglist, uint8_t* packet, uint64 pac
 	fout.Seek(0, wxFromStart);
 
 	{
-		CONTEXT(wxT("Check taglist serialization length"));
+		CONTEXT("Check taglist serialization length");
 		ASSERT_EQUALS(packet_len, fout.GetLength());
 	}
 
 	std::vector<uint8_t> buf(packet_len);
 
 	{
-		CONTEXT(wxT("Reading back serialized taglist bytes from CMemFile"));
+		CONTEXT("Reading back serialized taglist bytes from CMemFile");
 		fout.Read(&buf[0], packet_len);
 	}
 
 	for (uint64 i = 0; i < packet_len; i++) {
-		CONTEXT(wxString::Format(wxT("Comparing serialized byte #%") wxLongLongFmtSpec wxT("u"), i));
+		CONTEXT(wxString::Format("Comparing serialized byte #%" wxLongLongFmtSpec "u", i));
 
 		ASSERT_EQUALS(packet[i], buf[i]);
 	}
@@ -284,17 +284,17 @@ void test_taglist_serialization(TagPtrList& taglist, uint8_t* packet, uint64 pac
 void ReadTagPtrList(TagPtrList& taglist, uint8_t* packet, uint64 packet_len)
 {
 
-	CONTEXT(wxT("Reading taglist from buffer"));
+	CONTEXT("Reading taglist from buffer");
 	CMemFile fin(packet, packet_len);
 	fin.ReadTagPtrList(&taglist, true);
 
 	{
-		CONTEXT(wxT("Verify position is at end of packet"));
+		CONTEXT("Verify position is at end of packet");
 		ASSERT_EQUALS(packet_len, fin.GetPosition());
 	}
 }
 
-TEST_M(CTag, ReadTagList1, wxT("Kad: Parse taglist from Kad packet with UTF8 string #1"))
+TEST_M(CTag, ReadTagList1, "Kad: Parse taglist from Kad packet with UTF8 string #1")
 {
 	uint8_t packet[] = {
 		0x07,
@@ -313,7 +313,7 @@ TEST_M(CTag, ReadTagList1, wxT("Kad: Parse taglist from Kad packet with UTF8 str
 	ReadTagPtrList(taglist, packet, sizeof (packet));
 	TagPtrList::iterator it = taglist.begin();
 
-	CheckTagData(*it++, TAG_FILENAME, valid_tag_value(wxT("Gem Boy - Sarà perchè ti amo.mp3")));
+	CheckTagData(*it++, TAG_FILENAME, valid_tag_value(wxString::FromUTF8("Gem Boy - Sarà perchè ti amo.mp3")));
 	CheckTagData(*it++, TAG_FILESIZE, valid_tag_value(2060061));
 	CheckTagData(*it++, TAG_SOURCES, valid_tag_value(1));
 	CheckTagData(*it++, TAG_FILETYPE, valid_tag_value(ED2KFTSTR_AUDIO));
@@ -326,7 +326,7 @@ TEST_M(CTag, ReadTagList1, wxT("Kad: Parse taglist from Kad packet with UTF8 str
 	deleteTagPtrListEntries(&taglist);
 }
 
-TEST_M(CTag, ReadTagList2, wxT("Kad: Parse taglist from Kad packet with UTF8 string #2"))
+TEST_M(CTag, ReadTagList2, "Kad: Parse taglist from Kad packet with UTF8 string #2")
 {
 	uint8_t packet[] = {
 		0x05,
@@ -344,7 +344,7 @@ TEST_M(CTag, ReadTagList2, wxT("Kad: Parse taglist from Kad packet with UTF8 str
 	ReadTagPtrList(taglist, packet, sizeof (packet));
 	TagPtrList::iterator it = taglist.begin();
 
-	CheckTagData(*it++, TAG_FILENAME, valid_tag_value(wxT("Serialization Test File 1893-€€èéçàù§.txt")));
+	CheckTagData(*it++, TAG_FILENAME, valid_tag_value(wxString::FromUTF8("Serialization Test File 1893-€€èéçàù§.txt")));
 	CheckTagData(*it++, TAG_FILESIZE, valid_tag_value(13));
 	CheckTagData(*it++, TAG_SOURCES, valid_tag_value(0));
 	CheckTagData(*it++, TAG_FILETYPE, valid_tag_value(ED2KFTSTR_DOCUMENT));
@@ -356,7 +356,7 @@ TEST_M(CTag, ReadTagList2, wxT("Kad: Parse taglist from Kad packet with UTF8 str
 
 }
 
-TEST_M(CTag, Float, wxT("Kad: Read/Write floats"))
+TEST_M(CTag, Float, "Kad: Read/Write floats")
 {
 	uint8_t packet[] = {
 		0x02,
@@ -376,7 +376,7 @@ TEST_M(CTag, Float, wxT("Kad: Read/Write floats"))
 	deleteTagPtrListEntries(&taglist);
 }
 
-TEST_M(CTag, CMD4Hash, wxT("Kad: Read/Write CMD4Hash"))
+TEST_M(CTag, CMD4Hash, "Kad: Read/Write CMD4Hash")
 {
 	uint8_t packet[] = {
 		0x01,
@@ -404,12 +404,12 @@ template<class T, class V>
 void check_single_kad_tag(uint8_t* packet, size_t packet_len, T tagName, V tagValue)
 {
 	CMemFile buf(packet, packet_len);
-	CONTEXT(wxT("Starting buffer: ") + toString(buf));
+	CONTEXT("Starting buffer: " + toString(buf));
 	CTag* tag = buf.ReadTag(true);
 
 	CheckTagData(tag, tagName, valid_tag_value(tagValue));
 	{
-		CONTEXT(wxT("Check end of buffer"));
+		CONTEXT("Check end of buffer");
 		ASSERT_EQUALS(packet_len, buf.GetPosition());
 	}
 
@@ -417,11 +417,11 @@ void check_single_kad_tag(uint8_t* packet, size_t packet_len, T tagName, V tagVa
 		CMemFile newbuf;
 		newbuf.WriteTag(*tag);
 
-		CONTEXT(wxT("Serialized    : ") + toString(newbuf));
+		CONTEXT("Serialized    : " + toString(newbuf));
 
 		newbuf.Seek(0, wxFromStart);
 		for (size_t i = 0; i < packet_len; i++) {
-			CONTEXT(wxString::Format(wxT("Comparing byte #%d"), static_cast<int>(i)));
+			CONTEXT(wxString::Format("Comparing byte #%d", static_cast<int>(i)));
 
 			ASSERT_EQUALS(packet[i], newbuf.ReadUInt8());
 		}
@@ -431,22 +431,22 @@ void check_single_kad_tag(uint8_t* packet, size_t packet_len, T tagName, V tagVa
 	delete tag;
 }
 
-TEST_M(CTag, KadBsob, wxT("Kad: Read/Write BSOB"))
+TEST_M(CTag, KadBsob, "Kad: Read/Write BSOB")
 {
 	uint8_t packet[] = {
 		/*Tag1*/ 0x0A, 0x01, 0x00, 0x02, 0x04, 0x01, 0x02, 0x03, 0x04,
 	};
 	uint8_t raw_data[] = {0x01, 0x02, 0x03, 0x04};
 	{
-		CONTEXT(wxT("Create BSOBValue"));
+		CONTEXT("Create BSOBValue");
 		BSOBValue bsob(sizeof (raw_data), raw_data);
 
-		CONTEXT(wxT("check_single_kad_tag BSOBValue"));
+		CONTEXT("check_single_kad_tag BSOBValue");
 		check_single_kad_tag(packet, sizeof (packet), TAG_FILESIZE, bsob);
 	}
 }
 
-TEST_M(CTag, KadInt64, wxT("Kad: Read/Write integer 64bit"))
+TEST_M(CTag, KadInt64, "Kad: Read/Write integer 64bit")
 {
 	uint8_t packet[] = {
 		/*Tag1*/ 0x0b, 0x01, 0x00, 0x02, 0x10, 0x11, 0x12, 0x13, 0x20, 0x21, 0x22, 0x23, // 64 bit int
@@ -454,7 +454,7 @@ TEST_M(CTag, KadInt64, wxT("Kad: Read/Write integer 64bit"))
 	check_single_kad_tag(packet, sizeof (packet), TAG_FILESIZE, 0x2322212013121110LL);
 }
 
-TEST_M(CTag, KadInt32, wxT("Kad: Read/Write integer 32bit"))
+TEST_M(CTag, KadInt32, "Kad: Read/Write integer 32bit")
 {
 	uint8_t packet[] = {
 		/*Tag1*/ 0x03, 0x01, 0x00, 0x02, 0x12, 0x34, 0x56, 0x78, // 32 bit int
@@ -462,7 +462,7 @@ TEST_M(CTag, KadInt32, wxT("Kad: Read/Write integer 32bit"))
 	check_single_kad_tag(packet, sizeof (packet), TAG_FILESIZE, 0x78563412);
 }
 
-TEST_M(CTag, KadInt16, wxT("Kad: Read/Write integer 16bit"))
+TEST_M(CTag, KadInt16, "Kad: Read/Write integer 16bit")
 {
 	uint8_t packet[] = {
 		/*Tag1*/ 0x08, 0x01, 0x00, 0x02, 0x12, 0x34, // 16 bit int
@@ -470,7 +470,7 @@ TEST_M(CTag, KadInt16, wxT("Kad: Read/Write integer 16bit"))
 	check_single_kad_tag(packet, sizeof (packet), TAG_FILESIZE, 0x3412);
 }
 
-TEST_M(CTag, KadInt8, wxT("Kad: Read/Write integer  8bit"))
+TEST_M(CTag, KadInt8, "Kad: Read/Write integer  8bit")
 {
 	uint8_t packet[] = {
 		/*Tag1*/ 0x09, 0x01, 0x00, 0x02, 0x12, //  8 bit int
@@ -478,7 +478,7 @@ TEST_M(CTag, KadInt8, wxT("Kad: Read/Write integer  8bit"))
 	check_single_kad_tag(packet, sizeof (packet), TAG_FILESIZE, 0x12);
 }
 
-TEST_M(CTag, ReadIntegers, wxT("Kad: Read/Write multiple integers"))
+TEST_M(CTag, ReadIntegers, "Kad: Read/Write multiple integers")
 {
 	uint8_t packet[] = {
 		0x08,
@@ -517,54 +517,54 @@ TEST_M(CTag, ReadIntegers, wxT("Kad: Read/Write multiple integers"))
 
 typedef std::map<wxString, wxString> TagNamesByString;
 
-TEST_M(CTag, KadTagNames, wxT("Kad: Test Kad tags (name=string) - write/read every valid tag name"))
+TEST_M(CTag, KadTagNames, "Kad: Test Kad tags (name=string) - write/read every valid tag name")
 {
 	TagNamesByString tagNames;
 
-	tagNames[TAG_FILENAME] = wxT("TAG_FILENAME");
-	tagNames[TAG_FILESIZE] = wxT("TAG_FILESIZE");
-	tagNames[TAG_FILESIZE_HI] = wxT("TAG_FILESIZE_HI");
-	tagNames[TAG_FILETYPE] = wxT("TAG_FILETYPE");
-	tagNames[TAG_FILEFORMAT] = wxT("TAG_FILEFORMAT");
-	tagNames[TAG_COLLECTION] = wxT("TAG_COLLECTION");
-	tagNames[TAG_PART_PATH] = wxT("TAG_PART_PATH");
-	tagNames[TAG_PART_HASH] = wxT("TAG_PART_HASH");
-	tagNames[TAG_COPIED] = wxT("TAG_COPIED");
-	tagNames[TAG_GAP_START] = wxT("TAG_GAP_START");
-	tagNames[TAG_GAP_END] = wxT("TAG_GAP_END");
-	tagNames[TAG_DESCRIPTION] = wxT("TAG_DESCRIPTION");
-	tagNames[TAG_PING] = wxT("TAG_PING");
-	tagNames[TAG_FAIL] = wxT("TAG_FAIL");
-	tagNames[TAG_PREFERENCE] = wxT("TAG_PREFERENCE");
-	tagNames[TAG_PORT] = wxT("TAG_PORT");
-	tagNames[TAG_IP_ADDRESS] = wxT("TAG_IP_ADDRESS");
-	tagNames[TAG_VERSION] = wxT("TAG_VERSION");
-	tagNames[TAG_TEMPFILE] = wxT("TAG_TEMPFILE");
-	tagNames[TAG_PRIORITY] = wxT("TAG_PRIORITY");
-	tagNames[TAG_STATUS] = wxT("TAG_STATUS");
-	tagNames[TAG_SOURCES] = wxT("TAG_SOURCES");
-	tagNames[TAG_AVAILABILITY] = wxT("TAG_AVAILABILITY");
-	tagNames[TAG_PERMISSIONS] = wxT("TAG_PERMISSIONS");
-	tagNames[TAG_QTIME] = wxT("TAG_QTIME");
-	tagNames[TAG_PARTS] = wxT("TAG_PARTS");
-	tagNames[TAG_PUBLISHINFO] = wxT("TAG_PUBLISHINFO");
-	tagNames[TAG_MEDIA_ARTIST] = wxT("TAG_MEDIA_ARTIST");
-	tagNames[TAG_MEDIA_ALBUM] = wxT("TAG_MEDIA_ALBUM");
-	tagNames[TAG_MEDIA_TITLE] = wxT("TAG_MEDIA_TITLE");
-	tagNames[TAG_MEDIA_LENGTH] = wxT("TAG_MEDIA_LENGTH");
-	tagNames[TAG_MEDIA_BITRATE] = wxT("TAG_MEDIA_BITRATE");
-	tagNames[TAG_MEDIA_CODEC] = wxT("TAG_MEDIA_CODEC");
-	tagNames[TAG_KADMISCOPTIONS] = wxT("TAG_KADMISCOPTIONS");
-	tagNames[TAG_ENCRYPTION] = wxT("TAG_ENCRYPTION");
-	tagNames[TAG_FILERATING] = wxT("TAG_FILERATING");
-	tagNames[TAG_BUDDYHASH] = wxT("TAG_BUDDYHASH");
-	tagNames[TAG_CLIENTLOWID] = wxT("TAG_CLIENTLOWID");
-	tagNames[TAG_SERVERPORT] = wxT("TAG_SERVERPORT");
-	tagNames[TAG_SERVERIP] = wxT("TAG_SERVERIP");
-	tagNames[TAG_SOURCEUPORT] = wxT("TAG_SOURCEUPORT");
-	tagNames[TAG_SOURCEPORT] = wxT("TAG_SOURCEPORT");
-	tagNames[TAG_SOURCEIP] = wxT("TAG_SOURCEIP");
-	tagNames[TAG_SOURCETYPE] = wxT("TAG_SOURCETYPE");
+	tagNames[TAG_FILENAME] = "TAG_FILENAME";
+	tagNames[TAG_FILESIZE] = "TAG_FILESIZE";
+	tagNames[TAG_FILESIZE_HI] = "TAG_FILESIZE_HI";
+	tagNames[TAG_FILETYPE] = "TAG_FILETYPE";
+	tagNames[TAG_FILEFORMAT] = "TAG_FILEFORMAT";
+	tagNames[TAG_COLLECTION] = "TAG_COLLECTION";
+	tagNames[TAG_PART_PATH] = "TAG_PART_PATH";
+	tagNames[TAG_PART_HASH] = "TAG_PART_HASH";
+	tagNames[TAG_COPIED] = "TAG_COPIED";
+	tagNames[TAG_GAP_START] = "TAG_GAP_START";
+	tagNames[TAG_GAP_END] = "TAG_GAP_END";
+	tagNames[TAG_DESCRIPTION] = "TAG_DESCRIPTION";
+	tagNames[TAG_PING] = "TAG_PING";
+	tagNames[TAG_FAIL] = "TAG_FAIL";
+	tagNames[TAG_PREFERENCE] = "TAG_PREFERENCE";
+	tagNames[TAG_PORT] = "TAG_PORT";
+	tagNames[TAG_IP_ADDRESS] = "TAG_IP_ADDRESS";
+	tagNames[TAG_VERSION] = "TAG_VERSION";
+	tagNames[TAG_TEMPFILE] = "TAG_TEMPFILE";
+	tagNames[TAG_PRIORITY] = "TAG_PRIORITY";
+	tagNames[TAG_STATUS] = "TAG_STATUS";
+	tagNames[TAG_SOURCES] = "TAG_SOURCES";
+	tagNames[TAG_AVAILABILITY] = "TAG_AVAILABILITY";
+	tagNames[TAG_PERMISSIONS] = "TAG_PERMISSIONS";
+	tagNames[TAG_QTIME] = "TAG_QTIME";
+	tagNames[TAG_PARTS] = "TAG_PARTS";
+	tagNames[TAG_PUBLISHINFO] = "TAG_PUBLISHINFO";
+	tagNames[TAG_MEDIA_ARTIST] = "TAG_MEDIA_ARTIST";
+	tagNames[TAG_MEDIA_ALBUM] = "TAG_MEDIA_ALBUM";
+	tagNames[TAG_MEDIA_TITLE] = "TAG_MEDIA_TITLE";
+	tagNames[TAG_MEDIA_LENGTH] = "TAG_MEDIA_LENGTH";
+	tagNames[TAG_MEDIA_BITRATE] = "TAG_MEDIA_BITRATE";
+	tagNames[TAG_MEDIA_CODEC] = "TAG_MEDIA_CODEC";
+	tagNames[TAG_KADMISCOPTIONS] = "TAG_KADMISCOPTIONS";
+	tagNames[TAG_ENCRYPTION] = "TAG_ENCRYPTION";
+	tagNames[TAG_FILERATING] = "TAG_FILERATING";
+	tagNames[TAG_BUDDYHASH] = "TAG_BUDDYHASH";
+	tagNames[TAG_CLIENTLOWID] = "TAG_CLIENTLOWID";
+	tagNames[TAG_SERVERPORT] = "TAG_SERVERPORT";
+	tagNames[TAG_SERVERIP] = "TAG_SERVERIP";
+	tagNames[TAG_SOURCEUPORT] = "TAG_SOURCEUPORT";
+	tagNames[TAG_SOURCEPORT] = "TAG_SOURCEPORT";
+	tagNames[TAG_SOURCEIP] = "TAG_SOURCEIP";
+	tagNames[TAG_SOURCETYPE] = "TAG_SOURCETYPE";
 
 	CMemFile buf;
 	buf.WriteUInt8(tagNames.size());
@@ -594,7 +594,7 @@ TEST_M(CTag, KadTagNames, wxT("Kad: Test Kad tags (name=string) - write/read eve
 
 	counter = 0;
 	for (TagNamesByString::iterator it_name = tagNames.begin(); it_name != tagNames.end(); ++it_name) {
-		CONTEXT(wxT("Testing tag name: ") + it_name->second);
+		CONTEXT("Testing tag name: " + it_name->second);
 		CheckTagData(*it++, it_name->first, valid_tag_value(counter++));
 	}
 
@@ -605,49 +605,49 @@ TEST_M(CTag, KadTagNames, wxT("Kad: Test Kad tags (name=string) - write/read eve
 
 typedef std::map<int, wxString> TagNamesByInt;
 
-TEST_M(CTag, ED2kTagNames, wxT("Ed2k: Test ed2k tags (name=id) - write/read every valid tag name"))
+TEST_M(CTag, ED2kTagNames, "Ed2k: Test ed2k tags (name=id) - write/read every valid tag name")
 {
 	TagNamesByInt tagNames;
 
-	tagNames[FT_FILENAME] = wxT("FT_FILENAME");
-	tagNames[FT_FILESIZE] = wxT("FT_FILESIZE");
-	tagNames[FT_FILESIZE_HI] = wxT("FT_FILESIZE_HI");
-	tagNames[FT_FILETYPE] = wxT("FT_FILETYPE");
-	tagNames[FT_FILEFORMAT] = wxT("FT_FILEFORMAT");
-	tagNames[FT_LASTSEENCOMPLETE] = wxT("FT_LASTSEENCOMPLETE");
-	tagNames[FT_TRANSFERRED] = wxT("FT_TRANSFERRED");
-	tagNames[FT_GAPSTART] = wxT("FT_GAPSTART");
-	tagNames[FT_GAPEND] = wxT("FT_GAPEND");
-	tagNames[FT_PARTFILENAME] = wxT("FT_PARTFILENAME");
-	tagNames[FT_OLDDLPRIORITY] = wxT("FT_OLDDLPRIORITY");
-	tagNames[FT_STATUS] = wxT("FT_STATUS");
-	tagNames[FT_SOURCES] = wxT("FT_SOURCES");
-	tagNames[FT_PERMISSIONS] = wxT("FT_PERMISSIONS");
-	tagNames[FT_OLDULPRIORITY] = wxT("FT_OLDULPRIORITY");
-	tagNames[FT_DLPRIORITY] = wxT("FT_DLPRIORITY");
-	tagNames[FT_ULPRIORITY] = wxT("FT_ULPRIORITY");
-	tagNames[FT_KADLASTPUBLISHKEY] = wxT("FT_KADLASTPUBLISHKEY");
-	tagNames[FT_KADLASTPUBLISHSRC] = wxT("FT_KADLASTPUBLISHSRC");
-	tagNames[FT_FLAGS] = wxT("FT_FLAGS");
-	tagNames[FT_DL_ACTIVE_TIME] = wxT("FT_DL_ACTIVE_TIME");
-	tagNames[FT_CORRUPTEDPARTS] = wxT("FT_CORRUPTEDPARTS");
-	tagNames[FT_DL_PREVIEW] = wxT("FT_DL_PREVIEW");
-	tagNames[FT_KADLASTPUBLISHNOTES] = wxT("FT_KADLASTPUBLISHNOTES");
-	tagNames[FT_AICH_HASH] = wxT("FT_AICH_HASH");
-	tagNames[FT_COMPLETE_SOURCES] = wxT("FT_COMPLETE_SOURCES");
-	tagNames[FT_PUBLISHINFO] = wxT("FT_PUBLISHINFO");
-	tagNames[FT_ATTRANSFERRED] = wxT("FT_ATTRANSFERRED");
-	tagNames[FT_ATREQUESTED] = wxT("FT_ATREQUESTED");
-	tagNames[FT_ATACCEPTED] = wxT("FT_ATACCEPTED");
-	tagNames[FT_CATEGORY] = wxT("FT_CATEGORY");
-	tagNames[FT_ATTRANSFERREDHI] = wxT("FT_ATTRANSFERREDHI");
-	tagNames[FT_MEDIA_ARTIST] = wxT("FT_MEDIA_ARTIST");
-	tagNames[FT_MEDIA_ALBUM] = wxT("FT_MEDIA_ALBUM");
-	tagNames[FT_MEDIA_TITLE] = wxT("FT_MEDIA_TITLE");
-	tagNames[FT_MEDIA_LENGTH] = wxT("FT_MEDIA_LENGTH");
-	tagNames[FT_MEDIA_BITRATE] = wxT("FT_MEDIA_BITRATE");
-	tagNames[FT_MEDIA_CODEC] = wxT("FT_MEDIA_CODEC");
-	tagNames[FT_FILERATING] = wxT("FT_FILERATING");
+	tagNames[FT_FILENAME] = "FT_FILENAME";
+	tagNames[FT_FILESIZE] = "FT_FILESIZE";
+	tagNames[FT_FILESIZE_HI] = "FT_FILESIZE_HI";
+	tagNames[FT_FILETYPE] = "FT_FILETYPE";
+	tagNames[FT_FILEFORMAT] = "FT_FILEFORMAT";
+	tagNames[FT_LASTSEENCOMPLETE] = "FT_LASTSEENCOMPLETE";
+	tagNames[FT_TRANSFERRED] = "FT_TRANSFERRED";
+	tagNames[FT_GAPSTART] = "FT_GAPSTART";
+	tagNames[FT_GAPEND] = "FT_GAPEND";
+	tagNames[FT_PARTFILENAME] = "FT_PARTFILENAME";
+	tagNames[FT_OLDDLPRIORITY] = "FT_OLDDLPRIORITY";
+	tagNames[FT_STATUS] = "FT_STATUS";
+	tagNames[FT_SOURCES] = "FT_SOURCES";
+	tagNames[FT_PERMISSIONS] = "FT_PERMISSIONS";
+	tagNames[FT_OLDULPRIORITY] = "FT_OLDULPRIORITY";
+	tagNames[FT_DLPRIORITY] = "FT_DLPRIORITY";
+	tagNames[FT_ULPRIORITY] = "FT_ULPRIORITY";
+	tagNames[FT_KADLASTPUBLISHKEY] = "FT_KADLASTPUBLISHKEY";
+	tagNames[FT_KADLASTPUBLISHSRC] = "FT_KADLASTPUBLISHSRC";
+	tagNames[FT_FLAGS] = "FT_FLAGS";
+	tagNames[FT_DL_ACTIVE_TIME] = "FT_DL_ACTIVE_TIME";
+	tagNames[FT_CORRUPTEDPARTS] = "FT_CORRUPTEDPARTS";
+	tagNames[FT_DL_PREVIEW] = "FT_DL_PREVIEW";
+	tagNames[FT_KADLASTPUBLISHNOTES] = "FT_KADLASTPUBLISHNOTES";
+	tagNames[FT_AICH_HASH] = "FT_AICH_HASH";
+	tagNames[FT_COMPLETE_SOURCES] = "FT_COMPLETE_SOURCES";
+	tagNames[FT_PUBLISHINFO] = "FT_PUBLISHINFO";
+	tagNames[FT_ATTRANSFERRED] = "FT_ATTRANSFERRED";
+	tagNames[FT_ATREQUESTED] = "FT_ATREQUESTED";
+	tagNames[FT_ATACCEPTED] = "FT_ATACCEPTED";
+	tagNames[FT_CATEGORY] = "FT_CATEGORY";
+	tagNames[FT_ATTRANSFERREDHI] = "FT_ATTRANSFERREDHI";
+	tagNames[FT_MEDIA_ARTIST] = "FT_MEDIA_ARTIST";
+	tagNames[FT_MEDIA_ALBUM] = "FT_MEDIA_ALBUM";
+	tagNames[FT_MEDIA_TITLE] = "FT_MEDIA_TITLE";
+	tagNames[FT_MEDIA_LENGTH] = "FT_MEDIA_LENGTH";
+	tagNames[FT_MEDIA_BITRATE] = "FT_MEDIA_BITRATE";
+	tagNames[FT_MEDIA_CODEC] = "FT_MEDIA_CODEC";
+	tagNames[FT_FILERATING] = "FT_FILERATING";
 
 
 	CMemFile buf;
@@ -666,7 +666,7 @@ TEST_M(CTag, ED2kTagNames, wxT("Ed2k: Test ed2k tags (name=id) - write/read ever
 
 	counter = 0;
 	for (TagNamesByInt::iterator it_name = tagNames.begin(); it_name != tagNames.end(); ++it_name) {
-		CONTEXT(wxString::Format(wxT("Reading tag#%") wxLongLongFmtSpec wxT("u"), counter));
+		CONTEXT(wxString::Format("Reading tag#%" wxLongLongFmtSpec "u", counter));
 		CTag* newtag = new CTag(buf, true);
 		CheckTagName(it_name->first, newtag);
 		CheckTagValue( valid_tag_value( counter ), newtag);
@@ -675,7 +675,7 @@ TEST_M(CTag, ED2kTagNames, wxT("Ed2k: Test ed2k tags (name=id) - write/read ever
 	}
 }
 
-TEST_M(CTag, Ed2kBlob1, wxT("Ed2k: Read/Write BLOB - numeric tagname"))
+TEST_M(CTag, Ed2kBlob1, "Ed2k: Read/Write BLOB - numeric tagname")
 {
 	uint8_t packet[] = {
 		/*Tag1*/ 0x87, 0xFF, 0x04, 0x00, 0x00, 0x00,
@@ -686,7 +686,7 @@ TEST_M(CTag, Ed2kBlob1, wxT("Ed2k: Read/Write BLOB - numeric tagname"))
 	buf.Seek(0, wxFromStart);
 	uint8_t raw_data[] = {0x01, 0x02, 0x03, 0x04};
 	{
-		CONTEXT(wxT("Create BLOBValue"));
+		CONTEXT("Create BLOBValue");
 		BLOBValue blob(sizeof (raw_data), raw_data);
 
 		CTag tag(buf, true);
@@ -695,7 +695,7 @@ TEST_M(CTag, Ed2kBlob1, wxT("Ed2k: Read/Write BLOB - numeric tagname"))
 	}
 }
 
-TEST_M(CTag, Ed2kBlob2, wxT("Ed2k: Read/Write BLOB - string tagname"))
+TEST_M(CTag, Ed2kBlob2, "Ed2k: Read/Write BLOB - string tagname")
 {
 	uint8_t packet[] = {
 		/*Tag1*/ 0x07, 0x02, 0x00, 'A', 'A', 0x04, 0x00, 0x00, 0x00,
@@ -706,11 +706,11 @@ TEST_M(CTag, Ed2kBlob2, wxT("Ed2k: Read/Write BLOB - string tagname"))
 	buf.Seek(0, wxFromStart);
 	uint8_t raw_data[] = {0x01, 0x02, 0x03, 0x04};
 	{
-		CONTEXT(wxT("Create BLOBValue"));
+		CONTEXT("Create BLOBValue");
 		BLOBValue blob(sizeof (raw_data), raw_data);
 
 		CTag tag(buf, true);
-		CheckTagName(wxT("AA"), &tag);
+		CheckTagName("AA", &tag);
 		CheckTagValue( valid_tag_value( blob ), &tag);
 	}
 }

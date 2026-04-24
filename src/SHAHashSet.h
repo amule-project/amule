@@ -79,8 +79,8 @@ Version 2 of AICH also supports 32bit identifiers to support large files, check 
 #include "ClientRef.h"
 
 #define HASHSIZE			20
-#define KNOWN2_MET_FILENAME		wxT("known2_64.met")
-#define OLD_KNOWN2_MET_FILENAME		wxT("known2.met")
+#define KNOWN2_MET_FILENAME		"known2_64.met"
+#define OLD_KNOWN2_MET_FILENAME		"known2.met"
 #define KNOWN2_MET_VERSION		0x02
 
 enum EAICHStatus {

@@ -51,7 +51,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	    new wxStaticBox ( this, -1, _( "Directory containing amulesig.dat file" ) );
 	m_osPathSBoxSizer = new wxStaticBoxSizer ( m_osPathSBox, wxHORIZONTAL );
 
-	m_osPathTextCtrl = new wxTextCtrl ( this, -1, wxEmptyString );
+	m_osPathTextCtrl = new wxTextCtrl ( this, -1, "" );
 	m_osPathBrowseButton =
 	    new wxButton ( this, ID_OSPATH_BROWSE_BUTTON, wxString ( _( "Browse" ) ) );
 
@@ -62,7 +62,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 
 	// Text extent
 	wxInt32 charExtent, y;
-	m_osPathTextCtrl->GetTextExtent ( wxT( "8" ), &charExtent, &y );
+	m_osPathTextCtrl->GetTextExtent ( "8", &charExtent, &y );
 	m_osPathTextCtrl->SetSize ( wxSize ( charExtent * ( str.Length () + 1 ), -1 ) );
 
 	m_osPathTextCtrl->SetValue ( str );
@@ -76,7 +76,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	m_mainVBox->Add ( m_osPathSBoxSizer, 0, wxGROW | wxALIGN_CENTER | wxALL, 10 );
 
 	// Refresh rate
-	m_refreshSBox = new wxStaticBox ( this, -1, wxEmptyString );
+	m_refreshSBox = new wxStaticBox ( this, -1, "" );
 	m_refreshSBoxSizer = new wxStaticBoxSizer ( m_refreshSBox, wxHORIZONTAL );
 
 
@@ -96,7 +96,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	                  10 );
 
 	// Auto generate stat image
-	m_autoStatImgSBox = new wxStaticBox ( this, -1, wxEmptyString );
+	m_autoStatImgSBox = new wxStaticBox ( this, -1, "" );
 	m_autoStatImgSBoxSizer =
 	    new wxStaticBoxSizer ( m_autoStatImgSBox, wxVERTICAL );
 
@@ -111,7 +111,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 
 	wxString strs[] =
 	    {
-	        wxT ( "PNG" ), wxT ( "JPG" ), wxT ( "BMP" ) };
+	        "PNG", "JPG", "BMP" };
 
 	m_autoStatImgCombo =
 	    new wxComboBox ( this, ID_AUTOSTATIMG_COMBO,
@@ -121,7 +121,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	                     wxDefaultPosition, wxDefaultSize, 3, strs,
 	                     wxCB_DROPDOWN | wxCB_READONLY );
 
-	m_autoStatImgTextCtrl = new wxTextCtrl ( this, -1, wxEmptyString );
+	m_autoStatImgTextCtrl = new wxTextCtrl ( this, -1, "" );
 	m_autoStatImgTextCtrl->SetValue ( prefs->
 	                                  Read ( WxCasCte::AUTOSTATIMG_DIR_KEY,
 	                                         WxCasCte::DEFAULT_AUTOSTATIMG_PATH ) );
@@ -146,7 +146,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	                  5 );
 
 	// Auto FTP update stat image
-	m_ftpUpdateSBox = new wxStaticBox ( this, -1, wxEmptyString );
+	m_ftpUpdateSBox = new wxStaticBox ( this, -1, "" );
 	m_ftpUpdateSBoxSizer =
 	    new wxStaticBoxSizer ( m_ftpUpdateSBox, wxVERTICAL );
 
@@ -170,7 +170,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	m_ftpUpdateGridSizer->Add ( m_ftpPathStaticText, 1,
 	                            wxALIGN_LEFT | wxALIGN_BOTTOM | wxALL, 5 );
 	// Url
-	m_ftpUrlTextCtrl = new wxTextCtrl ( this, -1, wxEmptyString );
+	m_ftpUrlTextCtrl = new wxTextCtrl ( this, -1, "" );
 	m_ftpUrlTextCtrl->SetValue ( prefs->
 	                             Read ( WxCasCte::FTP_URL_KEY,
 	                                    WxCasCte::DEFAULT_FTP_URL ) );
@@ -182,7 +182,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	                            wxGROW | wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5 );
 
 	// Path
-	m_ftpPathTextCtrl = new wxTextCtrl ( this, -1, wxEmptyString );
+	m_ftpPathTextCtrl = new wxTextCtrl ( this, -1, "" );
 	m_ftpPathTextCtrl->SetValue ( prefs->
 	                              Read ( WxCasCte::FTP_PATH_KEY,
 	                                     WxCasCte::DEFAULT_FTP_PATH ) );
@@ -203,7 +203,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	                            wxALIGN_LEFT | wxALIGN_BOTTOM | wxALL, 5 );
 
 	// User
-	m_ftpUserTextCtrl = new wxTextCtrl ( this, -1, wxEmptyString );
+	m_ftpUserTextCtrl = new wxTextCtrl ( this, -1, "" );
 	m_ftpUserTextCtrl->SetValue ( prefs->
 	                              Read ( WxCasCte::FTP_USER_KEY,
 	                                     WxCasCte::DEFAULT_FTP_USER ) );
@@ -215,7 +215,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	                            wxGROW | wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5 );
 
 	// Passwd
-	m_ftpPasswdTextCtrl = new wxTextCtrl ( this, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+	m_ftpPasswdTextCtrl = new wxTextCtrl ( this, -1, "", wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
 	m_ftpPasswdTextCtrl->SetValue ( prefs->
 	                                Read ( WxCasCte::FTP_PASSWD_KEY,
 	                                       WxCasCte::DEFAULT_FTP_PASSWD ) );

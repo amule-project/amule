@@ -48,9 +48,9 @@
 #endif
 
 #ifdef __SVN__
-	#define	MOD_VERSION_LONG		wxT("aMule SVN")
+	#define	MOD_VERSION_LONG		"aMule SVN"
 #else
-	#define	MOD_VERSION_LONG		(wxT("aMule ") wxT(VERSION))
+	#define	MOD_VERSION_LONG		("aMule " VERSION)
 #endif
 
 #define	VERSION_MJR		2

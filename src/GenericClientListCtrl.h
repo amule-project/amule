@@ -193,7 +193,7 @@ private:
 	 * @see CMuleListCtrl::GetTTSText
 	 * Just a dummy
 	 */
-	virtual wxString GetTTSText(unsigned) const { return wxEmptyString; }
+	virtual wxString GetTTSText(unsigned) const { return ""; }
 
 	/**
 	 * Set "show sources" or "show peers" flag in Known File

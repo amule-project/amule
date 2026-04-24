@@ -79,7 +79,7 @@ wxString CUInt128::ToHexString() const
 	wxString str;
 
 	for (int i = 3; i >= 0; i--) {
-		str.Append(CFormat(wxT("%08X")) % m_data.u32_data[i]);
+		str.Append(CFormat("%08X") % m_data.u32_data[i]);
 	}
 
 	return str;
@@ -93,12 +93,12 @@ wxString CUInt128::ToBinaryString(bool trim) const
 	for (int i = 0; i < 128; i++) {
 		b = GetBitNumber(i);
 		if ((!trim) || (b != 0)) {
-			str.Append(b ? wxT("1") : wxT("0"));
+			str.Append(b ? "1" : "0");
 			trim = false;
 		}
 	}
 	if (str.Len() == 0) {
-		str = wxT("0");
+		str = "0";
 	}
 	return str;
 }
@@ -115,7 +115,7 @@ CUInt128& CUInt128::SetValueBE(const uint8_t *valueBE) throw()
 
 void CUInt128::ToByteArray(uint8_t *b) const
 {
-	wxCHECK_RET(b != NULL, wxT("Destination buffer missing."));
+	wxCHECK_RET(b != NULL, "Destination buffer missing.");
 
 	RawPokeUInt32(b,      wxUINT32_SWAP_ON_LE(m_data.u32_data[3]));
 	RawPokeUInt32(b + 4,  wxUINT32_SWAP_ON_LE(m_data.u32_data[2]));
@@ -125,7 +125,7 @@ void CUInt128::ToByteArray(uint8_t *b) const
 
 void CUInt128::StoreCryptValue(uint8_t *buf) const
 {
-	wxCHECK_RET(buf != NULL, wxT("Destination buffer missing."));
+	wxCHECK_RET(buf != NULL, "Destination buffer missing.");
 
 	RawPokeUInt32(buf,      wxUINT32_SWAP_ON_BE(m_data.u32_data[3]));
 	RawPokeUInt32(buf + 4,  wxUINT32_SWAP_ON_BE(m_data.u32_data[2]));

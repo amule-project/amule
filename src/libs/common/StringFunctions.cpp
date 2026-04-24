@@ -76,9 +76,9 @@ wxString URLEncode(const wxString& sIn)
 		if ( isalnum( curChar ) ) {
 	        sOut += curChar;
 	    } else if( isspace ( curChar ) ) {
-		    sOut += wxT("+");
+		    sOut += "+";
 		} else {
-			sOut += wxT("%");
+			sOut += "%";
 			sOut += base16Chars[ curChar >> 4];
 			sOut += base16Chars[ curChar & 0xf];
 		}
@@ -99,11 +99,11 @@ wxChar HexToDec( const wxString& hex )
 		wxChar cur = str.GetChar(i);
 
 		if ( isdigit( cur ) ) {
-			result += cur - wxT('0');
-		} else if ( cur >= wxT('A') && cur <= wxT('F') ) {
-			result += cur - wxT('A') + 10;
+			result += cur - '0';
+		} else if ( cur >= 'A' && cur <= 'F' ) {
+			result += cur - 'A' + 10;
 		} else {
-			return wxT('\0');
+			return '\0';
 		}
 	}
 
@@ -165,14 +165,14 @@ enum ECharType {
 inline wxString GetNextField(const wxString& str, size_t& cookie)
 {
 	// These are taken to separate "fields"
-	static const wxChar* s_delims = wxT("\t\n\x0b\x0c\r !\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~");
+	static const wxChar* s_delims = L"\t\n\x0b\x0c\r !\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~";
 
 	wxString field;
 	ECharType curType = ECTNone;
 	for (; cookie < str.Length(); ++cookie) {
 		wxChar c = str[cookie];
 
-		if ((c >= wxT('0')) && (c <= wxT('9'))) {
+		if ((c >= '0') && (c <= '9')) {
 			if (curType == ECTText) {
 				break;
 			}

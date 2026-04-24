@@ -105,7 +105,7 @@ wxString CEntry::GetStrTagValue(const wxString& tagname) const
 			return (*it)->GetStr();
 		}
 	}
-	return wxEmptyString;
+	return "";
 }
 
 void CEntry::SetFileName(const wxString& name)
@@ -132,7 +132,7 @@ wxString CEntry::GetCommonFileName() const
 			result = it;
 		}
 	}
-	wxString strResult(result != m_filenames.end() ? result->m_filename : wxString(wxEmptyString));
+	wxString strResult(result != m_filenames.end() ? result->m_filename : wxString(""));
 	wxASSERT(!strResult.IsEmpty() || m_filenames.empty());
 	return strResult;
 }
@@ -140,7 +140,7 @@ wxString CEntry::GetCommonFileName() const
 void CEntry::WriteTagListInc(CFileDataIO* data, uint32_t increaseTagNumber)
 {
 	// write taglist and add name + size tag
-	wxCHECK_RET(data != NULL, wxT("data must not be NULL"));
+	wxCHECK_RET(data != NULL, "data must not be NULL");
 
 	uint32_t count = GetTagCount() + increaseTagNumber;	// will include name and size tag in the count if needed
 	wxASSERT(count <= 0xFF);
@@ -174,7 +174,7 @@ CKeyEntry::~CKeyEntry()
 {
 	if (m_publishingIPs != NULL) {
 		for (PublishingIPList::const_iterator it = m_publishingIPs->begin(); it != m_publishingIPs->end(); ++it) {
-			AdjustGlobalPublishTracking(it->m_ip, false, wxT("instance delete"));
+			AdjustGlobalPublishTracking(it->m_ip, false, "instance delete");
 		}
 		delete m_publishingIPs;
 		m_publishingIPs = NULL;
@@ -221,7 +221,7 @@ bool CKeyEntry::SearchTermsMatch(const SSearchTerm* searchTerm) const
 				// 21-Sep-2006 []: Special handling for TAG_FILEFORMAT which is already part
 				// of the filename and thus does not need to get published nor stored explicitly,
 				wxString commonFileName(GetCommonFileName());
-				int ext = commonFileName.Find(wxT('.'), true);
+				int ext = commonFileName.Find('.', true);
 				if (ext != wxNOT_FOUND) {
 					return commonFileName.Mid(ext + 1).CmpNoCase(searchTerm->tag->GetStr()) == 0;
 				}
@@ -341,8 +341,8 @@ void CKeyEntry::AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wx
 	}
 #ifdef __DEBUG__
 	if (!dbgReason.IsEmpty()) {
-		AddDebugLogLineN(logKadEntryTracking, CFormat(wxT("%s %s (%s) - (%s), new count %u"))
-			% (increase ? wxT("Adding") : wxT("Removing")) % KadIPToString(ip & 0xFFFFFF00) % KadIPToString(ip) % dbgReason % count);
+		AddDebugLogLineN(logKadEntryTracking, CFormat("%s %s (%s) - (%s), new count %u")
+			% (increase ? "Adding" : "Removing") % KadIPToString(ip & 0xFFFFFF00) % KadIPToString(ip) % dbgReason % count);
 	}
 #endif
 }
@@ -377,7 +377,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 			if (it->m_ip == m_uIP) {
 				refresh = true;
 				if ((time(NULL) - it->m_lastPublish) < (KADEMLIAREPUBLISHTIMES - HR2S(1))) {
-					AddDebugLogLineN(logKadEntryTracking, wxT("FastRefresh publish, ip: ") + KadIPToString(m_uIP));
+					AddDebugLogLineN(logKadEntryTracking, "FastRefresh publish, ip: " + KadIPToString(m_uIP));
 					fastRefresh = true; // refreshed faster than expected, will not count into filenamepopularity index
 				}
 				it->m_lastPublish = time(NULL);
@@ -393,7 +393,7 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 
 		// copy over the different names, if they are different the one we have right now
 		wxASSERT(m_filenames.size() == 1); // we should have only one name here, since it's the entry from one single source
-		sFileNameEntry currentName = { wxEmptyString, 0 };
+		sFileNameEntry currentName = { "", 0 };
 		if (m_filenames.size() != 0) {
 			currentName = m_filenames.front();
 			m_filenames.pop_front();
@@ -423,20 +423,20 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 		m_publishingIPs->push_back(add);
 
 		// add the publisher to the tacking list
-		AdjustGlobalPublishTracking(m_uIP, true, wxT("new publisher"));
+		AdjustGlobalPublishTracking(m_uIP, true, "new publisher");
 
 		// we keep track of max 100 IPs, in order to avoid too much time for calculation/storing/loading.
 		if (m_publishingIPs->size() > 100) {
 			sPublishingIP curEntry = m_publishingIPs->front();
 			m_publishingIPs->pop_front();
-			AdjustGlobalPublishTracking(curEntry.m_ip, false, wxT("more than 100 publishers purge"));
+			AdjustGlobalPublishTracking(curEntry.m_ip, false, "more than 100 publishers purge");
 		}
 
 		// since we added a new publisher, we want to (re)calculate the trust value for this entry
 		ReCalculateTrustValue();
 	}
-	AddDebugLogLineN(logKadEntryTracking, CFormat(wxT("Indexed Keyword, Refresh: %s, Current Publisher: %s, Total Publishers: %u, Total different Names: %u, TrustValue: %.2f, file: %s"))
-		% (refresh ? wxT("Yes") : wxT("No")) % KadIPToString(m_uIP) % m_publishingIPs->size() % m_filenames.size() % m_trustValue % m_uSourceID.ToHexString());
+	AddDebugLogLineN(logKadEntryTracking, CFormat("Indexed Keyword, Refresh: %s, Current Publisher: %s, Total Publishers: %u, Total different Names: %u, TrustValue: %.2f, file: %s")
+		% (refresh ? "Yes" : "No") % KadIPToString(m_uIP) % m_publishingIPs->size() % m_filenames.size() % m_trustValue % m_uSourceID.ToHexString());
 }
 
 void CKeyEntry::ReCalculateTrustValue()
@@ -456,7 +456,7 @@ void CKeyEntry::ReCalculateTrustValue()
 	//
 	// Its important to note that entry with < 1 do NOT get ignored or singled out, this only comes into play if we have 300 more results for
 	// a search request rating > 1
-	wxCHECK_RET(m_publishingIPs != NULL, wxT("No publishing IPs?"));
+	wxCHECK_RET(m_publishingIPs != NULL, "No publishing IPs?");
 
 	m_lastTrustValueCalc = ::GetTickCount();
 	m_trustValue = 0;
@@ -471,7 +471,7 @@ void CKeyEntry::ReCalculateTrustValue()
 		if (count > 0) {
 			m_trustValue += PUBLISHPOINTSSPERSUBNET / count;
 		} else {
-			AddDebugLogLineN(logKadEntryTracking, wxT("Inconsistency in RecalcualteTrustValue()"));
+			AddDebugLogLineN(logKadEntryTracking, "Inconsistency in RecalcualteTrustValue()");
 			wxFAIL;
 		}
 	}
@@ -497,7 +497,7 @@ void CKeyEntry::CleanUpTrackedPublishers()
 		// entries are ordered, older ones first
 		sPublishingIP curEntry = m_publishingIPs->front();
 		if (now - curEntry.m_lastPublish > KADEMLIAREPUBLISHTIMEK) {
-			AdjustGlobalPublishTracking(curEntry.m_ip, false, wxT("cleanup"));
+			AdjustGlobalPublishTracking(curEntry.m_ip, false, "cleanup");
 			m_publishingIPs->pop_front();
 		} else {
 			break;
@@ -555,14 +555,14 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CFileDataIO* data)
 		dbgLastTime = toAdd.m_lastPublish;
 #endif
 
-		AdjustGlobalPublishTracking(toAdd.m_ip, true, wxEmptyString);
+		AdjustGlobalPublishTracking(toAdd.m_ip, true, "");
 
 		m_publishingIPs->push_back(toAdd);
 	}
 	ReCalculateTrustValue();
 // #ifdef __DEBUG__
 //	if (GetTrustValue() < 1.0) {
-//		AddDebugLogLineN(logKadEntryTracking,CFormat(wxT("Loaded %u different names, %u different publishIPs (trustvalue = %.2f) for file %s"))
+//		AddDebugLogLineN(logKadEntryTracking,CFormat("Loaded %u different names, %u different publishIPs (trustvalue = %.2f) for file %s")
 //			% nameCount % ipCount % GetTrustValue() % m_uSourceID.ToHexString());
 //	}
 // #endif

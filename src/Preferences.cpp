@@ -624,44 +624,44 @@ typedef struct {
  * Then activate the test code in Cfg_Lang::UpdateChoice below!
  */
 static LangInfo aMuleLanguages[] = {
-	{ wxLANGUAGE_DEFAULT,				true,	wxEmptyString,	wxTRANSLATE("System default") },
-	{ wxLANGUAGE_ALBANIAN,				false,	wxEmptyString,	wxTRANSLATE("Albanian") },
-	{ wxLANGUAGE_ARABIC,				false,	wxEmptyString,	wxTRANSLATE("Arabic") },
-	{ wxLANGUAGE_ASTURIAN,				false,	wxEmptyString,	wxTRANSLATE("Asturian") },
-	{ wxLANGUAGE_BASQUE,				false,	wxEmptyString,	wxTRANSLATE("Basque") },
-	{ wxLANGUAGE_BULGARIAN,				false,	wxEmptyString,	wxTRANSLATE("Bulgarian") },
-	{ wxLANGUAGE_CATALAN,				false,	wxEmptyString,	wxTRANSLATE("Catalan") },
-	{ wxLANGUAGE_CHINESE_SIMPLIFIED,	false,	wxEmptyString,	wxTRANSLATE("Chinese (Simplified)") },
-	{ wxLANGUAGE_CHINESE_TRADITIONAL,	false,	wxEmptyString,	wxTRANSLATE("Chinese (Traditional)") },
-	{ wxLANGUAGE_CROATIAN,				false,	wxEmptyString,	wxTRANSLATE("Croatian") },
-	{ wxLANGUAGE_CZECH,					false,	wxEmptyString,	wxTRANSLATE("Czech") },
-	{ wxLANGUAGE_DANISH,				false,	wxEmptyString,	wxTRANSLATE("Danish") },
-	{ wxLANGUAGE_DUTCH,					false,	wxEmptyString,	wxTRANSLATE("Dutch") },
-	{ wxLANGUAGE_ENGLISH,				false,	wxEmptyString,	wxTRANSLATE("English (U.K.)") },
-	{ wxLANGUAGE_ESTONIAN,				false,	wxEmptyString,	wxTRANSLATE("Estonian") },
-	{ wxLANGUAGE_FINNISH,				false,	wxEmptyString,	wxTRANSLATE("Finnish") },
-	{ wxLANGUAGE_FRENCH,				false,	wxEmptyString,	wxTRANSLATE("French") },
-	{ wxLANGUAGE_GALICIAN,				false,	wxEmptyString,	wxTRANSLATE("Galician") },
-	{ wxLANGUAGE_GERMAN,				false,	wxEmptyString,	wxTRANSLATE("German") },
-	{ wxLANGUAGE_GREEK,					false,	wxEmptyString,	wxTRANSLATE("Greek") },
-	{ wxLANGUAGE_HEBREW,				false,	wxEmptyString,	wxTRANSLATE("Hebrew") },
-	{ wxLANGUAGE_HUNGARIAN,				false,	wxEmptyString,	wxTRANSLATE("Hungarian") },
-	{ wxLANGUAGE_ITALIAN,				false,	wxEmptyString,	wxTRANSLATE("Italian") },
-	{ wxLANGUAGE_ITALIAN_SWISS,			false,	wxEmptyString,	wxTRANSLATE("Italian (Swiss)") },
-	{ wxLANGUAGE_JAPANESE,				false,	wxEmptyString,	wxTRANSLATE("Japanese") },
-	{ wxLANGUAGE_KOREAN,				false,	wxEmptyString,	wxTRANSLATE("Korean") },
-	{ wxLANGUAGE_LITHUANIAN,			false,	wxEmptyString,	wxTRANSLATE("Lithuanian") },
-	{ wxLANGUAGE_NORWEGIAN_NYNORSK,		false,	wxEmptyString,	wxTRANSLATE("Norwegian (Nynorsk)") },
-	{ wxLANGUAGE_POLISH,				false,	wxEmptyString,	wxTRANSLATE("Polish") },
-	{ wxLANGUAGE_PORTUGUESE,			false,	wxEmptyString,	wxTRANSLATE("Portuguese") },
-	{ wxLANGUAGE_PORTUGUESE_BRAZILIAN,	false,	wxEmptyString,	wxTRANSLATE("Portuguese (Brazilian)") },
-	{ wxLANGUAGE_ROMANIAN,				false,	wxEmptyString,	wxTRANSLATE("Romanian") },
-	{ wxLANGUAGE_RUSSIAN,				false,	wxEmptyString,	wxTRANSLATE("Russian") },
-	{ wxLANGUAGE_SLOVENIAN,				false,	wxEmptyString,	wxTRANSLATE("Slovenian") },
-	{ wxLANGUAGE_SPANISH,				false,	wxEmptyString,	wxTRANSLATE("Spanish") },
-	{ wxLANGUAGE_SWEDISH,				false,	wxEmptyString,	wxTRANSLATE("Swedish") },
-	{ wxLANGUAGE_TURKISH,				false,	wxEmptyString,	wxTRANSLATE("Turkish") },
-	{ wxLANGUAGE_UKRAINIAN,				false,	wxEmptyString,	wxTRANSLATE("Ukrainian") },
+	{ wxLANGUAGE_DEFAULT,				true,	"",	wxTRANSLATE("System default") },
+	{ wxLANGUAGE_ALBANIAN,				false,	"",	wxTRANSLATE("Albanian") },
+	{ wxLANGUAGE_ARABIC,				false,	"",	wxTRANSLATE("Arabic") },
+	{ wxLANGUAGE_ASTURIAN,				false,	"",	wxTRANSLATE("Asturian") },
+	{ wxLANGUAGE_BASQUE,				false,	"",	wxTRANSLATE("Basque") },
+	{ wxLANGUAGE_BULGARIAN,				false,	"",	wxTRANSLATE("Bulgarian") },
+	{ wxLANGUAGE_CATALAN,				false,	"",	wxTRANSLATE("Catalan") },
+	{ wxLANGUAGE_CHINESE_SIMPLIFIED,	false,	"",	wxTRANSLATE("Chinese (Simplified)") },
+	{ wxLANGUAGE_CHINESE_TRADITIONAL,	false,	"",	wxTRANSLATE("Chinese (Traditional)") },
+	{ wxLANGUAGE_CROATIAN,				false,	"",	wxTRANSLATE("Croatian") },
+	{ wxLANGUAGE_CZECH,					false,	"",	wxTRANSLATE("Czech") },
+	{ wxLANGUAGE_DANISH,				false,	"",	wxTRANSLATE("Danish") },
+	{ wxLANGUAGE_DUTCH,					false,	"",	wxTRANSLATE("Dutch") },
+	{ wxLANGUAGE_ENGLISH,				false,	"",	wxTRANSLATE("English (U.K.)") },
+	{ wxLANGUAGE_ESTONIAN,				false,	"",	wxTRANSLATE("Estonian") },
+	{ wxLANGUAGE_FINNISH,				false,	"",	wxTRANSLATE("Finnish") },
+	{ wxLANGUAGE_FRENCH,				false,	"",	wxTRANSLATE("French") },
+	{ wxLANGUAGE_GALICIAN,				false,	"",	wxTRANSLATE("Galician") },
+	{ wxLANGUAGE_GERMAN,				false,	"",	wxTRANSLATE("German") },
+	{ wxLANGUAGE_GREEK,					false,	"",	wxTRANSLATE("Greek") },
+	{ wxLANGUAGE_HEBREW,				false,	"",	wxTRANSLATE("Hebrew") },
+	{ wxLANGUAGE_HUNGARIAN,				false,	"",	wxTRANSLATE("Hungarian") },
+	{ wxLANGUAGE_ITALIAN,				false,	"",	wxTRANSLATE("Italian") },
+	{ wxLANGUAGE_ITALIAN_SWISS,			false,	"",	wxTRANSLATE("Italian (Swiss)") },
+	{ wxLANGUAGE_JAPANESE,				false,	"",	wxTRANSLATE("Japanese") },
+	{ wxLANGUAGE_KOREAN,				false,	"",	wxTRANSLATE("Korean") },
+	{ wxLANGUAGE_LITHUANIAN,			false,	"",	wxTRANSLATE("Lithuanian") },
+	{ wxLANGUAGE_NORWEGIAN_NYNORSK,		false,	"",	wxTRANSLATE("Norwegian (Nynorsk)") },
+	{ wxLANGUAGE_POLISH,				false,	"",	wxTRANSLATE("Polish") },
+	{ wxLANGUAGE_PORTUGUESE,			false,	"",	wxTRANSLATE("Portuguese") },
+	{ wxLANGUAGE_PORTUGUESE_BRAZILIAN,	false,	"",	wxTRANSLATE("Portuguese (Brazilian)") },
+	{ wxLANGUAGE_ROMANIAN,				false,	"",	wxTRANSLATE("Romanian") },
+	{ wxLANGUAGE_RUSSIAN,				false,	"",	wxTRANSLATE("Russian") },
+	{ wxLANGUAGE_SLOVENIAN,				false,	"",	wxTRANSLATE("Slovenian") },
+	{ wxLANGUAGE_SPANISH,				false,	"",	wxTRANSLATE("Spanish") },
+	{ wxLANGUAGE_SWEDISH,				false,	"",	wxTRANSLATE("Swedish") },
+	{ wxLANGUAGE_TURKISH,				false,	"",	wxTRANSLATE("Turkish") },
+	{ wxLANGUAGE_UKRAINIAN,				false,	"",	wxTRANSLATE("Ukrainian") },
 };
 
 
@@ -672,7 +672,7 @@ class Cfg_Lang : public Cfg_PureInt, public Cfg_Lang_Base
 public:
 	// cppcheck-suppress uninitMemberVar m_selection, m_langSelector
 	Cfg_Lang()
-		: Cfg_PureInt( wxEmptyString, m_selection, 0 )
+		: Cfg_PureInt( "", m_selection, 0 )
 	{
 		m_languagesReady = false;
 		m_changePos = 0;
@@ -720,7 +720,7 @@ public:
 			m_selection = 0;
 			for (uint32 i = 0; i < itemsof(aMuleLanguages); i++) {
 				if ( aMuleLanguages[i].id == wxId ) {
-					m_langSelector->Append(wxString(wxGetTranslation(aMuleLanguages[i].name)) + wxT(" [") + aMuleLanguages[i].name + wxT("]"));
+					m_langSelector->Append(wxString(wxGetTranslation(aMuleLanguages[i].name)) + " [" + aMuleLanguages[i].name + "]");
 					break;
 				}
 			}
@@ -747,15 +747,15 @@ public:
 					wxLogNull	logTarget;
 					wxLocale	locale_to_check;
 					InitLocale(locale_to_check, aMuleLanguages[i].id);
-					if (locale_to_check.IsOk() && locale_to_check.IsLoaded(wxT(PACKAGE))) {
-						aMuleLanguages[i].displayname = wxString(wxGetTranslation(aMuleLanguages[i].name)) + wxT(" [") + aMuleLanguages[i].name + wxT("]");
+					if (locale_to_check.IsOk() && locale_to_check.IsLoaded(PACKAGE)) {
+						aMuleLanguages[i].displayname = wxString(wxGetTranslation(aMuleLanguages[i].name)) + " [" + aMuleLanguages[i].name + "]";
 						aMuleLanguages[i].available = true;
 #if 0
 						// Check for language problems
 						// Activate this code temporarily after messing with the languages!
 						int wxid = StrLang2wx(wxLang2Str(aMuleLanguages[i].id));
 						if (wxid != aMuleLanguages[i].id) {
-							AddDebugLogLineN(logGeneral, CFormat(wxT("Language problem for %s : aMule id %d != wx id %d"))
+							AddDebugLogLineN(logGeneral, CFormat("Language problem for %s : aMule id %d != wx id %d")
 								% aMuleLanguages[i].name % aMuleLanguages[i].id % wxid);
 						}
 #endif
@@ -840,14 +840,14 @@ public:
 		wxString filespec;
 		wxString defaultSelection = _("- default -");
 //#warning there has to be a better way...
-		if ( GetKey() == wxT("/SkinGUIOptions/Skin") ) {
-			folder = wxT("skins");
+		if ( GetKey() == "/SkinGUIOptions/Skin" ) {
+			folder = "skins";
 			m_is_skin = true;
 			flags = wxDIR_FILES;
-			filespec = wxT("*.zip");
+			filespec = "*.zip";
 			skinSelector->Append(defaultSelection);
 		} else {
-			folder = wxT("webserver");
+			folder = "webserver";
 		}
 		wxString dirName(JoinPaths(thePrefs::GetConfigDir(), folder));
 		wxString Filename;
@@ -861,7 +861,7 @@ public:
 			do
 			{
 				if (m_is_skin) {
-					Filename = wxT("User:") + Filename;
+					Filename = "User:" + Filename;
 				}
 				skinSelector->Append(Filename);
 			}
@@ -875,7 +875,7 @@ public:
 			dataDir = wxStandardPaths::Get().GetResourcesDir();
 		}
 #if !defined(__WINDOWS__) && !defined(__WXMAC__)
-		dataDir = dataDir.BeforeLast(wxT('/')) + wxT("/amule");
+		dataDir = dataDir.BeforeLast('/') + "/amule";
 #endif
 		wxString systemDir(JoinPaths(dataDir,folder));
 
@@ -887,7 +887,7 @@ public:
 			do
 			{
 				if (m_is_skin) {
-					Filename = wxT("System:") +  Filename;
+					Filename = "System:" +  Filename;
 				}
 				// avoid duplicates for webserver templates
 				if (skinSelector->FindString(Filename) == wxNOT_FOUND) {
@@ -925,7 +925,7 @@ CPreferences::CPreferences()
 	srand( wxGetLocalTimeMillis().GetLo() ); // we need random numbers sometimes
 
 	// load preferences.dat or set standard values
-	wxString fullpath(s_configDir + wxT("preferences.dat"));
+	wxString fullpath(s_configDir + "preferences.dat");
 	CFile preffile;
 	if (wxFileExists(fullpath)) {
 		if (preffile.Open(fullpath, CFile::read)) {
@@ -934,7 +934,7 @@ CPreferences::CPreferences()
 				s_userhash = preffile.ReadHash();
 			} catch (const CSafeIOException& e) {
 				AddDebugLogLineC(logGeneral,
-					wxT("Error while reading userhash: ") + e.what());
+					"Error while reading userhash: " + e.what());
 			}
 		}
 	}
@@ -958,7 +958,7 @@ CPreferences::CPreferences()
 
 	// serverlist addresses
 	CTextFile slistfile;
-	if (slistfile.Open(s_configDir + wxT("addresses.dat"), CTextFile::read)) {
+	if (slistfile.Open(s_configDir + "addresses.dat", CTextFile::read)) {
 		adresses_list = slistfile.ReadLines();
 	}
 #endif
@@ -979,7 +979,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	/**
 	 * User settings
 	 **/
-	NewCfgItem(IDC_NICK,		(new Cfg_Str(  wxT("/eMule/Nick"), s_nick, wxT("http://www.aMule.org") )));
+	NewCfgItem(IDC_NICK,		(new Cfg_Str(  "/eMule/Nick", s_nick, "http://www.aMule.org" )));
 #ifndef AMULE_DAEMON
 	Cfg_Lang * cfgLang = new Cfg_Lang();
 	s_cfgLang = cfgLang;
@@ -990,280 +990,280 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 * Browser options
 	 **/
 	#ifdef __WXMAC__
-		wxString	customBrowser = wxT("/usr/bin/open");
+		wxString	customBrowser = "/usr/bin/open";
 	#else
 		wxString	customBrowser; // left empty
 	#endif
 
-	NewCfgItem(IDC_BROWSERTABS,	(new Cfg_Bool( wxT("/Browser/OpenPageInTab"), s_BrowserTab, true )));
-	NewCfgItem(IDC_BROWSERSELF,	(new Cfg_Str(  wxT("/Browser/CustomBrowserString"), s_CustomBrowser, customBrowser )));
+	NewCfgItem(IDC_BROWSERTABS,	(new Cfg_Bool( "/Browser/OpenPageInTab", s_BrowserTab, true )));
+	NewCfgItem(IDC_BROWSERSELF,	(new Cfg_Str(  "/Browser/CustomBrowserString", s_CustomBrowser, customBrowser )));
 
 
 	/**
 	 * Misc
 	 **/
-	NewCfgItem(IDC_QUEUESIZE,	(MkCfg_Int( wxT("/eMule/QueueSizePref"), s_iQueueSize, 50 )));
+	NewCfgItem(IDC_QUEUESIZE,	(MkCfg_Int( "/eMule/QueueSizePref", s_iQueueSize, 50 )));
 
 
 #ifdef __DEBUG__
 	/**
 	 * Debugging
 	 **/
-	NewCfgItem(ID_VERBOSEDEBUG, (new Cfg_Bool( wxT("/eMule/VerboseDebug"), s_bVerbose, false )));
-	NewCfgItem(ID_VERBOSEDEBUGLOGFILE, (new Cfg_Bool( wxT("/eMule/VerboseDebugLogfile"), s_bVerboseLogfile, false )));
+	NewCfgItem(ID_VERBOSEDEBUG, (new Cfg_Bool( "/eMule/VerboseDebug", s_bVerbose, false )));
+	NewCfgItem(ID_VERBOSEDEBUGLOGFILE, (new Cfg_Bool( "/eMule/VerboseDebugLogfile", s_bVerboseLogfile, false )));
 #endif
 
 	/**
 	 * Connection settings
 	 **/
-	NewCfgItem(IDC_MAXUP,		(MkCfg_Int( wxT("/eMule/MaxUpload"), s_maxupload, 0 )));
-	NewCfgItem(IDC_MAXDOWN,		(MkCfg_Int( wxT("/eMule/MaxDownload"), s_maxdownload, 0 )));
-	NewCfgItem(IDC_SLOTALLOC,	(MkCfg_Int( wxT("/eMule/SlotAllocation"), s_slotallocation, 2 )));
-	NewCfgItem(IDC_PORT,		(MkCfg_Int( wxT("/eMule/Port"), s_port, DEFAULT_TCP_PORT )));
-	NewCfgItem(IDC_UDPPORT,		(MkCfg_Int( wxT("/eMule/UDPPort"), s_udpport, DEFAULT_UDP_PORT )));
-	NewCfgItem(IDC_UDPENABLE,	(new Cfg_Bool( wxT("/eMule/UDPEnable"), s_UDPEnable, true )));
-	NewCfgItem(IDC_ADDRESS,		(new Cfg_Str( wxT("/eMule/Address"), s_Addr, wxEmptyString)));
-	NewCfgItem(IDC_AUTOCONNECT,	(new Cfg_Bool( wxT("/eMule/Autoconnect"), s_autoconnect, true )));
-	NewCfgItem(IDC_MAXSOURCEPERFILE,	(MkCfg_Int( wxT("/eMule/MaxSourcesPerFile"), s_maxsourceperfile, 300 )));
-	NewCfgItem(IDC_MAXCON,		(MkCfg_Int( wxT("/eMule/MaxConnections"), s_maxconnections, GetRecommendedMaxConnections() )));
-	NewCfgItem(IDC_MAXCON5SEC,	(MkCfg_Int( wxT("/eMule/MaxConnectionsPerFiveSeconds"), s_MaxConperFive, 20 )));
+	NewCfgItem(IDC_MAXUP,		(MkCfg_Int( "/eMule/MaxUpload", s_maxupload, 0 )));
+	NewCfgItem(IDC_MAXDOWN,		(MkCfg_Int( "/eMule/MaxDownload", s_maxdownload, 0 )));
+	NewCfgItem(IDC_SLOTALLOC,	(MkCfg_Int( "/eMule/SlotAllocation", s_slotallocation, 2 )));
+	NewCfgItem(IDC_PORT,		(MkCfg_Int( "/eMule/Port", s_port, DEFAULT_TCP_PORT )));
+	NewCfgItem(IDC_UDPPORT,		(MkCfg_Int( "/eMule/UDPPort", s_udpport, DEFAULT_UDP_PORT )));
+	NewCfgItem(IDC_UDPENABLE,	(new Cfg_Bool( "/eMule/UDPEnable", s_UDPEnable, true )));
+	NewCfgItem(IDC_ADDRESS,		(new Cfg_Str( "/eMule/Address", s_Addr, "")));
+	NewCfgItem(IDC_AUTOCONNECT,	(new Cfg_Bool( "/eMule/Autoconnect", s_autoconnect, true )));
+	NewCfgItem(IDC_MAXSOURCEPERFILE,	(MkCfg_Int( "/eMule/MaxSourcesPerFile", s_maxsourceperfile, 300 )));
+	NewCfgItem(IDC_MAXCON,		(MkCfg_Int( "/eMule/MaxConnections", s_maxconnections, GetRecommendedMaxConnections() )));
+	NewCfgItem(IDC_MAXCON5SEC,	(MkCfg_Int( "/eMule/MaxConnectionsPerFiveSeconds", s_MaxConperFive, 20 )));
 
 	/**
 	 * Proxy
 	 **/
-	NewCfgItem(ID_PROXY_ENABLE_PROXY,	(new Cfg_Bool( wxT("/Proxy/ProxyEnableProxy"), s_ProxyData.m_proxyEnable, false )));
-	NewCfgItem(ID_PROXY_TYPE,		(MkCfg_Int( wxT("/Proxy/ProxyType"), s_ProxyData.m_proxyType, 0 )));
-	NewCfgItem(ID_PROXY_NAME,		(new Cfg_Str( wxT("/Proxy/ProxyName"), s_ProxyData.m_proxyHostName, wxEmptyString )));
-	NewCfgItem(ID_PROXY_PORT,		(MkCfg_Int( wxT("/Proxy/ProxyPort"), s_ProxyData.m_proxyPort, 1080 )));
-	NewCfgItem(ID_PROXY_ENABLE_PASSWORD,	(new Cfg_Bool( wxT("/Proxy/ProxyEnablePassword"), s_ProxyData.m_enablePassword, false )));
-	NewCfgItem(ID_PROXY_USER,		(new Cfg_Str( wxT("/Proxy/ProxyUser"), s_ProxyData.m_userName, wxEmptyString )));
-	NewCfgItem(ID_PROXY_PASSWORD,		(new Cfg_Str( wxT("/Proxy/ProxyPassword"), s_ProxyData.m_password, wxEmptyString )));
+	NewCfgItem(ID_PROXY_ENABLE_PROXY,	(new Cfg_Bool( "/Proxy/ProxyEnableProxy", s_ProxyData.m_proxyEnable, false )));
+	NewCfgItem(ID_PROXY_TYPE,		(MkCfg_Int( "/Proxy/ProxyType", s_ProxyData.m_proxyType, 0 )));
+	NewCfgItem(ID_PROXY_NAME,		(new Cfg_Str( "/Proxy/ProxyName", s_ProxyData.m_proxyHostName, "" )));
+	NewCfgItem(ID_PROXY_PORT,		(MkCfg_Int( "/Proxy/ProxyPort", s_ProxyData.m_proxyPort, 1080 )));
+	NewCfgItem(ID_PROXY_ENABLE_PASSWORD,	(new Cfg_Bool( "/Proxy/ProxyEnablePassword", s_ProxyData.m_enablePassword, false )));
+	NewCfgItem(ID_PROXY_USER,		(new Cfg_Str( "/Proxy/ProxyUser", s_ProxyData.m_userName, "" )));
+	NewCfgItem(ID_PROXY_PASSWORD,		(new Cfg_Str( "/Proxy/ProxyPassword", s_ProxyData.m_password, "" )));
 // These were copied from eMule config file, maybe someone with windows can complete this?
-//	NewCfgItem(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY,	(new Cfg_Bool( wxT("/Proxy/Proxy????"), s_Proxy????, false )));
+//	NewCfgItem(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY,	(new Cfg_Bool( "/Proxy/Proxy????", s_Proxy????, false )));
 
 	/**
 	 * Servers
 	 **/
-	NewCfgItem(IDC_REMOVEDEAD,	(new Cfg_Bool( wxT("/eMule/RemoveDeadServer"), s_deadserver, 1 )));
-	NewCfgItem(IDC_SERVERRETRIES,	(MkCfg_Int( wxT("/eMule/DeadServerRetry"), s_deadserverretries, 3 )));
-	NewCfgItem(IDC_SERVERKEEPALIVE,	(MkCfg_Int( wxT("/eMule/ServerKeepAliveTimeout"), s_dwServerKeepAliveTimeoutMins, 0 )));
-	NewCfgItem(IDC_RECONN,		(new Cfg_Bool( wxT("/eMule/Reconnect"), s_reconnect, true )));
-	NewCfgItem(IDC_SCORE,		(new Cfg_Bool( wxT("/eMule/Scoresystem"), s_scorsystem, true )));
-	NewCfgItem(IDC_AUTOSERVER,	(new Cfg_Bool( wxT("/eMule/Serverlist"), s_autoserverlist, false )));
-	NewCfgItem(IDC_UPDATESERVERCONNECT,	(new Cfg_Bool( wxT("/eMule/AddServerListFromServer"), s_addserversfromserver, false)));
-	NewCfgItem(IDC_UPDATESERVERCLIENT,	(new Cfg_Bool( wxT("/eMule/AddServerListFromClient"), s_addserversfromclient, false )));
-	NewCfgItem(IDC_SAFESERVERCONNECT,	(new Cfg_Bool( wxT("/eMule/SafeServerConnect"), s_safeServerConnect, false )));
-	NewCfgItem(IDC_AUTOCONNECTSTATICONLY,	(new Cfg_Bool( wxT("/eMule/AutoConnectStaticOnly"), s_autoconnectstaticonly, false )));
-	NewCfgItem(IDC_UPNP_ENABLED,	(new Cfg_Bool( wxT("/eMule/UPnPEnabled"), s_UPnPEnabled, false )));
-	NewCfgItem(IDC_UPNPTCPPORT,	(MkCfg_Int( wxT("/eMule/UPnPTCPPort"), s_UPnPTCPPort, 50000 )));
-	NewCfgItem(IDC_SMARTIDCHECK,	(new Cfg_Bool( wxT("/eMule/SmartIdCheck"), s_smartidcheck, true )));
+	NewCfgItem(IDC_REMOVEDEAD,	(new Cfg_Bool( "/eMule/RemoveDeadServer", s_deadserver, 1 )));
+	NewCfgItem(IDC_SERVERRETRIES,	(MkCfg_Int( "/eMule/DeadServerRetry", s_deadserverretries, 3 )));
+	NewCfgItem(IDC_SERVERKEEPALIVE,	(MkCfg_Int( "/eMule/ServerKeepAliveTimeout", s_dwServerKeepAliveTimeoutMins, 0 )));
+	NewCfgItem(IDC_RECONN,		(new Cfg_Bool( "/eMule/Reconnect", s_reconnect, true )));
+	NewCfgItem(IDC_SCORE,		(new Cfg_Bool( "/eMule/Scoresystem", s_scorsystem, true )));
+	NewCfgItem(IDC_AUTOSERVER,	(new Cfg_Bool( "/eMule/Serverlist", s_autoserverlist, false )));
+	NewCfgItem(IDC_UPDATESERVERCONNECT,	(new Cfg_Bool( "/eMule/AddServerListFromServer", s_addserversfromserver, false)));
+	NewCfgItem(IDC_UPDATESERVERCLIENT,	(new Cfg_Bool( "/eMule/AddServerListFromClient", s_addserversfromclient, false )));
+	NewCfgItem(IDC_SAFESERVERCONNECT,	(new Cfg_Bool( "/eMule/SafeServerConnect", s_safeServerConnect, false )));
+	NewCfgItem(IDC_AUTOCONNECTSTATICONLY,	(new Cfg_Bool( "/eMule/AutoConnectStaticOnly", s_autoconnectstaticonly, false )));
+	NewCfgItem(IDC_UPNP_ENABLED,	(new Cfg_Bool( "/eMule/UPnPEnabled", s_UPnPEnabled, false )));
+	NewCfgItem(IDC_UPNPTCPPORT,	(MkCfg_Int( "/eMule/UPnPTCPPort", s_UPnPTCPPort, 50000 )));
+	NewCfgItem(IDC_SMARTIDCHECK,	(new Cfg_Bool( "/eMule/SmartIdCheck", s_smartidcheck, true )));
 	// Enabled networks
-	NewCfgItem( IDC_NETWORKKAD, (new Cfg_Bool( wxT("/eMule/ConnectToKad"),	s_ConnectToKad, true )) );
-	NewCfgItem( IDC_NETWORKED2K, ( new Cfg_Bool( wxT("/eMule/ConnectToED2K"),	s_ConnectToED2K, true ) ));
+	NewCfgItem( IDC_NETWORKKAD, (new Cfg_Bool( "/eMule/ConnectToKad",	s_ConnectToKad, true )) );
+	NewCfgItem( IDC_NETWORKED2K, ( new Cfg_Bool( "/eMule/ConnectToED2K",	s_ConnectToED2K, true ) ));
 
 
 	/**
 	 * Files
 	 **/
-	NewCfgItem(IDC_TEMPFILES,	(new Cfg_Path(  wxT("/eMule/TempDir"),	s_tempdir, appdir + wxT("Temp") )));
+	NewCfgItem(IDC_TEMPFILES,	(new Cfg_Path(  "/eMule/TempDir",	s_tempdir, appdir + "Temp" )));
 
 	#if defined(__WXMAC__) || defined(__WINDOWS__)
 		wxString incpath = wxStandardPaths::Get().GetDocumentsDir();
 		if (incpath.IsEmpty()) {
 			// There is a built-in possibility for this call to fail, though I can't imagine a reason for that.
-			incpath = appdir + wxT("Incoming");
+			incpath = appdir + "Incoming";
 		} else {
-			incpath = JoinPaths(incpath, wxT("aMule Downloads"));
+			incpath = JoinPaths(incpath, "aMule Downloads");
 		}
 	#else
-		wxString incpath = appdir + wxT("Incoming");
+		wxString incpath = appdir + "Incoming";
 	#endif
-	NewCfgItem(IDC_INCFILES,	(new Cfg_Path(  wxT("/eMule/IncomingDir"), s_incomingdir, incpath )));
+	NewCfgItem(IDC_INCFILES,	(new Cfg_Path(  "/eMule/IncomingDir", s_incomingdir, incpath )));
 
-	NewCfgItem(IDC_ICH,		(new Cfg_Bool( wxT("/eMule/ICH"), s_ICH, true )));
-	NewCfgItem(IDC_AICHTRUST,	(new Cfg_Bool( wxT("/eMule/AICHTrust"), s_AICHTrustEveryHash, false )));
-	NewCfgItem(IDC_CHECKDISKSPACE,	(new Cfg_Bool( wxT("/eMule/CheckDiskspace"), s_checkDiskspace, true )));
-	NewCfgItem(IDC_MINDISKSPACE,	(MkCfg_Int( wxT("/eMule/MinFreeDiskSpace"), s_uMinFreeDiskSpace, 1 )));
-	NewCfgItem(IDC_ADDNEWFILESPAUSED,	(new Cfg_Bool( wxT("/eMule/AddNewFilesPaused"), s_addnewfilespaused, false )));
-	NewCfgItem(IDC_PREVIEWPRIO,	(new Cfg_Bool( wxT("/eMule/PreviewPrio"), s_bpreviewprio, false )));
-	NewCfgItem(IDC_MANUALSERVERHIGHPRIO,	(new Cfg_Bool( wxT("/eMule/ManualHighPrio"), s_bmanualhighprio, false )));
-	NewCfgItem(IDC_STARTNEXTFILE,	(new Cfg_Bool( wxT("/eMule/StartNextFile"), s_bstartnextfile, false )));
-	NewCfgItem(IDC_STARTNEXTFILE_SAME,	(new Cfg_Bool( wxT("/eMule/StartNextFileSameCat"), s_bstartnextfilesame, false )));
-	NewCfgItem(IDC_STARTNEXTFILE_ALPHA,	(new Cfg_Bool( wxT("/eMule/StartNextFileAlpha"), s_bstartnextfilealpha, false )));
-	NewCfgItem(IDC_SRCSEEDS,	(new Cfg_Bool( wxT("/ExternalConnect/UseSrcSeeds"), s_UseSrcSeeds, false )));
-	NewCfgItem(IDC_FILEBUFFERSIZE,	(MkCfg_Int( wxT("/eMule/FileBufferSizePref"), s_iFileBufferSize, 16 )));
-	NewCfgItem(IDC_DAP,		(new Cfg_Bool( wxT("/eMule/DAPPref"), s_bDAP, true )));
-	NewCfgItem(IDC_UAP,		(new Cfg_Bool( wxT("/eMule/UAPPref"), s_bUAP, true )));
-	NewCfgItem(IDC_ALLOCFULLFILE,	(new Cfg_Bool( wxT("/eMule/AllocateFullFile"), s_allocFullFile, false )));
+	NewCfgItem(IDC_ICH,		(new Cfg_Bool( "/eMule/ICH", s_ICH, true )));
+	NewCfgItem(IDC_AICHTRUST,	(new Cfg_Bool( "/eMule/AICHTrust", s_AICHTrustEveryHash, false )));
+	NewCfgItem(IDC_CHECKDISKSPACE,	(new Cfg_Bool( "/eMule/CheckDiskspace", s_checkDiskspace, true )));
+	NewCfgItem(IDC_MINDISKSPACE,	(MkCfg_Int( "/eMule/MinFreeDiskSpace", s_uMinFreeDiskSpace, 1 )));
+	NewCfgItem(IDC_ADDNEWFILESPAUSED,	(new Cfg_Bool( "/eMule/AddNewFilesPaused", s_addnewfilespaused, false )));
+	NewCfgItem(IDC_PREVIEWPRIO,	(new Cfg_Bool( "/eMule/PreviewPrio", s_bpreviewprio, false )));
+	NewCfgItem(IDC_MANUALSERVERHIGHPRIO,	(new Cfg_Bool( "/eMule/ManualHighPrio", s_bmanualhighprio, false )));
+	NewCfgItem(IDC_STARTNEXTFILE,	(new Cfg_Bool( "/eMule/StartNextFile", s_bstartnextfile, false )));
+	NewCfgItem(IDC_STARTNEXTFILE_SAME,	(new Cfg_Bool( "/eMule/StartNextFileSameCat", s_bstartnextfilesame, false )));
+	NewCfgItem(IDC_STARTNEXTFILE_ALPHA,	(new Cfg_Bool( "/eMule/StartNextFileAlpha", s_bstartnextfilealpha, false )));
+	NewCfgItem(IDC_SRCSEEDS,	(new Cfg_Bool( "/ExternalConnect/UseSrcSeeds", s_UseSrcSeeds, false )));
+	NewCfgItem(IDC_FILEBUFFERSIZE,	(MkCfg_Int( "/eMule/FileBufferSizePref", s_iFileBufferSize, 16 )));
+	NewCfgItem(IDC_DAP,		(new Cfg_Bool( "/eMule/DAPPref", s_bDAP, true )));
+	NewCfgItem(IDC_UAP,		(new Cfg_Bool( "/eMule/UAPPref", s_bUAP, true )));
+	NewCfgItem(IDC_ALLOCFULLFILE,	(new Cfg_Bool( "/eMule/AllocateFullFile", s_allocFullFile, false )));
 
 	/**
 	 * Web Server
 	 */
-	NewCfgItem(IDC_OSDIR,		(new Cfg_Path(  wxT("/eMule/OSDirectory"), s_OSDirectory,	appdir )));
-	NewCfgItem(IDC_ONLINESIG,	(new Cfg_Bool( wxT("/eMule/OnlineSignature"), s_onlineSig, false )));
-	NewCfgItem(IDC_OSUPDATE,	(MkCfg_Int( wxT("/eMule/OnlineSignatureUpdate"), s_OSUpdate, 5 )));
-	NewCfgItem(IDC_ENABLE_WEB,	(new Cfg_Bool( wxT("/WebServer/Enabled"), s_bWebEnabled, false )));
-	NewCfgItem(IDC_WEB_PASSWD,	(new Cfg_Str_Encrypted( wxT("/WebServer/Password"), s_sWebPassword )));
-	NewCfgItem(IDC_WEB_PASSWD_LOW,	(new Cfg_Str_Encrypted( wxT("/WebServer/PasswordLow"), s_sWebLowPassword )));
-	NewCfgItem(IDC_WEB_PORT,	(MkCfg_Int( wxT("/WebServer/Port"), s_nWebPort, 4711 )));
-	NewCfgItem(IDC_WEBUPNPTCPPORT,	(MkCfg_Int( wxT("/WebServer/WebUPnPTCPPort"), s_nWebUPnPTCPPort, 50001 )));
+	NewCfgItem(IDC_OSDIR,		(new Cfg_Path(  "/eMule/OSDirectory", s_OSDirectory,	appdir )));
+	NewCfgItem(IDC_ONLINESIG,	(new Cfg_Bool( "/eMule/OnlineSignature", s_onlineSig, false )));
+	NewCfgItem(IDC_OSUPDATE,	(MkCfg_Int( "/eMule/OnlineSignatureUpdate", s_OSUpdate, 5 )));
+	NewCfgItem(IDC_ENABLE_WEB,	(new Cfg_Bool( "/WebServer/Enabled", s_bWebEnabled, false )));
+	NewCfgItem(IDC_WEB_PASSWD,	(new Cfg_Str_Encrypted( "/WebServer/Password", s_sWebPassword )));
+	NewCfgItem(IDC_WEB_PASSWD_LOW,	(new Cfg_Str_Encrypted( "/WebServer/PasswordLow", s_sWebLowPassword )));
+	NewCfgItem(IDC_WEB_PORT,	(MkCfg_Int( "/WebServer/Port", s_nWebPort, 4711 )));
+	NewCfgItem(IDC_WEBUPNPTCPPORT,	(MkCfg_Int( "/WebServer/WebUPnPTCPPort", s_nWebUPnPTCPPort, 50001 )));
 	NewCfgItem(IDC_UPNP_WEBSERVER_ENABLED,
-					(new Cfg_Bool( wxT("/WebServer/UPnPWebServerEnabled"), s_UPnPWebServerEnabled, false )));
-	NewCfgItem(IDC_WEB_GZIP,	(new Cfg_Bool( wxT("/WebServer/UseGzip"), s_bWebUseGzip, true )));
-	NewCfgItem(IDC_ENABLE_WEB_LOW,	(new Cfg_Bool( wxT("/WebServer/UseLowRightsUser"), s_bWebLowEnabled, false )));
-	NewCfgItem(IDC_WEB_REFRESH_TIMEOUT,	(MkCfg_Int( wxT("/WebServer/PageRefreshTime"), s_nWebPageRefresh, 120 )));
-	NewCfgItem(IDC_WEBTEMPLATE,	(new Cfg_Skin( wxT("/WebServer/Template"), s_WebTemplate, wxEmptyString )));
+					(new Cfg_Bool( "/WebServer/UPnPWebServerEnabled", s_UPnPWebServerEnabled, false )));
+	NewCfgItem(IDC_WEB_GZIP,	(new Cfg_Bool( "/WebServer/UseGzip", s_bWebUseGzip, true )));
+	NewCfgItem(IDC_ENABLE_WEB_LOW,	(new Cfg_Bool( "/WebServer/UseLowRightsUser", s_bWebLowEnabled, false )));
+	NewCfgItem(IDC_WEB_REFRESH_TIMEOUT,	(MkCfg_Int( "/WebServer/PageRefreshTime", s_nWebPageRefresh, 120 )));
+	NewCfgItem(IDC_WEBTEMPLATE,	(new Cfg_Skin( "/WebServer/Template", s_WebTemplate, "" )));
 
 	/**
 	 * External Connections
 	 */
-	NewCfgItem(IDC_EXT_CONN_ACCEPT,	(new Cfg_Bool( wxT("/ExternalConnect/AcceptExternalConnections"), s_AcceptExternalConnections, false )));
-	NewCfgItem(IDC_EXT_CONN_IP,	(new Cfg_Str( wxT("/ExternalConnect/ECAddress"), s_ECAddr, wxEmptyString )));
-	NewCfgItem(IDC_EXT_CONN_TCP_PORT,	(MkCfg_Int( wxT("/ExternalConnect/ECPort"), s_ECPort, 4712 )));
-	NewCfgItem(IDC_EXT_CONN_PASSWD,	(new Cfg_Str_Encrypted( wxT("/ExternalConnect/ECPassword"), s_ECPassword, wxEmptyString )));
-	NewCfgItem(IDC_UPNP_EC_ENABLED,	(new Cfg_Bool( wxT("/ExternalConnect/UPnPECEnabled"), s_UPnPECEnabled, false )));
+	NewCfgItem(IDC_EXT_CONN_ACCEPT,	(new Cfg_Bool( "/ExternalConnect/AcceptExternalConnections", s_AcceptExternalConnections, false )));
+	NewCfgItem(IDC_EXT_CONN_IP,	(new Cfg_Str( "/ExternalConnect/ECAddress", s_ECAddr, "" )));
+	NewCfgItem(IDC_EXT_CONN_TCP_PORT,	(MkCfg_Int( "/ExternalConnect/ECPort", s_ECPort, 4712 )));
+	NewCfgItem(IDC_EXT_CONN_PASSWD,	(new Cfg_Str_Encrypted( "/ExternalConnect/ECPassword", s_ECPassword, "" )));
+	NewCfgItem(IDC_UPNP_EC_ENABLED,	(new Cfg_Bool( "/ExternalConnect/UPnPECEnabled", s_UPnPECEnabled, false )));
 
 	/**
 	 * GUI behavior
 	 **/
-	NewCfgItem(IDC_MACHIDEONCLOSE,	(new Cfg_Bool( wxT("/GUI/HideOnClose"), s_hideonclose, false )));
-	NewCfgItem(IDC_ENABLETRAYICON,	(new Cfg_Bool( wxT("/eMule/EnableTrayIcon"), s_trayiconenabled, false )));
-	NewCfgItem(IDC_MINTRAY,		(new Cfg_Bool( wxT("/eMule/MinToTray"), s_mintotray, false )));
-	NewCfgItem(IDC_NOTIF,		(new Cfg_Bool( wxT("/eMule/Notifications"), s_notify, false )));
-	NewCfgItem(IDC_EXIT,		(new Cfg_Bool( wxT("/eMule/ConfirmExit"), s_confirmExit, true )));
-	NewCfgItem(IDC_STARTMIN,	(new Cfg_Bool( wxT("/eMule/StartupMinimized"), s_startMinimized, false )));
+	NewCfgItem(IDC_MACHIDEONCLOSE,	(new Cfg_Bool( "/GUI/HideOnClose", s_hideonclose, false )));
+	NewCfgItem(IDC_ENABLETRAYICON,	(new Cfg_Bool( "/eMule/EnableTrayIcon", s_trayiconenabled, false )));
+	NewCfgItem(IDC_MINTRAY,		(new Cfg_Bool( "/eMule/MinToTray", s_mintotray, false )));
+	NewCfgItem(IDC_NOTIF,		(new Cfg_Bool( "/eMule/Notifications", s_notify, false )));
+	NewCfgItem(IDC_EXIT,		(new Cfg_Bool( "/eMule/ConfirmExit", s_confirmExit, true )));
+	NewCfgItem(IDC_STARTMIN,	(new Cfg_Bool( "/eMule/StartupMinimized", s_startMinimized, false )));
 
 	/**
 	 * GUI appearance
 	 **/
-	NewCfgItem(IDC_3DDEPTH,		(MkCfg_Int( wxT("/eMule/3DDepth"), s_depth3D, 10 )));
-	NewCfgItem(IDC_TOOLTIPDELAY,	(MkCfg_Int( wxT("/eMule/ToolTipDelay"), s_iToolDelayTime, 1 )));
-	NewCfgItem(IDC_SHOWOVERHEAD,	(new Cfg_Bool( wxT("/eMule/ShowOverhead"), s_bshowoverhead, false )));
-	NewCfgItem(IDC_EXTCATINFO,	(new Cfg_Bool( wxT("/eMule/ShowInfoOnCatTabs"), s_showCatTabInfos, true )));
-	NewCfgItem(IDC_FED2KLH,		(new Cfg_Bool( wxT("/Razor_Preferences/FastED2KLinksHandler"), s_FastED2KLinksHandler, true )));
-	NewCfgItem(IDC_PROGBAR,		(new Cfg_Bool( wxT("/ExternalConnect/ShowProgressBar"), s_ProgBar, true )));
-	NewCfgItem(IDC_PERCENT,		(new Cfg_Bool( wxT("/ExternalConnect/ShowPercent"), s_Percent, true )));
-	NewCfgItem(IDC_SKIN,		(new Cfg_Skin(  wxT("/SkinGUIOptions/Skin"), s_Skin, wxEmptyString )));
-	NewCfgItem(IDC_VERTTOOLBAR,	(new Cfg_Bool( wxT("/eMule/VerticalToolbar"), s_ToolbarOrientation, false )));
-	NewCfgItem(IDC_SHOW_COUNTRY_FLAGS,	(new Cfg_Bool( wxT("/eMule/GeoIPEnabled"), s_GeoIPEnabled, true )));
+	NewCfgItem(IDC_3DDEPTH,		(MkCfg_Int( "/eMule/3DDepth", s_depth3D, 10 )));
+	NewCfgItem(IDC_TOOLTIPDELAY,	(MkCfg_Int( "/eMule/ToolTipDelay", s_iToolDelayTime, 1 )));
+	NewCfgItem(IDC_SHOWOVERHEAD,	(new Cfg_Bool( "/eMule/ShowOverhead", s_bshowoverhead, false )));
+	NewCfgItem(IDC_EXTCATINFO,	(new Cfg_Bool( "/eMule/ShowInfoOnCatTabs", s_showCatTabInfos, true )));
+	NewCfgItem(IDC_FED2KLH,		(new Cfg_Bool( "/Razor_Preferences/FastED2KLinksHandler", s_FastED2KLinksHandler, true )));
+	NewCfgItem(IDC_PROGBAR,		(new Cfg_Bool( "/ExternalConnect/ShowProgressBar", s_ProgBar, true )));
+	NewCfgItem(IDC_PERCENT,		(new Cfg_Bool( "/ExternalConnect/ShowPercent", s_Percent, true )));
+	NewCfgItem(IDC_SKIN,		(new Cfg_Skin(  "/SkinGUIOptions/Skin", s_Skin, "" )));
+	NewCfgItem(IDC_VERTTOOLBAR,	(new Cfg_Bool( "/eMule/VerticalToolbar", s_ToolbarOrientation, false )));
+	NewCfgItem(IDC_SHOW_COUNTRY_FLAGS,	(new Cfg_Bool( "/eMule/GeoIPEnabled", s_GeoIPEnabled, true )));
 #ifndef __SVN__
-	NewCfgItem(IDC_SHOWVERSIONONTITLE,	(new Cfg_Bool( wxT("/eMule/ShowVersionOnTitle"), s_showVersionOnTitle, false )));
+	NewCfgItem(IDC_SHOWVERSIONONTITLE,	(new Cfg_Bool( "/eMule/ShowVersionOnTitle", s_showVersionOnTitle, false )));
 #endif
 
 	/**
 	 * External Apps
 	 */
-	NewCfgItem(IDC_VIDEOPLAYER,	(new Cfg_Str(  wxT("/eMule/VideoPlayer"), s_VideoPlayer, wxEmptyString )));
+	NewCfgItem(IDC_VIDEOPLAYER,	(new Cfg_Str(  "/eMule/VideoPlayer", s_VideoPlayer, "" )));
 
 	/**
 	 * Statistics
 	 **/
-	NewCfgItem(IDC_SLIDER,		(MkCfg_Int( wxT("/eMule/StatGraphsInterval"), s_trafficOMeterInterval, 3 )));
-	NewCfgItem(IDC_SLIDER2,		(MkCfg_Int( wxT("/eMule/statsInterval"), s_statsInterval, 30 )));
-	NewCfgItem(IDC_DOWNLOAD_CAP,	(MkCfg_Int( wxT("/eMule/DownloadCapacity"), s_maxGraphDownloadRate, 300 )));
-	NewCfgItem(IDC_UPLOAD_CAP,	(MkCfg_Int( wxT("/eMule/UploadCapacity"), s_maxGraphUploadRate, 100 )));
-	NewCfgItem(IDC_SLIDER3,		(MkCfg_Int( wxT("/eMule/StatsAverageMinutes"), s_statsAverageMinutes, 5 )));
-	NewCfgItem(IDC_SLIDER4,		(MkCfg_Int( wxT("/eMule/VariousStatisticsMaxValue"), s_statsMax, 100 )));
-	NewCfgItem(IDC_CLIENTVERSIONS,	(MkCfg_Int( wxT("/Statistics/MaxClientVersions"), s_maxClientVersions, 0 )));
+	NewCfgItem(IDC_SLIDER,		(MkCfg_Int( "/eMule/StatGraphsInterval", s_trafficOMeterInterval, 3 )));
+	NewCfgItem(IDC_SLIDER2,		(MkCfg_Int( "/eMule/statsInterval", s_statsInterval, 30 )));
+	NewCfgItem(IDC_DOWNLOAD_CAP,	(MkCfg_Int( "/eMule/DownloadCapacity", s_maxGraphDownloadRate, 300 )));
+	NewCfgItem(IDC_UPLOAD_CAP,	(MkCfg_Int( "/eMule/UploadCapacity", s_maxGraphUploadRate, 100 )));
+	NewCfgItem(IDC_SLIDER3,		(MkCfg_Int( "/eMule/StatsAverageMinutes", s_statsAverageMinutes, 5 )));
+	NewCfgItem(IDC_SLIDER4,		(MkCfg_Int( "/eMule/VariousStatisticsMaxValue", s_statsMax, 100 )));
+	NewCfgItem(IDC_CLIENTVERSIONS,	(MkCfg_Int( "/Statistics/MaxClientVersions", s_maxClientVersions, 0 )));
 
 	/**
 	 * Security
 	 **/
-	NewCfgItem(IDC_SEESHARES,	(MkCfg_Int( wxT("/eMule/SeeShare"),	s_iSeeShares, 2 )));
-	NewCfgItem(IDC_SECIDENT,        (new Cfg_Bool( wxT("/ExternalConnect/UseSecIdent"), s_SecIdent, true )));
-	NewCfgItem(IDC_IPFCLIENTS,	(new Cfg_Bool( wxT("/ExternalConnect/IpFilterClients"), s_IPFilterClients, true )));
-	NewCfgItem(IDC_IPFSERVERS,	(new Cfg_Bool( wxT("/ExternalConnect/IpFilterServers"), s_IPFilterServers, true )));
-	NewCfgItem(IDC_FILTERLAN,		(new Cfg_Bool( wxT("/eMule/FilterLanIPs"), s_filterLanIP, true )));
-	NewCfgItem(IDC_PARANOID,		(new Cfg_Bool( wxT("/eMule/ParanoidFiltering"), s_paranoidfilter, true )));
-	NewCfgItem(IDC_AUTOIPFILTER,	(new Cfg_Bool( wxT("/eMule/IPFilterAutoLoad"), s_IPFilterAutoLoad, true )));
-	NewCfgItem(IDC_IPFILTERURL,	(new Cfg_Str(  wxT("/eMule/IPFilterURL"), s_IPFilterURL, wxEmptyString )));
-	NewCfgItem(ID_IPFILTERLEVEL,	(MkCfg_Int( wxT("/eMule/FilterLevel"), s_filterlevel, 127 )));
-	NewCfgItem(IDC_IPFILTERSYS,	(new Cfg_Bool( wxT("/eMule/IPFilterSystem"), s_IPFilterSys, false )));
+	NewCfgItem(IDC_SEESHARES,	(MkCfg_Int( "/eMule/SeeShare",	s_iSeeShares, 2 )));
+	NewCfgItem(IDC_SECIDENT,        (new Cfg_Bool( "/ExternalConnect/UseSecIdent", s_SecIdent, true )));
+	NewCfgItem(IDC_IPFCLIENTS,	(new Cfg_Bool( "/ExternalConnect/IpFilterClients", s_IPFilterClients, true )));
+	NewCfgItem(IDC_IPFSERVERS,	(new Cfg_Bool( "/ExternalConnect/IpFilterServers", s_IPFilterServers, true )));
+	NewCfgItem(IDC_FILTERLAN,		(new Cfg_Bool( "/eMule/FilterLanIPs", s_filterLanIP, true )));
+	NewCfgItem(IDC_PARANOID,		(new Cfg_Bool( "/eMule/ParanoidFiltering", s_paranoidfilter, true )));
+	NewCfgItem(IDC_AUTOIPFILTER,	(new Cfg_Bool( "/eMule/IPFilterAutoLoad", s_IPFilterAutoLoad, true )));
+	NewCfgItem(IDC_IPFILTERURL,	(new Cfg_Str(  "/eMule/IPFilterURL", s_IPFilterURL, "" )));
+	NewCfgItem(ID_IPFILTERLEVEL,	(MkCfg_Int( "/eMule/FilterLevel", s_filterlevel, 127 )));
+	NewCfgItem(IDC_IPFILTERSYS,	(new Cfg_Bool( "/eMule/IPFilterSystem", s_IPFilterSys, false )));
 
 	/**
 	 * Message Filter
 	 **/
-	NewCfgItem(IDC_MSGFILTER,	(new Cfg_Bool( wxT("/eMule/FilterMessages"), s_MustFilterMessages, true )));
-	NewCfgItem(IDC_MSGFILTER_ALL,	(new Cfg_Bool( wxT("/eMule/FilterAllMessages"), s_FilterAllMessages, false )));
-	NewCfgItem(IDC_MSGFILTER_NONFRIENDS,	(new Cfg_Bool( wxT("/eMule/MessagesFromFriendsOnly"),	s_msgonlyfriends, false )));
-	NewCfgItem(IDC_MSGFILTER_NONSECURE,	(new Cfg_Bool( wxT("/eMule/MessageFromValidSourcesOnly"),	s_msgsecure, true )));
-	NewCfgItem(IDC_MSGFILTER_WORD,	(new Cfg_Bool( wxT("/eMule/FilterWordMessages"), s_FilterSomeMessages, false )));
-	NewCfgItem(IDC_MSGWORD,		(new Cfg_Str(  wxT("/eMule/MessageFilter"), s_MessageFilterString, wxEmptyString )));
-	NewCfgItem(IDC_MSGLOG,	(new Cfg_Bool( wxT("/eMule/ShowMessagesInLog"), s_ShowMessagesInLog, true )));
-	//Todo NewCfgItem(IDC_MSGADVSPAM,	(new Cfg_Bool( wxT("/eMule/AdvancedSpamFilter"), s_IsAdvancedSpamfilterEnabled, true )));
-	//Todo NewCfgItem(IDC_MSGCAPTCHA,	(new Cfg_Bool( wxT("/eMule/MessageUseCaptchas"), s_IsChatCaptchaEnabled, true )));
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/AdvancedSpamFilter"), s_IsAdvancedSpamfilterEnabled, true ) );
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/MessageUseCaptchas"), s_IsChatCaptchaEnabled, true ) );
+	NewCfgItem(IDC_MSGFILTER,	(new Cfg_Bool( "/eMule/FilterMessages", s_MustFilterMessages, true )));
+	NewCfgItem(IDC_MSGFILTER_ALL,	(new Cfg_Bool( "/eMule/FilterAllMessages", s_FilterAllMessages, false )));
+	NewCfgItem(IDC_MSGFILTER_NONFRIENDS,	(new Cfg_Bool( "/eMule/MessagesFromFriendsOnly",	s_msgonlyfriends, false )));
+	NewCfgItem(IDC_MSGFILTER_NONSECURE,	(new Cfg_Bool( "/eMule/MessageFromValidSourcesOnly",	s_msgsecure, true )));
+	NewCfgItem(IDC_MSGFILTER_WORD,	(new Cfg_Bool( "/eMule/FilterWordMessages", s_FilterSomeMessages, false )));
+	NewCfgItem(IDC_MSGWORD,		(new Cfg_Str(  "/eMule/MessageFilter", s_MessageFilterString, "" )));
+	NewCfgItem(IDC_MSGLOG,	(new Cfg_Bool( "/eMule/ShowMessagesInLog", s_ShowMessagesInLog, true )));
+	//Todo NewCfgItem(IDC_MSGADVSPAM,	(new Cfg_Bool( "/eMule/AdvancedSpamFilter", s_IsAdvancedSpamfilterEnabled, true )));
+	//Todo NewCfgItem(IDC_MSGCAPTCHA,	(new Cfg_Bool( "/eMule/MessageUseCaptchas", s_IsChatCaptchaEnabled, true )));
+	s_MiscList.push_back( new Cfg_Bool( "/eMule/AdvancedSpamFilter", s_IsAdvancedSpamfilterEnabled, true ) );
+	s_MiscList.push_back( new Cfg_Bool( "/eMule/MessageUseCaptchas", s_IsChatCaptchaEnabled, true ) );
 
-	NewCfgItem(IDC_FILTERCOMMENTS,	(new Cfg_Bool( wxT("/eMule/FilterComments"), s_FilterComments, false )));
-	NewCfgItem(IDC_COMMENTWORD,		(new Cfg_Str(  wxT("/eMule/CommentFilter"), s_CommentFilterString, wxEmptyString )));
+	NewCfgItem(IDC_FILTERCOMMENTS,	(new Cfg_Bool( "/eMule/FilterComments", s_FilterComments, false )));
+	NewCfgItem(IDC_COMMENTWORD,		(new Cfg_Str(  "/eMule/CommentFilter", s_CommentFilterString, "" )));
 
 	/**
 	 * Hidden files sharing
 	 **/
-	NewCfgItem(IDC_SHAREHIDDENFILES,	(new Cfg_Bool( wxT("/eMule/ShareHiddenFiles"), s_ShareHiddenFiles, false )));
+	NewCfgItem(IDC_SHAREHIDDENFILES,	(new Cfg_Bool( "/eMule/ShareHiddenFiles", s_ShareHiddenFiles, false )));
 
 	/**
 	 * Auto-Sorting of downloads
 	 **/
-	 NewCfgItem(IDC_AUTOSORT,	 (new Cfg_Bool( wxT("/eMule/AutoSortDownloads"), s_AutoSortDownload, false )));
+	 NewCfgItem(IDC_AUTOSORT,	 (new Cfg_Bool( "/eMule/AutoSortDownloads", s_AutoSortDownload, false )));
 
 	/**
 	 * Version check
 	 **/
-	 NewCfgItem(IDC_NEWVERSION,	(new Cfg_Bool( wxT("/eMule/NewVersionCheck"), s_NewVersionCheck, true )));
+	 NewCfgItem(IDC_NEWVERSION,	(new Cfg_Bool( "/eMule/NewVersionCheck", s_NewVersionCheck, true )));
 
 	 /**
 	  * Obfuscation
 	  **/
-	NewCfgItem( IDC_SUPPORT_PO, ( new Cfg_Bool( wxT("/Obfuscation/IsClientCryptLayerSupported"), s_IsClientCryptLayerSupported, true )));
-	NewCfgItem( IDC_ENABLE_PO_OUTGOING, ( new Cfg_Bool( wxT("/Obfuscation/IsCryptLayerRequested"), s_bCryptLayerRequested, true )));
-	NewCfgItem( IDC_ENFORCE_PO_INCOMING, ( new Cfg_Bool( wxT("/Obfuscation/IsClientCryptLayerRequired"), s_IsClientCryptLayerRequired, false )));
+	NewCfgItem( IDC_SUPPORT_PO, ( new Cfg_Bool( "/Obfuscation/IsClientCryptLayerSupported", s_IsClientCryptLayerSupported, true )));
+	NewCfgItem( IDC_ENABLE_PO_OUTGOING, ( new Cfg_Bool( "/Obfuscation/IsCryptLayerRequested", s_bCryptLayerRequested, true )));
+	NewCfgItem( IDC_ENFORCE_PO_INCOMING, ( new Cfg_Bool( "/Obfuscation/IsClientCryptLayerRequired", s_IsClientCryptLayerRequired, false )));
 #ifndef CLIENT_GUI
 	// There is no need for GUI items for this two.
-	s_MiscList.push_back( MkCfg_Int( wxT("/Obfuscation/CryptoPaddingLenght"), s_byCryptTCPPaddingLength, 254 ) );
-	s_MiscList.push_back( MkCfg_Int( wxT("/Obfuscation/CryptoKadUDPKey"), s_dwKadUDPKey, GetRandomUint32() ) );
+	s_MiscList.push_back( MkCfg_Int( "/Obfuscation/CryptoPaddingLenght", s_byCryptTCPPaddingLength, 254 ) );
+	s_MiscList.push_back( MkCfg_Int( "/Obfuscation/CryptoKadUDPKey", s_dwKadUDPKey, GetRandomUint32() ) );
 #endif
 
 	/**
 	 * Power management
 	 **/
-	NewCfgItem( IDC_PREVENT_SLEEP, ( new Cfg_Bool( wxT("/PowerManagement/PreventSleepWhileDownloading"), s_preventSleepWhileDownloading, false )));
+	NewCfgItem( IDC_PREVENT_SLEEP, ( new Cfg_Bool( "/PowerManagement/PreventSleepWhileDownloading", s_preventSleepWhileDownloading, false )));
 
 	/**
 	 * The following doesn't have an associated widget or section
 	 **/
-	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Language"),			s_languageID ) );
-	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/SplitterbarPosition"),		s_splitterbarPosition, 75 ) );
-	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/YourHostname"),			s_yourHostname, wxEmptyString ) );
-	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/DateTimeFormat"),		s_datetimeformat, wxT("%A, %x, %X") ) );
+	s_MiscList.push_back( new Cfg_Str(  "/eMule/Language",			s_languageID ) );
+	s_MiscList.push_back(    MkCfg_Int( "/eMule/SplitterbarPosition",		s_splitterbarPosition, 75 ) );
+	s_MiscList.push_back( new Cfg_Str(  "/eMule/YourHostname",			s_yourHostname, "" ) );
+	s_MiscList.push_back( new Cfg_Str(  "/eMule/DateTimeFormat",		s_datetimeformat, "%A, %x, %X" ) );
 
-	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/AllcatType"),			s_allcatFilter, 0 ) );
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/ShowAllNotCats"),		s_showAllNotCats, false ) );
+	s_MiscList.push_back(    MkCfg_Int( "/eMule/AllcatType",			s_allcatFilter, 0 ) );
+	s_MiscList.push_back( new Cfg_Bool( "/eMule/ShowAllNotCats",		s_showAllNotCats, false ) );
 
-	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/SmartIdState"), s_smartidstate, 0 ) );
+	s_MiscList.push_back( MkCfg_Int( "/eMule/SmartIdState", s_smartidstate, 0 ) );
 
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DropSlowSources"),		s_DropSlowSources, false ) );
+	s_MiscList.push_back( new Cfg_Bool( "/eMule/DropSlowSources",		s_DropSlowSources, false ) );
 
-	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/KadNodesUrl"),			s_KadURL, wxT("http://upd.emule-security.org/nodes.dat") ) );
-	s_MiscList.push_back( new Cfg_Str(	wxT("/eMule/Ed2kServersUrl"),		s_Ed2kURL, wxT("http://upd.emule-security.org/server.met") ) );
-	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/ShowRatesOnTitle"),		s_showRatesOnTitle, 0 ));
+	s_MiscList.push_back( new Cfg_Str(  "/eMule/KadNodesUrl",			s_KadURL, "http://upd.emule-security.org/nodes.dat" ) );
+	s_MiscList.push_back( new Cfg_Str(	"/eMule/Ed2kServersUrl",		s_Ed2kURL, "http://upd.emule-security.org/server.met" ) );
+	s_MiscList.push_back( MkCfg_Int( "/eMule/ShowRatesOnTitle",		s_showRatesOnTitle, 0 ));
 
-	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/GeoLiteCountryUpdateUrl"),		s_GeoIPUpdateUrl, wxT("https://mailfud.org/geoip-legacy/GeoIP.dat.gz") ) );
-	wxConfigBase::Get()->DeleteEntry(wxT("/eMule/GeoIPUpdateUrl")); // get rid of the old one for a while
+	s_MiscList.push_back( new Cfg_Str(  "/eMule/GeoLiteCountryUpdateUrl",		s_GeoIPUpdateUrl, "https://mailfud.org/geoip-legacy/GeoIP.dat.gz" ) );
+	wxConfigBase::Get()->DeleteEntry("/eMule/GeoIPUpdateUrl"); // get rid of the old one for a while
 
-	s_MiscList.push_back( new Cfg_Str( wxT("/WebServer/Path"),				s_sWebPath, wxT("amuleweb") ) );
+	s_MiscList.push_back( new Cfg_Str( "/WebServer/Path",				s_sWebPath, "amuleweb" ) );
 
-	s_MiscList.push_back( new Cfg_Str( wxT("/eMule/StatsServerName"),		s_StatsServerName,	wxT("Shorty's ED2K stats") ) );
-	s_MiscList.push_back( new Cfg_Str( wxT("/eMule/StatsServerURL"),		s_StatsServerURL,	wxT("http://ed2k.shortypower.dyndns.org/?hash=") ) );
+	s_MiscList.push_back( new Cfg_Str( "/eMule/StatsServerName",		s_StatsServerName,	"Shorty's ED2K stats" ) );
+	s_MiscList.push_back( new Cfg_Str( "/eMule/StatsServerURL",		s_StatsServerURL,	"http://ed2k.shortypower.dyndns.org/?hash=" ) );
 
-	s_MiscList.push_back( new Cfg_Bool( wxT("/ExternalConnect/TransmitOnlyUploadingClients"),	s_TransmitOnlyUploadingClients, false ) );
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/CreateSparseFiles"),		s_createFilesSparse, true ) );
+	s_MiscList.push_back( new Cfg_Bool( "/ExternalConnect/TransmitOnlyUploadingClients",	s_TransmitOnlyUploadingClients, false ) );
+	s_MiscList.push_back( new Cfg_Bool( "/eMule/CreateSparseFiles",		s_createFilesSparse, true ) );
 
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
 	for ( int i = 0; i < cntStatColors; i++ ) {
-		wxString str = CFormat(wxT("/eMule/StatColor%i")) % i;
+		wxString str = CFormat("/eMule/StatColor%i") % i;
 		s_MiscList.push_back( new Cfg_Colour( str, CStatisticsDlg::acrStat[i] ) );
 	}
 #endif
@@ -1274,10 +1274,10 @@ void CPreferences::BuildItemList( const wxString& appdir )
 		// later, which would be impossible in amuled with NewCfgItem.
 		// The IDs we assign here are high enough to not cause any collision
 		// even on the daemon.
-		s_CfgList[USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 1] = new Cfg_Bool(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/CoreEnabled"), CUserEvents::GetCoreEnableVar(i), false);
-		s_CfgList[USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 2] = new Cfg_Str(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/CoreCommand"), CUserEvents::GetCoreCommandVar(i), wxEmptyString);
-		s_CfgList[USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 3] = new Cfg_Bool(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/GUIEnabled"), CUserEvents::GetGUIEnableVar(i), false);
-		s_CfgList[USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 4] = new Cfg_Str(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/GUICommand"), CUserEvents::GetGUICommandVar(i), wxEmptyString);
+		s_CfgList[USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 1] = new Cfg_Bool("/UserEvents/" + CUserEvents::GetKey(i) + "/CoreEnabled", CUserEvents::GetCoreEnableVar(i), false);
+		s_CfgList[USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 2] = new Cfg_Str("/UserEvents/" + CUserEvents::GetKey(i) + "/CoreCommand", CUserEvents::GetCoreCommandVar(i), "");
+		s_CfgList[USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 3] = new Cfg_Bool("/UserEvents/" + CUserEvents::GetKey(i) + "/GUIEnabled", CUserEvents::GetGUIEnableVar(i), false);
+		s_CfgList[USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 4] = new Cfg_Str("/UserEvents/" + CUserEvents::GetKey(i) + "/GUICommand", CUserEvents::GetGUICommandVar(i), "");
 	}
 }
 
@@ -1302,18 +1302,18 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 #ifndef CLIENT_GUI
 	// Preserve values from old config. The global config object may not be set yet
 	// when BuildItemList() is called, so we need to provide defaults later - here.
-	if (cfg->HasEntry(wxT("/eMule/ExecOnCompletion"))) {
+	if (cfg->HasEntry("/eMule/ExecOnCompletion")) {
 		bool ExecOnCompletion;
-		cfg->Read(wxT("/eMule/ExecOnCompletion"), &ExecOnCompletion, false);
+		cfg->Read("/eMule/ExecOnCompletion", &ExecOnCompletion, false);
 		// Assign to core command, that's the most likely it was.
 		static_cast<Cfg_Bool*>(s_CfgList[USEREVENTS_FIRST_ID + CUserEvents::DownloadCompleted * USEREVENTS_IDS_PER_EVENT + 1])->SetDefault(ExecOnCompletion);
-		cfg->DeleteEntry(wxT("/eMule/ExecOnCompletion"));
+		cfg->DeleteEntry("/eMule/ExecOnCompletion");
 	}
-	if (cfg->HasEntry(wxT("/eMule/ExecOnCompletionCommand"))) {
+	if (cfg->HasEntry("/eMule/ExecOnCompletionCommand")) {
 		wxString ExecOnCompletionCommand;
-		cfg->Read(wxT("/eMule/ExecOnCompletionCommand"), &ExecOnCompletionCommand, wxEmptyString);
+		cfg->Read("/eMule/ExecOnCompletionCommand", &ExecOnCompletionCommand, "");
 		static_cast<Cfg_Str*>(s_CfgList[USEREVENTS_FIRST_ID + CUserEvents::DownloadCompleted * USEREVENTS_IDS_PER_EVENT + 2])->SetDefault(ExecOnCompletionCommand);
-		cfg->DeleteEntry(wxT("/eMule/ExecOnCompletionCommand"));
+		cfg->DeleteEntry("/eMule/ExecOnCompletionCommand");
 	}
 #endif
 	CFGMap::iterator it_a = s_CfgList.begin();
@@ -1327,21 +1327,21 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 	}
 
 	// Preserve old value of UDPDisable
-	if (cfg->HasEntry(wxT("/eMule/UDPDisable"))) {
+	if (cfg->HasEntry("/eMule/UDPDisable")) {
 		bool UDPDisable;
-		cfg->Read(wxT("/eMule/UDPDisable"), &UDPDisable, false);
+		cfg->Read("/eMule/UDPDisable", &UDPDisable, false);
 		SetUDPDisable(UDPDisable);
-		cfg->DeleteEntry(wxT("/eMule/UDPDisable"));
+		cfg->DeleteEntry("/eMule/UDPDisable");
 	}
 
 	// Preserve old value of UseSkinFiles
-	if (cfg->HasEntry(wxT("/SkinGUIOptions/UseSkinFiles"))) {
+	if (cfg->HasEntry("/SkinGUIOptions/UseSkinFiles")) {
 		bool UseSkinFiles;
-		cfg->Read(wxT("/SkinGUIOptions/UseSkinFiles"), &UseSkinFiles, false);
+		cfg->Read("/SkinGUIOptions/UseSkinFiles", &UseSkinFiles, false);
 		if (!UseSkinFiles) {
 			s_Skin.Clear();
 		}
-		cfg->DeleteEntry(wxT("/SkinGUIOptions/UseSkinFiles"));
+		cfg->DeleteEntry("/SkinGUIOptions/UseSkinFiles");
 	}
 
 #ifdef __DEBUG__
@@ -1352,7 +1352,7 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 		const CDebugCategory& cat = theLogger.GetDebugCategory( i );
 
 		bool enabled = false;
-		cfg->Read( wxT("/Debug/Cat_") + cat.GetName(), &enabled );
+		cfg->Read( "/Debug/Cat_" + cat.GetName(), &enabled );
 
 		theLogger.SetEnabled( cat.GetType(), enabled );
 	}
@@ -1389,7 +1389,7 @@ void CPreferences::SaveAllItems(wxConfigBase* cfg)
 	for ( int i = 0; i < count; i++ ) {
 		const CDebugCategory& cat = theLogger.GetDebugCategory( i );
 
-		cfg->Write( wxT("/Debug/Cat_") + cat.GetName(), cat.IsEnabled() );
+		cfg->Write( "/Debug/Cat_" + cat.GetName(), cat.IsEnabled() );
 	}
 #endif
 }
@@ -1454,7 +1454,7 @@ void CPreferences::CheckUlDlRatio()
 
 void CPreferences::Save()
 {
-	wxString fullpath(s_configDir + wxT("preferences.dat"));
+	wxString fullpath(s_configDir + "preferences.dat");
 
 	CFile preffile;
 	if (!wxFileExists(fullpath)) {
@@ -1466,7 +1466,7 @@ void CPreferences::Save()
 			preffile.WriteUInt8(PREFFILE_VERSION);
 			preffile.WriteHash(s_userhash);
 		} catch (const CIOFailureException& e) {
-			AddDebugLogLineC(logGeneral, wxT("IO failure while saving user-hash: ") + e.what());
+			AddDebugLogLineC(logGeneral, "IO failure while saving user-hash: " + e.what());
 		}
 	}
 
@@ -1474,7 +1474,7 @@ void CPreferences::Save()
 
 	#ifndef CLIENT_GUI
 	CTextFile sdirfile;
-	if (sdirfile.Open(s_configDir + wxT("shareddir.dat"), CTextFile::write)) {
+	if (sdirfile.Open(s_configDir + "shareddir.dat", CTextFile::write)) {
 		for (size_t i = 0; i < shareddir_list.size(); ++i) {
 			sdirfile.WriteLine(shareddir_list[i].GetRaw(), wxConvUTF8);
 		}
@@ -1514,7 +1514,7 @@ void CPreferences::SavePreferences()
 {
 	wxConfigBase* cfg = wxConfigBase::Get();
 
-	cfg->Write( wxT("/eMule/AppVersion"), wxT(VERSION) );
+	cfg->Write( "/eMule/AppVersion", VERSION );
 
 	// Save the options
 	SaveAllItems( cfg );
@@ -1530,24 +1530,24 @@ void CPreferences::SaveCats()
 		wxConfigBase* cfg = wxConfigBase::Get();
 
 		// Save the main cat.
-		cfg->Write( wxT("/eMule/AllcatType"), (int)s_allcatFilter);
+		cfg->Write( "/eMule/AllcatType", (int)s_allcatFilter);
 
 		// The first category is the default one and should not be counted
 
-		cfg->Write( wxT("/General/Count"), (long)(m_CatList.size() - 1) );
+		cfg->Write( "/General/Count", (long)(m_CatList.size() - 1) );
 
 		uint32 maxcat = m_CatList.size();
 		for (uint32 i = 1; i < maxcat; i++) {
-			cfg->SetPath(CFormat(wxT("/Cat#%i")) % i);
+			cfg->SetPath(CFormat("/Cat#%i") % i);
 
-			cfg->Write( wxT("Title"),	m_CatList[i]->title );
-			cfg->Write( wxT("Incoming"),	CPath::ToUniv(m_CatList[i]->path) );
-			cfg->Write( wxT("Comment"),	m_CatList[i]->comment );
-			cfg->Write( wxT("Color"),	wxString(CFormat(wxT("%u")) % m_CatList[i]->color));
-			cfg->Write( wxT("Priority"),	(int)m_CatList[i]->prio );
+			cfg->Write( "Title",	m_CatList[i]->title );
+			cfg->Write( "Incoming",	CPath::ToUniv(m_CatList[i]->path) );
+			cfg->Write( "Comment",	m_CatList[i]->comment );
+			cfg->Write( "Color",	wxString(CFormat("%u") % m_CatList[i]->color));
+			cfg->Write( "Priority",	(int)m_CatList[i]->prio );
 		}
 		// remove deleted cats from config
-		while (cfg->DeleteGroup(CFormat(wxT("/Cat#%i")) % maxcat++)) {}
+		while (cfg->DeleteGroup(CFormat("/Cat#%i") % maxcat++)) {}
 
 		cfg->Flush();
 	}
@@ -1571,15 +1571,15 @@ void CPreferences::LoadCats()
 
 	wxConfigBase* cfg = wxConfigBase::Get();
 
-	long max = cfg->Read( wxT("/General/Count"), 0l );
+	long max = cfg->Read( "/General/Count", 0l );
 
 	for ( int i = 1; i <= max ; i++ ) {
-		cfg->SetPath(CFormat(wxT("/Cat#%i")) % i);
+		cfg->SetPath(CFormat("/Cat#%i") % i);
 
 		Category_Struct* newcat = new Category_Struct;
 
-		newcat->title = cfg->Read( wxT("Title"), wxEmptyString );
-		newcat->path  = CPath::FromUniv(cfg->Read(wxT("Incoming"), wxEmptyString));
+		newcat->title = cfg->Read( "Title", "" );
+		newcat->path  = CPath::FromUniv(cfg->Read("Incoming", ""));
 
 		// Some sanity checking
 		if ( newcat->title.IsEmpty() || !newcat->path.IsOk() ) {
@@ -1589,9 +1589,9 @@ void CPreferences::LoadCats()
 			continue;
 		}
 
-		newcat->comment = cfg->Read( wxT("Comment"), wxEmptyString );
-		newcat->prio = cfg->Read( wxT("Priority"), 0l );
-		newcat->color = StrToULong(cfg->Read(wxT("Color"), wxT("0")));
+		newcat->comment = cfg->Read( "Comment", "" );
+		newcat->prio = cfg->Read( "Priority", 0l );
+		newcat->color = StrToULong(cfg->Read("Color", "0"));
 
 		AddCat(newcat);
 
@@ -1710,18 +1710,18 @@ wxString CPreferences::GetBrowser()
 #ifndef __WINDOWS__
 	if( s_BrowserTab ) {
 		// This is certainly not the best way to do it, but I'm lazy
-		if ((wxT("mozilla") == cmd.Right(7)) || (wxT("firefox") == cmd.Right(7))
-			|| (wxT("MozillaFirebird") == cmd.Right(15))) {
-			cmd += wxT(" -remote 'openURL(%s, new-tab)'");
+		if (("mozilla" == cmd.Right(7)) || ("firefox" == cmd.Right(7))
+			|| ("MozillaFirebird" == cmd.Right(15))) {
+			cmd += " -remote 'openURL(%s, new-tab)'";
 		}
-		if ((wxT("galeon") == cmd.Right(6)) || (wxT("epiphany") == cmd.Right(8))) {
-			cmd += wxT(" -n '%s'");
+		if (("galeon" == cmd.Right(6)) || ("epiphany" == cmd.Right(8))) {
+			cmd += " -n '%s'";
 		}
-		if (wxT("opera") == cmd.Right(5)) {
-			cmd += wxT(" --newpage '%s'");
+		if ("opera" == cmd.Right(5)) {
+			cmd += " --newpage '%s'";
 		}
-		if (wxT("netscape") == cmd.Right(8)) {
-			cmd += wxT(" -remote 'openURLs(%s,new-tab)'");
+		if ("netscape" == cmd.Right(8)) {
+			cmd += " -remote 'openURLs(%s,new-tab)'";
 		}
 	}
 #endif /* !__WINDOWS__ */
@@ -1780,7 +1780,7 @@ void CPreferences::ReloadSharedFolders()
 	shareddir_list.clear();
 
 	CTextFile file;
-	if (file.Open(s_configDir + wxT("shareddir.dat"), CTextFile::read)) {
+	if (file.Open(s_configDir + "shareddir.dat", CTextFile::read)) {
 		wxArrayString lines = file.ReadLines(txtReadDefault, wxConvUTF8);
 
 		for (size_t i = 0; i < lines.size(); ++i) {
@@ -1803,11 +1803,11 @@ bool CPreferences::IsMessageFiltered(const wxString& message)
 		return true;
 	} else {
 		if (s_FilterSomeMessages) {
-			if (s_MessageFilterString.IsSameAs(wxT("*"))){
+			if (s_MessageFilterString.IsSameAs("*")){
 				// Filter anything
 				return true;
 			} else {
-				wxStringTokenizer tokenizer( s_MessageFilterString, wxT(",") );
+				wxStringTokenizer tokenizer( s_MessageFilterString, "," );
 				while (tokenizer.HasMoreTokens()) {
 					if ( message.Lower().Trim(false).Trim(true).Contains(
 							tokenizer.GetNextToken().Lower().Trim(false).Trim(true))) {
@@ -1826,7 +1826,7 @@ bool CPreferences::IsMessageFiltered(const wxString& message)
 bool CPreferences::IsCommentFiltered(const wxString& comment)
 {
 	if (s_FilterComments) {
-		wxStringTokenizer tokenizer( s_CommentFilterString, wxT(",") );
+		wxStringTokenizer tokenizer( s_CommentFilterString, "," );
 		while (tokenizer.HasMoreTokens()) {
 			if ( comment.Lower().Trim(false).Trim(true).Contains(
 					tokenizer.GetNextToken().Lower().Trim(false).Trim(true))) {
@@ -1840,14 +1840,14 @@ bool CPreferences::IsCommentFiltered(const wxString& comment)
 wxString CPreferences::GetLastHTTPDownloadURL(uint8 t)
 {
 	wxConfigBase* cfg = wxConfigBase::Get();
-	wxString key = CFormat(wxT("/HTTPDownload/URL_%d")) % t;
-	return cfg->Read(key, wxEmptyString);
+	wxString key = CFormat("/HTTPDownload/URL_%d") % t;
+	return cfg->Read(key, "");
 }
 
 void CPreferences::SetLastHTTPDownloadURL(uint8 t, const wxString& val)
 {
 	wxConfigBase* cfg = wxConfigBase::Get();
-	wxString key = CFormat(wxT("/HTTPDownload/URL_%d")) % t;
+	wxString key = CFormat("/HTTPDownload/URL_%d") % t;
 	cfg->Write(key, val);
 }
 

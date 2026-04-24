@@ -110,34 +110,34 @@ bool CamulewebApp::OnInit()
 
 int CamulewebApp::OnRun()
 {
-	ConnectAndRun(wxT("aMuleweb"), wxT(VERSION));
+	ConnectAndRun("aMuleweb", VERSION);
 	return 0;
 }
 
 
 bool CamulewebApp::CheckDirForTemplate(wxString& dir, const wxString& tmpl)
 {
-	DebugShow(wxT("checking for directory '") + dir + wxT("'..."));
+	DebugShow("checking for directory '" + dir + "'...");
 	if (wxFileName::DirExists(dir)) {
-		DebugShow(wxT(" yes\n"));
+		DebugShow(" yes\n");
 		dir = JoinPaths(dir, tmpl);
-		DebugShow(wxT("checking for directory '") + dir + wxT("'..."));
+		DebugShow("checking for directory '" + dir + "'...");
 		if (wxFileName::DirExists(dir)) {
-			DebugShow(wxT(" yes\n"));
-			wxString tmplPath = JoinPaths(dir, wxT("login.php"));
-			DebugShow(wxT("checking for file '") + tmplPath + wxT("'..."));
+			DebugShow(" yes\n");
+			wxString tmplPath = JoinPaths(dir, "login.php");
+			DebugShow("checking for file '" + tmplPath + "'...");
 			if (wxFileName::FileExists(tmplPath)) {
-				DebugShow(wxT(" yes\n"));
+				DebugShow(" yes\n");
 				// dir is already set to the directory component of the template path
 				return true;
 			} else {
-				DebugShow(wxT(" no\n"));
+				DebugShow(" no\n");
 			}
 		} else {
-			DebugShow(wxT(" no\n"));
+			DebugShow(" no\n");
 		}
 	} else {
-		DebugShow(wxT(" no\n"));
+		DebugShow(" no\n");
 	}
 
 	return false;
@@ -149,7 +149,7 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 	wxString dir;
 	m_localTemplate = false;
 
-	DebugShow(wxT("looking for template: ") + templateName + wxT("\n"));
+	DebugShow("looking for template: " + templateName + "\n");
 
 #ifdef __WXMAC__
 	CFURLRef amuleBundleUrl;
@@ -190,14 +190,14 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 	}
 #endif
 
-	dir = m_configDir + wxT("webserver");
+	dir = m_configDir + "webserver";
 	if (CheckDirForTemplate(dir, templateName)) {
 		templateDir = dir;
 		m_localTemplate = true;
 		return true;
 	}
 #ifdef WEBSERVERDIR
-	dir = wxT(WEBSERVERDIR);
+	dir = WEBSERVERDIR;
 	if (CheckDirForTemplate(dir, templateName)) {
 		templateDir = dir;
 		return true;
@@ -207,21 +207,21 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 	dir = wxStandardPaths::Get().GetResourcesDir();	// Returns 'aMule' when we use 'amule' elsewhere
 #if !defined(__WINDOWS__) && !defined(__WXMAC__)
 	dir = dir.BeforeLast(wxFileName::GetPathSeparator());
-	dir = JoinPaths(dir, wxT("amule"));
+	dir = JoinPaths(dir, "amule");
 #endif
-	dir = JoinPaths(dir, wxT("webserver"));
+	dir = JoinPaths(dir, "webserver");
 	if (CheckDirForTemplate(dir, templateName)) {
 		templateDir = dir;
 		return true;
 	}
 
 	// template not found. reverting to default
-	const wxChar* const defaultTemplateName = wxT("default");
+	const char* const defaultTemplateName = "default";
 
 	if ( templateName == defaultTemplateName ) {
 		return false;
 	}
-	Show(wxT("Template ") + templateName + wxT(" not found, reverting to default\n\n"));
+	Show("Template " + templateName + " not found, reverting to default\n\n");
 	return GetTemplateDir(defaultTemplateName, templateDir);
 }
 
@@ -229,51 +229,51 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 {
 	CaMuleExternalConnector::OnInitCmdLine(amuleweb_parser, "amuleweb");
-	amuleweb_parser.AddOption(wxT("t"), wxT("template"),
+	amuleweb_parser.AddOption("t", "template",
 		_("Loads template <str>"),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddOption(wxT("s"), wxT("server-port"),
+	amuleweb_parser.AddOption("s", "server-port",
 		_("Web server HTTP port"),
 		wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddSwitch(wxT("u"), wxT("enable-upnp"),
+	amuleweb_parser.AddSwitch("u", "enable-upnp",
 		_("Use UPnP port forwarding on web server port"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddSwitch(wxT("U"), wxT("upnp-port"),
+	amuleweb_parser.AddSwitch("U", "upnp-port",
 		_("UPnP port"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddSwitch(wxT("z"), wxT("enable-gzip"),
+	amuleweb_parser.AddSwitch("z", "enable-gzip",
 		_("Use gzip compression"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddSwitch(wxT("Z"), wxT("disable-gzip"),
-		wxT("Do not use gzip compression"),
+	amuleweb_parser.AddSwitch("Z", "disable-gzip",
+		"Do not use gzip compression",
 		wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddOption(wxT("A"), wxT("admin-pass"),
+	amuleweb_parser.AddOption("A", "admin-pass",
 		_("Full access password for web server"),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddOption(wxT("G"), wxT("guest-pass"),
+	amuleweb_parser.AddOption("G", "guest-pass",
 		_("Guest password for web server"),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddSwitch(wxT("a"), wxT("allow-guest"),
+	amuleweb_parser.AddSwitch("a", "allow-guest",
 		_("Allow guest access"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddSwitch(wxT("d"), wxT("deny-guest"),
+	amuleweb_parser.AddSwitch("d", "deny-guest",
 		_("Deny guest access"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddSwitch(wxT("L"), wxT("load-settings"),
+	amuleweb_parser.AddSwitch("L", "load-settings",
 		_("Load/save web server settings from/to remote aMule"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddOption(wxEmptyString, wxT("amule-config-file"),
+	amuleweb_parser.AddOption("", "amule-config-file",
 		_("aMule config file path. DO NOT USE DIRECTLY!"),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
@@ -281,7 +281,7 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 	 * In this mode, internal PHP interpreter is activated, and
 	 * amuleweb will forward there requests for .php pages
 	 */
-	amuleweb_parser.AddSwitch(wxEmptyString, wxT("no-php"),
+	amuleweb_parser.AddSwitch("", "no-php",
 		_("Disable PHP interpreter (deprecated)"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
@@ -289,7 +289,7 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 	 * Reload .php page each time it's requested - don't cache
 	 * compilation results. Used for script development.
 	 */
-	amuleweb_parser.AddSwitch(wxT("N"), wxT("no-script-cache"),
+	amuleweb_parser.AddSwitch("N", "no-script-cache",
 		_("Recompile PHP pages on each request"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 }
@@ -298,7 +298,7 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 {
 	wxString aMuleConfigFile;
-	if (parser.Found(wxT("amule-config-file"), &aMuleConfigFile)) {
+	if (parser.Found("amule-config-file", &aMuleConfigFile)) {
 		aMuleConfigFile = FinalizeFilename(aMuleConfigFile);
 		if (!::wxFileExists(aMuleConfigFile)) {
 			fprintf(stderr, "FATAL ERROR: file '%s' does not exist.\n",
@@ -323,13 +323,13 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 	}
 
 	if (CaMuleExternalConnector::OnCmdLineParsed(parser)) {
-		if ( parser.Found(wxT("no-php")) ) {
+		if ( parser.Found("no-php") ) {
 			fprintf(stderr, "WARNING: --no-php switch have no effect. Long live PHP\n");
 		}
 
-		parser.Found(wxT("template"), &m_TemplateName);
+		parser.Found("template", &m_TemplateName);
 		if (m_TemplateName.IsEmpty()) {
-			m_TemplateName = wxT("default");
+			m_TemplateName = "default";
 		}
 		if (!(m_TemplateOk = GetTemplateDir(m_TemplateName, m_TemplateDir))) {
 			// no reason to run webserver without a template
@@ -339,38 +339,38 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		}
 
 		long port;
-		if (parser.Found(wxT("server-port"), &port)) {
+		if (parser.Found("server-port", &port)) {
 			m_WebserverPort = port;
 		}
-		if (parser.Found(wxT("enable-upnp"))) {
+		if (parser.Found("enable-upnp")) {
 			m_UPnPWebServerEnabled = true;
 		}
-		if (parser.Found(wxT("upnp-port"), &port)) {
+		if (parser.Found("upnp-port", &port)) {
 			m_UPnPTCPPort = port;
 		}
-		if (parser.Found(wxT("enable-gzip"))) {
+		if (parser.Found("enable-gzip")) {
 			m_UseGzip = true;
 		}
-		if (parser.Found(wxT("disable-gzip"))) {
+		if (parser.Found("disable-gzip")) {
 			m_UseGzip = false;
 		}
 
-		if (parser.Found(wxT("allow-guest"))) {
+		if (parser.Found("allow-guest")) {
 			m_AllowGuest = true;
 		}
-		if (parser.Found(wxT("deny-guest"))) {
+		if (parser.Found("deny-guest")) {
 			m_AllowGuest = false;
 		}
 
 		wxString tmp;
-		if ( parser.Found(wxT("admin-pass"), &tmp) ) {
+		if ( parser.Found("admin-pass", &tmp) ) {
 			if (tmp.IsEmpty()) {
 				m_AdminPass.Clear();
 			} else {
 				m_AdminPass.Decode(MD5Sum(tmp).GetHash());
 			}
 		}
-		if ( parser.Found(wxT("guest-pass"), &tmp) ) {
+		if ( parser.Found("guest-pass", &tmp) ) {
 			if (tmp.IsEmpty()) {
 				m_GuestPass.Clear();
 			} else {
@@ -378,7 +378,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 			}
 		}
 
-		m_LoadSettingsFromAmule = parser.Found(wxT("load-settings"));
+		m_LoadSettingsFromAmule = parser.Found("load-settings");
 		return true;
 	} else {
 		return false;
@@ -413,16 +413,16 @@ void CamulewebApp::TextShell(const wxString &)
 void CamulewebApp::LoadAmuleConfig(CECFileConfig& cfg)
 {
 	CaMuleExternalConnector::LoadAmuleConfig(cfg);
-	m_UseGzip = (cfg.Read(wxT("/WebServer/UseGzip"), 0l) == 1l);
-	m_AllowGuest = (cfg.Read(wxT("/WebServer/UseLowRightsUser"), 0l) == 1l);
-	cfg.ReadHash(wxT("/WebServer/Password"), &m_AdminPass);
-	cfg.ReadHash(wxT("/WebServer/PasswordLow"), &m_GuestPass);
-	m_WebserverPort = cfg.Read(wxT("/WebServer/Port"), 4711l);
+	m_UseGzip = (cfg.Read("/WebServer/UseGzip", 0l) == 1l);
+	m_AllowGuest = (cfg.Read("/WebServer/UseLowRightsUser", 0l) == 1l);
+	cfg.ReadHash("/WebServer/Password", &m_AdminPass);
+	cfg.ReadHash("/WebServer/PasswordLow", &m_GuestPass);
+	m_WebserverPort = cfg.Read("/WebServer/Port", 4711l);
 	m_UPnPWebServerEnabled =
-		(cfg.Read(wxT("/Webserver/UPnPWebServerEnabled"), 0l) == 1l);
-	m_UPnPTCPPort = cfg.Read(wxT("/WebServer/UPnPTCPPort"), 50001l);
-	m_PageRefresh = cfg.Read(wxT("/WebServer/PageRefreshTime"), 120l);
-	m_TemplateName = cfg.Read(wxT("/WebServer/Template"), wxT("default"));
+		(cfg.Read("/Webserver/UPnPWebServerEnabled", 0l) == 1l);
+	m_UPnPTCPPort = cfg.Read("/WebServer/UPnPTCPPort", 50001l);
+	m_PageRefresh = cfg.Read("/WebServer/PageRefreshTime", 120l);
+	m_TemplateName = cfg.Read("/WebServer/Template", "default");
 }
 
 
@@ -431,16 +431,16 @@ void CamulewebApp::LoadConfigFile()
 	CaMuleExternalConnector::LoadConfigFile();
 	if (m_configFile) {
 		wxString tmp;
-		m_WebserverPort = m_configFile->Read(wxT("/Webserver/Port"), 4711l);
-		m_configFile->Read(wxT("/Webserver/UPnPWebServerEnabled"),
+		m_WebserverPort = m_configFile->Read("/Webserver/Port", 4711l);
+		m_configFile->Read("/Webserver/UPnPWebServerEnabled",
 			&m_UPnPWebServerEnabled, false);
-		m_UPnPTCPPort = m_configFile->Read(wxT("/WebServer/UPnPTCPPort"), 50001l);
-		m_TemplateName = m_configFile->Read(wxT("/Webserver/Template"), wxEmptyString);
-		m_configFile->Read(wxT("/Webserver/UseGzip"), &m_UseGzip, false);
-		m_configFile->Read(wxT("/Webserver/AllowGuest"), &m_AllowGuest, false);
-		m_configFile->ReadHash(wxT("/Webserver/AdminPassword"), &m_AdminPass);
-		m_configFile->ReadHash(wxT("/Webserver/GuestPassword"), &m_GuestPass);
-		m_PageRefresh = m_configFile->Read(wxT("/Webserver/PageRefreshTime"), 120l);
+		m_UPnPTCPPort = m_configFile->Read("/WebServer/UPnPTCPPort", 50001l);
+		m_TemplateName = m_configFile->Read("/Webserver/Template", "");
+		m_configFile->Read("/Webserver/UseGzip", &m_UseGzip, false);
+		m_configFile->Read("/Webserver/AllowGuest", &m_AllowGuest, false);
+		m_configFile->ReadHash("/Webserver/AdminPassword", &m_AdminPass);
+		m_configFile->ReadHash("/Webserver/GuestPassword", &m_GuestPass);
+		m_PageRefresh = m_configFile->Read("/Webserver/PageRefreshTime", 120l);
 	}
 }
 
@@ -449,15 +449,15 @@ void CamulewebApp::SaveConfigFile()
 {
 	CaMuleExternalConnector::SaveConfigFile();
 	if (m_configFile) {
-		m_configFile->Write(wxT("/Webserver/Port"), m_WebserverPort);
-		m_configFile->Write(wxT("/Webserver/UPnPWebServerEnabled"),
+		m_configFile->Write("/Webserver/Port", m_WebserverPort);
+		m_configFile->Write("/Webserver/UPnPWebServerEnabled",
 			m_UPnPWebServerEnabled);
-		m_configFile->Write(wxT("/WebServer/UPnPTCPPort"), m_UPnPTCPPort);
-		m_configFile->Write(wxT("/Webserver/Template"), m_TemplateName);
-		m_configFile->Write(wxT("/Webserver/UseGzip"), m_UseGzip);
-		m_configFile->Write(wxT("/Webserver/AllowGuest"), m_AllowGuest);
-		m_configFile->WriteHash(wxT("/Webserver/AdminPassword"), m_AdminPass);
-		m_configFile->WriteHash(wxT("/Webserver/GuestPassword"), m_GuestPass);
+		m_configFile->Write("/WebServer/UPnPTCPPort", m_UPnPTCPPort);
+		m_configFile->Write("/Webserver/Template", m_TemplateName);
+		m_configFile->Write("/Webserver/UseGzip", m_UseGzip);
+		m_configFile->Write("/Webserver/AllowGuest", m_AllowGuest);
+		m_configFile->WriteHash("/Webserver/AdminPassword", m_AdminPass);
+		m_configFile->WriteHash("/Webserver/GuestPassword", m_GuestPass);
 	}
 }
 
@@ -465,20 +465,20 @@ void CamulewebApp::SaveConfigFile()
 #ifdef ENABLE_NLS
 static inline bool CheckDirForMessageCatalog(const wxString& dir, const wxString& lang, const wxString& domain)
 {
-	return wxFileName::FileExists(JoinPaths(dir, JoinPaths(lang, JoinPaths(wxT("LC_MESSAGES"), domain + wxT(".mo")))));
+	return wxFileName::FileExists(JoinPaths(dir, JoinPaths(lang, JoinPaths("LC_MESSAGES", domain + ".mo"))));
 }
 
 
 static inline bool DirHasMessageCatalog(const wxString& dir, const wxString& lang, const wxString& domain)
 {
 	if (!CheckDirForMessageCatalog(dir, lang, domain)) {
-		wxString lingua = lang.BeforeFirst(wxT('.')).BeforeFirst(wxT('@'));
+		wxString lingua = lang.BeforeFirst('.').BeforeFirst('@');
 		if (lingua == lang || !CheckDirForMessageCatalog(dir, lingua, domain)) {
-			wxString lng = lingua.BeforeFirst(wxT('_'));
-			wxString ctry = lingua.AfterFirst(wxT('_'));
+			wxString lng = lingua.BeforeFirst('_');
+			wxString ctry = lingua.AfterFirst('_');
 			if (ctry.IsEmpty()) {
 				ctry = lng.Upper();
-				return CheckDirForMessageCatalog(dir, lng + wxT("_") + ctry, domain);
+				return CheckDirForMessageCatalog(dir, lng + "_" + ctry, domain);
 			} else if (ctry == lng.Upper()) {
 				return CheckDirForMessageCatalog(dir, lng, domain);
 			} else {
@@ -498,9 +498,9 @@ wxString CamulewebApp::SetLocale(const wxString& language)
 	// SetLocale() may indeed return an empty string, when no locale has been selected yet and
 	// no locale change was requested, or, in the worst case, if the last locale change didn't succeed.
 	if (!lang.IsEmpty()) {
-		DebugShow(wxT("*** Language set to: ") + lang + wxT(" ***\n"));
+		DebugShow("*** Language set to: " + lang + " ***\n");
 #ifdef ENABLE_NLS
-		wxString domain = wxT("amuleweb-") + m_TemplateName;
+		wxString domain = "amuleweb-" + m_TemplateName;
 		Unicode2CharBuf domainBuf = unicode2char(domain);
 		const char *c_domain = (const char *)domainBuf;
 
@@ -508,28 +508,28 @@ wxString CamulewebApp::SetLocale(const wxString& language)
 		// First look in ~/.aMule/webserver/<template>, but only if a local template was used
 		wxString dir;
 		if (m_localTemplate) {
-			dir = JoinPaths(JoinPaths(JoinPaths(m_configDir, wxT("webserver")), m_TemplateName), wxT("locale"));
-			DebugShow(wxT("looking for message catalogs in ") + dir + wxT("... "));
+			dir = JoinPaths(JoinPaths(JoinPaths(m_configDir, "webserver"), m_TemplateName), "locale");
+			DebugShow("looking for message catalogs in " + dir + "... ");
 		}
 		if (!m_localTemplate || !DirHasMessageCatalog(dir, lang, domain)) {
 			if (m_localTemplate) {
-				DebugShow(wxT("no\n"));
+				DebugShow("no\n");
 			}
 #if defined __WXMAC__ || defined __WINDOWS__
 			// on Mac, the bundle may be tried, too
 			dir = wxStandardPaths::Get().GetDataDir();
 #elif defined(__UNIX__)
-			dir = JoinPaths(static_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetInstallPrefix(), JoinPaths(wxT("share"), wxT("locale")));
+			dir = JoinPaths(static_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetInstallPrefix(), JoinPaths("share", "locale"));
 #endif
-			DebugShow(wxT("looking for message catalogs in ") + dir + wxT("... "));
+			DebugShow("looking for message catalogs in " + dir + "... ");
 			if (!DirHasMessageCatalog(dir, lang, domain)) {
-				DebugShow(wxT("no\n"));
-				dir = wxEmptyString;
+				DebugShow("no\n");
+				dir = "";
 			} else {
-				DebugShow(wxT("yes\n"));
+				DebugShow("yes\n");
 			}
 		} else {
-			DebugShow(wxT("yes\n"));
+			DebugShow("yes\n");
 		}
 		// If we found something, then use it otherwise it may still be present at the system default location
 		if (!dir.IsEmpty()) {

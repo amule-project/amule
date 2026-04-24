@@ -65,9 +65,9 @@ wxString CIndexed::m_loadfilename;
 
 CIndexed::CIndexed()
 {
-	m_sfilename = thePrefs::GetConfigDir() + wxT("src_index.dat");
-	m_kfilename = thePrefs::GetConfigDir() + wxT("key_index.dat");
-	m_loadfilename = thePrefs::GetConfigDir() + wxT("load_index.dat");
+	m_sfilename = thePrefs::GetConfigDir() + "src_index.dat";
+	m_kfilename = thePrefs::GetConfigDir() + "key_index.dat";
+	m_loadfilename = thePrefs::GetConfigDir() + "load_index.dat";
 	m_lastClean = time(NULL) + (60*30);
 	m_totalIndexSource = 0;
 	m_totalIndexKeyword = 0;
@@ -234,13 +234,13 @@ void CIndexed::ReadFile()
 		m_totalIndexSource = totalSource;
 		m_totalIndexKeyword = totalKeyword;
 		m_totalIndexLoad = totalLoad;
-		AddDebugLogLineN(logKadIndex, CFormat(wxT("Read %u source, %u keyword, and %u load entries")) % totalSource % totalKeyword % totalLoad);
+		AddDebugLogLineN(logKadIndex, CFormat("Read %u source, %u keyword, and %u load entries") % totalSource % totalKeyword % totalLoad);
 	} catch (const CSafeIOException& err) {
-		AddDebugLogLineC(logKadIndex, wxT("CSafeIOException in CIndexed::readFile: ") + err.what());
+		AddDebugLogLineC(logKadIndex, "CSafeIOException in CIndexed::readFile: " + err.what());
 	} catch (const CInvalidPacket& err) {
-		AddDebugLogLineC(logKadIndex, wxT("CInvalidPacket Exception in CIndexed::readFile: ") + err.what());
+		AddDebugLogLineC(logKadIndex, "CInvalidPacket Exception in CIndexed::readFile: " + err.what());
 	} catch (const wxString& e) {
-		AddDebugLogLineC(logKadIndex, wxT("Exception in CIndexed::readFile: ") + e);
+		AddDebugLogLineC(logKadIndex, "Exception in CIndexed::readFile: " + e);
 	}
 }
 
@@ -349,7 +349,7 @@ CIndexed::~CIndexed()
 			}
 			k_file.Close();
 		}
-		AddDebugLogLineN(logKadIndex, CFormat(wxT("Wrote %u source, %u keyword, and %u load entries")) % s_total % k_total % l_total);
+		AddDebugLogLineN(logKadIndex, CFormat("Wrote %u source, %u keyword, and %u load entries") % s_total % k_total % l_total);
 
 		for (SrcHashMap::iterator itNoteHash = m_Notes_map.begin(); itNoteHash != m_Notes_map.end(); ++itNoteHash) {
 			SrcHash* currNoteHash = itNoteHash->second;
@@ -368,11 +368,11 @@ CIndexed::~CIndexed()
 
 		m_Notes_map.clear();
 	} catch (const CSafeIOException& err) {
-		AddDebugLogLineC(logKadIndex, wxT("CSafeIOException in CIndexed::~CIndexed: ") + err.what());
+		AddDebugLogLineC(logKadIndex, "CSafeIOException in CIndexed::~CIndexed: " + err.what());
 	} catch (const CInvalidPacket& err) {
-		AddDebugLogLineC(logKadIndex, wxT("CInvalidPacket Exception in CIndexed::~CIndexed: ") + err.what());
+		AddDebugLogLineC(logKadIndex, "CInvalidPacket Exception in CIndexed::~CIndexed: " + err.what());
 	} catch (const wxString& e) {
-		AddDebugLogLineC(logKadIndex, wxT("Exception in CIndexed::~CIndexed: ") + e);
+		AddDebugLogLineC(logKadIndex, "Exception in CIndexed::~CIndexed: " + e);
 	}
 }
 
@@ -467,7 +467,7 @@ void CIndexed::Clean()
 
 	m_totalIndexSource = s_Total - s_Removed;
 	m_totalIndexKeyword = k_Total - k_Removed;
-	AddDebugLogLineN(logKadIndex, CFormat(wxT("Removed %u keyword out of %u and %u source out of %u")) % k_Removed % k_Total % s_Removed % s_Total);
+	AddDebugLogLineN(logKadIndex, CFormat("Removed %u keyword out of %u and %u source out of %u") % k_Removed % k_Total % s_Removed % s_Total);
 	m_lastClean = tNow + MIN2S(30);
 }
 
@@ -535,7 +535,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 				entry->MergeIPsAndFilenames(oldEntry);	// oldEntry can be NULL, that's ok and we still need to do this call in this case
 				if (oldEntry == NULL) {
 					m_totalIndexKeyword++;
-					AddDebugLogLineN(logKadIndex, wxT("Multiple sizes published for file ") + entry->m_uSourceID.ToHexString());
+					AddDebugLogLineN(logKadIndex, "Multiple sizes published for file " + entry->m_uSourceID.ToHexString());
 				}
 				delete oldEntry;
 				oldEntry = NULL;
@@ -797,7 +797,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 			}
 		} while (!onlyTrusted);
 
-		AddDebugLogLineN(logKadIndex, CFormat(wxT("Kad keyword search result request: Sent %u trusted and %u untrusted results")) % dbgResultsTrusted % dbgResultsUntrusted);
+		AddDebugLogLineN(logKadIndex, CFormat("Kad keyword search result request: Sent %u trusted and %u untrusted results") % dbgResultsTrusted % dbgResultsUntrusted);
 
 		if (count > 0) {
 			uint16_t countLeft = (uint16_t)count % 50;

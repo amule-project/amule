@@ -79,7 +79,7 @@ END_EVENT_TABLE()
 
 static long GetSpeedFromString(wxString label){
 	long temp;
-	label.Replace(_("kB/s"),wxT(""),TRUE);
+	label.Replace(_("kB/s"),"",TRUE);
 	label.Trim(FALSE);
 	label.Trim(TRUE);
 	label.ToLong(&temp);
@@ -301,7 +301,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	wxString label = MOD_VERSION_LONG;
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
-	label = wxString(_("Speed limits:")) + wxT(" ");
+	label = wxString(_("Speed limits:")) + " ";
 
 	// Check for upload limits
 	unsigned int max_upload = thePrefs::GetMaxUpload();
@@ -311,7 +311,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	else {
 		label += CFormat(_("UL: %u")) % max_upload;
 	}
-	label += wxT(", ");
+	label += ", ";
 
 	// Check for download limits
 	unsigned int max_download = thePrefs::GetMaxDownload();
@@ -324,10 +324,10 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 	traymenu->Append(TRAY_MENU_INFO, label);
 	label = CFormat(_("Download speed: %.1f%s"))
-			% (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : wxT("")));
+			% (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : ""));
 	traymenu->Append(TRAY_MENU_INFO, label);
 	label = CFormat(_("Upload speed: %.1f%s"))
-			% (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : wxT("")));
+			% (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : ""));
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
 
@@ -347,7 +347,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		wxString temp = _("ClientID: ");
 
 		if (theApp->IsConnectedED2K()) {
-			temp += CFormat(wxT("%u")) % theApp->GetED2KID();
+			temp += CFormat("%u") % theApp->GetED2KID();
 		} else {
 			temp += _("Not connected");
 		}
@@ -471,7 +471,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 		for ( int i = 0; i < 5; i++ ) {
 			unsigned int tempspeed = (unsigned int)((double)max_ul_speed / 5) * (5 - i);
-			wxString temp = CFormat(wxT("%u %s")) % tempspeed % _("kB/s");
+			wxString temp = CFormat("%u %s") % tempspeed % _("kB/s");
 			UploadSpeedMenu->Append((int)UPLOAD_ITEM1+i+1,temp);
 		}
 	}
@@ -492,7 +492,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 		for ( int i = 0; i < 5; i++ ) {
 			unsigned int tempspeed = (unsigned int)((double)max_dl_speed / 5) * (5 - i);
-			wxString temp = CFormat(wxT("%d %s")) % tempspeed % _("kB/s");
+			wxString temp = CFormat("%d %s") % tempspeed % _("kB/s");
 			DownloadSpeedMenu->Append((int)DOWNLOAD_ITEM1+i+1,temp);
 		}
 	}

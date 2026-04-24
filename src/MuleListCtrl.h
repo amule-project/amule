@@ -85,7 +85,7 @@ public:
 		       const wxSize &size = wxDefaultSize,
 		       long style = wxLC_ICON,
 		       const wxValidator& validator = wxDefaultValidator,
-		       const wxString &name = wxT("mulelistctrl") );
+		       const wxString &name = "mulelistctrl" );
 
 	/**
 	 * Destructor.
@@ -197,7 +197,7 @@ public:
 			  const wxString& heading,
 			  int format = wxLIST_FORMAT_LEFT,
 			  int width = -1,
-			  const wxString& name = wxEmptyString
+			  const wxString& name = ""
 			  );
 
 	/**

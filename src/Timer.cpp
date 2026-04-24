@@ -109,7 +109,7 @@ bool CTimer::IsRunning() const
 
 bool CTimer::Start(int millisecs, bool oneShot)
 {
-	wxCHECK_MSG(m_id != -1, false, wxT("Invalid target-ID for timer-events."));
+	wxCHECK_MSG(m_id != -1, false, "Invalid target-ID for timer-events.");
 
 	// Since this class generally matches wxTimer, calling
 	// start on a running timer stops and then restarts it.

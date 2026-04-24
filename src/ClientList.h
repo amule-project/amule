@@ -349,7 +349,7 @@ public:
 
 	// Direct Callback list
 	void	AddDirectCallbackClient(CUpDownClient *toAdd);
-	void	RemoveDirectCallback(CUpDownClient *toRemove) { m_currentDirectCallbacks.remove(CCLIENTREF(toRemove, wxEmptyString)); }
+	void	RemoveDirectCallback(CUpDownClient *toRemove) { m_currentDirectCallbacks.remove(CCLIENTREF(toRemove, "")); }
 	void	AddTrackCallbackRequests(uint32_t ip);
 	bool	AllowCallbackRequest(uint32_t ip) const;
 

@@ -57,10 +57,10 @@ void CECPacket::DebugPrint(bool incoming, uint32 trueSize) const
 		uint32 size = GetPacketLength() + sizeof(ec_opcode_t) + 2;	// full length incl. header
 
 		if (trueSize == 0 || size == trueSize) {
-			DoECLogLine(CFormat(wxT("%s %s %d")) % (incoming ? wxT("<") : wxT(">"))
+			DoECLogLine(CFormat("%s %s %d") % (incoming ? "<" : ">")
 				% GetDebugNameECOpCodes(m_opCode) % size);
 		} else {
-			DoECLogLine(CFormat(wxT("%s %s %d (compressed: %d)")) % (incoming ? wxT("<") : wxT(">"))
+			DoECLogLine(CFormat("%s %s %d (compressed: %d)") % (incoming ? "<" : ">")
 				% GetDebugNameECOpCodes(m_opCode) % size % trueSize);
 		}
 		CECTag::DebugPrint(1, false);

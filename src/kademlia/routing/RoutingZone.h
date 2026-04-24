@@ -76,7 +76,7 @@ public:
 	bool	 AddUnfiltered(const CUInt128 &id, uint32_t ip, uint16_t port, uint16_t tport, uint8_t version, const CKadUDPKey& key, bool& ipVerified, bool update, bool fromHello);
 	bool	 Add(CContact *contact, bool& update, bool& outIpVerified);
 
-	void	 ReadFile(const wxString& specialNodesdat = wxEmptyString);
+	void	 ReadFile(const wxString& specialNodesdat = "");
 
 	bool	 VerifyContact(const CUInt128& id, uint32_t ip);
 	CContact *GetContact(const CUInt128& id) const throw();

@@ -47,7 +47,7 @@ WxCas::OnInit ()
 {
 	// Used to tell wxCas to use aMule catalog
 	m_locale.Init();
-	m_locale.AddCatalog( wxT( PACKAGE ) );
+	m_locale.AddCatalog( PACKAGE );
 
 #if wxUSE_LIBPNG
 	wxImage::AddHandler ( new wxPNGHandler );

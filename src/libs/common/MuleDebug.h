@@ -55,7 +55,7 @@ class CMuleException
 {
 public:
 	CMuleException(const wxString& type, const wxString& desc)
-		: m_what(type + wxT(": ") + desc) {}
+		: m_what(type + ": " + desc) {}
 	virtual ~CMuleException() throw() {}
 	virtual const wxString& what() const throw() { return m_what; }
 
@@ -72,7 +72,7 @@ private:
 struct CRunTimeException : public CMuleException
 {
 	CRunTimeException(const wxString& type, const wxString& desc)
-		: CMuleException(wxT("CRunTimeException::") + type, desc) {}
+		: CMuleException("CRunTimeException::" + type, desc) {}
 };
 
 
@@ -83,7 +83,7 @@ struct CRunTimeException : public CMuleException
 struct CInvalidParamsEx : public CRunTimeException
 {
 	CInvalidParamsEx(const wxString& desc)
-		: CRunTimeException(wxT("CInvalidArgsException"), desc) {}
+		: CRunTimeException("CInvalidArgsException", desc) {}
 };
 
 
@@ -93,7 +93,7 @@ struct CInvalidParamsEx : public CRunTimeException
 struct CInvalidStateEx : public CRunTimeException
 {
 	CInvalidStateEx(const wxString& desc)
-		: CRunTimeException(wxT("CInvalidStateException"), desc) {}
+		: CRunTimeException("CInvalidStateException", desc) {}
 };
 
 /**
@@ -102,7 +102,7 @@ struct CInvalidStateEx : public CRunTimeException
 struct CInvalidPacket : public CMuleException
 {
 	CInvalidPacket(const wxString& desc)
-		: CMuleException(wxT("CInvalidPacket"), desc) {}
+		: CMuleException("CInvalidPacket", desc) {}
 };
 
 
@@ -119,7 +119,7 @@ struct CInvalidPacket : public CMuleException
 	#define _MULE_THROW(cond, cls, msg) \
 		do { \
 			if (!(cond)) { \
-				wxFAIL_MSG(wxT(#cond)); \
+				wxFAIL_MSG(#cond); \
 				throw cls(msg); \
 			} \
 		} while (false)

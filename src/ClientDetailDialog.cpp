@@ -85,7 +85,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	wxString OSInfo = m_client.GetClientOSInfo();
 	if (!OSInfo.IsEmpty()) {
 		CastChild(ID_DSOFT, wxStaticText)->SetLabel(
-			m_client.GetSoftStr()+wxT(" (")+OSInfo+wxT(")"));
+			m_client.GetSoftStr()+" ("+OSInfo+")");
 	} else {
 		CastChild(ID_DSOFT, wxStaticText)->SetLabel(
 			m_client.GetSoftStr());
@@ -97,17 +97,17 @@ bool CClientDetailDialog::OnInitDialog() {
 
 	// User ID
 	CastChild(ID_DID, wxStaticText)->SetLabel(
-		CFormat(wxT("%u (%s)")) % m_client.GetUserIDHybrid() % (m_client.HasLowID() ? _("LowID") : _("HighID")));
+		CFormat("%u (%s)") % m_client.GetUserIDHybrid() % (m_client.HasLowID() ? _("LowID") : _("HighID")));
 
 	// Client IP/Port
 	CastChild(ID_DIP, wxStaticText)->SetLabel(
-		CFormat(wxT("%s:%i")) % m_client.GetFullIP() % m_client.GetUserPort());
+		CFormat("%s:%i") % m_client.GetFullIP() % m_client.GetUserPort());
 
 	// Server IP/Port/Name
 	if (m_client.GetServerIP()) {
 		wxString srvaddr = Uint32toStringIP(m_client.GetServerIP());
 		CastChild(ID_DSIP, wxStaticText)->SetLabel(
-			CFormat(wxT("%s:%i")) % srvaddr % m_client.GetServerPort());
+			CFormat("%s:%i") % srvaddr % m_client.GetServerPort());
 		CastChild(ID_DSNAME, wxStaticText)->SetLabel(
 			m_client.GetServerName());
 	} else {
@@ -139,7 +139,7 @@ bool CClientDetailDialog::OnInitDialog() {
 		wxString filename = MakeStringEscaped(file->GetFileName().TruncatePath(60));
 		CastChild(ID_DDOWNLOADING, wxStaticText)->SetLabel(filename);
 	} else {
-		CastChild(ID_DDOWNLOADING, wxStaticText)->SetLabel(wxT("-"));
+		CastChild(ID_DDOWNLOADING, wxStaticText)->SetLabel("-");
 	}
 
 	// Upload
@@ -168,7 +168,7 @@ bool CClientDetailDialog::OnInitDialog() {
 
 	// DL/UP Modifier
 	CastChild(ID_DRATIO, wxStaticText)->SetLabel(
-		CFormat(wxT("%.1f")) % m_client.GetScoreRatio());
+		CFormat("%.1f") % m_client.GetScoreRatio());
 
 	// Secure Ident
 	CastChild(IDC_CDIDENT, wxStaticText)->SetLabel(
@@ -177,12 +177,12 @@ bool CClientDetailDialog::OnInitDialog() {
 	// Queue Score
 	if (m_client.GetUploadState() != US_NONE) {
 		CastChild(ID_QUEUERANK, wxStaticText)->SetLabel(
-			CFormat(wxT("%u")) % m_client.GetUploadQueueWaitingPosition());
+			CFormat("%u") % m_client.GetUploadQueueWaitingPosition());
 		CastChild(ID_DSCORE, wxStaticText)->SetLabel(
-			CFormat(wxT("%u")) % m_client.GetScore());
+			CFormat("%u") % m_client.GetScore());
 	} else {
-		CastChild(ID_QUEUERANK, wxStaticText)->SetLabel(wxT("-"));
-		CastChild(ID_DSCORE, wxStaticText)->SetLabel(wxT("-"));
+		CastChild(ID_QUEUERANK, wxStaticText)->SetLabel("-");
+		CastChild(ID_DSCORE, wxStaticText)->SetLabel("-");
 	}
 	Layout();
 

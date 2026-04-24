@@ -101,7 +101,7 @@ class CIPFilterTask : public CThreadTask
 {
 public:
 	CIPFilterTask(wxEvtHandler* owner)
-		: CThreadTask(wxT("Load IPFilter"), wxEmptyString, ETP_Critical),
+		: CThreadTask("Load IPFilter", "", ETP_Critical),
 		  m_storeDescriptions(false),
 		  m_owner(owner)
 	{
@@ -111,7 +111,7 @@ private:
 	void Entry()
 	{
 		AddLogLineN(_("Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."));
-		if ( !LoadFromFile(thePrefs::GetConfigDir() + wxT("ipfilter.dat")) &&
+		if ( !LoadFromFile(thePrefs::GetConfigDir() + "ipfilter.dat") &&
 		     thePrefs::UseIPFilterSystem() ) {
 			// Load from system wide IP filter file
 			wxStandardPathsBase &spb(wxStandardPaths::Get());
@@ -120,14 +120,14 @@ private:
 #elif defined(__WXMAC__)
 			wxString dataDir(spb.GetDataDir());
 #else
-			wxString dataDir(spb.GetDataDir().BeforeLast(wxT('/')) + wxT("/amule"));
+			wxString dataDir(spb.GetDataDir().BeforeLast('/') + "/amule");
 #endif
-			wxString systemwideFile(JoinPaths(dataDir,wxT("ipfilter.dat")));
+			wxString systemwideFile(JoinPaths(dataDir,"ipfilter.dat"));
 			LoadFromFile(systemwideFile);
 		}
 
 
-		LoadFromFile(thePrefs::GetConfigDir() + wxT("ipfilter_static.dat"));
+		LoadFromFile(thePrefs::GetConfigDir() + "ipfilter_static.dat");
 
 		uint8 accessLevel = thePrefs::GetIPFilterLevel();
 		uint32 size = m_result.size();
@@ -194,7 +194,7 @@ private:
 		// Numbers are probably different:
 		// - ranges from map that are not blocked because of their level are not added to the table
 		// - some ranges from the map have to be split for the table
-		AddDebugLogLineN(logIPFilter, CFormat(wxT("Ranges in map: %d  blocked ranges in table: %d")) % size % m_rangeIPs.size());
+		AddDebugLogLineN(logIPFilter, CFormat("Ranges in map: %d  blocked ranges in table: %d") % size % m_rangeIPs.size());
 
 		CIPFilterEvent evt(m_rangeIPs, m_rangeLengths, m_rangeNames);
 		wxPostEvent(m_owner, evt);
@@ -286,10 +286,10 @@ private:
 		m_storeDescriptions = theLogger.IsEnabled(logIPFilter);
 #endif
 
-		const wxChar* ipfilter_files[] = {
-			wxT("ipfilter.dat"),
-			wxT("guardian.p2p"),
-			wxT("guarding.p2p"),
+		const char* ipfilter_files[] = {
+			"ipfilter.dat",
+			"guardian.p2p",
+			"guarding.p2p",
 			NULL
 		};
 
@@ -319,7 +319,7 @@ private:
 			}
 #ifdef __DEBUG__
 			uint32 time2 = GetTickCountFullRes();
-			AddDebugLogLineN(logIPFilter, CFormat(wxT("time for lexer: %.3f")) % ((time2-time1) / 1000.0));
+			AddDebugLogLineN(logIPFilter, CFormat("time for lexer: %.3f") % ((time2-time1) / 1000.0));
 #endif
 		} else {
 			AddLogLineC(CFormat(_("Failed to load ipfilter.dat file '%s', could not open file.")) % file);
@@ -328,7 +328,7 @@ private:
 
 		wxString msg = CFormat(wxPLURAL("Loaded %u IP-range from '%s'.", "Loaded %u IP-ranges from '%s'.", filtercount)) % filtercount % file;
 		if (yyip_Bad) {
-			msg << wxT(" ") << ( CFormat(wxPLURAL("%u malformed line was discarded.", "%u malformed lines were discarded.", yyip_Bad)) % yyip_Bad );
+			msg << " " << ( CFormat(wxPLURAL("%u malformed line was discarded.", "%u malformed lines were discarded.", yyip_Bad)) % yyip_Bad );
 		}
 		AddLogLineN(msg);
 
@@ -372,24 +372,24 @@ CIPFilter::CIPFilter() :
 	m_connectToAnyServerWhenReady(false)
 {
 	// Setup dummy files for the curious user.
-	const wxString normalDat = thePrefs::GetConfigDir() + wxT("ipfilter.dat");
+	const wxString normalDat = thePrefs::GetConfigDir() + "ipfilter.dat";
 	const wxString normalMsg = wxString()
-		<< wxT("# This file is used by aMule to store ipfilter lists downloaded\n")
-		<< wxT("# through the auto-update functionality. Do not save ipfilter-\n")
-		<< wxT("# ranges here that should not be overwritten by aMule.\n");
+		<< "# This file is used by aMule to store ipfilter lists downloaded\n"
+		<< "# through the auto-update functionality. Do not save ipfilter-\n"
+		<< "# ranges here that should not be overwritten by aMule.\n";
 
 	if (CreateDummyFile(normalDat, normalMsg)) {
 		// redownload if user deleted file
-		thePrefs::SetLastHTTPDownloadURL(HTTP_IPFilter, wxEmptyString);
+		thePrefs::SetLastHTTPDownloadURL(HTTP_IPFilter, "");
 	}
 
-	const wxString staticDat = thePrefs::GetConfigDir() + wxT("ipfilter_static.dat");
+	const wxString staticDat = thePrefs::GetConfigDir() + "ipfilter_static.dat";
 	const wxString staticMsg = wxString()
-		<< wxT("# This file is used to store ipfilter-ranges that should\n")
-		<< wxT("# not be overwritten by aMule. If you wish to keep a custom\n")
-		<< wxT("# set of ipfilter-ranges that take precedence over ipfilter-\n")
-		<< wxT("# ranges acquired through the auto-update functionality, then\n")
-		<< wxT("# place them in this file. aMule will not change this file.");
+		<< "# This file is used to store ipfilter-ranges that should\n"
+		<< "# not be overwritten by aMule. If you wish to keep a custom\n"
+		<< "# set of ipfilter-ranges that take precedence over ipfilter-\n"
+		<< "# ranges acquired through the auto-update functionality, then\n"
+		<< "# place them in this file. aMule will not change this file.";
 
 	CreateDummyFile(staticDat, staticMsg);
 
@@ -424,7 +424,7 @@ bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 	if (!m_ready) {
 		// Somebody connected before we even started the networks.
 		// Filter is not up yet, so block him.
-		AddDebugLogLineN(logIPFilter, CFormat(wxT("Filtered IP %s because filter isn't ready yet.")) % Uint32toStringIP(IPTest));
+		AddDebugLogLineN(logIPFilter, CFormat("Filtered IP %s because filter isn't ready yet.") % Uint32toStringIP(IPTest));
 		if (isServer) {
 			theStats::AddFilteredServer();
 		} else {
@@ -459,9 +459,9 @@ bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 		}
 	}
 	if (found) {
-		AddDebugLogLineN(logIPFilter, CFormat(wxT("Filtered IP %s%s")) % Uint32toStringIP(IPTest)
-			% (i < (int)m_rangeNames.size() ? (wxT(" (") + wxString(char2unicode(m_rangeNames[i].c_str())) + wxT(")"))
-											: wxString(wxEmptyString)));
+		AddDebugLogLineN(logIPFilter, CFormat("Filtered IP %s%s") % Uint32toStringIP(IPTest)
+			% (i < (int)m_rangeNames.size() ? (" (" + wxString(char2unicode(m_rangeNames[i].c_str())) + ")")
+											: wxString("")));
 		if (isServer) {
 			theStats::AddFilteredServer();
 		} else {
@@ -478,8 +478,8 @@ void CIPFilter::Update(const wxString& strURL)
 	if (!strURL.IsEmpty()) {
 		m_URL = strURL;
 
-		wxString filename = thePrefs::GetConfigDir() + wxT("ipfilter.download");
-		wxString oldfilename = thePrefs::GetConfigDir() + wxT("ipfilter.dat");
+		wxString filename = thePrefs::GetConfigDir() + "ipfilter.download";
+		wxString oldfilename = thePrefs::GetConfigDir() + "ipfilter.dat";
 		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(m_URL, filename, oldfilename, HTTP_IPFilter, true, true);
 
 		downloader->Create();
@@ -490,10 +490,10 @@ void CIPFilter::Update(const wxString& strURL)
 
 void CIPFilter::DownloadFinished(uint32 result)
 {
-	wxString datName = wxT("ipfilter.dat");
+	wxString datName = "ipfilter.dat";
 	if (result == HTTP_Success) {
 		// download succeeded. proceed with ipfilter loading
-		wxString newDat = thePrefs::GetConfigDir() + wxT("ipfilter.download");
+		wxString newDat = thePrefs::GetConfigDir() + "ipfilter.download";
 		wxString oldDat = thePrefs::GetConfigDir() + datName;
 
 		if (wxFileExists(oldDat) && !wxRemoveFile(oldDat)) {

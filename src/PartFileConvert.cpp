@@ -75,14 +75,14 @@ int CPartFileConvert::ScanFolderToAdd(const CPath& folder, bool deletesource)
 	int count = 0;
 	CDirIterator finder(folder);
 
-	CPath file = finder.GetFirstFile(CDirIterator::File, wxT("*.part.met"));
+	CPath file = finder.GetFirstFile(CDirIterator::File, "*.part.met");
 	while (file.IsOk()) {
 		ConvertToeMule(folder.JoinPaths(file), deletesource);
 		file = finder.GetNextFile();
 		count++;
 	}
 	/* Shareaza
-	file = finder.GetFirstFile(CDirIterator::File, wxT("*.sd"));
+	file = finder.GetFirstFile(CDirIterator::File, "*.sd");
 	while (!file.IsEmpty()) {
 		ConvertToeMule(file, deletesource);
 		file = finder.GetNextFile();
@@ -90,7 +90,7 @@ int CPartFileConvert::ScanFolderToAdd(const CPath& folder, bool deletesource)
 	}
 	*/
 
-	file = finder.GetFirstFile(CDirIterator::Dir, wxT("*.*"));
+	file = finder.GetFirstFile(CDirIterator::Dir, "*.*");
 	while (file.IsOk()) {
 		ScanFolderToAdd(folder.JoinPaths(file), deletesource);
 
@@ -124,16 +124,16 @@ void CPartFileConvert::StartThread()
 
 		switch ( s_convertPfThread->Create() ) {
 			case wxTHREAD_NO_ERROR:
-				AddDebugLogLineN( logPfConvert, wxT("A new thread has been created.") );
+				AddDebugLogLineN( logPfConvert, "A new thread has been created." );
 				break;
 			case wxTHREAD_RUNNING:
-				AddDebugLogLineC( logPfConvert, wxT("Error, attempt to create an already running thread!") );
+				AddDebugLogLineC( logPfConvert, "Error, attempt to create an already running thread!" );
 				break;
 			case wxTHREAD_NO_RESOURCE:
-				AddDebugLogLineC( logPfConvert, wxT("Error, attempt to create a thread without resources!") );
+				AddDebugLogLineC( logPfConvert, "Error, attempt to create a thread without resources!" );
 				break;
 			default:
-				AddDebugLogLineC( logPfConvert, wxT("Error, unknown error attempting to create a thread!") );
+				AddDebugLogLineC( logPfConvert, "Error, unknown error attempting to create a thread!" );
 		}
 
 		// The thread shouldn't hog the CPU, as it will already be hogging the HD
@@ -214,7 +214,7 @@ wxThread::ExitCode CPartFileConvert::Entry()
 		theApp->sharedfiles->PublishNextTurn();
 	}
 
-	AddDebugLogLineN(logPfConvert, wxT("No more jobs on queue, exiting from thread."));
+	AddDebugLogLineN(logPfConvert, "No more jobs on queue, exiting from thread.");
 
 	s_convertPfThread = NULL;
 
@@ -273,7 +273,7 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 			// just count
 			unsigned maxindex = 0;
 			unsigned partfilecount = 0;
-			CPath filePath = finder.GetFirstFile(CDirIterator::File, filepartindex + wxT(".*.part"));
+			CPath filePath = finder.GetFirstFile(CDirIterator::File, filepartindex + ".*.part");
 			while (filePath.IsOk()) {
 				long l;
 				++partfilecount;
@@ -318,7 +318,7 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 			file->m_hpartfile.SetLength( s_pfconverting->spaceneeded );
 
 			unsigned curindex = 0;
-			CPath filename = finder.GetFirstFile(CDirIterator::File, filepartindex + wxT(".*.part"));
+			CPath filename = finder.GetFirstFile(CDirIterator::File, filepartindex + ".*.part");
 			while (filename.IsOk()) {
 				// stats
 				++curindex;
@@ -350,7 +350,7 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 			}
 			delete[] ba;
 		} catch (const CSafeIOException& e) {
-			AddDebugLogLineC(logPfConvert, wxT("IO error while converting partfiles: ") + e.what());
+			AddDebugLogLineC(logPfConvert, "IO error while converting partfiles: " + e.what());
 
 			delete[] ba;
 			file->Delete();
@@ -438,7 +438,7 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 	}
 
 	if (s_pfconverting->removeSource) {
-		CPath oldFile = finder.GetFirstFile(CDirIterator::File, filepartindex + wxT(".*"));
+		CPath oldFile = finder.GetFirstFile(CDirIterator::File, filepartindex + ".*");
 		while (oldFile.IsOk()) {
 			CPath::RemoveFile(folder.JoinPaths(oldFile));
 			oldFile = finder.GetNextFile();

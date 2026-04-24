@@ -41,9 +41,9 @@
 #include "CryptoPP_Inc.h"	// Needed for Crypto functions
 
 
-#define CLIENTS_MET_FILENAME		wxT("clients.met")
-#define CLIENTS_MET_BAK_FILENAME	wxT("clients.met.bak")
-#define CRYPTKEY_FILENAME		wxT("cryptkey.dat")
+#define CLIENTS_MET_FILENAME		"clients.met"
+#define CLIENTS_MET_BAK_FILENAME	"clients.met.bak"
+#define CRYPTKEY_FILENAME		"cryptkey.dat"
 
 
 CClientCreditsList::CClientCreditsList()
@@ -75,7 +75,7 @@ void CClientCreditsList::LoadList()
 		file.Open(fileName, CFile::read);
 
 		if (file.ReadUInt8() != CREDITFILE_VERSION) {
-			AddDebugLogLineC( logCredits, wxT("Creditfile is outdated and will be replaced") );
+			AddDebugLogLineC( logCredits, "Creditfile is outdated and will be replaced" );
 			file.Close();
 			return;
 		}
@@ -102,12 +102,12 @@ void CClientCreditsList::LoadList()
 			file.Close(); // close the file before copying
 			if (!CPath::CloneFile(fileName, bakFileName, true)) {
 				AddDebugLogLineC(logCredits,
-					CFormat(wxT("Could not create backup file '%s'")) % fileName);
+					CFormat("Could not create backup file '%s'") % fileName);
 			}
 			// reopen file
 			if (!file.Open(fileName, CFile::read)) {
 				AddDebugLogLineC( logCredits,
-					wxT("Failed to load creditfile") );
+					"Failed to load creditfile" );
 				return;
 			}
 
@@ -141,7 +141,7 @@ void CClientCreditsList::LoadList()
 				DeleteContents(m_mapClients);
 
 				AddDebugLogLineC( logCredits,
-					wxT("WARNING: Corruptions found while reading Creditfile!") );
+					"WARNING: Corruptions found while reading Creditfile!" );
 				return;
 			}
 
@@ -161,21 +161,21 @@ void CClientCreditsList::LoadList()
 			AddLogLineN(CFormat(wxPLURAL(" - Credits expired for %u client!", " - Credits expired for %u clients!", cDeleted)) % cDeleted);
 		}
 	} catch (const CSafeIOException& e) {
-		AddDebugLogLineC(logCredits, wxT("IO error while loading clients.met file: ") + e.what());
+		AddDebugLogLineC(logCredits, "IO error while loading clients.met file: " + e.what());
 	}
 }
 
 
 void CClientCreditsList::SaveList()
 {
-	AddDebugLogLineN( logCredits, wxT("Saved Credit list"));
+	AddDebugLogLineN( logCredits, "Saved Credit list");
 	m_nLastSaved = ::GetTickCount();
 
 	wxString name(thePrefs::GetConfigDir() + CLIENTS_MET_FILENAME);
 	CFile file;
 
 	if ( !file.Create(name, true) ) {
-		AddDebugLogLineC( logCredits, wxT("Failed to create creditfile") );
+		AddDebugLogLineC( logCredits, "Failed to create creditfile" );
 		return;
 	}
 
@@ -211,10 +211,10 @@ void CClientCreditsList::SaveList()
 			file.Seek( 1 );
 			file.WriteUInt32( count );
 		} catch (const CIOFailureException& e) {
-			AddDebugLogLineC(logCredits, wxT("IO failure while saving clients.met: ") + e.what());
+			AddDebugLogLineC(logCredits, "IO failure while saving clients.met: " + e.what());
 		}
 	} else {
-		AddDebugLogLineC(logCredits, wxT("Failed to open existing creditfile!"));
+		AddDebugLogLineC(logCredits, "Failed to open existing creditfile!");
 	}
 }
 
@@ -266,10 +266,10 @@ bool CClientCreditsList::CreateKeyPair()
 		// delete privkeysink;
 		// delete fileSink;
 
-		AddDebugLogLineN(logCredits, wxT("Created new RSA keypair"));
+		AddDebugLogLineN(logCredits, "Created new RSA keypair");
 	} catch(const CryptoPP::Exception& e) {
 		AddDebugLogLineC(logCredits,
-			wxString(wxT("Failed to create new RSA keypair: ")) +
+			wxString("Failed to create new RSA keypair: ") +
 			wxString(char2unicode(e.what())));
 		wxFAIL;
 		return false;
@@ -295,10 +295,10 @@ void CClientCreditsList::InitalizeCrypting()
 			off_t keySize = CPath::GetFileSize(thePrefs::GetConfigDir() + CRYPTKEY_FILENAME);
 
 			if (keySize == wxInvalidOffset) {
-				AddDebugLogLineC(logCredits, wxT("Cannot access 'cryptkey.dat', please check permissions."));
+				AddDebugLogLineC(logCredits, "Cannot access 'cryptkey.dat', please check permissions.");
 				return;
 			} else if (keySize == 0) {
-				AddDebugLogLineC(logCredits, wxT("'cryptkey.dat' is empty, recreating keypair."));
+				AddDebugLogLineC(logCredits, "'cryptkey.dat' is empty, recreating keypair.");
 				CreateKeyPair();
 			}
 		} else {
@@ -320,7 +320,7 @@ void CClientCreditsList::InitalizeCrypting()
 		m_pSignkey = NULL;
 
 		AddDebugLogLineC(logCredits,
-			wxString(wxT("Error while initializing encryption keys: ")) +
+			wxString("Error while initializing encryption keys: ") +
 			wxString(char2unicode(e.what())));
 	}
 }
@@ -365,7 +365,7 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uint8_t* pach
 
 		return asink.TotalPutLength();
 	} catch (const CryptoPP::Exception& e) {
-		AddDebugLogLineC(logCredits, wxString(wxT("Error while creating signature: ")) + wxString(char2unicode(e.what())));
+		AddDebugLogLineC(logCredits, wxString("Error while creating signature: ") + wxString(char2unicode(e.what())));
 		wxFAIL;
 
 		return 0;
@@ -405,7 +405,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uint8_t* pac
 					// Ignore local ip...
 					if (!theApp->GetPublicIP(true)) {
 						if (::IsLowID(theApp->GetED2KID())){
-							AddDebugLogLineN(logCredits, wxT("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
+							AddDebugLogLineN(logCredits, "Warning: Maybe SecureHash Ident fails because LocalIP is unknown");
 							// Fallback to local ip...
 							ChallengeIP = theApp->GetPublicIP();
 						} else {
@@ -426,7 +426,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uint8_t* pac
 
 		bResult = pubkey.VerifyMessage(abyBuffer, m_nMyPublicKeyLen+4+nChIpSize, pachSignature, nInputSize);
 	} catch (const CryptoPP::Exception& e) {
-		AddDebugLogLineC(logCredits, wxString(wxT("Error while verifying identity: ")) + wxString(char2unicode(e.what())));
+		AddDebugLogLineC(logCredits, wxString("Error while verifying identity: ") + wxString(char2unicode(e.what())));
 		bResult = false;
 	}
 

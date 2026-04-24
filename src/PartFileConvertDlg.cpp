@@ -131,7 +131,7 @@ void CPartFileConvertDlg::UpdateProgress(float percent, wxString text, wxString 
 {
 	if (s_convertgui) {
 		s_convertgui->m_pb_current->SetValue((int)percent);
-		wxString buffer = CFormat(wxT("%.2f %%")) % percent;
+		wxString buffer = CFormat("%.2f %%") % percent;
 		wxStaticText* percentlabel = dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT));
 		percentlabel->SetLabel(buffer);
 
@@ -151,9 +151,9 @@ void CPartFileConvertDlg::ClearInfo()
 {
 	if (s_convertgui) {
 		dynamic_cast<wxStaticBoxSizer*>(IDC_CURJOB)->GetStaticBox()->SetLabel(_("Waiting..."));
-		dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT))->SetLabel(wxEmptyString);
+		dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT))->SetLabel("");
 		s_convertgui->m_pb_current->SetValue(0);
-		dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PB_LABEL))->SetLabel(wxEmptyString);
+		dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PB_LABEL))->SetLabel("");
 	}
 }
 
@@ -176,7 +176,7 @@ void CPartFileConvertDlg::UpdateJobInfo(ConvertInfo& info)
 			if (info.size > 0) {
 				s_convertgui->m_joblist->SetItem(itemnr, 2, CFormat(_("%s (Disk: %s)")) % CastItoXBytes(info.size) % CastItoXBytes(info.spaceneeded));
 			} else {
-				s_convertgui->m_joblist->SetItem(itemnr, 2, wxEmptyString);
+				s_convertgui->m_joblist->SetItem(itemnr, 2, "");
 			}
 			s_convertgui->m_joblist->SetItem(itemnr, 3, info.filehash);
 		}

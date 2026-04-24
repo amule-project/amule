@@ -149,7 +149,7 @@ protected:
 					m_uType = TAGTYPE_UINT8;
 					break;
 				default:
-					throw wxString(wxT("Invalid bitsize on int tag"));
+					throw wxString("Invalid bitsize on int tag");
 			}
 	}
 };

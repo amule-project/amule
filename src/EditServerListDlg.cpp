@@ -51,7 +51,7 @@ EditServerListDlg::EditServerListDlg(wxWindow *parent,
 
   topsizer->Add( CreateTextSizer( message ), 0, wxALL, 10 );
 
-  m_textctrl = new wxTextCtrl(this, -1, wxEmptyString,
+  m_textctrl = new wxTextCtrl(this, -1, "",
 			      wxDefaultPosition,
 			      wxDefaultSize,
 			      wxTE_MULTILINE);
@@ -81,6 +81,6 @@ void EditServerListDlg::OnOK(wxCommandEvent& WXUNUSED(event) )
 	if (m_textctrl->SaveFile(m_file))
 		EndModal(1);
 	else
-		wxLogSysError(wxT("Can't write to file '") +  m_file + wxT("'"));
+		wxLogSysError("Can't write to file '" +  m_file + "'");
 }
 // File_checked_for_headers

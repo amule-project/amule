@@ -93,7 +93,7 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID,
 	}
 
 	if (!GetFileName().IsOk()) {
-		throw CInvalidPacket(wxT("No filename in search result"));
+		throw CInvalidPacket("No filename in search result");
 	}
 }
 
@@ -187,24 +187,24 @@ void CSearchFile::MergeResults(const CSearchFile& other)
 
 void CSearchFile::AddChild(CSearchFile* file)
 {
-	wxCHECK_RET(file, wxT("Not a valid child!"));
-	wxCHECK_RET(!file->GetParent(), wxT("Search-result can only be child of one other result"));
-	wxCHECK_RET(!file->HasChildren(), wxT("Result already has children, cannot become child."));
-	wxCHECK_RET(!GetParent(), wxT("A child cannot have children of its own"));
-	wxCHECK_RET(GetFileHash() == file->GetFileHash(), wxT("Mismatching child/parent hashes"));
-	wxCHECK_RET(GetFileSize() == file->GetFileSize(), wxT("Mismatching child/parent sizes"));
+	wxCHECK_RET(file, "Not a valid child!");
+	wxCHECK_RET(!file->GetParent(), "Search-result can only be child of one other result");
+	wxCHECK_RET(!file->HasChildren(), "Result already has children, cannot become child.");
+	wxCHECK_RET(!GetParent(), "A child cannot have children of its own");
+	wxCHECK_RET(GetFileHash() == file->GetFileHash(), "Mismatching child/parent hashes");
+	wxCHECK_RET(GetFileSize() == file->GetFileSize(), "Mismatching child/parent sizes");
 
 	// If no children exists, then we add the current item.
 	if (GetChildren().empty()) {
 		// Merging duplicate names instead of adding a new one
 		if (file->GetFileName() == GetFileName()) {
-			AddDebugLogLineN(logSearch, CFormat(wxT("Merged results for '%s'")) % GetFileName());
+			AddDebugLogLineN(logSearch, CFormat("Merged results for '%s'") % GetFileName());
 			MergeResults(*file);
 			delete file;
 			return;
 		} else {
 			// The first child will always be the first result we received.
-			AddDebugLogLineN(logSearch, CFormat(wxT("Created initial child for result '%s'")) % GetFileName());
+			AddDebugLogLineN(logSearch, CFormat("Created initial child for result '%s'") % GetFileName());
 			m_children.push_back(new CSearchFile(*this));
 			m_children.back()->m_parent = this;
 		}
@@ -235,7 +235,7 @@ void CSearchFile::AddChild(CSearchFile* file)
 
 void CSearchFile::UpdateParent()
 {
-	wxCHECK_RET(!m_parent, wxT("UpdateParent called on child item"));
+	wxCHECK_RET(!m_parent, "UpdateParent called on child item");
 
 	uint32_t sourceCount = 0;		// ed2k: sum of all sources, kad: the max sources found
 	uint32_t completeSourceCount = 0;	// ed2k: sum of all sources, kad: the max sources found

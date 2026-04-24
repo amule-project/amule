@@ -223,30 +223,30 @@ void CUploadDiskIOThread::StartCreateNextBlockPackage(CUpDownClient* client)
 			// eMule ref: lines 215-223 — check file ID switch; defer to main thread
 			if (md4cmp(currentblock->FileID, client->GetUploadFileID().GetHash()) != 0)
 			{
-				AddDebugLogLineN(logClient, wxT("CUploadDiskIOThread::StartCreateNextBlockPackage: Switched fileid, waiting for mainthread"));
+				AddDebugLogLineN(logClient, "CUploadDiskIOThread::StartCreateNextBlockPackage: Switched fileid, waiting for mainthread");
 				return;
 			}
 
 			// eMule ref: lines 227-244 — resolve file from shared list
 			CKnownFile* srcfile = theApp->sharedfiles->GetFileByID(CMD4Hash(currentblock->FileID));
 			if (srcfile == NULL) {
-				throw wxString(wxT("requested file not found"));
+				throw wxString("requested file not found");
 			}
 
 			CPartFile* srcPartFile = srcfile->IsPartFile() ? static_cast<CPartFile*>(srcfile) : NULL;
 
 			// eMule ref: lines 247-252 — validate block offsets
 			if (currentblock->EndOffset > srcfile->GetFileSize()) {
-				throw wxString(CFormat(wxT("Asked for data up to %d beyond end of file (%d)"))
+				throw wxString(CFormat("Asked for data up to %d beyond end of file (%d)")
 					% currentblock->EndOffset % srcfile->GetFileSize());
 			} else if (currentblock->StartOffset > currentblock->EndOffset) {
-				throw wxString(CFormat(wxT("Asked for invalid block (start %d > end %d)"))
+				throw wxString(CFormat("Asked for invalid block (start %d > end %d)")
 					% currentblock->StartOffset % currentblock->EndOffset);
 			}
 
 			uint64 togo = currentblock->EndOffset - currentblock->StartOffset;
 			if (togo > EMBLOCKSIZE * 3) {
-				throw wxString(CFormat(wxT("Client requested too large block (%d > %d)"))
+				throw wxString(CFormat("Client requested too large block (%d > %d)")
 					% togo % (EMBLOCKSIZE * 3));
 			}
 
@@ -283,12 +283,12 @@ void CUploadDiskIOThread::StartCreateNextBlockPackage(CUpDownClient* client)
 			if (srcPartFile) {
 				if (!srcPartFile->IsComplete(currentblock->StartOffset, currentblock->EndOffset - 1)) {
 					delete req;
-					throw wxString(CFormat(wxT("Asked for incomplete block (%d - %d)"))
+					throw wxString(CFormat("Asked for incomplete block (%d - %d)")
 						% currentblock->StartOffset % (currentblock->EndOffset - 1));
 				}
 				if (!srcPartFile->ReadData(req->area, currentblock->StartOffset, (uint32)togo)) {
 					delete req;
-					throw wxString(wxT("Failed to read from requested partfile"));
+					throw wxString("Failed to read from requested partfile");
 				}
 			} else {
 				CFileAutoClose file;
@@ -297,7 +297,7 @@ void CUploadDiskIOThread::StartCreateNextBlockPackage(CUpDownClient* client)
 					AddLogLineN(CFormat(_("Failed to open file (%s), removing from list of shared files.")) % srcfile->GetFileName());
 					theApp->sharedfiles->RemoveFile(srcfile);
 					delete req;
-					throw wxString(wxT("Failed to open requested file"));
+					throw wxString("Failed to open requested file");
 				}
 				req->area.ReadAt(file, currentblock->StartOffset, (uint32)togo);
 			}
@@ -319,14 +319,14 @@ void CUploadDiskIOThread::StartCreateNextBlockPackage(CUpDownClient* client)
 			client->m_BlockRequests_queue.pop_front();
 		}
 	} catch (const wxString& DEBUG_ONLY(error)) {
-		AddDebugLogLineN(logClient, CFormat(wxT("CUploadDiskIOThread: error for client '%s': %s"))
+		AddDebugLogLineN(logClient, CFormat("CUploadDiskIOThread: error for client '%s': %s")
 			% client->GetUserName() % error);
 		client->m_bIOError = true;
 	} catch (const CIOFailureException& error) {
-		AddDebugLogLineC(logClient, wxT("CUploadDiskIOThread: IO failure: ") + error.what());
+		AddDebugLogLineC(logClient, "CUploadDiskIOThread: IO failure: " + error.what());
 		client->m_bIOError = true;
 	} catch (const CEOFException&) {
-		AddDebugLogLineN(logClient, wxT("CUploadDiskIOThread: EOF reading block"));
+		AddDebugLogLineN(logClient, "CUploadDiskIOThread: EOF reading block");
 		client->m_bIOError = true;
 	}
 }
@@ -359,7 +359,7 @@ void CUploadDiskIOThread::ReadCompletionRoutine(ReadRequest_Struct* req)
 		}
 
 		if (!bFound) {
-			AddDebugLogLineN(logClient, wxT("CUploadDiskIOThread::ReadCompletionRoutine: Client not found in uploadlist anymore, discarding block"));
+			AddDebugLogLineN(logClient, "CUploadDiskIOThread::ReadCompletionRoutine: Client not found in uploadlist anymore, discarding block");
 			bError = true;
 		}
 
@@ -371,7 +371,7 @@ void CUploadDiskIOThread::ReadCompletionRoutine(ReadRequest_Struct* req)
 
 			// eMule ref: lines 420-422 — check socket still connected
 			if (pSocket == NULL || !client->IsConnected()) {
-				AddDebugLogLineN(logClient, wxT("CUploadDiskIOThread::ReadCompletionRoutine: Client has no connected socket"));
+				AddDebugLogLineN(logClient, "CUploadDiskIOThread::ReadCompletionRoutine: Client has no connected socket");
 				bError = true;
 				client->m_bIOError = true;
 			}

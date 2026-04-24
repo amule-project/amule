@@ -90,7 +90,7 @@ static const int IMAGE_MARGIN_IN_REPORT_MODE = 5;
 // the space between the image and the text in the report mode in header
 static const int HEADER_IMAGE_MARGIN_IN_REPORT_MODE = 2;
 
-const wxChar wxListCtrlNameStr[] = wxT("listCtrl");
+const wxChar wxListCtrlNameStr[] = L"listCtrl";
 
 // ============================================================================
 // private classes
@@ -400,7 +400,7 @@ public:
                         const wxPoint &pos = wxDefaultPosition,
                         const wxSize &size = wxDefaultSize,
                         long style = 0,
-                        const wxString &name = wxT("wxlistctrlcolumntitles") );
+                        const wxString &name = "wxlistctrlcolumntitles" );
 
     virtual ~wxListHeaderWindow();
 
@@ -1638,7 +1638,7 @@ void wxListLineData::DrawTextFormatted(wxDC *dc,
     else // otherwise, truncate and add an ellipsis if possible
     {
         // determine the base width
-        wxString ellipsis(wxT("..."));
+        wxString ellipsis("...");
         wxCoord base_w;
         dc->GetTextExtent(ellipsis, &base_w, &h);
 
@@ -2944,10 +2944,10 @@ void wxListMainWindow::ChangeCurrent(size_t current)
 wxTextCtrl *wxListMainWindow::EditLabel(long item, wxClassInfo* textControlClass)
 {
     wxCHECK_MSG( (item >= 0) && ((size_t)item < GetItemCount()), NULL,
-                 wxT("wrong index in wxGenericListCtrl::EditLabel()") );
+                 "wrong index in wxGenericListCtrl::EditLabel()" );
 
     wxASSERT_MSG( textControlClass->IsKindOf(CLASSINFO(wxTextCtrl)),
-                 wxT("EditLabel() needs a text control") );
+                 "EditLabel() needs a text control" );
 
     size_t itemEdit = (size_t)item;
 
@@ -2983,7 +2983,7 @@ wxTextCtrl *wxListMainWindow::EditLabel(long item, wxClassInfo* textControlClass
 
 void wxListMainWindow::OnRenameTimer()
 {
-    wxCHECK_RET( HasCurrent(), wxT("unexpected rename timer") );
+    wxCHECK_RET( HasCurrent(), "unexpected rename timer" );
 
     EditLabel( m_current );
 }
@@ -4504,7 +4504,7 @@ void wxListMainWindow::DeleteColumn( int col )
 {
     wxListHeaderDataList::compatibility_iterator node = m_columns.Item( col );
 
-    wxCHECK_RET( node, wxT("invalid column index in DeleteColumn()") );
+    wxCHECK_RET( node, "invalid column index in DeleteColumn()" );
 
     m_dirty = true;
     delete node->GetData();
@@ -4967,7 +4967,7 @@ void wxGenericListCtrl::CalculateAndSetHeaderHeight()
 #else
         // we use 'g' to get the descent, too
         int w, h, d;
-        m_headerWin->GetTextExtent(wxT("Hg"), &w, &h, &d);
+        m_headerWin->GetTextExtent("Hg", &w, &h, &d);
         h += d + 2 * HEADER_OFFSET_Y + EXTRA_HEIGHT;
 #endif
 
@@ -5817,14 +5817,14 @@ wxString wxGenericListCtrl::OnGetItemText(long WXUNUSED(item), long WXUNUSED(col
     // because the controls which are not virtual don't need to implement it
     wxFAIL_MSG( _T("wxGenericListCtrl::OnGetItemText not supposed to be called") );
 
-    return wxEmptyString;
+    return "";
 }
 
 int wxGenericListCtrl::OnGetItemImage(long WXUNUSED(item)) const
 {
     wxCHECK_MSG(!GetImageList(wxIMAGE_LIST_SMALL),
                 -1,
-                wxT("List control has an image list, OnGetItemImage or OnGetItemColumnImage should be overridden."));
+                "List control has an image list, OnGetItemImage or OnGetItemColumnImage should be overridden.");
     return -1;
 }
 
