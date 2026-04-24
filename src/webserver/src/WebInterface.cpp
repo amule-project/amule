@@ -152,13 +152,18 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 	DebugShow("looking for template: " + templateName + "\n");
 
 #ifdef __WXMAC__
-	CFURLRef amuleBundleUrl;
-	OSStatus status = LSFindApplicationForInfo(
-		kLSUnknownCreator,
-		// This magic string is the bundle identifier in aMule.app's Info.plist
-		CFSTR("org.amule.aMule"),
-		NULL, NULL, &amuleBundleUrl);
-	if (status == noErr && amuleBundleUrl) {
+	// This magic string is the bundle identifier in aMule.app's Info.plist
+	CFArrayRef amuleBundleUrls = LSCopyApplicationURLsForBundleIdentifier(
+		CFSTR("org.amule.aMule"), NULL);
+	CFURLRef amuleBundleUrl = NULL;
+	if (amuleBundleUrls) {
+		if (CFArrayGetCount(amuleBundleUrls) > 0) {
+			amuleBundleUrl = (CFURLRef)CFRetain(
+				CFArrayGetValueAtIndex(amuleBundleUrls, 0));
+		}
+		CFRelease(amuleBundleUrls);
+	}
+	if (amuleBundleUrl) {
 		CFBundleRef amuleBundle = CFBundleCreate(NULL, amuleBundleUrl);
 		CFRelease(amuleBundleUrl);
 		if (amuleBundle) {
