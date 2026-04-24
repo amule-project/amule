@@ -32,9 +32,7 @@ const int versionRevision	= 1;
 #include <iostream>
 #include <fstream>
 
-#ifdef __APPLE__
-	#include <CoreServices/CoreServices.h>
-#elif defined(_WIN32)
+#ifdef _WIN32
 	#include <winerror.h>
 	#include <shlobj.h>
 	#include <shlwapi.h>
@@ -69,21 +67,13 @@ static string GetLinksFilePath(const string& configDir)
 
 #ifdef __APPLE__
 
-	std::string strDir;
-
-	FSRef fsRef;
-	if (FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &fsRef) == noErr) {
-		CFURLRef urlRef = CFURLCreateFromFSRef(NULL, &fsRef);
-		if (urlRef != NULL) {
-			UInt8 buffer[PATH_MAX + 1];
-			if (CFURLGetFileSystemRepresentation(urlRef, true, buffer, sizeof(buffer))) {
-				strDir.assign((char*) buffer);
-			}
-			CFRelease(urlRef) ;
-		}
-	}
-
-	return strDir + "/aMule/ED2KLinks";
+	// ~/Library/Application Support always exists on macOS >= 10.5 and
+	// is the user-domain equivalent of FSFindFolder(kUserDomain,
+	// kApplicationSupportFolderType, ...) that we used to call via the
+	// Carbon FSRef API (removed in 64-bit macOS).
+	const char* home = getenv("HOME");
+	std::string strDir = (home ? home : "");
+	return strDir + "/Library/Application Support/aMule/ED2KLinks";
 
 #elif defined(_WIN32)
 

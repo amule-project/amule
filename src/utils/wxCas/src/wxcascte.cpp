@@ -31,8 +31,6 @@
 #include <wx/filename.h>
 
 #ifdef __WXMAC__
-	#include <CoreServices/CoreServices.h> // Do_not_auto_remove
-	#include <wx/osx/core/cfstring.h>  // Do_not_auto_remove
 	#include <wx/intl.h> // Do_not_auto_remove
 #elif defined(__WINDOWS__)
 	#include <winerror.h> // Do_not_auto_remove
@@ -123,14 +121,16 @@ wxString GetDefaultAmulesigPath()
 
 #ifdef __WXMAC__
 
-	FSRef fsRef;
-	if (FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &fsRef) == noErr)
-	{
-		CFURLRef	urlRef		= CFURLCreateFromFSRef(NULL, &fsRef);
-		CFStringRef	cfString	= CFURLCopyFileSystemPath(urlRef, kCFURLPOSIXPathStyle);
-		CFRelease(urlRef) ;
-		strDir = wxCFStringRef(cfString).AsString()
-		+ wxFileName::GetPathSeparator() + wxT("aMule");
+	// ~/Library/Application Support is always present on macOS >= 10.5
+	// and matches what FSFindFolder(kUserDomain,
+	// kApplicationSupportFolderType, ...) used to return. Carbon's
+	// FSRef API is gone in 64-bit macOS, so just derive the path from
+	// $HOME.
+	const char* home = getenv("HOME");
+	if (home) {
+		strDir = wxString::FromUTF8(home)
+			+ wxT("/Library/Application Support")
+			+ wxFileName::GetPathSeparator() + wxT("aMule");
 	}
 
 #elif defined(__WINDOWS__)

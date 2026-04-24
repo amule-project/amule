@@ -52,8 +52,6 @@
 	#include <winerror.h>
 	#include <shlobj.h>
 #elif defined(__WXMAC__)
-	#include <CoreServices/CoreServices.h>
-	#include <wx/osx/core/cfstring.h>  // Do_not_auto_remove
 	#include <wx/intl.h>
 #endif
 
@@ -342,14 +340,13 @@ AlcFrame::SetFileToHash()
 	}
 #elif defined(__WXMAC__)
 
-	FSRef fsRef;
+	// ~/Documents always exists on macOS and matches what
+	// FSFindFolder(kUserDomain, kDocumentsFolderType, ...) used to
+	// return via the Carbon FSRef API (removed in 64-bit macOS).
 	wxString browseroot;
-	if (FSFindFolder(kUserDomain, kDocumentsFolderType, kCreateFolder, &fsRef) == noErr)
-	{
-		CFURLRef	urlRef		= CFURLCreateFromFSRef(NULL, &fsRef);
-		CFStringRef	cfString	= CFURLCopyFileSystemPath(urlRef, kCFURLPOSIXPathStyle);
-		CFRelease(urlRef) ;
-		browseroot = wxCFStringRef(cfString).AsString();
+	const char* home = getenv("HOME");
+	if (home) {
+		browseroot = wxString::FromUTF8(home) + wxT("/Documents");
 	} else {
 		browseroot = wxFileName::GetHomeDir();
 	}
