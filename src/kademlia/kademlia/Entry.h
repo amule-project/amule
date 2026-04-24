@@ -74,7 +74,7 @@ public:
 
 	virtual		~CEntry();
 	virtual CEntry*	Copy() const;
-	virtual bool	IsKeyEntry() const throw()	{ return false; }
+	virtual bool	IsKeyEntry() const noexcept	{ return false; }
 
 	bool	 GetIntTagValue(const wxString& tagname, uint64_t& value, bool includeVirtualTags = true) const;
 	wxString GetStrTagValue(const wxString& tagname) const;
@@ -116,7 +116,7 @@ class CKeyEntry : public CEntry
 	virtual ~CKeyEntry();
 
 	virtual CEntry*	Copy() const			{ return CEntry::Copy(); }
-	virtual bool	IsKeyEntry() const throw()	{ return true; }
+	virtual bool	IsKeyEntry() const noexcept	{ return true; }
 
 	bool	SearchTermsMatch(const SSearchTerm *searchTerm) const;
 	void	MergeIPsAndFilenames(CKeyEntry* fromEntry);

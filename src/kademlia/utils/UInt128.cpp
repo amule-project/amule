@@ -103,7 +103,7 @@ wxString CUInt128::ToBinaryString(bool trim) const
 	return str;
 }
 
-CUInt128& CUInt128::SetValueBE(const uint8_t *valueBE) throw()
+CUInt128& CUInt128::SetValueBE(const uint8_t *valueBE) noexcept
 {
 	m_data.u32_data[3] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE));
 	m_data.u32_data[2] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE + 4));
@@ -133,7 +133,7 @@ void CUInt128::StoreCryptValue(uint8_t *buf) const
 	RawPokeUInt32(buf + 12, wxUINT32_SWAP_ON_BE(m_data.u32_data[0]));
 }
 
-int CUInt128::CompareTo(const CUInt128 &other) const throw()
+int CUInt128::CompareTo(const CUInt128 &other) const noexcept
 {
 	for (int i = 3; i >= 0; i--) {
 	    if (m_data.u32_data[i] < other.m_data.u32_data[i])
@@ -144,7 +144,7 @@ int CUInt128::CompareTo(const CUInt128 &other) const throw()
 	return 0;
 }
 
-int CUInt128::CompareTo(uint32_t value) const throw()
+int CUInt128::CompareTo(uint32_t value) const noexcept
 {
 	if ((m_data.u64_data[1] > 0) || (m_data.u32_data[1] > 0) || (m_data.u32_data[0] > value))
 		return 1;
@@ -153,7 +153,7 @@ int CUInt128::CompareTo(uint32_t value) const throw()
 	return 0;
 }
 
-CUInt128& CUInt128::Add(const CUInt128 &value) throw()
+CUInt128& CUInt128::Add(const CUInt128 &value) noexcept
 {
 	if (value.IsZero()) return *this;
 
@@ -167,7 +167,7 @@ CUInt128& CUInt128::Add(const CUInt128 &value) throw()
 	return *this;
 }
 
-CUInt128& CUInt128::Subtract(const CUInt128 &value) throw()
+CUInt128& CUInt128::Subtract(const CUInt128 &value) noexcept
 {
 	if (value.IsZero()) return *this;
 
@@ -181,7 +181,7 @@ CUInt128& CUInt128::Subtract(const CUInt128 &value) throw()
 	return *this;
 }
 
-CUInt128& CUInt128::ShiftLeft(unsigned bits) throw()
+CUInt128& CUInt128::ShiftLeft(unsigned bits) noexcept
 {
 	if ((bits == 0) || IsZero())
 		return *this;

@@ -58,52 +58,52 @@ public:
 	CContact(const CContact& k1);
 	CContact& operator=(const CContact& k1) = default;
 
-	const CUInt128& GetClientID() const throw()		{ return m_clientID; }
-	void SetClientID(const CUInt128& clientID) throw()	{ m_clientID = clientID; m_distance = CKademlia::GetPrefs()->GetKadID() ^ clientID; }
+	const CUInt128& GetClientID() const noexcept		{ return m_clientID; }
+	void SetClientID(const CUInt128& clientID) noexcept	{ m_clientID = clientID; m_distance = CKademlia::GetPrefs()->GetKadID() ^ clientID; }
 
 	const wxString GetClientIDString() const		{ return m_clientID.ToHexString(); }
 
-	const CUInt128& GetDistance() const throw()		{ return m_distance; }
+	const CUInt128& GetDistance() const noexcept		{ return m_distance; }
 	const wxString GetDistanceString() const		{ return m_distance.ToBinaryString(); }
 
-	uint32_t GetIPAddress() const throw()			{ return m_ip; }
-	void	 SetIPAddress(uint32_t ip) throw()		{ if (m_ip != ip) { SetIPVerified(false); m_ip = ip; } }
+	uint32_t GetIPAddress() const noexcept			{ return m_ip; }
+	void	 SetIPAddress(uint32_t ip) noexcept		{ if (m_ip != ip) { SetIPVerified(false); m_ip = ip; } }
 
-	uint16_t GetTCPPort() const throw()			{ return m_tcpPort; }
-	void	 SetTCPPort(uint16_t port) throw()		{ m_tcpPort = port; }
+	uint16_t GetTCPPort() const noexcept			{ return m_tcpPort; }
+	void	 SetTCPPort(uint16_t port) noexcept		{ m_tcpPort = port; }
 
-	uint16_t GetUDPPort() const throw()			{ return m_udpPort; }
-	void	 SetUDPPort(uint16_t port) throw()		{ m_udpPort = port; }
+	uint16_t GetUDPPort() const noexcept			{ return m_udpPort; }
+	void	 SetUDPPort(uint16_t port) noexcept		{ m_udpPort = port; }
 
-	uint8_t	 GetType() const throw()			{ return m_type; }
+	uint8_t	 GetType() const noexcept			{ return m_type; }
 
-	void	 UpdateType() throw();
-	void	 CheckingType() throw();
+	void	 UpdateType() noexcept;
+	void	 CheckingType() noexcept;
 
-	bool	 InUse() const throw()				{ return m_inUse > 0; }
-	void	 IncUse() throw()				{ m_inUse++; }
+	bool	 InUse() const noexcept				{ return m_inUse > 0; }
+	void	 IncUse() noexcept				{ m_inUse++; }
 	void	 DecUse()					{ if (m_inUse) m_inUse--; else { wxFAIL; } }
 
-	time_t	 GetCreatedTime() const throw()			{ return m_created; }
+	time_t	 GetCreatedTime() const noexcept			{ return m_created; }
 
-	void	 SetExpireTime(time_t value) throw()		{ m_expires = value; };
-	time_t	 GetExpireTime() const throw()			{ return m_expires; }
+	void	 SetExpireTime(time_t value) noexcept		{ m_expires = value; };
+	time_t	 GetExpireTime() const noexcept			{ return m_expires; }
 
-	time_t	 GetLastTypeSet() const throw()			{ return m_lastTypeSet; }
+	time_t	 GetLastTypeSet() const noexcept			{ return m_lastTypeSet; }
 
-	time_t	 GetLastSeen() const throw();
+	time_t	 GetLastSeen() const noexcept;
 
-	uint8_t	 GetVersion() const throw()			{ return m_version; }
-	void	 SetVersion(uint8_t value) throw()		{ m_version = value; }
+	uint8_t	 GetVersion() const noexcept			{ return m_version; }
+	void	 SetVersion(uint8_t value) noexcept		{ m_version = value; }
 
-	const CKadUDPKey& GetUDPKey() const throw()		{ return m_udpKey; }
-	void	 SetUDPKey(const CKadUDPKey& key) throw()	{ m_udpKey = key; }
+	const CKadUDPKey& GetUDPKey() const noexcept		{ return m_udpKey; }
+	void	 SetUDPKey(const CKadUDPKey& key) noexcept	{ m_udpKey = key; }
 
-	bool	 IsIPVerified() const throw()			{ return m_ipVerified; }
-	void	 SetIPVerified(bool ipVerified) throw()		{ m_ipVerified = ipVerified; }
+	bool	 IsIPVerified() const noexcept			{ return m_ipVerified; }
+	void	 SetIPVerified(bool ipVerified) noexcept		{ m_ipVerified = ipVerified; }
 
-	bool	GetReceivedHelloPacket() const throw()		{ return m_receivedHelloPacket; }
-	void	SetReceivedHelloPacket() throw()		{ m_receivedHelloPacket = true; }
+	bool	GetReceivedHelloPacket() const noexcept		{ return m_receivedHelloPacket; }
+	void	SetReceivedHelloPacket() noexcept		{ m_receivedHelloPacket = true; }
 
 private:
 	CUInt128	m_clientID;

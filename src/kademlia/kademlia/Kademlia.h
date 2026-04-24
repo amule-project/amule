@@ -68,25 +68,25 @@ public:
 	static void Start(CPrefs *prefs);
 	static void Stop();
 
-	static CPrefs *			GetPrefs() throw()		{ if (instance == NULL || instance->m_prefs == NULL) return NULL; else return instance->m_prefs; }
+	static CPrefs *			GetPrefs() noexcept		{ if (instance == NULL || instance->m_prefs == NULL) return NULL; else return instance->m_prefs; }
 	static CRoutingZone *		GetRoutingZone()		{ wxCHECK(instance && instance->m_routingZone, NULL); return instance->m_routingZone; }
 	static CKademliaUDPListener *	GetUDPListener()		{ wxCHECK(instance && instance->m_udpListener, NULL); return instance->m_udpListener; }
 	static CIndexed *		GetIndexed()			{ wxCHECK(instance && instance->m_indexed, NULL); return instance->m_indexed; }
-	static bool			IsRunning() throw()		{ return m_running; }
-	static bool			IsConnected() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->HasHadContact() : false; }
+	static bool			IsRunning() noexcept		{ return m_running; }
+	static bool			IsConnected() noexcept		{ return instance && instance->m_prefs ? instance->m_prefs->HasHadContact() : false; }
 	static bool			IsFirewalled()
 		{ return instance && instance->m_prefs ? instance->m_prefs->GetFirewalled() && !IsRunningInLANMode() : true; }
 	static void			RecheckFirewalled();
 	static uint32_t			GetKademliaUsers(bool newMethod = false)
 		{ return instance && instance->m_prefs ? (newMethod ? CalculateKadUsersNew() : instance->m_prefs->GetKademliaUsers()) : 0; }
-	static uint32_t			GetKademliaFiles() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetKademliaFiles() : 0; }
-	static uint32_t			GetTotalStoreKey() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreKey() : 0; }
-	static uint32_t			GetTotalStoreSrc() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreSrc() : 0; }
-	static uint32_t			GetTotalStoreNotes() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreNotes() : 0; }
-	static uint32_t			GetTotalFile() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalFile() : 0; }
-	static bool			GetPublish() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetPublish() : false; }
-	static uint32_t			GetIPAddress() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetIPAddress() : 0; }
-	static const CUInt128&		GetKadID() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetKadID() : s_nullUInt128; }
+	static uint32_t			GetKademliaFiles() noexcept	{ return instance && instance->m_prefs ? instance->m_prefs->GetKademliaFiles() : 0; }
+	static uint32_t			GetTotalStoreKey() noexcept	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreKey() : 0; }
+	static uint32_t			GetTotalStoreSrc() noexcept	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreSrc() : 0; }
+	static uint32_t			GetTotalStoreNotes() noexcept	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreNotes() : 0; }
+	static uint32_t			GetTotalFile() noexcept		{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalFile() : 0; }
+	static bool			GetPublish() noexcept		{ return instance && instance->m_prefs ? instance->m_prefs->GetPublish() : false; }
+	static uint32_t			GetIPAddress() noexcept		{ return instance && instance->m_prefs ? instance->m_prefs->GetIPAddress() : 0; }
+	static const CUInt128&		GetKadID() noexcept		{ return instance && instance->m_prefs ? instance->m_prefs->GetKadID() : s_nullUInt128; }
 
 	static void Bootstrap(uint32_t ip, uint16_t port)
 	{
@@ -99,7 +99,7 @@ public:
 
 	static void ProcessPacket(const uint8_t* data, uint32_t lenData, uint32_t ip, uint16_t port, bool validReceiverKey, const CKadUDPKey& senderKey);
 
-	static void AddEvent(CRoutingZone *zone) throw()		{ m_events[zone] = zone; }
+	static void AddEvent(CRoutingZone *zone) noexcept		{ m_events[zone] = zone; }
 	static void RemoveEvent(CRoutingZone *zone)			{ m_events.erase(zone); }
 	static void Process();
 	static void StatsAddClosestDistance(const CUInt128& distance);

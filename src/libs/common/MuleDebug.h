@@ -58,8 +58,8 @@ public:
 		: m_what(type + ": " + desc) {}
 	CMuleException(const CMuleException&) = default;
 	CMuleException& operator=(const CMuleException&) = default;
-	virtual ~CMuleException() throw() {}
-	virtual const wxString& what() const throw() { return m_what; }
+	virtual ~CMuleException() noexcept {}
+	virtual const wxString& what() const noexcept { return m_what; }
 
 private:
 	wxString m_what;

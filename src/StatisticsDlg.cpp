@@ -42,8 +42,8 @@ class CTreeItemData : public wxTreeItemData
 		: m_uniqueid(uniqueid)
 	{}
 
-	uint32_t GetUniqueId() const throw() { return m_uniqueid; }
-	void SetUniqueId(uint32_t val) throw() { m_uniqueid = val; }
+	uint32_t GetUniqueId() const noexcept { return m_uniqueid; }
+	void SetUniqueId(uint32_t val) noexcept { m_uniqueid = val; }
 
       private:
 	uint32_t m_uniqueid;

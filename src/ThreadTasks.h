@@ -279,16 +279,16 @@ class CAllocFinishedEvent : public wxEvent
 	virtual wxEvent *Clone() const;
 
 	/** Returns the partfile for which preallocation was requested. */
-	CPartFile *GetFile() const throw()	{ return m_file; }
+	CPartFile *GetFile() const noexcept	{ return m_file; }
 
 	/** Returns whether the partfile should start paused. */
-	bool	IsPaused() const throw()	{ return m_pause; }
+	bool	IsPaused() const noexcept	{ return m_pause; }
 
 	/** Returns the result of preallocation: true on success, false otherwise. */
-	bool	Succeeded() const throw()	{ return m_result == 0; }
+	bool	Succeeded() const noexcept	{ return m_result == 0; }
 
 	/** Returns the result of the preallocation. */
-	long	GetResult() const throw()	{ return m_result; }
+	long	GetResult() const noexcept	{ return m_result; }
 
       private:
 	//! The partfile for which preallocation was requested.

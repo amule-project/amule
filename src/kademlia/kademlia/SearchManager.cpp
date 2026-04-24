@@ -59,7 +59,7 @@ using namespace Kademlia;
 uint32_t  CSearchManager::m_nextID = 0;
 SearchMap CSearchManager::m_searches;
 
-bool CSearchManager::IsSearching(uint32_t searchID) throw()
+bool CSearchManager::IsSearching(uint32_t searchID) noexcept
 {
 	// Check if this searchID is within the searches
 	for (SearchMap::const_iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
@@ -395,7 +395,7 @@ void CSearchManager::JumpStart()
 	}
 }
 
-void CSearchManager::UpdateStats() throw()
+void CSearchManager::UpdateStats() noexcept
 {
 	uint8_t m_totalFile = 0;
 	uint8_t m_totalStoreSrc = 0;

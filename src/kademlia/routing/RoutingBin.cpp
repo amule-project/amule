@@ -130,7 +130,7 @@ void CRoutingBin::SetTCPPort(uint32_t ip, uint16_t port, uint16_t tcpPort)
 	}
 }
 
-CContact *CRoutingBin::GetContact(const CUInt128 &id) const throw()
+CContact *CRoutingBin::GetContact(const CUInt128 &id) const noexcept
 {
 	for (ContactList::const_iterator it = m_entries.begin(); it != m_entries.end(); ++it) {
 		if ((*it)->GetClientID() == id) {
@@ -140,7 +140,7 @@ CContact *CRoutingBin::GetContact(const CUInt128 &id) const throw()
 	return NULL;
 }
 
-CContact *CRoutingBin::GetContact(uint32_t ip, uint16_t port, bool tcpPort) const throw()
+CContact *CRoutingBin::GetContact(uint32_t ip, uint16_t port, bool tcpPort) const noexcept
 {
 	for (ContactList::const_iterator it = m_entries.begin(); it != m_entries.end(); ++it) {
 		CContact *contact = *it;
@@ -152,7 +152,7 @@ CContact *CRoutingBin::GetContact(uint32_t ip, uint16_t port, bool tcpPort) cons
 	return NULL;
 }
 
-void CRoutingBin::GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const throw()
+void CRoutingBin::GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const noexcept
 {
 	// count all nodes which meet the search criteria and also report those who don't
 	for (ContactList::const_iterator it = m_entries.begin(); it != m_entries.end(); ++it) {
@@ -388,7 +388,7 @@ bool CRoutingBin::CheckGlobalIPLimits(uint32_t ip, uint16_t DEBUG_ONLY(port))
 	return true;
 }
 
-bool CRoutingBin::HasOnlyLANNodes() const throw()
+bool CRoutingBin::HasOnlyLANNodes() const noexcept
 {
 	for (ContactList::const_iterator it = m_entries.begin(); it != m_entries.end(); ++it) {
 		if (!::IsLanIP(wxUINT32_SWAP_ALWAYS((*it)->GetIPAddress()))) {

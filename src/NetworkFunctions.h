@@ -112,10 +112,10 @@ uint32 StringHosttoUint32(const wxString &Host);
  *
  * Note: IP must be in anti-host order (BE on LE platform, LE on BE platform).
  */
-bool IsGoodIP( uint32 IP, bool filterLAN ) throw();
+bool IsGoodIP( uint32 IP, bool filterLAN ) noexcept;
 
 
-inline bool IsGoodIPPort(uint32 nIP, uint16 nPort) throw()
+inline bool IsGoodIPPort(uint32 nIP, uint16 nPort) noexcept
 {
 	return IsGoodIP(nIP, true) && nPort!=0;
 }
@@ -137,7 +137,7 @@ inline bool IsLowID(uint32 id)
  *
  * @note IP must be in anti-host order.
  */
-bool IsLanIP(uint32_t ip) throw();
+bool IsLanIP(uint32_t ip) noexcept;
 
 #endif // NETWORK_FUNCTIONS_H
 // File_checked_for_headers

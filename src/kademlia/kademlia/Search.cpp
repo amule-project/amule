@@ -185,7 +185,7 @@ void CSearch::Go()
 }
 
 //If we allow about a 15 sec delay before deleting, we won't miss a lot of delayed returning packets.
-void CSearch::PrepareToStop() throw()
+void CSearch::PrepareToStop() noexcept
 {
 	// Check if already stopping.
 	if (m_stopping) {

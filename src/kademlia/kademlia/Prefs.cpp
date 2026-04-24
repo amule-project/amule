@@ -140,7 +140,7 @@ void CPrefs::WriteFile()
 	}
 }
 
-void CPrefs::SetIPAddress(uint32_t val) throw()
+void CPrefs::SetIPAddress(uint32_t val) noexcept
 {
 	//This is our first check on connect, init our IP..
 	if ( !val || !m_ipLast ) {
@@ -158,7 +158,7 @@ void CPrefs::SetIPAddress(uint32_t val) throw()
 }
 
 
-bool CPrefs::GetFirewalled() const throw()
+bool CPrefs::GetFirewalled() const noexcept
 {
 	if (m_firewalled < 2) {
 		//Not enough people have told us we are open but we may be doing a recheck
@@ -238,7 +238,7 @@ uint32_t CPrefs::GetUDPVerifyKey(uint32_t targetIP)
 	return (uint32_t)(PeekUInt32(md5.GetRawHash()) ^ PeekUInt32(md5.GetRawHash() + 4) ^ PeekUInt32(md5.GetRawHash() + 8) ^ PeekUInt32(md5.GetRawHash() + 12)) % 0xFFFFFFFE + 1;
 }
 
-float CPrefs::StatsGetFirewalledRatio(bool udp) const throw()
+float CPrefs::StatsGetFirewalledRatio(bool udp) const noexcept
 {
 	// gives an estimated percentage of TCP firewalled clients in the network
 	// will only work once enough > 0.49b nodes have spread and only if we are not UDP firewalled ourself

@@ -64,7 +64,7 @@ void CPacketTracking::AddTrackedOutPacket(uint32_t ip, uint8_t opcode)
 	}
 }
 
-bool CPacketTracking::IsTrackedOutListRequestPacket(uint8_t opcode) throw()
+bool CPacketTracking::IsTrackedOutListRequestPacket(uint8_t opcode) noexcept
 {
 	switch (opcode) {
 	 case KADEMLIA2_BOOTSTRAP_REQ:

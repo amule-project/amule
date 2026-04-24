@@ -130,7 +130,7 @@ static filter_st lan_ranges[] = {
 };
 
 
-bool IsGoodIP(uint32 ip, bool filterLAN) throw()
+bool IsGoodIP(uint32 ip, bool filterLAN) noexcept
 {
 	for (unsigned int i = 0; i < itemsof(reserved_ranges); ++i) {
 		if (((ip ^ reserved_ranges[i].addr) & reserved_ranges[i].mask) == 0) {
@@ -141,7 +141,7 @@ bool IsGoodIP(uint32 ip, bool filterLAN) throw()
 	return !(filterLAN && IsLanIP(ip));
 }
 
-bool IsLanIP(uint32_t ip) throw()
+bool IsLanIP(uint32_t ip) noexcept
 {
 	for (unsigned int i = 0; i < itemsof(lan_ranges); ++i) {
 		if (((ip ^ lan_ranges[i].addr) & lan_ranges[i].mask) == 0) {

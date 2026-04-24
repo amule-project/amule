@@ -63,7 +63,7 @@ class CSearchManager
 
 public:
 
-	static bool IsSearching(uint32_t searchID) throw();
+	static bool IsSearching(uint32_t searchID) noexcept;
 	static void StopSearch(uint32_t searchID, bool delayDelete);
 	static void StopAllSearches();
 
@@ -82,16 +82,16 @@ public:
 
 	static void GetWords(const wxString& str, WordList *words, bool allowDuplicates = false);
 
-	static void UpdateStats() throw();
+	static void UpdateStats() noexcept;
 
-	static bool AlreadySearchingFor(const CUInt128& target) throw() { return m_searches.count(target) > 0; }
+	static bool AlreadySearchingFor(const CUInt128& target) noexcept { return m_searches.count(target) > 0; }
 
 	static const wxChar* GetInvalidKeywordChars() { return L" ()[]{}<>,._-!?:;\\/\""; }
 
 	static void CancelNodeFWCheckUDPSearch();
 	static bool FindNodeFWCheckUDP();
 	static bool IsFWCheckUDPSearch(const CUInt128& target);
-	static void SetNextSearchID(uint32_t nextID) throw()	{ m_nextID = nextID; }
+	static void SetNextSearchID(uint32_t nextID) noexcept	{ m_nextID = nextID; }
 
 private:
 

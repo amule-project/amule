@@ -388,7 +388,7 @@ void CRoutingZone::WriteBootstrapFile()
 }
 #endif
 
-bool CRoutingZone::CanSplit() const throw()
+bool CRoutingZone::CanSplit() const noexcept
 {
 	// Max levels allowed.
 	if (m_level >= 127) {
@@ -515,7 +515,7 @@ bool CRoutingZone::Add(CContact *contact, bool& update, bool& outIpVerified)
 	}
 }
 
-CContact *CRoutingZone::GetContact(const CUInt128& id) const throw()
+CContact *CRoutingZone::GetContact(const CUInt128& id) const noexcept
 {
 	if (IsLeaf()) {
 		return m_bin->GetContact(id);
@@ -526,7 +526,7 @@ CContact *CRoutingZone::GetContact(const CUInt128& id) const throw()
 	}
 }
 
-CContact *CRoutingZone::GetContact(uint32_t ip, uint16_t port, bool tcpPort) const throw()
+CContact *CRoutingZone::GetContact(uint32_t ip, uint16_t port, bool tcpPort) const noexcept
 {
 	if (IsLeaf()) {
 		return m_bin->GetContact(ip, port, tcpPort);
@@ -596,7 +596,7 @@ void CRoutingZone::RandomBin(ContactList *result, bool emptyFirst) const
 	}
 }
 
-uint32_t CRoutingZone::GetMaxDepth() const throw()
+uint32_t CRoutingZone::GetMaxDepth() const noexcept
 {
 	if (IsLeaf()) {
 		return 0;
@@ -826,7 +826,7 @@ void CRoutingZone::RandomLookup() const
 	CSearchManager::FindNode(random, false);
 }
 
-uint32_t CRoutingZone::GetNumContacts() const throw()
+uint32_t CRoutingZone::GetNumContacts() const noexcept
 {
 	if (IsLeaf()) {
 		return m_bin->GetSize();
@@ -835,7 +835,7 @@ uint32_t CRoutingZone::GetNumContacts() const throw()
 	}
 }
 
-void CRoutingZone::GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const throw()
+void CRoutingZone::GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const noexcept
 {
 	if (IsLeaf()) {
 		m_bin->GetNumContacts(nInOutContacts, nInOutFilteredContacts, minVersion);
@@ -916,7 +916,7 @@ bool CRoutingZone::IsAcceptableContact(const CContact *toCheck) const
 	return CRoutingBin::CheckGlobalIPLimits(toCheck->GetIPAddress(), toCheck->GetUDPPort());
 }
 
-bool CRoutingZone::HasOnlyLANNodes() const throw()
+bool CRoutingZone::HasOnlyLANNodes() const noexcept
 {
 	if (IsLeaf()) {
 		return m_bin->HasOnlyLANNodes();

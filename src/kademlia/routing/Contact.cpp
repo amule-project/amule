@@ -77,7 +77,7 @@ CContact::CContact(const CContact& k1)
 	theStats::AddKadNode();
 }
 
-void CContact::CheckingType() throw()
+void CContact::CheckingType() noexcept
 {
 	time_t now = time(NULL);
 
@@ -91,7 +91,7 @@ void CContact::CheckingType() throw()
 	m_type++;
 }
 
-void CContact::UpdateType() throw()
+void CContact::UpdateType() noexcept
 {
 	time_t now = time(NULL);
 	uint32_t hours = (now - m_created) / HR2S(1);
@@ -110,7 +110,7 @@ void CContact::UpdateType() throw()
 	}
 }
 
-time_t CContact::GetLastSeen() const throw()
+time_t CContact::GetLastSeen() const noexcept
 {
 	// calculating back from expire time, so we don't need an additional field.
 	// might result in wrong values if doing CheckingType() for example, so don't use for important timing stuff

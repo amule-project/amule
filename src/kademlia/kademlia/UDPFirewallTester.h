@@ -50,8 +50,8 @@ class CUDPFirewallTester
 	static bool	IsFirewalledUDP(bool lastStateIfTesting); // Are we UDP firewalled - if unknown open is assumed unless onlyVerified == true
 	static void	SetUDPFWCheckResult(bool succeeded, bool testCancelled, uint32_t fromIP, uint16_t incomingPort);
 	static void	ReCheckFirewallUDP(bool setUnverified);
-	static bool	IsFWCheckUDPRunning() throw()		{ return m_fwChecksFinishedUDP < UDP_FIREWALLTEST_CLIENTSTOASK && !CKademlia::IsRunningInLANMode(); }
-	static bool	IsVerified() throw()			{ return m_isFWVerifiedUDP || CKademlia::IsRunningInLANMode(); }
+	static bool	IsFWCheckUDPRunning() noexcept		{ return m_fwChecksFinishedUDP < UDP_FIREWALLTEST_CLIENTSTOASK && !CKademlia::IsRunningInLANMode(); }
+	static bool	IsVerified() noexcept			{ return m_isFWVerifiedUDP || CKademlia::IsRunningInLANMode(); }
 
 	static void	AddPossibleTestContact(const CUInt128& clientID, uint32_t ip, uint16_t port, uint16_t tport, const CUInt128& target, uint8_t version, const CKadUDPKey& udpKey, bool ipVerified)
 	{
@@ -69,7 +69,7 @@ class CUDPFirewallTester
 
       private:
 	// are we in search for testclients
-	static bool	GetUDPCheckClientsNeeded() throw()	{ return (m_fwChecksRunningUDP + m_fwChecksFinishedUDP) < UDP_FIREWALLTEST_CLIENTSTOASK; }
+	static bool	GetUDPCheckClientsNeeded() noexcept	{ return (m_fwChecksRunningUDP + m_fwChecksFinishedUDP) < UDP_FIREWALLTEST_CLIENTSTOASK; }
 	static bool	m_firewalledUDP;
 	static bool	m_firewalledLastStateUDP;
 	static bool	m_isFWVerifiedUDP;
