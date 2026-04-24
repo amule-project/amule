@@ -453,11 +453,9 @@ using MuleNotify::CMuleGUIEvent;
 //! The event-handler type that takes a CMuleGUIEvent.
 typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 
-//! Event-handler for completed hashings of new shared files and partfiles.
+//! Event-handler for cross-thread GUI notification events.
 #define EVT_MULE_NOTIFY(func) \
-	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_NOTIFY, -1, -1, \
-	(wxObjectEventFunction) (wxEventFunction) \
-	wxStaticCastEvent(MuleNotifyEventFunction, &func), (wxObject*) NULL),
+	wx__DECLARE_EVT0(MULE_EVT_NOTIFY, wxEVENT_HANDLER_CAST(MuleNotifyEventFunction, func))
 
 
 
