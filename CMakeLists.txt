@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.5)
 project (amule)
 
-set (MIN_BOOST_VERSION 1.47)
+set (MIN_BOOST_VERSION 1.70)
 set (MIN_CRYPTOPP_VERSION 5.6)
 set (MIN_GDLIB_VERSION 2.0.0)
 set (MIN_WX_VERSION 3.2.0)
