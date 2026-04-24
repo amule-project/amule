@@ -123,6 +123,14 @@ if (WIN32)
 		version.rc.in
 		version.rc
 	)
+
+	# Silences 80+ CI spam lines from MSYS2 `winsock2.h:15` which prints
+	# `#warning Please include winsock2.h before windows.h` whenever
+	# <windows.h> pulls in the legacy WinSock API first. Defining
+	# WIN32_LEAN_AND_MEAN tells windows.h to skip that legacy include,
+	# leaving <winsock2.h> to be pulled in cleanly by wx headers.
+	# Upstream wx 3.3 does this inside wrapwin.h; wx 3.2 does not.
+	add_compile_definitions(WIN32_LEAN_AND_MEAN)
 endif()
 
 if (BUILD_MONOLITHIC)

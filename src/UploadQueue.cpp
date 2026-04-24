@@ -35,7 +35,7 @@
 #include "Types.h"		// Do_not_auto_remove (win32)
 
 #ifdef __WINDOWS__
-	#include <winsock.h>	// Do_not_auto_remove
+	#include <winsock2.h>	// Do_not_auto_remove (htonl/ntohs/inet_addr) — legacy <winsock.h> pulls <windows.h> and trips winsock2.h:15 via later wx includes
 #else
 	#include <sys/types.h>	// Do_not_auto_remove
 	#include <netinet/in.h>	// Do_not_auto_remove

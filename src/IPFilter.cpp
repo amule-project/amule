@@ -49,18 +49,15 @@
 ////////////////////////////////////////////////////////////
 // CIPFilterEvent
 
-BEGIN_DECLARE_EVENT_TYPES()
-	DECLARE_EVENT_TYPE(MULE_EVT_IPFILTER_LOADED, -1)
-END_DECLARE_EVENT_TYPES()
-
-DEFINE_EVENT_TYPE(MULE_EVT_IPFILTER_LOADED)
+class CIPFilterEvent;
+wxDECLARE_EVENT(MULE_EVT_IPFILTER_LOADED, CIPFilterEvent);
 
 
 class CIPFilterEvent : public wxEvent
 {
 public:
 	CIPFilterEvent(CIPFilter::RangeIPs rangeIPs, CIPFilter::RangeLengths rangeLengths, CIPFilter::RangeNames rangeNames)
-		: wxEvent(-1, MULE_EVT_IPFILTER_LOADED)
+		: wxEvent(wxID_ANY, MULE_EVT_IPFILTER_LOADED)
 	{
 		// Physically copy the vectors, this will hopefully resize them back to their needed capacity.
 		m_rangeIPs = rangeIPs;
@@ -79,14 +76,17 @@ public:
 	CIPFilter::RangeNames m_rangeNames;
 };
 
+wxDEFINE_EVENT(MULE_EVT_IPFILTER_LOADED, CIPFilterEvent);
+
 
 typedef void (wxEvtHandler::*MuleIPFilterEventFunction)(CIPFilterEvent&);
 
-//! Event-handler for completed hashings of new shared files and partfiles.
+#define MuleIPFilterEventHandler(func) \
+	wxEVENT_HANDLER_CAST(MuleIPFilterEventFunction, func)
+
+//! Event-handler for completed loading of the ipfilter files.
 #define EVT_MULE_IPFILTER_LOADED(func) \
-	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_IPFILTER_LOADED, -1, -1, \
-	(wxObjectEventFunction) (wxEventFunction) \
-	wxStaticCastEvent(MuleIPFilterEventFunction, &func), (wxObject*) NULL),
+	wx__DECLARE_EVT0(MULE_EVT_IPFILTER_LOADED, MuleIPFilterEventHandler(func))
 
 
 ////////////////////////////////////////////////////////////
