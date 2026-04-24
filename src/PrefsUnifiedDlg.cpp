@@ -1248,7 +1248,7 @@ void PrefsUnifiedDlg::CreateEventPanels(const int idx, const wxString& vars, wxW
 	wxFlexGridSizer *item10 = new wxFlexGridSizer( 3, 0, 0 );
 	item10->AddGrowableCol( 2 );
 
-	item10->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 0 );
+	item10->Add( 20, 20, wxSizerFlags().Center() );
 
 	wxStaticText *item11 = new wxStaticText( parent, -1, _("Core command:"), wxDefaultPosition, wxDefaultSize, 0 );
 	item10->Add( item11, wxSizerFlags().Center().Border(wxALL, 5) );
@@ -1265,7 +1265,7 @@ void PrefsUnifiedDlg::CreateEventPanels(const int idx, const wxString& vars, wxW
 	wxFlexGridSizer *item15 = new wxFlexGridSizer( 3, 0, 0 );
 	item15->AddGrowableCol( 2 );
 
-	item15->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 0 );
+	item15->Add( 20, 20, wxSizerFlags().Center() );
 
 	wxStaticText *item16 = new wxStaticText( parent, -1, _("GUI command:"), wxDefaultPosition, wxDefaultSize, 0 );
 	item15->Add( item16, wxSizerFlags().Center().Border(wxALL, 5) );
