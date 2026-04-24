@@ -300,12 +300,12 @@ void CFormat::Init(const wxString& str)
 								*buf = '\0';
 								int result = mule_strerror_r(errnum, buf, buflen);
 								if ((result == 0) || (buflen > 1024)) {
-									ProcessArgument<const wxString&>(it, wxString(buf, wxConvLocal));
+									ProcessArgument<const wxString&>(it, wxString(buf, wxConvLibc));
 								} else if (errno == EINVAL) {
 									if (*buf == '\0') {
 										ProcessArgument<const wxString&>(it, wxString::Format(_("Unknown error %d"), errnum));
 									} else {
-										ProcessArgument<const wxString&>(it, wxString(buf, wxConvLocal));
+										ProcessArgument<const wxString&>(it, wxString(buf, wxConvLibc));
 									}
 								} else if (errno != ERANGE) {
 									ProcessArgument<const wxString&>(it, wxString::Format(_("Unable to get error description for error %d"), errnum));

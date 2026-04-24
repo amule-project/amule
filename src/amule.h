@@ -451,7 +451,7 @@ private:
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 	// The GTK wxApps sets its file name conversion properly
 	// in wxApp::Initialize(), while wxAppConsole::Initialize()
-	// does not, leaving wxConvFile being set to wxConvLibc. File
+	// does not, leaving wxConvFileName being set to wxConvLibc. File
 	// name conversion should be set otherwise amuled will abort to
 	// handle non-ASCII file names which monolithic amule can handle.
 	// This function are overridden to perform this.

@@ -36,13 +36,13 @@
 // Conversion of wxString so it can be used by printf() in a console
 // On some platforms (Windows) the console allows only "plain" characters,
 // so try to convert as much as possible and replace the others with '?'.
-// On other platforms (some Linux) wxConvLocal silently converts to UTF8
+// On other platforms (some Linux) wxConvLibc silently converts to UTF8
 // so the console can show even Chinese chars.
 //
 Unicode2CharBuf unicode2char(const wxChar* s)
 {
 	// First try the straight way.
-	Unicode2CharBuf buf1(wxConvLocal.cWX2MB(s));
+	Unicode2CharBuf buf1(wxConvLibc.cWX2MB(s));
 	if ((const char *) buf1) {
 		return buf1;
 	}
@@ -52,7 +52,7 @@ Unicode2CharBuf unicode2char(const wxChar* s)
 	wxCharBuffer buf(maxlen + 1);	// This is wasteful, but the string is used temporary anyway.
 	char * data = buf.data();
 	for (size_t i = 0, pos = 0; i < len; i++) {
-		size_t len_char = wxConvLocal.FromWChar(data + pos, maxlen - pos, s + i, 1);
+		size_t len_char = wxConvLibc.FromWChar(data + pos, maxlen - pos, s + i, 1);
 		if (len_char != wxCONV_FAILED) {
 			pos += len_char - 1;
 		} else if (pos < maxlen) {
