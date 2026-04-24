@@ -1,3 +1,0 @@
-?package(amule-remote-gui):needs="X11" section="Applications/Network/File Transfer"\
-  title="aMule Remote GUI" command="/usr/bin/amulegui"\
-  icon="/usr/share/pixmaps/amulegui.xpm"
