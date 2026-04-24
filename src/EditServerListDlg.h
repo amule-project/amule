@@ -46,7 +46,7 @@ protected:
     wxString    m_file;
 
 private:
-    DECLARE_EVENT_TABLE()
+    wxDECLARE_EVENT_TABLE();
 };
 
 #endif // EDITSERVERLISTDLG_H

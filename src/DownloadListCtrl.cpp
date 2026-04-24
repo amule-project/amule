@@ -95,7 +95,7 @@ enum ColumnEnum {
 	ColumnNumberOfColumns
 };
 
-BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
+wxBEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_ACTIVATED(ID_DLOADLIST,	CDownloadListCtrl::OnItemActivated)
 	EVT_LIST_ITEM_RIGHT_CLICK(ID_DLOADLIST, CDownloadListCtrl::OnMouseRightClick)
 	EVT_LIST_ITEM_MIDDLE_CLICK(ID_DLOADLIST, CDownloadListCtrl::OnMouseMiddleClick)
@@ -132,7 +132,7 @@ BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
 
 	EVT_MENU( MP_WS,			CDownloadListCtrl::OnGetFeedback )
 
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 //! This listtype is used when gathering the selected items.
 typedef std::list<FileCtrlItem_Struct*>	ItemList;

@@ -37,7 +37,7 @@
 #include "UploadQueue.h"	// Needed for theApp->uploadqueue
 
 
-BEGIN_EVENT_TABLE(CSharedFilesWnd, wxPanel)
+wxBEGIN_EVENT_TABLE(CSharedFilesWnd, wxPanel)
 	EVT_LIST_ITEM_SELECTED( ID_SHFILELIST,	CSharedFilesWnd::OnItemSelectionChanged )
 	EVT_LIST_ITEM_DESELECTED( ID_SHFILELIST,	CSharedFilesWnd::OnItemSelectionChanged )
 	EVT_BUTTON( ID_BTNRELSHARED,			CSharedFilesWnd::OnBtnReloadShared )
@@ -45,7 +45,7 @@ BEGIN_EVENT_TABLE(CSharedFilesWnd, wxPanel)
 	EVT_RADIOBOX(ID_SHOW_CLIENTS_MODE,		CSharedFilesWnd::OnSelectClientsMode)
 
 	EVT_SPLITTER_SASH_POS_CHANGING(ID_SHARESSPLATTER, CSharedFilesWnd::OnSashPositionChanging)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 CSharedFilesWnd::CSharedFilesWnd( wxWindow* pParent )
 	: wxPanel(pParent, -1)

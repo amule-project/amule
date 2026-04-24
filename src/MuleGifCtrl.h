@@ -134,7 +134,7 @@ private:
 	void OnErase( wxEraseEvent& WXUNUSED(event) ) {}
 
 	//! Enables the event functions OnErase(), OnTimer() and OnPaint().
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif

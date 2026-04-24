@@ -40,7 +40,7 @@ public:
 
 protected:
 	void OnTimer(wxTimerEvent& evt);
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 
 private:
 	void UpdateData(bool resetFilename);

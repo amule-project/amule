@@ -232,7 +232,7 @@ private:
 	//! The number of displayed files
 	int m_filecount;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 
 };
 

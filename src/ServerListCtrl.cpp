@@ -49,7 +49,7 @@
 #define CMuleColour(x) (wxSystemSettings::GetColour(x))
 
 
-BEGIN_EVENT_TABLE(CServerListCtrl,CMuleListCtrl)
+wxBEGIN_EVENT_TABLE(CServerListCtrl,CMuleListCtrl)
 	EVT_LIST_ITEM_RIGHT_CLICK( -1,	CServerListCtrl::OnItemRightClicked)
 	EVT_LIST_ITEM_ACTIVATED( -1,	CServerListCtrl::OnItemActivated )
 
@@ -68,7 +68,7 @@ BEGIN_EVENT_TABLE(CServerListCtrl,CMuleListCtrl)
 	EVT_MENU( MP_GETED2KLINK,		CServerListCtrl::OnGetED2kURL )
 
 	EVT_CHAR( CServerListCtrl::OnKeyPressed )
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 

@@ -418,7 +418,7 @@ public:
 	wxString GetLog(bool reset = false);
 	wxString GetServerLog(bool reset = false);
 	void AddServerMessageLine(wxString &msg);
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 
@@ -463,7 +463,7 @@ public:
 
 	virtual int ShowAlert(wxString msg, wxString title, int flags);
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 DECLARE_APP(CamuleDaemonApp)

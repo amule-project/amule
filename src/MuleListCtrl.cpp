@@ -55,7 +55,7 @@
 #endif
 
 
-BEGIN_EVENT_TABLE(CMuleListCtrl, MuleExtern::wxGenericListCtrl)
+wxBEGIN_EVENT_TABLE(CMuleListCtrl, MuleExtern::wxGenericListCtrl)
 	EVT_LIST_COL_CLICK( -1,			CMuleListCtrl::OnColumnLClick)
 	EVT_LIST_COL_RIGHT_CLICK( -1,	CMuleListCtrl::OnColumnRClick)
 	EVT_LIST_ITEM_SELECTED(-1,		CMuleListCtrl::OnItemSelected)
@@ -65,7 +65,7 @@ BEGIN_EVENT_TABLE(CMuleListCtrl, MuleExtern::wxGenericListCtrl)
 	EVT_CHAR(						CMuleListCtrl::OnChar)
 	EVT_MENU_RANGE(MP_LISTCOL_1, MP_LISTCOL_15, CMuleListCtrl::OnMenuSelected)
 	EVT_MOUSEWHEEL(CMuleListCtrl::OnMouseWheel)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 //! Shared list of arrow-pixmaps

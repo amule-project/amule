@@ -188,7 +188,7 @@ private:
 	wxMenu* m_menu;
 
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif

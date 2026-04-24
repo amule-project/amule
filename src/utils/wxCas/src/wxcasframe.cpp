@@ -255,7 +255,7 @@ WxCasFrame::~WxCasFrame ()
 }
 
 // Events table
-BEGIN_EVENT_TABLE ( WxCasFrame, wxFrame )
+wxBEGIN_EVENT_TABLE ( WxCasFrame, wxFrame )
 EVT_TOOL ( ID_BAR_REFRESH, WxCasFrame::OnBarRefresh )
 EVT_TOOL ( ID_BAR_SAVE, WxCasFrame::OnBarSave )
 EVT_TOOL ( ID_BAR_PRINT, WxCasFrame::OnBarPrint )
@@ -265,7 +265,7 @@ EVT_TIMER ( ID_REFRESH_TIMER, WxCasFrame::OnRefreshTimer )
 EVT_TIMER ( ID_FTP_UPDATE_TIMER, WxCasFrame::OnFtpUpdateTimer )
 EVT_BUTTON ( ID_HIT_BUTTON, WxCasFrame::OnHitButton )
 EVT_BUTTON ( ID_ABS_HIT_BUTTON, WxCasFrame::OnAbsHitButton )
-END_EVENT_TABLE ()
+wxEND_EVENT_TABLE ()
 
 // Get Stat Bitmap
 wxImage *

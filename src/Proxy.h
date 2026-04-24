@@ -183,7 +183,7 @@ private:
 	 * Event handler function.
 	 */
 	void ProxySocketHandler(wxSocketEvent &event);
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 #endif /* !ASIO_SOCKETS */
 

@@ -50,10 +50,10 @@ CColorFrameCtrl::~CColorFrameCtrl()
 } // ~CColorFrameCtrl
 
 
-BEGIN_EVENT_TABLE(CColorFrameCtrl,wxControl)
+wxBEGIN_EVENT_TABLE(CColorFrameCtrl,wxControl)
   EVT_PAINT(CColorFrameCtrl::OnPaint)
   EVT_SIZE(CColorFrameCtrl::OnSize)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorFrameCtrl message handlers

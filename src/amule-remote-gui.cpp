@@ -92,9 +92,9 @@ wxString CEConnectDlg::PassHash()
 }
 
 
-BEGIN_EVENT_TABLE(CEConnectDlg, wxDialog)
+wxBEGIN_EVENT_TABLE(CEConnectDlg, wxDialog)
   EVT_BUTTON(wxID_OK, CEConnectDlg::OnOK)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 void CEConnectDlg::OnOK(wxCommandEvent& evt)
@@ -116,7 +116,7 @@ void CEConnectDlg::OnOK(wxCommandEvent& evt)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_INIT_DONE)
 
 
-BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
+wxBEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 	// Core timer
 	EVT_TIMER(ID_CORE_TIMER_EVENT, CamuleRemoteGuiApp::OnPollTimer)
 	// Watchdog on the initial EC connect attempt
@@ -131,7 +131,7 @@ BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 	// HTTPDownload finished
 	EVT_MULE_INTERNAL(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, -1, CamuleRemoteGuiApp::OnFinishedHTTPDownload)
 #endif
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 IMPLEMENT_APP(CamuleRemoteGuiApp)

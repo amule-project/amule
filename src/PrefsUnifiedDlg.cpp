@@ -53,7 +53,7 @@
 #include "UserEvents.h"
 #include "PlatformSpecific.h"		// Needed for PLATFORMSPECIFIC_CAN_PREVENT_SLEEP_MODE
 
-BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
+wxBEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	// Events
 #define USEREVENTS_EVENT(ID, NAME, VARS) \
 	EVT_CHECKBOX(USEREVENTS_FIRST_ID + CUserEvents::ID * USEREVENTS_IDS_PER_EVENT + 1,	PrefsUnifiedDlg::OnCheckBoxChange) \
@@ -132,7 +132,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 
 	EVT_CLOSE(PrefsUnifiedDlg::OnClose)
 
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 /**

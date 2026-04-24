@@ -50,7 +50,7 @@
 #ifndef CLIENT_GUI
 #include "InternalEvents.h"		// Needed for wxEVT_*
 
-BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
+wxBEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 
 #ifndef ASIO_SOCKETS
 	// Socket handlers
@@ -97,7 +97,7 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 	// requires an EVT_END_SESSION handler to ensure cleanup runs.
 	EVT_QUERY_END_SESSION(CamuleGuiApp::OnQueryEndSession)
 	EVT_END_SESSION(CamuleGuiApp::OnEndSession)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 IMPLEMENT_APP(CamuleGuiApp)

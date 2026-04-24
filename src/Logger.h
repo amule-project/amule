@@ -306,7 +306,7 @@ private:
 	 */
 	void DoLines(const wxString & lines, bool critical, bool toStdout, bool toGUI);
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 extern CLogger theLogger;

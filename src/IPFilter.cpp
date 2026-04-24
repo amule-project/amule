@@ -341,9 +341,9 @@ private:
 // CIPFilter
 
 
-BEGIN_EVENT_TABLE(CIPFilter, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(CIPFilter, wxEvtHandler)
 	EVT_MULE_IPFILTER_LOADED(CIPFilter::OnIPFilterEvent)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 

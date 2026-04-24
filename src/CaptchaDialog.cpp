@@ -28,9 +28,9 @@
 #include "GuiEvents.h"
 
 
-BEGIN_EVENT_TABLE(CCaptchaDialog,wxDialog)
+wxBEGIN_EVENT_TABLE(CCaptchaDialog,wxDialog)
 	EVT_BUTTON(wxID_OK, CCaptchaDialog::OnBnClose)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CCaptchaDialog::CCaptchaDialog(

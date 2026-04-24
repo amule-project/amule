@@ -191,7 +191,7 @@ private:
 	const CServer* m_connected;
 
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif

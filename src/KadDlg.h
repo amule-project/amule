@@ -57,7 +57,7 @@ private:
 	void		OnBnClickedUpdateNodeList(wxCommandEvent& evt);
 	void		OnFieldsChange(wxCommandEvent& evt);
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif // KADDLG_H

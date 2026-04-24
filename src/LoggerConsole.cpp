@@ -95,5 +95,5 @@ void CLogger::AddLogLine(
 
 CLogger theLogger;
 
-BEGIN_EVENT_TABLE(CLogger, wxEvtHandler)
-END_EVENT_TABLE()
+wxBEGIN_EVENT_TABLE(CLogger, wxEvtHandler)
+wxEND_EVENT_TABLE()

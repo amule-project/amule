@@ -59,9 +59,9 @@ IMPLEMENT_APP(CamulewebApp)
 
 DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY)
 
-BEGIN_EVENT_TABLE(CamulewebApp, CaMuleExternalConnector)
+wxBEGIN_EVENT_TABLE(CamulewebApp, CaMuleExternalConnector)
 	EVT_MULE_NOTIFY(CamulewebApp::OnNotifyEvent)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 

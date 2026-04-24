@@ -38,7 +38,7 @@
 
 #include "ClientList.h"
 
-BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
+wxBEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 	EVT_BUTTON(ID_ADDTOLIST,CServerWnd::OnBnClickedAddserver)
 	EVT_BUTTON(IDC_ED2KDISCONNECT,CServerWnd::OnBnClickedED2KDisconnect)
 	EVT_BUTTON(ID_UPDATELIST,CServerWnd::OnBnClickedUpdateservermetfromurl)
@@ -46,7 +46,7 @@ BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 	EVT_BUTTON(ID_BTN_RESET, CServerWnd::OnBnClickedResetLog)
 	EVT_BUTTON(ID_BTN_RESET_SERVER, CServerWnd::OnBnClickedResetServerLog)
 	EVT_SPLITTER_SASH_POS_CHANGED(ID_SRV_SPLITTER,CServerWnd::OnSashPositionChanged)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)

@@ -46,7 +46,7 @@
 // just to keep compiler happy
 static wxCommandEvent nullEvent;
 
-BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
+wxBEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_BUTTON(		IDC_STARTS,		CSearchDlg::OnBnClickedStart)
 	EVT_TEXT_ENTER(	IDC_SEARCHNAME,	CSearchDlg::OnBnClickedStart)
 
@@ -75,7 +75,7 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_CHECKBOX(ID_FILTER_INVERT,	CSearchDlg::OnFilteringChange)
 	EVT_CHECKBOX(ID_FILTER_KNOWN,	CSearchDlg::OnFilteringChange)
 	EVT_BUTTON(ID_FILTER,			CSearchDlg::OnFilteringChange)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 

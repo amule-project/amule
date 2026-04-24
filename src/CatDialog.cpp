@@ -42,11 +42,11 @@
 #include "muuli_wdr.h"			// Needed for CategoriesEditWindow
 
 
-BEGIN_EVENT_TABLE(CCatDialog,wxDialog)
+wxBEGIN_EVENT_TABLE(CCatDialog,wxDialog)
 	EVT_BUTTON(wxID_OK,		CCatDialog::OnBnClickedOk)
 	EVT_BUTTON(IDC_CATCOLOR,	CCatDialog::OnBnClickColor)
 	EVT_BUTTON(IDC_BROWSE,		CCatDialog::OnBnClickedBrowse)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 /*
  * This class is used in both amule and amulegui. It cannot go into

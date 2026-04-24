@@ -37,7 +37,7 @@
 #include "GuiEvents.h"		// Needed for CoreNotify_Search_Add_Download
 #include "MuleColour.h"
 
-BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
+wxBEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_RIGHT_CLICK(-1, CSearchListCtrl::OnRightClick)
 	EVT_LIST_COL_CLICK( -1,       CSearchListCtrl::OnColumnLClick)
 	EVT_LIST_COL_END_DRAG( -1,    CSearchListCtrl::OnColumnResize)
@@ -50,7 +50,7 @@ BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_MENU_RANGE( MP_ASSIGNCAT, MP_ASSIGNCAT + 99, CSearchListCtrl::OnPopupDownload )
 
 	EVT_LIST_ITEM_ACTIVATED( -1,  CSearchListCtrl::OnItemActivated)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 std::list<CSearchListCtrl*> CSearchListCtrl::s_lists;

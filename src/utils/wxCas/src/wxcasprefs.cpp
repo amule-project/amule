@@ -283,13 +283,13 @@ WxCasPrefs::~WxCasPrefs ()
 {}
 
 // Events table
-BEGIN_EVENT_TABLE ( WxCasPrefs, wxDialog )
+wxBEGIN_EVENT_TABLE ( WxCasPrefs, wxDialog )
 EVT_BUTTON ( ID_OSPATH_BROWSE_BUTTON, WxCasPrefs::OnOSPathBrowseButton )
 EVT_BUTTON ( ID_AUTOSTATIMG_BROWSE_BUTTON, WxCasPrefs::OnAutoStatImgBrowseButton )
 EVT_BUTTON ( ID_VALIDATE_BUTTON, WxCasPrefs::OnValidateButton )
 EVT_CHECKBOX ( ID_AUTOSTATIMG_CHECK, WxCasPrefs::OnAutoStatImgCheck )
 EVT_CHECKBOX ( ID_FTP_UPDATE_CHECK, WxCasPrefs::OnFtpUpdateCheck )
-END_EVENT_TABLE ()
+wxEND_EVENT_TABLE ()
 
 // Browse for OS Path
 void WxCasPrefs::OnOSPathBrowseButton ( wxCommandEvent& WXUNUSED( event ) )

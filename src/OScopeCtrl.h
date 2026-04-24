@@ -93,7 +93,7 @@ public:
 
 
 protected:
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 	PlotData_t *pdsTrends;
 
 	wxRect	m_rectClient;

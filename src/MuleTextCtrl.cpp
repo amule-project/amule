@@ -51,7 +51,7 @@ enum CMTC_Events
 };
 
 
-BEGIN_EVENT_TABLE(CMuleTextCtrl, wxTextCtrl)
+wxBEGIN_EVENT_TABLE(CMuleTextCtrl, wxTextCtrl)
 #ifndef __WXGTK__
 	EVT_RIGHT_DOWN	(CMuleTextCtrl::OnRightDown)
 
@@ -59,7 +59,7 @@ BEGIN_EVENT_TABLE(CMuleTextCtrl, wxTextCtrl)
 	EVT_MENU	(CMTCE_Clear,	CMuleTextCtrl::OnClear)
 	EVT_MENU	(CMTCE_SelAll,	CMuleTextCtrl::OnSelAll)
 #endif
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CMuleTextCtrl::CMuleTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)

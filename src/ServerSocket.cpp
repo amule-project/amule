@@ -67,13 +67,13 @@ public:
 public:
 private:
 	void ServerSocketHandler(wxSocketEvent& event);
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 
-BEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
 	EVT_SOCKET(ID_SERVERSOCKET_EVENT, CServerSocketHandler::ServerSocketHandler)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
 {

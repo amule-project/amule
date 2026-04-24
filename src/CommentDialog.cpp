@@ -48,12 +48,12 @@ CCommentDialog::~CCommentDialog()
 {
 }
 
-BEGIN_EVENT_TABLE(CCommentDialog,wxDialog)
+wxBEGIN_EVENT_TABLE(CCommentDialog,wxDialog)
 	EVT_TEXT_ENTER(IDC_CMT_TEXT, CCommentDialog::OnBnClickedApply)
 	EVT_BUTTON(IDCOK, CCommentDialog::OnBnClickedApply)
 	EVT_BUTTON(IDC_FC_CLEAR, CCommentDialog::OnBnClickedClear)
 	EVT_BUTTON(IDCCANCEL, CCommentDialog::OnBnClickedCancel)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 void CCommentDialog::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 {

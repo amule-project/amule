@@ -262,9 +262,9 @@ protected:
 ///////////////////////////////////////////////////////////
 // CSearchList
 
-BEGIN_EVENT_TABLE(CSearchList, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(CSearchList, wxEvtHandler)
 	EVT_MULE_TIMER(wxID_ANY, CSearchList::OnGlobalSearchTimer)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CSearchList::CSearchList()

@@ -41,7 +41,7 @@
 #define ID_MY_TIMER 1652
 
 //IMPLEMENT_DYNAMIC(CFileDetailDialog, CDialog)
-BEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
+wxBEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
 	EVT_BUTTON(ID_CLOSEWNDFD, CFileDetailDialog::OnClosewnd)
 	EVT_BUTTON(IDC_BUTTONSTRIP, CFileDetailDialog::OnBnClickedButtonStrip)
 	EVT_BUTTON(IDC_TAKEOVER, CFileDetailDialog::OnBnClickedTakeOver)
@@ -53,7 +53,7 @@ BEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
 	EVT_BUTTON(IDC_PREVFILE, CFileDetailDialog::OnBnClickedPrevFile)
 	EVT_BUTTON(IDC_NEXTFILE, CFileDetailDialog::OnBnClickedNextFile)
 	EVT_TIMER(ID_MY_TIMER,CFileDetailDialog::OnTimer)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 CFileDetailDialog::CFileDetailDialog(wxWindow *parent, std::vector<CPartFile *> & files, int index)
 :

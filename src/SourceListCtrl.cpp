@@ -38,8 +38,8 @@ static CGenericClientListCtrlColumn s_sources_column_info[] = {
 	{ ColumnUserSharedFiles,	wxTRANSLATE("Shares File List"), 100 }
 };
 
-BEGIN_EVENT_TABLE(CSourceListCtrl, CGenericClientListCtrl)
-END_EVENT_TABLE()
+wxBEGIN_EVENT_TABLE(CSourceListCtrl, CGenericClientListCtrl)
+wxEND_EVENT_TABLE()
 
 CSourceListCtrl::CSourceListCtrl(
 	wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size,

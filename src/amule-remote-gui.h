@@ -59,7 +59,7 @@ class CEConnectDlg : public wxDialog {
 	wxString login, passwd;
 	bool m_save_user_pass;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 public:
 	CEConnectDlg();
 
@@ -751,7 +751,7 @@ public:
 
 	CUInt128	m_kadID;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 DECLARE_APP(CamuleRemoteGuiApp)

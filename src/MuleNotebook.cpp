@@ -33,7 +33,7 @@
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED)
 
-BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
+wxBEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_RIGHT_DOWN(CMuleNotebook::OnRMButton)
 
 	EVT_MENU(MP_CLOSE_TAB,		CMuleNotebook::OnPopupClose)
@@ -46,7 +46,7 @@ BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_MIDDLE_DOWN(CMuleNotebook::OnMouseButton)
 	EVT_MIDDLE_UP(CMuleNotebook::OnMouseButton)
 	EVT_MOTION(CMuleNotebook::OnMouseMotion)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CMuleNotebook::CMuleNotebook( wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name )

@@ -34,9 +34,9 @@
 
 // CClientDetailDialog dialog
 
-BEGIN_EVENT_TABLE(CClientDetailDialog,wxDialog)
+wxBEGIN_EVENT_TABLE(CClientDetailDialog,wxDialog)
 	EVT_BUTTON(ID_CLOSEWND,CClientDetailDialog::OnBnClose)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CClientDetailDialog::CClientDetailDialog(

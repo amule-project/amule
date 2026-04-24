@@ -127,7 +127,7 @@ protected:
 
 	void OnInitDialog( wxInitDialogEvent& evt );
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 
 private:
 	bool	m_verticalToolbar;

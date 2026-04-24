@@ -104,7 +104,7 @@ void CamuleDlg::EnableIP2Country(){}
 
 #endif
 
-BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
+wxBEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 
 	EVT_TOOL(ID_BUTTONNETWORKS, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONSEARCH, CamuleDlg::OnToolBarButton)
@@ -132,7 +132,7 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 
 	EVT_MENU(wxID_EXIT, CamuleDlg::OnExit)
 
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 #ifndef wxCLOSE_BOX
 	#define wxCLOSE_BOX 0

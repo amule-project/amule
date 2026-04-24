@@ -130,7 +130,7 @@ private:
 	friend class CIPFilterEvent;
 	friend class CIPFilterTask;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif
