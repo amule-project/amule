@@ -82,7 +82,7 @@ wxString CastItoIShort(uint64 count)
 	else if (count < 1000000000000LL)
 		return wxString(CFormat("%.2f") % ((float)((uint32)(count/1000))/1000000)) + _("G") ;
 	else
-		return wxString(CFormat("%.2f") % ((float)count/1000000000000LL)) + _("T");
+		return wxString(CFormat("%.2f") % ((float)count/1.0e12f)) + _("T");
 }
 
 

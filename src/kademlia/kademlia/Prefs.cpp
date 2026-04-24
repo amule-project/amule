@@ -225,10 +225,10 @@ uint8_t CPrefs::GetMyConnectOptions(bool encryption, bool callback)
 
        // direct callback is only possible if connected to kad, tcp firewalled and verified UDP open (for example on a full cone NAT)
 
-       return    (callback && theApp->IsFirewalled() && CKademlia::IsRunning() && !CUDPFirewallTester::IsFirewalledUDP(true) && CUDPFirewallTester::IsVerified()) ? 0x08 : 0
-	       | (thePrefs::IsClientCryptLayerRequired() && encryption) ? 0x04 : 0
-	       | (thePrefs::IsClientCryptLayerRequested() && encryption) ? 0x02 : 0
-	       | (thePrefs::IsClientCryptLayerSupported() && encryption) ? 0x01 : 0;
+       return    ((callback && theApp->IsFirewalled() && CKademlia::IsRunning() && !CUDPFirewallTester::IsFirewalledUDP(true) && CUDPFirewallTester::IsVerified()) ? 0x08 : 0)
+	       | ((thePrefs::IsClientCryptLayerRequired() && encryption) ? 0x04 : 0)
+	       | ((thePrefs::IsClientCryptLayerRequested() && encryption) ? 0x02 : 0)
+	       | ((thePrefs::IsClientCryptLayerSupported() && encryption) ? 0x01 : 0);
 }
 
 uint32_t CPrefs::GetUDPVerifyKey(uint32_t targetIP)
