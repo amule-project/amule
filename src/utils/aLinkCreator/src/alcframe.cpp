@@ -92,7 +92,7 @@ AlcFrame::AlcFrame (const wxString & title):
 
   // Main Panel static line
   m_staticLine = new wxStaticLine (m_mainPanel, -1);
-  m_mainPanelVBox->Add (m_staticLine, 0, wxALL | wxGROW);
+  m_mainPanelVBox->Add (m_staticLine, wxSizerFlags().Expand().Border(wxALL, 0));
 
   // Input Parameters
   m_inputSBox =
@@ -145,8 +145,8 @@ AlcFrame::AlcFrame (const wxString & title):
   m_clearButton =
     new wxButton (m_mainPanel, ID_CLEAR_BUTTON, wxString (_("Clear")));
 
-  m_buttonUrlVBox->Add (m_removeButton, 0, wxALIGN_CENTER | wxTOP | wxBOTTOM, 5);
-  m_buttonUrlVBox->Add (m_clearButton, 0, wxALIGN_CENTER | wxTOP | wxBOTTOM, 5);
+  m_buttonUrlVBox->Add (m_removeButton, wxSizerFlags().Center().Border(wxTOP|wxBOTTOM, 5));
+  m_buttonUrlVBox->Add (m_clearButton, wxSizerFlags().Center().Border(wxTOP|wxBOTTOM, 5));
 
   // Check button
   m_parthashesCheck =
@@ -161,26 +161,26 @@ AlcFrame::AlcFrame (const wxString & title):
               ("Help to spread new and rare files faster, at the cost of an increased link size"));
 
   // Add to sizers
-  m_inputFlexSizer->Add (m_inputFileStaticText, 1, wxGROW | wxALIGN_BOTTOM | wxTOP, 10);
+  m_inputFlexSizer->Add (m_inputFileStaticText, wxSizerFlags(1).Expand().Bottom().Border(wxTOP, 10));
   m_inputFlexSizer->Add (1,1);
 
-  m_inputFlexSizer->Add (m_inputFileTextCtrl, 1, wxGROW | wxALIGN_TOP , 0);
-  m_inputFlexSizer->Add (m_inputFileBrowseButton, 0, wxGROW | wxALIGN_TOP , 0);
+  m_inputFlexSizer->Add (m_inputFileTextCtrl, wxSizerFlags(1).Expand());
+  m_inputFlexSizer->Add (m_inputFileBrowseButton, wxSizerFlags().Expand());
 
-  m_inputFlexSizer->Add (m_inputAddStaticText, 1, wxGROW | wxALIGN_BOTTOM | wxTOP, 10);
+  m_inputFlexSizer->Add (m_inputAddStaticText, wxSizerFlags(1).Expand().Bottom().Border(wxTOP, 10));
   m_inputFlexSizer->Add (1,1);
 
-  m_inputFlexSizer->Add (m_inputAddTextCtrl, 1, wxGROW | wxALIGN_TOP , 0);
-  m_inputFlexSizer->Add (m_inputAddButton, 0, wxGROW | wxALIGN_TOP , 0);
+  m_inputFlexSizer->Add (m_inputAddTextCtrl, wxSizerFlags(1).Expand());
+  m_inputFlexSizer->Add (m_inputAddButton, wxSizerFlags().Expand());
 
-  m_inputFlexSizer->Add (m_inputUrlListBox, 0, wxGROW | wxALIGN_CENTER , 0);
-  m_inputFlexSizer->Add (m_buttonUrlVBox, 0, wxGROW | wxALIGN_CENTER , 0);
+  m_inputFlexSizer->Add (m_inputUrlListBox, wxSizerFlags().Expand().Center());
+  m_inputFlexSizer->Add (m_buttonUrlVBox, wxSizerFlags().Expand().Center());
 
-  m_inputFlexSizer->Add (m_parthashesCheck, 0, wxGROW | wxALIGN_CENTER | wxTOP, 10);
+  m_inputFlexSizer->Add (m_parthashesCheck, wxSizerFlags().Expand().Center().Border(wxTOP, 10));
   m_inputFlexSizer->Add (1,1);
 
-  m_inputSBoxSizer->Add (m_inputFlexSizer, 1, wxGROW | wxALIGN_CENTER | wxALL, 10);
-  m_mainPanelVBox->Add (m_inputSBoxSizer, 0, wxGROW | wxALIGN_CENTER | wxALL, 10);
+  m_inputSBoxSizer->Add (m_inputFlexSizer, wxSizerFlags(1).Expand().Center().Border(wxALL, 10));
+  m_mainPanelVBox->Add (m_inputSBoxSizer, wxSizerFlags().Expand().Center().Border(wxALL, 10));
 
 #ifdef WANT_MD4SUM
   // MD4 Hash Vertical Box Sizer
@@ -191,8 +191,8 @@ AlcFrame::AlcFrame (const wxString & title):
   m_md4HashTextCtrl = new wxTextCtrl( m_mainPanel, -1, "", wxDefaultPosition,
                                       wxDefaultSize, wxTE_READONLY );
 
-  m_md4HashSBoxSizer->Add (m_md4HashTextCtrl, 1, wxALL | wxALIGN_CENTER, 5);
-  m_mainPanelVBox->Add( m_md4HashSBoxSizer, 0, wxALL | wxGROW, 10 );
+  m_md4HashSBoxSizer->Add (m_md4HashTextCtrl, wxSizerFlags(1).Center().Border(wxALL, 5));
+  m_mainPanelVBox->Add( m_md4HashSBoxSizer, wxSizerFlags().Expand().Border(wxALL, 10) );
 #endif
 
   // Hash Vertical Box Sizer
@@ -203,8 +203,8 @@ AlcFrame::AlcFrame (const wxString & title):
   m_e2kHashTextCtrl = new wxTextCtrl( m_mainPanel, -1, "", wxDefaultPosition,
                                       wxDefaultSize, wxTE_READONLY );
 
-  m_e2kHashSBoxSizer->Add (m_e2kHashTextCtrl, 1, wxALL | wxALIGN_CENTER, 5);
-  m_mainPanelVBox->Add( m_e2kHashSBoxSizer, 0, wxALL | wxGROW, 10 );
+  m_e2kHashSBoxSizer->Add (m_e2kHashTextCtrl, wxSizerFlags(1).Center().Border(wxALL, 5));
+  m_mainPanelVBox->Add( m_e2kHashSBoxSizer, wxSizerFlags().Expand().Border(wxALL, 10) );
 
   // Ed2k Vertical Box Sizer
   m_ed2kSBox = new wxStaticBox (m_mainPanel, -1, _("eD2k link"));
@@ -214,8 +214,8 @@ AlcFrame::AlcFrame (const wxString & title):
   m_ed2kTextCtrl = new wxTextCtrl( m_mainPanel, -1, "", wxDefaultPosition,
                                    wxSize(-1,60), wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL );
 
-  m_ed2kSBoxSizer->Add (m_ed2kTextCtrl, 1, wxALL | wxGROW, 5);
-  m_mainPanelVBox->Add( m_ed2kSBoxSizer, 1, wxALL | wxGROW, 10 );
+  m_ed2kSBoxSizer->Add (m_ed2kTextCtrl, wxSizerFlags(1).Expand().Border(wxALL, 5));
+  m_mainPanelVBox->Add( m_ed2kSBoxSizer, wxSizerFlags(1).Expand().Border(wxALL, 10) );
 
   // Button bar
   m_buttonHBox = new wxBoxSizer (wxHORIZONTAL);
@@ -228,14 +228,14 @@ AlcFrame::AlcFrame (const wxString & title):
   m_closeButton =
     new wxButton (m_mainPanel, ID_EXIT_BUTTON, wxString (_("Exit")));
 
-  m_buttonHBox->Add (m_copyButton, 0, wxALIGN_LEFT | wxALL, 5);
+  m_buttonHBox->Add (m_copyButton, wxSizerFlags().Border(wxALL, 5));
   m_buttonHBox->Add(1,1,1);
-  m_buttonHBox->Add (m_startButton, 0, wxALIGN_RIGHT | wxALL, 5);
-  m_buttonHBox->Add (m_saveButton, 0, wxALIGN_RIGHT | wxALL, 5);
-  m_buttonHBox->Add (m_closeButton, 0, wxALIGN_RIGHT | wxALL, 5);
+  m_buttonHBox->Add (m_startButton, wxSizerFlags().Right().Border(wxALL, 5));
+  m_buttonHBox->Add (m_saveButton, wxSizerFlags().Right().Border(wxALL, 5));
+  m_buttonHBox->Add (m_closeButton, wxSizerFlags().Right().Border(wxALL, 5));
 
 
-  m_mainPanelVBox->Add (m_buttonHBox, 0,  wxALL | wxGROW, 5);
+  m_mainPanelVBox->Add (m_buttonHBox, wxSizerFlags().Expand().Border(wxALL, 5));
 
   // Toolbar Pixmaps
   m_toolBarBitmaps[0] = AlcPix::getPixmap("open");
@@ -274,7 +274,7 @@ AlcFrame::AlcFrame (const wxString & title):
   m_mainPanel->SetSizerAndFit (m_mainPanelVBox);
 
   // Frame Layout
-  m_frameVBox->Add (m_mainPanel, 1, wxALL | wxGROW, 0);
+  m_frameVBox->Add (m_mainPanel, wxSizerFlags(1).Expand().Border(wxALL, 0));
   SetAutoLayout (true);
   SetSizerAndFit (m_frameVBox);
 

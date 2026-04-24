@@ -239,7 +239,7 @@ wxDialog(parent, -1, _("Preferences"),
 		}
 
 		// Add it to the sizer
-		prefs_sizer->Add(Widget, 0, wxGROW|wxEXPAND);
+		prefs_sizer->Add(Widget, wxSizerFlags().Expand().Expand());
 
 		if (pages[i].m_function == PreferencesGeneralTab) {
 			// This must be done now or pages won't Fit();
@@ -325,7 +325,7 @@ wxDialog(parent, -1, _("Preferences"),
 
 	// Default to the General tab
 	m_CurrentPanel = DefaultWidget;
-	prefs_sizer->Add(DefaultWidget, 0, wxGROW|wxEXPAND);
+	prefs_sizer->Add(DefaultWidget, wxSizerFlags().Expand().Expand());
 	m_CurrentPanel->Show( true );
 
 	// Select the first item
@@ -1102,7 +1102,7 @@ void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
 		CastChild(IDC_SHARESELECTOR, CDirectoryTreeCtrl)->Init();
 	}
 
-	prefs_sizer->Add( m_CurrentPanel, 0, wxGROW|wxEXPAND );
+	prefs_sizer->Add( m_CurrentPanel, wxSizerFlags().Expand().Expand());
 	m_CurrentPanel->Show( true );
 
 	Layout();
@@ -1243,7 +1243,7 @@ void PrefsUnifiedDlg::CreateEventPanels(const int idx, const wxString& vars, wxW
 	wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
 
 	wxCheckBox *item9 = new wxCheckBox( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 1, _("Enable command execution on core"), wxDefaultPosition, wxDefaultSize, 0 );
-	item7->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+	item7->Add( item9, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT, 5) );
 
 	wxFlexGridSizer *item10 = new wxFlexGridSizer( 3, 0, 0 );
 	item10->AddGrowableCol( 2 );
@@ -1251,16 +1251,16 @@ void PrefsUnifiedDlg::CreateEventPanels(const int idx, const wxString& vars, wxW
 	item10->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 0 );
 
 	wxStaticText *item11 = new wxStaticText( parent, -1, _("Core command:"), wxDefaultPosition, wxDefaultSize, 0 );
-	item10->Add( item11, 0, wxALIGN_CENTER|wxALL, 5 );
+	item10->Add( item11, wxSizerFlags().Center().Border(wxALL, 5) );
 
 	wxTextCtrl *item12 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 2, "", wxDefaultPosition, wxDefaultSize, 0 );
 	item12->Enable(CUserEvents::IsCoreCommandEnabled(static_cast<enum CUserEvents::EventType>(idx)));
-	item10->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	item10->Add( item12, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
 
-	item7->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+	item7->Add( item10, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 0) );
 
 	wxCheckBox *item14 = new wxCheckBox( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 3, _("Enable command execution on GUI"), wxDefaultPosition, wxDefaultSize, 0 );
-	item7->Add( item14, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+	item7->Add( item14, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT, 5) );
 
 	wxFlexGridSizer *item15 = new wxFlexGridSizer( 3, 0, 0 );
 	item15->AddGrowableCol( 2 );
@@ -1268,18 +1268,18 @@ void PrefsUnifiedDlg::CreateEventPanels(const int idx, const wxString& vars, wxW
 	item15->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 0 );
 
 	wxStaticText *item16 = new wxStaticText( parent, -1, _("GUI command:"), wxDefaultPosition, wxDefaultSize, 0 );
-	item15->Add( item16, 0, wxALIGN_CENTER|wxALL, 5 );
+	item15->Add( item16, wxSizerFlags().Center().Border(wxALL, 5) );
 
 	wxTextCtrl *item17 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 4, "", wxDefaultPosition, wxDefaultSize, 0 );
 	item17->Enable(CUserEvents::IsGUICommandEnabled(static_cast<enum CUserEvents::EventType>(idx)));
-	item15->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	item15->Add( item17, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
 
-	item7->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+	item7->Add( item15, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 0) );
 
 	wxStaticText *item13 = new wxStaticText( parent, -1, _("The following variables will be replaced:") + vars, wxDefaultPosition, wxDefaultSize, 0 );
-	item7->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	item7->Add( item13, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
 
-	IDC_PREFS_EVENTS_PAGE->Add(item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+	IDC_PREFS_EVENTS_PAGE->Add(item7, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5));
 
 	IDC_PREFS_EVENTS_PAGE->Layout();
 	IDC_PREFS_EVENTS_PAGE->Hide(idx + 1);

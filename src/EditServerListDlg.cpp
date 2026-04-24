@@ -55,9 +55,9 @@ EditServerListDlg::EditServerListDlg(wxWindow *parent,
 			      wxDefaultPosition,
 			      wxDefaultSize,
 			      wxTE_MULTILINE);
-  topsizer->Add( m_textctrl, 1, wxEXPAND | wxLEFT|wxRIGHT, 15 );
+  topsizer->Add( m_textctrl, wxSizerFlags(1).Expand().Border(wxLEFT|wxRIGHT, 15) );
 
-  topsizer->Add( CreateButtonSizer( wxOK | wxCANCEL ), 0, wxCENTRE | wxALL, 10 );
+  topsizer->Add( CreateButtonSizer( wxOK | wxCANCEL ), wxSizerFlags().Center().Border(wxALL, 10) );
 
   SetAutoLayout( TRUE );
   SetSizer( topsizer );

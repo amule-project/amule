@@ -147,43 +147,43 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 #endif
 
 	// Statistic Panel Layout
-	m_sigPanelSBoxSizer->Add ( m_statLine_1, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_2, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_3, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_4, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_5, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_6, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_7, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+	m_sigPanelSBoxSizer->Add ( m_statLine_1, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_sigPanelSBoxSizer->Add ( m_statLine_2, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_sigPanelSBoxSizer->Add ( m_statLine_3, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_sigPanelSBoxSizer->Add ( m_statLine_4, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_sigPanelSBoxSizer->Add ( m_statLine_5, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_sigPanelSBoxSizer->Add ( m_statLine_6, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_sigPanelSBoxSizer->Add ( m_statLine_7, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
 
-	m_hitPanelSBoxSizer->Add ( m_hitLine, 0, wxALL | wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxGROW, 5 );
-	m_hitPanelSBoxSizer->Add ( m_hitButton, 0, wxALL | wxALIGN_RIGHT, 5 );
+	m_hitPanelSBoxSizer->Add ( m_hitLine, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
+	m_hitPanelSBoxSizer->Add ( m_hitButton, wxSizerFlags().Right().Border(wxALL, 5) );
 
-	m_absHitPanelSBoxSizer->Add ( m_absHitLine, 0, wxALL | wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxGROW, 5 );
-	m_absHitPanelSBoxSizer->Add ( m_absHitButton, 0, wxALL | wxALIGN_RIGHT, 5 );
+	m_absHitPanelSBoxSizer->Add ( m_absHitLine, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
+	m_absHitPanelSBoxSizer->Add ( m_absHitButton, wxSizerFlags().Right().Border(wxALL, 5) );
 
 #ifdef __LINUX__		// System monitoring on Linux
 
-	m_monPanelSBoxSizer->Add ( m_sysLine_1, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_monPanelSBoxSizer->Add ( m_sysLine_2, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+	m_monPanelSBoxSizer->Add ( m_sysLine_1, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_monPanelSBoxSizer->Add ( m_sysLine_2, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
 #endif
 
 	// Main panel Layout
-	m_mainPanelVBox->Add ( m_staticLine, 0, wxALL | wxALIGN_CENTER | wxGROW );
+	m_mainPanelVBox->Add ( m_staticLine, wxSizerFlags().Expand().Center().Border(wxALL, 0));
 
-	m_mainPanelVBox->Add ( m_sigPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
+	m_mainPanelVBox->Add ( m_sigPanelSBoxSizer, wxSizerFlags().Expand().Center().Border(wxALL, 10) );
 
 #ifdef __LINUX__		// System monitoring on Linux
 
-	m_mainPanelVBox->Add ( m_monPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
+	m_mainPanelVBox->Add ( m_monPanelSBoxSizer, wxSizerFlags().Expand().Center().Border(wxALL, 10) );
 #endif
 
-	m_mainPanelVBox->Add ( m_hitPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
+	m_mainPanelVBox->Add ( m_hitPanelSBoxSizer, wxSizerFlags().Expand().Center().Border(wxALL, 10) );
 
-	m_mainPanelVBox->Add ( m_absHitPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
+	m_mainPanelVBox->Add ( m_absHitPanelSBoxSizer, wxSizerFlags().Expand().Center().Border(wxALL, 10) );
 
 #ifdef __WINDOWS__
 
-	m_mainPanelVBox->Add ( m_BottomStaticLine, 0, wxALL | wxALIGN_CENTER | wxGROW );
+	m_mainPanelVBox->Add ( m_BottomStaticLine, wxSizerFlags().Expand().Center().Border(wxALL, 0));
 #endif
 
 	// Toolbar Pixmaps
@@ -230,7 +230,7 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_mainPanel->SetSizer ( m_mainPanelVBox );
 
 	// Frame Layout
-	m_frameVBox->Add ( m_mainPanel, 1, wxALL | wxGROW );
+	m_frameVBox->Add ( m_mainPanel, wxSizerFlags(1).Expand().Border(wxALL, 0));
 	SetAutoLayout ( TRUE );
 	SetSizerAndFit ( m_frameVBox );
 

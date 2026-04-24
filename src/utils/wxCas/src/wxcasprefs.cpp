@@ -70,10 +70,10 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	SetToolTip ( _
 	             ( "Enter here the directory where your amulesig.dat file is" ) );
 
-	m_osPathSBoxSizer->Add ( m_osPathTextCtrl, 1, wxALL | wxALIGN_CENTER, 5 );
-	m_osPathSBoxSizer->Add ( m_osPathBrowseButton, 0, wxALL | wxALIGN_CENTER, 5 );
+	m_osPathSBoxSizer->Add ( m_osPathTextCtrl, wxSizerFlags(1).Center().Border(wxALL, 5) );
+	m_osPathSBoxSizer->Add ( m_osPathBrowseButton, wxSizerFlags().Center().Border(wxALL, 5) );
 
-	m_mainVBox->Add ( m_osPathSBoxSizer, 0, wxGROW | wxALIGN_CENTER | wxALL, 10 );
+	m_mainVBox->Add ( m_osPathSBoxSizer, wxSizerFlags().Expand().Center().Border(wxALL, 10) );
 
 	// Refresh rate
 	m_refreshSBox = new wxStaticBox ( this, -1, "" );
@@ -89,11 +89,10 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	m_refreshStaticText =
 	    new wxStaticText ( this, -1, _( "Refresh rate interval in seconds" ), wxDefaultPosition,
 	                       wxDefaultSize, wxALIGN_CENTRE );
-	m_refreshSBoxSizer->Add ( m_refreshSpinButton, 0, wxALL | wxALIGN_CENTER, 5 );
-	m_refreshSBoxSizer->Add ( m_refreshStaticText, 1, wxALL | wxALIGN_CENTER, 5 );
+	m_refreshSBoxSizer->Add ( m_refreshSpinButton, wxSizerFlags().Center().Border(wxALL, 5) );
+	m_refreshSBoxSizer->Add ( m_refreshStaticText, wxSizerFlags(1).Center().Border(wxALL, 5) );
 
-	m_mainVBox->Add ( m_refreshSBoxSizer, 0, wxGROW | wxALIGN_CENTER | wxALL,
-	                  10 );
+	m_mainVBox->Add ( m_refreshSBoxSizer, wxSizerFlags().Expand().Center().Border(wxALL, 10) );
 
 	// Auto generate stat image
 	m_autoStatImgSBox = new wxStaticBox ( this, -1, "" );
@@ -104,8 +103,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	    new wxCheckBox ( this, ID_AUTOSTATIMG_CHECK,
 	                     _
 	                     ( "Generate a stat image at every refresh event" ) );
-	m_autoStatImgSBoxSizer->Add ( m_autoStatImgCheck, 0,
-	                              wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5 );
+	m_autoStatImgSBoxSizer->Add ( m_autoStatImgCheck, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
 
 	m_autoStatImgHBoxSizer = new wxBoxSizer ( wxHORIZONTAL );
 
@@ -132,18 +130,13 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	m_autoStatImgButton =
 	    new wxButton ( this, ID_AUTOSTATIMG_BROWSE_BUTTON, wxString ( _( "Browse" ) ) );
 
-	m_autoStatImgHBoxSizer->Add ( m_autoStatImgCombo, 0, wxALIGN_CENTER | wxALL,
-	                              5 );
-	m_autoStatImgHBoxSizer->Add ( m_autoStatImgTextCtrl, 1,
-	                              wxALIGN_CENTER | wxALL, 5 );
-	m_autoStatImgHBoxSizer->Add ( m_autoStatImgButton, 0, wxALIGN_CENTER | wxALL,
-	                              5 );
+	m_autoStatImgHBoxSizer->Add ( m_autoStatImgCombo, wxSizerFlags().Center().Border(wxALL, 5) );
+	m_autoStatImgHBoxSizer->Add ( m_autoStatImgTextCtrl, wxSizerFlags(1).Center().Border(wxALL, 5) );
+	m_autoStatImgHBoxSizer->Add ( m_autoStatImgButton, wxSizerFlags().Center().Border(wxALL, 5) );
 
-	m_autoStatImgSBoxSizer->Add ( m_autoStatImgHBoxSizer, 0,
-	                              wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5 );
+	m_autoStatImgSBoxSizer->Add ( m_autoStatImgHBoxSizer, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
 
-	m_mainVBox->Add ( m_autoStatImgSBoxSizer, 0, wxGROW | wxALIGN_CENTER | wxALL,
-	                  5 );
+	m_mainVBox->Add ( m_autoStatImgSBoxSizer, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
 
 	// Auto FTP update stat image
 	m_ftpUpdateSBox = new wxStaticBox ( this, -1, "" );
@@ -155,20 +148,17 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	    new wxCheckBox ( this, ID_FTP_UPDATE_CHECK,
 	                     _
 	                     ( "Upload periodically your stat image to FTP server" ) );
-	m_ftpUpdateSBoxSizer->Add ( m_ftpUpdateCheck, 0,
-	                            wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5 );
+	m_ftpUpdateSBoxSizer->Add ( m_ftpUpdateCheck, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
 
 	// Grid size
 	m_ftpUpdateGridSizer = new wxGridSizer( 2 );
 
 	// FTP Static text
 	m_ftpUrlStaticText = new wxStaticText ( this, -1, _( "FTP Url" ) );
-	m_ftpUpdateGridSizer->Add ( m_ftpUrlStaticText, 1,
-	                            wxALIGN_LEFT | wxALIGN_BOTTOM | wxALL, 5 );
+	m_ftpUpdateGridSizer->Add ( m_ftpUrlStaticText, wxSizerFlags(1).Bottom().Border(wxALL, 5) );
 
 	m_ftpPathStaticText = new wxStaticText ( this, -1, _( "FTP Path" ) );
-	m_ftpUpdateGridSizer->Add ( m_ftpPathStaticText, 1,
-	                            wxALIGN_LEFT | wxALIGN_BOTTOM | wxALL, 5 );
+	m_ftpUpdateGridSizer->Add ( m_ftpPathStaticText, wxSizerFlags(1).Bottom().Border(wxALL, 5) );
 	// Url
 	m_ftpUrlTextCtrl = new wxTextCtrl ( this, -1, "" );
 	m_ftpUrlTextCtrl->SetValue ( prefs->
@@ -178,8 +168,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	SetToolTip ( _
 	             ( "Enter here the URL of your FTP server" ) );
 
-	m_ftpUpdateGridSizer->Add ( m_ftpUrlTextCtrl, 1,
-	                            wxGROW | wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5 );
+	m_ftpUpdateGridSizer->Add ( m_ftpUrlTextCtrl, wxSizerFlags(1).Expand().Border(wxALL, 5) );
 
 	// Path
 	m_ftpPathTextCtrl = new wxTextCtrl ( this, -1, "" );
@@ -190,17 +179,14 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	SetToolTip ( _
 	             ( "Enter here the directory where putting your stat image on FTP server" ) );
 
-	m_ftpUpdateGridSizer->Add ( m_ftpPathTextCtrl, 1,
-	                            wxGROW | wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5 );
+	m_ftpUpdateGridSizer->Add ( m_ftpPathTextCtrl, wxSizerFlags(1).Expand().Border(wxALL, 5) );
 
 	// Login Static text
 	m_ftpUserStaticText = new wxStaticText ( this, -1, _( "User" ) );
-	m_ftpUpdateGridSizer->Add ( m_ftpUserStaticText, 1,
-	                            wxALIGN_LEFT | wxALIGN_BOTTOM | wxALL, 5 );
+	m_ftpUpdateGridSizer->Add ( m_ftpUserStaticText, wxSizerFlags(1).Bottom().Border(wxALL, 5) );
 
 	m_ftpPasswdStaticText = new wxStaticText ( this, -1, _( "Password" ) );
-	m_ftpUpdateGridSizer->Add ( m_ftpPasswdStaticText, 1,
-	                            wxALIGN_LEFT | wxALIGN_BOTTOM | wxALL, 5 );
+	m_ftpUpdateGridSizer->Add ( m_ftpPasswdStaticText, wxSizerFlags(1).Bottom().Border(wxALL, 5) );
 
 	// User
 	m_ftpUserTextCtrl = new wxTextCtrl ( this, -1, "" );
@@ -211,8 +197,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	SetToolTip ( _
 	             ( "Enter here the User name to log into your FTP server" ) );
 
-	m_ftpUpdateGridSizer->Add ( m_ftpUserTextCtrl, 1,
-	                            wxGROW | wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5 );
+	m_ftpUpdateGridSizer->Add ( m_ftpUserTextCtrl, wxSizerFlags(1).Expand().Border(wxALL, 5) );
 
 	// Passwd
 	m_ftpPasswdTextCtrl = new wxTextCtrl ( this, -1, "", wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
@@ -223,13 +208,11 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	SetToolTip ( _
 	             ( "Enter here the User password to log into your FTP server" ) );
 
-	m_ftpUpdateGridSizer->Add ( m_ftpPasswdTextCtrl, 1,
-	                            wxGROW | wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5 );
+	m_ftpUpdateGridSizer->Add ( m_ftpPasswdTextCtrl, wxSizerFlags(1).Expand().Border(wxALL, 5) );
 
 
 	// Add to static sizer
-	m_ftpUpdateSBoxSizer->Add ( m_ftpUpdateGridSizer, 1,
-	                            wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5 );
+	m_ftpUpdateSBoxSizer->Add ( m_ftpUpdateGridSizer, wxSizerFlags(1).Expand().CenterVertical().Border(wxALL, 5) );
 
 	// Upload rate
 	m_ftpRateHBoxSizer = new wxBoxSizer( wxHORIZONTAL );
@@ -242,15 +225,13 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	m_ftpUpdateStaticText =
 	    new wxStaticText ( this, -1, _( "FTP update rate interval in minutes" ), wxDefaultPosition,
 	                       wxDefaultSize, wxALIGN_CENTRE );
-	m_ftpRateHBoxSizer->Add ( m_ftpUpdateSpinButton, 0, wxALL | wxALIGN_CENTER, 5 );
-	m_ftpRateHBoxSizer->Add ( m_ftpUpdateStaticText, 1, wxALL | wxALIGN_CENTER, 5 );
+	m_ftpRateHBoxSizer->Add ( m_ftpUpdateSpinButton, wxSizerFlags().Center().Border(wxALL, 5) );
+	m_ftpRateHBoxSizer->Add ( m_ftpUpdateStaticText, wxSizerFlags(1).Center().Border(wxALL, 5) );
 
-	m_ftpUpdateSBoxSizer->Add ( m_ftpRateHBoxSizer, 0,
-	                            wxGROW | wxALIGN_CENTER_VERTICAL | wxALL, 5 );
+	m_ftpUpdateSBoxSizer->Add ( m_ftpRateHBoxSizer, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
 
 	// Add to main sizer
-	m_mainVBox->Add ( m_ftpUpdateSBoxSizer, 0, wxGROW | wxALIGN_CENTER | wxALL,
-	                  5 );
+	m_mainVBox->Add ( m_ftpUpdateSBoxSizer, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
 
 	// Mask auto stat img disabled controls
 	if (prefs->Read( WxCasCte::ENABLE_AUTOSTATIMG_KEY,
@@ -275,7 +256,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 
 	// Separator line
 	m_staticLine = new wxStaticLine ( this, -1 );
-	m_mainVBox->Add ( m_staticLine, 0, wxGROW | wxALIGN_CENTER | wxALL );
+	m_mainVBox->Add ( m_staticLine, wxSizerFlags().Expand().Center().Border(wxALL, 0));
 
 	// Button bar
 	m_buttonHBox = new wxBoxSizer ( wxHORIZONTAL );
@@ -284,10 +265,10 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	m_cancelButton =
 	    new wxButton ( this, wxID_CANCEL, wxString ( _( "Cancel" ) ) );
 
-	m_buttonHBox->Add ( m_validateButton, 0, wxALIGN_CENTER | wxALL, 5 );
-	m_buttonHBox->Add ( m_cancelButton, 0, wxALIGN_CENTER | wxALL, 5 );
+	m_buttonHBox->Add ( m_validateButton, wxSizerFlags().Center().Border(wxALL, 5) );
+	m_buttonHBox->Add ( m_cancelButton, wxSizerFlags().Center().Border(wxALL, 5) );
 
-	m_mainVBox->Add ( m_buttonHBox, 0, wxALIGN_CENTER | wxALL, 10 );
+	m_mainVBox->Add ( m_buttonHBox, wxSizerFlags().Center().Border(wxALL, 10) );
 
 	// Layout
 	SetAutoLayout ( TRUE );

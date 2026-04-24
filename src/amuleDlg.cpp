@@ -224,7 +224,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	s_main->AddGrowableRow(0);
 
 	wxPanel* p_cnt = new wxPanel(this, -1, wxDefaultPosition, wxDefaultSize);
-	s_main->Add(p_cnt, 0, wxGROW|wxEXPAND, 0);
+	s_main->Add(p_cnt, wxSizerFlags().Expand().Expand());
 	muleDlg(p_cnt, false, true);
 	SetSizer(s_main, true);
 
@@ -367,7 +367,7 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 		contentSizer->Detach(m_activewnd);
 	}
 
-	contentSizer->Add(dlg, 1, wxALIGN_LEFT|wxEXPAND);
+	contentSizer->Add(dlg, wxSizerFlags(1).Expand());
 	dlg->Show(true);
 	m_activewnd=dlg;
 	s_dlgcnt->Layout();
@@ -1484,7 +1484,7 @@ void CamuleDlg::DoNetworkRearrange()
 
 		replacement->Reparent(m_networknotebooksizer->GetContainingWindow());
 		replacement->Show();
-		m_networknotebooksizer->Add(replacement, 1, wxGROW | wxALIGN_CENTER_VERTICAL | wxTOP, 5);
+		m_networknotebooksizer->Add(replacement, wxSizerFlags(1).Expand().CenterVertical().Border(wxTOP, 5));
 		m_networknotebooksizer->Layout();
 		currentState = newState;
 	}
