@@ -107,12 +107,17 @@ TEST(Format, SetStringAndGetString)
 	STANDARD_TEST(cformat, wxformat, MAX(type)); \
 
 // In wx >= 2.9 wxChar represents a Unicode code point, thus its maximum value
-// is 1114111 (0x10ffff).
+// is 1114111 (0x10ffff) on platforms with 4-byte wchar_t (Linux, macOS).
+// Windows uses 2-byte wchar_t, so the ceiling is 0xffff there — do the min
+// at 32-bit width and cast back, so the narrowing from 0x10ffff to wxChar
+// happens explicitly rather than as an implicit constant conversion.
 TEST(Format, InjectwxChar)
 {
+	const uint32_t maxCodePoint = std::min<uint32_t>(
+		static_cast<uint32_t>(MAX(wxChar)), 0x10ffffu);
 	STANDARD_TEST("c", "c", MIN(wxChar));
-	STANDARD_TEST("c", "c", (wxChar)(std::min<wxChar>(MAX(wxChar), 0x10ffff) / 2));
-	STANDARD_TEST("c", "c", (std::min<wxChar>(MAX(wxChar), 0x10ffff)));
+	STANDARD_TEST("c", "c", static_cast<wxChar>(maxCodePoint / 2));
+	STANDARD_TEST("c", "c", static_cast<wxChar>(maxCodePoint));
 }
 
 
