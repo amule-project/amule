@@ -59,8 +59,15 @@ env:
     --with-boost
 
   # BUILD_PLASMAMULE requires Qt4
+  # CMAKE_BUILD_TYPE=Debug: the unit tests include ASSERT_RAISES() cases that
+  # exercise wxASSERT-gated code paths (e.g. CFormat's format-specifier type
+  # mismatch detection). wxASSERT is a no-op in Release, so the expected
+  # assertion exception never fires and those tests fail. CI has always been
+  # Debug in practice (the old .git-sniff in CMakeLists.txt kicked in here);
+  # make that explicit now that the default is Release.
   cmake_common_config_flags: |-
     -B build \
+    -DCMAKE_BUILD_TYPE=Debug \
     -DBUILD_ALC=YES \
     -DBUILD_ALCC=YES \
     -DBUILD_AMULECMD=YES \
