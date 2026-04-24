@@ -148,7 +148,7 @@ wxFrame(
 	pParent, -1, title, where, dlg_size,
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
 	wxRESIZE_BORDER|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,
-	wxT("aMule")),
+	"aMule"),
 m_activewnd(NULL),
 m_transferwnd(NULL),
 m_serverwnd(NULL),
@@ -173,33 +173,33 @@ m_skinFileName(),
 m_clientSkinNames(CLIENT_SKIN_SIZE)
 {
 	// Initialize skin names
-	m_clientSkinNames[Client_Green_Smiley]            = wxT("Transfer");
-	m_clientSkinNames[Client_Red_Smiley]              = wxT("Connecting");
-	m_clientSkinNames[Client_Yellow_Smiley]           = wxT("OnQueue");
-	m_clientSkinNames[Client_Grey_Smiley]             = wxT("A4AFNoNeededPartsQueueFull");
-	m_clientSkinNames[Client_White_Smiley]            = wxT("StatusUnknown");
-	m_clientSkinNames[Client_ExtendedProtocol_Smiley] = wxT("ExtendedProtocol");
-	m_clientSkinNames[Client_SecIdent_Smiley]         = wxT("SecIdent");
-	m_clientSkinNames[Client_BadGuy_Smiley]           = wxT("BadGuy");
-	m_clientSkinNames[Client_CreditsGrey_Smiley]      = wxT("CreditsGrey");
-	m_clientSkinNames[Client_CreditsYellow_Smiley]    = wxT("CreditsYellow");
-	m_clientSkinNames[Client_Upload_Smiley]           = wxT("Upload");
-	m_clientSkinNames[Client_Friend_Smiley]           = wxT("Friend");
-	m_clientSkinNames[Client_eMule_Smiley]            = wxT("eMule");
-	m_clientSkinNames[Client_mlDonkey_Smiley]         = wxT("mlDonkey");
-	m_clientSkinNames[Client_eDonkeyHybrid_Smiley]    = wxT("eDonkeyHybrid");
-	m_clientSkinNames[Client_aMule_Smiley]            = wxT("aMule");
-	m_clientSkinNames[Client_lphant_Smiley]           = wxT("lphant");
-	m_clientSkinNames[Client_Shareaza_Smiley]         = wxT("Shareaza");
-	m_clientSkinNames[Client_xMule_Smiley]            = wxT("xMule");
-	m_clientSkinNames[Client_Unknown]                 = wxT("Unknown");
-	m_clientSkinNames[Client_InvalidRating_Smiley]    = wxT("InvalidRatingOnFile");
-	m_clientSkinNames[Client_PoorRating_Smiley]       = wxT("PoorRatingOnFile");
-	m_clientSkinNames[Client_GoodRating_Smiley]       = wxT("GoodRatingOnFile");
-	m_clientSkinNames[Client_FairRating_Smiley]       = wxT("FairRatingOnFile");
-	m_clientSkinNames[Client_ExcellentRating_Smiley]  = wxT("ExcellentRatingOnFile");
-	m_clientSkinNames[Client_CommentOnly_Smiley]      = wxT("CommentOnly");
-	m_clientSkinNames[Client_Encryption_Smiley]       = wxT("Encrypted");
+	m_clientSkinNames[Client_Green_Smiley]            = "Transfer";
+	m_clientSkinNames[Client_Red_Smiley]              = "Connecting";
+	m_clientSkinNames[Client_Yellow_Smiley]           = "OnQueue";
+	m_clientSkinNames[Client_Grey_Smiley]             = "A4AFNoNeededPartsQueueFull";
+	m_clientSkinNames[Client_White_Smiley]            = "StatusUnknown";
+	m_clientSkinNames[Client_ExtendedProtocol_Smiley] = "ExtendedProtocol";
+	m_clientSkinNames[Client_SecIdent_Smiley]         = "SecIdent";
+	m_clientSkinNames[Client_BadGuy_Smiley]           = "BadGuy";
+	m_clientSkinNames[Client_CreditsGrey_Smiley]      = "CreditsGrey";
+	m_clientSkinNames[Client_CreditsYellow_Smiley]    = "CreditsYellow";
+	m_clientSkinNames[Client_Upload_Smiley]           = "Upload";
+	m_clientSkinNames[Client_Friend_Smiley]           = "Friend";
+	m_clientSkinNames[Client_eMule_Smiley]            = "eMule";
+	m_clientSkinNames[Client_mlDonkey_Smiley]         = "mlDonkey";
+	m_clientSkinNames[Client_eDonkeyHybrid_Smiley]    = "eDonkeyHybrid";
+	m_clientSkinNames[Client_aMule_Smiley]            = "aMule";
+	m_clientSkinNames[Client_lphant_Smiley]           = "lphant";
+	m_clientSkinNames[Client_Shareaza_Smiley]         = "Shareaza";
+	m_clientSkinNames[Client_xMule_Smiley]            = "xMule";
+	m_clientSkinNames[Client_Unknown]                 = "Unknown";
+	m_clientSkinNames[Client_InvalidRating_Smiley]    = "InvalidRatingOnFile";
+	m_clientSkinNames[Client_PoorRating_Smiley]       = "PoorRatingOnFile";
+	m_clientSkinNames[Client_GoodRating_Smiley]       = "GoodRatingOnFile";
+	m_clientSkinNames[Client_FairRating_Smiley]       = "FairRatingOnFile";
+	m_clientSkinNames[Client_ExcellentRating_Smiley]  = "ExcellentRatingOnFile";
+	m_clientSkinNames[Client_CommentOnly_Smiley]      = "CommentOnly";
+	m_clientSkinNames[Client_Encryption_Smiley]       = "Encrypted";
 
 	// wxWidgets send idle events to ALL WINDOWS by default... *SIGH*
 	wxIdleEvent::SetMode(wxIDLE_PROCESS_SPECIFIED);
@@ -208,7 +208,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	Apply_Clients_Skin();
 
 #ifdef __WINDOWS__
-	wxSystemOptions::SetOption(wxT("msw.remap"), 0);
+	wxSystemOptions::SetOption("msw.remap", 0);
 #endif
 
 #if !defined(__WXMAC__)
@@ -229,14 +229,14 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	SetSizer(s_main, true);
 
 	m_serverwnd = new CServerWnd(p_cnt, m_srv_split_pos);
-	AddLogLineN(wxEmptyString);
-	AddLogLineN(wxString(wxT(" - ")) +
+	AddLogLineN("");
+	AddLogLineN(wxString(" - ") +
 		wxString(CFormat(_("This is aMule %s based on eMule.")) % GetMuleVersion()));
-	AddLogLineN(wxString(wxT("   ")) +
+	AddLogLineN(wxString("   ") +
 		wxString(CFormat(_("Running on %s")) % wxGetOsDescription()));
-	AddLogLineN(wxT(" - ") +
+	AddLogLineN(" - " +
 		wxString(_("Visit http://www.amule.org to check if a new version is available.")));
-	AddLogLineN(wxEmptyString);
+	AddLogLineN("");
 
 #ifdef ENABLE_IP2COUNTRY
 	m_GeoIPavailable = true;
@@ -249,7 +249,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	m_sharedfileswnd = new CSharedFilesWnd(p_cnt);
 	m_statisticswnd = new CStatisticsDlg(p_cnt, theApp->m_statistics);
 	m_chatwnd = new CChatWnd(p_cnt);
-	m_kademliawnd = CastChild(wxT("kadWnd"), CKadDlg);
+	m_kademliawnd = CastChild("kadWnd", CKadDlg);
 
 	m_serverwnd->Show(false);
 	m_searchwnd->Show(false);
@@ -276,7 +276,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 		(dlg_size.y != DEFAULT_SIZE_Y) );
 	if (!LoadGUIPrefs(override_where, override_size)) {
 		// Prefs not loaded for some reason, exit
-		AddLogLineC(wxT("Error! Unable to load Preferences") );
+		AddLogLineC("Error! Unable to load Preferences" );
 		return;
 	}
 
@@ -302,7 +302,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 
 	// Set shortcut keys
 	wxAcceleratorEntry entries[] = {
-		wxAcceleratorEntry(wxACCEL_CTRL, wxT('Q'), wxID_EXIT)
+		wxAcceleratorEntry(wxACCEL_CTRL, 'Q', wxID_EXIT)
 	};
 
 	SetAcceleratorTable(wxAcceleratorTable(itemsof(entries), entries));
@@ -333,7 +333,7 @@ void CamuleDlg::ShowED2KLinksHandler( bool show )
 {
 	// Errorchecking in case the pointer becomes invalid ...
 	if (s_fed2klh == NULL) {
-		wxLogWarning(wxT("Unable to find Fast ED2K Links handler sizer! Hiding FED2KLH aborted."));
+		wxLogWarning("Unable to find Fast ED2K Links handler sizer! Hiding FED2KLH aborted.");
 		return;
 	}
 
@@ -346,7 +346,7 @@ void CamuleDlg::ToogleED2KLinksHandler()
 {
 	// Errorchecking in case the pointer becomes invalid ...
 	if (s_fed2klh == NULL) {
-		wxLogWarning(wxT("Unable to find Fast ED2K Links handler sizer! Toogling FED2KLH aborted."));
+		wxLogWarning("Unable to find Fast ED2K Links handler sizer! Toogling FED2KLH aborted.");
 		return;
 	}
 	ShowED2KLinksHandler(!s_dlgcnt->IsShown(s_fed2klh));
@@ -402,7 +402,7 @@ void CamuleDlg::UpdateTrayIcon(int percent)
 void CamuleDlg::CreateSystray()
 {
 	wxCHECK_RET(m_wndTaskbarNotifier == NULL,
-		wxT("Systray already created"));
+		"Systray already created");
 
 	m_wndTaskbarNotifier = new CMuleTrayIcon();
 	// This will effectively show the Tray Icon.
@@ -439,7 +439,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 				case ID_BUTTONNETWORKS:
 					SetActiveDialog(DT_NETWORKS_WND, m_serverwnd);
 					// Set serverlist splitter position
-					CastChild( wxT("SrvSplitterWnd"), wxSplitterWindow )->SetSashPosition(m_srv_split_pos, true);
+					CastChild( "SrvSplitterWnd", wxSplitterWindow )->SetSashPosition(m_srv_split_pos, true);
 					break;
 
 				case ID_BUTTONSEARCH:
@@ -471,7 +471,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 
 				// This shouldn't happen, but just in case
 				default:
-					AddLogLineC(wxT("Unknown button triggered CamuleApp::OnToolBarButton().") );
+					AddLogLineC("Unknown button triggered CamuleApp::OnToolBarButton()." );
 					break;
 			}
 		}
@@ -484,17 +484,17 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 
 void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 {
-	wxString msg = wxT(" ");
+	wxString msg = " ";
 #ifdef CLIENT_GUI
-	msg << _("aMule remote control ") << wxT(VERSION);
+	msg << _("aMule remote control ") << VERSION;
 #else
-	msg << wxT("aMule ") << wxT(VERSION);
+	msg << "aMule " << VERSION;
 #endif
-	msg << wxT(" ");
+	msg << " ";
 #ifdef SVNDATE
-	msg << _("Snapshot:") << wxT("\n ") << wxT(SVNDATE);
+	msg << _("Snapshot:") << "\n " << SVNDATE;
 #endif
-	msg << wxT("\n\n") << _("'All-Platform' p2p client based on eMule \n\n") <<
+	msg << "\n\n" << _("'All-Platform' p2p client based on eMule \n\n") <<
 		_("Website: http://www.amule.org \n") <<
 		_("Forum: http://forum.amule.org \n") <<
 		_("FAQ: http://wiki.amule.org \n\n") <<
@@ -594,14 +594,14 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 void CamuleDlg::ResetLog(int id)
 {
 	wxTextCtrl* ct = CastByID(id, m_serverwnd, wxTextCtrl);
-	wxCHECK_RET(ct, wxT("Resetting unknown log"));
+	wxCHECK_RET(ct, "Resetting unknown log");
 
 	ct->Clear();
 
 	if (id == ID_LOGVIEW) {
 		// Also clear the log line
-		wxStaticText* text = CastChild(wxT("infoLabel"), wxStaticText);
-		text->SetLabel(wxEmptyString);
+		wxStaticText* text = CastChild("infoLabel", wxStaticText);
+		text->SetLabel("");
 		text->GetParent()->Layout();
 	}
 }
@@ -631,10 +631,10 @@ void CamuleDlg::AddLogLine(const wxString& line)
 	// Set the status-bar if the event warrents it
 	if ( addtostatusbar ) {
 		// Escape "&"s, which would otherwise not show up
-		bufferline.Replace( wxT("&"), wxT("&&") );
-		wxStaticText* text = CastChild( wxT("infoLabel"), wxStaticText );
+		bufferline.Replace( "&", "&&" );
+		wxStaticText* text = CastChild( "infoLabel", wxStaticText );
 		// Only show the first line if multiple lines
-		text->SetLabel( bufferline.BeforeFirst( wxT('\n') ) );
+		text->SetLabel( bufferline.BeforeFirst( '\n' ) );
 		text->SetToolTip( bufferline );
 		text->GetParent()->Layout();
 	}
@@ -647,9 +647,9 @@ void CamuleDlg::AddServerMessageLine(wxString& message)
 	wxTextCtrl* cv= CastByID( ID_SERVERINFO, m_serverwnd, wxTextCtrl );
 	if(cv) {
 		if (message.Length() > 500) {
-			cv->AppendText(message.Left(500) + wxT("\n"));
+			cv->AppendText(message.Left(500) + "\n");
 		} else {
-			cv->AppendText(message + wxT("\n"));
+			cv->AppendText(message + "\n");
 		}
 		cv->ShowPosition(cv->GetLastPosition()-1);
 	}
@@ -687,7 +687,7 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 	if (theApp->IsConnectedED2K()) {
 		CServer* server = theApp->serverconnect->GetCurrentServer();
 		if (server) {
-			msgED2K = CFormat(wxT("eD2k: %s")) % server->GetListName();
+			msgED2K = CFormat("eD2k: %s") % server->GetListName();
 		}
 
 		if (theApp->serverconnect->IsLowID()) {
@@ -722,12 +722,12 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 		msgKad = _("Kad: Off");
 	}
 
-	wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
-	{ wxCHECK_RET(connLabel, wxT("'connLabel' widget not found")); }
+	wxStaticText* connLabel = CastChild( "connLabel", wxStaticText );
+	{ wxCHECK_RET(connLabel, "'connLabel' widget not found"); }
 
 	wxString labelMsg;
 	if (msgED2K.Length() && msgKad.Length()) {
-		labelMsg = msgED2K + wxT(" | ") + msgKad;
+		labelMsg = msgED2K + " | " + msgKad;
 	} else {
 		labelMsg = msgED2K + msgKad;
 	}
@@ -797,8 +797,8 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 	if (ed2kState != s_ED2KOldState || kadState != s_EKadOldState) {
 		s_ED2KOldState = ed2kState;
 		s_EKadOldState = kadState;
-		wxStaticBitmap* connBitmap = CastChild( wxT("connImage"), wxStaticBitmap );
-		wxCHECK_RET(connBitmap, wxT("'connImage' widget not found"));
+		wxStaticBitmap* connBitmap = CastChild( "connImage", wxStaticBitmap );
+		wxCHECK_RET(connBitmap, "'connImage' widget not found");
 
 		wxBitmap statusIcon = connBitmap->GetBitmap();
 		// Sanity check - otherwise there's a crash here if aMule runs out of resources
@@ -818,7 +818,7 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 
 void CamuleDlg::ShowUserCount(const wxString& info)
 {
-	wxStaticText* label = CastChild( wxT("userLabel"), wxStaticText );
+	wxStaticText* label = CastChild( "userLabel", wxStaticText );
 
 	// Update Kad tab
 	m_serverwnd->UpdateKadInfo();
@@ -840,28 +840,28 @@ void CamuleDlg::ShowTransferRate()
 	if( thePrefs::ShowOverhead() )
 	{
 		buffer = CFormat(_("Up: %.1f%s (%.1f) | Down: %.1f%s (%.1f)"))
-				 % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : wxT(""))) % (theStats::GetUpOverheadRate() / 1024.0)
-				 % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : wxT(""))) % (theStats::GetDownOverheadRate() / 1024.0);
+				 % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : "")) % (theStats::GetUpOverheadRate() / 1024.0)
+				 % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : "")) % (theStats::GetDownOverheadRate() / 1024.0);
 	} else {
 		buffer = CFormat(_("Up: %.1f%s | Down: %.1f%s"))
-				 % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : wxT("")))
-				 % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : wxT("")));
+				 % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : ""))
+				 % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : ""));
 	}
 	buffer.Truncate(50); // Max size 50
 
-	wxStaticText* label = CastChild( wxT("speedLabel"), wxStaticText );
+	wxStaticText* label = CastChild( "speedLabel", wxStaticText );
 	label->SetLabel(buffer);
 	label->GetParent()->Layout();
 
 	// Show upload/download speed in title
 	if (thePrefs::GetShowRatesOnTitle()) {
-		wxString UpDownSpeed = CFormat(wxT("Up: %.1f%s | Down: %.1f%s"))
-						   % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : wxT("")))
-						   % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : wxT("")));
+		wxString UpDownSpeed = CFormat("Up: %.1f%s | Down: %.1f%s")
+						   % (showMBpsUp ? MBpsUp : kBpsUp) % (showMBpsUp ? _(" MB/s") : ((kBpsUp > 0) ? _(" kB/s") : ""))
+						   % (showMBpsDown ? MBpsDown : kBpsDown) % (showMBpsDown ? _(" MB/s") : ((kBpsDown > 0) ? _(" kB/s") : ""));
 		if (thePrefs::GetShowRatesOnTitle() == 1) {
-			SetTitle(theApp->m_FrameTitle + wxT(" -- ") + UpDownSpeed);
+			SetTitle(theApp->m_FrameTitle + " -- " + UpDownSpeed);
 		} else {
-			SetTitle(UpDownSpeed + wxT(" -- ") + theApp->m_FrameTitle);
+			SetTitle(UpDownSpeed + " -- " + theApp->m_FrameTitle);
 		}
 	}
 
@@ -880,7 +880,7 @@ void CamuleDlg::ShowTransferRate()
 		m_wndTaskbarNotifier->SetTrayToolTip(buffer2);
 	}
 
-	wxStaticBitmap* bmp = CastChild( wxT("transferImg"), wxStaticBitmap );
+	wxStaticBitmap* bmp = CastChild( "transferImg", wxStaticBitmap );
 	bmp->SetBitmap(dlStatusImages((kBpsUp>0.01 ? 2 : 0) + (kBpsDown>0.01 ? 1 : 0)));
 }
 
@@ -930,7 +930,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 
 void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 {
-	wxTextCtrl* ctl = CastChild( wxT("FastEd2kLinks"), wxTextCtrl );
+	wxTextCtrl* ctl = CastChild( "FastEd2kLinks", wxTextCtrl );
 
 	for ( int i = 0; i < ctl->GetNumberOfLines(); i++ ) {
 		wxString strlink = ctl->GetLineText(i);
@@ -941,7 +941,7 @@ void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 		}
 	}
 
-	ctl->SetValue(wxEmptyString);
+	ctl->SetValue("");
 }
 
 
@@ -956,18 +956,18 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 	}
 
 	// The section where to save in in file
-	wxString section = wxT("/Razor_Preferences/");
+	wxString section = "/Razor_Preferences/";
 
 	// Get window size and position
-	int x1 = config->Read(section + wxT("MAIN_X_POS"), -1);
-	int y1 = config->Read(section + wxT("MAIN_Y_POS"), -1);
-	int x2 = config->Read(section + wxT("MAIN_X_SIZE"), -1);
-	int y2 = config->Read(section + wxT("MAIN_Y_SIZE"), -1);
+	int x1 = config->Read(section + "MAIN_X_POS", -1);
+	int y1 = config->Read(section + "MAIN_Y_POS", -1);
+	int x2 = config->Read(section + "MAIN_X_SIZE", -1);
+	int y2 = config->Read(section + "MAIN_Y_SIZE", -1);
 
-	int maximized = config->Read(section + wxT("Maximized"), 01);
+	int maximized = config->Read(section + "Maximized", 01);
 
 	// Kry - Random usable pos for m_srv_split_pos
-	m_srv_split_pos = config->Read(section + wxT("SRV_SPLITTER_POS"), 463l);
+	m_srv_split_pos = config->Read(section + "SRV_SPLITTER_POS", 463l);
 	if (!override_size) {
 		if (x2 > 0 && y2 > 0) {
 			SetSize(x2, y2);
@@ -1011,7 +1011,7 @@ bool CamuleDlg::SaveGUIPrefs()
 		return false;
 	}
 	// The section where to save in in file
-	wxString section = wxT("/Razor_Preferences/");
+	wxString section = "/Razor_Preferences/";
 
 	if (!IsIconized()) {
 		// Main window location and size
@@ -1020,17 +1020,17 @@ bool CamuleDlg::SaveGUIPrefs()
 		GetSize(&x2, &y2);
 
 		// Saving window size and position
-		config->Write(section+wxT("MAIN_X_POS"), (long) x1);
-		config->Write(section+wxT("MAIN_Y_POS"), (long) y1);
+		config->Write(section+"MAIN_X_POS", (long) x1);
+		config->Write(section+"MAIN_Y_POS", (long) y1);
 
-		config->Write(section+wxT("MAIN_X_SIZE"), (long) x2);
-		config->Write(section+wxT("MAIN_Y_SIZE"), (long) y2);
+		config->Write(section+"MAIN_X_SIZE", (long) x2);
+		config->Write(section+"MAIN_Y_SIZE", (long) y2);
 
-		config->Write(section+wxT("Maximized"), (long) (IsMaximized() ? 1 : 0));
+		config->Write(section+"Maximized", (long) (IsMaximized() ? 1 : 0));
 	}
 
 	// Saving sash position of splitter in server window
-	config->Write(section+wxT("SRV_SPLITTER_POS"), (long) m_srv_split_pos);
+	config->Write(section+"SRV_SPLITTER_POS", (long) m_srv_split_pos);
 
 	config->Flush(true);
 
@@ -1142,12 +1142,12 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 	cmd = thePrefs::GetBrowser();
 	wxString tmp = url;
 	// Pipes cause problems, so escape them
-	tmp.Replace( wxT("|"), wxT("%7C") );
+	tmp.Replace( "|", "%7C" );
 
 	if ( !cmd.IsEmpty() ) {
-		if (!cmd.Replace(wxT("%s"), tmp)) {
+		if (!cmd.Replace("%s", tmp)) {
 			// No %s found, just append the url
-			cmd += wxT(" ") + tmp;
+			cmd += " " + tmp;
 		}
 
 		CTerminationProcess *p = new CTerminationProcess(cmd);
@@ -1163,7 +1163,7 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 	}
 	// Unable to execute browser. But this error message doesn't make sense,
 	// cosidering that you _can't_ set the browser executable path... =/
-	wxLogError(wxT("Unable to launch browser. Please set correct browser executable path in Preferences."));
+	wxLogError("Unable to launch browser. Please set correct browser executable path in Preferences.");
 }
 
 
@@ -1176,7 +1176,7 @@ bool CamuleDlg::Check_and_Init_Skin()
 		return false;
 	}
 
-	wxString userDir(JoinPaths(thePrefs::GetConfigDir(), wxT("skins")) + wxFileName::GetPathSeparator());
+	wxString userDir(JoinPaths(thePrefs::GetConfigDir(), "skins") + wxFileName::GetPathSeparator());
 
 	wxStandardPathsBase &spb(wxStandardPaths::Get());
 #ifdef __WINDOWS__
@@ -1184,13 +1184,13 @@ bool CamuleDlg::Check_and_Init_Skin()
 #elif defined(__WXMAC__)
 		wxString dataDir(spb.GetDataDir());
 #else
-	wxString dataDir(spb.GetDataDir().BeforeLast(wxT('/')) + wxT("/amule"));
+	wxString dataDir(spb.GetDataDir().BeforeLast('/') + "/amule");
 #endif
-	wxString systemDir(JoinPaths(dataDir,wxT("skins")) + wxFileName::GetPathSeparator());
+	wxString systemDir(JoinPaths(dataDir,"skins") + wxFileName::GetPathSeparator());
 
 
-	skinFileName.Replace(wxT("User:"), userDir );
-	skinFileName.Replace(wxT("System:"), systemDir );
+	skinFileName.Replace("User:", userDir );
+	skinFileName.Replace("System:", systemDir );
 
 	m_skinFileName.Assign(skinFileName);
 	if (!m_skinFileName.FileExists()) {
@@ -1229,16 +1229,16 @@ void CamuleDlg::Add_Skin_Icon(
 		wxFFileInputStream in(m_skinFileName.GetFullPath());
 		wxZipInputStream zip(in);
 
-		ZipCatalog::iterator it = cat.find(wxZipEntry::GetInternalName(iconName + wxT(".png")));
+		ZipCatalog::iterator it = cat.find(wxZipEntry::GetInternalName(iconName + ".png"));
 		if ( it != cat.end() ) {
 			zip.OpenEntry(*it->second);
 			if ( !new_image.LoadFile(zip,wxBITMAP_TYPE_PNG) ) {
-				AddLogLineN(wxT("Warning: Error loading icon for ") +
+				AddLogLineN("Warning: Error loading icon for " +
 						iconName);
 				useSkins = false;
 			}
 		}else {
-				AddLogLineN(wxT("Warning: Can't load icon for ") +
+				AddLogLineN("Warning: Can't load icon for " +
 						iconName);
 				useSkins = false;
 		}
@@ -1246,9 +1246,9 @@ void CamuleDlg::Add_Skin_Icon(
 	}
 
 	wxBitmap bmp(useSkins ? new_image : stdIcon);
-	if (iconName.StartsWith(wxT("Client_"))) {
+	if (iconName.StartsWith("Client_")) {
 		m_imagelist.Add(bmp);
-	} else if (iconName.StartsWith(wxT("Toolbar_"))) {
+	} else if (iconName.StartsWith("Toolbar_")) {
 		m_tblist.Add(bmp);
 	}
 }
@@ -1263,7 +1263,7 @@ void CamuleDlg::Apply_Clients_Skin()
 
 	// Add the images to the image list
 	for (int i = 0; i < CLIENT_SKIN_SIZE; ++i) {
-		Add_Skin_Icon(wxT("Client_") + m_clientSkinNames[i],
+		Add_Skin_Icon("Client_" + m_clientSkinNames[i],
 			clientImages(i), useSkins);
 	}
 }
@@ -1278,25 +1278,25 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	m_tblist.RemoveAll();
 
 	// Add the images to the image list
-	Add_Skin_Icon(wxT("Toolbar_Connect"),    connButImg(0),      useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Disconnect"), connButImg(1),      useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Connecting"), connButImg(2),      useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Network"),    amuleDlgImages(20), useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Transfers"),  amuleDlgImages(21), useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Search"),     amuleDlgImages(22), useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Shared"),     amuleDlgImages(23), useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Messages"),   amuleDlgImages(24), useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Stats"),      amuleDlgImages(25), useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Prefs"),      amuleDlgImages(26), useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Import"),     amuleDlgImages(32), useSkins);
-	Add_Skin_Icon(wxT("Toolbar_About"),      amuleDlgImages(29), useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Blink"),	 amuleDlgImages(33), useSkins);
+	Add_Skin_Icon("Toolbar_Connect",    connButImg(0),      useSkins);
+	Add_Skin_Icon("Toolbar_Disconnect", connButImg(1),      useSkins);
+	Add_Skin_Icon("Toolbar_Connecting", connButImg(2),      useSkins);
+	Add_Skin_Icon("Toolbar_Network",    amuleDlgImages(20), useSkins);
+	Add_Skin_Icon("Toolbar_Transfers",  amuleDlgImages(21), useSkins);
+	Add_Skin_Icon("Toolbar_Search",     amuleDlgImages(22), useSkins);
+	Add_Skin_Icon("Toolbar_Shared",     amuleDlgImages(23), useSkins);
+	Add_Skin_Icon("Toolbar_Messages",   amuleDlgImages(24), useSkins);
+	Add_Skin_Icon("Toolbar_Stats",      amuleDlgImages(25), useSkins);
+	Add_Skin_Icon("Toolbar_Prefs",      amuleDlgImages(26), useSkins);
+	Add_Skin_Icon("Toolbar_Import",     amuleDlgImages(32), useSkins);
+	Add_Skin_Icon("Toolbar_About",      amuleDlgImages(29), useSkins);
+	Add_Skin_Icon("Toolbar_Blink",	 amuleDlgImages(33), useSkins);
 
 	// Build aMule toolbar
 	wndToolbar->SetMargins(0, 0);
 
 	// Placeholder. Gets updated by ShowConnectionState
-	wndToolbar->AddTool(ID_BUTTONCONNECT, wxT("..."), m_tblist.GetBitmap(0));
+	wndToolbar->AddTool(ID_BUTTONCONNECT, "...", m_tblist.GetBitmap(0));
 
 	wndToolbar->AddSeparator();
 	wndToolbar->AddTool(ID_BUTTONNETWORKS, _("Networks"), m_tblist.GetBitmap(3), wxNullBitmap, wxITEM_CHECK, _("Networks Window"));
@@ -1364,7 +1364,7 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt)
 		if (!m_transferwnd->clientlistctrl->GetShowing()) {
 			int height = m_transferwnd->clientlistctrl->GetSize().GetHeight();
 			wxSplitterWindow* splitter =
-				CastChild(wxT("splitterWnd"), wxSplitterWindow);
+				CastChild("splitterWnd", wxSplitterWindow);
 			height += splitter->GetWindow1()->GetSize().GetHeight();
 			splitter->SetSashPosition( height );
 		}
@@ -1378,7 +1378,7 @@ void CamuleDlg::OnKeyPressed(wxKeyEvent& event)
 		// Ctrl/Alt/Shift must not be pressed, to avoid
 		// conflicts with other (global) shortcuts.
 		if (!event.HasModifiers() && !event.ShiftDown()) {
-			LaunchUrl(wxT("http://wiki.amule.org"));
+			LaunchUrl("http://wiki.amule.org");
 			return;
 		}
 	}

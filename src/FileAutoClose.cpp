@@ -126,7 +126,7 @@ void CFileAutoClose::Unlock()
 void CFileAutoClose::Reopen()
 {
 	if (m_autoClosed) {
-		AddDebugLogLineN(logCFile, wxT("Reopen AutoClosed file ") + GetFilePath().GetPrintable());
+		AddDebugLogLineN(logCFile, "Reopen AutoClosed file " + GetFilePath().GetPrintable());
 		m_file.Reopen(m_mode); // throws on failure
 		// On open error m_autoClosed stays true, so if the app tries again
 		// it opens and throws again.
@@ -145,8 +145,8 @@ bool CFileAutoClose::Release(bool now)
 		m_autoClosed = true;
 		m_size = m_file.GetLength();
 		m_file.Close();
-		AddDebugLogLineN(logCFile, wxT("AutoClosed file ") + GetFilePath().GetPrintable()
-			+ (now ? wxT("(immediately)") : wxT("(timed)")));
+		AddDebugLogLineN(logCFile, "AutoClosed file " + GetFilePath().GetPrintable()
+			+ (now ? "(immediately)" : "(timed)"));
 	}
 	return m_autoClosed;
 }

@@ -103,7 +103,7 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
 	// ---------------
 	//  12
 	if (iOpAnd + iOpOr + iOpNot > 10) {
-		yyerror(wxT("Search expression is too complex"));
+		yyerror("Search expression is too complex");
 	}
 
 	_SearchExpr.m_aExpr.Empty();
@@ -316,7 +316,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, CSearchP
 	}
 
 	if (params.typeText != ED2KFTSTR_PROGRAM) {
-		if (params.typeText.CmpNoCase(wxT("Any"))) {
+		if (params.typeText.CmpNoCase("Any")) {
 			m_resultType = params.typeText;
 		} else {
 			m_resultType.Clear();
@@ -348,7 +348,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, CSearchP
 		wxString error;
 
 		for (unsigned int i = 0; i < _astrParserErrors.GetCount(); ++i) {
-			error += _astrParserErrors[i] + wxT("\n");
+			error += _astrParserErrors[i] + "\n";
 		}
 
 		return error;
@@ -390,14 +390,14 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, CSearchP
 		}
 	}
 
-	return wxEmptyString;
+	return "";
 }
 
 
 void CSearchList::LocalSearchEnd()
 {
 	if (m_searchType == GlobalSearch) {
-		wxCHECK_RET(m_searchPacket, wxT("Global search, but no packet"));
+		wxCHECK_RET(m_searchPacket, "Global search, but no packet");
 
 		// Ensure that every global search starts over.
 		theApp->serverlist->RemoveObserver(&m_serverQueue);
@@ -470,24 +470,24 @@ void CSearchList::OnGlobalSearchTimer(CTimerEvent& WXUNUSED(evt))
 					extSearchPacket->CopyToDataBuffer(data.GetLength(), m_searchPacket->GetDataBuffer(), m_searchPacket->GetPacketSize());
 					theStats::AddUpOverheadServer(extSearchPacket->GetPacketSize());
 					theApp->serverconnect->SendUDPPacket(extSearchPacket, server, true);
-					AddDebugLogLineN(logServerUDP, wxT("Sending OP_GLOBSEARCHREQ3 to server ") + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()));
+					AddDebugLogLineN(logServerUDP, "Sending OP_GLOBSEARCHREQ3 to server " + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()));
 				} else if (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETFILES) {
 					if (!m_64bitSearchPacket || server->SupportsLargeFilesUDP()) {
 						m_searchPacket->SetOpCode(OP_GLOBSEARCHREQ2);
-						AddDebugLogLineN(logServerUDP, wxT("Sending OP_GLOBSEARCHREQ2 to server ") + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()));
+						AddDebugLogLineN(logServerUDP, "Sending OP_GLOBSEARCHREQ2 to server " + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()));
 						theStats::AddUpOverheadServer(m_searchPacket->GetPacketSize());
 						theApp->serverconnect->SendUDPPacket(m_searchPacket, server, false);
 					} else {
-						AddDebugLogLineN(logServerUDP, wxT("Skipped UDP search on server ") + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()) + wxT(": No large file support"));
+						AddDebugLogLineN(logServerUDP, "Skipped UDP search on server " + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()) + ": No large file support");
 					}
 				} else {
 					if (!m_64bitSearchPacket || server->SupportsLargeFilesUDP()) {
 						m_searchPacket->SetOpCode(OP_GLOBSEARCHREQ);
-						AddDebugLogLineN(logServerUDP, wxT("Sending OP_GLOBSEARCHREQ to server ") + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()));
+						AddDebugLogLineN(logServerUDP, "Sending OP_GLOBSEARCHREQ to server " + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()));
 						theStats::AddUpOverheadServer(m_searchPacket->GetPacketSize());
 						theApp->serverconnect->SendUDPPacket(m_searchPacket, server, false);
 					} else {
-						AddDebugLogLineN(logServerUDP, wxT("Skipped UDP search on server ") + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()) + wxT(": No large file support"));
+						AddDebugLogLineN(logServerUDP, "Skipped UDP search on server " + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()) + ": No large file support");
 					}
 				}
 				CoreNotify_Search_Update_Progress(GetSearchProgress());
@@ -503,13 +503,13 @@ void CSearchList::OnGlobalSearchTimer(CTimerEvent& WXUNUSED(evt))
 void CSearchList::ProcessSharedFileList(const uint8_t* in_packet, uint32 size,
 	CUpDownClient* sender, bool *moreResultsAvailable, const wxString& directory)
 {
-	wxCHECK_RET(sender, wxT("No sender in search-results from client."));
+	wxCHECK_RET(sender, "No sender in search-results from client.");
 
 	wxUIntPtr searchID = reinterpret_cast<wxUIntPtr>(sender);
 
 #ifndef AMULE_DAEMON
 	if (!theApp->amuledlg->m_searchwnd->CheckTabNameExists(sender->GetUserName())) {
-		theApp->amuledlg->m_searchwnd->CreateNewTab(sender->GetUserName() + wxT(" (0)"), searchID);
+		theApp->amuledlg->m_searchwnd->CreateNewTab(sender->GetUserName() + " (0)", searchID);
 	}
 #endif
 
@@ -561,7 +561,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 	// If filesize is 0, or file is too large for the network, drop it
 	if ((fileSize == 0) || (fileSize > MAX_FILE_SIZE)) {
 		AddDebugLogLineN(logSearch,
-				CFormat(wxT("Dropped result with filesize %u: %s"))
+				CFormat("Dropped result with filesize %u: %s")
 					% fileSize
 					% toadd->GetFileName());
 
@@ -573,7 +573,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 	if ((clientResponse == false) && !m_resultType.IsEmpty()) {
 		if (GetFileTypeByName(toadd->GetFileName()) != m_resultType) {
 			AddDebugLogLineN(logSearch,
-				CFormat( wxT("Dropped result type %s != %s, file %s") )
+				CFormat( "Dropped result type %s != %s, file %s" )
 					% GetFileTypeByName(toadd->GetFileName())
 					% m_resultType
 					% toadd->GetFileName());
@@ -591,7 +591,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 		CSearchFile* item = results.at(i);
 
 		if ((toadd->GetFileHash() == item->GetFileHash()) && (toadd->GetFileSize() == item->GetFileSize())) {
-			AddDebugLogLineN(logSearch, CFormat(wxT("Received duplicate results for '%s' : %s")) % item->GetFileName() % item->GetFileHash().Encode());
+			AddDebugLogLineN(logSearch, CFormat("Received duplicate results for '%s' : %s") % item->GetFileName() % item->GetFileHash().Encode());
 			// Add the child, possibly updating the parents filename.
 			item->AddChild(toadd);
 			Notify_Search_Update_Sources(item);
@@ -600,7 +600,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 	}
 
 	AddDebugLogLineN(logSearch,
-		CFormat(wxT("Added new result '%s' : %s"))
+		CFormat("Added new result '%s' : %s")
 			% toadd->GetFileName() % toadd->GetFileHash().Encode());
 
 	// New unique result, simply add and display.
@@ -701,20 +701,20 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(CSearchParams& params, Se
 
 	if (_astrParserErrors.GetCount() > 0) {
 		for (unsigned int i=0; i < _astrParserErrors.GetCount(); ++i) {
-			AddLogLineNS(CFormat(wxT("Error %u: %s\n")) % i % _astrParserErrors[i]);
+			AddLogLineNS(CFormat("Error %u: %s\n") % i % _astrParserErrors[i]);
 		}
 
 		return CMemFilePtr(nullptr);
 	}
 
 	if (iParseResult != 0) {
-		_astrParserErrors.Add(CFormat(wxT("Undefined error %i on search expression")) % iParseResult);
+		_astrParserErrors.Add(CFormat("Undefined error %i on search expression") % iParseResult);
 
 		return CMemFilePtr(nullptr);
 	}
 
 	if (type == KadSearch && s_strCurKadKeyword != params.strKeyword) {
-		AddDebugLogLineN(logSearch, CFormat(wxT("Keyword was rearranged, using '%s' instead of '%s'")) % s_strCurKadKeyword % params.strKeyword);
+		AddDebugLogLineN(logSearch, CFormat("Keyword was rearranged, using '%s' instead of '%s'") % s_strCurKadKeyword % params.strKeyword);
 		params.strKeyword = s_strCurKadKeyword;
 	}
 
@@ -1029,7 +1029,7 @@ void CSearchList::KademliaSearchKeyword(uint32_t searchID, const Kademlia::CUInt
 
 	temp.Seek(0, wxFromStart);
 
-	CSearchFile *tempFile = new CSearchFile(temp, (eStrEncode == utf8strRaw), searchID, 0, 0, wxEmptyString, true);
+	CSearchFile *tempFile = new CSearchFile(temp, (eStrEncode == utf8strRaw), searchID, 0, 0, "", true);
 	tempFile->SetKadPublishInfo(kadPublishInfo);
 
 	AddToList(tempFile);

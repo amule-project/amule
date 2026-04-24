@@ -53,11 +53,11 @@ CSharedFilesWnd::CSharedFilesWnd( wxWindow* pParent )
 	wxSizer* content = sharedfilesDlg(this, true);
 	content->Show(this, true);
 
-	m_bar_requests	= CastChild( wxT("popbar"), wxGauge );
-	m_bar_accepted	= CastChild( wxT("popbarAccept"), wxGauge );
-	m_bar_transfer	= CastChild( wxT("popbarTrans"), wxGauge );
+	m_bar_requests	= CastChild( "popbar", wxGauge );
+	m_bar_accepted	= CastChild( "popbarAccept", wxGauge );
+	m_bar_transfer	= CastChild( "popbarTrans", wxGauge );
 	m_radioClientMode = CastChild( ID_SHOW_CLIENTS_MODE, wxRadioBox );
-	sharedfilesctrl = CastChild( wxT("sharedFilesCt"), CSharedFilesCtrl );
+	sharedfilesctrl = CastChild( "sharedFilesCt", CSharedFilesCtrl );
 	peerslistctrl   = CastChild( ID_SHAREDCLIENTLIST, CSharedFilePeersListCtrl );
 	wxASSERT(sharedfilesctrl);
 	wxASSERT(peerslistctrl);
@@ -69,11 +69,11 @@ CSharedFilesWnd::CSharedFilesWnd( wxWindow* pParent )
 
 	// Check if the clientlist is hidden
 	bool show = true;
-	config->Read( wxT("/GUI/SharedWnd/ShowClientList"), &show, true );
+	config->Read( "/GUI/SharedWnd/ShowClientList", &show, true );
 	peerslistctrl->SetShowing(show);
 	// Load the last used splitter position
-	m_splitter = config->Read( wxT("/GUI/SharedWnd/Splitter"), 463l );
-	m_clientShow = (EClientShow) config->Read(wxT("/GUI/SharedWnd/ClientShowMode"), ClientShowSelected);
+	m_splitter = config->Read( "/GUI/SharedWnd/Splitter", 463l );
+	m_clientShow = (EClientShow) config->Read("/GUI/SharedWnd/ClientShowMode", ClientShowSelected);
 	m_radioClientMode->SetSelection(m_clientShow);
 }
 
@@ -85,20 +85,20 @@ CSharedFilesWnd::~CSharedFilesWnd()
 
 		if ( !peerslistctrl->GetShowing() ) {
 			// Save the splitter position
-			config->Write( wxT("/GUI/SharedWnd/Splitter"), m_splitter );
+			config->Write( "/GUI/SharedWnd/Splitter", m_splitter );
 
 			// Save the visible status of the list
-			config->Write( wxT("/GUI/SharedWnd/ShowClientList"), false );
+			config->Write( "/GUI/SharedWnd/ShowClientList", false );
 		} else {
-			wxSplitterWindow* splitter = CastChild( wxT("sharedsplitterWnd"), wxSplitterWindow );
+			wxSplitterWindow* splitter = CastChild( "sharedsplitterWnd", wxSplitterWindow );
 
 			// Save the splitter position
-			config->Write(wxT("/GUI/SharedWnd/Splitter"), splitter->GetSashPosition());
+			config->Write("/GUI/SharedWnd/Splitter", splitter->GetSashPosition());
 
 			// Save the visible status of the list
-			config->Write( wxT("/GUI/SharedWnd/ShowClientList"), true );
+			config->Write( "/GUI/SharedWnd/ShowClientList", true );
 		}
-		config->Write(wxT("/GUI/SharedWnd/ClientShowMode"), (int)m_clientShow);
+		config->Write("/GUI/SharedWnd/ClientShowMode", (int)m_clientShow);
 	}
 }
 
@@ -148,15 +148,15 @@ void CSharedFilesWnd::SelectionUpdated()
 		if (fileVector.empty()) {
 			// Requests
 			m_bar_requests->SetValue( 0 );
-			CastChild(IDC_SREQUESTED, wxStaticText)->SetLabel( wxT("- / -") );
+			CastChild(IDC_SREQUESTED, wxStaticText)->SetLabel( "- / -" );
 
 			// Accepted requests
 			m_bar_accepted->SetValue( 0 );
-			CastChild(IDC_SACCEPTED, wxStaticText)->SetLabel( wxT("- / -") );
+			CastChild(IDC_SACCEPTED, wxStaticText)->SetLabel( "- / -" );
 
 			// Transferred
 			m_bar_transfer->SetValue( 0 );
-			CastChild(IDC_STRANSFERRED, wxStaticText)->SetLabel( wxT("- / -") );
+			CastChild(IDC_STRANSFERRED, wxStaticText)->SetLabel( "- / -" );
 
 		} else {
 			std::sort(fileVector.begin(), fileVector.end());
@@ -166,19 +166,19 @@ void CSharedFilesWnd::SelectionUpdated()
 			// Requests
 			session_requests = session_requests > lRequested ? lRequested : session_requests;
 			m_bar_requests->SetValue( session_requests );
-			wxString labelReq = CFormat(wxT("%d / %d")) % session_requests % all_requests;
+			wxString labelReq = CFormat("%d / %d") % session_requests % all_requests;
 			CastChild(IDC_SREQUESTED, wxStaticText)->SetLabel(labelReq);
 
 			// Accepted requests
 			session_accepted = session_accepted > lAccepted ? lAccepted : session_accepted;
 			m_bar_accepted->SetValue( session_accepted );
-			wxString labelAcc = CFormat(wxT("%d / %d")) % session_accepted % all_accepted;
+			wxString labelAcc = CFormat("%d / %d") % session_accepted % all_accepted;
 			CastChild(IDC_SACCEPTED, wxStaticText)->SetLabel(labelAcc);
 
 			// Transferred
 			session_transferred = session_transferred > lTransferred ? lTransferred : session_transferred;
 			m_bar_transfer->SetValue( session_transferred / 1024 );
-			wxString labelTrans = CastItoXBytes( session_transferred ) + wxT(" / ") + CastItoXBytes( all_transferred );
+			wxString labelTrans = CastItoXBytes( session_transferred ) + " / " + CastItoXBytes( all_transferred );
 			CastChild(IDC_STRANSFERRED, wxStaticText)->SetLabel(labelTrans);
 
 			if (labelReq.Len() > lReq || labelAcc.Len() > lAcc || labelTrans.Len() > lTrans) {
@@ -243,7 +243,7 @@ void CSharedFilesWnd::Prepare()
 		return;
 	}
 	m_prepared = true;
-	wxSplitterWindow* splitter = CastChild( wxT("sharedsplitterWnd"), wxSplitterWindow );
+	wxSplitterWindow* splitter = CastChild( "sharedsplitterWnd", wxSplitterWindow );
 	int height = splitter->GetSize().GetHeight();
 	int header_height = s_sharedfilespeerHeader->GetSize().GetHeight();
 
@@ -268,7 +268,7 @@ void CSharedFilesWnd::Prepare()
 
 void CSharedFilesWnd::OnToggleClientList(wxCommandEvent& WXUNUSED(evt))
 {
-	wxSplitterWindow* splitter = CastChild( wxT("sharedsplitterWnd"), wxSplitterWindow );
+	wxSplitterWindow* splitter = CastChild( "sharedsplitterWnd", wxSplitterWindow );
 	wxBitmapButton*   button = CastChild( ID_SHAREDCLIENTTOGGLE, wxBitmapButton );
 
 	if ( !peerslistctrl->GetShowing() ) {
@@ -305,7 +305,7 @@ void CSharedFilesWnd::OnSashPositionChanging(wxSplitterEvent& evt)
 		evt.SetSashPosition( s_splitterMin );
 	} else {
 		wxSplitterWindow* splitter = wxStaticCast( evt.GetEventObject(), wxSplitterWindow);
-		wxCHECK_RET(splitter, wxT("ERROR: NULL splitter in CSharedFilesWnd::OnSashPositionChanging"));
+		wxCHECK_RET(splitter, "ERROR: NULL splitter in CSharedFilesWnd::OnSashPositionChanging");
 
 		int height = splitter->GetSize().GetHeight();
 		int header_height = s_sharedfilespeerHeader->GetSize().GetHeight();

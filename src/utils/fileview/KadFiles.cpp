@@ -181,7 +181,7 @@ void DecodeNodesDat(const CFileDataIO& file)
 		}
 	}
 	for (uint32_t i = 0; i < numContacts; i++) {
-		cout << wxString::Format(wxT("#%u\tID       : "), i) << file.ReadUInt128();
+		cout << wxString::Format("#%u\tID       : ", i) << file.ReadUInt128();
 		cout << "\n\tIP       : " << CKadIP(file.ReadUInt32());
 		cout << "\n\tUDP Port : " << file.ReadUInt16();
 		cout << "\n\tTCP Port : " << file.ReadUInt16();

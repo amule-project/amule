@@ -79,8 +79,8 @@ Version 2 of AICH also supports 32bit identifiers to support large files, check 
 #include "ClientRef.h"
 
 #define HASHSIZE			20
-#define KNOWN2_MET_FILENAME		wxT("known2_64.met")
-#define OLD_KNOWN2_MET_FILENAME		wxT("known2.met")
+#define KNOWN2_MET_FILENAME		"known2_64.met"
+#define OLD_KNOWN2_MET_FILENAME		"known2.met"
 #define KNOWN2_MET_VERSION		0x02
 
 enum EAICHStatus {
@@ -191,6 +191,8 @@ protected:
 ///CAICHUntrustedHashs
 class CAICHUntrustedHash {
 public:
+	CAICHUntrustedHash() = default;
+	CAICHUntrustedHash(const CAICHUntrustedHash&) = default;
 	CAICHUntrustedHash& operator=(const CAICHUntrustedHash& k1)
 	{
 		m_adwIpsSigning = k1.m_adwIpsSigning;
@@ -212,6 +214,7 @@ public:
 		m_nPart = 0;
 		m_pPartFile = NULL;
 	}
+	CAICHRequestedData(const CAICHRequestedData&) = default;
 	CAICHRequestedData& operator=(const CAICHRequestedData& k1)
 	{
 		m_nPart = k1.m_nPart;

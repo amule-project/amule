@@ -42,8 +42,8 @@ class CTreeItemData : public wxTreeItemData
 		: m_uniqueid(uniqueid)
 	{}
 
-	uint32_t GetUniqueId() const throw() { return m_uniqueid; }
-	void SetUniqueId(uint32_t val) throw() { m_uniqueid = val; }
+	uint32_t GetUniqueId() const noexcept { return m_uniqueid; }
+	void SetUniqueId(uint32_t val) noexcept { m_uniqueid = val; }
 
       private:
 	uint32_t m_uniqueid;
@@ -65,13 +65,13 @@ CStatisticsDlg::CStatisticsDlg(wxWindow* pParent, CStatistics* stats)
 	wxSizer* content=statsDlg(this,TRUE);
 	content->Show(this,TRUE);
 
-	pscopeDL	= CastChild( wxT("dloadScope"), COScopeCtrl );
+	pscopeDL	= CastChild( "dloadScope", COScopeCtrl );
 	pscopeDL->graph_type = GRAPH_DOWN;
-	pscopeUL	= CastChild( wxT("uloadScope"), COScopeCtrl );
+	pscopeUL	= CastChild( "uloadScope", COScopeCtrl );
 	pscopeUL->graph_type = GRAPH_UP;
-	pscopeConn	= CastChild( wxT("otherScope"), COScopeCtrl );
+	pscopeConn	= CastChild( "otherScope", COScopeCtrl );
 	pscopeConn->graph_type = GRAPH_CONN;
-	stattree	= CastChild( wxT("statTree"),	wxTreeCtrl  );
+	stattree	= CastChild( "statTree",	wxTreeCtrl  );
 
 	m_stats = stats;
 }
@@ -102,7 +102,7 @@ void CStatisticsDlg::InitGraphs()
 	pscopeUL->SetRanges(0.0, (float)(thePrefs::GetMaxGraphUploadRate()+4));
 	pscopeUL->SetYUnits(_("kB/s"));
 	pscopeConn->SetRanges(0.0, (float)(thePrefs::GetStatsMax()));
-	pscopeConn->SetYUnits(wxEmptyString);
+	pscopeConn->SetYUnits("");
 
 	SetUpdatePeriod(thePrefs::GetTrafficOMeterInterval());
 }
@@ -145,7 +145,7 @@ void CStatisticsDlg::ApplyStatsColor(int index)
 		case 8:  case 9:  case 10:
 				(*ppscope)->SetPlotColor(cr, iTrend);
 				if ((ctrl = CastChild(iRes, CColorFrameCtrl)) == NULL) {
-					throw wxString(CFormat(wxT("CStatisticsDlg::ApplyStatsColor: control missing (%d)\n")) % iRes);
+					throw wxString(CFormat("CStatisticsDlg::ApplyStatsColor: control missing (%d)\n") % iRes);
 				}
 				ctrl->SetBackgroundBrushColour(cr);
 				ctrl->SetFrameBrushColour(*wxBLACK);

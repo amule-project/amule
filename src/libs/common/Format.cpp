@@ -41,28 +41,28 @@
 inline bool isTypeChar(wxChar c)
 {
 	switch (c) {
-		case wxT('s'):		// String of characters
-		case wxT('u'):		// Unsigned decimal integer
-		case wxT('i'):		// Signed decimal integer
-		case wxT('d'):		// Signed decimal integer
-		case wxT('c'):		// Character
-		case wxT('f'):		// Decimal floating point
-		case wxT('F'):		// Decimal floating point
-		case wxT('x'):		// Unsigned hexadecimal integer
-		case wxT('X'):		// Unsigned hexadecimal integer (capital letters)
-		case wxT('o'):		// Unsigned octal
-		case wxT('e'):		// Scientific notation (mantise/exponent) using e character
-		case wxT('E'):		// Scientific notation (mantise/exponent) using E character
-		case wxT('g'):		// Use shorter %e or %f
-		case wxT('G'):		// Use shorter %E or %F
-		case wxT('p'):		// Pointer
-		case wxT('n'):		// Not supported, still needs to be caught though
-		case wxT('a'):		// (C99; not in SUSv2) Double in hexadecimal notation.
-		case wxT('A'):		// (C99; not in SUSv2) Double in hexadecimal notation (capital letters).
-		case wxT('C'):		// (Not in C99, but in SUSv2.)  Synonym for lc.  Don't use. Not supported.
-		case wxT('S'):		// (Not in C99, but in SUSv2.)  Synonym for ls.  Don't use. Not supported.
-		case wxT('m'):		// (Glibc extension.)  Print output of strerror(errno).  No argument is required.
-//		case wxT('%'):		// A `%' is written.  No argument is converted.  The complete conversion specification is `%%'.
+		case 's':		// String of characters
+		case 'u':		// Unsigned decimal integer
+		case 'i':		// Signed decimal integer
+		case 'd':		// Signed decimal integer
+		case 'c':		// Character
+		case 'f':		// Decimal floating point
+		case 'F':		// Decimal floating point
+		case 'x':		// Unsigned hexadecimal integer
+		case 'X':		// Unsigned hexadecimal integer (capital letters)
+		case 'o':		// Unsigned octal
+		case 'e':		// Scientific notation (mantise/exponent) using e character
+		case 'E':		// Scientific notation (mantise/exponent) using E character
+		case 'g':		// Use shorter %e or %f
+		case 'G':		// Use shorter %E or %F
+		case 'p':		// Pointer
+		case 'n':		// Not supported, still needs to be caught though
+		case 'a':		// (C99; not in SUSv2) Double in hexadecimal notation.
+		case 'A':		// (C99; not in SUSv2) Double in hexadecimal notation (capital letters).
+		case 'C':		// (Not in C99, but in SUSv2.)  Synonym for lc.  Don't use. Not supported.
+		case 'S':		// (Not in C99, but in SUSv2.)  Synonym for ls.  Don't use. Not supported.
+		case 'm':		// (Glibc extension.)  Print output of strerror(errno).  No argument is required.
+//		case '%':		// A `%' is written.  No argument is converted.  The complete conversion specification is `%%'.
 			return true;
 	}
 
@@ -74,15 +74,15 @@ inline bool isFlagChar(wxChar c)
 {
 	switch (c) {
 		// C standard flags
-		case wxT('+'):		// Include sign for integers
-		case wxT('-'):		// Left-align output
-		case wxT('#'):		// Alternate form, varies
-		case wxT(' '):		// Pad with spaces
-		case wxT('0'):		// Pad with zeros
+		case '+':		// Include sign for integers
+		case '-':		// Left-align output
+		case '#':		// Alternate form, varies
+		case ' ':		// Pad with spaces
+		case '0':		// Pad with zeros
 		// SUSv2
-		case wxT('\''):		// For decimal conversion (i, d, u, f, F, g, G) the output is to be grouped with thousands' grouping characters if the locale information indicates any.
+		case '\'':		// For decimal conversion (i, d, u, f, F, g, G) the output is to be grouped with thousands' grouping characters if the locale information indicates any.
 		// glibc 2.2
-		case wxT('I'):		// For decimal integer conversion (i, d, u) the output uses the locale's alternative output digits, if any.
+		case 'I':		// For decimal integer conversion (i, d, u) the output uses the locale's alternative output digits, if any.
 			return true;
 	}
 
@@ -93,13 +93,13 @@ inline bool isFlagChar(wxChar c)
 inline bool isLengthChar(wxChar c)
 {
 	switch (c) {
-		case wxT('h'):		// Short ('hh') and char ('h')
-		case wxT('l'):		// Long ('l') and long long ('ll')
-		case wxT('L'):		// Double long
-		case wxT('z'):		// size_t
-		case wxT('j'):		// intmax_t
-		case wxT('t'):		// ptrdiff_t
-		case wxT('q'):		// quad. Synonym for 'll'. Don't use.
+		case 'h':		// Short ('hh') and char ('h')
+		case 'l':		// Long ('l') and long long ('ll')
+		case 'L':		// Double long
+		case 'z':		// size_t
+		case 'j':		// intmax_t
+		case 't':		// ptrdiff_t
+		case 'q':		// quad. Synonym for 'll'. Don't use.
 			return true;
 	}
 
@@ -109,11 +109,11 @@ inline bool isLengthChar(wxChar c)
 /** Returns true if the argument is a valid length modifier */
 inline bool isValidLength(const wxString& str)
 {
-	return ((str == wxT("hh")) || (str == wxT("h")) ||
-		(str == wxT("l")) || (str == wxT("ll")) ||
-		(str == wxT("L")) || (str == wxT("z")) ||
-		(str == wxT("j")) || (str == wxT("t")) ||
-		(str == wxT("q")));
+	return ((str == "hh") || (str == "h") ||
+		(str == "l") || (str == "ll") ||
+		(str == "L") || (str == "z") ||
+		(str == "j") || (str == "t") ||
+		(str == "q"));
 }
 
 
@@ -187,7 +187,7 @@ void CFormat::Init(const wxString& str)
 		size_t formatStart = 0;
 		eStringParserStates state = esNonFormat;
 		for (size_t pos = 0; pos < str.length(); ++pos) {
-			if (str[pos] == wxT('%')) {
+			if (str[pos] == '%') {
 				state = stringParser[state][0];
 			} else if (isTypeChar(str[pos])) {
 				state = stringParser[state][1];
@@ -196,7 +196,7 @@ void CFormat::Init(const wxString& str)
 			}
 			switch (state) {
 				case esInvalidFormat:
-					wxFAIL_MSG(wxT("Invalid format specifier: ") + str.Mid(formatStart, pos - formatStart + 1));
+					wxFAIL_MSG("Invalid format specifier: " + str.Mid(formatStart, pos - formatStart + 1));
 				/* fall through */
 				case esFormatStart:
 					formatStart = pos;
@@ -213,15 +213,15 @@ void CFormat::Init(const wxString& str)
 					break;
 			}
 		}
-		wxASSERT_MSG((state == esFormatEnd) || (state == esNonFormat), wxT("Incomplete format specifier: ") + str.Mid(formatStart));
+		wxASSERT_MSG((state == esFormatEnd) || (state == esNonFormat), "Incomplete format specifier: " + str.Mid(formatStart));
 	}
 
 	// Parse the extracted format specifiers, removing invalid ones
 	unsigned formatCount = 0;
 	for (FormatList::iterator it = m_formats.begin(); it != m_formats.end();) {
-		if (it->result == wxT("%%")) {
+		if (it->result == "%%") {
 			it->argIndex = 0;
-			it->result = wxT("%");
+			it->result = "%";
 			++it;
 		} else {
 			it->argIndex = ++formatCount;
@@ -235,26 +235,26 @@ void CFormat::Init(const wxString& str)
 			eFormatParserStates state = efStart;
 			for (size_t pos = 1; pos < it->result.length(); ++pos) {
 				wxChar c = it->result[pos];
-				if ((c >= wxT('1')) && (c <= wxT('9'))) {
+				if ((c >= '1') && (c <= '9')) {
 					state = formatParser[state][0];
-				} else if (c == wxT('0')) {
+				} else if (c == '0') {
 					state = formatParser[state][1];
 				} else if (isFlagChar(c)) {
 					state = formatParser[state][2];
-				} else if (c == wxT('.')) {
+				} else if (c == '.') {
 					state = formatParser[state][3];
 				} else if (isLengthChar(c)) {
 					state = formatParser[state][4];
 				} else if (isTypeChar(c)) {
 					state = formatParser[state][5];
-				} else if (c == wxT('$')) {
+				} else if (c == '$') {
 					state = formatParser[state][6];
 				} else {
 					state = efError;
 				}
-				if ((c >= wxT('0')) && (c <= wxT('9'))) {
+				if ((c >= '0') && (c <= '9')) {
 					num *= 10;
-					num += (c - wxT('0'));
+					num += (c - '0');
 				}
 				switch (state) {
 					case efArgIndexEnd:
@@ -287,9 +287,9 @@ void CFormat::Init(const wxString& str)
 						} else if (num > 0) {
 							it->width = num;
 						}
-						if (c == wxT('m')) {
+						if (c == 'm') {
 							it->argIndex = 0;
-							it->type = wxT('s');
+							it->type = 's';
 							int errnum = errno;
 #if defined(HAVE_STRERROR) || defined(HAVE_STRERROR_R)
 							unsigned buflen = 256;
@@ -316,7 +316,7 @@ void CFormat::Init(const wxString& str)
 								done = ((result == 0) || (errno != ERANGE));
 							} while (!done);
 #else
-							wxFAIL_MSG(wxString::Format(wxT("Unable to get error description for error %d."), errnum));
+							wxFAIL_MSG(wxString::Format("Unable to get error description for error %d.", errnum));
 							ProcessArgument<const wxString&>(it, wxString::Format(_("Unable to get error description for error %d"), errnum));
 #endif
 						} else {
@@ -325,7 +325,7 @@ void CFormat::Init(const wxString& str)
 					default:
 						break;
 				}
-				wxCHECK2_MSG(state != efError, break, wxT("Invalid format specifier: ") + it->result);
+				wxCHECK2_MSG(state != efError, break, "Invalid format specifier: " + it->result);
 				if (state == efType) {
 					// Needed by the '%m' conversion, which takes place immediately,
 					// overwriting it->result
@@ -362,15 +362,15 @@ wxString CFormat::GetString() const
 
 wxString CFormat::GetModifiers(FormatList::const_iterator it) const
 {
-	wxString result = wxT("%");
-	if (it->flag != wxT('\0')) {
+	wxString result = "%";
+	if (it->flag != '\0') {
 		result += it->flag;
 	}
 	if (it->width > 0) {
-		result += wxString::Format(wxT("%u"), it->width);
+		result += wxString::Format("%u", it->width);
 	}
 	if (it->precision >= 0) {
-		result += wxString::Format(wxT(".%u"), it->precision);
+		result += wxString::Format(".%u", it->precision);
 	}
 	return result;
 }
@@ -383,20 +383,20 @@ template<>
 void CFormat::ProcessArgument(FormatList::iterator it, double value)
 {
 	switch (it->type) {
-		case wxT('a'):
-		case wxT('A'):
-		case wxT('e'):
-		case wxT('E'):
-		case wxT('f'):
-		case wxT('F'):
-		case wxT('g'):
-		case wxT('G'):
+		case 'a':
+		case 'A':
+		case 'e':
+		case 'E':
+		case 'f':
+		case 'F':
+		case 'g':
+		case 'G':
 			break;
-		case wxT('s'):
-			it->type = wxT('g');
+		case 's':
+			it->type = 'g';
 			break;
 		default:
-			wxFAIL_MSG(wxT("Floating-point value passed for non-floating-point format field: ") + it->result);
+			wxFAIL_MSG("Floating-point value passed for non-floating-point format field: " + it->result);
 			return;
 	}
 	it->result = wxString::Format(GetModifiers(it) + it->type, value);
@@ -407,31 +407,31 @@ template<>
 void CFormat::ProcessArgument(FormatList::iterator it, wxChar value)
 {
 	switch (it->type) {
-		case wxT('c'):
+		case 'c':
 			break;
-		case wxT('s'):
-			it->type = wxT('c');
+		case 's':
+			it->type = 'c';
 			break;
-		case wxT('u'):
-		case wxT('d'):
-		case wxT('i'):
-		case wxT('o'):
-		case wxT('x'):
-		case wxT('X'):
+		case 'u':
+		case 'd':
+		case 'i':
+		case 'o':
+		case 'x':
+		case 'X':
 			ProcessArgument(it, (unsigned long long)value);
 			return;
-		case wxT('a'):
-		case wxT('A'):
-		case wxT('e'):
-		case wxT('E'):
-		case wxT('f'):
-		case wxT('F'):
-		case wxT('g'):
-		case wxT('G'):
+		case 'a':
+		case 'A':
+		case 'e':
+		case 'E':
+		case 'f':
+		case 'F':
+		case 'g':
+		case 'G':
 			ProcessArgument(it, (double)value);
 			return;
 		default:
-			wxFAIL_MSG(wxT("Character value passed to non-character format field: ") + it->result);
+			wxFAIL_MSG("Character value passed to non-character format field: " + it->result);
 			return;
 	}
 	it->result = wxString::Format(GetModifiers(it) + it->type, value);
@@ -442,33 +442,33 @@ template<>
 void CFormat::ProcessArgument(FormatList::iterator it, signed long long value)
 {
 	switch (it->type) {
-		case wxT('c'):
+		case 'c':
 			ProcessArgument(it, (wxChar)value);
 			return;
-		case wxT('i'):
+		case 'i':
 			break;
-		case wxT('o'):
-		case wxT('x'):
-		case wxT('X'):
+		case 'o':
+		case 'x':
+		case 'X':
 			ProcessArgument(it, (unsigned long long)value);
 			return;
-		case wxT('u'):
-		case wxT('d'):
-		case wxT('s'):
-			it->type = wxT('i');
+		case 'u':
+		case 'd':
+		case 's':
+			it->type = 'i';
 			break;
-		case wxT('a'):
-		case wxT('A'):
-		case wxT('e'):
-		case wxT('E'):
-		case wxT('f'):
-		case wxT('F'):
-		case wxT('g'):
-		case wxT('G'):
+		case 'a':
+		case 'A':
+		case 'e':
+		case 'E':
+		case 'f':
+		case 'F':
+		case 'g':
+		case 'G':
 			ProcessArgument(it, (double)value);
 			return;
 		default:
-			wxFAIL_MSG(wxT("Integer value passed for non-integer format field: ") + it->result);
+			wxFAIL_MSG("Integer value passed for non-integer format field: " + it->result);
 			return;
 	}
 	it->result = wxString::Format(GetModifiers(it) + WXLONGLONGFMTSPEC + it->type, value);
@@ -479,31 +479,31 @@ template<>
 void CFormat::ProcessArgument(FormatList::iterator it, unsigned long long value)
 {
 	switch (it->type) {
-		case wxT('c'):
+		case 'c':
 			ProcessArgument(it, (wxChar)value);
 			return;
-		case wxT('u'):
-		case wxT('o'):
-		case wxT('x'):
-		case wxT('X'):
+		case 'u':
+		case 'o':
+		case 'x':
+		case 'X':
 			break;
-		case wxT('i'):
-		case wxT('d'):
-		case wxT('s'):
-			it->type = wxT('u');
+		case 'i':
+		case 'd':
+		case 's':
+			it->type = 'u';
 			break;
-		case wxT('a'):
-		case wxT('A'):
-		case wxT('e'):
-		case wxT('E'):
-		case wxT('f'):
-		case wxT('F'):
-		case wxT('g'):
-		case wxT('G'):
+		case 'a':
+		case 'A':
+		case 'e':
+		case 'E':
+		case 'f':
+		case 'F':
+		case 'g':
+		case 'G':
 			ProcessArgument(it, (double)value);
 			return;
 		default:
-			wxFAIL_MSG(wxT("Integer value passed for non-integer format field: ") + it->result);
+			wxFAIL_MSG("Integer value passed for non-integer format field: " + it->result);
 			return;
 	}
 	it->result = wxString::Format(GetModifiers(it) + WXLONGLONGFMTSPEC + it->type, value);
@@ -513,8 +513,8 @@ void CFormat::ProcessArgument(FormatList::iterator it, unsigned long long value)
 template<>
 void CFormat::ProcessArgument(FormatList::iterator it, const wxString& value)
 {
-	if (it->type != wxT('s')) {
-		wxFAIL_MSG(wxT("String value passed for non-string format field: ") + it->result);
+	if (it->type != 's') {
+		wxFAIL_MSG("String value passed for non-string format field: " + it->result);
 	} else {
 		if (it->precision >= 0) {
 			it->result = value.Left(it->precision);
@@ -522,10 +522,10 @@ void CFormat::ProcessArgument(FormatList::iterator it, const wxString& value)
 			it->result = value;
 		}
 		if ((it->width > 0) && (it->result.length() < it->width)) {
-			if (it->flag == wxT('-')) {
-				it->result += wxString(it->width - it->result.length(), wxT(' '));
+			if (it->flag == '-') {
+				it->result += wxString(it->width - it->result.length(), ' ');
 			} else {
-				it->result = wxString(it->width -it->result.length(), wxT(' ')) + it->result;
+				it->result = wxString(it->width -it->result.length(), ' ') + it->result;
 			}
 		}
 	}
@@ -535,7 +535,7 @@ void CFormat::ProcessArgument(FormatList::iterator it, const wxString& value)
 template<>
 void CFormat::ProcessArgument(FormatList::iterator it, void * value)
 {
-	if ((it->type == wxT('p')) || (it->type == wxT('s'))) {
+	if ((it->type == 'p') || (it->type == 's')) {
 		// Modifiers (if any) are ignored for pointer conversions
 		// built-in Format for pointer is not consistent:
 		// - Windows: uppercase, no leading 0x
@@ -543,13 +543,13 @@ void CFormat::ProcessArgument(FormatList::iterator it, void * value)
 		// -> format it as hex
 		if (sizeof(void*) == 8) {
 			// 64 bit
-			it->result = wxString::Format(wxString(wxT("0x%016")) + WXLONGLONGFMTSPEC + wxT("x"), (uintptr_t)value);
+			it->result = wxString::Format(wxString("0x%016") + WXLONGLONGFMTSPEC + "x", (uintptr_t)value);
 		} else {
 			// 32 bit
-			it->result = wxString::Format(wxT("0x%08x"), (uintptr_t)value);
+			it->result = wxString::Format("0x%08x", (uintptr_t)value);
 		}
 	} else {
-		wxFAIL_MSG(wxT("Pointer value passed for non-pointer format field: ") + it->result);
+		wxFAIL_MSG("Pointer value passed for non-pointer format field: " + it->result);
 	}
 }
 
@@ -561,10 +561,10 @@ CFormat& CFormat::operator%(_Tp value)
 	m_argIndex++;
 	for (FormatList::iterator it = m_formats.begin(); it != m_formats.end(); ++it) {
 		if (it->argIndex == m_argIndex) {
-			if ((it->type != wxT('n')) && (it->type != wxT('C')) && (it->type != wxT('S'))) {
+			if ((it->type != 'n') && (it->type != 'C') && (it->type != 'S')) {
 				ProcessArgument<_Tp>(it, value);
 			} else {
-				wxFAIL_MSG(wxT("Not supported conversion type in format field: ") + it->result);
+				wxFAIL_MSG("Not supported conversion type in format field: " + it->result);
 			}
 		}
 	}

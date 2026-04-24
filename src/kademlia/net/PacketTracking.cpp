@@ -64,7 +64,7 @@ void CPacketTracking::AddTrackedOutPacket(uint32_t ip, uint8_t opcode)
 	}
 }
 
-bool CPacketTracking::IsTrackedOutListRequestPacket(uint8_t opcode) throw()
+bool CPacketTracking::IsTrackedOutListRequestPacket(uint8_t opcode) noexcept
 {
 	switch (opcode) {
 	 case KADEMLIA2_BOOTSTRAP_REQ:
@@ -212,14 +212,14 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32_t ip, uint8_t opcode, bo
 			if (it->m_count > allowedPacketsPerMinute * 5) {
 				// this is so far above the limit that it has to be an intentional flood / misuse in any case
 				// so we take the next higher punishment and ban the IP
-				AddDebugLogLineN(logKadPacketTracking, CFormat(wxT("Massive request flood detected for opcode 0x%X (0x%X) from IP %s - Banning IP")) % opcode % dbgOrgOpcode % KadIPToString(ip));
+				AddDebugLogLineN(logKadPacketTracking, CFormat("Massive request flood detected for opcode 0x%X (0x%X) from IP %s - Banning IP") % opcode % dbgOrgOpcode % KadIPToString(ip));
 				theApp->clientlist->AddBannedClient(wxUINT32_SWAP_ALWAYS(ip));
 				return false; // drop packet
 			} else if (it->m_count > allowedPacketsPerMinute) {
 				// over the limit, drop the packet but do nothing else
 				if (!it->m_dbgLogged) {
 					it->m_dbgLogged = true;
-					AddDebugLogLineN(logKadPacketTracking, CFormat(wxT("Request flood detected for opcode 0x%X (0x%X) from IP %s - Dropping packets with this opcode")) % opcode % dbgOrgOpcode % KadIPToString(ip));
+					AddDebugLogLineN(logKadPacketTracking, CFormat("Request flood detected for opcode 0x%X (0x%X) from IP %s - Dropping packets with this opcode") % opcode % dbgOrgOpcode % KadIPToString(ip));
 				}
 				return false; // drop packet
 			} else {
@@ -253,7 +253,7 @@ void CPacketTracking::InTrackListCleanup()
 			m_mapTrackPacketsIn.erase(it2);
 		}
 	}
-	AddDebugLogLineN(logKadPacketTracking, CFormat(wxT("Cleaned up Kad Incoming Requests Tracklist, entries before: %u, after %u")) % dbgOldSize % m_mapTrackPacketsIn.size());
+	AddDebugLogLineN(logKadPacketTracking, CFormat("Cleaned up Kad Incoming Requests Tracklist, entries before: %u, after %u") % dbgOldSize % m_mapTrackPacketsIn.size());
 }
 
 void CPacketTracking::AddLegacyChallenge(const CUInt128& contactID, const CUInt128& challengeID, uint32_t ip, uint8_t opcode)
@@ -263,7 +263,7 @@ void CPacketTracking::AddLegacyChallenge(const CUInt128& contactID, const CUInt1
 	listChallengeRequests.push_front(sTrack);
 	while (!listChallengeRequests.empty()) {
 		if (now - listChallengeRequests.back().inserted > SEC2MS(180)) {
-			AddDebugLogLineN(logKadPacketTracking, wxT("Challenge timed out, client not verified - ") + KadIPToString(listChallengeRequests.back().ip));
+			AddDebugLogLineN(logKadPacketTracking, "Challenge timed out, client not verified - " + KadIPToString(listChallengeRequests.back().ip));
 			listChallengeRequests.pop_back();
 		} else {
 			break;
@@ -290,7 +290,7 @@ bool CPacketTracking::IsLegacyChallenge(const CUInt128& challengeID, uint32_t ip
 	}
 #ifdef __DEBUG__
 	if (warning) {
-		AddDebugLogLineN(logKadPacketTracking, wxT("Wrong challenge answer received, client not verified (") + KadIPToString(ip) + wxT(")"));
+		AddDebugLogLineN(logKadPacketTracking, "Wrong challenge answer received, client not verified (" + KadIPToString(ip) + ")");
 	}
 #endif
 	return false;

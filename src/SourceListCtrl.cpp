@@ -45,7 +45,7 @@ CSourceListCtrl::CSourceListCtrl(
 	wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size,
 	long style, const wxValidator& validator, const wxString& name )
 :
-CGenericClientListCtrl( wxT("Sources"), parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name )
+CGenericClientListCtrl( "Sources", parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name )
 {
 	// Setting the sorter function.
 	SetSortFunc( SourceSortProc );

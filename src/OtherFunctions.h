@@ -318,8 +318,8 @@ inline void md4cpy(void* dst, const void* src)
 
 
 // DumpMem ... Dumps mem ;)
-wxString DumpMemToStr(const void *buff, int n, const wxString& msg = wxEmptyString, bool ok = true);
-void DumpMem(const void *buff, int n, const wxString& msg = wxEmptyString, bool ok = true);
+wxString DumpMemToStr(const void *buff, int n, const wxString& msg = "", bool ok = true);
+void DumpMem(const void *buff, int n, const wxString& msg = "", bool ok = true);
 void DumpMem_DW(const uint32 *ptr, int count);
 
 // Returns special source ID for GUI.

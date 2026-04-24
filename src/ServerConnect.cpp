@@ -258,12 +258,12 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 
 		CPacket* packet = new CPacket(data, OP_EDONKEYPROT, OP_LOGINREQUEST);
 		#ifdef DEBUG_CLIENT_PROTOCOL
-		AddLogLineC(wxT("Client: OP_LOGINREQUEST"));
-		AddLogLineC(wxString(wxT("        Hash     : ")) << thePrefs::GetUserHash().Encode());
-		AddLogLineC(wxString(wxT("        ClientID : ")) << GetClientID());
-		AddLogLineC(wxString(wxT("        Port     : ")) << thePrefs::GetPort());
-		AddLogLineC(wxString(wxT("        User Nick: ")) << thePrefs::GetUserNick());
-		AddLogLineC(wxString(wxT("        Edonkey  : ")) << EDONKEYVERSION);
+		AddLogLineC("Client: OP_LOGINREQUEST");
+		AddLogLineC(wxString("        Hash     : ") << thePrefs::GetUserHash().Encode());
+		AddLogLineC(wxString("        ClientID : ") << GetClientID());
+		AddLogLineC(wxString("        Port     : ") << thePrefs::GetPort());
+		AddLogLineC(wxString("        User Nick: ") << thePrefs::GetUserNick());
+		AddLogLineC(wxString("        Edonkey  : ") << EDONKEYVERSION);
 		#endif
 		theStats::AddUpOverheadServer(packet->GetPacketSize());
 		SendPacket(packet, true, sender);
@@ -291,7 +291,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 			theStats::AddUpOverheadServer(packet->GetPacketSize());
 			SendPacket(packet, true);
 			#ifdef DEBUG_CLIENT_PROTOCOL
-			AddLogLineC(wxT("Client: OP_GETSERVERLIST"));
+			AddLogLineC("Client: OP_GETSERVERLIST");
 			#endif
 		}
 	}
@@ -597,7 +597,7 @@ void CServerConnect::KeepConnectionAlive()
 
 		CPacket* packet = new CPacket(files, OP_EDONKEYPROT, OP_OFFERFILES);
 		#ifdef DEBUG_CLIENT_PROTOCOL
-		AddLogLineC(wxT("Client: OP_OFFERFILES"));
+		AddLogLineC("Client: OP_OFFERFILES");
 		#endif
 		// compress packet
 		//   - this kind of data is highly compressible (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
@@ -608,7 +608,7 @@ void CServerConnect::KeepConnectionAlive()
 		theStats::AddUpOverheadServer(packet->GetPacketSize());
 		connectedsocket->SendPacket(packet,true);
 
-		AddDebugLogLineN(logServer, wxT("Refreshing server connection"));
+		AddDebugLogLineN(logServer, "Refreshing server connection");
 	}
 }
 

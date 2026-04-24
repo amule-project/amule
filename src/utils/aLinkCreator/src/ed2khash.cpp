@@ -51,7 +51,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
 {
   // Open file and let wxFFile destructor close the file
   // Closing it explicitly may crash on Win32 ...
-  wxFFile file(filename.GetFullPath(), wxT("rbS"));
+  wxFFile file(filename.GetFullPath(), "rbS");
   if (! file.IsOpened())
     {
 	  // This doesn't make much sense to me, but it is what it was before and actually works.
@@ -73,7 +73,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
 
 #ifdef WANT_STRING_IMPLEMENTATION
 
-      wxString tmpHash(wxEmptyString);
+      wxString tmpHash("");
 #else
 
       unsigned char* tmpCharHash = NULL;
@@ -195,15 +195,15 @@ bool Ed2kHash::SetED2KHashFromFile(const wxString& filename, MD4Hook hook)
   return SetED2KHashFromFile(wxFileName(filename), hook);
 }
 
-#define WXLONGLONGFMTSPEC wxT(wxLongLongFmtSpec)
+#define WXLONGLONGFMTSPEC wxLongLongFmtSpec
 
 /// Get Ed2k link
 wxString Ed2kHash::GetED2KLink(const bool addPartHashes, const wxArrayString* arrayOfUrls)
 {
   // Constructing ed2k basic link
-  wxString ed2kLink = wxT("ed2k://|file|") + CleanFilename(m_filename)
-                      + wxString::Format(wxT("|%") WXLONGLONGFMTSPEC wxT("u|"), m_fileSize)
-                      + m_ed2kArrayOfHashes.Last() + wxT("|");
+  wxString ed2kLink = "ed2k://|file|" + CleanFilename(m_filename)
+                      + wxString::Format("|%" WXLONGLONGFMTSPEC "u|", m_fileSize)
+                      + m_ed2kArrayOfHashes.Last() + "|";
 
 
   // Add optional URLs
@@ -212,25 +212,25 @@ wxString Ed2kHash::GetED2KLink(const bool addPartHashes, const wxArrayString* ar
       size_t i;
       for ( i = 0; i < arrayOfUrls->GetCount(); i++ )
         {
-          ed2kLink += wxT("s=") + (*arrayOfUrls)[i] + wxT("|");
+          ed2kLink += "s=" + (*arrayOfUrls)[i] + "|";
         }
     }
 
   // Add Optional part-hashes
   if (addPartHashes && m_ed2kArrayOfHashes.GetCount()>1)
     {
-      ed2kLink += wxT("p=");
+      ed2kLink += "p=";
       size_t i;
       for (i=0;i<(m_ed2kArrayOfHashes.GetCount()-1);++i)
         {
-          ed2kLink += m_ed2kArrayOfHashes[i] + wxT(":");
+          ed2kLink += m_ed2kArrayOfHashes[i] + ":";
         }
       ed2kLink.RemoveLast(); // Remove last :
-      ed2kLink += wxT("|");
+      ed2kLink += "|";
     }
 
   // Add last slash
-  ed2kLink += wxT("/");
+  ed2kLink += "/";
 
   return ed2kLink;
 }
@@ -240,8 +240,8 @@ wxString Ed2kHash::CleanFilename(const wxString& filename)
 {
   wxString name(filename);
 
-  wxRegEx toStrip(wxT("[^[:alnum:]_.-]"));
-  toStrip.Replace(&name, wxT("_"));
+  wxRegEx toStrip("[^[:alnum:]_.-]");
+  toStrip.Replace(&name, "_");
 
   return (name);
 }

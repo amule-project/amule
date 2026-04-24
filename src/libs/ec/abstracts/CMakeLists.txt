@@ -100,11 +100,11 @@ FOREACH (LINE ${CONTENTS})
 				STRING (REGEX REPLACE "[\t| ]" ";" LINE ${LINE})
 				LIST (GET LINE 0 TAG_NAME)
 				LIST (GET LINE -1 TAG_CODE)
-				FILE (APPEND ${HEADER_FILE} "\t\tcase ${TAG_CODE}: return wxT(\"${TAG_NAME}\");\n")
+				FILE (APPEND ${HEADER_FILE} "\t\tcase ${TAG_CODE}: return \"${TAG_NAME}\";\n")
 			ENDIF (NOT "${LINE}" STREQUAL "[/Section]" AND NOT "${LINE}" MATCHES "^Name " AND NOT "${LINE}" MATCHES "^DataType ")
 
 			IF ("${LINE}" STREQUAL "[/Section]")
-				FILE (APPEND ${HEADER_FILE} "\t\tdefault: return CFormat(wxT(\"unknown %d 0x%x\")) % arg % arg;\n\t}\n}\n\n")
+				FILE (APPEND ${HEADER_FILE} "\t\tdefault: return CFormat(\"unknown %d 0x%x\") % arg % arg;\n\t}\n}\n\n")
 				SET (FOUND_ENUM FALSE)
 			ENDIF ("${LINE}" STREQUAL "[/Section]")
 

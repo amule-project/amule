@@ -106,7 +106,7 @@ void CCorruptionBlackBox::TransferredData(uint64 nStartPos, uint64 nEndPos, uint
 	}
 	if (!merged) {
 		list.push_back(CCBBRecord(nRelStartPos, nRelEndPos, senderIP));
-		AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox(%s): transferred: new record for part %d (%d - %d, %s)"))
+		AddDebugLogLineN(logPartFile, CFormat("CorruptionBlackBox(%s): transferred: new record for part %d (%d - %d, %s)")
 			% m_partNumber % nPart % nRelStartPos % nRelEndPos % Uint32toStringIP(senderIP));
 	}
 }
@@ -180,8 +180,8 @@ void CCorruptionBlackBox::VerifiedData(bool ok, uint16 nPart, uint32 nRelStartPo
 		m_Records.erase(nPart);
 	}
 #ifdef __DEBUG__
-	AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox(%s): found and marked %d recorded bytes of %d as %s in part %d, %d records found, %d records left, %d different clients"))
-		% m_partNumber % nDbgVerifiedBytes % (nRelEndPos-nRelStartPos+1) % (ok ? wxT("verified") : wxT("corrupt"))
+	AddDebugLogLineN(logPartFile, CFormat("CorruptionBlackBox(%s): found and marked %d recorded bytes of %d as %s in part %d, %d records found, %d records left, %d different clients")
+		% m_partNumber % nDbgVerifiedBytes % (nRelEndPos-nRelStartPos+1) % (ok ? "verified" : "corrupt")
 		% nPart % listsize1 % listsize2 % mapDebug.size());
 #endif
 }
@@ -211,13 +211,13 @@ void CCorruptionBlackBox::EvaluateData()
 			wxString clientName;
 			if (pEvilClient != NULL) {
 				clientName = pEvilClient->GetClientShortInfo();
-				AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox(%s): Banning: Found client which sent %d of %d corrupted data, %s"))
+				AddDebugLogLineN(logPartFile, CFormat("CorruptionBlackBox(%s): Banning: Found client which sent %d of %d corrupted data, %s")
 					% m_partNumber % bad % (good + bad) % pEvilClient->GetClientFullInfo());
 				theApp->clientlist->AddTrackClient(pEvilClient);
 				pEvilClient->Ban();  // Identified as sender of corrupt data
 				// Stop download right away
 				pEvilClient->SetDownloadState(DS_BANNED);
-				if (pEvilClient->Disconnected(wxT("Upload of corrupted data"))) {
+				if (pEvilClient->Disconnected("Upload of corrupted data")) {
 					pEvilClient->Safe_Delete();
 				}
 			} else {
@@ -229,11 +229,11 @@ void CCorruptionBlackBox::EvaluateData()
 		} else {
 			CUpDownClient* pSuspectClient = theApp->clientlist->FindClientByIP(ip);
 			if (pSuspectClient != NULL) {
-				AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox(%s): Reporting: Found client which probably sent %d of %d corrupted data, but it is within the acceptable limit, %s"))
+				AddDebugLogLineN(logPartFile, CFormat("CorruptionBlackBox(%s): Reporting: Found client which probably sent %d of %d corrupted data, but it is within the acceptable limit, %s")
 					% m_partNumber % bad % (good + bad) % pSuspectClient->GetClientFullInfo());
 				theApp->clientlist->AddTrackClient(pSuspectClient);
 			} else {
-				AddDebugLogLineN(logPartFile, CFormat(wxT("CorruptionBlackBox(%s): Reporting: Found client which probably sent %d of %d corrupted data, but it is within the acceptable limit, %s"))
+				AddDebugLogLineN(logPartFile, CFormat("CorruptionBlackBox(%s): Reporting: Found client which probably sent %d of %d corrupted data, but it is within the acceptable limit, %s")
 					% m_partNumber % bad % (good + bad) % Uint32toStringIP(ip));
 			}
 		}
@@ -244,29 +244,29 @@ void CCorruptionBlackBox::EvaluateData()
 void CCorruptionBlackBox::DumpAll()
 {
 #ifdef __DEBUG__
-	AddDebugLogLineN(logPartFile, wxT("CBB Dump Records"));
+	AddDebugLogLineN(logPartFile, "CBB Dump Records");
 	std::map<uint16, CRecordList>::iterator it = m_Records.begin();
 	for (; it != m_Records.end(); ++it) {
 		uint16 block = it->first;
 		CRecordList & list = it->second;
 		for (CRecordList::iterator it2 = list.begin(); it2 != list.end(); ++it2) {
-			AddDebugLogLineN(logPartFile, CFormat(wxT("CBBD %6d %.16s %10d - %10d"))
+			AddDebugLogLineN(logPartFile, CFormat("CBBD %6d %.16s %10d - %10d")
 				% block % Uint32toStringIP(it2->m_dwIP) % it2->m_nStartPos % it2->m_nEndPos);
 		}
 	}
 	if (!m_goodClients.empty()) {
-		AddDebugLogLineN(logPartFile, wxT("CBB Dump good Clients"));
+		AddDebugLogLineN(logPartFile, "CBB Dump good Clients");
 		CCBBClientMap::iterator it3 = m_goodClients.begin();
 		for (; it3 != m_goodClients.end(); ++it3) {
-			AddDebugLogLineN(logPartFile, CFormat(wxT("CBBD %.16s good %10d"))
+			AddDebugLogLineN(logPartFile, CFormat("CBBD %.16s good %10d")
 				% Uint32toStringIP(it3->first) % it3->second.m_downloaded);
 		}
 	}
 	if (!m_badClients.empty()) {
-		AddDebugLogLineN(logPartFile, wxT("CBB Dump bad Clients"));
+		AddDebugLogLineN(logPartFile, "CBB Dump bad Clients");
 		CCBBClientMap::iterator it3 = m_badClients.begin();
 		for (; it3 != m_badClients.end(); ++it3) {
-			AddDebugLogLineN(logPartFile, CFormat(wxT("CBBD %.16s bad %10d"))
+			AddDebugLogLineN(logPartFile, CFormat("CBBD %.16s bad %10d")
 				% Uint32toStringIP(it3->first) % it3->second.m_downloaded);
 		}
 	}

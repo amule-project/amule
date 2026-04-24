@@ -99,7 +99,7 @@ inline void DoSplitPath(const wxString& strPath, wxString* path, wxString* name)
 	wxFileName::SplitPath(strPath, pVol, path, name, pExt, &hasExt);
 
 	if (hasExt && pExt) {
-		*name += wxT(".") + ext;
+		*name += "." + ext;
 	}
 
 	if (path && vol.Length()) {
@@ -116,25 +116,25 @@ static wxString DoCleanup(const wxString& filename, bool keepSpaces, bool isFAT3
 		const wxChar c = filename[i];
 
 		switch (c) {
-			case wxT('/'):
+			case '/':
 				continue;
 
-			case wxT('\"'):
-			case wxT('*'):
-			case wxT('<'):
-			case wxT('>'):
-			case wxT('?'):
-			case wxT('|'):
-			case wxT('\\'):
-			case wxT(':'):
+			case '\"':
+			case '*':
+			case '<':
+			case '>':
+			case '?':
+			case '|':
+			case '\\':
+			case ':':
 				if (isFAT32) {
 					continue;
 				}
 
 			/* fall through */
 			default:
-				if ((c == wxT(' ')) && !keepSpaces) {
-					result += wxT("%20");
+				if ((c == ' ') && !keepSpaces) {
+					result += "%20";
 				} else if (c >= 32) {
 					// Many illegal for filenames in windows
 					// below the 32th char (which is space).
@@ -177,7 +177,7 @@ static wxString DoCleanPath(const wxString& path)
 
 	// Root paths must end with a separator (X:\ rather than X:).
 	// See comments in wxDirExists.
-	if ((cleanPath.Length() == 2) && (cleanPath.Last() == wxT(':'))) {
+	if ((cleanPath.Length() == 2) && (cleanPath.Last() == ':')) {
 		cleanPath += wxFileName::GetPathSeparator();
 	}
 
@@ -485,12 +485,12 @@ CPath CPath::AppendExt(const wxString& ext) const
 	}
 
 	CPath result(*this);
-	if (ext[0] == wxT('.')) {
+	if (ext[0] == '.') {
 		result.m_printable << ext;
 		result.m_filesystem << ext;
 	} else {
-		result.m_printable << wxT(".") << ext;
-		result.m_filesystem << wxT(".") << ext;
+		result.m_printable << "." << ext;
+		result.m_filesystem << "." << ext;
 	}
 
 	return result;
@@ -659,7 +659,7 @@ wxString CPath::TruncatePath(size_t length, bool isFilePath) const
 			int pathlen = (int)(length - file.Length() - 6);
 
 			if (pathlen > 0) {
-				path = wxT("[...]") + path.Right( pathlen );
+				path = "[...]" + path.Right( pathlen );
 			} else {
 				path.Clear();
 			}
@@ -670,7 +670,7 @@ wxString CPath::TruncatePath(size_t length, bool isFilePath) const
 
 	if (file.Length() > length) {
 		if (length > 5) {
-			file = file.Left(length - 5) + wxT("[...]");
+			file = file.Left(length - 5) + "[...]";
 		} else {
 			file.Clear();
 		}

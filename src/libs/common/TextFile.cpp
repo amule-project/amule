@@ -52,10 +52,10 @@ bool CTextFile::Open(const CPath& path, EOpenMode mode)
 
 	if (mode == read) {
 		if (path.FileExists()) {
-			m_file.Open(path.GetRaw(), wxT("r"));
+			m_file.Open(path.GetRaw(), "r");
 		}
 	} else if (mode == write) {
-		m_file.Open(path.GetRaw(), wxT("w"));
+		m_file.Open(path.GetRaw(), "w");
 	} else {
 		wxFAIL;
 	}
@@ -92,9 +92,9 @@ bool CTextFile::Close()
 
 wxString CTextFile::GetNextLine(EReadTextFile flags, const wxMBConv& conv, bool* result)
 {
-	wxCHECK_MSG(m_file.IsOpened(), wxEmptyString, wxT("Trying to read from closed file."));
-	wxCHECK_MSG(!m_file.Eof(), wxEmptyString, wxT("Trying to read past EOF"));
-	wxCHECK_MSG((m_mode == read), wxEmptyString, wxT("Trying to read from non-readable file."));
+	wxCHECK_MSG(m_file.IsOpened(), "", "Trying to read from closed file.");
+	wxCHECK_MSG(!m_file.Eof(), "", "Trying to read past EOF");
+	wxCHECK_MSG((m_mode == read), "", "Trying to read from non-readable file.");
 
 	bool is_filtered = false;
 
@@ -130,9 +130,9 @@ wxString CTextFile::GetNextLine(EReadTextFile flags, const wxMBConv& conv, bool*
 			line += conv.cMB2WC(buffer);
 
 			// Remove any newlines, carriage returns, etc.
-			if (line.Length() && (line.Last() == wxT('\n'))) {
+			if (line.Length() && (line.Last() == '\n')) {
 				if ((line.Length() > 1)) {
-					if (line[line.Length() - 2] == wxT('\r')) {
+					if (line[line.Length() - 2] == '\r') {
 						// Carriage return + newline
 						line.RemoveLast(2);
 					} else {
@@ -173,8 +173,8 @@ wxString CTextFile::GetNextLine(EReadTextFile flags, const wxMBConv& conv, bool*
 
 bool CTextFile::WriteLine(const wxString& line, const wxMBConv& conv)
 {
-	wxCHECK_MSG(m_file.IsOpened(), false, wxT("Trying to read from closed file."));
-	wxCHECK_MSG((m_mode == write), false, wxT("Trying to read from non-readable file."));
+	wxCHECK_MSG(m_file.IsOpened(), false, "Trying to read from closed file.");
+	wxCHECK_MSG((m_mode == write), false, "Trying to read from non-readable file.");
 
 	// Ensures that use of newlines/carriage-returns matches the OS
 	wxString result = wxTextBuffer::Translate(line);

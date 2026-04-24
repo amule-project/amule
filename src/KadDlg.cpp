@@ -60,7 +60,7 @@ END_EVENT_TABLE()
 
 
 CKadDlg::CKadDlg(wxWindow* pParent)
-	: wxPanel(pParent, -1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, wxT("kadwnd") )
+	: wxPanel(pParent, -1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, "kadwnd" )
 {
 	m_kad_scope = NULL;
 }
@@ -68,9 +68,9 @@ CKadDlg::CKadDlg(wxWindow* pParent)
 
 void CKadDlg::Init()
 {
-	m_kad_scope = CastChild( wxT("kadScope"), COScopeCtrl );
+	m_kad_scope = CastChild( "kadScope", COScopeCtrl );
 	m_kad_scope->SetRanges(0.0, thePrefs::GetStatsMax());
-	m_kad_scope->SetYUnits(wxT("Nodes"));
+	m_kad_scope->SetYUnits("Nodes");
 
 #ifndef __WINDOWS__
 	//
@@ -145,8 +145,8 @@ void CKadDlg::UpdateGraph(const GraphUpdateInfo& update)
 
 void CKadDlg::UpdateNodeCount(unsigned nodeCount)
 {
-	wxStaticText* label = CastChild( wxT("nodesListLabel"), wxStaticText );
-	wxCHECK_RET(label, wxT("Failed to find kad-nodes label"));
+	wxStaticText* label = CastChild( "nodesListLabel", wxStaticText );
+	wxCHECK_RET(label, "Failed to find kad-nodes label");
 
 	label->SetLabel(CFormat(_("Nodes (%u)")) % nodeCount);
 	label->GetParent()->Layout();
@@ -174,9 +174,9 @@ void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 	if (FindWindowById(ID_NODECONNECT)->IsEnabled()) {
 		// Ip is reversed since StringIPtoUint32 returns anti-host and kad expects host order
 		uint32 ip = StringIPtoUint32(
-			dynamic_cast<wxTextCtrl*>(FindWindowById(ID_NODE_IP4))->GetValue() + wxT(".") +
-			dynamic_cast<wxTextCtrl*>(FindWindowById(ID_NODE_IP3))->GetValue() + wxT(".") +
-			dynamic_cast<wxTextCtrl*>(FindWindowById(ID_NODE_IP2))->GetValue() + wxT(".") +
+			dynamic_cast<wxTextCtrl*>(FindWindowById(ID_NODE_IP4))->GetValue() + "." +
+			dynamic_cast<wxTextCtrl*>(FindWindowById(ID_NODE_IP3))->GetValue() + "." +
+			dynamic_cast<wxTextCtrl*>(FindWindowById(ID_NODE_IP2))->GetValue() + "." +
 			dynamic_cast<wxTextCtrl*>(FindWindowById(ID_NODE_IP1))->GetValue() );
 
 		if (ip == 0) {

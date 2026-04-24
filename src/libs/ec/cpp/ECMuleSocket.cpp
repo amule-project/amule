@@ -53,7 +53,7 @@ END_EVENT_TABLE()
 void CECMuleSocketHandler::SocketHandler(wxSocketEvent& event)
 {
         CECSocket *socket = dynamic_cast<CECSocket *>(event.GetSocket());
-        wxCHECK_RET(socket, wxT("Socket event with a NULL socket!"));
+        wxCHECK_RET(socket, "Socket event with a NULL socket!");
 
         switch(event.GetSocketEvent()) {
         case wxSOCKET_LOST:

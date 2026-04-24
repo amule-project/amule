@@ -33,7 +33,7 @@
 //-----------------------------------------------------------------------------
 // This can be put in a separate include file
 #include <wx/strconv.h>
-static wxCSConv aMuleConv(wxT("iso8859-1"));
+static wxCSConv aMuleConv("iso8859-1");
 #ifdef wxUSE_UNICODE
         #define unicode2char(x) (const char*) aMuleConv.cWX2MB(x)
         #define char2unicode(x) aMuleConv.cMB2WX(x)

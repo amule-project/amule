@@ -95,22 +95,22 @@ CSharedFilesCtrl::CSharedFilesCtrl(wxWindow* parent, int id, const wxPoint& pos,
 	SetSortFunc( SortProc );
 
 	// Set the table-name (for loading and saving preferences).
-	SetTableName( wxT("Shared") );
+	SetTableName( "Shared" );
 
 	m_menu=NULL;
 
-	InsertColumn(ID_SHARED_COL_NAME, _("File Name"),		wxLIST_FORMAT_LEFT, 250, wxT("N") );
-	InsertColumn(ID_SHARED_COL_SIZE, _("Size"),			wxLIST_FORMAT_LEFT, 100, wxT("Z") );
-	InsertColumn(ID_SHARED_COL_TYPE, _("Type"),			wxLIST_FORMAT_LEFT,  50, wxT("Y") );
-	InsertColumn(ID_SHARED_COL_PRIO, _("Priority"),			wxLIST_FORMAT_LEFT,  70, wxT("p") );
-	InsertColumn(ID_SHARED_COL_ID,   _("FileID"),			wxLIST_FORMAT_LEFT, 220, wxT("I") );
-	InsertColumn(ID_SHARED_COL_REQ,  _("Requests"),			wxLIST_FORMAT_LEFT, 100, wxT("Q") );
-	InsertColumn(ID_SHARED_COL_AREQ, _("Accepted Requests"),	wxLIST_FORMAT_LEFT, 100, wxT("A") );
-	InsertColumn(ID_SHARED_COL_TRA,  _("Transferred Data"),		wxLIST_FORMAT_LEFT, 120, wxT("T") );
-	InsertColumn(ID_SHARED_COL_RTIO, _("Share Ratio"),		wxLIST_FORMAT_LEFT, 100, wxT("R") );
-	InsertColumn(ID_SHARED_COL_PART, _("Obtained Parts"),		wxLIST_FORMAT_LEFT, 120, wxT("P") );
-	InsertColumn(ID_SHARED_COL_CMPL, _("Complete Sources"),		wxLIST_FORMAT_LEFT, 120, wxT("C") );
-	InsertColumn(ID_SHARED_COL_PATH, _("Directory Path"),		wxLIST_FORMAT_LEFT, 220, wxT("D") );
+	InsertColumn(ID_SHARED_COL_NAME, _("File Name"),		wxLIST_FORMAT_LEFT, 250, "N" );
+	InsertColumn(ID_SHARED_COL_SIZE, _("Size"),			wxLIST_FORMAT_LEFT, 100, "Z" );
+	InsertColumn(ID_SHARED_COL_TYPE, _("Type"),			wxLIST_FORMAT_LEFT,  50, "Y" );
+	InsertColumn(ID_SHARED_COL_PRIO, _("Priority"),			wxLIST_FORMAT_LEFT,  70, "p" );
+	InsertColumn(ID_SHARED_COL_ID,   _("FileID"),			wxLIST_FORMAT_LEFT, 220, "I" );
+	InsertColumn(ID_SHARED_COL_REQ,  _("Requests"),			wxLIST_FORMAT_LEFT, 100, "Q" );
+	InsertColumn(ID_SHARED_COL_AREQ, _("Accepted Requests"),	wxLIST_FORMAT_LEFT, 100, "A" );
+	InsertColumn(ID_SHARED_COL_TRA,  _("Transferred Data"),		wxLIST_FORMAT_LEFT, 120, "T" );
+	InsertColumn(ID_SHARED_COL_RTIO, _("Share Ratio"),		wxLIST_FORMAT_LEFT, 100, "R" );
+	InsertColumn(ID_SHARED_COL_PART, _("Obtained Parts"),		wxLIST_FORMAT_LEFT, 120, "P" );
+	InsertColumn(ID_SHARED_COL_CMPL, _("Complete Sources"),		wxLIST_FORMAT_LEFT, 120, "C" );
+	InsertColumn(ID_SHARED_COL_PATH, _("Directory Path"),		wxLIST_FORMAT_LEFT, 220, "D" );
 
 	LoadSettings();
 }
@@ -118,7 +118,7 @@ CSharedFilesCtrl::CSharedFilesCtrl(wxWindow* parent, int id, const wxPoint& pos,
 
 wxString CSharedFilesCtrl::GetOldColumnOrder() const
 {
-	return wxT("N,Z,Y,p,I,Q,A,T,R,P,C,D");
+	return "N,Z,Y,p,I,Q,A,T,R,P,C,D";
 }
 
 
@@ -156,7 +156,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->Append(MP_RENAME, _("Rename"));
 		m_menu->AppendSeparator();
 
-		if (file->GetFileName().GetExt() == wxT("emulecollection")) {
+		if (file->GetFileName().GetExt() == "emulecollection") {
 			m_menu->Append( MP_ADDCOLLECTION, _("Add files in collection to transfer list"));
 			m_menu->AppendSeparator();
 		}
@@ -202,7 +202,7 @@ void CSharedFilesCtrl::OnGetFeedback(wxCommandEvent& WXUNUSED(event))
 		if (feed.IsEmpty()) {
 			feed = CFormat(_("Feedback from: %s (%s)\n\n")) % thePrefs::GetUserNick() % theApp->GetFullMuleVersion();
 		} else {
-			feed += wxT("\n");
+			feed += "\n";
 		}
 		feed += reinterpret_cast<CKnownFile*>(GetItemData(index))->GetFeedback();
 		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
@@ -259,7 +259,7 @@ void CSharedFilesCtrl::DoShowFile(CKnownFile* file, bool batch)
 
 	const long insertPos = (batch ? GetItemCount() : GetInsertPos(ptr));
 
-	long newitem = InsertItem(insertPos, wxEmptyString);
+	long newitem = InsertItem(insertPos, "");
 	SetItemPtrData( newitem, ptr );
 
 	if (!batch) {
@@ -326,14 +326,14 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 		CKnownFile* file = reinterpret_cast<CKnownFile*>(GetItemData(index));
 
 		switch ( event.GetId() ) {
-			case MP_GETMAGNETLINK:				URIs += theApp->CreateMagnetLink( file ) + wxT("\n");				break;
-			case MP_GETED2KLINK:				URIs += theApp->CreateED2kLink( file ) + wxT("\n");					break;
-			case MP_GETSOURCEED2KLINK:			URIs += theApp->CreateED2kLink( file , true) + wxT("\n");			break;
-			case MP_GETCRYPTSOURCEDED2KLINK:	URIs += theApp->CreateED2kLink( file , true, false, true) + wxT("\n");			break;
-			case MP_GETHOSTNAMESOURCEED2KLINK:	URIs += theApp->CreateED2kLink( file , true, true) + wxT("\n");	break;
-			case MP_GETHOSTNAMECRYPTSOURCEED2KLINK:			URIs += theApp->CreateED2kLink( file, true, true, true ) + wxT("\n");	break;
-			case MP_GETAICHED2KLINK:			URIs += theApp->CreateED2kLink(file, false, false, false, true) + wxT("\n");		break;
-			case MP_GETAICHED2KLINKSRC:			URIs += theApp->CreateED2kLink(file, true,  false, false, true) + wxT("\n");		break;
+			case MP_GETMAGNETLINK:				URIs += theApp->CreateMagnetLink( file ) + "\n";				break;
+			case MP_GETED2KLINK:				URIs += theApp->CreateED2kLink( file ) + "\n";					break;
+			case MP_GETSOURCEED2KLINK:			URIs += theApp->CreateED2kLink( file , true) + "\n";			break;
+			case MP_GETCRYPTSOURCEDED2KLINK:	URIs += theApp->CreateED2kLink( file , true, false, true) + "\n";			break;
+			case MP_GETHOSTNAMESOURCEED2KLINK:	URIs += theApp->CreateED2kLink( file , true, true) + "\n";	break;
+			case MP_GETHOSTNAMECRYPTSOURCEED2KLINK:			URIs += theApp->CreateED2kLink( file, true, true, true ) + "\n";	break;
+			case MP_GETAICHED2KLINK:			URIs += theApp->CreateED2kLink(file, false, false, false, true) + "\n";		break;
+			case MP_GETAICHED2KLINKSRC:			URIs += theApp->CreateED2kLink(file, true,  false, false, true) + "\n";		break;
 		}
 
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
@@ -460,7 +460,7 @@ void CSharedFilesCtrl::UpdateItem(CKnownFile* toupdate)
 
 void CSharedFilesCtrl::ShowFilesCount()
 {
-	wxStaticText* label = CastByName( wxT("sharedFilesLabel"), GetParent(), wxStaticText );
+	wxStaticText* label = CastByName( "sharedFilesLabel", GetParent(), wxStaticText );
 
 	label->SetLabel(CFormat(_("Shared Files (%i)")) % GetItemCount());
 	label->GetParent()->Layout();
@@ -551,24 +551,24 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 					break;
 
 				case ID_SHARED_COL_REQ:
-					textBuffer = CFormat(wxT("%u (%u)"))
+					textBuffer = CFormat("%u (%u)")
 							% file->statistic.GetRequests()
 							% file->statistic.GetAllTimeRequests();
 					break;
 
 				case ID_SHARED_COL_AREQ:
-					textBuffer = CFormat(wxT("%u (%u)"))
+					textBuffer = CFormat("%u (%u)")
 							% file->statistic.GetAccepts()
 							% file->statistic.GetAllTimeAccepts();
 					break;
 
 				case ID_SHARED_COL_TRA:
 					textBuffer = CastItoXBytes(file->statistic.GetTransferred())
-						+ wxT(" (") + CastItoXBytes(file->statistic.GetAllTimeTransferred()) + wxT(")");
+						+ " (" + CastItoXBytes(file->statistic.GetAllTimeTransferred()) + ")";
 					break;
 
 				case ID_SHARED_COL_RTIO:
-					textBuffer = CFormat(wxT("%.2f")) %	((double)file->statistic.GetAllTimeTransferred() / file->GetFileSize());
+					textBuffer = CFormat("%.2f") %	((double)file->statistic.GetAllTimeTransferred() / file->GetFileSize());
 					break;
 
 				case ID_SHARED_COL_PART:
@@ -583,14 +583,14 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 				case ID_SHARED_COL_CMPL:
 					if ( file->m_nCompleteSourcesCountLo == 0 ) {
 						if ( file->m_nCompleteSourcesCountHi ) {
-							textBuffer = CFormat(wxT("< %u")) % file->m_nCompleteSourcesCountHi;
+							textBuffer = CFormat("< %u") % file->m_nCompleteSourcesCountHi;
 						} else {
-							textBuffer = wxT("0");
+							textBuffer = "0";
 						}
 					} else if (file->m_nCompleteSourcesCountLo == file->m_nCompleteSourcesCountHi) {
-						textBuffer = CFormat(wxT("%u")) % file->m_nCompleteSourcesCountLo;
+						textBuffer = CFormat("%u") % file->m_nCompleteSourcesCountLo;
 					} else {
-						textBuffer = CFormat(wxT("%u - %u")) % file->m_nCompleteSourcesCountLo % file->m_nCompleteSourcesCountHi;
+						textBuffer = CFormat("%u - %u") % file->m_nCompleteSourcesCountLo % file->m_nCompleteSourcesCountHi;
 					}
 
 					break;

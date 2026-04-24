@@ -544,7 +544,7 @@ public:
 	// Actions
 	//
 	void Reload();
-	void Update(wxString strURL = wxEmptyString);
+	void Update(wxString strURL = "");
 	bool IsReady() const { return true; }
 };
 

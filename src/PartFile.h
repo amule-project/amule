@@ -47,7 +47,7 @@ class CED2KFileLink;
 // Ok, eMule and aMule are building incompatible backup files because
 // of the different name. aMule was using ".BAK" and eMule ".bak".
 // This should fix it.
-#define   PARTMET_BAK_EXT wxT(".bak")
+#define   PARTMET_BAK_EXT ".bak"
 
 enum EPartFileFormat {
 	PMT_UNKNOWN	= 0,
@@ -68,9 +68,7 @@ public:
 	wxString Comment;
 public:
 	SFileRating(const wxString &u, const wxString &f, sint16 r, const wxString &c);
-	SFileRating(const SFileRating &fr);
 	SFileRating(const CUpDownClient &client);
-	~SFileRating();
 };
 
 typedef std::list<SFileRating> FileRatingList;
@@ -417,8 +415,8 @@ public:
 	bool IsLocalSrcRequestQueued() const		{ return m_localSrcReqQueued; }
 	void SetLocalSrcRequestQueued(bool value)	{ m_localSrcReqQueued = value; }
 
-	void AddA4AFSource(CUpDownClient* src)		{ m_A4AFsrclist.insert(CCLIENTREF(src, wxT("A4AFSource"))); }
-	bool RemoveA4AFSource(CUpDownClient* src)	{ return (m_A4AFsrclist.erase(CCLIENTREF(src, wxEmptyString)) > 0); }
+	void AddA4AFSource(CUpDownClient* src)		{ m_A4AFsrclist.insert(CCLIENTREF(src, "A4AFSource")); }
+	bool RemoveA4AFSource(CUpDownClient* src)	{ return (m_A4AFsrclist.erase(CCLIENTREF(src, "")) > 0); }
 
 	uint32 GetLastSearchTime() const			{ return m_lastsearchtime; }
 	void SetLastSearchTime(uint32 time)			{ m_lastsearchtime = time; }

@@ -72,7 +72,7 @@ public:
 	}
 
 	void UpdateGauge(int total, int current) {
-		CFormat label( wxT("( %s / %s )") );
+		CFormat label( "( %s / %s )" );
 
 		const int safeCurrent = (current > 0) ? current : 0;
 		const int safeTotal   = (total   > 0) ? total   : 0;
@@ -177,17 +177,17 @@ static void ApplyProxyToDefaultSession()
 		return;
 	}
 	if (pd->m_proxyType != PROXY_HTTP) {
-		AddDebugLogLineN(logHTTP, wxT("wxWebRequest: SOCKS proxies are not supported; startup HTTP will be made direct."));
+		AddDebugLogLineN(logHTTP, "wxWebRequest: SOCKS proxies are not supported; startup HTTP will be made direct.");
 		session.SetProxy(wxWebProxy::FromURL(wxString()));
 		return;
 	}
 	wxString url;
 	if (pd->m_enablePassword && !pd->m_userName.IsEmpty()) {
-		url = CFormat(wxT("http://%s:%s@%s:%u"))
+		url = CFormat("http://%s:%s@%s:%u")
 			% pd->m_userName % pd->m_password
 			% pd->m_proxyHostName % pd->m_proxyPort;
 	} else {
-		url = CFormat(wxT("http://%s:%u"))
+		url = CFormat("http://%s:%u")
 			% pd->m_proxyHostName % pd->m_proxyPort;
 	}
 	session.SetProxy(wxWebProxy::FromURL(url));
@@ -219,7 +219,7 @@ CHTTPDownloadThread::CHTTPDownloadThread(const wxString& url, const wxString& fi
 	if (checkDownloadNewer && thePrefs::GetLastHTTPDownloadURL(file_id) == url) {
 		wxFileName origFile(oldfilename);
 		if (origFile.FileExists()) {
-			AddDebugLogLineN(logHTTP, CFormat(wxT("URL %s matches and file %s exists, only download if newer")) % url % oldfilename);
+			AddDebugLogLineN(logHTTP, CFormat("URL %s matches and file %s exists, only download if newer") % url % oldfilename);
 			m_lastmodified = origFile.GetModificationTime();
 		}
 	}
@@ -229,7 +229,7 @@ CHTTPDownloadThread::CHTTPDownloadThread(const wxString& url, const wxString& fi
 		s_allThreads.insert(this);
 	}
 
-	AddDebugLogLineN(logHTTP, CFormat(wxT("HTTP download started: %s")) % m_url);
+	AddDebugLogLineN(logHTTP, CFormat("HTTP download started: %s") % m_url);
 
 	if (m_url.IsEmpty()) {
 		AddLogLineC(_("The URL to download can't be empty"));
@@ -255,8 +255,8 @@ CHTTPDownloadThread::CHTTPDownloadThread(const wxString& url, const wxString& fi
 	m_request.SetStorage(wxWebRequest::Storage_File);
 
 	if (m_lastmodified.IsValid()) {
-		AddDebugLogLineN(logHTTP, wxT("If-Modified-Since: ") + FormatDateHTTP(m_lastmodified));
-		m_request.SetHeader(wxT("If-Modified-Since"), FormatDateHTTP(m_lastmodified));
+		AddDebugLogLineN(logHTTP, "If-Modified-Since: " + FormatDateHTTP(m_lastmodified));
+		m_request.SetHeader("If-Modified-Since", FormatDateHTTP(m_lastmodified));
 	}
 
 	Bind(wxEVT_WEBREQUEST_STATE, &CHTTPDownloadThread::OnStateEvent, this);
@@ -268,10 +268,10 @@ CHTTPDownloadThread::CHTTPDownloadThread(const wxString& url, const wxString& fi
 // Example: Thu, 14 Jan 2010 15:40:23 GMT
 wxString CHTTPDownloadThread::FormatDateHTTP(const wxDateTime& date)
 {
-	static const wxChar* s_months[] = { wxT("Jan"), wxT("Feb"), wxT("Mar"), wxT("Apr"), wxT("May"), wxT("Jun"), wxT("Jul"), wxT("Aug"), wxT("Sep"), wxT("Oct"), wxT("Nov"), wxT("Dec") };
-	static const wxChar* s_dow[] = { wxT("Sun"), wxT("Mon"), wxT("Tue"), wxT("Wed"), wxT("Thu"), wxT("Fri"), wxT("Sat") };
+	static const wxChar* s_months[] = { L"Jan", L"Feb", L"Mar", L"Apr", L"May", L"Jun", L"Jul", L"Aug", L"Sep", L"Oct", L"Nov", L"Dec" };
+	static const wxChar* s_dow[] = { L"Sun", L"Mon", L"Tue", L"Wed", L"Thu", L"Fri", L"Sat" };
 
-	return CFormat(wxT("%s, %02d %s %d %02d:%02d:%02d GMT")) % s_dow[date.GetWeekDay(wxDateTime::UTC)] % date.GetDay(wxDateTime::UTC) % s_months[date.GetMonth(wxDateTime::UTC)] % date.GetYear(wxDateTime::UTC) % date.GetHour(wxDateTime::UTC) % date.GetMinute(wxDateTime::UTC) % date.GetSecond(wxDateTime::UTC);
+	return CFormat("%s, %02d %s %d %02d:%02d:%02d GMT") % s_dow[date.GetWeekDay(wxDateTime::UTC)] % date.GetDay(wxDateTime::UTC) % s_months[date.GetMonth(wxDateTime::UTC)] % date.GetYear(wxDateTime::UTC) % date.GetHour(wxDateTime::UTC) % date.GetMinute(wxDateTime::UTC) % date.GetSecond(wxDateTime::UTC);
 }
 
 
@@ -293,7 +293,7 @@ void CHTTPDownloadThread::OnStateEvent(wxWebRequestEvent& evt)
 				CMuleInternalEvent prog(wxEVT_HTTP_PROGRESS);
 				prog.SetInt((int)m_request.GetBytesReceived());
 				prog.SetExtraLong((long)(expected > 0 ? expected : 0));
-				wxPostEvent(m_companion, prog);
+				wxQueueEvent(m_companion, (prog).Clone());
 #endif
 			}
 			break;
@@ -304,11 +304,11 @@ void CHTTPDownloadThread::OnStateEvent(wxWebRequestEvent& evt)
 			m_response = response.IsOk() ? response.GetStatus() : 0;
 			m_error    = 0;
 
-			AddDebugLogLineN(logHTTP, CFormat(wxT("HTTP response %d for %s")) % m_response % m_url);
+			AddDebugLogLineN(logHTTP, CFormat("HTTP response %d for %s") % m_response % m_url);
 
 			if (m_response == 304) {
 				// Not Modified — nothing to write.
-				AddDebugLogLineN(logHTTP, wxT("Skipped download because requested file is not newer."));
+				AddDebugLogLineN(logHTTP, "Skipped download because requested file is not newer.");
 				FinishAndDestroy(HTTP_Skipped);
 			} else if (m_response >= 200 && m_response < 300) {
 				// Success. wx wrote the body to its own temp file; move it
@@ -352,7 +352,7 @@ void CHTTPDownloadThread::OnStateEvent(wxWebRequestEvent& evt)
 		}
 
 		case wxWebRequest::State_Cancelled: {
-			AddDebugLogLineN(logHTTP, CFormat(wxT("HTTP download cancelled: %s")) % m_url);
+			AddDebugLogLineN(logHTTP, CFormat("HTTP download cancelled: %s") % m_url);
 			FinishAndDestroy(HTTP_Error);
 			break;
 		}
@@ -389,7 +389,7 @@ void CHTTPDownloadThread::FinishAndDestroy(int result)
 #ifndef AMULE_DAEMON
 	if (m_companion) {
 		CMuleInternalEvent termEvent(wxEVT_HTTP_SHUTDOWN);
-		wxPostEvent(m_companion, termEvent);
+		wxQueueEvent(m_companion, (termEvent).Clone());
 	}
 #endif
 
@@ -398,14 +398,14 @@ void CHTTPDownloadThread::FinishAndDestroy(int result)
 	CMuleInternalEvent evt(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD);
 	evt.SetInt((int)m_file_id);
 	evt.SetExtraLong((long)m_result);
-	wxPostEvent(wxTheApp, evt);
+	wxQueueEvent(wxTheApp, (evt).Clone());
 
 	{
 		wxMutexLocker lock(s_allThreadsMutex);
 		s_allThreads.erase(this);
 	}
 
-	AddDebugLogLineN(logHTTP, wxT("HTTP download ended"));
+	AddDebugLogLineN(logHTTP, "HTTP download ended");
 
 	// Schedule our own destruction after the current event returns to
 	// the main loop. Must not be `delete this` — wxWebRequest may still

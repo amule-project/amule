@@ -48,7 +48,7 @@ public:
 	CUPnPException(const std::ostringstream& msg)
 	:
 	CMuleException(
-		wxT("CUPnPException"),
+		"CUPnPException",
 		wxString(char2unicode(msg.str().c_str()))) {}
 };
 

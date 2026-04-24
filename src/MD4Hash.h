@@ -62,9 +62,6 @@ public:
 		Clear();
 	}
 
-	~CMD4Hash() {
-	}
-
 	/**
 	 * Cast a unsigned char array to a CMD4Hash.
 	 *
@@ -255,12 +252,12 @@ public:
 	 * @return The value (or its reference) at the given index.
 	 */
 	unsigned char operator[](size_t i) const {
-		MULE_VALIDATE_PARAMS(i < MD4HASH_LENGTH, wxT("Invalid index in CMD4Hash::operator[]"));
+		MULE_VALIDATE_PARAMS(i < MD4HASH_LENGTH, "Invalid index in CMD4Hash::operator[]");
 		return m_hash[i];
 	}
 
 	unsigned char& operator[](size_t i) {
-		MULE_VALIDATE_PARAMS(i < MD4HASH_LENGTH, wxT("Invalid index in CMD4Hash::operator[]"));
+		MULE_VALIDATE_PARAMS(i < MD4HASH_LENGTH, "Invalid index in CMD4Hash::operator[]");
 		return m_hash[i];
 	}
 

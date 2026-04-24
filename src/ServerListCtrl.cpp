@@ -80,24 +80,24 @@ CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPo
 	SetSortFunc( SortProc );
 
 	// Set the table-name (for loading and saving preferences).
-	SetTableName( wxT("Server") );
+	SetTableName( "Server" );
 
 	m_connected = 0;
 
-	InsertColumn( COLUMN_SERVER_NAME,	_("Server Name"),	wxLIST_FORMAT_LEFT, 150, wxT("N") );
-	InsertColumn( COLUMN_SERVER_ADDR,	_("Address"),		wxLIST_FORMAT_LEFT, 140, wxT("A") );
-	InsertColumn( COLUMN_SERVER_PORT,	_("Port"),		wxLIST_FORMAT_LEFT,  25, wxT("P") );
-	InsertColumn( COLUMN_SERVER_DESC,	_("Description"),	wxLIST_FORMAT_LEFT, 150, wxT("D") );
-	InsertColumn( COLUMN_SERVER_PING,	_("Ping"),		wxLIST_FORMAT_LEFT,  25, wxT("p") );
-	InsertColumn( COLUMN_SERVER_USERS,	_("Users"),		wxLIST_FORMAT_LEFT,  40, wxT("U") );
-	InsertColumn( COLUMN_SERVER_FILES,	_("Files"),		wxLIST_FORMAT_LEFT,  45, wxT("F") );
-	InsertColumn( COLUMN_SERVER_PRIO,	_("Priority"),		wxLIST_FORMAT_LEFT,  60, wxT("r") );
-	InsertColumn( COLUMN_SERVER_FAILS,	_("Failed"),		wxLIST_FORMAT_LEFT,  40, wxT("f") );
-	InsertColumn( COLUMN_SERVER_STATIC,	_("Static"),		wxLIST_FORMAT_LEFT,  40, wxT("S") );
-	InsertColumn( COLUMN_SERVER_VERSION,	_("Version"),		wxLIST_FORMAT_LEFT,  80, wxT("V") );
+	InsertColumn( COLUMN_SERVER_NAME,	_("Server Name"),	wxLIST_FORMAT_LEFT, 150, "N" );
+	InsertColumn( COLUMN_SERVER_ADDR,	_("Address"),		wxLIST_FORMAT_LEFT, 140, "A" );
+	InsertColumn( COLUMN_SERVER_PORT,	_("Port"),		wxLIST_FORMAT_LEFT,  25, "P" );
+	InsertColumn( COLUMN_SERVER_DESC,	_("Description"),	wxLIST_FORMAT_LEFT, 150, "D" );
+	InsertColumn( COLUMN_SERVER_PING,	_("Ping"),		wxLIST_FORMAT_LEFT,  25, "p" );
+	InsertColumn( COLUMN_SERVER_USERS,	_("Users"),		wxLIST_FORMAT_LEFT,  40, "U" );
+	InsertColumn( COLUMN_SERVER_FILES,	_("Files"),		wxLIST_FORMAT_LEFT,  45, "F" );
+	InsertColumn( COLUMN_SERVER_PRIO,	_("Priority"),		wxLIST_FORMAT_LEFT,  60, "r" );
+	InsertColumn( COLUMN_SERVER_FAILS,	_("Failed"),		wxLIST_FORMAT_LEFT,  40, "f" );
+	InsertColumn( COLUMN_SERVER_STATIC,	_("Static"),		wxLIST_FORMAT_LEFT,  40, "S" );
+	InsertColumn( COLUMN_SERVER_VERSION,	_("Version"),		wxLIST_FORMAT_LEFT,  80, "V" );
 	#ifdef __DEBUG__
-	InsertColumn( COLUMN_SERVER_TCPFLAGS,	wxT("TCP Flags"),	wxLIST_FORMAT_LEFT,  80, wxT("t") );
-	InsertColumn( COLUMN_SERVER_UDPFLAGS,	wxT("UDP Flags"),	wxLIST_FORMAT_LEFT,  80, wxT("u") );
+	InsertColumn( COLUMN_SERVER_TCPFLAGS,	"TCP Flags",	wxLIST_FORMAT_LEFT,  80, "t" );
+	InsertColumn( COLUMN_SERVER_UDPFLAGS,	"UDP Flags",	wxLIST_FORMAT_LEFT,  80, "u" );
 	#endif
 
 
@@ -107,7 +107,7 @@ CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPo
 
 wxString CServerListCtrl::GetOldColumnOrder() const
 {
-	return wxT("N,A,P,D,p,U,F,r,f,S,V,t,u");
+	return "N,A,P,D,p,U,F,r,f,S,V,t,u";
 }
 
 
@@ -196,7 +196,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	if (theApp->amuledlg->m_IP2Country->IsEnabled() && thePrefs::IsGeoIPEnabled()) {
 		const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(server->GetFullIP());
 		serverName << countrydata.Name;
-		serverName << wxT(" - ");
+		serverName << " - ";
 	}
 #endif // ENABLE_IP2COUNTRY
 	serverName << server->GetListName();
@@ -204,10 +204,10 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	SetItem(itemnr, COLUMN_SERVER_ADDR, server->GetAddress());
 	if (server->GetAuxPortsList().IsEmpty()) {
 		SetItem( itemnr, COLUMN_SERVER_PORT,
-			CFormat(wxT("%u")) % server->GetPort());
+			CFormat("%u") % server->GetPort());
 	} else {
 		SetItem( itemnr, COLUMN_SERVER_PORT,
-			CFormat(wxT("%u (%s)")) % server->GetPort() % server->GetAuxPortsList());
+			CFormat("%u (%s)") % server->GetPort() % server->GetAuxPortsList());
 	}
 	SetItem( itemnr, COLUMN_SERVER_DESC, server->GetDescription() );
 
@@ -215,31 +215,31 @@ void CServerListCtrl::RefreshServer( CServer* server )
 		SetItem( itemnr, COLUMN_SERVER_PING,
 			CastSecondsToHM(server->GetPing()/1000, server->GetPing() % 1000 ) );
 	} else {
-		SetItem( itemnr, COLUMN_SERVER_PING, wxEmptyString );
+		SetItem( itemnr, COLUMN_SERVER_PING, "" );
 	}
 
 	if ( server->GetUsers() ) {
 		SetItem( itemnr, COLUMN_SERVER_USERS,
-			CFormat(wxT("%u")) % server->GetUsers());
+			CFormat("%u") % server->GetUsers());
 	} else {
-		SetItem( itemnr, COLUMN_SERVER_USERS, wxEmptyString );
+		SetItem( itemnr, COLUMN_SERVER_USERS, "" );
 	}
 
 	if ( server->GetFiles() ) {
 		SetItem( itemnr, COLUMN_SERVER_FILES,
-			CFormat(wxT("%u")) % server->GetFiles());
+			CFormat("%u") % server->GetFiles());
 	} else {
-		SetItem( itemnr, COLUMN_SERVER_FILES, wxEmptyString );
+		SetItem( itemnr, COLUMN_SERVER_FILES, "" );
 	}
 
 	switch ( server->GetPreferences() ) {
 		case SRV_PR_LOW:	SetItem(itemnr, COLUMN_SERVER_PRIO, _("Low"));		break;
 		case SRV_PR_NORMAL:	SetItem(itemnr, COLUMN_SERVER_PRIO, _("Normal"));	break;
 		case SRV_PR_HIGH:	SetItem(itemnr, COLUMN_SERVER_PRIO, _("High") );	break;
-		default:		SetItem(itemnr, COLUMN_SERVER_PRIO, wxT("---"));	// this should never happen
+		default:		SetItem(itemnr, COLUMN_SERVER_PRIO, "---");	// this should never happen
 	}
 
-	SetItem( itemnr, COLUMN_SERVER_FAILS, CFormat(wxT("%u")) % server->GetFailedCount());
+	SetItem( itemnr, COLUMN_SERVER_FAILS, CFormat("%u") % server->GetFailedCount());
 	SetItem( itemnr, COLUMN_SERVER_STATIC, ( server->IsStaticMember() ? _("Yes") : _("No") ) );
 	SetItem( itemnr, COLUMN_SERVER_VERSION, server->GetVersion() );
 
@@ -247,25 +247,25 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	wxString flags;
 	/* TCP */
 	if (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION) {
-		flags += wxT("c");
+		flags += "c";
 	}
 	if (server->GetTCPFlags() & SRV_TCPFLG_NEWTAGS) {
-		flags += wxT("n");
+		flags += "n";
 	}
 	if (server->GetTCPFlags() & SRV_TCPFLG_UNICODE) {
-		flags += wxT("u");
+		flags += "u";
 	}
 	if (server->GetTCPFlags() & SRV_TCPFLG_RELATEDSEARCH) {
-		flags += wxT("r");
+		flags += "r";
 	}
 	if (server->GetTCPFlags() & SRV_TCPFLG_TYPETAGINTEGER) {
-		flags += wxT("t");
+		flags += "t";
 	}
 	if (server->GetTCPFlags() & SRV_TCPFLG_LARGEFILES) {
-		flags += wxT("l");
+		flags += "l";
 	}
 	if (server->GetTCPFlags() & SRV_TCPFLG_TCPOBFUSCATION) {
-		flags += wxT("o");
+		flags += "o";
 	}
 
 	SetItem( itemnr, COLUMN_SERVER_TCPFLAGS, flags );
@@ -273,28 +273,28 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	/* UDP */
 	flags.Clear();
 	if (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES) {
-		flags += wxT("g");
+		flags += "g";
 	}
 	if (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETFILES) {
-		flags += wxT("f");
+		flags += "f";
 	}
 	if (server->GetUDPFlags() & SRV_UDPFLG_NEWTAGS) {
-		flags += wxT("n");
+		flags += "n";
 	}
 	if (server->GetUDPFlags() & SRV_UDPFLG_UNICODE) {
-		flags += wxT("u");
+		flags += "u";
 	}
 	if (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2) {
-		flags += wxT("G");
+		flags += "G";
 	}
 	if (server->GetUDPFlags() & SRV_UDPFLG_LARGEFILES) {
-		flags += wxT("l");
+		flags += "l";
 	}
 	if (server->GetUDPFlags() & SRV_UDPFLG_UDPOBFUSCATION) {
-		flags += wxT("o");
+		flags += "o";
 	}
 	if (server->GetUDPFlags() & SRV_UDPFLG_TCPOBFUSCATION) {
-		flags += wxT("O");
+		flags += "O";
 	}
 	SetItem( itemnr, COLUMN_SERVER_UDPFLAGS, flags );
 
@@ -342,7 +342,7 @@ void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
 
 void CServerListCtrl::ShowServerCount()
 {
-	wxStaticText* label = CastByName( wxT("serverListLabel"), GetParent(), wxStaticText );
+	wxStaticText* label = CastByName( "serverListLabel", GetParent(), wxStaticText );
 
 	if ( label ) {
 		label->SetLabel(CFormat(_("Servers (%i)")) % GetItemCount());
@@ -508,7 +508,7 @@ void CServerListCtrl::OnGetED2kURL( wxCommandEvent& WXUNUSED(event) )
 	while ( pos != -1 ) {
 		CServer* server = reinterpret_cast<CServer*>(GetItemData(pos));
 
-		URL += CFormat(wxT("ed2k://|server|%s|%d|/\n"))	% server->GetFullIP() % server->GetPort();
+		URL += CFormat("ed2k://|server|%s|%d|/\n")	% server->GetFullIP() % server->GetPort();
 
 		pos = GetNextItem( pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}

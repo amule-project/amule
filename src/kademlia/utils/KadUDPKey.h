@@ -36,14 +36,15 @@ class CKadUDPKey
 {
       public:
 	CKadUDPKey(uint32_t WXUNUSED_UNLESS_DEBUG(zero) = 0)			{ wxASSERT(zero == 0); m_key = m_ip = 0; }
-	CKadUDPKey(uint32_t key, uint32_t ip) throw()				{ m_key = key; m_ip = ip; }
+	CKadUDPKey(uint32_t key, uint32_t ip) noexcept				{ m_key = key; m_ip = ip; }
 	CKadUDPKey(CFileDataIO& file)						{ ReadFromFile(file); }
-	CKadUDPKey& operator=(const CKadUDPKey& k1) throw()			{ m_key = k1.m_key; m_ip = k1.m_ip; return *this; }
+	CKadUDPKey(const CKadUDPKey&) = default;
+	CKadUDPKey& operator=(const CKadUDPKey& k1) noexcept			{ m_key = k1.m_key; m_ip = k1.m_ip; return *this; }
 	CKadUDPKey& operator=(const uint32_t WXUNUSED_UNLESS_DEBUG(zero))	{ wxASSERT(zero == 0); m_key = m_ip = 0; return *this; }
-	friend bool operator==(const CKadUDPKey& k1, const CKadUDPKey& k2) throw() { return k1.GetKeyValue(k1.m_ip) == k2.GetKeyValue(k2.m_ip);}
+	friend bool operator==(const CKadUDPKey& k1, const CKadUDPKey& k2) noexcept { return k1.GetKeyValue(k1.m_ip) == k2.GetKeyValue(k2.m_ip);}
 
-	uint32_t	GetKeyValue(uint32_t myIP) const throw()		{ return (myIP == m_ip) ? m_key : 0; }
-	bool		IsEmpty() const throw()					{ return (m_key == 0) || (m_ip == 0); }
+	uint32_t	GetKeyValue(uint32_t myIP) const noexcept		{ return (myIP == m_ip) ? m_key : 0; }
+	bool		IsEmpty() const noexcept					{ return (m_key == 0) || (m_ip == 0); }
 	void		StoreToFile(CFileDataIO& file) const			{ file.WriteUInt32(m_key); file.WriteUInt32(m_ip); }
 	void		ReadFromFile(CFileDataIO& file)				{ m_key = file.ReadUInt32(); m_ip = file.ReadUInt32(); }
 

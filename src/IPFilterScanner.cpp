@@ -1244,7 +1244,7 @@ YY_RULE_SETUP
 {
 		/* Bad line */
 		yyip_Bad++;
-		AddDebugLogLineN(logIPFilter, CFormat(wxT("error in line %d: %s")) % yyip_Line % wxString(char2unicode(yytext)));
+		AddDebugLogLineN(logIPFilter, CFormat("error in line %d: %s") % yyip_Line % wxString(char2unicode(yytext)));
 	}
 	YY_BREAK
 case 6:

@@ -59,7 +59,7 @@ using namespace Kademlia;
 uint32_t  CSearchManager::m_nextID = 0;
 SearchMap CSearchManager::m_searches;
 
-bool CSearchManager::IsSearching(uint32_t searchID) throw()
+bool CSearchManager::IsSearching(uint32_t searchID) noexcept
 {
 	// Check if this searchID is within the searches
 	for (SearchMap::const_iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
@@ -127,7 +127,7 @@ CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t s
 
 		wxString wstrKeyword = s->m_words.front();
 
-		AddDebugLogLineN(logSearch, CFormat(wxT("Keyword for search: %s")) % wstrKeyword);
+		AddDebugLogLineN(logSearch, CFormat("Keyword for search: %s") % wstrKeyword);
 
 		// Kry - I just decided to assume everyone is unicoded
 		// GonoszTopi - seconded
@@ -148,11 +148,11 @@ CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t s
 		s->Go();
 	} catch (const CEOFException& err) {
 		delete s;
-		wxString strError = wxT("CEOFException in ") + wxString::FromAscii(__FUNCTION__) + wxT(": ") + err.what();
+		wxString strError = "CEOFException in " + wxString::FromAscii(__FUNCTION__) + ": " + err.what();
 		throw strError;
 	} catch (const CInvalidPacket& err) {
 		delete s;
-		wxString strError = wxT("CInvalidPacket exception in ") + wxString::FromAscii(__FUNCTION__) + wxT(": ") + err.what();
+		wxString strError = "CInvalidPacket exception in " + wxString::FromAscii(__FUNCTION__) + ": " + err.what();
 		throw strError;
 	} catch (...) {
 		delete s;
@@ -193,10 +193,10 @@ CSearch* CSearchManager::PrepareLookup(uint32_t type, bool start, const CUInt128
 		}
 	} catch (const CEOFException& DEBUG_ONLY(err)) {
 		delete s;
-		AddDebugLogLineN(logKadSearch, wxT("CEOFException in CSearchManager::PrepareLookup: ") + err.what());
+		AddDebugLogLineN(logKadSearch, "CEOFException in CSearchManager::PrepareLookup: " + err.what());
 		return NULL;
 	} catch (...) {
-		AddDebugLogLineN(logKadSearch, wxT("Exception in CSearchManager::PrepareLookup"));
+		AddDebugLogLineN(logKadSearch, "Exception in CSearchManager::PrepareLookup");
 		delete s;
 		throw;
 	}
@@ -395,7 +395,7 @@ void CSearchManager::JumpStart()
 	}
 }
 
-void CSearchManager::UpdateStats() throw()
+void CSearchManager::UpdateStats() noexcept
 {
 	uint8_t m_totalFile = 0;
 	uint8_t m_totalStoreSrc = 0;
@@ -485,7 +485,7 @@ void CSearchManager::ProcessResponse(const CUInt128& target, uint32_t fromIP, ui
 	// If this search was deleted before this response, delete contacts and abort, otherwise process them.
 	if (s == NULL) {
 		AddDebugLogLineN(logKadSearch,
-			wxT("Search either never existed or receiving late results (CSearchManager::ProcessResponse)"));
+			"Search either never existed or receiving late results (CSearchManager::ProcessResponse)");
 		DeleteContents(*results);
 	} else {
 		s->ProcessResponse(fromIP, fromPort, results);
@@ -505,7 +505,7 @@ void CSearchManager::ProcessResult(const CUInt128& target, const CUInt128& answe
 	// If this search was deleted before these results, delete contacts and abort, otherwise process them.
 	if (s == NULL) {
 		AddDebugLogLineN(logKadSearch,
-			wxT("Search either never existed or receiving late results (CSearchManager::ProcessResult)"));
+			"Search either never existed or receiving late results (CSearchManager::ProcessResult)");
 	} else {
 		s->ProcessResult(answer, info);
 	}
@@ -514,7 +514,7 @@ void CSearchManager::ProcessResult(const CUInt128& target, const CUInt128& answe
 bool CSearchManager::FindNodeSpecial(const CUInt128& id, CKadClientSearcher *requester)
 {
 	// Do a node lookup.
-	AddDebugLogLineN(logKadSearch, wxT("Starting NODESPECIAL Kad Search for ") + id.ToHexString());
+	AddDebugLogLineN(logKadSearch, "Starting NODESPECIAL Kad Search for " + id.ToHexString());
 	CSearch *search = new CSearch;
 	search->SetSearchTypes(CSearch::NODESPECIAL);
 	search->SetTargetID(id);
@@ -526,7 +526,7 @@ bool CSearchManager::FindNodeFWCheckUDP()
 {
 	CancelNodeFWCheckUDPSearch();
 	CUInt128 id(GetRandomUint128());
-	AddDebugLogLineN(logKadSearch, wxT("Starting NODEFWCHECKUDP Kad Search"));
+	AddDebugLogLineN(logKadSearch, "Starting NODEFWCHECKUDP Kad Search");
 	CSearch *search = new CSearch;
 	search->SetSearchTypes(CSearch::NODEFWCHECKUDP);
 	search->SetTargetID(id);

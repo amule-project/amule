@@ -255,7 +255,7 @@ public:
 	CLibSocket(wxSocketFlags flags = 0) : wxSocketClient(flags), m_isDestroying(false) {}
 
 	// not actually called
-	const wxChar * GetIP() const { return wxEmptyString; }
+	const wxChar * GetIP() const { return ""; }
 	void EventProcessed() {}
 	bool GetProxyState() const { return false; }
 	// unused Handlers

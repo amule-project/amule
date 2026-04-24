@@ -140,6 +140,9 @@ public:
 	CFormat& operator%(const wxString& value)		{ return this->operator%<const wxString&>(value); }
 	CFormat& operator%(const CFormat& value)		{ return this->operator%<const wxString&>(value); }
 	CFormat& operator%(const std::string& value)	{ return this->operator%<const wxString&>(wxString(value.c_str(), wxConvUTF8)); }
+	// Narrow string literals are passed directly (after dropping the wxT()
+	// wrapping sweep); dispatch to the wxString overload.
+	CFormat& operator%(const char* value)			{ return this->operator%<const wxString&>(wxString(value, wxConvUTF8)); }
 
 	/**
 	 * Returns the resulting string.
@@ -194,7 +197,7 @@ template<> inline CFormat& CFormat::operator%(float value)		{ return *this % (do
 template<> inline CFormat& CFormat::operator%(const wxChar* value)	{ return this->operator%<const wxString&>(wxString(value)); }
 
 
-#define WXLONGLONGFMTSPEC wxT(wxLongLongFmtSpec)
+#define WXLONGLONGFMTSPEC wxLongLongFmtSpec
 
 #endif
 // File_checked_for_headers

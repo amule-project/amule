@@ -101,7 +101,7 @@ void CFriendList::RemoveFriend(CFriend* toremove)
 
 void CFriendList::LoadList()
 {
-	CPath metfile = CPath(thePrefs::GetConfigDir() + wxT("emfriends.met"));
+	CPath metfile = CPath(thePrefs::GetConfigDir() + "emfriends.met");
 
 	if (!metfile.FileExists()) {
 		return;
@@ -123,9 +123,9 @@ void CFriendList::LoadList()
 			AddLogLineN(_("Failed to open friend list file 'emfriends.met' for reading!"));
 		}
 	} catch (const CInvalidPacket& e) {
-		AddDebugLogLineC(logGeneral, wxT("Invalid entry in friend list, file may be corrupt: ") + e.what());
+		AddDebugLogLineC(logGeneral, "Invalid entry in friend list, file may be corrupt: " + e.what());
 	} catch (const CSafeIOException& e) {
-		AddDebugLogLineC(logGeneral, wxT("IO error while reading 'emfriends.met': ") + e.what());
+		AddDebugLogLineC(logGeneral, "IO error while reading 'emfriends.met': " + e.what());
 	}
 
 }
@@ -134,7 +134,7 @@ void CFriendList::LoadList()
 void CFriendList::SaveList()
 {
 	CFile file;
-	if (file.Create(thePrefs::GetConfigDir() + wxT("emfriends.met"), true)) {
+	if (file.Create(thePrefs::GetConfigDir() + "emfriends.met", true)) {
 		try {
 			file.WriteUInt8(MET_HEADER);
 			file.WriteUInt32(m_FriendList.size());
@@ -143,7 +143,7 @@ void CFriendList::SaveList()
 				(*it)->WriteToFile(&file);
 			}
 		} catch (const CIOFailureException& e) {
-			AddDebugLogLineC(logGeneral, wxT("IO failure while saving 'emfriends.met': ") + e.what());
+			AddDebugLogLineC(logGeneral, "IO failure while saving 'emfriends.met': " + e.what());
 		}
 	} else {
 		AddLogLineN(_("Failed to open friend list file 'emfriends.met' for writing!"));
@@ -217,7 +217,7 @@ void CFriendList::RequestSharedFileList(CFriend* cur_friend)
 			client = new CUpDownClient(cur_friend->GetPort(), cur_friend->GetIP(), 0, 0, 0, true, true);
 			client->SetUserName(cur_friend->GetName());
 			theApp->clientlist->AddClient(client);
-			cur_friend->LinkClient(CCLIENTREF(client, wxT("CFriendList::RequestSharedFileList")));
+			cur_friend->LinkClient(CCLIENTREF(client, "CFriendList::RequestSharedFileList"));
 		}
 		client->RequestSharedFileList();
 	}
@@ -243,7 +243,7 @@ void CFriendList::StartChatSession(CFriend* Friend)
 			client->SetIP(Friend->GetIP());
 			client->SetUserName(Friend->GetName());
 			theApp->clientlist->AddClient(client);
-			Friend->LinkClient(CCLIENTREF(client, wxT("CFriendList::StartChatSession")));
+			Friend->LinkClient(CCLIENTREF(client, "CFriendList::StartChatSession"));
 		}
 	} else {
 		AddLogLineC(_("CRITICAL - no client on StartChatSession"));

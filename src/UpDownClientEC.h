@@ -60,7 +60,7 @@ private:
 	wxString GetLinkedFrom() {
 		wxString ret;
 		for (std::multiset<wxString>::iterator it = m_linkedFrom.begin(); it != m_linkedFrom.end(); it++) {
-			ret += *it + wxT(", ");
+			ret += *it + ", ";
 		}
 		return ret;
 	}

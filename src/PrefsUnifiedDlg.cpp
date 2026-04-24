@@ -147,9 +147,9 @@ END_EVENT_TABLE()
 static void SendCheckBoxEvent(wxWindow* parent, int id)
 {
 	wxCheckBox* widget = CastByID(id, parent, wxCheckBox);
-	wxCHECK_RET(widget, wxT("Invalid widget in CreateEvent"));
+	wxCHECK_RET(widget, "Invalid widget in CreateEvent");
 
-	wxCommandEvent evt(wxEVT_COMMAND_CHECKBOX_CLICKED, id);
+	wxCommandEvent evt(wxEVT_CHECKBOX, id);
 	evt.SetInt(widget->IsChecked() ? 1 : 0);
 
 	parent->GetEventHandler()->ProcessEvent(evt);
@@ -207,7 +207,7 @@ wxDialog(parent, -1, _("Preferences"),
 
 	// Add the single column used
 	m_PrefsIcons->InsertColumn(
-		0, wxEmptyString, wxLIST_FORMAT_LEFT,
+		0, "", wxLIST_FORMAT_LEFT,
 		m_PrefsIcons->GetSize().GetWidth()-5);
 
 	// Temp variables for finding the smallest height and width needed
@@ -256,11 +256,11 @@ wxDialog(parent, -1, _("Preferences"),
 			#endif
 		} else if (pages[i].m_function == PreferencesEventsTab) {
 
-#define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	+ wxString(wxT("\n  %") VAR wxT(" - ")) + wxGetTranslation(DESC)
-#define USEREVENTS_EVENT(ID, NAME, VARS) case CUserEvents::ID: CreateEventPanels(idx, wxEmptyString VARS, Widget); break;
+#define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	+ wxString("\n  %" VAR " - ") + wxGetTranslation(DESC)
+#define USEREVENTS_EVENT(ID, NAME, VARS) case CUserEvents::ID: CreateEventPanels(idx, "" VARS, Widget); break;
 
 			wxListCtrl *list = CastChild(IDC_EVENTLIST, wxListCtrl);
-			list->InsertColumn(0, wxEmptyString);
+			list->InsertColumn(0, "");
 			for (unsigned int idx = 0; idx < CUserEvents::GetCount(); ++idx) {
 				long lidx = list->InsertItem(idx,
 					wxGetTranslation(CUserEvents::GetDisplayName(
@@ -272,7 +272,7 @@ wxDialog(parent, -1, _("Preferences"),
 						USEREVENTS_EVENTLIST()
 						/* This macro expands to handle all user event types. Here is an example:
 						   case CUserEvents::NewChatSession: {
-						       CreateEventPanels(idx, wxString(wxT("\n %SENDER - ")) + wxTRANSLATE("Message sender."), Widget);
+						       CreateEventPanels(idx, wxString("\n %SENDER - ") + wxTRANSLATE("Message sender."), Widget);
 						       break;
 						   } */
 					}
@@ -625,7 +625,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	// Force port checking
 	thePrefs::SetPort(thePrefs::GetPort());
 
-	if ((CPath::GetFileSize(thePrefs::GetConfigDir() + wxT("addresses.dat")) == 0) &&
+	if ((CPath::GetFileSize(thePrefs::GetConfigDir() + "addresses.dat") == 0) &&
 		CastChild(IDC_AUTOSERVER, wxCheckBox)->IsChecked() ) {
 		thePrefs::UnsetAutoServerStart();
 		wxMessageBox(_("Your Auto-update server list is empty.\n'Auto-update server list at startup' will be disabled."),
@@ -851,7 +851,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 
 		case IDC_AUTOSERVER:
-			if ((CPath::GetFileSize(thePrefs::GetConfigDir() + wxT("addresses.dat")) == 0) &&
+			if ((CPath::GetFileSize(thePrefs::GetConfigDir() + "addresses.dat") == 0) &&
 				CastChild(event.GetId(), wxCheckBox)->IsChecked() ) {
 				wxMessageBox(_("Your Auto-update servers list is in blank.\nPlease fill in at least one URL to point to a valid server.met file.\nClick on the button \"List\" by this checkbox to enter an URL."),
 					_("Message"), wxOK | wxICON_INFORMATION);
@@ -1052,13 +1052,13 @@ void PrefsUnifiedDlg::OnButtonBrowseApplication(wxCommandEvent& event)
 	}
 	wxString wildcard = CFormat(_("Executable%s"))
 #ifdef __WINDOWS__
-		% wxT(" (*.exe)|*.exe");
+		% " (*.exe)|*.exe";
 #else
-		% wxT("|*");
+		% "|*";
 #endif
 
-	wxString str = wxFileSelector( title, wxEmptyString, wxEmptyString,
-		wxEmptyString, wildcard, 0, this );
+	wxString str = wxFileSelector( title, "", "",
+		"", wildcard, 0, this );
 
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = CastChild( id, wxTextCtrl );
@@ -1069,7 +1069,7 @@ void PrefsUnifiedDlg::OnButtonBrowseApplication(wxCommandEvent& event)
 
 void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString fullpath( thePrefs::GetConfigDir() + wxT("addresses.dat") );
+	wxString fullpath( thePrefs::GetConfigDir() + "addresses.dat" );
 
 	EditServerListDlg* test = new EditServerListDlg(this, _("Edit server list"),
 		_("Add here URL's to download server.met files.\nOnly one url on each line."),
@@ -1253,7 +1253,7 @@ void PrefsUnifiedDlg::CreateEventPanels(const int idx, const wxString& vars, wxW
 	wxStaticText *item11 = new wxStaticText( parent, -1, _("Core command:"), wxDefaultPosition, wxDefaultSize, 0 );
 	item10->Add( item11, 0, wxALIGN_CENTER|wxALL, 5 );
 
-	wxTextCtrl *item12 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 2, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+	wxTextCtrl *item12 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 2, "", wxDefaultPosition, wxDefaultSize, 0 );
 	item12->Enable(CUserEvents::IsCoreCommandEnabled(static_cast<enum CUserEvents::EventType>(idx)));
 	item10->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
@@ -1270,7 +1270,7 @@ void PrefsUnifiedDlg::CreateEventPanels(const int idx, const wxString& vars, wxW
 	wxStaticText *item16 = new wxStaticText( parent, -1, _("GUI command:"), wxDefaultPosition, wxDefaultSize, 0 );
 	item15->Add( item16, 0, wxALIGN_CENTER|wxALL, 5 );
 
-	wxTextCtrl *item17 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 4, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+	wxTextCtrl *item17 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 4, "", wxDefaultPosition, wxDefaultSize, 0 );
 	item17->Enable(CUserEvents::IsGUICommandEnabled(static_cast<enum CUserEvents::EventType>(idx)));
 	item15->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 

@@ -300,6 +300,6 @@ void CFileArea::CheckError()
 	bool err = m_error;
 	m_error = false;
 	if (err)
-		throw CIOFailureException(wxT("Read error, failed to read from file."));
+		throw CIOFailureException("Read error, failed to read from file.");
 }
 

@@ -143,49 +143,49 @@ wxString CGenericClientListCtrl::TranslateCIDToName(GenericColumnEnum cid)
 
 	switch (cid) {
 		case ColumnUserName:
-			name = wxT("N");
+			name = "N";
 			break;
 		case ColumnUserDownloaded:
-			name = wxT("D");
+			name = "D";
 			break;
 		case ColumnUserUploaded:
-			name = wxT("U");
+			name = "U";
 			break;
 		case ColumnUserSpeedDown:
-			name = wxT("S");
+			name = "S";
 			break;
 		case ColumnUserSpeedUp:
-			name = wxT("s");
+			name = "s";
 			break;
 		case ColumnUserProgress:
-			name = wxT("P");
+			name = "P";
 			break;
 		case ColumnUserAvailable:
-			name = wxT("A");
+			name = "A";
 			break;
 		case ColumnUserVersion:
-			name = wxT("V");
+			name = "V";
 			break;
 		case ColumnUserQueueRankLocal:
-			name = wxT("Q");
+			name = "Q";
 			break;
 		case ColumnUserQueueRankRemote:
-			name = wxT("q");
+			name = "q";
 			break;
 		case ColumnUserOrigin:
-			name = wxT("O");
+			name = "O";
 			break;
 		case ColumnUserFileNameDownload:
-			name = wxT("F");
+			name = "F";
 			break;
 		case ColumnUserFileNameUpload:
-			name = wxT("f");
+			name = "f";
 			break;
 		case ColumnUserFileNameDownloadRemote:
-			name = wxT("R");
+			name = "R";
 			break;
 		case ColumnUserSharedFiles:
-			name = wxT("m");
+			name = "m";
 			break;
 		case ColumnInvalid:
 		default:
@@ -199,7 +199,7 @@ wxString CGenericClientListCtrl::TranslateCIDToName(GenericColumnEnum cid)
 void CGenericClientListCtrl::InitColumnData()
 {
 	if (!m_columndata.n_columns) {
-		throw wxString(wxT("CRITICAL: Initialization of the column data lacks subclass information"));
+		throw wxString("CRITICAL: Initialization of the column data lacks subclass information");
 	}
 
 	for (int i = 0; i < m_columndata.n_columns; ++i) {
@@ -223,15 +223,15 @@ void CGenericClientListCtrl::RawAddSource(CKnownFile* owner, CClientRef source, 
 
 	m_ListItems.insert( ListItemsPair(source.ECID(), newitem) );
 
-	long item = InsertItem( GetItemCount(), wxEmptyString );
+	long item = InsertItem( GetItemCount(), "" );
 	SetItemPtrData( item, reinterpret_cast<wxUIntPtr>(newitem) );
 	SetItemBackgroundColour( item, GetBackgroundColour() );
 }
 
 void CGenericClientListCtrl::AddSource(CKnownFile* owner, const CClientRef& source, SourceItemType type)
 {
-	wxCHECK_RET(owner, wxT("NULL owner in CGenericClientListCtrl::AddSource"));
-	wxCHECK_RET(source.IsLinked(), wxT("Unlinked source in CGenericClientListCtrl::AddSource"));
+	wxCHECK_RET(owner, "NULL owner in CGenericClientListCtrl::AddSource");
+	wxCHECK_RET(source.IsLinked(), "Unlinked source in CGenericClientListCtrl::AddSource");
 
 	// Update the other instances of this source
 	bool bFound = false;
@@ -288,7 +288,7 @@ void CGenericClientListCtrl::RawRemoveSource( ListItems::iterator& it)
 void CGenericClientListCtrl::RemoveSource(uint32 source, const CKnownFile* owner)
 {
 	// A NULL owner means remove it no matter what.
-	wxCHECK_RET(source, wxT("NULL source in CGenericClientListCtrl::RemoveSource"));
+	wxCHECK_RET(source, "NULL source in CGenericClientListCtrl::RemoveSource");
 
 	// Retrieve all entries matching the source
 	ListIteratorPair rangeIt = m_ListItems.equal_range(source);
@@ -390,7 +390,7 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
 
 			CKnownFile* file = files[i];
 
-			wxASSERT_MSG(file, wxT("NULL file in CGenericClientListCtrl::ShowSources"));
+			wxASSERT_MSG(file, "NULL file in CGenericClientListCtrl::ShowSources");
 
 			if (file) {
 
@@ -483,7 +483,7 @@ void CGenericClientListCtrl::OnSwapSource( wxCommandEvent& WXUNUSED(event) )
 	for ( ItemList::iterator it = sources.begin(); it != sources.end(); ++it ) {
 		CKnownFile * kf = (*it)->GetOwner();
 		if (!kf->IsPartFile()) {
-			wxFAIL_MSG(wxT("File is not a partfile when swapping sources"));
+			wxFAIL_MSG("File is not a partfile when swapping sources");
 			continue;
 		}
 		(*it)->GetSource().SwapToAnotherFile( true, false, false,  dynamic_cast<CPartFile*>(kf));
@@ -582,7 +582,7 @@ void CGenericClientListCtrl::OnMouseRightClick(wxListEvent& evt)
 	ClientCtrlItem_Struct* item = reinterpret_cast<ClientCtrlItem_Struct*>(GetItemData( index ));
 	CClientRef& client = item->GetSource();
 
-	m_menu = new wxMenu(wxT("Clients"));
+	m_menu = new wxMenu("Clients");
 	m_menu->Append(MP_DETAIL, _("Show &Details"));
 	m_menu->Append(MP_ADDFRIEND, client.IsFriend() ? _("Remove from friends") : _("Add to Friends"));
 
@@ -847,13 +847,13 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 
 					userName << countrydata.Name;
 
-					userName << wxT(" - ");
+					userName << " - ";
 
 					point.x += countrydata.Flag.GetWidth() + 2 /*Padding*/;
 				}
 #endif // ENABLE_IP2COUNTRY
 				if (client.GetUserName().IsEmpty()) {
-					userName << wxT("?");
+					userName << "?";
 				} else {
 					userName << client.GetUserName();
 				}
@@ -946,9 +946,9 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 					if (p) {
 						a4af = p->GetFileName().GetPrintable();
 					} else {
-						a4af = wxT("?");
+						a4af = "?";
 					}
-					buffer = CFormat(wxT("%s: %s")) % _("A4AF") % a4af;
+					buffer = CFormat("%s: %s") % _("A4AF") % a4af;
 
 					int midx = (2*rect.GetX() + rect.GetWidth()) >> 1;
 					int midy = (2*rect.GetY() + rect.GetHeight()) >> 1;
@@ -1013,7 +1013,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 					buffer = _("Asked for another file");
 					if (	client.GetRequestFile() &&
 						client.GetRequestFile()->GetFileName().IsOk()) {
-						buffer += CFormat(wxT(" (%s)"))
+						buffer += CFormat(" (%s)")
 							% client.GetRequestFile()->GetFileName();
 					}
 				}
@@ -1056,7 +1056,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 				buffer = pf->GetFileName().GetPrintable();
 			} else {
 				buffer = _("Unknown");
-				buffer = wxT("[") + buffer + wxT("]");
+				buffer = "[" + buffer + "]";
 			}
 			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			break;
@@ -1067,7 +1067,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 				buffer = kf->GetFileName().GetPrintable();
 			} else {
 				buffer = _("Unknown");
-				buffer = wxT("[") + buffer + wxT("]");
+				buffer = "[" + buffer + "]";
 			}
 			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
 			break;
@@ -1077,7 +1077,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 			wxColour savedColour = dc->GetTextForeground();
 			if (client.GetClientFilename().IsEmpty() || item->GetType() == A4AF_SOURCE) {
 				buffer = _("Unknown");
-				buffer = wxT("[") + buffer + wxT("]");
+				buffer = "[" + buffer + "]";
 			} else {
 				buffer = client.GetClientFilename();
 				const CPartFile * pf = client.GetRequestFile();
@@ -1300,7 +1300,7 @@ void CGenericClientListCtrl::ShowSourcesCount( int diff )
 	wxStaticText* label = CastByID( ID_CLIENTCOUNT, GetParent(), wxStaticText );
 
 	if (label) {
-		label->SetLabel(CFormat(wxT("%i")) % m_clientcount);
+		label->SetLabel(CFormat("%i") % m_clientcount);
 		label->GetParent()->Layout();
 	}
 }

@@ -106,13 +106,13 @@ long CMuleListCtrl::InsertColumn(long col, const wxString& heading, int format, 
 	if (!name.IsEmpty()) {
 #ifdef __DEBUG__
 		// Check for valid names
-		wxASSERT_MSG(name.Find(wxT(':')) == wxNOT_FOUND, wxT("Column name \"") + name + wxT("\" contains invalid characters!"));
-		wxASSERT_MSG(name.Find(wxT(',')) == wxNOT_FOUND, wxT("Column name \"") + name + wxT("\" contains invalid characters!"));
+		wxASSERT_MSG(name.Find(':') == wxNOT_FOUND, "Column name \"" + name + "\" contains invalid characters!");
+		wxASSERT_MSG(name.Find(',') == wxNOT_FOUND, "Column name \"" + name + "\" contains invalid characters!");
 
 		// Check for uniqueness of names.
 		for (ColNameList::const_iterator it = m_column_names.begin(); it != m_column_names.end(); ++it) {
 			if (name == it->name) {
-				wxFAIL_MSG(wxT("Column name \"") + name + wxT("\" is not unique!"));
+				wxFAIL_MSG("Column name \"" + name + "\" is not unique!");
 			}
 		}
 #endif
@@ -133,7 +133,7 @@ long CMuleListCtrl::InsertColumn(long col, const wxString& heading, int format, 
 
 void CMuleListCtrl::SaveSettings()
 {
-	wxCHECK_RET(!m_name.IsEmpty(), wxT("Cannot save settings for unnamed list"));
+	wxCHECK_RET(!m_name.IsEmpty(), "Cannot save settings for unnamed list");
 
 	wxConfigBase* cfg = wxConfigBase::Get();
 
@@ -143,19 +143,19 @@ void CMuleListCtrl::SaveSettings()
 		wxString columnName = GetColumnName(it->first);
 		if (!columnName.IsEmpty()) {
 			sortOrder += columnName;
-			sortOrder += wxT(":");
-			sortOrder += it->second & SORT_DES ? wxT("1") : wxT("0");
-			sortOrder += wxT(":");
-			sortOrder += it->second & SORT_ALT ? wxT("1") : wxT("0");
+			sortOrder += ":";
+			sortOrder += it->second & SORT_DES ? "1" : "0";
+			sortOrder += ":";
+			sortOrder += it->second & SORT_ALT ? "1" : "0";
 			if (++it != m_sort_orders.end()) {
-				sortOrder += wxT(",");
+				sortOrder += ",";
 			}
 		} else {
 			++it;
 		}
 	}
 
-	cfg->Write(wxT("/eMule/TableOrdering") + m_name, sortOrder);
+	cfg->Write("/eMule/TableOrdering" + m_name, sortOrder);
 
 	// Save column widths. ATM this is also used to signify hidden columns.
 	wxString buffer;
@@ -163,29 +163,29 @@ void CMuleListCtrl::SaveSettings()
 		wxString columnName = GetColumnName(i);
 		if (!columnName.IsEmpty()) {
 			if (!buffer.IsEmpty()) {
-				buffer << wxT(",");
+				buffer << ",";
 			}
 			int currentwidth = GetColumnWidth(i);
 			int savedsize = (m_column_sizes.size() && (i < (int) m_column_sizes.size())) ? m_column_sizes[i] : 0;
-			buffer << columnName << wxT(":") << ((currentwidth > 0) ? currentwidth : (-1 * savedsize));
+			buffer << columnName << ":" << ((currentwidth > 0) ? currentwidth : (-1 * savedsize));
 		}
 	}
 
-	cfg->Write(wxT("/eMule/TableWidths") + m_name, buffer);
+	cfg->Write("/eMule/TableWidths" + m_name, buffer);
 }
 
 void CMuleListCtrl::ParseOldConfigEntries(const wxString& sortOrders, const wxString& columnWidths)
 {
 	// Set sort order (including sort column)
-	wxStringTokenizer tokens(sortOrders, wxT(","));
+	wxStringTokenizer tokens(sortOrders, ",");
 	while (tokens.HasMoreTokens()) {
 		wxString token = tokens.GetNextToken();
 
 		long column = 0;
 		unsigned long order = 0;
 
-		if (token.BeforeFirst(wxT(' ')).Strip(wxString::both).ToLong(&column)) {
-			if (token.AfterFirst(wxT(' ')).Strip(wxString::both).ToULong(&order)) {
+		if (token.BeforeFirst(' ').Strip(wxString::both).ToLong(&column)) {
+			if (token.AfterFirst(' ').Strip(wxString::both).ToULong(&order)) {
 				column = GetNewColumnIndex(column);
 				// Sanity checking, to avoid asserting if column count changes.
 				if (column >= 0 && column < GetColumnCount()) {
@@ -201,7 +201,7 @@ void CMuleListCtrl::ParseOldConfigEntries(const wxString& sortOrders, const wxSt
 
 	// Set column widths
 	int counter = 0;
-	wxStringTokenizer tokenizer(columnWidths, wxT(","));
+	wxStringTokenizer tokenizer(columnWidths, ",");
 	while (tokenizer.HasMoreTokens()) {
 		long idx = GetNewColumnIndex(counter++);
 		long width = StrToLong(tokenizer.GetNextToken());
@@ -213,25 +213,25 @@ void CMuleListCtrl::ParseOldConfigEntries(const wxString& sortOrders, const wxSt
 
 void CMuleListCtrl::LoadSettings()
 {
-	wxCHECK_RET(!m_name.IsEmpty(), wxT("Cannot load settings for unnamed list"));
+	wxCHECK_RET(!m_name.IsEmpty(), "Cannot load settings for unnamed list");
 
 	wxConfigBase* cfg = wxConfigBase::Get();
 
 	// Load sort order (including sort-column)
 	m_sort_orders.clear();
-	wxString sortOrders = cfg->Read(wxT("/eMule/TableOrdering") + m_name, wxEmptyString);
-	wxString columnWidths = cfg->Read(wxT("/eMule/TableWidths") + m_name, wxEmptyString);
+	wxString sortOrders = cfg->Read("/eMule/TableOrdering" + m_name, "");
+	wxString columnWidths = cfg->Read("/eMule/TableWidths" + m_name, "");
 
 	// Prevent sorting from occurring when calling SetSorting
 	MuleListCtrlCompare sortFunc = m_sort_func;
 	m_sort_func = NULL;
 
-	if (columnWidths.Find(wxT(':')) == wxNOT_FOUND) {
+	if (columnWidths.Find(':') == wxNOT_FOUND) {
 		// Old-style config entries...
 		ParseOldConfigEntries(sortOrders, columnWidths);
 	} else {
 		// Sort orders
-		wxStringTokenizer tokens(sortOrders, wxT(","));
+		wxStringTokenizer tokens(sortOrders, ",");
 		// Sort orders are stored in order primary, secondary, ...
 		// We want to apply them with SetSorting(), so we have to apply them in reverse order,
 		// so that the primary order is applied last and wins.
@@ -242,9 +242,9 @@ void CMuleListCtrl::LoadSettings()
 		}
 		for (CStringList::iterator it = tokenList.begin(); it != tokenList.end(); ++it) {
 			wxString token = *it;
-			wxString name = token.BeforeFirst(wxT(':'));
-			long order = StrToLong(token.AfterFirst(wxT(':')).BeforeLast(wxT(':')));
-			long alt = StrToLong(token.AfterLast(wxT(':')));
+			wxString name = token.BeforeFirst(':');
+			long order = StrToLong(token.AfterFirst(':').BeforeLast(':'));
+			long alt = StrToLong(token.AfterLast(':'));
 			int col = GetColumnIndex(name);
 			if (col >= 0) {
 				SetSorting(col, (order ? SORT_DES : 0) | (alt ? SORT_ALT : 0));
@@ -252,11 +252,11 @@ void CMuleListCtrl::LoadSettings()
 		}
 
 		// Column widths
-		wxStringTokenizer tkz(columnWidths, wxT(","));
+		wxStringTokenizer tkz(columnWidths, ",");
 		while (tkz.HasMoreTokens()) {
 			wxString token = tkz.GetNextToken();
-			wxString name = token.BeforeFirst(wxT(':'));
-			long width = StrToLong(token.AfterFirst(wxT(':')));
+			wxString name = token.BeforeFirst(':');
+			long width = StrToLong(token.AfterFirst(':'));
 			int col = GetColumnIndex(name);
 			if (col >= 0) {
 				if (col >= (int) m_column_sizes.size()) {
@@ -311,7 +311,7 @@ int CMuleListCtrl::GetColumnIndex(const wxString& name) const
 
 int CMuleListCtrl::GetNewColumnIndex(int oldindex) const
 {
-	wxStringTokenizer oldcolumns(GetOldColumnOrder(), wxT(","), wxTOKEN_RET_EMPTY_ALL);
+	wxStringTokenizer oldcolumns(GetOldColumnOrder(), ",", wxTOKEN_RET_EMPTY_ALL);
 
 	while (oldcolumns.HasMoreTokens()) {
 		wxString name = oldcolumns.GetNextToken();
@@ -564,8 +564,8 @@ bool CMuleListCtrl::AltSortAllowed(unsigned WXUNUSED(column)) const
 
 void CMuleListCtrl::SetSorting(unsigned column, unsigned order)
 {
-	MULE_VALIDATE_PARAMS(column < (unsigned)GetColumnCount(), wxT("Invalid column to sort by."));
-	MULE_VALIDATE_PARAMS(!(order & ~SORTING_MASK), wxT("Sorting order contains invalid data."));
+	MULE_VALIDATE_PARAMS(column < (unsigned)GetColumnCount(), "Invalid column to sort by.");
+	MULE_VALIDATE_PARAMS(!(order & ~SORTING_MASK), "Sorting order contains invalid data.");
 
 	if (!m_sort_orders.empty()) {
 		SetColumnImage(m_sort_orders.front().first, -1);
@@ -593,8 +593,8 @@ void CMuleListCtrl::SetSorting(unsigned column, unsigned order)
 
 bool CMuleListCtrl::IsItemSorted(long item)
 {
-	wxCHECK_MSG(m_sort_func, true, wxT("No sort function specified!"));
-	wxCHECK_MSG((item >= 0) && (item < GetItemCount()), true, wxT("Invalid item"));
+	wxCHECK_MSG(m_sort_func, true, "No sort function specified!");
+	wxCHECK_MSG((item >= 0) && (item < GetItemCount()), true, "Invalid item");
 
 	bool sorted = true;
 	wxUIntPtr data = GetItemData(item);
@@ -656,9 +656,9 @@ long CMuleListCtrl::CheckSelection(wxListEvent& event)
 
 wxString CMuleListCtrl::GetTTSText(unsigned item) const
 {
-	MULE_VALIDATE_PARAMS(item < (unsigned)GetItemCount(), wxT("Invalid row."));
+	MULE_VALIDATE_PARAMS(item < (unsigned)GetItemCount(), "Invalid row.");
 	MULE_VALIDATE_STATE((GetWindowStyle() & wxLC_OWNERDRAW) == 0,
-		wxT("GetTTSText must be overwritten for owner-drawn lists."));
+		"GetTTSText must be overwritten for owner-drawn lists.");
 
 	return GetItemText(item);
 }
@@ -791,6 +791,6 @@ void CMuleListCtrl::ResetTTS()
 
 wxString CMuleListCtrl::GetOldColumnOrder() const
 {
-	return wxEmptyString;
+	return "";
 }
 // File_checked_for_headers

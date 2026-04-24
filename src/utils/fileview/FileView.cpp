@@ -69,30 +69,30 @@ IMPLEMENT_APP(CFileView);
 
 void CFileView::OnInitCmdLine(wxCmdLineParser& parser)
 {
-	parser.AddSwitch(wxT("h"), wxT("help"), wxT("Show help"), wxCMD_LINE_OPTION_HELP);
-	parser.AddSwitch(wxT("v"), wxT("version"), wxT("Show program version"), wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddOption(wxT("s"), wxT("strings"), wxT("String decoding mode: display (default), safe, utf8, none"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddParam(wxT("input file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE);
+	parser.AddSwitch("h", "help", "Show help", wxCMD_LINE_OPTION_HELP);
+	parser.AddSwitch("v", "version", "Show program version", wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddOption("s", "strings", "String decoding mode: display (default), safe, utf8, none", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddParam("input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE);
 }
 
 bool CFileView::OnCmdLineParsed(wxCmdLineParser& parser)
 {
-	if (parser.Found(wxT("version"))) {
-		cout << wxString::Format(wxT("MuleFileView version %u.%u.%u\nCopyright (c) 2008-2011 aMule Team\n"), VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
+	if (parser.Found("version")) {
+		cout << wxString::Format("MuleFileView version %u.%u.%u\nCopyright (c) 2008-2011 aMule Team\n", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
 		return false;
 	} else {
 		wxString strDecode;
-		if (parser.Found(wxT("strings"), &strDecode)) {
-			if (strDecode == wxT("display")) {
+		if (parser.Found("strings", &strDecode)) {
+			if (strDecode == "display") {
 				SetStringsMode(SD_DISPLAY);
-			} else if (strDecode == wxT("safe")) {
+			} else if (strDecode == "safe") {
 				SetStringsMode(SD_SAFE);
-			} else if (strDecode == wxT("utf8")) {
+			} else if (strDecode == "utf8") {
 				SetStringsMode(SD_UTF8);
-			} else if (strDecode == wxT("none")) {
+			} else if (strDecode == "none") {
 				SetStringsMode(SD_NONE);
 			} else {
-				parser.SetLogo(wxT("Error: Invalid argument to --strings option: \"") + strDecode + wxT("\""));
+				parser.SetLogo("Error: Invalid argument to --strings option: \"" + strDecode + "\"");
 				parser.Usage();
 				return false;
 			}
@@ -114,7 +114,7 @@ bool CFileView::OnCmdLineParsed(wxCmdLineParser& parser)
 int CFileView::OnRun()
 {
 	for (std::list<wxString>::const_iterator it = m_files.begin(); it != m_files.end(); ++it) {
-		wxString basename = (*it).AfterLast(wxFileName::GetPathSeparator()).AfterLast(wxT('/'));
+		wxString basename = (*it).AfterLast(wxFileName::GetPathSeparator()).AfterLast('/');
 		try {
 			CFile file(*it);
 			if (file.IsOpened()) {
@@ -122,31 +122,31 @@ int CFileView::OnRun()
 					cout << endl;
 				}
 				cout << "Decoding file: " << *it << endl;
-				if (basename == wxT("preferencesKad.dat")) {
+				if (basename == "preferencesKad.dat") {
 					DecodePreferencesKadDat(file);
-				} else if (basename == wxT("load_index.dat")) {
+				} else if (basename == "load_index.dat") {
 					DecodeLoadIndexDat(file);
-				} else if (basename == wxT("key_index.dat")) {
+				} else if (basename == "key_index.dat") {
 					DecodeKeyIndexDat(file);
-				} else if (basename == wxT("src_index.dat")) {
+				} else if (basename == "src_index.dat") {
 					DecodeSourceIndexDat(file);
-				} else if (basename == wxT("nodes.dat")) {
+				} else if (basename == "nodes.dat") {
 					DecodeNodesDat(file);
-				} else if (basename == wxT("preferences.dat")) {
+				} else if (basename == "preferences.dat") {
 					DecodePreferencesDat(file);
-				} else if (basename == wxT("emfriends.met")) {
+				} else if (basename == "emfriends.met") {
 					DecodeFriendList(file);
-				} else if (basename == wxT("server.met")) {
+				} else if (basename == "server.met") {
 					DecodeServerMet(file);
-				} else if (basename == wxT("clients.met")) {
+				} else if (basename == "clients.met") {
 					DecodeClientsMet(file);
-				} else if (basename == wxT("known.met")) {
+				} else if (basename == "known.met") {
 					DecodeKnownMet(file);
-				} else if (basename == wxT("statistics.dat")) {
+				} else if (basename == "statistics.dat") {
 					DecodeStatisticsDat(file);
-				} else if (basename.Find(wxT(".part.met")) != wxNOT_FOUND) {
+				} else if (basename.Find(".part.met") != wxNOT_FOUND) {
 					DecodePartMetFile(file);
-				} else if (basename == wxT("canceled.met")) {
+				} else if (basename == "canceled.met") {
 					DecodeCanceledMet(file);
 				} else {
 					cerr << "ERROR: Don't know how to decode " << *it << endl;

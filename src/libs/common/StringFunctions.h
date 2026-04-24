@@ -96,14 +96,14 @@ inline Char2UnicodeBuf char2filename(const char* x)	{ return wxConvFile.cMB2WC(x
 // Replaces "&" with "&&" in 'in' for use with text-labels
 //
 inline wxString MakeStringEscaped(wxString in) {
-	in.Replace(wxT("&"),wxT("&&"));
+	in.Replace("&","&&");
 	return in;
 }
 
 // Make a string be a folder
 inline wxString MakeFoldername(wxString path) {
 
-	if ( !path.IsEmpty() && ( path.Right(1) == wxT('/' )) ) {
+	if ( !path.IsEmpty() && ( path.Right(1) == '/') ) {
 		path.RemoveLast();
 	}
 

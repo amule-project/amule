@@ -82,10 +82,10 @@ CCommandTree* CCommandTree::AddCommand(CCommandTree* command)
 
 int CCommandTree::FindCommandId(const wxString& command, wxString& args, wxString& cmdstr) const
 {
-	wxString cmd = command.BeforeFirst(wxT(' ')).Lower();
+	wxString cmd = command.BeforeFirst(' ').Lower();
 	for (CmdPosConst_t it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
 		if ((*it)->m_command.Lower() == cmd) {
-			args = command.AfterFirst(wxT(' ')).Trim(false);
+			args = command.AfterFirst(' ').Trim(false);
 			return (*it)->FindCommandId(args, args, cmdstr);
 		}
 	}
@@ -96,7 +96,7 @@ int CCommandTree::FindCommandId(const wxString& command, wxString& args, wxStrin
 		return CMD_ERR_NO_PARAM;
 	} else {
 		if ((m_cmd_id >= 0) && (m_cmd_id & CMD_DEPRECATED)) {
-			m_app->Show(wxT('\n') + m_verbose + wxT('\n'));
+			m_app->Show('\n' + m_verbose + '\n');
 			return m_cmd_id & ~CMD_DEPRECATED;
 		} else {
 			return m_cmd_id;
@@ -111,7 +111,7 @@ wxString CCommandTree::GetFullCommand() const
 
 	const CCommandTree *parent = m_parent;
 	while (parent && parent->m_parent) {
-		cmd = parent->m_command + wxT(" ") + cmd;
+		cmd = parent->m_command + " " + cmd;
 		parent = parent->m_parent;
 	}
 
@@ -121,11 +121,11 @@ wxString CCommandTree::GetFullCommand() const
 
 void CCommandTree::PrintHelpFor(const wxString& command) const
 {
-	wxString cmd = command.BeforeFirst(wxT(' ')).Lower();
+	wxString cmd = command.BeforeFirst(' ').Lower();
 	if (!cmd.IsEmpty()) {
 		for (CmdPosConst_t it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
 			if ((*it)->m_command.Lower() == cmd) {
-				(*it)->PrintHelpFor(command.AfterFirst(wxT(' ')).Trim(false));
+				(*it)->PrintHelpFor(command.AfterFirst(' ').Trim(false));
 				return;
 			}
 		}
@@ -137,9 +137,9 @@ void CCommandTree::PrintHelpFor(const wxString& command) const
 	} else {
 		wxString fullcmd = GetFullCommand();
 		if (!fullcmd.IsEmpty()) {
-			m_app->Show(fullcmd.Upper() + wxT(": ") + wxGetTranslation(m_short) + wxT("\n"));
+			m_app->Show(fullcmd.Upper() + ": " + wxGetTranslation(m_short) + "\n");
 			if (!m_verbose.IsEmpty()) {
-				m_app->Show(wxT("\n"));
+				m_app->Show("\n");
 				m_app->Show(wxGetTranslation(m_verbose));
 			}
 		}
@@ -170,15 +170,15 @@ void CCommandTree::PrintHelpFor(const wxString& command) const
 			maxlen += 4;
 			for (it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
 				if (!((*it)->m_cmd_id >= 0 && (*it)->m_cmd_id & CMD_DEPRECATED) || m_parent) {
-					m_app->Show((*it)->m_command + wxString(wxT(' '), maxlen - (*it)->m_command.Length()) + wxGetTranslation((*it)->m_short) + wxT("\n"));
+					m_app->Show((*it)->m_command + wxString(' ', maxlen - (*it)->m_command.Length()) + wxGetTranslation((*it)->m_short) + "\n");
 				}
 			}
 			if (!m_parent) {
-				m_app->Show(CFormat(_("\nAll commands are case insensitive.\nType '%s <command>' to get detailed info on <command>.\n")) % wxT("help"));
+				m_app->Show(CFormat(_("\nAll commands are case insensitive.\nType '%s <command>' to get detailed info on <command>.\n")) % "help");
 			}
 		}
 	}
-	m_app->Show(wxT("\n"));
+	m_app->Show("\n");
 }
 
 //-------------------------------------------------------------------
@@ -191,15 +191,15 @@ const CmdList_t* CCommandTree::GetSubCommandsFor(const wxString& command, bool m
 		return &m_subcommands;
 	}
 
-	wxString cmd = command.BeforeFirst(wxT(' ')).Lower();
+	wxString cmd = command.BeforeFirst(' ').Lower();
 
-	if (mayRestart && cmd == wxT("help")) {
-		return GetSubCommandsFor(command.AfterFirst(wxT(' ')), false);
+	if (mayRestart && cmd == "help") {
+		return GetSubCommandsFor(command.AfterFirst(' '), false);
 	}
 
 	for (CmdPosConst_t it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
 		if ((*it)->m_command.Lower() == cmd) {
-			return (*it)->GetSubCommandsFor(command.AfterFirst(wxT(' ')).Trim(false), mayRestart);
+			return (*it)->GetSubCommandsFor(command.AfterFirst(' ').Trim(false), mayRestart);
 		}
 	}
 
@@ -223,7 +223,7 @@ char *command_completion(const char *text, int state)
 
 	if (state == 0) {
 		wxString lineBuffer(rl_line_buffer, *wxConvCurrent);
-		wxString prefix(lineBuffer.Left(rl_point).BeforeLast(wxT(' ')));
+		wxString prefix(lineBuffer.Left(rl_point).BeforeLast(' '));
 
 		curCommands = theCommands->GetSubCommandsFor(prefix);
 		if (curCommands) {
@@ -266,7 +266,7 @@ CaMuleExternalConnector::CaMuleExternalConnector()
 	  m_strFullVersion(NULL),
 	  m_strOSDescription(NULL)
 {
-	SetAppName(wxT("aMule"));	// Do not change!
+	SetAppName("aMule");	// Do not change!
 }
 
 CaMuleExternalConnector::~CaMuleExternalConnector()
@@ -279,9 +279,9 @@ CaMuleExternalConnector::~CaMuleExternalConnector()
 
 void CaMuleExternalConnector::OnInitCommandSet()
 {
-	m_commands.AddCommand(wxT("Quit"), CMD_ID_QUIT, wxTRANSLATE("Exits from the application."), wxEmptyString);
-	m_commands.AddCommand(wxT("Exit"), CMD_ID_QUIT, wxTRANSLATE("Exits from the application."), wxEmptyString);
-	m_commands.AddCommand(wxT("Help"), CMD_ID_HELP, wxTRANSLATE("Show help."),
+	m_commands.AddCommand("Quit", CMD_ID_QUIT, wxTRANSLATE("Exits from the application."), "");
+	m_commands.AddCommand("Exit", CMD_ID_QUIT, wxTRANSLATE("Exits from the application."), "");
+	m_commands.AddCommand("Help", CMD_ID_HELP, wxTRANSLATE("Show help."),
 			      /* TRANSLATORS:
 				 Do not translate the word 'help', it is a command to the program! */
 			      wxTRANSLATE("To get help on a command, type 'help <command>'.\nTo get the full command list type 'help'.\n"));
@@ -301,18 +301,18 @@ void CaMuleExternalConnector::ShowGreet()
 {
 	wxString text = GetGreetingTitle();
 	int len = text.Length();
-	Show(wxT('\n') + wxString(wxT('-'), 22 + len) + wxT('\n'));
-	Show(wxT('|') + wxString(wxT(' '), 10) + text + wxString(wxT(' '), 10) + wxT('|') + wxT('\n'));
-	Show(wxString(wxT('-'), 22 + len) + wxT('\n'));
+	Show('\n' + wxString('-', 22 + len) + '\n');
+	Show('|' + wxString(' ', 10) + text + wxString(' ', 10) + '|' + '\n');
+	Show(wxString('-', 22 + len) + '\n');
 	// Do not merge the line below, or translators could translate "Help"
-	Show(CFormat(_("\nUse '%s' for command list\n\n")) % wxT("Help"));
+	Show(CFormat(_("\nUse '%s' for command list\n\n")) % "Help");
 }
 
 void CaMuleExternalConnector::Process_Answer(const wxString& answer)
 {
-	wxStringTokenizer tokens(answer, wxT("\n"));
+	wxStringTokenizer tokens(answer, "\n");
 	while ( tokens.HasMoreTokens() ) {
-		Show(wxT(" > ") + tokens.GetNextToken() + wxT("\n"));
+		Show(" > " + tokens.GetNextToken() + "\n");
 	}
 }
 
@@ -321,7 +321,7 @@ bool CaMuleExternalConnector::Parse_Command(const wxString& buffer)
 	wxString cmd;
 	wxStringTokenizer tokens(buffer);
 	while (tokens.HasMoreTokens()) {
-		cmd += tokens.GetNextToken() + wxT(' ');
+		cmd += tokens.GetNextToken() + ' ';
 	}
 	cmd.Trim(false);
 	cmd.Trim(true);
@@ -357,10 +357,10 @@ bool CaMuleExternalConnector::Parse_Command(const wxString& buffer)
 			break;
 	}
 	if (!error.IsEmpty()) {
-		Show(error + wxT('\n'));
-		wxString helpStr(wxT("help"));
+		Show(error + '\n');
+		wxString helpStr("help");
 		if (!GetLastCmdStr().IsEmpty()) {
-			helpStr << wxT(' ') << GetLastCmdStr();
+			helpStr << ' ' << GetLastCmdStr();
 		}
 		Show(CFormat(_("Type '%s' to get more help.\n")) % helpStr);
 	}
@@ -370,7 +370,7 @@ bool CaMuleExternalConnector::Parse_Command(const wxString& buffer)
 void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, size_t buffer_size)
 {
 #ifdef HAVE_LIBREADLINE
-		char *text = readline(unicode2char(prompt + wxT("$ ")));
+		char *text = readline(unicode2char(prompt + "$ "));
 		if (text && *text &&
 		    (m_InputLine == 0 || strcmp(text,m_InputLine) != 0)) {
 		  add_history (text);
@@ -379,7 +379,7 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 		  free(m_InputLine);
 		m_InputLine = text;
 #else
-		Show(prompt + wxT("$ "));
+		Show(prompt + "$ ");
 		const char *text = fgets(buffer, buffer_size, stdin);	// == buffer if ok, NULL if eof
 #endif /* HAVE_LIBREADLINE */
 		if ( text ) {
@@ -417,16 +417,16 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 	}
 
 	#ifdef SVNDATE
-		Show(CFormat(_("This is %s %s %s\n")) % wxString::FromAscii(m_appname) % wxT(VERSION) % wxT(SVNDATE));
+		Show(CFormat(_("This is %s %s %s\n")) % wxString::FromAscii(m_appname) % VERSION % SVNDATE);
 	#else
-		Show(CFormat(_("This is %s %s\n")) % wxString::FromAscii(m_appname) % wxT(VERSION));
+		Show(CFormat(_("This is %s %s\n")) % wxString::FromAscii(m_appname) % VERSION);
 	#endif
 
 	// HostName, Port and Password
 	if ( m_password.IsEmpty() ) {
 		m_password = GetPassword(true);
 		// MD5 hash for an empty string, according to rfc1321.
-		if (m_password.Encode() == wxT("D41D8CD98F00B204E9800998ECF8427E")) {
+		if (m_password.Encode() == "D41D8CD98F00B204E9800998ECF8427E") {
 			m_password.Clear();
 		}
 	}
@@ -439,17 +439,17 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		m_ECClient->SetCapabilities(m_ZLIB, true, false);	// ZLIB, UTF8 numbers, notification
 
 		// ConnectToCore is blocking since m_ECClient was initialized with NULL
-		if (!m_ECClient->ConnectToCore(m_host, m_port, wxT("foobar"), m_password.Encode(), ProgName, ProgVersion)) {
+		if (!m_ECClient->ConnectToCore(m_host, m_port, "foobar", m_password.Encode(), ProgName, ProgVersion)) {
 			// no connection => close gracefully
 			if (!m_ECClient->GetServerReply().IsEmpty()) {
-					Show(CFormat(wxT("%s\n")) % m_ECClient->GetServerReply());
+					Show(CFormat("%s\n") % m_ECClient->GetServerReply());
 			}
 			Show(CFormat(_("Connection Failed. Unable to connect to %s:%d\n")) % m_host % m_port);
 		} else {
 			// Authenticate ourselves
 			// ConnectToCore() already authenticated for us.
 			//m_ECClient->ConnectionEstablished();
-			Show(m_ECClient->GetServerReply()+wxT("\n"));
+			Show(m_ECClient->GetServerReply()+"\n");
 			if (m_ECClient->IsSocketConnected()) {
 				if (m_interactive) {
 					ShowGreet();
@@ -472,59 +472,59 @@ void CaMuleExternalConnector::OnInitCmdLine(wxCmdLineParser& parser, const char*
 {
 	m_appname = appname;
 
-	parser.AddSwitch(wxEmptyString, wxT("help"),
+	parser.AddSwitch("", "help",
 		_("Show this help text."),
 		wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddOption(wxT("h"), wxT("host"),
+	parser.AddOption("h", "host",
 		_("Host where aMule is running. (default: localhost)"),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddOption(wxT("p"), wxT("port"),
+	parser.AddOption("p", "port",
 		_("aMule's port for External Connection. (default: 4712)"),
 		wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddOption(wxT("P"), wxT("password"),
+	parser.AddOption("P", "password",
 		_("External Connection password."),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddOption(wxT("f"), wxT("config-file"),
+	parser.AddOption("f", "config-file",
 		_("Read configuration from file."),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddSwitch(wxT("q"), wxT("quiet"),
+	parser.AddSwitch("q", "quiet",
 		_("Do not print any output to stdout."),
 		wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddSwitch(wxT("v"), wxT("verbose"),
+	parser.AddSwitch("v", "verbose",
 		_("Be verbose - show also debug messages."),
 		wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddOption(wxT("l"), wxT("locale"),
+	parser.AddOption("l", "locale",
 		_("Sets program locale (language)."),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddSwitch(wxT("w"), wxT("write-config"),
+	parser.AddSwitch("w", "write-config",
 		_("Write command line options to config file."),
 		wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddOption(wxEmptyString, wxT("create-config-from"),
+	parser.AddOption("", "create-config-from",
 		_("Creates config file based on aMule's config file."),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddSwitch(wxEmptyString, wxT("version"),
+	parser.AddSwitch("", "version",
 		_("Print program version."),
 		wxCMD_LINE_PARAM_OPTIONAL);
 }
 
 bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 {
-	if (parser.Found(wxT("version"))) {
+	if (parser.Found("version")) {
 		printf("%s %s\n", m_appname, (const char *)unicode2char(GetMuleVersion()));
 		return false;
 	}
 
-	if (!parser.Found(wxT("config-file"), &m_configFileName)) {
-		m_configFileName = wxT("remote.conf");
+	if (!parser.Found("config-file", &m_configFileName)) {
+		m_configFileName = "remote.conf";
 	}
 	m_configDir = GetConfigDir(m_configFileName);
 	m_configFileName = m_configDir + m_configFileName;
 
 	wxString aMuleConfigFile;
-	if (parser.Found(wxT("create-config-from"), &aMuleConfigFile)) {
+	if (parser.Found("create-config-from", &aMuleConfigFile)) {
 		aMuleConfigFile = FinalizeFilename(aMuleConfigFile);
 		if (!::wxFileExists(aMuleConfigFile)) {
-			fprintf(stderr, "%s\n", (const char *)unicode2char(wxT("FATAL ERROR: File does not exist: ") + aMuleConfigFile));
+			fprintf(stderr, "%s\n", (const char *)unicode2char("FATAL ERROR: File does not exist: " + aMuleConfigFile));
 			exit(1);
 		}
 		CECFileConfig aMuleConfig(aMuleConfigFile);
@@ -536,19 +536,19 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 
 	LoadConfigFile();
 
-	if ( !parser.Found(wxT("host"), &m_host) ) {
+	if ( !parser.Found("host", &m_host) ) {
 		if ( m_host.IsEmpty() ) {
-			m_host = wxT("localhost");
+			m_host = "localhost";
 		}
 	}
 
 	long port;
-	if (parser.Found(wxT("port"), &port)) {
+	if (parser.Found("port", &port)) {
 		m_port = port;
 	}
 
 	wxString pass_plain;
-	if (parser.Found(wxT("password"), &pass_plain)) {
+	if (parser.Found("password", &pass_plain)) {
 		if (!pass_plain.IsEmpty()) {
 			m_password.Decode(MD5Sum(pass_plain).GetHash());
 		} else {
@@ -556,29 +556,29 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 		}
 	}
 
-	if (parser.Found(wxT("write-config"))) {
+	if (parser.Found("write-config")) {
 		m_NeedsConfigSave = true;
 	}
 
-	parser.Found(wxT("locale"), &m_language);
+	parser.Found("locale", &m_language);
 
-	if (parser.Found(wxT("help"))) {
+	if (parser.Found("help")) {
 		parser.Usage();
 		return false;
 	}
 
-	m_KeepQuiet = parser.Found(wxT("quiet"));
-	m_Verbose = parser.Found(wxT("verbose"));
+	m_KeepQuiet = parser.Found("quiet");
+	m_Verbose = parser.Found("verbose");
 
 	return true;
 }
 
 void CaMuleExternalConnector::LoadAmuleConfig(CECFileConfig& cfg)
 {
-	m_host = wxT("localhost");
-	m_port = cfg.Read(wxT("/ExternalConnect/ECPort"), 4712l);
-	cfg.ReadHash(wxT("/ExternalConnect/ECPassword"), &m_password);
-	m_language = cfg.Read(wxT("/eMule/Language"), wxEmptyString);
+	m_host = "localhost";
+	m_port = cfg.Read("/ExternalConnect/ECPort", 4712l);
+	cfg.ReadHash("/ExternalConnect/ECPassword", &m_password);
+	m_language = cfg.Read("/eMule/Language", "");
 }
 
 
@@ -588,11 +588,11 @@ void CaMuleExternalConnector::LoadConfigFile()
 		m_configFile = new CECFileConfig(m_configFileName);
 	}
 	if (m_configFile) {
-		m_language = m_configFile->Read(wxT("/Locale"), wxEmptyString);
-		m_host = m_configFile->Read(wxT("/EC/Host"), wxEmptyString);
-		m_port = m_configFile->Read(wxT("/EC/Port"), 4712l);
-		m_configFile->ReadHash(wxT("/EC/Password"), &m_password);
-		m_ZLIB = m_configFile->Read(wxT("/EC/ZLIB"), 1l) != 0;
+		m_language = m_configFile->Read("/Locale", "");
+		m_host = m_configFile->Read("/EC/Host", "");
+		m_port = m_configFile->Read("/EC/Port", 4712l);
+		m_configFile->ReadHash("/EC/Password", &m_password);
+		m_ZLIB = m_configFile->Read("/EC/ZLIB", 1l) != 0;
 	}
 }
 
@@ -605,10 +605,10 @@ void CaMuleExternalConnector::SaveConfigFile()
 		m_configFile = new CECFileConfig(m_configFileName);
 	}
 	if (m_configFile) {
-		m_configFile->Write(wxT("/Locale"), m_language);
-		m_configFile->Write(wxT("/EC/Host"), m_host);
-		m_configFile->Write(wxT("/EC/Port"), m_port);
-		m_configFile->WriteHash(wxT("/EC/Password"), m_password);
+		m_configFile->Write("/Locale", m_language);
+		m_configFile->Write("/EC/Host", m_host);
+		m_configFile->Write("/EC/Port", m_port);
+		m_configFile->WriteHash("/EC/Password", m_password);
 	}
 }
 
@@ -700,7 +700,7 @@ void CaMuleExternalConnector::OnFatalException()
 void CaMuleExternalConnector::OnAssertFailure(const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg)
 {
 #if !defined wxUSE_STACKWALKER || !wxUSE_STACKWALKER
-	wxString errmsg = CFormat( wxT("%s:%s:%d: Assertion '%s' failed. %s") ) % file % func % line % cond % ( msg ? msg : wxT("") );
+	wxString errmsg = CFormat( "%s:%s:%d: Assertion '%s' failed. %s" ) % file % func % line % cond % ( msg ? msg : "" );
 
 	fprintf(stderr, "Assertion failed: %s\n", (const char*)unicode2char(errmsg));
 

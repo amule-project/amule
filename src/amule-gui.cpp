@@ -161,25 +161,25 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 		long y = display.y;
 
 		// Tokenize the string
-		wxStringTokenizer tokens(geom_string, wxT("xX+-"));
+		wxStringTokenizer tokens(geom_string, "xX+-");
 
 		// First part: Program width
 		if ( tokens.GetNextToken().ToLong( &width ) ) {
 			wxString prefix = geom_string[ tokens.GetPosition() - 1 ];
-			if ( prefix == wxT("x") || prefix == wxT("X") ) {
+			if ( prefix == "x" || prefix == "X" ) {
 				// Second part: Program height
 				if ( tokens.GetNextToken().ToLong( &height ) ) {
 					prefix = geom_string[ tokens.GetPosition() - 1 ];
-					if ( prefix == wxT("+") || prefix == wxT("-") ) {
+					if ( prefix == "+" || prefix == "-" ) {
 						// Third part: X-Offset
 						if ( tokens.GetNextToken().ToLong( &x ) ) {
-							if ( prefix == wxT("-") )
+							if ( prefix == "-" )
 								x = display.GetRight() - ( width + x );
 							prefix = geom_string[ tokens.GetPosition() - 1 ];
-							if ( prefix == wxT("+") || prefix == wxT("-") ) {
+							if ( prefix == "+" || prefix == "-" ) {
 								// Fourth part: Y-Offset
 								if ( tokens.GetNextToken().ToLong( &y ) ) {
-									if ( prefix == wxT("-") )
+									if ( prefix == "-" )
 										y = display.GetBottom() - ( height + y );
 								}
 							}
@@ -215,9 +215,9 @@ void CamuleGuiBase::ResetTitle()
 {
 #ifdef SVNDATE
 	#ifdef CLIENT_GUI
-		m_FrameTitle = CFormat(wxT("aMule remote control %s %s")) % wxT( VERSION ) % wxT( SVNDATE );
+		m_FrameTitle = CFormat("aMule remote control %s %s") % VERSION % SVNDATE;
 	#else
-		m_FrameTitle = CFormat(wxT("aMule %s %s")) % wxT( VERSION ) % wxT( SVNDATE );
+		m_FrameTitle = CFormat("aMule %s %s") % VERSION % SVNDATE;
 	#endif
 #else
 	#ifdef CLIENT_GUI
@@ -227,8 +227,8 @@ void CamuleGuiBase::ResetTitle()
 	#endif
 
 	if (thePrefs::ShowVersionOnTitle()) {
-		m_FrameTitle += wxT(' ');
-		m_FrameTitle += wxT( VERSION );
+		m_FrameTitle += ' ';
+		m_FrameTitle += VERSION;
 	}
 #endif
 }

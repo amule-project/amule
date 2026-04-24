@@ -76,7 +76,7 @@ void CThreadScheduler::Start()
 
 	// Ensures that a thread is started if tasks are already waiting.
 	if (s_scheduler) {
-		AddDebugLogLineN(logThreads, wxT("Starting scheduler"));
+		AddDebugLogLineN(logThreads, "Starting scheduler");
 		s_scheduler->CreateSchedulerThread();
 	}
 }
@@ -84,7 +84,7 @@ void CThreadScheduler::Start()
 
 void CThreadScheduler::Terminate()
 {
-	AddDebugLogLineN(logThreads, wxT("Terminating scheduler"));
+	AddDebugLogLineN(logThreads, "Terminating scheduler");
 	CThreadScheduler* ptr = NULL;
 
 	{
@@ -98,7 +98,7 @@ void CThreadScheduler::Terminate()
 	}
 
 	delete ptr;
-	AddDebugLogLineN(logThreads, wxT("Scheduler terminated"));
+	AddDebugLogLineN(logThreads, "Scheduler terminated");
 }
 
 
@@ -108,12 +108,12 @@ bool CThreadScheduler::AddTask(CThreadTask* task, bool overwrite)
 
 	// When terminated (on shutdown), all tasks are ignored.
 	if (s_terminated) {
-		AddDebugLogLineN(logThreads, wxT("Task discarded: ") + task->GetDesc());
+		AddDebugLogLineN(logThreads, "Task discarded: " + task->GetDesc());
 		delete task;
 		return false;
 	} else if (s_scheduler == NULL) {
 		s_scheduler = new CThreadScheduler();
-		AddDebugLogLineN(logThreads, wxT("Scheduler created."));
+		AddDebugLogLineN(logThreads, "Scheduler created.");
 	}
 
 	return s_scheduler->DoAddTask(task, overwrite);
@@ -124,14 +124,14 @@ bool CThreadScheduler::AddTask(CThreadTask* task, bool overwrite)
 static wxString GetErrMsg(wxThreadError err)
 {
 	switch (err) {
-		case wxTHREAD_NO_ERROR:		return wxT("wxTHREAD_NO_ERROR");
-		case wxTHREAD_NO_RESOURCE:	return wxT("wxTHREAD_NO_RESOURCE");
-		case wxTHREAD_RUNNING:		return wxT("wxTHREAD_RUNNING");
-		case wxTHREAD_NOT_RUNNING:	return wxT("wxTHREAD_NOT_RUNNING");
-		case wxTHREAD_KILLED:		return wxT("wxTHREAD_KILLED");
-		case wxTHREAD_MISC_ERROR:	return wxT("wxTHREAD_MISC_ERROR");
+		case wxTHREAD_NO_ERROR:		return "wxTHREAD_NO_ERROR";
+		case wxTHREAD_NO_RESOURCE:	return "wxTHREAD_NO_RESOURCE";
+		case wxTHREAD_RUNNING:		return "wxTHREAD_RUNNING";
+		case wxTHREAD_NOT_RUNNING:	return "wxTHREAD_NOT_RUNNING";
+		case wxTHREAD_KILLED:		return "wxTHREAD_KILLED";
+		case wxTHREAD_MISC_ERROR:	return "wxTHREAD_MISC_ERROR";
 		default:
-			return wxT("Unknown error");
+			return "Unknown error";
 	}
 }
 
@@ -144,7 +144,7 @@ void CThreadScheduler::CreateSchedulerThread()
 
 	// A thread can only be run once, so the old one must be safely disposed of
 	if (m_thread) {
-		AddDebugLogLineN(logThreads, wxT("CreateSchedulerThread: Disposing of old thread."));
+		AddDebugLogLineN(logThreads, "CreateSchedulerThread: Disposing of old thread.");
 		m_thread->Stop();
 		delete m_thread;
 	}
@@ -158,13 +158,13 @@ void CThreadScheduler::CreateSchedulerThread()
 
 		err = m_thread->Run();
 		if (err == wxTHREAD_NO_ERROR) {
-			AddDebugLogLineN(logThreads, wxT("Scheduler thread started"));
+			AddDebugLogLineN(logThreads, "Scheduler thread started");
 			return;
 		} else {
-			AddDebugLogLineC(logThreads, wxT("Error while starting scheduler thread: ") + GetErrMsg(err));
+			AddDebugLogLineC(logThreads, "Error while starting scheduler thread: " + GetErrMsg(err));
 		}
 	} else {
-		AddDebugLogLineC(logThreads, wxT("Error while creating scheduler thread: ") + GetErrMsg(err));
+		AddDebugLogLineC(logThreads, "Error while creating scheduler thread: " + GetErrMsg(err));
 	}
 
 	// Creation or running failed.
@@ -226,11 +226,11 @@ bool CThreadScheduler::DoAddTask(CThreadTask* task, bool overwrite)
 
 	CDescMap::value_type entry(task->GetDesc(), task);
 	if (map.insert(entry).second) {
-		AddDebugLogLineN(logThreads, wxT("Task scheduled: ") + task->GetType() + wxT(" - ") + task->GetDesc());
+		AddDebugLogLineN(logThreads, "Task scheduled: " + task->GetType() + " - " + task->GetDesc());
 		m_tasks.push_back(CEntryPair(task, taskAge++));
 		m_tasksDirty = true;
 	} else if (overwrite) {
-		AddDebugLogLineN(logThreads, wxT("Task overwritten: ") + task->GetType() + wxT(" - ") + task->GetDesc());
+		AddDebugLogLineN(logThreads, "Task overwritten: " + task->GetType() + " - " + task->GetDesc());
 
 		CThreadTask* existingTask = map[task->GetDesc()];
 		if (m_currentTask == existingTask) {
@@ -246,7 +246,7 @@ bool CThreadScheduler::DoAddTask(CThreadTask* task, bool overwrite)
 		map[task->GetDesc()] = task;
 		m_tasksDirty = true;
 	} else {
-		AddDebugLogLineN(logThreads, wxT("Duplicate task, discarding: ") + task->GetType() + wxT(" - ") + task->GetDesc());
+		AddDebugLogLineN(logThreads, "Duplicate task, discarding: " + task->GetType() + " - " + task->GetDesc());
 		delete task;
 		return false;
 	}
@@ -261,7 +261,7 @@ bool CThreadScheduler::DoAddTask(CThreadTask* task, bool overwrite)
 
 void* CThreadScheduler::Entry()
 {
-	AddDebugLogLineN(logThreads, wxT("Entering scheduling loop"));
+	AddDebugLogLineN(logThreads, "Entering scheduling loop");
 
 	while (!m_thread->TestDestroy()) {
 		CScopedPtr<CThreadTask> task(NULL);
@@ -271,11 +271,11 @@ void* CThreadScheduler::Entry()
 
 			// Resort tasks by priority/age if list has been modified.
 			if (m_tasksDirty) {
-				AddDebugLogLineN(logThreads, wxT("Resorting tasks"));
+				AddDebugLogLineN(logThreads, "Resorting tasks");
 				std::sort(m_tasks.begin(), m_tasks.end(), CTaskSorter());
 				m_tasksDirty = false;
 			} else if (m_tasks.empty()) {
-				AddDebugLogLineN(logThreads, wxT("No more tasks, stopping"));
+				AddDebugLogLineN(logThreads, "No more tasks, stopping");
 				break;
 			}
 
@@ -285,7 +285,7 @@ void* CThreadScheduler::Entry()
 			m_currentTask = task.get();
 		}
 
-		AddDebugLogLineN(logThreads, wxT("Current task: ") + task->GetType() + wxT(" - ") + task->GetDesc());
+		AddDebugLogLineN(logThreads, "Current task: " + task->GetType() + " - " + task->GetDesc());
 		// Execute the task
 		task->m_owner = m_thread;
 		task->Entry();
@@ -302,9 +302,9 @@ void* CThreadScheduler::Entry()
 			// that it can't be the last task of this type.
 			if (!task->m_abort) {
 				AddDebugLogLineN(logThreads,
-					CFormat(wxT("Completed task '%s%s', %u tasks remaining."))
+					CFormat("Completed task '%s%s', %u tasks remaining.")
 						% task->GetType()
-						% (task->GetDesc().IsEmpty() ? wxString() : (wxT(" - ") + task->GetDesc()))
+						% (task->GetDesc().IsEmpty() ? wxString() : (" - " + task->GetDesc()))
 						% m_tasks.size() );
 
 				CDescMap& map = m_taskDescs[task->GetType()];
@@ -321,12 +321,12 @@ void* CThreadScheduler::Entry()
 
 		if (isLastTask) {
 			// Allow the task to signal that all sub-tasks have been completed
-			AddDebugLogLineN(logThreads, wxT("Last task, calling OnLastTask"));
+			AddDebugLogLineN(logThreads, "Last task, calling OnLastTask");
 			task->OnLastTask();
 		}
 	}
 
-	AddDebugLogLineN(logThreads, wxT("Leaving scheduling loop"));
+	AddDebugLogLineN(logThreads, "Leaving scheduling loop");
 
 	return 0;
 }

@@ -983,8 +983,8 @@ void CECTag::DebugPrint(int level, bool print_empty) const
 {
 	if (m_dataLen || print_empty) {
 		wxString space;
-		for (int i = level; i--;) space += wxT("  ");
-		wxString s1 = CFormat(wxT("%s%s %d = ")) % space % GetDebugNameECTagNames(m_tagName) % m_dataLen;
+		for (int i = level; i--;) space += "  ";
+		wxString s1 = CFormat("%s%s %d = ") % space % GetDebugNameECTagNames(m_tagName) % m_dataLen;
 		wxString s2;
 		switch (m_tagName) {
 			case EC_TAG_DETAIL_LEVEL:
@@ -999,11 +999,11 @@ void CECTag::DebugPrint(int level, bool print_empty) const
 					case EC_TAGTYPE_UINT16:
 					case EC_TAGTYPE_UINT32:
 					case EC_TAGTYPE_UINT64:
-						s2 = CFormat(wxT("%d")) % GetInt(); break;
+						s2 = CFormat("%d") % GetInt(); break;
 					case EC_TAGTYPE_STRING:
 						s2 = GetStringData(); break;
 					case EC_TAGTYPE_DOUBLE:
-						s2 = CFormat(wxT("%.1f")) % GetDoubleData(); break;
+						s2 = CFormat("%.1f") % GetDoubleData(); break;
 					case EC_TAGTYPE_HASH16:
 						s2 = GetMD4Data().Encode(); break;
 					case EC_TAGTYPE_UINT128:
@@ -1015,16 +1015,16 @@ void CECTag::DebugPrint(int level, bool print_empty) const
 						//s2 = GetInt128Data().ToHexString(); break;
 					case EC_TAGTYPE_CUSTOM:
 						if (m_dataLen == 0) {
-							s2 = wxT("empty");
+							s2 = "empty";
 						} else {
 							// Make a hex dump (limited to maxOutput)
 							const uint32 maxOutput = 50;
 							for (uint32 i = 0; i < m_dataLen; i++) {
 								if (i == maxOutput) {
-									s2 += wxT("...");
+									s2 += "...";
 									break;
 								}
-								s2 += CFormat(wxT("%02X ")) % (unsigned char) m_tagData[i];
+								s2 += CFormat("%02X ") % (unsigned char) m_tagData[i];
 							}
 						}
 						break;

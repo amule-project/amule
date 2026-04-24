@@ -73,7 +73,7 @@ wxSizer * CCaptchaDialog::captchaDlg( wxWindow *parent )
     wxStaticBitmap *item1 = new wxStaticBitmap( parent, -1, *m_captchaBitmap, wxDefaultPosition, wxSize(160,60) );
     item0->Add( item1, 0, wxALIGN_CENTER|wxALL, 5 );
 
-	m_TextCtrl = new wxTextCtrl( parent, -1, wxEmptyString, wxDefaultPosition, wxSize(80,20));
+	m_TextCtrl = new wxTextCtrl( parent, -1, "", wxDefaultPosition, wxSize(80,20));
     item0->Add( m_TextCtrl, 0, wxALIGN_CENTER|wxALL, 5 );
 
     wxButton *item3 = new wxButton( parent, wxID_OK  );

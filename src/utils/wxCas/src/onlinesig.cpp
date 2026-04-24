@@ -72,7 +72,7 @@ OnLineSig::Refresh ()
 		wxFileInputStream input ( file );
 
 		wxTextInputStream text ( input );
-		text.SetStringSeparators ( wxT( "\n" ) );
+		text.SetStringSeparators ( "\n" );
 
 		text >> m_amuleState;
 		text >> m_serverName;
@@ -254,9 +254,9 @@ wxString OnLineSig::GetConvertedSessionDL ()
 
 wxString OnLineSig::GetConnexionIDType () const
 {
-	if ( m_connexionID == wxT( "H" ) ) {
+	if ( m_connexionID == "H" ) {
 		return ( wxString ( _( "HighID" ) ) );
-	} else if ( m_connexionID == wxT( "L" ) ) {
+	} else if ( m_connexionID == "L" ) {
                 return ( wxString ( _( "LowID" ) ) );
 	}
 	else {

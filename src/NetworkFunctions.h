@@ -35,23 +35,23 @@
 
 inline wxString Uint32toStringIP(uint32 ip)
 {
-	return CFormat(wxT("%u.%u.%u.%u")) % (uint8)ip % (uint8)(ip>>8) % (uint8)(ip>>16) % (uint8)(ip>>24);
+	return CFormat("%u.%u.%u.%u") % (uint8)ip % (uint8)(ip>>8) % (uint8)(ip>>16) % (uint8)(ip>>24);
 }
 
 inline wxString Uint32_16toStringIP_Port(uint32 ip, uint16 port)
 {
-	return CFormat(wxT("%u.%u.%u.%u:%u")) % (uint8)ip % (uint8)(ip>>8) % (uint8)(ip>>16) % (uint8)(ip>>24) % port;
+	return CFormat("%u.%u.%u.%u:%u") % (uint8)ip % (uint8)(ip>>8) % (uint8)(ip>>16) % (uint8)(ip>>24) % port;
 }
 
 // These functions take IPs in host-order
 inline wxString KadIPToString(uint32_t ip)
 {
-	return CFormat(wxT("%u.%u.%u.%u")) % (uint8_t)(ip >> 24) % (uint8_t)(ip >> 16) % (uint8_t)(ip >> 8) % (uint8_t)ip;
+	return CFormat("%u.%u.%u.%u") % (uint8_t)(ip >> 24) % (uint8_t)(ip >> 16) % (uint8_t)(ip >> 8) % (uint8_t)ip;
 }
 
 inline wxString KadIPPortToString(uint32_t ip, uint16_t port)
 {
-	return CFormat(wxT("%u.%u.%u.%u:%u")) % (uint8_t)(ip >> 24) % (uint8_t)(ip >> 16) % (uint8_t)(ip >> 8) % (uint8_t)ip % port;
+	return CFormat("%u.%u.%u.%u:%u") % (uint8_t)(ip >> 24) % (uint8_t)(ip >> 16) % (uint8_t)(ip >> 8) % (uint8_t)ip % port;
 }
 
 /**
@@ -112,10 +112,10 @@ uint32 StringHosttoUint32(const wxString &Host);
  *
  * Note: IP must be in anti-host order (BE on LE platform, LE on BE platform).
  */
-bool IsGoodIP( uint32 IP, bool filterLAN ) throw();
+bool IsGoodIP( uint32 IP, bool filterLAN ) noexcept;
 
 
-inline bool IsGoodIPPort(uint32 nIP, uint16 nPort) throw()
+inline bool IsGoodIPPort(uint32 nIP, uint16 nPort) noexcept
 {
 	return IsGoodIP(nIP, true) && nPort!=0;
 }
@@ -137,7 +137,7 @@ inline bool IsLowID(uint32 id)
  *
  * @note IP must be in anti-host order.
  */
-bool IsLanIP(uint32_t ip) throw();
+bool IsLanIP(uint32_t ip) noexcept;
 
 #endif // NETWORK_FUNCTIONS_H
 // File_checked_for_headers

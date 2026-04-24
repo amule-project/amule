@@ -313,7 +313,7 @@ public:
 	 * Attempting to erase the end() iterator is an invalid operation.
 	 */
 	iterator erase(iterator pos) {
-		MULE_VALIDATE_PARAMS(pos != end(), wxT("Cannot erase 'end'"));
+		MULE_VALIDATE_PARAMS(pos != end(), "Cannot erase 'end'");
 
 		RangeIterator temp = pos.m_it++;
 
@@ -435,7 +435,7 @@ protected:
 	 * @return An iterator pointing to the range covering at least the specified range.
 	 */
 	iterator do_insert(KEYTYPE start, HELPER entry, bool merge = true) {
-		MULE_VALIDATE_PARAMS(start <= entry.first, wxT("Not a valid range."));
+		MULE_VALIDATE_PARAMS(start <= entry.first, "Not a valid range.");
 
 		RangeIterator it = get_insert_it(start);
 		while ( it != m_ranges.end() ) {

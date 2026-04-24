@@ -67,7 +67,7 @@ CMuleNotebook::~CMuleNotebook()
 bool CMuleNotebook::DeletePage(int nPage)
 {
 	wxCHECK_MSG((nPage >= 0) && (nPage < (int)GetPageCount()), false,
-		wxT("Trying to delete invalid page-index in CMuleNotebook::DeletePage"));
+		"Trying to delete invalid page-index in CMuleNotebook::DeletePage");
 
 	// Send out close event
 	wxNotebookEvent evt( wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING, GetId(), nPage );
@@ -92,7 +92,7 @@ bool CMuleNotebook::DeletePage(int nPage)
 		if (page == GetPageCount()) {
 			page--;
 		}
-		wxNotebookEvent event( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, GetId(), page );
+		wxNotebookEvent event( wxEVT_NOTEBOOK_PAGE_CHANGED, GetId(), page );
 		event.SetEventObject(this);
 		ProcessEvent( event );
 	} else {

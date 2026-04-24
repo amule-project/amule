@@ -137,7 +137,7 @@ wxString amuleIPV4Address::IPAddress() const
 bool amuleIPV4Address::AnyAddress()
 {
 	bool ret = m_endpoint->AnyAddress();
-	AddDebugLogLineN(logGeneral, CFormat(wxT("AnyAddress() returned %s")) % IPAddress());
+	AddDebugLogLineN(logGeneral, CFormat("AnyAddress() returned %s") % IPAddress());
 	return ret;
 }
 

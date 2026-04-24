@@ -46,18 +46,18 @@ enum ECTagTypes {
 wxString GetDebugNameECTagTypes(uint8 arg)
 {
 	switch (arg) {
-		case 0: return wxT("EC_TAGTYPE_UNKNOWN");
-		case 1: return wxT("EC_TAGTYPE_CUSTOM");
-		case 2: return wxT("EC_TAGTYPE_UINT8");
-		case 3: return wxT("EC_TAGTYPE_UINT16");
-		case 4: return wxT("EC_TAGTYPE_UINT32");
-		case 5: return wxT("EC_TAGTYPE_UINT64");
-		case 6: return wxT("EC_TAGTYPE_STRING");
-		case 7: return wxT("EC_TAGTYPE_DOUBLE");
-		case 8: return wxT("EC_TAGTYPE_IPV4");
-		case 9: return wxT("EC_TAGTYPE_HASH16");
-		case 10: return wxT("EC_TAGTYPE_UINT128");
-		default: return CFormat(wxT("unknown %d 0x%x")) % arg % arg;
+		case 0: return "EC_TAGTYPE_UNKNOWN";
+		case 1: return "EC_TAGTYPE_CUSTOM";
+		case 2: return "EC_TAGTYPE_UINT8";
+		case 3: return "EC_TAGTYPE_UINT16";
+		case 4: return "EC_TAGTYPE_UINT32";
+		case 5: return "EC_TAGTYPE_UINT64";
+		case 6: return "EC_TAGTYPE_STRING";
+		case 7: return "EC_TAGTYPE_DOUBLE";
+		case 8: return "EC_TAGTYPE_IPV4";
+		case 9: return "EC_TAGTYPE_HASH16";
+		case 10: return "EC_TAGTYPE_UINT128";
+		default: return CFormat("unknown %d 0x%x") % arg % arg;
 	}
 }
 

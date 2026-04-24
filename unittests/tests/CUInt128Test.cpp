@@ -41,9 +41,9 @@ namespace muleunit {
 		wxString retval;
 		for (int i = 0; i < 16; i++) {
 			if (i) {
-				retval.Append(wxString::Format(wxT(" %02X"), value[i]));
+				retval.Append(wxString::Format(" %02X", value[i]));
 			} else {
-				retval.Append(wxString::Format(wxT("%02X"), value[i]));
+				retval.Append(wxString::Format("%02X", value[i]));
 			}
 		}
 		return retval;
@@ -64,7 +64,7 @@ DECLARE_SIMPLE(CUInt128);
 
 // Each test uses only functionality previously tested.
 
-TEST_M(CUInt128, ConstructorAndToByteArray, wxT("Reading/writing byte sequences"))
+TEST_M(CUInt128, ConstructorAndToByteArray, "Reading/writing byte sequences")
 {
 	uint8_t result[16];
 
@@ -86,22 +86,22 @@ TEST_M(CUInt128, ConstructorAndToByteArray, wxT("Reading/writing byte sequences"
 		      TestData::sequence[13] == result[13] &&
 		      TestData::sequence[14] == result[14] &&
 		      TestData::sequence[15] == result[15],
-		      wxString(wxT("Expected '")) + StringFrom(TestData::sequence) + wxT("' but got '") + StringFrom(result) + wxT("'"));
+		      wxString("Expected '") + StringFrom(TestData::sequence) + "' but got '" + StringFrom(result) + "'");
 }
 
 TEST(CUInt128, ToHexString)
 {
 	CUInt128 test((uint8_t *)&TestData::sequence);
-	ASSERT_EQUALS(wxT("000102030405060708090A0B0C0D0E0F"), test.ToHexString());
+	ASSERT_EQUALS("000102030405060708090A0B0C0D0E0F", test.ToHexString());
 }
 
 TEST(CUInt128, ToBinaryString)
 {
 	CUInt128 test((uint8_t *)&TestData::sequence);
-	ASSERT_EQUALS(wxT("00000000000000010000001000000011000001000000010100000110000001110000100000001001000010100000101100001100000011010000111000001111"), test.ToBinaryString());
-	ASSERT_EQUALS(wxT("10000001000000011000001000000010100000110000001110000100000001001000010100000101100001100000011010000111000001111"), test.ToBinaryString(true));
+	ASSERT_EQUALS("00000000000000010000001000000011000001000000010100000110000001110000100000001001000010100000101100001100000011010000111000001111", test.ToBinaryString());
+	ASSERT_EQUALS("10000001000000011000001000000010100000110000001110000100000001001000010100000101100001100000011010000111000001111", test.ToBinaryString(true));
 	CUInt128 testZero((uint8_t *)&TestData::zero);
-	ASSERT_EQUALS(wxT("0"), testZero.ToBinaryString(true));
+	ASSERT_EQUALS("0", testZero.ToBinaryString(true));
 }
 
 TEST(CUInt128, Get32BitChunk)
@@ -114,7 +114,7 @@ TEST(CUInt128, Get32BitChunk)
 	ASSERT_EQUALS(0u, test.Get32BitChunk(4));
 }
 
-TEST_M(CUInt128, OperatorEqualsCUInt128, wxT("operator==(const CUInt128&)"))
+TEST_M(CUInt128, OperatorEqualsCUInt128, "operator==(const CUInt128&)")
 {
 	CUInt128 a((uint8_t *)&TestData::sequence);
 	CUInt128 b((uint8_t *)&TestData::one);
@@ -123,7 +123,7 @@ TEST_M(CUInt128, OperatorEqualsCUInt128, wxT("operator==(const CUInt128&)"))
 	ASSERT_FALSE(a == b);
 }
 
-TEST_M(CUInt128, OperatorEqualsUint32, wxT("operator==(uint32_t)"))
+TEST_M(CUInt128, OperatorEqualsUint32, "operator==(uint32_t)")
 {
 	ASSERT_TRUE(CUInt128((uint8_t *)&TestData::uintValue) == 0x12345678u);
 	CUInt128 test((uint8_t *)&TestData::sequence);
@@ -133,7 +133,7 @@ TEST_M(CUInt128, OperatorEqualsUint32, wxT("operator==(uint32_t)"))
 	ASSERT_FALSE(test == 0x0c0d0e0fu);
 }
 
-TEST_M(CUInt128, OperatorEqualsUint32CUInt128, wxT("operator==(uint32_t, const CUInt128&)"))
+TEST_M(CUInt128, OperatorEqualsUint32CUInt128, "operator==(uint32_t, const CUInt128&)")
 {
 	ASSERT_TRUE(0x12345678u == CUInt128((uint8_t *)&TestData::uintValue));
 	CUInt128 test((uint8_t *)&TestData::sequence);
@@ -143,7 +143,7 @@ TEST_M(CUInt128, OperatorEqualsUint32CUInt128, wxT("operator==(uint32_t, const C
 	ASSERT_FALSE(0x0c0d0e0fu == test);
 }
 
-TEST_M(CUInt128, EmptyContructor, wxT("CUInt128()"))
+TEST_M(CUInt128, EmptyContructor, "CUInt128()")
 {
 	CUInt128 test;
 	CUInt128 ref((uint8_t *)&TestData::zero);
@@ -151,7 +151,7 @@ TEST_M(CUInt128, EmptyContructor, wxT("CUInt128()"))
 	ASSERT_EQUALS(ref, test);
 }
 
-TEST_M(CUInt128, CopyConstructor, wxT("CUInt128(const CUInt128&)"))
+TEST_M(CUInt128, CopyConstructor, "CUInt128(const CUInt128&)")
 {
 	CUInt128 a((uint8_t *)&TestData::sequence);
 	CUInt128 b(a);
@@ -159,7 +159,7 @@ TEST_M(CUInt128, CopyConstructor, wxT("CUInt128(const CUInt128&)"))
 	ASSERT_EQUALS(a, b);
 }
 
-TEST_M(CUInt128, ConstructFromBool, wxT("CUInt128(bool)"))
+TEST_M(CUInt128, ConstructFromBool, "CUInt128(bool)")
 {
 	CUInt128 empty(false);
 	CUInt128 full(true);
@@ -170,12 +170,12 @@ TEST_M(CUInt128, ConstructFromBool, wxT("CUInt128(bool)"))
 	ASSERT_EQUALS(minusOne, full);
 }
 
-TEST_M(CUInt128, ConstructFromUint32, wxT("CUInt128(uint32_t)"))
+TEST_M(CUInt128, ConstructFromUint32, "CUInt128(uint32_t)")
 {
 	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::uintValue), CUInt128(0x12345678u));
 }
 
-TEST_M(CUInt128, ConstructWithBits, wxT("CUInt128(const CUInt128&, unsigned)"))
+TEST_M(CUInt128, ConstructWithBits, "CUInt128(const CUInt128&, unsigned)")
 {
 	CUInt128 a((uint8_t *)&TestData::sequence);
 	CUInt128 b((uint8_t *)&TestData::minusOne);
@@ -231,7 +231,7 @@ TEST_M(CUInt128, ConstructWithBits, wxT("CUInt128(const CUInt128&, unsigned)"))
 	}
 }
 
-TEST_M(CUInt128, AssignCUInt128, wxT("operator=(const CUInt128&)"))
+TEST_M(CUInt128, AssignCUInt128, "operator=(const CUInt128&)")
 {
 	CUInt128 a((uint8_t *)&TestData::sequence);
 	CUInt128 b = a;
@@ -239,7 +239,7 @@ TEST_M(CUInt128, AssignCUInt128, wxT("operator=(const CUInt128&)"))
 	ASSERT_EQUALS(a, b);
 }
 
-TEST_M(CUInt128, AssignUint32, wxT("operator=(uint32_t)"))
+TEST_M(CUInt128, AssignUint32, "operator=(uint32_t)")
 {
 	CUInt128 a((uint8_t *)&TestData::uintValue);
 	// Note that CUInt128 b = 0x12345678u; won't work,
@@ -294,7 +294,7 @@ TEST(CUInt128, StoreCryptValue)
 	ASSERT_EQUALS(CUInt128((uint8_t *)&ref), CUInt128((uint8_t *)&tmp));
 }
 
-TEST_M(CUInt128, OperatorShiftLeftAssign, wxT("operator<<=(unsigned)"))
+TEST_M(CUInt128, OperatorShiftLeftAssign, "operator<<=(unsigned)")
 {
 	CUInt128 test((uint8_t *)&TestData::one);
 	uint8_t r1[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2 };
@@ -318,7 +318,7 @@ TEST_M(CUInt128, OperatorShiftLeftAssign, wxT("operator<<=(unsigned)"))
 	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::zero), test);
 }
 
-TEST_M(CUInt128, OperatorAddAssignCUInt128, wxT("operator+=(const CUInt128&)"))
+TEST_M(CUInt128, OperatorAddAssignCUInt128, "operator+=(const CUInt128&)")
 {
 	uint8_t d0[16] = { 0xfc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
 	uint8_t r1[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xd, 0x30, 0x53, 0x76 };
@@ -342,7 +342,7 @@ TEST_M(CUInt128, OperatorAddAssignCUInt128, wxT("operator+=(const CUInt128&)"))
 	ASSERT_EQUALS(CUInt128(), a);
 }
 
-TEST_M(CUInt128, OperatorAddAssignUint32, wxT("operator+=(uint32_t)"))
+TEST_M(CUInt128, OperatorAddAssignUint32, "operator+=(uint32_t)")
 {
 	uint8_t r1[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xd, 0x30, 0x53, 0x76 };
 	uint8_t r2[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xc, 0xc, 0x30, 0x53, 0x76 };
@@ -357,7 +357,7 @@ TEST_M(CUInt128, OperatorAddAssignUint32, wxT("operator+=(uint32_t)"))
 	ASSERT_EQUALS(0, a);
 }
 
-TEST_M(CUInt128, OperatorSubtractAssignCUInt128, wxT("operator-=(const CUInt128&)"))
+TEST_M(CUInt128, OperatorSubtractAssignCUInt128, "operator-=(const CUInt128&)")
 {
 	uint8_t d0[16] = { 0xfc, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
 	uint8_t r1[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xd, 0x30, 0x53, 0x76 };
@@ -381,7 +381,7 @@ TEST_M(CUInt128, OperatorSubtractAssignCUInt128, wxT("operator-=(const CUInt128&
 	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::minusOne), a);
 }
 
-TEST_M(CUInt128, OperatorSubtractAssignUint32, wxT("operator-=(uint32_t)"))
+TEST_M(CUInt128, OperatorSubtractAssignUint32, "operator-=(uint32_t)")
 {
 	uint8_t r1[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xd, 0x30, 0x53, 0x76 };
 	uint8_t r2[16] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xc, 0xc, 0x30, 0x53, 0x76 };
@@ -396,7 +396,7 @@ TEST_M(CUInt128, OperatorSubtractAssignUint32, wxT("operator-=(uint32_t)"))
 	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::minusOne), a);
 }
 
-TEST_M(CUInt128, OperatorXorAssignCUInt128, wxT("operator^=(const CUInt128&)"))
+TEST_M(CUInt128, OperatorXorAssignCUInt128, "operator^=(const CUInt128&)")
 {
 	uint8_t xd[16] = { 0xff, 0x00, 0xee, 0x11, 0xdd, 0x22, 0xcc, 0x33, 0xbb, 0x44, 0xaa, 0x55, 0x99, 0x66, 0x88, 0x77 };
 	uint8_t xr[16] = { 0xff, 0x01, 0xec, 0x12, 0xd9, 0x27, 0xca, 0x34, 0xb3, 0x4d, 0xa0, 0x5e, 0x95, 0x6b, 0x86, 0x78 };
@@ -408,7 +408,7 @@ TEST_M(CUInt128, OperatorXorAssignCUInt128, wxT("operator^=(const CUInt128&)"))
 	ASSERT_EQUALS(CUInt128((uint8_t *)&xd), x);
 }
 
-TEST_M(CUInt128, OperatorXorAssignUint32, wxT("operator^=(uint32_t)"))
+TEST_M(CUInt128, OperatorXorAssignUint32, "operator^=(uint32_t)")
 {
 	CUInt128 a(0x12345678u);
 
@@ -453,7 +453,7 @@ TEST(CUInt128, SetBitNumber)
 	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::sequence), test);
 }
 
-TEST_M(CUInt128, OperatorNotEqualCUInt128, wxT("operator!=(const CUInt128&)"))
+TEST_M(CUInt128, OperatorNotEqualCUInt128, "operator!=(const CUInt128&)")
 {
 	CUInt128 a((uint8_t *)&TestData::sequence);
 	CUInt128 b((uint8_t *)&TestData::one);
@@ -462,7 +462,7 @@ TEST_M(CUInt128, OperatorNotEqualCUInt128, wxT("operator!=(const CUInt128&)"))
 	ASSERT_TRUE(a != b);
 }
 
-TEST_M(CUInt128, OperatorNotEqualUint32, wxT("operator!=(uint32_t)"))
+TEST_M(CUInt128, OperatorNotEqualUint32, "operator!=(uint32_t)")
 {
 	ASSERT_FALSE(CUInt128((uint8_t *)&TestData::uintValue) != 0x12345678u);
 	CUInt128 test((uint8_t *)&TestData::sequence);
@@ -472,7 +472,7 @@ TEST_M(CUInt128, OperatorNotEqualUint32, wxT("operator!=(uint32_t)"))
 	ASSERT_TRUE(test != 0x0c0d0e0fu);
 }
 
-TEST_M(CUInt128, OperatorNotEqualUint32CUInt128, wxT("operator!=(uint32_t, const CUInt128&)"))
+TEST_M(CUInt128, OperatorNotEqualUint32CUInt128, "operator!=(uint32_t, const CUInt128&)")
 {
 	ASSERT_FALSE(0x12345678u != CUInt128((uint8_t *)&TestData::uintValue));
 	CUInt128 test((uint8_t *)&TestData::sequence);
@@ -482,7 +482,7 @@ TEST_M(CUInt128, OperatorNotEqualUint32CUInt128, wxT("operator!=(uint32_t, const
 	ASSERT_TRUE(0x0c0d0e0fu != test);
 }
 
-TEST_M(CUInt128, OperatorLessCUInt128, wxT("operator<(const CUInt128&)"))
+TEST_M(CUInt128, OperatorLessCUInt128, "operator<(const CUInt128&)")
 {
 	for (unsigned i = 0; i < 4; i++) {
 		CUInt128 a;
@@ -493,7 +493,7 @@ TEST_M(CUInt128, OperatorLessCUInt128, wxT("operator<(const CUInt128&)"))
 	}
 }
 
-TEST_M(CUInt128, OperatorLessOrEqualCUInt128, wxT("operator<=(const CUInt128&)"))
+TEST_M(CUInt128, OperatorLessOrEqualCUInt128, "operator<=(const CUInt128&)")
 {
 	for (unsigned i = 0; i < 4; i++) {
 		CUInt128 a;
@@ -506,7 +506,7 @@ TEST_M(CUInt128, OperatorLessOrEqualCUInt128, wxT("operator<=(const CUInt128&)")
 	}
 }
 
-TEST_M(CUInt128, OperatorGreaterCUInt128, wxT("operator>(const CUInt128&)"))
+TEST_M(CUInt128, OperatorGreaterCUInt128, "operator>(const CUInt128&)")
 {
 	for (unsigned i = 0; i < 4; i++) {
 		CUInt128 a;
@@ -517,7 +517,7 @@ TEST_M(CUInt128, OperatorGreaterCUInt128, wxT("operator>(const CUInt128&)"))
 	}
 }
 
-TEST_M(CUInt128, OperatorGreaterOrEqualCUInt128, wxT("operator>=(const CUInt128&)"))
+TEST_M(CUInt128, OperatorGreaterOrEqualCUInt128, "operator>=(const CUInt128&)")
 {
 	for (unsigned i = 0; i < 4; i++) {
 		CUInt128 a;
@@ -530,7 +530,7 @@ TEST_M(CUInt128, OperatorGreaterOrEqualCUInt128, wxT("operator>=(const CUInt128&
 	}
 }
 
-TEST_M(CUInt128, OperatorLessUint32, wxT("operator<(uint32_t)"))
+TEST_M(CUInt128, OperatorLessUint32, "operator<(uint32_t)")
 {
 	for (unsigned i = 0; i < 4; i++) {
 		CUInt128 a;
@@ -543,7 +543,7 @@ TEST_M(CUInt128, OperatorLessUint32, wxT("operator<(uint32_t)"))
 	}
 }
 
-TEST_M(CUInt128, OperatorLessOrEqualUint32, wxT("operator<=(uint32_t)"))
+TEST_M(CUInt128, OperatorLessOrEqualUint32, "operator<=(uint32_t)")
 {
 	for (unsigned i = 0; i < 4; i++) {
 		CUInt128 a;
@@ -558,7 +558,7 @@ TEST_M(CUInt128, OperatorLessOrEqualUint32, wxT("operator<=(uint32_t)"))
 	}
 }
 
-TEST_M(CUInt128, OperatorGreaterUint32, wxT("operator>(uint32_t)"))
+TEST_M(CUInt128, OperatorGreaterUint32, "operator>(uint32_t)")
 {
 	for (unsigned i = 0; i < 4; i++) {
 		CUInt128 a;
@@ -567,7 +567,7 @@ TEST_M(CUInt128, OperatorGreaterUint32, wxT("operator>(uint32_t)"))
 	}
 }
 
-TEST_M(CUInt128, OperatorGreaterOrEqualUint32, wxT("operator>=(uint32_t)"))
+TEST_M(CUInt128, OperatorGreaterOrEqualUint32, "operator>=(uint32_t)")
 {
 	for (unsigned i = 0; i < 4; i++) {
 		CUInt128 a;
@@ -577,7 +577,7 @@ TEST_M(CUInt128, OperatorGreaterOrEqualUint32, wxT("operator>=(uint32_t)"))
 	}
 }
 
-TEST_M(CUInt128, OperatorLessUint32CUInt128, wxT("operator<(uint32_t, const CUInt128&)"))
+TEST_M(CUInt128, OperatorLessUint32CUInt128, "operator<(uint32_t, const CUInt128&)")
 {
 	for (unsigned i = 0; i < 4; i++) {
 		CUInt128 a;
@@ -586,7 +586,7 @@ TEST_M(CUInt128, OperatorLessUint32CUInt128, wxT("operator<(uint32_t, const CUIn
 	}
 }
 
-TEST_M(CUInt128, OperatorLessOrEqualUint32CUInt128, wxT("operator<=(uint32_t, const CUInt128&)"))
+TEST_M(CUInt128, OperatorLessOrEqualUint32CUInt128, "operator<=(uint32_t, const CUInt128&)")
 {
 	for (unsigned i = 0; i < 4; i++) {
 		CUInt128 a;
@@ -596,7 +596,7 @@ TEST_M(CUInt128, OperatorLessOrEqualUint32CUInt128, wxT("operator<=(uint32_t, co
 	}
 }
 
-TEST_M(CUInt128, OperatorGreaterUint32CUInt128, wxT("operator>(uint32_t, const CUInt128&)"))
+TEST_M(CUInt128, OperatorGreaterUint32CUInt128, "operator>(uint32_t, const CUInt128&)")
 {
 	for (unsigned i = 0; i < 4; i++) {
 		CUInt128 a;
@@ -609,7 +609,7 @@ TEST_M(CUInt128, OperatorGreaterUint32CUInt128, wxT("operator>(uint32_t, const C
 	}
 }
 
-TEST_M(CUInt128, OperatorGreaterOrEqualUint32CUInt128, wxT("operator>=(uint32_t, const CUInt128&)"))
+TEST_M(CUInt128, OperatorGreaterOrEqualUint32CUInt128, "operator>=(uint32_t, const CUInt128&)")
 {
 	for (unsigned i = 0; i < 4; i++) {
 		CUInt128 a;
@@ -624,7 +624,7 @@ TEST_M(CUInt128, OperatorGreaterOrEqualUint32CUInt128, wxT("operator>=(uint32_t,
 	}
 }
 
-TEST_M(CUInt128, OperatorAddCUInt128, wxT("operator+(const CUInt128&)"))
+TEST_M(CUInt128, OperatorAddCUInt128, "operator+(const CUInt128&)")
 {
 	CUInt128 a((uint8_t *)&TestData::sequence);
 
@@ -644,7 +644,7 @@ TEST_M(CUInt128, OperatorAddCUInt128, wxT("operator+(const CUInt128&)"))
 	ASSERT_EQUALS(check, result);
 }
 
-TEST_M(CUInt128, OperatorSubtractCUInt128, wxT("operator-(const CUInt128&)"))
+TEST_M(CUInt128, OperatorSubtractCUInt128, "operator-(const CUInt128&)")
 {
 	CUInt128 a((uint8_t *)&TestData::randomValue);
 	CUInt128 b((uint8_t *)&TestData::sequence);
@@ -665,7 +665,7 @@ TEST_M(CUInt128, OperatorSubtractCUInt128, wxT("operator-(const CUInt128&)"))
 	ASSERT_EQUALS(check, result);
 }
 
-TEST_M(CUInt128, OperatorXorCUInt128, wxT("operator^(const CUInt128&)"))
+TEST_M(CUInt128, OperatorXorCUInt128, "operator^(const CUInt128&)")
 {
 	CUInt128 a((uint8_t *)&TestData::randomValue);
 	CUInt128 b((uint8_t *)&TestData::sequence);
@@ -682,7 +682,7 @@ TEST_M(CUInt128, OperatorXorCUInt128, wxT("operator^(const CUInt128&)"))
 	ASSERT_EQUALS(check, result);
 }
 
-TEST_M(CUInt128, OperatorAddUint32, wxT("operator+(uint32_t)"))
+TEST_M(CUInt128, OperatorAddUint32, "operator+(uint32_t)")
 {
 	CUInt128 a((uint8_t *)&TestData::randomValue);
 	uint32_t b = a.Get32BitChunk(0);
@@ -704,7 +704,7 @@ TEST_M(CUInt128, OperatorAddUint32, wxT("operator+(uint32_t)"))
 	ASSERT_EQUALS(check, result);
 }
 
-TEST_M(CUInt128, OperatorSubtractUint32, wxT("operator-(uint32_t)"))
+TEST_M(CUInt128, OperatorSubtractUint32, "operator-(uint32_t)")
 {
 	CUInt128 a((uint8_t *)&TestData::randomValue);
 	uint32_t b = a.Get32BitChunk(0);
@@ -723,7 +723,7 @@ TEST_M(CUInt128, OperatorSubtractUint32, wxT("operator-(uint32_t)"))
 	ASSERT_EQUALS(check, result);
 }
 
-TEST_M(CUInt128, OperatorXorUint32, wxT("operator^(uint32_t)"))
+TEST_M(CUInt128, OperatorXorUint32, "operator^(uint32_t)")
 {
 	CUInt128 a((uint8_t *)&TestData::randomValue);
 	uint32_t b = a.Get32BitChunk(0);
@@ -738,7 +738,7 @@ TEST_M(CUInt128, OperatorXorUint32, wxT("operator^(uint32_t)"))
 	ASSERT_EQUALS(check, result);
 }
 
-TEST_M(CUInt128, OperatorAddUint32CUInt128, wxT("operator+(uint32_t, const CUInt128&)"))
+TEST_M(CUInt128, OperatorAddUint32CUInt128, "operator+(uint32_t, const CUInt128&)")
 {
 	CUInt128 a((uint8_t *)&TestData::randomValue);
 	uint32_t b = a.Get32BitChunk(0);
@@ -760,7 +760,7 @@ TEST_M(CUInt128, OperatorAddUint32CUInt128, wxT("operator+(uint32_t, const CUInt
 	ASSERT_EQUALS(check, result);
 }
 
-TEST_M(CUInt128, OperatorSubtractUint32CUInt128, wxT("operator-(uint32_t, const CUInt128&)"))
+TEST_M(CUInt128, OperatorSubtractUint32CUInt128, "operator-(uint32_t, const CUInt128&)")
 {
 	CUInt128 a((uint8_t *)&TestData::randomValue);
 	uint32_t b = a.Get32BitChunk(0);
@@ -774,7 +774,7 @@ TEST_M(CUInt128, OperatorSubtractUint32CUInt128, wxT("operator-(uint32_t, const 
 	ASSERT_EQUALS(check, result);
 }
 
-TEST_M(CUInt128, OperatorXorUint32CUInt128, wxT("operator^(uint32_t, const CUInt128&)"))
+TEST_M(CUInt128, OperatorXorUint32CUInt128, "operator^(uint32_t, const CUInt128&)")
 {
 	CUInt128 a((uint8_t *)&TestData::randomValue);
 	uint32_t b = a.Get32BitChunk(0);

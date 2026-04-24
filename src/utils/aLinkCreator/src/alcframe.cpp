@@ -67,10 +67,10 @@ AlcFrame::AlcFrame (const wxString & title):
 {
   // Give it an icon
 #ifdef __WINDOWS__
-  wxIcon icon(wxT("alc"));
+  wxIcon icon("alc");
 #else
   wxIcon icon;
-  icon.CopyFromBitmap(AlcPix::getPixmap(wxT("alc")));
+  icon.CopyFromBitmap(AlcPix::getPixmap("alc"));
 #endif
   SetIcon (icon);
 
@@ -115,13 +115,13 @@ AlcFrame::AlcFrame (const wxString & title):
                                         wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE);
 
   // Text ctrls
-  m_inputFileTextCtrl = new wxTextCtrl (m_mainPanel,-1,wxEmptyString,
+  m_inputFileTextCtrl = new wxTextCtrl (m_mainPanel,-1,"",
                                         wxDefaultPosition, wxSize(300,-1));
   m_inputFileTextCtrl->
   SetToolTip (_
               ("Enter here the file you want to compute the eD2k link"));
 
-  m_inputAddTextCtrl = new wxTextCtrl (m_mainPanel,-1,wxEmptyString,
+  m_inputAddTextCtrl = new wxTextCtrl (m_mainPanel,-1,"",
                                        wxDefaultPosition, wxSize(300,-1));
   m_inputAddTextCtrl->
   SetToolTip (_
@@ -188,7 +188,7 @@ AlcFrame::AlcFrame (const wxString & title):
   m_md4HashSBoxSizer = new wxStaticBoxSizer (m_md4HashSBox, wxHORIZONTAL);
 
   // MD4 Hash results
-  m_md4HashTextCtrl = new wxTextCtrl( m_mainPanel, -1, wxEmptyString, wxDefaultPosition,
+  m_md4HashTextCtrl = new wxTextCtrl( m_mainPanel, -1, "", wxDefaultPosition,
                                       wxDefaultSize, wxTE_READONLY );
 
   m_md4HashSBoxSizer->Add (m_md4HashTextCtrl, 1, wxALL | wxALIGN_CENTER, 5);
@@ -200,7 +200,7 @@ AlcFrame::AlcFrame (const wxString & title):
   m_e2kHashSBoxSizer = new wxStaticBoxSizer (m_e2kHashSBox, wxHORIZONTAL);
 
   // Hash results
-  m_e2kHashTextCtrl = new wxTextCtrl( m_mainPanel, -1, wxEmptyString, wxDefaultPosition,
+  m_e2kHashTextCtrl = new wxTextCtrl( m_mainPanel, -1, "", wxDefaultPosition,
                                       wxDefaultSize, wxTE_READONLY );
 
   m_e2kHashSBoxSizer->Add (m_e2kHashTextCtrl, 1, wxALL | wxALIGN_CENTER, 5);
@@ -211,7 +211,7 @@ AlcFrame::AlcFrame (const wxString & title):
   m_ed2kSBoxSizer = new wxStaticBoxSizer (m_ed2kSBox, wxVERTICAL);
 
   // Ed2k results
-  m_ed2kTextCtrl = new wxTextCtrl( m_mainPanel, -1, wxEmptyString, wxDefaultPosition,
+  m_ed2kTextCtrl = new wxTextCtrl( m_mainPanel, -1, "", wxDefaultPosition,
                                    wxSize(-1,60), wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL );
 
   m_ed2kSBoxSizer->Add (m_ed2kTextCtrl, 1, wxALL | wxGROW, 5);
@@ -238,10 +238,10 @@ AlcFrame::AlcFrame (const wxString & title):
   m_mainPanelVBox->Add (m_buttonHBox, 0,  wxALL | wxGROW, 5);
 
   // Toolbar Pixmaps
-  m_toolBarBitmaps[0] = AlcPix::getPixmap(wxT("open"));
-  m_toolBarBitmaps[1] = AlcPix::getPixmap(wxT("copy"));
-  m_toolBarBitmaps[2] = AlcPix::getPixmap(wxT("saveas"));
-  m_toolBarBitmaps[3] = AlcPix::getPixmap(wxT("about"));
+  m_toolBarBitmaps[0] = AlcPix::getPixmap("open");
+  m_toolBarBitmaps[1] = AlcPix::getPixmap("copy");
+  m_toolBarBitmaps[2] = AlcPix::getPixmap("saveas");
+  m_toolBarBitmaps[3] = AlcPix::getPixmap("about");
 
   // Constructing toolbar
   m_toolbar =
@@ -346,7 +346,7 @@ AlcFrame::SetFileToHash()
 	wxString browseroot;
 	const char* home = getenv("HOME");
 	if (home) {
-		browseroot = wxString::FromUTF8(home) + wxT("/Documents");
+		browseroot = wxString::FromUTF8(home) + "/Documents";
 	} else {
 		browseroot = wxFileName::GetHomeDir();
 	}
@@ -356,7 +356,7 @@ AlcFrame::SetFileToHash()
 #endif
   const wxString & filename =
     wxFileSelector (_("Select the file you want to compute the eD2k link"),
-                    browseroot, wxEmptyString, wxEmptyString, wxT("*.*"),
+                    browseroot, "", "", "*.*",
                     wxFD_OPEN | wxFD_FILE_MUST_EXIST, this);
 
   if (!filename.empty ())
@@ -426,8 +426,8 @@ AlcFrame::SaveEd2kLinkToFile()
     {
       const wxString & filename =
         wxFileSelector (_("Select the file to your computed eD2k link"),
-                        wxFileName::GetHomeDir(),wxT("my_ed2k_link"),
-                        wxT("txt"), wxT("*.txt"), wxFD_SAVE, this);
+                        wxFileName::GetHomeDir(),"my_ed2k_link",
+                        "txt", "*.txt", wxFD_SAVE, this);
 
       if (!filename.empty ())
         {
@@ -536,7 +536,7 @@ void AlcFrame::OnStartButton (wxCommandEvent & WXUNUSED(event))
           for (size_t i = 0; i < m_inputUrlListBox->GetCount(); ++i)
             {
               url=m_inputUrlListBox->GetString(i);
-              if (url.Right(1) == wxT("/"))
+              if (url.Right(1) == "/")
                 {
                   url += fileToHash.GetFullName();
                 }
@@ -596,7 +596,7 @@ AlcFrame::OnAddUrlButton (wxCommandEvent & WXUNUSED(event))
       if (UrlNotExists)
         {
 	  m_inputUrlListBox->Append(wxURI(url).BuildURI());
-          m_inputAddTextCtrl->SetValue(wxEmptyString);
+          m_inputAddTextCtrl->SetValue("");
         }
       else
         {

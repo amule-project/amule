@@ -46,7 +46,7 @@ public:
                 const wxSize &size = wxDefaultSize,
                 long style = wxLC_ICON,
                 const wxValidator& validator = wxDefaultValidator,
-                const wxString &name = wxT("sourcelistctrl") );
+                const wxString &name = "sourcelistctrl" );
 
 	/**
 	 * Destructor.

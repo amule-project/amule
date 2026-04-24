@@ -73,7 +73,7 @@
 CIP2Country::CIP2Country(const wxString& configDir)
 {
 	m_geoip = NULL;
-	m_DataBaseName = wxT("GeoIP.dat");
+	m_DataBaseName = "GeoIP.dat";
 	m_DataBasePath = configDir + m_DataBaseName;
 }
 
@@ -96,7 +96,7 @@ void CIP2Country::Enable()
 void CIP2Country::Update()
 {
 	AddLogLineN(CFormat(_("Download new GeoIP.dat from %s")) % thePrefs::GetGeoIPUpdateUrl());
-	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(thePrefs::GetGeoIPUpdateUrl(), m_DataBasePath + wxT(".download"), m_DataBasePath, HTTP_GeoIP, true, true);
+	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(thePrefs::GetGeoIPUpdateUrl(), m_DataBasePath + ".download", m_DataBasePath, HTTP_GeoIP, true, true);
 	downloader->Create();
 	downloader->Run();
 }
@@ -114,11 +114,11 @@ void CIP2Country::DownloadFinished(uint32 result)
 	if (result == HTTP_Success) {
 		Disable();
 		// download succeeded. Switch over to new database.
-		wxString newDat = m_DataBasePath + wxT(".download");
+		wxString newDat = m_DataBasePath + ".download";
 
 		// Try to unpack the file, might be an archive
-		wxWCharBuffer dataBaseName = m_DataBaseName.wc_str();
-		const wxChar* geoip_files[] = {
+		wxScopedCharBuffer dataBaseName = m_DataBaseName.utf8_str();
+		const char* geoip_files[] = {
 			dataBaseName,
 			NULL
 		};
@@ -173,7 +173,7 @@ void CIP2Country::LoadFlags()
 		}
 	}
 
-	AddDebugLogLineN(logGeneral, CFormat(wxT("Loaded %d flag bitmaps.")) % m_CountryDataMap.size());  // there's never just one - no plural needed
+	AddDebugLogLineN(logGeneral, CFormat("Loaded %d flag bitmaps.") % m_CountryDataMap.size());  // there's never just one - no plural needed
 }
 
 
@@ -187,8 +187,8 @@ const CountryData& CIP2Country::GetCountryData(const wxString &ip)
 {
 	// Should prevent the crash if the GeoIP database does not exists
 	if (m_geoip == NULL) {
-		CountryDataMap::iterator it = m_CountryDataMap.find(wxString(wxT("unknown")));
-		it->second.Name = wxT("?");
+		CountryDataMap::iterator it = m_CountryDataMap.find(wxString("unknown"));
+		it->second.Name = "?";
 		return it->second;
 	}
 
@@ -208,10 +208,10 @@ const CountryData& CIP2Country::GetCountryData(const wxString &ip)
 	CountryDataMap::iterator it = m_CountryDataMap.find(CCode);
 	if (it == m_CountryDataMap.end()) {
 		// Show the code and ?? flag
-		it = m_CountryDataMap.find(wxString(wxT("unknown")));
+		it = m_CountryDataMap.find(wxString("unknown"));
 		wxASSERT(it != m_CountryDataMap.end());
 		if (CCode.IsEmpty()) {
-			it->second.Name = wxT("?");
+			it->second.Name = "?";
 		} else{
 			it->second.Name = CCode;
 		}

@@ -55,7 +55,7 @@ public:
 	void SetRange(float dLower, float dUpper, unsigned iTrend = 0);
 	void SetRanges(float dLower, float dUpper);
 	void SetYUnits(const wxString& string,
-		const wxString& YMin = wxEmptyString, const wxString& YMax = wxEmptyString);
+		const wxString& YMin = "", const wxString& YMax = "");
 	void SetBackgroundColor(const wxColour& color);
 	void SetGridColor(const wxColour& color);
 	void SetPlotColor(const wxColour& color, unsigned iTrend = 0);

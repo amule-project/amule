@@ -56,8 +56,6 @@ public:
 		const std::string &protocol = stdEmptyString,
 		bool enabled = false,
 		const std::string &description = stdEmptyString);
-	~CUPnPPortMapping() {}
-
 	const std::string &getPort() const
 		{ return m_port; }
 	const std::string &getProtocol() const
@@ -173,9 +171,7 @@ private:
 	const std::string m_ErrorCode;
 	const std::string m_ErrorDescription;
 public:
-	CUPnPError(IXML_Document *errorDoc);
-	~CUPnPError() {}
-	const std::string &getErrorCode() const
+	CUPnPError(IXML_Document *errorDoc);	const std::string &getErrorCode() const
 		{ return m_ErrorCode; }
 	const std::string &getErrorDescription() const
 		{ return m_ErrorDescription; }
@@ -194,9 +190,7 @@ public:
 	CUPnPArgument(
 		const CUPnPControlPoint &upnpControlPoint,
 		IXML_Element *argument,
-		const std::string &SCPDURL);
-	~CUPnPArgument() {}
-	const std::string &GetName() const
+		const std::string &SCPDURL);	const std::string &GetName() const
 		{ return m_name; }
 	const std::string &GetDirection() const
 		{ return m_direction; }
@@ -220,9 +214,7 @@ public:
 	CUPnPAction(
 		const CUPnPControlPoint &upnpControlPoint,
 		IXML_Element *action,
-		const std::string &SCPDURL);
-	~CUPnPAction() {}
-	const std::string &GetName() const
+		const std::string &SCPDURL);	const std::string &GetName() const
 		{ return m_name; }
 	const std::string &GetKey() const
 		{ return m_name; }
@@ -240,9 +232,7 @@ public:
 	CUPnPAllowedValue(
 		const CUPnPControlPoint &upnpControlPoint,
 		IXML_Element *allowedValue,
-		const std::string &SCPDURL);
-	~CUPnPAllowedValue() {}
-	const std::string &GetAllowedValue() const
+		const std::string &SCPDURL);	const std::string &GetAllowedValue() const
 		{ return m_allowedValue; }
 	const std::string &GetKey() const
 		{ return m_allowedValue; }
@@ -262,9 +252,7 @@ public:
 	CUPnPStateVariable(
 		const CUPnPControlPoint &upnpControlPoint,
 		IXML_Element *stateVariable,
-		const std::string &URLBase);
-	~CUPnPStateVariable() {}
-	const std::string &GetNname() const
+		const std::string &URLBase);	const std::string &GetNname() const
 		{ return m_name; }
 	const std::string &GetDataType() const
 		{ return m_dataType; }
@@ -288,9 +276,7 @@ public:
 	CUPnPSCPD(
 		const CUPnPControlPoint &upnpControlPoint,
 		IXML_Element *scpd,
-		const std::string &SCPDURL);
-	~CUPnPSCPD() {}
-	const ActionList &GetActionList() const
+		const std::string &SCPDURL);	const ActionList &GetActionList() const
 		{ return m_ActionList; }
 	const ServiceStateTable &GetServiceStateTable() const
 		{ return m_ServiceStateTable; }
@@ -306,8 +292,6 @@ private:
 public:
 	CUPnPArgumentValue();
 	CUPnPArgumentValue(const std::string &argument, const std::string &value);
-	~CUPnPArgumentValue() {}
-
 	const std::string &GetArgument() const	{ return m_argument; }
 	const std::string &GetValue() const	{ return m_value; }
 	const std::string &SetArgument(const std::string& argument)	{ return m_argument = argument; }
@@ -404,8 +388,6 @@ public:
 		const CUPnPControlPoint &upnpControlPoint,
 		IXML_Element *device,
 		const std::string &URLBase);
-	~CUPnPDevice() {}
-
 	const std::string &GetUDN() const
 		{ return m_UDN; }
 	const std::string &GetDeviceType() const
@@ -434,8 +416,6 @@ public:
 		const std::string &FixedURLBase,
 		const char *location,
 		int expires);
-	~CUPnPRootDevice() {}
-
 	const std::string &GetURLBase() const
 		{ return m_URLBase; }
 	const std::string &GetLocation() const

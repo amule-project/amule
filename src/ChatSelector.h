@@ -40,7 +40,7 @@ class CFriend;
 class CChatSession : public CMuleTextCtrl
 {
 public:
-	CChatSession(wxWindow *parent, wxWindowID id = -1, const wxString& value = wxT(""), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr );
+	CChatSession(wxWindow *parent, wxWindowID id = -1, const wxString& value = "", const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr );
 	~CChatSession();
 
 	uint64	m_client_id;
@@ -71,7 +71,7 @@ public:
 	CChatSession*	GetPageByClientID(uint64 client_id);
 	int				GetTabByClientID(uint64 client_id);
 	bool			ProcessMessage(uint64 sender_id, const wxString& message);
-	bool			SendMessage(const wxString& message, const wxString& client_name = wxEmptyString, uint64 to_id = 0);
+	bool			SendMessage(const wxString& message, const wxString& client_name = "", uint64 to_id = 0);
 	void			ConnectionResult(bool success, const wxString& message, uint64 id);
 	void			RefreshFriend(uint64 toupdate_id, const wxString& new_name);
 	void			ShowCaptchaResult(uint64 id, bool ok);

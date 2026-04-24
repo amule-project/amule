@@ -76,14 +76,14 @@ public:
 	bool	 AddUnfiltered(const CUInt128 &id, uint32_t ip, uint16_t port, uint16_t tport, uint8_t version, const CKadUDPKey& key, bool& ipVerified, bool update, bool fromHello);
 	bool	 Add(CContact *contact, bool& update, bool& outIpVerified);
 
-	void	 ReadFile(const wxString& specialNodesdat = wxEmptyString);
+	void	 ReadFile(const wxString& specialNodesdat = "");
 
 	bool	 VerifyContact(const CUInt128& id, uint32_t ip);
-	CContact *GetContact(const CUInt128& id) const throw();
-	CContact *GetContact(uint32_t ip, uint16_t port, bool tcpPort) const throw();
+	CContact *GetContact(const CUInt128& id) const noexcept;
+	CContact *GetContact(uint32_t ip, uint16_t port, bool tcpPort) const noexcept;
 	CContact *GetRandomContact(uint32_t maxType, uint32_t minKadVersion) const;
-	uint32_t GetNumContacts() const throw();
-	void	 GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const throw();
+	uint32_t GetNumContacts() const noexcept;
+	void	 GetNumContacts(uint32_t& nInOutContacts, uint32_t& nInOutFilteredContacts, uint8_t minVersion) const noexcept;
 
 	// Check if we know a contact with the same IP or ID but not matching IP/ID and other limitations, similar checks like when adding a node to the table except allowing duplicates
 	bool	IsAcceptableContact(const CContact *toCheck) const;
@@ -99,7 +99,7 @@ public:
 	uint32_t GetBootstrapContacts(ContactList *results, uint32_t maxRequired) const;
 
 	uint32_t EstimateCount() const;
-	bool	 HasOnlyLANNodes() const throw();
+	bool	 HasOnlyLANNodes() const noexcept;
 
 	time_t	 m_nextBigTimer;
 	time_t	 m_nextSmallTimer;
@@ -115,14 +115,14 @@ private:
 
 	void WriteFile();
 
-	bool IsLeaf() const throw() { return m_bin != NULL; }
-	bool CanSplit() const throw();
+	bool IsLeaf() const noexcept { return m_bin != NULL; }
+	bool CanSplit() const noexcept;
 
 	// Returns all contacts from this zone tree that are no deeper than *depth* from the current zone.
 	void TopDepth(int depth, ContactList *result, bool emptyFirst = true) const;
 
 	// Returns the maximum depth of the tree as the number of edges of the longest path to a leaf.
-	uint32_t GetMaxDepth() const throw();
+	uint32_t GetMaxDepth() const noexcept;
 
 	void RandomBin(ContactList *result, bool emptyFirst = true) const;
 

@@ -90,7 +90,7 @@ static const int IMAGE_MARGIN_IN_REPORT_MODE = 5;
 // the space between the image and the text in the report mode in header
 static const int HEADER_IMAGE_MARGIN_IN_REPORT_MODE = 2;
 
-const wxChar wxListCtrlNameStr[] = wxT("listCtrl");
+const wxChar wxListCtrlNameStr[] = L"listCtrl";
 
 // ============================================================================
 // private classes
@@ -400,7 +400,7 @@ public:
                         const wxPoint &pos = wxDefaultPosition,
                         const wxSize &size = wxDefaultSize,
                         long style = 0,
-                        const wxString &name = wxT("wxlistctrlcolumntitles") );
+                        const wxString &name = "wxlistctrlcolumntitles" );
 
     virtual ~wxListHeaderWindow();
 
@@ -1638,7 +1638,7 @@ void wxListLineData::DrawTextFormatted(wxDC *dc,
     else // otherwise, truncate and add an ellipsis if possible
     {
         // determine the base width
-        wxString ellipsis(wxT("..."));
+        wxString ellipsis("...");
         wxCoord base_w;
         dc->GetTextExtent(ellipsis, &base_w, &h);
 
@@ -1951,7 +1951,7 @@ void wxListHeaderWindow::OnMouse( wxMouseEvent &event )
 
     if (m_isDragging)
     {
-        SendListEvent(wxEVT_COMMAND_LIST_COL_DRAGGING, event.GetPosition());
+        SendListEvent(wxEVT_LIST_COL_DRAGGING, event.GetPosition());
 
         // we don't draw the line beyond our window, but we allow dragging it
         // there
@@ -1970,7 +1970,7 @@ void wxListHeaderWindow::OnMouse( wxMouseEvent &event )
             m_isDragging = false;
             m_dirty = true;
             m_owner->SetColumnWidth( m_column, m_currentX - m_minX );
-            SendListEvent(wxEVT_COMMAND_LIST_COL_END_DRAG, event.GetPosition());
+            SendListEvent(wxEVT_LIST_COL_END_DRAG, event.GetPosition());
         }
         else
         {
@@ -2023,7 +2023,7 @@ void wxListHeaderWindow::OnMouse( wxMouseEvent &event )
         {
             if (hit_border && event.LeftDown())
             {
-                if ( SendListEvent(wxEVT_COMMAND_LIST_COL_BEGIN_DRAG,
+                if ( SendListEvent(wxEVT_LIST_COL_BEGIN_DRAG,
                                    event.GetPosition()) )
                 {
                     m_isDragging = true;
@@ -2052,8 +2052,8 @@ void wxListHeaderWindow::OnMouse( wxMouseEvent &event )
                 }
 
                 SendListEvent( event.LeftDown()
-                                    ? wxEVT_COMMAND_LIST_COL_CLICK
-                                    : wxEVT_COMMAND_LIST_COL_RIGHT_CLICK,
+                                    ? wxEVT_LIST_COL_CLICK
+                                    : wxEVT_LIST_COL_RIGHT_CLICK,
                                 event.GetPosition());
             }
         }
@@ -2586,8 +2586,8 @@ bool wxListMainWindow::HighlightLine( size_t line, bool highlight )
 
     if ( changed )
     {
-        SendNotify( line, highlight ? wxEVT_COMMAND_LIST_ITEM_SELECTED
-                                    : wxEVT_COMMAND_LIST_ITEM_DESELECTED );
+        SendNotify( line, highlight ? wxEVT_LIST_ITEM_SELECTED
+                                    : wxEVT_LIST_ITEM_DESELECTED );
     }
 
     return changed;
@@ -2765,7 +2765,7 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
         // tell the caller cache to cache the data
         if ( IsVirtual() )
         {
-            wxListEvent evCache(wxEVT_COMMAND_LIST_CACHE_HINT,
+            wxListEvent evCache(wxEVT_LIST_CACHE_HINT,
                                 GetParent()->GetId());
             evCache.SetEventObject( GetParent() );
             evCache.m_oldItemIndex = visibleFrom;
@@ -2922,7 +2922,7 @@ void wxListMainWindow::SendNotify( size_t line,
         {
             GetLine(line)->GetItem( 0, le.m_item );
         }
-        //else: this happens for wxEVT_COMMAND_LIST_ITEM_FOCUSED event
+        //else: this happens for wxEVT_LIST_ITEM_FOCUSED event
     }
     //else: there may be no more such item
 
@@ -2938,20 +2938,20 @@ void wxListMainWindow::ChangeCurrent(size_t current)
     if ( m_renameTimer->IsRunning() )
         m_renameTimer->Stop();
 
-    SendNotify(current, wxEVT_COMMAND_LIST_ITEM_FOCUSED);
+    SendNotify(current, wxEVT_LIST_ITEM_FOCUSED);
 }
 
 wxTextCtrl *wxListMainWindow::EditLabel(long item, wxClassInfo* textControlClass)
 {
     wxCHECK_MSG( (item >= 0) && ((size_t)item < GetItemCount()), NULL,
-                 wxT("wrong index in wxGenericListCtrl::EditLabel()") );
+                 "wrong index in wxGenericListCtrl::EditLabel()" );
 
     wxASSERT_MSG( textControlClass->IsKindOf(CLASSINFO(wxTextCtrl)),
-                 wxT("EditLabel() needs a text control") );
+                 "EditLabel() needs a text control" );
 
     size_t itemEdit = (size_t)item;
 
-    wxListEvent le( wxEVT_COMMAND_LIST_BEGIN_LABEL_EDIT, GetParent()->GetId() );
+    wxListEvent le( wxEVT_LIST_BEGIN_LABEL_EDIT, GetParent()->GetId() );
     le.SetEventObject( GetParent() );
     le.m_itemIndex = item;
     wxListLineData *data = GetLine(itemEdit);
@@ -2983,14 +2983,14 @@ wxTextCtrl *wxListMainWindow::EditLabel(long item, wxClassInfo* textControlClass
 
 void wxListMainWindow::OnRenameTimer()
 {
-    wxCHECK_RET( HasCurrent(), wxT("unexpected rename timer") );
+    wxCHECK_RET( HasCurrent(), "unexpected rename timer" );
 
     EditLabel( m_current );
 }
 
 bool wxListMainWindow::OnRenameAccept(size_t itemEdit, const wxString& value)
 {
-    wxListEvent le( wxEVT_COMMAND_LIST_END_LABEL_EDIT, GetParent()->GetId() );
+    wxListEvent le( wxEVT_LIST_END_LABEL_EDIT, GetParent()->GetId() );
     le.SetEventObject( GetParent() );
     le.m_itemIndex = itemEdit;
 
@@ -3007,7 +3007,7 @@ bool wxListMainWindow::OnRenameAccept(size_t itemEdit, const wxString& value)
 void wxListMainWindow::OnRenameCancelled(size_t itemEdit)
 {
     // let owner know that the edit was cancelled
-    wxListEvent le( wxEVT_COMMAND_LIST_END_LABEL_EDIT, GetParent()->GetId() );
+    wxListEvent le( wxEVT_LIST_END_LABEL_EDIT, GetParent()->GetId() );
 
     le.SetEditCanceled(true);
 
@@ -3051,7 +3051,7 @@ void wxListMainWindow::OnMouse( wxMouseEvent &event )
     {
         if (event.RightDown())
         {
-            SendNotify( (size_t)-1, wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK, event.GetPosition() );
+            SendNotify( (size_t)-1, wxEVT_LIST_ITEM_RIGHT_CLICK, event.GetPosition() );
             // Allow generation of context menu event
             event.Skip();
         }
@@ -3108,8 +3108,8 @@ void wxListMainWindow::OnMouse( wxMouseEvent &event )
         if (m_dragCount != 3)
             return;
 
-        int command = event.RightIsDown() ? wxEVT_COMMAND_LIST_BEGIN_RDRAG
-                                          : wxEVT_COMMAND_LIST_BEGIN_DRAG;
+        int command = event.RightIsDown() ? wxEVT_LIST_BEGIN_RDRAG
+                                          : wxEVT_LIST_BEGIN_DRAG;
 
         wxListEvent le( command, GetParent()->GetId() );
         le.SetEventObject( GetParent() );
@@ -3129,7 +3129,7 @@ void wxListMainWindow::OnMouse( wxMouseEvent &event )
         // outside of any item
         if (event.RightDown())
         {
-            SendNotify( (size_t) -1, wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK, event.GetPosition() );
+            SendNotify( (size_t) -1, wxEVT_LIST_ITEM_RIGHT_CLICK, event.GetPosition() );
 
             wxContextMenuEvent evtCtx(
                 wxEVT_CONTEXT_MENU,
@@ -3157,7 +3157,7 @@ void wxListMainWindow::OnMouse( wxMouseEvent &event )
 
         if ( current == m_lineLastClicked )
         {
-            SendNotify( current, wxEVT_COMMAND_LIST_ITEM_ACTIVATED );
+            SendNotify( current, wxEVT_LIST_ITEM_ACTIVATED );
 
             return;
         }
@@ -3221,7 +3221,7 @@ void wxListMainWindow::OnMouse( wxMouseEvent &event )
             ReverseHighlight(m_current);
         }
 
-        SendNotify( current, wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK, event.GetPosition() );
+        SendNotify( current, wxEVT_LIST_ITEM_RIGHT_CLICK, event.GetPosition() );
 
         wxContextMenuEvent evtCtx(
                 wxEVT_CONTEXT_MENU,
@@ -3232,7 +3232,7 @@ void wxListMainWindow::OnMouse( wxMouseEvent &event )
     }
     else if (event.MiddleDown())
     {
-        SendNotify( current, wxEVT_COMMAND_LIST_ITEM_MIDDLE_CLICK );
+        SendNotify( current, wxEVT_LIST_ITEM_MIDDLE_CLICK );
     }
     else if ( event.LeftDown() || forceClick )
     {
@@ -3426,7 +3426,7 @@ void wxListMainWindow::OnChar( wxKeyEvent &event )
     // send a list_key event up
     if ( HasCurrent() )
     {
-        wxListEvent le( wxEVT_COMMAND_LIST_KEY_DOWN, GetParent()->GetId() );
+        wxListEvent le( wxEVT_LIST_KEY_DOWN, GetParent()->GetId() );
         le.m_itemIndex = m_current;
         GetLine(m_current)->GetItem( 0, le.m_item );
         le.m_code = event.GetKeyCode();
@@ -3552,7 +3552,7 @@ void wxListMainWindow::OnChar( wxKeyEvent &event )
                 }
                 else // normal space press
                 {
-                    SendNotify( m_current, wxEVT_COMMAND_LIST_ITEM_ACTIVATED );
+                    SendNotify( m_current, wxEVT_LIST_ITEM_ACTIVATED );
                 }
             }
             else // multiple selection
@@ -3563,7 +3563,7 @@ void wxListMainWindow::OnChar( wxKeyEvent &event )
 
         case WXK_RETURN:
         case WXK_EXECUTE:
-            SendNotify( m_current, wxEVT_COMMAND_LIST_ITEM_ACTIVATED );
+            SendNotify( m_current, wxEVT_LIST_ITEM_ACTIVATED );
             break;
 
         default:
@@ -4482,7 +4482,7 @@ void wxListMainWindow::DeleteItem( long lindex )
         ResetVisibleLinesRange();
     }
 
-    SendNotify( index, wxEVT_COMMAND_LIST_DELETE_ITEM, wxDefaultPosition );
+    SendNotify( index, wxEVT_LIST_DELETE_ITEM, wxDefaultPosition );
 
     if ( IsVirtual() )
     {
@@ -4504,7 +4504,7 @@ void wxListMainWindow::DeleteColumn( int col )
 {
     wxListHeaderDataList::compatibility_iterator node = m_columns.Item( col );
 
-    wxCHECK_RET( node, wxT("invalid column index in DeleteColumn()") );
+    wxCHECK_RET( node, "invalid column index in DeleteColumn()" );
 
     m_dirty = true;
     delete node->GetData();
@@ -4545,7 +4545,7 @@ void wxListMainWindow::DoDeleteAllItems()
     // for all of them: this is compatible with wxMSW and documented in
     // DeleteAllItems() description
 
-    wxListEvent event( wxEVT_COMMAND_LIST_DELETE_ALL_ITEMS, GetParent()->GetId() );
+    wxListEvent event( wxEVT_LIST_DELETE_ALL_ITEMS, GetParent()->GetId() );
     event.SetEventObject( GetParent() );
     GetParent()->GetEventHandler()->ProcessEvent( event );
 
@@ -4740,7 +4740,7 @@ void wxListMainWindow::InsertItem( wxListItem &item )
     if ( HasCurrent() && m_current >= id )
         m_current++;
 
-    SendNotify(id, wxEVT_COMMAND_LIST_INSERT_ITEM);
+    SendNotify(id, wxEVT_LIST_INSERT_ITEM);
 
     RefreshLines(id, GetItemCount() - 1);
 }
@@ -4967,7 +4967,7 @@ void wxGenericListCtrl::CalculateAndSetHeaderHeight()
 #else
         // we use 'g' to get the descent, too
         int w, h, d;
-        m_headerWin->GetTextExtent(wxT("Hg"), &w, &h, &d);
+        m_headerWin->GetTextExtent("Hg", &w, &h, &d);
         h += d + 2 * HEADER_OFFSET_Y + EXTRA_HEIGHT;
 #endif
 
@@ -5817,14 +5817,14 @@ wxString wxGenericListCtrl::OnGetItemText(long WXUNUSED(item), long WXUNUSED(col
     // because the controls which are not virtual don't need to implement it
     wxFAIL_MSG( _T("wxGenericListCtrl::OnGetItemText not supposed to be called") );
 
-    return wxEmptyString;
+    return "";
 }
 
 int wxGenericListCtrl::OnGetItemImage(long WXUNUSED(item)) const
 {
     wxCHECK_MSG(!GetImageList(wxIMAGE_LIST_SMALL),
                 -1,
-                wxT("List control has an image list, OnGetItemImage or OnGetItemColumnImage should be overridden."));
+                "List control has an image list, OnGetItemImage or OnGetItemColumnImage should be overridden.");
     return -1;
 }
 

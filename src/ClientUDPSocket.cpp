@@ -56,7 +56,7 @@
 //
 
 CClientUDPSocket::CClientUDPSocket(const amuleIPV4Address& address, const CProxyData* ProxyData)
-	: CMuleUDPSocket(wxT("Client UDP-Socket"), ID_CLIENTUDPSOCKET_EVENT, address, ProxyData)
+	: CMuleUDPSocket("Client UDP-Socket", ID_CLIENTUDPSOCKET_EVENT, address, ProxyData)
 {
 	if (!thePrefs::IsUDPDisabled()) {
 		Open();
@@ -77,7 +77,7 @@ void CClientUDPSocket::OnReceive(int errorCode)
 
 void CClientUDPSocket::OnPacketReceived(uint32 ip, uint16 port, uint8_t* buffer, size_t length)
 {
-	wxCHECK_RET(length >= 2, wxT("Invalid packet."));
+	wxCHECK_RET(length >= 2, "Invalid packet.");
 
 	uint8_t *decryptedBuffer;
 	uint32_t receiverVerifyKey;
@@ -99,7 +99,7 @@ void CClientUDPSocket::OnPacketReceived(uint32 ip, uint16 port, uint8_t* buffer,
 					if (packetLen >= 2) {
 						Kademlia::CKademlia::ProcessPacket(decryptedBuffer, packetLen, wxUINT32_SWAP_ALWAYS(ip), port, (Kademlia::CPrefs::GetUDPVerifyKey(ip) == receiverVerifyKey), Kademlia::CKadUDPKey(senderVerifyKey, theApp->GetPublicIP(false)));
 					} else {
-						throw wxString(wxT("Kad packet too short"));
+						throw wxString("Kad packet too short");
 					}
 					break;
 
@@ -111,27 +111,27 @@ void CClientUDPSocket::OnPacketReceived(uint32 ip, uint16 port, uint8_t* buffer,
 						uLongf unpackedsize = newSize - 2;
 						uint16_t result = uncompress(&(unpack[2]), &unpackedsize, decryptedBuffer + 2, packetLen - 2);
 						if (result == Z_OK) {
-							AddDebugLogLineN(logClientKadUDP, wxT("Correctly uncompressed Kademlia packet"));
+							AddDebugLogLineN(logClientKadUDP, "Correctly uncompressed Kademlia packet");
 							unpack[0] = OP_KADEMLIAHEADER;
 							unpack[1] = opcode;
 							Kademlia::CKademlia::ProcessPacket(&(unpack[0]), unpackedsize + 2, wxUINT32_SWAP_ALWAYS(ip), port, (Kademlia::CPrefs::GetUDPVerifyKey(ip) == receiverVerifyKey), Kademlia::CKadUDPKey(senderVerifyKey, theApp->GetPublicIP(false)));
 						} else {
-							AddDebugLogLineN(logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
+							AddDebugLogLineN(logClientKadUDP, "Failed to uncompress Kademlia packet");
 						}
 					} else {
-						throw wxString(wxT("Kad packet (compressed) too short"));
+						throw wxString("Kad packet (compressed) too short");
 					}
 					break;
 
 				default:
-					AddDebugLogLineN(logClientUDP, CFormat(wxT("Unknown opcode on received packet: 0x%x")) % protocol);
+					AddDebugLogLineN(logClientUDP, CFormat("Unknown opcode on received packet: 0x%x") % protocol);
 			}
 		} catch (const wxString& DEBUG_ONLY(e)) {
-			AddDebugLogLineN(logClientUDP, wxT("Error while parsing UDP packet: ") + e);
+			AddDebugLogLineN(logClientUDP, "Error while parsing UDP packet: " + e);
 		} catch (const CInvalidPacket& DEBUG_ONLY(e)) {
-			AddDebugLogLineN(logClientUDP, wxT("Invalid UDP packet encountered: ") + e.what());
+			AddDebugLogLineN(logClientUDP, "Invalid UDP packet encountered: " + e.what());
 		} catch (const CEOFException& DEBUG_ONLY(e)) {
-			AddDebugLogLineN(logClientUDP, wxT("Malformed packet encountered while parsing UDP packet: ") + e.what());
+			AddDebugLogLineN(logClientUDP, "Malformed packet encountered while parsing UDP packet: " + e.what());
 		}
 	}
 }
@@ -141,7 +141,7 @@ void CClientUDPSocket::ProcessPacket(uint8_t* packet, int16 size, int8 opcode, u
 {
 	switch (opcode) {
 		case OP_REASKCALLBACKUDP: {
-			AddDebugLogLineN( logClientUDP, wxT("Client UDP socket; OP_REASKCALLBACKUDP") );
+			AddDebugLogLineN( logClientUDP, "Client UDP socket; OP_REASKCALLBACKUDP" );
 			theStats::AddDownOverheadOther(size);
 			CUpDownClient* buddy = theApp->clientlist->GetBuddy();
 			if( buddy ) {
@@ -161,7 +161,7 @@ void CClientUDPSocket::ProcessPacket(uint8_t* packet, int16 size, int8 opcode, u
 					mem_packet.WriteUInt32(host);
 					mem_packet.WriteUInt16(port);
 					CPacket* response = new CPacket(mem_packet, OP_EMULEPROT, OP_REASKCALLBACKTCP);
-					AddDebugLogLineN( logClientUDP, wxT("Client UDP socket: send OP_REASKCALLBACKTCP") );
+					AddDebugLogLineN( logClientUDP, "Client UDP socket: send OP_REASKCALLBACKTCP" );
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 					buddy->GetSocket()->SendPacket(response);
 				}
@@ -169,7 +169,7 @@ void CClientUDPSocket::ProcessPacket(uint8_t* packet, int16 size, int8 opcode, u
 			break;
 		}
 		case OP_REASKFILEPING: {
-			AddDebugLogLineN( logClientUDP, wxT("Client UDP socket: OP_REASKFILEPING") );
+			AddDebugLogLineN( logClientUDP, "Client UDP socket: OP_REASKFILEPING" );
 			theStats::AddDownOverheadFileRequest(size);
 
 			CMemFile data_in(packet, size);
@@ -222,10 +222,10 @@ void CClientUDPSocket::ProcessPacket(uint8_t* packet, int16 size, int8 opcode, u
 					data_out.WriteUInt16(sender->GetUploadQueueWaitingPosition());
 					CPacket* response = new CPacket(data_out, OP_EMULEPROT, OP_REASKACK);
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
-					AddDebugLogLineN( logClientUDP, wxT("Client UDP socket: OP_REASKACK to ") + sender->GetFullIP());
+					AddDebugLogLineN( logClientUDP, "Client UDP socket: OP_REASKACK to " + sender->GetFullIP());
 					SendPacket(response, host, port, sender->ShouldReceiveCryptUDPPackets(), sender->GetUserHash().GetHash(), false, 0);
 				} else {
-					AddDebugLogLineN( logClientUDP, wxT("Client UDP socket; ReaskFilePing; reqfile does not match") );
+					AddDebugLogLineN( logClientUDP, "Client UDP socket; ReaskFilePing; reqfile does not match" );
 				}
 			} else {
 				if (!bSenderMultipleIpUnknown) {
@@ -235,13 +235,13 @@ void CClientUDPSocket::ProcessPacket(uint8_t* packet, int16 size, int8 opcode, u
 						SendPacket(response,host,port, false, NULL, false, 0); // we cannot answer this one encrypted since we dont know this client
 					}
 				} else {
-					AddDebugLogLineN(logClientUDP, CFormat(wxT("UDP Packet received - multiple clients with the same IP but different UDP port found. Possible UDP Portmapping problem, enforcing TCP connection. IP: %s, Port: %u")) % Uint32toStringIP(host) % port);
+					AddDebugLogLineN(logClientUDP, CFormat("UDP Packet received - multiple clients with the same IP but different UDP port found. Possible UDP Portmapping problem, enforcing TCP connection. IP: %s, Port: %u") % Uint32toStringIP(host) % port);
 				}
 			}
 			break;
 		}
 		case OP_QUEUEFULL: {
-			AddDebugLogLineN( logClientUDP, wxT("Client UDP socket: OP_QUEUEFULL") );
+			AddDebugLogLineN( logClientUDP, "Client UDP socket: OP_QUEUEFULL" );
 			theStats::AddDownOverheadOther(size);
 			CUpDownClient* sender = theApp->downloadqueue->GetDownloadClientByIP_UDP(host,port);
 			if (sender) {
@@ -265,7 +265,7 @@ void CClientUDPSocket::ProcessPacket(uint8_t* packet, int16 size, int8 opcode, u
 			break;
 		}
 		case OP_FILENOTFOUND: {
-			AddDebugLogLineN( logClientUDP, wxT("Client UDP socket: OP_FILENOTFOUND") );
+			AddDebugLogLineN( logClientUDP, "Client UDP socket: OP_FILENOTFOUND" );
 			theStats::AddDownOverheadFileRequest(size);
 			CUpDownClient* sender = theApp->downloadqueue->GetDownloadClientByIP_UDP(host,port);
 			if (sender){
@@ -276,10 +276,10 @@ void CClientUDPSocket::ProcessPacket(uint8_t* packet, int16 size, int8 opcode, u
 		}
 		case OP_DIRECTCALLBACKREQ:
 		{
-			AddDebugLogLineN( logClientUDP, wxT("Client UDP socket: OP_DIRECTCALLBACKREQ") );
+			AddDebugLogLineN( logClientUDP, "Client UDP socket: OP_DIRECTCALLBACKREQ" );
 			theStats::AddDownOverheadOther(size);
 			if (!theApp->clientlist->AllowCallbackRequest(host)) {
-				AddDebugLogLineN(logClientUDP, wxT("Ignored DirectCallback Request because this IP (") + Uint32toStringIP(host) + wxT(") has sent too many requests within a short time"));
+				AddDebugLogLineN(logClientUDP, "Ignored DirectCallback Request because this IP (" + Uint32toStringIP(host) + ") has sent too many requests within a short time");
 				break;
 			}
 			// do we accept callbackrequests at all?
@@ -306,10 +306,10 @@ void CClientUDPSocket::ProcessPacket(uint8_t* packet, int16 size, int8 opcode, u
 				requester->SetDirectUDPCallbackSupport(false);
 				requester->SetIP(host);
 				requester->SetUserPort(remoteTCPPort);
-				AddDebugLogLineN(logClientUDP, wxT("Accepting incoming DirectCallback Request from ") + Uint32toStringIP(host));
+				AddDebugLogLineN(logClientUDP, "Accepting incoming DirectCallback Request from " + Uint32toStringIP(host));
 				requester->TryToConnect();
 			} else {
-				AddDebugLogLineN(logClientUDP, wxT("Ignored DirectCallback Request because we do not accept Direct Callbacks at all (") + Uint32toStringIP(host) + wxT(")"));
+				AddDebugLogLineN(logClientUDP, "Ignored DirectCallback Request because we do not accept Direct Callbacks at all (" + Uint32toStringIP(host) + ")");
 			}
 			break;
 		}

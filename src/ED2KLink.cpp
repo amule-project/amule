@@ -57,21 +57,21 @@ CED2KLink::LinkType CED2KLink::GetKind() const
 
 CED2KLink* CED2KLink::CreateLinkFromUrl(const wxString& link)
 {
-	wxRegEx re_type(wxT("ed2k://\\|(file|server|serverlist)\\|.*/"), wxRE_ICASE | wxRE_DEFAULT);
+	wxRegEx re_type("ed2k://\\|(file|server|serverlist)\\|.*/", wxRE_ICASE | wxRE_DEFAULT);
 	{ wxCHECK(re_type.IsValid(), NULL); }
 
 	if (!re_type.Matches(link)) {
-		throw wxString(wxT("Not a valid ed2k-URI"));
+		throw wxString("Not a valid ed2k-URI");
 	}
 
 	wxString type = re_type.GetMatch(link, 1).MakeLower();
 	{ wxCHECK(type.Length(), NULL); }
 
-	if (type == wxT("file")) {
+	if (type == "file") {
 		return new CED2KFileLink(link);
-	} else if (type == wxT("server")) {
+	} else if (type == "server") {
 		return new CED2KServerLink(link);
-	} else if (type == wxT("serverlist")) {
+	} else if (type == "serverlist") {
 		return new CED2KServerListLink(link);
 	} else {
 		wxCHECK(false, NULL);
@@ -85,9 +85,9 @@ CED2KLink* CED2KLink::CreateLinkFromUrl(const wxString& link)
 CED2KServerListLink::CED2KServerListLink(const wxString& link)
 	: CED2KLink( kServerList )
 {
-	wxRegEx re(wxT("ed2k://\\|serverlist\\|(.*)\\|/"), wxRE_ICASE | wxRE_DEFAULT);
+	wxRegEx re("ed2k://\\|serverlist\\|(.*)\\|/", wxRE_ICASE | wxRE_DEFAULT);
 	if (!re.Matches(link)) {
-		throw wxString(wxT("Not a valid server-list link."));
+		throw wxString("Not a valid server-list link.");
 	}
 
 	m_address = UnescapeHTML(re.GetMatch(link, 1));
@@ -96,7 +96,7 @@ CED2KServerListLink::CED2KServerListLink(const wxString& link)
 
 wxString CED2KServerListLink::GetLink() const
 {
-	return wxT("ed2k://|serverlist|") + m_address + wxT("|/");
+	return "ed2k://|serverlist|" + m_address + "|/";
 }
 
 
@@ -112,9 +112,9 @@ const wxString& CED2KServerListLink::GetAddress() const
 CED2KServerLink::CED2KServerLink(const wxString& link)
 	: CED2KLink( kServer )
 {
-	wxRegEx re(wxT("ed2k://\\|server\\|([^\\|]+)\\|([0-9]+)\\|/"), wxRE_ICASE | wxRE_DEFAULT);
+	wxRegEx re("ed2k://\\|server\\|([^\\|]+)\\|([0-9]+)\\|/", wxRE_ICASE | wxRE_DEFAULT);
 	if (!re.Matches(link)) {
-		throw wxString(wxT("Not a valid server link."));
+		throw wxString("Not a valid server link.");
 	}
 
 	wxString ip = UnescapeHTML(re.GetMatch(link, 1));
@@ -122,7 +122,7 @@ CED2KServerLink::CED2KServerLink(const wxString& link)
 
 	unsigned long ul = StrToULong(port);
 	if (ul > 0xFFFF || ul == 0) {
-		throw wxString( wxT("Bad port number") );
+		throw wxString( "Bad port number" );
 	}
 
 	m_port = static_cast<uint16>(ul);
@@ -132,7 +132,7 @@ CED2KServerLink::CED2KServerLink(const wxString& link)
 
 wxString CED2KServerLink::GetLink() const
 {
-	return wxString(wxT("ed2k://|server|")) << Uint32toStringIP(m_ip) << wxT("|") << m_port << wxT("|/");
+	return wxString("ed2k://|server|") << Uint32toStringIP(m_ip) << "|" << m_port << "|/";
 }
 
 
@@ -158,18 +158,18 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 	  m_bAICHHashValid(false)
 {
 	// Start tokenizing after the "ed2k:://|file|" part of the link
-	wxStringTokenizer tokens(link, wxT("|"), wxTOKEN_RET_EMPTY_ALL);
+	wxStringTokenizer tokens(link, "|", wxTOKEN_RET_EMPTY_ALL);
 
 	// Must at least be ed2k://|file|NAME|SIZE|HASH|/
 	if (tokens.CountTokens() < 5
-		|| tokens.GetNextToken() != wxT("ed2k://")
-		|| tokens.GetNextToken() != wxT("file")) {
-		throw wxString(wxT("Not a valid file link"));
+		|| tokens.GetNextToken() != "ed2k://"
+		|| tokens.GetNextToken() != "file") {
+		throw wxString("Not a valid file link");
 	}
 
 	m_name = UnescapeHTML(tokens.GetNextToken().Strip(wxString::both));
 	// We don't want a path in the name.
-	m_name.Replace(wxT("/"), wxT("_"));
+	m_name.Replace("/", "_");
 
 	// Note that StrToULong returns ULONG_MAX if the value is
 	// too large to be contained in a unsigned long, which means
@@ -177,40 +177,40 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 	wxString size = tokens.GetNextToken().Strip(wxString::both);
 	m_size = StrToULongLong(size);
 	if ((m_size == 0) || (m_size > MAX_FILE_SIZE)) {
-		throw wxString(CFormat(wxT("Invalid file size %i")) % m_size);
+		throw wxString(CFormat("Invalid file size %i") % m_size);
 	}
 
 	if (!m_hash.Decode(tokens.GetNextToken().Strip(wxString::both))) {
-		throw wxString(wxT("Invalid hash"));
+		throw wxString("Invalid hash");
 	}
 
 	// Check extra fields (sources, parthashes, masterhashes)
 	while (tokens.HasMoreTokens()) {
 		wxString field = tokens.GetNextToken().MakeLower().Strip(wxString::both);
 
-		if (field.StartsWith(wxT("sources,"))) {
-			wxStringTokenizer srcTokens(field, wxT(","));
+		if (field.StartsWith("sources,")) {
+			wxStringTokenizer srcTokens(field, ",");
 			// Skipping the first token ("sources").
 			wxString token = srcTokens.GetNextToken();
 			while (srcTokens.HasMoreTokens()) {
 				token = srcTokens.GetNextToken().Strip(wxString::both);
 
-				wxStringTokenizer sourceTokens(token, wxT(":"));
+				wxStringTokenizer sourceTokens(token, ":");
 				wxString addr = sourceTokens.GetNextToken();
 				if (addr.IsEmpty()) {
-					throw wxString( wxT("Empty address" ) );
+					throw wxString( "Empty address" );
 				}
 
 				wxString strport = sourceTokens.GetNextToken();
 				if (strport.IsEmpty()) {
-					throw wxString( wxT("Empty port" ) );
+					throw wxString( "Empty port" );
 				}
 
 				unsigned port = StrToULong(strport);
 
 				// Sanity checking
 				if ((port == 0) || (port > 0xFFFF)) {
-					throw wxString( wxT("Invalid Port" ) );
+					throw wxString( "Invalid Port" );
 				}
 
 				wxString sourcehash;
@@ -222,7 +222,7 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 						// Source ready for encryption, hash included.
 						sourcehash = sourceTokens.GetNextToken();
 						if (sourcehash.IsEmpty()) {
-							throw wxString( wxT("Empty sourcehash conflicts with cryptoptions flag 0x80" ) );
+							throw wxString( "Empty sourcehash conflicts with cryptoptions flag 0x80" );
 						}
 					}
 				}
@@ -231,8 +231,8 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 
 				m_sources.push_back(entry);
 			}
-		} else if (field.StartsWith(wxT("p="))) {
-			wxStringTokenizer hashTokens(field.AfterFirst(wxT('=')), wxT(":"), wxTOKEN_RET_EMPTY_ALL);
+		} else if (field.StartsWith("p=")) {
+			wxStringTokenizer hashTokens(field.AfterFirst('='), ":", wxTOKEN_RET_EMPTY_ALL);
 
 			m_hashset = new CMemFile();
 			m_hashset->WriteHash(m_hash);
@@ -241,7 +241,7 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 			while (hashTokens.HasMoreTokens()) {
 				CMD4Hash hash;
 				if (!hash.Decode(hashTokens.GetNextToken().Strip(wxString::both))) {
-					throw wxString(wxT("Invalid hash in part-hashes list"));
+					throw wxString("Invalid hash in part-hashes list");
 				}
 
 				m_hashset->WriteHash(hash);
@@ -257,12 +257,12 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 				delete m_hashset;
 				m_hashset = NULL;
 			}
-		} else if (field.StartsWith(wxT("h="))) {
-			wxString hash = field.AfterFirst(wxT('=')).MakeUpper();
+		} else if (field.StartsWith("h=")) {
+			wxString hash = field.AfterFirst('=').MakeUpper();
 
 			size_t decodedSize = DecodeBase32(hash, CAICHHash::GetHashSize(), m_AICHHash.GetRawHash());
 			if ((decodedSize != CAICHHash::GetHashSize()) || m_AICHHash.GetString() != hash) {
-				throw wxString(wxT("Invalid master-hash"));
+				throw wxString("Invalid master-hash");
 			}
 
 			m_bAICHHashValid = true;
@@ -280,7 +280,7 @@ CED2KFileLink::~CED2KFileLink()
 
 wxString CED2KFileLink::GetLink() const
 {
-	return CFormat(wxT("ed2k://|file|%s|%u|%s|/")) % m_name % m_size % m_hash.Encode();
+	return CFormat("ed2k://|file|%s|%u|%s|/") % m_name % m_size % m_hash.Encode();
 }
 
 

@@ -129,14 +129,14 @@ inline void syscall_check(
 {
 	if (!check) {
 		AddDebugLogLineC(logCFile,
-			CFormat(wxT("Error when %s (%s): %s"))
+			CFormat("Error when %s (%s): %s")
 				% what % filePath % wxSysErrorMsg());
 	}
 }
 
 
 CSeekFailureException::CSeekFailureException(const wxString& desc)
-	: CIOFailureException(wxT("SeekFailure"), desc)
+	: CIOFailureException("SeekFailure", desc)
 {}
 
 
@@ -206,7 +206,7 @@ bool CFile::Create(const wxString& path, bool overwrite, int accessMode)
 
 bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 {
-	MULE_VALIDATE_PARAMS(fileName.Length(), wxT("CFile: Cannot open, empty path."));
+	MULE_VALIDATE_PARAMS(fileName.Length(), "CFile: Cannot open, empty path.");
 
 	return Open(CPath(fileName), mode, accessMode);
 }
@@ -214,7 +214,7 @@ bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 
 bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 {
-	MULE_VALIDATE_PARAMS(fileName.IsOk(), wxT("CFile: Cannot open, empty path."));
+	MULE_VALIDATE_PARAMS(fileName.IsOk(), "CFile: Cannot open, empty path.");
 
 	if (IsOpened()) {
 		Close();
@@ -249,7 +249,7 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 
 		case write_safe:
 			flags |= O_WRONLY | O_CREAT | O_TRUNC;
-			m_filePath = m_filePath.AppendExt(wxT(".new"));
+			m_filePath = m_filePath.AppendExt(".new");
 			m_safeWrite = true;
 			break;
 
@@ -267,10 +267,10 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 	m_fd = _wopen(m_filePath.GetRaw().c_str(), flags, accessMode);
 #else
 	Unicode2CharBuf tmpFileName = filename2char(m_filePath.GetRaw());
-	wxASSERT_MSG(tmpFileName, wxT("Conversion failed in CFile::Open"));
+	wxASSERT_MSG(tmpFileName, "Conversion failed in CFile::Open");
 	m_fd = open(tmpFileName, flags, accessMode);
 #endif
-	syscall_check(m_fd != fd_invalid, m_filePath, wxT("opening file"));
+	syscall_check(m_fd != fd_invalid, m_filePath, "opening file");
 
 	return IsOpened();
 }
@@ -279,17 +279,17 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 void CFile::Reopen(OpenMode mode)
 {
 	if (!Open(m_filePath, mode)) {
-		throw CIOFailureException(wxString(wxT("Error reopening file")));
+		throw CIOFailureException(wxString("Error reopening file"));
 	}
 }
 
 
 bool CFile::Close()
 {
-	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot close closed file."));
+	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot close closed file.");
 
 	bool closed = (close(m_fd) != -1);
-	syscall_check(closed, m_filePath, wxT("closing file"));
+	syscall_check(closed, m_filePath, "closing file");
 
 	m_fd = fd_invalid;
 
@@ -307,10 +307,10 @@ bool CFile::Close()
 
 bool CFile::Flush()
 {
-	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot flush closed file."));
+	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot flush closed file.");
 
 	bool flushed = (FLUSH_FD(m_fd) != -1);
-	syscall_check(flushed, m_filePath, wxT("flushing file"));
+	syscall_check(flushed, m_filePath, "flushing file");
 
 	return flushed;
 }
@@ -318,8 +318,8 @@ bool CFile::Flush()
 
 sint64 CFile::doRead(void* buffer, size_t count) const
 {
-	MULE_VALIDATE_PARAMS(buffer, wxT("CFile: Invalid buffer in read operation."));
-	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot read from closed file."));
+	MULE_VALIDATE_PARAMS(buffer, "CFile: Invalid buffer in read operation.");
+	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot read from closed file.");
 
 	size_t totalRead = 0;
 	while (totalRead < count) {
@@ -327,7 +327,7 @@ sint64 CFile::doRead(void* buffer, size_t count) const
 
 		if (current == -1) {
 			// Read error, nothing we can do other than abort.
-			throw CIOFailureException(wxString(wxT("Error reading from file: ")) + wxSysErrorMsg());
+			throw CIOFailureException(wxString("Error reading from file: ") + wxSysErrorMsg());
 		} else if ((totalRead + current < count) && Eof()) {
 			// We may fail to read the specified count in a couple
 			// of situations: EOF and interrupts. The check for EOF
@@ -344,13 +344,13 @@ sint64 CFile::doRead(void* buffer, size_t count) const
 
 sint64 CFile::doWrite(const void* buffer, size_t nCount)
 {
-	MULE_VALIDATE_PARAMS(buffer, wxT("CFile: Invalid buffer in write operation."));
-	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot write to closed file."));
+	MULE_VALIDATE_PARAMS(buffer, "CFile: Invalid buffer in write operation.");
+	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot write to closed file.");
 
 	sint64 result = ::write(m_fd, buffer, nCount);
 
 	if (result != (sint64)nCount) {
-		throw CIOFailureException(wxString(wxT("Error writing to file: ")) + wxSysErrorMsg());
+		throw CIOFailureException(wxString("Error writing to file: ") + wxSysErrorMsg());
 	}
 
 	return result;
@@ -360,30 +360,30 @@ sint64 CFile::doWrite(const void* buffer, size_t nCount)
 sint64 CFile::doSeek(sint64 offset) const
 {
 	if (!IsOpened()) {
-		throw CSeekFailureException(wxT("Cannot seek on closed file."));
+		throw CSeekFailureException("Cannot seek on closed file.");
 	}
 
-	MULE_VALIDATE_PARAMS(offset >= 0, wxT("Invalid position, must be positive."));
+	MULE_VALIDATE_PARAMS(offset >= 0, "Invalid position, must be positive.");
 
 	sint64 result = SEEK_FD(m_fd, offset, SEEK_SET);
 
 	if (result == offset) {
 		return result;
 	} else if (result == wxInvalidOffset) {
-		throw CSeekFailureException(wxString(wxT("Seeking failed: ")) + wxSysErrorMsg());
+		throw CSeekFailureException(wxString("Seeking failed: ") + wxSysErrorMsg());
 	} else {
-		throw CSeekFailureException(wxT("Seeking returned incorrect position"));
+		throw CSeekFailureException("Seeking returned incorrect position");
 	}
 }
 
 
 uint64 CFile::GetPosition() const
 {
-	MULE_VALIDATE_STATE(IsOpened(), wxT("Cannot get position in closed file."));
+	MULE_VALIDATE_STATE(IsOpened(), "Cannot get position in closed file.");
 
 	sint64 pos = TELL_FD(m_fd);
 	if (pos == wxInvalidOffset) {
-		throw CSeekFailureException(wxString(wxT("Failed to retrieve position in file: ")) + wxSysErrorMsg());
+		throw CSeekFailureException(wxString("Failed to retrieve position in file: ") + wxSysErrorMsg());
 	}
 
 	return pos;
@@ -392,11 +392,11 @@ uint64 CFile::GetPosition() const
 
 uint64 CFile::GetLength() const
 {
-	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot get length of closed file."));
+	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot get length of closed file.");
 
 	STAT_STRUCT buf;
 	if (STAT_FD(m_fd, &buf) == -1) {
-		throw CIOFailureException(wxString(wxT("Failed to retrieve length of file: ")) + wxSysErrorMsg());
+		throw CIOFailureException(wxString("Failed to retrieve length of file: ") + wxSysErrorMsg());
 	}
 
 	return buf.st_size;
@@ -420,7 +420,7 @@ uint64 CFile::GetAvailable() const
 
 bool CFile::SetLength(uint64 new_len)
 {
-	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot set length when no file is open."));
+	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot set length when no file is open.");
 
 #ifdef __WINDOWS__
 #ifdef _MSC_VER
@@ -434,7 +434,7 @@ bool CFile::SetLength(uint64 new_len)
 	bool result = ftruncate(m_fd, new_len) != -1;
 #endif
 
-	syscall_check(result, m_filePath, wxT("truncating file"));
+	syscall_check(result, m_filePath, "truncating file");
 
 	return result;
 }

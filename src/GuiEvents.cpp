@@ -81,7 +81,7 @@ namespace MuleNotify
 #endif
 		} else {
 			CMuleGUIEvent evt(ntf.Clone());
-			wxPostEvent(wxTheApp, evt);
+			wxQueueEvent(wxTheApp, (evt).Clone());
 		}
 	}
 
@@ -89,7 +89,7 @@ namespace MuleNotify
 	void HandleNotificationAlways(const CMuleNotiferBase& ntf)
 	{
 		CMuleGUIEvent evt(ntf.Clone());
-		wxPostEvent(wxTheApp, evt);
+		wxQueueEvent(wxTheApp, (evt).Clone());
 	}
 
 
@@ -560,7 +560,7 @@ namespace MuleNotify
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_chatwnd) {
-			theApp->amuledlg->m_chatwnd->SendMessage(captcha, wxEmptyString, to_id);
+			theApp->amuledlg->m_chatwnd->SendMessage(captcha, "", to_id);
 		}
 #endif
 	}

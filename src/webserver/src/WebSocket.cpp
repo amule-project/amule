@@ -189,7 +189,7 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 	wxString sURL(char2unicode(path));
 	if ( is_post ) {
 		wxString sData(char2unicode(pData));
-		sURL += wxT("?") + sData.Left(dwDataLen);
+		sURL += "?" + sData.Left(dwDataLen);
 	}
 
 	//
@@ -214,8 +214,8 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 	wxString sFile = Data.parsedURL.File();
 	if (sFile.Length() > 4 ) {
 		wxString url_ext = sFile.Right( sFile.Length() - sFile.Find('.', true) ).MakeLower();
-		if ( (url_ext==wxT(".gif")) || (url_ext==wxT(".jpg")) || (url_ext==wxT(".ico")) ||
-			(url_ext==wxT(".png")) || (url_ext==wxT(".bmp")) || (url_ext==wxT(".jpeg")) ) {
+		if ( (url_ext==".gif") || (url_ext==".jpg") || (url_ext==".ico") ||
+			(url_ext==".png") || (url_ext==".bmp") || (url_ext==".jpeg") ) {
 			m_pParent->ProcessImgFileReq(Data);
 		} else {
 			m_pParent->ProcessURL(Data);

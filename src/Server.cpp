@@ -209,7 +209,7 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 				m_strVersion = tag.GetStr();
 			}
 		} else if (tag.IsInt()) {
-			m_strVersion = CFormat(wxT("%u.%u")) % (tag.GetInt() >> 16) % (tag.GetInt() & 0xFFFF);
+			m_strVersion = CFormat("%u.%u") % (tag.GetInt() >> 16) % (tag.GetInt() & 0xFFFF);
 		} else {
 			wxFAIL;
 		}
@@ -251,9 +251,9 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 
 	default:
 		if (!tag.GetName().IsEmpty()) {
-			if (tag.GetName() == wxT("files")) {
+			if (tag.GetName() == "files") {
 				files = tag.GetInt();
-			} else if (tag.GetName() == wxT("users")) {
+			} else if (tag.GetName() == "users") {
 				users = tag.GetInt();
 			}
 		} else {
