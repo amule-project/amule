@@ -17,10 +17,6 @@ set (DEFAULT_BUILD_TYPE "Release")
 set (RECONF_COMMAND ${CMAKE_COMMAND})
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if (EXISTS "${CMAKE_SOURCE_DIR}/.git")
-	set (DEFAULT_BUILD_TYPE "Debug")
-endif()
-
 # Set the possible values of build type for cmake-gui
 if (CMAKE_CONFIGURATION_TYPES)
 	set (CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE
