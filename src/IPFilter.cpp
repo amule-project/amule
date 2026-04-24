@@ -197,7 +197,7 @@ private:
 		AddDebugLogLineN(logIPFilter, CFormat("Ranges in map: %d  blocked ranges in table: %d") % size % m_rangeIPs.size());
 
 		CIPFilterEvent evt(m_rangeIPs, m_rangeLengths, m_rangeNames);
-		wxPostEvent(m_owner, evt);
+		wxQueueEvent(m_owner, (evt).Clone());
 	}
 
 	/**

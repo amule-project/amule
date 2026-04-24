@@ -67,7 +67,7 @@ public:
 				// Increment for one event only, so no events can be lost.
 				lastEvent += m_period;
 
-				wxPostEvent(m_owner, evt);
+				wxQueueEvent(m_owner, (evt).Clone());
 			} else {
 				break;
 			}

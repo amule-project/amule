@@ -197,11 +197,11 @@ void CHashingTask::Entry()
 	if ((m_toHash == EH_AICH) && !TestDestroy()) {
 		CHashingEvent evt(MULE_EVT_AICH_HASHING, knownfile.release(), m_owner);
 
-		wxPostEvent(wxTheApp, evt);
+		wxQueueEvent(wxTheApp, (evt).Clone());
 	} else if (!TestDestroy()) {
 		CHashingEvent evt(MULE_EVT_HASHING, knownfile.release(), m_owner);
 
-		wxPostEvent(wxTheApp, evt);
+		wxQueueEvent(wxTheApp, (evt).Clone());
 	}
 }
 
@@ -498,7 +498,7 @@ void CCompletionTask::OnExit()
 	// Notify the app that the completion has finished for this file.
 	CCompletionEvent evt(m_error, m_owner, m_newName);
 
-	wxPostEvent(wxTheApp, evt);
+	wxQueueEvent(wxTheApp, (evt).Clone());
 }
 
 
@@ -618,7 +618,7 @@ void CAllocateFileTask::OnExit()
 	// Notify the app that the preallocation has finished for this file.
 	CAllocFinishedEvent evt(m_file, m_pause, m_result);
 
-	wxPostEvent(wxTheApp, evt);
+	wxQueueEvent(wxTheApp, (evt).Clone());
 }
 
 

@@ -68,7 +68,7 @@ wxThread::ExitCode CAsyncDNS::Entry()
 		CMuleInternalEvent evt(event_id);
 		evt.SetExtraLong(result);
 		evt.SetClientData(event_data);
-		wxPostEvent(m_handler,evt);
+		wxQueueEvent(m_handler, (evt).Clone());
 	}
 
 	return NULL;

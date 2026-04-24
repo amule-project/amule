@@ -293,7 +293,7 @@ void CHTTPDownloadThread::OnStateEvent(wxWebRequestEvent& evt)
 				CMuleInternalEvent prog(wxEVT_HTTP_PROGRESS);
 				prog.SetInt((int)m_request.GetBytesReceived());
 				prog.SetExtraLong((long)(expected > 0 ? expected : 0));
-				wxPostEvent(m_companion, prog);
+				wxQueueEvent(m_companion, (prog).Clone());
 #endif
 			}
 			break;
@@ -389,7 +389,7 @@ void CHTTPDownloadThread::FinishAndDestroy(int result)
 #ifndef AMULE_DAEMON
 	if (m_companion) {
 		CMuleInternalEvent termEvent(wxEVT_HTTP_SHUTDOWN);
-		wxPostEvent(m_companion, termEvent);
+		wxQueueEvent(m_companion, (termEvent).Clone());
 	}
 #endif
 
@@ -398,7 +398,7 @@ void CHTTPDownloadThread::FinishAndDestroy(int result)
 	CMuleInternalEvent evt(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD);
 	evt.SetInt((int)m_file_id);
 	evt.SetExtraLong((long)m_result);
-	wxPostEvent(wxTheApp, evt);
+	wxQueueEvent(wxTheApp, (evt).Clone());
 
 	{
 		wxMutexLocker lock(s_allThreadsMutex);

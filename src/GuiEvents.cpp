@@ -81,7 +81,7 @@ namespace MuleNotify
 #endif
 		} else {
 			CMuleGUIEvent evt(ntf.Clone());
-			wxPostEvent(wxTheApp, evt);
+			wxQueueEvent(wxTheApp, (evt).Clone());
 		}
 	}
 
@@ -89,7 +89,7 @@ namespace MuleNotify
 	void HandleNotificationAlways(const CMuleNotiferBase& ntf)
 	{
 		CMuleGUIEvent evt(ntf.Clone());
-		wxPostEvent(wxTheApp, evt);
+		wxQueueEvent(wxTheApp, (evt).Clone());
 	}
 
 
