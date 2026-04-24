@@ -113,8 +113,7 @@ void CEConnectDlg::OnOK(wxCommandEvent& evt)
 }
 
 
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_INIT_DONE)
-
+wxDEFINE_EVENT(wxEVT_EC_INIT_DONE, wxEvent);
 
 wxBEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 	// Core timer
@@ -2300,8 +2299,7 @@ CamuleRemoteGuiApp *theApp;
 //
 // since gui is not linked with amule.cpp - define events here
 //
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_UDP_DNS_DONE)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_SERVER_DNS_DONE)
-// File_checked_for_headers
+wxDEFINE_EVENT(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, wxEvent);
+wxDEFINE_EVENT(wxEVT_CORE_SOURCE_DNS_DONE, wxEvent);
+wxDEFINE_EVENT(wxEVT_CORE_UDP_DNS_DONE, wxEvent);
+wxDEFINE_EVENT(wxEVT_CORE_SERVER_DNS_DONE, wxEvent);// File_checked_for_headers

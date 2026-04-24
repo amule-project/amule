@@ -45,8 +45,7 @@ class CLibSocketServer;
 class CMuleUDPSocket;
 
 
-DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY, -1)
-
+wxDECLARE_EVENT(MULE_EVT_NOTIFY, wxEvent);
 
 /**
  * This namespaces contains a number of functions and classes

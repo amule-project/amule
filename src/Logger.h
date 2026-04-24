@@ -326,8 +326,7 @@ public:
 };
 
 
-DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE, -1)
-
+wxDECLARE_EVENT(MULE_EVT_LOGLINE, wxEvent);
 
 /** This event is sent when a log-line is queued. */
 class CLoggingEvent : public wxEvent

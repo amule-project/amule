@@ -382,8 +382,7 @@ private:
 	bool ProcessAuthPacket(const CECPacket *reply);
 };
 
-DECLARE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION, wxEVT_USER_FIRST + 1000)
-
+wxDECLARE_EVENT(wxEVT_EC_CONNECTION, wxEvent);
 class wxECSocketEvent : public wxEvent {
 public:
 	wxECSocketEvent(int id, bool result, const wxString& reply) : wxEvent(-1, id)

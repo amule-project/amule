@@ -265,7 +265,7 @@ private:
 /**
  * This event is sent when preallocation of a new partfile is finished.
  */
-DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_ALLOC_FINISHED, -1);
+wxDECLARE_EVENT(MULE_EVT_ALLOC_FINISHED, wxEvent);
 class CAllocFinishedEvent : public wxEvent
 {
       public:
@@ -301,10 +301,9 @@ class CAllocFinishedEvent : public wxEvent
 	long		m_result;
 };
 
-DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_HASHING, -1)
-DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_AICH_HASHING, -1)
-DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_FILE_COMPLETED, -1)
-
+wxDECLARE_EVENT(MULE_EVT_HASHING, wxEvent);
+wxDECLARE_EVENT(MULE_EVT_AICH_HASHING, wxEvent);
+wxDECLARE_EVENT(MULE_EVT_FILE_COMPLETED, wxEvent);
 
 typedef void (wxEvtHandler::*MuleHashingEventFunction)(CHashingEvent&);
 typedef void (wxEvtHandler::*MuleCompletionEventFunction)(CCompletionEvent&);

@@ -626,9 +626,8 @@ void CAllocateFileTask::OnExit()
 ////////////////////////////////////////////////////////////
 // CHashingEvent
 
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_HASHING)
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_AICH_HASHING)
-
+wxDEFINE_EVENT(MULE_EVT_HASHING, wxEvent);
+wxDEFINE_EVENT(MULE_EVT_AICH_HASHING, wxEvent);
 CHashingEvent::CHashingEvent(wxEventType type, CKnownFile* result, const CKnownFile* owner)
 	: wxEvent(-1, type),
 	  m_owner(owner),
@@ -660,8 +659,7 @@ CKnownFile* CHashingEvent::GetResult() const
 ////////////////////////////////////////////////////////////
 // CCompletionEvent
 
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_FILE_COMPLETED)
-
+wxDEFINE_EVENT(MULE_EVT_FILE_COMPLETED, wxEvent);
 
 CCompletionEvent::CCompletionEvent(bool errorOccured, const CPartFile* owner, const CPath& fullPath)
 	: wxEvent(-1, MULE_EVT_FILE_COMPLETED),
@@ -699,8 +697,7 @@ const CPath& CCompletionEvent::GetFullPath() const
 ////////////////////////////////////////////////////////////
 // CAllocFinishedEvent
 
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_ALLOC_FINISHED)
-
+wxDEFINE_EVENT(MULE_EVT_ALLOC_FINISHED, wxEvent);
 wxEvent *CAllocFinishedEvent::Clone() const
 {
 	return new CAllocFinishedEvent(m_file, m_pause, m_result);
