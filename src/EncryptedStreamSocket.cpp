@@ -696,7 +696,7 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, uint32_t nBuf
 			memcpy(pBuffer, lpBuf, nStartCryptFromByte);
 		}
 
-		if (nBufLen - nStartCryptFromByte > 0) {
+		if (nBufLen > nStartCryptFromByte) {
 			//printf("Crypting negotiation data on %s starting on byte %i\n", (const char*) unicode2char(GetPeer()), nStartCryptFromByte);
 			//DumpMem(lpBuf, nBufLen, "Pre-encryption:");
 			m_pfiSendBuffer.RC4Crypt((uint8*)lpBuf + nStartCryptFromByte, pBuffer + nStartCryptFromByte, nBufLen - nStartCryptFromByte);
