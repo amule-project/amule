@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "**" ]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   pofiles:
     name: Translation checks
