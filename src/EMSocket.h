@@ -26,6 +26,8 @@
 #ifndef EMSOCKET_H
 #define EMSOCKET_H
 
+#include <mutex>
+
 #include "EncryptedStreamSocket.h"				// Needed for CEncryptedStreamSocket
 
 #include "ThrottledSocket.h"	// Needed for ThrottledFileSocket
@@ -128,7 +130,7 @@ private:
 
     bool m_currentPacket_is_controlpacket;
 
-	wxMutex	m_sendLocker;
+	std::mutex	m_sendLocker;
 
 	uint64 m_numberOfSentBytesCompleteFile;
     uint64 m_numberOfSentBytesPartFile;

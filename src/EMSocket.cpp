@@ -103,7 +103,7 @@ CEMSocket::~CEMSocket()
     // need to be locked here to know that the other methods
     // won't be in the middle of things
     {
-	wxMutexLocker lock(m_sendLocker);
+	std::lock_guard<std::mutex> lock(m_sendLocker);
 		byConnected = ES_DISCONNECTED;
 	}
 
@@ -124,7 +124,7 @@ CEMSocket::~CEMSocket()
 
 void CEMSocket::ClearQueues()
 {
-	wxMutexLocker lock(m_sendLocker);
+	std::lock_guard<std::mutex> lock(m_sendLocker);
 
 	DeleteContents(m_control_queue);
 
@@ -162,7 +162,7 @@ void CEMSocket::OnClose(int WXUNUSED(nErrorCode))
     // need to be locked here to know that the other methods
     // won't be in the middle of things
     {
-	wxMutexLocker lock(m_sendLocker);
+	std::lock_guard<std::mutex> lock(m_sendLocker);
 		byConnected = ES_DISCONNECTED;
 	}
 
@@ -226,7 +226,7 @@ void CEMSocket::OnReceive(int nErrorCode)
 
 		ret = 0;
 		if (readMax) {
-			wxMutexLocker lock(m_sendLocker);
+			std::lock_guard<std::mutex> lock(m_sendLocker);
 			ret = Read(buf, readMax);
 			if (BlocksRead()) {
 				pendingOnReceive = true;
@@ -330,7 +330,7 @@ void CEMSocket::DisableDownloadLimit()
 void CEMSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, uint32 actualPayloadSize)
 {
 	//printf("* SendPacket called on socket %p\n", this);
-	wxMutexLocker lock(m_sendLocker);
+	std::lock_guard<std::mutex> lock(m_sendLocker);
 
 	if (byConnected == ES_DISCONNECTED) {
 		//printf("* Disconnected, drop packet\n");
@@ -366,7 +366,7 @@ void CEMSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, 
 
 uint64 CEMSocket::GetSentBytesCompleteFileSinceLastCallAndReset()
 {
-	wxMutexLocker lock( m_sendLocker );
+	std::lock_guard<std::mutex> lock( m_sendLocker );
 
 	uint64 sentBytes = m_numberOfSentBytesCompleteFile;
     m_numberOfSentBytesCompleteFile = 0;
@@ -377,7 +377,7 @@ uint64 CEMSocket::GetSentBytesCompleteFileSinceLastCallAndReset()
 
 uint64 CEMSocket::GetSentBytesPartFileSinceLastCallAndReset()
 {
-	wxMutexLocker lock( m_sendLocker );
+	std::lock_guard<std::mutex> lock( m_sendLocker );
 
 	uint64 sentBytes = m_numberOfSentBytesPartFile;
     m_numberOfSentBytesPartFile = 0;
@@ -387,7 +387,7 @@ uint64 CEMSocket::GetSentBytesPartFileSinceLastCallAndReset()
 
 uint64 CEMSocket::GetSentBytesControlPacketSinceLastCallAndReset()
 {
-	wxMutexLocker lock( m_sendLocker );
+	std::lock_guard<std::mutex> lock( m_sendLocker );
 
 	uint64 sentBytes = m_numberOfSentBytesControlPacket;
     m_numberOfSentBytesControlPacket = 0;
@@ -397,7 +397,7 @@ uint64 CEMSocket::GetSentBytesControlPacketSinceLastCallAndReset()
 
 uint64 CEMSocket::GetSentPayloadSinceLastCallAndReset()
 {
-	wxMutexLocker lock( m_sendLocker );
+	std::lock_guard<std::mutex> lock( m_sendLocker );
 
 	uint64 sentBytes = m_actualPayloadSizeSent;
     m_actualPayloadSizeSent = 0;
@@ -411,7 +411,7 @@ uint64 CEMSocket::GetSentPayloadSinceLastCallAndReset()
 // Lock order: must not be called while m_sendLocker is already held by the caller.
 uint64 CEMSocket::PeekSentPayload()
 {
-	wxMutexLocker lock( m_sendLocker );
+	std::lock_guard<std::mutex> lock( m_sendLocker );
 	return m_actualPayloadSizeSent;
 }
 
@@ -431,7 +431,7 @@ void CEMSocket::OnSend(int nErrorCode)
 
 	CEncryptedStreamSocket::OnSend(0);
 
-	wxMutexLocker lock( m_sendLocker );
+	std::lock_guard<std::mutex> lock( m_sendLocker );
     m_bBusy = false;
 
     if (byConnected != ES_DISCONNECTED) {
@@ -467,7 +467,7 @@ void CEMSocket::OnSend(int nErrorCode)
  */
 SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSize, bool onlyAllowedToSendControlPacket)
 {
-	wxMutexLocker lock(m_sendLocker);
+	std::lock_guard<std::mutex> lock(m_sendLocker);
 
 	//printf("* Attempt to send a packet on socket %p\n", this);
 
@@ -676,7 +676,7 @@ uint32 CEMSocket::GetNeededBytes()
 	uint64 sizeleft, sizetotal;
 
 	{
-		wxMutexLocker lock(m_sendLocker);
+		std::lock_guard<std::mutex> lock(m_sendLocker);
 
 		if (byConnected == ES_DISCONNECTED) {
 			return 0;
@@ -732,7 +732,7 @@ uint32 CEMSocket::GetNeededBytes()
  */
 void CEMSocket::TruncateQueues()
 {
-	wxMutexLocker lock(m_sendLocker);
+	std::lock_guard<std::mutex> lock(m_sendLocker);
 
 	// Clear the standard queue totally
     // Please note! There may still be a standardpacket in the sendbuffer variable!
