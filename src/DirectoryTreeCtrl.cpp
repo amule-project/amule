@@ -294,11 +294,17 @@ wxString CDirectoryTreeCtrl::GetKey(const CPath& path)
 		return path.GetRaw();
 	}
 
-	// Sanity check, see IsSameAs() in Path.cpp
-	const wxString cwd = wxGetCwd();
+	// Sanity check, see IsSameAs() in Path.cpp.  Skip wxGetCwd() when
+	// the path is already absolute — Normalize ignores cwd in that
+	// case, and wxGetCwd() emits a wxLogSysError for every call when
+	// the process's recorded CWD has been removed.
+	wxString cwd;
+	wxFileName fn(path.GetRaw());
+	if (!fn.IsAbsolute()) {
+		cwd = wxGetCwd();
+	}
 	// wxPATH_NORM_ALL is deprecated in wx3 — use explicit flags instead (excluding wxPATH_NORM_ENV_VARS)
 	const int flags = wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_CASE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT;
-	wxFileName fn(path.GetRaw());
 	fn.Normalize(flags, cwd);
 	return fn.GetFullPath();
 }
