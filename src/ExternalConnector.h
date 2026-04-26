@@ -67,7 +67,7 @@ class CaMuleExternalConnector;
 class CCommandTree {
  public:
 	CCommandTree(CaMuleExternalConnector& app)
-		: m_command(wxEmptyString), m_cmd_id(CMD_ERR_SYNTAX), m_short(wxEmptyString), m_verbose(wxEmptyString), m_params(CMD_PARAM_OPTIONAL), m_parent(NULL)
+		: m_command(""), m_cmd_id(CMD_ERR_SYNTAX), m_short(""), m_verbose(""), m_params(CMD_PARAM_OPTIONAL), m_parent(NULL)
 		{
 			m_app = &app;
 		}
@@ -179,9 +179,6 @@ protected:
 	CCommandTree	m_commands;
 	const char *	m_appname;
 
-#if !wxUSE_GUI && defined(__WXMAC__) && !wxCHECK_VERSION(2, 9, 0)
-	virtual wxAppTraits* CreateTraits();
-#endif
 
 private:
 	wxString	m_configFileName;

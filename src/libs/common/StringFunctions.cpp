@@ -36,13 +36,13 @@
 // Conversion of wxString so it can be used by printf() in a console
 // On some platforms (Windows) the console allows only "plain" characters,
 // so try to convert as much as possible and replace the others with '?'.
-// On other platforms (some Linux) wxConvLocal silently converts to UTF8
+// On other platforms (some Linux) wxConvLibc silently converts to UTF8
 // so the console can show even Chinese chars.
 //
 Unicode2CharBuf unicode2char(const wxChar* s)
 {
 	// First try the straight way.
-	Unicode2CharBuf buf1(wxConvLocal.cWX2MB(s));
+	Unicode2CharBuf buf1(wxConvLibc.cWX2MB(s));
 	if ((const char *) buf1) {
 		return buf1;
 	}
@@ -52,7 +52,7 @@ Unicode2CharBuf unicode2char(const wxChar* s)
 	wxCharBuffer buf(maxlen + 1);	// This is wasteful, but the string is used temporary anyway.
 	char * data = buf.data();
 	for (size_t i = 0, pos = 0; i < len; i++) {
-		size_t len_char = wxConvLocal.FromWChar(data + pos, maxlen - pos, s + i, 1);
+		size_t len_char = wxConvLibc.FromWChar(data + pos, maxlen - pos, s + i, 1);
 		if (len_char != wxCONV_FAILED) {
 			pos += len_char - 1;
 		} else if (pos < maxlen) {
@@ -64,22 +64,21 @@ Unicode2CharBuf unicode2char(const wxChar* s)
 }
 
 
-static byte base16Chars[17] = "0123456789ABCDEF";
+static uint8_t base16Chars[17] = "0123456789ABCDEF";
 
 wxString URLEncode(const wxString& sIn)
 {
 	wxString sOut;
-	unsigned char curChar;
 
 	for ( unsigned int i = 0; i < sIn.Length(); ++i ) {
-		curChar = sIn.GetChar( i );
+		unsigned char curChar = sIn.GetChar( i );
 
 		if ( isalnum( curChar ) ) {
 	        sOut += curChar;
 	    } else if( isspace ( curChar ) ) {
-		    sOut += wxT("+");
+		    sOut += "+";
 		} else {
-			sOut += wxT("%");
+			sOut += "%";
 			sOut += base16Chars[ curChar >> 4];
 			sOut += base16Chars[ curChar & 0xf];
 		}
@@ -100,11 +99,11 @@ wxChar HexToDec( const wxString& hex )
 		wxChar cur = str.GetChar(i);
 
 		if ( isdigit( cur ) ) {
-			result += cur - wxT('0');
-		} else if ( cur >= wxT('A') && cur <= wxT('F') ) {
-			result += cur - wxT('A') + 10;
+			result += cur - '0';
+		} else if ( cur >= 'A' && cur <= 'F' ) {
+			result += cur - 'A' + 10;
 		} else {
-			return wxT('\0');
+			return '\0';
 		}
 	}
 
@@ -165,15 +164,15 @@ enum ECharType {
 
 inline wxString GetNextField(const wxString& str, size_t& cookie)
 {
-	// These are taken to seperate "fields"
-	static const wxChar* s_delims = wxT("\t\n\x0b\x0c\r !\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~");
+	// These are taken to separate "fields"
+	static const wxChar* s_delims = L"\t\n\x0b\x0c\r !\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~";
 
 	wxString field;
 	ECharType curType = ECTNone;
 	for (; cookie < str.Length(); ++cookie) {
 		wxChar c = str[cookie];
 
-		if ((c >= wxT('0')) && (c <= wxT('9'))) {
+		if ((c >= '0') && (c <= '9')) {
 			if (curType == ECTText) {
 				break;
 			}

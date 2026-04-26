@@ -49,10 +49,10 @@ public:
 	CDirIterator(const CPath& dir);
 	~CDirIterator();
 
-	CPath GetFirstFile(FileType type, const wxString& mask = wxEmptyString);
+	CPath GetFirstFile(FileType type, const wxString& mask = "");
 	CPath GetNextFile();
 
-	bool HasSubDirs(const wxString& spec = wxEmptyString);
+	bool HasSubDirs(const wxString& spec = "");
 };
 
 
@@ -89,7 +89,7 @@ typedef std::pair<bool, EFileType> UnpackResult;
  * Zip archive, the first file found matching any in the files array (case-
  * insensitive) will be unpacked and overwrite the archive.
  */
-UnpackResult UnpackArchive(const CPath& file, const wxChar* files[]);
+UnpackResult UnpackArchive(const CPath& file, const char* files[]);
 
 #endif
 // File_checked_for_headers

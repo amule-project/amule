@@ -38,10 +38,10 @@
 #include "Statistics.h"
 
 
-BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
+wxBEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
 	EVT_PAINT(COScopeCtrl::OnPaint)
 	EVT_SIZE(COScopeCtrl::OnSize)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 const wxColour crPreset [ 16 ] = {
@@ -74,7 +74,7 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 	PlotData_t* ppds = pdsTrends;
 	for(unsigned i=0; i<nTrends; ++i, ++ppds){
 		ppds->crPlot = (i<15 ? crPreset[i] : *wxWHITE);
-		ppds->penPlot=*(wxThePenList->FindOrCreatePen(ppds->crPlot, 1, wxSOLID));
+		ppds->penPlot=*(wxThePenList->FindOrCreatePen(ppds->crPlot, 1, wxPENSTYLE_SOLID));
 		ppds->fPrev = ppds->fLowerLimit = ppds->fUpperLimit = 0.0;
 	}
 
@@ -89,8 +89,8 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 	m_gridColour  = wxColour(  0, 255, 255) ;  // see also SetGridColor
 	brushBack = *wxBLACK_BRUSH;
 
-	strXUnits = wxT("X");  // can also be set with SetXUnits
-	strYUnits = wxT("Y");  // can also be set with SetYUnits
+	strXUnits = "X";  // can also be set with SetXUnits
+	strYUnits = "Y";  // can also be set with SetYUnits
 
 	nXGrids = 6;
 	nYGrids = 5;
@@ -166,7 +166,7 @@ void COScopeCtrl::SetPlotColor(const wxColour& cr, unsigned iTrend)
 	if (ppds->crPlot == cr)
 		return;
 	ppds->crPlot = cr;
-	ppds->penPlot=*(wxThePenList->FindOrCreatePen(ppds->crPlot, 1, wxSOLID));
+	ppds->penPlot=*(wxThePenList->FindOrCreatePen(ppds->crPlot, 1, wxPENSTYLE_SOLID));
 	InvalidateGraph();
 }
 
@@ -179,7 +179,7 @@ void COScopeCtrl::SetBackgroundColor(const wxColour& cr)
 	}
 
 	m_bgColour = cr;
-	brushBack= *(wxTheBrushList->FindOrCreateBrush(cr, wxSOLID));
+	brushBack= *(wxTheBrushList->FindOrCreateBrush(cr, wxBRUSHSTYLE_SOLID));
 	InvalidateCtrl() ;
 }
 
@@ -196,7 +196,7 @@ void COScopeCtrl::RecreateGrid()
 
 	wxMemoryDC dcGrid(m_bmapGrid);
 
-	wxPen solidPen = *(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxSOLID));
+	wxPen solidPen = *(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxPENSTYLE_SOLID));
 	wxString strTemp;
 
 	// fill the grid background
@@ -213,13 +213,13 @@ void COScopeCtrl::RecreateGrid()
 	dcGrid.SetPen(wxNullPen);
 
 	// create some fonts (horizontal and vertical)
-	wxFont axisFont(10, wxSWISS, wxNORMAL, wxNORMAL, false);
+	wxFont axisFont(10, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false);
 	dcGrid.SetFont(axisFont);
 
 	// y max
 	dcGrid.SetTextForeground(m_gridColour);
 	if( strYMax.IsEmpty() ) {
-		strTemp = wxString::Format(wxT("%.*f"), nYDecimals, pdsTrends[ 0 ].fUpperLimit);
+		strTemp = wxString::Format("%.*f", nYDecimals, pdsTrends[ 0 ].fUpperLimit);
 	} else {
 		strTemp = strYMax;
 	}
@@ -228,7 +228,7 @@ void COScopeCtrl::RecreateGrid()
 	dcGrid.DrawText(strTemp,m_rectPlot.GetLeft()-4-sizX,m_rectPlot.GetTop()-7);
 	// y min
 	if( strYMin.IsEmpty() ) {
-		strTemp = wxString::Format(wxT("%.*f"), nYDecimals, pdsTrends[ 0 ].fLowerLimit) ;
+		strTemp = wxString::Format("%.*f", nYDecimals, pdsTrends[ 0 ].fLowerLimit) ;
 	} else {
 		strTemp = strYMin;
 	}
@@ -316,11 +316,11 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 	dc.DrawBitmap(m_bmapPlot, m_rectPlot.x, m_rectPlot.y, false);
 
 	// draw the dotted lines.
-	// This is done last because wxMAC does't support the wxOR logical
+	// This is done last because wxMAC doesn't support the wxOR logical
 	// operation, preventing us from simply blitting the plot on top of
 	// the grid bitmap.
 
-	dc.SetPen(*(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxLONG_DASH)));
+	dc.SetPen(*(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxPENSTYLE_LONG_DASH)));
 	for (unsigned j = 1; j < (nYGrids + 1); ++j) {
 		unsigned GridPos = (m_rectPlot.GetHeight())*j/( nYGrids + 1 ) + m_rectPlot.GetTop();
 
@@ -404,7 +404,7 @@ void COScopeCtrl::DrawPoints(const std::vector<float *> &apf, unsigned cntPoints
 	// this appends a new set of data points to a graph; all of the plotting is
 	// directed to the memory based bitmap associated with dcPlot
 	// the will subsequently be BitBlt'd to the client in OnPaint
-	// draw the next line segement
+	// draw the next line segment
 	unsigned y, yPrev;
 	unsigned cntPixelOffset = std::min((unsigned)(m_rectPlot.GetWidth()-1), (cntPoints-1)*nShiftPixels);
 	PlotData_t* ppds = pdsTrends;
@@ -467,8 +467,8 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 		} catch(std::bad_alloc) {
 			// Failed memory allocation
 			AddLogLineC(wxString(
-				wxT("Error: COScopeCtrl::PlotHistory: Insuficient memory, cntPoints == ")) <<
-				cntPoints << wxT("."));
+				"Error: COScopeCtrl::PlotHistory: Insuficient memory, cntPoints == ") <<
+				cntPoints << ".");
 			for (i = 0; i < nTrends; ++i) {
 				delete [] apf[i];
 			}

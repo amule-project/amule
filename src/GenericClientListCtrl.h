@@ -153,12 +153,12 @@ public:
 protected:
 	// The columns with their attributes; MUST be defined by the derived class.
 	GenericColumnInfo m_columndata;
-	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
+	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData);
 
 private:
 	/**
      *
-	 * Must be overriden by the derived class and return the dialog where this list is.
+	 * Must be overridden by the derived class and return the dialog where this list is.
      * @see CamuleDlg::DialogType
 	 *
      */
@@ -193,7 +193,7 @@ private:
 	 * @see CMuleListCtrl::GetTTSText
 	 * Just a dummy
 	 */
-	virtual wxString GetTTSText(unsigned) const { return wxEmptyString; }
+	virtual wxString GetTTSText(unsigned) const { return ""; }
 
 	/**
 	 * Set "show sources" or "show peers" flag in Known File
@@ -246,7 +246,7 @@ private:
 	//! The files being shown, if any.
 	CKnownFileVector m_knownfiles;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 
 	bool m_showing;
 

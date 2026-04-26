@@ -280,9 +280,9 @@ public:
 				   CMD4Hash userHash);
 	void SetPreferencesConnections(uint32 LineDownloadCapacity,
 				       uint32 LineUploadCapacity,
-				       uint16 MaxDownloadSpeed,
-				       uint16 MaxUploadSpeed,
-				       uint16 UploadSlotAllocation,
+				       uint32 MaxDownloadSpeed,
+				       uint32 MaxUploadSpeed,
+				       uint32 UploadSlotAllocation,
 				       uint16 TCPPort,
 				       uint16 UDPPort,
 				       bool DisableUDP,
@@ -382,8 +382,7 @@ private:
 	bool ProcessAuthPacket(const CECPacket *reply);
 };
 
-DECLARE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION, wxEVT_USER_FIRST + 1000)
-
+wxDECLARE_EVENT(wxEVT_EC_CONNECTION, wxEvent);
 class wxECSocketEvent : public wxEvent {
 public:
 	wxECSocketEvent(int id, bool result, const wxString& reply) : wxEvent(-1, id)

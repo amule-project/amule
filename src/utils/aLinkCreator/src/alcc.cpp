@@ -25,11 +25,7 @@
 
 
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"             // Needed for PACKAGE
-#else
-#define PACKAGE "amule"
-#endif
+#include "config.h"		// Needed for PACKAGE
 
 #include <wx/log.h>
 
@@ -44,17 +40,13 @@ int alcc::OnRun ()
 {
   // Used to tell alcc to use aMule catalog
   m_locale.Init();
-  m_locale.AddCatalog(wxT(PACKAGE));
+  m_locale.AddCatalog(PACKAGE);
 
   wxLog::DontCreateOnDemand();
   wxLogStderr * stderrLog = new wxLogStderr;
   wxLogStderr * stdoutLog = new wxLogStderr(stdout);
   delete wxLog::SetActiveTarget(stderrLog); // Log on Stderr
-#if wxCHECK_VERSION(2, 9, 0)
   wxLog::SetTimestamp("");   // Disable timestamp on messages
-#else
-  wxLog::SetTimestamp(NULL); // Disable timestamp on messages
-#endif
 
   Ed2kHash hash;
   size_t i;
@@ -76,7 +68,7 @@ int alcc::OnRun ()
             {
 				// Print the link to stdout
 				wxLog::SetActiveTarget(stdoutLog);
-                wxLogMessage(wxT("%s"), hash.GetED2KLink(m_flagPartHashes).c_str());
+                wxLogMessage("%s", hash.GetED2KLink(m_flagPartHashes).c_str());
 				// Everything else goes to stderr
 				wxLog::SetActiveTarget(stderrLog);
             }
@@ -85,10 +77,11 @@ int alcc::OnRun ()
         {
             if (m_flagVerbose)
                 {
-                    wxLogMessage(_("%s ---> Non existant file !\n"),m_filesToHash[i].c_str());
+                    wxLogMessage(_("%s ---> Non existent file !\n"),m_filesToHash[i].c_str());
                 }
         }
     }
+  delete stdoutLog;
   return 0;
 }
 
@@ -103,10 +96,10 @@ alcc::OnExit()
 /// Parse command line
 void alcc::OnInitCmdLine(wxCmdLineParser& cmdline)
 {
-	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("show this help message"), wxCMD_LINE_OPTION_HELP);
-	cmdline.AddSwitch(wxT("v"), wxT("verbose"), wxT("be verbose"));
-	cmdline.AddSwitch(wxT("p"), wxT("parthashes"), wxT("add part-hashes to ed2k link"));
-	cmdline.AddParam(wxT("input files"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE);
+	cmdline.AddSwitch("h", "help", "show this help message", wxCMD_LINE_OPTION_HELP);
+	cmdline.AddSwitch("v", "verbose", "be verbose");
+	cmdline.AddSwitch("p", "parthashes", "add part-hashes to ed2k link");
+	cmdline.AddParam("input files", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE);
 }
 
 /// Command line preocessing
@@ -116,8 +109,8 @@ bool alcc::OnCmdLineParsed(wxCmdLineParser& cmdline)
   wxFileName filename;
   size_t i;
 
-  m_flagVerbose = cmdline.Found(wxT("v"));
-  m_flagPartHashes = cmdline.Found(wxT("p"));
+  m_flagVerbose = cmdline.Found("v");
+  m_flagPartHashes = cmdline.Found("p");
 
   m_filesToHash.Clear();
   for (i = 0; i < cmdline.GetParamCount(); ++i)

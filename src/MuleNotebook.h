@@ -28,41 +28,16 @@
 
 #include <wx/notebook.h>
 
-#define MULE_NEEDS_DELETEPAGE_WORKAROUND	wxCHECK_VERSION(3,0,2)
 
+wxDECLARE_EVENT(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING, wxEvent);
+wxDECLARE_EVENT(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED, wxEvent);
 
-DECLARE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING, -1)
-DECLARE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED, -1)
-
-#if MULE_NEEDS_DELETEPAGE_WORKAROUND
-DECLARE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_DELETE_PAGE, -1)
-
-#define EVT_MULENOTEBOOK_DELETE_PAGE(id, fn)						\
-	DECLARE_EVENT_TABLE_ENTRY(							\
-		wxEVT_COMMAND_MULENOTEBOOK_DELETE_PAGE,					\
-		id,									\
-		-1,									\
-		(wxObjectEventFunction)(wxEventFunction)(wxNotebookEventFunction) &fn,  \
-		NULL                                                                    \
-	),
-#endif // MULE_NEEDS_DELETEPAGE_WORKAROUND
-
-#define EVT_MULENOTEBOOK_PAGE_CLOSING(id, fn)						\
-	DECLARE_EVENT_TABLE_ENTRY(							\
-		wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING,					\
-		id,									\
-		-1,									\
-		(wxObjectEventFunction)(wxEventFunction)(wxNotebookEventFunction) &fn,  \
-		NULL                                                                    \
-	),
-#define EVT_MULENOTEBOOK_ALL_PAGES_CLOSED(id, fn)					\
-	DECLARE_EVENT_TABLE_ENTRY(							\
-		wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED,				\
-		id,									\
-		-1,									\
-		(wxObjectEventFunction)(wxEventFunction)(wxNotebookEventFunction) &fn,  \
-		NULL                                                                    \
-	),
+#define EVT_MULENOTEBOOK_PAGE_CLOSING(id, fn) \
+	wx__DECLARE_EVT1(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING, id, \
+		wxEVENT_HANDLER_CAST(wxNotebookEventFunction, fn))
+#define EVT_MULENOTEBOOK_ALL_PAGES_CLOSED(id, fn) \
+	wx__DECLARE_EVT1(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED, id, \
+		wxEVENT_HANDLER_CAST(wxNotebookEventFunction, fn))
 
 
 class wxWindow;
@@ -83,7 +58,7 @@ public:
 	 *
 	 * @see wxNotebook::wxNotebook
 	 */
-	CMuleNotebook( wxWindow *parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxString& name = wxT("notebook") );
+	CMuleNotebook( wxWindow *parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxString& name = "notebook" );
 
 	/**
 	 * Destructor.
@@ -113,7 +88,7 @@ public:
 	/**
 	 * Sets an external widget to handle the popup-event.
 	 *
-	 * @param widget The widget which would recieve the event or NULL to disable.
+	 * @param widget The widget which would receive the event or NULL to disable.
 	 *
 	 * Setting the handler to a non-NULL pointer means that upon right-clicks, a
 	 * right click event will be sent to that widget, so that it can create a
@@ -121,12 +96,6 @@ public:
 	 * so no mapping is needed.
 	 */
 	void SetPopupHandler( wxWindow* widget );
-
-#if MULE_NEEDS_DELETEPAGE_WORKAROUND
-private:
-	// Internal handler. Workaround for wxWidgets Tab-Crash bug.
-	void OnDeletePage(wxBookCtrlEvent& evt);
-#endif // MULE_NEEDS_DELETEPAGE_WORKAROUND
 
 protected:
 	/**
@@ -145,27 +114,27 @@ protected:
 	void OnRMButton(wxMouseEvent& event);
 
 	/**
-	 * Event-handler fo the Close item on the popup-menu.
+	 * Event-handler of the Close item on the popup-menu.
 	 */
 	void OnPopupClose(wxCommandEvent& evt);
 
 	/**
-	 * Event-handler fo the CloseAll item on the popup-menu.
+	 * Event-handler of the CloseAll item on the popup-menu.
 	 */
 	void OnPopupCloseAll(wxCommandEvent& evt);
 
 	/**
-	 * Event-handler fo the CloseOthers item on the popup-menu.
+	 * Event-handler of the CloseOthers item on the popup-menu.
 	 */
 	void OnPopupCloseOthers(wxCommandEvent& evt);
 
 	//! Keeps track of the popup-menu being enabled or not.
 	bool		m_popup_enable;
 
-	//! The pointer to the widget which would recieve right-click events or NULL.
+	//! The pointer to the widget which would receive right-click events or NULL.
 	wxWindow*	m_popup_widget;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #ifdef __WINDOWS__

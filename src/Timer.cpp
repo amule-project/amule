@@ -67,7 +67,7 @@ public:
 				// Increment for one event only, so no events can be lost.
 				lastEvent += m_period;
 
-				wxPostEvent(m_owner, evt);
+				wxQueueEvent(m_owner, (evt).Clone());
 			} else {
 				break;
 			}
@@ -109,7 +109,7 @@ bool CTimer::IsRunning() const
 
 bool CTimer::Start(int millisecs, bool oneShot)
 {
-	wxCHECK_MSG(m_id != -1, false, wxT("Invalid target-ID for timer-events."));
+	wxCHECK_MSG(m_id != -1, false, "Invalid target-ID for timer-events.");
 
 	// Since this class generally matches wxTimer, calling
 	// start on a running timer stops and then restarts it.
@@ -147,8 +147,7 @@ void CTimer::Stop()
 }
 
 
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_TIMER)
-
+wxDEFINE_EVENT(MULE_EVT_TIMER, wxEvent);
 CTimerEvent::CTimerEvent(int id)
 	: wxEvent(id, MULE_EVT_TIMER)
 {

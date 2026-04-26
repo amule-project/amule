@@ -53,7 +53,7 @@ public:
 	/** Default constructor. */
 	CPath();
 
-	/** Constuctor. */
+	/** Constructor. */
 	explicit CPath(const wxString& path);
 
 	/** Copy constructor. Creates a deep-copy of the passed object. */
@@ -116,7 +116,7 @@ public:
 	/** Returns the (raw) last extension, empty if none is found. */
 	wxString GetExt() const;
 
-	/** Returns the full path, exluding the filename. */
+	/** Returns the full path, excluding the filename. */
 	CPath GetPath() const;
 	/** Returns the full filename, excluding the path. */
 	CPath GetFullName() const;
@@ -126,7 +126,7 @@ public:
 
 	/**
 	 * Compares under the assumption that both objects are dirs, even if
-	 * one or the other lacks a terminal directory-seperator. However, an
+	 * one or the other lacks a terminal directory-separator. However, an
 	 * empty CPath object will not be considered equal to a path to the root.
 	 */
 	bool IsSameDir(const CPath& other) const;

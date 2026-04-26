@@ -26,10 +26,7 @@
 #ifndef CLIENTVERSION_H
 #define CLIENTVERSION_H
 
-#ifdef HAVE_CONFIG_H
-	#include "config.h"	// Needed for VERSION
-#endif
-
+#include "config.h"		// Needed for VERSION
 
 // eMule version used on old MuleInfo packet (unimportant).
 #define	CURRENT_VERSION_SHORT			0x47
@@ -51,9 +48,9 @@
 #endif
 
 #ifdef __SVN__
-	#define	MOD_VERSION_LONG		wxT("aMule SVN")
+	#define	MOD_VERSION_LONG		"aMule SVN"
 #else
-	#define	MOD_VERSION_LONG		(wxT("aMule ") wxT(VERSION))
+	#define	MOD_VERSION_LONG		("aMule " VERSION)
 #endif
 
 #define	VERSION_MJR		2

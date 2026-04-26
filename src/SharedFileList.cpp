@@ -106,7 +106,7 @@ public:
 	}
 
 	void RotateReferences(unsigned iRotateSize) {
-		wxCHECK_RET(m_aFiles.size(), wxT("RotateReferences: Rotating empty array"));
+		wxCHECK_RET(m_aFiles.size(), "RotateReferences: Rotating empty array");
 
 		unsigned shift = (iRotateSize % m_aFiles.size());
 		std::rotate(m_aFiles.begin(), m_aFiles.begin() + shift, m_aFiles.end());
@@ -380,7 +380,7 @@ void CSharedFileList::FindSharedFiles()
 
 
 // Checks if the dir a is the same as b. If they are, then logs the message and returns true.
-bool CheckDirectory(const wxString& a, const CPath& b)
+static bool CheckDirectory(const wxString& a, const CPath& b)
 {
 	if (CPath(a).IsSameDir(b)) {
 		AddLogLineC(CFormat( _("ERROR: Attempted to share %s") ) % a);
@@ -428,12 +428,12 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 
 		if (!fullPath.FileExists()) {
 			AddDebugLogLineN(logKnownFiles,
-				CFormat(wxT("Shared file does not exist (possibly a broken link): %s")) % fullPath);
+				CFormat("Shared file does not exist (possibly a broken link): %s") % fullPath);
 			continue;
 		}
 
 		AddDebugLogLineN(logKnownFiles,
-			CFormat(wxT("Found shared file: %s")) % fullPath);
+			CFormat("Found shared file: %s") % fullPath);
 
 		time_t fdate = CPath::GetModificationTime(fullPath);
 		sint64 fsize = fullPath.GetFileSize();
@@ -441,13 +441,13 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 		// This will also catch files with too strict permissions.
 		if ((fdate == (time_t)-1) || (fsize == wxInvalidOffset)) {
 			AddDebugLogLineN(logKnownFiles,
-				CFormat(wxT("Failed to retrieve modification time or size for '%s', skipping.")) % fullPath);
+				CFormat("Failed to retrieve modification time or size for '%s', skipping.") % fullPath);
 			continue;
 		}
 
 		if (fsize == 0) {
 			AddDebugLogLineN(logKnownFiles,
-				CFormat(wxT("Skip zero size file '%s'")) % fullPath);
+				CFormat("Skip zero size file '%s'") % fullPath);
 			continue;
 		}
 
@@ -457,19 +457,19 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 			knownFiles++;
 			if (AddFile(toadd)) {
 				AddDebugLogLineN(logKnownFiles,
-					CFormat(wxT("Added known file '%s' to shares"))
+					CFormat("Added known file '%s' to shares")
 						% fname);
 
 				toadd->SetFilePath(directory);
 			} else {
 				AddDebugLogLineN(logKnownFiles,
-					CFormat(wxT("File already shared, skipping: %s"))
+					CFormat("File already shared, skipping: %s")
 						% fname);
 			}
 		} else {
 			//not in knownfilelist - start adding thread to hash file
 			AddDebugLogLineN(logKnownFiles,
-				CFormat(wxT("Hashing new unknown shared file '%s'")) % fname);
+				CFormat("Hashing new unknown shared file '%s'") % fname);
 
 			hashTasks.push_back(new CHashingTask(directory, fname));
 			addedFiles++;
@@ -537,7 +537,7 @@ void CSharedFileList::Reload()
 	// deltaHF - removed the old ugly button and changed the code to use the new small one
 	// Kry - bah, let's use a var.
 	if (!reloading) {
-		AddDebugLogLineN(logKnownFiles, wxT("Reload shared files"));
+		AddDebugLogLineN(logKnownFiles, "Reload shared files");
 		reloading = true;
 		Notify_SharedFilesRemoveAllItems();
 
@@ -662,7 +662,7 @@ void CSharedFileList::RepublishFile(CKnownFile* pFile)
 	}
 }
 
-uint8 GetRealPrio(uint8 in)
+static uint8 GetRealPrio(uint8 in)
 {
 	switch(in) {
 		case 4 : return 0;
@@ -674,7 +674,7 @@ uint8 GetRealPrio(uint8 in)
 	return 0;
 }
 
-bool SortFunc( const CKnownFile* fileA, const CKnownFile* fileB )
+static bool SortFunc( const CKnownFile* fileA, const CKnownFile* fileB )
 {
     return GetRealPrio(fileA->GetUpPriority()) < GetRealPrio(fileB->GetUpPriority());
 }
@@ -740,11 +740,11 @@ void CSharedFileList::SendListToServer(){
 
 	CPacket* packet = new CPacket(files, OP_EDONKEYPROT, OP_OFFERFILES);
 	// compress packet
-	//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
+	//   - this kind of data is highly compressible (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
 	//   - the min. amount of data needed for one published file is ~100 bytes
 	//   - this function is called once when connecting to a server and when a file becomes shareable - so, it's called rarely.
 	//   - if the compressed size is still >= the original size, we send the uncompressed packet
-	// therefor we always try to compress the packet
+	// therefore we always try to compress the packet
 	if (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION){
 		packet->PackPacket();
 	}
@@ -972,7 +972,7 @@ wxString CSharedFileList::GetPublicSharedDirName(const CPath& dir)
 	// safety check: is the directory supposed to be shared after all?
 	if (!IsShared(dir))	{
 		wxFAIL;
-		return wxT("");
+		return "";
 	}
 	// check if the public name for the directory is cached in our Map
 	StringPathMap::const_iterator it;
@@ -1008,7 +1008,7 @@ wxString CSharedFileList::GetPublicSharedDirName(const CPath& dir)
 		wxASSERT( strPublicName.GetChar(0) == cPathSepa );
 		strPublicName = strPublicName.Right(strPublicName.Length() - 1);
 	} else {
-		// must be a rootdirectory on Windos
+		// must be a rootdirectory on Windows
 		wxASSERT( strDirectoryTmp.Length() == 2 );
 		strPublicName = strDirectoryTmp;
 	}
@@ -1016,10 +1016,10 @@ wxString CSharedFileList::GetPublicSharedDirName(const CPath& dir)
 	if (m_PublicSharedDirNames.find(strPublicName) != m_PublicSharedDirNames.end())	{
 		wxString strUniquePublicName;
 		for (iPos = 2; ; ++iPos) {
-			strUniquePublicName = CFormat(wxT("%s_%i")) % strPublicName % iPos;
+			strUniquePublicName = CFormat("%s_%i") % strPublicName % iPos;
 
 			if (m_PublicSharedDirNames.find(strUniquePublicName) == m_PublicSharedDirNames.end()) {
-				AddDebugLogLineN(logClient, CFormat(wxT("Using public name '%s' for directory '%s'"))
+				AddDebugLogLineN(logClient, CFormat("Using public name '%s' for directory '%s'")
 				                            % strUniquePublicName
 				                            % dir.GetPrintable());
 				m_PublicSharedDirNames.insert(std::pair<wxString, CPath> (strUniquePublicName, dir));
@@ -1032,11 +1032,11 @@ wxString CSharedFileList::GetPublicSharedDirName(const CPath& dir)
 			else if (iPos > 200)  // Only 200 identical names are indexed.
 			{
 				wxASSERT( false );
-				return wxT("");
+				return "";
 			}
 		}
 	} else {
-		AddDebugLogLineN(logClient, CFormat(wxT("Using public name '%s' for directory '%s'")) % strPublicName % dir.GetPrintable());
+		AddDebugLogLineN(logClient, CFormat("Using public name '%s' for directory '%s'") % strPublicName % dir.GetPrintable());
 		m_PublicSharedDirNames.insert(std::pair<wxString, CPath> (strPublicName, dir));
 		return strPublicName;
 	}

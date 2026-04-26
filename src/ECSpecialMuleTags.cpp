@@ -346,7 +346,7 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
  * @param applyFunc	The function to use for applying the value
  * @param tagName	The name of the TAG that holds the boolean value
  */
-void ApplyBoolean(bool use_tag, const CECTag *thisTab, void (applyFunc)(bool), int tagName)
+static void ApplyBoolean(bool use_tag, const CECTag *thisTab, void (applyFunc)(bool), int tagName)
 {
 	const CECTag *boolTag = thisTab->GetTagByName(tagName);
 	if (use_tag) {

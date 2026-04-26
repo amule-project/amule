@@ -30,7 +30,7 @@ Please do not change anything here and release it..
 There is going to be a new forum created just for the Kademlia side of the client..
 If you feel there is an error or a way to improve something, please
 post it in the forum first and let us look at it.. If it is a real improvement,
-it will be added to the offical client.. Changing something without knowing
+it will be added to the official client.. Changing something without knowing
 what all it does can cause great harm to the network if released in mass form..
 Any mod that changes anything within the Kademlia side will not be allowed to advertise
 there client on the eMule forum..
@@ -123,7 +123,7 @@ public:
 	bool AddSources(const CUInt128& keyWordID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8_t& load);
 	bool AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8_t& load);
 	bool AddLoad(const CUInt128& keyID, uint32_t time);
-	size_t GetFileKeyCount() const throw() { return m_Keyword_map.size(); }
+	size_t GetFileKeyCount() const noexcept { return m_Keyword_map.size(); }
 	void SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32_t ip, uint16_t port, bool oldClient, uint16_t startPosition, const CKadUDPKey& senderKey);
 	void SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_t port, uint16_t startPosition, uint64_t fileSize, const CKadUDPKey& senderKey);
 	void SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t port, uint64_t fileSize, const CKadUDPKey& senderKey);

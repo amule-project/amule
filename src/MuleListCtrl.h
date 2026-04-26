@@ -85,7 +85,7 @@ public:
 		       const wxSize &size = wxDefaultSize,
 		       long style = wxLC_ICON,
 		       const wxValidator& validator = wxDefaultValidator,
-		       const wxString &name = wxT("mulelistctrl") );
+		       const wxString &name = "mulelistctrl" );
 
 	/**
 	 * Destructor.
@@ -197,7 +197,7 @@ public:
 			  const wxString& heading,
 			  int format = wxLIST_FORMAT_LEFT,
 			  int width = -1,
-			  const wxString& name = wxEmptyString
+			  const wxString& name = ""
 			  );
 
 	/**
@@ -247,7 +247,7 @@ protected:
 	 *
 	 * By default, this function simply returns the text in the first
 	 * column for the given item. However, when owner-drawing is
-	 * enabled, this function _must_ be overriden.
+	 * enabled, this function _must_ be overridden.
 	 */
 	virtual wxString GetTTSText(unsigned item) const;
 
@@ -391,7 +391,7 @@ private:
 	 * otherwise, parents may not end up properly located in
 	 * relation to child-items.
 	 */
-	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
+	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData);
 
 	/** Compares two items in the list, using the current sort sequence. */
 	int CompareItems(wxUIntPtr item1, wxUIntPtr item2);
@@ -446,7 +446,7 @@ private:
 	 * @param[in] oldindex Old column index which we want to turn into a
 	 * new index.
 	 *
-	 * @return The new index of the column, or -1 if an error occured.
+	 * @return The new index of the column, or -1 if an error occurred.
 	 */
 	int GetNewColumnIndex(int oldindex) const;
 
@@ -483,7 +483,7 @@ private:
 	// True while sorting.
 	bool m_isSorting;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif // MULELISTCTRL_H

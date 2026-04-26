@@ -35,6 +35,10 @@ enum ESearchOperators
 	SEARCHOP_NOT
 };
 
+// Magic-byte (0xAD) delimiter; as a narrow literal on POSIX UTF-8 locale it
+// would fail wxConvLibc and collapse to empty, breaking operator-token
+// comparisons in SearchList. Keep wxT() so the literal is a wide-char at
+// compile time — same reason as FileTags.h TAG_* macros.
 #define	SEARCHOPTOK_AND	wxT("\255AND")
 #define	SEARCHOPTOK_OR	wxT("\255OR")
 #define	SEARCHOPTOK_NOT	wxT("\255NOT")
@@ -83,6 +87,8 @@ public:
 
 	wxArrayString m_aExpr;
 };
+
+void ParsedSearchExpression(const CSearchExpr* pexpr);
 
 #ifdef _MSC_VER
 #define YY_NO_UNISTD_H

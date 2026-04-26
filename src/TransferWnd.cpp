@@ -52,7 +52,7 @@
 #include "GuiEvents.h"			// Needed for CoreNotify_*
 
 
-BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
+wxBEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
 	EVT_RIGHT_DOWN(CTransferWnd::OnNMRclickDLtab)
 	EVT_NOTEBOOK_PAGE_CHANGED(ID_CATEGORIES,	CTransferWnd::OnCategoryChanged)
 
@@ -73,7 +73,7 @@ BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
 	EVT_MENU(MP_STOP,			CTransferWnd::OnSetCatStatus)
 	EVT_MENU(MP_CANCEL,			CTransferWnd::OnSetCatStatus)
 	EVT_MENU(MP_RESUME,			CTransferWnd::OnSetCatStatus)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 
@@ -83,7 +83,7 @@ CTransferWnd::CTransferWnd( wxWindow* pParent )
 	wxSizer* content = transferDlg(this, true);
 	content->Show(this, true);
 
-	downloadlistctrl = CastChild( wxT("downloadList"), CDownloadListCtrl );
+	downloadlistctrl = CastChild( "downloadList", CDownloadListCtrl );
 	clientlistctrl   = CastChild( ID_CLIENTLIST, CSourceListCtrl );
 	m_dlTab          = CastChild( ID_CATEGORIES, CMuleNotebook );
 
@@ -109,10 +109,10 @@ CTransferWnd::CTransferWnd( wxWindow* pParent )
 
 	// Check if the clientlist is hidden
 	bool show = true;
-	config->Read( wxT("/GUI/TransferWnd/ShowClientList"), &show, true );
+	config->Read( "/GUI/TransferWnd/ShowClientList", &show, true );
 	clientlistctrl->SetShowing(show);
 	// Load the last used splitter position
-	m_splitter = config->Read( wxT("/GUI/TransferWnd/Splitter"), 463l );
+	m_splitter = config->Read( "/GUI/TransferWnd/Splitter", 463l );
 }
 
 
@@ -122,18 +122,18 @@ CTransferWnd::~CTransferWnd()
 
 	if ( !clientlistctrl->GetShowing() ) {
 		// Save the splitter position
-		config->Write( wxT("/GUI/TransferWnd/Splitter"), m_splitter );
+		config->Write( "/GUI/TransferWnd/Splitter", m_splitter );
 
 		// Save the visible status of the list
-		config->Write( wxT("/GUI/TransferWnd/ShowClientList"), false );
+		config->Write( "/GUI/TransferWnd/ShowClientList", false );
 	} else {
-		wxSplitterWindow* splitter = CastChild( wxT("splitterWnd"), wxSplitterWindow );
+		wxSplitterWindow* splitter = CastChild( "splitterWnd", wxSplitterWindow );
 
 		// Save the splitter position
-		config->Write( wxT("/GUI/TransferWnd/Splitter"), splitter->GetSashPosition() );
+		config->Write( "/GUI/TransferWnd/Splitter", splitter->GetSashPosition() );
 
 		// Save the visible status of the list
-		config->Write( wxT("/GUI/TransferWnd/ShowClientList"), true );
+		config->Write( "/GUI/TransferWnd/ShowClientList", true );
 	}
 }
 
@@ -196,7 +196,7 @@ void CTransferWnd::UpdateCategory(int index)
 	for (int i = start; i <= end; i++) {
 		wxString label = theApp->glob_prefs->GetCategory(i)->title;
 		if (showCatTabInfos) {
-			label += CFormat(wxT(" (%u/%u)")) % downloads[i] % files[i];
+			label += CFormat(" (%u/%u)") % downloads[i] % files[i];
 		}
 		m_dlTab->SetPageText(i, label);
 	}
@@ -395,7 +395,7 @@ void CTransferWnd::OnBtnClearDownloads( wxCommandEvent& WXUNUSED(evt) )
 
 void CTransferWnd::Prepare()
 {
-	wxSplitterWindow* splitter = CastChild( wxT("splitterWnd"), wxSplitterWindow );
+	wxSplitterWindow* splitter = CastChild( "splitterWnd", wxSplitterWindow );
 	int height = splitter->GetSize().GetHeight();
 	int header_height = s_clientlistHeader->GetSize().GetHeight();
 
@@ -420,7 +420,7 @@ void CTransferWnd::Prepare()
 
 void CTransferWnd::OnToggleClientList(wxCommandEvent& WXUNUSED(evt))
 {
-	wxSplitterWindow* splitter = CastChild( wxT("splitterWnd"), wxSplitterWindow );
+	wxSplitterWindow* splitter = CastChild( "splitterWnd", wxSplitterWindow );
 	wxBitmapButton*   button = CastChild( ID_CLIENTTOGGLE, wxBitmapButton );
 
 	if ( !clientlistctrl->GetShowing() ) {
@@ -458,7 +458,7 @@ void CTransferWnd::OnSashPositionChanging(wxSplitterEvent& evt)
 		evt.SetSashPosition( s_splitterMin );
 	} else {
 		wxSplitterWindow* splitter = wxStaticCast( evt.GetEventObject(), wxSplitterWindow);
-		wxCHECK_RET(splitter, wxT("ERROR: NULL splitter in CTransferWnd::OnSashPositionChanging"));
+		wxCHECK_RET(splitter, "ERROR: NULL splitter in CTransferWnd::OnSashPositionChanging");
 
 		int height = splitter->GetSize().GetHeight();
 		int header_height = s_clientlistHeader->GetSize().GetHeight();

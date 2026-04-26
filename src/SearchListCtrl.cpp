@@ -37,7 +37,7 @@
 #include "GuiEvents.h"		// Needed for CoreNotify_Search_Add_Download
 #include "MuleColour.h"
 
-BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
+wxBEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_RIGHT_CLICK(-1, CSearchListCtrl::OnRightClick)
 	EVT_LIST_COL_CLICK( -1,       CSearchListCtrl::OnColumnLClick)
 	EVT_LIST_COL_END_DRAG( -1,    CSearchListCtrl::OnColumnResize)
@@ -50,7 +50,7 @@ BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_MENU_RANGE( MP_ASSIGNCAT, MP_ASSIGNCAT + 99, CSearchListCtrl::OnPopupDownload )
 
 	EVT_LIST_ITEM_ACTIVATED( -1,  CSearchListCtrl::OnItemActivated)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 std::list<CSearchListCtrl*> CSearchListCtrl::s_lists;
@@ -84,25 +84,25 @@ m_filterEnabled(false)
 	// Setting the sorter function.
 	SetSortFunc( SortProc );
 
-	InsertColumn( ID_SEARCH_COL_NAME,    _("File Name"), wxLIST_FORMAT_LEFT, 500, wxT("N") );
-	InsertColumn( ID_SEARCH_COL_SIZE,    _("Size"),      wxLIST_FORMAT_LEFT, 100, wxT("Z") );
-	InsertColumn( ID_SEARCH_COL_SOURCES, _("Sources"),   wxLIST_FORMAT_LEFT,  50, wxT("u") );
-	InsertColumn( ID_SEARCH_COL_TYPE,    _("Type"),      wxLIST_FORMAT_LEFT,  65, wxT("Y") );
-	InsertColumn( ID_SEARCH_COL_FILEID,  _("FileID"),    wxLIST_FORMAT_LEFT, 280, wxT("I") );
-	InsertColumn( ID_SEARCH_COL_STATUS,  _("Status"),    wxLIST_FORMAT_LEFT, 100, wxT("S") );
-	InsertColumn( ID_SEARCH_COL_DIRECTORY,  _("Directories"),    wxLIST_FORMAT_LEFT, 280, wxT("D") );  // I would have prefered "Directory" but this is already translated
+	InsertColumn( ID_SEARCH_COL_NAME,    _("File Name"), wxLIST_FORMAT_LEFT, 500, "N" );
+	InsertColumn( ID_SEARCH_COL_SIZE,    _("Size"),      wxLIST_FORMAT_LEFT, 100, "Z" );
+	InsertColumn( ID_SEARCH_COL_SOURCES, _("Sources"),   wxLIST_FORMAT_LEFT,  50, "u" );
+	InsertColumn( ID_SEARCH_COL_TYPE,    _("Type"),      wxLIST_FORMAT_LEFT,  65, "Y" );
+	InsertColumn( ID_SEARCH_COL_FILEID,  _("FileID"),    wxLIST_FORMAT_LEFT, 280, "I" );
+	InsertColumn( ID_SEARCH_COL_STATUS,  _("Status"),    wxLIST_FORMAT_LEFT, 100, "S" );
+	InsertColumn( ID_SEARCH_COL_DIRECTORY,  _("Directories"),    wxLIST_FORMAT_LEFT, 280, "D" );  // I would have preferred "Directory" but this is already translated
 
 	m_nResultsID = 0;
 
 	// Only load settings for first list, otherwise sync with current lists
 	if ( s_lists.empty() ) {
 		// Set the name to enable loading of settings
-		SetTableName( wxT("Search") );
+		SetTableName( "Search" );
 
 		LoadSettings();
 
 		// Unset the name to avoid the settings getting saved every time a list is closed
-		SetTableName( wxEmptyString );
+		SetTableName( "" );
 	} else {
 		// Sync this list with one of the others
 		SyncLists( s_lists.front(), this );
@@ -115,7 +115,7 @@ m_filterEnabled(false)
 
 wxString CSearchListCtrl::GetOldColumnOrder() const
 {
-	return wxT("N,Z,u,Y,I,S");
+	return "N,Z,u,Y,I,S";
 }
 
 
@@ -129,14 +129,14 @@ CSearchListCtrl::~CSearchListCtrl()
 	// We only save the settings if the last list was closed
 	if ( s_lists.empty() ) {
 		// In order to get the settings saved, we need to set the name
-		SetTableName( wxT("Search") );
+		SetTableName( "Search" );
 	}
 }
 
 
 void CSearchListCtrl::AddResult(CSearchFile* toshow)
 {
-	wxCHECK_RET(toshow->GetSearchID() == m_nResultsID, wxT("Wrong search-id for result-list"));
+	wxCHECK_RET(toshow->GetSearchID() == m_nResultsID, "Wrong search-id for result-list");
 
 	const wxUIntPtr toshowdata = reinterpret_cast<wxUIntPtr>(toshow);
 	CSearchFile* parent = toshow->GetParent();
@@ -215,18 +215,18 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	SetItem(newid, ID_SEARCH_COL_SIZE, CastItoXBytes( toshow->GetFileSize() ) );
 
 	// Source count
-	wxString temp = CFormat(wxT("%d")) % toshow->GetSourceCount();
+	wxString temp = CFormat("%d") % toshow->GetSourceCount();
 	if (toshow->GetCompleteSourceCount()) {
-		temp += CFormat(wxT(" (%d)")) % toshow->GetCompleteSourceCount();
+		temp += CFormat(" (%d)") % toshow->GetCompleteSourceCount();
 	}
 	if (toshow->GetClientsCount()) {
-		temp += CFormat(wxT(" [%d]")) % toshow->GetClientsCount();
+		temp += CFormat(" [%d]") % toshow->GetClientsCount();
 	}
 #if defined(__DEBUG__) && !defined(CLIENT_GUI)
 	if (toshow->GetKadPublishInfo() == 0) {
-		temp += wxT(" | -");
+		temp += " | -";
 	} else {
-		temp += CFormat(wxT(" | N:%u, P:%u, T:%0.2f"))
+		temp += CFormat(" | N:%u, P:%u, T:%0.2f")
 			% ((toshow->GetKadPublishInfo() & 0xFF000000) >> 24)
 			% ((toshow->GetKadPublishInfo() & 0x00FF0000) >> 16)
 			% ((toshow->GetKadPublishInfo() & 0x0000FFFF) / 100.0);
@@ -274,18 +274,18 @@ void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 		// Update the filename, which may be changed in case of multiple variants.
 		SetItem(index, ID_SEARCH_COL_NAME, toupdate->GetFileName().GetPrintable());
 
-		wxString temp = CFormat(wxT("%d")) % toupdate->GetSourceCount();
+		wxString temp = CFormat("%d") % toupdate->GetSourceCount();
 		if (toupdate->GetCompleteSourceCount()) {
-			temp += CFormat(wxT(" (%d)")) % toupdate->GetCompleteSourceCount();
+			temp += CFormat(" (%d)") % toupdate->GetCompleteSourceCount();
 		}
 		if (toupdate->GetClientsCount()) {
-			temp += CFormat(wxT(" [%d]")) % toupdate->GetClientsCount();
+			temp += CFormat(" [%d]") % toupdate->GetClientsCount();
 		}
 #if defined(__DEBUG__) && !defined(CLIENT_GUI)
 		if (toupdate->GetKadPublishInfo() == 0) {
-			temp += wxT(" | -");
+			temp += " | -";
 		} else {
-			temp += CFormat(wxT(" | N:%u, P:%u, T:%0.2f"))
+			temp += CFormat(" | N:%u, P:%u, T:%0.2f")
 				% ((toupdate->GetKadPublishInfo() & 0xFF000000) >> 24)
 				% ((toupdate->GetKadPublishInfo() & 0x00FF0000) >> 16)
 				% ((toupdate->GetKadPublishInfo() & 0x0000FFFF) / 100.0);
@@ -362,7 +362,7 @@ void CSearchListCtrl::UpdateItemColor(long index)
 }
 
 
-void CSearchListCtrl::ShowResults( long ResultsID )
+void CSearchListCtrl::ShowResults( wxUIntPtr ResultsID )
 {
 	DeleteAllItems();
 	m_nResultsID = ResultsID;
@@ -385,7 +385,7 @@ void CSearchListCtrl::SetFilter(const wxString& regExp, bool invert, bool filter
 {
 	if (regExp.IsEmpty()) {
 		// Show everything
-		m_filterText = wxT(".*");
+		m_filterText = ".*";
 	} else {
 		m_filterText = regExp;
 	}
@@ -466,12 +466,12 @@ bool CSearchListCtrl::IsFiltered(const CSearchFile* file)
 }
 
 
-int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
+int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData)
 {
 	CSearchFile* file1 = reinterpret_cast<CSearchFile*>(item1);
 	CSearchFile* file2 = reinterpret_cast<CSearchFile*>(item2);
 
-	// Modifies the result, 1 for ascending, -1 for decending
+	// Modifies the result, 1 for ascending, -1 for descending
 	int modifier = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 	bool alternate = (sortData & CMuleListCtrl::SORT_ALT) != 0;
 
@@ -516,7 +516,7 @@ int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 			int cmp2 = CmpAny( file1->GetCompleteSourceCount(), file2->GetCompleteSourceCount() );
 
 			if ( alternate ) {
-				// Swap criterias
+				// Swap criteria
 				int temp = cmp2;
 				cmp2 = cmp;
 				cmp = temp;
@@ -584,7 +584,7 @@ void CSearchListCtrl::SetSorting(unsigned column, unsigned order)
 
 void CSearchListCtrl::SyncLists( CSearchListCtrl* src, CSearchListCtrl* dst )
 {
-	wxCHECK_RET(src && dst, wxT("NULL argument in SyncLists"));
+	wxCHECK_RET(src && dst, "NULL argument in SyncLists");
 
 	// Column widths
 	for ( int i = 0; i < src->GetColumnCount(); i++ ) {
@@ -687,7 +687,7 @@ void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& WXUNUSED(event) )
 	while (index != -1) {
 		CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(index));
 
-		URIs += theApp->CreateED2kLink( file ) + wxT("\n");
+		URIs += theApp->CreateED2kLink( file ) + "\n";
 
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
@@ -721,7 +721,7 @@ void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 	theApp->searchlist->StopSearch(true);
 	theApp->amuledlg->m_searchwnd->ResetControls();
 	CastByID( IDC_SEARCHNAME, theApp->amuledlg->m_searchwnd, wxTextCtrl )->
-		SetValue(wxT("related::") + file->GetFileHash().Encode());
+		SetValue("related::" + file->GetFileHash().Encode());
 	theApp->amuledlg->m_searchwnd->StartNewSearch();
 }
 
@@ -799,7 +799,7 @@ void CSearchListCtrl::DownloadSelected(int category)
 }
 
 
-const wxBrush& GetBrush(wxSystemColour index)
+static const wxBrush& GetBrush(wxSystemColour index)
 {
 	return CMuleColour(index).GetBrush();
 }
@@ -826,7 +826,7 @@ void CSearchListCtrl::OnDrawItem(
 
 	// Define the border of the drawn area
 	if (highlighted) {
-		dc->SetPen(*(wxThePenList->FindOrCreatePen(CMuleColour(dc->GetBackground().GetColour()).Blend(65), 1, wxSOLID)));
+		dc->SetPen(*(wxThePenList->FindOrCreatePen(CMuleColour(dc->GetBackground().GetColour()).Blend(65), 1, wxPENSTYLE_SOLID)));
 	} else {
 		dc->SetPen(*wxTRANSPARENT_PEN);
 		dc->SetTextForeground(GetItemTextColour(item));
@@ -895,7 +895,7 @@ void CSearchListCtrl::OnDrawItem(
 			if (GetItem(cellitem)) {
 				dc->DrawText(cellitem.GetText(), target_rec.GetX(), target_rec.GetY());
 			} else {
-				dc->DrawText(wxT("GetItem failed!"), target_rec.GetX(), target_rec.GetY());
+				dc->DrawText("GetItem failed!", target_rec.GetX(), target_rec.GetY());
 			}
 
 			// Increment to the next column
@@ -912,7 +912,7 @@ void CSearchListCtrl::OnDrawItem(
 		const int middle = cur_rec.y + ( cur_rec.height + 1 ) / 2;
 
 		// Set up a new pen for drawing the tree
-		dc->SetPen( *(wxThePenList->FindOrCreatePen(dc->GetTextForeground(), 1, wxSOLID)) );
+		dc->SetPen( *(wxThePenList->FindOrCreatePen(dc->GetTextForeground(), 1, wxPENSTYLE_SOLID)) );
 
 		if (file->GetParent()) {
 			// Draw the line to the filename

@@ -29,12 +29,10 @@
 #include <wx/event.h>	// Needed for wxEvent
 
 
-DECLARE_LOCAL_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, wxEVT_USER_FIRST+HTTP_DOWNLOAD_FINISHED)
-
-DECLARE_LOCAL_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE, wxEVT_USER_FIRST+SOURCE_DNS_DONE)
-DECLARE_LOCAL_EVENT_TYPE(wxEVT_CORE_UDP_DNS_DONE, wxEVT_USER_FIRST+UDP_DNS_DONE)
-DECLARE_LOCAL_EVENT_TYPE(wxEVT_CORE_SERVER_DNS_DONE, wxEVT_USER_FIRST+SERVER_DNS_DONE)
-
+wxDECLARE_EVENT(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, wxEvent);
+wxDECLARE_EVENT(wxEVT_CORE_SOURCE_DNS_DONE, wxEvent);
+wxDECLARE_EVENT(wxEVT_CORE_UDP_DNS_DONE, wxEvent);
+wxDECLARE_EVENT(wxEVT_CORE_SERVER_DNS_DONE, wxEvent);
 
 class CMuleInternalEvent : public wxEvent
 {
@@ -84,11 +82,9 @@ private:
 
 typedef void (wxEvtHandler::*MuleInternalEventFunction)(CMuleInternalEvent&);
 
-//! Event-handler for completed hashings of new shared files and partfiles.
+//! Event-handler for internal core events.
 #define EVT_MULE_INTERNAL(event, id, func) \
-	DECLARE_EVENT_TABLE_ENTRY(event, id, -1, \
-	(wxObjectEventFunction) (wxEventFunction) \
-	wxStaticCastEvent(MuleInternalEventFunction, &func), (wxObject*) NULL),
+	wx__DECLARE_EVT1(event, id, wxEVENT_HANDLER_CAST(MuleInternalEventFunction, func))
 
 
 #endif /* INTERNALEVENTS_H */

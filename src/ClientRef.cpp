@@ -24,7 +24,7 @@
 //
 
 #include "ClientRef.h"
-#include "amule.h"				// Needed fot theApp
+#include "amule.h"				// Needed for theApp
 
 #ifdef CLIENT_GUI
 #include "UpDownClientEC.h"	// Needed for CUpDownClient
@@ -44,7 +44,7 @@
 CClientRef::CClientRef(const CClientRef& ref)
 {
 	m_client = ref.m_client;
-	ASSIGN_MFROM(wxT("copy ctor of ") + ref.m_from);
+	ASSIGN_MFROM("copy ctor of " + ref.m_from);
 	if (m_client) {
 		m_client->Link(MFROM);
 	}

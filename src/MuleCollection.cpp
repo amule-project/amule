@@ -10,7 +10,7 @@
 //
 // Marcelo Malheiros <mgmalheiros@gmail.com>
 // * fixed error with FT_FILEHASH
-// * added inital 5 tag/file support
+// * added initial 5 tag/file support
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their

@@ -36,11 +36,11 @@
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 
 
-BEGIN_EVENT_TABLE(CDirectoryTreeCtrl, wxTreeCtrl)
+wxBEGIN_EVENT_TABLE(CDirectoryTreeCtrl, wxTreeCtrl)
 	EVT_TREE_ITEM_RIGHT_CLICK(wxID_ANY,	CDirectoryTreeCtrl::OnRButtonDown)
 	EVT_TREE_ITEM_ACTIVATED(wxID_ANY,	CDirectoryTreeCtrl::OnItemActivated)
 	EVT_TREE_ITEM_EXPANDED(wxID_ANY,	CDirectoryTreeCtrl::OnItemExpanding)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 class CItemData : public wxTreeItemData
@@ -60,7 +60,7 @@ class CItemData : public wxTreeItemData
 
 
 CDirectoryTreeCtrl::CDirectoryTreeCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags)
-	: wxTreeCtrl(parent,id,pos,siz,flags,wxDefaultValidator,wxT("ShareTree"))
+	: wxTreeCtrl(parent,id,pos,siz,flags,wxDefaultValidator,"ShareTree")
 {
 	m_IsInit = false;
 	HasChanged = false;
@@ -100,12 +100,12 @@ void CDirectoryTreeCtrl::Init()
 
 	// Create an empty root item, which we can
 	// safely append when creating a full path.
-	m_root = AddRoot(wxEmptyString, IMAGE_FOLDER, -1,
+	m_root = AddRoot("", IMAGE_FOLDER, -1,
 					new CItemData(CPath()));
 
 	if (!m_IsRemote) {
 	#ifndef __WINDOWS__
-		AddChildItem(m_root, CPath(wxT("/")));
+		AddChildItem(m_root, CPath("/"));
 	#else
 		// this might take awhile, so change the cursor
 		::wxSetCursor(*wxHOURGLASS_CURSOR);
@@ -114,11 +114,11 @@ void CDirectoryTreeCtrl::Init()
 		drives >>= 1;
 		for (char drive = 'C'; drive <= 'Z'; drive++) {
 			drives >>= 1;
-			if (! (drives & 1)) { // skip non existant drives
+			if (! (drives & 1)) { // skip non existent drives
 				continue;
 			}
-			wxString driveStr = CFormat(wxT("%c:")) % drive;
-			uint32 type = GetDriveType((driveStr + wxT("\\")).wc_str());
+			wxString driveStr = CFormat("%c:") % drive;
+			uint32 type = GetDriveType((driveStr + "\\").wc_str());
 
 			// skip removable/undefined drives, share only fixed or remote drives
 			if ((type == 3 || type == 4)   // fixed drive / remote drive
@@ -197,7 +197,7 @@ void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild, bool mark, bool recur
 
 void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const CPath& item)
 {
-	wxCHECK_RET(hBranch.IsOk(), wxT("Attempted to add children to invalid item"));
+	wxCHECK_RET(hBranch.IsOk(), "Attempted to add children to invalid item");
 
 	CPath fullPath = GetFullPath(hBranch).JoinPaths(item);
 	wxTreeItemId treeItem = AppendItem(hBranch, item.GetPrintable(),
@@ -218,19 +218,19 @@ void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const CPath& item)
 
 	if (HasSubdirectories(fullPath)) {
 		// Trick. will show + if it has subdirs
-		AppendItem(treeItem, wxT("."));
+		AppendItem(treeItem, ".");
 	}
 }
 
 
 CPath CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 {
-	{ wxCHECK_MSG(hItem.IsOk(), CPath(), wxT("Invalid item in GetFullPath")); }
+	{ wxCHECK_MSG(hItem.IsOk(), CPath(), "Invalid item in GetFullPath"); }
 
 	CPath result;
 	for (; hItem.IsOk(); hItem = GetItemParent(hItem)) {
 		CItemData* data = dynamic_cast<CItemData*>(GetItemData(hItem));
-		wxCHECK_MSG(data, CPath(), wxT("Missing data-item in GetFullPath"));
+		wxCHECK_MSG(data, CPath(), "Missing data-item in GetFullPath");
 
 		result = data->GetPathComponent().JoinPaths(result);
 	}
@@ -241,7 +241,7 @@ CPath CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 
 void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, const CPath& path)
 {
-	wxCHECK_RET(path.IsOk(), wxT("Invalid path in AddSubdirectories"));
+	wxCHECK_RET(path.IsOk(), "Invalid path in AddSubdirectories");
 
 	CDirIterator sharedDir(path);
 
@@ -265,7 +265,7 @@ bool CDirectoryTreeCtrl::HasSubdirectories(const CPath& folder)
 
 void CDirectoryTreeCtrl::GetSharedDirectories(PathList* list)
 {
-	wxCHECK_RET(list, wxT("Invalid list in GetSharedDirectories"));
+	wxCHECK_RET(list, "Invalid list in GetSharedDirectories");
 
 	for (SharedMap::iterator it = m_lstShared.begin(); it != m_lstShared.end(); ++it) {
 		list->push_back(it->second);
@@ -275,7 +275,7 @@ void CDirectoryTreeCtrl::GetSharedDirectories(PathList* list)
 
 void CDirectoryTreeCtrl::SetSharedDirectories(PathList* list)
 {
-	wxCHECK_RET(list, wxT("Invalid list in SetSharedDirectories"));
+	wxCHECK_RET(list, "Invalid list in SetSharedDirectories");
 
 	m_lstShared.clear();
 	for (PathList::iterator it = list->begin(); it != list->end(); ++it) {
@@ -294,10 +294,17 @@ wxString CDirectoryTreeCtrl::GetKey(const CPath& path)
 		return path.GetRaw();
 	}
 
-	// Sanity check, see IsSameAs() in Path.cpp
-	const wxString cwd = wxGetCwd();
-	const int flags = (wxPATH_NORM_ALL | wxPATH_NORM_CASE) & ~wxPATH_NORM_ENV_VARS;
+	// Sanity check, see IsSameAs() in Path.cpp.  Skip wxGetCwd() when
+	// the path is already absolute — Normalize ignores cwd in that
+	// case, and wxGetCwd() emits a wxLogSysError for every call when
+	// the process's recorded CWD has been removed.
+	wxString cwd;
 	wxFileName fn(path.GetRaw());
+	if (!fn.IsAbsolute()) {
+		cwd = wxGetCwd();
+	}
+	// wxPATH_NORM_ALL is deprecated in wx3 — use explicit flags instead (excluding wxPATH_NORM_ENV_VARS)
+	const int flags = wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_CASE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT;
 	fn.Normalize(flags, cwd);
 	return fn.GetFullPath();
 }
@@ -372,7 +379,7 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked, bool re
 
 bool CDirectoryTreeCtrl::IsShared(const CPath& path)
 {
-	wxCHECK_MSG(path.IsOk(), false, wxT("Invalid path in IsShared"));
+	wxCHECK_MSG(path.IsOk(), false, "Invalid path in IsShared");
 
 	return m_lstShared.find(GetKey(path)) != m_lstShared.end();
 }
@@ -380,7 +387,7 @@ bool CDirectoryTreeCtrl::IsShared(const CPath& path)
 
 void CDirectoryTreeCtrl::AddShare(const CPath& path)
 {
-	wxCHECK_RET(path.IsOk(), wxT("Invalid path in AddShare"));
+	wxCHECK_RET(path.IsOk(), "Invalid path in AddShare");
 
 	if (IsShared(path)) {
 		return;
@@ -392,7 +399,7 @@ void CDirectoryTreeCtrl::AddShare(const CPath& path)
 
 void CDirectoryTreeCtrl::DelShare(const CPath& path)
 {
-	wxCHECK_RET(path.IsOk(), wxT("Invalid path in DelShare"));
+	wxCHECK_RET(path.IsOk(), "Invalid path in DelShare");
 
 	m_lstShared.erase(GetKey(path));
 }

@@ -29,6 +29,8 @@
 
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "FileAutoClose.h"	// Needed for CFileAutoClose
+#include "FileArea.h"		// Needed for CFileArea (PartFileBufferedData)
+#include <atomic>			// Needed for std::atomic (m_iWrites)
 
 #include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "DeadSourceList.h"	// Needed for CDeadSourceList
@@ -45,7 +47,7 @@ class CED2KFileLink;
 // Ok, eMule and aMule are building incompatible backup files because
 // of the different name. aMule was using ".BAK" and eMule ".bak".
 // This should fix it.
-#define   PARTMET_BAK_EXT wxT(".bak")
+#define   PARTMET_BAK_EXT ".bak"
 
 enum EPartFileFormat {
 	PMT_UNKNOWN	= 0,
@@ -66,9 +68,7 @@ public:
 	wxString Comment;
 public:
 	SFileRating(const wxString &u, const wxString &f, sint16 r, const wxString &c);
-	SFileRating(const SFileRating &fr);
 	SFileRating(const CUpDownClient &client);
-	~SFileRating();
 };
 
 typedef std::list<SFileRating> FileRatingList;
@@ -86,7 +86,27 @@ public:
 
 typedef std::map<uint32,SourcenameItem> SourcenameItemMap;
 
+
+class PartFileBufferedData
+{
+public:
+	CFileArea area;				// File area to be written
+	uint64 start;					// This is the start offset of the data
+	uint64 end;						// This is the end offset of the data
+	Requested_Block_Struct *block;	// This is the requested block that this data relates to
+	uint8 flushed;					// eMule ref: 0=ready 1=pending 2=error 3=written
+
+	PartFileBufferedData(CFileAutoClose& file, uint8_t * data, uint64 _start, uint64 _end, Requested_Block_Struct *_block)
+		: start(_start), end(_end), block(_block), flushed(0)
+	{
+		area.StartWriteAt(file, start, end-start+1);
+		memcpy(area.GetBuffer(), data, end-start+1);
+	}
+};
+
+
 class CPartFile : public CKnownFile {
+	friend class CPartFileWriteThread;
 public:
 	typedef std::list<Requested_Block_Struct*> CReqBlockPtrList;
 
@@ -162,7 +182,7 @@ public:
 	int	getPartfileStatusRang() const;
 
 	// Barry - Added as replacement for BlockReceived to buffer data before writing to disk
-	uint32	WriteToBuffer(uint32 transize, byte *data, uint64 start, uint64 end, Requested_Block_Struct *block, const CUpDownClient* client);
+	uint32	WriteToBuffer(uint32 transize, uint8_t *data, uint64 start, uint64 end, Requested_Block_Struct *block, const CUpDownClient* client);
 	void	FlushBuffer(bool fromAICHRecoveryDataAvailable = false);
 
 	// Barry - Added to prevent list containing deleted blocks on shutdown
@@ -232,9 +252,9 @@ public:
 	bool	DelSource( CUpDownClient* client );
 
 	/**
-	 * Updates the requency of avilable parts from with the data the client provides.
+	 * Updates the frequency of available parts from with the data the client provides.
 	 *
-	 * @param client The clients whoose available parts should be considered.
+	 * @param client The clients whose available parts should be considered.
 	 * @param increment If true, the counts are incremented, otherwise they are decremented.
 	 *
 	 * This functions updates the frequency list of file-parts, using the clients
@@ -352,6 +372,8 @@ private:
 
 	uint32 m_nTotalBufferData;
 	uint32 m_nLastBufferFlushTime;
+	std::atomic<int32> m_iWrites;	// eMule ref: count of items queued to write thread (not yet PB_WRITTEN)
+	std::vector<bool> m_aChangedPart;	// eMule ref: persistent tracking of parts needing hash verification
 
 	uint8	m_category;
 	uint32	m_nDlActiveTime;
@@ -393,8 +415,8 @@ public:
 	bool IsLocalSrcRequestQueued() const		{ return m_localSrcReqQueued; }
 	void SetLocalSrcRequestQueued(bool value)	{ m_localSrcReqQueued = value; }
 
-	void AddA4AFSource(CUpDownClient* src)		{ m_A4AFsrclist.insert(CCLIENTREF(src, wxT("A4AFSource"))); }
-	bool RemoveA4AFSource(CUpDownClient* src)	{ return (m_A4AFsrclist.erase(CCLIENTREF(src, wxEmptyString)) > 0); }
+	void AddA4AFSource(CUpDownClient* src)		{ m_A4AFsrclist.insert(CCLIENTREF(src, "A4AFSource")); }
+	bool RemoveA4AFSource(CUpDownClient* src)	{ return (m_A4AFsrclist.erase(CCLIENTREF(src, "")) > 0); }
 
 	uint32 GetLastSearchTime() const			{ return m_lastsearchtime; }
 	void SetLastSearchTime(uint32 time)			{ m_lastsearchtime = time; }

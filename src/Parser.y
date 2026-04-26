@@ -1,6 +1,5 @@
 %{
 #include "SearchExpr.h"
-#include "Scanner.h.in"
 #include "Scanner.h"
 #include "OtherFunctions.h"
 
@@ -13,7 +12,6 @@ static char THIS_FILE[] = __FILE__;
 
 extern wxArrayString _astrParserErrors;
 
-void ParsedSearchExpression(const CSearchExpr* pexpr);
 int yyerror(const char* errstr);
 int yyerror(wxString errstr);
 
@@ -55,7 +53,7 @@ action			: searchexpr
 				/* --------- Error Handling --------- */
 				| searchexpr error
 					{
-						yyerror(wxT("Undefined search expression error"));
+						yyerror("Undefined search expression error");
 						delete $1;
 						return 1;
 					}
@@ -100,40 +98,40 @@ searchexpr		: and_strings
 				/* --------- Error Handling --------- */
 				| searchexpr TOK_OR error
 					{
-						yyerror(wxT("Missing right operand for OR on search expression"));
+						yyerror("Missing right operand for OR on search expression");
 						delete $1;
 						return 1;
 					}
 				| searchexpr TOK_NOT error
 					{
-						yyerror(wxT("Missing operand for NOT on search expression"));
+						yyerror("Missing operand for NOT on search expression");
 						delete $1;
 						return 1;
 					}
 				| '(' error
 					{
-						yyerror(wxT("Missing left parenthesis on search expression"));
+						yyerror("Missing left parenthesis on search expression");
 						return 1;
 					}
 				| '(' searchexpr error
 					{
-						yyerror(wxT("Missing closing parenthesis on search expression"));
+						yyerror("Missing closing parenthesis on search expression");
 						delete $2;
 						return 1;
 					}
 				| TOK_AND error
 					{
-						yyerror(wxT("Missing left operand for AND on search expression"));
+						yyerror("Missing left operand for AND on search expression");
 						return 1;
 					}
 				| TOK_OR error
 					{
-						yyerror(wxT("Missing left operand for OR on search expression"));
+						yyerror("Missing left operand for OR on search expression");
 						return 1;
 					}
 				| TOK_NOT error
 					{
-						yyerror(wxT("Missing left operand for NOT on search expression (?)"));
+						yyerror("Missing left operand for NOT on search expression (?)");
 						return 1;
 					}
 				;

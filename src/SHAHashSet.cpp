@@ -106,7 +106,7 @@ CAICHHashTree* CAICHHashTree::FindHash(uint64 nStartPos, uint64 nSize, uint8* nL
 		// this is the searched hash
 		return this;
 	} else if (m_nDataSize <= m_nBaseSize) { // sanity
-		// this is already the last level, cant go deeper
+		// this is already the last level, can't go deeper
 		wxFAIL;
 		return NULL;
 	} else {
@@ -171,7 +171,7 @@ bool CAICHHashTree::ReCalculateHash(CAICHHashAlgo* hashalg, bool bDontReplace)
 	} else if (m_pLeftTree == NULL && m_pRightTree == NULL) {
 		return true;
 	} else {
-		AddDebugLogLineN(logSHAHashSet, wxT("ReCalculateHash failed - Hashtree incomplete"));
+		AddDebugLogLineN(logSHAHashSet, "ReCalculateHash failed - Hashtree incomplete");
 		return false;
 	}
 }
@@ -190,7 +190,7 @@ bool CAICHHashTree::VerifyHashTree(CAICHHashAlgo* hashalg, bool bDeleteBadTrees)
 				m_pRightTree = NULL;
 			}
 		}
-		AddDebugLogLineN(logSHAHashSet, wxT("VerifyHashTree - No masterhash available"));
+		AddDebugLogLineN(logSHAHashSet, "VerifyHashTree - No masterhash available");
 		return false;
 	}
 
@@ -214,7 +214,7 @@ bool CAICHHashTree::VerifyHashTree(CAICHHashAlgo* hashalg, bool bDeleteBadTrees)
 					m_pRightTree = NULL;
 				}
 			}
-			AddDebugLogLineN(logSHAHashSet, wxT("VerifyHashSet failed - Hashtree incomplete"));
+			AddDebugLogLineN(logSHAHashSet, "VerifyHashSet failed - Hashtree incomplete");
 			return false;
 		}
 	if ((m_pRightTree && m_pRightTree->m_bHashValid) && (m_pLeftTree && m_pLeftTree->m_bHashValid)) {
@@ -253,14 +253,14 @@ void CAICHHashTree::SetBlockHash(uint64 nSize, uint64 nStartPos, CAICHHashAlgo* 
 	CAICHHashTree* pToInsert = FindHash(nStartPos, nSize);
 	if (pToInsert == NULL) { // sanity
 		wxFAIL;
-		AddDebugLogLineN(logSHAHashSet, wxT("Critical Error: Failed to Insert SHA-HashBlock, FindHash() failed!"));
+		AddDebugLogLineN(logSHAHashSet, "Critical Error: Failed to Insert SHA-HashBlock, FindHash() failed!");
 		return;
 	}
 
 	//sanity
 	if (pToInsert->m_nBaseSize != EMBLOCKSIZE || pToInsert->m_nDataSize != nSize) {
 		wxFAIL;
-		AddDebugLogLineN(logSHAHashSet, wxT("Critical Error: Logical error on values in SetBlockHashFromData"));
+		AddDebugLogLineN(logSHAHashSet, "Critical Error: Logical error on values in SetBlockHashFromData");
 		return;
 	}
 
@@ -276,10 +276,10 @@ bool CAICHHashTree::CreatePartRecoveryData(uint64 nStartPos, uint64 nSize, CFile
 
 	if (nStartPos == 0 && nSize == m_nDataSize) {
 		// this is the searched part, now write all blocks of this part
-		// hashident for this level will be adjsuted by WriteLowestLevelHash
+		// hashident for this level will be adjusted by WriteLowestLevelHash
 		return WriteLowestLevelHashs(fileDataOut, wHashIdent, false, b32BitIdent);
 	} else if (m_nDataSize <= m_nBaseSize) { // sanity
-		// this is already the last level, cant go deeper
+		// this is already the last level, can't go deeper
 		wxFAIL;
 		return false;
 	} else {
@@ -398,7 +398,7 @@ bool CAICHHashTree::SetHash(CFileDataIO* fileInput, uint32 wHashIdent, sint8 nLe
 			wHashIdent <<= 1;
 		}
 		if (i > 31) {
-			AddDebugLogLineN(logSHAHashSet, wxT("CAICHHashTree::SetHash - found invalid HashIdent (0)"));
+			AddDebugLogLineN(logSHAHashSet, "CAICHHashTree::SetHash - found invalid HashIdent (0)");
 			return false;
 		} else {
 			nLevel = 31 - i;
@@ -415,7 +415,7 @@ bool CAICHHashTree::SetHash(CFileDataIO* fileInput, uint32 wHashIdent, sint8 nLe
 		m_bHashValid = true;
 		return true;
 	} else if (m_nDataSize <= m_nBaseSize) { // sanity
-		// this is already the last level, cant go deeper
+		// this is already the last level, can't go deeper
 		wxFAIL;
 		return false;
 	} else {
@@ -482,7 +482,7 @@ bool CAICHHashSet::CreatePartRecoveryData(uint64 nPartStartPos, CFileDataIO* fil
 	if (!bDbgDontLoad) {
 		if (!LoadHashSet()) {
 			AddDebugLogLineN(logSHAHashSet,
-				CFormat(wxT("Created RecoveryData error: failed to load hashset. File: %s")) % m_pOwner->GetFileName());
+				CFormat("Created RecoveryData error: failed to load hashset. File: %s") % m_pOwner->GetFileName());
 			SetStatus(AICH_ERROR);
 			return false;
 		}
@@ -504,7 +504,7 @@ bool CAICHHashSet::CreatePartRecoveryData(uint64 nPartStartPos, CFileDataIO* fil
 		if (nHashsToWrite*(HASHSIZE+(bUse32BitIdentifier? 4u:2u)) != fileDataOut->GetPosition() - nCheckFilePos) {
 			wxFAIL;
 			AddDebugLogLineN( logSHAHashSet,
-				CFormat(wxT("Created RecoveryData has wrong length. File: %s")) % m_pOwner->GetFileName() );
+				CFormat("Created RecoveryData has wrong length. File: %s") % m_pOwner->GetFileName() );
 			bResult = false;
 			SetStatus(AICH_ERROR);
 		} else {
@@ -512,7 +512,7 @@ bool CAICHHashSet::CreatePartRecoveryData(uint64 nPartStartPos, CFileDataIO* fil
 		}
 	} else {
 		AddDebugLogLineN(logSHAHashSet,
-			CFormat(wxT("Failed to create RecoveryData for '%s'")) % m_pOwner->GetFileName());
+			CFormat("Failed to create RecoveryData for '%s'") % m_pOwner->GetFileName());
 		bResult = false;
 		SetStatus(AICH_ERROR);
 	}
@@ -551,9 +551,9 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 	// read hashs with 16 bit identifier
 	uint16 nHashsAvailable = fileDataIn->ReadUInt16();
 	if (fileDataIn->GetLength()-fileDataIn->GetPosition() < nHashsToRead*(HASHSIZE+2u) || (nHashsToRead != nHashsAvailable && nHashsAvailable != 0)) {
-		// this check is redunant, CSafememfile would catch such an error too
+		// this check is redundant, CSafememfile would catch such an error too
 		AddDebugLogLineN(logSHAHashSet,
-			CFormat(wxT("Failed to read RecoveryData for '%s' - Received datasize/amounts of hashs was invalid"))
+			CFormat("Failed to read RecoveryData for '%s' - Received datasize/amounts of hashs was invalid")
 				% m_pOwner->GetFileName());
 		return false;
 	}
@@ -563,7 +563,7 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 			|| !m_pHashTree.SetHash(fileDataIn, wHashIdent,(-1), false))
 		{
 			AddDebugLogLineN(logSHAHashSet,
-				CFormat(wxT("Failed to read RecoveryData for '%s' - Error when trying to read hash into tree"))
+				CFormat("Failed to read RecoveryData for '%s' - Error when trying to read hash into tree")
 					% m_pOwner->GetFileName());
 			VerifyHashTree(true); // remove invalid hashes which we have already written
 			return false;
@@ -575,7 +575,7 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 	if (nHashsAvailable == 0 && fileDataIn->GetLength() - fileDataIn->GetPosition() >= 2) {
 		nHashsAvailable = fileDataIn->ReadUInt16();
 		if (fileDataIn->GetLength()-fileDataIn->GetPosition() < nHashsToRead*(HASHSIZE+4u) || (nHashsToRead != nHashsAvailable && nHashsAvailable != 0)) {
-			// this check is redunant, CSafememfile would catch such an error too
+			// this check is redundant, CSafememfile would catch such an error too
 // TODO:			theApp->QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Received datasize/amounts of hashs was invalid (2)"), m_pOwner->GetFileName() );
 			return false;
 		}
@@ -606,7 +606,7 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 			CAICHHashTree* phtToCheck = m_pHashTree.FindHash(nPartStartPos+nPartPos, min<uint64>(EMBLOCKSIZE, nPartSize-nPartPos));
 			if (phtToCheck == NULL || !phtToCheck->m_bHashValid) {
 				AddDebugLogLineN(logSHAHashSet,
-					CFormat(wxT("Failed to read RecoveryData for '%s' - Error while verifying presence of all lowest level hashes"))
+					CFormat("Failed to read RecoveryData for '%s' - Error while verifying presence of all lowest level hashes")
 						% m_pOwner->GetFileName());
 				return false;
 			}
@@ -615,7 +615,7 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 		return true;
 	} else {
 		AddDebugLogLineN(logSHAHashSet,
-			CFormat(wxT("Failed to read RecoveryData for '%s' - Verifying received hashtree failed"))
+			CFormat("Failed to read RecoveryData for '%s' - Verifying received hashtree failed")
 				% m_pOwner->GetFileName());
 		return false;
 	}
@@ -640,7 +640,7 @@ bool CAICHHashSet::SaveHashSet()
 
 		CFile file(fullpath, exists ? CFile::read_write : CFile::write);
 		if (!file.IsOpened()) {
-			AddDebugLogLineC(logSHAHashSet, wxT("Failed to save HashSet: opening met file failed!"));
+			AddDebugLogLineC(logSHAHashSet, "Failed to save HashSet: opening met file failed!");
 			return false;
 		}
 
@@ -648,11 +648,11 @@ bool CAICHHashSet::SaveHashSet()
 		if (nExistingSize) {
 			uint8 header = file.ReadUInt8();
 			if (header != KNOWN2_MET_VERSION) {
-				AddDebugLogLineC(logSHAHashSet, wxT("Saving failed: Current file is not a met-file!"));
+				AddDebugLogLineC(logSHAHashSet, "Saving failed: Current file is not a met-file!");
 				return false;
 			}
 
-			AddDebugLogLineN(logSHAHashSet, CFormat(wxT("Met file is version 0x%2.2x.")) % header);
+			AddDebugLogLineN(logSHAHashSet, CFormat("Met file is version 0x%2.2x.") % header);
 		} else {
 			file.WriteUInt8(KNOWN2_MET_VERSION);
 			// Update the recorded size, in order for the sanity check below to work.
@@ -669,7 +669,7 @@ bool CAICHHashSet::SaveHashSet()
 			}
 			uint32 nHashCount = file.ReadUInt32();
 			if (file.GetPosition() + nHashCount*HASHSIZE > nExistingSize) {
-				AddDebugLogLineC(logSHAHashSet, wxT("Saving failed: File contains fewer entries than specified!"));
+				AddDebugLogLineC(logSHAHashSet, "Saving failed: File contains fewer entries than specified!");
 				return false;
 			}
 			// skip the rest of this hashset
@@ -684,20 +684,20 @@ bool CAICHHashSet::SaveHashSet()
 		}
 		file.WriteUInt32(nHashCount);
 		if (!m_pHashTree.WriteLowestLevelHashs(&file, 0, true, true)) {
-			// thats bad... really
+			// that's bad... really
 			file.SetLength(nExistingSize);
-			AddDebugLogLineC(logSHAHashSet, wxT("Failed to save HashSet: WriteLowestLevelHashs() failed!"));
+			AddDebugLogLineC(logSHAHashSet, "Failed to save HashSet: WriteLowestLevelHashs() failed!");
 			return false;
 		}
 		if (file.GetLength() != nExistingSize + (nHashCount+1)*HASHSIZE + 4) {
-			// thats even worse
+			// that's even worse
 			file.SetLength(nExistingSize);
-			AddDebugLogLineC(logSHAHashSet, wxT("Failed to save HashSet: Calculated and real size of hashset differ!"));
+			AddDebugLogLineC(logSHAHashSet, "Failed to save HashSet: Calculated and real size of hashset differ!");
 			return false;
 		}
-		AddDebugLogLineN(logSHAHashSet, CFormat(wxT("Successfully saved eMuleAC Hashset, %u Hashs + 1 Masterhash written")) % nHashCount);
+		AddDebugLogLineN(logSHAHashSet, CFormat("Successfully saved eMuleAC Hashset, %u Hashs + 1 Masterhash written") % nHashCount);
 	} catch (const CSafeIOException& e) {
-		AddDebugLogLineC(logSHAHashSet, wxT("IO error while saving AICH HashSet: ") + e.what());
+		AddDebugLogLineC(logSHAHashSet, "IO error while saving AICH HashSet: " + e.what());
 		return false;
 	}
 
@@ -719,7 +719,7 @@ bool CAICHHashSet::LoadHashSet()
 	CFile file(fullpath, CFile::read);
 	if (!file.IsOpened()) {
 		if (wxFileExists(fullpath)) {
-			wxString strError(wxT("Failed to load ") KNOWN2_MET_FILENAME wxT(" file"));
+			wxString strError("Failed to load " KNOWN2_MET_FILENAME " file");
 			AddDebugLogLineC(logSHAHashSet, strError);
 		}
 		return false;
@@ -728,7 +728,7 @@ bool CAICHHashSet::LoadHashSet()
 	try {
 		uint8 header = file.ReadUInt8();
 		if (header != KNOWN2_MET_VERSION) {
-			AddDebugLogLineC(logSHAHashSet, wxT("Loading failed: Current file is not a met-file!"));
+			AddDebugLogLineC(logSHAHashSet, "Loading failed: Current file is not a met-file!");
 			return false;
 		}
 
@@ -745,40 +745,40 @@ bool CAICHHashSet::LoadHashSet()
 				}
 				nHashCount = file.ReadUInt32();
 				if (nHashCount != nExpectedCount) {
-					AddDebugLogLineC(logSHAHashSet, wxT("Failed to load HashSet: Available Hashs and expected hashcount differ!"));
+					AddDebugLogLineC(logSHAHashSet, "Failed to load HashSet: Available Hashs and expected hashcount differ!");
 					return false;
 				}
 				if (!m_pHashTree.LoadLowestLevelHashs(&file)) {
-					AddDebugLogLineC(logSHAHashSet, wxT("Failed to load HashSet: LoadLowestLevelHashs failed!"));
+					AddDebugLogLineC(logSHAHashSet, "Failed to load HashSet: LoadLowestLevelHashs failed!");
 					return false;
 				}
 				if (!ReCalculateHash(false)) {
-					AddDebugLogLineC(logSHAHashSet, wxT("Failed to load HashSet: Calculating loaded hashs failed!"));
+					AddDebugLogLineC(logSHAHashSet, "Failed to load HashSet: Calculating loaded hashs failed!");
 					return false;
 				}
 				if (CurrentHash != m_pHashTree.m_Hash) {
-					AddDebugLogLineC(logSHAHashSet, wxT("Failed to load HashSet: Calculated Masterhash differs from given Masterhash - hashset corrupt!"));
+					AddDebugLogLineC(logSHAHashSet, "Failed to load HashSet: Calculated Masterhash differs from given Masterhash - hashset corrupt!");
 					return false;
 				}
 				return true;
 			}
 			nHashCount = file.ReadUInt32();
 			if (file.GetPosition() + nHashCount*HASHSIZE > nExistingSize) {
-				AddDebugLogLineC(logSHAHashSet, wxT("Saving failed: File contains fewer entries than specified!"));
+				AddDebugLogLineC(logSHAHashSet, "Saving failed: File contains fewer entries than specified!");
 				return false;
 			}
 			// skip the rest of this hashset
 			file.Seek(nHashCount*HASHSIZE, wxFromCurrent);
 		}
-		AddDebugLogLineC(logSHAHashSet, wxT("Failed to load HashSet: HashSet not found!"));
+		AddDebugLogLineC(logSHAHashSet, "Failed to load HashSet: HashSet not found!");
 	} catch (const CSafeIOException& e) {
-		AddDebugLogLineC(logSHAHashSet, wxT("IO error while loading AICH HashSet: ") + e.what());
+		AddDebugLogLineC(logSHAHashSet, "IO error while loading AICH HashSet: " + e.what());
 	}
 
 	return false;
 }
 
-// delete the hashset except the masterhash (we dont keep aich hashsets in memory to save ressources)
+// delete the hashset except the masterhash (we dont keep aich hashsets in memory to save resources)
 void CAICHHashSet::FreeHashSet()
 {
 	if (m_pHashTree.m_pLeftTree) {
@@ -873,9 +873,9 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 		(nMostTrustedIPs >= MINUNIQUEIPS_TOTRUST && (100 * nMostTrustedIPs)/nSigningIPsTotal >= MINPERCENTAGE_TOTRUST)) {
 		//trusted
 		AddDebugLogLineN(logSHAHashSet,
-			CFormat(wxT("AICH Hash received (%sadded), We have now %u hash(es) from %u unique IP(s). ")
-					wxT("We trust the Hash %s from %u client(s) (%u%%). File: %s"))
-				% (bAdded ? wxT("") : wxT("not "))
+			CFormat("AICH Hash received (%sadded), We have now %u hash(es) from %u unique IP(s). "
+					"We trust the Hash %s from %u client(s) (%u%%). File: %s")
+				% (bAdded ? "" : "not ")
 				% m_aUntrustedHashs.size()
 				% nSigningIPsTotal
 				% m_aUntrustedHashs[nMostTrustedPos].m_Hash.GetString()
@@ -891,9 +891,9 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 	} else {
 		// untrusted
 		AddDebugLogLineN(logSHAHashSet,
-			CFormat(wxT("AICH Hash received (%sadded), We have now %u hash(es) from %u unique IP(s). ")
-					wxT("Best Hash %s from %u clients (%u%%) - but we don't trust it yet. File: %s"))
-				% (bAdded ? wxT(""): wxT("not "))
+			CFormat("AICH Hash received (%sadded), We have now %u hash(es) from %u unique IP(s). "
+					"Best Hash %s from %u clients (%u%%) - but we don't trust it yet. File: %s")
+				% (bAdded ? "": "not ")
 				% m_aUntrustedHashs.size()
 				% nSigningIPsTotal
 				% m_aUntrustedHashs[nMostTrustedPos].m_Hash.GetString()
@@ -921,7 +921,7 @@ void CAICHHashSet::ClientAICHRequestFailed(CUpDownClient* pClient)
 	}
 	if( theApp->downloadqueue->IsPartFile(data.m_pPartFile)) {
 		AddDebugLogLineN(logSHAHashSet,
-			CFormat(wxT("AICH Request failed, Trying to ask another client (File: '%s', Part: %u, Client '%s'"))
+			CFormat("AICH Request failed, Trying to ask another client (File: '%s', Part: %u, Client '%s'")
 				% data.m_pPartFile->GetFileName() % data.m_nPart % pClient->GetClientFullInfo());
 		data.m_pPartFile->RequestAICHRecovery(data.m_nPart);
 	}
@@ -1023,13 +1023,13 @@ void CAICHHashSet::DbgTest()
 		uint32 j;
 		for (j = 0; j+EMBLOCKSIZE < 9728000; j += EMBLOCKSIZE) {
 			VERIFY( m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel) );
-			//TRACE(wxT("%u - %s\r\n"), cHash, m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel)->m_Hash.GetString());
+			//TRACE("%u - %s\r\n", cHash, m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel)->m_Hash.GetString());
 			maxLevel = max(curLevel, maxLevel);
 			curLevel = 0;
 			cHash++;
 		}
 		VERIFY( m_pHashTree.FindHash(i+j, 9728000-j, &curLevel) );
-		//TRACE(wxT("%u - %s\r\n"), cHash, m_pHashTree.FindHash(i+j, 9728000-j, &curLevel)->m_Hash.GetString());
+		//TRACE("%u - %s\r\n", cHash, m_pHashTree.FindHash(i+j, 9728000-j, &curLevel)->m_Hash.GetString());
 		maxLevel = max(curLevel, maxLevel);
 		curLevel = 0;
 		cHash++;
@@ -1042,13 +1042,13 @@ void CAICHHashSet::DbgTest()
 	TestHashSet.FreeHashSet();
 	for (uint64 j = 0; j+EMBLOCKSIZE < TESTSIZE-i; j += EMBLOCKSIZE) {
 		VERIFY( m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel) );
-		//TRACE(wxT("%u - %s\r\n"), cHash,m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel)->m_Hash.GetString());
+		//TRACE("%u - %s\r\n", cHash,m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel)->m_Hash.GetString());
 		maxLevel = max(curLevel, maxLevel);
 		curLevel = 0;
 		cHash++;
 	}
 	//VERIFY( m_pHashTree.FindHash(i+j, (TESTSIZE-i)-j, &curLevel) );
-	//TRACE(wxT("%u - %s\r\n"), cHash,m_pHashTree.FindHash(i+j, (TESTSIZE-i)-j, &curLevel)->m_Hash.GetString());
+	//TRACE("%u - %s\r\n", cHash,m_pHashTree.FindHash(i+j, (TESTSIZE-i)-j, &curLevel)->m_Hash.GetString());
 	maxLevel = max(curLevel, maxLevel);
 #endif
 }

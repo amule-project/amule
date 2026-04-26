@@ -30,29 +30,29 @@
 
 wxBitmap AlcPix::getPixmap(const wxString& name)
 {
-  if (name == wxT("about"))
+  if (name == "about")
     {
       wxBitmap bitmap(m_about_xpm);
       return bitmap;
     }
 #ifndef __WINDOWS__
-  else if (name == wxT("alc"))
+  else if (name == "alc")
     {
       wxBitmap bitmap(m_alc_xpm);
       return bitmap;
     }
 #endif
-  else if (name == wxT("copy"))
+  else if (name == "copy")
     {
       wxBitmap bitmap(m_copy_xpm);
       return bitmap;
     }
-  else if (name == wxT("open"))
+  else if (name == "open")
     {
       wxBitmap bitmap(m_open_xpm);
       return bitmap;
     }
-  else if (name == wxT("saveas"))
+  else if (name == "saveas")
     {
       wxBitmap bitmap(m_saveas_xpm);
       return bitmap;

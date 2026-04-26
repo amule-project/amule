@@ -43,7 +43,7 @@ CCaptchaGenerator::CCaptchaGenerator(uint32 nLetterCount)
 
 void CCaptchaGenerator::ReGenerateCaptcha(uint32 nLetterCount)
 {
-	static wxString schCaptchaContent = wxT("ABCDEFGHJKLMNPQRSTUVWXYZ123456789");
+	static wxString schCaptchaContent = "ABCDEFGHJKLMNPQRSTUVWXYZ123456789";
 	m_strCaptchaText.Clear();
 	// Bitmap must be created with full depth, or it will fail on GTK
 	wxBitmap pimgResult(LETTERSIZE + (nLetterCount-1)*CROWDEDSIZE, 36);
@@ -76,7 +76,7 @@ void CCaptchaGenerator::ReGenerateCaptcha(uint32 nLetterCount)
 	m_pimgCaptcha = pimgResult.ConvertToImage();
 	// wx always saves as 24 bpp except when it gets this WELL DOCUMENTED option...
 	m_pimgCaptcha.SetOption(wxIMAGE_OPTION_BMP_FORMAT, wxBMP_1BPP);
-	// m_pimgCaptcha.SaveFile(wxT("captcha.bmp"), wxBITMAP_TYPE_BMP);
+	// m_pimgCaptcha.SaveFile("captcha.bmp", wxBITMAP_TYPE_BMP);
 }
 
 bool CCaptchaGenerator::WriteCaptchaImage(wxMemoryOutputStream& file)

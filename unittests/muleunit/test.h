@@ -23,14 +23,13 @@
 #define TEST_H
 
 #include <exception>
+#include <memory>
 
 #include <wx/string.h>
 #include <list>
 #include <string>
-
-#if wxCHECK_VERSION(2, 9, 0)
 #include <wx/wxcrt.h>
-#endif
+
 
 /**
  * MuleUnit namespace.
@@ -62,18 +61,16 @@ inline void Print(const wxString& str)
 struct CTestFailureException : public std::exception
 {
 	/** Constructor, takes a snapshot of the current context, and adds the given information. */
-	CTestFailureException(const wxString& msg, const wxChar* file, long lineNumber);
-
-	~CTestFailureException() throw();
+	CTestFailureException(const wxString& msg, const wxString& file, long lineNumber);
 
 	/** Prints the context backtrace for the location where the exception was thrown. */
 	void PrintBT() const;
 
-	virtual const char* what () const throw ();
+	virtual const char* what () const noexcept;
 private:
 	//! Pointer to struct containing a snapshot of the contexts
 	//! taken at the time the exception was created.
-	struct BTList* m_bt;
+	std::shared_ptr<struct BTList> m_bt;
 
 	//! The message passed in the constructor.
 	std::string m_message;
@@ -83,7 +80,7 @@ private:
 struct CAssertFailureException : public CTestFailureException
 {
 public:
-	CAssertFailureException(const wxString& msg, const wxChar* file, long lineNumber)
+	CAssertFailureException(const wxString& msg, const wxString& file, long lineNumber)
 		: CTestFailureException(msg, file, lineNumber)
 	{
 	}
@@ -105,9 +102,9 @@ class CContext
 {
 public:
 	/** Adds a context with the specified information and description. */
-	CContext(const wxChar* file, int line, const wxString& desc);
+	CContext(const wxString& file, int line, const wxString& desc);
 
-	/** Removes the context addded by the constructor. */
+	/** Removes the context added by the constructor. */
 	~CContext();
 };
 
@@ -117,7 +114,7 @@ public:
 #define DO_CONTEXT(x, y, z) x y##z
 
 //! Specifies the context of the current scope.
-#define CONTEXT(x) CContext wxCONCAT(context,__LINE__)(wxT(__FILE__), __LINE__, x)
+#define CONTEXT(x) CContext wxCONCAT(context,__LINE__)(__FILE__, __LINE__, x)
 
 
 /**
@@ -142,12 +139,12 @@ wxString StringFrom(const TYPE& value)
 
 inline wxString StringFrom(unsigned long long value)
 {
-	return wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), value);
+	return wxString::Format("%" wxLongLongFmtSpec "u", value);
 }
 
 inline wxString StringFrom(signed long long value)
 {
-	return wxString::Format(wxT("%") wxLongLongFmtSpec wxT("i"), value);
+	return wxString::Format("%" wxLongLongFmtSpec "i", value);
 }
 
 
@@ -170,7 +167,7 @@ public:
 	Test(const wxString& testCaseName, const wxString& testName);
 
 	/**
-	 * Main Test desctructor
+	 * Main Test destructor
 	 * Delete the testPartResult linked list. This is why the user should
 	 * only use the macro provided by muleunit to report a test result.
 	 */
@@ -217,13 +214,10 @@ public:
 	static void DoAssertEquals(const wxString& file, unsigned line, const A& a, const B& b)
 	{
 		if (!(a == b)) {
-			wxString message = wxT("Expected '") + StringFrom(a) +
-								wxT("' but got '") + StringFrom(b) + wxT("'");
-            #if wxCHECK_VERSION(3, 1, 0)
-                throw CTestFailureException(message, file.c_str(), line);
-            #else
-                throw CTestFailureException(message, file, line);
-            #endif
+			wxString message = "Expected '" + StringFrom(a) +
+								"' but got '" + StringFrom(b) + "'";
+
+			throw CTestFailureException(message, file.c_str(), line);
 		}
 	}
 
@@ -235,13 +229,13 @@ protected:
 
 
 #define THROW_TEST_FAILURE(message) \
-	throw CTestFailureException(message, wxT(__FILE__), __LINE__)
+	throw CTestFailureException(message, __FILE__, __LINE__)
 
 
 /**
  * Asserts that a condition is true.
  * If the condition is not true, a failure is generated.
- * @param condition Condition to fullfill for the assertion to pass
+ * @param condition Condition to fulfill for the assertion to pass
  * @param message Message that will be displayed if this assertion fails
  */
 #define ASSERT_TRUE_M(condition, message) \
@@ -256,14 +250,14 @@ protected:
  * Same as ASSERT_TRUE, but without an explicit message.
  */
 #define ASSERT_TRUE(condition) \
-	ASSERT_TRUE_M(condition, wxString(wxT("Not true: ")) + wxT(#condition));
+	ASSERT_TRUE_M(condition, wxString("Not true: ") + #condition);
 
 
 /**
  * Same as ASSERT_TRUE, but without an explicit message and condition must be false.
  */
 #define ASSERT_FALSE(condition) \
-	ASSERT_TRUE_M(!(condition), wxString(wxT("Not false: ")) + wxT(#condition));
+	ASSERT_TRUE_M(!(condition), wxString("Not false: ") + #condition);
 
 
 /**
@@ -285,7 +279,7 @@ protected:
  * Same as ASSERT_EQUALS_M, but without an explicit message.
  */
 #define ASSERT_EQUALS(expected, actual) \
-	Test::DoAssertEquals(wxT(__FILE__), __LINE__, expected, actual)
+	Test::DoAssertEquals(__FILE__, __LINE__, expected, actual)
 
 
 /**
@@ -298,7 +292,7 @@ protected:
 /**
  * Same as FAIL_M, but without an explicit message.
  */
-#define FAIL() FAIL_M(wxT("Test failed."))
+#define FAIL() FAIL_M("Test failed.")
 
 
 /**
@@ -319,7 +313,7 @@ protected:
  * Same as ASSERT_RAISES, but without an explicit message.
  */
 #define ASSERT_RAISES(type, call) \
-	ASSERT_RAISES_M(type, (call), wxT("Exception of type ") wxT(#type) wxT(" not raised."))
+	ASSERT_RAISES_M(type, (call), "Exception of type " #type " not raised.")
 
 
 
@@ -339,7 +333,7 @@ protected:
     {                                                                          \
     public:                                                                    \
         testCaseName##testName##Test()                                         \
-            : testCaseName##Declare##Test(wxT(#testCaseName), testDisplayName) \
+            : testCaseName##Declare##Test(#testCaseName, testDisplayName) \
         {                                                                      \
         }                                                                      \
                                                                                \
@@ -358,10 +352,10 @@ protected:
  * the same name of DECLARE, SETUP and TEARDOWN.
  * @param testName Unique test name.
  */
-#define TEST(testCaseName, testName)	TEST_M(testCaseName, testName, wxT(#testName))
+#define TEST(testCaseName, testName)	TEST_M(testCaseName, testName, #testName)
 
 /**
- * Location to declare variables and objets.
+ * Location to declare variables and objects.
  * This is where user should declare members accessible by TESTF,
  * SETUP and TEARDOWN.
  *

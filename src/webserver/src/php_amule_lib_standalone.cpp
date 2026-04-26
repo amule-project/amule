@@ -312,7 +312,8 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 	cast_value_dnum(&si->var->value);
 	int max_size = si->var->value.int_val;
 
-	printf("php_native_search_start_cmd: search=%s \n", search);
+	printf("php_native_search_start_cmd:\nsearch=%s\next=%s\ntype=%s\navail=%d\nmin_size=%d\nmax_size=%d\n",
+	       search, ext, type, avail, min_size, max_size);
 }
 
 /*

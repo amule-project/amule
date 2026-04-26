@@ -54,7 +54,7 @@ enum DebugType
 	logZLib,
 	//! Warnings/Errors for the AICH-syncronization thread.
 	logAICHThread,
-	//! Warnings/Errors for transfering AICH hash-sets.
+	//! Warnings/Errors for transferring AICH hash-sets.
 	logAICHTransfer,
 	//! Warnings/Errors when recovering with AICH.
 	logAICHRecovery,
@@ -82,7 +82,7 @@ enum DebugType
 	logSearch,
 	//! Warnings/Errors related to the server UDP socket.
 	logServerUDP,
-	//! Warning/Errors related to Kademlia UDP comunication on client
+	//! Warning/Errors related to Kademlia UDP communication on client
 	logClientKadUDP,
 	//! Warning/Errors related to Kademlia Search
 	logKadSearch,
@@ -306,7 +306,7 @@ private:
 	 */
 	void DoLines(const wxString & lines, bool critical, bool toStdout, bool toGUI);
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 extern CLogger theLogger;
@@ -320,18 +320,13 @@ public:
 	CLoggerTarget();
 
 	/**
-	 * @see wxLog::DoLogString
+	 * @see wxLog::DoLogText
 	 */
-#if wxCHECK_VERSION(2, 9, 0)
 	void DoLogText(const wxString &msg);
-#else
-	void DoLogString(const wxChar *msg, time_t);
-#endif
 };
 
 
-DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE, -1)
-
+wxDECLARE_EVENT(MULE_EVT_LOGLINE, wxEvent);
 
 /** This event is sent when a log-line is queued. */
 class CLoggingEvent : public wxEvent
@@ -377,11 +372,9 @@ private:
 
 typedef void (wxEvtHandler::*MuleLogEventFunction)(CLoggingEvent&);
 
-//! Event-handler for completed hashings of new shared files and partfiles.
+//! Event-handler for log-line events dispatched to GUI / stdout sinks.
 #define EVT_MULE_LOGGING(func) \
-	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_LOGLINE, -1, -1, \
-	(wxObjectEventFunction) (wxEventFunction) \
-	wxStaticCastEvent(MuleLogEventFunction, &func), (wxObject*) NULL),
+	wx__DECLARE_EVT0(MULE_EVT_LOGLINE, wxEVENT_HANDLER_CAST(MuleLogEventFunction, func))
 
 
 // access the logfile for EC

@@ -129,7 +129,7 @@ private:
 	 *
 	 * @see wxListCtrl::SortItems
 	 */
-	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
+	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData);
 
 	/**
 	 * Function that specifies which columns have alternate sorting.
@@ -188,7 +188,7 @@ private:
 	wxMenu* m_menu;
 
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif

@@ -45,12 +45,11 @@ class CLibSocketServer;
 class CMuleUDPSocket;
 
 
-DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY, -1)
-
+wxDECLARE_EVENT(MULE_EVT_NOTIFY, wxEvent);
 
 /**
  * This namespaces contains a number of functions and classes
- * related to defered function calls, allowing a notification
+ * related to deferred function calls, allowing a notification
  * call to be delayed till it can be initiated from the main
  * thread.
  */
@@ -386,7 +385,7 @@ namespace MuleNotify
 	/**
 	 * This function will execute or queue a given notification functor.
 	 *
-	 * If the caller is the main thread, the functor is executed immediatly,
+	 * If the caller is the main thread, the functor is executed immediately,
 	 * thus acting like a regular function call. OTOH, if the caller is a
 	 * worker thread, the functor is cloned and sent via an event to
 	 * wxTheApp.
@@ -396,7 +395,7 @@ namespace MuleNotify
 	/**
 	 * These functions take a function pointer and a set of arguments,
 	 * matching those of the function-pointer. A functor is created
-	 * from these and either executed immediatly, or sent as an event
+	 * from these and either executed immediately, or sent as an event
 	 * in the case of non-main threads calling the functions.
 	 *
 	 * Note that the return-value of the function must be void.
@@ -454,11 +453,9 @@ using MuleNotify::CMuleGUIEvent;
 //! The event-handler type that takes a CMuleGUIEvent.
 typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 
-//! Event-handler for completed hashings of new shared files and partfiles.
+//! Event-handler for cross-thread GUI notification events.
 #define EVT_MULE_NOTIFY(func) \
-	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_NOTIFY, -1, -1, \
-	(wxObjectEventFunction) (wxEventFunction) \
-	wxStaticCastEvent(MuleNotifyEventFunction, &func), (wxObject*) NULL),
+	wx__DECLARE_EVT0(MULE_EVT_NOTIFY, wxEVENT_HANDLER_CAST(MuleNotifyEventFunction, func))
 
 
 
@@ -530,7 +527,7 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define Notify_ServersURLChanged(url)			MuleNotify::DoNotify(&MuleNotify::ServersURLChanged, url)
 
 // Partfile conversion: Core -> GUI
-#define Notify_ConvertUpdateProgress(val, text)		Notify_ConvertUpdateProgressFull(val, text, wxEmptyString)
+#define Notify_ConvertUpdateProgress(val, text)		Notify_ConvertUpdateProgressFull(val, text, "")
 #define Notify_ConvertUpdateProgressFull(val, text, hdr) MuleNotify::DoNotify(&MuleNotify::ConvertUpdateProgress, val, text, hdr)
 #define Notify_ConvertUpdateJobInfo(info)		MuleNotify::DoNotify(&MuleNotify::ConvertUpdateJobInfo, info)
 #define Notify_ConvertRemoveJobInfo(id)			MuleNotify::DoNotify(&MuleNotify::ConvertRemoveJobInfo, id)

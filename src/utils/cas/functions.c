@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <limits.h>		/* PATH_MAX */
 
 
 /* XXX This needs to be replaced so that we use
@@ -43,7 +44,6 @@
  */
 
 #ifdef __APPLE__
-	#include <CoreServices/CoreServices.h>
 	#define CAS_DIR_SEPARATOR	"/"
 #elif defined(__WIN32__)
 	#define COBJMACROS
@@ -74,18 +74,19 @@ char *get_path(const char *file)
 	if (saved_home == NULL) {
 #ifdef __APPLE__
 
+		/* ~/Library/Application Support always exists on macOS >= 10.5
+		 * and matches what FSFindFolder(kUserDomain,
+		 * kApplicationSupportFolderType, ...) used to return. Carbon's
+		 * FSRef API is gone in 64-bit macOS, so just derive the path
+		 * from $HOME. */
 		char home[PATH_MAX];
 		home[0] = '\0';
 
-		FSRef fsRef;
-		if (FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &fsRef) == noErr) {
-			CFURLRef urlRef = CFURLCreateFromFSRef(NULL, &fsRef);
-			if (urlRef != NULL) {
-				if (CFURLGetFileSystemRepresentation(urlRef, true, home, sizeof(home))) {
-					strcat(home, CAS_DIR_SEPARATOR "aMule");
-				}
-				CFRelease(urlRef) ;
-			}
+		const char* home_env = getenv("HOME");
+		if (home_env) {
+			snprintf(home, sizeof(home),
+				"%s/Library/Application Support" CAS_DIR_SEPARATOR "aMule",
+				home_env);
 		}
 
 #elif defined(__WIN32__)
@@ -248,7 +249,6 @@ void replace(char *tmpl, const char *search, const char *to_replace)
 {
 	char *dest   = NULL;
 	char *retStr = NULL;
-	int	befLen,srchLen,repLen,totLen;
 
 	/* returning the 'tmpl' if 'search' is NULL */
   if (NULL == tmpl || NULL == search) /* || NULL == to_replace) */
@@ -258,6 +258,7 @@ void replace(char *tmpl, const char *search, const char *to_replace)
 
 	while (1)
 	{
+		int befLen,srchLen,repLen,totLen;
 		/* if 'search' is found in 'tmpl' */
 		retStr = strstr(tmpl, search);
 		if (NULL == retStr)

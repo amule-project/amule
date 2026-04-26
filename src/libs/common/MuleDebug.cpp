@@ -25,9 +25,7 @@
 
 #include <cstdlib>			// Needed for std::abort()
 
-#ifdef HAVE_CONFIG_H
-#	include "config.h"		// Needed for HAVE_CXXABI and HAVE_EXECINFO
-#endif
+#include "config.h"			// Needed for HAVE_CXXABI and HAVE_EXECINFO
 
 #include "MuleDebug.h"			// Interface declaration
 #include "StringFunctions.h"		// Needed for unicode2char
@@ -35,9 +33,9 @@
 
 #ifdef HAVE_EXECINFO
 #	include <execinfo.h>
-#	include <wx/utils.h>			// Needed for wxArrayString
+#	include <wx/utils.h>		// Needed for wxArrayString
 #	ifndef HAVE_BFD
-#		include <wx/thread.h>		// Needed for wxThread
+#		include <wx/thread.h>	// Needed for wxThread
 #	endif
 #endif
 
@@ -57,11 +55,12 @@
 #endif
 
 #include <vector>
+#include <exception>
 
 
 /**
  * This functions displays a verbose description of
- * any unhandled exceptions that occour and then
+ * any unhandled exceptions that occur and then
  * terminate the program by raising SIGABRT.
  */
 void OnUnhandledException()
@@ -131,35 +130,35 @@ public:
 
 	void OnStackFrame(const wxStackFrame& frame)
 	{
-		wxString btLine = CFormat(wxT("[%u] ")) % frame.GetLevel();
+		wxString btLine = CFormat("[%u] ") % frame.GetLevel();
 		wxString filename = frame.GetName();
 
 		if (!filename.IsEmpty()) {
-			btLine += filename + wxT(" (") +
+			btLine += filename + " (" +
 #if TOO_VERBOSE_BACKTRACE
 			        frame.GetModule()
 #else
-				frame.GetModule().AfterLast(wxT('/'))
+				frame.GetModule().AfterLast('/')
 #endif
-			        + wxT(")");
+			        + ")";
 		} else {
-			btLine += CFormat(wxT("%p")) % frame.GetAddress();
+			btLine += CFormat("%p") % frame.GetAddress();
 		}
 
 		if (frame.HasSourceLocation()) {
-			btLine += wxT(" at ") +
+			btLine += " at " +
 #if TOO_VERBOSE_BACKTRACE
 			        frame.GetFileName()
 #else
-				frame.GetFileName().AfterLast(wxT('/'))
+				frame.GetFileName().AfterLast('/')
 #endif
-			        + CFormat(wxT(":%u")) % frame.GetLine();
+			        + CFormat(":%u") % frame.GetLine();
 		} else {
-			btLine += wxT(" (Unknown file/line)");
+			btLine += " (Unknown file/line)";
 		}
 
 		//! Contains the entire backtrace
-		m_trace += btLine + wxT("\n");
+		m_trace += btLine + "\n";
 	}
 
 	wxString m_trace;
@@ -286,17 +285,17 @@ void get_file_line_info(bfd *abfd, asection *section, void* _address)
 
 #endif // HAVE_BFD
 
-wxString demangle(const wxString& function)
+static wxString demangle(const wxString& function)
 {
 #ifdef HAVE_CXXABI
 	wxString result;
 
-	if (function.Mid(0,2) == wxT("_Z")) {
+	if (function.Mid(0,2) == "_Z") {
 		int status;
 		char *demangled = abi::__cxa_demangle(function.mb_str(), NULL, NULL, &status);
 
 		if (!status) {
-			result = wxConvCurrent->cMB2WX(demangled);
+			result = wxConvLibc.cMB2WX(demangled);
 		}
 
 		if (demangled) {
@@ -306,7 +305,7 @@ wxString demangle(const wxString& function)
 
 	return result;
 #else
-	return wxEmptyString;
+	return "";
 #endif
 }
 
@@ -322,12 +321,12 @@ wxString get_backtrace(unsigned n)
 
 	if ((num_entries = backtrace(bt_array, 100)) < 0) {
 		fprintf(stderr, "* Could not generate backtrace\n");
-		return wxEmptyString;
+		return "";
 	}
 
 	if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
 		fprintf(stderr, "* Could not get symbol names for backtrace\n");
-		return wxEmptyString;
+		return "";
 	}
 
 	std::vector<wxString> libname(num_entries);
@@ -336,17 +335,17 @@ wxString get_backtrace(unsigned n)
 	wxString AllAddresses;
 
 	for (int i = 0; i < num_entries; ++i) {
-		wxString wxBtString = wxConvCurrent->cMB2WX(bt_strings[i]);
-		int posLPar = wxBtString.Find(wxT('('));
-		int posRPar = wxBtString.Find(wxT(')'));
-		int posLBra = wxBtString.Find(wxT('['));
-		int posRBra = wxBtString.Find(wxT(']'));
+		wxString wxBtString = wxConvLibc.cMB2WX(bt_strings[i]);
+		int posLPar = wxBtString.Find('(');
+		int posRPar = wxBtString.Find(')');
+		int posLBra = wxBtString.Find('[');
+		int posRBra = wxBtString.Find(']');
 		bool hasFunction = true;
 		if (posLPar == -1 || posRPar == -1) {
 			if (posLBra == -1 || posRBra == -1) {
 				/* It is important to have exactly num_entries
 				* addresses in AllAddresses */
-				AllAddresses += wxT("0x0000000 ");
+				AllAddresses += "0x0000000 ";
 				continue;
 			}
 			posLPar = posLBra;
@@ -357,7 +356,7 @@ wxString get_backtrace(unsigned n)
 		libname[i] = wxBtString.Mid(0, len);
 		/* Function name */
 		if (hasFunction) {
-			int posPlus = wxBtString.Find(wxT('+'), true);
+			int posPlus = wxBtString.Find('+', true);
 			if (posPlus == -1)
 				posPlus = posRPar;
 			len = posPlus - posLPar - 1;
@@ -369,11 +368,11 @@ wxString get_backtrace(unsigned n)
 		}
 		/* Address */
 		if ( posLBra == -1 || posRBra == -1) {
-			address[i] = wxT("0x0000000");
+			address[i] = "0x0000000";
 		} else {
 			len = posRBra - posLBra - 1;
 			address[i] = wxBtString.Mid(posLBra + 1, len);
-			AllAddresses += address[i] + wxT(" ");
+			AllAddresses += address[i] + " ";
 		}
 	}
 	free(bt_strings);
@@ -400,17 +399,17 @@ wxString get_backtrace(unsigned n)
 		bfd_map_over_sections(s_abfd, get_file_line_info, (void*)addr);
 
 		if (s_found) {
-			wxString function = wxConvCurrent->cMB2WX(s_function_name);
+			wxString function = wxConvLibc.cMB2WX(s_function_name);
 			wxString demangled = demangle(function);
 			if (!demangled.IsEmpty()) {
 				function = demangled;
 				funcname[i] = demangled;
 			}
-			out.Insert(wxConvCurrent->cMB2WX(s_function_name),i*2);
-			out.Insert(CFormat(wxT("%s:%u")) % wxString(wxConvCurrent->cMB2WX(s_file_name)) % s_line_number, i*2+1);
+			out.Insert(wxConvLibc.cMB2WX(s_function_name),i*2);
+			out.Insert(CFormat("%s:%u") % wxString(wxConvLibc.cMB2WX(s_file_name)) % s_line_number, i*2+1);
 		} else {
-			out.Insert(wxT("??"),i*2);
-			out.Insert(wxT("??"),i*2+1);
+			out.Insert("??",i*2);
+			out.Insert("??",i*2+1);
 		}
 	}
 
@@ -419,8 +418,8 @@ wxString get_backtrace(unsigned n)
 #else	/* !HAVE_BFD */
 	if (wxThread::IsMain()) {
 		wxString command;
-		command << wxT("addr2line -C -f -s -e /proc/") <<
-		getpid() << wxT("/exe ") << AllAddresses;
+		command << "addr2line -C -f -s -e /proc/" <<
+		getpid() << "/exe " << AllAddresses;
 		// The output of the command is this wxArrayString, in which
 		// the even elements are the function names, and the odd elements
 		// are the line numbers.
@@ -438,31 +437,31 @@ wxString get_backtrace(unsigned n)
 			if (hasLineNumberInfo) {
 				funcname[i] = out[2*i];
 			} else {
-				funcname[i] = wxT("??");
+				funcname[i] = "??";
 			}
 		}
 		wxString btLine;
-		btLine << wxT("[") << i << wxT("] ") << funcname[i] << wxT(" in ");
+		btLine << "[" << i << "] " << funcname[i] << " in ";
 		/* If addr2line did not find a line number, use bt_string */
-		if (!hasLineNumberInfo || out[2*i+1].Mid(0,2) == wxT("??")) {
-			btLine += libname[i] + wxT("[") + address[i] + wxT("]");
+		if (!hasLineNumberInfo || out[2*i+1].Mid(0,2) == "??") {
+			btLine += libname[i] + "[" + address[i] + "]";
 		} else if (hasLineNumberInfo) {
 #if TOO_VERBOSE_BACKTRACE
 			btLine += out[2*i+1];
 #else
-			btLine += out[2*i+1].AfterLast(wxT('/'));
+			btLine += out[2*i+1].AfterLast('/');
 #endif
 		} else {
 			btLine += libname[i];
 		}
 
-		trace += btLine + wxT("\n");
+		trace += btLine + "\n";
 	}
 
 	return trace;
 #else /* !HAVE_EXECINFO */
 	fprintf(stderr, "--== cannot generate backtrace ==--\n\n");
-	return wxEmptyString;
+	return "";
 #endif /* HAVE_EXECINFO */
 }
 
@@ -570,7 +569,7 @@ wxString get_backtrace(unsigned n)
 
 wxString get_backtrace(unsigned WXUNUSED(n))
 {
-	return wxT("--== no BACKTRACE for your platform ==--\n\n");
+	return "--== no BACKTRACE for your platform ==--\n\n";
 }
 
 #endif /* !__LINUX__ */

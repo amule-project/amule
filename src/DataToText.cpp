@@ -24,6 +24,7 @@
 
 #include <wx/intl.h>
 
+#include "DataToText.h"
 #include "Constants.h"
 #include <protocol/ed2k/ClientSoftware.h>
 
@@ -83,38 +84,38 @@ const wxString GetSoftName(unsigned int software_ident)
 	switch (software_ident) {
 		case SO_OLDEMULE:
 		case SO_EMULE:
-			return wxT("eMule");
+			return "eMule";
 		case SO_CDONKEY:
-			return wxT("cDonkey");
+			return "cDonkey";
 		case SO_LXMULE:
-			return wxT("(l/x)Mule");
+			return "(l/x)Mule";
 		case SO_AMULE:
-			return wxT("aMule");
+			return "aMule";
 		case SO_SHAREAZA:
 		case SO_NEW_SHAREAZA:
 		case SO_NEW2_SHAREAZA:
-			return wxT("Shareaza");
+			return "Shareaza";
 		case SO_EMULEPLUS:
-			return wxT("eMule+");
+			return "eMule+";
 		case SO_HYDRANODE:
-			return wxT("HydraNode");
+			return "HydraNode";
 		case SO_MLDONKEY:
 			return wxTRANSLATE("Old MLDonkey");
 		case SO_NEW_MLDONKEY:
 		case SO_NEW2_MLDONKEY:
 			return wxTRANSLATE("New MLDonkey");
 		case SO_LPHANT:
-			return wxT("lphant");
+			return "lphant";
 		case SO_EDONKEYHYBRID:
-			return wxT("eDonkeyHybrid");
+			return "eDonkeyHybrid";
 		case SO_EDONKEY:
-			return wxT("eDonkey");
+			return "eDonkey";
 		case SO_UNKNOWN:
 			return wxTRANSLATE("Unknown");
 		case SO_COMPAT_UNK:
 			return wxTRANSLATE("eMule Compatible");
 		default:
-			return wxEmptyString;
+			return "";
 	}
 }
 
@@ -148,7 +149,7 @@ wxString GetConversionState(unsigned int state)
 		case CONV_QUEUE			: return _("Queued");
 		case CONV_ALREADYEXISTS		: return _("Already downloading");
 		case CONV_BADFORMAT		: return _("Unknown or bad tempfile format.");
-		default: return wxT("?");
+		default: return "?";
 	}
 }
 // File_checked_for_headers

@@ -38,14 +38,14 @@ static CGenericClientListCtrlColumn s_sources_column_info[] = {
 	{ ColumnUserSharedFiles,	wxTRANSLATE("Shares File List"), 100 }
 };
 
-BEGIN_EVENT_TABLE(CSourceListCtrl, CGenericClientListCtrl)
-END_EVENT_TABLE()
+wxBEGIN_EVENT_TABLE(CSourceListCtrl, CGenericClientListCtrl)
+wxEND_EVENT_TABLE()
 
 CSourceListCtrl::CSourceListCtrl(
 	wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size,
 	long style, const wxValidator& validator, const wxString& name )
 :
-CGenericClientListCtrl( wxT("Sources"), parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name )
+CGenericClientListCtrl( "Sources", parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name )
 {
 	// Setting the sorter function.
 	SetSortFunc( SourceSortProc );
@@ -60,7 +60,7 @@ CSourceListCtrl::~CSourceListCtrl()
 {
 }
 
-int CSourceListCtrl::SourceSortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
+int CSourceListCtrl::SourceSortProc(wxUIntPtr param1, wxUIntPtr param2, wxIntPtr sortData)
 {
 	return CGenericClientListCtrl::SortProc(param1, param2, s_sources_column_info[sortData & CMuleListCtrl::COLUMN_MASK].cid | (sortData & CMuleListCtrl::SORT_DES));
 }

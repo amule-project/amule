@@ -48,9 +48,9 @@
 // Note: this code is harmless on little-endian machines.
 void MD4::byteReverse(unsigned char *buf, unsigned longs)
 {
-  uint32_t t;
   do
     {
+      uint32_t t;
       t = (uint32_t) ((unsigned) buf[3] << 8 | buf[2]) << 16 |
           ((unsigned) buf[1] << 8 | buf[0]);
       *(uint32_t *) buf = t;
@@ -78,7 +78,7 @@ void MD4::MD4Init(struct MD4Context *ctx)
 void MD4::MD4Update(struct MD4Context *ctx, unsigned char const *buf,
                     size_t len)
 {
-  register uint32_t t;
+  uint32_t t;
 
   // Update bitcount
   t = ctx->bits[0];
@@ -193,7 +193,7 @@ void MD4::MD4Final(struct MD4Context *ctx, unsigned char* digest)
 /// The core of the MD4 algorithm
 void MD4::MD4Transform(uint32_t buf[4], uint32_t const in[16])
 {
-  register uint32_t a, b, c, d;
+  uint32_t a, b, c, d;
 
   a = buf[0];
   b = buf[1];
@@ -260,20 +260,20 @@ void MD4::MD4Transform(uint32_t buf[4], uint32_t const in[16])
 /// Algorithm verification
 bool MD4::selfTest()
 {
-  wxString test1(wxEmptyString);
-  wxString test1_md(wxT("31D6CFE0D16AE931B73C59D7E0C089C0"));
-  wxString test2(wxT("a"));
-  wxString test2_md(wxT("BDE52CB31DE33E46245E05FBDBD6FB24"));
-  wxString test3(wxT("abc"));
-  wxString test3_md(wxT("A448017AAF21D8525FC10AE87AA6729D"));
-  wxString test4(wxT("message digest"));
-  wxString test4_md(wxT("D9130A8164549FE818874806E1C7014B"));
-  wxString test5(wxT("abcdefghijklmnopqrstuvwxyz"));
-  wxString test5_md(wxT("D79E1C308AA5BBCDEEA8ED63DF412DA9"));
-  wxString test6(wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"));
-  wxString test6_md(wxT("043F8582F241DB351CE627E153E7F0E4"));
-  wxString test7(wxT("12345678901234567890123456789012345678901234567890123456789012345678901234567890"));
-  wxString test7_md(wxT("E33B4DDC9C38F2199C3E7B164FCC0536"));
+  wxString test1("");
+  wxString test1_md("31D6CFE0D16AE931B73C59D7E0C089C0");
+  wxString test2("a");
+  wxString test2_md("BDE52CB31DE33E46245E05FBDBD6FB24");
+  wxString test3("abc");
+  wxString test3_md("A448017AAF21D8525FC10AE87AA6729D");
+  wxString test4("message digest");
+  wxString test4_md("D9130A8164549FE818874806E1C7014B");
+  wxString test5("abcdefghijklmnopqrstuvwxyz");
+  wxString test5_md("D79E1C308AA5BBCDEEA8ED63DF412DA9");
+  wxString test6("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
+  wxString test6_md("043F8582F241DB351CE627E153E7F0E4");
+  wxString test7("12345678901234567890123456789012345678901234567890123456789012345678901234567890");
+  wxString test7_md("E33B4DDC9C38F2199C3E7B164FCC0536");
 
   MD4 md4;
 
@@ -311,7 +311,6 @@ wxString MD4::calcMd4FromString(const wxString &buf)
 /// Get Md4 hash from a file
 wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
 {
-  unsigned char ret[MD4_HASHLEN_BYTE];
   MD4Context hdc;
 
   // Open file and let wxFFile destructor close the file
@@ -319,15 +318,15 @@ wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
   wxFFile file(filename, wxS("rbS"));
   if (! file.IsOpened())
     {
-      return wxEmptyString;
+      return "";
     }
   else
     {
+      unsigned char ret[MD4_HASHLEN_BYTE];
       unsigned int bufSize = calcBufSize(file.Length());
       char *buf = new char[bufSize];
 
       bool keep_going = true;
-      size_t read = 0;
       size_t totalread = 0;
 
       bool goAhead = true;
@@ -341,7 +340,7 @@ wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
             }
           if (goAhead)
             {
-              read = file.Read(buf, bufSize);
+              size_t read = file.Read(buf, bufSize);
               MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
                         read );
               totalread += read;

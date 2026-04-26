@@ -38,7 +38,7 @@ template <typename TEST> class CObservable;
 /**
  * This class implements the observable part of an Observer/Observable pattern.
  *
- * The EventType paramter is used to specify a protocol for the event-type used
+ * The EventType parameter is used to specify a protocol for the event-type used
  * by a particular Observer/Observable set and allows for any level of
  * information passing to be used, depending on the context.
  *
@@ -108,9 +108,9 @@ public:
 	 * This function subscribes an observer to events from this observable.
 	 *
 	 * @param o The observer that wishes to observe this object.
-	 * @return True if it succesfully subscribed, false otherwise.
+	 * @return True if it successfully subscribed, false otherwise.
 	 *
-	 * If the subscription was succesful, ObserverAdded() will be called
+	 * If the subscription was successful, ObserverAdded() will be called
 	 * on "o", allowing the subclass to initialize the the observer's state.
 	 */
 	bool AddObserver( ObserverType* o );

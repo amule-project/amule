@@ -175,7 +175,7 @@ void CServerConnect::StopConnectionTry()
 	  m_idRetryTimer.Stop();
 	}
 
-	// close all currenty opened sockets except the one which is connected to our current server
+	// close all currently opened sockets except the one which is connected to our current server
 	for(SocketsList::iterator it = m_lstOpenSockets.begin(); it != m_lstOpenSockets.end(); ) {
 		CServerSocket *pSck = *it++;
 		if (pSck == connectedsocket)		// don't destroy socket which is connected to server
@@ -209,7 +209,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 
 		CMemFile data(256);
 		data.WriteHash(thePrefs::GetUserHash());
-		// Why pass an ID, if we are loggin in?
+		// Why pass an ID, if we are logging in?
 		data.WriteUInt32(GetClientID());
 		data.WriteUInt16(thePrefs::GetPort());
 		data.WriteUInt32(4); // tagcount
@@ -258,12 +258,12 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 
 		CPacket* packet = new CPacket(data, OP_EDONKEYPROT, OP_LOGINREQUEST);
 		#ifdef DEBUG_CLIENT_PROTOCOL
-		AddLogLineC(wxT("Client: OP_LOGINREQUEST"));
-		AddLogLineC(wxString(wxT("        Hash     : ")) << thePrefs::GetUserHash().Encode());
-		AddLogLineC(wxString(wxT("        ClientID : ")) << GetClientID());
-		AddLogLineC(wxString(wxT("        Port     : ")) << thePrefs::GetPort());
-		AddLogLineC(wxString(wxT("        User Nick: ")) << thePrefs::GetUserNick());
-		AddLogLineC(wxString(wxT("        Edonkey  : ")) << EDONKEYVERSION);
+		AddLogLineC("Client: OP_LOGINREQUEST");
+		AddLogLineC(wxString("        Hash     : ") << thePrefs::GetUserHash().Encode());
+		AddLogLineC(wxString("        ClientID : ") << GetClientID());
+		AddLogLineC(wxString("        Port     : ") << thePrefs::GetPort());
+		AddLogLineC(wxString("        User Nick: ") << thePrefs::GetUserNick());
+		AddLogLineC(wxString("        Edonkey  : ") << EDONKEYVERSION);
 		#endif
 		theStats::AddUpOverheadServer(packet->GetPacketSize());
 		SendPacket(packet, true, sender);
@@ -291,7 +291,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 			theStats::AddUpOverheadServer(packet->GetPacketSize());
 			SendPacket(packet, true);
 			#ifdef DEBUG_CLIENT_PROTOCOL
-			AddLogLineC(wxT("Client: OP_GETSERVERLIST"));
+			AddLogLineC("Client: OP_GETSERVERLIST");
 			#endif
 		}
 	}
@@ -522,7 +522,7 @@ CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &add
 	m_recurseTryAnotherConnectionrequest = false;
 	m_bTryObfuscated = thePrefs::IsServerCryptLayerTCPRequested();
 
-	// initalize socket for udp packets
+	// initialize socket for udp packets
 	if (thePrefs::GetNetworkED2K()) {
 		serverudpsocket = new CServerUDPSocket(address, thePrefs::GetProxyData());
 	} else {
@@ -597,18 +597,18 @@ void CServerConnect::KeepConnectionAlive()
 
 		CPacket* packet = new CPacket(files, OP_EDONKEYPROT, OP_OFFERFILES);
 		#ifdef DEBUG_CLIENT_PROTOCOL
-		AddLogLineC(wxT("Client: OP_OFFERFILES"));
+		AddLogLineC("Client: OP_OFFERFILES");
 		#endif
 		// compress packet
-		//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
+		//   - this kind of data is highly compressible (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
 		//   - the min. amount of data needed for one published file is ~100 bytes
 		//   - this function is called once when connecting to a server and when a file becomes shareable - so, it's called rarely.
 		//   - if the compressed size is still >= the original size, we send the uncompressed packet
-		// therefor we always try to compress the packet
+		// therefore we always try to compress the packet
 		theStats::AddUpOverheadServer(packet->GetPacketSize());
 		connectedsocket->SendPacket(packet,true);
 
-		AddDebugLogLineN(logServer, wxT("Refreshing server connection"));
+		AddDebugLogLineN(logServer, "Refreshing server connection");
 	}
 }
 

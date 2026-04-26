@@ -31,12 +31,6 @@
 #include <wx/filename.h>
 
 #ifdef __WXMAC__
-	#include <CoreServices/CoreServices.h> // Do_not_auto_remove
-	#if wxCHECK_VERSION(2, 9, 0)
-		#include <wx/osx/core/cfstring.h>  // Do_not_auto_remove
-	#else
-		#include <wx/mac/corefoundation/cfstring.h>  // Do_not_auto_remove
-	#endif
 	#include <wx/intl.h> // Do_not_auto_remove
 #elif defined(__WINDOWS__)
 	#include <winerror.h> // Do_not_auto_remove
@@ -47,9 +41,9 @@
 #include "wxcascte.h"
 
 const wxString
-WxCasCte::AMULESIG_FILENAME ( wxT( "amulesig.dat" ) );
+WxCasCte::AMULESIG_FILENAME ( "amulesig.dat" );
 const wxString
-WxCasCte::AMULESIG_IMG_NAME ( wxT( "aMule-online-sign" ) );
+WxCasCte::AMULESIG_IMG_NAME ( "aMule-online-sign" );
 
 // Refresh rate limits
 const wxUint32
@@ -66,34 +60,34 @@ WxCasCte::MAX_FTP_RATE = 1440;
 
 // Key config names
 const wxString
-WxCasCte::AMULESIG_PATH_KEY ( wxT( "OSDirectory" ) );
+WxCasCte::AMULESIG_PATH_KEY ( "OSDirectory" );
 const wxString
-WxCasCte::REFRESH_RATE_KEY ( wxT( "RefreshRate" ) );
+WxCasCte::REFRESH_RATE_KEY ( "RefreshRate" );
 
 const wxString
-WxCasCte::ENABLE_AUTOSTATIMG_KEY ( wxT( "EnableAutoStatImg" ) );
+WxCasCte::ENABLE_AUTOSTATIMG_KEY ( "EnableAutoStatImg" );
 const wxString
-WxCasCte::AUTOSTATIMG_DIR_KEY ( wxT( "StatImgDirectory" ) );
+WxCasCte::AUTOSTATIMG_DIR_KEY ( "StatImgDirectory" );
 const wxString
-WxCasCte::AUTOSTATIMG_TYPE_KEY ( wxT( "StatImgType" ) );
+WxCasCte::AUTOSTATIMG_TYPE_KEY ( "StatImgType" );
 
 const wxString
-WxCasCte::ENABLE_FTP_UPDATE_KEY( wxT( "EnableFtpUpdate" ) );
+WxCasCte::ENABLE_FTP_UPDATE_KEY( "EnableFtpUpdate" );
 const wxString
-WxCasCte::FTP_UPDATE_RATE_KEY ( wxT( "FtpUpdateRate" ) );
+WxCasCte::FTP_UPDATE_RATE_KEY ( "FtpUpdateRate" );
 const wxString
-WxCasCte::FTP_URL_KEY ( wxT( "FtpUrl" ) );
+WxCasCte::FTP_URL_KEY ( "FtpUrl" );
 const wxString
-WxCasCte::FTP_PATH_KEY ( wxT( "FtpPath" ) );
+WxCasCte::FTP_PATH_KEY ( "FtpPath" );
 const wxString
-WxCasCte::FTP_USER_KEY ( wxT( "FtpUser" ) );
+WxCasCte::FTP_USER_KEY ( "FtpUser" );
 const wxString
-WxCasCte::FTP_PASSWD_KEY ( wxT( "FtpPasswd" ) );
+WxCasCte::FTP_PASSWD_KEY ( "FtpPasswd" );
 
 const wxString
-WxCasCte::ABSOLUTE_MAX_DL_KEY ( wxT( "AbsoluteMaxDL" ) );
+WxCasCte::ABSOLUTE_MAX_DL_KEY ( "AbsoluteMaxDL" );
 const wxString
-WxCasCte::ABSOLUTE_MAX_DL_DATE_KEY ( wxT( "AbsoluteMaxDlDate" ) );
+WxCasCte::ABSOLUTE_MAX_DL_DATE_KEY ( "AbsoluteMaxDlDate" );
 
 // Default config parameters
 const wxString
@@ -106,20 +100,20 @@ WxCasCte::DEFAULT_AUTOSTATIMG_ISENABLED = FALSE;
 const wxString
 WxCasCte::DEFAULT_AUTOSTATIMG_PATH ( wxFileName::GetHomeDir () );
 const wxString
-WxCasCte::DEFAULT_AUTOSTATIMG_TYPE ( wxT( "PNG" ) );
+WxCasCte::DEFAULT_AUTOSTATIMG_TYPE ( "PNG" );
 
 const bool
 WxCasCte::DEFAULT_FTP_UPDATE_ISENABLED = FALSE;
 const wxUint32
 WxCasCte::DEFAULT_FTP_UPDATE_RATE = 10;
 const wxString
-WxCasCte::DEFAULT_FTP_URL( wxT( "ftp.myftp.cx" ) );
+WxCasCte::DEFAULT_FTP_URL( "ftp.myftp.cx" );
 const wxString
-WxCasCte::DEFAULT_FTP_PATH( wxT( "/pub/myamuledir" ) );
+WxCasCte::DEFAULT_FTP_PATH( "/pub/myamuledir" );
 const wxString
-WxCasCte::DEFAULT_FTP_USER( wxT( "anonymous" ) );
+WxCasCte::DEFAULT_FTP_USER( "anonymous" );
 const wxString
-WxCasCte::DEFAULT_FTP_PASSWD( wxT( "whiterabit@here" ) );
+WxCasCte::DEFAULT_FTP_PASSWD( "whiterabit@here" );
 
 wxString GetDefaultAmulesigPath()
 {
@@ -127,19 +121,16 @@ wxString GetDefaultAmulesigPath()
 
 #ifdef __WXMAC__
 
-	FSRef fsRef;
-	if (FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &fsRef) == noErr)
-	{
-		CFURLRef	urlRef		= CFURLCreateFromFSRef(NULL, &fsRef);
-		CFStringRef	cfString	= CFURLCopyFileSystemPath(urlRef, kCFURLPOSIXPathStyle);
-		CFRelease(urlRef) ;
-		#if wxCHECK_VERSION(2, 9, 0)
-			strDir = wxCFStringRef(cfString).AsString(wxLocale::GetSystemEncoding())
-			+ wxFileName::GetPathSeparator() + wxT("aMule");
-		#else
-			strDir = wxMacCFStringHolder(cfString).AsString(wxLocale::GetSystemEncoding())
-			+ wxFileName::GetPathSeparator() + wxT("aMule");
-		#endif
+	// ~/Library/Application Support is always present on macOS >= 10.5
+	// and matches what FSFindFolder(kUserDomain,
+	// kApplicationSupportFolderType, ...) used to return. Carbon's
+	// FSRef API is gone in 64-bit macOS, so just derive the path from
+	// $HOME.
+	const char* home = getenv("HOME");
+	if (home) {
+		strDir = wxString::FromUTF8(home)
+			+ "/Library/Application Support"
+			+ wxFileName::GetPathSeparator() + "aMule";
 	}
 
 #elif defined(__WINDOWS__)
@@ -150,9 +141,9 @@ wxString GetDefaultAmulesigPath()
 
 	if (SUCCEEDED(hr)) {
 		if (!SHGetPathFromIDList(pidl, wxStringBuffer(strDir, MAX_PATH))) {
-			strDir = wxEmptyString;
+			strDir = "";
 		} else {
-			strDir = strDir + wxFileName::GetPathSeparator() + wxT("aMule");
+			strDir = strDir + wxFileName::GetPathSeparator() + "aMule";
 		}
 	}
 
@@ -167,7 +158,7 @@ wxString GetDefaultAmulesigPath()
 
 #else
 
-	strDir = wxFileName::GetHomeDir() + wxFileName::GetPathSeparator() + wxT(".aMule");
+	strDir = wxFileName::GetHomeDir() + wxFileName::GetPathSeparator() + ".aMule";
 
 #endif
 

@@ -53,7 +53,7 @@ public:
 	/// Destructor
 	~LinuxMon ();
 
-	/// Refresh stored informations
+	/// Refresh stored information
 	void Refresh ();
 
 	/// Get system uptime

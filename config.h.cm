@@ -1,0 +1,189 @@
+/* Define to 1 if you have <boost/asio.hpp> and are using Boost.Asio for
+   networking. */
+#cmakedefine ASIO_SOCKETS 1
+
+/* Define to 1 if error_code handling should be handled internally */
+#cmakedefine BOOST_ERROR_CODE_HEADER_ONLY 1
+
+/* Define this to the include prefix of crypto++ */
+#cmakedefine CRYPTOPP_INCLUDE_PREFIX ${CRYPTOPP_INCLUDE_PREFIX}
+
+/* Define if upnp was found. */
+#cmakedefine ENABLE_UPNP
+
+/* Define to 1  if translation of program messages to the user's
+   native language is requested. */
+#cmakedefine ENABLE_NLS 1
+
+/* Define if you have the _SC_PAGESIZE constant in <unistd.h> */
+#cmakedefine HAVE__SC_PAGESIZE
+
+/* Define if you have the <argz.h> header file. */
+#cmakedefine  HAVE_ARGZ_H
+
+/* Define if you have the <bfd.h> header file. */
+#cmakedefine  HAVE_BFD
+
+/* Define if you have the <cxxabi.h> header file */
+#cmakedefine HAVE_CXXABI
+
+/* Define if you have the <errno.h> header file. */
+#cmakedefine HAVE_ERRNO_H
+
+/* Define if you have the <execinfo.h> header file */
+#cmakedefine HAVE_EXECINFO
+
+/* Define if you have the fallocate() function. */
+#cmakedefine HAVE_FALLOCATE
+
+/* Define if you have the <fcntl.h> header file. */
+#cmakedefine HAVE_FCNTL_H 1
+
+/* Define if you have the `getopt_long' function. */
+#cmakedefine HAVE_GETOPT_LONG
+
+/* Define if you have the `getrlimit' function. */
+#cmakedefine HAVE_GETRLIMIT
+
+/* Define if you have the <history.h> header file. */
+#cmakedefine HAVE_HISTORY_H
+
+/* Define if <inttypes.h> exists and doesn't clash with <sys/types.h>. */
+#cmakedefine HAVE_INTTYPES_H 1
+
+/* Define if <inttypes.h> exists, doesn't clash with <sys/types.h>, and
+   declares uintmax_t. */
+#cmakedefine HAVE_INTTYPES_H_WITH_UINTMAX 1
+
+/* Define if you have a readline compatible library */
+#cmakedefine HAVE_LIBREADLINE
+
+/* Define if you have the <limits.h> header file. */
+#cmakedefine HAVE_LIMITS_H
+
+/* Define if you have the <locale.h> header file. */
+#cmakedefine HAVE_LOCALE_H
+
+/* Define if you have a working `mmap' system call. */
+#cmakedefine HAVE_MMAP
+
+/* Define if you have the `munmap' function. */
+#cmakedefine HAVE_MUNMAP
+
+/* Define if you have the <nl_types.h> header file. */
+#cmakedefine HAVE_NL_TYPES_H
+
+/* Define if you have posix_fallocate() and it should be used. */
+#cmakedefine HAVE_POSIX_FALLOCATE
+
+/* Define if you have the <readline.h> header file. */
+#cmakedefine HAVE_READLINE_H
+
+/* Define if your readline library has \`add_history' */
+#cmakedefine HAVE_READLINE_HISTORY
+
+/* Define if you have the <readline/history.h> header file. */
+#cmakedefine HAVE_READLINE_HISTORY_H
+
+/* Define if you have the <readline/readline.h> header file. */
+#cmakedefine HAVE_READLINE_READLINE_H
+
+/* Define if you have the `setrlimit' function. */
+#cmakedefine HAVE_SETRLIMIT
+
+/* Define if you have the <signal.h> header file. */
+#cmakedefine HAVE_SIGNAL_H
+
+/* Define if you have the <stddef.h> header file. */
+#cmakedefine HAVE_STDDEF_H
+
+/* Define if you have the <stdint.h> header file. */
+#cmakedefine HAVE_STDINT_H
+
+/* Define if <stdint.h> exists, doesn't clash with <sys/types.h>, and declares
+   uintmax_t. */
+#cmakedefine HAVE_STDINT_H_WITH_UINTMAX 1
+
+/* Define if you have the <stdlib.h> header file. */
+#cmakedefine HAVE_STDLIB_H
+
+/* Define if you have the `strerror_r' function. */
+#cmakedefine HAVE_STRERROR_R
+
+/* Define if you have the <string.h> header file. */
+#cmakedefine HAVE_STRING_H
+
+/* Define to 1 if you have the `sysconf' function. */
+#cmakedefine HAVE_SYSCONF 1
+
+/* Define if you have the <sys/mman.h> header file. */
+#cmakedefine HAVE_SYS_MMAN_H
+
+/* Define if you have the <sys/param.h> header file. */
+#cmakedefine HAVE_SYS_PARAM_H
+
+/* Define if you have the <sys/resource.h> header file. */
+#cmakedefine HAVE_SYS_RESOURCE_H
+
+/* Define if you have the <sys/statvfs.h> header file. */
+#cmakedefine HAVE_SYS_STATVFS_H
+
+/* Define if you have the <sys/select.h> header file. */
+#cmakedefine HAVE_SYS_SELECT_H 1
+
+/* Define if you have the <sys/time.h> header file. */
+#cmakedefine HAVE_SYS_TIME_H
+
+/* Define if you have the <sys/types.h> header file. */
+#cmakedefine HAVE_SYS_TYPES_H
+
+/* Define if you have <sys/wait.h> that is POSIX.1 compatible. */
+#cmakedefine HAVE_SYS_WAIT_H
+
+/* Define if you have the <unistd.h> header file. */
+#cmakedefine HAVE_UNISTD_H 1
+
+/* Name of package */
+#cmakedefine PACKAGE "${PACKAGE}"
+
+/* Define to the address where bug reports for this package should be sent. */
+#cmakedefine PACKAGE_BUGREPORT "${PACKAGE_BUGREPORT}"
+
+/*#cmakedefine PACKAGE_NAME "aMule"*/
+#cmakedefine PACKAGE_NAME "${PACKAGE_NAME}"
+
+/* Define to the full name and version of this package. */
+#cmakedefine PACKAGE_STRING "${PACKAGE_STRING}"
+
+/* Define to the one symbol short name of this package. */
+#cmakedefine PACKAGE_TARNAME "${PACKAGE_TARNAME}"
+
+/* Define to the home page for this package. */
+#cmakedefine PACKAGE_URL "${PACKAGE_URL}"
+
+/* Define to the version of this package. */
+#cmakedefine PACKAGE_VERSION "${PACKAGE_VERSION}"
+
+/* Define if <inttypes.h> exists and defines unusable PRI* macros. */
+#cmakedefine PRI_MACROS_BROKEN
+
+/* Define to 1 if strerror_r returns char *. */
+#cmakedefine STRERROR_R_CHAR_P
+
+/* The checkout date or svn revision number. */
+#define SVNDATE "${SVNDATE}"
+
+/* There's no point in defining this on every cmd-line */
+#define USE_WX_EXTENSIONS
+
+/* Version number of package */
+#cmakedefine VERSION "${VERSION}"
+
+/* Where the webserver finds it's themes */
+#cmakedefine WEBSERVERDIR "${WEBSERVERDIR}"
+
+/* Define if libpng is present is set. */
+#cmakedefine WITH_LIBPNG
+
+/* Define if ENABLE_NLS is set. */
+#cmakedefine YYENABLE_NLS 1

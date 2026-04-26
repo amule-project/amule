@@ -72,13 +72,13 @@ static const char * convert_xpm[] = {
 // Modeless Dialog Implementation
 // CPartFileConvertDlg dialog
 
-BEGIN_EVENT_TABLE(CPartFileConvertDlg, wxDialog)
+wxBEGIN_EVENT_TABLE(CPartFileConvertDlg, wxDialog)
 	EVT_BUTTON(IDC_ADDITEM,		CPartFileConvertDlg::OnAddFolder)
 	EVT_BUTTON(IDC_RETRY,		CPartFileConvertDlg::RetrySel)
 	EVT_BUTTON(IDC_CONVREMOVE,	CPartFileConvertDlg::RemoveSel)
 	EVT_BUTTON(wxID_CANCEL,		CPartFileConvertDlg::OnCloseButton)
 	EVT_CLOSE(CPartFileConvertDlg::OnClose)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 CPartFileConvertDlg::CPartFileConvertDlg(wxWindow* parent)
 	: wxDialog(parent, -1, _("Import partfiles"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
@@ -131,7 +131,7 @@ void CPartFileConvertDlg::UpdateProgress(float percent, wxString text, wxString 
 {
 	if (s_convertgui) {
 		s_convertgui->m_pb_current->SetValue((int)percent);
-		wxString buffer = CFormat(wxT("%.2f %%")) % percent;
+		wxString buffer = CFormat("%.2f %%") % percent;
 		wxStaticText* percentlabel = dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT));
 		percentlabel->SetLabel(buffer);
 
@@ -151,9 +151,9 @@ void CPartFileConvertDlg::ClearInfo()
 {
 	if (s_convertgui) {
 		dynamic_cast<wxStaticBoxSizer*>(IDC_CURJOB)->GetStaticBox()->SetLabel(_("Waiting..."));
-		dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT))->SetLabel(wxEmptyString);
+		dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT))->SetLabel("");
 		s_convertgui->m_pb_current->SetValue(0);
-		dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PB_LABEL))->SetLabel(wxEmptyString);
+		dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PB_LABEL))->SetLabel("");
 	}
 }
 
@@ -176,7 +176,7 @@ void CPartFileConvertDlg::UpdateJobInfo(ConvertInfo& info)
 			if (info.size > 0) {
 				s_convertgui->m_joblist->SetItem(itemnr, 2, CFormat(_("%s (Disk: %s)")) % CastItoXBytes(info.size) % CastItoXBytes(info.spaceneeded));
 			} else {
-				s_convertgui->m_joblist->SetItem(itemnr, 2, wxEmptyString);
+				s_convertgui->m_joblist->SetItem(itemnr, 2, "");
 			}
 			s_convertgui->m_joblist->SetItem(itemnr, 3, info.filehash);
 		}
@@ -203,7 +203,7 @@ void CPartFileConvertDlg::OnAddFolder(wxCommandEvent& WXUNUSED(event))
 		wxStandardPaths::Get().GetDocumentsDir(), wxDD_DEFAULT_STYLE,
 		wxDefaultPosition, this);
 	if (!folder.IsEmpty()) {
-		int reply = wxMessageBox(_("Do you want the source files of succesfully imported downloads be deleted?"),
+		int reply = wxMessageBox(_("Do you want the source files of successfully imported downloads be deleted?"),
 					 _("Remove sources?"),
 					 wxYES_NO | wxCANCEL | wxICON_QUESTION, this);
 		if (reply != wxCANCEL) {

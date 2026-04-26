@@ -64,17 +64,17 @@ bool CCanceledFileList::Init()
 
 		uint32 RecordsNumber = file.ReadUInt32();
 		AddDebugLogLineN(logKnownFiles,
-			CFormat(wxT("Reading %i canceled files from file format 0x%02x."))
+			CFormat("Reading %i canceled files from file format 0x%02x.")
 			% RecordsNumber % version);
 		for (uint32 i = 0; i < RecordsNumber; i++) {
 			CMD4Hash hash;
 			file.Read(hash.GetHash(), 16);
-			AddDebugLogLineN(logKnownFiles, CFormat(wxT("Canceled file read: %s")) % hash.Encode());
+			AddDebugLogLineN(logKnownFiles, CFormat("Canceled file read: %s") % hash.Encode());
 			if (!hash.IsEmpty()) {
 				m_canceledFileList.insert(hash);
 			}
 		}
-		AddDebugLogLineN(logKnownFiles, wxT("Finished reading canceled files"));
+		AddDebugLogLineN(logKnownFiles, "Finished reading canceled files");
 
 		return true;
 	} catch (const CSafeIOException& e) {

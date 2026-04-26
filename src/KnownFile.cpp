@@ -431,7 +431,7 @@ void CKnownFile::SetFileSize(uint64 nFileSize)
 
 void CKnownFile::AddUploadingClient(CUpDownClient* client)
 {
-	m_ClientUploadList.insert(CCLIENTREF(client, wxT("CKnownFile::AddUploadingClient m_ClientUploadList")));
+	m_ClientUploadList.insert(CCLIENTREF(client, "CKnownFile::AddUploadingClient m_ClientUploadList"));
 
 	SourceItemType type = UNAVAILABLE_SOURCE;
 	switch (client->GetUploadState()) {
@@ -444,7 +444,7 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client)
 		}
 	}
 
-	Notify_SharedCtrlAddClient(this, CCLIENTREF(client, wxT("CKnownFile::AddUploadingClient Notify_SharedCtrlAddClient")), type);
+	Notify_SharedCtrlAddClient(this, CCLIENTREF(client, "CKnownFile::AddUploadingClient Notify_SharedCtrlAddClient"), type);
 
 	UpdateAutoUpPriority();
 }
@@ -452,7 +452,7 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client)
 
 void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
 {
-	if (m_ClientUploadList.erase(CCLIENTREF(client, wxEmptyString))) {
+	if (m_ClientUploadList.erase(CCLIENTREF(client, ""))) {
 		Notify_SharedCtrlRemoveClient(client->ECID(), this);
 		UpdateAutoUpPriority();
 	}
@@ -633,7 +633,7 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 				SetLastPublishTimeKadSrc( newtag.GetInt(), 0 );
 
 				if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
-					//There may be a posibility of an older client that saved a random number here.. This will check for that..
+					//There may be a possibility of an older client that saved a random number here.. This will check for that..
 					SetLastPublishTimeKadSrc(0, 0);
 				}
 				break;
@@ -695,7 +695,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 		tagcount++;
 	}
 	// Float meta tags are currently not written. All older eMule versions < 0.28a have
-	// a bug in the meta tag reading+writing code. To achive maximum backward
+	// a bug in the meta tag reading+writing code. To achieve maximum backward
 	// compatibility for met files with older eMule versions we just don't write float
 	// tags. This is OK, because we (eMule) do not use float tags. The only float tags
 	// we may have to handle is the '# Sent' tag from the Hybrid, which is pretty
@@ -786,10 +786,10 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 
 void CKnownFile::CreateHashFromHashlist(const ArrayOfCMD4Hash& hashes, CMD4Hash* Output)
 {
-	wxCHECK_RET(hashes.size(), wxT("No input to hash from in CreateHashFromHashlist"));
+	wxCHECK_RET(hashes.size(), "No input to hash from in CreateHashFromHashlist");
 
-	std::vector<byte> buffer(hashes.size() * MD4HASH_LENGTH);
-	std::vector<byte>::iterator it = buffer.begin();
+	std::vector<uint8_t> buffer(hashes.size() * MD4HASH_LENGTH);
+	std::vector<uint8_t>::iterator it = buffer.begin();
 
 	for (size_t i = 0; i < hashes.size(); ++i) {
 		it = STLCopy_n(hashes[i].GetHash(), MD4HASH_LENGTH, it);
@@ -801,7 +801,7 @@ void CKnownFile::CreateHashFromHashlist(const ArrayOfCMD4Hash& hashes, CMD4Hash*
 
 void CKnownFile::CreateHashFromFile(CFileAutoClose& file, uint64 offset, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut)
 {
-	wxCHECK_RET(Length, wxT("No input to hash from in CreateHashFromFile"));
+	wxCHECK_RET(Length, "No input to hash from in CreateHashFromFile");
 
 	CFileArea area;
 	area.ReadAt(file, offset, Length);
@@ -811,16 +811,16 @@ void CKnownFile::CreateHashFromFile(CFileAutoClose& file, uint64 offset, uint32 
 }
 
 
-void CKnownFile::CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut )
+void CKnownFile::CreateHashFromInput(const uint8_t* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut )
 {
-	wxASSERT_MSG(Output || pShaHashOut, wxT("Nothing to do in CreateHashFromInput"));
-	{ wxCHECK_RET(input, wxT("No input to hash from in CreateHashFromInput")); }
+	wxASSERT_MSG(Output || pShaHashOut, "Nothing to do in CreateHashFromInput");
+	{ wxCHECK_RET(input, "No input to hash from in CreateHashFromInput"); }
 	wxASSERT(Length <= PARTSIZE); // We never hash more than one PARTSIZE
 
 	CMemFile data(input, Length);
 
 	uint32 Required = Length;
-	byte   X[64*128];
+	uint8  X[64*128];
 
 	uint32	posCurrentEMBlock = 0;
 	uint32	nIACHPos = 0;
@@ -887,12 +887,8 @@ void CKnownFile::CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash*
 	}
 
 	if (Output != NULL){
-		#ifdef __WEAK_CRYPTO__
-			CryptoPP::Weak::MD4 md4_hasher;
-		#else
-			CryptoPP::MD4 md4_hasher;
-		#endif
-		 md4_hasher.CalculateDigest(Output->GetHash(), input, Length);
+		CryptoPP::Weak::MD4 md4_hasher;
+		md4_hasher.CalculateDigest(Output->GetHash(), input, Length);
 	}
 }
 
@@ -923,7 +919,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 		if (GetFileName().IsOk()) {
 			file2 = GetFileName().GetPrintable();
 		}
-		AddDebugLogLineN(logKnownFiles, wxT("File mismatch on source packet (K) Sending: ") + file1 + wxT("  From: ") + file2);
+		AddDebugLogLineN(logKnownFiles, "File mismatch on source packet (K) Sending: " + file1 + "  From: " + file2);
 		return NULL;
 	}
 
@@ -932,7 +928,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 	//wxASSERT(rcvstatus.size() == GetPartCount()); // Obviously!
 	if (rcvstatus.size() != GetPartCount()) {
 		// Yuck. Same file but different part count? Seriously fucked up.
-		AddDebugLogLineN(logKnownFiles, CFormat(wxT("Impossible situation: different partcounts for the same known file: %i (client) and %i (file)")) % rcvstatus.size() % GetPartCount());
+		AddDebugLogLineN(logKnownFiles, CFormat("Impossible situation: different partcounts for the same known file: %i (client) and %i (file)") % rcvstatus.size() % GetPartCount());
 		return NULL;
 	}
 
@@ -949,13 +945,13 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 
 		// we don't support any special SX2 options yet, reserved for later use
 		if (nRequestedOptions != 0) {
-			AddDebugLogLineN(logKnownFiles, CFormat(wxT("Client requested unknown options for SourceExchange2: %u")) % nRequestedOptions);
+			AddDebugLogLineN(logKnownFiles, CFormat("Client requested unknown options for SourceExchange2: %u") % nRequestedOptions);
 		}
 	} else {
 		byUsedVersion = forClient->GetSourceExchange1Version();
 		bIsSX2Packet = false;
 		if (forClient->SupportsSourceExchange2()) {
-			AddDebugLogLineN(logKnownFiles, wxT("Client which announced to support SX2 sent SX1 packet instead"));
+			AddDebugLogLineN(logKnownFiles, "Client which announced to support SX2 sent SX1 packet instead");
 		}
 	}
 
@@ -1253,14 +1249,14 @@ void CKnownFile::SetFileCommentRating(const wxString& strNewComment, int8 iNewRa
 {
 	if (m_strComment != strNewComment || m_iRating != iNewRating) {
 		SetLastPublishTimeKadNotes(0);
-		wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
+		wxString strCfgPath = "/" + m_abyFileHash.Encode() + "/";
 
 		wxConfigBase* cfg = wxConfigBase::Get();
 		if (strNewComment.IsEmpty() && iNewRating == 0) {
 			cfg->DeleteGroup(strCfgPath);
 		} else {
-			cfg->Write( strCfgPath + wxT("Comment"), strNewComment);
-			cfg->Write( strCfgPath + wxT("Rate"), (int)iNewRating);
+			cfg->Write( strCfgPath + "Comment", strNewComment);
+			cfg->Write( strCfgPath + "Rate", (int)iNewRating);
 		}
 
 		m_strComment = strNewComment;
@@ -1464,23 +1460,23 @@ void CKnownFile::ClearPriority() {
 	UpdateAutoUpPriority();
 }
 
-void GuessAndRemoveExt(CPath& name)
+static void GuessAndRemoveExt(CPath& name)
 {
 	wxString ext = name.GetExt();
 
 	// Remove common two-part extensions, such as "tar.gz"
-	if (ext == wxT("gz") || ext == wxT("bz2")) {
+	if (ext == "gz" || ext == "bz2") {
 		name = name.RemoveExt();
-		if (name.GetExt() == wxT("tar")) {
+		if (name.GetExt() == "tar") {
 			name = name.RemoveExt();
 		}
 	// might be an extension if length == 3
 	// and also remove some common non-three-character extensions
 	} else if (ext.Length() == 3  ||
-		   ext == wxT("7z")   ||
-		   ext == wxT("rm")   ||
-		   ext == wxT("jpeg") ||
-		   ext == wxT("mpeg")
+		   ext == "7z"   ||
+		   ext == "rm"   ||
+		   ext == "jpeg" ||
+		   ext == "mpeg"
 		   ) {
 		name = name.RemoveExt();
 	}
@@ -1502,12 +1498,12 @@ void CKnownFile::SetFileName(const CPath& filename)
 void CKnownFile::LoadComment() const
 {
 	#ifndef CLIENT_GUI
-	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
+	wxString strCfgPath = "/" + m_abyFileHash.Encode() + "/";
 
 	wxConfigBase* cfg = wxConfigBase::Get();
 
-	m_strComment = cfg->Read( strCfgPath + wxT("Comment"), wxEmptyString);
-	m_iRating = cfg->Read( strCfgPath + wxT("Rate"), 0l);
+	m_strComment = cfg->Read( strCfgPath + "Comment", "");
+	m_iRating = cfg->Read( strCfgPath + "Rate", 0l);
 	#endif
 
 	m_bCommentLoaded = true;
@@ -1523,7 +1519,7 @@ wxString CKnownFile::GetAICHMasterHash() const
 		return m_pAICHHashSet->GetMasterHash().GetString();
 	}
 
-	return wxEmptyString;
+	return "";
 #endif
 }
 
@@ -1541,14 +1537,14 @@ bool CKnownFile::HasProperAICHHashSet() const
 
 wxString CKnownFile::GetFeedback() const
 {
-	return	  wxString(_("File name")) + wxT(": ") + GetFileName().GetPrintable() + wxT("\n")
-		+ _("File size") + wxT(": ") + CastItoXBytes(GetFileSize()) + wxT("\n")
-		+ _("Share ratio") + CFormat(wxT(": %.2f%%\n")) % (((double)statistic.GetAllTimeTransferred() / (double)GetFileSize()) * 100.0)
-		+ _("Uploaded") + wxT(": ") + CastItoXBytes(statistic.GetTransferred()) + wxT(" (") + CastItoXBytes(statistic.GetAllTimeTransferred()) + wxT(")\n")
-		+ _("Requested") + CFormat(wxT(": %u (%u)\n")) % statistic.GetRequests() % statistic.GetAllTimeRequests()
-		+ _("Accepted") + CFormat(wxT(": %u (%u)\n")) % statistic.GetAccepts() % statistic.GetAllTimeAccepts()
-		+ _("On Queue") + CFormat(wxT(": %u\n")) % GetQueuedCount()
-		+ _("Complete sources") + CFormat(wxT(": %u\n")) % m_nCompleteSourcesCount;
+	return	  wxString(_("File name")) + ": " + GetFileName().GetPrintable() + "\n"
+		+ _("File size") + ": " + CastItoXBytes(GetFileSize()) + "\n"
+		+ _("Share ratio") + wxString(CFormat(": %.2f%%\n") % (((double)statistic.GetAllTimeTransferred() / (double)GetFileSize()) * 100.0))
+		+ _("Uploaded") + ": " + CastItoXBytes(statistic.GetTransferred()) + " (" + CastItoXBytes(statistic.GetAllTimeTransferred()) + ")\n"
+		+ _("Requested") + wxString(CFormat(": %u (%u)\n") % statistic.GetRequests() % statistic.GetAllTimeRequests())
+		+ _("Accepted") + wxString(CFormat(": %u (%u)\n") % statistic.GetAccepts() % statistic.GetAllTimeAccepts())
+		+ _("On Queue") + wxString(CFormat(": %u\n") % GetQueuedCount())
+		+ _("Complete sources") + wxString(CFormat(": %u\n") % m_nCompleteSourcesCount);
 }
 
 // File_checked_for_headers

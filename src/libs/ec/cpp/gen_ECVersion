@@ -38,9 +38,7 @@ cat > ECVersion.h.new <<EOT
 #ifndef ECVERSION_H
 #define ECVERSION_H
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #ifdef SVNDATE
 #define EC_VERSION_ID "$final_hash"

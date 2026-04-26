@@ -32,7 +32,7 @@
 
 #include <common/Format.h>			// Needed for CFormat
 
-#define a_brackets_b(a,b) (a + wxT(" (") + b + wxT(")"))
+#define a_brackets_b(a,b) (a + " (" + b + ")")
 
 #endif /* !CLIENT_GUI */
 
@@ -291,19 +291,19 @@ wxString CStatTreeItemCounterTmpl<_Tp>::GetDisplayString() const
 	wxString my_label = wxGetTranslation(m_label);
 	// This is needed for client names, for example
 	if (my_label == m_label) {
-		if (m_label.Right(4) == wxT(": %s")) {
+		if (m_label.Right(4) == ": %s") {
 			my_label = wxGetTranslation(
 				m_label.Mid(0, m_label.Length() - 4)) +
-				wxString(wxT(": %s"));
+				wxString(": %s");
 		}
 	}
 	CFormat label(my_label);
 	if (m_displaymode == dmBytes) {
 		return label % CastItoXBytes(m_value);
 	} else {
-		wxString result = CFormat(wxT("%u")) % m_value;
+		wxString result = CFormat("%u") % m_value;
 		if ((m_flags & stShowPercent) && m_parent) {
-			result += CFormat(wxT(" (%.2f%%)")) % ((double(m_value) / dynamic_cast<CStatTreeItemCounterTmpl<_Tp>*>(m_parent)->m_value) * 100.0);
+			result += CFormat(" (%.2f%%)") % ((double(m_value) / dynamic_cast<CStatTreeItemCounterTmpl<_Tp>*>(m_parent)->m_value) * 100.0);
 		}
 		return label % result;
 	}
@@ -463,10 +463,10 @@ wxString CStatTreeItemAverage::GetDisplayString() const
 					CastSecondsToHM((*m_dividend)/(*m_divisor));
 			default:
 				return CFormat(wxGetTranslation(m_label)) %
-					(CFormat(wxT("%u")) % ((uint64)(*m_dividend)/(*m_divisor))).GetString();
+					(CFormat("%u") % ((uint64)(*m_dividend)/(*m_divisor))).GetString();
 		}
 	} else {
-		return CFormat(wxGetTranslation(m_label)) % wxT("-");
+		return CFormat(wxGetTranslation(m_label)) % "-";
 	}
 }
 #endif
@@ -487,7 +487,7 @@ void CStatTreeItemAverage::AddECValues(CECTag *tag) const
 			tag->AddTag(value);
 		}
 	} else {
-		CECTag value(EC_TAG_STAT_NODE_VALUE, wxString(wxT("-")));
+		CECTag value(EC_TAG_STAT_NODE_VALUE, wxString("-"));
 		value.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_STRING));
 		tag->AddTag(value);
 	}
@@ -532,23 +532,25 @@ wxString CStatTreeItemRatio::GetString() const
 	double v2 = m_counter2->GetValue();
 	if (v1 > 0 && v2 > 0) {
 		if (v2 < v1) {
-			ret = CFormat(wxT("%.2f : 1")) % (v1 / v2);
+			ret = CFormat("%.2f : 1") % (v1 / v2);
 		} else {
-			ret = CFormat(wxT("1 : %.2f")) % (v2 / v1);
-		}
-
-		if (m_totalfunc1 && m_totalfunc2) {
-			double t1 = m_totalfunc1() + v1;
-			double t2 = m_totalfunc2() + v2;
-			if (t2 < t1) {
-				ret += CFormat(wxT(" (%.2f : 1)")) % (t1 / t2);
-			} else {
-				ret += CFormat(wxT(" (1 : %.2f)")) % (t2 / t1);
-			}
+			ret = CFormat("1 : %.2f") % (v2 / v1);
 		}
 	} else {
 		ret = _("Not available");
 	}
+	
+	// show the total ratio
+	if (m_totalfunc1 && m_totalfunc2) {
+		double t1 = m_totalfunc1() + v1;
+		double t2 = m_totalfunc2() + v2;
+		if (t2 < t1) {
+			ret += CFormat(" (%.2f : 1)") % (t1 / t2);
+		} else {
+			ret += CFormat(" (1 : %.2f)") % (t2 / t1);
+		}
+	}
+	
 	return ret;
 }
 
@@ -589,7 +591,7 @@ wxString CStatTreeItemMaxConnLimitReached::GetDisplayString() const
 {
 	if (m_count) {
 		return CFormat(wxGetTranslation(m_label)) %
-			(CFormat(wxT("%i : %s %s")) % m_count % m_time.FormatISODate() % m_time.FormatISOTime());
+			(CFormat("%i : %s %s") % m_count % m_time.FormatISODate() % m_time.FormatISOTime());
 	} else {
 		return CFormat(wxGetTranslation(m_label)) % _("Never");
 	}
@@ -600,7 +602,7 @@ void CStatTreeItemMaxConnLimitReached::AddECValues(CECTag *tag) const
 {
 	wxString result;
 	if (m_count) {
-		result = CFormat(wxT("%i : %s %s")) % m_count % m_time.FormatISODate() % m_time.FormatISOTime();
+		result = CFormat("%i : %s %s") % m_count % m_time.FormatISODate() % m_time.FormatISOTime();
 	} else {
 		result = wxTRANSLATE("Never");
 	}

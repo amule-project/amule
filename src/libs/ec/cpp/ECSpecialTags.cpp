@@ -81,7 +81,7 @@ CEC_Search_Tag::CEC_Search_Tag(const wxString &name, EC_SEARCH_TYPE search_type,
 	}
 }
 
-void FormatValue(CFormat& format, const CECTag* tag)
+static void FormatValue(CFormat& format, const CECTag* tag)
 {
 	wxASSERT(tag->GetTagName() == EC_TAG_STAT_NODE_VALUE);
 
@@ -93,15 +93,15 @@ void FormatValue(CFormat& format, const CECTag* tag)
 		EC_STATTREE_NODE_VALUE_TYPE tmp_valueType = tmp_vt != NULL ? (EC_STATTREE_NODE_VALUE_TYPE)tmp_vt->GetInt() : EC_VALUE_INTEGER;
 		switch (tmp_valueType) {
 			case EC_VALUE_INTEGER:
-				tmp_fmt = wxT("%llu");
+				tmp_fmt = "%llu";
 				break;
 			case EC_VALUE_DOUBLE:
-				tmp_fmt = wxT("%.2f%%");	// it's used for percentages
+				tmp_fmt = "%.2f%%";	// it's used for percentages
 				break;
 			default:
-				tmp_fmt = wxT("%s");
+				tmp_fmt = "%s";
 		}
-		CFormat tmp_format(wxT(" (") + tmp_fmt + wxT(")"));
+		CFormat tmp_format(wxString(" (") + tmp_fmt + ")");
 		FormatValue(tmp_format, tmp_tag);
 		extra = tmp_format.GetString();
 	}
@@ -113,7 +113,7 @@ void FormatValue(CFormat& format, const CECTag* tag)
 			format = format % tag->GetInt();
 			break;
 		case EC_VALUE_ISTRING:
-			format = format % (CFormat(wxT("%u")) % tag->GetInt() + extra);
+			format = format % (CFormat("%u") % tag->GetInt() + extra);
 			break;
 		case EC_VALUE_BYTES:
 			format = format % (CastItoXBytes(tag->GetInt()) + extra);
@@ -144,8 +144,8 @@ wxString CEC_StatTree_Node_Tag::GetDisplayString() const
 	wxString my_label = wxGetTranslation(en_label);
 	// This is needed for client names, for example
 	if (my_label == en_label) {
-		if (en_label.Right(4) == wxT(": %s")) {
-			my_label = wxGetTranslation(en_label.Mid(0, en_label.Length() - 4)) + wxString(wxT(": %s"));
+		if (en_label.Right(4) == ": %s") {
+			my_label = wxGetTranslation(en_label.Mid(0, en_label.Length() - 4)) + wxString(": %s");
 		}
 	}
 	CFormat label(my_label);

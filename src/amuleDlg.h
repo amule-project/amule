@@ -107,7 +107,7 @@ class CamuleDlg : public wxFrame
 public:
 	CamuleDlg(
 		wxWindow *pParent = NULL,
-		const wxString &title = wxEmptyString,
+		const wxString &title = "",
 		wxPoint where = wxDefaultPosition,
 		wxSize dlg_size = wxSize(DEFAULT_SIZE_X,DEFAULT_SIZE_Y));
 	~CamuleDlg();
@@ -116,7 +116,7 @@ public:
 	void AddServerMessageLine(wxString& message);
 	void ResetLog(int id);
 
-	void ShowUserCount(const wxString& info = wxEmptyString);
+	void ShowUserCount(const wxString& info = "");
 	void ShowConnectionState(bool skinChanged = false);
 	void ShowTransferRate();
 
@@ -138,7 +138,7 @@ public:
 	void SetActiveDialog(DialogType type, wxWindow* dlg);
 
 	/**
-	 * Helper function for deciding if a certian dlg is visible.
+	 * Helper function for deciding if a certain dlg is visible.
 	 *
 	 * @return True if the dialog is visible to the user, false otherwise.
 	 */
@@ -152,8 +152,6 @@ public:
 	void DlgShutDown();
 	void OnClose(wxCloseEvent& evt);
 	void OnBnConnect(wxCommandEvent& evt);
-
-	void DoIconize(bool iconize);
 
 	bool SafeState()	{ return m_is_safe_state; }
 
@@ -240,7 +238,7 @@ private:
 	void SetMessagesTool();
 	void OnKeyPressed(wxKeyEvent& evt);
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif

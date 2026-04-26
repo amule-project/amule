@@ -41,7 +41,7 @@
 #define ID_MY_TIMER 1652
 
 //IMPLEMENT_DYNAMIC(CFileDetailDialog, CDialog)
-BEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
+wxBEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
 	EVT_BUTTON(ID_CLOSEWNDFD, CFileDetailDialog::OnClosewnd)
 	EVT_BUTTON(IDC_BUTTONSTRIP, CFileDetailDialog::OnBnClickedButtonStrip)
 	EVT_BUTTON(IDC_TAKEOVER, CFileDetailDialog::OnBnClickedTakeOver)
@@ -53,7 +53,7 @@ BEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
 	EVT_BUTTON(IDC_PREVFILE, CFileDetailDialog::OnBnClickedPrevFile)
 	EVT_BUTTON(IDC_NEXTFILE, CFileDetailDialog::OnBnClickedNextFile)
 	EVT_TIMER(ID_MY_TIMER,CFileDetailDialog::OnTimer)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 CFileDetailDialog::CFileDetailDialog(wxWindow *parent, std::vector<CPartFile *> & files, int index)
 :
@@ -98,10 +98,10 @@ void CFileDetailDialog::UpdateData(bool resetFilename)
 	}
 
 	CastChild(IDC_FHASH,wxStaticText)->SetLabel(m_file->GetFileHash().Encode());
-	bufferS = CFormat(wxT("%u bytes (%s)")) % m_file->GetFileSize() % CastItoXBytes(m_file->GetFileSize());
+	bufferS = CFormat("%u bytes (%s)") % m_file->GetFileSize() % CastItoXBytes(m_file->GetFileSize());
 	CastChild(IDC_FSIZE,wxControl)->SetLabel(bufferS);
 	CastChild(IDC_PFSTATUS,wxControl)->SetLabel(m_file->getPartfileStatus());
-	bufferS = CFormat(wxT("%i (%i)")) % m_file->GetPartCount() % m_file->GetHashCount();
+	bufferS = CFormat("%i (%i)") % m_file->GetPartCount() % m_file->GetHashCount();
 	CastChild(IDC_PARTCOUNT,wxControl)->SetLabel(bufferS);
 	CastChild(IDC_TRANSFERRED,wxControl)->SetLabel(CastItoXBytes(m_file->GetTransferred()));
 	CastChild(IDC_FD_STATS1,wxControl)->SetLabel(CastItoXBytes(m_file->GetLostDueToCorruption()));
@@ -112,11 +112,11 @@ void CFileDetailDialog::UpdateData(bool resetFilename)
 	CastChild(IDC_PROCCOMPL,wxControl)->SetLabel(bufferS);
 	bufferS = CFormat(_("%.2f kB/s")) % m_file->GetKBpsDown();
 	CastChild(IDC_DATARATE,wxControl)->SetLabel(bufferS);
-	bufferS = CFormat(wxT("%i")) % m_file->GetSourceCount();
+	bufferS = CFormat("%i") % m_file->GetSourceCount();
 	CastChild(IDC_SOURCECOUNT,wxControl)->SetLabel(bufferS);
-	bufferS = CFormat(wxT("%i")) % m_file->GetTransferingSrcCount();
+	bufferS = CFormat("%i") % m_file->GetTransferingSrcCount();
 	CastChild(IDC_SOURCECOUNT2,wxControl)->SetLabel(bufferS);
-	bufferS = CFormat(wxT("%i (%.1f%%)"))
+	bufferS = CFormat("%i (%.1f%%)")
 		% m_file->GetAvailablePartCount()
 		% ((m_file->GetAvailablePartCount() * 100.0)/ m_file->GetPartCount());
 	CastChild(IDC_PARTAVAILABLE,wxControl)->SetLabel(bufferS);
@@ -127,7 +127,7 @@ void CFileDetailDialog::UpdateData(bool resetFilename)
 		bufferS = wxString(_("Unknown")).MakeLower();
 	} else {
 		wxDateTime last_seen(m_file->lastseencomplete);
-		bufferS = last_seen.FormatISODate() + wxT(" ") + last_seen.FormatISOTime();
+		bufferS = last_seen.FormatISODate() + " " + last_seen.FormatISOTime();
 	}
 
 	CastChild(IDC_LASTSEENCOMPL,wxControl)->SetLabel(bufferS);
@@ -212,7 +212,7 @@ void CFileDetailDialog::FillSourcenameList()
 			pmyListCtrl->DeleteItem(i);
 			i--;  // PA: one step back is enough, no need to go back to 0
 		} else {
-			pmyListCtrl->SetItem(i, 1, CFormat(wxT("%i")) % item->count);
+			pmyListCtrl->SetItem(i, 1, CFormat("%i") % item->count);
 		}
 	}
 
@@ -308,7 +308,7 @@ void CFileDetailDialog::OnBnClickedNextFile(wxCommandEvent&)
 }
 
 
-bool IsDigit(const wxChar ch)
+static bool IsDigit(const wxChar ch)
 {
 	switch (ch) {
 		case '0':
@@ -325,7 +325,7 @@ bool IsDigit(const wxChar ch)
 	return false;
 }
 
-bool IsWordSeparator(const wxChar ch)
+static bool IsWordSeparator(const wxChar ch)
 {
 	switch (ch) {
 		case '.':
@@ -343,7 +343,7 @@ bool IsWordSeparator(const wxChar ch)
 	return false;
 }
 
-void ReplaceWord(wxString& str, const wxString& replaceFrom, const wxString& replaceTo, bool numbers = false)
+static void ReplaceWord(wxString& str, const wxString& replaceFrom, const wxString& replaceTo, bool numbers = false)
 {
 	unsigned int i = 0;
 	unsigned int l = replaceFrom.Length();
@@ -373,36 +373,36 @@ void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& WXUNUSED(evt))
 		ext.MakeLower();
 		// get rid of extension and replace . with space
 		filename.Truncate(extpos);
-		filename.Replace(wxT("."),wxT(" "));
+		filename.Replace("."," ");
 	}
 
 	// Replace Space-holders with Spaces
-	filename.Replace(wxT("_"),wxT(" "));
-	filename.Replace(wxT("%20"),wxT(" "));
+	filename.Replace("_"," ");
+	filename.Replace("%20"," ");
 
 	// Some additional formatting
-	filename.Replace(wxT("hYPNOTiC"), wxEmptyString);
+	filename.Replace("hYPNOTiC", "");
 	filename.MakeLower();
-	filename.Replace(wxT("xxx"), wxT("XXX"));
-//	filename.Replace(wxT("xdmnx"), wxEmptyString);
-//	filename.Replace(wxT("pmp"), wxEmptyString);
-//	filename.Replace(wxT("dws"), wxEmptyString);
-	filename.Replace(wxT("www pornreactor com"), wxEmptyString);
-	filename.Replace(wxT("sharereactor"), wxEmptyString);
-	filename.Replace(wxT("found via www filedonkey com"), wxEmptyString);
-	filename.Replace(wxT("deviance"), wxEmptyString);
-	filename.Replace(wxT("adunanza"), wxEmptyString);
-	filename.Replace(wxT("-ftv"), wxEmptyString);
-	filename.Replace(wxT("flt"), wxEmptyString);
-	filename.Replace(wxT("[]"), wxEmptyString);
-	filename.Replace(wxT("()"), wxEmptyString);
+	filename.Replace("xxx", "XXX");
+//	filename.Replace("xdmnx", "");
+//	filename.Replace("pmp", "");
+//	filename.Replace("dws", "");
+	filename.Replace("www pornreactor com", "");
+	filename.Replace("sharereactor", "");
+	filename.Replace("found via www filedonkey com", "");
+	filename.Replace("deviance", "");
+	filename.Replace("adunanza", "");
+	filename.Replace("-ftv", "");
+	filename.Replace("flt", "");
+	filename.Replace("[]", "");
+	filename.Replace("()", "");
 
 	// Change CD, CD#, VCD{,#}, DVD{,#}, ISO, PC to uppercase
-	ReplaceWord(filename, wxT("cd"), wxT("CD"), true);
-	ReplaceWord(filename, wxT("vcd"), wxT("VCD"), true);
-	ReplaceWord(filename, wxT("dvd"), wxT("DVD"), true);
-	ReplaceWord(filename, wxT("iso"), wxT("ISO"), false);
-	ReplaceWord(filename, wxT("pc"), wxT("PC"), false);
+	ReplaceWord(filename, "cd", "CD", true);
+	ReplaceWord(filename, "vcd", "VCD", true);
+	ReplaceWord(filename, "dvd", "DVD", true);
+	ReplaceWord(filename, "iso", "ISO", false);
+	ReplaceWord(filename, "pc", "PC", false);
 
 	// Make leading Caps
 	// and delete 1+ spaces
@@ -445,7 +445,7 @@ void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& WXUNUSED(evt))
 	}
 
 	// should stay lowercase
-	ReplaceWord(filename, wxT("By"), wxT("by"));
+	ReplaceWord(filename, "By", "by");
 
 	// re-add extension
 	filename += ext;

@@ -79,8 +79,8 @@ Version 2 of AICH also supports 32bit identifiers to support large files, check 
 #include "ClientRef.h"
 
 #define HASHSIZE			20
-#define KNOWN2_MET_FILENAME		wxT("known2_64.met")
-#define OLD_KNOWN2_MET_FILENAME		wxT("known2.met")
+#define KNOWN2_MET_FILENAME		"known2_64.met"
+#define OLD_KNOWN2_MET_FILENAME		"known2.met"
 #define KNOWN2_MET_VERSION		0x02
 
 enum EAICHStatus {
@@ -104,12 +104,12 @@ class CUpDownClient;
 class CAICHHash
 {
 private:
-	byte m_abyBuffer[HASHSIZE];
+	uint8_t m_abyBuffer[HASHSIZE];
 
 public:
 	CAICHHash()				{ memset(m_abyBuffer, 0, HASHSIZE); }
 	CAICHHash(CFileDataIO* file)		{ Read(file); }
-	CAICHHash(byte* data)			{ Read(data); }
+	CAICHHash(uint8_t* data)		{ Read(data); }
 	CAICHHash(const CAICHHash& k1)		{ *this = k1; }
 	~CAICHHash() {}
 	CAICHHash& operator=(const CAICHHash& k1)
@@ -124,9 +124,9 @@ public:
 	friend bool operator!=(const CAICHHash& k1,const CAICHHash& k2)	{ return !(k1 == k2); }
 	void Read(CFileDataIO* file);
 	void Write(CFileDataIO* file) const;
-	void Read(byte* data)			{ memcpy(m_abyBuffer, data, HASHSIZE); }
+	void Read(uint8_t* data)		{ memcpy(m_abyBuffer, data, HASHSIZE); }
 	wxString GetString() const;
-	byte* GetRawHash()			{ return m_abyBuffer; }
+	uint8_t* GetRawHash()			{ return m_abyBuffer; }
 	static uint32 GetHashSize()		{ return HASHSIZE;}
 	unsigned int DecodeBase32(const wxString &base32);
 };
@@ -191,6 +191,8 @@ protected:
 ///CAICHUntrustedHashs
 class CAICHUntrustedHash {
 public:
+	CAICHUntrustedHash() = default;
+	CAICHUntrustedHash(const CAICHUntrustedHash&) = default;
 	CAICHUntrustedHash& operator=(const CAICHUntrustedHash& k1)
 	{
 		m_adwIpsSigning = k1.m_adwIpsSigning;
@@ -212,6 +214,7 @@ public:
 		m_nPart = 0;
 		m_pPartFile = NULL;
 	}
+	CAICHRequestedData(const CAICHRequestedData&) = default;
 	CAICHRequestedData& operator=(const CAICHRequestedData& k1)
 	{
 		m_nPart = k1.m_nPart;

@@ -64,12 +64,16 @@ public:
     uint64	GetSentBytesPartFileSinceLastCallAndReset();
     uint64	GetSentBytesControlPacketSinceLastCallAndReset();
     uint64	GetSentPayloadSinceLastCallAndReset();
+    uint64	PeekSentPayload();   // Non-resetting peek — for disk I/O thread buffer check
     void	TruncateQueues();
 
     virtual SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize) { return Send(maxNumberOfBytesToSend, minFragSize, true); };
     virtual SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize) { return Send(maxNumberOfBytesToSend, minFragSize, false); };
 
     uint32	GetNeededBytes();
+    bool    HasSent() { return m_hasSent; }  // eMule ref: used by CUploadDiskIOThread to detect socket starvation
+    bool    HasQueues(bool bOnlyStandardPackets = false) const;
+    bool    IsBusyQuickCheck() const { return m_bBusy; }
 
 	//protected:
 	// these functions are public on our code because of the amuleDlg::socketHandler
@@ -91,7 +95,6 @@ private:
 	void	ClearQueues();
 
     uint32	GetNextFragSize(uint32 current, uint32 minFragSize);
-    bool    HasSent() { return m_hasSent; }
 
 	// Download (pseudo) rate control
 	uint32	downloadLimit;
@@ -99,15 +102,15 @@ private:
 	bool	pendingOnReceive;
 
 	// Download partial header
-	byte	pendingHeader[PACKET_HEADER_SIZE];
+	uint8	pendingHeader[PACKET_HEADER_SIZE];
 	uint32	pendingHeaderSize;
 
 	// Download partial packet
-	byte*	pendingPacket;
-	uint32  pendingPacketSize;
+	uint8*	pendingPacket;
+	uint32	pendingPacketSize;
 
 	// Upload control
-	byte*	sendbuffer;
+	uint8*	sendbuffer;
 	uint32	sendblen;
 	uint32	sent;
 

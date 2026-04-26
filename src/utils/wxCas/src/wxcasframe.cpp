@@ -52,10 +52,10 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 {
 	// Give it an icon
 #ifdef __WINDOWS__
-	wxIcon icon(wxT("wxcas"));
+	wxIcon icon("wxcas");
 #else
 	wxIcon icon;
-	icon.CopyFromBitmap( WxCasPix::getPixmap( wxT( "wxcas" ) ) );
+	icon.CopyFromBitmap( WxCasPix::getPixmap( "wxcas" ) );
 #endif
 	SetIcon ( icon );
 
@@ -147,52 +147,52 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 #endif
 
 	// Statistic Panel Layout
-	m_sigPanelSBoxSizer->Add ( m_statLine_1, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_2, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_3, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_4, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_5, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_6, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_7, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+	m_sigPanelSBoxSizer->Add ( m_statLine_1, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_sigPanelSBoxSizer->Add ( m_statLine_2, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_sigPanelSBoxSizer->Add ( m_statLine_3, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_sigPanelSBoxSizer->Add ( m_statLine_4, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_sigPanelSBoxSizer->Add ( m_statLine_5, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_sigPanelSBoxSizer->Add ( m_statLine_6, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_sigPanelSBoxSizer->Add ( m_statLine_7, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
 
-	m_hitPanelSBoxSizer->Add ( m_hitLine, 0, wxALL | wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxGROW, 5 );
-	m_hitPanelSBoxSizer->Add ( m_hitButton, 0, wxALL | wxALIGN_RIGHT, 5 );
+	m_hitPanelSBoxSizer->Add ( m_hitLine, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
+	m_hitPanelSBoxSizer->Add ( m_hitButton, wxSizerFlags().Right().Border(wxALL, 5) );
 
-	m_absHitPanelSBoxSizer->Add ( m_absHitLine, 0, wxALL | wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxGROW, 5 );
-	m_absHitPanelSBoxSizer->Add ( m_absHitButton, 0, wxALL | wxALIGN_RIGHT, 5 );
+	m_absHitPanelSBoxSizer->Add ( m_absHitLine, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
+	m_absHitPanelSBoxSizer->Add ( m_absHitButton, wxSizerFlags().Right().Border(wxALL, 5) );
 
 #ifdef __LINUX__		// System monitoring on Linux
 
-	m_monPanelSBoxSizer->Add ( m_sysLine_1, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
-	m_monPanelSBoxSizer->Add ( m_sysLine_2, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+	m_monPanelSBoxSizer->Add ( m_sysLine_1, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
+	m_monPanelSBoxSizer->Add ( m_sysLine_2, wxSizerFlags().Expand().Center().Border(wxALL, 5) );
 #endif
 
 	// Main panel Layout
-	m_mainPanelVBox->Add ( m_staticLine, 0, wxALL | wxALIGN_CENTER | wxGROW );
+	m_mainPanelVBox->Add ( m_staticLine, wxSizerFlags().Expand().Center().Border(wxALL, 0));
 
-	m_mainPanelVBox->Add ( m_sigPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
+	m_mainPanelVBox->Add ( m_sigPanelSBoxSizer, wxSizerFlags().Expand().Center().Border(wxALL, 10) );
 
 #ifdef __LINUX__		// System monitoring on Linux
 
-	m_mainPanelVBox->Add ( m_monPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
+	m_mainPanelVBox->Add ( m_monPanelSBoxSizer, wxSizerFlags().Expand().Center().Border(wxALL, 10) );
 #endif
 
-	m_mainPanelVBox->Add ( m_hitPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
+	m_mainPanelVBox->Add ( m_hitPanelSBoxSizer, wxSizerFlags().Expand().Center().Border(wxALL, 10) );
 
-	m_mainPanelVBox->Add ( m_absHitPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
+	m_mainPanelVBox->Add ( m_absHitPanelSBoxSizer, wxSizerFlags().Expand().Center().Border(wxALL, 10) );
 
 #ifdef __WINDOWS__
 
-	m_mainPanelVBox->Add ( m_BottomStaticLine, 0, wxALL | wxALIGN_CENTER | wxGROW );
+	m_mainPanelVBox->Add ( m_BottomStaticLine, wxSizerFlags().Expand().Center().Border(wxALL, 0));
 #endif
 
 	// Toolbar Pixmaps
-	m_toolBarBitmaps[ 0 ] = WxCasPix::getPixmap( wxT( "refresh" ) );
-	m_toolBarBitmaps[ 1 ] = WxCasPix::getPixmap( wxT( "save" ) );
-	m_toolBarBitmaps[ 2 ] = WxCasPix::getPixmap( wxT( "print" ) );
-	m_toolBarBitmaps[ 3 ] = WxCasPix::getPixmap( wxT( "about" ) );
-	m_toolBarBitmaps[ 4 ] = WxCasPix::getPixmap( wxT( "stop" ) );
-	m_toolBarBitmaps[ 5 ] = WxCasPix::getPixmap( wxT( "prefs" ) );
+	m_toolBarBitmaps[ 0 ] = WxCasPix::getPixmap( "refresh" );
+	m_toolBarBitmaps[ 1 ] = WxCasPix::getPixmap( "save" );
+	m_toolBarBitmaps[ 2 ] = WxCasPix::getPixmap( "print" );
+	m_toolBarBitmaps[ 3 ] = WxCasPix::getPixmap( "about" );
+	m_toolBarBitmaps[ 4 ] = WxCasPix::getPixmap( "stop" );
+	m_toolBarBitmaps[ 5 ] = WxCasPix::getPixmap( "prefs" );
 
 	// Constructing toolbar
 	m_toolbar =
@@ -202,23 +202,23 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_toolbar->SetToolBitmapSize ( wxSize ( 32, 32 ) );
 	m_toolbar->SetMargins ( 2, 2 );
 
-	m_toolbar->AddTool ( ID_BAR_REFRESH, wxT( "Refresh" ), m_toolBarBitmaps[ 0 ],
+	m_toolbar->AddTool ( ID_BAR_REFRESH, "Refresh", m_toolBarBitmaps[ 0 ],
 	                     _( "Stop Auto Refresh" ) );
 
 	m_toolbar->AddSeparator ();
 
-	m_toolbar->AddTool ( ID_BAR_SAVE, wxT( "Save" ), m_toolBarBitmaps[ 1 ],
+	m_toolbar->AddTool ( ID_BAR_SAVE, "Save", m_toolBarBitmaps[ 1 ],
 	                     _( "Save Online Statistics image" ) );
 
-	m_toolbar->AddTool ( ID_BAR_PRINT, wxT( "Print" ), m_toolBarBitmaps[ 2 ],
+	m_toolbar->AddTool ( ID_BAR_PRINT, "Print", m_toolBarBitmaps[ 2 ],
 	                     _( "Print Online Statistics image" ) );
 
-	m_toolbar->AddTool ( ID_BAR_PREFS, wxT( "Prefs" ), m_toolBarBitmaps[ 5 ],
+	m_toolbar->AddTool ( ID_BAR_PREFS, "Prefs", m_toolBarBitmaps[ 5 ],
 	                     _( "Preferences setting" ) );
 
 	m_toolbar->AddSeparator ();
 
-	m_toolbar->AddTool ( ID_BAR_ABOUT, wxT( "About" ), m_toolBarBitmaps[ 3 ],
+	m_toolbar->AddTool ( ID_BAR_ABOUT, "About", m_toolBarBitmaps[ 3 ],
 	                     _( "About wxCas" ) );
 
 	m_toolbar->Realize ();
@@ -230,7 +230,7 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_mainPanel->SetSizer ( m_mainPanelVBox );
 
 	// Frame Layout
-	m_frameVBox->Add ( m_mainPanel, 1, wxALL | wxGROW );
+	m_frameVBox->Add ( m_mainPanel, wxSizerFlags(1).Expand().Border(wxALL, 0));
 	SetAutoLayout ( TRUE );
 	SetSizerAndFit ( m_frameVBox );
 
@@ -255,7 +255,7 @@ WxCasFrame::~WxCasFrame ()
 }
 
 // Events table
-BEGIN_EVENT_TABLE ( WxCasFrame, wxFrame )
+wxBEGIN_EVENT_TABLE ( WxCasFrame, wxFrame )
 EVT_TOOL ( ID_BAR_REFRESH, WxCasFrame::OnBarRefresh )
 EVT_TOOL ( ID_BAR_SAVE, WxCasFrame::OnBarSave )
 EVT_TOOL ( ID_BAR_PRINT, WxCasFrame::OnBarPrint )
@@ -265,14 +265,14 @@ EVT_TIMER ( ID_REFRESH_TIMER, WxCasFrame::OnRefreshTimer )
 EVT_TIMER ( ID_FTP_UPDATE_TIMER, WxCasFrame::OnFtpUpdateTimer )
 EVT_BUTTON ( ID_HIT_BUTTON, WxCasFrame::OnHitButton )
 EVT_BUTTON ( ID_ABS_HIT_BUTTON, WxCasFrame::OnAbsHitButton )
-END_EVENT_TABLE ()
+wxEND_EVENT_TABLE ()
 
 // Get Stat Bitmap
 wxImage *
 WxCasFrame::GetStatImage () const
 {
 	wxBitmap
-	statBitmap = WxCasPix::getPixmap( wxT( "stat" ) );
+	statBitmap = WxCasPix::getPixmap( "stat" );
 
 	wxMemoryDC memdc;
 	memdc.SelectObject ( statBitmap );
@@ -280,11 +280,11 @@ WxCasFrame::GetStatImage () const
 #ifdef __WINDOWS__
 
 	memdc.
-	SetFont ( wxFont ( 6, wxSWISS, wxNORMAL, wxBOLD ) );
+	SetFont ( wxFont ( 6, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD ) );
 #else
 
 	memdc.
-	SetFont ( wxFont ( 8, wxSWISS, wxNORMAL, wxBOLD ) );
+	SetFont ( wxFont ( 8, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD ) );
 #endif
 
 	memdc.
@@ -321,7 +321,7 @@ WxCasFrame::OnBarRefresh ( wxCommandEvent& WXUNUSED( event ) )
 		m_refresh_timer->Stop ();
 		m_ftp_update_timer->Stop ();
 		m_toolbar->DeleteTool ( ID_BAR_REFRESH );
-		m_toolbar->InsertTool ( 0, ID_BAR_REFRESH, wxT( "Refresh" ),
+		m_toolbar->InsertTool ( 0, ID_BAR_REFRESH, "Refresh",
 		                        m_toolBarBitmaps[ 4 ], wxNullBitmap,
 		                        wxITEM_NORMAL, _( "Start Auto Refresh" ) );
 		m_toolbar->Realize ();
@@ -330,7 +330,7 @@ WxCasFrame::OnBarRefresh ( wxCommandEvent& WXUNUSED( event ) )
 		m_refresh_timer->Start ();
 		m_ftp_update_timer->Start ();
 		m_toolbar->DeleteTool ( ID_BAR_REFRESH );
-		m_toolbar->InsertTool ( 0, ID_BAR_REFRESH, wxT( "Refresh" ),
+		m_toolbar->InsertTool ( 0, ID_BAR_REFRESH, "Refresh",
 		                        m_toolBarBitmaps[ 0 ], wxNullBitmap,
 		                        wxITEM_NORMAL, _( "Stop Auto Refresh" ) );
 		m_toolbar->Realize ();
@@ -348,7 +348,7 @@ WxCasFrame::OnBarSave ( wxCommandEvent& WXUNUSED( event ) )
 		_( "Save Statistics Image" ),
 		wxFileName::GetHomeDir (),
 		WxCasCte::AMULESIG_IMG_NAME,
-		wxT("PNG (*.png)|*.png|JPEG (*.jpg)|*.jpg|BMP (*.bmp)|*.bmp"),
+		"PNG (*.png)|*.png|JPEG (*.jpg)|*.jpg|BMP (*.bmp)|*.bmp",
 		wxFD_SAVE);
 
 	selectSaveFile.ShowModal();
@@ -357,7 +357,7 @@ WxCasFrame::OnBarSave ( wxCommandEvent& WXUNUSED( event ) )
 
 	if ( !saveFileName.empty () ) {
 		// static list of allowed types, update if you change extensions above
-		const wxString ext[3] = { wxT(".png"), wxT(".jpg"), wxT(".bmp") };
+		const wxString ext[3] = { ".png", ".jpg", ".bmp" };
 		const wxString fileType = ext[selectSaveFile.GetFilterIndex()];
 		bool isValidFileType = false;
 
@@ -434,7 +434,7 @@ WxCasFrame::OnRefreshTimer ( wxTimerEvent& WXUNUSED( event ) )
 		                      Lower () );
 
 		if ( !statImage->SaveFile ( fileName.GetFullPath () ) ) {
-			wxLogError ( wxT( "No handler for this file type. File was not saved" ) );
+			wxLogError ( "No handler for this file type. File was not saved" );
 		}
 		delete statImage;
 	}
@@ -464,7 +464,7 @@ WxCasFrame::OnFtpUpdateTimer ( wxTimerEvent& WXUNUSED( event ) )
 
 		// If img doenst exist, return
 		if ( ! fileName.FileExists( fileName.GetFullPath () ) ) {
-			wxLogError( wxT( "Image file " ) + fileName.GetFullPath () + wxT( " doesn't exist" ) );
+			wxLogError( "Image file " + fileName.GetFullPath () + " doesn't exist" );
 			return ;
 		}
 
@@ -478,7 +478,7 @@ WxCasFrame::OnFtpUpdateTimer ( wxTimerEvent& WXUNUSED( event ) )
 
 		if ( ! ftp.Connect( prefs->Read ( WxCasCte::FTP_URL_KEY,
 		                                  WxCasCte::DEFAULT_FTP_URL ) ) ) {
-			wxLogError( wxT( "Cannot connect to FTP server " ) + prefs->Read ( WxCasCte::FTP_URL_KEY,
+			wxLogError( "Cannot connect to FTP server " + prefs->Read ( WxCasCte::FTP_URL_KEY,
 			            WxCasCte::DEFAULT_FTP_URL ) );
 			return ;
 		}
@@ -486,7 +486,7 @@ WxCasFrame::OnFtpUpdateTimer ( wxTimerEvent& WXUNUSED( event ) )
 		// Chdir
 		if ( ! ftp.ChDir( prefs->Read ( WxCasCte::FTP_PATH_KEY,
 		                                WxCasCte::DEFAULT_FTP_PATH ) ) ) {
-			wxLogError( wxT( "Cannot chdir to " ) + prefs->Read ( WxCasCte::FTP_PATH_KEY,
+			wxLogError( "Cannot chdir to " + prefs->Read ( WxCasCte::FTP_PATH_KEY,
 			            WxCasCte::DEFAULT_FTP_PATH ) );
 			ftp.Close();
 			return ;
@@ -501,10 +501,10 @@ WxCasFrame::OnFtpUpdateTimer ( wxTimerEvent& WXUNUSED( event ) )
 				out->Write( in );
 				delete out;
 			} else {
-				wxLogError( wxT( "Cannot open FTP upload stream" ) );
+				wxLogError( "Cannot open FTP upload stream" );
 			}
 		} else {
-			wxLogError( wxT( "Cannot open file stream to read image file" ) );
+			wxLogError( "Cannot open file stream to read image file" );
 		}
 
 		// Close connexion
@@ -536,7 +536,7 @@ WxCasFrame::UpdateAll ( bool forceFitting )
 	bool needFit = UpdateStatsPanel ();
 
 	if ( needFit || forceFitting ) {
-		// Fit stats pannel
+		// Fit stats panel
 		m_mainPanel->Fit();
 
 		// Fit main frame
@@ -1033,7 +1033,7 @@ WxCasFrame::MakeStatLine_2() const
 {
 	wxString notTooLongName ( m_aMuleSig->GetServerName () );
 	if ( notTooLongName.Length() > 32 ) {
-		notTooLongName = notTooLongName.Left( 32 ) + wxT( "..." );
+		notTooLongName = notTooLongName.Left( 32 ) + "...";
 	}
 
 	if ((m_aMuleSig->GetAmuleState () == 0) && (m_aMuleSig->GetKadState() == 0)){
@@ -1058,14 +1058,14 @@ WxCasFrame::MakeStatLine_2() const
 	wxString newline = m_aMuleSig->GetUser ()
 	                   + _( " is on " )
 	                   + notTooLongName
-			   + wxT( " [" )
+			   + " ["
 			   + m_aMuleSig->GetServerIP ()
-			   + wxT( ":" )
+			   + ":"
 			   + m_aMuleSig->GetServerPort ()
-			   + wxT( "]" )
+			   + "]"
 			   + _( " with " )
 			   + m_aMuleSig->GetConnexionIDType ()
-			   + wxT( " |" )
+			   + " |"
 			   + _( " Kad: " );
 	if(m_aMuleSig->GetKadState() == 2) {
 		newline += _( "ok" );
@@ -1138,7 +1138,7 @@ WxCasFrame::MakeHitsLine_1() const
 {
 	wxString newline = wxString::Format ( _( "%.2f kB/s" ), m_aMuleSig->GetSessionMaxDL () )
 	                   + _( " on " )
-	                   + m_aMuleSig->GetSessionMaxDlDate().Format( wxT( "%c" ) );
+	                   + m_aMuleSig->GetSessionMaxDlDate().Format( "%c" );
 
 	return ( newline );
 }
@@ -1148,7 +1148,7 @@ WxCasFrame::MakeHitsLine_2() const
 {
 	wxString newline = wxString::Format ( _( "%.2f kB/s" ), m_aMuleSig->GetAbsoluteMaxDL() )
 	                   + _( " on " )
-	                   + m_aMuleSig->GetAbsoluteMaxDlDate().Format( wxT( "%c" ) );
+	                   + m_aMuleSig->GetAbsoluteMaxDlDate().Format( "%c" );
 
 	return ( newline );
 }
@@ -1158,8 +1158,8 @@ wxString
 WxCasFrame::MakeSysLine_1() const
 {
 	wxString newline = _( "System Load Average (1-5-15 min): " )
-	                   + m_sysMonitor->GetSysLoad_1 () + wxT( " " )
-	                   + m_sysMonitor->GetSysLoad_5 () + wxT( " " )
+	                   + m_sysMonitor->GetSysLoad_1 () + " "
+	                   + m_sysMonitor->GetSysLoad_5 () + " "
 	                   + m_sysMonitor->GetSysLoad_15 ();
 
 	return ( newline );

@@ -8,44 +8,44 @@ using namespace muleunit;
 
 DECLARE_SIMPLE(TextFile)
 
-const wxChar* g_filesDefault[] = {
-	wxT("TextFileTest_dos.txt"),
-	wxT("TextFileTest_unix.txt")
+const char* g_filesDefault[] = {
+	"TextFileTest_dos.txt",
+	"TextFileTest_unix.txt"
 };
 
 
 wxString ArrToStr(const wxArrayString& arr)
 {
-	wxString str = wxT("[");
+	wxString str = "[";
 
 	for (size_t i = 0; i < arr.Count(); ++i) {
-		if (str != wxT("[")) {
-			str << wxT(", \"") << arr[i] << wxT('"');
+		if (str != "[") {
+			str << ", \"" << arr[i] << '"';
 		} else {
-			str << wxT('"') << arr[i] << wxT('"');
+			str << '"' << arr[i] << '"';
 		}
 	}
 
-	str << wxT("]");
+	str << "]";
 
 	return str;
 }
 
 
-wxString ArrToStr(size_t count, const wxChar* arr[])
+wxString ArrToStr(size_t count, const char* arr[])
 {
 	return ArrToStr(wxArrayString(count, arr));
 }
 
 
 
-void CompareReadLines(size_t count, const wxChar* expected[], EReadTextFile criteria)
+void CompareReadLines(size_t count, const char* expected[], EReadTextFile criteria)
 {
 	CTextFile file;
 	ASSERT_FALSE(file.IsOpened());
 	ASSERT_TRUE(file.Eof());
 	for (size_t j = 0; j < ArraySize(g_filesDefault); ++j) {
-		CONTEXT(wxString(wxT("Checking file: ")) + g_filesDefault[j]);
+		CONTEXT(wxString("Checking file: ") + g_filesDefault[j]);
 
 		ASSERT_TRUE(file.Open(CPath(wxSTRINGIZE_T(SRCDIR)).JoinPaths(CPath(g_filesDefault[j])).GetRaw(), CTextFile::read));
 
@@ -65,83 +65,83 @@ TEST(TextFile, ReadLines)
 	ASSERT_TRUE(CPath::DirExists(wxSTRINGIZE_T(SRCDIR)));
 
 	{
-		CONTEXT(wxT("Checking default parameters"));
+		CONTEXT("Checking default parameters");
 
-		const wxChar* lines[] = {
-			wxT("abc"),
-			wxT("def ghi"),
-			wxT("xyz"),
+		const char* lines[] = {
+			"abc",
+			"def ghi",
+			"xyz",
 		};
 
 		CompareReadLines(ArraySize(lines), lines, txtReadDefault);
 	}
 
 	{
-		CONTEXT(wxT("Checking without criteria"));
+		CONTEXT("Checking without criteria");
 
-		const wxChar* lines[] = {
-			wxT(" # comment"),
-			wxT("abc"),
-			wxT("# foo bar"),
-			wxT(" "),
-			wxT("def ghi "),
-			wxT(""),
-			wxT("# xyz"),
-			wxT(" xyz"),
-			wxT(" "),
-			wxT("")
+		const char* lines[] = {
+			" # comment",
+			"abc",
+			"# foo bar",
+			" ",
+			"def ghi ",
+			"",
+			"# xyz",
+			" xyz",
+			" ",
+			""
 		};
 
 		CompareReadLines(ArraySize(lines), lines, (EReadTextFile)0);
 	}
 
 	{
-		CONTEXT(wxT("Checking txtIgnoreEmptyLines"));
+		CONTEXT("Checking txtIgnoreEmptyLines");
 
-		const wxChar* lines[] = {
-			wxT(" # comment"),
-			wxT("abc"),
-			wxT("# foo bar"),
-			wxT(" "),
-			wxT("def ghi "),
-			wxT("# xyz"),
-			wxT(" xyz"),
-			wxT(" "),
+		const char* lines[] = {
+			" # comment",
+			"abc",
+			"# foo bar",
+			" ",
+			"def ghi ",
+			"# xyz",
+			" xyz",
+			" ",
 		};
 
 		CompareReadLines(ArraySize(lines), lines, txtIgnoreEmptyLines);
 	}
 
 	{
-		CONTEXT(wxT("Checking txtIgnoreComments"));
+		CONTEXT("Checking txtIgnoreComments");
 
-		const wxChar* lines[] = {
-			wxT("abc"),
-			wxT(" "),
-			wxT("def ghi "),
-			wxT(""),
-			wxT(" xyz"),
-			wxT(" "),
-			wxT("")
+		const char* lines[] = {
+			"abc",
+			" ",
+			"def ghi ",
+			"",
+			" xyz",
+			" ",
+			""
 		};
 
 		CompareReadLines(ArraySize(lines), lines, txtIgnoreComments);
 	}
 
 	{
-		CONTEXT(wxT("Checking txtStripWhitespace"));
+		CONTEXT("Checking txtStripWhitespace");
 
-		const wxChar* lines[] = {
-			wxT("# comment"),
-			wxT("abc"),
-			wxT("# foo bar"),
-			wxT(""),
-			wxT("def ghi"),
-			wxT(""),
-			wxT("# xyz"),
-			wxT("xyz"),
-			wxT(""),
-			wxT("")
+		const char* lines[] = {
+			"# comment",
+			"abc",
+			"# foo bar",
+			"",
+			"def ghi",
+			"",
+			"# xyz",
+			"xyz",
+			"",
+			""
 		};
 
 		CompareReadLines(ArraySize(lines), lines, txtStripWhitespace);
@@ -153,13 +153,13 @@ class TextFileTest : public Test
 {
 public:
 	TextFileTest()
-		: Test(wxT("TextFile"), wxT("WriteLines"))
+		: Test("TextFile", "WriteLines")
 	{
 	}
 
 	virtual void setUp()
 	{
-		const CPath path = CPath(wxT("testfile.txt"));
+		const CPath path = CPath("testfile.txt");
 		if (path.FileExists()) {
 			ASSERT_TRUE(CPath::RemoveFile(path));
 		}
@@ -173,41 +173,41 @@ public:
 
 	virtual void run()
 	{
-		const wxChar* lines[] = {
-			wxT(" # comment"),
-			wxT("abc"),
-			wxT("# foo bar"),
-			wxT(" "),
-			wxT("def ghi "),
-			wxT(""),
-			wxT("# xyz"),
-			wxT(" xyz"),
-			wxT(" "),
-			wxT("")
+		const char* lines[] = {
+			" # comment",
+			"abc",
+			"# foo bar",
+			" ",
+			"def ghi ",
+			"",
+			"# xyz",
+			" xyz",
+			" ",
+			""
 		};
 
 		{
-			CONTEXT(wxT("Writing lines manually"));
+			CONTEXT("Writing lines manually");
 
 			CTextFile file;
-			ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::write));
+			ASSERT_TRUE(file.Open("testfile.txt", CTextFile::write));
 
 			for (size_t i = 0; i < ArraySize(lines); ++i) {
-				CONTEXT(wxString::Format(wxT("Writing the %i'th line."), static_cast<int>(i)));
+				CONTEXT(wxString::Format("Writing the %i'th line.", static_cast<int>(i)));
 
 				ASSERT_TRUE(file.WriteLine(lines[i]));
 			}
 		}
 
 		{
-			CONTEXT(wxT("Reading manually written lines"));
+			CONTEXT("Reading manually written lines");
 
 			CTextFile file;
-			ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::read));
+			ASSERT_TRUE(file.Open("testfile.txt", CTextFile::read));
 			ASSERT_FALSE(file.Eof());
 
 			for (size_t i = 0; i < ArraySize(lines); ++i) {
-				CONTEXT(wxString::Format(wxT("Reading the %i'th line."), static_cast<int>(i)));
+				CONTEXT(wxString::Format("Reading the %i'th line.", static_cast<int>(i)));
 
 				ASSERT_EQUALS(lines[i], file.GetNextLine());
 			}
@@ -215,26 +215,26 @@ public:
 		}
 
 		{
-			CONTEXT(wxT("Writing lines automatically"));
+			CONTEXT("Writing lines automatically");
 
 			CTextFile file;
 			ASSERT_FALSE(file.IsOpened());
-			ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::write));
+			ASSERT_TRUE(file.Open("testfile.txt", CTextFile::write));
 			ASSERT_TRUE(file.WriteLines(wxArrayString(ArraySize(lines), lines)));
 			ASSERT_TRUE(file.IsOpened());
 		}
 
 		{
-			CONTEXT(wxT("Reading automatically written lines"));
+			CONTEXT("Reading automatically written lines");
 
 			CTextFile file;
 			ASSERT_FALSE(file.IsOpened());
-			ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::read));
+			ASSERT_TRUE(file.Open("testfile.txt", CTextFile::read));
 			ASSERT_TRUE(file.IsOpened());
 			ASSERT_FALSE(file.Eof());
 
 			for (size_t i = 0; i < ArraySize(lines); ++i) {
-				CONTEXT(wxString::Format(wxT("Reading the %i'th line."), static_cast<int>(i)));
+				CONTEXT(wxString::Format("Reading the %i'th line.", static_cast<int>(i)));
 
 				ASSERT_EQUALS(lines[i], file.GetNextLine());
 			}

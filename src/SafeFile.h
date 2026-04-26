@@ -103,7 +103,7 @@ public:
 	 * the position and target buffer is left unchanged.
 	 *
 	 * However, it is also possible that the read will
-	 * fail due to IO errors (bad hardware, ect), in which
+	 * fail due to IO errors (bad hardware, etc), in which
 	 * case an CIOFailureException will be thrown.
 	 */
 	virtual void Read(void* buffer, size_t count) const;
@@ -147,7 +147,7 @@ public:
 	 * @return The resulting text-string.
 	 *
 	 * Note that when SafeRead is set to true, CSafeFileIO will crop the length
-	 * read from the lenght-field (see lenBytes), so that at most GetLength() -
+	 * read from the length-field (see lenBytes), so that at most GetLength() -
 	 * GetPosition() bytes are read.
 	 *
 	 * @see CSafeFileIO::Read
@@ -226,7 +226,7 @@ protected:
 	 * Note that the return value must be the actual number of bytes
 	 * read or written, with the exception that in case of errors, -1
 	 * may be returned. This is because the return value is used to
-	 * detect if the operation succeded.
+	 * detect if the operation succeeded.
 	 *
 	 * This function should not throw Either of the CSafeIOExceptions,
 	 * this is done by the CSafeFileIO::Read and the CSafeFileIO::Write

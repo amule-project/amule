@@ -53,7 +53,7 @@
 #include "UserEvents.h"
 #include "PlatformSpecific.h"		// Needed for PLATFORMSPECIFIC_CAN_PREVENT_SLEEP_MODE
 
-BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
+wxBEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	// Events
 #define USEREVENTS_EVENT(ID, NAME, VARS) \
 	EVT_CHECKBOX(USEREVENTS_FIRST_ID + CUserEvents::ID * USEREVENTS_IDS_PER_EVENT + 1,	PrefsUnifiedDlg::OnCheckBoxChange) \
@@ -132,24 +132,24 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 
 	EVT_CLOSE(PrefsUnifiedDlg::OnClose)
 
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 /**
  * Creates an command-event for the given checkbox.
  *
  * This can be used enforce logical constraints by passing by
- * sending a check-box event for each checkbox, when transfering
+ * sending a check-box event for each checkbox, when transferring
  * to the UI. However, it should also be used for checkboxes that
  * have no side-effects other than enabling/disabling other
  * widgets in the preferences dialogs.
  */
-void SendCheckBoxEvent(wxWindow* parent, int id)
+static void SendCheckBoxEvent(wxWindow* parent, int id)
 {
 	wxCheckBox* widget = CastByID(id, parent, wxCheckBox);
-	wxCHECK_RET(widget, wxT("Invalid widget in CreateEvent"));
+	wxCHECK_RET(widget, "Invalid widget in CreateEvent");
 
-	wxCommandEvent evt(wxEVT_COMMAND_CHECKBOX_CLICKED, id);
+	wxCommandEvent evt(wxEVT_CHECKBOX, id);
 	evt.SetInt(widget->IsChecked() ? 1 : 0);
 
 	parent->GetEventHandler()->ProcessEvent(evt);
@@ -207,7 +207,7 @@ wxDialog(parent, -1, _("Preferences"),
 
 	// Add the single column used
 	m_PrefsIcons->InsertColumn(
-		0, wxEmptyString, wxLIST_FORMAT_LEFT,
+		0, "", wxLIST_FORMAT_LEFT,
 		m_PrefsIcons->GetSize().GetWidth()-5);
 
 	// Temp variables for finding the smallest height and width needed
@@ -239,7 +239,7 @@ wxDialog(parent, -1, _("Preferences"),
 		}
 
 		// Add it to the sizer
-		prefs_sizer->Add(Widget, 0, wxGROW|wxEXPAND);
+		prefs_sizer->Add(Widget, wxSizerFlags().Expand().Expand());
 
 		if (pages[i].m_function == PreferencesGeneralTab) {
 			// This must be done now or pages won't Fit();
@@ -256,11 +256,11 @@ wxDialog(parent, -1, _("Preferences"),
 			#endif
 		} else if (pages[i].m_function == PreferencesEventsTab) {
 
-#define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	+ wxString(wxT("\n  %") VAR wxT(" - ")) + wxGetTranslation(DESC)
-#define USEREVENTS_EVENT(ID, NAME, VARS) case CUserEvents::ID: CreateEventPanels(idx, wxEmptyString VARS, Widget); break;
+#define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	+ wxString("\n  %" VAR " - ") + wxGetTranslation(DESC)
+#define USEREVENTS_EVENT(ID, NAME, VARS) case CUserEvents::ID: CreateEventPanels(idx, "" VARS, Widget); break;
 
 			wxListCtrl *list = CastChild(IDC_EVENTLIST, wxListCtrl);
-			list->InsertColumn(0, wxEmptyString);
+			list->InsertColumn(0, "");
 			for (unsigned int idx = 0; idx < CUserEvents::GetCount(); ++idx) {
 				long lidx = list->InsertItem(idx,
 					wxGetTranslation(CUserEvents::GetDisplayName(
@@ -272,7 +272,7 @@ wxDialog(parent, -1, _("Preferences"),
 						USEREVENTS_EVENTLIST()
 						/* This macro expands to handle all user event types. Here is an example:
 						   case CUserEvents::NewChatSession: {
-						       CreateEventPanels(idx, wxString(wxT("\n %SENDER - ")) + wxTRANSLATE("Message sender."), Widget);
+						       CreateEventPanels(idx, wxString("\n %SENDER - ") + wxTRANSLATE("Message sender."), Widget);
 						       break;
 						   } */
 					}
@@ -325,7 +325,7 @@ wxDialog(parent, -1, _("Preferences"),
 
 	// Default to the General tab
 	m_CurrentPanel = DefaultWidget;
-	prefs_sizer->Add(DefaultWidget, 0, wxGROW|wxEXPAND);
+	prefs_sizer->Add(DefaultWidget, wxSizerFlags().Expand().Expand());
 	m_CurrentPanel->Show( true );
 
 	// Select the first item
@@ -625,7 +625,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	// Force port checking
 	thePrefs::SetPort(thePrefs::GetPort());
 
-	if ((CPath::GetFileSize(thePrefs::GetConfigDir() + wxT("addresses.dat")) == 0) &&
+	if ((CPath::GetFileSize(thePrefs::GetConfigDir() + "addresses.dat") == 0) &&
 		CastChild(IDC_AUTOSERVER, wxCheckBox)->IsChecked() ) {
 		thePrefs::UnsetAutoServerStart();
 		wxMessageBox(_("Your Auto-update server list is empty.\n'Auto-update server list at startup' will be disabled."),
@@ -851,7 +851,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 
 		case IDC_AUTOSERVER:
-			if ((CPath::GetFileSize(thePrefs::GetConfigDir() + wxT("addresses.dat")) == 0) &&
+			if ((CPath::GetFileSize(thePrefs::GetConfigDir() + "addresses.dat") == 0) &&
 				CastChild(event.GetId(), wxCheckBox)->IsChecked() ) {
 				wxMessageBox(_("Your Auto-update servers list is in blank.\nPlease fill in at least one URL to point to a valid server.met file.\nClick on the button \"List\" by this checkbox to enter an URL."),
 					_("Message"), wxOK | wxICON_INFORMATION);
@@ -860,7 +860,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 
 		case IDC_MSGFILTER:
-			// Toogle All filter options
+			// Toggle All filter options
 			FindWindow(IDC_MSGFILTER_ALL)->Enable(value);
 			FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(value);
 			FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(value);
@@ -874,7 +874,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 
 		case IDC_MSGFILTER_ALL:
-			// Toogle filtering by data.
+			// Toggle filtering by data.
 			FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(!value);
 			FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(!value);
 			FindWindow(IDC_MSGFILTER_WORD)->Enable(!value);
@@ -887,7 +887,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 
 		case IDC_MSGFILTER_WORD:
-			// Toogle filter word list.
+			// Toggle filter word list.
 			FindWindow(IDC_MSGWORD)->Enable(value);
 			break;
 
@@ -924,6 +924,10 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 				theApp->amuledlg->RemoveSystray();
 			}
 			thePrefs::SetUseTrayIcon(value);
+			break;
+
+		case IDC_NOTIF:
+			FindWindow(IDC_NOTIF)->Enable(value);
 			break;
 
 		case ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY:
@@ -1048,13 +1052,13 @@ void PrefsUnifiedDlg::OnButtonBrowseApplication(wxCommandEvent& event)
 	}
 	wxString wildcard = CFormat(_("Executable%s"))
 #ifdef __WINDOWS__
-		% wxT(" (*.exe)|*.exe");
+		% " (*.exe)|*.exe";
 #else
-		% wxT("|*");
+		% "|*";
 #endif
 
-	wxString str = wxFileSelector( title, wxEmptyString, wxEmptyString,
-		wxEmptyString, wildcard, 0, this );
+	wxString str = wxFileSelector( title, "", "",
+		"", wildcard, 0, this );
 
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = CastChild( id, wxTextCtrl );
@@ -1065,7 +1069,7 @@ void PrefsUnifiedDlg::OnButtonBrowseApplication(wxCommandEvent& event)
 
 void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString fullpath( thePrefs::GetConfigDir() + wxT("addresses.dat") );
+	wxString fullpath( thePrefs::GetConfigDir() + "addresses.dat" );
 
 	EditServerListDlg* test = new EditServerListDlg(this, _("Edit server list"),
 		_("Add here URL's to download server.met files.\nOnly one url on each line."),
@@ -1098,7 +1102,7 @@ void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
 		CastChild(IDC_SHARESELECTOR, CDirectoryTreeCtrl)->Init();
 	}
 
-	prefs_sizer->Add( m_CurrentPanel, 0, wxGROW|wxEXPAND );
+	prefs_sizer->Add( m_CurrentPanel, wxSizerFlags().Expand().Expand());
 	m_CurrentPanel->Show( true );
 
 	Layout();
@@ -1239,43 +1243,43 @@ void PrefsUnifiedDlg::CreateEventPanels(const int idx, const wxString& vars, wxW
 	wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
 
 	wxCheckBox *item9 = new wxCheckBox( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 1, _("Enable command execution on core"), wxDefaultPosition, wxDefaultSize, 0 );
-	item7->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+	item7->Add( item9, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT, 5) );
 
 	wxFlexGridSizer *item10 = new wxFlexGridSizer( 3, 0, 0 );
 	item10->AddGrowableCol( 2 );
 
-	item10->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 0 );
+	item10->Add( 20, 20, wxSizerFlags().Center() );
 
 	wxStaticText *item11 = new wxStaticText( parent, -1, _("Core command:"), wxDefaultPosition, wxDefaultSize, 0 );
-	item10->Add( item11, 0, wxALIGN_CENTER|wxALL, 5 );
+	item10->Add( item11, wxSizerFlags().Center().Border(wxALL, 5) );
 
-	wxTextCtrl *item12 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 2, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+	wxTextCtrl *item12 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 2, "", wxDefaultPosition, wxDefaultSize, 0 );
 	item12->Enable(CUserEvents::IsCoreCommandEnabled(static_cast<enum CUserEvents::EventType>(idx)));
-	item10->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	item10->Add( item12, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
 
-	item7->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+	item7->Add( item10, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 0) );
 
 	wxCheckBox *item14 = new wxCheckBox( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 3, _("Enable command execution on GUI"), wxDefaultPosition, wxDefaultSize, 0 );
-	item7->Add( item14, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+	item7->Add( item14, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT, 5) );
 
 	wxFlexGridSizer *item15 = new wxFlexGridSizer( 3, 0, 0 );
 	item15->AddGrowableCol( 2 );
 
-	item15->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 0 );
+	item15->Add( 20, 20, wxSizerFlags().Center() );
 
 	wxStaticText *item16 = new wxStaticText( parent, -1, _("GUI command:"), wxDefaultPosition, wxDefaultSize, 0 );
-	item15->Add( item16, 0, wxALIGN_CENTER|wxALL, 5 );
+	item15->Add( item16, wxSizerFlags().Center().Border(wxALL, 5) );
 
-	wxTextCtrl *item17 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 4, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+	wxTextCtrl *item17 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 4, "", wxDefaultPosition, wxDefaultSize, 0 );
 	item17->Enable(CUserEvents::IsGUICommandEnabled(static_cast<enum CUserEvents::EventType>(idx)));
-	item15->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	item15->Add( item17, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
 
-	item7->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+	item7->Add( item15, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 0) );
 
 	wxStaticText *item13 = new wxStaticText( parent, -1, _("The following variables will be replaced:") + vars, wxDefaultPosition, wxDefaultSize, 0 );
-	item7->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	item7->Add( item13, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
 
-	IDC_PREFS_EVENTS_PAGE->Add(item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+	IDC_PREFS_EVENTS_PAGE->Add(item7, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5));
 
 	IDC_PREFS_EVENTS_PAGE->Layout();
 	IDC_PREFS_EVENTS_PAGE->Hide(idx + 1);

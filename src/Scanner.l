@@ -29,12 +29,14 @@ extern int yyerror(wxString errstr);
 #define	YY_INPUT			ReadLexBuff
 #define	YY_FATAL_ERROR		FatalLexError
 
-static void ReadLexBuff(char* pcBuff, size_t& riResult, size_t uMaxSize);
 static void ReadLexBuff(char* pcBuff, int& riResult, size_t uMaxSize);
 static void FatalLexError(yyconst char msg[]);
 
 static char* _pszLexBuff;
 static char* _pszLexStr;
+
+void LexInit(const wxString& pszInput);
+void LexFree();
 
 %}
 
@@ -68,7 +70,7 @@ keywordchar		[^ \"()]
 					{
 						if (c == EOF || c == '\n'){
 							unput(c);
-							yyerror(wxT("Search expression error: unterminated string"));
+							yyerror("Search expression error: unterminated string");
 							break;
 						}
 						if (c == '\\'){		/*Escape sequence*/
@@ -168,7 +170,7 @@ keywordchar		[^ \"()]
 
 %%
 
-static void ReadLexBuff(char* pcBuff, size_t& riResult, size_t uMaxSize)
+static void ReadLexBuff(char* pcBuff, int& riResult, size_t uMaxSize)
 {
 	wxASSERT( _pszLexBuff != NULL );
 
@@ -179,16 +181,9 @@ static void ReadLexBuff(char* pcBuff, size_t& riResult, size_t uMaxSize)
 	wxASSERT( sizeof(YY_CHAR) == sizeof(char) );
 	size_t uCharsInBuff = strlen(_pszLexBuff);
 	size_t uCharsRead = min(uMaxSize, uCharsInBuff);
-	riResult = uCharsRead;
+	riResult = (int)uCharsRead; // safe: value is always <= YY_READ_BUF_SIZE (8192)
 	memcpy(pcBuff, _pszLexBuff, uCharsRead);
 	_pszLexBuff += uCharsRead;
-}
-
-static void ReadLexBuff(char* pcBuff, int& riResult, size_t uMaxSize)
-{
-	size_t st_result = static_cast<size_t>(riResult);
-	ReadLexBuff(pcBuff, st_result, uMaxSize);
-	riResult = static_cast<int>(st_result);
 }
 
 static void FatalLexError(yyconst char msg[])
@@ -221,12 +216,6 @@ void LexFree()
 	yy_did_buffer_switch_on_eof = 0;
 	yy_last_accepting_state = 0;
 	yy_last_accepting_cpos = NULL;
-
-#if YY_STACK_USED
-	yy_start_stack_ptr = 0;
-	yy_start_stack_depth = 0;
-	yy_start_stack = NULL;
-#endif
 
 	free(_pszLexStr);
 }

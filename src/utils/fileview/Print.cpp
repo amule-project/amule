@@ -60,7 +60,7 @@ wxString MakePrintableString(const wxString& s)
 		}
 	}
 
-	wxString retval = wxT("\"");
+	wxString retval = "\"";
 
 	if (GetStringsMode() == SD_DISPLAY) {
 		retval += str;
@@ -74,14 +74,14 @@ wxString MakePrintableString(const wxString& s)
 			if (GetStringsMode() == SD_NONE ? ((unsigned)str[i] >= ' ' && (unsigned)str[i] <= 0x7f) : std::isprint(str[i])) {
 				retval += str[i];
 			} else if (c <= 0xff) {
-				retval += wxString::Format(wxT("\\x%02x"), str[i]);
+				retval += wxString::Format("\\x%02x", str[i]);
 			} else {
-				retval += wxString::Format(wxT("\\u%04x"), str[i]);
+				retval += wxString::Format("\\u%04x", str[i]);
 			}
 		}
 	}
 
-	retval += wxT("\"");
+	retval += "\"";
 	return retval;
 }
 
@@ -108,13 +108,13 @@ std::ostream& operator<<(std::ostream& x, const CeD2kIP& ip)
 static inline wxString TagNameString(const wxString& name)
 {
 	if (name.length() == 1) {
-		return wxString::Format(wxT("\"\\x%02x\""), name[0]);
+		return wxString::Format("\"\\x%02x\"", name[0]);
 	} else if (name.length() > 1) {
 		if (name[0] == FT_GAPSTART || name[0] == FT_GAPEND) {
-			return wxString::Format(wxT("\"\\x%02x"), name[0]) + name.substr(1) + wxT("\"");
+			return wxString::Format("\"\\x%02x", name[0]) + name.substr(1) + "\"";
 		}
 	}
-	return wxT("\"") + name + wxT("\"");
+	return "\"" + name + "\"";
 }
 
 #define TEST_VALUE(VALUE)	if (value == VALUE) return #VALUE; else
@@ -296,13 +296,13 @@ class CFlagDecoder
 		while (flags) {
 			if (flags & 1) {
 				if (!result.empty()) {
-					result += wxT(" | ");
+					result += " | ";
 				}
 				FlagMap::const_iterator it = m_flags.find(cur_flag);
 				if (it != m_flags.end()) {
 					result += wxString::FromAscii(it->second);
 				} else {
-					result += wxString::Format(wxT("%#x"), cur_flag);
+					result += wxString::Format("%#x", cur_flag);
 				}
 			}
 			cur_flag <<= 1;
@@ -331,7 +331,7 @@ std::ostream& operator<<(std::ostream& out, const CTag& tag)
 			if (gap_mark == FT_GAPSTART || gap_mark == FT_GAPEND) {
 				unsigned long gapkey;
 				if (tag.GetName().Mid(1).ToULong(&gapkey)) {
-					out << DecodeTagNameID(gap_mark) << wxString::Format(wxT("[%lu]"), gapkey);
+					out << DecodeTagNameID(gap_mark) << wxString::Format("[%lu]", gapkey);
 					name_decoded = true;
 				}
 			}
@@ -394,9 +394,9 @@ std::ostream& operator<<(std::ostream& out, const CTag& tag)
 	} else if (tag.IsHash()) {
 		out << tag.GetHash();
 	} else if (tag.IsBlob()) {
-		out << wxString::Format(wxT("(size = %u)"), tag.GetBlobSize());
+		out << wxString::Format("(size = %u)", tag.GetBlobSize());
 	} else if (tag.IsBsob()) {
-		out << wxString::Format(wxT("(size = %u)"), tag.GetBsobSize());
+		out << wxString::Format("(size = %u)", tag.GetBsobSize());
 	} else {
 		out << "(...)";
 	}
@@ -451,9 +451,9 @@ std::ostream& operator<<(std::ostream& out, const CServerTag& tag)
 	} else if (tag.IsHash()) {
 		out << tag.GetHash();
 	} else if (tag.IsBlob()) {
-		out << wxString::Format(wxT("(size = %u)"), tag.GetBlobSize());
+		out << wxString::Format("(size = %u)", tag.GetBlobSize());
 	} else if (tag.IsBsob()) {
-		out << wxString::Format(wxT("(size = %u)"), tag.GetBsobSize());
+		out << wxString::Format("(size = %u)", tag.GetBsobSize());
 	} else {
 		out << "(...)";
 	}
@@ -479,9 +479,9 @@ std::ostream& operator<<(std::ostream& out, const CFriendTag& tag)
 	} else if (tag.IsHash()) {
 		out << tag.GetHash();
 	} else if (tag.IsBlob()) {
-		out << wxString::Format(wxT("(size = %u)"), tag.GetBlobSize());
+		out << wxString::Format("(size = %u)", tag.GetBlobSize());
 	} else if (tag.IsBsob()) {
-		out << wxString::Format(wxT("(size = %u)"), tag.GetBsobSize());
+		out << wxString::Format("(size = %u)", tag.GetBsobSize());
 	} else {
 		out << "(...)";
 	}

@@ -23,17 +23,33 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifdef HAVE_CONFIG_H
-#	include "config.h"		// Needed for ENABLE_UPNP
-#endif
+#include "config.h"		// Needed for ENABLE_UPNP
 
 #ifdef ENABLE_UPNP
 
 // check for broken Debian-hacked libUPnP
 #include <upnp.h>
-#ifdef STRING_H			// defined in UpnpString.h Yes, I would have liked UPNPSTRING_H much better.
+#ifdef STRING_H				// defined in UpnpString.h Yes, I would have liked UPNPSTRING_H much better.
 #define BROKEN_DEBIAN_LIBUPNP
 #endif
+
+/* Fix for broken UPNP_VERSION macro */
+#if UPNP_VERSION_MAJOR == 17
+
+#undef UPNP_VERSION_MAJOR
+#undef UPNP_VERSION_MINOR
+#undef UPNP_VERSION_PATCH
+#undef UPNP_VERSION
+
+#define UPNP_VERSION_MAJOR 1
+#define UPNP_VERSION_MINOR 14
+#define UPNP_VERSION_PATCH 18
+#define UPNP_VERSION (\
+	(UPNP_VERSION_MAJOR * 10000) + \
+	(UPNP_VERSION_MINOR * 100) + \
+	(UPNP_VERSION_PATCH))
+
+#endif /* UPNP_MAJOR_VERSION == 17 */
 
 #include "UPnPBase.h"
 
@@ -63,7 +79,7 @@ const char s_deviceList[] = "deviceList";
 /**
  * Case insensitive std::string comparison
  */
-bool stdStringIsEqualCI(const std::string &s1, const std::string &s2)
+static bool stdStringIsEqualCI(const std::string &s1, const std::string &s2)
 {
 	std::string ns1(s1);
 	std::string ns2(s2);
@@ -110,7 +126,7 @@ namespace Service {
 }
 
 static std::string ProcessErrorMessage(
-	const std::string &messsage,
+	const std::string &message,
 	int errorCode,
 	const DOMString errorString,
 	IXML_Document *doc)
@@ -121,7 +137,7 @@ static std::string ProcessErrorMessage(
 	}
 	if (errorCode > 0) {
 		msg << "Error: " <<
-			messsage <<
+			message <<
 			": Error code :'";
 		if (doc) {
 			CUPnPError e(doc);
@@ -138,7 +154,7 @@ static std::string ProcessErrorMessage(
 		AddDebugLogLineN(logUPnP, msg);
 	} else {
 		msg << "Error: " <<
-			messsage <<
+			message <<
 			": UPnP SDK error: " <<
 			UpnpGetErrorMessage(errorCode) <<
 			" (" << errorCode << ").";
@@ -824,13 +840,17 @@ m_WanService(NULL)
 	// Null string at first
 	std::ostringstream msg;
 
+	// Declare those here to avoid 
+	// "jump to label ‘error’ [-fpermissive] crosses initialization
+	// of ‘char* ipAddress’"
+	unsigned short port;
+	char *ipAddress;
+
 	// Start UPnP
 	int ret;
-	char *ipAddress = NULL;
-	unsigned short port = 0;
-	ret = UpnpInit(ipAddress, udpPort);
+	ret = UpnpInit2(0, udpPort);
 	if (ret != UPNP_E_SUCCESS) {
-		msg << "error(UpnpInit): Error code ";
+		msg << "error(UpnpInit2): Error code ";
 		goto error;
 	}
 	port = UpnpGetServerPort();
@@ -1127,7 +1147,13 @@ bool CUPnPControlPoint::PrivateDeletePortMapping(
 
 
 // This function is static
-#if UPNP_VERSION >= 10800
+#if UPNP_VERSION >= 11800
+int CUPnPControlPoint::Callback(Upnp_EventType_e EventType, void *Event, void * /*Cookie*/)
+#elif UPNP_VERSION >= 11430
+int CUPnPControlPoint::Callback(Upnp_EventType_e EventType, const void *Event, void * /*Cookie*/)
+#elif UPNP_VERSION >= 11426
+int CUPnPControlPoint::Callback(Upnp_EventType_e EventType, void *Event, void * /*Cookie*/)
+#elif UPNP_VERSION >= 10800
 int CUPnPControlPoint::Callback(Upnp_EventType_e EventType, const void *Event, void * /*Cookie*/)
 #else
 int CUPnPControlPoint::Callback(Upnp_EventType EventType, void *Event, void * /*Cookie*/)
@@ -1288,7 +1314,7 @@ upnpDiscovery:
 	}
 	case UPNP_EVENT_RECEIVED: {
 		//fprintf(stderr, "Callback: UPNP_EVENT_RECEIVED\n");
-		// Event reveived
+		// Event received
 #if UPNP_VERSION >= 10800
 		UpnpEvent *e_event = (UpnpEvent *)Event;
 		int eventKey = UpnpEvent_get_EventKey(e_event);
@@ -1528,7 +1554,7 @@ eventSubscriptionRequest:
 		AddDebugLogLineC(logUPnP, msg);
 		break;
 	default:
-		// Humm, this is not good, we forgot to handle something...
+		// Hum, this is not good, we forgot to handle something...
 		fprintf(stderr,
 			"Callback: default... Unknown event:'%d', not good.\n",
 			EventType);
@@ -1641,7 +1667,7 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 		msg.str("");
 
 		// Now try to subscribe to this service. If the subscription
-		// is not successfull, we will not be notified about events,
+		// is not successful, we will not be notified about events,
 		// but it may be possible to use the service anyway.
 		errcode = UpnpSubscribe(m_UPnPClientHandle,
 			service.GetAbsEventSubURL().c_str(),

@@ -61,7 +61,7 @@ void CBarShader::SetHeight(unsigned height)
 	if( m_Height != height ) {
 		m_Height = height;
 
-		// Reset the modifers
+		// Reset the modifiers
 		if ( m_Modifiers ) {
 			delete[] m_Modifiers;
 			m_Modifiers = NULL;
@@ -90,7 +90,7 @@ void CBarShader::Set3dDepth(unsigned depth)
 	if ( m_used3dlevel != depth ) {
 		m_used3dlevel = depth;
 
-		// Reset the modifers
+		// Reset the modifiers
 		if ( m_Modifiers ) {
 			delete[] m_Modifiers;
 			m_Modifiers = NULL;

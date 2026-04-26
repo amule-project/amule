@@ -31,9 +31,9 @@
 
 #include "EditServerListDlg.h"	// Interface declarations
 
-BEGIN_EVENT_TABLE(EditServerListDlg, wxDialog)
+wxBEGIN_EVENT_TABLE(EditServerListDlg, wxDialog)
     EVT_BUTTON(wxID_OK, EditServerListDlg::OnOK)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 EditServerListDlg::EditServerListDlg(wxWindow *parent,
@@ -51,13 +51,13 @@ EditServerListDlg::EditServerListDlg(wxWindow *parent,
 
   topsizer->Add( CreateTextSizer( message ), 0, wxALL, 10 );
 
-  m_textctrl = new wxTextCtrl(this, -1, wxEmptyString,
+  m_textctrl = new wxTextCtrl(this, -1, "",
 			      wxDefaultPosition,
 			      wxDefaultSize,
 			      wxTE_MULTILINE);
-  topsizer->Add( m_textctrl, 1, wxEXPAND | wxLEFT|wxRIGHT, 15 );
+  topsizer->Add( m_textctrl, wxSizerFlags(1).Expand().Border(wxLEFT|wxRIGHT, 15) );
 
-  topsizer->Add( CreateButtonSizer( wxOK | wxCANCEL ), 0, wxCENTRE | wxALL, 10 );
+  topsizer->Add( CreateButtonSizer( wxOK | wxCANCEL ), wxSizerFlags().Center().Border(wxALL, 10) );
 
   SetAutoLayout( TRUE );
   SetSizer( topsizer );
@@ -81,6 +81,6 @@ void EditServerListDlg::OnOK(wxCommandEvent& WXUNUSED(event) )
 	if (m_textctrl->SaveFile(m_file))
 		EndModal(1);
 	else
-		wxLogSysError(wxT("Can't write to file '") +  m_file + wxT("'"));
+		wxLogSysError("Can't write to file '" +  m_file + "'");
 }
 // File_checked_for_headers

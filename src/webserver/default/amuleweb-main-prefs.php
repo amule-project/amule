@@ -123,7 +123,7 @@ var initvals = new Object;
 		);
 		$conn_opts = array("max_line_up_cap","max_up_limit",
 			"max_line_down_cap","max_down_limit", "slot_alloc", 
-			"tcp_port","udp_dis","max_file_src","max_conn_total","autoconn_en");
+			"tcp_port","udp_port","udp_dis","max_file_src","max_conn_total","autoconn_en","reconn_en");
 		$webserver_opts = array("use_gzip", "autorefresh_time");
 		
 		$all_opts;

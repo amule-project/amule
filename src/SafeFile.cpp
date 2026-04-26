@@ -31,6 +31,7 @@
 #include <common/Format.h>		// Needed for CFormat
 #include "CompilerSpecific.h"		// Needed for __FUNCTION__
 
+#include <cstring>              // For std::memcpy
 
 #define CHECK_BOM(size, x) ((size >= 3)  && (x[0] == (char)0xEF) && (x[1] == (char)0xBB) && (x[2] == (char)0xBF))
 
@@ -38,18 +39,18 @@ const char BOMHeader[3] = { '\xEF', '\xBB', '\xBF'};
 
 
 CSafeIOException::CSafeIOException(const wxString& type, const wxString& desc)
-	: CMuleException(wxT("SafeIO::") + type, desc) {}
+	: CMuleException("SafeIO::" + type, desc) {}
 
 
 CEOFException::CEOFException(const wxString& desc)
-	: CSafeIOException(wxT("EOF"), desc) {}
+	: CSafeIOException("EOF", desc) {}
 
 
 CIOFailureException::CIOFailureException(const wxString& desc)
-	: CSafeIOException(wxT("IOFailure"), desc) {}
+	: CSafeIOException("IOFailure", desc) {}
 
 CIOFailureException::CIOFailureException(const wxString& type, const wxString& desc)
-	: CSafeIOException(wxT("IOFailure::") + type, desc) {}
+	: CSafeIOException("IOFailure::" + type, desc) {}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -69,7 +70,7 @@ bool CFileDataIO::Eof() const
 
 void CFileDataIO::Read(void *buffer, size_t count) const
 {
-	MULE_VALIDATE_PARAMS(buffer, wxT("Attempting to write to NULL buffer."));
+	MULE_VALIDATE_PARAMS(buffer, "Attempting to write to NULL buffer.");
 
 	// Check that we read everything we wanted.
 	if (doRead(buffer, count) == (signed)count) {
@@ -78,19 +79,19 @@ void CFileDataIO::Read(void *buffer, size_t count) const
 
 	// To reduce potential system calls, we only do EOF checks when reads fail.
 	if (Eof()) {
-		throw CEOFException(wxT("Attempt to read past end of file."));
+		throw CEOFException("Attempt to read past end of file.");
 	} else {
-		throw CIOFailureException(wxT("Read error, failed to read from file."));
+		throw CIOFailureException("Read error, failed to read from file.");
 	}
 }
 
 
 void CFileDataIO::Write(const void* buffer, size_t count)
 {
-	MULE_VALIDATE_PARAMS(buffer, wxT("Attempting to read from NULL buffer."));
+	MULE_VALIDATE_PARAMS(buffer, "Attempting to read from NULL buffer.");
 
 	if (doWrite(buffer, count) != (signed)count) {
-		throw CIOFailureException(wxT("Write error, failed to write to file."));
+		throw CIOFailureException("Write error, failed to write to file.");
 	}
 }
 
@@ -112,14 +113,14 @@ uint64 CFileDataIO::Seek(sint64 offset, wxSeekMode from) const
 			break;
 
 		default:
-			MULE_VALIDATE_PARAMS(false, wxT("Invalid seek-mode specified."));
+			MULE_VALIDATE_PARAMS(false, "Invalid seek-mode specified.");
 	}
 
-	MULE_VALIDATE_PARAMS(newpos >= 0, wxT("Position after seeking would be less than zero!"));
+	MULE_VALIDATE_PARAMS(newpos >= 0, "Position after seeking would be less than zero!");
 
 	sint64 result = doSeek(newpos);
-	MULE_VALIDATE_STATE(result >= 0, wxT("Seeking resulted in invalid offset."));
-	MULE_VALIDATE_STATE(result == newpos, wxT("Target position and actual position disagree."));
+	MULE_VALIDATE_STATE(result >= 0, "Seeking resulted in invalid offset.");
+	MULE_VALIDATE_STATE(result == newpos, "Target position and actual position disagree.");
 
 	return result;
 }
@@ -189,13 +190,17 @@ float CFileDataIO::ReadFloat() const
 {
 	float retVal;
 	Read(&retVal, sizeof(float));
+	uint32_t toswap{};
+	std::memcpy(&toswap, &retVal, sizeof(toswap));
+	toswap = ENDIAN_SWAP_32(toswap);
+	std::memcpy(&retVal, &toswap, sizeof(retVal));
 	return retVal;
 }
 
 
 unsigned char* CFileDataIO::ReadBsob(uint8* puSize) const
 {
-	MULE_VALIDATE_PARAMS(puSize, wxT("NULL pointer argument in ReadBsob"));
+	MULE_VALIDATE_PARAMS(puSize, "NULL pointer argument in ReadBsob");
 
 	*puSize = ReadUInt8();
 
@@ -214,7 +219,7 @@ wxString CFileDataIO::ReadString(bool bOptUTF8, uint8 SizeLen, bool SafeRead) co
 		case sizeof(uint32):	readLen = ReadUInt32();	break;
 
 		default:
-			MULE_VALIDATE_PARAMS(false, wxT("Invalid SizeLen value in ReadString"));
+			MULE_VALIDATE_PARAMS(false, "Invalid SizeLen value in ReadString");
 	}
 
 	if (SafeRead) {
@@ -306,6 +311,10 @@ void CFileDataIO::WriteHash(const CMD4Hash& value)
 
 void CFileDataIO::WriteFloat(float value)
 {
+	uint32_t toswap{};
+	std::memcpy(&toswap, &value, sizeof(toswap));
+	toswap = ENDIAN_SWAP_32(toswap);
+	std::memcpy(&value, &toswap, sizeof(value));
 	Write(&value, sizeof(float));
 }
 
@@ -359,7 +368,7 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 			// us, by sending ISO8859-1 strings that expand to a
 			// greater than 16b length when converted as UTF-8.
 			if (real_length > 0xFFFF) {
-				wxFAIL_MSG(wxT("String is too long to be saved"));
+				wxFAIL_MSG("String is too long to be saved");
 
 				real_length = std::min<uint32>(real_length, 0xFFFF);
 				if (eEncode == utf8strOptBOM) {
@@ -377,7 +386,7 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 			break;
 
 		default:
-			MULE_VALIDATE_PARAMS(false, wxT("Invalid length for string-length field."));
+			MULE_VALIDATE_PARAMS(false, "Invalid length for string-length field.");
 	}
 
 	// The BOM header must be written even if the string is empty.
@@ -397,7 +406,7 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 {
 	CTag *retVal = NULL;
 	wxString name;
-	byte type = 0;
+	uint8_t type = 0;
 	try {
 		type = ReadUInt8();
 		name = ReadString(false);
@@ -407,7 +416,7 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 			// NOTE: This tag data type is accepted and stored only to give us the possibility to upgrade
 			// the net in some months.
 			//
-			// And still.. it doesnt't work this way without breaking backward compatibility. To properly
+			// And still.. it doesn't work this way without breaking backward compatibility. To properly
 			// do this without messing up the network the following would have to be done:
 			//	 -	those tag types have to be ignored by any client, otherwise those tags would also be sent (and
 			//		that's really the problem)
@@ -456,7 +465,7 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 			// NOTE: This tag data type is accepted and stored only to give us the possibility to upgrade
 			// the net in some months.
 			//
-			// And still.. it doesnt't work this way without breaking backward compatibility
+			// And still.. it doesn't work this way without breaking backward compatibility
 			case TAGTYPE_BSOB:
 			{
 				uint8 size = 0;
@@ -467,7 +476,7 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 			}
 
 			default:
-				throw wxString(CFormat(wxT("Invalid Kad tag type; type=0x%02x name=%s\n")) % type % name);
+				throw wxString(CFormat("Invalid Kad tag type; type=0x%02x name=%s\n") % type % name);
 		}
 	} catch(const CMuleException& e) {
 		AddLogLineN(e.what());
@@ -484,7 +493,7 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 
 void CFileDataIO::ReadTagPtrList(TagPtrList* taglist, bool bOptACP) const
 {
-	MULE_VALIDATE_PARAMS(taglist, wxT("NULL pointer argument in ReadTagPtrList"));
+	MULE_VALIDATE_PARAMS(taglist, "NULL pointer argument in ReadTagPtrList");
 
 	uint32 count = ReadUInt8();
 	for (uint32 i = 0; i < count; i++)
@@ -544,12 +553,12 @@ void CFileDataIO::WriteTag(const CTag& tag)
 			default:
 				//TODO: Support more tag types
 				// With the if above, this should NEVER happen.
-				AddLogLineNS(CFormat(wxT("CFileDataIO::WriteTag: Unknown tag: type=0x%02X")) % tag.GetType());
+				AddLogLineNS(CFormat("CFileDataIO::WriteTag: Unknown tag: type=0x%02X") % tag.GetType());
 				wxFAIL;
 				break;
 		}
 	} catch (...) {
-		AddLogLineNS(wxT("Exception in CDataIO:WriteTag"));
+		AddLogLineNS("Exception in CDataIO:WriteTag");
 		throw;
 	}
 }
@@ -592,7 +601,7 @@ uint64 CFileDataIO::GetIntTagValue() const {
 			break;
 
 		default:
-			throw wxString(wxT("Wrong tag type reading int tag"));
+			throw wxString("Wrong tag type reading int tag");
 	}
 }
 // File_checked_for_headers

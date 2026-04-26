@@ -28,11 +28,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"             // Needed for PACKAGE
-#else
-#define PACKAGE "amule"
-#endif
+#include "config.h"			// Needed for PACKAGE
 
 #include <wx/config.h>
 #include <wx/image.h>
@@ -51,7 +47,7 @@ WxCas::OnInit ()
 {
 	// Used to tell wxCas to use aMule catalog
 	m_locale.Init();
-	m_locale.AddCatalog( wxT( PACKAGE ) );
+	m_locale.AddCatalog( PACKAGE );
 
 #if wxUSE_LIBPNG
 	wxImage::AddHandler ( new wxPNGHandler );

@@ -28,21 +28,17 @@
 #define AMULE_H
 
 
-#include <wx/app.h>		// Needed for wxApp
-#include <wx/intl.h>		// Needed for wxLocale
+#include <wx/app.h>			// Needed for wxApp
+#include <wx/intl.h>			// Needed for wxLocale
 
 
-#include "Types.h"		// Needed for int32, uint16 and uint64
+#include "Types.h"			// Needed for int32, uint16 and uint64
 #include <map>
 #ifndef __WINDOWS__
 	#include <signal.h>
-//	#include <wx/unix/execute.h>
 #endif // __WINDOWS__
 
-#ifdef HAVE_CONFIG_H
-#	include "config.h"		// Needed for ASIO_SOCKETS
-#endif
-
+#include "config.h"			// Needed for ASIO_SOCKETS
 
 class CAbstractFile;
 class CKnownFile;
@@ -51,6 +47,7 @@ class CamuleDlg;
 class CPreferences;
 class CDownloadQueue;
 class CUploadQueue;
+class CPartFileWriteThread;
 class CServerConnect;
 class CSharedFileList;
 class CServer;
@@ -67,6 +64,7 @@ class CFriendList;
 class CClientUDPSocket;
 class CIPFilter;
 class UploadBandwidthThrottler;
+class CUploadDiskIOThread;
 #ifdef ASIO_SOCKETS
 class CAsioService;
 #else
@@ -115,6 +113,9 @@ namespace Kademlia {
 #define CONNECTED_KAD_NOT (1<<1)
 #define CONNECTED_KAD_OK (1<<2)
 #define CONNECTED_KAD_FIREWALLED (1<<3)
+
+
+void OnShutdownSignal( int /* sig */ );
 
 
 // Base class common to amule, aamuled and amulegui
@@ -258,6 +259,7 @@ public:
 	CPreferences*		glob_prefs;
 	CDownloadQueue*		downloadqueue;
 	CUploadQueue*		uploadqueue;
+	CPartFileWriteThread*	partFileWriteThread;
 	CServerConnect*		serverconnect;
 	CSharedFileList*	sharedfiles;
 	CServerList*		serverlist;
@@ -272,6 +274,7 @@ public:
 	CStatistics*		m_statistics;
 	CIPFilter*		ipfilter;
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
+	CUploadDiskIOThread*      uploadDiskIOThread;		// eMule ref: emule.h:92
 #ifdef ASIO_SOCKETS
 	CAsioService*		m_AsioService;
 #endif
@@ -401,6 +404,11 @@ class CamuleGuiApp : public CamuleApp, public CamuleGuiBase
 	int OnExit();
 	bool OnInit();
 
+	// Catch alternate quit paths (macOS Dock right-click → Quit)
+	// so we can run ShutDown cleanup even when wxApp skips OnExit.
+	void OnEndSession(wxCloseEvent& evt);
+	void OnQueryEndSession(wxCloseEvent& evt);
+
 public:
 
 	virtual int ShowAlert(wxString msg, wxString title, int flags);
@@ -410,7 +418,7 @@ public:
 	wxString GetLog(bool reset = false);
 	wxString GetServerLog(bool reset = false);
 	void AddServerMessageLine(wxString &msg);
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 
@@ -432,122 +440,10 @@ extern CamuleGuiApp *theApp;
 
 #else /* ! AMULE_DAEMON */
 
-// wxWidgets 2.8 requires special code for event handling and sockets.
-// 2.9 doesn't, so standard event loop and sockets can be used
-//
-// Windows: aMuled compiles with 2.8 (without the special code),
-// but works only with 2.9
-
-#if !wxCHECK_VERSION(2, 9, 0)
-	// wx 2.8 needs a hand-made event loop in any case
-	#define AMULED28_EVENTLOOP
-
-	// wx 2.8 also needs extra socket code, unless we have ASIO sockets
-	//
-	#ifdef HAVE_CONFIG_H
-	#	include "config.h"		// defines ASIO_SOCKETS
-	#endif
-
-	#ifndef ASIO_SOCKETS
-		// MSW: can't run amuled with 2.8 without ASIO sockets, just get it compiled
-		#ifndef __WINDOWS__
-			#define AMULED28_SOCKETS
-		#endif
-	#endif
-#endif
-
-#ifdef AMULED28_SOCKETS
-#include <wx/socket.h>
-
-class CSocketSet;
-
-
-class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable
-{
-private:
-	CSocketSet *m_in_set, *m_out_set;
-
-	wxMutex m_lock;
-public:
-	CAmuledGSocketFuncTable();
-
-	void AddSocket(GSocket *socket, GSocketEvent event);
-	void RemoveSocket(GSocket *socket, GSocketEvent event);
-	void RunSelect();
-
-	virtual bool OnInit();
-	virtual void OnExit();
-	virtual bool CanUseEventLoop();
-	virtual bool Init_Socket(GSocket *socket);
-	virtual void Destroy_Socket(GSocket *socket);
-	virtual void Install_Callback(GSocket *socket, GSocketEvent event);
-	virtual void Uninstall_Callback(GSocket *socket, GSocketEvent event);
-	virtual void Enable_Events(GSocket *socket);
-	virtual void Disable_Events(GSocket *socket);
-};
-
-
-#endif // AMULED28_SOCKETS
-
-// AppTrait functionality is required for 2.8 wx sockets
-// Otherwise it's used to prevent zombie child processes,
-// which stops working with wx 2.9.5.
-// So disable it there (no idea if this has a noticeable impact).
-
-#if !wxCHECK_VERSION(2, 9, 5) && !defined(__WINDOWS__)
-#define AMULED_APPTRAITS
-#endif
-
-#ifdef AMULED_APPTRAITS
-
-typedef std::map<int, class wxEndProcessData *> EndProcessDataMap;
-
-#include <wx/apptrait.h>
-
-class CDaemonAppTraits : public wxConsoleAppTraits
-{
-private:
-	struct sigaction m_oldSignalChildAction;
-	struct sigaction m_newSignalChildAction;
-
-#ifdef AMULED28_SOCKETS
-	CAmuledGSocketFuncTable *m_table;
-	wxMutex m_lock;
-	std::list<wxObject *> m_sched_delete;
-public:
-	CDaemonAppTraits(CAmuledGSocketFuncTable *table);
-	virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
-	virtual void ScheduleForDestroy(wxObject *object);
-	virtual void RemoveFromPendingDelete(wxObject *object);
-
-	void DeletePending();
-#else	// AMULED28_SOCKETS
-public:
-	CDaemonAppTraits();
-#endif	// !AMULED28_SOCKETS
-
-	virtual int WaitForChild(wxExecuteData& execData);
-
-#if defined(__WXMAC__) && !wxCHECK_VERSION(2, 9, 0)
-	virtual wxStandardPathsBase& GetStandardPaths();
-#endif
-};
-
-void OnSignalChildHandler(int signal, siginfo_t *siginfo, void *ucontext);
-pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg);
-
-#endif // AMULED_APPTRAITS
-
 
 class CamuleDaemonApp : public CamuleApp
 {
 private:
-#ifdef AMULED28_EVENTLOOP
-	bool m_Exit;
-#endif
-#ifdef AMULED28_SOCKETS
-	CAmuledGSocketFuncTable *m_table;
-#endif
 	bool OnInit();
 	int OnRun();
 	int OnExit();
@@ -555,32 +451,19 @@ private:
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 	// The GTK wxApps sets its file name conversion properly
 	// in wxApp::Initialize(), while wxAppConsole::Initialize()
-	// does not, leaving wxConvFile being set to wxConvLibc. File
+	// does not, leaving wxConvFileName being set to wxConvLibc. File
 	// name conversion should be set otherwise amuled will abort to
 	// handle non-ASCII file names which monolithic amule can handle.
-	// This function are overrided to perform this.
+	// This function are overridden to perform this.
 	virtual bool Initialize(int& argc_, wxChar **argv_);
 
-#ifdef AMULED_APPTRAITS
-	struct sigaction m_oldSignalChildAction;
-	struct sigaction m_newSignalChildAction;
 public:
-	wxAppTraits *CreateTraits();
-#endif // AMULED_APPTRAITS
-
-public:
-
-#ifdef AMULED28_EVENTLOOP
-	CamuleDaemonApp();
-
-	void ExitMainLoop() { m_Exit = true; }
-#endif
 
 	bool CopyTextToClipboard(wxString strText);
 
 	virtual int ShowAlert(wxString msg, wxString title, int flags);
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 DECLARE_APP(CamuleDaemonApp)

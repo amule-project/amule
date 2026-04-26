@@ -30,7 +30,7 @@ Please do not change anything here and release it..
 There is going to be a new forum created just for the Kademlia side of the client..
 If you feel there is an error or a way to improve something, please
 post it in the forum first and let us look at it.. If it is a real improvement,
-it will be added to the offical client.. Changing something without knowing
+it will be added to the official client.. Changing something without knowing
 what all it does can cause great harm to the network if released in mass form..
 Any mod that changes anything within the Kademlia side will not be allowed to advertise
 there client on the eMule forum..
@@ -77,7 +77,7 @@ CContact::CContact(const CContact& k1)
 	theStats::AddKadNode();
 }
 
-void CContact::CheckingType() throw()
+void CContact::CheckingType() noexcept
 {
 	time_t now = time(NULL);
 
@@ -91,7 +91,7 @@ void CContact::CheckingType() throw()
 	m_type++;
 }
 
-void CContact::UpdateType() throw()
+void CContact::UpdateType() noexcept
 {
 	time_t now = time(NULL);
 	uint32_t hours = (now - m_created) / HR2S(1);
@@ -110,7 +110,7 @@ void CContact::UpdateType() throw()
 	}
 }
 
-time_t CContact::GetLastSeen() const throw()
+time_t CContact::GetLastSeen() const noexcept
 {
 	// calculating back from expire time, so we don't need an additional field.
 	// might result in wrong values if doing CheckingType() for example, so don't use for important timing stuff

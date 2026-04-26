@@ -1,7 +1,7 @@
 /*
  *  Name:         Config file functions
  *
- *  Purpose:      Read info from casrc ou create one if it doesnt exist
+ *  Purpose:      Read info from casrc ou create one if it doesn't exist
  *
  *  Author:       Pedro de Oliveira <falso@rdk.homeip.net>
  *
@@ -89,7 +89,7 @@ int readconfig(CONF *config)
 {
 	char buffer[120], option[15], *path;
 	FILE *conf;
-	int i = 0;
+	int i;
 	char lines[IMG_TEXTLINES][13] = {
 		"first_line",
 		"second_line",
@@ -120,7 +120,7 @@ int readconfig(CONF *config)
 		// Jacobo221 - [ToDo] Only first char per line is comment...
 		if (fgets (buffer,120,conf)) {
 			if (buffer[0] != '#') {
-				/* Only two fileds per line */
+				/* Only two fields per line */
 				sscanf(buffer, "%" MAX_CONF_KEY_LEN_STR "s %*" MAX_CONF_ARG_LEN_STR "s", option);
 				fflush (stdout);
 		// Jacobo221 - [ToDo] So lines can't be swapped...

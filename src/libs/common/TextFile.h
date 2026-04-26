@@ -111,10 +111,10 @@ public:
 	bool		WriteLine(const wxString& line, const wxMBConv& conv = wxConvLibc);
 
 
-	/** Reads and returns the contents of a text-file, using the specifed criteria and converter. */
+	/** Reads and returns the contents of a text-file, using the specified criteria and converter. */
 	wxArrayString ReadLines(EReadTextFile flags = txtReadDefault, const wxMBConv& conv = wxConvLibc);
 
-	/** Writes the lines to the file, using the given converter, returning true if no errors occured. */
+	/** Writes the lines to the file, using the given converter, returning true if no errors occurred. */
 	bool WriteLines(const wxArrayString& lines, const wxMBConv& conv = wxConvLibc);
 
 private:

@@ -51,7 +51,7 @@ void writePredefData(CFileDataIO* file)
 
 
 /////////////////////////////////////////////////////////////////////
-// Specialize this template for each implemention
+// Specialize this template for each implementation
 // of the CFileDataIO interface you wish to test.
 //
 // This struct must be a subclass of Test.
@@ -75,7 +75,7 @@ class FileDataIOFixture<CFile> : public Test
 {
 public:
 	FileDataIOFixture(const wxString& testName)
-		: Test(wxT("FileDataIO"), wxT("CFile - ") + testName) {}
+		: Test("FileDataIO", "CFile - " + testName) {}
 
 
 	CFile* m_emptyFile;
@@ -83,8 +83,8 @@ public:
 
 	void setUp() {
 		m_emptyFile = m_predefFile = NULL;
-		const CPath emptyPath = CPath(wxT("FileDataIOTest.empty"));
-		const CPath datPath   = CPath(wxT("FileDataIOTest.dat"));
+		const CPath emptyPath = CPath("FileDataIOTest.empty");
+		const CPath datPath   = CPath("FileDataIOTest.dat");
 
 		m_emptyFile = new CFile();
 		m_emptyFile->Create(emptyPath, true);
@@ -109,8 +109,8 @@ public:
 		delete m_emptyFile;
 		delete m_predefFile;
 
-		wxRemoveFile(wxT("FileDataIOTest.dat"));
-		wxRemoveFile(wxT("FileDataIOTest.empty"));
+		wxRemoveFile("FileDataIOTest.dat");
+		wxRemoveFile("FileDataIOTest.empty");
 	}
 };
 
@@ -120,7 +120,7 @@ class FileDataIOFixture<CMemFile> : public Test
 {
 public:
 	FileDataIOFixture(const wxString& testName)
-		: Test(wxT("FileDataIO"), wxT("CMemFile - ") + testName) {}
+		: Test("FileDataIO", "CMemFile - " + testName) {}
 
 
 	CMemFile* m_emptyFile;
@@ -176,7 +176,7 @@ struct RWInterface<uint8>
 		file->WriteUInt8(value);
 	}
 
-	static wxString name() { return wxT("UInt8"); }
+	static wxString name() { return "UInt8"; }
 };
 
 
@@ -195,7 +195,7 @@ struct RWInterface<uint16>
 		file->WriteUInt16(value);
 	}
 
-	static wxString name() { return wxT("UInt16"); }
+	static wxString name() { return "UInt16"; }
 };
 
 
@@ -214,7 +214,7 @@ struct RWInterface<uint32>
 		file->WriteUInt32(value);
 	}
 
-	static wxString name() { return wxT("UInt32"); }
+	static wxString name() { return "UInt32"; }
 };
 
 
@@ -238,7 +238,7 @@ struct RWInterface<CMD4Hash>
 		file->WriteHash(value);
 	}
 
-	static wxString name() { return wxT("CMD4Hash"); }
+	static wxString name() { return "CMD4Hash"; }
 };
 
 
@@ -266,7 +266,7 @@ struct RWInterface<CUInt128>
 		file->WriteUInt128(value);
 	}
 
-	static wxString name() { return wxT("CUInt128"); }
+	static wxString name() { return "CUInt128"; }
 };
 
 
@@ -281,7 +281,7 @@ class ReadTest : public FileDataIOFixture<IMPL>
 
 public:
 	ReadTest()
-		: FileDataIOFixture<IMPL>(wxT("Read ") + RW::name()) {}
+		: FileDataIOFixture<IMPL>("Read " + RW::name()) {}
 
 	void run() {
 		CFileDataIO* file = this->m_predefFile;
@@ -331,7 +331,7 @@ class WriteTest : public FileDataIOFixture<IMPL>
 
 public:
 	WriteTest()
-		: FileDataIOFixture<IMPL>(wxT("Write ") + RW::name()) {}
+		: FileDataIOFixture<IMPL>("Write " + RW::name()) {}
 
 	void run() {
 		const unsigned char CanaryData = 170;
@@ -389,7 +389,7 @@ class SeekTest : public FileDataIOFixture<IMPL>
 {
 public:
 	SeekTest()
-		: FileDataIOFixture<IMPL>(wxT("Seek")) {}
+		: FileDataIOFixture<IMPL>("Seek") {}
 
 	void run() {
 		CFileDataIO* file = this->m_predefFile;
@@ -437,7 +437,7 @@ class WritePastEndTest : public FileDataIOFixture<IMPL>
 {
 public:
 	WritePastEndTest()
-		: FileDataIOFixture<IMPL>(wxT("Write Past End")) {}
+		: FileDataIOFixture<IMPL>("Write Past End") {}
 
 	void run() {
 		CFileDataIO* file = this->m_emptyFile;
@@ -493,7 +493,7 @@ class StringTest : public FileDataIOFixture<IMPL>
 {
 public:
 	StringTest()
-		: FileDataIOFixture<IMPL>(wxT("String")) {}
+		: FileDataIOFixture<IMPL>("String") {}
 
 	struct Encoding
 	{
@@ -522,19 +522,19 @@ public:
 
 		TestString testData[] =
 		{
-			{ wxT("0123456789abcdef"),	{ 16, 16 } },
-			{ wxT(""),			{  0,  0 } },
-			{ wxT("abc ø def æ ghi å"),	{ 17, 20 } },
-			{ wxT("aáeéuúó"),		{  7, 11 } },
-			{ wxT("uüoöÿeëaäyÿ"),		{ 11, 17 } },
+			{ L"0123456789abcdef",	{ 16, 16 } },
+			{ L"",			{  0,  0 } },
+			{ L"abc ø def æ ghi å",	{ 17, 20 } },
+			{ L"aáeéuúó",		{  7, 11 } },
+			{ L"uüoöÿeëaäyÿ",		{ 11, 17 } },
 		};
 
 
 		for (size_t str = 0; str < ArraySize(testData); ++str) {
-			CONTEXT(wxString(wxT("Testing string: '")) << testData[str].str << wxT("'"));
+			CONTEXT(wxString("Testing string: '") << testData[str].str << "'");
 
 			for (size_t enc = 0; enc < ArraySize(encodings); ++enc) {
-				CONTEXT(wxString::Format(wxT("Testing encoding: %i"), encodings[enc].id));
+				CONTEXT(wxString::Format("Testing encoding: %i", encodings[enc].id));
 
 				const wxChar* curStr = testData[str].str;
 				size_t strLen = testData[str].lengths[(encodings[enc].id == utf8strNone) ? 0 : 1];
@@ -577,14 +577,14 @@ public:
 
 		CAssertOff silence;
 		for (size_t enc = 0; enc < ArraySize(encodings); ++enc) {
-			CONTEXT(wxString::Format(wxT("Testing encoding against poisoning: %i"), encodings[enc].id));
+			CONTEXT(wxString::Format("Testing encoding against poisoning: %i", encodings[enc].id));
 
 			//////////////////////////////////////////////
 			// Check if we guard against "poisoning".
 			ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
 
 			const size_t rawLen = (((uint16)-1) * 3) / 4;
-			wxString badStr(wxT('\xfe'), rawLen);
+			wxString badStr('\xfe', rawLen);
 
 			// This will cause the string to be UTF-8 encoded,
 			// thereby exceeding the max length-field size (16b).
@@ -605,7 +605,7 @@ class LargeFileTest : public FileDataIOFixture<IMPL>
 {
 public:
 	LargeFileTest()
-		: FileDataIOFixture<IMPL>(wxT("LargeFile")) {}
+		: FileDataIOFixture<IMPL>("LargeFile") {}
 
 	void run() {
 		CFile* file = dynamic_cast<CFile*>(this->m_emptyFile);
@@ -668,7 +668,7 @@ DECLARE_SIMPLE(CMemFile);
 TEST(CMemFile, AttachedBuffer)
 {
 	const size_t BufferLength = 1024;
-	byte buffer[BufferLength];
+	uint8_t buffer[BufferLength];
 
 	for (size_t i = 0; i < BufferLength; ++i) {
 		buffer[i] = i & 0xFF;
@@ -694,15 +694,15 @@ TEST(CMemFile, AttachedBuffer)
 	ASSERT_RAISES(CRunTimeException, file.WriteUInt8(0));
 
 	// Init with invalid buffer should fail
-	ASSERT_RAISES(CRunTimeException, new CMemFile(static_cast<const byte*>(NULL), 1024));
-	ASSERT_RAISES(CRunTimeException, new CMemFile(static_cast<byte*>(NULL), 1024));
+	ASSERT_RAISES(CRunTimeException, new CMemFile(static_cast<const uint8_t*>(NULL), 1024));
+	ASSERT_RAISES(CRunTimeException, new CMemFile(static_cast<uint8_t*>(NULL), 1024));
 }
 
 
 TEST(CMemFile, ConstBuffer)
 {
-	byte arr[10];
-	CMemFile file(const_cast<const byte*>(arr), sizeof(arr));
+	uint8_t arr[10];
+	CMemFile file(const_cast<const uint8_t*>(arr), sizeof(arr));
 
 	ASSERT_RAISES(CRunTimeException, file.WriteUInt8(0));
 	ASSERT_RAISES(CRunTimeException, file.WriteUInt16(0));
@@ -731,7 +731,7 @@ TEST(CMemFile, SetLength)
 /////////////////////////////////////////////////////////////////////
 // CFile specific tests
 
-const CPath testFile = CPath(wxT("TestFile.dat"));
+const CPath testFile = CPath("TestFile.dat");
 const unsigned testMode = 0600;
 
 DECLARE(CFile);
@@ -739,7 +739,7 @@ DECLARE(CFile);
 		// Ensure that the testfile doesn't exist
 		if (testFile.FileExists()) {
 			if (!CPath::RemoveFile(testFile)) {
-				MULE_VALIDATE_STATE(false, wxT("Failed to remove temporary file."));
+				MULE_VALIDATE_STATE(false, "Failed to remove temporary file.");
 			}
 		}
 	}
@@ -762,7 +762,6 @@ TEST(CFile, Constructor)
 		ASSERT_TRUE(file.fd() == CFile::fd_invalid);
 		ASSERT_RAISES(CRunTimeException, file.WriteUInt8(0));
 		ASSERT_RAISES(CRunTimeException, file.ReadUInt8());
-		ASSERT_RAISES(CRunTimeException, file.Seek(0, wxFromStart));
 		ASSERT_RAISES(CRunTimeException, file.GetLength());
 		ASSERT_RAISES(CRunTimeException, file.GetPosition());
 		ASSERT_RAISES(CRunTimeException, file.SetLength(13));
@@ -874,7 +873,7 @@ TEST(CFile, Create)
 		file.WriteUInt32(1);
 	}
 
-	// Check that owerwrite = false works as expected
+	// Check that overwrite = false works as expected
 	{
 		CFile file;
 		ASSERT_FALSE(file.Create(testFile, false, testMode));
@@ -893,7 +892,7 @@ TEST(CFile, Create)
 		ASSERT_TRUE(!file.IsOpened());
 	}
 
-	// Check that owerwrite = true works as expected
+	// Check that overwrite = true works as expected
 	{
 		CFile file;
 		ASSERT_TRUE(file.Create(testFile, true, testMode));

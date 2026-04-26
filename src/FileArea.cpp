@@ -24,9 +24,7 @@
 //
 
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #ifdef HAVE_ERRNO_H
 #include <errno.h>
@@ -142,7 +140,7 @@ void CFileAreaSigHandler::Init()
 		return;
 
 	// Set our new signal handler.
-	// Note that we safe old handlers (propably wx ones) in order
+	// Note that we safe old handlers (probably wx ones) in order
 	// to be able to call them if signal not handled as desired.
 	// These handler will be removed by wx code when wx will restore
 	// old ones
@@ -232,7 +230,7 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 		void *p = mmap(NULL, m_length, PROT_READ, MAP_SHARED, file.fd(), offStart);
 		if (p != MAP_FAILED) {
 			m_file = &file;
-			m_mmap_buffer = (byte*) p;
+			m_mmap_buffer = (uint8_t*) p;
 			m_buffer = m_mmap_buffer + (offset - offStart);
 
 			// add to list to catch errors correctly
@@ -242,7 +240,7 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 	}
 	file.Unlock();
 #endif
-	m_buffer = new byte[count];
+	m_buffer = new uint8_t[count];
 	file.ReadAt(m_buffer, offset, count);
 }
 
@@ -259,7 +257,7 @@ void CFileArea::StartWriteAt(CFileAutoClose& file, uint64 offset, size_t count)
 		if (p != MAP_FAILED)
 		{
 			m_file = &file;
-			m_mmap_buffer = (byte*) p;
+			m_mmap_buffer = (uint8_t*) p;
 			m_buffer = m_mmap_buffer + (offset - offStart);
 
 			// add to list to catch errors correctly
@@ -268,13 +266,13 @@ void CFileArea::StartWriteAt(CFileAutoClose& file, uint64 offset, size_t count)
 		}
 		file.Unlock();
 	}
-	m_buffer = new byte[count];
+	m_buffer = new uint8_t[count];
 }
 #else
 void CFileArea::StartWriteAt(CFileAutoClose&, uint64, size_t count)
 {
 	Close();
-	m_buffer = new byte[count];
+	m_buffer = new uint8_t[count];
 }
 #endif
 
@@ -302,6 +300,6 @@ void CFileArea::CheckError()
 	bool err = m_error;
 	m_error = false;
 	if (err)
-		throw CIOFailureException(wxT("Read error, failed to read from file."));
+		throw CIOFailureException("Read error, failed to read from file.");
 }
 

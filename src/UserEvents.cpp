@@ -36,7 +36,7 @@
 #include <wx/process.h>
 
 
-#define USEREVENTS_EVENT(ID, NAME, VARS)	{ wxT(#ID), NAME, false, wxEmptyString, false, wxEmptyString },
+#define USEREVENTS_EVENT(ID, NAME, VARS)	{ #ID, NAME, false, "", false, "" },
 static struct {
 	const wxString key;
 	const wxString name;
@@ -47,7 +47,7 @@ static struct {
 } s_EventList[] = {
 	USEREVENTS_EVENTLIST()
 	/* This macro expands to initialise the list of user event types. Example:
-	   { wxT("NewChatSession"), wxTRANSLATE("New chat session started"), false, wxEmptyString, false, wxEmptyString }, */
+	   { "NewChatSession", wxTRANSLATE("New chat session started"), false, "", false, "" }, */
 };
 #undef USEREVENTS_EVENT
 
@@ -113,7 +113,7 @@ wxString& CUserEvents::GetGUICommandVar(const unsigned int event)
 }
 
 #define USEREVENTS_EVENT(ID, NAME, VARS)	case CUserEvents::ID: { VARS break; }
-#define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	command.Replace(wxT("%") VAR, CODE);
+#define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	command.Replace("%" VAR, CODE);
 static void ExecuteCommand(
 	enum CUserEvents::EventType event,
 	const void* object,
@@ -125,7 +125,7 @@ static void ExecuteCommand(
 		USEREVENTS_EVENTLIST()
 		/* This macro expands to handle all user event types. Example:
 		   case CUserEvents::NewChatSession: {
-		       command.Replace( wxT("%SENDER"), *((wxString*)object) );
+		       command.Replace( "%SENDER", *((wxString*)object) );
 			   break;
 		   } */
 	}

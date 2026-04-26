@@ -30,26 +30,6 @@
 #include "ExternalConnector.h"
 
 
-#if !wxCHECK_VERSION(2, 9, 0)
-
-	// wx 2.8 needs a hand-made event loop in any case
-	#define AMULEWEB28_EVENTLOOP
-
-	// wx 2.8 also needs extra socket code, unless we have ASIO sockets
-	//
-	#ifdef HAVE_CONFIG_H
-	#	include "config.h"		// defines ASIO_SOCKETS
-	#endif
-
-	#ifndef ASIO_SOCKETS
-		// MSW: can't run amuled with 2.8 without ASIO sockets, just get it compiled
-		#ifndef __WINDOWS__
-			#define AMULEWEB28_SOCKETS
-		#endif
-	#endif
-
-#endif
-
 namespace MuleNotify {
 	class CMuleGUIEvent;
 }
@@ -62,16 +42,6 @@ class CamulewebApp
 public CaMuleExternalConnector
 {
 	class CWebServerBase *m_webserver;
-
-#ifdef AMULEWEB28_SOCKETS
-	class CWebserverGSocketFuncTable *m_table;
-public:
-	wxAppTraits *CreateTraits();
-#endif
-#ifdef AMULEWEB28_EVENTLOOP
-public:
-	CamulewebApp();
-#endif
 
 public:
 	const wxString GetGreetingTitle();
@@ -109,7 +79,7 @@ public:
 	virtual wxString SetLocale(const wxString& language);
 
 	void OnNotifyEvent(CMuleGUIEvent& evt);
-	DECLARE_EVENT_TABLE();
+	wxDECLARE_EVENT_TABLE();
 
 private:
 	virtual bool	OnInit();

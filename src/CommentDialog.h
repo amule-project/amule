@@ -40,7 +40,7 @@ public:
 	virtual ~CCommentDialog();
 	virtual bool OnInitDialog();
 protected:
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 public:
 	void OnBnClickedApply(wxCommandEvent& evt);
 	void OnBnClickedClear(wxCommandEvent& evt);

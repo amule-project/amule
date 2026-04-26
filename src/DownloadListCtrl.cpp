@@ -95,7 +95,7 @@ enum ColumnEnum {
 	ColumnNumberOfColumns
 };
 
-BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
+wxBEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_ACTIVATED(ID_DLOADLIST,	CDownloadListCtrl::OnItemActivated)
 	EVT_LIST_ITEM_RIGHT_CLICK(ID_DLOADLIST, CDownloadListCtrl::OnMouseRightClick)
 	EVT_LIST_ITEM_MIDDLE_CLICK(ID_DLOADLIST, CDownloadListCtrl::OnMouseMiddleClick)
@@ -132,7 +132,7 @@ BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
 
 	EVT_MENU( MP_WS,			CDownloadListCtrl::OnGetFeedback )
 
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 //! This listtype is used when gathering the selected items.
 typedef std::list<FileCtrlItem_Struct*>	ItemList;
@@ -147,27 +147,27 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 	SetSortFunc( SortProc );
 
 	// Set the table-name (for loading and saving preferences).
-	SetTableName( wxT("Download") );
+	SetTableName( "Download" );
 
 	m_menu = NULL;
 
-	m_hilightBrush  = CMuleColour(wxSYS_COLOUR_HIGHLIGHT).Blend(125).GetBrush();
+	m_hilightBrush  = CMuleColour(wxSYS_COLOUR_HIGHLIGHT)/*.Blend(125)*/.GetBrush();
 
-	m_hilightUnfocusBrush = CMuleColour(wxSYS_COLOUR_BTNSHADOW).Blend(125).GetBrush();
+	m_hilightUnfocusBrush = CMuleColour(wxSYS_COLOUR_BTNSHADOW)/*.Blend(125)*/.GetBrush();
 
-	InsertColumn( ColumnPart,			_("Part"),					wxLIST_FORMAT_LEFT,  30, wxT("a") );
-	InsertColumn( ColumnFileName,		_("File Name"),				wxLIST_FORMAT_LEFT, 260, wxT("N") );
-	InsertColumn( ColumnSize,			_("Size"),					wxLIST_FORMAT_LEFT,  60, wxT("Z") );
-	InsertColumn( ColumnTransferred,	_("Transferred"),			wxLIST_FORMAT_LEFT,  65, wxT("T") );
-	InsertColumn( ColumnCompleted,		_("Completed"),				wxLIST_FORMAT_LEFT,  65, wxT("C") );
-	InsertColumn( ColumnSpeed,			_("Speed"),					wxLIST_FORMAT_LEFT,  65, wxT("S") );
-	InsertColumn( ColumnProgress,		_("Progress"),				wxLIST_FORMAT_LEFT, 170, wxT("P") );
-	InsertColumn( ColumnSources,		_("Sources"),				wxLIST_FORMAT_LEFT,  50, wxT("u") );
-	InsertColumn( ColumnPriority,		_("Priority"),				wxLIST_FORMAT_LEFT,  55, wxT("p") );
-	InsertColumn( ColumnStatus,			_("Status"),				wxLIST_FORMAT_LEFT,  70, wxT("s") );
-	InsertColumn( ColumnTimeRemaining,  _("Time Remaining"),		wxLIST_FORMAT_LEFT, 110, wxT("r") );
-	InsertColumn( ColumnLastSeenComplete, _("Last Seen Complete"),	wxLIST_FORMAT_LEFT, 220, wxT("c") );
-	InsertColumn( ColumnLastReception,	_("Last Reception"),		wxLIST_FORMAT_LEFT, 220, wxT("R") );
+	InsertColumn( ColumnPart,			_("Part"),					wxLIST_FORMAT_LEFT,  30, "a" );
+	InsertColumn( ColumnFileName,		_("File Name"),				wxLIST_FORMAT_LEFT, 260, "N" );
+	InsertColumn( ColumnSize,			_("Size"),					wxLIST_FORMAT_LEFT,  60, "Z" );
+	InsertColumn( ColumnTransferred,	_("Transferred"),			wxLIST_FORMAT_LEFT,  65, "T" );
+	InsertColumn( ColumnCompleted,		_("Completed"),				wxLIST_FORMAT_LEFT,  65, "C" );
+	InsertColumn( ColumnSpeed,			_("Speed"),					wxLIST_FORMAT_LEFT,  65, "S" );
+	InsertColumn( ColumnProgress,		_("Progress"),				wxLIST_FORMAT_LEFT, 170, "P" );
+	InsertColumn( ColumnSources,		_("Sources"),				wxLIST_FORMAT_LEFT,  50, "u" );
+	InsertColumn( ColumnPriority,		_("Priority"),				wxLIST_FORMAT_LEFT,  55, "p" );
+	InsertColumn( ColumnStatus,			_("Status"),				wxLIST_FORMAT_LEFT,  70, "s" );
+	InsertColumn( ColumnTimeRemaining,  _("Time Remaining"),		wxLIST_FORMAT_LEFT, 110, "r" );
+	InsertColumn( ColumnLastSeenComplete, _("Last Seen Complete"),	wxLIST_FORMAT_LEFT, 220, "c" );
+	InsertColumn( ColumnLastReception,	_("Last Reception"),		wxLIST_FORMAT_LEFT, 220, "R" );
 
 	m_category = 0;
 	m_filecount = 0;
@@ -181,7 +181,7 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 // Don't touch when inserting new columns!
 wxString CDownloadListCtrl::GetOldColumnOrder() const
 {
-	return wxT("N,Z,T,C,S,P,u,p,s,r,c,R");
+	return "N,Z,T,C,S,P,u,p,s,r,c,R";
 }
 
 CDownloadListCtrl::~CDownloadListCtrl()
@@ -221,7 +221,7 @@ void CDownloadListCtrl::RemoveFile( CPartFile* file )
 	// Ensure that any list-entries are removed
 	ShowFile( file, false );
 
-	// Find the assosiated list-item
+	// Find the associated list-item
 	ListItems::iterator it = m_ListItems.find( file );
 
 	if ( it != m_ListItems.end() ) {
@@ -299,7 +299,7 @@ void CDownloadListCtrl::ShowFile( CPartFile* file, bool show )
 			// Check if the file is already being displayed
 			long index = FindItem( -1, reinterpret_cast<wxUIntPtr>(item) );
 			if ( index == -1 ) {
-				long newitem = InsertItem( GetItemCount(), wxEmptyString );
+				long newitem = InsertItem( GetItemCount(), "" );
 
 				SetItemPtrData( newitem, reinterpret_cast<wxUIntPtr>(item) );
 
@@ -371,7 +371,7 @@ uint8 CDownloadListCtrl::GetCategory() const
  * @param list A pointer to the list to gather items from.
  * @return A list containing the selected items.
  */
-ItemList GetSelectedItems( CDownloadListCtrl* list)
+static ItemList GetSelectedItems( CDownloadListCtrl* list)
 {
 	ItemList results;
 
@@ -532,14 +532,14 @@ void CDownloadListCtrl::OnGetLink(wxCommandEvent& event)
 		CPartFile* file = (*it)->GetFile();
 
 		if ( event.GetId() == MP_GETED2KLINK ) {
-			URIs += theApp->CreateED2kLink( file ) + wxT("\n");
+			URIs += theApp->CreateED2kLink( file ) + "\n";
 		} else {
-			URIs += theApp->CreateMagnetLink( file ) + wxT("\n");
+			URIs += theApp->CreateMagnetLink( file ) + "\n";
 		}
 	}
 
 	if ( !URIs.IsEmpty() ) {
-		theApp->CopyTextToClipboard( URIs.BeforeLast(wxT('\n')) );
+		theApp->CopyTextToClipboard( URIs.BeforeLast('\n') );
 	}
 }
 
@@ -553,7 +553,7 @@ void CDownloadListCtrl::OnGetFeedback(wxCommandEvent& WXUNUSED(event))
 		if (feed.IsEmpty()) {
 			feed = CFormat(_("Feedback from: %s (%s)\n\n")) % thePrefs::GetUserNick() % theApp->GetFullMuleVersion();
 		} else {
-			feed += wxT("\n");
+			feed += "\n";
 		}
 		feed += (*it)->GetFile()->GetFeedback();
 	}
@@ -734,7 +734,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 
 	wxString view;
 	if (file->IsPartFile() && !file->IsCompleted()) {
-		view = CFormat(wxT("%s [%s]")) % _("Preview")
+		view = CFormat("%s [%s]") % _("Preview")
 				% file->GetPartMetFileName().RemoveExt();
 	} else if ( file->IsCompleted() ) {
 		view = _("&Open the file");
@@ -850,7 +850,7 @@ void CDownloadListCtrl::OnDrawItem(
 		dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		dc->SetPen( colour.Blend(65).GetPen() );
 	} else {
-		dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxSOLID)));
+		dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxBRUSHSTYLE_SOLID)));
 		dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
@@ -914,7 +914,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		// Part Number
 		case ColumnPart: {
 			if (file->IsPartFile() && !file->IsCompleted()) {
-			  text = CFormat(wxT("%03d")) % file->GetPartMetNumber();
+			  text = CFormat("%03d") % file->GetPartMetNumber();
 			}
 			break;
 		}
@@ -961,7 +961,11 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		// Speed
 		case ColumnSpeed:
 			if ( file->GetTransferingSrcCount() ) {
-				text = CFormat(_("%.1f kB/s")) % file->GetKBpsDown();
+				if (file->GetKBpsDown() >= 1024) {
+					text = CFormat(_("%.1f MB/s")) % (file->GetKBpsDown() / 1024.0);
+				} else {
+					text = CFormat(_("%.1f kB/s")) % file->GetKBpsDown();
+				}
 			}
 			break;
 
@@ -1012,10 +1016,12 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 					uint16	hashingProgress = file->GetHashingProgress();
 					double	percent = hashingProgress == 0 ? file->GetPercentCompleted()
 										: 100.0 * hashingProgress * PARTSIZE / file->GetFileSize();
-					if (percent > 100.0) {
+					if (file->IsCompleted()) {
 						percent = 100.0;
+					} else if (percent > 99.9) {
+						percent = 99.9;
 					}
-					wxString buffer = CFormat(wxT("%.1f%%")) % percent;
+					wxString buffer = CFormat("%.1f%%") % percent;
 					int middlex = (2*rect.GetX() + rect.GetWidth()) >> 1;
 					int middley = (2*rect.GetY() + rect.GetHeight()) >> 1;
 
@@ -1043,17 +1049,17 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 			uint16 sc = file->GetSourceCount();
 			uint16 ncsc = file->GetNotCurrentSourcesCount();
 			if ( ncsc ) {
-				text = CFormat(wxT("%i/%i")) % (sc - ncsc) % sc;
+				text = CFormat("%i/%i") % (sc - ncsc) % sc;
 			} else {
-				text = CFormat(wxT("%i")) % sc;
+				text = CFormat("%i") % sc;
 			}
 
 			if ( file->GetSrcA4AFCount() ) {
-				text += CFormat(wxT("+%i")) % file->GetSrcA4AFCount();
+				text += CFormat("+%i") % file->GetSrcA4AFCount();
 			}
 
 			if ( file->GetTransferingSrcCount() ) {
-				text += CFormat(wxT(" (%i)")) % file->GetTransferingSrcCount();
+				text += CFormat(" (%i)") % file->GetTransferingSrcCount();
 			}
 
 			break;
@@ -1081,7 +1087,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 					text = _("Unknown");
 				}
 
-				text += wxT(" (") + CastItoXBytes(remainSize) + wxT(")");
+				text += " (" + CastItoXBytes(remainSize) + ")";
 			}
 			break;
 		}
@@ -1118,7 +1124,7 @@ wxString CDownloadListCtrl::GetTTSText(unsigned item) const
 }
 
 
-int CDownloadListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
+int CDownloadListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, wxIntPtr sortData)
 {
 	FileCtrlItem_Struct* item1 = reinterpret_cast<FileCtrlItem_Struct*>(param1);
 	FileCtrlItem_Struct* item2 = reinterpret_cast<FileCtrlItem_Struct*>(param2);
@@ -1126,7 +1132,7 @@ int CDownloadListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long sortDat
 	int sortMod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 	sortData &= CMuleListCtrl::COLUMN_MASK;
 
-	// We modify the result so that it matches with ascending or decending
+	// We modify the result so that it matches with ascending or descending
 	return sortMod * Compare( item1->GetFile(), item2->GetFile(), sortData);
 }
 
@@ -1268,7 +1274,7 @@ void CDownloadListCtrl::ShowFilesCount( int diff )
 {
 	m_filecount += diff;
 
-	wxStaticText* label = CastByName( wxT("downloadsLabel"), GetParent(), wxStaticText );
+	wxStaticText* label = CastByName( "downloadsLabel", GetParent(), wxStaticText );
 
 	label->SetLabel(CFormat(_("Downloads (%i)")) % m_filecount);
 	label->GetParent()->Layout();
@@ -1407,15 +1413,15 @@ void CDownloadListCtrl::DrawFileStatusBar(
 		dc->DrawLine( rect.x, rect.y + 2, rect.x + width, rect.y + 2 );
 
 		// Draw the green line
-		dc->SetPen( *(wxThePenList->FindOrCreatePen( crProgress , 1, wxSOLID ) ));
+		dc->SetPen( *(wxThePenList->FindOrCreatePen( crProgress , 1, wxPENSTYLE_SOLID ) ));
 		dc->DrawLine( rect.x, rect.y + 1, rect.x + width, rect.y + 1 );
 	}
 }
 
 #ifdef __WINDOWS__
-#	define QUOTE	wxT("\"")
+#	define QUOTE	"\""
 #else
-#	define QUOTE	wxT("\'")
+#	define QUOTE	"\'"
 #endif
 
 void CDownloadListCtrl::PreviewFile(CPartFile* file)
@@ -1429,7 +1435,7 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 			_("File preview"), wxOK, this);
 		// Since newer versions for some reason mplayer does not automatically
 		// select video output device and needs a parameter, go figure...
-		command = wxT("xterm -T \"aMule Preview\" -iconic -e mplayer ") QUOTE wxT("$file") QUOTE;
+		command = "xterm -T \"aMule Preview\" -iconic -e mplayer " QUOTE "$file" QUOTE;
 	} else {
 		command = thePrefs::GetVideoPlayer();
 	}
@@ -1450,23 +1456,23 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	}
 
 	// Compatibility with old behaviour
-	if (!command.Replace(wxT("$file"), wxT("%PARTFILE"))) {
-		if ((command.Find(wxT("%PARTFILE")) == wxNOT_FOUND) && (command.Find(wxT("%PARTNAME")) == wxNOT_FOUND)) {
+	if (!command.Replace("$file", "%PARTFILE")) {
+		if ((command.Find("%PARTFILE") == wxNOT_FOUND) && (command.Find("%PARTNAME") == wxNOT_FOUND)) {
 			// No magic string, so we just append the filename to the player command
 			// Need to use quotes in case filename contains spaces
-			command << wxT(" ") << QUOTE << wxT("%PARTFILE") << QUOTE;
+			command << " " << QUOTE << "%PARTFILE" << QUOTE;
 		}
 	}
 
 #ifndef __WINDOWS__
 	// We have to escape quote characters in the file name, otherwise arbitrary
 	// options could be passed to the player.
-	partFile.Replace(QUOTE, wxT("\\") QUOTE);
-	partName.Replace(QUOTE, wxT("\\") QUOTE);
+	partFile.Replace(QUOTE, "\\" QUOTE);
+	partName.Replace(QUOTE, "\\" QUOTE);
 #endif
 
-	command.Replace(wxT("%PARTFILE"), partFile);
-	command.Replace(wxT("%PARTNAME"), partName);
+	command.Replace("%PARTFILE", partFile);
+	command.Replace("%PARTNAME", partName);
 
 	// We can't use wxShell here, it blocks the app
 	CTerminationProcess *p = new CTerminationProcess(command);

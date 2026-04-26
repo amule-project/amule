@@ -59,7 +59,7 @@ public:
 	//! Structure used to pass search-parameters.
 	struct CSearchParams
 	{
-		/** Prevents accidential use of uninitialized variables. */
+		/** Prevents accidental use of uninitialized variables. */
 		CSearchParams() { minSize = maxSize = availability = 0; }
 
 		//! The actual string to search for.
@@ -74,7 +74,7 @@ public:
 		uint64_t minSize;
 		//! The largest filesize in bytes to accept, zero for any.
 		uint64_t maxSize;
-		//! The minumum available (source-count), zero for any.
+		//! The minimum available (source-count), zero for any.
 		uint32_t availability;
 	};
 
@@ -109,10 +109,10 @@ public:
 	 *
 	 * If the search is not valid, an empty list is returned.
 	 */
-	const	CSearchResultList& GetSearchResults(long searchID) const;
+	const	CSearchResultList& GetSearchResults(wxUIntPtr searchID) const;
 
 	/** Removes all results for the specified search. */
-	void	RemoveResults(long searchID);
+	void	RemoveResults(wxUIntPtr searchID);
 
 
 	/** Finds the search-result (by hash) and downloads it in the given category. */
@@ -128,7 +128,7 @@ public:
 	 * @param moreResultsAvailable Set to a value specifying if more results are available.
 	 * @param directory The directory containing the shared files.
 	 */
-	void	ProcessSharedFileList(const byte* packet, uint32 size, CUpDownClient* sender, bool* moreResultsAvailable, const wxString& directory);
+	void	ProcessSharedFileList(const uint8_t* packet, uint32 size, CUpDownClient* sender, bool* moreResultsAvailable, const wxString& directory);
 
 	/**
 	 * Processes a search-result sent via TCP from the local server. All results are added.
@@ -220,7 +220,7 @@ private:
 	CQueueObserver<CServer*> m_serverQueue;
 
 	//! Shorthand for the map of results (key is a SearchID).
-	typedef std::map<long, CSearchResultList> ResultMap;
+	typedef std::map<wxUIntPtr, CSearchResultList> ResultMap;
 
 	//! Map of all search-results added.
 	ResultMap	m_results;
@@ -230,7 +230,7 @@ private:
 	wxString	m_resultType;
 
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 

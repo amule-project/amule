@@ -30,14 +30,9 @@
 
 #include <common/MenuIDs.h>
 
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED)
-
-#if MULE_NEEDS_DELETEPAGE_WORKAROUND
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_DELETE_PAGE)
-#endif
-
-BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
+wxDEFINE_EVENT(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING, wxEvent);
+wxDEFINE_EVENT(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED, wxEvent);
+wxBEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_RIGHT_DOWN(CMuleNotebook::OnRMButton)
 
 	EVT_MENU(MP_CLOSE_TAB,		CMuleNotebook::OnPopupClose)
@@ -50,10 +45,7 @@ BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_MIDDLE_DOWN(CMuleNotebook::OnMouseButton)
 	EVT_MIDDLE_UP(CMuleNotebook::OnMouseButton)
 	EVT_MOTION(CMuleNotebook::OnMouseMotion)
-#if MULE_NEEDS_DELETEPAGE_WORKAROUND
-	EVT_MULENOTEBOOK_DELETE_PAGE(wxID_ANY, CMuleNotebook::OnDeletePage)
-#endif
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CMuleNotebook::CMuleNotebook( wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name )
@@ -71,19 +63,10 @@ CMuleNotebook::~CMuleNotebook()
 }
 
 
-#if MULE_NEEDS_DELETEPAGE_WORKAROUND
-void CMuleNotebook::OnDeletePage(wxBookCtrlEvent& evt)
-{
-	int page = evt.GetSelection();
-	DeletePage(page);
-}
-#endif // MULE_NEEDS_DELETEPAGE_WORKAROUND
-
-
 bool CMuleNotebook::DeletePage(int nPage)
 {
 	wxCHECK_MSG((nPage >= 0) && (nPage < (int)GetPageCount()), false,
-		wxT("Trying to delete invalid page-index in CMuleNotebook::DeletePage"));
+		"Trying to delete invalid page-index in CMuleNotebook::DeletePage");
 
 	// Send out close event
 	wxNotebookEvent evt( wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING, GetId(), nPage );
@@ -108,7 +91,7 @@ bool CMuleNotebook::DeletePage(int nPage)
 		if (page == GetPageCount()) {
 			page--;
 		}
-		wxNotebookEvent event( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, GetId(), page );
+		wxNotebookEvent event( wxEVT_NOTEBOOK_PAGE_CHANGED, GetId(), page );
 		event.SetEventObject(this);
 		ProcessEvent( event );
 	} else {
@@ -249,17 +232,7 @@ void CMuleNotebook::OnMouseButton(wxMouseEvent &event)
 		// User did click on a 'x' or middle click on the label
 		tab_down_icon = -1;
 		tab_down_label = -1;
-#if MULE_NEEDS_DELETEPAGE_WORKAROUND
-		/*	WORKAROUND: Instead of calling DeletePage, we need to wait for the
-		 *	mouse release signal to reach Gtk. Inconsistent with normal wxEvent
-		 *	behaviour the button release handler in wxWidgets don't evaluate
-		 *	the result of the signal handling. */
-		wxNotebookEvent evt( wxEVT_COMMAND_MULENOTEBOOK_DELETE_PAGE, GetId(), tab );
-		evt.SetEventObject(this);
-		AddPendingEvent( evt );
-#else
 		DeletePage(tab);
-#endif // MULE_NEEDS_DELETEPAGE_WORKAROUND
 	} else {
 		// Is not a 'x'. Send this event up.
 		event.Skip();

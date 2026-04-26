@@ -39,10 +39,7 @@
 #include "graphics.h"
 #include "html.h"
 #include "lines.h"
-
-#ifdef HAVE_CONFIG_H
-	#include "config.h"	// For HAVE_GETOPT_LONG
-#endif
+#include "config.h"		// For HAVE_GETOPT_LONG
 
 #ifndef HAVE_GETOPT_LONG
 /* Code from getopt_long.h - getopt_long() for systems that lack it
@@ -225,7 +222,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Unable to open file %s\nCheck if you have amule online signature enabled.\n", path);
 		exit(2);
 	}
-	/* i believe this shouldnt be here.
+	/* i believe this shouldn't be here.
 	The freq of update could be higher than 60 seconds.
 	And it doesn't mean that the amule is not running.
 	*/

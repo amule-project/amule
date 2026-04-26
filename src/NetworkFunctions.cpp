@@ -47,10 +47,10 @@ bool StringIPtoUint32(const wxString &strIP, uint32& Ip)
 	for (size_t i = 0; i < str.Length(); i++) {
 		wxChar c = str.GetChar( i );
 
-		if ( c >= wxT('0') && c <= wxT('9') && (value >> 8) == 0) {
-			value = ( value * 10 ) + ( c - wxT('0') );
+		if ( c >= '0' && c <= '9' && (value >> 8) == 0) {
+			value = ( value * 10 ) + ( c - '0' );
 			++digit;
-		} else if ( c == wxT('.') ) {
+		} else if ( c == '.' ) {
 			if ( digit && (value >> 8) == 0) {
 				tmp_ip = tmp_ip | value << ( field * 8 );
 
@@ -130,7 +130,7 @@ static filter_st lan_ranges[] = {
 };
 
 
-bool IsGoodIP(uint32 ip, bool filterLAN) throw()
+bool IsGoodIP(uint32 ip, bool filterLAN) noexcept
 {
 	for (unsigned int i = 0; i < itemsof(reserved_ranges); ++i) {
 		if (((ip ^ reserved_ranges[i].addr) & reserved_ranges[i].mask) == 0) {
@@ -141,7 +141,7 @@ bool IsGoodIP(uint32 ip, bool filterLAN) throw()
 	return !(filterLAN && IsLanIP(ip));
 }
 
-bool IsLanIP(uint32_t ip) throw()
+bool IsLanIP(uint32_t ip) noexcept
 {
 	for (unsigned int i = 0; i < itemsof(lan_ranges); ++i) {
 		if (((ip ^ lan_ranges[i].addr) & lan_ranges[i].mask) == 0) {

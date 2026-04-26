@@ -72,7 +72,7 @@ struct TrackPacketsIn_Struct {
 class CPacketTracking
 {
       public:
-	CPacketTracking() throw() { lastTrackInCleanup = 0; }
+	CPacketTracking() noexcept { lastTrackInCleanup = 0; }
 	virtual ~CPacketTracking();
 
       protected:
@@ -85,7 +85,7 @@ class CPacketTracking
 	bool HasActiveLegacyChallenge(uint32_t ip) const;
 
       private:
-	static bool IsTrackedOutListRequestPacket(uint8_t opcode) throw();
+	static bool IsTrackedOutListRequestPacket(uint8_t opcode) noexcept;
 	typedef std::list<TrackPackets_Struct>		TrackedPacketList;
 	typedef std::list<TrackChallenge_Struct>	TrackChallengeList;
 	typedef std::map<uint32_t, TrackPacketsIn_Struct*>	TrackedPacketInMap;

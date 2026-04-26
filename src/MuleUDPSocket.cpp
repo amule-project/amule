@@ -66,7 +66,7 @@ CMuleUDPSocket::~CMuleUDPSocket()
 
 void CMuleUDPSocket::CreateSocket()
 {
-	wxCHECK_RET(!m_socket, wxT("Socket already opened."));
+	wxCHECK_RET(!m_socket, "Socket already opened.");
 
 	m_socket = new CEncryptedDatagramSocket(m_addr, MULE_SOCKET_NOWAIT, m_proxy);
 	m_socket->SetClientData(this);
@@ -77,10 +77,10 @@ void CMuleUDPSocket::CreateSocket()
 	m_socket->Notify(true);
 
 	if (!m_socket->IsOk()) {
-		AddDebugLogLineC(logMuleUDP, wxT("Failed to create valid ") + m_name);
+		AddDebugLogLineC(logMuleUDP, "Failed to create valid " + m_name);
 		DestroySocket();
 	} else {
-		AddLogLineN(wxString(wxT("Created ")) << m_name << wxT(" at port ") << m_addr.Service());
+		AddLogLineN(wxString("Created ") << m_name << " at port " << m_addr.Service());
 	}
 }
 
@@ -88,7 +88,7 @@ void CMuleUDPSocket::CreateSocket()
 void CMuleUDPSocket::DestroySocket()
 {
 	if (m_socket) {
-		AddDebugLogLineN(logMuleUDP, wxT("Shutting down ") + m_name);
+		AddDebugLogLineN(logMuleUDP, "Shutting down " + m_name);
 #ifndef ASIO_SOCKETS
 		m_socket->SetNotify(0);
 		m_socket->Notify(false);
@@ -136,7 +136,7 @@ void CMuleUDPSocket::OnSend(int errorCode)
 
 void CMuleUDPSocket::OnReceive(int errorCode)
 {
-	AddDebugLogLineN(logMuleUDP, CFormat(wxT("Got UDP callback for read: Error %i Socket state %i"))
+	AddDebugLogLineN(logMuleUDP, CFormat("Got UDP callback for read: Error %i Socket state %i")
 		% errorCode % Ok());
 
 	char buffer[UDP_BUFFER_SIZE];
@@ -167,27 +167,27 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 		OnReceiveError(lastError, ip, port);
 	} else if (length < 2) {
 		// 2 bytes (protocol and opcode) is the smallets possible packet.
-		AddDebugLogLineN(logMuleUDP, m_name + wxT(": Invalid Packet received"));
+		AddDebugLogLineN(logMuleUDP, m_name + ": Invalid Packet received");
 	} else if (!ip) {
 		// wxFAIL;
-		AddLogLineNS(wxT("Unknown ip receiving a UDP packet! Ignoring: '") + addr.IPAddress() + wxT("'"));
+		AddLogLineNS("Unknown ip receiving a UDP packet! Ignoring: '" + addr.IPAddress() + "'");
 	} else if (!port) {
 		// wxFAIL;
-		AddLogLineNS(wxT("Unknown port receiving a UDP packet! Ignoring"));
+		AddLogLineNS("Unknown port receiving a UDP packet! Ignoring");
 	} else if (theApp->clientlist->IsBannedClient(ip)) {
-		AddDebugLogLineN(logMuleUDP, m_name + wxT(": Dropped packet from banned IP ") + addr.IPAddress());
+		AddDebugLogLineN(logMuleUDP, m_name + ": Dropped packet from banned IP " + addr.IPAddress());
 	} else {
-		AddDebugLogLineN(logMuleUDP, (m_name + wxT(": Packet received ("))
-			<< addr.IPAddress() << wxT(":") << port << wxT("): ")
-			<< length << wxT("b"));
-		OnPacketReceived(ip, port, (byte*)buffer, length);
+		AddDebugLogLineN(logMuleUDP, (m_name + ": Packet received (")
+			<< addr.IPAddress() << ":" << port << "): "
+			<< length << "b");
+		OnPacketReceived(ip, port, (uint8_t*)buffer, length);
 	}
 }
 
 
 void CMuleUDPSocket::OnReceiveError(int DEBUG_ONLY(errorCode), uint32 WXUNUSED(ip), uint16 WXUNUSED(port))
 {
-	AddDebugLogLineN(logMuleUDP, (m_name + wxT(": Error while reading: ")) << errorCode);
+	AddDebugLogLineN(logMuleUDP, (m_name + ": Error while reading: ") << errorCode);
 }
 
 
@@ -201,7 +201,7 @@ void CMuleUDPSocket::OnDisconnected(int WXUNUSED(errorCode))
 	 * This has been reported as patch #1885472:
 	 * http://sourceforge.net/tracker/index.php?func=detail&aid=1885472&group_id=9863&atid=309863
 	 */
-	AddDebugLogLineC(logMuleUDP, m_name + wxT("Socket died, recreating."));
+	AddDebugLogLineC(logMuleUDP, m_name + "Socket died, recreating.");
 	DestroySocket();
 	CreateSocket();
 }
@@ -209,9 +209,9 @@ void CMuleUDPSocket::OnDisconnected(int WXUNUSED(errorCode))
 
 void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port, bool bEncrypt, const uint8* pachTargetClientHashORKadID, bool bKad, uint32 nReceiverVerifyKey)
 {
-	wxCHECK_RET(packet, wxT("Invalid packet."));
-	/*wxCHECK_RET(port, wxT("Invalid port."));
-	wxCHECK_RET(IP, wxT("Invalid IP."));
+	wxCHECK_RET(packet, "Invalid packet.");
+	/*wxCHECK_RET(port, "Invalid port.");
+	wxCHECK_RET(IP, "Invalid IP.");
 	*/
 
 	if (!port || !IP) {
@@ -219,15 +219,15 @@ void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port, bool bE
 	}
 
 	if (!Ok()) {
-		AddDebugLogLineN(logMuleUDP, (m_name + wxT(": Packet discarded, socket not Ok ("))
-			<< Uint32_16toStringIP_Port(IP, port) << wxT("): ") << packet->GetPacketSize() << wxT("b"));
+		AddDebugLogLineN(logMuleUDP, (m_name + ": Packet discarded, socket not Ok (")
+			<< Uint32_16toStringIP_Port(IP, port) << "): " << packet->GetPacketSize() << "b");
 		delete packet;
 
 		return;
 	}
 
-	AddDebugLogLineN(logMuleUDP, (m_name + wxT(": Packet queued ("))
-		<< Uint32_16toStringIP_Port(IP, port) << wxT("): ") << packet->GetPacketSize() << wxT("b"));
+	AddDebugLogLineN(logMuleUDP, (m_name + ": Packet queued (")
+		<< Uint32_16toStringIP_Port(IP, port) << "): " << packet->GetPacketSize() << "b");
 
 	UDPPack newpending;
 	newpending.IP = IP;
@@ -324,16 +324,16 @@ bool CMuleUDPSocket::SendTo(uint8_t *buffer, uint32_t length, uint32_t ip, uint1
 		// flag so it gets resent when socket is ready.
 		m_busy = true;
 	} else if (uint32 error = m_socket->LastError()) {
-		// An error which we can't handle happended, so we drop
+		// An error which we can't handle happened, so we drop
 		// the packet rather than risk entering an infinite loop.
-		AddLogLineN((wxT("WARNING! ") + m_name + wxT(": Packet to "))
+		AddLogLineN(("WARNING! " + m_name + ": Packet to ")
 			<< Uint32_16toStringIP_Port(ip, port)
-			<< wxT(" discarded due to error (") << error << wxT(") while sending."));
+			<< " discarded due to error (" << error << ") while sending.");
 		sent = true;
 	} else {
-		AddDebugLogLineN(logMuleUDP, (m_name + wxT(": Packet sent ("))
-			<< Uint32_16toStringIP_Port(ip, port) << wxT("): ")
-			<< length << wxT("b"));
+		AddDebugLogLineN(logMuleUDP, (m_name + ": Packet sent (")
+			<< Uint32_16toStringIP_Port(ip, port) << "): "
+			<< length << "b");
 		sent = true;
 	}
 

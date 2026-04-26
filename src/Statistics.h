@@ -105,7 +105,7 @@ class CPreciseRateCounter {
 	/**
 	 * Gets ever seen maximal rate.
 	 *
-	 * @return The maximal rate which occured.
+	 * @return The maximal rate which occurred.
 	 */
 	double	GetMaxRate()			{ wxMutexLocker lock(m_mutex); return m_max_rate; }
 

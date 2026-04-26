@@ -26,12 +26,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"             // Needed for PACKAGE
-#else
-#define PACKAGE "amule"
-#endif
-
+#include "config.h"		// Needed for PACKAGE
 #include "alc.h"
 
 // Application implementation
@@ -41,7 +36,7 @@ bool alc::OnInit ()
 {
   // Used to tell alc to use aMule catalog
   m_locale.Init();
-  m_locale.AddCatalog(wxT(PACKAGE));
+  m_locale.AddCatalog(PACKAGE);
 
   m_alcFrame = new AlcFrame (_("aLinkCreator, the aMule eD2k link creator"));
   m_alcFrame->Show (true);

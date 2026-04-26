@@ -45,7 +45,7 @@ public:
 	/**
 	 * Sorter function for the CMuleListCtrl used to contain the lists.
 	 */
-	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
+	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData);
 
 private:
 	void OnBnClickedApply(wxCommandEvent& evt);
@@ -68,7 +68,7 @@ private:
 	CMuleListCtrl* m_list;
 
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif // COMMENTDIALOGLST_H

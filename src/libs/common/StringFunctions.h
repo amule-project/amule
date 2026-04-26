@@ -77,7 +77,7 @@ typedef const wxWCharBuffer Char2UnicodeBuf;
 Unicode2CharBuf unicode2char(const wxChar* x);
 Unicode2CharBuf unicode2char(const Char2UnicodeBuf& x);
 inline Unicode2CharBuf unicode2char(const wxString& x)		{ return unicode2char(x.wc_str()); }
-inline Char2UnicodeBuf char2unicode(const char* x)	{ return wxConvLocal.cMB2WX(x); }
+inline Char2UnicodeBuf char2unicode(const char* x)	{ return wxConvLibc.cMB2WX(x); }
 
 inline Unicode2CharBuf unicode2UTF8(const wxChar* x)	{ return wxConvUTF8.cWX2MB(x); }
 inline Unicode2CharBuf unicode2UTF8(const Char2UnicodeBuf& x)	{ return wxConvUTF8.cWX2MB(x); }
@@ -87,23 +87,23 @@ inline Char2UnicodeBuf UTF82unicode(const char* x)	{ return wxConvUTF8.cMB2WX(x)
 inline const wxCharBuffer char2UTF8(const char *x)	{ return unicode2UTF8(char2unicode(x)); }
 inline const wxCharBuffer UTF82char(const char *x)	{ return unicode2char(UTF82unicode(x)); }
 
-inline Unicode2CharBuf filename2char(const wxChar* x)	{ return wxConvFile.cWC2MB(x); }
-inline Unicode2CharBuf filename2char(const wxString& x)	{ return x.mb_str(wxConvFile); }
-inline Char2UnicodeBuf char2filename(const char* x)	{ return wxConvFile.cMB2WC(x); }
+inline Unicode2CharBuf filename2char(const wxChar* x)	{ return wxConvFileName->cWC2MB(x); }
+inline Unicode2CharBuf filename2char(const wxString& x)	{ return x.mb_str(*wxConvFileName); }
+inline Char2UnicodeBuf char2filename(const char* x)	{ return wxConvFileName->cMB2WC(x); }
 
 
 //
 // Replaces "&" with "&&" in 'in' for use with text-labels
 //
 inline wxString MakeStringEscaped(wxString in) {
-	in.Replace(wxT("&"),wxT("&&"));
+	in.Replace("&","&&");
 	return in;
 }
 
 // Make a string be a folder
 inline wxString MakeFoldername(wxString path) {
 
-	if ( !path.IsEmpty() && ( path.Right(1) == wxT('/' )) ) {
+	if ( !path.IsEmpty() && ( path.Right(1) == '/') ) {
 		path.RemoveLast();
 	}
 
@@ -127,7 +127,7 @@ inline char* nstrdup(const char* src)
 inline long StrToLong(const wxString& str)
 {
 	long value = 0;
-	if (!str.ToLong(&value)) {	// value may be changed even if it failes according to wx docu
+	if (!str.ToLong(&value)) {	// value may be changed even if it fails according to wx docu
 		value = 0;
 	}
 	return value;
@@ -144,25 +144,11 @@ inline unsigned long StrToULong(const wxString& str)
 
 inline unsigned long long StrToULongLong(const wxString& str)
 {
-#if wxCHECK_VERSION(2, 9, 0)
 	unsigned long long value = 0;
 	if (!str.ToULongLong(&value)) {
 		value = 0;
 	}
 	return value;
-
-#else	// wx 2.8
-
-	Unicode2CharBuf buf = unicode2char(str);
-	if (!buf) {		// something went wrong
-		return 0;
-	}
-#ifdef _MSC_VER
-	return _atoi64(buf);
-#else
-	return atoll(buf);
-#endif
-#endif	// wx 2.8
 }
 
 inline size_t GetRawSize(const wxString& rstr, EUtf8Str eEncode)
@@ -238,7 +224,7 @@ wxString validateURI(const wxString& url);
  * compared. This allows strings such as "a (2)" and "a (10)" to
  * be properly sorted for displaying.
  *
- * Currently does not handle floats (they are treated as to seperate
+ * Currently does not handle floats (they are treated as to separate
  * fields, nor negative numbers.
  */
 int FuzzyStrCmp(const wxString& a, const wxString& b);

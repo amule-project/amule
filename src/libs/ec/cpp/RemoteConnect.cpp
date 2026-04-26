@@ -32,8 +32,7 @@
 
 #include <wx/intl.h>
 
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION)
-
+wxDEFINE_EVENT(wxEVT_EC_CONNECTION, wxEvent);
 CECLoginPacket::CECLoginPacket(const wxString& client, const wxString& version,
 							   bool canZLIB, bool canUTF8numbers, bool canNotify)
 :
@@ -45,7 +44,7 @@ CECPacket(EC_OP_AUTH_REQ)
 
 	#ifdef EC_VERSION_ID
 	CMD4Hash versionhash;
-	wxCHECK2(versionhash.Decode(wxT(EC_VERSION_ID)), /* Do nothing. */);
+	wxCHECK2(versionhash.Decode(EC_VERSION_ID), /* Do nothing. */);
 	AddTag(CECTag(EC_TAG_VERSION_ID, versionhash));
 	#endif
 
@@ -114,7 +113,7 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	m_version = version;
 
 	// don't even try to connect without a valid password
-	if (m_connectionPassword.IsEmpty() || m_connectionPassword == wxT("d41d8cd98f00b204e9800998ecf8427e")) {
+	if (m_connectionPassword.IsEmpty() || m_connectionPassword == "d41d8cd98f00b204e9800998ecf8427e") {
 		m_server_reply = _("You must specify a non-empty password.");
 		return false;
 	} else {
@@ -249,7 +248,7 @@ bool CRemoteConnect::ProcessAuthPacket(const CECPacket *reply) {
 		if ((m_ec_state == EC_REQ_SENT) && (reply->GetOpCode() == EC_OP_AUTH_SALT)) {
 				const CECTag *passwordSalt = reply->GetTagByName(EC_TAG_PASSWD_SALT);
 				if ( NULL != passwordSalt) {
-					wxString saltHash = MD5Sum(CFormat(wxT("%lX")) % passwordSalt->GetInt()).GetHash();
+					wxString saltHash = MD5Sum(CFormat("%lX") % passwordSalt->GetInt()).GetHash();
 					m_connectionPassword = MD5Sum(m_connectionPassword.Lower() + saltHash).GetHash();
 					m_ec_state = EC_SALT_RECEIVED;
 					return true;

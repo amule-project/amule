@@ -28,7 +28,7 @@
 
 #include "MD4Hash.h"		// Needed for CMD4Hash
 #include "ObservableQueue.h"	// Needed for CObservableQueue
-#include "GetTickCount.h"	// Needed fot GetTickCount
+#include "GetTickCount.h"	// Needed for GetTickCount
 
 
 #include <deque>
@@ -168,7 +168,7 @@ public:
 	/**
 	 * This function adds already known source to the specified file.
 	 *
-	 * @param sender The owner fo the new source.
+	 * @param sender The owner of the new source.
 	 * @param source The client in question.
 	 *
 	 * This function acts like CheckAndAddSource, with the exception that no
@@ -179,7 +179,7 @@ public:
 
 
 	/**
-	 * Removes the specified client completly.
+	 * Removes the specified client completely.
 	 *
 	 * @param toremove The client to be removed.
 	 * @param updatewindow NOT USED!
@@ -346,7 +346,7 @@ private:
 
 	void	AddToResolve(const CMD4Hash& fileid, const wxString& pszHostname, uint16 port, const wxString& hash, uint8 cryptoptions);
 
-	//! The mutex assosiated with this class, mutable to allow for const functions.
+	//! The mutex associated with this class, mutable to allow for const functions.
 	mutable wxMutex m_mutex;
 
 

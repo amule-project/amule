@@ -63,7 +63,7 @@ class CMuleTrayIcon : public wxTaskBarIcon
 {
 public:
 	/**
-	 * Contructor.
+	 * Constructor.
 	 */
 	CMuleTrayIcon();
 
@@ -108,7 +108,7 @@ private:
 	wxMemoryDC IconWithSpeed;
 	wxString CurrentTip;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 #endif // DAEMON

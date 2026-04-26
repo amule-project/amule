@@ -30,13 +30,9 @@
 #include <cstring>
 #include <wx/process.h>
 #include <wx/sstream.h>
-
-#ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
+#include "config.h"			// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
 					//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H, VERSION
 					//   and ENABLE_NLS
-#endif
-
 #include <common/ClientVersion.h>
 
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
@@ -45,6 +41,11 @@
 #include <wx/socket.h>
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
+#include <wx/stopwatch.h>		// Needed for wxStopWatch
+#ifdef __WINDOWS__
+#include <wx/stdpaths.h>		// Needed for wxStandardPaths (CA bundle lookup)
+#include <wx/filename.h>		// Needed for wxFileName (CA bundle lookup)
+#endif
 
 
 #include <common/Format.h>		// Needed for CFormat
@@ -78,7 +79,9 @@
 #include "TerminationProcessAmuleweb.h"	// Needed for CTerminationProcessAmuleweb
 #include "ThreadTasks.h"
 #include "UploadQueue.h"		// Needed for CUploadQueue
+#include "PartFileWriteThread.h"	// Needed for CPartFileWriteThread
 #include "UploadBandwidthThrottler.h"
+#include "UploadDiskIOThread.h"
 #include "UserEvents.h"
 #include "ScopedPtr.h"
 
@@ -93,11 +96,7 @@
 #ifndef AMULE_DAEMON
 	#ifdef __WXMAC__
 		#include <CoreFoundation/CFBundle.h>  // Do_not_auto_remove
-		#if wxCHECK_VERSION(2, 9, 0)
-			#include <wx/osx/core/cfstring.h>  // Do_not_auto_remove
-		#else
-			#include <wx/mac/corefoundation/cfstring.h>  // Do_not_auto_remove
-		#endif
+		#include <wx/osx/core/cfstring.h>  // Do_not_auto_remove
 	#endif
 	#include <wx/msgdlg.h>
 
@@ -197,6 +196,7 @@ CamuleApp::CamuleApp()
 	glob_prefs	= NULL;
 	m_statistics	= NULL;
 	uploadBandwidthThrottler = NULL;
+	uploadDiskIOThread = NULL;
 #ifdef ENABLE_UPNP
 	m_upnp		= NULL;
 	m_upnpMappings.resize(4);
@@ -209,7 +209,7 @@ CamuleApp::CamuleApp()
 
 	enable_daemon_fork = false;
 
-	// Apprently needed for *BSD
+	// Apparently needed for *BSD
 	SetResourceLimits();
 
 #ifdef _MSC_VER
@@ -226,6 +226,16 @@ CamuleApp::~CamuleApp()
 
 int CamuleApp::OnExit()
 {
+	// Guard against double-entry: on macOS the EVT_END_SESSION handler calls
+	// OnExit() explicitly (so the destructor chain runs before Cocoa
+	// terminates the process), and wxEntry may also call it on event-loop
+	// teardown. Without the guard the queues would be double-freed.
+	static bool s_exitDone = false;
+	if (s_exitDone) {
+		return 0;
+	}
+	s_exitDone = true;
+
 	if (m_app_state!=APP_STATE_STARTING) {
 		AddLogLineNS(_("Now, exiting main app..."));
 	}
@@ -295,8 +305,24 @@ int CamuleApp::OnExit()
 	delete clientlist;
 	clientlist = NULL;
 
+	// Stop upload disk I/O thread before deleting uploadqueue — the thread
+	// iterates uploadqueue->GetUploadingList() and will crash if it runs
+	// after uploadqueue is freed.
+	if (uploadDiskIOThread) {
+		uploadDiskIOThread->EndThread();
+		delete uploadDiskIOThread;
+		uploadDiskIOThread = NULL;
+	}
+
 	delete uploadqueue;
 	uploadqueue = NULL;
+
+	// Stop write thread before deleting downloadqueue — must drain pending writes.
+	if (partFileWriteThread) {
+		partFileWriteThread->EndThread();
+		delete partFileWriteThread;
+		partFileWriteThread = NULL;
+	}
 
 	delete downloadqueue;
 	downloadqueue = NULL;
@@ -319,6 +345,13 @@ int CamuleApp::OnExit()
 	glob_prefs = NULL;
 	CPreferences::EraseItemList();
 
+	// Shut down disk I/O thread before throttler — eMule ref: emule.cpp shutdown order
+	if (uploadDiskIOThread) {
+		uploadDiskIOThread->EndThread();
+		delete uploadDiskIOThread;
+		uploadDiskIOThread = NULL;
+	}
+
 	delete uploadBandwidthThrottler;
 	uploadBandwidthThrottler = NULL;
 
@@ -335,13 +368,13 @@ int CamuleApp::OnExit()
 
 #if wxUSE_MEMORY_TRACING
 	AddLogLineNS(_("Memory debug results for aMule exit:"));
-	// Log mem debug mesages to wxLogStderr
+	// Log mem debug messages to wxLogStderr
 	wxLog* oldLog = wxLog::SetActiveTarget(new wxLogStderr);
-	//AddLogLineNS(wxT("**************Classes**************");
+	//AddLogLineNS("**************Classes**************";
 	//wxDebugContext::PrintClasses();
-	//AddLogLineNS(wxT("***************Dump***************");
+	//AddLogLineNS("***************Dump***************";
 	//wxDebugContext::Dump();
-	AddLogLineNS(wxT("***************Stats**************"));
+	AddLogLineNS("***************Stats**************");
 	wxDebugContext::PrintStatistics(true);
 
 	// Set back to wxLogGui
@@ -350,7 +383,26 @@ int CamuleApp::OnExit()
 
 	StopTickTimer();
 
-	// Return 0 for succesful program termination
+#if defined(__APPLE__)
+	// wx 3.3.2 has a bug in wxWebSessionURLSession::~wxWebSessionURLSession:
+	// it releases the NSURLSession and the delegate separately without
+	// first calling -invalidateAndCancel. NSURLSession retains its
+	// delegate strongly, so the session's dealloc already drops the
+	// delegate ref — wx's subsequent release hits a freed object and the
+	// process aborts with "pointer being freed was not allocated". This
+	// fires in wx module cleanup / atexit / __cxa_finalize on any Mac
+	// build after any HTTP download (version check, server.met, ...).
+	//
+	// By this point in OnExit we have saved state, joined threads, and
+	// flushed logs — nothing aMule-owned remains to clean up. _Exit
+	// bypasses atexit and static destructors, so the buggy wx dtor never
+	// runs and the process terminates cleanly. Linux / Windows continue
+	// through wx's normal cleanup; remove this block once the upstream
+	// fix lands in a wx release we depend on.
+	std::_Exit(0);
+#endif
+
+	// Return 0 for successful program termination
 	return AMULE_APP_BASE::OnExit();
 }
 
@@ -368,7 +420,7 @@ bool CamuleApp::OnInit()
 {
 #if wxUSE_MEMORY_TRACING
 	// any text before call of Localize_mule needs not to be translated.
-	AddLogLineNS(wxT("Checkpoint set on app init for memory debug"));	// debug output
+	AddLogLineNS("Checkpoint set on app init for memory debug");	// debug output
 	wxDebugContext::SetCheckpoint();
 #endif
 
@@ -390,7 +442,27 @@ bool CamuleApp::OnInit()
 
 #ifdef __WXMAC__
 	// For listctrl's to behave on Mac
-	wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), 1);
+	wxSystemOptions::SetOption("mac.listctrl.always_use_generic", 1);
+#endif
+
+#ifdef __WINDOWS__
+	// wxWebRequest is backed by libcurl on MSYS2 (MINGW64 / CLANGARM64)
+	// builds. MSYS2 libcurl is compiled with `--with-ca-bundle=` pointing
+	// at an absolute MSYS2 path that does not exist on end-user machines,
+	// so HTTPS (and any HTTP→HTTPS redirect — e.g. SourceForge) fails
+	// with "libcurl error 77: Problem with the SSL CA cert". CMake's
+	// install step ships a ca-bundle.crt next to the .exe; point
+	// CURL_CA_BUNDLE at it here if the user has not set one explicitly.
+	{
+		wxString existing;
+		if (!wxGetEnv("CURL_CA_BUNDLE", &existing) || existing.IsEmpty()) {
+			wxFileName caFile(wxStandardPaths::Get().GetExecutablePath());
+			caFile.SetFullName("ca-bundle.crt");
+			if (caFile.FileExists()) {
+				wxSetEnv("CURL_CA_BUNDLE", caFile.GetFullPath());
+			}
+		}
+	}
 #endif
 
 	// Handle uncaught exceptions
@@ -403,13 +475,13 @@ bool CamuleApp::OnInit()
 	glob_prefs = new CPreferences();
 
 	CPath outDir;
-	if (CheckMuleDirectory(wxT("temp"), thePrefs::GetTempDir(), thePrefs::GetConfigDir() + wxT("Temp"), outDir)) {
+	if (CheckMuleDirectory("temp", thePrefs::GetTempDir(), thePrefs::GetConfigDir() + "Temp", outDir)) {
 		thePrefs::SetTempDir(outDir);
 	} else {
 		return false;
 	}
 
-	if (CheckMuleDirectory(wxT("incoming"), thePrefs::GetIncomingDir(), thePrefs::GetConfigDir() + wxT("Incoming"), outDir)) {
+	if (CheckMuleDirectory("incoming", thePrefs::GetIncomingDir(), thePrefs::GetConfigDir() + "Incoming", outDir)) {
 		thePrefs::SetIncomingDir(outDir);
 	} else {
 		return false;
@@ -455,10 +527,10 @@ bool CamuleApp::OnInit()
 #ifndef __WINDOWS__
 	if (getuid() == 0) {
 		wxString msg =
-			wxT("Warning! You are running aMule as root.\n")
-			wxT("Doing so is not recommended for security reasons,\n")
-			wxT("and you are advised to run aMule as an normal\n")
-			wxT("user instead.");
+			"Warning! You are running aMule as root.\n"
+			"Doing so is not recommended for security reasons,\n"
+			"and you are advised to run aMule as an normal\n"
+			"user instead.";
 
 		ShowAlert(msg, _("WARNING"), wxCENTRE | wxOK | wxICON_ERROR);
 
@@ -469,8 +541,8 @@ bool CamuleApp::OnInit()
 #endif
 
 	// Display notification on new version or first run
-	wxTextFile vfile( thePrefs::GetConfigDir() + wxT("lastversion") );
-	wxString newMule(wxT( VERSION ));
+	wxTextFile vfile( thePrefs::GetConfigDir() + "lastversion" );
+	wxString newMule(VERSION);
 
 	if ( !wxFileExists( vfile.GetName() ) ) {
 		vfile.Create();
@@ -487,7 +559,7 @@ bool CamuleApp::OnInit()
 			}
 		}
 
-		// We havent run this version before?
+		// We haven't run this version before?
 		if ( !found ) {
 			// Insert new at top to provide faster searches
 			vfile.InsertLine( newMule, 0 );
@@ -495,7 +567,7 @@ bool CamuleApp::OnInit()
 			Trigger_New_version( newMule );
 		}
 
-		// Keep at most 10 entires
+		// Keep at most 10 entries
 		while ( vfile.GetLineCount() > 10 )
 			vfile.RemoveLine( vfile.GetLineCount() - 1 );
 
@@ -518,12 +590,13 @@ bool CamuleApp::OnInit()
 	// bugfix - do this before creating the uploadqueue
 	downloadqueue	= new CDownloadQueue();
 	uploadqueue	= new CUploadQueue();
+	partFileWriteThread = new CPartFileWriteThread();
 	ipfilter	= new CIPFilter();
 
 	// Creates all needed listening sockets
 	wxString msg;
 	if (!ReinitializeNetwork(&msg)) {
-		AddLogLineNS(wxT("\n"));
+		AddLogLineNS("\n");
 		AddLogLineNS(msg);
 	}
 
@@ -531,8 +604,8 @@ bool CamuleApp::OnInit()
 	if (thePrefs::GetCheckNewVersion()) {
 		// We use the thread base because I don't want a dialog to pop up.
 		CHTTPDownloadThread* version_check =
-			new CHTTPDownloadThread(wxT("http://amule.sourceforge.net/lastversion"),
-				thePrefs::GetConfigDir() + wxT("last_version_check"), thePrefs::GetConfigDir() + wxT("last_version"), HTTP_VersionCheck, false, false);
+			new CHTTPDownloadThread("http://amule.sourceforge.net/lastversion",
+				thePrefs::GetConfigDir() + "last_version_check", thePrefs::GetConfigDir() + "last_version", HTTP_VersionCheck, false, false);
 		version_check->Create();
 		version_check->Run();
 	}
@@ -552,6 +625,10 @@ bool CamuleApp::OnInit()
 	// (when using posix threads) only replicates the mainthread,
 	// and the UBT constructor creates a thread.
 	uploadBandwidthThrottler = new UploadBandwidthThrottler();
+
+	// Start disk I/O thread — must be after uploadBandwidthThrottler.
+	// eMule ref: emule.cpp:748
+	uploadDiskIOThread = new CUploadDiskIOThread();
 
 #ifdef ASIO_SOCKETS
 	m_AsioService = new CAsioService;
@@ -631,25 +708,21 @@ bool CamuleApp::OnInit()
 			if (absoluteUrl) {
 				CFStringRef amulewebCfstr = CFURLCopyFileSystemPath(absoluteUrl, kCFURLPOSIXPathStyle);
 				CFRelease(absoluteUrl);
-	#if wxCHECK_VERSION(2, 9, 0)
-				amulewebPath = wxCFStringRef(amulewebCfstr).AsString(wxLocale::GetSystemEncoding());
-	#else
-				amulewebPath = wxMacCFStringHolder(amulewebCfstr).AsString(wxLocale::GetSystemEncoding());
-	#endif
+				amulewebPath = wxCFStringRef(amulewebCfstr).AsString();
 			}
 		}
 #endif
 
 #ifdef __WINDOWS__
-#	define QUOTE	wxT("\"")
+#	define QUOTE	"\""
 #else
-#	define QUOTE	wxT("\'")
+#	define QUOTE	"\'"
 #endif
 
 		wxString cmd =
 			QUOTE +
 			amulewebPath +
-			QUOTE wxT(" ") QUOTE wxT("--amule-config-file=") +
+			QUOTE " " QUOTE "--amule-config-file=" +
 			aMuleConfigFile +
 			QUOTE;
 		CTerminationProcessAmuleweb *p = new CTerminationProcessAmuleweb(cmd, &webserver_pid);
@@ -688,15 +761,15 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		thePrefs::SetECPort( port );
 
 		wxString err =
-			wxT("Network configuration failed! You cannot use the same port\n")
-			wxT("for the main TCP port and the External Connections port.\n")
-			wxT("The EC port has been changed to avoid conflict, see the\n")
-			wxT("preferences for the new value.\n");
+			"Network configuration failed! You cannot use the same port\n"
+			"for the main TCP port and the External Connections port.\n"
+			"The EC port has been changed to avoid conflict, see the\n"
+			"preferences for the new value.\n";
 		*msg << err;
 
-		AddLogLineN(wxEmptyString );
+		AddLogLineN("" );
 		AddLogLineC(err );
-		AddLogLineN(wxEmptyString );
+		AddLogLineN("" );
 
 		ok = false;
 	}
@@ -710,16 +783,16 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		thePrefs::SetUDPPort( port );
 
 		wxString err =
-			wxT("Network configuration failed! You set your UDP port to\n")
-			wxT("the value of the main TCP port plus 3.\n")
-			wxT("This port has been reserved for the Server-UDP port. The\n")
-			wxT("port value has been changed to avoid conflict, see the\n")
-			wxT("preferences for the new value\n");
+			"Network configuration failed! You set your UDP port to\n"
+			"the value of the main TCP port plus 3.\n"
+			"This port has been reserved for the Server-UDP port. The\n"
+			"port value has been changed to avoid conflict, see the\n"
+			"preferences for the new value\n";
 		*msg << err;
 
-		AddLogLineN(wxEmptyString );
+		AddLogLineN("" );
 		AddLogLineC(err );
-		AddLogLineN(wxEmptyString );
+		AddLogLineN("" );
 
 		ok = false;
 	}
@@ -750,7 +823,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	wxString ip = myaddr[1].IPAddress();
 	myaddr[1].Service(thePrefs::GetPort()+3);
 	serverconnect = new CServerConnect(serverlist, myaddr[1]);
-	*msg << CFormat( wxT("*** Server UDP socket (TCP+3) at %s:%u\n") )
+	*msg << CFormat( "*** Server UDP socket (TCP+3) at %s:%u\n" )
 		% ip % ((unsigned int)thePrefs::GetPort() + 3u);
 
 	// Create the ListenSocket (aMule TCP socket).
@@ -760,10 +833,10 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	myaddr[2] = myaddr[1];
 	myaddr[2].Service(thePrefs::GetPort());
 	listensocket = new CListenSocket(myaddr[2]);
-	*msg << CFormat( wxT("*** TCP socket (TCP) listening on %s:%u\n") )
+	*msg << CFormat( "*** TCP socket (TCP) listening on %s:%u\n" )
 		% ip % (unsigned int)(thePrefs::GetPort());
 	// Notify(true) has already been called to the ListenSocket, so events may
-	// be already comming in.
+	// be already coming in.
 	if (!listensocket->IsOk()) {
 		// If we wern't able to start listening, we need to warn the user
 		wxString err;
@@ -786,10 +859,10 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	myaddr[3].Service(thePrefs::GetUDPPort());
 	clientudp = new CClientUDPSocket(myaddr[3], thePrefs::GetProxyData());
 	if (!thePrefs::IsUDPDisabled()) {
-		*msg << CFormat( wxT("*** Client UDP socket (extended eMule) at %s:%u") )
+		*msg << CFormat( "*** Client UDP socket (extended eMule) at %s:%u" )
 			% ip % thePrefs::GetUDPPort();
 	} else {
-		*msg << wxT("*** Client UDP socket (extended eMule) disabled on preferences");
+		*msg << "*** Client UDP socket (extended eMule) disabled on preferences";
 	}
 
 #ifdef ENABLE_UPNP
@@ -816,6 +889,10 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 				thePrefs::GetUPnPEnabled(),
 				"aMule UDP Extended eMule Socket");
 			m_upnp = new CUPnPControlPoint(thePrefs::GetUPnPTCPPort());
+
+			wxStopWatch count; // Wait UPnP service responses for 3s before add port mappings
+			while (count.Time() < 3000 && !m_upnp->WanServiceDetected());
+
 			m_upnp->AddPortMappings(m_upnpMappings);
 		} catch(CUPnPException &e) {
 			wxString error_msg;
@@ -871,30 +948,30 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	wxString temp;
 
 	if (zero) {
-		emulesig_string = wxT("0\xA0.0|0.0|0");
-		amulesig_out.AddLine(wxT("0\n0\n0\n0\n0\n0\n0.0\n0.0\n0\n0"));
+		emulesig_string = L"0\xA0.0|0.0|0";
+		amulesig_out.AddLine("0\n0\n0\n0\n0\n0\n0.0\n0.0\n0\n0");
 	} else {
 		if (IsConnectedED2K()) {
 
-			temp = CFormat(wxT("%d")) % serverconnect->GetCurrentServer()->GetPort();
+			temp = CFormat("%d") % serverconnect->GetCurrentServer()->GetPort();
 
 			// We are online
 			emulesig_string =
 				// Connected
-				wxT("1|")
+				"1|"
 				//Server name
 				+ serverconnect->GetCurrentServer()->GetListName()
-				+ wxT("|")
+				+ "|"
 				// IP and port of the server
 				+ serverconnect->GetCurrentServer()->GetFullIP()
-				+ wxT("|")
+				+ "|"
 				+ temp;
 
 
 			// Now for amule sig
 
 			// Connected. State 1, full info
-			amulesig_out.AddLine(wxT("1"));
+			amulesig_out.AddLine("1");
 			// Server Name
 			amulesig_out.AddLine(serverconnect->GetCurrentServer()->GetListName());
 			// Server IP
@@ -903,57 +980,57 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			amulesig_out.AddLine(temp);
 
 			if (serverconnect->IsLowID()) {
-				amulesig_out.AddLine(wxT("L"));
+				amulesig_out.AddLine("L");
 			} else {
-				amulesig_out.AddLine(wxT("H"));
+				amulesig_out.AddLine("H");
 			}
 
 		} else if (serverconnect->IsConnecting()) {
-			emulesig_string = wxT("0");
+			emulesig_string = L"0";
 
 			// Connecting. State 2, No info.
-			amulesig_out.AddLine(wxT("2\n0\n0\n0\n0"));
+			amulesig_out.AddLine("2\n0\n0\n0\n0");
 		} else {
 			// Not connected to a server
-			emulesig_string = wxT("0");
+			emulesig_string = L"0";
 
 			// Not connected, state 0, no info
-			amulesig_out.AddLine(wxT("0\n0\n0\n0\n0"));
+			amulesig_out.AddLine("0\n0\n0\n0\n0");
 		}
 		if (IsConnectedKad()) {
 			if(Kademlia::CKademlia::IsFirewalled()) {
 				// Connected. Firewalled. State 1.
-				amulesig_out.AddLine(wxT("1"));
+				amulesig_out.AddLine("1");
 			} else {
 				// Connected. State 2.
-				amulesig_out.AddLine(wxT("2"));
+				amulesig_out.AddLine("2");
 			}
 		} else {
 			// Not connected.State 0.
-			amulesig_out.AddLine(wxT("0"));
+			amulesig_out.AddLine("0");
 		}
-		emulesig_string += wxT("\xA");
+		emulesig_string += "\xA";
 
 		// Datarate for downloads
-		temp = CFormat(wxT("%.1f")) % (theStats::GetDownloadRate() / 1024.0);
+		temp = CFormat("%.1f") % (theStats::GetDownloadRate() / 1024.0);
 
-		emulesig_string += temp + wxT("|");
+		emulesig_string += temp + "|";
 		amulesig_out.AddLine(temp);
 
 		// Datarate for uploads
-		temp = CFormat(wxT("%.1f")) % (theStats::GetUploadRate() / 1024.0);
+		temp = CFormat("%.1f") % (theStats::GetUploadRate() / 1024.0);
 
-		emulesig_string += temp + wxT("|");
+		emulesig_string += temp + "|";
 		amulesig_out.AddLine(temp);
 
 		// Number of users waiting for upload
-		temp = CFormat(wxT("%d")) % theStats::GetWaitingUserCount();
+		temp = CFormat("%d") % theStats::GetWaitingUserCount();
 
 		emulesig_string += temp;
 		amulesig_out.AddLine(temp);
 
 		// Number of shared files (not on eMule)
-		amulesig_out.AddLine(CFormat(wxT("%d")) % theStats::GetSharedFileCount());
+		amulesig_out.AddLine(CFormat("%d") % theStats::GetSharedFileCount());
 	}
 
 	// eMule signature finished here. Write the line to the wxTextFile.
@@ -965,33 +1042,33 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	amulesig_out.AddLine(thePrefs::GetUserNick());
 
 	// Total received in bytes
-	amulesig_out.AddLine(CFormat(wxT("%llu")) % theStats::GetTotalReceivedBytes());
+	amulesig_out.AddLine(CFormat("%llu") % theStats::GetTotalReceivedBytes());
 
 	// Total sent in bytes
-	amulesig_out.AddLine(CFormat(wxT("%llu")) % theStats::GetTotalSentBytes());
+	amulesig_out.AddLine(CFormat("%llu") % theStats::GetTotalSentBytes());
 
 	// amule version
 #ifdef SVNDATE
-	amulesig_out.AddLine(wxT(VERSION) wxT(" ") wxT(SVNDATE));
+	amulesig_out.AddLine(VERSION " " SVNDATE);
 #else
-	amulesig_out.AddLine(wxT(VERSION));
+	amulesig_out.AddLine(VERSION);
 #endif
 
 	if (zero) {
-		amulesig_out.AddLine(wxT("0"));
-		amulesig_out.AddLine(wxT("0"));
-		amulesig_out.AddLine(wxT("0"));
+		amulesig_out.AddLine("0");
+		amulesig_out.AddLine("0");
+		amulesig_out.AddLine("0");
 	} else {
         // Total received bytes in session
-		amulesig_out.AddLine( CFormat( wxT("%llu") ) %
+		amulesig_out.AddLine( CFormat( "%llu" ) %
 			theStats::GetSessionReceivedBytes() );
 
         // Total sent bytes in session
-		amulesig_out.AddLine( CFormat( wxT("%llu") ) %
+		amulesig_out.AddLine( CFormat( "%llu" ) %
 			theStats::GetSessionSentBytes() );
 
 		// Uptime
-		amulesig_out.AddLine(CFormat(wxT("%llu")) % theStats::GetUptimeSeconds());
+		amulesig_out.AddLine(CFormat("%llu") % theStats::GetUptimeSeconds());
 	}
 
 	// Flush the files
@@ -1006,20 +1083,20 @@ void CamuleApp::OnFatalException()
 {
 	/* Print the backtrace */
 	wxString msg;
-	msg	<< wxT("\n--------------------------------------------------------------------------------\n")
-		<< wxT("A fatal error has occurred and aMule has crashed.\n")
-		<< wxT("Please assist us in fixing this problem by posting the backtrace below in our\n")
-		<< wxT("'aMule Crashes' forum and include as much information as possible regarding the\n")
-		<< wxT("circumstances of this crash. The forum is located here:\n")
-		<< wxT("    http://forum.amule.org/index.php?board=67.0\n")
-		<< wxT("If possible, please try to generate a real backtrace of this crash:\n")
-		<< wxT("    http://wiki.amule.org/wiki/Backtraces\n\n")
-		<< wxT("----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n")
-		<< wxT("Current version is: ") << FullMuleVersion
-		<< wxT("\nRunning on: ") << OSDescription
-		<< wxT("\n\n")
+	msg	<< "\n--------------------------------------------------------------------------------\n"
+		<< "A fatal error has occurred and aMule has crashed.\n"
+		<< "Please assist us in fixing this problem by posting the backtrace below in our\n"
+		<< "'aMule Crashes' forum and include as much information as possible regarding the\n"
+		<< "circumstances of this crash. The forum is located here:\n"
+		<< "    http://forum.amule.org/index.php?board=67.0\n"
+		<< "If possible, please try to generate a real backtrace of this crash:\n"
+		<< "    http://wiki.amule.org/wiki/Backtraces\n\n"
+		<< "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n"
+		<< "Current version is: " << FullMuleVersion
+		<< "\nRunning on: " << OSDescription
+		<< "\n\n"
 		<< get_backtrace(1) // 1 == skip this function.
-		<< wxT("\n--------------------------------------------------------------------------------\n");
+		<< "\n--------------------------------------------------------------------------------\n";
 
 	theLogger.EmergencyLog(msg, true);
 }
@@ -1041,18 +1118,18 @@ void CamuleApp::Localize_mule()
 // Is called when the user runs a new version of aMule
 void CamuleApp::Trigger_New_version(wxString new_version)
 {
-	wxString info = wxT(" --- ") + CFormat(_("This is the first time you run aMule %s")) % new_version + wxT(" ---\n\n");
-	if (new_version == wxT("SVN")) {
+	wxString info = wxString(" --- ") + wxString(CFormat(_("This is the first time you run aMule %s")) % new_version) + " ---\n\n";
+	if (new_version == "SVN") {
 		info += _("This version is a testing version, updated daily, and\n");
 		info += _("we give no warranty it won't break anything, burn your house,\n");
 		info += _("or kill your dog. But it *should* be safe to use anyway.\n");
 	}
 
 	// General info
-	info += wxT("\n");
+	info += "\n";
 	info += _("More information, support and new releases can found at our homepage,\n");
 	info += _("at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n");
-	info += wxT("\n");
+	info += "\n";
 	info += _("Feel free to report any bugs to http://forum.amule.org");
 
 	ShowAlert(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
@@ -1063,8 +1140,8 @@ void CamuleApp::SetOSFiles(const wxString& new_path)
 {
 	if ( thePrefs::IsOnlineSignatureEnabled() ) {
 		if ( ::wxDirExists(new_path) ) {
-			m_emulesig_path = JoinPaths(new_path, wxT("onlinesig.dat"));
-			m_amulesig_path = JoinPaths(new_path, wxT("amulesig.dat"));
+			m_emulesig_path = JoinPaths(new_path, "onlinesig.dat");
+			m_amulesig_path = JoinPaths(new_path, "amulesig.dat");
 		} else {
 			ShowAlert(_("The folder for Online Signature files you specified is INVALID!\n OnlineSignature will be DISABLED until you fix it on preferences."), _("ERROR"), wxOK | wxICON_ERROR);
 			m_emulesig_path.Clear();
@@ -1084,8 +1161,8 @@ void CamuleApp::SetOSFiles(const wxString& new_path)
 void CamuleApp::OnAssertFailure(const wxChar* file, int line,
 				const wxChar* func, const wxChar* cond, const wxChar* msg)
 {
-	wxString errmsg = CFormat( wxT("Assertion failed: %s:%s:%d: Assertion '%s' failed. %s\nBacktrace follows:\n%s\n") )
-		% file % func % line % cond % ( msg ? msg : wxT("") )
+	wxString errmsg = CFormat( "Assertion failed: %s:%s:%d: Assertion '%s' failed. %s\nBacktrace follows:\n%s\n" )
+		% file % func % line % cond % ( msg ? wxString(msg) : wxString() )
 		% get_backtrace(2);		// Skip the function-calls directly related to the assert call.
 	theLogger.EmergencyLog(errmsg, false);
 
@@ -1093,9 +1170,9 @@ void CamuleApp::OnAssertFailure(const wxChar* file, int line,
 		AMULE_APP_BASE::OnAssertFailure(file, line, func, cond, msg);
 	} else {
 #ifdef _MSC_VER
-		wxString s = CFormat(wxT("%s in %s")) % cond % func;
+		wxString s = CFormat("%s in %s") % cond % func;
 		if (msg) {
-			s << wxT(" : ") << msg;
+			s << " : " << msg;
 		}
 		_wassert(s.wc_str(), file, line);
 #else
@@ -1249,7 +1326,7 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 	}
 
 
-	// Recomended by lugdunummaster himself - from emule 0.30c
+	// Recommended by lugdunummaster himself - from emule 0.30c
 	serverconnect->KeepConnectionAlive();
 
 	// Disarm recursion protection
@@ -1259,7 +1336,7 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 
 void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 {
-	wxCHECK_RET(evt.GetResult(), wxT("No result of hashing"));
+	wxCHECK_RET(evt.GetResult(), "No result of hashing");
 
 	CKnownFile* owner = const_cast<CKnownFile*>(evt.GetOwner());
 	CKnownFile* result = evt.GetResult();
@@ -1277,13 +1354,13 @@ void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 
 		if (knownfiles->SafeAddKFile(result, true)) {
 			AddDebugLogLineN(logKnownFiles,
-				CFormat(wxT("Safe adding file to sharedlist: %s")) % result->GetFileName());
+				CFormat("Safe adding file to sharedlist: %s") % result->GetFileName());
 			sharedfiles->SafeAddKFile(result);
 
 			bytecount += result->GetFileSize();
 			// If we have added files with a total size of ~3000mb
 			if (bytecount >= wxULL(3145728000)) {
-				AddDebugLogLineN(logKnownFiles, wxT("Failsafe for crash on file hashing creation"));
+				AddDebugLogLineN(logKnownFiles, "Failsafe for crash on file hashing creation");
 				if ( m_app_state != APP_STATE_SHUTTINGDOWN ) {
 					knownfiles->Save();
 					bytecount = 0;
@@ -1291,7 +1368,7 @@ void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 			}
 		} else {
 			AddDebugLogLineN(logKnownFiles,
-				CFormat(wxT("File not added to sharedlist: %s")) % result->GetFileName());
+				CFormat("File not added to sharedlist: %s") % result->GetFileName());
 			delete result;
 		}
 	}
@@ -1300,7 +1377,7 @@ void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 
 void CamuleApp::OnFinishedAICHHashing(CHashingEvent& evt)
 {
-	wxCHECK_RET(evt.GetResult(), wxT("No result of AICH-hashing"));
+	wxCHECK_RET(evt.GetResult(), "No result of AICH-hashing");
 
 	CKnownFile* owner = const_cast<CKnownFile*>(evt.GetOwner());
 	CScopedPtr<CKnownFile> result(evt.GetResult());
@@ -1321,8 +1398,8 @@ void CamuleApp::OnFinishedAICHHashing(CHashingEvent& evt)
 void CamuleApp::OnFinishedCompletion(CCompletionEvent& evt)
 {
 	CPartFile* completed = const_cast<CPartFile*>(evt.GetOwner());
-	wxCHECK_RET(completed, wxT("Completion event sent for unspecified file"));
-	wxASSERT_MSG(downloadqueue->IsPartFile(completed), wxT("CCompletionEvent for unknown partfile."));
+	wxCHECK_RET(completed, "Completion event sent for unspecified file");
+	wxASSERT_MSG(downloadqueue->IsPartFile(completed), "CCompletionEvent for unknown partfile.");
 
 	completed->CompleteFileEnded(evt.ErrorOccured(), evt.GetFullPath());
 	if (evt.ErrorOccured()) {
@@ -1336,8 +1413,8 @@ void CamuleApp::OnFinishedCompletion(CCompletionEvent& evt)
 void CamuleApp::OnFinishedAllocation(CAllocFinishedEvent& evt)
 {
 	CPartFile *file = evt.GetFile();
-	wxCHECK_RET(file, wxT("Allocation finished event sent for unspecified file"));
-	wxASSERT_MSG(downloadqueue->IsPartFile(file), wxT("CAllocFinishedEvent for unknown partfile"));
+	wxCHECK_RET(file, "Allocation finished event sent for unspecified file");
+	wxASSERT_MSG(downloadqueue->IsPartFile(file), "CAllocFinishedEvent for unknown partfile");
 
 	file->SetStatus(PS_EMPTY);
 
@@ -1373,14 +1450,14 @@ void CamuleApp::ShutDown()
 	PlatformSpecific::AllowSleepMode();
 
 	// Log
-	AddDebugLogLineN(logGeneral, wxT("CamuleApp::ShutDown() has started."));
+	AddDebugLogLineN(logGeneral, "CamuleApp::ShutDown() has started.");
 
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTTINGDOWN;
 
 	// Stop ASIO thread
 #ifdef ASIO_SOCKETS			// only needed to suppress the log message in non-Asio build
-	AddDebugLogLineN(logGeneral, wxT("Terminate ASIO thread."));
+	AddDebugLogLineN(logGeneral, "Terminate ASIO thread.");
 	m_AsioService->Stop();
 #endif
 
@@ -1399,7 +1476,7 @@ void CamuleApp::ShutDown()
 	// Exit thread scheduler and upload thread
 	CThreadScheduler::Terminate();
 
-	AddDebugLogLineN(logGeneral, wxT("Terminate upload thread."));
+	AddDebugLogLineN(logGeneral, "Terminate upload thread.");
 	uploadBandwidthThrottler->EndThread();
 
 	// Close sockets to avoid new clients coming in
@@ -1430,14 +1507,14 @@ void CamuleApp::ShutDown()
 	theStats::Save();
 
 	CPath configFileName = CPath(thePrefs::GetConfigDir() + m_configFile);
-	CPath::BackupFile(configFileName, wxT(".bak"));
+	CPath::BackupFile(configFileName, ".bak");
 
 	if (clientlist) {
 		clientlist->DeleteAll();
 	}
 
 	// Log
-	AddDebugLogLineN(logGeneral, wxT("CamuleApp::ShutDown() has ended."));
+	AddDebugLogLineN(logGeneral, "CamuleApp::ShutDown() has ended.");
 }
 
 
@@ -1481,7 +1558,7 @@ void CamuleApp::SetPublicIP(const uint32 dwIP)
 wxString CamuleApp::GetLog(bool reset)
 {
 	wxFile logfile;
-	logfile.Open(thePrefs::GetConfigDir() + wxT("logfile"));
+	logfile.Open(thePrefs::GetConfigDir() + "logfile");
 	if ( !logfile.IsOpened() ) {
 		return _("ERROR: can't open logfile");
 	}
@@ -1504,7 +1581,7 @@ wxString CamuleApp::GetLog(bool reset)
 	delete [] tmp_buffer;
 	if ( reset ) {
 		theLogger.CloseLogfile();
-		if (theLogger.OpenLogfile(thePrefs::GetConfigDir() + wxT("logfile"))) {
+		if (theLogger.OpenLogfile(thePrefs::GetConfigDir() + "logfile")) {
 			AddLogLineN(_("Log has been reset"));
 		}
 		ECServerHandler->ResetAllLogs();
@@ -1530,7 +1607,7 @@ wxString CamuleApp::GetDebugLog(bool reset)
 
 void CamuleApp::AddServerMessageLine(wxString &msg)
 {
-	server_msg += msg + wxT("\n");
+	server_msg += msg + "\n";
 	AddLogLineN(CFormat(_("ServerMessage: %s")) % msg);
 }
 
@@ -1558,7 +1635,7 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 		case HTTP_NodesDat:
 			if (event.GetExtraLong() == HTTP_Success) {
 
-				wxString file = thePrefs::GetConfigDir() + wxT("nodes.dat");
+				wxString file = thePrefs::GetConfigDir() + "nodes.dat";
 				if (wxFileExists(file)) {
 					wxRemoveFile(file);
 				}
@@ -1567,13 +1644,13 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 					Kademlia::CKademlia::Stop();
 				}
 
-				wxRenameFile(file + wxT(".download"),file);
+				wxRenameFile(file + ".download",file);
 
 				Kademlia::CKademlia::Start();
 				theApp->ShowConnectionState();
 			// cppcheck-suppress duplicateBranch
 			} else if (event.GetExtraLong() == HTTP_Skipped) {
-				AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("nodes.dat"));
+				AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % "nodes.dat");
 			} else {
 				AddLogLineC(_("Failed to download the nodes list."));
 			}
@@ -1591,7 +1668,7 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 void CamuleApp::CheckNewVersion(uint32 result)
 {
 	if (result == HTTP_Success) {
-		wxString filename = thePrefs::GetConfigDir() + wxT("last_version_check");
+		wxString filename = thePrefs::GetConfigDir() + "last_version_check";
 		wxTextFile file;
 
 		if (!file.Open(filename)) {
@@ -1601,9 +1678,9 @@ void CamuleApp::CheckNewVersion(uint32 result)
 			AddLogLineC(_("Corrupted version check file"));
 		} else {
 			wxString versionLine = file.GetFirstLine();
-			wxStringTokenizer tkz(versionLine, wxT("."));
+			wxStringTokenizer tkz(versionLine, ".");
 
-			AddDebugLogLineN(logGeneral, wxString(wxT("Running: ")) + wxT(VERSION) + wxT(", Version check: ") + versionLine);
+			AddDebugLogLineN(logGeneral, wxString("Running: ") + VERSION + ", Version check: " + versionLine);
 
 			long fields[] = {0, 0, 0};
 			for (int i = 0; i < 3; ++i) {
@@ -1783,7 +1860,7 @@ bool CamuleApp::CanDoCallback(uint32 clientServerIP, uint16 clientServerPort)
 				//Only Kad Connected - Kad Firewalled
 				return false;
 			} else {
-				//Only Kad Conected - Kad Open
+				//Only Kad Connected - Kad Open
 				return true;
 			}
 		}
@@ -1830,19 +1907,19 @@ void CamuleApp::ShowUserCount() {
 #ifndef ASIO_SOCKETS
 void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 {
-	{ wxCHECK_RET(listensocket, wxT("Connection-event for NULL'd listen-socket")); }
+	{ wxCHECK_RET(listensocket, "Connection-event for NULL'd listen-socket"); }
 	{ wxCHECK_RET(event.GetSocketEvent() == wxSOCKET_CONNECTION,
-		wxT("Invalid event received for listen-socket")); }
+		"Invalid event received for listen-socket"); }
 
 	if (m_app_state == APP_STATE_RUNNING) {
 		listensocket->OnAccept();
 	} else if (m_app_state == APP_STATE_STARTING) {
 		// When starting up, connection may be made before we are able
-		// to handle them. However, if these are ignored, no futher
+		// to handle them. However, if these are ignored, no further
 		// connection-events will be triggered, so we have to accept it.
 		CLibSocket* socket = listensocket->Accept(false);
 
-		wxCHECK_RET(socket, wxT("NULL returned by Accept() during startup"));
+		wxCHECK_RET(socket, "NULL returned by Accept() during startup");
 
 		socket->Destroy();
 	}
@@ -1934,7 +2011,7 @@ void CamuleApp::ShowConnectionState(bool forceUpdate)
 void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 {
 	CMuleUDPSocket* socket = reinterpret_cast<CMuleUDPSocket*>(event.GetClientData());
-	wxCHECK_RET(socket, wxT("No socket owner specified."));
+	wxCHECK_RET(socket, "No socket owner specified.");
 
 	if (IsOnShutDown() || thePrefs::IsUDPDisabled()) return;
 
@@ -2014,9 +2091,9 @@ void CamuleApp::BootstrapKad(uint32 ip, uint16 port)
 
 void CamuleApp::UpdateNotesDat(const wxString& url)
 {
-	wxString strTempFilename(thePrefs::GetConfigDir() + wxT("nodes.dat.download"));
+	wxString strTempFilename(thePrefs::GetConfigDir() + "nodes.dat.download");
 
-	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(url, strTempFilename, thePrefs::GetConfigDir() + wxT("nodes.dat"), HTTP_NodesDat, true, false);
+	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(url, strTempFilename, thePrefs::GetConfigDir() + "nodes.dat", HTTP_NodesDat, true, false);
 	downloader->Create();
 	downloader->Run();
 }
@@ -2048,7 +2125,7 @@ uint32 CamuleApp::GetID() const {
 	} else if( theApp->serverconnect->IsConnected() ) {
 		ID = theApp->serverconnect->GetClientID();
 	} else if ( Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::IsFirewalled() ) {
-		// A firewalled Kad client get's a "1"
+		// A firewalled Kad client gets a "1"
 		ID = 1;
 	} else {
 		ID = 0;
@@ -2057,8 +2134,7 @@ uint32 CamuleApp::GetID() const {
 	return ID;
 }
 
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_UDP_DNS_DONE)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_SERVER_DNS_DONE)
-// File_checked_for_headers
+wxDEFINE_EVENT(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, wxEvent);
+wxDEFINE_EVENT(wxEVT_CORE_SOURCE_DNS_DONE, wxEvent);
+wxDEFINE_EVENT(wxEVT_CORE_UDP_DNS_DONE, wxEvent);
+wxDEFINE_EVENT(wxEVT_CORE_SERVER_DNS_DONE, wxEvent);// File_checked_for_headers

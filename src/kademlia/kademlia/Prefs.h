@@ -30,7 +30,7 @@ Please do not change anything here and release it..
 There is going to be a new forum created just for the Kademlia side of the client..
 If you feel there is an error or a way to improve something, please
 post it in the forum first and let us look at it.. If it is a real improvement,
-it will be added to the offical client.. Changing something without knowing
+it will be added to the official client.. Changing something without knowing
 what all it does can cause great harm to the network if released in mass form..
 Any mod that changes anything within the Kademlia side will not be allowed to advertise
 there client on the eMule forum..
@@ -55,63 +55,63 @@ public:
 	CPrefs();
 	~CPrefs();
 
-	void	SetKadID(const CUInt128 &id) throw()		{ m_clientID = id; }
-	const CUInt128&	GetKadID() const throw()		{ return m_clientID; }
+	void	SetKadID(const CUInt128 &id) noexcept		{ m_clientID = id; }
+	const CUInt128&	GetKadID() const noexcept		{ return m_clientID; }
 
-	void	SetClientHash(const CUInt128 &id) throw()	{ m_clientHash = id; }
-	const CUInt128& GetClientHash() const throw()		{ return m_clientHash; }
+	void	SetClientHash(const CUInt128 &id) noexcept	{ m_clientHash = id; }
+	const CUInt128& GetClientHash() const noexcept		{ return m_clientHash; }
 
-	uint32_t GetIPAddress() const throw()			{ return m_ip; }
-	void	 SetIPAddress(uint32_t val) throw();
+	uint32_t GetIPAddress() const noexcept			{ return m_ip; }
+	void	 SetIPAddress(uint32_t val) noexcept;
 
-	bool	GetRecheckIP() const throw()			{ return (m_recheckip < KADEMLIAFIREWALLCHECKS); }
+	bool	GetRecheckIP() const noexcept			{ return (m_recheckip < KADEMLIAFIREWALLCHECKS); }
 	void	SetRecheckIP()					{ m_recheckip = 0; SetFirewalled(); }
-	void	IncRecheckIP() throw()				{ m_recheckip++; }
+	void	IncRecheckIP() noexcept				{ m_recheckip++; }
 
-	bool	HasHadContact() const throw()			{ return m_lastContact ? ((time(NULL) - m_lastContact) < KADEMLIADISCONNECTDELAY) : false; }
-	void	SetLastContact() throw()			{ m_lastContact = time(NULL); }
-	bool	HasLostConnection() const throw()		{ return m_lastContact ? !((time(NULL) - m_lastContact) < KADEMLIADISCONNECTDELAY) : false; }
-	uint32_t GetLastContact() const throw()			{ return m_lastContact; }
+	bool	HasHadContact() const noexcept			{ return m_lastContact ? ((time(NULL) - m_lastContact) < KADEMLIADISCONNECTDELAY) : false; }
+	void	SetLastContact() noexcept			{ m_lastContact = time(NULL); }
+	bool	HasLostConnection() const noexcept		{ return m_lastContact ? !((time(NULL) - m_lastContact) < KADEMLIADISCONNECTDELAY) : false; }
+	uint32_t GetLastContact() const noexcept			{ return m_lastContact; }
 
-	bool	GetFirewalled() const throw();
+	bool	GetFirewalled() const noexcept;
 	void	SetFirewalled();
 	void	IncFirewalled();
 
-	uint8_t	GetTotalFile() const throw()			{ return m_totalFile; }
-	void	SetTotalFile(uint8_t val) throw()		{ m_totalFile = val; }
+	uint8_t	GetTotalFile() const noexcept			{ return m_totalFile; }
+	void	SetTotalFile(uint8_t val) noexcept		{ m_totalFile = val; }
 
-	uint8_t	GetTotalStoreSrc() const throw()		{ return m_totalStoreSrc; }
-	void	SetTotalStoreSrc(uint8_t val) throw()		{ m_totalStoreSrc = val; }
+	uint8_t	GetTotalStoreSrc() const noexcept		{ return m_totalStoreSrc; }
+	void	SetTotalStoreSrc(uint8_t val) noexcept		{ m_totalStoreSrc = val; }
 
-	uint8_t	GetTotalStoreKey() const throw()		{ return m_totalStoreKey; }
-	void	SetTotalStoreKey(uint8_t val) throw()		{ m_totalStoreKey = val; }
+	uint8_t	GetTotalStoreKey() const noexcept		{ return m_totalStoreKey; }
+	void	SetTotalStoreKey(uint8_t val) noexcept		{ m_totalStoreKey = val; }
 
-	uint8_t	GetTotalSource() const throw()			{ return m_totalSource; }
-	void	SetTotalSource(uint8_t val) throw()		{ m_totalSource = val; }
+	uint8_t	GetTotalSource() const noexcept			{ return m_totalSource; }
+	void	SetTotalSource(uint8_t val) noexcept		{ m_totalSource = val; }
 
-	uint8_t	GetTotalNotes() const throw()			{ return m_totalNotes; }
-	void	SetTotalNotes(uint8_t val) throw()		{ m_totalNotes = val; }
+	uint8_t	GetTotalNotes() const noexcept			{ return m_totalNotes; }
+	void	SetTotalNotes(uint8_t val) noexcept		{ m_totalNotes = val; }
 
-	uint8_t	GetTotalStoreNotes() const throw()		{ return m_totalStoreNotes; }
-	void	SetTotalStoreNotes(uint8_t val) throw()		{ m_totalStoreNotes = val; }
+	uint8_t	GetTotalStoreNotes() const noexcept		{ return m_totalStoreNotes; }
+	void	SetTotalStoreNotes(uint8_t val) noexcept		{ m_totalStoreNotes = val; }
 
-	uint32_t GetKademliaUsers() const throw()		{ return m_kademliaUsers; }
-	void	 SetKademliaUsers(uint32_t val) throw()		{ m_kademliaUsers = val; }
+	uint32_t GetKademliaUsers() const noexcept		{ return m_kademliaUsers; }
+	void	 SetKademliaUsers(uint32_t val) noexcept		{ m_kademliaUsers = val; }
 
-	uint32_t GetKademliaFiles() const throw()		{ return m_kademliaFiles; }
+	uint32_t GetKademliaFiles() const noexcept		{ return m_kademliaFiles; }
 	void	 SetKademliaFiles();
 
-	bool	GetPublish() const throw()			{ return m_Publish; }
-	void	SetPublish(bool val) throw()			{ m_Publish = val; }
+	bool	GetPublish() const noexcept			{ return m_Publish; }
+	void	SetPublish(bool val) noexcept			{ m_Publish = val; }
 
-	bool	GetFindBuddy() throw()				{ return m_findBuddy ? m_findBuddy = false, true : false; }
-	void	SetFindBuddy(bool val = true) throw()		{ m_findBuddy = val; }
+	bool	GetFindBuddy() noexcept				{ return m_findBuddy ? m_findBuddy = false, true : false; }
+	void	SetFindBuddy(bool val = true) noexcept		{ m_findBuddy = val; }
 
 	bool	GetUseExternKadPort() const;
-	void	SetUseExternKadPort(bool val) throw()		{ m_useExternKadPort = val; }
+	void	SetUseExternKadPort(bool val) noexcept		{ m_useExternKadPort = val; }
 
-	uint16_t GetExternalKadPort() const throw()		{ return m_externKadPort; }
-	uint16_t GetInternKadPort() const throw()		{ return thePrefs::GetUDPPort(); }
+	uint16_t GetExternalKadPort() const noexcept		{ return m_externKadPort; }
+	uint16_t GetInternKadPort() const noexcept		{ return thePrefs::GetUDPPort(); }
 	void	 SetExternKadPort(uint16_t port, uint32_t fromIP);
 	bool	 FindExternKadPort(bool reset = false);
 
@@ -119,9 +119,9 @@ public:
 	static uint32_t GetUDPVerifyKey(uint32_t targetIP);
 
 	// Statistics
-	void	StatsIncUDPFirewalledNodes(bool firewalled) throw()	{ firewalled ? ++m_statsUDPFirewalledNodes : ++m_statsUDPOpenNodes; }
-	void	StatsIncTCPFirewalledNodes(bool firewalled) throw()	{ firewalled ? ++m_statsTCPFirewalledNodes : ++m_statsTCPOpenNodes; }
-	float	StatsGetFirewalledRatio(bool udp) const throw();
+	void	StatsIncUDPFirewalledNodes(bool firewalled) noexcept	{ firewalled ? ++m_statsUDPFirewalledNodes : ++m_statsUDPOpenNodes; }
+	void	StatsIncTCPFirewalledNodes(bool firewalled) noexcept	{ firewalled ? ++m_statsTCPFirewalledNodes : ++m_statsTCPOpenNodes; }
+	float	StatsGetFirewalledRatio(bool udp) const noexcept;
 	float	StatsGetKadV8Ratio();
 
 private:

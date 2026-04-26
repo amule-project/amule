@@ -80,7 +80,7 @@ protected:
 	bool			CfgChanged(int id);
 
 	/**
-	 * Helper functions which returns the Cfg assosiated with the specified id.
+	 * Helper functions which returns the Cfg associated with the specified id.
 	 */
 	Cfg_Base*		GetCfg(int id);
 
@@ -127,7 +127,7 @@ protected:
 
 	void OnInitDialog( wxInitDialogEvent& evt );
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 
 private:
 	bool	m_verticalToolbar;

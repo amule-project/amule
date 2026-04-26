@@ -32,11 +32,11 @@
 #include "Types.h"
 
 
-BEGIN_EVENT_TABLE(MuleGifCtrl, wxControl)
+wxBEGIN_EVENT_TABLE(MuleGifCtrl, wxControl)
 	EVT_TIMER(GIFTIMERID, MuleGifCtrl::OnTimer)
 	EVT_PAINT(MuleGifCtrl::OnPaint)
 	EVT_ERASE_BACKGROUND(MuleGifCtrl::OnErase)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 class MuleGIFDecoder : public wxGIFDecoder
 {
@@ -116,11 +116,7 @@ void MuleGifCtrl::Start()
 	if (m_decoder && m_decoder->IsAnimation()) {
 		m_timer.Stop();
 		m_decoder->GoLastFrame();
-#if wxCHECK_VERSION(2, 9, 0)
 		wxTimerEvent evt(m_timer);
-#else
-		wxTimerEvent evt;
-#endif
 		OnTimer(evt);
 	}
 }
@@ -167,7 +163,7 @@ void MuleGifCtrl::OnPaint(wxPaintEvent& WXUNUSED(event))
 	int x = (clientsize.GetWidth()-gifsize.GetWidth())/2;
 	int y = (clientsize.GetHeight()-gifsize.GetHeight())/2;
 
-	dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxSOLID)));
+	dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
 	dc.Clear();
 	dc.DrawBitmap(m_frame, x, y, true);
 }

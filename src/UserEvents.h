@@ -59,41 +59,41 @@ const int USEREVENTS_FIRST_ID	=	11500;	/* Some safe GUI ID to start from */
 #define USEREVENTS_EVENTLIST() \
 	USEREVENTS_EVENT(DownloadCompleted, wxTRANSLATE("Download completed"), \
 		USEREVENTS_REPLACE_VAR( \
-			wxT("FILE"), \
+			"FILE", \
 			wxTRANSLATE("The full path to the file."), \
 			static_cast<const CPartFile*>(object)->GetFullName().GetRaw() ) \
 		USEREVENTS_REPLACE_VAR( \
-			wxT("NAME"), \
+			"NAME", \
 			wxTRANSLATE("The name of the file without path component."), \
 			static_cast<const CPartFile*>(object)->GetFileName().GetRaw() ) \
 		USEREVENTS_REPLACE_VAR( \
-			wxT("HASH"), \
+			"HASH", \
 			wxTRANSLATE("The eD2k hash of the file."), \
 			static_cast<const CPartFile*>(object)->GetFileHash().Encode() ) \
 		USEREVENTS_REPLACE_VAR( \
-			wxT("SIZE"), \
+			"SIZE", \
 			wxTRANSLATE("The size of the file in bytes."), \
-			(CFormat(wxT("%llu")) % static_cast<const CPartFile*>(object)->GetFileSize()).GetString() ) \
+			(CFormat("%llu") % static_cast<const CPartFile*>(object)->GetFileSize()).GetString() ) \
 		USEREVENTS_REPLACE_VAR( \
-			wxT("DLACTIVETIME"), \
+			"DLACTIVETIME", \
 			wxTRANSLATE("Cumulative download activity time."), \
 			CastSecondsToHM(static_cast<const CPartFile*>(object)->GetDlActiveTime()) ) \
 	) \
 	USEREVENTS_EVENT(NewChatSession, wxTRANSLATE("New chat session started"), \
 		USEREVENTS_REPLACE_VAR( \
-			wxT("SENDER"), \
+			"SENDER", \
 			wxTRANSLATE("Message sender."), \
 			*static_cast<const wxString*>(object) ) \
 	) \
 	USEREVENTS_EVENT(OutOfDiskSpace, wxTRANSLATE("Out of space"), \
 		USEREVENTS_REPLACE_VAR( \
-			wxT("PARTITION"), \
+			"PARTITION", \
 			wxTRANSLATE("Disk partition."), \
 			wxString(static_cast<const wxChar*>(object)) ) \
 	) \
 	USEREVENTS_EVENT(ErrorOnCompletion, wxTRANSLATE("Error on completion"), \
 		USEREVENTS_REPLACE_VAR( \
-			wxT("FILE"), \
+			"FILE", \
 			wxTRANSLATE("The full path to the file."), \
 			static_cast<const CPartFile*>(object)->GetFullName().GetRaw() ) \
 	)
@@ -139,7 +139,7 @@ class CUserEvents {
 	static unsigned int	GetCount() ATTR(__const__);
 
 	/**
-	 * Returs the human-readable name of the event.
+	 * Returns the human-readable name of the event.
 	 */
 	static const wxString&	GetDisplayName(enum EventType event) ATTR(__pure__);
 

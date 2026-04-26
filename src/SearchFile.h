@@ -80,7 +80,7 @@ public:
 		wxUIntPtr searchID,
 		uint32_t serverIP = 0,
 		uint16_t serverPort = 0,
-		const wxString& directory = wxEmptyString,
+		const wxString& directory = "",
 		bool kademlia = false);
 
 
@@ -92,7 +92,7 @@ public:
 	 * Merges the two results into one.
 	 *
 	 * Merges the other result into this one, updating
-	 * various informations.
+	 * various information.
 	 *
 	 * @param other The file to be merged into this.
 	 */
@@ -163,20 +163,20 @@ public:
 	void	 AddClient(const ClientStruct& client);
 	const std::list<ClientStruct>& GetClients() const	{ return m_clients; }
 
-	uint32_t GetClientID() const throw()			{ return m_clientID; }
-	void	 SetClientID(uint32_t clientID) throw()		{ m_clientID = clientID; }
-	uint16_t GetClientPort() const throw()			{ return m_clientPort; }
-	void	 SetClientPort(uint16_t port) throw()		{ m_clientPort = port; }
-	uint32_t GetClientServerIP() const throw()		{ return m_clientServerIP; }
-	void	 SetClientServerIP(uint32_t serverIP) throw()	{ m_clientServerIP = serverIP; }
-	uint16_t GetClientServerPort() const throw()		{ return m_clientServerPort; }
-	void	 SetClientServerPort(uint16_t port) throw()	{ m_clientServerPort = port; }
+	uint32_t GetClientID() const noexcept			{ return m_clientID; }
+	void	 SetClientID(uint32_t clientID) noexcept		{ m_clientID = clientID; }
+	uint16_t GetClientPort() const noexcept			{ return m_clientPort; }
+	void	 SetClientPort(uint16_t port) noexcept		{ m_clientPort = port; }
+	uint32_t GetClientServerIP() const noexcept		{ return m_clientServerIP; }
+	void	 SetClientServerIP(uint32_t serverIP) noexcept	{ m_clientServerIP = serverIP; }
+	uint16_t GetClientServerPort() const noexcept		{ return m_clientServerPort; }
+	void	 SetClientServerPort(uint16_t port) noexcept	{ m_clientServerPort = port; }
 	int	 GetClientsCount() const			{ return ((GetClientID() && GetClientPort()) ? 1 : 0) + m_clients.size(); }
 
-	void	 SetKadPublishInfo(uint32_t val) throw()	{ m_kadPublishInfo = val; }
-	uint32_t GetKadPublishInfo() const throw()		{ return m_kadPublishInfo; }
+	void	 SetKadPublishInfo(uint32_t val) noexcept	{ m_kadPublishInfo = val; }
+	uint32_t GetKadPublishInfo() const noexcept		{ return m_kadPublishInfo; }
 
-	const wxString& GetDirectory() const throw()	{ return m_directory; }
+	const wxString& GetDirectory() const noexcept	{ return m_directory; }
 
 private:
 	//! CSearchFile is not assignable.

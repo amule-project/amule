@@ -37,7 +37,7 @@
 #include "graphics.h"
 
 /*
- * this is the funcion that writes the text to the image.
+ * this is the function that writes the text to the image.
  * almost everything is taken from libgd examples
  */
 int createimage(CONF *config, char *lines[IMG_TEXTLINES], char *path_for_picture)
@@ -60,6 +60,8 @@ int createimage(CONF *config, char *lines[IMG_TEXTLINES], char *path_for_picture
 	}
 
 	im = gdImageCreateFromPng(in);
+	fclose(in);
+
 	if( NULL == im) {
 		perror("Error loading source image (not a valid png image file?).\n");
 		return 0;

@@ -60,7 +60,7 @@ public:
 	 * @param name Name used when logging events.
 	 * @param id The ID used for events.
 	 * @param address The address where the socket will listen.
-	 * @param ProxyData ProxyData assosiated with the socket.
+	 * @param ProxyData ProxyData associated with the socket.
 	 */
 	CMuleUDPSocket(const wxString& name, int id, const amuleIPV4Address& address, const CProxyData* ProxyData = NULL);
 
@@ -131,7 +131,7 @@ protected:
 	 * @param buffer The data that has been received.
 	 * @param length The length of the data buffer.
 	 */
-	virtual void OnPacketReceived(uint32 ip, uint16 port, byte* buffer, size_t length) = 0;
+	virtual void OnPacketReceived(uint32 ip, uint16 port, uint8_t* buffer, size_t length) = 0;
 
 
 	/** See ThrottledControlSocket::SendControlData */

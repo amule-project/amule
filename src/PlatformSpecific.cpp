@@ -23,10 +23,7 @@
 //
 
 #include "PlatformSpecific.h"
-
-#ifdef HAVE_CONFIG_H
-#	include "config.h"
-#endif
+#include "config.h"
 
 // NTFS Sparse Files (only for MSW)
 #ifdef __WINDOWS__
@@ -74,12 +71,12 @@ bool PlatformSpecific::CreateSparseFile(const CPath& name, uint64_t size)
 		FILE_ATTRIBUTE_ARCHIVE,
 		NULL);
 	if (hd == INVALID_HANDLE_VALUE) {
-		AddDebugLogLineC(logPartFile, CFormat(wxT("converting %s to sparse failed (OPEN): %s ")) % name % SystemError());
+		AddDebugLogLineC(logPartFile, CFormat("converting %s to sparse failed (OPEN): %s ") % name % SystemError());
 		return false;
 	}
 
 	if (!DeviceIoControl(hd, FSCTL_SET_SPARSE, NULL, 0, NULL, 0, &dwReturnedBytes, NULL)) {
-		AddDebugLogLineC(logPartFile, CFormat(wxT("converting %s to sparse failed (SET_SPARSE): %s ")) % name % SystemError());
+		AddDebugLogLineC(logPartFile, CFormat("converting %s to sparse failed (SET_SPARSE): %s ") % name % SystemError());
 	} else {
 		// FILE_ZERO_DATA_INFORMATION is not defined here
 		struct {
@@ -93,9 +90,9 @@ bool PlatformSpecific::CreateSparseFile(const CPath& name, uint64_t size)
 
 		// zero the data
 		if (!DeviceIoControl(hd, FSCTL_SET_ZERO_DATA, (LPVOID) &fzdi, sizeof(fzdi), NULL, 0, &dwReturnedBytes, NULL)) {
-			AddDebugLogLineC(logPartFile, CFormat(wxT("converting %s to sparse failed (ZERO): %s")) % name % SystemError());
+			AddDebugLogLineC(logPartFile, CFormat("converting %s to sparse failed (ZERO): %s") % name % SystemError());
 		} else if (!SetFilePointerEx(hd, largo, NULL, FILE_BEGIN) || !SetEndOfFile(hd)) {
-			AddDebugLogLineC(logPartFile, CFormat(wxT("converting %s to sparse failed (SEEK): %s")) % name % SystemError());
+			AddDebugLogLineC(logPartFile, CFormat("converting %s to sparse failed (SEEK): %s") % name % SystemError());
 		}
 	}
 	CloseHandle(hd);
@@ -122,7 +119,7 @@ int PlatformSpecific::GetMaxConnections()
 {
 	int maxconn = -1;
 	// Try to get the max connection value in the registry
-	wxRegKey key( wxT("HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\VxD\\MSTCP\\MaxConnections") );
+	wxRegKey key( "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\VxD\\MSTCP\\MaxConnections" );
 	wxString value;
 	if ( key.Exists() ) {
 		value = key.QueryDefaultValue();
@@ -171,9 +168,9 @@ static PlatformSpecific::EFSType doGetFilesystemType(const CPath& path)
 	if (!GetVolumeInformationW(volume, NULL, 0, NULL, &maximumComponentLength, &filesystemFlags, filesystemNameBuffer, 128)) {
 		return PlatformSpecific::fsOther;
 	}
-	if (wxStrnicmp(filesystemNameBuffer, wxT("FAT"), 3) == 0) {
+	if (wxStrnicmp(filesystemNameBuffer, "FAT", 3) == 0) {
 		return PlatformSpecific::fsFAT;
-	} else if (wxStrcmp(filesystemNameBuffer, wxT("NTFS")) == 0) {
+	} else if (wxStrcmp(filesystemNameBuffer, "NTFS") == 0) {
 		return PlatformSpecific::fsNTFS;
 	}
 	return PlatformSpecific::fsOther;
@@ -299,7 +296,7 @@ PlatformSpecific::EFSType PlatformSpecific::GetFilesystemType(const CPath& path)
 	// Lock used to ensure the integrity of the cache.
 	static wxMutex	s_lock;
 
-	wxCHECK_MSG(path.IsOk(), fsOther, wxT("Invalid path in GetFilesystemType()"));
+	wxCHECK_MSG(path.IsOk(), fsOther, "Invalid path in GetFilesystemType()");
 
 	wxMutexLocker locker(s_lock);
 

@@ -234,7 +234,7 @@ public:
 	// KAD TODO: This must be used on KadSearchListCtrl too once imported
 	void	SetKadFileSearchID(uint32 id) { kadFileSearchID = id; } // John - Don't use this unless you know what your are DOING!! (Hopefully I do.. :)
 	const Kademlia::WordList& GetKadKeywords() const { return wordlist; }
-	// KAD TODO: If we add the proper column to SharedFilesCtrl, this is the funtion.
+	// KAD TODO: If we add the proper column to SharedFilesCtrl, this is the function.
 	uint32	GetLastPublishTimeKadSrc() const { return m_lastPublishTimeKadSrc; }
 	void	SetLastPublishTimeKadSrc(uint32 time, uint32 buddyip) { m_lastPublishTimeKadSrc = time; m_lastBuddyIP = buddyip;}
 	// Another unused function, useful for the shared files control column
@@ -276,9 +276,9 @@ public:
 	bool HasProperAICHHashSet() const;
 
 	/**
-	 * Updates the requency of uploading parts from with the data the client provides.
+	 * Updates the frequency of uploading parts from with the data the client provides.
 	 *
-	 * @param client The clients whoose uploading parts should be considered.
+	 * @param client The clients whose uploading parts should be considered.
 	 * @param increment If true, the counts are incremented, otherwise they are decremented.
 	 *
 	 * This functions updates the frequency list of file-upparts, using the clients
@@ -333,7 +333,7 @@ protected:
 	CPath	m_filePath;
 
 	static void CreateHashFromFile(class CFileAutoClose& file, uint64 offset, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
-	static void CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
+	static void CreateHashFromInput(const uint8_t* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
 
 	mutable bool	m_bCommentLoaded;
 	uint16	m_iPartCount;

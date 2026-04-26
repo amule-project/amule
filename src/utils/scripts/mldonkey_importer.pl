@@ -22,9 +22,14 @@
 
 # Gimme a break, is my first perl app... (Kry)
 
-use File::Copy;
 use warnings;
 use strict;
+
+eval "use File::Copy";
+if ($@) {
+	die "File::Copy perl module is required by the mldonkey_importer script.\n"
+	  . "If you want to use this script please install File::Copy from CPAN.\n";
+}
 
 my $exit_with_help;
 

@@ -46,7 +46,7 @@
 // just to keep compiler happy
 static wxCommandEvent nullEvent;
 
-BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
+wxBEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_BUTTON(		IDC_STARTS,		CSearchDlg::OnBnClickedStart)
 	EVT_TEXT_ENTER(	IDC_SEARCHNAME,	CSearchDlg::OnBnClickedStart)
 
@@ -65,17 +65,17 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_NOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK, CSearchDlg::OnSearchPageChanged)
 
 	// Event handlers for the parameter fields getting changed
-	EVT_CUSTOM( wxEVT_COMMAND_TEXT_UPDATED,     IDC_SEARCHNAME, CSearchDlg::OnFieldChanged)
-	EVT_CUSTOM( wxEVT_COMMAND_TEXT_UPDATED,     IDC_EDITSEARCHEXTENSION, CSearchDlg::OnFieldChanged)
-	EVT_CUSTOM( wxEVT_COMMAND_SPINCTRL_UPDATED, wxID_ANY, CSearchDlg::OnFieldChanged)
-	EVT_CUSTOM( wxEVT_COMMAND_CHOICE_SELECTED, wxID_ANY, CSearchDlg::OnFieldChanged)
+	EVT_CUSTOM( wxEVT_TEXT,     IDC_SEARCHNAME, CSearchDlg::OnFieldChanged)
+	EVT_CUSTOM( wxEVT_TEXT,     IDC_EDITSEARCHEXTENSION, CSearchDlg::OnFieldChanged)
+	EVT_CUSTOM( wxEVT_SPINCTRL, wxID_ANY, CSearchDlg::OnFieldChanged)
+	EVT_CUSTOM( wxEVT_CHOICE, wxID_ANY, CSearchDlg::OnFieldChanged)
 
 	// Event handlers for the filter fields getting changed.
 	EVT_TEXT_ENTER(ID_FILTER_TEXT,	CSearchDlg::OnFilteringChange)
 	EVT_CHECKBOX(ID_FILTER_INVERT,	CSearchDlg::OnFilteringChange)
 	EVT_CHECKBOX(ID_FILTER_KNOWN,	CSearchDlg::OnFilteringChange)
 	EVT_BUTTON(ID_FILTER,			CSearchDlg::OnFilteringChange)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 
@@ -345,7 +345,7 @@ bool CSearchDlg::CheckTabNameExists(const wxString& searchString)
 	int nPages = m_notebook->GetPageCount();
 	for ( int i = 0; i < nPages; i++ ) {
 		// The BeforeLast(' ') is to strip the hit-count from the name
-		if ( m_notebook->GetPageText(i).BeforeLast(wxT(' ')) == searchString ) {
+		if ( m_notebook->GetPageText(i).BeforeLast(' ') == searchString ) {
 			return true;
 		}
 	}
@@ -403,7 +403,7 @@ void CSearchDlg::KadSearchEnd(uint32 id)
 			dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(i));
 		if (page->GetSearchId() == id || id == 0) {	// 0: just update all pages (there is only one KAD search running at a time anyway)
 			wxString rest;
-			if (m_notebook->GetPageText(i).StartsWith(wxT("!"),&rest)) {
+			if (m_notebook->GetPageText(i).StartsWith("!",&rest)) {
 				m_notebook->SetPageText(i,rest);
 			}
 		}
@@ -487,7 +487,7 @@ void CSearchDlg::StartNewSearch()
 		case 7:	params.typeText = ED2KFTSTR_VIDEO;	break;
 		default:
 			AddDebugLogLineC( logGeneral,
-				CFormat( wxT("Warning! Unknown search-category (%s) selected!") )
+				CFormat( "Warning! Unknown search-category (%s) selected!" )
 					% params.typeText
 			);
 			break;
@@ -533,8 +533,8 @@ void CSearchDlg::StartNewSearch()
 		FindWindow(IDC_CANCELS)->Disable();
 	} else {
 		CreateNewTab(
-			((search_type == KadSearch) ? wxT("!") : wxEmptyString) +
-				params.searchString + wxT(" (0)"),
+			((search_type == KadSearch) ? "!" : "") +
+				params.searchString + " (0)",
 			real_id);
 	}
 }
@@ -544,16 +544,16 @@ void CSearchDlg::UpdateHitCount(CSearchListCtrl* page)
 {
 	for ( uint32 i = 0; i < (uint32)m_notebook->GetPageCount(); ++i ) {
 		if ( m_notebook->GetPage(i) == page ) {
-			wxString searchtxt = m_notebook->GetPageText(i).BeforeLast(wxT(' '));
+			wxString searchtxt = m_notebook->GetPageText(i).BeforeLast(' ');
 
 			if ( !searchtxt.IsEmpty() ) {
 				size_t shown = page->GetItemCount();
 				size_t hidden = page->GetHiddenItemCount();
 
 				if (hidden) {
-					searchtxt += CFormat(wxT(" (%u/%u)")) % shown % (shown + hidden);
+					searchtxt += CFormat(" (%u/%u)") % shown % (shown + hidden);
 				} else {
-					searchtxt += CFormat(wxT(" (%u)")) % shown;
+					searchtxt += CFormat(" (%u)") % shown;
 				}
 
 				m_notebook->SetPageText(i, searchtxt);

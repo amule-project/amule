@@ -51,7 +51,7 @@ PHP_SCOPE_STACK g_scope_stack = 0;
 // Known named constant values
 std::map<std::string, int> g_known_const;
 
-PHP_EXP_NODE *make_zero_exp_node()
+static PHP_EXP_NODE *make_zero_exp_node()
 {
 	PHP_EXP_NODE *node = new PHP_EXP_NODE;
 	memset(node, 0, sizeof(PHP_EXP_NODE));
@@ -326,7 +326,7 @@ PHP_SYN_NODE *make_switch_syn_node(PHP_EXP_NODE *cond, PHP_EXP_NODE *case_list)
 
 	//
 	// Bind all statement lists into single one for
-	// simplier execution
+	// simpler execution
 	//
 	PHP_SYN_NODE *stat_list_tail = 0;
 	for(PHP_EXP_NODE *cur_case = case_list; cur_case; cur_case = cur_case->next) {
@@ -468,7 +468,7 @@ void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
  *  1. Memory will not leak
  *  2. Next call may be using same params by-value, so it need independent varnode
  */
-void func_scope_copy_back(PHP_FUNC_PARAM_DEF *params, int param_count,
+static void func_scope_copy_back(PHP_FUNC_PARAM_DEF *params, int param_count,
 	PHP_SCOPE_TABLE_TYPE * /*scope_map*/, PHP_VALUE_NODE *arg_array,
 	std::map<std::string, PHP_VAR_NODE *> &saved_vars)
 {
@@ -571,14 +571,14 @@ void delete_scope_table(PHP_SCOPE_TABLE scope)
 void add_func_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *func)
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
-	PHP_SCOPE_ITEM *it = new PHP_SCOPE_ITEM;
-	it->type = PHP_SCOPE_FUNC;
-	it->func = func;
 	std::string key(func->func_decl->name);
 	if ( scope_map->count(key) ) {
 		// error - function already defined
 		php_report_error(PHP_ERROR, "Can not add function to scope table - already present");
 	} else {
+		PHP_SCOPE_ITEM *it = new PHP_SCOPE_ITEM;
+		it->type = PHP_SCOPE_FUNC;
+		it->func = func;
 		(*scope_map)[key] = it;
 	}
 }
@@ -586,19 +586,19 @@ void add_func_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *func)
 void add_class_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *class_node)
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
-	PHP_SCOPE_ITEM *it = new PHP_SCOPE_ITEM;
-	it->type = PHP_SCOPE_CLASS;
-	it->class_decl = class_node;
 	std::string key(class_node->class_decl->name);
 	if ( scope_map->count(key) ) {
 		// error - function already defined
 		php_report_error(PHP_ERROR, "Can not add function to scope table - already present");
 	} else {
+		PHP_SCOPE_ITEM *it = new PHP_SCOPE_ITEM;
+		it->type = PHP_SCOPE_CLASS;
+		it->class_decl = class_node;
 		(*scope_map)[key] = it;
 	}
 }
 
-PHP_SCOPE_ITEM *make_named_scope_item(PHP_SCOPE_TABLE scope, const char *name)
+static PHP_SCOPE_ITEM *make_named_scope_item(PHP_SCOPE_TABLE scope, const char *name)
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
 	PHP_SCOPE_ITEM *it = new PHP_SCOPE_ITEM;
@@ -667,7 +667,7 @@ const std::string &array_get_ith_key(PHP_VALUE_NODE *array, int i)
 }
 
 
-PHP_VAR_NODE *array_get_by_str_key(PHP_VALUE_NODE *array, std::string key)
+PHP_VAR_NODE *array_get_by_str_key(PHP_VALUE_NODE *array, const std::string &key)
 {
 	if ( array->type != PHP_VAL_ARRAY ) {
 		return 0;
@@ -717,7 +717,7 @@ void array_set_by_key(PHP_VALUE_NODE *array, PHP_VALUE_NODE *key, PHP_VAR_NODE *
 	value_value_free(&s_key);
 }
 
-void array_add_to_str_key(PHP_VALUE_NODE *array, std::string key, PHP_VAR_NODE *node)
+void array_add_to_str_key(PHP_VALUE_NODE *array, const std::string &key, PHP_VAR_NODE *node)
 {
 	if ( array->type != PHP_VAL_ARRAY ) {
 		return ;
@@ -730,7 +730,7 @@ void array_add_to_str_key(PHP_VALUE_NODE *array, std::string key, PHP_VAR_NODE *
 	}
 }
 
-void array_remove_at_str_key(PHP_VALUE_NODE *array, std::string key)
+void array_remove_at_str_key(PHP_VALUE_NODE *array, const std::string &key)
 {
 	if ( array->type != PHP_VAL_ARRAY ) {
 		return ;
@@ -1212,7 +1212,7 @@ void php_engine_free()
  *  1,2. Target is scalar variable or variable by name ${xxx}
  *  3. Target is member of array.
  */
-void exp_set_ref(PHP_EXP_NODE *expr, PHP_VAR_NODE *var, PHP_VALUE_NODE *key)
+static void exp_set_ref(PHP_EXP_NODE *expr, PHP_VAR_NODE *var, PHP_VALUE_NODE *key)
 {
 	switch ( expr->op ) {
 		case PHP_OP_VAR: {
@@ -1536,7 +1536,7 @@ PHP_VAR_NODE *php_expr_eval_lvalue(PHP_EXP_NODE *expr)
 	return lval_node;
 }
 
-PHP_VALUE_TYPE cast_type_resolve(PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2)
+static PHP_VALUE_TYPE cast_type_resolve(PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2)
 {
 	if ( (op1->type == PHP_VAL_FLOAT) || (op2->type == PHP_VAL_FLOAT) ) {
 		cast_value_fnum(op1);
@@ -1784,9 +1784,8 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 	if ( !node ) {
 		return 0;
 	}
-	int curr_exec_result;
 	while ( node ) {
-		curr_exec_result = 0;
+		int curr_exec_result = 0;
 		PHP_VALUE_NODE cond_result;
 		cond_result.type = PHP_VAL_NONE;
 		switch (node->type) {
@@ -2006,7 +2005,7 @@ void php_report_error(PHP_MSG_TYPE err_type, const char *msg, ...)
 	// hope my error message will never be that big.
 	//
 	// security is ok, since _user_ errors are not reporting thru
-	// this function, but handled by scipt itself.
+	// this function, but handled by script itself.
 	// However, badly written script MAY force user-supplied data to
 	// leak here and create stack overrun exploit. Be warned.
 	//

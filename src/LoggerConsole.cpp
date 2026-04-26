@@ -29,14 +29,22 @@
 
 #include "Logger.h"				// for Add(Debug)LogLineM()
 
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE)
+wxDEFINE_EVENT(MULE_EVT_LOGLINE, wxEvent);
 
 #ifdef __DEBUG__
+
 bool CLogger::IsEnabled(DebugType /*type*/) const
 {
 	return true;
 }
-#endif
+
+// Dummy functions for EC logging
+#include "ec/cpp/ECLog.h"
+
+bool ECLogIsEnabled() { return false; }
+void DoECLogLine(const wxString &) {}
+
+#endif /* __DEBUG__ */
 
 
 void CLogger::AddLogLine(
@@ -86,5 +94,5 @@ void CLogger::AddLogLine(
 
 CLogger theLogger;
 
-BEGIN_EVENT_TABLE(CLogger, wxEvtHandler)
-END_EVENT_TABLE()
+wxBEGIN_EVENT_TABLE(CLogger, wxEvtHandler)
+wxEND_EVENT_TABLE()

@@ -50,10 +50,10 @@ CColorFrameCtrl::~CColorFrameCtrl()
 } // ~CColorFrameCtrl
 
 
-BEGIN_EVENT_TABLE(CColorFrameCtrl,wxControl)
+wxBEGIN_EVENT_TABLE(CColorFrameCtrl,wxControl)
   EVT_PAINT(CColorFrameCtrl::OnPaint)
   EVT_SIZE(CColorFrameCtrl::OnSize)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorFrameCtrl message handlers
@@ -61,7 +61,7 @@ END_EVENT_TABLE()
 /////////////////////////////////////////////////////////////////////////////
 void CColorFrameCtrl::SetFrameBrushColour(const wxColour& colour)
 {
-	m_brushFrame = *(wxTheBrushList->FindOrCreateBrush(colour, wxSOLID));
+	m_brushFrame = *(wxTheBrushList->FindOrCreateBrush(colour, wxBRUSHSTYLE_SOLID));
 
 	Refresh(FALSE);
 }  // SetFrameColor
@@ -70,7 +70,7 @@ void CColorFrameCtrl::SetFrameBrushColour(const wxColour& colour)
 /////////////////////////////////////////////////////////////////////////////
 void CColorFrameCtrl::SetBackgroundBrushColour(const wxColour& colour)
 {
-	m_brushBack = *(wxTheBrushList->FindOrCreateBrush(colour, wxSOLID));
+	m_brushBack = *(wxTheBrushList->FindOrCreateBrush(colour, wxBRUSHSTYLE_SOLID));
 
 	// clear out the existing garbage, re-start with a clean plot
 	Refresh(FALSE);

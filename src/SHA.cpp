@@ -74,7 +74,7 @@ CSHA::CSHA()
     To obtain the highest speed on processors with 32-bit words, this code
     needs to determine the order in which bytes are packed into such words.
     The following block of code is an attempt to capture the most obvious
-    ways in which various environemnts specify their endian definitions.
+    ways in which various environments specify their endian definitions.
     It may well fail, in which case the definitions will need to be set by
     editing at the points marked **** EDIT HERE IF NECESSARY **** below.
 */
@@ -184,7 +184,7 @@ void CSHA::Add(const void* pData, uint32 nLength)
     if((m_nCount[0] += nLength) < nLength)
         ++(m_nCount[1]);
 
-    while(nLength >= space)     /* tranfer whole blocks while possible  */
+    while(nLength >= space)     /* transfer whole blocks while possible  */
     {
         memcpy(((unsigned char*)m_nBuffer) + pos, sp, space);
         sp += space; nLength -= space; space = SHA1_BLOCK_SIZE; pos = 0;

@@ -41,35 +41,35 @@ enum VersionType {
 
 static wxString VersionInfo(uint8_t version, uint8_t type)
 {
-	wxString verStr = wxT("??");
+	wxString verStr = "??";
 	if (type == PrefFile) {
 		if (version == PREFFILE_VERSION) {
-			verStr = wxT("PREFFILE_VERSION");
+			verStr = "PREFFILE_VERSION";
 		}
 	} else if (type == PartMetFile) {
 		if (version == PARTFILE_VERSION) {
-			verStr = wxT("PARTFILE_VERSION");
+			verStr = "PARTFILE_VERSION";
 		} else if (version == PARTFILE_SPLITTEDVERSION) {
-			verStr = wxT("PARTFILE_SPLITTEDVERSION");
+			verStr = "PARTFILE_SPLITTEDVERSION";
 		} else if (version == PARTFILE_VERSION_LARGEFILE) {
-			verStr = wxT("PARTFILE_VERSION_LARGEFILE");
+			verStr = "PARTFILE_VERSION_LARGEFILE";
 		}
 	} else if (type == CreditFile) {
 		if (version == CREDITFILE_VERSION) {
-			verStr = wxT("CREDITFILE_VERSION");
+			verStr = "CREDITFILE_VERSION";
 		}
 	} else if (type == KnownFileList) {
 		if (version == MET_HEADER) {
-			verStr = wxT("MET_HEADER");
+			verStr = "MET_HEADER";
 		} else if (version == MET_HEADER_WITH_LARGEFILES) {
-			verStr = wxT("MET_HEADER_WITH_LARGEFILES");
+			verStr = "MET_HEADER_WITH_LARGEFILES";
 		}
 	} else if (type == CanceledFileList) {
 		if (version == CANCELEDFILE_VERSION) {
-			verStr = wxT("CANCELEDFILE_VERSION");
+			verStr = "CANCELEDFILE_VERSION";
 		}
 	}
-	return hex(version) + wxT(' ') + verStr;
+	return hex(version) + ' ' + verStr;
 };
 
 void DecodePreferencesDat(const CFileDataIO& file)
@@ -136,7 +136,7 @@ void DecodeClientsMet(const CFileDataIO& file)
 	uint32_t count = file.ReadUInt32();
 	cout << "Count  : " << count << '\n';
 	for (uint32_t i = 0; i < count; i++) {
-		cout << wxString::Format(wxT("#%u\tKey          : "), i) << file.ReadHash();
+		cout << wxString::Format("#%u\tKey          : ", i) << file.ReadHash();
 		uint32_t uploaded = file.ReadUInt32();
 		uint32_t downloaded = file.ReadUInt32();
 		cout << "\n\tUploaded     : " << uploaded;
@@ -163,12 +163,12 @@ void DecodeClientsMet(const CFileDataIO& file)
 	}
 }
 
-static inline void PrintDateFromFile(const CFileDataIO& file, const wxString& prefix = wxEmptyString)
+static inline void PrintDateFromFile(const CFileDataIO& file, const wxString& prefix = "")
 {
 	cout << prefix << "LastChanged : " << CTimeT(file.ReadUInt32()) << '\n';
 }
 
-static void PrintHashsetFromFile(const CFileDataIO& file, const wxString& prefix = wxEmptyString)
+static void PrintHashsetFromFile(const CFileDataIO& file, const wxString& prefix = "")
 {
 	cout << prefix << "FileHash    : " << file.ReadHash() << '\n';
 
@@ -197,8 +197,8 @@ void DecodeKnownMet(const CFileDataIO& file)
 	uint32_t records = file.ReadUInt32();
 	cout << "Records : " << records << '\n';
 	for (uint32_t i = 0; i < records; i++) {
-		PrintDateFromFile(file, wxString::Format(wxT("#%u\t"), i));
-		PrintHashsetFromFile(file, wxT("\t"));
+		PrintDateFromFile(file, wxString::Format("#%u\t", i));
+		PrintHashsetFromFile(file, "\t");
 		uint32_t tagCount = file.ReadUInt32();
 		cout << "\tTagCount    : " << tagCount << '\n';
 		for (; tagCount > 0; tagCount--) {

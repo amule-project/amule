@@ -32,7 +32,7 @@ Please do not change anything here and release it..
 There is going to be a new forum created just for the Kademlia side of the client..
 If you feel there is an error or a way to improve something, please
 post it in the forum first and let us look at it.. If it is a real improvement,
-it will be added to the offical client.. Changing something without knowing
+it will be added to the official client.. Changing something without knowing
 what all it does can cause great harm to the network if released in mass form..
 Any mod that changes anything within the Kademlia side will not be allowed to advertise
 there client on the eMule forum..
@@ -69,7 +69,7 @@ CUInt128::CUInt128(const CUInt128 &value, unsigned numBits)
 	}
 
 	// Pad with random bytes
-	for (unsigned i = numULONGs; i < 3; i++) {
+	for (unsigned i = numULONGs; i < 4; i++) {
 		Set32BitChunk(i, rand());
 	}
 }
@@ -79,7 +79,7 @@ wxString CUInt128::ToHexString() const
 	wxString str;
 
 	for (int i = 3; i >= 0; i--) {
-		str.Append(CFormat(wxT("%08X")) % m_data.u32_data[i]);
+		str.Append(CFormat("%08X") % m_data.u32_data[i]);
 	}
 
 	return str;
@@ -93,17 +93,17 @@ wxString CUInt128::ToBinaryString(bool trim) const
 	for (int i = 0; i < 128; i++) {
 		b = GetBitNumber(i);
 		if ((!trim) || (b != 0)) {
-			str.Append(b ? wxT("1") : wxT("0"));
+			str.Append(b ? "1" : "0");
 			trim = false;
 		}
 	}
 	if (str.Len() == 0) {
-		str = wxT("0");
+		str = "0";
 	}
 	return str;
 }
 
-CUInt128& CUInt128::SetValueBE(const uint8_t *valueBE) throw()
+CUInt128& CUInt128::SetValueBE(const uint8_t *valueBE) noexcept
 {
 	m_data.u32_data[3] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE));
 	m_data.u32_data[2] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE + 4));
@@ -115,7 +115,7 @@ CUInt128& CUInt128::SetValueBE(const uint8_t *valueBE) throw()
 
 void CUInt128::ToByteArray(uint8_t *b) const
 {
-	wxCHECK_RET(b != NULL, wxT("Destination buffer missing."));
+	wxCHECK_RET(b != NULL, "Destination buffer missing.");
 
 	RawPokeUInt32(b,      wxUINT32_SWAP_ON_LE(m_data.u32_data[3]));
 	RawPokeUInt32(b + 4,  wxUINT32_SWAP_ON_LE(m_data.u32_data[2]));
@@ -125,7 +125,7 @@ void CUInt128::ToByteArray(uint8_t *b) const
 
 void CUInt128::StoreCryptValue(uint8_t *buf) const
 {
-	wxCHECK_RET(buf != NULL, wxT("Destination buffer missing."));
+	wxCHECK_RET(buf != NULL, "Destination buffer missing.");
 
 	RawPokeUInt32(buf,      wxUINT32_SWAP_ON_BE(m_data.u32_data[3]));
 	RawPokeUInt32(buf + 4,  wxUINT32_SWAP_ON_BE(m_data.u32_data[2]));
@@ -133,7 +133,7 @@ void CUInt128::StoreCryptValue(uint8_t *buf) const
 	RawPokeUInt32(buf + 12, wxUINT32_SWAP_ON_BE(m_data.u32_data[0]));
 }
 
-int CUInt128::CompareTo(const CUInt128 &other) const throw()
+int CUInt128::CompareTo(const CUInt128 &other) const noexcept
 {
 	for (int i = 3; i >= 0; i--) {
 	    if (m_data.u32_data[i] < other.m_data.u32_data[i])
@@ -144,7 +144,7 @@ int CUInt128::CompareTo(const CUInt128 &other) const throw()
 	return 0;
 }
 
-int CUInt128::CompareTo(uint32_t value) const throw()
+int CUInt128::CompareTo(uint32_t value) const noexcept
 {
 	if ((m_data.u64_data[1] > 0) || (m_data.u32_data[1] > 0) || (m_data.u32_data[0] > value))
 		return 1;
@@ -153,7 +153,7 @@ int CUInt128::CompareTo(uint32_t value) const throw()
 	return 0;
 }
 
-CUInt128& CUInt128::Add(const CUInt128 &value) throw()
+CUInt128& CUInt128::Add(const CUInt128 &value) noexcept
 {
 	if (value.IsZero()) return *this;
 
@@ -167,7 +167,7 @@ CUInt128& CUInt128::Add(const CUInt128 &value) throw()
 	return *this;
 }
 
-CUInt128& CUInt128::Subtract(const CUInt128 &value) throw()
+CUInt128& CUInt128::Subtract(const CUInt128 &value) noexcept
 {
 	if (value.IsZero()) return *this;
 
@@ -181,7 +181,7 @@ CUInt128& CUInt128::Subtract(const CUInt128 &value) throw()
 	return *this;
 }
 
-CUInt128& CUInt128::ShiftLeft(unsigned bits) throw()
+CUInt128& CUInt128::ShiftLeft(unsigned bits) noexcept
 {
 	if ((bits == 0) || IsZero())
 		return *this;

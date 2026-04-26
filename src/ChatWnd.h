@@ -49,7 +49,7 @@ public:
 	void	ProcessMessage(uint64 sender, const wxString& message);
 	void	ConnectionResult(bool success, const wxString& message, uint64 id);
 
-	void	SendMessage(const wxString& message, const wxString& client_name = wxEmptyString, uint64 to_id = 0);
+	void	SendMessage(const wxString& message, const wxString& client_name = "", uint64 to_id = 0);
 
 	bool	IsIdValid(uint64 id);
 	void	ShowCaptchaResult(uint64 id, bool ok);
@@ -61,22 +61,22 @@ protected:
 	 */
 	void	OnNMRclickChatTab(wxMouseEvent& evt);
 	/**
-	 * Event-handler fo the Close item on the popup-menu.
+	 * Event-handler of the Close item on the popup-menu.
 	 */
 	void	OnPopupClose(wxCommandEvent& evt);
 
 	/**
-	 * Event-handler fo the CloseAll item on the popup-menu.
+	 * Event-handler of the CloseAll item on the popup-menu.
 	 */
 	void	OnPopupCloseAll(wxCommandEvent& evt);
 
 	/**
-	 * Event-handler fo the CloseOthers item on the popup-menu.
+	 * Event-handler of the CloseOthers item on the popup-menu.
 	 */
 	void	OnPopupCloseOthers(wxCommandEvent& evt);
 
 	/**
-	 * Event-handler fo the AddFriend item on the popup-menu.
+	 * Event-handler of the AddFriend item on the popup-menu.
 	 */
 	void	OnAddFriend(wxCommandEvent& evt);
 
@@ -85,7 +85,7 @@ protected:
 	void	OnAllPagesClosed(wxNotebookEvent& evt);
 	void	CheckNewButtonsState();
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 
 	//! Variable used to ensure that the popup menu doesn't get displayed twice.
 	wxMenu* m_menu;

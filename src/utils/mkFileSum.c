@@ -84,7 +84,6 @@ int GetCharCode(int c)
 
 int main()
 {
-	int c;
 	int state = 0;
 	MD5_CTX context;
 	unsigned char digest[16];
@@ -94,7 +93,7 @@ int main()
 	MD5Init(&context);
 
 	while (state != 0x00ff) {
-		c = getchar();
+		int c = getchar();
 		state = table[state][GetCharCode(c)];
 		if (state & 0x0800) {
 			buffer[count++] = '\\';

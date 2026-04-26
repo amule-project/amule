@@ -198,14 +198,14 @@ void CClientCredits::Verified(uint32 dwForIP)
 			// in order to save this client, set 1 byte
 			m_pCredits->downloaded = 1;
 			m_pCredits->uploaded = 1;
-			AddDebugLogLineN( logCredits, wxT("Credits deleted due to new SecureIdent") );
+			AddDebugLogLineN( logCredits, "Credits deleted due to new SecureIdent" );
 		}
 	}
 	m_identState = IS_IDENTIFIED;
 }
 
 
-bool CClientCredits::SetSecureIdent(const byte* pachIdent, uint8 nIdentLen)
+bool CClientCredits::SetSecureIdent(const uint8_t* pachIdent, uint8 nIdentLen)
 { // verified Public key cannot change, use only if there is not public key yet
 	if (MAXPUBKEYSIZE < nIdentLen || m_pCredits->nKeySize != 0 ) {
 		return false;

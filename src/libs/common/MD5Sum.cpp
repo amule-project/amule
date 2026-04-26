@@ -77,7 +77,7 @@ wxString MD5Sum::GetHash()
 		// That's still far from optimal, but called much less often.
 		for (int i = 0; i < 16; ++i) {
 			wxString sT;
-			sT = CFormat(wxT("%02x")) % m_rawhash[i];
+			sT = CFormat("%02x") % m_rawhash[i];
 			m_sHash += sT;
 		}
 	}

@@ -31,7 +31,7 @@ Please do not change anything here and release it..
 There is going to be a new forum created just for the Kademlia side of the client..
 If you feel there is an error or a way to improve something, please
 post it in the forum first and let us look at it.. If it is a real improvement,
-it will be added to the offical client.. Changing something without knowing
+it will be added to the official client.. Changing something without knowing
 what all it does can cause great harm to the network if released in mass form..
 Any mod that changes anything within the Kademlia side will not be allowed to advertise
 there client on the eMule forum..
@@ -60,22 +60,22 @@ namespace Kademlia {
 class CUInt128
 {
 public:
-	CUInt128(const CUInt128& value) throw()
+	CUInt128(const CUInt128& value) noexcept
 	{
 		SetValue(value);
 	}
 
-	explicit CUInt128(bool fill = false) throw()
+	explicit CUInt128(bool fill = false) noexcept
 	{
 		m_data.u64_data[0] = m_data.u64_data[1] = (fill ? (uint64_t)-1 : 0);
 	}
 
-	explicit CUInt128(uint32_t value) throw()
+	explicit CUInt128(uint32_t value) noexcept
 	{
 		SetValue(value);
 	}
 
-	explicit CUInt128(const uint8_t *valueBE) throw()
+	explicit CUInt128(const uint8_t *valueBE) noexcept
 	{
 		SetValueBE(valueBE);
 	}
@@ -87,7 +87,7 @@ public:
 	CUInt128(const CUInt128& value, unsigned numBits);
 
 	/* Bit at level 0 being most significant. */
-	unsigned GetBitNumber(unsigned bit) const throw()
+	unsigned GetBitNumber(unsigned bit) const noexcept
 	{
 		return bit <= 127 ? (m_data.u32_data[(127 - bit) / 32] >> ((127 - bit) % 32)) & 1 : 0;
 	}
@@ -106,7 +106,7 @@ public:
 	}
 
 	/* Chunk 0 being the most significant */
-	uint32_t Get32BitChunk(unsigned val) const throw()
+	uint32_t Get32BitChunk(unsigned val) const noexcept
 	{
 		return val < 4 ? m_data.u32_data[3 - val] : 0;
 	}
@@ -119,7 +119,7 @@ public:
 		m_data.u32_data[3 - chunk] = value;
 	}
 
-	CUInt128& SetValueBE(const uint8_t *valueBE) throw();
+	CUInt128& SetValueBE(const uint8_t *valueBE) noexcept;
 
 	wxString ToHexString() const;
 	wxString ToBinaryString(bool trim = false) const;
@@ -137,15 +137,15 @@ public:
 	void StoreCryptValue(uint8_t *buf) const;
 
       private:
-	int CompareTo(const CUInt128& other) const throw();
-	int CompareTo(uint32_t value) const throw();
-	CUInt128& Add(const CUInt128& value) throw();
-	CUInt128& Add(uint32_t value) throw() { return value ? Add(CUInt128(value)) : *this; }
-	CUInt128& Subtract(const CUInt128& value) throw();
-	CUInt128& Subtract(uint32_t value) throw() { return value ? Subtract(CUInt128(value)) : *this; }
-	CUInt128& ShiftLeft(unsigned bits) throw();
+	int CompareTo(const CUInt128& other) const noexcept;
+	int CompareTo(uint32_t value) const noexcept;
+	CUInt128& Add(const CUInt128& value) noexcept;
+	CUInt128& Add(uint32_t value) noexcept { return value ? Add(CUInt128(value)) : *this; }
+	CUInt128& Subtract(const CUInt128& value) noexcept;
+	CUInt128& Subtract(uint32_t value) noexcept { return value ? Subtract(CUInt128(value)) : *this; }
+	CUInt128& ShiftLeft(unsigned bits) noexcept;
 
-	CUInt128& XOR(const CUInt128& value) throw()
+	CUInt128& XOR(const CUInt128& value) noexcept
 	{
 		m_data.u64_data[0] ^= value.m_data.u64_data[0];
 		m_data.u64_data[1] ^= value.m_data.u64_data[1];
@@ -153,54 +153,54 @@ public:
 		return *this;
 	}
 
-	bool IsZero() const throw() { return (m_data.u64_data[0] | m_data.u64_data[1]) == 0; }
+	bool IsZero() const noexcept { return (m_data.u64_data[0] | m_data.u64_data[1]) == 0; }
 
       public:
-	bool operator< (const CUInt128& value) const throw() { return (CompareTo(value) <  0); }
-	bool operator> (const CUInt128& value) const throw() { return (CompareTo(value) >  0); }
-	bool operator<=(const CUInt128& value) const throw() { return (CompareTo(value) <= 0); }
-	bool operator>=(const CUInt128& value) const throw() { return (CompareTo(value) >= 0); }
-	bool operator==(const CUInt128& value) const throw() { return (CompareTo(value) == 0); }
-	bool operator!=(const CUInt128& value) const throw() { return (CompareTo(value) != 0); }
+	bool operator< (const CUInt128& value) const noexcept { return (CompareTo(value) <  0); }
+	bool operator> (const CUInt128& value) const noexcept { return (CompareTo(value) >  0); }
+	bool operator<=(const CUInt128& value) const noexcept { return (CompareTo(value) <= 0); }
+	bool operator>=(const CUInt128& value) const noexcept { return (CompareTo(value) >= 0); }
+	bool operator==(const CUInt128& value) const noexcept { return (CompareTo(value) == 0); }
+	bool operator!=(const CUInt128& value) const noexcept { return (CompareTo(value) != 0); }
 
-	bool operator< (uint32_t value) const throw() { return (CompareTo(value) <  0); }
-	bool operator> (uint32_t value) const throw() { return (CompareTo(value) >  0); }
-	bool operator<=(uint32_t value) const throw() { return (CompareTo(value) <= 0); }
-	bool operator>=(uint32_t value) const throw() { return (CompareTo(value) >= 0); }
-	bool operator==(uint32_t value) const throw() { return (CompareTo(value) == 0); }
-	bool operator!=(uint32_t value) const throw() { return (CompareTo(value) != 0); }
+	bool operator< (uint32_t value) const noexcept { return (CompareTo(value) <  0); }
+	bool operator> (uint32_t value) const noexcept { return (CompareTo(value) >  0); }
+	bool operator<=(uint32_t value) const noexcept { return (CompareTo(value) <= 0); }
+	bool operator>=(uint32_t value) const noexcept { return (CompareTo(value) >= 0); }
+	bool operator==(uint32_t value) const noexcept { return (CompareTo(value) == 0); }
+	bool operator!=(uint32_t value) const noexcept { return (CompareTo(value) != 0); }
 
-	CUInt128& operator= (const CUInt128& value) throw() { SetValue(value); return *this; }
-	CUInt128& operator+=(const CUInt128& value) throw() { return Add(value); }
-	CUInt128& operator-=(const CUInt128& value) throw() { return Subtract(value); }
-	CUInt128& operator^=(const CUInt128& value) throw() { return XOR(value); }
+	CUInt128& operator= (const CUInt128& value) noexcept { SetValue(value); return *this; }
+	CUInt128& operator+=(const CUInt128& value) noexcept { return Add(value); }
+	CUInt128& operator-=(const CUInt128& value) noexcept { return Subtract(value); }
+	CUInt128& operator^=(const CUInt128& value) noexcept { return XOR(value); }
 
-	CUInt128& operator= (uint32_t value) throw() { SetValue(value); return *this; }
-	CUInt128& operator+=(uint32_t value) throw() { return Add(value); }
-	CUInt128& operator-=(uint32_t value) throw() { return Subtract(value); }
-	CUInt128& operator^=(uint32_t value) throw() { return value ? XOR(CUInt128(value)) : *this; }
+	CUInt128& operator= (uint32_t value) noexcept { SetValue(value); return *this; }
+	CUInt128& operator+=(uint32_t value) noexcept { return Add(value); }
+	CUInt128& operator-=(uint32_t value) noexcept { return Subtract(value); }
+	CUInt128& operator^=(uint32_t value) noexcept { return value ? XOR(CUInt128(value)) : *this; }
 
-	CUInt128& operator<<=(unsigned bits) throw() { return ShiftLeft(bits); }
+	CUInt128& operator<<=(unsigned bits) noexcept { return ShiftLeft(bits); }
 
-	CUInt128  operator+(const CUInt128& value) const throw() { return CUInt128(*this).operator+=(value); }
-	CUInt128  operator-(const CUInt128& value) const throw() { return CUInt128(*this).operator-=(value); }
-	CUInt128  operator^(const CUInt128& value) const throw() { return CUInt128(*this).operator^=(value); }
+	CUInt128  operator+(const CUInt128& value) const noexcept { return CUInt128(*this).operator+=(value); }
+	CUInt128  operator-(const CUInt128& value) const noexcept { return CUInt128(*this).operator-=(value); }
+	CUInt128  operator^(const CUInt128& value) const noexcept { return CUInt128(*this).operator^=(value); }
 
-	CUInt128  operator+(uint32_t value) const throw() { return CUInt128(*this).operator+=(value); }
-	CUInt128  operator-(uint32_t value) const throw() { return CUInt128(*this).operator-=(value); }
-	CUInt128  operator^(uint32_t value) const throw() { return CUInt128(*this).operator^=(value); }
+	CUInt128  operator+(uint32_t value) const noexcept { return CUInt128(*this).operator+=(value); }
+	CUInt128  operator-(uint32_t value) const noexcept { return CUInt128(*this).operator-=(value); }
+	CUInt128  operator^(uint32_t value) const noexcept { return CUInt128(*this).operator^=(value); }
 
-	CUInt128  operator<<(unsigned bits) const throw() { return CUInt128(*this).operator<<=(bits); }
+	CUInt128  operator<<(unsigned bits) const noexcept { return CUInt128(*this).operator<<=(bits); }
 
 
 private:
-	void SetValue(const CUInt128& other) throw()
+	void SetValue(const CUInt128& other) noexcept
 	{
 		m_data.u64_data[0] = other.m_data.u64_data[0];
 		m_data.u64_data[1] = other.m_data.u64_data[1];
 	}
 
-	void SetValue(uint32_t value) throw()
+	void SetValue(uint32_t value) noexcept
 	{
 		m_data.u32_data[0] = value;
 		m_data.u32_data[1] = 0;
@@ -213,15 +213,15 @@ private:
 	} m_data;
 };
 
-inline bool operator==(uint32_t x, const CUInt128& y) throw() { return y.operator==(x); }
-inline bool operator!=(uint32_t x, const CUInt128& y) throw() { return y.operator!=(x); }
-inline bool operator<(uint32_t x, const CUInt128& y) throw() { return y.operator>(x); }
-inline bool operator>(uint32_t x, const CUInt128& y) throw() { return y.operator<(x); }
-inline bool operator<=(uint32_t x, const CUInt128& y) throw() { return y.operator>=(x); }
-inline bool operator>=(uint32_t x, const CUInt128& y) throw() { return y.operator<=(x); }
-inline CUInt128 operator+(uint32_t x, const CUInt128& y) throw() { return y.operator+(x); }
-inline CUInt128 operator-(uint32_t x, const CUInt128& y) throw() { return CUInt128(x).operator-(y); }
-inline CUInt128 operator^(uint32_t x, const CUInt128& y) throw() { return y.operator^(x); }
+inline bool operator==(uint32_t x, const CUInt128& y) noexcept { return y.operator==(x); }
+inline bool operator!=(uint32_t x, const CUInt128& y) noexcept { return y.operator!=(x); }
+inline bool operator<(uint32_t x, const CUInt128& y) noexcept { return y.operator>(x); }
+inline bool operator>(uint32_t x, const CUInt128& y) noexcept { return y.operator<(x); }
+inline bool operator<=(uint32_t x, const CUInt128& y) noexcept { return y.operator>=(x); }
+inline bool operator>=(uint32_t x, const CUInt128& y) noexcept { return y.operator<=(x); }
+inline CUInt128 operator+(uint32_t x, const CUInt128& y) noexcept { return y.operator+(x); }
+inline CUInt128 operator-(uint32_t x, const CUInt128& y) noexcept { return CUInt128(x).operator-(y); }
+inline CUInt128 operator^(uint32_t x, const CUInt128& y) noexcept { return y.operator^(x); }
 
 } // End namespace
 

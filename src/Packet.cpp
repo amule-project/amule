@@ -29,7 +29,7 @@
 
 #include <protocol/Protocols.h>
 
-#include "Logger.h"			// Neeed for AddDebugLogLineN
+#include "Logger.h"			// Needed for AddDebugLogLineN
 #include "MemFile.h"			// Needed for CMemFile
 #include "OtherStructs.h"		// Needed for Header_Struct
 #include "ArchSpecific.h"		// Needed for ENDIAN_*
@@ -47,12 +47,12 @@ CPacket::CPacket(CPacket &p)
 	memcpy(head, p.head, sizeof head);
 	tempbuffer	= NULL;
 	if (p.completebuffer) {
-		completebuffer	= new byte[size + 10];;
+		completebuffer	= new uint8_t[size + 10];;
 		pBuffer	= completebuffer + sizeof(Header_Struct);
 	} else {
 		completebuffer	= NULL;
 		if (p.pBuffer) {
-			pBuffer = new byte[size];
+			pBuffer = new uint8_t[size];
 		} else {
 			pBuffer = NULL;
 		}
@@ -77,7 +77,7 @@ CPacket::CPacket(uint8 protocol)
 }
 
 // only used for receiving packets
-CPacket::CPacket(byte* rawHeader, byte *buf)
+CPacket::CPacket(uint8_t* rawHeader, uint8_t *buf)
 {
 	memset(head, 0, sizeof head);
 	Header_Struct* header = reinterpret_cast<Header_Struct*>(rawHeader);
@@ -104,7 +104,7 @@ CPacket::CPacket(const CMemFile& datafile, uint8 protocol, uint8 ucOpcode)
 	m_bFromPF	= false;
 	memset(head, 0, sizeof head);
 	tempbuffer = NULL;
-	completebuffer = new byte[size + sizeof(Header_Struct)/*Why this 4?*/];
+	completebuffer = new uint8_t[size + sizeof(Header_Struct)/*Why this 4?*/];
 	pBuffer = completebuffer + sizeof(Header_Struct);
 
 	// Write contents of MemFile to buffer (while keeping original position in file)
@@ -126,7 +126,7 @@ CPacket::CPacket(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)
 	memset(head, 0, sizeof head);
 	tempbuffer	= NULL;
 	if (in_size) {
-		completebuffer = new byte[in_size + sizeof(Header_Struct) + 4 /*Why this 4?*/];
+		completebuffer = new uint8_t[in_size + sizeof(Header_Struct) + 4 /*Why this 4?*/];
 		pBuffer = completebuffer + sizeof(Header_Struct);
 		memset(completebuffer, 0, in_size + sizeof(Header_Struct) + 4 /*Why this 4?*/);
 	} else {
@@ -136,7 +136,7 @@ CPacket::CPacket(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)
 }
 
 // only used for splitted packets!
-CPacket::CPacket(byte* pPacketPart, uint32 nSize, bool bLast, bool bFromPF)
+CPacket::CPacket(uint8_t* pPacketPart, uint32 nSize, bool bLast, bool bFromPF)
 {
 	size		= nSize - sizeof(Header_Struct);
 	opcode		= 0;
@@ -166,7 +166,7 @@ CPacket::~CPacket()
 	}
 }
 
-uint32 CPacket::GetPacketSizeFromHeader(const byte* rawHeader)
+uint32 CPacket::GetPacketSizeFromHeader(const uint8_t* rawHeader)
 {
 	const Header_Struct* header = reinterpret_cast<const Header_Struct*>(rawHeader);
 	uint32 size = ENDIAN_SWAP_32(header->packetlength);
@@ -175,13 +175,13 @@ uint32 CPacket::GetPacketSizeFromHeader(const byte* rawHeader)
 	return size - 1;
 }
 
-void CPacket::CopyToDataBuffer(unsigned int offset, const byte* data, unsigned int n)
+void CPacket::CopyToDataBuffer(unsigned int offset, const uint8_t* data, unsigned int n)
 {
 	wxASSERT(offset + n <= size + 1);
 	memcpy(pBuffer + offset, data, n);
 }
 
-byte* CPacket::GetPacket() {
+uint8_t* CPacket::GetPacket() {
 	if (completebuffer) {
 		if (!m_bSplitted) {
 			memcpy(completebuffer, GetHeader(), sizeof(Header_Struct));
@@ -192,19 +192,19 @@ byte* CPacket::GetPacket() {
 			delete [] tempbuffer;
 			tempbuffer = NULL;
 		}
-		tempbuffer = new byte[size + sizeof(Header_Struct) + 4 /* why this 4?*/];
+		tempbuffer = new uint8_t[size + sizeof(Header_Struct) + 4 /* why this 4?*/];
 		memcpy(tempbuffer    , GetHeader(), sizeof(Header_Struct));
 		memcpy(tempbuffer + sizeof(Header_Struct), pBuffer    , size);
 		return tempbuffer;
 	}
 }
 
-byte* CPacket::DetachPacket() {
+uint8_t* CPacket::DetachPacket() {
 	if (completebuffer) {
 		if (!m_bSplitted) {
 			memcpy(completebuffer, GetHeader(), sizeof(Header_Struct));
 		}
-		byte* result = completebuffer;
+		uint8_t* result = completebuffer;
 		completebuffer = pBuffer = NULL;
 		return result;
 	} else{
@@ -212,16 +212,16 @@ byte* CPacket::DetachPacket() {
 			delete[] tempbuffer;
 			tempbuffer = NULL;
 		}
-		tempbuffer = new byte[size+sizeof(Header_Struct)+4 /* Why this 4?*/];
+		tempbuffer = new uint8_t[size+sizeof(Header_Struct)+4 /* Why this 4?*/];
 		memcpy(tempbuffer,GetHeader(),sizeof(Header_Struct));
 		memcpy(tempbuffer+sizeof(Header_Struct),pBuffer,size);
-		byte* result = tempbuffer;
+		uint8_t* result = tempbuffer;
 		tempbuffer = 0;
 		return result;
 	}
 }
 
-byte* CPacket::GetHeader() {
+uint8_t* CPacket::GetHeader() {
 	wxASSERT( !m_bSplitted );
 
 	Header_Struct* header = reinterpret_cast<Header_Struct*>(head);
@@ -232,7 +232,7 @@ byte* CPacket::GetHeader() {
 	return head;
 }
 
-byte* CPacket::GetUDPHeader() {
+uint8_t* CPacket::GetUDPHeader() {
 	wxASSERT( !m_bSplitted );
 
 	memset(head, 0, 6);
@@ -249,7 +249,7 @@ void CPacket::PackPacket()
 	wxASSERT(!m_bSplitted);
 
 	uLongf newsize = size + 300;
-	byte* output = new byte[newsize];
+	uint8_t* output = new uint8_t[newsize];
 
 	uint16 result = compress2(output, &newsize, pBuffer, size, Z_BEST_COMPRESSION);
 
@@ -275,10 +275,10 @@ void CPacket::PackPacket()
 bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 	wxASSERT( prot == OP_PACKEDPROT || prot == OP_ED2KV2PACKEDPROT);
 	// OP_ED2KV2PACKEDPROT is experimental aMule test code,
-	// this should not happen yet. Leave a warining in the log.
+	// this should not happen yet. Leave a warning in the log.
 	if (prot == OP_ED2KV2PACKEDPROT) {
 		AddDebugLogLineN(logPacketErrors,
-			wxT("Received OP_ED2KV2PACKEDPROT."));
+			"Received OP_ED2KV2PACKEDPROT.");
 	}
 
 	uint32 nNewSize = size * 10 + 300;
@@ -287,7 +287,7 @@ bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 		nNewSize = uMaxDecompressedSize;
 	}
 
-	byte* unpack = new byte[nNewSize];
+	uint8_t* unpack = new uint8_t[nNewSize];
 	uLongf unpackedsize = nNewSize;
 	uint16 result = uncompress(unpack, &unpackedsize, pBuffer, size);
 
@@ -315,7 +315,7 @@ void CPacket::Copy16ToDataBuffer(const void* data)
 
 void CPacket::CopyUInt32ToDataBuffer(uint32 data, unsigned int offset)
 {
-	wxCHECK_RET(offset <= size - sizeof(uint32), wxT("Bad offset in CopyUInt32ToDataBuffer."));
+	wxCHECK_RET(offset <= size - sizeof(uint32), "Bad offset in CopyUInt32ToDataBuffer.");
 	PokeUInt32( pBuffer + offset, data );
 }
 // File_checked_for_headers

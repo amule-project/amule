@@ -16,7 +16,6 @@
 #include <wx/textctrl.h>
 
 #define wxLC_OWNERDRAW 0x10000
-#define WXWIN_COMPATIBILITY_2_8 1
 
 #include <wx/imaglist.h>
 
@@ -25,7 +24,7 @@ class WXDLLEXPORT wxDropTarget;
 #endif
 
 // Fix for bug in wx's implementation, which uses longs for item*
-typedef int (wxCALLBACK *MuleListCtrlCompare)(wxUIntPtr item1, wxUIntPtr item2, long sortData);
+typedef int (wxCALLBACK *MuleListCtrlCompare)(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData);
 
 namespace MuleExtern {
 
@@ -94,7 +93,7 @@ public:
 #endif // wxABI 2.8.4+
 
 // It is not certain that sizeof(long) == sizeof(void*), and since we
-// just about only use pointers as item-data, I've choosen to disable
+// just about only use pointers as item-data, I've chosen to disable
 // this function to prevent mistakes. Use SetItemPtrData instead.
 #if 0
     bool SetItemData(long item, long data);
@@ -152,7 +151,7 @@ public:
     long InsertColumn( long col, const wxString& heading,
                        int format = wxLIST_FORMAT_LEFT, int width = -1 );
     bool ScrollList( int dx, int dy );
-    bool SortItems( MuleListCtrlCompare fn, long data );
+    bool SortItems( MuleListCtrlCompare fn, wxIntPtr data );
     bool Update( long item );
     // Must provide overload to avoid hiding it (and warnings about it)
     virtual void Update() { wxControl::Update(); }
@@ -258,7 +257,7 @@ private:
     // on whether it should be shown or not
     void ResizeReportView(bool showHeader);
 
-    DECLARE_EVENT_TABLE()
+    wxDECLARE_EVENT_TABLE();
 };
 
 #if (!defined(__WXMSW__) || defined(__WXUNIVERSAL__)) && (!defined(__WXMAC__) || defined(__WXUNIVERSAL__))

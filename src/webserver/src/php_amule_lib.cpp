@@ -28,9 +28,7 @@
 
 #include <sys/types.h>
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include "WebServer.h"
 #include <ec/cpp/ECSpecialTags.h>
@@ -41,8 +39,8 @@
 #include <wx/datetime.h>
 
 /*
- * Built-in php functions. Those are amule-specific funcions, accessing EC and internal
- * datastructre
+ * Built-in php functions. Those are amule-specific functions, accessing EC and internal
+ * datastructure
  *
  */
 
@@ -174,7 +172,7 @@ void php_native_add_server_cmd(PHP_VALUE_NODE *)
 	char *name = si->var->value.str_val;
 
 	CPhPLibContext::g_curr_context->WebServer()->Send_AddServer_Cmd(wxString(char2unicode(addr)),
-		wxString::Format(wxT("%d"), port), wxString(char2unicode(name)));
+		wxString::Format("%d", port), wxString(char2unicode(name)));
 }
 
 /*
@@ -365,7 +363,7 @@ PHP_2_EC_OPT_DEF g_coretweak_opt_defs[] = {
 	{0, (ECTagNames)0, 0}
 };
 
-void set_array_int_val(PHP_VALUE_NODE *array, std::string arrkey, int value)
+void set_array_int_val(PHP_VALUE_NODE *array, const std::string &arrkey, int value)
 {
 	PHP_VAR_NODE *key = array_get_by_str_key(array, arrkey);
 	PHP_VALUE_NODE intval;
@@ -841,7 +839,7 @@ void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *re
 		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileName));
 	} else if ( strcmp(prop_name, "short_name") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		wxString short_name(obj->sFileName.Length() > 60 ? (obj->sFileName.Left(60) + (wxT(" ..."))) : obj->sFileName);
+		wxString short_name(obj->sFileName.Length() > 60 ? (obj->sFileName.Left(60) + (" ...")) : obj->sFileName);
 		result->str_val = strdup((const char *)unicode2UTF8(short_name));
 	} else if ( strcmp(prop_name, "hash") == 0 ) {
 		result->type = PHP_VAL_STRING;
@@ -909,9 +907,9 @@ void amule_upload_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 		}
 		wxString short_name;
 		if (sharedfile) {
-			short_name = sharedfile->sFileName.Length() > 60 ? (sharedfile->sFileName.Left(60) + (wxT(" ..."))) : sharedfile->sFileName;
+			short_name = sharedfile->sFileName.Length() > 60 ? (sharedfile->sFileName.Left(60) + (" ...")) : sharedfile->sFileName;
 		} else {
-			short_name = wxT("???");
+			short_name = "???";
 		}
 		result->str_val = strdup((const char *)unicode2UTF8(short_name));
 	} else if ( strcmp(prop_name, "user_name") == 0 ) {
@@ -976,7 +974,7 @@ void amule_shared_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileName));
 	} else if ( strcmp(prop_name, "short_name") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		wxString short_name(obj->sFileName.Length() > 60 ? (obj->sFileName.Left(60) + (wxT(" ..."))) : obj->sFileName);
+		wxString short_name(obj->sFileName.Length() > 60 ? (obj->sFileName.Left(60) + (" ...")) : obj->sFileName);
 		result->str_val = strdup((const char *)unicode2UTF8(short_name));
 	} else if ( strcmp(prop_name, "hash") == 0 ) {
 		result->type = PHP_VAL_STRING;
@@ -1028,7 +1026,7 @@ void amule_search_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileName));
 	} else if ( strcmp(prop_name, "short_name") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		wxString short_name(obj->sFileName.Length() > 60 ? (obj->sFileName.Left(60) + (wxT(" ..."))) : obj->sFileName);
+		wxString short_name(obj->sFileName.Length() > 60 ? (obj->sFileName.Left(60) + (" ...")) : obj->sFileName);
 		result->str_val = strdup((const char *)unicode2UTF8(short_name));
 	} else if ( strcmp(prop_name, "hash") == 0 ) {
 		result->type = PHP_VAL_STRING;

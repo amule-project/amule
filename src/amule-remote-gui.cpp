@@ -74,9 +74,9 @@ wxDialog(theApp->amuledlg, -1, _("Connect to remote amule"), wxDefaultPosition)
 	CoreConnect(this, true);
 
 	wxString pref_host, pref_port;
-	wxConfig::Get()->Read(wxT("/EC/Host"), &pref_host, wxT("localhost"));
-	wxConfig::Get()->Read(wxT("/EC/Port"), &pref_port, wxT("4712"));
-	wxConfig::Get()->Read(wxT("/EC/Password"), &pwd_hash);
+	wxConfig::Get()->Read("/EC/Host", &pref_host, "localhost");
+	wxConfig::Get()->Read("/EC/Port", &pref_port, "4712");
+	wxConfig::Get()->Read("/EC/Password", &pwd_hash);
 
 	CastChild(ID_REMOTE_HOST, wxTextCtrl)->SetValue(pref_host);
 	CastChild(ID_REMOTE_PORT, wxTextCtrl)->SetValue(pref_port);
@@ -92,9 +92,9 @@ wxString CEConnectDlg::PassHash()
 }
 
 
-BEGIN_EVENT_TABLE(CEConnectDlg, wxDialog)
+wxBEGIN_EVENT_TABLE(CEConnectDlg, wxDialog)
   EVT_BUTTON(wxID_OK, CEConnectDlg::OnOK)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 void CEConnectDlg::OnOK(wxCommandEvent& evt)
@@ -113,12 +113,13 @@ void CEConnectDlg::OnOK(wxCommandEvent& evt)
 }
 
 
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_INIT_DONE)
+wxDEFINE_EVENT(wxEVT_EC_INIT_DONE, wxEvent);
 
-
-BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
+wxBEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 	// Core timer
 	EVT_TIMER(ID_CORE_TIMER_EVENT, CamuleRemoteGuiApp::OnPollTimer)
+	// Watchdog on the initial EC connect attempt
+	EVT_TIMER(ID_REMOTE_CONNECT_TIMEOUT_TIMER, CamuleRemoteGuiApp::OnConnectTimeout)
 
 	EVT_CUSTOM(wxEVT_EC_CONNECTION, -1, CamuleRemoteGuiApp::OnECConnection)
 	EVT_CUSTOM(wxEVT_EC_INIT_DONE, -1, CamuleRemoteGuiApp::OnECInitDone)
@@ -129,7 +130,7 @@ BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 	// HTTPDownload finished
 	EVT_MULE_INTERNAL(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, -1, CamuleRemoteGuiApp::OnFinishedHTTPDownload)
 #endif
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 IMPLEMENT_APP(CamuleRemoteGuiApp)
@@ -219,6 +220,9 @@ void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 	delete poll_timer;
 	poll_timer = NULL;
 
+	delete connect_timeout_timer;
+	connect_timeout_timer = NULL;
+
 #ifdef ASIO_SOCKETS
 	m_AsioService->Stop();
 	delete m_AsioService;
@@ -244,6 +248,7 @@ bool CamuleRemoteGuiApp::OnInit()
 {
 	StartTickTimer();
 	amuledlg = NULL;
+	connect_timeout_timer = NULL;
 
 	// Get theApp
 	theApp = &wxGetApp();
@@ -274,17 +279,45 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	glob_prefs = new CPreferencesRem(m_connect);
 	long enableZLIB;
-	wxConfig::Get()->Read(wxT("/EC/ZLIB"), &enableZLIB, 1);
+	wxConfig::Get()->Read("/EC/ZLIB", &enableZLIB, 1);
 	m_connect->SetCapabilities(enableZLIB != 0, true, false);	// ZLIB, UTF8 numbers, notification
 
 	InitCustomLanguages();
 	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
 
 	if (ShowConnectionDialog()) {
+		// Watchdog on the EC connect. When the host is unreachable the TCP
+		// SYN can silently time out over several minutes while the main
+		// loop is running with no visible window, which the OS reports as
+		// "not responding". Fire a shorter timeout so we can show an error
+		// and shut down cleanly instead.
+		connect_timeout_timer = new wxTimer(this, ID_REMOTE_CONNECT_TIMEOUT_TIMER);
+		connect_timeout_timer->StartOnce(15000);
 		AddLogLineNS(_("Going to event loop..."));
 		return true;
 	}
 
+	// User cancelled (or ShowConnectionDialog failed before reaching the
+	// connect step). Tear down the partial init so the Asio thread pool,
+	// poll timer and remote-connect socket don't leak — wx will never
+	// call ShutDown() / OnExit() because the main loop isn't entered when
+	// OnInit() returns false, so we have to unwind manually here. Without
+	// this, wx reports "4 threads were not terminated by the application".
+#ifdef ASIO_SOCKETS
+	if (m_AsioService) {
+		m_AsioService->Stop();
+		delete m_AsioService;
+		m_AsioService = NULL;
+	}
+#endif
+	if (m_connect) {
+		m_connect->Destroy();
+		m_connect = NULL;
+	}
+	if (poll_timer) {
+		delete poll_timer;
+		poll_timer = NULL;
+	}
 	return false;
 }
 
@@ -310,7 +343,7 @@ bool CamuleRemoteGuiApp::ShowConnectionDialog()
 	AddLogLineNS(_("Connecting..."));
 	if (!m_connect->ConnectToCore(dialog->Host(), dialog->Port(),
 		dialog->Login(), dialog->PassHash(),
-		wxT("amule-remote"), wxT("0x0001"))) {
+		"amule-remote", "0x0001")) {
 		wxMessageBox(_("Connection failed "),_("ERROR"),wxOK);
 
 		return false;
@@ -321,6 +354,12 @@ bool CamuleRemoteGuiApp::ShowConnectionDialog()
 
 
 void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
+	// Connect attempt resolved one way or the other — kill the watchdog.
+	if (connect_timeout_timer) {
+		connect_timeout_timer->Stop();
+		delete connect_timeout_timer;
+		connect_timeout_timer = NULL;
+	}
 	wxECSocketEvent& evt = *((wxECSocketEvent*)&event);
 	AddLogLineNS(_("Remote GUI EC event handler"));
 	wxString reply = evt.GetServerReply();
@@ -344,6 +383,24 @@ void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
 }
 
 
+void CamuleRemoteGuiApp::OnConnectTimeout(wxTimerEvent&)
+{
+	delete connect_timeout_timer;
+	connect_timeout_timer = NULL;
+
+	wxString host = dialog ? dialog->Host() : wxString();
+	long     port = dialog ? dialog->Port() : 0;
+	wxMessageBox(
+		CFormat(_("Connection timed out. Unable to reach %s:%d within the allotted time.\nPlease check the host, port and that aMule is running with External Connections enabled."))
+			% host % port,
+		_("ERROR"), wxOK | wxICON_ERROR);
+
+	wxCloseEvent ev;
+	ShutDown(ev);
+	ExitMainLoop();
+}
+
+
 void CamuleRemoteGuiApp::OnECInitDone(wxEvent& )
 {
 	Startup();
@@ -359,9 +416,9 @@ void CamuleRemoteGuiApp::OnNotifyEvent(CMuleGUIEvent& evt)
 void CamuleRemoteGuiApp::Startup() {
 
 	if (dialog->SaveUserPass()) {
-		wxConfig::Get()->Write(wxT("/EC/Host"), dialog->Host());
-		wxConfig::Get()->Write(wxT("/EC/Port"), dialog->Port());
-		wxConfig::Get()->Write(wxT("/EC/Password"), dialog->PassHash());
+		wxConfig::Get()->Write("/EC/Host", dialog->Host());
+		wxConfig::Get()->Write("/EC/Port", dialog->Port());
+		wxConfig::Get()->Write("/EC/Password", dialog->PassHash());
 	}
 	dialog->Destroy();
 	dialog = NULL;
@@ -446,20 +503,20 @@ wxString CamuleRemoteGuiApp::GetLog(bool reset)
 		CECPacket req(EC_OP_RESET_LOG);
 		m_connect->SendPacket(&req);
 	}
-	return wxEmptyString;
+	return "";
 }
 
 
 wxString CamuleRemoteGuiApp::GetServerLog(bool)
 {
-	return wxEmptyString;
+	return "";
 }
 
 
 bool CamuleRemoteGuiApp::AddServer(CServer * server, bool)
 {
 	CECPacket req(EC_OP_SERVER_ADD);
-	req.AddTag(CECTag(EC_TAG_SERVER_ADDRESS, CFormat(wxT("%s:%d")) % server->GetAddress() % server->GetPort()));
+	req.AddTag(CECTag(EC_TAG_SERVER_ADDRESS, CFormat("%s:%d") % server->GetAddress() % server->GetPort()));
 	req.AddTag(CECTag(EC_TAG_SERVER_NAME, server->GetListName()));
 	m_connect->SendPacket(&req);
 
@@ -1189,7 +1246,7 @@ CClientRef::CClientRef(const CEC_UpDownClient_Tag *tag)
 {
 	m_client = new CUpDownClient(tag);
 #ifdef DEBUG_ZOMBIE_CLIENTS
-	m_client->Link(wxT("TAG"));
+	m_client->Link("TAG");
 #else
 	m_client->Link();
 #endif
@@ -1249,7 +1306,7 @@ void CUpDownClient::Unlink(const wxString& from)
 	m_linked--;
 	if (!m_linked) {
 		if (m_linkedDebug) {
-			AddLogLineN(CFormat(wxT("Last reference to client %d %p unlinked, delete it.")) % ECID() % this);
+			AddLogLineN(CFormat("Last reference to client %d %p unlinked, delete it.") % ECID() % this);
 		}
 		delete this;
 	}
@@ -1325,7 +1382,7 @@ void CUpDownClientListRem::DeleteItem(CClientRef *clientref)
 
 #ifdef DEBUG_ZOMBIE_CLIENTS
 	if (client->m_linked > 1) {
-		AddLogLineC(CFormat(wxT("Client %d still linked in %d places: %s")) % client->ECID() % (client->m_linked - 1) % client->GetLinkedFrom());
+		AddLogLineC(CFormat("Client %d still linked in %d places: %s") % client->ECID() % (client->m_linked - 1) % client->GetLinkedFrom());
 		client->m_linkedDebug = true;
 	}
 #endif
@@ -1361,7 +1418,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 		if (client->m_clientSoftString == _("Unknown")) {
 			client->m_fullClientVerString = client->m_clientSoftString;
 		} else {
-			client->m_fullClientVerString = client->m_clientSoftString + wxT(" ") + client->m_clientVerString;
+			client->m_fullClientVerString = client->m_clientSoftString + " " + client->m_clientVerString;
 		}
 	}
 	// User hash
@@ -1448,7 +1505,7 @@ void CUpDownClientListRem::ProcessItemUpdate(
 			client->m_reqfile = static_cast<CPartFile *>(kf);
 			client->m_reqfile->AddSource(client);
 			client->m_downPartStatus.setsize(kf->GetPartCount(), 0);
-			Notify_SourceCtrlAddSource(client->m_reqfile, CCLIENTREF(client, wxT("AddSource")), A4AF_SOURCE);
+			Notify_SourceCtrlAddSource(client->m_reqfile, CCLIENTREF(client, "AddSource"), A4AF_SOURCE);
 			notified = true;
 		}
 	}
@@ -1960,7 +2017,7 @@ wxString CSearchListRem::StartNewSearch(
 
 	Flush();
 
-	return wxEmptyString; // EC reply will have the error mesg is needed.
+	return ""; // EC reply will have the error mesg is needed.
 }
 
 
@@ -1999,6 +2056,11 @@ m_kadPublishInfo(0)
 	SetFileName(CPath(tag->FileName()));
 	m_abyFileHash = tag->FileHash();
 	SetFileSize(tag->SizeFull());
+
+	uint8 rating = 0;
+	if (tag->GetRating(rating)) {
+		m_iUserRating = rating;
+	}
 
 	m_searchID = theApp->searchlist->m_curr_search;
 	uint32 parentID = tag->ParentID();
@@ -2075,7 +2137,7 @@ bool CSearchListRem::Phase1Done(const CECPacket *WXUNUSED(reply))
 }
 
 
-void CSearchListRem::RemoveResults(long nSearchID)
+void CSearchListRem::RemoveResults(wxUIntPtr nSearchID)
 {
 	ResultMap::iterator it = m_results.find(nSearchID);
 	if (it != m_results.end()) {
@@ -2088,7 +2150,7 @@ void CSearchListRem::RemoveResults(long nSearchID)
 }
 
 
-const CSearchResultList& CSearchListRem::GetSearchResults(long nSearchID)
+const CSearchResultList& CSearchListRem::GetSearchResults(wxUIntPtr nSearchID)
 {
 	ResultMap::const_iterator it = m_results.find(nSearchID);
 	if (it != m_results.end()) {
@@ -2113,7 +2175,7 @@ void CStatsUpdaterRem::HandlePacket(const CECPacket *packet)
 
 void CUpDownClient::RequestSharedFileList()
 {
-	CClientRef ref = CCLIENTREF(this, wxEmptyString);
+	CClientRef ref = CCLIENTREF(this, "");
 	theApp->friendlist->RequestSharedFileList(ref);
 }
 
@@ -2237,8 +2299,7 @@ CamuleRemoteGuiApp *theApp;
 //
 // since gui is not linked with amule.cpp - define events here
 //
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_UDP_DNS_DONE)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_SERVER_DNS_DONE)
-// File_checked_for_headers
+wxDEFINE_EVENT(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, wxEvent);
+wxDEFINE_EVENT(wxEVT_CORE_SOURCE_DNS_DONE, wxEvent);
+wxDEFINE_EVENT(wxEVT_CORE_UDP_DNS_DONE, wxEvent);
+wxDEFINE_EVENT(wxEVT_CORE_SERVER_DNS_DONE, wxEvent);// File_checked_for_headers

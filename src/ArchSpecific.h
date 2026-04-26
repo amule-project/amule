@@ -27,9 +27,7 @@
 #define ARCHSPECIFIC_H
 
 #include "Types.h"
-#ifdef HAVE_CONFIG_H
-#	include "config.h"
-#endif
+#include "config.h"
 
 #define ENDIAN_SWAP_16(x) (wxUINT16_SWAP_ON_BE(x))
 #define ENDIAN_SWAP_I_16(x) x = wxUINT16_SWAP_ON_BE(x)

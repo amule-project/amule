@@ -131,7 +131,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				break;
 
 			case TAGTYPE_FLOAT32:
-				//#warning Endianess problem?
+				//#warning Endianness problem?
 				data.Read(&m_fVal, 4);
 				break;
 
@@ -161,7 +161,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				// Since the length is 32b, this check is needed to avoid
 				// huge allocations in case of bad tags.
 				if (m_nSize > data.GetLength() - data.GetPosition()) {
-					throw CInvalidPacket(wxT("Malformed tag"));
+					throw CInvalidPacket("Malformed tag");
 				}
 
 				m_pData = new unsigned char[m_nSize];
@@ -176,7 +176,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				} else {
 					// Since we cannot determine the length of this tag, we
 					// simply have to abort reading the file.
-					throw CInvalidPacket(CFormat(wxT("Unknown tag type encounted %x, cannot proceed!")) % m_uType);
+					throw CInvalidPacket(CFormat("Unknown tag type encountered %x, cannot proceed!") % m_uType);
 				}
 		}
 	} catch (...) {
@@ -243,7 +243,7 @@ CTag &CTag::operator=(const CTag &rhs)
 
 #define CHECK_TAG_TYPE(check, expected) \
 	if (!(check)) { \
-		throw CInvalidPacket(wxT(#expected) wxT(" tag expected, but found ") + GetFullInfo()); \
+		throw CInvalidPacket(#expected " tag expected, but found " + GetFullInfo()); \
 	}
 
 uint64 CTag::GetInt() const
@@ -286,7 +286,7 @@ uint32 CTag::GetBlobSize() const
 }
 
 
-const byte* CTag::GetBlob() const
+const uint8_t* CTag::GetBlob() const
 {
 	CHECK_TAG_TYPE(IsBlob(), Blob);
 
@@ -302,7 +302,7 @@ uint32 CTag::GetBsobSize() const
 }
 
 
-const byte* CTag::GetBsob() const
+const uint8_t* CTag::GetBsob() const
 {
 	CHECK_TAG_TYPE(IsBsob(), Bsob);
 
@@ -364,7 +364,7 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 			data->WriteUInt8(m_uVal);
 			break;
 		case TAGTYPE_FLOAT32:
-			//#warning Endianess problem?
+			//#warning Endianness problem?
 			data->Write(&m_fVal, 4);
 			break;
 		case TAGTYPE_HASH16:
@@ -415,39 +415,39 @@ wxString CTag::GetFullInfo() const
 	if (!m_Name.IsEmpty()) {
 		// Special case: Kad tags, and some ED2k tags ...
 		if (m_Name.Length() == 1) {
-			strTag = CFormat(wxT("0x%02X")) % (unsigned)m_Name[0];
+			strTag = CFormat("0x%02X") % (unsigned)m_Name[0];
 		} else {
-			strTag = wxT('\"');
+			strTag = '\"';
 			strTag += m_Name;
-			strTag += wxT('\"');
+			strTag += '\"';
 		}
 	} else {
-		strTag = CFormat(wxT("0x%02X")) % m_uName;
+		strTag = CFormat("0x%02X") % m_uName;
 	}
-	strTag += wxT("=");
+	strTag += "=";
 	if (m_uType == TAGTYPE_STRING) {
-		strTag += wxT("\"");
+		strTag += "\"";
 		strTag += *m_pstrVal;
-		strTag += wxT("\"");
+		strTag += "\"";
 	} else if (m_uType >= TAGTYPE_STR1 && m_uType <= TAGTYPE_STR16) {
-		strTag += CFormat(wxT("(Str%u)\"")) % (m_uType - TAGTYPE_STR1 + 1)
-					+  *m_pstrVal + wxT("\"");
+		strTag += CFormat("(Str%u)\"") % (m_uType - TAGTYPE_STR1 + 1)
+					+  *m_pstrVal + "\"";
 	} else if (m_uType == TAGTYPE_UINT64) {
-		strTag += CFormat(wxT("(Int64)%u")) % m_uVal;
+		strTag += CFormat("(Int64)%u") % m_uVal;
 	} else if (m_uType == TAGTYPE_UINT32) {
-		strTag += CFormat(wxT("(Int32)%u")) % m_uVal;
+		strTag += CFormat("(Int32)%u") % m_uVal;
 	} else if (m_uType == TAGTYPE_UINT16) {
-		strTag += CFormat(wxT("(Int16)%u")) % m_uVal;
+		strTag += CFormat("(Int16)%u") % m_uVal;
 	} else if (m_uType == TAGTYPE_UINT8) {
-		strTag += CFormat(wxT("(Int8)%u")) % m_uVal;
+		strTag += CFormat("(Int8)%u") % m_uVal;
 	} else if (m_uType == TAGTYPE_FLOAT32) {
-		strTag += CFormat(wxT("(Float32)%f")) % m_fVal;
+		strTag += CFormat("(Float32)%f") % m_fVal;
 	} else if (m_uType == TAGTYPE_BLOB) {
-		strTag += CFormat(wxT("(Blob)%u")) % m_nSize;
+		strTag += CFormat("(Blob)%u") % m_nSize;
 	} else if (m_uType == TAGTYPE_BSOB) {
-		strTag += CFormat(wxT("(Bsob)%u")) % m_nSize;
+		strTag += CFormat("(Bsob)%u") % m_nSize;
 	} else {
-		strTag += CFormat(wxT("Type=%u")) % m_uType;
+		strTag += CFormat("Type=%u") % m_uType;
 	}
 	return strTag;
 }

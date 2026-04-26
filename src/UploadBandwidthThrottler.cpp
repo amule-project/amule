@@ -35,6 +35,8 @@
 #include "Logger.h"
 #include "Preferences.h"
 #include "Statistics.h"
+#include "amule.h"
+#include "UploadDiskIOThread.h"
 
 
 /////////////////////////////////////
@@ -45,6 +47,7 @@
  */
 UploadBandwidthThrottler::UploadBandwidthThrottler()
 		: wxThread( wxTHREAD_JOINABLE )
+		, m_newDataCondition( m_newDataMutex )
 {
 	m_SentBytesSinceLastCall = 0;
 	m_SentBytesSinceLastCallOverhead = 0;
@@ -57,11 +60,23 @@ UploadBandwidthThrottler::UploadBandwidthThrottler()
 
 
 /**
- * The destructor stops the thread. If the thread has already stoppped, destructor does nothing.
+ * The destructor stops the thread. If the thread has already stopped, destructor does nothing.
  */
 UploadBandwidthThrottler::~UploadBandwidthThrottler()
 {
 	EndThread();
+}
+
+
+/**
+ * Called by the disk I/O thread when it has put new data on a socket queue.
+ * Wakes the throttler immediately instead of waiting for its next sleep interval.
+ * eMule ref: UploadBandwidthThrottler.cpp:795
+ */
+void UploadBandwidthThrottler::NewUploadDataAvailable()
+{
+	wxMutexLocker lock( m_newDataMutex );
+	m_newDataCondition.Signal();
 }
 
 
@@ -100,11 +115,11 @@ uint64 UploadBandwidthThrottler::GetNumberOfSentBytesOverheadSinceLastCallAndRes
 
 /**
  * Add a socket to the list of sockets that have upload slots. The main thread will
- * continously call send on these sockets, to give them chance to work off their queues.
+ * continuously call send on these sockets, to give them chance to work off their queues.
  * The sockets are called in the order they exist in the list, so the top socket (index 0)
  * will be given a chance first to use bandwidth, and then the next socket (index 1) etc.
  *
- * It is possible to add a socket several times to the list without removing it inbetween,
+ * It is possible to add a socket several times to the list without removing it in between,
  * but that should be avoided.
  *
  * @param index insert the socket at this place in the list. An index that is higher than the
@@ -268,7 +283,7 @@ void* UploadBandwidthThrottler::Entry()
 	uint32 lastLoopTick = GetTickCountFullRes();
 	// Bytes to spend in current cycle. If we spend more this becomes negative and causes a wait next time.
 	sint32 bytesToSpend = 0;
-	uint32 allowedDataRate = 0;
+	uint32 allowedDataRate;
 	uint32 rememberedSlotCounter = 0;
 	uint32 extraSleepTime = TIME_BETWEEN_UPLOAD_LOOPS;
 
@@ -277,8 +292,9 @@ void* UploadBandwidthThrottler::Entry()
 
 		// Calculate data rate
 		if (thePrefs::GetMaxUpload() == UNLIMITED) {
-			// Try to increase the upload rate from UploadSpeedSense
-			allowedDataRate = (uint32)theStats::GetUploadRate() + 5 * 1024;
+			// MaxUpload=0 means literal unlimited — bypass the per-iteration rate cap
+			// so SendFileAndControlData() is never throttled.
+			allowedDataRate = UNLIMITED_RATE;
 		} else {
 			allowedDataRate = thePrefs::GetMaxUpload() * 1024;
 		}
@@ -303,7 +319,10 @@ void* UploadBandwidthThrottler::Entry()
 		}
 
 		if (timeSinceLastLoop < sleepTime) {
-			Sleep(sleepTime-timeSinceLastLoop);
+			// eMule ref: UploadBandwidthThrottler.cpp:580 — WaitForSingleObject replaced with wxCondition::WaitTimeout
+			// Wakes early if disk I/O thread signals NewUploadDataAvailable()
+			wxMutexLocker lock( m_newDataMutex );
+			m_newDataCondition.WaitTimeout(sleepTime - timeSinceLastLoop);
 		}
 
 		// Check after sleep in case the thread has been signaled to end
@@ -316,15 +335,21 @@ void* UploadBandwidthThrottler::Entry()
 		lastLoopTick = thisLoopTick;
 
 		if (timeSinceLastLoop > sleepTime + 2000) {
-			AddDebugLogLineN(logGeneral, CFormat(wxT("UploadBandwidthThrottler: Time since last loop too long. time: %ims wanted: %ims Max: %ims"))
+			AddDebugLogLineN(logGeneral, CFormat("UploadBandwidthThrottler: Time since last loop too long. time: %ims wanted: %ims Max: %ims")
 				% timeSinceLastLoop % sleepTime % (sleepTime + 2000));
 
 			timeSinceLastLoop = sleepTime + 2000;
 		}
 
 		// Calculate how many bytes we can spend
-
-		bytesToSpend += (sint32) (allowedDataRate / 1000.0 * timeSinceLastLoop);
+		// In UNLIMITED mode, allowedDataRate = UINT_MAX (~4 GB/s) would overflow the
+		// sint32 bytesToSpend accumulator when multiplied by timeSinceLastLoop.
+		// Cap the budget rate at 1 GB/s — still far above any real uplink, and every
+		// real socket send() will short-circuit far below this ceiling.
+		const uint32 bytesToSpendRate = (allowedDataRate == UNLIMITED_RATE)
+			? (1024u * 1024u * 1024u)
+			: allowedDataRate;
+		bytesToSpend += (sint32) (bytesToSpendRate / 1000.0 * timeSinceLastLoop);
 
 		if (bytesToSpend >= 1) {
 			sint32 spentBytes = 0;
@@ -384,7 +409,7 @@ void* UploadBandwidthThrottler::Entry()
 						}
 					}
 				} else {
-					AddDebugLogLineN(logGeneral, CFormat( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (trickle)! Prevented usage. Index: %i Size: %i"))
+					AddDebugLogLineN(logGeneral, CFormat( "There was a NULL socket in the UploadBandwidthThrottler Standard list (trickle)! Prevented usage. Index: %i Size: %i")
 						% slotCounter % m_StandardOrder_list.size());
 				}
 			}
@@ -408,7 +433,7 @@ void* UploadBandwidthThrottler::Entry()
 					spentBytes += socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
 					spentOverhead += socketSentBytes.sentBytesControlPackets;
 				} else {
-					AddDebugLogLineN(logGeneral, CFormat(wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (equal-for-all)! Prevented usage. Index: %i Size: %i"))
+					AddDebugLogLineN(logGeneral, CFormat("There was a NULL socket in the UploadBandwidthThrottler Standard list (equal-for-all)! Prevented usage. Index: %i Size: %i")
 						% rememberedSlotCounter % m_StandardOrder_list.size());
 				}
 
@@ -435,6 +460,13 @@ void* UploadBandwidthThrottler::Entry()
 				extraSleepTime = std::min<uint32>(extraSleepTime * 5, 1000); // 1s at most
 			} else {
 				extraSleepTime = TIME_BETWEEN_UPLOAD_LOOPS;
+
+				// eMule ref: EMSocket.cpp:602 — SocketAvailable()
+				// Wake disk I/O thread whenever payload bytes were actually sent so it can
+				// refill the socket queue without waiting for its 100ms WaitTimeout.
+				if (spentBytes > spentOverhead && theApp->uploadDiskIOThread != NULL) {
+					theApp->uploadDiskIOThread->SocketNeedsMoreData();
+				}
 			}
 		}
 	}

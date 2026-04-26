@@ -71,7 +71,7 @@ enum AllCategoryFilter {
  *
  * The purpose of this class is to perform two tasks:
  * 1) To load and save a variable using wxConfig
- * 2) If nescecarry, to syncronize it with a widget
+ * 2) If nescecarry, to synchronize it with a widget
  *
  * This pure-virtual class servers as the base of all the Cfg types
  * defined below, and exposes the entire interface.
@@ -81,7 +81,7 @@ enum AllCategoryFilter {
  * for this.
  *
  * To create a sub-class you need only provide the Load/Save functionality,
- * as it is given that not all variables have a widget assosiated.
+ * as it is given that not all variables have a widget associated.
  */
 class Cfg_Base
 {
@@ -102,11 +102,11 @@ public:
 	virtual ~Cfg_Base() {}
 
 	/**
-	 * This function loads the assosiated variable from the provided config object.
+	 * This function loads the associated variable from the provided config object.
 	 */
 	virtual void LoadFromFile(wxConfigBase* cfg) = 0;
 	/**
-	 * This function saves the assosiated variable to the provided config object.
+	 * This function saves the associated variable to the provided config object.
 	 */
 	virtual void SaveToFile(wxConfigBase* cfg) = 0;
 
@@ -136,7 +136,7 @@ public:
 	virtual	bool ConnectToWidget( int WXUNUSED(id), wxWindow* WXUNUSED(parent) = NULL )	{ return false; }
 
 	/**
-	 * Gets the key assosiated with Cfg object.
+	 * Gets the key associated with Cfg object.
 	 *
 	 * @return The config-key of this object.
 	 */
@@ -224,8 +224,8 @@ public:
 	static void		SetTempDir(const CPath& dir)	{ s_tempdir = dir; }
 	static const CMD4Hash&	GetUserHash()			{ return s_userhash; }
 	static void		SetUserHash(const CMD4Hash& h)	{ s_userhash = h; }
-	static uint16		GetMaxUpload()			{ return s_maxupload; }
-	static uint16		GetSlotAllocation()		{ return s_slotallocation; }
+	static uint32		GetMaxUpload()			{ return s_maxupload; }
+	static uint32		GetSlotAllocation()		{ return s_slotallocation; }
 	static bool		IsICHEnabled()			{ return s_ICH; }
 	static void		SetICHEnabled(bool val)		{ s_ICH = val; }
 	static bool		IsTrustingEveryHash()		{ return s_AICHTrustEveryHash; }
@@ -233,6 +233,7 @@ public:
 	static bool		AutoServerlist()		{ return s_autoserverlist; }
 	static void		SetAutoServerlist(bool val)	{ s_autoserverlist = val; }
 	static bool		DoMinToTray()			{ return s_mintotray; }
+	static bool		ShowNotifications()		{ return s_notify; }
 	static void		SetMinToTray(bool val)		{ s_mintotray = val; }
 	static bool		UseTrayIcon()			{ return s_trayiconenabled; }
 	static void		SetUseTrayIcon(bool val)	{ s_trayiconenabled = val; }
@@ -263,7 +264,7 @@ public:
 	static void		SetMaxGraphDownloadRate(uint32 in)
 						{ s_maxGraphDownloadRate = in; }
 
-	static uint16		GetMaxDownload()		{ return s_maxdownload; }
+	static uint32		GetMaxDownload()		{ return s_maxdownload; }
 	static uint16		GetMaxConnections()		{ return s_maxconnections; }
 	static uint16		GetMaxSourcePerFile()		{ return s_maxsourceperfile; }
 	static uint16		GetMaxSourcePerFileSoft() {
@@ -344,9 +345,9 @@ public:
 	static const wxString&	GetYourHostname()		{ return s_yourHostname; }
 	static void		SetYourHostname(const wxString& s)	{ s_yourHostname = s; }
 
-	static void		SetMaxUpload(uint16 in);
-	static void		SetMaxDownload(uint16 in);
-	static void		SetSlotAllocation(uint16 in)	{ s_slotallocation = (in >= 1) ? in : 1; };
+	static void		SetMaxUpload(uint32 in);
+	static void		SetMaxDownload(uint32 in);
+	static void		SetSlotAllocation(uint32 in)	{ s_slotallocation = (in >= 1) ? in : 1; };
 
 	typedef std::vector<CPath> PathList;
 	PathList shareddir_list;
@@ -611,9 +612,9 @@ protected:
 	static Cfg_Lang_Base * s_cfgLang;
 
 ////////////// CONNECTION
-	static uint16	s_maxupload;
-	static uint16	s_maxdownload;
-	static uint16	s_slotallocation;
+	static uint32	s_maxupload;
+	static uint32	s_maxdownload;
+	static uint32	s_slotallocation;
 	static wxString s_Addr;
 	static uint16	s_port;
 	static uint16	s_udpport;
@@ -646,6 +647,7 @@ protected:
 	static bool	s_scorsystem;
 	static bool	s_hideonclose;
 	static bool	s_mintotray;
+	static bool	s_notify;
 	static bool	s_trayiconenabled;
 	static bool	s_addnewfilespaused;
 	static bool	s_addserversfromserver;

@@ -30,7 +30,7 @@ Please do not change anything here and release it..
 There is going to be a new forum created just for the Kademlia side of the client..
 If you feel there is an error or a way to improve something, please
 post it in the forum first and let us look at it.. If it is a real improvement,
-it will be added to the offical client.. Changing something without knowing
+it will be added to the official client.. Changing something without knowing
 what all it does can cause great harm to the network if released in mass form..
 Any mod that changes anything within the Kademlia side will not be allowed to advertise
 there client on the eMule forum..
@@ -92,7 +92,7 @@ void CKademlia::Start(CPrefs *prefs)
 		return;
 	}
 
-	AddDebugLogLineN(logKadMain, wxT("Starting Kademlia"));
+	AddDebugLogLineN(logKadMain, "Starting Kademlia");
 
 	// Init jump start timer.
 	m_nextSearchJumpStart = time(NULL);
@@ -133,7 +133,7 @@ void CKademlia::Stop()
 		return;
 	}
 
-	AddDebugLogLineN(logKadMain, wxT("Stopping Kademlia"));
+	AddDebugLogLineN(logKadMain, "Stopping Kademlia");
 
 	// Mark Kad as being in the stop state to make sure nothing else is used.
 	m_running = false;
@@ -211,11 +211,11 @@ void CKademlia::Process()
 		// If our UDP firewallcheck is running and we don't know our external port, we send a request every 15 seconds
 		CContact *contact = GetRoutingZone()->GetRandomContact(3, 6);
 		if (contact != NULL) {
-			AddDebugLogLineN(logKadPrefs, wxT("Requesting our external port from ") + KadIPToString(contact->GetIPAddress()));
+			AddDebugLogLineN(logKadPrefs, "Requesting our external port from " + KadIPToString(contact->GetIPAddress()));
 			DebugSend(Kad2Ping, contact->GetIPAddress(), contact->GetUDPPort());
 			GetUDPListener()->SendNullPacket(KADEMLIA2_PING, contact->GetIPAddress(), contact->GetUDPPort(), contact->GetUDPKey(), &contact->GetClientID());
 		} else {
-			AddDebugLogLineN(logKadPrefs, wxT("No valid client for requesting external port available"));
+			AddDebugLogLineN(logKadPrefs, "No valid client for requesting external port available");
 		}
 		m_externPortLookup = 15 + now;
 	}
@@ -267,7 +267,7 @@ void CKademlia::Process()
 	if (m_consolidate <= now) {
 		uint32_t mergedCount = instance->m_routingZone->Consolidate();
 		if (mergedCount) {
-			AddDebugLogLineN(logKadRouting, CFormat(wxT("Kad merged %u zones")) % mergedCount);
+			AddDebugLogLineN(logKadRouting, CFormat("Kad merged %u zones") % mergedCount);
 		}
 		m_consolidate = MIN2S(45) + now;
 	}
@@ -285,7 +285,7 @@ void CKademlia::Process()
 		CContact *contact = s_bootstrapList.front();
 		s_bootstrapList.pop_front();
 		m_bootstrap = now;
-		AddDebugLogLineN(logKadMain, CFormat(wxT("Trying to bootstrap Kad from %s, Distance: %s Version: %u, %u contacts left"))
+		AddDebugLogLineN(logKadMain, CFormat("Trying to bootstrap Kad from %s, Distance: %s Version: %u, %u contacts left")
 			% KadIPToString(contact->GetIPAddress()) % contact->GetDistance().ToHexString() % contact->GetVersion() % s_bootstrapList.size());
 		instance->m_udpListener->Bootstrap(contact->GetIPAddress(), contact->GetUDPPort(), contact->GetVersion(), &contact->GetClientID());
 		delete contact;
@@ -303,12 +303,12 @@ void CKademlia::ProcessPacket(const uint8_t *data, uint32_t lenData, uint32_t ip
 			instance->m_udpListener->ProcessPacket(data, lenData, ip, port, validReceiverKey, senderKey);
 		}
 	} catch (const wxString& DEBUG_ONLY(error)) {
-		AddDebugLogLineN(logKadMain, CFormat(wxT("Exception on Kad ProcessPacket while processing packet (length = %u) from %s:"))
+		AddDebugLogLineN(logKadMain, CFormat("Exception on Kad ProcessPacket while processing packet (length = %u) from %s:")
 			% lenData % KadIPPortToString(ip, port));
 		AddDebugLogLineN(logKadMain, error);
 		throw;
 	} catch (...) {
-		AddDebugLogLineN(logKadMain, wxT("Unhandled exception on Kad ProcessPacket"));
+		AddDebugLogLineN(logKadMain, "Unhandled exception on Kad ProcessPacket");
 		throw;
 	}
 }
@@ -366,7 +366,7 @@ bool CKademlia::FindIPByNodeID(CKadClientSearcher& requester, const uint8_t* nod
 
 void CKademlia::CancelClientSearch(CKadClientSearcher& fromRequester)
 {
-	wxCHECK_RET(instance && GetUDPListener(), wxT("Something is really bad"));
+	wxCHECK_RET(instance && GetUDPListener(), "Something is really bad");
 
 	GetUDPListener()->ExpireClientSearch(&fromRequester);
 	CSearchManager::CancelNodeSpecial(&fromRequester);
@@ -450,7 +450,7 @@ uint32_t CKademlia::CalculateKadUsersNew()
 	}
 	float newRatio = CKademlia::GetPrefs()->StatsGetKadV8Ratio();
 	float firewalledModifyTotal = 0.0;
-	if (newRatio > 0 && firewalledModifyNew > 0) { // weigth the old and the new modifier based on how many new contacts we have
+	if (newRatio > 0 && firewalledModifyNew > 0) { // weigh the old and the new modifier based on how many new contacts we have
 		firewalledModifyTotal = (newRatio * firewalledModifyNew) + ((1 - newRatio) * firewalledModifyOld);
 	} else {
 		firewalledModifyTotal = firewalledModifyOld;
@@ -479,13 +479,13 @@ bool CKademlia::IsRunningInLANMode()
 				if (!m_lanMode) {
 					m_lanMode = true;
 					theApp->ShowConnectionState();
-					AddDebugLogLineN(logKadMain, wxT("Activating LAN mode"));
+					AddDebugLogLineN(logKadMain, "Activating LAN mode");
 				}
 			} else {
 				if (m_lanMode) {
 					m_lanMode = false;
 					theApp->ShowConnectionState();
-					AddDebugLogLineN(logKadMain, wxT("Deactivating LAN mode"));
+					AddDebugLogLineN(logKadMain, "Deactivating LAN mode");
 				}
 			}
 		}
@@ -499,13 +499,9 @@ bool CKademlia::IsRunningInLANMode()
 #include "../../CryptoPP_Inc.h"
 void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 {
-	byte Output[16];
+	uint8_t Output[16];
 
-	#ifdef __WEAK_CRYPTO__
-		CryptoPP::Weak::MD4 md4_hasher;
-	#else
-		CryptoPP::MD4 md4_hasher;
-	#endif
+	CryptoPP::Weak::MD4 md4_hasher;
 
 	// This should be safe - we assume rstrKeyword is ANSI anyway.
 	char* ansi_buffer = strdup(unicode2UTF8(rstrKeyword));

@@ -32,9 +32,7 @@ const int versionRevision	= 1;
 #include <iostream>
 #include <fstream>
 
-#ifdef __APPLE__
-	#include <CoreServices/CoreServices.h>
-#elif defined(_WIN32)
+#ifdef _WIN32
 	#include <winerror.h>
 	#include <shlobj.h>
 	#include <shlwapi.h>
@@ -46,7 +44,7 @@ const int versionRevision	= 1;
 
 using std::string;
 
-string GetLinksFilePath(const string& configDir)
+static string GetLinksFilePath(const string& configDir)
 {
 	if (!configDir.empty()) {
 #ifdef _WIN32
@@ -69,31 +67,23 @@ string GetLinksFilePath(const string& configDir)
 
 #ifdef __APPLE__
 
-	std::string strDir;
-
-	FSRef fsRef;
-	if (FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &fsRef) == noErr) {
-		CFURLRef urlRef = CFURLCreateFromFSRef(NULL, &fsRef);
-		if (urlRef != NULL) {
-			UInt8 buffer[PATH_MAX + 1];
-			if (CFURLGetFileSystemRepresentation(urlRef, true, buffer, sizeof(buffer))) {
-				strDir.assign((char*) buffer);
-			}
-			CFRelease(urlRef) ;
-		}
-	}
-
-	return strDir + "/aMule/ED2KLinks";
+	// ~/Library/Application Support always exists on macOS >= 10.5 and
+	// is the user-domain equivalent of FSFindFolder(kUserDomain,
+	// kApplicationSupportFolderType, ...) that we used to call via the
+	// Carbon FSRef API (removed in 64-bit macOS).
+	const char* home = getenv("HOME");
+	std::string strDir = (home ? home : "");
+	return strDir + "/Library/Application Support/aMule/ED2KLinks";
 
 #elif defined(_WIN32)
 
 	std::string strDir;
 	LPITEMIDLIST pidl;
-	char buffer[MAX_PATH + 1];
 
 	HRESULT hr = SHGetSpecialFolderLocation(NULL, CSIDL_APPDATA, &pidl);
 
 	if (SUCCEEDED(hr)) {
+		char buffer[MAX_PATH + 1];
 		if (SHGetPathFromIDListA(pidl, buffer)) {
 			if (PathAppendA(buffer, "aMule\\ED2KLinks")) {
 				strDir.assign(buffer);
@@ -125,7 +115,7 @@ string GetLinksFilePath(const string& configDir)
  * @param hex The hex-number, must be at most 2 digits long.
  * @return The resulting char or \0 if conversion failed.
  */
-char HexToDec( const string& hex )
+static char HexToDec( const string& hex )
 {
 	char result = 0;
 
@@ -152,7 +142,7 @@ char HexToDec( const string& hex )
  * @param str The string to unescape.
  * @return The unescaped version of the input string.
  */
-string Unescape( const string& str )
+static string Unescape( const string& str )
 {
 	string result;
 	result.reserve( str.length() );
@@ -182,7 +172,7 @@ string Unescape( const string& str )
 /**
  * Returns the string with whitespace stripped from both ends.
  */
-string strip( const string& str )
+static string strip( const string& str )
 {
 	size_t first = 0;
 	size_t last  = str.length() - 1;
@@ -206,7 +196,7 @@ string strip( const string& str )
 /**
  * Returns true if the string is a valid number.
  */
-bool isNumber( const string& str )
+static bool isNumber( const string& str )
 {
 	for ( size_t i = 0; i < str.length(); i++ ) {
 		if ( !isdigit( str.at(i) ) ) {
@@ -221,7 +211,7 @@ bool isNumber( const string& str )
 /**
  * Returns true if the string is a valid Base16 representation of a MD4 Hash.
  */
-bool isMD4Hash( const string& str )
+static bool isMD4Hash( const string& str )
 {
 	for ( size_t i = 0; i < str.length(); i++ ) {
 		const char c = toupper( str.at(i) );
@@ -238,7 +228,7 @@ bool isMD4Hash( const string& str )
 /**
  * Returns a description of the current version of "ed2k".
  */
-string getVersion()
+static string getVersion()
 {
 	std::ostringstream v;
 
@@ -254,7 +244,7 @@ string getVersion()
 /**
  * Helper-function for printing link-errors.
  */
-void badLink( const string& type, const string& err, const string& uri )
+static void badLink( const string& type, const string& err, const string& uri )
 {
 	std::cout << "Invalid " << type << "-link, " + err << ":\n"
 		<< "\t" << uri << std::endl;
@@ -266,7 +256,7 @@ void badLink( const string& type, const string& err, const string& uri )
  *
  * If errors are detected, it will terminate the program.
  */
-void writeLink( const string& uri, const string& config_dir )
+static void writeLink( const string& uri, const string& config_dir )
 {
 	// Attempt to lock the ED2KLinks file
 	static CFileLock lock(GetLinksFilePath(config_dir));
@@ -294,7 +284,7 @@ void writeLink( const string& uri, const string& config_dir )
  * @param uri The URI to check.
  * @return True if the URI was written, false otherwise.
  */
-bool checkFileLink( const string& uri )
+static bool checkFileLink( const string& uri )
 {
 	if ( uri.substr( 0, 13 ) == "ed2k://|file|" ) {
 		size_t base_off = 12;
@@ -345,7 +335,7 @@ bool checkFileLink( const string& uri )
  * @param uri The URI to check.
  * @return True if the URI was written, false otherwise.
  */
-bool checkServerLink( const string& uri )
+static bool checkServerLink( const string& uri )
 {
 	if ( uri.substr( 0, 15 ) == "ed2k://|server|" ) {
 		size_t base_off = 14;
@@ -388,7 +378,7 @@ bool checkServerLink( const string& uri )
  * @param uri The URI to check.
  * @return True if the URI was written, false otherwise.
  */
-bool checkServerListLink( const string& uri )
+static bool checkServerListLink( const string& uri )
 {
 	if ( uri.substr( 0, 19 ) == "ed2k://|serverlist|" ) {
 		size_t base_off = 19;

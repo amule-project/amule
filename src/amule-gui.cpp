@@ -28,6 +28,7 @@
 #include <common/ClientVersion.h>
 
 #include <wx/clipbrd.h>			// Needed for wxClipBoard
+#include <wx/sizer.h>
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
@@ -49,7 +50,7 @@
 #ifndef CLIENT_GUI
 #include "InternalEvents.h"		// Needed for wxEVT_*
 
-BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
+wxBEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 
 #ifndef ASIO_SOCKETS
 	// Socket handlers
@@ -89,7 +90,14 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 
 	// Disk space preallocation finished
 	EVT_MULE_ALLOC_FINISHED(CamuleGuiApp::OnFinishedAllocation)
-END_EVENT_TABLE()
+
+	// macOS Dock right-click → Quit and system session end.
+	// Normal exit paths (red X, Cmd+Q, File > Quit) go through CamuleDlg::OnClose
+	// → ShutDown → OnExit. The Dock "Quit" path on macOS skips OnClose and
+	// requires an EVT_END_SESSION handler to ensure cleanup runs.
+	EVT_QUERY_END_SESSION(CamuleGuiApp::OnQueryEndSession)
+	EVT_END_SESSION(CamuleGuiApp::OnEndSession)
+wxEND_EVENT_TABLE()
 
 
 IMPLEMENT_APP(CamuleGuiApp)
@@ -98,6 +106,11 @@ IMPLEMENT_APP(CamuleGuiApp)
 
 CamuleGuiBase::CamuleGuiBase()
 {
+	// Disable these checks for now.  The code really needs updating to
+	// eliminate these inconsistent flag uses, but these checks are new
+	// since wx3.0, and this should just return us to what 3.0 did.
+	wxSizerFlags::DisableConsistencyChecks();
+
 	amuledlg = NULL;
 }
 
@@ -140,7 +153,7 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 		long width = geometry_width;
 		long height = geometry_height;
 
-		// Get the avilable display area
+		// Get the available display area
 		wxRect display = wxGetClientDisplayRect();
 
 		// We want to place aMule inside the client area by default
@@ -148,25 +161,25 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 		long y = display.y;
 
 		// Tokenize the string
-		wxStringTokenizer tokens(geom_string, wxT("xX+-"));
+		wxStringTokenizer tokens(geom_string, "xX+-");
 
 		// First part: Program width
 		if ( tokens.GetNextToken().ToLong( &width ) ) {
 			wxString prefix = geom_string[ tokens.GetPosition() - 1 ];
-			if ( prefix == wxT("x") || prefix == wxT("X") ) {
+			if ( prefix == "x" || prefix == "X" ) {
 				// Second part: Program height
 				if ( tokens.GetNextToken().ToLong( &height ) ) {
 					prefix = geom_string[ tokens.GetPosition() - 1 ];
-					if ( prefix == wxT("+") || prefix == wxT("-") ) {
+					if ( prefix == "+" || prefix == "-" ) {
 						// Third part: X-Offset
 						if ( tokens.GetNextToken().ToLong( &x ) ) {
-							if ( prefix == wxT("-") )
+							if ( prefix == "-" )
 								x = display.GetRight() - ( width + x );
 							prefix = geom_string[ tokens.GetPosition() - 1 ];
-							if ( prefix == wxT("+") || prefix == wxT("-") ) {
+							if ( prefix == "+" || prefix == "-" ) {
 								// Fourth part: Y-Offset
 								if ( tokens.GetNextToken().ToLong( &y ) ) {
-									if ( prefix == wxT("-") )
+									if ( prefix == "-" )
 										y = display.GetBottom() - ( height + y );
 								}
 							}
@@ -202,9 +215,9 @@ void CamuleGuiBase::ResetTitle()
 {
 #ifdef SVNDATE
 	#ifdef CLIENT_GUI
-		m_FrameTitle = CFormat(wxT("aMule remote control %s %s")) % wxT( VERSION ) % wxT( SVNDATE );
+		m_FrameTitle = CFormat("aMule remote control %s %s") % VERSION % SVNDATE;
 	#else
-		m_FrameTitle = CFormat(wxT("aMule %s %s")) % wxT( VERSION ) % wxT( SVNDATE );
+		m_FrameTitle = CFormat("aMule %s %s") % VERSION % SVNDATE;
 	#endif
 #else
 	#ifdef CLIENT_GUI
@@ -214,8 +227,8 @@ void CamuleGuiBase::ResetTitle()
 	#endif
 
 	if (thePrefs::ShowVersionOnTitle()) {
-		m_FrameTitle += wxT(' ');
-		m_FrameTitle += wxT( VERSION );
+		m_FrameTitle += ' ';
+		m_FrameTitle += VERSION;
 	}
 #endif
 }
@@ -278,6 +291,28 @@ void CamuleGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 	amuledlg->DlgShutDown();
 	amuledlg->Destroy();
 	CamuleApp::ShutDown();
+}
+
+
+// macOS Dock right-click → Quit bypasses OnClose. wxWidgets posts a session-end
+// event for this path; drive the same ShutDown sequence so the destructor
+// chain (~CPartFile → FlushBuffer → SavePartFile) runs and download progress
+// is persisted.
+void CamuleGuiApp::OnQueryEndSession(wxCloseEvent& evt)
+{
+	evt.Skip();
+}
+
+void CamuleGuiApp::OnEndSession(wxCloseEvent& evt)
+{
+	// Run ShutDown if not already running (OnClose may already have triggered it).
+	if (!IsOnShutDown() && amuledlg) {
+		ShutDown(evt);
+	}
+	// wxWidgets may skip OnExit on this path, so explicitly run the exit
+	// cleanup to destroy downloadqueue → ~CPartFile → FlushBuffer → SavePartFile.
+	OnExit();
+	evt.Skip();
 }
 
 

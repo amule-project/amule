@@ -23,9 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifdef HAVE_CONFIG_H
-#	include "config.h"	// Needed for ASIO_SOCKETS
-#endif
+#include "config.h"		// Needed for ASIO_SOCKETS
 
 #ifdef ASIO_SOCKETS
 #	include "LibSocketAsio.cpp"

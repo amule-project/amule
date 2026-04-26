@@ -23,12 +23,11 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifdef HAVE_CONFIG_H
-#	include "config.h"		// Needed for HAVE_BOOST_SOURCES
-#endif
+#include "config.h"		// Needed for HAVE_BOOST_SOURCES
+
 
 #ifdef _MSC_VER
-#define _WIN32_WINNT 0x0501		// Boost complains otherwise
+#define _WIN32_WINNT 0x0501	// Boost complains otherwise
 #endif
 
 // Windows requires that Boost headers are included before wx headers.
@@ -42,9 +41,13 @@
 #endif
 
 #include <algorithm>	// Needed for std::min - Boost up to 1.54 fails to compile with MSVC 2013 otherwise
+#include <atomic>
+#include <chrono>
 
+// Trip the compile if we accidentally pull a deprecated Asio API back in.
+#define BOOST_ASIO_NO_DEPRECATED
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
+#include <boost/asio/steady_timer.hpp>
 #include <boost/version.hpp>
 
 //
@@ -67,11 +70,18 @@
 #include "MuleUDPSocket.h"
 #include "OtherFunctions.h"	// DeleteContents
 #include "ScopedPtr.h"
+#ifdef _WIN32
+#include <winsock2.h>
+#else
+#include <sys/socket.h>		// ::recv with MSG_PEEK | MSG_DONTWAIT
+#include <unistd.h>
+#endif
+#include <errno.h>
 #include <common/Macros.h>
 
 using namespace boost::asio;
 using namespace boost::system;	// for error_code
-static io_service s_io_service;
+static io_context s_io_service;
 
 // Number of threads in the Asio thread pool
 const int CAsioService::m_numberOfThreads = 4;
@@ -106,7 +116,7 @@ public:
 	{
 		m_OK = false;
 		m_blocksRead = false;
-		m_blocksWrite = false;
+		m_blocksWrite.store(false, std::memory_order_relaxed);
 		m_ErrorCode = 0;
 		m_readBuffer = NULL;
 		m_readBufferSize = 0;
@@ -114,14 +124,14 @@ public:
 		m_readBufferContent = 0;
 		m_eventPending = false;
 		m_port = 0;
-		m_sendBuffer = NULL;
+		m_sendBuffer.store(nullptr, std::memory_order_relaxed);
 		m_connected = false;
 		m_closed = false;
 		m_isDestroying = false;
 		m_proxyState = false;
 		m_notify = true;
 		m_sync = false;
-		m_IP = wxT("?");
+		m_IP = L"?";
 		m_IPint = 0;
 		m_socket = new ip::tcp::socket(s_io_service);
 
@@ -132,7 +142,8 @@ public:
 	~CAsioSocketImpl()
 	{
 		delete[] m_readBuffer;
-		delete[] m_sendBuffer;
+		delete[] m_sendBuffer.load();
+		delete m_socket;
 	}
 
 	void Notify(bool notify)
@@ -149,7 +160,7 @@ public:
 		m_closed = false;
 		m_OK = false;
 		m_sync = !m_notify;		// set this once for the whole lifetime of the socket
-		AddDebugLogLineF(logAsio, CFormat(wxT("Connect %s %p")) % m_IP % this);
+		AddDebugLogLineF(logAsio, CFormat("Connect %s %p") % m_IP % this);
 
 		if (wait || m_sync) {
 			error_code ec;
@@ -159,7 +170,7 @@ public:
 			return m_OK;
 		} else {
 			m_socket->async_connect(adr.GetEndpoint(),
-				m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleConnect, this, placeholders::error)));
+				bind_executor(m_strand, [this](const error_code& ec) { HandleConnect(ec); }));
 			// m_OK and return are false because we are not connected yet
 			return false;
 		}
@@ -196,7 +207,7 @@ public:
 	// Is writing blocked?
 	bool BlocksWrite() const
 	{
-		return m_blocksWrite;
+		return m_blocksWrite.load(std::memory_order_acquire);
 	}
 
 	// Problem: wx sends an event when data gets available, so first there is an event, then Read() is called
@@ -218,7 +229,7 @@ public:
 		}
 
 		if (m_ErrorCode) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("Read1 %s %d - Error")) % m_IP % bytesToRead);
+			AddDebugLogLineF(logAsio, CFormat("Read1 %s %d - Error") % m_IP % bytesToRead);
 			return 0;
 		}
 
@@ -226,7 +237,7 @@ public:
 			|| m_readBufferContent == 0) {	// shouldn't be if it's not pending
 
 			m_blocksRead = true;
-			AddDebugLogLineF(logAsio, CFormat(wxT("Read1 %s %d - Block")) % m_IP % bytesToRead);
+			AddDebugLogLineF(logAsio, CFormat("Read1 %s %d - Block") % m_IP % bytesToRead);
 			return 0;
 		}
 
@@ -238,7 +249,7 @@ public:
 		m_readBufferContent	-= readCache;
 		m_readBufferPtr		+= readCache;
 
-		AddDebugLogLineF(logAsio, CFormat(wxT("Read2 %s %d - %d")) % m_IP % bytesToRead % readCache);
+		AddDebugLogLineF(logAsio, CFormat("Read2 %s %d - %d") % m_IP % bytesToRead % readCache);
 		if (m_readBufferContent) {
 			// Data left, post another event
 			PostReadEvent(1);
@@ -258,15 +269,16 @@ public:
 			return WriteSync(buf, nbytes);
 		}
 
-		if (m_sendBuffer) {
-			m_blocksWrite = true;
-			AddDebugLogLineF(logAsio, CFormat(wxT("Write blocks %d %p %s")) % nbytes % m_sendBuffer % m_IP);
+		if (m_sendBuffer.load(std::memory_order_acquire)) {
+			m_blocksWrite.store(true, std::memory_order_relaxed);
+			AddDebugLogLineF(logAsio, CFormat("Write blocks %d %p %s") % nbytes % m_sendBuffer.load() % m_IP);
 			return 0;
 		}
-		AddDebugLogLineF(logAsio, CFormat(wxT("Write %d %s")) % nbytes % m_IP);
-		m_sendBuffer = new char[nbytes];
-		memcpy(m_sendBuffer, buf, nbytes);
-		m_strand.dispatch(boost::bind(& CAsioSocketImpl::DispatchWrite, this, nbytes));
+		AddDebugLogLineF(logAsio, CFormat("Write %d %s") % nbytes % m_IP);
+		char* newBuf = new char[nbytes];
+		memcpy(newBuf, buf, nbytes);
+		m_sendBuffer.store(newBuf, std::memory_order_release);
+		dispatch(m_strand, [this, newBuf, nbytes]() { DispatchWrite(newBuf, nbytes); });
 		m_ErrorCode = 0;
 		return nbytes;
 	}
@@ -280,7 +292,7 @@ public:
 			if (m_sync || s_io_service.stopped()) {
 				DispatchClose();
 			} else {
-				m_strand.dispatch(boost::bind(& CAsioSocketImpl::DispatchClose, this));
+				dispatch(m_strand, [this]() { DispatchClose(); });
 			}
 		}
 	}
@@ -289,11 +301,11 @@ public:
 	void Destroy()
 	{
 		if (m_isDestroying) {
-			AddDebugLogLineC(logAsio, CFormat(wxT("Destroy() already dying socket %p %p %s")) % m_libSocket % this % m_IP);
+			AddDebugLogLineC(logAsio, CFormat("Destroy() already dying socket %p %p %s") % m_libSocket % this % m_IP);
 			return;
 		}
 		m_isDestroying = true;
-		AddDebugLogLineF(logAsio, CFormat(wxT("Destroy() %p %p %s")) % m_libSocket % this % m_IP);
+		AddDebugLogLineF(logAsio, CFormat("Destroy() %p %p %s") % m_libSocket % this % m_IP);
 		Close();
 		if (m_sync || s_io_service.stopped()) {
 			HandleDestroy();
@@ -301,8 +313,8 @@ public:
 			// Close prevents creation of any more callbacks, but does not clear any callbacks already
 			// sitting in Asio's event queue (I have seen such a crash).
 			// So create a delay timer so they can be called until core is notified.
-			m_timer.expires_from_now(boost::posix_time::seconds(1));
-			m_timer.async_wait(m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleDestroy, this)));
+			m_timer.expires_after(std::chrono::seconds(1));
+			m_timer.async_wait(bind_executor(m_strand, [this](const error_code&) { HandleDestroy(); }));
 		}
 	}
 
@@ -327,7 +339,7 @@ public:
 			// Socket is usually still closed when this is called
 			m_socket->open(boost::asio::ip::tcp::v4(), ec);
 			if (ec) {
-				AddDebugLogLineC(logAsio, CFormat(wxT("Can't open socket : %s")) % ec.message());
+				AddDebugLogLineC(logAsio, CFormat("Can't open socket : %s") % ec.message());
 			}
 		}
 		//
@@ -340,10 +352,10 @@ public:
 		endpoint.port(0);
 		m_socket->bind(endpoint, ec);
 		if (ec) {
-			AddDebugLogLineC(logAsio, CFormat(wxT("Can't bind socket to local endpoint %s : %s"))
+			AddDebugLogLineC(logAsio, CFormat("Can't bind socket to local endpoint %s : %s")
 				% local.IPAddress() % ec.message());
 		} else {
-			AddDebugLogLineF(logAsio, CFormat(wxT("Bound socket to local endpoint %s")) % local.IPAddress());
+			AddDebugLogLineF(logAsio, CFormat("Bound socket to local endpoint %s") % local.IPAddress());
 		}
 	}
 
@@ -368,12 +380,12 @@ public:
 		error_code ec;
 		amuleIPV4Address addr = CamuleIPV4Endpoint(m_socket->remote_endpoint(ec));
 		if (SetError(ec)) {
-			AddDebugLogLineN(logAsio, CFormat(wxT("UpdateIP failed %p %s")) % this % ec.message());
+			AddDebugLogLineN(logAsio, CFormat("UpdateIP failed %p %s") % this % ec.message());
 			return false;
 		}
 		SetIp(addr);
 		m_port = addr.Service();
-		AddDebugLogLineF(logAsio, CFormat(wxT("UpdateIP %s %d %p")) % m_IP % m_port % this);
+		AddDebugLogLineF(logAsio, CFormat("UpdateIP %s %d %p") % m_IP % m_port % this);
 		return true;
 	}
 
@@ -394,10 +406,10 @@ public:
 			// Start. Get the true IP for logging.
 			wxASSERT(adr);
 			SetIp(*adr);
-			AddDebugLogLineF(logAsio, CFormat(wxT("SetProxyState to proxy %s")) % m_IP);
+			AddDebugLogLineF(logAsio, CFormat("SetProxyState to proxy %s") % m_IP);
 		} else {
 			// Transition from proxy to normal mode
-			AddDebugLogLineF(logAsio, CFormat(wxT("SetProxyState to normal %s")) % m_IP);
+			AddDebugLogLineF(logAsio, CFormat("SetProxyState to normal %s") % m_IP);
 			m_ErrorCode = 0;
 		}
 	}
@@ -414,23 +426,27 @@ private:
 		error_code ec;
 		m_socket->close(ec);
 		if (ec) {
-			AddDebugLogLineC(logAsio, CFormat(wxT("Close error %s %s")) % m_IP % ec.message());
+			AddDebugLogLineC(logAsio, CFormat("Close error %s %s") % m_IP % ec.message());
 		} else {
-			AddDebugLogLineF(logAsio, CFormat(wxT("Closed %s")) % m_IP);
+			AddDebugLogLineF(logAsio, CFormat("Closed %s") % m_IP);
 		}
 	}
 
 	void DispatchBackgroundRead()
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("DispatchBackgroundRead %s")) % m_IP);
-		m_socket->async_read_some(null_buffers(),
-			m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleRead, this, placeholders::error)));
+		AddDebugLogLineF(logAsio, CFormat("DispatchBackgroundRead %s") % m_IP);
+		m_socket->async_wait(ip::tcp::socket::wait_read,
+			bind_executor(m_strand, [this](const error_code& ec) { HandleRead(ec); }));
 	}
 
-	void DispatchWrite(uint32 nbytes)
+	// The buffer pointer is passed explicitly so each HandleSend knows
+	// which buffer it owns and must delete.  m_sendBuffer only tracks the
+	// currently-in-flight write and is cleared by HandleSend when the send
+	// completes — it cannot be used to identify the buffer to free.
+	void DispatchWrite(char* sendBuffer, uint32 nbytes)
 	{
-		async_write(*m_socket, buffer(m_sendBuffer, nbytes),
-			m_strand.wrap(boost::bind(& CAsioSocketImpl::HandleSend, this, placeholders::error, placeholders::bytes_transferred)));
+		async_write(*m_socket, buffer(sendBuffer, nbytes),
+			bind_executor(m_strand, [this, sendBuffer](const error_code& ec, std::size_t n) { HandleSend(sendBuffer, ec, n); }));
 	}
 
 	//
@@ -440,9 +456,9 @@ private:
 	void HandleConnect(const error_code& err)
 	{
 		m_OK = !err;
-		AddDebugLogLineF(logAsio, CFormat(wxT("HandleConnect %d %s")) % m_OK % m_IP);
+		AddDebugLogLineF(logAsio, CFormat("HandleConnect %d %s") % m_OK % m_IP);
 		if (m_isDestroying) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("HandleConnect: socket pending for deletion %s")) % m_IP);
+			AddDebugLogLineF(logAsio, CFormat("HandleConnect: socket pending for deletion %s") % m_IP);
 		} else {
 			CoreNotify_LibSocketConnect(m_libSocket, err.value());
 			if (m_OK) {
@@ -455,20 +471,23 @@ private:
 		}
 	}
 
-	void HandleSend(const error_code& err, size_t DEBUG_ONLY(bytes_transferred) )
+	void HandleSend(char* sentBuffer, const error_code& err, size_t bytes_transferred)
 	{
-		delete[] m_sendBuffer;
-		m_sendBuffer = NULL;
+		delete[] sentBuffer;
+		// Atomically clear m_sendBuffer only if it still points to the buffer
+		// we just finished sending.  A racing Write() on the throttler thread
+		// may have already swapped in a new buffer.
+		m_sendBuffer.compare_exchange_strong(sentBuffer, nullptr, std::memory_order_release);
 
 		if (m_isDestroying) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend: socket pending for deletion %s")) % m_IP);
+			AddDebugLogLineF(logAsio, CFormat("HandleSend: socket pending for deletion %s") % m_IP);
 		} else {
 			if (SetError(err)) {
-				AddDebugLogLineN(logAsio, CFormat(wxT("HandleSend Error %d %s")) % bytes_transferred % m_IP);
+				AddDebugLogLineN(logAsio, CFormat("HandleSend Error %d %s") % bytes_transferred % m_IP);
 				PostLostEvent();
 			} else {
-				AddDebugLogLineF(logAsio, CFormat(wxT("HandleSend %d %s")) % bytes_transferred % m_IP);
-				m_blocksWrite = false;
+				AddDebugLogLineF(logAsio, CFormat("HandleSend %d %s") % bytes_transferred % m_IP);
+				m_blocksWrite.store(false, std::memory_order_release);
 				CoreNotify_LibSocketSend(m_libSocket, m_ErrorCode);
 			}
 		}
@@ -477,12 +496,12 @@ private:
 	void HandleRead(const error_code & ec)
 	{
 		if (m_isDestroying) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("HandleRead: socket pending for deletion %s")) % m_IP);
+			AddDebugLogLineF(logAsio, CFormat("HandleRead: socket pending for deletion %s") % m_IP);
 		}
 
 		if (SetError(ec)) {
 			// This is what we get in Windows when a connection gets closed from remote.
-			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError %s %s")) % m_IP % ec.message());
+			AddDebugLogLineN(logAsio, CFormat("HandleReadError %s %s") % m_IP % ec.message());
 			PostLostEvent();
 			return;
 		}
@@ -490,34 +509,76 @@ private:
 		error_code ec2;
 		uint32 avail = m_socket->available(ec2);
 		if (SetError(ec2)) {
-			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError available %d %s %s")) % avail % m_IP % ec2.message());
+			AddDebugLogLineN(logAsio, CFormat("HandleReadError available %d %s %s") % avail % m_IP % ec2.message());
 			PostLostEvent();
 			return;
 		}
 		if (avail == 0) {
-			// This is what we get in Linux when a connection gets closed from remote.
-			AddDebugLogLineF(logAsio, CFormat(wxT("HandleReadError nothing available %s")) % m_IP);
-			SetError();
-			PostLostEvent();
+			// Two cases indistinguishable from available() alone:
+			//   1. Peer closed — socket state has EOF pending
+			//   2. Spurious wakeup — boost.asio uses EPOLLET; after a
+			//      concurrent drain on another ASIO thread consumed the
+			//      data, a queued edge event still schedules this
+			//      handler with no data pending.
+			// Distinguish via non-blocking native recv with MSG_PEEK.
+			// We cannot call socket.read_some() synchronously — the
+			// socket is in *blocking* mode (the constructor's
+			// non_blocking() call is a getter, not a setter).
+#ifdef _WIN32
+			// boost::asio on Windows uses IOCP, not EPOLLET, so a read
+			// completion with 0 bytes available really means EOF. No
+			// spurious-wakeup scenario to distinguish.
+			bool eof = true;
+#else
+			char peek;
+			ssize_t n = ::recv(m_socket->native_handle(), &peek, 1, MSG_PEEK | MSG_DONTWAIT);
+			bool eof = (n == 0) || (n < 0 && errno != EAGAIN && errno != EWOULDBLOCK);
+#endif
+			if (eof) {
+				AddDebugLogLineF(logAsio, CFormat("HandleReadError nothing available %s") % m_IP);
+				SetError();
+				PostLostEvent();
+				return;
+			}
+			// Spurious wakeup — re-arm without setting error.
+			m_socket->async_wait(ip::tcp::socket::wait_read,
+				bind_executor(m_strand, [this](const error_code& ec) { HandleRead(ec); }));
 			return;
 		}
-		AddDebugLogLineF(logAsio, CFormat(wxT("HandleRead %d %s")) % avail % m_IP);
+		AddDebugLogLineF(logAsio, CFormat("HandleRead %d %s") % avail % m_IP);
 
-		// adjust (or create) our read buffer
-		if (m_readBufferSize < avail) {
-			delete[] m_readBuffer;
-			m_readBuffer = new char[avail];
-			m_readBufferSize = avail;
+		// Drain loop: boost.asio uses EPOLLET.  If more data arrives
+		// between available() and read_some(), it stays in the kernel
+		// buffer and no new event fires until the buffer empties then
+		// refills.  Loop until available() returns 0.
+		uint32 totalRead = 0;
+		while (avail > 0) {
+			uint32 needed = totalRead + avail;
+			if (m_readBufferSize < needed) {
+				char* newBuf = new char[needed];
+				if (totalRead > 0) {
+					memcpy(newBuf, m_readBuffer, totalRead);
+				}
+				delete[] m_readBuffer;
+				m_readBuffer = newBuf;
+				m_readBufferSize = needed;
+			}
+			size_t got = m_socket->read_some(buffer(m_readBuffer + totalRead, avail), ec2);
+			if (SetError(ec2) || got == 0) {
+				AddDebugLogLineN(logAsio, CFormat("HandleReadError read %zu %s %s") % got % m_IP % ec2.message());
+				PostLostEvent();
+				return;
+			}
+			totalRead += (uint32)got;
+			avail = m_socket->available(ec2);
+			if (SetError(ec2)) {
+				AddDebugLogLineN(logAsio, CFormat("HandleReadError availLoop %s %s") % m_IP % ec2.message());
+				PostLostEvent();
+				return;
+			}
 		}
 		m_readBufferPtr = m_readBuffer;
-
-		// read available data
-		m_readBufferContent = m_socket->read_some(buffer(m_readBuffer, avail), ec2);
-		if (SetError(ec2) || m_readBufferContent == 0) {
-			AddDebugLogLineN(logAsio, CFormat(wxT("HandleReadError read %d %s %s")) % m_readBufferContent % m_IP % ec2.message());
-			PostLostEvent();
-			return;
-		}
+		m_readBufferContent = totalRead;
 
 		m_readPending = false;
 		m_blocksRead = false;
@@ -526,7 +587,7 @@ private:
 
 	void HandleDestroy()
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("HandleDestroy() %p %p %s")) % m_libSocket % this % m_IP);
+		AddDebugLogLineF(logAsio, CFormat("HandleDestroy() %p %p %s") % m_libSocket % this % m_IP);
 		CoreNotify_LibSocketDestroy(m_libSocket);
 	}
 
@@ -539,13 +600,13 @@ private:
 	{
 		m_readPending = true;
 		m_readBufferContent = 0;
-		m_strand.dispatch(boost::bind(& CAsioSocketImpl::DispatchBackgroundRead, this));
+		dispatch(m_strand, [this]() { DispatchBackgroundRead(); });
 	}
 
 	void PostReadEvent(int DEBUG_ONLY(from) )
 	{
 		if (!m_eventPending) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("Post read event %d %s")) % from % m_IP);
+			AddDebugLogLineF(logAsio, CFormat("Post read event %d %s") % from % m_IP);
 			m_eventPending = true;
 			CoreNotify_LibSocketReceive(m_libSocket, m_ErrorCode);
 		}
@@ -611,16 +672,16 @@ private:
 	bool			m_OK;
 	int				m_ErrorCode;
 	bool			m_blocksRead;
-	bool			m_blocksWrite;
 	char *			m_readBuffer;
 	uint32			m_readBufferSize;
 	char *			m_readBufferPtr;
 	bool			m_readPending;
 	uint32			m_readBufferContent;
 	bool			m_eventPending;
-	char *			m_sendBuffer;
-	io_service::strand	m_strand;		// handle synchronisation in io_service thread pool
-	deadline_timer	m_timer;
+	std::atomic<char*>	m_sendBuffer;	// atomic: shared between throttler thread (Write) and ASIO thread (HandleSend)
+	std::atomic<bool>	m_blocksWrite;	// atomic: shared between throttler thread (BlocksWrite) and ASIO thread (HandleSend)
+	io_context::strand	m_strand;		// handle synchronisation in io_service thread pool
+	steady_timer	m_timer;
 	bool			m_connected;
 	bool			m_closed;
 	bool			m_isDestroying;		// true if Destroy() was called
@@ -642,7 +703,7 @@ CLibSocket::CLibSocket(int /* flags */)
 
 CLibSocket::~CLibSocket()
 {
-	AddDebugLogLineF(logAsio, CFormat(wxT("~CLibSocket() %p %p %s")) % this % m_aSocket % m_aSocket->GetIP());
+	AddDebugLogLineF(logAsio, CFormat("~CLibSocket() %p %p %s") % this % m_aSocket % m_aSocket->GetIP());
 	delete m_aSocket;
 }
 
@@ -795,9 +856,9 @@ public:
 			listen();
 			StartAccept();
 			m_ok = true;
-			AddDebugLogLineN(logAsio, CFormat(wxT("CAsioSocketServerImpl bind to %s %d")) % adr.IPAddress() % adr.Service());
+			AddDebugLogLineN(logAsio, CFormat("CAsioSocketServerImpl bind to %s %d") % adr.IPAddress() % adr.Service());
 		} catch (const system_error& err) {
-			AddDebugLogLineC(logAsio, CFormat(wxT("CAsioSocketServerImpl bind to %s %d failed - %s")) % adr.IPAddress() % adr.Service() % err.code().message());
+			AddDebugLogLineC(logAsio, CFormat("CAsioSocketServerImpl bind to %s %d failed - %s") % adr.IPAddress() % adr.Service() % err.code().message());
 		}
 	}
 
@@ -813,7 +874,7 @@ public:
 	bool AcceptWith(CLibSocket & socket)
 	{
 		if (!m_socketAvailable) {
-			AddDebugLogLineF(logAsio, wxT("AcceptWith: nothing there"));
+			AddDebugLogLineF(logAsio, "AcceptWith: nothing there");
 			return false;
 		}
 
@@ -835,11 +896,11 @@ public:
 			m_socketAvailable = false;
 			// start getting another one
 			StartAccept();
-			AddDebugLogLineF(logAsio, wxT("AcceptWith: ok, getting another socket in background"));
+			AddDebugLogLineF(logAsio, "AcceptWith: ok, getting another socket in background");
 		} else {
 			// we got another socket right away
 			m_socketAvailable = true;	// it is already true, but this improves readability
-			AddDebugLogLineF(logAsio, wxT("AcceptWith: ok, another socket is available"));
+			AddDebugLogLineF(logAsio, "AcceptWith: ok, another socket is available");
 			// aMule actually doesn't need a notification as it polls the listen socket.
 			// amuleweb does need it though
 			CoreNotify_ServerTCPAccept(m_libSocketServer);
@@ -856,27 +917,27 @@ private:
 	{
 		m_currentSocket.reset(new CAsioSocketImpl(NULL));
 		async_accept(m_currentSocket->GetAsioSocket(),
-			m_strand.wrap(boost::bind(& CAsioSocketServerImpl::HandleAccept, this, placeholders::error)));
+			bind_executor(m_strand, [this](const error_code& ec) { HandleAccept(ec); }));
 	}
 
 	void HandleAccept(const error_code& error)
 	{
 		if (error) {
-			AddDebugLogLineC(logAsio, CFormat(wxT("Error in HandleAccept: %s")) % error.message());
+			AddDebugLogLineC(logAsio, CFormat("Error in HandleAccept: %s") % error.message());
 		} else {
 			if (m_currentSocket->UpdateIP()) {
-				AddDebugLogLineN(logAsio, CFormat(wxT("HandleAccept received a connection from %s:%d"))
+				AddDebugLogLineN(logAsio, CFormat("HandleAccept received a connection from %s:%d")
 					% m_currentSocket->GetIP() % m_currentSocket->GetPort());
 				m_socketAvailable = true;
 				CoreNotify_ServerTCPAccept(m_libSocketServer);
 				return;
 			} else {
-				AddDebugLogLineN(logAsio, wxT("Error in HandleAccept: invalid socket"));
+				AddDebugLogLineN(logAsio, "Error in HandleAccept: invalid socket");
 			}
 		}
 		// We were not successful. Try again.
 		// Post the request to the event queue to make sure it doesn't get called immediately.
-		m_strand.post(boost::bind(& CAsioSocketServerImpl::StartAccept, this));
+		post(m_strand, [this]() { StartAccept(); });
 	}
 
 	// The wrapper object
@@ -887,7 +948,7 @@ private:
 	CScopedPtr<CAsioSocketImpl> m_currentSocket;
 	// Is there a socket available?
 	bool m_socketAvailable;
-	io_service::strand	m_strand;		// handle synchronisation in io_service thread pool
+	io_context::strand	m_strand;		// handle synchronisation in io_service thread pool
 };
 
 
@@ -981,7 +1042,7 @@ public:
 
 	~CAsioUDPSocketImpl()
 	{
-		AddDebugLogLineF(logAsio, wxT("UDP ~CAsioUDPSocketImpl"));
+		AddDebugLogLineF(logAsio, "UDP ~CAsioUDPSocketImpl");
 		delete m_socket;
 		delete[] m_readBuffer;
 		DeleteContents(m_receiveBuffers);
@@ -989,7 +1050,7 @@ public:
 
 	void SetClientData(CMuleUDPSocket * muleSocket)
 	{
-		AddDebugLogLineF(logAsio, wxT("UDP SetClientData"));
+		AddDebugLogLineF(logAsio, "UDP SetClientData");
 		m_muleSocket = muleSocket;
 	}
 
@@ -999,7 +1060,7 @@ public:
 		{
 			wxMutexLocker lock(m_receiveBuffersLock);
 			if (m_receiveBuffers.empty()) {
-				AddDebugLogLineN(logAsio, wxT("UDP RecvFromError no data"));
+				AddDebugLogLineN(logAsio, "UDP RecvFromError no data");
 				return 0;
 			}
 			recdata = * m_receiveBuffers.begin();
@@ -1008,7 +1069,7 @@ public:
 		uint32 read = recdata->size;
 		if (read > nBytes) {
 			// should not happen
-			AddDebugLogLineN(logAsio, CFormat(wxT("UDP RecvFromError too much data %d")) % read);
+			AddDebugLogLineN(logAsio, CFormat("UDP RecvFromError too much data %d") % read);
 			read = nBytes;
 		}
 		memcpy(buf, recdata->buffer, read);
@@ -1021,8 +1082,8 @@ public:
 	{
 		// Collect data, make a copy of the buffer's content
 		CUDPData * recdata = new CUDPData(buf, nBytes, addr);
-		AddDebugLogLineF(logAsio, CFormat(wxT("UDP SendTo %d to %s")) % nBytes % addr.IPAddress());
-		m_strand.dispatch(boost::bind(& CAsioUDPSocketImpl::DispatchSendTo, this, recdata));
+		AddDebugLogLineF(logAsio, CFormat("UDP SendTo %d to %s") % nBytes % addr.IPAddress());
+		dispatch(m_strand, [this, recdata]() { DispatchSendTo(recdata); });
 		return nBytes;
 	}
 
@@ -1036,13 +1097,13 @@ public:
 		if (s_io_service.stopped()) {
 			DispatchClose();
 		} else {
-			m_strand.dispatch(boost::bind(& CAsioUDPSocketImpl::DispatchClose, this));
+			dispatch(m_strand, [this]() { DispatchClose(); });
 		}
 	}
 
 	void Destroy()
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("Destroy() %p %p")) % m_libSocket % this);
+		AddDebugLogLineF(logAsio, CFormat("Destroy() %p %p") % m_libSocket % this);
 		Close();
 		if (s_io_service.stopped()) {
 			HandleDestroy();
@@ -1050,8 +1111,8 @@ public:
 			// Close prevents creation of any more callbacks, but does not clear any callbacks already
 			// sitting in Asio's event queue (I have seen such a crash).
 			// So create a delay timer so they can be called until core is notified.
-			m_timer.expires_from_now(boost::posix_time::seconds(1));
-			m_timer.async_wait(m_strand.wrap(boost::bind(& CAsioUDPSocketImpl::HandleDestroy, this)));
+			m_timer.expires_after(std::chrono::seconds(1));
+			m_timer.async_wait(bind_executor(m_strand, [this](const error_code&) { HandleDestroy(); }));
 		}
 	}
 
@@ -1068,9 +1129,9 @@ private:
 		error_code ec;
 		m_socket->close(ec);
 		if (ec) {
-			AddDebugLogLineC(logAsio, CFormat(wxT("UDP Close error %s")) % ec.message());
+			AddDebugLogLineC(logAsio, CFormat("UDP Close error %s") % ec.message());
 		} else {
-			AddDebugLogLineF(logAsio, wxT("UDP Closed"));
+			AddDebugLogLineF(logAsio, "UDP Closed");
 		}
 	}
 
@@ -1078,10 +1139,10 @@ private:
 	{
 		ip::udp::endpoint endpoint(recdata->ipadr.GetEndpoint().address(), recdata->ipadr.Service());
 
-		AddDebugLogLineF(logAsio, CFormat(wxT("UDP DispatchSendTo %d to %s:%d")) % recdata->size
+		AddDebugLogLineF(logAsio, CFormat("UDP DispatchSendTo %d to %s:%d") % recdata->size
 			% endpoint.address().to_string() % endpoint.port());
 		m_socket->async_send_to(buffer(recdata->buffer, recdata->size), endpoint,
-			m_strand.wrap(boost::bind(& CAsioUDPSocketImpl::HandleSendTo, this, placeholders::error, placeholders::bytes_transferred, recdata)));
+			bind_executor(m_strand, [this, recdata](const error_code& ec, std::size_t sent) { HandleSendTo(ec, sent, recdata); }));
 	}
 
 	//
@@ -1091,15 +1152,15 @@ private:
 	void HandleRead(const error_code & ec, size_t received)
 	{
 		if (ec) {
-			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleReadError %s")) % ec.message());
+			AddDebugLogLineN(logAsio, CFormat("UDP HandleReadError %s") % ec.message());
 		} else if (received == 0) {
-			AddDebugLogLineF(logAsio, wxT("UDP HandleReadError nothing available"));
+			AddDebugLogLineF(logAsio, "UDP HandleReadError nothing available");
 		} else if (m_muleSocket == NULL) {
-			AddDebugLogLineN(logAsio, wxT("UDP HandleReadError no handler"));
+			AddDebugLogLineN(logAsio, "UDP HandleReadError no handler");
 		} else {
 
 			amuleIPV4Address ipadr = amuleIPV4Address(CamuleIPV4Endpoint(m_receiveEndpoint));
-			AddDebugLogLineF(logAsio, CFormat(wxT("UDP HandleRead %d %s:%d")) % received % ipadr.IPAddress() % ipadr.Service());
+			AddDebugLogLineF(logAsio, CFormat("UDP HandleRead %d %s:%d") % received % ipadr.IPAddress() % ipadr.Service());
 
 			// create our read buffer
 			CUDPData * recdata = new CUDPData(m_readBuffer, received, ipadr);
@@ -1115,14 +1176,14 @@ private:
 	void HandleSendTo(const error_code & ec, size_t sent, CUDPData * recdata)
 	{
 		if (ec) {
-			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleSendToError %s")) % ec.message());
+			AddDebugLogLineN(logAsio, CFormat("UDP HandleSendToError %s") % ec.message());
 		} else if (sent != recdata->size) {
-			AddDebugLogLineN(logAsio, CFormat(wxT("UDP HandleSendToError tosend: %d sent %d")) % recdata->size % sent);
+			AddDebugLogLineN(logAsio, CFormat("UDP HandleSendToError tosend: %d sent %d") % recdata->size % sent);
 		}
 		if (m_muleSocket == NULL) {
-			AddDebugLogLineN(logAsio, wxT("UDP HandleSendToError no handler"));
+			AddDebugLogLineN(logAsio, "UDP HandleSendToError no handler");
 		} else {
-			AddDebugLogLineF(logAsio, CFormat(wxT("UDP HandleSendTo %d to %s")) % sent % recdata->ipadr.IPAddress());
+			AddDebugLogLineF(logAsio, CFormat("UDP HandleSendTo %d to %s") % sent % recdata->ipadr.IPAddress());
 			CoreNotify_UDPSocketSend(m_muleSocket);
 		}
 		delete recdata;
@@ -1130,7 +1191,7 @@ private:
 
 	void HandleDestroy()
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("HandleDestroy() %p %p")) % m_libSocket % this);
+		AddDebugLogLineF(logAsio, CFormat("HandleDestroy() %p %p") % m_libSocket % this);
 		delete m_libSocket;
 	}
 
@@ -1144,10 +1205,10 @@ private:
 			delete m_socket;
 			ip::udp::endpoint endpoint(m_address.GetEndpoint().address(), m_address.Service());
 			m_socket = new ip::udp::socket(s_io_service, endpoint);
-			AddDebugLogLineN(logAsio, CFormat(wxT("Created UDP socket %s %d")) % m_address.IPAddress() % m_address.Service());
+			AddDebugLogLineN(logAsio, CFormat("Created UDP socket %s %d") % m_address.IPAddress() % m_address.Service());
 			StartBackgroundRead();
 		} catch (const system_error& err) {
-			AddLogLineC(CFormat(wxT("Error creating UDP socket %s %d : %s")) % m_address.IPAddress() % m_address.Service() % err.code().message());
+			AddLogLineC(CFormat("Error creating UDP socket %s %d : %s") % m_address.IPAddress() % m_address.Service() % err.code().message());
 			m_socket = NULL;
 			m_OK = false;
 		}
@@ -1156,15 +1217,15 @@ private:
 	void StartBackgroundRead()
 	{
 		m_socket->async_receive_from(buffer(m_readBuffer, CMuleUDPSocket::UDP_BUFFER_SIZE), m_receiveEndpoint,
-			m_strand.wrap(boost::bind(& CAsioUDPSocketImpl::HandleRead, this, placeholders::error, placeholders::bytes_transferred)));
+			bind_executor(m_strand, [this](const error_code& ec, std::size_t n) { HandleRead(ec, n); }));
 	}
 
 	CLibUDPSocket *		m_libSocket;
 	ip::udp::socket *	m_socket;
 	CMuleUDPSocket *	m_muleSocket;
 	bool				m_OK;
-	io_service::strand	m_strand;		// handle synchronisation in io_service thread pool
-	deadline_timer		m_timer;
+	io_context::strand	m_strand;		// handle synchronisation in io_service thread pool
+	steady_timer		m_timer;
 	amuleIPV4Address	m_address;
 
 	// One fix receive buffer
@@ -1191,7 +1252,7 @@ CLibUDPSocket::CLibUDPSocket(amuleIPV4Address &address, int flags)
 
 CLibUDPSocket::~CLibUDPSocket()
 {
-	AddDebugLogLineF(logAsio, CFormat(wxT("~CLibUDPSocket() %p %p")) % this % m_aSocket);
+	AddDebugLogLineF(logAsio, CFormat("~CLibUDPSocket() %p %p") % this % m_aSocket);
 	delete m_aSocket;
 }
 
@@ -1255,9 +1316,9 @@ public:
 	void * Entry()
 	{
 		AddLogLineNS(CFormat(_("Asio thread %d started")) % m_threadNumber);
-		io_service::work worker(s_io_service);		// keep io_service running
+		auto worker = make_work_guard(s_io_service);		// keep io_service running
 		s_io_service.run();
-		AddDebugLogLineN(logAsio, CFormat(wxT("Asio thread %d stopped")) % m_threadNumber);
+		AddDebugLogLineN(logAsio, CFormat("Asio thread %d stopped") % m_threadNumber);
 
 		return NULL;
 	}
@@ -1343,29 +1404,28 @@ bool amuleIPV4Address::Hostname(const wxString& name)
 	// This is usually just an IP.
 	std::string sname(unicode2char(name));
 	error_code ec;
-	ip::address_v4 adr = ip::address_v4::from_string(sname, ec);
+	ip::address_v4 adr = ip::make_address_v4(sname, ec);
 	if (!ec) {
 		m_endpoint->address(adr);
 		return true;
 	}
-	AddDebugLogLineN(logAsio, CFormat(wxT("Hostname(\"%s\") failed, not an IP address %s")) % name % ec.message());
+	AddDebugLogLineN(logAsio, CFormat("Hostname(\"%s\") failed, not an IP address %s") % name % ec.message());
 
 	// Try to resolve (sync). Normally not required. Unless you type in your hostname as "local IP address" or something.
 	error_code ec2;
 	ip::tcp::resolver res(s_io_service);
 	// We only want to get IPV4 addresses.
-	ip::tcp::resolver::query query(ip::tcp::v4(), sname, "");
-	ip::tcp::resolver::iterator endpoint_iterator = res.resolve(query, ec2);
+	ip::tcp::resolver::results_type endpoint_iterator = res.resolve(sname, "", ec2);
 	if (ec2) {
-		AddDebugLogLineN(logAsio, CFormat(wxT("Hostname(\"%s\") resolve failed: %s")) % name % ec2.message());
+		AddDebugLogLineN(logAsio, CFormat("Hostname(\"%s\") resolve failed: %s") % name % ec2.message());
 		return false;
 	}
-	if (endpoint_iterator == ip::tcp::resolver::iterator()) {
-		AddDebugLogLineN(logAsio, CFormat(wxT("Hostname(\"%s\") resolve failed: no address found")) % name);
+	if (endpoint_iterator == ip::tcp::resolver::results_type()) {
+		AddDebugLogLineN(logAsio, CFormat("Hostname(\"%s\") resolve failed: no address found") % name);
 		return false;
 	}
-	m_endpoint->address(endpoint_iterator->endpoint().address());
-	AddDebugLogLineN(logAsio, CFormat(wxT("Hostname(\"%s\") resolved to %s")) % name % IPAddress());
+	m_endpoint->address(endpoint_iterator.begin()->endpoint().address());
+	AddDebugLogLineN(logAsio, CFormat("Hostname(\"%s\") resolved to %s") % name % IPAddress());
 	return true;
 }
 
@@ -1390,7 +1450,7 @@ bool amuleIPV4Address::IsLocalHost() const
 
 wxString amuleIPV4Address::IPAddress() const
 {
-	return CFormat(wxT("%s")) % m_endpoint->address().to_string();
+	return CFormat("%s") % m_endpoint->address().to_string();
 }
 
 // "Set address to any of the addresses of the current machine."
@@ -1399,7 +1459,7 @@ wxString amuleIPV4Address::IPAddress() const
 bool amuleIPV4Address::AnyAddress()
 {
 	m_endpoint->address(ip::address_v4::any());
-	AddDebugLogLineN(logAsio, CFormat(wxT("AnyAddress: set to %s")) % IPAddress());
+	AddDebugLogLineN(logAsio, CFormat("AnyAddress: set to %s") % IPAddress());
 	return true;
 }
 
@@ -1423,12 +1483,12 @@ namespace MuleNotify
 	void LibSocketConnect(CLibSocket * socket, int error)
 	{
 		if (socket->IsDestroying()) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketConnect Destroying %s %d")) % socket->GetIP() % error);
+			AddDebugLogLineF(logAsio, CFormat("LibSocketConnect Destroying %s %d") % socket->GetIP() % error);
 		} else if (socket->GetProxyState()) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketConnect Proxy %s %d")) % socket->GetIP() % error);
+			AddDebugLogLineF(logAsio, CFormat("LibSocketConnect Proxy %s %d") % socket->GetIP() % error);
 			socket->OnProxyEvent(MULE_SOCKET_CONNECTION);
 		} else {
-			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketConnect %s %d")) %socket->GetIP() % error);
+			AddDebugLogLineF(logAsio, CFormat("LibSocketConnect %s %d") %socket->GetIP() % error);
 			socket->OnConnect(error);
 		}
 	}
@@ -1436,12 +1496,12 @@ namespace MuleNotify
 	void LibSocketSend(CLibSocket * socket, int error)
 	{
 		if (socket->IsDestroying()) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketSend Destroying %s %d")) % socket->GetIP() % error);
+			AddDebugLogLineF(logAsio, CFormat("LibSocketSend Destroying %s %d") % socket->GetIP() % error);
 		} else if (socket->GetProxyState()) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketSend Proxy %s %d")) % socket->GetIP() % error);
+			AddDebugLogLineF(logAsio, CFormat("LibSocketSend Proxy %s %d") % socket->GetIP() % error);
 			socket->OnProxyEvent(MULE_SOCKET_OUTPUT);
 		} else {
-			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketSend %s %d")) % socket->GetIP() % error);
+			AddDebugLogLineF(logAsio, CFormat("LibSocketSend %s %d") % socket->GetIP() % error);
 			socket->OnSend(error);
 		}
 	}
@@ -1450,12 +1510,12 @@ namespace MuleNotify
 	{
 		socket->EventProcessed();
 		if (socket->IsDestroying()) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketReceive Destroying %s %d")) % socket->GetIP() % error);
+			AddDebugLogLineF(logAsio, CFormat("LibSocketReceive Destroying %s %d") % socket->GetIP() % error);
 		} else if (socket->GetProxyState()) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketReceive Proxy %s %d")) % socket->GetIP() % error);
+			AddDebugLogLineF(logAsio, CFormat("LibSocketReceive Proxy %s %d") % socket->GetIP() % error);
 			socket->OnProxyEvent(MULE_SOCKET_INPUT);
 		} else {
-			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketReceive %s %d")) % socket->GetIP() % error);
+			AddDebugLogLineF(logAsio, CFormat("LibSocketReceive %s %d") % socket->GetIP() % error);
 			socket->OnReceive(error);
 		}
 	}
@@ -1463,43 +1523,43 @@ namespace MuleNotify
 	void LibSocketLost(CLibSocket * socket)
 	{
 		if (socket->IsDestroying()) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketLost Destroying %s")) % socket->GetIP());
+			AddDebugLogLineF(logAsio, CFormat("LibSocketLost Destroying %s") % socket->GetIP());
 		} else if (socket->GetProxyState()) {
-			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketLost Proxy %s")) % socket->GetIP());
+			AddDebugLogLineF(logAsio, CFormat("LibSocketLost Proxy %s") % socket->GetIP());
 			socket->OnProxyEvent(MULE_SOCKET_LOST);
 		} else {
-			AddDebugLogLineF(logAsio, CFormat(wxT("LibSocketLost %s")) % socket->GetIP());
+			AddDebugLogLineF(logAsio, CFormat("LibSocketLost %s") % socket->GetIP());
 			socket->OnLost();
 		}
 	}
 
 	void LibSocketDestroy(CLibSocket * socket)
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("LibSocket_Destroy %s")) % socket->GetIP());
+		AddDebugLogLineF(logAsio, CFormat("LibSocket_Destroy %s") % socket->GetIP());
 		delete socket;
 	}
 
 	void ProxySocketEvent(CLibSocket * socket, int evt)
 	{
-		AddDebugLogLineF(logAsio, CFormat(wxT("ProxySocketEvent %s %d")) % socket->GetIP() % evt);
+		AddDebugLogLineF(logAsio, CFormat("ProxySocketEvent %s %d") % socket->GetIP() % evt);
 		socket->OnProxyEvent(evt);
 	}
 
 	void ServerTCPAccept(CLibSocketServer * socketServer)
 	{
-		AddDebugLogLineF(logAsio, wxT("ServerTCP_Accept"));
+		AddDebugLogLineF(logAsio, "ServerTCP_Accept");
 		socketServer->OnAccept();
 	}
 
 	void UDPSocketSend(CMuleUDPSocket * socket)
 	{
-		AddDebugLogLineF(logAsio, wxT("UDPSocketSend"));
+		AddDebugLogLineF(logAsio, "UDPSocketSend");
 		socket->OnSend(0);
 	}
 
 	void UDPSocketReceive(CMuleUDPSocket * socket)
 	{
-		AddDebugLogLineF(logAsio, wxT("UDPSocketReceive"));
+		AddDebugLogLineF(logAsio, "UDPSocketReceive");
 		socket->OnReceive(0);
 	}
 
@@ -1509,4 +1569,4 @@ namespace MuleNotify
 //
 // Initialize MuleBoostVersion
 //
-wxString MuleBoostVersion = CFormat(wxT("%d.%d")) % (BOOST_VERSION / 100000) % (BOOST_VERSION / 100 % 1000);
+wxString MuleBoostVersion = CFormat("%d.%d") % (BOOST_VERSION / 100000) % (BOOST_VERSION / 100 % 1000);

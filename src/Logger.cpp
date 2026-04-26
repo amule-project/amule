@@ -34,50 +34,49 @@
 #include <wx/filename.h>
 
 
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE)
-
+wxDEFINE_EVENT(MULE_EVT_LOGLINE, wxEvent);
 
 CDebugCategory g_debugcats[] = {
-	CDebugCategory( logGeneral,		wxT("General") ),
-	CDebugCategory( logHasher,		wxT("Hasher") ),
-	CDebugCategory( logClient,		wxT("ED2k Client") ),
-	CDebugCategory( logLocalClient,		wxT("Local Client Protocol") ),
-	CDebugCategory( logRemoteClient,	wxT("Remote Client Protocol") ),
-	CDebugCategory( logPacketErrors,	wxT("Packet Parsing Errors") ),
-	CDebugCategory( logCFile,		wxT("CFile") ),
-	CDebugCategory( logFileIO,		wxT("FileIO") ),
-	CDebugCategory( logZLib,		wxT("ZLib") ),
-	CDebugCategory( logAICHThread,		wxT("AICH-Hasher") ),
-	CDebugCategory( logAICHTransfer,	wxT("AICH-Transfer") ),
-	CDebugCategory( logAICHRecovery,	wxT("AICH-Recovery") ),
-	CDebugCategory( logListenSocket,	wxT("ListenSocket") ),
-	CDebugCategory( logCredits,		wxT("Credits") ),
-	CDebugCategory( logClientUDP,		wxT("ClientUDPSocket") ),
-	CDebugCategory( logDownloadQueue,	wxT("DownloadQueue") ),
-	CDebugCategory( logIPFilter,		wxT("IPFilter") ),
-	CDebugCategory( logKnownFiles,		wxT("KnownFileList") ),
-	CDebugCategory( logPartFile,		wxT("PartFiles") ),
-	CDebugCategory( logSHAHashSet,		wxT("SHAHashSet") ),
-	CDebugCategory( logServer,		wxT("Servers") ),
-	CDebugCategory( logProxy,		wxT("Proxy") ),
-	CDebugCategory( logSearch,		wxT("Searching") ),
-	CDebugCategory( logServerUDP,		wxT("ServerUDP") ),
-	CDebugCategory( logClientKadUDP,	wxT("Client Kademlia UDP") ),
-	CDebugCategory( logKadSearch,		wxT("Kademlia Search") ),
-	CDebugCategory( logKadRouting,		wxT("Kademlia Routing") ),
-	CDebugCategory( logKadIndex,		wxT("Kademlia Indexing") ),
-	CDebugCategory( logKadMain,		wxT("Kademlia Main Thread") ),
-	CDebugCategory( logKadPrefs,		wxT("Kademlia Preferences") ),
-	CDebugCategory( logPfConvert,		wxT("PartFileConvert") ),
-	CDebugCategory( logMuleUDP,		wxT("MuleUDPSocket" ) ),
-	CDebugCategory( logThreads,		wxT("ThreadScheduler" ) ),
-	CDebugCategory( logUPnP,		wxT("Universal Plug and Play" ) ),
-	CDebugCategory( logKadUdpFwTester,	wxT("Kademlia UDP Firewall Tester") ),
-	CDebugCategory( logKadPacketTracking,	wxT("Kademlia Packet Tracking") ),
-	CDebugCategory( logKadEntryTracking,	wxT("Kademlia Entry Tracking") ),
-	CDebugCategory( logEC,			wxT("External Connect") ),
-	CDebugCategory( logHTTP,		wxT("HTTP") ),
-	CDebugCategory( logAsio,		wxT("Asio Sockets") )
+	CDebugCategory( logGeneral,		"General" ),
+	CDebugCategory( logHasher,		"Hasher" ),
+	CDebugCategory( logClient,		"ED2k Client" ),
+	CDebugCategory( logLocalClient,		"Local Client Protocol" ),
+	CDebugCategory( logRemoteClient,	"Remote Client Protocol" ),
+	CDebugCategory( logPacketErrors,	"Packet Parsing Errors" ),
+	CDebugCategory( logCFile,		"CFile" ),
+	CDebugCategory( logFileIO,		"FileIO" ),
+	CDebugCategory( logZLib,		"ZLib" ),
+	CDebugCategory( logAICHThread,		"AICH-Hasher" ),
+	CDebugCategory( logAICHTransfer,	"AICH-Transfer" ),
+	CDebugCategory( logAICHRecovery,	"AICH-Recovery" ),
+	CDebugCategory( logListenSocket,	"ListenSocket" ),
+	CDebugCategory( logCredits,		"Credits" ),
+	CDebugCategory( logClientUDP,		"ClientUDPSocket" ),
+	CDebugCategory( logDownloadQueue,	"DownloadQueue" ),
+	CDebugCategory( logIPFilter,		"IPFilter" ),
+	CDebugCategory( logKnownFiles,		"KnownFileList" ),
+	CDebugCategory( logPartFile,		"PartFiles" ),
+	CDebugCategory( logSHAHashSet,		"SHAHashSet" ),
+	CDebugCategory( logServer,		"Servers" ),
+	CDebugCategory( logProxy,		"Proxy" ),
+	CDebugCategory( logSearch,		"Searching" ),
+	CDebugCategory( logServerUDP,		"ServerUDP" ),
+	CDebugCategory( logClientKadUDP,	"Client Kademlia UDP" ),
+	CDebugCategory( logKadSearch,		"Kademlia Search" ),
+	CDebugCategory( logKadRouting,		"Kademlia Routing" ),
+	CDebugCategory( logKadIndex,		"Kademlia Indexing" ),
+	CDebugCategory( logKadMain,		"Kademlia Main Thread" ),
+	CDebugCategory( logKadPrefs,		"Kademlia Preferences" ),
+	CDebugCategory( logPfConvert,		"PartFileConvert" ),
+	CDebugCategory( logMuleUDP,		"MuleUDPSocket" ),
+	CDebugCategory( logThreads,		"ThreadScheduler" ),
+	CDebugCategory( logUPnP,		"Universal Plug and Play" ),
+	CDebugCategory( logKadUdpFwTester,	"Kademlia UDP Firewall Tester" ),
+	CDebugCategory( logKadPacketTracking,	"Kademlia Packet Tracking" ),
+	CDebugCategory( logKadEntryTracking,	"Kademlia Entry Tracking" ),
+	CDebugCategory( logEC,			"External Connect" ),
+	CDebugCategory( logHTTP,		"HTTP" ),
+	CDebugCategory( logAsio,		"Asio Sockets" )
 };
 
 
@@ -143,7 +142,7 @@ void CLogger::AddLogLine(
 			const CDebugCategory& cat = g_debugcats[ index ];
 			wxASSERT(type == cat.GetType());
 
-			msg = cat.GetName() + wxT(": ") + msg;
+			msg = cat.GetName() + ": " + msg;
 		} else {
 			wxFAIL;
 		}
@@ -151,7 +150,7 @@ void CLogger::AddLogLine(
 
 #ifdef __DEBUG__
 	if (line) {
-		msg = file.AfterLast(wxFileName::GetPathSeparator()).AfterLast(wxT('/')) << wxT("(") << line << wxT("): ") + msg;
+		msg = file.AfterLast(wxFileName::GetPathSeparator()).AfterLast('/') << "(" << line << "): " + msg;
 	}
 #endif
 
@@ -160,7 +159,7 @@ void CLogger::AddLogLine(
 		CLoggingEvent Event(critical, toStdout, toGUI, msg);
 		AddPendingEvent(Event);
 	} else {
-		// Try to handle events immediatly when possible (to save to file).
+		// Try to handle events immediately when possible (to save to file).
 		DoLines(msg, critical, toStdout, toGUI);
 	}
 }
@@ -225,25 +224,25 @@ void CLogger::DoLines(const wxString & lines, bool critical, bool toStdout, bool
 	wxString bufferline = lines.Strip(wxString::trailing);
 
 	// Create the timestamp
-	wxString stamp = wxDateTime::Now().FormatISODate() + wxT(" ") + wxDateTime::Now().FormatISOTime()
+	wxString stamp = wxDateTime::Now().FormatISODate() + " " + wxDateTime::Now().FormatISOTime()
 #ifdef CLIENT_GUI
-					+ wxT(" (remote-GUI): ");
+					+ " (remote-GUI): ";
 #else
-					+ wxT(": ");
+					+ ": ";
 #endif
 
 	// critical lines get a ! prepended, ordinary lines a blank
 	// logfile-only lines get a . to prevent transmission on EC
-	wxString prefix = !toGUI ? wxT(".") : (critical ? wxT("!") : wxT(" "));
+	wxString prefix = !toGUI ? "." : (critical ? "!" : " ");
 
 	if ( bufferline.IsEmpty() ) {
 		// If it's empty we just write a blank line with no timestamp.
-		DoLine(wxT(" \n"), toStdout, toGUI);
+		DoLine(" \n", toStdout, toGUI);
 	} else {
 		// Split multi-line messages into individual lines
-		wxStringTokenizer tokens( bufferline, wxT("\n") );
+		wxStringTokenizer tokens( bufferline, "\n" );
 		while ( tokens.HasMoreTokens() ) {
-			wxString fullline = prefix + stamp + tokens.GetNextToken() + wxT("\n");
+			wxString fullline = prefix + stamp + tokens.GetNextToken() + "\n";
 			DoLine(fullline, toStdout, toGUI);
 		}
 	}
@@ -298,16 +297,15 @@ void CLogger::FlushApplog()
 
 CLogger theLogger;
 
-BEGIN_EVENT_TABLE(CLogger, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(CLogger, wxEvtHandler)
 	EVT_MULE_LOGGING(CLogger::OnLoggingEvent)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CLoggerTarget::CLoggerTarget()
 {
 }
 
-#if wxCHECK_VERSION(2, 9, 0)
 void CLoggerTarget::DoLogText(const wxString &msg)
 {
 	// prevent infinite recursion
@@ -326,31 +324,6 @@ void CLoggerTarget::DoLogText(const wxString &msg)
 
 	recursion = false;
 }
-#else
-void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
-{
-	// prevent infinite recursion
-	static bool recursion = false;
-	if (recursion) {
-		return;
-	}
-	recursion = true;
-
-	wxCHECK_RET(msg, wxT("Log message is NULL in DoLogString!"));
-
-	wxString str(msg);
-
-	// This is much simpler than manually handling all wx log-types.
-	// cppcheck-suppress duplicateBranch
-	if (str.StartsWith(_("ERROR: ")) || str.StartsWith(_("WARNING: "))) {
-		AddLogLineC(str);
-	} else {
-		AddLogLineN(str);
-	}
-
-	recursion = false;
-}
-#endif
 
 CLoggerAccess::CLoggerAccess()
 {
@@ -419,6 +392,10 @@ bool CLoggerAccess::GetString(wxString & s)
 }
 
 // Functions for EC logging
+
+#ifdef __DEBUG__
+#include "ec/cpp/ECLog.h"
+
 bool ECLogIsEnabled()
 {
 	return theLogger.IsEnabled(logEC);
@@ -427,7 +404,8 @@ bool ECLogIsEnabled()
 void DoECLogLine(const wxString &line)
 {
 	// without file/line
-	theLogger.AddLogLine(wxEmptyString, 0, false, logStandard, line, false, false);
+	theLogger.AddLogLine("", 0, false, logStandard, line, false, false);
 }
 
+#endif /* __DEBUG__ */
 // File_checked_for_headers

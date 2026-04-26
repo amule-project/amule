@@ -38,7 +38,7 @@
 
 #include "ClientList.h"
 
-BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
+wxBEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 	EVT_BUTTON(ID_ADDTOLIST,CServerWnd::OnBnClickedAddserver)
 	EVT_BUTTON(IDC_ED2KDISCONNECT,CServerWnd::OnBnClickedED2KDisconnect)
 	EVT_BUTTON(ID_UPDATELIST,CServerWnd::OnBnClickedUpdateservermetfromurl)
@@ -46,7 +46,7 @@ BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 	EVT_BUTTON(ID_BTN_RESET, CServerWnd::OnBnClickedResetLog)
 	EVT_BUTTON(ID_BTN_RESET_SERVER, CServerWnd::OnBnClickedResetServerLog)
 	EVT_SPLITTER_SASH_POS_CHANGED(ID_SRV_SPLITTER,CServerWnd::OnSashPositionChanged)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
@@ -67,13 +67,13 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 	// Insert two columns, currently without a header
 	wxListCtrl* ED2KInfoList = CastChild( ID_ED2KINFO, wxListCtrl );
 	wxASSERT(ED2KInfoList);
-	ED2KInfoList->InsertColumn(0, wxEmptyString);
-	ED2KInfoList->InsertColumn(1, wxEmptyString);
+	ED2KInfoList->InsertColumn(0, "");
+	ED2KInfoList->InsertColumn(1, "");
 
 	wxListCtrl* KadInfoList = CastChild( ID_KADINFO, wxListCtrl );
 	wxASSERT(KadInfoList);
-	KadInfoList->InsertColumn(0, wxEmptyString);
-	KadInfoList->InsertColumn(1, wxEmptyString);
+	KadInfoList->InsertColumn(0, "");
+	KadInfoList->InsertColumn(1, "");
 
 	sizer->Show(this,TRUE);
 }
@@ -171,9 +171,9 @@ void CServerWnd::UpdateED2KInfo()
 
 		ED2KInfoList->InsertItem(2, _("ID"));
 		// No need to test the server connect, it's already true
-		ED2KInfoList->SetItem(2, 1, CFormat(wxT("%u")) % theApp->GetED2KID());
+		ED2KInfoList->SetItem(2, 1, CFormat("%u") % theApp->GetED2KID());
 
-		ED2KInfoList->InsertItem(3, wxEmptyString);
+		ED2KInfoList->InsertItem(3, "");
 
 		if (theApp->serverconnect->IsLowID()) {
 			ED2KInfoList->SetItem(1, 1, _("Server")); // LowID, unknown ip
@@ -251,13 +251,13 @@ void CServerWnd::UpdateKadInfo()
 
 			// Index info
 			KadInfoList->InsertItem(next_row, _("Indexed sources:"));
-			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % theApp->GetKadIndexedSources());
+			KadInfoList->SetItem(next_row++, 1, CFormat("%d") % theApp->GetKadIndexedSources());
 			KadInfoList->InsertItem(next_row, _("Indexed keywords:"));
-			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % theApp->GetKadIndexedKeywords());
+			KadInfoList->SetItem(next_row++, 1, CFormat("%d") % theApp->GetKadIndexedKeywords());
 			KadInfoList->InsertItem(next_row, _("Indexed notes:"));
-			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % theApp->GetKadIndexedNotes());
+			KadInfoList->SetItem(next_row++, 1, CFormat("%d") % theApp->GetKadIndexedNotes());
 			KadInfoList->InsertItem(next_row, _("Indexed load:"));
-			KadInfoList->SetItem(next_row++, 1, CFormat(wxT("%d")) % theApp->GetKadIndexedLoad());
+			KadInfoList->SetItem(next_row++, 1, CFormat("%d") % theApp->GetKadIndexedLoad());
 
 			KadInfoList->InsertItem(next_row, _("Average Users:"));
 			KadInfoList->SetItem(next_row, 1, CastItoIShort(theApp->GetKadUsers()));
@@ -278,7 +278,7 @@ void CServerWnd::UpdateKadInfo()
 void CServerWnd::OnSashPositionChanged(wxSplitterEvent& WXUNUSED(evt))
 {
 	if (theApp->amuledlg) {
-		theApp->amuledlg->m_srv_split_pos = CastChild( wxT("SrvSplitterWnd"), wxSplitterWindow )->GetSashPosition();
+		theApp->amuledlg->m_srv_split_pos = CastChild( "SrvSplitterWnd", wxSplitterWindow )->GetSashPosition();
 	}
 }
 

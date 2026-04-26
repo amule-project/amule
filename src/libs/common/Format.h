@@ -40,7 +40,7 @@
  *  - The @c "*" width-modifier, because only one argument is fed at a time.
  *  - The @c "n" type, just unsafe and won't be implemented.
  *  - The @c "C" and @c "S" types, which are considered obsolete.
- *  - The Long Double type, which is extremly slow and shouldn't be used.
+ *  - The Long Double type, which is extremely slow and shouldn't be used.
  *
  * Support for the C99 @c a, @c A conversions and the non-standard @c ', @c I
  * flags depend on the underlying C library. Do not use them.
@@ -140,6 +140,9 @@ public:
 	CFormat& operator%(const wxString& value)		{ return this->operator%<const wxString&>(value); }
 	CFormat& operator%(const CFormat& value)		{ return this->operator%<const wxString&>(value); }
 	CFormat& operator%(const std::string& value)	{ return this->operator%<const wxString&>(wxString(value.c_str(), wxConvUTF8)); }
+	// Narrow string literals are passed directly (after dropping the wxT()
+	// wrapping sweep); dispatch to the wxString overload.
+	CFormat& operator%(const char* value)			{ return this->operator%<const wxString&>(wxString(value, wxConvUTF8)); }
 
 	/**
 	 * Returns the resulting string.
@@ -194,11 +197,7 @@ template<> inline CFormat& CFormat::operator%(float value)		{ return *this % (do
 template<> inline CFormat& CFormat::operator%(const wxChar* value)	{ return this->operator%<const wxString&>(wxString(value)); }
 
 
-#if wxCHECK_VERSION(2, 9, 0)
-#define WXLONGLONGFMTSPEC wxT(wxLongLongFmtSpec)
-#else
 #define WXLONGLONGFMTSPEC wxLongLongFmtSpec
-#endif
 
 #endif
 // File_checked_for_headers

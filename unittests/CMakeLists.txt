@@ -1,0 +1,2 @@
+ADD_SUBDIRECTORY (muleunit)
+ADD_SUBDIRECTORY (tests)

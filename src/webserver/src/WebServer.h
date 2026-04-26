@@ -27,17 +27,15 @@
 #ifndef WEBSERVER_H
 #define WEBSERVER_H
 
-#ifdef HAVE_CONFIG_H
-	#include "config.h"	// Needed for ASIO_SOCKETS
-#endif
+#include "config.h"		// Needed for ASIO_SOCKETS
 
 #ifdef WITH_LIBPNG
 	#include <png.h>
 #endif
 
 #include "WebInterface.h"
-#include <map>			// Needed for std::map
-#include <set>			// Needed for std::set
+#include <map>				// Needed for std::map
+#include <set>				// Needed for std::set
 #include "RLE.h"
 #include "OtherStructs.h"
 #include <ec/cpp/ECID.h>	// Needed for CECID
@@ -46,7 +44,7 @@
 #	include "UPnPBase.h"
 #endif
 
-#include <wx/datetime.h>  // For DownloadFile::wxtLastSeenComplete
+#include <wx/datetime.h>	// For DownloadFile::wxtLastSeenComplete
 
 #ifdef _MSC_VER
 #define strncasecmp _strnicmp
@@ -737,7 +735,7 @@ class CWebServerBase : public wxEvtHandler {
 #else
 		void OnWebSocketServerEvent(wxSocketEvent& event);
 		void OnWebSocketEvent(wxSocketEvent& event);
-		DECLARE_EVENT_TABLE();
+		wxDECLARE_EVENT_TABLE();
 #endif
 	public:
 		CWebServerBase(CamulewebApp *webApp, const wxString& templateDir);

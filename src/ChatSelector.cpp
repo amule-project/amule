@@ -69,7 +69,7 @@ CChatSession::~CChatSession()
 void CChatSession::AddText(const wxString& text, const wxTextAttr& style, bool newline)
 {
 	// Split multi-line messages into individual lines
-	wxStringTokenizer tokens( text, wxT("\n") );
+	wxStringTokenizer tokens( text, "\n" );
 
 	while ( tokens.HasMoreTokens() ) {
 		// Check if we should add a time-stamp
@@ -79,7 +79,7 @@ void CChatSession::AddText(const wxString& text, const wxTextAttr& style, bool n
 			if ( line.IsEmpty() ) {
 				SetDefaultStyle( COLOR_BLACK );
 
-				AppendText( wxT(" [") + wxDateTime::Now().FormatISOTime() + wxT("] ") );
+				AppendText( " [" + wxDateTime::Now().FormatISOTime() + "] " );
 			}
 		}
 
@@ -89,7 +89,7 @@ void CChatSession::AddText(const wxString& text, const wxTextAttr& style, bool n
 
 		// Only add newlines after the last line if it is desired
 		if ( tokens.HasMoreTokens() || newline ) {
-			AppendText( wxT("\n") );
+			AppendText( "\n" );
 		}
 	}
 }
@@ -126,7 +126,7 @@ CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& clie
 	chatsession->m_client_id = client_id;
 
 	wxString text;
-	text = wxT(" *** ") + (CFormat(_("Chat-Session Started: %s (%s:%u) - %s %s"))
+	text = wxString(" *** ") + wxString(CFormat(_("Chat-Session Started: %s (%s:%u) - %s %s"))
 			% client_name
 			% Uint32toStringIP(IP_FROM_GUI_ID(client_id))
 			% PORT_FROM_GUI_ID(client_id)
@@ -175,7 +175,7 @@ bool CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 	CChatSession* session = GetPageByClientID(sender_id);
 
 	// Try to get the name (core sent it?)
-	int separator = message.Find(wxT("|"));
+	int separator = message.Find("|");
 	wxString client_name;
 	wxString client_message;
 	if (separator != -1) {
@@ -189,13 +189,13 @@ bool CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 	bool newtab = !session;
 
 	if ( !session ) {
-		// This must be a mesage from a client that is not already chatting
+		// This must be a message from a client that is not already chatting
 		if (client_name.IsEmpty()) {
 			// Core did not send us the name.
 			// This must NOT happen.
 			// Build a client name based on the ID
 			uint32 ip = IP_FROM_GUI_ID(sender_id);
-			client_name = CFormat(wxT("IP: %s Port: %u")) % Uint32toStringIP(ip) % PORT_FROM_GUI_ID(sender_id);
+			client_name = CFormat("IP: %s Port: %u") % Uint32toStringIP(ip) % PORT_FROM_GUI_ID(sender_id);
 		}
 
 		session = StartSession( sender_id, client_name, true );
@@ -210,7 +210,7 @@ bool CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 
 	// Page text is client name
 	session->AddText( GetPageText(GetTabByClientID(sender_id)), COLOR_BLUE, false );
-	session->AddText( wxT(": ") + client_message, COLOR_BLACK );
+	session->AddText( ": " + client_message, COLOR_BLACK );
 
 	return newtab;
 }
@@ -246,7 +246,7 @@ bool CChatSelector::SendMessage( const wxString& message, const wxString& client
 	#ifndef CLIENT_GUI
 	if (theApp->clientlist->SendChatMessage(ci->m_client_id, message)) {
 		ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN, false );
-		ci->AddText( wxT(": ") + message, COLOR_BLACK );
+		ci->AddText( ": " + message, COLOR_BLACK );
 	} else {
 		ci->AddText( _("*** Connecting to Client ***"), COLOR_RED );
 	}
@@ -287,7 +287,7 @@ void CChatSelector::ConnectionResult(bool success, const wxString& message, uint
 		if ( !message.IsEmpty() ) {
 			ci->AddText( _("*** Connected to Client ***"), COLOR_RED );
 			ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN, false );
-			ci->AddText( wxT(": ") + message, COLOR_BLACK );
+			ci->AddText( ": " + message, COLOR_BLACK );
 		}
 	}
 }
@@ -310,7 +310,7 @@ void CChatSelector::EndSession(uint64 client_id)
 }
 
 
-// Refresh the tab assosiated with a client
+// Refresh the tab associated with a client
 void CChatSelector::RefreshFriend(uint64 toupdate_id, const wxString& new_name)
 {
 	wxASSERT( toupdate_id );

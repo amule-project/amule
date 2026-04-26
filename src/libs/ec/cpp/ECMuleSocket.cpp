@@ -43,17 +43,17 @@ class CECMuleSocketHandler: public wxEvtHandler {
  private:
         void SocketHandler(wxSocketEvent& event);
 
-        DECLARE_EVENT_TABLE()
+        wxDECLARE_EVENT_TABLE();
 };
 
-BEGIN_EVENT_TABLE(CECMuleSocketHandler, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(CECMuleSocketHandler, wxEvtHandler)
         EVT_SOCKET(EC_SOCKET_HANDLER, CECMuleSocketHandler::SocketHandler)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 void CECMuleSocketHandler::SocketHandler(wxSocketEvent& event)
 {
         CECSocket *socket = dynamic_cast<CECSocket *>(event.GetSocket());
-        wxCHECK_RET(socket, wxT("Socket event with a NULL socket!"));
+        wxCHECK_RET(socket, "Socket event with a NULL socket!");
 
         switch(event.GetSocketEvent()) {
         case wxSOCKET_LOST:

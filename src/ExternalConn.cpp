@@ -24,32 +24,30 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for VERSION
-#endif
+#include "config.h"				// Needed for VERSION
 
 #include <ec/cpp/ECMuleSocket.h>		// Needed for CECSocket
 
-#include <common/Format.h>		// Needed for CFormat
+#include <common/Format.h>			// Needed for CFormat
 
 #include <common/ClientVersion.h>
 #include <common/MD5Sum.h>
 
-#include "ExternalConn.h"	// Interface declarations
-#include "updownclient.h"	// Needed for CUpDownClient
-#include "Server.h"		// Needed for CServer
-#include "ServerList.h"		// Needed for CServerList
-#include "PartFile.h"		// Needed for CPartFile
-#include "ServerConnect.h"	// Needed for CServerConnect
-#include "UploadQueue.h"	// Needed for CUploadQueue
-#include "amule.h"		// Needed for theApp
-#include "SearchList.h"		// Needed for GetSearchResults
+#include "ExternalConn.h"			// Interface declarations
+#include "updownclient.h"			// Needed for CUpDownClient
+#include "Server.h"				// Needed for CServer
+#include "ServerList.h"				// Needed for CServerList
+#include "PartFile.h"				// Needed for CPartFile
+#include "ServerConnect.h"			// Needed for CServerConnect
+#include "UploadQueue.h"			// Needed for CUploadQueue
+#include "amule.h"				// Needed for theApp
+#include "SearchList.h"				// Needed for GetSearchResults
 #include "ClientList.h"
-#include "Preferences.h"	// Needed for CPreferences
+#include "Preferences.h"			// Needed for CPreferences
 #include "Logger.h"
-#include "GuiEvents.h"		// Needed for Notify_* macros
-#include "Statistics.h"		// Needed for theStats
-#include "KnownFileList.h"	// Needed for CKnownFileList
+#include "GuiEvents.h"				// Needed for Notify_* macros
+#include "Statistics.h"				// Needed for theStats
+#include "KnownFileList.h"			// Needed for CKnownFileList
 #include "Friend.h"
 #include "FriendList.h"
 #include "RandomFunctions.h"
@@ -302,9 +300,9 @@ enum
 };
 
 
-BEGIN_EVENT_TABLE(ExternalConn, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(ExternalConn, wxEvtHandler)
 	EVT_SOCKET(SERVER_ID, ExternalConn::OnServerEvent)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 #endif
 
 
@@ -316,7 +314,7 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 	if ( thePrefs::AcceptExternalConnections() ) {
 		// We must have a valid password, otherwise we will not allow EC connections
 		if (thePrefs::ECPassword().IsEmpty()) {
-			*msg += wxT("External connections disabled due to empty password!\n");
+			*msg += "External connections disabled due to empty password!\n";
 			AddLogLineC(_("External connections disabled due to empty password!"));
 			return;
 		}
@@ -332,16 +330,16 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		int port = addr.Service();
 		wxString ip = addr.IPAddress();
 		if (m_ECServer->IsOk()) {
-			msgLocal = CFormat(wxT("*** TCP socket (ECServer) listening on %s:%d")) % ip % port;
-			*msg += msgLocal + wxT("\n");
+			msgLocal = CFormat("*** TCP socket (ECServer) listening on %s:%d") % ip % port;
+			*msg += msgLocal + "\n";
 			AddLogLineN(msgLocal);
 		} else {
-			msgLocal = CFormat(wxT("Could not listen for external connections at %s:%d!")) % ip % port;
-			*msg += msgLocal + wxT("\n");
+			msgLocal = CFormat("Could not listen for external connections at %s:%d!") % ip % port;
+			*msg += msgLocal + "\n";
 			AddLogLineN(msgLocal);
 		}
 	} else {
-		*msg += wxT("External connections disabled in config file\n");
+		*msg += "External connections disabled in config file\n";
 		AddLogLineN(_("External connections disabled in config file"));
 	}
 	m_ec_notifier = new ECNotifier();
@@ -373,7 +371,7 @@ void ExternalConn::RemoveSocket(CECServerSocket *s)
 void ExternalConn::KillAllSockets()
 {
 	AddDebugLogLineN(logGeneral,
-		CFormat(wxT("ExternalConn::KillAllSockets(): %d sockets to destroy.")) %
+		CFormat("ExternalConn::KillAllSockets(): %d sockets to destroy.") %
 			socket_list.size());
 	SocketSet::iterator it = socket_list.begin();
 	while (it != socket_list.end()) {
@@ -450,9 +448,9 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 #ifdef EC_VERSION_ID
 		// For SVN versions, both client and server must use SVNDATE, and they must be the same
 		CMD4Hash vhash;
-		if (!vhash.Decode(wxT(EC_VERSION_ID))) {
+		if (!vhash.Decode(EC_VERSION_ID)) {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
-			response->AddTag(CECTag(EC_TAG_STRING, wxT("Fatal error, version hash is not a valid MD4-hash.")));
+			response->AddTag(CECTag(EC_TAG_STRING, "Fatal error, version hash is not a valid MD4-hash."));
 		} else if (!request->GetTagByName(EC_TAG_VERSION_ID) || request->GetTagByNameSafe(EC_TAG_VERSION_ID)->GetMD4Data() != vhash) {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Incorrect EC version ID, there might be binary incompatibility. Use core and remote from same snapshot.")));
@@ -478,14 +476,14 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 					m_my_flags |= EC_FLAG_UTF8_NUMBERS;
 				}
 				m_haveNotificationSupport = request->GetTagByName(EC_TAG_CAN_NOTIFY) != NULL;
-				AddDebugLogLineN(logEC, CFormat(wxT("Client capabilities: ZLIB: %s  UTF8 numbers: %s  Push notification: %s") )
-					% ((m_my_flags & EC_FLAG_ZLIB) ? wxT("yes") : wxT("no"))
-					% ((m_my_flags & EC_FLAG_UTF8_NUMBERS) ? wxT("yes") : wxT("no"))
-					% (m_haveNotificationSupport ? wxT("yes") : wxT("no")));
+				AddDebugLogLineN(logEC, CFormat("Client capabilities: ZLIB: %s  UTF8 numbers: %s  Push notification: %s" )
+					% ((m_my_flags & EC_FLAG_ZLIB) ? "yes" : "no")
+					% ((m_my_flags & EC_FLAG_UTF8_NUMBERS) ? "yes" : "no")
+					% (m_haveNotificationSupport ? "yes" : "no"));
 			} else {
 				response = new CECPacket(EC_OP_AUTH_FAIL);
-				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid protocol version.")
-					+ CFormat(wxT("( %#.4x != %#.4x )")) % proto_version % (uint16_t)EC_CURRENT_PROTOCOL_VERSION));
+				response->AddTag(CECTag(EC_TAG_STRING, wxString(wxTRANSLATE("Invalid protocol version."))
+					+ wxString(CFormat("( %#.4x != %#.4x )") % proto_version % (uint16_t)EC_CURRENT_PROTOCOL_VERSION)));
 			}
 		} else {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
@@ -498,18 +496,18 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 		if (!passh.Decode(thePrefs::ECPassword())) {
 			wxString err = wxTRANSLATE("Authentication failed: invalid hash specified as EC password.");
 			AddLogLineN(wxString(wxGetTranslation(err))
-						+ wxT(" ") + thePrefs::ECPassword());
+						+ " " + thePrefs::ECPassword());
 			response = new CECPacket(EC_OP_AUTH_FAIL);
 			response->AddTag(CECTag(EC_TAG_STRING, err));
 		} else {
-			wxString saltHash = MD5Sum(CFormat(wxT("%lX")) % m_passwd_salt).GetHash();
-			wxString saltStr = CFormat(wxT("%lX")) % m_passwd_salt;
+			wxString saltHash = MD5Sum(CFormat("%lX") % m_passwd_salt).GetHash();
+			wxString saltStr = CFormat("%lX") % m_passwd_salt;
 
 			passh.Decode(MD5Sum(thePrefs::ECPassword().Lower() + saltHash).GetHash());
 
 			if (passwd && passwd->GetMD4Data() == passh) {
 				response = new CECPacket(EC_OP_AUTH_OK);
-				response->AddTag(CECTag(EC_TAG_SERVER_VERSION, wxT(VERSION)));
+				response->AddTag(CECTag(EC_TAG_SERVER_VERSION, VERSION));
 			} else {
 				wxString err;
 				if (passwd) {
@@ -954,7 +952,7 @@ static CECPacket *Get_EC_Response_Friend(const CECPacket *request)
 		if (subtag) {
 			CUpDownClient * client = theApp->clientlist->FindClientByECID(subtag->GetInt());
 			if (client) {
-				theApp->friendlist->AddFriend(CCLIENTREF(client, wxT("Get_EC_Response_Friend theApp->friendlist->AddFriend")));
+				theApp->friendlist->AddFriend(CCLIENTREF(client, "Get_EC_Response_Friend theApp->friendlist->AddFriend"));
 				response = new CECPacket(EC_OP_NOOP);
 			}
 		} else {
@@ -986,26 +984,30 @@ static CECPacket *Get_EC_Response_Friend(const CECPacket *request)
 			}
 		}
 	} else if ((tag = request->GetTagByName(EC_TAG_FRIEND_SHARED))) {
-		response = new CECPacket(EC_OP_FAILED);
-		response->AddTag(CECTag(EC_TAG_STRING, wxT("Request shared files list not implemented yet.")));
-#if 0
-		// This works fine - but there is no way atm to transfer the results to amulegui, so disable it for now.
-
 		const CECTag *subtag = tag->GetTagByName(EC_TAG_FRIEND);
 		if (subtag) {
 			CFriend * Friend = theApp->friendlist->FindFriend(subtag->GetInt());
 			if (Friend) {
 				theApp->friendlist->RequestSharedFileList(Friend);
 				response = new CECPacket(EC_OP_NOOP);
+			} else {
+				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Friend not found.")));
 			}
 		} else if ((subtag = tag->GetTagByName(EC_TAG_CLIENT))) {
 			CUpDownClient * client = theApp->clientlist->FindClientByECID(subtag->GetInt());
 			if (client) {
 				client->RequestSharedFileList();
 				response = new CECPacket(EC_OP_NOOP);
+			} else {
+				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Client not found.")));
 			}
+		} else {
+			response = new CECPacket(EC_OP_FAILED);
+			response->AddTag(CECTag(EC_TAG_STRING,
+				wxTRANSLATE("EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT.")));
 		}
-#endif
 	}
 
 	if (!response) {
@@ -1378,6 +1380,9 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 					category = cattag->GetInt();
 				}
 				AddLogLineC(CFormat(_("ExternalConn: adding link '%s'.")) % link);
+				if (response) {
+					delete response;
+				}
 				if ( theApp->downloadqueue->AddLink(link, category) ) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
@@ -1667,7 +1672,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		case EC_OP_DELETE_CATEGORY:
 			if ( request->GetTagCount() == 1 ) {
 				uint32 cat = request->GetFirstTagSafe()->GetInt();
-				// this noes not only update the gui, but actually deletes the cat
+				// this does not only update the gui, but actually deletes the cat
 				Notify_CategoryDelete(cat);
 			}
 			response = new CECPacket(EC_OP_NOOP);
@@ -1743,7 +1748,7 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 				delete tree;
 			}
 			if (request->GetDetailLevel() == EC_DETAIL_WEB) {
-				response->AddTag(CECTag(EC_TAG_SERVER_VERSION, wxT(VERSION)));
+				response->AddTag(CECTag(EC_TAG_SERVER_VERSION, VERSION));
 				response->AddTag(CECTag(EC_TAG_USER_NICK, thePrefs::GetUserNick()));
 			}
 			break;

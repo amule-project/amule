@@ -57,9 +57,9 @@ inline wxString FinalizeFilename(const wxString filename)
 class CECFileConfig : public wxFileConfig {
 	public:
 
-		CECFileConfig(const wxString& localFilename = wxEmptyString)
-			: wxFileConfig(wxEmptyString, wxEmptyString, FinalizeFilename(localFilename),
-				wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH)
+		CECFileConfig(const wxString& localFilename = "")
+			: wxFileConfig("", "", FinalizeFilename(localFilename),
+				"", wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH)
 			{}
 
 		/**
@@ -73,7 +73,7 @@ class CECFileConfig : public wxFileConfig {
 		bool	ReadHash(const wxString& key, CMD4Hash *hash)
 		{
 			wxString sHash;
-			bool retval = wxFileConfig::Read(key, &sHash, wxEmptyString);
+			bool retval = wxFileConfig::Read(key, &sHash, "");
 			if (sHash.IsEmpty()) {
 				hash->Clear();
 			} else {
@@ -92,7 +92,7 @@ class CECFileConfig : public wxFileConfig {
 		 */
 		bool	WriteHash(const wxString& key, const CMD4Hash& hash)
 		{
-			return wxFileConfig::Write(key, hash.IsEmpty() ? wxString(wxEmptyString) : hash.Encode());
+			return wxFileConfig::Write(key, hash.IsEmpty() ? wxString("") : hash.Encode());
 		}
 };
 

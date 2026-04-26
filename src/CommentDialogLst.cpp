@@ -33,10 +33,10 @@
 
 
 
-BEGIN_EVENT_TABLE(CCommentDialogLst,wxDialog)
+wxBEGIN_EVENT_TABLE(CCommentDialogLst,wxDialog)
 	EVT_BUTTON(IDCOK,CCommentDialogLst::OnBnClickedApply)
 	EVT_BUTTON(IDCREF,CCommentDialogLst::OnBnClickedRefresh)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 /*
@@ -91,7 +91,7 @@ void CCommentDialogLst::UpdateList()
 		if (!thePrefs::IsCommentFiltered(it->Comment)) {
 			m_list->InsertItem(count, it->UserName);
 			m_list->SetItem(count, 1, it->FileName);
-			m_list->SetItem(count, 2, (it->Rating != -1) ? GetRateString(it->Rating) : wxString(wxT("on")));
+			m_list->SetItem(count, 2, (it->Rating != -1) ? GetRateString(it->Rating) : wxString("on"));
 			m_list->SetItem(count, 3, it->Comment);
 			m_list->SetItemPtrData(count, reinterpret_cast<wxUIntPtr>(new SFileRating(*it)));
 			++count;
@@ -123,7 +123,7 @@ void CCommentDialogLst::ClearList()
 }
 
 
-int CCommentDialogLst::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
+int CCommentDialogLst::SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData)
 {
 	SFileRating* file1 = reinterpret_cast<SFileRating*>(item1);
 	SFileRating* file2 = reinterpret_cast<SFileRating*>(item2);

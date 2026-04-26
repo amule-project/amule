@@ -59,7 +59,7 @@ class CEConnectDlg : public wxDialog {
 	wxString login, passwd;
 	bool m_save_user_pass;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 public:
 	CEConnectDlg();
 
@@ -73,8 +73,7 @@ public:
 	bool SaveUserPass() { return m_save_user_pass; }
 };
 
-DECLARE_LOCAL_EVENT_TYPE(wxEVT_EC_INIT_DONE, wxEVT_USER_FIRST + 1001)
-
+wxDECLARE_EVENT(wxEVT_EC_INIT_DONE, wxEvent);
 class wxECInitDoneEvent : public wxEvent {
 public:
 	wxECInitDoneEvent() : wxEvent(-1, wxEVT_EC_INIT_DONE)
@@ -253,7 +252,7 @@ public:
 	}
 
 	//
-	// Following are like basicly same code as in webserver. Eventually it must
+	// Following are like basically same code as in webserver. Eventually it must
 	// be same class
 	//
 	void DoRequery(int cmd, int tag)
@@ -544,7 +543,7 @@ public:
 	// Actions
 	//
 	void Reload();
-	void Update(wxString strURL = wxEmptyString);
+	void Update(wxString strURL = "");
 	bool IsReady() const { return true; }
 };
 
@@ -554,12 +553,12 @@ public:
 	CSearchListRem(CRemoteConnect *);
 
 	int m_curr_search;
-	typedef std::map<long, CSearchResultList> ResultMap;
+	typedef std::map<wxUIntPtr, CSearchResultList> ResultMap;
 	ResultMap m_results;
 
-	const CSearchResultList& GetSearchResults(long nSearchID);
-	void RemoveResults(long nSearchID);
-	const CSearchResultList& GetSearchResults(long nSearchID) const;
+	const CSearchResultList& GetSearchResults(wxUIntPtr nSearchID);
+	void RemoveResults(wxUIntPtr nSearchID);
+	const CSearchResultList& GetSearchResults(wxUIntPtr nSearchID) const;
 	//
 	// Actions
 	//
@@ -622,6 +621,12 @@ public:
 
 class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase, public CamuleAppCommon {
 	wxTimer*	poll_timer;
+	// Watchdog on the initial EC connect attempt. Started when the user
+	// clicks OK on the connection dialog; fires if no OnECConnection
+	// event has arrived within the timeout, so a wrong host / firewalled
+	// daemon doesn't leave amulegui "not responding" indefinitely with
+	// no visible window while TCP SYN silently times out over minutes.
+	wxTimer*	connect_timeout_timer;
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
@@ -630,6 +635,7 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase, public CamuleAppC
 	int OnExit();
 
 	void OnPollTimer(wxTimerEvent& evt);
+	void OnConnectTimeout(wxTimerEvent& evt);
 
 	void OnECConnection(wxEvent& event);
 	void OnECInitDone(wxEvent& event);
@@ -744,7 +750,7 @@ public:
 
 	CUInt128	m_kadID;
 
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 
 DECLARE_APP(CamuleRemoteGuiApp)

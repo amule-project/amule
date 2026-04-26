@@ -199,7 +199,7 @@ void CEMSocket::OnReceive(int nErrorCode)
 		}
 
 		uint32 readMax;
-		byte *buf;
+		uint8_t *buf;
 		if (pendingHeaderSize < PACKET_HEADER_SIZE) {
 			delete[] pendingPacket;
 			pendingPacket = NULL;
@@ -213,7 +213,7 @@ void CEMSocket::OnReceive(int nErrorCode)
 				OnError(ERR_TOOBIG);
 				return;
 			}
-			pendingPacket = new byte[readMax + 1];
+			pendingPacket = new uint8_t[readMax + 1];
 			buf = pendingPacket;
 		} else {
 			buf = pendingPacket + pendingPacketSize;
@@ -405,6 +405,22 @@ uint64 CEMSocket::GetSentPayloadSinceLastCallAndReset()
     return sentBytes;
 }
 
+// Non-resetting peek at bytes sent since the last GetSentPayloadSinceLastCallAndReset() call.
+// Used by the disk I/O thread to get a fresh view of sent bytes without consuming the counter
+// that SendBlockData() drains every CORE_TIMER_PERIOD ms.
+// Lock order: must not be called while m_sendLocker is already held by the caller.
+uint64 CEMSocket::PeekSentPayload()
+{
+	wxMutexLocker lock( m_sendLocker );
+	return m_actualPayloadSizeSent;
+}
+
+
+bool CEMSocket::HasQueues(bool bOnlyStandardPackets) const
+{
+	return sendbuffer != NULL || !m_standard_queue.empty() || (!bOnlyStandardPackets && !m_control_queue.empty());
+}
+
 
 void CEMSocket::OnSend(int nErrorCode)
 {
@@ -516,7 +532,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 					// Just to be safe. Shouldn't happen?
 					// if we reach this point, then there's something wrong with the while condition above!
 					wxFAIL;
-					AddDebugLogLineC(logGeneral, wxT("EMSocket: Couldn't get a new packet! There's an error in the first while condition in EMSocket::Send()"));
+					AddDebugLogLineC(logGeneral, "EMSocket: Couldn't get a new packet! There's an error in the first while condition in EMSocket::Send()");
 
 					SocketSentBytes returnVal = { true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
 					return returnVal;
@@ -529,7 +545,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 				sent = 0;
 				delete curPacket;
 
-				CryptPrepareSendData((byte*)sendbuffer, sendblen);
+				CryptPrepareSendData((uint8_t*)sendbuffer, sendblen);
 			}
 
 			// At this point we've got a packet to send in sendbuffer. Try to send it. Loop until entire packet
@@ -564,24 +580,18 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 
 				uint32 result = CEncryptedStreamSocket::Write(sendbuffer+sent,tosend);
 
-				if (BlocksWrite()) {
-					m_bBusy = true;
-					SocketSentBytes returnVal = { true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
-					return returnVal; // Send() blocked, onsend will be called when ready to send again
-				} else if (LastError()) {
-					// Send() gave an error
-					anErrorHasOccured = true;
-				} else {
-					// we managed to send some bytes. Perform bookkeeping.
-					m_bBusy = false;
+				// Advance 'sent' before checking BlocksWrite().  BlocksWrite()
+				// reflects "any async_write currently in flight", not "did
+				// this Write() succeed".  A previous iteration's pending
+				// write may still be in flight when the current Write()
+				// succeeds, so BlocksWrite() returns true even though we
+				// just dispatched more data.  Advancing first prevents
+				// 'sent' from lagging and the same bytes being re-sent.
+				if (result > 0) {
 					m_hasSent = true;
-
 					sent += result;
-
-					// Log send bytes in correct class
 					if(m_currentPacket_is_controlpacket == false) {
 						sentStandardPacketBytesThisCall += result;
-
 						if(m_currentPackageIsFromPartFile == true) {
 							m_numberOfSentBytesPartFile += result;
 						} else {
@@ -591,6 +601,17 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 						sentControlPacketBytesThisCall += result;
 						m_numberOfSentBytesControlPacket += result;
 					}
+				}
+
+				if (BlocksWrite()) {
+					m_bBusy = true;
+					SocketSentBytes returnVal = { true, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
+					return returnVal; // Send() blocked, onsend will be called when ready to send again
+				} else if (LastError()) {
+					// Send() gave an error
+					anErrorHasOccured = true;
+				} else {
+					m_bBusy = false;
 				}
 			}
 
@@ -662,7 +683,7 @@ uint32 CEMSocket::GetNeededBytes()
 		}
 
 		if (!((sendbuffer && !m_currentPacket_is_controlpacket) || !m_standard_queue.empty())) {
-			// No standard packet to send. Even if data needs to be sent to prevent timout, there's nothing to send.
+			// No standard packet to send. Even if data needs to be sent to prevent timeout, there's nothing to send.
 			return 0;
 		}
 

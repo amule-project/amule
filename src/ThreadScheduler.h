@@ -188,7 +188,7 @@ private:
 
 	//! The owner (scheduler), used when calling TestDestroy.
 	CMuleThread* m_owner;
-	//! Specifies if the specifc task should be aborted.
+	//! Specifies if the specific task should be aborted.
 	bool m_abort;
 
 	friend class CThreadScheduler;

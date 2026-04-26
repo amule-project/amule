@@ -26,11 +26,12 @@
 #ifndef __PROXY_H__
 #define __PROXY_H__
 
-#include <wx/wx.h>
-
 #include "amuleIPV4Address.h"	// For amuleIPV4address
 #include "StateMachine.h"	// For CStateMachine
 #include "LibSocket.h"
+
+#include <wx/wx.h>
+#include <wx/socket.h>
 
 /******************************************************************************/
 
@@ -58,7 +59,7 @@ const unsigned char SOCKS4_REPLY_FAILED_DIFFERENT_USERIDS	= 93;
  * Also, for the future :) :
  * - RFC-1961: GSS-API Authentication Method for SOCKS Version 5
  * - RFC-1508: Generic Security Service Application Program Interface
- * - RFC-1509: Genecic Security Service API: C-bindings
+ * - RFC-1509: Generic Security Service API: C-bindings
  *
  */
 
@@ -182,7 +183,7 @@ private:
 	 * Event handler function.
 	 */
 	void ProxySocketHandler(wxSocketEvent &event);
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
 #endif /* !ASIO_SOCKETS */
 
@@ -287,7 +288,7 @@ protected:
 	// Temporary variables
 	//
 	unsigned char		m_lastReply;
-	unsigned int		m_packetLenght;
+	unsigned int		m_packetLength;
 };
 
 //------------------------------------------------------------------------------
@@ -502,6 +503,9 @@ private:
 
 class CSocketClientProxy : public CProxySocket
 {
+private:
+	bool Connect(const wxSockAddress &, bool = true) { return false; }
+
 public:
 	/* Constructor */
 	CSocketClientProxy(

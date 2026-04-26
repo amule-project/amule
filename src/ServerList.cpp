@@ -46,7 +46,7 @@
 #include "Preferences.h"		// Needed for thePrefs
 #include "amule.h"			// Needed for theApp
 #include "Statistics.h"			// Needed for theStats
-#include "Packet.h"			// Neeed for CPacket
+#include "Packet.h"			// Needed for CPacket
 #include "Logger.h"
 #include "ScopedPtr.h"
 #include <common/Format.h>
@@ -66,10 +66,10 @@ CServerList::CServerList()
 bool CServerList::Init()
 {
 	// Load Metfile
-	bool bRes = LoadServerMet(CPath(thePrefs::GetConfigDir() + wxT("server.met")));
+	bool bRes = LoadServerMet(CPath(thePrefs::GetConfigDir() + "server.met"));
 
 	// insert static servers from textfile
-	m_staticServersConfig = thePrefs::GetConfigDir() + wxT("staticservers.dat");
+	m_staticServersConfig = thePrefs::GetConfigDir() + "staticservers.dat";
 	LoadStaticServers();
 
 	// Send the auto-update of server.met via HTTPThread requests
@@ -95,7 +95,7 @@ bool CServerList::LoadServerMet(const CPath& path)
 	}
 
 	// Try to unpack the file, might be an archive
-	const wxChar* mets[] = { wxT("server.met"), NULL };
+	const char* mets[] = { "server.met", NULL };
 	// Try to unpack the file, might be an archive
 	if (UnpackArchive(path, mets).second != EFT_Met) {
 		AddLogLineC(CFormat(_("Failed to load server.met file '%s', unknown format encountered.")) % path);
@@ -112,7 +112,7 @@ bool CServerList::LoadServerMet(const CPath& path)
 	try {
 		Notify_ServerFreeze();
 
-		byte version = servermet.ReadUInt8();
+		uint8_t version = servermet.ReadUInt8();
 
 		if (version != 0xE0 && version != MET_HEADER) {
 			AddLogLineC(CFormat(_("Server.met file corrupt, found invalid versiontag: 0x%x, size %i")) % version % sizeof(version));
@@ -147,7 +147,7 @@ bool CServerList::LoadServerMet(const CPath& path)
 
 			// set listname for server
 			if ( newserver->GetListName().IsEmpty() ) {
-				newserver->SetListName(wxT("Server ") +newserver->GetAddress());
+				newserver->SetListName("Server " +newserver->GetAddress());
 			}
 
 
@@ -284,13 +284,13 @@ void CServerList::ServerStats()
 		}
 
 		srand((unsigned)time(NULL));
-		ping_server->SetRealLastPingedTime(tNow); // this is not used to calcualte the next ping, but only to ensure a minimum delay for premature pings
+		ping_server->SetRealLastPingedTime(tNow); // this is not used to calculate the next ping, but only to ensure a minimum delay for premature pings
 		if (!ping_server->GetCryptPingReplyPending() && (!ping_server->GetLastPingedTime() || (tNow - ping_server->GetLastPingedTime()) >= UDPSERVSTATREASKTIME) && theApp->GetPublicIP() && thePrefs::IsServerCryptLayerUDPEnabled()) {
 			// We try a obfsucation ping first and wait 20 seconds for an answer
-			// if it doesn't get responsed, we don't count it as error but continue with a normal ping
+			// if it doesn't get responded to, we don't count it as error but continue with a normal ping
 			ping_server->SetCryptPingReplyPending(true);
 			uint32 nPacketLen = 4 + (uint8)(rand() % 16); // max padding 16 bytes
-			CScopedArray<byte> pRawPacket(nPacketLen);
+			CScopedArray<uint8_t> pRawPacket(nPacketLen);
 			uint32 dwChallenge = (rand() << 17) | (rand() << 2) | (rand() & 0x03);
 			if (dwChallenge == 0) {
 				dwChallenge++;
@@ -305,7 +305,7 @@ void CServerList::ServerStats()
 			ping_server->SetLastPinged(tNow);
 			ping_server->SetLastPingedTime((tNow - (uint32)UDPSERVSTATREASKTIME) + 20); // give it 20 seconds to respond
 
-			AddDebugLogLineN(logServerUDP, CFormat(wxT(">> Sending OP__GlobServStatReq (obfuscated) to server %s:%u")) % ping_server->GetAddress() % ping_server->GetPort());
+			AddDebugLogLineN(logServerUDP, CFormat(">> Sending OP__GlobServStatReq (obfuscated) to server %s:%u") % ping_server->GetAddress() % ping_server->GetPort());
 
 			CPacket* packet = new CPacket(pRawPacket[1], nPacketLen - 2, pRawPacket[0]);
 			packet->CopyToDataBuffer(0, pRawPacket.get() + 2, nPacketLen - 2);
@@ -316,9 +316,9 @@ void CServerList::ServerStats()
 			// our obfsucation ping request was not answered, so probably the server doesn'T supports obfuscation
 			// continue with a normal request
 			if (ping_server->GetCryptPingReplyPending() && thePrefs::IsServerCryptLayerUDPEnabled()) {
-				AddDebugLogLineN(logServerUDP, wxT("CryptPing failed for server ") + ping_server->GetListName());
+				AddDebugLogLineN(logServerUDP, "CryptPing failed for server " + ping_server->GetListName());
 			} else if (thePrefs::IsServerCryptLayerUDPEnabled()) {
-				AddDebugLogLineN(logServerUDP, wxT("CryptPing skipped because our public IP is unknown for server ") + ping_server->GetListName());
+				AddDebugLogLineN(logServerUDP, "CryptPing skipped because our public IP is unknown for server " + ping_server->GetListName());
 			}
 
 			ping_server->SetCryptPingReplyPending(false);
@@ -460,7 +460,7 @@ void CServerList::LoadStaticServers()
 			continue;
 		}
 
-		wxStringTokenizer tokens( line, wxT(",") );
+		wxStringTokenizer tokens( line, "," );
 
 		if ( tokens.CountTokens() != 3 ) {
 			continue;
@@ -472,8 +472,8 @@ void CServerList::LoadStaticServers()
 		wxString prio = tokens.GetNextToken().Strip( wxString::both );
 		wxString name = tokens.GetNextToken().Strip( wxString::both );
 
-		wxString host = addy.BeforeFirst( wxT(':') );
-		wxString port = addy.AfterFirst( wxT(':') );
+		wxString host = addy.BeforeFirst( ':' );
+		wxString port = addy.AfterFirst( ':' );
 
 
 		int priority = StrToLong( prio );
@@ -523,7 +523,7 @@ void CServerList::SaveStaticServers()
 		const CServer* server = *it;
 
 		if (server->IsStaticMember()) {
-			file.WriteLine(CFormat(wxT("%s:%u,%u,%s"))
+			file.WriteLine(CFormat("%s:%u,%u,%s")
 				% server->GetAddress() % server->GetPort()
 				% server->GetPreferences() % server->GetListName());
 		}
@@ -679,7 +679,7 @@ void CServerList::SetServerPrio(CServer* server, uint32 prio)
 
 bool CServerList::SaveServerMet()
 {
-	CPath curservermet = CPath(thePrefs::GetConfigDir() + wxT("server.met"));
+	CPath curservermet = CPath(thePrefs::GetConfigDir() + "server.met");
 
 	CFile servermet(curservermet, CFile::write_safe);
 	if (!servermet.IsOpened()) {
@@ -766,8 +766,8 @@ bool CServerList::SaveServerMet()
 
 			CTagInt32( ST_FAIL,       server->GetFailedCount()   ).WriteTagToFile( &servermet );
 			CTagInt32( ST_PREFERENCE, server->GetPreferences()   ).WriteTagToFile( &servermet );
-			CTagInt32( wxT("users"),  server->GetUsers()         ).WriteTagToFile( &servermet );
-			CTagInt32( wxT("files"),  server->GetFiles()         ).WriteTagToFile( &servermet );
+			CTagInt32( "users",  server->GetUsers()         ).WriteTagToFile( &servermet );
+			CTagInt32( "files",  server->GetFiles()         ).WriteTagToFile( &servermet );
 			CTagInt32( ST_PING,       server->GetPing()          ).WriteTagToFile( &servermet );
 			CTagInt32( ST_LASTPING,   server->GetLastPingedTime()).WriteTagToFile( &servermet );
 			CTagInt32( ST_MAXUSERS,   server->GetMaxUsers()      ).WriteTagToFile( &servermet );
@@ -799,7 +799,7 @@ bool CServerList::SaveServerMet()
 		}
 		// Now server.met.new is ready to be closed and renamed to server.met.
 		// But first rename existing server.met to server.met.bak (replacing old .bak file).
-		const CPath oldservermet = CPath(thePrefs::GetConfigDir() + wxT("server.met.bak"));
+		const CPath oldservermet = CPath(thePrefs::GetConfigDir() + "server.met.bak");
 		if (curservermet.FileExists()) {
 			CPath::RenameFile(curservermet, oldservermet, true);
 		}
@@ -807,7 +807,7 @@ bool CServerList::SaveServerMet()
 		servermet.Close();
 
 	} catch (const CIOFailureException& e) {
-		AddLogLineC(wxT("IO failure while writing 'server.met': ") + e.what());
+		AddLogLineC("IO failure while writing 'server.met': " + e.what());
 		return false;
 	}
 
@@ -829,13 +829,13 @@ void CServerList::RemoveDeadServers()
 
 void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 {
-	if (strURL.Find(wxT("://")) == -1) {
+	if (strURL.Find("://") == -1) {
 		AddLogLineC(_("Invalid URL"));
 		return;
 	}
 	m_URLUpdate = strURL;
-	wxString strTempFilename(thePrefs::GetConfigDir() + wxT("server.met.download"));
-	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL, strTempFilename, thePrefs::GetConfigDir() + wxT("server.met"), HTTP_ServerMet, false, false);
+	wxString strTempFilename(thePrefs::GetConfigDir() + "server.met.download");
+	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL, strTempFilename, thePrefs::GetConfigDir() + "server.met", HTTP_ServerMet, false, false);
 	downloader->Create();
 	downloader->Run();
 }
@@ -845,7 +845,7 @@ bool CServerList::DownloadFinished(uint32 result)
 {
 	bool ret = false;
 	if(result == HTTP_Success) {
-		const CPath tempFilename = CPath(thePrefs::GetConfigDir() + wxT("server.met.download"));
+		const CPath tempFilename = CPath(thePrefs::GetConfigDir() + "server.met.download");
 
 		// curl succeeded. proceed with server.met loading
 		LoadServerMet(tempFilename);
@@ -857,9 +857,9 @@ bool CServerList::DownloadFinished(uint32 result)
 		ret = true;
 	// cppcheck-suppress duplicateBranch
 	} else if (result == HTTP_Skipped) {
-		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % wxT("server.met"));
+		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % "server.met");
 	} else {
-		AddLogLineC(CFormat(_("Failed to download %s from %s")) % wxT("server.met") % m_URLUpdate);
+		AddLogLineC(CFormat(_("Failed to download %s from %s")) % "server.met" % m_URLUpdate);
 	}
 	return ret;
 }
@@ -882,11 +882,11 @@ void CServerList::AutoUpdate()
 			// Ok, got a valid URI
 			m_URLUpdate = URI;
 			wxString strTempFilename =
-				thePrefs::GetConfigDir() + wxT("server_auto.met");
+				thePrefs::GetConfigDir() + "server_auto.met";
 			AddLogLineC(CFormat(
 				_("Start downloading server list from %s")) % URI);
 			CHTTPDownloadThread *downloader = new CHTTPDownloadThread(
-				URI, strTempFilename, thePrefs::GetConfigDir() + wxT("server.met"), HTTP_ServerMetAuto, false, false);
+				URI, strTempFilename, thePrefs::GetConfigDir() + "server.met", HTTP_ServerMetAuto, false, false);
 			downloader->Create();
 			downloader->Run();
 
@@ -904,7 +904,7 @@ void CServerList::AutoUpdate()
 void CServerList::AutoDownloadFinished(uint32 result)
 {
 	if (result == HTTP_Success) {
-		CPath tempFilename = CPath(thePrefs::GetConfigDir() + wxT("server_auto.met"));
+		CPath tempFilename = CPath(thePrefs::GetConfigDir() + "server_auto.met");
 
 		// curl succeeded. proceed with server.met loading
 		LoadServerMet(tempFilename);

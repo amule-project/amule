@@ -63,8 +63,7 @@
 
 #include <common/MacrosProgramSpecific.h>
 
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY)
-
+wxDEFINE_EVENT(MULE_EVT_NOTIFY, wxEvent);
 
 namespace MuleNotify
 {
@@ -81,7 +80,7 @@ namespace MuleNotify
 #endif
 		} else {
 			CMuleGUIEvent evt(ntf.Clone());
-			wxPostEvent(wxTheApp, evt);
+			wxQueueEvent(wxTheApp, (evt).Clone());
 		}
 	}
 
@@ -89,7 +88,7 @@ namespace MuleNotify
 	void HandleNotificationAlways(const CMuleNotiferBase& ntf)
 	{
 		CMuleGUIEvent evt(ntf.Clone());
-		wxPostEvent(wxTheApp, evt);
+		wxQueueEvent(wxTheApp, (evt).Clone());
 	}
 
 
@@ -560,7 +559,7 @@ namespace MuleNotify
 	{
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_chatwnd) {
-			theApp->amuledlg->m_chatwnd->SendMessage(captcha, wxEmptyString, to_id);
+			theApp->amuledlg->m_chatwnd->SendMessage(captcha, "", to_id);
 		}
 #endif
 	}
