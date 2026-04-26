@@ -191,8 +191,18 @@ static wxString DoCleanPath(const wxString& path)
 /** Returns true if the two paths are equal. */
 static bool IsSameAs(const wxString& a, const wxString& b)
 {
-	// Cache the current directory
-	const wxString cwd = wxGetCwd();
+	// Cache the current directory only when at least one of the paths
+	// is relative — wxFileName::Normalize ignores the cwd argument
+	// for absolute paths.  Skipping wxGetCwd() in the absolute-only
+	// case (which is essentially every aMule call site: shared dirs,
+	// Temp, Incoming, partfile paths) avoids the wxLogSysError
+	// "Failed to get the working directory" that wxGetCwd() emits on
+	// macOS bundles whose recorded CWD has been removed (App
+	// translocation, deleted launching shell, etc.).
+	wxString cwd;
+	if (!wxIsAbsolutePath(a) || !wxIsAbsolutePath(b)) {
+		cwd = wxGetCwd();
+	}
 
 	// We normalize everything, except env. variables, which
 	// can cause problems when the string is not encodable
@@ -509,14 +519,25 @@ CPath CPath::RemoveExt() const
 
 CPath CPath::RemoveAllExt() const
 {
+	// Loop until all extensions are removed.
+	//
+	// The termination test compares the underlying filesystem strings
+	// directly rather than going through CPath::operator!=. The latter
+	// routes through IsSameAs() / wxFileName::Normalize(), which
+	// resolves relative paths via wxGetCwd().  When the process's
+	// recorded working directory has been deleted (routine on macOS
+	// bundles whose launching shell's CWD has been removed) wxGetCwd()
+	// emits a wxLogSysError("Failed to get the working directory...")
+	// for every call, and CDownloadListCtrl::DrawFileItem reaches this
+	// loop on every paint of every download row.  Plain string
+	// equality is the right comparison here anyway: we only need to
+	// know whether RemoveExt() changed the buffer, not whether two
+	// filesystem locations refer to the same node.
 	CPath last, current = RemoveExt();
-
-	// Loop until all extensions are removed
 	do {
 		last = current;
-
 		current = last.RemoveExt();
-	} while (last != current);
+	} while (last.m_filesystem != current.m_filesystem);
 
 	return current;
 }
