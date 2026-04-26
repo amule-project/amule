@@ -190,15 +190,42 @@ bool UploadBandwidthThrottler::RemoveFromStandardListNoLock(ThrottledFileSocket*
 */
 void UploadBandwidthThrottler::QueueForSendingControlPacket(ThrottledControlSocket* socket, bool hasSent)
 {
-	// Get critical section
-	wxMutexLocker lock( m_tempQueueLocker );
+	bool wasEmpty = false;
+	{
+		// Get critical section
+		wxMutexLocker lock( m_tempQueueLocker );
 
-	if ( m_doRun ) {
-		if( hasSent ) {
-			m_TempControlQueueFirst_list.push_back(socket);
-		} else {
-			m_TempControlQueue_list.push_back(socket);
+		if ( m_doRun ) {
+			wasEmpty = m_TempControlQueue_list.empty() && m_TempControlQueueFirst_list.empty();
+			if( hasSent ) {
+				m_TempControlQueueFirst_list.push_back(socket);
+			} else {
+				m_TempControlQueue_list.push_back(socket);
+			}
 		}
+	}
+
+	// Wake the throttler when the temp control queue transitions from
+	// empty to non-empty.  Without this signal the throttler's adaptive
+	// backoff (extraSleepTime *= 5 per idle tick, capped at 1 sec) lets
+	// the thread doze through newly-queued packets, adding 5–25 ms of
+	// latency to every freshly-built OP_REQUESTPARTS — which directly
+	// caps per-peer download throughput on Windows where peer ramp is
+	// already sensitive to ACK clock jitter.
+	//
+	// Gating on the empty→non-empty transition (rather than signaling
+	// on every queue add) matches the CBatchDrainNotifier pattern: one
+	// wake per drain cycle, not per producer add.  Bursty enqueues
+	// from the same SendBlockRequests fan-out coalesce into a single
+	// signal.
+	//
+	// The disk I/O thread already wakes the throttler the same way
+	// via NewUploadDataAvailable() when fresh file-data lands on a
+	// socket; this closes the equivalent gap for the control-packet
+	// path.
+	if (wasEmpty) {
+		wxMutexLocker lock( m_newDataMutex );
+		m_newDataCondition.Signal();
 	}
 }
 
