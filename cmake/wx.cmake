@@ -89,3 +89,60 @@ endforeach()
 
 unset (_amule_wx_components)
 unset (_amule_wx_targets)
+
+
+# CHTTPDownloadThread (HTTPDownload.{h,cpp}) is built directly on top of
+# wxWebRequest / wxWebSession / wxWebRequestEvent.  Those classes are gated
+# on wxUSE_WEBREQUEST in <wx/webrequest.h>, which itself collapses to 0
+# when wx was built without a backend — libcurl on Linux/*BSD, WinHTTP on
+# Windows, NSURLSession on macOS.  Distro CI never sees this because the
+# stock wx packages include the backend, but hand-rolled wx builds and
+# Gentoo wxGTK with USE="-curl" don't.  Surface that here so the failure
+# is one configure-time line instead of a wall of "wxWebRequest does not
+# name a type" cascades during the build.
+if (wx_NEED_NET)
+	include (CheckCXXSourceCompiles)
+	include (CMakePushCheckState)
+
+	# wxWidgets_DEFINITIONS is a list of bare names (e.g. WXUSINGDLL,
+	# __WXGTK__, _FILE_OFFSET_BITS=64); CMAKE_REQUIRED_DEFINITIONS wants
+	# each entry already prefixed with -D.  Without that, wx/defs.h trips
+	# its own "No Target! You should use wx-config program for compilation
+	# flags!" #error and the test fails for the wrong reason.
+	set (_amule_wx_required_defs)
+	foreach (_def IN LISTS wxWidgets_DEFINITIONS)
+		list (APPEND _amule_wx_required_defs "-D${_def}")
+	endforeach()
+
+	# Compile-only — we are inspecting a preprocessor symbol from
+	# wx/setup.h, not exercising any wx symbols, so save the link step
+	# (which would need CMAKE_REQUIRED_LIBRARIES wired up).
+	cmake_push_check_state (RESET)
+	set (CMAKE_REQUIRED_INCLUDES ${wxWidgets_INCLUDE_DIRS})
+	set (CMAKE_REQUIRED_DEFINITIONS ${_amule_wx_required_defs})
+	set (CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
+	check_cxx_source_compiles ("
+		#include <wx/webrequest.h>
+		#if !wxUSE_WEBREQUEST
+		#error wxUSE_WEBREQUEST is not enabled
+		#endif
+		int probe() { return 0; }
+	" amule_HAVE_WXWEBREQUEST)
+
+	cmake_pop_check_state()
+	unset (_amule_wx_required_defs)
+
+	if (NOT amule_HAVE_WXWEBREQUEST)
+		message (FATAL_ERROR
+			"wxWidgets was found but wxUSE_WEBREQUEST is 0 in this build.\n"
+			"aMule's HTTP download path requires wxWebRequest, which "
+			"needs a backend at wx-build time:\n"
+			"  - Linux / *BSD: libcurl   (rebuild wx with --with-libcurl,\n"
+			"                            or on Gentoo emerge net-libs/wxGTK\n"
+			"                            with USE=\"curl\")\n"
+			"  - Windows     : WinHTTP   (always present on supported releases)\n"
+			"  - macOS       : NSURLSession (always present)\n"
+			"Then re-run cmake.")
+	endif()
+endif()
