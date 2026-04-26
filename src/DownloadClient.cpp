@@ -636,6 +636,7 @@ void CUpDownClient::SendBlockRequests()
 		pblock->totalUnzipped = 0;
 		pblock->fZStreamError = 0;
 		pblock->fRecovered = 0;
+		pblock->fQueued = 0;	// Block sits in our local queue, not yet asked over the wire.
 		m_PendingBlocks_list.push_back(pblock);
 		m_DownloadBlocks_list.pop_front();
 	}
@@ -681,6 +682,7 @@ void CUpDownClient::SendBlockRequests()
 					pblock->totalUnzipped = 0;
 					pblock->fZStreamError = 0;
 					pblock->fRecovered = 0;
+					pblock->fQueued = 0;
 					m_PendingBlocks_list.push_back(pblock);
 				}
 			} else {
@@ -696,114 +698,131 @@ void CUpDownClient::SendBlockRequests()
 		}
 	}
 
+	// Collect up to N pending blocks that have not yet been written to a
+	// REQUESTPARTS packet (fQueued == 0).  N is the protocol's
+	// per-packet limit:
+	//
+	//   - Legacy OP_REQUESTPARTS / OP_REQUESTPARTS_I64 carry exactly 3
+	//     <start,end> pairs on the wire (see ProcessRequestPartsPacket
+	//     in UploadClient.cpp, which unconditionally reads 3 pairs).
+	//     Asking for more than 3 in one packet corrupts the wire format
+	//     and the sender ignores us, leaving the receiver stuck "On
+	//     queue".  Pad with zero-pairs if we have fewer than 3 unqueued
+	//     blocks.
+	//
+	//   - The aMule-only ED2Kv2 OP_REQUESTPARTS variant (gated by
+	//     GetVBTTags()) carries a leading uint8 block count and can
+	//     hold up to m_MaxBlockRequests blocks per packet.
+	//
+	// To take more than 3 blocks in flight on legacy peers we therefore
+	// emit one 3-block packet per call to SendBlockRequests() and let
+	// the caller's existing re-invocation loop (after each
+	// OP_SENDINGPART, OP_ACCEPTUPLOADREQ, etc.) issue further packets
+	// until m_PendingBlocks_list is fully queued.  This is the same
+	// pattern eMule 0.70 uses (eMule0.70b srchybrid/DownloadClient.cpp
+	// ::CreateBlockRequests + ::SendBlockRequests).
+	std::vector<Pending_Block_Struct*> toRequest;
+	bool bHasLongBlocks = false;
+	const size_t perPacketLimit = GetVBTTags() ? m_MaxBlockRequests : (size_t)STANDARD_BLOCKS_REQUEST;
+	toRequest.reserve(perPacketLimit);
+
+	for (std::list<Pending_Block_Struct*>::iterator it = m_PendingBlocks_list.begin();
+		 it != m_PendingBlocks_list.end() && toRequest.size() < perPacketLimit;
+		 ++it)
+	{
+		Pending_Block_Struct* pending = *it;
+		if (pending->fQueued) {
+			continue;	// Already asked for over the wire; sender owes us bytes.
+		}
+
+		wxASSERT(pending->block->StartOffset <= pending->block->EndOffset);
+		if (pending->block->StartOffset > 0xFFFFFFFF || pending->block->EndOffset > 0xFFFFFFFF) {
+			bHasLongBlocks = true;
+			if (!SupportsLargeFiles()) {
+				// Requesting a large block from a client that doesn't support large files?
+				if (!GetSentCancelTransfer()) {
+					CPacket* cancel_packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
+					theStats::AddUpOverheadFileRequest(cancel_packet->GetPacketSize());
+					AddDebugLogLineN(logLocalClient, "Local Client: OP_CANCELTRANSFER to " + GetFullIP());
+					SendPacket(cancel_packet, true, true);
+					SetSentCancelTransfer(1);
+				}
+				SetDownloadState(DS_ERROR);
+				return;
+			}
+		}
+		toRequest.push_back(pending);
+	}
+
+	if (toRequest.empty()) {
+		// Every pending block is already in flight.  Nothing to send;
+		// SendBlockRequests will be re-invoked as those blocks complete.
+		return;
+	}
+
 	CPacket* packet = NULL;
 
 	if (GetVBTTags()) {
-		// ED2Kv2 packet...
-		// Most common scenario: hash + blocks to request + every one
-		// having 2 uint32 tags
-
-		uint8 nBlocks = m_PendingBlocks_list.size();
-		if (nBlocks > m_MaxBlockRequests) {
-			nBlocks = m_MaxBlockRequests;
-		}
-
-		CMemFile data(16 + 1 + nBlocks*((2+4)*2));
-
+		// ED2Kv2 packet: hash + nBlocks + per-block <start,end> tag pair.
+		const uint8 nBlocks = (uint8)toRequest.size();
+		CMemFile data(16 + 1 + nBlocks * ((2 + 4) * 2));
 		data.WriteHash(m_reqfile->GetFileHash());
-
 		data.WriteUInt8(nBlocks);
-
-		std::list<Pending_Block_Struct*>::iterator it = m_PendingBlocks_list.begin();
-		while (nBlocks) {
-			wxASSERT(it != m_PendingBlocks_list.end());
-			wxASSERT( (*it)->block->StartOffset <= (*it)->block->EndOffset );
-			(*it)->fZStreamError = 0;
-			(*it)->fRecovered = 0;
-			CTagVarInt(/*Noname*/0,(*it)->block->StartOffset).WriteTagToFile(&data);
-			CTagVarInt(/*Noname*/0,(*it)->block->EndOffset).WriteTagToFile(&data);
-			++it;
-			nBlocks--;
+		for (Pending_Block_Struct* pending : toRequest) {
+			pending->fZStreamError = 0;
+			pending->fRecovered = 0;
+			pending->fQueued = 1;
+			CTagVarInt(/*Noname*/0, pending->block->StartOffset).WriteTagToFile(&data);
+			CTagVarInt(/*Noname*/0, pending->block->EndOffset).WriteTagToFile(&data);
 		}
-
 		packet = new CPacket(data, OP_ED2KV2HEADER, OP_REQUESTPARTS);
-		AddDebugLogLineN( logLocalClient, CFormat("Local Client ED2Kv2: OP_REQUESTPARTS(%i) to %s")
-				  % (m_PendingBlocks_list.size()<m_MaxBlockRequests ? m_PendingBlocks_list.size() : m_MaxBlockRequests) % GetFullIP() );
-
+		AddDebugLogLineN(logLocalClient, CFormat("Local Client ED2Kv2: OP_REQUESTPARTS(%i) to %s")
+				% (int)nBlocks % GetFullIP());
 	} else {
-		wxASSERT(m_MaxBlockRequests == STANDARD_BLOCKS_REQUEST);
-
-		//#warning Kry - I dont specially like this approach, we iterate one time too many
-
-		bool bHasLongBlocks =  false;
-
-		std::list<Pending_Block_Struct*>::iterator it = m_PendingBlocks_list.begin();
-		for (uint32 i = 0; i != m_MaxBlockRequests; i++){
-			if (it != m_PendingBlocks_list.end()) {
-				Pending_Block_Struct* pending = *it++;
-				wxASSERT( pending->block->StartOffset <= pending->block->EndOffset );
-				if (pending->block->StartOffset > 0xFFFFFFFF || pending->block->EndOffset > 0xFFFFFFFF){
-					bHasLongBlocks = true;
-					if (!SupportsLargeFiles()){
-						// Requesting a large block from a client that doesn't support large files?
-						if (!GetSentCancelTransfer()){
-							CPacket* cancel_packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
-							theStats::AddUpOverheadFileRequest(cancel_packet->GetPacketSize());
-							AddDebugLogLineN( logLocalClient, "Local Client: OP_CANCELTRANSFER to " + GetFullIP() );
-							SendPacket(cancel_packet,true,true);
-							SetSentCancelTransfer(1);
-						}
-						SetDownloadState(DS_ERROR);
-						return;
-					}
-					break;
-				}
-			}
-		}
-
-		CMemFile data(16 /*Hash*/ + (m_MaxBlockRequests*(bHasLongBlocks ? 8 : 4) /* uint32/64 start*/) + (3*(bHasLongBlocks ? 8 : 4)/* uint32/64 end*/));
+		// Legacy OP_REQUESTPARTS / OP_REQUESTPARTS_I64: always 3 blocks
+		// on the wire.  Pad missing entries with zero <start,end> pairs;
+		// the upload-side parser (UploadClient.cpp ProcessRequestPartsPacket)
+		// silently skips entries with end <= start, so zero pairs are inert.
+		const size_t kWireBlocks = STANDARD_BLOCKS_REQUEST;
+		const size_t offsetSize = bHasLongBlocks ? 8 : 4;
+		CMemFile data(16 + kWireBlocks * offsetSize * 2);
 		data.WriteHash(m_reqfile->GetFileHash());
 
-		it = m_PendingBlocks_list.begin();
-		for (uint32 i = 0; i != m_MaxBlockRequests; i++) {
-			if (it != m_PendingBlocks_list.end()) {
-				Pending_Block_Struct* pending = *it++;
-				wxASSERT( pending->block->StartOffset <= pending->block->EndOffset );
+		for (size_t i = 0; i < kWireBlocks; ++i) {
+			uint64 start = 0;
+			if (i < toRequest.size()) {
+				Pending_Block_Struct* pending = toRequest[i];
 				pending->fZStreamError = 0;
 				pending->fRecovered = 0;
-				if (bHasLongBlocks) {
-					data.WriteUInt64(pending->block->StartOffset);
-				} else {
-					data.WriteUInt32(pending->block->StartOffset);
-				}
+				pending->fQueued = 1;
+				start = pending->block->StartOffset;
+			}
+			if (bHasLongBlocks) {
+				data.WriteUInt64(start);
 			} else {
-				if (bHasLongBlocks) {
-					data.WriteUInt64(0);
-				} else {
-					data.WriteUInt32(0);
-				}
+				data.WriteUInt32((uint32)start);
 			}
 		}
-
-		it = m_PendingBlocks_list.begin();
-		for (uint32 i = 0; i != m_MaxBlockRequests; i++) {
-			if (it != m_PendingBlocks_list.end()) {
-				Requested_Block_Struct* block = (*it++)->block;
-				if (bHasLongBlocks) {
-					data.WriteUInt64(block->EndOffset+1);
-				} else {
-					data.WriteUInt32(block->EndOffset+1);
-				}
+		for (size_t i = 0; i < kWireBlocks; ++i) {
+			uint64 end = 0;
+			if (i < toRequest.size()) {
+				end = toRequest[i]->block->EndOffset + 1;
+			}
+			if (bHasLongBlocks) {
+				data.WriteUInt64(end);
 			} else {
-				if (bHasLongBlocks) {
-					data.WriteUInt64(0);
-				} else {
-					data.WriteUInt32(0);
-				}
+				data.WriteUInt32((uint32)end);
 			}
 		}
-		packet = new CPacket(data, (bHasLongBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bHasLongBlocks ? (uint8)OP_REQUESTPARTS_I64 : (uint8)OP_REQUESTPARTS));
-		AddDebugLogLineN(logLocalClient, CFormat("Local Client: %s to %s") % (bHasLongBlocks ? "OP_REQUESTPARTS_I64" : "OP_REQUESTPARTS") % GetFullIP());
+		packet = new CPacket(data,
+			(bHasLongBlocks ? OP_EMULEPROT : OP_EDONKEYPROT),
+			(bHasLongBlocks ? (uint8)OP_REQUESTPARTS_I64 : (uint8)OP_REQUESTPARTS));
+		AddDebugLogLineN(logLocalClient,
+			CFormat("Local Client: %s(%u of %u pending) to %s")
+				% (bHasLongBlocks ? "OP_REQUESTPARTS_I64" : "OP_REQUESTPARTS")
+				% (unsigned)toRequest.size()
+				% (unsigned)m_PendingBlocks_list.size()
+				% GetFullIP());
 	}
 
 	if (packet) {
