@@ -70,13 +70,6 @@
 #include "MuleUDPSocket.h"
 #include "OtherFunctions.h"	// DeleteContents
 #include "ScopedPtr.h"
-#ifdef _WIN32
-#include <winsock2.h>
-#else
-#include <sys/socket.h>		// ::recv with MSG_PEEK | MSG_DONTWAIT
-#include <unistd.h>
-#endif
-#include <errno.h>
 #include <common/Macros.h>
 
 using namespace boost::asio;
@@ -107,6 +100,12 @@ public:
 
 class CAsioSocketImpl
 {
+	// Buffer size posted with async_read_some.  256 KB lets a fast peer
+	// fill the buffer with several TCP segments at once on POSIX (epoll/
+	// kqueue), and is the IOCP-native WSARecv buffer on Windows.  Bigger
+	// keeps per-byte event-loop overhead small without blowing memory.
+	static constexpr uint32 READ_CHUNK = 256 * 1024;
+
 public:
 	// cppcheck-suppress uninitMemberVar m_readBufferPtr
 	CAsioSocketImpl(CLibSocket * libSocket) :
@@ -435,8 +434,19 @@ private:
 	void DispatchBackgroundRead()
 	{
 		AddDebugLogLineF(logAsio, CFormat("DispatchBackgroundRead %s") % m_IP);
-		m_socket->async_wait(ip::tcp::socket::wait_read,
-			bind_executor(m_strand, [this](const error_code& ec) { HandleRead(ec); }));
+		// Why async_read_some and not async_wait(wait_read): on Windows
+		// boost.asio implements async_wait via its select_reactor (a single
+		// select() loop in a dedicated thread) because IOCP has no native
+		// "ready notification" without a buffer.  async_read_some maps to
+		// WSARecv on Windows (IOCP-native) and to epoll/kqueue on POSIX, so
+		// it is the fast path on every platform.
+		if (m_readBufferSize < READ_CHUNK) {
+			delete[] m_readBuffer;
+			m_readBuffer = new char[READ_CHUNK];
+			m_readBufferSize = READ_CHUNK;
+		}
+		m_socket->async_read_some(buffer(m_readBuffer, m_readBufferSize),
+			bind_executor(m_strand, [this](const error_code& ec, std::size_t n) { HandleRead(ec, n); }));
 	}
 
 	// The buffer pointer is passed explicitly so each HandleSend knows
@@ -493,7 +503,7 @@ private:
 		}
 	}
 
-	void HandleRead(const error_code & ec)
+	void HandleRead(const error_code & ec, size_t bytes_transferred)
 	{
 		if (m_isDestroying) {
 			AddDebugLogLineF(logAsio, CFormat("HandleRead: socket pending for deletion %s") % m_IP);
@@ -506,79 +516,16 @@ private:
 			return;
 		}
 
-		error_code ec2;
-		uint32 avail = m_socket->available(ec2);
-		if (SetError(ec2)) {
-			AddDebugLogLineN(logAsio, CFormat("HandleReadError available %d %s %s") % avail % m_IP % ec2.message());
+		if (bytes_transferred == 0) {
+			AddDebugLogLineF(logAsio, CFormat("HandleReadError nothing available %s") % m_IP);
+			SetError();
 			PostLostEvent();
 			return;
 		}
-		if (avail == 0) {
-			// Two cases indistinguishable from available() alone:
-			//   1. Peer closed — socket state has EOF pending
-			//   2. Spurious wakeup — boost.asio uses EPOLLET; after a
-			//      concurrent drain on another ASIO thread consumed the
-			//      data, a queued edge event still schedules this
-			//      handler with no data pending.
-			// Distinguish via non-blocking native recv with MSG_PEEK.
-			// We cannot call socket.read_some() synchronously — the
-			// socket is in *blocking* mode (the constructor's
-			// non_blocking() call is a getter, not a setter).
-#ifdef _WIN32
-			// boost::asio on Windows uses IOCP, not EPOLLET, so a read
-			// completion with 0 bytes available really means EOF. No
-			// spurious-wakeup scenario to distinguish.
-			bool eof = true;
-#else
-			char peek;
-			ssize_t n = ::recv(m_socket->native_handle(), &peek, 1, MSG_PEEK | MSG_DONTWAIT);
-			bool eof = (n == 0) || (n < 0 && errno != EAGAIN && errno != EWOULDBLOCK);
-#endif
-			if (eof) {
-				AddDebugLogLineF(logAsio, CFormat("HandleReadError nothing available %s") % m_IP);
-				SetError();
-				PostLostEvent();
-				return;
-			}
-			// Spurious wakeup — re-arm without setting error.
-			m_socket->async_wait(ip::tcp::socket::wait_read,
-				bind_executor(m_strand, [this](const error_code& ec) { HandleRead(ec); }));
-			return;
-		}
-		AddDebugLogLineF(logAsio, CFormat("HandleRead %d %s") % avail % m_IP);
 
-		// Drain loop: boost.asio uses EPOLLET.  If more data arrives
-		// between available() and read_some(), it stays in the kernel
-		// buffer and no new event fires until the buffer empties then
-		// refills.  Loop until available() returns 0.
-		uint32 totalRead = 0;
-		while (avail > 0) {
-			uint32 needed = totalRead + avail;
-			if (m_readBufferSize < needed) {
-				char* newBuf = new char[needed];
-				if (totalRead > 0) {
-					memcpy(newBuf, m_readBuffer, totalRead);
-				}
-				delete[] m_readBuffer;
-				m_readBuffer = newBuf;
-				m_readBufferSize = needed;
-			}
-			size_t got = m_socket->read_some(buffer(m_readBuffer + totalRead, avail), ec2);
-			if (SetError(ec2) || got == 0) {
-				AddDebugLogLineN(logAsio, CFormat("HandleReadError read %zu %s %s") % got % m_IP % ec2.message());
-				PostLostEvent();
-				return;
-			}
-			totalRead += (uint32)got;
-			avail = m_socket->available(ec2);
-			if (SetError(ec2)) {
-				AddDebugLogLineN(logAsio, CFormat("HandleReadError availLoop %s %s") % m_IP % ec2.message());
-				PostLostEvent();
-				return;
-			}
-		}
+		AddDebugLogLineF(logAsio, CFormat("HandleRead %zu %s") % bytes_transferred % m_IP);
 		m_readBufferPtr = m_readBuffer;
-		m_readBufferContent = totalRead;
+		m_readBufferContent = (uint32)bytes_transferred;
 
 		m_readPending = false;
 		m_blocksRead = false;
