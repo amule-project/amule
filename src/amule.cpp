@@ -1573,11 +1573,10 @@ wxString CamuleApp::GetLog(bool reset)
 	// try to guess file format
 	wxString str;
 	if (tmp_buffer[0] && tmp_buffer[1]) {
-		str = wxString(UTF82unicode(tmp_buffer));
+		str = wxString::FromUTF8(tmp_buffer); 
 	} else {
-		str = wxWCharBuffer((wchar_t *)tmp_buffer);
+		str = wxString(tmp_buffer); 
 	}
-
 	delete [] tmp_buffer;
 	if ( reset ) {
 		theLogger.CloseLogfile();
