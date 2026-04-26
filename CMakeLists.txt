@@ -96,19 +96,42 @@ if (wx_NEEDED)
 	include (cmake/wx.cmake)
 endif()
 
-if (NOT SVNDATE)
+#
+# SVNDATE is consumed by config.h.cm (#define SVNDATE "...") and
+# version.rc.in (Windows version resource), and ends up in the binary's
+# `--version` output and the amuled startup banner.
+#
+# Two modes:
+#   * Distro packagers building from a tarball (no .git) pass
+#     -DSVNDATE="rev. foo" on the cmake command line.  That value lands
+#     in the cache and is respected here unconditionally.
+#   * Source builds derive the value from `git describe` on EVERY
+#     configure so subsequent commits show up in the banner without a
+#     full reconfigure.  The previous code wrapped this in
+#     `if (NOT SVNDATE)` and stored the result with `CACHE STRING FORCE`,
+#     which froze the value at the first configure forever — every
+#     incremental rebuild thereafter embedded the stale revision string.
+#
+# CMAKE_CONFIGURE_DEPENDS on .git/HEAD makes the build system re-run
+# cmake when HEAD changes (commit, checkout, pull), so `cmake --build`
+# alone is enough to pick up new commits in the banner.
+#
+if (NOT DEFINED CACHE{SVNDATE})
 	find_package (Git)
-
-	if (GIT_FOUND)
+	if (GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
 		execute_process (
 			COMMAND ${GIT_EXECUTABLE} describe
 			OUTPUT_VARIABLE GIT_INFO_WC_REVISION
 			OUTPUT_STRIP_TRAILING_WHITESPACE
+			RESULT_VARIABLE GIT_INFO_RESULT
 			WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-	endif (GIT_FOUND)
-
-	set (SVNDATE "rev. ${GIT_INFO_WC_REVISION}" CACHE STRING "Revision to be written to version string" FORCE)
-	message (STATUS "git revision ${SVNDATE} found")
+		if (GIT_INFO_RESULT EQUAL 0 AND GIT_INFO_WC_REVISION)
+			set (SVNDATE "rev. ${GIT_INFO_WC_REVISION}")
+			message (STATUS "git revision ${SVNDATE} found")
+		endif()
+	endif()
+	set_property (DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+		"${CMAKE_SOURCE_DIR}/.git/HEAD")
 endif()
 
 include (cmake/bfd.cmake)
