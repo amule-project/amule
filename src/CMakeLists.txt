@@ -84,7 +84,7 @@ if (BUILD_AMULECMD)
 
 	if (HAVE_BFD)
 		target_link_libraries (amulecmd 
-			PRIVATE ${LIBBFD}
+			PRIVATE ${BFD_LIBRARY}
 		)
 	endif (HAVE_BFD)
 
@@ -132,7 +132,7 @@ if (BUILD_DAEMON)
 
 	if (HAVE_BFD)
 		target_link_libraries (amuled
-			PRIVATE ${LIBBFD}
+			PRIVATE ${BFD_LIBRARY}
 		)
 	endif()
 
@@ -211,7 +211,7 @@ if (BUILD_MONOLITHIC)
 
 	if (HAVE_BFD)
 		target_link_libraries (amule
-			PRIVATE ${LIBBFD}
+			PRIVATE ${BFD_LIBRARY}
 		)
 	endif()
 
@@ -315,7 +315,7 @@ if (BUILD_REMOTEGUI)
 
 	if (HAVE_BFD)
 		target_link_libraries (amulegui
-			PRIVATE ${LIBBFD}
+			PRIVATE ${BFD_LIBRARY}
 		)
 	endif()
 
