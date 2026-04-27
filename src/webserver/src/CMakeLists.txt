@@ -33,7 +33,7 @@ add_executable (amuleweb
 
 if (WIN32)
 	target_sources (amuleweb
-		PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+		PRIVATE ${CMAKE_BINARY_DIR}/version.rc
 	)
 endif()
 

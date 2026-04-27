@@ -64,7 +64,7 @@ if (BUILD_AMULECMD)
 
 	if (WIN32)
 		target_sources (amulecmd
-			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+			PRIVATE ${CMAKE_BINARY_DIR}/version.rc
 		)
 	endif()
 
@@ -108,7 +108,7 @@ if (BUILD_DAEMON)
 
 	if (WIN32)
 		target_sources (amuled
-			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+			PRIVATE ${CMAKE_BINARY_DIR}/version.rc
 		)
 	endif()
 
@@ -156,7 +156,7 @@ if (BUILD_ED2K)
 
 	if (WIN32)
 		target_sources (ed2k
-			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+			PRIVATE ${CMAKE_BINARY_DIR}/version.rc
 		)
 	endif()
 
@@ -194,7 +194,7 @@ if (BUILD_MONOLITHIC)
 
 	if (WIN32)
 		target_sources (amule
-			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc ${CMAKE_SOURCE_DIR}/amule.rc
+			PRIVATE ${CMAKE_BINARY_DIR}/version.rc ${CMAKE_SOURCE_DIR}/amule.rc
 		)
 	endif()
 
@@ -291,7 +291,7 @@ if (BUILD_REMOTEGUI)
 
 	if (WIN32)
 		target_sources (amulegui
-			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc ${CMAKE_SOURCE_DIR}/amule.rc
+			PRIVATE ${CMAKE_BINARY_DIR}/version.rc ${CMAKE_SOURCE_DIR}/amule.rc
 		)
 	endif()
 

@@ -12,7 +12,7 @@ add_executable (fileview
 
 if (WIN32)
 	target_sources (fileview
-		PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+		PRIVATE ${CMAKE_BINARY_DIR}/version.rc
 	)
 endif()
 
