@@ -11,7 +11,7 @@ if (BUILD_ALCC)
 
 	if (WIN32)
 		target_sources (alcc
-			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+			PRIVATE ${CMAKE_BINARY_DIR}/version.rc
 		)
 	endif()
 
@@ -43,7 +43,7 @@ if (BUILD_ALC)
 
 	if (WIN32)
 		target_sources (alc
-			PRIVATE ${CMAKE_SOURCE_DIR}/version.rc
+			PRIVATE ${CMAKE_BINARY_DIR}/version.rc
 		)
 
 		set_target_properties (alc
