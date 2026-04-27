@@ -13,6 +13,7 @@ permissions:
 env:
   # The minus sign removes the trailing new line in the last line
   cmake_ubuntu_deps: |-
+    binutils-dev \
     build-essential \
     cmake \
     gettext \
