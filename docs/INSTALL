@@ -70,6 +70,21 @@
     cmake -LAH -B build | less
 
 
+ Refreshing translated manpages (maintainers / translators)
+-----------------------------------------------------------
+
+  The translated *.LANG.1 manpages under docs/man/ are committed
+  artifacts, regenerated from docs/man/po/manpages-LANG.po against the
+  English masters via po4a. po4a is not a build dependency — the
+  refresh target only exists when po4a is found at configure time:
+
+    cmake --build build --target po4a-update
+
+  This rewrites docs/man/po/manpages.pot, syncs each manpages-LANG.po,
+  and regenerates the translated *.LANG.1 files in place. Commit the
+  resulting changes.
+
+
  Links
 -------
 
