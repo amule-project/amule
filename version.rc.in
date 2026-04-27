@@ -1,5 +1,5 @@
 #include <winver.h>
-#include "src/include/common/ClientVersion.h"
+#include "@CMAKE_SOURCE_DIR@/src/include/common/ClientVersion.h"
 
 #ifdef __PRERELEASE__
 #define VER_PRERELEASE	VS_FF_PRERELEASE
