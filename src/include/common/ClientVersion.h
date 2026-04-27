@@ -26,7 +26,14 @@
 #ifndef CLIENTVERSION_H
 #define CLIENTVERSION_H
 
+// RC_INVOKED is defined by windres when processing a .rc resource
+// file. The Windows version-info resource (version.rc.in) only needs
+// the VERSION_MJR/MIN/UPDATE macros below; pulling in config.h drags
+// in -I${CMAKE_BINARY_DIR} which isn't on the windres command line for
+// every Windows target (e.g. ed2k).
+#ifndef RC_INVOKED
 #include "config.h"		// Needed for VERSION
+#endif
 
 // eMule version used on old MuleInfo packet (unimportant).
 #define	CURRENT_VERSION_SHORT			0x47
