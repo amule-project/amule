@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.5)
+cmake_minimum_required (VERSION 3.10...3.31)
 project (amule)
 
 set (MIN_BOOST_VERSION 1.70)
