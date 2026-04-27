@@ -2377,7 +2377,7 @@ bool CUpDownClient::SendPacket(CPacket* packet, bool delpacket, bool controlpack
 	}
 }
 
-float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
+float CUpDownClient::TickDownloadAndMeasure()
 {
 	// lfroen: in daemon it actually can happen
 		wxASSERT( m_socket );
@@ -2385,32 +2385,13 @@ float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
 	float kBpsClient = CalculateKBpsDown();
 
 	if ( m_socket ) {
-
-		if (reducedownload) {
-			// (% to reduce * current speed) / 100 and THEN, / (1000 / CORE_TIMER_PERIOD)
-			// which is how often it is called per second.
-			uint32 limit = (uint32)(reducedownload * kBpsClient * 1024.0 / 100000.0 * CORE_TIMER_PERIOD);
-
-			if(limit<1024 && reducedownload >= 200) {
-				// If we're going up and this download is < 1kB,
-				// we want it to go up fast. Can be reduced later,
-				// and it'll probably be in a more fair way with
-				// other downloads that are faster.
-				limit +=1024;
-			} else if(limit == 0) {
-				// This download is not transferring yet... make it
-				// 1024 so we don't fill the TCP stack and lose the
-				// connection.
-				limit = 1024;
-			}
-
-			m_socket->SetDownloadLimit(limit);
-		} else {
-			m_socket->DisableDownloadLimit();
-		}
-
+		// Wake the socket if it suspended last tick because the global
+		// CDownloadBandwidthThrottler bucket was empty -- this is the
+		// per-tick poke that lets paused reads retry against the
+		// freshly refilled budget.
+		m_socket->WakeIfPaused();
 	} else {
-		AddLogLineNS(CFormat("CAUGHT DEAD SOCKET IN SETDOWNLOADLIMIT() WITH SPEED %f") % kBpsClient);
+		AddLogLineNS(CFormat("CAUGHT DEAD SOCKET IN TICKDOWNLOADANDMEASURE() WITH SPEED %f") % kBpsClient);
 	}
 
 	return kBpsClient;

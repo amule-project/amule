@@ -15,6 +15,7 @@ if (BUILD_MONOLITHIC OR BUILD_DAEMON)
 		ClientTCPSocket.cpp
 		ClientUDPSocket.cpp
 		CorruptionBlackBox.cpp
+		DownloadBandwidthThrottler.cpp
 		DownloadClient.cpp
 		DownloadQueue.cpp
 		ECSpecialCoreTags.cpp

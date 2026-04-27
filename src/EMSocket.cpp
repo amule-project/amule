@@ -31,6 +31,7 @@
 
 #include "Packet.h"		// Needed for CPacket
 #include "amule.h"
+#include "DownloadBandwidthThrottler.h"
 #include "GetTickCount.h"
 #include "UploadBandwidthThrottler.h"
 #include "Logger.h"
@@ -60,9 +61,9 @@ CEMSocket::CEMSocket(const CProxyData *ProxyData)
 	byConnected = ES_NOTCONNECTED;
 	m_uTimeOut = CONNECTION_TIMEOUT; // default timeout for ed2k sockets
 
-	// Download (pseudo) rate control
-	downloadLimit = 0;
-	downloadLimitEnable = false;
+	// Download rate control: bucket is global
+	// (CDownloadBandwidthThrottler); only the per-socket pause flag
+	// lives here.
 	pendingOnReceive = false;
 
 	// Download partial header
@@ -136,9 +137,7 @@ void CEMSocket::ClearQueues()
 		m_standard_queue.clear();
 	}
 
-	// Download (pseudo) rate control
-	downloadLimit = 0;
-	downloadLimitEnable = false;
+	// Download rate control: see header.
 	pendingOnReceive = false;
 
 	// Download partial header
@@ -192,12 +191,6 @@ void CEMSocket::OnReceive(int nErrorCode)
 
 	uint32 ret;
 	do {
-		// CPU load improvement
-		if (downloadLimitEnable && downloadLimit == 0){
-			pendingOnReceive = true;
-			return;
-		}
-
 		uint32 readMax;
 		uint8_t *buf;
 		if (pendingHeaderSize < PACKET_HEADER_SIZE) {
@@ -220,31 +213,42 @@ void CEMSocket::OnReceive(int nErrorCode)
 			readMax = CPacket::GetPacketSizeFromHeader(pendingHeader) - pendingPacketSize;
 		}
 
-		if (downloadLimitEnable && readMax > downloadLimit) {
-			readMax = downloadLimit;
-		}
-
+		// Reserve from the global download budget only when we actually
+		// intend to read something. readMax can legitimately be 0 here
+		// for empty-payload packets (some ED2K control packets carry no
+		// payload past the header) -- the do-while iteration still has
+		// to fall through to the packet-processing block below to
+		// finalise the packet, so don't let Reserve(0) -> 0 -> early
+		// return short-circuit that path.
+		uint32 grantedBytes = 0;
 		ret = 0;
 		if (readMax) {
+			grantedBytes =
+				CDownloadBandwidthThrottler::Get().Reserve(readMax);
+			if (grantedBytes == 0) {
+				// Bucket exhausted; resume on next tick refill.
+				pendingOnReceive = true;
+				return;
+			}
+			readMax = grantedBytes;
+
 			std::lock_guard<std::mutex> lock(m_sendLocker);
 			ret = Read(buf, readMax);
 			if (BlocksRead()) {
+				CDownloadBandwidthThrottler::Get().Refund(grantedBytes);
 				pendingOnReceive = true;
 				return;
 			}
 			if (LastError() || ret == 0) {
+				CDownloadBandwidthThrottler::Get().Refund(grantedBytes);
 				return;
 			}
 		}
 
-		// Bandwidth control
-		if (downloadLimitEnable) {
-			// Update limit
-			if (ret >= downloadLimit) {
-				downloadLimit = 0;
-			} else {
-				downloadLimit -= ret;
-			}
+		// Refund the slice we reserved but didn't actually read so the
+		// leftover stays available to other peers in the same tick.
+		if (grantedBytes > ret) {
+			CDownloadBandwidthThrottler::Get().Refund(grantedBytes - ret);
 		}
 
 		// CPU load improvement
@@ -283,24 +287,13 @@ void CEMSocket::OnReceive(int nErrorCode)
 }
 
 
-void CEMSocket::SetDownloadLimit(uint32 limit)
+void CEMSocket::WakeIfPaused()
 {
-	downloadLimit = limit;
-	downloadLimitEnable = true;
-
-	// CPU load improvement
-	if(limit > 0 && pendingOnReceive == true){
-		OnReceive(0);
-	}
-}
-
-
-void CEMSocket::DisableDownloadLimit()
-{
-	downloadLimitEnable = false;
-
-	// CPU load improvement
-	if (pendingOnReceive == true){
+	if (pendingOnReceive) {
+		// Re-enter the read loop. OnReceive() will consult the global
+		// CDownloadBandwidthThrottler for fresh budget; if the bucket
+		// is still empty, pendingOnReceive stays set and we'll retry
+		// next tick.
 		OnReceive(0);
 	}
 }

@@ -552,9 +552,10 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 				m_downPartStatus.clear();
 				m_nPartCount = 0;
 			}
-			if (m_socket && byNewState != DS_ERROR) {
-				m_socket->DisableDownloadLimit();
-			}
+			// (Old code disabled the per-socket download cap here on
+			// transition out of DS_DOWNLOADING. The cap is now a global
+			// budget in CDownloadBandwidthThrottler shared across all
+			// sockets, so there's no per-socket state to clear.)
 		}
 		m_nDownloadState = byNewState;
 		if(GetDownloadState() == DS_DOWNLOADING) {

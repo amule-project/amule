@@ -128,7 +128,7 @@ public:
 	bool	IsCompleted() const		{ return status == PS_COMPLETE; }	// true if completed
 	bool	IsCPartFile() const		{ return true; }					// true if it's a CPartFile
 
-	uint32	Process(uint32 reducedownload, uint8 m_icounter);
+	uint32	Process(uint8 m_icounter);
 	uint8	LoadPartFile(const CPath& in_directory, const CPath& filename, bool from_backup = false, bool getsizeonly = false);
 	bool	SavePartFile(bool Initial = false);
 	void	PartFileHashFinished(CKnownFile* result);
