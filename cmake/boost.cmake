@@ -35,6 +35,9 @@ if (NOT ASIO_SOCKETS)
 			else()
 				set (Boost_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} CACHE STRING "Libraries needed for linking with boost" FORCE)
 			endif()
+			# find_package(Boost CONFIG) above sets a local non-cache Boost_LIBRARIES
+			# that masks the cache value we just wrote — clear it so the cache shows through.
+			unset (Boost_LIBRARIES)
 			set (BOOST_ERROR_CODE_HEADER_ONLY TRUE CACHE INTERNAL "When true, boost_system lib is not needed for linking" FORCE)
 			unset (CMAKE_REQUIRED_INCLUDES)
 			unset (CMAKE_REQUIRED_FLAGS)
