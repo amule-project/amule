@@ -11,7 +11,13 @@ if (NOT HAVE_BFD)
 			message (STATUS "No useable bfd-lib found, disabling support")
 		else()
 			foreach (CMAKE_REQUIRED_LIBRARIES
-				"" "${LIBBFD_TMP}" "${LIBBFD_TMP};iberty" "${LIBBFD_TMP};dl" "${LIBBFD};iberty;dl" "${LIBBFD_TMP};${LIBINTL}" "${LIBBFD_TMP};iberty;${LIBINTL_TMP}" "${LIBBFD_TMP};iberty;dl;${LIBINBTL}"
+				"${LIBBFD_TMP}"
+				"${LIBBFD_TMP};iberty"
+				"${LIBBFD_TMP};dl"
+				"${LIBBFD_TMP};iberty;dl"
+				"${LIBBFD_TMP};${LIBINTL}"
+				"${LIBBFD_TMP};iberty;${LIBINTL}"
+				"${LIBBFD_TMP};iberty;dl;${LIBINTL}"
 			)
 				unset (BFD_COMPILE_TEST CACHE)
 				check_c_source_compiles ("#include <ansidecl.h>
@@ -26,9 +32,9 @@ if (NOT HAVE_BFD)
 
 				if (BFD_COMPILE_TEST)
 					set (BFD_LIBRARY ${CMAKE_REQUIRED_LIBRARIES} CACHE STRING "Lib to use when linking to bfd")
-					unset (${CMAKE_REQUIRED_LIBRARIES})
+					unset (CMAKE_REQUIRED_LIBRARIES)
 					break()
-				endif()	
+				endif()
 			endforeach()
 		endif()
 
