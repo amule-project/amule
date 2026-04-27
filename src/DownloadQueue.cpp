@@ -47,6 +47,7 @@
 #include "Preferences.h"	// Needed for thePrefs
 #include "amule.h"		// Needed for theApp
 #include "AsyncDNS.h"		// Needed for CAsyncDNS
+#include "DownloadBandwidthThrottler.h"
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include <common/Format.h>	// Needed for CFormat
@@ -418,15 +419,17 @@ void CDownloadQueue::Process()
 	{
 		wxMutexLocker lock(m_mutex);
 
-		uint32 downspeed = 0;
-		if (thePrefs::GetMaxDownload() != UNLIMITED && m_datarate > 1500) {
-			downspeed = (((uint32)thePrefs::GetMaxDownload())*1024*100)/(m_datarate+1);
-			if (downspeed < 50) {
-				downspeed = 50;
-			} else if (downspeed > 200) {
-				downspeed = 200;
-			}
-		}
+		// Refill the global download bucket for this tick. The previous
+		// per-peer ratio controller (50-200% adaptive against the
+		// observed aggregate datarate) never actually enforced
+		// MaxDownload as a literal byte/sec cap. The throttler is a
+		// single shared atomic budget that every CEMSocket consults
+		// before each Read(); fast peers can claim unused capacity
+		// from slow ones within the same tick (demand-aware
+		// redistribution), and the global cap is the only constraint.
+		// MaxDownload=0 (UNLIMITED) sets the throttler to bypass mode.
+		CDownloadBandwidthThrottler::Get().RefillBudget(
+			thePrefs::GetMaxDownload(), CORE_TIMER_PERIOD);
 
 		m_datarate = 0;
 		m_udcounter++;
@@ -446,7 +449,7 @@ void CDownloadQueue::Process()
 			mustPreventSleep |= !(status == PS_ERROR || status == PS_INSUFFICIENT || status == PS_PAUSED || status == PS_COMPLETE);
 
 			if (status == PS_READY || status == PS_EMPTY ){
-				cur_datarate += file->Process( downspeed, cur_udcounter );
+				cur_datarate += file->Process( cur_udcounter );
 			} else {
 				//This will make sure we don't keep old sources to paused and stopped files..
 				file->StopPausedFile();

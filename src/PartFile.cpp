@@ -1331,7 +1331,7 @@ void CPartFile::WriteCompleteSourcesCount(CMemFile* file)
 	file->WriteUInt16(m_nCompleteSourcesCount);
 }
 
-uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
+uint32 CPartFile::Process(uint8 m_icounter)
 {
 	uint16 old_trans;
 	uint32 dwCurTick = ::GetTickCount();
@@ -1355,7 +1355,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			CUpDownClient *cur_src = it++->GetClient();
 			if(cur_src->GetDownloadState() == DS_DOWNLOADING) {
 				++transferingsrc;
-				kBpsDown += cur_src->SetDownloadLimit(reducedownload);
+				kBpsDown += cur_src->TickDownloadAndMeasure();
 			}
 		}
 	} else {
@@ -1365,7 +1365,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			switch (cur_src->GetDownloadState()) {
 				case DS_DOWNLOADING: {
 					++transferingsrc;
-					kBpsDown += cur_src->SetDownloadLimit(reducedownload);
+					kBpsDown += cur_src->TickDownloadAndMeasure();
 					break;
 				}
 				case DS_BANNED: {

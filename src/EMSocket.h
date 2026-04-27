@@ -54,8 +54,11 @@ public:
 	virtual void	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
 	bool	IsConnected() { return byConnected==ES_CONNECTED;};
 	uint8	GetConState()	{return byConnected;}
-	void	SetDownloadLimit(uint32 limit);
-	void	DisableDownloadLimit();
+	// Re-trigger OnReceive if this socket suspended its read loop last
+	// tick because CDownloadBandwidthThrottler's bucket was empty.
+	// Called once per tick from CPartFile::Process via
+	// CUpDownClient::TickDownloadAndMeasure.
+	void	WakeIfPaused();
 
 	virtual uint32	GetTimeOut() const;
 	virtual void	SetTimeOut(uint32 uTimeOut);
@@ -98,9 +101,11 @@ private:
 
     uint32	GetNextFragSize(uint32 current, uint32 minFragSize);
 
-	// Download (pseudo) rate control
-	uint32	downloadLimit;
-	bool	downloadLimitEnable;
+	// Download rate control: the global cap is enforced by
+	// CDownloadBandwidthThrottler. pendingOnReceive is the only
+	// per-socket bit -- set when OnReceive() suspended its read loop
+	// because the throttler's bucket was empty, cleared on the next
+	// successful read or when WakeIfPaused() retries the loop.
 	bool	pendingOnReceive;
 
 	// Download partial header

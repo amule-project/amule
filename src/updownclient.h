@@ -452,11 +452,16 @@ public:
 	bool		SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true);
 
 	/**
-	 * Safe function for setting the download limit of the socket.
+	 * Per-tick poke from CPartFile::Process. Re-arms this client's
+	 * socket if it suspended last tick because the global
+	 * CDownloadBandwidthThrottler bucket was empty, and returns the
+	 * client's current observed download speed for the per-file
+	 * kBpsDown display sum.
 	 *
-	 * @return Current download speed of the client.
+	 * The download cap (thePrefs::GetMaxDownload()) is enforced
+	 * globally inside the throttler, not per-client.
 	 */
-	float		SetDownloadLimit(uint32 reducedownload);
+	float		TickDownloadAndMeasure();
 
 	/**
 	 * Sends a message to a client
