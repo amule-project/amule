@@ -112,9 +112,20 @@ endif()
 #     which froze the value at the first configure forever — every
 #     incremental rebuild thereafter embedded the stale revision string.
 #
-# CMAKE_CONFIGURE_DEPENDS on .git/HEAD makes the build system re-run
-# cmake when HEAD changes (commit, checkout, pull), so `cmake --build`
-# alone is enough to pick up new commits in the banner.
+# CMAKE_CONFIGURE_DEPENDS makes the build system re-run cmake when the
+# git state changes, so `cmake --build` alone is enough to pick up new
+# commits in the banner.
+#
+# We need three files, not just .git/HEAD:
+#   * .git/HEAD — touched on `git checkout <branch>` (symref retarget),
+#     `git checkout --detach`, and explicit `git update-ref HEAD ...`.
+#   * the branch-ref file (.git/refs/heads/<branch>) that HEAD points at —
+#     touched on `git commit`, `git reset --hard`, `git pull --ff-only`,
+#     and any other op that moves the branch tip.  Tracking only HEAD
+#     misses these because HEAD is a symref text file, not the SHA itself.
+#   * .git/packed-refs — touched by `git gc` / `git pack-refs`, which can
+#     consolidate the branch ref file out of existence.  After a pack,
+#     the SHA lives only in packed-refs.
 #
 if (NOT DEFINED CACHE{SVNDATE})
 	find_package (Git)
@@ -132,6 +143,26 @@ if (NOT DEFINED CACHE{SVNDATE})
 	endif()
 	set_property (DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
 		"${CMAKE_SOURCE_DIR}/.git/HEAD")
+	# Resolve HEAD's symref target so we can also depend on the branch
+	# ref file directly.  This catches commits/resets that move the
+	# branch tip without retargeting HEAD.
+	if (EXISTS "${CMAKE_SOURCE_DIR}/.git/HEAD")
+		file (READ "${CMAKE_SOURCE_DIR}/.git/HEAD" _amule_head_contents LIMIT 200)
+		string (STRIP "${_amule_head_contents}" _amule_head_contents)
+		if (_amule_head_contents MATCHES "^ref: (.+)$")
+			set (_amule_head_ref "${CMAKE_MATCH_1}")
+			if (EXISTS "${CMAKE_SOURCE_DIR}/.git/${_amule_head_ref}")
+				set_property (DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+					"${CMAKE_SOURCE_DIR}/.git/${_amule_head_ref}")
+			endif()
+		endif()
+	endif()
+	# Also depend on packed-refs in case the branch ref is packed
+	# (loose ref file may not exist after `git gc`).
+	if (EXISTS "${CMAKE_SOURCE_DIR}/.git/packed-refs")
+		set_property (DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+			"${CMAKE_SOURCE_DIR}/.git/packed-refs")
+	endif()
 endif()
 
 include (cmake/bfd.cmake)
