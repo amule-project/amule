@@ -263,6 +263,28 @@ if (BUILD_MONOLITHIC)
 			COMMENT "Opting aMule.app out of App Transport Security"
 			VERBATIM
 		)
+
+		# Copy translation catalogs into the .app bundle so the in-tree
+		# build picks them up.  wxLocale's lookup prefix on macOS is
+		# wxStandardPaths::GetDataDir() + "/locale", which resolves to
+		# Contents/Resources/locale inside the bundle.  Done here (not
+		# in po/) because the `amule` target is defined in this file
+		# while `po` is added earlier in the top-level CMakeLists.
+		if (ENABLE_NLS AND AMULE_TRANSLATIONS)
+			add_dependencies (amule pofiles)
+			foreach (_lang IN LISTS AMULE_TRANSLATIONS)
+				set (_mo_dir
+					"$<TARGET_BUNDLE_CONTENT_DIR:amule>/Resources/locale/${_lang}/LC_MESSAGES")
+				add_custom_command (TARGET amule POST_BUILD
+					COMMAND ${CMAKE_COMMAND} -E make_directory "${_mo_dir}"
+					COMMAND ${CMAKE_COMMAND} -E copy_if_different
+						"${CMAKE_BINARY_DIR}/po/${_lang}.gmo"
+						"${_mo_dir}/amule.mo"
+					COMMENT "Bundling ${_lang} catalog into aMule.app"
+					VERBATIM
+				)
+			endforeach()
+		endif()
 	endif()
 
 	install (TARGETS amule
@@ -510,6 +532,16 @@ if (NEED_LIB_MULEAPPCORE)
 		PUBLIC wxWidgets::BASE
 		PRIVATE CRYPTOPP::CRYPTOPP
 	)
+
+	# Parser.cpp's bison-generated yyparse() expands YY_(Msgid) to dgettext,
+	# so libintl needs to be on the link line whenever NLS is enabled.
+	# Empty/no-op on glibc; the .dylib / .dll.a on macOS / MinGW.  PUBLIC so
+	# every consumer of muleappcore (amule, amuled, amulecmd, amulegui)
+	# inherits the dependency.
+	if (ENABLE_NLS AND Intl_FOUND)
+		target_include_directories (muleappcore PUBLIC ${Intl_INCLUDE_DIRS})
+		target_link_libraries (muleappcore PUBLIC ${Intl_LIBRARIES})
+	endif()
 
 	if (APPLE)
 		target_link_libraries (muleappcore

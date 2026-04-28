@@ -55,6 +55,13 @@ target_link_libraries (amuleweb
 	PRIVATE wxWidgets::NET
 )
 
+# WebInterface.cpp and php_core_lib.cpp call gettext/dgettext directly.
+# Empty/no-op on glibc; the libintl entry on macOS / MinGW.
+if (ENABLE_NLS AND Intl_FOUND)
+	target_include_directories (amuleweb PRIVATE ${Intl_INCLUDE_DIRS})
+	target_link_libraries (amuleweb PRIVATE ${Intl_LIBRARIES})
+endif()
+
 if (ENABLE_UPNP)
 	target_link_libraries (amuleweb
 		PRIVATE UPNP::Shared
