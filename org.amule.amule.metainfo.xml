@@ -4,6 +4,7 @@
 
   <name>aMule</name>
   <summary>P2P client based on eMule</summary>
+  <summary xml:lang="es">Cliente P2P basado en eMule</summary>
 
   <metadata_license>FSFAP</metadata_license>
   <project_license>GPL-2.0-or-later</project_license>
@@ -11,6 +12,9 @@
   <description>
     <p>
       aMule is a multi-platform client for the ED2K file sharing network and based on the windows client eMule. aMule is intended to be as user friendly and feature rich as eMule and to remain faithful to the look and feel of eMule so users familiar with either aMule or eMule will be able switch between the two easily. Since aMule is based upon the eMule codebase, new features in eMule tend to find their way into aMule soon after their inclusion into eMule so users of aMule can expect to ride the cutting-edge of ED2k clients.
+    </p>
+    <p xml:lang="es">
+      aMule es un cliente multiplataforma para la red de intercambio de archivos ED2K basado en el cliente de Windows eMule. aMule pretende ser tan fácil de usar y completo como eMule, y mantener la experiencia de uso de eMule para que los usuarios familiarizados con cualquiera de los dos puedan cambiar entre ambos con facilidad. Dado que aMule se basa en el código de eMule, las nuevas características de eMule suelen llegar a aMule poco después de su inclusión, por lo que los usuarios de aMule pueden esperar estar a la vanguardia de los clientes ED2K.
     </p>
   </description>
 
@@ -26,10 +30,12 @@
     <screenshot type="default">
       <image>https://raw.githubusercontent.com/amule/amule/master/.github/amule-interface-search.png</image>
       <caption>Screenshot of the aMule search interface</caption>
+      <caption xml:lang="es">Captura de pantalla de la interfaz de búsqueda de aMule</caption>
     </screenshot>
     <screenshot type="default">
       <image>https://raw.githubusercontent.com/amule/amule/master/.github/amule-preferences.png</image>
       <caption>Screenshot of the aMule preferences interface</caption>
+      <caption xml:lang="es">Captura de pantalla de la interfaz de preferencias de aMule</caption>
     </screenshot>
   </screenshots>
 
