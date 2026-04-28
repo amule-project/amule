@@ -60,12 +60,35 @@ foreach (PO_FILE ${PO_FILES})
 
 	if (TRANSLATION_${PO_FILE})
 		list (APPEND PO_BUILD ${PO_FILE}.po)
+		list (APPEND AMULE_TRANSLATIONS ${PO_FILE})
 
-		install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${PO_FILE}.gmo
-			DESTINATION ${CMAKE_INSTALL_LOCALEDIR}/${PO_FILE}/LC_MESSAGES/
-			RENAME amule.mo
-		)
+		# aMule's InitLocale() (src/OtherFunctions.cpp) adds
+		# <DataDir>/locale as a wxLocale lookup prefix on macOS and
+		# Windows.  GetDataDir() resolves to the bundle's Resources dir
+		# on macOS and the directory containing the .exe on Windows, so
+		# the .mo catalogs need to live there — not under share/locale.
+		# Linux/*BSD use libintl's system search paths under
+		# ${CMAKE_INSTALL_LOCALEDIR}.
+		if (APPLE)
+			# Bundling into the .app happens in src/CMakeLists.txt
+			# via a POST_BUILD on the amule target, since `po` is
+			# processed before `src` and the target doesn't exist yet.
+		elseif (WIN32)
+			install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${PO_FILE}.gmo
+				DESTINATION ${CMAKE_INSTALL_BINDIR}/locale/${PO_FILE}/LC_MESSAGES/
+				RENAME amule.mo
+			)
+		else()
+			install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${PO_FILE}.gmo
+				DESTINATION ${CMAKE_INSTALL_LOCALEDIR}/${PO_FILE}/LC_MESSAGES/
+				RENAME amule.mo
+			)
+		endif()
 	endif()
 endforeach()
+
+# Make the list of enabled translations visible to src/ for the macOS
+# bundle copy step.
+set (AMULE_TRANSLATIONS "${AMULE_TRANSLATIONS}" CACHE INTERNAL "Enabled translation language codes" FORCE)
 
 gettext_process_po_files ("" ALL PO_FILES ${PO_BUILD})
