@@ -33,8 +33,8 @@
 
 
 CCanceledFileList::CCanceledFileList()
+	: m_filename(wxT("canceled.met"))
 {
-	m_filename = "canceled.met";
 	Init();
 }
 

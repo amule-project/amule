@@ -33,9 +33,9 @@
 
 CAsyncDNS::CAsyncDNS(const wxString& ipName, DnsSolveType type, wxEvtHandler* handler, void* socket)
 	: wxThread(wxTHREAD_DETACHED)
+	, m_ipName(ipName.wc_str())		// make a deep copy to to circument the thread-unsafe wxString reference counting
 {
 	m_type = type;
-	m_ipName = ipName.wc_str();		// make a deep copy to to circument the thread-unsafe wxString reference counting
 	m_socket = socket;
 	m_handler = handler;
 }
