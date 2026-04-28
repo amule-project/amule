@@ -41,23 +41,35 @@ if (NOT YYENABLE_NLS)
 		set (ENABLE_NLS FALSE)
 	endif()
 
-	# Parser.cpp and the webserver call dgettext directly, so libintl needs
-	# to be on the link line.  On glibc systems Intl_LIBRARIES is empty
-	# (gettext lives inside libc); on macOS, MinGW/MSYS2 and *BSD it points
-	# at the separate libintl.  Without this, ENABLE_NLS=ON used to link
-	# fine on Linux and fail with `_libintl_dgettext` undefined elsewhere.
-	if (ENABLE_NLS)
-		find_package (Intl)
-		if (NOT Intl_FOUND)
-			message (STATUS "libintl headers/library not found — disabling NLS")
-			set (ENABLE_NLS FALSE)
-		endif()
-	endif()
-
 	if (ENABLE_NLS)
 		message (STATUS "Everything is fine. aMule can be localized")
 		set (YYENABLE_NLS TRUE CACHE INTERNAL "For parser, php-parser and to not recheck for nls-support" FORCE)
 	else()
 		message (STATUS "You need to install GNU gettext/gettext-tools to compile aMule with i18n support.")
+	endif()
+endif()
+
+# Parser.cpp and the webserver call dgettext directly, so libintl needs
+# to be on the link line.  On glibc systems Intl_LIBRARIES is empty
+# (gettext lives inside libc); on macOS, MinGW/MSYS2 and *BSD it points
+# at the separate libintl.  Without this, ENABLE_NLS=ON used to link
+# fine on Linux and fail with `_libintl_dgettext` undefined elsewhere.
+#
+# This block lives *outside* the YYENABLE_NLS gate above intentionally.
+# find_package(Intl) populates Intl_FOUND / Intl_LIBRARIES / Intl_INCLUDE_DIRS
+# as ordinary (non-cache) variables, so on every fresh `cmake` configure
+# pass they evaporate unless re-derived.  The cache-gated upper branch
+# skips on subsequent configures (e.g. when a SVNDATE refresh triggers
+# CMAKE_CONFIGURE_DEPENDS), which silently dropped the libintl link
+# wiring in src/CMakeLists.txt's `if (ENABLE_NLS AND Intl_FOUND)` guard
+# and produced `_libintl_dgettext` undefined-symbol failures on the
+# next incremental build.  Calling find_package(Intl) every configure
+# is cheap: its own internal cache (Intl_INCLUDE_DIR / Intl_LIBRARY)
+# is preserved, so subsequent runs are effectively a cache lookup.
+if (ENABLE_NLS)
+	find_package (Intl)
+	if (NOT Intl_FOUND)
+		message (STATUS "libintl headers/library not found — disabling NLS")
+		set (ENABLE_NLS FALSE)
 	endif()
 endif()
