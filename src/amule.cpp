@@ -1386,6 +1386,28 @@ void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 }
 
 
+void CamuleApp::OnPartFileHashResult(CPartFileHashResultEvent& evt)
+{
+	if (m_app_state == APP_STATE_SHUTTINGDOWN || !theApp || !theApp->IsRunning()) {
+		return;
+	}
+
+	// Look up the file by hash. If it was removed from the download
+	// queue between enqueue and dispatch (cancelled, completed early)
+	// the lookup returns NULL and we drop the event safely.
+	CPartFile* file = downloadqueue->GetFileByID(evt.FileHash());
+	if (!file) {
+		AddDebugLogLineN(logPartFile, CFormat(
+			"Hash result for part %u: file no longer in download queue, dropping")
+			% evt.PartNumber());
+		return;
+	}
+
+	file->OnAsyncHashComplete(evt.PartNumber(), evt.Ok(),
+		evt.FromAICHRecoveryDataAvailable());
+}
+
+
 void CamuleApp::OnFinishedAICHHashing(CHashingEvent& evt)
 {
 	wxCHECK_RET(evt.GetResult(), "No result of AICH-hashing");

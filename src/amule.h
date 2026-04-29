@@ -49,6 +49,7 @@ class CDownloadQueue;
 class CUploadQueue;
 class CPartFileWriteThread;
 class CPartFileHashThread;
+class CPartFileHashResultEvent;
 class CServerConnect;
 class CSharedFileList;
 class CServer;
@@ -336,6 +337,7 @@ protected:
 	void OnCoreTimer(CTimerEvent& evt);
 
 	void OnFinishedHashing(CHashingEvent& evt);
+	void OnPartFileHashResult(CPartFileHashResultEvent& evt);
 	void OnFinishedAICHHashing(CHashingEvent& evt);
 	void OnFinishedCompletion(CCompletionEvent& evt);
 	void OnFinishedAllocation(CAllocFinishedEvent& evt);

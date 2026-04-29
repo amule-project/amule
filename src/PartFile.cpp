@@ -27,6 +27,7 @@
 
 #include "PartFile.h"		// Interface declarations.
 #include "PartFileWriteThread.h"	// Needed for PB_READY etc.
+#include "PartFileHashThread.h"		// Needed for QueueHashCheck
 #include "config.h"		// Needed for VERSION
 #include <protocol/kad/Constants.h>
 #include <protocol/ed2k/Client2Client/TCP.h>
@@ -226,9 +227,96 @@ CPartFile::CPartFile(const CED2KFileLink* fileLink)
 
 CPartFile::~CPartFile()
 {
+	// Gate Phase 3 below; see m_inDestructor comment in PartFile.h.
+	m_inDestructor = true;
+	AddDebugLogLineN(logPartFile, CFormat(
+		"~CPartFile entered, m_inDestructor set: '%s'") % GetFileName());
+
+	// Wait for any in-flight HashJobs targeting this file to finish.
+	// CPartFileHashThread reads m_hpartfile via HashSinglePart; we must
+	// not close the file out from under it. m_inDestructor was set above
+	// so Phase 3 will not enqueue anything new.
+	if (m_pendingHashes > 0) {
+		AddDebugLogLineN(logPartFile, CFormat(
+			"~CPartFile waiting for %d pending hash job(s) of '%s'")
+			% (int)m_pendingHashes % GetFileName());
+		while (m_pendingHashes > 0) {
+			wxMilliSleep(10);
+		}
+	}
+
 	// if it's not opened, it was completed or deleted
 	if (m_hpartfile.IsOpened()) {
+		// FlushBuffer drains buffered writes / harvests Phase 2's
+		// PB_WRITTEN items into m_aChangedPart. Phase 3 itself returns
+		// early due to m_inDestructor.
 		FlushBuffer();
+
+		// Sync-hash any parts still flagged dirty in m_aChangedPart.
+		//
+		// Why this is needed: in normal operation Phase 3 enqueues
+		// dirty parts to CPartFileHashThread asynchronously. But at
+		// shutdown the hash thread is torn down before downloadqueue
+		// (see CamuleApp::OnExit ordering), so async enqueue isn't
+		// available here — and a forced-quit during an active download
+		// can leave many parts harvested-but-not-yet-hashed
+		// (m_aChangedPart-true but never enqueued because the
+		// quiescent guard never opened during the receive burst).
+		//
+		// Without this, .met would be saved with gaplist marking
+		// those parts complete and m_corrupted_list empty, so on
+		// next launch they would be treated as implicitly verified
+		// (the existing "verified iff IsComplete && !IsCorruptedPart"
+		// invariant) — even though they were never hashed.
+		//
+		// Run the verification synchronously on the main thread.
+		// Slow shutdown is acceptable for the rare cancel-mid-download
+		// case; the common paths (natural completion, pause/resume,
+		// idle drain) keep m_aChangedPart drained throughout the
+		// session, so the loop usually has nothing to do.
+		if (m_aChangedPart.size() == GetPartCount()) {
+			uint16 verified = 0, corrupt = 0;
+			for (uint16 i = 0; i < GetPartCount(); ++i) {
+				if (!m_aChangedPart[i]) {
+					continue;
+				}
+				m_aChangedPart[i] = false;
+
+				// Only hash parts whose data is actually on disk.
+				if (!IsComplete(i)) {
+					continue;
+				}
+
+				if (HashSinglePart(i)) {
+					// Part is good. If it was carried in
+					// m_corrupted_list from before, drop it so the
+					// .met save below records the new clean state.
+					if (IsCorruptedPart(i)) {
+						EraseFirstValue(m_corrupted_list, i);
+					}
+					++verified;
+				} else {
+					// Part is bad. Re-open the gap and record in
+					// m_corrupted_list so next launch knows to
+					// re-download + retry.
+					AddGap(i);
+					if (!IsCorruptedPart(i)) {
+						m_corrupted_list.push_back(i);
+					}
+					m_iLostDueToCorruption +=
+						(uint64)GetPartSize(i);
+					++corrupt;
+				}
+			}
+			if (verified > 0 || corrupt > 0) {
+				AddDebugLogLineN(logPartFile, CFormat(
+					"~CPartFile sync-hashed %u remaining dirty part(s) "
+					"(%u verified, %u corrupt) for '%s'")
+					% (verified + corrupt) % verified % corrupt
+					% GetFileName());
+			}
+		}
+
 		m_hpartfile.Close();
 		// Update met file (with current directory entry)
 		SavePartFile();
@@ -1336,7 +1424,6 @@ uint32 CPartFile::Process(uint8 m_icounter)
 	uint16 old_trans;
 	uint32 dwCurTick = ::GetTickCount();
 
-	// If buffer size exceeds limit, or if not written within time limit, flush data
 	if (	(m_nTotalBufferData > thePrefs::GetFileBufferSize()) ||
 		(dwCurTick > (m_nLastBufferFlushTime + BUFFER_TIME_LIMIT))) {
 		FlushBuffer();
@@ -2886,6 +2973,9 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, uint8_t* data, uint64 start, ui
 	// log transferinformation in our "blackbox"
 	m_CorruptionBlackBox->TransferredData(start, end, client->GetIP());
 
+	// Stamp for FlushBuffer's Phase 3 quiescent guard.
+	m_nLastBlockReceivedTick = GetTickCount();
+
 	// Create a new buffered queue entry
 	PartFileBufferedData *item = new PartFileBufferedData(m_hpartfile, data, start, end, block);
 
@@ -2939,11 +3029,6 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 {
 	m_nLastBufferFlushTime = GetTickCount();
 
-	if (m_BufferedData_list.empty()) {
-		return;
-	}
-
-
 	uint32 partCount = GetPartCount();
 	// Persistent tracking of parts needing hash verification (eMule ref: m_aChangedPart).
 	// Survives across FlushBuffer() calls so parts written by the background thread
@@ -2952,13 +3037,18 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		m_aChangedPart.resize(partCount, false);
 	}
 
-	// Ensure file is big enough to write data to (the last item will be the furthest from the start)
-	if (!CheckFreeDiskSpace(m_nTotalBufferData)) {
-		// Not enough free space to write the last item, bail
-		AddLogLineC(CFormat( _("WARNING: Not enough free disk-space! Pausing file: %s") ) % GetFileName());
+	// No empty-buffer early-return: Phase 3 below still needs to run
+	// when m_aChangedPart has dirty entries left from earlier writes
+	// (e.g. paused/idle download). Phase 1+2 are no-ops on empty list.
+	if (!m_BufferedData_list.empty()) {
+		// Ensure file is big enough to write data to (the last item will be the furthest from the start)
+		if (!CheckFreeDiskSpace(m_nTotalBufferData)) {
+			// Not enough free space to write the last item, bail
+			AddLogLineC(CFormat( _("WARNING: Not enough free disk-space! Pausing file: %s") ) % GetFileName());
 
-		PauseFile( true );
-		return;
+			PauseFile( true );
+			return;
+		}
 	}
 
 	// eMule ref: PartFile.cpp:4102-4127 — Phase 1: queue PB_READY items to the write thread
@@ -3063,97 +3153,234 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		return;
 	}
 
-	for (uint16 partNumber = 0; partNumber < partCount; ++partNumber) {
-		if (!m_aChangedPart[partNumber]) {
-			continue;
-		}
-		m_aChangedPart[partNumber] = false;
-
-		uint32 partRange = GetPartSize(partNumber) - 1;
-
-		// Is this 9MB part complete
-		if (IsComplete(partNumber)) {
-			// Is part corrupt
-			if (!HashSinglePart(partNumber)) {
-				AddLogLineC(CFormat(
-					_("Downloaded part %i is corrupt in file: %s") ) % partNumber % GetFileName() );
-				AddGap(partNumber);
-				// add part to corrupted list, if not already there
-				if (!IsCorruptedPart(partNumber)) {
-					m_corrupted_list.push_back(partNumber);
-				}
-				// request AICH recovery data
-				// Don't if called from the AICHRecovery. It's already there and would lead to an infinite recursion.
-				if (!fromAICHRecoveryDataAvailable) {
-					RequestAICHRecovery(partNumber);
-				}
-				// Reduce transferred amount by corrupt amount
-				m_iLostDueToCorruption += (partRange + 1);
-			} else {
-				if (!m_hashsetneeded) {
-					AddDebugLogLineN(logPartFile, CFormat(
-						"Finished part %u of '%s'") % partNumber % GetFileName());
-				}
-
-				// tell the blackbox about the verified data
-				m_CorruptionBlackBox->VerifiedData(true, partNumber, 0, partRange);
-
-				// if this part was successfully completed (although ICH is active), remove from corrupted list
-				EraseFirstValue(m_corrupted_list, partNumber);
-
-				if (status == PS_EMPTY) {
-					if (theApp->IsRunning()) { // may be called during shutdown!
-						if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded) {
-							// Successfully completed part, make it available for sharing
-							SetStatus(PS_READY);
-							theApp->sharedfiles->SafeAddKFile(this);
-						}
-					}
-				}
-			}
-		} else if ( IsCorruptedPart(partNumber) &&		// corrupted part:
-					(thePrefs::IsICHEnabled()			// old ICH:  rehash whenever we have new data hoping it will be good now
-					|| fromAICHRecoveryDataAvailable)) {// new AICH: one rehash right before performing it (maybe it's already good)
-			// Try to recover with minimal loss
-			if (HashSinglePart(partNumber)) {
-				++m_iTotalPacketsSavedDueToICH;
-
-				uint64 uMissingInPart = m_gaplist.GetGapSize(partNumber);
-				FillGap(partNumber);
-				RemoveBlockFromList(PARTSIZE*partNumber,(PARTSIZE*partNumber + partRange));
-
-				// tell the blackbox about the verified data
-				m_CorruptionBlackBox->VerifiedData(true, partNumber, 0, partRange);
-
-				// remove from corrupted list
-				EraseFirstValue(m_corrupted_list, partNumber);
-
-				AddLogLineC(CFormat( _("ICH: Recovered corrupted part %i for %s -> Saved bytes: %s") )
-					% partNumber
-					% GetFileName()
-					% CastItoXBytes(uMissingInPart));
-
-				if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded) {
-					if (status == PS_EMPTY) {
-						// Successfully recovered part, make it available for sharing
-						SetStatus(PS_READY);
-						if (theApp->IsRunning()) // may be called during shutdown!
-							theApp->sharedfiles->SafeAddKFile(this);
-					}
-				}
-			}
-		}
+	// Destructor / shutdown gate (see m_inDestructor in PartFile.h).
+	if (m_inDestructor || !theApp || !theApp->IsRunning()) {
+		return;
 	}
+
+	// Skip Phase 3 at gaplist completion: CCompletionTask re-reads
+	// the file for the ED2K root + AICH tree, subsuming Phase 3's
+	// per-part MD4. Running both is duplicate work and (for fresh
+	// downloads where every part is dirty) a 30-60 s main-thread
+	// freeze.
+	if (m_gaplist.IsComplete()) {
+		const uint32 dirty = (uint32)std::count(
+			m_aChangedPart.begin(), m_aChangedPart.end(), true);
+		if (dirty > 0) {
+			AddDebugLogLineN(logPartFile, CFormat(
+				"Phase 3 skipped at gaplist completion: cleared %u dirty parts of '%s'")
+				% dirty % GetFileName());
+		}
+		std::fill(m_aChangedPart.begin(), m_aChangedPart.end(), false);
+	} else {
+		// Quiescent guard: defer per-part hashing until 1 s of no new
+		// blocks, so the synchronous read+MD4 doesn't fire mid-burst.
+		const uint32 kHashQuiescentMs = 1000;
+		const uint32 nowTick = GetTickCount();
+		if (m_nLastBlockReceivedTick != 0 &&
+			(nowTick - m_nLastBlockReceivedTick) < kHashQuiescentMs) {
+			return;
+		}
+
+		// Async enqueue: hand each dirty part to CPartFileHashThread,
+		// which runs HashSinglePart on its own thread and posts a
+		// CPartFileHashResultEvent back to CamuleApp's main-thread
+		// handler — OnAsyncHashComplete then runs the AICH-recovery /
+		// SafeAddKFile branches below.  Main-thread cost here is just
+		// queue inserts (microseconds per part), so even a 3000-part
+		// dirty list enqueues in milliseconds with zero hashing freeze.
+		//
+		// PR #454 rejected an async-hash thread because read-for-hash
+		// competed with CPartFileWriteThread's writes during active
+		// download.  The quiescent guard above (1 s no receives)
+		// guarantees writes have drained before we enqueue, so the
+		// contention case can't arise.
+		uint16 enqueued = 0;
+		for (uint16 partNumber = 0; partNumber < partCount; ++partNumber) {
+			if (!m_aChangedPart[partNumber]) {
+				continue;
+			}
+			m_aChangedPart[partNumber] = false;
+			++m_pendingHashes;
+			theApp->partFileHashThread->QueueHashCheck(this, partNumber,
+				fromAICHRecoveryDataAvailable);
+			++enqueued;
+		}
+		if (enqueued > 0) {
+			AddDebugLogLineN(logPartFile, CFormat(
+				"Phase 3 enqueued %u parts to hash thread for '%s'")
+				% enqueued % GetFileName());
+		}
+	}  // close gaplistComplete else-branch (async enqueue)
 
 	// Update met file
 	SavePartFile();
 
+	// Final PB_WRITTEN harvest. The Phase 2 loop above can race with
+	// CPartFileWriteThread::Entry(), which decrements m_iWrites and
+	// then sets PB_WRITTEN: an item Phase 2 saw as PB_PENDING (and
+	// left in the list) can transition to PB_WRITTEN before the
+	// trailing check below runs. Without this sweep, the gap-closing
+	// write at file completion would leave m_BufferedData_list
+	// non-empty, fail the trailing check, and the download would stick
+	// at 99.9% until the next BUFFER_TIME_LIMIT (60 s) tick.
+	for (std::list<PartFileBufferedData*>::iterator it = m_BufferedData_list.begin();
+		 it != m_BufferedData_list.end(); )
+	{
+		PartFileBufferedData* item = *it;
+		if (item->flushed == PB_WRITTEN) {
+			uint32 lenData = (uint32)(item->end - item->start + 1);
+			for (uint32 curpart = (item->start/PARTSIZE);
+				 curpart <= (item->end/PARTSIZE); ++curpart) {
+				wxASSERT(curpart < partCount);
+				m_aChangedPart[curpart] = true;
+			}
+			m_nTotalBufferData -= lenData;
+			delete item;
+			it = m_BufferedData_list.erase(it);
+		} else {
+			++it;
+		}
+	}
+
 	if (theApp->IsRunning()) { // may be called during shutdown!
-		// Is this file finished ?
-		// eMule ref: line 4240 — also check m_iWrites and buffer list
-		if (m_gaplist.IsComplete() && m_iWrites <= 0 && m_BufferedData_list.empty()) {
+		// CompleteFile is not idempotent — each call kicks off a fresh
+		// CHashingTask. Must guard:
+		//   - status PS_EMPTY or PS_READY: skip if already
+		//     PS_COMPLETING / PS_HASHING / PS_WAITINGFORHASH / PS_ERROR
+		//     (otherwise StopFile→FlushBuffer and PerformFileComplete→
+		//     FlushBuffer in the post-CompleteFile path would re-fire
+		//     and spawn duplicate hash tasks). Both PS_EMPTY and
+		//     PS_READY are normal in-flight states: PS_READY is set on
+		//     load (LoadPartFile, line ~757) when any part is already
+		//     complete, and in OnAsyncHashComplete after a successful
+		//     part hash. So a resumed download is PS_READY from the
+		//     moment .met is loaded — gating on PS_EMPTY alone made
+		//     CompleteFile fail to fire on every resume-then-finish.
+		//   - m_pendingHashes <= 0: don't kick off CCompletionTask while
+		//     CPartFileHashThread is still reading m_hpartfile via
+		//     HashSinglePart — PerformFileComplete closes the file and
+		//     the worker would fault. The last OnAsyncHashComplete (when
+		//     pendingHashes drops to 0) re-runs this same check and
+		//     fires CompleteFile then.
+		if ((status == PS_EMPTY || status == PS_READY)
+			&& m_gaplist.IsComplete()
+			&& m_iWrites <= 0
+			&& m_BufferedData_list.empty()
+			&& m_pendingHashes <= 0) {
 			CompleteFile(false);
 		}
+	}
+}
+
+
+// Receives a HashSinglePart result from CPartFileHashThread (via the
+// CPartFileHashResultEvent dispatched on CamuleApp).  Runs the same
+// success/failure / AICH-recovery logic the original synchronous Phase 3
+// did, just with the boolean result already computed by the worker.
+void CPartFile::OnAsyncHashComplete(uint16 partNumber, bool ok,
+	bool fromAICHRecoveryDataAvailable)
+{
+	if (m_inDestructor || !theApp || !theApp->IsRunning()) {
+		return;
+	}
+	if (partNumber >= GetPartCount()) {
+		return;
+	}
+
+	const uint32 partRange = GetPartSize(partNumber) - 1;
+
+	// Track whether this part's outcome changes persistent state.
+	// Only those branches need a SavePartFile flush; the success path
+	// for an already-complete part touches in-memory bookkeeping only
+	// (VerifiedData, m_corrupted_list, status), which is fine to
+	// persist on the next FlushBuffer-driven SavePartFile.  Avoids
+	// hammering the .met file on the main thread once per part —
+	// that's what made the GUI freeze on async-hash drain.
+	bool stateChanged = false;
+
+	if (IsComplete(partNumber)) {
+		if (!ok) {
+			AddLogLineC(CFormat(
+				_("Downloaded part %i is corrupt in file: %s") )
+				% partNumber % GetFileName());
+			AddGap(partNumber);
+			if (!IsCorruptedPart(partNumber)) {
+				m_corrupted_list.push_back(partNumber);
+			}
+			// request AICH recovery data; skip if we're already inside
+			// an AICH recovery to avoid infinite recursion.
+			if (!fromAICHRecoveryDataAvailable) {
+				RequestAICHRecovery(partNumber);
+			}
+			m_iLostDueToCorruption += (partRange + 1);
+			stateChanged = true;
+		} else {
+			if (!m_hashsetneeded) {
+				AddDebugLogLineN(logPartFile, CFormat(
+					"Finished part %u of '%s'") % partNumber % GetFileName());
+			}
+
+			m_CorruptionBlackBox->VerifiedData(true, partNumber, 0, partRange);
+
+			// If this part was carried as corrupted in the .met from a
+			// prior session, removing it from m_corrupted_list IS a
+			// persistent state change — without a save, next launch
+			// would still flag it as needing recovery.
+			if (IsCorruptedPart(partNumber)) {
+				EraseFirstValue(m_corrupted_list, partNumber);
+				stateChanged = true;
+			}
+
+			if (status == PS_EMPTY) {
+				if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded) {
+					SetStatus(PS_READY);
+					theApp->sharedfiles->SafeAddKFile(this);
+					stateChanged = true;
+				}
+			}
+		}
+	} else if (IsCorruptedPart(partNumber) &&
+		(thePrefs::IsICHEnabled() || fromAICHRecoveryDataAvailable)) {
+		if (ok) {
+			++m_iTotalPacketsSavedDueToICH;
+			uint64 uMissingInPart = m_gaplist.GetGapSize(partNumber);
+			FillGap(partNumber);
+			RemoveBlockFromList(PARTSIZE * partNumber,
+				(PARTSIZE * partNumber + partRange));
+			m_CorruptionBlackBox->VerifiedData(true, partNumber, 0, partRange);
+			EraseFirstValue(m_corrupted_list, partNumber);
+
+			AddLogLineC(CFormat(
+				_("ICH: Recovered corrupted part %i for %s -> Saved bytes: %s") )
+				% partNumber % GetFileName()
+				% CastItoXBytes(uMissingInPart));
+
+			if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded) {
+				if (status == PS_EMPTY) {
+					SetStatus(PS_READY);
+					theApp->sharedfiles->SafeAddKFile(this);
+				}
+			}
+			stateChanged = true;
+		}
+	}
+
+	if (stateChanged) {
+		SavePartFile();
+	}
+
+	// Now that this part's hash has been processed, the file may be
+	// ready for completion. Mirrors the trailing CompleteFile check in
+	// FlushBuffer — accept both PS_EMPTY and PS_READY (resumed
+	// downloads are PS_READY from load), but still skip PS_COMPLETING
+	// so a duplicate CompleteFile / CHashingTask isn't spawned.
+	if ((status == PS_EMPTY || status == PS_READY)
+		&& m_gaplist.IsComplete()
+		&& m_iWrites <= 0
+		&& m_BufferedData_list.empty()
+		&& m_pendingHashes <= 0) {
+		CompleteFile(false);
 	}
 }
 

@@ -34,6 +34,7 @@
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "Timer.h"				// Needed for CTimer
 #include "PartFile.h"			// Needed for CPartFile
+#include "PartFileHashThread.h"	// Needed for EVT_PARTFILE_HASH_RESULT
 
 #include "muuli_wdr.h"			// Needed for IDs
 #include "amuleDlg.h"			// Needed for CamuleDlg
@@ -81,6 +82,9 @@ wxBEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 	// Hash ended notifier
 	EVT_MULE_HASHING(CamuleGuiApp::OnFinishedHashing)
 	EVT_MULE_AICH_HASHING(CamuleGuiApp::OnFinishedAICHHashing)
+
+	// CPartFileHashThread per-part result
+	EVT_PARTFILE_HASH_RESULT(CamuleGuiApp::OnPartFileHashResult)
 
 	// File completion ended notifier
 	EVT_MULE_FILE_COMPLETED(CamuleGuiApp::OnFinishedCompletion)
