@@ -26,7 +26,9 @@
 #include "PartFileWriteThread.h"
 
 #include "PartFile.h"		// Needed for CPartFile, PartFileBufferedData
+#include "CFile.h"			// Needed for CIOFailureException
 #include "Logger.h"
+#include <common/Format.h>	// Needed for CFormat
 
 // eMule ref: CPartFileWriteThread::CPartFileWriteThread() — line 41
 CPartFileWriteThread::CPartFileWriteThread()
@@ -107,23 +109,44 @@ void* CPartFileWriteThread::Entry()
 			// Synchronous write via CFileArea (replaces eMule's overlapped WriteFile).
 			// CFileArea::FlushAt() writes the buffered data at the given offset.
 			//
-			// Lock m_hpartfileMutex against CPartFileHashThread: with
-			// ENABLE_MMAP=OFF the underlying CFileAutoClose::WriteAt does
-			// Seek+Write on the shared fd; concurrent HashSinglePart on
-			// the hash thread does Seek+Read on the same fd, and the two
-			// races on file position. See CPartFile::m_hpartfileMutex.
-			{
+			// Lock m_hpartfileMutex against CPartFileHashThread (see
+			// CPartFile::m_hpartfileMutex): with ENABLE_MMAP=OFF the
+			// underlying CFileAutoClose::WriteAt does Seek+Write on the
+			// shared fd, and HashSinglePart on the hash thread does
+			// Seek+Read on the same fd; the two race on file position
+			// without the lock.
+			//
+			// FlushAt can also throw CIOFailureException on a disk-full /
+			// EIO / permission failure.  Catching it here keeps the
+			// worker thread alive: an unhandled exception in Entry()
+			// propagates through wxThreadInternal::PthreadStart() to
+			// wxApp::OnUnhandledException(), which std::set_terminate's
+			// MuleDebug aborts the process.  On caught failure we mark
+			// the buffered item PB_ERROR so the main thread can retry on
+			// the next FlushBuffer (where CheckFreeDiskSpace will pause
+			// the file if disk is genuinely exhausted).
+			bool writeOk = true;
+			try {
 				std::lock_guard<std::mutex> lock(it->pFile->m_hpartfileMutex);
 				pBuffer->area.FlushAt(it->pFile->m_hpartfile, pBuffer->start, lenData);
+			} catch (const CIOFailureException& e) {
+				AddDebugLogLineC(logPartFile, CFormat(
+					"Write thread: I/O failure on '%s' at offset %llu (%u bytes): %s")
+					% it->pFile->GetFileName() % pBuffer->start % lenData % e.what());
+				writeOk = false;
 			}
 
 			// eMule ref: WriteCompletionRoutine line 179 — decrement in write thread
 			// so main thread can check m_iWrites at any time.
 			--it->pFile->m_iWrites;
 
-			// Mark buffer as written so the main thread can harvest it.
+			// Mark buffer as written / errored so the main thread can harvest
+			// it.  PB_ERROR is handled in FlushBuffer Phase 2 (resets to
+			// PB_READY for retry; if the disk is genuinely full the next
+			// FlushBuffer's CheckFreeDiskSpace pauses the file before the
+			// retry loops).
 			// eMule ref: WriteCompletionRoutine — line 182
-			pBuffer->flushed = PB_WRITTEN;
+			pBuffer->flushed = writeOk ? PB_WRITTEN : PB_ERROR;
 		}
 	}
 
