@@ -51,6 +51,7 @@ wxBEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_TEXT_ENTER(	IDC_SEARCHNAME,	CSearchDlg::OnBnClickedStart)
 
 	EVT_BUTTON(IDC_CANCELS, CSearchDlg::OnBnClickedStop)
+	EVT_BUTTON(IDC_SEARCHMORE, CSearchDlg::OnBnClickedSearchMore)
 
 	EVT_LIST_ITEM_SELECTED(ID_SEARCHLISTCTRL, CSearchDlg::OnListItemSelected)
 
@@ -264,6 +265,13 @@ void CSearchDlg::OnSearchPageChanged(wxBookCtrlEvent& WXUNUSED(evt))
 
 		bool enable = (ctrl->GetSelectedItemCount() > 0);
 		FindWindow(IDC_SDOWNLOAD)->Enable( enable );
+
+		// "More" is Kad-only — enable when this tab's searchID still
+		// corresponds to an active Kad search.
+		FindWindow(IDC_SEARCHMORE)->Enable(
+			theApp->searchlist->IsKadSearch((uint32_t)ctrl->GetSearchId()));
+	} else {
+		FindWindow(IDC_SEARCHMORE)->Enable(false);
 	}
 }
 
@@ -380,6 +388,12 @@ void CSearchDlg::CreateNewTab(const wxString& searchString, wxUIntPtr nSearchID)
 
 	Layout();
 	FindWindow(IDC_CLEAR_RESULTS)->Enable(true);
+
+	// AddPage above made the new tab the selected one; defer to
+	// IsKadSearch on its searchID so a freshly-created ED2K tab leaves
+	// the button disabled.
+	FindWindow(IDC_SEARCHMORE)->Enable(
+		theApp->searchlist->IsKadSearch((uint32_t)nSearchID));
 }
 
 
@@ -387,6 +401,41 @@ void CSearchDlg::OnBnClickedStop(wxCommandEvent& WXUNUSED(evt))
 {
 	theApp->searchlist->StopSearch();
 	ResetControls();
+}
+
+
+void CSearchDlg::OnBnClickedSearchMore(wxCommandEvent& WXUNUSED(evt))
+{
+	// "More" button: ask the currently-selected Kad search for more
+	// results.  Uses CSearch::RequestMoreResults() (which dispatches
+	// the existing KADEMLIA_FIND_VALUE_MORE wide-reask variant) to
+	// widen the search frontier — peers we already queried return up
+	// to 11 closer contacts instead of 2, and the existing
+	// ProcessResponse cascade then queries the new neighbours with
+	// FIND_VALUE.  Bounded per-search by KADEMLIA_FIND_VALUE_MORE_REASKS
+	// (4) inside CSearch.
+	//
+	// For ED2K Local / Global searches there is currently no equivalent
+	// — the "More" button silently no-ops on non-Kad tabs.  This mirrors
+	// the prior behaviour of the (never-wired) ED2K-only stub.
+	int sel = m_notebook->GetSelection();
+	if (sel == -1) {
+		return;
+	}
+	CSearchListCtrl* page = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(sel));
+	if (!page) {
+		return;
+	}
+	const uint32_t searchID = (uint32_t)page->GetSearchId();
+	if (theApp->searchlist->RequestMoreResults(searchID)) {
+		AddLogLineN(_("Kad search: requested wider results from one more peer."));
+	} else {
+		// Either the active tab isn't a Kad search, the per-search cap is
+		// hit, or there is no responded peer left to reask.  Surface that
+		// to the user as a normal log line (not debug) so a click without
+		// effect is at least visible.
+		AddLogLineN(_("Kad search: no peer left to reask for more results (cap reached or no responses yet)."));
+	}
 }
 
 
@@ -417,6 +466,17 @@ void CSearchDlg::KadSearchEnd(uint32 id)
 			}
 		}
 	}
+
+	// If the search that just ended is the one currently shown, the
+	// "More" button now has no candidate to widen — disable it.
+	int sel = m_notebook->GetSelection();
+	if (sel != -1) {
+		CSearchListCtrl* page = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(sel));
+		if (page) {
+			FindWindow(IDC_SEARCHMORE)->Enable(
+				theApp->searchlist->IsKadSearch((uint32_t)page->GetSearchId()));
+		}
+	}
 }
 
 void CSearchDlg::OnBnClickedDownload(wxCommandEvent& WXUNUSED(evt))
@@ -439,6 +499,7 @@ void CSearchDlg::OnBnClickedClear(wxCommandEvent& WXUNUSED(ev))
 
 	FindWindow(IDC_CLEAR_RESULTS)->Enable(FALSE);
 	FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
+	FindWindow(IDC_SEARCHMORE)->Enable(FALSE);
 }
 
 
