@@ -263,7 +263,7 @@ TEST(CUInt128, Set32BitChunk)
 	test.Set32BitChunk(2, 0x08090a0bu);
 	test.Set32BitChunk(3, 0x0c0d0e0fu);
 	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::sequence), test);
-#ifdef __WXDEBUG__
+#if wxDEBUG_LEVEL >= 1
 	ASSERT_RAISES(CAssertFailureException, test.Set32BitChunk(4, 0));
 	ASSERT_EQUALS(CUInt128((uint8_t *)&TestData::sequence), test);
 #endif
@@ -443,7 +443,7 @@ TEST(CUInt128, SetBitNumber)
 	ASSERT_EQUALS(2, test);
 	test.SetBitNumber(0, 1);
 	ASSERT_EQUALS(0x80000000u, test.Get32BitChunk(0));
-#ifdef __WXDEBUG__
+#if wxDEBUG_LEVEL >= 1
 	ASSERT_RAISES(CAssertFailureException, test.SetBitNumber(128, 0));
 #endif
 
