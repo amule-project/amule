@@ -48,6 +48,7 @@ class CPreferences;
 class CDownloadQueue;
 class CUploadQueue;
 class CPartFileWriteThread;
+class CPartFileHashThread;
 class CServerConnect;
 class CSharedFileList;
 class CServer;
@@ -260,6 +261,7 @@ public:
 	CDownloadQueue*		downloadqueue;
 	CUploadQueue*		uploadqueue;
 	CPartFileWriteThread*	partFileWriteThread;
+	CPartFileHashThread*	partFileHashThread;
 	CServerConnect*		serverconnect;
 	CSharedFileList*	sharedfiles;
 	CServerList*		serverlist;

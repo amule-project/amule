@@ -41,6 +41,7 @@ if (BUILD_MONOLITHIC OR BUILD_DAEMON)
 		UploadDiskIOThread.cpp
 		UploadQueue.cpp
 		PartFileWriteThread.cpp
+		PartFileHashThread.cpp
 		ThreadTasks.cpp
 	)
 endif()

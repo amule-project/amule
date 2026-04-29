@@ -107,6 +107,7 @@ public:
 
 class CPartFile : public CKnownFile {
 	friend class CPartFileWriteThread;
+	friend class CPartFileHashThread;
 public:
 	typedef std::list<Requested_Block_Struct*> CReqBlockPtrList;
 
@@ -374,6 +375,13 @@ private:
 	uint32 m_nLastBufferFlushTime;
 	std::atomic<int32> m_iWrites;	// eMule ref: count of items queued to write thread (not yet PB_WRITTEN)
 	std::vector<bool> m_aChangedPart;	// eMule ref: persistent tracking of parts needing hash verification
+
+	// Count of HashJobs in flight on CPartFileHashThread targeting
+	// this file. Incremented before enqueue, decremented by the worker
+	// after HashSinglePart and event-post complete. ~CPartFile waits
+	// for this to reach 0 so the worker is never reading m_hpartfile
+	// while the destructor is closing it.
+	std::atomic<int32> m_pendingHashes{0};
 
 	uint8	m_category;
 	uint32	m_nDlActiveTime;

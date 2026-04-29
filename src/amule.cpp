@@ -80,6 +80,7 @@
 #include "ThreadTasks.h"
 #include "UploadQueue.h"		// Needed for CUploadQueue
 #include "PartFileWriteThread.h"	// Needed for CPartFileWriteThread
+#include "PartFileHashThread.h"		// Needed for CPartFileHashThread
 #include "UploadBandwidthThrottler.h"
 #include "UploadDiskIOThread.h"
 #include "UserEvents.h"
@@ -202,6 +203,7 @@ CamuleApp::CamuleApp()
 	m_upnpMappings.resize(4);
 #endif
 	core_timer	= NULL;
+	partFileHashThread = NULL;
 
 	m_localip	= 0;
 	m_dwPublicIP	= 0;
@@ -316,6 +318,14 @@ int CamuleApp::OnExit()
 
 	delete uploadqueue;
 	uploadqueue = NULL;
+
+	// Stop hash thread first so any in-flight HashSinglePart finishes
+	// and m_pendingHashes drops to 0 before ~CPartFile waits on it.
+	if (partFileHashThread) {
+		partFileHashThread->EndThread();
+		delete partFileHashThread;
+		partFileHashThread = NULL;
+	}
 
 	// Stop write thread before deleting downloadqueue — must drain pending writes.
 	if (partFileWriteThread) {
@@ -591,6 +601,7 @@ bool CamuleApp::OnInit()
 	downloadqueue	= new CDownloadQueue();
 	uploadqueue	= new CUploadQueue();
 	partFileWriteThread = new CPartFileWriteThread();
+	partFileHashThread = new CPartFileHashThread();
 	ipfilter	= new CIPFilter();
 
 	// Creates all needed listening sockets
