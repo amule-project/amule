@@ -281,7 +281,16 @@ void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 	// We mustn't search more often than once every 2 secs
 	if ((GetTickCount() - m_last_search_time) > 2000) {
 		m_last_search_time = GetTickCount();
-		OnBnClickedStop(nullEvent);
+		// Stop previous ED2K search state only (the server has a
+		// single in-flight search packet per session and m_searchPacket
+		// has to be reset).  Do NOT stop a previous Kad search: the
+		// Kad data layer (CSearchManager::m_searches) supports multiple
+		// concurrent searches keyed by target hash, and stopping the
+		// previous one immediately deletes its CSearch (which strips
+		// the "!" tab indicator and halts result delivery).
+		// Unconditionally calling OnBnClickedStop here was the reason
+		// starting a second Kad search appeared to cancel the first.
+		theApp->searchlist->StopSearch(/*globalOnly=*/true);
 		StartNewSearch();
 	}
 }
