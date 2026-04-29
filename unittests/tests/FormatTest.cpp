@@ -294,7 +294,7 @@ TEST(Format, EscapedPercentageSign)
 
 TEST(Format, MalformedFields)
 {
-#ifdef __WXDEBUG__
+#if wxDEBUG_LEVEL >= 1
 	{
 		// Incomplete format string
 		ASSERT_RAISES(CAssertFailureException, CFormat("%"));
@@ -347,7 +347,7 @@ TEST(Format, NotReady)
 
 TEST(Format, WrongTypes)
 {
-#ifdef __WXDEBUG__
+#if wxDEBUG_LEVEL >= 1
 	{
 		// Entirely wrong types
 		ASSERT_RAISES(CAssertFailureException, CFormat("%c") % "1");
@@ -367,7 +367,7 @@ TEST(Format, WrongTypes)
 
 TEST(Format, NotSupported)
 {
-#ifdef __WXDEBUG__
+#if wxDEBUG_LEVEL >= 1
 	{
 		ASSERT_RAISES(CAssertFailureException, CFormat("%*d") % 1);
 		ASSERT_RAISES(CAssertFailureException, CFormat("%*s") % "");
