@@ -39,6 +39,8 @@ there client on the eMule forum..
 #ifndef __SEARCH_H__
 #define __SEARCH_H__
 
+#include <set>
+
 #include "SearchManager.h"
 
 class CKnownFile;
@@ -81,6 +83,18 @@ public:
 
 	CKadClientSearcher *	GetNodeSpecialSearchRequester() const noexcept				{ return m_nodeSpecialSearchRequester; }
 	void			SetNodeSpecialSearchRequester(CKadClientSearcher *requester) noexcept	{ m_nodeSpecialSearchRequester = requester; }
+
+	// User-triggered widening of the Kad result set.  Walks m_responded for
+	// the closest contact we have not already reasked, and sends it
+	// SendFindValue with reaskMore=true (i.e. KADEMLIA_FIND_VALUE_MORE on
+	// the wire instead of KADEMLIA_FIND_VALUE — peers return up to 11
+	// closer contacts instead of 2).  Subsequent FIND_VALUE queries against
+	// those contacts surface additional file matches that the search's
+	// initial alpha=ALPHA_QUERY frontier missed.  Bounded internally by
+	// m_requestedMoreNodes.size() < KADEMLIA_FIND_VALUE_MORE_REASKS to
+	// limit per-search network impact.  Returns true if a reask was
+	// dispatched, false if no eligible candidate remains.
+	bool		RequestMoreResults();
 
 	enum {
 		NODE,
@@ -141,7 +155,17 @@ private:
 	ContactList	m_delete;
 	ContactMap	m_inUse;
 	CUInt128	m_closestDistantFound; // not used for the search itself, but for statistical data collecting
-	CContact *	m_requestedMoreNodesContact;
+
+	// Set of contact ClientIDs we have asked KADEMLIA_FIND_VALUE_MORE
+	// from (the wider 11-contact response variant).  Tracked as a set
+	// rather than a single pointer so that:
+	//   - the existing dead-nodes-fallback at JumpStart can still fire
+	//     once on the closest responded node (semantically: empty set
+	//     before, one entry after, like the old NULL/non-NULL check);
+	//   - RequestMoreResults() can be called multiple times to widen
+	//     further on subsequent responded nodes, capped by
+	//     KADEMLIA_FIND_VALUE_MORE_REASKS.
+	std::set<CUInt128>	m_requestedMoreNodes;
 };
 
 } // End namespace

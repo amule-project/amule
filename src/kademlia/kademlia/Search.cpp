@@ -82,7 +82,7 @@ CSearch::CSearch()
 	m_searchTermsDataSize = 0;
 	m_nodeSpecialSearchRequester = NULL;
 	m_closestDistantFound = 0;
-	m_requestedMoreNodesContact = NULL;
+	// m_requestedMoreNodes default-constructs empty
 }
 
 CSearch::~CSearch()
@@ -253,7 +253,7 @@ void CSearch::JumpStart()
 	// The reason for this is that we may not have found the closest node alive due to results being limited to 2 contacts,
 	// which could very well have been the duplicates of our dead closest nodes
 	bool lookupCloserNodes = false;
-	if (m_requestedMoreNodesContact == NULL && GetRequestContactCount() == KADEMLIA_FIND_VALUE && m_tried.size() >= 3 * KADEMLIA_FIND_VALUE) {
+	if (m_requestedMoreNodes.empty() && GetRequestContactCount() == KADEMLIA_FIND_VALUE && m_tried.size() >= 3 * KADEMLIA_FIND_VALUE) {
 		ContactMap::const_iterator it = m_tried.begin();
 		lookupCloserNodes = true;
 		for (unsigned i = 0; i < KADEMLIA_FIND_VALUE; i++) {
@@ -325,8 +325,12 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 	}
 
 	// Make sure the node is not sending more results than we requested, which is not only a protocol violation
-	// but most likely a malicious answer
-	if (results->size() > GetRequestContactCount() && !(m_requestedMoreNodesContact == fromContact && results->size() <= KADEMLIA_FIND_VALUE_MORE)) {
+	// but most likely a malicious answer.  When fromContact is in
+	// m_requestedMoreNodes we asked it for KADEMLIA_FIND_VALUE_MORE
+	// contacts (the wider variant), so a larger response is legitimate.
+	const bool wasReaskedForMore = fromContact &&
+		m_requestedMoreNodes.count(fromContact->GetClientID()) > 0;
+	if (results->size() > GetRequestContactCount() && !(wasReaskedForMore && results->size() <= KADEMLIA_FIND_VALUE_MORE)) {
 		AddDebugLogLineN(logKadSearch, "Node " + KadIPToString(fromIP) + " sent more contacts than requested on a routing query, ignoring response");
 		return;
 	}
@@ -1098,13 +1102,15 @@ void CSearch::SendFindValue(CContact *contact, bool reaskMore)
 		uint8_t contactCount = GetRequestContactCount();
 
 		if (reaskMore) {
-			if (m_requestedMoreNodesContact == NULL) {
-				m_requestedMoreNodesContact = contact;
-				wxASSERT(contactCount == KADEMLIA_FIND_VALUE);
-				contactCount = KADEMLIA_FIND_VALUE_MORE;
-			} else {
-				wxFAIL;
-			}
+			// Either the JumpStart dead-nodes-fallback or
+			// CSearch::RequestMoreResults() asked us to send the wider
+			// KADEMLIA_FIND_VALUE_MORE variant to this contact.  Track
+			// the contact's ClientID so ProcessResponse's "more results
+			// than requested" check accepts the larger response, and so
+			// RequestMoreResults() won't reask the same peer twice.
+			wxASSERT(contactCount == KADEMLIA_FIND_VALUE);
+			m_requestedMoreNodes.insert(contact->GetClientID());
+			contactCount = KADEMLIA_FIND_VALUE_MORE;
 		}
 
 		if (contactCount > 0) {
@@ -1173,6 +1179,60 @@ void CSearch::SendFindValue(CContact *contact, bool reaskMore)
 		AddDebugLogLineC(logKadSearch, "Exception in CSearch::SendFindValue: " + e);
 	}
 }
+
+bool CSearch::RequestMoreResults()
+{
+	// Walk m_responded (sorted by distance to target) for the closest
+	// peer we have not yet asked for KADEMLIA_FIND_VALUE_MORE, and
+	// dispatch the wider variant to it.  Each reask returns up to 11
+	// closer contacts (vs the default 2), which the existing
+	// ProcessResponse cascade then queries with FIND_VALUE — surfacing
+	// additional file matches from one extra ring of the routing-table
+	// neighbourhood.
+	//
+	// Bounded by KADEMLIA_FIND_VALUE_MORE_REASKS to limit per-search
+	// network impact: past 4 reasks the local neighbourhood for a
+	// given keyword is typically exhausted and additional reasks are
+	// wasted UDP traffic.
+
+	if (m_stopping) {
+		return false;
+	}
+	if (GetRequestContactCount() != KADEMLIA_FIND_VALUE) {
+		// reaskMore is only meaningful for FIND_VALUE searches
+		// (KEYWORD / FILE / FINDSOURCE / NOTES).
+		return false;
+	}
+	if (m_requestedMoreNodes.size() >= KADEMLIA_FIND_VALUE_MORE_REASKS) {
+		return false;
+	}
+
+	// m_responded is keyed by distance; iteration is closest-first.
+	// m_tried is a parallel ContactMap on the same key, so we look up
+	// the CContact* via m_tried.
+	for (RespondedMap::const_iterator it = m_responded.begin();
+		 it != m_responded.end(); ++it) {
+		const CUInt128& distance = it->first;
+		ContactMap::const_iterator triedIt = m_tried.find(distance);
+		if (triedIt == m_tried.end()) {
+			continue; // shouldn't happen; defensive
+		}
+		CContact* contact = triedIt->second;
+		if (m_requestedMoreNodes.count(contact->GetClientID()) > 0) {
+			continue; // already reasked this one
+		}
+		AddDebugLogLineN(logKadSearch, CFormat(
+			"User-triggered RequestMoreResults: reasking %s for more contacts (search id=%x, reask %u/%u)")
+			% KadIPToString(contact->GetIPAddress())
+			% GetSearchID()
+			% (unsigned)(m_requestedMoreNodes.size() + 1)
+			% (unsigned)KADEMLIA_FIND_VALUE_MORE_REASKS);
+		SendFindValue(contact, true);
+		return true;
+	}
+	return false;
+}
+
 
 // TODO: Redundant metadata checks
 void CSearch::PreparePacketForTags(CMemFile *bio, CKnownFile *file)
