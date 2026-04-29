@@ -191,6 +191,20 @@ static wxString DoCleanPath(const wxString& path)
 /** Returns true if the two paths are equal. */
 static bool IsSameAs(const wxString& a, const wxString& b)
 {
+	// Fast path for bare filenames (no directory separator on either
+	// path).  Search results stream in as bare filenames from FT_FILENAME
+	// tags, and CSearchFile::AddChild's filename-dedup path
+	// (other->GetFileName() == file->GetFileName()) lands here on every
+	// duplicate result; without this fast path the call falls through to
+	// wxFileName::Normalize, which insists on a cwd argument and triggers
+	// wxGetCwd() — and wxGetCwd() emits a wxLogSysError on macOS bundles
+	// whose recorded CWD has been removed (App translocation, deleted
+	// launching shell, etc.) for every comparison.
+	if (a.find_first_of(wxFileName::GetPathSeparators()) == wxString::npos
+		&& b.find_first_of(wxFileName::GetPathSeparators()) == wxString::npos) {
+		return PATHCMP(a.c_str(), b.c_str()) == 0;
+	}
+
 	// Cache the current directory only when at least one of the paths
 	// is relative — wxFileName::Normalize ignores the cwd argument
 	// for absolute paths.  Skipping wxGetCwd() in the absolute-only
