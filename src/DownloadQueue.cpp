@@ -454,11 +454,18 @@ void CDownloadQueue::Process()
 				//This will make sure we don't keep old sources to paused and stopped files..
 				file->StopPausedFile();
 
-				// Drain leftover Phase 3 hash work for paused/insufficient
-				// files: their Process() doesn't run (gated above), but
-				// pre-pause m_aChangedPart entries still need verification.
-				if ((status == PS_PAUSED || status == PS_INSUFFICIENT)
-					&& file->HasPendingHashWork()) {
+				// Drain leftover Phase 3 hash work for paused files: their
+				// Process() doesn't run (gated above), but pre-pause
+				// m_aChangedPart entries still need verification.
+				//
+				// PS_INSUFFICIENT is intentionally excluded — driving
+				// FlushBuffer for a disk-full file re-enters its disk-space
+				// check at PartFile.cpp:3083 every tick, which logs
+				// "Not enough free disk-space" and re-pauses on every call,
+				// producing tens of log lines per second.  The destructor
+				// sync-hash drain still covers leftover dirty parts of
+				// disk-full files at shutdown.
+				if (status == PS_PAUSED && file->HasPendingHashWork()) {
 					file->FlushBuffer();
 				}
 			}
