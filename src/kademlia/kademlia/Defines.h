@@ -55,6 +55,14 @@ const unsigned int K	=		10;
 // network load modest while letting CSearch::ProcessResponse's existing
 // "in top ALPHA_QUERY closer than current" cascade maintain more parallelism.
 #define ALPHA_QUERY			5
+
+// Cap on user-triggered widening reasks (CSearch::RequestMoreResults).
+// Each reask asks an already-responded peer for KADEMLIA_FIND_VALUE_MORE
+// (= 11) closer contacts instead of the default 2, exposing a wider slice
+// of the routing-table neighbourhood.  Past 4 reasks the local
+// neighbourhood for a given keyword is typically exhausted (responses
+// dedupe against m_results) and additional reasks are wasted UDP traffic.
+#define KADEMLIA_FIND_VALUE_MORE_REASKS	4
 #define LOG_BASE_EXPONENT		5
 #define HELLO_TIMEOUT			20
 #define SEARCH_JUMPSTART		1
