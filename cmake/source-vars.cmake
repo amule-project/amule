@@ -100,7 +100,10 @@ if (BUILD_MONOLITHIC OR BUILD_DAEMON OR BUILD_REMOTEGUI)
 endif()
 
 if (ENABLE_IP2COUNTRY)
-	set (IP2COUNTRY IP2Country.cpp)
+	set (IP2COUNTRY
+		IP2Country.cpp
+		geoip/MaxMindDBDatabase.cpp
+	)
 endif()
 
 if (ENABLE_UPNP)

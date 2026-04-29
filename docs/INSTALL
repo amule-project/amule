@@ -19,10 +19,11 @@
       on most GNU systems).
 
   Optionally:
-    * libgd    >= 2.0.0  — statistics images in `cas`
-    * libupnp  >= 1.6.6  — UPnP port forwarding
-    * libGeoIP >= 1.4.4  — country flags and IP-to-country mapping
-    * gettext  >= 0.11.5 — native-language support (NLS)
+    * libgd        >= 2.0.0  — statistics images in `cas`
+    * libupnp      >= 1.6.6  — UPnP port forwarding
+    * libmaxminddb >= 1.0    — country flags and IP-to-country mapping
+                               (see docs/IP2Country.md for setup)
+    * gettext      >= 0.11.5 — native-language support (NLS)
 
   aMule is unicode-only; wxWidgets must be built with unicode support
   (this is the default since wx 3.0).
@@ -63,7 +64,7 @@
     BUILD_FILEVIEW     console file viewer (experimental)
     ENABLE_NLS         native-language support (gettext)
     ENABLE_UPNP        UPnP port forwarding
-    ENABLE_IP2COUNTRY  libGeoIP country flags
+    ENABLE_IP2COUNTRY  libmaxminddb country flags (see docs/IP2Country.md)
 
   For the full list:
 
