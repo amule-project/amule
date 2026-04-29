@@ -1424,8 +1424,12 @@ uint32 CPartFile::Process(uint8 m_icounter)
 	uint16 old_trans;
 	uint32 dwCurTick = ::GetTickCount();
 
+	// Flush on buffer-full, time-limit, or pending hash drain.
+	// HasPendingHashWork() bypass drains Phase 3 at Process()-tick
+	// rate (~100 ms) instead of every 60 s when the file is idle.
 	if (	(m_nTotalBufferData > thePrefs::GetFileBufferSize()) ||
-		(dwCurTick > (m_nLastBufferFlushTime + BUFFER_TIME_LIMIT))) {
+		(dwCurTick > (m_nLastBufferFlushTime + BUFFER_TIME_LIMIT)) ||
+		HasPendingHashWork()) {
 		FlushBuffer();
 	}
 
@@ -2418,6 +2422,31 @@ void CPartFile::SetDownPriority(uint8 np, bool bSave, bool bRefresh )
 		if ( bSave )
 			SavePartFile();
 	}
+}
+
+
+bool CPartFile::HasPendingHashWork() const
+{
+	if (m_iWrites > 0) {
+		return false;
+	}
+	for (bool dirty : m_aChangedPart) {
+		if (dirty) {
+			return true;
+		}
+	}
+	// Completion-pending: gaplist is closed and the file is in active
+	// state but writes haven't all been harvested yet — keep firing
+	// FlushBuffer at Process tick rate so the trailing CompleteFile
+	// check runs once the worker thread drains. Without this, a slow
+	// worker that completes the gap-closing write after the last
+	// FlushBuffer would leave us waiting for BUFFER_TIME_LIMIT (60 s).
+	if (m_gaplist.IsComplete()
+		&& (status == PS_EMPTY || status == PS_READY)
+		&& !m_BufferedData_list.empty()) {
+		return true;
+	}
+	return false;
 }
 
 
