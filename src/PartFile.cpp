@@ -287,7 +287,16 @@ CPartFile::~CPartFile()
 					continue;
 				}
 
-				if (HashSinglePart(i)) {
+				// Lock m_hpartfileMutex against CPartFileWriteThread:
+				// Phase 1 of FlushBuffer above may have queued writes
+				// that the write thread is still draining concurrently
+				// with this sync-hash loop. See m_hpartfileMutex.
+				bool ok;
+				{
+					std::lock_guard<std::mutex> lock(m_hpartfileMutex);
+					ok = HashSinglePart(i);
+				}
+				if (ok) {
 					// Part is good. If it was carried in
 					// m_corrupted_list from before, drop it so the
 					// .met save below records the new clean state.
@@ -3112,7 +3121,11 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 					m_aChangedPart[curpart] = true;
 				}
 				try {
-					item->area.FlushAt(m_hpartfile, item->start, lenData);
+					{
+						// Defensive lock vs hash thread; see m_hpartfileMutex.
+						std::lock_guard<std::mutex> lock(m_hpartfileMutex);
+						item->area.FlushAt(m_hpartfile, item->start, lenData);
+					}
 					m_nTotalBufferData -= lenData;
 				} catch (const CIOFailureException& e) {
 					AddDebugLogLineC(logPartFile, "Error while saving part-file: " + e.what());

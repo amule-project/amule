@@ -115,14 +115,24 @@ void* CPartFileHashThread::Entry()
 		{
 			const uint32 startTick = GetTickCountFullRes();
 
-			// Pure read+MD4: no shared mutable state touched.  The
-			// caller's quiescent guard guarantees no concurrent writes
-			// from CPartFileWriteThread for this file's m_hpartfile.
-			//
 			// CPartFile::m_pendingHashes was incremented before enqueue
 			// and is the gate that ~CPartFile waits on, so the file
 			// pointer is guaranteed valid here.
-			bool ok = it->pFile->HashSinglePart(it->partNumber);
+			//
+			// Lock m_hpartfileMutex against CPartFileWriteThread: with
+			// ENABLE_MMAP=OFF, HashSinglePart's CFileArea::ReadAt does
+			// Seek+Read on the same fd that the write thread does
+			// Seek+Write on for FlushAt; concurrent execution races
+			// on the fd's file position. The quiescent guard at
+			// enqueue time only gates dispatch — it does not prevent
+			// writes from resuming while the hash thread is still
+			// chewing through a backlog (e.g. user pause → drain →
+			// resume mid-drain). See CPartFile::m_hpartfileMutex.
+			bool ok;
+			{
+				std::lock_guard<std::mutex> lock(it->pFile->m_hpartfileMutex);
+				ok = it->pFile->HashSinglePart(it->partNumber);
+			}
 
 			const uint32 elapsedMs = GetTickCountFullRes() - startTick;
 
