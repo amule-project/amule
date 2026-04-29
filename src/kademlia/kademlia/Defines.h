@@ -47,7 +47,14 @@ namespace Kademlia {
 const unsigned int K	=		10;
 #define KBASE				4
 #define KK				5
-#define ALPHA_QUERY			3
+// Maxmimum number of in-flight queries during a Kad search.  At each step the
+// initiator sends FIND_VALUE to up to ALPHA_QUERY closest unqueried nodes and
+// uses the responses to expand the search frontier.  The Kademlia paper (MIT
+// 2002) uses 3-10 as the typical range; eMule's historical value of 3 is at
+// the low end and slow-converges searches for unpopular keywords.  5 keeps
+// network load modest while letting CSearch::ProcessResponse's existing
+// "in top ALPHA_QUERY closer than current" cascade maintain more parallelism.
+#define ALPHA_QUERY			5
 #define LOG_BASE_EXPONENT		5
 #define HELLO_TIMEOUT			20
 #define SEARCH_JUMPSTART		1
