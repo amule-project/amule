@@ -641,6 +641,18 @@ void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 }
 
 
+bool CSearchList::IsKadSearch(uint32_t searchID) const
+{
+	return Kademlia::CSearchManager::IsKadSearch(searchID);
+}
+
+
+bool CSearchList::RequestMoreResults(uint32_t searchID)
+{
+	return Kademlia::CSearchManager::RequestMoreResults(searchID);
+}
+
+
 void CSearchList::StopSearch(bool globalOnly)
 {
 	if (m_searchType == GlobalSearch) {

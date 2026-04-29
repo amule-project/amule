@@ -70,6 +70,31 @@ bool CSearchManager::IsSearching(uint32_t searchID) noexcept
 	return false;
 }
 
+bool CSearchManager::RequestMoreResults(uint32_t searchID)
+{
+	// Linear scan because m_searches is keyed by target hash, not
+	// searchID.  CSearch counts at any one time are tiny (one per active
+	// user search plus internal lookups), so the scan cost is negligible.
+	for (SearchMap::iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
+		if (it->second->GetSearchID() == searchID) {
+			return it->second->RequestMoreResults();
+		}
+	}
+	return false;
+}
+
+
+bool CSearchManager::IsKadSearch(uint32_t searchID)
+{
+	for (SearchMap::const_iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
+		if (it->second->GetSearchID() == searchID) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
 void CSearchManager::StopSearch(uint32_t searchID, bool delayDelete)
 {
 	// Stop a specific searchID

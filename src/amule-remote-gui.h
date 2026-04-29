@@ -568,6 +568,13 @@ public:
 
 	void StopSearch(bool globalOnly = false);
 
+	// Stub for monolithic CSearchList API parity.  amulegui has no
+	// direct Kad layer access; an EC opcode for "search-more" is a
+	// follow-up PR.  Until then these always return false, which keeps
+	// the SearchDlg "More" button disabled in remote-GUI mode.
+	bool IsKadSearch(uint32_t /*searchID*/) const { return false; }
+	bool RequestMoreResults(uint32_t /*searchID*/) { return false; }
+
 	//
 	// template
 	//

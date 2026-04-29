@@ -86,6 +86,18 @@ public:
 
 	static bool AlreadySearchingFor(const CUInt128& target) noexcept { return m_searches.count(target) > 0; }
 
+	// Find a CSearch by searchID (m_searches is keyed by target hash;
+	// this iterates) and invoke its RequestMoreResults().  Returns true
+	// if a reask was dispatched, false if no matching search was found
+	// or RequestMoreResults declined (cap reached / no eligible peer).
+	// Wired up on the search dialog "More" button.
+	static bool RequestMoreResults(uint32_t searchID);
+
+	// True if the given searchID corresponds to an active Kad search.
+	// Used by the search dialog to gate "More" button enable state on
+	// the currently-selected tab being a Kad search (vs ED2K).
+	static bool IsKadSearch(uint32_t searchID);
+
 	static const wxChar* GetInvalidKeywordChars() { return L" ()[]{}<>,._-!?:;\\/\""; }
 
 	static void CancelNodeFWCheckUDPSearch();

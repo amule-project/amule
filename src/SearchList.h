@@ -97,6 +97,16 @@ public:
 	/** Stops the current search (global or Kad), if any is in progress. */
 	void StopSearch(bool globalOnly = false);
 
+	/** True if the given searchID corresponds to an active Kad search. */
+	bool IsKadSearch(uint32_t searchID) const;
+
+	/**
+	 * Ask the Kad search identified by searchID to widen its frontier
+	 * via KADEMLIA_FIND_VALUE_MORE.  Wired to the search dialog "More"
+	 * button.  Returns true if a reask was dispatched, false otherwise.
+	 */
+	bool RequestMoreResults(uint32_t searchID);
+
 	/** Returns the completion percentage of the current search. */
 	uint32 GetSearchProgress() const;
 
