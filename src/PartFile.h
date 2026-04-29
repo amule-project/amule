@@ -31,6 +31,7 @@
 #include "FileAutoClose.h"	// Needed for CFileAutoClose
 #include "FileArea.h"		// Needed for CFileArea (PartFileBufferedData)
 #include <atomic>			// Needed for std::atomic (m_iWrites)
+#include <mutex>			// Needed for std::mutex (m_hpartfileMutex)
 
 #include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "DeadSourceList.h"	// Needed for CDeadSourceList
@@ -402,6 +403,19 @@ private:
 	// for this to reach 0 so the worker is never reading m_hpartfile
 	// while the destructor is closing it.
 	std::atomic<int32> m_pendingHashes{0};
+
+	// Serialises access to m_hpartfile across the main thread,
+	// CPartFileWriteThread and CPartFileHashThread. With ENABLE_MMAP=OFF
+	// (the default), CFileAutoClose::ReadAt / WriteAt both implement
+	// positional I/O as Seek+Read / Seek+Write on the same OS fd, so
+	// concurrent hash reads and disk writes would race on the fd's
+	// file position and corrupt one or the other. Held by:
+	//   * CPartFileWriteThread::Entry around pBuffer->area.FlushAt(...)
+	//   * CPartFileHashThread::Entry around HashSinglePart(...)
+	//   * ~CPartFile's sync-hash drain around HashSinglePart(...)
+	//   * FlushBuffer Phase 2's PB_READY synchronous fallback around
+	//     item->area.FlushAt(...)
+	std::mutex m_hpartfileMutex;
 
 	uint8	m_category;
 	uint32	m_nDlActiveTime;

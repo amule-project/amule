@@ -106,7 +106,16 @@ void* CPartFileWriteThread::Entry()
 
 			// Synchronous write via CFileArea (replaces eMule's overlapped WriteFile).
 			// CFileArea::FlushAt() writes the buffered data at the given offset.
-			pBuffer->area.FlushAt(it->pFile->m_hpartfile, pBuffer->start, lenData);
+			//
+			// Lock m_hpartfileMutex against CPartFileHashThread: with
+			// ENABLE_MMAP=OFF the underlying CFileAutoClose::WriteAt does
+			// Seek+Write on the shared fd; concurrent HashSinglePart on
+			// the hash thread does Seek+Read on the same fd, and the two
+			// races on file position. See CPartFile::m_hpartfileMutex.
+			{
+				std::lock_guard<std::mutex> lock(it->pFile->m_hpartfileMutex);
+				pBuffer->area.FlushAt(it->pFile->m_hpartfile, pBuffer->start, lenData);
+			}
 
 			// eMule ref: WriteCompletionRoutine line 179 — decrement in write thread
 			// so main thread can check m_iWrites at any time.
