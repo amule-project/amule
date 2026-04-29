@@ -186,6 +186,13 @@ public:
 	uint32	WriteToBuffer(uint32 transize, uint8_t *data, uint64 start, uint64 end, Requested_Block_Struct *block, const CUpDownClient* client);
 	void	FlushBuffer(bool fromAICHRecoveryDataAvailable = false);
 
+	// Called from CamuleApp's wxEVT_PARTFILE_HASH_RESULT handler when
+	// CPartFileHashThread reports a HashSinglePart result for this
+	// file. Runs the original Phase 3 success/failure logic (AICH
+	// recovery on bad part, SafeAddKFile on good complete part).
+	void	OnAsyncHashComplete(uint16 partNumber, bool ok,
+		bool fromAICHRecoveryDataAvailable);
+
 	// Barry - Added to prevent list containing deleted blocks on shutdown
 	void	RemoveAllRequestedBlocks(void);
 
@@ -375,6 +382,14 @@ private:
 	uint32 m_nLastBufferFlushTime;
 	std::atomic<int32> m_iWrites;	// eMule ref: count of items queued to write thread (not yet PB_WRITTEN)
 	std::vector<bool> m_aChangedPart;	// eMule ref: persistent tracking of parts needing hash verification
+
+	// GetTickCount() at last WriteToBuffer; FlushBuffer's Phase 3
+	// quiescent guard reads this to defer hashing during active receive.
+	uint32 m_nLastBlockReceivedTick = 0;
+
+	// Set in ~CPartFile so Phase 3 skips its SafeAddKFile branch
+	// during destruction (avoids re-sharing a partfile being deleted).
+	bool m_inDestructor = false;
 
 	// Count of HashJobs in flight on CPartFileHashThread targeting
 	// this file. Incremented before enqueue, decremented by the worker

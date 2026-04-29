@@ -49,6 +49,7 @@
 
 #include "Preferences.h"		// Needed for CPreferences
 #include "PartFile.h"			// Needed for CPartFile
+#include "PartFileHashThread.h"	// Needed for EVT_PARTFILE_HASH_RESULT
 #include "Logger.h"
 #include <common/Format.h>
 #include "InternalEvents.h"		// Needed for wxEVT_*
@@ -105,6 +106,9 @@ wxBEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 	// Hash ended notifier
 	EVT_MULE_HASHING(CamuleDaemonApp::OnFinishedHashing)
 	EVT_MULE_AICH_HASHING(CamuleDaemonApp::OnFinishedAICHHashing)
+
+	// CPartFileHashThread per-part result
+	EVT_PARTFILE_HASH_RESULT(CamuleDaemonApp::OnPartFileHashResult)
 
 	// File completion ended notifier
 	EVT_MULE_FILE_COMPLETED(CamuleDaemonApp::OnFinishedCompletion)
