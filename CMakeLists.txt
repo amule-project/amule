@@ -282,7 +282,7 @@ endif()
 message ("			libintl				${ENABLE_NLS}")
 
 if (ENABLE_IP2COUNTRY)
-	message ("			libGeoIP			${GEOIP_LIB}")
+	message ("			libmaxminddb			${MAXMINDDB_LIB}")
 endif()
 
 if (BUILD_WEBSERVER)

@@ -50,6 +50,8 @@
 #include <wx/image.h>
 #include <wx/string.h>
 
+class CMaxMindDBDatabase;
+
 
 typedef struct {
 	wxString Name;
@@ -68,11 +70,11 @@ public:
 	void Enable();
 	void Disable();
 	void Update();
-	bool IsEnabled() { return m_geoip != NULL; }
+	bool IsEnabled();
 	void DownloadFinished(uint32 result);
 
 private:
-	struct GeoIPTag *m_geoip;
+	CMaxMindDBDatabase* m_db;
 	CountryDataMap m_CountryDataMap;
 	wxString m_DataBaseName;
 	wxString m_DataBasePath;

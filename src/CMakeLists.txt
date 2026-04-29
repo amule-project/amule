@@ -44,7 +44,7 @@ endif()
 
 if (ENABLE_IP2COUNTRY)
 	set_source_files_properties (${IP2COUNTRY}
-		PROPERTIES COMPILE_FLAGS "-I${CMAKE_CURRENT_BINARY_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/pixmaps/flags_xpm"
+		PROPERTIES COMPILE_FLAGS "-I${CMAKE_CURRENT_BINARY_DIR} -I${CMAKE_CURRENT_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/pixmaps/flags_xpm"
 	)
 endif()
 
@@ -570,7 +570,7 @@ if (NEED_LIB_MULEAPPGUI)
 
 	if (ENABLE_IP2COUNTRY)
 		target_link_libraries (muleappgui
-			PUBLIC GeoIP::Shared
+			PUBLIC MaxMindDB::Shared
 		)
 	endif()
 

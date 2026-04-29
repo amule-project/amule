@@ -1,42 +1,20 @@
-if (GEOIP_INCLUDE_DIR)
-	set (CMAKE_REQUIRED_INCLUDES ${GEOIP_INCLUDE_DIR})
-endif()
+find_path (MAXMINDDB_INCLUDE_DIR maxminddb.h)
+find_library (MAXMINDDB_LIB maxminddb)
 
-if (NOT GEOIP_LIB)
-	include (CheckIncludeFile)
+if (MAXMINDDB_INCLUDE_DIR AND MAXMINDDB_LIB)
+	message (STATUS "libmaxminddb found, IP2Country support enabled")
 
-
-	check_include_file (GeoIP.h GEOIP_H)
-
-	if (GEOIP_H)
-		find_library (GEOIP_LIB GeoIP)
-
-		if (NOT GEOIP_LIB AND GEOIP_INCLUDE_DIR)
-			find_library (GEOIP_LIB GeoIP
-				PATHS ${GEOIP_INCLUDE_DIR}
-			)
-		endif()
-
-		if (NOT GEOIP_LIB)
-			set (ENABLE_IP2COUNTRY FALSE)
-			message (STATUS "GeoIP lib not found, disabling support")
-		else()
-			message (STATUS "GeoIP found useable")
-		endif()
+	add_library (MaxMindDB::Shared UNKNOWN IMPORTED)
+	set_target_properties (MaxMindDB::Shared PROPERTIES
+		INTERFACE_COMPILE_DEFINITIONS "ENABLE_IP2COUNTRY"
+		INTERFACE_INCLUDE_DIRECTORIES "${MAXMINDDB_INCLUDE_DIR}"
+		IMPORTED_LOCATION "${MAXMINDDB_LIB}"
+	)
+else()
+	set (ENABLE_IP2COUNTRY FALSE)
+	if (NOT MAXMINDDB_INCLUDE_DIR)
+		message (STATUS "maxminddb.h not found, IP2Country support disabled")
 	else()
-		set (ENABLE_IP2COUNTRY FALSE)
-		message (STATUS "GeoIP headers not found, disabling support")
+		message (STATUS "libmaxminddb not found, IP2Country support disabled")
 	endif()
 endif()
-
-if (ENABLE_IP2COUNTRY)
-	add_library (GeoIP::Shared UNKNOWN IMPORTED)
-
-	set_target_properties (GeoIP::Shared PROPERTIES
-		INTERFACE_COMPILE_DEFINITIONS "ENABLE_IP2COUNTRY"
-		INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_REQUIRED_INCLUDES}"
-		IMPORTED_LOCATION "${GEOIP_LIB}"
-	)
-endif()
-
-unset (CMAKE_REQUIRED_INCLUDES)

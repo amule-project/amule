@@ -1249,7 +1249,11 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Str(	"/eMule/Ed2kServersUrl",		s_Ed2kURL, "http://upd.emule-security.org/server.met" ) );
 	s_MiscList.push_back( MkCfg_Int( "/eMule/ShowRatesOnTitle",		s_showRatesOnTitle, 0 ));
 
-	s_MiscList.push_back( new Cfg_Str(  "/eMule/GeoLiteCountryUpdateUrl",		s_GeoIPUpdateUrl, "https://mailfud.org/geoip-legacy/GeoIP.dat.gz" ) );
+	// MaxMind requires a (free) license key for GeoLite2 downloads, and the
+	// official URL returns .tar.gz which the existing UnpackArchive does not
+	// handle. Default empty: users either configure their own URL+key here
+	// or drop GeoLite2-Country.mmdb manually into the config directory.
+	s_MiscList.push_back( new Cfg_Str(  "/eMule/GeoLiteCountryUpdateUrl",		s_GeoIPUpdateUrl, "" ) );
 	wxConfigBase::Get()->DeleteEntry("/eMule/GeoIPUpdateUrl"); // get rid of the old one for a while
 
 	s_MiscList.push_back( new Cfg_Str( "/WebServer/Path",				s_sWebPath, "amuleweb" ) );
