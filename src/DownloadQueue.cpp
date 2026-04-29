@@ -453,6 +453,14 @@ void CDownloadQueue::Process()
 			} else {
 				//This will make sure we don't keep old sources to paused and stopped files..
 				file->StopPausedFile();
+
+				// Drain leftover Phase 3 hash work for paused/insufficient
+				// files: their Process() doesn't run (gated above), but
+				// pre-pause m_aChangedPart entries still need verification.
+				if ((status == PS_PAUSED || status == PS_INSUFFICIENT)
+					&& file->HasPendingHashWork()) {
+					file->FlushBuffer();
+				}
 			}
 
 			if (!file->IsPaused() && !file->IsStopped()) {

@@ -186,6 +186,11 @@ public:
 	uint32	WriteToBuffer(uint32 transize, uint8_t *data, uint64 start, uint64 end, Requested_Block_Struct *block, const CUpDownClient* client);
 	void	FlushBuffer(bool fromAICHRecoveryDataAvailable = false);
 
+	// True when m_aChangedPart has dirty entries and the write thread
+	// is idle. CDownloadQueue uses this to drive FlushBuffer for
+	// paused/insufficient files (Process() doesn't run for them).
+	bool	HasPendingHashWork() const;
+
 	// Called from CamuleApp's wxEVT_PARTFILE_HASH_RESULT handler when
 	// CPartFileHashThread reports a HashSinglePart result for this
 	// file. Runs the original Phase 3 success/failure logic (AICH
