@@ -53,7 +53,6 @@ env:
 
   cmake_common_config_flags: |-
     -B build \
-    -DCMAKE_BUILD_TYPE=Debug \
     -DBUILD_ALC=YES \
     -DBUILD_ALCC=YES \
     -DBUILD_AMULECMD=YES \
@@ -89,8 +88,12 @@ env:
 
 jobs:
   build_cmake_ubuntu:
-    name: Build CMake Ubuntu
+    name: Build CMake Ubuntu (${{ matrix.build_type }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: [Debug, Release]
     steps:
       - uses: actions/checkout@v6
       - name: install deps
@@ -104,6 +107,7 @@ jobs:
       - name: create build system
         run: |
           cmake \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
             ${{ env.cmake_common_config_flags }} \
             ${{ env.cmake_ubuntu_config_flags }}
       - name: make
@@ -112,8 +116,12 @@ jobs:
         run: ctest ${{ env.ctest_flags }}
 
   build_cmake_macos:
-    name: Build CMake MacOS
+    name: Build CMake MacOS (${{ matrix.build_type }})
     runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: [Debug, Release]
     steps:
       - uses: actions/checkout@v6
       - name: install deps
@@ -133,6 +141,7 @@ jobs:
       - name: create build system
         run: |
           cmake \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
             ${{ env.cmake_common_config_flags }} \
             ${{ env.cmake_macos_config_flags }}
       - name: make
@@ -141,8 +150,12 @@ jobs:
         run: ctest ${{ env.ctest_flags }}
 
   build_cmake_windows_mingw_w64:
-    name: Build CMake mingw-w64
+    name: Build CMake mingw-w64 (${{ matrix.build_type }})
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: [Debug, Release]
     defaults:
       run:
         shell: msys2 {0}
@@ -157,6 +170,7 @@ jobs:
       - name: create build system
         run: |
           cmake \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
             ${{ env.cmake_common_config_flags }} \
             ${{ env.cmake_mingw_w64_config_flags }}
       - name: make
