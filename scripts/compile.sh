@@ -16,9 +16,11 @@ usage() {
 	echo "Compiles the program"
 	echo
 	echo "Usage: $0 [-d] [-h | -?]"
-	echo "  -d    Enable debug compilation (default is release)"
-	echo "  -h    Display this help message"
-	echo "  -?    Display this help message"
+	echo "  -d           Enable debug compilation (default is release)"
+	echo "  -h"
+	echo "  --help       Display this help message"
+	echo "  -j<n>"
+	echo "  --jobs<n>    Run <n> jobs in parallel"
 }
 
 OPT_DEBUG=Release
@@ -94,6 +96,7 @@ cmake_configure () {
 }
 
 cmake_build() {
+	echo Running the CMake build with "${OPT_J} parallel jobs"
 	cmake --build build -j"${OPT_J}" "$@"
 
 	die 3 "CMake build failed"
