@@ -20,7 +20,7 @@ env:
     libboost-all-dev \
     libcrypto++-dev \
     libgd-dev \
-    libgeoip-dev \
+    libmaxminddb-dev \
     libreadline-dev \
     libupnp-dev \
     libwxgtk3.2-dev \
@@ -32,6 +32,7 @@ env:
     cryptopp \
     gd \
     gettext \
+    libmaxminddb \
     libupnp \
     pkg-config \
     wxwidgets
@@ -40,9 +41,9 @@ env:
     mingw-w64-x86_64-boost
     mingw-w64-x86_64-cmake
     mingw-w64-x86_64-crypto++
-    mingw-w64-x86_64-geoip
     mingw-w64-x86_64-gettext
     mingw-w64-x86_64-libgd
+    mingw-w64-x86_64-libmaxminddb
     mingw-w64-x86_64-ninja
     mingw-w64-x86_64-pkgconf
     mingw-w64-x86_64-pupnp
@@ -70,12 +71,10 @@ env:
   cmake_ubuntu_config_flags: |-
     -DENABLE_IP2COUNTRY=YES
 
-  # ENABLE_IP2COUNTRY disabled: Homebrew dropped legacy libgeoip;
-  #   only libmaxminddb is available, which aMule doesn't use
   # ENABLE_NLS will be auto-disabled by cmake/nls.cmake: argz.h is
   #   a glibc-only header and isn't provided by macOS or Homebrew
   cmake_macos_config_flags: |-
-    -DENABLE_IP2COUNTRY=NO
+    -DENABLE_IP2COUNTRY=YES
 
   cmake_mingw_w64_config_flags: |-
     -G Ninja \
