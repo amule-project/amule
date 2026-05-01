@@ -33,6 +33,7 @@
 
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "Timer.h"				// Needed for CTimer
+#include "AppImageIntegration.h"	// Needed for AppImage first-run prompt
 #include "PartFile.h"			// Needed for CPartFile
 #include "PartFileHashThread.h"	// Needed for EVT_PARTFILE_HASH_RESULT
 
@@ -379,6 +380,15 @@ bool CamuleGuiApp::OnInit()
 		LSRegisterURL(ed2kHelperUrl, true);
 		CFRelease(ed2kHelperUrl);
 	}
+#endif
+
+#ifdef __WXGTK__
+	// AppImage first-run desktop integration prompt. CallAfter defers the
+	// dialog until the event loop is fully running, so the modal doesn't
+	// block OnInit's return path.
+	CallAfter([this] {
+		AppImageIntegration::PromptAndInstall(amuledlg);
+	});
 #endif
 
 	return true;

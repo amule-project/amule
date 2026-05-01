@@ -50,6 +50,7 @@ if (BUILD_MONOLITHIC OR BUILD_REMOTEGUI)
 	set (GUI_SOURCES
 		AddFriend.cpp
 		amule-gui.cpp
+		AppImageIntegration.cpp
 		amuleDlg.cpp
 		CatDialog.cpp
 		ChatSelector.cpp
