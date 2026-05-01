@@ -247,13 +247,22 @@ wxDialog(parent, -1, _("Preferences"),
 				CastChild(IDC_BROWSERTABS, wxCheckBox)->Enable(false);
 			#endif /* __WINDOWS__ */
 			CastChild(IDC_PREVIEW_NOTE, wxStaticText)->SetLabel(_("The following variables will be substituted:\n    %PARTFILE - full path to the file\n    %PARTNAME - file name only"));
-			#ifdef __WXMAC__
-				FindWindow(IDC_ENABLETRAYICON)->Show(false);
-				FindWindow(IDC_MINTRAY)->Show(false);
-			#else
+			#ifndef __WXMAC__
+				// "Hide on close" is a macOS convention (close
+				// button hides the window, app stays alive in the
+				// dock). On other platforms the close button
+				// closes the app — exposing this option there
+				// only confuses users.
 				FindWindow(IDC_MACHIDEONCLOSE)->Show(false);
 				thePrefs::SetHideOnClose(false);
 			#endif
+			// Tray-icon checkboxes (IDC_ENABLETRAYICON,
+			// IDC_MINTRAY) are visible on every platform now,
+			// including macOS. wxTaskBarIcon → NSStatusItem on
+			// Mac, NOTIFYICONDATA on Windows, GtkStatusIcon /
+			// libayatana SNI on Linux. macOS users who prefer
+			// the menu-bar status-item pattern (Spotify / Slack
+			// / Discord style) can opt in.
 		} else if (pages[i].m_function == PreferencesEventsTab) {
 
 #define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	+ wxString("\n  %" VAR " - ") + wxGetTranslation(DESC)
