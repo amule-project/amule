@@ -1,0 +1,3 @@
+# Rendered Flatpak manifest is generated from .yaml.in + versions.env
+# by packaging/linux/build.sh. Don't commit it.
+*.yaml

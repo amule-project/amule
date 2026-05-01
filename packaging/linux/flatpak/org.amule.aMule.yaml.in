@@ -1,0 +1,335 @@
+# Flatpak manifest TEMPLATE for aMule.
+#
+# DO NOT EDIT VERSIONS HERE. Pinned values come from
+# packaging/linux/versions.env, rendered into this file by
+# packaging/linux/build.sh via envsubst. Hand-editing this template
+# is fine for structural changes (modules, finish-args, build steps),
+# but version pins belong in versions.env.
+#
+# To regenerate the rendered manifest:
+#   packaging/linux/build.sh render-flatpak-manifest
+# To build + install locally:
+#   packaging/linux/build.sh flatpak
+
+app-id: ${APP_ID}
+runtime: org.gnome.Platform
+runtime-version: '${GNOME_RUNTIME_VERSION}'
+sdk: org.gnome.Sdk
+command: amule
+
+# Cap module-build parallelism. flatpak-builder defaults
+# FLATPAK_BUILDER_N_JOBS to nproc inside the build sandbox; on hosts
+# with ≤ 8 GB RAM this OOM-kills wx/cryptopp/aMule mid-build because
+# C++ TUs peak at 1-2 GB each. MAKEFLAGS is honored by both make and
+# (via cmake) ninja, so a single env override caps everything.
+build-options:
+  env:
+    MAKEFLAGS: "-j2"
+
+finish-args:
+  # Networking (ed2k + Kad + WebUI + EC + UPnP).
+  - --share=network
+  # GUI.
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+  # Full home access. aMule is a P2P client where users mark arbitrary
+  # folders as shared (uploads) and pick arbitrary destinations for
+  # Incoming / Temp / completed-files dirs (downloads). Restricting to
+  # xdg-download alone makes the most common config — "share my Music
+  # folder, save downloads to ~/Movies" — silently fail. This matches
+  # qBittorrent / Transmission on Flathub for the same reason.
+  #
+  # Side benefit: aMule's config dir at ~/.aMule/ now lives on the host
+  # at the standard path (not ~/.var/app/...), so state survives reboots
+  # without needing --persist, and the Flatpak shares config with any
+  # non-Flatpak aMule install side by side.
+  - --filesystem=home
+  # MIME handler for ed2k:// links opened from a browser.
+  - --filesystem=xdg-config/mimeapps.list:ro
+  # Wake-from-sleep (long-running daemon-ish behaviour).
+  - --talk-name=org.freedesktop.PowerManagement.Inhibit
+  # SNI (StatusNotifierItem) tray icon support. Flatpak denies all
+  # cross-name D-Bus access by default, so libayatana-appindicator3's
+  # registration with the system tray host (GNOME's AppIndicator
+  # extension, KDE Plasma's built-in SNI host, etc.) silently fails
+  # without these allowlist entries:
+  #   - StatusNotifierWatcher: the registry where the tray icon publishes
+  #   - AppMenu.Registrar: libdbusmenu's menu-item exposure for the tray menu
+  #   - Notifications: aMule's connection-state desktop notifications
+  - --talk-name=org.kde.StatusNotifierWatcher
+  - --talk-name=com.canonical.AppMenu.Registrar
+  - --talk-name=org.freedesktop.Notifications
+
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /lib/cmake
+  - /share/man
+  - /share/doc
+  - '*.la'
+  - '*.a'
+
+modules:
+
+  - name: cryptopp
+    buildsystem: simple
+    # cryptopp's templated TUs (rijndael, sha, etc.) peak at ~1.5 GB
+    # RAM per gcc process under -O2 on aarch64. flatpak-builder's
+    # default -j${FLATPAK_BUILDER_N_JOBS} resolves to nproc inside
+    # the build sandbox — on small hosts that OOM-kills the build.
+    # Cap at -j2 here so it fits in 7-8 GB hosts; CI runners with
+    # more headroom barely notice the slowdown (cryptopp is small).
+    build-commands:
+      - make -j2 shared
+      - make install PREFIX=/app
+    # Upstream's cryptopp890.zip has filename-case collisions that
+    # break flatpak-builder's extractor ("File already exists" on
+    # TestVectors/Readme.txt). Fetch via git instead — same content,
+    # no extraction step.
+    sources:
+      - type: git
+        url: https://github.com/weidai11/cryptopp.git
+        tag: CRYPTOPP_${CRYPTOPP_TAG_SUFFIX}
+        x-checker-data:
+          type: git
+          tag-pattern: ^CRYPTOPP_(\d+)_(\d+)_(\d+)$
+
+  - name: libupnp
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DUPNP_BUILD_SAMPLES=OFF
+      - -DUPNP_BUILD_TESTS=OFF
+      - -Dreuseaddr=ON
+      - -Dipv6=ON
+    sources:
+      - type: archive
+        url: ${LIBUPNP_TARBALL_URL}
+        sha256: ${LIBUPNP_SHA256}
+
+  - name: boost
+    # GNOME Platform doesn't ship Boost. aMule needs Boost.Asio
+    # (header-only) and Boost.System (for asio::error_code), no other
+    # compiled libraries. Building only --with-libraries=system keeps
+    # the build small (<1 min vs ~15 min for full Boost). Headers are
+    # consumed by wx and aMule at build time and stripped at finish
+    # via the top-level cleanup: /include rule above.
+    buildsystem: simple
+    build-commands:
+      - ./bootstrap.sh --prefix=/app --with-libraries=system
+      - ./b2 -j2 install --prefix=/app
+    sources:
+      - type: archive
+        url: ${BOOST_TARBALL_URL}
+        sha256: ${BOOST_SHA256}
+
+  - name: libgd
+    buildsystem: autotools
+    config-opts:
+      - --without-x
+      - --with-png=/usr
+      - --with-zlib=/usr
+      - --without-tiff
+      - --without-webp
+      - --without-xpm
+      - --without-fontconfig
+    sources:
+      - type: archive
+        url: ${LIBGD_TARBALL_URL}
+        sha256: ${LIBGD_SHA256}
+
+  # libayatana-appindicator stack — needed for the StatusNotifierItem
+  # tray-icon backend in MuleTrayIcon. GNOME Platform 49 doesn't ship
+  # any of these. When this stack is missing, the tray icon falls back
+  # to the legacy GtkStatusIcon path which most modern desktops drop.
+  # Order matters: intltool → libdbusmenu → ayatana-ido →
+  # libayatana-indicator → libayatana-appindicator.
+
+  # libdbusmenu's autoconf hard-requires intltool ≥ 0.35.0
+  # (`IT_PROG_INTLTOOL`). Modern GNOME runtimes deprecated intltool in
+  # favour of pure-gettext, so it isn't in the SDK. Build it from
+  # source first; cleanup: ['*'] discards everything since intltool is
+  # only used during configure of subsequent modules, not at runtime.
+  - name: intltool
+    cleanup:
+      - '*'
+    sources:
+      - type: archive
+        # launchpad.net hosts the canonical tarball but its CDN frequently
+        # times out / 503s, breaking the Flatpak build. Debian/Ubuntu's
+        # archive.ubuntu.com keeps the upstream .orig tarball verbatim
+        # (same SHA256), and snapshot.debian.org preserves an immutable
+        # historical copy with the same content. flatpak-builder tries
+        # mirror-urls in order if the primary url fails, requiring all
+        # mirrors to match the declared sha256 — they do.
+        url: https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
+        mirror-urls:
+          - https://archive.ubuntu.com/ubuntu/pool/main/i/intltool/intltool_0.51.0.orig.tar.gz
+          - https://snapshot.debian.org/archive/debian/20180815T211456Z/pool/main/i/intltool/intltool_0.51.0.orig.tar.gz
+        sha256: 67c74d94196b153b774ab9f89b2fa6c6ba79352407037c8c14d5aeb334e959cd
+
+  - name: libdbusmenu
+    buildsystem: autotools
+    config-opts:
+      - --with-gtk=3
+      - --disable-dumper
+      - --disable-static
+      - --disable-tests
+      - --disable-introspection
+      - --disable-vala
+      - --disable-gtk-doc
+    # libdbusmenu's makefiles inject -Werror unconditionally and the
+    # sources use GObject macros (G_TYPE_INSTANCE_GET_PRIVATE etc.)
+    # that newer glib in GNOME 49 has deprecated. flatpak-builder's
+    # `cflags:` would be added before the build's own -Werror, so a
+    # single `-Wno-error=...` doesn't survive. Instead override the
+    # autotools CFLAGS variable wholesale via `make-args`, dropping
+    # -Werror on the floor while still getting -Wall + optimisation.
+    #
+    # MAKEFLAGS=-j1 override: the manifest's global -j2 races
+    # libdbusmenu's `make install` (autotools install rules aren't
+    # parallel-safe — two install processes try to write the same
+    # header file and one trips "File exists" / "No such file").
+    # Compile happily parallelises; install must serialise.
+    build-options:
+      env:
+        HAVE_VALGRIND_FALSE: '#'
+        HAVE_VALGRIND_TRUE: ''
+        MAKEFLAGS: '-j1'
+    make-args:
+      - 'CFLAGS=-Wall -O2 -g -fPIC -Wno-error'
+      - 'CXXFLAGS=-Wall -O2 -g -fPIC -Wno-error'
+    sources:
+      - type: archive
+        # libdbusmenu 16.04.0 is only on launchpad.net — Debian/Ubuntu
+        # ship the .1 point release with a different sha256, and snapshot.
+        # debian.org doesn't carry the source package at this version.
+        # No working mirror exists at the pinned sha. If launchpad reliability
+        # becomes an ongoing issue, switching to the GitHub-hosted
+        # AyatanaIndicators/libayatana-dbusmenu fork (ABI-compatible) is a
+        # follow-up worth considering.
+        url: https://launchpad.net/libdbusmenu/16.04/16.04.0/+download/libdbusmenu-16.04.0.tar.gz
+        sha256: b9cc4a2acd74509435892823607d966d424bd9ad5d0b00938f27240a1bfa878a
+
+  # CMAKE_INSTALL_LIBDIR=lib pin: cmake's GNUInstallDirs picks `lib64`
+  # on x86_64 (biarch heritage) and `lib` on aarch64. The Flatpak
+  # `org.gnome.Sdk//49` pkg-config search path is `/app/lib/pkgconfig`
+  # only, so libs landing in `/app/lib64/` are silently invisible to
+  # downstream `pkg_check_modules` calls. Force `lib` everywhere so
+  # both arches install consistently.
+
+  - name: ayatana-ido
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DENABLE_TESTS=OFF
+      - -DCMAKE_INSTALL_LIBDIR=lib
+    sources:
+      - type: archive
+        url: https://github.com/AyatanaIndicators/ayatana-ido/archive/refs/tags/0.10.4.tar.gz
+        sha256: bd59abd5f1314e411d0d55ce3643e91cef633271f58126be529de5fb71c5ab38
+
+  - name: libayatana-indicator
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DENABLE_TESTS=OFF
+      - -DCMAKE_INSTALL_LIBDIR=lib
+    sources:
+      - type: archive
+        url: https://github.com/AyatanaIndicators/libayatana-indicator/archive/refs/tags/0.9.4.tar.gz
+        sha256: a18d3c682e29afd77db24366f8475b26bda22b0e16ff569a2ec71cd6eb4eac95
+
+  - name: libayatana-appindicator
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DENABLE_BINDINGS_MONO=OFF
+      - -DENABLE_BINDINGS_VALA=OFF
+      - -DENABLE_TESTS=OFF
+      - -DFLAVOUR_GTK3=ON
+      - -DCMAKE_INSTALL_LIBDIR=lib
+      # gtk-doc generation runs scangobj.sh which links a tiny probe
+      # against transitive layatana-indicator3 / dbusmenu* libs; in
+      # the GNOME 49 sandbox the linker can't find them at the layout
+      # it expects (-l<name> with no -L hint) and aborts. Docs aren't
+      # needed for our runtime use of the lib. Note: spelling is
+      # ENABLE_GTKDOC (one word), not ENABLE_GTK_DOC.
+      - -DENABLE_GTKDOC=OFF
+    sources:
+      - type: archive
+        url: https://github.com/AyatanaIndicators/libayatana-appindicator/archive/refs/tags/0.5.94.tar.gz
+        sha256: 884a6bc77994c0b58c961613ca4c4b974dc91aa0f804e70e92f38a542d0d0f90
+
+  # libmaxminddb — enables aMule's IP2Country feature (country flag
+  # lookup in client lists / search results / transfers). The matching
+  # GeoLite2-Country.mmdb database is NOT shipped: MaxMind's licence
+  # forbids redistribution, and the file changes monthly. Users drop
+  # their own copy into the Flatpak's per-app data dir at runtime,
+  # which lives at ~/.var/app/org.amule.aMule/data/.aMule/ on the
+  # host. Without the .mmdb the feature stays inert; the lib being
+  # built in is what allows the on-disk database to be picked up.
+  - name: libmaxminddb
+    buildsystem: autotools
+    config-opts:
+      - --disable-static
+      - --disable-tests
+    sources:
+      - type: archive
+        url: https://github.com/maxmind/libmaxminddb/releases/download/1.13.3/libmaxminddb-1.13.3.tar.gz
+        sha256: a66502ea76eadbe17f2cd6fd708946777253972d2ae8157dee1b23a2fb528171
+
+  - name: wxwidgets
+    buildsystem: autotools
+    config-opts:
+      - --with-gtk=3
+      - --enable-unicode
+      - --disable-debug
+      - --disable-shared
+      - --disable-mediactrl
+      - --disable-webview
+      - --disable-richtext
+      - --disable-aui
+      - --disable-html
+      - --without-libtiff
+      - --without-libjbig
+      - --without-libmspack
+      - --without-opengl
+      - --with-libcurl
+    sources:
+      - type: archive
+        url: ${WX_TARBALL_URL}
+        sha256: ${WX_SHA256}
+
+  - name: amule
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DBUILD_MONOLITHIC=YES
+      - -DBUILD_REMOTEGUI=YES
+      - -DBUILD_DAEMON=YES
+      - -DBUILD_AMULECMD=YES
+      - -DBUILD_ED2K=YES
+      - -DBUILD_WEBSERVER=YES
+      - -DENABLE_NLS=YES
+      - -DENABLE_UPNP=YES
+      - -DENABLE_IP2COUNTRY=YES
+    # AMULE_REVISION (in versions.env) controls what gets built:
+    #   - "master" or another branch -> branch: <name> at flatpak-builder time
+    #   - a release tag like "2.3.3" -> branch: <tag-name> works because flatpak's
+    #     git fetcher resolves any ref. For Flathub release builds this can be
+    #     swapped to `tag: ${AMULE_REVISION}` if stricter pinning is preferred.
+    # flatpak-external-data-checker uses x-checker-data to auto-bump when new
+    # release tags are pushed upstream.
+    sources:
+      - type: git
+        url: https://github.com/amule-project/amule.git
+        branch: ${AMULE_REVISION}
+        # Default flatpak-builder fetch is a shallow clone, which strips
+        # all tags. Without tags `git describe --tags` (called from
+        # cmake/git-rev.cmake at configure time) returns empty, leaving
+        # the SVNDATE macro unset and the runtime banner showing
+        # "Snapshot: " with no rev. Disable the shallow optimisation so
+        # tags are present and the banner reports the actual git rev.
+        disable-shallow-clone: true
+        x-checker-data:
+          type: git
+          tag-pattern: ^v?([\d.]+)$
