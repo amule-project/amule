@@ -28,7 +28,7 @@ env:
     libboost-all-dev \
     libcrypto++-dev \
     libgd-dev \
-    libgeoip-dev \
+    libmaxminddb-dev \
     libreadline-dev \
     libupnp-dev \
     libwxgtk3.2-dev \
