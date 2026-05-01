@@ -130,6 +130,14 @@ if (BUILD_DAEMON)
 		PRIVATE wxWidgets::NET
 	)
 
+	if (GLIB_FOUND)
+		# amule.cpp's CamuleApp::OnInit calls g_set_prgname; daemon
+		# build pulls amule.cpp via CORE_SOURCES so it needs the
+		# glib include path too.
+		target_include_directories (amuled PRIVATE ${GLIB_INCLUDE_DIRS})
+		target_link_libraries (amuled PRIVATE ${GLIB_LIBRARIES})
+	endif()
+
 	if (HAVE_BFD)
 		target_link_libraries (amuled
 			PRIVATE ${BFD_LIBRARY}
@@ -215,6 +223,20 @@ if (BUILD_MONOLITHIC)
 		)
 	endif()
 
+	if (GLIB_FOUND)
+		# CamuleApp::OnInit calls g_set_prgname (Wayland app_id binding),
+		# so amule.cpp needs the glib include path even when the
+		# AppIndicator backend isn't compiled in.
+		target_include_directories (amule PRIVATE ${GLIB_INCLUDE_DIRS})
+		target_link_libraries (amule PRIVATE ${GLIB_LIBRARIES})
+	endif()
+
+	if (WITH_LIBAYATANA_APPINDICATOR)
+		target_include_directories (amule PRIVATE ${AYATANA_APPINDICATOR_INCLUDE_DIRS})
+		target_link_libraries (amule PRIVATE ${AYATANA_APPINDICATOR_LIBRARIES})
+		target_compile_options (amule PRIVATE ${AYATANA_APPINDICATOR_CFLAGS_OTHER})
+	endif()
+
 	if (WIN32)
 		target_link_libraries (amule
 			PRIVATE shlwapi.lib
@@ -292,14 +314,11 @@ if (BUILD_MONOLITHIC)
 		BUNDLE DESTINATION .
 	)
 
+	# XPM fallback for Icon= lookups on systems too old to ship the
+	# hicolor PNG path. Filename matches the .desktop's Icon= field.
 	install (FILES aMule.xpm
 		DESTINATION "${CMAKE_INSTALL_DATADIR}/pixmaps"
-		RENAME amule.xpm
-	)
-
-	install (FILES aMule.xpm
-		DESTINATION "${CMAKE_INSTALL_DATADIR}/pixmaps"
-		RENAME amulegui.xpm
+		RENAME org.amule.aMule.xpm
 	)
 endif (BUILD_MONOLITHIC)
 
@@ -339,6 +358,20 @@ if (BUILD_REMOTEGUI)
 		target_link_libraries (amulegui
 			PRIVATE ${BFD_LIBRARY}
 		)
+	endif()
+
+	if (GLIB_FOUND)
+		# amulegui pulls MuleTrayIcon.cpp via GUI_SOURCES; the SNI
+		# backend includes app-indicator headers which transitively
+		# need glib's include path.
+		target_include_directories (amulegui PRIVATE ${GLIB_INCLUDE_DIRS})
+		target_link_libraries (amulegui PRIVATE ${GLIB_LIBRARIES})
+	endif()
+
+	if (WITH_LIBAYATANA_APPINDICATOR)
+		target_include_directories (amulegui PRIVATE ${AYATANA_APPINDICATOR_INCLUDE_DIRS})
+		target_link_libraries (amulegui PRIVATE ${AYATANA_APPINDICATOR_LIBRARIES})
+		target_compile_options (amulegui PRIVATE ${AYATANA_APPINDICATOR_CFLAGS_OTHER})
 	endif()
 
 	if (WIN32)

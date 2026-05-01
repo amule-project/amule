@@ -167,6 +167,50 @@ endif()
 
 include (cmake/bfd.cmake)
 
+# glib-2.0 headers — needed by amule.cpp's CamuleApp::OnInit, which
+# calls g_set_prgname() under __WXGTK__ to bind the Wayland wl_app_id
+# (and X11 WM_CLASS) to the .desktop filename. amule.cpp is compiled
+# into both amule (monolithic) and amuled (daemon), so detect this
+# unconditionally on Linux rather than gating on a build flag — wxgtk
+# builds against glib transitively but doesn't always propagate the
+# include path through the wxWidgets cmake target on every distro.
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	find_package (PkgConfig QUIET)
+	if (PkgConfig_FOUND)
+		pkg_check_modules (GLIB QUIET glib-2.0)
+	endif()
+endif()
+
+# Optional StatusNotifierItem (SNI) backend for the system-tray icon.
+# wxGTK's wxTaskBarIcon talks the legacy GtkStatusIcon API, which
+# GNOME Shell removed in 3.26 and modern wlroots compositors never
+# implemented. Apps that need a visible tray icon on Ubuntu (with the
+# AppIndicators extension), KDE Plasma, and Sway speak the SNI D-Bus
+# protocol directly via libayatana-appindicator3. When the dev
+# headers are present we build a SNI backend into MuleTrayIcon; on
+# platforms where the library is missing (Windows, macOS, builds
+# without the dep) we fall back to wxTaskBarIcon.
+if (BUILD_MONOLITHIC AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	find_package (PkgConfig QUIET)
+	if (PkgConfig_FOUND)
+		# `0.1` is the API version (never bumped, every release uses it),
+		# not a library version pin. Try the Ayatana fork first since
+		# that's the maintained one; fall back to Canonical's legacy
+		# `appindicator3-0.1` for distros that haven't migrated yet.
+		# The two are API-compatible at the headers/symbols level.
+		pkg_check_modules (AYATANA_APPINDICATOR QUIET ayatana-appindicator3-0.1)
+		if (NOT AYATANA_APPINDICATOR_FOUND)
+			pkg_check_modules (AYATANA_APPINDICATOR QUIET appindicator3-0.1)
+		endif()
+		if (AYATANA_APPINDICATOR_FOUND)
+			message (STATUS "AppIndicator3 found: ${AYATANA_APPINDICATOR_MODULE_NAME} ${AYATANA_APPINDICATOR_VERSION} — tray icon uses SNI backend")
+			set (WITH_LIBAYATANA_APPINDICATOR ON)
+		else()
+			message (STATUS "AppIndicator3 not found (looked for ayatana-appindicator3-0.1 and appindicator3-0.1) — tray icon falls back to legacy GtkStatusIcon, invisible on modern GNOME/wlroots")
+		endif()
+	endif()
+endif()
+
 configure_file (
 	config.h.cm
 	config.h
@@ -188,24 +232,28 @@ if (WIN32)
 endif()
 
 if (BUILD_MONOLITHIC)
-	install (FILES amule.desktop
+	# Files use the canonical AppStream / Flatpak / Wayland app id
+	# `org.amule.aMule`. Wayland compositors bind windows to launcher
+	# icons by matching wl_app_id (set via g_set_prgname() in amule's
+	# OnInit) against the .desktop filename without extension; the id
+	# also doubles as the AppStream component id and the Flatpak app id
+	# so AppImage, Flatpak, and distro packages all resolve to the same
+	# entity in software catalogs.
+	install (FILES org.amule.aMule.desktop
 		DESTINATION "${CMAKE_INSTALL_DATADIR}/applications"
 	)
-	# Ship the PNG application icon in the XDG hicolor theme so
-	# desktop environments (GTK, KDE, Wayland shells, file managers)
-	# can resolve `Icon=amule` from amule.desktop.
-	install (FILES amule.png
+	install (FILES org.amule.aMule.png
 		DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps"
 	)
 endif()
 
 if (BUILD_REMOTEGUI)
-	install (FILES amulegui.desktop
+	install (FILES org.amule.aMule.gui.desktop
 		DESTINATION "${CMAKE_INSTALL_DATADIR}/applications"
 	)
 endif()
 
-install (FILES org.amule.amule.metainfo.xml
+install (FILES org.amule.aMule.metainfo.xml
 	DESTINATION "${CMAKE_INSTALL_DATADIR}/metainfo"
 )
 
@@ -295,4 +343,12 @@ endif()
 
 if (NEED_ZLIB)
 	message ("			zlib				${ZLIB_VERSION_STRING}")
+endif()
+
+if (BUILD_MONOLITHIC AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	if (WITH_LIBAYATANA_APPINDICATOR)
+		message ("			tray-icon backend		StatusNotifierItem (libayatana-appindicator ${AYATANA_APPINDICATOR_VERSION})")
+	else()
+		message ("			tray-icon backend		legacy GtkStatusIcon (invisible on modern GNOME/wlroots — install libayatana-appindicator3-dev for SNI)")
+	endif()
 endif()

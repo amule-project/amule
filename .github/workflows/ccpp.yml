@@ -20,6 +20,7 @@ env:
     libboost-all-dev \
     libcrypto++-dev \
     libgd-dev \
+    libglib2.0-dev \
     libmaxminddb-dev \
     libreadline-dev \
     libupnp-dev \
