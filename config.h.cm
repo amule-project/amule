@@ -185,5 +185,9 @@
 /* Define if libpng is present is set. */
 #cmakedefine WITH_LIBPNG
 
+/* Define if libayatana-appindicator3 was found at configure time —
+ * enables the StatusNotifierItem backend in MuleTrayIcon. */
+#cmakedefine WITH_LIBAYATANA_APPINDICATOR
+
 /* Define if ENABLE_NLS is set. */
 #cmakedefine YYENABLE_NLS 1

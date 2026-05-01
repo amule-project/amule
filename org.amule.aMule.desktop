@@ -1,11 +1,11 @@
 [Desktop Entry]
 Name=aMule
-Exec=env GDK_BACKEND=x11 amule %u
-Icon=amule
+Exec=amule %u
+Icon=org.amule.aMule
 Terminal=false
 Type=Application
 Categories=Network;P2P;
-StartupWMClass=amule
+StartupWMClass=org.amule.aMule
 Comment=A client for the eD2k network
 Comment[fr]=Un client pour le réseau eD2k
 Comment[tr]=eD2k ağı için istemci

@@ -1,10 +1,11 @@
 [Desktop Entry]
 Name=aMuleGUI
-Exec=env GDK_BACKEND=x11 amulegui
-Icon=amule
+Exec=amulegui
+Icon=org.amule.aMule
 Terminal=false
 Type=Application
 Categories=Network;P2P;
+StartupWMClass=org.amule.aMule.gui
 Comment=aMule remote control
 Comment[de]=aMule-Fernsteuerung
 Comment[fr]=Contrôle à distance d'aMule

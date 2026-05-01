@@ -47,6 +47,10 @@
 #include <wx/filename.h>		// Needed for wxFileName (CA bundle lookup)
 #endif
 
+#ifdef __WXGTK__
+#include <glib.h>			// g_set_prgname() — wl_app_id / WM_CLASS binding
+#endif
+
 
 #include <common/Format.h>		// Needed for CFormat
 #include "kademlia/kademlia/Kademlia.h"
@@ -432,6 +436,20 @@ bool CamuleApp::OnInit()
 	// any text before call of Localize_mule needs not to be translated.
 	AddLogLineNS("Checkpoint set on app init for memory debug");	// debug output
 	wxDebugContext::SetCheckpoint();
+#endif
+
+#ifdef __WXGTK__
+	// Set the GTK program name to the canonical app id. On Wayland,
+	// GTK derives wl_app_id (xdg_toplevel.set_app_id) from
+	// g_get_prgname(); compositors match wl_app_id against the
+	// .desktop filename to bind windows to launcher icons. Without
+	// this the binding falls back to argv[0], which differs across
+	// packaging formats (AppImage's argv[0] is "aMule", distro
+	// installs use "amule", Flatpak renames the .desktop entirely).
+	// On X11 the same value also feeds into WM_CLASS, matching
+	// StartupWMClass=org.amule.aMule in the .desktop file. Must run
+	// before any GTK window is created.
+	g_set_prgname("org.amule.aMule");
 #endif
 
 	// Forward wxLog events to CLogger
