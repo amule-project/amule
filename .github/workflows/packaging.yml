@@ -1,0 +1,350 @@
+# Packaging CI — verifies the recipes in packaging/{linux,macos,windows}/
+# still produce working artifacts on every push to a branch that includes
+# packaging/ changes. NOT tag-triggered (that's release.yml later); this
+# is the per-PR sanity gate.
+#
+# Each platform builds on its native GHA runner (no QEMU emulation).
+# macOS Universal2 is the special case — built by parallel arm64 + x86_64
+# jobs and merged in a follow-up `lipo` job, since standard Homebrew on
+# Apple Silicon ships native-arch-only dylibs.
+#
+# Artifacts uploaded per matrix entry; not assembled into a Release here.
+
+name: Packaging
+
+on:
+  # Auto-fires only on push to master — i.e. when a PR is merged. Open
+  # PRs do NOT trigger this workflow; reviewers who want to inspect a
+  # PR's artifacts before merging can run `workflow_dispatch` against
+  # the PR branch from the Actions UI. This avoids the double-fire of
+  # "fires on PR open AND on merge" which is the most expensive shape.
+  # Path filter ensures doc-only commits don't burn CI either.
+  push:
+    branches:
+      - master
+      - 'packaging**'
+    paths:
+      - 'packaging/**'
+      - '.github/workflows/packaging.yml'
+      - 'src/**'
+      - 'CMakeLists.txt'
+      - 'cmake/**'
+  workflow_dispatch:
+    inputs:
+      only:
+        description: >-
+          Comma-separated list of platform tracks to run.
+          Default empty = run all. Useful during iteration to focus
+          on the failing tracks without paying for the green ones.
+          Valid: appimage, flatpak, macos, windows.
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+
+  # ------------------------------------------------------------------
+  # Linux — AppImage on x86_64 + aarch64 native runners
+  # ------------------------------------------------------------------
+  appimage:
+    name: AppImage (${{ matrix.arch }})
+    if: >-
+      github.event_name != 'workflow_dispatch' ||
+      inputs.only == '' ||
+      contains(inputs.only, 'appimage')
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { arch: x86_64,  runs-on: ubuntu-22.04 }
+          - { arch: aarch64, runs-on: ubuntu-22.04-arm }
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0  # for git describe in build.sh
+      - name: Build AppImage
+        run: packaging/linux/build.sh appimage
+      - name: Validate via cross-distro Docker matrix
+        run: packaging/linux/build.sh validate
+      - uses: actions/upload-artifact@v7
+        with:
+          name: appimage-${{ matrix.arch }}
+          path: dist/aMule-*-${{ matrix.arch }}.AppImage
+          if-no-files-found: error
+
+  # ------------------------------------------------------------------
+  # Linux — Flatpak on x86_64 + aarch64 native runners
+  # ------------------------------------------------------------------
+  flatpak:
+    name: Flatpak (${{ matrix.arch }})
+    if: >-
+      github.event_name != 'workflow_dispatch' ||
+      inputs.only == '' ||
+      contains(inputs.only, 'flatpak')
+    strategy:
+      fail-fast: false
+      matrix:
+        # ubuntu-24.04 (not 22.04 like the AppImage job) so the host
+        # ships appstream 1.0+ which provides /usr/bin/appstream-compose.
+        # flatpak-builder shells out to that binary at the end of every
+        # build to compose AppStream metadata; on 22.04 (appstream 0.15)
+        # the binary is absent and flatpak-builder fails with
+        # "bwrap: execvp appstream-compose: No such file or directory".
+        # Host glibc doesn't matter for Flatpak builds (output runs
+        # inside the GNOME Platform sandbox), so bumping the runner
+        # has no compat downside, unlike the AppImage matrix.
+        include:
+          - { arch: x86_64,  runs-on: ubuntu-24.04 }
+          - { arch: aarch64, runs-on: ubuntu-24.04-arm }
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Install flatpak + flatpak-builder + GNOME runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak flatpak-builder gettext-base
+          flatpak remote-add --user --if-not-exists flathub \
+              https://flathub.org/repo/flathub.flatpakrepo
+          # Read GNOME_RUNTIME_VERSION from versions.env so this stays
+          # in sync with whatever the manifest pins.
+          set -a; . packaging/linux/versions.env; set +a
+          flatpak install --user --noninteractive flathub \
+              "org.gnome.Platform//${GNOME_RUNTIME_VERSION}" \
+              "org.gnome.Sdk//${GNOME_RUNTIME_VERSION}"
+      - name: Build Flatpak
+        run: packaging/linux/build.sh flatpak
+      - uses: actions/upload-artifact@v7
+        with:
+          name: flatpak-${{ matrix.arch }}
+          path: dist/aMule-*-${{ matrix.arch }}.flatpak
+          if-no-files-found: error
+
+  # ------------------------------------------------------------------
+  # macOS — native arm64 + x86_64 builds, then lipo-merge to Universal2
+  # ------------------------------------------------------------------
+  macos-build:
+    name: macOS .app (${{ matrix.arch }})
+    if: >-
+      github.event_name != 'workflow_dispatch' ||
+      inputs.only == '' ||
+      contains(inputs.only, 'macos')
+    # Both arches build on macos-15 (Apple Silicon) — the legacy
+    # macos-13 (Intel) runner is being retired by GitHub and has been
+    # flaky for months. The x86_64 build uses Rosetta: a parallel Intel
+    # Homebrew install at /usr/local supplies x86_64 dep bottles, and
+    # every command that produces x86_64 output is wrapped in
+    # `arch -x86_64`. CMake honours MACOS_ARCHITECTURES from the env
+    # (handled in packaging/macos/build.sh) so clang emits the right
+    # slice. End result is identical to a native Intel build, with the
+    # benefit of running on a much beefier ARM host.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: arm64
+            archcmd: ''
+            brew_prefix: /opt/homebrew
+          - arch: x86_64
+            archcmd: 'arch -x86_64'
+            brew_prefix: /usr/local
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Bootstrap x86_64 Homebrew (Rosetta)
+        if: matrix.arch == 'x86_64'
+        run: |
+          # Apple Silicon runners ship Rosetta preinstalled. Install
+          # x86_64 Homebrew at /usr/local so we can fetch x86_64 bottles
+          # for our deps. The native /opt/homebrew install is left alone.
+          arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      - name: Install Homebrew deps
+        run: |
+          BREW=${{ matrix.brew_prefix }}/bin/brew
+          ${{ matrix.archcmd }} $BREW update
+          ${{ matrix.archcmd }} $BREW install --quiet \
+              cmake wxwidgets cryptopp libupnp gd gettext boost dylibbundler libmaxminddb
+          # Prepend the matrix-selected brew prefix to PATH so every
+          # `brew --prefix` / `cmake` / `pkg-config` invocation in the
+          # build script resolves against the right install. gettext
+          # is keg-only on macOS; add msgfmt to PATH for the NLS probe.
+          echo "${{ matrix.brew_prefix }}/bin" >> "$GITHUB_PATH"
+          echo "${{ matrix.brew_prefix }}/opt/gettext/bin" >> "$GITHUB_PATH"
+      - name: Build native-arch .app
+        env:
+          MACOS_ARCHITECTURES: ${{ matrix.arch }}
+        run: ${{ matrix.archcmd }} packaging/macos/build.sh
+      - name: Smoke-test amuled --version
+        run: |
+          # Mount the produced .dmg at a fixed path. The volume name
+          # contains spaces (e.g. "aMule 2.3.3-foo"), and parsing it
+          # out of hdiutil's tabular output is fragile — supply
+          # -mountpoint instead.
+          DMG=$(ls dist/aMule-*-macOS.dmg | head -1)
+          MNT=/tmp/amulemnt
+          mkdir -p "${MNT}"
+          hdiutil attach -nobrowse -mountpoint "${MNT}" "${DMG}"
+          # x86_64 binaries on Apple Silicon run via Rosetta automatically
+          # (no explicit arch prefix needed for execution), but be
+          # consistent. amuled --version exits 255 (wxApp::OnInit returns
+          # false after printing version → wxEntry returns -1). Check the
+          # banner via grep instead of relying on exit code.
+          ${{ matrix.archcmd }} "${MNT}/aMule.app/Contents/MacOS/amuled" --version 2>&1 | grep -q '^aMuleD GIT'
+          hdiutil detach "${MNT}"
+      - uses: actions/upload-artifact@v7
+        with:
+          # Upload the produced .app tree (not the .dmg) so the merge
+          # job can lipo-merge mach-o files. The final lipo'd .app gets
+          # re-wrapped into a Universal2 .dmg in the merge job.
+          name: macos-app-${{ matrix.arch }}
+          path: build-macos/src/aMule.app
+          if-no-files-found: error
+          # Preserve symlinks + permissions inside the .app.
+          retention-days: 1
+
+  macos-universal2:
+    name: macOS Universal2 .dmg
+    needs: macos-build
+    if: >-
+      github.event_name != 'workflow_dispatch' ||
+      inputs.only == '' ||
+      contains(inputs.only, 'macos')
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v8
+        with:
+          name: macos-app-arm64
+          path: arm64.app
+      - uses: actions/download-artifact@v8
+        with:
+          name: macos-app-x86_64
+          path: x86_64.app
+      - name: lipo-merge into Universal2 .app
+        run: |
+          # Use the arm64 .app as the base layout; for every Mach-O
+          # file inside it, lipo-create with the matching x86_64 sibling.
+          # Side files (Info.plist, .icns, locale catalogs) are
+          # arch-agnostic and inherited from arm64 unchanged.
+          BASE=arm64.app
+          OTHER=x86_64.app
+          OUT=aMule.app
+          cp -R "${BASE}" "${OUT}"
+          while IFS= read -r -d '' rel; do
+              local_arm="${BASE}/${rel}"
+              local_x86="${OTHER}/${rel}"
+              if file "${local_arm}" | grep -q "Mach-O" && [ -f "${local_x86}" ]; then
+                  lipo -create -output "${OUT}/${rel}" "${local_arm}" "${local_x86}"
+                  # `lipo -create -output` writes the new file with the
+                  # process umask (default 022 -> rw-r--r--), discarding
+                  # the executable bit on the source. macOS launchd then
+                  # refuses to spawn the bundle with errno 13 (EACCES)
+                  # because access(X_OK) on the main exec fails. Restore
+                  # the executable bit so launchd can spawn the binary.
+                  chmod +x "${OUT}/${rel}"
+              fi
+          done < <(cd "${BASE}" && find . -type f -print0 | sed 's|^\./||g')
+          # Re-apply ad-hoc signatures to every nested Mach-O. clang on
+          # Apple Silicon emits ad-hoc-signed binaries by default; lipo
+          # invalidates those signatures on merge, and macOS amfid then
+          # refuses to load the resulting fat binary. `codesign --force
+          # --deep --sign -` rewrites valid ad-hoc sigs across the whole
+          # bundle. Required even before notarization for the binary to
+          # launch at all on Apple Silicon.
+          codesign --force --deep --sign - "${OUT}"
+      - name: Build Universal2 .dmg
+        run: |
+          VERSION=$(git describe --tags --always)
+          mkdir -p dist
+          STAGE=$(mktemp -d)
+          cp -R aMule.app "${STAGE}/"
+          ln -s /Applications "${STAGE}/Applications"
+          hdiutil create -volname "aMule ${VERSION}" \
+              -srcfolder "${STAGE}" -ov -format UDZO \
+              "dist/aMule-${VERSION}-macOS-universal2.dmg"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: macos-universal2
+          path: dist/aMule-*-macOS-universal2.dmg
+          if-no-files-found: error
+
+  # ------------------------------------------------------------------
+  # Windows — portable .zip for x64 (MINGW64) and ARM64 (CLANGARM64).
+  # ------------------------------------------------------------------
+  windows-zip:
+    name: Windows portable .zip (${{ matrix.arch }})
+    if: >-
+      github.event_name != 'workflow_dispatch' ||
+      inputs.only == '' ||
+      contains(inputs.only, 'windows')
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            msystem: MINGW64
+            runs-on: windows-2025
+            pkg_prefix: mingw-w64-x86_64
+          - arch: arm64
+            msystem: CLANGARM64
+            runs-on: windows-11-arm
+            pkg_prefix: mingw-w64-clang-aarch64
+    runs-on: ${{ matrix.runs-on }}
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{ matrix.msystem }}
+          update: true
+          install: >-
+            ${{ matrix.pkg_prefix }}-boost
+            ${{ matrix.pkg_prefix }}-cmake
+            ${{ matrix.pkg_prefix }}-crypto++
+            ${{ matrix.pkg_prefix }}-gettext
+            ${{ matrix.pkg_prefix }}-libgd
+            ${{ matrix.pkg_prefix }}-libmaxminddb
+            ${{ matrix.pkg_prefix }}-make
+            ${{ matrix.pkg_prefix }}-pkgconf
+            ${{ matrix.pkg_prefix }}-pupnp
+            ${{ matrix.pkg_prefix }}-readline
+            ${{ matrix.pkg_prefix }}-toolchain
+            ${{ matrix.pkg_prefix }}-wxwidgets3.2-msw
+            ${{ matrix.pkg_prefix }}-zlib
+            zip
+      - name: Build portable .zip
+        env:
+          WINDOWS_MSYSTEM: ${{ matrix.msystem }}
+        run: packaging/windows/build.sh
+      - name: Smoke-test amuled.exe --version
+        run: |
+          # Two layered quirks here:
+          # 1. amuled.exe --version exits 255 (wxApp::OnInit returns
+          #    false after banner → wxEntry returns -1). || true
+          #    swallows that.
+          # 2. Piping `amuled.exe ... | grep -q` on MSYS2 bash exits
+          #    127: grep -q closes its pipe end at first match,
+          #    amuled.exe gets SIGPIPE on its next stdout flush, MSYS2
+          #    surfaces that as 127. Capture to a file first, then
+          #    grep the file — no pipe race.
+          ./amule-portable-${{ matrix.arch }}/bin/amuled.exe --version \
+              > /tmp/version.txt 2>&1 || true
+          cat /tmp/version.txt
+          grep -q '^aMuleD GIT' /tmp/version.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows-${{ matrix.arch }}
+          path: dist/aMule-*-Windows-${{ matrix.arch }}.zip
+          if-no-files-found: error

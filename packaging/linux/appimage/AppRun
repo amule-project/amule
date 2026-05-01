@@ -1,0 +1,58 @@
+#!/bin/bash
+# Custom AppRun for the aMule AppImage.
+#
+# Dispatches to one of the bundled binaries (amule / amuled / amulegui /
+# amulecmd / amuleweb / ed2k) based on the name the AppImage was invoked
+# as. The AppImage runtime sets $ARGV0 to the path used to launch the
+# image; basename of that gives us the symlink name. Standard idiom —
+# same pattern Krita and GIMP use to ship multiple tools in one bundle.
+#
+# Usage:
+#   ./aMule-x.y.z-x86_64.AppImage         # runs amule (monolithic GUI)
+#   ln -s aMule.AppImage amuled
+#   ./amuled                              # runs the daemon
+#   ln -s aMule.AppImage amulecmd
+#   ./amulecmd ...                        # runs the EC client
+
+set -e
+
+HERE="$(dirname "$(readlink -f "${0}")")"
+
+# Source plugin env hooks (linuxdeploy-plugin-gtk drops its env setup
+# in apprun-hooks/linuxdeploy-plugin-gtk.sh — GTK_PATH, GIO_MODULE_DIR,
+# GDK_PIXBUF_MODULE_FILE, XDG_DATA_DIRS, FONTCONFIG_PATH, etc.).
+if [ -d "${HERE}/apprun-hooks" ]; then
+    for hook in "${HERE}/apprun-hooks/"*.sh; do
+        [ -f "${hook}" ] && . "${hook}"
+    done
+fi
+
+export PATH="${HERE}/usr/bin:${PATH}"
+export LD_LIBRARY_PATH="${HERE}/usr/lib:${LD_LIBRARY_PATH:-}"
+
+# argv[0] dispatch. ARGV0 is set by the AppImage runtime; fall back to
+# $0 for direct invocation (e.g. when extracted via --appimage-extract).
+INVOCATION="${ARGV0:-$0}"
+NAME="$(basename "${INVOCATION}")"
+# Strip a trailing .AppImage so renaming aMule-2.4.0-x86_64.AppImage
+# to amuled.AppImage still dispatches.
+NAME="${NAME%.AppImage}"
+# Some users keep arch suffixes; tolerate aMule-x86_64, amuled-aarch64, etc.
+NAME="${NAME%-x86_64}"
+NAME="${NAME%-aarch64}"
+
+case "${NAME}" in
+    amuled|amulegui|amulecmd|amuleweb|ed2k)
+        BIN="${HERE}/usr/bin/${NAME}"
+        ;;
+    *)
+        BIN="${HERE}/usr/bin/amule"
+        ;;
+esac
+
+if [ ! -x "${BIN}" ]; then
+    echo "AppRun: ${BIN} missing or not executable" >&2
+    exit 127
+fi
+
+exec "${BIN}" "$@"
