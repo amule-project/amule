@@ -413,6 +413,15 @@ class CamuleGuiApp : public CamuleApp, public CamuleGuiBase
 	void OnEndSession(wxCloseEvent& evt);
 	void OnQueryEndSession(wxCloseEvent& evt);
 
+#ifdef __WXMAC__
+	// Restore the main window when the user clicks the Dock icon
+	// while no aMule windows are visible. Default wxApp::MacReopenApp
+	// behaviour is to do nothing when the frame is hidden, so a
+	// window hidden via the close button (HideOnClose pref) stays
+	// permanently hidden — the app appears stuck.
+	virtual void MacReopenApp();
+#endif
+
 public:
 
 	virtual int ShowAlert(wxString msg, wxString title, int flags);

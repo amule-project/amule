@@ -319,6 +319,27 @@ void CamuleGuiApp::OnEndSession(wxCloseEvent& evt)
 	evt.Skip();
 }
 
+#ifdef __WXMAC__
+void CamuleGuiApp::MacReopenApp()
+{
+	// Fired when the user clicks the Dock icon and aMule has no
+	// visible top-level windows. Without this override, wxApp's
+	// default Reopen handler is a no-op when the frame is hidden,
+	// so a window hidden via the close button (HideOnClose pref =
+	// macOS-style "close hides instead of quits") stays permanently
+	// hidden — the only way to bring aMule back was to Cmd+Tab.
+	//
+	// Show + Iconize(false) + Raise covers all three hidden states:
+	// hidden via Show(false), iconized to the dock, or just behind
+	// other apps.
+	if (amuledlg) {
+		amuledlg->Show(true);
+		amuledlg->Iconize(false);
+		amuledlg->Raise();
+	}
+}
+#endif
+
 
 bool CamuleGuiApp::OnInit()
 {
