@@ -108,6 +108,7 @@ bool		CPreferences::s_ICH;
 uint8		CPreferences::s_depth3D;
 bool		CPreferences::s_scorsystem;
 bool		CPreferences::s_hideonclose;
+bool		CPreferences::s_appimageIntegrationDeclined;
 bool		CPreferences::s_mintotray;
 bool		CPreferences::s_notify;
 bool		CPreferences::s_trayiconenabled;
@@ -1194,6 +1195,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	//Todo NewCfgItem(IDC_MSGCAPTCHA,	(new Cfg_Bool( "/eMule/MessageUseCaptchas", s_IsChatCaptchaEnabled, true )));
 	s_MiscList.push_back( new Cfg_Bool( "/eMule/AdvancedSpamFilter", s_IsAdvancedSpamfilterEnabled, true ) );
 	s_MiscList.push_back( new Cfg_Bool( "/eMule/MessageUseCaptchas", s_IsChatCaptchaEnabled, true ) );
+	s_MiscList.push_back( new Cfg_Bool( "/GUI/AppImageIntegrationDeclined", s_appimageIntegrationDeclined, false ) );
 
 	NewCfgItem(IDC_FILTERCOMMENTS,	(new Cfg_Bool( "/eMule/FilterComments", s_FilterComments, false )));
 	NewCfgItem(IDC_COMMENTWORD,		(new Cfg_Str(  "/eMule/CommentFilter", s_CommentFilterString, "" )));

@@ -239,6 +239,8 @@ public:
 	static void		SetUseTrayIcon(bool val)	{ s_trayiconenabled = val; }
 	static bool		HideOnClose()			{ return s_hideonclose; }
 	static void		SetHideOnClose(bool val)	{ s_hideonclose = val; }
+	static bool		IsAppImageIntegrationDeclined()		{ return s_appimageIntegrationDeclined; }
+	static void		SetAppImageIntegrationDeclined(bool val) { s_appimageIntegrationDeclined = val; }
 	static bool		DoAutoConnect()			{ return s_autoconnect; }
 	static void		SetAutoConnect(bool inautoconnect)
 						{s_autoconnect = inautoconnect; }
@@ -646,6 +648,7 @@ protected:
 
 	static bool	s_scorsystem;
 	static bool	s_hideonclose;
+	static bool	s_appimageIntegrationDeclined;
 	static bool	s_mintotray;
 	static bool	s_notify;
 	static bool	s_trayiconenabled;
