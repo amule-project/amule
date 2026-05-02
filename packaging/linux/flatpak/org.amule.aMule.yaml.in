@@ -167,17 +167,11 @@ modules:
       - '*'
     sources:
       - type: archive
-        # launchpad.net hosts the canonical tarball but its CDN frequently
-        # times out / 503s, breaking the Flatpak build. Debian/Ubuntu's
-        # archive.ubuntu.com keeps the upstream .orig tarball verbatim
-        # (same SHA256), and snapshot.debian.org preserves an immutable
-        # historical copy with the same content. flatpak-builder tries
-        # mirror-urls in order if the primary url fails, requiring all
-        # mirrors to match the declared sha256 — they do.
-        url: https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
-        mirror-urls:
-          - https://archive.ubuntu.com/ubuntu/pool/main/i/intltool/intltool_0.51.0.orig.tar.gz
-          - https://snapshot.debian.org/archive/debian/20180815T211456Z/pool/main/i/intltool/intltool_0.51.0.orig.tar.gz
+        # Vendored at packaging/deps/intltool-0.51.0.tar.gz to insulate
+        # the build from launchpad.net outages. See
+        # packaging/deps/README.md for the upstream URL, sha256
+        # provenance, and update procedure.
+        path: ../../deps/intltool-0.51.0.tar.gz
         sha256: 67c74d94196b153b774ab9f89b2fa6c6ba79352407037c8c14d5aeb334e959cd
 
   - name: libdbusmenu
@@ -213,14 +207,15 @@ modules:
       - 'CXXFLAGS=-Wall -O2 -g -fPIC -Wno-error'
     sources:
       - type: archive
-        # libdbusmenu 16.04.0 is only on launchpad.net — Debian/Ubuntu
-        # ship the .1 point release with a different sha256, and snapshot.
-        # debian.org doesn't carry the source package at this version.
-        # No working mirror exists at the pinned sha. If launchpad reliability
-        # becomes an ongoing issue, switching to the GitHub-hosted
-        # AyatanaIndicators/libayatana-dbusmenu fork (ABI-compatible) is a
-        # follow-up worth considering.
-        url: https://launchpad.net/libdbusmenu/16.04/16.04.0/+download/libdbusmenu-16.04.0.tar.gz
+        # Vendored at packaging/deps/libdbusmenu-16.04.0.tar.gz because
+        # the upstream is launchpad-only (Debian/Ubuntu ship the .1
+        # point release with a different sha; snapshot.debian.org
+        # doesn't carry the source at this version). See
+        # packaging/deps/README.md for the upstream URL and update
+        # procedure. If we ever decide to migrate off the unmaintained
+        # libdbusmenu, the GitHub-hosted AyatanaIndicators/libayatana-dbusmenu
+        # fork is the planned alternative.
+        path: ../../deps/libdbusmenu-16.04.0.tar.gz
         sha256: b9cc4a2acd74509435892823607d966d424bd9ad5d0b00938f27240a1bfa878a
 
   # CMAKE_INSTALL_LIBDIR=lib pin: cmake's GNUInstallDirs picks `lib64`
