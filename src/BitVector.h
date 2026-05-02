@@ -26,6 +26,8 @@
 #ifndef BITVECTOR_H
 #define BITVECTOR_H
 
+#include "Types.h"
+
 //
 // Packed bit vector
 //
@@ -119,7 +121,7 @@ public:
 					foundFalse = !get(i);
 				}
 			}
-			// check bytewise
+			// check byte-wise
 			for (uint32 i = 0; !foundFalse && i < lastByte; i++) {
 				foundFalse = m_vector[i] != 0xff;
 			}
