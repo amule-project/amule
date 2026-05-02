@@ -313,12 +313,17 @@ void CAICHSyncTask::Entry()
 				hashlist.push_back(CAICHHash(&file));
 
 				uint32 nHashCount = file.ReadUInt32();
-				if (file.GetPosition() + nHashCount * CAICHHash::GetHashSize() > nExistingSize){
+				const uint64 hashsetBytes =
+					static_cast<uint64>(nHashCount) *
+					CAICHHash::GetHashSize();
+				if (file.GetPosition() + hashsetBytes > nExistingSize) {
 					throw CEOFException("Hashlist ends past end of file.");
 				}
 
 				// skip the rest of this hashset
-				nLastVerifiedPos = file.Seek(nHashCount * HASHSIZE, wxFromCurrent);
+				nLastVerifiedPos = file.Seek(
+					static_cast<wxFileOffset>(hashsetBytes),
+					wxFromCurrent);
 			}
 		} catch (const CEOFException&) {
 			AddDebugLogLineC(logAICHThread, "Hashlist corrupted, truncating file.");
