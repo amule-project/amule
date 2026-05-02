@@ -98,11 +98,22 @@ modules:
 
   - name: libupnp
     buildsystem: cmake-ninja
+    # libupnp's CMakeLists hard-codes lib64 as the install dir on
+    # x86_64 and aarch64 alike (it doesn't go through GNUInstallDirs
+    # the usual way), so libupnp.pc lands at
+    # /app/lib64/pkgconfig/libupnp.pc. Flatpak's downstream
+    # PKG_CONFIG_PATH only searches /app/lib/pkgconfig/, so
+    # pkg_check_modules(LIBUPNP libupnp) in cmake/upnp.cmake fails
+    # to find the package and the build errors out via the
+    # ENABLE_UPNP=YES hard-fail introduced in PR #511. Force
+    # CMAKE_INSTALL_LIBDIR=lib so the .pc and the .so land where
+    # Flatpak expects.
     config-opts:
       - -DUPNP_BUILD_SAMPLES=OFF
       - -DUPNP_BUILD_TESTS=OFF
       - -Dreuseaddr=ON
       - -Dipv6=ON
+      - -DCMAKE_INSTALL_LIBDIR=lib
     sources:
       - type: archive
         url: ${LIBUPNP_TARBALL_URL}
