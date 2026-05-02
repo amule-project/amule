@@ -1459,7 +1459,8 @@ CDynStatisticImage::~CDynStatisticImage()
 void CDynStatisticImage::DrawImage()
 {
 	// copy background first
-	memcpy(m_img_data, m_background, m_width*m_height*3);
+	memcpy(m_img_data, m_background,
+		static_cast<size_t>(m_width) * m_height * 3u);
 
 	//
 	// Now graph itself
