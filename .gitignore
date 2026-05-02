@@ -1,55 +1,3 @@
-# Files created by the auto* tools
-ABOUT-NLS
-aclocal.m4
-autom4te.cache/
-compile
-config.guess
-config.h.in
-config.rpath
-config.sub
-configure
-depcomp
-install-sh
-intl/
-Makefile.in
-missing
-mkinstalldirs
-po/Makefile.in.in
-src/pixmaps/flags_xpm/CountryFlags.h
-src/pixmaps/flags_xpm/Makefile.am
-test-driver
-
-# Files created by building the project
-# in a directory other than where the sources live
-po/*.gmo
-
-# Files created by building the project
-# in the source directory
-*.a
-*.o
-*.swp
-.deps
-config.h
-config.log
-config.status
-Makefile
-po/POTFILES
-src/amule
-src/amulecmd
-src/amuled
-src/amulegui
-src/ed2k
-src/libs/ec/ECGeneratedFiles
-src/libs/ec/cpp/EC-timestamp
-src/libs/ec/cpp/ECVersion.h
-src/libs/ec/cpp/mkFileSum
-src/utils/cas/cas
-src/utils/scripts/denoiser.sed
-src/utils/wxCas/src/wxcas
-src/utils/xas/autostart-xas
-src/webserver/src/amuleweb
-stamp-h1
-
 # Files created by the Visual Studio build process
 platforms/Windows/**/Debug30ALC
 platforms/Windows/**/Debug
@@ -65,6 +13,7 @@ platforms/Windows/*/libs/libGeoIP/GeoIP_X.c
 # Other files created by various editors
 .*~
 *~
+*.sw?
 *.orig
 **/#*#
 .#*
@@ -76,3 +25,17 @@ Makefile.user
 
 # CMake
 build
+
+# AI coding assistants
+*.local.md
+.claude/
+.cursor/
+.windsurf/
+.copilot/
+.continue/
+.codeium/
+.tabnine/
+.gemini/
+.devin/
+.aider*
+
