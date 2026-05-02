@@ -41,12 +41,10 @@
 #ifdef ENABLE_IP2COUNTRY
 	#include "IP2Country.h"	// Needed for IP2Country
 #endif
-#include "Logger.h"
 #include "muuli_wdr.h"		// Needed for ID_DLOADLIST
 #include "PartFile.h"		// Needed for CPartFile
 #include "Preferences.h"
 #include "SharedFileList.h"	// Needed for CSharedFileList
-#include "TerminationProcess.h"	// Needed for CTerminationProcess
 #include "ClientRef.h"		// Needed for CClientRef
 #include "FriendList.h"
 
