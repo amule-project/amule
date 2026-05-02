@@ -380,12 +380,14 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 			CAICHHash aichHash(&oldfile);
 			uint32 nHashCount = oldfile.ReadUInt16();
 
-			CScopedArray<uint8_t> buffer(nHashCount * CAICHHash::GetHashSize());
+			const size_t hashBytes = static_cast<size_t>(nHashCount)
+				* CAICHHash::GetHashSize();
+			CScopedArray<uint8_t> buffer(hashBytes);
 
-			oldfile.Read(buffer.get(), nHashCount * CAICHHash::GetHashSize());
+			oldfile.Read(buffer.get(), hashBytes);
 			newfile.Write(aichHash.GetRawHash(), CAICHHash::GetHashSize());
 			newfile.WriteUInt32(nHashCount);
-			newfile.Write(buffer.get(), nHashCount * CAICHHash::GetHashSize());
+			newfile.Write(buffer.get(), hashBytes);
 		}
 		newfile.Flush();
 	} catch (const CEOFException& e) {
