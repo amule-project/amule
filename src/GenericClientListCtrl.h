@@ -236,9 +236,9 @@ private:
 	//! Pointer to the current menu object, used to avoid multiple menus.
 	wxMenu*		m_menu;
 	//! Cached brush object.
-	wxBrush	m_hilightBrush;
+	wxBrush	m_highlightBrush;
 	//! Cached brush object.
-	wxBrush	m_hilightUnfocusBrush;
+	wxBrush	m_highlightUnfocusBrush;
 
 	//! The number of displayed sources
 	int m_clientcount;

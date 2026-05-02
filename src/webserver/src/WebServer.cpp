@@ -373,12 +373,12 @@ void CScriptWebServer::ProcessImgFileReq(ThreadData Data)
 
 	// Only static images are available to visitors, in order to prevent
 	// information leakage, but still allowing images on the login page.
-	if (img && (session->m_loggedin || dynamic_cast<CFileImage*>(img))) {
+	if (img && (session->m_logged_in || dynamic_cast<CFileImage*>(img))) {
 		int img_size = 0;
 		unsigned char* img_data = img->RequestData(img_size);
 		// This unicode2char is ok.
 		Data.pSocket->SendContent(unicode2char(img->GetHTTP()), img_data, img_size);
-	} else if (!session->m_loggedin) {
+	} else if (!session->m_logged_in) {
 		webInterface->DebugShow("**** imgrequest: failed, not logged in\n");
 		ProcessURL(Data);
 	} else {
@@ -1435,7 +1435,7 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 		set_rgb_color_val(m_row_bg_ptrs[m_y_axis_size - 1]+3*j, axis_color, 0);
 	}
 
-	// horisontal grid
+	// horizontal grid
 	int v_grid_size = m_y_axis_size / 4;
 	for(int i = m_y_axis_size - v_grid_size; i >= v_grid_size; i -= v_grid_size) {
 		png_bytep u_row = m_row_bg_ptrs[i];
@@ -1502,7 +1502,7 @@ void CDynStatisticImage::DrawImage()
 	m_digits[0]->Apply(m_row_ptrs, 3*img_delta+2*m_num_font_w_size, m_y_axis_size-m_num_font_h_size-5);
 
 	//
-	// When data is scaled down, axis are scaled UP and viceversa
+	// When data is scaled down, axis are scaled UP and vice-versa
 	int y_axis_max = m_y_axis_size;
 	if ( m_scale_down != 1 ) {
 		y_axis_max *= m_scale_down;
@@ -1618,14 +1618,14 @@ CNumImageMask::~CNumImageMask()
 	delete [] m_row_mask_ptrs;
 }
 
-void CNumImageMask::Apply(png_bytep *image, int offx, int offy)
+void CNumImageMask::Apply(png_bytep *image, int off_x, int off_y)
 {
-	offx *= 3;
+	off_x *= 3;
 	for(int i = 0; i < m_height; i++) {
-		png_bytep img_row = image[offy + i];
+		png_bytep img_row = image[off_y + i];
 		png_bytep num_row = m_row_mask_ptrs[i];
 		for(int j = 0; j < m_width*3; j++) {
-			img_row[offx + j] |= num_row[j];
+			img_row[off_x + j] |= num_row[j];
 		}
 	}
 }
@@ -1638,11 +1638,11 @@ void CNumImageMask::DrawHorzLine(int off)
 	}
 }
 
-void CNumImageMask::DrawVertLine(int offx, int offy)
+void CNumImageMask::DrawVertLine(int off_x, int off_y)
 {
 	for(int i = 0; i < m_v_segsize; i++) {
-		png_bytep m_row = m_row_mask_ptrs[offy*(m_v_segsize-1)+i];
-		int x_idx = offx*(m_h_segsize-1)*3;
+		png_bytep m_row = m_row_mask_ptrs[off_y*(m_v_segsize-1)+i];
+		int x_idx = off_x*(m_h_segsize-1)*3;
 		m_row[x_idx] = m_row[x_idx+1] = m_row[x_idx+2] = 0xff;
 	}
 }
@@ -1739,18 +1739,18 @@ CAnyImage *CImageLib::GetImage(const wxString &name)
  * Script-based webserver
  */
 CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir)
-	: CWebServerBase(webApp, templateDir), m_wwwroot(templateDir)
+	: CWebServerBase(webApp, templateDir), m_www_root(templateDir)
 {
 	wxString img_tmpl("<img src=\"%s\" height=\"20\" width=\"%d\" alt=\"%s\">");
 	m_DownloadFileInfo.LoadImageParams(img_tmpl, 200, 20);
 
-	if ( ::wxFileExists(wxFileName(m_wwwroot, "index.html").GetFullPath()) ) {
+	if ( ::wxFileExists(wxFileName(m_www_root, "index.html").GetFullPath()) ) {
 		m_index = "index.html";
-	} else if ( ::wxFileExists(wxFileName(m_wwwroot, "index.php").GetFullPath()) ) {
+	} else if ( ::wxFileExists(wxFileName(m_www_root, "index.php").GetFullPath()) ) {
 		m_index = "index.php";
 	} else {
 		webInterface->Show(_("Index file not found: ") +
-			wxFileName(m_wwwroot, "index.{html,php}").GetFullPath() + "\n");
+			wxFileName(m_www_root, "index.{html,php}").GetFullPath() + "\n");
 	}
 }
 
@@ -1832,7 +1832,7 @@ CSession *CScriptWebServer::CheckLoggedin(ThreadData &Data)
 			m_sessions.erase(Data.SessionID);
 			session = 0;
 		} else {
-			if ( session->m_loggedin ) {
+			if ( session->m_logged_in ) {
 				Print(_("Session ok, logged in\n"));
 			} else {
 				Print(_("Session ok, not logged in\n"));
@@ -1848,7 +1848,7 @@ CSession *CScriptWebServer::CheckLoggedin(ThreadData &Data)
 		}
 		session = &m_sessions[Data.SessionID];
 		session->m_last_access = curr_time;
-		session->m_loggedin = false;
+		session->m_logged_in = false;
 		Print(_("Session created - requesting login\n"));
 	}
 	Data.parsedURL.ConvertParams(session->m_get_vars);
@@ -1873,7 +1873,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	CSession *session = CheckLoggedin(Data);
 
 	session->m_vars["login_error"] = "";
-	if ( !session->m_loggedin ) {
+	if ( !session->m_logged_in ) {
 		filename = "login.php";
 
 		wxString PwStr(Data.parsedURL.Param("pass"));
@@ -1882,24 +1882,24 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 			Print(_("No password specified, login will not be allowed."));
 		} else if ( PwStr.Length() ) {
 			Print(_("Checking password\n"));
-			session->m_loggedin = false;
+			session->m_logged_in = false;
 
 			CMD4Hash PwHash;
 			if (!PwHash.Decode(MD5Sum(PwStr).GetHash())) {
 				Print(_("Password hash invalid\n"));
 				session->m_vars["login_error"] = "Invalid password hash, please report on http://forum.amule.org";
 			} else if ( PwHash == webInterface->m_AdminPass ) {
-				session->m_loggedin = true;
+				session->m_logged_in = true;
 				// m_vars is map<string, string> - so _() will not work here !
 				session->m_vars["guest_login"] = "0";
 			} else if ( PwHash == webInterface->m_GuestPass ) {
-				session->m_loggedin = true;
+				session->m_logged_in = true;
 				session->m_vars["guest_login"] = "1";
 			} else {
 				session->m_vars["login_error"] = "Password incorrect, please try again.";
 			}
 
-			if ( session->m_loggedin ) {
+			if ( session->m_logged_in ) {
 				filename = m_index;
 				Print(_("Password ok\n"));
 			} else {
@@ -1915,7 +1915,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		//
 		if ( filename == "login.php" ) {
 			Print(_("Logout requested\n"));
-			session->m_loggedin = false;
+			session->m_logged_in = false;
 		}
 	}
 
@@ -1925,7 +1925,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		wxString(CFormat("%d") % webInterface->m_PageRefresh));
 	session->m_vars["content_type"] = "text/html";
 
-	wxString req_file(wxFileName(m_wwwroot, filename).GetFullPath());
+	wxString req_file(wxFileName(m_www_root, filename).GetFullPath());
 	if (req_file.EndsWith(".html")) {
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
 	} else if (req_file.EndsWith(".php")) {

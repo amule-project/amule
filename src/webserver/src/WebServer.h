@@ -597,7 +597,7 @@ class CNumImageMask {
 
 		// mask generation
 		void DrawHorzLine(int off);
-		void DrawVertLine(int offx, int offy);
+		void DrawVertLine(int off_x, int off_y);
 		void DrawSegment(int id);
 
 		static const int m_num_to_7_decode[10];
@@ -605,7 +605,7 @@ class CNumImageMask {
 		CNumImageMask(int number, int width, int height);
 		~CNumImageMask();
 
-		void Apply(png_bytep *image, int offx, int offy);
+		void Apply(png_bytep *image, int off_x, int off_y);
 };
 
 class CDynStatisticImage : public virtual CDynPngImage {
@@ -779,7 +779,7 @@ class CWebServerBase : public wxEvtHandler {
 
 class CSession {
 	public:
-		bool m_loggedin;
+		bool m_logged_in;
 		time_t m_last_access;
 		std::map<std::string, std::string> m_vars, m_get_vars;
 
@@ -790,7 +790,7 @@ class CSession {
  * Script based webserver
  */
 class CScriptWebServer : public CWebServerBase {
-		wxString m_wwwroot;
+		wxString m_www_root;
 		wxString m_index;
 
 		char *ProcessHtmlRequest(const char *filename, long &size);

@@ -1452,8 +1452,8 @@ void CamuleApp::OnFinishedCompletion(CCompletionEvent& evt)
 	wxCHECK_RET(completed, "Completion event sent for unspecified file");
 	wxASSERT_MSG(downloadqueue->IsPartFile(completed), "CCompletionEvent for unknown partfile.");
 
-	completed->CompleteFileEnded(evt.ErrorOccured(), evt.GetFullPath());
-	if (evt.ErrorOccured()) {
+	completed->CompleteFileEnded(evt.ErrorOccurred(), evt.GetFullPath());
+	if (evt.ErrorOccurred()) {
 		CUserEvents::ProcessEvent(CUserEvents::ErrorOnCompletion, completed);
 	}
 

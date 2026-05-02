@@ -58,7 +58,7 @@ CHashingTask::CHashingTask(const CPath& path, const CPath& filename, const CPart
 	// We can only create the AICH hashset if the file is a knownfile or
 	// if the partfile is complete, since the MD4 hashset is checked first,
 	// so that the AICH hashset only gets assigned if the MD4 hashset
-	// matches what we expected. Due to the rareity of post-completion
+	// matches what we expected. Due to the rarity of post-completion
 	// corruptions, this gives us a nice speedup in most cases.
 	if (part && !part->GetGapList().empty()) {
 		m_toHash = EH_MD4;
@@ -668,11 +668,11 @@ CKnownFile* CHashingEvent::GetResult() const
 
 wxDEFINE_EVENT(MULE_EVT_FILE_COMPLETED, wxEvent);
 
-CCompletionEvent::CCompletionEvent(bool errorOccured, const CPartFile* owner, const CPath& fullPath)
+CCompletionEvent::CCompletionEvent(bool errorOccurred, const CPartFile* owner, const CPath& fullPath)
 	: wxEvent(-1, MULE_EVT_FILE_COMPLETED),
 	  m_fullPath(fullPath),
 	  m_owner(owner),
-	  m_error(errorOccured)
+	  m_error(errorOccurred)
 {
 }
 
@@ -683,7 +683,7 @@ wxEvent* CCompletionEvent::Clone() const
 }
 
 
-bool CCompletionEvent::ErrorOccured() const
+bool CCompletionEvent::ErrorOccurred() const
 {
 	return m_error;
 }

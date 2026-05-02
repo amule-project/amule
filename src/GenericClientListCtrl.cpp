@@ -128,9 +128,9 @@ m_columndata(0, NULL)
 	m_menu = NULL;
 	m_showing = false;
 
-	m_hilightBrush  = CMuleColour(wxSYS_COLOUR_HIGHLIGHT)/*.Blend(125)*/.GetBrush();
+	m_highlightBrush  = CMuleColour(wxSYS_COLOUR_HIGHLIGHT)/*.Blend(125)*/.GetBrush();
 
-	m_hilightUnfocusBrush = CMuleColour(wxSYS_COLOUR_BTNSHADOW)/*.Blend(125)*/.GetBrush();
+	m_highlightUnfocusBrush = CMuleColour(wxSYS_COLOUR_BTNSHADOW)/*.Blend(125)*/.GetBrush();
 
 	m_clientcount = 0;
 }
@@ -525,7 +525,7 @@ void CGenericClientListCtrl::OnSetFriendslot(wxCommandEvent& evt)
 		++it;
 	}
 	if (it != sources.end()) {
-		wxMessageBox(_("You are not allowed to set more than one friendslot.\n Only one slot was assigned."), _("Multiple selection"), wxOK | wxICON_ERROR, this);
+		wxMessageBox(_("You are not allowed to set more than one friend slot.\n Only one slot was assigned."), _("Multiple selection"), wxOK | wxICON_ERROR, this);
 	}
 }
 
@@ -649,11 +649,11 @@ void CGenericClientListCtrl::OnDrawItem(
 	if (highlighted) {
 		CMuleColour colour;
 		if (GetFocus()) {
-			dc->SetBackground(m_hilightBrush);
-			colour = m_hilightBrush.GetColour();
+			dc->SetBackground(m_highlightBrush);
+			colour = m_highlightBrush.GetColour();
 		} else {
-			dc->SetBackground(m_hilightUnfocusBrush);
-			colour = m_hilightUnfocusBrush.GetColour();
+			dc->SetBackground(m_highlightUnfocusBrush);
+			colour = m_highlightUnfocusBrush.GetColour();
 		}
 		dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		dc->SetPen( colour.Blend(65).GetPen() );
@@ -685,12 +685,12 @@ void CGenericClientListCtrl::OnDrawItem(
 
 	for (int i = 0; i < GetColumnCount(); ++i) {
 
-		int columnwidth = GetColumnWidth(i);
+		int columnWidth = GetColumnWidth(i);
 
-		if (columnwidth > 2*iOffset) {
+		if (columnWidth > 2*iOffset) {
 			// Make a copy of the current rectangle so we can apply specific tweaks
 			wxRect target_rec = cur_rec;
-			target_rec.width = columnwidth - 2*iOffset;
+			target_rec.width = columnWidth - 2*iOffset;
 
 			GenericColumnEnum cid = m_columndata.columns[i].cid;
 
@@ -699,7 +699,7 @@ void CGenericClientListCtrl::OnDrawItem(
 		}
 
 		// Increment to the next column
-		cur_rec.x += columnwidth;
+		cur_rec.x += columnWidth;
 	}
 }
 
@@ -793,7 +793,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 							// cDonkey, Compatible, Unknown
 							// No icon for those yet.
 							// Using the eMule one + '?'
-							// Which is a faillback to the default (Client_Unknown)
+							// Which is a failback to the default (Client_Unknown)
 							break;
 					}
 				}
@@ -948,15 +948,15 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 					}
 					buffer = CFormat("%s: %s") % _("A4AF") % a4af;
 
-					int midx = (2*rect.GetX() + rect.GetWidth()) >> 1;
-					int midy = (2*rect.GetY() + rect.GetHeight()) >> 1;
+					int mid_x = (2*rect.GetX() + rect.GetWidth()) >> 1;
+					int mid_y = (2*rect.GetY() + rect.GetHeight()) >> 1;
 
 					wxCoord txtwidth, txtheight;
 
 					dc->GetTextExtent(buffer, &txtwidth, &txtheight);
 
 					dc->SetTextForeground(*wxBLACK);
-					dc->DrawText(buffer, wxMax(rect.GetX() + 2, midx - (txtwidth >> 1)), midy - (txtheight >> 1));
+					dc->DrawText(buffer, wxMax(rect.GetX() + 2, mid_x - (txtwidth >> 1)), mid_y - (txtheight >> 1));
 
 					// Draw black border
 					dc->SetPen( *wxBLACK_PEN );
@@ -1071,7 +1071,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 			break;
 		}
 		case ColumnUserFileNameDownloadRemote: {
-			bool nameMissmatch = false;
+			bool nameMismatch = false;
 			wxColour savedColour = dc->GetTextForeground();
 			if (client.GetClientFilename().IsEmpty() || item->GetType() == A4AF_SOURCE) {
 				buffer = _("Unknown");
@@ -1080,12 +1080,12 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 				buffer = client.GetClientFilename();
 				const CPartFile * pf = client.GetRequestFile();
 				if (pf && (pf->GetFileName().GetPrintable().CmpNoCase(buffer) != 0)) {
-					nameMissmatch = true;
+					nameMismatch = true;
 					dc->SetTextForeground(*wxRED);
 				}
 			}
 			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
-			if (nameMissmatch) {
+			if (nameMismatch) {
 				dc->SetTextForeground(savedColour);
 			}
 			break;

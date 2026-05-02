@@ -487,10 +487,10 @@ void CDownloadQueue::Process()
 				PlatformSpecific::AllowSleepMode();
 			}
 		} else {
-			// Just in case the value changes while we're preventing. Calls to this function are totally inexpensive anwyay
+			// Just in case the value changes while we're preventing.
+			// Calls to this function are totally inexpensive anyway
 			PlatformSpecific::AllowSleepMode();
 		}
-
 
 		// Set the source rarity thresholds
 		int nSourceGroups = m_sourcecountlist.size();
@@ -508,15 +508,15 @@ void CDownloadQueue::Process()
 				// More than two, time to do some math.
 
 				// Lower 25% with the current #define values.
-				int rarecutpoint = (nSourceGroups / RARITY_FACTOR);
-				for (int i = 0; i < rarecutpoint; ++ i) {
+				int rare_cut_point = (nSourceGroups / RARITY_FACTOR);
+				for (int i = 0; i < rare_cut_point; ++ i) {
 					m_sourcecountlist.pop_front();
 				}
 				m_rareFileThreshold = (m_sourcecountlist.front() > 0) ? (m_sourcecountlist.front() - 1) : 1;
 
 				// 50% of the non-rare ones, with the current #define values.
-				int commoncutpoint = (nSourceGroups - rarecutpoint) / NORMALITY_FACTOR;
-				for (int i = 0; i < commoncutpoint; ++ i) {
+				int common_cut_point = (nSourceGroups - rare_cut_point) / NORMALITY_FACTOR;
+				for (int i = 0; i < common_cut_point; ++ i) {
 					m_sourcecountlist.pop_front();
 				}
 				m_commonFileThreshold = (m_sourcecountlist.front() > 0) ? (m_sourcecountlist.front() - 1) : 1;
