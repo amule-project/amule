@@ -55,8 +55,19 @@ if (NOT UPNP_CONFIG)
 			INTERFACE_LINK_LIBRARIES "${LIBUPNP_LIBRARIES}"
 		)
 	elseif (NOT LIBUPNP_FOUND AND NOT DOWNLOAD_AND_BUILD_DEPS)
-		set (ENABLE_UPNP FALSE)
-		message (STATUS "lib-upnp not, disabling upnp")
+		# This file is only included from the top-level CMakeLists.txt
+		# when ENABLE_UPNP is true — i.e. the user explicitly asked
+		# for the feature and is not opting into the download-and-build
+		# fallback. Honour the user's intent: fail loudly instead of
+		# silently downgrading to ENABLE_UPNP=FALSE, which would mask
+		# the missing dep behind a green build with the feature
+		# mysteriously absent at runtime.
+		message (FATAL_ERROR "ENABLE_UPNP=YES but libupnp was not found. "
+			"Install libupnp headers + library (Debian/Ubuntu: libupnp-dev, "
+			"Fedora: libupnp-devel, macOS Homebrew: libupnp, "
+			"MSYS2: mingw-w64-x86_64-pupnp), or pass -DENABLE_UPNP=NO to "
+			"disable the feature, or pass -DDOWNLOAD_AND_BUILD_DEPS=YES "
+			"to have CMake build libupnp from source.")
 	elseif (NOT LIBUPNP_FOUND AND DOWNLOAD_AND_BUILD_DEPS)
 		CmDaB_install ("pupnp")
 	endif()
