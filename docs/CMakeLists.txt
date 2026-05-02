@@ -1,7 +1,7 @@
 add_subdirectory (man)
 
 install (FILES
-	Changelog
+	CHANGELOG.md
 	EC_Protocol.md
 	INSTALL.md
 	IP2Country.md
