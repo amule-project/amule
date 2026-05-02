@@ -12,12 +12,15 @@ Credits to all original authors and contributors are recorded below.
 
 * Marcelo Jimenez aka Phoenix &lt;phoenix@amule.org&gt;
 * Dévai Tamás aka GonoszTopi &lt;gonosztopi@amule.org&gt;
+* Werner Mahr aka Vollstrecker &lt;werner@vollstreckernet.de&gt;
 
 ### Developers
 
 * Johannes Krampf aka wuischke &lt;wuischke@amule.org&gt;
 * Martin Brieg aka Stu Redman &lt;sturedman@amule.org&gt;
 * Balla Marcell aka ^marcell^ &lt;marcell@amule.org&gt;
+* Pablo Barciela aka Sc0w &lt;scow@riseup.net&gt;
+* got3nks &lt;got3nks@users.noreply.github.com&gt;
 
 ### Web Administration
 
