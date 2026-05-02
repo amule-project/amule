@@ -100,7 +100,7 @@ CDownloadQueue::CDownloadQueue()
 CDownloadQueue::~CDownloadQueue()
 {
 	if ( !m_filelist.empty() ) {
-		for ( unsigned int i = 0; i < m_filelist.size(); i++ ) {
+		for ( FileQueue::size_type i = 0; i < m_filelist.size(); i++ ) {
 			AddLogLineNS(CFormat(_("Saving PartFile %u of %u")) % (i + 1) % m_filelist.size());
 			delete m_filelist[i];
 		}
@@ -440,7 +440,7 @@ void CDownloadQueue::Process()
 
 		bool mustPreventSleep = false;
 
-		for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
+		for ( FileQueue::size_type i = 0; i < m_filelist.size(); i++ ) {
 			CPartFile* file = m_filelist[i];
 
 			CMutexUnlocker unlocker(m_mutex);
@@ -569,7 +569,7 @@ CPartFile* CDownloadQueue::GetFileByID(const CMD4Hash& filehash) const
 {
 	wxMutexLocker lock( m_mutex );
 
-	for ( uint16 i = 0; i < m_filelist.size(); ++i ) {
+	for ( FileQueue::size_type i = 0; i < m_filelist.size(); ++i ) {
 		if ( filehash == m_filelist[i]->GetFileHash()) {
 			return m_filelist[ i ];
 		}
@@ -602,7 +602,7 @@ bool CDownloadQueue::IsPartFile(const CKnownFile* file) const
 {
 	wxMutexLocker lock(m_mutex);
 
-	for (uint16 i = 0; i < m_filelist.size(); ++i) {
+	for (FileQueue::size_type i = 0; i < m_filelist.size(); ++i) {
 		if (file == m_filelist[i]) {
 			return true;
 		}
@@ -616,7 +616,7 @@ void CDownloadQueue::OnConnectionState(bool bConnected)
 {
 	wxMutexLocker lock(m_mutex);
 
-	for (uint16 i = 0; i < m_filelist.size(); ++i) {
+	for (FileQueue::size_type i = 0; i < m_filelist.size(); ++i) {
 		if (	m_filelist[i]->GetStatus() == PS_READY ||
 			m_filelist[i]->GetStatus() == PS_EMPTY) {
 			m_filelist[i]->SetActive(bConnected);
@@ -854,7 +854,7 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(uint32 dwIP, uint16 nUD
 {
 	wxMutexLocker lock( m_mutex );
 
-	for ( unsigned int i = 0; i < m_filelist.size(); i++ ) {
+	for ( FileQueue::size_type i = 0; i < m_filelist.size(); i++ ) {
 		const CKnownFile::SourceSet& set = m_filelist[i]->GetSourceList();
 
 		for ( CKnownFile::SourceSet::const_iterator it = set.begin(); it != set.end(); ++it ) {
@@ -1033,7 +1033,7 @@ void CDownloadQueue::ResetLocalServerRequests()
 	m_dwNextTCPSrcReq = 0;
 	m_localServerReqQueue.clear();
 
-	for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
+	for ( FileQueue::size_type i = 0; i < m_filelist.size(); i++ ) {
 		m_filelist[i]->SetLocalSrcRequestQueued(false);
 	}
 }
@@ -1193,7 +1193,7 @@ void CDownloadQueue::SetCatStatus(uint8 cat, int newstatus)
 	{
 		wxMutexLocker lock(m_mutex);
 
-		for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
+		for ( FileQueue::size_type i = 0; i < m_filelist.size(); ++i ) {
 			if ( m_filelist[i]->CheckShowItemInGivenCat(cat) ) {
 				files.push_back( m_filelist[i] );
 			}
@@ -1218,7 +1218,7 @@ uint16 CDownloadQueue::GetDownloadingFileCount() const
 	wxMutexLocker lock( m_mutex );
 
 	uint16 count = 0;
-	for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
+	for ( FileQueue::size_type i = 0; i < m_filelist.size(); i++ ) {
 		uint8 status = m_filelist[i]->GetStatus();
 		if ( status == PS_READY || status == PS_EMPTY ) {
 			count++;
@@ -1234,7 +1234,7 @@ uint16 CDownloadQueue::GetPausedFileCount() const
 	wxMutexLocker lock( m_mutex );
 
 	uint16 count = 0;
-	for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
+	for ( FileQueue::size_type i = 0; i < m_filelist.size(); i++ ) {
 		if ( m_filelist[i]->GetStatus() == PS_PAUSED ) {
 			count++;
 		}
@@ -1272,7 +1272,7 @@ void CDownloadQueue::CheckDiskspace( const CPath& path )
 			"Temporary partition");
 	}
 
-	for (unsigned int i = 0; i < m_filelist.size(); ++i) {
+	for (FileQueue::size_type i = 0; i < m_filelist.size(); ++i) {
 		CPartFile* file = m_filelist[i];
 
 		switch ( file->GetStatus() ) {
@@ -1671,7 +1671,7 @@ CPartFile* CDownloadQueue::GetFileByKadFileSearchID(uint32 id) const
 {
 	wxMutexLocker lock( m_mutex );
 
-	for ( uint16 i = 0; i < m_filelist.size(); ++i ) {
+	for ( FileQueue::size_type i = 0; i < m_filelist.size(); ++i ) {
 		if ( id == m_filelist[i]->GetKadFileSearchID()) {
 			return m_filelist[ i ];
 		}
