@@ -724,7 +724,7 @@ void CSharedFileList::SendListToServer(){
 	// Files sent.
 	files.WriteUInt32(limit);
 
-	uint16 count = 0;
+	uint32 count = 0;
 	// Add to packet
 	std::vector<CKnownFile*>::iterator sorted_it = SortedList.begin();
 	for ( ; (sorted_it != SortedList.end()) && (count < limit); ++sorted_it ) {
