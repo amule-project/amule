@@ -379,7 +379,7 @@ void CUploadDiskIOThread::ReadCompletionRoutine(ReadRequest_Struct* req)
 			if (!bError)
 			{
 				// eMule ref: lines 428-447 — decide compression
-				// Disable compression if socket is starved and datarate is high.
+				// Disable compression if socket is starved and data rate is high.
 				// Once disabled for a client, stays disabled for the session.
 				bool bUseCompression = false;
 				if (!client->m_bDisableCompression && req->pFileStruct->bCompress && client->m_byDataCompVer == 1)
@@ -403,15 +403,15 @@ void CUploadDiskIOThread::ReadCompletionRoutine(ReadRequest_Struct* req)
 				// Build packets into a local list, then send them out.
 				// File ID was set in StartCreateNextBlockPackage when srcfile was resolved.
 				CPacketList packetList;
-				uint32 datarate = client->GetUploadDatarate();
+				uint32 data_rate = client->GetUploadDatarate();
 				if (bUseCompression) {
 					CreatePackedPackets(req->area.GetBuffer(),
 						req->uStartOffset, req->uEndOffset, packetList,
-						req->pFileStruct->ucMD4FileHash, datarate);
+						req->pFileStruct->ucMD4FileHash, data_rate);
 				} else {
 					CreateStandardPackets(req->area.GetBuffer(),
 						req->uStartOffset, req->uEndOffset, packetList,
-						req->pFileStruct->ucMD4FileHash, datarate);
+						req->pFileStruct->ucMD4FileHash, data_rate);
 				}
 
 				// eMule ref: lines 478-482 — send all packets

@@ -922,26 +922,26 @@ bool CSharedFileList::RenameFile(CKnownFile* file, const CPath& newName)
 			RepublishFile(file);
 
 			const Kademlia::WordList& newwords = file->GetKadKeywords();
-			Kademlia::WordList::iterator itold;
-			Kademlia::WordList::const_iterator itnew;
+			Kademlia::WordList::iterator it_old;
+			Kademlia::WordList::const_iterator it_new;
 			// compare keywords in old and new names
-			for (itnew = newwords.begin(); itnew != newwords.end(); ++itnew) {
-				for (itold = oldwords.begin(); itold != oldwords.end(); ++itold) {
-					if (*itold == *itnew) {
+			for (it_new = newwords.begin(); it_new != newwords.end(); ++it_new) {
+				for (it_old = oldwords.begin(); it_old != oldwords.end(); ++it_old) {
+					if (*it_old == *it_new) {
 						break;
 					}
 				}
-				if (itold != oldwords.end()) {
+				if (it_old != oldwords.end()) {
 					// Remove keyword from old name which also exist in new name
-					oldwords.erase(itold);
+					oldwords.erase(it_old);
 				} else {
 					// This is a new keyword not present in the old name
-					m_keywords->AddKeyword(*itnew, file);
+					m_keywords->AddKeyword(*it_new, file);
 				}
 			}
 			// Remove all remaining old keywords not present in the new name
-			for (itold = oldwords.begin(); itold != oldwords.end(); ++itold) {
-				m_keywords->RemoveKeyword(*itold, file);
+			for (it_old = oldwords.begin(); it_old != oldwords.end(); ++it_old) {
+				m_keywords->RemoveKeyword(*it_old, file);
 			}
 
 			Notify_DownloadCtrlUpdateItem(file);
@@ -984,12 +984,12 @@ wxString CSharedFileList::GetPublicSharedDirName(const CPath& dir)
 	}
 
 	// we store the path separator (forward or back slash) for quick access
-	wxChar cPathSepa = wxFileName::GetPathSeparator();
+	wxChar cPathSeparator = wxFileName::GetPathSeparator();
 
 	// determine and cache the public name for "dir" ...
 	// We need to use the 'raw' filename, so the receiving client can recognize it.
 	wxString strDirectoryTmp = dir.GetRaw();
-	if (strDirectoryTmp.EndsWith(&cPathSepa)) {
+	if (strDirectoryTmp.EndsWith(&cPathSeparator)) {
 		strDirectoryTmp.RemoveLast();
 	}
 
@@ -997,7 +997,7 @@ wxString CSharedFileList::GetPublicSharedDirName(const CPath& dir)
 	int iPos;
 	// check all the subdirectories in the path for being shared
 	// the public name will consist of these concatenated
-	while ((iPos = strDirectoryTmp.Find( cPathSepa, true )) != wxNOT_FOUND)	{
+	while ((iPos = strDirectoryTmp.Find( cPathSeparator, true )) != wxNOT_FOUND)	{
 		strPublicName = strDirectoryTmp.Right(strDirectoryTmp.Length() - iPos) + strPublicName;
 		strDirectoryTmp.Truncate(iPos);
 		if (!IsShared(CPath(strDirectoryTmp)))
@@ -1005,7 +1005,7 @@ wxString CSharedFileList::GetPublicSharedDirName(const CPath& dir)
 	}
 	if (!strPublicName.IsEmpty()) {
 		// remove first path separator ???
-		wxASSERT( strPublicName.GetChar(0) == cPathSepa );
+		wxASSERT( strPublicName.GetChar(0) == cPathSeparator );
 		strPublicName = strPublicName.Right(strPublicName.Length() - 1);
 	} else {
 		// must be a rootdirectory on Windows

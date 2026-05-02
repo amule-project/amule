@@ -243,7 +243,7 @@ public:
 	virtual wxEvent* Clone() const;
 
 	/** Returns true if completion failed. */
-	bool ErrorOccured() const;
+	bool ErrorOccurred() const;
 
 	/** Returns the owner of the file that was being completed. */
 	const CPartFile* GetOwner() const;
