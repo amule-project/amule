@@ -1,12 +1,16 @@
-Version 2.3.4 - The "can we have two releases in the same year?" version.
-----------
+# aMule Changelog
+
+The history of every aMule release. Versions are listed newest first.
+
+---
+
+## Version 2.3.4 — "can we have two releases in the same year?"
 2021-??-??
 
 
---------------------------------------------------------------------------------
+---
 
-Version 2.3.3 - The "delayed too many times, but still not too late" version.
-----------
+## Version 2.3.3 — "delayed too many times, but still not too late"
 2021-02-07
 
 	alesnav:
@@ -121,10 +125,9 @@ Version 2.3.3 - The "delayed too many times, but still not too late" version.
 	xinhuang:
 		* Fix crash when shared files changed on Shared files tab
 
---------------------------------------------------------------------------------
+---
 
-Version 2.3.2 - The "don't close tabs" version.
-----------
+## Version 2.3.2 — "don't close tabs"
 2016-09-16
 
 	circulosmeos:
@@ -196,10 +199,9 @@ Version 2.3.2 - The "don't close tabs" version.
 	Tianming Xie:
 		* Fix for debian bug #795061: There is no rule to generate Scanner.h
 
---------------------------------------------------------------------------------
+---
 
-Version 2.3.1 - The "unobvious evil date" version.
-----------
+## Version 2.3.1 — "unobvious evil date"
 2011-11-11
 
 	btkaos:
@@ -485,10 +487,9 @@ Version 2.3.1 - The "unobvious evil date" version.
 		  the grandfather of all fuck-ups
 		* mirko.g for being so committed to compile aMule on Snow Leopard.
 
---------------------------------------------------------------------------------
+---
 
-Version 2.2.6 - The "we don't have holidays" version.
-----------
+## Version 2.2.6 — "we don't have holidays"
 2009-09-16
 
 	GonoszTopi:
@@ -520,10 +521,9 @@ Version 2.2.6 - The "we don't have holidays" version.
 	Special Thanks To:
 		* stefanero and his bleeding-edge system
 
---------------------------------------------------------------------------------
+---
 
-Version 2.2.5 - The "never say never" version.
-----------
+## Version 2.2.5 — "never say never"
 2009-05-16
 
 	GonoszTopi:
@@ -537,10 +537,9 @@ Version 2.2.5 - The "never say never" version.
 	Special Thanks To:
 		* CroMag for pointing out the upload problem
 
---------------------------------------------------------------------------------
+---
 
-Version 2.2.4 - The "we didn't have a .4 version since... well... long ago" version.
-----------
+## Version 2.2.4 — "we didn't have a .4 version since... well... long ago"
 2009-04-03
 
 	freddy77:
@@ -612,10 +611,9 @@ Version 2.2.4 - The "we didn't have a .4 version since... well... long ago" vers
 	Special Thanks To:
 		* wires for the strenuous testing on 64-bit
 
---------------------------------------------------------------------------------
+---
 
-Version 2.2.3 - The "Late Christmas present" version.
-----------
+## Version 2.2.3 — "Late Christmas present"
 2008-12-28
 
 	Alfred:
@@ -666,10 +664,9 @@ Version 2.2.3 - The "Late Christmas present" version.
 	Special Thanks to:
 		* btkaos and CtrlAltDel for their invaluable help in tracking off bugs.
 
---------------------------------------------------------------------------------
+---
 
-Version 2.2.2 - The "Similarity." version.
-----------
+## Version 2.2.2 — "Similarity."
 2008-08-08
 
 	bomj:
@@ -784,10 +781,9 @@ Version 2.2.2 - The "Similarity." version.
 		* Fix for packets being lost in EC communication.
 		  Fixes aMuleGUI not updating after a while.
 
---------------------------------------------------------------------------------
+---
 
-Version 2.2.1 - The "Excuse me, have you seen my 2.2.0 release anywhere?" version.
-----------
+## Version 2.2.1 — "Excuse me, have you seen my 2.2.0 release anywhere?"
 2008-06-11
 
 	Bas Zoetekouw:
@@ -1636,10 +1632,9 @@ Version 2.2.1 - The "Excuse me, have you seen my 2.2.0 release anywhere?" versio
 		* Dimitrios Galanakis for his work on language improvements
 		* Bun Bun, for being there to tell me I'm not stupid.
 
---------------------------------------------------------------------------------
+---
 
-Version 2.1.3 - The "We missed the 6/6/6 devil release and we're very sad" version
-----------
+## Version 2.1.3 - The "We missed the 6/6/6 devil release and we're very sad" version
 2006-06-11
 
 	GonoszTopi:
@@ -1664,10 +1659,9 @@ Version 2.1.3 - The "We missed the 6/6/6 devil release and we're very sad" versi
 	Special Thanks to:
 		* Me, because I'm the only one bothering to compile the changelogs. Go me!
 
---------------------------------------------------------------------------------
+---
 
-Version 2.1.2 - The "We're on fire!" version
-----------
+## Version 2.1.2 - The "We're on fire!" version
 2006-03-28
 
 	GonoszTopi:
@@ -1754,10 +1748,9 @@ Version 2.1.2 - The "We're on fire!" version
 		* From Kry: to the one that makes it all worth it.
 		* quinox, for helping us find the security hole in aMuleWeb.
 
---------------------------------------------------------------------------------
+---
 
-Version 2.1.1 - The "There can be only two! Point one! Point one!" version
-----------
+## Version 2.1.1 - The "There can be only two! Point one! Point one!" version
 2006-03-18
 
 	GonoszTopi:
@@ -1884,10 +1877,9 @@ Version 2.1.1 - The "There can be only two! Point one! Point one!" version
 	Special Thanks To:
 		* All the translaters who did such a great and fast job.
 
---------------------------------------------------------------------------------
+---
 
-Version 2.1.0 - The "I just teased you with this release till 2006" version
-----------
+## Version 2.1.0 - The "I just teased you with this release till 2006" version
 2006-01-01
 Note: This version is dedicated to our great tester Citroklar, for reasons he knows.
 
@@ -3097,10 +3089,9 @@ Note: This version is dedicated to our great tester Citroklar, for reasons he kn
 	Special Thanks To:
 		* All the translaters who did such a great and fast job.
 
---------------------------------------------------------------------------------
+---
 
-Version 2.0.3 - The "Hell 2.0.3: Now with improved daemons!" version.
-----------
+## Version 2.0.3 — "Hell 2.0.3: Now with improved daemons!"
 2005-06-15
 
 	ken:
@@ -3134,10 +3125,9 @@ Version 2.0.3 - The "Hell 2.0.3: Now with improved daemons!" version.
 		  You don't know who they are? Just check previous changelogs
 		  (just not the previous one, ok?) :P
 
---------------------------------------------------------------------------------
+---
 
-Version 2.0.2 - The " [Your Ad Here] " version.
-----------
+## Version 2.0.2 — " [Your Ad Here] "
 2005-06-04
 
 	boutros:
@@ -3185,10 +3175,9 @@ Version 2.0.2 - The " [Your Ad Here] " version.
 		* All the usual people. You don't know who they are? Just check
 		   previous changelogs :P
 
---------------------------------------------------------------------------------
+---
 
-Version 2.0.1 - The " Woops, HotFix " version.
-----------
+## Version 2.0.1 — " Woops, HotFix "
 2005-05-18
 
 	ken:
@@ -3223,10 +3212,9 @@ Version 2.0.1 - The " Woops, HotFix " version.
 		* All the usual people (translators, debugers, people at #amule, etc)
 		  C'mon, this is a hotfix release, I can't add everyone again.
 
---------------------------------------------------------------------------------
+---
 
-Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
-----------
+## Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 2005-05-01
 
 	BigBob:
@@ -4042,10 +4030,9 @@ Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 	Welcome our new aMule team members:
 		blerfont, m2kio, skolnick, thedude0001 & thorero
 
---------------------------------------------------------------------------------
+---
 
-Version 2.0.0rc8 - The "last rc" version.
-----------
+## Version 2.0.0rc8 - The "last rc" version.
 2004-12-21
 
 	Baz:
@@ -4351,11 +4338,10 @@ Version 2.0.0rc8 - The "last rc" version.
 		lionel77, ken_aMule, nachbarnebenan & one2one
 
 
---------------------------------------------------------------------------------
+---
 
 
-Version 2.0.0rc7 - The "99,6% Final" version.
-----------
+## Version 2.0.0rc7 - The "99,6% Final" version.
 2004-10-19
 
 	bisley:
@@ -4523,11 +4509,10 @@ Version 2.0.0rc7 - The "99,6% Final" version.
 		* All aMule users!!!
 
 
---------------------------------------------------------------------------------------------------------------------------------
+---
 
 
-Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair" version.
-----------
+## Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair" version.
 2004-10-03
 
 	deltaHF:
@@ -4993,10 +4978,9 @@ Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair
 		   were added) and then deltaHF changed it later.
 		   We just love changing that page.
 
-----------------------------------------------------------------------------------------------------------------------
+---
 
-Version 2.0.0rc5 - The 'Let's recover our release speed' version.
-----------
+## Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 2004-07-18
 
 	deltaHF:
@@ -5068,11 +5052,10 @@ Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 		* All the people at the Mac section of forums, for testing compilation and run.
 
 
-----------------------------------------------------------------------------------------------------------------------
+---
 
 
-Version 2.0.0rc4a - HOTFIX release for lugdunum 16.47 servers (The 'Ooops!' version)
-----------
+## Version 2.0.0rc4a - HOTFIX release for lugdunum 16.47 servers (The 'Ooops!' version)
 2004-07-14
 
 	Kry:
@@ -5081,11 +5064,10 @@ Version 2.0.0rc4a - HOTFIX release for lugdunum 16.47 servers (The 'Ooops!' vers
 	deltaHF:
 		* Translations update
 
-----------------------------------------------------------------------------------------------------------------------
+---
 
 
-Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
-----------
+## Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
 2004-07-12
 
 	alehack:
@@ -5473,11 +5455,10 @@ Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
 		* Everyone we forgot here ;)
 
 
---------------------------------------------------------------------------------------------
+---
 
 
-Version 2.0.0rc3 - The 'Target: Stability' version.
--------------
+## Version 2.0.0rc3 - The 'Target: Stability' version.
 2004-04-22
 
 	aquatroll:
@@ -5633,10 +5614,9 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 		.
 		 --- As usual thx to eMule & wxWidgets devs and everyone i forgot ;) ---
 
----------------------------------------------------------------------------------------------------------------
+---
 
-Version 2.0.0-rc2 - The 'white rabbit' version.
--------------
+## Version 2.0.0-rc2 - The 'white rabbit' version.
 2004-04-11
 
 	aquatroll:
@@ -5806,10 +5786,9 @@ Version 2.0.0-rc2 - The 'white rabbit' version.
 
 	** Follow the white rabbit and u'll find rc3 soon ;)
 
---------------------------------------------------------------------------------------------------
+---
 
-Version 2.0.0-rc1 - The 'Mules and Rabbits love carrots' version.
--------------
+## Version 2.0.0-rc1 - The 'Mules and Rabbits love carrots' version.
 2004-03-26
 
 	Kry:
@@ -6043,10 +6022,9 @@ Version 2.0.0-rc1 - The 'Mules and Rabbits love carrots' version.
 
 		* All aMule users!!!
 
----------------------------------------------------------------------------
+---
 
-Version 1.2.6
--------------
+## Version 1.2.6
 2004-02-16
 
         Kry:
@@ -6082,10 +6060,9 @@ Version 1.2.6
         deltaHF:
                * i18n stuff.
 
----------------------------------------------------------------------------
+---
 
-Version 1.2.5
--------------
+## Version 1.2.5
 2004-02-10
 
 	Hetfield:
@@ -6301,10 +6278,9 @@ Version 1.2.5
 
 		* All aMule users!!!
 
----------------------------------------------------------------------------
+---
 
-Version 1.2.4
--------------
+## Version 1.2.4
 2004-01-10
 
 (Previously released, with some errors, as 1.2.3-1)
@@ -6312,10 +6288,9 @@ Version 1.2.4
 	Aleric, Kry:
 		* Fixed the 'Completing file' bug.
 
----------------------------------------------------------------------------
+---
 
-Version 1.2.3
--------------
+## Version 1.2.3
 2003-12-31
 
 The "Happy New Year!" version.
@@ -6419,18 +6394,16 @@ The "Happy New Year!" version.
 		  WebServer.cpp PartFile.cpp UploadClient.cpp
 		  ClientCredits.cpp ClientUDPSocket.cpp.
 
----------------------------------------------------------------------------
+---
 
-Version 1.2.2
--------------
+## Version 1.2.2
 
      Phantom version. Expected to be released on 21/22 dec, delayed and then made
      into 1.2.3 version.
 
----------------------------------------------------------------------------
+---
 
-Version 1.2.1
--------------
+## Version 1.2.1
 2003-12-14
 
 	Kry:
@@ -6528,10 +6501,9 @@ Version 1.2.1
 		  for aMule clients.
 		* Fixed bug in uploadlist.
 
----------------------------------------------------------------------------
+---
 
-Version 1.2.0
--------------
+## Version 1.2.0
 2003-11-26
 
 	Kry:
@@ -6581,10 +6553,9 @@ Version 1.2.0
 		  GetSoftFiles() SetSoftFiles()	GetHardFiles() SetHardFiles()
 		  SetVersion() DbgGetFileInfo()
 
----------------------------------------------------------------------------
+---
 
-Version 1.1.2
--------------
+## Version 1.1.2
 2003-11-04
 
 	Kry:
@@ -6594,19 +6565,17 @@ Version 1.1.2
 		* Some more memleaks fixed.
 		* Now aMule compiles under wxGTK2.5
 
----------------------------------------------------------------------------
+---
 
-Version 1.1.1b
---------------
+## Version 1.1.1b
 2003-11-03
 
 	Kry:
 		* * Fixed severes memleaks.
 
----------------------------------------------------------------------------
+---
 
-Version 1.1.1a
---------------
+## Version 1.1.1a
 2003-11-03
 
 	Kry:
@@ -6615,10 +6584,9 @@ Version 1.1.1a
 	Creteil:
 		* Fixed another assert statement causing crash.
 
----------------------------------------------------------------------------
+---
 
-Version 1.1.1
--------------
+## Version 1.1.1
 2003-11-01
 
 	Kry:
@@ -6645,10 +6613,9 @@ Version 1.1.1
 		  don't use anymore), my old binarie = 2.9Mb the new one
 		  = 2.5Mb.
 
----------------------------------------------------------------------------
+---
 
-Version 1.1.0 (Kry special edition).
-------------------------------------
+## Version 1.1.0 (Kry special edition).
 2003-10-21
 
 	Kry:
@@ -6668,10 +6635,9 @@ Version 1.1.0 (Kry special edition).
 		* Relooked all main windows.
 		* Initial import of Messaging sytem GUI. Credits go to Tiku.
 
----------------------------------------------------------------------------
+---
 
-Version 1.0.9
--------------
+## Version 1.0.9
 2003-10-17
 
  - Fixes :
@@ -6693,10 +6659,9 @@ Version 1.0.9
 	* I'm working hard on the rewrite of preferences, don't expect many
 	  changes during this time ...
 
----------------------------------------------------------------------------
+---
 
-Version 1.0.8
--------------
+## Version 1.0.8
 2003-10-10
 
  - Fixes :
@@ -6726,10 +6691,9 @@ Version 1.0.8
 	* I'm working hard on the rewrite of preferences, don't expect many
 	  changes during this time ...
 
----------------------------------------------------------------------------
+---
 
-Version 1.0.7
--------------
+## Version 1.0.7
 2003-10-03
 
  - Fixes :
@@ -6751,10 +6715,9 @@ Version 1.0.7
 	  just temporary ... (i'm thinking about removing totally this
 	  functionnality).
 
----------------------------------------------------------------------------
+---
 
-Version 1.0.6
--------------
+## Version 1.0.6
 2003-09-24
 
  - Fixes :
@@ -6770,10 +6733,9 @@ Version 1.0.6
 	* Localization Languages are broken for the moment, don't panic it's
 	  just temporary ..
 
----------------------------------------------------------------------------
+---
 
-Version 1.0.5
--------------
+## Version 1.0.5
 2003-09-15
 
  - Gui changes :
@@ -6800,10 +6762,9 @@ Version 1.0.5
 	* Localization Languages are broken for the moment, don't panic it's
 	  just temporary ..
 
----------------------------------------------------------------------------
+---
 
-Version 1.0.4
--------------
+## Version 1.0.4
 2003-09-14
 
  - Gui changes :
@@ -6831,10 +6792,9 @@ Version 1.0.4
 	* Localization Languages are broken for the moment, don't panic it's
 	  just temporary ..
 
----------------------------------------------------------------------------
+---
 
-Version 1.0.3
--------------
+## Version 1.0.3
 2003-09-08
 
  - Gui changes :
@@ -6851,10 +6811,9 @@ Version 1.0.3
 
 	* Removed mmMultiButton from source (no more used).
 
----------------------------------------------------------------------------
+---
 
-Version 1.0.2
--------------
+## Version 1.0.2
 2003-09-03
 
  - Gui changes :
@@ -6867,10 +6826,9 @@ Version 1.0.2
 	  from eMule, Possible fix for some problems while ending the
 	  program).
 
----------------------------------------------------------------------------
+---
 
-Version 1.0.1
--------------
+## Version 1.0.1
 2003-09-29
 
  - Gui changes :
@@ -6882,10 +6840,9 @@ Version 1.0.1
 
 	* Synched aMule with xMule latest fixes.
 
----------------------------------------------------------------------------
+---
 
-Version 1.0.0
--------------
+## Version 1.0.0
 2003-08-25
 
 !!! Initial Launch of aMule !!!
@@ -6907,7 +6864,7 @@ Version 1.0.0
 
  Nothing more i can remind ;-)
 
----------------------------------------------------------------------------
+---
 
 malware's contributions:
    * Speed up the initial sharing by making KnowFileList a hash map.
@@ -6937,8 +6894,7 @@ NetBSD team's contributions:
 sepahewe's contributions:
    * Fix images in transfer list web page.
 
-Version 1.5.6
--------------
+## Version 1.5.6
 2003/08/01
 
 Highlights:
@@ -6997,8 +6953,7 @@ FooMan's contributions:
 DongCheon Park's contributions:
 	* Updated the Korean translation files for new features.
 
-Version 1.5.5
--------------
+## Version 1.5.5
 2003/07/11
 
 Madcat's contributions:
@@ -7020,8 +6975,7 @@ MikaelB's contributions:
 plobb's contributions:
    * Hotranking: Sources with QR: <5 ignore MaxNewConPer5Sec value.
 
-Version 1.5.4
--------------
+## Version 1.5.4
 2003/07/05
 
 Madcat's contributions:
@@ -7037,8 +6991,7 @@ MikaelB's contributions:
    * Possible fix for main toolbar display bug.
    * Possible fix for sash position loading problems after new compilation.
 
-Version 1.5.3
--------------
+## Version 1.5.3
 2003/07/02
 
 Highlights:
@@ -7099,8 +7052,7 @@ Malware's contributions:
 Balu's contributions:
    * Updated spanish translation.
 
-Version 1.5.2
--------------
+## Version 1.5.2
 2003-06-22
 
 Madcat's contributions:
@@ -7126,8 +7078,7 @@ Lagloose's contributions:
    * More Information on uploading clients in upload window.
 
 
-Version 1.5.1
--------------
+## Version 1.5.1
 2003-06-11
 
 Un-Thesis' contributions:
@@ -7140,8 +7091,7 @@ Kry's contributions:
    * Added a notification message in case second xMule is started.
    * Possible fix for --version commandline argument.
 
-Version 1.5.0
--------------
+## Version 1.5.0
 2003-06-08
 
 Madcat's contributions:
@@ -7168,8 +7118,7 @@ Un-Thesis' contributions:
 MikaelB's contributions:
    * Possible fix for toolbar sizing with i18n
 
-Version 1.3.1
--------------
+## Version 1.3.1
 2003-05-16
 
 Madcat's contributions:
@@ -7185,8 +7134,7 @@ ArCePi's contributions:
 Shuttle's contributions:
    * Added Italian translation
 
-Version 1.3.0
--------------
+## Version 1.3.0
 2003-05-15
 
 * Changed the release organization of xmule
