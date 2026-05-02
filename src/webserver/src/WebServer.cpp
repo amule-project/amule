@@ -926,7 +926,8 @@ CAnyImage::CAnyImage(int width, int height) : m_width(width), m_height(height)
 {
 	m_size = 0;
 	// allocate considering image header
-	m_alloc_size = width * height * sizeof(uint32) + 0x100;
+	m_alloc_size = static_cast<unsigned long>(width) *
+		static_cast<unsigned long>(height) * sizeof(uint32) + 0x100;
 	if ( m_alloc_size ) {
 		m_data = new unsigned char[m_alloc_size];
 	} else {
