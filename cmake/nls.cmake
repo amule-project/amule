@@ -36,17 +36,22 @@ if (NOT YYENABLE_NLS)
 	include (FindGettext)
 
 	# msgfmt / msgmerge are required at build time for compiling the .po
-	# catalogs into .mo files installed alongside the binaries.
+	# catalogs into .mo files installed alongside the binaries. This file
+	# is only included from the top-level CMakeLists.txt when ENABLE_NLS
+	# is true — i.e. the user explicitly asked for the feature. Honour
+	# the user's intent: fail loudly instead of silently downgrading to
+	# ENABLE_NLS=FALSE, which would mask the missing dep behind a green
+	# build with no localization at runtime.
 	if (NOT GETTEXT_MSGFMT_EXECUTABLE OR NOT GETTEXT_MSGMERGE_EXECUTABLE)
-		set (ENABLE_NLS FALSE)
+		message (FATAL_ERROR "ENABLE_NLS=YES but msgfmt and/or msgmerge were "
+			"not found. Install GNU gettext (Debian/Ubuntu: gettext, "
+			"Fedora: gettext, macOS Homebrew: gettext, "
+			"MSYS2: mingw-w64-x86_64-gettext), or pass -DENABLE_NLS=NO to "
+			"build without translation support.")
 	endif()
 
-	if (ENABLE_NLS)
-		message (STATUS "Everything is fine. aMule can be localized")
-		set (YYENABLE_NLS TRUE CACHE INTERNAL "For parser, php-parser and to not recheck for nls-support" FORCE)
-	else()
-		message (STATUS "You need to install GNU gettext/gettext-tools to compile aMule with i18n support.")
-	endif()
+	message (STATUS "Everything is fine. aMule can be localized")
+	set (YYENABLE_NLS TRUE CACHE INTERNAL "For parser, php-parser and to not recheck for nls-support" FORCE)
 endif()
 
 # Parser.cpp and the webserver call dgettext directly, so libintl needs
@@ -69,7 +74,21 @@ endif()
 if (ENABLE_NLS)
 	find_package (Intl)
 	if (NOT Intl_FOUND)
-		message (STATUS "libintl headers/library not found — disabling NLS")
-		set (ENABLE_NLS FALSE)
+		# Same reasoning as the msgfmt branch above: ENABLE_NLS=YES is
+		# the user's explicit intent, so the missing libintl is a hard
+		# error, not a silent fallback. On glibc systems Intl_LIBRARIES
+		# is empty because gettext lives inside libc — find_package(Intl)
+		# still reports Intl_FOUND=TRUE there. So this branch only fires
+		# on platforms with separate libintl (macOS, MinGW/MSYS2, *BSD,
+		# musl) where the runtime hasn't been installed.
+		message (FATAL_ERROR "ENABLE_NLS=YES but the libintl headers/library "
+			"were not found. Install GNU gettext's runtime "
+			"(macOS Homebrew: gettext, MSYS2: mingw-w64-x86_64-gettext, "
+			"Alpine/musl: gettext-dev + musl-libintl, *BSD: gettext-runtime), "
+			"or pass -DENABLE_NLS=NO to build without translation support. "
+			"Linux glibc systems should not hit this branch — gettext is "
+			"part of libc and find_package(Intl) succeeds with empty "
+			"Intl_LIBRARIES; if you do hit it on a glibc system, your "
+			"glibc-devel / libc6-dev install is incomplete.")
 	endif()
 endif()
