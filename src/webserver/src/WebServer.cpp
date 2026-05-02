@@ -1138,11 +1138,17 @@ CDynPngImage::CDynPngImage(int w, int h) : CAnyImage(w, h)
 	// Allocate array of "row pointers" - libpng need it in this form
 	// Fill it also with the image data
 	//
-	m_img_data = new png_byte[3*m_width*m_height];
-	memset(m_img_data, 0, 3*m_width*m_height);
+	const size_t img_size = static_cast<size_t>(3) *
+		static_cast<size_t>(m_width) *
+		static_cast<size_t>(m_height);
+	m_img_data = new png_byte[img_size];
+	memset(m_img_data, 0, img_size);
 	m_row_ptrs = new png_bytep [m_height];
 	for (int i = 0; i < m_height;i++) {
-		m_row_ptrs[i] = &m_img_data[3*m_width*i];
+		m_row_ptrs[i] = &m_img_data[
+			static_cast<size_t>(3) *
+			static_cast<size_t>(m_width) *
+			static_cast<size_t>(i)];
 	}
 
 }
