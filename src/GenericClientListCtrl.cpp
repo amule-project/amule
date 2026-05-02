@@ -1335,24 +1335,24 @@ void CGenericClientListCtrl::DrawSourceStatusBar(
 									? source.GetLastDownloadingPart() : 0xffff;
 		uint16 nextRequestedPart = source.GetNextRequestedPart();
 
-		for ( uint16 i = 0; i < partStatus.size(); i++ ) {
+		for ( uint32 i = 0; i < partStatus.size(); i++ ) {
 			uint64 uStart = PARTSIZE * i;
-			uint64 uEnd = uStart + reqfile->GetPartSize(i) - 1;
+			uint64 uEnd = uStart + reqfile->GetPartSize(static_cast<uint16>(i)) - 1;
 
 			CMuleColour colour;
 			if (!partStatus.get(i)) {
 				// client does not have this part
 				// light grey
 				colour = bFlat ? crFlatNeither : crNeither;
-			} else if ( reqfile->IsComplete(i)) {
+			} else if ( reqfile->IsComplete(static_cast<uint16>(i))) {
 				// completed part
 				// green
 				colour = bFlat ? crFlatBoth : crBoth;
-			} else if (lastDownloadingPart == i) {
+			} else if (lastDownloadingPart == static_cast<uint16>(i)) {
 				// downloading part
 				// yellow
 				colour = crPending;
-			} else if (nextRequestedPart == i) {
+			} else if (nextRequestedPart == static_cast<uint16>(i)) {
 				// requested part
 				// light yellow
 				colour = crNextPending;
