@@ -1,11 +1,11 @@
 add_subdirectory (man)
 
 install (FILES
-	amulesig.txt
 	Changelog
-	EC_Protocol.txt
-	INSTALL
+	EC_Protocol.md
+	INSTALL.md
 	IP2Country.md
+	amulesig.md
 	license.txt
 	DESTINATION "${CMAKE_INSTALL_DOCDIR}"
 )
