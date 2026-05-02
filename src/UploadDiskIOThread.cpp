@@ -547,7 +547,9 @@ void CUploadDiskIOThread::CreatePackedPackets(const uint8_t* buffer, uint64 star
 		CPacket* packet = new CPacket(data, OP_EMULEPROT, (isLargeBlock ? OP_COMPRESSEDPART_I64 : OP_COMPRESSEDPART));
 
 		// approximate payload size
-		uint32 payloadSize = nPacketSize*oldSize/newsize;
+		uint32 payloadSize = static_cast<uint32>(
+			(static_cast<uint64>(nPacketSize) * oldSize) /
+			newsize);
 
 		if (togo == 0 && totalPayloadSize+payloadSize < oldSize) {
 			payloadSize = oldSize-totalPayloadSize;
