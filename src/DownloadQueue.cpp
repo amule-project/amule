@@ -61,18 +61,13 @@
 
 #include "kademlia/kademlia/Kademlia.h"
 
-#include <string>			// Do_not_auto_remove (mingw-gcc-3.4.5)
-
-
 // Max. file IDs per UDP packet
 // ----------------------------
 // 576 - 30 bytes of header (28 for UDP, 2 for "E3 9A" edonkey proto) = 546 bytes
 // 546 / 16 = 34
 
-
 #define MAX_FILES_PER_UDP_PACKET	31	// 2+16*31 = 498 ... is still less than 512 bytes!!
 #define MAX_REQUESTS_PER_SERVER		35
-
 
 CDownloadQueue::CDownloadQueue()
 // Needs to be recursive that that is can own an observer assigned to itself
