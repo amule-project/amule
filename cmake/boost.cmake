@@ -44,12 +44,37 @@ if (NOT ASIO_SOCKETS)
 			unset (CMAKE_REQUIRED_LIBRARIES)
 		else()
 			if (NOT DOWNLOAD_AND_BUILD_DEPS)
-				message (STATUS "No useable boost headers found. Disabling support")
-				set (ENABLE_BOOST FALSE)
+				# This file is only included from the top-level
+				# CMakeLists.txt when ENABLE_BOOST is true — i.e. the user
+				# explicitly asked for the feature and is not opting into
+				# the download-and-build fallback. Honour the user's
+				# intent: fail loudly instead of silently downgrading to
+				# ENABLE_BOOST=FALSE, which would mask the missing headers
+				# behind a green build with the asio sockets path
+				# mysteriously absent.
+				message (FATAL_ERROR "ENABLE_BOOST=YES but boost::asio "
+					"headers were not usable. find_package(Boost) found "
+					"a Boost install but check_include_files for "
+					"boost/system/error_code.hpp + boost/asio.hpp "
+					"failed to compile. Install full Boost development "
+					"headers (Debian/Ubuntu: libboost-dev, Fedora: "
+					"boost-devel, macOS Homebrew: boost, MSYS2: "
+					"mingw-w64-x86_64-boost), or pass -DENABLE_BOOST=NO "
+					"to fall back to wxWidgets sockets, or pass "
+					"-DDOWNLOAD_AND_BUILD_DEPS=YES to have CMake build "
+					"Boost from source.")
 			endif()
 		endif()
 	else()
-		message (STATUS "No useable boost headers found. Disabling support")
-		set (ENABLE_BOOST FALSE)
+		# Defensive branch: find_package(Boost CONFIG REQUIRED) at the
+		# top of this file already errors out when Boost is absent, so
+		# this else() is practically unreachable. Keep a FATAL_ERROR
+		# rather than a silent disable so that any future edit which
+		# drops the REQUIRED keyword surfaces the bug instead of
+		# producing a green build with no boost support.
+		message (FATAL_ERROR "ENABLE_BOOST=YES but Boost_FOUND is false. "
+			"This shouldn't happen — find_package(Boost CONFIG REQUIRED) "
+			"at the top of cmake/boost.cmake should have errored out "
+			"already. Please report this configuration as a bug.")
 	endif()
 endif()
