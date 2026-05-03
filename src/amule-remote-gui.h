@@ -726,7 +726,7 @@ public:
 	uint32 GetKadIndexedLoad() const	{ return theStats::GetKadIndexedLoad(); }
 	const CUInt128&	GetKadID() const	{ return m_kadID; }
 	// True IP of machine
-	uint32 GetKadIPAdress() const		{ return theStats::GetKadIPAdress(); }
+	uint32 GetKadIPAddress() const		{ return theStats::GetKadIPAddress(); }
 	// Buddy status
 	uint8	GetBuddyStatus() const		{ return theStats::GetBuddyStatus(); }
 	uint32	GetBuddyIP() const			{ return theStats::GetBuddyIP(); }

@@ -354,7 +354,7 @@ public:
 	typedef std::vector<CPath> PathList;
 	PathList shareddir_list;
 
-	wxArrayString adresses_list;
+	wxArrayString addresses_list;
 
 	static bool		AutoConnectStaticOnly()		{ return s_autoconnectstaticonly; }
 	static void		SetAutoConnectStaticOnly(bool val) { s_autoconnectstaticonly = val; }

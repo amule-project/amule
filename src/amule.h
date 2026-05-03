@@ -230,7 +230,7 @@ public:
 	uint32	GetKadIndexedNotes() const;
 	uint32	GetKadIndexedLoad() const;
 	// True IP of machine
-	uint32	GetKadIPAdress() const;
+	uint32	GetKadIPAddress() const;
 	// Buddy status
 	uint8	GetBuddyStatus() const;
 	uint32	GetBuddyIP() const;

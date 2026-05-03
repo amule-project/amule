@@ -142,7 +142,7 @@ wxString GetConversionState(unsigned int state)
 	switch (state) {
 		case CONV_OK			: return _("Completed");
 		case CONV_INPROGRESS		: return _("In progress");
-		case CONV_OUTOFDISKSPACE	: return _("ERROR: Out of diskspace");
+		case CONV_OUTOFDISKSPACE	: return _("ERROR: Out of disk space");
 		case CONV_PARTMETNOTFOUND	: return _("ERROR: Partmet not found");
 		case CONV_IOERROR		: return _("ERROR: IO error!");
 		case CONV_FAILED		: return _("ERROR: Failed!");

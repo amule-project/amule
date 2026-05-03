@@ -62,12 +62,12 @@ wxSizer *muleDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE 
 #define ID_SRV_SPLITTER 10001
 wxSizer *serverListDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-extern wxSizer *s_searchsizer;
+extern wxSizer *s_search_sizer;
 #define IDC_SEARCHNAME 10002
 #define ID_SEARCHTYPE 10003
 #define IDC_EXTENDEDSEARCHCHECK 10004
 #define IDC_FILTERCHECK 10005
-extern wxSizer *s_extendedsizer;
+extern wxSizer *s_extended_sizer;
 #define IDC_TypeSearch 10006
 #define ID_AUTOCATASSIGN 10007
 #define IDC_EDITSEARCHEXTENSION 10008
@@ -76,7 +76,7 @@ extern wxSizer *s_extendedsizer;
 #define IDC_SPINSEARCHMAX 10011
 #define IDC_SEARCHMAXSIZE 10012
 #define IDC_SPINSEARCHAVAIBILITY 10013
-extern wxSizer *s_filtersizer;
+extern wxSizer *s_filter_sizer;
 #define ID_FILTER_TEXT 10014
 #define ID_FILTER 10015
 #define ID_FILTER_INVERT 10016

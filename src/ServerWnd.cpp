@@ -247,7 +247,7 @@ void CServerWnd::UpdateKadInfo()
 			}
 
 			KadInfoList->InsertItem(next_row, _("IP address:"));
-			KadInfoList->SetItem(next_row++, 1, Uint32toStringIP(theApp->GetKadIPAdress()));
+			KadInfoList->SetItem(next_row++, 1, Uint32toStringIP(theApp->GetKadIPAddress()));
 
 			// Index info
 			KadInfoList->InsertItem(next_row, _("Indexed sources:"));

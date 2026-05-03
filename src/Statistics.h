@@ -499,7 +499,7 @@ enum StatDataIndex {
 	sdKadIndexedKeywords,
 	sdKadIndexedNotes,
 	sdKadIndexedLoad,
-	sdKadIPAdress,
+	sdKadIPAddress,
 	sdKadNodes,
 	sdBuddyStatus,
 	sdBuddyIP,
@@ -552,7 +552,7 @@ private:
 	static	uint32	GetKadIndexedKeywords()	{ return s_statData[sdKadIndexedKeywords]; }
 	static	uint32	GetKadIndexedNotes()	{ return s_statData[sdKadIndexedNotes]; }
 	static	uint32	GetKadIndexedLoad()		{ return s_statData[sdKadIndexedLoad]; }
-	static	uint32	GetKadIPAdress()		{ return s_statData[sdKadIPAdress]; }
+	static	uint32	GetKadIPAddress()		{ return s_statData[sdKadIPAddress]; }
 	static	uint8	GetBuddyStatus()		{ return s_statData[sdBuddyStatus]; }
 	static	uint32	GetBuddyIP()			{ return s_statData[sdBuddyIP]; }
 	static	uint32	GetBuddyPort()			{ return s_statData[sdBuddyPort]; }

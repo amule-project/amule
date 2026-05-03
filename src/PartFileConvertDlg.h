@@ -56,7 +56,7 @@ protected:
 
 	wxDECLARE_EVENT_TABLE();
 
-	static CPartFileConvertDlg*	s_convertgui;
+	static CPartFileConvertDlg*	s_convert_gui;
 };
 
 #endif /* PARTFILECONVERTDLG_H */

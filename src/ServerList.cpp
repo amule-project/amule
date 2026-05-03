@@ -868,7 +868,7 @@ bool CServerList::DownloadFinished(uint32 result)
 void CServerList::AutoUpdate()
 {
 
-	uint8 url_count = theApp->glob_prefs->adresses_list.GetCount();
+	uint8 url_count = theApp->glob_prefs->addresses_list.GetCount();
 
 	if (!url_count) {
 		AddLogLineC(_("No server list address entry in 'addresses.dat' found. Please paste a valid server list address into this file in order to auto-update your server list"));
@@ -876,7 +876,7 @@ void CServerList::AutoUpdate()
 	}
 	// Do current URL. Callback function will take care of the others.
 	while ( current_url_index < url_count ) {
-		wxString URI = theApp->glob_prefs->adresses_list[current_url_index];
+		wxString URI = theApp->glob_prefs->addresses_list[current_url_index];
 		// We use wxURL to validate the URI
 		if ( wxURL( URI ).GetError() == wxURL_NOERR ) {
 			// Ok, got a valid URI
@@ -918,7 +918,7 @@ void CServerList::AutoDownloadFinished(uint32 result)
 
 	++current_url_index;
 
-	if (current_url_index < theApp->glob_prefs->adresses_list.GetCount()) {
+	if (current_url_index < theApp->glob_prefs->addresses_list.GetCount()) {
 		// Next!
 		AutoUpdate();
 	}

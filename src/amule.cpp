@@ -867,7 +867,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	// Notify(true) has already been called to the ListenSocket, so events may
 	// be already coming in.
 	if (!listensocket->IsOk()) {
-		// If we wern't able to start listening, we need to warn the user
+		// If we weren't able to start listening, we need to warn the user
 		wxString err;
 		err = CFormat(_("Port %u is not available. You will be LOWID\n")) %
 			(unsigned int)(thePrefs::GetPort());
@@ -1855,7 +1855,7 @@ uint32 CamuleApp::GetKadIndexedLoad() const
 
 
 // True IP of machine
-uint32 CamuleApp::GetKadIPAdress() const
+uint32 CamuleApp::GetKadIPAddress() const
 {
 	return wxUINT32_SWAP_ALWAYS(Kademlia::CKademlia::GetPrefs()->GetIPAddress());
 }

@@ -164,7 +164,7 @@ enum ECTagNames {
 		EC_TAG_STATS_KAD_INDEXED_KEYWORDS         = 0x0210,
 		EC_TAG_STATS_KAD_INDEXED_NOTES            = 0x0211,
 		EC_TAG_STATS_KAD_INDEXED_LOAD             = 0x0212,
-		EC_TAG_STATS_KAD_IP_ADRESS                = 0x0213,
+		EC_TAG_STATS_KAD_IP_ADDRESS                = 0x0213,
 		EC_TAG_STATS_BUDDY_STATUS                 = 0x0214,
 		EC_TAG_STATS_BUDDY_IP                     = 0x0215,
 		EC_TAG_STATS_BUDDY_PORT                   = 0x0216,
@@ -602,7 +602,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0210: return "EC_TAG_STATS_KAD_INDEXED_KEYWORDS";
 		case 0x0211: return "EC_TAG_STATS_KAD_INDEXED_NOTES";
 		case 0x0212: return "EC_TAG_STATS_KAD_INDEXED_LOAD";
-		case 0x0213: return "EC_TAG_STATS_KAD_IP_ADRESS";
+		case 0x0213: return "EC_TAG_STATS_KAD_IP_ADDRESS";
 		case 0x0214: return "EC_TAG_STATS_BUDDY_STATUS";
 		case 0x0215: return "EC_TAG_STATS_BUDDY_IP";
 		case 0x0216: return "EC_TAG_STATS_BUDDY_PORT";

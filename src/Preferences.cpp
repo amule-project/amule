@@ -960,7 +960,7 @@ CPreferences::CPreferences()
 	// serverlist addresses
 	CTextFile slistfile;
 	if (slistfile.Open(s_configDir + "addresses.dat", CTextFile::read)) {
-		adresses_list = slistfile.ReadLines();
+		addresses_list = slistfile.ReadLines();
 	}
 #endif
 }

@@ -102,7 +102,7 @@ void alcc::OnInitCmdLine(wxCmdLineParser& cmdline)
 	cmdline.AddParam("input files", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE);
 }
 
-/// Command line preocessing
+/// Command line preprocessing
 bool alcc::OnCmdLineParsed(wxCmdLineParser& cmdline)
 {
 

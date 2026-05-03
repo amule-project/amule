@@ -121,8 +121,8 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	CastChild( IDC_SEARCHMAXSIZE, wxChoice )->SetSelection(2);
 
 	// Not there initially.
-	s_searchsizer->Show(s_extendedsizer, false);
-	s_searchsizer->Show(s_filtersizer, false);
+	s_search_sizer->Show(s_extended_sizer, false);
+	s_search_sizer->Show(s_filter_sizer, false);
 
 	Layout();
 }
@@ -205,7 +205,7 @@ void CSearchDlg::OnListItemSelected(wxListEvent& event)
 
 void CSearchDlg::OnExtendedSearchChange(wxCommandEvent& event)
 {
-	s_searchsizer->Show(s_extendedsizer, event.IsChecked());
+	s_search_sizer->Show(s_extended_sizer, event.IsChecked());
 
 	Layout();
 }
@@ -213,7 +213,7 @@ void CSearchDlg::OnExtendedSearchChange(wxCommandEvent& event)
 
 void CSearchDlg::OnFilterCheckChange(wxCommandEvent& event)
 {
-	s_searchsizer->Show(s_filtersizer, event.IsChecked());
+	s_search_sizer->Show(s_filter_sizer, event.IsChecked());
 	Layout();
 
 	int nPages = m_notebook->GetPageCount();

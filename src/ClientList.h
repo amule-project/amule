@@ -201,7 +201,7 @@ public:
 	/**
 	 * Returns the number of tracked client.
 	 *
-	 * @param dwIP The IP-adress which of the clients.
+	 * @param dwIP The IP-address which of the clients.
 	 * @return The number of clients tracked at the specified IP.
 	 */
 	uint16	GetClientsFromIP(uint32 dwIP);
