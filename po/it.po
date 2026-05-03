@@ -492,7 +492,6 @@ msgstr ""
 "\"AcceptExternalConnections\" a 1 nel file ~/.aMule/amule.conf"
 
 #: src/amuled.cpp:159
-#, fuzzy
 msgid ""
 "ERROR: A valid password is required to use external connections, and aMule "
 "daemon cannot be used without external connections. To run aMule daemon, you "
@@ -879,6 +878,9 @@ msgid ""
 "Please check the host, port and that aMule is running with External "
 "Connections enabled."
 msgstr ""
+"Connessione scaduta. Impossibile raggiungere %s:%d entro il tempo previsto.\n"
+"Verificare l'host, la porta e che aMule sia in esecuzione con le connessioni "
+"esterne abilitate."
 
 #: src/amule-remote-gui.cpp:482
 msgid "Ready"
@@ -1458,7 +1460,6 @@ msgid "In progress"
 msgstr "In corso"
 
 #: src/DataToText.cpp:145
-#, fuzzy
 msgid "ERROR: Out of disk space"
 msgstr "ERRORE: Spazio su disco esaurito"
 
@@ -1879,18 +1880,16 @@ msgid "eD2k is disabled in preferences."
 msgstr "eD2k è disabilitato nelle preferenze."
 
 #: src/ExternalConn.cpp:995
-#, fuzzy
 msgid "Friend not found."
-msgstr "File non trovato."
+msgstr "Amico non trovato."
 
 #: src/ExternalConn.cpp:1004
-#, fuzzy
 msgid "Client not found."
-msgstr "File non trovato."
+msgstr "Client non trovato."
 
 #: src/ExternalConn.cpp:1009
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
-msgstr ""
+msgstr "EC_TAG_FRIEND_SHARED richiede EC_TAG_FRIEND o EC_TAG_CLIENT."
 
 #: src/ExternalConn.cpp:1118
 msgid "Search in progress. Refetch results in a moment!"
@@ -2259,7 +2258,6 @@ msgid "Multiple selection"
 msgstr "Selezione multipla"
 
 #: src/GenericClientListCtrl.cpp:528
-#, fuzzy
 msgid ""
 "You are not allowed to set more than one friend slot.\n"
 " Only one slot was assigned."
@@ -2338,39 +2336,39 @@ msgid "The URL to download can't be empty"
 msgstr "L'URL per scaricare non può essere vuoto"
 
 #: src/HTTPDownload.cpp:242
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to create HTTP request for %s"
-msgstr "Impossibile ricevere i file condivisi dall'utente '%s'"
+msgstr "Impossibile creare la richiesta HTTP per %s"
 
 #: src/HTTPDownload.cpp:318
 #, c-format
 msgid "HTTP download: empty response body for %s"
-msgstr ""
+msgstr "Download HTTP: corpo della risposta vuoto per %s"
 
 #: src/HTTPDownload.cpp:330
-#, fuzzy, c-format
+#, c-format
 msgid "Could not move downloaded file to %s"
-msgstr "Cartella per i file temporanei"
+msgstr "Impossibile spostare il file scaricato in %s"
 
 #: src/HTTPDownload.cpp:334
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %s (%llu bytes)"
-msgstr "Scaricati %d byte"
+msgstr "Scaricato %s (%llu byte)"
 
 #: src/HTTPDownload.cpp:339
-#, fuzzy, c-format
+#, c-format
 msgid "The URL %s returned: %i"
-msgstr "L'URL %s ha restituito: %i - Errore (%i)!"
+msgstr "L'URL %s ha restituito: %i"
 
 #: src/HTTPDownload.cpp:346
-#, fuzzy, c-format
+#, c-format
 msgid "HTTP download failed for %s: %s"
-msgstr "Download HTTP cancellato"
+msgstr "Download HTTP fallito per %s: %s"
 
 #: src/HTTPDownload.cpp:361
 #, c-format
 msgid "HTTP 401 Unauthorized for %s"
-msgstr ""
+msgstr "HTTP 401 Non autorizzato per %s"
 
 #: src/IP2Country.cpp:95
 #, c-format
@@ -2379,16 +2377,19 @@ msgid ""
 "(a free MaxMind account is required) and place it at %s, or set the URL in "
 "Preferences."
 msgstr ""
+"Nessun URL configurato per l'aggiornamento di GeoLite2. Scaricare GeoLite2-"
+"Country.mmdb manualmente (è richiesto un account MaxMind gratuito) e "
+"posizionarlo in %s, oppure impostare l'URL nelle Preferenze."
 
 #: src/IP2Country.cpp:100
-#, fuzzy, c-format
+#, c-format
 msgid "Download new %s from %s"
-msgstr "Scaricamento in corso di nuovo GeoIP.dat da %s"
+msgstr "Scaricamento in corso di nuovo %s da %s"
 
 #: src/IP2Country.cpp:128
-#, fuzzy, c-format
+#, c-format
 msgid "Download of %s file failed, aborting update."
-msgstr "Scaricamento del file GeoIP.dat fallito, interruzione aggiornamento."
+msgstr "Scaricamento del file %s fallito, interruzione aggiornamento."
 
 #: src/IP2Country.cpp:134 src/IPFilter.cpp:500
 #, c-format
@@ -2406,9 +2407,9 @@ msgid "Successfully updated %s"
 msgstr "%s aggiornato con successo"
 
 #: src/IP2Country.cpp:148
-#, fuzzy, c-format
+#, c-format
 msgid "Error updating %s"
-msgstr "Errore durante l'aggiornamento di GeoIP.dat"
+msgstr "Errore durante l'aggiornamento di %s"
 
 #: src/IP2Country.cpp:153 src/IPFilter.cpp:512 src/ServerList.cpp:862
 #, c-format
@@ -2713,39 +2714,32 @@ msgid "Select All"
 msgstr "Seleziona tutto"
 
 #: src/MuleTrayIcon.cpp:290
-#, fuzzy
 msgid "eD2k: "
-msgstr "eD2k"
+msgstr "eD2k: "
 
 #: src/MuleTrayIcon.cpp:293
-#, fuzzy
 msgid "Connected (LowID)"
-msgstr "Connesso"
+msgstr "Connesso (LowID)"
 
 #: src/MuleTrayIcon.cpp:294
-#, fuzzy
 msgid "Connected (HighID)"
-msgstr "Connesso"
+msgstr "Connesso (HighID)"
 
 #: src/MuleTrayIcon.cpp:303
-#, fuzzy
 msgid "Kad: "
-msgstr " Kad: "
+msgstr "Kad: "
 
 #: src/MuleTrayIcon.cpp:306
-#, fuzzy
 msgid "Connected (firewalled)"
-msgstr "Connesso alla rete Kad (firewalled)"
+msgstr "Connesso (firewalled)"
 
 #: src/MuleTrayIcon.cpp:316
-#, fuzzy
 msgid "Server: "
-msgstr "IP server: "
+msgstr "Server: "
 
 #: src/MuleTrayIcon.cpp:317
-#, fuzzy
 msgid "Server IP: "
-msgstr "IP server:"
+msgstr "IP server: "
 
 #: src/MuleTrayIcon.cpp:322 src/MuleTrayIcon.cpp:323 src/MuleTrayIcon.cpp:725
 #: src/MuleTrayIcon.cpp:739 src/TextClient.cpp:716 src/TextClient.cpp:729
@@ -3109,6 +3103,10 @@ msgid ""
 "next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing "
 "additional file matches that the search's initial alpha frontier missed."
 msgstr ""
+"Chiedi ai peer Kad che hanno già risposto di ampliare la ricerca. Ogni clic "
+"interroga il peer più vicino successivo per ottenere altri contatti "
+"(KADEMLIA_FIND_VALUE_MORE), facendo emergere ulteriori corrispondenze di "
+"file che la frontiera alfa iniziale della ricerca non ha rilevato."
 
 #: src/muuli_wdr.cpp:330
 msgid "Stop"
@@ -3852,7 +3850,6 @@ msgid "Upload graph scale:"
 msgstr "Scala grafico d'invio:"
 
 #: src/muuli_wdr.cpp:1634
-#, fuzzy
 msgid "Colors: "
 msgstr "Colori: "
 
@@ -3893,7 +3890,6 @@ msgid "Active connections"
 msgstr "Connessioni attive"
 
 #: src/muuli_wdr.cpp:1649
-#, fuzzy
 msgid "Systray Icon Speed Bar"
 msgstr "Barra della velocità nell'icona sulla barra di sistema"
 
@@ -4369,7 +4365,6 @@ msgid "Use system-wide ipfilter.dat if available"
 msgstr "Usa l'ipfilter.dat di sistema se disponibile"
 
 #: src/muuli_wdr.cpp:2413
-#, fuzzy
 msgid ""
 "If there's no local ipfilter.dat found, allow usage of a system-wide "
 "ipfilter file."
@@ -4772,7 +4767,6 @@ msgstr ""
 "saranno incluse)"
 
 #: src/PartFileConvertDlg.cpp:206
-#, fuzzy
 msgid ""
 "Do you want the source files of successfully imported downloads be deleted?"
 msgstr ""
@@ -5508,13 +5502,15 @@ msgstr "Errore di ricerca"
 
 #: src/SearchDlg.cpp:431
 msgid "Kad search: requested wider results from one more peer."
-msgstr ""
+msgstr "Ricerca Kad: richiesti risultati più ampi a un altro peer."
 
 #: src/SearchDlg.cpp:437
 msgid ""
 "Kad search: no peer left to reask for more results (cap reached or no "
 "responses yet)."
 msgstr ""
+"Ricerca Kad: nessun peer rimasto a cui richiedere altri risultati (limite "
+"raggiunto o nessuna risposta ancora ricevuta)."
 
 #: src/SearchDlg.cpp:539
 msgid "Min size must be smaller than max size. Max size ignored."
@@ -7196,7 +7192,7 @@ msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
 msgstr "Hai richiesto l'hash delle parti (solo per file > 9.5 MB)"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:80
-#, fuzzy, c-format
+#, c-format
 msgid "%s ---> Non existent file !\n"
 msgstr "%s ---> File inesistente!\n"
 
@@ -7670,7 +7666,6 @@ msgid "Enter here the directory where you want to generate the statistic image"
 msgstr "Inserire la cartella nella quale generare l'immagine delle statistiche"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:150
-#, fuzzy
 msgid "Upload periodically your stat image to FTP server"
 msgstr "Carica periodicamente l'immagine delle statistiche sul server FTP"
 
