@@ -159,6 +159,18 @@ if (NOT DEFINED CACHE{SVNDATE})
 			set (PACKAGE_VERSION "${GIT_TAG}")
 			set (PACKAGE_STRING "aMule ${GIT_TAG}")
 			set (AMULE_TAGGED_RELEASE 1)
+			# Suppress the "(Snapshot: ...)" trailer that
+			# MuleVersion.h's `#ifdef SVNDATE` gate appends to
+			# GetMuleVersion(). On a tagged build the SVNDATE the
+			# earlier git-describe block produced ("rev. <tag>")
+			# would render as "Initialising aMule <tag> ...
+			# (Snapshot: rev. <tag>)" — both redundant and
+			# inaccurate, since a tagged release isn't a snapshot.
+			# Pairs with the `#define` → `#cmakedefine` change in
+			# config.h.cm so an unset SVNDATE yields `#undef
+			# SVNDATE` instead of `#define SVNDATE ""`, which
+			# otherwise leaves the empty parens in place.
+			unset (SVNDATE)
 			message (STATUS "building tagged release: ${PACKAGE_STRING}")
 		endif()
 	endif()

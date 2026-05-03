@@ -177,7 +177,7 @@
 #cmakedefine STRERROR_R_CHAR_P
 
 /* The checkout date or svn revision number. */
-#define SVNDATE "${SVNDATE}"
+#cmakedefine SVNDATE "${SVNDATE}"
 
 /* There's no point in defining this on every cmd-line */
 #define USE_WX_EXTENSIONS
