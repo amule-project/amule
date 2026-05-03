@@ -140,6 +140,27 @@ if (NOT DEFINED CACHE{SVNDATE})
 			set (SVNDATE "rev. ${GIT_INFO_WC_REVISION}")
 			message (STATUS "git revision ${SVNDATE} found")
 		endif()
+		# When HEAD sits exactly on a tag, override the SVN/GIT
+		# placeholders set above with the tag name so artifact
+		# filenames, the About dialog, the tray menu label, and the
+		# Windows version resource all reflect the release. Tagless
+		# builds keep "SVN"/"GIT" — the existing dev marker. The
+		# AMULE_TAGGED_RELEASE flag is also forwarded to config.h so
+		# ClientVersion.h can suppress the __SVN__ marker on releases.
+		execute_process (
+			COMMAND ${GIT_EXECUTABLE} describe --tags --exact-match HEAD
+			OUTPUT_VARIABLE GIT_TAG
+			OUTPUT_STRIP_TRAILING_WHITESPACE
+			RESULT_VARIABLE GIT_TAG_RESULT
+			ERROR_QUIET
+			WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+		if (GIT_TAG_RESULT EQUAL 0 AND GIT_TAG)
+			set (VERSION "${GIT_TAG}")
+			set (PACKAGE_VERSION "${GIT_TAG}")
+			set (PACKAGE_STRING "aMule ${GIT_TAG}")
+			set (AMULE_TAGGED_RELEASE 1)
+			message (STATUS "building tagged release: ${PACKAGE_STRING}")
+		endif()
 	endif()
 	set_property (DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
 		"${CMAKE_SOURCE_DIR}/.git/HEAD")
