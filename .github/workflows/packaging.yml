@@ -40,6 +40,14 @@ on:
         required: false
         type: string
         default: ''
+  # Lets release.yml invoke this matrix as a reusable workflow on tag
+  # pushes — same artifact set, no duplication of the build steps.
+  workflow_call:
+    inputs:
+      only:
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: read

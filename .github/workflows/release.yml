@@ -1,0 +1,124 @@
+# Release — tag-triggered workflow that runs the full packaging matrix
+# and assembles a draft GitHub Release with the artifacts attached.
+#
+# Pushing a release-like tag fires the packaging matrix as a reusable
+# workflow, then a release job collects every platform's final artifact
+# and creates a draft Release on the repository the tag was pushed to.
+#
+# Tag filter: digit-leading tags (aMule's convention — 2.3.3, 2.4.0-rc1,
+# 3.0-beta) plus optional v-prefix (v2.4.0) for compatibility. Excludes
+# branch-backup / topic tags like `backup/*`, `per-peer-cap-fix`, etc.
+#
+# Test on a fork by pushing a tag like `0.0.0-fork-test` — the draft
+# Release lands on the fork's Releases page, not upstream.
+#
+# Output is always a draft so a maintainer can review the asset list
+# and edit the auto-generated notes before publishing.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - '[0-9]*'
+      - 'v[0-9]*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: >-
+          Tag to release. Must already exist as a git tag on the repo.
+          Use this to retry asset assembly without re-tagging.
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build artifacts
+    uses: ./.github/workflows/packaging.yml
+
+  release:
+    name: Assemble draft Release
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      # Pull only the final per-platform artifacts. The intermediate
+      # macos-app-arm64 / macos-app-x86_64 .app trees are inputs to the
+      # lipo merge job and don't belong on the Release page.
+      - name: Download AppImages
+        uses: actions/download-artifact@v8
+        with:
+          pattern: appimage-*
+          path: dist/
+          merge-multiple: true
+      - name: Download Flatpaks
+        uses: actions/download-artifact@v8
+        with:
+          pattern: flatpak-*
+          path: dist/
+          merge-multiple: true
+      - name: Download macOS Universal2 .dmg
+        uses: actions/download-artifact@v8
+        with:
+          name: macos-universal2
+          path: dist/
+      - name: Download Windows portable zips
+        uses: actions/download-artifact@v8
+        with:
+          pattern: windows-*
+          path: dist/
+          merge-multiple: true
+
+      - name: List artifacts
+        run: ls -la dist/
+
+      - name: Create draft Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            TAG="${{ inputs.tag }}"
+          else
+            TAG="${{ github.ref_name }}"
+          fi
+          # Semver-style pre-release detection: any tag with a hyphenated
+          # suffix after the version core counts as a pre-release.
+          # Matches 2.4.0-rc1, 2.4.0-rc.1, 2.4.0-beta, 2.4.0-alpha.2,
+          # 0.0.0-fork-test, v1.0.0-rc1, etc. Plain 2.3.3 / v1.0 / v3
+          # stays as a full release.
+          IS_PRERELEASE=false
+          if [[ "${TAG}" =~ ^v?[0-9]+(\.[0-9]+)*- ]]; then
+            IS_PRERELEASE=true
+          fi
+          echo "Tag: ${TAG} (prerelease: ${IS_PRERELEASE})"
+          # `gh release create` rejects re-runs if the release already
+          # exists. Retry-friendly: if a release with this tag is
+          # already present, upload assets to it instead of creating,
+          # and refresh the prerelease flag in case it was wrong.
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            echo "Release ${TAG} already exists — uploading assets to it."
+            gh release upload "${TAG}" dist/* --clobber
+            gh release edit "${TAG}" --prerelease="${IS_PRERELEASE}"
+          else
+            PRERELEASE_FLAG=""
+            if [[ "${IS_PRERELEASE}" == "true" ]]; then
+              PRERELEASE_FLAG="--prerelease"
+            fi
+            # --generate-notes auto-fills the body from PR titles since
+            # the previous tag. The release stays a draft, so the
+            # maintainer can edit / trim / replace the auto notes
+            # before publishing.
+            gh release create "${TAG}" \
+              --title "aMule ${TAG}" \
+              --generate-notes \
+              --draft \
+              ${PRERELEASE_FLAG} \
+              dist/*
+          fi
