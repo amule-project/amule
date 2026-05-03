@@ -203,8 +203,10 @@ jobs:
           # (no explicit arch prefix needed for execution), but be
           # consistent. amuled --version exits 255 (wxApp::OnInit returns
           # false after printing version → wxEntry returns -1). Check the
-          # banner via grep instead of relying on exit code.
-          ${{ matrix.archcmd }} "${MNT}/aMule.app/Contents/MacOS/amuled" --version 2>&1 | grep -q '^aMuleD GIT'
+          # banner via grep instead of relying on exit code. Pattern
+          # accepts the dev placeholder ("aMuleD GIT ...") and any
+          # tagged-release banner ("aMuleD 3.0.0-beta ...", etc.).
+          ${{ matrix.archcmd }} "${MNT}/aMule.app/Contents/MacOS/amuled" --version 2>&1 | grep -q '^aMuleD '
           hdiutil detach "${MNT}"
       - uses: actions/upload-artifact@v7
         with:
@@ -362,7 +364,9 @@ jobs:
           ./amule-portable-${{ matrix.arch }}/bin/amuled.exe --version \
               > /tmp/version.txt 2>&1 || true
           cat /tmp/version.txt
-          grep -q '^aMuleD GIT' /tmp/version.txt
+          # Pattern accepts the dev placeholder ("aMuleD GIT ...") and
+          # any tagged-release banner ("aMuleD 3.0.0-beta ...", etc.).
+          grep -q '^aMuleD ' /tmp/version.txt
       - uses: actions/upload-artifact@v7
         with:
           name: windows-${{ matrix.arch }}
