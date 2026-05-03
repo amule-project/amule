@@ -11,8 +11,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-02 23:41-0300\n"
+"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2020-03-04 14:52+0100\n"
 "Last-Translator: Michał Trzebiatowski <hippie_1968@hotmail.com>\n"
 "Language-Team: translationproject.org/team/pl.html <translation-team-"
@@ -40,6 +40,87 @@ msgstr "Informacje"
 #: src/AddFriend.cpp:67
 msgid "The specified userhash is not valid!"
 msgstr "Wybrany skrót użytkownika jest niepoprawny!"
+
+#: src/AppImageIntegration.cpp:221
+msgid ""
+"aMule can install a desktop launcher and icon into your home directory so it "
+"appears in your application menu like a regularly installed app. This is "
+"reversible — the files live under ~/.local/share/applications and ~/.local/"
+"share/icons and can be removed at any time.\n"
+"\n"
+"Install desktop integration now?"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:226
+#, fuzzy
+msgid "Add aMule to your application menu?"
+msgstr "Za nazwą aplikacji"
+
+#: src/AppImageIntegration.cpp:228
+msgid "Install"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:228
+msgid "Not now"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:229
+msgid "Don't ask again"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:248
+msgid ""
+"Cannot install desktop integration: the APPDIR environment variable is not "
+"set. This usually means the AppImage was launched in a non-standard way."
+msgstr ""
+
+#: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
+#: src/AppImageIntegration.cpp:274
+#, fuzzy
+msgid "aMule integration failed"
+msgstr "Nieudane połączenie "
+
+#: src/AppImageIntegration.cpp:259
+#, c-format
+msgid ""
+"Cannot install desktop integration: failed to create %s. Check that your "
+"home directory is writable."
+msgstr ""
+
+#: src/AppImageIntegration.cpp:271
+#, c-format
+msgid ""
+"Cannot install desktop integration: failed to write %s. Check that your home "
+"directory is writable."
+msgstr ""
+
+#: src/AppImageIntegration.cpp:281
+msgid "AppImage integration: aMule added to your application menu."
+msgstr ""
+
+#: src/AppImageIntegration.cpp:284
+msgid ""
+"aMule has been added to your application menu. You can now launch it from "
+"your applications list, and the launcher will run this same AppImage.\n"
+"\n"
+"On some desktops, aMule may need to restart for the dock / taskbar icon to "
+"bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick "
+"this up live, but a restart is the safe fallback if the icon stays generic.\n"
+"\n"
+"Restart aMule now?"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:287
+msgid "aMule installed"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:289
+msgid "Restart now"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:289
+msgid "Later"
+msgstr ""
 
 #: src/amuleAppCommon.cpp:129
 msgid "Failed to open ED2KLinks file."

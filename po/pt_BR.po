@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-02 23:41-0300\n"
+"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2020-03-04 15:06+0100\n"
 "Last-Translator: Felipe Augusto <flipeicl@gmail.com>\n"
 "Language-Team: Português (Brasileiro) <pt@li.org>\n"
@@ -42,6 +42,87 @@ msgstr "Informação"
 #: src/AddFriend.cpp:67
 msgid "The specified userhash is not valid!"
 msgstr "A Hash do usuário especificado é inválida"
+
+#: src/AppImageIntegration.cpp:221
+msgid ""
+"aMule can install a desktop launcher and icon into your home directory so it "
+"appears in your application menu like a regularly installed app. This is "
+"reversible — the files live under ~/.local/share/applications and ~/.local/"
+"share/icons and can be removed at any time.\n"
+"\n"
+"Install desktop integration now?"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:226
+#, fuzzy
+msgid "Add aMule to your application menu?"
+msgstr "Depois do nome da aplicação"
+
+#: src/AppImageIntegration.cpp:228
+msgid "Install"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:228
+msgid "Not now"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:229
+msgid "Don't ask again"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:248
+msgid ""
+"Cannot install desktop integration: the APPDIR environment variable is not "
+"set. This usually means the AppImage was launched in a non-standard way."
+msgstr ""
+
+#: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
+#: src/AppImageIntegration.cpp:274
+#, fuzzy
+msgid "aMule integration failed"
+msgstr "Conexão falhou "
+
+#: src/AppImageIntegration.cpp:259
+#, c-format
+msgid ""
+"Cannot install desktop integration: failed to create %s. Check that your "
+"home directory is writable."
+msgstr ""
+
+#: src/AppImageIntegration.cpp:271
+#, c-format
+msgid ""
+"Cannot install desktop integration: failed to write %s. Check that your home "
+"directory is writable."
+msgstr ""
+
+#: src/AppImageIntegration.cpp:281
+msgid "AppImage integration: aMule added to your application menu."
+msgstr ""
+
+#: src/AppImageIntegration.cpp:284
+msgid ""
+"aMule has been added to your application menu. You can now launch it from "
+"your applications list, and the launcher will run this same AppImage.\n"
+"\n"
+"On some desktops, aMule may need to restart for the dock / taskbar icon to "
+"bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick "
+"this up live, but a restart is the safe fallback if the icon stays generic.\n"
+"\n"
+"Restart aMule now?"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:287
+msgid "aMule installed"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:289
+msgid "Restart now"
+msgstr ""
+
+#: src/AppImageIntegration.cpp:289
+msgid "Later"
+msgstr ""
 
 #: src/amuleAppCommon.cpp:129
 msgid "Failed to open ED2KLinks file."
@@ -770,7 +851,8 @@ msgid ""
 "Please check the host, port and that aMule is running with External "
 "Connections enabled."
 msgstr ""
-"Tempo expirado na conexão. Incapaz de atingir %s:%d dentro do tempo alocado.\n"
+"Tempo expirado na conexão. Incapaz de atingir %s:%d dentro do tempo "
+"alocado.\n"
 "Por favor, confira o host, porta e que aMule esteja rodando com a opção de "
 "Conexões Externas habilitada"
 
@@ -2249,9 +2331,9 @@ msgid ""
 "(a free MaxMind account is required) and place it at %s, or set the URL in "
 "Preferences."
 msgstr ""
-"A URL de atualização do GeoLite2 não está configurada. Baixe "
-"GeoLite2-Country.mmdb manualmente (é necessário ter uma conta MaxMind grátis)"
-"e coloque esse arquivo em %s, ou ajuste a URL nas Preferências."
+"A URL de atualização do GeoLite2 não está configurada. Baixe GeoLite2-"
+"Country.mmdb manualmente (é necessário ter uma conta MaxMind grátis)e "
+"coloque esse arquivo em %s, ou ajuste a URL nas Preferências."
 
 #: src/IP2Country.cpp:100
 #, c-format
@@ -2973,8 +3055,8 @@ msgid ""
 msgstr ""
 "Pedir para pares Kad que já responderam para alargar a busca. Cada clique "
 "interroga o próximo par mais próximo por mais contatos "
-"(KADEMLIA_FIND_VALUE_MORE), fazendo emergir casamentos de arquivos adicionais "
-"que a fronteira alfa inicial da busca perdeu."
+"(KADEMLIA_FIND_VALUE_MORE), fazendo emergir casamentos de arquivos "
+"adicionais que a fronteira alfa inicial da busca perdeu."
 
 #: src/muuli_wdr.cpp:330
 msgid "Stop"
@@ -3417,8 +3499,8 @@ msgid ""
 "Enabling this will make aMule to show notifications when finished "
 "downloading."
 msgstr ""
-"Habilitar isto vai fazer com que o aMule mostre notificações quando terminar"
-"de baixar."
+"Habilitar isto vai fazer com que o aMule mostre notificações quando "
+"terminarde baixar."
 
 #: src/muuli_wdr.cpp:1246
 msgid "Tooltip delay time: "
@@ -4774,7 +4856,8 @@ msgstr "Download concluído: %s"
 msgid ""
 "Finished downloading:\n"
 "%s"
-msgstr "Download concluído:\n"
+msgstr ""
+"Download concluído:\n"
 "%s"
 
 #: src/PartFile.cpp:2304
@@ -5353,8 +5436,8 @@ msgid ""
 "Kad search: no peer left to reask for more results (cap reached or no "
 "responses yet)."
 msgstr ""
-"Busca Kad: nenhum par sobrou para pedir mais resultados novamente (capacidade"
-"atingida ou ainda sem respostas)"
+"Busca Kad: nenhum par sobrou para pedir mais resultados novamente "
+"(capacidadeatingida ou ainda sem respostas)"
 
 #: src/SearchDlg.cpp:539
 msgid "Min size must be smaller than max size. Max size ignored."
