@@ -323,7 +323,19 @@ jobs:
             ${{ matrix.pkg_prefix }}-toolchain
             ${{ matrix.pkg_prefix }}-wxwidgets3.2-msw
             ${{ matrix.pkg_prefix }}-zlib
+            git
             zip
+      - name: Configure git safe.directory for MSYS2 git
+        # MSYS2 git (now installed above) uses a global config separate
+        # from the Windows git at C:\Program Files\Git\bin\git.exe that
+        # actions/checkout configures. Without this entry, MSYS2 git
+        # may trip the "dubious ownership" guard on the workspace dir,
+        # which would cause `git describe --tags` inside
+        # packaging/windows/build.sh to fall through the `2>/dev/null
+        # || echo "snapshot"` fallback and produce
+        # aMule-snapshot-Windows-*.zip instead of
+        # aMule-<tag>-Windows-*.zip.
+        run: git config --global --add safe.directory '*'
       - name: Build portable .zip
         env:
           WINDOWS_MSYSTEM: ${{ matrix.msystem }}

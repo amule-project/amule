@@ -50,7 +50,7 @@ PORTABLE_DIR="${REPO_ROOT}/amule-portable-${ARCH}"
 DIST_DIR="${REPO_ROOT}/dist"
 mkdir -p "${DIST_DIR}"
 
-VERSION=$(cd "${REPO_ROOT}" && git describe --tags --always --dirty 2>/dev/null || echo "snapshot")
+VERSION=$(cd "${REPO_ROOT}" && git describe --tags --always 2>/dev/null || echo "snapshot")
 ZIP_NAME="aMule-${VERSION}-Windows-${ARCH}.zip"
 
 require_tool() {
