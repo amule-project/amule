@@ -4,8 +4,161 @@ The history of every aMule release. Versions are listed newest first.
 
 ---
 
-## Version 2.3.4 — "can we have two releases in the same year?"
-2021-??-??
+## Version 3.0.0-beta — "alive again"
+2026-MM-DD
+
+First major release in 5+ years (since 2.3.3, 2021-02-07). Headline changes are dramatic throughput improvements, full build-system overhaul, modernized dependency stack, native binaries for Linux / macOS / Windows, and a broad legacy-API cleanup. **3.0.0 is published as a beta** to gather wider testing before declaring stable.
+
+### Highlights
+
+- **Throughput rewrite.** Disk I/O moved off the main thread, ASIO/EPOLLET races fixed, throttlers replaced with proper token-bucket limiters. The headline numbers (peer-to-peer on the same hardware/network):
+  - **Per-peer upload: ~450 KB/s → ~140 MB/s, roughly 300×** — driven primarily by the eMule `CUploadDiskIOThread` port (#451), which alone delivered ~130× on the in-house benchmark.
+  - **Per-peer download: 2.3× from the partfile-write offload (#454), then another 4.3× on Windows / 1.8–2.0× on macOS+Ubuntu from the throttler-wake fix (#484).** Windows now beats eMule 0.70b ~1.9×.
+  - Both throttlers (`MaxUpload`, `MaxDownload`) were also broken pre-fix — `MaxUpload=0` capped at "current rate + 5 KB/s", `MaxDownload` was a ratio controller rather than a literal cap. Both rewritten (#461, #491). Important user-facing bug fixes, but secondary to the headline numbers.
+- **CMake replaces autotools.** Single build system, modern toolchain — minimum CMake 3.10, minimum wxWidgets 3.2.0.
+- **Native binaries for every major desktop.** AppImage (x86_64 + aarch64), Flatpak (x86_64 + aarch64), macOS Universal2 .dmg, Windows portable .zip (x64 + ARM64). First-run desktop integration prompt for AppImage.
+- **HTTPS works again.** `CHTTPDownloadThread` rewritten on top of `wxWebRequest`; the hand-rolled stack had silently stopped working against modern TLS.
+- **Kad parallel searches** with alpha-frontier widening.
+- **MaxMindDB replaces deprecated GeoIP** for IP→country.
+
+### Performance
+
+Throughput work landed across April 2026 in the order below. Numbers come from each PR's published benchmark.
+
+#### Upload
+
+- **Per-peer upload throughput went from ~450 KB/s to ~140 MB/s, roughly 300× over 2.3.3.** The bulk of the gain landed in a single PR: the eMule `CUploadDiskIOThread` port (#451) — disk reads and ed2k packet construction moved off the main thread, RC4 stream-desync race fixed in the ASIO layer, EPOLLET spurious-wakeup fix in `HandleRead`, and adaptive per-slot packet chunk sizing (10 KiB → EMBLOCKSIZE based on per-slot datarate). The PR's own bench: stock master 0.46 MB/s peak → 64 MB/s peak on the same Docker host = **~130×** on its own. The remainder (62 MB/s → 140 MB/s) came from late-cycle wire-side fixes that landed alongside #484 (`std::mutex` + IOCP-native reads + throttler-wake gate).
+- `MaxUpload=0` (the user-facing "unlimited" setting) now actually means literal unlimited (#461). The legacy code set `allowedDataRate = current_rate + 5 KB/s` per iteration — a hard cap that tracked the observed rate, which pinned the uplink at a fraction of capacity on any link faster than a few hundred KB/s.
+- Speed-limit fields widened from `uint16` to `uint32` (#436) — the legacy 65,534 KB/s (~524 Mbps) configuration ceiling is gone; gigabit-class links can now be configured.
+- Bandwidth-cap UI: spin button ceiling raised from 19,375 KB/s to 1,000,000 KB/s, and width raised from 100 px to 140 px so the `+` button no longer clips off on modern themes (anything above ~10,000 was visually unreachable on the original 100 px field). Slot Allocation cap raised from 100 to 100,000 KB/s. (#463)
+
+#### Download
+
+- **`CPartFileWriteThread` (#454)** — disk writes for downloads moved off the main thread. PR's own bench, Mac client, single LAN peer (server has #436/#451 applied): **31 MB/s sustained → 72 MB/s sustained = 2.3×.**
+- **Per-peer download throttler-wake fix (#484)** — single-line root cause was that `UploadBandwidthThrottler::Entry()` adaptive backoff dozed for 5–25 ms between control-queue pumps, stalling the request→response loop. Empty→non-empty wake gate added on the control-queue path, plus IOCP-native `async_read_some` on Windows, `wxMutex` → `std::mutex`, and decoupling `m_MaxBlockRequests` from per-packet block count. PR's bench, single eD2k peer, identical hardware/network, baseline = same revision pre-#484:
+
+  | Platform | baseline (peak) | post-#484 (peak) | improvement |
+  |---|---|---|---|
+  | Windows 11 ARM (UTM) | 10.01 MB/s | **42.60 MB/s** | **4.3×** |
+  | macOS (Apple Silicon) | 79.18 MB/s | **145.19 MB/s** | **1.8×** |
+  | Ubuntu ARM (UTM) | 58.01 MB/s | **115.75 MB/s** | **2.0×** |
+
+  Windows post-#484 is **~1.9× eMule 0.70b** on the same hardware (eMule 0.70b sustains 22.06 MB/s wire-level via tcpdump).
+
+- **`MaxDownload` is now a literal byte/sec cap (#491).** The legacy code wasn't a cap at all — it was a closed-loop ratio controller that nudged each peer's transfer rate ±5%/tick relative to its own current speed, so `MaxDownload=20000` (20 MB/s) shaped traffic toward whatever the aggregate datarate converged on, generally well below the configured value. Replaced with a global token bucket (`CDownloadBandwidthThrottler`) that enforces the cap to within 2.5% across all platforms; demand-aware redistribution (fast peers absorb the slack from slow peers) falls out naturally.
+- Per-part hash verification deferred to a dedicated worker thread (#498) — only runs when the file isn't actively transferring; full-file rehash on crash recovery happens in the background and doesn't block startup. Follow-ups #499 #500.
+
+#### Other
+
+- ASIO handler binding modernized (#467): `boost::bind` → C++11 lambda, `strand.wrap()` → `bind_executor()`, `deadline_timer` → `steady_timer`, `null_buffers` → `async_wait(wait_read)`. Fixes the long-standing `boost::bind` placeholder warning. Minimum Boost bumped 1.47 → 1.70 (every supported distro since Ubuntu 20.04 / Debian Bullseye).
+- Fast-path bare-filename comparison skips `wxGetCwd()` (#504).
+
+### Networking & Discovery
+
+- **Kad parallel searches** with alpha-frontier widening; new "More" button to ask additional peers for results (#505).
+- **MaxMindDB replaces deprecated GeoIP** for IP→country (.dat → .mmdb; free MaxMind account required for the database) (#502, #507, #509).
+- HTTPS downloads work again — `CHTTPDownloadThread` rewritten on top of `wxWebRequest` (#462), with a hard-fail when `wxUSE_WEBREQUEST` is off (#481).
+- Wire-parser hardening: `OP_SERVERMESSAGE` size validation (#447), buffer overflow fix in `ECSocket` (#421), uninitialized memory fix in `UInt128` (#424).
+- ed2k-link float tags endian-swapped correctly on big-endian hosts (#368).
+- Friend's shared list and search-result rating exposed via EC (#430, #452).
+
+### Build System & Dependencies
+
+aMule 3.0 requires **CMake ≥ 3.10** and **wxWidgets ≥ 3.2.0**. Autotools is removed entirely.
+
+- Full CMake build replaces autotools (#449).
+- Autotools, `debian/` packaging dir, and dead platform/subtool trees retired (#466).
+- wxWidgets 3.x build fixes (#438, #443, #453); macOS framework / app-bundle compat (#453).
+- Boost 1.87 / 1.89 build fixes (#387, #429) — modern Boost ASIO no longer breaks the build.
+- CMake hard-fails when `ENABLE_X=YES` cannot be honored: UPnP (#511), NLS (#512), Boost (#513), IP2Country (#509). No more silent disable.
+- CMake mins / detection: minimum 3.10 and `version.rc` path fix (#490), `MIN_WX_VERSION` 3.2 with legacy `wx.cmake` retired (#459), default build type Release (#469), broken `UPNP.cmake` workaround (#439), BFD link fixes for modern binutils (#487, #489), `find_package(Intl)` outside `YYENABLE_NLS` gate (#495).
+- SVNDATE banner: stops freezing at first configure (#483); refreshes on `git reset` / commit (#493).
+- `compile_commands.json` generated (#441); `compile.sh` and `find_uncompiled.py` build/analysis scripts (#494, #501).
+- Loongarch64 architecture support (#286).
+- OpenSUSE platform fixes (#440); libupnp 1.18 compatibility (#448).
+
+### Packaging
+
+aMule 3.0 ships native binaries covering most modern desktops:
+
+- **Linux AppImage** (x86_64, aarch64) — works across all major distros.
+- **Linux Flatpak** (x86_64, aarch64) — runs in the GNOME Platform sandbox.
+- **macOS Universal2 .dmg** — Apple Silicon and Intel in a single bundle.
+- **Windows portable .zip** (x64, ARM64).
+
+Recipes, manifests, and the GitHub Actions packaging matrix landed in #510. AppImage's first-run prompt installs a desktop launcher to the user's application menu (reversible, opt-in).
+
+Other platform integration work:
+
+- Wayland-friendly desktop integration: matching `app_id`, SNI tray icon (replaces deprecated `GtkStatusIcon`), macOS dock-restore on quit, tray opt-in (#508; fallback workaround in #474).
+- macOS Carbon `FSRef` API retired in favor of `$HOME`-based paths (#468).
+- macOS Dock right-click Quit triggers proper shutdown cleanup (#456).
+- Windows / MinGW build support: cmake fixes, LLP64 pointer safety, ASIO on Windows (#457).
+- Icons across all platforms: Linux hicolor PNG, Windows `.rc` icon, macOS `amulegui.app` (#464).
+- Initial AppStream metainfo (#367).
+- Localization on macOS and Windows fixed — wxLocale lookup paths repaired (#492).
+- macOS spurious `wxGetCwd()` errors silenced (#480).
+- Flatpak `libupnp` install-libdir pinned for pkg-config (#515).
+
+### Internals & Refactoring
+
+- Legacy wx 2.x-era deprecated APIs removed (#470).
+- 2.x-compat globals and event-table macros retired (#475).
+- Dialog code migrated to `wxSizerFlags`; wxDesigner-generated code retired; GCC 15 enum-enum conversion warnings eliminated (#473).
+- macOS 10.10-era deprecation cleanup (#470).
+- `OnAssertFailure` ternary fixed for strict GCC / Alpine builds (#476).
+- Documentation transitioned to Markdown; staleness audit; broken README icon URL fixed (#514).
+- po4a config restored + optional CMake `po4a-update` target (#485).
+- Wiki content migrated into the repository (#496).
+
+### Translations
+
+- Italian: AppImage integration prompt translated (#518).
+- Spanish updated and completed (#497).
+- Dutch updated (#343).
+- Catalan updated (#425).
+- Simplified Chinese updated (#348).
+- Translation pipeline: `scripts/update-po.sh` introduced.
+
+### Bug Fixes & Stability
+
+- `CFile::doSeek` no longer asserts when `IsOpened()` is false (#294).
+- `RLE_Data` memory delete issue fixed (Valgrind report) (#379).
+- Selected lines in Download/Shared lists no longer become illegible when losing focus (#385).
+- amulegui: clean startup on Cancel + watchdog on wrong connection data (#465).
+- amuleweb: missing `prefs apply` options restored (#419).
+- `PartFileWriteThread` catches `CIOFailureException` so disk-full doesn't kill the process (#499).
+- StatTree fix (#319); totalizers added to download/upload stats (#338, #339).
+- Doc / source-comment typos cleanup (#297); missing include (#360).
+
+### CI
+
+- macOS and Windows MinGW64 build jobs added (#458); ccpp.yml adjustments (#460).
+- Ubuntu CI installs `binutils-dev` so the BFD path is exercised (#488).
+- Assert tests gated on `wxDEBUG_LEVEL`; `ctest` runs in Release in CI (#506).
+- CodeQL adjustments and code-scanning fixes (#477, #478, #482).
+- `actions/checkout` bumped from v4 to v6 (#446).
+
+### Known Limitations (3.0.0-beta)
+
+This release is published as **beta** to gather wider testing before declaring 3.0.0 stable. Known caveats:
+
+- macOS `.dmg` is **not yet code-signed or notarized** — users will see Gatekeeper warnings on first launch.
+- **Flathub submission pending** — for now, install the `.flatpak` directly with `flatpak install <file>`.
+- AppImage doesn't yet ship through AppImageLauncher's catalogue.
+- Tray-icon library (`libayatana-appindicator`) is deprecated upstream; migration to `libayatana-appindicator-glib` deferred until LTS distros pick it up.
+
+### Contributors
+
+This release reflects 5+ years of work across 98 merged PRs. Particular thanks to:
+
+- **got3nks** — 57 PRs, 125 commits.
+- **Marcelo Jimenez** (mrjimenez) — 12 PRs, 52 commits.
+- **Werner Mahr** (Vollstrecker) — 38 commits.
+- **Pablo Barciela** (sc0w) — 3 PRs, 17 commits.
+- **Dévai Tamás** (GonoszTopi) — 16 commits.
+
+Plus contributions from RealGreenDragon, frnjjq, Sergi Amoros, Stefano Picerno, Alexander Tsoy, sergiomb2, puleglot, mercu01, lggcs, comio, danim7, MPolleke, mike2718, joebonrichie, matoro, dependabot, tbo47, SevC10, topotech, minterior, luzpaz, loongson-zn.
 
 
 ---
