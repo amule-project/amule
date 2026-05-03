@@ -1,3 +1,9 @@
+/* Defined when CMake detected HEAD is on a release tag (set by the
+   git-describe block in CMakeLists.txt). Used in ClientVersion.h to
+   suppress the __SVN__ dev marker so MOD_VERSION_LONG reflects the
+   release version instead of "aMule SVN". */
+#cmakedefine AMULE_TAGGED_RELEASE
+
 /* Define to 1 if you have <boost/asio.hpp> and are using Boost.Asio for
    networking. */
 #cmakedefine ASIO_SOCKETS 1
