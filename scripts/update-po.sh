@@ -69,8 +69,18 @@ xgettext \
 	--files-from=po/POTFILES.in \
 	--output=po/amule.pot \
 	--from-code=UTF-8 \
-	--add-comments=TRANSLATORS
+	--add-comments=TRANSLATORS \
+	--copyright-holder='Free Software Foundation, Inc.' \
+	--package-name='aMule' \
+	--package-version='SVN' \
+	--msgid-bugs-address='http://forum.amule.org/index.php?board=40.0'
 die 30 "xgettext failed"
+
+# xgettext writes "Copyright (C) YEAR" as a placeholder; fill it in.
+YEAR=$(date +%Y)
+sed -e "1,5 s/^# Copyright (C) YEAR /# Copyright (C) ${YEAR} /" po/amule.pot > po/amule.pot.tmp \
+	&& mv po/amule.pot.tmp po/amule.pot
+die 32 "failed to substitute copyright year in po/amule.pot"
 
 echo "Merging po/amule.pot into each .po file ..."
 for PO_FILE in po/*.po; do

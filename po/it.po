@@ -18,8 +18,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.3.3\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-02 23:41-0300\n"
+"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2023-03-11 13:45+0100\n"
 "Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: SebastianoPistore.info@protonmail.ch\n"
@@ -45,6 +45,109 @@ msgstr "Informazione"
 #: src/AddFriend.cpp:67
 msgid "The specified userhash is not valid!"
 msgstr "L'hash utente specificato non è valido!"
+
+#: src/AppImageIntegration.cpp:221
+msgid ""
+"aMule can install a desktop launcher and icon into your home directory so it "
+"appears in your application menu like a regularly installed app. This is "
+"reversible — the files live under ~/.local/share/applications and ~/.local/"
+"share/icons and can be removed at any time.\n"
+"\n"
+"Install desktop integration now?"
+msgstr ""
+"aMule può installare un'icona di avvio nel menu delle applicazioni "
+"mostrandosi come una qualunque app installata. L'operazione è reversibile — "
+"i file saranno collocati in ~/.local/share/applications e ~/.local/share/"
+"icons e potranno essere rimossi in qualsiasi momento.\n"
+"\n"
+"Installare ora l'integrazione con il desktop?"
+
+#: src/AppImageIntegration.cpp:226
+msgid "Add aMule to your application menu?"
+msgstr "Aggiungere aMule al menu delle applicazioni?"
+
+#: src/AppImageIntegration.cpp:228
+msgid "Install"
+msgstr "Installa"
+
+#: src/AppImageIntegration.cpp:228
+msgid "Not now"
+msgstr "Non ora"
+
+#: src/AppImageIntegration.cpp:229
+msgid "Don't ask again"
+msgstr "Non chiedere più"
+
+#: src/AppImageIntegration.cpp:248
+msgid ""
+"Cannot install desktop integration: the APPDIR environment variable is not "
+"set. This usually means the AppImage was launched in a non-standard way."
+msgstr ""
+"Impossibile installare l'integrazione con il desktop: la variabile di "
+"ambiente APPDIR non è impostata. Di solito significa che l'AppImage è stata "
+"avviata in modo non standard."
+
+#: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
+#: src/AppImageIntegration.cpp:274
+msgid "aMule integration failed"
+msgstr "Integrazione di aMule non riuscita"
+
+#: src/AppImageIntegration.cpp:259
+#, c-format
+msgid ""
+"Cannot install desktop integration: failed to create %s. Check that your "
+"home directory is writable."
+msgstr ""
+"Impossibile installare l'integrazione con il desktop: errore nella creazione "
+"di %s. Verificare che la home directory sia scrivibile."
+
+#: src/AppImageIntegration.cpp:271
+#, c-format
+msgid ""
+"Cannot install desktop integration: failed to write %s. Check that your home "
+"directory is writable."
+msgstr ""
+"Impossibile installare l'integrazione con il desktop: errore nella scrittura "
+"di %s. Verificare che la home directory sia scrivibile."
+
+#: src/AppImageIntegration.cpp:281
+msgid "AppImage integration: aMule added to your application menu."
+msgstr ""
+"Integrazione AppImage: aMule è stato aggiunto al menu delle applicazioni."
+
+#: src/AppImageIntegration.cpp:284
+msgid ""
+"aMule has been added to your application menu. You can now launch it from "
+"your applications list, and the launcher will run this same AppImage.\n"
+"\n"
+"On some desktops, aMule may need to restart for the dock / taskbar icon to "
+"bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick "
+"this up live, but a restart is the safe fallback if the icon stays generic.\n"
+"\n"
+"Restart aMule now?"
+msgstr ""
+"aMule è stato aggiunto al menu delle applicazioni. È ora possibile avviarlo "
+"dall'elenco delle applicazioni e il collegamento eseguirà questa stessa "
+"AppImage.\n"
+"\n"
+"In alcuni desktop aMule potrebbe dover essere riavviato perché l'icona della "
+"dock / barra delle applicazioni si associ al nuovo collegamento. I "
+"compositor Wayland moderni (GNOME, KDE) la riconoscono al volo, ma un "
+"riavvio è la soluzione sicura se l'icona resta generica.\n"
+"\n"
+"Riavviare aMule ora?"
+
+#: src/AppImageIntegration.cpp:287
+msgid "aMule installed"
+msgstr "aMule installato"
+
+#: src/AppImageIntegration.cpp:289
+msgid "Restart now"
+msgstr "Riavvia ora"
+
+#: src/AppImageIntegration.cpp:289
+msgid "Later"
+msgstr "Più tardi"
 
 #: src/amuleAppCommon.cpp:129
 msgid "Failed to open ED2KLinks file."
@@ -7744,108 +7847,6 @@ msgstr "Disconnessone richiesta\n"
 #: src/webserver/src/WebServer.cpp:1922
 msgid "Processing request [redirected]: "
 msgstr "Elaborazione richiesta [rediretta]: "
-
-#: src/AppImageIntegration.cpp:221
-msgid ""
-"aMule can install a desktop launcher and icon into your home directory so it "
-"appears in your application menu like a regularly installed app. This is "
-"reversible — the files live under ~/.local/share/applications and ~/.local/"
-"share/icons and can be removed at any time.\n"
-"\n"
-"Install desktop integration now?"
-msgstr ""
-"aMule può installare un'icona di avvio nel menu delle applicazioni mostrandosi "
-"come una qualunque app installata. L'operazione è reversibile — i file "
-"saranno collocati in ~/.local/share/applications e ~/.local/share/icons e "
-"potranno essere rimossi in qualsiasi momento.\n"
-"\n"
-"Installare ora l'integrazione con il desktop?"
-
-#: src/AppImageIntegration.cpp:226
-msgid "Add aMule to your application menu?"
-msgstr "Aggiungere aMule al menu delle applicazioni?"
-
-#: src/AppImageIntegration.cpp:228
-msgid "Install"
-msgstr "Installa"
-
-#: src/AppImageIntegration.cpp:228
-msgid "Not now"
-msgstr "Non ora"
-
-#: src/AppImageIntegration.cpp:229
-msgid "Don't ask again"
-msgstr "Non chiedere più"
-
-#: src/AppImageIntegration.cpp:248
-msgid ""
-"Cannot install desktop integration: the APPDIR environment variable is not "
-"set. This usually means the AppImage was launched in a non-standard way."
-msgstr ""
-"Impossibile installare l'integrazione con il desktop: la variabile di "
-"ambiente APPDIR non è impostata. Di solito significa che l'AppImage è stata "
-"avviata in modo non standard."
-
-#: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
-#: src/AppImageIntegration.cpp:274
-msgid "aMule integration failed"
-msgstr "Integrazione di aMule non riuscita"
-
-#: src/AppImageIntegration.cpp:259
-#, c-format
-msgid ""
-"Cannot install desktop integration: failed to create %s. Check that your "
-"home directory is writable."
-msgstr ""
-"Impossibile installare l'integrazione con il desktop: errore nella creazione "
-"di %s. Verificare che la home directory sia scrivibile."
-
-#: src/AppImageIntegration.cpp:271
-#, c-format
-msgid ""
-"Cannot install desktop integration: failed to write %s. Check that your home "
-"directory is writable."
-msgstr ""
-"Impossibile installare l'integrazione con il desktop: errore nella scrittura "
-"di %s. Verificare che la home directory sia scrivibile."
-
-#: src/AppImageIntegration.cpp:281
-msgid "AppImage integration: aMule added to your application menu."
-msgstr "Integrazione AppImage: aMule è stato aggiunto al menu delle applicazioni."
-
-#: src/AppImageIntegration.cpp:284
-msgid ""
-"aMule has been added to your application menu. You can now launch it from "
-"your applications list, and the launcher will run this same AppImage.\n"
-"\n"
-"On some desktops, aMule may need to restart for the dock / taskbar icon to "
-"bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick "
-"this up live, but a restart is the safe fallback if the icon stays generic.\n"
-"\n"
-"Restart aMule now?"
-msgstr ""
-"aMule è stato aggiunto al menu delle applicazioni. È ora possibile avviarlo "
-"dall'elenco delle applicazioni e il collegamento eseguirà questa stessa "
-"AppImage.\n"
-"\n"
-"In alcuni desktop aMule potrebbe dover essere riavviato perché l'icona della "
-"dock / barra delle applicazioni si associ al nuovo collegamento. I "
-"compositor Wayland moderni (GNOME, KDE) la riconoscono al volo, ma un "
-"riavvio è la soluzione sicura se l'icona resta generica.\n"
-"\n"
-"Riavviare aMule ora?"
-
-#: src/AppImageIntegration.cpp:287
-msgid "aMule installed"
-msgstr "aMule installato"
-
-#: src/AppImageIntegration.cpp:289
-msgid "Restart now"
-msgstr "Riavvia ora"
-
-#: src/AppImageIntegration.cpp:289
-msgid "Later"
-msgstr "Più tardi"
 
 #~ msgid ""
 #~ "Invalid URL for HTTP download or HTTP redirection (did you forget "
