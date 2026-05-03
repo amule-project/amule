@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
 "POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2020-03-04 15:06+0100\n"
-"Last-Translator: Felipe Augusto <flipeicl@gmail.com>\n"
+"Last-Translator: Marcelo Jimenez <mroberto@users.sourceforge.com>\n"
 "Language-Team: Português (Brasileiro) <pt@li.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -52,35 +52,43 @@ msgid ""
 "\n"
 "Install desktop integration now?"
 msgstr ""
+"aMule pode instalar um lançador de desktop e um ícone em seu diretório de "
+"usuário, de modo a aparecer em seu menu de aplicativos como um aplicativo"
+"instalado regularmente. Esta ação é reversível — os arquivos vivem dentro"
+"das pastas ~/.local/share/applications e ~/.local/share/icons e podem ser"
+"removidos em qualquer momento.\n"
+"\n"
+"Deseja instalar agora a integração com o desktop?"
 
 #: src/AppImageIntegration.cpp:226
-#, fuzzy
 msgid "Add aMule to your application menu?"
-msgstr "Depois do nome da aplicação"
+msgstr "Adicionar o aMule ao seu menu de aplicativos?"
 
 #: src/AppImageIntegration.cpp:228
 msgid "Install"
-msgstr ""
+msgstr "Instalar"
 
 #: src/AppImageIntegration.cpp:228
 msgid "Not now"
-msgstr ""
+msgstr "Agora não"
 
 #: src/AppImageIntegration.cpp:229
 msgid "Don't ask again"
-msgstr ""
+msgstr "Não perguntar novamente"
 
 #: src/AppImageIntegration.cpp:248
 msgid ""
 "Cannot install desktop integration: the APPDIR environment variable is not "
 "set. This usually means the AppImage was launched in a non-standard way."
 msgstr ""
+"Não foi possível instalar a integração com o desktop: a variável de ambiente"
+"APPDIR não está setada. Normalmente isto significa que a AppImage foi lançada"
+"de uma forma não padrão."
 
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
 #: src/AppImageIntegration.cpp:274
-#, fuzzy
 msgid "aMule integration failed"
-msgstr "Conexão falhou "
+msgstr "A integração do aMule falhou"
 
 #: src/AppImageIntegration.cpp:259
 #, c-format
@@ -88,6 +96,8 @@ msgid ""
 "Cannot install desktop integration: failed to create %s. Check that your "
 "home directory is writable."
 msgstr ""
+"Não foi possível instalar a integração com o desktop: falha ao criar %s. "
+"Confira se seu diretório de usuário tem permissão de escrita."
 
 #: src/AppImageIntegration.cpp:271
 #, c-format
@@ -95,10 +105,12 @@ msgid ""
 "Cannot install desktop integration: failed to write %s. Check that your home "
 "directory is writable."
 msgstr ""
+"Não foi possível instalar a integração com o desktop: falha escrevendo %s. "
+"Confira se seu diretório de usuário tem permissão de escrita."
 
 #: src/AppImageIntegration.cpp:281
 msgid "AppImage integration: aMule added to your application menu."
-msgstr ""
+msgstr "Integração do AppImage: aMule foi adicionado ao seu menu de aplicativos."
 
 #: src/AppImageIntegration.cpp:284
 msgid ""
@@ -111,18 +123,27 @@ msgid ""
 "\n"
 "Restart aMule now?"
 msgstr ""
+"O aMule foi adicionado ao seu menu de aplicativos. Você pode lançá-lo de sua "
+"lista de aplicativos, e o lançador vai rodar esta mesma AppImage.\n"
+"\n"
+"Em alguns desktops, o aMule pode precisar reiniciar para que o ícone da doca "
+"ou barra de tarefas possa se ligar à nova entrada do lançador. Compositores "
+"Wayland modernos (GNOME, KDE) fazem isso enquanto rodam, mas um reinício é um"
+"caminho seguro no caso do ícone permanecer genérico.\n"
+"\n"
+"Reiniciar agora o aMule?"
 
 #: src/AppImageIntegration.cpp:287
 msgid "aMule installed"
-msgstr ""
+msgstr "aMule instalado"
 
 #: src/AppImageIntegration.cpp:289
 msgid "Restart now"
-msgstr ""
+msgstr "Reiniciar agora"
 
 #: src/AppImageIntegration.cpp:289
 msgid "Later"
-msgstr ""
+msgstr "Mais tarde"
 
 #: src/amuleAppCommon.cpp:129
 msgid "Failed to open ED2KLinks file."
