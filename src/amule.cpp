@@ -38,6 +38,7 @@
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>
+#include <wx/regex.h>			// Needed for wxRegEx (version check JSON parse)
 #include <wx/socket.h>
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
@@ -629,11 +630,16 @@ bool CamuleApp::OnInit()
 		AddLogLineNS(msg);
 	}
 
-	// Test if there's any new version
+	// Test if there's any new version. The URL is the GitHub Releases
+	// "latest" endpoint, which returns JSON describing the most recent
+	// non-prerelease, non-draft Release.  We parse the `tag_name` field
+	// in CheckNewVersion() below.  This replaces the legacy SourceForge
+	// `lastversion` text file, which has been unmaintained since the
+	// project moved to GitHub years ago.
 	if (thePrefs::GetCheckNewVersion()) {
 		// We use the thread base because I don't want a dialog to pop up.
 		CHTTPDownloadThread* version_check =
-			new CHTTPDownloadThread("http://amule.sourceforge.net/lastversion",
+			new CHTTPDownloadThread("https://api.github.com/repos/amule-project/amule/releases/latest",
 				thePrefs::GetConfigDir() + "last_version_check", thePrefs::GetConfigDir() + "last_version", HTTP_VersionCheck, false, false);
 		version_check->Create();
 		version_check->Run();
@@ -1727,7 +1733,60 @@ void CamuleApp::CheckNewVersion(uint32 result)
 		} else if (!file.GetLineCount()) {
 			AddLogLineC(_("Corrupted version check file"));
 		} else {
-			wxString versionLine = file.GetFirstLine();
+			// The downloaded file is the GitHub Releases /latest JSON
+			// response.  Concatenate all lines so the regex below
+			// matches across the pretty-printed payload.
+			wxString jsonContent;
+			for (size_t i = 0; i < file.GetLineCount(); ++i) {
+				jsonContent += file.GetLine(i);
+			}
+
+			// Extract the `tag_name` string from the JSON.  The
+			// /releases/latest endpoint excludes pre-releases by
+			// design, so any tag_name we see here represents the
+			// latest stable Release.  We don't need a full JSON
+			// parser for one well-known field — a regex on the
+			// `"tag_name": "..."` pair is robust against
+			// whitespace and field-order changes.
+			wxRegEx tagRe("\"tag_name\"[[:space:]]*:[[:space:]]*\"([^\"]+)\"");
+			if (!tagRe.IsValid() || !tagRe.Matches(jsonContent)) {
+				AddLogLineC(_("Corrupted version check file"));
+				file.Close();
+				wxRemoveFile(filename);
+				return;
+			}
+			wxString versionLine = tagRe.GetMatch(jsonContent, 1);
+
+			// Strip the optional `v` prefix (aMule's tags are bare
+			// semver, but be tolerant in case a future maintainer
+			// switches to vX.Y.Z).
+			if (versionLine.StartsWith("v") || versionLine.StartsWith("V")) {
+				versionLine = versionLine.Mid(1);
+			}
+
+			// Strip any pre-release / build-metadata suffix so the
+			// integer comparison sees only MAJOR.MINOR.UPDATE.
+			// /releases/latest already excludes pre-releases, but
+			// be defensive: a stable tag like `3.0.0+build42`
+			// should still parse.
+			size_t suffixPos = versionLine.find_first_of(wxT("-+"));
+			if (suffixPos != wxString::npos) {
+				versionLine = versionLine.Mid(0, suffixPos);
+			}
+
+			// Catch degenerate inputs where the prefix/suffix
+			// strip leaves nothing behind (e.g. tag_name "v",
+			// "-foo", "v-rc1").  Without this guard the
+			// tokenizer returns no tokens, all three fields
+			// stay at 0, and the comparison silently reports
+			// "up to date" against an unparseable input.
+			if (versionLine.IsEmpty()) {
+				AddLogLineC(_("Corrupted version check file"));
+				file.Close();
+				wxRemoveFile(filename);
+				return;
+			}
+
 			wxStringTokenizer tkz(versionLine, ".");
 
 			AddDebugLogLineN(logGeneral, wxString("Running: ") + VERSION + ", Version check: " + versionLine);
@@ -1735,15 +1794,18 @@ void CamuleApp::CheckNewVersion(uint32 result)
 			long fields[] = {0, 0, 0};
 			for (int i = 0; i < 3; ++i) {
 				if (!tkz.HasMoreTokens()) {
-					AddLogLineC(_("Corrupted version check file"));
-					return;
-				} else {
-					wxString token = tkz.GetNextToken();
+					// Tags with fewer than three components (e.g.
+					// a maintainer tagging "3.1" instead of "3.1.0")
+					// are valid; treat the missing field as 0.
+					break;
+				}
+				wxString token = tkz.GetNextToken();
 
-					if (!token.ToLong(&fields[i])) {
-						AddLogLineC(_("Corrupted version check file"));
-						return;
-					}
+				if (!token.ToLong(&fields[i])) {
+					AddLogLineC(_("Corrupted version check file"));
+					file.Close();
+					wxRemoveFile(filename);
+					return;
 				}
 			}
 
