@@ -51,13 +51,44 @@ cmake --build build -j"$(nproc)"
 sudo cmake --install build
 ```
 
+By default files are installed under `/usr/local`:
+
+| What | Where |
+| ---- | ----- |
+| Binaries | `/usr/local/bin/` |
+| Translation catalogs | `/usr/local/share/locale/<lang>/LC_MESSAGES/amule.mo` |
+| Data files, docs | `/usr/local/share/amule/` |
+| Desktop entries | `/usr/local/share/applications/` |
+| Icon | `/usr/local/share/icons/hicolor/128x128/apps/` |
+
 Pass `--prefix=<dir>` to `cmake -B build` (or to `cmake --install`) to
-install somewhere other than `/usr/local`.
+install somewhere other than `/usr/local`. Installing under `$HOME/.local`
+is useful during development — no `sudo` required and easy to clean up:
+
+```sh
+cmake --install build --prefix=$HOME/.local
+```
 
 Platform-specific notes (Homebrew paths on macOS, MSYS2 shells on
 Windows, etc.) live in
 [`.github/workflows/ccpp.yml`](../.github/workflows/ccpp.yml), which is
 the authoritative reference used by CI.
+
+
+## Uninstalling
+
+CMake records every installed file in `build/install_manifest.txt`. Use
+it to remove them:
+
+```sh
+sudo xargs rm -f < build/install_manifest.txt
+```
+
+If you installed under `$HOME/.local` no `sudo` is needed:
+
+```sh
+xargs rm -f < build/install_manifest.txt
+```
 
 ### Linux-only icon-cache step
 

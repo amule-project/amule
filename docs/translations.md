@@ -172,6 +172,32 @@ strings will never appear in any translation and no warning is
 emitted — the omission is completely silent.
 
 
+## Testing a translation
+
+To verify a translation works at runtime, set `LANG` to the locale
+before launching aMule. Note that `LANGUAGE` does not work reliably
+with wxWidgets — use `LANG`:
+
+```sh
+LANG=pt_BR.UTF-8 amule
+```
+
+The program must be installed first so the `.mo` catalog is in a
+location wxWidgets can find. The easiest approach during development
+is a local install (no `sudo` required):
+
+```sh
+cmake --install build --prefix=$HOME/.local
+LANG=pt_BR.UTF-8 amule
+```
+
+To uninstall when done:
+
+```sh
+xargs rm -f < build/install_manifest.txt
+```
+
+
 ## Build integration
 
 The cmake build compiles every enabled `.po` into a `.gmo` binary
