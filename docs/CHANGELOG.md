@@ -4,10 +4,10 @@ The history of every aMule release. Versions are listed newest first.
 
 ---
 
-## Version 3.0.0-beta — "alive again"
+## Version 3.0.0 — "alive again"
 2026-MM-DD
 
-First major release in 5+ years (since 2.3.3, 2021-02-07). Headline changes are dramatic throughput improvements, full build-system overhaul, modernized dependency stack, native binaries for Linux / macOS / Windows, and a broad legacy-API cleanup. **3.0.0 is published as a beta** to gather wider testing before declaring stable.
+First major release in 5+ years (since 2.3.3, 2021-02-07). Headline changes are dramatic throughput improvements, full build-system overhaul, modernized dependency stack, native binaries for Linux / macOS / Windows, and a broad legacy-API cleanup.
 
 ### Highlights
 
@@ -139,9 +139,9 @@ Other platform integration work:
 - CodeQL adjustments and code-scanning fixes (#477, #478, #482).
 - `actions/checkout` bumped from v4 to v6 (#446).
 
-### Known Limitations (3.0.0-beta)
+### Known Limitations
 
-This release is published as **beta** to gather wider testing before declaring 3.0.0 stable. Known caveats:
+Known caveats users should be aware of for this release:
 
 - macOS `.dmg` is **not yet code-signed or notarized** — users will see Gatekeeper warnings on first launch.
 - **Flathub submission pending** — for now, install the `.flatpak` directly with `flatpak install <file>`.
