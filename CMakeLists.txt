@@ -173,9 +173,57 @@ if (NOT DEFINED CACHE{SVNDATE})
 			unset (SVNDATE)
 			message (STATUS "building tagged release: ${PACKAGE_STRING}")
 		endif()
+	else()
+		# No `.git` directory.  If we're sitting in an extracted git
+		# archive — e.g. GitHub's "Download ZIP" button on a tag or
+		# commit, or a tarball someone produced via `git archive` —
+		# `.git_archival.txt` will exist with its `$Format:...$`
+		# placeholders substituted to the actual SHA / tag / describe
+		# output.  Parse it as a fallback so the resulting binary
+		# self-identifies the same way a `.git`-present clone of the
+		# same commit would.  See `.gitattributes` for the
+		# `export-subst` binding that triggers the substitution.
+		set (_archival_file "${CMAKE_SOURCE_DIR}/.git_archival.txt")
+		if (EXISTS "${_archival_file}")
+			file (READ "${_archival_file}" _archival_content)
+			# Skip un-substituted templates: a working-tree copy
+			# of the file (someone tar'd up `src/` without running
+			# `git archive`) still contains literal `$Format:`
+			# markers.  These are the signal that `git archive`
+			# never touched the file — fall through to defaults.
+			if (NOT _archival_content MATCHES "\\\$Format:")
+				string (REGEX MATCH "describe-name:[ \t]*([^\r\n]+)" _ "${_archival_content}")
+				set (_describe "${CMAKE_MATCH_1}")
+				string (STRIP "${_describe}" _describe)
+				if (_describe)
+					# `git describe --tags` output:
+					#   - exact-tag: just the tag name ("3.0.0", "v3.0.0")
+					#   - off-tag:   "<tag>-<N>-g<sha>" ("2.3.3-296-ge3f87f77f")
+					# Detect the off-tag form by the `-N-g<hex>`
+					# trailer; otherwise treat as a tagged release.
+					if (_describe MATCHES "-[0-9]+-g[0-9a-f]+$")
+						set (SVNDATE "rev. ${_describe}")
+						message (STATUS "git archival metadata: ${SVNDATE} found")
+					else()
+						set (VERSION "${_describe}")
+						set (PACKAGE_VERSION "${_describe}")
+						set (PACKAGE_STRING "aMule ${_describe}")
+						set (AMULE_TAGGED_RELEASE 1)
+						message (STATUS "git archival metadata: tagged release ${PACKAGE_STRING}")
+					endif()
+				endif()
+			endif()
+		endif()
 	endif()
 	set_property (DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
 		"${CMAKE_SOURCE_DIR}/.git/HEAD")
+	# Also depend on .git_archival.txt so that if it's swapped in
+	# (e.g. someone re-extracts an archive, or hand-edits the file),
+	# cmake re-runs and re-parses on the next build.
+	if (EXISTS "${CMAKE_SOURCE_DIR}/.git_archival.txt")
+		set_property (DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+			"${CMAKE_SOURCE_DIR}/.git_archival.txt")
+	endif()
 	# Resolve HEAD's symref target so we can also depend on the branch
 	# ref file directly.  This catches commits/resets that move the
 	# branch tip without retargeting HEAD.
