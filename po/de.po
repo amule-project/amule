@@ -297,9 +297,9 @@ msgstr ""
 "werden\n"
 
 #: src/amule.cpp:1160
-msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
-"unter https://github.com/amule-org/amule, oder in unserem IRC-Channel #amule auf "
+"unter https://amule-org.github.io, oder in unserem IRC-Channel #amule auf "
 "irc.freenode.net.\n"
 
 #: src/amule.cpp:1162
@@ -369,8 +369,8 @@ msgstr ""
 "Diese Version von aMule ist %i.%i.%i und die aktuelle Version ist %li.%li.%li"
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at https://github.com/amule-org/amule"
-msgstr "Die neueste Version kann man immer auf https://github.com/amule-org/amule finden."
+msgid "The latest version can always be found at https://github.com/amule-org/amule/releases/latest"
+msgstr "Die neueste Version kann man immer auf https://github.com/amule-org/amule/releases/latest finden."
 
 #: src/amule.cpp:1759
 #, c-format
@@ -512,9 +512,9 @@ msgid "Running on %s"
 msgstr "Läuft auf %s"
 
 #: src/amuleDlg.cpp:238
-msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
+msgid "Visit https://github.com/amule-org/amule/releases/latest to check if a new version is available."
 msgstr ""
-"Besuche https://github.com/amule-org/amule um zu sehen, ob eine neue Version verfügbar ist."
+"Besuche https://github.com/amule-org/amule/releases/latest um zu sehen, ob eine neue Version verfügbar ist."
 
 #: src/amuleDlg.cpp:264
 msgid "FATAL ERROR: Failed to create Timer"
@@ -537,8 +537,8 @@ msgstr ""
 "\n"
 
 #: src/amuleDlg.cpp:498
-msgid "Website: https://github.com/amule-org/amule \n"
-msgstr "Webseite: https://github.com/amule-org/amule \n"
+msgid "Website: https://amule-org.github.io \n"
+msgstr "Webseite: https://amule-org.github.io \n"
 
 #: src/amuleDlg.cpp:499
 msgid "Forum: https://github.com/amule-org/amule/discussions \n"
@@ -3463,8 +3463,8 @@ msgid "Nick"
 msgstr "Spitzname"
 
 #: src/muuli_wdr.cpp:1201
-msgid "https://github.com/amule-org/amule - the multi-platform Mule"
-msgstr "https://github.com/amule-org/amule - der multiplattform Muli"
+msgid "https://amule-org.github.io - the multi-platform Mule"
+msgstr "https://amule-org.github.io - der multiplattform Muli"
 
 #: src/muuli_wdr.cpp:1202
 msgid "This is the name that other users will see when connecting to you."

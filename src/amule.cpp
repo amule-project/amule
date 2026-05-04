@@ -1163,7 +1163,7 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 	// General info
 	info += "\n";
 	info += _("More information, support and new releases can found at our homepage,\n");
-	info += _("at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n");
+	info += _("at https://amule-org.github.io, or in our IRC channel #aMule at irc.freenode.net.\n");
 	info += "\n";
 	info += _("Feel free to report any bugs to https://github.com/amule-org/amule/issues");
 
@@ -1816,7 +1816,7 @@ void CamuleApp::CheckNewVersion(uint32 result)
 				AddLogLineC(_("You are using an outdated version of aMule!"));
 				// cppcheck-suppress zerodiv
 				AddLogLineN(CFormat(_("Your aMule version is %i.%i.%i and the latest version is %li.%li.%li")) % VERSION_MJR % VERSION_MIN % VERSION_UPDATE % fields[0] % fields[1] % fields[2]);
-				AddLogLineN(_("The latest version can always be found at https://github.com/amule-org/amule"));
+				AddLogLineN(_("The latest version can always be found at https://github.com/amule-org/amule/releases/latest"));
 				#ifdef AMULE_DAEMON
 				AddLogLineCS(CFormat(_("WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"))
 					% VERSION_MJR % VERSION_MIN % VERSION_UPDATE % fields[0] % fields[1] % fields[2]);
