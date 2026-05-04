@@ -1,0 +1,12 @@
+# `git archive` (used by GitHub's "Download ZIP" button and `git archive`
+# directly) substitutes `$Format:...$` placeholders in files marked with
+# `export-subst` at archive-creation time.
+#
+# .git_archival.txt is a small metadata template that gets baked with
+# the actual SHA / tag / commit-date inside any zip or tarball produced
+# by `git archive`.  CMakeLists.txt reads it as a fallback when `.git`
+# is absent — see the SVNDATE / .git_archival.txt block in CMakeLists.txt.
+#
+# Without this attribute, the placeholders stay as literal `$Format:...$`
+# strings inside the archive, and the cmake fallback ignores the file.
+.git_archival.txt  export-subst
