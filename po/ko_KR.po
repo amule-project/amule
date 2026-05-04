@@ -290,7 +290,7 @@ msgstr ""
 "더 많은 정보, 지원, 새 릴리즈는 홈페이지 github.com/amule-org/amule, 또는 IRC 채널\n"
 
 #: src/amule.cpp:1160
-msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "(irc.freenode.net의 #aMule)에서 찾을 수 있습니다.\n"
 
 #: src/amule.cpp:1162
@@ -360,8 +360,8 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "어뮬 버젼은 %i.%i.%i이며 최신 버젼은 %li.%li.%li입니다."
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at https://github.com/amule-org/amule"
-msgstr "최신 버젼은 항상 https://github.com/amule-org/amule 에서 찾을 수 있습니다."
+msgid "The latest version can always be found at https://github.com/amule-org/amule/releases/latest"
+msgstr "최신 버젼은 항상 https://github.com/amule-org/amule/releases/latest 에서 찾을 수 있습니다."
 
 #: src/amule.cpp:1759
 #, c-format
@@ -493,7 +493,7 @@ msgid "Running on %s"
 msgstr "%s에 동작중"
 
 #: src/amuleDlg.cpp:238
-msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
+msgid "Visit https://github.com/amule-org/amule/releases/latest to check if a new version is available."
 msgstr "https://github.com/amule-org/amule에 방문하셔서 새로운버젼이 있는지 확인하십시오."
 
 #: src/amuleDlg.cpp:264
@@ -515,7 +515,7 @@ msgid ""
 msgstr ""
 
 #: src/amuleDlg.cpp:498
-msgid "Website: https://github.com/amule-org/amule \n"
+msgid "Website: https://amule-org.github.io \n"
 msgstr ""
 
 #: src/amuleDlg.cpp:499
@@ -3392,7 +3392,7 @@ msgid "Nick"
 msgstr "별명"
 
 #: src/muuli_wdr.cpp:1201
-msgid "https://github.com/amule-org/amule - the multi-platform Mule"
+msgid "https://amule-org.github.io - the multi-platform Mule"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1202

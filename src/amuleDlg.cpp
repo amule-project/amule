@@ -235,7 +235,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	AddLogLineN(wxString("   ") +
 		wxString(CFormat(_("Running on %s")) % wxGetOsDescription()));
 	AddLogLineN(" - " +
-		wxString(_("Visit https://github.com/amule-org/amule to check if a new version is available.")));
+		wxString(_("Visit https://github.com/amule-org/amule/releases/latest to check if a new version is available.")));
 	AddLogLineN("");
 
 #ifdef ENABLE_IP2COUNTRY
@@ -495,7 +495,7 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 	msg << _("Snapshot:") << "\n " << SVNDATE;
 #endif
 	msg << "\n\n" << _("'All-Platform' p2p client based on eMule \n\n") <<
-		_("Website: https://github.com/amule-org/amule \n") <<
+		_("Website: https://amule-org.github.io \n") <<
 		_("Forum: https://github.com/amule-org/amule/discussions \n") <<
 		_("FAQ: https://github.com/amule-org/amule/wiki \n\n") <<
 		_("Contact: admin@amule.org (administrative issues) \n") <<

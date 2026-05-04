@@ -271,7 +271,7 @@ msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 
 #: src/amule.cpp:1160
-msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 
 #: src/amule.cpp:1162
@@ -339,8 +339,8 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Din aMule version er %i.%i.%i og den sisdte nye version er %li.%li.%li"
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at https://github.com/amule-org/amule"
-msgstr "Den sidste nye version kan altid findes hos https://github.com/amule-org/amule"
+msgid "The latest version can always be found at https://github.com/amule-org/amule/releases/latest"
+msgstr "Den sidste nye version kan altid findes hos https://github.com/amule-org/amule/releases/latest"
 
 #: src/amule.cpp:1759
 #, c-format
@@ -468,7 +468,7 @@ msgid "Running on %s"
 msgstr ""
 
 #: src/amuleDlg.cpp:238
-msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
+msgid "Visit https://github.com/amule-org/amule/releases/latest to check if a new version is available."
 msgstr ""
 
 #: src/amuleDlg.cpp:264
@@ -490,7 +490,7 @@ msgid ""
 msgstr ""
 
 #: src/amuleDlg.cpp:498
-msgid "Website: https://github.com/amule-org/amule \n"
+msgid "Website: https://amule-org.github.io \n"
 msgstr ""
 
 #: src/amuleDlg.cpp:499
@@ -3303,7 +3303,7 @@ msgid "Nick"
 msgstr "Brugernavn"
 
 #: src/muuli_wdr.cpp:1201
-msgid "https://github.com/amule-org/amule - the multi-platform Mule"
+msgid "https://amule-org.github.io - the multi-platform Mule"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1202
