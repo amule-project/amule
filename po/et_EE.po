@@ -303,7 +303,7 @@ msgstr ""
 msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
 msgstr ""
 "Tunne ennast vabalt suvaliste vigade leidmisest teavitamisel aadressil "
-"https://github.com/amule-org/amule/discussions"
+"https://github.com/amule-org/amule/issues"
 
 #: src/amule.cpp:1175
 msgid ""

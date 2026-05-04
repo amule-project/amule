@@ -300,7 +300,7 @@ msgstr "https://amule-org.github.io, o al nostre canal IRC #aMule de irc.freenod
 
 #: src/amule.cpp:1162
 msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
-msgstr "Podeu informar de qualsevol error a https://github.com/amule-org/amule/discussions"
+msgstr "Podeu informar de qualsevol error a https://github.com/amule-org/amule/issues"
 
 #: src/amule.cpp:1175
 msgid ""

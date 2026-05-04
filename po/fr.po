@@ -305,7 +305,7 @@ msgstr "https://amule-org.github.io, ou sur notre canal IRC : #aMule sur irc.fr
 
 #: src/amule.cpp:1162
 msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
-msgstr "Ne vous gênez pas pour reporter tout bogue sur https://github.com/amule-org/amule/discussions"
+msgstr "Ne vous gênez pas pour reporter tout bogue sur https://github.com/amule-org/amule/issues"
 
 #: src/amule.cpp:1175
 msgid ""

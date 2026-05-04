@@ -295,7 +295,7 @@ msgstr ""
 
 #: src/amule.cpp:1162
 msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
-msgstr "Nyugodtan jelezz bármilyen hibát a https://github.com/amule-org/amule/discussions-on"
+msgstr "Nyugodtan jelezz bármilyen hibát a https://github.com/amule-org/amule/issues"
 
 #: src/amule.cpp:1175
 msgid ""
@@ -5856,7 +5856,7 @@ msgstr "\tLegvalószínűbb oka az lehet, hogy tűzfal vagy router mögött vagy
 #: src/ServerSocket.cpp:435
 msgid "\tFor more information, please refer to https://github.com/amule-org/amule/wiki"
 msgstr ""
-"\tTovábbi információért, kérlek látogasd meg a https://github.com/amule-org/amule/wiki-ot"
+"\tTovábbi információért, kérlek látogasd meg a https://github.com/amule-org/amule/wiki"
 
 #: src/ServerSocket.cpp:491
 msgid "Unknown server info received! - too short"
