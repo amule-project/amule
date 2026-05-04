@@ -300,7 +300,7 @@ msgstr ""
 
 #: src/amule.cpp:1162
 msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
-msgstr "Morebitne hrošče lahko sporočite na https://github.com/amule-org/amule/discussions"
+msgstr "Morebitne hrošče lahko sporočite na https://github.com/amule-org/amule/issues"
 
 #: src/amule.cpp:1175
 msgid ""

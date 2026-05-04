@@ -298,11 +298,11 @@ msgstr "Mais informação, suporte e novos lançamentos na nossa página,\n"
 
 #: src/amule.cpp:1160
 msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr "em github.com/amule-org/amule ou no canal de IRC #aMule em irc.freenode.net.\n"
+msgstr "em amule-org.github.io ou no canal de IRC #aMule em irc.freenode.net.\n"
 
 #: src/amule.cpp:1162
 msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
-msgstr "Esteja à vontade para comunicar erros para https://github.com/amule-org/amule/discussions"
+msgstr "Esteja à vontade para comunicar erros para https://github.com/amule-org/amule/issues"
 
 #: src/amule.cpp:1175
 msgid ""

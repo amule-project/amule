@@ -295,11 +295,11 @@ msgstr ""
 #: src/amule.cpp:1160
 msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
-"tek github.com/amule-org/amule ose ne kanalin tone IRC #amule tek irc.freenode.net.\n"
+"tek amule-org.github.io ose ne kanalin tone IRC #amule tek irc.freenode.net.\n"
 
 #: src/amule.cpp:1162
 msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
-msgstr "Raportoni cdo gabim tek https://github.com/amule-org/amule/discussions"
+msgstr "Raportoni cdo gabim tek https://github.com/amule-org/amule/issues"
 
 #: src/amule.cpp:1175
 msgid ""

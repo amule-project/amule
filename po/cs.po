@@ -289,7 +289,7 @@ msgstr ""
 
 #: src/amule.cpp:1162
 msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
-msgstr "Hlašte chyby na adrese https://github.com/amule-org/amule/discussions"
+msgstr "Hlašte chyby na adrese https://github.com/amule-org/amule/issues"
 
 #: src/amule.cpp:1175
 msgid ""
@@ -352,7 +352,7 @@ msgstr "Vaše verze aMule je %i.%i.%i a poslední verze je %li.%li.%li"
 
 #: src/amule.cpp:1757
 msgid "The latest version can always be found at https://github.com/amule-org/amule/releases/latest"
-msgstr "Poslední verze jsou vždy k nalezení na https://github.com/amule-org/amule/"
+msgstr "Poslední verze jsou vždy k nalezení na https://github.com/amule-org/amule/releases/latest "
 
 #: src/amule.cpp:1759
 #, c-format
@@ -485,7 +485,7 @@ msgstr "Běží na %s"
 #: src/amuleDlg.cpp:238
 msgid "Visit https://github.com/amule-org/amule/releases/latest to check if a new version is available."
 msgstr ""
-"Navštivte https://github.com/amule-org/amule/ pro kontrolu, jestli není dostupná nová "
+"Navštivte https://github.com/amule-org/amule/releases/latest  pro kontrolu, jestli není dostupná nová "
 "verze."
 
 #: src/amuleDlg.cpp:264

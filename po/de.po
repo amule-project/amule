@@ -304,7 +304,7 @@ msgstr ""
 
 #: src/amule.cpp:1162
 msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
-msgstr "Bitte melde Fehler unter https://github.com/amule-org/amule/discussions"
+msgstr "Bitte melde Fehler unter https://github.com/amule-org/amule/issues"
 
 #: src/amule.cpp:1175
 msgid ""
