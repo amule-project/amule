@@ -205,7 +205,7 @@ jobs:
           # false after printing version → wxEntry returns -1). Check the
           # banner via grep instead of relying on exit code. Pattern
           # accepts the dev placeholder ("aMuleD GIT ...") and any
-          # tagged-release banner ("aMuleD 3.0.0-beta ...", etc.).
+          # tagged-release banner ("aMuleD 3.0.0 ...", etc.).
           ${{ matrix.archcmd }} "${MNT}/aMule.app/Contents/MacOS/amuled" --version 2>&1 | grep -q '^aMuleD '
           hdiutil detach "${MNT}"
       - uses: actions/upload-artifact@v7
@@ -365,7 +365,7 @@ jobs:
               > /tmp/version.txt 2>&1 || true
           cat /tmp/version.txt
           # Pattern accepts the dev placeholder ("aMuleD GIT ...") and
-          # any tagged-release banner ("aMuleD 3.0.0-beta ...", etc.).
+          # any tagged-release banner ("aMuleD 3.0.0 ...", etc.).
           grep -q '^aMuleD ' /tmp/version.txt
       - uses: actions/upload-artifact@v7
         with:
