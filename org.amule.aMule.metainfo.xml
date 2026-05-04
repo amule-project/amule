@@ -18,9 +18,9 @@
     </p>
   </description>
 
-  <url type="homepage">https://www.amule.org/</url>
+  <url type="homepage">https://github.com/amule-org/amule</url>
   <url type="bugtracker">https://github.com/amule-org/amule/issues</url>
-  <url type="help">https://wiki.amule.org/wiki/Main_Page</url>
+  <url type="help">https://github.com/amule-org/amule/wiki</url>
 
   # TODO: Auto generate me from changelog!
   <releases></releases>

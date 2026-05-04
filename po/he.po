@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2020-03-04 12:34+0100\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
@@ -273,12 +273,12 @@ msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 
 #: src/amule.cpp:1160
-msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 
 #: src/amule.cpp:1162
-msgid "Feel free to report any bugs to http://forum.amule.org"
-msgstr "תרגיש חופשי לדוואח על כל שגיאה ל http://forum.amule.org"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgstr "תרגיש חופשי לדוואח על כל שגיאה ל https://github.com/amule-org/amule/discussions"
 
 #: src/amule.cpp:1175
 msgid ""
@@ -341,7 +341,7 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at http://www.amule.org"
+msgid "The latest version can always be found at https://github.com/amule-org/amule"
 msgstr ""
 
 #: src/amule.cpp:1759
@@ -437,7 +437,7 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at http://wiki.amule.org"
+"password. More information can be found at https://github.com/amule-org/amule/wiki"
 msgstr ""
 
 #: src/amuled.cpp:175
@@ -468,8 +468,8 @@ msgid "Running on %s"
 msgstr "פועל על %s"
 
 #: src/amuleDlg.cpp:238
-msgid "Visit http://www.amule.org to check if a new version is available."
-msgstr "בקר ב http://www.amule.org כדי לבדוק האם ישנה גירסה חדישה זמינה."
+msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
+msgstr "בקר ב https://github.com/amule-org/amule כדי לבדוק האם ישנה גירסה חדישה זמינה."
 
 #: src/amuleDlg.cpp:264
 msgid "FATAL ERROR: Failed to create Timer"
@@ -490,16 +490,16 @@ msgid ""
 msgstr ""
 
 #: src/amuleDlg.cpp:498
-msgid "Website: http://www.amule.org \n"
+msgid "Website: https://github.com/amule-org/amule \n"
 msgstr ""
 
 #: src/amuleDlg.cpp:499
-msgid "Forum: http://forum.amule.org \n"
+msgid "Forum: https://github.com/amule-org/amule/discussions \n"
 msgstr ""
 
 #: src/amuleDlg.cpp:500
 msgid ""
-"FAQ: http://wiki.amule.org \n"
+"FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
 msgstr ""
 
@@ -1577,7 +1577,7 @@ msgstr "טוען מידע מקובץ הורדות ישן (%u·מ·%u)"
 
 #: src/DownloadQueue.cpp:150
 msgid ""
-"ERROR: Failed to load backup file. Search http://forum.amule.org "
+"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions "
 "for .part.met recovery solutions."
 msgstr ""
 
@@ -3317,7 +3317,7 @@ msgid "Nick"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1201
-msgid "http://www.aMule.org - the multi-platform Mule"
+msgid "https://github.com/amule-org/amule - the multi-platform Mule"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1202
@@ -5683,8 +5683,8 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\t רוב הסיכויים שזה מאחר ואתה נמצא מאחור חומתאש או נתב."
 
 #: src/ServerSocket.cpp:435
-msgid "\tFor more information, please refer to http://wiki.amule.org"
-msgstr "\tעבור מידע נוסף פנה ל http://wiki.amule.org"
+msgid "\tFor more information, please refer to https://github.com/amule-org/amule/wiki"
+msgstr "\tעבור מידע נוסף פנה ל https://github.com/amule-org/amule/wiki"
 
 #: src/ServerSocket.cpp:491
 msgid "Unknown server info received! - too short"

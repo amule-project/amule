@@ -147,7 +147,7 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 					% toadd->GetFileHash().Encode() % fileName;
 			} else {
 				// If result is false, then reading of both the primary and the backup .met failed
-				AddLogLineN(_("ERROR: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions."));
+				AddLogLineN(_("ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions for .part.met recovery solutions."));
 				msg << CFormat("ERROR: Failed to load PartFile '%s'") % fileName;
 			}
 			AddLogLineCS(msg);

@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2020-03-04 15:39+0100\n"
 "Last-Translator: Oleksandr Kovalenko <alx.kovalenko@gmail.com>\n"
@@ -291,13 +291,13 @@ msgstr ""
 "сторінці,\n"
 
 #: src/amule.cpp:1160
-msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
-"на www.aMule.org, або у нашому IRC-каналі #aMule на irc.freenode.net.\n"
+"на https://github.com/amule-org/amule, або у нашому IRC-каналі #aMule на irc.freenode.net.\n"
 
 #: src/amule.cpp:1162
-msgid "Feel free to report any bugs to http://forum.amule.org"
-msgstr "Не соромтеся повідомити про будь-які помилки на http://forum.amule.org"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgstr "Не соромтеся повідомити про будь-які помилки на https://github.com/amule-org/amule/discussions"
 
 #: src/amule.cpp:1175
 msgid ""
@@ -361,8 +361,8 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Ваша версія aMule %i.%i.%i, а остання %li.%li.%li"
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at http://www.amule.org"
-msgstr "Остання версія може бути завжди знайдена на http://www.amule.org"
+msgid "The latest version can always be found at https://github.com/amule-org/amule"
+msgstr "Остання версія може бути завжди знайдена на https://github.com/amule-org/amule"
 
 #: src/amule.cpp:1759
 #, c-format
@@ -464,13 +464,13 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at http://wiki.amule.org"
+"password. More information can be found at https://github.com/amule-org/amule/wiki"
 msgstr ""
 "ПОМИЛКА: необхідний вірний пароль, щоб використовувати зовнішні з'єднання, і "
 "демон aMule не може бути використаний без зовнішніх з'єднань. Щоб запустити "
 "демон aMule, ви маєте встановити відповідне значення у полі \"ECPassword\" у "
 "файлі ~/.aMule/amule.conf. Виконайте amuled  з параметром --ec-config, щоб "
-"встановити пароль. Більше інформації можете знайти на http://wiki.amule.org"
+"встановити пароль. Більше інформації можете знайти на https://github.com/amule-org/amule/wiki"
 
 #: src/amuled.cpp:175
 msgid "amuled: OnInit - starting timer"
@@ -500,9 +500,9 @@ msgid "Running on %s"
 msgstr "Запущений на %s"
 
 #: src/amuleDlg.cpp:238
-msgid "Visit http://www.amule.org to check if a new version is available."
+msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
 msgstr ""
-"Відвідайте http://www.amule.org, щоб перевірити наявність нових версій."
+"Відвідайте https://github.com/amule-org/amule, щоб перевірити наявність нових версій."
 
 #: src/amuleDlg.cpp:264
 msgid "FATAL ERROR: Failed to create Timer"
@@ -525,19 +525,19 @@ msgstr ""
 "\n"
 
 #: src/amuleDlg.cpp:498
-msgid "Website: http://www.amule.org \n"
-msgstr "Сторінка в Інтернет: http://www.amule.org \n"
+msgid "Website: https://github.com/amule-org/amule \n"
+msgstr "Сторінка в Інтернет: https://github.com/amule-org/amule \n"
 
 #: src/amuleDlg.cpp:499
-msgid "Forum: http://forum.amule.org \n"
-msgstr "Форум: http://forum.amule.org \n"
+msgid "Forum: https://github.com/amule-org/amule/discussions \n"
+msgstr "Форум: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:500
 msgid ""
-"FAQ: http://wiki.amule.org \n"
+"FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
 msgstr ""
-"FAQ: http://wiki.amule.org \n"
+"FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
 
 #: src/amuleDlg.cpp:501
@@ -1640,11 +1640,11 @@ msgstr "Завантажуються частковий файл %u з %u"
 
 #: src/DownloadQueue.cpp:150
 msgid ""
-"ERROR: Failed to load backup file. Search http://forum.amule.org "
+"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions "
 "for .part.met recovery solutions."
 msgstr ""
-"ПОМИЛКА: не вдалося завантажити файл резервної копії. Шукайте на http://"
-"forum.amule.org вирішення проблем відновлення .part.met"
+"ПОМИЛКА: не вдалося завантажити файл резервної копії. Шукайте на https://github.com/amule-org/amule/discussions"
+" вирішення проблем відновлення .part.met"
 
 #: src/DownloadQueue.cpp:159
 msgid "All PartFiles Loaded."
@@ -3435,8 +3435,8 @@ msgid "Nick"
 msgstr "Прізвисько"
 
 #: src/muuli_wdr.cpp:1201
-msgid "http://www.aMule.org - the multi-platform Mule"
-msgstr "http://www.aMule.org - багатоплатформений Mule"
+msgid "https://github.com/amule-org/amule - the multi-platform Mule"
+msgstr "https://github.com/amule-org/amule - багатоплатформений Mule"
 
 #: src/muuli_wdr.cpp:1202
 msgid "This is the name that other users will see when connecting to you."
@@ -5900,9 +5900,9 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\tНайбільш ймовірно це тому, що ви за фаєрволом або маршрутизатором."
 
 #: src/ServerSocket.cpp:435
-msgid "\tFor more information, please refer to http://wiki.amule.org"
+msgid "\tFor more information, please refer to https://github.com/amule-org/amule/wiki"
 msgstr ""
-"\tЗа додатковою інформацією, будь ласка, завітайте до http://wiki.amule.org"
+"\tЗа додатковою інформацією, будь ласка, завітайте до https://github.com/amule-org/amule/wiki"
 
 #: src/ServerSocket.cpp:491
 msgid "Unknown server info received! - too short"

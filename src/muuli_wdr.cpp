@@ -1198,7 +1198,7 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Nick") );
     wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
-    CMuleTextCtrl *item3 = new CMuleTextCtrl( parent, IDC_NICK, _("http://www.aMule.org - the multi-platform Mule"), wxDefaultPosition, wxSize(90,-1), 0 );
+    CMuleTextCtrl *item3 = new CMuleTextCtrl( parent, IDC_NICK, _("https://github.com/amule-org/amule - the multi-platform Mule"), wxDefaultPosition, wxSize(90,-1), 0 );
     item3->SetToolTip( _("This is the name that other users will see when connecting to you.") );
     item1->Add( item3, wxSizerFlags().Expand().CenterVertical() );
     item0->Add( item1, wxSizerFlags().Expand().CenterHorizontal() );

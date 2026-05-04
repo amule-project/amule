@@ -680,12 +680,12 @@ void CaMuleExternalConnector::OnFatalException()
 	/* Print the backtrace */
 	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
 	fprintf(stderr, "A fatal error has occurred and %s has crashed.\n", m_appname);
-	fprintf(stderr, "Please assist us in fixing this problem by posting the backtrace below in our\n");
-	fprintf(stderr, "'aMule Crashes' forum and include as much information as possible regarding the\n");
-	fprintf(stderr, "circumstances of this crash. The forum is located here:\n");
-	fprintf(stderr, "    http://forum.amule.org/index.php?board=67.0\n");
+	fprintf(stderr, "Please assist us in fixing this problem by reporting the backtrace below as a\n");
+	fprintf(stderr, "GitHub issue, including as much information as possible regarding the\n");
+	fprintf(stderr, "circumstances of this crash. Issue tracker:\n");
+	fprintf(stderr, "    https://github.com/amule-org/amule/issues\n");
 	fprintf(stderr, "If possible, please try to generate a real backtrace of this crash:\n");
-	fprintf(stderr, "    http://wiki.amule.org/wiki/Backtraces\n\n");
+	fprintf(stderr, "    https://github.com/amule-org/amule/wiki/Backtraces\n\n");
 	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n");
 	fprintf(stderr, "Current version is: %s %s\n", m_appname, m_strFullVersion);
 	fprintf(stderr, "Running on: %s\n\n", m_strOSDescription);

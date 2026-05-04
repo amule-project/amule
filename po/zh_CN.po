@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2024-12-15 20:08+0100\n"
 "Last-Translator: Mike Akiba <mike2718@gmail.com>\n"
@@ -287,12 +287,12 @@ msgid "More information, support and new releases can found at our homepage,\n"
 msgstr "如要获取使用信息、用户支持以及下载最新版本，请访问我们的首页\n"
 
 #: src/amule.cpp:1160
-msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr "www.aMule.org，或进入我们在 irc.freenode.net 的 IRC 频道 #aMule。\n"
+msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgstr "https://github.com/amule-org/amule，或进入我们在 irc.freenode.net 的 IRC 频道 #aMule。\n"
 
 #: src/amule.cpp:1162
-msgid "Feel free to report any bugs to http://forum.amule.org"
-msgstr "欢迎您到 http://forum.amule.org 去提交错误报告"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgstr "欢迎您到 https://github.com/amule-org/amule/discussions 去提交错误报告"
 
 #: src/amule.cpp:1175
 msgid ""
@@ -356,8 +356,8 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "您的 aMule 版本是 %i.%i.%i，最新版本是 %li.%li.%li"
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at http://www.amule.org"
-msgstr "最新版本可从这里下载：http://www.amule.org"
+msgid "The latest version can always be found at https://github.com/amule-org/amule"
+msgstr "最新版本可从这里下载：https://github.com/amule-org/amule"
 
 #: src/amule.cpp:1759
 #, c-format
@@ -456,12 +456,12 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at http://wiki.amule.org"
+"password. More information can be found at https://github.com/amule-org/amule/wiki"
 msgstr ""
 "错误：如果需要使用外部连接，必须设置一个可用的密码，aMule daemon不能在没有启"
 "用外部连接的情况下使用。要运行aMule daemon，你必须设置~/.aMule/amule.conf文件"
 "中的\"ECPassword\"字段，使它有一个合适的值。执行amuled --ce-config来设置这个"
-"密码。更多信息请访问http://wiki.amule.org。"
+"密码。更多信息请访问https://github.com/amule-org/amule/wiki。"
 
 #: src/amuled.cpp:175
 msgid "amuled: OnInit - starting timer"
@@ -491,8 +491,8 @@ msgid "Running on %s"
 msgstr "运行于 %s"
 
 #: src/amuleDlg.cpp:238
-msgid "Visit http://www.amule.org to check if a new version is available."
-msgstr "访问 http://www.amule.org 来检查 是否有新版本。"
+msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
+msgstr "访问 https://github.com/amule-org/amule 来检查 是否有新版本。"
 
 #: src/amuleDlg.cpp:264
 msgid "FATAL ERROR: Failed to create Timer"
@@ -513,18 +513,18 @@ msgid ""
 msgstr "基于 eMule 的“全平台” P2P客户端\n"
 
 #: src/amuleDlg.cpp:498
-msgid "Website: http://www.amule.org \n"
-msgstr "网站：http://www.amule.org \n"
+msgid "Website: https://github.com/amule-org/amule \n"
+msgstr "网站：https://github.com/amule-org/amule \n"
 
 #: src/amuleDlg.cpp:499
-msgid "Forum: http://forum.amule.org \n"
-msgstr "论坛：http://forum.amule.org \n"
+msgid "Forum: https://github.com/amule-org/amule/discussions \n"
+msgstr "论坛：https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:500
 msgid ""
-"FAQ: http://wiki.amule.org \n"
+"FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
-msgstr "常见问题：http://wiki.amule.org \n"
+msgstr "常见问题：https://github.com/amule-org/amule/wiki \n"
 
 #: src/amuleDlg.cpp:501
 msgid "Contact: admin@amule.org (administrative issues) \n"
@@ -1600,10 +1600,10 @@ msgstr "载入 PartFile %u 之 %u"
 
 #: src/DownloadQueue.cpp:150
 msgid ""
-"ERROR: Failed to load backup file. Search http://forum.amule.org "
+"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions "
 "for .part.met recovery solutions."
 msgstr ""
-"错误：载入备份文件失败！请到 http://forum.amule.org 搜索 .part 和 .met 文件的"
+"错误：载入备份文件失败！请到 https://github.com/amule-org/amule/discussions 搜索 .part 和 .met 文件的"
 "恢复方法。"
 
 #: src/DownloadQueue.cpp:159
@@ -3349,8 +3349,8 @@ msgid "Nick"
 msgstr "昵称"
 
 #: src/muuli_wdr.cpp:1201
-msgid "http://www.aMule.org - the multi-platform Mule"
-msgstr "http://www.aMule.org - 跨平台的电骡"
+msgid "https://github.com/amule-org/amule - the multi-platform Mule"
+msgstr "https://github.com/amule-org/amule - 跨平台的电骡"
 
 #: src/muuli_wdr.cpp:1202
 msgid "This is the name that other users will see when connecting to you."
@@ -5717,8 +5717,8 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\t大概这是因为您处在防火墙或路由器后面。"
 
 #: src/ServerSocket.cpp:435
-msgid "\tFor more information, please refer to http://wiki.amule.org"
-msgstr "\t如需了解更多相关信息，请访问 http://wiki.amule.org"
+msgid "\tFor more information, please refer to https://github.com/amule-org/amule/wiki"
+msgstr "\t如需了解更多相关信息，请访问 https://github.com/amule-org/amule/wiki"
 
 #: src/ServerSocket.cpp:491
 msgid "Unknown server info received! - too short"

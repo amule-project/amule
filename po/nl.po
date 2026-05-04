@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2022-10-02 10:41+0200\n"
 "Last-Translator: Marcel Pol <marcel@timelord.nl>\n"
@@ -295,12 +295,12 @@ msgstr ""
 "onze homepage,\n"
 
 #: src/amule.cpp:1160
-msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr "op www.aMule.org, of op ons IRC-kanaal #amule op irc.freenode.net.\n"
+msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgstr "op https://github.com/amule-org/amule, of op ons IRC-kanaal #amule op irc.freenode.net.\n"
 
 #: src/amule.cpp:1162
-msgid "Feel free to report any bugs to http://forum.amule.org"
-msgstr "Bugs kunt u altijd melden op http://forum.amule.org"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgstr "Bugs kunt u altijd melden op https://github.com/amule-org/amule/discussions"
 
 #: src/amule.cpp:1175
 msgid ""
@@ -364,8 +364,8 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Uw aMule-versie is %i.%i.%i en de nieuwste versie is %li.%li.%li"
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at http://www.amule.org"
-msgstr "De nieuwste versie kan altijd gevonden worden op http://www.amule.org"
+msgid "The latest version can always be found at https://github.com/amule-org/amule"
+msgstr "De nieuwste versie kan altijd gevonden worden op https://github.com/amule-org/amule"
 
 #: src/amule.cpp:1759
 #, c-format
@@ -467,14 +467,14 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at http://wiki.amule.org"
+"password. More information can be found at https://github.com/amule-org/amule/wiki"
 msgstr ""
 "FOUT: Een geldig wachtwoord is nodig om gebruik te maken van externe "
 "verbindingen, en aMule daemon kan niet gebruikt worden zonder externe "
 "verbindingen. Om aMule daemon to draaien, moet u het veld \"ECPassword\" in "
 "het bestand ~/.aMule/amule.conf een juiste waarde geven. Voer amuled uit met "
 "de vlag --ec-config om het wachtwoord in te stellen. Meer informatie is te "
-"vinden op http://wiki.amule.org"
+"vinden op https://github.com/amule-org/amule/wiki"
 
 #: src/amuled.cpp:175
 msgid "amuled: OnInit - starting timer"
@@ -504,9 +504,9 @@ msgid "Running on %s"
 msgstr "Draaiend op %s"
 
 #: src/amuleDlg.cpp:238
-msgid "Visit http://www.amule.org to check if a new version is available."
+msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
 msgstr ""
-"Bezoek http://www.amule.org om te zien of een nieuwe versie beschikbaar is."
+"Bezoek https://github.com/amule-org/amule om te zien of een nieuwe versie beschikbaar is."
 
 #: src/amuleDlg.cpp:264
 msgid "FATAL ERROR: Failed to create Timer"
@@ -529,19 +529,19 @@ msgstr ""
 "\n"
 
 #: src/amuleDlg.cpp:498
-msgid "Website: http://www.amule.org \n"
-msgstr "Website: http://www.amule.org \n"
+msgid "Website: https://github.com/amule-org/amule \n"
+msgstr "Website: https://github.com/amule-org/amule \n"
 
 #: src/amuleDlg.cpp:499
-msgid "Forum: http://forum.amule.org \n"
-msgstr "Forum: http://forum.amule.org \n"
+msgid "Forum: https://github.com/amule-org/amule/discussions \n"
+msgstr "Forum: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:500
 msgid ""
-"FAQ: http://wiki.amule.org \n"
+"FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
 msgstr ""
-"FAQ: http://wiki.amule.org \n"
+"FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
 
 #: src/amuleDlg.cpp:501
@@ -1639,10 +1639,10 @@ msgstr "Deelbestand %u van %u wordt geladen"
 
 #: src/DownloadQueue.cpp:150
 msgid ""
-"ERROR: Failed to load backup file. Search http://forum.amule.org "
+"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions "
 "for .part.met recovery solutions."
 msgstr ""
-"FOUT: Laden van backupbestand misukt. Zoek op http://forum.amule.org "
+"FOUT: Laden van backupbestand misukt. Zoek op https://github.com/amule-org/amule/discussions "
 "naar .part.met hersteloplossingen."
 
 #: src/DownloadQueue.cpp:159
@@ -3426,8 +3426,8 @@ msgid "Nick"
 msgstr "Bijnaam"
 
 #: src/muuli_wdr.cpp:1201
-msgid "http://www.aMule.org - the multi-platform Mule"
-msgstr "http://www.aMule.org - de multi-platform Mule"
+msgid "https://github.com/amule-org/amule - the multi-platform Mule"
+msgstr "https://github.com/amule-org/amule - de multi-platform Mule"
 
 #: src/muuli_wdr.cpp:1202
 msgid "This is the name that other users will see when connecting to you."
@@ -5873,8 +5873,8 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\tDit komt waarschijnlijk omdat u achter een firewall of router zit."
 
 #: src/ServerSocket.cpp:435
-msgid "\tFor more information, please refer to http://wiki.amule.org"
-msgstr "\tVoor meer informatie, bekijk http://wiki.amule.org"
+msgid "\tFor more information, please refer to https://github.com/amule-org/amule/wiki"
+msgstr "\tVoor meer informatie, bekijk https://github.com/amule-org/amule/wiki"
 
 #: src/ServerSocket.cpp:491
 msgid "Unknown server info received! - too short"

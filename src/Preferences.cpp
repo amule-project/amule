@@ -980,7 +980,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	/**
 	 * User settings
 	 **/
-	NewCfgItem(IDC_NICK,		(new Cfg_Str(  "/eMule/Nick", s_nick, "http://www.aMule.org" )));
+	NewCfgItem(IDC_NICK,		(new Cfg_Str(  "/eMule/Nick", s_nick, "https://github.com/amule-org/amule" )));
 #ifndef AMULE_DAEMON
 	Cfg_Lang * cfgLang = new Cfg_Lang();
 	s_cfgLang = cfgLang;

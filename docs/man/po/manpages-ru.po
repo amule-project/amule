@@ -275,12 +275,12 @@ msgstr "СООБЩЕНИЕ ОБ ОШИБКАХ"
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
 msgid ""
-"Please report bugs either on our forum (I<http://forum.amule.org/>), or in "
-"our bugtracker (I<http://bugs.amule.org/>).  Please do not report bugs in e-"
+"Please report bugs either on our forum (I<https://github.com/amule-org/amule/discussions>), or in "
+"our bugtracker (I<https://github.com/amule-org/amule/issues>).  Please do not report bugs in e-"
 "mail, neither to our mailing list nor directly to any team member."
 msgstr ""
 "Пожалуйста, сообщайте об ошибках либо на нашем форуме (I<http://forum.amule."
-"org/>), либо в багтрекере (I<http://bugs.amule.org/>). Пожалуйста, не "
+"org/>), либо в багтрекере (I<https://github.com/amule-org/amule/issues>). Пожалуйста, не "
 "сообщайте об ошбках по электронной почте, по нашим спискам рассылки, или "
 "напрямую участникам."
 

@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2020-03-04 15:09+0100\n"
 "Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"
@@ -294,13 +294,13 @@ msgstr ""
 "strani,\n"
 
 #: src/amule.cpp:1160
-msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
-"na www.aMule.org, ali na kanalu IRC #aMule, na strežniku irc.freenode.net.\n"
+"na https://github.com/amule-org/amule, ali na kanalu IRC #aMule, na strežniku irc.freenode.net.\n"
 
 #: src/amule.cpp:1162
-msgid "Feel free to report any bugs to http://forum.amule.org"
-msgstr "Morebitne hrošče lahko sporočite na http://forum.amule.org"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgstr "Morebitne hrošče lahko sporočite na https://github.com/amule-org/amule/discussions"
 
 #: src/amule.cpp:1175
 msgid ""
@@ -365,8 +365,8 @@ msgstr ""
 "Različica vaše aMule je %i.%i.%i, najnovejša različica pa je %li.%li.%li"
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at http://www.amule.org"
-msgstr "Najnovejšo različico lahko vedno najdete na http://www.amule.org"
+msgid "The latest version can always be found at https://github.com/amule-org/amule"
+msgstr "Najnovejšo različico lahko vedno najdete na https://github.com/amule-org/amule"
 
 #: src/amule.cpp:1759
 #, c-format
@@ -468,13 +468,13 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at http://wiki.amule.org"
+"password. More information can be found at https://github.com/amule-org/amule/wiki"
 msgstr ""
 "NAPAKA: Za uporabo zunanjih povezav je potrebno veljavno geslo, demona aMule "
 "pa brez zunanjih povezav ni mogoče uporabiti. Za zagon demona aMule morate "
 "ključ »ECPassword« v datoteki ~/.aMule/amule.conf nastaviti na ustrezno "
 "vrednost. Za nastavitev gesla zaženite amuled z možnostjo --ec-config. Več "
-"informacij lahko najdete na http://wiki.amule.org"
+"informacij lahko najdete na https://github.com/amule-org/amule/wiki"
 
 #: src/amuled.cpp:175
 msgid "amuled: OnInit - starting timer"
@@ -504,9 +504,9 @@ msgid "Running on %s"
 msgstr "Operacijski sistem: %s"
 
 #: src/amuleDlg.cpp:238
-msgid "Visit http://www.amule.org to check if a new version is available."
+msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
 msgstr ""
-"Obiščite http://www.amule.org da preverite, če je na voljo nova različica."
+"Obiščite https://github.com/amule-org/amule da preverite, če je na voljo nova različica."
 
 #: src/amuleDlg.cpp:264
 msgid "FATAL ERROR: Failed to create Timer"
@@ -529,19 +529,19 @@ msgstr ""
 "\n"
 
 #: src/amuleDlg.cpp:498
-msgid "Website: http://www.amule.org \n"
-msgstr "Spletna stran: http://www.amule.org \n"
+msgid "Website: https://github.com/amule-org/amule \n"
+msgstr "Spletna stran: https://github.com/amule-org/amule \n"
 
 #: src/amuleDlg.cpp:499
-msgid "Forum: http://forum.amule.org \n"
-msgstr "Forum: http://forum.amule.org \n"
+msgid "Forum: https://github.com/amule-org/amule/discussions \n"
+msgstr "Forum: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:500
 msgid ""
-"FAQ: http://wiki.amule.org \n"
+"FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
 msgstr ""
-"PZS: http://wiki.amule.org \n"
+"PZS: https://github.com/amule-org/amule/wiki \n"
 "\n"
 
 #: src/amuleDlg.cpp:501
@@ -1649,10 +1649,10 @@ msgstr "Nalaganje delne datoteke %u od %u"
 
 #: src/DownloadQueue.cpp:150
 msgid ""
-"ERROR: Failed to load backup file. Search http://forum.amule.org "
+"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions "
 "for .part.met recovery solutions."
 msgstr ""
-"NAPAKA: nalaganje varnostne kopije ni uspelo. Na http://forum.amule.org "
+"NAPAKA: nalaganje varnostne kopije ni uspelo. Na https://github.com/amule-org/amule/discussions "
 "pošičite rešitve za obnavljanje datotek .part.met."
 
 #: src/DownloadQueue.cpp:159
@@ -3451,8 +3451,8 @@ msgid "Nick"
 msgstr "Vzdevek"
 
 #: src/muuli_wdr.cpp:1201
-msgid "http://www.aMule.org - the multi-platform Mule"
-msgstr "http://www.aMule.org – Mule za vse platforme"
+msgid "https://github.com/amule-org/amule - the multi-platform Mule"
+msgstr "https://github.com/amule-org/amule – Mule za vse platforme"
 
 #: src/muuli_wdr.cpp:1202
 msgid "This is the name that other users will see when connecting to you."
@@ -5930,8 +5930,8 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\tPo vsej verjetnosti ste za požarnim zidom ali usmerjevalnikom."
 
 #: src/ServerSocket.cpp:435
-msgid "\tFor more information, please refer to http://wiki.amule.org"
-msgstr "\tZa več informacij se obrnite na http://wiki.amule.org"
+msgid "\tFor more information, please refer to https://github.com/amule-org/amule/wiki"
+msgstr "\tZa več informacij se obrnite na https://github.com/amule-org/amule/wiki"
 
 #: src/ServerSocket.cpp:491
 msgid "Unknown server info received! - too short"

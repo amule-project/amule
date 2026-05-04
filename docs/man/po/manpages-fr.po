@@ -278,12 +278,12 @@ msgstr "RAPPORTER DES BOGUES"
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
 msgid ""
-"Please report bugs either on our forum (I<http://forum.amule.org/>), or in "
-"our bugtracker (I<http://bugs.amule.org/>).  Please do not report bugs in e-"
+"Please report bugs either on our forum (I<https://github.com/amule-org/amule/discussions>), or in "
+"our bugtracker (I<https://github.com/amule-org/amule/issues>).  Please do not report bugs in e-"
 "mail, neither to our mailing list nor directly to any team member."
 msgstr ""
-"Veuillez rapporter les bogues sur notre forum (I<http://forum.amule.org/>), "
-"ou sur notre bugtracker (I<http://bugs.amule.org/>).  Veuillez ne pas "
+"Veuillez rapporter les bogues sur notre forum (I<https://github.com/amule-org/amule/discussions>), "
+"ou sur notre bugtracker (I<https://github.com/amule-org/amule/issues>).  Veuillez ne pas "
 "rapporter les bogues par e-mail, sur notre liste de diffusion ou directement "
 "à n'importe quel membre  de l'équipe."
 

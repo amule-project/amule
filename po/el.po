@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2020-03-04 12:18+0100\n"
 "Last-Translator: Dimitris <dgalanak@yahoo.com>\n"
@@ -299,13 +299,13 @@ msgstr ""
 "στην ιστοσελίδα μας,\n"
 
 #: src/amule.cpp:1160
-msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr "στο www.aMule.org, ή στο κανάλι #aMule του IRC στο irc.freenode.net.\n"
+msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgstr "στο https://github.com/amule-org/amule, ή στο κανάλι #aMule του IRC στο irc.freenode.net.\n"
 
 #: src/amule.cpp:1162
-msgid "Feel free to report any bugs to http://forum.amule.org"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
 msgstr ""
-"Παρακαλούμε αναφέρετε σφάλματα του προγράμματος στο http://forum.amule.org"
+"Παρακαλούμε αναφέρετε σφάλματα του προγράμματος στο https://github.com/amule-org/amule/discussions"
 
 #: src/amule.cpp:1175
 msgid ""
@@ -372,8 +372,8 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Η παρούσα έκδοση του aMule είναι %i.%i.%i και η τελευταία %li.%li.%li"
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at http://www.amule.org"
-msgstr "Η τελευταία έκδοση μπορεί να βρεθεί στο http://www.amule.org"
+msgid "The latest version can always be found at https://github.com/amule-org/amule"
+msgstr "Η τελευταία έκδοση μπορεί να βρεθεί στο https://github.com/amule-org/amule"
 
 #: src/amule.cpp:1759
 #, c-format
@@ -478,7 +478,7 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at http://wiki.amule.org"
+"password. More information can be found at https://github.com/amule-org/amule/wiki"
 msgstr ""
 
 #: src/amuled.cpp:175
@@ -509,9 +509,9 @@ msgid "Running on %s"
 msgstr "Τρέχει στο %s"
 
 #: src/amuleDlg.cpp:238
-msgid "Visit http://www.amule.org to check if a new version is available."
+msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
 msgstr ""
-"Επισκεφτείτε το http://www.amule.org για να δείτε αν υπάρχει νέα έκδοση."
+"Επισκεφτείτε το https://github.com/amule-org/amule για να δείτε αν υπάρχει νέα έκδοση."
 
 #: src/amuleDlg.cpp:264
 msgid "FATAL ERROR: Failed to create Timer"
@@ -534,19 +534,19 @@ msgstr ""
 "\n"
 
 #: src/amuleDlg.cpp:498
-msgid "Website: http://www.amule.org \n"
-msgstr "Ιστοσελίδα: http://www.amule.org \n"
+msgid "Website: https://github.com/amule-org/amule \n"
+msgstr "Ιστοσελίδα: https://github.com/amule-org/amule \n"
 
 #: src/amuleDlg.cpp:499
-msgid "Forum: http://forum.amule.org \n"
-msgstr "Συζητήσεις: http://forum.amule.org \n"
+msgid "Forum: https://github.com/amule-org/amule/discussions \n"
+msgstr "Συζητήσεις: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:500
 msgid ""
-"FAQ: http://wiki.amule.org \n"
+"FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
 msgstr ""
-"Συχνές Ερωτήσεις: http://wiki.amule.org \n"
+"Συχνές Ερωτήσεις: https://github.com/amule-org/amule/wiki \n"
 "\n"
 
 #: src/amuleDlg.cpp:501
@@ -1656,11 +1656,11 @@ msgstr "Φόρτωση δεδομένων από το παλιό αρχείο κ
 
 #: src/DownloadQueue.cpp:150
 msgid ""
-"ERROR: Failed to load backup file. Search http://forum.amule.org "
+"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions "
 "for .part.met recovery solutions."
 msgstr ""
-"ΣΦΑΛΜΑ: Αποτυχία φορτώματος του αντιγράφου ασφαλείας. Ψάξτε στο http://"
-"forum.amule.org για λύσεις ανάκτησης αρχείων .part.met"
+"ΣΦΑΛΜΑ: Αποτυχία φορτώματος του αντιγράφου ασφαλείας. Ψάξτε στο https://github.com/amule-org/amule/discussions"
+" για λύσεις ανάκτησης αρχείων .part.met"
 
 #: src/DownloadQueue.cpp:159
 msgid "All PartFiles Loaded."
@@ -3463,8 +3463,8 @@ msgid "Nick"
 msgstr "Παρατσούκλι"
 
 #: src/muuli_wdr.cpp:1201
-msgid "http://www.aMule.org - the multi-platform Mule"
-msgstr "http://www.aMule.org - το μουλάρι όλων των πλατφόρμων"
+msgid "https://github.com/amule-org/amule - the multi-platform Mule"
+msgstr "https://github.com/amule-org/amule - το μουλάρι όλων των πλατφόρμων"
 
 #: src/muuli_wdr.cpp:1202
 msgid "This is the name that other users will see when connecting to you."
@@ -5961,10 +5961,10 @@ msgstr ""
 "\tΠιθανότατα αυτό είναι γιατί είστε πίσω από τοίχο προστασίας ή δρομολογητή."
 
 #: src/ServerSocket.cpp:435
-msgid "\tFor more information, please refer to http://wiki.amule.org"
+msgid "\tFor more information, please refer to https://github.com/amule-org/amule/wiki"
 msgstr ""
-"\tΓια περισσότερες πληροφορίες, παρακαλώ αναφερθείτε στο http://"
-"wiki.amule.org"
+"\tΓια περισσότερες πληροφορίες, παρακαλώ αναφερθείτε στο https://github.com/amule-org/amule/wiki"
+""
 
 #: src/ServerSocket.cpp:491
 msgid "Unknown server info received! - too short"
