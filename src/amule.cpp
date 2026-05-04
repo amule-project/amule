@@ -639,7 +639,7 @@ bool CamuleApp::OnInit()
 	if (thePrefs::GetCheckNewVersion()) {
 		// We use the thread base because I don't want a dialog to pop up.
 		CHTTPDownloadThread* version_check =
-			new CHTTPDownloadThread("https://api.github.com/repos/amule-project/amule/releases/latest",
+			new CHTTPDownloadThread("https://api.github.com/repos/amule-org/amule/releases/latest",
 				thePrefs::GetConfigDir() + "last_version_check", thePrefs::GetConfigDir() + "last_version", HTTP_VersionCheck, false, false);
 		version_check->Create();
 		version_check->Run();

@@ -332,7 +332,7 @@ modules:
     # release tags are pushed upstream.
     sources:
       - type: git
-        url: https://github.com/amule-project/amule.git
+        url: https://github.com/amule-org/amule.git
         branch: ${AMULE_REVISION}
         # Default flatpak-builder fetch is a shallow clone, which strips
         # all tags. Without tags `git describe --tags` (called from

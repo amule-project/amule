@@ -162,7 +162,7 @@ For anything else, the wiki and forum are the best places to look:
 
 * Wiki: <http://wiki.amule.org>
 * Forum: <http://forum.amule.org>
-* GitHub Issues: <https://github.com/amule-project/amule/issues>
+* GitHub Issues: <https://github.com/amule-org/amule/issues>
 
 
 ## Safety / legal

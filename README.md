@@ -1,6 +1,6 @@
 # aMule
 
-![aMule](https://raw.githubusercontent.com/amule-project/amule/master/org.amule.aMule.png)
+![aMule](https://raw.githubusercontent.com/amule-org/amule/master/org.amule.aMule.png)
 
 aMule is an eMule-like client for the eDonkey and Kademlia networks.
 
@@ -75,7 +75,7 @@ If you find a bug or miss a feature, please open an issue on
 includes the exact aMule version (`amuled --version`), the platform you're
 on, and steps to reproduce.
 
-[5]: https://github.com/amule-project/amule/issues "aMule Issues"
+[5]: https://github.com/amule-org/amule/issues "aMule Issues"
 
 
 ## Contributing
@@ -91,7 +91,7 @@ You can contribute to aMule in several ways:
 * **Wiki** — aMule's wiki contains historical content that no longer matches
   current behaviour. Updating outdated pages is genuinely helpful.
 
-[6]: https://github.com/amule-project/amule/pulls "aMule Pull Requests"
+[6]: https://github.com/amule-org/amule/pulls "aMule Pull Requests"
 [7]: http://wiki.amule.org/wiki/Translations "Translating aMule"
 [8]: http://wiki.amule.org/wiki/Translating_Wiki "Translating the wiki"
 [9]: http://wiki.amule.org/wiki/Translating_Docs "Translating the documentation"
