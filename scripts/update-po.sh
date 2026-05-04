@@ -73,7 +73,7 @@ xgettext \
 	--copyright-holder='Free Software Foundation, Inc.' \
 	--package-name='aMule' \
 	--package-version='SVN' \
-	--msgid-bugs-address='http://forum.amule.org/index.php?board=40.0'
+	--msgid-bugs-address='https://github.com/amule-org/amule/issues'
 die 30 "xgettext failed"
 
 # xgettext writes "Copyright (C) YEAR" as a placeholder; fill it in.

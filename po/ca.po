@@ -13,7 +13,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2025-12-27 18:51+0100\n"
 "Last-Translator: minterior <minterior@gmail.com>\n"
@@ -295,12 +295,12 @@ msgstr ""
 "Podeu trobar més informació, ajuda i noves versions a la nostra pàgina web,\n"
 
 #: src/amule.cpp:1160
-msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr "www.aMule.org, o al nostre canal IRC #aMule de irc.freenode.net.\n"
+msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgstr "https://github.com/amule-org/amule, o al nostre canal IRC #aMule de irc.freenode.net.\n"
 
 #: src/amule.cpp:1162
-msgid "Feel free to report any bugs to http://forum.amule.org"
-msgstr "Podeu informar de qualsevol error a http://forum.amule.org"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgstr "Podeu informar de qualsevol error a https://github.com/amule-org/amule/discussions"
 
 #: src/amule.cpp:1175
 msgid ""
@@ -368,8 +368,8 @@ msgstr ""
 "La vostra versió de l'aMule és %i.%i.%i i l'última versió és %li.%li.%li"
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at http://www.amule.org"
-msgstr "Sempre podeu trobar l'última versió a http://www.amule.org"
+msgid "The latest version can always be found at https://github.com/amule-org/amule"
+msgstr "Sempre podeu trobar l'última versió a https://github.com/amule-org/amule"
 
 #: src/amule.cpp:1759
 #, c-format
@@ -471,14 +471,14 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at http://wiki.amule.org"
+"password. More information can be found at https://github.com/amule-org/amule/wiki"
 msgstr ""
 "ERROR: És obligatori l'ús d'una contrassenya vàlida per usar connexions "
 "externes, el dimoni de l'aMule no pot usar-se sense connexions externes. Per "
 "executar el dimoni aMule, el camp \"ECPassword\" del fitxer ~/.aMule/"
 "amule.conf ha de tenir un valor assignat. Executa amuled amb els paràmetres "
-"--ec-config per establir una contrassenya. Més informació a http://"
-"wiki.amule.org"
+"--ec-config per establir una contrassenya. Més informació a https://github.com/amule-org/amule/wiki"
+""
 
 #: src/amuled.cpp:175
 msgid "amuled: OnInit - starting timer"
@@ -508,9 +508,9 @@ msgid "Running on %s"
 msgstr "S'està executant sobre %s"
 
 #: src/amuleDlg.cpp:238
-msgid "Visit http://www.amule.org to check if a new version is available."
+msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
 msgstr ""
-"Visiteu http://www.amule.org per a comprovar si hi ha disponible una versió "
+"Visiteu https://github.com/amule-org/amule per a comprovar si hi ha disponible una versió "
 "nova."
 
 #: src/amuleDlg.cpp:264
@@ -532,19 +532,19 @@ msgid ""
 msgstr "Client P2P 'Multiplataforma' basat en eMule \n"
 
 #: src/amuleDlg.cpp:498
-msgid "Website: http://www.amule.org \n"
-msgstr "Lloc web: http://www.amule.org \n"
+msgid "Website: https://github.com/amule-org/amule \n"
+msgstr "Lloc web: https://github.com/amule-org/amule \n"
 
 #: src/amuleDlg.cpp:499
-msgid "Forum: http://forum.amule.org \n"
-msgstr "Fòrum: http://forum.amule.org \n"
+msgid "Forum: https://github.com/amule-org/amule/discussions \n"
+msgstr "Fòrum: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:500
 msgid ""
-"FAQ: http://wiki.amule.org \n"
+"FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
 msgstr ""
-"PMF: http://wiki.amule.org \n"
+"PMF: https://github.com/amule-org/amule/wiki \n"
 "\n"
 
 #: src/amuleDlg.cpp:501
@@ -1655,11 +1655,11 @@ msgstr "S'està carregant els fitxer de descarrega %u de %u"
 
 #: src/DownloadQueue.cpp:150
 msgid ""
-"ERROR: Failed to load backup file. Search http://forum.amule.org "
+"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions "
 "for .part.met recovery solutions."
 msgstr ""
 "ERROR: No s'ha pogut carregar la còpia de seguretat. Cerqueu '.part.met "
-"recovery solutions' a http://forum.amule.org."
+"recovery solutions' a https://github.com/amule-org/amule/discussions."
 
 #: src/DownloadQueue.cpp:159
 msgid "All PartFiles Loaded."
@@ -3453,8 +3453,8 @@ msgid "Nick"
 msgstr "Sobrenom"
 
 #: src/muuli_wdr.cpp:1201
-msgid "http://www.aMule.org - the multi-platform Mule"
-msgstr "http://www.aMule.org - el Mule multi-plataforma"
+msgid "https://github.com/amule-org/amule - the multi-platform Mule"
+msgstr "https://github.com/amule-org/amule - el Mule multi-plataforma"
 
 #: src/muuli_wdr.cpp:1202
 msgid "This is the name that other users will see when connecting to you."
@@ -5917,8 +5917,8 @@ msgstr ""
 "\tAixò normalment és perquè esteu darrere d'un tallafocs o un encaminador."
 
 #: src/ServerSocket.cpp:435
-msgid "\tFor more information, please refer to http://wiki.amule.org"
-msgstr "\tPer a rebre més informació, si us plau visiteu http://wiki.amule.org"
+msgid "\tFor more information, please refer to https://github.com/amule-org/amule/wiki"
+msgstr "\tPer a rebre més informació, si us plau visiteu https://github.com/amule-org/amule/wiki"
 
 #: src/ServerSocket.cpp:491
 msgid "Unknown server info received! - too short"

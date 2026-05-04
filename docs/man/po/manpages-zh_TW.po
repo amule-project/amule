@@ -272,12 +272,11 @@ msgstr "回報問題"
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
 msgid ""
-"Please report bugs either on our forum (I<http://forum.amule.org/>), or in "
-"our bugtracker (I<http://bugs.amule.org/>).  Please do not report bugs in e-"
+"Please report bugs either on our forum (I<https://github.com/amule-org/amule/discussions>), or in "
+"our bugtracker (I<https://github.com/amule-org/amule/issues>).  Please do not report bugs in e-"
 "mail, neither to our mailing list nor directly to any team member."
 msgstr ""
-"請到我們的論壇 (I<http://forum.amule.org/>) 或錯誤追蹤網站 (I<http://bugs."
-"amule.org/>) 回報發現的問題。請不要用 e-mail 或在我們的群組信件中回報，也不要"
+"請到我們的論壇 (I<https://github.com/amule-org/amule/discussions>) 或錯誤追蹤網站 (I<https://github.com/amule-org/amule/issues>) 回報發現的問題。請不要用 e-mail 或在我們的群組信件中回報，也不要"
 "直接通知某個團隊成員。"
 
 #. type: SH

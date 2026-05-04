@@ -13,7 +13,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2020-03-04 15:41+0100\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
@@ -287,12 +287,12 @@ msgid "More information, support and new releases can found at our homepage,\n"
 msgstr "在我們的網頁可找到更多資訊、使用者支援以及程式最新版本：\n"
 
 #: src/amule.cpp:1160
-msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr "http://www.aMule.org，或我們在 irc.freenode.net 的 IRC 頻道 #aMule。\n"
+msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgstr "https://github.com/amule-org/amule，或我們在 irc.freenode.net 的 IRC 頻道 #aMule。\n"
 
 #: src/amule.cpp:1162
-msgid "Feel free to report any bugs to http://forum.amule.org"
-msgstr "歡迎您到 http://forum.amule.org 提出錯誤報告"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgstr "歡迎您到 https://github.com/amule-org/amule/discussions 提出錯誤報告"
 
 #: src/amule.cpp:1175
 msgid ""
@@ -356,8 +356,8 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "您的 aMule 版本是 %i.%i.%i，最新版本是 %li.%li.%li"
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at http://www.amule.org"
-msgstr "最新版本可從這裏下載：http://www.amule.org"
+msgid "The latest version can always be found at https://github.com/amule-org/amule"
+msgstr "最新版本可從這裏下載：https://github.com/amule-org/amule"
 
 #: src/amule.cpp:1759
 #, c-format
@@ -456,12 +456,12 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at http://wiki.amule.org"
+"password. More information can be found at https://github.com/amule-org/amule/wiki"
 msgstr ""
 "錯誤：需要有效的密碼以使用外部連線，且 aMule 背景服務程式要有外部連線才可使"
 "用。要執行 aMule 背景服務程式，您必須在檔案 ~/aMule/amule.conf 中將 "
 "「ECPassword」 設定值改為適當的數字。使用 --ec-config 參數啓動 amuled 以設定"
-"密碼。請到 http://wiki.amule.org 取得更多資訊"
+"密碼。請到 https://github.com/amule-org/amule/wiki 取得更多資訊"
 
 #: src/amuled.cpp:175
 msgid "amuled: OnInit - starting timer"
@@ -491,8 +491,8 @@ msgid "Running on %s"
 msgstr "執行於 %s"
 
 #: src/amuleDlg.cpp:238
-msgid "Visit http://www.amule.org to check if a new version is available."
-msgstr "請到 http://www.amule.org 下載最新版本。"
+msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
+msgstr "請到 https://github.com/amule-org/amule 下載最新版本。"
 
 #: src/amuleDlg.cpp:264
 msgid "FATAL ERROR: Failed to create Timer"
@@ -515,19 +515,19 @@ msgstr ""
 "\n"
 
 #: src/amuleDlg.cpp:498
-msgid "Website: http://www.amule.org \n"
-msgstr "網站：http://www.amule.org \n"
+msgid "Website: https://github.com/amule-org/amule \n"
+msgstr "網站：https://github.com/amule-org/amule \n"
 
 #: src/amuleDlg.cpp:499
-msgid "Forum: http://forum.amule.org \n"
-msgstr "論壇：http://forum.amule.org \n"
+msgid "Forum: https://github.com/amule-org/amule/discussions \n"
+msgstr "論壇：https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:500
 msgid ""
-"FAQ: http://wiki.amule.org \n"
+"FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
 msgstr ""
-"FAQ：http://wiki.amule.org \n"
+"FAQ：https://github.com/amule-org/amule/wiki \n"
 "\n"
 
 #: src/amuleDlg.cpp:501
@@ -1599,10 +1599,10 @@ msgstr "正在載入暫存檔 (%u / %u)"
 
 #: src/DownloadQueue.cpp:150
 msgid ""
-"ERROR: Failed to load backup file. Search http://forum.amule.org "
+"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions "
 "for .part.met recovery solutions."
 msgstr ""
-"錯誤：無法載入備份檔案，請到 http://forum.amule.org 搜尋復原 .part.met 的方"
+"錯誤：無法載入備份檔案，請到 https://github.com/amule-org/amule/discussions 搜尋復原 .part.met 的方"
 "法。"
 
 #: src/DownloadQueue.cpp:159
@@ -3345,8 +3345,8 @@ msgid "Nick"
 msgstr "暱稱"
 
 #: src/muuli_wdr.cpp:1201
-msgid "http://www.aMule.org - the multi-platform Mule"
-msgstr "http://www.aMule.org - 跨平台的騾子"
+msgid "https://github.com/amule-org/amule - the multi-platform Mule"
+msgstr "https://github.com/amule-org/amule - 跨平台的騾子"
 
 #: src/muuli_wdr.cpp:1202
 msgid "This is the name that other users will see when connecting to you."
@@ -5702,8 +5702,8 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\t可能是因爲受到防火牆或網路分享器影響。"
 
 #: src/ServerSocket.cpp:435
-msgid "\tFor more information, please refer to http://wiki.amule.org"
-msgstr "\t請參考 http://wiki.amule.org 的資訊"
+msgid "\tFor more information, please refer to https://github.com/amule-org/amule/wiki"
+msgstr "\t請參考 https://github.com/amule-org/amule/wiki 的資訊"
 
 #: src/ServerSocket.cpp:491
 msgid "Unknown server info received! - too short"

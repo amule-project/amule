@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2020-03-04 15:10+0100\n"
 "Last-Translator: Fation <dj_barthezz@linuxmail.org "
@@ -293,13 +293,13 @@ msgstr ""
 "tona,\n"
 
 #: src/amule.cpp:1160
-msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
-"tek www.amule.org ose ne kanalin tone IRC #amule tek irc.freenode.net.\n"
+"tek github.com/amule-org/amule ose ne kanalin tone IRC #amule tek irc.freenode.net.\n"
 
 #: src/amule.cpp:1162
-msgid "Feel free to report any bugs to http://forum.amule.org"
-msgstr "Raportoni cdo gabim tek http://forum.amule.org"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgstr "Raportoni cdo gabim tek https://github.com/amule-org/amule/discussions"
 
 #: src/amule.cpp:1175
 msgid ""
@@ -365,8 +365,8 @@ msgstr ""
 "Versioni juaj i amUle eshte %i.%i-%i dhe versioni i fundit eshte %li.%li.%li"
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at http://www.amule.org"
-msgstr "Versioni i fundit mund te gjendet gjithmone tek http://www.amule.org"
+msgid "The latest version can always be found at https://github.com/amule-org/amule"
+msgstr "Versioni i fundit mund te gjendet gjithmone tek https://github.com/amule-org/amule"
 
 #: src/amule.cpp:1759
 #, c-format
@@ -469,7 +469,7 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at http://wiki.amule.org"
+"password. More information can be found at https://github.com/amule-org/amule/wiki"
 msgstr ""
 
 #: src/amuled.cpp:175
@@ -500,9 +500,9 @@ msgid "Running on %s"
 msgstr "Duke punuar ne %s"
 
 #: src/amuleDlg.cpp:238
-msgid "Visit http://www.amule.org to check if a new version is available."
+msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
 msgstr ""
-"Vizitoni http://www.amule.org per te kontrolluar nqs eshte ne dispozicion "
+"Vizitoni https://github.com/amule-org/amule per te kontrolluar nqs eshte ne dispozicion "
 "nje version i ri."
 
 #: src/amuleDlg.cpp:264
@@ -524,16 +524,16 @@ msgid ""
 msgstr ""
 
 #: src/amuleDlg.cpp:498
-msgid "Website: http://www.amule.org \n"
+msgid "Website: https://github.com/amule-org/amule \n"
 msgstr ""
 
 #: src/amuleDlg.cpp:499
-msgid "Forum: http://forum.amule.org \n"
+msgid "Forum: https://github.com/amule-org/amule/discussions \n"
 msgstr ""
 
 #: src/amuleDlg.cpp:500
 msgid ""
-"FAQ: http://wiki.amule.org \n"
+"FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
 msgstr ""
 
@@ -1634,7 +1634,7 @@ msgstr "Duke ngarkuar te dhena nga nje fail i shkarkuar i vjeter (%u te %u)"
 
 #: src/DownloadQueue.cpp:150
 msgid ""
-"ERROR: Failed to load backup file. Search http://forum.amule.org "
+"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions "
 "for .part.met recovery solutions."
 msgstr ""
 
@@ -3416,7 +3416,7 @@ msgid "Nick"
 msgstr "Nick"
 
 #: src/muuli_wdr.cpp:1201
-msgid "http://www.aMule.org - the multi-platform Mule"
+msgid "https://github.com/amule-org/amule - the multi-platform Mule"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1202
@@ -5866,8 +5866,8 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\tMbase ngaqe ju jeni mbas nje firewalli ose routeri."
 
 #: src/ServerSocket.cpp:435
-msgid "\tFor more information, please refer to http://wiki.amule.org"
-msgstr "\tPer me shume informacion ju lutem vizitoni http://wiki.amule.org"
+msgid "\tFor more information, please refer to https://github.com/amule-org/amule/wiki"
+msgstr "\tPer me shume informacion ju lutem vizitoni https://github.com/amule-org/amule/wiki"
 
 #: src/ServerSocket.cpp:491
 msgid "Unknown server info received! - too short"

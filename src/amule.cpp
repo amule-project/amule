@@ -1120,12 +1120,12 @@ void CamuleApp::OnFatalException()
 	wxString msg;
 	msg	<< "\n--------------------------------------------------------------------------------\n"
 		<< "A fatal error has occurred and aMule has crashed.\n"
-		<< "Please assist us in fixing this problem by posting the backtrace below in our\n"
-		<< "'aMule Crashes' forum and include as much information as possible regarding the\n"
-		<< "circumstances of this crash. The forum is located here:\n"
-		<< "    http://forum.amule.org/index.php?board=67.0\n"
+		<< "Please assist us in fixing this problem by reporting the backtrace below as a\n"
+		<< "GitHub issue, including as much information as possible regarding the\n"
+		<< "circumstances of this crash. Issue tracker:\n"
+		<< "    https://github.com/amule-org/amule/issues\n"
 		<< "If possible, please try to generate a real backtrace of this crash:\n"
-		<< "    http://wiki.amule.org/wiki/Backtraces\n\n"
+		<< "    https://github.com/amule-org/amule/wiki/Backtraces\n\n"
 		<< "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n"
 		<< "Current version is: " << FullMuleVersion
 		<< "\nRunning on: " << OSDescription
@@ -1163,9 +1163,9 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 	// General info
 	info += "\n";
 	info += _("More information, support and new releases can found at our homepage,\n");
-	info += _("at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n");
+	info += _("at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n");
 	info += "\n";
-	info += _("Feel free to report any bugs to http://forum.amule.org");
+	info += _("Feel free to report any bugs to https://github.com/amule-org/amule/issues");
 
 	ShowAlert(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
 }
@@ -1816,7 +1816,7 @@ void CamuleApp::CheckNewVersion(uint32 result)
 				AddLogLineC(_("You are using an outdated version of aMule!"));
 				// cppcheck-suppress zerodiv
 				AddLogLineN(CFormat(_("Your aMule version is %i.%i.%i and the latest version is %li.%li.%li")) % VERSION_MJR % VERSION_MIN % VERSION_UPDATE % fields[0] % fields[1] % fields[2]);
-				AddLogLineN(_("The latest version can always be found at http://www.amule.org"));
+				AddLogLineN(_("The latest version can always be found at https://github.com/amule-org/amule"));
 				#ifdef AMULE_DAEMON
 				AddLogLineCS(CFormat(_("WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"))
 					% VERSION_MJR % VERSION_MIN % VERSION_UPDATE % fields[0] % fields[1] % fields[2]);

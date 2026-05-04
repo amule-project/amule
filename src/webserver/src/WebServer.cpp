@@ -1887,7 +1887,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 			CMD4Hash PwHash;
 			if (!PwHash.Decode(MD5Sum(PwStr).GetHash())) {
 				Print(_("Password hash invalid\n"));
-				session->m_vars["login_error"] = "Invalid password hash, please report on http://forum.amule.org";
+				session->m_vars["login_error"] = "Invalid password hash, please report at https://github.com/amule-org/amule/issues";
 			} else if ( PwHash == webInterface->m_AdminPass ) {
 				session->m_logged_in = true;
 				// m_vars is map<string, string> - so _() will not work here !
@@ -2008,7 +2008,7 @@ void CNoTemplateWebServer::ProcessURL(ThreadData Data)
 				"<li>If you are installing by using a precompiled package, you may need to contact the package maintainer </li>"
 			"</ul>"
 			"<p>For more information please visit</p>"
-			"<p><a href=\"http://www.amule.org\">aMule main site</a> or <a href=\"http://forum.amule.org\">aMule forums</a></p>"
+			"<p><a href=\"https://github.com/amule-org/amule\">aMule on GitHub</a> or <a href=\"https://github.com/amule-org/amule/discussions\">aMule Discussions</a></p>"
 		"</body>"
 	"</html>";
 

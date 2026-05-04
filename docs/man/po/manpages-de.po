@@ -306,12 +306,12 @@ msgstr "FEHLER MELDEN"
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
 msgid ""
-"Please report bugs either on our forum (I<http://forum.amule.org/>), or in "
-"our bugtracker (I<http://bugs.amule.org/>).  Please do not report bugs in e-"
+"Please report bugs either on our forum (I<https://github.com/amule-org/amule/discussions>), or in "
+"our bugtracker (I<https://github.com/amule-org/amule/issues>).  Please do not report bugs in e-"
 "mail, neither to our mailing list nor directly to any team member."
 msgstr ""
-"Bitte meldet Fehler entweder in unserem Forum (I<http://forum.amule.org/>), "
-"oder in unseren Bugtracker (I<http://bugs.amule.org/>). Bitte meldet uns "
+"Bitte meldet Fehler entweder in unserem Forum (I<https://github.com/amule-org/amule/discussions>), "
+"oder in unseren Bugtracker (I<https://github.com/amule-org/amule/issues>). Bitte meldet uns "
 "weder Fehler per E-Mail, noch auf unsere Mailingliste oder direkt an unsere "
 "Teammitglieder."
 

@@ -273,12 +273,12 @@ msgstr "RAPORTAREA ERORILOR"
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
 msgid ""
-"Please report bugs either on our forum (I<http://forum.amule.org/>), or in "
-"our bugtracker (I<http://bugs.amule.org/>).  Please do not report bugs in e-"
+"Please report bugs either on our forum (I<https://github.com/amule-org/amule/discussions>), or in "
+"our bugtracker (I<https://github.com/amule-org/amule/issues>).  Please do not report bugs in e-"
 "mail, neither to our mailing list nor directly to any team member."
 msgstr ""
 "Vă rugăm să raportați erorile fie pe forumul  nostru(I<http://forum.amule."
-"org/>), sau în bugtracker-ul nostru (I<http://bugs.amule.org/>). Nu "
+"org/>), sau în bugtracker-ul nostru (I<https://github.com/amule-org/amule/issues>). Nu "
 "raportați erorile pe email, nici la lista noastră de adrese nici direct la "
 "nici un membru al echipei."
 

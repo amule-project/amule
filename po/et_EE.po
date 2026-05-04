@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2020-03-04 12:26+0100\n"
 "Last-Translator: \n"
@@ -294,16 +294,16 @@ msgstr ""
 "kodulehelt,\n"
 
 #: src/amule.cpp:1160
-msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
-"aadressil www.aMule.org või meie IRC kanalis #aMule aadressil "
+"aadressil https://github.com/amule-org/amule või meie IRC kanalis #aMule aadressil "
 "irc.freenode.net.\n"
 
 #: src/amule.cpp:1162
-msgid "Feel free to report any bugs to http://forum.amule.org"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
 msgstr ""
 "Tunne ennast vabalt suvaliste vigade leidmisest teavitamisel aadressil "
-"http://forum.amule.org"
+"https://github.com/amule-org/amule/discussions"
 
 #: src/amule.cpp:1175
 msgid ""
@@ -367,8 +367,8 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Sinu aMule versioon on %i.%i.%i ja uusim versioon on %li.%li.%li"
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at http://www.amule.org"
-msgstr "Uuema aMule versiooni saad alati aadressilt http://www.amule.org"
+msgid "The latest version can always be found at https://github.com/amule-org/amule"
+msgstr "Uuema aMule versiooni saad alati aadressilt https://github.com/amule-org/amule"
 
 #: src/amule.cpp:1759
 #, c-format
@@ -469,13 +469,13 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at http://wiki.amule.org"
+"password. More information can be found at https://github.com/amule-org/amule/wiki"
 msgstr ""
 "VIGA: Väliste ühenduste jaoks peab olema määratud kehtiv parool ning aMule "
 "deemonit ei saa kasutada ilma väliste ühendusteta. aMule deemoni "
 "kasutamiseks pead määrama konfiguratsioonifailis ~/.aMule/amule.conf  "
 "\"ECPassword\" väärtuseks kohase väärtuse.Parooli seadmiseks käivita amuled "
-"võtmega '--ec-config'. Lisainformatsiooni leiad http://wiki.amule.org"
+"võtmega '--ec-config'. Lisainformatsiooni leiad https://github.com/amule-org/amule/wiki"
 
 #: src/amuled.cpp:175
 msgid "amuled: OnInit - starting timer"
@@ -505,8 +505,8 @@ msgid "Running on %s"
 msgstr "Jookseb %s peal"
 
 #: src/amuleDlg.cpp:238
-msgid "Visit http://www.amule.org to check if a new version is available."
-msgstr "Külasta http://www.amule.org ja vaata ehk on uuem versioon saadaval."
+msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
+msgstr "Külasta https://github.com/amule-org/amule ja vaata ehk on uuem versioon saadaval."
 
 #: src/amuleDlg.cpp:264
 msgid "FATAL ERROR: Failed to create Timer"
@@ -529,19 +529,19 @@ msgstr ""
 "\n"
 
 #: src/amuleDlg.cpp:498
-msgid "Website: http://www.amule.org \n"
-msgstr "Web: http://www.amule.org \n"
+msgid "Website: https://github.com/amule-org/amule \n"
+msgstr "Web: https://github.com/amule-org/amule \n"
 
 #: src/amuleDlg.cpp:499
-msgid "Forum: http://forum.amule.org \n"
-msgstr "Foorum: http://forum.amule.org \n"
+msgid "Forum: https://github.com/amule-org/amule/discussions \n"
+msgstr "Foorum: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:500
 msgid ""
-"FAQ: http://wiki.amule.org \n"
+"FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
 msgstr ""
-"KKK: http://wiki.amule.org \n"
+"KKK: https://github.com/amule-org/amule/wiki \n"
 "\n"
 
 #: src/amuleDlg.cpp:501
@@ -1635,11 +1635,11 @@ msgstr "Laen osafaili %u %u-st"
 
 #: src/DownloadQueue.cpp:150
 msgid ""
-"ERROR: Failed to load backup file. Search http://forum.amule.org "
+"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions "
 "for .part.met recovery solutions."
 msgstr ""
-"VIGA: Ei suutnud laadida tagavarafaili. Vaata aadressilt http://"
-"forum.amule.org, kas leiad juhiseid .part. met faili taastamiseks"
+"VIGA: Ei suutnud laadida tagavarafaili. Vaata aadressilt https://github.com/amule-org/amule/discussions"
+", kas leiad juhiseid .part. met faili taastamiseks"
 
 #: src/DownloadQueue.cpp:159
 msgid "All PartFiles Loaded."
@@ -3404,8 +3404,8 @@ msgid "Nick"
 msgstr "Nimi"
 
 #: src/muuli_wdr.cpp:1201
-msgid "http://www.aMule.org - the multi-platform Mule"
-msgstr "http://www.aMule.org - mitme platvormi Muul"
+msgid "https://github.com/amule-org/amule - the multi-platform Mule"
+msgstr "https://github.com/amule-org/amule - mitme platvormi Muul"
 
 #: src/muuli_wdr.cpp:1202
 msgid "This is the name that other users will see when connecting to you."
@@ -5836,8 +5836,8 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\tTõenäolisem põhjus on sinu asumine tulemüüri või ruuteri 'taga'."
 
 #: src/ServerSocket.cpp:435
-msgid "\tFor more information, please refer to http://wiki.amule.org"
-msgstr "\tTäpsemat informatsiooni leiad http://wiki.amule.org"
+msgid "\tFor more information, please refer to https://github.com/amule-org/amule/wiki"
+msgstr "\tTäpsemat informatsiooni leiad https://github.com/amule-org/amule/wiki"
 
 #: src/ServerSocket.cpp:491
 msgid "Unknown server info received! - too short"

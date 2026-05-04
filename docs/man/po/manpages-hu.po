@@ -275,12 +275,12 @@ msgstr "HIBÁK JELENTÉSE"
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #: ../../src/utils/xas/docs/xas.1:19
 msgid ""
-"Please report bugs either on our forum (I<http://forum.amule.org/>), or in "
-"our bugtracker (I<http://bugs.amule.org/>).  Please do not report bugs in e-"
+"Please report bugs either on our forum (I<https://github.com/amule-org/amule/discussions>), or in "
+"our bugtracker (I<https://github.com/amule-org/amule/issues>).  Please do not report bugs in e-"
 "mail, neither to our mailing list nor directly to any team member."
 msgstr ""
-"A hibákat kérjük vagy a fórumon (I<http://forum.amule.org/>), vagy a "
-"hibakövetőben (I<http://bugs.amule.org/>) jelentsék. Hibákról kérjük ne "
+"A hibákat kérjük vagy a fórumon (I<https://github.com/amule-org/amule/discussions>), vagy a "
+"hibakövetőben (I<https://github.com/amule-org/amule/issues>) jelentsék. Hibákról kérjük ne "
 "írjanak levelet (e-mail-t) se a levelezési listára, se közvetlenül "
 "valamelyik fejlesztőnek."
 

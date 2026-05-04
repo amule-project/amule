@@ -10,11 +10,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"Report-Msgid-Bugs-To: http://forum.amule.org/index.php?board=40.0\n"
+"Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-05-03 06:32+0200\n"
 "PO-Revision-Date: 2020-03-04 12:31+0100\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
-"Language-Team: aMule Team <http://www.amule.org>\n"
+"Language-Team: aMule Team <https://github.com/amule-org/amule>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -292,14 +292,14 @@ msgstr ""
 "Lisätietoa, tukea ja uudet julkaisut löytyvät kotisivuiltamme osoitteessa\n"
 
 #: src/amule.cpp:1160
-msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgid "at https://github.com/amule-org/amule, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
-"http://www.aMule.org tai IRC-kanavaltamme #aMule palvelimella "
+"https://github.com/amule-org/amule tai IRC-kanavaltamme #aMule palvelimella "
 "irc.freenode.net (englanniksi).\n"
 
 #: src/amule.cpp:1162
-msgid "Feel free to report any bugs to http://forum.amule.org"
-msgstr "Voit vapaasti raportoida bugeista osoitteessa http://forum.amule.org"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgstr "Voit vapaasti raportoida bugeista osoitteessa https://github.com/amule-org/amule/discussions"
 
 #: src/amule.cpp:1175
 msgid ""
@@ -363,8 +363,8 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Tämän aMulen versio on %i.%i.%i ja uusin versio on %li.%li.%li"
 
 #: src/amule.cpp:1757
-msgid "The latest version can always be found at http://www.amule.org"
-msgstr "Uusin version löytyy aina osoitteesta http://www.amule.org"
+msgid "The latest version can always be found at https://github.com/amule-org/amule"
+msgstr "Uusin version löytyy aina osoitteesta https://github.com/amule-org/amule"
 
 #: src/amule.cpp:1759
 #, c-format
@@ -466,14 +466,14 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at http://wiki.amule.org"
+"password. More information can be found at https://github.com/amule-org/amule/wiki"
 msgstr ""
 "VIRHE: Kelvollinen salasana vaaditaan etäyhteyksien käyttämiseksi ja aMule-"
 "taustaprosessia ei voida käyttää ilman etäyhteyksiä. Käynnistääksesi aMule-"
 "taustaprosessin sinun pitää asettaa kenttään \"ECPassword\" tiedostossa "
 "~/.aMule/amule.conf kelvollinen arvo. Käynnistä amuled parametrilla --ec-"
-"config asettaaksesi salasanan. Lisää tiedoa löytyy osoitteesta at http://"
-"wiki.amule.org"
+"config asettaaksesi salasanan. Lisää tiedoa löytyy osoitteesta at https://github.com/amule-org/amule/wiki"
+""
 
 #: src/amuled.cpp:175
 msgid "amuled: OnInit - starting timer"
@@ -503,9 +503,9 @@ msgid "Running on %s"
 msgstr "Käynnissä %s"
 
 #: src/amuleDlg.cpp:238
-msgid "Visit http://www.amule.org to check if a new version is available."
+msgid "Visit https://github.com/amule-org/amule to check if a new version is available."
 msgstr ""
-"Vieraile nettisivulla http://www.amule.org tarkistaaksi uuden version "
+"Vieraile nettisivulla https://github.com/amule-org/amule tarkistaaksi uuden version "
 "saatavuuden."
 
 #: src/amuleDlg.cpp:264
@@ -529,19 +529,19 @@ msgstr ""
 "\n"
 
 #: src/amuleDlg.cpp:498
-msgid "Website: http://www.amule.org \n"
-msgstr "Verkkosivu: http://www.amule.org\n"
+msgid "Website: https://github.com/amule-org/amule \n"
+msgstr "Verkkosivu: https://github.com/amule-org/amule\n"
 
 #: src/amuleDlg.cpp:499
-msgid "Forum: http://forum.amule.org \n"
-msgstr "Foorumi: http://forum.amule.org\n"
+msgid "Forum: https://github.com/amule-org/amule/discussions \n"
+msgstr "Foorumi: https://github.com/amule-org/amule/discussions\n"
 
 #: src/amuleDlg.cpp:500
 msgid ""
-"FAQ: http://wiki.amule.org \n"
+"FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
 msgstr ""
-"UKK: http://wiki.amule.org\n"
+"UKK: https://github.com/amule-org/amule/wiki\n"
 "\n"
 
 #: src/amuleDlg.cpp:501
@@ -1636,11 +1636,11 @@ msgstr "Lataan osatiedostoa %u %u:sta"
 
 #: src/DownloadQueue.cpp:150
 msgid ""
-"ERROR: Failed to load backup file. Search http://forum.amule.org "
+"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions "
 "for .part.met recovery solutions."
 msgstr ""
-"VIRHE: Varmuuskopiotiedostoa ei saatu avattua.  Katso sivuilta http://"
-"forum.amule.org ratkaisuja .part.met -palautukseen."
+"VIRHE: Varmuuskopiotiedostoa ei saatu avattua.  Katso sivuilta https://github.com/amule-org/amule/discussions"
+" ratkaisuja .part.met -palautukseen."
 
 #: src/DownloadQueue.cpp:159
 msgid "All PartFiles Loaded."
@@ -3421,8 +3421,8 @@ msgid "Nick"
 msgstr "Nimimerkki"
 
 #: src/muuli_wdr.cpp:1201
-msgid "http://www.aMule.org - the multi-platform Mule"
-msgstr "http://www.aMule.org - monen alustan Mule"
+msgid "https://github.com/amule-org/amule - the multi-platform Mule"
+msgstr "https://github.com/amule-org/amule - monen alustan Mule"
 
 #: src/muuli_wdr.cpp:1202
 msgid "This is the name that other users will see when connecting to you."
@@ -5867,8 +5867,8 @@ msgstr ""
 "takana"
 
 #: src/ServerSocket.cpp:435
-msgid "\tFor more information, please refer to http://wiki.amule.org"
-msgstr "\tLisätietoa http://wiki.amule.org"
+msgid "\tFor more information, please refer to https://github.com/amule-org/amule/wiki"
+msgstr "\tLisätietoa https://github.com/amule-org/amule/wiki"
 
 #: src/ServerSocket.cpp:491
 msgid "Unknown server info received! - too short"
