@@ -11,10 +11,8 @@ First major release in 5+ years (since 2.3.3, 2021-02-07). Headline changes are 
 
 ### Highlights
 
-- **Throughput rewrite.** Disk I/O moved off the main thread, ASIO/EPOLLET races fixed, throttlers replaced with proper token-bucket limiters. The headline numbers (peer-to-peer on the same hardware/network):
-  - **Per-peer upload: ~450 KB/s → ~140 MB/s, roughly 300×** — driven primarily by the eMule `CUploadDiskIOThread` port (#451), which alone delivered ~130× on the in-house benchmark.
-  - **Per-peer download: 2.3× from the partfile-write offload (#454), then another 4.3× on Windows / 1.8–2.0× on macOS+Ubuntu from the throttler-wake fix (#484).** Windows now beats eMule 0.70b ~1.9×.
-  - Both throttlers (`MaxUpload`, `MaxDownload`) were also broken pre-fix — `MaxUpload=0` capped at "current rate + 5 KB/s", `MaxDownload` was a ratio controller rather than a literal cap. Both rewritten (#461, #491). Important user-facing bug fixes, but secondary to the headline numbers.
+- **Throughput rewrite.** Disk I/O moved off the main thread, ASIO/EPOLLET races fixed, throttlers replaced with proper token-bucket limiters. Peer-to-peer download on the same hardware sees **~100–380× speedups** across macOS / Linux / Windows over 2.3.3, plus aMule 3.0.0 sustains **~4.8×** the upload throughput of eMule 0.70b on Windows. See [Performance](#performance) for the full matrix and per-PR breakdown.
+- Both throttlers (`MaxUpload`, `MaxDownload`) were also broken pre-fix — `MaxUpload=0` capped at "current rate + 5 KB/s", `MaxDownload` was a ratio controller rather than a literal cap. Both rewritten (#461, #491). Important user-facing bug fixes, but secondary to the headline numbers.
 - **CMake replaces autotools.** Single build system, modern toolchain — minimum CMake 3.10, minimum wxWidgets 3.2.0.
 - **Native binaries for every major desktop.** AppImage (x86_64 + aarch64), Flatpak (x86_64 + aarch64), macOS Universal2 .dmg, Windows portable .zip (x64 + ARM64). First-run desktop integration prompt for AppImage.
 - **HTTPS works again.** `CHTTPDownloadThread` rewritten on top of `wxWebRequest`; the hand-rolled stack had silently stopped working against modern TLS.
@@ -23,35 +21,58 @@ First major release in 5+ years (since 2.3.3, 2021-02-07). Headline changes are 
 
 ### Performance
 
-Throughput work landed across April 2026 in the order below. Numbers come from each PR's published benchmark.
+Throughput work landed across April 2026. The bottom-line cross-platform
+numbers first, then the per-PR contributions that produced them.
+
+#### Cross-platform end-to-end (2.3.3 vs 3.0.0)
+
+| Leecher platform | 2.3.3 (sustained) | 3.0.0 (sustained) | Speedup |
+|---|---:|---:|---:|
+| macOS (Apple Silicon, Mac Studio) | 0.35 MB/s | **135 MB/s** | **381×** |
+| Linux ARM (UTM VM, Ubuntu 25.10) | 0.34 MB/s | **117 MB/s** | **345×** |
+| Windows ARM (UTM VM, Windows 11) | 0.36 MB/s | **39 MB/s** | **107×** |
+
+Sustained over a 90 s window, single LAN peer downloading a 30 GB file
+from an x86_64 Linux seeder running the same aMule version under test.
+
+Per-platform breakdown of the seeder-side vs leecher-side contributions:
+
+| Platform | 2.3.3 | + seeder fix | + leecher fix (3.0.0) |
+|---|---:|---:|---:|
+| macOS | 0.35 MB/s | 30 MB/s | **135 MB/s** |
+| Linux | 0.34 MB/s | 20 MB/s | **117 MB/s** |
+| Windows | 0.36 MB/s | 6.8 MB/s | **39 MB/s** |
+
+The seeder-side contribution (PR #451 `CUploadDiskIOThread` + ASIO fixes)
+dominates everywhere; the leecher-side contribution (#454 partfile-write
+offload + #484 throttler-wake fix + #491 token-bucket cap) stacks another
+~4–6× on top.
+
+#### vs eMule 0.70b (Windows · same UTM hardware)
+
+| Direction | eMule 0.70b | aMule 3.0.0 | Speedup |
+|---|---:|---:|---:|
+| **Upload** (Windows seeds → Mac leecher) | 22 MB/s | **106 MB/s** | **~4.8×** |
+| **Download** (Linux seeds → Windows leeches) | 20 MB/s | **39 MB/s** | **~1.9×** |
 
 #### Upload
 
-- **Per-peer upload throughput went from ~450 KB/s to ~140 MB/s, roughly 300× over 2.3.3.** The bulk of the gain landed in a single PR: the eMule `CUploadDiskIOThread` port (#451) — disk reads and ed2k packet construction moved off the main thread, RC4 stream-desync race fixed in the ASIO layer, EPOLLET spurious-wakeup fix in `HandleRead`, and adaptive per-slot packet chunk sizing (10 KiB → EMBLOCKSIZE based on per-slot datarate). The PR's own bench: stock master 0.46 MB/s peak → 64 MB/s peak on the same Docker host = **~130×** on its own. The remainder (62 MB/s → 140 MB/s) came from late-cycle wire-side fixes that landed alongside #484 (`std::mutex` + IOCP-native reads + throttler-wake gate).
-- `MaxUpload=0` (the user-facing "unlimited" setting) now actually means literal unlimited (#461). The legacy code set `allowedDataRate = current_rate + 5 KB/s` per iteration — a hard cap that tracked the observed rate, which pinned the uplink at a fraction of capacity on any link faster than a few hundred KB/s.
-- Speed-limit fields widened from `uint16` to `uint32` (#436) — the legacy 65,534 KB/s (~524 Mbps) configuration ceiling is gone; gigabit-class links can now be configured.
-- Bandwidth-cap UI: spin button ceiling raised from 19,375 KB/s to 1,000,000 KB/s, and width raised from 100 px to 140 px so the `+` button no longer clips off on modern themes (anything above ~10,000 was visually unreachable on the original 100 px field). Slot Allocation cap raised from 100 to 100,000 KB/s. (#463)
+- **#451 — eMule `CUploadDiskIOThread` port.** Disk reads + ed2k packet construction off the main thread, RC4 stream-desync race fixed in the ASIO layer, EPOLLET spurious-wakeup fix in `HandleRead`, adaptive per-slot packet sizing (10 KiB → EMBLOCKSIZE). Dominant contributor to the upload gain.
+- **#461 — `MaxUpload=0` is now literal unlimited.** The legacy code set `allowedDataRate = current_rate + 5 KB/s` per iteration — a tracking cap that pinned the uplink at a fraction of capacity on any link above a few hundred KB/s.
+- **#436 — Speed-limit fields widened from `uint16` to `uint32`.** Legacy 65,534 KB/s (~524 Mbps) configuration ceiling gone; gigabit-class links can now be configured.
+- **#463 — Bandwidth-cap UI.** Spin button ceiling 19,375 → 1,000,000 KB/s; field width 100 → 140 px so the `+` button no longer clips off on modern themes. Slot Allocation cap 100 → 100,000 KB/s.
 
 #### Download
 
-- **`CPartFileWriteThread` (#454)** — disk writes for downloads moved off the main thread. PR's own bench, Mac client, single LAN peer (server has #436/#451 applied): **31 MB/s sustained → 72 MB/s sustained = 2.3×.**
-- **Per-peer download throttler-wake fix (#484)** — single-line root cause was that `UploadBandwidthThrottler::Entry()` adaptive backoff dozed for 5–25 ms between control-queue pumps, stalling the request→response loop. Empty→non-empty wake gate added on the control-queue path, plus IOCP-native `async_read_some` on Windows, `wxMutex` → `std::mutex`, and decoupling `m_MaxBlockRequests` from per-packet block count. PR's bench, single eD2k peer, identical hardware/network, baseline = same revision pre-#484:
-
-  | Platform | baseline (peak) | post-#484 (peak) | improvement |
-  |---|---|---|---|
-  | Windows 11 ARM (UTM) | 10.01 MB/s | **42.60 MB/s** | **4.3×** |
-  | macOS (Apple Silicon) | 79.18 MB/s | **145.19 MB/s** | **1.8×** |
-  | Ubuntu ARM (UTM) | 58.01 MB/s | **115.75 MB/s** | **2.0×** |
-
-  Windows post-#484 is **~1.9× eMule 0.70b** on the same hardware (eMule 0.70b sustains 22.06 MB/s wire-level via tcpdump).
-
-- **`MaxDownload` is now a literal byte/sec cap (#491).** The legacy code wasn't a cap at all — it was a closed-loop ratio controller that nudged each peer's transfer rate ±5%/tick relative to its own current speed, so `MaxDownload=20000` (20 MB/s) shaped traffic toward whatever the aggregate datarate converged on, generally well below the configured value. Replaced with a global token bucket (`CDownloadBandwidthThrottler`) that enforces the cap to within 2.5% across all platforms; demand-aware redistribution (fast peers absorb the slack from slow peers) falls out naturally.
-- Per-part hash verification deferred to a dedicated worker thread (#498) — only runs when the file isn't actively transferring; full-file rehash on crash recovery happens in the background and doesn't block startup. Follow-ups #499 #500.
+- **#454 — `CPartFileWriteThread`.** Disk writes for downloads moved off the main thread.
+- **#484 — Throttler-wake fix.** `UploadBandwidthThrottler::Entry()` adaptive backoff dozed for 5–25 ms between control-queue pumps, stalling the request→response loop. Empty→non-empty wake gate added on the control-queue path, plus IOCP-native `async_read_some` on Windows, `wxMutex` → `std::mutex`, and decoupling `m_MaxBlockRequests` from per-packet block count. The biggest win on Windows specifically.
+- **#491 — `MaxDownload` is now a literal byte/sec cap.** The legacy code was a closed-loop ratio controller that nudged each peer's rate ±5%/tick relative to its own current speed, so `MaxDownload=20000` (20 MB/s) shaped traffic toward whatever the aggregate converged on — generally well below configured. Replaced with a global token bucket (`CDownloadBandwidthThrottler`) enforcing the cap to within 2.5% across platforms.
+- **#498 — Per-part hash verification deferred to a dedicated worker thread** (only runs when the file isn't actively transferring). Follow-ups #499, #500.
 
 #### Other
 
-- ASIO handler binding modernized (#467): `boost::bind` → C++11 lambda, `strand.wrap()` → `bind_executor()`, `deadline_timer` → `steady_timer`, `null_buffers` → `async_wait(wait_read)`. Fixes the long-standing `boost::bind` placeholder warning. Minimum Boost bumped 1.47 → 1.70 (every supported distro since Ubuntu 20.04 / Debian Bullseye).
-- Fast-path bare-filename comparison skips `wxGetCwd()` (#504).
+- **#467 — ASIO handler binding modernised.** `boost::bind` → C++11 lambda, `strand.wrap()` → `bind_executor()`, `deadline_timer` → `steady_timer`, `null_buffers` → `async_wait(wait_read)`. Fixes the long-standing `boost::bind` placeholder warning. Minimum Boost bumped 1.47 → 1.70.
+- **#504 — Fast-path bare-filename comparison** skips `wxGetCwd()`.
 
 ### Networking & Discovery
 
