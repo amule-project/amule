@@ -11,7 +11,7 @@ aMule is an eMule-like client for the eDonkey and Kademlia networks.
 
 [Forum]: https://github.com/amule-org/amule/discussions "aMule Forum"
 [Wiki]:  https://github.com/amule-org/amule/wiki "aMule Wiki"
-[FAQ]:   https://github.com/amule-org/amule/wiki/FAQ_aMule "FAQ on aMule"
+[FAQ]:   https://github.com/amule-org/amule/wiki/FAQ-aMule "FAQ on aMule"
 
 
 ## Overview
@@ -64,7 +64,7 @@ firewall and/or forward them on your router. The wiki has articles on
 [getting a HighID][2] and [setting up firewall rules][3].
 
 [HighID]: https://github.com/amule-org/amule/wiki/FAQ_eD2k‐Kademlia#what-is-lowid-and-highid "What is LowID and HighID?"
-[2]: https://github.com/amule-org/amule/wiki/Get_HighID "How to get HighID"
+[2]: https://github.com/amule-org/amule/wiki/Get-HighID "How to get HighID"
 [3]: https://github.com/amule-org/amule/wiki/Firewall "How to set up firewall rules for aMule"
 
 
@@ -93,5 +93,5 @@ You can contribute to aMule in several ways:
 
 [6]: https://github.com/amule-org/amule/pulls "aMule Pull Requests"
 [7]: https://github.com/amule-org/amule/wiki/Translations "Translating aMule"
-[8]: https://github.com/amule-org/amule/wiki/Translating_Wiki "Translating the wiki"
-[9]: https://github.com/amule-org/amule/wiki/Translating_Docs "Translating the documentation"
+[8]: https://github.com/amule-org/amule/wiki/Translating-Wiki "Translating the wiki"
+[9]: https://github.com/amule-org/amule/wiki/Translating-Docs "Translating the documentation"
