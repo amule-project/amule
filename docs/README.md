@@ -42,7 +42,7 @@ get a *LowID*, which makes you reachable from far fewer sources.
 The wiki has detailed walkthroughs for [getting a HighID][highid] and
 [firewall rules][firewall].
 
-[highid]: https://github.com/amule-org/amule/wiki/Get_HighID
+[highid]: https://github.com/amule-org/amule/wiki/Get-HighID
 [firewall]: https://github.com/amule-org/amule/wiki/Firewall
 
 ### 2. Set realistic upload / download limits
@@ -96,7 +96,7 @@ Connect to it from another machine with `amulegui`, `amuleweb`, or
 
 The wiki has detailed walkthroughs for
 [amuled setup](https://github.com/amule-org/amule/wiki/Amuled),
-[amuleweb](https://github.com/amule-org/amule/wiki/Amuleweb), and
+[amuleweb](https://github.com/amule-org/amule/wiki/AMuleWeb), and
 [amulecmd](https://github.com/amule-org/amule/wiki/Amulecmd).
 
 
