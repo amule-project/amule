@@ -63,7 +63,7 @@ However, to receive a [HighID] you need to open aMule's ports on your
 firewall and/or forward them on your router. The wiki has articles on
 [getting a HighID][2] and [setting up firewall rules][3].
 
-[HighID]: https://github.com/amule-org/amule/wiki/FAQ_eD2k-Kademlia#What_is_LowID_and_HighID.3F "What is LowID and HighID?"
+[HighID]: https://github.com/amule-org/amule/wiki/FAQ_eD2k‐Kademlia#what-is-lowid-and-highid "What is LowID and HighID?"
 [2]: https://github.com/amule-org/amule/wiki/Get_HighID "How to get HighID"
 [3]: https://github.com/amule-org/amule/wiki/Firewall "How to set up firewall rules for aMule"
 
