@@ -207,6 +207,11 @@ jobs:
           # accepts the dev placeholder ("aMuleD GIT ...") and any
           # tagged-release banner ("aMuleD 3.0.0 ...", etc.).
           ${{ matrix.archcmd }} "${MNT}/aMule.app/Contents/MacOS/amuled" --version 2>&1 | grep -q '^aMuleD '
+          # Sanity-check that aMuleGUI.app (the remote-GUI client) is
+          # also at the dmg root — packaging/macos/build.sh stages it
+          # next to aMule.app via make_dmg, so its absence would mean
+          # BUILD_REMOTEGUI didn't actually produce a bundle.
+          [ -d "${MNT}/aMuleGUI.app" ] || { echo "aMuleGUI.app missing from per-arch dmg" >&2; exit 1; }
           hdiutil detach "${MNT}"
       - uses: actions/upload-artifact@v7
         with:
@@ -217,6 +222,15 @@ jobs:
           path: build-macos/src/aMule.app
           if-no-files-found: error
           # Preserve symlinks + permissions inside the .app.
+          retention-days: 1
+      - uses: actions/upload-artifact@v7
+        with:
+          # aMuleGUI.app is a separate bundle (the remote-GUI client);
+          # uploaded alongside aMule.app so the merge job can lipo it
+          # the same way and ship both in the Universal2 .dmg.
+          name: macos-gui-${{ matrix.arch }}
+          path: build-macos/src/aMuleGUI.app
+          if-no-files-found: error
           retention-days: 1
 
   macos-universal2:
@@ -237,44 +251,60 @@ jobs:
         with:
           name: macos-app-x86_64
           path: x86_64.app
-      - name: lipo-merge into Universal2 .app
+      - uses: actions/download-artifact@v8
+        with:
+          name: macos-gui-arm64
+          path: arm64-gui.app
+      - uses: actions/download-artifact@v8
+        with:
+          name: macos-gui-x86_64
+          path: x86_64-gui.app
+      - name: lipo-merge into Universal2 .app bundles
         run: |
-          # Use the arm64 .app as the base layout; for every Mach-O
-          # file inside it, lipo-create with the matching x86_64 sibling.
-          # Side files (Info.plist, .icns, locale catalogs) are
-          # arch-agnostic and inherited from arm64 unchanged.
-          BASE=arm64.app
-          OTHER=x86_64.app
-          OUT=aMule.app
-          cp -R "${BASE}" "${OUT}"
-          while IFS= read -r -d '' rel; do
-              local_arm="${BASE}/${rel}"
-              local_x86="${OTHER}/${rel}"
-              if file "${local_arm}" | grep -q "Mach-O" && [ -f "${local_x86}" ]; then
-                  lipo -create -output "${OUT}/${rel}" "${local_arm}" "${local_x86}"
-                  # `lipo -create -output` writes the new file with the
-                  # process umask (default 022 -> rw-r--r--), discarding
-                  # the executable bit on the source. macOS launchd then
-                  # refuses to spawn the bundle with errno 13 (EACCES)
-                  # because access(X_OK) on the main exec fails. Restore
-                  # the executable bit so launchd can spawn the binary.
-                  chmod +x "${OUT}/${rel}"
-              fi
-          done < <(cd "${BASE}" && find . -type f -print0 | sed 's|^\./||g')
-          # Re-apply ad-hoc signatures to every nested Mach-O. clang on
-          # Apple Silicon emits ad-hoc-signed binaries by default; lipo
-          # invalidates those signatures on merge, and macOS amfid then
-          # refuses to load the resulting fat binary. `codesign --force
-          # --deep --sign -` rewrites valid ad-hoc sigs across the whole
-          # bundle. Required even before notarization for the binary to
-          # launch at all on Apple Silicon.
-          codesign --force --deep --sign - "${OUT}"
+          # Merges two per-arch .app bundles (BASE = arm64, OTHER =
+          # x86_64) into a Universal2 OUT bundle. Uses the arm64 .app
+          # as the base layout; for every Mach-O file inside it, runs
+          # lipo-create with the matching x86_64 sibling. Side files
+          # (Info.plist, .icns, locale catalogs) are arch-agnostic
+          # and inherited from arm64 unchanged.
+          merge_app() {
+              local BASE="$1"
+              local OTHER="$2"
+              local OUT="$3"
+              cp -R "${BASE}" "${OUT}"
+              local rel local_arm local_x86
+              while IFS= read -r -d '' rel; do
+                  local_arm="${BASE}/${rel}"
+                  local_x86="${OTHER}/${rel}"
+                  if file "${local_arm}" | grep -q "Mach-O" && [ -f "${local_x86}" ]; then
+                      lipo -create -output "${OUT}/${rel}" "${local_arm}" "${local_x86}"
+                      # `lipo -create -output` writes the new file with the
+                      # process umask (default 022 -> rw-r--r--), discarding
+                      # the executable bit on the source. macOS launchd then
+                      # refuses to spawn the bundle with errno 13 (EACCES)
+                      # because access(X_OK) on the main exec fails. Restore
+                      # the executable bit so launchd can spawn the binary.
+                      chmod +x "${OUT}/${rel}"
+                  fi
+              done < <(cd "${BASE}" && find . -type f -print0 | sed 's|^\./||g')
+              # Re-apply ad-hoc signatures to every nested Mach-O. clang on
+              # Apple Silicon emits ad-hoc-signed binaries by default; lipo
+              # invalidates those signatures on merge, and macOS amfid then
+              # refuses to load the resulting fat binary. `codesign --force
+              # --deep --sign -` rewrites valid ad-hoc sigs across the whole
+              # bundle. Required even before notarization for the binary to
+              # launch at all on Apple Silicon.
+              codesign --force --deep --sign - "${OUT}"
+          }
+          merge_app arm64.app     x86_64.app     aMule.app
+          merge_app arm64-gui.app x86_64-gui.app aMuleGUI.app
       - name: Build Universal2 .dmg
         run: |
           VERSION=$(git describe --tags --always)
           mkdir -p dist
           STAGE=$(mktemp -d)
-          cp -R aMule.app "${STAGE}/"
+          cp -R aMule.app    "${STAGE}/"
+          cp -R aMuleGUI.app "${STAGE}/"
           ln -s /Applications "${STAGE}/Applications"
           hdiutil create -volname "aMule ${VERSION}" \
               -srcfolder "${STAGE}" -ov -format UDZO \
