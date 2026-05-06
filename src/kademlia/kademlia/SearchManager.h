@@ -103,7 +103,6 @@ public:
 	static void CancelNodeFWCheckUDPSearch();
 	static bool FindNodeFWCheckUDP();
 	static bool IsFWCheckUDPSearch(const CUInt128& target);
-	static void SetNextSearchID(uint32_t nextID) noexcept	{ m_nextID = nextID; }
 
 private:
 

@@ -56,7 +56,11 @@ there client on the eMule forum..
 using namespace Kademlia;
 ////////////////////////////////////////
 
-uint32_t  CSearchManager::m_nextID = 0;
+// Top bit reserved for Kad-allocated IDs; ed2k Local/Global IDs
+// (CSearchDlg::StartNewSearch) live in the bottom half. Keeps the
+// two ID spaces from ever colliding regardless of session length.
+#define SEARCH_ID_KAD_MASK 0x80000000
+uint32_t  CSearchManager::m_nextID = SEARCH_ID_KAD_MASK;
 SearchMap CSearchManager::m_searches;
 
 bool CSearchManager::IsSearching(uint32_t searchID) noexcept
@@ -166,7 +170,7 @@ CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t s
 		s->SetSearchTermData(searchTermsDataSize, searchTermsData);
 		// Inc our searchID
 		// If called from external client use predefined search id
-		s->SetSearchID((searchid & 0xffffff00) == 0xffffff00 ? searchid : ++m_nextID);
+		s->SetSearchID((searchid & 0xffffff00) == 0xffffff00 ? searchid : (++m_nextID | SEARCH_ID_KAD_MASK));
 		// Insert search into map
 		m_searches[s->GetTarget()] = s;
 		// Start search
@@ -211,7 +215,7 @@ CSearch* CSearchManager::PrepareLookup(uint32_t type, bool start, const CUInt128
 				break;
 		}
 
-		s->SetSearchID(++m_nextID);
+		s->SetSearchID((++m_nextID | SEARCH_ID_KAD_MASK));
 		if (start) {
 			m_searches[id] = s;
 			s->Go();
