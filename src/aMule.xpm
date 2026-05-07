@@ -1,5 +1,5 @@
 /* XPM */
-static const char * aMule_xpm[] = {
+static char * aMule_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "32 42 256 2",
 "  	c None",

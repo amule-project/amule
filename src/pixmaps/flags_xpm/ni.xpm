@@ -1,5 +1,5 @@
 /* XPM */
-static const char *ni[] = {
+static char *ni[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 146 2",
 "   c #CE9177",

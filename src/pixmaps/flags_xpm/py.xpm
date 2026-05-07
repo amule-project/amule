@@ -1,5 +1,5 @@
 /* XPM */
-static const char *py[] = {
+static char *py[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 146 2",
 "   c #E90000",

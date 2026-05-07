@@ -13,7 +13,7 @@ FILE (APPEND ${HEADER_FILE} "\n")
 
 FILE (APPEND ${HEADER_FILE} "struct FlagXPMCode\n")
 FILE (APPEND ${HEADER_FILE} "{\n")
-FILE (APPEND ${HEADER_FILE} "\tconst char **xpm;\n")
+FILE (APPEND ${HEADER_FILE} "\tconst char *const *xpm;\n")
 FILE (APPEND ${HEADER_FILE} "\tconst char *code;\n")
 FILE (APPEND ${HEADER_FILE} "};\n")
 FILE (APPEND ${HEADER_FILE} "\n")
