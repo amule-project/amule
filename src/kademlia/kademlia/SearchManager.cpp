@@ -56,7 +56,28 @@ there client on the eMule forum..
 using namespace Kademlia;
 ////////////////////////////////////////
 
-uint32_t  CSearchManager::m_nextID = 0;
+// The 32-bit search-ID namespace is split between the two allocators
+// that hand out IDs in this codebase, so they can never collide:
+//
+//   ed2k Local/Global IDs (CSearchDlg::StartNewSearch in SearchDlg.cpp)
+//     use the bottom half:  0x00000000 .. 0x7FFFFFFF  (top bit = 0)
+//   Kad-allocated IDs (this file) use the top half:
+//                            0x80000000 .. 0xFFFFFEFF  (top bit = 1)
+//
+// The two ranges are disjoint by construction, so the search lookup in
+// CSearchList (which keys results by search ID across both networks)
+// can never alias an ed2k search and a Kad search to the same row of
+// results. Without the partition, both counters started at 0 and both
+// were free to increment past each other on a long-running session,
+// leading to the "Kad results land in the ed2k tab" bug. The
+// ed2k-side counter masks itself to the bottom half on every ++,
+// matching this top-half start.
+//
+// 0xFFFFFF00 .. 0xFFFFFFFF is reserved by the related-search use of
+// SetSearchID() below ("use supplied ID as-is"); the Kad counter
+// would only collide with that range after ~2 billion searches in a
+// single session, which is not a realistic operating regime.
+uint32_t  CSearchManager::m_nextID = 0x80000000;
 SearchMap CSearchManager::m_searches;
 
 bool CSearchManager::IsSearching(uint32_t searchID) noexcept

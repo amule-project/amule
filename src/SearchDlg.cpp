@@ -506,7 +506,13 @@ void CSearchDlg::OnBnClickedClear(wxCommandEvent& WXUNUSED(ev))
 void CSearchDlg::StartNewSearch()
 {
 	static uint32 m_nSearchID = 0;
-	m_nSearchID++;
+	// Stay in the bottom half of the uint32 search-ID space so the
+	// ed2k-allocated IDs here can never collide with Kad-allocated IDs
+	// from CSearchManager::m_nextID, which starts at 0x80000000 and
+	// only ever increments. See the comment block above
+	// `CSearchManager::m_nextID` in SearchManager.cpp for the partition
+	// rationale.
+	m_nSearchID = (m_nSearchID + 1) & 0x7fffffff;
 
 	FindWindow(IDC_STARTS)->Disable();
 	FindWindow(IDC_SDOWNLOAD)->Disable();
