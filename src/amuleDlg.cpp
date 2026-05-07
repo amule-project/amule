@@ -295,6 +295,22 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	}
 
 	Show(true);
+
+	// Workaround for wxMSW: Create_Toolbar() above (and the Realize()
+	// inside Apply_Toolbar_Skin) runs before the frame is mapped at
+	// its final on-screen size. wxMSW's native toolbar control
+	// measures whether labels fit at *that* moment to pick its display
+	// mode (icon-only vs icon-with-label-below); with long-string
+	// locales (it_IT, fr_FR, ...) on amulegui (one fewer button than
+	// the monolithic GUI, so a slightly different total width) the
+	// initial measurement decides icon-only and never recovers when
+	// the frame later resizes to the saved/maximized geometry, leaving
+	// the labels clipped. Re-realize the toolbar after Show(true) so
+	// the mode is picked against the actual on-screen frame width.
+	if (m_wndToolbar) {
+		m_wndToolbar->Realize();
+	}
+
 	// Must we start minimized?
 	if (thePrefs::GetStartMinimized()) {
 		Iconize(true);
