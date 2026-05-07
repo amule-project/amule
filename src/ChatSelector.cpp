@@ -27,7 +27,11 @@
 #include <wx/imaglist.h>
 #include <wx/datetime.h>
 
+// See comment at the equivalent #include in src/amuleDlg.cpp.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wwrite-strings"
 #include "pixmaps/chat.ico.xpm"
+#pragma GCC diagnostic pop
 #include "ChatSelector.h"	// Interface declarations
 #include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"			// Needed for theApp

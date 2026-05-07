@@ -38,11 +38,15 @@
 #include "OtherFunctions.h"
 
 
-// For arrow-pixmaps
+// For arrow-pixmaps. See comment at the equivalent #include in
+// src/amuleDlg.cpp.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wwrite-strings"
 #include "pixmaps/sort_dn.xpm"
 #include "pixmaps/sort_up.xpm"
 #include "pixmaps/sort_dnx2.xpm"
 #include "pixmaps/sort_upx2.xpm"
+#pragma GCC diagnostic pop
 
 
 // Global constants

@@ -427,9 +427,13 @@ void CMuleTrayIcon::RebuildMenu()
 //  goes nowhere — build with libayatana-appindicator3 to fix that.
 // ---------------------------------------------------------------------
 
+// See comment at the equivalent #include in src/amuleDlg.cpp.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wwrite-strings"
 #include "pixmaps/mule_TrayIcon_big.ico.xpm"
 #include "pixmaps/mule_Tr_yellow_big.ico.xpm"
 #include "pixmaps/mule_Tr_grey_big.ico.xpm"
+#pragma GCC diagnostic pop
 
 #include <wx/menu.h>
 

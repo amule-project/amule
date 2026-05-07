@@ -73,7 +73,15 @@
 #include "IPFilter.h"
 
 #ifndef __WINDOWS__
+// XPM arrays declare `static char *<name>[] = {"...", ...}`; the
+// string literals are `const char[]` in C++ so initializing the
+// non-const `char *` slots fires -Wwrite-strings on every entry.
+// The data is read-only at runtime in practice (wxBitmap takes
+// `const char* const*`), so suppress the warning across the include.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wwrite-strings"
 #include "aMule.xpm"
+#pragma GCC diagnostic pop
 #endif
 
 #include "kademlia/kademlia/Kademlia.h"

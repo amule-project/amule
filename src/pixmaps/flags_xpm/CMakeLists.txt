@@ -5,10 +5,20 @@ FILE (APPEND ${HEADER_FILE} "namespace flags {\n")
 
 FILE (GLOB FLAGS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.xpm)
 
+# XPM arrays declare `static char *<name>[] = {"...", ...}`; the
+# string literals are `const char[]` in C++ so initializing the
+# non-const `char *` slots fires -Wwrite-strings on every entry.
+# The data is read-only at runtime in practice (wxImage / wxBitmap
+# take `const char* const*`), so suppress the warning across the
+# 247 generated #includes that follow.
+FILE (APPEND ${HEADER_FILE} "#pragma GCC diagnostic push\n")
+FILE (APPEND ${HEADER_FILE} "#pragma GCC diagnostic ignored \"-Wwrite-strings\"\n")
+
 FOREACH (FLAG ${FLAGS})
 	FILE (APPEND ${HEADER_FILE} "#include \"${FLAG}\"\n")
 ENDFOREACH (FLAG ${FLAGS})
 
+FILE (APPEND ${HEADER_FILE} "#pragma GCC diagnostic pop\n")
 FILE (APPEND ${HEADER_FILE} "\n")
 
 FILE (APPEND ${HEADER_FILE} "struct FlagXPMCode\n")
