@@ -34,6 +34,7 @@
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "Timer.h"				// Needed for CTimer
 #include "AppImageIntegration.h"	// Needed for AppImage first-run prompt
+#include "CamuleArtProvider.h"	// Needed for wxArtProvider::Push() in OnInit
 #include "PartFile.h"			// Needed for CPartFile
 #include "PartFileHashThread.h"	// Needed for EVT_PARTFILE_HASH_RESULT
 
@@ -345,6 +346,11 @@ void CamuleGuiApp::MacReopenApp()
 bool CamuleGuiApp::OnInit()
 {
 	amuledlg = NULL;
+
+	// Register the embedded-PNG art provider before CamuleApp::OnInit()
+	// touches anything UI-shaped. wxArtProvider::Push takes ownership
+	// of the pointer; wx tears the providers down at app exit.
+	wxArtProvider::Push(new CamuleArtProvider());
 
 	if ( !CamuleApp::OnInit() ) {
 		return false;

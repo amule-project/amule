@@ -38,11 +38,7 @@
 #include "OtherFunctions.h"
 
 
-// For arrow-pixmaps
-#include "pixmaps/sort_dn.xpm"
-#include "pixmaps/sort_up.xpm"
-#include "pixmaps/sort_dnx2.xpm"
-#include "pixmaps/sort_upx2.xpm"
+#include <wx/artprov.h>             // Needed for wxArtProvider::GetBitmap
 
 
 // Global constants
@@ -81,10 +77,10 @@ CMuleListCtrl::CMuleListCtrl(wxWindow *parent, wxWindowID winid, const wxPoint& 
 	m_isSorting = false;
 
 	if (imgList.GetImageCount() == 0) {
-		imgList.Add(wxBitmap(sort_dn_xpm));
-		imgList.Add(wxBitmap(sort_up_xpm));
-		imgList.Add(wxBitmap(sort_dnx2_xpm));
-		imgList.Add(wxBitmap(sort_upx2_xpm));
+		imgList.Add(wxArtProvider::GetBitmap("amule:sort_dn"));
+		imgList.Add(wxArtProvider::GetBitmap("amule:sort_up"));
+		imgList.Add(wxArtProvider::GetBitmap("amule:sort_dnx2"));
+		imgList.Add(wxArtProvider::GetBitmap("amule:sort_upx2"));
 	}
 
 	// Default sort-order is to sort by the first column (asc).

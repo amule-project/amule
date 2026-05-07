@@ -3,11 +3,41 @@ set (INCLUDE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set (SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set (EC_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libs/ec/cpp")
 
-add_custom_command (
-	OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/pixmaps/flags_xpm/CountryFlags.h
-	COMMAND ${CMAKE_COMMAND} -DHEADER_FILE="${CMAKE_CURRENT_BINARY_DIR}/pixmaps/flags_xpm/CountryFlags.h" -P ${CMAKE_CURRENT_SOURCE_DIR}/pixmaps/flags_xpm/CMakeLists.txt
-	WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/pixmaps/flags_xpm"
-)
+# Embed every PNG under src/icons/ as a static byte-array table in a
+# generated C TU (see src/icons/embed_icons.py for the format).
+# CamuleArtProvider then exposes the entries to wxArtProvider at
+# runtime — there's no longer any compile-time #include of icon
+# source data, which is why this PR also deletes the entire
+# src/pixmaps/ XPM tree and src/pixmaps/flags_xpm/CountryFlags.h.
+#
+# Python3 is the canonical generator path. If Python3 is missing on
+# the build host (rare — base distros all ship it; Windows MSYS2 too)
+# we fall back to a checked-in copy at src/icons/icon_data.c that the
+# project keeps in sync via CI.  AMULE_ICON_DATA_C is then the right
+# path for downstream targets to consume regardless of which path
+# was taken.
+find_package (Python3 COMPONENTS Interpreter)
+if (Python3_FOUND)
+	file (GLOB_RECURSE AMULE_ICON_PNGS CONFIGURE_DEPENDS
+		${CMAKE_CURRENT_SOURCE_DIR}/icons/*.png)
+	add_custom_command (
+		OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/icons/icon_data.c
+		COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/icons
+		COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/icons/embed_icons.py
+			${CMAKE_CURRENT_SOURCE_DIR}/icons
+			${CMAKE_CURRENT_BINARY_DIR}/icons/icon_data.c
+		DEPENDS
+			${CMAKE_CURRENT_SOURCE_DIR}/icons/embed_icons.py
+			${AMULE_ICON_PNGS}
+		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/icons
+		COMMENT "Embedding ${CMAKE_CURRENT_SOURCE_DIR}/icons -> icon_data.c"
+	)
+	set (AMULE_ICON_DATA_C ${CMAKE_CURRENT_BINARY_DIR}/icons/icon_data.c)
+	message (STATUS "Icon data: regenerating at build time via ${Python3_EXECUTABLE}")
+else()
+	set (AMULE_ICON_DATA_C ${CMAKE_CURRENT_SOURCE_DIR}/icons/icon_data.c)
+	message (STATUS "Icon data: Python3 not found — using checked-in fallback ${AMULE_ICON_DATA_C}")
+endif()
 
 add_custom_command (
 	OUTPUT ${EC_INCLUDE_DIR}/ECCodes.h
@@ -21,10 +51,12 @@ add_custom_command (
 	WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/libs/ec/abstracts"
 )
 
-add_custom_target (generate_CountryFlags.h DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/pixmaps/flags_xpm/CountryFlags.h)
+if (Python3_FOUND)
+	add_custom_target (generate_icon_data DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/icons/icon_data.c)
+	set_source_files_properties (${CMAKE_CURRENT_BINARY_DIR}/icons/icon_data.c PROPERTIES GENERATED TRUE)
+endif()
 add_custom_target (generate_ECCodes.h DEPENDS ${EC_INCLUDE_DIR}/ECCodes.h)
 add_custom_target (generate_ECTagTypes.h DEPENDS ${EC_INCLUDE_DIR}/ECTagTypes.h)
-set_source_files_properties (${CMAKE_CURRENT_BINARY_DIR}/pixmaps/flags_xpm/CountryFlags.h PROPERTIES GENERATED TRUE)
 set_source_files_properties (${EC_INCLUDE_DIR}/ECCodes.h PROPERTIES GENERATED TRUE)
 set_source_files_properties (${EC_INCLUDE_DIR}/ECTagTypes.h PROPERTIES GENERATED TRUE)
 include (${CMAKE_SOURCE_DIR}/cmake/source-vars.cmake)
@@ -42,9 +74,15 @@ if (INSTALL_SKINS)
 endif()
 
 
+# MaxMindDBDatabase.cpp lives under src/geoip/ but #includes
+# project headers as `"Logger.h"` etc., so it needs the src dir
+# (and matching binary dir, for generated config.h) on its include
+# search path. The flag-XPM include path that used to live here
+# (-I.../pixmaps/flags_xpm) is gone — flag icons are loaded via
+# CamuleArtProvider's embedded PNG table now.
 if (ENABLE_IP2COUNTRY)
 	set_source_files_properties (${IP2COUNTRY}
-		PROPERTIES COMPILE_FLAGS "-I${CMAKE_CURRENT_BINARY_DIR} -I${CMAKE_CURRENT_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/pixmaps/flags_xpm"
+		PROPERTIES COMPILE_FLAGS "-I${CMAKE_CURRENT_BINARY_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}"
 	)
 endif()
 
@@ -314,11 +352,12 @@ if (BUILD_MONOLITHIC)
 		BUNDLE DESTINATION .
 	)
 
-	# XPM fallback for Icon= lookups on systems too old to ship the
-	# hicolor PNG path. Filename matches the .desktop's Icon= field.
-	install (FILES aMule.xpm
+	# Legacy /usr/share/pixmaps/ fallback for desktops that don't
+	# implement the hicolor icon theme. The matching hicolor install
+	# happens in the top-level CMakeLists.txt; both paths reference
+	# the same source PNG. Filename matches the .desktop's Icon= field.
+	install (FILES ${CMAKE_SOURCE_DIR}/org.amule.aMule.png
 		DESTINATION "${CMAKE_INSTALL_DATADIR}/pixmaps"
-		RENAME org.amule.aMule.xpm
 	)
 endif (BUILD_MONOLITHIC)
 
@@ -615,15 +654,27 @@ if (NEED_LIB_MULEAPPGUI)
 		PUBLIC ${amule_BINARY_DIR}
 		PUBLIC ${INCLUDE_INCLUDE_DIR}
 		PUBLIC ${LIBS_INCLUDE_DIR}
+		# The build-generated icon_data.c #includes "icon_data.h",
+		# which lives in src/icons/ — needs to be on the include
+		# path for the C compile. PUBLIC so it propagates to the
+		# amule monolithic + amulegui executables, which compile
+		# the same GUI_SOURCES list directly into themselves
+		# (see add_executable for those targets).
+		PUBLIC ${SRC_DIR}/icons
 	)
 
 	target_link_libraries (muleappgui
 		PRIVATE wxWidgets::CORE
 	)
 
-	if (ENABLE_IP2COUNTRY)
-		add_dependencies (muleappgui
-			generate_CountryFlags.h)
+	# generate_icon_data produces ${BINARY_DIR}/src/icons/icon_data.c,
+	# which is part of GUI_SOURCES (see cmake/source-vars.cmake).
+	# Only present when Python3 was found at configure time; without
+	# it muleappgui consumes the checked-in fallback at
+	# ${SOURCE_DIR}/icons/icon_data.c directly, no extra dependency
+	# needed.
+	if (Python3_FOUND)
+		add_dependencies (muleappgui generate_icon_data)
 	endif()
 endif()
 

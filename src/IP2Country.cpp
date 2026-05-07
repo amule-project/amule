@@ -51,10 +51,13 @@
 #include <common/Format.h>		// For CFormat()
 #include "common/FileFunctions.h"	// For UnpackArchive
 #include <common/StringFunctions.h>	// For unicode2char()
-#include "pixmaps/flags_xpm/CountryFlags.h"
+#include "icons/icon_data.h"		// For amule_get_all_icons()
 
+#include <wx/artprov.h>			// For wxArtProvider::GetBitmap
 #include <wx/intl.h>
 #include <wx/image.h>
+
+#include <cstring>			// For strncmp
 
 #include "IP2Country.h"
 #include "geoip/MaxMindDBDatabase.h"
@@ -160,11 +163,28 @@ void CIP2Country::DownloadFinished(uint32 result)
 
 void CIP2Country::LoadFlags()
 {
-	// Load data from xpm files
-	for (int i = 0; i < flags::FLAGS_XPM_SIZE; ++i) {
+	// Walk the embedded icon table and pick out anything named
+	// "flag_<code>". The table is built by src/icons/embed_icons.py
+	// from src/icons/flags/<code>.png at compile time; CamuleArtProvider
+	// (registered in CamuleGuiApp::OnInit) hands us back a decoded
+	// wxBitmap for each.
+	int icon_count = 0;
+	const struct AMuleIconEntry *icons = amule_get_all_icons(&icon_count);
+	const char flag_prefix[] = "flag_";
+	const size_t flag_prefix_len = sizeof(flag_prefix) - 1;
+
+	for (int i = 0; i < icon_count; ++i) {
+		const char *name = icons[i].name;
+		if (strncmp(name, flag_prefix, flag_prefix_len) != 0) {
+			continue;
+		}
+		const char *code = name + flag_prefix_len;
+
 		CountryData countrydata;
-		countrydata.Name = wxString(flags::flagXPMCodeVector[i].code, wxConvISO8859_1);
-		countrydata.Flag = wxImage(flags::flagXPMCodeVector[i].xpm);
+		countrydata.Name = wxString(code, wxConvISO8859_1);
+
+		const wxString art_id = wxString::Format("amule:%s", name);
+		countrydata.Flag = wxArtProvider::GetBitmap(art_id).ConvertToImage();
 
 		if (countrydata.Flag.IsOk()) {
 			m_CountryDataMap[countrydata.Name] = countrydata;
