@@ -96,7 +96,7 @@ wxSizer *muleDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxStaticText *item3 = new wxStaticText( parent, -1, _("eD2k Link: "), wxDefaultPosition, wxDefaultSize, 0 );
     item2->Add( item3, wxSizerFlags().Center().Border(wxLEFT, 5) );
-    CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, -1, "", wxDefaultPosition, wxSize(-1,20), wxTE_MULTILINE );
+    CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, -1, "", wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
     item4->SetName( "FastEd2kLinks" );
     item2->Add( item4, wxSizerFlags(1).Expand().Border(wxALL, 5) );
     wxButton *item5 = new wxButton( parent, ID_BUTTON_FAST, _("Commit"), wxDefaultPosition, wxDefaultSize, 0 );
