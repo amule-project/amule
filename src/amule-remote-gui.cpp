@@ -39,6 +39,7 @@
 
 
 #include "amule.h"			// Interface declarations.
+#include "CamuleArtProvider.h"		// Needed for wxArtProvider::Push() in OnInit
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "ClientCredits.h"
 #include "SourceListCtrl.h"
@@ -249,6 +250,11 @@ bool CamuleRemoteGuiApp::OnInit()
 	StartTickTimer();
 	amuledlg = NULL;
 	connect_timeout_timer = NULL;
+
+	// Register the embedded-PNG art provider before any UI work.
+	// wxArtProvider::Push takes ownership of the pointer; wx tears
+	// the providers down at app exit.
+	wxArtProvider::Push(new CamuleArtProvider());
 
 	// Get theApp
 	theApp = &wxGetApp();

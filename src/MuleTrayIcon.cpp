@@ -427,9 +427,7 @@ void CMuleTrayIcon::RebuildMenu()
 //  goes nowhere — build with libayatana-appindicator3 to fix that.
 // ---------------------------------------------------------------------
 
-#include "pixmaps/mule_TrayIcon_big.ico.xpm"
-#include "pixmaps/mule_Tr_yellow_big.ico.xpm"
-#include "pixmaps/mule_Tr_grey_big.ico.xpm"
+#include <wx/artprov.h>           // Needed for wxArtProvider::GetIcon
 
 #include <wx/menu.h>
 
@@ -538,9 +536,9 @@ CMuleTrayIcon::CMuleTrayIcon()
 	Old_SpeedSize = 0xFFFF; // must be > any possible one.
 
 	// Create the background icons (speed improvement)
-	HighId_Icon_size = wxIcon(mule_TrayIcon_big_ico_xpm).GetHeight();
-	LowId_Icon_size = wxIcon(mule_Tr_yellow_big_ico_xpm).GetHeight();
-	Disconnected_Icon_size = wxIcon(mule_Tr_grey_big_ico_xpm).GetHeight();
+	HighId_Icon_size = wxArtProvider::GetIcon("amule:tray_high").GetHeight();
+	LowId_Icon_size = wxArtProvider::GetIcon("amule:tray_low").GetHeight();
+	Disconnected_Icon_size = wxArtProvider::GetIcon("amule:tray_disconnected").GetHeight();
 }
 
 CMuleTrayIcon::~CMuleTrayIcon()
@@ -581,13 +579,13 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 			switch (Icon) {
 				case TRAY_ICON_HIGHID:
 					// Most likely case, test first
-					CurrentIcon = wxIcon(mule_TrayIcon_big_ico_xpm);
+					CurrentIcon = wxArtProvider::GetIcon("amule:tray_high");
 					break;
 				case TRAY_ICON_LOWID:
-					CurrentIcon = wxIcon(mule_Tr_yellow_big_ico_xpm);
+					CurrentIcon = wxArtProvider::GetIcon("amule:tray_low");
 					break;
 				case TRAY_ICON_DISCONNECTED:
-					CurrentIcon = wxIcon(mule_Tr_grey_big_ico_xpm);
+					CurrentIcon = wxArtProvider::GetIcon("amule:tray_disconnected");
 					break;
 				default:
 					wxFAIL;

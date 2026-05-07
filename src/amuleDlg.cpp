@@ -72,9 +72,7 @@
 #endif
 #include "IPFilter.h"
 
-#ifndef __WINDOWS__
-#include "aMule.xpm"
-#endif
+#include <wx/artprov.h>		// Needed for wxArtProvider::GetIcon
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "MuleVersion.h"			// Needed for GetMuleVersion()
@@ -212,8 +210,17 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 #endif
 
 #if !defined(__WXMAC__)
-	// this crashes on Mac with wx 2.9
+	// this crashes on Mac with wx 2.9.
+	// On Windows the wxICON macro resolves the icon from the .rc
+	// resource bundle (see amule.rc); elsewhere it would normally
+	// expand to wxIcon(aMule_xpm), but the XPM tree is gone — we
+	// route through CamuleArtProvider, which decodes the embedded
+	// PNG bytes registered under the "amule:amule" art id.
+#ifdef __WINDOWS__
 	SetIcon(wxICON(aMule));
+#else
+	SetIcon(wxArtProvider::GetIcon("amule:amule"));
+#endif
 #endif
 
 	srand(time(NULL));

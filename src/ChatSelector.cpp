@@ -27,7 +27,7 @@
 #include <wx/imaglist.h>
 #include <wx/datetime.h>
 
-#include "pixmaps/chat.ico.xpm"
+#include <wx/artprov.h>           // Needed for wxArtProvider::GetBitmap
 #include "ChatSelector.h"	// Interface declarations
 #include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"			// Needed for theApp
@@ -103,7 +103,7 @@ CChatSelector::CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos
 	wxImageList* imagelist = new wxImageList(16,16);
 
 	// Chat icon -- default state
-	imagelist->Add(wxBitmap(chat_ico_xpm));
+	imagelist->Add(wxArtProvider::GetBitmap("amule:chat"));
 	// Close icon -- on mouseover
 	imagelist->Add(amuleSpecial(4));
 
