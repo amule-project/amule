@@ -2731,6 +2731,15 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
     // done (a Windows requirement).
     wxBufferedPaintDC dc( this );
 
+    // Force LTR text rendering for cell content. Under an RTL primary locale
+    // (LC_ALL=fa_IR.UTF-8, etc.) wxGTK propagates wxLayout_RightToLeft to the
+    // DC, which mirrors the coordinate system: every DrawText then draws
+    // glyphs flipped horizontally, turning "Ubuntu" into "utnubU". File names
+    // and other tabular cell data are not natural-language paragraphs — they
+    // should render in script order regardless of the surrounding GUI's bidi
+    // layout, so override the DC's direction explicitly. See amule issue #418.
+    dc.SetLayoutDirection(wxLayout_LeftToRight);
+
     // Ensure an uniform background color, as to avoid differences between
     // the automatically cleared parts and the rest of the canvas.
     dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX), wxBRUSHSTYLE_SOLID)));
