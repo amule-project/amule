@@ -458,6 +458,28 @@ if (BUILD_REMOTEGUI)
 			COMMENT "Opting aMuleGUI.app out of App Transport Security"
 			VERBATIM
 		)
+
+		# Same translation-catalog bundling as the monolithic amule.app
+		# — wxLocale's lookup prefix on macOS is GetDataDir() + "/locale"
+		# which resolves to Contents/Resources/locale inside whichever
+		# bundle is running, so each .app needs its own copy.  Without
+		# this aMuleGUI.app launches in English regardless of system
+		# locale (issue #541).
+		if (ENABLE_NLS AND AMULE_TRANSLATIONS)
+			add_dependencies (amulegui pofiles)
+			foreach (_lang IN LISTS AMULE_TRANSLATIONS)
+				set (_mo_dir
+					"$<TARGET_BUNDLE_CONTENT_DIR:amulegui>/Resources/locale/${_lang}/LC_MESSAGES")
+				add_custom_command (TARGET amulegui POST_BUILD
+					COMMAND ${CMAKE_COMMAND} -E make_directory "${_mo_dir}"
+					COMMAND ${CMAKE_COMMAND} -E copy_if_different
+						"${CMAKE_BINARY_DIR}/po/${_lang}.gmo"
+						"${_mo_dir}/amule.mo"
+					COMMENT "Bundling ${_lang} catalog into aMuleGUI.app"
+					VERBATIM
+				)
+			endforeach()
+		endif()
 	endif()
 
 	install (TARGETS amulegui
