@@ -153,8 +153,9 @@ Reset the log.
 Shows you the results of the last search.
 .SS Resume \fI<hash>\fP | \fI<number>\fP
 Resumes the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fBshow\fR.
-.SS Search \fI<type>\fP \fI<keyword>\fR
-Makes a search for the given \fI<keyword>\fR. A search type and a keyword to search is mandatory to do this.
+.SS Search \fI<type>\fP [\fI<filters>\fP] \fI<keyword>\fR
+Makes a search for the given \fI<keyword>\fR. A search type and a keyword
+to search is mandatory to do this.
 Example: `search kad amule' performs a kad search for `amule'.
 
 Available search types:
@@ -166,6 +167,25 @@ Performs a search on the Kademlia network.
 .IP Local 10
 Performs a local search.
 .RE
+.PP
+Optional filters can be placed before, after, or interleaved with the
+search keyword(s):
+.RS
+.IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
+Restrict results to the given file type.
+.IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
+Restrict results to a specific file extension (e.g.\ \fIiso\fR, \fImp3\fR).
+.IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
+Minimum number of sources a result must report.
+.IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
+Smallest file size to return. Suffixes use binary multipliers
+(K = 1024, M = K\(mu1024, G = M\(mu1024); no suffix means bytes.
+.IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
+Largest file size to return. Same suffixes as \fB\-\-min\-size\fR.
+.RE
+.PP
+Example: `search global linux iso \-\-type Iso \-\-min-size 100M' returns
+results for \(lqlinux iso\(rq of file-type Iso at least 100 MiB.
 .SS Set \fI<what>\fR
 Sets a given preferences value.
 
