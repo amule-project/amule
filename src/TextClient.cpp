@@ -114,6 +114,88 @@ SearchFile::SearchFile(const CEC_SearchFile_Tag *tag)
 	bPresent = tag->AlreadyHave();
 }
 
+// Parse a size string like "100M", "1G", "512K", "12345" (bytes default).
+// Suffixes are case-insensitive and use binary multipliers
+// (K=1024, M=1024*1024, G=1024*1024*1024). Returns true on success.
+static bool ParseSizeWithSuffix(const wxString& s, uint64& out)
+{
+	if (s.IsEmpty()) {
+		return false;
+	}
+	wxString digits = s;
+	uint64 multiplier = 1;
+	const wxUniChar last = s.Last();
+	if (!wxIsdigit(last)) {
+		switch (static_cast<int>(wxTolower(last))) {
+			case 'k': multiplier = 1024ULL; break;
+			case 'm': multiplier = 1024ULL * 1024; break;
+			case 'g': multiplier = 1024ULL * 1024 * 1024; break;
+			case 'b': multiplier = 1; break;
+			default: return false;
+		}
+		digits = s.Left(s.length() - 1);
+	}
+	unsigned long long n = 0;
+	if (!digits.ToULongLong(&n)) {
+		return false;
+	}
+	out = static_cast<uint64>(n) * multiplier;
+	return true;
+}
+
+// Strip optional --type / --extension / --avail / --min-size / --max-size
+// flags from `args`, leaving only the search keyword(s). Each flag takes
+// exactly one whitespace-separated value. Unknown tokens are preserved as
+// part of the search query, joined by single spaces in input order.
+// Returns true on success, false if a flag is missing its value or a value
+// fails to parse; on failure the output values are undefined.
+static bool ParseSearchFilters(
+	wxString& args,
+	wxString& type,
+	wxString& extension,
+	uint32& avail,
+	uint64& min_size,
+	uint64& max_size)
+{
+	type.Clear();
+	extension.Clear();
+	avail = 0;
+	min_size = 0;
+	max_size = 0;
+
+	wxString remaining;
+	wxStringTokenizer tok(args, wxT(" \t"));
+	while (tok.HasMoreTokens()) {
+		wxString t = tok.GetNextToken();
+		if (t == wxT("--type")) {
+			if (!tok.HasMoreTokens()) return false;
+			type = tok.GetNextToken();
+		} else if (t == wxT("--extension") || t == wxT("--ext")) {
+			if (!tok.HasMoreTokens()) return false;
+			extension = tok.GetNextToken();
+		} else if (t == wxT("--avail") || t == wxT("--availability")) {
+			if (!tok.HasMoreTokens()) return false;
+			unsigned long n = 0;
+			if (!tok.GetNextToken().ToULong(&n)) return false;
+			avail = static_cast<uint32>(n);
+		} else if (t == wxT("--min-size")) {
+			if (!tok.HasMoreTokens()) return false;
+			if (!ParseSizeWithSuffix(tok.GetNextToken(), min_size)) return false;
+		} else if (t == wxT("--max-size")) {
+			if (!tok.HasMoreTokens()) return false;
+			if (!ParseSizeWithSuffix(tok.GetNextToken(), max_size)) return false;
+		} else {
+			if (!remaining.IsEmpty()) {
+				remaining += wxT(' ');
+			}
+			remaining += t;
+		}
+	}
+
+	args = remaining;
+	return true;
+}
+
 //-------------------------------------------------------------------
 IMPLEMENT_APP (CamulecmdApp)
 //-------------------------------------------------------------------
@@ -520,13 +602,26 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			{
 				wxString search = args;
 				wxString type;
-				wxString extention;
+				wxString extension;
 				uint32 avail = 0;
-				uint32 min_size = 0;
-				uint32 max_size = 0;
+				uint64 min_size = 0;
+				uint64 max_size = 0;
+
+				if (!ParseSearchFilters(search, type, extension, avail, min_size, max_size)) {
+					/* TRANSLATORS:
+					   'help search' is a command to the program, do not translate it. */
+					Show(_("Invalid search filter syntax.\nType 'help search' to get more help.\n"));
+					return CMD_ERR_INVALID_ARG;
+				}
+				if (search.IsEmpty()) {
+					/* TRANSLATORS:
+					   'help search' is a command to the program, do not translate it. */
+					Show(_("No search keyword provided.\nType 'help search' to get more help.\n"));
+					return CMD_ERR_INVALID_ARG;
+				}
 
 				request = new CECPacket(EC_OP_SEARCH_START);
-				request->AddTag(CEC_Search_Tag (search, search_type, type, extention, avail, min_size, max_size));
+				request->AddTag(CEC_Search_Tag (search, search_type, type, extension, avail, min_size, max_size));
 				request_list.push_back(request);
 			}
 			break;
@@ -951,7 +1046,23 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp->AddCommand("BwLimits", CMD_ID_GET_BWLIMITS, wxTRANSLATE("Get bandwidth limits."), "", CMD_PARAM_NEVER);
 
 	tmp = m_commands.AddCommand("Search", CMD_ID_SEARCH, wxTRANSLATE("Execute a search."),
-			      wxTRANSLATE("A search type has to be specified by giving the type:\n    GLOBAL\n    LOCAL\n    KAD\nExample: 'search kad file' will execute a kad search for \"file\".\n"), CMD_PARAM_ALWAYS);
+			      wxTRANSLATE(
+				  "A search type has to be specified by giving the type:\n"
+				  "    GLOBAL\n"
+				  "    LOCAL\n"
+				  "    KAD\n"
+				  "Example: 'search kad file' will execute a kad search for \"file\".\n"
+				  "\n"
+				  "Optional filters can be added before, after, or interleaved with\n"
+				  "the search keyword(s):\n"
+				  "    --type <Audio|Video|Image|Doc|Pro|Arc|Iso>\n"
+				  "    --extension <ext>      (alias: --ext)\n"
+				  "    --avail <N>            minimum number of sources\n"
+				  "    --min-size <N[KMG]>    smallest file size; K=1024, M=K*1024, G=M*1024\n"
+				  "    --max-size <N[KMG]>    largest file size; same suffixes\n"
+				  "Example: 'search global linux iso --type Iso --min-size 100M' returns\n"
+				  "results for \"linux iso\" of file-type Iso at least 100 MiB.\n"
+				  ), CMD_PARAM_ALWAYS);
 	tmp->AddCommand("global", CMD_ID_SEARCH_GLOBAL, wxTRANSLATE("Execute a global search."), "", CMD_PARAM_ALWAYS);
 	tmp->AddCommand("local", CMD_ID_SEARCH_LOCAL, wxTRANSLATE("Execute a local search"), "", CMD_PARAM_ALWAYS);
 	tmp->AddCommand("kad", CMD_ID_SEARCH_KAD, wxTRANSLATE("Execute a kad search"), "", CMD_PARAM_ALWAYS);
