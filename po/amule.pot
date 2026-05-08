@@ -6196,9 +6196,25 @@ msgstr ""
 
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
-#: src/TextClient.cpp:536
+#: src/TextClient.cpp:631
 msgid ""
 "No search type defined.\n"
+"Type 'help search' to get more help.\n"
+msgstr ""
+
+#. TRANSLATORS:
+#. 'help search' is a command to the program, do not translate it.
+#: src/TextClient.cpp:617
+msgid ""
+"Invalid search filter syntax.\n"
+"Type 'help search' to get more help.\n"
+msgstr ""
+
+#. TRANSLATORS:
+#. 'help search' is a command to the program, do not translate it.
+#: src/TextClient.cpp:623
+msgid ""
+"No search keyword provided.\n"
 "Type 'help search' to get more help.\n"
 msgstr ""
 
@@ -6532,13 +6548,23 @@ msgstr ""
 msgid "Execute a search."
 msgstr ""
 
-#: src/TextClient.cpp:954
+#: src/TextClient.cpp:1054
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
 "    LOCAL\n"
 "    KAD\n"
 "Example: 'search kad file' will execute a kad search for \"file\".\n"
+"\n"
+"Optional filters can be added before, after, or interleaved with\n"
+"the search keyword(s):\n"
+"    --type <Audio|Video|Image|Doc|Pro|Arc|Iso>\n"
+"    --extension <ext>      (alias: --ext)\n"
+"    --avail <N>            minimum number of sources\n"
+"    --min-size <N[KMG]>    smallest file size; K=1024, M=K*1024, G=M*1024\n"
+"    --max-size <N[KMG]>    largest file size; same suffixes\n"
+"Example: 'search global linux iso --type Iso --min-size 100M' returns\n"
+"results for \"linux iso\" of file-type Iso at least 100 MiB.\n"
 msgstr ""
 
 #: src/TextClient.cpp:955
