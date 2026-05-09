@@ -379,6 +379,26 @@ namespace MuleNotify
 	}
 
 
+	void SharedFilesBeginBulkUpdate()
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg && theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
+			theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->BeginBulkUpdate();
+		}
+#endif
+	}
+
+
+	void SharedFilesEndBulkUpdate()
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg && theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
+			theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->EndBulkUpdate();
+		}
+#endif
+	}
+
+
 	void DownloadCtrlAddFile(CPartFile* file)
 	{
 		theApp->ECServerHandler->m_ec_notifier->DownloadFile_AddFile(file);

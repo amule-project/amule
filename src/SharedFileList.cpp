@@ -637,10 +637,19 @@ void CSharedFileList::ClearED2KPublishInfo(){
 	CKnownFile* cur_file;
 	m_lastPublishED2KFlag = true;
 	wxMutexLocker lock(list_mut);
+	// Suppress per-row GUI updates while we walk every shared file.
+	// SetPublishedED2K() notifies the SharedFilesCtrl which does an
+	// O(N) FindItem per call; without this, a 100k-file shared list
+	// makes every server disconnect freeze the main thread for
+	// minutes. SetPublishedED2K() is also a no-op when the value
+	// didn't change, so the genuinely-false→false majority is free.
+	// See #302.
+	Notify_SharedFilesBeginBulkUpdate();
 	for (CKnownFileMap::iterator pos = m_Files_map.begin(); pos != m_Files_map.end(); ++pos ) {
 		cur_file = pos->second;
 		cur_file->SetPublishedED2K(false);
 	}
+	Notify_SharedFilesEndBulkUpdate();
 }
 
 void CSharedFileList::ClearKadSourcePublishInfo()
