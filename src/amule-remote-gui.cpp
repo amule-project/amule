@@ -695,6 +695,35 @@ void CPreferencesRem::SendToRemote()
 }
 
 
+// Surfaces the EC_OP_FAILED reply from amuled's EC_OP_ADD_LINK handler
+// to the user. CDownQueueRem::AddLink used to drop the reply on the
+// floor (fire-and-forget SendPacket), so a malformed ed2k link -- e.g.
+// the original #310 reproducer `ed2k::3D366ED505B977FC61C9A6EE01E96329`
+// -- silently did nothing. amuled does the right thing now (logs
+// "Unknown protocol of link" and returns EC_OP_FAILED + EC_TAG_STRING),
+// but the GUI side has to actually show the message.
+class CAddLinkHandler : public CECPacketHandlerBase {
+	virtual void HandlePacket(const CECPacket *packet);
+};
+
+
+void CAddLinkHandler::HandlePacket(const CECPacket *packet)
+{
+	if (packet->GetOpCode() == EC_OP_FAILED) {
+		// Daemon-side EC_OP_ADD_LINK always tags the failure response
+		// with an EC_TAG_STRING explaining what went wrong. Reuse that
+		// string as the fallback too (it's already in the i18n catalog
+		// at po/amule.pot:1783, so no new string needs adding here).
+		const CECTag *tag = packet->GetFirstTagSafe();
+		wxString msg = (tag && tag->IsString())
+			? wxGetTranslation(tag->GetStringData())
+			: wxGetTranslation(wxTRANSLATE("Invalid link or already on list."));
+		wxMessageBox(msg, _("ERROR"), wxOK | wxICON_ERROR);
+	}
+	delete this;
+}
+
+
 class CCatHandler : public CECPacketHandlerBase {
 	virtual void HandlePacket(const CECPacket *packet);
 };
@@ -1601,7 +1630,10 @@ bool CDownQueueRem::AddLink(const wxString &link, uint8 cat)
 	link_tag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
 	req.AddTag(link_tag);
 
-	m_conn->SendPacket(&req);
+	// SendRequest registers the handler; on EC_OP_FAILED the GUI shows
+	// the wxMessageBox set up in CAddLinkHandler. Previously this was
+	// fire-and-forget and silently dropped errors (#310 follow-up).
+	m_conn->SendRequest(new CAddLinkHandler, &req);
 	return true;
 }
 
