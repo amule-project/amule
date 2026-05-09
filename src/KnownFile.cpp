@@ -1278,6 +1278,14 @@ void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool m_bsave){
 }
 
 void CKnownFile::SetPublishedED2K(bool val){
+	if (m_PublishedED2K == val) {
+		// No-op state changes are a hot path during ClearED2KPublishInfo
+		// (which writes false to every shared file regardless of current
+		// state) — the GUI cascade is O(N) per call due to FindItem in
+		// CSharedFilesCtrl::UpdateItem, so unconditional notify here was
+		// O(N²) on a single-threaded main loop. See #302.
+		return;
+	}
 	m_PublishedED2K = val;
 	Notify_SharedFilesUpdateItem(this);
 }
