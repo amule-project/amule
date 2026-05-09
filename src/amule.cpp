@@ -1189,7 +1189,6 @@ void CamuleApp::SetOSFiles(const wxString& new_path)
 }
 
 
-#ifdef __WXDEBUG__
 #ifndef wxUSE_STACKWALKER
 #define wxUSE_STACKWALKER 0
 #endif
@@ -1200,6 +1199,15 @@ void CamuleApp::OnAssertFailure(const wxChar* file, int line,
 		% file % func % line % cond % ( msg ? wxString(msg) : wxString() )
 		% get_backtrace(2);		// Skip the function-calls directly related to the assert call.
 	theLogger.EmergencyLog(errmsg, false);
+
+	// --disable-fatal: skip the wxApp dialog and abort directly so a
+	// supervisor (systemd, watchdog script) sees a non-zero exit and
+	// can restart aMule. The errmsg above is already on stderr and in
+	// the log; nothing useful would be lost by skipping the dialog.
+	if (m_disableFatal) {
+		raise(SIGABRT);
+		return; // unreachable
+	}
 
 	if (wxThread::IsMain() && IsRunning()) {
 		AMULE_APP_BASE::OnAssertFailure(file, line, func, cond, msg);
@@ -1216,7 +1224,6 @@ void CamuleApp::OnAssertFailure(const wxChar* file, int line,
 #endif
 	}
 }
-#endif
 
 
 void CamuleApp::OnUDPDnsDone(CMuleInternalEvent& evt)

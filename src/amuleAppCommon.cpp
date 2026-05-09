@@ -57,6 +57,7 @@ CamuleAppCommon::CamuleAppCommon()
 	m_singleInstance = NULL;
 	ec_config = false;
 	m_geometryEnabled = false;
+	m_disableFatal = false;
 	if (IsRemoteGui()) {
 		m_appName		= "aMuleGUI";
 		m_configFile	= "remote.conf";
@@ -253,7 +254,9 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	cmdline.AddOption("w", "use-amuleweb", "Specify location of amuleweb binary.");
 #endif
 #ifndef __WINDOWS__
-	cmdline.AddSwitch("d", "disable-fatal", "Do not handle fatal exception.");
+	cmdline.AddSwitch("d", "disable-fatal",
+		"Don't catch fatal exceptions or block exit on assertions "
+		"(useful under systemd / watchdog scripts).");
 // Keep stdin open to run valgrind --gen_suppressions
 	cmdline.AddSwitch("i", "enable-stdin", "Do not disable stdin.");
 #endif
@@ -298,8 +301,9 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	// in the try/catch somewhere.
 	// So leave it out.
 #ifndef __WINDOWS__
+	m_disableFatal = cmdline.Found("disable-fatal");
 	#if wxUSE_ON_FATAL_EXCEPTION
-		if ( !cmdline.Found("disable-fatal") ) {
+		if ( !m_disableFatal ) {
 			// catch fatal exceptions
 			wxHandleFatalExceptions(true);
 		}
