@@ -36,6 +36,9 @@
 #include <common/ClientVersion.h>
 
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
+#ifndef AMULE_DAEMON
+	#include <wx/choicdlg.h>	// Needed for wxMultiChoiceDialog (GUI-only)
+#endif
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>
 #include <wx/regex.h>			// Needed for wxRegEx (version check JSON parse)
@@ -692,19 +695,49 @@ bool CamuleApp::OnInit()
 	// The user can start pressing buttons like mad if he feels like it.
 	m_app_state = APP_STATE_RUNNING;
 
-	if (!serverlist->GetServerCount() && thePrefs::GetNetworkED2K()) {
-		// There are no servers and ED2K active -> ask for download.
-		// As we cannot ask in amuled, we just update there
+	{
+		const bool needServerMet = !serverlist->GetServerCount() && thePrefs::GetNetworkED2K();
+		const bool needNodesDat  = thePrefs::GetNetworkKademlia()
+			&& !wxFileExists(thePrefs::GetConfigDir() + "nodes.dat");
+
+		if (needServerMet || needNodesDat) {
 #ifndef AMULE_DAEMON
-		if (wxYES == wxMessageBox(
-			wxString(
-				_("You don't have any server in the server list.\nDo you want aMule to download a new list now?")),
-			wxString(_("Server list download")),
-			wxYES_NO,
-			static_cast<wxWindow*>(theApp->amuledlg)))
+			wxArrayString choices;
+			if (needServerMet) choices.Add(_("eD2k server list (server.met)"));
+			if (needNodesDat)  choices.Add(_("Kad bootstrap nodes (nodes.dat)"));
+
+			wxArrayInt defaults;
+			for (size_t i = 0; i < choices.GetCount(); ++i) defaults.Add(i);
+
+			wxMultiChoiceDialog dlg(
+				static_cast<wxWindow*>(theApp->amuledlg),
+				_("aMule has detected missing network bootstrap files.\nSelect which ones to download:"),
+				_("Network bootstrap"),
+				choices);
+			dlg.SetSelections(defaults);
+
+			if (dlg.ShowModal() == wxID_OK) {
+				const wxArrayInt sel = dlg.GetSelections();
+				int idx = 0;
+				if (needServerMet) {
+					if (sel.Index(idx++) != wxNOT_FOUND) {
+						serverlist->UpdateServerMetFromURL(thePrefs::GetEd2kServersUrl());
+					}
+				}
+				if (needNodesDat) {
+					if (sel.Index(idx++) != wxNOT_FOUND) {
+						UpdateNotesDat(thePrefs::GetKadNodesUrl());
+					}
+				}
+			}
+#else
+			if (needServerMet) {
+				serverlist->UpdateServerMetFromURL(thePrefs::GetEd2kServersUrl());
+			}
+			if (needNodesDat) {
+				UpdateNotesDat(thePrefs::GetKadNodesUrl());
+			}
 #endif
-		{
-			serverlist->UpdateServerMetFromURL(thePrefs::GetEd2kServersUrl());
 		}
 	}
 
