@@ -123,12 +123,24 @@ bool CKnownFileList::Init()
 
 void CKnownFileList::Save()
 {
+	// Acquire the lock before opening the .new file. Save() is called
+	// from both the main thread (on shutdown / scheduled persist) and
+	// the hashing worker thread (CHashingTask::OnLastTask). If two
+	// callers raced past the open, both would create known.met.new at
+	// the same path, the first to Close() would rename it away, and
+	// the second's rename would fail with ENOENT -- producing the
+	// "Impossible to get permissions for file 'known.met.new'" /
+	// "couldn't be renamed 'known.met.new' -> 'known.met'" pair seen
+	// in #86. Holding list_mut around the whole save serialises the
+	// .new lifecycle. The list itself is read-only inside, so this
+	// doesn't widen the existing critical section meaningfully.
+	wxMutexLocker sLock(list_mut);
+
 	CFile file(thePrefs::GetConfigDir() + m_filename, CFile::write_safe);
 	if (!file.IsOpened()) {
 		return;
 	}
 
-	wxMutexLocker sLock(list_mut);
 	AddDebugLogLineN(logKnownFiles, CFormat("start saving %s") % m_filename);
 
 	try {
