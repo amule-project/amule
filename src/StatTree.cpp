@@ -337,11 +337,22 @@ template void CStatTreeItemNativeCounter::AddECValues(CECTag *tag) const;
 
 /* CStatTreeItemUlDlCounter */
 
+// The display format is "<session> (<all-time-cumulative>)" where
+// the session value is m_value and the cumulative is what
+// m_totalfunc() returns. Both values are kept in sync by
+// CStatistics::AddSentBytes / AddReceivedBytes, which adds the same
+// byte count to both the session counter (m_value) and the saved
+// cumulative (m_totalfunc()'s underlying s_totalSent / s_totalReceived).
+// So m_totalfunc() already includes m_value -- adding m_value again
+// double-counts the session bytes in the cumulative slot, which is
+// the user-visible #301: live UI shows "session bytes counted twice"
+// and the post-restart figure drops by exactly one session-worth.
+// Use m_totalfunc() directly for the cumulative slot.
 #ifndef AMULE_DAEMON
 wxString CStatTreeItemUlDlCounter::GetDisplayString() const
 {
 	return CFormat(wxGetTranslation(m_label)) %
-		a_brackets_b(CastItoXBytes(m_value), CastItoXBytes(m_value + m_totalfunc()));
+		a_brackets_b(CastItoXBytes(m_value), CastItoXBytes(m_totalfunc()));
 }
 #endif
 
@@ -349,7 +360,7 @@ void CStatTreeItemUlDlCounter::AddECValues(CECTag *tag) const
 {
 	CECTag value(EC_TAG_STAT_NODE_VALUE, m_value);
 	value.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_BYTES));
-	CECTag tmp(EC_TAG_STAT_NODE_VALUE, m_value + m_totalfunc());
+	CECTag tmp(EC_TAG_STAT_NODE_VALUE, m_totalfunc());
 	tmp.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_BYTES));
 	value.AddTag(tmp);
 	tag->AddTag(value);
