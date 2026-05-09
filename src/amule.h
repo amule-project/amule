@@ -136,6 +136,7 @@ protected:
 	bool		ec_config;
 	bool		m_skipConnectionDialog;
 	bool		m_geometryEnabled;
+	bool		m_disableFatal;
 	wxString	m_geometryString;
 	wxString	m_logFile;
 	wxString	m_appName;
@@ -321,13 +322,18 @@ public:
 
 protected:
 
-#ifdef __WXDEBUG__
 	/**
 	 * Handles asserts in a thread-safe manner.
+	 *
+	 * Compiled unconditionally (not just in __WXDEBUG__) so the
+	 * --disable-fatal short-circuit also covers wxWidgets' own
+	 * release-build assertions: Debian / Ubuntu's libwx packages
+	 * leave wxDEBUG_LEVEL=1, which keeps wxASSERT live even in
+	 * release builds and otherwise routes here through wxApp's
+	 * default dialog.
 	 */
 	virtual void OnAssertFailure(const wxChar* file, int line,
 		const wxChar* func, const wxChar* cond, const wxChar* msg);
-#endif
 
 	void OnUDPDnsDone(CMuleInternalEvent& evt);
 	void OnSourceDnsDone(CMuleInternalEvent& evt);
