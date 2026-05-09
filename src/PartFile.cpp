@@ -3243,6 +3243,16 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 				continue;
 			}
 			m_aChangedPart[partNumber] = false;
+
+			// Mirror the synchronous verify loop at line 286: a write
+			// that touches a part marks it dirty, but the part may still
+			// have gaps. Hashing an incomplete part would read past the
+			// highest written offset and EOF. Future writes to this part
+			// will re-set the dirty bit; once gap-complete, the next
+			// pass enqueues it.
+			if (!IsComplete(partNumber)) {
+				continue;
+			}
 			++m_pendingHashes;
 			theApp->partFileHashThread->QueueHashCheck(this, partNumber,
 				fromAICHRecoveryDataAvailable);
