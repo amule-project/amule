@@ -45,7 +45,9 @@ Reimposta la configurazione ai valori di default.
 Specifica la posizione dell'eseguibile di amuleweb in \fI<percorso>\fP.
 .TP 
 .B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
-Non gestisce le eccezioni fatali.
+Don't catch fatal exceptions and don't block exit on assertions.  Useful for
+headless / supervised setups (systemd, watchdog scripts)  where the
+otherwise\-modal assertion dialog prevents auto\-restart.
 .TP 
 .B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
 Non disabilita lo stdin.
@@ -85,9 +87,10 @@ aMule, \fI~/.aMule\fP.
 .SH FILE
 ~/.aMule/*
 .SH "SEGNALARE I BUG"
-Per favore segnalare i bug nel nostro forum (\fIhttps://github.com/amule-org/amule/discussions\fP) o
-nel nostro bugtracker (\fIhttps://github.com/amule-org/amule/issues\fP). Per favore non segnalare
-i bug via posta elettronica, né nella nostra mailing list né direttamente a
+Per favore segnalare i bug nel nostro forum
+(\fIhttps://github.com/amule\-org/amule/discussions\fP) o nel nostro bugtracker
+(\fIhttps://github.com/amule\-org/amule/issues\fP). Per favore non segnalare i
+bug via posta elettronica, né nella nostra mailing list né direttamente a
 qualunque membro del gruppo.
 .SH COPYRIGHT
 aMule e tutti i programmi di utilità correlati sono distribuiti in accordo

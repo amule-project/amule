@@ -65,7 +65,7 @@ aMule 外部連線用的通訊埠，在 偏好設定 >  遠端控制 設定 (預
 顯示簡短的使用說明。
 .SH 指令
 所有指令都不分大小寫。
-.SS "Add \fI<eD2k 連結>\fP | \fI<magnet 連結>\fP"
+.SS_untranslated Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
 將 eD2k 連結或 magnet 加到核心。
 
 可以使用以下幾種 eD2k 連結：
@@ -79,9 +79,9 @@ aMule 外部連線用的通訊埠，在 偏好設定 >  遠端控制 設定 (預
 .RE
 
 magnet 連結裏必須包含 eD2k 的 hash 值和檔案大小。
-.SS "Cancel \fI<hash 值>\fP | \fI<編號>\fP"
+.SS_untranslated Cancel \fI<hash>\fP | \fI<number>\fP
 取消下載指定的檔案，指定方式：\fI<hash 值>\fP 或 \fI<編號>\fP；要查詢數值請用 \fBshow\fP。
-.SS "connect [ \fIkad\fP | \fIed2k\fP | \fI<IP | 網域名稱>\fP ]"
+.SS_untranslated Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
 連線到網路。
 
 這樣將會連線到在偏好設定中啟用的所有網路。
@@ -90,13 +90,13 @@ magnet 連結裏必須包含 eD2k 的 hash 值和檔案大小。
 轉換的網域名稱)，aMule 就會只連線到那個伺服器。
 .SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
 中斷所有已連線的網路，或只中斷指定的網路連線。
-.SS "download \fI<編號>\fP"
+.SS_untranslated Download \fI<number>\fP
 開始下載檔案。
 
 \fI<編號>\fP 指上次搜尋檔案時的結果。例如：「download 12」會下載上次搜尋時編號 12 的檔案。
 .SS_untranslated Exit
 始 amule/amuled 斷線，並離開 amulecmd。
-.SS "get \fI<目標>\fP"
+.SS_untranslated Get \fI<what>\fP
 取得並顯示某個偏好設定的值。
 
 \fI<目標>\fP 參數可用的值：
@@ -106,11 +106,11 @@ magnet 連結裏必須包含 eD2k 的 hash 值和檔案大小。
 .IP IPFilter 10
 取得 IP 過濾器的偏好設定。
 .RE
-.SS "help [ \fI<命令>\fP ]"
+.SS_untranslated Help [ \fI<command>\fP ]
 顯示使用說明。如果沒有加參數，會顯示可用的指令一覽；如果加了 \fI<指令>\fP 參數，會顯示該指令的簡單說明。
-.SS "pause \fI<hash 值>\fP | \fI<編號>\fP"
+.SS_untranslated Pause \fI<hash>\fP | \fI<number>\fP
 暫停下載指定的檔案，指定方式：\fI<hash 值>\fP 或 \fI<編號>\fP；要查詢數值請用 \fBshow\fP。
-.SS "priority \fI<優先程度>\fP \fI<hash 值>\fP | \fI<編號>\fP"
+.SS_untranslated Priority \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP
 用 \fI<hash 值>\fP 或 \fI<編號>\fP 設定下載檔案的優先程度。
 
 可用在 \fI<優先度>\fP 的參數：
@@ -127,8 +127,8 @@ magnet 連結裏必須包含 eD2k 的 hash 值和檔案大小。
 .SS_untranslated Progress
 顯示正在進行中的搜尋進度。
 .SS_untranslated Quit
-功能和 \fBexit\fP 一樣的指令。
-.SS "reload \fI<目標>\fP"
+A synonym of the \fBexit\fP command.
+.SS_untranslated Reload \fI<what>\fP
 重新載入指定的物件。
 
 \fI<目標>\fP 參數可用的值：
@@ -142,9 +142,9 @@ magnet 連結裏必須包含 eD2k 的 hash 值和檔案大小。
 清除記錄。
 .SS_untranslated Results
 顯示上次搜尋的結果。
-.SS "resume \fI<hash 值>\fP | \fI<編號>\fP"
+.SS_untranslated Resume \fI<hash>\fP | \fI<number>\fP
 繼續下載指定的檔案，指定方式：\fI<hash 值>\fP 或 \fI<編號>\fP；要查詢數值請用 \fBshow\fP。
-.SS "search \fI<種類>\fP \fI<關鍵字>\fP"
+.SS_untranslated Search \fI<type>\fP [\fI<filters>\fP] \fI<keyword>\fR
 用指定的 \fI<關鍵字>\fP 搜尋。必須要有搜尋的「種類」加上「關鍵字」，例如：「search kad amule」會開始在 KAD
 網路搜尋「amule」。
 
@@ -157,7 +157,26 @@ magnet 連結裏必須包含 eD2k 的 hash 值和檔案大小。
 .IP Local 10
 開始在本地伺服器搜尋。
 .RE
-.SS "set \fI<目標>\fP"
+.PP
+Optional filters can be placed before, after, or interleaved with the search
+keyword(s):
+.RS
+.IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
+Restrict results to the given file type.
+.IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
+Restrict results to a specific file extension (e.g.\ \fIiso\fP, \fImp3\fP).
+.IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
+Minimum number of sources a result must report.
+.IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
+Smallest file size to return. Suffixes use binary multipliers (K = 1024, M =
+K\(mu1024, G = M\(mu1024); no suffix means bytes.
+.IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
+Largest file size to return. Same suffixes as \fB\-\-min\-size\fP.
+.RE
+.PP
+Example: `search global linux iso \-\-type Iso \-\-min\-size 100M' returns
+results for \(lqlinux iso\(rq of file\-type Iso at least 100 MiB.
+.SS_untranslated Set \fI<what>\fR
 設定指定的偏好設定值。
 
 \fI<目標>\fP 參數可用的值：
@@ -167,7 +186,7 @@ magnet 連結裏必須包含 eD2k 的 hash 值和檔案大小。
 .IP IPFilter 10
 設定 IP過濾器的偏好設定。
 .RE
-.SS "show \fI<目標>\fP"
+.SS_untranslated Show \fI<what>\fR
 顯示 上傳/下載 等候區、伺服器清單 或 分享檔案清單。
 
 \fI<目標>\fP 參數可用的值：
@@ -179,13 +198,13 @@ magnet 連結裏必須包含 eD2k 的 hash 值和檔案大小。
 .IP Servers 10
 顯示伺服器清單。
 .IP Shared 10
-顯示分享檔案清單。
+Show shared files list.
 .IP UL 10
 顯示上傳等候區。
 .RE
 .SS_untranslated Shutdown
 關閉在遠端執行的核心 (amule/amuled)。這樣也會關閉文字模式客戶端程式，因為不能在沒有核心下執行。
-.SS "statistics [ \fI<號字>\fP ]"
+.SS_untranslated Statistics [ \fI<number>\fP ]
 顯示統計資訊。
 
 \fI<編號>\fP 是這個指令的參數之一，用來指定要顯示多少個客戶端程式的版本附加版本；須為 0\-255 的數字，輸入 0
@@ -239,8 +258,9 @@ magnet 連結裏必須包含 eD2k 的 hash 值和檔案大小。
 
 當然，你可以不必都遵照這個範例。
 .SH 回報問題
-請到我們的論壇 (\fIhttps://github.com/amule-org/amule/discussions\fP) 或錯誤追蹤網站 (\fIhttps://github.com/amule-org/amule/issues\fP)
-回報發現的問題。請不要用 e\-mail 或在我們的群組信件中回報，也不要直接通知某個團隊成員。
+請到我們的論壇 (\fIhttps://github.com/amule\-org/amule/discussions\fP) 或錯誤追蹤網站
+(\fIhttps://github.com/amule\-org/amule/issues\fP) 回報發現的問題。請不要用 e\-mail
+或在我們的群組信件中回報，也不要直接通知某個團隊成員。
 .SH 版權
 aMule 與附加的工具程式都遵守 GNU 的 GPL 協定。
 .SH 參考

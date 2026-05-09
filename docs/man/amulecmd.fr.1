@@ -73,7 +73,7 @@ Affiche le numéro de la version actuelle.
 Afficher une court description d'utilisation.
 .SH COMMANDES
 Toutes les commandes sont insensibles à la casse.
-.SS "Add \fI<lien eD2k>\fP | \fI<lien magnétique>\fP"
+.SS_untranslated Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
 Ajoute un lien eD2k ou magnétique au noyau.
 
 Le lien eD2k à ajouter peut être :
@@ -89,10 +89,10 @@ seront ajoutés à la liste des serveurs.
 .RE
 
 Le lien magnétique doit contenir le hachage eD2k et la longueur du fichier.
-.SS "Cancel \fI<hachage>\fP | \fI<numéro>\fP"
+.SS_untranslated Cancel \fI<hash>\fP | \fI<number>\fP
 Annule le téléchargement spécifié par  le \fI<hachage>\fP ou le
 \fI<numéro>\fP. Pour obtenir la valeur utilisée \fBshow\fP.
-.SS "Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|nom>\fP ]"
+.SS_untranslated Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
 Se connecter au réseau.
 
 Cela connectera à tous les réseaux qui sont activés dans les préférences.
@@ -104,7 +104,7 @@ soit une adresse décimale IPv4 ou un nom DNS résolvable) aMule se connectera
 .SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
 Déconnecte de tous les réseaux dont vous êtes connecté, ou juste déconnecte
 d'un réseau spécifié.
-.SS "Download \fI<nombre>\fP"
+.SS_untranslated Download \fI<number>\fP
 Commence à télécharger un fichier.
 
 Le \fI<numéro>\fP d'un fichier à partir de la dernière recherche doit
@@ -112,7 +112,7 @@ Le \fI<numéro>\fP d'un fichier à partir de la dernière recherche doit
 avec le numéro 12 de la recherche précédente.
 .SS_untranslated Exit
 Déconnecte d'amule/amuled et quitter amulecmd.
-.SS "Get \fI<quoi>\fP"
+.SS_untranslated Get \fI<what>\fP
 Obtient et affiche une valeur de préférence.
 
 Valeurs disponibles pour \fI<quoi>\fP:
@@ -122,15 +122,15 @@ Obtenir les limites de bande passante.
 .IP IPFilter 10
 Obtenir les préférences de filtrage IP.
 .RE
-.SS "Help [ \fI<commande>\fP ]"
+.SS_untranslated Help [ \fI<command>\fP ]
 Affiche une courte description d'utilisation. S'il est appelé sans
 paramètre, il affiche une liste des commandes disponibles. Lorsqu'il est
 appelé avec la \fI<commande>\fP, il affiche une courte description de
 la commande donnée.
-.SS "Pause \fI<hachage>\fP | \fI<numéro>\fP"
+.SS_untranslated Pause \fI<hash>\fP | \fI<number>\fP
 Interrompt le téléchargement spécifié par le \fI<hachage>\fP ou le
 \fI<numéro>\fP. Pour obtenir la valeur d'utilisée \fBshow\fP.
-.SS "Priority \fI<priorité>\fP \fI<hachage>\fP | \fI<numéro>\fP"
+.SS_untranslated Priority \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP
 Définit la priorité d'un téléchargement spécifié par le \fI<hachage>\fP
 ou le \fI<numéro>\fP.
 
@@ -148,8 +148,8 @@ Priorité normal.
 .SS_untranslated Progress
 Affiche la progression d'une recherche en cours.
 .SS_untranslated Quit
-Un synonyme de la commande \fBquitter\fP
-.SS "Reload \fI<quoi>\fP"
+A synonym of the \fBexit\fP command.
+.SS_untranslated Reload \fI<what>\fP
 Recharge un objet donné.
 
 Valeurs disponibles pour \fI<quoi>\fP:
@@ -163,10 +163,10 @@ Recharger les tables IP filter
 Réinitialiser le journal.
 .SS_untranslated Results
 Montre les résultats de la dernière recherche.
-.SS "Resume \fI<hachage>\fP | \fI<numéro>\fP"
+.SS_untranslated Resume \fI<hash>\fP | \fI<number>\fP
 Reprise du téléchargement spécifié par le \fI<hachage>\fP ou le
 \fI<numéro>\fP. Pour obtenir la valeur utilisée \fBshow\fP.
-.SS "Search \fI<type>\fP \fI<mot clé>\fP"
+.SS_untranslated Search \fI<type>\fP [\fI<filters>\fP] \fI<keyword>\fR
 Fait une recherche du \fI<mot clé>\fP donné. Un type de recherche et
 d'un mot clé de recherche sont obligatoires pour le faire. Exemple: `search
 kad amule' effectue une recherche kad pour `amule'.
@@ -180,7 +180,26 @@ Effectuer une recherche sur le réseau Kademlia.
 .IP Local 10
 Effectue une recherche locale.
 .RE
-.SS "Set \fI<quoi>\fP"
+.PP
+Optional filters can be placed before, after, or interleaved with the search
+keyword(s):
+.RS
+.IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
+Restrict results to the given file type.
+.IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
+Restrict results to a specific file extension (e.g.\ \fIiso\fP, \fImp3\fP).
+.IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
+Minimum number of sources a result must report.
+.IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
+Smallest file size to return. Suffixes use binary multipliers (K = 1024, M =
+K\(mu1024, G = M\(mu1024); no suffix means bytes.
+.IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
+Largest file size to return. Same suffixes as \fB\-\-min\-size\fP.
+.RE
+.PP
+Example: `search global linux iso \-\-type Iso \-\-min\-size 100M' returns
+results for \(lqlinux iso\(rq of file\-type Iso at least 100 MiB.
+.SS_untranslated Set \fI<what>\fR
 Définit une valeur compte tenu des préférences.
 
 Valeurs disponibles pour \fI<quoi>\fP:
@@ -190,7 +209,7 @@ Définir les limites de bande passante.
 .IP IPFilter 10
 Définir les préférences de filtrage d'IP.
 .RE
-.SS "Show \fI<quoi>\fP"
+.SS_untranslated Show \fI<what>\fR
 Montrer la file d'attente des envois/réceptions, la liste des serveurs ou la
 liste des fichiers partagés.
 
@@ -203,7 +222,7 @@ Afficher le journal.
 .IP Servers 10
 Afficher la liste des serveurs.
 .IP Shared 10
-Afficher la liste des fichiers partagés.
+Show shared files list.
 .IP UL 10
 Montrer la file d'attente des envois.
 .RE
@@ -211,7 +230,7 @@ Montrer la file d'attente des envois.
 Arrêt du noyau distant exécutant (amule/amuled). Cela arrêtera aussi le
 client en mode texte, car il est inutilisable sans un noyau en cours
 d'exécution.
-.SS "Statistics [ \fI<numéro>\fP ]"
+.SS_untranslated Statistics [ \fI<number>\fP ]
 Afficher l'arbre des statistiques.
 
 L'option \fI<numéro>\fP dans l'interval 255 peut être passé comme
@@ -279,10 +298,11 @@ suffira de taper plus tard :
 
 Bien sûr, vous n'avez pas à suivre cet exemple.
 .SH "RAPPORTER DES BOGUES"
-Veuillez rapporter les bogues sur notre forum (\fIhttps://github.com/amule-org/amule/discussions\fP),
-ou sur notre bugtracker (\fIhttps://github.com/amule-org/amule/issues\fP).  Veuillez ne pas
-rapporter les bogues par e\-mail, sur notre liste de diffusion ou directement
-à n'importe quel membre  de l'équipe.
+Veuillez rapporter les bogues sur notre forum
+(\fIhttps://github.com/amule\-org/amule/discussions\fP), ou sur notre bugtracker
+(\fIhttps://github.com/amule\-org/amule/issues\fP).  Veuillez ne pas rapporter
+les bogues par e\-mail, sur notre liste de diffusion ou directement à
+n'importe quel membre  de l'équipe.
 .SH COPYRIGHT
 aMule et tout ses outils sont distribués sous la licence GNU General Public
 License.

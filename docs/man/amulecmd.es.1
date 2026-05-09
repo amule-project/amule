@@ -73,7 +73,7 @@ Mostrar el número de la versión actual.
 Imprime una breve descripción de uso.
 .SH COMANDOS
 Todos los comandos ignoran las mayúsculas.
-.SS "Añadir \fI<eD2k\-link>\fP | \fI<magnet\-link>\fP"
+.SS_untranslated Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
 Añadir un enlace eD2k o un enlace magnet al núcleo.
 
 El enlace eD2k para ser añadido puede ser:
@@ -90,10 +90,10 @@ lista.
 .RE
 
 El enlace magnet debe contener un hash eD2k y la longitud del archivo.
-.SS "Cancelar \fI<hash>\fP | \fI<number>\fP"
+.SS_untranslated Cancel \fI<hash>\fP | \fI<number>\fP
 Cancels the download specified by \fI<hash>\fP or
 \fI<number>\fP. To get the value use \fBshow\fP.
-.SS "Conectar [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]"
+.SS_untranslated Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
 Conectar a la red.
 
 Esto conectará a todas las redes que estén habilitadas en las preferencias.
@@ -105,7 +105,7 @@ that server only.
 .SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
 Desconectar de todas las redes a las que estás conectado, o solamente
 desconecta de la red especificada.
-.SS "Descarga \fI<number>\fP"
+.SS_untranslated Download \fI<number>\fP
 Comenzar a descargar un archivo.
 
 The \fI<number>\fP of a file from the last search has to be given.
@@ -113,7 +113,7 @@ Example: `download 12' will start to download the file with the number 12 of
 the previous search.
 .SS_untranslated Exit
 Desconectar de amule/amuled y salir de amulecmd.
-.SS "Obtener \fI<what>\fP"
+.SS_untranslated Get \fI<what>\fP
 Obtener y mostrar un valor de opciones.
 
 Valores disponibles para \fI<what>\fP:
@@ -123,14 +123,14 @@ Obtener limites de ancho de banda.
 .IP IPFilter 10
 Obtener opciones del filtro IP.
 .RE
-.SS "Ayuda [ \fI<command>\fP ]"
+.SS_untranslated Help [ \fI<command>\fP ]
 Prints a short usage description.  If called without parameter, it shows a
 list of available commands.  If called with \fI<command>\fP, it shows a
 short description of the given command.
-.SS "Pausa \fI<hash>\fP | \fI<number>\fP"
+.SS_untranslated Pause \fI<hash>\fP | \fI<number>\fP
 Pauses the download specified by \fI<hash>\fP or
 \fI<number>\fP. To get the value use \fBshow\fP.
-.SS "Priority \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP"
+.SS_untranslated Priority \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP
 Fijar la prioridad de una descarga especificada por \fI<hash>\fP o
 \fI<number>\fP.
 
@@ -148,8 +148,8 @@ Prioridad normal.
 .SS_untranslated Progress
 Shows the progress of an on\-going search.
 .SS_untranslated Quit
-Un sinónimo del comando \fBexit\fP.
-.SS "Recargar \fI<what>\fP"
+A synonym of the \fBexit\fP command.
+.SS_untranslated Reload \fI<what>\fP
 Recargar un objeto dado.
 
 Valores disponibles para \fI<what>\fP:
@@ -163,10 +163,10 @@ Recargar tablas de filtros IP.
 Reiniciar el registro.
 .SS_untranslated Results
 Shows you the results of the last search.
-.SS "Resume \fI<hash>\fP | \fI<number>\fP"
+.SS_untranslated Resume \fI<hash>\fP | \fI<number>\fP
 Resumes the download specified by \fI<hash>\fP or
 \fI<number>\fP. To get the value use \fBshow\fP.
-.SS "Search \fI<type>\fP \fI<keyword>\fP"
+.SS_untranslated Search \fI<type>\fP [\fI<filters>\fP] \fI<keyword>\fR
 Makes a search for the given \fI<keyword>\fP. A search type and a
 keyword to search is mandatory to do this.  Example: `search kad amule'
 performs a kad search for `amule'.
@@ -180,7 +180,28 @@ Realiza una búsqueda en la red Kademlia.
 .IP Local 10
 Realiza una búsqueda local.
 .RE
-.SS "Fija \fI<what>\fP"
+.PP
+Pueden colocarse filtros opcionales antes, después o intercalados con la(s)
+palabra(s) clave de búsqueda:
+.RS
+.IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
+Restringe los resultados al tipo de archivo indicado.
+.IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
+Restringe los resultados a una extensión de archivo específica (p. ej.\ \fIiso\fP, \fImp3\fP).
+.IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
+Número mínimo de fuentes que un resultado debe declarar.
+.IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
+Tamaño mínimo de archivo a devolver. Los sufijos usan multiplicadores
+binarios (K = 1024, M = K\(mu1024, G = M\(mu1024); sin sufijo significa
+bytes.
+.IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
+Tamaño máximo de archivo a devolver. Mismos sufijos que \fB\-\-min\-size\fP.
+.RE
+.PP
+Ejemplo: `search global linux iso \-\-type Iso \-\-min\-size 100M' devuelve
+resultados para \(lqlinux iso\(rq de tipo de archivo Iso de al menos 100
+MiB.
+.SS_untranslated Set \fI<what>\fR
 Asigna un valor dado de opción.
 
 Valores disponibles para \fI<what>\fP:
@@ -190,7 +211,7 @@ Asignar limites de ancho de banda.
 .IP IPFilter 10
 Fija las opciones del FiltroIP
 .RE
-.SS "Mostrar \fI<what>\fP"
+.SS_untranslated Show \fI<what>\fR
 Shows upload/download queue, servers list or shared files list.
 
 Valores disponibles para \fI<what>\fP:
@@ -209,7 +230,7 @@ Mostrar cola de subida.
 .SS_untranslated Shutdown
 Shutdown the remote running core (amule/amuled).  This will also shut down
 the text client, since it is unusable without a running core.
-.SS "Estadísticas [ \fI<number>\fP ]"
+.SS_untranslated Statistics [ \fI<number>\fP ]
 Mostrar árbol de estadísticas.
 
 The optional \fI<number>\fP in the range of 0\-255 can be passed as
@@ -272,9 +293,10 @@ tiene que escribir:
 Of course, you don't have to follow this example.
 .SH "INFORMANDO ERRORES"
 Por favor informa de fallos ya sea en nuestro foro
-(\fIhttps://github.com/amule-org/amule/discussions\fP), o en nuestro bugtracker
-(\fIhttps://github.com/amule-org/amule/issues\fP). Por favor no informe de fallos por correo, ni
-en nuestras listas, ni directamente al correo de algun miembro del equipo.
+(\fIhttps://github.com/amule\-org/amule/discussions\fP), o en nuestro bugtracker
+(\fIhttps://github.com/amule\-org/amule/issues\fP). Por favor no informe de
+fallos por correo, ni en nuestras listas, ni directamente al correo de algun
+miembro del equipo.
 .SH COPYRIGHT
 aMule y todas las demás utilidades relacionadas son distribuidas bajo la GNU
 General Public License.

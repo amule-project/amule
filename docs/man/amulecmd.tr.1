@@ -15,8 +15,7 @@ amulecmd \- aMule'ü yönetmek için konsol temelli bir program
 \fI<şifre>\fP] [\fB\-f\fP \fI<yol>\fP]
 .RB_untranslated [ \-q ]
 .RB_untranslated [ \-v ]
-[\fB\-l\fP \fI<dil>\fP] {\fB \fP[\fB\-w\fP]\fB \fP|\fB \fP[\fB\-c\fP \fI<komut>\fP]\fB
-\fP}
+[\fB\-l\fP \fI<dil>\fP] {\fB \fP[\fB\-w\fP]\fB \fP|\fB \fP[\fB\-c\fP \fI<komut>\fP]\fB \fP}
 
 .B_untranslated amulecmd
 [\fB\-\-create\-config\-from\fP=\fI<yol>\fP]
@@ -72,7 +71,7 @@ Geçerli sürüm numarasını görüntüler.
 Kısa bir kullanım açıklaması görüntüler.
 .SH KOMUTLAR
 Tüm komutlar harf büyüklüğüne duyarsızdır.
-.SS "Add \fI<eD2k\-bağlantısı>\fP | \fI<magnet\-bağlantısı>\fP"
+.SS_untranslated Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
 Çekirdeğe bir eD2k ya da magnet bağlantısı ekler.
 
 Eklenecek eD2k bağlantısı şunlardan biri olabilir:
@@ -87,10 +86,10 @@ listesine eklenir.
 .RE
 
 Magnet bağlantısı eD2k hash değerini ve dosya boyutunu içermelidir.
-.SS "Cancel \fI<hash>\fP | \fI<sayı>\fP"
+.SS_untranslated Cancel \fI<hash>\fP | \fI<number>\fP
 \fI<hash>\fP ya da \fI<sayı>\fP tarafından belirtilen indirmeyi
 iptal eder. Değerleri öğrenmek için \fBshow\fP komutunu kullanınız.
-.SS "Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|isim>\fP ]"
+.SS_untranslated Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
 Ağa bağlanır.
 
 Ayarlarda ekinleştirilmiş tüm ağlara bağlanır.
@@ -102,7 +101,7 @@ verirseniz aMule sadece bu sunucuya bağlanacaktır.
 .SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
 Ya çevrimiçi olan tüm ağlarla bağlantıyı keser, ya da sadece belirtilen ağ
 ile.
-.SS "Download \fI<sayı>\fP"
+.SS_untranslated Download \fI<number>\fP
 Bir dosyayı indirmeye başlar.
 
 Bir dosyanın son aramadan \fI<sayı>\fP değeri girilmesi
@@ -110,7 +109,7 @@ gerekir. Örneğin `download 12' son aramadaki 12 numaralı dosyayı indirmeye
 başlar.
 .SS_untranslated Exit
 amule/amuled ile bağlantıyı keser ve amulecmd kapanır.
-.SS "Get \fI<değer>\fP"
+.SS_untranslated Get \fI<what>\fP
 Bir ayar değerini görüntüler.
 
 \fI<değer>\fP ile kullanılabilecek değerler:
@@ -120,14 +119,14 @@ Bant genişliği değerlerini görüntüler.
 .IP IPFilter 10
 IPFilter ayarlarını görüntüler.
 .RE
-.SS "Help [ \fI<komut>\fP ]"
+.SS_untranslated Help [ \fI<command>\fP ]
 Kısa bir kullanım açıklaması görüntüler. Bir parametre ile kullanılırsa
 mevcut komutların listesini verir. \fI<komut>\fP ile kullanılırsa
 belirtilen komutun kısa bir açıklamasını görüntüler.
-.SS "Pause \fI<hash>\fP | \fI<sayı>\fP"
+.SS_untranslated Pause \fI<hash>\fP | \fI<number>\fP
 \fI<hash>\fP ya da \fI<sayı>\fP değerleri ile belirtilen indirmeyi
 duraklatır. Bu değerleri elde etmek için \fBshow\fP komutunu kullanabilirsiniz.
-.SS "Priority \fI<öncelik>\fP \fI<hash>\fP | \fI<sayı>\fP"
+.SS_untranslated Priority \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP
 \fI<hash>\fP ya da \fI<sayı>\fP ile belirtilen bir indirmenin
 önceliğini ayarlar.
 
@@ -145,8 +144,8 @@ Normal öncelik.
 .SS_untranslated Progress
 Sürmekte olan bir aramanın ilerlemesini gösterir.
 .SS_untranslated Quit
-\fBexit\fP komutu ile eş anlamlıdır.
-.SS "Reload \fI<değer>\fP"
+A synonym of the \fBexit\fP command.
+.SS_untranslated Reload \fI<what>\fP
 Belirtilen değeri yeniden yükler.
 
 \fI<değer>\fP ile kullanılabilecek değerler:
@@ -160,10 +159,10 @@ IP filtre tablolarını yeniden yükler.
 Günlüğü sıfırlar.
 .SS_untranslated Results
 Son aramanın sonuçlarını gösterir.
-.SS "Resume \fI<hash>\fP | \fI<sayı>\fP"
+.SS_untranslated Resume \fI<hash>\fP | \fI<number>\fP
 \fI<hash>\fP ya da \fI<sayı>\fP ile belirtilen indirmeye kaldığı
 yerden devam eder. Değeri öğrenmek için \fBshow\fP komutunu kullanabilirsiniz.
-.SS "Search \fI<tür>\fP \fI<anahtarkelime>\fP"
+.SS_untranslated Search \fI<type>\fP [\fI<filters>\fP] \fI<keyword>\fR
 Girilen \fI<anahtarkelime>\fP için bir arama yapar. Bir arama türü ve
 bir anahtar kelime kullanmanız mecburidir. Örneğin `search kad amule' kad
 ağında `amule' sözcüğü ile arama yapar.
@@ -177,7 +176,26 @@ Kad ağında arama yapar.
 .IP Local 10
 Sunucuda arama yapar.
 .RE
-.SS "Set \fI<değer>\fP"
+.PP
+Optional filters can be placed before, after, or interleaved with the search
+keyword(s):
+.RS
+.IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
+Restrict results to the given file type.
+.IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
+Restrict results to a specific file extension (e.g.\ \fIiso\fP, \fImp3\fP).
+.IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
+Minimum number of sources a result must report.
+.IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
+Smallest file size to return. Suffixes use binary multipliers (K = 1024, M =
+K\(mu1024, G = M\(mu1024); no suffix means bytes.
+.IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
+Largest file size to return. Same suffixes as \fB\-\-min\-size\fP.
+.RE
+.PP
+Example: `search global linux iso \-\-type Iso \-\-min\-size 100M' returns
+results for \(lqlinux iso\(rq of file\-type Iso at least 100 MiB.
+.SS_untranslated Set \fI<what>\fR
 Belirtilen değeri ayarlara girer.
 
 \fI<değer>\fP ile kullanılabilecek değerler:
@@ -187,7 +205,7 @@ Bant genişliği değerlerini ayarlar.
 .IP IPFilter 10
 IPFilter tercihlerini ayarlar.
 .RE
-.SS "Show \fI<değer>\fP"
+.SS_untranslated Show \fI<what>\fR
 İndirme/aktarma kuyruğunu, sunucu listesini ya da paylaşılan dosya listesini
 gösterir.
 
@@ -200,14 +218,14 @@ Günlüğü (log) gösterir.
 .IP Servers 10
 Sunucu listesini gösterir.
 .IP Shared 10
-Paylaşılan dosya listesini gösterir.
+Show shared files list.
 .IP UL 10
 Aktarma (gönderilen dosyalar) kuyruğunu gösterir.
 .RE
 .SS_untranslated Shutdown
 Uzakta çalışmakta olan çekirdeği (amule/amuled) kapatır. Bu metin temelli
 istemciyi de kapatacaktır çünkü çekirdek olmadan işleyemez.
-.SS "İstatistikler [ \fI<sayı>\fP ]"
+.SS_untranslated Statistics [ \fI<number>\fP ]
 İstatistikler ağacını gösterir.
 
 0\-255 arası \fI<sayı>\fP isteğe bağlı argüman olarak komuta
@@ -269,10 +287,11 @@ sadece şunu girmeniz yeterli olacaktır:
 
 Tabii ki bu örneğe harfiyen uymanız zorunlu değildir.
 .SH GERİBİLDİRİM
-Hataları bildirmek için forumumuzu (\fIhttps://github.com/amule-org/amule/discussions\fP) ya da hata
-takipçimizi (\fIhttps://github.com/amule-org/amule/issues\fP) kullanınız. Hataları bildirmek için
-e\-mail ve e\-mail listemizi kullanmamanızı ve geliştiricilerden birine
-doğrudan bildirmemenizi rica ederiz.
+Hataları bildirmek için forumumuzu
+(\fIhttps://github.com/amule\-org/amule/discussions\fP) ya da hata takipçimizi
+(\fIhttps://github.com/amule\-org/amule/issues\fP) kullanınız. Hataları
+bildirmek için e\-mail ve e\-mail listemizi kullanmamanızı ve
+geliştiricilerden birine doğrudan bildirmemenizi rica ederiz.
 .SH "TELİF HAKKI"
 aMule ve ilgili tüm yardımcı araçları GNU Genel Kamu Lisansı çerçevesinde
 dağıtılmaktadır.
