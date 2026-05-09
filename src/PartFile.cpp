@@ -2382,6 +2382,29 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		CMD4Hash hashresult;
 		uint64 offset = PARTSIZE * partnumber;
 		uint32 length = GetPartSize(partnumber);
+
+		// Drift defense: gap-tracking advances on receive, but bytes
+		// only hit disk via the buffered write path; a write failure
+		// (ENOSPC, EIO, transient I/O error) followed by a SavePartFile
+		// and an unclean shutdown leaves the .met persisted with the
+		// optimistic gap state, while the partfile is shorter than
+		// the gap-list claims. Reading past EOF would throw and trip
+		// PS_ERROR, requiring manual recovery (truncate -s <fullsize>).
+		// Detect the divergence pre-read and reopen the gap so the
+		// missing bytes are re-fetched cleanly. Also covers external
+		// truncation, partial backup restore, and FS corruption.
+		const uint64 partfileLen = m_hpartfile.GetLength();
+		if (partfileLen < offset + length) {
+			AddLogLineC(CFormat(_(
+				"Part %u of '%s' marked complete but partfile is shorter than expected "
+				"(have %llu bytes, need %llu); reopening gap for re-download."))
+				% partnumber % GetFileName()
+				% (unsigned long long)partfileLen
+				% (unsigned long long)(offset + length));
+			AddGap(offset, offset + length - 1);
+			return false;
+		}
+
 		try {
 			CreateHashFromFile(m_hpartfile, offset, length, &hashresult, NULL);
 		} catch (const CIOFailureException& e) {
