@@ -72,7 +72,7 @@ Afișează numărul versiunii curente.
 Tipărește o scurtă descriere de utilizare.
 .SH COMENZI
 toate comenzile nu sunt sensibile la majuscule.
-.SS "Adaugă \fI<eD2k\-link>\fP | \fI<magnet\-link>\fP"
+.SS_untranslated Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
 Adaugă la nucleu o legătură eD2k sau o legătură magnet.
 
 Link\-ul eD2k de adăugat poate fi:
@@ -88,10 +88,10 @@ la lista serverelor.
 .RE
 
 Legătura magnet trebuie să conțină indexul eD2k și lungimea fișierului.
-.SS "Anulează \fI<hash>\fP | \fI<number>\fP"
+.SS_untranslated Cancel \fI<hash>\fP | \fI<number>\fP
 Anulează descărcarea specificată de \fI<hash>\fP sau
 \fI<number>\fP. Pentru a obține valoarea utilizați  \fBshow\fP.
-.SS "Conectare [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]"
+.SS_untranslated Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
 Conectare la rețea.
 
 Aceasta va conecta la toate rețelele care sunt activate în preferințe.
@@ -103,7 +103,7 @@ la acel server.
 .SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
 Deconectați de la toate rețelele la care sunteți conectat, sau doar
 deconectați de la rețeaua specificată.
-.SS "Descarcă \fI<number>\fP"
+.SS_untranslated Download \fI<number>\fP
 Pornește descărcarea unui fișier.
 
 Un \fI<number>\fP a unui fișier de la ultima căutare trebuie
@@ -111,7 +111,7 @@ dat. Exemplu: `descărcarea 12' va porni descărcarea fișierului cu numărul 12
 al căutării anterioare.
 .SS_untranslated Exit
 Deconectează de la amule/amuled și termină amulecmd.
-.SS "Ia \fI<what>\fP"
+.SS_untranslated Get \fI<what>\fP
 Ia și afișează o valoare preferată.
 
 Valori disponibile pentru \fI<what>\fP:
@@ -121,14 +121,14 @@ Ia limitele lățimii de bandă.
 .IP IPFilter 10
 Ia preferințele filtrului IP.
 .RE
-.SS "Ajutor [ \fI<command>\fP ]"
+.SS_untranslated Help [ \fI<command>\fP ]
 Tipărește o scurtă descriere a utilizării. Dacă este adresată fără nici un
 parametru, va arăta o listă a comenzilor disponibile. Dacă este adresată cu
 \fI<command>\fP, va arăta o scurtă descriere a comenzii date.
-.SS "Pauză \fI<hash>\fP | \fI<number>\fP"
+.SS_untranslated Pause \fI<hash>\fP | \fI<number>\fP
 Pauzează descărcarea specificată de \fI<hash>\fP or
 \fI<number>\fP. Pentru a obține valoarea utilizați \fBshow\fP.
-.SS "Prioritate \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP"
+.SS_untranslated Priority \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP
 Configurați prioritatea unei descărcări cu \fI<hash>\fP sau
 \fI<number>\fP.
 
@@ -146,8 +146,8 @@ Prioritate normală.
 .SS_untranslated Progress
 Arată progresul unei căutări în desfășurare.
 .SS_untranslated Quit
-Un sinonim a comenzii \fBexit\fP .
-.SS "Reâncarcă \fI<what>\fP"
+A synonym of the \fBexit\fP command.
+.SS_untranslated Reload \fI<what>\fP
 Reâncarcă un obiect dat.
 
 Valori disponibile pentru \fI<what>\fP:
@@ -161,10 +161,10 @@ Reâncarcă tabelele filtrului IP.
 Resetează jurnalul.
 .SS_untranslated Results
 Arată rezultatele ultimei căutări.
-.SS "Reia \fI<hash>\fP | \fI<number>\fP"
+.SS_untranslated Resume \fI<hash>\fP | \fI<number>\fP
 Reia descărcarea specificată de \fI<hash>\fP sau
 \fI<number>\fP. Pentru a obține valoarea utilizați \fBshow\fP.
-.SS "Caută \fI<type>\fP \fI<keyword>\fP"
+.SS_untranslated Search \fI<type>\fP [\fI<filters>\fP] \fI<keyword>\fR
 Face o căutare a cuvântului cheie dat \fI<keyword>\fP. Un tip de
 căutare și un un cuvânt cheie sunt obligatorii pentru a face asta. Exemplu:
 `caută kad amule' efectuează o căutare kad pentru `amule'.
@@ -178,7 +178,26 @@ Efectuează o căutare în rețeaua Kademlia.
 .IP Local 10
 Efectuează o căutare locală.
 .RE
-.SS "Configurează \fI<what>\fP"
+.PP
+Optional filters can be placed before, after, or interleaved with the search
+keyword(s):
+.RS
+.IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
+Restrict results to the given file type.
+.IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
+Restrict results to a specific file extension (e.g.\ \fIiso\fP, \fImp3\fP).
+.IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
+Minimum number of sources a result must report.
+.IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
+Smallest file size to return. Suffixes use binary multipliers (K = 1024, M =
+K\(mu1024, G = M\(mu1024); no suffix means bytes.
+.IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
+Largest file size to return. Same suffixes as \fB\-\-min\-size\fP.
+.RE
+.PP
+Example: `search global linux iso \-\-type Iso \-\-min\-size 100M' returns
+results for \(lqlinux iso\(rq of file\-type Iso at least 100 MiB.
+.SS_untranslated Set \fI<what>\fR
 Configurați o valoare a preferințelor date.
 
 Valori disponibile pentru \fI<what>\fP:
@@ -188,7 +207,7 @@ Configurare limite lățime de bandă.
 .IP IPFilter 10
 Configurare preferințe filtru IP.
 .RE
-.SS "Arată \fI<what>\fP"
+.SS_untranslated Show \fI<what>\fR
 Arată coada încărcărilor/descărcărilor, lista serverelor sau lista
 fișierelor partajate.
 
@@ -201,7 +220,7 @@ Arată jurnalul.
 .IP Servers 10
 Arată lista serverelor.
 .IP Shared 10
-Arată lista fișierelor partajate.
+Show shared files list.
 .IP UL 10
 Arată coada încărcărilor.
 .RE
@@ -209,7 +228,7 @@ Arată coada încărcărilor.
 Închide nucleul distant care rulează (amule/amuled). Aceasta va închide de
 asemenea clientul text, deoarece este inutilizabil fără un nucleu care
 rulează.
-.SS "Statistici [ \fI<number>\fP ]"
+.SS_untranslated Statistics [ \fI<number>\fP ]
 Arată arborele statisticilor.
 
 Numărul facultativ \fI<number>\fP în domeniul 0\-255 poate fi trecut ca
@@ -273,9 +292,10 @@ târziu trebuie doar să tastați:
 Desigur, nu trebuie să urmați acest exemplu.
 .SH "RAPORTAREA ERORILOR"
 Vă rugăm să raportați erorile fie pe forumul
-nostru(\fIhttps://github.com/amule-org/amule/discussions\fP), sau în bugtracker\-ul nostru
-(\fIhttps://github.com/amule-org/amule/issues\fP). Nu raportați erorile pe email, nici la lista
-noastră de adrese nici direct la nici un membru al echipei.
+nostru(\fIhttps://github.com/amule\-org/amule/discussions\fP), sau în
+bugtracker\-ul nostru (\fIhttps://github.com/amule\-org/amule/issues\fP). Nu
+raportați erorile pe email, nici la lista noastră de adrese nici direct la
+nici un membru al echipei.
 .SH "DREPT DE AUTOR"
 aMule și toate utilitarele conexe sunt distribuite sub GNU General Public
 License.

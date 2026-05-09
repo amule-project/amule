@@ -44,7 +44,9 @@ Setzt die Konfiguration auf die Standardwerte zurück.
 Setzt den Ort der ausführbaren Datei von amuleweb auf \fI<Pfad>\fP.
 .TP 
 .B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
-Fehlerbehandlung für fatale Fehler abschalten.
+Don't catch fatal exceptions and don't block exit on assertions.  Useful for
+headless / supervised setups (systemd, watchdog scripts)  where the
+otherwise\-modal assertion dialog prevents auto\-restart.
 .TP 
 .B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
 Schaltet die Standardeingabe nicht ab.
@@ -84,8 +86,9 @@ angenommen, diese Datei liegt um aMule\-Konfigurationsverzeichnis,
 .SH DATEIEN
 ~/.aMule/*
 .SH "FEHLER MELDEN"
-Bitte meldet Fehler entweder in unserem Forum (\fIhttps://github.com/amule-org/amule/discussions\fP),
-oder in unseren Bugtracker (\fIhttps://github.com/amule-org/amule/issues\fP). Bitte meldet uns
+Bitte meldet Fehler entweder in unserem Forum
+(\fIhttps://github.com/amule\-org/amule/discussions\fP), oder in unseren
+Bugtracker (\fIhttps://github.com/amule\-org/amule/issues\fP). Bitte meldet uns
 weder Fehler per E\-Mail, noch auf unsere Mailingliste oder direkt an unsere
 Teammitglieder.
 .SH COPYRIGHT

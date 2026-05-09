@@ -7,13 +7,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-09-15 11:10+0200\n"
+"POT-Creation-Date: 2026-05-11 13:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. type: TH
@@ -23,7 +23,10 @@ msgid "AMULE"
 msgstr ""
 
 #. type: TH
-#: amule.1:1 amulecmd.1:1 amuled.1:1 amulegui.1:1 amuleweb.1:1 ed2k.1:1 ../../src/utils/aLinkCreator/docs/alc.1:1 ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1 ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
+#: amule.1:1 amulecmd.1:1 amuled.1:1 amulegui.1:1 amuleweb.1:1 ed2k.1:1
+#: ../../src/utils/aLinkCreator/docs/alc.1:1
+#: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
+#: ../../src/utils/wxCas/docs/wxcas.1:1
 #, no-wrap
 msgid "September 2016"
 msgstr ""
@@ -41,7 +44,10 @@ msgid "aMule"
 msgstr ""
 
 #. type: SH
-#: amule.1:4 amulecmd.1:5 amuled.1:4 amuleweb.1:4 ed2k.1:4 ../../src/utils/aLinkCreator/docs/alc.1:3 ../../src/utils/aLinkCreator/docs/alcc.1:4 ../../src/utils/cas/docs/cas.1:4 ../../src/utils/wxCas/docs/wxcas.1:3 ../../src/utils/xas/docs/xas.1:3
+#: amule.1:4 amulecmd.1:5 amuled.1:4 amulegui.1:4 amuleweb.1:4 ed2k.1:4
+#: ../../src/utils/aLinkCreator/docs/alc.1:3
+#: ../../src/utils/aLinkCreator/docs/alcc.1:4 ../../src/utils/cas/docs/cas.1:4
+#: ../../src/utils/wxCas/docs/wxcas.1:3
 #, no-wrap
 msgid "NAME"
 msgstr ""
@@ -52,7 +58,10 @@ msgid "amule - the all-platform eMule p2p client"
 msgstr ""
 
 #. type: SH
-#: amule.1:6 amulecmd.1:7 amuled.1:6 amulegui.1:6 amuleweb.1:6 ed2k.1:6 ../../src/utils/aLinkCreator/docs/alc.1:5 ../../src/utils/aLinkCreator/docs/alcc.1:6 ../../src/utils/cas/docs/cas.1:6 ../../src/utils/wxCas/docs/wxcas.1:5 ../../src/utils/xas/docs/xas.1:5
+#: amule.1:6 amulecmd.1:7 amuled.1:6 amulegui.1:6 amuleweb.1:6 ed2k.1:6
+#: ../../src/utils/aLinkCreator/docs/alc.1:5
+#: ../../src/utils/aLinkCreator/docs/alcc.1:6 ../../src/utils/cas/docs/cas.1:6
+#: ../../src/utils/wxCas/docs/wxcas.1:5
 #, no-wrap
 msgid "SYNOPSIS"
 msgstr ""
@@ -73,19 +82,24 @@ msgid "[B<-t> I<E<lt>numE<gt>>] [I<eD2k-link>]"
 msgstr ""
 
 #. type: SH
-#: amule.1:24 amulecmd.1:26 amuled.1:25 amulegui.1:20 amuleweb.1:41 ed2k.1:19 ../../src/utils/aLinkCreator/docs/alc.1:7 ../../src/utils/aLinkCreator/docs/alcc.1:14 ../../src/utils/cas/docs/cas.1:14 ../../src/utils/wxCas/docs/wxcas.1:7 ../../src/utils/xas/docs/xas.1:7
+#: amule.1:24 amulecmd.1:26 amuled.1:25 amulegui.1:20 amuleweb.1:41 ed2k.1:19
+#: ../../src/utils/aLinkCreator/docs/alc.1:7
+#: ../../src/utils/aLinkCreator/docs/alcc.1:14
+#: ../../src/utils/cas/docs/cas.1:14 ../../src/utils/wxCas/docs/wxcas.1:7
 #, no-wrap
 msgid "DESCRIPTION"
 msgstr ""
 
 #. type: TP
-#: amule.1:25 amuled.1:26 amulegui.1:24 ed2k.1:21 ../../src/utils/cas/docs/cas.1:26
+#: amule.1:25 amuled.1:26 amulegui.1:24 ed2k.1:21
+#: ../../src/utils/cas/docs/cas.1:26
 #, no-wrap
 msgid "B<[ -c> I<E<lt>pathE<gt>>, B<--config-dir>=I<E<lt>pathE<gt>> B<]>"
 msgstr ""
 
 #. type: Plain text
-#: amule.1:28 amuled.1:29 amulegui.1:27 ed2k.1:24 ../../src/utils/cas/docs/cas.1:29
+#: amule.1:28 amuled.1:29 amulegui.1:27 ed2k.1:24
+#: ../../src/utils/cas/docs/cas.1:29
 msgid "Read config from I<E<lt>pathE<gt>> instead of home"
 msgstr ""
 
@@ -125,88 +139,93 @@ msgid "Specify location of amuleweb binary to I<E<lt>pathE<gt>>."
 msgstr ""
 
 #. type: Plain text
-#: amule.1:43 amuled.1:51
-msgid "Does not handle fatal exception."
+#: amule.1:45 amuled.1:53
+msgid ""
+"Don't catch fatal exceptions and don't block exit on assertions.  Useful for "
+"headless / supervised setups (systemd, watchdog scripts)  where the "
+"otherwise-modal assertion dialog prevents auto-restart."
 msgstr ""
 
 #. type: Plain text
-#: amule.1:46 amuled.1:54
+#: amule.1:48 amuled.1:56
 msgid "Does not disable stdin."
 msgstr ""
 
 #. type: TP
-#: amule.1:46 amuled.1:54 amulegui.1:39 ed2k.1:24
+#: amule.1:48 amuled.1:56 amulegui.1:39 ed2k.1:24
 #, no-wrap
 msgid "B<[ -t>, B<--category>=I<E<lt>numE<gt>> B<]>"
 msgstr ""
 
 #. type: Plain text
-#: amule.1:49 amuled.1:57 amulegui.1:42 ed2k.1:27
+#: amule.1:51 amuled.1:59 amulegui.1:42 ed2k.1:27
 msgid "Set category for passed eD2k links to I<E<lt>numE<gt>>"
 msgstr ""
 
 #. type: Plain text
-#: amule.1:52 amulecmd.1:66 amuled.1:60 amulegui.1:48 amuleweb.1:126 ed2k.1:39
+#: amule.1:54 amulecmd.1:66 amuled.1:62 amulegui.1:48 amuleweb.1:126 ed2k.1:39
 msgid "Displays the current version number."
 msgstr ""
 
 #. type: Plain text
-#: amule.1:55 amulecmd.1:69 amuled.1:63 amulegui.1:45 amuleweb.1:123 ed2k.1:36 ../../src/utils/aLinkCreator/docs/alcc.1:22 ../../src/utils/cas/docs/cas.1:32
+#: amule.1:57 amulecmd.1:69 amuled.1:65 amulegui.1:45 amuleweb.1:123 ed2k.1:36
+#: ../../src/utils/aLinkCreator/docs/alcc.1:22
+#: ../../src/utils/cas/docs/cas.1:32
 msgid "Prints a short usage description."
 msgstr ""
 
 #. type: TP
-#: amule.1:55 amuled.1:63 ed2k.1:39
+#: amule.1:57 amuled.1:65 ed2k.1:39
 #, no-wrap
 msgid "B<[ eD2k-link ]>"
 msgstr ""
 
 #. type: Plain text
-#: amule.1:58 amuled.1:66 ed2k.1:42
+#: amule.1:60 amuled.1:68 ed2k.1:42
 msgid "Adds an eD2k-link to the core."
 msgstr ""
 
 #. type: Plain text
-#: amule.1:60 amulecmd.1:75 amuled.1:68 ed2k.1:44
+#: amule.1:62 amulecmd.1:75 amuled.1:70 ed2k.1:44
 msgid "The eD2k link to be added can be:"
 msgstr ""
 
 #. type: Plain text
-#: amule.1:63 amulecmd.1:78 amuled.1:71 ed2k.1:47
+#: amule.1:65 amulecmd.1:78 amuled.1:73 ed2k.1:47
 msgid "a file link (ed2k://|file|...), it will be added to the download queue;"
 msgstr ""
 
 #. type: Plain text
-#: amule.1:65 amulecmd.1:80 amuled.1:73 ed2k.1:49
+#: amule.1:67 amulecmd.1:80 amuled.1:75 ed2k.1:49
 msgid "a server link (ed2k://|server|...), it will be added to the server list;"
 msgstr ""
 
 #. type: Plain text
-#: amule.1:67 amuled.1:75 ed2k.1:51
+#: amule.1:69 amuled.1:77 ed2k.1:51
 msgid ""
 "a serverlist link, in which case all servers in the list will be added to "
 "the server list;"
 msgstr ""
 
 #. type: Plain text
-#: amule.1:69 amuled.1:77
+#: amule.1:71 amuled.1:79
 msgid "a magnet link."
 msgstr ""
 
 #. type: SH
-#: amule.1:70 amulecmd.1:207 amuleweb.1:132
+#: amule.1:72 amulecmd.1:229 amuleweb.1:132
 #, no-wrap
 msgid "NOTES"
 msgstr ""
 
 #. type: SS
-#: amule.1:71 amulecmd.1:208 amuleweb.1:133
+#: amule.1:73 amulecmd.1:230 amuleweb.1:133
 #, no-wrap
 msgid "Paths"
 msgstr ""
 
 #. type: Plain text
-#: amule.1:75 amulecmd.1:212 amuleweb.1:137
+#: amule.1:77 amulecmd.1:234 amuleweb.1:137
 msgid ""
 "For all options which take a I<E<lt>pathE<gt>> value, if the I<path> "
 "contains no directory part (i.e. just a plain filename), then it is "
@@ -214,57 +233,80 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: amule.1:75 amulecmd.1:240 amuled.1:78 amuleweb.1:171 ed2k.1:60 ../../src/utils/cas/docs/cas.1:36
+#: amule.1:77 amulecmd.1:262 amuled.1:80 amuleweb.1:171 ed2k.1:60
+#: ../../src/utils/cas/docs/cas.1:36
 #, no-wrap
 msgid "FILES"
 msgstr ""
 
 #. type: Plain text
-#: amule.1:77 amuled.1:80
+#: amule.1:79 amuled.1:82
 msgid "~/.aMule/*"
 msgstr ""
 
 #. type: SH
-#: amule.1:77 amulecmd.1:256 amuled.1:80 amulegui.1:48 amuleweb.1:191 ed2k.1:62 ../../src/utils/aLinkCreator/docs/alc.1:11 ../../src/utils/aLinkCreator/docs/alcc.1:26 ../../src/utils/cas/docs/cas.1:42 ../../src/utils/wxCas/docs/wxcas.1:16 ../../src/utils/xas/docs/xas.1:16
+#: amule.1:79 amulecmd.1:278 amuled.1:82 amulegui.1:48 amuleweb.1:191 ed2k.1:62
+#: ../../src/utils/aLinkCreator/docs/alc.1:11
+#: ../../src/utils/aLinkCreator/docs/alcc.1:26
+#: ../../src/utils/cas/docs/cas.1:42 ../../src/utils/wxCas/docs/wxcas.1:16
 #, no-wrap
 msgid "REPORTING BUGS"
 msgstr ""
 
 #. type: Plain text
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14 ../../src/utils/aLinkCreator/docs/alcc.1:29 ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19 ../../src/utils/xas/docs/xas.1:19
+#: amule.1:82 amulecmd.1:281 amuled.1:85 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: ../../src/utils/aLinkCreator/docs/alc.1:14
+#: ../../src/utils/aLinkCreator/docs/alcc.1:29
+#: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 msgid ""
-"Please report bugs either on our forum (I<https://github.com/amule-org/amule/discussions>), or in "
-"our bugtracker (I<https://github.com/amule-org/amule/issues>).  Please do not report bugs in "
-"e-mail, neither to our mailing list nor directly to any team member."
+"Please report bugs either on our forum "
+"(I<https://github.com/amule-org/amule/discussions>), or in our bugtracker "
+"(I<https://github.com/amule-org/amule/issues>).  Please do not report bugs "
+"in e-mail, neither to our mailing list nor directly to any team member."
 msgstr ""
 
 #. type: SH
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65 ../../src/utils/aLinkCreator/docs/alc.1:14 ../../src/utils/aLinkCreator/docs/alcc.1:29 ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19 ../../src/utils/xas/docs/xas.1:19
+#: amule.1:82 amulecmd.1:281 amuled.1:85 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: ../../src/utils/aLinkCreator/docs/alc.1:14
+#: ../../src/utils/aLinkCreator/docs/alcc.1:29
+#: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16 ../../src/utils/aLinkCreator/docs/alcc.1:31 ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21 ../../src/utils/xas/docs/xas.1:21
+#: amule.1:84 amulecmd.1:283 amuled.1:87 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: ../../src/utils/aLinkCreator/docs/alc.1:16
+#: ../../src/utils/aLinkCreator/docs/alcc.1:31
+#: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
 msgid ""
 "aMule and all of its related utilities are distributed under the GNU General "
 "Public License."
 msgstr ""
 
 #. type: SH
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67 ../../src/utils/aLinkCreator/docs/alc.1:16 ../../src/utils/aLinkCreator/docs/alcc.1:31 ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21 ../../src/utils/xas/docs/xas.1:21
+#: amule.1:84 amulecmd.1:283 amuled.1:87 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: ../../src/utils/aLinkCreator/docs/alc.1:16
+#: ../../src/utils/aLinkCreator/docs/alcc.1:31
+#: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
 
 #. type: SH
-#: amule.1:84 amulecmd.1:263 amuled.1:87 amulegui.1:55 amuleweb.1:198 ed2k.1:69 ../../src/utils/aLinkCreator/docs/alc.1:18 ../../src/utils/aLinkCreator/docs/alcc.1:33 ../../src/utils/cas/docs/cas.1:49 ../../src/utils/wxCas/docs/wxcas.1:23 ../../src/utils/xas/docs/xas.1:23
+#: amule.1:86 amulecmd.1:285 amuled.1:89 amulegui.1:55 amuleweb.1:198 ed2k.1:69
+#: ../../src/utils/aLinkCreator/docs/alc.1:18
+#: ../../src/utils/aLinkCreator/docs/alcc.1:33
+#: ../../src/utils/cas/docs/cas.1:49 ../../src/utils/wxCas/docs/wxcas.1:23
 #, no-wrap
 msgid "AUTHOR"
 msgstr ""
 
 #. type: Plain text
-#: amule.1:85 amulecmd.1:264 amuled.1:88 amuleweb.1:199 ed2k.1:70 ../../src/utils/aLinkCreator/docs/alc.1:19 ../../src/utils/aLinkCreator/docs/alcc.1:34 ../../src/utils/cas/docs/cas.1:50 ../../src/utils/wxCas/docs/wxcas.1:24 ../../src/utils/xas/docs/xas.1:24
+#: amule.1:87 amulecmd.1:286 amuled.1:90 amuleweb.1:199 ed2k.1:70
+#: ../../src/utils/aLinkCreator/docs/alc.1:19
+#: ../../src/utils/aLinkCreator/docs/alcc.1:34
+#: ../../src/utils/cas/docs/cas.1:50 ../../src/utils/wxCas/docs/wxcas.1:24
 msgid "This manpage was written by Vollstrecker E<lt>amule@vollstreckernet.deE<gt>"
 msgstr ""
 
@@ -281,7 +323,9 @@ msgid "aMuleCmd v2.3.2"
 msgstr ""
 
 #. type: TH
-#: amulecmd.1:1 amuleweb.1:1 ed2k.1:1 ../../src/utils/aLinkCreator/docs/alc.1:1 ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1 ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
+#: amulecmd.1:1 amuleweb.1:1 ed2k.1:1 ../../src/utils/aLinkCreator/docs/alc.1:1
+#: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
+#: ../../src/utils/wxCas/docs/wxcas.1:1
 #, no-wrap
 msgid "aMule utilities"
 msgstr ""
@@ -430,12 +474,6 @@ msgstr ""
 msgid "All commands are case insensitive."
 msgstr ""
 
-#. type: SS
-#: amulecmd.1:71
-#, no-wrap
-msgid "Add I<E<lt>eD2k-linkE<gt>> | I<E<lt>magnet-linkE<gt>>"
-msgstr ""
-
 #. type: Plain text
 #: amulecmd.1:73
 msgid "Adds an eD2k-link or a magnet-link to the core."
@@ -453,23 +491,11 @@ msgstr ""
 msgid "The magnet link must contain the eD2k hash and file length."
 msgstr ""
 
-#. type: SS
-#: amulecmd.1:85
-#, no-wrap
-msgid "Cancel I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
-msgstr ""
-
 #. type: Plain text
 #: amulecmd.1:87
 msgid ""
 "Cancels the download specified by I<E<lt>hashE<gt>> or "
 "I<E<lt>numberE<gt>>. To get the value use B<show>."
-msgstr ""
-
-#. type: SS
-#: amulecmd.1:87
-#, no-wrap
-msgid "Connect [ I<kad> | I<ed2k> | I<E<lt>ip|nameE<gt>> ]"
 msgstr ""
 
 #. type: Plain text
@@ -498,12 +524,6 @@ msgid ""
 "the specified network."
 msgstr ""
 
-#. type: SS
-#: amulecmd.1:98
-#, no-wrap
-msgid "Download I<E<lt>numberE<gt>>"
-msgstr ""
-
 #. type: Plain text
 #: amulecmd.1:100
 msgid "Start downloading a file."
@@ -522,19 +542,13 @@ msgstr ""
 msgid "Disconnect from amule/amuled and quit amulecmd."
 msgstr ""
 
-#. type: SS
-#: amulecmd.1:106
-#, no-wrap
-msgid "Get I<E<lt>whatE<gt>>"
-msgstr ""
-
 #. type: Plain text
 #: amulecmd.1:108
 msgid "Get and display a preference value."
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:110 amulecmd.1:144 amulecmd.1:173 amulecmd.1:183
+#: amulecmd.1:110 amulecmd.1:144 amulecmd.1:193 amulecmd.1:203
 msgid "Available values for I<E<lt>whatE<gt>>:"
 msgstr ""
 
@@ -548,12 +562,6 @@ msgstr ""
 msgid "Get IPFilter preferences."
 msgstr ""
 
-#. type: SS
-#: amulecmd.1:116
-#, no-wrap
-msgid "Help [ I<E<lt>commandE<gt>> ]"
-msgstr ""
-
 #. type: Plain text
 #: amulecmd.1:120
 msgid ""
@@ -562,23 +570,11 @@ msgid ""
 "short description of the given command."
 msgstr ""
 
-#. type: SS
-#: amulecmd.1:120
-#, no-wrap
-msgid "Pause I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
-msgstr ""
-
 #. type: Plain text
 #: amulecmd.1:122
 msgid ""
 "Pauses the download specified by I<E<lt>hashE<gt>> or "
 "I<E<lt>numberE<gt>>. To get the value use B<show>."
-msgstr ""
-
-#. type: SS
-#: amulecmd.1:122
-#, no-wrap
-msgid "Priority I<E<lt>priorityE<gt>> I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
 msgstr ""
 
 #. type: Plain text
@@ -620,13 +616,7 @@ msgstr ""
 
 #. type: Plain text
 #: amulecmd.1:140
-msgid "A synonim of the B<exit> command."
-msgstr ""
-
-#. type: SS
-#: amulecmd.1:140
-#, no-wrap
-msgid "Reload I<E<lt>whatE<gt>>"
+msgid "A synonym of the B<exit> command."
 msgstr ""
 
 #. type: Plain text
@@ -654,12 +644,6 @@ msgstr ""
 msgid "Shows you the results of the last search."
 msgstr ""
 
-#. type: SS
-#: amulecmd.1:154
-#, no-wrap
-msgid "Resume I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
-msgstr ""
-
 #. type: Plain text
 #: amulecmd.1:156
 msgid ""
@@ -667,14 +651,8 @@ msgid ""
 "I<E<lt>numberE<gt>>. To get the value use B<show>."
 msgstr ""
 
-#. type: SS
-#: amulecmd.1:156
-#, no-wrap
-msgid "Search I<E<lt>typeE<gt>> I<E<lt>keywordE<gt>>"
-msgstr ""
-
 #. type: Plain text
-#: amulecmd.1:159
+#: amulecmd.1:160
 msgid ""
 "Makes a search for the given I<E<lt>keywordE<gt>>. A search type and a "
 "keyword to search is mandatory to do this.  Example: `search kad amule' "
@@ -682,97 +660,125 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:161
+#: amulecmd.1:162
 msgid "Available search types:"
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:164
+#: amulecmd.1:165
 msgid "Performs a global search."
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:166
+#: amulecmd.1:167
 msgid "Performs a search on the Kademlia network."
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:168
+#: amulecmd.1:169
 msgid "Performs a local search."
 msgstr ""
 
-#. type: SS
-#: amulecmd.1:169
-#, no-wrap
-msgid "Set I<E<lt>whatE<gt>>"
-msgstr ""
-
 #. type: Plain text
-#: amulecmd.1:171
-msgid "Sets a given preferences value."
+#: amulecmd.1:173
+msgid ""
+"Optional filters can be placed before, after, or interleaved with the search "
+"keyword(s):"
 msgstr ""
 
 #. type: Plain text
 #: amulecmd.1:176
-msgid "Set bandwidth limits."
+msgid "Restrict results to the given file type."
 msgstr ""
 
 #. type: Plain text
 #: amulecmd.1:178
-msgid "Set IPFilter preferences."
-msgstr ""
-
-#. type: SS
-#: amulecmd.1:179
-#, no-wrap
-msgid "Show I<E<lt>whatE<gt>>"
+msgid "Restrict results to a specific file extension (e.g.\\ I<iso>, I<mp3>)."
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:181
-msgid "Shows upload/download queue, servers list or shared files list."
+#: amulecmd.1:180
+msgid "Minimum number of sources a result must report."
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:186
-msgid "Show download queue."
+#: amulecmd.1:183
+msgid ""
+"Smallest file size to return. Suffixes use binary multipliers (K = 1024, M = "
+"K\\(mu1024, G = M\\(mu1024); no suffix means bytes."
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:188
-msgid "Show log."
+#: amulecmd.1:185
+msgid "Largest file size to return. Same suffixes as B<--min-size>."
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:190
-msgid "Show servers list."
+#: amulecmd.1:189
+msgid ""
+"Example: `search global linux iso --type Iso --min-size 100M' returns "
+"results for \\(lqlinux iso\\(rq of file-type Iso at least 100 MiB."
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:192
-msgid "Show upload queue."
+#: amulecmd.1:191
+msgid "Sets a given preferences value."
 msgstr ""
 
 #. type: Plain text
 #: amulecmd.1:196
+msgid "Set bandwidth limits."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:198
+msgid "Set IPFilter preferences."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:201
+msgid "Shows upload/download queue, servers list or shared files list."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:206
+msgid "Show download queue."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:208
+msgid "Show log."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:210
+msgid "Show servers list."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:212
+msgid "Show shared files list."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:214
+msgid "Show upload queue."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:218
 msgid ""
 "Shutdown the remote running core (amule/amuled).  This will also shut down "
 "the text client, since it is unusable without a running core."
 msgstr ""
 
-#. type: SS
-#: amulecmd.1:196
-#, no-wrap
-msgid "Statistics [ I<E<lt>numberE<gt>> ]"
-msgstr ""
-
 #. type: Plain text
-#: amulecmd.1:198
+#: amulecmd.1:220
 msgid "Show statistics tree."
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:202
+#: amulecmd.1:224
 msgid ""
 "The optional I<E<lt>numberE<gt>> in the range of 0-255 can be passed as "
 "argument to this command, which tells how many entries of the client version "
@@ -780,25 +786,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:205
+#: amulecmd.1:227
 msgid ""
 "Example: `statistics 5' will show only the top 5 versions for each client "
 "type."
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:207
+#: amulecmd.1:229
 msgid "Show connection status, current up/download speeds, etc."
 msgstr ""
 
 #. type: SS
-#: amulecmd.1:212 amuleweb.1:137
+#: amulecmd.1:234 amuleweb.1:137
 #, no-wrap
 msgid "Languages"
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:218 amuleweb.1:143
+#: amulecmd.1:240 amuleweb.1:143
 msgid ""
 "The I<E<lt>langE<gt>> parameter for the B<-l> option has the following form: "
 "I<lang>[B<_>I<LANG>][B<.>I<encoding>][B<@>I<modifier>] where I<lang> is the "
@@ -808,71 +814,71 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:220 amuleweb.1:145
+#: amulecmd.1:242 amuleweb.1:145
 msgid "For example, the following strings are valid:"
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:234 amuleweb.1:159
+#: amulecmd.1:256 amuleweb.1:159
 msgid ""
 "Though all the above strings are accepted as valid language definitions, "
 "I<encoding> and I<modifier> are yet unused."
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:237 amuleweb.1:162
+#: amulecmd.1:259 amuleweb.1:162
 msgid ""
 "In addition to the format above, you can also specify full language names in "
 "English - so B<-l german> is also valid and is equal to B<-l de_DE>."
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:240 amuleweb.1:165
+#: amulecmd.1:262 amuleweb.1:165
 msgid ""
 "When no locale is defined, either on command-line or in config file, system "
 "default language will be used."
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:242 amuleweb.1:173
+#: amulecmd.1:264 amuleweb.1:173
 msgid "~/.aMule/remote.conf"
 msgstr ""
 
 #. type: SH
-#: amulecmd.1:242 amuleweb.1:177
+#: amulecmd.1:264 amuleweb.1:177
 #, no-wrap
 msgid "EXAMPLE"
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:244
+#: amulecmd.1:266
 msgid "Typically amulecmd will be first run as:"
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:246
+#: amulecmd.1:268
 msgid "B<amulecmd> B<-h> I<hostname> B<-p> I<ECport> B<-P> I<ECpassword> B<-w>"
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:248 amuleweb.1:183
+#: amulecmd.1:270 amuleweb.1:183
 msgid "or"
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:250
+#: amulecmd.1:272
 msgid "B<amulecmd> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:252 amuleweb.1:187
+#: amulecmd.1:274 amuleweb.1:187
 msgid ""
 "These will save settings to I<$HOME/.aMule/remote.conf>, and later you only "
 "need to type:"
 msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:256
+#: amulecmd.1:278
 msgid "Of course, you don't have to follow this example."
 msgstr ""
 
@@ -1307,7 +1313,8 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ../../src/utils/aLinkCreator/docs/alc.1:11 ../../src/utils/wxCas/docs/wxcas.1:16
+#: ../../src/utils/aLinkCreator/docs/alc.1:11
+#: ../../src/utils/wxCas/docs/wxcas.1:16
 msgid "This app doesn't take any arguments."
 msgstr ""
 
@@ -1446,48 +1453,4 @@ msgstr ""
 msgid ""
 "Based on Pedro de Oliveira's B<cas>(1).  B<wxcas> was written by ThePolish "
 "E<lt>thepolish@vipmail.ruE<gt>"
-msgstr ""
-
-#. type: TH
-#: ../../src/utils/xas/docs/xas.1:1
-#, no-wrap
-msgid "XAS"
-msgstr ""
-
-#. type: TH
-#: ../../src/utils/xas/docs/xas.1:1
-#, no-wrap
-msgid "xas v1.9"
-msgstr ""
-
-#. type: Plain text
-#: ../../src/utils/xas/docs/xas.1:5
-msgid "xas - X-Chat aMule Statistics"
-msgstr ""
-
-#. type: Plain text
-#: ../../src/utils/xas/docs/xas.1:7
-msgid "B<none>"
-msgstr ""
-
-#. type: Plain text
-#: ../../src/utils/xas/docs/xas.1:12
-msgid ""
-"B<xas> is a plugin for xchat. For loading see your xchat "
-"documentation. After loading type /xas and it will send statistics to the "
-"channel you are in. These are taken from your Online Signature file.  For "
-"this to work, you must enable the \"Online Signature\" option in aMule's "
-"preferences."
-msgstr ""
-
-#. type: Plain text
-#: ../../src/utils/xas/docs/xas.1:14
-msgid ""
-"To enable it on every startup of xchat you can just run the autostart-xas "
-"script (in /usr/bin if you installed with --prefix=/usr)."
-msgstr ""
-
-#. type: Plain text
-#: ../../src/utils/xas/docs/xas.1:16
-msgid "B<xas> was originally written by niet"
 msgstr ""

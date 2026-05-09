@@ -73,7 +73,7 @@ Zeigt die derzeitige Versionsnummer an.
 Gibt eine kurze Nutzungsbeschreibung aus.
 .SH BEFEHLE
 Alle Befehle können groß oder klein geschrieben werden.
-.SS "Add \fI<eD2k\-Verweis>\fP | \fI<Magnet\-Verweis>\fP"
+.SS_untranslated Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
 Fügt einen eD2k\- oder Magnetverweis dem Kern hinzu.
 
 Der eD2k\-Verweis darf enthalten:
@@ -90,10 +90,10 @@ der Serverliste hinzugefügt.
 .RE
 
 Der Magnet Verweis muss die eD2k Prüfsumme und die Dateigröße enthalten.
-.SS "Cancel \fI<Pfrüfsumme>\fP | \fI<Nummer>\fP"
+.SS_untranslated Cancel \fI<hash>\fP | \fI<number>\fP
 Bricht den Download, der mit \fI<Prüfsumme>\fP oder \fI<Nummer>\fP
 angegeben wurde, ab. Benutze \fBshow\fP um den Wert zu erfahren.
-.SS "Connect [ \fIkad\fP | \fIed2k\fP | \fI<IP|Name>\fP ]"
+.SS_untranslated Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
 Verbindung zu einem Netzwerk aufbauen.
 
 Die Verbindung wird zu allen Netzwerken aufgebaut, die in den Einstellungen
@@ -107,7 +107,7 @@ verbinden.
 .SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
 Trennt die Verbindung zu allen Netzwerken mit denen du verbunden bist, oder
 nur zu dem, welches angegeben wurde.
-.SS "Download \fI<Nummer>\fP"
+.SS_untranslated Download \fI<number>\fP
 Startet den Download einer Datei
 
 Die \fI<Nummer>\fP einer Datei aus der letzten Suche muss angegeben
@@ -115,7 +115,7 @@ werden.  Beispiel: 'download 12' startet den Download der Datei, die in der
 letzten Suche die Nummer 12 hatte.
 .SS_untranslated Exit
 Verbindung zu amule/amuled trennen und amulecmd beenden.
-.SS "Get \fI<Wert>\fP"
+.SS_untranslated Get \fI<what>\fP
 Liest eine Option und zeigt sie an.
 
 Verfügbare Werte für \fI<Was>\fP:
@@ -125,16 +125,16 @@ Bandbreitenbeschränkungen abfragen.
 .IP IPFilter 10
 IPFilter Einstellungen abfragen.
 .RE
-.SS "Help [ \fI<Befehl>\fP ]"
+.SS_untranslated Help [ \fI<command>\fP ]
 Gibt eine kurze Nutzungsübersicht aus.  Wenn ohne Parameter aufgerufen,
 zeigt es eine Liste der verfügbaren Befehle an.  Wenn mit
 \fI<Befehl>\fPaufgerufen, zeigt es eine Kurzbeschreibung diese Befehls
 an.
-.SS "Pause \fI<Prüfsumme>\fP | \fI<Nummer>\fP"
+.SS_untranslated Pause \fI<hash>\fP | \fI<number>\fP
 Pausiert den Download der mit \fI<Prüfsumme>\fP oder
 \fI<Numner>\fP angegeben wurde. Benutze \fBshow\fP um den Wert zu
 erfahren.
-.SS "Priority  \fI<Priorität>\fP \fI<Prüfsummer>\fP | \fI<Nummer>\fP"
+.SS_untranslated Priority \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP
 Setzt die Priorität für den Download der mit \fI<Prüfsumme>\fP oder
 \fI<Nummer>\fP angegeben wurde.
 
@@ -152,8 +152,8 @@ Normale Priorität.
 .SS_untranslated Progress
 Zeigt den Fortschritt einer laufenden Suche an.
 .SS_untranslated Quit
-Synonim für den \fBexit\fP Befehl.
-.SS "Reload \fI<Was>\fP"
+A synonym of the \fBexit\fP command.
+.SS_untranslated Reload \fI<what>\fP
 Aktualisiert das angegebene Objekt.
 
 Verfügbare Werte für \fI<Was>\fP:
@@ -167,10 +167,10 @@ IP Filter Tabellen neu laden.
 Setzt das Log zurück.
 .SS_untranslated Results
 Zeigt die Resultate der letzten Suche an.
-.SS "Resume \fI<Prüfsumme>\fP | \fI<Nummer>\fP"
+.SS_untranslated Resume \fI<hash>\fP | \fI<number>\fP
 Setzt den Download der mit \fI<Prüfsumme>\fP oder \fI<Nummer>\fP
 angegeben wurde fort. Nutze \fBshow\fP, um den Wert zu erfahren.
-.SS "Search \fI<Typ>\fP \fI<Schlüsselwort>\fP"
+.SS_untranslated Search \fI<type>\fP [\fI<filters>\fP] \fI<keyword>\fR
 Startet eine Suche nach dem angegebenenI \fI<Schlüsselwort>\fP. Ein
 Suchtyp und ein Schlüsselwort müssen angegeben werden. Beispiel: 'search kad
 amule' startet eine kad\-Suche nach 'amule'.
@@ -184,7 +184,26 @@ Führt eine Suche im Kad\-Netzwerk durch.
 .IP Local 10
 Führt eine lokale Suche durch.
 .RE
-.SS "Set \fI<Was>\fP"
+.PP
+Optional filters can be placed before, after, or interleaved with the search
+keyword(s):
+.RS
+.IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
+Restrict results to the given file type.
+.IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
+Restrict results to a specific file extension (e.g.\ \fIiso\fP, \fImp3\fP).
+.IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
+Minimum number of sources a result must report.
+.IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
+Smallest file size to return. Suffixes use binary multipliers (K = 1024, M =
+K\(mu1024, G = M\(mu1024); no suffix means bytes.
+.IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
+Largest file size to return. Same suffixes as \fB\-\-min\-size\fP.
+.RE
+.PP
+Example: `search global linux iso \-\-type Iso \-\-min\-size 100M' returns
+results for \(lqlinux iso\(rq of file\-type Iso at least 100 MiB.
+.SS_untranslated Set \fI<what>\fR
 Setzt die angegebene Option.
 
 Verfügbare Werte für \fI<Was>\fP:
@@ -194,7 +213,7 @@ Setzt die Bandbreitenbeschränkungen.
 .IP IPFilter 10
 IPFilter Einstellungen setzen.
 .RE
-.SS "Show \fI<Was>\fP"
+.SS_untranslated Show \fI<what>\fR
 Zeigt upload/download Warteschlange, Serverliste oder die Liste der
 freigegebenen Dateien an.
 
@@ -207,14 +226,14 @@ Log anzeigen.
 .IP Servers 10
 Serverliste anzeigen.
 .IP Shared 10
-Liste der freigegebenen Dateien anzeigen.
+Show shared files list.
 .IP UL 10
 Uploadwarteschlange anzeigen.
 .RE
 .SS_untranslated Shutdown
 Beendet das Programm (amule/amuled) zu dem du verbunden bist. Dies beendet
 auch den Textclient, da er ohne Verbindung nicht zu gebrauchen ist.
-.SS "Statistics [ \fI<Nummer>\fP ]"
+.SS_untranslated Statistics [ \fI<number>\fP ]
 Zeigt die Statistiken an.
 
 Die optionale \fI<Nummer>\fP im Bereich von 0\-255 kann als Argument
@@ -279,8 +298,9 @@ tippst du nur noch:
 
 Natürlich brauchst du dich nicht unbedingt an dieses Beispiel halten.
 .SH "FEHLER MELDEN"
-Bitte meldet Fehler entweder in unserem Forum (\fIhttps://github.com/amule-org/amule/discussions\fP),
-oder in unseren Bugtracker (\fIhttps://github.com/amule-org/amule/issues\fP). Bitte meldet uns
+Bitte meldet Fehler entweder in unserem Forum
+(\fIhttps://github.com/amule\-org/amule/discussions\fP), oder in unseren
+Bugtracker (\fIhttps://github.com/amule\-org/amule/issues\fP). Bitte meldet uns
 weder Fehler per E\-Mail, noch auf unsere Mailingliste oder direkt an unsere
 Teammitglieder.
 .SH COPYRIGHT

@@ -68,7 +68,7 @@ Displays the current version number.
 Prints a short usage description.
 .SH COMMANDS
 All commands are case insensitive.
-.SS Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
+.SS_untranslated Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
 Adds an eD2k-link or a magnet-link to the core.
 
 The eD2k link to be added can be:
@@ -82,9 +82,9 @@ a serverlist link, in which case all servers in the list will be added to the se
 .RE
 
 The magnet link must contain the eD2k hash and file length.
-.SS Cancel \fI<hash>\fP | \fI<number>\fP
+.SS_untranslated Cancel \fI<hash>\fP | \fI<number>\fP
 Cancels the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fBshow\fR.
-.SS Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
+.SS_untranslated Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
 Connect to the network.
 
 This will connect to all networks that are enabled in Preferences.
@@ -95,7 +95,7 @@ IPv4 address or a resolvable DNS name) aMule will connect to that server only.
 .SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
 Disconnect from all networks you are connected to, or just disconnect from the
 specified network.
-.SS Download \fI<number>\fP
+.SS_untranslated Download \fI<number>\fP
 Start downloading a file.
 
 The \fI<number>\fR of a file from the last search has to be given.
@@ -103,7 +103,7 @@ Example: `download 12' will start to download the file with the number 12 of the
 previous search.
 .SS_untranslated Exit
 Disconnect from amule/amuled and quit amulecmd.
-.SS Get \fI<what>\fP
+.SS_untranslated Get \fI<what>\fP
 Get and display a preference value.
 
 Available values for \fI<what>\fR:
@@ -113,13 +113,13 @@ Get bandwidth limits.
 .IP IPFilter 10
 Get IPFilter preferences.
 .RE
-.SS Help [ \fI<command>\fP ]
+.SS_untranslated Help [ \fI<command>\fP ]
 Prints a short usage description.
 If called without parameter, it shows a list of available commands.
 If called with \fI<command>\fR, it shows a short description of the given command.
-.SS Pause \fI<hash>\fP | \fI<number>\fP
+.SS_untranslated Pause \fI<hash>\fP | \fI<number>\fP
 Pauses the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fBshow\fR.
-.SS Priority \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP
+.SS_untranslated Priority \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP
 Set priority of a download specified by \fI<hash>\fR or \fI<number>\fR.
 
 Available values for \fI<priority>\fR:
@@ -137,7 +137,7 @@ Normal priority.
 Shows the progress of an on\-going search.
 .SS_untranslated Quit
 A synonym of the \fBexit\fR command.
-.SS Reload \fI<what>\fP
+.SS_untranslated Reload \fI<what>\fP
 Reloads a given object.
 
 Available values for \fI<what>\fR:
@@ -151,9 +151,9 @@ Reload IP filter tables.
 Reset the log.
 .SS_untranslated Results
 Shows you the results of the last search.
-.SS Resume \fI<hash>\fP | \fI<number>\fP
+.SS_untranslated Resume \fI<hash>\fP | \fI<number>\fP
 Resumes the download specified by \fI<hash>\fR or \fI<number>\fR. To get the value use \fBshow\fR.
-.SS Search \fI<type>\fP [\fI<filters>\fP] \fI<keyword>\fR
+.SS_untranslated Search \fI<type>\fP [\fI<filters>\fP] \fI<keyword>\fR
 Makes a search for the given \fI<keyword>\fR. A search type and a keyword
 to search is mandatory to do this.
 Example: `search kad amule' performs a kad search for `amule'.
@@ -186,7 +186,7 @@ Largest file size to return. Same suffixes as \fB\-\-min\-size\fR.
 .PP
 Example: `search global linux iso \-\-type Iso \-\-min-size 100M' returns
 results for \(lqlinux iso\(rq of file-type Iso at least 100 MiB.
-.SS Set \fI<what>\fR
+.SS_untranslated Set \fI<what>\fR
 Sets a given preferences value.
 
 Available values for \fI<what>\fR:
@@ -196,7 +196,7 @@ Set bandwidth limits.
 .IP IPFilter 10
 Set IPFilter preferences.
 .RE
-.SS Show \fI<what>\fR
+.SS_untranslated Show \fI<what>\fR
 Shows upload/download queue, servers list or shared files list.
 
 Available values for \fI<what>\fR:
@@ -215,7 +215,7 @@ Show upload queue.
 .SS_untranslated Shutdown
 Shutdown the remote running core (amule/amuled).
 This will also shut down the text client, since it is unusable without a running core.
-.SS Statistics [ \fI<number>\fP ]
+.SS_untranslated Statistics [ \fI<number>\fP ]
 Show statistics tree.
 
 The optional \fI<number>\fR in the range of 0-255 can be passed as argument to this

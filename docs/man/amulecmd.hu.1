@@ -72,7 +72,7 @@ Megjeleníti a verziószámot.
 Egy rövid használati leírást jelenít meg.
 .SH PARANCSOK
 Minden parancs érzéketlen a kis/nagy betűkre.
-.SS "Add \fI<eD2k\-hivatkozás>\fP | \fI<magnet\-hivatkozás>\fP"
+.SS_untranslated Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
 Egy eD2k vagy magnet hivatkozást ad a letöltéshez.
 
 Az eD2k hivatkozás a következő lehet:
@@ -89,10 +89,10 @@ kiszolgáló a kiszolgáló\-listához adódik.
 .RE
 
 A magnet hivatkozásnak tartalmaznia kell az eD2k hash\-t és a fájl hosszát.
-.SS "Cancel \fI<hash>\fP | \fI<szám>\fP"
+.SS_untranslated Cancel \fI<hash>\fP | \fI<number>\fP
 Megszakítja a \fI<hash>\fP vagy \fI<szám>\fP által azonosított
 letöltést. Az értékek megszerzéséhez használd a \fBshow\fP parancsot.
-.SS "Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|név>\fP ]"
+.SS_untranslated Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
 Kapcsolódik a hálózathoz.
 
 A Beállításokban engedélyezett összes hálózathoz kapcsolódik.
@@ -104,7 +104,7 @@ kiszolgálóhoz fog csatlakozni.
 .SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
 Leválasztás minden csatlakoztatott hálózatról, vagy csak a megadott
 hálózatról.
-.SS "Download \fI<szám>\fP"
+.SS_untranslated Download \fI<number>\fP
 Letölt egy fájlt.
 
 Meg kell adni egy fájl számát a legutóbbi keresésből. Például: a
@@ -112,7 +112,7 @@ Meg kell adni egy fájl számát a legutóbbi keresésből. Például: a
 sorszámú fájlt fogja letölteni.
 .SS_untranslated Exit
 Leválasztás az amule(d)\-ről és kilépés az amulecmd\-ből.
-.SS "Get \fI<mit>\fP"
+.SS_untranslated Get \fI<what>\fP
 Megmutat egy beállítás értéket.
 
 A \fI<mit>\fP lehetséges értékei:
@@ -122,14 +122,14 @@ Sávszélesség határok.
 .IP IPFilter 10
 IP\-szűrő beállítások.
 .RE
-.SS "Help [ \fI<parancs>\fP ]"
+.SS_untranslated Help [ \fI<command>\fP ]
 Egy rövid használati leírást jelenít meg. Ha paraméter nélkül hívjuk meg,
 kilistázza az elérhető parancsokat. Ha egy \fI<parancs>\fP\-ot is
 megadunk, rövid leírást ad az adott parancsról.
-.SS "Pause \fI<hash>\fP | \fI<szám>\fP"
+.SS_untranslated Pause \fI<hash>\fP | \fI<number>\fP
 Megállítja a \fI<hash>\fP vagy \fI<szám>\fP által azonosított
 letöltést. Az értékek megszerzéséhez használd a \fBshow\fP parancsot.
-.SS "Priority \fI<prioritás>\fP \fI<hash>\fP | \fI<szám>\fP"
+.SS_untranslated Priority \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP
 Beállítja a \fI<hash>\fP vagy \fI<szám>\fP által azonosított
 letöltés prioritását.
 
@@ -147,8 +147,8 @@ Normál prioritás.
 .SS_untranslated Progress
 Egy folymatban lévő keresés állapotát jeleníti meg.
 .SS_untranslated Quit
-Az \fBexit\fP parancs szinonímája.
-.SS "Reload \fI<mit>\fP"
+A synonym of the \fBexit\fP command.
+.SS_untranslated Reload \fI<what>\fP
 A megadott objektum újratöltése.
 
 A \fI<mit>\fP lehetséges értékei:
@@ -162,10 +162,10 @@ Az IP szűrő újratöltése.
 Napló újrakezdése.
 .SS_untranslated Results
 Az utolsó keresés eredményeinek megjelenítése.
-.SS "Resume \fI<hash>\fP | \fI<szám>\fP"
+.SS_untranslated Resume \fI<hash>\fP | \fI<number>\fP
 Folytatja a \fI<hash>\fP vagy \fI<szám>\fP által azonosított
 letöltést. Az értékek megszerzéséhez használd a \fBshow\fP parancsot.
-.SS "Search \fI<típus>\fP \fI<kulcsszó>\fP"
+.SS_untranslated Search \fI<type>\fP [\fI<filters>\fP] \fI<keyword>\fR
 Elindít egy keresést a megadott \fI<kulcsszó>\fP\-ra. Kötelező megadni a
 keresés típusát és a kulcsszót. Példa: a \(Bqsearch kad amule\(rq parancs
 egy Kademlia keresést indít az \(Bqamule\(rq kulcsszóra.
@@ -179,7 +179,26 @@ A Kademlia hálózaton keres.
 .IP Local 10
 Lokális keresés.
 .RE
-.SS "Set \fI<mit>\fP"
+.PP
+Optional filters can be placed before, after, or interleaved with the search
+keyword(s):
+.RS
+.IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
+Restrict results to the given file type.
+.IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
+Restrict results to a specific file extension (e.g.\ \fIiso\fP, \fImp3\fP).
+.IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
+Minimum number of sources a result must report.
+.IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
+Smallest file size to return. Suffixes use binary multipliers (K = 1024, M =
+K\(mu1024, G = M\(mu1024); no suffix means bytes.
+.IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
+Largest file size to return. Same suffixes as \fB\-\-min\-size\fP.
+.RE
+.PP
+Example: `search global linux iso \-\-type Iso \-\-min\-size 100M' returns
+results for \(lqlinux iso\(rq of file\-type Iso at least 100 MiB.
+.SS_untranslated Set \fI<what>\fR
 Egy beállítás érték megváltoztatása.
 
 A \fI<mit>\fP lehetséges értékei:
@@ -189,7 +208,7 @@ Sávszélesség határok beállítása.
 .IP IPFilter 10
 IP\-szűrő beállításainak módosítása.
 .RE
-.SS "Show \fI<mit>\fP"
+.SS_untranslated Show \fI<what>\fR
 Megmutatja a fel\- és letöltési sort, a kiszolgáló\- és megosztott fájlok
 listáját.
 
@@ -202,14 +221,14 @@ Napló megjelenítése.
 .IP Servers 10
 Kiszolgálók listájának megjelenítése.
 .IP Shared 10
-A megosztott fájlok listájának megjelenítése.
+Show shared files list.
 .IP UL 10
 Feltöltési lista megjelenítése.
 .RE
 .SS_untranslated Shutdown
 Leállítja a távoli magot (amule/amuled). Ez egyszersmind a szöveges klienst
 is leállítja, mivel az nemigen használható futó mag nélkül.
-.SS "Statistics [ \fI<szám>\fP ]"
+.SS_untranslated Statistics [ \fI<number>\fP ]
 A statisztika fa megjelenítése.
 
 Lehetséges megadni egy számot a 0\-255 tartományban, amely megadja az
@@ -275,8 +294,9 @@ már csak ezt kelljen írni:
 
 Természetesen nem kötelező ezt a példát követni.
 .SH "HIBÁK JELENTÉSE"
-A hibákat kérjük vagy a fórumon (\fIhttps://github.com/amule-org/amule/discussions\fP), vagy a
-hibakövetőben (\fIhttps://github.com/amule-org/amule/issues\fP) jelentsék. Hibákról kérjük ne
+A hibákat kérjük vagy a fórumon
+(\fIhttps://github.com/amule\-org/amule/discussions\fP), vagy a hibakövetőben
+(\fIhttps://github.com/amule\-org/amule/issues\fP) jelentsék. Hibákról kérjük ne
 írjanak levelet (e\-mail\-t) se a levelezési listára, se közvetlenül
 valamelyik fejlesztőnek.
 .SH COPYRIGHT

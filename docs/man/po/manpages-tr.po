@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
-"POT-Creation-Date: 2016-09-15 11:10+0200\n"
+"POT-Creation-Date: 2026-05-11 13:24+0200\n"
 "PO-Revision-Date: 2017-05-24 10:09+0200\n"
 "Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: \n"
@@ -25,7 +25,7 @@ msgstr "AMULE"
 #: amule.1:1 amulecmd.1:1 amuled.1:1 amulegui.1:1 amuleweb.1:1 ed2k.1:1
 #: ../../src/utils/aLinkCreator/docs/alc.1:1
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
-#: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
+#: ../../src/utils/wxCas/docs/wxcas.1:1
 #, no-wrap
 msgid "September 2016"
 msgstr "Eylül 2016"
@@ -43,10 +43,10 @@ msgid "aMule"
 msgstr "aMule"
 
 #. type: SH
-#: amule.1:4 amulecmd.1:5 amuled.1:4 amuleweb.1:4 ed2k.1:4
+#: amule.1:4 amulecmd.1:5 amuled.1:4 amulegui.1:4 amuleweb.1:4 ed2k.1:4
 #: ../../src/utils/aLinkCreator/docs/alc.1:3
 #: ../../src/utils/aLinkCreator/docs/alcc.1:4 ../../src/utils/cas/docs/cas.1:4
-#: ../../src/utils/wxCas/docs/wxcas.1:3 ../../src/utils/xas/docs/xas.1:3
+#: ../../src/utils/wxCas/docs/wxcas.1:3
 #, no-wrap
 msgid "NAME"
 msgstr "İSİM"
@@ -60,7 +60,7 @@ msgstr "amule - her platformda çalışan eMule p2p istemcisi"
 #: amule.1:6 amulecmd.1:7 amuled.1:6 amulegui.1:6 amuleweb.1:6 ed2k.1:6
 #: ../../src/utils/aLinkCreator/docs/alc.1:5
 #: ../../src/utils/aLinkCreator/docs/alcc.1:6 ../../src/utils/cas/docs/cas.1:6
-#: ../../src/utils/wxCas/docs/wxcas.1:5 ../../src/utils/xas/docs/xas.1:5
+#: ../../src/utils/wxCas/docs/wxcas.1:5
 #, no-wrap
 msgid "SYNOPSIS"
 msgstr "KULLANIM"
@@ -85,7 +85,6 @@ msgstr "[B<-t> I<E<lt>sayıE<gt>>] [I<eD2k-bağlantısı>]"
 #: ../../src/utils/aLinkCreator/docs/alc.1:7
 #: ../../src/utils/aLinkCreator/docs/alcc.1:14
 #: ../../src/utils/cas/docs/cas.1:14 ../../src/utils/wxCas/docs/wxcas.1:7
-#: ../../src/utils/xas/docs/xas.1:7
 #, no-wrap
 msgid "DESCRIPTION"
 msgstr "AÇIKLAMA"
@@ -113,8 +112,8 @@ msgstr "B<[ -geometry >I<E<lt>geomE<gt>> B<]>"
 #: amule.1:31 amulegui.1:30
 msgid ""
 "Sets the geometry of the app. I<E<lt>geomE<gt>> uses the same format as "
-"standard X11 apps:\t[B<=>][I<E<lt>widthE<gt>>{B<xX>}I<E<lt>heightE<gt>>][{B<"
-"+->}I<E<lt>xoffsetE<gt>>{B<+->}I<E<lt>yoffsetE<gt>>]"
+"standard X11 apps:\t[B<=>][I<E<lt>widthE<gt>>{B<xX>}I<E<lt>heightE<gt>>]"
+"[{B<+->}I<E<lt>xoffsetE<gt>>{B<+->}I<E<lt>yoffsetE<gt>>]"
 msgstr ""
 "Uygulamanın geometrisini düzenler. I<E<lt>geomE<gt>> standart X11 "
 "uygulamaları ile aynı biçimi kullanır:\t[B<=>][I<E<lt>genişlikE<gt>>{B<xX>}"
@@ -145,70 +144,73 @@ msgstr ""
 "belirler."
 
 #. type: Plain text
-#: amule.1:43 amuled.1:51
-msgid "Does not handle fatal exception."
-msgstr "Kritik istisnaları ele almaz."
+#: amule.1:45 amuled.1:53
+msgid ""
+"Don't catch fatal exceptions and don't block exit on assertions.  Useful for "
+"headless / supervised setups (systemd, watchdog scripts)  where the "
+"otherwise-modal assertion dialog prevents auto-restart."
+msgstr ""
 
 #. type: Plain text
-#: amule.1:46 amuled.1:54
+#: amule.1:48 amuled.1:56
 msgid "Does not disable stdin."
 msgstr "standart girdiyi devre dışı bırakmaz."
 
 #. type: TP
-#: amule.1:46 amuled.1:54 amulegui.1:39 ed2k.1:24
+#: amule.1:48 amuled.1:56 amulegui.1:39 ed2k.1:24
 #, no-wrap
 msgid "B<[ -t>, B<--category>=I<E<lt>numE<gt>> B<]>"
 msgstr "B<[ -t>, B<--category>=I<E<lt>sayıE<gt>> B<]>"
 
 #. type: Plain text
-#: amule.1:49 amuled.1:57 amulegui.1:42 ed2k.1:27
+#: amule.1:51 amuled.1:59 amulegui.1:42 ed2k.1:27
 msgid "Set category for passed eD2k links to I<E<lt>numE<gt>>"
 msgstr ""
 "I<E<lt>sayıE<gt>>ya gönderilen eD2k bağlantılarının kategorilerini belirler."
 
 #. type: Plain text
-#: amule.1:52 amulecmd.1:66 amuled.1:60 amulegui.1:48 amuleweb.1:126 ed2k.1:39
+#: amule.1:54 amulecmd.1:66 amuled.1:62 amulegui.1:48 amuleweb.1:126 ed2k.1:39
 msgid "Displays the current version number."
 msgstr "Geçerli sürüm numarasını görüntüler."
 
 #. type: Plain text
-#: amule.1:55 amulecmd.1:69 amuled.1:63 amulegui.1:45 amuleweb.1:123 ed2k.1:36
+#: amule.1:57 amulecmd.1:69 amuled.1:65 amulegui.1:45 amuleweb.1:123 ed2k.1:36
 #: ../../src/utils/aLinkCreator/docs/alcc.1:22
 #: ../../src/utils/cas/docs/cas.1:32
 msgid "Prints a short usage description."
 msgstr "Kısa bir kullanım açıklaması görüntüler."
 
 #. type: TP
-#: amule.1:55 amuled.1:63 ed2k.1:39
+#: amule.1:57 amuled.1:65 ed2k.1:39
 #, no-wrap
 msgid "B<[ eD2k-link ]>"
 msgstr "B<[ eD2k-bağlantısı ]>"
 
 #. type: Plain text
-#: amule.1:58 amuled.1:66 ed2k.1:42
+#: amule.1:60 amuled.1:68 ed2k.1:42
 msgid "Adds an eD2k-link to the core."
 msgstr "Çekirdeğe bir eD2k bağlantısı ekler."
 
 #. type: Plain text
-#: amule.1:60 amulecmd.1:75 amuled.1:68 ed2k.1:44
+#: amule.1:62 amulecmd.1:75 amuled.1:70 ed2k.1:44
 msgid "The eD2k link to be added can be:"
 msgstr "Eklenecek eD2k bağlantısı şunlardan biri olabilir:"
 
 #. type: Plain text
-#: amule.1:63 amulecmd.1:78 amuled.1:71 ed2k.1:47
+#: amule.1:65 amulecmd.1:78 amuled.1:73 ed2k.1:47
 msgid "a file link (ed2k://|file|...), it will be added to the download queue;"
 msgstr ""
 "bir dosya bağlantısı (ed2k://|file|...) ki indirmeler kuyruğuna eklenir;"
 
 #. type: Plain text
-#: amule.1:65 amulecmd.1:80 amuled.1:73 ed2k.1:49
+#: amule.1:67 amulecmd.1:80 amuled.1:75 ed2k.1:49
 msgid ""
 "a server link (ed2k://|server|...), it will be added to the server list;"
 msgstr ""
 "bir sunucu bağlantısı (ed2k://|server|...) ki sunucu listesine eklenir;"
 
 #. type: Plain text
-#: amule.1:67 amuled.1:75 ed2k.1:51
+#: amule.1:69 amuled.1:77 ed2k.1:51
 msgid ""
 "a serverlist link, in which case all servers in the list will be added to "
 "the server list;"
@@ -217,87 +219,85 @@ msgstr ""
 "listesine eklenir;"
 
 #. type: Plain text
-#: amule.1:69 amuled.1:77
+#: amule.1:71 amuled.1:79
 msgid "a magnet link."
 msgstr "bir magnet bağlantısı."
 
 #. type: SH
-#: amule.1:70 amulecmd.1:207 amuleweb.1:132
+#: amule.1:72 amulecmd.1:229 amuleweb.1:132
 #, no-wrap
 msgid "NOTES"
 msgstr "NOTLAR"
 
 #. type: SS
-#: amule.1:71 amulecmd.1:208 amuleweb.1:133
+#: amule.1:73 amulecmd.1:230 amuleweb.1:133
 #, no-wrap
 msgid "Paths"
 msgstr "Yollar"
 
 #. type: Plain text
-#: amule.1:75 amulecmd.1:212 amuleweb.1:137
+#: amule.1:77 amulecmd.1:234 amuleweb.1:137
 msgid ""
 "For all options which take a I<E<lt>pathE<gt>> value, if the I<path> "
 "contains no directory part (i.e. just a plain filename), then it is "
 "considered to be under the aMule configuration directory, I<~/.aMule>."
 msgstr ""
 "I<E<lt>yolE<gt>> değeri alan  tüm seçenekler için eğer I<yol> hiçbir dizin "
-"içermiyorsa (yani sadece bir dosya ismiyse) aMule yapılandırma dizini (I<~/."
-"aMule>) varsayılır."
+"içermiyorsa (yani sadece bir dosya ismiyse) aMule yapılandırma dizini "
+"(I<~/.aMule>) varsayılır."
 
 #. type: SH
-#: amule.1:75 amulecmd.1:240 amuled.1:78 amuleweb.1:171 ed2k.1:60
+#: amule.1:77 amulecmd.1:262 amuled.1:80 amuleweb.1:171 ed2k.1:60
 #: ../../src/utils/cas/docs/cas.1:36
 #, no-wrap
 msgid "FILES"
 msgstr "DOSYALAR"
 
 #. type: Plain text
-#: amule.1:77 amuled.1:80
+#: amule.1:79 amuled.1:82
 msgid "~/.aMule/*"
 msgstr "~/.aMule/*"
 
 #. type: SH
-#: amule.1:77 amulecmd.1:256 amuled.1:80 amulegui.1:48 amuleweb.1:191 ed2k.1:62
+#: amule.1:79 amulecmd.1:278 amuled.1:82 amulegui.1:48 amuleweb.1:191 ed2k.1:62
 #: ../../src/utils/aLinkCreator/docs/alc.1:11
 #: ../../src/utils/aLinkCreator/docs/alcc.1:26
 #: ../../src/utils/cas/docs/cas.1:42 ../../src/utils/wxCas/docs/wxcas.1:16
-#: ../../src/utils/xas/docs/xas.1:16
 #, no-wrap
 msgid "REPORTING BUGS"
 msgstr "GERİBİLDİRİM"
 
 #. type: Plain text
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: amule.1:82 amulecmd.1:281 amuled.1:85 amulegui.1:51 amuleweb.1:194 ed2k.1:65
 #: ../../src/utils/aLinkCreator/docs/alc.1:14
 #: ../../src/utils/aLinkCreator/docs/alcc.1:29
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
-#: ../../src/utils/xas/docs/xas.1:19
 msgid ""
-"Please report bugs either on our forum (I<https://github.com/amule-org/amule/discussions>), or in "
-"our bugtracker (I<https://github.com/amule-org/amule/issues>).  Please do not report bugs in e-"
-"mail, neither to our mailing list nor directly to any team member."
+"Please report bugs either on our forum (I<https://github.com/amule-org/amule/"
+"discussions>), or in our bugtracker (I<https://github.com/amule-org/amule/"
+"issues>).  Please do not report bugs in e-mail, neither to our mailing list "
+"nor directly to any team member."
 msgstr ""
-"Hataları bildirmek için forumumuzu (I<https://github.com/amule-org/amule/discussions>) ya da hata "
-"takipçimizi (I<https://github.com/amule-org/amule/issues>) kullanınız. Hataları bildirmek için "
-"e-mail ve e-mail listemizi kullanmamanızı ve geliştiricilerden birine "
-"doğrudan bildirmemenizi rica ederiz."
+"Hataları bildirmek için forumumuzu (I<https://github.com/amule-org/amule/"
+"discussions>) ya da hata takipçimizi (I<https://github.com/amule-org/amule/"
+"issues>) kullanınız. Hataları bildirmek için e-mail ve e-mail listemizi "
+"kullanmamanızı ve geliştiricilerden birine doğrudan bildirmemenizi rica "
+"ederiz."
 
 #. type: SH
-#: amule.1:80 amulecmd.1:259 amuled.1:83 amulegui.1:51 amuleweb.1:194 ed2k.1:65
+#: amule.1:82 amulecmd.1:281 amuled.1:85 amulegui.1:51 amuleweb.1:194 ed2k.1:65
 #: ../../src/utils/aLinkCreator/docs/alc.1:14
 #: ../../src/utils/aLinkCreator/docs/alcc.1:29
 #: ../../src/utils/cas/docs/cas.1:45 ../../src/utils/wxCas/docs/wxcas.1:19
-#: ../../src/utils/xas/docs/xas.1:19
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr "TELİF HAKKI"
 
 #. type: Plain text
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: amule.1:84 amulecmd.1:283 amuled.1:87 amulegui.1:53 amuleweb.1:196 ed2k.1:67
 #: ../../src/utils/aLinkCreator/docs/alc.1:16
 #: ../../src/utils/aLinkCreator/docs/alcc.1:31
 #: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
-#: ../../src/utils/xas/docs/xas.1:21
 msgid ""
 "aMule and all of its related utilities are distributed under the GNU General "
 "Public License."
@@ -306,31 +306,28 @@ msgstr ""
 "dağıtılmaktadır."
 
 #. type: SH
-#: amule.1:82 amulecmd.1:261 amuled.1:85 amulegui.1:53 amuleweb.1:196 ed2k.1:67
+#: amule.1:84 amulecmd.1:283 amuled.1:87 amulegui.1:53 amuleweb.1:196 ed2k.1:67
 #: ../../src/utils/aLinkCreator/docs/alc.1:16
 #: ../../src/utils/aLinkCreator/docs/alcc.1:31
 #: ../../src/utils/cas/docs/cas.1:47 ../../src/utils/wxCas/docs/wxcas.1:21
-#: ../../src/utils/xas/docs/xas.1:21
 #, no-wrap
 msgid "SEE ALSO"
 msgstr "İLGİLİ BELGELER"
 
 #. type: SH
-#: amule.1:84 amulecmd.1:263 amuled.1:87 amulegui.1:55 amuleweb.1:198 ed2k.1:69
+#: amule.1:86 amulecmd.1:285 amuled.1:89 amulegui.1:55 amuleweb.1:198 ed2k.1:69
 #: ../../src/utils/aLinkCreator/docs/alc.1:18
 #: ../../src/utils/aLinkCreator/docs/alcc.1:33
 #: ../../src/utils/cas/docs/cas.1:49 ../../src/utils/wxCas/docs/wxcas.1:23
-#: ../../src/utils/xas/docs/xas.1:23
 #, no-wrap
 msgid "AUTHOR"
 msgstr "YAZAN"
 
 #. type: Plain text
-#: amule.1:85 amulecmd.1:264 amuled.1:88 amuleweb.1:199 ed2k.1:70
+#: amule.1:87 amulecmd.1:286 amuled.1:90 amuleweb.1:199 ed2k.1:70
 #: ../../src/utils/aLinkCreator/docs/alc.1:19
 #: ../../src/utils/aLinkCreator/docs/alcc.1:34
 #: ../../src/utils/cas/docs/cas.1:50 ../../src/utils/wxCas/docs/wxcas.1:24
-#: ../../src/utils/xas/docs/xas.1:24
 msgid ""
 "This manpage was written by Vollstrecker E<lt>amule@vollstreckernet.deE<gt>"
 msgstr ""
@@ -352,7 +349,7 @@ msgstr "aMuleCmd v2.3.2"
 #. type: TH
 #: amulecmd.1:1 amuleweb.1:1 ed2k.1:1 ../../src/utils/aLinkCreator/docs/alc.1:1
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
-#: ../../src/utils/wxCas/docs/wxcas.1:1 ../../src/utils/xas/docs/xas.1:1
+#: ../../src/utils/wxCas/docs/wxcas.1:1
 #, no-wrap
 msgid "aMule utilities"
 msgstr "aMule yardımcı araçları"
@@ -516,12 +513,6 @@ msgstr "KOMUTLAR"
 msgid "All commands are case insensitive."
 msgstr "Tüm komutlar harf büyüklüğüne duyarsızdır."
 
-#. type: SS
-#: amulecmd.1:71
-#, no-wrap
-msgid "Add I<E<lt>eD2k-linkE<gt>> | I<E<lt>magnet-linkE<gt>>"
-msgstr "Add I<E<lt>eD2k-bağlantısıE<gt>> | I<E<lt>magnet-bağlantısıE<gt>>"
-
 #. type: Plain text
 #: amulecmd.1:73
 msgid "Adds an eD2k-link or a magnet-link to the core."
@@ -541,12 +532,6 @@ msgstr ""
 msgid "The magnet link must contain the eD2k hash and file length."
 msgstr "Magnet bağlantısı eD2k hash değerini ve dosya boyutunu içermelidir."
 
-#. type: SS
-#: amulecmd.1:85
-#, no-wrap
-msgid "Cancel I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
-msgstr "Cancel I<E<lt>hashE<gt>> | I<E<lt>sayıE<gt>>"
-
 #. type: Plain text
 #: amulecmd.1:87
 msgid ""
@@ -555,12 +540,6 @@ msgid ""
 msgstr ""
 "I<E<lt>hashE<gt>> ya da I<E<lt>sayıE<gt>> tarafından belirtilen indirmeyi "
 "iptal eder. Değerleri öğrenmek için B<show> komutunu kullanınız."
-
-#. type: SS
-#: amulecmd.1:87
-#, no-wrap
-msgid "Connect [ I<kad> | I<ed2k> | I<E<lt>ip|nameE<gt>> ]"
-msgstr "Connect [ I<kad> | I<ed2k> | I<E<lt>ip|isimE<gt>> ]"
 
 #. type: Plain text
 #: amulecmd.1:89
@@ -580,8 +559,8 @@ msgid ""
 "decimal IPv4 address or a resolvable DNS name) aMule will connect to that "
 "server only."
 msgstr ""
-"Ek bir parametreyle hangi ağa bağlanmak istediğinizi belirtebilirsiniz. IP:"
-"port şeklinde (IP ya noktalarla ayrılmış ondalık bir IPv4 adresi ya da "
+"Ek bir parametreyle hangi ağa bağlanmak istediğinizi belirtebilirsiniz. "
+"IP:port şeklinde (IP ya noktalarla ayrılmış ondalık bir IPv4 adresi ya da "
 "çözümlenebilen bir DNS ismi olmalıdır) bir sunucu adresi verirseniz aMule "
 "sadece bu sunucuya bağlanacaktır."
 
@@ -593,12 +572,6 @@ msgid ""
 msgstr ""
 "Ya çevrimiçi olan tüm ağlarla bağlantıyı keser, ya da sadece belirtilen ağ "
 "ile."
-
-#. type: SS
-#: amulecmd.1:98
-#, no-wrap
-msgid "Download I<E<lt>numberE<gt>>"
-msgstr "Download I<E<lt>sayıE<gt>>"
 
 #. type: Plain text
 #: amulecmd.1:100
@@ -620,19 +593,13 @@ msgstr ""
 msgid "Disconnect from amule/amuled and quit amulecmd."
 msgstr "amule/amuled ile bağlantıyı keser ve amulecmd kapanır."
 
-#. type: SS
-#: amulecmd.1:106
-#, no-wrap
-msgid "Get I<E<lt>whatE<gt>>"
-msgstr "Get I<E<lt>değerE<gt>>"
-
 #. type: Plain text
 #: amulecmd.1:108
 msgid "Get and display a preference value."
 msgstr "Bir ayar değerini görüntüler."
 
 #. type: Plain text
-#: amulecmd.1:110 amulecmd.1:144 amulecmd.1:173 amulecmd.1:183
+#: amulecmd.1:110 amulecmd.1:144 amulecmd.1:193 amulecmd.1:203
 msgid "Available values for I<E<lt>whatE<gt>>:"
 msgstr "I<E<lt>değerE<gt>> ile kullanılabilecek değerler:"
 
@@ -646,12 +613,6 @@ msgstr "Bant genişliği değerlerini görüntüler."
 msgid "Get IPFilter preferences."
 msgstr "IPFilter ayarlarını görüntüler."
 
-#. type: SS
-#: amulecmd.1:116
-#, no-wrap
-msgid "Help [ I<E<lt>commandE<gt>> ]"
-msgstr "Help [ I<E<lt>komutE<gt>> ]"
-
 #. type: Plain text
 #: amulecmd.1:120
 msgid ""
@@ -663,12 +624,6 @@ msgstr ""
 "mevcut komutların listesini verir. I<E<lt>komutE<gt>> ile kullanılırsa "
 "belirtilen komutun kısa bir açıklamasını görüntüler."
 
-#. type: SS
-#: amulecmd.1:120
-#, no-wrap
-msgid "Pause I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
-msgstr "Pause I<E<lt>hashE<gt>> | I<E<lt>sayıE<gt>>"
-
 #. type: Plain text
 #: amulecmd.1:122
 msgid ""
@@ -677,12 +632,6 @@ msgid ""
 msgstr ""
 "I<E<lt>hashE<gt>> ya da I<E<lt>sayıE<gt>> değerleri ile belirtilen indirmeyi "
 "duraklatır. Bu değerleri elde etmek için B<show> komutunu kullanabilirsiniz."
-
-#. type: SS
-#: amulecmd.1:122
-#, no-wrap
-msgid "Priority I<E<lt>priorityE<gt>> I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
-msgstr "Priority I<E<lt>öncelikE<gt>> I<E<lt>hashE<gt>> | I<E<lt>sayıE<gt>>"
 
 #. type: Plain text
 #: amulecmd.1:124
@@ -725,14 +674,10 @@ msgstr "Sürmekte olan bir aramanın ilerlemesini gösterir."
 
 #. type: Plain text
 #: amulecmd.1:140
-msgid "A synonim of the B<exit> command."
+#, fuzzy
+#| msgid "A synonim of the B<exit> command."
+msgid "A synonym of the B<exit> command."
 msgstr "B<exit> komutu ile eş anlamlıdır."
-
-#. type: SS
-#: amulecmd.1:140
-#, no-wrap
-msgid "Reload I<E<lt>whatE<gt>>"
-msgstr "Reload I<E<lt>değerE<gt>>"
 
 #. type: Plain text
 #: amulecmd.1:142
@@ -759,12 +704,6 @@ msgstr "Günlüğü sıfırlar."
 msgid "Shows you the results of the last search."
 msgstr "Son aramanın sonuçlarını gösterir."
 
-#. type: SS
-#: amulecmd.1:154
-#, no-wrap
-msgid "Resume I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
-msgstr "Resume I<E<lt>hashE<gt>> | I<E<lt>sayıE<gt>>"
-
 #. type: Plain text
 #: amulecmd.1:156
 msgid ""
@@ -774,14 +713,8 @@ msgstr ""
 "I<E<lt>hashE<gt>> ya da I<E<lt>sayıE<gt>> ile belirtilen indirmeye kaldığı "
 "yerden devam eder. Değeri öğrenmek için B<show> komutunu kullanabilirsiniz."
 
-#. type: SS
-#: amulecmd.1:156
-#, no-wrap
-msgid "Search I<E<lt>typeE<gt>> I<E<lt>keywordE<gt>>"
-msgstr "Search I<E<lt>türE<gt>> I<E<lt>anahtarkelimeE<gt>>"
-
 #. type: Plain text
-#: amulecmd.1:159
+#: amulecmd.1:160
 msgid ""
 "Makes a search for the given I<E<lt>keywordE<gt>>. A search type and a "
 "keyword to search is mandatory to do this.  Example: `search kad amule' "
@@ -792,81 +725,117 @@ msgstr ""
 "ağında `amule' sözcüğü ile arama yapar."
 
 #. type: Plain text
-#: amulecmd.1:161
+#: amulecmd.1:162
 msgid "Available search types:"
 msgstr "Kullanılabilecek arama türleri:"
 
 #. type: Plain text
-#: amulecmd.1:164
+#: amulecmd.1:165
 msgid "Performs a global search."
 msgstr "Genel arama yapar."
 
 #. type: Plain text
-#: amulecmd.1:166
+#: amulecmd.1:167
 msgid "Performs a search on the Kademlia network."
 msgstr "Kad ağında arama yapar."
 
 #. type: Plain text
-#: amulecmd.1:168
+#: amulecmd.1:169
 msgid "Performs a local search."
 msgstr "Sunucuda arama yapar."
 
-#. type: SS
-#: amulecmd.1:169
-#, no-wrap
-msgid "Set I<E<lt>whatE<gt>>"
-msgstr "Set I<E<lt>değerE<gt>>"
+#. type: Plain text
+#: amulecmd.1:173
+msgid ""
+"Optional filters can be placed before, after, or interleaved with the search "
+"keyword(s):"
+msgstr ""
 
 #. type: Plain text
-#: amulecmd.1:171
+#: amulecmd.1:176
+msgid "Restrict results to the given file type."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:178
+msgid "Restrict results to a specific file extension (e.g.\\ I<iso>, I<mp3>)."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:180
+msgid "Minimum number of sources a result must report."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:183
+msgid ""
+"Smallest file size to return. Suffixes use binary multipliers (K = 1024, M = "
+"K\\(mu1024, G = M\\(mu1024); no suffix means bytes."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:185
+msgid "Largest file size to return. Same suffixes as B<--min-size>."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:189
+msgid ""
+"Example: `search global linux iso --type Iso --min-size 100M' returns "
+"results for \\(lqlinux iso\\(rq of file-type Iso at least 100 MiB."
+msgstr ""
+
+#. type: Plain text
+#: amulecmd.1:191
 msgid "Sets a given preferences value."
 msgstr "Belirtilen değeri ayarlara girer."
 
 #. type: Plain text
-#: amulecmd.1:176
+#: amulecmd.1:196
 msgid "Set bandwidth limits."
 msgstr "Bant genişliği değerlerini ayarlar."
 
 #. type: Plain text
-#: amulecmd.1:178
+#: amulecmd.1:198
 msgid "Set IPFilter preferences."
 msgstr "IPFilter tercihlerini ayarlar."
 
-#. type: SS
-#: amulecmd.1:179
-#, no-wrap
-msgid "Show I<E<lt>whatE<gt>>"
-msgstr "Show I<E<lt>değerE<gt>>"
-
 #. type: Plain text
-#: amulecmd.1:181
+#: amulecmd.1:201
 msgid "Shows upload/download queue, servers list or shared files list."
 msgstr ""
 "İndirme/aktarma kuyruğunu, sunucu listesini ya da paylaşılan dosya listesini "
 "gösterir."
 
 #. type: Plain text
-#: amulecmd.1:186
+#: amulecmd.1:206
 msgid "Show download queue."
 msgstr "İndirme kuyruğunu gösterir."
 
 #. type: Plain text
-#: amulecmd.1:188
+#: amulecmd.1:208
 msgid "Show log."
 msgstr "Günlüğü (log) gösterir."
 
 #. type: Plain text
-#: amulecmd.1:190
+#: amulecmd.1:210
 msgid "Show servers list."
 msgstr "Sunucu listesini gösterir."
 
 #. type: Plain text
-#: amulecmd.1:192
+#: amulecmd.1:212
+#, fuzzy
+#| msgid "Reload shared files list."
+msgid "Show shared files list."
+msgstr "Paylaşılan dosyalar listesini yeniden yükler."
+
+#. type: Plain text
+#: amulecmd.1:214
 msgid "Show upload queue."
 msgstr "Aktarma (gönderilen dosyalar) kuyruğunu gösterir."
 
 #. type: Plain text
-#: amulecmd.1:196
+#: amulecmd.1:218
 msgid ""
 "Shutdown the remote running core (amule/amuled).  This will also shut down "
 "the text client, since it is unusable without a running core."
@@ -874,19 +843,13 @@ msgstr ""
 "Uzakta çalışmakta olan çekirdeği (amule/amuled) kapatır. Bu metin temelli "
 "istemciyi de kapatacaktır çünkü çekirdek olmadan işleyemez."
 
-#. type: SS
-#: amulecmd.1:196
-#, no-wrap
-msgid "Statistics [ I<E<lt>numberE<gt>> ]"
-msgstr "İstatistikler [ I<E<lt>sayıE<gt>> ]"
-
 #. type: Plain text
-#: amulecmd.1:198
+#: amulecmd.1:220
 msgid "Show statistics tree."
 msgstr "İstatistikler ağacını gösterir."
 
 #. type: Plain text
-#: amulecmd.1:202
+#: amulecmd.1:224
 msgid ""
 "The optional I<E<lt>numberE<gt>> in the range of 0-255 can be passed as "
 "argument to this command, which tells how many entries of the client version "
@@ -898,7 +861,7 @@ msgstr ""
 "anlamına gelir."
 
 #. type: Plain text
-#: amulecmd.1:205
+#: amulecmd.1:227
 msgid ""
 "Example: `statistics 5' will show only the top 5 versions for each client "
 "type."
@@ -906,19 +869,19 @@ msgstr ""
 "Örneğin `statistics 5' her istemcinin en çok kullanılan 5 sürümünü gösterir."
 
 #. type: Plain text
-#: amulecmd.1:207
+#: amulecmd.1:229
 msgid "Show connection status, current up/download speeds, etc."
 msgstr ""
 "Bağlantı durumunu, sürmekte olan indirmeleri ve aktarmaları vs. gösterir."
 
 #. type: SS
-#: amulecmd.1:212 amuleweb.1:137
+#: amulecmd.1:234 amuleweb.1:137
 #, no-wrap
 msgid "Languages"
 msgstr "Diller"
 
 #. type: Plain text
-#: amulecmd.1:218 amuleweb.1:143
+#: amulecmd.1:240 amuleweb.1:143
 msgid ""
 "The I<E<lt>langE<gt>> parameter for the B<-l> option has the following form: "
 "I<lang>[B<_>I<LANG>][B<.>I<encoding>][B<@>I<modifier>] where I<lang> is the "
@@ -933,12 +896,12 @@ msgstr ""
 "verileri kullanma olanağı sağlar."
 
 #. type: Plain text
-#: amulecmd.1:220 amuleweb.1:145
+#: amulecmd.1:242 amuleweb.1:145
 msgid "For example, the following strings are valid:"
 msgstr "Örnek olarak, aşağıdaki dizeler geçerlidir:"
 
 #. type: Plain text
-#: amulecmd.1:234 amuleweb.1:159
+#: amulecmd.1:256 amuleweb.1:159
 msgid ""
 "Though all the above strings are accepted as valid language definitions, "
 "I<encoding> and I<modifier> are yet unused."
@@ -947,7 +910,7 @@ msgstr ""
 "kullanılmamaktadır."
 
 #. type: Plain text
-#: amulecmd.1:237 amuleweb.1:162
+#: amulecmd.1:259 amuleweb.1:162
 msgid ""
 "In addition to the format above, you can also specify full language names in "
 "English - so B<-l german> is also valid and is equal to B<-l de_DE>."
@@ -956,7 +919,7 @@ msgstr ""
 "yani B<-l german> ile B<-l de_DE> eşdeğerdir ve ikisi de geçerlidir."
 
 #. type: Plain text
-#: amulecmd.1:240 amuleweb.1:165
+#: amulecmd.1:262 amuleweb.1:165
 msgid ""
 "When no locale is defined, either on command-line or in config file, system "
 "default language will be used."
@@ -965,40 +928,40 @@ msgstr ""
 "zaman sistemin varsayılan dili kullanılacaktır."
 
 #. type: Plain text
-#: amulecmd.1:242 amuleweb.1:173
+#: amulecmd.1:264 amuleweb.1:173
 msgid "~/.aMule/remote.conf"
 msgstr "~/.aMule/remote.conf"
 
 #. type: SH
-#: amulecmd.1:242 amuleweb.1:177
+#: amulecmd.1:264 amuleweb.1:177
 #, no-wrap
 msgid "EXAMPLE"
 msgstr "ÖRNEK"
 
 #. type: Plain text
-#: amulecmd.1:244
+#: amulecmd.1:266
 msgid "Typically amulecmd will be first run as:"
 msgstr "Tipik olarak amulecmd ilk defada şu şekilde başlayacaktır:"
 
 #. type: Plain text
-#: amulecmd.1:246
+#: amulecmd.1:268
 msgid "B<amulecmd> B<-h> I<hostname> B<-p> I<ECport> B<-P> I<ECpassword> B<-w>"
 msgstr ""
 "B<amulecmd> B<-h> I<bilgisayaradı> B<-p> I<DBport> B<-P> I<DBşifre> B<-w>"
 
 #. type: Plain text
-#: amulecmd.1:248 amuleweb.1:183
+#: amulecmd.1:270 amuleweb.1:183
 msgid "or"
 msgstr "ya da"
 
 #. type: Plain text
-#: amulecmd.1:250
+#: amulecmd.1:272
 msgid "B<amulecmd> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
 msgstr ""
 "B<amulecmd> B<--create-config-from>=I</home/kullanıcıadı/.aMule/amule.conf>"
 
 #. type: Plain text
-#: amulecmd.1:252 amuleweb.1:187
+#: amulecmd.1:274 amuleweb.1:187
 msgid ""
 "These will save settings to I<$HOME/.aMule/remote.conf>, and later you only "
 "need to type:"
@@ -1007,7 +970,7 @@ msgstr ""
 "sadece şunu girmeniz yeterli olacaktır:"
 
 #. type: Plain text
-#: amulecmd.1:256
+#: amulecmd.1:278
 msgid "Of course, you don't have to follow this example."
 msgstr "Tabii ki bu örneğe harfiyen uymanız zorunlu değildir."
 
@@ -1338,9 +1301,9 @@ msgid ""
 msgstr ""
 "B<amuleweb> bilgileri çeşitli temalarda görüntüleyebilir. Bu temalara şablon "
 "adı verilir ve amuleweb'in belli bir şablonu yüklemesini B<-t> komut satırı "
-"seçeneği ile sağlayabilirsiniz. Şablonlar iki konumda aranır: önce I<~/."
-"aMule/webserver/> konumunda, sonra da, kurulum --prefix=/usr ile yapıldıysa "
-"I</usr/share/amule/webserver/> konumunda."
+"seçeneği ile sağlayabilirsiniz. Şablonlar iki konumda aranır: önce "
+"I<~/.aMule/webserver/> konumunda, sonra da, kurulum --prefix=/usr ile "
+"yapıldıysa I</usr/share/amule/webserver/> konumunda."
 
 #. type: Plain text
 #: amuleweb.1:171
@@ -1423,8 +1386,8 @@ msgid ""
 "Sends the given I<E<lt>eD2k-linkE<gt>> to aMule, i.e. writes it to the file "
 "~/.aMule/ED2KLinks, which will be checked by aMule every second for links."
 msgstr ""
-"Herhangi bir I<E<lt>eD2k-bağlantısınıE<gt>> aMule'e gönderir, yani onu ~/."
-"aMule/ED2KLinks dosyasına yazar ki bu dosya aMule tarafından her saniye "
+"Herhangi bir I<E<lt>eD2k-bağlantısınıE<gt>> aMule'e gönderir, yani onu "
+"~/.aMule/ED2KLinks dosyasına yazar ki bu dosya aMule tarafından her saniye "
 "bağlantılar için sorgulanır."
 
 #. type: Plain text
@@ -1659,56 +1622,102 @@ msgstr ""
 "Pedro de Oliveira'nın B<cas>(1) programına dayalıdır. B<wxcas> ThePolish "
 "E<lt>thepolish@vipmail.ruE<gt> tarafından yazılmıştır"
 
-#. type: TH
-#: ../../src/utils/xas/docs/xas.1:1
+#~ msgid "Does not handle fatal exception."
+#~ msgstr "Kritik istisnaları ele almaz."
+
 #, no-wrap
-msgid "XAS"
-msgstr "XAS"
+#~ msgid "Add I<E<lt>eD2k-linkE<gt>> | I<E<lt>magnet-linkE<gt>>"
+#~ msgstr "Add I<E<lt>eD2k-bağlantısıE<gt>> | I<E<lt>magnet-bağlantısıE<gt>>"
 
-#. type: TH
-#: ../../src/utils/xas/docs/xas.1:1
 #, no-wrap
-msgid "xas v1.9"
-msgstr "xas v1.9"
+#~ msgid "Cancel I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
+#~ msgstr "Cancel I<E<lt>hashE<gt>> | I<E<lt>sayıE<gt>>"
 
-#. type: Plain text
-#: ../../src/utils/xas/docs/xas.1:5
-msgid "xas - X-Chat aMule Statistics"
-msgstr "xas - X-Chat aMule İstatistikleri"
+#, no-wrap
+#~ msgid "Connect [ I<kad> | I<ed2k> | I<E<lt>ip|nameE<gt>> ]"
+#~ msgstr "Connect [ I<kad> | I<ed2k> | I<E<lt>ip|isimE<gt>> ]"
 
-#. type: Plain text
-#: ../../src/utils/xas/docs/xas.1:7
-msgid "B<none>"
-msgstr "B<boş>"
+#, no-wrap
+#~ msgid "Download I<E<lt>numberE<gt>>"
+#~ msgstr "Download I<E<lt>sayıE<gt>>"
 
-#. type: Plain text
-#: ../../src/utils/xas/docs/xas.1:12
-msgid ""
-"B<xas> is a plugin for xchat. For loading see your xchat documentation. "
-"After loading type /xas and it will send statistics to the channel you are "
-"in. These are taken from your Online Signature file.  For this to work, you "
-"must enable the \"Online Signature\" option in aMule's preferences."
-msgstr ""
-"B<xas> xchat için bir eklentidir. Yüklemek için xchat yardım belgelerine "
-"bakınız. Yüklendikten sonra /xas yazdığınızda istatistikleri bulunduğunuz "
-"kanala yollar. Bu bilgiler Çevrimiçi İmza dosyanızdan okunur. Bunun "
-"çalışması için aMule'ün ayarlarında \"Çevrim İçi İmza\" seçeneğini "
-"etkinleştirmeniz gerekmektedir."
+#, no-wrap
+#~ msgid "Get I<E<lt>whatE<gt>>"
+#~ msgstr "Get I<E<lt>değerE<gt>>"
 
-#. type: Plain text
-#: ../../src/utils/xas/docs/xas.1:14
-msgid ""
-"To enable it on every startup of xchat you can just run the autostart-xas "
-"script (in /usr/bin if you installed with --prefix=/usr)."
-msgstr ""
-"xchat programının her başlayışında yüklenmesi için autostart-xas scriptini "
-"çalıştırmanız yeterli olacaktır (--prefix=/usr ile kurduysanız /usr/bin "
-"dizininde bulunur)."
+#, no-wrap
+#~ msgid "Help [ I<E<lt>commandE<gt>> ]"
+#~ msgstr "Help [ I<E<lt>komutE<gt>> ]"
 
-#. type: Plain text
-#: ../../src/utils/xas/docs/xas.1:16
-msgid "B<xas> was originally written by niet"
-msgstr "B<xas> başlangıçta niet tarafından yazılmıştır"
+#, no-wrap
+#~ msgid "Pause I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
+#~ msgstr "Pause I<E<lt>hashE<gt>> | I<E<lt>sayıE<gt>>"
+
+#, no-wrap
+#~ msgid "Priority I<E<lt>priorityE<gt>> I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
+#~ msgstr "Priority I<E<lt>öncelikE<gt>> I<E<lt>hashE<gt>> | I<E<lt>sayıE<gt>>"
+
+#, no-wrap
+#~ msgid "Reload I<E<lt>whatE<gt>>"
+#~ msgstr "Reload I<E<lt>değerE<gt>>"
+
+#, no-wrap
+#~ msgid "Resume I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
+#~ msgstr "Resume I<E<lt>hashE<gt>> | I<E<lt>sayıE<gt>>"
+
+#, no-wrap
+#~ msgid "Search I<E<lt>typeE<gt>> I<E<lt>keywordE<gt>>"
+#~ msgstr "Search I<E<lt>türE<gt>> I<E<lt>anahtarkelimeE<gt>>"
+
+#, no-wrap
+#~ msgid "Set I<E<lt>whatE<gt>>"
+#~ msgstr "Set I<E<lt>değerE<gt>>"
+
+#, no-wrap
+#~ msgid "Show I<E<lt>whatE<gt>>"
+#~ msgstr "Show I<E<lt>değerE<gt>>"
+
+#, no-wrap
+#~ msgid "Statistics [ I<E<lt>numberE<gt>> ]"
+#~ msgstr "İstatistikler [ I<E<lt>sayıE<gt>> ]"
+
+#, no-wrap
+#~ msgid "XAS"
+#~ msgstr "XAS"
+
+#, no-wrap
+#~ msgid "xas v1.9"
+#~ msgstr "xas v1.9"
+
+#~ msgid "xas - X-Chat aMule Statistics"
+#~ msgstr "xas - X-Chat aMule İstatistikleri"
+
+#~ msgid "B<none>"
+#~ msgstr "B<boş>"
+
+#~ msgid ""
+#~ "B<xas> is a plugin for xchat. For loading see your xchat documentation. "
+#~ "After loading type /xas and it will send statistics to the channel you "
+#~ "are in. These are taken from your Online Signature file.  For this to "
+#~ "work, you must enable the \"Online Signature\" option in aMule's "
+#~ "preferences."
+#~ msgstr ""
+#~ "B<xas> xchat için bir eklentidir. Yüklemek için xchat yardım belgelerine "
+#~ "bakınız. Yüklendikten sonra /xas yazdığınızda istatistikleri bulunduğunuz "
+#~ "kanala yollar. Bu bilgiler Çevrimiçi İmza dosyanızdan okunur. Bunun "
+#~ "çalışması için aMule'ün ayarlarında \"Çevrim İçi İmza\" seçeneğini "
+#~ "etkinleştirmeniz gerekmektedir."
+
+#~ msgid ""
+#~ "To enable it on every startup of xchat you can just run the autostart-xas "
+#~ "script (in /usr/bin if you installed with --prefix=/usr)."
+#~ msgstr ""
+#~ "xchat programının her başlayışında yüklenmesi için autostart-xas "
+#~ "scriptini çalıştırmanız yeterli olacaktır (--prefix=/usr ile kurduysanız /"
+#~ "usr/bin dizininde bulunur)."
+
+#~ msgid "B<xas> was originally written by niet"
+#~ msgstr "B<xas> başlangıçta niet tarafından yazılmıştır"
 
 #~ msgid "January 2010"
 #~ msgstr "Ocak 2010"

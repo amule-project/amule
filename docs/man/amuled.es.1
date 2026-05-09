@@ -51,7 +51,9 @@ Reiniciar configuracion a valores por defecto
 Especifica ubicacion del binario amuleweb en \fI<path>\fP.
 .TP 
 .B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
-No maneja excepción grave
+Don't catch fatal exceptions and don't block exit on assertions.  Useful for
+headless / supervised setups (systemd, watchdog scripts)  where the
+otherwise\-modal assertion dialog prevents auto\-restart.
 .TP 
 .B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
 No deshabilitar entrada estándar
@@ -86,9 +88,10 @@ un enlace magnet.
 ~/.aMule/*
 .SH "INFORMANDO ERRORES"
 Por favor informa de fallos ya sea en nuestro foro
-(\fIhttps://github.com/amule-org/amule/discussions\fP), o en nuestro bugtracker
-(\fIhttps://github.com/amule-org/amule/issues\fP). Por favor no informe de fallos por correo, ni
-en nuestras listas, ni directamente al correo de algun miembro del equipo.
+(\fIhttps://github.com/amule\-org/amule/discussions\fP), o en nuestro bugtracker
+(\fIhttps://github.com/amule\-org/amule/issues\fP). Por favor no informe de
+fallos por correo, ni en nuestras listas, ni directamente al correo de algun
+miembro del equipo.
 .SH COPYRIGHT
 aMule y todas las demás utilidades relacionadas son distribuidas bajo la GNU
 General Public License.
