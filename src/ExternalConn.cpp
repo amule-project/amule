@@ -1370,7 +1370,13 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Already shutting down.")));
 			}
 			break;
-		case EC_OP_ADD_LINK:
+		case EC_OP_ADD_LINK: {
+			// Aggregate the per-link results into a single response: until
+			// #206 was filed, every iteration overwrote the previous response,
+			// so a batch of N-1 successes followed by one failure looked like
+			// a total failure to the caller (and vice versa).
+			int successCount = 0;
+			int failCount = 0;
 			for (CECPacket::const_iterator it = request->begin(); it != request->end(); ++it) {
 				const CECTag &tag = *it;
 				wxString link = tag.GetStringData();
@@ -1380,18 +1386,26 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 					category = cattag->GetInt();
 				}
 				AddLogLineC(CFormat(_("ExternalConn: adding link '%s'.")) % link);
-				if (response) {
-					delete response;
-				}
 				if ( theApp->downloadqueue->AddLink(link, category) ) {
-					response = new CECPacket(EC_OP_NOOP);
+					++successCount;
 				} else {
-					// Error messages are printed by the add function.
-					response = new CECPacket(EC_OP_FAILED);
-					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid link or already on list.")));
+					// Per-link error reasons are already printed by AddLink().
+					++failCount;
 				}
 			}
+			if (failCount == 0) {
+				response = new CECPacket(EC_OP_NOOP);
+			} else if (successCount == 0) {
+				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid link or already on list.")));
+			} else {
+				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING,
+					CFormat(wxString(wxTRANSLATE("%d of %d links failed (invalid or already on list).")))
+						% failCount % (failCount + successCount)));
+			}
 			break;
+		}
 		//
 		// Status requests
 		//
