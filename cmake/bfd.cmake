@@ -2,7 +2,21 @@ if (NOT HAVE_BFD)
 	include (CheckIncludeFile)
 	include (CheckCSourceCompiles)
 
+	# Modern bfd.h (Arch / Fedora / current binutils) starts with
+	#   #if !defined PACKAGE && !defined PACKAGE_VERSION
+	#   #error config.h must be included before this header
+	# so a bare check_include_file() probe always fails -- libbfd is
+	# present, but the probe never compiles. Pre-define both as cache
+	# stubs for the duration of the probe; bfd uses them as info-print
+	# strings only, so the values are cosmetic. Saved-and-restored to
+	# avoid leaking into later checks.
+	set (_bfd_saved_defs "${CMAKE_REQUIRED_DEFINITIONS}")
+	list (APPEND CMAKE_REQUIRED_DEFINITIONS
+		"-DPACKAGE=\"${PACKAGE}\""
+		"-DPACKAGE_VERSION=\"${PACKAGE_VERSION}\"")
 	check_include_file (bfd.h HAVE_BFD)
+	set (CMAKE_REQUIRED_DEFINITIONS "${_bfd_saved_defs}")
+	unset (_bfd_saved_defs)
 
 	if (HAVE_BFD)
 		# Try pkg-config first. Some distros ship bfd.pc with the full
