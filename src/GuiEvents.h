@@ -86,6 +86,8 @@ namespace MuleNotify
 	void SharedFilesRemoveAllFiles();
 	void SharedFilesShowFileList();
 	void SharedFilesUpdateItem(CKnownFile* file);
+	void SharedFilesBeginBulkUpdate();
+	void SharedFilesEndBulkUpdate();
 
 	void DownloadCtrlUpdateItem(const void* item);
 	void SourceCtrlUpdateSource(uint32 source, SourceItemType type);
@@ -467,6 +469,8 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define Notify_SharedFilesShowFileList()		MuleNotify::DoNotify(&MuleNotify::SharedFilesShowFileList)
 #define Notify_SharedFilesSort()			MuleNotify::DoNotify(&MuleNotify::SharedFilesSort)
 #define Notify_SharedFilesUpdateItem(file)		MuleNotify::DoNotify(&MuleNotify::SharedFilesUpdateItem, file)
+#define Notify_SharedFilesBeginBulkUpdate()		MuleNotify::DoNotify(&MuleNotify::SharedFilesBeginBulkUpdate)
+#define Notify_SharedFilesEndBulkUpdate()		MuleNotify::DoNotify(&MuleNotify::SharedFilesEndBulkUpdate)
 
 // download ctrl
 #define Notify_DownloadCtrlUpdateItem(ptr)		MuleNotify::DoNotify(&MuleNotify::DownloadCtrlUpdateItem, ptr)

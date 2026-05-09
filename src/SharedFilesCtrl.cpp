@@ -89,7 +89,8 @@ enum SharedFilesListColumns {
 
 
 CSharedFilesCtrl::CSharedFilesCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize size, int flags)
-	: CMuleListCtrl(parent, id, pos, size, flags | wxLC_OWNERDRAW )
+	: CMuleListCtrl(parent, id, pos, size, flags | wxLC_OWNERDRAW ),
+	  m_inBulkUpdate(false)
 {
 	// Setting the sorter function.
 	SetSortFunc( SortProc );
@@ -446,6 +447,14 @@ int CSharedFilesCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortDa
 
 void CSharedFilesCtrl::UpdateItem(CKnownFile* toupdate)
 {
+	if (m_inBulkUpdate) {
+		// Caller (e.g. CSharedFileList::ClearED2KPublishInfo) will
+		// issue a single Refresh() in EndBulkUpdate(). Skipping the
+		// per-row FindItem here is what turns ClearED2KPublishInfo
+		// from O(N²) into O(N) for users with thousands of shared
+		// files. See #302.
+		return;
+	}
 	long result = FindItem( -1, reinterpret_cast<wxUIntPtr>(toupdate) );
 
 	if ( result > -1 ) {
@@ -454,6 +463,25 @@ void CSharedFilesCtrl::UpdateItem(CKnownFile* toupdate)
 		if ( GetItemState( result, wxLIST_STATE_SELECTED ) ) {
 			theApp->amuledlg->m_sharedfileswnd->SelectionUpdated();
 		}
+	}
+}
+
+
+void CSharedFilesCtrl::BeginBulkUpdate()
+{
+	m_inBulkUpdate = true;
+}
+
+
+void CSharedFilesCtrl::EndBulkUpdate()
+{
+	m_inBulkUpdate = false;
+	// One full repaint covers every row whose data changed during the
+	// bulk window. SelectionUpdated() refreshes the right-hand detail
+	// panel in case the selected row's data changed.
+	Refresh();
+	if (theApp->amuledlg && theApp->amuledlg->m_sharedfileswnd) {
+		theApp->amuledlg->m_sharedfileswnd->SelectionUpdated();
 	}
 }
 

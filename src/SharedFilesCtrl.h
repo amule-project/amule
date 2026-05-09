@@ -80,6 +80,17 @@ public:
 	void	UpdateItem(CKnownFile* toupdate);
 
 	/**
+	 * Begin a bulk update. While in this mode, UpdateItem() is a no-op
+	 * and the per-row FindItem/RefreshItem cost is skipped. EndBulkUpdate()
+	 * issues a single full Refresh() to repaint every row at once. Used by
+	 * CSharedFileList::ClearED2KPublishInfo to convert what was an O(N²)
+	 * GUI cascade (per-file SetPublishedED2K() -> notify -> linear-scan
+	 * UpdateItem) into O(N) bookkeeping plus one full repaint.
+	 */
+	void	BeginBulkUpdate();
+	void	EndBulkUpdate();
+
+	/**
 	 * Updates the number of shared files displayed above the list.
 	 */
 	void	ShowFilesCount();
@@ -186,6 +197,10 @@ private:
 
 	//! Pointer used to ensure that the menu isn't displayed twice.
 	wxMenu* m_menu;
+
+	//! When true, UpdateItem() short-circuits and the bulk caller is
+	//! responsible for issuing a single Refresh() at end-of-bulk.
+	bool m_inBulkUpdate;
 
 
 	wxDECLARE_EVENT_TABLE();
