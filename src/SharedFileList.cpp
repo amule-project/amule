@@ -721,8 +721,16 @@ void CSharedFileList::SendListToServer(){
 
 	CMemFile files;
 
-	// Files sent.
-	files.WriteUInt32(limit);
+	// Files-sent count is patched in after the loop. We can't write the
+	// final number up-front because the loop body filters out >4GB files
+	// when the server doesn't advertise SRV_TCPFLG_LARGEFILES, and we
+	// only know how many actually made it into the packet once the loop
+	// has run. Pre-fix the header was hard-coded to `limit`, so the
+	// packet header claimed N files but the body could carry N-K of them
+	// for any K >4GB files in the prefix; legacy non-LF servers see a
+	// short read against the count and may reject or partially process
+	// the publish (#347).
+	files.WriteUInt32(0);
 
 	uint32 count = 0;
 	// Add to packet
@@ -731,12 +739,14 @@ void CSharedFileList::SendListToServer(){
 		CKnownFile* file = *sorted_it;
 		if (!file->IsLargeFile() || (server && server->SupportsLargeFilesTCP())) {
 			file->CreateOfferedFilePacket(&files, server, NULL);
+			++count;
 		}
 		file->SetPublishedED2K(true);
-		++count;
 	}
 
-	wxASSERT(count == limit);
+	// Patch the count to match what we actually wrote.
+	files.Seek(0);
+	files.WriteUInt32(count);
 
 	CPacket* packet = new CPacket(files, OP_EDONKEYPROT, OP_OFFERFILES);
 	// compress packet
