@@ -100,6 +100,29 @@ inline wxString MakeStringEscaped(wxString in) {
 	return in;
 }
 
+//
+// Render a string suitable for inclusion in a single log line.
+//
+// Control characters (< 0x20) and DEL (0x7f) become \xHH escapes so a
+// hostile or malformed input can't break log line framing or inject
+// fake log entries into a downstream collector. Printable ASCII and
+// any character >= 0x80 (UTF-8 continuation bytes / wide Unicode)
+// pass through untouched.
+//
+inline wxString EscapeForLog(const wxString& in) {
+	wxString out;
+	out.reserve(in.length());
+	for (size_t i = 0; i < in.length(); ++i) {
+		wxChar c = in[i];
+		if ((c >= 0 && c < 0x20) || c == 0x7f) {
+			out += wxString::Format("\\x%02x", static_cast<unsigned>(c));
+		} else {
+			out += c;
+		}
+	}
+	return out;
+}
+
 // Make a string be a folder
 inline wxString MakeFoldername(wxString path) {
 
