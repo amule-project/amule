@@ -744,6 +744,16 @@ void CSharedFileList::SendListToServer(){
 		file->SetPublishedED2K(true);
 	}
 
+	// Nothing to publish to this server (e.g. every unpublished file in
+	// our prefix is >4GB and the server doesn't advertise
+	// SRV_TCPFLG_LARGEFILES). Sending an OP_OFFERFILES with count=0
+	// would just be ~28 bytes of TCP overhead per ED2KREPUBLISHTIME
+	// tick — the server gets no information from "0 offered" that it
+	// didn't already have from us being silent.
+	if (count == 0) {
+		return;
+	}
+
 	// Patch the count to match what we actually wrote.
 	files.Seek(0);
 	files.WriteUInt32(count);
