@@ -155,6 +155,20 @@ static bool UnpackZipFile(const wxString& file, const char* files[])
 				char buffer[10240];
 				while (!zip.Eof()) {
 					zip.Read(buffer, sizeof(buffer));
+					if (zip.LastRead() == 0) {
+						// Stream stuck (e.g. unsupported compression
+						// method on this entry). wxZipInputStream
+						// doesn't advance its EOF flag in this case,
+						// so the original loop spun forever -- on a
+						// malformed eMule-security IPFilter feed it
+						// emitted gigabytes of "Error: unsupported
+						// Zip compression method" inside seconds
+						// (#376). Bail and let the caller treat this
+						// download as failed; the next fetch will
+						// pick up the clean copy.
+						run = false;
+						break;
+					}
 					target.Write(buffer, zip.LastRead());
 				}
 				run = false;
