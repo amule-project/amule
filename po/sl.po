@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-05-03 06:32+0200\n"
+"POT-Creation-Date: 2026-05-09 19:40+0100\n"
 "PO-Revision-Date: 2020-03-04 15:09+0100\n"
 "Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -132,37 +132,37 @@ msgstr ""
 "OPOZORILO: če imete nizek ID, sebe ne morete dodati kot vira za povezavo "
 "eD2k."
 
-#: src/amule.cpp:246
+#: src/amule.cpp:250
 msgid "Now, exiting main app..."
 msgstr "Sedaj, zapuščanje glavnega programa ..."
 
-#: src/amule.cpp:265
+#: src/amule.cpp:269
 #, c-format
 msgid "Terminating amuleweb instance with pid '%ld' ... "
 msgstr "Končanje izvoda amuleweb s PID »%ld« ... "
 
-#: src/amule.cpp:268
+#: src/amule.cpp:272
 #, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
 msgstr "Ubijanje izvoda amuleweb s PID »%ld« ... "
 
-#: src/amule.cpp:270 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
+#: src/amule.cpp:274 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
 msgstr "Neuspeh"
 
-#: src/amule.cpp:276
+#: src/amule.cpp:280
 msgid "aMule OnExit: Terminating core."
 msgstr "aMule OnExit: Končevanje jedra."
 
-#: src/amule.cpp:380
+#: src/amule.cpp:384
 msgid "aMule shutdown completed."
 msgstr "Zaustavitev aMule zaključena."
 
-#: src/amule.cpp:384
+#: src/amule.cpp:388
 msgid "Memory debug results for aMule exit:"
 msgstr "Rezultati razhroščevanja pomnilnika za izhod iz aMule:"
 
-#: src/amule.cpp:543
+#: src/amule.cpp:547
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -170,13 +170,13 @@ msgstr ""
 "Vaše področne nastavitve so bile spremenjene na sistemsko privzete zaradi "
 "spremembe v nastavitvah. Oprostite."
 
-#: src/amule.cpp:543 src/amule.cpp:1164 src/CatDialog.cpp:141
+#: src/amule.cpp:547 src/amule.cpp:1203 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:346
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
 msgstr "Podatki"
 
-#: src/amule.cpp:549
+#: src/amule.cpp:553
 msgid ""
 "\n"
 "EC configuration"
@@ -184,33 +184,41 @@ msgstr ""
 "\n"
 "Nastavitev zunanje povezave"
 
-#: src/amule.cpp:552
+#: src/amule.cpp:556
 msgid "Password set and external connections enabled."
 msgstr "Geslo je bilo nastavljeno in zunanje povezave omogočene."
 
-#: src/amule.cpp:563 src/KadDlg.cpp:183 src/KadDlg.cpp:189
+#: src/amule.cpp:567 src/KadDlg.cpp:183 src/KadDlg.cpp:189
 #: src/PrefsUnifiedDlg.cpp:759 src/SharedFilesCtrl.cpp:318
 msgid "WARNING"
 msgstr "OPOZORILO"
 
-#: src/amule.cpp:695
-msgid ""
-"You don't have any server in the server list.\n"
-"Do you want aMule to download a new list now?"
+#: src/amule.cpp:706
+#, fuzzy
+msgid "eD2k server list (server.met)"
+msgstr "%i najdenih strežnikov v server.met"
+
+#: src/amule.cpp:707
+msgid "Kad bootstrap nodes (nodes.dat)"
 msgstr ""
-"Na seznamu strežnikov nimate nobenega strežnika.\n"
-"Ali želite, da aMule zdaj pridobi nov seznam?"
 
-#: src/amule.cpp:696
-msgid "Server list download"
-msgstr "Prejemanje seznama strežnikov"
+#: src/amule.cpp:714
+msgid ""
+"aMule has detected missing network bootstrap files.\n"
+"Select which ones to download:"
+msgstr ""
 
-#: src/amule.cpp:761
+#: src/amule.cpp:715
+#, fuzzy
+msgid "Network bootstrap"
+msgstr "Omrežja"
+
+#: src/amule.cpp:800
 #, c-format
 msgid "web server running on pid %d"
 msgstr "spletni strežnik teče s PID %d"
 
-#: src/amule.cpp:765
+#: src/amule.cpp:804
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
@@ -221,24 +229,24 @@ msgstr ""
 "ali pa prevedite aMule z možnostjo »--enable-webserver« in ga znova "
 "namestite z »make install«."
 
-#: src/amule.cpp:766 src/amule.cpp:880 src/amule.cpp:1175
-#: src/amule-remote-gui.cpp:347 src/amule-remote-gui.cpp:375
-#: src/amule-remote-gui.cpp:377 src/amule-remote-gui.cpp:396
-#: src/amule-remote-gui.cpp:707
+#: src/amule.cpp:805 src/amule.cpp:919 src/amule.cpp:1214
+#: src/amule-remote-gui.cpp:353 src/amule-remote-gui.cpp:381
+#: src/amule-remote-gui.cpp:383 src/amule-remote-gui.cpp:402
+#: src/amule-remote-gui.cpp:713
 msgid "ERROR"
 msgstr "NAPAKA"
 
-#: src/amule.cpp:848
+#: src/amule.cpp:887
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "Vrat ni bilo moč povezati z navedenim naslovom: %s"
 
-#: src/amule.cpp:872
+#: src/amule.cpp:911
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Vrata %u niso razpoložljiva. Imeli boste nizek ID\n"
 
-#: src/amule.cpp:878
+#: src/amule.cpp:917
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -253,15 +261,15 @@ msgstr ""
 "\n"
 "Preverite omrežje in se prepričajte, da so vrata odprta za izhod in vhod."
 
-#: src/amule.cpp:961
+#: src/amule.cpp:1000
 msgid "Failed to create OnlineSig File"
 msgstr "Ni bilo mogoče ustvariti datoteke spletnega podpisa"
 
-#: src/amule.cpp:969
+#: src/amule.cpp:1008
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Ni bilo mogoče ustvariti aMule datoteke spletnega podpisa"
 
-#: src/amule.cpp:1141
+#: src/amule.cpp:1180
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -269,40 +277,45 @@ msgstr ""
 "Kot kaže izbrana področna nastavitev ni nameščena na vašem računalniku. "
 "(Opomba: vseeno se jo bo poskusilo nastaviti)"
 
-#: src/amule.cpp:1150
+#: src/amule.cpp:1189
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "To je vaš prvi zagon aMule %s"
 
-#: src/amule.cpp:1152
+#: src/amule.cpp:1191
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "To je testna različica, posodobljena dnevno in\n"
 
-#: src/amule.cpp:1153
+#: src/amule.cpp:1192
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "ne dajemo zagotovila, da ne bo ničesar poškodovala, zažgala vaše hiše\n"
 
-#: src/amule.cpp:1154
+#: src/amule.cpp:1193
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "ali ubila vašega psa. Vendar bi vseeno morala biti varna za uporabo.\n"
 
-#: src/amule.cpp:1159
+#: src/amule.cpp:1198
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Več informacij, podporo in nove različice, lahko najdete na naši domači "
 "strani,\n"
 
-#: src/amule.cpp:1160
-msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.freenode.net.\n"
+#: src/amule.cpp:1199
+msgid ""
+"at https://amule-org.github.io, or in our IRC channel #aMule at "
+"irc.freenode.net.\n"
 msgstr ""
-"na https://amule-org.github.io, ali na kanalu IRC #aMule, na strežniku irc.freenode.net.\n"
+"na https://amule-org.github.io, ali na kanalu IRC #aMule, na strežniku "
+"irc.freenode.net.\n"
 
-#: src/amule.cpp:1162
-msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
-msgstr "Morebitne hrošče lahko sporočite na https://github.com/amule-org/amule/issues"
+#: src/amule.cpp:1201
+msgid ""
+"Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgstr ""
+"Morebitne hrošče lahko sporočite na https://github.com/amule-org/amule/issues"
 
-#: src/amule.cpp:1175
+#: src/amule.cpp:1214
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -310,134 +323,138 @@ msgstr ""
 "Navedena mapa za datoteke za spletni podpis je NEVELJAVNA.\n"
 "Spletni podpis bo ONEMOGOČEN, dokler težave ne odpravite v nastavitvah."
 
-#: src/amule.cpp:1231
+#: src/amule.cpp:1270
 msgid "Server hostname notified"
 msgstr "Gostitelj strežnika obveščen"
 
-#: src/amule.cpp:1479
+#: src/amule.cpp:1518
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Vnaprejšnja dodelitev prostora na disku za datoteko »%s« ni uspela: %s"
 
-#: src/amule.cpp:1614
+#: src/amule.cpp:1653
 msgid "ERROR: can't open logfile"
 msgstr "NAPAKA: ni mogoče odpreti dnevniške datoteke"
 
-#: src/amule.cpp:1618
+#: src/amule.cpp:1657
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "OPOZORILO: dnevniška datoteka je prazna. Nekaj je narobe."
 
-#: src/amule.cpp:1635
+#: src/amule.cpp:1674
 msgid "Log has been reset"
 msgstr "Dnevnik je bil ponastavljen"
 
-#: src/amule.cpp:1661
+#: src/amule.cpp:1700
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Sporočilo strežnika: %s"
 
-#: src/amule.cpp:1703 src/IP2Country.cpp:151 src/IPFilter.cpp:510
+#: src/amule.cpp:1742 src/IP2Country.cpp:154 src/IPFilter.cpp:510
 #: src/ServerList.cpp:860
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr "Prejemanje %s je bilo preskočeno, ker zahtevana datoteka ni novejša."
 
-#: src/amule.cpp:1705
+#: src/amule.cpp:1744
 msgid "Failed to download the nodes list."
 msgstr "Ni bilo mogoče prenesti seznama vozlišč."
 
-#: src/amule.cpp:1725
+#: src/amule.cpp:1764
 msgid "Failed to open the downloaded version check file"
 msgstr "Ni bilo mogoče odpreti prejete datoteke za preverjanje različice"
 
-#: src/amule.cpp:1728 src/amule.cpp:1738 src/amule.cpp:1744
+#: src/amule.cpp:1767 src/amule.cpp:1786 src/amule.cpp:1817 src/amule.cpp:1838
 msgid "Corrupted version check file"
 msgstr "Datoteka za preverjanje različice je pokvarjena"
 
-#: src/amule.cpp:1754
+#: src/amule.cpp:1849
 msgid "You are using an outdated version of aMule!"
 msgstr "Uporabljate zastarelo različico aMule."
 
-#: src/amule.cpp:1756
+#: src/amule.cpp:1851
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 "Različica vaše aMule je %i.%i.%i, najnovejša različica pa je %li.%li.%li"
 
-#: src/amule.cpp:1757
-msgid "The latest version can always be found at https://github.com/amule-org/amule/releases/latest"
-msgstr "Najnovejšo različico lahko vedno najdete na https://github.com/amule-org/amule/releases/latest"
+#: src/amule.cpp:1852
+msgid ""
+"The latest version can always be found at https://github.com/amule-org/amule/"
+"releases/latest"
+msgstr ""
+"Najnovejšo različico lahko vedno najdete na https://github.com/amule-org/"
+"amule/releases/latest"
 
-#: src/amule.cpp:1759
+#: src/amule.cpp:1854
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "OPOZORILO: vaša različica aMule je zastarela: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1763
+#: src/amule.cpp:1858
 msgid "Your copy of aMule is up to date."
 msgstr "Uporabljate najnovejšo različico aMule."
 
-#: src/amule.cpp:1770
+#: src/amule.cpp:1865
 msgid "Failed to download the version check file"
 msgstr "Ni bilo mogoče prenesti datoteke za preverjanje različice"
 
-#: src/amule.cpp:1940 src/amule-remote-gui.cpp:593
+#: src/amule.cpp:2035 src/amule-remote-gui.cpp:599
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Uporabniki: %s | Datoteke: %s"
 
-#: src/amule.cpp:1941 src/amule-remote-gui.cpp:594
+#: src/amule.cpp:2036 src/amule-remote-gui.cpp:600
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Uporabniki: E: %s K: %s | Datoteke: E: %s K: %s"
 
-#: src/amule.cpp:1950 src/amule-remote-gui.cpp:603
+#: src/amule.cpp:2045 src/amule-remote-gui.cpp:609
 msgid "No networks selected"
 msgstr "Izbranega ni nobenega omrežja"
 
-#: src/amule.cpp:2015 src/TextClient.cpp:711
+#: src/amule.cpp:2110 src/TextClient.cpp:711
 msgid "with LowID"
 msgstr "z nizkim ID-jem"
 
-#: src/amule.cpp:2015 src/TextClient.cpp:711
+#: src/amule.cpp:2110 src/TextClient.cpp:711
 msgid "with HighID"
 msgstr "z visokim ID-jem"
 
-#: src/amule.cpp:2017
+#: src/amule.cpp:2112
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Povezan z %s %s"
 
-#: src/amule.cpp:2021
+#: src/amule.cpp:2116
 #, c-format
 msgid "Connecting to %s"
 msgstr "Povezovanje z %s"
 
-#: src/amule.cpp:2023
+#: src/amule.cpp:2118
 msgid "Disconnected from eD2k"
 msgstr "Povezava z eD2k prekinjena"
 
-#: src/amule.cpp:2031
+#: src/amule.cpp:2126
 msgid "Kad started."
 msgstr "Kad zagnan."
 
-#: src/amule.cpp:2033
+#: src/amule.cpp:2128
 msgid "Kad stopped."
 msgstr "Kad ustavljen."
 
-#: src/amule.cpp:2041
+#: src/amule.cpp:2136
 msgid "Connected to Kad (ok)"
 msgstr "Povezan s Kad (v redu)"
 
-#: src/amule.cpp:2043
+#: src/amule.cpp:2138
 msgid "Connected to Kad (firewalled)"
 msgstr "Povezan s Kad (za požarnim zidom)"
 
-#: src/amule.cpp:2046
+#: src/amule.cpp:2141
 msgid "Disconnected from Kad"
 msgstr "Povezava s Kad prekinjena"
 
-#: src/amule.cpp:2115
+#: src/amule.cpp:2210
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -445,7 +462,7 @@ msgstr ""
 "Omrežja Kad ni mogoče uporabljati, če so vrata UDP onemogočena v "
 "nastavitvah. Kad ni zagnan."
 
-#: src/amule.cpp:2118
+#: src/amule.cpp:2213
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Omrežje Kad je onemogočeno v nastavitvah. Ni povezave."
 
@@ -468,7 +485,8 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://github.com/amule-org/amule/wiki"
+"password. More information can be found at https://github.com/amule-org/"
+"amule/wiki"
 msgstr ""
 "NAPAKA: Za uporabo zunanjih povezav je potrebno veljavno geslo, demona aMule "
 "pa brez zunanjih povezav ni mogoče uporabiti. Za zagon demona aMule morate "
@@ -493,34 +511,37 @@ msgstr "Ni moč ustvariti datoteke PID"
 msgid "ERROR: %s"
 msgstr "NAPAKA: %s"
 
-#: src/amuleDlg.cpp:234
+#: src/amuleDlg.cpp:241
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "To je aMule %s, ki temelji na eMule."
 
-#: src/amuleDlg.cpp:236
+#: src/amuleDlg.cpp:243
 #, c-format
 msgid "Running on %s"
 msgstr "Operacijski sistem: %s"
 
-#: src/amuleDlg.cpp:238
-msgid "Visit https://github.com/amule-org/amule/releases/latest to check if a new version is available."
+#: src/amuleDlg.cpp:245
+msgid ""
+"Visit https://github.com/amule-org/amule/releases/latest to check if a new "
+"version is available."
 msgstr ""
-"Obiščite https://github.com/amule-org/amule/releases/latest da preverite, če je na voljo nova različica."
+"Obiščite https://github.com/amule-org/amule/releases/latest da preverite, če "
+"je na voljo nova različica."
 
-#: src/amuleDlg.cpp:264
+#: src/amuleDlg.cpp:271
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "USODNA NAPAKA: ustvaritev časomerilnika ni uspela"
 
-#: src/amuleDlg.cpp:489
+#: src/amuleDlg.cpp:512
 msgid "aMule remote control "
 msgstr "Oddaljen nadzor aMule "
 
-#: src/amuleDlg.cpp:495
+#: src/amuleDlg.cpp:518
 msgid "Snapshot:"
 msgstr "Posnetek:"
 
-#: src/amuleDlg.cpp:497
+#: src/amuleDlg.cpp:520
 msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
@@ -528,15 +549,15 @@ msgstr ""
 "Odjemalec P2P, ki temelji na eMule in je za vse platforme\n"
 "\n"
 
-#: src/amuleDlg.cpp:498
+#: src/amuleDlg.cpp:521
 msgid "Website: https://amule-org.github.io \n"
 msgstr "Spletna stran: https://amule-org.github.io \n"
 
-#: src/amuleDlg.cpp:499
+#: src/amuleDlg.cpp:522
 msgid "Forum: https://github.com/amule-org/amule/discussions \n"
 msgstr "Forum: https://github.com/amule-org/amule/discussions \n"
 
-#: src/amuleDlg.cpp:500
+#: src/amuleDlg.cpp:523
 msgid ""
 "FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
@@ -544,11 +565,11 @@ msgstr ""
 "PZS: https://github.com/amule-org/amule/wiki \n"
 "\n"
 
-#: src/amuleDlg.cpp:501
+#: src/amuleDlg.cpp:524
 msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr "Stik: admin@amule.org (administrativne zadeve) \n"
 
-#: src/amuleDlg.cpp:502
+#: src/amuleDlg.cpp:525
 msgid ""
 "Copyright (c) 2003-2019 aMule Team \n"
 "\n"
@@ -556,62 +577,62 @@ msgstr ""
 "Avtorske pravice © 2003–2019 ekipa aMule\n"
 "\n"
 
-#: src/amuleDlg.cpp:503
+#: src/amuleDlg.cpp:526
 msgid "Part of aMule is based on \n"
 msgstr "Del aMule temelji na\n"
 
-#: src/amuleDlg.cpp:504
+#: src/amuleDlg.cpp:527
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademlia: usmerjanje med enakovrednimi, ki temelji na metriki XOR.\n"
 
-#: src/amuleDlg.cpp:505
+#: src/amuleDlg.cpp:528
 msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr ""
 " Avtorske pravice 2002–2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 
-#: src/amuleDlg.cpp:506
+#: src/amuleDlg.cpp:529
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:509 src/KadDlg.cpp:193 src/PartFile.cpp:987
+#: src/amuleDlg.cpp:532 src/KadDlg.cpp:193 src/PartFile.cpp:987
 #: src/PartFile.cpp:995 src/PrefsUnifiedDlg.cpp:641 src/PrefsUnifiedDlg.cpp:746
 #: src/PrefsUnifiedDlg.cpp:866
 msgid "Message"
 msgstr "Sporočilo"
 
-#: src/amuleDlg.cpp:546
+#: src/amuleDlg.cpp:569
 msgid "aMule dialog destroyed"
 msgstr "Pogovorno okno aMule je bilo uničeno"
 
-#: src/amuleDlg.cpp:570 src/DataToText.cpp:59 src/IPFilter.cpp:544
+#: src/amuleDlg.cpp:593 src/DataToText.cpp:59 src/IPFilter.cpp:544
 msgid "Connecting"
 msgstr "Povezovanje"
 
-#: src/amuleDlg.cpp:699
+#: src/amuleDlg.cpp:722
 msgid "eD2k: Connecting"
 msgstr "eD2k: povezovanje"
 
-#: src/amuleDlg.cpp:703
+#: src/amuleDlg.cpp:726
 msgid "eD2k: Disconnected"
 msgstr "eD2k: povezava prekinjena"
 
-#: src/amuleDlg.cpp:709
+#: src/amuleDlg.cpp:732
 msgid "Kad: Firewalled"
 msgstr "Kad: za požarnim zidom"
 
-#: src/amuleDlg.cpp:713
+#: src/amuleDlg.cpp:736
 msgid "Kad: Connected"
 msgstr "Kad: povezan"
 
-#: src/amuleDlg.cpp:718
+#: src/amuleDlg.cpp:741
 msgid "Kad: Connecting"
 msgstr "Kad: povezovanje"
 
-#: src/amuleDlg.cpp:722
+#: src/amuleDlg.cpp:745
 msgid "Kad: Off"
 msgstr "Kad: izklopljen"
 
-#: src/amuleDlg.cpp:768 src/DownloadListCtrl.cpp:415
+#: src/amuleDlg.cpp:791 src/DownloadListCtrl.cpp:415
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:681 src/muuli_wdr.cpp:732 src/muuli_wdr.cpp:794
 #: src/muuli_wdr.cpp:846 src/muuli_wdr.cpp:1940 src/muuli_wdr.cpp:2022
@@ -621,229 +642,229 @@ msgstr "Kad: izklopljen"
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: src/amuleDlg.cpp:769
+#: src/amuleDlg.cpp:792
 msgid "Stop the current connection attempts"
 msgstr "Ustavi trenutne poskuse povezovanja"
 
-#: src/amuleDlg.cpp:774 src/MuleTrayIcon.cpp:388 src/MuleTrayIcon.cpp:879
+#: src/amuleDlg.cpp:797 src/MuleTrayIcon.cpp:388 src/MuleTrayIcon.cpp:877
 #: src/muuli_wdr.cpp:2144
 msgid "Disconnect"
 msgstr "Prekini povezave"
 
-#: src/amuleDlg.cpp:775
+#: src/amuleDlg.cpp:798
 msgid "Disconnect from the currently connected networks"
 msgstr "Prekini povezavo s trenutno povezanimi omrežji"
 
-#: src/amuleDlg.cpp:780 src/MuleTrayIcon.cpp:388 src/MuleTrayIcon.cpp:882
+#: src/amuleDlg.cpp:803 src/MuleTrayIcon.cpp:388 src/MuleTrayIcon.cpp:880
 #: src/muuli_wdr.cpp:2293 src/muuli_wdr.cpp:2603 src/muuli_wdr.cpp:2935
 msgid "Connect"
 msgstr "Poveži se"
 
-#: src/amuleDlg.cpp:781
+#: src/amuleDlg.cpp:804
 msgid "Connect to the currently enabled networks"
 msgstr "Poveži se s trenutno omogočenimi omrežji"
 
-#: src/amuleDlg.cpp:842
+#: src/amuleDlg.cpp:865
 #, fuzzy, c-format
 msgid "Up: %.1f%s (%.1f) | Down: %.1f%s (%.1f)"
 msgstr "Gor: %.1f (%.1f) | Dol: %.1f (%.1f)"
 
-#: src/amuleDlg.cpp:843 src/amuleDlg.cpp:844 src/amuleDlg.cpp:847
-#: src/amuleDlg.cpp:848 src/amuleDlg.cpp:859 src/amuleDlg.cpp:860
-#: src/MuleTrayIcon.cpp:700 src/MuleTrayIcon.cpp:703
+#: src/amuleDlg.cpp:866 src/amuleDlg.cpp:867 src/amuleDlg.cpp:870
+#: src/amuleDlg.cpp:871 src/amuleDlg.cpp:882 src/amuleDlg.cpp:883
+#: src/MuleTrayIcon.cpp:698 src/MuleTrayIcon.cpp:701
 #, fuzzy
 msgid " MB/s"
 msgstr "MiB/s"
 
-#: src/amuleDlg.cpp:843 src/amuleDlg.cpp:844 src/amuleDlg.cpp:847
-#: src/amuleDlg.cpp:848 src/amuleDlg.cpp:859 src/amuleDlg.cpp:860
-#: src/MuleTrayIcon.cpp:700 src/MuleTrayIcon.cpp:703
+#: src/amuleDlg.cpp:866 src/amuleDlg.cpp:867 src/amuleDlg.cpp:870
+#: src/amuleDlg.cpp:871 src/amuleDlg.cpp:882 src/amuleDlg.cpp:883
+#: src/MuleTrayIcon.cpp:698 src/MuleTrayIcon.cpp:701
 #: src/utils/wxCas/src/wxcasframe.cpp:1110
 msgid " kB/s"
 msgstr " kB/s"
 
-#: src/amuleDlg.cpp:846
+#: src/amuleDlg.cpp:869
 #, fuzzy, c-format
 msgid "Up: %.1f%s | Down: %.1f%s"
 msgstr "Gor: %.1f | Dol: %.1f"
 
-#: src/amuleDlg.cpp:876
+#: src/amuleDlg.cpp:899
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | Povezan)"
 
-#: src/amuleDlg.cpp:878
+#: src/amuleDlg.cpp:901
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Ni povezave)"
 
-#: src/amuleDlg.cpp:915
+#: src/amuleDlg.cpp:938
 #, c-format
 msgid "Do you really want to exit %s?"
 msgstr "Ali res želite zapustiti %s?"
 
-#: src/amuleDlg.cpp:916
+#: src/amuleDlg.cpp:939
 msgid "Exit confirmation"
 msgstr "Potrditev izhoda"
 
-#: src/amuleDlg.cpp:1155
+#: src/amuleDlg.cpp:1178
 msgid "Launch Command: "
 msgstr "Zaženi ukaz: "
 
-#: src/amuleDlg.cpp:1175 src/muuli_wdr.cpp:1747 src/Preferences.cpp:842
+#: src/amuleDlg.cpp:1198 src/muuli_wdr.cpp:1747 src/Preferences.cpp:842
 msgid "- default -"
 msgstr "– privzeto –"
 
-#: src/amuleDlg.cpp:1198
+#: src/amuleDlg.cpp:1221
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Mapa za preobleke »%s« ne obstaja"
 
-#: src/amuleDlg.cpp:1203
+#: src/amuleDlg.cpp:1226
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "OPOZORILO: datoteke s preobleko »%s« ni moč odpreti za branje"
 
-#: src/amuleDlg.cpp:1302 src/amuleDlg.cpp:1436 src/muuli_wdr.cpp:1393
+#: src/amuleDlg.cpp:1325 src/amuleDlg.cpp:1459 src/muuli_wdr.cpp:1393
 #: src/muuli_wdr.cpp:2937
 msgid "Networks"
 msgstr "Omrežja"
 
-#: src/amuleDlg.cpp:1302 src/muuli_wdr.cpp:2937
+#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:2937
 msgid "Networks Window"
 msgstr "Okno z omrežji"
 
-#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:2938
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:2938
 msgid "Searches"
 msgstr "Iskanja"
 
-#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:2938
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:2938
 msgid "Searches Window"
 msgstr "Okno z iskanji"
 
-#: src/amuleDlg.cpp:1304 src/DownloadListCtrl.cpp:643 src/muuli_wdr.cpp:379
+#: src/amuleDlg.cpp:1327 src/DownloadListCtrl.cpp:643 src/muuli_wdr.cpp:379
 #: src/muuli_wdr.cpp:1495 src/muuli_wdr.cpp:2939 src/Statistics.cpp:757
 msgid "Downloads"
 msgstr "Prejemanja"
 
-#: src/amuleDlg.cpp:1304 src/muuli_wdr.cpp:2939
+#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:2939
 msgid "Downloads Window"
 msgstr "Okno s prejemanji"
 
-#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:2830
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:2830
 msgid "Shared files"
 msgstr "Deljene datoteke"
 
-#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:2941
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:2941
 msgid "Shared Files Window"
 msgstr "Okno z deljenimi datotekami"
 
-#: src/amuleDlg.cpp:1306 src/muuli_wdr.cpp:2470 src/muuli_wdr.cpp:2895
+#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:2470 src/muuli_wdr.cpp:2895
 #: src/muuli_wdr.cpp:2942
 msgid "Messages"
 msgstr "Sporočila"
 
-#: src/amuleDlg.cpp:1306 src/muuli_wdr.cpp:2942
+#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:2942
 msgid "Messages Window"
 msgstr "Okno s sporočili"
 
-#: src/amuleDlg.cpp:1307 src/muuli_wdr.cpp:2943 src/PrefsUnifiedDlg.cpp:183
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:2943 src/PrefsUnifiedDlg.cpp:183
 #: src/Statistics.cpp:727 src/Statistics.cpp:1024
 msgid "Statistics"
 msgstr "Statistika"
 
-#: src/amuleDlg.cpp:1307 src/muuli_wdr.cpp:2943
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:2943
 msgid "Statistics Graph Window"
 msgstr "Okno s statističnimi grafi"
 
-#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:2945 src/PrefsUnifiedDlg.cpp:198
+#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:2945 src/PrefsUnifiedDlg.cpp:198
 #: src/utils/wxCas/src/wxcasprefs.cpp:41
 msgid "Preferences"
 msgstr "Nastavitve"
 
-#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:2945
+#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:2945
 msgid "Preferences Settings Window"
 msgstr "Okno z nastavitvami"
 
-#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:2946
+#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:2946
 msgid "Import"
 msgstr "Uvoz"
 
-#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:2946
+#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:2946
 msgid "The partfile importer tool"
 msgstr "Orodje za uvažanje delnih datotek"
 
-#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:2947
+#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:2947
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
 msgid "About"
 msgstr "O programu"
 
-#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:2947
+#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:2947
 msgid "About/Help"
 msgstr "O programu/pomoč"
 
-#: src/amuleDlg.cpp:1440
+#: src/amuleDlg.cpp:1463
 msgid "eD2k network"
 msgstr "Omrežje eD2k"
 
-#: src/amuleDlg.cpp:1444
+#: src/amuleDlg.cpp:1467
 msgid "Kad network"
 msgstr "Omrežje Kad"
 
-#: src/amuleDlg.cpp:1444
+#: src/amuleDlg.cpp:1467
 msgid "No network"
 msgstr "Brez omrežja"
 
-#: src/amule-gui.cpp:229
+#: src/amule-gui.cpp:230
 msgid "aMule remote control"
 msgstr "Oddaljeni nadzor aMule"
 
-#: src/amule-gui.cpp:231 src/utils/wxCas/src/wxcasframe.cpp:111
+#: src/amule-gui.cpp:232 src/utils/wxCas/src/wxcasframe.cpp:111
 msgid "aMule"
 msgstr "aMule"
 
-#: src/amule-gui.cpp:356
+#: src/amule-gui.cpp:362
 msgid "Fatal Error: Failed to create Core Timer"
 msgstr "Usodna napaka: ni bilo mogoče ustvariti osrednjega časomerilnika"
 
-#: src/amule-remote-gui.cpp:72
+#: src/amule-remote-gui.cpp:73
 msgid "Connect to remote amule"
 msgstr "Poveži se z oddaljenim aMule"
 
-#: src/amule-remote-gui.cpp:270
+#: src/amule-remote-gui.cpp:276
 msgid "Fatal Error: Failed to create Poll Timer"
 msgstr "Usodna napaka: ni bilo mogoče ustvariti časomerilnika za povpraševanje"
 
-#: src/amule-remote-gui.cpp:296
+#: src/amule-remote-gui.cpp:302
 msgid "Going to event loop..."
 msgstr "Prehod v dogodkovno zanko ..."
 
-#: src/amule-remote-gui.cpp:343
+#: src/amule-remote-gui.cpp:349
 msgid "Connecting..."
 msgstr "Povezovanje ..."
 
-#: src/amule-remote-gui.cpp:347
+#: src/amule-remote-gui.cpp:353
 msgid "Connection failed "
 msgstr "Povezovanje ni uspelo "
 
-#: src/amule-remote-gui.cpp:364
+#: src/amule-remote-gui.cpp:370
 msgid "Remote GUI EC event handler"
 msgstr "Rokovalnik z dogodki zunanje povezave oddaljenega vmesnika"
 
-#: src/amule-remote-gui.cpp:371
+#: src/amule-remote-gui.cpp:377
 msgid "Going down"
 msgstr "Zaustavljanje"
 
-#: src/amule-remote-gui.cpp:374 src/ExternalConnector.cpp:447
+#: src/amule-remote-gui.cpp:380 src/ExternalConnector.cpp:447
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr "Povezava ni uspela. Ni se moč povezati z %s: %d\n"
 
-#: src/amule-remote-gui.cpp:377
+#: src/amule-remote-gui.cpp:383
 msgid "Connection closed - aMule has terminated probably."
 msgstr "Povezava prekinjena – aMule se je najverjetneje končal."
 
-#: src/amule-remote-gui.cpp:394
+#: src/amule-remote-gui.cpp:400
 #, c-format
 msgid ""
 "Connection timed out. Unable to reach %s:%d within the allotted time.\n"
@@ -851,20 +872,20 @@ msgid ""
 "Connections enabled."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:482
+#: src/amule-remote-gui.cpp:488
 msgid "Ready"
 msgstr "Pripravljen"
 
-#: src/amule-remote-gui.cpp:659 src/TransferWnd.cpp:340
+#: src/amule-remote-gui.cpp:665 src/TransferWnd.cpp:340
 msgid "All"
 msgstr "Vse"
 
-#: src/amule-remote-gui.cpp:705
+#: src/amule-remote-gui.cpp:711
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr "Ni moč ustvariti mape »%s« za kategorijo »%s«, obdržana bo mapa »%s«."
 
-#: src/amule-remote-gui.cpp:1418 src/BaseClient.cpp:1775
+#: src/amule-remote-gui.cpp:1424 src/BaseClient.cpp:1775
 #: src/BaseClient.cpp:2314 src/BaseClient.cpp:2330 src/BaseClient.cpp:2606
 #: src/ClientDetailDialog.cpp:80 src/ClientDetailDialog.cpp:81
 #: src/ClientDetailDialog.cpp:114 src/ClientDetailDialog.cpp:115
@@ -875,7 +896,7 @@ msgstr "Ni moč ustvariti mape »%s« za kategorijo »%s«, obdržana bo mapa »
 #: src/FileDetailDialog.cpp:127 src/GenericClientListCtrl.cpp:1056
 #: src/GenericClientListCtrl.cpp:1067 src/GenericClientListCtrl.cpp:1077
 #: src/HTTPDownload.cpp:83 src/KnownFile.cpp:912 src/KnownFile.cpp:918
-#: src/MuleTrayIcon.cpp:333 src/MuleTrayIcon.cpp:748 src/PartFile.cpp:2632
+#: src/MuleTrayIcon.cpp:333 src/MuleTrayIcon.cpp:746 src/PartFile.cpp:2632
 #: src/PartFile.cpp:2638 src/Server.cpp:133 src/Server.cpp:208
 #: src/Statistics.cpp:972
 msgid "Unknown"
@@ -1649,11 +1670,11 @@ msgstr "Nalaganje delne datoteke %u od %u"
 
 #: src/DownloadQueue.cpp:150
 msgid ""
-"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions "
-"for .part.met recovery solutions."
+"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/"
+"discussions for .part.met recovery solutions."
 msgstr ""
-"NAPAKA: nalaganje varnostne kopije ni uspelo. Na https://github.com/amule-org/amule/discussions "
-"pošičite rešitve za obnavljanje datotek .part.met."
+"NAPAKA: nalaganje varnostne kopije ni uspelo. Na https://github.com/amule-"
+"org/amule/discussions pošičite rešitve za obnavljanje datotek .part.met."
 
 #: src/DownloadQueue.cpp:159
 msgid "All PartFiles Loaded."
@@ -2338,7 +2359,7 @@ msgstr "Prejemanje HTTP preklicano"
 msgid "HTTP 401 Unauthorized for %s"
 msgstr ""
 
-#: src/IP2Country.cpp:95
+#: src/IP2Country.cpp:98
 #, c-format
 msgid ""
 "No GeoLite2 update URL configured. Download GeoLite2-Country.mmdb manually "
@@ -2346,42 +2367,42 @@ msgid ""
 "Preferences."
 msgstr ""
 
-#: src/IP2Country.cpp:100
+#: src/IP2Country.cpp:103
 #, fuzzy, c-format
 msgid "Download new %s from %s"
 msgstr "Pridobi novo datoteko GeoIP.dat od %s"
 
-#: src/IP2Country.cpp:128
+#: src/IP2Country.cpp:131
 #, fuzzy, c-format
 msgid "Download of %s file failed, aborting update."
 msgstr "Prejemanje datoteke GeoIP.dat ni uspelo, posodobitev preklicana."
 
-#: src/IP2Country.cpp:134 src/IPFilter.cpp:500
+#: src/IP2Country.cpp:137 src/IPFilter.cpp:500
 #, c-format
 msgid "Failed to remove %s file, aborting update."
 msgstr "Odstranitev datoteke %s ni uspela, posodobitev preklicana."
 
-#: src/IP2Country.cpp:140
+#: src/IP2Country.cpp:143
 #, c-format
 msgid "Failed to rename %s file, aborting update."
 msgstr "Preimenovanje datoteke %s ni uspelo, posodobitev preklicana."
 
-#: src/IP2Country.cpp:146 src/IPFilter.cpp:506
+#: src/IP2Country.cpp:149 src/IPFilter.cpp:506
 #, c-format
 msgid "Successfully updated %s"
 msgstr "%s je bila uspešno posodobljena"
 
-#: src/IP2Country.cpp:148
+#: src/IP2Country.cpp:151
 #, fuzzy, c-format
 msgid "Error updating %s"
 msgstr "Napaka pri posodabljanju GeoIP.dat"
 
-#: src/IP2Country.cpp:153 src/IPFilter.cpp:512 src/ServerList.cpp:862
+#: src/IP2Country.cpp:156 src/IPFilter.cpp:512 src/ServerList.cpp:862
 #, c-format
 msgid "Failed to download %s from %s"
 msgstr "Prejemanje %s od %s ni uspelo"
 
-#: src/IP2Country.cpp:172
+#: src/IP2Country.cpp:192
 #, c-format
 msgid "Failed to load country data for '%s'."
 msgstr "Nalaganje državnih podatkov za »%s« ni uspelo."
@@ -2468,11 +2489,11 @@ msgstr ""
 msgid "Continue?"
 msgstr "Ali želite nadaljevati?"
 
-#: src/kademlia/kademlia/SearchManager.cpp:150
+#: src/kademlia/kademlia/SearchManager.cpp:154
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: iskalni niz je prekratek"
 
-#: src/kademlia/kademlia/SearchManager.cpp:163
+#: src/kademlia/kademlia/SearchManager.cpp:167
 msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kademlia: iskalna ključna beseda je že na iskalnem seznamu: "
 
@@ -2721,162 +2742,162 @@ msgstr "IP strežnika: "
 msgid "Server IP: "
 msgstr "IP strežnika:"
 
-#: src/MuleTrayIcon.cpp:322 src/MuleTrayIcon.cpp:323 src/MuleTrayIcon.cpp:725
-#: src/MuleTrayIcon.cpp:739 src/TextClient.cpp:716 src/TextClient.cpp:729
+#: src/MuleTrayIcon.cpp:322 src/MuleTrayIcon.cpp:323 src/MuleTrayIcon.cpp:723
+#: src/MuleTrayIcon.cpp:737 src/TextClient.cpp:716 src/TextClient.cpp:729
 msgid "Not connected"
 msgstr "Ni povezave"
 
-#: src/MuleTrayIcon.cpp:330 src/MuleTrayIcon.cpp:748
+#: src/MuleTrayIcon.cpp:330 src/MuleTrayIcon.cpp:746
 #, c-format
 msgid "IP: %s"
 msgstr "IP: %s"
 
-#: src/MuleTrayIcon.cpp:337 src/MuleTrayIcon.cpp:757
+#: src/MuleTrayIcon.cpp:337 src/MuleTrayIcon.cpp:755
 #, c-format
 msgid "TCP port: %d"
 msgstr "Vrata TCP: %d"
 
-#: src/MuleTrayIcon.cpp:338 src/MuleTrayIcon.cpp:759
+#: src/MuleTrayIcon.cpp:338 src/MuleTrayIcon.cpp:757
 msgid "TCP port: Not ready"
 msgstr "Vrata TCP: niso pripravljena"
 
-#: src/MuleTrayIcon.cpp:341 src/MuleTrayIcon.cpp:768
+#: src/MuleTrayIcon.cpp:341 src/MuleTrayIcon.cpp:766
 #, c-format
 msgid "UDP port: %d"
 msgstr "Vrata UDP: %d"
 
-#: src/MuleTrayIcon.cpp:342 src/MuleTrayIcon.cpp:770
+#: src/MuleTrayIcon.cpp:342 src/MuleTrayIcon.cpp:768
 msgid "UDP port: Not ready"
 msgstr "Vrata UDP: niso pripravljena"
 
-#: src/MuleTrayIcon.cpp:346 src/MuleTrayIcon.cpp:709
+#: src/MuleTrayIcon.cpp:346 src/MuleTrayIcon.cpp:707
 msgid "Client Information"
 msgstr "Podatki o odjemalcu"
 
-#: src/MuleTrayIcon.cpp:364 src/MuleTrayIcon.cpp:826
+#: src/MuleTrayIcon.cpp:364 src/MuleTrayIcon.cpp:824
 msgid "Upload limit"
 msgstr "Omejitev pošiljanja"
 
-#: src/MuleTrayIcon.cpp:377 src/MuleTrayIcon.cpp:830
+#: src/MuleTrayIcon.cpp:377 src/MuleTrayIcon.cpp:828
 msgid "Download limit"
 msgstr "Omejitev prejemanja"
 
-#: src/MuleTrayIcon.cpp:397 src/MuleTrayIcon.cpp:890
+#: src/MuleTrayIcon.cpp:397 src/MuleTrayIcon.cpp:888
 msgid "Hide aMule"
 msgstr "Skrij aMule"
 
-#: src/MuleTrayIcon.cpp:398 src/MuleTrayIcon.cpp:893
+#: src/MuleTrayIcon.cpp:398 src/MuleTrayIcon.cpp:891
 msgid "Show aMule"
 msgstr "Prikaži aMule"
 
-#: src/MuleTrayIcon.cpp:408 src/MuleTrayIcon.cpp:900
+#: src/MuleTrayIcon.cpp:408 src/MuleTrayIcon.cpp:898
 #: src/utils/aLinkCreator/src/alcframe.cpp:229
 msgid "Exit"
 msgstr "Končaj"
 
-#: src/MuleTrayIcon.cpp:471 src/MuleTrayIcon.cpp:847 src/MuleTrayIcon.cpp:868
+#: src/MuleTrayIcon.cpp:469 src/MuleTrayIcon.cpp:845 src/MuleTrayIcon.cpp:866
 #: src/muuli_wdr.cpp:1315 src/muuli_wdr.cpp:1323 src/muuli_wdr.cpp:1330
 #: src/muuli_wdr.cpp:1622 src/muuli_wdr.cpp:1628 src/OtherFunctions.cpp:94
 #: src/StatisticsDlg.cpp:101 src/StatisticsDlg.cpp:103
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/MuleTrayIcon.cpp:486 src/MuleTrayIcon.cpp:505 src/MuleTrayIcon.cpp:834
-#: src/MuleTrayIcon.cpp:855
+#: src/MuleTrayIcon.cpp:484 src/MuleTrayIcon.cpp:503 src/MuleTrayIcon.cpp:832
+#: src/MuleTrayIcon.cpp:853
 msgid "Unlimited"
 msgstr "Neomejeno"
 
-#: src/MuleTrayIcon.cpp:671
+#: src/MuleTrayIcon.cpp:669
 msgid "aMule Tray Menu"
 msgstr "aMule meni sistemske vrstice"
 
-#: src/MuleTrayIcon.cpp:677
+#: src/MuleTrayIcon.cpp:675
 msgid "Speed limits:"
 msgstr "Omejitve hitrosti"
 
-#: src/MuleTrayIcon.cpp:682
+#: src/MuleTrayIcon.cpp:680
 msgid "UL: None"
 msgstr "Gor: brez"
 
-#: src/MuleTrayIcon.cpp:685
+#: src/MuleTrayIcon.cpp:683
 #, c-format
 msgid "UL: %u"
 msgstr "Gor: %u"
 
-#: src/MuleTrayIcon.cpp:692
+#: src/MuleTrayIcon.cpp:690
 msgid "DL: None"
 msgstr "Dol: brez"
 
-#: src/MuleTrayIcon.cpp:695
+#: src/MuleTrayIcon.cpp:693
 #, c-format
 msgid "DL: %u"
 msgstr "Dol: %u"
 
-#: src/MuleTrayIcon.cpp:699
+#: src/MuleTrayIcon.cpp:697
 #, fuzzy, c-format
 msgid "Download speed: %.1f%s"
 msgstr "Hitrost prejemanja: %.1f"
 
-#: src/MuleTrayIcon.cpp:702
+#: src/MuleTrayIcon.cpp:700
 #, fuzzy, c-format
 msgid "Upload speed: %.1f%s"
 msgstr "Hitrost pošiljanja: %.1f"
 
-#: src/MuleTrayIcon.cpp:713
+#: src/MuleTrayIcon.cpp:711
 #, c-format
 msgid "Nickname: %s"
 msgstr "Vzdevek: %s"
 
-#: src/MuleTrayIcon.cpp:713
+#: src/MuleTrayIcon.cpp:711
 msgid "No Nickname Selected!"
 msgstr "Izbran ni noben vzdevek."
 
-#: src/MuleTrayIcon.cpp:720
+#: src/MuleTrayIcon.cpp:718
 msgid "ClientID: "
 msgstr "Odjemalčev ID: "
 
-#: src/MuleTrayIcon.cpp:732
+#: src/MuleTrayIcon.cpp:730
 msgid "ServerName: "
 msgstr "Ime strežnika: "
 
-#: src/MuleTrayIcon.cpp:733
+#: src/MuleTrayIcon.cpp:731
 msgid "ServerIP: "
 msgstr "IP strežnika: "
 
-#: src/MuleTrayIcon.cpp:740 src/ServerWnd.cpp:188
+#: src/MuleTrayIcon.cpp:738 src/ServerWnd.cpp:188
 #: src/utils/wxCas/src/onlinesig.cpp:263
 msgid "Not Connected"
 msgstr "Ni povezave"
 
-#: src/MuleTrayIcon.cpp:779
+#: src/MuleTrayIcon.cpp:777
 msgid "Online Signature: Enabled"
 msgstr "Spletni podpis: omogočen"
 
-#: src/MuleTrayIcon.cpp:782
+#: src/MuleTrayIcon.cpp:780
 msgid "Online Signature: Disabled"
 msgstr "Spletni podpis: onemogočen"
 
-#: src/MuleTrayIcon.cpp:789 src/Statistics.cpp:732
+#: src/MuleTrayIcon.cpp:787 src/Statistics.cpp:732
 #, c-format
 msgid "Uptime: %s"
 msgstr "Neprekinjeno delovanje: %s"
 
-#: src/MuleTrayIcon.cpp:795
+#: src/MuleTrayIcon.cpp:793
 #, c-format
 msgid "Shared files: %d"
 msgstr "Deljene datoteke: %d"
 
-#: src/MuleTrayIcon.cpp:801
+#: src/MuleTrayIcon.cpp:799
 #, c-format
 msgid "Queued clients: %d"
 msgstr "Odjemalci v vrsti: %d"
 
-#: src/MuleTrayIcon.cpp:808
+#: src/MuleTrayIcon.cpp:806
 #, c-format
 msgid "Total DL: %s"
 msgstr "Skupno dol: %s"
 
-#: src/MuleTrayIcon.cpp:815
+#: src/MuleTrayIcon.cpp:813
 #, c-format
 msgid "Total UL: %s"
 msgstr "Skupno gor: %s"
@@ -5503,17 +5524,17 @@ msgid ""
 "responses yet)."
 msgstr ""
 
-#: src/SearchDlg.cpp:539
+#: src/SearchDlg.cpp:542
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 "Min. velikost mora biti manjša kot maks. velikost. Maks. velikost ni "
 "upoštevana."
 
-#: src/SearchDlg.cpp:540 src/SearchDlg.cpp:599
+#: src/SearchDlg.cpp:543 src/SearchDlg.cpp:602
 msgid "Search warning"
 msgstr "Opozorilo iskanja"
 
-#: src/SearchDlg.cpp:659 src/SearchListCtrl.cpp:628
+#: src/SearchDlg.cpp:662 src/SearchListCtrl.cpp:628
 msgid "Main"
 msgstr "Glavna"
 
@@ -5930,8 +5951,11 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\tPo vsej verjetnosti ste za požarnim zidom ali usmerjevalnikom."
 
 #: src/ServerSocket.cpp:435
-msgid "\tFor more information, please refer to https://github.com/amule-org/amule/wiki"
-msgstr "\tZa več informacij se obrnite na https://github.com/amule-org/amule/wiki"
+msgid ""
+"\tFor more information, please refer to https://github.com/amule-org/amule/"
+"wiki"
+msgstr ""
+"\tZa več informacij se obrnite na https://github.com/amule-org/amule/wiki"
 
 #: src/ServerSocket.cpp:491
 msgid "Unknown server info received! - too short"
@@ -7846,6 +7870,16 @@ msgstr "Zahtevana odjava\n"
 #: src/webserver/src/WebServer.cpp:1922
 msgid "Processing request [redirected]: "
 msgstr "Obdelovanje zahteve [preusmerjeno]: "
+
+#~ msgid ""
+#~ "You don't have any server in the server list.\n"
+#~ "Do you want aMule to download a new list now?"
+#~ msgstr ""
+#~ "Na seznamu strežnikov nimate nobenega strežnika.\n"
+#~ "Ali želite, da aMule zdaj pridobi nov seznam?"
+
+#~ msgid "Server list download"
+#~ msgstr "Prejemanje seznama strežnikov"
 
 #, c-format
 #~ msgid "Unable to create destination file %s for download!"
