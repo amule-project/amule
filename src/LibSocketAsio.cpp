@@ -72,9 +72,37 @@
 #include "ScopedPtr.h"
 #include <common/Macros.h>
 
+#ifndef __WINDOWS__
+#include <fcntl.h>		// FD_CLOEXEC
+#endif
+
 using namespace boost::asio;
 using namespace boost::system;	// for error_code
 static io_context s_io_service;
+
+//
+// Mark a freshly-created socket close-on-exec so subprocesses launched
+// via wxExecute() (preview-with-vlc, etc.) don't inherit and pin our
+// listen / UDP file descriptors. Without this, vlc keeps the bind alive
+// after aMule exits, and the next aMule start fails with
+// "Address already in use" until the user kills vlc (#172).
+//
+// No-op on Windows: WinSock SOCKET handles are non-inheritable by
+// default unless the parent passes bInheritHandle=TRUE to CreateProcess,
+// which wxExecute does not do.
+//
+template <typename Handle>
+static inline void SetCloexecOnSocket(Handle native)
+{
+#ifndef __WINDOWS__
+	int flags = ::fcntl(native, F_GETFD, 0);
+	if (flags != -1) {
+		::fcntl(native, F_SETFD, flags | FD_CLOEXEC);
+	}
+#else
+	(void) native;
+#endif
+}
 
 // Number of threads in the Asio thread pool
 const int CAsioService::m_numberOfThreads = 4;
@@ -798,6 +826,7 @@ public:
 
 		try {
 			open(adr.GetEndpoint().protocol());
+			SetCloexecOnSocket(native_handle());
 			set_option(ip::tcp::acceptor::reuse_address(true));
 			bind(adr.GetEndpoint());
 			listen();
@@ -1151,7 +1180,14 @@ private:
 		try {
 			delete m_socket;
 			ip::udp::endpoint endpoint(m_address.GetEndpoint().address(), m_address.Service());
-			m_socket = new ip::udp::socket(s_io_service, endpoint);
+			// Open + bind in two steps so we can mark the fd close-on-exec
+			// before bind, matching the TCP acceptor path. Single-arg
+			// ctor + open() is the documented Asio idiom for "create
+			// without binding".
+			m_socket = new ip::udp::socket(s_io_service);
+			m_socket->open(endpoint.protocol());
+			SetCloexecOnSocket(m_socket->native_handle());
+			m_socket->bind(endpoint);
 			AddDebugLogLineN(logAsio, CFormat("Created UDP socket %s %d") % m_address.IPAddress() % m_address.Service());
 			StartBackgroundRead();
 		} catch (const system_error& err) {
