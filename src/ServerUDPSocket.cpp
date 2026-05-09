@@ -135,7 +135,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, uint32 ip, 
 								"Server search reply got additional bogus bytes." );
 							break;
 						} else {
-							AddDebugLogLineC( logServerUDP,
+							AddDebugLogLineN( logServerUDP,
 								"Got server search reply with additional packet." );
 						}
 					}
