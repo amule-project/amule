@@ -29,6 +29,7 @@
 #include "ScopedPtr.h"			// Needed for CScopedPtr and CScopedArray
 #include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
+#include <common/StringFunctions.h>	// Needed for EscapeForLog
 #include "CompilerSpecific.h"		// Needed for __FUNCTION__
 
 #include <cstring>              // For std::memcpy
@@ -476,7 +477,10 @@ CTag *CFileDataIO::ReadTag(bool bOptACP) const
 			}
 
 			default:
-				throw wxString(CFormat("Invalid Kad tag type; type=0x%02x name=%s\n") % type % name);
+				// name comes from arbitrary network bytes -- escape control
+				// chars before logging so a malformed / malicious tag can't
+				// inject newlines and corrupt downstream log collectors (#266).
+				throw wxString(CFormat("Invalid Kad tag type; type=0x%02x name=%s\n") % type % EscapeForLog(name));
 		}
 	} catch(const CMuleException& e) {
 		AddLogLineN(e.what());
