@@ -127,7 +127,16 @@ namespace MuleNotify
 	void DownloadCtrlUpdateItem(const void* item)
 	{
 #ifndef CLIENT_GUI
-		theApp->ECServerHandler->m_ec_notifier->DownloadFile_SetDirty(static_cast<const CPartFile*>(item));
+		// Notify can fire from PartFile load during early OnInit (#268
+		// crash from a wx2.8.12 / pre-ASIO build) and from background
+		// threads during shutdown after `delete ECServerHandler`.
+		// Master's OnInit currently builds ECServerHandler before
+		// LoadMetFiles, so the early-init crash is fixed by ordering;
+		// guard the dereference anyway so future reorders or
+		// shutdown races can't reintroduce the segfault.
+		if (theApp->ECServerHandler && theApp->ECServerHandler->m_ec_notifier) {
+			theApp->ECServerHandler->m_ec_notifier->DownloadFile_SetDirty(static_cast<const CPartFile*>(item));
+		}
 #endif
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
@@ -381,7 +390,11 @@ namespace MuleNotify
 
 	void DownloadCtrlAddFile(CPartFile* file)
 	{
-		theApp->ECServerHandler->m_ec_notifier->DownloadFile_AddFile(file);
+		// See DownloadCtrlUpdateItem above for the rationale; the
+		// notifier can be NULL during init or shutdown.
+		if (theApp->ECServerHandler && theApp->ECServerHandler->m_ec_notifier) {
+			theApp->ECServerHandler->m_ec_notifier->DownloadFile_AddFile(file);
+		}
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl ) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
@@ -391,7 +404,9 @@ namespace MuleNotify
 
 	void DownloadCtrlRemoveFile(CPartFile* file)
 	{
-		theApp->ECServerHandler->m_ec_notifier->DownloadFile_RemoveFile(file);
+		if (theApp->ECServerHandler && theApp->ECServerHandler->m_ec_notifier) {
+			theApp->ECServerHandler->m_ec_notifier->DownloadFile_RemoveFile(file);
+		}
 #ifndef AMULE_DAEMON
 		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveFile(file);
