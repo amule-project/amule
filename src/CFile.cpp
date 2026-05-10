@@ -141,19 +141,20 @@ CSeekFailureException::CSeekFailureException(const wxString& desc)
 
 
 CFile::CFile()
-	: m_fd(fd_invalid), m_safeWrite(false)
+	: m_fd(fd_invalid), m_safeWrite(false),
+	  m_writeBufferPending(0), m_canBuffer(false)
 {}
 
 
 CFile::CFile(const CPath& fileName, OpenMode mode)
-	: m_fd(fd_invalid)
+	: m_fd(fd_invalid), m_writeBufferPending(0), m_canBuffer(false)
 {
 	Open(fileName, mode);
 }
 
 
 CFile::CFile(const wxString& fileName, OpenMode mode)
-	: m_fd(fd_invalid)
+	: m_fd(fd_invalid), m_writeBufferPending(0), m_canBuffer(false)
 {
 	Open(fileName, mode);
 }
@@ -222,6 +223,12 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 
 	m_safeWrite = false;
 	m_filePath = fileName;
+	m_writeBufferPending = 0;
+	// Buffer writes for any mode that can actually write. Read-only
+	// stays unbuffered so a misuse (like writing to a read-opened
+	// file) still fails immediately at the doWrite call site,
+	// preserving FileDataIOTest's CFile.Constructor contract.
+	m_canBuffer = (mode != read);
 
 #ifdef __linux__
 	int flags = O_BINARY | O_LARGEFILE;
@@ -288,6 +295,10 @@ bool CFile::Close()
 {
 	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot close closed file.");
 
+	// Flush userspace write buffer to the fd before closing — otherwise
+	// any pending bytes from doWrite() would be silently dropped.
+	DrainWriteBuffer();
+
 	bool closed = (close(m_fd) != -1);
 	syscall_check(closed, m_filePath, "closing file");
 
@@ -309,6 +320,9 @@ bool CFile::Flush()
 {
 	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot flush closed file.");
 
+	// Userspace buffer first, then ask the kernel to commit to disk.
+	DrainWriteBuffer();
+
 	bool flushed = (FLUSH_FD(m_fd) != -1);
 	syscall_check(flushed, m_filePath, "flushing file");
 
@@ -320,6 +334,11 @@ sint64 CFile::doRead(void* buffer, size_t count) const
 {
 	MULE_VALIDATE_PARAMS(buffer, "CFile: Invalid buffer in read operation.");
 	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot read from closed file.");
+
+	// Read-after-write (or interleaved read/write on a read_write file)
+	// must see preceding writes. For pure-read files the buffer is
+	// always empty so this is a single branch.
+	DrainWriteBuffer();
 
 	size_t totalRead = 0;
 	while (totalRead < count) {
@@ -342,18 +361,66 @@ sint64 CFile::doRead(void* buffer, size_t count) const
 }
 
 
+void CFile::DrainWriteBuffer() const
+{
+	if (m_writeBufferPending == 0) {
+		return;
+	}
+
+	// Loop to handle partial writes (e.g. interrupted by a signal).
+	size_t total = 0;
+	while (total < m_writeBufferPending) {
+		ssize_t written = ::write(m_fd,
+			m_writeBuffer + total,
+			m_writeBufferPending - total);
+		if (written < 0) {
+			throw CIOFailureException(
+				wxString("Error flushing write buffer: ") + wxSysErrorMsg());
+		}
+		total += (size_t)written;
+	}
+	m_writeBufferPending = 0;
+}
+
+
 sint64 CFile::doWrite(const void* buffer, size_t nCount)
 {
 	MULE_VALIDATE_PARAMS(buffer, "CFile: Invalid buffer in write operation.");
 	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot write to closed file.");
 
-	sint64 result = ::write(m_fd, buffer, nCount);
-
-	if (result != (sint64)nCount) {
-		throw CIOFailureException(wxString("Error writing to file: ") + wxSysErrorMsg());
+	// Read-only files: the kernel will reject the write with EBADF;
+	// surface that immediately by going direct, the same way the
+	// pre-buffering version did.
+	//
+	// Single payload that doesn't fit in the buffer at all also goes
+	// direct — no point splitting into 64 KB chunks just to copy
+	// through the buffer first. Drain pending bytes (if any) so
+	// ordering is preserved.
+	if (!m_canBuffer || nCount >= kWriteBufferSize) {
+		DrainWriteBuffer();
+		if (nCount == 0) {
+			return 0;
+		}
+		sint64 result = ::write(m_fd, buffer, nCount);
+		if (result != (sint64)nCount) {
+			throw CIOFailureException(
+				wxString("Error writing to file: ") + wxSysErrorMsg());
+		}
+		return result;
 	}
 
-	return result;
+	if (nCount == 0) {
+		return 0;
+	}
+
+	// New write would overflow the buffer; drain first.
+	if (m_writeBufferPending + nCount > kWriteBufferSize) {
+		DrainWriteBuffer();
+	}
+
+	memcpy(m_writeBuffer + m_writeBufferPending, buffer, nCount);
+	m_writeBufferPending += nCount;
+	return (sint64)nCount;
 }
 
 
@@ -364,6 +431,12 @@ sint64 CFile::doSeek(sint64 offset) const
 	}
 
 	MULE_VALIDATE_PARAMS(offset >= 0, "Invalid position, must be positive.");
+
+	// Pending bytes belong at the pre-seek position; flush before
+	// changing the fd's offset so writes don't end up in the wrong
+	// place. (CSafeFile / known.met save uses Seek() to back-patch
+	// the header after writing the body, so this matters in practice.)
+	DrainWriteBuffer();
 
 	sint64 result = SEEK_FD(m_fd, offset, SEEK_SET);
 
@@ -381,6 +454,10 @@ uint64 CFile::GetPosition() const
 {
 	MULE_VALIDATE_STATE(IsOpened(), "Cannot get position in closed file.");
 
+	// Reported position must include any pending buffered bytes.
+	// Easiest is to drain so TELL_FD's answer is authoritative.
+	DrainWriteBuffer();
+
 	sint64 pos = TELL_FD(m_fd);
 	if (pos == wxInvalidOffset) {
 		throw CSeekFailureException(wxString("Failed to retrieve position in file: ") + wxSysErrorMsg());
@@ -393,6 +470,10 @@ uint64 CFile::GetPosition() const
 uint64 CFile::GetLength() const
 {
 	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot get length of closed file.");
+
+	// fstat reads inode metadata, not buffered bytes — drain so the
+	// reported size reflects pending buffered writes.
+	DrainWriteBuffer();
 
 	STAT_STRUCT buf;
 	if (STAT_FD(m_fd, &buf) == -1) {
@@ -421,6 +502,11 @@ uint64 CFile::GetAvailable() const
 bool CFile::SetLength(uint64 new_len)
 {
 	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot set length when no file is open.");
+
+	// ftruncate / chsize operate on the kernel-side size; drain the
+	// userspace buffer first so any pending bytes are part of the
+	// length-resolution decision (e.g. extend-then-write patterns).
+	DrainWriteBuffer();
 
 #ifdef __WINDOWS__
 #ifdef _MSC_VER
