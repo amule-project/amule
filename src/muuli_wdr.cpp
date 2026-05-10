@@ -246,7 +246,7 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item13->Add( item19, wxSizerFlags().CenterHorizontal().Border(wxALL, 5) );
     wxStaticText *item20 = new wxStaticText( parent, -1, _("Extension"), wxDefaultPosition, wxDefaultSize, 0 );
     item13->Add( item20, wxSizerFlags().CenterVertical().Border(wxALL, 5) );
-    CMuleTextCtrl *item21 = new CMuleTextCtrl( parent, IDC_EDITSEARCHEXTENSION, "", wxDefaultPosition, wxSize(40,10), wxTE_PROCESS_ENTER );
+    CMuleTextCtrl *item21 = new CMuleTextCtrl( parent, IDC_EDITSEARCHEXTENSION, "", wxDefaultPosition, wxSize(60,-1), wxTE_PROCESS_ENTER );
     item13->Add( item21, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
     wxStaticText *item22 = new wxStaticText( parent, -1, _("Min Size"), wxDefaultPosition, wxDefaultSize, 0 );
     item13->Add( item22, wxSizerFlags().CenterVertical().Border(wxALL, 5) );
