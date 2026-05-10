@@ -927,7 +927,13 @@ void CamuleDlg::DlgShutDown()
 
 void CamuleDlg::OnClose(wxCloseEvent& evt)
 {
-	if (thePrefs::HideOnClose() && evt.CanVeto()) {
+	// The tray icon is the only recovery surface for a window hidden
+	// via the close button on every platform: Linux/Windows use the
+	// NSStatusItem-equivalent to bring the window back, and on macOS
+	// the matching path drops the Dock icon (accessory mode) while
+	// hidden, so the Dock is no longer a fallback either.
+	bool hideOnClose = thePrefs::HideOnClose() && thePrefs::UseTrayIcon();
+	if (hideOnClose && evt.CanVeto()) {
 		Show(false);
 		evt.Veto();
 		return;

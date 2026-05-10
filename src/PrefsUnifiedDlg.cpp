@@ -247,15 +247,6 @@ wxDialog(parent, -1, _("Preferences"),
 				CastChild(IDC_BROWSERTABS, wxCheckBox)->Enable(false);
 			#endif /* __WINDOWS__ */
 			CastChild(IDC_PREVIEW_NOTE, wxStaticText)->SetLabel(_("The following variables will be substituted:\n    %PARTFILE - full path to the file\n    %PARTNAME - file name only"));
-			#ifndef __WXMAC__
-				// "Hide on close" is a macOS convention (close
-				// button hides the window, app stays alive in the
-				// dock). On other platforms the close button
-				// closes the app — exposing this option there
-				// only confuses users.
-				FindWindow(IDC_MACHIDEONCLOSE)->Show(false);
-				thePrefs::SetHideOnClose(false);
-			#endif
 			// Tray-icon checkboxes (IDC_ENABLETRAYICON,
 			// IDC_MINTRAY) are visible on every platform now,
 			// including macOS. wxTaskBarIcon → NSStatusItem on
@@ -446,7 +437,12 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
 	FindWindow( IDC_STARTNEXTFILE_ALPHA )->Enable(thePrefs::StartNextFile());
 
-	FindWindow(IDC_MACHIDEONCLOSE)->Enable(true);
+	// The tray icon is the only recovery surface for a window hidden
+	// via the close button: on Linux/Windows the option needs the tray
+	// to bring the window back, and on macOS the matching code path
+	// (NSApplicationActivationPolicyAccessory) drops the Dock icon
+	// while hidden, so the tray is also the only way back there.
+	FindWindow(IDC_MACHIDEONCLOSE)->Enable(thePrefs::UseTrayIcon());
 	FindWindow(IDC_EXIT)->Enable(!thePrefs::HideOnClose());
 	if (thePrefs::HideOnClose()) {
 		CastChild(IDC_EXIT, wxCheckBox)->SetValue(false);
@@ -927,6 +923,11 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 
 		case IDC_ENABLETRAYICON:
 			FindWindow(IDC_MINTRAY)->Enable(value);
+			// HideOnClose's recovery surface is the tray icon, so its
+			// checkbox follows tray-icon state too. Live-update both
+			// here so the user doesn't have to close + reopen prefs to
+			// see dependent options gate correctly.
+			FindWindow(IDC_MACHIDEONCLOSE)->Enable(value);
 			if (value) {
 				theApp->amuledlg->CreateSystray();
 			} else {
