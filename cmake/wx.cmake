@@ -145,4 +145,26 @@ if (wx_NEED_NET)
 			"  - macOS       : NSURLSession (always present)\n"
 			"Then re-run cmake.")
 	endif()
+
+	# Optional: when libcurl headers are present on the build host, we
+	# enable CHTTPDownloadThread's CURLOPT_NOSIGNAL + CURLOPT_CONNECTTIMEOUT_MS
+	# tuning via wxWebRequest::GetNativeHandle(). This requires both
+	# wx itself to be built with the libcurl backend (wxUSE_WEBREQUEST_CURL=1
+	# at runtime) AND <curl/curl.h> at our build time. Probe is
+	# unconditional — wx may include the curl backend on platforms
+	# whose default is something else (macOS Homebrew wxwidgets builds
+	# with libcurl alongside NSURLSession; same for some MSYS2 wx
+	# packages). Soft-fails to a STATUS line; the patch silently
+	# no-ops when libcurl-dev is absent.
+	find_package (CURL QUIET)
+	if (CURL_FOUND)
+		set (amule_HAVE_LIBCURL 1 CACHE INTERNAL "libcurl headers available")
+		message (STATUS "libcurl headers found (${CURL_VERSION_STRING}) — CHTTPDownloadThread CURLOPT tuning enabled")
+	else()
+		message (STATUS
+			"libcurl headers not found — CHTTPDownloadThread will skip "
+			"CURLOPT tuning (NOSIGNAL/CONNECTTIMEOUT). Install "
+			"libcurl4-openssl-dev (Debian/Ubuntu) or libcurl-devel "
+			"(Fedora) to enable.")
+	endif()
 endif()

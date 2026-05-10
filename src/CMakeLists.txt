@@ -466,6 +466,24 @@ if (BUILD_REMOTEGUI)
 	)
 endif()
 
+# Expose libcurl headers + link AND set AMULE_HAVE_LIBCURL=1 on every app
+# that pulls HTTPDownload.cpp via COMMON_SOURCES, when libcurl-dev was
+# found at configure time (see cmake/wx.cmake). HTTPDownload.cpp's
+# CURLOPT-tuning block is double-gated on AMULE_HAVE_LIBCURL (set here)
+# AND wxUSE_WEBREQUEST_CURL (wx-internal, true when wx itself was built
+# with the libcurl backend). Either missing → block is a no-op and the
+# header isn't included, so the build stays clean on hosts without
+# libcurl-dev or with a non-curl wxWebRequest backend.
+if (amule_HAVE_LIBCURL)
+	foreach (_tgt IN ITEMS amuled amule amulegui)
+		if (TARGET ${_tgt})
+			target_include_directories (${_tgt} PRIVATE ${CURL_INCLUDE_DIRS})
+			target_link_libraries (${_tgt} PRIVATE ${CURL_LIBRARIES})
+			target_compile_definitions (${_tgt} PRIVATE AMULE_HAVE_LIBCURL=1)
+		endif()
+	endforeach()
+endif()
+
 if (NEED_LIB_MULEAPPCOMMON)
 	add_library (muleappcommon STATIC
 		${UPNP_SOURCES}
