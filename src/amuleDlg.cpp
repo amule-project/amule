@@ -81,6 +81,10 @@
 #include "IP2Country.h"				// Needed for IP2Country
 #endif
 
+#ifdef __WXMAC__
+#include "MacAppHelper.h"			// mac_set_accessory_mode
+#endif
+
 #ifdef ENABLE_IP2COUNTRY			// That's no bug. MSVC has ENABLE_IP2COUNTRY always on,
 						// but dummy GeoIP.h turns ENABLE_IP2COUNTRY off again.
 void CamuleDlg::IP2CountryDownloadFinished(uint32 result)
@@ -1071,8 +1075,12 @@ bool CamuleDlg::SaveGUIPrefs()
 
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
-// Evil Hack: check if the mouse is inside the window
-#ifndef __WINDOWS__
+// Evil Hack: check if the mouse is inside the window. Linux only —
+// the heuristic filters spurious iconize events from window-manager
+// state changes (workspace switches, etc.). On macOS it can return
+// NULL during the yellow-button minimize transition itself, which
+// would silently skip the hide-to-tray branch entirely.
+#if !defined(__WINDOWS__) && !defined(__WXMAC__)
 	if (wxFindWindowAtPoint(wxGetMousePosition()))
 #endif
 	{
@@ -1080,7 +1088,22 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 			// Veto.
 		} else {
 			if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
-				Show(!evt.IsIconized());
+				if (evt.IsIconized()) {
+#ifdef __WXMAC__
+					// Drop NSApp's activation policy to Accessory
+					// before hiding — that removes the Dock icon
+					// (and any in-flight miniaturize-to-Dock target),
+					// so the yellow button doesn't leave a Dock
+					// thumbnail. Tray icon stays as the only
+					// recovery surface; Show(true) from the tray's
+					// DoShowHide restores both the Dock icon and the
+					// window.
+					mac_set_accessory_mode(true);
+#endif
+					Show(false);
+				} else {
+					Show(true);
+				}
 			}
 			else {
 				evt.Skip();
