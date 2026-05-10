@@ -123,6 +123,7 @@ wxBEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 
 	EVT_CLOSE(CamuleDlg::OnClose)
 	EVT_ICONIZE(CamuleDlg::OnMinimize)
+	EVT_SHOW(CamuleDlg::OnShow)
 
 	EVT_BUTTON(ID_BUTTON_FAST, CamuleDlg::OnBnClickedFast)
 
@@ -1083,8 +1084,49 @@ bool CamuleDlg::SaveGUIPrefs()
 }
 
 
+void CamuleDlg::OnShow(wxShowEvent& evt)
+{
+	// When the window becomes visible the iconized state is
+	// effectively cleared — Iconize(false) on a non-iconized
+	// window doesn't fire wxIconizeEvent on every platform, so
+	// IsTrayLogicallyIconized() would otherwise stay sticky from
+	// a previous minimize-to-tray cycle.
+	if (evt.IsShown()) {
+		m_iconized_logical = false;
+	}
+#ifdef WITH_LIBAYATANA_APPINDICATOR
+	// SNI tray menus are static between rebuilds, so the
+	// "Show aMule"/"Hide aMule" entry's label can drift out of sync
+	// when the window is hidden via paths that don't go through
+	// CMuleTrayIcon::DoShowHide (close-button HideOnClose,
+	// minimize-to-tray, programmatic Show(false) via the tray
+	// menu's hide-and-restore). Re-tracking visibility here keeps
+	// the menu honest across every entry point.
+	if (m_wndTaskbarNotifier) {
+		m_wndTaskbarNotifier->RebuildMenu();
+	}
+#endif
+	evt.Skip();
+}
+
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
+	// Snapshot the iconize state straight from the event — wxFrame's
+	// IsIconized() is unreliable on wxGTK during the minimize-button
+	// transition, so consumers that need to know if the window is
+	// iconized (tray menu label, DoShowHide branch decision) read
+	// IsTrayLogicallyIconized() instead.
+	m_iconized_logical = evt.IsIconized();
+
+#ifdef WITH_LIBAYATANA_APPINDICATOR
+	// SNI tray menu is built once and held; iconize doesn't fire
+	// EVT_SHOW so OnShow's RebuildMenu() doesn't run. Push the
+	// refresh from here so the "Show aMule"/"Hide aMule" label
+	// follows iconize transitions too.
+	if (m_wndTaskbarNotifier) {
+		m_wndTaskbarNotifier->RebuildMenu();
+	}
+#endif
 // Evil Hack: check if the mouse is inside the window. Linux only —
 // the heuristic filters spurious iconize events from window-manager
 // state changes (workspace switches, etc.). On macOS it can return
