@@ -248,17 +248,40 @@ endif()
 
 include (cmake/bfd.cmake)
 
-# glib-2.0 headers — needed by amule.cpp's CamuleApp::OnInit, which
-# calls g_set_prgname() under __WXGTK__ to bind the Wayland wl_app_id
-# (and X11 WM_CLASS) to the .desktop filename. amule.cpp is compiled
-# into both amule (monolithic) and amuled (daemon), so detect this
-# unconditionally on Linux rather than gating on a build flag — wxgtk
-# builds against glib transitively but doesn't always propagate the
-# include path through the wxWidgets cmake target on every distro.
+# glib-2.0 headers — needed for the Wayland wl_app_id / X11 WM_CLASS
+# binding via g_set_prgname() (called from amule.cpp on the monolithic
+# / daemon side, and from amule-remote-gui.cpp on the amulegui side
+# once the remote-GUI fix lands as a separate PR). amulecmd and
+# amuleweb don't need glib. Detect it here best-effort so the
+# optional `if (GLIB_FOUND)` blocks downstream pick it up when
+# present (e.g. amulegui's MuleTrayIcon SNI backend), and promote
+# the missing-dep case to a hard configure-time error when a target
+# that depends on it is being built (#562 — the silent QUIET
+# surfaced as a confusing `glib.h: No such file` mid-compile for
+# fresh-checkout users).
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	find_package (PkgConfig QUIET)
 	if (PkgConfig_FOUND)
 		pkg_check_modules (GLIB QUIET glib-2.0)
+	endif()
+
+	if ((BUILD_MONOLITHIC OR BUILD_DAEMON OR BUILD_REMOTEGUI) AND NOT GLIB_FOUND)
+		message (FATAL_ERROR
+			"glib-2.0 development headers not found, but they are "
+			"required to build amule (monolithic), amuled, or "
+			"amulegui — these targets call g_set_prgname() to bind "
+			"the Wayland wl_app_id / X11 WM_CLASS to the .desktop "
+			"filename, which needs <glib.h>. "
+			"Install one of:\n"
+			"  - libglib2.0-dev   (Debian / Ubuntu / Mint)\n"
+			"  - glib2-devel      (Fedora / RHEL / Rocky)\n"
+			"  - dev-libs/glib    (Gentoo)\n"
+			"  - glib             (Arch / Manjaro)\n"
+			"…then re-run cmake AFTER deleting the build directory "
+			"(`rm -rf build`); pkg_check_modules only runs at "
+			"configure time, so installing the package on top of a "
+			"cached configure won't help. pkg-config itself is also "
+			"required — install `pkg-config` if cmake didn't find it.")
 	endif()
 endif()
 
