@@ -147,7 +147,16 @@ class CECTag {
 			return m_tagData;
 		}
 		uint16_t		GetTagDataLen() const { return m_dataLen; }
-		uint32_t		GetTagLen() const;
+		// useLargeCount: when true, account for the +4 bytes that
+		// CECTag::WriteChildren emits as the sentinel-extended count
+		// follow-up for any nested tag with >= 0xFFFF children. Writer
+		// (WriteTag) and reader (ReadFromSocket) must pass the SAME
+		// value (derived from CECSocket::m_tx_flags / m_rx_flags &
+		// EC_FLAG_LARGE_TAG_COUNT) so their independently-computed
+		// tagLen values agree and m_dataLen subtraction stays
+		// consistent. Default false preserves the historical wire size
+		// for callers that don't have a socket context (e.g. tests).
+		uint32_t		GetTagLen(bool useLargeCount = false) const;
 		ec_tagname_t		GetTagName() const { return m_tagName; }
 
 		// Retrieving special data types

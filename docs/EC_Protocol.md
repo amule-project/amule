@@ -33,11 +33,11 @@ zero bytes omitted (an empty transmission flags value is sent as
 
 | Bit(s)            | Name                       | Meaning |
 | ----------------- | -------------------------- | ------- |
-| `0`               | Compression                | When set, zlib compression is applied to the application layer's data. |
-| `1`               | Compressed numbers         | When set (presumably on small packets that aren't worth zlib-compressing), all numbers used in the protocol are encoded as a wide char converted to UTF-8 to avoid sending zero bytes. |
+| `0`               | Compression (`EC_FLAG_ZLIB`) | When set, zlib compression is applied to the application layer's data. |
+| `1`               | Compressed numbers (`EC_FLAG_UTF8_NUMBERS`) | When set (presumably on small packets that aren't worth zlib-compressing), all numbers used in the protocol are encoded as a wide char converted to UTF-8 to avoid sending zero bytes. |
 | `2`               | Has ID                     | When set, a `uint32` follows the flags — the packet ID. The response must echo the same ID. The only requirement is that IDs be unique within one session (or at least don't repeat for a reasonably long time). |
 | `3`               | Reserved                   | Set to 0. |
-| `4`               | Accepts value present      | The sender then transmits another `uint32` (encoded LSB-first, zero bytes omitted) — a fully constructed flags value indicating which extensions the sender can accept. No extensions can be used until the other side has sent an *accepts* value for them. Best sent on the first transfer, but may be sent any time later, even changing previously announced flags. |
+| `4`               | Large tag count (`EC_FLAG_LARGE_TAG_COUNT`) | When set, indicates the sender uses the sentinel-extended `TAGCOUNT` encoding (see Section 1.2). Both sides must have advertised `EC_TAG_CAN_LARGE_TAG_COUNT` in their auth packet for the bit to appear in any subsequent flags. Without it, the historical 16-bit `TAGCOUNT` is used, capping any tag at 0xFFFE children for safe interoperation with old peers. |
 | `5`               | Always 1                   | Distinguishes from older (pre-rc8) clients. |
 | `6`               | Always 0                   | Distinguishes from older (pre-rc8) clients. |
 | `7`, `15`, `23`   | Extension                  | Indicates that the next byte of flags is present. |
@@ -72,6 +72,7 @@ A packet contains:
 ```c
 [ec_opcode_t]   OPCODE
 [uint16]        TAGCOUNT
+<[uint32]       EXTENDED_TAGCOUNT>?
                 <tags>
 ```
 
@@ -79,6 +80,16 @@ A packet contains:
   Type `ec_opcode_t`, currently `uint8`.
 * **TAGCOUNT** is the number of first-level tags in this packet,
   followed by the tags themselves.
+* **EXTENDED_TAGCOUNT** (optional, only when `EC_FLAG_LARGE_TAG_COUNT`
+  is in effect, see Section 1.1): if `TAGCOUNT == 0xFFFF`, a `uint32`
+  follows carrying the actual count. This sentinel-extended encoding
+  lifts the historical 65535-tag ceiling so that responses for large
+  shared-file libraries (etc.) can carry their full size. Senders
+  emit the `0xFFFF` marker only for `count >= 0xFFFF`, and only when
+  the receiver has advertised `EC_TAG_CAN_LARGE_TAG_COUNT` in the
+  auth handshake. Otherwise `TAGCOUNT` is a plain `uint16` and counts
+  larger than `0xFFFE` are silently truncated to `0xFFFE` to avoid
+  ambiguity (the value `0xFFFF` is reserved as the sentinel).
 
 A tag contains:
 
@@ -105,6 +116,10 @@ tag has sub-tags; presence is indicated by the **lowest bit of
 `TAGNAME`** being set. When a tag contains sub-tags, the sub-tags are
 sent before the tag's own data. Tag-data length can be calculated by
 subtracting all sub-tags' total length from `TAGLEN`.
+
+When `EC_FLAG_LARGE_TAG_COUNT` is in effect, the sub-tag `TAGCOUNT`
+field uses the same sentinel-extended encoding as the packet-level
+`TAGCOUNT` (a `uint32` follows when the `uint16` reads `0xFFFF`).
 
 
 ## Section 2 — Data types
@@ -169,13 +184,30 @@ connection.
 
 ```
 EC_OP_AUTH_REQ (0x02)
-    +-- EC_TAG_CLIENT_NAME       (0x06) (optional)
-    +-- EC_TAG_PASSWD_HASH       (0x04)
-    +-- EC_TAG_PROTOCOL_VERSION  (0x0c)
-    +-- EC_TAG_CLIENT_VERSION    (0x08) (optional)
-    +-- EC_TAG_VERSION_ID        (0x0e) (required for CVS versions, must
-                                         not be present for releases)
+    +-- EC_TAG_CLIENT_NAME            (0x06) (optional)
+    +-- EC_TAG_PASSWD_HASH            (0x04)
+    +-- EC_TAG_PROTOCOL_VERSION       (0x0c)
+    +-- EC_TAG_CLIENT_VERSION         (0x08) (optional)
+    +-- EC_TAG_VERSION_ID             (0x0e) (required for CVS versions, must
+                                              not be present for releases)
+    +-- EC_TAG_CAN_ZLIB               (0x0c) (optional, advertises capability)
+    +-- EC_TAG_CAN_UTF8_NUMBERS       (0x0d) (optional, advertises capability)
+    +-- EC_TAG_CAN_NOTIFY             (0x0e) (optional, advertises capability)
+    +-- EC_TAG_CAN_LARGE_TAG_COUNT    (0x11) (optional, advertises capability)
 ```
+
+Each `EC_TAG_CAN_*` is an empty tag advertising support for the
+corresponding wire-format extension. The server may use the matching
+flag (`EC_FLAG_ZLIB`, `EC_FLAG_UTF8_NUMBERS`, `EC_FLAG_LARGE_TAG_COUNT`,
+…) only when both sides have advertised the capability — clients that
+omit a `CAN` tag get the historical wire format for that feature.
+
+For symmetry, the server echoes the `CAN` tags it accepts in its
+`EC_OP_AUTH_OK` response so the client knows which extensions are
+actually negotiated for this connection. A client that only sees
+`EC_TAG_SERVER_VERSION` in the reply (no `CAN` tags) is talking to an
+older daemon and must avoid sending packets that need the corresponding
+extensions.
 
 What gets transmitted (all numbers hexadecimal, the `0x` prefix omitted
 for readability):
