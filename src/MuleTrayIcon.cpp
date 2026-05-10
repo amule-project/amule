@@ -46,6 +46,14 @@
 #include "MacAppHelper.h"	// mac_set_accessory_mode
 #endif
 
+#ifdef WITH_LIBAYATANA_APPINDICATOR
+// gtk_window_present is the xdg-activation-aware way to request
+// focus on Wayland — wxFrame::Raise() alone doesn't reach the
+// compositor's activation path there. Needed early so DoShow()
+// below can call it.
+#include <gtk/gtk.h>
+#endif
+
 
 // =====================================================================
 // Common action handlers — invoked from either backend.
@@ -98,6 +106,44 @@ void CMuleTrayIcon::DoShowHide()
 	// Refresh so the menu label flips to "Hide aMule" / "Show aMule"
 	// to match the new window state. SNI menu is static between
 	// state changes — without this poke the label would lag a click.
+	RebuildMenu();
+#endif
+}
+
+void CMuleTrayIcon::DoShow()
+{
+#ifdef __WXMAC__
+	mac_set_accessory_mode(false);
+#endif
+	theApp->amuledlg->Iconize(false);
+	theApp->amuledlg->Show(true);
+	theApp->amuledlg->Raise();
+#ifdef WITH_LIBAYATANA_APPINDICATOR
+	// Ask the compositor to bring our window forward. The timestamp
+	// matters on Wayland: GNOME Shell's focus-stealing-prevention
+	// treats GDK_CURRENT_TIME (0) as suspicious and shows an
+	// "app is ready" notification instead of granting focus. Pull
+	// the timestamp of the actual menu-click event via
+	// gtk_get_current_event_time() so the compositor sees this as
+	// a fresh user gesture and honours the request directly. If
+	// no event is currently being processed (returns
+	// GDK_CURRENT_TIME) we still pass it through — the worst case
+	// is the focus-denial notification, which is itself clickable.
+	if (GtkWidget* gtkw = static_cast<GtkWidget*>(theApp->amuledlg->GetHandle())) {
+		gtk_window_present_with_time(GTK_WINDOW(gtkw),
+			gtk_get_current_event_time());
+	}
+	RebuildMenu();
+#endif
+}
+
+void CMuleTrayIcon::DoHide()
+{
+#ifdef __WXMAC__
+	mac_set_accessory_mode(true);
+#endif
+	theApp->amuledlg->Show(false);
+#ifdef WITH_LIBAYATANA_APPINDICATOR
 	RebuildMenu();
 #endif
 }
@@ -159,6 +205,8 @@ namespace {
 enum TrayAction {
 	TRAY_ACTION_CONNECT_DISCONNECT = 1,
 	TRAY_ACTION_SHOW_HIDE,
+	TRAY_ACTION_SHOW,
+	TRAY_ACTION_HIDE,
 	TRAY_ACTION_EXIT,
 	TRAY_ACTION_SET_UPLOAD_LIMIT,
 	TRAY_ACTION_SET_DOWNLOAD_LIMIT,
@@ -175,6 +223,8 @@ void on_menu_item_activated(GtkMenuItem* item, gpointer user_data)
 	switch (action) {
 		case TRAY_ACTION_CONNECT_DISCONNECT: tray->DoConnectDisconnect(); break;
 		case TRAY_ACTION_SHOW_HIDE:          tray->DoShowHide(); break;
+		case TRAY_ACTION_SHOW:               tray->DoShow(); break;
+		case TRAY_ACTION_HIDE:               tray->DoHide(); break;
 		case TRAY_ACTION_EXIT:               tray->DoExit(); break;
 		case TRAY_ACTION_SET_UPLOAD_LIMIT:   tray->DoSetUploadLimit((long)arg); break;
 		case TRAY_ACTION_SET_DOWNLOAD_LIMIT: tray->DoSetDownloadLimit((long)arg); break;
@@ -418,8 +468,21 @@ void CMuleTrayIcon::RebuildMenu()
 				TRAY_ACTION_CONNECT_DISCONNECT, 0, this));
 	}
 
-	// Show / Hide — label depends on whether the main window is visible.
-	{
+	// Show / Hide. On a Wayland session we can't reliably detect that
+	// the window has been iconized by the OS minimize button (xdg-shell
+	// doesn't deliver the event), so a single toggle entry would mis-
+	// label itself in that state. Show two deterministic entries
+	// instead — click Show to bring the window back, click Hide to
+	// hide it. On X11 / macOS / Windows the toggle is reliable, so
+	// the single label-aware entry stays.
+	if (CamuleAppCommon::IsWaylandSession()) {
+		gtk_menu_shell_append(GTK_MENU_SHELL(menu),
+			make_action_item((const char*)wxString(_("Show aMule")).utf8_str(),
+				TRAY_ACTION_SHOW, 0, this));
+		gtk_menu_shell_append(GTK_MENU_SHELL(menu),
+			make_action_item((const char*)wxString(_("Hide aMule")).utf8_str(),
+				TRAY_ACTION_HIDE, 0, this));
+	} else {
 		// Treat iconized as not visible — see DoShowHide for rationale.
 		const bool visible = theApp->amuledlg
 			&& theApp->amuledlg->IsShown()

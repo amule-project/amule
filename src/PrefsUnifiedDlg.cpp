@@ -254,6 +254,40 @@ wxDialog(parent, -1, _("Preferences"),
 			// libayatana SNI on Linux. macOS users who prefer
 			// the menu-bar status-item pattern (Spotify / Slack
 			// / Discord style) can opt in.
+#if defined(__WXGTK__) && !defined(WITH_LIBAYATANA_APPINDICATOR)
+			// On Linux without libayatana-appindicator3 the only
+			// backend wxTaskBarIcon can fall back to is the legacy
+			// GtkStatusIcon API, which GNOME Shell dropped in 3.26
+			// and wlroots-based compositors never implemented — the
+			// tray icon is silently invisible. Disable the option
+			// so users don't enable a feature that does nothing.
+			// (CamuleApp::OnInit force-clears UseTrayIcon at startup
+			// for the same reason, so dependent options cascade off
+			// even before the user opens this panel.)
+			FindWindow(IDC_ENABLETRAYICON)->Enable(false);
+			FindWindow(IDC_ENABLETRAYICON)->SetToolTip(
+				_("Tray icon support requires libayatana-appindicator3 at compile time."));
+#endif
+
+#ifdef __WXGTK__
+			// xdg-shell intentionally doesn't deliver iconified-state
+			// notifications to clients, so the system minimize button
+			// on Wayland cannot trigger our hide-to-tray path. Same
+			// gap is documented across qBittorrent / Telegram /
+			// KeePassXC / Slack — none of them have a fix either.
+			// Grey out the option with a tooltip so the user
+			// understands why; the runtime sanity check in
+			// CamuleApp::OnInit keeps DoMinToTray() returning false
+			// regardless of the saved value.
+			if (CamuleAppCommon::IsWaylandSession()) {
+				FindWindow(IDC_MINTRAY)->SetToolTip(
+					_("Not available on Wayland: the protocol does not "
+					  "report when a window is minimized, so this option "
+					  "cannot intercept the system minimize button. "
+					  "Workaround: launch aMule with `GDK_BACKEND=x11` "
+					  "to use XWayland instead."));
+			}
+#endif
 		} else if (pages[i].m_function == PreferencesEventsTab) {
 
 #define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	+ wxString("\n  %" VAR " - ") + wxGetTranslation(DESC)
@@ -444,7 +478,13 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	// while hidden, so the tray is also the only way back there.
 	FindWindow(IDC_MACHIDEONCLOSE)->Enable(thePrefs::UseTrayIcon());
 
-	FindWindow(IDC_MINTRAY)->Enable(thePrefs::UseTrayIcon());
+#ifdef __WXGTK__
+	const bool minTrayUsable = thePrefs::UseTrayIcon()
+		&& !CamuleAppCommon::IsWaylandSession();
+#else
+	const bool minTrayUsable = thePrefs::UseTrayIcon();
+#endif
+	FindWindow(IDC_MINTRAY)->Enable(minTrayUsable);
 
 	if (!CastChild(IDC_MSGFILTER, wxCheckBox)->IsChecked()) {
 		FindWindow(IDC_MSGFILTER_ALL)->Enable(false);
