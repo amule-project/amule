@@ -197,6 +197,13 @@ private:
 	CFile& operator=(const CFile&);
 	//@}
 
+	//! Flush any data in the userspace write buffer to the kernel.
+	//! No-op when the buffer is empty (e.g. read-only files). Called
+	//! from any path that needs the file's on-disk state to reflect
+	//! preceding writes — Close, Flush, doSeek, doRead, GetPosition,
+	//! GetLength.
+	void DrainWriteBuffer() const;
+
 	//! File descriptor or 'fd_invalid' if not opened
 	int m_fd;
 
@@ -205,6 +212,29 @@ private:
 
 	//! Are we using safe write mode?
 	bool m_safeWrite;
+
+	//! Userspace write buffer. CFile::doWrite was previously a thin
+	//! wrapper over ::write(), which made every CFileDataIO::WriteTag
+	//! call (and its many small WriteString / Write underneath) round-
+	//! trip through the kernel. CKnownFileList::Save() with hundreds
+	//! of thousands of files emitted ~26k write() syscalls per second
+	//! and stalled shutdown for many minutes (#562 — slrslr's report).
+	//! Buffering doWrite into 64 KB chunks collapses millions of
+	//! syscalls into a few thousand, dropping the wall-clock at the
+	//! cost of one fixed-size buffer per open file. Members are
+	//! mutable so the const-qualified read / seek / position / length
+	//! paths can drain the buffer transparently.
+	enum { kWriteBufferSize = 64 * 1024 };
+	mutable char m_writeBuffer[kWriteBufferSize];
+	mutable size_t m_writeBufferPending;
+
+	//! True when the file was opened in a write-capable mode and
+	//! buffering is safe. Read-only files bypass the buffer so that
+	//! a stray write() through doWrite still fails immediately at
+	//! the call site (preserves CFileDataIO's error contract — see
+	//! FileDataIOTest's CFile.Constructor "ASSERT_RAISES(...,
+	//! file.WriteUInt8(0))" for a read-only fd).
+	bool m_canBuffer;
 };
 
 
