@@ -29,6 +29,10 @@
 #include <wx/fileconf.h>		// Needed for wxFileConfig
 #include <wx/socket.h>			// Needed for wxSocketBase
 
+#ifdef __WXGTK__
+#include <glib.h>			// g_set_prgname() — wl_app_id / WM_CLASS binding
+#endif
+
 
 #include <common/Format.h>
 #include <common/StringFunctions.h>
@@ -250,6 +254,23 @@ bool CamuleRemoteGuiApp::OnInit()
 	StartTickTimer();
 	amuledlg = NULL;
 	connect_timeout_timer = NULL;
+
+#ifdef __WXGTK__
+	// Set the GTK program name to the canonical app id. On Wayland,
+	// GTK derives wl_app_id (xdg_toplevel.set_app_id) from
+	// g_get_prgname(); compositors match wl_app_id against the
+	// .desktop filename to bind windows to launcher icons. Without
+	// this the binding falls back to argv[0], which differs across
+	// packaging formats (AppImage's argv[0] is "aMuleGUI", distro
+	// installs use "amulegui", Flatpak renames the .desktop entirely).
+	// On X11 the same value also feeds into WM_CLASS, matching
+	// StartupWMClass=org.amule.aMule.gui in the .desktop file. Must run
+	// before any GTK window is created — same fix the monolithic amule
+	// has in CamuleApp::OnInit; amulegui shipped without it, so on
+	// GNOME / wlroots the taskbar icon never bound to the launcher
+	// and showed the generic fallback. (#562 follow-up.)
+	g_set_prgname("org.amule.aMule.gui");
+#endif
 
 	// Register the embedded-PNG art provider before any UI work.
 	// wxArtProvider::Push takes ownership of the pointer; wx tears
