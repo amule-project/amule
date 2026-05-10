@@ -59,18 +59,16 @@ void CMuleTrayIcon::DoConnectDisconnect()
 
 void CMuleTrayIcon::DoShowHide()
 {
-	// Toggle main-window visibility. The pre-existing implementation
-	// of this toggle in CMuleTrayIcon::ShowHide / SwitchShow called
-	// Iconize() + Show() in sequence and re-read IsShown() between
-	// them — on macOS that left the window half-minimized (a weird
-	// mini-Dock tile) AND half-hidden, with the next Dock click only
-	// un-hiding the frame and producing the "only the toolbar shows"
-	// state. Iconize is for the green-button minimize-to-Dock UX, a
-	// separate gesture from this hide-to-tray flow. Drop it: Show
-	// (true/false) toggles visibility cleanly on every platform, and
-	// hidden windows aren't in the OS taskbar regardless of Iconize
-	// state, so non-Mac platforms see no behavioural change.
-	if (theApp->amuledlg->IsShown()) {
+	// Treat an iconized window as not-visible: minimized-to-Dock on
+	// Mac, taskbar-iconized on Windows, and Iconize() on Linux all
+	// keep IsShown()==true even though the user can't actually see
+	// the frame. Acting on plain IsShown() would make the tray menu
+	// offer "Hide aMule" in those states, and clicking would make
+	// the window vanish entirely (no Dock thumbnail / no taskbar
+	// entry) — destructive UX. Treat iconized as "not visible" so
+	// the menu offers "Show aMule" and clicking restores the frame.
+	const bool visible = theApp->amuledlg->IsShown() && !theApp->amuledlg->IsTrayLogicallyIconized();
+	if (visible) {
 #ifdef __WXMAC__
 		// Drop the Dock icon while the window is hidden; the tray
 		// icon (NSStatusItem) is the only recovery surface in this
@@ -83,6 +81,16 @@ void CMuleTrayIcon::DoShowHide()
 #ifdef __WXMAC__
 		mac_set_accessory_mode(false);
 #endif
+		// Clear the iconized bit on every platform — the window
+		// might be hidden (Show(false) via HideOnClose / minimize-to-
+		// tray) or just iconized to the OS dock/taskbar; in either
+		// case the user wants a normal restored frame. Without this
+		// Show(true) on a still-iconized window would leave it as a
+		// taskbar entry / Dock thumbnail without un-minimizing.
+		// Iconize(false) is idempotent on a non-iconized window —
+		// don't gate on IsIconized() because wxGTK can report a
+		// stale value during the tray-restore transition.
+		theApp->amuledlg->Iconize(false);
 		theApp->amuledlg->Show(true);
 		theApp->amuledlg->Raise();
 	}
@@ -412,9 +420,12 @@ void CMuleTrayIcon::RebuildMenu()
 
 	// Show / Hide — label depends on whether the main window is visible.
 	{
-		const bool shown = theApp->amuledlg && theApp->amuledlg->IsShown();
-		const wxString label = shown ? wxString(_("Hide aMule"))
-		                             : wxString(_("Show aMule"));
+		// Treat iconized as not visible — see DoShowHide for rationale.
+		const bool visible = theApp->amuledlg
+			&& theApp->amuledlg->IsShown()
+			&& !theApp->amuledlg->IsTrayLogicallyIconized();
+		const wxString label = visible ? wxString(_("Hide aMule"))
+		                               : wxString(_("Show aMule"));
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu),
 			make_action_item((const char*)label.utf8_str(),
 				TRAY_ACTION_SHOW_HIDE, 0, this));
@@ -458,6 +469,13 @@ void CMuleTrayIcon::RebuildMenu()
 /****************************************************/
 
 wxBEGIN_EVENT_TABLE(CMuleTrayIcon, wxTaskBarIcon)
+#ifdef __WINDOWS__
+	// Windows convention: single-left click on the tray icon toggles
+	// the primary action (show/hide the main window). NSStatusItem
+	// on macOS opens the menu on single-click via its own default,
+	// so leave that path alone.
+	EVT_TASKBAR_LEFT_UP(CMuleTrayIcon::SwitchShow)
+#endif
 	EVT_TASKBAR_LEFT_DCLICK(CMuleTrayIcon::SwitchShow)
 	EVT_MENU( TRAY_MENU_EXIT, CMuleTrayIcon::Close)
 	EVT_MENU( TRAY_MENU_CONNECT, CMuleTrayIcon::ServerConnection)
@@ -902,11 +920,10 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	// Separator
 	traymenu->AppendSeparator();
 
-	if (theApp->amuledlg->IsShown()) {
-		//hide item
+	// Treat iconized as not visible — see DoShowHide for rationale.
+	if (theApp->amuledlg->IsShown() && !theApp->amuledlg->IsTrayLogicallyIconized()) {
 		traymenu->Append(TRAY_MENU_HIDE, _("Hide aMule"));
 	} else {
-		//show item
 		traymenu->Append(TRAY_MENU_SHOW, _("Show aMule"));
 	}
 
