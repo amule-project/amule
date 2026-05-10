@@ -937,7 +937,12 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	// the matching path drops the Dock icon (accessory mode) while
 	// hidden, so the Dock is no longer a fallback either.
 	bool hideOnClose = thePrefs::HideOnClose() && thePrefs::UseTrayIcon();
-	if (hideOnClose && evt.CanVeto()) {
+	// Quit menus (Cmd+Q, Dock right-click → Quit, tray-icon Exit) all
+	// either pass force=true to Close() (CanVeto()==false) or set the
+	// app's IsQuitting() flag from OnQueryEndSession. Either signal
+	// bypasses the hide-on-close branch so HideOnClose only governs
+	// the red close-button gesture itself.
+	if (hideOnClose && evt.CanVeto() && !theApp->IsQuitting()) {
 		Show(false);
 		evt.Veto();
 		return;
@@ -948,6 +953,11 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 		if (wxNO == wxMessageBox(wxString(CFormat(_("Do you really want to exit %s?")) % theApp->GetMuleAppName()),
 				wxString(_("Exit confirmation")), wxYES_NO, this)) {
 			evt.Veto();
+			// User canceled the quit. Clear the IsQuitting flag so a
+			// subsequent close-button click respects HideOnClose
+			// again (the flag was set by tray-Exit / Dock-Quit but
+			// the operation didn't go through).
+			theApp->ResetQuitting();
 			return;
 		}
 	}

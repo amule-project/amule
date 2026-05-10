@@ -168,6 +168,20 @@ public:
 
 	const wxString&	GetMuleAppName() const { return m_appName; }
 	const wxString	GetFullMuleVersion() const;
+
+	// Set when a quit was requested out-of-band of the main-window
+	// close button (Cmd+Q, Dock right-click → Quit, tray-icon Exit).
+	// CamuleDlg::OnClose checks this so HideOnClose only hides the
+	// window for the actual red close-button gesture and never blocks
+	// an explicit quit request. Lives on the common base so both the
+	// monolithic CamuleApp and the remote-GUI CamuleRemoteGuiApp
+	// expose the same accessors.
+	bool IsQuitting() const { return m_isQuitting; }
+	void SetQuitting() { m_isQuitting = true; }
+	void ResetQuitting() { m_isQuitting = false; }
+
+private:
+	bool m_isQuitting = false;
 };
 
 class CamuleApp : public AMULE_APP_BASE, public CamuleAppCommon

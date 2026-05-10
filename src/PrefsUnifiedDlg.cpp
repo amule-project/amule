@@ -443,10 +443,6 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	// (NSApplicationActivationPolicyAccessory) drops the Dock icon
 	// while hidden, so the tray is also the only way back there.
 	FindWindow(IDC_MACHIDEONCLOSE)->Enable(thePrefs::UseTrayIcon());
-	FindWindow(IDC_EXIT)->Enable(!thePrefs::HideOnClose());
-	if (thePrefs::HideOnClose()) {
-		CastChild(IDC_EXIT, wxCheckBox)->SetValue(false);
-	}
 
 	FindWindow(IDC_MINTRAY)->Enable(thePrefs::UseTrayIcon());
 
@@ -914,11 +910,6 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 		case IDC_STARTNEXTFILE:
 			FindWindow(IDC_STARTNEXTFILE_SAME)->Enable(value);
 			FindWindow(IDC_STARTNEXTFILE_ALPHA)->Enable(value);
-			break;
-
-		case IDC_MACHIDEONCLOSE:
-			FindWindow(IDC_EXIT)->Enable(!value);
-			CastChild(IDC_EXIT, wxCheckBox)->SetValue(!value && thePrefs::IsConfirmExitEnabled());
 			break;
 
 		case IDC_ENABLETRAYICON:
