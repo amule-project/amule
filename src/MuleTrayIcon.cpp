@@ -42,6 +42,10 @@
 #include <common/Format.h>	// Needed for CFormat
 #include <common/MenuIDs.h>	// Needed to access menu item constants
 
+#ifdef __WXMAC__
+#include "MacAppHelper.h"	// mac_set_accessory_mode
+#endif
+
 
 // =====================================================================
 // Common action handlers — invoked from either backend.
@@ -67,8 +71,18 @@ void CMuleTrayIcon::DoShowHide()
 	// hidden windows aren't in the OS taskbar regardless of Iconize
 	// state, so non-Mac platforms see no behavioural change.
 	if (theApp->amuledlg->IsShown()) {
+#ifdef __WXMAC__
+		// Drop the Dock icon while the window is hidden; the tray
+		// icon (NSStatusItem) is the only recovery surface in this
+		// state. Restored when the user un-hides via the tray click
+		// or menu.
+		mac_set_accessory_mode(true);
+#endif
 		theApp->amuledlg->Show(false);
 	} else {
+#ifdef __WXMAC__
+		mac_set_accessory_mode(false);
+#endif
 		theApp->amuledlg->Show(true);
 		theApp->amuledlg->Raise();
 	}
