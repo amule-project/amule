@@ -25,6 +25,8 @@
 
 #include "SharedFileList.h"	// Interface declarations  // Do_not_auto_remove
 
+#include <map>
+
 #include <protocol/Protocols.h>
 #include <protocol/kad/Constants.h>
 #include <tags/FileTags.h>
@@ -148,12 +150,21 @@ public:
 	void SetNextPublishTime(uint32 tNextPublishKeywordTime) { m_tNextPublishKeywordTime = tNextPublishKeywordTime; }
 
 protected:
-	// can't use a CMap - too many disadvantages in processing the 'list'
-	//CTypedPtrMap<CMapStringToPtr, CString, CPublishKeyword*> m_lstKeywords;
+	// The list is the canonical container — its insertion order is
+	// load-bearing for GetNextKeyword()'s round-robin publish cursor
+	// (m_posNextKeyword), so we cannot replace it with a map.
 	typedef std::list<CPublishKeyword*> CKeyWordList;
 	CKeyWordList m_lstKeywords;
 	CKeyWordList::iterator m_posNextKeyword;
 	uint32 m_tNextPublishKeywordTime;
+
+	// Secondary index: keyword string -> position in m_lstKeywords. Lets
+	// FindKeyword() do an O(log N) lookup instead of a linear scan,
+	// collapsing AddKeywords()'s hot path on large shared sets
+	// (CSharedFileList::Reload, called once per shared file at startup)
+	// from O(N²) to O(N log N). std::list iterators are stable across
+	// other inserts/erases, so caching them here is safe.
+	std::map<wxString, CKeyWordList::iterator> m_keywordIndex;
 
 	CPublishKeyword* FindKeyword(const wxString& rstrKeyword, CKeyWordList::iterator* ppos = NULL);
 };
@@ -187,19 +198,14 @@ void CPublishKeywordList::ResetNextKeyword()
 
 CPublishKeyword* CPublishKeywordList::FindKeyword(const wxString& rstrKeyword, CKeyWordList::iterator* ppos)
 {
-	CKeyWordList::iterator it = m_lstKeywords.begin();
-	for (; it != m_lstKeywords.end(); ++it) {
-		CPublishKeyword* pPubKw = *it;
-		if (pPubKw->GetKeyword() == rstrKeyword) {
-			if (ppos) {
-				(*ppos) = it;
-			}
-
-			return pPubKw;
-		}
+	std::map<wxString, CKeyWordList::iterator>::iterator idx = m_keywordIndex.find(rstrKeyword);
+	if (idx == m_keywordIndex.end()) {
+		return NULL;
 	}
-
-	return NULL;
+	if (ppos) {
+		*ppos = idx->second;
+	}
+	return *(idx->second);
 }
 
 void CPublishKeywordList::AddKeyword(const wxString& keyword, CKnownFile *file)
@@ -208,6 +214,9 @@ void CPublishKeywordList::AddKeyword(const wxString& keyword, CKnownFile *file)
 	if (pubKw == NULL) {
 		pubKw = new CPublishKeyword(keyword);
 		m_lstKeywords.push_back(pubKw);
+		CKeyWordList::iterator it = m_lstKeywords.end();
+		--it;
+		m_keywordIndex[keyword] = it;
 		SetNextPublishTime(0);
 	}
 	pubKw->AddRef(file);
@@ -233,6 +242,7 @@ void CPublishKeywordList::RemoveKeyword(const wxString& keyword, CKnownFile *fil
 				++m_posNextKeyword;
 			}
 			m_lstKeywords.erase(pos);
+			m_keywordIndex.erase(keyword);
 			delete pubKw;
 			SetNextPublishTime(0);
 		}
@@ -252,6 +262,7 @@ void CPublishKeywordList::RemoveKeywords(CKnownFile* pFile)
 void CPublishKeywordList::RemoveAllKeywords()
 {
 	DeleteContents(m_lstKeywords);
+	m_keywordIndex.clear();
 	ResetNextKeyword();
 	SetNextPublishTime(0);
 }
@@ -275,6 +286,7 @@ void CPublishKeywordList::PurgeUnreferencedKeywords()
 			if (it == m_posNextKeyword) {
 				++m_posNextKeyword;
 			}
+			m_keywordIndex.erase(pPubKw->GetKeyword());
 			m_lstKeywords.erase(it++);
 			delete pPubKw;
 			SetNextPublishTime(0);
