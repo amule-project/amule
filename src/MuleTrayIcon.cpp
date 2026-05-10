@@ -97,6 +97,11 @@ void CMuleTrayIcon::DoShowHide()
 void CMuleTrayIcon::DoExit()
 {
 	if (theApp->amuledlg->IsEnabled()) {
+		// Mark as quitting so OnClose skips HideOnClose, but still
+		// pass force=false (Close()) so the confirm-exit prompt can
+		// run if enabled. If the user answers No there, the prompt
+		// vetoes and clears the IsQuitting flag.
+		theApp->SetQuitting();
 		theApp->amuledlg->Close();
 	}
 }

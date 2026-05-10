@@ -306,6 +306,12 @@ void CamuleGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 // is persisted.
 void CamuleGuiApp::OnQueryEndSession(wxCloseEvent& evt)
 {
+	// Mark the app as quitting before letting wx propagate the close
+	// to top-level windows. CamuleDlg::OnClose checks this flag and
+	// skips its HideOnClose-veto branch when set, so a Dock right-
+	// click → Quit (or any other session-end path) actually quits
+	// instead of getting hidden to tray.
+	SetQuitting();
 	evt.Skip();
 }
 
