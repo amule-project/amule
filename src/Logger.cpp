@@ -359,6 +359,20 @@ bool CLoggerAccess::HasString()
 	while (!m_ready) {
 		int c = m_logfile->GetC();
 		if (c == wxEOF) {
+			// wxFFileInputStream wraps a stdio FILE* whose EOF flag is
+			// sticky: once GetC() returns wxEOF, subsequent reads keep
+			// returning wxEOF even when amuled has appended more lines
+			// to the logfile in the meantime. Re-seek to the current
+			// position; this calls fseek() which clears the FILE*'s
+			// EOF indicator and resets the wxInputStream error state,
+			// so the next poll picks up newly appended log lines.
+			// Without this, EC clients (amuleGUI, amuleweb) display
+			// the log content captured at connection time and never
+			// see anything emitted afterwards (#215).
+			wxFileOffset pos = m_logfile->TellI();
+			if (pos != wxInvalidOffset) {
+				m_logfile->SeekI(pos);
+			}
 			break;
 		}
 		// check for buffer overrun
