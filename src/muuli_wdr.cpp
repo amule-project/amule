@@ -1227,12 +1227,13 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     item9->SetToolTip( _("Makes aMule prompt before exiting.") );
     item0->Add( item9, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxCheckBox *item10 = new wxCheckBox( parent, IDC_MACHIDEONCLOSE, _("Hide application window when close button is pressed"), wxDefaultPosition, wxDefaultSize, 0 );
-    item0->Add( item10, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
     wxCheckBox *item11 = new wxCheckBox( parent, IDC_ENABLETRAYICON, _("Enable Tray Icon"), wxDefaultPosition, wxDefaultSize, 0 );
     item11->SetToolTip( _("This Enables/Disables the system tray (or taskbar) icon.") );
     item0->Add( item11, wxSizerFlags().Expand().CenterVertical() );
+
+    wxCheckBox *item10 = new wxCheckBox( parent, IDC_MACHIDEONCLOSE, _("Hide application window when close button is pressed"), wxDefaultPosition, wxDefaultSize, 0 );
+    item0->Add( item10, 0, wxALIGN_CENTER_VERTICAL, 5 );
+
     wxCheckBox *item12 = new wxCheckBox( parent, IDC_MINTRAY, _("Minimize to Tray Icon"), wxDefaultPosition, wxDefaultSize, 0 );
     item12->SetToolTip( _("Enabling this will make aMule minimize to the System Tray, rather than the taskbar.") );
     item0->Add( item12, 0, wxALIGN_CENTER_VERTICAL, 0 );
