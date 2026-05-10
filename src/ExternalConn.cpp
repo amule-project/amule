@@ -475,11 +475,19 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 				if (request->GetTagByName(EC_TAG_CAN_UTF8_NUMBERS)) {
 					m_my_flags |= EC_FLAG_UTF8_NUMBERS;
 				}
+				if (request->GetTagByName(EC_TAG_CAN_LARGE_TAG_COUNT)) {
+					// Client can decode the sentinel-extended children-
+					// count format in CECTag::WriteChildren (#199). Only
+					// new clients send this tag; old clients omit it
+					// and we keep the wire format capped at uint16.
+					m_my_flags |= EC_FLAG_LARGE_TAG_COUNT;
+				}
 				m_haveNotificationSupport = request->GetTagByName(EC_TAG_CAN_NOTIFY) != NULL;
-				AddDebugLogLineN(logEC, CFormat("Client capabilities: ZLIB: %s  UTF8 numbers: %s  Push notification: %s" )
+				AddDebugLogLineN(logEC, CFormat("Client capabilities: ZLIB: %s  UTF8 numbers: %s  Push notification: %s  Large tag count: %s" )
 					% ((m_my_flags & EC_FLAG_ZLIB) ? "yes" : "no")
 					% ((m_my_flags & EC_FLAG_UTF8_NUMBERS) ? "yes" : "no")
-					% (m_haveNotificationSupport ? "yes" : "no"));
+					% (m_haveNotificationSupport ? "yes" : "no")
+					% ((m_my_flags & EC_FLAG_LARGE_TAG_COUNT) ? "yes" : "no"));
 			} else {
 				response = new CECPacket(EC_OP_AUTH_FAIL);
 				response->AddTag(CECTag(EC_TAG_STRING, wxString(wxTRANSLATE("Invalid protocol version."))
@@ -508,6 +516,15 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 			if (passwd && passwd->GetMD4Data() == passh) {
 				response = new CECPacket(EC_OP_AUTH_OK);
 				response->AddTag(CECTag(EC_TAG_SERVER_VERSION, VERSION));
+				// Echo the negotiated large-tag-count capability so
+				// the client mirrors EC_FLAG_LARGE_TAG_COUNT into its
+				// own m_my_flags. Without this echo, client wouldn't
+				// know the server supports the extended wire format
+				// and would never set the flag in its outgoing
+				// per-packet headers (#199).
+				if (m_my_flags & EC_FLAG_LARGE_TAG_COUNT) {
+					response->AddTag(CECEmptyTag(EC_TAG_CAN_LARGE_TAG_COUNT));
+				}
 			} else {
 				wxString err;
 				if (passwd) {

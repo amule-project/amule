@@ -749,6 +749,13 @@ uint32 CECSocket::WritePacket(const CECPacket *packet)
 		flags |= EC_FLAG_UTF8_NUMBERS;
 	}
 
+	// Always advertise large-tag-count support per packet; the
+	// `flags &= m_my_flags` strips it back out if the peer didn't
+	// advertise EC_TAG_CAN_LARGE_TAG_COUNT in the auth handshake.
+	// Both sides must have the bit in m_my_flags (i.e. negotiated)
+	// before WriteChildren / ReadChildren take the sentinel branch.
+	flags |= EC_FLAG_LARGE_TAG_COUNT;
+
 	flags &= m_my_flags;
 	m_tx_flags = flags;
 

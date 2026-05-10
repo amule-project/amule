@@ -361,10 +361,12 @@ bool CECTag::AddTag(const CECTag& tag, CValueMap* valuemap)
 	if (valuemap) {
 		return valuemap->AddTag(tag, this);
 	}
-	// cannot have more than 64k tags
-	if (m_tagList.size() >= 0xffff) {
-		return false;
-	}
+	// The historical 65535 children-per-tag wire-format ceiling was
+	// lifted by the sentinel-extended count format in WriteChildren /
+	// ReadChildren; this writer-side guard is no longer needed and
+	// was silently dropping every tag past the 65535th — preventing
+	// EC_OP_SHARED_FILES responses from carrying libraries with more
+	// than 65535 shared files (#199).
 
 	// First add an empty tag.
 	m_tagList.push_back(CECEmptyTag());
@@ -435,7 +437,8 @@ bool CECTag::ReadFromSocket(CECSocket& socket)
 
 	unsigned int tmp_len = m_dataLen;
 	m_dataLen = 0;
-	m_dataLen = tmp_len - GetTagLen();
+	const bool useLargeCount = (socket.m_rx_flags & EC_FLAG_LARGE_TAG_COUNT) != 0;
+	m_dataLen = tmp_len - GetTagLen(useLargeCount);
 	if (m_dataLen > 0) {
 		NewData();
 		if (!socket.ReadBuffer(m_tagData, m_dataLen)) {
@@ -453,7 +456,8 @@ bool CECTag::WriteTag(CECSocket& socket) const
 {
 	ec_tagname_t tmp_tagName = (m_tagName << 1) | (m_tagList.empty() ? 0 : 1);
 	ec_tagtype_t type = m_dataType;
-	ec_taglen_t tagLen = GetTagLen();
+	const bool useLargeCount = (socket.m_tx_flags & EC_FLAG_LARGE_TAG_COUNT) != 0;
+	ec_taglen_t tagLen = GetTagLen(useLargeCount);
 	EC_ASSERT(type != EC_TAGTYPE_UNKNOWN);
 
 	if (!socket.WriteNumber(&tmp_tagName, sizeof(ec_tagname_t))) return false;
@@ -475,12 +479,31 @@ bool CECTag::WriteTag(CECSocket& socket) const
 
 bool CECTag::ReadChildren(CECSocket& socket)
 {
-	uint16 tmp_tagCount;
-	if (!socket.ReadNumber(&tmp_tagCount, sizeof(uint16))) {
+	const bool useLargeCount = (socket.m_rx_flags & EC_FLAG_LARGE_TAG_COUNT) != 0;
+	uint16 tmp_tagCount16;
+	if (!socket.ReadNumber(&tmp_tagCount16, sizeof(uint16))) {
 		return false;
 	}
+	uint32 tmp_tagCount;
+	if (useLargeCount && tmp_tagCount16 == 0xFFFF) {
+		// Sentinel-extended children count — see WriteChildren. Only
+		// honoured when the peer advertised EC_TAG_CAN_LARGE_TAG_COUNT
+		// in the auth handshake (mirrored into m_rx_flags via the
+		// per-packet flag). Old peers that don't know about this
+		// extension can still legitimately emit count == 0xFFFF as
+		// the literal uint16 count for 65535 children, so without
+		// the negotiated flag we MUST treat 0xFFFF as the count and
+		// not consume any follow-up bytes.
+		uint32 tmp_tagCount32;
+		if (!socket.ReadNumber(&tmp_tagCount32, sizeof(uint32))) {
+			return false;
+		}
+		tmp_tagCount = tmp_tagCount32;
+	} else {
+		tmp_tagCount = tmp_tagCount16;
+	}
 	m_tagList.clear();
-	for (int i = 0; i < tmp_tagCount; i++) {
+	for (uint32 i = 0; i < tmp_tagCount; i++) {
 		m_tagList.push_back(CECTag());
 		CECTag& tag = m_tagList.back();
 		if (!tag.ReadFromSocket(socket)) {
@@ -492,9 +515,32 @@ bool CECTag::ReadChildren(CECSocket& socket)
 
 bool CECTag::WriteChildren(CECSocket& socket) const
 {
-	uint16 tmp = (uint16)m_tagList.size();
-	if (!socket.WriteNumber(&tmp, sizeof(tmp))) return false;
-	for (const_iterator it = begin(); it != end(); ++it) {
+	const bool useLargeCount = (socket.m_tx_flags & EC_FLAG_LARGE_TAG_COUNT) != 0;
+	const size_t count = m_tagList.size();
+	// In non-sentinel (mixed-version-safe) mode the wire count field is
+	// uint16; cap at 0xFFFE both to fit and to avoid emitting 0xFFFF,
+	// which a fix-side peer would treat as the sentinel marker even when
+	// the capability wasn't negotiated this connection.
+	const size_t writeCount = useLargeCount ? count : std::min(count, (size_t)0xFFFE);
+
+	if (useLargeCount && count >= 0xFFFF) {
+		// Sentinel-extended count — see ReadChildren for the format.
+		uint16 marker = 0xFFFF;
+		if (!socket.WriteNumber(&marker, sizeof(marker))) return false;
+		uint32 tmp = (uint32)count;
+		if (!socket.WriteNumber(&tmp, sizeof(tmp))) return false;
+	} else {
+		// Plain uint16 count — wire-byte-identical to the historical
+		// format. When useLargeCount is false and the in-memory list
+		// has more than 0xFFFE children, only the first 0xFFFE are
+		// serialised (silent truncation, matching the historical
+		// AddTag cap behaviour for old peers). #199.
+		uint16 tmp = (uint16)writeCount;
+		if (!socket.WriteNumber(&tmp, sizeof(tmp))) return false;
+	}
+
+	size_t i = 0;
+	for (const_iterator it = begin(); it != end() && i < writeCount; ++it, ++i) {
 		if (!it->WriteTag(socket)) return false;
 	}
 	return true;
@@ -550,12 +596,29 @@ const CECTag* CECTag::GetTagByNameSafe(ec_tagname_t name) const
  *
  * @return Tag length, containing its childs' length.
  */
-uint32 CECTag::GetTagLen(void) const
+uint32 CECTag::GetTagLen(bool useLargeCount) const
 {
 	uint32 length = m_dataLen;
-	for (const_iterator it = begin(); it != end(); ++it) {
-		length += it->GetTagLen();
-		length += sizeof(ec_tagname_t) + sizeof(ec_tagtype_t) + sizeof(ec_taglen_t) + (it->HasChildTags() ? 2 : 0);
+	// Mirror WriteChildren's iteration cap: in non-sentinel mode only
+	// the first 0xFFFE children get serialised, so the wire-size
+	// estimate must stop counting at the same boundary or tagLen will
+	// over-state and m_dataLen reader-side calc will overrun. #199.
+	const size_t total = m_tagList.size();
+	const size_t maxIter = useLargeCount ? total : std::min(total, (size_t)0xFFFE);
+	size_t i = 0;
+	for (const_iterator it = begin(); it != end() && i < maxIter; ++it, ++i) {
+		length += it->GetTagLen(useLargeCount);
+		length += sizeof(ec_tagname_t) + sizeof(ec_tagtype_t) + sizeof(ec_taglen_t);
+		if (it->HasChildTags()) {
+			// Children-count field — uint16 normally, with an extra
+			// uint32 follow-up only when sentinel format is in effect
+			// AND that nested tag has >= 0xFFFF children. See
+			// WriteChildren / ReadChildren for the sentinel scheme.
+			length += sizeof(uint16);
+			if (useLargeCount && it->GetTagCount() >= 0xFFFF) {
+				length += sizeof(uint32);
+			}
+		}
 	}
 	return length;
 }
