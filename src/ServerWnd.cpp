@@ -45,6 +45,7 @@ wxBEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 	EVT_TEXT_ENTER(IDC_SERVERLISTURL,CServerWnd::OnBnClickedUpdateservermetfromurl)
 	EVT_BUTTON(ID_BTN_RESET, CServerWnd::OnBnClickedResetLog)
 	EVT_BUTTON(ID_BTN_RESET_SERVER, CServerWnd::OnBnClickedResetServerLog)
+	EVT_SPLITTER_SASH_POS_CHANGING(ID_SRV_SPLITTER,CServerWnd::OnSashPositionChanging)
 	EVT_SPLITTER_SASH_POS_CHANGED(ID_SRV_SPLITTER,CServerWnd::OnSashPositionChanged)
 wxEND_EVENT_TABLE()
 
@@ -60,7 +61,12 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 	serverlistctrl = CastChild( ID_SERVERLIST, CServerListCtrl );
 
 	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashPosition(splitter_pos, true);
-	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashGravity(0.5f);
+	// Default gravity (0.0) anchors the sash to the top: when the
+	// main window resizes, the server list keeps its height and the
+	// log pane absorbs the extra space. The other amule splitters
+	// (Shared/Transfer/Messages) use the same default and don't
+	// suffer the layout-recalc storm during minimize/restore that
+	// gravity 0.5 produced on Mac and Windows (#334 reproductions).
 	CastChild( IDC_NODESLISTURL, wxTextCtrl )->SetValue(thePrefs::GetKadNodesUrl());
 	CastChild( IDC_SERVERLISTURL, wxTextCtrl )->SetValue(thePrefs::GetEd2kServersUrl());
 
@@ -275,10 +281,29 @@ void CServerWnd::UpdateKadInfo()
 	KadInfoList->SetColumnWidth(1, -1);
 }
 
+void CServerWnd::OnSashPositionChanging(wxSplitterEvent& evt)
+{
+	// CHANGING fires only while the user is actively dragging the
+	// sash; mark the drag in flight so OnSashPositionChanged knows
+	// the next CHANGED event came from a real user gesture (and not
+	// a layout reflow during minimize/restore).
+	m_userDraggingSash = true;
+	evt.Skip();
+}
+
 void CServerWnd::OnSashPositionChanged(wxSplitterEvent& WXUNUSED(evt))
 {
-	if (theApp->amuledlg) {
-		theApp->amuledlg->m_srv_split_pos = CastChild( "SrvSplitterWnd", wxSplitterWindow )->GetSashPosition();
+	wxSplitterWindow* split = CastChild("SrvSplitterWnd", wxSplitterWindow);
+	if (!m_userDraggingSash) {
+		// Layout-induced sash move — don't persist. With the default
+		// sash gravity, these should be rare; previously gravity 0.5
+		// produced a storm of CHANGED events during minimize/restore
+		// reflows that pushed the sash out of the visible range.
+		return;
+	}
+	m_userDraggingSash = false;
+	if (theApp->amuledlg && split) {
+		theApp->amuledlg->m_srv_split_pos = split->GetSashPosition();
 	}
 }
 

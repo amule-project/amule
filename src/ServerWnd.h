@@ -44,12 +44,19 @@ public:
 	CServerListCtrl* serverlistctrl;
 
 private:
+	void OnSashPositionChanging(wxSplitterEvent& evt);
 	void OnSashPositionChanged(wxSplitterEvent& evt);
 	void OnBnClickedAddserver(wxCommandEvent& evt);
 	void OnBnClickedED2KDisconnect(wxCommandEvent& evt);
 	void OnBnClickedUpdateservermetfromurl(wxCommandEvent& evt);
 	void OnBnClickedResetLog(wxCommandEvent& evt);
 	void OnBnClickedResetServerLog(wxCommandEvent& evt);
+
+	// Set in OnSashPositionChanging (only fires while the user is
+	// actually dragging the sash); checked by OnSashPositionChanged
+	// to filter out layout-induced sash moves that fire during
+	// minimize/restore reflows on Windows.
+	bool m_userDraggingSash = false;
 
 	wxDECLARE_EVENT_TABLE();
 };
