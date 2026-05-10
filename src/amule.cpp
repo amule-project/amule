@@ -519,6 +519,30 @@ bool CamuleApp::OnInit()
 	// Initialize wx sockets (needed for http download in background with Asio sockets)
 	wxSocketBase::Initialize();
 
+#if defined(__WXGTK__) && !defined(WITH_LIBAYATANA_APPINDICATOR)
+	// On Linux without libayatana-appindicator3 the tray icon falls
+	// back to the legacy GtkStatusIcon backend, which GNOME Shell
+	// dropped in 3.26 and wlroots-based compositors never picked up
+	// — the icon is silently invisible. Force the pref off so users
+	// don't end up with the window hidden via HideOnClose and no
+	// surface to bring it back. The existing sanity check below
+	// will then cascade MinToTray off as well.
+	thePrefs::SetUseTrayIcon(false);
+#endif
+
+#ifdef __WXGTK__
+	// xdg-shell intentionally doesn't deliver iconified-state
+	// notifications to clients, so on Wayland the system minimize
+	// button cannot trigger our Show(false) hide-to-tray path.
+	// The same gap is documented in qBittorrent #17265, Telegram
+	// #2123, KeePassXC #6502 and others. Force MinToTray off when
+	// running under a Wayland session so the option doesn't appear
+	// to "do nothing" — the prefs panel also greys the checkbox.
+	if (CamuleAppCommon::IsWaylandSession()) {
+		thePrefs::SetMinToTray(false);
+	}
+#endif
+
 	// Some sanity check
 	if (!thePrefs::UseTrayIcon()) {
 		thePrefs::SetMinToTray(false);

@@ -106,6 +106,12 @@ public:
 	// the wxMenu event table (wxTaskBarIcon backend).
 	void DoConnectDisconnect();
 	void DoShowHide();
+	// Deterministic non-toggling variants used by the SNI menu on
+	// Wayland, where window-iconize state isn't reliably detectable
+	// so a single toggle would mislabel itself when the user clicks
+	// the OS minimize button.
+	void DoShow();
+	void DoHide();
 	void DoExit();
 	void DoSetUploadLimit(long kBytesPerSec);   // UNLIMITED for no cap
 	void DoSetDownloadLimit(long kBytesPerSec);

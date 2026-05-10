@@ -169,6 +169,16 @@ public:
 	const wxString&	GetMuleAppName() const { return m_appName; }
 	const wxString	GetFullMuleVersion() const;
 
+#ifdef __WXGTK__
+	// True when the process is running under a Wayland session (any
+	// distro, any compositor). xdg-shell intentionally doesn't deliver
+	// iconify-state notifications to clients, so several tray-icon
+	// features that rely on detecting "user just minimized the
+	// window" cannot work there — the call sites use this flag to
+	// disable / grey out the relevant prefs and skip the broken paths.
+	static bool IsWaylandSession();
+#endif
+
 	// Set when a quit was requested out-of-band of the main-window
 	// close button (Cmd+Q, Dock right-click → Quit, tray-icon Exit).
 	// CamuleDlg::OnClose checks this so HideOnClose only hides the

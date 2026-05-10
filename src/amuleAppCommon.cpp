@@ -35,6 +35,11 @@
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>
 
+#ifdef __WXGTK__
+#include <stdlib.h>				// Needed for getenv (IsWaylandSession)
+#include <string.h>				// Needed for strcmp (IsWaylandSession)
+#endif
+
 #include "amule.h"			// Interface declarations.
 #include <common/Format.h>		// Needed for CFormat
 #include "CFile.h"			// Needed for CFile
@@ -81,6 +86,38 @@ CamuleAppCommon::~CamuleAppCommon()
 	delete m_singleInstance;
 #endif
 }
+
+#ifdef __WXGTK__
+bool CamuleAppCommon::IsWaylandSession()
+{
+	// Explicit GDK_BACKEND=x11 forces the app onto XWayland — OS
+	// minimize events come through reliably, so treat it as X11.
+	// This is the documented user workaround for "I want MinToTray
+	// on Wayland": launch with `GDK_BACKEND=x11 amule`. Same trick
+	// Discord users adopt to get their tray icon back on Wayland.
+	if (const char* gb = getenv("GDK_BACKEND")) {
+		if (strncmp(gb, "x11", 3) == 0) {
+			return false;
+		}
+	}
+	// WAYLAND_DISPLAY is set by Wayland servers to the socket name
+	// (e.g. "wayland-0") for any client running under that session.
+	// XDG_SESSION_TYPE is the systemd-logind hint and is also set
+	// to "wayland" on every common distro. Either non-empty match
+	// is treated as a Wayland session.
+	if (const char* wd = getenv("WAYLAND_DISPLAY")) {
+		if (wd[0] != '\0') {
+			return true;
+		}
+	}
+	if (const char* st = getenv("XDG_SESSION_TYPE")) {
+		if (strcmp(st, "wayland") == 0) {
+			return true;
+		}
+	}
+	return false;
+}
+#endif
 
 void CamuleAppCommon::RefreshSingleInstanceChecker()
 {
