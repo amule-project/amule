@@ -167,9 +167,10 @@ void OnShutdownSignal( int /* sig */ )
 
 	g_shutdownSignal = true;
 
-#ifdef AMULE_DAEMON
-	theApp->ExitMainLoop();
-#endif
+	// The actual shutdown trigger is driven from OnCoreTimer (normal
+	// context) since calling ExitMainLoop() from signal context isn't
+	// async-signal-safe and silently no-ops on macOS's wxAppConsole
+	// event loop.
 }
 
 
@@ -1263,9 +1264,29 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 		return;
 	}
 
-#ifndef AMULE_DAEMON
-	// Check if we should terminate the app
+	// Check if we should terminate the app. OnShutdownSignal only sets
+	// the flag; the actual exit trigger runs from here (normal context)
+	// every CORE_TIMER_PERIOD ms.
 	if ( g_shutdownSignal ) {
+#ifdef AMULE_DAEMON
+#if defined(__APPLE__)
+		// wxBase 3.3.2's wxAppConsole event loop on macOS doesn't
+		// honour ExitMainLoop without a top-level window driving the
+		// close (the way wxApp does for the GUI build below). Run
+		// OnExit() directly here for clean shutdown of all subsystems,
+		// then _exit() to terminate before wx's own static destructors
+		// hit the NSURLSession-cleanup crash also handled in OnExit's
+		// __APPLE__ block.
+		static bool s_alreadyExiting = false;
+		if (!s_alreadyExiting) {
+			s_alreadyExiting = true;
+			OnExit();
+			_exit(0);
+		}
+#else
+		ExitMainLoop();
+#endif
+#else
 		wxWindow* top = GetTopWindow();
 
 		if ( top ) {
@@ -1274,8 +1295,8 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 			// No top-window, have to force termination.
 			wxExit();
 		}
-	}
 #endif
+	}
 
 	// There is a theoretical chance that the core time function can recurse:
 	// if an event function gets blocked on a mutex (communicating with the
