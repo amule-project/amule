@@ -27,6 +27,10 @@
 #include <wx/filename.h>
 #include <wx/webrequest.h>
 
+#if defined(AMULE_HAVE_LIBCURL) && wxUSE_WEBREQUEST_CURL
+#include <curl/curl.h>
+#endif
+
 #include "HTTPDownload.h"				// Interface declarations
 #include <common/StringFunctions.h>		// Needed for unicode2char
 #include "OtherFunctions.h"				// Needed for CastChild
@@ -243,6 +247,21 @@ CHTTPDownloadThread::CHTTPDownloadThread(const wxString& url, const wxString& fi
 		FinishAndDestroy(HTTP_Error);
 		return;
 	}
+
+#if defined(AMULE_HAVE_LIBCURL) && wxUSE_WEBREQUEST_CURL
+	// When wx was built with the libcurl backend AND we found <curl/curl.h>
+	// at configure time, set CURLOPT_NOSIGNAL so the synchronous-resolver
+	// fallback doesn't raise SIGALRM in this multi-threaded process, and
+	// CURLOPT_CONNECTTIMEOUT_MS so the connect phase (incl. DNS) gives up
+	// after 30 s instead of waiting the full OS resolver timeout (~5 min).
+	// This does NOT close the cleanup-time pthread_join hang on libcurl's
+	// threaded resolver — that's bounded by the OS DNS timeout regardless
+	// — but it bounds the visible delay before the Failed event fires.
+	if (CURL* curl = static_cast<CURL*>(m_request.GetNativeHandle())) {
+		curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
+		curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT_MS, 30000L);
+	}
+#endif
 
 	// Storage_File: wx streams the response body to an internal temp file
 	// and hands us the path on completion. We then rename it to the
