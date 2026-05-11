@@ -32,6 +32,7 @@
 #include <wx/file.h>		// Needed for constants
 
 #include <memory>		// Needed for std::unique_ptr
+#include <mutex>		// Needed for std::recursive_mutex
 
 #ifdef _MSC_VER  // silly warnings about deprecated functions
 #pragma warning(disable:4996)
@@ -247,6 +248,34 @@ private:
 	//! FileDataIOTest's CFile.Constructor "ASSERT_RAISES(...,
 	//! file.WriteUInt8(0))" for a read-only fd).
 	bool m_canBuffer;
+
+	//! Serializes access to the userspace write buffer + fd state.
+	//! Without it, paths that drain the buffer (Close, Flush, doSeek,
+	//! doRead, GetPosition, GetLength, SetLength) can race against
+	//! concurrent doWrite/drain calls: two threads both pass the
+	//! `pending != 0` check before either resets pending to 0, and
+	//! since ::write advances the fd offset atomically per call, the
+	//! same N bytes end up written at fd_pos AND fd_pos + N — the
+	//! second write clobbers whatever lived there (typically the
+	//! previously-written block's data).
+	//!
+	//! Hit in production on CPartFile::m_hpartfile: CPartFile::FlushBuffer
+	//! calls m_hpartfile.GetLength()/SetLength() and CPartFile::
+	//! GetNeededSpace() calls GetLength(), all from the main thread
+	//! without taking m_hpartfileMutex. Pre-#562 this was safe because
+	//! GetLength was just fstat — independent of fd position. After
+	//! #562 it drains the buffer, which is what triggers the race
+	//! against CPartFileWriteThread's FlushAt (held under
+	//! m_hpartfileMutex but contending against unlocked main-thread
+	//! drains). Manifests as 1-3 corrupt blocks per part, with AICH
+	//! recovering ~98% of each part.
+	//!
+	//! Recursive so Open() → Close() (and Reopen → Open → Close) don't
+	//! deadlock. Cost is ~30-50 ns per public-method call versus the
+	//! ~1 µs floor of any I/O syscall it's serializing — well within
+	//! noise. Mutable because const-qualified methods (doRead, doSeek,
+	//! GetLength, GetPosition) need to lock it.
+	mutable std::recursive_mutex m_mutex;
 };
 
 

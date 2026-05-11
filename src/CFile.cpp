@@ -217,6 +217,8 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 {
 	MULE_VALIDATE_PARAMS(fileName.IsOk(), "CFile: Cannot open, empty path.");
 
+	std::lock_guard<std::recursive_mutex> lock(m_mutex);
+
 	if (IsOpened()) {
 		Close();
 	}
@@ -285,6 +287,8 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 
 void CFile::Reopen(OpenMode mode)
 {
+	std::lock_guard<std::recursive_mutex> lock(m_mutex);
+
 	if (!Open(m_filePath, mode)) {
 		throw CIOFailureException(wxString("Error reopening file"));
 	}
@@ -294,6 +298,8 @@ void CFile::Reopen(OpenMode mode)
 bool CFile::Close()
 {
 	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot close closed file.");
+
+	std::lock_guard<std::recursive_mutex> lock(m_mutex);
 
 	// Flush userspace write buffer to the fd before closing — otherwise
 	// any pending bytes from doWrite() would be silently dropped.
@@ -320,6 +326,8 @@ bool CFile::Flush()
 {
 	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot flush closed file.");
 
+	std::lock_guard<std::recursive_mutex> lock(m_mutex);
+
 	// Userspace buffer first, then ask the kernel to commit to disk.
 	DrainWriteBuffer();
 
@@ -334,6 +342,8 @@ sint64 CFile::doRead(void* buffer, size_t count) const
 {
 	MULE_VALIDATE_PARAMS(buffer, "CFile: Invalid buffer in read operation.");
 	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot read from closed file.");
+
+	std::lock_guard<std::recursive_mutex> lock(m_mutex);
 
 	// Read-after-write (or interleaved read/write on a read_write file)
 	// must see preceding writes. For pure-read files the buffer is
@@ -388,6 +398,8 @@ sint64 CFile::doWrite(const void* buffer, size_t nCount)
 	MULE_VALIDATE_PARAMS(buffer, "CFile: Invalid buffer in write operation.");
 	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot write to closed file.");
 
+	std::lock_guard<std::recursive_mutex> lock(m_mutex);
+
 	// Read-only files: the kernel will reject the write with EBADF;
 	// surface that immediately by going direct, the same way the
 	// pre-buffering version did.
@@ -439,6 +451,8 @@ sint64 CFile::doSeek(sint64 offset) const
 
 	MULE_VALIDATE_PARAMS(offset >= 0, "Invalid position, must be positive.");
 
+	std::lock_guard<std::recursive_mutex> lock(m_mutex);
+
 	// Pending bytes belong at the pre-seek position; flush before
 	// changing the fd's offset so writes don't end up in the wrong
 	// place. (CSafeFile / known.met save uses Seek() to back-patch
@@ -461,6 +475,8 @@ uint64 CFile::GetPosition() const
 {
 	MULE_VALIDATE_STATE(IsOpened(), "Cannot get position in closed file.");
 
+	std::lock_guard<std::recursive_mutex> lock(m_mutex);
+
 	// Reported position must include any pending buffered bytes.
 	// Easiest is to drain so TELL_FD's answer is authoritative.
 	DrainWriteBuffer();
@@ -478,6 +494,8 @@ uint64 CFile::GetLength() const
 {
 	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot get length of closed file.");
 
+	std::lock_guard<std::recursive_mutex> lock(m_mutex);
+
 	// fstat reads inode metadata, not buffered bytes — drain so the
 	// reported size reflects pending buffered writes.
 	DrainWriteBuffer();
@@ -493,6 +511,12 @@ uint64 CFile::GetLength() const
 
 uint64 CFile::GetAvailable() const
 {
+	// Lock around both calls so length/position are taken atomically;
+	// otherwise a concurrent write could land between and skew the
+	// reported "available" count. Recursive so the inner GetLength /
+	// GetPosition calls (which lock again) don't deadlock.
+	std::lock_guard<std::recursive_mutex> lock(m_mutex);
+
 	const uint64 length = GetLength();
 	const uint64 position = GetPosition();
 
@@ -509,6 +533,8 @@ uint64 CFile::GetAvailable() const
 bool CFile::SetLength(uint64 new_len)
 {
 	MULE_VALIDATE_STATE(IsOpened(), "CFile: Cannot set length when no file is open.");
+
+	std::lock_guard<std::recursive_mutex> lock(m_mutex);
 
 	// ftruncate / chsize operate on the kernel-side size; drain the
 	// userspace buffer first so any pending bytes are part of the
