@@ -371,7 +371,7 @@ void CFile::DrainWriteBuffer() const
 	size_t total = 0;
 	while (total < m_writeBufferPending) {
 		ssize_t written = ::write(m_fd,
-			m_writeBuffer + total,
+			m_writeBuffer.get() + total,
 			m_writeBufferPending - total);
 		if (written < 0) {
 			throw CIOFailureException(
@@ -418,7 +418,14 @@ sint64 CFile::doWrite(const void* buffer, size_t nCount)
 		DrainWriteBuffer();
 	}
 
-	memcpy(m_writeBuffer + m_writeBufferPending, buffer, nCount);
+	// Lazy-allocate on first buffered write: a CFile that's opened
+	// write-capable but never written to (e.g. construct-then-close
+	// on an early error path) shouldn't pay for the buffer.
+	if (!m_writeBuffer) {
+		m_writeBuffer.reset(new char[kWriteBufferSize]);
+	}
+
+	memcpy(m_writeBuffer.get() + m_writeBufferPending, buffer, nCount);
 	m_writeBufferPending += nCount;
 	return (sint64)nCount;
 }
