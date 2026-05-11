@@ -306,6 +306,12 @@ if (BUILD_MONOLITHIC)
 		target_link_libraries (amule
 			PRIVATE "-framework CoreServices"
 			PRIVATE "-framework ApplicationServices"
+			# AppKit: MacAppHelper.mm calls [NSApp setActivationPolicy:]
+			# (used by amuleDlg's tray-icon hide path to drop the Dock
+			# icon). Was implicitly satisfied by wx-3.2's wx-config
+			# --libs; wx-3.3 dropped that transitive link, so we now
+			# have to name AppKit ourselves.
+			PRIVATE "-framework AppKit"
 		)
 
 		# aMule performs HTTP downloads to user-configurable URLs
@@ -445,6 +451,8 @@ if (BUILD_REMOTEGUI)
 		target_link_libraries (amulegui
 			PRIVATE "-framework CoreServices"
 			PRIVATE "-framework ApplicationServices"
+			# AppKit: see comment on the amule target above.
+			PRIVATE "-framework AppKit"
 		)
 
 		# Same ATS opt-out as the monolithic amule.app: wxWebRequest on
