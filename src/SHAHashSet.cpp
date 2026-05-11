@@ -47,6 +47,11 @@
 
 CAICHRequestedDataList CAICHHashSet::m_liRequestedData;
 
+// Lazily-built dedup index over known2.met. See SaveHashSet for usage.
+wxMutex CAICHHashSet::s_rootHashCacheMutex;
+std::unordered_set<CAICHHash> CAICHHashSet::s_rootHashCache;
+bool CAICHHashSet::s_rootHashCacheLoaded = false;
+
 /////////////////////////////////////////////////////////////////////////////////////////
 ///CAICHHash
 wxString CAICHHash::GetString() const
@@ -622,6 +627,71 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 }
 
 // this function is only allowed to be called right after successfully calculating the hashset (!)
+void CAICHHashSet::InvalidateRootHashCache()
+{
+	wxMutexLocker lock(s_rootHashCacheMutex);
+	s_rootHashCache.clear();
+	s_rootHashCacheLoaded = false;
+}
+
+
+void CAICHHashSet::LoadRootHashCacheLocked()
+{
+	// Walk known2.met once, collecting every root hash. Replaces the
+	// per-call in-file linear scan that turned bulk-hashing N files into
+	// O(N^2) on-disk work (issue #579).
+	s_rootHashCache.clear();
+	s_rootHashCacheLoaded = true; // marked early so a partial read still ends the loop
+
+	const wxString fullpath = thePrefs::GetConfigDir() + KNOWN2_MET_FILENAME;
+	if (!wxFile::Exists(fullpath)) {
+		return;
+	}
+
+	CFile file(fullpath, CFile::read);
+	if (!file.IsOpened()) {
+		// Couldn't open: don't claim the cache is valid; SaveHashSet
+		// will retry on the next invocation.
+		s_rootHashCacheLoaded = false;
+		return;
+	}
+
+	try {
+		const uint64 nFileSize = file.GetLength();
+		if (nFileSize == 0) {
+			return;
+		}
+		const uint8 header = file.ReadUInt8();
+		if (header != KNOWN2_MET_VERSION) {
+			AddDebugLogLineC(logSHAHashSet,
+				"AICH cache load: unexpected known2.met version, leaving cache empty");
+			return;
+		}
+		while (file.GetPosition() < nFileSize) {
+			CAICHHash rootHash;
+			rootHash.Read(&file);
+			const uint32 nHashCount = file.ReadUInt32();
+			const uint64 skipBytes =
+				static_cast<uint64>(nHashCount) * HASHSIZE;
+			if (file.GetPosition() + skipBytes > nFileSize) {
+				// known2.met is truncated past this entry; stop here.
+				// CAICHSyncTask will handle the actual truncation/recovery.
+				AddDebugLogLineC(logSHAHashSet,
+					"AICH cache load: known2.met truncated mid-entry");
+				break;
+			}
+			file.Seek(static_cast<wxFileOffset>(skipBytes), wxFromCurrent);
+			s_rootHashCache.insert(rootHash);
+		}
+	} catch (const CSafeIOException& e) {
+		AddDebugLogLineC(logSHAHashSet,
+			"IO error walking known2.met for AICH cache: " + e.what());
+		// Keep whatever we collected; stay marked loaded so we don't
+		// re-scan on every SaveHashSet call (and risk the same error).
+	}
+}
+
+
 bool CAICHHashSet::SaveHashSet()
 {
 	if (m_eStatus != AICH_HASHSETCOMPLETE) {
@@ -633,6 +703,17 @@ bool CAICHHashSet::SaveHashSet()
 		return false;
 	}
 
+	wxMutexLocker cacheLock(s_rootHashCacheMutex);
+
+	if (!s_rootHashCacheLoaded) {
+		LoadRootHashCacheLocked();
+	}
+
+	// O(1) dedup — replaces the linear file walk that used to make this
+	// O(N) per call and O(N^2) over a bulk-hashing batch.
+	if (s_rootHashCache.find(m_pHashTree.m_Hash) != s_rootHashCache.end()) {
+		return true;
+	}
 
 	try {
 		const wxString fullpath = thePrefs::GetConfigDir() + KNOWN2_MET_FILENAME;
@@ -651,29 +732,13 @@ bool CAICHHashSet::SaveHashSet()
 				AddDebugLogLineC(logSHAHashSet, "Saving failed: Current file is not a met-file!");
 				return false;
 			}
-
-			AddDebugLogLineN(logSHAHashSet, CFormat("Met file is version 0x%2.2x.") % header);
+			// Skip the in-file dedup walk; the cache already confirmed
+			// our root hash isn't present.
+			file.Seek(static_cast<wxFileOffset>(nExistingSize), wxFromStart);
 		} else {
 			file.WriteUInt8(KNOWN2_MET_VERSION);
 			// Update the recorded size, in order for the sanity check below to work.
 			nExistingSize += 1;
-		}
-
-		// first we check if the hashset we want to write is already stored
-		CAICHHash CurrentHash;
-		while (file.GetPosition() < nExistingSize) {
-			CurrentHash.Read(&file);
-			if (m_pHashTree.m_Hash == CurrentHash) {
-				// this hashset if already available, no need to save it again
-				return true;
-			}
-			uint32 nHashCount = file.ReadUInt32();
-			if (file.GetPosition() + nHashCount*HASHSIZE > nExistingSize) {
-				AddDebugLogLineC(logSHAHashSet, "Saving failed: File contains fewer entries than specified!");
-				return false;
-			}
-			// skip the rest of this hashset
-			file.Seek(nHashCount*HASHSIZE, wxFromCurrent);
 		}
 
 		// write hashset
@@ -701,6 +766,9 @@ bool CAICHHashSet::SaveHashSet()
 		return false;
 	}
 
+	// Append succeeded — record in the cache so the next SaveHashSet for
+	// the same root hash dedups in O(1).
+	s_rootHashCache.insert(m_pHashTree.m_Hash);
 	return true;
 }
 
