@@ -330,6 +330,9 @@ void CAICHSyncTask::Entry()
 			file.Close();
 			file.Reopen(CFile::read_write);
 			file.SetLength(nLastVerifiedPos);
+			// Drop the SaveHashSet dedup cache: some of its entries
+			// may have just been truncated off the end of the file.
+			CAICHHashSet::InvalidateRootHashCache();
 		} catch (const CIOFailureException& e) {
 			AddDebugLogLineC(logAICHThread, "IO failure while reading hashlist (Aborting): " + e.what());
 
