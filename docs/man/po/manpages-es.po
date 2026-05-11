@@ -147,12 +147,17 @@ msgid "Specify location of amuleweb binary to I<E<lt>pathE<gt>>."
 msgstr "Especifica ubicacion del binario amuleweb en I<E<lt>pathE<gt>>."
 
 #. type: Plain text
+# AI-GENERATED — please review.
 #: amule.1:45 amuled.1:53
 msgid ""
 "Don't catch fatal exceptions and don't block exit on assertions.  Useful for "
 "headless / supervised setups (systemd, watchdog scripts)  where the "
 "otherwise-modal assertion dialog prevents auto-restart."
 msgstr ""
+"No captura las excepciones fatales y no bloquea la salida en las "
+"aserciones.  Útil para configuraciones sin interfaz / supervisadas (systemd, "
+"scripts watchdog) donde el diálogo de aserción, que normalmente es modal, "
+"impide el reinicio automático."
 
 #. type: Plain text
 #: amule.1:48 amuled.1:56
@@ -668,8 +673,6 @@ msgstr ""
 
 #. type: Plain text
 #: amulecmd.1:140
-#, fuzzy
-#| msgid "A synonim of the B<exit> command."
 msgid "A synonym of the B<exit> command."
 msgstr "Un sinónimo del comando B<exit>."
 
