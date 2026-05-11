@@ -976,16 +976,19 @@ void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 {
 	wxTextCtrl* ctl = CastChild( "FastEd2kLinks", wxTextCtrl );
 
+	wxArrayString links;
 	for ( int i = 0; i < ctl->GetNumberOfLines(); i++ ) {
 		wxString strlink = ctl->GetLineText(i);
 		strlink.Trim(true);
 		strlink.Trim(false);
 		if ( !strlink.IsEmpty() ) {
-			theApp->downloadqueue->AddLink( strlink, m_transferwnd->downloadlistctrl->GetCategory() );
+			links.Add(strlink);
 		}
 	}
 
 	ctl->SetValue("");
+
+	theApp->downloadqueue->AddLinks(links, m_transferwnd->downloadlistctrl->GetCategory());
 }
 
 

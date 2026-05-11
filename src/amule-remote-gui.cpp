@@ -1659,6 +1659,25 @@ bool CDownQueueRem::AddLink(const wxString &link, uint8 cat)
 }
 
 
+void CDownQueueRem::AddLinks(const wxArrayString& links, uint8 cat)
+{
+	// Pack the whole batch into one EC_OP_ADD_LINK packet. The daemon-side
+	// handler (PR #551) already iterates over every child tag and emits a
+	// single aggregated response, so CAddLinkHandler fires once for the
+	// whole batch — no client-side N popups for N invalid links.
+	if (links.IsEmpty()) {
+		return;
+	}
+	CECPacket req(EC_OP_ADD_LINK);
+	for (size_t i = 0; i < links.GetCount(); ++i) {
+		CECTag link_tag(EC_TAG_STRING, links[i]);
+		link_tag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
+		req.AddTag(link_tag);
+	}
+	m_conn->SendRequest(new CAddLinkHandler, &req);
+}
+
+
 void CDownQueueRem::ResetCatParts(int cat)
 {
 	// Called when category is deleted. Command will be performed on the remote side,

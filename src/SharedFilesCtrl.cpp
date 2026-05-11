@@ -743,10 +743,11 @@ void CSharedFilesCtrl::OnAddCollection( wxCommandEvent& WXUNUSED(evt) )
 		CMuleCollection my_collection;
 		if (my_collection.Open( (std::string)CollectionFile.mb_str() )) {
 //#warning This is probably not working on Unicode
+			wxArrayString links;
 			for (size_t e = 0; e < my_collection.size(); ++e) {
-				theApp->downloadqueue->AddLink(wxString(my_collection[e].c_str(), wxConvUTF8));
+				links.Add(wxString(my_collection[e].c_str(), wxConvUTF8));
 			}
-
+			theApp->downloadqueue->AddLinks(links);
 		}
 	}
 }
