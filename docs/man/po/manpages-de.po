@@ -158,12 +158,17 @@ msgstr ""
 "Setzt den Ort der ausführbaren Datei von amuleweb auf I<E<lt>PfadE<gt>>."
 
 #. type: Plain text
+# AI-GENERATED — please review.
 #: amule.1:45 amuled.1:53
 msgid ""
 "Don't catch fatal exceptions and don't block exit on assertions.  Useful for "
 "headless / supervised setups (systemd, watchdog scripts)  where the "
 "otherwise-modal assertion dialog prevents auto-restart."
 msgstr ""
+"Fatale Ausnahmen nicht abfangen und das Beenden bei Assertions nicht "
+"blockieren.  Nützlich für Headless- / überwachte Setups (systemd, "
+"Watchdog-Skripte), bei denen der sonst modale Assertion-Dialog den "
+"automatischen Neustart verhindert."
 
 # type: Plain text
 #. type: Plain text
@@ -760,11 +765,10 @@ msgid "Shows the progress of an on-going search."
 msgstr "Zeigt den Fortschritt einer laufenden Suche an."
 
 #. type: Plain text
+# AI-GENERATED — please review.
 #: amulecmd.1:140
-#, fuzzy
-#| msgid "A synonim of the B<exit> command."
 msgid "A synonym of the B<exit> command."
-msgstr "Synonim für den B<exit> Befehl."
+msgstr "Synonym für den B<exit> Befehl."
 
 # type: Plain text
 #. type: Plain text
@@ -841,45 +845,61 @@ msgid "Performs a local search."
 msgstr "Führt eine lokale Suche durch."
 
 #. type: Plain text
+# AI-GENERATED — please review.
 #: amulecmd.1:173
 msgid ""
 "Optional filters can be placed before, after, or interleaved with the search "
 "keyword(s):"
 msgstr ""
+"Optionale Filter können vor, nach oder zwischen den Suchbegriffen "
+"eingefügt werden:"
 
 #. type: Plain text
+# AI-GENERATED — please review.
 #: amulecmd.1:176
 msgid "Restrict results to the given file type."
-msgstr ""
+msgstr "Beschränkt die Ergebnisse auf den angegebenen Dateityp."
 
 #. type: Plain text
+# AI-GENERATED — please review.
 #: amulecmd.1:178
 msgid "Restrict results to a specific file extension (e.g.\\ I<iso>, I<mp3>)."
 msgstr ""
+"Beschränkt die Ergebnisse auf eine bestimmte Dateierweiterung (z. B.\\ "
+"I<iso>, I<mp3>)."
 
 #. type: Plain text
+# AI-GENERATED — please review.
 #: amulecmd.1:180
 msgid "Minimum number of sources a result must report."
-msgstr ""
+msgstr "Mindestanzahl an Quellen, die ein Ergebnis melden muss."
 
 #. type: Plain text
+# AI-GENERATED — please review.
 #: amulecmd.1:183
 msgid ""
 "Smallest file size to return. Suffixes use binary multipliers (K = 1024, M = "
 "K\\(mu1024, G = M\\(mu1024); no suffix means bytes."
 msgstr ""
+"Kleinste zurückzugebende Dateigröße. Suffixe verwenden binäre "
+"Multiplikatoren (K = 1024, M = K\\(mu1024, G = M\\(mu1024); kein Suffix "
+"bedeutet Bytes."
 
 #. type: Plain text
+# AI-GENERATED — please review.
 #: amulecmd.1:185
 msgid "Largest file size to return. Same suffixes as B<--min-size>."
-msgstr ""
+msgstr "Größte zurückzugebende Dateigröße. Gleiche Suffixe wie B<--min-size>."
 
 #. type: Plain text
+# AI-GENERATED — please review.
 #: amulecmd.1:189
 msgid ""
 "Example: `search global linux iso --type Iso --min-size 100M' returns "
 "results for \\(lqlinux iso\\(rq of file-type Iso at least 100 MiB."
 msgstr ""
+"Beispiel: `search global linux iso --type Iso --min-size 100M' liefert "
+"Ergebnisse für \\(lqlinux iso\\(rq vom Dateityp Iso mit mindestens 100 MiB."
 
 # type: Plain text
 #. type: Plain text
@@ -925,11 +945,10 @@ msgid "Show servers list."
 msgstr "Serverliste anzeigen."
 
 #. type: Plain text
+# AI-GENERATED — please review.
 #: amulecmd.1:212
-#, fuzzy
-#| msgid "Reload shared files list."
 msgid "Show shared files list."
-msgstr "Liste der freigegebenen Dateien neu laden."
+msgstr "Liste der freigegebenen Dateien anzeigen."
 
 # type: Plain text
 #. type: Plain text
