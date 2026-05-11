@@ -223,25 +223,29 @@ msgstr "Password impostata, connessioni esterne abilitate."
 msgid "WARNING"
 msgstr "ATTENZIONE"
 
+# AI-GENERATED — please review.
 #: src/amule.cpp:706
-#, fuzzy
 msgid "eD2k server list (server.met)"
-msgstr "Trovato %i server nel file server.met"
+msgstr "Lista server eD2k (server.met)"
 
+# AI-GENERATED — please review.
 #: src/amule.cpp:707
 msgid "Kad bootstrap nodes (nodes.dat)"
-msgstr ""
+msgstr "Nodi di bootstrap Kad (nodes.dat)"
 
+# AI-GENERATED — please review.
 #: src/amule.cpp:714
 msgid ""
 "aMule has detected missing network bootstrap files.\n"
 "Select which ones to download:"
 msgstr ""
+"aMule ha rilevato file di bootstrap di rete mancanti.\n"
+"Selezionare quali scaricare:"
 
+# AI-GENERATED — please review.
 #: src/amule.cpp:715
-#, fuzzy
 msgid "Network bootstrap"
-msgstr "Reti"
+msgstr "Bootstrap di rete"
 
 #: src/amule.cpp:800
 #, c-format
