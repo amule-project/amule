@@ -147,7 +147,7 @@ Priorità normale.
 .SS_untranslated Progress
 Mostra i progressi di una ricerca in corso.
 .SS_untranslated Quit
-A synonym of the \fBexit\fP command.
+Un sinonimo del comando \fBexit\fP.
 .SS_untranslated Reload \fI<what>\fP
 Ricarica un dato oggetto.
 
@@ -180,24 +180,25 @@ Esegue una ricerca sulla rete Kademlia.
 Esegue una ricerca locale.
 .RE
 .PP
-Optional filters can be placed before, after, or interleaved with the search
-keyword(s):
+È possibile inserire filtri opzionali prima, dopo o intervallati alla/e
+parola/e chiave di ricerca:
 .RS
 .IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
-Restrict results to the given file type.
+Limita i risultati al tipo di file indicato.
 .IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
-Restrict results to a specific file extension (e.g.\ \fIiso\fP, \fImp3\fP).
+Limita i risultati a un'estensione di file specifica (ad es.\ \fIiso\fP,
+\fImp3\fP).
 .IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
-Minimum number of sources a result must report.
+Numero minimo di fonti che un risultato deve dichiarare.
 .IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
-Smallest file size to return. Suffixes use binary multipliers (K = 1024, M =
-K\(mu1024, G = M\(mu1024); no suffix means bytes.
+Dimensione minima del file da restituire. I suffissi usano moltiplicatori
+binari (K = 1024, M = K\(mu1024, G = M\(mu1024); senza suffisso indica byte.
 .IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
-Largest file size to return. Same suffixes as \fB\-\-min\-size\fP.
+Dimensione massima del file da restituire. Stessi suffissi di \fB\-\-min\-size\fP.
 .RE
 .PP
-Example: `search global linux iso \-\-type Iso \-\-min\-size 100M' returns
-results for \(lqlinux iso\(rq of file\-type Iso at least 100 MiB.
+Esempio: `search global linux iso \-\-type Iso \-\-min\-size 100M' restituisce
+risultati per \(lqlinux iso\(rq di tipo file Iso di almeno 100 MiB.
 .SS_untranslated Set \fI<what>\fR
 Imposta un dato valore di preferenza.
 
@@ -221,7 +222,7 @@ Mostra il log.
 .IP Servers 10
 Mostra la lista dei server.
 .IP Shared 10
-Show shared files list.
+Mostra la lista dei file condivisi.
 .IP UL 10
 Mostra la coda di upload.
 .RE
