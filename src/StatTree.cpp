@@ -555,10 +555,15 @@ wxString CStatTreeItemRatio::GetString() const
 	if (m_totalfunc1 && m_totalfunc2) {
 		double t1 = m_totalfunc1() + v1;
 		double t2 = m_totalfunc2() + v2;
-		if (t2 < t1) {
-			ret += CFormat(" (%.2f : 1)") % (t1 / t2);
-		} else {
-			ret += CFormat(" (1 : %.2f)") % (t2 / t1);
+		// Guard against fresh-install / zero-history cases. Without
+		// this, t1/t2 or t2/t1 divides by zero and the UI surfaces
+		// "(1 : nan)" or "(1 : inf)".
+		if (t1 > 0 && t2 > 0) {
+			if (t2 < t1) {
+				ret += CFormat(" (%.2f : 1)") % (t1 / t2);
+			} else {
+				ret += CFormat(" (1 : %.2f)") % (t2 / t1);
+			}
 		}
 	}
 	
