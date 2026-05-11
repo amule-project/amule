@@ -148,7 +148,7 @@ Priorité normal.
 .SS_untranslated Progress
 Affiche la progression d'une recherche en cours.
 .SS_untranslated Quit
-A synonym of the \fBexit\fP command.
+Un synonyme de la commande \fBexit\fP.
 .SS_untranslated Reload \fI<what>\fP
 Recharge un objet donné.
 
@@ -181,24 +181,25 @@ Effectuer une recherche sur le réseau Kademlia.
 Effectue une recherche locale.
 .RE
 .PP
-Optional filters can be placed before, after, or interleaved with the search
-keyword(s):
+Des filtres facultatifs peuvent être placés avant, après ou intercalés avec
+le(s) mot(s)\-clé(s) de recherche :
 .RS
 .IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
-Restrict results to the given file type.
+Restreint les résultats au type de fichier indiqué.
 .IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
-Restrict results to a specific file extension (e.g.\ \fIiso\fP, \fImp3\fP).
+Restreint les résultats à une extension de fichier spécifique (par ex.\ \fIiso\fP, \fImp3\fP).
 .IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
-Minimum number of sources a result must report.
+Nombre minimum de sources qu'un résultat doit indiquer.
 .IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
-Smallest file size to return. Suffixes use binary multipliers (K = 1024, M =
-K\(mu1024, G = M\(mu1024); no suffix means bytes.
+Taille minimale du fichier à renvoyer. Les suffixes utilisent des
+multiplicateurs binaires (K = 1024, M = K\(mu1024, G = M\(mu1024) ; sans
+suffixe signifie octets.
 .IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
-Largest file size to return. Same suffixes as \fB\-\-min\-size\fP.
+Taille maximale du fichier à renvoyer. Mêmes suffixes que \fB\-\-min\-size\fP.
 .RE
 .PP
-Example: `search global linux iso \-\-type Iso \-\-min\-size 100M' returns
-results for \(lqlinux iso\(rq of file\-type Iso at least 100 MiB.
+Exemple : `search global linux iso \-\-type Iso \-\-min\-size 100M' renvoie des
+résultats pour \(lqlinux iso\(rq de type de fichier Iso d'au moins 100 MiB.
 .SS_untranslated Set \fI<what>\fR
 Définit une valeur compte tenu des préférences.
 
@@ -222,7 +223,7 @@ Afficher le journal.
 .IP Servers 10
 Afficher la liste des serveurs.
 .IP Shared 10
-Show shared files list.
+Affiche la liste des fichiers partagés.
 .IP UL 10
 Montrer la file d'attente des envois.
 .RE

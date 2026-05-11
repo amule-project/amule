@@ -45,9 +45,10 @@ Réinitialiser la configuration par défaut.
 Préciser l'emplacement du binaire d'amuleweb \fI<chemin>\fP.
 .TP 
 .B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
-Don't catch fatal exceptions and don't block exit on assertions.  Useful for
-headless / supervised setups (systemd, watchdog scripts)  where the
-otherwise\-modal assertion dialog prevents auto\-restart.
+Ne pas intercepter les exceptions fatales et ne pas bloquer la sortie sur
+les assertions.  Utile pour les configurations sans interface / supervisées
+(systemd, scripts watchdog) où la boîte de dialogue d'assertion, autrement
+modale, empêche le redémarrage automatique.
 .TP 
 .B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
 Ne pas désactiver stdin.
