@@ -483,6 +483,7 @@ public:
 	void StopUDPRequests() {}
 	void AddFileLinkToDownload(CED2KFileLink*, uint8);
 	bool AddLink(const wxString &link, uint8 category = 0);
+	void AddLinks(const wxArrayString& links, uint8 category = 0);
 	void UnsetCompletedFilesExist();
 	void ResetCatParts(int cat);
 	void AddSearchToDownload(CSearchFile* toadd, uint8 category);

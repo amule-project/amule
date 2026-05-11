@@ -1428,6 +1428,23 @@ bool CDownloadQueue::AddLink( const wxString& link, uint8 category )
 }
 
 
+void CDownloadQueue::AddLinks( const wxArrayString& links, uint8 category )
+{
+	unsigned failed = 0;
+	for (size_t i = 0; i < links.GetCount(); ++i) {
+		if (!AddLink(links[i], category)) {
+			++failed;
+		}
+	}
+	if (failed > 0) {
+		theApp->ShowAlert(
+			CFormat(wxPLURAL("Could not add %u link (see log for details).",
+			                 "Could not add %u links (see log for details).", failed)) % failed,
+			_("ERROR"), wxOK | wxICON_ERROR);
+	}
+}
+
+
 bool CDownloadQueue::AddED2KLink( const wxString& link, uint8 category )
 {
 	wxASSERT( !link.IsEmpty() );

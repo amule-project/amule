@@ -273,6 +273,13 @@ public:
 	 */
 	bool	AddLink( const wxString& link, uint8 category = 0 );
 
+	/**
+	 * Batch variant of AddLink. Per-link failures are still logged with the
+	 * specific protocol reason; on top of that, a single aggregated dialog
+	 * is shown at the end of the batch (one popup for N failed links).
+	 */
+	void	AddLinks( const wxArrayString& links, uint8 category = 0 );
+
 	bool	AddED2KLink( const wxString& link, uint8 category = 0 );
 	bool	AddED2KLink( const CED2KLink* link, uint8 category = 0 );
 	bool	AddED2KLink( const CED2KFileLink* link, uint8 category = 0 );

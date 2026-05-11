@@ -142,6 +142,7 @@ void CamuleAppCommon::AddLinksFromFile()
 
 	wxTextFile file(fullPath);
 	if ( file.Open() ) {
+		unsigned failed = 0;
 		for ( unsigned int i = 0; i < file.GetLineCount(); i++ ) {
 			wxString line = file.GetLine( i ).Strip( wxString::both );
 
@@ -158,11 +159,20 @@ void CamuleAppCommon::AddLinksFromFile()
 						 // This is fixed in wx 2.9
 					category = 0;
 				}
-				theApp->downloadqueue->AddLink(line, category);
+				if (!theApp->downloadqueue->AddLink(line, category)) {
+					++failed;
+				}
 			}
 		}
 
 		file.Close();
+
+		if (failed > 0) {
+			theApp->ShowAlert(
+				CFormat(wxPLURAL("Could not add %u link from ED2KLinks file (see log for details).",
+				                 "Could not add %u links from ED2KLinks file (see log for details).", failed)) % failed,
+				_("ERROR"), wxOK | wxICON_ERROR);
+		}
 	} else {
 		AddLogLineNS(_("Failed to open ED2KLinks file."));
 	}
