@@ -98,6 +98,18 @@ bool CKnownFileList::Init()
 		uint32 RecordsNumber = file.ReadUInt32();
 		AddDebugLogLineN(logKnownFiles, CFormat("Reading %i known files from file format 0x%2.2x.")
 			% RecordsNumber % version);
+
+		// Keep the size-map index live during the load. Append() is O(log N)
+		// on every record, but on each MD4 hash collision (real-world
+		// libraries hit these whenever the same content was indexed under
+		// two paths/names) it falls back to IsOnDuplicates(name, date, size).
+		// Without a duplicate-size index, IsOnDuplicates scans
+		// m_duplicateFileList linearly, so the dedup cost grows with each
+		// duplicate appended — O(N^2) over the whole load. Prebuilding the
+		// (empty) index here lets Append maintain it incrementally, giving
+		// the O(log N) equal_range fast path on every collision check.
+		// Issue #562 startup gap, ~36 s on a 200 k-file library.
+		PrepareIndex();
 		for (uint32 i = 0; i < RecordsNumber; i++) {
 			CScopedPtr<CKnownFile> record;
 			if (record->LoadFromFile(&file)) {
@@ -108,12 +120,15 @@ bool CKnownFileList::Init()
 				AddLogLineC(_("Failed to load entry in known file list, file may be corrupt"));
 			}
 		}
+		ReleaseIndex();
 		AddDebugLogLineN(logKnownFiles, "Finished reading known files");
 
 		return true;
 	} catch (const CInvalidPacket& e) {
+		ReleaseIndex();
 		AddLogLineC(_("Invalid entry in known file list, file may be corrupt: ") + e.what());
 	} catch (const CSafeIOException& e) {
+		ReleaseIndex();
 		AddLogLineC(CFormat(_("IO error while reading %s file: %s")) % m_filename % e.what());
 	}
 
@@ -290,6 +305,11 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 		CKnownFileMap::iterator it = m_knownFileMap.find(tkey);
 		if (it == m_knownFileMap.end()) {
 			m_knownFileMap[tkey] = Record;
+			if (m_knownSizeMap) {
+				m_knownSizeMap->insert(
+					std::pair<uint32, CKnownFile*>(
+						(uint32) Record->GetFileSize(), Record));
+			}
 			return true;
 		} else {
 			CKnownFile *existing = it->second;
@@ -325,9 +345,33 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 				// The file is a duplicated hash. Add THE OLD ONE to the duplicates list.
 				// (This is used when reading the known file list where the duplicates are stored in front.)
 				m_duplicateFileList.push_back(existing);
+				if (m_duplicateSizeMap) {
+					m_duplicateSizeMap->insert(
+						std::pair<uint32, CKnownFile*>(
+							(uint32) existing->GetFileSize(), existing));
+				}
 				if (theApp->sharedfiles) {
 					// Removing the old kad keywords created with the old filename
 					theApp->sharedfiles->RemoveKeywords(existing);
+				}
+				if (m_knownSizeMap) {
+					// existing is leaving m_knownFileMap for m_duplicateFileList;
+					// drop its size-map entry so FindKnownFile doesn't return a
+					// pointer that no longer belongs to the live map.
+					std::pair<KnownFileSizeMap::iterator,
+						KnownFileSizeMap::iterator> p =
+						m_knownSizeMap->equal_range(
+							(uint32) existing->GetFileSize());
+					for (KnownFileSizeMap::iterator hit = p.first;
+						hit != p.second; ++hit) {
+						if (hit->second == existing) {
+							m_knownSizeMap->erase(hit);
+							break;
+						}
+					}
+					m_knownSizeMap->insert(
+						std::pair<uint32, CKnownFile*>(
+							(uint32) Record->GetFileSize(), Record));
 				}
 				m_knownFileMap[tkey] = Record;
 				return true;
