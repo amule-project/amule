@@ -42,6 +42,7 @@ msgstr "Information"
 msgid "The specified userhash is not valid!"
 msgstr "Le hachage utilisateur spécifié est invalide !"
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:221
 msgid ""
 "aMule can install a desktop launcher and icon into your home directory so it "
@@ -51,54 +52,76 @@ msgid ""
 "\n"
 "Install desktop integration now?"
 msgstr ""
+"aMule peut installer un lanceur de bureau et une icône dans votre "
+"répertoire personnel afin qu'il apparaisse dans votre menu d'applications "
+"comme une application installée normalement. Ce changement est réversible "
+"— les fichiers sont placés dans ~/.local/share/applications et "
+"~/.local/share/icons et peuvent être supprimés à tout moment.\n"
+"\n"
+"Installer l'intégration de bureau maintenant ?"
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:226
-#, fuzzy
 msgid "Add aMule to your application menu?"
-msgstr "Après le nom de l'application"
+msgstr "Ajouter aMule à votre menu d'applications ?"
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:228
 msgid "Install"
-msgstr ""
+msgstr "Installer"
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:228
 msgid "Not now"
-msgstr ""
+msgstr "Pas maintenant"
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:229
 msgid "Don't ask again"
-msgstr ""
+msgstr "Ne plus me demander"
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:248
 msgid ""
 "Cannot install desktop integration: the APPDIR environment variable is not "
 "set. This usually means the AppImage was launched in a non-standard way."
 msgstr ""
+"Impossible d'installer l'intégration de bureau : la variable "
+"d'environnement APPDIR n'est pas définie. Cela signifie généralement que "
+"l'AppImage a été lancée d'une manière non standard."
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
 #: src/AppImageIntegration.cpp:274
-#, fuzzy
 msgid "aMule integration failed"
-msgstr "La connexion a échoué "
+msgstr "Échec de l'intégration d'aMule"
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:259
 #, c-format
 msgid ""
 "Cannot install desktop integration: failed to create %s. Check that your "
 "home directory is writable."
 msgstr ""
+"Impossible d'installer l'intégration de bureau : échec de la création de "
+"%s. Vérifiez que votre répertoire personnel est accessible en écriture."
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:271
 #, c-format
 msgid ""
 "Cannot install desktop integration: failed to write %s. Check that your home "
 "directory is writable."
 msgstr ""
+"Impossible d'installer l'intégration de bureau : échec de l'écriture de "
+"%s. Vérifiez que votre répertoire personnel est accessible en écriture."
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:281
 msgid "AppImage integration: aMule added to your application menu."
-msgstr ""
+msgstr "Intégration AppImage : aMule a été ajouté à votre menu d'applications."
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:284
 msgid ""
 "aMule has been added to your application menu. You can now launch it from "
@@ -110,18 +133,32 @@ msgid ""
 "\n"
 "Restart aMule now?"
 msgstr ""
+"aMule a été ajouté à votre menu d'applications. Vous pouvez maintenant le "
+"lancer depuis votre liste d'applications, et le lanceur exécutera cette "
+"même AppImage.\n"
+"\n"
+"Sur certains bureaux, aMule peut avoir besoin de redémarrer pour que "
+"l'icône du dock / barre des tâches se lie à la nouvelle entrée du lanceur. "
+"Les compositeurs Wayland modernes (GNOME, KDE) le détectent en direct, "
+"mais un redémarrage est la solution de repli sûre si l'icône reste "
+"générique.\n"
+"\n"
+"Redémarrer aMule maintenant ?"
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:287
 msgid "aMule installed"
-msgstr ""
+msgstr "aMule installé"
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:289
 msgid "Restart now"
-msgstr ""
+msgstr "Redémarrer maintenant"
 
+# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:289
 msgid "Later"
-msgstr ""
+msgstr "Plus tard"
 
 #: src/amuleAppCommon.cpp:129
 msgid "Failed to open ED2KLinks file."
@@ -196,25 +233,29 @@ msgstr "Mot de passe renseigné et connexions externes activées."
 msgid "WARNING"
 msgstr "AVERTISSEMENT"
 
+# AI-GENERATED — please review.
 #: src/amule.cpp:706
-#, fuzzy
 msgid "eD2k server list (server.met)"
-msgstr "%i serveur trouvé dans server.met"
+msgstr "Liste de serveurs eD2k (server.met)"
 
+# AI-GENERATED — please review.
 #: src/amule.cpp:707
 msgid "Kad bootstrap nodes (nodes.dat)"
-msgstr ""
+msgstr "Nœuds bootstrap Kad (nodes.dat)"
 
+# AI-GENERATED — please review.
 #: src/amule.cpp:714
 msgid ""
 "aMule has detected missing network bootstrap files.\n"
 "Select which ones to download:"
 msgstr ""
+"aMule a détecté des fichiers bootstrap de réseau manquants.\n"
+"Sélectionnez ceux à télécharger :"
 
+# AI-GENERATED — please review.
 #: src/amule.cpp:715
-#, fuzzy
 msgid "Network bootstrap"
-msgstr "Réseaux"
+msgstr "Bootstrap de réseau"
 
 #: src/amule.cpp:800
 #, c-format
@@ -487,8 +528,8 @@ msgstr ""
 "aMule normal, démarrez amuled avec l'option --ec-config ou passez la clé "
 "\"AcceptExternalConnections\" à 1 dans le fichier ~/.aMule/amule.conf"
 
+# AI-GENERATED — please review.
 #: src/amuled.cpp:159
-#, fuzzy
 msgid ""
 "ERROR: A valid password is required to use external connections, and aMule "
 "daemon cannot be used without external connections. To run aMule daemon, you "
@@ -500,10 +541,10 @@ msgstr ""
 "ERREUR : Un mot de passe valide est requis pour utiliser les connexions "
 "externes, et le démon aMule ne peut pas être utilisé sans connexions "
 "externes. Pour exécuter le démon aMule, vous devez indiquer une valeur "
-"appropriée dans le champ \"Mot de passe EC\" dans le fichier ~/.aMule/"
-"amule.conf. Lancez amuled avec le flag --ec-config pour affecter le mot de "
-"passe. Plus d'information est disponible sur https://github.com/amule-org/"
-"amule/wiki"
+"appropriée dans le champ \"ECPassword\" du fichier ~/.aMule/amule.conf. "
+"Lancez amuled avec le flag --ec-config pour affecter le mot de passe. Plus "
+"d'informations sont disponibles sur "
+"https://github.com/amule-org/amule/wiki"
 
 #: src/amuled.cpp:175
 msgid "amuled: OnInit - starting timer"
@@ -874,6 +915,7 @@ msgstr "Connexion échouée. Impossible de se connecter à %s : %d\n"
 msgid "Connection closed - aMule has terminated probably."
 msgstr "Connexion fermée - aMule s'est probablement arrêté."
 
+# AI-GENERATED — please review.
 #: src/amule-remote-gui.cpp:400
 #, c-format
 msgid ""
@@ -881,6 +923,10 @@ msgid ""
 "Please check the host, port and that aMule is running with External "
 "Connections enabled."
 msgstr ""
+"Délai de connexion dépassé. Impossible de joindre %s:%d dans le temps "
+"imparti.\n"
+"Vérifiez l'hôte, le port et qu'aMule est en cours d'exécution avec les "
+"connexions externes activées."
 
 #: src/amule-remote-gui.cpp:488
 msgid "Ready"
@@ -1459,7 +1505,6 @@ msgid "In progress"
 msgstr "En cours"
 
 #: src/DataToText.cpp:145
-#, fuzzy
 msgid "ERROR: Out of disk space"
 msgstr "ERREUR : Plus d'espace disque"
 
@@ -1885,19 +1930,20 @@ msgstr "il faut définir le serveur à supprimer"
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k est désactivé dans les préférences."
 
+# AI-GENERATED — please review.
 #: src/ExternalConn.cpp:995
-#, fuzzy
 msgid "Friend not found."
-msgstr "Fichier non trouvé."
+msgstr "Ami non trouvé."
 
+# AI-GENERATED — please review.
 #: src/ExternalConn.cpp:1004
-#, fuzzy
 msgid "Client not found."
-msgstr "Fichier non trouvé."
+msgstr "Client non trouvé."
 
+# AI-GENERATED — please review.
 #: src/ExternalConn.cpp:1009
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
-msgstr ""
+msgstr "EC_TAG_FRIEND_SHARED nécessite EC_TAG_FRIEND ou EC_TAG_CLIENT."
 
 #: src/ExternalConn.cpp:1118
 msgid "Search in progress. Refetch results in a moment!"
@@ -2271,7 +2317,6 @@ msgid "Multiple selection"
 msgstr "Sélection multiple"
 
 #: src/GenericClientListCtrl.cpp:528
-#, fuzzy
 msgid ""
 "You are not allowed to set more than one friend slot.\n"
 " Only one slot was assigned."
@@ -2349,41 +2394,49 @@ msgstr "Téléchargement HTTP annulé"
 msgid "The URL to download can't be empty"
 msgstr "L'URL de téléchargement ne peut pas être vide"
 
+# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:242
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to create HTTP request for %s"
-msgstr "Échec de la réception des fichiers partagés de l'utilisateur '%s'"
+msgstr "Échec de la création de la requête HTTP pour %s"
 
+# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:318
 #, c-format
 msgid "HTTP download: empty response body for %s"
-msgstr ""
+msgstr "Téléchargement HTTP : corps de réponse vide pour %s"
 
+# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:330
-#, fuzzy, c-format
+#, c-format
 msgid "Could not move downloaded file to %s"
-msgstr "Dossier des fichiers de téléchargements temporaires"
+msgstr "Impossible de déplacer le fichier téléchargé vers %s"
 
+# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:334
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %s (%llu bytes)"
-msgstr "%d octets téléchargés"
+msgstr "%s téléchargé (%llu octets)"
 
+# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:339
-#, fuzzy, c-format
+#, c-format
 msgid "The URL %s returned: %i"
-msgstr "L'URL %s retourne : %i - Erreur (%i)!"
+msgstr "L'URL %s a retourné : %i"
 
+# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:346
-#, fuzzy, c-format
+#, c-format
 msgid "HTTP download failed for %s: %s"
-msgstr "Téléchargement HTTP annulé"
+msgstr "Échec du téléchargement HTTP pour %s : %s"
 
+# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:361
 #, c-format
 msgid "HTTP 401 Unauthorized for %s"
-msgstr ""
+msgstr "HTTP 401 Non autorisé pour %s"
 
+# AI-GENERATED — please review.
 #: src/IP2Country.cpp:98
 #, c-format
 msgid ""
@@ -2391,16 +2444,22 @@ msgid ""
 "(a free MaxMind account is required) and place it at %s, or set the URL in "
 "Preferences."
 msgstr ""
+"Aucune URL de mise à jour GeoLite2 configurée. Téléchargez "
+"GeoLite2-Country.mmdb manuellement (un compte MaxMind gratuit est "
+"nécessaire) et placez-le dans %s, ou définissez l'URL dans les "
+"Préférences."
 
+# AI-GENERATED — please review.
 #: src/IP2Country.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid "Download new %s from %s"
-msgstr "Télécharger un nouveau fichier GeoIP.dat à partir de %s"
+msgstr "Télécharger un nouveau %s depuis %s"
 
+# AI-GENERATED — please review.
 #: src/IP2Country.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Download of %s file failed, aborting update."
-msgstr "Échec du téléchargement du fichier GeoIP.dat, mise à jour annulée."
+msgstr "Échec du téléchargement du fichier %s, annulation de la mise à jour."
 
 #: src/IP2Country.cpp:137 src/IPFilter.cpp:500
 #, c-format
@@ -2417,10 +2476,11 @@ msgstr "Impossible de renommer le fichier %s, abandon de la mise à jour."
 msgid "Successfully updated %s"
 msgstr "Mise à jour réussite de %s"
 
+# AI-GENERATED — please review.
 #: src/IP2Country.cpp:151
-#, fuzzy, c-format
+#, c-format
 msgid "Error updating %s"
-msgstr "Erreur lors de la mise à jour de GeoIP.dat"
+msgstr "Erreur lors de la mise à jour de %s"
 
 #: src/IP2Country.cpp:156 src/IPFilter.cpp:512 src/ServerList.cpp:862
 #, c-format
@@ -2726,40 +2786,40 @@ msgstr "Effacer"
 msgid "Select All"
 msgstr "Tout sélectionner"
 
+# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:290
-#, fuzzy
 msgid "eD2k: "
-msgstr "eD2k"
+msgstr "eD2k : "
 
+# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:293
-#, fuzzy
 msgid "Connected (LowID)"
-msgstr "Connecté"
+msgstr "Connecté (LowID)"
 
+# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:294
-#, fuzzy
 msgid "Connected (HighID)"
-msgstr "Connecté"
+msgstr "Connecté (HighID)"
 
+# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:303
-#, fuzzy
 msgid "Kad: "
-msgstr " Kad : "
+msgstr "Kad : "
 
+# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:306
-#, fuzzy
 msgid "Connected (firewalled)"
-msgstr "Connecté à Kad (pare-feu)"
+msgstr "Connecté (pare-feu)"
 
+# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:316
-#, fuzzy
 msgid "Server: "
-msgstr "IP du serveur : "
+msgstr "Serveur : "
 
+# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:317
-#, fuzzy
 msgid "Server IP: "
-msgstr "IP du serveur :"
+msgstr "IP du serveur : "
 
 #: src/MuleTrayIcon.cpp:322 src/MuleTrayIcon.cpp:323 src/MuleTrayIcon.cpp:723
 #: src/MuleTrayIcon.cpp:737 src/TextClient.cpp:716 src/TextClient.cpp:729
@@ -3121,12 +3181,18 @@ msgstr "Démarrer"
 msgid "More"
 msgstr "Plus"
 
+# AI-GENERATED — please review.
 #: src/muuli_wdr.cpp:325
 msgid ""
 "Ask already-responded Kad peers to widen the search. Each click queries the "
 "next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing "
 "additional file matches that the search's initial alpha frontier missed."
 msgstr ""
+"Demande aux pairs Kad ayant déjà répondu d'élargir la recherche. Chaque "
+"clic interroge le pair le plus proche suivant pour obtenir plus de "
+"contacts (KADEMLIA_FIND_VALUE_MORE), faisant apparaître des "
+"correspondances de fichiers supplémentaires que la frontière alpha "
+"initiale de la recherche n'avait pas trouvées."
 
 #: src/muuli_wdr.cpp:330
 msgid "Stop"
@@ -3866,7 +3932,6 @@ msgid "Upload graph scale:"
 msgstr "Échelle des graphiques d'envoi :"
 
 #: src/muuli_wdr.cpp:1634
-#, fuzzy
 msgid "Colors: "
 msgstr "Couleurs : "
 
@@ -3907,7 +3972,6 @@ msgid "Active connections"
 msgstr "Connexions actives"
 
 #: src/muuli_wdr.cpp:1649
-#, fuzzy
 msgid "Systray Icon Speed Bar"
 msgstr "Barre de vitesse dans l'icône de barre des tâches"
 
@@ -4393,7 +4457,6 @@ msgid "Use system-wide ipfilter.dat if available"
 msgstr "Utiliser un ipfilter.dat système si disponible"
 
 #: src/muuli_wdr.cpp:2413
-#, fuzzy
 msgid ""
 "If there's no local ipfilter.dat found, allow usage of a system-wide "
 "ipfilter file."
@@ -4801,7 +4864,6 @@ msgstr ""
 "sous-dossiers seront inclus)"
 
 #: src/PartFileConvertDlg.cpp:206
-#, fuzzy
 msgid ""
 "Do you want the source files of successfully imported downloads be deleted?"
 msgstr ""
@@ -5546,15 +5608,19 @@ msgstr ""
 msgid "Search error"
 msgstr "Erreur de recherche"
 
+# AI-GENERATED — please review.
 #: src/SearchDlg.cpp:431
 msgid "Kad search: requested wider results from one more peer."
-msgstr ""
+msgstr "Recherche Kad : résultats étendus demandés à un pair supplémentaire."
 
+# AI-GENERATED — please review.
 #: src/SearchDlg.cpp:437
 msgid ""
 "Kad search: no peer left to reask for more results (cap reached or no "
 "responses yet)."
 msgstr ""
+"Recherche Kad : plus aucun pair à recontacter pour plus de résultats "
+"(limite atteinte ou aucune réponse encore)."
 
 #: src/SearchDlg.cpp:542
 msgid "Min size must be smaller than max size. Max size ignored."
@@ -7262,7 +7328,7 @@ msgstr ""
 "fichiers dont les tailles sont > 9.5 Mo)"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:80
-#, fuzzy, c-format
+#, c-format
 msgid "%s ---> Non existent file !\n"
 msgstr "%s ---> Fichier inexistant !\n"
 
@@ -7735,7 +7801,6 @@ msgid "Enter here the directory where you want to generate the statistic image"
 msgstr "Entrer ici le répertoire où générer l'image des statistiques en ligne"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:150
-#, fuzzy
 msgid "Upload periodically your stat image to FTP server"
 msgstr ""
 "Envoi périodique de l'image des statistiques en ligne sur un serveur FTP"
