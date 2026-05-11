@@ -31,6 +31,8 @@
 
 #include <wx/file.h>		// Needed for constants
 
+#include <memory>		// Needed for std::unique_ptr
+
 #ifdef _MSC_VER  // silly warnings about deprecated functions
 #pragma warning(disable:4996)
 #endif
@@ -220,12 +222,22 @@ private:
 	//! of thousands of files emitted ~26k write() syscalls per second
 	//! and stalled shutdown for many minutes (#562 — slrslr's report).
 	//! Buffering doWrite into 64 KB chunks collapses millions of
-	//! syscalls into a few thousand, dropping the wall-clock at the
-	//! cost of one fixed-size buffer per open file. Members are
-	//! mutable so the const-qualified read / seek / position / length
-	//! paths can drain the buffer transparently.
+	//! syscalls into a few thousand. Members are mutable so the const-
+	//! qualified read / seek / position / length paths can drain the
+	//! buffer transparently.
+	//!
+	//! Heap-allocated (lazy) rather than embedded as a fixed array,
+	//! because CFile is regularly stack-allocated inside worker-thread
+	//! call chains (e.g. CHashingTask → CAICHHashSet::SaveHashSet
+	//! stack-allocates two CFile-shaped objects). musl's default
+	//! pthread stack is 128 KiB; two embedded 64 KiB buffers consume
+	//! the whole stack and the next stack-using call (in practice the
+	//! wxString → char conversion inside wxFile::Exists) crosses the
+	//! guard page and SIGSEGVs. The unique_ptr brings sizeof(CFile)
+	//! back to ~32 bytes and pays the 64 KiB only on first write,
+	//! which means read-only opens stay free.
 	enum { kWriteBufferSize = 64 * 1024 };
-	mutable char m_writeBuffer[kWriteBufferSize];
+	mutable std::unique_ptr<char[]> m_writeBuffer;
 	mutable size_t m_writeBufferPending;
 
 	//! True when the file was opened in a write-capable mode and
