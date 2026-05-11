@@ -152,7 +152,7 @@ Normale Priorität.
 .SS_untranslated Progress
 Zeigt den Fortschritt einer laufenden Suche an.
 .SS_untranslated Quit
-A synonym of the \fBexit\fP command.
+Synonym für den \fBexit\fP Befehl.
 .SS_untranslated Reload \fI<what>\fP
 Aktualisiert das angegebene Objekt.
 
@@ -185,24 +185,25 @@ Führt eine Suche im Kad\-Netzwerk durch.
 Führt eine lokale Suche durch.
 .RE
 .PP
-Optional filters can be placed before, after, or interleaved with the search
-keyword(s):
+Optionale Filter können vor, nach oder zwischen den Suchbegriffen eingefügt
+werden:
 .RS
 .IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
-Restrict results to the given file type.
+Beschränkt die Ergebnisse auf den angegebenen Dateityp.
 .IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
-Restrict results to a specific file extension (e.g.\ \fIiso\fP, \fImp3\fP).
+Beschränkt die Ergebnisse auf eine bestimmte Dateierweiterung (z. B.\ \fIiso\fP, \fImp3\fP).
 .IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
-Minimum number of sources a result must report.
+Mindestanzahl an Quellen, die ein Ergebnis melden muss.
 .IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
-Smallest file size to return. Suffixes use binary multipliers (K = 1024, M =
-K\(mu1024, G = M\(mu1024); no suffix means bytes.
+Kleinste zurückzugebende Dateigröße. Suffixe verwenden binäre
+Multiplikatoren (K = 1024, M = K\(mu1024, G = M\(mu1024); kein Suffix
+bedeutet Bytes.
 .IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
-Largest file size to return. Same suffixes as \fB\-\-min\-size\fP.
+Größte zurückzugebende Dateigröße. Gleiche Suffixe wie \fB\-\-min\-size\fP.
 .RE
 .PP
-Example: `search global linux iso \-\-type Iso \-\-min\-size 100M' returns
-results for \(lqlinux iso\(rq of file\-type Iso at least 100 MiB.
+Beispiel: `search global linux iso \-\-type Iso \-\-min\-size 100M' liefert
+Ergebnisse für \(lqlinux iso\(rq vom Dateityp Iso mit mindestens 100 MiB.
 .SS_untranslated Set \fI<what>\fR
 Setzt die angegebene Option.
 
@@ -226,7 +227,7 @@ Log anzeigen.
 .IP Servers 10
 Serverliste anzeigen.
 .IP Shared 10
-Show shared files list.
+Liste der freigegebenen Dateien anzeigen.
 .IP UL 10
 Uploadwarteschlange anzeigen.
 .RE
