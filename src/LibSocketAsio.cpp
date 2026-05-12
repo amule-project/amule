@@ -1258,6 +1258,17 @@ private:
 	//
 	void DispatchClose()
 	{
+		// CreateSocket() leaves m_socket NULL on bind failure (e.g. EADDRINUSE
+		// during the post-resume recovery path, where the old socket's close
+		// hasn't yet been processed on the strand before the new bind runs).
+		// Without this guard the subsequent CMuleUDPSocket::DestroySocket()
+		// → Close() → DispatchClose chain dereferences the NULL m_socket
+		// and SIGSEGVs — exposed by #384 once the shared_from_this fix lets
+		// amuled survive the first wake-from-sleep.
+		if (!m_socket) {
+			AddDebugLogLineF(logAsio, "UDP Close: socket already null (CreateSocket failed)");
+			return;
+		}
 		error_code ec;
 		m_socket->close(ec);
 		if (ec) {
