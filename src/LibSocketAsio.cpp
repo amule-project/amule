@@ -126,7 +126,11 @@ public:
 	}
 };
 
-class CAsioSocketImpl
+// See the comment above CAsioUDPSocketImpl for the rationale on enable_shared_from_this:
+// pending asio completion handlers must keep the impl alive past the wrapper's
+// death (and past the old 1-second-timer guard that did not survive the time
+// jump on wake-from-sleep — issue #384).
+class CAsioSocketImpl : public std::enable_shared_from_this<CAsioSocketImpl>
 {
 	// Buffer size posted with async_read_some.  256 KB lets a fast peer
 	// fill the buffer with several TCP segments at once on POSIX (epoll/
@@ -138,8 +142,7 @@ public:
 	// cppcheck-suppress uninitMemberVar m_readBufferPtr
 	CAsioSocketImpl(CLibSocket * libSocket) :
 		m_libSocket(libSocket),
-		m_strand(s_io_service),
-		m_timer(s_io_service)
+		m_strand(s_io_service)
 	{
 		m_OK = false;
 		m_blocksRead = false;
@@ -154,7 +157,7 @@ public:
 		m_sendBuffer.store(nullptr, std::memory_order_relaxed);
 		m_connected = false;
 		m_closed = false;
-		m_isDestroying = false;
+		m_destroying.store(false, std::memory_order_relaxed);
 		m_proxyState = false;
 		m_notify = true;
 		m_sync = false;
@@ -171,6 +174,16 @@ public:
 		delete[] m_readBuffer;
 		delete[] m_sendBuffer.load();
 		delete m_socket;
+	}
+
+	// Called by the wrapper's destructor (or by LinkSocketImpl when swapping
+	// us out) to detach the back-pointer so any callback that fires after
+	// the wrapper is gone no-ops its CoreNotify_* branch instead of
+	// dereferencing freed memory. Atomic so the wrapper-side (any thread)
+	// and the strand-side reads don't need an external lock.
+	void OnWrapperGone()
+	{
+		m_libSocket.store(nullptr, std::memory_order_release);
 	}
 
 	void Notify(bool notify)
@@ -196,8 +209,9 @@ public:
 			m_connected = m_OK;
 			return m_OK;
 		} else {
+			auto self = shared_from_this();
 			m_socket->async_connect(adr.GetEndpoint(),
-				bind_executor(m_strand, [this](const error_code& ec) { HandleConnect(ec); }));
+				bind_executor(m_strand, [self](const error_code& ec) { self->HandleConnect(ec); }));
 			// m_OK and return are false because we are not connected yet
 			return false;
 		}
@@ -216,7 +230,7 @@ public:
 
 	bool IsDestroying() const
 	{
-		return m_isDestroying;
+		return m_destroying.load(std::memory_order_acquire);
 	}
 
 	// Returns the actual error code
@@ -305,7 +319,8 @@ public:
 		char* newBuf = new char[nbytes];
 		memcpy(newBuf, buf, nbytes);
 		m_sendBuffer.store(newBuf, std::memory_order_release);
-		dispatch(m_strand, [this, newBuf, nbytes]() { DispatchWrite(newBuf, nbytes); });
+		auto self = shared_from_this();
+		dispatch(m_strand, [self, newBuf, nbytes]() { self->DispatchWrite(newBuf, nbytes); });
 		m_ErrorCode = 0;
 		return nbytes;
 	}
@@ -319,29 +334,47 @@ public:
 			if (m_sync || s_io_service.stopped()) {
 				DispatchClose();
 			} else {
-				dispatch(m_strand, [this]() { DispatchClose(); });
+				auto self = shared_from_this();
+				dispatch(m_strand, [self]() { self->DispatchClose(); });
 			}
 		}
 	}
 
 
+	// See the parallel comment on CAsioUDPSocketImpl::Destroy(). The TCP path
+	// has identical wake-from-sleep risk; the fix is identical too — drop the
+	// 1-second-timer band-aid in favour of shared_from_this lifetime.
+	//
+	// TCP routes wrapper deletion through CoreNotify_LibSocketDestroy (rather
+	// than deleting inline like UDP) because TCP wrappers are reachable from
+	// many parts of the core; the GUI-thread delete preserves the existing
+	// thread affinity for that cleanup.
 	void Destroy()
 	{
-		if (m_isDestroying) {
-			AddDebugLogLineC(logAsio, CFormat("Destroy() already dying socket %p %p %s") % m_libSocket % this % m_IP);
+		if (m_destroying.exchange(true, std::memory_order_acq_rel)) {
+			CLibSocket * w = m_libSocket.load(std::memory_order_acquire);
+			AddDebugLogLineC(logAsio, CFormat("Destroy() already dying socket %p %p %s") % w % this % m_IP);
 			return;
 		}
-		m_isDestroying = true;
-		AddDebugLogLineF(logAsio, CFormat("Destroy() %p %p %s") % m_libSocket % this % m_IP);
+		CLibSocket * wrapper = m_libSocket.load(std::memory_order_acquire);
+		AddDebugLogLineF(logAsio, CFormat("Destroy() %p %p %s") % wrapper % this % m_IP);
 		Close();
+
+		auto self = shared_from_this();
+		auto teardown = [self]() {
+			// Null the back-pointer before notifying so any callback that
+			// fires after this point sees null and skips its CoreNotify_*.
+			CLibSocket * w = self->m_libSocket.exchange(nullptr,
+				std::memory_order_acq_rel);
+			if (w) {
+				CoreNotify_LibSocketDestroy(w);
+			}
+		};
+
 		if (m_sync || s_io_service.stopped()) {
-			HandleDestroy();
+			teardown();
 		} else {
-			// Close prevents creation of any more callbacks, but does not clear any callbacks already
-			// sitting in Asio's event queue (I have seen such a crash).
-			// So create a delay timer so they can be called until core is notified.
-			m_timer.expires_after(std::chrono::seconds(1));
-			m_timer.async_wait(bind_executor(m_strand, [this](const error_code&) { HandleDestroy(); }));
+			post(m_strand, teardown);
 		}
 	}
 
@@ -394,7 +427,7 @@ public:
 
 	void SetWrapSocket(CLibSocket * socket)
 	{
-		m_libSocket = socket;
+		m_libSocket.store(socket, std::memory_order_release);
 		// Also do some setting up
 		m_OK = true;
 		m_connected = true;
@@ -473,8 +506,9 @@ private:
 			m_readBuffer = new char[READ_CHUNK];
 			m_readBufferSize = READ_CHUNK;
 		}
+		auto self = shared_from_this();
 		m_socket->async_read_some(buffer(m_readBuffer, m_readBufferSize),
-			bind_executor(m_strand, [this](const error_code& ec, std::size_t n) { HandleRead(ec, n); }));
+			bind_executor(m_strand, [self](const error_code& ec, std::size_t n) { self->HandleRead(ec, n); }));
 	}
 
 	// The buffer pointer is passed explicitly so each HandleSend knows
@@ -483,8 +517,9 @@ private:
 	// completes — it cannot be used to identify the buffer to free.
 	void DispatchWrite(char* sendBuffer, uint32 nbytes)
 	{
+		auto self = shared_from_this();
 		async_write(*m_socket, buffer(sendBuffer, nbytes),
-			bind_executor(m_strand, [this, sendBuffer](const error_code& ec, std::size_t n) { HandleSend(sendBuffer, ec, n); }));
+			bind_executor(m_strand, [self, sendBuffer](const error_code& ec, std::size_t n) { self->HandleSend(sendBuffer, ec, n); }));
 	}
 
 	//
@@ -495,13 +530,14 @@ private:
 	{
 		m_OK = !err;
 		AddDebugLogLineF(logAsio, CFormat("HandleConnect %d %s") % m_OK % m_IP);
-		if (m_isDestroying) {
-			AddDebugLogLineF(logAsio, CFormat("HandleConnect: socket pending for deletion %s") % m_IP);
+		CLibSocket * wrapper = m_libSocket.load(std::memory_order_acquire);
+		if (!wrapper) {
+			AddDebugLogLineF(logAsio, CFormat("HandleConnect: wrapper gone %s") % m_IP);
 		} else {
-			CoreNotify_LibSocketConnect(m_libSocket, err.value());
+			CoreNotify_LibSocketConnect(wrapper, err.value());
 			if (m_OK) {
 				// After connect also send a OUTPUT event to show data is available
-				CoreNotify_LibSocketSend(m_libSocket, 0);
+				CoreNotify_LibSocketSend(wrapper, 0);
 				// Start reading
 				StartBackgroundRead();
 				m_connected = true;
@@ -517,8 +553,9 @@ private:
 		// may have already swapped in a new buffer.
 		m_sendBuffer.compare_exchange_strong(sentBuffer, nullptr, std::memory_order_release);
 
-		if (m_isDestroying) {
-			AddDebugLogLineF(logAsio, CFormat("HandleSend: socket pending for deletion %s") % m_IP);
+		CLibSocket * wrapper = m_libSocket.load(std::memory_order_acquire);
+		if (!wrapper) {
+			AddDebugLogLineF(logAsio, CFormat("HandleSend: wrapper gone %s") % m_IP);
 		} else {
 			if (SetError(err)) {
 				AddDebugLogLineN(logAsio, CFormat("HandleSend Error %d %s") % bytes_transferred % m_IP);
@@ -526,15 +563,15 @@ private:
 			} else {
 				AddDebugLogLineF(logAsio, CFormat("HandleSend %d %s") % bytes_transferred % m_IP);
 				m_blocksWrite.store(false, std::memory_order_release);
-				CoreNotify_LibSocketSend(m_libSocket, m_ErrorCode);
+				CoreNotify_LibSocketSend(wrapper, m_ErrorCode);
 			}
 		}
 	}
 
 	void HandleRead(const error_code & ec, size_t bytes_transferred)
 	{
-		if (m_isDestroying) {
-			AddDebugLogLineF(logAsio, CFormat("HandleRead: socket pending for deletion %s") % m_IP);
+		if (!m_libSocket.load(std::memory_order_acquire)) {
+			AddDebugLogLineF(logAsio, CFormat("HandleRead: wrapper gone %s") % m_IP);
 		}
 
 		if (SetError(ec)) {
@@ -560,12 +597,6 @@ private:
 		PostReadEvent(2);
 	}
 
-	void HandleDestroy()
-	{
-		AddDebugLogLineF(logAsio, CFormat("HandleDestroy() %p %p %s") % m_libSocket % this % m_IP);
-		CoreNotify_LibSocketDestroy(m_libSocket);
-	}
-
 
 	//
 	// Other functions
@@ -575,7 +606,8 @@ private:
 	{
 		m_readPending = true;
 		m_readBufferContent = 0;
-		dispatch(m_strand, [this]() { DispatchBackgroundRead(); });
+		auto self = shared_from_this();
+		dispatch(m_strand, [self]() { self->DispatchBackgroundRead(); });
 	}
 
 	void PostReadEvent(int DEBUG_ONLY(from) )
@@ -583,14 +615,18 @@ private:
 		if (!m_eventPending) {
 			AddDebugLogLineF(logAsio, CFormat("Post read event %d %s") % from % m_IP);
 			m_eventPending = true;
-			CoreNotify_LibSocketReceive(m_libSocket, m_ErrorCode);
+			CLibSocket * wrapper = m_libSocket.load(std::memory_order_acquire);
+			if (wrapper) {
+				CoreNotify_LibSocketReceive(wrapper, m_ErrorCode);
+			}
 		}
 	}
 
 	void PostLostEvent()
 	{
-		if (!m_isDestroying && !m_closed) {
-			CoreNotify_LibSocketLost(m_libSocket);
+		CLibSocket * wrapper = m_libSocket.load(std::memory_order_acquire);
+		if (wrapper && !m_destroying.load(std::memory_order_acquire) && !m_closed) {
+			CoreNotify_LibSocketLost(wrapper);
 		}
 	}
 
@@ -637,7 +673,10 @@ private:
 		m_IPint = StringIPtoUint32(m_IPstring);
 	}
 
-	CLibSocket	*	m_libSocket;
+	// Atomic so OnWrapperGone() (called from the wrapper's dtor on any
+	// thread) and the strand-side load in Destroy() can both touch it
+	// without an external lock.
+	std::atomic<CLibSocket *>	m_libSocket;
 	ip::tcp::socket	*	m_socket;
 										// remote IP
 	wxString		m_IPstring;			// as String (use nowhere because of threading!)
@@ -656,10 +695,9 @@ private:
 	std::atomic<char*>	m_sendBuffer;	// atomic: shared between throttler thread (Write) and ASIO thread (HandleSend)
 	std::atomic<bool>	m_blocksWrite;	// atomic: shared between throttler thread (BlocksWrite) and ASIO thread (HandleSend)
 	io_context::strand	m_strand;		// handle synchronisation in io_service thread pool
-	steady_timer	m_timer;
 	bool			m_connected;
 	bool			m_closed;
-	bool			m_isDestroying;		// true if Destroy() was called
+	std::atomic<bool>	m_destroying;	// set once Destroy() has been called
 	bool			m_proxyState;
 	bool			m_notify;			// set by Notify()
 	bool			m_sync;				// copied from !m_notify on Connect()
@@ -672,14 +710,23 @@ private:
 
 CLibSocket::CLibSocket(int /* flags */)
 {
-	m_aSocket = new CAsioSocketImpl(this);
+	// make_shared so the impl can later use shared_from_this() inside async
+	// callbacks. The TCP impl's ctor does not start any async ops, so no
+	// post-construction Init() call is needed; async work starts in Connect().
+	m_aSocket = std::make_shared<CAsioSocketImpl>(this);
 }
 
 
 CLibSocket::~CLibSocket()
 {
-	AddDebugLogLineF(logAsio, CFormat("~CLibSocket() %p %p %s") % this % m_aSocket % m_aSocket->GetIP());
-	delete m_aSocket;
+	AddDebugLogLineF(logAsio, CFormat("~CLibSocket() %p %p %s") % this % m_aSocket.get() % m_aSocket->GetIP());
+	// Detach the back-pointer first so any callbacks that fire after the
+	// wrapper is gone don't dereference us. The impl itself stays alive as
+	// long as any callback still holds a shared_from_this() ref; once the
+	// last drops, the impl destructs cleanly and frees the asio socket.
+	if (m_aSocket) {
+		m_aSocket->OnWrapperGone();
+	}
 }
 
 
@@ -782,10 +829,15 @@ void CLibSocket::EventProcessed()
 }
 
 
-void CLibSocket::LinkSocketImpl(class CAsioSocketImpl * socket)
+void CLibSocket::LinkSocketImpl(std::shared_ptr<class CAsioSocketImpl> socket)
 {
-	delete m_aSocket;
-	m_aSocket = socket;
+	// Detach the back-pointer on the outgoing impl before swapping it out;
+	// any in-flight callback that still holds a shared_from_this() ref on
+	// it will then no-op its notify branch instead of touching us.
+	if (m_aSocket) {
+		m_aSocket->OnWrapperGone();
+	}
+	m_aSocket = std::move(socket);
 	m_aSocket->SetWrapSocket(this);
 }
 
@@ -812,34 +864,52 @@ void CLibSocket::SetProxyState(bool state, const amuleIPV4Address * adr)
  * ASIO TCP socket server
  */
 
-class CAsioSocketServerImpl : public ip::tcp::acceptor
+// See the parallel comment on CAsioUDPSocketImpl. Same lifetime fix applied
+// here so a pending async_accept completion can't fire on a freed acceptor
+// impl after the wrapper has been deleted.
+class CAsioSocketServerImpl : public ip::tcp::acceptor,
+	public std::enable_shared_from_this<CAsioSocketServerImpl>
 {
 public:
 	CAsioSocketServerImpl(const amuleIPV4Address & adr, CLibSocketServer * libSocketServer)
 		: ip::tcp::acceptor(s_io_service),
 		  m_libSocketServer(libSocketServer),
-		  m_currentSocket(NULL),
-		  m_strand(s_io_service)
+		  m_strand(s_io_service),
+		  m_address(adr)
 	{
 		m_ok = false;
 		m_socketAvailable = false;
-
-		try {
-			open(adr.GetEndpoint().protocol());
-			SetCloexecOnSocket(native_handle());
-			set_option(ip::tcp::acceptor::reuse_address(true));
-			bind(adr.GetEndpoint());
-			listen();
-			StartAccept();
-			m_ok = true;
-			AddDebugLogLineN(logAsio, CFormat("CAsioSocketServerImpl bind to %s %d") % adr.IPAddress() % adr.Service());
-		} catch (const system_error& err) {
-			AddDebugLogLineC(logAsio, CFormat("CAsioSocketServerImpl bind to %s %d failed - %s") % adr.IPAddress() % adr.Service() % err.code().message());
-		}
 	}
 
 	~CAsioSocketServerImpl()
 	{
+	}
+
+	// Init() runs the bind/listen/StartAccept sequence after the managing
+	// shared_ptr is in place — StartAccept captures shared_from_this(), and
+	// that's only valid post-construction.
+	void Init()
+	{
+		try {
+			open(m_address.GetEndpoint().protocol());
+			SetCloexecOnSocket(native_handle());
+			set_option(ip::tcp::acceptor::reuse_address(true));
+			bind(m_address.GetEndpoint());
+			listen();
+			StartAccept();
+			m_ok = true;
+			AddDebugLogLineN(logAsio, CFormat("CAsioSocketServerImpl bind to %s %d") % m_address.IPAddress() % m_address.Service());
+		} catch (const system_error& err) {
+			AddDebugLogLineC(logAsio, CFormat("CAsioSocketServerImpl bind to %s %d failed - %s") % m_address.IPAddress() % m_address.Service() % err.code().message());
+		}
+	}
+
+	// Detach the back-pointer to the wrapper so any in-flight async_accept
+	// completion that fires after the wrapper has been deleted no-ops its
+	// CoreNotify_ServerTCPAccept branch instead of dereferencing freed memory.
+	void OnWrapperGone()
+	{
+		m_libSocketServer.store(nullptr, std::memory_order_release);
 	}
 
 	// For wxSocketServer, Ok will return true if the server could bind to the specified address and is already listening for new connections.
@@ -855,10 +925,10 @@ public:
 		}
 
 		// return the socket we received
-		socket.LinkSocketImpl(m_currentSocket.release());
+		socket.LinkSocketImpl(std::move(m_currentSocket));
 
 		// check if we have another socket ready for reception
-		m_currentSocket.reset(new CAsioSocketImpl(NULL));
+		m_currentSocket = std::make_shared<CAsioSocketImpl>(nullptr);
 		error_code ec;
 		// async_accept does not work if server is non-blocking
 		// temporarily switch it to non-blocking
@@ -879,7 +949,10 @@ public:
 			AddDebugLogLineF(logAsio, "AcceptWith: ok, another socket is available");
 			// aMule actually doesn't need a notification as it polls the listen socket.
 			// amuleweb does need it though
-			CoreNotify_ServerTCPAccept(m_libSocketServer);
+			CLibSocketServer * w = m_libSocketServer.load(std::memory_order_acquire);
+			if (w) {
+				CoreNotify_ServerTCPAccept(w);
+			}
 		}
 
 		return true;
@@ -891,9 +964,10 @@ private:
 
 	void StartAccept()
 	{
-		m_currentSocket.reset(new CAsioSocketImpl(NULL));
+		m_currentSocket = std::make_shared<CAsioSocketImpl>(nullptr);
+		auto self = shared_from_this();
 		async_accept(m_currentSocket->GetAsioSocket(),
-			bind_executor(m_strand, [this](const error_code& ec) { HandleAccept(ec); }));
+			bind_executor(m_strand, [self](const error_code& ec) { self->HandleAccept(ec); }));
 	}
 
 	void HandleAccept(const error_code& error)
@@ -905,7 +979,10 @@ private:
 				AddDebugLogLineN(logAsio, CFormat("HandleAccept received a connection from %s:%d")
 					% m_currentSocket->GetIP() % m_currentSocket->GetPort());
 				m_socketAvailable = true;
-				CoreNotify_ServerTCPAccept(m_libSocketServer);
+				CLibSocketServer * w = m_libSocketServer.load(std::memory_order_acquire);
+				if (w) {
+					CoreNotify_ServerTCPAccept(w);
+				}
 				return;
 			} else {
 				AddDebugLogLineN(logAsio, "Error in HandleAccept: invalid socket");
@@ -913,30 +990,43 @@ private:
 		}
 		// We were not successful. Try again.
 		// Post the request to the event queue to make sure it doesn't get called immediately.
-		post(m_strand, [this]() { StartAccept(); });
+		auto self = shared_from_this();
+		post(m_strand, [self]() { self->StartAccept(); });
 	}
 
-	// The wrapper object
-	CLibSocketServer * m_libSocketServer;
+	// The wrapper object. Atomic for the same reason as CAsioSocketImpl::m_libSocket.
+	std::atomic<CLibSocketServer *> m_libSocketServer;
 	// Startup ok
 	bool m_ok;
 	// The last socket that connected to us
-	CScopedPtr<CAsioSocketImpl> m_currentSocket;
+	std::shared_ptr<CAsioSocketImpl> m_currentSocket;
 	// Is there a socket available?
 	bool m_socketAvailable;
 	io_context::strand	m_strand;		// handle synchronisation in io_service thread pool
+	// Bind address. Stored so Init() can run after construction (the
+	// shared-from-this contract needs make_shared to complete before any
+	// async ops start).
+	amuleIPV4Address m_address;
 };
 
 
 CLibSocketServer::CLibSocketServer(const amuleIPV4Address& adr, int /* flags */)
 {
-	m_aServer = new CAsioSocketServerImpl(adr, this);
+	// make_shared so the impl can use shared_from_this() inside its
+	// async_accept callbacks. Init() runs the bind/listen/StartAccept
+	// sequence after the managing shared_ptr is in place.
+	m_aServer = std::make_shared<CAsioSocketServerImpl>(adr, this);
+	m_aServer->Init();
 }
 
 
 CLibSocketServer::~CLibSocketServer()
 {
-	delete m_aServer;
+	if (m_aServer) {
+		m_aServer->OnWrapperGone();
+	}
+	// shared_ptr drops automatically; impl stays alive via callback self refs
+	// until the last in-flight async_accept completion drains.
 }
 
 
@@ -979,7 +1069,19 @@ bool CLibSocketServer::SocketAvailable()
  * ASIO UDP socket implementation
  */
 
-class CAsioUDPSocketImpl
+// Wake-from-sleep crash (issue #384) was caused by asio completion handlers
+// firing on a freed CAsioUDPSocketImpl: pending async_receive_from ops survive
+// a long suspend, complete on wake, and re-enter HandleRead → StartBackgroundRead
+// after the impl has been destroyed by the post-resume socket-recreation path.
+// The old 1-second-timer guard in Destroy() did not survive the time jump.
+//
+// Fix: enable_shared_from_this. Each async callback captures
+// [self = shared_from_this()], keeping the impl alive until the last in-flight
+// callback drops its ref. The wrapper's raw back-pointer m_libSocket is atomic
+// and nulled on the strand during Destroy(), so callbacks that fire after the
+// wrapper has been notified-destroyed silently no-op instead of dereferencing
+// freed memory.
+class CAsioUDPSocketImpl : public std::enable_shared_from_this<CAsioUDPSocketImpl>
 {
 private:
 	// UDP data block
@@ -1006,14 +1108,17 @@ public:
 	CAsioUDPSocketImpl(const amuleIPV4Address &address, int /* flags */, CLibUDPSocket * libSocket) :
 		m_libSocket(libSocket),
 		m_strand(s_io_service),
-		m_timer(s_io_service),
 		m_address(address)
 	{
 		m_muleSocket = NULL;
 		m_socket = NULL;
 		m_readBuffer = new char[CMuleUDPSocket::UDP_BUFFER_SIZE];
 		m_OK = true;
-		CreateSocket();
+		m_destroying.store(false, std::memory_order_relaxed);
+		// CreateSocket() must run after construction completes — it calls
+		// StartBackgroundRead() which captures shared_from_this(), and that
+		// requires a managing shared_ptr to already exist. The wrapper calls
+		// Init() right after make_shared.
 	}
 
 	~CAsioUDPSocketImpl()
@@ -1022,6 +1127,22 @@ public:
 		delete m_socket;
 		delete[] m_readBuffer;
 		DeleteContents(m_receiveBuffers);
+	}
+
+	// Called by the wrapper after make_shared so StartBackgroundRead() can
+	// safely call shared_from_this().
+	void Init()
+	{
+		CreateSocket();
+	}
+
+	// Called by the wrapper's destructor (or by the destroy chain) to detach
+	// the back-pointer so any still-in-flight callbacks no-op the notify path
+	// instead of touching the freed wrapper. Atomic so it's safe to call from
+	// any thread without an external lock.
+	void OnWrapperGone()
+	{
+		m_libSocket.store(nullptr, std::memory_order_release);
 	}
 
 	void SetClientData(CMuleUDPSocket * muleSocket)
@@ -1059,7 +1180,8 @@ public:
 		// Collect data, make a copy of the buffer's content
 		CUDPData * recdata = new CUDPData(buf, nBytes, addr);
 		AddDebugLogLineF(logAsio, CFormat("UDP SendTo %d to %s") % nBytes % addr.IPAddress());
-		dispatch(m_strand, [this, recdata]() { DispatchSendTo(recdata); });
+		auto self = shared_from_this();
+		dispatch(m_strand, [self, recdata]() { self->DispatchSendTo(recdata); });
 		return nBytes;
 	}
 
@@ -1073,22 +1195,56 @@ public:
 		if (s_io_service.stopped()) {
 			DispatchClose();
 		} else {
-			dispatch(m_strand, [this]() { DispatchClose(); });
+			auto self = shared_from_this();
+			dispatch(m_strand, [self]() { self->DispatchClose(); });
 		}
 	}
 
+	// Destroy() schedules a single strand task that closes the socket, nulls
+	// the back-pointer, and deletes the wrapper. The impl itself stays alive
+	// as long as any in-flight async callback holds a shared_from_this() ref
+	// — it dies cleanly when the last drains, with no risk of a pending
+	// completion firing on freed memory.
+	//
+	// Note: unlike the TCP path which posts CoreNotify_LibSocketDestroy to
+	// route the wrapper delete through the GUI thread, UDP deletes the
+	// wrapper directly. By contract the caller (CMuleUDPSocket) has already
+	// nulled its pointer before calling Destroy(), so nothing else is
+	// expected to reach the wrapper.
 	void Destroy()
 	{
-		AddDebugLogLineF(logAsio, CFormat("Destroy() %p %p") % m_libSocket % this);
-		Close();
+		if (m_destroying.exchange(true, std::memory_order_acq_rel)) {
+			// Already destroying; no-op so callers can be sloppy about it.
+			return;
+		}
+		CLibUDPSocket * wrapper = m_libSocket.load(std::memory_order_acquire);
+		AddDebugLogLineF(logAsio, CFormat("Destroy() %p %p") % wrapper % this);
+
+		auto self = shared_from_this();
+		auto teardown = [self]() {
+			// Null the back-pointer before deleting the wrapper so any
+			// callback that fires after this point sees null and skips
+			// its notify branch.
+			CLibUDPSocket * w = self->m_libSocket.exchange(nullptr,
+				std::memory_order_acq_rel);
+			if (self->m_socket) {
+				error_code ec;
+				self->m_socket->close(ec);
+			}
+			if (w) {
+				// Wrapper dtor drops its shared_ptr<impl>; we still hold
+				// 'self' here so the impl stays alive until all queued
+				// callbacks drain.
+				delete w;
+			}
+		};
+
 		if (s_io_service.stopped()) {
-			HandleDestroy();
+			// Service stopped (shutdown): run the teardown inline; no
+			// pending callbacks to wait for.
+			teardown();
 		} else {
-			// Close prevents creation of any more callbacks, but does not clear any callbacks already
-			// sitting in Asio's event queue (I have seen such a crash).
-			// So create a delay timer so they can be called until core is notified.
-			m_timer.expires_after(std::chrono::seconds(1));
-			m_timer.async_wait(bind_executor(m_strand, [this](const error_code&) { HandleDestroy(); }));
+			post(m_strand, teardown);
 		}
 	}
 
@@ -1117,8 +1273,9 @@ private:
 
 		AddDebugLogLineF(logAsio, CFormat("UDP DispatchSendTo %d to %s:%d") % recdata->size
 			% endpoint.address().to_string() % endpoint.port());
+		auto self = shared_from_this();
 		m_socket->async_send_to(buffer(recdata->buffer, recdata->size), endpoint,
-			bind_executor(m_strand, [this, recdata](const error_code& ec, std::size_t sent) { HandleSendTo(ec, sent, recdata); }));
+			bind_executor(m_strand, [self, recdata](const error_code& ec, std::size_t sent) { self->HandleSendTo(ec, sent, recdata); }));
 	}
 
 	//
@@ -1165,12 +1322,6 @@ private:
 		delete recdata;
 	}
 
-	void HandleDestroy()
-	{
-		AddDebugLogLineF(logAsio, CFormat("HandleDestroy() %p %p") % m_libSocket % this);
-		delete m_libSocket;
-	}
-
 	//
 	// Other functions
 	//
@@ -1199,16 +1350,28 @@ private:
 
 	void StartBackgroundRead()
 	{
+		// Skip if Destroy() has already nulled the socket via the strand
+		// teardown lambda. Without this guard the impl's last self ref
+		// (held by the in-flight async_receive_from completion that
+		// brought us here) would try to re-queue a recv on a closed-and-
+		// nulled socket.
+		if (!m_socket || m_destroying.load(std::memory_order_acquire)) {
+			return;
+		}
+		auto self = shared_from_this();
 		m_socket->async_receive_from(buffer(m_readBuffer, CMuleUDPSocket::UDP_BUFFER_SIZE), m_receiveEndpoint,
-			bind_executor(m_strand, [this](const error_code& ec, std::size_t n) { HandleRead(ec, n); }));
+			bind_executor(m_strand, [self](const error_code& ec, std::size_t n) { self->HandleRead(ec, n); }));
 	}
 
-	CLibUDPSocket *		m_libSocket;
+	// Atomic so OnWrapperGone() (called from the wrapper's dtor on any
+	// thread) and the strand-side load in Destroy() can both touch it
+	// without an external lock.
+	std::atomic<CLibUDPSocket *>	m_libSocket;
 	ip::udp::socket *	m_socket;
 	CMuleUDPSocket *	m_muleSocket;
 	bool				m_OK;
+	std::atomic<bool>	m_destroying;	// set once Destroy() has been called
 	io_context::strand	m_strand;		// handle synchronisation in io_service thread pool
-	steady_timer		m_timer;
 	amuleIPV4Address	m_address;
 
 	// One fix receive buffer
@@ -1229,14 +1392,25 @@ private:
 
 CLibUDPSocket::CLibUDPSocket(amuleIPV4Address &address, int flags)
 {
-	m_aSocket = new CAsioUDPSocketImpl(address, flags, this);
+	// make_shared must run to completion (so a shared_ptr exists to manage
+	// the object) before Init() — Init triggers async_receive_from whose
+	// completion handler captures shared_from_this(), and that requires a
+	// managing shared_ptr to already be in place.
+	m_aSocket = std::make_shared<CAsioUDPSocketImpl>(address, flags, this);
+	m_aSocket->Init();
 }
 
 
 CLibUDPSocket::~CLibUDPSocket()
 {
-	AddDebugLogLineF(logAsio, CFormat("~CLibUDPSocket() %p %p") % this % m_aSocket);
-	delete m_aSocket;
+	AddDebugLogLineF(logAsio, CFormat("~CLibUDPSocket() %p %p") % this % m_aSocket.get());
+	// Detach the back-pointer first so any callbacks that fire after the
+	// wrapper is gone don't dereference us. The impl itself stays alive as
+	// long as any callback still holds a shared_from_this() ref; once the
+	// last drops, the impl destructs cleanly and frees the asio socket.
+	if (m_aSocket) {
+		m_aSocket->OnWrapperGone();
+	}
 }
 
 
