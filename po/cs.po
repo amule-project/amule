@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-05-09 19:40+0100\n"
+"POT-Creation-Date: 2026-05-11 16:37-0300\n"
 "PO-Revision-Date: 2020-03-04 12:16+0100\n"
 "Last-Translator: David Watzke <david@watzke.cz>\n"
 "Language-Team: cs <cs@li.org>\n"
@@ -118,48 +118,65 @@ msgstr ""
 msgid "Later"
 msgstr ""
 
-#: src/amuleAppCommon.cpp:129
+#: src/amuleAppCommon.cpp:172
+#, c-format
+msgid "Could not add %u link from ED2KLinks file (see log for details)."
+msgid_plural ""
+"Could not add %u links from ED2KLinks file (see log for details)."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/amuleAppCommon.cpp:174 src/amule.cpp:830 src/amule.cpp:944
+#: src/amule.cpp:1239 src/amule-remote-gui.cpp:374 src/amule-remote-gui.cpp:402
+#: src/amule-remote-gui.cpp:404 src/amule-remote-gui.cpp:423
+#: src/amule-remote-gui.cpp:742 src/amule-remote-gui.cpp:763
+#: src/DownloadQueue.cpp:1443
+msgid "ERROR"
+msgstr "CHYBA"
+
+#: src/amuleAppCommon.cpp:177
 msgid "Failed to open ED2KLinks file."
 msgstr "Selhalo otvírání souboru ED2KLinks."
 
-#: src/amuleAppCommon.cpp:202
+#: src/amuleAppCommon.cpp:250
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
 msgstr ""
 "VAROVÁNÍ: Nemůžete přidat sebe jako zdroj pro eD2k odkaz, když máte LowID."
 
-#: src/amule.cpp:250
+#: src/amule.cpp:251
 msgid "Now, exiting main app..."
 msgstr "Ukončuji hlavní aplikaci..."
 
-#: src/amule.cpp:269
+#: src/amule.cpp:270
 #, fuzzy, c-format
 msgid "Terminating amuleweb instance with pid '%ld' ... "
 msgstr "Ukončuji instanci amuleweb s PID `%ld'..."
 
-#: src/amule.cpp:272
+#: src/amule.cpp:273
 #, fuzzy, c-format
 msgid "Killing amuleweb instance with pid '%ld' ... "
 msgstr "Zabíjím instanci amuleweb s PID `%ld'..."
 
-#: src/amule.cpp:274 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
+#: src/amule.cpp:275 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
 msgstr "Selhal"
 
-#: src/amule.cpp:280
+#: src/amule.cpp:281
 msgid "aMule OnExit: Terminating core."
 msgstr "aMule OnExit: Ukončuji jádro."
 
-#: src/amule.cpp:384
+#: src/amule.cpp:385
 msgid "aMule shutdown completed."
 msgstr "Ukončení aMule dokončeno."
 
-#: src/amule.cpp:388
+#: src/amule.cpp:389
 msgid "Memory debug results for aMule exit:"
 msgstr ""
 
-#: src/amule.cpp:547
+#: src/amule.cpp:572
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -167,13 +184,13 @@ msgstr ""
 "Vaše nastavení locale bylo změněno na výchozí systémové nastavení kvůli "
 "změně v konfiguraci. Pardon."
 
-#: src/amule.cpp:547 src/amule.cpp:1203 src/CatDialog.cpp:141
+#: src/amule.cpp:572 src/amule.cpp:1228 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:346
 #: src/ServerListCtrl.cpp:149
 msgid "Info"
 msgstr "Info"
 
-#: src/amule.cpp:553
+#: src/amule.cpp:578
 msgid ""
 "\n"
 "EC configuration"
@@ -181,64 +198,57 @@ msgstr ""
 "\n"
 "Konfigurace EC"
 
-#: src/amule.cpp:556
+#: src/amule.cpp:581
 msgid "Password set and external connections enabled."
 msgstr "Heslo nastaveno a externí připojení povoleno."
 
-#: src/amule.cpp:567 src/KadDlg.cpp:183 src/KadDlg.cpp:189
-#: src/PrefsUnifiedDlg.cpp:759 src/SharedFilesCtrl.cpp:318
+#: src/amule.cpp:592 src/KadDlg.cpp:183 src/KadDlg.cpp:189
+#: src/PrefsUnifiedDlg.cpp:791 src/SharedFilesCtrl.cpp:319
 msgid "WARNING"
 msgstr "VAROVÁNÍ"
 
-#: src/amule.cpp:706
+#: src/amule.cpp:731
 msgid "eD2k server list (server.met)"
 msgstr ""
 
-#: src/amule.cpp:707
+#: src/amule.cpp:732
 msgid "Kad bootstrap nodes (nodes.dat)"
 msgstr ""
 
-#: src/amule.cpp:714
+#: src/amule.cpp:739
 msgid ""
 "aMule has detected missing network bootstrap files.\n"
 "Select which ones to download:"
 msgstr ""
 
-#: src/amule.cpp:715
+#: src/amule.cpp:740
 #, fuzzy
 msgid "Network bootstrap"
 msgstr "Sítě"
 
-#: src/amule.cpp:800
+#: src/amule.cpp:825
 #, c-format
 msgid "web server running on pid %d"
 msgstr "webserver běží s PID %d"
 
-#: src/amule.cpp:804
+#: src/amule.cpp:829
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
 "aMule using --enable-webserver and run make install"
 msgstr ""
 
-#: src/amule.cpp:805 src/amule.cpp:919 src/amule.cpp:1214
-#: src/amule-remote-gui.cpp:353 src/amule-remote-gui.cpp:381
-#: src/amule-remote-gui.cpp:383 src/amule-remote-gui.cpp:402
-#: src/amule-remote-gui.cpp:713
-msgid "ERROR"
-msgstr "CHYBA"
-
-#: src/amule.cpp:887
+#: src/amule.cpp:912
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr ""
 
-#: src/amule.cpp:911
+#: src/amule.cpp:936
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Port %u je nedostupný. Budete mít LowID\n"
 
-#: src/amule.cpp:917
+#: src/amule.cpp:942
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -254,44 +264,44 @@ msgstr ""
 "Zkontrolujte nastavení vaší sítě a ujistěte se, že je port v obou směrech "
 "otevřený."
 
-#: src/amule.cpp:1000
+#: src/amule.cpp:1025
 msgid "Failed to create OnlineSig File"
 msgstr "Selhalo vytvoření OnlineSig souboru"
 
-#: src/amule.cpp:1008
+#: src/amule.cpp:1033
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Selhalo vytvoření aMule OnlineSig souboru"
 
-#: src/amule.cpp:1180
+#: src/amule.cpp:1205
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
 msgstr ""
 
-#: src/amule.cpp:1189
+#: src/amule.cpp:1214
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Toto je vaše první spuštění aMule %s"
 
-#: src/amule.cpp:1191
+#: src/amule.cpp:1216
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Toto je testovací verze, která je denně aktualizovaná a\n"
 
-#: src/amule.cpp:1192
+#: src/amule.cpp:1217
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "my nezaručujeme, že nemůže nic pokazit, zapálit váš dům,\n"
 
-#: src/amule.cpp:1193
+#: src/amule.cpp:1218
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "nebo zabít vašeho psa. Nicméně i tak by *mělo* být její používání bezpečné.\n"
 
-#: src/amule.cpp:1198
+#: src/amule.cpp:1223
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Více informací, podporu a nová vydání naleznete na naší domovské stránce,\n"
 
-#: src/amule.cpp:1199
+#: src/amule.cpp:1224
 msgid ""
 "at https://amule-org.github.io, or in our IRC channel #aMule at "
 "irc.freenode.net.\n"
@@ -299,71 +309,71 @@ msgstr ""
 "na https://amule-org.github.io, nebo na našem IRC kanálu #aMule na "
 "irc.freenode.net.\n"
 
-#: src/amule.cpp:1201
+#: src/amule.cpp:1226
 msgid ""
 "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
 msgstr "Hlašte chyby na adrese https://github.com/amule-org/amule/issues"
 
-#: src/amule.cpp:1214
+#: src/amule.cpp:1239
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
 msgstr ""
 
-#: src/amule.cpp:1270
+#: src/amule.cpp:1302
 msgid "Server hostname notified"
 msgstr ""
 
-#: src/amule.cpp:1518
+#: src/amule.cpp:1570
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Předalokace místa na disku pro soubor '%s' selhala: %s"
 
-#: src/amule.cpp:1653
+#: src/amule.cpp:1705
 msgid "ERROR: can't open logfile"
 msgstr "CHYBA: nelze otevřít logovací soubor"
 
-#: src/amule.cpp:1657
+#: src/amule.cpp:1709
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "VAROVÁNÍ: log je prázdný. Něco je špatně."
 
-#: src/amule.cpp:1674
+#: src/amule.cpp:1726
 msgid "Log has been reset"
 msgstr "Log byl vymazán"
 
-#: src/amule.cpp:1700
+#: src/amule.cpp:1752
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Zpráva od serveru: %s"
 
-#: src/amule.cpp:1742 src/IP2Country.cpp:154 src/IPFilter.cpp:510
+#: src/amule.cpp:1794 src/IP2Country.cpp:154 src/IPFilter.cpp:510
 #: src/ServerList.cpp:860
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr ""
 
-#: src/amule.cpp:1744
+#: src/amule.cpp:1796
 msgid "Failed to download the nodes list."
 msgstr "Selhalo stahování seznamu uzlů."
 
-#: src/amule.cpp:1764
+#: src/amule.cpp:1816
 msgid "Failed to open the downloaded version check file"
 msgstr "Selhalo otvírání staženého kontrolního souboru s verzí"
 
-#: src/amule.cpp:1767 src/amule.cpp:1786 src/amule.cpp:1817 src/amule.cpp:1838
+#: src/amule.cpp:1819 src/amule.cpp:1838 src/amule.cpp:1869 src/amule.cpp:1890
 msgid "Corrupted version check file"
 msgstr "Porušený soubor pro kontrolu verze"
 
-#: src/amule.cpp:1849
+#: src/amule.cpp:1901
 msgid "You are using an outdated version of aMule!"
 msgstr "Používáte zastaralou verzi aMule!"
 
-#: src/amule.cpp:1851
+#: src/amule.cpp:1903
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Vaše verze aMule je %i.%i.%i a poslední verze je %li.%li.%li"
 
-#: src/amule.cpp:1852
+#: src/amule.cpp:1904
 msgid ""
 "The latest version can always be found at https://github.com/amule-org/amule/"
 "releases/latest"
@@ -371,82 +381,82 @@ msgstr ""
 "Poslední verze jsou vždy k nalezení na https://github.com/amule-org/amule/"
 "releases/latest "
 
-#: src/amule.cpp:1854
+#: src/amule.cpp:1906
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "VAROVÁNÍ: Vaše verze aMuled je zastaralá: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1858
+#: src/amule.cpp:1910
 msgid "Your copy of aMule is up to date."
 msgstr "Vaše verze aMule je aktuální."
 
-#: src/amule.cpp:1865
+#: src/amule.cpp:1917
 msgid "Failed to download the version check file"
 msgstr "Selhalo stahování kontrolního souboru s verzí"
 
-#: src/amule.cpp:2035 src/amule-remote-gui.cpp:599
+#: src/amule.cpp:2087 src/amule-remote-gui.cpp:620
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Uživatelů: %s | Souborů: %s"
 
-#: src/amule.cpp:2036 src/amule-remote-gui.cpp:600
+#: src/amule.cpp:2088 src/amule-remote-gui.cpp:621
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Uživatelů: E: %s K: %s | Souborů: E: %s K: %s"
 
-#: src/amule.cpp:2045 src/amule-remote-gui.cpp:609
+#: src/amule.cpp:2097 src/amule-remote-gui.cpp:630
 msgid "No networks selected"
 msgstr "Nezvoleny žádné sítě"
 
-#: src/amule.cpp:2110 src/TextClient.cpp:711
+#: src/amule.cpp:2162 src/TextClient.cpp:806
 msgid "with LowID"
 msgstr "s LowID"
 
-#: src/amule.cpp:2110 src/TextClient.cpp:711
+#: src/amule.cpp:2162 src/TextClient.cpp:806
 msgid "with HighID"
 msgstr "s HighID"
 
-#: src/amule.cpp:2112
+#: src/amule.cpp:2164
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Připojen k %s %s"
 
-#: src/amule.cpp:2116
+#: src/amule.cpp:2168
 #, c-format
 msgid "Connecting to %s"
 msgstr "Připojování k %s"
 
-#: src/amule.cpp:2118
+#: src/amule.cpp:2170
 msgid "Disconnected from eD2k"
 msgstr "Odpojen od eD2k"
 
-#: src/amule.cpp:2126
+#: src/amule.cpp:2178
 msgid "Kad started."
 msgstr "Kad spuštěn."
 
-#: src/amule.cpp:2128
+#: src/amule.cpp:2180
 msgid "Kad stopped."
 msgstr "Kad zastaven."
 
-#: src/amule.cpp:2136
+#: src/amule.cpp:2188
 msgid "Connected to Kad (ok)"
 msgstr "Připojen ke Kad (ok)"
 
-#: src/amule.cpp:2138
+#: src/amule.cpp:2190
 msgid "Connected to Kad (firewalled)"
 msgstr "Připojen ke kad (za firewallem)"
 
-#: src/amule.cpp:2141
+#: src/amule.cpp:2193
 msgid "Disconnected from Kad"
 msgstr "Odpojen od Kad"
 
-#: src/amule.cpp:2210
+#: src/amule.cpp:2262
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr "Síť Kad nelze použít, když je v nastavení zakázán UDP port."
 
-#: src/amule.cpp:2213
+#: src/amule.cpp:2265
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Síť Kad je zakázána v nastavení, nepřipojuji se."
 
@@ -490,17 +500,17 @@ msgstr "Nelze vytvořit soubor s PID"
 msgid "ERROR: %s"
 msgstr "CHYBA: %s"
 
-#: src/amuleDlg.cpp:241
+#: src/amuleDlg.cpp:246
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "Toto je aMule %s založená na eMule."
 
-#: src/amuleDlg.cpp:243
+#: src/amuleDlg.cpp:248
 #, c-format
 msgid "Running on %s"
 msgstr "Běží na %s"
 
-#: src/amuleDlg.cpp:245
+#: src/amuleDlg.cpp:250
 msgid ""
 "Visit https://github.com/amule-org/amule/releases/latest to check if a new "
 "version is available."
@@ -508,19 +518,19 @@ msgstr ""
 "Navštivte https://github.com/amule-org/amule/releases/latest  pro kontrolu, "
 "jestli není dostupná nová verze."
 
-#: src/amuleDlg.cpp:271
+#: src/amuleDlg.cpp:276
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr "KRITICKÁ CHYBA: Vytváření časovače selhalo"
 
-#: src/amuleDlg.cpp:512
+#: src/amuleDlg.cpp:517
 msgid "aMule remote control "
 msgstr "Vzdálené ovládání aMule"
 
-#: src/amuleDlg.cpp:518
+#: src/amuleDlg.cpp:523
 msgid "Snapshot:"
 msgstr "Snapshot:"
 
-#: src/amuleDlg.cpp:520
+#: src/amuleDlg.cpp:525
 msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
@@ -528,15 +538,15 @@ msgstr ""
 "Multiplatformní p2p klient založený na eMule \n"
 "\n"
 
-#: src/amuleDlg.cpp:521
+#: src/amuleDlg.cpp:526
 msgid "Website: https://amule-org.github.io \n"
 msgstr "Web: https://amule-org.github.io\n"
 
-#: src/amuleDlg.cpp:522
+#: src/amuleDlg.cpp:527
 msgid "Forum: https://github.com/amule-org/amule/discussions \n"
 msgstr "Fórum: https://github.com/amule-org/amule/discussions\n"
 
-#: src/amuleDlg.cpp:523
+#: src/amuleDlg.cpp:528
 msgid ""
 "FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
@@ -544,11 +554,11 @@ msgstr ""
 "FAQ: https://github.com/amule-org/amule/wiki \n"
 "\n"
 
-#: src/amuleDlg.cpp:524
+#: src/amuleDlg.cpp:529
 msgid "Contact: admin@amule.org (administrative issues) \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:525
+#: src/amuleDlg.cpp:530
 msgid ""
 "Copyright (c) 2003-2019 aMule Team \n"
 "\n"
@@ -556,240 +566,240 @@ msgstr ""
 "Copyright (c) 2003-2019 Tým aMule \n"
 "\n"
 
-#: src/amuleDlg.cpp:526
+#: src/amuleDlg.cpp:531
 msgid "Part of aMule is based on \n"
 msgstr "Část aMule je založena na \n"
 
-#: src/amuleDlg.cpp:527
+#: src/amuleDlg.cpp:532
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:528
+#: src/amuleDlg.cpp:533
 msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 msgstr " Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n"
 
-#: src/amuleDlg.cpp:529
+#: src/amuleDlg.cpp:534
 msgid "http://kademlia.scs.cs.nyu.edu\n"
 msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:532 src/KadDlg.cpp:193 src/PartFile.cpp:987
-#: src/PartFile.cpp:995 src/PrefsUnifiedDlg.cpp:641 src/PrefsUnifiedDlg.cpp:746
-#: src/PrefsUnifiedDlg.cpp:866
+#: src/amuleDlg.cpp:537 src/KadDlg.cpp:193 src/PartFile.cpp:987
+#: src/PartFile.cpp:995 src/PrefsUnifiedDlg.cpp:673 src/PrefsUnifiedDlg.cpp:778
+#: src/PrefsUnifiedDlg.cpp:898
 msgid "Message"
 msgstr "Zpráva"
 
-#: src/amuleDlg.cpp:569
+#: src/amuleDlg.cpp:574
 msgid "aMule dialog destroyed"
 msgstr "Dialog aMule zničen"
 
-#: src/amuleDlg.cpp:593 src/DataToText.cpp:59 src/IPFilter.cpp:544
+#: src/amuleDlg.cpp:598 src/DataToText.cpp:59 src/IPFilter.cpp:544
 msgid "Connecting"
 msgstr "Připojuji"
 
-#: src/amuleDlg.cpp:722
+#: src/amuleDlg.cpp:727
 msgid "eD2k: Connecting"
 msgstr "eD2k: připojuji"
 
-#: src/amuleDlg.cpp:726
+#: src/amuleDlg.cpp:731
 msgid "eD2k: Disconnected"
 msgstr "eD2k: odpojeno"
 
-#: src/amuleDlg.cpp:732
+#: src/amuleDlg.cpp:737
 msgid "Kad: Firewalled"
 msgstr "Kad: Za firewallem"
 
-#: src/amuleDlg.cpp:736
+#: src/amuleDlg.cpp:741
 msgid "Kad: Connected"
 msgstr "Kad: Připojen"
 
-#: src/amuleDlg.cpp:741
+#: src/amuleDlg.cpp:746
 msgid "Kad: Connecting"
 msgstr "Kad: Připojuji"
 
-#: src/amuleDlg.cpp:745
+#: src/amuleDlg.cpp:750
 msgid "Kad: Off"
 msgstr "Kad: vypnut"
 
-#: src/amuleDlg.cpp:791 src/DownloadListCtrl.cpp:415
+#: src/amuleDlg.cpp:796 src/DownloadListCtrl.cpp:415
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:174
 #: src/muuli_wdr.cpp:681 src/muuli_wdr.cpp:732 src/muuli_wdr.cpp:794
-#: src/muuli_wdr.cpp:846 src/muuli_wdr.cpp:1940 src/muuli_wdr.cpp:2022
-#: src/muuli_wdr.cpp:2606 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
+#: src/muuli_wdr.cpp:846 src/muuli_wdr.cpp:1941 src/muuli_wdr.cpp:2023
+#: src/muuli_wdr.cpp:2607 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
 #: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
 #: src/utils/wxCas/src/wxcasprefs.cpp:266
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: src/amuleDlg.cpp:792
+#: src/amuleDlg.cpp:797
 msgid "Stop the current connection attempts"
 msgstr "Zastaví aktuální pokusy o připojení"
 
-#: src/amuleDlg.cpp:797 src/MuleTrayIcon.cpp:388 src/MuleTrayIcon.cpp:877
-#: src/muuli_wdr.cpp:2144
+#: src/amuleDlg.cpp:802 src/MuleTrayIcon.cpp:465 src/MuleTrayIcon.cpp:977
+#: src/muuli_wdr.cpp:2145
 msgid "Disconnect"
 msgstr "Odpojit"
 
-#: src/amuleDlg.cpp:798
+#: src/amuleDlg.cpp:803
 msgid "Disconnect from the currently connected networks"
 msgstr "Odpojit se od aktuálně připojených sítí"
 
-#: src/amuleDlg.cpp:803 src/MuleTrayIcon.cpp:388 src/MuleTrayIcon.cpp:880
-#: src/muuli_wdr.cpp:2293 src/muuli_wdr.cpp:2603 src/muuli_wdr.cpp:2935
+#: src/amuleDlg.cpp:808 src/MuleTrayIcon.cpp:465 src/MuleTrayIcon.cpp:980
+#: src/muuli_wdr.cpp:2294 src/muuli_wdr.cpp:2604 src/muuli_wdr.cpp:2936
 msgid "Connect"
 msgstr "Připojit"
 
-#: src/amuleDlg.cpp:804
+#: src/amuleDlg.cpp:809
 msgid "Connect to the currently enabled networks"
 msgstr "Připojit se k povoleným sítím"
 
-#: src/amuleDlg.cpp:865
+#: src/amuleDlg.cpp:870
 #, fuzzy, c-format
 msgid "Up: %.1f%s (%.1f) | Down: %.1f%s (%.1f)"
 msgstr "Od: %.1f(%.1f) | St: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:866 src/amuleDlg.cpp:867 src/amuleDlg.cpp:870
-#: src/amuleDlg.cpp:871 src/amuleDlg.cpp:882 src/amuleDlg.cpp:883
-#: src/MuleTrayIcon.cpp:698 src/MuleTrayIcon.cpp:701
+#: src/amuleDlg.cpp:871 src/amuleDlg.cpp:872 src/amuleDlg.cpp:875
+#: src/amuleDlg.cpp:876 src/amuleDlg.cpp:887 src/amuleDlg.cpp:888
+#: src/MuleTrayIcon.cpp:798 src/MuleTrayIcon.cpp:801
 #, fuzzy
 msgid " MB/s"
 msgstr "MB/s"
 
-#: src/amuleDlg.cpp:866 src/amuleDlg.cpp:867 src/amuleDlg.cpp:870
-#: src/amuleDlg.cpp:871 src/amuleDlg.cpp:882 src/amuleDlg.cpp:883
-#: src/MuleTrayIcon.cpp:698 src/MuleTrayIcon.cpp:701
+#: src/amuleDlg.cpp:871 src/amuleDlg.cpp:872 src/amuleDlg.cpp:875
+#: src/amuleDlg.cpp:876 src/amuleDlg.cpp:887 src/amuleDlg.cpp:888
+#: src/MuleTrayIcon.cpp:798 src/MuleTrayIcon.cpp:801
 #: src/utils/wxCas/src/wxcasframe.cpp:1110
 msgid " kB/s"
 msgstr " kB/s"
 
-#: src/amuleDlg.cpp:869
+#: src/amuleDlg.cpp:874
 #, fuzzy, c-format
 msgid "Up: %.1f%s | Down: %.1f%s"
 msgstr "Od: %.1f | St: %.1f"
 
-#: src/amuleDlg.cpp:899
+#: src/amuleDlg.cpp:904
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | připojen)"
 
-#: src/amuleDlg.cpp:901
+#: src/amuleDlg.cpp:906
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | odpojen)"
 
-#: src/amuleDlg.cpp:938
+#: src/amuleDlg.cpp:954
 #, c-format
 msgid "Do you really want to exit %s?"
 msgstr "Opravdu si přejete ukončit %s?"
 
-#: src/amuleDlg.cpp:939
+#: src/amuleDlg.cpp:955
 msgid "Exit confirmation"
 msgstr "Potvrzení ukončení"
 
-#: src/amuleDlg.cpp:1178
+#: src/amuleDlg.cpp:1262
 msgid "Launch Command: "
 msgstr "Spustit příkaz: "
 
-#: src/amuleDlg.cpp:1198 src/muuli_wdr.cpp:1747 src/Preferences.cpp:842
+#: src/amuleDlg.cpp:1282 src/muuli_wdr.cpp:1748 src/Preferences.cpp:842
 msgid "- default -"
 msgstr "- výchozí -"
 
-#: src/amuleDlg.cpp:1221
+#: src/amuleDlg.cpp:1305
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Adresář se skiny '%s' neexistuje"
 
-#: src/amuleDlg.cpp:1226
+#: src/amuleDlg.cpp:1310
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "VAROVÁNÍ: Nelze otevřít soubor se vzhledem '%s' pro čtení"
 
-#: src/amuleDlg.cpp:1325 src/amuleDlg.cpp:1459 src/muuli_wdr.cpp:1393
-#: src/muuli_wdr.cpp:2937
+#: src/amuleDlg.cpp:1409 src/amuleDlg.cpp:1543 src/muuli_wdr.cpp:1394
+#: src/muuli_wdr.cpp:2938
 msgid "Networks"
 msgstr "Sítě"
 
-#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:2937
+#: src/amuleDlg.cpp:1409 src/muuli_wdr.cpp:2938
 msgid "Networks Window"
 msgstr "Okno sítí"
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:2938
+#: src/amuleDlg.cpp:1410 src/muuli_wdr.cpp:2939
 msgid "Searches"
 msgstr "Vyhledávání"
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:2938
+#: src/amuleDlg.cpp:1410 src/muuli_wdr.cpp:2939
 msgid "Searches Window"
 msgstr "Vyhledávací okno"
 
-#: src/amuleDlg.cpp:1327 src/DownloadListCtrl.cpp:643 src/muuli_wdr.cpp:379
-#: src/muuli_wdr.cpp:1495 src/muuli_wdr.cpp:2939 src/Statistics.cpp:757
+#: src/amuleDlg.cpp:1411 src/DownloadListCtrl.cpp:643 src/muuli_wdr.cpp:379
+#: src/muuli_wdr.cpp:1496 src/muuli_wdr.cpp:2940 src/Statistics.cpp:757
 msgid "Downloads"
 msgstr "Stahování"
 
-#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:2939
+#: src/amuleDlg.cpp:1411 src/muuli_wdr.cpp:2940
 msgid "Downloads Window"
 msgstr "Stahování"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:2830
+#: src/amuleDlg.cpp:1412 src/muuli_wdr.cpp:2831
 msgid "Shared files"
 msgstr "Sdílené soubory"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:2941
+#: src/amuleDlg.cpp:1412 src/muuli_wdr.cpp:2942
 msgid "Shared Files Window"
 msgstr "Okno se sdílenými soubory"
 
-#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:2470 src/muuli_wdr.cpp:2895
-#: src/muuli_wdr.cpp:2942
+#: src/amuleDlg.cpp:1413 src/muuli_wdr.cpp:2471 src/muuli_wdr.cpp:2896
+#: src/muuli_wdr.cpp:2943
 msgid "Messages"
 msgstr "Zprávy"
 
-#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:2942
+#: src/amuleDlg.cpp:1413 src/muuli_wdr.cpp:2943
 msgid "Messages Window"
 msgstr "Okno zpráv"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:2943 src/PrefsUnifiedDlg.cpp:183
+#: src/amuleDlg.cpp:1414 src/muuli_wdr.cpp:2944 src/PrefsUnifiedDlg.cpp:183
 #: src/Statistics.cpp:727 src/Statistics.cpp:1024
 msgid "Statistics"
 msgstr "Statistiky"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:2943
+#: src/amuleDlg.cpp:1414 src/muuli_wdr.cpp:2944
 msgid "Statistics Graph Window"
 msgstr "Okno se statistikami"
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:2945 src/PrefsUnifiedDlg.cpp:198
+#: src/amuleDlg.cpp:1416 src/muuli_wdr.cpp:2946 src/PrefsUnifiedDlg.cpp:198
 #: src/utils/wxCas/src/wxcasprefs.cpp:41
 msgid "Preferences"
 msgstr "Nastavení"
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:2945
+#: src/amuleDlg.cpp:1416 src/muuli_wdr.cpp:2946
 msgid "Preferences Settings Window"
 msgstr "Okno s nastavením"
 
-#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:2946
+#: src/amuleDlg.cpp:1418 src/muuli_wdr.cpp:2947
 msgid "Import"
 msgstr "Import"
 
-#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:2946
+#: src/amuleDlg.cpp:1418 src/muuli_wdr.cpp:2947
 msgid "The partfile importer tool"
 msgstr "Nástroj pro import částečných souborů"
 
-#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:2947
+#: src/amuleDlg.cpp:1420 src/muuli_wdr.cpp:2948
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
 msgid "About"
 msgstr "O programu"
 
-#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:2947
+#: src/amuleDlg.cpp:1420 src/muuli_wdr.cpp:2948
 msgid "About/Help"
 msgstr "O programu/Nápověda"
 
-#: src/amuleDlg.cpp:1463
+#: src/amuleDlg.cpp:1547
 msgid "eD2k network"
 msgstr "Síť eD2k"
 
-#: src/amuleDlg.cpp:1467
+#: src/amuleDlg.cpp:1551
 msgid "Kad network"
 msgstr "Síť Kad"
 
-#: src/amuleDlg.cpp:1467
+#: src/amuleDlg.cpp:1551
 msgid "No network"
 msgstr "Žádná síť"
 
@@ -801,48 +811,48 @@ msgstr "Vzdálené ovládání aMule"
 msgid "aMule"
 msgstr "aMule"
 
-#: src/amule-gui.cpp:362
+#: src/amule-gui.cpp:368
 msgid "Fatal Error: Failed to create Core Timer"
 msgstr "Kritická chyba: Selhalo vytváření časovače jádra"
 
-#: src/amule-remote-gui.cpp:73
+#: src/amule-remote-gui.cpp:77
 msgid "Connect to remote amule"
 msgstr "Připojit se ke vzdálené amuli"
 
-#: src/amule-remote-gui.cpp:276
+#: src/amule-remote-gui.cpp:297
 msgid "Fatal Error: Failed to create Poll Timer"
 msgstr "Kritická chyba: Selhalo vytváření časovače pro dotazování"
 
-#: src/amule-remote-gui.cpp:302
+#: src/amule-remote-gui.cpp:323
 msgid "Going to event loop..."
 msgstr "Zahajuji smyčku událostí..."
 
-#: src/amule-remote-gui.cpp:349
+#: src/amule-remote-gui.cpp:370
 msgid "Connecting..."
 msgstr "Připojuji..."
 
-#: src/amule-remote-gui.cpp:353
+#: src/amule-remote-gui.cpp:374
 msgid "Connection failed "
 msgstr "Připojení selhalo "
 
-#: src/amule-remote-gui.cpp:370
+#: src/amule-remote-gui.cpp:391
 msgid "Remote GUI EC event handler"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:377
+#: src/amule-remote-gui.cpp:398
 msgid "Going down"
 msgstr "Ukončuji"
 
-#: src/amule-remote-gui.cpp:380 src/ExternalConnector.cpp:447
+#: src/amule-remote-gui.cpp:401 src/ExternalConnector.cpp:447
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:383
+#: src/amule-remote-gui.cpp:404
 msgid "Connection closed - aMule has terminated probably."
 msgstr "Spojení uzavřeno - aMule se pravděpodobně ukončila."
 
-#: src/amule-remote-gui.cpp:400
+#: src/amule-remote-gui.cpp:421
 #, c-format
 msgid ""
 "Connection timed out. Unable to reach %s:%d within the allotted time.\n"
@@ -850,20 +860,24 @@ msgid ""
 "Connections enabled."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:488
+#: src/amule-remote-gui.cpp:509
 msgid "Ready"
 msgstr "Připraven"
 
-#: src/amule-remote-gui.cpp:665 src/TransferWnd.cpp:340
+#: src/amule-remote-gui.cpp:686 src/TransferWnd.cpp:340
 msgid "All"
 msgstr "Vše"
 
-#: src/amule-remote-gui.cpp:711
+#: src/amule-remote-gui.cpp:741 src/ExternalConn.cpp:1417
+msgid "Invalid link or already on list."
+msgstr "Neplatný odkaz, nebo je již v seznamu."
+
+#: src/amule-remote-gui.cpp:761
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:1424 src/BaseClient.cpp:1775
+#: src/amule-remote-gui.cpp:1474 src/BaseClient.cpp:1775
 #: src/BaseClient.cpp:2314 src/BaseClient.cpp:2330 src/BaseClient.cpp:2606
 #: src/ClientDetailDialog.cpp:80 src/ClientDetailDialog.cpp:81
 #: src/ClientDetailDialog.cpp:114 src/ClientDetailDialog.cpp:115
@@ -873,9 +887,9 @@ msgstr ""
 #: src/DownloadListCtrl.cpp:1111 src/ExternalConn.cpp:445
 #: src/FileDetailDialog.cpp:127 src/GenericClientListCtrl.cpp:1056
 #: src/GenericClientListCtrl.cpp:1067 src/GenericClientListCtrl.cpp:1077
-#: src/HTTPDownload.cpp:83 src/KnownFile.cpp:912 src/KnownFile.cpp:918
-#: src/MuleTrayIcon.cpp:333 src/MuleTrayIcon.cpp:746 src/PartFile.cpp:2632
-#: src/PartFile.cpp:2638 src/Server.cpp:133 src/Server.cpp:208
+#: src/HTTPDownload.cpp:87 src/KnownFile.cpp:912 src/KnownFile.cpp:918
+#: src/MuleTrayIcon.cpp:410 src/MuleTrayIcon.cpp:846 src/PartFile.cpp:2655
+#: src/PartFile.cpp:2661 src/Server.cpp:133 src/Server.cpp:208
 #: src/Statistics.cpp:972
 msgid "Unknown"
 msgstr "Neznámý"
@@ -973,12 +987,12 @@ msgstr "VAROVÁNÍ: %s nelze otevřít."
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
 msgstr "VAROVÁNÍ: Soubor je porušen, obsahuje neplatnou hlavičku."
 
-#: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:117
+#: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:132
 #, fuzzy, c-format
 msgid "IO error while reading %s file: %s"
 msgstr "I/O chyba při čtení souboru known.met: %s"
 
-#: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:165
+#: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:192
 #, fuzzy, c-format
 msgid "Error while saving %s file: %s"
 msgstr "Došlo k chybě při ukládání souboru known.met: %s"
@@ -1087,12 +1101,12 @@ msgstr "Soubor 'cryptkey.dat' nenalezen, vytvářím."
 msgid "Client Details"
 msgstr "Podrobnosti klienta"
 
-#: src/ClientDetailDialog.cpp:100 src/ServerWnd.cpp:170 src/ServerWnd.cpp:180
+#: src/ClientDetailDialog.cpp:100 src/ServerWnd.cpp:176 src/ServerWnd.cpp:186
 #: src/utils/wxCas/src/onlinesig.cpp:260
 msgid "LowID"
 msgstr "LowID"
 
-#: src/ClientDetailDialog.cpp:100 src/ServerWnd.cpp:183
+#: src/ClientDetailDialog.cpp:100 src/ServerWnd.cpp:189
 #: src/utils/wxCas/src/onlinesig.cpp:258
 msgid "HighID"
 msgstr "HighID"
@@ -1113,13 +1127,13 @@ msgstr "Nepodporováno"
 msgid "Disabled"
 msgstr "Zakázáno"
 
-#: src/ClientDetailDialog.cpp:131 src/MuleTrayIcon.cpp:307
-#: src/ServerWnd.cpp:164 src/ServerWnd.cpp:213 src/TextClient.cpp:721
+#: src/ClientDetailDialog.cpp:131 src/MuleTrayIcon.cpp:384
+#: src/ServerWnd.cpp:170 src/ServerWnd.cpp:219 src/TextClient.cpp:816
 msgid "Connected"
 msgstr "Připojen"
 
-#: src/ClientDetailDialog.cpp:133 src/MuleTrayIcon.cpp:296
-#: src/MuleTrayIcon.cpp:309 src/ServerWnd.cpp:213
+#: src/ClientDetailDialog.cpp:133 src/MuleTrayIcon.cpp:373
+#: src/MuleTrayIcon.cpp:386 src/ServerWnd.cpp:219
 msgid "Disconnected"
 msgstr "Odpojeno"
 
@@ -1224,7 +1238,7 @@ msgstr "Jméno"
 
 #: src/CommentDialogLst.cpp:56 src/DownloadListCtrl.cpp:159
 #: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:87
-#: src/SharedFilesCtrl.cpp:102
+#: src/SharedFilesCtrl.cpp:103
 msgid "File Name"
 msgstr "Název souboru"
 
@@ -1266,33 +1280,33 @@ msgstr "Auto [No]"
 msgid "Auto [Hi]"
 msgstr "Auto [Vy]"
 
-#: src/DataToText.cpp:41 src/SharedFilesCtrl.cpp:137
+#: src/DataToText.cpp:41 src/SharedFilesCtrl.cpp:138
 msgid "Very low"
 msgstr "Velmi nízká"
 
-#: src/DataToText.cpp:42 src/DownloadListCtrl.cpp:646 src/muuli_wdr.cpp:1991
+#: src/DataToText.cpp:42 src/DownloadListCtrl.cpp:646 src/muuli_wdr.cpp:1992
 #: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
-#: src/SharedFilesCtrl.cpp:138
+#: src/SharedFilesCtrl.cpp:139
 msgid "Low"
 msgstr "Nízká"
 
-#: src/DataToText.cpp:43 src/DownloadListCtrl.cpp:647 src/muuli_wdr.cpp:1992
+#: src/DataToText.cpp:43 src/DownloadListCtrl.cpp:647 src/muuli_wdr.cpp:1993
 #: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:400
-#: src/SharedFilesCtrl.cpp:139
+#: src/SharedFilesCtrl.cpp:140
 msgid "Normal"
 msgstr "Normální"
 
-#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:648 src/muuli_wdr.cpp:1993
+#: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:648 src/muuli_wdr.cpp:1994
 #: src/ServerListCtrl.cpp:238 src/ServerListCtrl.cpp:401
-#: src/SharedFilesCtrl.cpp:140
+#: src/SharedFilesCtrl.cpp:141
 msgid "High"
 msgstr "Vysoká"
 
-#: src/DataToText.cpp:45 src/SharedFilesCtrl.cpp:141
+#: src/DataToText.cpp:45 src/SharedFilesCtrl.cpp:142
 msgid "Very High"
 msgstr "Velmi vysoká"
 
-#: src/DataToText.cpp:46 src/SharedFilesCtrl.cpp:142
+#: src/DataToText.cpp:46 src/SharedFilesCtrl.cpp:143
 msgid "Release"
 msgstr "Vydání"
 
@@ -1309,12 +1323,12 @@ msgid "Queue Full"
 msgstr "Plná fronta"
 
 #: src/DataToText.cpp:62 src/GenericClientListCtrl.cpp:1003
-#: src/KnownFile.cpp:1546
+#: src/KnownFile.cpp:1554
 msgid "On Queue"
 msgstr "Ve frontě"
 
 #: src/DataToText.cpp:63 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:631 src/PartFile.cpp:4027 src/TransferWnd.cpp:348
+#: src/OtherFunctions.cpp:631 src/PartFile.cpp:4060 src/TransferWnd.cpp:348
 msgid "Downloading"
 msgstr "Stahuji"
 
@@ -1374,8 +1388,8 @@ msgstr "Lokální server"
 msgid "Remote Server"
 msgstr "Vzdálený server"
 
-#: src/DataToText.cpp:128 src/muuli_wdr.cpp:204 src/muuli_wdr.cpp:2723
-#: src/SearchDlg.cpp:110 src/TextClient.cpp:718
+#: src/DataToText.cpp:128 src/muuli_wdr.cpp:204 src/muuli_wdr.cpp:2724
+#: src/SearchDlg.cpp:110 src/TextClient.cpp:813
 msgid "Kad"
 msgstr "Kad"
 
@@ -1442,11 +1456,11 @@ msgid "Part"
 msgstr "Část"
 
 #: src/DownloadListCtrl.cpp:160 src/PartFileConvertDlg.cpp:93
-#: src/SearchListCtrl.cpp:88 src/SharedFilesCtrl.cpp:103
+#: src/SearchListCtrl.cpp:88 src/SharedFilesCtrl.cpp:104
 msgid "Size"
 msgstr "Velikost"
 
-#: src/DownloadListCtrl.cpp:161 src/muuli_wdr.cpp:2790
+#: src/DownloadListCtrl.cpp:161 src/muuli_wdr.cpp:2791
 msgid "Transferred"
 msgstr "Přeneseno"
 
@@ -1459,17 +1473,17 @@ msgid "Progress"
 msgstr "Průběh"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:4073 src/SearchListCtrl.cpp:89
+#: src/PartFile.cpp:4106 src/SearchListCtrl.cpp:89
 msgid "Sources"
 msgstr "Zdroje"
 
 #: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:651
 #: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:403
-#: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:145
+#: src/SharedFilesCtrl.cpp:106 src/SharedFilesCtrl.cpp:146
 msgid "Priority"
 msgstr "Priorita"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4075 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4108 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr "Stav"
 
@@ -1493,7 +1507,7 @@ msgstr "Opravdu si přejete smazat vybraný soubor?"
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "Opravdu si přejete smazat vybrané soubory?"
 
-#: src/DownloadListCtrl.cpp:554 src/SharedFilesCtrl.cpp:203
+#: src/DownloadListCtrl.cpp:554 src/SharedFilesCtrl.cpp:204
 #, c-format
 msgid ""
 "Feedback from: %s (%s)\n"
@@ -1502,8 +1516,8 @@ msgstr ""
 "Odezva od: %s (%s)\n"
 "\n"
 
-#: src/DownloadListCtrl.cpp:649 src/muuli_wdr.cpp:1994
-#: src/SharedFilesCtrl.cpp:143
+#: src/DownloadListCtrl.cpp:649 src/muuli_wdr.cpp:1995
+#: src/SharedFilesCtrl.cpp:144
 msgid "Auto"
 msgstr "Auto"
 
@@ -1555,11 +1569,11 @@ msgstr "Zobrazit všechny komentáře"
 msgid "Copy magnet URI to clipboard"
 msgstr "Zkopírovat magnet URI do schránky"
 
-#: src/DownloadListCtrl.cpp:686 src/SharedFilesCtrl.cpp:164
+#: src/DownloadListCtrl.cpp:686 src/SharedFilesCtrl.cpp:165
 msgid "Copy eD2k &link to clipboard"
 msgstr "Zkopírovat eD2k &odkaz do schránky"
 
-#: src/DownloadListCtrl.cpp:688 src/SharedFilesCtrl.cpp:171
+#: src/DownloadListCtrl.cpp:688 src/SharedFilesCtrl.cpp:172
 msgid "Copy feedback to clipboard"
 msgstr "Uložit odezvu do schránky"
 
@@ -1575,11 +1589,11 @@ msgstr "Zařadit do kategorie"
 msgid "&Open the file"
 msgstr "&Otevřít tento soubor"
 
-#: src/DownloadListCtrl.cpp:812 src/SharedFilesCtrl.cpp:686
+#: src/DownloadListCtrl.cpp:812 src/SharedFilesCtrl.cpp:714
 msgid "Enter new name for this file:"
 msgstr "Zadejte nový název pro tento soubor:"
 
-#: src/DownloadListCtrl.cpp:813 src/SharedFilesCtrl.cpp:687
+#: src/DownloadListCtrl.cpp:813 src/SharedFilesCtrl.cpp:715
 msgid "File rename"
 msgstr "Přejmenování souboru"
 
@@ -1654,11 +1668,11 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/DownloadQueue.cpp:240 src/DownloadQueue.cpp:1483
+#: src/DownloadQueue.cpp:240 src/DownloadQueue.cpp:1500
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr ""
 
-#: src/DownloadQueue.cpp:243 src/DownloadQueue.cpp:1486
+#: src/DownloadQueue.cpp:243 src/DownloadQueue.cpp:1503
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr ""
 
@@ -1692,7 +1706,15 @@ msgstr ""
 msgid "Unknown protocol of link: %s"
 msgstr ""
 
-#: src/DownloadQueue.cpp:1446
+#: src/DownloadQueue.cpp:1441
+#, c-format
+msgid "Could not add %u link (see log for details)."
+msgid_plural "Could not add %u links (see log for details)."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/DownloadQueue.cpp:1463
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Neplatný eD2k odkaz! CHYBA: %s"
@@ -1746,172 +1768,173 @@ msgid ""
 "snapshot! *sigh* possible crash prevented"
 msgstr ""
 
-#: src/ExternalConn.cpp:485
+#: src/ExternalConn.cpp:493
 msgid "Invalid protocol version."
 msgstr "Neplatná verze protokolu."
 
-#: src/ExternalConn.cpp:490
+#: src/ExternalConn.cpp:498
 msgid "Missing protocol version tag."
 msgstr ""
 
-#: src/ExternalConn.cpp:497
+#: src/ExternalConn.cpp:505
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr ""
 
-#: src/ExternalConn.cpp:514
+#: src/ExternalConn.cpp:531
 msgid "Authentication failed: wrong password."
 msgstr "Autentizace selhala: nesprávné heslo."
 
-#: src/ExternalConn.cpp:516
+#: src/ExternalConn.cpp:533
 msgid "Authentication failed: missing password."
 msgstr "Autentizace selhala: chybějící heslo."
 
-#: src/ExternalConn.cpp:526
+#: src/ExternalConn.cpp:543
 msgid "Invalid request, please authenticate first."
 msgstr "Neplatný požadavek, nejdřív se prosím autentizujte."
 
-#: src/ExternalConn.cpp:531
+#: src/ExternalConn.cpp:548
 msgid "Access granted."
 msgstr "Přistup povolen."
 
-#: src/ExternalConn.cpp:539
+#: src/ExternalConn.cpp:556
 #, c-format
 msgid "Sent error message \"%s\" to client."
 msgstr "Odeslána chybová hláška \"%s\" pro klienta."
 
-#: src/ExternalConn.cpp:542
+#: src/ExternalConn.cpp:559
 #, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
 msgstr "Neautorizovaný pokus o přístup z %s. Připojení uzavřeno."
 
-#: src/ExternalConn.cpp:809
+#: src/ExternalConn.cpp:826
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr ""
 
-#: src/ExternalConn.cpp:811
+#: src/ExternalConn.cpp:828
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "FileHash nenalezen: %s"
 
-#: src/ExternalConn.cpp:858 src/ExternalConn.cpp:940 src/ExternalConn.cpp:1015
+#: src/ExternalConn.cpp:875 src/ExternalConn.cpp:957 src/ExternalConn.cpp:1032
 msgid "OOPS! OpCode processing error!"
 msgstr ""
 
-#: src/ExternalConn.cpp:886
+#: src/ExternalConn.cpp:903
 msgid "Server not added"
 msgstr "Server nepřidán"
 
-#: src/ExternalConn.cpp:904
+#: src/ExternalConn.cpp:921
 #, c-format
 msgid "server not found: %s"
 msgstr "server nenalezen: %s"
 
-#: src/ExternalConn.cpp:920
+#: src/ExternalConn.cpp:937
 msgid "need to define server to be removed"
 msgstr ""
 
-#: src/ExternalConn.cpp:934
+#: src/ExternalConn.cpp:951
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k je zakázané v nastavení."
 
-#: src/ExternalConn.cpp:995
+#: src/ExternalConn.cpp:1012
 #, fuzzy
 msgid "Friend not found."
 msgstr "Soubor nenalezen."
 
-#: src/ExternalConn.cpp:1004
+#: src/ExternalConn.cpp:1021
 #, fuzzy
 msgid "Client not found."
 msgstr "Soubor nenalezen."
 
-#: src/ExternalConn.cpp:1009
+#: src/ExternalConn.cpp:1026
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
 msgstr ""
 
-#: src/ExternalConn.cpp:1118
+#: src/ExternalConn.cpp:1135
 msgid "Search in progress. Refetch results in a moment!"
 msgstr ""
 
-#: src/ExternalConn.cpp:1124
+#: src/ExternalConn.cpp:1141
 msgid "WebSearch from remote interface makes no sense."
 msgstr ""
 
-#: src/ExternalConn.cpp:1322
+#: src/ExternalConn.cpp:1339
 msgid "No points for graph."
 msgstr "Žádné údaje pro graf."
 
-#: src/ExternalConn.cpp:1331
+#: src/ExternalConn.cpp:1348
 msgid "Your client is not configured for this detail level."
 msgstr "Vás klient není nakonfigurován pro tuto úroveň detailů."
 
-#: src/ExternalConn.cpp:1358
+#: src/ExternalConn.cpp:1375
 msgid "External Connection: shutdown requested"
 msgstr ""
 
-#: src/ExternalConn.cpp:1370
+#: src/ExternalConn.cpp:1387
 msgid "Already shutting down."
 msgstr "Již se ukončuji."
 
-#: src/ExternalConn.cpp:1382
+#: src/ExternalConn.cpp:1405
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr ""
 
-#: src/ExternalConn.cpp:1391
-msgid "Invalid link or already on list."
+#: src/ExternalConn.cpp:1421
+#, fuzzy, c-format
+msgid "%d of %d links failed (invalid or already on list)."
 msgstr "Neplatný odkaz, nebo je již v seznamu."
 
-#: src/ExternalConn.cpp:1458
+#: src/ExternalConn.cpp:1489
 msgid "File not found."
 msgstr "Soubor nenalezen."
 
-#: src/ExternalConn.cpp:1463
+#: src/ExternalConn.cpp:1494
 msgid "Invalid file name."
 msgstr "Neplatný název souboru."
 
-#: src/ExternalConn.cpp:1471
+#: src/ExternalConn.cpp:1502
 msgid "Unable to rename file."
 msgstr "Nelze přejmenovat soubor."
 
-#: src/ExternalConn.cpp:1769 src/ExternalConn.cpp:1796
+#: src/ExternalConn.cpp:1800 src/ExternalConn.cpp:1827
 msgid "Kad is disabled in preferences."
 msgstr "Kad je zakázaný v nastavení."
 
-#: src/ExternalConn.cpp:1808
+#: src/ExternalConn.cpp:1839
 msgid "Already connected to eD2k."
 msgstr "Již připojen k eD2k."
 
-#: src/ExternalConn.cpp:1811
+#: src/ExternalConn.cpp:1842
 msgid "Connecting to eD2k..."
 msgstr "Připojuji se k eD2k..."
 
-#: src/ExternalConn.cpp:1819
+#: src/ExternalConn.cpp:1850
 msgid "Already connected to Kad."
 msgstr "Již jste připojen k síti Kad."
 
-#: src/ExternalConn.cpp:1822
+#: src/ExternalConn.cpp:1853
 msgid "Connecting to Kad..."
 msgstr "Připojuji se k síti Kad..."
 
-#: src/ExternalConn.cpp:1829
+#: src/ExternalConn.cpp:1860
 msgid "All networks are disabled."
 msgstr "Všechny sítě jsou zakázány."
 
-#: src/ExternalConn.cpp:1837
+#: src/ExternalConn.cpp:1868
 msgid "Disconnected from eD2k."
 msgstr "Odpojen od eD2k."
 
-#: src/ExternalConn.cpp:1841
+#: src/ExternalConn.cpp:1872
 msgid "Disconnected from Kad."
 msgstr "Odpojen od Kademlia."
 
-#: src/ExternalConn.cpp:1850
+#: src/ExternalConn.cpp:1881
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr ""
 
-#: src/ExternalConn.cpp:1853
+#: src/ExternalConn.cpp:1884
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr ""
 
@@ -2129,7 +2152,7 @@ msgstr ""
 msgid "CRITICAL - no client on StartChatSession"
 msgstr ""
 
-#: src/FriendListCtrl.cpp:122 src/muuli_wdr.cpp:2358 src/muuli_wdr.cpp:2871
+#: src/FriendListCtrl.cpp:122 src/muuli_wdr.cpp:2359 src/muuli_wdr.cpp:2872
 msgid "Friends"
 msgstr "Kamarádi"
 
@@ -2244,49 +2267,49 @@ msgstr "Ne"
 msgid "Yes"
 msgstr "Ano"
 
-#: src/HTTPDownload.cpp:54
+#: src/HTTPDownload.cpp:58
 msgid "Downloading..."
 msgstr "Stahuji..."
 
-#: src/HTTPDownload.cpp:118
+#: src/HTTPDownload.cpp:122
 msgid "HTTP download cancelled"
 msgstr "HTTP stahování zrušeno"
 
-#: src/HTTPDownload.cpp:233
+#: src/HTTPDownload.cpp:237
 msgid "The URL to download can't be empty"
 msgstr "URL pro stahování nesmí být prázdné"
 
-#: src/HTTPDownload.cpp:242
+#: src/HTTPDownload.cpp:246
 #, fuzzy, c-format
 msgid "Failed to create HTTP request for %s"
 msgstr "Nelze získat seznam sdílených souborů od uživatele '%s'"
 
-#: src/HTTPDownload.cpp:318
+#: src/HTTPDownload.cpp:337
 #, c-format
 msgid "HTTP download: empty response body for %s"
 msgstr ""
 
-#: src/HTTPDownload.cpp:330
+#: src/HTTPDownload.cpp:349
 #, fuzzy, c-format
 msgid "Could not move downloaded file to %s"
 msgstr "Soubor %s se již pokoušíte stáhnout"
 
-#: src/HTTPDownload.cpp:334
+#: src/HTTPDownload.cpp:353
 #, fuzzy, c-format
 msgid "Downloaded %s (%llu bytes)"
 msgstr "Staženo %d bytů"
 
-#: src/HTTPDownload.cpp:339
+#: src/HTTPDownload.cpp:358
 #, fuzzy, c-format
 msgid "The URL %s returned: %i"
 msgstr "URL %s vrátilo: %i - Chyba (%i)!"
 
-#: src/HTTPDownload.cpp:346
+#: src/HTTPDownload.cpp:365
 #, fuzzy, c-format
 msgid "HTTP download failed for %s: %s"
 msgstr "HTTP stahování zrušeno"
 
-#: src/HTTPDownload.cpp:361
+#: src/HTTPDownload.cpp:380
 #, c-format
 msgid "HTTP 401 Unauthorized for %s"
 msgstr ""
@@ -2461,32 +2484,32 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/KnownFile.cpp:1540 src/PartFileConvertDlg.cpp:91
+#: src/KnownFile.cpp:1548 src/PartFileConvertDlg.cpp:91
 msgid "File name"
 msgstr "Název souboru"
 
-#: src/KnownFile.cpp:1541
+#: src/KnownFile.cpp:1549
 msgid "File size"
 msgstr "Velikost souboru"
 
-#: src/KnownFile.cpp:1542
+#: src/KnownFile.cpp:1550
 msgid "Share ratio"
 msgstr "Poměr sdílení"
 
-#: src/KnownFile.cpp:1543 src/SharedFilePeersListCtrl.cpp:31
+#: src/KnownFile.cpp:1551 src/SharedFilePeersListCtrl.cpp:31
 #: src/SourceListCtrl.cpp:31
 msgid "Uploaded"
 msgstr "Odesláno"
 
-#: src/KnownFile.cpp:1544 src/muuli_wdr.cpp:2774
+#: src/KnownFile.cpp:1552 src/muuli_wdr.cpp:2775
 msgid "Requested"
 msgstr "Vyžádáno"
 
-#: src/KnownFile.cpp:1545
+#: src/KnownFile.cpp:1553
 msgid "Accepted"
 msgstr "Přijato"
 
-#: src/KnownFile.cpp:1547
+#: src/KnownFile.cpp:1555
 msgid "Complete sources"
 msgstr "Kompletní zdroje"
 
@@ -2494,11 +2517,11 @@ msgstr "Kompletní zdroje"
 msgid "WARNING: Known file list corrupted, contains invalid header."
 msgstr ""
 
-#: src/KnownFileList.cpp:108
+#: src/KnownFileList.cpp:120
 msgid "Failed to load entry in known file list, file may be corrupt"
 msgstr ""
 
-#: src/KnownFileList.cpp:115
+#: src/KnownFileList.cpp:129
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
 
@@ -2512,72 +2535,72 @@ msgstr "Neznámá verze"
 msgid "Unable to get error description for error %d"
 msgstr "Nemohu otevřít soubor se skinem %s pro čtení"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:4005
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:4038
 msgid "Hashing"
 msgstr "Hashuji"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:4011
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:4044
 msgid "Completing"
 msgstr "Dokončování"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:4014
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:4047
 msgid "Complete"
 msgstr "Dokončeno"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:633
-#: src/PartFile.cpp:4017 src/TransferWnd.cpp:350
+#: src/PartFile.cpp:4050 src/TransferWnd.cpp:350
 msgid "Paused"
 msgstr "Pozastaveno"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:632
-#: src/PartFile.cpp:4020 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:4053 src/TransferWnd.cpp:349
 msgid "Erroneous"
 msgstr "Poškozený"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:630
-#: src/PartFile.cpp:4029 src/TransferWnd.cpp:347
+#: src/PartFile.cpp:4062 src/TransferWnd.cpp:347
 msgid "Waiting"
 msgstr "Čekám"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:117 src/libs/ec/cpp/RemoteConnect.cpp:125
+#: src/libs/ec/cpp/RemoteConnect.cpp:121 src/libs/ec/cpp/RemoteConnect.cpp:129
 msgid "You must specify a non-empty password."
 msgstr "Musíte zadat (neprázdné) heslo."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:122
+#: src/libs/ec/cpp/RemoteConnect.cpp:126
 msgid "Invalid password, not a MD5 hash!"
 msgstr "Neplatné heslo, není MD5 hash!"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:185
+#: src/libs/ec/cpp/RemoteConnect.cpp:189
 msgid "Connection failure"
 msgstr "Chyba při připojování"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:245
+#: src/libs/ec/cpp/RemoteConnect.cpp:249
 msgid "EC connection failed. Empty reply."
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:256
+#: src/libs/ec/cpp/RemoteConnect.cpp:260
 #, fuzzy
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
 msgstr "Špatná odpověď od serveru. Spojení uzavřeno."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:264
+#: src/libs/ec/cpp/RemoteConnect.cpp:268
 msgid "Succeeded! Connection established to aMule "
 msgstr "Připojení k aMule uspělo"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:267
+#: src/libs/ec/cpp/RemoteConnect.cpp:271
 msgid "Succeeded! Connection established."
 msgstr "Připojení uspělo."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:273
+#: src/libs/ec/cpp/RemoteConnect.cpp:287
 msgid "External Connection: Access denied because: "
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:276
+#: src/libs/ec/cpp/RemoteConnect.cpp:290
 #, fuzzy
 msgid "External Connection: Handshake failed."
 msgstr "Heslo pro externí připojení."
 
-#: src/LibSocketAsio.cpp:1265
+#: src/LibSocketAsio.cpp:1301
 #, fuzzy, c-format
 msgid "Asio thread %d started"
 msgstr "Synchronizační vlákno spuštěno."
@@ -2599,7 +2622,7 @@ msgid "WARNING: "
 msgstr "VAROVÁNÍ: "
 
 #: src/MuleNotebook.cpp:170 src/muuli_wdr.cpp:765 src/muuli_wdr.cpp:1181
-#: src/muuli_wdr.cpp:2678 src/muuli_wdr.cpp:2911
+#: src/muuli_wdr.cpp:2679 src/muuli_wdr.cpp:2912
 msgid "Close"
 msgstr "Zavřít"
 
@@ -2625,197 +2648,197 @@ msgstr "Vyprázdnit"
 msgid "Select All"
 msgstr "Označit vše"
 
-#: src/MuleTrayIcon.cpp:290
+#: src/MuleTrayIcon.cpp:367
 #, fuzzy
 msgid "eD2k: "
 msgstr "eD2k"
 
-#: src/MuleTrayIcon.cpp:293
+#: src/MuleTrayIcon.cpp:370
 #, fuzzy
 msgid "Connected (LowID)"
 msgstr "Připojen"
 
-#: src/MuleTrayIcon.cpp:294
+#: src/MuleTrayIcon.cpp:371
 #, fuzzy
 msgid "Connected (HighID)"
 msgstr "Připojen"
 
-#: src/MuleTrayIcon.cpp:303
+#: src/MuleTrayIcon.cpp:380
 #, fuzzy
 msgid "Kad: "
 msgstr " Kad: "
 
-#: src/MuleTrayIcon.cpp:306
+#: src/MuleTrayIcon.cpp:383
 #, fuzzy
 msgid "Connected (firewalled)"
 msgstr "Připojen ke kad (za firewallem)"
 
-#: src/MuleTrayIcon.cpp:316
+#: src/MuleTrayIcon.cpp:393
 #, fuzzy
 msgid "Server: "
 msgstr "IP serveru: "
 
-#: src/MuleTrayIcon.cpp:317
+#: src/MuleTrayIcon.cpp:394
 #, fuzzy
 msgid "Server IP: "
 msgstr "IP serveru:"
 
-#: src/MuleTrayIcon.cpp:322 src/MuleTrayIcon.cpp:323 src/MuleTrayIcon.cpp:723
-#: src/MuleTrayIcon.cpp:737 src/TextClient.cpp:716 src/TextClient.cpp:729
+#: src/MuleTrayIcon.cpp:399 src/MuleTrayIcon.cpp:400 src/MuleTrayIcon.cpp:823
+#: src/MuleTrayIcon.cpp:837 src/TextClient.cpp:811 src/TextClient.cpp:824
 msgid "Not connected"
 msgstr "Nepřipojen"
 
-#: src/MuleTrayIcon.cpp:330 src/MuleTrayIcon.cpp:746
+#: src/MuleTrayIcon.cpp:407 src/MuleTrayIcon.cpp:846
 #, c-format
 msgid "IP: %s"
 msgstr "IP: %s"
 
-#: src/MuleTrayIcon.cpp:337 src/MuleTrayIcon.cpp:755
+#: src/MuleTrayIcon.cpp:414 src/MuleTrayIcon.cpp:855
 #, c-format
 msgid "TCP port: %d"
 msgstr "TCP port: %d"
 
-#: src/MuleTrayIcon.cpp:338 src/MuleTrayIcon.cpp:757
+#: src/MuleTrayIcon.cpp:415 src/MuleTrayIcon.cpp:857
 msgid "TCP port: Not ready"
 msgstr "TCP port: nepřipraven"
 
-#: src/MuleTrayIcon.cpp:341 src/MuleTrayIcon.cpp:766
+#: src/MuleTrayIcon.cpp:418 src/MuleTrayIcon.cpp:866
 #, c-format
 msgid "UDP port: %d"
 msgstr "UDP port: %d"
 
-#: src/MuleTrayIcon.cpp:342 src/MuleTrayIcon.cpp:768
+#: src/MuleTrayIcon.cpp:419 src/MuleTrayIcon.cpp:868
 msgid "UDP port: Not ready"
 msgstr "UDP port: nepřipraven"
 
-#: src/MuleTrayIcon.cpp:346 src/MuleTrayIcon.cpp:707
+#: src/MuleTrayIcon.cpp:423 src/MuleTrayIcon.cpp:807
 msgid "Client Information"
 msgstr "Informace o klientu"
 
-#: src/MuleTrayIcon.cpp:364 src/MuleTrayIcon.cpp:824
+#: src/MuleTrayIcon.cpp:441 src/MuleTrayIcon.cpp:924
 msgid "Upload limit"
 msgstr "Limit odesílání"
 
-#: src/MuleTrayIcon.cpp:377 src/MuleTrayIcon.cpp:828
+#: src/MuleTrayIcon.cpp:454 src/MuleTrayIcon.cpp:928
 msgid "Download limit"
 msgstr "Limit stahování"
 
-#: src/MuleTrayIcon.cpp:397 src/MuleTrayIcon.cpp:888
-msgid "Hide aMule"
-msgstr "Skrýt aMule"
-
-#: src/MuleTrayIcon.cpp:398 src/MuleTrayIcon.cpp:891
+#: src/MuleTrayIcon.cpp:480 src/MuleTrayIcon.cpp:491 src/MuleTrayIcon.cpp:990
 msgid "Show aMule"
 msgstr "Zobrazit aMule"
 
-#: src/MuleTrayIcon.cpp:408 src/MuleTrayIcon.cpp:898
+#: src/MuleTrayIcon.cpp:483 src/MuleTrayIcon.cpp:490 src/MuleTrayIcon.cpp:988
+msgid "Hide aMule"
+msgstr "Skrýt aMule"
+
+#: src/MuleTrayIcon.cpp:501 src/MuleTrayIcon.cpp:997
 #: src/utils/aLinkCreator/src/alcframe.cpp:229
 msgid "Exit"
 msgstr "Ukončit"
 
-#: src/MuleTrayIcon.cpp:469 src/MuleTrayIcon.cpp:845 src/MuleTrayIcon.cpp:866
-#: src/muuli_wdr.cpp:1315 src/muuli_wdr.cpp:1323 src/muuli_wdr.cpp:1330
-#: src/muuli_wdr.cpp:1622 src/muuli_wdr.cpp:1628 src/OtherFunctions.cpp:94
+#: src/MuleTrayIcon.cpp:569 src/MuleTrayIcon.cpp:945 src/MuleTrayIcon.cpp:966
+#: src/muuli_wdr.cpp:1316 src/muuli_wdr.cpp:1324 src/muuli_wdr.cpp:1331
+#: src/muuli_wdr.cpp:1623 src/muuli_wdr.cpp:1629 src/OtherFunctions.cpp:94
 #: src/StatisticsDlg.cpp:101 src/StatisticsDlg.cpp:103
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/MuleTrayIcon.cpp:484 src/MuleTrayIcon.cpp:503 src/MuleTrayIcon.cpp:832
-#: src/MuleTrayIcon.cpp:853
+#: src/MuleTrayIcon.cpp:584 src/MuleTrayIcon.cpp:603 src/MuleTrayIcon.cpp:932
+#: src/MuleTrayIcon.cpp:953
 msgid "Unlimited"
 msgstr "Neomezený"
 
-#: src/MuleTrayIcon.cpp:669
+#: src/MuleTrayIcon.cpp:769
 msgid "aMule Tray Menu"
 msgstr "Tray menu aMule"
 
-#: src/MuleTrayIcon.cpp:675
+#: src/MuleTrayIcon.cpp:775
 msgid "Speed limits:"
 msgstr "Rychlostní limity:"
 
-#: src/MuleTrayIcon.cpp:680
+#: src/MuleTrayIcon.cpp:780
 msgid "UL: None"
 msgstr "UL: žádný"
 
-#: src/MuleTrayIcon.cpp:683
+#: src/MuleTrayIcon.cpp:783
 #, c-format
 msgid "UL: %u"
 msgstr "UL: %u"
 
-#: src/MuleTrayIcon.cpp:690
+#: src/MuleTrayIcon.cpp:790
 msgid "DL: None"
 msgstr "DL: žádný"
 
-#: src/MuleTrayIcon.cpp:693
+#: src/MuleTrayIcon.cpp:793
 #, c-format
 msgid "DL: %u"
 msgstr "DL: %u"
 
-#: src/MuleTrayIcon.cpp:697
+#: src/MuleTrayIcon.cpp:797
 #, fuzzy, c-format
 msgid "Download speed: %.1f%s"
 msgstr "Rychlost stahování: %.1f"
 
-#: src/MuleTrayIcon.cpp:700
+#: src/MuleTrayIcon.cpp:800
 #, fuzzy, c-format
 msgid "Upload speed: %.1f%s"
 msgstr "Rychlost odesílání: %.1f"
 
-#: src/MuleTrayIcon.cpp:711
+#: src/MuleTrayIcon.cpp:811
 #, c-format
 msgid "Nickname: %s"
 msgstr "Přezdívka: %s"
 
-#: src/MuleTrayIcon.cpp:711
+#: src/MuleTrayIcon.cpp:811
 msgid "No Nickname Selected!"
 msgstr "Nezvolena žádná přezdívka!"
 
-#: src/MuleTrayIcon.cpp:718
+#: src/MuleTrayIcon.cpp:818
 msgid "ClientID: "
 msgstr "ID klienta: "
 
-#: src/MuleTrayIcon.cpp:730
+#: src/MuleTrayIcon.cpp:830
 msgid "ServerName: "
 msgstr "Název serveru: "
 
-#: src/MuleTrayIcon.cpp:731
+#: src/MuleTrayIcon.cpp:831
 msgid "ServerIP: "
 msgstr "IP serveru: "
 
-#: src/MuleTrayIcon.cpp:738 src/ServerWnd.cpp:188
+#: src/MuleTrayIcon.cpp:838 src/ServerWnd.cpp:194
 #: src/utils/wxCas/src/onlinesig.cpp:263
 msgid "Not Connected"
 msgstr "Nepřipojen"
 
-#: src/MuleTrayIcon.cpp:777
+#: src/MuleTrayIcon.cpp:877
 msgid "Online Signature: Enabled"
 msgstr "Online podpis: Povolen"
 
-#: src/MuleTrayIcon.cpp:780
+#: src/MuleTrayIcon.cpp:880
 msgid "Online Signature: Disabled"
 msgstr "Online podpis: Zakázán"
 
-#: src/MuleTrayIcon.cpp:787 src/Statistics.cpp:732
+#: src/MuleTrayIcon.cpp:887 src/Statistics.cpp:732
 #, c-format
 msgid "Uptime: %s"
 msgstr "Uptime: %s"
 
-#: src/MuleTrayIcon.cpp:793
+#: src/MuleTrayIcon.cpp:893
 #, c-format
 msgid "Shared files: %d"
 msgstr "Sdílené soubory: %d"
 
-#: src/MuleTrayIcon.cpp:799
+#: src/MuleTrayIcon.cpp:899
 #, c-format
 msgid "Queued clients: %d"
 msgstr "Klienti ve frontě: %d"
 
-#: src/MuleTrayIcon.cpp:806
+#: src/MuleTrayIcon.cpp:906
 #, c-format
 msgid "Total DL: %s"
 msgstr "Celkem DL: %s"
 
-#: src/MuleTrayIcon.cpp:813
+#: src/MuleTrayIcon.cpp:913
 #, c-format
 msgid "Total UL: %s"
 msgstr "Celkem UL: %s"
@@ -2891,7 +2914,7 @@ msgstr "Vyhledávání"
 msgid "Name:"
 msgstr "Název:"
 
-#: src/muuli_wdr.cpp:198 src/SearchListCtrl.cpp:90 src/SharedFilesCtrl.cpp:104
+#: src/muuli_wdr.cpp:198 src/SearchListCtrl.cpp:90 src/SharedFilesCtrl.cpp:105
 msgid "Type"
 msgstr "Typ"
 
@@ -2966,7 +2989,7 @@ msgstr "bajtů"
 msgid "KB"
 msgstr "KB"
 
-#: src/muuli_wdr.cpp:261 src/muuli_wdr.cpp:280 src/muuli_wdr.cpp:1527
+#: src/muuli_wdr.cpp:261 src/muuli_wdr.cpp:280 src/muuli_wdr.cpp:1528
 #: src/OtherFunctions.cpp:65
 msgid "MB"
 msgstr "MB"
@@ -3018,7 +3041,7 @@ msgstr ""
 msgid "Stop"
 msgstr "Zastavit"
 
-#: src/muuli_wdr.cpp:335 src/muuli_wdr.cpp:1309 src/SearchListCtrl.cpp:625
+#: src/muuli_wdr.cpp:335 src/muuli_wdr.cpp:1310 src/SearchListCtrl.cpp:625
 msgid "Download"
 msgstr "Stahování"
 
@@ -3059,7 +3082,7 @@ msgstr "Celá název:"
 #: src/muuli_wdr.cpp:1119 src/muuli_wdr.cpp:1124 src/muuli_wdr.cpp:1131
 #: src/muuli_wdr.cpp:1136 src/muuli_wdr.cpp:1143 src/muuli_wdr.cpp:1157
 #: src/muuli_wdr.cpp:1164 src/muuli_wdr.cpp:1169 src/muuli_wdr.cpp:1176
-#: src/muuli_wdr.cpp:2776 src/muuli_wdr.cpp:2784 src/muuli_wdr.cpp:2792
+#: src/muuli_wdr.cpp:2777 src/muuli_wdr.cpp:2785 src/muuli_wdr.cpp:2793
 msgid "N/A"
 msgstr "N/A"
 
@@ -3233,7 +3256,7 @@ msgstr "Uživatelské jméno:"
 msgid "Userhash :"
 msgstr ""
 
-#: src/muuli_wdr.cpp:843 src/muuli_wdr.cpp:2139
+#: src/muuli_wdr.cpp:843 src/muuli_wdr.cpp:2140
 #: src/utils/aLinkCreator/src/alcframe.cpp:139
 msgid "Add"
 msgstr "Přidat"
@@ -3242,15 +3265,15 @@ msgstr "Přidat"
 msgid "Download-Speed"
 msgstr "Rychlost stahování"
 
-#: src/muuli_wdr.cpp:902 src/muuli_wdr.cpp:939 src/muuli_wdr.cpp:2237
+#: src/muuli_wdr.cpp:902 src/muuli_wdr.cpp:939 src/muuli_wdr.cpp:2238
 msgid "Current"
 msgstr ""
 
-#: src/muuli_wdr.cpp:910 src/muuli_wdr.cpp:947 src/muuli_wdr.cpp:2245
+#: src/muuli_wdr.cpp:910 src/muuli_wdr.cpp:947 src/muuli_wdr.cpp:2246
 msgid "Running average"
 msgstr ""
 
-#: src/muuli_wdr.cpp:918 src/muuli_wdr.cpp:955 src/muuli_wdr.cpp:2253
+#: src/muuli_wdr.cpp:918 src/muuli_wdr.cpp:955 src/muuli_wdr.cpp:2254
 msgid "Session average"
 msgstr "Průměr sezení"
 
@@ -3262,7 +3285,7 @@ msgstr "Rychlost odesílání"
 msgid "Connections"
 msgstr "Připojení"
 
-#: src/muuli_wdr.cpp:976 src/muuli_wdr.cpp:1647
+#: src/muuli_wdr.cpp:976 src/muuli_wdr.cpp:1648
 msgid "Active downloads"
 msgstr "Aktivní stahování"
 
@@ -3270,7 +3293,7 @@ msgstr "Aktivní stahování"
 msgid "Active connections (1:1)"
 msgstr "Aktivní připojení (1:1)"
 
-#: src/muuli_wdr.cpp:992 src/muuli_wdr.cpp:1648
+#: src/muuli_wdr.cpp:992 src/muuli_wdr.cpp:1649
 msgid "Active uploads"
 msgstr "Aktivní odesílání"
 
@@ -3294,7 +3317,7 @@ msgstr "Software klienta:"
 msgid "Client version:"
 msgstr "Verze klienta:"
 
-#: src/muuli_wdr.cpp:1057 src/ServerWnd.cpp:249
+#: src/muuli_wdr.cpp:1057 src/ServerWnd.cpp:255
 msgid "IP address:"
 msgstr "IP adresa:"
 
@@ -3387,8 +3410,8 @@ msgstr "Toto jméno uvidí ostatní uživatelé, kteří se k vám připojí."
 msgid "Language: "
 msgstr ""
 
-#: src/muuli_wdr.cpp:1209 src/muuli_wdr.cpp:1247 src/muuli_wdr.cpp:1251
-#: src/muuli_wdr.cpp:1254
+#: src/muuli_wdr.cpp:1209 src/muuli_wdr.cpp:1248 src/muuli_wdr.cpp:1252
+#: src/muuli_wdr.cpp:1255
 msgid "The delay before showing tool-tips."
 msgstr "Prodleva před zobrazením tooltipů."
 
@@ -3421,1051 +3444,1051 @@ msgid "Makes aMule prompt before exiting."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1230
-msgid "Hide application window when close button is pressed"
-msgstr ""
-
-#: src/muuli_wdr.cpp:1233
 msgid "Enable Tray Icon"
 msgstr "Povolit ikonu v trayi"
 
-#: src/muuli_wdr.cpp:1234
+#: src/muuli_wdr.cpp:1231
 msgid "This Enables/Disables the system tray (or taskbar) icon."
 msgstr "Povolí/zakáže ikonu v systray."
 
-#: src/muuli_wdr.cpp:1236
+#: src/muuli_wdr.cpp:1234
+msgid "Hide application window when close button is pressed"
+msgstr ""
+
+#: src/muuli_wdr.cpp:1237
 msgid "Minimize to Tray Icon"
 msgstr "Minimalizovat do tray ikony"
 
-#: src/muuli_wdr.cpp:1237
+#: src/muuli_wdr.cpp:1238
 msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
 msgstr "Povolením tohoto se aMule minimalizuje do traye (místo pruhu úloh)."
 
-#: src/muuli_wdr.cpp:1240
+#: src/muuli_wdr.cpp:1241
 msgid "Show notifications when finished downloading"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1241
+#: src/muuli_wdr.cpp:1242
 msgid ""
 "Enabling this will make aMule to show notifications when finished "
 "downloading."
 msgstr ""
 
-#: src/muuli_wdr.cpp:1246
+#: src/muuli_wdr.cpp:1247
 msgid "Tooltip delay time: "
 msgstr ""
 
-#: src/muuli_wdr.cpp:1253
+#: src/muuli_wdr.cpp:1254
 msgid "seconds"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1257
+#: src/muuli_wdr.cpp:1258
 msgid "Browser Selection"
 msgstr "Výběr prohlížeče"
 
-#: src/muuli_wdr.cpp:1263
+#: src/muuli_wdr.cpp:1264
 msgid ""
 "Enter your browser name here. Leave this field empty to use the system "
 "default browser."
 msgstr ""
 
-#: src/muuli_wdr.cpp:1266 src/muuli_wdr.cpp:1283 src/muuli_wdr.cpp:1559
-#: src/muuli_wdr.cpp:1567 src/muuli_wdr.cpp:2452
+#: src/muuli_wdr.cpp:1267 src/muuli_wdr.cpp:1284 src/muuli_wdr.cpp:1560
+#: src/muuli_wdr.cpp:1568 src/muuli_wdr.cpp:2453
 #: src/utils/aLinkCreator/src/alcframe.cpp:136
 #: src/utils/wxCas/src/wxcasprefs.cpp:56 src/utils/wxCas/src/wxcasprefs.cpp:131
 msgid "Browse"
 msgstr "Procházet"
 
-#: src/muuli_wdr.cpp:1270
+#: src/muuli_wdr.cpp:1271
 msgid "Open in new tab if possible"
 msgstr "Otevřít pokud možno v novém tabu"
 
-#: src/muuli_wdr.cpp:1272
+#: src/muuli_wdr.cpp:1273
 msgid "Open the web page in a new tab instead of in a new window when possible"
 msgstr ""
 "Otevřít webovou stránku v novém tabu místo otvírání nového okna, pokud je to "
 "možné"
 
-#: src/muuli_wdr.cpp:1276
+#: src/muuli_wdr.cpp:1277
 msgid "Video Player"
 msgstr "Video přehrávač"
 
-#: src/muuli_wdr.cpp:1303
+#: src/muuli_wdr.cpp:1304
 msgid "Bandwidth limits"
 msgstr "Limity šířky pásma"
 
-#: src/muuli_wdr.cpp:1317
+#: src/muuli_wdr.cpp:1318
 msgid "Upload"
 msgstr "Odesílání"
 
-#: src/muuli_wdr.cpp:1325
+#: src/muuli_wdr.cpp:1326
 msgid "Slot Allocation"
 msgstr "Přidělování slotů"
 
-#: src/muuli_wdr.cpp:1334
+#: src/muuli_wdr.cpp:1335
 msgid "Ports"
 msgstr "Porty"
 
-#: src/muuli_wdr.cpp:1340
+#: src/muuli_wdr.cpp:1341
 msgid "Standard TCP Port "
 msgstr "Standardní TCP port"
 
-#: src/muuli_wdr.cpp:1344
+#: src/muuli_wdr.cpp:1345
 msgid "This is the standard eD2k port and cannot be disabled."
 msgstr "Tohle je standardní eD2k port a nelze jej zakázat."
 
-#: src/muuli_wdr.cpp:1347
+#: src/muuli_wdr.cpp:1348
 msgid "UDP port for server requests (TCP+3):"
 msgstr "UDP port pro požadavky serveru (TCP+3):"
 
-#: src/muuli_wdr.cpp:1349
+#: src/muuli_wdr.cpp:1350
 msgid "4665"
 msgstr "4665"
 
-#: src/muuli_wdr.cpp:1352
+#: src/muuli_wdr.cpp:1353
 msgid "Extended UDP port (Kad / global search) "
 msgstr "Rozšířený UDP port (Kad / globální vyhledávání)"
 
-#: src/muuli_wdr.cpp:1356
+#: src/muuli_wdr.cpp:1357
 msgid "This UDP port is used for extended eD2k requests and Kad network"
 msgstr "Tento UDP port je použit pro rozšířené požadavky eD2k a pro síť Kad"
 
-#: src/muuli_wdr.cpp:1359
+#: src/muuli_wdr.cpp:1360
 msgid "Enable UPnP for router port forwarding"
 msgstr "Povolit UPnP port forwarding"
 
-#: src/muuli_wdr.cpp:1363
+#: src/muuli_wdr.cpp:1364
 msgid "UPnP TCP Port (Optional):"
 msgstr "UPnP TCP port (volitelné):"
 
-#: src/muuli_wdr.cpp:1373
+#: src/muuli_wdr.cpp:1374
 msgid "Bind local address to IP (empty for any):"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1376
+#: src/muuli_wdr.cpp:1377
 msgid ""
 "Advanced users only: If you have multiple network interfaces, enter the "
 "address of the interface to which aMule should be bound."
 msgstr ""
 
-#: src/muuli_wdr.cpp:1382
+#: src/muuli_wdr.cpp:1383
 msgid "Max sources per downloading file:"
 msgstr "Max. zdrojů na stahovaný soubor:"
 
-#: src/muuli_wdr.cpp:1386
+#: src/muuli_wdr.cpp:1387
 msgid "Max simultaneous connections:"
 msgstr "Maximum připojení naráz:"
 
-#: src/muuli_wdr.cpp:1396
+#: src/muuli_wdr.cpp:1397
 msgid "Kademlia"
 msgstr "Kademlia"
 
-#: src/muuli_wdr.cpp:1399 src/muuli_wdr.cpp:2718
+#: src/muuli_wdr.cpp:1400 src/muuli_wdr.cpp:2719
 msgid "ED2K"
 msgstr "ED2K"
 
-#: src/muuli_wdr.cpp:1406
+#: src/muuli_wdr.cpp:1407
 msgid "Autoconnect on startup"
 msgstr "Automatické připojení po spuštění"
 
-#: src/muuli_wdr.cpp:1409
+#: src/muuli_wdr.cpp:1410
 msgid "Reconnect on loss"
 msgstr "Po odpojení znovu připojit"
 
-#: src/muuli_wdr.cpp:1431
+#: src/muuli_wdr.cpp:1432
 msgid "Remove dead server after"
 msgstr "Odstranit mrtvý server po"
 
-#: src/muuli_wdr.cpp:1435
+#: src/muuli_wdr.cpp:1436
 msgid "retries"
 msgstr "pokusech"
 
-#: src/muuli_wdr.cpp:1440
+#: src/muuli_wdr.cpp:1441
 msgid "Auto-update server list at startup"
 msgstr "Automaticky aktualizovat seznam serverů po spuštění"
 
-#: src/muuli_wdr.cpp:1443
+#: src/muuli_wdr.cpp:1444
 msgid "List"
 msgstr "Seznam"
 
-#: src/muuli_wdr.cpp:1446
+#: src/muuli_wdr.cpp:1447
 msgid "Update server list when connecting to a server"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1449
+#: src/muuli_wdr.cpp:1450
 msgid "Update server list when a client connects"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1452
+#: src/muuli_wdr.cpp:1453
 msgid "Use priority system"
 msgstr "Použít systém priorit"
 
-#: src/muuli_wdr.cpp:1456
+#: src/muuli_wdr.cpp:1457
 msgid "Use smart LowID check on connect"
 msgstr "Použít po připojení chytrou kontrolu LowID"
 
-#: src/muuli_wdr.cpp:1460
+#: src/muuli_wdr.cpp:1461
 msgid "Safe connect"
 msgstr "Bezpečné připojení"
 
-#: src/muuli_wdr.cpp:1464
+#: src/muuli_wdr.cpp:1465
 msgid "Autoconnect to servers in static list only"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1467
+#: src/muuli_wdr.cpp:1468
 msgid "Set manually added servers to High Priority"
 msgstr "Přidělit ručně přidaným serverům vysokou prioritu"
 
-#: src/muuli_wdr.cpp:1485
+#: src/muuli_wdr.cpp:1486
 msgid "Intelligent Corruption Handling (I.C.H.)"
 msgstr "Inteligentní zpracování poškození (I.C.H.)"
 
-#: src/muuli_wdr.cpp:1488
+#: src/muuli_wdr.cpp:1489
 msgid "Enable"
 msgstr "Povolit"
 
-#: src/muuli_wdr.cpp:1491
+#: src/muuli_wdr.cpp:1492
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1498
+#: src/muuli_wdr.cpp:1499
 msgid "Add files to download in pause mode"
 msgstr "Přidávat soubory ke stažení do fronty pozastavené"
 
-#: src/muuli_wdr.cpp:1500
+#: src/muuli_wdr.cpp:1501
 msgid "Add files to download with auto priority"
 msgstr "Přidávat soubory ke stažení do fronty s \"auto\" prioritou"
 
-#: src/muuli_wdr.cpp:1503
+#: src/muuli_wdr.cpp:1504
 msgid "Try to download first and last chunks first"
 msgstr "Pokusit se nejprve stáhnout první a poslední části"
 
-#: src/muuli_wdr.cpp:1506
+#: src/muuli_wdr.cpp:1507
 msgid "Start next paused file when a file completes"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1509
+#: src/muuli_wdr.cpp:1510
 msgid "From the same category"
 msgstr "Ze stejné kategorie"
 
-#: src/muuli_wdr.cpp:1511
+#: src/muuli_wdr.cpp:1512
 msgid "In alphabetic order"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1513
+#: src/muuli_wdr.cpp:1514
 msgid "Preallocate disk space for new files"
 msgstr "Předalokovat místo na disku pro nové soubory"
 
-#: src/muuli_wdr.cpp:1514
+#: src/muuli_wdr.cpp:1515
 msgid ""
 "For new files preallocates disk space for the whole file, thus reduces "
 "fragmentation"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1519
+#: src/muuli_wdr.cpp:1520
 msgid "Stop downloads when free disk space reaches "
 msgstr ""
 
-#: src/muuli_wdr.cpp:1520
+#: src/muuli_wdr.cpp:1521
 msgid "Select this if you want aMule to check your disk space"
 msgstr "Toto zvolte chcete-li, aby aMule kontrolovala místo na disku"
 
-#: src/muuli_wdr.cpp:1524
+#: src/muuli_wdr.cpp:1525
 msgid "Enter here the min disk space desired."
 msgstr "Zadejte minimum místa na disku."
 
-#: src/muuli_wdr.cpp:1530
+#: src/muuli_wdr.cpp:1531
 msgid "Save 10 sources on rare files (< 20 sources)"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1534 src/Statistics.cpp:736
+#: src/muuli_wdr.cpp:1535 src/Statistics.cpp:736
 msgid "Uploads"
 msgstr "Odesílání"
 
-#: src/muuli_wdr.cpp:1537
+#: src/muuli_wdr.cpp:1538
 msgid "Add new shared files with auto priority"
 msgstr "Přidat nově sdílené soubory s \"auto\" prioritou"
 
-#: src/muuli_wdr.cpp:1554
+#: src/muuli_wdr.cpp:1555
 msgid "Destination folder for downloads"
 msgstr "Cílový adresář pro stahování"
 
-#: src/muuli_wdr.cpp:1562
+#: src/muuli_wdr.cpp:1563
 msgid "Folder for temporary download files"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1570
+#: src/muuli_wdr.cpp:1571
 msgid "Shared folders"
 msgstr "Sdílené adresáře"
 
-#: src/muuli_wdr.cpp:1573
+#: src/muuli_wdr.cpp:1574
 msgid "(Right click on folder icon for recursive share)"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1579
+#: src/muuli_wdr.cpp:1580
 msgid "Share hidden files"
 msgstr "Sdílet skryté soubory"
 
-#: src/muuli_wdr.cpp:1598
+#: src/muuli_wdr.cpp:1599
 msgid "Graphs"
 msgstr "Grafy"
 
-#: src/muuli_wdr.cpp:1601 src/muuli_wdr.cpp:1663
+#: src/muuli_wdr.cpp:1602 src/muuli_wdr.cpp:1664
 msgid "Update delay : 5 secs"
 msgstr "Prodleva aktualizace: 5 sekund"
 
-#: src/muuli_wdr.cpp:1605
+#: src/muuli_wdr.cpp:1606
 msgid "Time for average graph: 100 mins"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1609
+#: src/muuli_wdr.cpp:1610
 msgid "Connections Graph Scale: 100 "
 msgstr ""
 
-#: src/muuli_wdr.cpp:1616
+#: src/muuli_wdr.cpp:1617
 msgid "Download graph scale:"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1624
+#: src/muuli_wdr.cpp:1625
 msgid "Upload graph scale:"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1634
+#: src/muuli_wdr.cpp:1635
 #, fuzzy
 msgid "Colors: "
 msgstr "Barvy: "
 
-#: src/muuli_wdr.cpp:1638
+#: src/muuli_wdr.cpp:1639
 msgid "Background"
 msgstr "Na pozadí"
 
-#: src/muuli_wdr.cpp:1639
+#: src/muuli_wdr.cpp:1640
 msgid "Grid"
 msgstr "Mřížka"
 
-#: src/muuli_wdr.cpp:1640
+#: src/muuli_wdr.cpp:1641
 msgid "Download current"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1641
+#: src/muuli_wdr.cpp:1642
 msgid "Download running average"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1642
+#: src/muuli_wdr.cpp:1643
 msgid "Download session average"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1643
+#: src/muuli_wdr.cpp:1644
 msgid "Upload current"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1644
+#: src/muuli_wdr.cpp:1645
 msgid "Upload running average"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1645
+#: src/muuli_wdr.cpp:1646
 msgid "Upload session average"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1646
+#: src/muuli_wdr.cpp:1647
 msgid "Active connections"
 msgstr "Aktivní připojení"
 
-#: src/muuli_wdr.cpp:1649
+#: src/muuli_wdr.cpp:1650
 #, fuzzy
 msgid "Systray Icon Speed Bar"
 msgstr "Ukazatel rychlosti v tray ikoně"
 
-#: src/muuli_wdr.cpp:1650
+#: src/muuli_wdr.cpp:1651
 msgid "Kad-nodes current"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1651
+#: src/muuli_wdr.cpp:1652
 msgid "Kad-nodes running"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1652
+#: src/muuli_wdr.cpp:1653
 msgid "Kad-nodes session"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1656 src/muuli_wdr.cpp:2012
+#: src/muuli_wdr.cpp:1657 src/muuli_wdr.cpp:2013
 msgid "Select"
 msgstr "Vyberte"
 
-#: src/muuli_wdr.cpp:1660
+#: src/muuli_wdr.cpp:1661
 msgid "Tree"
 msgstr "Strom"
 
-#: src/muuli_wdr.cpp:1670
+#: src/muuli_wdr.cpp:1671
 msgid "Number of Client Versions shown (0=unlimited)"
 msgstr "Počet verzí klientů k zobrazení (0=neomezeně)"
 
-#: src/muuli_wdr.cpp:1695
+#: src/muuli_wdr.cpp:1696
 msgid "!!! WARNING !!!"
 msgstr "!!! VAROVÁNÍ !!!"
 
-#: src/muuli_wdr.cpp:1707
+#: src/muuli_wdr.cpp:1708
 msgid "Max new connections / 5 secs"
 msgstr "Max. nových připojení za 5 sek."
 
-#: src/muuli_wdr.cpp:1712
+#: src/muuli_wdr.cpp:1713
 msgid "File Buffer Size: 240000 bytes"
 msgstr "Velikost zásobníku pro soubory: 240000 bytů"
 
-#: src/muuli_wdr.cpp:1716
+#: src/muuli_wdr.cpp:1717
 msgid "Upload Queue Size: 5000 clients"
 msgstr "Velikost fronty odesílání: 5000 klientů"
 
-#: src/muuli_wdr.cpp:1720
+#: src/muuli_wdr.cpp:1721
 msgid "Server connection refresh interval: Disable"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1724
+#: src/muuli_wdr.cpp:1725
 msgid "Disable computer's timed standby mode"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1743
+#: src/muuli_wdr.cpp:1744
 msgid "Skin to use: "
 msgstr "Vzhled: "
 
-#: src/muuli_wdr.cpp:1752
+#: src/muuli_wdr.cpp:1753
 msgid "Show \"Fast eD2k Links Handler\" in every window."
 msgstr ""
 
-#: src/muuli_wdr.cpp:1755
+#: src/muuli_wdr.cpp:1756
 msgid "Show extended info on categories tabs"
 msgstr "Zobrazit rozšířené informace na tabech kategorií"
 
-#: src/muuli_wdr.cpp:1758
+#: src/muuli_wdr.cpp:1759
 #, fuzzy
 msgid "Show application version on title"
 msgstr "Zobrazit rychlosti přenosu v titulku okna"
 
-#: src/muuli_wdr.cpp:1760
+#: src/muuli_wdr.cpp:1761
 msgid "Show transfer rates on title"
 msgstr "Zobrazit rychlosti přenosu v titulku okna"
 
-#: src/muuli_wdr.cpp:1762
+#: src/muuli_wdr.cpp:1763
 msgid "Before application name"
 msgstr "Před názvem programu"
 
-#: src/muuli_wdr.cpp:1764
+#: src/muuli_wdr.cpp:1765
 msgid "After application name"
 msgstr "Za názvem programu"
 
-#: src/muuli_wdr.cpp:1767
+#: src/muuli_wdr.cpp:1768
 msgid "Show overhead bandwidth"
 msgstr "Zobrazit šířku pásma režie"
 
-#: src/muuli_wdr.cpp:1771
+#: src/muuli_wdr.cpp:1772
 msgid "Vertical toolbar orientation"
 msgstr "Vertikální umístění nástrojové lišty"
 
-#: src/muuli_wdr.cpp:1773
+#: src/muuli_wdr.cpp:1774
 msgid "Show country flags for clients"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1775
+#: src/muuli_wdr.cpp:1776
 msgid "Download Queue Files"
 msgstr ""
 
-#: src/muuli_wdr.cpp:1778
+#: src/muuli_wdr.cpp:1779
 msgid "Show progress percentage"
 msgstr "Zobrazit procenta průběhu"
 
-#: src/muuli_wdr.cpp:1784
+#: src/muuli_wdr.cpp:1785
 msgid "Show progress bar"
 msgstr "Zobrazit ukazatel průběhu"
 
-#: src/muuli_wdr.cpp:1787
+#: src/muuli_wdr.cpp:1788
 msgid "Flat"
 msgstr "Plochý"
 
-#: src/muuli_wdr.cpp:1791
+#: src/muuli_wdr.cpp:1792
 msgid "Round"
 msgstr "Kulatý"
 
-#: src/muuli_wdr.cpp:1794
+#: src/muuli_wdr.cpp:1795
 msgid "Auto-sort files (high CPU)"
 msgstr "Automaticky řadit soubory (žere CPU)"
 
-#: src/muuli_wdr.cpp:1796
+#: src/muuli_wdr.cpp:1797
 msgid "aMule will sort the columns in your download list automatically"
 msgstr "aMule automaticky seřadí kolonky ve vaší frontě stahování"
 
-#: src/muuli_wdr.cpp:1813
+#: src/muuli_wdr.cpp:1814
 msgid "External Connection Parameters"
 msgstr "Nastavení externího připojení"
 
-#: src/muuli_wdr.cpp:1816
+#: src/muuli_wdr.cpp:1817
 msgid "Accept external connections"
 msgstr "Přijímat externí připojení"
 
-#: src/muuli_wdr.cpp:1823
+#: src/muuli_wdr.cpp:1824
 msgid "IP of the listening interface:"
 msgstr "IP naslouchajícího zařízení:"
 
-#: src/muuli_wdr.cpp:1826
+#: src/muuli_wdr.cpp:1827
 msgid ""
 "Enter here a valid ip in the a.b.c.d format for the listening EC interface. "
 "An empty field or 0.0.0.0 will mean any interface."
 msgstr ""
 
-#: src/muuli_wdr.cpp:1832 src/muuli_wdr.cpp:1878
+#: src/muuli_wdr.cpp:1833 src/muuli_wdr.cpp:1879
 msgid "TCP port:"
 msgstr "TCP port:"
 
-#: src/muuli_wdr.cpp:1838
+#: src/muuli_wdr.cpp:1839
 msgid "Enable UPnP port forwarding on the EC port"
 msgstr "Povolit UPnP port forwarding na EC portu"
 
-#: src/muuli_wdr.cpp:1842 src/muuli_wdr.cpp:2592
+#: src/muuli_wdr.cpp:1843 src/muuli_wdr.cpp:2593
 #: src/utils/wxCas/src/wxcasprefs.cpp:188
 msgid "Password"
 msgstr "Heslo"
 
-#: src/muuli_wdr.cpp:1848
+#: src/muuli_wdr.cpp:1849
 msgid "Web server parameters"
 msgstr "Parametry webserveru"
 
-#: src/muuli_wdr.cpp:1851
+#: src/muuli_wdr.cpp:1852
 msgid "Run webserver on startup"
 msgstr "Spustit webserver při spuštění aMule"
 
-#: src/muuli_wdr.cpp:1857
+#: src/muuli_wdr.cpp:1858
 msgid "Web template"
 msgstr "Šablona webu"
 
-#: src/muuli_wdr.cpp:1862
+#: src/muuli_wdr.cpp:1863
 msgid "Full rights password"
 msgstr "Heslo pro plná práva"
 
-#: src/muuli_wdr.cpp:1866
+#: src/muuli_wdr.cpp:1867
 msgid "Enable Low rights User"
 msgstr "Povolit uživatele s omezenými právy"
 
-#: src/muuli_wdr.cpp:1871
+#: src/muuli_wdr.cpp:1872
 msgid "Low rights password"
 msgstr "Heslo pro omezená práva"
 
-#: src/muuli_wdr.cpp:1885
+#: src/muuli_wdr.cpp:1886
 msgid "Enable UPnP port forwarding of the web server port"
 msgstr "Povolit UPnP port forwarding portu webserveru"
 
-#: src/muuli_wdr.cpp:1890
+#: src/muuli_wdr.cpp:1891
 msgid "Web server UPnP TCP port (Optional)"
 msgstr "UPnP TCP port webserveru (volitelné)"
 
-#: src/muuli_wdr.cpp:1898
+#: src/muuli_wdr.cpp:1899
 msgid "Page Refresh Time (in secs)"
 msgstr "Obnovování stránky (v sek.)"
 
-#: src/muuli_wdr.cpp:1905
+#: src/muuli_wdr.cpp:1906
 msgid "Enable Gzip compression"
 msgstr "Povoliz Gzip kompresi"
 
-#: src/muuli_wdr.cpp:1936 src/muuli_wdr.cpp:2019 src/ServerWnd.cpp:218
-#: src/ServerWnd.cpp:223
+#: src/muuli_wdr.cpp:1937 src/muuli_wdr.cpp:2020 src/ServerWnd.cpp:224
+#: src/ServerWnd.cpp:229
 msgid "OK"
 msgstr "Budiž"
 
-#: src/muuli_wdr.cpp:1938
+#: src/muuli_wdr.cpp:1939
 msgid "Click here to apply any changes made to the preferences."
 msgstr "Klikněte zde pro aplikování změn nastavení."
 
-#: src/muuli_wdr.cpp:1941
+#: src/muuli_wdr.cpp:1942
 msgid "Reset any changes made to the preferences."
 msgstr "Zahodí všechny změny v nastavení."
 
-#: src/muuli_wdr.cpp:1963
+#: src/muuli_wdr.cpp:1964
 msgid "Title :"
 msgstr "Titulek:"
 
-#: src/muuli_wdr.cpp:1970
+#: src/muuli_wdr.cpp:1971
 msgid "Comment :"
 msgstr "Komentář:"
 
-#: src/muuli_wdr.cpp:1977
+#: src/muuli_wdr.cpp:1978
 msgid "Incoming Dir :"
 msgstr "Příchozí adresář:"
 
-#: src/muuli_wdr.cpp:1986
+#: src/muuli_wdr.cpp:1987
 msgid "Change priority for new assigned files :"
 msgstr "Změnit prioritu pro nově přiřazené soubory:"
 
-#: src/muuli_wdr.cpp:1990
+#: src/muuli_wdr.cpp:1991
 #, fuzzy
 msgid "Don't change"
 msgstr "Neměnit"
 
-#: src/muuli_wdr.cpp:2002
+#: src/muuli_wdr.cpp:2003
 msgid "Select color for this Category (currently selected) :"
 msgstr "Barva pro tuto kategorii:"
 
-#: src/muuli_wdr.cpp:2067 src/muuli_wdr.cpp:2089
+#: src/muuli_wdr.cpp:2068 src/muuli_wdr.cpp:2090
 #: src/utils/wxCas/src/wxcasframe.cpp:133
 #: src/utils/wxCas/src/wxcasframe.cpp:137
 msgid "Reset"
 msgstr "Reset"
 
-#: src/muuli_wdr.cpp:2068 src/muuli_wdr.cpp:2090
+#: src/muuli_wdr.cpp:2069 src/muuli_wdr.cpp:2091
 msgid "Click this button to reset the log."
 msgstr "Klikněte na toto tlačítko pro vynulování logu."
 
-#: src/muuli_wdr.cpp:2110
+#: src/muuli_wdr.cpp:2111
 msgid "Click on this button to update the servers list from URL ..."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2114
+#: src/muuli_wdr.cpp:2115
 msgid "Server list"
 msgstr "Seznam serverů"
 
-#: src/muuli_wdr.cpp:2118
+#: src/muuli_wdr.cpp:2119
 msgid ""
 "Enter the url to a server.met file here and press the button to the left to "
 "update the list of known servers."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2123
+#: src/muuli_wdr.cpp:2124
 msgid "Add server manually: Name"
 msgstr "Přidat server ručně: Název"
 
-#: src/muuli_wdr.cpp:2126
+#: src/muuli_wdr.cpp:2127
 msgid "Enter the name of the new server here"
 msgstr "Zadejte název serveru"
 
-#: src/muuli_wdr.cpp:2128 src/ServerWnd.cpp:168
+#: src/muuli_wdr.cpp:2129 src/ServerWnd.cpp:174
 msgid "IP:Port"
 msgstr "IP:Port"
 
-#: src/muuli_wdr.cpp:2131
+#: src/muuli_wdr.cpp:2132
 msgid "Enter the IP of the server here, using the x.x.x.x format."
 msgstr "Zadejte IP serveru ve tvaru x.x.x.x."
 
-#: src/muuli_wdr.cpp:2137
+#: src/muuli_wdr.cpp:2138
 msgid "Enter the port of the server here."
 msgstr "Zadejte port serveru."
 
-#: src/muuli_wdr.cpp:2140
+#: src/muuli_wdr.cpp:2141
 msgid "Add manually a server (fill fields to the left before) ..."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2169
+#: src/muuli_wdr.cpp:2170
 msgid "aMule Log"
 msgstr "Log aMule"
 
-#: src/muuli_wdr.cpp:2173
+#: src/muuli_wdr.cpp:2174
 msgid "Server Info"
 msgstr "Info o serveru"
 
-#: src/muuli_wdr.cpp:2177
+#: src/muuli_wdr.cpp:2178
 msgid "ED2K Info"
 msgstr "ED2K Info"
 
-#: src/muuli_wdr.cpp:2181
+#: src/muuli_wdr.cpp:2182
 msgid "Kad Info"
 msgstr "Kad Info"
 
-#: src/muuli_wdr.cpp:2209
+#: src/muuli_wdr.cpp:2210
 msgid "Click on this button to update the nodes list from URL ..."
 msgstr "Aktualizuje seznam uzlů z dané URL..."
 
-#: src/muuli_wdr.cpp:2213
+#: src/muuli_wdr.cpp:2214
 msgid "Nodes (0)"
 msgstr "Uzly (0)"
 
-#: src/muuli_wdr.cpp:2217
+#: src/muuli_wdr.cpp:2218
 msgid ""
 "Enter the url to a nodes.dat file here and press the button to the left to "
 "update the list of known nodes."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2220
+#: src/muuli_wdr.cpp:2221
 msgid "Nodes stats"
 msgstr "Statistiky uzlů"
 
-#: src/muuli_wdr.cpp:2260
+#: src/muuli_wdr.cpp:2261
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
-#: src/muuli_wdr.cpp:2263
+#: src/muuli_wdr.cpp:2264
 msgid "New node"
 msgstr "Nový uzel"
 
-#: src/muuli_wdr.cpp:2268
+#: src/muuli_wdr.cpp:2269
 msgid "IP:"
 msgstr "IP:"
 
-#: src/muuli_wdr.cpp:2288
+#: src/muuli_wdr.cpp:2289
 msgid "Port:"
 msgstr "Port:"
 
-#: src/muuli_wdr.cpp:2299
+#: src/muuli_wdr.cpp:2300
 msgid "Bootstrap from known clients"
 msgstr "Bootstrap od známých klientů"
 
-#: src/muuli_wdr.cpp:2302
+#: src/muuli_wdr.cpp:2303
 msgid "Disconnect Kad"
 msgstr "Odpojit Kad"
 
-#: src/muuli_wdr.cpp:2336
+#: src/muuli_wdr.cpp:2337
 msgid "Use Secure User Identification"
 msgstr "Použít bezpečnou uživatelskou identifikaci"
 
-#: src/muuli_wdr.cpp:2338
+#: src/muuli_wdr.cpp:2339
 msgid ""
 "It is recommended to enable this option. You will not receive credits if SUI "
 "is not enabled."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2340
+#: src/muuli_wdr.cpp:2341
 msgid "Protocol Obfuscation"
 msgstr "Zatemnění protokolu"
 
-#: src/muuli_wdr.cpp:2343
+#: src/muuli_wdr.cpp:2344
 msgid "Support Protocol Obfuscation"
 msgstr "Podporuje zatemnění protokolu"
 
-#: src/muuli_wdr.cpp:2345
+#: src/muuli_wdr.cpp:2346
 msgid ""
 "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
 "connections from other clients."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2347
+#: src/muuli_wdr.cpp:2348
 msgid "Use obfuscation for outgoing connections"
 msgstr "Použít zatemnění protokolu pro odchozí spojení"
 
-#: src/muuli_wdr.cpp:2349
+#: src/muuli_wdr.cpp:2350
 msgid ""
 "This option makes aMule use Protocol Obfuscation when connecting other "
 "clients/servers."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2351
+#: src/muuli_wdr.cpp:2352
 msgid "Accept only obfuscated connections"
 msgstr "Přijímat pouze zatemněná spojení"
 
-#: src/muuli_wdr.cpp:2352
+#: src/muuli_wdr.cpp:2353
 msgid ""
 "This option makes aMule only accept obfuscated connections. You will have "
 "less sources, but all your traffic will be obfuscated"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2357
+#: src/muuli_wdr.cpp:2358
 msgid "Everybody"
 msgstr "Všichni"
 
-#: src/muuli_wdr.cpp:2359
+#: src/muuli_wdr.cpp:2360
 msgid "No one"
 msgstr "Nikdo"
 
-#: src/muuli_wdr.cpp:2361
+#: src/muuli_wdr.cpp:2362
 msgid "Who can see my shared files:"
 msgstr "Kdo může prohlížet moje sdílené soubory:"
 
-#: src/muuli_wdr.cpp:2362
+#: src/muuli_wdr.cpp:2363
 msgid "Select who can request to view a list of your shared files."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2364
+#: src/muuli_wdr.cpp:2365
 msgid "IP-Filtering"
 msgstr "IP filtrování"
 
-#: src/muuli_wdr.cpp:2371
+#: src/muuli_wdr.cpp:2372
 msgid "Filter clients"
 msgstr "Filtrovat klienty"
 
-#: src/muuli_wdr.cpp:2373
+#: src/muuli_wdr.cpp:2374
 msgid ""
 "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2375
+#: src/muuli_wdr.cpp:2376
 msgid "Filter servers"
 msgstr "Filtrovat servery"
 
-#: src/muuli_wdr.cpp:2377
+#: src/muuli_wdr.cpp:2378
 msgid ""
 "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2381
+#: src/muuli_wdr.cpp:2382
 msgid "Reload List"
 msgstr "Obnovit seznam"
 
-#: src/muuli_wdr.cpp:2382
+#: src/muuli_wdr.cpp:2383
 msgid "Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2388
+#: src/muuli_wdr.cpp:2389
 msgid "URL:"
 msgstr "URL:"
 
-#: src/muuli_wdr.cpp:2392
+#: src/muuli_wdr.cpp:2393
 msgid "Update now"
 msgstr "Obnovit"
 
-#: src/muuli_wdr.cpp:2395
+#: src/muuli_wdr.cpp:2396
 msgid "Auto-update ipfilter at startup"
 msgstr "Automaticky aktualizovat IP filtr po spuštění"
 
-#: src/muuli_wdr.cpp:2399
+#: src/muuli_wdr.cpp:2400
 msgid "Filtering Level:"
 msgstr "Úroveň filtrování:"
 
-#: src/muuli_wdr.cpp:2405
+#: src/muuli_wdr.cpp:2406
 msgid "Always filter LAN IPs"
 msgstr "Vždy filtrovat LAN IP"
 
-#: src/muuli_wdr.cpp:2408
+#: src/muuli_wdr.cpp:2409
 msgid "Paranoid handling of non-matching IPs"
 msgstr "Paranoidní nakládání s nesouhlasícími IP"
 
-#: src/muuli_wdr.cpp:2410
+#: src/muuli_wdr.cpp:2411
 msgid ""
 "Rejects packet if the client ip is different from the ip where the packet is "
 "received from. Use with caution."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2412
+#: src/muuli_wdr.cpp:2413
 msgid "Use system-wide ipfilter.dat if available"
 msgstr "Použít systémový ipfilter.dat, je-li dostupný"
 
-#: src/muuli_wdr.cpp:2413
+#: src/muuli_wdr.cpp:2414
 #, fuzzy
 msgid ""
 "If there's no local ipfilter.dat found, allow usage of a system-wide "
 "ipfilter file."
 msgstr "Neexistuje-li místní ipfilter.dat, umožní použití systémového."
 
-#: src/muuli_wdr.cpp:2430
+#: src/muuli_wdr.cpp:2431
 msgid "Enable Online-Signature"
 msgstr "Povolit online podpis"
 
-#: src/muuli_wdr.cpp:2432
+#: src/muuli_wdr.cpp:2433
 msgid ""
 "Enables the writing of the OS file, which can be used by external apps to "
 "create signatures and the like."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2436
+#: src/muuli_wdr.cpp:2437
 msgid "Update Frequency (Secs):"
 msgstr "Prodleva aktualizace (sek.):"
 
-#: src/muuli_wdr.cpp:2439
+#: src/muuli_wdr.cpp:2440
 msgid "Change the frequency (in seconds) of Online Signature updates."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2447
+#: src/muuli_wdr.cpp:2448
 msgid "Save online signature file in: "
 msgstr ""
 
-#: src/muuli_wdr.cpp:2453
+#: src/muuli_wdr.cpp:2454
 msgid ""
 "Click here to select the directory containing the the Online Signature files."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2473
+#: src/muuli_wdr.cpp:2474
 msgid "Filter incoming messages (except current chat):"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2475
+#: src/muuli_wdr.cpp:2476
 msgid "Filter all messages"
 msgstr "Filtrovat všechny zprávy"
 
-#: src/muuli_wdr.cpp:2477
+#: src/muuli_wdr.cpp:2478
 msgid "Filter messages from people not on your friend list"
 msgstr "Filtrovat zprávy, které nejsou od přátel"
 
-#: src/muuli_wdr.cpp:2479
+#: src/muuli_wdr.cpp:2480
 msgid "Filter messages from unknown clients"
 msgstr "Filtrovat zprávy od neznámých klientů"
 
-#: src/muuli_wdr.cpp:2481
+#: src/muuli_wdr.cpp:2482
 msgid "Filter messages containing (use ',' as separator):"
 msgstr "Filtrovat zprávy obsahující (použijte ',' jako oddělovač):"
 
-#: src/muuli_wdr.cpp:2484 src/muuli_wdr.cpp:2495
+#: src/muuli_wdr.cpp:2485 src/muuli_wdr.cpp:2496
 msgid "add here the words amule should filter and block messages including it"
 msgstr ""
 "zadejte slova, která by měla amule filtrovat a blokovat zprávy obsahující je"
 
-#: src/muuli_wdr.cpp:2486
+#: src/muuli_wdr.cpp:2487
 msgid "Show received messages in the log"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2489
+#: src/muuli_wdr.cpp:2490
 msgid "Comments"
 msgstr "Komentáře"
 
-#: src/muuli_wdr.cpp:2492
+#: src/muuli_wdr.cpp:2493
 msgid "Filter comments containing (use ',' as separator):"
 msgstr "Filtrovat komentáře obsahující (použijte ',' jako oddělovač):"
 
-#: src/muuli_wdr.cpp:2512
+#: src/muuli_wdr.cpp:2513
 msgid "Automatic server connect without proxy"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2517
+#: src/muuli_wdr.cpp:2518
 msgid "Enable authentication"
 msgstr "Povolit autentizaci"
 
-#: src/muuli_wdr.cpp:2518
+#: src/muuli_wdr.cpp:2519
 msgid "Enable/disable username/password authentication"
 msgstr "Povolí/zakáže autentizaci (uživatelské jméno a heslo)"
 
-#: src/muuli_wdr.cpp:2521
+#: src/muuli_wdr.cpp:2522
 msgid "Username: "
 msgstr "Uživatelské jméno: "
 
-#: src/muuli_wdr.cpp:2524
+#: src/muuli_wdr.cpp:2525
 msgid "The username to use to connect to the proxy"
 msgstr "Uživatelské jméno, které se použije pro přihlášení k proxy"
 
-#: src/muuli_wdr.cpp:2526
+#: src/muuli_wdr.cpp:2527
 msgid "Password:"
 msgstr "Heslo:"
 
-#: src/muuli_wdr.cpp:2529
+#: src/muuli_wdr.cpp:2530
 msgid "The password to use to connect to the proxy"
 msgstr "Heslo, které se použije pro přihlášení k proxy"
 
-#: src/muuli_wdr.cpp:2531
+#: src/muuli_wdr.cpp:2532
 msgid "Enable Proxy"
 msgstr "Povolit proxy"
 
-#: src/muuli_wdr.cpp:2532
+#: src/muuli_wdr.cpp:2533
 msgid "Enable/disable proxy support"
 msgstr "Povolí/zakáže proxy"
 
-#: src/muuli_wdr.cpp:2535
+#: src/muuli_wdr.cpp:2536
 msgid "Proxy type:"
 msgstr "Typ proxy:"
 
-#: src/muuli_wdr.cpp:2546
+#: src/muuli_wdr.cpp:2547
 msgid "Proxy host:"
 msgstr "Hostitel proxy:"
 
-#: src/muuli_wdr.cpp:2549
+#: src/muuli_wdr.cpp:2550
 msgid "The proxy host name"
 msgstr "Název hostitele proxy"
 
-#: src/muuli_wdr.cpp:2551
+#: src/muuli_wdr.cpp:2552
 msgid "Proxy port:"
 msgstr "Port proxy:"
 
-#: src/muuli_wdr.cpp:2554
+#: src/muuli_wdr.cpp:2555
 msgid "The proxy port"
 msgstr "Port proxy"
 
-#: src/muuli_wdr.cpp:2573
+#: src/muuli_wdr.cpp:2574
 msgid "Connect to:"
 msgstr "Připojit se k:"
 
-#: src/muuli_wdr.cpp:2582
+#: src/muuli_wdr.cpp:2583
 msgid "Login to remote amule"
 msgstr "Připojit k vzdálené aMuli"
 
-#: src/muuli_wdr.cpp:2587
+#: src/muuli_wdr.cpp:2588
 msgid "User name"
 msgstr "Uživatelské jméno"
 
-#: src/muuli_wdr.cpp:2598
+#: src/muuli_wdr.cpp:2599
 msgid "Remember those settings"
 msgstr "Zapamatovat si toto nastavení"
 
-#: src/muuli_wdr.cpp:2623
+#: src/muuli_wdr.cpp:2624
 msgid "Enable Verbose Debug-Logging."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2625
+#: src/muuli_wdr.cpp:2626
 #, fuzzy
 msgid "Only to Logfile"
 msgstr "&Otevřít tento soubor"
 
-#: src/muuli_wdr.cpp:2627
+#: src/muuli_wdr.cpp:2628
 msgid "Message Categories:"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2651 src/PartFileConvertDlg.cpp:153
+#: src/muuli_wdr.cpp:2652 src/PartFileConvertDlg.cpp:153
 msgid "Waiting..."
 msgstr "Čekání..."
 
-#: src/muuli_wdr.cpp:2671
+#: src/muuli_wdr.cpp:2672
 msgid "Add imports"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2674
+#: src/muuli_wdr.cpp:2675
 msgid "Retry selected"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2676
+#: src/muuli_wdr.cpp:2677
 msgid "Remove selected"
 msgstr "Odstranit vybrané"
 
-#: src/muuli_wdr.cpp:2739
+#: src/muuli_wdr.cpp:2740
 msgid "Event Types"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2758
+#: src/muuli_wdr.cpp:2759
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2782
+#: src/muuli_wdr.cpp:2783
 msgid "Active Uploads"
 msgstr "Aktivní odesílání"
 
-#: src/muuli_wdr.cpp:2796
+#: src/muuli_wdr.cpp:2797
 msgid "Percent of total files"
 msgstr ""
 
-#: src/muuli_wdr.cpp:2835
+#: src/muuli_wdr.cpp:2836
 #, fuzzy
 msgid "All files"
 msgstr "Všechny sdílené soubory"
 
-#: src/muuli_wdr.cpp:2836
+#: src/muuli_wdr.cpp:2837
 #, fuzzy
 msgid "Selected files"
 msgstr "Sdílené soubory"
 
-#: src/muuli_wdr.cpp:2837
+#: src/muuli_wdr.cpp:2838
 #, fuzzy
 msgid "Active uploads only"
 msgstr "Aktivní odesílání"
 
-#: src/muuli_wdr.cpp:2839
+#: src/muuli_wdr.cpp:2840
 #, fuzzy
 msgid "Show Clients for"
 msgstr "Zobrazit klienty"
 
-#: src/muuli_wdr.cpp:2841
+#: src/muuli_wdr.cpp:2842
 msgid "Reload:"
 msgstr "Obnovit:"
 
-#: src/muuli_wdr.cpp:2845
+#: src/muuli_wdr.cpp:2846
 msgid "Reload your shared files"
 msgstr "Znovu načíst vaše sdílené soubory"
 
-#: src/muuli_wdr.cpp:2907
+#: src/muuli_wdr.cpp:2908
 msgid "Send"
 msgstr "Odeslat"
 
-#: src/muuli_wdr.cpp:2908
+#: src/muuli_wdr.cpp:2909
 msgid "Sends the specified message."
 msgstr "Odešle zadanou zprávu."
 
-#: src/muuli_wdr.cpp:2912
+#: src/muuli_wdr.cpp:2913
 msgid "Close this chat-session."
 msgstr "Zavře tento chat."
 
-#: src/muuli_wdr.cpp:2935
+#: src/muuli_wdr.cpp:2936
 msgid "Connect to any server and/or Kad"
 msgstr "Připojit k nějakému serveru a/nebo Kadu"
 
-#: src/muuli_wdr.cpp:2941 src/SharedFilesCtrl.cpp:135 src/Statistics.cpp:815
+#: src/muuli_wdr.cpp:2942 src/SharedFilesCtrl.cpp:136 src/Statistics.cpp:815
 msgid "Shared Files"
 msgstr "Sdílené soubory"
 
@@ -4544,7 +4567,7 @@ msgstr "vše ostatní"
 msgid "Incomplete"
 msgstr "Nekompletní"
 
-#: src/OtherFunctions.cpp:634 src/PartFile.cpp:4034 src/TransferWnd.cpp:351
+#: src/OtherFunctions.cpp:634 src/PartFile.cpp:4067 src/TransferWnd.cpp:351
 msgid "Stopped"
 msgstr "Zastaveno"
 
@@ -4803,42 +4826,49 @@ msgid ""
 "never happen"
 msgstr ""
 
-#: src/PartFile.cpp:2388 src/PartFile.cpp:2393
+#: src/PartFile.cpp:2399
+#, c-format
+msgid ""
+"Part %u of '%s' marked complete but partfile is shorter than expected (have "
+"%llu bytes, need %llu); reopening gap for re-download."
+msgstr ""
+
+#: src/PartFile.cpp:2411 src/PartFile.cpp:2416
 #, c-format
 msgid ""
 "EOF while hashing downloaded part %u with length %u (max %u) of partfile "
 "'%s' with length %u: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3085
+#: src/PartFile.cpp:3108
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "VAROVÁNÍ: Nedostatek volného místa na disku! Pozastavuji soubor: %s"
 
-#: src/PartFile.cpp:3347
+#: src/PartFile.cpp:3380
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Stažená část %i souboru '%s' je poškozená."
 
-#: src/PartFile.cpp:3397
+#: src/PartFile.cpp:3430
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 
-#: src/PartFile.cpp:4007
+#: src/PartFile.cpp:4040
 msgid "Allocating"
 msgstr "Alokuji"
 
-#: src/PartFile.cpp:4023
+#: src/PartFile.cpp:4056
 msgid "Insufficient disk space"
 msgstr "Nedostatek místa na disku"
 
-#: src/PartFile.cpp:4073 src/SearchListCtrl.cpp:1006
+#: src/PartFile.cpp:4106 src/SearchListCtrl.cpp:1006
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
 msgstr "Staženo"
 
-#: src/PartFile.cpp:4322
+#: src/PartFile.cpp:4355
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr ""
@@ -5090,7 +5120,18 @@ msgid ""
 "    %PARTNAME - file name only"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:299
+#: src/PrefsUnifiedDlg.cpp:269
+msgid "Tray icon support requires libayatana-appindicator3 at compile time."
+msgstr ""
+
+#: src/PrefsUnifiedDlg.cpp:284
+msgid ""
+"Not available on Wayland: the protocol does not report when a window is "
+"minimized, so this option cannot intercept the system minimize button. "
+"Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
+msgstr ""
+
+#: src/PrefsUnifiedDlg.cpp:324
 msgid ""
 "Do not change these setting unless you know\n"
 "what you are doing, otherwise you can easily\n"
@@ -5106,26 +5147,26 @@ msgstr ""
 "aMule poběží v pohodě bez změny\n"
 "nastavení na tomto tabu."
 
-#: src/PrefsUnifiedDlg.cpp:360
+#: src/PrefsUnifiedDlg.cpp:385
 #, c-format
 msgid "Failed to connect Cfg to widget with the ID %d and key %s"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:409
+#: src/PrefsUnifiedDlg.cpp:434
 #, c-format
 msgid "Failed to transfer data from Cfg to Widget with the ID %d and key %s"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:426
+#: src/PrefsUnifiedDlg.cpp:451
 msgid "The type of proxy you are connecting to"
 msgstr "Typ proxy, ke které se připojujete"
 
-#: src/PrefsUnifiedDlg.cpp:547
+#: src/PrefsUnifiedDlg.cpp:579
 #, c-format
 msgid "Failed to transfer data from Widget to Cfg with the ID %d and key %s"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:602
+#: src/PrefsUnifiedDlg.cpp:634
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
@@ -5133,65 +5174,65 @@ msgstr ""
 "Restartujte aMule, aby se projevily následující změny:\n"
 "\n"
 
-#: src/PrefsUnifiedDlg.cpp:609
+#: src/PrefsUnifiedDlg.cpp:641
 msgid "- TCP port changed.\n"
 msgstr "- TCP port změněn.\n"
 
-#: src/PrefsUnifiedDlg.cpp:614
+#: src/PrefsUnifiedDlg.cpp:646
 msgid "- UDP port changed.\n"
 msgstr "- UDP port změněn.\n"
 
-#: src/PrefsUnifiedDlg.cpp:619
+#: src/PrefsUnifiedDlg.cpp:651
 #, fuzzy
 msgid "- External connect port changed.\n"
 msgstr "Externí připojení uzavřeno."
 
-#: src/PrefsUnifiedDlg.cpp:623
+#: src/PrefsUnifiedDlg.cpp:655
 #, fuzzy
 msgid "- External connect acceptance changed.\n"
 msgstr "Nové externí připojení přijato"
 
-#: src/PrefsUnifiedDlg.cpp:627
+#: src/PrefsUnifiedDlg.cpp:659
 #, fuzzy
 msgid "- External connect interface changed.\n"
 msgstr "Externí připojení uzavřeno."
 
-#: src/PrefsUnifiedDlg.cpp:631
+#: src/PrefsUnifiedDlg.cpp:663
 #, fuzzy
 msgid "- Protocol obfuscation support changed.\n"
 msgstr "Zatemnění protokolu"
 
-#: src/PrefsUnifiedDlg.cpp:640
+#: src/PrefsUnifiedDlg.cpp:672
 msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup' will be disabled."
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:647
+#: src/PrefsUnifiedDlg.cpp:679
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:659
+#: src/PrefsUnifiedDlg.cpp:691
 msgid "- Language changed.\n"
 msgstr "- Jazyk byl změněn.\n"
 
-#: src/PrefsUnifiedDlg.cpp:664
+#: src/PrefsUnifiedDlg.cpp:696
 msgid "- Temp folder changed.\n"
 msgstr "- Dočasný adresář byl změněn.\n"
 
-#: src/PrefsUnifiedDlg.cpp:669
+#: src/PrefsUnifiedDlg.cpp:701
 msgid "- ED2K network enabled.\n"
 msgstr "- Síť eD2k povolena.\n"
 
-#: src/PrefsUnifiedDlg.cpp:741
+#: src/PrefsUnifiedDlg.cpp:773
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:745
+#: src/PrefsUnifiedDlg.cpp:777
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -5199,7 +5240,7 @@ msgstr ""
 "Kad se nespustí, když máte zakázaný UDP port.\n"
 "Povolte UDP port, nebo zakažte připojování na Kad."
 
-#: src/PrefsUnifiedDlg.cpp:758
+#: src/PrefsUnifiedDlg.cpp:790
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -5209,48 +5250,48 @@ msgstr ""
 "Nyní MUSÍTE restartovat aMule.\n"
 "Pokud to neuděláte, tak si pak nestěžujte, když se přihodí něco špatného.\n"
 
-#: src/PrefsUnifiedDlg.cpp:865
+#: src/PrefsUnifiedDlg.cpp:897
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
 "Click on the button \"List\" by this checkbox to enter an URL."
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:1009
+#: src/PrefsUnifiedDlg.cpp:1041
 msgid "Temporary files"
 msgstr "Dočasné soubory"
 
-#: src/PrefsUnifiedDlg.cpp:1014
+#: src/PrefsUnifiedDlg.cpp:1046
 msgid "Incoming files"
 msgstr "Příchozí soubory"
 
-#: src/PrefsUnifiedDlg.cpp:1019
+#: src/PrefsUnifiedDlg.cpp:1051
 msgid "Online Signatures"
 msgstr "Online podpisy"
 
-#: src/PrefsUnifiedDlg.cpp:1032
+#: src/PrefsUnifiedDlg.cpp:1064
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Zvolte adresář pro %s"
 
-#: src/PrefsUnifiedDlg.cpp:1052
+#: src/PrefsUnifiedDlg.cpp:1084
 msgid "Browse for videoplayer"
 msgstr "Zvolit přehrávač videa"
 
-#: src/PrefsUnifiedDlg.cpp:1056
+#: src/PrefsUnifiedDlg.cpp:1088
 msgid "Select browser"
 msgstr "Výběr prohlížeče"
 
-#: src/PrefsUnifiedDlg.cpp:1062
+#: src/PrefsUnifiedDlg.cpp:1094
 #, c-format
 msgid "Executable%s"
 msgstr "Spustitelný soubor %s"
 
-#: src/PrefsUnifiedDlg.cpp:1083
+#: src/PrefsUnifiedDlg.cpp:1115
 msgid "Edit server list"
 msgstr "Upravit seznam serverů"
 
-#: src/PrefsUnifiedDlg.cpp:1084
+#: src/PrefsUnifiedDlg.cpp:1116
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -5258,7 +5299,7 @@ msgstr ""
 "Sem přidejte URL pro stažení server.met souborů.\n"
 "Pouze jedno URL na každý řádek."
 
-#: src/PrefsUnifiedDlg.cpp:1143 src/PrefsUnifiedDlg.cpp:1162
+#: src/PrefsUnifiedDlg.cpp:1175 src/PrefsUnifiedDlg.cpp:1194
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
@@ -5266,7 +5307,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/PrefsUnifiedDlg.cpp:1150
+#: src/PrefsUnifiedDlg.cpp:1182
 #, fuzzy, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
@@ -5274,12 +5315,12 @@ msgstr[0] "Čas pro průměrný graf: %d minut"
 msgstr[1] "Čas pro průměrný graf: %d minut"
 msgstr[2] ""
 
-#: src/PrefsUnifiedDlg.cpp:1156
+#: src/PrefsUnifiedDlg.cpp:1188
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr ""
 
-#: src/PrefsUnifiedDlg.cpp:1168
+#: src/PrefsUnifiedDlg.cpp:1200
 #, fuzzy, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
@@ -5287,7 +5328,7 @@ msgstr[0] "Velikost zásobníku pro soubory: %d bajtů"
 msgstr[1] "Velikost zásobníku pro soubory: %d bajtů"
 msgstr[2] ""
 
-#: src/PrefsUnifiedDlg.cpp:1174
+#: src/PrefsUnifiedDlg.cpp:1206
 #, fuzzy, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
@@ -5295,7 +5336,7 @@ msgstr[0] "Velikost fronty pro odesílání: %d klientů"
 msgstr[1] "Velikost fronty pro odesílání: %d klientů"
 msgstr[2] ""
 
-#: src/PrefsUnifiedDlg.cpp:1181
+#: src/PrefsUnifiedDlg.cpp:1213
 #, fuzzy, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
@@ -5303,36 +5344,36 @@ msgstr[0] "Interval pro obnovení připojení k serveru: %d minut"
 msgstr[1] "Interval pro obnovení připojení k serveru: %d minut"
 msgstr[2] ""
 
-#: src/PrefsUnifiedDlg.cpp:1183
+#: src/PrefsUnifiedDlg.cpp:1215
 msgid "Server connection refresh interval: Disabled"
 msgstr "Interval pro obnovení připojení k serveru: Zakázáno"
 
-#: src/PrefsUnifiedDlg.cpp:1228
+#: src/PrefsUnifiedDlg.cpp:1260
 msgid "disabled"
 msgstr "zakázáno"
 
-#: src/PrefsUnifiedDlg.cpp:1251
+#: src/PrefsUnifiedDlg.cpp:1283
 #, fuzzy, c-format
 msgid "Execute command on '%s' event"
 msgstr "Spustí příkaz při událost `%s'"
 
-#: src/PrefsUnifiedDlg.cpp:1254
+#: src/PrefsUnifiedDlg.cpp:1286
 msgid "Enable command execution on core"
 msgstr "Povolit jaderné příkazy"
 
-#: src/PrefsUnifiedDlg.cpp:1262
+#: src/PrefsUnifiedDlg.cpp:1294
 msgid "Core command:"
 msgstr "Příkaz jádra:"
 
-#: src/PrefsUnifiedDlg.cpp:1271
+#: src/PrefsUnifiedDlg.cpp:1303
 msgid "Enable command execution on GUI"
 msgstr "Povolit GUI příkazy"
 
-#: src/PrefsUnifiedDlg.cpp:1279
+#: src/PrefsUnifiedDlg.cpp:1311
 msgid "GUI command:"
 msgstr "Příkaz GUI:"
 
-#: src/PrefsUnifiedDlg.cpp:1288
+#: src/PrefsUnifiedDlg.cpp:1320
 msgid "The following variables will be replaced:"
 msgstr "Následující proměnné budou nahrazeny:"
 
@@ -5384,7 +5425,7 @@ msgstr ""
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Neočekávaná chyba během vyhledávání v síti Kad: "
 
-#: src/SearchListCtrl.cpp:91 src/SharedFilesCtrl.cpp:106
+#: src/SearchListCtrl.cpp:91 src/SharedFilesCtrl.cpp:107
 msgid "FileID"
 msgstr "ID souboru"
 
@@ -5685,7 +5726,7 @@ msgid "Servers (%i)"
 msgstr "Servery (%i)"
 
 #: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:275 src/ServerSocket.cpp:290
-#: src/ServerWnd.cpp:179
+#: src/ServerWnd.cpp:185
 msgid "Server"
 msgstr "Server"
 
@@ -5828,121 +5869,121 @@ msgstr "Připojování k %s (%s - %s:%i) %s"
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr ""
 
-#: src/ServerWnd.cpp:103
+#: src/ServerWnd.cpp:109
 msgid "Server not added: No IP or hostname specified."
 msgstr ""
 
-#: src/ServerWnd.cpp:108
+#: src/ServerWnd.cpp:114
 msgid "Server not added: Invalid server-port specified."
 msgstr ""
 
-#: src/ServerWnd.cpp:161
+#: src/ServerWnd.cpp:167
 msgid "eD2k Status:"
 msgstr "Stav eD2k:"
 
-#: src/ServerWnd.cpp:172
+#: src/ServerWnd.cpp:178
 msgid "ID"
 msgstr "ID"
 
-#: src/ServerWnd.cpp:204
+#: src/ServerWnd.cpp:210
 msgid "Kademlia Status:"
 msgstr "Stav Kademlia:"
 
-#: src/ServerWnd.cpp:207
+#: src/ServerWnd.cpp:213
 #, fuzzy
 msgid "Running in LAN mode"
 msgstr "Běží na %s"
 
-#: src/ServerWnd.cpp:207
+#: src/ServerWnd.cpp:213
 msgid "Running"
 msgstr "Běží"
 
-#: src/ServerWnd.cpp:210
+#: src/ServerWnd.cpp:216
 #, fuzzy
 msgid "Kademlia client ID:"
 msgstr "Stav Kademlia:"
 
-#: src/ServerWnd.cpp:212
+#: src/ServerWnd.cpp:218
 msgid "Status:"
 msgstr "Stav:"
 
-#: src/ServerWnd.cpp:215
+#: src/ServerWnd.cpp:221
 msgid "Connection State:"
 msgstr "Stav připojení:"
 
-#: src/ServerWnd.cpp:217
+#: src/ServerWnd.cpp:223
 #, c-format
 msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr "Za firewallem - otevřete TCP port %d na vašem routeru či ve firewallu"
 
-#: src/ServerWnd.cpp:219
+#: src/ServerWnd.cpp:225
 msgid "UDP Connection State:"
 msgstr "Stav UDP připojení:"
 
-#: src/ServerWnd.cpp:222
+#: src/ServerWnd.cpp:228
 #, c-format
 msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr "Za firewallem - otevřete UDP port %d na vašem routeru či ve firewallu"
 
-#: src/ServerWnd.cpp:226
+#: src/ServerWnd.cpp:232
 msgid "Firewalled state: "
 msgstr "Stav firewallu: "
 
-#: src/ServerWnd.cpp:232
+#: src/ServerWnd.cpp:238
 msgid "No buddy required - TCP port open"
 msgstr "Není třeba kamaráda - TCP port je otevřený"
 
-#: src/ServerWnd.cpp:234
+#: src/ServerWnd.cpp:240
 msgid "No buddy required - UDP port open"
 msgstr "Není třeba kamaráda - UDP port je otevřený"
 
-#: src/ServerWnd.cpp:236
+#: src/ServerWnd.cpp:242
 msgid "No buddy"
 msgstr "Žádný kamarád"
 
-#: src/ServerWnd.cpp:240
+#: src/ServerWnd.cpp:246
 msgid "Connecting to buddy"
 msgstr "Připojuji se ke kamarádovi"
 
-#: src/ServerWnd.cpp:243
+#: src/ServerWnd.cpp:249
 #, c-format
 msgid "Connected to buddy at %s"
 msgstr "Připojen ke kamarádovi na %s"
 
-#: src/ServerWnd.cpp:253
+#: src/ServerWnd.cpp:259
 msgid "Indexed sources:"
 msgstr "Indexované zdroje:"
 
-#: src/ServerWnd.cpp:255
+#: src/ServerWnd.cpp:261
 msgid "Indexed keywords:"
 msgstr "Indexovaná klíčová slova:"
 
-#: src/ServerWnd.cpp:257
+#: src/ServerWnd.cpp:263
 msgid "Indexed notes:"
 msgstr ""
 
-#: src/ServerWnd.cpp:259
+#: src/ServerWnd.cpp:265
 msgid "Indexed load:"
 msgstr ""
 
-#: src/ServerWnd.cpp:262
+#: src/ServerWnd.cpp:268
 msgid "Average Users:"
 msgstr ""
 
-#: src/ServerWnd.cpp:265
+#: src/ServerWnd.cpp:271
 msgid "Average Files:"
 msgstr ""
 
-#: src/ServerWnd.cpp:270 src/TextClient.cpp:732
+#: src/ServerWnd.cpp:276 src/TextClient.cpp:827
 msgid "Not running"
 msgstr "Neběží"
 
-#: src/SharedFileList.cpp:332
+#: src/SharedFileList.cpp:344
 #, c-format
 msgid "Adding file %s to shares"
 msgstr ""
 
-#: src/SharedFileList.cpp:371
+#: src/SharedFileList.cpp:383
 #, c-format
 msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
@@ -5950,7 +5991,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/SharedFileList.cpp:377
+#: src/SharedFileList.cpp:389
 #, fuzzy, c-format
 msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
@@ -5958,17 +5999,17 @@ msgstr[0] "Nalezeno %i známých a %i neznámých sdílených souborů"
 msgstr[1] "Nalezeno %i známých a %i neznámých sdílených souborů"
 msgstr[2] ""
 
-#: src/SharedFileList.cpp:386
+#: src/SharedFileList.cpp:398
 #, c-format
 msgid "ERROR: Attempted to share %s"
 msgstr ""
 
-#: src/SharedFileList.cpp:410
+#: src/SharedFileList.cpp:422
 #, c-format
 msgid "Shared directory not found, skipping: %s"
 msgstr "Sdílený adresář nenalezen, přeskakuji: %s"
 
-#: src/SharedFileList.cpp:480
+#: src/SharedFileList.cpp:492
 #, c-format
 msgid "No shareable files found in directory: %s"
 msgstr ""
@@ -6012,89 +6053,89 @@ msgstr "Název souboru"
 msgid "Shares File List"
 msgstr "Sdílené soubory"
 
-#: src/SharedFilesCtrl.cpp:107
+#: src/SharedFilesCtrl.cpp:108
 msgid "Requests"
 msgstr "Požadavky"
 
-#: src/SharedFilesCtrl.cpp:108
+#: src/SharedFilesCtrl.cpp:109
 msgid "Accepted Requests"
 msgstr "Přijaté požadavky"
 
-#: src/SharedFilesCtrl.cpp:109
+#: src/SharedFilesCtrl.cpp:110
 msgid "Transferred Data"
 msgstr "Přenesená data"
 
-#: src/SharedFilesCtrl.cpp:110
+#: src/SharedFilesCtrl.cpp:111
 msgid "Share Ratio"
 msgstr "Poměr sdílení"
 
-#: src/SharedFilesCtrl.cpp:111
+#: src/SharedFilesCtrl.cpp:112
 msgid "Obtained Parts"
 msgstr "Obdržené části"
 
-#: src/SharedFilesCtrl.cpp:112
+#: src/SharedFilesCtrl.cpp:113
 msgid "Complete Sources"
 msgstr "Kompletní zdroje"
 
-#: src/SharedFilesCtrl.cpp:113
+#: src/SharedFilesCtrl.cpp:114
 msgid "Directory Path"
 msgstr "Cesta"
 
-#: src/SharedFilesCtrl.cpp:150
+#: src/SharedFilesCtrl.cpp:151
 msgid "Add Comment/Rating"
 msgstr "Přidat komentář/hodnocení"
 
-#: src/SharedFilesCtrl.cpp:152
+#: src/SharedFilesCtrl.cpp:153
 msgid "Edit Comment/Rating"
 msgstr "Upravit komentář/hodnocení"
 
-#: src/SharedFilesCtrl.cpp:156
+#: src/SharedFilesCtrl.cpp:157
 msgid "Rename"
 msgstr "Přejmenovat"
 
-#: src/SharedFilesCtrl.cpp:160
+#: src/SharedFilesCtrl.cpp:161
 msgid "Add files in collection to transfer list"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:163
+#: src/SharedFilesCtrl.cpp:164
 msgid "Copy magnet &URI to clipboard"
 msgstr "Zkopírovat magnet URI do schránky"
 
-#: src/SharedFilesCtrl.cpp:165
+#: src/SharedFilesCtrl.cpp:166
 msgid "Copy eD2k link to clipboard (&Source)"
 msgstr "Zkopírovat eD2k odkaz do schránky (%zdroj)"
 
-#: src/SharedFilesCtrl.cpp:166
+#: src/SharedFilesCtrl.cpp:167
 msgid "Copy eD2k link to clipboard (Source) (&With Crypt options)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:167
+#: src/SharedFilesCtrl.cpp:168
 msgid "Copy eD2k link to clipboard (&Hostname)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:168
+#: src/SharedFilesCtrl.cpp:169
 msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:169
+#: src/SharedFilesCtrl.cpp:170
 msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:170
+#: src/SharedFilesCtrl.cpp:171
 #, fuzzy
 msgid "Copy eD2k link to clipboard (&AICH info + Source)"
 msgstr "Zkopírovat ED2K odkaz do schránky (AICH info)"
 
-#: src/SharedFilesCtrl.cpp:318
+#: src/SharedFilesCtrl.cpp:319
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "K vytvoření platného odkazu potřebujete HighID"
 
-#: src/SharedFilesCtrl.cpp:465
+#: src/SharedFilesCtrl.cpp:493
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "Sdílené soubory (%i)"
 
-#: src/SharedFilesCtrl.cpp:600 src/TextClient.cpp:830
+#: src/SharedFilesCtrl.cpp:628 src/TextClient.cpp:925
 msgid "[PartFile]"
 msgstr "[PartSoubor]"
 
@@ -6340,11 +6381,11 @@ msgstr "Neobdrženo"
 msgid "Active connections (1:%u)"
 msgstr "Aktivní připojení (1:%u)"
 
-#: src/StatTree.cpp:540
+#: src/StatTree.cpp:551
 msgid "Not available"
 msgstr "Nedostupný"
 
-#: src/StatTree.cpp:596 src/StatTree.cpp:607
+#: src/StatTree.cpp:612 src/StatTree.cpp:623
 msgid "Never"
 msgstr "Nikdy"
 
@@ -6353,119 +6394,137 @@ msgstr "Nikdy"
 msgid "Command '%s' with pid '%d' has finished with status code '%d'."
 msgstr ""
 
-#: src/TextClient.cpp:125
+#: src/TextClient.cpp:207
 msgid "Execute <str> and exit."
 msgstr "Spustí <str> a ukončí se."
 
-#: src/TextClient.cpp:200
+#: src/TextClient.cpp:282
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "Neplatný formát IP adresy. Použijte xxx.xxx.xxx.xxx:xxxx\n"
 
-#: src/TextClient.cpp:317
+#: src/TextClient.cpp:399
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
 msgstr ""
 
-#: src/TextClient.cpp:353
+#: src/TextClient.cpp:435
 msgid "Processing by hash: "
 msgstr "Zpracovávám podle hashe: "
 
-#: src/TextClient.cpp:367
+#: src/TextClient.cpp:449
 msgid "Processing by filename: "
 msgstr "Zpracovávám podle názvu souboru: "
 
-#: src/TextClient.cpp:389
+#: src/TextClient.cpp:471
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
 msgstr ""
 
-#: src/TextClient.cpp:415
+#: src/TextClient.cpp:497
 msgid "Not a valid number\n"
 msgstr "Neplatné číslo\n"
 
-#: src/TextClient.cpp:419
+#: src/TextClient.cpp:501
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr ""
 
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
-#: src/TextClient.cpp:536
+#: src/TextClient.cpp:613
+#, fuzzy
+msgid ""
+"Invalid search filter syntax.\n"
+"Type 'help search' to get more help.\n"
+msgstr "Pro nápovědu spusťte '%s'.\n"
+
+#. TRANSLATORS:
+#. 'help search' is a command to the program, do not translate it.
+#: src/TextClient.cpp:619
+#, fuzzy
+msgid ""
+"No search keyword provided.\n"
+"Type 'help search' to get more help.\n"
+msgstr "Pro nápovědu spusťte '%s'.\n"
+
+#. TRANSLATORS:
+#. 'help search' is a command to the program, do not translate it.
+#: src/TextClient.cpp:631
 #, fuzzy
 msgid ""
 "No search type defined.\n"
 "Type 'help search' to get more help.\n"
 msgstr "Pro nápovědu spusťte '%s'.\n"
 
-#: src/TextClient.cpp:555
+#: src/TextClient.cpp:650
 #, fuzzy, c-format
 msgid "Download File: %lu %s\n"
 msgstr "Stahování (%i)"
 
-#: src/TextClient.cpp:647 src/webserver/src/WebServer.cpp:409
+#: src/TextClient.cpp:742 src/webserver/src/WebServer.cpp:409
 msgid "Request failed with an unknown error."
 msgstr "Požadavek selhal kvůli neznámé chybě."
 
-#: src/TextClient.cpp:651
+#: src/TextClient.cpp:746
 msgid "Operation was successful."
 msgstr "Operace byla úspěšná."
 
-#: src/TextClient.cpp:657
+#: src/TextClient.cpp:752
 #, c-format
 msgid "Request failed with the following error: %s"
 msgstr ""
 
-#: src/TextClient.cpp:671
+#: src/TextClient.cpp:766
 #, c-format
 msgid "IP filtering for clients is %s.\n"
 msgstr ""
 
-#: src/TextClient.cpp:672 src/TextClient.cpp:678
+#: src/TextClient.cpp:767 src/TextClient.cpp:773
 msgid "OFF"
 msgstr "vypnuto"
 
-#: src/TextClient.cpp:672 src/TextClient.cpp:678
+#: src/TextClient.cpp:767 src/TextClient.cpp:773
 msgid "ON"
 msgstr "zapnuto"
 
-#: src/TextClient.cpp:677
+#: src/TextClient.cpp:772
 #, c-format
 msgid "IP filtering for servers is %s.\n"
 msgstr ""
 
-#: src/TextClient.cpp:682
+#: src/TextClient.cpp:777
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
 msgstr ""
 
-#: src/TextClient.cpp:689
+#: src/TextClient.cpp:784
 #, c-format
 msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr ""
 
-#: src/TextClient.cpp:703
+#: src/TextClient.cpp:798
 msgid "eD2k"
 msgstr "eD2k"
 
-#: src/TextClient.cpp:708
+#: src/TextClient.cpp:803
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "Připojen k %s %s %s"
 
-#: src/TextClient.cpp:714
+#: src/TextClient.cpp:809
 msgid "Now connecting"
 msgstr "Připojování"
 
-#: src/TextClient.cpp:723 src/utils/wxCas/src/wxcasframe.cpp:1051
+#: src/TextClient.cpp:818 src/utils/wxCas/src/wxcasframe.cpp:1051
 #: src/utils/wxCas/src/wxcasframe.cpp:1073
 msgid "firewalled"
 msgstr "za firewallem"
 
-#: src/TextClient.cpp:725 src/utils/wxCas/src/wxcasframe.cpp:1049
+#: src/TextClient.cpp:820 src/utils/wxCas/src/wxcasframe.cpp:1049
 #: src/utils/wxCas/src/wxcasframe.cpp:1071
 msgid "ok"
 msgstr "ok"
 
-#: src/TextClient.cpp:738
+#: src/TextClient.cpp:833
 #, c-format
 msgid ""
 "\n"
@@ -6474,7 +6533,7 @@ msgstr ""
 "\n"
 "Stahování:\t%s"
 
-#: src/TextClient.cpp:741
+#: src/TextClient.cpp:836
 #, c-format
 msgid ""
 "\n"
@@ -6483,7 +6542,7 @@ msgstr ""
 "\n"
 "Odesílání:\t%s"
 
-#: src/TextClient.cpp:744
+#: src/TextClient.cpp:839
 #, c-format
 msgid ""
 "\n"
@@ -6492,7 +6551,7 @@ msgstr ""
 "\n"
 "Klientů ve frontě:\t%d\n"
 
-#: src/TextClient.cpp:747
+#: src/TextClient.cpp:842
 #, c-format
 msgid ""
 "\n"
@@ -6501,39 +6560,39 @@ msgstr ""
 "\n"
 "Celkem zdrojů:\t%d\n"
 
-#: src/TextClient.cpp:856
+#: src/TextClient.cpp:951
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr "Počet výsledků vyhledávání: %i\n"
 
-#: src/TextClient.cpp:870
+#: src/TextClient.cpp:965
 #, c-format
 msgid "Search progress: %u %% \n"
 msgstr ""
 
-#: src/TextClient.cpp:872
+#: src/TextClient.cpp:967
 #, fuzzy
 msgid "Search progress not available"
 msgstr "Zobrazit procenta průběhu"
 
-#: src/TextClient.cpp:877
+#: src/TextClient.cpp:972
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "Obdržena neznámá odpověď od serveru, kód operace = %#x."
 
-#: src/TextClient.cpp:890
+#: src/TextClient.cpp:985
 msgid "Show short status information."
 msgstr ""
 
-#: src/TextClient.cpp:891
+#: src/TextClient.cpp:986
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr ""
 
-#: src/TextClient.cpp:893
+#: src/TextClient.cpp:988
 msgid "Show full statistics tree."
 msgstr "Zobrazit celý strom statistik."
 
-#: src/TextClient.cpp:894
+#: src/TextClient.cpp:989
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -6545,46 +6604,46 @@ msgid ""
 "type.\n"
 msgstr ""
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:991
 msgid "Shut down aMule."
 msgstr "Ukončit aMuli"
 
-#: src/TextClient.cpp:897
+#: src/TextClient.cpp:992
 msgid ""
 "Shut down the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
 
-#: src/TextClient.cpp:899
+#: src/TextClient.cpp:994
 msgid "Reload the given object."
 msgstr ""
 
-#: src/TextClient.cpp:900
+#: src/TextClient.cpp:995
 msgid "Reload shared files list."
 msgstr "Znovu načte seznam sdílených souborů."
 
-#: src/TextClient.cpp:902
+#: src/TextClient.cpp:997
 msgid "Reload IP filtering table."
 msgstr ""
 
-#: src/TextClient.cpp:903
+#: src/TextClient.cpp:998
 msgid "Reload current IP filtering table."
 msgstr ""
 
-#: src/TextClient.cpp:904
+#: src/TextClient.cpp:999
 msgid "Update IP filtering table from URL."
 msgstr ""
 
-#: src/TextClient.cpp:905
+#: src/TextClient.cpp:1000
 msgid "If URL is omitted the URL from the preferences is used."
 msgstr ""
 
-#: src/TextClient.cpp:907
+#: src/TextClient.cpp:1002
 msgid "Connect to the network."
 msgstr "Připojit se k síti."
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:1003
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -6593,35 +6652,35 @@ msgid ""
 "or a resolvable DNS name."
 msgstr ""
 
-#: src/TextClient.cpp:909
+#: src/TextClient.cpp:1004
 msgid "Connect to eD2k only."
 msgstr "Připojit se pouze k eD2k."
 
-#: src/TextClient.cpp:910
+#: src/TextClient.cpp:1005
 msgid "Connect to Kad only."
 msgstr "Připojit se pouze ke Kademlia."
 
-#: src/TextClient.cpp:912
+#: src/TextClient.cpp:1007
 msgid "Disconnect from the network."
 msgstr "Odpojit se od sítě."
 
-#: src/TextClient.cpp:913
+#: src/TextClient.cpp:1008
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr ""
 
-#: src/TextClient.cpp:914
+#: src/TextClient.cpp:1009
 msgid "Disconnect from eD2k only."
 msgstr "Odpojit se pouze od eD2k."
 
-#: src/TextClient.cpp:915
+#: src/TextClient.cpp:1010
 msgid "Disconnect from Kad only."
 msgstr "Odpojit se pouze od Kademlia."
 
-#: src/TextClient.cpp:917
+#: src/TextClient.cpp:1012
 msgid "Add an eD2k or magnet link to core."
 msgstr "Přidat eD2k nebo magnet odkaz do jádra."
 
-#: src/TextClient.cpp:918
+#: src/TextClient.cpp:1013
 msgid ""
 "The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -6633,233 +6692,243 @@ msgid ""
 "The magnet link must contain the eD2k hash and file length.\n"
 msgstr ""
 
-#: src/TextClient.cpp:920
+#: src/TextClient.cpp:1015
 msgid "Set a preference value."
 msgstr "Nastavit hodnotu nastavení."
 
-#: src/TextClient.cpp:923
+#: src/TextClient.cpp:1018
 msgid "Set IP filtering preferences."
 msgstr "Nastavit filtrování IP."
 
-#: src/TextClient.cpp:924
+#: src/TextClient.cpp:1019
 msgid "Turn IP filtering on for both clients and servers."
 msgstr "Povolit klientům i serverům filtrování IP."
 
-#: src/TextClient.cpp:925
+#: src/TextClient.cpp:1020
 msgid "Turn IP filtering off for both clients and servers."
 msgstr "Zakázat klientům i serverům filtrování IP."
 
-#: src/TextClient.cpp:926
+#: src/TextClient.cpp:1021
 msgid "Enable/Disable IP filtering for clients."
 msgstr "Povolit/zakázat klientům filtrování IP."
 
-#: src/TextClient.cpp:927
+#: src/TextClient.cpp:1022
 msgid "Turn IP filtering on for clients."
 msgstr "Povolit klientům filtrování IP."
 
-#: src/TextClient.cpp:928
+#: src/TextClient.cpp:1023
 msgid "Turn IP filtering off for clients."
 msgstr "Zakázat klientům filtrování IP."
 
-#: src/TextClient.cpp:929
+#: src/TextClient.cpp:1024
 msgid "Enable/Disable IP filtering for servers."
 msgstr "Povolit/zakázat klientům filtrování IP."
 
-#: src/TextClient.cpp:930
+#: src/TextClient.cpp:1025
 msgid "Turn IP filtering on for servers."
 msgstr "Povolit serverům filtrování IP."
 
-#: src/TextClient.cpp:931
+#: src/TextClient.cpp:1026
 msgid "Turn IP filtering off for servers."
 msgstr "Zakázat serverům filtrování IP."
 
-#: src/TextClient.cpp:932
+#: src/TextClient.cpp:1027
 msgid "Select IP filtering level."
 msgstr "Zvolte úroveň filtrování IP."
 
-#: src/TextClient.cpp:933
+#: src/TextClient.cpp:1028
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
 msgstr ""
 
-#: src/TextClient.cpp:935
+#: src/TextClient.cpp:1030
 msgid "Set bandwidth limits."
 msgstr "Nastavit limity šířky pásma."
 
-#: src/TextClient.cpp:936
+#: src/TextClient.cpp:1031
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr ""
 
-#: src/TextClient.cpp:937
+#: src/TextClient.cpp:1032
 msgid "Set upload bandwidth limit."
 msgstr "Nastavit limit šířky pásma pro odesílání."
 
-#: src/TextClient.cpp:938 src/TextClient.cpp:940
+#: src/TextClient.cpp:1033 src/TextClient.cpp:1035
 msgid "The given value must be in kilobytes/sec.\n"
 msgstr ""
 
-#: src/TextClient.cpp:939
+#: src/TextClient.cpp:1034
 msgid "Set download bandwidth limit."
 msgstr "Nastavit limit šířky pásma pro stahování."
 
-#: src/TextClient.cpp:942
+#: src/TextClient.cpp:1037
 msgid "Get and display a preference value."
 msgstr ""
 
-#: src/TextClient.cpp:945
+#: src/TextClient.cpp:1040
 msgid "Get IP filtering preferences."
 msgstr ""
 
-#: src/TextClient.cpp:946
+#: src/TextClient.cpp:1041
 msgid "Get IP filtering state for both clients and servers."
 msgstr ""
 
-#: src/TextClient.cpp:947
+#: src/TextClient.cpp:1042
 msgid "Get IP filtering state for clients only."
 msgstr ""
 
-#: src/TextClient.cpp:948
+#: src/TextClient.cpp:1043
 msgid "Get IP filtering state for servers only."
 msgstr ""
 
-#: src/TextClient.cpp:949
+#: src/TextClient.cpp:1044
 msgid "Get IP filtering level."
 msgstr ""
 
-#: src/TextClient.cpp:951
+#: src/TextClient.cpp:1046
 msgid "Get bandwidth limits."
 msgstr ""
 
-#: src/TextClient.cpp:953
+#: src/TextClient.cpp:1048
 msgid "Execute a search."
 msgstr "Spustí vyhledávání v síti Kad"
 
-#: src/TextClient.cpp:954
+#: src/TextClient.cpp:1050
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
 "    LOCAL\n"
 "    KAD\n"
 "Example: 'search kad file' will execute a kad search for \"file\".\n"
+"\n"
+"Optional filters can be added before, after, or interleaved with\n"
+"the search keyword(s):\n"
+"    --type <Audio|Video|Image|Doc|Pro|Arc|Iso>\n"
+"    --extension <ext>      (alias: --ext)\n"
+"    --avail <N>            minimum number of sources\n"
+"    --min-size <N[KMG]>    smallest file size; K=1024, M=K*1024, G=M*1024\n"
+"    --max-size <N[KMG]>    largest file size; same suffixes\n"
+"Example: 'search global linux iso --type Iso --min-size 100M' returns\n"
+"results for \"linux iso\" of file-type Iso at least 100 MiB.\n"
 msgstr ""
 
-#: src/TextClient.cpp:955
+#: src/TextClient.cpp:1066
 msgid "Execute a global search."
 msgstr "Spustí globální vyhledávání"
 
-#: src/TextClient.cpp:956
+#: src/TextClient.cpp:1067
 msgid "Execute a local search"
 msgstr "Spustí lokální vyhledávání"
 
-#: src/TextClient.cpp:957
+#: src/TextClient.cpp:1068
 msgid "Execute a kad search"
 msgstr "Spustí vyhledávání v síti Kad"
 
-#: src/TextClient.cpp:959
+#: src/TextClient.cpp:1070
 msgid "Show the results of the last search."
 msgstr "Zobrazí výsledky posledního vyhledávání."
 
-#: src/TextClient.cpp:960
+#: src/TextClient.cpp:1071
 msgid "Return the results of the previous search.\n"
 msgstr "Zobrazí výsledky posledního vyhledávání.\n"
 
-#: src/TextClient.cpp:962
+#: src/TextClient.cpp:1073
 msgid "Show the progress of a search."
 msgstr "Zobrazí průběh vyhledávání."
 
-#: src/TextClient.cpp:963
+#: src/TextClient.cpp:1074
 msgid "Show the progress of a search.\n"
 msgstr "Zobrazí průběh vyhledávání.\n"
 
-#: src/TextClient.cpp:965
+#: src/TextClient.cpp:1076
 msgid "Start downloading a file"
 msgstr ""
 
-#: src/TextClient.cpp:966
+#: src/TextClient.cpp:1077
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
 "the previous search.\n"
 msgstr ""
 
-#: src/TextClient.cpp:973
+#: src/TextClient.cpp:1084
 msgid "Pause download."
 msgstr "Pozastavit stahování."
 
-#: src/TextClient.cpp:976
+#: src/TextClient.cpp:1087
 msgid "Resume download."
 msgstr "Pokračovat ve stahování."
 
-#: src/TextClient.cpp:979
+#: src/TextClient.cpp:1090
 msgid "Cancel download."
 msgstr "Zrušit stahování."
 
-#: src/TextClient.cpp:982
+#: src/TextClient.cpp:1093
 msgid "Set download priority."
 msgstr "Nastaví prioritu stahování."
 
-#: src/TextClient.cpp:983
+#: src/TextClient.cpp:1094
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr ""
 "Nastavte prioritu stahovaného souboru na nízkou, normální, vysokou, nebo "
 "automatickou.\n"
 
-#: src/TextClient.cpp:984
+#: src/TextClient.cpp:1095
 msgid "Set priority to low."
 msgstr "Nastaví nízkou prioritu."
 
-#: src/TextClient.cpp:985
+#: src/TextClient.cpp:1096
 msgid "Set priority to normal."
 msgstr "Nastaví normální prioritu."
 
-#: src/TextClient.cpp:986
+#: src/TextClient.cpp:1097
 msgid "Set priority to high."
 msgstr "Nastaví vysokou prioritu."
 
-#: src/TextClient.cpp:987
+#: src/TextClient.cpp:1098
 msgid "Set priority to auto."
 msgstr "Nastaví automatickou prioritu."
 
-#: src/TextClient.cpp:989
+#: src/TextClient.cpp:1100
 msgid "Show queues/lists."
 msgstr "Zobrazit fronty/seznamy."
 
-#: src/TextClient.cpp:990
+#: src/TextClient.cpp:1101
 msgid "Show upload/download queue, server list or shared files list.\n"
 msgstr ""
 
-#: src/TextClient.cpp:991
+#: src/TextClient.cpp:1102
 msgid "Show upload queue."
 msgstr "Zobrazit frontu odesílání."
 
-#: src/TextClient.cpp:992
+#: src/TextClient.cpp:1103
 msgid "Show download queue."
 msgstr "Zobrazit frontu stahování."
 
-#: src/TextClient.cpp:993
+#: src/TextClient.cpp:1104
 msgid "Show log."
 msgstr "Zobrazit log."
 
-#: src/TextClient.cpp:994
+#: src/TextClient.cpp:1105
 msgid "Show servers list."
 msgstr "Zobrazit seznam serverů."
 
-#: src/TextClient.cpp:995
+#: src/TextClient.cpp:1106
 #, fuzzy
 msgid "Show shared files list."
 msgstr "Znovu načte seznam sdílených souborů."
 
-#: src/TextClient.cpp:997
+#: src/TextClient.cpp:1108
 msgid "Reset log."
 msgstr "Vyčistit log."
 
-#: src/TextClient.cpp:1004
+#: src/TextClient.cpp:1115
 #, c-format
 msgid "Deprecated command, use '%s' instead."
 msgstr ""
 
-#: src/TextClient.cpp:1005
+#: src/TextClient.cpp:1116
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
@@ -6872,17 +6941,17 @@ msgstr ""
 msgid "aMule text client"
 msgstr "Textový klient aMule"
 
-#: src/ThreadTasks.cpp:378
+#: src/ThreadTasks.cpp:381
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "Převádí se staré AICH hashsety v '%s' do 64b v '%s'."
 
-#: src/ThreadTasks.cpp:459
+#: src/ThreadTasks.cpp:462
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr "VAROVÁNÍ: Název souboru '%s' je neplatný a byl změněn na '%s'."
 
-#: src/ThreadTasks.cpp:471
+#: src/ThreadTasks.cpp:474
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr ""
