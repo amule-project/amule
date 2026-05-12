@@ -29,6 +29,7 @@
 
 #include "config.h"		// Needed for ASIO_SOCKETS
 #include "Types.h"
+#include <memory>		// shared_ptr for CAsioUDPSocketImpl ownership
 class amuleIPV4Address;
 
 #ifdef ASIO_SOCKETS
@@ -125,10 +126,13 @@ public:
 	virtual void OnProxyEvent(int) {}
 
 private:
-	// Replace the internal socket
-	void	LinkSocketImpl(class CAsioSocketImpl *);
+	// Replace the internal socket. Takes ownership of the passed shared_ptr.
+	void	LinkSocketImpl(std::shared_ptr<class CAsioSocketImpl>);
 
-	class CAsioSocketImpl * m_aSocket;
+	// shared_ptr so the asio impl can outlive this wrapper for as long as
+	// any in-flight async callback still holds a shared_from_this() ref.
+	// Required to fix the wake-from-sleep use-after-free crash (issue #384).
+	std::shared_ptr<class CAsioSocketImpl> m_aSocket;
 	void LastCount();	// No. We don't have this. We return it directly with Read() and Write()
 	bool Error() const;	// Only use LastError
 };
@@ -162,7 +166,9 @@ public:
 	// Do we have a socket available if AcceptWith() is called ?
 	bool	SocketAvailable();
 private:
-	class CAsioSocketServerImpl * m_aServer;
+	// shared_ptr for the same reason as CLibSocket::m_aSocket — pending
+	// async_accept completions must keep the impl alive past wrapper death.
+	std::shared_ptr<class CAsioSocketServerImpl> m_aServer;
 };
 
 
@@ -195,7 +201,10 @@ public:
 	bool	BlocksWrite() const { return false; }
 
 private:
-	class	CAsioUDPSocketImpl * m_aSocket;
+	// shared_ptr so the asio impl can outlive this wrapper for as long as
+	// any in-flight async callback still holds a shared_from_this() ref.
+	// Required to fix the wake-from-sleep use-after-free crash (issue #384).
+	std::shared_ptr<class CAsioUDPSocketImpl> m_aSocket;
 	void	LastCount();	// block this
 	bool	Error() const;	// Only use LastError
 };
