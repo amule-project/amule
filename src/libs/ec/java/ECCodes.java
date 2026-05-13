@@ -368,6 +368,7 @@ public final static short 		EC_TAG_DIRECTORIES_INCOMING               = 0x1A01;
 public final static short 		EC_TAG_DIRECTORIES_TEMP                   = 0x1A02;
 public final static short 		EC_TAG_DIRECTORIES_SHARED                 = 0x1A03;
 public final static short 		EC_TAG_DIRECTORIES_SHARE_HIDDEN           = 0x1A04;
+public final static short 		EC_TAG_DIRECTORIES_AUTO_RESCAN            = 0x1A05;
 public final static short 	EC_TAG_PREFS_STATISTICS                   = 0x1B00;
 public final static short 		EC_TAG_STATSGRAPH_WIDTH                   = 0x1B01;
 public final static short 		EC_TAG_STATSGRAPH_SCALE                   = 0x1B02;

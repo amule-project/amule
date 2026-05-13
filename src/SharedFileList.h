@@ -43,6 +43,7 @@ class CPublishKeywordList;
 class CPath;
 class CAICHHash;
 class CThreadTask;
+class CSharedDirWatcher;
 
 
 typedef std::map<CMD4Hash,CKnownFile*> CKnownFileMap;
@@ -101,6 +102,13 @@ public:
 	 */
 	void CheckAICHHashes(const std::list<CAICHHash>& hashes);
 
+	/**
+	 * Toggle automatic rescan of shared directories at runtime.
+	 * Called when the user flips the corresponding pref in the
+	 * Directories panel.
+	 */
+	void	EnableDirectoryWatcher(bool enable);
+
 private:
 	typedef std::list<CThreadTask *> TaskList;
 
@@ -127,6 +135,11 @@ private:
 	unsigned int m_currFileKey;
 	uint32 m_lastPublishKadSrc;
 	uint32 m_lastPublishKadNotes;
+
+	// Fs-watcher for auto-rescan of shared dirs. Owned here; created
+	// lazily on EnableDirectoryWatcher(true). Forward-declared in this
+	// header to keep wx/fswatcher.h out of public includes.
+	CSharedDirWatcher * m_dirWatcher;
 };
 
 #endif // SHAREDFILELIST_H

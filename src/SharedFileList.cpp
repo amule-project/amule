@@ -24,6 +24,7 @@
 //
 
 #include "SharedFileList.h"	// Interface declarations  // Do_not_auto_remove
+#include "SharedDirWatcher.h"
 
 #include <map>
 
@@ -309,12 +310,27 @@ CSharedFileList::CSharedFileList(CKnownFileList* in_filelist){
 	m_lastPublishKadSrc = 0;
 	m_lastPublishKadNotes = 0;
 	m_currFileKey = 0;
+	m_dirWatcher = NULL;
 }
 
 
 CSharedFileList::~CSharedFileList()
 {
+	delete m_dirWatcher;
 	delete m_keywords;
+}
+
+
+void CSharedFileList::EnableDirectoryWatcher(bool enable)
+{
+	if (enable) {
+		if (!m_dirWatcher) {
+			m_dirWatcher = new CSharedDirWatcher(this);
+		}
+		m_dirWatcher->Enable();
+	} else if (m_dirWatcher) {
+		m_dirWatcher->Disable();
+	}
 }
 
 
@@ -565,6 +581,12 @@ void CSharedFileList::Reload()
 		m_keywords->PurgeUnreferencedKeywords();
 
 		Notify_SharedFilesShowFileList();
+
+		// Re-sync the watcher's path set so dirs added or removed from
+		// shareddir_list since the previous Reload are picked up.
+		if (m_dirWatcher) {
+			m_dirWatcher->Refresh();
+		}
 
 		reloading = false;
 	}

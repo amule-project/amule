@@ -711,6 +711,14 @@ bool CamuleApp::OnInit()
 	downloadqueue->LoadMetFiles(thePrefs::GetTempDir());
 	sharedfiles->Reload();
 
+	// Start the fs-watcher after the initial scan so directories exist
+	// in shareddir_list before Add() runs. The watcher itself is cheap
+	// when no events fire; gating it on the user pref keeps inotify
+	// watches off the books on hosts where the user doesn't want them.
+	if (thePrefs::AutoRescanSharedDirs()) {
+		sharedfiles->EnableDirectoryWatcher(true);
+	}
+
 	// Ensure that the up/down ratio is used
 	CPreferences::CheckUlDlRatio();
 

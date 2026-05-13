@@ -705,6 +705,12 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp->sharedfiles->Reload();
 	}
 
+	if (CfgChanged(IDC_AUTO_RESCAN_SHARED)) {
+		// Start or stop the fs-watcher immediately so the user sees the
+		// effect of toggling without needing to restart amuled.
+		theApp->sharedfiles->EnableDirectoryWatcher(thePrefs::AutoRescanSharedDirs());
+	}
+
 	if (CfgChanged(IDC_OSDIR) || CfgChanged(IDC_ONLINESIG)) {
 		wxTextCtrl* widget = CastChild( IDC_OSDIR, wxTextCtrl );
 

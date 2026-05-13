@@ -210,6 +210,7 @@ bool		CPreferences::s_ShowMessagesInLog;
 bool		CPreferences::s_IsAdvancedSpamfilterEnabled;
 bool		CPreferences::s_IsChatCaptchaEnabled;
 bool		CPreferences::s_ShareHiddenFiles;
+bool		CPreferences::s_AutoRescanSharedDirs;
 bool		CPreferences::s_AutoSortDownload;
 bool		CPreferences::s_NewVersionCheck;
 bool		CPreferences::s_ConnectToKad;
@@ -1206,6 +1207,13 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_SHAREHIDDENFILES,	(new Cfg_Bool( "/eMule/ShareHiddenFiles", s_ShareHiddenFiles, false )));
 
 	/**
+	 * Auto-rescan of shared directories via wxFileSystemWatcher.
+	 * Default on so the feature is visible without opt-in; the prefs panel
+	 * lets users disable it (e.g. Linux hosts hitting max_user_watches).
+	 **/
+	NewCfgItem(IDC_AUTO_RESCAN_SHARED,	(new Cfg_Bool( "/eMule/AutoRescanSharedDirs", s_AutoRescanSharedDirs, true )));
+
+	/**
 	 * Auto-Sorting of downloads
 	 **/
 	 NewCfgItem(IDC_AUTOSORT,	 (new Cfg_Bool( "/eMule/AutoSortDownloads", s_AutoSortDownload, false )));
@@ -1478,6 +1486,12 @@ void CPreferences::Save()
 
 	SavePreferences();
 
+	SaveSharedFolders();
+}
+
+
+void CPreferences::SaveSharedFolders()
+{
 	#ifndef CLIENT_GUI
 	CTextFile sdirfile;
 	if (sdirfile.Open(s_configDir + "shareddir.dat", CTextFile::write)) {

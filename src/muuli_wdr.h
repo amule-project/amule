@@ -275,6 +275,9 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit = TRUE, bool set_s
 #define IDC_SELTEMPDIR 10174
 #define IDC_SHARESELECTOR 10175
 #define IDC_SHAREHIDDENFILES 10176
+// Picked above the existing wxDesigner-generated range so a future
+// regeneration of muuli_wdr.* doesn't reuse this ID for something else.
+#define IDC_AUTO_RESCAN_SHARED 10333
 wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 #define IDC_SLIDERINFO 10177

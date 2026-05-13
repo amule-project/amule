@@ -382,6 +382,7 @@ enum ECTagNames {
 			EC_TAG_DIRECTORIES_TEMP                   = 0x1A02,
 			EC_TAG_DIRECTORIES_SHARED                 = 0x1A03,
 			EC_TAG_DIRECTORIES_SHARE_HIDDEN           = 0x1A04,
+			EC_TAG_DIRECTORIES_AUTO_RESCAN            = 0x1A05,
 		EC_TAG_PREFS_STATISTICS                   = 0x1B00,
 			EC_TAG_STATSGRAPH_WIDTH                   = 0x1B01,
 			EC_TAG_STATSGRAPH_SCALE                   = 0x1B02,
