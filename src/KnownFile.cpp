@@ -325,6 +325,14 @@ void CKnownFile::Init()
 	m_lastPublishTimeKadNotes = 0;
 	m_lastBuddyIP = 0;
 	m_lastDateChanged = 0;
+	// Sentinel "unknown": LoadFromFile fills this in from FT_LASTSEEN
+	// when present, else falls back to the file's own mtime
+	// (m_lastDateChanged) for migration -- so a known.met that
+	// predates this tag gets a useful aging signal on first save
+	// after upgrade rather than every record looking "fresh now"
+	// for the next TTL window. Fresh hashes (CHashingTask) bump
+	// this in CKnownFileList::Append's "newly added" branch.
+	m_lastSeen = 0;
 	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
 	m_hashingProgress = 0;
@@ -642,6 +650,10 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 				SetLastPublishTimeKadNotes( newtag.GetInt() );
 				break;
 
+			case FT_LASTSEEN:
+				m_lastSeen = newtag.GetInt();
+				break;
+
 			default:
 				// Store them here and write them back on saving.
 				m_taglist.push_back(newtag);
@@ -667,6 +679,15 @@ bool CKnownFile::LoadFromFile(const CFileDataIO* file)
 	bool ret2 = LoadHashsetFromFile(file,false);
 	bool ret3 = LoadTagsFromFile(file);
 	UpdatePartsInfo();
+	// Migration: a known.met written before FT_LASTSEEN was added
+	// leaves m_lastSeen at its Init() sentinel of 0. Fall back to
+	// the file's stored mtime as a proxy for "last known to be on
+	// disk at this name/date/size" -- accurate enough to drive the
+	// TTL prune on first save after upgrade rather than waiting a
+	// TTL window for all records to look "fresh now".
+	if (m_lastSeen == 0) {
+		m_lastSeen = (uint32) m_lastDateChanged;
+	}
 	// Final hash-count verification, needs to be done after the tags are loaded.
 	return ret1 && ret2 && ret3 && GetED2KPartHashCount()==GetHashCount();
 	// SLUGFILLER: SafeHash
@@ -689,7 +710,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 		file->WriteHash(m_hashlist[i]);
 
 	//tags
-	const int iFixedTags = 8;
+	const int iFixedTags = 9;	// +1 for FT_LASTSEEN
 	uint32 tagcount = iFixedTags;
 	if (HasProperAICHHashSet()) {
 		tagcount++;
@@ -755,6 +776,11 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	// priority N permission
 	CTagInt32 priotag(FT_ULPRIORITY, IsAutoUpPriority() ? PR_AUTO : m_iUpPriority);
 	priotag.WriteTagToFile(file);
+
+	// Last time this record was matched against a real on-disk file
+	// (or freshly hashed). Drives the TTL prune in CKnownFileList.
+	CTagInt32 lastseentag(FT_LASTSEEN, m_lastSeen);
+	lastseentag.WriteTagToFile(file);
 
 	//AICH Filehash
 	if (HasProperAICHHashSet()) {

@@ -52,6 +52,11 @@
 #define	FT_DL_PREVIEW			0x25
 #define	FT_KADLASTPUBLISHNOTES		0x26	// <uint32>
 #define	FT_AICH_HASH			0x27
+// Per-record "last seen alive" timestamp written by aMule's KnownFileList
+// so the dedup-list cap/TTL can drop entries whose file hasn't existed
+// for the user-configured window. aMule-internal; eMule and older
+// aMule binaries ignore unknown tags on load.
+#define	FT_LASTSEEN			0x28	// <uint32>
 #define	FT_COMPLETE_SOURCES		0x30	// nr. of sources which share a
 						// complete version of the
 						// associated file (supported

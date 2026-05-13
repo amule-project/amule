@@ -293,6 +293,17 @@ public:
 
 	time_t	m_lastDateChanged;
 
+	// "Last time aMule saw this exact (name, date, size) match a real
+	// file." Refreshed by CKnownFileList::FindKnownFile and the
+	// "already on the list" branch in Append. Persisted via
+	// FT_LASTSEEN. Drives the TTL prune in CKnownFileList::Save --
+	// records whose lastSeen is older than the TTL window are dropped
+	// (both live and duplicate-list entries), capping known.met
+	// growth at a function of *recently active* unique hashes
+	// rather than lifetime-of-the-profile uniques.
+	uint32	GetLastSeen() const { return m_lastSeen; }
+	void	SetLastSeen(uint32 t) { m_lastSeen = t; }
+
 	virtual wxString GetFeedback() const;
 
 	void	SetShowSources( bool val )	{ m_showSources = val; }
@@ -354,6 +365,8 @@ protected:
 	uint32	m_lastPublishTimeKadSrc;
 	uint32	m_lastPublishTimeKadNotes;
 	uint32	m_lastBuddyIP;
+
+	uint32	m_lastSeen;
 
 	bool	m_showSources;
 	bool	m_showPeers;

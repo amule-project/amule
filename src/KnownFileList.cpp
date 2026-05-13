@@ -31,6 +31,7 @@
 #include <algorithm>
 #include <map>
 #include <memory>		// Do_not_auto_remove (lionel's Mac, 10.3)
+#include <set>
 #include <vector>
 #include "PartFile.h"		// Needed for CPartFile
 #include "amule.h"
@@ -48,6 +49,17 @@
 // weekly-snapshot / monthly-backup cycles while bounding the on-disk
 // known.met at unique_hashes × (1 + cap).
 #define KNOWN_DUPLICATE_HASH_CAP 8
+
+// TTL after which a record (live or duplicate) whose lastSeen hasn't
+// been refreshed gets dropped. A real file currently on disk has its
+// lastSeen bumped by FindKnownFile / IsOnDuplicates / Append every
+// share-scan; anything left stale for this long either lost its file
+// or had its mtime/name change in a way that won't recur (mtime is
+// monotone-forward in practice, so a duplicate captured at an older
+// mtime will not match again). 30 days catches most pathological
+// touch loops on the next save without losing legitimate intermittent
+// matches.
+#define KNOWN_DUPLICATE_TTL_SECS	(30 * 24 * 60 * 60)
 
 
 // This function is inlined for performance
@@ -249,6 +261,7 @@ CKnownFile* CKnownFileList::FindKnownFile(
 	uint64 in_size)
 {
 	wxMutexLocker sLock(list_mut);
+	const uint32 now = (uint32) time(NULL);
 
 	if (m_knownSizeMap) {
 		const auto key = std::make_pair((uint32) in_size, (uint32) in_date);
@@ -257,6 +270,7 @@ CKnownFile* CKnownFileList::FindKnownFile(
 		for (KnownFileSizeMap::const_iterator it = p.first; it != p.second; ++it) {
 			CKnownFile *cur_file = it->second;
 			if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
+				cur_file->SetLastSeen(now);
 				return cur_file;
 			}
 		}
@@ -265,6 +279,7 @@ CKnownFile* CKnownFileList::FindKnownFile(
 			 it != m_knownFileMap.end(); ++it) {
 			CKnownFile *cur_file = it->second;
 			if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
+				cur_file->SetLastSeen(now);
 				return cur_file;
 			}
 		}
@@ -277,6 +292,7 @@ CKnownFile* CKnownFileList::FindKnownFile(
 	// the other only ever appears here).
 	CKnownFile * dup = IsOnDuplicates(filename, in_date, in_size);
 	if (dup) {
+		dup->SetLastSeen(now);
 		m_pinnedDuplicates.insert(dup);
 	}
 	return dup;
@@ -350,9 +366,15 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 				% Record->GetFileName().GetPrintable() % Record->GetFileSize() % Record->GetED2KPartHashCount() % Record->GetHashCount());
 			return false;
 		}
+		const uint32 now = (uint32) time(NULL);
 		const CMD4Hash& tkey = Record->GetFileHash();
 		CKnownFileMap::iterator it = m_knownFileMap.find(tkey);
 		if (it == m_knownFileMap.end()) {
+			// Fresh hash from CHashingTask -- m_lastSeen was 0 from
+			// CKnownFile::Init's sentinel and never overridden by a
+			// loaded FT_LASTSEEN; stamp it now so the TTL prune
+			// treats this as freshly seen on disk.
+			Record->SetLastSeen(now);
 			m_knownFileMap[tkey] = Record;
 			if (m_knownSizeMap) {
 				m_knownSizeMap->insert(
@@ -367,6 +389,7 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 			if (KnownFileMatches(Record, existing->GetFileName(), existing->GetLastChangeDatetime(), existing->GetFileSize())) {
 				// The file is already on the list, ignore it.
 				AddDebugLogLineN(logKnownFiles, CFormat("%s is already on the list") % Record->GetFileName().GetPrintable());
+				existing->SetLastSeen(now);
 				return false;
 			} else if (CKnownFile * dup = IsOnDuplicates(
 					Record->GetFileName(), Record->GetLastChangeDatetime(),
@@ -378,6 +401,7 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 				// on-disk file (we just hashed it), so this record
 				// matches a live file and the next-session scan
 				// would benefit from finding it without re-hashing.
+				dup->SetLastSeen(now);
 				m_pinnedDuplicates.insert(dup);
 				return false;
 			} else {
@@ -437,6 +461,11 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 								(uint32) Record->GetLastChangeDatetime()),
 							Record));
 				}
+				// Record is freshly hashed; the afterHashing copy
+				// above pulled existing's tags including its (stale)
+				// FT_LASTSEEN. Refresh so the new live entry isn't
+				// born aged-out of the TTL window.
+				Record->SetLastSeen(now);
 				m_knownFileMap[tkey] = Record;
 				return true;
 			}
@@ -496,81 +525,148 @@ void CKnownFileList::PruneDuplicates(
 		return;
 	}
 
-	if (m_duplicateFileList.empty()) {
-		return;
+	const uint32 now = (uint32) time(NULL);
+	const uint32 ttlCutoff =
+		(now > KNOWN_DUPLICATE_TTL_SECS)
+			? (now - KNOWN_DUPLICATE_TTL_SECS) : 0;
+
+	auto isProtected = [&](CKnownFile * r) {
+		return inUse.count(r) > 0 || m_pinnedDuplicates.count(r) > 0;
+	};
+
+	auto eraseFromSizeMap = [&](KnownFileSizeMap * sizeMap,
+			CKnownFile * dead) {
+		if (!sizeMap) {
+			return;
+		}
+		const auto key = std::make_pair(
+			(uint32) dead->GetFileSize(),
+			(uint32) dead->GetLastChangeDatetime());
+		std::pair<KnownFileSizeMap::iterator,
+			KnownFileSizeMap::iterator> p =
+			sizeMap->equal_range(key);
+		for (KnownFileSizeMap::iterator hit = p.first;
+			hit != p.second; ++hit) {
+			if (hit->second == dead) {
+				sizeMap->erase(hit);
+				return;
+			}
+		}
+	};
+
+	// Pass 1: live entries (m_knownFileMap) past TTL. A non-refreshed
+	// live entry means no share-scan in the last TTL window produced a
+	// (name, date, size) match -- the file is no longer accessible to
+	// us. The whole hash is dead; we'll also wipe its duplicates.
+	// std::set (not unordered_set) because CMD4Hash provides operator<
+	// but no std::hash specialization.
+	std::set<CMD4Hash> deadHashes;
+	for (CKnownFileMap::const_iterator it = m_knownFileMap.begin();
+		it != m_knownFileMap.end(); ++it) {
+		CKnownFile * live = it->second;
+		if (isProtected(live)) {
+			continue;
+		}
+		if (live->GetLastSeen() < ttlCutoff) {
+			deadHashes.insert(it->first);
+		}
 	}
 
-	// Bucket the duplicate list by hash, recording the list iterator so
-	// the eventual erase is O(1). Pinned/in-use records are excluded
-	// from the prune candidate set up front: they're load-bearing
-	// (in_use would dangle a SharedFileList pointer; m_pinnedDuplicates
-	// represents a real on-disk file matched this session). The cap
-	// applies only to the unprotected remainder, so the effective
-	// per-hash retention is protected + min(prunable, cap).
-	std::map<CMD4Hash, std::vector<KnownFileList::iterator> > prunable;
+	// Pass 2: duplicates -- drop if their hash is dead, or their own
+	// lastSeen is past TTL. Bucket survivors by hash for the cap pass.
+	std::map<CMD4Hash, std::vector<KnownFileList::iterator> > survivors;
+	size_t droppedDupTTL = 0;
 	for (KnownFileList::iterator it = m_duplicateFileList.begin();
-		it != m_duplicateFileList.end(); ++it) {
+		it != m_duplicateFileList.end(); ) {
 		CKnownFile * record = *it;
-		if (inUse.count(record) > 0) {
+		if (isProtected(record)) {
+			survivors[record->GetFileHash()].push_back(it);
+			++it;
 			continue;
 		}
-		if (m_pinnedDuplicates.count(record) > 0) {
-			continue;
+		const bool hashDead =
+			deadHashes.count(record->GetFileHash()) > 0;
+		const bool ownStale =
+			record->GetLastSeen() < ttlCutoff;
+		if (hashDead || ownStale) {
+			eraseFromSizeMap(m_duplicateSizeMap, record);
+			KnownFileList::iterator victim = it++;
+			delete record;
+			m_duplicateFileList.erase(victim);
+			++droppedDupTTL;
+		} else {
+			survivors[record->GetFileHash()].push_back(it);
+			++it;
 		}
-		prunable[record->GetFileHash()].push_back(it);
 	}
 
-	size_t dropped = 0;
+	// Pass 3: drop the dead live entries (and their size-map index).
+	size_t droppedLive = 0;
+	for (std::set<CMD4Hash>::const_iterator it = deadHashes.begin();
+		it != deadHashes.end(); ++it) {
+		CKnownFileMap::iterator kit = m_knownFileMap.find(*it);
+		if (kit == m_knownFileMap.end()) {
+			continue;
+		}
+		CKnownFile * dead = kit->second;
+		eraseFromSizeMap(m_knownSizeMap, dead);
+		delete dead;
+		m_knownFileMap.erase(kit);
+		++droppedLive;
+	}
+
+	// Pass 4: per-hash cap on whatever duplicate survivors remain.
+	size_t droppedDupCap = 0;
 	for (std::map<CMD4Hash,
 			std::vector<KnownFileList::iterator> >::iterator
-		bucket = prunable.begin();
-		bucket != prunable.end(); ++bucket) {
+		bucket = survivors.begin();
+		bucket != survivors.end(); ++bucket) {
 		std::vector<KnownFileList::iterator> & iters = bucket->second;
 		if (iters.size() <= KNOWN_DUPLICATE_HASH_CAP) {
 			continue;
 		}
 
-		// Sort by mtime descending so the K newest survive. mtime is
-		// the only freshness signal we have without persisting a
-		// per-record lastSeen tag -- a record whose mtime is newer is
-		// more likely to "come back" via mtime-restore tools.
-		std::sort(iters.begin(), iters.end(),
+		// Partition out protected entries first; the cap counts
+		// only the prunable remainder so protected records don't
+		// crowd legitimate survivors out.
+		std::vector<KnownFileList::iterator> prunable;
+		prunable.reserve(iters.size());
+		for (size_t i = 0; i < iters.size(); ++i) {
+			if (!isProtected(*iters[i])) {
+				prunable.push_back(iters[i]);
+			}
+		}
+		if (prunable.size() <= KNOWN_DUPLICATE_HASH_CAP) {
+			continue;
+		}
+
+		// Newest mtime survives the cap. Older mtimes for the same
+		// hash are unlikely to match again in practice (mtime is
+		// monotone-forward outside explicit-restore tooling).
+		std::sort(prunable.begin(), prunable.end(),
 			[](const KnownFileList::iterator & a,
 				const KnownFileList::iterator & b) {
 				return (*a)->GetLastChangeDatetime()
 					> (*b)->GetLastChangeDatetime();
 			});
-
 		for (size_t i = KNOWN_DUPLICATE_HASH_CAP;
-			i < iters.size(); ++i) {
-			CKnownFile * dead = *iters[i];
-
-			if (m_duplicateSizeMap) {
-				const auto key = std::make_pair(
-					(uint32) dead->GetFileSize(),
-					(uint32) dead->GetLastChangeDatetime());
-				std::pair<KnownFileSizeMap::iterator,
-					KnownFileSizeMap::iterator> p =
-					m_duplicateSizeMap->equal_range(key);
-				for (KnownFileSizeMap::iterator hit = p.first;
-					hit != p.second; ++hit) {
-					if (hit->second == dead) {
-						m_duplicateSizeMap->erase(hit);
-						break;
-					}
-				}
-			}
-
-			m_duplicateFileList.erase(iters[i]);
+			i < prunable.size(); ++i) {
+			CKnownFile * dead = *prunable[i];
+			eraseFromSizeMap(m_duplicateSizeMap, dead);
+			m_duplicateFileList.erase(prunable[i]);
 			delete dead;
-			++dropped;
+			++droppedDupCap;
 		}
 	}
 
-	if (dropped > 0) {
+	if (droppedLive || droppedDupTTL || droppedDupCap) {
 		AddDebugLogLineN(logKnownFiles,
-			CFormat("Pruned %u duplicate-hash records over per-hash cap of %u")
-				% (unsigned)dropped % KNOWN_DUPLICATE_HASH_CAP);
+			CFormat("known.met prune: dropped %u live + %u dup (TTL %u days) + %u dup (cap %u)")
+				% (unsigned)droppedLive
+				% (unsigned)droppedDupTTL
+				% (unsigned)(KNOWN_DUPLICATE_TTL_SECS / (24 * 60 * 60))
+				% (unsigned)droppedDupCap
+				% KNOWN_DUPLICATE_HASH_CAP);
 	}
 }
 
