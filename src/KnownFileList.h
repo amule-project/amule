@@ -75,8 +75,17 @@ private:
 	CKnownFileMap	m_knownFileMap;
 	// The filename "known.met"
 	wxString	m_filename;
-	// Speed up shared files reload
-	typedef std::multimap<uint32, CKnownFile*> KnownFileSizeMap;
+	// Speed up shared files reload. The key is (size, mtime) rather than
+	// size alone: libraries that contain many files of the same size
+	// (small text files, fixed-quality JPEGs, fixed-bitrate audio/video)
+	// would otherwise collapse FindKnownFile()'s equal_range into a
+	// large bucket that the inner KnownFileMatches loop walks linearly,
+	// turning the whole shared-list reload into O(N^2) over the same-
+	// size files. Adding mtime to the key narrows the bucket aggressively
+	// in any realistic library — files added at different times have
+	// different mtimes — while keeping the per-entry cost identical
+	// (8 bytes of key vs the previous 4).
+	typedef std::multimap<std::pair<uint32, uint32>, CKnownFile*> KnownFileSizeMap;
 	KnownFileSizeMap * m_knownSizeMap;
 	KnownFileSizeMap * m_duplicateSizeMap;
 };

@@ -213,8 +213,9 @@ CKnownFile* CKnownFileList::FindKnownFile(
 	wxMutexLocker sLock(list_mut);
 
 	if (m_knownSizeMap) {
+		const auto key = std::make_pair((uint32) in_size, (uint32) in_date);
 		std::pair<KnownFileSizeMap::const_iterator, KnownFileSizeMap::const_iterator> p;
-		p = m_knownSizeMap->equal_range((uint32) in_size);
+		p = m_knownSizeMap->equal_range(key);
 		for (KnownFileSizeMap::const_iterator it = p.first; it != p.second; ++it) {
 			CKnownFile *cur_file = it->second;
 			if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
@@ -241,8 +242,9 @@ CKnownFile *CKnownFileList::IsOnDuplicates(
 	uint64 in_size) const
 {
 	if (m_duplicateSizeMap) {
+		const auto key = std::make_pair((uint32) in_size, (uint32) in_date);
 		std::pair<KnownFileSizeMap::const_iterator, KnownFileSizeMap::const_iterator> p;
-		p = m_duplicateSizeMap->equal_range((uint32) in_size);
+		p = m_duplicateSizeMap->equal_range(key);
 		for (KnownFileSizeMap::const_iterator it = p.first; it != p.second; ++it) {
 			CKnownFile *cur_file = it->second;
 			if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
@@ -307,8 +309,10 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 			m_knownFileMap[tkey] = Record;
 			if (m_knownSizeMap) {
 				m_knownSizeMap->insert(
-					std::pair<uint32, CKnownFile*>(
-						(uint32) Record->GetFileSize(), Record));
+					std::make_pair(
+						std::make_pair((uint32) Record->GetFileSize(),
+							(uint32) Record->GetLastChangeDatetime()),
+						Record));
 			}
 			return true;
 		} else {
@@ -347,8 +351,10 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 				m_duplicateFileList.push_back(existing);
 				if (m_duplicateSizeMap) {
 					m_duplicateSizeMap->insert(
-						std::pair<uint32, CKnownFile*>(
-							(uint32) existing->GetFileSize(), existing));
+						std::make_pair(
+							std::make_pair((uint32) existing->GetFileSize(),
+								(uint32) existing->GetLastChangeDatetime()),
+							existing));
 				}
 				if (theApp->sharedfiles) {
 					// Removing the old kad keywords created with the old filename
@@ -358,10 +364,12 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 					// existing is leaving m_knownFileMap for m_duplicateFileList;
 					// drop its size-map entry so FindKnownFile doesn't return a
 					// pointer that no longer belongs to the live map.
+					const auto existingKey = std::make_pair(
+						(uint32) existing->GetFileSize(),
+						(uint32) existing->GetLastChangeDatetime());
 					std::pair<KnownFileSizeMap::iterator,
 						KnownFileSizeMap::iterator> p =
-						m_knownSizeMap->equal_range(
-							(uint32) existing->GetFileSize());
+						m_knownSizeMap->equal_range(existingKey);
 					for (KnownFileSizeMap::iterator hit = p.first;
 						hit != p.second; ++hit) {
 						if (hit->second == existing) {
@@ -370,8 +378,10 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 						}
 					}
 					m_knownSizeMap->insert(
-						std::pair<uint32, CKnownFile*>(
-							(uint32) Record->GetFileSize(), Record));
+						std::make_pair(
+							std::make_pair((uint32) Record->GetFileSize(),
+								(uint32) Record->GetLastChangeDatetime()),
+							Record));
 				}
 				m_knownFileMap[tkey] = Record;
 				return true;
@@ -386,18 +396,25 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 	}
 }
 
-// Make an index by size to speed up FindKnownFile
-// Size modulo 2^32 is enough here
+// Make a (size, mtime) index to speed up FindKnownFile. Size + mtime
+// modulo 2^32 is enough here — same precision the rest of the file
+// uses for FindKnownFile's inputs and KnownFileMatches' comparisons.
 void CKnownFileList::PrepareIndex()
 {
 	ReleaseIndex();
 	m_knownSizeMap = new KnownFileSizeMap;
 	for (CKnownFileMap::const_iterator it = m_knownFileMap.begin(); it != m_knownFileMap.end(); ++it) {
-		m_knownSizeMap->insert(std::pair<uint32, CKnownFile*>((uint32) it->second->GetFileSize(), it->second));
+		m_knownSizeMap->insert(std::make_pair(
+			std::make_pair((uint32) it->second->GetFileSize(),
+				(uint32) it->second->GetLastChangeDatetime()),
+			it->second));
 	}
 	m_duplicateSizeMap = new KnownFileSizeMap;
 	for (KnownFileList::const_iterator it = m_duplicateFileList.begin(); it != m_duplicateFileList.end(); ++it) {
-		m_duplicateSizeMap->insert(std::pair<uint32, CKnownFile*>((uint32) (*it)->GetFileSize(), *it));
+		m_duplicateSizeMap->insert(std::make_pair(
+			std::make_pair((uint32) (*it)->GetFileSize(),
+				(uint32) (*it)->GetLastChangeDatetime()),
+			*it));
 	}
 }
 
