@@ -20,6 +20,10 @@
 #include <wx/evtloop.h>
 #include <wx/filename.h>
 
+#ifdef __APPLE__
+#include <CoreFoundation/CFRunLoop.h>
+#endif
+
 #include <common/Format.h>		// Needed for CFormat
 
 #include <common/Path.h>
@@ -63,12 +67,23 @@ bool IsStrictlyInside(const CPath & inner, const CPath & outer)
 // perceived latency is bounded by FSEvents, not by this timer.
 static constexpr int kDebounceMs = 5000;
 
-// Timer IDs are wx-local; use one not clashing with the prefs dialog.
-static const int ID_FSWATCHER_DEBOUNCE = wxID_HIGHEST + 8231;
+// Timer IDs are wx-local; use ones not clashing with the prefs dialog.
+static const int ID_FSWATCHER_DEBOUNCE   = wxID_HIGHEST + 8231;
+#ifdef __APPLE__
+static const int ID_FSWATCHER_MAC_PUMP   = wxID_HIGHEST + 8232;
+
+// CFRunLoop pump cadence on macOS amuled. 200 ms keeps user-perceived
+// latency below the 5 s debounce window's resolution while costing only
+// ~5 non-blocking wakeups/second on the main thread.
+static constexpr int kMacPumpMs = 200;
+#endif
 
 BEGIN_EVENT_TABLE(CSharedDirWatcher, wxEvtHandler)
 	EVT_FSWATCHER(wxID_ANY, CSharedDirWatcher::OnFileSystemEvent)
 	EVT_TIMER(ID_FSWATCHER_DEBOUNCE, CSharedDirWatcher::OnDebounceTimer)
+#ifdef __APPLE__
+	EVT_TIMER(ID_FSWATCHER_MAC_PUMP, CSharedDirWatcher::OnMacRunLoopPump)
+#endif
 END_EVENT_TABLE()
 
 
@@ -76,6 +91,9 @@ CSharedDirWatcher::CSharedDirWatcher(CSharedFileList * parent) :
 	m_parent(parent),
 	m_watcher(NULL),
 	m_debounceTimer(this, ID_FSWATCHER_DEBOUNCE)
+#ifdef __APPLE__
+	, m_macPumpTimer(this, ID_FSWATCHER_MAC_PUMP)
+#endif
 {
 }
 
@@ -114,6 +132,19 @@ void CSharedDirWatcher::Enable()
 	m_watcher = new wxFileSystemWatcher();
 	m_watcher->SetOwner(this);
 	RegisterAllPaths();
+
+#ifdef __APPLE__
+	// wx's FSEvents wrapper schedules its stream on the thread's
+	// CFRunLoop at AddTree() time. aMule.app has a real Cocoa event
+	// loop that pumps that runloop, so callbacks deliver normally.
+	// amuled (wxAppConsole) does not — its event loop never spins
+	// CFRunLoop, so events would queue forever. Start a periodic
+	// non-blocking pump only in that case.
+	if (wxTheApp && !wxTheApp->IsGUI()) {
+		m_macPumpTimer.Start(kMacPumpMs, wxTIMER_CONTINUOUS);
+	}
+#endif
+
 	AddDebugLogLineN(logKnownFiles, "Shared-dir watcher enabled");
 }
 
@@ -123,6 +154,11 @@ void CSharedDirWatcher::Disable()
 	if (m_debounceTimer.IsRunning()) {
 		m_debounceTimer.Stop();
 	}
+#ifdef __APPLE__
+	if (m_macPumpTimer.IsRunning()) {
+		m_macPumpTimer.Stop();
+	}
+#endif
 	if (!m_watcher) {
 		return;
 	}
@@ -284,3 +320,16 @@ void CSharedDirWatcher::OnDebounceTimer(wxTimerEvent & WXUNUSED(event))
 		"Shared-dir watcher: triggering Reload after debounce");
 	m_parent->Reload();
 }
+
+
+#ifdef __APPLE__
+void CSharedDirWatcher::OnMacRunLoopPump(wxTimerEvent & WXUNUSED(event))
+{
+	// Non-blocking drain (returnAfterSourceHandled=true, timeout=0):
+	// dispatches any FSEvents callbacks queued on this thread's
+	// CFRunLoop since the last tick, then returns immediately. wx's
+	// FSEvents wrapper translates those callbacks into wx events and
+	// posts them to our OnFileSystemEvent via the normal event queue.
+	CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, true);
+}
+#endif
