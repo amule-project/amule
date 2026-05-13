@@ -1580,6 +1580,12 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
     wxCheckBox *item13 = new wxCheckBox( parent, IDC_SHAREHIDDENFILES, _("Share hidden files"), wxDefaultPosition, wxDefaultSize, 0 );
     item13->SetValue( TRUE );
     item9->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 0 );
+    // Auto-rescan toggle. When on, the fs-watcher reflects changes in
+    // the shared dirs without a manual reload; new subdirs created under
+    // any path in the tree above are auto-shared.
+    wxCheckBox *itemAutoRescan = new wxCheckBox( parent, IDC_AUTO_RESCAN_SHARED, _("Automatically rescan shared folders for changes"), wxDefaultPosition, wxDefaultSize, 0 );
+    itemAutoRescan->SetValue( TRUE );
+    item9->Add( itemAutoRescan, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
     item0->Add( item9, wxSizerFlags(1).Expand().CenterVertical().Border(wxALL, 0) );
     if (set_sizer)

@@ -30,6 +30,7 @@
 
 #include "Preferences.h"
 #include "amule.h"
+#include "SharedFileList.h"		// for EnableDirectoryWatcher on the apply path
 
 CEC_Category_Tag::CEC_Category_Tag(uint32 cat_index, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_CATEGORY, cat_index)
 {
@@ -278,6 +279,7 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 		}
 		dirPrefs.AddTag(dirtag);
 		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_SHARE_HIDDEN, thePrefs::ShareHiddenFiles()));
+		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_AUTO_RESCAN, thePrefs::AutoRescanSharedDirs()));
 		AddTag(dirPrefs);
 	}
 
@@ -513,6 +515,13 @@ void CEC_Prefs_Packet::Apply() const
 			}
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetShareHiddenFiles, EC_TAG_DIRECTORIES_SHARE_HIDDEN);
+		ApplyBoolean(use_tag, thisTab, thePrefs::SetAutoRescanSharedDirs, EC_TAG_DIRECTORIES_AUTO_RESCAN);
+		// Apply the new auto-rescan state immediately on amuled so a
+		// remote toggle from amulegui doesn't need a daemon restart to
+		// take effect.
+		if (theApp->sharedfiles) {
+			theApp->sharedfiles->EnableDirectoryWatcher(thePrefs::AutoRescanSharedDirs());
+		}
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_STATISTICS)) != NULL) {

@@ -35,6 +35,7 @@ if (BUILD_MONOLITHIC OR BUILD_DAEMON)
 		ServerSocket.cpp
 		ServerUDPSocket.cpp
 		SHAHashSet.cpp
+		SharedDirWatcher.cpp
 		SharedFileList.cpp
 		UploadBandwidthThrottler.cpp
 		UploadClient.cpp

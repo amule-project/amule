@@ -506,6 +506,11 @@ public:
 	bool RenameFile(CKnownFile* file, const CPath& newName);
 	void SetFileCommentRating(CKnownFile* file, const wxString& newComment, int8 newRating);
 	void CopyFileList(std::vector<CKnownFile*>& out_list) const;
+
+	// Remote-side no-op. The actual watcher lives on amuled and is
+	// driven there by the EC-synced AutoRescanSharedDirs pref; on the
+	// GUI side there is nothing to enable/disable locally.
+	void EnableDirectoryWatcher(bool /* enable */) {}
 };
 
 class CKnownFilesRem : public CRemoteContainer<CKnownFile, uint32, CEC_SharedFile_Tag> {

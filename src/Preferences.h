@@ -196,6 +196,10 @@ public:
 	void			Save();
 	void			SaveCats();
 	void			ReloadSharedFolders();
+	// Persist just shareddir.dat. Called by CSharedDirWatcher after it
+	// auto-appends a newly-created subdirectory so the change survives a
+	// restart without forcing a full preferences.dat write.
+	void			SaveSharedFolders();
 
 	static const wxString&	GetConfigDir()			{ return s_configDir; }
 	static void		SetConfigDir(const wxString& dir) { s_configDir = dir; }
@@ -524,6 +528,12 @@ public:
 	static bool ShareHiddenFiles() { return s_ShareHiddenFiles; }
 	static void SetShareHiddenFiles(bool val) { s_ShareHiddenFiles = val; }
 
+	// Automatic rescan of shared directories via wxFileSystemWatcher.
+	// On by default; when disabled, the user must hit "Reload shared
+	// files" manually after adding files to a share.
+	static bool AutoRescanSharedDirs() { return s_AutoRescanSharedDirs; }
+	static void SetAutoRescanSharedDirs(bool val) { s_AutoRescanSharedDirs = val; }
+
 	static bool AutoSortDownload()		{ return s_AutoSortDownload; }
 	static bool AutoSortDownload(bool val)	{ bool tmp = s_AutoSortDownload; s_AutoSortDownload = val; return tmp; }
 
@@ -782,6 +792,9 @@ protected:
 
 	// Hidden files sharing
 	static bool	s_ShareHiddenFiles;
+
+	// Auto-rescan of shared dirs via wxFileSystemWatcher.
+	static bool	s_AutoRescanSharedDirs;
 
 	static bool s_AutoSortDownload;
 
