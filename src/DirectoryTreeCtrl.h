@@ -41,10 +41,20 @@ public:
 	CDirectoryTreeCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags);
 	virtual ~CDirectoryTreeCtrl();
 
-	// get all shared directories
+	// get all explicitly-shared directories (single right-click is now
+	// "recursive", double-click is "this dir only"). Returns only the
+	// directories the user has individually marked.
 	void GetSharedDirectories(PathList* list);
-	// set list of shared directories
+	// set list of explicitly-shared directories
 	void SetSharedDirectories(PathList* list);
+
+	// Recursive-share intents: roots the user wants to share together
+	// with every descendant. The actual descendant enumeration is now
+	// deferred to the PrefsUnifiedDlg apply path (formerly happened
+	// synchronously inside OnRButtonDown and froze the UI on large
+	// trees like /home).
+	void GetRecursiveSharedDirectories(PathList* list);
+	void SetRecursiveSharedDirectories(PathList* list);
 
 	// User made any changes to list?
 	bool HasChanged;
@@ -78,6 +88,20 @@ private:
 	void DelShare(const CPath& path);
 	void MarkChildren(wxTreeItemId hChild, bool mark, bool recursed);
 
+	// Recursive-share intent helpers. These aren't `const` because
+	// GetKey() may resolve cwd for relative paths via wxGetCwd().
+	bool IsRecursiveShare(const CPath& path);
+	bool IsInsideRecursiveShare(const CPath& path);
+	void AddRecursiveShare(const CPath& path);
+	void DelRecursiveShare(const CPath& path);
+	// Sweep all m_lstShared entries that are descendants of `root`.
+	// Used by OnRButtonDown's unshare path so that a recursive share
+	// whose flat descendants survived from a previous Prefs session
+	// (loaded from shareddir.dat) is fully removed by right-clicking
+	// the root again — without forcing the tree to expand every
+	// subdir in the UI just to find them.
+	void DelSharesUnder(const CPath& root);
+
 	void OnItemExpanding(wxTreeEvent& evt);
 	void OnRButtonDown(wxTreeEvent& evt);
 	void OnItemActivated(wxTreeEvent& evt);
@@ -85,6 +109,10 @@ private:
 	typedef std::pair<wxString, CPath> SharedMapItem;
 	typedef std::map<wxString, CPath> SharedMap;
 	SharedMap m_lstShared;
+	// Recursive-share roots. Keys are normalized paths just like
+	// m_lstShared so prefix-matching (IsInsideRecursiveShare) is
+	// consistent across the two maps.
+	SharedMap m_lstSharedRecursive;
 	// get map key from path (normalized path)
 	wxString GetKey(const CPath& path);
 

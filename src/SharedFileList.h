@@ -26,6 +26,7 @@
 #ifndef SHAREDFILELIST_H
 #define SHAREDFILELIST_H
 
+#include <functional>
 #include <list>
 #include <map>
 #include <wx/thread.h>		// Needed for wxMutex
@@ -54,7 +55,19 @@ class CSharedFileList {
 public:
 	CSharedFileList(CKnownFileList* in_filelist);
 	~CSharedFileList();
+
+	// Yield/cancel hook for chunked reloads. Invoked periodically
+	// during the directory walk with the running count of files
+	// scanned so far. Returning false aborts the reload promptly and
+	// leaves whatever was added in place (partial commit). null is a
+	// no-op — kept that way for daemon-side and EC-triggered callers
+	// that don't have a UI to drive.
+	using ReloadYieldCb = std::function<bool(size_t /*filesScanned*/)>;
+
 	void	Reload();
+	// Cancellable + progress-reporting variant. Returns true if the
+	// walk completed normally, false if `yieldCb` requested abort.
+	bool	Reload(ReloadYieldCb yieldCb);
 	void	SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd = false);
 	void	RemoveFile(CKnownFile* toremove);
 	CKnownFile*	GetFileByID(const CMD4Hash& filehash);
@@ -113,8 +126,12 @@ private:
 	typedef std::list<CThreadTask *> TaskList;
 
 	bool	AddFile(CKnownFile* pFile);
-	unsigned	AddFilesFromDirectory(const CPath& directory, TaskList & hashTasks);
-	void	FindSharedFiles();
+	// scanned/aborted are in/out: the caller passes a running count
+	// and a flag that the dir walker flips on abort. Lets a single
+	// counter span all paths in one Reload() pass.
+	unsigned	AddFilesFromDirectory(const CPath& directory, TaskList & hashTasks,
+		const ReloadYieldCb & yieldCb, size_t & scanned, bool & aborted);
+	void	FindSharedFiles(const ReloadYieldCb & yieldCb, bool & aborted);
 	bool	reloading;
 
 	void	SendListToServer();

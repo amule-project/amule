@@ -80,6 +80,7 @@ if (BUILD_MONOLITHIC OR BUILD_REMOTEGUI)
 		SearchListCtrl.cpp
 		ServerListCtrl.cpp
 		ServerWnd.cpp
+		SharedDirsApplyTask.cpp
 		SharedFilePeersListCtrl.cpp
 		SharedFilesCtrl.cpp
 		SharedFilesWnd.cpp
