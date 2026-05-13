@@ -28,15 +28,26 @@
 
 #include <common/DataFileVersion.h>
 
+#include <algorithm>
+#include <map>
 #include <memory>		// Do_not_auto_remove (lionel's Mac, 10.3)
+#include <vector>
 #include "PartFile.h"		// Needed for CPartFile
 #include "amule.h"
 #include "Logger.h"
 #include "MemFile.h"
 #include "ScopedPtr.h"
 #include "SearchList.h"		// Needed for UpdateSearchFileByHash
+#include "SharedFileList.h"
 #include <common/Format.h>
 #include "Preferences.h"	// Needed for thePrefs
+
+// Max duplicate-list records retained per hash. Unique hashes always
+// keep their live m_knownFileMap entry; this caps only the historical
+// (name/date) variants in m_duplicateFileList. 8 covers daily-touch /
+// weekly-snapshot / monthly-backup cycles while bounding the on-disk
+// known.met at unique_hashes × (1 + cap).
+#define KNOWN_DUPLICATE_HASH_CAP 8
 
 
 // This function is inlined for performance
@@ -61,6 +72,7 @@ CKnownFileList::CKnownFileList()
 	m_filename = "known.met";
 	m_knownSizeMap = NULL;
 	m_duplicateSizeMap = NULL;
+	m_initialShareScanComplete = false;
 	Init();
 }
 
@@ -138,6 +150,21 @@ bool CKnownFileList::Init()
 
 void CKnownFileList::Save()
 {
+	// Snapshot the currently-shared-files pointer set without holding
+	// our own lock -- CSharedFileList::CopyFileList briefly takes its
+	// own mutex (the reverse lock order from
+	// CSharedFileList::SafeAddKFile, which already does
+	// sharedfiles-lock -> knownfiles-lock; doing it the same way here
+	// would be a textbook ABBA). Anything in the snapshot is a
+	// pointer SharedFileList is currently holding; PruneDuplicates
+	// will never delete those.
+	std::vector<CKnownFile*> sharedSnapshot;
+	if (theApp && theApp->sharedfiles) {
+		theApp->sharedfiles->CopyFileList(sharedSnapshot);
+	}
+	std::unordered_set<CKnownFile*> inUse(
+		sharedSnapshot.begin(), sharedSnapshot.end());
+
 	// Acquire the lock before opening the .new file. Save() is called
 	// from both the main thread (on shutdown / scheduled persist) and
 	// the hashing worker thread (CHashingTask::OnLastTask). If two
@@ -150,6 +177,8 @@ void CKnownFileList::Save()
 	// .new lifecycle. The list itself is read-only inside, so this
 	// doesn't widen the existing critical section meaningfully.
 	wxMutexLocker sLock(list_mut);
+
+	PruneDuplicates(inUse);
 
 	CFile file(thePrefs::GetConfigDir() + m_filename, CFile::write_safe);
 	if (!file.IsOpened()) {
@@ -202,6 +231,15 @@ void CKnownFileList::Clear()
 	DeleteContents(m_knownFileMap);
 	DeleteContents(m_duplicateFileList);
 	ReleaseIndex();
+	m_pinnedDuplicates.clear();
+	m_initialShareScanComplete = false;
+}
+
+
+void CKnownFileList::MarkInitialShareScanComplete()
+{
+	wxMutexLocker sLock(list_mut);
+	m_initialShareScanComplete = true;
 }
 
 
@@ -232,7 +270,16 @@ CKnownFile* CKnownFileList::FindKnownFile(
 		}
 	}
 
-	return IsOnDuplicates(filename, in_date, in_size);
+	// Pin any duplicate-list match against this session's prune so a
+	// real on-disk file's record isn't dropped just because its hash
+	// is also held by a more-recent live entry (the dual-content-copy
+	// case: same hash in two shared paths -- one becomes m_Files_map,
+	// the other only ever appears here).
+	CKnownFile * dup = IsOnDuplicates(filename, in_date, in_size);
+	if (dup) {
+		m_pinnedDuplicates.insert(dup);
+	}
+	return dup;
 }
 
 
@@ -321,10 +368,17 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 				// The file is already on the list, ignore it.
 				AddDebugLogLineN(logKnownFiles, CFormat("%s is already on the list") % Record->GetFileName().GetPrintable());
 				return false;
-			} else if (IsOnDuplicates(Record->GetFileName(), Record->GetLastChangeDatetime(), Record->GetFileSize())) {
+			} else if (CKnownFile * dup = IsOnDuplicates(
+					Record->GetFileName(), Record->GetLastChangeDatetime(),
+					Record->GetFileSize())) {
 				// The file is on the duplicates list, ignore it.
 				// Should not happen, at least not after hashing. Or why did it get hashed in the first place then?
 				AddDebugLogLineN(logKnownFiles, CFormat("%s is on the duplicates list") % Record->GetFileName().GetPrintable());
+				// Pin the duplicate -- Append got here from a real
+				// on-disk file (we just hashed it), so this record
+				// matches a live file and the next-session scan
+				// would benefit from finding it without re-hashing.
+				m_pinnedDuplicates.insert(dup);
 				return false;
 			} else {
 				if (afterHashing && existing->GetFileSize() == Record->GetFileSize()) {
@@ -425,6 +479,99 @@ void CKnownFileList::ReleaseIndex()
 	delete m_duplicateSizeMap;
 	m_knownSizeMap = NULL;
 	m_duplicateSizeMap = NULL;
+}
+
+
+void CKnownFileList::PruneDuplicates(
+	const std::unordered_set<CKnownFile*> & inUse)
+{
+	// Caller must hold list_mut.
+
+	// Gate on a full share-scan having run this session -- before that,
+	// inUse is empty and m_pinnedDuplicates hasn't been populated by
+	// FindKnownFile yet, so a prune here would drop records the next
+	// scan would have legitimately pinned. Set true by
+	// MarkInitialShareScanComplete() from CSharedFileList::Reload.
+	if (!m_initialShareScanComplete) {
+		return;
+	}
+
+	if (m_duplicateFileList.empty()) {
+		return;
+	}
+
+	// Bucket the duplicate list by hash, recording the list iterator so
+	// the eventual erase is O(1). Pinned/in-use records are excluded
+	// from the prune candidate set up front: they're load-bearing
+	// (in_use would dangle a SharedFileList pointer; m_pinnedDuplicates
+	// represents a real on-disk file matched this session). The cap
+	// applies only to the unprotected remainder, so the effective
+	// per-hash retention is protected + min(prunable, cap).
+	std::map<CMD4Hash, std::vector<KnownFileList::iterator> > prunable;
+	for (KnownFileList::iterator it = m_duplicateFileList.begin();
+		it != m_duplicateFileList.end(); ++it) {
+		CKnownFile * record = *it;
+		if (inUse.count(record) > 0) {
+			continue;
+		}
+		if (m_pinnedDuplicates.count(record) > 0) {
+			continue;
+		}
+		prunable[record->GetFileHash()].push_back(it);
+	}
+
+	size_t dropped = 0;
+	for (std::map<CMD4Hash,
+			std::vector<KnownFileList::iterator> >::iterator
+		bucket = prunable.begin();
+		bucket != prunable.end(); ++bucket) {
+		std::vector<KnownFileList::iterator> & iters = bucket->second;
+		if (iters.size() <= KNOWN_DUPLICATE_HASH_CAP) {
+			continue;
+		}
+
+		// Sort by mtime descending so the K newest survive. mtime is
+		// the only freshness signal we have without persisting a
+		// per-record lastSeen tag -- a record whose mtime is newer is
+		// more likely to "come back" via mtime-restore tools.
+		std::sort(iters.begin(), iters.end(),
+			[](const KnownFileList::iterator & a,
+				const KnownFileList::iterator & b) {
+				return (*a)->GetLastChangeDatetime()
+					> (*b)->GetLastChangeDatetime();
+			});
+
+		for (size_t i = KNOWN_DUPLICATE_HASH_CAP;
+			i < iters.size(); ++i) {
+			CKnownFile * dead = *iters[i];
+
+			if (m_duplicateSizeMap) {
+				const auto key = std::make_pair(
+					(uint32) dead->GetFileSize(),
+					(uint32) dead->GetLastChangeDatetime());
+				std::pair<KnownFileSizeMap::iterator,
+					KnownFileSizeMap::iterator> p =
+					m_duplicateSizeMap->equal_range(key);
+				for (KnownFileSizeMap::iterator hit = p.first;
+					hit != p.second; ++hit) {
+					if (hit->second == dead) {
+						m_duplicateSizeMap->erase(hit);
+						break;
+					}
+				}
+			}
+
+			m_duplicateFileList.erase(iters[i]);
+			delete dead;
+			++dropped;
+		}
+	}
+
+	if (dropped > 0) {
+		AddDebugLogLineN(logKnownFiles,
+			CFormat("Pruned %u duplicate-hash records over per-hash cap of %u")
+				% (unsigned)dropped % KNOWN_DUPLICATE_HASH_CAP);
+	}
 }
 
 // File_checked_for_headers
