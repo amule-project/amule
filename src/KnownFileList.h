@@ -27,6 +27,8 @@
 #define KNOWNFILELIST_H
 
 
+#include <unordered_set>
+
 #include "SharedFileList.h" // CKnownFileMap
 
 
@@ -50,6 +52,12 @@ public:
 	void	PrepareIndex();
 	void	ReleaseIndex();
 
+	// Latch set by CSharedFileList::Reload once a full share-scan has
+	// finished in this session. PruneDuplicates only runs once this is
+	// true, so the cap-prune never fires before the pin set is
+	// populated by FindKnownFile-during-scan.
+	void	MarkInitialShareScanComplete();
+
 	uint16 requested;
 	uint32 transferred;
 	uint16 accepted;
@@ -70,6 +78,16 @@ private:
 		uint32 in_date,
 		uint64 in_size) const;
 
+	// Drop duplicate-list records whose hash has more than
+	// KNOWN_DUPLICATE_HASH_CAP variants, keeping the newest by mtime.
+	// `inUse` is a snapshot of pointers currently held by
+	// CSharedFileList::m_Files_map: never pruned (would dangle the
+	// share-list pointer). m_pinnedDuplicates additionally protects
+	// records that FindKnownFile matched against a real on-disk file
+	// during this session even when AddFile rejected them as
+	// content-duplicates of an already-shared file.
+	void	PruneDuplicates(const std::unordered_set<CKnownFile*> & inUse);
+
 	typedef std::list<CKnownFile*> KnownFileList;
 	KnownFileList	m_duplicateFileList;
 	CKnownFileMap	m_knownFileMap;
@@ -88,6 +106,19 @@ private:
 	typedef std::multimap<std::pair<uint32, uint32>, CKnownFile*> KnownFileSizeMap;
 	KnownFileSizeMap * m_knownSizeMap;
 	KnownFileSizeMap * m_duplicateSizeMap;
+
+	// Duplicate-list records that FindKnownFile / IsOnDuplicates
+	// returned during this session — i.e. their (name, date, size)
+	// matched a real on-disk file. Pinned across the rest of the
+	// session so the cap-prune never drops a record that we know
+	// still represents a live file (avoids re-hashing on next
+	// restart). Cleared on Clear() / Init() so each session starts
+	// fresh.
+	std::unordered_set<CKnownFile*> m_pinnedDuplicates;
+
+	// Set to true by MarkInitialShareScanComplete() at the end of the
+	// first non-aborted CSharedFileList::Reload of the session.
+	bool	m_initialShareScanComplete;
 };
 
 #endif // KNOWNFILELIST_H

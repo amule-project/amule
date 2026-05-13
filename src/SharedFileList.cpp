@@ -620,6 +620,15 @@ bool CSharedFileList::Reload(ReloadYieldCb yieldCb)
 		m_dirWatcher->Refresh();
 	}
 
+	// Tell KnownFileList that a full scan has now run -- this
+	// gates the duplicate-list cap-prune in Save(), so the prune
+	// never fires while the pin set is unpopulated (which would
+	// drop records the scan was about to pin). Only on non-aborted
+	// scans: a cancelled mid-scan leaves the pin set partial.
+	if (!aborted && filelist) {
+		filelist->MarkInitialShareScanComplete();
+	}
+
 	reloading = false;
 	return !aborted;
 }
