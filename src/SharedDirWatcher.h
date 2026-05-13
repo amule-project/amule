@@ -68,6 +68,14 @@ public:
 private:
 	void OnFileSystemEvent(wxFileSystemWatcherEvent & event);
 	void OnDebounceTimer(wxTimerEvent & event);
+#ifdef __APPLE__
+	// macOS amuled (wxAppConsole) doesn't spin the main thread's
+	// CFRunLoop, so FSEvents callbacks scheduled by wx never deliver.
+	// A periodic non-blocking drain fixes that without spawning a
+	// dedicated thread. No-op under aMule.app whose Cocoa main loop
+	// already pumps the runloop.
+	void OnMacRunLoopPump(wxTimerEvent & event);
+#endif
 
 	// Walk shareddir_list and Add() every path. Errors per-path are
 	// logged but do not abort the rest (so a single Linux
@@ -87,6 +95,9 @@ private:
 	CSharedFileList *      m_parent;
 	wxFileSystemWatcher *  m_watcher;
 	wxTimer                m_debounceTimer;
+#ifdef __APPLE__
+	wxTimer                m_macPumpTimer;
+#endif
 
 	DECLARE_EVENT_TABLE()
 };
