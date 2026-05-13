@@ -334,7 +334,7 @@ void CSharedFileList::EnableDirectoryWatcher(bool enable)
 }
 
 
-void CSharedFileList::FindSharedFiles()
+void CSharedFileList::FindSharedFiles(const ReloadYieldCb & yieldCb, bool & aborted)
 {
 	/* Abort loading if we are shutting down. */
 	if(theApp->IsOnShutDown()) {
@@ -382,8 +382,12 @@ void CSharedFileList::FindSharedFiles()
 	// Gathering is done in the foreground and can be slowed down severely by parallel background hashing.
 	// So just store the hashing tasks for now.
 	TaskList hashTasks;
+	size_t scanned = 0;
 	for (std::list<CPath>::iterator it = sharedPaths.begin(); it != sharedPaths.end(); ++it) {
-		AddFilesFromDirectory(*it, hashTasks);
+		AddFilesFromDirectory(*it, hashTasks, yieldCb, scanned, aborted);
+		if (aborted) {
+			break;
+		}
 	}
 	filelist->ReleaseIndex();
 
@@ -420,7 +424,8 @@ static bool CheckDirectory(const wxString& a, const CPath& b)
 }
 
 
-unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList & hashTasks)
+unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList & hashTasks,
+	const ReloadYieldCb & yieldCb, size_t & scanned, bool & aborted)
 {
 	// Do not allow these folders to be shared:
 	//  - The .aMule folder
@@ -449,9 +454,23 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 	unsigned knownFiles = 0;
 	unsigned addedFiles = 0;
 
+	// Yield to the caller every kYieldEvery files so the UI can stay
+	// responsive on big shared trees. 256 strikes a balance between
+	// progress-bar responsiveness (~4 updates/s on a 1 ms-per-file
+	// machine) and the overhead of the callback itself.
+	constexpr size_t kYieldEvery = 256;
+
 	CDirIterator SharedDir(directory);
 
 	for (CPath fname = SharedDir.GetFirstFile(searchFor); fname.IsOk(); fname = SharedDir.GetNextFile()) {
+		if (yieldCb && ++scanned % kYieldEvery == 0) {
+			if (!yieldCb(scanned)) {
+				aborted = true;
+				return addedFiles;
+			}
+		} else if (!yieldCb) {
+			++scanned;
+		}
 		CPath fullPath = directory.JoinPaths(fname);
 
 		if (!fullPath.FileExists()) {
@@ -560,36 +579,49 @@ void CSharedFileList::RemoveFile(CKnownFile* toremove){
 
 void CSharedFileList::Reload()
 {
+	Reload(nullptr);
+}
+
+
+bool CSharedFileList::Reload(ReloadYieldCb yieldCb)
+{
 	// Madcat - Disable reloading if reloading already in progress.
 	// Kry - Fixed to let non-english language users use the 'Reload' button :P
 	// deltaHF - removed the old ugly button and changed the code to use the new small one
 	// Kry - bah, let's use a var.
-	if (!reloading) {
-		AddDebugLogLineN(logKnownFiles, "Reload shared files");
-		reloading = true;
-		Notify_SharedFilesRemoveAllItems();
-
-		/* All Kad keywords must be removed */
-		m_keywords->RemoveAllKeywordReferences();
-
-		/* Public identifiers must be erased as they might be invalid now */
-		m_PublicSharedDirNames.clear();
-
-		FindSharedFiles();
-
-		/* And now the unreferenced keywords must be removed also */
-		m_keywords->PurgeUnreferencedKeywords();
-
-		Notify_SharedFilesShowFileList();
-
-		// Re-sync the watcher's path set so dirs added or removed from
-		// shareddir_list since the previous Reload are picked up.
-		if (m_dirWatcher) {
-			m_dirWatcher->Refresh();
-		}
-
-		reloading = false;
+	if (reloading) {
+		// Already running. Surface that to the caller as a non-abort,
+		// non-complete state — they shouldn't react as if they
+		// cancelled, but also haven't completed a fresh scan.
+		return true;
 	}
+
+	AddDebugLogLineN(logKnownFiles, "Reload shared files");
+	reloading = true;
+	Notify_SharedFilesRemoveAllItems();
+
+	/* All Kad keywords must be removed */
+	m_keywords->RemoveAllKeywordReferences();
+
+	/* Public identifiers must be erased as they might be invalid now */
+	m_PublicSharedDirNames.clear();
+
+	bool aborted = false;
+	FindSharedFiles(yieldCb, aborted);
+
+	/* And now the unreferenced keywords must be removed also */
+	m_keywords->PurgeUnreferencedKeywords();
+
+	Notify_SharedFilesShowFileList();
+
+	// Re-sync the watcher's path set so dirs added or removed from
+	// shareddir_list since the previous Reload are picked up.
+	if (m_dirWatcher) {
+		m_dirWatcher->Refresh();
+	}
+
+	reloading = false;
+	return !aborted;
 }
 
 

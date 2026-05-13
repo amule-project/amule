@@ -26,6 +26,9 @@
 #define AMULE_REMOTE_GUI_H
 
 
+#include <functional>				// std::function for the CSharedFilesRem
+								// Reload(yieldCb) shim — matches the daemon-side
+								// signature added in PrefsUnifiedDlg's commit path.
 #include <ec/cpp/RemoteConnect.h>		// Needed for CRemoteConnect
 
 
@@ -506,6 +509,17 @@ public:
 	bool RenameFile(CKnownFile* file, const CPath& newName);
 	void SetFileCommentRating(CKnownFile* file, const wxString& newComment, int8 newRating);
 	void CopyFileList(std::vector<CKnownFile*>& out_list) const;
+
+	// Remote-side shim for the daemon's cancellable-progress Reload
+	// added in the shared-dirs deferred-apply flow. The actual file
+	// walk happens on amuled; here we just fall through to the
+	// existing EC-driven Reload(sendtoserver=true) and ignore the
+	// progress callback. Returns true (never "cancelled") because
+	// the local-thread part of the operation is essentially instant.
+	bool Reload(std::function<bool(size_t)> /* yieldCb */) {
+		Reload();
+		return true;
+	}
 
 	// Remote-side no-op. The actual watcher lives on amuled and is
 	// driven there by the EC-synced AutoRescanSharedDirs pref; on the
