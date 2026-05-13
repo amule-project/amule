@@ -1404,6 +1404,7 @@ wxArrayString BuildSensitivePathList()
 	pushIfNotEmpty("C:\\Program Files");
 	pushIfNotEmpty("C:\\Program Files (x86)");
 	pushIfNotEmpty("C:\\ProgramData");
+	pushIfNotEmpty("C:\\Users");          // parent of every user's home
 #else
 	pushIfNotEmpty("/");
 	pushIfNotEmpty("/etc");
@@ -1411,8 +1412,11 @@ wxArrayString BuildSensitivePathList()
 	pushIfNotEmpty("/tmp");
 	pushIfNotEmpty("/boot");
 	pushIfNotEmpty("/usr");
+	pushIfNotEmpty("/home");              // parent of every user's home on Linux
+	pushIfNotEmpty("/root");              // root user's home on Linux
 	pushIfNotEmpty("/Applications");      // macOS
 	pushIfNotEmpty("/System");            // macOS
+	pushIfNotEmpty("/Users");             // parent of every user's home on macOS
 #endif
 
 	return out;
