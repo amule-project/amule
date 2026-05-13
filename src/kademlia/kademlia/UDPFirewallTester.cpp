@@ -126,10 +126,20 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 	}
 
 	if (m_fwChecksRunningUDP == 0) {
-		wxFAIL;
-	} else {
-		m_fwChecksRunningUDP--;
+		// A response arrived for a check we no longer believe to be
+		// running. Most commonly this is a late UDP packet that
+		// straddles a Kad restart (system suspend/resume, see #384),
+		// where ReCheckFirewallUDP zeroed the counter while the
+		// previous test's responses were still in flight. Dropping
+		// the response avoids mutating m_firewalledUDP /
+		// m_fwChecksFinishedUDP based on stale state — the new test
+		// cycle will produce its own results.
+		AddDebugLogLineN(logKadUdpFwTester,
+			wxString::Format("Ignoring late UDP FW result from %s",
+				(const char*)KadIPToString(fromIP).mb_str()));
+		return;
 	}
+	m_fwChecksRunningUDP--;
 
 	if (!testCancelled){
 		m_fwChecksFinishedUDP++;
@@ -173,7 +183,17 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 
 void CUDPFirewallTester::ReCheckFirewallUDP(bool setUnverified)
 {
-	wxASSERT(m_fwChecksRunningUDP == 0);
+	if (m_fwChecksRunningUDP != 0) {
+		// Entering a fresh UDP firewall test while the previous one
+		// is still bookkeeping in-flight requests. Common on Kad
+		// restart after a system suspend/resume (#384): the previous
+		// check's responses may still be travelling. We forcibly
+		// reset; any late responses for the old run are dropped
+		// by SetUDPFWCheckResult's stale-response guard.
+		AddDebugLogLineN(logKadUdpFwTester,
+			wxString::Format("ReCheckFirewallUDP: resetting in-flight counter %u -> 0",
+				(unsigned)m_fwChecksRunningUDP));
+	}
 	m_fwChecksRunningUDP = 0;
 	m_fwChecksFinishedUDP = 0;
 	m_lastSucceededTime = 0;
