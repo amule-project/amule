@@ -255,6 +255,35 @@ void CKnownFileList::MarkInitialShareScanComplete()
 }
 
 
+void CKnownFileList::CollectLiveAICHRoots(
+	std::unordered_set<CAICHHash> & out)
+{
+	wxMutexLocker sLock(list_mut);
+	out.reserve(out.size() + m_knownFileMap.size() + m_duplicateFileList.size());
+	for (CKnownFileMap::const_iterator it = m_knownFileMap.begin();
+		it != m_knownFileMap.end(); ++it) {
+		const CKnownFile * f = it->second;
+		if (f && f->HasProperAICHHashSet()) {
+			out.insert(f->GetAICHHashset()->GetMasterHash());
+		}
+	}
+	// Duplicate-list records can also be the only owner of an AICH
+	// master hash, because a hash-collision demote in Append parks
+	// the previous record (including its hashset) on the duplicate
+	// list while the new record takes over m_knownFileMap. If we
+	// drop the duplicate's AICH from known2_64.met and then the
+	// duplicate later gets re-promoted (mtime restore) we'd
+	// silently lose its hashset; cheap to keep both sets here.
+	for (KnownFileList::const_iterator it = m_duplicateFileList.begin();
+		it != m_duplicateFileList.end(); ++it) {
+		const CKnownFile * f = *it;
+		if (f && f->HasProperAICHHashSet()) {
+			out.insert(f->GetAICHHashset()->GetMasterHash());
+		}
+	}
+}
+
+
 CKnownFile* CKnownFileList::FindKnownFile(
 	const CPath& filename,
 	time_t in_date,
