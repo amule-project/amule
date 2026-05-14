@@ -195,11 +195,29 @@ public:
 
 	void			Save();
 	void			SaveCats();
+	// Read shareddir-explicit.dat, shareddir-recursive.dat, and
+	// shareddir.dat from disk; recompute shareddir_list as the union
+	// of the explicit list and the recursive expansion; reconcile any
+	// drift from external writers (e.g. a Docker entrypoint script
+	// that edits shareddir.dat directly and then calls Reload via
+	// EC); rewrite shareddir.dat as the new union. Safe to call from
+	// startup, the EC ReloadSharedFiles command, the UI Reload
+	// button, and the watcher's debounced reload.
 	void			ReloadSharedFolders();
-	// Persist just shareddir.dat. Called by CSharedDirWatcher after it
-	// auto-appends a newly-created subdirectory so the change survives a
-	// restart without forcing a full preferences.dat write.
+	// Persist all three shared-dir files: shareddir-explicit.dat,
+	// shareddir-recursive.dat (the two canonical sources of truth)
+	// and shareddir.dat (regenerated as the union, for backwards
+	// compatibility with older binaries and scripts that read it).
+	// Called by CSharedDirWatcher after it auto-appends a
+	// newly-created subdirectory so the change survives a restart
+	// without forcing a full preferences.dat write.
 	void			SaveSharedFolders();
+	// True iff `path` is in shareddir_recursive_list or is a
+	// descendant of an entry there. Used by the watcher to decide
+	// whether auto-add of a new subdir / cold-discovered subdir is
+	// authorised: non-recursive share roots do NOT auto-collect new
+	// subdirs, recursive roots do.
+	bool			IsRecursiveAncestor(const CPath & path) const;
 
 	static const wxString&	GetConfigDir()			{ return s_configDir; }
 	static void		SetConfigDir(const wxString& dir) { s_configDir = dir; }
@@ -356,7 +374,34 @@ public:
 	static void		SetSlotAllocation(uint32 in)	{ s_slotallocation = (in >= 1) ? in : 1; };
 
 	typedef std::vector<CPath> PathList;
+	// The effective set of shared directories at runtime, computed at
+	// load time as `shareddir_explicit_list ∪ expand(shareddir_recursive_list)`.
+	// Persisted as the union to shareddir.dat for backwards compatibility
+	// with older binaries and external scripts that read/write that file.
+	// Live consumers (share scan, watcher) treat this as authoritative.
 	PathList shareddir_list;
+
+	// User-explicit non-recursive share roots. Each entry shares only
+	// the files directly under it -- subdirectories are NOT followed.
+	// New subdirs created at runtime under an explicit-only root are
+	// NOT auto-shared (CSharedDirWatcher::RegisterNewSubdirectory
+	// gates on "ancestor is recursive"). Persisted to
+	// shareddir-explicit.dat. Migration: a pre-existing shareddir.dat
+	// with no shareddir-recursive.dat is loaded entirely into this
+	// list, which preserves the user's existing path set without
+	// silently upgrading anything to recursive (safer default).
+	PathList shareddir_explicit_list;
+
+	// User-explicit recursive share roots. Each entry contributes
+	// itself AND every descendant directory to shareddir_list at
+	// load time (cold expansion). New subdirs created at runtime
+	// under a recursive root are auto-added by the watcher's HOT
+	// path. Persisted to shareddir-recursive.dat -- a separate file
+	// so older binaries that read shareddir.dat see the already-
+	// expanded union and behave correctly, while round-tripping
+	// shareddir.dat through an older binary preserves the recursive
+	// intent in this file.
+	PathList shareddir_recursive_list;
 
 	wxArrayString addresses_list;
 

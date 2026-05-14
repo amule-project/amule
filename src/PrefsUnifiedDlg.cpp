@@ -440,7 +440,13 @@ bool PrefsUnifiedDlg::TransferToWindow()
 		}
 	}
 
-	m_ShareSelector->SetSharedDirectories(&theApp->glob_prefs->shareddir_list);
+	// Load the user's intent (explicit non-recursive vs marked-recursive
+	// roots) into the tree control's two maps. shareddir_list itself
+	// is the runtime expansion -- not useful as UI state since it
+	// includes auto-discovered subdirs that shouldn't render as
+	// user-selected.
+	m_ShareSelector->SetSharedDirectories(&theApp->glob_prefs->shareddir_explicit_list);
+	m_ShareSelector->SetRecursiveSharedDirectories(&theApp->glob_prefs->shareddir_recursive_list);
 
 	for ( int i = 0; i < cntStatColors; i++ ) {
 		thePrefs::s_colors[i] = CMuleColour(CStatisticsDlg::acrStat[i]).GetULong();
@@ -1487,12 +1493,18 @@ PrefsUnifiedDlg::CommitSharedDirsWithProgress()
 		}
 	}
 
-	// Snapshot the current shareddir_list so we can restore it
+	// Snapshot the current shared-dirs state so we can restore it
 	// atomically if the user cancels at any phase (expansion or
 	// reload). Cancel means "leave my saved state alone" — we do not
-	// persist a half-committed list to disk.
+	// persist a half-committed list to disk. All three lists are
+	// captured: the explicit/recursive intent + the runtime union,
+	// since SaveSharedFolders persists all three together.
 	const CDirectoryTreeCtrl::PathList originalShares =
 		theApp->glob_prefs->shareddir_list;
+	const CDirectoryTreeCtrl::PathList originalExplicit =
+		theApp->glob_prefs->shareddir_explicit_list;
+	const CDirectoryTreeCtrl::PathList originalRecursive =
+		theApp->glob_prefs->shareddir_recursive_list;
 
 	// One progress dialog covers both phases: the optional recursive
 	// expansion, plus the always-present Reload phase. Even a single
@@ -1573,13 +1585,17 @@ PrefsUnifiedDlg::CommitSharedDirsWithProgress()
 
 	// ----- Phase 2: persist + reload --------------------------------
 	//
-	// Apply the finalised list and persist it to shareddir.dat
-	// *before* invoking Reload(): FindSharedFiles starts by calling
-	// ReloadSharedFolders() which re-reads the file from disk, so the
-	// in-memory list alone isn't enough — the disk has to agree.
-	// Drive the file walk through the same progress dialog with a
-	// yield callback that lets the user cancel.
-	theApp->glob_prefs->shareddir_list = finalShares;
+	// Update all three canonical/derived lists on the Preferences
+	// instance and persist them to disk *before* invoking Reload():
+	// FindSharedFiles starts by calling ReloadSharedFolders() which
+	// re-reads from disk, so the in-memory state alone isn't enough.
+	// shareddir-explicit.dat and shareddir-recursive.dat record the
+	// user's intent (non-recursive vs recursive roots); shareddir.dat
+	// is regenerated as the runtime union (= finalShares from the
+	// apply walk) so older binaries still see the right paths.
+	theApp->glob_prefs->shareddir_explicit_list  = explicitShares;
+	theApp->glob_prefs->shareddir_recursive_list = recursiveIntents;
+	theApp->glob_prefs->shareddir_list           = finalShares;
 	theApp->glob_prefs->SaveSharedFolders();
 
 	bool reloadAborted = false;
@@ -1597,13 +1613,17 @@ PrefsUnifiedDlg::CommitSharedDirsWithProgress()
 	progress.Update(100);
 
 	if (!reloadOk || reloadAborted) {
-		// Roll back: both the in-memory list and the on-disk
-		// shareddir.dat have to be reverted. The in-memory shared-
-		// file map is partially populated against the new list, so
-		// rebuild it from the restored list (without a yield
-		// callback — the restored list is by construction the one
-		// the user was already running with before this OK click).
-		theApp->glob_prefs->shareddir_list = originalShares;
+		// Roll back: both the in-memory state and the on-disk
+		// files (shareddir.dat + shareddir-explicit.dat +
+		// shareddir-recursive.dat) have to be reverted. The
+		// in-memory shared-file map is partially populated against
+		// the new list, so rebuild it from the restored list
+		// (without a yield callback — the restored list is by
+		// construction the one the user was already running with
+		// before this OK click).
+		theApp->glob_prefs->shareddir_list           = originalShares;
+		theApp->glob_prefs->shareddir_explicit_list  = originalExplicit;
+		theApp->glob_prefs->shareddir_recursive_list = originalRecursive;
 		theApp->glob_prefs->SaveSharedFolders();
 		theApp->sharedfiles->Reload(nullptr);
 		return SharedDirsCommitResult::CancelledByUser;

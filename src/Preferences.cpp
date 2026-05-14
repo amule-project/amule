@@ -41,7 +41,9 @@
 #include "config.h"				// Needed for PACKAGE_STRING
 
 #include "CFile.h"
+#include <common/FileFunctions.h>		// CDirIterator for recursive-root walk
 #include <common/MD5Sum.h>
+#include <set>					// reconcile sets in ReloadSharedFolders
 #include "Logger.h"
 #include <common/Format.h>			// Needed for CFormat
 #include <common/TextFile.h>			// Needed for CTextFile
@@ -1493,13 +1495,24 @@ void CPreferences::Save()
 void CPreferences::SaveSharedFolders()
 {
 	#ifndef CLIENT_GUI
-	CTextFile sdirfile;
-	if (sdirfile.Open(s_configDir + "shareddir.dat", CTextFile::write)) {
-		for (size_t i = 0; i < shareddir_list.size(); ++i) {
-			sdirfile.WriteLine(shareddir_list[i].GetRaw(), wxConvUTF8);
+	// Canonical sources of truth: shareddir-explicit.dat (user-added
+	// non-recursive roots) and shareddir-recursive.dat (user-marked
+	// recursive roots). Older versions of aMule know nothing about
+	// these two files -- they only read shareddir.dat -- so we also
+	// regenerate shareddir.dat as the runtime union for backwards
+	// compatibility with both older binaries and external scripts
+	// (e.g. Docker entrypoints) that read or write it directly.
+	auto writeList = [](const wxString & filename, const PathList & list) {
+		CTextFile f;
+		if (f.Open(filename, CTextFile::write)) {
+			for (size_t i = 0; i < list.size(); ++i) {
+				f.WriteLine(list[i].GetRaw(), wxConvUTF8);
+			}
 		}
-
-	}
+	};
+	writeList(s_configDir + "shareddir-explicit.dat", shareddir_explicit_list);
+	writeList(s_configDir + "shareddir-recursive.dat", shareddir_recursive_list);
+	writeList(s_configDir + "shareddir.dat", shareddir_list);
 	#endif
 }
 
@@ -1794,26 +1807,198 @@ void CPreferences::SetPort(uint16 val)
 }
 
 
+namespace {
+
+// Load one path per line from a CTextFile. Drops lines whose path
+// doesn't exist on disk (matches the existing shareddir.dat loader
+// behaviour). Logs each drop. Returns true if the file was opened
+// (even if empty); false if it didn't exist or couldn't be opened.
+bool LoadDirListFile(const wxString & path, CPreferences::PathList & out)
+{
+	out.clear();
+	CTextFile file;
+	if (!file.Open(path, CTextFile::read)) {
+		return false;
+	}
+	wxArrayString lines = file.ReadLines(txtReadDefault, wxConvUTF8);
+	for (size_t i = 0; i < lines.size(); ++i) {
+		CPath p(lines[i]);
+		if (p.DirExists()) {
+			out.push_back(p);
+		} else {
+			AddLogLineN(CFormat(_("Dropping non-existing shared directory: %s"))
+				% p.GetPrintable());
+		}
+	}
+	return true;
+}
+
+// Walk `root` recursively, appending `root` itself and every
+// descendant directory to `out`. Uses CDirIterator::Dir so hidden
+// subdirs are included (matches the runtime watcher's behaviour --
+// the watcher's AddTree() visits hidden too).
+void ExpandRecursiveRoot(const CPath & root, CPreferences::PathList & out)
+{
+	if (!root.IsOk() || !root.DirExists()) {
+		return;
+	}
+	out.push_back(root);
+	CDirIterator dir(root);
+	for (CPath sub = dir.GetFirstFile(CDirIterator::Dir);
+		sub.IsOk();
+		sub = dir.GetNextFile()) {
+		ExpandRecursiveRoot(root.JoinPaths(sub), out);
+	}
+}
+
+} // namespace
+
+
 void CPreferences::ReloadSharedFolders()
 {
 #ifndef CLIENT_GUI
 	shareddir_list.clear();
+	shareddir_explicit_list.clear();
+	shareddir_recursive_list.clear();
 
-	CTextFile file;
-	if (file.Open(s_configDir + "shareddir.dat", CTextFile::read)) {
-		wxArrayString lines = file.ReadLines(txtReadDefault, wxConvUTF8);
+	const wxString explicitPath  = s_configDir + "shareddir-explicit.dat";
+	const wxString recursivePath = s_configDir + "shareddir-recursive.dat";
+	const wxString unionPath     = s_configDir + "shareddir.dat";
 
-		for (size_t i = 0; i < lines.size(); ++i) {
-			CPath path(lines[i]);
+	const bool haveExplicit  = LoadDirListFile(explicitPath,  shareddir_explicit_list);
+	const bool haveRecursive = LoadDirListFile(recursivePath, shareddir_recursive_list);
 
-			if (path.DirExists()) {
-				shareddir_list.push_back(path);
-			} else {
-				AddLogLineN(CFormat(_("Dropping non-existing shared directory: %s")) % path.GetPrintable());
+	// Migration: an older aMule wrote only shareddir.dat. On first
+	// load with this version neither shareddir-explicit.dat nor
+	// shareddir-recursive.dat exists. Treat every existing entry in
+	// shareddir.dat as explicit (non-recursive). This is the safe
+	// default -- the watcher's auto-add-new-subdir behaviour
+	// (#591/#606) is gated on recursive ancestry, so existing users
+	// keep their current path set but stop silently auto-recursing.
+	// They opt into recursion per root via the UI tree right-click.
+	if (!haveExplicit && !haveRecursive) {
+		LoadDirListFile(unionPath, shareddir_explicit_list);
+	}
+
+	// Recursive expansion: for each marked root walk its subtree and
+	// collect every existing directory. This is the *runtime*
+	// expansion -- newly-created subdirs of recursive roots will be
+	// caught here on the next ReloadSharedFolders.
+	PathList expansion;
+	for (size_t i = 0; i < shareddir_recursive_list.size(); ++i) {
+		ExpandRecursiveRoot(shareddir_recursive_list[i], expansion);
+	}
+
+	// Build the expected union as a set for cheap membership tests.
+	// The set is keyed on raw path strings; we accept the macOS
+	// /tmp vs /private/tmp aliasing wart (also present in the
+	// watcher's RegisterNewSubdirectory dedup) -- a real fix needs
+	// path canonicalisation that we don't have a portable wxWidgets
+	// API for. Practical impact: rare duplicate entries on macOS
+	// where script-written shareddir.dat uses /tmp form but
+	// expansion produces /private/tmp form (or vice-versa).
+	std::set<wxString> expected;
+	for (size_t i = 0; i < shareddir_explicit_list.size(); ++i) {
+		expected.insert(shareddir_explicit_list[i].GetRaw());
+	}
+	for (size_t i = 0; i < expansion.size(); ++i) {
+		expected.insert(expansion[i].GetRaw());
+	}
+
+	// Reconciliation against on-disk shareddir.dat: external writers
+	// (Docker entrypoints, manual sysadmin edits, downgrade-cycle
+	// old binaries) modify shareddir.dat directly and then expect
+	// the next Reload to honour their changes. We import diffs back
+	// into shareddir_explicit_list so they survive future
+	// regenerations.
+	PathList onDisk;
+	const bool haveUnion = LoadDirListFile(unionPath, onDisk);
+	if (haveUnion) {
+		std::set<wxString> actual;
+		for (size_t i = 0; i < onDisk.size(); ++i) {
+			actual.insert(onDisk[i].GetRaw());
+		}
+
+		// Entries written externally that we don't already know
+		// about → import as explicit. We can't tell whether the
+		// external writer intended them as recursive (they didn't
+		// touch shareddir-recursive.dat), so the safe default is
+		// explicit.
+		for (size_t i = 0; i < onDisk.size(); ++i) {
+			if (expected.find(onDisk[i].GetRaw()) == expected.end()) {
+				shareddir_explicit_list.push_back(onDisk[i]);
+				expected.insert(onDisk[i].GetRaw());
 			}
 		}
+
+		// Entries we expected but the external writer removed →
+		// drop from the explicit list. Entries that came from
+		// `expansion` (a recursive marker) are left in place: the
+		// user's recursive intent overrides a single-entry edit
+		// they made via an old binary. If they really want a
+		// subdir excluded they need to un-mark recursive.
+		PathList trimmedExplicit;
+		trimmedExplicit.reserve(shareddir_explicit_list.size());
+		for (size_t i = 0; i < shareddir_explicit_list.size(); ++i) {
+			const wxString key = shareddir_explicit_list[i].GetRaw();
+			if (actual.find(key) != actual.end()) {
+				trimmedExplicit.push_back(shareddir_explicit_list[i]);
+			}
+		}
+		shareddir_explicit_list.swap(trimmedExplicit);
 	}
+
+	// Final in-memory list: union of explicit and the recursive
+	// expansion, deduped. shareddir_list is what the rest of the app
+	// (share scan, watcher, etc.) reads as authoritative.
+	std::set<wxString> seen;
+	for (size_t i = 0; i < shareddir_explicit_list.size(); ++i) {
+		const wxString key = shareddir_explicit_list[i].GetRaw();
+		if (seen.insert(key).second) {
+			shareddir_list.push_back(shareddir_explicit_list[i]);
+		}
+	}
+	for (size_t i = 0; i < expansion.size(); ++i) {
+		const wxString key = expansion[i].GetRaw();
+		if (seen.insert(key).second) {
+			shareddir_list.push_back(expansion[i]);
+		}
+	}
+
+	// Persist all three files so a crash mid-session doesn't leave
+	// reconciled state un-written, and so the union is up-to-date
+	// for any external reader.
+	SaveSharedFolders();
 #endif
+}
+
+
+bool CPreferences::IsRecursiveAncestor(const CPath & path) const
+{
+	if (!path.IsOk()) {
+		return false;
+	}
+	const wxString target = path.GetRaw();
+	for (size_t i = 0; i < shareddir_recursive_list.size(); ++i) {
+		const wxString root = shareddir_recursive_list[i].GetRaw();
+		if (root.IsEmpty()) {
+			continue;
+		}
+		// Exact match: the path *is* a recursive root.
+		if (target == root) {
+			return true;
+		}
+		// Prefix match with separator boundary, so /home isn't
+		// reported as an ancestor of /home2. Trailing separator on
+		// root is tolerated.
+		const wxChar sep = wxFileName::GetPathSeparator();
+		const wxChar lastChar = root.Last();
+		if (target.length() > root.length() && target.StartsWith(root) &&
+			(lastChar == sep || target[root.length()] == sep)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 

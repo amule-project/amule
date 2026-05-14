@@ -288,6 +288,16 @@ void CSharedDirWatcher::RegisterNewSubdirectory(const wxString & path)
 		return;
 	}
 
+	// Only auto-add when an ancestor is in the user's recursive set
+	// (shareddir-recursive.dat). Non-recursive shares are now strict
+	// -- a new subdir under /Music does NOT get auto-shared unless
+	// /Music (or some ancestor of it) was marked recursive via the
+	// UI. This protects desktop users with sensitive nested folders
+	// from silent recursion.
+	if (!theApp->glob_prefs->IsRecursiveAncestor(p)) {
+		return;
+	}
+
 	// Skip if already on the list (defensive — duplicate inotify
 	// events for the same mkdir are possible).
 	thePrefs::PathList & shared = theApp->glob_prefs->shareddir_list;
@@ -331,6 +341,17 @@ void CSharedDirWatcher::ColdDiscoverSubdirs()
 		return;
 	}
 
+	// Walk only the user's recursive roots, not every shared dir.
+	// Non-recursive (explicit) shares are strict: their pre-existing
+	// subdirs do NOT get auto-included. Same policy as the HOT path
+	// (RegisterNewSubdirectory) -- both auto-add behaviours gate on
+	// IsRecursiveAncestor.
+	const thePrefs::PathList & roots =
+		theApp->glob_prefs->shareddir_recursive_list;
+	if (roots.empty()) {
+		return;
+	}
+
 	// Membership index over the current list: avoids O(N*M) string
 	// comparisons when M (newly-discovered subdirs) is large. Keys are
 	// raw path strings -- matches the comparison RegisterNewSubdirectory
@@ -348,13 +369,11 @@ void CSharedDirWatcher::ColdDiscoverSubdirs()
 	// rather than rewriting shareddir.dat once per discovery.
 	std::vector<CPath> discovered;
 
-	// Iterate by index because the loop body grows `shared`. Newly
-	// added entries don't need re-walking here -- they'll be visited
-	// on the next Refresh() if they themselves contain subdirs.
-	// (Keeping the walk single-pass keeps the worst case predictable.)
-	const size_t initial = shared.size();
-	for (size_t i = 0; i < initial; ++i) {
-		const CPath & root = shared[i];
+	// Walk each recursive root's subtree. CSharedFileList's Reload
+	// already handled the root itself; this surfaces previously-
+	// uncovered descendants only.
+	for (size_t i = 0; i < roots.size(); ++i) {
+		const CPath & root = roots[i];
 		if (!root.IsOk() || !root.DirExists()) {
 			continue;
 		}
