@@ -21,6 +21,9 @@
 #include <wx/timer.h>
 #include <wx/fswatcher.h>
 
+#include <set>
+#include <vector>
+
 #include "Types.h"
 
 class CSharedFileList;
@@ -91,6 +94,28 @@ private:
 	// already there) and start watching it. Used for Option A's
 	// "auto-share new subdirs of watched parents" behaviour.
 	void RegisterNewSubdirectory(const wxString & path);
+
+	// Recursively walk each path in shareddir_list and add any subdir
+	// not already listed. The "cold" twin of RegisterNewSubdirectory:
+	// without this, subdirs created while aMule was offline are never
+	// observed -- the watcher only fires CREATE events post-Enable(),
+	// so a /Music share whose disk grew three new albums in the
+	// interim would never see them until each gained a new file via
+	// some other path. Batches in-memory and writes shareddir.dat
+	// once at the end so a large discovery pass doesn't trigger N
+	// rewrites.
+	void ColdDiscoverSubdirs();
+
+	// Recursive walker used by ColdDiscoverSubdirs. Visits every
+	// subdirectory of `root`; for each that is not already in
+	// `known` it inserts the path into `known` and appends to `out`.
+	// Always recurses (even through already-known subdirs) so a tree
+	// whose top layer is in shareddir.dat but whose deeper layers
+	// are not still gets fully covered in one pass.
+	void WalkForUnknownSubdirs(
+		const CPath & root,
+		std::set<wxString> & known,
+		std::vector<CPath> & out);
 
 	CSharedFileList *      m_parent;
 	wxFileSystemWatcher *  m_watcher;
