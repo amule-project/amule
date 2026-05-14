@@ -354,6 +354,16 @@ void CDirectoryTreeCtrl::SetRecursiveSharedDirectories(PathList* list)
 	for (PathList::iterator it = list->begin(); it != list->end(); ++it) {
 		m_lstSharedRecursive.insert(SharedMapItem(GetKey(*it), *it));
 	}
+
+	// Mirror SetSharedDirectories: refresh the tree so a recursive
+	// root reloaded from shareddir-recursive.dat at prefs-open is
+	// rendered bold straight away rather than only after the user
+	// happens to expand its branch. PrefsUnifiedDlg calls this and
+	// SetSharedDirectories back-to-back; without this refresh, only
+	// the explicit set would have been visualised on first paint.
+	if (m_IsInit) {
+		UpdateSharedDirectories();
+	}
 }
 
 
