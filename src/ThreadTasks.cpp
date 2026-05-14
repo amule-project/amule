@@ -27,6 +27,9 @@
 
 #include <wx/app.h>			// Needed for wxTheApp
 
+#include <algorithm>			// std::min
+#include <unordered_set>		// CAICHSyncTask orphan-prune liveRoots set
+
 #include "ThreadTasks.h"		// Interface declarations
 #include "PartFile.h"			// Needed for CPartFile
 #include "Logger.h"			// Needed for Add(Debug)LogLine{C,N}
@@ -282,6 +285,16 @@ void CAICHSyncTask::Entry()
 	std::list<CAICHHash> hashlist;
 	const CPath fullpath = CPath(thePrefs::GetConfigDir() + KNOWN2_MET_FILENAME);
 
+	// Snapshot of AICH master hashes still referenced by a known.met
+	// record. Used to drop orphans (entries whose owning known.met
+	// record was TTL-evicted by CKnownFileList::PruneDuplicates) from
+	// known2_64.met during the read walk. Empty set disables the prune
+	// (defensive: never wipe everything before knownfiles is loaded).
+	std::unordered_set<CAICHHash> liveRoots;
+	if (theApp->knownfiles) {
+		theApp->knownfiles->CollectLiveAICHRoots(liveRoots);
+	}
+
 	CFile file;
 	if (!fullpath.FileExists()) {
 		// File does not exist. Try to create it to see if it can be created at all (and don't start hashing otherwise).
@@ -301,6 +314,32 @@ void CAICHSyncTask::Entry()
 			return;
 		}
 
+		// Rewrite target. CFile::write_safe writes to "<name>.new" and
+		// renames on Close(); a partial rewrite leaves the original
+		// known2_64.met untouched, so a crash mid-prune doesn't lose
+		// data. Only opened when we actually have a live-roots set to
+		// filter against.
+		const bool prune = !liveRoots.empty();
+		CFile rewriteFile;
+		bool rewriteOk = false;
+		size_t droppedCount = 0;
+		size_t keptCount = 0;
+		if (prune) {
+			rewriteOk = rewriteFile.Open(fullpath, CFile::write_safe);
+			if (rewriteOk) {
+				try {
+					rewriteFile.WriteUInt8(KNOWN2_MET_VERSION);
+				} catch (const CIOFailureException&) {
+					rewriteOk = false;
+					rewriteFile.Close();
+				}
+			} else {
+				AddDebugLogLineN(logAICHThread,
+					"Could not open known2_64.met.new for orphan prune; "
+					"will read existing file without rewriting.");
+			}
+		}
+
 		uint32 nLastVerifiedPos = 0;
 		try {
 			if (file.ReadUInt8() != KNOWN2_MET_VERSION) {
@@ -310,7 +349,7 @@ void CAICHSyncTask::Entry()
 			uint64 nExistingSize = file.GetLength();
 			while (file.GetPosition() < nExistingSize) {
 				// Read the next hash
-				hashlist.push_back(CAICHHash(&file));
+				CAICHHash rootHash(&file);
 
 				uint32 nHashCount = file.ReadUInt32();
 				const uint64 hashsetBytes =
@@ -320,10 +359,46 @@ void CAICHSyncTask::Entry()
 					throw CEOFException("Hashlist ends past end of file.");
 				}
 
-				// skip the rest of this hashset
-				nLastVerifiedPos = file.Seek(
-					static_cast<wxFileOffset>(hashsetBytes),
-					wxFromCurrent);
+				const bool keep = !prune || liveRoots.count(rootHash) > 0;
+
+				if (keep) {
+					hashlist.push_back(rootHash);
+				}
+
+				if (rewriteOk) {
+					if (keep) {
+						rootHash.Write(&rewriteFile);
+						rewriteFile.WriteUInt32(nHashCount);
+						// Stream the hashset bytes through a small
+						// fixed buffer rather than slurping into RAM:
+						// large files can have many MB of leaf+tree
+						// SHA-1s and we don't want one entry to
+						// dictate the working set.
+						uint8_t buf[64 * 1024];
+						uint64 remaining = hashsetBytes;
+						while (remaining > 0) {
+							const size_t chunk = static_cast<size_t>(
+								std::min<uint64>(sizeof(buf), remaining));
+							file.Read(buf, chunk);
+							rewriteFile.Write(buf, chunk);
+							remaining -= chunk;
+						}
+						++keptCount;
+						nLastVerifiedPos = static_cast<uint32>(file.GetPosition());
+					} else {
+						nLastVerifiedPos = file.Seek(
+							static_cast<wxFileOffset>(hashsetBytes),
+							wxFromCurrent);
+						++droppedCount;
+					}
+				} else {
+					// No rewrite in progress (prune disabled or
+					// rewrite file failed to open): just skip the
+					// hashset bytes as before.
+					nLastVerifiedPos = file.Seek(
+						static_cast<wxFileOffset>(hashsetBytes),
+						wxFromCurrent);
+				}
 			}
 		} catch (const CEOFException&) {
 			AddDebugLogLineC(logAICHThread, "Hashlist corrupted, truncating file.");
@@ -333,10 +408,38 @@ void CAICHSyncTask::Entry()
 			// Drop the SaveHashSet dedup cache: some of its entries
 			// may have just been truncated off the end of the file.
 			CAICHHashSet::InvalidateRootHashCache();
+			// Don't finalise the rewrite when the source was
+			// corrupt -- the partial .new file would replace the
+			// just-truncated source with something different. Abort
+			// the rewrite explicitly so its destructor doesn't end
+			// up renaming a stale .new over the recovered file.
+			if (rewriteOk) {
+				rewriteFile.Close();
+				CPath::RemoveFile(CPath(fullpath.GetRaw() + wxT(".new")));
+				rewriteOk = false;
+			}
 		} catch (const CIOFailureException& e) {
 			AddDebugLogLineC(logAICHThread, "IO failure while reading hashlist (Aborting): " + e.what());
-
+			if (rewriteOk) {
+				rewriteFile.Close();
+				CPath::RemoveFile(CPath(fullpath.GetRaw() + wxT(".new")));
+			}
 			return;
+		}
+
+		if (rewriteOk) {
+			rewriteFile.Close();
+			if (droppedCount > 0) {
+				AddDebugLogLineN(logAICHThread,
+					CFormat("known2_64.met orphan prune: dropped %u, kept %u")
+						% (unsigned)droppedCount
+						% (unsigned)keptCount);
+				// The dedup cache mirrored the old file. Drop it so
+				// the next SaveHashSet rebuilds against the rewritten
+				// known2_64.met instead of insisting hashes we just
+				// pruned are still "present".
+				CAICHHashSet::InvalidateRootHashCache();
+			}
 		}
 
 		AddDebugLogLineN( logAICHThread, "Masterhashes of known files have been loaded." );

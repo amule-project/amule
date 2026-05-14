@@ -34,6 +34,7 @@
 
 class CKnownFile;
 class CPath;
+class CAICHHash;
 
 class CKnownFileList
 {
@@ -57,6 +58,15 @@ public:
 	// true, so the cap-prune never fires before the pin set is
 	// populated by FindKnownFile-during-scan.
 	void	MarkInitialShareScanComplete();
+
+	// Snapshot the set of AICH master hashes that are still referenced
+	// by live and duplicate-list records. Used by CAICHSyncTask to
+	// prune orphaned hashsets out of known2_64.met (entries whose
+	// owning known.met record has been TTL-evicted by PruneDuplicates
+	// and no longer appears in either map). The set is populated under
+	// list_mut to get a consistent view; CAICHHash is hashable so
+	// callers can fast-test membership during the file walk.
+	void	CollectLiveAICHRoots(std::unordered_set<CAICHHash> & out);
 
 	uint16 requested;
 	uint32 transferred;
