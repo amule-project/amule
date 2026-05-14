@@ -1471,6 +1471,46 @@ PrefsUnifiedDlg::CommitSharedDirsWithProgress()
 	m_ShareSelector->GetSharedDirectories(&explicitShares);
 	m_ShareSelector->GetRecursiveSharedDirectories(&recursiveIntents);
 
+	// Strip entries that are descendants of a recursive root: the
+	// UI's right-click handler populates m_lstShared with the already-
+	// rendered subtree as a side-effect of MarkChildren (so the
+	// in-tree visual stays consistent), but those subdirs aren't
+	// "explicit" intent -- they're the recursive expansion. Without
+	// this filter they'd land in shareddir-explicit.dat and stick
+	// around as orphan pinned paths if the user later removed the
+	// recursive marker externally (no DelSharesUnder cleanup runs
+	// outside the UI). Filter at the commit boundary keeps the
+	// canonical files semantically clean.
+	if (!recursiveIntents.empty()) {
+		const wxChar sep = wxFileName::GetPathSeparator();
+		auto isInsideRecursive = [&recursiveIntents, sep](const CPath & p) {
+			const wxString target = p.GetRaw();
+			for (const CPath & root : recursiveIntents) {
+				const wxString r = root.GetRaw();
+				if (r.IsEmpty()) {
+					continue;
+				}
+				if (target == r) {
+					return true;
+				}
+				if (target.length() > r.length() &&
+					target.StartsWith(r) &&
+					(r.Last() == sep || target[r.length()] == sep)) {
+					return true;
+				}
+			}
+			return false;
+		};
+		CDirectoryTreeCtrl::PathList filtered;
+		filtered.reserve(explicitShares.size());
+		for (const CPath & p : explicitShares) {
+			if (!isInsideRecursive(p)) {
+				filtered.push_back(p);
+			}
+		}
+		explicitShares.swap(filtered);
+	}
+
 	// Confirm before expanding sensitive recursive roots.
 	std::vector<CPath> sensitive;
 	for (const CPath & p : recursiveIntents) {
