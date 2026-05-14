@@ -122,6 +122,23 @@ private:
 
 	wxTreeItemId m_root;
 
+	// Font used to render recursive-share roots. Bold-italic, so the
+	// user can distinguish "this is the recursive root" from "this
+	// is a plain explicit share" or "this is a descendant covered by
+	// a recursive expansion" -- all three would otherwise look
+	// identical (plain bold). Constructed lazily on first paint via
+	// MakeRecursiveFont because the tree control's default font
+	// isn't fully resolved until after the ctor runs (on macOS
+	// especially, GetFont() inside the ctor returns a default-system
+	// font that's later overridden by the layout pass).
+	wxFont GetRecursiveFont();
+	// Toggle the italic-bold marker on a single tree item. Called
+	// from AddChildItem on initial render and from the right-click
+	// toggle paths so the visual stays in sync with
+	// m_lstSharedRecursive on every transition.
+	void ApplyRecursiveMark(wxTreeItemId hItem, bool isRecursive);
+	wxFont m_fontRecursiveRoot;
+
 	wxDECLARE_EVENT_TABLE();
 };
 
