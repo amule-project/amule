@@ -27,6 +27,7 @@
 #include <common/Format.h>		// Needed for CFormat
 
 #include <common/Path.h>
+#include <common/FileFunctions.h>		// CDirIterator for cold-discover walk
 
 #include "amule.h"
 #include "Logger.h"
@@ -132,6 +133,11 @@ void CSharedDirWatcher::Enable()
 	m_watcher = new wxFileSystemWatcher();
 	m_watcher->SetOwner(this);
 	RegisterAllPaths();
+	// First-enable also needs the cold-discovery pass; otherwise
+	// subdirs that grew while the daemon was offline are never seen
+	// until Reload() fires Refresh() (which happens only when
+	// shareddir_list itself changes -- not at startup).
+	ColdDiscoverSubdirs();
 
 #ifdef __APPLE__
 	// wx's FSEvents wrapper schedules its stream on the thread's
@@ -179,6 +185,14 @@ void CSharedDirWatcher::Refresh()
 	// the typical list size (low hundreds at most).
 	m_watcher->RemoveAll();
 	RegisterAllPaths();
+	// Cold-discovery is one-shot at Enable() only. Re-running it from
+	// Refresh() risks adding duplicate entries when a runtime
+	// RegisterNewSubdirectory wrote a path in one canonical form
+	// (e.g. macOS-resolved "/private/tmp/...") while the disk walk
+	// later produces the unresolved form ("/tmp/...") -- both go in
+	// as distinct strings. Startup is the only moment we genuinely
+	// have to walk to catch up; runtime new-dirs are covered by
+	// RegisterNewSubdirectory from OnFileSystemEvent.
 }
 
 
@@ -303,6 +317,112 @@ void CSharedDirWatcher::RegisterNewSubdirectory(const wxString & path)
 
 	// Persist the new entry so the change survives a restart.
 	theApp->glob_prefs->SaveSharedFolders();
+}
+
+
+void CSharedDirWatcher::ColdDiscoverSubdirs()
+{
+	if (!m_watcher) {
+		return;
+	}
+
+	thePrefs::PathList & shared = theApp->glob_prefs->shareddir_list;
+	if (shared.empty()) {
+		return;
+	}
+
+	// Membership index over the current list: avoids O(N*M) string
+	// comparisons when M (newly-discovered subdirs) is large. Keys are
+	// raw path strings -- matches the comparison RegisterNewSubdirectory
+	// uses for its own dedup check, just lifted into a set.
+	// std::set rather than unordered_set: wxString has operator< but
+	// no stdlib std::hash specialization, and N here is at most a
+	// few thousand even on heavy users -- log-N membership is fine.
+	std::set<wxString> known;
+	for (size_t i = 0; i < shared.size(); ++i) {
+		known.insert(shared[i].GetRaw());
+	}
+
+	// Discovered new subdirs go here; we add them in bulk after the
+	// walk so a single SaveSharedFolders() flushes the whole batch
+	// rather than rewriting shareddir.dat once per discovery.
+	std::vector<CPath> discovered;
+
+	// Iterate by index because the loop body grows `shared`. Newly
+	// added entries don't need re-walking here -- they'll be visited
+	// on the next Refresh() if they themselves contain subdirs.
+	// (Keeping the walk single-pass keeps the worst case predictable.)
+	const size_t initial = shared.size();
+	for (size_t i = 0; i < initial; ++i) {
+		const CPath & root = shared[i];
+		if (!root.IsOk() || !root.DirExists()) {
+			continue;
+		}
+		WalkForUnknownSubdirs(root, known, discovered);
+	}
+
+	if (discovered.empty()) {
+		return;
+	}
+
+	for (size_t i = 0; i < discovered.size(); ++i) {
+		const CPath & sub = discovered[i];
+		shared.push_back(sub);
+#ifndef __WXOSX__
+		// On Linux/BSD/Windows the inotify/kqueue/RDCW backends need
+		// each subdir registered explicitly. macOS's FSEvents stream
+		// from the enclosing AddTree() already covers descendants.
+		wxFileName fn = wxFileName::DirName(sub.GetRaw());
+		if (!m_watcher->Add(fn, kWatchMask)) {
+			AddDebugLogLineC(logKnownFiles,
+				CFormat("Shared-dir watcher: failed to add cold-discovered %s")
+					% sub.GetRaw());
+		}
+#endif
+		AddDebugLogLineN(logKnownFiles,
+			CFormat("Shared-dir watcher: cold-discovered subdir %s")
+				% sub.GetRaw());
+	}
+
+	AddDebugLogLineN(logKnownFiles,
+		CFormat("Shared-dir watcher: cold discovery added %u subdir(s)")
+			% (unsigned)discovered.size());
+
+	// Single rewrite of shareddir.dat for the whole batch.
+	theApp->glob_prefs->SaveSharedFolders();
+
+	// The initial share-scan already ran (amule.cpp invokes Reload
+	// before EnableDirectoryWatcher), so the in-memory shared file
+	// list doesn't yet reflect the newly-discovered subdirs. Match
+	// the HOT path's behaviour and schedule a debounced Reload to
+	// pick up the files under each new subdir without blocking
+	// Enable().
+	ScheduleReload();
+}
+
+
+void CSharedDirWatcher::WalkForUnknownSubdirs(
+	const CPath & root,
+	std::set<wxString> & known,
+	std::vector<CPath> & out)
+{
+	CDirIterator dir(root);
+	for (CPath sub = dir.GetFirstFile(CDirIterator::Dir);
+		sub.IsOk();
+		sub = dir.GetNextFile())
+	{
+		CPath full = root.JoinPaths(sub);
+		const wxString key = full.GetRaw();
+		if (known.find(key) == known.end()) {
+			known.insert(key);
+			out.push_back(full);
+		}
+		// Always recurse: known subdirs may themselves contain
+		// unknown grandchildren, and we want a single Refresh() to
+		// pick up the whole offline-created tree, not just the top
+		// layer of new dirs.
+		WalkForUnknownSubdirs(full, known, out);
+	}
 }
 
 
