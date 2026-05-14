@@ -252,7 +252,7 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item13->Add( item22, wxSizerFlags().CenterVertical().Border(wxALL, 5) );
     wxBoxSizer *item23 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item24 = new wxSpinCtrl( parent, IDC_SPINSEARCHMIN, "0", wxDefaultPosition, wxSize(60,-1), 0, 0, 4096, 0 );
+    wxSpinCtrl *item24 = new wxSpinCtrl( parent, IDC_SPINSEARCHMIN, "0", wxDefaultPosition, wxDefaultSize, 0, 0, 4096, 0 );
     item23->Add( item24, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
     wxString strs25[] = 
     {
@@ -271,7 +271,7 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item13->Add( item27, wxSizerFlags().CenterVertical().Border(wxALL, 5) );
     wxBoxSizer *item28 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item29 = new wxSpinCtrl( parent, IDC_SPINSEARCHMAX, "0", wxDefaultPosition, wxSize(60,-1), 0, 0, 4096, 0 );
+    wxSpinCtrl *item29 = new wxSpinCtrl( parent, IDC_SPINSEARCHMAX, "0", wxDefaultPosition, wxDefaultSize, 0, 0, 4096, 0 );
     item28->Add( item29, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
     wxString strs30[] = 
     {
@@ -288,7 +288,7 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item13->Add( item31, wxSizerFlags().Center().Border(wxALL, 5) );
     wxStaticText *item32 = new wxStaticText( parent, -1, _("Availability"), wxDefaultPosition, wxDefaultSize, 0 );
     item13->Add( item32, wxSizerFlags().CenterVertical().Border(wxALL, 5) );
-    wxSpinCtrl *item33 = new wxSpinCtrl( parent, IDC_SPINSEARCHAVAIBILITY, "0", wxDefaultPosition, wxSize(45,-1), 0, 0, 1000, 0 );
+    wxSpinCtrl *item33 = new wxSpinCtrl( parent, IDC_SPINSEARCHAVAIBILITY, "0", wxDefaultPosition, wxDefaultSize, 0, 0, 1000, 0 );
     item13->Add( item33, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
     item1->Add( item13, 0, wxALIGN_CENTER, 5 );
 
