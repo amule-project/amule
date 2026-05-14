@@ -47,10 +47,6 @@ CWebSocket::CWebSocket(CWebServerBase *parent)
 
 	m_pParent = parent;
 
-#ifndef ASIO_SOCKETS
-	SetEventHandler(*parent, ID_WEBCLIENTSOCKET_EVENT);
-	SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
-#endif
 	Notify(true);
 
 }

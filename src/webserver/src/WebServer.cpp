@@ -214,13 +214,6 @@ void CParsedUrl::ConvertParams(std::map<std::string, std::string> &dst)
 	}
 }
 
-#ifndef ASIO_SOCKETS
-wxBEGIN_EVENT_TABLE(CWebServerBase, wxEvtHandler)
-	EVT_SOCKET(ID_WEBLISTENSOCKET_EVENT, CWebServerBase::OnWebSocketServerEvent)
-	EVT_SOCKET(ID_WEBCLIENTSOCKET_EVENT, CWebServerBase::OnWebSocketEvent)
-wxEND_EVENT_TABLE()
-#endif
-
 CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir) :
 	m_ServersInfo(webApp), m_SharedFileInfo(webApp), m_DownloadFileInfo(webApp, &m_ImageLib),
 	m_UploadsInfo(webApp), m_SearchInfo(webApp), m_Stats(500, webApp),
@@ -244,19 +237,15 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 	m_upnpEnabled = webInterface->m_UPnPWebServerEnabled;
 	m_upnpTCPPort = webInterface->m_UPnPTCPPort;
 
-#ifdef ASIO_SOCKETS
 	m_AsioService = new CAsioService;
-#endif
 }
 
 
 // Probably always terminated by Ctrl-C or kill, but make a clean shutdown of the service anyway
 CWebServerBase::~CWebServerBase()
 {
-#ifdef ASIO_SOCKETS
 	m_AsioService->Stop();
 	delete m_AsioService;
-#endif
 }
 
 
@@ -287,10 +276,6 @@ void CWebServerBase::StartServer()
 	addr.Service(webInterface->m_WebserverPort);
 
 	m_webserver_socket = new CWebLibSocketServer(addr, MULE_SOCKET_REUSEADDR, this);
-#ifndef ASIO_SOCKETS
-	m_webserver_socket->SetEventHandler(*this, ID_WEBLISTENSOCKET_EVENT);
-	m_webserver_socket->SetNotify(wxSOCKET_CONNECTION_FLAG);
-#endif
 	m_webserver_socket->Notify(true);
 	if (!m_webserver_socket->IsOk()) {
 		delete m_webserver_socket;
@@ -312,13 +297,6 @@ void CWebServerBase::StopServer()
 #endif
 }
 
-#ifndef ASIO_SOCKETS
-void CWebServerBase::OnWebSocketServerEvent(wxSocketEvent& WXUNUSED(event))
-{
-	m_webserver_socket->OnAccept();
-}
-#endif
-
 CWebLibSocketServer::CWebLibSocketServer(const class amuleIPV4Address& adr, int flags, CWebServerBase * webServerBase)
 	:	CLibSocketServer(adr, flags),
 		m_webServerBase(webServerBase)
@@ -336,30 +314,6 @@ void CWebLibSocketServer::OnAccept()
 		m_webServerBase->webInterface->Show(_("ERROR: cannot accept web client connection\n"));
     }
 }
-
-#ifndef ASIO_SOCKETS
-void CWebServerBase::OnWebSocketEvent(wxSocketEvent& event)
-{
-	CWebSocket *socket = dynamic_cast<CWebSocket *>(event.GetSocket());
-    wxCHECK_RET(socket, "Socket event with a NULL socket!");
-    switch(event.GetSocketEvent()) {
-    case wxSOCKET_LOST:
-        socket->OnLost();
-        break;
-    case wxSOCKET_INPUT:
-        socket->OnReceive(0);
-        break;
-    case wxSOCKET_OUTPUT:
-        socket->OnSend(0);
-        break;
-    case wxSOCKET_CONNECTION:
-        break;
-    default:
-        wxFAIL;
-        break;
-    }
-}
-#endif
 
 void CScriptWebServer::ProcessImgFileReq(ThreadData Data)
 {

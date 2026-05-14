@@ -56,74 +56,6 @@
 
 //#define __PACKET_RECV_DUMP__
 
-#ifndef ASIO_SOCKETS
-
-//------------------------------------------------------------------------------
-// CClientTCPSocketHandler
-//------------------------------------------------------------------------------
-
-class CClientTCPSocketHandler: public wxEvtHandler
-{
-public:
-	CClientTCPSocketHandler() {};
-
-private:
-	void ClientTCPSocketHandler(wxSocketEvent& event);
-	wxDECLARE_EVENT_TABLE();
-};
-
-wxBEGIN_EVENT_TABLE(CClientTCPSocketHandler, wxEvtHandler)
-	EVT_SOCKET(ID_CLIENTTCPSOCKET_EVENT, CClientTCPSocketHandler::ClientTCPSocketHandler)
-wxEND_EVENT_TABLE()
-
-void CClientTCPSocketHandler::ClientTCPSocketHandler(wxSocketEvent& event)
-{
-	wxSocketBase* baseSocket = event.GetSocket();
-//	wxASSERT(baseSocket);	// Rather want a log message right now. Enough other wx problems. >:(
-	if (!baseSocket) {		// WTF?
-		AddDebugLogLineN(logClient, "received bad wxSocketEvent");
-		return;
-	}
-
-	CClientTCPSocket *socket = dynamic_cast<CClientTCPSocket *>(baseSocket);
-	wxASSERT(socket);
-	if (!socket) {
-		return;
-	}
-
-	if (socket->IsDestroying()) {
-		return;
-	}
-
-	switch(event.GetSocketEvent()) {
-		case wxSOCKET_LOST:
-			socket->OnError(0xFEFF /* SOCKET_LOST is not an error */);
-			break;
-		case wxSOCKET_INPUT:
-			socket->OnReceive(0);
-			break;
-		case wxSOCKET_OUTPUT:
-			socket->OnSend(0);
-			break;
-		case wxSOCKET_CONNECTION:
-			// connection stablished, nothing to do about it?
-			socket->OnConnect(socket->LastError());
-			break;
-		default:
-			// Nothing should arrive here...
-			wxFAIL;
-			break;
-	}
-}
-
-//
-// There can be only one. :)
-//
-static CClientTCPSocketHandler g_clientReqSocketHandler;
-
-#endif /* !ASIO_SOCKETS */
-
-
 //------------------------------------------------------------------------------
 // CClientTCPSocket
 //------------------------------------------------------------------------------
@@ -140,14 +72,6 @@ CClientTCPSocket::CClientTCPSocket(CUpDownClient* in_client, const CProxyData *P
 
 	ResetTimeOutTimer();
 
-#ifndef ASIO_SOCKETS
-	SetEventHandler(g_clientReqSocketHandler, ID_CLIENTTCPSOCKET_EVENT);
-	SetNotify(
-		wxSOCKET_CONNECTION_FLAG |
-		wxSOCKET_INPUT_FLAG |
-		wxSOCKET_OUTPUT_FLAG |
-		wxSOCKET_LOST_FLAG);
-#endif
 	Notify(true);
 
 	theApp->listensocket->AddSocket(this);
@@ -156,12 +80,6 @@ CClientTCPSocket::CClientTCPSocket(CUpDownClient* in_client, const CProxyData *P
 
 CClientTCPSocket::~CClientTCPSocket()
 {
-#ifndef ASIO_SOCKETS
-	// remove event handler
-	SetNotify(0);
-	Notify(false);
-#endif
-
 	if (m_client) {
 		m_client->SetSocket( NULL );
 	}

@@ -164,29 +164,6 @@ public:
 	wxString	m_password;
 };
 
-#ifndef ASIO_SOCKETS
-//------------------------------------------------------------------------------
-// CProxyEventHandler
-//------------------------------------------------------------------------------
-/**
- * Event handler object used during proxy negotiation.
- */
-class CProxyEventHandler : public wxEvtHandler {
-public:
-	/**
-	 * Constructor.
-	 */
-	CProxyEventHandler();
-
-private:
-	/**
-	 * Event handler function.
-	 */
-	void ProxySocketHandler(wxSocketEvent &event);
-	wxDECLARE_EVENT_TABLE();
-};
-#endif /* !ASIO_SOCKETS */
-
 //------------------------------------------------------------------------------
 // CProxyStateMachine
 //------------------------------------------------------------------------------
@@ -443,34 +420,8 @@ public:
 	/* Destructor */
 	~CProxySocket();
 
-#ifndef ASIO_SOCKETS
-	/* I know, this is not very good, because SetEventHandler is not
-	 * virtual in wxSocketBase, but I need to GetEventHandler in Proxy.cpp,
-	 * so...
-	 */
-	void SetEventHandler(wxEvtHandler &handler, int id = wxID_ANY)
-	{
-		m_socketEventHandler = &handler;
-		m_socketEventHandlerId = id;
-		CLibSocket::SetEventHandler(handler, id);
-	}
-	wxEvtHandler *GetEventHandler(void)	const { return m_socketEventHandler; }
-	int GetEventHandlerId(void)		const { return m_socketEventHandlerId; }
-	void SaveEventHandler(void)
-	{
-		m_savedSocketEventHandler = m_socketEventHandler;
-		m_savedSocketEventHandlerId = m_socketEventHandlerId;
-	}
-	void RestoreEventHandler(void)
-	{
-		m_socketEventHandler = m_savedSocketEventHandler;
-		m_socketEventHandlerId = m_savedSocketEventHandlerId;
-		SetEventHandler(*m_socketEventHandler, m_socketEventHandlerId);
-	}
-#else
 	// Asio mode
 	virtual void	OnProxyEvent(int evt);
-#endif
 
 	/* Interface */
 	void		SetProxyData(const CProxyData *proxyData);
@@ -489,12 +440,6 @@ private:
 	amuleIPV4Address	m_proxyAddress;
 	CProxyStateMachine	*m_proxyStateMachine;
 	CDatagramSocketProxy	*m_udpSocket;
-#ifndef ASIO_SOCKETS
-	wxEvtHandler		*m_socketEventHandler;
-	int			m_socketEventHandlerId;
-	wxEvtHandler		*m_savedSocketEventHandler;
-	int			m_savedSocketEventHandlerId;
-#endif
 };
 
 //------------------------------------------------------------------------------
