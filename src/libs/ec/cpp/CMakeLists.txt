@@ -24,11 +24,9 @@ target_include_directories (ec
 	PRIVATE ${LIBS_INCLUDE_DIR}
 )
 
-if (ENABLE_BOOST)
-	target_include_directories (ec
-		PUBLIC ${Boost_INCLUDE_DIR}
-	)
-endif()
+target_include_directories (ec
+	PUBLIC ${Boost_INCLUDE_DIR}
+)
 
 target_link_libraries (ec
 	PRIVATE CRYPTOPP::CRYPTOPP
