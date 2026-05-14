@@ -370,11 +370,22 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 		const CMD4Hash& tkey = Record->GetFileHash();
 		CKnownFileMap::iterator it = m_knownFileMap.find(tkey);
 		if (it == m_knownFileMap.end()) {
-			// Fresh hash from CHashingTask -- m_lastSeen was 0 from
-			// CKnownFile::Init's sentinel and never overridden by a
-			// loaded FT_LASTSEEN; stamp it now so the TTL prune
-			// treats this as freshly seen on disk.
-			Record->SetLastSeen(now);
+			// Only stamp lastSeen=now when this is a confirmed
+			// sighting of the file on disk (post-hash via
+			// CHashingTask, or any other afterHashing=true path).
+			// During known.met load Append is called with
+			// afterHashing=false; touching lastSeen here would
+			// overwrite either the FT_LASTSEEN tag we just loaded
+			// or the m_lastDateChanged fallback that
+			// CKnownFile::LoadFromFile substitutes when the tag
+			// is absent. The latter is the only thing that lets
+			// the TTL prune do useful migration work on an old
+			// known.met -- if we trample it, every loaded record
+			// looks "fresh" and TTL never evicts anything (this
+			// is exactly what bit ngosang on the first PR test).
+			if (afterHashing) {
+				Record->SetLastSeen(now);
+			}
 			m_knownFileMap[tkey] = Record;
 			if (m_knownSizeMap) {
 				m_knownSizeMap->insert(
@@ -389,7 +400,9 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 			if (KnownFileMatches(Record, existing->GetFileName(), existing->GetLastChangeDatetime(), existing->GetFileSize())) {
 				// The file is already on the list, ignore it.
 				AddDebugLogLineN(logKnownFiles, CFormat("%s is already on the list") % Record->GetFileName().GetPrintable());
-				existing->SetLastSeen(now);
+				if (afterHashing) {
+					existing->SetLastSeen(now);
+				}
 				return false;
 			} else if (CKnownFile * dup = IsOnDuplicates(
 					Record->GetFileName(), Record->GetLastChangeDatetime(),
@@ -397,12 +410,16 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 				// The file is on the duplicates list, ignore it.
 				// Should not happen, at least not after hashing. Or why did it get hashed in the first place then?
 				AddDebugLogLineN(logKnownFiles, CFormat("%s is on the duplicates list") % Record->GetFileName().GetPrintable());
-				// Pin the duplicate -- Append got here from a real
-				// on-disk file (we just hashed it), so this record
-				// matches a live file and the next-session scan
-				// would benefit from finding it without re-hashing.
-				dup->SetLastSeen(now);
-				m_pinnedDuplicates.insert(dup);
+				// Pin the duplicate only when this branch was hit
+				// because we just hashed a real on-disk file (the
+				// only case the comment above describes anyway).
+				// During load Append doesn't represent a fresh
+				// sighting -- pinning here would falsely protect
+				// stale records from the cap/TTL prune.
+				if (afterHashing) {
+					dup->SetLastSeen(now);
+					m_pinnedDuplicates.insert(dup);
+				}
 				return false;
 			} else {
 				if (afterHashing && existing->GetFileSize() == Record->GetFileSize()) {
@@ -461,11 +478,19 @@ bool CKnownFileList::Append(CKnownFile *Record, bool afterHashing)
 								(uint32) Record->GetLastChangeDatetime()),
 							Record));
 				}
-				// Record is freshly hashed; the afterHashing copy
-				// above pulled existing's tags including its (stale)
-				// FT_LASTSEEN. Refresh so the new live entry isn't
-				// born aged-out of the TTL window.
-				Record->SetLastSeen(now);
+				// On the afterHashing path the copy-existing-tags
+				// block above pulled the prior FT_LASTSEEN into
+				// Record; refresh it so the new live entry isn't
+				// born aged-out of the TTL window. During load
+				// (afterHashing=false) keep Record's own loaded
+				// lastSeen instead -- demoting an entry to the
+				// duplicate list must not stamp the replacement
+				// as "fresh now" or the migration-driven TTL pass
+				// loses its signal (every live entry would look
+				// load-time-fresh and never be evicted).
+				if (afterHashing) {
+					Record->SetLastSeen(now);
+				}
 				m_knownFileMap[tkey] = Record;
 				return true;
 			}
