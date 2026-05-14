@@ -164,14 +164,12 @@ if (NEED_LIB_MULECOMMON)
 endif()
 
 if (NEED_LIB_MULEAPPCOMMON)
-	option (ENABLE_BOOST "compile with Boost.ASIO Sockets" ON)
 	option (ENABLE_IP2COUNTRY "compile with GeoIP IP2Country library")
 	option (ENABLE_MMAP "enable using mapped memory if supported")
 	option (ENABLE_NLS "enable national language support" ON)
 	set (NEED_LIB_MULEAPPCORE TRUE)
 	set (wx_NEED_BASE TRUE)
 else()
-	set (ENABLE_BOOST FALSE)
 	set (ENABLE_IP2COUNTRY FALSE)
 	set (ENABLE_MMAP FALSE)
 	set (ENABLE_NLS FALSE)
@@ -185,7 +183,10 @@ if (NEED_LIB_MULESOCKET)
 	set (wx_NEED_BASE TRUE)
 endif()
 
-if (ENABLE_BOOST AND NOT (BUILD_DAEMON OR BUILD_MONOLITHIC OR BUILD_REMOTEGUI OR BUILD_WXCAS))
+# boost::asio is mandatory; the only consumers of wxWidgets sockets are
+# the wxcas helper and (transitively) the wxBase-dependent paths. Keep
+# wx_NEED_NET on only when those are actually being built.
+if (NOT (BUILD_DAEMON OR BUILD_MONOLITHIC OR BUILD_REMOTEGUI OR BUILD_WXCAS))
 	set (wx_NEED_NET FALSE)
 endif()
 

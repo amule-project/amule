@@ -741,16 +741,10 @@ IF (NEED_LIB_MULESOCKET)
 		PUBLIC ${LIBS_INCLUDE_DIR}
 	)
 
-	if (ENABLE_BOOST)
-		target_link_libraries (mulesocket
-			PRIVATE ${Boost_LIBRARIES}
-			PUBLIC wxWidgets::BASE
-		)
-	else()
-		target_link_libraries (mulesocket
-			PUBLIC wxWidgets::NET
-		)
-	endif()
+	target_link_libraries (mulesocket
+		PRIVATE ${Boost_LIBRARIES}
+		PUBLIC wxWidgets::BASE
+	)
 endif()
 
 # On MinGW-built Windows targets, bundle the MSYS2 MinGW64 runtime DLLs

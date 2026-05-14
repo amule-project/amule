@@ -68,9 +68,7 @@ if (BUILD_WEBSERVER)
 	include (cmake/png.cmake)
 endif()
 
-if (ENABLE_BOOST)
-	include (cmake/boost.cmake)
-endif()
+include (cmake/boost.cmake)
 
 if (ENABLE_IP2COUNTRY)
 	include (cmake/ip2country.cmake)
@@ -419,9 +417,7 @@ if (NEED_WX)
 	message (STATUS "			wxWidgets				${WX_VERSION}")
 endif()
 
-if (ASIO_SOCKETS)
-	message ("			boost				${Boost_VERSION}")
-endif()
+message ("			boost				${Boost_VERSION}")
 
 if (NEED_LIB_CRYPTO)
 	message ("			crypto++			${CRYPTOPP_VERSION} in ${CRYPTOPP_INCLUDE_PREFIX}")
