@@ -444,6 +444,7 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked, bool re
 		SetItemBold(hItem, bChecked);
 
 		const CPath fullPath = GetFullPath(hItem);
+		bool wasRecursive = false;
 		if (bChecked) {
 			AddShare(fullPath);
 		} else {
@@ -455,11 +456,23 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked, bool re
 			// from MarkChildren on descendants of a recursive root
 			// are harmless no-ops here (only the root is keyed in
 			// m_lstSharedRecursive).
+			wasRecursive = IsRecursiveShare(fullPath);
 			DelRecursiveShare(fullPath);
 		}
 
 		if (!recursed) {
 			UpdateParentItems(hItem, bChecked);
+			// If we just dropped the recursive marker on this item,
+			// the already-rendered descendants are still painted
+			// bold via IsInsideRecursiveShare from the original
+			// AddChildItem pass. That state isn't re-evaluated on
+			// its own when the marker disappears, so the user sees
+			// a "ghost selection" of grayed-out-but-bold subdirs.
+			// Walk the descendants and unbold them to keep the tree
+			// visually consistent with the now-empty state.
+			if (!bChecked && wasRecursive) {
+				MarkChildren(hItem, false, true);
+			}
 		}
 	}
 }
