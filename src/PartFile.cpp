@@ -3197,8 +3197,9 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 	m_lastDateChanged = wxDateTime::GetTimeNow();
 
 	try {
-		// Partfile should never be too large
-		if (m_hpartfile.GetLength() > GetFileSize()) {
+		// Partfile should never be too large. IsOpened() guard: StopPausedFile() Release()s
+		// the fd, and StopFile() reaches here via PauseFile -- GetLength() asserts on a closed fd.
+		if (m_hpartfile.IsOpened() && m_hpartfile.GetLength() > GetFileSize()) {
 			// it's "last chance" correction. the real bugfix has to be applied 'somewhere' else
 			m_hpartfile.SetLength(GetFileSize());
 		}
