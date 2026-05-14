@@ -84,38 +84,6 @@ void CProxyData::Clear()
 
 #include <typeinfo> // Do_not_auto_remove (NetBSD, older gccs)
 
-#ifndef ASIO_SOCKETS
-
-//------------------------------------------------------------------------------
-// ProxyEventHandler
-//------------------------------------------------------------------------------
-
-CProxyEventHandler::CProxyEventHandler()
-{
-}
-
-wxBEGIN_EVENT_TABLE(CProxyEventHandler, wxEvtHandler)
-	EVT_SOCKET(ID_PROXY_SOCKET_EVENT, CProxyEventHandler::ProxySocketHandler)
-wxEND_EVENT_TABLE()
-
-//
-// THE one and only Event Handler
-//
-static CProxyEventHandler g_proxyEventHandler;
-
-void CProxyEventHandler::ProxySocketHandler(wxSocketEvent& event)
-{
-	CProxySocket *sock = dynamic_cast<CProxySocket *>(event.GetSocket());
-	if (sock) {
-		sock->m_proxyStateMachine->Schedule(event.GetSocketEvent());
-		sock->m_proxyStateMachine->Clock();
-	} else {
-		// we're doomed :)
-	}
-}
-
-#else
-
 //
 // In Asio mode the event handler is:
 //
@@ -124,8 +92,6 @@ void CProxySocket::OnProxyEvent(int evt)
 	m_proxyStateMachine->Schedule(evt);
 	m_proxyStateMachine->Clock();
 }
-
-#endif
 
 //------------------------------------------------------------------------------
 // CProxyStateMachine
@@ -249,18 +215,10 @@ t_sm_state CProxyStateMachine::HandleEvent(t_sm_event event)
 
 void CProxyStateMachine::AddDummyEvent()
 {
-#ifdef ASIO_SOCKETS
 	CProxySocket *s = dynamic_cast<CProxySocket *>(m_proxyClientSocket);
 	if (s) {	// should always be
 		CoreNotify_ProxySocketEvent(s, MULE_SOCKET_DUMMY_VALUE);
 	}
-#else
-	wxSocketEvent e(ID_PROXY_SOCKET_EVENT);
-	// Make sure this is an unknown event :)
-	e.m_event = (wxSocketNotify)(MULE_SOCKET_DUMMY_VALUE);
-	e.SetEventObject(m_proxyClientSocket);
-	g_proxyEventHandler.AddPendingEvent(e);
-#endif
 }
 
 void CProxyStateMachine::ReactivateSocket()
@@ -285,7 +243,6 @@ void CProxyStateMachine::ReactivateSocket()
 		// be used after proxy negotiation.
 	} else {
 		// The original socket was a TCP socket
-#ifdef ASIO_SOCKETS
 		if (s->GetProxyState()) {	// somehow this gets called twice ?
 			s->SetProxyState(false);
 			CoreNotify_LibSocketConnect(s, 0);
@@ -295,21 +252,6 @@ void CProxyStateMachine::ReactivateSocket()
 				CoreNotify_LibSocketLost(s);
 			}
 		}
-#else
-		s->RestoreEventHandler();
-		wxSocketEvent e(s->GetEventHandlerId());
-		e.m_event = wxSOCKET_CONNECTION;
-		e.SetEventObject(s);
-		wxEvtHandler *h(s->GetEventHandler());
-		h->AddPendingEvent(e);
-		e.m_event = wxSOCKET_OUTPUT;
-		h->AddPendingEvent(e);
-		if (!m_ok) {
-			e.m_event = wxSOCKET_LOST;
-			h->AddPendingEvent(e);
-		}
-		s->RestoreState();
-#endif
 	}
 }
 
@@ -338,17 +280,12 @@ uint32 CProxyStateMachine::ProxyRead(CLibSocket &socket, void *buffer)
 	m_ok = true;
 	if (m_proxyClientSocket->BlocksRead()) {
 		m_lastError = 0;
-#ifndef ASIO_SOCKETS // m_canReceive is already assigned later
-		m_canReceive = false;
-#endif
 	} else if ((m_lastError = m_proxyClientSocket->LastError()) != 0) {
 		m_ok = false;
 	}
-#ifdef ASIO_SOCKETS
 	// We will get a new event right away if data is left, or when new data gets available.
 	// So block for now.
 	m_canReceive = false;
-#endif
 	AddDebugLogLineN(logProxy, CFormat("ProxyRead %d ok %d canrec %d") % m_lastRead % m_ok % m_canReceive);
 
 	return m_lastRead;
@@ -1191,12 +1128,6 @@ CProxySocket::CProxySocket(
 CLibSocket(flags),
 m_proxyStateMachine(NULL),
 m_udpSocket(udpSocket)
-#ifndef ASIO_SOCKETS
-,m_socketEventHandler(NULL)
-,m_socketEventHandlerId(0)
-,m_savedSocketEventHandler(NULL)
-,m_savedSocketEventHandlerId(0)
-#endif
 {
 	SetProxyData(proxyData);
 	if (m_useProxy) {
@@ -1245,22 +1176,7 @@ void CProxySocket::SetProxyData(const CProxyData *proxyData)
 
 bool CProxySocket::Start(const amuleIPV4Address &peerAddress)
 {
-#ifdef ASIO_SOCKETS
 	SetProxyState(true, &peerAddress);
-#else
-	SaveState();
-	// Important note! SaveState()/RestoreState() DO NOT save/restore
-	// the event handler. The method SaveEventHandler() has been created
-	// for that.
-	SaveEventHandler();
-	SetEventHandler(g_proxyEventHandler, ID_PROXY_SOCKET_EVENT);
-	SetNotify(
-		wxSOCKET_CONNECTION_FLAG |
-		wxSOCKET_INPUT_FLAG |
-		wxSOCKET_OUTPUT_FLAG |
-		wxSOCKET_LOST_FLAG);
-	Notify(true);
-#endif
 	Connect(m_proxyAddress, false);
 	SetFlags(MULE_SOCKET_NONE);
 	return m_proxyStateMachine->Start(peerAddress, this);

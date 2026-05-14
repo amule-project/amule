@@ -374,10 +374,8 @@ int CamuleApp::OnExit()
 	delete uploadBandwidthThrottler;
 	uploadBandwidthThrottler = NULL;
 
-#ifdef ASIO_SOCKETS
 	delete m_AsioService;
 	m_AsioService = NULL;
-#endif
 
 	wxSocketBase::Shutdown();	// needed because we also called Initialize() manually
 
@@ -693,9 +691,7 @@ bool CamuleApp::OnInit()
 	// eMule ref: emule.cpp:748
 	uploadDiskIOThread = new CUploadDiskIOThread();
 
-#ifdef ASIO_SOCKETS
 	m_AsioService = new CAsioService;
-#endif
 
 	// Start performing background tasks
 	// This will start loading the IP filter. It will start right away.
@@ -1606,10 +1602,8 @@ void CamuleApp::ShutDown()
 	m_app_state = APP_STATE_SHUTTINGDOWN;
 
 	// Stop ASIO thread
-#ifdef ASIO_SOCKETS			// only needed to suppress the log message in non-Asio build
 	AddDebugLogLineN(logGeneral, "Terminate ASIO thread.");
 	m_AsioService->Stop();
-#endif
 
 	StopKad();
 
@@ -2109,29 +2103,6 @@ void CamuleApp::ShowUserCount() {
 }
 
 
-#ifndef ASIO_SOCKETS
-void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
-{
-	{ wxCHECK_RET(listensocket, "Connection-event for NULL'd listen-socket"); }
-	{ wxCHECK_RET(event.GetSocketEvent() == wxSOCKET_CONNECTION,
-		"Invalid event received for listen-socket"); }
-
-	if (m_app_state == APP_STATE_RUNNING) {
-		listensocket->OnAccept();
-	} else if (m_app_state == APP_STATE_STARTING) {
-		// When starting up, connection may be made before we are able
-		// to handle them. However, if these are ignored, no further
-		// connection-events will be triggered, so we have to accept it.
-		CLibSocket* socket = listensocket->Accept(false);
-
-		wxCHECK_RET(socket, "NULL returned by Accept() during startup");
-
-		socket->Destroy();
-	}
-}
-#endif
-
-
 void CamuleApp::ShowConnectionState(bool forceUpdate)
 {
 	static uint8 old_state = (1<<7); // This flag doesn't exist
@@ -2210,43 +2181,6 @@ void CamuleApp::ShowConnectionState(bool forceUpdate)
 	ShowUserCount();
 	Notify_ShowConnState(forceUpdate);
 }
-
-
-#ifndef ASIO_SOCKETS
-void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
-{
-	CMuleUDPSocket* socket = reinterpret_cast<CMuleUDPSocket*>(event.GetClientData());
-	wxCHECK_RET(socket, "No socket owner specified.");
-
-	if (IsOnShutDown() || thePrefs::IsUDPDisabled()) return;
-
-	if (!IsRunning()) {
-		if (event.GetSocketEvent() == wxSOCKET_INPUT) {
-			// Back to the queue!
-			theApp->AddPendingEvent(event);
-			return;
-		}
-	}
-
-	switch (event.GetSocketEvent()) {
-		case wxSOCKET_INPUT:
-			socket->OnReceive(0);
-			break;
-
-		case wxSOCKET_OUTPUT:
-			socket->OnSend(0);
-			break;
-
-		case wxSOCKET_LOST:
-			socket->OnDisconnected(0);
-			break;
-
-		default:
-			wxFAIL;
-			break;
-	}
-}
-#endif
 
 
 void CamuleApp::OnUnhandledException()

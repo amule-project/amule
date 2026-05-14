@@ -25,32 +25,21 @@
 #ifndef MULEVERSION_H
 #define MULEVERSION_H
 
-#include "config.h"		// Needed for VERSION and ASIO_SOCKETS
+#include "config.h"		// Needed for VERSION
 
-#ifdef ASIO_SOCKETS
-#	define MULEVERSION_RETVAL_BEGIN		wxString ver(
-#	define MULEVERSION_RETVAL_END		);
-#	define MULEVERSION_BOOST_VERSION	ver += " and Boost " + MuleBoostVersion;
-#	define MULEVERSION_ADD_BEGIN		ver +=
-#	define MULEVERSION_ADD_END		;
-#	define MULEVERSION_RETURN_RESULT	return ver;
+#define MULEVERSION_RETVAL_BEGIN	wxString ver(
+#define MULEVERSION_RETVAL_END		);
+#define MULEVERSION_BOOST_VERSION	ver += " and Boost " + MuleBoostVersion;
+#define MULEVERSION_ADD_BEGIN		ver +=
+#define MULEVERSION_ADD_END		;
+#define MULEVERSION_RETURN_RESULT	return ver;
 
 /**
  * Version of Boost aMule is compiled with.
  *
- * This variable exists only if aMule is compiled with Boost.Asio networking.
  * Defined in LibSocketAsio.cpp.
  */
 extern wxString MuleBoostVersion;
-
-#else
-#	define MULEVERSION_RETVAL_BEGIN		return wxString(
-#	define MULEVERSION_RETVAL_END
-#	define MULEVERSION_BOOST_VERSION
-#	define MULEVERSION_ADD_BEGIN
-#	define MULEVERSION_ADD_END
-#	define MULEVERSION_RETURN_RESULT	);
-#endif
 
 
 /**

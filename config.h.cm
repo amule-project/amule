@@ -4,10 +4,6 @@
    release version instead of "aMule SVN". */
 #cmakedefine AMULE_TAGGED_RELEASE
 
-/* Define to 1 if you have <boost/asio.hpp> and are using Boost.Asio for
-   networking. */
-#cmakedefine ASIO_SOCKETS 1
-
 /* Define to 1 if error_code handling should be handled internally */
 #cmakedefine BOOST_ERROR_CODE_HEADER_ONLY 1
 

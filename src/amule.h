@@ -38,7 +38,7 @@
 	#include <signal.h>
 #endif // __WINDOWS__
 
-#include "config.h"			// Needed for ASIO_SOCKETS
+#include "config.h"			// Needed for ENABLE_UPNP
 
 class CAbstractFile;
 class CKnownFile;
@@ -67,11 +67,7 @@ class CClientUDPSocket;
 class CIPFilter;
 class UploadBandwidthThrottler;
 class CUploadDiskIOThread;
-#ifdef ASIO_SOCKETS
 class CAsioService;
-#else
-class wxSocketEvent;
-#endif
 #ifdef ENABLE_UPNP
 class CUPnPControlPoint;
 class CUPnPPortMapping;
@@ -218,12 +214,6 @@ public:
 	// derived classes may override those
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
-#ifndef ASIO_SOCKETS
-	// Socket handlers
-	void ListenSocketHandler(wxSocketEvent& event);
-	void UDPSocketHandler(wxSocketEvent& event);
-#endif
-
 	virtual int ShowAlert(wxString msg, wxString title, int flags) = 0;
 
 	// Barry - To find out if app is running or shutting/shut down
@@ -303,9 +293,7 @@ public:
 	CIPFilter*		ipfilter;
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
 	CUploadDiskIOThread*      uploadDiskIOThread;		// eMule ref: emule.h:92
-#ifdef ASIO_SOCKETS
 	CAsioService*		m_AsioService;
-#endif
 #ifdef ENABLE_UPNP
 	CUPnPControlPoint*	m_upnp;
 	std::vector<CUPnPPortMapping> m_upnpMappings;

@@ -105,15 +105,13 @@ target_include_directories (NetworkFunctionsTest
 	PRIVATE ${CMAKE_SOURCE_DIR}/src/include
 )
 
-if (ENABLE_BOOST)
-	target_include_directories (NetworkFunctionsTest
-		PRIVATE ${Boost_INCLUDE_DIR}
-	)
+target_include_directories (NetworkFunctionsTest
+	PRIVATE ${Boost_INCLUDE_DIR}
+)
 
-	target_link_libraries (NetworkFunctionsTest
-		${Boost_LIBRARIES}
-	)
-endif()
+target_link_libraries (NetworkFunctionsTest
+	${Boost_LIBRARIES}
+)
 
 target_link_libraries (NetworkFunctionsTest
 	muleunit

@@ -28,57 +28,7 @@
 #include "../../../amuleIPV4Address.h"
 #include "../../../NetworkFunctions.h"
 
-#ifdef ASIO_SOCKETS
 #include <boost/system/error_code.hpp>
-#else
-
-//-------------------- CECSocketHandler --------------------
-
-#define	EC_SOCKET_HANDLER	(wxID_HIGHEST + 644)
-
-class CECMuleSocketHandler: public wxEvtHandler {
- public:
-        CECMuleSocketHandler() {};
-
- private:
-        void SocketHandler(wxSocketEvent& event);
-
-        wxDECLARE_EVENT_TABLE();
-};
-
-wxBEGIN_EVENT_TABLE(CECMuleSocketHandler, wxEvtHandler)
-        EVT_SOCKET(EC_SOCKET_HANDLER, CECMuleSocketHandler::SocketHandler)
-wxEND_EVENT_TABLE()
-
-void CECMuleSocketHandler::SocketHandler(wxSocketEvent& event)
-{
-        CECSocket *socket = dynamic_cast<CECSocket *>(event.GetSocket());
-        wxCHECK_RET(socket, "Socket event with a NULL socket!");
-
-        switch(event.GetSocketEvent()) {
-        case wxSOCKET_LOST:
-            socket->OnLost();
-            break;
-        case wxSOCKET_INPUT:
-            socket->OnInput();
-            break;
-        case wxSOCKET_OUTPUT:
-            socket->OnOutput();
-            break;
-        case wxSOCKET_CONNECTION:
-            socket->OnConnect();
-            break;
-
-        default:
-            // Nothing should arrive here...
-            wxFAIL;
-            break;
-        }
-}
-
-static CECMuleSocketHandler	g_ECSocketHandler;
-
-#endif /* ASIO_SOCKETS */
 
 //
 // CECMuleSocket API - User interface functions
@@ -88,20 +38,7 @@ CECMuleSocket::CECMuleSocket(bool use_events)
 :
 CECSocket(use_events)
 {
-#ifdef ASIO_SOCKETS
 	Notify(use_events);
-#else
-	if ( use_events ) {
-		SetEventHandler(g_ECSocketHandler, EC_SOCKET_HANDLER);
-		SetNotify(wxSOCKET_CONNECTION_FLAG | wxSOCKET_INPUT_FLAG |
-			  wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
-		Notify(true);
-		SetFlags(wxSOCKET_NOWAIT);
-	} else {
-		SetFlags(wxSOCKET_WAITALL | wxSOCKET_BLOCK);
-		Notify(false);
-	}
-#endif
 }
 
 CECMuleSocket::~CECMuleSocket()
@@ -124,7 +61,6 @@ bool CECMuleSocket::InternalConnect(uint32_t ip, uint16_t port, bool wait) {
 int CECMuleSocket::InternalGetLastError()
 {
 	switch (LastError()) {
-#ifdef ASIO_SOCKETS
 		case boost::system::errc::success:
 			return EC_ERROR_NOERROR;
 		case boost::system::errc::address_family_not_supported:
@@ -155,28 +91,6 @@ int CECMuleSocket::InternalGetLastError()
 			return EC_ERROR_WOULDBLOCK;
 		case boost::system::errc::timed_out:
 			return EC_ERROR_TIMEDOUT;
-#else
-		case wxSOCKET_NOERROR:
-			return EC_ERROR_NOERROR;
-		case wxSOCKET_INVOP:
-			return EC_ERROR_INVOP;
-		case wxSOCKET_IOERR:
-			return EC_ERROR_IOERR;
-		case wxSOCKET_INVADDR:
-			return EC_ERROR_INVADDR;
-		case wxSOCKET_INVSOCK:
-			return EC_ERROR_INVSOCK;
-		case wxSOCKET_NOHOST:
-			return EC_ERROR_NOHOST;
-		case wxSOCKET_INVPORT:
-			return EC_ERROR_INVPORT;
-		case wxSOCKET_WOULDBLOCK:
-			return EC_ERROR_WOULDBLOCK;
-		case wxSOCKET_TIMEDOUT:
-			return EC_ERROR_TIMEDOUT;
-		case wxSOCKET_MEMERR:
-			return EC_ERROR_MEMERR;
-#endif
 		default:
 			return EC_ERROR_UNKNOWN;
 	}

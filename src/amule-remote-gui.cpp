@@ -228,11 +228,9 @@ void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 	delete connect_timeout_timer;
 	connect_timeout_timer = NULL;
 
-#ifdef ASIO_SOCKETS
 	m_AsioService->Stop();
 	delete m_AsioService;
 	m_AsioService = NULL;
-#endif
 
 	// Destroy the EC socket
 	m_connect->Destroy();
@@ -300,9 +298,7 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	m_connect = new CRemoteConnect(this);
 
-#ifdef ASIO_SOCKETS
 	m_AsioService = new CAsioService;
-#endif
 
 	glob_prefs = new CPreferencesRem(m_connect);
 	long enableZLIB;
@@ -330,13 +326,11 @@ bool CamuleRemoteGuiApp::OnInit()
 	// call ShutDown() / OnExit() because the main loop isn't entered when
 	// OnInit() returns false, so we have to unwind manually here. Without
 	// this, wx reports "4 threads were not terminated by the application".
-#ifdef ASIO_SOCKETS
 	if (m_AsioService) {
 		m_AsioService->Stop();
 		delete m_AsioService;
 		m_AsioService = NULL;
 	}
-#endif
 	if (m_connect) {
 		m_connect->Destroy();
 		m_connect = NULL;

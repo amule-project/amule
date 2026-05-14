@@ -48,72 +48,7 @@
 #include <common/Format.h>
 #include "IPFilter.h"
 #include "GuiEvents.h"		// Needed for Notify_*
-#ifdef ASIO_SOCKETS
-#	include <boost/system/error_code.hpp>
-#endif
-
-
-#ifndef ASIO_SOCKETS
-
-//------------------------------------------------------------------------------
-// CServerSocketHandler
-//------------------------------------------------------------------------------
-
-class CServerSocketHandler: public wxEvtHandler
-{
-public:
-	CServerSocketHandler() {};
-
-public:
-private:
-	void ServerSocketHandler(wxSocketEvent& event);
-	wxDECLARE_EVENT_TABLE();
-};
-
-
-wxBEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
-	EVT_SOCKET(ID_SERVERSOCKET_EVENT, CServerSocketHandler::ServerSocketHandler)
-wxEND_EVENT_TABLE()
-
-void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
-{
-	CServerSocket *socket = dynamic_cast<CServerSocket *>(event.GetSocket());
-	wxASSERT(socket);
-	if (!socket) {
-		return;
-	}
-
-	if (socket->IsDestroying()) {
-		return;
-	}
-
-	switch(event.GetSocketEvent()) {
-		case wxSOCKET_CONNECTION:
-			socket->OnConnect(wxSOCKET_NOERROR);
-			break;
-		case wxSOCKET_LOST:
-			socket->OnError(socket->LastError());
-			break;
-		case wxSOCKET_INPUT:
-			socket->OnReceive(wxSOCKET_NOERROR);
-			break;
-		case wxSOCKET_OUTPUT:
-			socket->OnSend(wxSOCKET_NOERROR);
-			break;
-		default:
-			wxFAIL;
-			break;
-	}
-
-
-}
-
-//
-// There can be only one. :)
-//
-static CServerSocketHandler g_serverSocketHandler;
-
-#endif /* !ASIO_SOCKETS */
+#include <boost/system/error_code.hpp>
 
 
 //------------------------------------------------------------------------------
@@ -130,15 +65,6 @@ CEMSocket(ProxyData)
 	info.Clear();
 	m_bIsDeleting = false;
 
-#ifndef ASIO_SOCKETS
-	SetEventHandler(g_serverSocketHandler, ID_SERVERSOCKET_EVENT);
-
-	SetNotify(
-		wxSOCKET_CONNECTION_FLAG |
-		wxSOCKET_INPUT_FLAG |
-		wxSOCKET_OUTPUT_FLAG |
-		wxSOCKET_LOST_FLAG);
-#endif
 	Notify(true);
 
 	m_dwLastTransmission = 0;
@@ -148,12 +74,6 @@ CEMSocket(ProxyData)
 
 CServerSocket::~CServerSocket()
 {
-#ifndef ASIO_SOCKETS
-	// remove event handler...
-	SetNotify(0);
-	Notify(FALSE);
-#endif
-
 	if (cur_server) {
 		delete cur_server;
 	}
@@ -164,11 +84,7 @@ CServerSocket::~CServerSocket()
 void CServerSocket::OnConnect(int nErrorCode)
 {
 	switch (nErrorCode) {
-#ifdef ASIO_SOCKETS
 		case boost::system::errc::success:
-#else
-		case wxSOCKET_NOERROR:
-#endif
 			if (cur_server->HasDynIP()) {
 				uint32 server_ip = GetPeerInt();
 				cur_server->SetID(server_ip);
@@ -187,7 +103,6 @@ void CServerSocket::OnConnect(int nErrorCode)
 			SetConnectionState(CS_WAITFORLOGIN);
 			break;
 
-#ifdef ASIO_SOCKETS
 		case boost::system::errc::address_in_use:
 		case boost::system::errc::address_not_available:
 		case boost::system::errc::bad_address:
@@ -195,12 +110,6 @@ void CServerSocket::OnConnect(int nErrorCode)
 		case boost::system::errc::host_unreachable:
 		case boost::system::errc::invalid_argument:
 		case boost::system::errc::timed_out:
-#else
-		case wxSOCKET_INVADDR:
-		case wxSOCKET_NOHOST:
-		case wxSOCKET_INVPORT:
-		case wxSOCKET_TIMEDOUT:
-#endif
 			m_bIsDeleting = true;
 			SetConnectionState(CS_SERVERDEAD);
 			serverconnect->DestroySocket(this);
@@ -741,11 +650,7 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 		if (theApp->ipfilter->IsFiltered(ip, true)) {
 			AddLogLineC(CFormat( _("Server IP %s (%s) is filtered.  Not connecting.") )
 				% Uint32toStringIP(ip) % cur_server->GetAddress() );
-#ifdef ASIO_SOCKETS
 			OnConnect(boost::system::errc::invalid_argument);
-#else
-			OnConnect(wxSOCKET_INVADDR);
-#endif
 		} else {
 			amuleIPV4Address addr;
 			addr.Hostname(ip);
@@ -777,11 +682,7 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 	} else {
 		AddLogLineC(CFormat( _("Could not solve dns for server %s: Unable to connect!") )
 			% cur_server->GetAddress() );
-#ifdef ASIO_SOCKETS
 		OnConnect(boost::system::errc::host_unreachable);
-#else
-		OnConnect(wxSOCKET_NOHOST);
-#endif
 	}
 
 }
