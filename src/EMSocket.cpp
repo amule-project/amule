@@ -214,35 +214,45 @@ void CEMSocket::OnReceive(int nErrorCode)
 		// payload past the header) -- the do-while iteration still has
 		// to fall through to the packet-processing block below to
 		// finalise the packet, so don't let Reserve(0) -> 0 -> early
-		// return short-circuit that path.
+		// return short-circuit that path. Sockets that opt out of the
+		// download throttler via IsDownloadThrottled() (server control
+		// sockets) skip the reservation entirely and read whatever's
+		// available; their traffic doesn't count against the cap.
+		const bool throttled = IsDownloadThrottled();
 		uint32 grantedBytes = 0;
 		ret = 0;
 		if (readMax) {
-			grantedBytes =
-				CDownloadBandwidthThrottler::Get().Reserve(readMax);
-			if (grantedBytes == 0) {
-				// Bucket exhausted; resume on next tick refill.
-				pendingOnReceive = true;
-				return;
+			if (throttled) {
+				grantedBytes =
+					CDownloadBandwidthThrottler::Get().Reserve(readMax);
+				if (grantedBytes == 0) {
+					// Bucket exhausted; resume on next tick refill.
+					pendingOnReceive = true;
+					return;
+				}
+				readMax = grantedBytes;
 			}
-			readMax = grantedBytes;
 
 			std::lock_guard<std::mutex> lock(m_sendLocker);
 			ret = Read(buf, readMax);
 			if (BlocksRead()) {
-				CDownloadBandwidthThrottler::Get().Refund(grantedBytes);
+				if (throttled) {
+					CDownloadBandwidthThrottler::Get().Refund(grantedBytes);
+				}
 				pendingOnReceive = true;
 				return;
 			}
 			if (LastError() || ret == 0) {
-				CDownloadBandwidthThrottler::Get().Refund(grantedBytes);
+				if (throttled) {
+					CDownloadBandwidthThrottler::Get().Refund(grantedBytes);
+				}
 				return;
 			}
 		}
 
 		// Refund the slice we reserved but didn't actually read so the
 		// leftover stays available to other peers in the same tick.
-		if (grantedBytes > ret) {
+		if (throttled && grantedBytes > (uint32)ret) {
 			CDownloadBandwidthThrottler::Get().Refund(grantedBytes - ret);
 		}
 

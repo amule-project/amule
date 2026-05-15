@@ -57,6 +57,11 @@ public:
 	void	OnReceive(int nErrorCode);
 	void	OnError(int nErrorCode);
 	bool	PacketReceived(CPacket* packet);
+
+	// Server control traffic is not subject to the global download
+	// bandwidth budget — search/source/MOTD packets are tiny and
+	// latency-sensitive.
+	bool	IsDownloadThrottled() const override { return false; }
 	void	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
 	bool	IsSolving() const { return m_IsSolving;};
 	void	OnHostnameResolved(uint32 ip);

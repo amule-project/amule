@@ -80,6 +80,13 @@ public:
     bool    HasQueues(bool bOnlyStandardPackets = false) const;
     bool    IsBusyQuickCheck() const { return m_bBusy; }
 
+	// Whether OnReceive should gate reads through the global
+	// download bandwidth budget. Peer file-transfer sockets do;
+	// server-control sockets do not, since their traffic is tiny
+	// and latency-sensitive and would stall silently under a
+	// download cap tight enough to exhaust the throttler bucket.
+	virtual bool	IsDownloadThrottled() const { return true; }
+
 	//protected:
 	// these functions are public on our code because of the amuleDlg::socketHandler
 	virtual void	OnError(int WXUNUSED(nErrorCode)) { };
