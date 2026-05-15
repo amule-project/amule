@@ -600,7 +600,9 @@ class CNumImageMask {
 		void DrawVertLine(int off_x, int off_y);
 		void DrawSegment(int id);
 
-		static const int m_num_to_7_decode[10];
+		// 0-9 are digit glyphs; 10-13 are unit-prefix glyphs K, M, G, T
+		// for axis labels scaled by powers of 1000.
+		static const int m_num_to_7_decode[14];
 	public:
 		CNumImageMask(int number, int width, int height);
 		~CNumImageMask();
@@ -617,8 +619,10 @@ class CDynStatisticImage : public virtual CDynPngImage {
 		int m_left_margin, m_bottom_margin;
 		int m_y_axis_size;
 
-		// hope nobody needs "define" for 10 !
-		CNumImageMask *m_digits[10];
+		// 0-9 are digit glyphs; 10-13 are unit-prefix glyphs K, M, G, T
+		// used by the axis-label renderer when the y-axis maximum exceeds
+		// what 4 digits can hold.
+		CNumImageMask *m_digits[14];
 
 		// indicates whether data should be divided on 1024 before
 		// drawing graph.
