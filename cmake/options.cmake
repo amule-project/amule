@@ -183,10 +183,12 @@ if (NEED_LIB_MULESOCKET)
 	set (wx_NEED_BASE TRUE)
 endif()
 
-# boost::asio is mandatory; the only consumers of wxWidgets sockets are
-# the wxcas helper and (transitively) the wxBase-dependent paths. Keep
-# wx_NEED_NET on only when those are actually being built.
-if (NOT (BUILD_DAEMON OR BUILD_MONOLITHIC OR BUILD_REMOTEGUI OR BUILD_WXCAS))
+# boost::asio is mandatory; the remaining wxWidgets-sockets consumers are
+# the daemon/GUI EC paths, the wxcas helper, and amuleweb (which links
+# wxWidgets::NET directly in src/webserver/src/CMakeLists.txt for its
+# socket code). Keep wx_NEED_NET on only when those are actually being
+# built.
+if (NOT (BUILD_DAEMON OR BUILD_MONOLITHIC OR BUILD_REMOTEGUI OR BUILD_WEBSERVER OR BUILD_WXCAS))
 	set (wx_NEED_NET FALSE)
 endif()
 
