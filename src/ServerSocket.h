@@ -52,17 +52,17 @@ public:
 	uint32  GetLastTransmission() const	{ return m_dwLastTransmission; }
 	wxString info;
 
-	void	OnClose(int nErrorCode);
-	void	OnConnect(int nErrorCode);
-	void	OnReceive(int nErrorCode);
-	void	OnError(int nErrorCode);
-	bool	PacketReceived(CPacket* packet);
+	void	OnClose(int nErrorCode) override;
+	void	OnConnect(int nErrorCode) override;
+	void	OnReceive(int nErrorCode) override;
+	void	OnError(int nErrorCode) override;
+	bool	PacketReceived(CPacket* packet) override;
 
 	// Server control traffic is not subject to the global download
 	// bandwidth budget — search/source/MOTD packets are tiny and
 	// latency-sensitive.
 	bool	IsDownloadThrottled() const override { return false; }
-	void	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
+	void	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0) override;
 	bool	IsSolving() const { return m_IsSolving;};
 	void	OnHostnameResolved(uint32 ip);
 	CServer *GetServerConnected() const { return serverconnect->GetCurrentServer(); }

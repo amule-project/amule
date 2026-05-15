@@ -57,23 +57,23 @@ public:
 	void		Safe_Delete();
 	void		Safe_Delete_Client();
 
-	void		OnConnect(int nErrorCode);
-	void		OnSend(int nErrorCode);
-	void		OnReceive(int nErrorCode);
+	void		OnConnect(int nErrorCode) override;
+	void		OnSend(int nErrorCode) override;
+	void		OnReceive(int nErrorCode) override;
 
-	void		OnClose(int nErrorCode);
-	void		OnError(int nErrorCode);
+	void		OnClose(int nErrorCode) override;
+	void		OnError(int nErrorCode) override;
 
 	uint32		GetRemoteIP() const { return m_remoteip; }
 
 	CUpDownClient* GetClient() { return m_client; }
 
-	virtual void SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
-    virtual SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);
-    virtual SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);
+	void		SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0) override;
+	SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend) override;
+	SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend) override;
 
 protected:
-	virtual bool PacketReceived(CPacket* packet);
+	bool		PacketReceived(CPacket* packet) override;
 
 private:
 	CUpDownClient*	m_client;
