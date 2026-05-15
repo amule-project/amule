@@ -276,10 +276,16 @@ bool CServerSocket::ProcessPacket(const uint8_t* packet, uint32 size, int8 opcod
 				if (size >= 4 + 4 + 4 + 4 + 4 /* All of the above + reported ip + obfuscation port */) {
 					dwServerReportedIP = data.ReadUInt32();
 					if (::IsLowID(dwServerReportedIP)){
-						wxFAIL;
+						AddDebugLogLineN(logServer,
+							CFormat(wxT("OP_IDCHANGE: server-reported IP %u is a LowID-shaped value; ignoring"))
+								% dwServerReportedIP);
 						dwServerReportedIP = 0;
 					}
-					wxASSERT( dwServerReportedIP == new_id || ::IsLowID(new_id) );
+					if (dwServerReportedIP != 0 && !::IsLowID(new_id) && dwServerReportedIP != new_id) {
+						AddDebugLogLineN(logServer,
+							CFormat(wxT("OP_IDCHANGE: server-reported IP %u doesn't match assigned HighID %u; ignoring"))
+								% dwServerReportedIP % new_id);
+					}
 					uint32 dwObfuscationTCPPort = data.ReadUInt32();
 					if (dwObfuscationTCPPort != 0) {
 						if (cur_server != NULL) {
