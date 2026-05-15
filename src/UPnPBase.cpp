@@ -604,7 +604,7 @@ m_SCPD(nullptr)
 		msg.str("");
 		msg << "Uninteresting service detected: '" <<
 			m_serviceType << "'. Ignoring.";
-		AddDebugLogLineC(logUPnP, msg);
+		AddDebugLogLineN(logUPnP, msg);
 	}
 }
 
@@ -1264,7 +1264,7 @@ upnpDiscovery:
 		if (d_event->ErrCode != UPNP_E_SUCCESS) {
 			msg << UpnpGetErrorMessage(d_event->ErrCode) << ".";
 #endif
-			AddDebugLogLineC(logUPnP, msg);
+			AddDebugLogLineN(logUPnP, msg);
 		}
 		// Get the XML tree device description in doc
 #if UPNP_VERSION >= 10800
@@ -1282,7 +1282,7 @@ upnpDiscovery:
 #endif
 				UpnpGetErrorMessage(ret) <<
 				"(" << ret << ").";
-			AddDebugLogLineC(logUPnP, msg);
+			AddDebugLogLineN(logUPnP, msg);
 		} else {
 			msg2 << "Retrieving device description from " <<
 #if UPNP_VERSION >= 10800
@@ -1360,7 +1360,7 @@ upnpDiscovery:
 				UpnpGetErrorMessage(dab_event->ErrCode) <<
 #endif
 				".";
-			AddDebugLogLineC(logUPnP, msg);
+			AddDebugLogLineN(logUPnP, msg);
 		}
 #if UPNP_VERSION >= 10800
 		std::string devType = UpnpDiscovery_get_DeviceType_cstr(dab_event);
@@ -1521,7 +1521,7 @@ upnpEventSubscriptionExpired:
 			} else {
 				msg << "Error: did not find service " <<
 					newSID << " in the service map.";
-				AddDebugLogLineC(logUPnP, msg);
+				AddDebugLogLineN(logUPnP, msg);
 			}
 		}
 		break;
@@ -1758,14 +1758,14 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 	} else {
 		msg << "Error getting SCPD Document from " <<
 			service.GetAbsSCPDURL() << ".";
-		AddDebugLogLineC(logUPnP, msg);
+		AddDebugLogLineN(logUPnP, msg);
 	}
 
 	return;
 
 	// Error processing
 error:
-	AddDebugLogLineC(logUPnP, msg);
+	AddDebugLogLineN(logUPnP, msg);
 }
 
 
