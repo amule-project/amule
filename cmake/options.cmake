@@ -188,7 +188,7 @@ endif()
 # wxWidgets::NET directly in src/webserver/src/CMakeLists.txt for its
 # socket code). Keep wx_NEED_NET on only when those are actually being
 # built.
-if (NOT (BUILD_DAEMON OR BUILD_MONOLITHIC OR BUILD_REMOTEGUI OR BUILD_WEBSERVER OR BUILD_WXCAS))
+if (NOT (BUILD_DAEMON OR BUILD_MONOLITHIC OR BUILD_REMOTEGUI OR BUILD_WEBSERVER OR BUILD_WXCAS OR BUILD_AMULECMD))
 	set (wx_NEED_NET FALSE)
 endif()
 
