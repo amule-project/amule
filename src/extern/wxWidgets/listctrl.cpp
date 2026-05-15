@@ -40,6 +40,8 @@
 #include <wx/renderer.h>
 #include <wx/dcbuffer.h>
 
+#include <unordered_map>
+
 
 // NOTE: If using the wxListBox visual attributes works everywhere then this can
 // be removed, as well as the #else case below.
@@ -746,6 +748,18 @@ public:
     // the array of all line objects for a non virtual list control (for the
     // virtual list control we only ever use m_lines[0])
     wxListLineDataArray  m_lines;
+
+    // O(1) reverse-index from user-data to row index, replacing the original
+    // O(N) linear scan in FindItem(long, wxUIntPtr). Built lazily by
+    // RebuildDataIndex() on the first FindItem after invalidation; flagged
+    // dirty by any mutation that shifts indices (mid-insert, delete, sort) or
+    // touches user-data (SetItem with wxLIST_MASK_DATA). aMule list controls
+    // (SharedFilesCtrl, DownloadListCtrl, ServerListCtrl) call
+    // FindItem(-1, pointer) per-EC-event, so this caches the dominant lookup.
+    mutable std::unordered_map<wxUIntPtr, size_t> m_dataIndex;
+    mutable bool m_dataIndexDirty;
+
+    void RebuildDataIndex() const;
 
     // the list of column objects
     wxListHeaderDataList m_columns;
@@ -2273,6 +2287,7 @@ wxEND_EVENT_TABLE()
 void wxListMainWindow::Init()
 {
     m_dirty = true;
+    m_dataIndexDirty = false;
     m_countVirt = 0;
     m_lineFrom =
     m_lineTo = (size_t)-1;
@@ -3881,6 +3896,12 @@ void wxListMainWindow::SetItem( wxListItem &item )
         wxListLineData *line = GetLine((size_t)id);
         line->SetItem( item.m_col, item );
 
+        // If the user-data field is being updated, the m_dataIndex map (if
+        // populated) is now stale. Mark dirty rather than chase the old/new
+        // pair; the next FindItem() rebuilds in one pass.
+        if ( item.m_mask & wxLIST_MASK_DATA )
+            m_dataIndexDirty = true;
+
         // Set item state if user wants
         if ( item.m_mask & wxLIST_MASK_STATE )
             SetItemState( item.m_itemId, item.m_state, item.m_state );
@@ -4510,6 +4531,9 @@ void wxListMainWindow::DeleteItem( long lindex )
         m_lines.RemoveAt( index );
     }
 
+    // Indices above the removed line have shifted; invalidate the cached map.
+    m_dataIndexDirty = true;
+
     // we need to refresh the (vert) scrollbar as the number of items changed
     m_dirty = true;
 
@@ -4581,6 +4605,9 @@ void wxListMainWindow::DoDeleteAllItems()
     }
 
     m_lines.Clear();
+
+    m_dataIndex.clear();
+    m_dataIndexDirty = false;
 }
 
 void wxListMainWindow::DeleteAllItems()
@@ -4647,21 +4674,56 @@ long wxListMainWindow::FindItem(long start, const wxString& str, bool partial )
 
 long wxListMainWindow::FindItem(long start, wxUIntPtr data)
 {
-    long pos = start;
-    if (pos < 0)
-        pos = 0;
+    // Virtual list controls don't store user-data on m_lines; preserve the
+    // original "not found" outcome for them.
+    if ( IsVirtual() )
+        return wxNOT_FOUND;
 
-    size_t count = GetItemCount();
-    for (size_t i = (size_t)pos; i < count; i++)
+    // Fast path: callers asking for the first match (start <= 0) get an O(1)
+    // hash lookup. aMule's list controls all call FindItem(-1, pointer) here.
+    if ( start <= 0 )
     {
-        wxListLineData *line = GetLine(i);
-        wxListItem item;
-        line->GetItem( 0, item );
-        if (item.m_data == data)
-            return i;
+        if ( m_dataIndexDirty )
+            RebuildDataIndex();
+
+        std::unordered_map<wxUIntPtr, size_t>::const_iterator it =
+            m_dataIndex.find( data );
+        return it != m_dataIndex.end() ? (long)it->second : wxNOT_FOUND;
     }
 
+    // Slow path for start > 0: callers want the first match at or after a
+    // given index. Direct access to m_lines[i].m_items.GetFirst()->m_data
+    // avoids the per-iteration wxListItem construction (and its wxString
+    // allocations) that the original scan paid on every row.
+    size_t count = m_lines.GetCount();
+    for ( size_t i = (size_t)start; i < count; i++ )
+    {
+        wxListItemDataList::compatibility_iterator node =
+            m_lines[i].m_items.GetFirst();
+        if ( node && node->GetData()->m_data == data )
+            return (long)i;
+    }
     return wxNOT_FOUND;
+}
+
+void wxListMainWindow::RebuildDataIndex() const
+{
+    m_dataIndex.clear();
+    if ( IsVirtual() )
+    {
+        m_dataIndexDirty = false;
+        return;
+    }
+    const size_t n = m_lines.GetCount();
+    m_dataIndex.reserve( n );
+    for ( size_t i = 0; i < n; i++ )
+    {
+        wxListItemDataList::compatibility_iterator node =
+            m_lines[i].m_items.GetFirst();
+        if ( node )
+            m_dataIndex[node->GetData()->m_data] = i;
+    }
+    m_dataIndexDirty = false;
 }
 
 long wxListMainWindow::FindItem( const wxPoint& pt )
@@ -4747,6 +4809,19 @@ void wxListMainWindow::InsertItem( wxListItem &item )
     line->SetItem( item.m_col, item );
 
     m_lines.Insert( line, id );
+
+    // Keep the data->index map consistent: appending at the end is the common
+    // case and stays O(1) without rebuild. A middle-insert shifts subsequent
+    // indices and forces a rebuild on the next FindItem().
+    if ( !m_dataIndexDirty && (item.m_mask & wxLIST_MASK_DATA) &&
+         id == m_lines.GetCount() - 1 )
+    {
+        m_dataIndex[item.m_data] = id;
+    }
+    else
+    {
+        m_dataIndexDirty = true;
+    }
 
     m_dirty = true;
 
@@ -4859,6 +4934,7 @@ void wxListMainWindow::SortItems( MuleListCtrlCompare fn, wxIntPtr data )
     list_ctrl_compare_data = data;
     m_lines.Sort( list_ctrl_compare_func_1 );
     m_dirty = true;
+    m_dataIndexDirty = true;
 }
 
 // ----------------------------------------------------------------------------
