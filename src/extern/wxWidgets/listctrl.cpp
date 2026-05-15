@@ -2644,6 +2644,16 @@ void wxListMainWindow::RefreshLines( size_t lineFrom, size_t lineTo )
         size_t visibleFrom, visibleTo;
         GetVisibleLinesRange(&visibleFrom, &visibleTo);
 
+        // Skip the refresh entirely when the requested range is fully
+        // outside the visible range. The clamp below assumes overlap;
+        // without this guard, a request strictly above visibleFrom or
+        // strictly below visibleTo leaves lineFrom > lineTo, and
+        // GetLineY(lineTo) - GetLineY(lineFrom) goes negative -- which
+        // wxRect::height (int) wraps to a near-2^32 value when cairo
+        // later reads it as unsigned.
+        if ( lineFrom > visibleTo || lineTo < visibleFrom )
+            return;
+
         if ( lineFrom < visibleFrom )
             lineFrom = visibleFrom;
         if ( lineTo > visibleTo )
