@@ -171,7 +171,7 @@ void CFriendListCtrl::OnRemoveFriend(wxCommandEvent& WXUNUSED(event))
 		question = _("Are you sure that you wish to delete the selected friends?");
 	}
 
-	if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ) {
+	if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT, this) == wxYES ) {
 		long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 
 		while( index != -1 ) {
