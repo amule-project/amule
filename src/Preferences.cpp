@@ -907,9 +907,20 @@ public:
 
 		int id = skinSelector->FindString(m_value);
 		if ( id == wxNOT_FOUND ) {
-			id = 0;
 			if (m_is_skin) {
+				// Skin files must be local to load; fall back to the
+				// default visually.
+				id = 0;
 				m_value = defaultSelection;
+			} else if (!m_value.IsEmpty()) {
+				// Template names are consumed by amuleweb, which may
+				// be running on a different host than amulegui or
+				// installing templates outside the GUI's scanned
+				// directories. Preserve the configured value in the
+				// dropdown so a Save round-trip doesn't erase it.
+				id = skinSelector->Append(m_value);
+			} else {
+				id = 0;
 			}
 		}
 		skinSelector->SetSelection(id);
