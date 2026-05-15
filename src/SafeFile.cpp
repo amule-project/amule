@@ -369,7 +369,9 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 			// us, by sending ISO8859-1 strings that expand to a
 			// greater than 16b length when converted as UTF-8.
 			if (real_length > 0xFFFF) {
-				wxFAIL_MSG("String is too long to be saved");
+				AddDebugLogLineN(logCFile,
+					CFormat(wxT("WriteStringCore: oversized string (%u bytes) truncated to 0xFFFF"))
+						% real_length);
 
 				real_length = std::min<uint32>(real_length, 0xFFFF);
 				if (eEncode == utf8strOptBOM) {
