@@ -89,6 +89,19 @@ static bool stdStringIsEqualCI(const std::string &s1, const std::string &s2)
 }
 
 
+static bool stdStringStartsWithCI(const std::string &s, const std::string &prefix)
+{
+	if (s.size() < prefix.size()) {
+		return false;
+	}
+	std::string head = s.substr(0, prefix.size());
+	std::string p = prefix;
+	std::transform(head.begin(), head.end(), head.begin(), tolower);
+	std::transform(p.begin(), p.end(), p.begin(), tolower);
+	return head == p;
+}
+
+
 CUPnPPortMapping::CUPnPPortMapping(
 	int port,
 	const std::string &protocol,
@@ -123,6 +136,44 @@ namespace Service {
 	static const std::string WAN_Common_Interface_Config("urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1");
 	static const std::string WAN_IP_Connection("urn:schemas-upnp-org:service:WANIPConnection:1");
 	static const std::string WAN_PPP_Connection("urn:schemas-upnp-org:service:WANPPPConnection:1");
+}
+
+// Decide whether an SSDP NT/ST is something amule actually wants to learn
+// about. The whitelist is the IGW family plus upnp:rootdevice (which is
+// opaque from SSDP alone -- the description.xml has to be fetched to
+// classify it). Anything else (media renderers, mesh APs, smart speakers,
+// ...) gets dropped before amule attempts to download description.xml,
+// which keeps the libupnp ThreadPool queue from filling on busy LANs and
+// stops spurious "Error retrieving device description" log lines for
+// devices we have no use for.
+static bool IsWANRelatedDeviceType(const std::string &type)
+{
+	if (type.empty()) {
+		// Malformed announcement; let the existing parser deal with it
+		// so we don't change behaviour for the pathological case.
+		return true;
+	}
+	if (stdStringIsEqualCI(type, ROOT_DEVICE)) {
+		return true;
+	}
+	// Versioned UPnP URNs: prefix-match so future :2/:3 revisions don't
+	// need code changes.
+	static const std::string prefixes[] = {
+		"urn:schemas-upnp-org:device:InternetGatewayDevice:",
+		"urn:schemas-upnp-org:device:WANDevice:",
+		"urn:schemas-upnp-org:device:WANConnectionDevice:",
+		"urn:schemas-upnp-org:device:LANDevice:",
+		"urn:schemas-upnp-org:service:Layer3Forwarding:",
+		"urn:schemas-upnp-org:service:WANCommonInterfaceConfig:",
+		"urn:schemas-upnp-org:service:WANIPConnection:",
+		"urn:schemas-upnp-org:service:WANPPPConnection:",
+	};
+	for (const std::string &prefix : prefixes) {
+		if (stdStringStartsWithCI(type, prefix)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 static std::string ProcessErrorMessage(
@@ -1168,11 +1219,30 @@ int CUPnPControlPoint::Callback(Upnp_EventType EventType, void *Event, void * /*
 
 	//fprintf(stderr, "Callback: %d, Cookie: %p\n", EventType, Cookie);
 	switch (EventType) {
-	case UPNP_DISCOVERY_ADVERTISEMENT_ALIVE:
+	case UPNP_DISCOVERY_ADVERTISEMENT_ALIVE: {
+		// Drop unsolicited NOTIFY announcements whose NT isn't a device
+		// or service we care about. Without this filter amule fetches
+		// description.xml from every UPnP speaker, media renderer, mesh
+		// AP, etc. on the LAN -- which both burns libupnp's ThreadPool
+		// budget and produces "Error retrieving device description" log
+		// noise for devices whose endpoints amule has no business poking.
+#if UPNP_VERSION >= 10800
+		UpnpDiscovery *d_filter_event = (UpnpDiscovery *)Event;
+		const char *deviceType =
+			UpnpDiscovery_get_DeviceType_cstr(d_filter_event);
+#else
+		struct Upnp_Discovery *d_filter_event =
+			(struct Upnp_Discovery *)Event;
+		const char *deviceType = d_filter_event->DeviceType;
+#endif
+		if (!UPnP::IsWANRelatedDeviceType(deviceType ? deviceType : "")) {
+			break;
+		}
 		//fprintf(stderr, "Callback: UPNP_DISCOVERY_ADVERTISEMENT_ALIVE\n");
 		msg << "error(UPNP_DISCOVERY_ADVERTISEMENT_ALIVE): ";
 		msg2<< "UPNP_DISCOVERY_ADVERTISEMENT_ALIVE: ";
 		goto upnpDiscovery;
+	}
 	case UPNP_DISCOVERY_SEARCH_RESULT: {
 		//fprintf(stderr, "Callback: UPNP_DISCOVERY_SEARCH_RESULT\n");
 		msg << "error(UPNP_DISCOVERY_SEARCH_RESULT): ";
