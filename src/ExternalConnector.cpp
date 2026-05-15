@@ -24,6 +24,7 @@
 
 #include "ExternalConnector.h"
 #include "config.h"		// Needed for VERSION and readline detection
+#include <clocale>		// For setlocale()
 #include <common/Format.h>	// Needed for CFormat
 #include <wx/tokenzr.h>		// For wxStringTokenizer
 
@@ -620,6 +621,15 @@ bool CaMuleExternalConnector::OnInit()
 		wxHandleFatalExceptions(true);
 	#endif
 #endif
+
+	// Pull the libc locale from the environment (LANG / LC_ALL / etc.)
+	// before any wxString -> char* conversion runs via unicode2char().
+	// Otherwise the process stays on the default "C" locale and
+	// wxConvLibc collapses every non-ASCII codepoint to '?' on output.
+	// readline does its own setlocale on first read, so paths that go
+	// through readline appear to work; non-interactive paths (e.g.
+	// amulecmd -c "...") don't and need the explicit init here.
+	setlocale(LC_ALL, "");
 
 	// If we didn't know that OnInit is called only once when creating the
 	// object, it could cause a memory leak. The two pointers below should
