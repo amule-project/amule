@@ -952,7 +952,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	// This will be here till the core close is != app close
 	if (evt.CanVeto() && thePrefs::IsConfirmExitEnabled() ) {
 		if (wxNO == wxMessageBox(wxString(CFormat(_("Do you really want to exit %s?")) % theApp->GetMuleAppName()),
-				wxString(_("Exit confirmation")), wxYES_NO, this)) {
+				wxString(_("Exit confirmation")), wxYES_NO | wxNO_DEFAULT, this)) {
 			evt.Veto();
 			// User canceled the quit. Clear the IsQuitting flag so a
 			// subsequent close-button click respects HideOnClose

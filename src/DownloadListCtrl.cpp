@@ -412,7 +412,7 @@ void CDownloadListCtrl::OnCancelFile(wxCommandEvent& WXUNUSED(event))
 		} else {
 			question = _("Are you sure that you wish to delete the selected files?");
 		}
-		if (wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES) {
+		if (wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT, this) == wxYES) {
 			for (ItemList::iterator it = files.begin(); it != files.end(); ++it) {
 				CPartFile* file = (*it)->GetFile();
 				if (file) {

@@ -224,7 +224,7 @@ void PromptAndInstall(wxWindow* parent)
 		  "and ~/.local/share/icons and can be removed at any time.\n\n"
 		  "Install desktop integration now?"),
 		_("Add aMule to your application menu?"),
-		wxYES_NO | wxICON_QUESTION);
+		wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
 	dlg.SetYesNoLabels(_("Install"), _("Not now"));
 	dlg.ShowCheckBox(_("Don't ask again"));
 
