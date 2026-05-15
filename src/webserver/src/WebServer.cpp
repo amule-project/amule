@@ -1401,9 +1401,9 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 	}
 
 	//
-	// Pre-create masks for digits
+	// Pre-create masks for digits 0-9 and unit prefixes K/M/G/T.
 	//
-	for(int i = 0; i < 10; i++) {
+	for(int i = 0; i < 14; i++) {
 		m_digits[i] = new CNumImageMask(i, m_num_font_w_size, m_num_font_h_size);
 	}
 }
@@ -1412,7 +1412,7 @@ CDynStatisticImage::~CDynStatisticImage()
 {
 	delete [] m_row_bg_ptrs;
 	delete [] m_background;
-	for(int i = 0; i < 10; i++) {
+	for(int i = 0; i < 14; i++) {
 		delete m_digits[i];
 	}
 }
@@ -1464,22 +1464,58 @@ void CDynStatisticImage::DrawImage()
 		y_axis_max /= m_scale_up;
 	}
 
-	// X---
-	if ( y_axis_max > 999 ) {
-		m_digits[y_axis_max / 1000]->Apply(m_row_ptrs, img_delta, img_delta);
+	// Render the y-axis maximum into the four pre-sized digit cells. When
+	// the value fits in 4 digits we render it as-is; above 9999 we collapse
+	// to a 3-digit number plus a K/M/G/T suffix glyph in the fourth cell
+	// so the label remains within the pre-sized margin.
+	int label_value = y_axis_max;
+	int suffix_idx = -1;
+	if (label_value >= 10000) {
+		// Scale by 1000 until the value fits in 3 digits. suffix_idx
+		// maps directly into m_digits[]: 10=K, 11=M, 12=G, 13=T.
+		int scale_steps = 0;
+		while (label_value >= 1000) {
+			label_value /= 1000;
+			scale_steps++;
+		}
+		// Clamp at the largest suffix we have. Anything beyond ~10^15
+		// (i.e. needing more than 'T') is well outside aMule's range.
+		if (scale_steps > 4) {
+			scale_steps = 4;
+			label_value = 999;
+		}
+		suffix_idx = 10 + (scale_steps - 1);
 	}
-	// -X--
-	if ( y_axis_max > 99 ) {
-		m_digits[(y_axis_max % 1000) / 100]->Apply(m_row_ptrs,
-			2*img_delta+m_num_font_w_size, img_delta);
+
+	// Cell origins, left to right: (n+1)*img_delta + n*m_num_font_w_size.
+	const int cell0_x =   img_delta;
+	const int cell1_x = 2*img_delta +   m_num_font_w_size;
+	const int cell2_x = 3*img_delta + 2*m_num_font_w_size;
+	const int cell3_x = 4*img_delta + 3*m_num_font_w_size;
+
+	if (suffix_idx >= 0) {
+		// 3 digits + suffix. label_value is in [1, 999] after scaling.
+		if (label_value > 99) {
+			m_digits[(label_value / 100) % 10]->Apply(m_row_ptrs, cell0_x, img_delta);
+		}
+		if (label_value > 9) {
+			m_digits[(label_value % 100) / 10]->Apply(m_row_ptrs, cell1_x, img_delta);
+		}
+		m_digits[label_value % 10]->Apply(m_row_ptrs, cell2_x, img_delta);
+		m_digits[suffix_idx]->Apply(m_row_ptrs, cell3_x, img_delta);
+	} else {
+		// Four digits, no suffix. label_value < 10000 here.
+		if (label_value > 999) {
+			m_digits[(label_value / 1000) % 10]->Apply(m_row_ptrs, cell0_x, img_delta);
+		}
+		if (label_value > 99) {
+			m_digits[(label_value % 1000) / 100]->Apply(m_row_ptrs, cell1_x, img_delta);
+		}
+		if (label_value > 9) {
+			m_digits[(label_value % 100) / 10]->Apply(m_row_ptrs, cell2_x, img_delta);
+		}
+		m_digits[label_value % 10]->Apply(m_row_ptrs, cell3_x, img_delta);
 	}
-	// --X-
-	if ( y_axis_max > 9 ) {
-		m_digits[(y_axis_max % 100) / 10]->Apply(m_row_ptrs,
-			3*img_delta+2*m_num_font_w_size, img_delta);
-	}
-	// ---X
-	m_digits[y_axis_max % 10]->Apply(m_row_ptrs, 4*img_delta+3*m_num_font_w_size, img_delta);
 
 	int prev_data = m_data->GetFirst();
 	if ( m_scale_down != 1 ) {
@@ -1540,8 +1576,13 @@ wxString CDynStatisticImage::GetHTML()
 //
 // Imprint numbers on generated png's
 //
-//                                                 0     1     2     3     4     5     6     7     8     9
-const int CNumImageMask::m_num_to_7_decode[] = {0x77, 0x24, 0x5d, 0x6d, 0x2e, 0x5d, 0x7a, 0x25, 0x7f, 0x2f};
+// 7-segment encodings. Segment numbering matches the comment block in front
+// of DrawSegment below: 0=top, 1=top-left, 2=top-right, 3=middle, 4=bottom-left,
+// 5=bottom-right, 6=bottom. Indices 0-9 are digits. Indices 10-13 are the
+// unit-prefix glyphs K, M, G, T used when the y-axis maximum exceeds 9999;
+// K and M are stylised approximations (7-segment has no clean K/M).
+//                                                 0     1     2     3     4     5     6     7     8     9     K     M     G     T
+const int CNumImageMask::m_num_to_7_decode[] = {0x77, 0x24, 0x5d, 0x6d, 0x2e, 0x6b, 0x7a, 0x25, 0x7f, 0x2f, 0x3a, 0x37, 0x7b, 0x5a};
 
 CNumImageMask::CNumImageMask(int number, int width, int height)
 {
