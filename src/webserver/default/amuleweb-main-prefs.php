@@ -125,34 +125,40 @@ var initvals = new Object;
 			"max_line_down_cap","max_down_limit", "slot_alloc", 
 			"tcp_port","udp_port","udp_dis","max_file_src","max_conn_total","autoconn_en","reconn_en");
 		$webserver_opts = array("use_gzip", "autorefresh_time");
-		
+
 		$all_opts;
 		foreach ($conn_opts as $i) {
 			$curr_value = $HTTP_GET_VARS[$i];
 			if ( $curr_value == "on") $curr_value = 1;
 			if ( $curr_value == "") $curr_value = 0;
-			
+
 			$all_opts["connection"][$i] = $curr_value;
 		}
 		foreach ($file_opts as $i) {
 			$curr_value = $HTTP_GET_VARS[$i];
 			if ( $curr_value == "on") $curr_value = 1;
 			if ( $curr_value == "") $curr_value = 0;
-			
+
 			$all_opts["files"][$i] = $curr_value;
 		}
 		foreach ($webserver_opts as $i) {
 			$curr_value = $HTTP_GET_VARS[$i];
 			if ( $curr_value == "on") $curr_value = 1;
 			if ( $curr_value == "") $curr_value = 0;
-			
+
 			$all_opts["webserver"][$i] = $curr_value;
+		}
+		// general: nickname is a single top-level string, not nested.
+		$nick_value = $HTTP_GET_VARS["nick"];
+		if ( $nick_value != "" ) {
+			$all_opts["nick"] = $nick_value;
 		}
 		//var_dump($all_opts);
 		amule_set_options($all_opts);
 	}
 	$opts = amule_get_options();
 	//var_dump($opts);
+	echo 'initvals["nick"] = "', $opts["nick"], '";';
 	$opt_groups = array("connection", "files", "webserver");
 	//var_dump($opt_groups);
 	foreach ($opt_groups as $group) {
@@ -170,6 +176,7 @@ function init_data()
 	var frm = document.forms.mainform
 
 	var str_param_names = new Array(
+		"nick",
 		"max_line_down_cap", "max_line_up_cap",
 		"max_up_limit", "max_down_limit", "max_file_src",
 		"slot_alloc", "max_conn_total",
@@ -228,10 +235,23 @@ function init_data()
       <td bgcolor="#FFFFFF"><form name="mainform" action="amuleweb-main-prefs.php" method="post">
               <table border="0" align="center" cellpadding="0" cellspacing="6">
                
-    <tr align="center" valign="top"> 
-      <td> 
+    <tr align="center" valign="top">
+      <td>
         <table width="350" border="0" align="center" cellpadding="0" cellspacing="0" >
-          <tr> 
+          <tr>
+            <td width="22">&nbsp;</td>
+            <th>General</th>
+            <td width="63">&nbsp;</td>
+          </tr>
+          <tr>
+            <td width="22" height="25">&nbsp;</td>
+            <td height="25">Nickname</td>
+            <td width="63" height="25">
+<input name="nick" type="text" id="nick0" size="20"></td>
+          </tr>
+        </table>
+        <table width="350" border="0" align="center" cellpadding="0" cellspacing="0" >
+          <tr>
             <td width="22">&nbsp;</td>
             <th>Webserver</th>
             <td width="63">&nbsp;</td>

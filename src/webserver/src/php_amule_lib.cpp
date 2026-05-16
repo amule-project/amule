@@ -473,6 +473,17 @@ void php_set_amule_options(PHP_VALUE_NODE *)
 	CECPacket req(EC_OP_SET_PREFERENCES);
 	PHP_VAR_NODE *opt_group_array = 0;
 
+	// general: nickname. amule_get_options exposes it at the top level
+	// as "nick" (not nested under a "general" group), so the setter
+	// mirrors that shape.
+	PHP_VAR_NODE *nick_node = array_get_by_str_key(&si->var->value, "nick");
+	if ( nick_node && nick_node->value.type == PHP_VAL_STRING && nick_node->value.str_val ) {
+		CECEmptyTag generalPrefs(EC_TAG_PREFS_GENERAL);
+		generalPrefs.AddTag(CECTag(EC_TAG_USER_NICK,
+			wxString::FromUTF8(nick_node->value.str_val)));
+		req.AddTag(generalPrefs);
+	}
+
 	// files
 	opt_group_array = array_get_by_str_key(&si->var->value, "files");
 	if ( opt_group_array->value.type == PHP_VAL_ARRAY ) {
