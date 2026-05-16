@@ -3034,8 +3034,13 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, uint8_t* data, uint64 start, ui
 	// log transferinformation in our "blackbox"
 	m_CorruptionBlackBox->TransferredData(start, end, client->GetIP());
 
-	// Stamp for FlushBuffer's Phase 3 quiescent guard.
+	// Stamp for FlushBuffer's Phase 3 quiescent guard, and for the
+	// download-list "Last Reception" column. The latter must stamp on
+	// real data arrival, not on every periodic FlushBuffer call, or
+	// idle/paused/stalled files will all read "now" and the column
+	// stops being useful for spotting hopeless downloads.
 	m_nLastBlockReceivedTick = GetTickCount();
+	m_lastDateChanged = wxDateTime::GetTimeNow();
 
 	// Create a new buffered queue entry
 	PartFileBufferedData *item = new PartFileBufferedData(m_hpartfile, data, start, end, block);
@@ -3192,9 +3197,6 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		}
 	}
 
-
-	// Update last-changed date
-	m_lastDateChanged = wxDateTime::GetTimeNow();
 
 	try {
 		// Partfile should never be too large. IsOpened() guard: StopPausedFile() Release()s
