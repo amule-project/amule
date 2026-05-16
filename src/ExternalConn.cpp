@@ -963,8 +963,14 @@ static CECPacket *Get_EC_Response_Friend(const CECPacket *request)
 			CFriend * Friend = theApp->friendlist->FindFriend(subtag->GetInt());
 			if (Friend) {
 				theApp->friendlist->RemoveFriend(Friend);
-				response = new CECPacket(EC_OP_NOOP);
 			}
+			// Idempotent: the desired end state of REMOVE is "friend
+			// not in the list", which is already true if FindFriend
+			// returned null (transient sync skew between amulegui's
+			// local view and the daemon's m_FriendList). Returning
+			// EC_OP_FAILED here forces the GUI into a resend / hang
+			// loop on the stale ECID.
+			response = new CECPacket(EC_OP_NOOP);
 		}
 	} else if ((tag = request->GetTagByName(EC_TAG_FRIEND_FRIENDSLOT))) {
 		const CECTag *subtag = tag->GetTagByName(EC_TAG_FRIEND);
