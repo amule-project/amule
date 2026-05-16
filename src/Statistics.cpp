@@ -596,6 +596,94 @@ unsigned CStatistics::GetHistoryForWeb(  // Assemble arrays of sample points for
 }
 
 
+unsigned CStatistics::GetHistoryForGui(
+	unsigned cntPoints,
+	double sStep,
+	double *sStart,
+	uint32 **graphData,
+	uint32 **connData,
+	uint64 &sessionDlKBytes,
+	uint64 &sessionUlKBytes,
+	uint64 &sessionKadTotal,
+	double &sessionTimespanSec)
+{
+	*graphData = NULL;
+	*connData = NULL;
+	sessionDlKBytes = 0;
+	sessionUlKBytes = 0;
+	sessionKadTotal = 0;
+	sessionTimespanSec = 0.0;
+
+	if (*sStart < 0.0) {
+		*sStart = 0.0;
+	}
+	if (sStep == 0.0 || cntPoints == 0) {
+		return 0;
+	}
+	unsigned	cntFilled = 0;
+	listRPOS	pos = listHR.rbegin();
+	double		LastTimeStamp = pos->sTimestamp;
+	double		sTarget = LastTimeStamp;
+
+	HR	**pphr = new HR *[cntPoints];
+
+	while (pos != listHR.rend()) {
+		if (pos->sTimestamp > sTarget) {
+			++pos;
+			continue;
+		}
+		pphr[cntFilled] = &(*pos);
+		if (++cntFilled == cntPoints)
+			break;
+		if (pos->sTimestamp <= *sStart)
+			break;
+		if ((sTarget -= sStep) <= 0.0) {
+			pphr[cntFilled++] = NULL;
+			break;
+		}
+	}
+
+	if (cntFilled) {
+		*graphData = new uint32 [4 * cntFilled];
+		*connData  = new uint32 [2 * cntFilled];
+		for (unsigned int i = 0; i < cntFilled; i++) {
+			HR *phr = pphr[cntFilled - i - 1];
+			if (phr) {
+				(*graphData)[4 * i    ] = ENDIAN_HTONL((uint32)(phr->kBpsDownCur * 1024.0));
+				(*graphData)[4 * i + 1] = ENDIAN_HTONL((uint32)(phr->kBpsUpCur * 1024.0));
+				(*graphData)[4 * i + 2] = ENDIAN_HTONL((uint32)phr->cntConnections);
+				(*graphData)[4 * i + 3] = ENDIAN_HTONL((uint32)phr->kadNodesCur);
+				(*connData)[2 * i    ]  = ENDIAN_HTONL((uint32)phr->cntUploads);
+				(*connData)[2 * i + 1]  = ENDIAN_HTONL((uint32)phr->cntDownloads);
+			} else {
+				(*graphData)[4 * i] = (*graphData)[4 * i + 1] = 0;
+				(*graphData)[4 * i + 2] = (*graphData)[4 * i + 3] = 0;
+				(*connData)[2 * i]  = (*connData)[2 * i + 1] = 0;
+			}
+		}
+		// Session totals are pulled from the latest sampled point so the
+		// graph's session-average line matches the daemon-side
+		// kBytesReceived / sTimestamp value monolithic amule plots —
+		// instead of forcing amulegui to integrate locally from connect
+		// time (which would diverge whenever the GUI attaches to a
+		// long-running daemon).
+		HR *latest = pphr[cntFilled - 1];
+		if (latest) {
+			sessionDlKBytes    = (uint64)latest->kBytesReceived;
+			sessionUlKBytes    = (uint64)latest->kBytesSent;
+			sessionKadTotal    = latest->kadNodesTotal;
+			sessionTimespanSec = latest->sTimestamp;
+		}
+	}
+
+	delete [] pphr;
+
+	*sStart = LastTimeStamp;
+
+	return cntFilled;
+}
+
+
 void CStatistics::ComputeAverages(
 	HR		**pphr,		// pointer to (end of) array of assembled history records
 	listRPOS	pos,		// position in history list from which to backtrack

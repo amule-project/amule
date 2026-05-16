@@ -393,6 +393,18 @@ enum ECTagNames {
 			EC_TAG_STAT_NODE_VALUE                    = 0x1B07,
 			EC_TAG_STAT_VALUE_TYPE                    = 0x1B08,
 			EC_TAG_STATTREE_NODEID                    = 0x1B09,
+			// Active uploads / active downloads per point — parallel
+			// to STATSGRAPH_DATA's connection total, lets amulegui
+			// draw monolithic amule's 3-line connection scope.
+			EC_TAG_STATSGRAPH_DATA_CONN               = 0x1B0A,
+			// Session totals as of the latest point in the reply.
+			// Lets amulegui compute the daemon's
+			// kBytesReceived/sTimestamp session average instead of
+			// integrating locally from GUI startup.
+			EC_TAG_STATSGRAPH_SESSION_DL              = 0x1B0B,
+			EC_TAG_STATSGRAPH_SESSION_UL              = 0x1B0C,
+			EC_TAG_STATSGRAPH_SESSION_KAD             = 0x1B0D,
+			EC_TAG_STATSGRAPH_SESSION_TIMESPAN        = 0x1B0E,
 		EC_TAG_PREFS_SECURITY                     = 0x1C00,
 			EC_TAG_SECURITY_CAN_SEE_SHARES            = 0x1C01,
 			EC_TAG_IPFILTER_CLIENTS                   = 0x1C02,
@@ -833,6 +845,11 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x1B07: return "EC_TAG_STAT_NODE_VALUE";
 		case 0x1B08: return "EC_TAG_STAT_VALUE_TYPE";
 		case 0x1B09: return "EC_TAG_STATTREE_NODEID";
+		case 0x1B0A: return "EC_TAG_STATSGRAPH_DATA_CONN";
+		case 0x1B0B: return "EC_TAG_STATSGRAPH_SESSION_DL";
+		case 0x1B0C: return "EC_TAG_STATSGRAPH_SESSION_UL";
+		case 0x1B0D: return "EC_TAG_STATSGRAPH_SESSION_KAD";
+		case 0x1B0E: return "EC_TAG_STATSGRAPH_SESSION_TIMESPAN";
 		case 0x1C00: return "EC_TAG_PREFS_SECURITY";
 		case 0x1C01: return "EC_TAG_SECURITY_CAN_SEE_SHARES";
 		case 0x1C02: return "EC_TAG_IPFILTER_CLIENTS";

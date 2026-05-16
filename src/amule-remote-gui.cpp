@@ -70,6 +70,8 @@
 #include "ServerListCtrl.h"		// Needed for CServerListCtrl
 #include "ScopedPtr.h"
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
+#include "KadDlg.h"		// Needed for CKadDlg::UpdateGraph
+#include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL
 
 
 CEConnectDlg::CEConnectDlg()
@@ -191,6 +193,11 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 				msPrevStats = msCur;
 				stattree->DoRequery();
 			}
+			// Pull graph history every poll cycle while the dialog is
+			// visible. The handler asks only for points newer than the
+			// last timestamp the daemon reported, so the EC pipe carries
+			// just the delta even on a 1 Hz timer.
+			statgraphs->DoRequery();
 		}
 		// Back to the roots
 		request_step = 0;
@@ -450,6 +457,7 @@ void CamuleRemoteGuiApp::Startup() {
 	serverconnect = new CServerConnectRem(m_connect);
 	m_statistics = new CStatistics(*m_connect);
 	stattree = new CStatTreeRem(m_connect);
+	statgraphs = new CStatGraphRem(m_connect);
 
 	clientlist = new CUpDownClientListRem(m_connect);
 	searchlist = new CSearchListRem(m_connect);
@@ -2363,6 +2371,142 @@ void CStatTreeRem::HandlePacket(const CECPacket * p)
 	if (treeRoot) {
 		theApp->amuledlg->m_statisticswnd->RebuildStatTreeRemote(treeRoot);
 		theApp->amuledlg->m_statisticswnd->ShowStatistics();
+	}
+}
+
+
+void CStatGraphRem::DoRequery()
+{
+	CECPacket request(EC_OP_GET_STATSGRAPHS, EC_DETAIL_FULL);
+	// Send back the most recent timestamp we've seen; daemon-side
+	// CStatistics::GetHistoryForWeb uses it as the lower bound so the
+	// response only carries points the GUI hasn't drawn yet.
+	request.AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, m_lastTimestamp));
+	// 1 s between points — matches monolithic amule's
+	// CamuleDlg::OnCoreTimer graph cadence, and lines up with the
+	// 1 s history-record granularity the daemon itself stores.
+	request.AddTag(CECTag(EC_TAG_STATSGRAPH_SCALE, (uint16)1));
+	// Generous upper bound: 32 points = ~32 s of backlog per poll,
+	// so a brief stall / reconnect catches up in one round-trip
+	// instead of needing dozens.
+	request.AddTag(CECTag(EC_TAG_STATSGRAPH_WIDTH, (uint16)32));
+	m_conn->SendRequest(this, &request);
+}
+
+void CStatGraphRem::HandlePacket(const CECPacket * p)
+{
+	// EC_OP_FAILED with "No points for graph." -> daemon has nothing
+	// newer than m_lastTimestamp; nothing to do this cycle.
+	if (p->GetOpCode() != EC_OP_STATSGRAPHS) {
+		return;
+	}
+	const CECTag *dataTag = p->GetTagByName(EC_TAG_STATSGRAPH_DATA);
+	const CECTag *tsTag = p->GetTagByName(EC_TAG_STATSGRAPH_LAST);
+	if (!dataTag || !tsTag) {
+		return;
+	}
+	m_lastTimestamp = tsTag->GetDoubleData();
+
+	// EC_TAG_STATSGRAPH_DATA carries N x (dl_Bps, ul_Bps, conn, kadCur)
+	// uint32 4-tuples in network byte order. Points are sStep seconds
+	// apart (we request 1 s in DoRequery, matching monolithic amule's
+	// CamuleDlg::OnCoreTimer graph cadence).
+	const uint8_t *raw = (const uint8_t *)dataTag->GetTagData();
+	size_t dataLen = dataTag->GetTagDataLen();
+	size_t numPoints = dataLen / (4 * sizeof(uint32));
+
+	// EC_TAG_STATSGRAPH_DATA_CONN (new tag, optional) carries the matching
+	// N x (cntUploads, cntDownloads) uint32 pairs so the Connections scope
+	// can show monolithic amule's 3-line breakdown. Absent when talking to
+	// a pre-extension daemon — fall back to flat 0 lines for those slots.
+	const CECTag *connTag = p->GetTagByName(EC_TAG_STATSGRAPH_DATA_CONN);
+	const uint8_t *connRaw = NULL;
+	size_t connPoints = 0;
+	if (connTag) {
+		connRaw = (const uint8_t *)connTag->GetTagData();
+		connPoints = connTag->GetTagDataLen() / (2 * sizeof(uint32));
+	}
+
+	// Session totals — let amulegui compute the same
+	// kBytesReceived / sTimestamp session average monolithic plots.
+	// Absent on old daemons; fall back to 0 (Session line stays flat).
+	const CECTag *sesDlTag  = p->GetTagByName(EC_TAG_STATSGRAPH_SESSION_DL);
+	const CECTag *sesUlTag  = p->GetTagByName(EC_TAG_STATSGRAPH_SESSION_UL);
+	const CECTag *sesKadTag = p->GetTagByName(EC_TAG_STATSGRAPH_SESSION_KAD);
+	const CECTag *sesTsTag  = p->GetTagByName(EC_TAG_STATSGRAPH_SESSION_TIMESPAN);
+	const double sessionTs   = sesTsTag  ? sesTsTag->GetDoubleData()    : 0.0;
+	const uint64 sessionDlB  = sesDlTag  ? sesDlTag->GetInt()           : 0;
+	const uint64 sessionUlB  = sesUlTag  ? sesUlTag->GetInt()           : 0;
+	const uint64 sessionKadN = sesKadTag ? sesKadTag->GetInt()          : 0;
+	const float sessionDl  = sessionTs > 0.0 ? (float)(sessionDlB  / sessionTs) : 0.0f;
+	const float sessionUl  = sessionTs > 0.0 ? (float)(sessionUlB  / sessionTs) : 0.0f;
+	const float sessionKad = sessionTs > 0.0 ? (float)(sessionKadN / sessionTs) : 0.0f;
+
+	// Running-average window: mirror CPreciseRateCounter's
+	// count_average=true behaviour with a deque of per-second samples
+	// sized to GetStatsAverageMinutes() minutes (the same preference
+	// monolithic amule's CStatistics::OnStatsChange uses). The
+	// daemon-side counter's per-tick state isn't on the wire, so this
+	// is recomputed locally from the per-point rates we already unpack.
+	const size_t winCap = (size_t)thePrefs::GetStatsAverageMinutes() * 60;
+	const size_t cap = winCap ? winCap : 1;
+
+	for (size_t i = 0; i < numPoints; i++) {
+		uint32 dl, ul, conn, kad;
+		memcpy(&dl,   raw + i * 16 + 0,  4);
+		memcpy(&ul,   raw + i * 16 + 4,  4);
+		memcpy(&conn, raw + i * 16 + 8,  4);
+		memcpy(&kad,  raw + i * 16 + 12, 4);
+		dl   = ENDIAN_NTOHL(dl);
+		ul   = ENDIAN_NTOHL(ul);
+		conn = ENDIAN_NTOHL(conn);
+		kad  = ENDIAN_NTOHL(kad);
+
+		uint32 cntUp = 0, cntDown = 0;
+		if (connRaw && i < connPoints) {
+			memcpy(&cntUp,   connRaw + i * 8 + 0, 4);
+			memcpy(&cntDown, connRaw + i * 8 + 4, 4);
+			cntUp   = ENDIAN_NTOHL(cntUp);
+			cntDown = ENDIAN_NTOHL(cntDown);
+		}
+
+		const float dl_kbps  = dl / 1024.0f;
+		const float ul_kbps  = ul / 1024.0f;
+		const float kad_cnt  = (float)kad;
+
+		m_winDl.push_back(dl_kbps);
+		m_winUp.push_back(ul_kbps);
+		m_winKad.push_back(kad_cnt);
+		while (m_winDl.size()  > cap) m_winDl.pop_front();
+		while (m_winUp.size()  > cap) m_winUp.pop_front();
+		while (m_winKad.size() > cap) m_winKad.pop_front();
+
+		double sumDl = 0.0, sumUp = 0.0, sumKad = 0.0;
+		for (float v : m_winDl)  sumDl  += v;
+		for (float v : m_winUp)  sumUp  += v;
+		for (float v : m_winKad) sumKad += v;
+		const float runDl  = m_winDl.empty()  ? 0.0f : (float)(sumDl  / m_winDl.size());
+		const float runUp  = m_winUp.empty()  ? 0.0f : (float)(sumUp  / m_winUp.size());
+		const float runKad = m_winKad.empty() ? 0.0f : (float)(sumKad / m_winKad.size());
+
+		GraphUpdateInfo update;
+		update.timestamp = m_lastTimestamp;
+		// Slot layout matches CStatistics::GetPointsForUpdate:
+		//   downloads/uploads/kadnodes — [0] session avg, [1] running avg, [2] current.
+		//   connections — [0] cntUploads, [1] cntConnections, [2] cntDownloads.
+		update.downloads[0] = sessionDl;  update.downloads[1] = runDl;  update.downloads[2] = dl_kbps;
+		update.uploads[0]   = sessionUl;  update.uploads[1]   = runUp;  update.uploads[2]   = ul_kbps;
+		update.kadnodes[0]  = sessionKad; update.kadnodes[1]  = runKad; update.kadnodes[2]  = kad_cnt;
+		update.connections[0] = (float)cntUp;
+		update.connections[1] = (float)conn;
+		update.connections[2] = (float)cntDown;
+
+		if (conn > m_peakConnections) {
+			m_peakConnections = conn;
+		}
+		theApp->amuledlg->m_statisticswnd->UpdateStatGraphs(
+			m_peakConnections, update);
+		theApp->amuledlg->m_kademliawnd->UpdateGraph(update);
 	}
 }
 
