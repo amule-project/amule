@@ -1556,10 +1556,15 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
     wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxHORIZONTAL );
 
     CMuleTextCtrl *item3 = new CMuleTextCtrl( parent, IDC_INCFILES, "", wxDefaultPosition, wxSize(80,-1), 0 );
+    item3->SetToolTip(_("Completed downloads are stored here. All files in this folder are automatically shared with other peers.\nIf this folder also holds files you don't want to share, point it at an aMule-only sub-folder."));
     item1->Add( item3, wxSizerFlags(1).Expand().CenterHorizontal() );
     wxButton *item4 = new wxButton( parent, IDC_SELINCDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->SetToolTip(_("Pick the folder where completed downloads will be stored. All files in that folder will be shared with other peers."));
     item1->Add( item4, wxSizerFlags().Expand().CenterHorizontal() );
     item0->Add( item1, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 0) );
+
+    wxStaticText *item3_hint = new wxStaticText( parent, -1, _("(All files in this folder are shared with other peers)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+    item0->Add( item3_hint, 0, wxALIGN_CENTER, 0 );
     wxStaticBox *item6 = new wxStaticBox( parent, -1, _("Folder for temporary download files") );
     wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxHORIZONTAL );
 
