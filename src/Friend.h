@@ -35,6 +35,7 @@ class CFile;
 class CFileDataIO;
 
 #define	FF_NAME		0x01
+#define	FF_FRIENDSLOT	0x02
 
 class CFriend  : public CECID
 {
@@ -58,6 +59,7 @@ public:
 	void	UnLinkClient(bool notify = true);
 
 	bool	HasFriendSlot();
+	void	SetPersistentFriendSlot(bool v)	{ m_HasFriendSlot = v; }
 
 	const wxString& GetName() const	{ return m_strName; }
 	uint16 GetPort() const			{ return m_nLastUsedPort; }
@@ -75,6 +77,11 @@ private:
 	uint32		m_dwLastUsedIP;
 	uint16		m_nLastUsedPort;
 	wxString	m_strName;
+
+	// Persistent friend-slot flag. The live CUpDownClient's m_bFriendSlot
+	// is a per-session reflection of this; this is the source of truth
+	// across disconnects and daemon restarts.
+	bool		m_HasFriendSlot;
 
 	// write-only info, never used (kept in order not to break the save file)
 	uint32		m_dwLastSeen;

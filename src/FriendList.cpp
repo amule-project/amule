@@ -226,11 +226,28 @@ void CFriendList::RequestSharedFileList(CFriend* cur_friend)
 
 void CFriendList::SetFriendSlot(CFriend* Friend, bool new_state)
 {
-	if (Friend && Friend->GetLinkedClient().IsLinked()) {
+	if (!Friend) {
+		return;
+	}
+	// Persist the flag on the friend record so it survives the friend
+	// going offline (the live CUpDownClient::m_bFriendSlot is per-session
+	// state that dies with the client object on disconnect).
+	Friend->SetPersistentFriendSlot(new_state);
+	if (new_state) {
+		// Only one friend can hold the slot at a time. Clear any other
+		// friend's persistent flag too so the on-disk state matches.
+		for (FriendList::iterator it = m_FriendList.begin(); it != m_FriendList.end(); ++it) {
+			if (*it != Friend) {
+				(*it)->SetPersistentFriendSlot(false);
+			}
+		}
 		RemoveAllFriendSlots();
+	}
+	if (Friend->GetLinkedClient().IsLinked()) {
 		Friend->GetLinkedClient().SetFriendSlot(new_state);
 		CoreNotify_Upload_Resort_Queue();
 	}
+	SaveList();
 }
 
 
