@@ -35,6 +35,7 @@ void CFriend::Init()
 	m_dwLastUsedIP = 0;
 	m_nLastUsedPort = 0;
 	m_dwLastChatted = 0;
+	m_HasFriendSlot = false;
 }
 
 
@@ -45,6 +46,7 @@ CFriend::CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLa
 	m_nLastUsedPort = tm_nLastUsedPort;
 	m_dwLastChatted = tm_dwLastChatted;
 	m_UserHash = userhash;
+	m_HasFriendSlot = false;
 
 	if (tm_strName.IsEmpty()) {
 		m_strName = "?";
@@ -56,6 +58,7 @@ CFriend::CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLa
 
 CFriend::CFriend(CClientRef client)
 {
+	m_HasFriendSlot = false;
 	LinkClient(client);
 
 	m_dwLastChatted = 0;
@@ -68,15 +71,15 @@ void CFriend::LinkClient(CClientRef client)
 
 	// Link the friend to that client
 	if (m_LinkedClient != client) {		// do nothing if already linked to this client
-		bool hadFriendslot = false;
 		if (m_LinkedClient.IsLinked()) { // What, is already linked?
-			hadFriendslot = m_LinkedClient.GetFriendSlot();
 			UnLinkClient(false);
 		}
 		m_LinkedClient = client;
 		m_LinkedClient.SetFriend(this);
-		if (hadFriendslot) {
-			// move an assigned friend slot between different client instances which are/were also friends
+		// Apply the persistent friend-slot flag to the live client. This
+		// is the path that restores the slot when a friend reconnects
+		// after a disconnect (or after a daemon restart).
+		if (m_HasFriendSlot) {
 			m_LinkedClient.SetFriendSlot(true);
 		}
 	}
@@ -132,6 +135,9 @@ void CFriend::LoadFromFile(CFileDataIO* file)
 					m_strName = newtag.GetStr();
 				}
 				break;
+			case FF_FRIENDSLOT:
+				m_HasFriendSlot = newtag.GetInt() != 0;
+				break;
 		}
 	}
 }
@@ -146,21 +152,21 @@ void CFriend::WriteToFile(CFileDataIO* file)
 	file->WriteUInt32(m_dwLastSeen);
 	file->WriteUInt32(m_dwLastChatted);
 
-	uint32 tagcount = ( m_strName.IsEmpty() ? 0 : 2 );
+	uint32 tagcount = ( m_strName.IsEmpty() ? 0 : 2 ) + ( m_HasFriendSlot ? 1 : 0 );
 	file->WriteUInt32(tagcount);
 	if ( !m_strName.IsEmpty() ) {
 		CTagString nametag(FF_NAME, m_strName);
 		nametag.WriteTagToFile(file, utf8strOptBOM);
 		nametag.WriteTagToFile(file);
 	}
+	if ( m_HasFriendSlot ) {
+		CTagInt8 slottag(FF_FRIENDSLOT, 1);
+		slottag.WriteTagToFile(file);
+	}
 }
 
 
 bool CFriend::HasFriendSlot() {
-	if (m_LinkedClient.IsLinked()) {
-		return m_LinkedClient.GetFriendSlot();
-	} else {
-		return false;
-	}
+	return m_HasFriendSlot;
 }
 // File_checked_for_headers
