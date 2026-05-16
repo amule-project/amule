@@ -26,6 +26,7 @@
 #define AMULE_REMOTE_GUI_H
 
 
+#include <deque>				// std::deque for CStatGraphRem rolling-average windows
 #include <functional>				// std::function for the CSharedFilesRem
 								// Reload(yieldCb) shim — matches the daemon-side
 								// signature added in PrefsUnifiedDlg's commit path.
@@ -640,6 +641,37 @@ public:
 	void DoRequery();
 };
 
+// Async EC poller that pulls the rolling-window graph history from the
+// daemon and feeds CStatisticsDlg / CKadDlg via the same UpdateStatGraphs
+// pipeline monolithic amule uses.
+class CStatGraphRem : public CECPacketHandlerBase {
+	virtual void HandlePacket(const CECPacket *);
+	CRemoteConnect *m_conn;
+	// Last timestamp the daemon reported; sent back on the next request
+	// so the response only carries points the GUI hasn't seen yet.
+	double m_lastTimestamp;
+
+	// Per-metric sliding window of recent samples — feeds the
+	// "Running average" line on each COScopeCtrl. Mirrors monolithic
+	// amule's CPreciseRateCounter with count_average=true: simple
+	// mean of the last N one-second samples, where N is
+	// GetStatsAverageMinutes()*60. Session average is pulled from
+	// EC_TAG_STATSGRAPH_SESSION_* (set by the daemon) so no local
+	// integral is needed.
+	std::deque<float> m_winDl;
+	std::deque<float> m_winUp;
+	std::deque<float> m_winKad;
+public:
+	// Peak connection count seen so far. CLIENT_GUI doesn't get the
+	// daemon's CStatTreeItemMaxValue accessor, so we track it locally
+	// off the connection samples we already unpack for the graphs.
+	uint32 m_peakConnections;
+public:
+	CStatGraphRem(CRemoteConnect * conn)
+		: m_conn(conn), m_lastTimestamp(0.0), m_peakConnections(0) {}
+	void DoRequery();
+};
+
 class CListenSocketRem {
 	uint32 m_peak_connections;
 public:
@@ -703,6 +735,7 @@ public:
 	CFriendListRem *friendlist;
 	CListenSocketRem *listensocket;
 	CStatTreeRem * stattree;
+	CStatGraphRem * statgraphs;
 
 	CStatistics *m_statistics;
 

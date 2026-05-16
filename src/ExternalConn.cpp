@@ -1308,12 +1308,28 @@ static CECPacket *GetStatsGraphs(const CECPacket *request)
 			}
 			uint16 nScale = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_SCALE)->GetInt();
 			uint16 nMaxPoints = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_WIDTH)->GetInt();
-			uint32 *graphData;
-			unsigned int numPoints = theApp->m_statistics->GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, &graphData);
+			uint32 *graphData = NULL;
+			uint32 *connData = NULL;
+			uint64 sessionDl = 0, sessionUl = 0, sessionKad = 0;
+			double sessionTimespan = 0.0;
+			unsigned int numPoints = theApp->m_statistics->GetHistoryForGui(
+				nMaxPoints, (double)nScale, &dTimestamp, &graphData, &connData,
+				sessionDl, sessionUl, sessionKad, sessionTimespan);
 			if (numPoints) {
 				response = new CECPacket(EC_OP_STATSGRAPHS);
 				response->AddTag(CECTag(EC_TAG_STATSGRAPH_DATA, 4 * numPoints * sizeof(uint32), graphData));
+				// Per-point active uploads / active downloads. Older
+				// amulegui builds simply ignore the unknown tag.
+				response->AddTag(CECTag(EC_TAG_STATSGRAPH_DATA_CONN, 2 * numPoints * sizeof(uint32), connData));
 				delete [] graphData;
+				delete [] connData;
+				// Latest session totals — let amulegui compute the same
+				// kBytesReceived / sTimestamp session average monolithic
+				// shows, instead of falling back to a GUI-local integral.
+				response->AddTag(CECTag(EC_TAG_STATSGRAPH_SESSION_DL, sessionDl));
+				response->AddTag(CECTag(EC_TAG_STATSGRAPH_SESSION_UL, sessionUl));
+				response->AddTag(CECTag(EC_TAG_STATSGRAPH_SESSION_KAD, sessionKad));
+				response->AddTag(CECTag(EC_TAG_STATSGRAPH_SESSION_TIMESPAN, sessionTimespan));
 				response->AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, dTimestamp));
 			} else {
 				response = new CECPacket(EC_OP_FAILED);
