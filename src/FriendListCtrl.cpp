@@ -93,7 +93,12 @@ void CFriendListCtrl::UpdateFriend(CFriend* toupdate)
 	}
 
 	SetItem(itemnr, 0, toupdate->GetName());
-	SetItemTextColour(itemnr, toupdate->GetLinkedClient().IsLinked() ? *wxBLUE : *wxBLACK);
+	// Linked friends stay visually distinguished in blue; unlinked
+	// ones must follow the system text color so they don't render
+	// invisible on dark themes (#640).
+	SetItemTextColour(itemnr, toupdate->GetLinkedClient().IsLinked()
+		? *wxBLUE
+		: wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
 }
 
 

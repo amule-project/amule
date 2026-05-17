@@ -130,7 +130,7 @@ m_columndata(0, NULL)
 
 	m_highlightBrush  = CMuleColour(wxSYS_COLOUR_HIGHLIGHT)/*.Blend(125)*/.GetBrush();
 
-	m_highlightUnfocusBrush = CMuleColour(wxSYS_COLOUR_BTNSHADOW)/*.Blend(125)*/.GetBrush();
+	m_highlightUnfocusBrush = CMuleColour(CMuleColour::GetUnfocusedHighlight()).GetBrush();
 
 	m_clientcount = 0;
 }

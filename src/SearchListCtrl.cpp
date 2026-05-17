@@ -816,7 +816,7 @@ void CSearchListCtrl::OnDrawItem(
 			dc->SetBackground(GetBrush(wxSYS_COLOUR_HIGHLIGHT));
 			dc->SetTextForeground(CMuleColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		} else {
-			dc->SetBackground(GetBrush(wxSYS_COLOUR_BTNSHADOW));
+			dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(CMuleColour::GetUnfocusedHighlight(), wxBRUSHSTYLE_SOLID)));
 			dc->SetTextForeground(CMuleColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		}
 	} else {

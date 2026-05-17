@@ -153,7 +153,7 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 
 	m_hilightBrush  = CMuleColour(wxSYS_COLOUR_HIGHLIGHT)/*.Blend(125)*/.GetBrush();
 
-	m_hilightUnfocusBrush = CMuleColour(wxSYS_COLOUR_BTNSHADOW)/*.Blend(125)*/.GetBrush();
+	m_hilightUnfocusBrush = CMuleColour(CMuleColour::GetUnfocusedHighlight()).GetBrush();
 
 	InsertColumn( ColumnPart,			_("Part"),					wxLIST_FORMAT_LEFT,  30, "a" );
 	InsertColumn( ColumnFileName,		_("File Name"),				wxLIST_FORMAT_LEFT, 260, "N" );
