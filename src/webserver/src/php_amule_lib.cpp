@@ -323,7 +323,7 @@ typedef struct {
 
 PHP_2_EC_OPT_DEF g_connection_opt_defs[] = {
 	{ "max_line_up_cap", EC_TAG_CONN_UL_CAP, 4}, { "max_line_down_cap", EC_TAG_CONN_DL_CAP, 4},
-	{ "max_up_limit", EC_TAG_CONN_MAX_UL, 2}, { "max_down_limit", EC_TAG_CONN_MAX_DL, 2},
+	{ "max_up_limit", EC_TAG_CONN_MAX_UL, 4}, { "max_down_limit", EC_TAG_CONN_MAX_DL, 4},
 	{ "slot_alloc", EC_TAG_CONN_SLOT_ALLOCATION, 2},
 	{ "tcp_port", EC_TAG_CONN_TCP_PORT, 2}, { "udp_port", EC_TAG_CONN_UDP_PORT, 2},
 	{ "udp_dis", EC_TAG_CONN_UDP_DISABLE, 0},
