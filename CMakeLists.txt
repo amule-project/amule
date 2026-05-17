@@ -245,6 +245,7 @@ if (NOT DEFINED CACHE{SVNDATE})
 endif()
 
 include (cmake/bfd.cmake)
+include (cmake/atomic.cmake)
 
 # glib-2.0 headers — needed for the Wayland wl_app_id / X11 WM_CLASS
 # binding via g_set_prgname() (called from amule.cpp on the monolithic
