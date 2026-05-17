@@ -3,8 +3,9 @@
 This document covers the end-user side of aMule: how to launch each
 tool, what to configure on first run, and where the safety footguns
 are. For an overview of the project see the
-[top-level README](../README.md). For build / install instructions see
-[INSTALL.md](INSTALL.md).
+[top-level README](../README.md). For installing the pre-built
+binaries see [INSTALL_BINARIES.md](INSTALL_BINARIES.md); for building
+from source see [INSTALL.md](INSTALL.md).
 
 
 ## What you got
@@ -51,12 +52,13 @@ Under `Preferences → Connection`, set the limits to roughly **80 % of
 your actual line speed** to avoid saturating the upstream and starving
 your own traffic.
 
-The values are in **kilobytes per second** (kB/s). ISP advertised speed
-is usually in **megabits per second** (Mbps); divide by 8 for kB/s.
+The values are in **kilobytes per second** (kB/s). ISP advertised
+speeds are usually in **megabits per second** (Mbps); multiply by
+**125** to get kB/s.
 
-> Example: a 100 Mbps / 20 Mbps fibre line → roughly 10000 kB/s
-> downstream and 2000 kB/s upstream. Set the *limits* to about 8000
-> down / 1600 up to stay below the line cap.
+> Example: a 100 Mbps / 20 Mbps fibre line → roughly 12500 kB/s
+> downstream and 2500 kB/s upstream. Set the *limits* to about 10000
+> down / 2000 up to stay below the line cap.
 
 ### 3. Pick what you share
 
@@ -69,9 +71,7 @@ Defaults are conservative; **don't share blanket filesystem trees**.
 > tax documents, password files, etc.).
 
 A focused share — the Incoming dir, plus one or two media folders —
-is the safe default. If you share more than ~200 files, some servers
-may drop you because of a per-client file limit; lots of small files
-beats one giant index.
+is the safe default.
 
 
 ## Running aMule headless (`amuled`)
@@ -98,6 +98,17 @@ The wiki has detailed walkthroughs for
 [amuled setup](https://github.com/amule-org/amule/wiki/Amuled),
 [amuleweb](https://github.com/amule-org/amule/wiki/AMuleWeb), and
 [amulecmd](https://github.com/amule-org/amule/wiki/Amulecmd).
+
+The commands above assume `amuled` / `amulecmd` / `amulegui` /
+`amuleweb` are on `$PATH`. A `make install` build does that for you;
+binary packages don't. For the path / dispatch pattern in each format
+see the Running the headless tools section of
+[INSTALL_BINARIES.md](INSTALL_BINARIES.md#running-the-headless-tools):
+
+* [Windows portable .zip](INSTALL_BINARIES.md#windows-portable-zip)
+* [macOS .dmg](INSTALL_BINARIES.md#macos-dmg)
+* [Linux AppImage](INSTALL_BINARIES.md#linux-appimage)
+* [Linux Flatpak](INSTALL_BINARIES.md#linux-flatpak)
 
 
 ## Reading the transfers window

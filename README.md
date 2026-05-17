@@ -38,7 +38,28 @@ generally adopted into aMule shortly after.
 * `amulecmd` — interactive CLI for a running `amuled`.
 
 
-## Compiling
+## Installation
+
+aMule ships pre-built binaries for every major desktop. Building
+from source is also supported.
+
+### Pre-built binaries (recommended)
+
+Download the latest release for your platform from the
+[Releases page]. Quick start:
+
+* **Linux** — AppImage (any distro) or Flatpak: download, `chmod +x`, run.
+* **macOS** — Universal2 `.dmg`: download, drag to `/Applications`.
+* **Windows** — Portable `.zip` (x64 / ARM64): download, unzip, run.
+
+See [docs/INSTALL_BINARIES.md](docs/INSTALL_BINARIES.md) for
+per-platform notes — including the macOS unsigned-binary
+workaround, the Windows SmartScreen prompt, and the Linux FUSE
+dependency for AppImage.
+
+[Releases page]: https://github.com/amule-org/amule/releases/latest
+
+### Building from source
 
 aMule uses CMake. Quick start:
 
@@ -59,13 +80,36 @@ on Linux, macOS, and Windows.
 ## Setting Up
 
 aMule comes with reasonable default settings and should be usable as-is.
-However, to receive a [HighID] you need to open aMule's ports on your
-firewall and/or forward them on your router. The wiki has articles on
+Two configuration steps are still worth doing on day one:
+
+### 1. Open the ports — get a HighID
+
+To receive a [HighID] you need to open aMule's ports on your firewall
+and/or forward them on your router. The wiki has articles on
 [getting a HighID][2] and [setting up firewall rules][3].
 
 [HighID]: https://github.com/amule-org/amule/wiki/FAQ_eD2k‐Kademlia#what-is-lowid-and-highid "What is LowID and HighID?"
 [2]: https://github.com/amule-org/amule/wiki/Get-HighID "How to get HighID"
 [3]: https://github.com/amule-org/amule/wiki/Firewall "How to set up firewall rules for aMule"
+
+### 2. Set bandwidth limits
+
+aMule ships with both upload and download caps disabled by default
+(`MaxUpload=0`, `MaxDownload=0` — both interpreted as literal
+unlimited). On a connection that aMule can saturate, that means
+aMule will eat all the bandwidth available to it, starving every
+other application sharing the link. **Setting realistic limits is
+strongly recommended.**
+
+Under `Preferences → Connection`, set the limits to roughly **80 %
+of your actual line speed** to avoid saturating the upstream and
+starving your own traffic. Values are in **kilobytes per second**
+(kB/s); ISP advertised speeds are usually in **megabits per
+second** (Mbps). To convert, multiply Mbps by **125**.
+
+> Example: a 100 Mbps / 20 Mbps fibre line → roughly 12 500 kB/s
+> downstream and 2 500 kB/s upstream. Set the limits to about
+> 10 000 down / 2 000 up to stay below the line cap.
 
 
 ## Reporting Bugs
