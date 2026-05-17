@@ -250,14 +250,14 @@ include (cmake/bfd.cmake)
 # binding via g_set_prgname() (called from amule.cpp on the monolithic
 # / daemon side, and from amule-remote-gui.cpp on the amulegui side
 # once the remote-GUI fix lands as a separate PR). amulecmd and
-# amuleweb don't need glib. Detect it here best-effort so the
-# optional `if (GLIB_FOUND)` blocks downstream pick it up when
-# present (e.g. amulegui's MuleTrayIcon SNI backend), and promote
-# the missing-dep case to a hard configure-time error when a target
-# that depends on it is being built (#562 — the silent QUIET
-# surfaced as a confusing `glib.h: No such file` mid-compile for
-# fresh-checkout users).
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+# amuleweb don't need glib. Gated on wxGTK being the wx toolkit AND
+# the host not being macOS — the `#include <glib.h>` / call sit behind
+# `#if defined(__WXGTK__) && !defined(__APPLE__)` in those files;
+# macOS doesn't run Wayland and macOS apps identify via Info.plist, so
+# the call is a no-op there even when wxGTK happens to be the toolkit
+# (MacPorts wxgtk, see #641) and there's no reason to drag glib2 in.
+list (FIND wxWidgets_DEFINITIONS "__WXGTK__" _amule_wxgtk_idx)
+if (_amule_wxgtk_idx GREATER -1 AND NOT APPLE)
 	find_package (PkgConfig QUIET)
 	if (PkgConfig_FOUND)
 		pkg_check_modules (GLIB QUIET glib-2.0)
@@ -267,14 +267,16 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		message (FATAL_ERROR
 			"glib-2.0 development headers not found, but they are "
 			"required to build amule (monolithic), amuled, or "
-			"amulegui — these targets call g_set_prgname() to bind "
-			"the Wayland wl_app_id / X11 WM_CLASS to the .desktop "
-			"filename, which needs <glib.h>. "
-			"Install one of:\n"
+			"amulegui against wxGTK — these targets call "
+			"g_set_prgname() to bind the Wayland wl_app_id / X11 "
+			"WM_CLASS to the .desktop filename, which needs "
+			"<glib.h>. Install one of:\n"
 			"  - libglib2.0-dev   (Debian / Ubuntu / Mint)\n"
 			"  - glib2-devel      (Fedora / RHEL / Rocky)\n"
 			"  - dev-libs/glib    (Gentoo)\n"
 			"  - glib             (Arch / Manjaro)\n"
+			"  - glib2            (MacPorts)\n"
+			"  - glib             (Homebrew)\n"
 			"…then re-run cmake AFTER deleting the build directory "
 			"(`rm -rf build`); pkg_check_modules only runs at "
 			"configure time, so installing the package on top of a "
@@ -282,6 +284,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 			"required — install `pkg-config` if cmake didn't find it.")
 	endif()
 endif()
+unset (_amule_wxgtk_idx)
 
 # Optional StatusNotifierItem (SNI) backend for the system-tray icon.
 # wxGTK's wxTaskBarIcon talks the legacy GtkStatusIcon API, which

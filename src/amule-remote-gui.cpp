@@ -29,7 +29,7 @@
 #include <wx/fileconf.h>		// Needed for wxFileConfig
 #include <wx/socket.h>			// Needed for wxSocketBase
 
-#ifdef __WXGTK__
+#if defined(__WXGTK__) && !defined(__APPLE__)
 #include <glib.h>			// g_set_prgname() — wl_app_id / WM_CLASS binding
 #endif
 
@@ -260,7 +260,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	amuledlg = NULL;
 	connect_timeout_timer = NULL;
 
-#ifdef __WXGTK__
+#if defined(__WXGTK__) && !defined(__APPLE__)
 	// Set the GTK program name to the canonical app id. On Wayland,
 	// GTK derives wl_app_id (xdg_toplevel.set_app_id) from
 	// g_get_prgname(); compositors match wl_app_id against the
@@ -274,6 +274,10 @@ bool CamuleRemoteGuiApp::OnInit()
 	// has in CamuleApp::OnInit; amulegui shipped without it, so on
 	// GNOME / wlroots the taskbar icon never bound to the launcher
 	// and showed the generic fallback. (#562 follow-up.)
+	// Skipped on macOS even under wxGTK (MacPorts): no Wayland or
+	// .desktop binding exists, and app identity is set via Info.plist
+	// in the .app bundle. Dropping the call lets that build skip the
+	// glib2 dep entirely (#641).
 	g_set_prgname("org.amule.aMule.gui");
 #endif
 
