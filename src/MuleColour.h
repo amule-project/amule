@@ -100,6 +100,23 @@ public:
 	const wxPen& GetPen(int width = 1, wxPenStyle style = wxPENSTYLE_SOLID) const;
 	const wxBrush& GetBrush(wxBrushStyle style = wxBRUSHSTYLE_SOLID) const;
 
+	// wxSYS_COLOUR_BTNSHADOW happens to equal SYS_COLOUR_LISTBOX on
+	// some Mate/Cinnamon themes (TraditionalOk, Menta) and on KDE
+	// builds without kde-gtk-config, which makes the wxListCtrl
+	// unfocused-selection paint render invisible (#640). Returning
+	// a 50/50 mix of HIGHLIGHT and LISTBOX keeps the selection
+	// readable across all themes while still looking distinctly
+	// "not the focused one".
+	static wxColour GetUnfocusedHighlight()
+	{
+		const wxColour hl = wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
+		const wxColour lb = wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX);
+		return wxColour(
+			(hl.Red()   + lb.Red())   / 2,
+			(hl.Green() + lb.Green()) / 2,
+			(hl.Blue()  + lb.Blue())  / 2);
+	}
+
 private:
 	uint8_t m_red;
 	uint8_t m_green;
