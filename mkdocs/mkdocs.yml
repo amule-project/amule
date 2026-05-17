@@ -1,0 +1,38 @@
+site_name: aMule Documentation
+site_description: aMule — A multi-platform eMule-like client for the eDonkey and Kademlia networks
+site_author: The aMule Team
+repo_url: https://github.com/amule-project/amule
+repo_name: amule-project/amule
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: readthedocs
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: getting-started/installation.md
+    - Configuration: getting-started/configuration.md
+  - User Guide:
+    - Interface Overview: user-guide/interface.md
+    - Downloading Files: user-guide/downloading.md
+    - Searching: user-guide/searching.md
+    - Sharing Files: user-guide/sharing.md
+  - Components:
+    - aMule (GUI): components/amule.md
+    - amuled (Daemon): components/amuled.md
+    - amulegui (Remote GUI): components/amulegui.md
+    - amuleweb (Web Interface): components/amuleweb.md
+    - amulecmd (CLI): components/amulecmd.md
+  - Advanced:
+    - EC Protocol: advanced/ec-protocol.md
+    - IP-to-Country: advanced/ip2country.md
+    - Online Signature: advanced/amulesig.md
+  - Development:
+    - Building from Source: development/building.md
+    - Contributing: development/contributing.md
+    - Changelog: development/changelog.md
+  - Reference:
+    - Authors: reference/authors.md
