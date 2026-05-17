@@ -25,6 +25,8 @@
 
 #include "PartFileConvertDlg.h"
 
+#include <vector>
+
 #include <common/Format.h>
 #include <common/Path.h>
 #include "DataToText.h"
@@ -227,10 +229,23 @@ void CPartFileConvertDlg::RemoveSel(wxCommandEvent& WXUNUSED(event))
 {
 	if (m_joblist->GetSelectedItemCount() == 0) return;
 
-	long item_nr = m_joblist->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	while (item_nr != -1) {
-		Notify_ConvertRemoveJob(m_joblist->GetItemData(item_nr));
-		item_nr = m_joblist->GetNextItem(item_nr, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	// Collect every selected job id before issuing any removal. The
+	// notification is delivered synchronously on the main thread, so
+	// each Notify_ConvertRemoveJob() reaches CPartFileConvertDlg::
+	// RemoveJobInfo() and DeleteItem()s the row before this function
+	// returns -- which invalidates the next GetNextItem() walk when
+	// the last surviving selected row was the last row overall
+	// (wxGenericListCtrl::GetNextItem asserts "ret < max" because
+	// item_nr is now past the shrunken end).
+	std::vector<wxUIntPtr> ids;
+	ids.reserve(m_joblist->GetSelectedItemCount());
+	for (long item_nr = m_joblist->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	     item_nr != -1;
+	     item_nr = m_joblist->GetNextItem(item_nr, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) {
+		ids.push_back(m_joblist->GetItemData(item_nr));
+	}
+	for (wxUIntPtr id : ids) {
+		Notify_ConvertRemoveJob(id);
 	}
 }
 
