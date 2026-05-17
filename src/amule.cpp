@@ -51,7 +51,7 @@
 #include <wx/filename.h>		// Needed for wxFileName (CA bundle lookup)
 #endif
 
-#ifdef __WXGTK__
+#if defined(__WXGTK__) && !defined(__APPLE__)
 #include <glib.h>			// g_set_prgname() — wl_app_id / WM_CLASS binding
 #endif
 
@@ -441,7 +441,7 @@ bool CamuleApp::OnInit()
 	wxDebugContext::SetCheckpoint();
 #endif
 
-#ifdef __WXGTK__
+#if defined(__WXGTK__) && !defined(__APPLE__)
 	// Set the GTK program name to the canonical app id. On Wayland,
 	// GTK derives wl_app_id (xdg_toplevel.set_app_id) from
 	// g_get_prgname(); compositors match wl_app_id against the
@@ -452,6 +452,10 @@ bool CamuleApp::OnInit()
 	// On X11 the same value also feeds into WM_CLASS, matching
 	// StartupWMClass=org.amule.aMule in the .desktop file. Must run
 	// before any GTK window is created.
+	// Skipped on macOS even under wxGTK (MacPorts): no Wayland or
+	// .desktop binding exists, and app identity is set via Info.plist
+	// in the .app bundle. Dropping the call lets that build skip the
+	// glib2 dep entirely (#641).
 	g_set_prgname("org.amule.aMule");
 #endif
 
