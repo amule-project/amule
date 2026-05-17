@@ -26,6 +26,9 @@ Makefile.user
 # CMake
 build
 
+# MkDocs generated output
+mkdocs/site
+
 # AI coding assistants
 *.local.md
 .claude/
