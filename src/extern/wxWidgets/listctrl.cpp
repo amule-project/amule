@@ -2342,13 +2342,22 @@ wxListMainWindow::wxListMainWindow( wxWindow *parent,
                             wxBRUSHSTYLE_SOLID
                          ));
 
-    m_highlightUnfocusedBrush = *(wxTheBrushList->FindOrCreateBrush(
-                                 wxSystemSettings::GetColour
-                                 (
-                                     wxSYS_COLOUR_BTNSHADOW
-                                 ),
-                                 wxBRUSHSTYLE_SOLID
-                              ));
+    // SYS_COLOUR_BTNSHADOW happens to equal SYS_COLOUR_LISTBOX on
+    // some Mate/Cinnamon themes (TraditionalOk, Menta) which makes
+    // an unfocused selection render invisible white-on-white (#640).
+    // Mix HIGHLIGHT 50/50 with LISTBOX so the unfocused selection
+    // always contrasts against the listbox background while still
+    // looking distinctly muted vs. the focused selection.
+    {
+        const wxColour _hl = wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
+        const wxColour _lb = wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX);
+        const wxColour _unfocused(
+            (_hl.Red()   + _lb.Red())   / 2,
+            (_hl.Green() + _lb.Green()) / 2,
+            (_hl.Blue()  + _lb.Blue())  / 2);
+        m_highlightUnfocusedBrush = *(wxTheBrushList->FindOrCreateBrush(
+                                     _unfocused, wxBRUSHSTYLE_SOLID));
+    }
 
     SetScrollbars( 0, 0, 0, 0, 0, 0 );
 
