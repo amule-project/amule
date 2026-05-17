@@ -653,6 +653,16 @@ if (NEED_LIB_MULEAPPCORE)
 		PRIVATE CRYPTOPP::CRYPTOPP
 	)
 
+	# DownloadBandwidthThrottler's std::atomic<int64_t> byte budget
+	# needs libatomic on 32-bit targets without a hardware 8-byte
+	# CAS (PPC32, ARMv5/v6, MIPS32). LIBATOMIC is set in
+	# cmake/atomic.cmake — empty on 64-bit, "atomic" on 32-bit.
+	# Linked PUBLIC so amule / amuled / amulegui pick it up
+	# transitively.
+	if (LIBATOMIC)
+		target_link_libraries (muleappcore PUBLIC ${LIBATOMIC})
+	endif()
+
 	# Parser.cpp's bison-generated yyparse() expands YY_(Msgid) to dgettext,
 	# so libintl needs to be on the link line whenever NLS is enabled.
 	# Empty/no-op on glibc; the .dylib / .dll.a on macOS / MinGW.  PUBLIC so
