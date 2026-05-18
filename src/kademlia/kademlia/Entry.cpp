@@ -414,6 +414,26 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 		if (!duplicate) {
 			m_filenames.push_back(currentName);
 		}
+
+		// Cap m_filenames so a single CKeyEntry can't accumulate
+		// unbounded filename variants. A popular file collects one
+		// sFileNameEntry per distinct publisher-chosen name (renames,
+		// language variants, mirror prefixes, trailing-paren copies,
+		// case differences); without a cap the list grows monotonically
+		// for the lifetime of the entry, which on a long-running
+		// shareset shows up as a steady ~MB/hour RSS climb in amuled.
+		// 100 matches the m_publishingIPs cap below and is comfortably
+		// above the count of variants any honest publisher set produces
+		// for a single hash — GetCommonFileName already picks the
+		// highest-popularity entry, so the cap is shaped to keep
+		// popularity-ordered survivors.
+		const size_t MAX_FILENAMES = 100;
+		if (m_filenames.size() > MAX_FILENAMES) {
+			m_filenames.sort([](const sFileNameEntry& a, const sFileNameEntry& b) {
+				return a.m_popularityIndex > b.m_popularityIndex;
+			});
+			m_filenames.resize(MAX_FILENAMES);
+		}
 	}
 
 	// if this was a refresh done, otherwise update the global track map
