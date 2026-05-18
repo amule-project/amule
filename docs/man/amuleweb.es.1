@@ -40,10 +40,11 @@ amuleweb \- servidor web de aMule
 [\fB\-\-amule\-config\-file\fP=\fI<path>\fP]
 
 .SH DESCRIPCIÓN
-\fBamuleweb\fP manages your access to amule through a web browser.  You can
-start amuleweb together with \fBamule\fP(1), or separately, any time later.
-Options can be specified via command\-line or via config\-file.  Command\-line
-options take precedence over config\-file options.
+\fBamuleweb\fP gestiona una sesión de amule a través del navegador web.  Puede
+iniciar amuleweb junto a \fBamule\fP(1), o por separado en cualquier momento
+posterior.  Las opciones se pueden especificar en la línea de comando o en
+un fichero de configuración.  Las opciones de línea de comandos tienen
+prioridad sobre las del fichero de configuración.
 .TP 
 \fB[ \-h\fP \fI<host>\fP, \fB\-\-host\fP=\fI<host>\fP \fB]\fP
 Host donde se está ejecutando aMule. (por defecto: \fIlocalhost\fP).
@@ -54,14 +55,14 @@ Puerto de conexión externa de aMule, puesto en Opciones\->Controles
 Remotos (por defecto: 4712)
 .TP 
 \fB[ \-P\fP \fI<password>\fP, \fB\-\-password\fP=\fI<password>\fP \fB]\fP
-Contraseña de conexiones externas
+Contraseña de conexiones externas.
 .TP 
 \fB[ \-f\fP \fI<path>\fP, \fB\-\-config\-file\fP=\fI<path>\fP \fB]\fP
 Usar la configuración dada por el archivo. El archivo de configuración por
 defecto es \fI~/.aMule/remote.conf\fP
 .TP 
 .B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
-No mostrar nada por la salida estándar
+No mostrar nada por la salida estándar.
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
 Modo Extendido \- muestra también los mensajes de depuración.
@@ -72,15 +73,14 @@ descripción del parámetro del \fI<lang>\fP.
 .TP 
 .B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
 Escribe opciones de la línea de comando al archivo de configuración y
-termina.
+termina
 .TP 
 \fB[ \-t\fP \fI<name>\fP, \fB\-\-template\fP=\fI<name>\fP \fB]\fP
-Loads the template named \fI<name>\fP. See the \fBSKIN SUPPORT\fP section
-for details.
+Carga la plantilla llamada \fI<name>\fP. Consulte la sección \fBSKIN SUPPORT\fP para más detalles.
 .TP 
 \fB[ \-s\fP \fI<port>\fP, \fB\-\-server\-port\fP=\fI<port>\fP \fB]\fP
-Webserver's HTTP port. This is the port you must point your browser to
-(default: \fI4711\fP).
+Puerto HTTP del servidor web. Éste es el puerto al que debe apuntar su
+navegador (por defecto: \fI4711\fP).
 .TP 
 .B_untranslated [ \-u ]\fR
 .br
@@ -90,7 +90,7 @@ Habilitar UPnP.
 Puerto UPnP.
 .TP 
 .B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
-Enables using gzip compression in HTTP traffic to save bandwidth.
+Activar compresión gzip para ahorrar tráfico HTTP.
 .TP 
 .B_untranslated [ \-Z\fR, \fB\-\-disable\-gzip ]\fR
 Deshabilitar la compresión gzip (esto es por defecto).
@@ -108,11 +108,12 @@ Permitir acceso invitado.
 Deniega el acceso invitado (defecto)
 .TP 
 .B_untranslated [ \-L\fR, \fB\-\-load\-settings ]\fR
-Load/save webserver settings from/to remote aMule.  This causes amuleweb to
-ignore command\-line and config\-file settings, and load them from aMule.
-When saving preferences none will be written to the config file, but to
-aMule.  (Of course, this works only for those settings that can be set in
-aMule's Preferences\->Remote Controls.)
+Cargar/Guardar del aMule remoto la configuración del servidor web.  Esto
+hace que amuleweb ignore la configuración de la línea de comandos o del
+fichero de config, y que la cargue directamente de aMule.  Al guardarla, no
+se escribirá nada en el fichero de configuración, sino en aMule.  (Por
+supuesto, esto sólo funciona para los parámetros que pueden configurarse en
+las Preferencias de aMule\->Controles Remotos.)
 .TP 
 .B_untranslated [ \-\-no\-php ]\fR
 Deshabilitar interprete PHP (obsoleto)
@@ -131,21 +132,22 @@ Imprime una breve descripción de uso.
 Mostrar el número de la versión actual.
 .TP 
 \fB[ \-\-amule\-config\-file\fP=\fI<path>\fP \fB]\fP
-aMule config file path.  \fBDO NOT USE DIRECTLY!\fP aMule uses this option when
-starting amuleweb at aMule startup.  This option causes all other
-command\-line and config\-file settings to be ignored, preferences to be read
-from the given config file, and also implies the \fB\-q \-L\fP options.
+Ruta al fichero de configuración de aMule.  \fB¡NO USAR DIRECTAMENTE!\fP aMule
+usa esta opción al arrancar amuleweb durante el arranque de aMule.  Esta
+opción hace que cualquier otra configuración de la línea de comandos o del
+fichero de configuración sea ignorada, y que las preferencias se lean del
+fichero especificado. También implica las opciones \fB\-q \-L\fP.
 .SH NOTAS
 .SS Rutas
-Todas las opciones que tengan \fI<path>\fP como valor, si \fIpath\fP
-contiene un directorio sin part (p.e. solo un archivo normal), entones se
-tomará el directorio de la configuración, \fI~/.aMule\fP.
+Todas las opciones que tengan \fI<path>\fP como valor, si \fIpath\fP no
+contiene una ruta de directorios (p.e. sólo un archivo normal), entones se
+usará el directorio de la configuración, \fI~/.aMule\fP.
 .SS Lenguajes
-The \fI<lang>\fP parameter for the \fB\-l\fP option has the following form:
-\fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP] where \fIlang\fP is the
-primary language, \fILANG\fP is a sublanguage/territory, \fIencoding\fP is the
-character set to use and \fImodifier\fP allows the user to select a specific
-instance of localization data within a single category.
+El parámetro \fI<lang>\fP para la opción \fB\-l\fP tiene esta forma:
+\fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP] donde \fIlang\fP es el
+lenguaje primario, \fILANG\fP es un sublenguaje/territorio, \fIencoding\fP es el
+conjunto de caracteres a usar y \fImodifier\fP permite al usuario elegir una
+instancia específica de localización dentro un una única categoría.
 
 Por ejemplo, las siguientes cadenas son válidas:
 .RS
@@ -160,23 +162,23 @@ Por ejemplo, las siguientes cadenas son válidas:
 .RB_untranslated de_DE.iso88591@euro
 .RE
 
-Though all the above strings are accepted as valid language definitions,
-\fIencoding\fP and \fImodifier\fP are yet unused.
+Aunque todas las cadenas previas son aceptadas como definiciones de lenguaje
+válidas,  \fIencoding\fP y \fImodifier\fP aún no se usan.
 
-In addition to the format above, you can also specify full language names in
-English \- so \fB\-l german\fP is also valid and is equal to \fB\-l de_DE\fP.
+Además del formato previo, también se pueden especificar el nombre completo
+del idioma en inglés, por lo que  \fB\-l german\fP es válido y equivale a \fB\-l de_DE\fP.
 
-When no locale is defined, either on command\-line or in config file, system
-default language will be used.
-.SH "SOPORTE TEMAS."
-\fBamuleweb\fP is capable of displaying information in different skins.  These
-skins are called templates, and you can make amuleweb load a specific
-template via the \fB\-t\fP command line option.  Templates are searched in two
-places: first in \fI~/.aMule/webserver/\fP and then in
-\fI/usr/share/amule/webserver/\fP if you installed with \-\-prefix=/usr.
+Cuando no se define ninguna localización, ni por línea de comandos ni en
+fichero de configuración, se usará el lenguaje por defecto del sistema.
+.SH "SOPORTE TEMAS"
+\fBamuleweb\fP es capaz de usar diferentes skins para mostrar información.
+Estos skins se llaman plantillas, y puede cargarse una plantilla específica
+usando la opción \fB\-t\fP de la línea de comandos.  Las plantillas se buscan en
+dos ubicaciones: primero en \fI~/.aMule/webserver/\fP y luego en
+\fI/usr/share/amule/webserver/\fP si se instaló con la opción \-\-prefix=/usr.
 .PP
-Each template must be in a subdirectory of the template name, and this
-directory must contain all files the template needs.
+Cada plantilla debe estar en un subdirectorio con el nombre de la plantilla,
+y este directorio debe contener todo los ficheros que la plantilla necesita.
 .SH ARCHIVOS
 ~/.aMule/remote.conf
 .br
@@ -209,8 +211,8 @@ miembro del equipo.
 .SH COPYRIGHT
 aMule y todas las demás utilidades relacionadas son distribuidas bajo la GNU
 General Public License.
-.SH "VEASE TAMBIEN"
+.SH "VÉASE TAMBIÉN"
 .B_untranslated amule\fR(1), \fBamulecmd\fR(1)
 .SH AUTOR
-Esta página de manualfue escrita por Vollstrecker
+Esta página de manual fue escrita por Vollstrecker
 <amule@vollstreckernet.de>
