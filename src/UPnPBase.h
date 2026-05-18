@@ -510,6 +510,21 @@ private:
 		CUPnPPortMapping &upnpPortMapping);
 	bool PrivateDeletePortMapping(
 		CUPnPPortMapping &upnpPortMapping);
+
+	// Suppress repeated UpnpDownloadXmlDoc() against URLs that just failed.
+	// SSDP ALIVE announcements arrive in dense bursts (one per service
+	// class, every few seconds per device). When the announcing device's
+	// HTTP server is unreachable each fetch pins a libupnp worker thread
+	// for the full TCP-connect timeout; a single misbehaving device on a
+	// busy LAN can saturate libupnp's internal pool. Each failed location
+	// URL is suppressed for FAILED_FETCH_TTL_SECS before the next attempt
+	// is allowed.
+	bool ShouldSkipAdvertisementFetch(const std::string &location);
+	void RecordAdvertisementFetchResult(const std::string &location,
+	                                    bool success);
+	std::map<std::string, time_t> m_failedFetchCache;
+	CUPnPMutex m_failedFetchCacheMutex;
+	static const int FAILED_FETCH_TTL_SECS = 300;
 };
 
 

@@ -587,7 +587,7 @@ m_SCPD(nullptr)
 			msg.str("");
 			msg << "WAN Service Detected: '" <<
 				m_serviceType << "'.";
-			AddDebugLogLineC(logUPnP, msg);
+			AddDebugLogLineN(logUPnP, msg);
 			// Subscribe
 			const_cast<CUPnPControlPoint &>(upnpControlPoint).Subscribe(*this);
 #if 0
@@ -1260,7 +1260,6 @@ upnpDiscovery:
 		if (errCode != UPNP_E_SUCCESS) {
 			msg << UpnpGetErrorMessage(errCode) << ".";
 #else
-		int ret;
 		if (d_event->ErrCode != UPNP_E_SUCCESS) {
 			msg << UpnpGetErrorMessage(d_event->ErrCode) << ".";
 #endif
@@ -1269,27 +1268,38 @@ upnpDiscovery:
 		// Get the XML tree device description in doc
 #if UPNP_VERSION >= 10800
 		const char *location = UpnpDiscovery_get_Location_cstr(d_event);
+#else
+		const char *location = d_event->Location;
+#endif
+		// Passive ALIVE announcements arrive in dense bursts (one per
+		// service class, every few seconds per device). When the
+		// announcing device's HTTP server is unreachable each fetch
+		// blocks a libupnp worker thread for the full TCP-connect
+		// timeout. Suppress repeat fetches against a recently-failed
+		// URL on ALIVE only -- SEARCH_RESULT is an active poll
+		// initiated by us and bypasses the cache.
+		if (EventType == UPNP_DISCOVERY_ADVERTISEMENT_ALIVE &&
+		    upnpCP->ShouldSkipAdvertisementFetch(location ? location : "")) {
+			break;
+		}
 		int ret = UpnpDownloadXmlDoc(location, &doc);
-#else
-		ret = UpnpDownloadXmlDoc(d_event->Location, &doc);
-#endif
 		if (ret != UPNP_E_SUCCESS) {
+			if (EventType == UPNP_DISCOVERY_ADVERTISEMENT_ALIVE) {
+				upnpCP->RecordAdvertisementFetchResult(
+					location ? location : "", false);
+			}
 			msg << "Error retrieving device description from " <<
-#if UPNP_VERSION >= 10800
-				location << ": " <<
-#else
-				d_event->Location << ": " <<
-#endif
+				(location ? location : "") << ": " <<
 				UpnpGetErrorMessage(ret) <<
 				"(" << ret << ").";
 			AddDebugLogLineN(logUPnP, msg);
 		} else {
+			if (EventType == UPNP_DISCOVERY_ADVERTISEMENT_ALIVE) {
+				upnpCP->RecordAdvertisementFetchResult(
+					location ? location : "", true);
+			}
 			msg2 << "Retrieving device description from " <<
-#if UPNP_VERSION >= 10800
-				location << ".";
-#else
-				d_event->Location << ".";
-#endif
+				(location ? location : "") << ".";
 			AddDebugLogLineN(logUPnP, msg2);
 		}
 		if (doc) {
@@ -1716,6 +1726,37 @@ void CUPnPControlPoint::RemoveRootDevice(const char *udn)
 }
 
 
+bool CUPnPControlPoint::ShouldSkipAdvertisementFetch(
+	const std::string &location)
+{
+	CUPnPMutexLocker lock(m_failedFetchCacheMutex);
+	std::map<std::string, time_t>::iterator it =
+		m_failedFetchCache.find(location);
+	if (it == m_failedFetchCache.end()) {
+		return false;
+	}
+	if (time(NULL) - it->second >= FAILED_FETCH_TTL_SECS) {
+		// TTL expired -- erase and allow one retry, which will refresh
+		// the entry on failure or clear it on success.
+		m_failedFetchCache.erase(it);
+		return false;
+	}
+	return true;
+}
+
+
+void CUPnPControlPoint::RecordAdvertisementFetchResult(
+	const std::string &location, bool success)
+{
+	CUPnPMutexLocker lock(m_failedFetchCacheMutex);
+	if (success) {
+		m_failedFetchCache.erase(location);
+	} else {
+		m_failedFetchCache[location] = time(NULL);
+	}
+}
+
+
 void CUPnPControlPoint::Subscribe(CUPnPService &service)
 {
 	std::ostringstream msg;
@@ -1733,7 +1774,7 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 		msg << "Successfully retrieved SCPD Document for service " <<
 			service.GetServiceType() << ", absEventSubURL: " <<
 			service.GetAbsEventSubURL() << ".";
-		AddDebugLogLineC(logUPnP, msg);
+		AddDebugLogLineN(logUPnP, msg);
 		msg.str("");
 
 		// Now try to subscribe to this service. If the subscription
