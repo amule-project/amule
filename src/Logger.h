@@ -189,6 +189,18 @@ public:
 	void SetEnabled( DebugType type, bool enabled );
 
 	/**
+	 * Sets the global verbose-debug flag that gates IsEnabled() per category.
+	 *
+	 * The amuled / monolithic build stores this in thePrefs; the
+	 * console-binary build (amuleweb, amulecmd, etc.) maintains its own
+	 * static since it doesn't link CPreferences. ExternalConnector calls
+	 * this with the value of /eMule/VerboseDebug after loading amule.conf
+	 * and again after parsing the --verbose CLI flag so both paths drive
+	 * the same gate.
+	 */
+	void SetVerbose(bool verbose);
+
+	/**
 	 * Returns true if logging to stdout is enabled
 	 */
 	bool IsEnabledStdoutLog() const		{ return m_StdoutLog; }

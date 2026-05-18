@@ -117,6 +117,12 @@ void CLogger::SetEnabled( DebugType type, bool enabled )
 }
 
 
+void CLogger::SetVerbose(bool verbose)
+{
+	thePrefs::SetVerbose(verbose);
+}
+
+
 void CLogger::AddLogLine(
 	const wxString& DEBUG_ONLY(file),
 	int DEBUG_ONLY(line),

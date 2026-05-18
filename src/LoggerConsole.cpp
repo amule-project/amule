@@ -33,9 +33,15 @@ wxDEFINE_EVENT(MULE_EVT_LOGLINE, wxEvent);
 
 #ifdef __DEBUG__
 
+// Console-binary verbose-debug gate. Driven by /eMule/VerboseDebug from
+// amule.conf (read by CaMuleExternalConnector::LoadAmuleConfig) and the
+// --verbose CLI flag, both of which call CLogger::SetVerbose below.
+// Default off, matching amuled's behaviour when VerboseDebug is unset.
+static bool s_consoleVerbose = false;
+
 bool CLogger::IsEnabled(DebugType /*type*/) const
 {
-	return true;
+	return s_consoleVerbose;
 }
 
 // Dummy functions for EC logging
@@ -45,6 +51,16 @@ bool ECLogIsEnabled() { return false; }
 void DoECLogLine(const wxString &) {}
 
 #endif /* __DEBUG__ */
+
+
+void CLogger::SetVerbose(bool verbose)
+{
+#ifdef __DEBUG__
+	s_consoleVerbose = verbose;
+#else
+	(void)verbose;
+#endif
+}
 
 
 void CLogger::AddLogLine(

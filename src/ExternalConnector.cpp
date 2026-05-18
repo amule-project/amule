@@ -49,6 +49,7 @@
 
 #include <ec/cpp/ECFileConfig.h>	// Needed for CECFileConfig
 #include <common/MD5Sum.h>
+#include "Logger.h"				// for theLogger.SetVerbose
 #include "OtherFunctions.h"		// Needed for GetPassword()
 #include "MuleVersion.h"		// Needed for GetMuleVersion()
 
@@ -571,6 +572,15 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 	m_KeepQuiet = parser.Found("quiet");
 	m_Verbose = parser.Found("verbose");
 
+	// Wire --verbose to the console logger gate so AddDebugLogLine* output
+	// from this binary obeys the CLI flag the same way amuled obeys its
+	// VerboseDebug pref. LoadAmuleConfig may have already set the gate
+	// from /eMule/VerboseDebug above; --verbose acts as an explicit
+	// runtime override when present.
+	if (m_Verbose) {
+		theLogger.SetVerbose(true);
+	}
+
 	return true;
 }
 
@@ -580,6 +590,7 @@ void CaMuleExternalConnector::LoadAmuleConfig(CECFileConfig& cfg)
 	m_port = cfg.Read("/ExternalConnect/ECPort", 4712l);
 	cfg.ReadHash("/ExternalConnect/ECPassword", &m_password);
 	m_language = cfg.Read("/eMule/Language", "");
+	theLogger.SetVerbose(cfg.Read("/eMule/VerboseDebug", 0l) != 0);
 }
 
 
