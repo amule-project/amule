@@ -8,6 +8,38 @@
 		echo "<meta http-equiv=\"refresh\" content=\"", $_SESSION["auto_refresh"], '">';
 	}
 
+	// Kad network controls. Dispatch before stats are rendered so the
+	// page shown after the submit reflects the post-action state.
+	// Note: amule's mini PHP parser tokenises only "<<=" / ">>=", not
+	// "<<" / ">>", and has no intval() builtin -- so the IP packing
+	// uses arithmetic (* 16777216 etc.) and relies on the runtime's
+	// implicit string-to-number coercion via the arithmetic operators.
+	if ($_SESSION["guest_login"] == 0) {
+		$kad_action = $HTTP_GET_VARS["kad_action"];
+		if ($kad_action == "connect_known") {
+			amule_kad_start();
+		} elseif ($kad_action == "connect_ip") {
+			$ip0 = $HTTP_GET_VARS["ip0"] + 0;
+			$ip1 = $HTTP_GET_VARS["ip1"] + 0;
+			$ip2 = $HTTP_GET_VARS["ip2"] + 0;
+			$ip3 = $HTTP_GET_VARS["ip3"] + 0;
+			$port = $HTTP_GET_VARS["port"] + 0;
+			// Pack the dotted-quad with ip0 (template's high-octet
+			// field) in the high byte and ip3 in the low byte.
+			$packed = $ip0 * 16777216 + $ip1 * 65536 + $ip2 * 256 + $ip3;
+			if ($packed != 0 and $port != 0) {
+				amule_kad_connect($packed, $port);
+			}
+		} elseif ($kad_action == "update_url") {
+			$nodes_url = $HTTP_GET_VARS["nodes_url"];
+			if ($nodes_url != "") {
+				amule_kad_update_from_url($nodes_url);
+			}
+		} elseif ($kad_action == "disconnect") {
+			amule_kad_disconnect();
+		}
+	}
+
 	amule_load_vars("stats_graph");
 ?>
 <script language="JavaScript" type="text/JavaScript">
@@ -169,18 +201,35 @@ function formCommandSubmit(command)
                 <tr valign="top"> 
                   <td height="200"><img src="amule_stats_kad.png" width="500" height="200" border="0" alt="" title="" /></td>
                   <td valign="top"> <table  border="0" align="center" cellpadding="0" cellspacing="6" class="kadnewnode">
-                      <tr> 
+                      <tr>
+                        <th colspan="2">Network</th>
+                      </tr>
+                      <tr>
+                        <td colspan="2" align="center">
+                          <button type="submit" name="kad_action" value="connect_known">Connect from known peers</button>
+                          &nbsp;
+                          <button type="submit" name="kad_action" value="disconnect">Disconnect</button>
+                        </td>
+                      </tr>
+                      <tr>
                         <th colspan="2">Bootstrap from node</th>
                       </tr>
-                      <tr> 
-                        <td align="right">IP :</td><td align="left"><input name="ip3" type="text" id="ip32" size="3" maxlength="3"> 
-                          &nbsp; <input name="ip2" type="text" id="ip23" size="3" maxlength="3"> 
-                          &nbsp; <input name="ip1" type="text" id="ip13" size="3" maxlength="3"> 
+                      <tr>
+                        <td align="right">IP :</td><td align="left"><input name="ip3" type="text" id="ip32" size="3" maxlength="3">
+                          &nbsp; <input name="ip2" type="text" id="ip23" size="3" maxlength="3">
+                          &nbsp; <input name="ip1" type="text" id="ip13" size="3" maxlength="3">
                           &nbsp; <input name="ip0" type="text" id="ip03" size="3" maxlength="3"></td>
                       </tr>
-                      <tr> 
-                        <td align="right">Port :</td><td align="left"><input name="port" type="text" id="port3" size="4" maxlength="5"> 
-                          &nbsp; <input type="submit" name="Submit" value="Connect"></td>
+                      <tr>
+                        <td align="right">Port :</td><td align="left"><input name="port" type="text" id="port3" size="4" maxlength="5">
+                          &nbsp; <button type="submit" name="kad_action" value="connect_ip">Connect</button></td>
+                      </tr>
+                      <tr>
+                        <th colspan="2">Update bootstrap from URL</th>
+                      </tr>
+                      <tr>
+                        <td align="right">URL :</td><td align="left"><input name="nodes_url" type="text" id="nodes_url" size="32">
+                          &nbsp; <button type="submit" name="kad_action" value="update_url">Update</button></td>
                       </tr>
                     </table></td>
                 </tr>
