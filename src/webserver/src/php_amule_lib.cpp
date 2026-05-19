@@ -145,6 +145,40 @@ void php_native_kad_disconnect(PHP_VALUE_NODE *)
 }
 
 /*
+ * Usage: amule_kad_start()
+ *
+ * Start the Kademlia network using the on-disk nodes.dat for bootstrap.
+ * Wraps EC_OP_KAD_START.
+ */
+void php_native_kad_start(PHP_VALUE_NODE *)
+{
+	CECPacket req(EC_OP_KAD_START);
+	CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(&req);
+}
+
+/*
+ * Usage: amule_kad_update_from_url($url)
+ *
+ * Download a fresh nodes.dat from the given URL, bootstrap Kad from it,
+ * and persist the URL into the KadNodesUrl preference so subsequent
+ * starts reuse the same source. Wraps EC_OP_KAD_UPDATE_FROM_URL.
+ */
+void php_native_kad_update_from_url(PHP_VALUE_NODE *)
+{
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( !si || (si->var->value.type != PHP_VAL_STRING) ) {
+		php_report_error(PHP_ERROR, "Missing or bad argument 1: $url");
+		return;
+	}
+	char *url = si->var->value.str_val;
+
+	CECPacket req(EC_OP_KAD_UPDATE_FROM_URL);
+	req.AddTag(CECTag(EC_TAG_KADEMLIA_UPDATE_URL,
+		wxString(char2unicode(url))));
+	CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(&req);
+}
+
+/*
  * Usage amule_add_server_cmd($server_addr, $server_port, $server_name);
  */
 void php_native_add_server_cmd(PHP_VALUE_NODE *)
@@ -1144,6 +1178,24 @@ PHP_BLTIN_FUNC_DEF amule_lib_funcs[] = {
 	{
 		"amule_get_version",
 		0, amule_version,
+	},
+	{
+		"amule_kad_start",
+		0, php_native_kad_start,
+	},
+	{
+		"amule_kad_connect",
+		2,
+		php_native_kad_connect,
+	},
+	{
+		"amule_kad_disconnect",
+		0, php_native_kad_disconnect,
+	},
+	{
+		"amule_kad_update_from_url",
+		1,
+		php_native_kad_update_from_url,
 	},
 	{ 0, 0, 0, },
 };
