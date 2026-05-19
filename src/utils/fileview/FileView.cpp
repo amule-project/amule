@@ -54,8 +54,17 @@ enum DebugType {};
 class CLogger
 {
       public:
+	bool IsEnabled(DebugType /*type*/) const;
 	void AddLogLine(const wxString& /*file*/, int /*line*/, bool /*critical*/, DebugType /*type*/, const wxString& str, bool /*toStdout*/, bool /*toGUI*/);
 };
+
+// Out-of-line definitions: SafeFile.cpp's Debug-build AddDebugLogLine*
+// macros expand to references against these symbols, and an inline body
+// in the class wouldn't emit one.
+bool CLogger::IsEnabled(DebugType /*type*/) const
+{
+	return false;
+}
 
 void CLogger::AddLogLine(const wxString& /*file*/, int /*line*/, bool /*critical*/, DebugType /*type*/, const wxString& str, bool /*toStdout*/, bool /*toGUI*/)
 {
