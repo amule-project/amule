@@ -138,7 +138,23 @@ color: white;
             <td width="24" background="images/tab_left.png">&nbsp;</td>
             
       <td bgcolor="#FFFFFF"><table width="100%"  border="0" align="center" cellpadding="0" cellspacing="0">
-              <tr> 
+              <?php
+                // Network-level disconnect button, admin only. Statements
+                // must be syntactically complete within one PHP block;
+                // see the other guest gates further down in this file
+                // for the same pattern. Inline form + button to match the
+                // Kad page styling and give a proper clickable button
+                // rather than a plain text link.
+                if ($_SESSION["guest_login"] == 0) {
+                    echo '<tr><td colspan="6" align="right" style="padding:4px 8px;">',
+                         '<form action="amuleweb-main-servers.php" method="get" style="display:inline;">',
+                         '<input type="hidden" name="server_action" value="disconnect">',
+                         '<button type="submit">Disconnect from current ed2k server</button>',
+                         '</form>',
+                         '</td></tr>';
+                }
+              ?>
+              <tr>
                 <th width="3%"></th>
                 <th width="22%" ><a href="amuleweb-main-servers.php?sort=name">Server Name</a></th>
                 <th width="42%" ><a href="amuleweb-main-servers.php?sort=desc">Description</a></th>
@@ -180,6 +196,14 @@ color: white;
 		if ( ($HTTP_GET_VARS["cmd"] != "") and ($HTTP_GET_VARS["ip"] != "") and ($HTTP_GET_VARS["port"] != "")) {
 			if ($_SESSION["guest_login"] == 0) {
 				amule_do_server_cmd($HTTP_GET_VARS["ip"], $HTTP_GET_VARS["port"], $HTTP_GET_VARS["cmd"]);
+			}
+		}
+		// Network-level disconnect (no per-server target). The
+		// amule_do_server_cmd path above always carries an ip/port
+		// tag, so it can only target one server at a time.
+		if ($HTTP_GET_VARS["server_action"] == "disconnect") {
+			if ($_SESSION["guest_login"] == 0) {
+				amule_server_disconnect();
 			}
 		}
 		

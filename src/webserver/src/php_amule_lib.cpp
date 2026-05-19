@@ -179,6 +179,22 @@ void php_native_kad_update_from_url(PHP_VALUE_NODE *)
 }
 
 /*
+ * Usage: amule_server_disconnect()
+ *
+ * Disconnect from the current ed2k server (network-level, not per-server).
+ * The existing amule_do_server_cmd takes (ip, port, cmd) and always sends
+ * EC_OP_SERVER_DISCONNECT with a server tag -- which on amuled simply
+ * disconnects globally, but it's not callable without IP/port. This
+ * variant sends the same opcode with no tag for the WebUI "Disconnect
+ * from current ed2k server" button.
+ */
+void php_native_server_disconnect(PHP_VALUE_NODE *)
+{
+	CECPacket req(EC_OP_SERVER_DISCONNECT);
+	CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(&req);
+}
+
+/*
  * Usage amule_add_server_cmd($server_addr, $server_port, $server_name);
  */
 void php_native_add_server_cmd(PHP_VALUE_NODE *)
@@ -1196,6 +1212,10 @@ PHP_BLTIN_FUNC_DEF amule_lib_funcs[] = {
 		"amule_kad_update_from_url",
 		1,
 		php_native_kad_update_from_url,
+	},
+	{
+		"amule_server_disconnect",
+		0, php_native_server_disconnect,
 	},
 	{ 0, 0, 0, },
 };
