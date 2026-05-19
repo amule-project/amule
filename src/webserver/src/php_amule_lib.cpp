@@ -330,6 +330,8 @@ PHP_2_EC_OPT_DEF g_connection_opt_defs[] = {
 	{ "max_file_src", EC_TAG_CONN_MAX_FILE_SOURCES, 2},
 	{ "max_conn_total", EC_TAG_CONN_MAX_CONN, 2},
 	{ "autoconn_en", EC_TAG_CONN_AUTOCONNECT, 0}, { "reconn_en", EC_TAG_CONN_RECONNECT, 0},
+	{ "network_ed2k", EC_TAG_NETWORK_ED2K, 0},
+	{ "network_kad", EC_TAG_NETWORK_KADEMLIA, 0},
 	{0, (ECTagNames)0, 0}
 };
 
