@@ -69,12 +69,12 @@ public:
 		return wxAppConsole::OnInit();
 	}
 
-	int OnRun() {
+	int OnRun() override {
 		return (TestRegistry::runAndPrint() ? 0 : 1);
 	}
 
 #ifndef __WXMSW__
-	void OnUnhandledException() {
+	void OnUnhandledException() override {
 		::OnUnhandledException();
 	}
 #endif
