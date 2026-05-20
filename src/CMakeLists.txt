@@ -655,10 +655,10 @@ if (NEED_LIB_MULEAPPCORE)
 
 	# DownloadBandwidthThrottler's std::atomic<int64_t> byte budget
 	# needs libatomic on 32-bit targets without a hardware 8-byte
-	# CAS (PPC32, ARMv5/v6, MIPS32). LIBATOMIC is set in
-	# cmake/atomic.cmake — empty on 64-bit, "atomic" on 32-bit.
-	# Linked PUBLIC so amule / amuled / amulegui pick it up
-	# transitively.
+	# CAS (PPC32, ARMv5/v6, MIPS32). LIBATOMIC is set at the top
+	# of the root CMakeLists.txt — empty on 64-bit, "atomic" on
+	# 32-bit. Linked PUBLIC so amule / amuled / amulegui pick it
+	# up transitively.
 	if (LIBATOMIC)
 		target_link_libraries (muleappcore PUBLIC ${LIBATOMIC})
 	endif()
