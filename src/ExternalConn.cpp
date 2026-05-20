@@ -226,6 +226,11 @@ private:
 	CECPacket *ProcessRequest2(const CECPacket *request);
 
 	virtual bool IsAuthorized() { return m_conn_state == CONN_ESTABLISHED; }
+
+	// Bound on the WriteDoneAndQueueEmpty -> SendPacket -> OnOutput ->
+	// WriteDoneAndQueueEmpty recursion chain that drains the notifier
+	// queue. See WriteDoneAndQueueEmpty for the full reasoning.
+	int		m_notification_dispatch_depth;
 };
 
 
@@ -233,7 +238,8 @@ CECServerSocket::CECServerSocket(ECNotifier *notifier)
 :
 CECMuleSocket(true),
 m_conn_state(CONN_INIT),
-m_passwd_salt(GetRandomUint64())
+m_passwd_salt(GetRandomUint64()),
+m_notification_dispatch_depth(0)
 {
 	wxASSERT(theApp->ECServerHandler);
 	theApp->ECServerHandler->AddSocket(this);
@@ -281,14 +287,55 @@ void CECServerSocket::OnLost()
 
 void CECServerSocket::WriteDoneAndQueueEmpty()
 {
-	if ( HaveNotificationSupport() && (m_conn_state == CONN_ESTABLISHED) ) {
-		CECPacket *packet = m_ec_notifier->GetNextPacket(this);
-		if ( packet ) {
-			SendPacket(packet);
-		}
-	} else {
+	if (!HaveNotificationSupport() || m_conn_state != CONN_ESTABLISHED) {
 		//printf("[EC] %p: WriteDoneAndQueueEmpty but notification disabled\n", this);
+		return;
 	}
+
+	// CECSocket::OnOutput drains the per-socket output queue, then calls
+	// WriteDoneAndQueueEmpty to pull the next notification packet. The
+	// chain runs synchronously on the main thread:
+	//
+	//   WriteDoneAndQueueEmpty -> SendPacket -> WritePacket + OnOutput
+	//     -> OnOutput drains queue -> WriteDoneAndQueueEmpty -> ...
+	//
+	// On a busy amuled (many peers / files generating notifications) the
+	// ECNotifier always has the next packet ready, so the recursion never
+	// bottoms out. The main thread stays inside this chain processing the
+	// notifier feed and never yields back to the wx event loop. That
+	// starves every other event -- including LibSocketLost from a
+	// half-closed EC peer, which is what CECServerSocket::OnLost needs
+	// to fire so it can tear the dead socket down.
+	//
+	// In the wedged-amuleweb scenario reported in #666, the peer is in
+	// kernel CLOSE-WAIT, writes silently succeed against the dead
+	// kernel buffer, and amuled spins indefinitely flushing the
+	// notifier to nowhere -- amulegui can't connect because the main
+	// thread is permanently occupied.
+	//
+	// Cap the dispatch depth so the chain returns to the event loop
+	// every MAX_DEPTH packets. The pending asio LibSocketSend
+	// completions (or LibSocketLost, if the peer has gone away) get
+	// processed in between; on a healthy peer the loop simply resumes
+	// when OnSend re-enters via the next completion.
+	static const int MAX_DEPTH = 8;
+	if (m_notification_dispatch_depth >= MAX_DEPTH) {
+		return;
+	}
+
+	CECPacket *packet = m_ec_notifier->GetNextPacket(this);
+	if (!packet) {
+		return;
+	}
+
+	m_notification_dispatch_depth++;
+	try {
+		SendPacket(packet);
+	} catch (...) {
+		m_notification_dispatch_depth--;
+		throw;
+	}
+	m_notification_dispatch_depth--;
 }
 
 //-------------------- ExternalConn --------------------
