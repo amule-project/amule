@@ -5,26 +5,32 @@
 aMule is built with [CMake](https://cmake.org). You'll need at least the
 following packages:
 
-| Package    | Minimum version | Notes |
-| ---------- | --------------- | ----- |
-| CMake      | 3.10            |       |
-| zlib       | 1.2.3           |       |
-| wxWidgets  | 3.2.0           | 3.2 branch or newer |
-| Crypto++   | 5.6             |       |
-| Boost      | 1.47            | headers only; only `asio` is used |
+| Package   | Minimum version | Notes                             |
+| --------- | --------------- | --------------------------------- |
+| CMake     | 3.10            |                                   |
+| zlib      | 1.2.3           |                                   |
+| wxWidgets | 3.2.0           | 3.2 branch or newer               |
+| Crypto++  | 5.6             |                                   |
+| Boost     | 1.47            | headers only; only `asio` is used |
 
 For `amuleweb` you'll also need a POSIX-compliant regex library — part of
 the standard C library on most GNU systems.
 
 ### Optional dependencies
 
-| Package                | Minimum | What it enables |
-| ---------------------- | ------- | --------------- |
-| `libgd`                | 2.0.0   | statistics images in `cas` |
-| `libupnp`              | 1.6.6   | UPnP port forwarding |
-| `libmaxminddb`         | 1.0     | country flags + IP→country mapping ([docs/IP2Country.md](IP2Country.md)) |
-| `gettext`              | 0.11.5  | native-language support (NLS) |
-| `libayatana-appindicator3` | —   | **Linux only.** StatusNotifierItem tray-icon backend. Without it the tray falls back to the legacy `GtkStatusIcon` API, which GNOME Shell dropped in 3.26 and wlroots compositors don't implement (silently invisible on Fedora / vanilla GNOME / Sway). Apt: `libayatana-appindicator3-dev`; RPM: `libayatana-appindicator-gtk3-devel`. |
+| Package                    | Minimum | What it enables                                                          |
+| -------------------------- | ------- | ------------------------------------------------------------------------ |
+| `libgd`                    | 2.0.0   | statistics images in `cas`                                               |
+| `libupnp`                  | 1.6.6   | UPnP port forwarding                                                     |
+| `libmaxminddb`             | 1.0     | country flags + IP→country mapping ([docs/IP2Country.md](IP2Country.md)) |
+| `gettext`                  | 0.11.5  | native-language support (NLS)                                            |
+| `libayatana-appindicator3` | —       | **Linux only.** StatusNotifierItem tray icon                             |
+
+Without `libayatana-appindicator3` the tray falls back to the legacy
+`GtkStatusIcon` API, which GNOME Shell dropped in 3.26 and wlroots
+compositors don't implement (silently invisible on Fedora / vanilla GNOME /
+Sway). Apt: `libayatana-appindicator3-dev`; RPM:
+`libayatana-appindicator-gtk3-devel`.
 
 ### Linux-only note: glib-2.0 dev headers
 
@@ -40,7 +46,6 @@ if pkg-config can't find `glib-2.0`.
 aMule is unicode-only; wxWidgets must be built with unicode support
 (this is the default since wx 3.0).
 
-
 ## Compiling aMule
 
 The typical build is:
@@ -53,13 +58,13 @@ sudo cmake --install build
 
 By default files are installed under `/usr/local`:
 
-| What | Where |
-| ---- | ----- |
-| Binaries | `/usr/local/bin/` |
+| What                 | Where                                                 |
+| -------------------- | ----------------------------------------------------- |
+| Binaries             | `/usr/local/bin/`                                     |
 | Translation catalogs | `/usr/local/share/locale/<lang>/LC_MESSAGES/amule.mo` |
-| Data files, docs | `/usr/local/share/amule/` |
-| Desktop entries | `/usr/local/share/applications/` |
-| Icon | `/usr/local/share/icons/hicolor/128x128/apps/` |
+| Data files, docs     | `/usr/local/share/amule/`                             |
+| Desktop entries      | `/usr/local/share/applications/`                      |
+| Icon                 | `/usr/local/share/icons/hicolor/128x128/apps/`        |
 
 Pass `--prefix=<dir>` to `cmake -B build` (or to `cmake --install`) to
 install somewhere other than `/usr/local`. Installing under `$HOME/.local`
@@ -73,7 +78,6 @@ Platform-specific notes (Homebrew paths on macOS, MSYS2 shells on
 Windows, etc.) live in
 [`.github/workflows/ccpp.yml`](../.github/workflows/ccpp.yml), which is
 the authoritative reference used by CI.
-
 
 ## Uninstalling
 
@@ -108,34 +112,32 @@ GNOME Shell's inotify watcher does pick up the new icons on its own
 within a few seconds, so this is best-effort — the icon usually resolves
 without the manual command.
 
-
 ## Build options
 
 Common `-D` options (`YES` / `NO`):
 
-| Option              | Default | Effect |
-| ------------------- | ------- | ------ |
-| `BUILD_MONOLITHIC`  | YES     | aMule GUI |
-| `BUILD_REMOTEGUI`   | NO      | `amulegui` — remote control GUI |
-| `BUILD_DAEMON`      | NO      | `amuled` — headless daemon |
-| `BUILD_AMULECMD`    | NO      | `amulecmd` — CLI client for the daemon |
-| `BUILD_WEBSERVER`   | NO      | `amuleweb` — HTTP interface for the daemon |
-| `BUILD_ED2K`        | NO      | `ed2k` — handle `ed2k://` links |
-| `BUILD_CAS`         | NO      | `cas` — C statistics tool |
-| `BUILD_WXCAS`       | NO      | `wxCas` — GUI statistics tool |
-| `BUILD_ALC`         | NO      | aMuleLinkCreator GUI |
-| `BUILD_ALCC`        | NO      | aMuleLinkCreator console |
-| `BUILD_FILEVIEW`    | NO      | console file viewer (experimental) |
-| `ENABLE_NLS`        | YES     | native-language support (gettext) |
-| `ENABLE_UPNP`       | YES     | UPnP port forwarding |
-| `ENABLE_IP2COUNTRY` | NO      | libmaxminddb country flags ([docs/IP2Country.md](IP2Country.md)) |
+| Option               | Default | Effect                                                           |
+| -------------------- | ------- | ---------------------------------------------------------------- |
+| `BUILD_MONOLITHIC`   | YES     | aMule GUI                                                        |
+| `BUILD_REMOTEGUI`    | NO      | `amulegui` — remote control GUI                                  |
+| `BUILD_DAEMON`       | NO      | `amuled` — headless daemon                                       |
+| `BUILD_AMULECMD`     | NO      | `amulecmd` — CLI client for the daemon                           |
+| `BUILD_WEBSERVER`    | NO      | `amuleweb` — HTTP interface for the daemon                       |
+| `BUILD_ED2K`         | NO      | `ed2k` — handle `ed2k://` links                                  |
+| `BUILD_CAS`          | NO      | `cas` — C statistics tool                                        |
+| `BUILD_WXCAS`        | NO      | `wxCas` — GUI statistics tool                                    |
+| `BUILD_ALC`          | NO      | aMuleLinkCreator GUI                                             |
+| `BUILD_ALCC`         | NO      | aMuleLinkCreator console                                         |
+| `BUILD_FILEVIEW`     | NO      | console file viewer (experimental)                               |
+| `ENABLE_NLS`         | YES     | native-language support (gettext)                                |
+| `ENABLE_UPNP`        | YES     | UPnP port forwarding                                             |
+| `ENABLE_IP2COUNTRY`  | NO      | libmaxminddb country flags ([docs/IP2Country.md](IP2Country.md)) |
 
 For the full list:
 
 ```sh
 cmake -LAH -B build | less
 ```
-
 
 ## Refreshing translated manpages (maintainers / translators)
 
@@ -151,7 +153,6 @@ cmake --build build --target po4a-update
 This rewrites `docs/man/po/manpages.pot`, syncs each
 `manpages-LANG.po`, and regenerates the translated `*.LANG.1` files in
 place. Commit the resulting changes.
-
 
 ## Links
 
