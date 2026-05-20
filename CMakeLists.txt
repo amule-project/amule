@@ -245,7 +245,39 @@ if (NOT DEFINED CACHE{SVNDATE})
 endif()
 
 include (cmake/bfd.cmake)
-include (cmake/atomic.cmake)
+
+# DownloadBandwidthThrottler holds the shared byte budget as
+# std::atomic<int64_t>. On 64-bit targets the compiler emits native
+# 8-byte CAS / load / store and no library is needed. On 32-bit targets
+# (PPC32, ARMv5/v6, MIPS32, some old x86 toolchains) the atomic ops
+# expand to __atomic_{load,store,compare_exchange,fetch_add}_8 calls
+# that live in libatomic; the link fails with
+# "Undefined symbols: ___atomic_compare_exchange_8" without -latomic.
+#
+# We don't probe with check_cxx_source_compiles -- a tiny probe lets
+# the compiler inline the lock-free expansion end-to-end and reports
+# "native works" even on targets where the real codebase's cross-TU
+# atomic references actually do need the library (see #643). Just
+# require libatomic unconditionally on 32-bit builds.
+set (LIBATOMIC "")
+if (CMAKE_SIZEOF_VOID_P EQUAL 4)
+	find_library (LIBATOMIC_LIBRARY NAMES atomic)
+	if (LIBATOMIC_LIBRARY)
+		set (LIBATOMIC atomic)
+		message (STATUS "32-bit target: linking libatomic for std::atomic<int64_t>")
+	else()
+		message (FATAL_ERROR
+			"32-bit target detected (sizeof(void*) == 4). aMule's "
+			"download bandwidth throttler holds the byte budget as "
+			"std::atomic<int64_t>; 32-bit CPUs lack a native 8-byte "
+			"atomic and the operations expand to library calls "
+			"(__atomic_*_8) that live in libatomic. libatomic was "
+			"not found on this system. Install it and re-run cmake:\n"
+			"  Debian/Ubuntu/Mint: libatomic1-dev\n"
+			"  Fedora/RHEL/Rocky/Arch: libatomic\n"
+			"  macOS/MacPorts: bundled with gcc; install gcc14+")
+	endif()
+endif()
 
 # glib-2.0 headers — needed for the Wayland wl_app_id / X11 WM_CLASS
 # binding via g_set_prgname() (called from amule.cpp on the monolithic
