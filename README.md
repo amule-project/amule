@@ -6,9 +6,6 @@ aMule is an eMule-like client for the eDonkey and Kademlia networks.
 
 [Forum] | [Wiki] | [FAQ]
 
-[![Debian CI](https://badges.debian.net/badges/debian/stable/amule/version.svg)](https://buildd.debian.org/amule)
-[![Debian CI](https://badges.debian.net/badges/debian/testing/amule/version.svg)](https://buildd.debian.org/amule)
-
 [Forum]: https://github.com/amule-org/amule/discussions "aMule Forum"
 [Wiki]:  https://github.com/amule-org/amule/wiki "aMule Wiki"
 [FAQ]:   https://github.com/amule-org/amule/wiki/FAQ-aMule "FAQ on aMule"
@@ -25,6 +22,38 @@ Supported platforms today: Linux, FreeBSD, OpenBSD, macOS, and Windows
 aMule aims to stay close to eMule in look-and-feel so users moving between
 the two have minimal friction. New eMule protocol-level features are
 generally adopted into aMule shortly after.
+
+---
+
+| Distributions |
+| --- |
+| [![Arch Linux](https://repology.org/badge/version-for-repo/arch/amule.svg)](https://archlinux.org/packages/extra/x86_64/amule/) |
+| [![AUR](https://repology.org/badge/version-for-repo/aur/amule.svg)](https://aur.archlinux.org/packages/amule) |
+| [![Debian stable](https://badges.debian.net/badges/debian/stable/amule/version.svg)](https://buildd.debian.org/amule) |
+| [![Debian testing](https://badges.debian.net/badges/debian/testing/amule/version.svg)](https://buildd.debian.org/amule) |
+| [![FreeBSD](https://repology.org/badge/version-for-repo/freebsd/amule.svg)](https://www.freshports.org/net-p2p/amule/) |
+| [![Gentoo](https://repology.org/badge/version-for-repo/gentoo/amule.svg)](https://packages.gentoo.org/packages/net-p2p/amule) |
+| [![Kali Linux](https://repology.org/badge/version-for-repo/kali_rolling/amule.svg)](https://pkg.kali.org/pkg/amule) |
+| [![Manjaro](https://repology.org/badge/version-for-repo/manjaro_stable/amule.svg)](https://repology.org/project/amule/versions) |
+| [![NixOS 25.05](https://repology.org/badge/version-for-repo/nix_stable_25_05/amule.svg)](https://search.nixos.org/packages?channel=25.05&query=amule) |
+| [![OpenBSD](https://repology.org/badge/version-for-repo/openbsd/amule.svg)](https://openports.pl/path/net/amule) |
+| [![openSUSE Tumbleweed (Packman)](https://repology.org/badge/version-for-repo/packman_opensuse_tumbleweed/amule.svg)](http://packman.links2linux.org/package/aMule) |
+| [![RPMFusion Fedora 42](https://repology.org/badge/version-for-repo/rpmfusion_fedora_42/amule.svg)](https://repology.org/project/amule/versions) |
+| [![Slackware](https://repology.org/badge/version-for-repo/slackbuilds/amule.svg)](https://slackbuilds.org/result/?search=amule) |
+| [![Solus](https://repology.org/badge/version-for-repo/solus/amule.svg)](https://repology.org/project/amule/versions) |
+| [![Ubuntu 24.04 LTS](https://repology.org/badge/version-for-repo/ubuntu_24_04/amule.svg)](https://packages.ubuntu.com/noble/amule) |
+| [![Ubuntu 25.04](https://repology.org/badge/version-for-repo/ubuntu_25_04/amule.svg)](https://packages.ubuntu.com/plucky/amule) |
+
+---
+
+Development Statistics:
+
+| [![Open Issues](https://img.shields.io/github/issues/amule-project/amule)](https://github.com/amule-project/amule/issues) | [![Open Pull Requests](https://img.shields.io/github/issues-pr/amule-project/amule)](https://github.com/amule-project/amule/pulls) |
+| --- | --- |
+| [![Bug](https://img.shields.io/github/issues/amule-project/amule/bug)](https://github.com/amule-project/amule/issues?q=is%3Aopen+is%3Aissue+label%3Abug) | |
+| [![Bug - Delayed Fix](https://img.shields.io/github/issues/amule-project/amule/bug%20-%20delayed%20fix)](https://github.com/amule-project/amule/issues?labels=bug%20-%20delayed+fix) | |
+| [![Feature Request](https://img.shields.io/github/issues/amule-project/amule/feature%20request)](https://github.com/amule-project/amule/issues?labels=feature+request) | |
+| [![Enhancement](https://img.shields.io/github/issues/amule-project/amule/enhancement)](https://github.com/amule-project/amule/issues?labels=enhancement) | |
 
 ## Features
 
