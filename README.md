@@ -13,7 +13,6 @@ aMule is an eMule-like client for the eDonkey and Kademlia networks.
 [Wiki]:  https://github.com/amule-org/amule/wiki "aMule Wiki"
 [FAQ]:   https://github.com/amule-org/amule/wiki/FAQ-aMule "FAQ on aMule"
 
-
 ## Overview
 
 aMule is a multi-platform client for the eD2k / Kad file-sharing network,
@@ -27,7 +26,6 @@ aMule aims to stay close to eMule in look-and-feel so users moving between
 the two have minimal friction. New eMule protocol-level features are
 generally adopted into aMule shortly after.
 
-
 ## Features
 
 * `amule` — all-in-one GUI client.
@@ -36,7 +34,6 @@ generally adopted into aMule shortly after.
   EC (External Connection) protocol.
 * `amuleweb` — HTTP interface to a running `amuled`.
 * `amulecmd` — interactive CLI for a running `amuled`.
-
 
 ## Compiling
 
@@ -55,7 +52,6 @@ build options (`BUILD_DAEMON`, `BUILD_AMULECMD`, `ENABLE_NLS`, `ENABLE_UPNP`,
 authoritative reference for the exact deps and flags used to build aMule
 on Linux, macOS, and Windows.
 
-
 ## Setting Up
 
 aMule comes with reasonable default settings and should be usable as-is.
@@ -67,7 +63,6 @@ firewall and/or forward them on your router. The wiki has articles on
 [2]: https://github.com/amule-org/amule/wiki/Get-HighID "How to get HighID"
 [3]: https://github.com/amule-org/amule/wiki/Firewall "How to set up firewall rules for aMule"
 
-
 ## Reporting Bugs
 
 If you find a bug or miss a feature, please open an issue on
@@ -76,7 +71,6 @@ includes the exact aMule version (`amuled --version`), the platform you're
 on, and steps to reproduce.
 
 [5]: https://github.com/amule-org/amule/issues "aMule Issues"
-
 
 ## Contributing
 
@@ -89,7 +83,7 @@ You can contribute to aMule in several ways:
 * **Translation** — [translate aMule][7], [translate the wiki][8], or
   [translate aMule's documentation][9] into your language.
 * **Wiki** — aMule's wiki contains historical content that no longer matches
-  current behaviour. Updating outdated pages is genuinely helpful.
+  current behavior. Updating outdated pages is genuinely helpful.
 
 [6]: https://github.com/amule-org/amule/pulls "aMule Pull Requests"
 [7]: https://github.com/amule-org/amule/wiki/Translations "Translating aMule"
