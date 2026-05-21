@@ -209,7 +209,7 @@ public:
 	uint8	GetUpPriority()	 const		{return m_iUpPriority;}
 	void	SetUpPriority(uint8 newUpPriority, bool bSave=true);
 	bool	IsAutoUpPriority() const		{return m_bAutoUpPriority;}
-	void	SetAutoUpPriority(bool flag)	{m_bAutoUpPriority = flag;}
+	void	SetAutoUpPriority(bool flag);
 	void	UpdateAutoUpPriority();
 #ifdef CLIENT_GUI
 	uint16	GetQueuedCount() const { return m_queuedCount; }
