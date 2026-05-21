@@ -758,6 +758,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	// check hashcount, file status etc
 	if (GetHashCount() != GetED2KPartHashCount()){
 		m_hashsetneeded = true;
+		ClearMetDirty();
 		return true;
 	} else {
 		m_hashsetneeded = false;
@@ -797,6 +798,13 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	} else if (completedsize != transferred) {
 		m_iLostDueToCorruption = transferred - completedsize;
 	}
+
+	// In-memory state now matches the just-loaded .part.met.  Setters
+	// invoked during tag parsing (SetUpPriority, SetAutoUpPriority,
+	// SetAutoDownPriority, SetStatus, etc.) may have set m_metDirty;
+	// drop it so the first FlushBuffer tick after load does not rewrite
+	// the .met with byte-identical content.
+	ClearMetDirty();
 
 	return true;
 }
@@ -1031,6 +1039,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	}
 	CPath::RenameFile(tmpName, m_fullname, true /* overwrite */);
 
+	ClearMetDirty();
 	return true;
 }
 
@@ -1320,12 +1329,14 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 void CPartFile::AddGap(uint64 start, uint64 end)
 {
 	m_gaplist.AddGap(start, end);
+	MarkMetDirty();
 	UpdateDisplayedInfo();
 }
 
 void CPartFile::AddGap(uint16 part)
 {
 	m_gaplist.AddGap(part);
+	MarkMetDirty();
 	UpdateDisplayedInfo();
 }
 
@@ -1413,6 +1424,7 @@ bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struc
 void CPartFile::FillGap(uint64 start, uint64 end)
 {
 	m_gaplist.FillGap(start, end);
+	MarkMetDirty();
 	UpdateCompletedInfos();
 	UpdateDisplayedInfo();
 }
@@ -1420,6 +1432,7 @@ void CPartFile::FillGap(uint64 start, uint64 end)
 void CPartFile::FillGap(uint16 part)
 {
 	m_gaplist.FillGap(part);
+	MarkMetDirty();
 	UpdateCompletedInfos();
 	UpdateDisplayedInfo();
 }
@@ -1827,6 +1840,7 @@ void CPartFile::UpdatePartsInfo()
 
 	if ( ( availablecounter == partcount ) && ( m_availablePartsCount < partcount ) ) {
 		lastseencomplete = time(NULL);
+		MarkMetDirty();
 	}
 
 	m_availablePartsCount = availablecounter;
@@ -2480,6 +2494,7 @@ void CPartFile::SetDownPriority(uint8 np, bool bSave, bool bRefresh )
 {
 	if ( m_iDownPriority != np ) {
 		m_iDownPriority = np;
+		MarkMetDirty();
 		if ( bRefresh )
 			UpdateDisplayedInfo(true);
 		if ( bSave )
@@ -2592,6 +2607,9 @@ void CPartFile::PauseFile(bool bInsufficient)
 
 
 	m_insufficient = bInsufficient;
+	if (!m_paused) {
+		MarkMetDirty();
+	}
 	m_paused = true;
 
 
@@ -2613,6 +2631,9 @@ void CPartFile::ResumeFile()
 		return;
 	}
 
+	if (m_paused) {
+		MarkMetDirty();
+	}
 	m_paused = false;
 	m_stopped = false;
 	m_insufficient = false;
@@ -3322,8 +3343,14 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		}
 	}  // close gaplistComplete else-branch (async enqueue)
 
-	// Update met file
-	SavePartFile();
+	// Update met file -- only when in-memory state has actually diverged
+	// from the on-disk .met since the last save.  An idle seeder with N
+	// partfiles otherwise rewrites N byte-identical .met files every 60 s,
+	// piling up disk work on the main thread for no observable change.
+	// Dirty-flag contract is documented on m_metDirty in PartFile.h.
+	if (IsMetDirty()) {
+		SavePartFile();
+	}
 
 	// Final PB_WRITTEN harvest. The Phase 2 loop above can race with
 	// CPartFileWriteThread::Entry(), which decrements m_iWrites and
@@ -3555,6 +3582,9 @@ void CPartFile::SetCategory(uint8 cat)
 {
 	wxASSERT( cat < theApp->glob_prefs->GetCatCount() );
 
+	if (m_category != cat) {
+		MarkMetDirty();
+	}
 	m_category = cat;
 	SavePartFile();
 }
@@ -3620,6 +3650,9 @@ void CPartFile::SetStatus(uint8 in)
 	// - they are never to be stored in status
 	wxASSERT( in != PS_PAUSED && in != PS_INSUFFICIENT );
 
+	if (status != in) {
+		MarkMetDirty();
+	}
 	status = in;
 
 	if (theApp->IsRunning()) {
@@ -4324,6 +4357,9 @@ void CPartFile::SetFileName(const CPath& fileName)
 		theApp->sharedfiles->RemoveKeywords(this);
 	}
 
+	if (GetFileName() != fileName) {
+		MarkMetDirty();
+	}
 	CKnownFile::SetFileName(fileName);
 
 	if (is_shared) {

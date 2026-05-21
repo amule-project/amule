@@ -1297,10 +1297,20 @@ void CKnownFile::SetFileCommentRating(const wxString& strNewComment, int8 iNewRa
 
 
 void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool m_bsave){
+	if (m_iUpPriority != iNewUpPriority && IsPartFile()) {
+		static_cast<CPartFile*>(this)->MarkMetDirty();
+	}
 	m_iUpPriority = iNewUpPriority;
 	if( IsPartFile() && m_bsave ) {
 		static_cast<CPartFile*>(this)->SavePartFile();
 	}
+}
+
+void CKnownFile::SetAutoUpPriority(bool flag){
+	if (m_bAutoUpPriority != flag && IsPartFile()) {
+		static_cast<CPartFile*>(this)->MarkMetDirty();
+	}
+	m_bAutoUpPriority = flag;
 }
 
 void CKnownFile::SetPublishedED2K(bool val){

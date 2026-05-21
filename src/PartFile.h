@@ -133,6 +133,12 @@ public:
 	uint32	Process(uint8 m_icounter);
 	uint8	LoadPartFile(const CPath& in_directory, const CPath& filename, bool from_backup = false, bool getsizeonly = false);
 	bool	SavePartFile(bool Initial = false);
+
+	// Mark/clear the in-memory dirty bit for the .part.met file.  See
+	// m_metDirty in the private section for the dirty-flag contract.
+	void	MarkMetDirty()			{ m_metDirty = true; }
+	void	ClearMetDirty()			{ m_metDirty = false; }
+	bool	IsMetDirty() const		{ return m_metDirty; }
 	void	PartFileHashFinished(CKnownFile* result);
 	bool	HashSinglePart(uint16 partnumber); // true = ok , false = corrupted
 
@@ -233,7 +239,7 @@ public:
 
 	void	SetDownPriority(uint8 newDownPriority, bool bSave = true, bool bRefresh = true);
 	bool	IsAutoDownPriority() const	{ return m_bAutoDownPriority; }
-	void	SetAutoDownPriority(bool flag)	{ m_bAutoDownPriority = flag; }
+	void	SetAutoDownPriority(bool flag)	{ if (m_bAutoDownPriority != flag) { MarkMetDirty(); } m_bAutoDownPriority = flag; }
 	void	UpdateAutoDownPriority();
 	uint8	GetDownPriority() const		{ return m_iDownPriority; }
 	void	SetActive(bool bActive);
@@ -396,6 +402,28 @@ private:
 	// Set in ~CPartFile so Phase 3 skips its SafeAddKFile branch
 	// during destruction (avoids re-sharing a partfile being deleted).
 	bool m_inDestructor = false;
+
+	// True when in-memory partfile state has diverged from the on-disk
+	// .part.met since the last successful save.  Gates the periodic
+	// FlushBuffer-driven SavePartFile so idle/seeding partfiles do not
+	// rewrite their .met every 60 s with byte-identical content.
+	//
+	// Set by MarkMetDirty() at every mutation of a field that ends up
+	// in the .met (gap list, status, priorities, category, AICH state,
+	// corrupted list, lastseencomplete, filename).  Cleared by a
+	// successful SavePartFile().  Stat counters (transferred,
+	// AllTimeRequests, etc.) and download active time deliberately do
+	// NOT mark dirty -- they persist on the next hard-state change or
+	// at shutdown via the destructor's explicit save, and a session's
+	// counters surviving across a crash is best-effort by design.
+	//
+	// Initialised false: the load path constructs CPartFile in a state
+	// matching the just-read .met, so nothing to flush.  LoadPartFile
+	// explicitly ClearMetDirty()s before each successful return to
+	// undo any MarkMetDirty()s incidentally produced by setters during
+	// tag parsing.  New-download path calls SavePartFile(true) which
+	// writes the initial .met and clears the flag.
+	bool m_metDirty = false;
 
 	// Count of HashJobs in flight on CPartFileHashThread targeting
 	// this file. Incremented before enqueue, decremented by the worker
