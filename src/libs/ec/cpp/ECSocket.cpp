@@ -420,7 +420,7 @@ void CECSocket::OnOutput()
 {
 	while (!m_output_queue.empty()) {
 		CQueuedData* data = m_output_queue.front();
-		data->WriteToSocket(this);
+		uint32 written = data->WriteToSocket(this);
 		if (!data->GetUnreadDataLength()) {
 			m_output_queue.pop_front();
 			delete data;
@@ -450,6 +450,31 @@ void CECSocket::OnOutput()
 					OnError();
 					break;
 				}
+			}
+		} else if (written == 0) {
+			// CAsioSocketImpl::Write returns 0 with no SocketError
+			// set when a previous async send is still in flight
+			// (m_sendBuffer != null) -- pure backpressure, not a
+			// real error.  Treat as "would block": yield to the
+			// event loop so the asio HandleSend callback can clear
+			// m_sendBuffer and re-fire OnOutput via
+			// CoreNotify_LibSocketSend.  Without this, the loop
+			// re-reads the same queue head and re-calls Write(),
+			// pegging the main thread at 100% CPU until asio
+			// catches up.  Large EC replies (e.g. status response
+			// after a batch ed2k-link add) hit this hard because
+			// they're chopped into many asio-sized chunks and the
+			// main thread can't service other wx events during
+			// the spin.
+			if (m_use_events) {
+				return;
+			}
+			// Synchronous path: same fallback as the SocketError
+			// case below.
+			if (!WaitSocketWrite(10, 0)) {
+				AddDebugLogLineN(logEC, "OnOutput: 10s wait elapsed in zero-write backpressure");
+				OnError();
+				break;
 			}
 		}
 	}
