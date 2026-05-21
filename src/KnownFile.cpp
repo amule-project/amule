@@ -78,6 +78,9 @@ void CFileStatistic::AddRequest()
 	requested++;
 	alltimerequested++;
 	theApp->knownfiles->requested++;
+	if (fileParent && fileParent->IsPartFile()) {
+		static_cast<CPartFile*>(fileParent)->MarkStatsDirty();
+	}
 	theApp->sharedfiles->UpdateItem(fileParent);
 }
 
@@ -86,6 +89,9 @@ void CFileStatistic::AddAccepted()
 	accepted++;
 	alltimeaccepted++;
 	theApp->knownfiles->accepted++;
+	if (fileParent && fileParent->IsPartFile()) {
+		static_cast<CPartFile*>(fileParent)->MarkStatsDirty();
+	}
 	theApp->sharedfiles->UpdateItem(fileParent);
 }
 
@@ -94,6 +100,9 @@ void CFileStatistic::AddTransferred(uint64 bytes)
 	transferred += bytes;
 	alltimetransferred += bytes;
 	theApp->knownfiles->transferred += bytes;
+	if (fileParent && fileParent->IsPartFile()) {
+		static_cast<CPartFile*>(fileParent)->MarkStatsDirty();
+	}
 	theApp->sharedfiles->UpdateItem(fileParent);
 }
 

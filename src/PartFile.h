@@ -139,6 +139,15 @@ public:
 	void	MarkMetDirty()			{ m_metDirty = true; }
 	void	ClearMetDirty()			{ m_metDirty = false; }
 	bool	IsMetDirty() const		{ return m_metDirty; }
+
+	// Soft-dirty bit for upload-stat counters (AllTimeRequests,
+	// AllTimeAccepts, AllTimeTransferred).  Flipped by CFileStatistic's
+	// AddRequest / AddAccepted / AddTransferred so a popular sharer does
+	// not re-dirty the partfile on every served chunk.  See m_statsDirty
+	// in the private section.
+	void	MarkStatsDirty()		{ m_statsDirty = true; }
+	void	ClearStatsDirty()		{ m_statsDirty = false; }
+	bool	IsStatsDirty() const		{ return m_statsDirty; }
 	void	PartFileHashFinished(CKnownFile* result);
 	bool	HashSinglePart(uint16 partnumber); // true = ok , false = corrupted
 
@@ -402,6 +411,20 @@ private:
 	// Set in ~CPartFile so Phase 3 skips its SafeAddKFile branch
 	// during destruction (avoids re-sharing a partfile being deleted).
 	bool m_inDestructor = false;
+
+	// Tick (GetTickCount) of the last successful SavePartFile.
+	// Used together with m_statsDirty to throttle soft-stat persistence
+	// to the STATS_HEARTBEAT_MS cadence (see FlushBuffer).
+	uint32 m_lastMetSaveTick = 0;
+
+	// Soft-dirty bit for upload-stat counters that increment every time
+	// a peer requests / accepts / transfers a chunk
+	// (CFileStatistic::AddRequest / AddAccepted / AddTransferred).
+	// Promoted to a save only on the STATS_HEARTBEAT_MS cadence so a
+	// popular sharer does not write its .met on every served chunk -- a
+	// pure seeder with active uploads would otherwise re-dirty every
+	// partfile on every block served.  Cleared on a successful save.
+	bool m_statsDirty = false;
 
 	// True when in-memory partfile state has diverged from the on-disk
 	// .part.met since the last successful save.  Gates the periodic
