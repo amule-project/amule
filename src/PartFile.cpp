@@ -759,6 +759,8 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	if (GetHashCount() != GetED2KPartHashCount()){
 		m_hashsetneeded = true;
 		ClearMetDirty();
+		ClearStatsDirty();
+		m_lastMetSaveTick = ::GetTickCount();
 		return true;
 	} else {
 		m_hashsetneeded = false;
@@ -803,8 +805,11 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	// invoked during tag parsing (SetUpPriority, SetAutoUpPriority,
 	// SetAutoDownPriority, SetStatus, etc.) may have set m_metDirty;
 	// drop it so the first FlushBuffer tick after load does not rewrite
-	// the .met with byte-identical content.
+	// the .met with byte-identical content.  Also seed m_lastMetSaveTick
+	// from load time so the stats-heartbeat is measured from now.
 	ClearMetDirty();
+	ClearStatsDirty();
+	m_lastMetSaveTick = ::GetTickCount();
 
 	return true;
 }
@@ -1009,6 +1014,8 @@ bool CPartFile::SavePartFile(bool Initial)
 	}
 
 	ClearMetDirty();
+	ClearStatsDirty();
+	m_lastMetSaveTick = ::GetTickCount();
 	return true;
 }
 
@@ -3312,12 +3319,22 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		}
 	}  // close gaplistComplete else-branch (async enqueue)
 
-	// Update met file -- only when in-memory state has actually diverged
-	// from the on-disk .met since the last save.  An idle seeder with N
-	// partfiles otherwise rewrites N byte-identical .met files every 60 s,
-	// piling up disk work on the main thread for no observable change.
-	// Dirty-flag contract is documented on m_metDirty in PartFile.h.
-	if (IsMetDirty()) {
+	// Update met file -- only when something has actually changed since
+	// the last save.  Two tiers:
+	//   1. Hard state (gap list, status, priority, category, etc.) sets
+	//      m_metDirty.  Saved at the next FlushBuffer tick (~60 s).
+	//   2. Soft stats (AllTimeRequests / AllTimeAccepts /
+	//      AllTimeTransferred) set m_statsDirty only.  Saved at the
+	//      STATS_HEARTBEAT_MS cadence so a popular sharer does not
+	//      rewrite its .met on every served chunk.  The heartbeat is
+	//      measured from the last successful save, so a regular dirty
+	//      save automatically resets it.
+	// If neither bit is dirty, no save fires.  An idle seeder with no
+	// activity at all writes nothing until shutdown.
+	const uint32 STATS_HEARTBEAT_MS = 10 * 60 * 1000;
+	if (IsMetDirty() ||
+		(IsStatsDirty() &&
+		 (::GetTickCount() - m_lastMetSaveTick > STATS_HEARTBEAT_MS))) {
 		SavePartFile();
 	}
 
