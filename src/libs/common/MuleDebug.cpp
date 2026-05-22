@@ -177,6 +177,8 @@ wxString get_backtrace(unsigned n)
 
 #ifdef HAVE_BFD
 
+#include <link.h> // Do_not_auto_remove -- needed for dl_iterate_phdr on PIE-base lookup
+
 static bfd* s_abfd;
 static asymbol** s_symbol_list;
 static bool s_have_backtrace_symbols = false;
@@ -184,6 +186,27 @@ static const char* s_file_name;
 static const char* s_function_name;
 static unsigned int s_line_number;
 static int s_found;
+
+// PIE relocation offset for the main executable -- subtracted from
+// runtime backtrace addresses before they're handed to bfd, which
+// expects link-time virtual addresses.  0 for non-PIE binaries.  See
+// init_backtrace_info() for the lookup and get_file_line_info() for
+// the application.
+static intptr_t s_pie_base = 0;
+
+static int find_pie_base_cb(struct dl_phdr_info *info, size_t /*size*/, void *data)
+{
+	// The main executable is the first entry in dl_iterate_phdr's
+	// callback order and is identified by an empty dlpi_name (shared
+	// libraries have their path; the executable has "").  dlpi_addr
+	// is the relocation offset applied at load time: 0 for ET_EXEC
+	// (non-PIE), random for ET_DYN (PIE).  Capture it once.
+	if (info->dlpi_name == NULL || info->dlpi_name[0] == '\0') {
+		*reinterpret_cast<intptr_t*>(data) = static_cast<intptr_t>(info->dlpi_addr);
+		return 1; // stop iteration
+	}
+	return 0;
+}
 
 
 /*
@@ -252,6 +275,15 @@ void init_backtrace_info()
 	}
 
 	s_have_backtrace_symbols = (get_backtrace_symbols(s_abfd, &s_symbol_list) > 0);
+
+	// Capture the executable's load-time PIE offset.  Without this the
+	// runtime PC values backtrace() returns (e.g. 0x55e7c40e4e60) are
+	// outside bfd's link-time section vmas (e.g. 0x1000-based on PIE
+	// binaries) so the section-bounds check in get_file_line_info
+	// rejects every address and every amule frame symbolicates to "??".
+	// Modern distros default to PIE for security; non-PIE binaries keep
+	// working too because dlpi_addr is 0 for them.
+	dl_iterate_phdr(find_pie_base_cb, &s_pie_base);
 }
 
 
@@ -269,7 +301,15 @@ void get_file_line_info(bfd *abfd, asection *section, void* _address)
 
 	bfd_vma vma = section->vma;
 
-	unsigned long address = (unsigned long)_address;
+	// Translate runtime PC back to a link-time address so it lines up
+	// with bfd's section vmas.  s_pie_base captured by init_backtrace_info
+	// is the executable's PIE relocation offset; 0 on non-PIE so this is
+	// a no-op there.  Library frames (libc, libwx, ...) come through with
+	// runtime addresses far outside amule's link-time vma range; after
+	// the subtraction they're either negative-wrapped to huge unsigned
+	// values or still way outside, and the section-bounds check below
+	// continues to skip them as it did before.
+	unsigned long address = (unsigned long)_address - s_pie_base;
 	if (address < vma) {
 		return;
 	}
