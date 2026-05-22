@@ -24,6 +24,8 @@
 //
 
 #include <cstdlib>			// Needed for std::abort()
+#include <cstdio>			// Needed for popen/pclose/fgets in the addr2line fallback
+#include <cstring>			// Needed for strlen in the addr2line fallback
 
 #include "config.h"			// Needed for HAVE_CXXABI and HAVE_EXECINFO
 
@@ -489,7 +491,32 @@ wxString get_backtrace(unsigned n)
 		// the even elements are the function names, and the odd elements
 		// are the line numbers.
 
-		hasLineNumberInfo = wxExecute(command, out) != -1;
+		// Use popen() rather than wxExecute() here.  GUI wxExecute(cmd,
+		// out) on Linux waits for the child via wxGUIAppTraits::
+		// WaitForChild, which runs a nested wx event loop -- and that
+		// loop dispatches whatever is pending in the wx event queue.
+		// If the assert that brought us into get_backtrace() came from
+		// a periodic event handler (e.g. OnCoreTimer), the nested loop
+		// fires the same handler again, re-enters wxASSERT, and the
+		// second-level wx assert handler can't run amule's reentrantly
+		// so it falls through to wxTrap()'s int3 -> SIGTRAP.  popen()
+		// is a plain fork+waitpid pipeline with no wx involvement, so
+		// the reentrance path doesn't exist.
+		FILE* pipe = popen((const char*)command.mb_str(), "r");
+		if (pipe) {
+			char line[1024];
+			while (fgets(line, sizeof(line), pipe)) {
+				size_t len = std::strlen(line);
+				while (len > 0
+					&& (line[len-1] == '\n' || line[len-1] == '\r')) {
+					line[--len] = '\0';
+				}
+				out.Add(wxConvLibc.cMB2WX(line));
+			}
+			hasLineNumberInfo = (pclose(pipe) != -1);
+		} else {
+			hasLineNumberInfo = false;
+		}
 	}
 
 #endif	/* HAVE_BFD / !HAVE_BFD */
