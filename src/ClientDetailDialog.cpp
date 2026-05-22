@@ -53,6 +53,11 @@ wxDialog(
 {
 	m_client = client;
 	wxSizer* content = clientDetails(this, true);
+	// The Close button uses ID_CLOSEWND rather than wxID_CANCEL, so
+	// wxDialog doesn't auto-bind Escape to it. Tell wxDialog to treat
+	// ID_CLOSEWND as the escape target so pressing Escape dismisses
+	// the dialog the same way clicking Close does.
+	SetEscapeId(ID_CLOSEWND);
 	OnInitDialog();
 	content->SetSizeHints(this);
 	content->Show(this, true);
