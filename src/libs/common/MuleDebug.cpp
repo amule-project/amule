@@ -175,25 +175,17 @@ wxString get_backtrace(unsigned n)
 
 #elif defined(__LINUX__)
 
-#ifdef HAVE_BFD
-
 // Do_not_auto_remove -- needed for dl_iterate_phdr on PIE-base lookup
 #include <link.h> // IWYU pragma: keep
 
-static bfd* s_abfd;
-static asymbol** s_symbol_list;
-static bool s_have_backtrace_symbols = false;
-static const char* s_file_name;
-static const char* s_function_name;
-static unsigned int s_line_number;
-static int s_found;
-
 // PIE relocation offset for the main executable -- subtracted from
-// runtime backtrace addresses before they're handed to bfd, which
-// expects link-time virtual addresses.  0 for non-PIE binaries.  See
-// init_backtrace_info() for the lookup and get_file_line_info() for
-// the application.
+// runtime backtrace addresses before they're handed to either bfd or
+// addr2line, both of which expect link-time virtual addresses.  0 for
+// non-PIE binaries.  Populated lazily by init_pie_base() so both the
+// bfd path (via init_backtrace_info()) and the addr2line fallback
+// (via get_backtrace()) can rely on it.
 static intptr_t s_pie_base = 0;
+static bool s_pie_base_init = false;
 
 static int find_pie_base_cb(struct dl_phdr_info *info, size_t /*size*/, void *data)
 {
@@ -208,6 +200,24 @@ static int find_pie_base_cb(struct dl_phdr_info *info, size_t /*size*/, void *da
 	}
 	return 0;
 }
+
+static void init_pie_base()
+{
+	if (!s_pie_base_init) {
+		dl_iterate_phdr(find_pie_base_cb, &s_pie_base);
+		s_pie_base_init = true;
+	}
+}
+
+#ifdef HAVE_BFD
+
+static bfd* s_abfd;
+static asymbol** s_symbol_list;
+static bool s_have_backtrace_symbols = false;
+static const char* s_file_name;
+static const char* s_function_name;
+static unsigned int s_line_number;
+static int s_found;
 
 
 /*
@@ -277,14 +287,13 @@ void init_backtrace_info()
 
 	s_have_backtrace_symbols = (get_backtrace_symbols(s_abfd, &s_symbol_list) > 0);
 
-	// Capture the executable's load-time PIE offset.  Without this the
-	// runtime PC values backtrace() returns (e.g. 0x55e7c40e4e60) are
-	// outside bfd's link-time section vmas (e.g. 0x1000-based on PIE
-	// binaries) so the section-bounds check in get_file_line_info
-	// rejects every address and every amule frame symbolicates to "??".
-	// Modern distros default to PIE for security; non-PIE binaries keep
-	// working too because dlpi_addr is 0 for them.
-	dl_iterate_phdr(find_pie_base_cb, &s_pie_base);
+	// Same PIE-offset lookup the addr2line fallback uses; without
+	// translating backtrace() runtime PCs to link-time addresses,
+	// bfd's section-bounds check would reject every amule frame and
+	// every amule frame symbolicates to "??" on modern PIE-by-default
+	// distros.  init_pie_base() is idempotent; non-PIE binaries get
+	// s_pie_base = 0 so the eventual subtraction is a no-op.
+	init_pie_base();
 }
 
 
@@ -458,9 +467,24 @@ wxString get_backtrace(unsigned n)
 
 #else	/* !HAVE_BFD */
 	if (wxThread::IsMain()) {
+		// Translate runtime PCs to link-time addresses before handing
+		// them to addr2line, otherwise PIE binaries (the default on
+		// modern distros) return "??" for every amule frame -- the
+		// same PIE bug the bfd path had before #677, exposed here in
+		// the no-libbfd fallback.  init_pie_base() leaves s_pie_base
+		// at 0 for non-PIE binaries, so this loop is a no-op there.
+		init_pie_base();
+		wxString translatedAddresses;
+		for (int i = 0; i < num_entries; ++i) {
+			unsigned long addr = 0;
+			address[i].ToULong(&addr, 0);
+			translatedAddresses += CFormat("0x%lx ")
+				% static_cast<unsigned long>(addr - s_pie_base);
+		}
+
 		wxString command;
 		command << "addr2line -C -f -s -e /proc/" <<
-		getpid() << "/exe " << AllAddresses;
+		getpid() << "/exe " << translatedAddresses;
 		// The output of the command is this wxArrayString, in which
 		// the even elements are the function names, and the odd elements
 		// are the line numbers.
