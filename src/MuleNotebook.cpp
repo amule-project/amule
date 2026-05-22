@@ -165,7 +165,18 @@ void CMuleNotebook::OnRMButton(wxMouseEvent& event)
 		evt.m_x = point.x;
 		evt.m_y = point.y;
 
-		m_popup_widget->GetEventHandler()->AddPendingEvent( evt );
+		// Synchronous dispatch: the parent's handler is expected to
+		// call PopupMenu(), which on wxGTK relies on the pointer
+		// grab from the current right-button-down event still being
+		// active. AddPendingEvent queues the event for delivery on
+		// the next event-loop cycle, and in amulegui the 1 Hz EC
+		// poll-timer adds enough latency between the queue insert
+		// and dispatch that the user's button-up arrives first
+		// ~80 % of the time -- PopupMenu then opens and is
+		// immediately dismissed by the late button-up, looking
+		// like the menu "doesn't latch".  ProcessEvent runs the
+		// handler inline while the grab is fresh (#680).
+		m_popup_widget->GetEventHandler()->ProcessEvent( evt );
 	} else {
 		wxMenu menu(_("Close"));
 		menu.Append(MP_CLOSE_TAB, wxString(_("Close tab")));
