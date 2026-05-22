@@ -177,7 +177,8 @@ wxString get_backtrace(unsigned n)
 
 #ifdef HAVE_BFD
 
-#include <link.h> // Do_not_auto_remove -- needed for dl_iterate_phdr on PIE-base lookup
+// Do_not_auto_remove -- needed for dl_iterate_phdr on PIE-base lookup
+#include <link.h> // IWYU pragma: keep
 
 static bfd* s_abfd;
 static asymbol** s_symbol_list;
