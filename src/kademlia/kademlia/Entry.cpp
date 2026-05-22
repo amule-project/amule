@@ -110,6 +110,14 @@ wxString CEntry::GetStrTagValue(const wxString& tagname) const
 
 void CEntry::SetFileName(const wxString& name)
 {
+	// Empty filenames are protocol garbage -- a peer publishing a Kad note
+	// or keyword with an empty FT_FILENAME tag should never end up in
+	// m_filenames at all.  Without this guard the empty entry takes the
+	// popularity slot, GetCommonFileName returns "" and trips its own
+	// !empty-or-list-empty invariant on the next call (issue #674).
+	if (name.IsEmpty()) {
+		return;
+	}
 	if (!m_filenames.empty()) {
 		wxFAIL;
 		m_filenames.clear();
@@ -402,6 +410,13 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 		bool duplicate = false;
 		for (FileNameList::iterator it = fromEntry->m_filenames.begin(); it != fromEntry->m_filenames.end(); ++it) {
 			sFileNameEntry nameToCopy = *it;
+			// Defence-in-depth: even though SetFileName now rejects empty
+			// names, an older on-disk Kad index could still hold one from
+			// before that guard landed.  Drop it here too rather than
+			// propagating into our m_filenames.
+			if (nameToCopy.m_filename.IsEmpty()) {
+				continue;
+			}
 			if (currentName.m_filename.CmpNoCase(nameToCopy.m_filename) == 0) {
 				// the filename of our new entry matches with our old, increase the popularity index for the old one
 				duplicate = true;
@@ -411,7 +426,10 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 			}
 			m_filenames.push_back(nameToCopy);
 		}
-		if (!duplicate) {
+		if (!duplicate && !currentName.m_filename.IsEmpty()) {
+			// Skip the synthetic currentName = { "", 0 } default that
+			// happens when m_filenames was unexpectedly empty above
+			// (wxASSERT fires in Debug, but Release keeps going).
 			m_filenames.push_back(currentName);
 		}
 
