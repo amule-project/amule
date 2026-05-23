@@ -45,6 +45,14 @@ IMPLEMENT_APP ( WxCas )
 bool
 WxCas::OnInit ()
 {
+	// Match amule (CamuleGuiBase, amule-gui.cpp): wxWidgets 3.2 added
+	// strict assertions for redundant sizer-flag combinations
+	// (e.g. Expand() + Center()), which the wxCas UI uses pervasively
+	// and which become fatal on distros that ship a build asserting on
+	// them (#693, Fedora 43 / wx 3.2.8). Disable the checks here until
+	// the flag uses are cleaned up.
+	wxSizerFlags::DisableConsistencyChecks();
+
 	// Used to tell wxCas to use aMule catalog
 	m_locale.Init();
 	m_locale.AddCatalog( PACKAGE );
