@@ -680,8 +680,16 @@ static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFile
 
 	encoders.UpdateEncoders();
 
-	for (uint32 i = 0; i < theApp->sharedfiles->GetFileCount(); ++i) {
-		const CKnownFile *cur_file = theApp->sharedfiles->GetFileByIndex(i);
+	// Snapshot the shared-file list once. GetFileByIndex() does an O(N)
+	// std::advance over the underlying std::map and re-acquires list_mut
+	// on every call -- looping it N times is O(N^2) and pegs the main
+	// thread for tens of minutes on users with tens of thousands of
+	// shared files (issue #666).
+	std::vector<CKnownFile*> snapshot;
+	theApp->sharedfiles->CopyFileList(snapshot);
+	for (std::vector<CKnownFile*>::const_iterator it = snapshot.begin();
+		it != snapshot.end(); ++it) {
+		const CKnownFile *cur_file = *it;
 
 		if ( !cur_file || (!queryitems.empty() && !queryitems.count(cur_file->ECID())) ) {
 			continue;
@@ -810,8 +818,14 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CFi
 
 	encoders.UpdateEncoders();
 
-	for (unsigned int i = 0; i < theApp->downloadqueue->GetFileCount(); i++) {
-		CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
+	// Snapshot once to avoid re-locking downloadqueue's mutex on every
+	// iteration (see Get_EC_Response_GetSharedFiles for the matching
+	// shared-files fix in issue #666).
+	std::vector<CPartFile*> snapshot;
+	theApp->downloadqueue->CopyFileList(snapshot);
+	for (std::vector<CPartFile*>::const_iterator it = snapshot.begin();
+		it != snapshot.end(); ++it) {
+		CPartFile *cur_file = *it;
 
 		if ( !queryitems.empty() && !queryitems.count(cur_file->ECID()) ) {
 			continue;
@@ -1989,8 +2003,11 @@ CECPacket *ECStatusMsgSource::GetNextPacket()
 */
 ECPartFileMsgSource::ECPartFileMsgSource()
 {
-	for (unsigned int i = 0; i < theApp->downloadqueue->GetFileCount(); i++) {
-		CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
+	std::vector<CPartFile*> snapshot;
+	theApp->downloadqueue->CopyFileList(snapshot);
+	for (std::vector<CPartFile*>::const_iterator it = snapshot.begin();
+		it != snapshot.end(); ++it) {
+		CPartFile *cur_file = *it;
 		PARTFILE_STATUS status = { true, false, false, false, true, cur_file };
 		m_dirty_status[cur_file->GetFileHash()] = status;
 	}
@@ -2060,8 +2077,11 @@ CECPacket *ECPartFileMsgSource::GetNextPacket()
  */
 ECKnownFileMsgSource::ECKnownFileMsgSource()
 {
-	for (unsigned int i = 0; i < theApp->sharedfiles->GetFileCount(); i++) {
-		const CKnownFile *cur_file = theApp->sharedfiles->GetFileByIndex(i);
+	std::vector<CKnownFile*> snapshot;
+	theApp->sharedfiles->CopyFileList(snapshot);
+	for (std::vector<CKnownFile*>::const_iterator it = snapshot.begin();
+		it != snapshot.end(); ++it) {
+		const CKnownFile *cur_file = *it;
 		KNOWNFILE_STATUS status = { true, false, false, true, cur_file };
 		m_dirty_status[cur_file->GetFileHash()] = status;
 	}
