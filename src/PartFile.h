@@ -229,7 +229,7 @@ public:
 
 	bool	PreviewAvailable();
 	uint16	GetAvailablePartCount() const	{ return m_availablePartsCount; }
-	uint32	GetLastAnsweredTime() const	{ return m_ClientSrcAnswered; }
+	uint64	GetLastAnsweredTime() const	{ return m_ClientSrcAnswered; }
 	void	SetLastAnsweredTime();
 	void	SetLastAnsweredTimeTimeout();
 	uint64	GetLostDueToCorruption() const	{ return m_iLostDueToCorruption; }
@@ -382,31 +382,31 @@ private:
 	uint8   m_iDownPriority;
 	bool    m_bAutoDownPriority;
 	uint8	status;
-	uint32	lastpurgetime;
-	uint32	m_LastNoNeededCheck;
+	uint64	lastpurgetime;
+	uint64	m_LastNoNeededCheck;
 	CGapList m_gaplist;
 	CReqBlockPtrList m_requestedblocks_list;
 	double	percentcompleted;
 	std::list<uint16> m_corrupted_list;
 	uint16	m_availablePartsCount;
-	uint32	m_ClientSrcAnswered;
+	uint64	m_ClientSrcAnswered;
 	bool	m_bPercentUpdated;
 
 	void	PerformFileComplete();
 
-	uint32		m_lastRefreshedDLDisplay;
+	uint64		m_lastRefreshedDLDisplay;
 
 	// Buffered data to be written
 	std::list<class PartFileBufferedData*> m_BufferedData_list;
 
 	uint32 m_nTotalBufferData;
-	uint32 m_nLastBufferFlushTime;
+	uint64 m_nLastBufferFlushTime;
 	std::atomic<int32> m_iWrites;	// eMule ref: count of items queued to write thread (not yet PB_WRITTEN)
 	std::vector<bool> m_aChangedPart;	// eMule ref: persistent tracking of parts needing hash verification
 
 	// GetTickCount() at last WriteToBuffer; FlushBuffer's Phase 3
 	// quiescent guard reads this to defer hashing during active receive.
-	uint32 m_nLastBlockReceivedTick = 0;
+	uint64 m_nLastBlockReceivedTick = 0;
 
 	// Set in ~CPartFile so Phase 3 skips its SafeAddKFile branch
 	// during destruction (avoids re-sharing a partfile being deleted).
@@ -415,7 +415,7 @@ private:
 	// Tick (GetTickCount) of the last successful SavePartFile.
 	// Used together with m_statsDirty to throttle soft-stat persistence
 	// to the STATS_HEARTBEAT_MS cadence (see FlushBuffer).
-	uint32 m_lastMetSaveTick = 0;
+	uint64 m_lastMetSaveTick = 0;
 
 	// Soft-dirty bit for upload-stat counters that increment every time
 	// a peer requests / accepts / transfers a chunk
@@ -476,7 +476,7 @@ private:
 	SourceSet	m_SrcList;
 	SourceSet	m_A4AFsrclist;
 	bool		m_hashsetneeded;
-	uint32		m_lastsearchtime;
+	uint64		m_lastsearchtime;
 	bool		m_localSrcReqQueued;
 
 #ifdef CLIENT_GUI
@@ -511,8 +511,8 @@ public:
 	void AddA4AFSource(CUpDownClient* src)		{ m_A4AFsrclist.insert(CCLIENTREF(src, "A4AFSource")); }
 	bool RemoveA4AFSource(CUpDownClient* src)	{ return (m_A4AFsrclist.erase(CCLIENTREF(src, "")) > 0); }
 
-	uint32 GetLastSearchTime() const			{ return m_lastsearchtime; }
-	void SetLastSearchTime(uint32 time)			{ m_lastsearchtime = time; }
+	uint64 GetLastSearchTime() const			{ return m_lastsearchtime; }
+	void SetLastSearchTime(uint64 time)			{ m_lastsearchtime = time; }
 
 	void AddDownloadingSource(CUpDownClient* client);
 
@@ -539,7 +539,7 @@ private:
 	CClientRefList m_downloadingSourcesList;
 
 	/* Kad Stuff */
-	uint32	m_LastSearchTimeKad;
+	uint64	m_LastSearchTimeKad;
 	uint8	m_TotalSearchesKad;
 
 friend class CKnownFilesRem;

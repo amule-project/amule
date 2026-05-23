@@ -307,7 +307,7 @@ void* UploadBandwidthThrottler::Entry()
 {
 	const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
 
-	uint32 lastLoopTick = GetTickCountFullRes();
+	uint64 lastLoopTick = GetTickCount64();
 	// Bytes to spend in current cycle. If we spend more this becomes negative and causes a wait next time.
 	sint32 bytesToSpend = 0;
 	uint32 allowedDataRate;
@@ -315,7 +315,7 @@ void* UploadBandwidthThrottler::Entry()
 	uint32 extraSleepTime = TIME_BETWEEN_UPLOAD_LOOPS;
 
 	while (m_doRun && !TestDestroy()) {
-		uint32 timeSinceLastLoop = GetTickCountFullRes() - lastLoopTick;
+		uint64 timeSinceLastLoop = GetTickCount64() - lastLoopTick;
 
 		// Calculate data rate
 		if (thePrefs::GetMaxUpload() == UNLIMITED) {
@@ -334,7 +334,7 @@ void* UploadBandwidthThrottler::Entry()
 		}
 
 
-		uint32 sleepTime;
+		uint64 sleepTime;
 		if (bytesToSpend < 1) {
 			// We have sent more than allowed in last cycle so we have to wait now
 			// until we can send at least 1 byte.
@@ -357,7 +357,7 @@ void* UploadBandwidthThrottler::Entry()
 			break;
 		}
 
-		const uint32 thisLoopTick = GetTickCountFullRes();
+		const uint64 thisLoopTick = GetTickCount64();
 		timeSinceLastLoop = thisLoopTick - lastLoopTick;
 		lastLoopTick = thisLoopTick;
 

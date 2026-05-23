@@ -708,7 +708,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	wxCHECK(!IsPartFile(), false);
 
 	// date
-	file->WriteUInt32(m_lastDateChanged);
+	file->WriteUInt32((uint32)m_lastDateChanged);
 	// hashset
 	file->WriteHash(m_abyFileHash);
 

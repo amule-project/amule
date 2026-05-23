@@ -496,7 +496,7 @@ void CKeyEntry::ReCalculateTrustValue()
 	// a search request rating > 1
 	wxCHECK_RET(m_publishingIPs != NULL, "No publishing IPs?");
 
-	m_lastTrustValueCalc = ::GetTickCount();
+	m_lastTrustValueCalc = ::GetTickCount64();
 	m_trustValue = 0;
 	wxASSERT(!m_publishingIPs->empty());
 	for (PublishingIPList::iterator it = m_publishingIPs->begin(); it != m_publishingIPs->end(); ++it) {
@@ -518,7 +518,7 @@ void CKeyEntry::ReCalculateTrustValue()
 double CKeyEntry::GetTrustValue()
 {
 	// update if last calculation is too old, will assert if this entry is not supposed to have a trustvalue
-	if (::GetTickCount() - m_lastTrustValueCalc > MIN2MS(10)) {
+	if (::GetTickCount64() - m_lastTrustValueCalc > MIN2MS(10)) {
 		ReCalculateTrustValue();
 	}
 	return m_trustValue;

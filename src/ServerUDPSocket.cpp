@@ -187,7 +187,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, uint32 ip, 
 
 				update->SetChallenge(0);
 				update->SetCryptPingReplyPending(false);
-				uint32 tNow = ::GetTickCount();
+				uint64 tNow = ::GetTickCount64();
 				update->SetLastPingedTime(tNow - (rand() % HR2S(1))); // if we used Obfuscated ping, we still need to reset the time properly
 
 				uint32 cur_user = packet.ReadUInt32();
@@ -219,7 +219,8 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, uint32 ip, 
 					}
 				}
 
-				update->SetPing( ::GetTickCount() - update->GetLastPinged() );
+				//SetPing takes uint32 as parameter, enough for the ping
+				update->SetPing( ::GetTickCount64() - update->GetLastPinged() );
 				update->SetUserCount( cur_user );
 				update->SetFileCount( cur_files );
 				update->SetMaxUsers( cur_maxusers );
@@ -341,7 +342,7 @@ void CServerUDPSocket::OnReceiveError(int errorCode, uint32 ip, uint16 port)
 
 	// If we are not currently pinging this server, increase the failure counter
 	CServer* pServer = theApp->serverlist->GetServerByIPUDP(ip, port, true);
-	if (pServer && !pServer->GetCryptPingReplyPending() && GetTickCount() - pServer->GetLastPinged() >= SEC2MS(30)) {
+	if (pServer && !pServer->GetCryptPingReplyPending() && GetTickCount64() - pServer->GetLastPinged() >= SEC2MS(30)) {
 		pServer->AddFailedCount();
 		Notify_ServerRefresh(pServer);
 	}
@@ -413,7 +414,8 @@ void CServerUDPSocket::SendQueue()
 			// This not an ip but a hostname. Resolve it.
 			CServer* update = theApp->serverlist->GetServerByAddress(item.addr, item.port);
 			if (update) {
-				if (update->GetLastDNSSolve() + DNS_SOLVE_TIME < ::GetTickCount64()) {
+				const uint64 now = ::GetTickCount64();
+				if (update->GetLastDNSSolve() + DNS_SOLVE_TIME < now) {
 					// Its time for a new check.
 					CAsyncDNS* dns = new CAsyncDNS(item.addr, DNS_UDP, theApp, this);
 					if ((dns->Create() != wxTHREAD_NO_ERROR) || (dns->Run() != wxTHREAD_NO_ERROR)) {
@@ -422,7 +424,7 @@ void CServerUDPSocket::SendQueue()
 						continue;
 					}
 					update->SetDNSError(false);
-					update->SetLastDNSSolve(::GetTickCount64());
+					update->SetLastDNSSolve(now);
 					// Wait for the DNS query to be resolved
 					return;
 				} else {

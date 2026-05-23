@@ -37,13 +37,13 @@ namespace Kademlia
 
 struct TrackPackets_Struct {
 	uint32_t ip;
-	uint32_t inserted;
+	uint64_t inserted;
 	uint8_t  opcode;
 };
 
 struct TrackChallenge_Struct {
 	uint32_t	ip;
-	uint32_t	inserted;
+	uint64_t	inserted;
 	uint8_t		opcode;
 	CUInt128	contactID;
 	CUInt128	challenge;
@@ -52,7 +52,7 @@ struct TrackChallenge_Struct {
 struct TrackPacketsIn_Struct {
 	struct TrackedRequestIn_Struct {
 		uint32_t m_count;
-		uint32_t m_firstAdded;
+		uint64_t m_firstAdded;
 		uint8_t	 m_opcode;
 		bool	 m_dbgLogged;
 	};
@@ -64,7 +64,7 @@ struct TrackPacketsIn_Struct {
 	}
 
 	uint32_t m_ip;
-	uint32_t m_lastExpire;
+	uint64_t m_lastExpire;
 	typedef std::list<TrackedRequestIn_Struct>	TrackedRequestList;
 	TrackedRequestList	m_trackedRequests;
 };
@@ -92,7 +92,7 @@ class CPacketTracking
 	TrackedPacketList	listTrackedRequests;
 	TrackChallengeList	listChallengeRequests;
 	TrackedPacketInMap	m_mapTrackPacketsIn;
-	uint32_t		lastTrackInCleanup;
+	uint64_t		lastTrackInCleanup;
 };
 
 } // namespace Kademlia

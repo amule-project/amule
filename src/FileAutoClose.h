@@ -183,7 +183,7 @@ private:
 	uint64 m_size;
 
 	//! Last access time (s)
-	uint32 m_lastAccess;
+	uint64 m_lastAccess;
 };
 
 

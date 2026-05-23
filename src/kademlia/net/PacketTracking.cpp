@@ -52,7 +52,7 @@ void CPacketTracking::AddTrackedOutPacket(uint32_t ip, uint8_t opcode)
 	if (!IsTrackedOutListRequestPacket(opcode)) {
 		return;
 	}
-	uint32_t now = ::GetTickCount();
+	uint64_t now = ::GetTickCount64();
 	TrackPackets_Struct track = { ip, now, opcode };
 	listTrackedRequests.push_front(track);
 	while (!listTrackedRequests.empty()) {
@@ -93,7 +93,7 @@ bool CPacketTracking::IsOnOutTrackList(uint32_t ip, uint8_t opcode, bool dontRem
 		wxFAIL;	// code error / bug
 	}
 #endif
-	uint32_t now = ::GetTickCount();
+	uint64_t now = ::GetTickCount64();
 	for (TrackedPacketList::iterator it = listTrackedRequests.begin(); it != listTrackedRequests.end(); ++it) {
 		if (it->ip == ip && it->opcode == opcode && now - it->inserted < SEC2MS(180)) {
 			if (!dontRemove) {
@@ -167,7 +167,7 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32_t ip, uint8_t opcode, bo
 	}
 
 	const uint32_t secondsPerPacket = 60 / allowedPacketsPerMinute;
-	const uint32_t currentTick = ::GetTickCount();
+	const uint64_t currentTick = ::GetTickCount64();
 
 	// time for cleaning up?
 	if (currentTick - lastTrackInCleanup > MIN2MS(12)) {
@@ -243,7 +243,7 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32_t ip, uint8_t opcode, bo
 
 void CPacketTracking::InTrackListCleanup()
 {
-	const uint32_t currentTick = ::GetTickCount();
+	const uint64_t currentTick = ::GetTickCount64();
 	DEBUG_ONLY( const uint32_t dbgOldSize = m_mapTrackPacketsIn.size(); )
 	lastTrackInCleanup = currentTick;
 	for (TrackedPacketInMap::iterator it = m_mapTrackPacketsIn.begin(); it != m_mapTrackPacketsIn.end();) {
@@ -258,7 +258,7 @@ void CPacketTracking::InTrackListCleanup()
 
 void CPacketTracking::AddLegacyChallenge(const CUInt128& contactID, const CUInt128& challengeID, uint32_t ip, uint8_t opcode)
 {
-	uint32_t now = ::GetTickCount();
+	uint64_t now = ::GetTickCount64();
 	TrackChallenge_Struct sTrack = { ip, now, opcode, contactID, challengeID };
 	listChallengeRequests.push_front(sTrack);
 	while (!listChallengeRequests.empty()) {
@@ -273,7 +273,7 @@ void CPacketTracking::AddLegacyChallenge(const CUInt128& contactID, const CUInt1
 
 bool CPacketTracking::IsLegacyChallenge(const CUInt128& challengeID, uint32_t ip, uint8_t opcode, CUInt128& contactID)
 {
-	uint32_t now = ::GetTickCount();
+	uint64_t now = ::GetTickCount64();
 	DEBUG_ONLY( bool warning = false; )
 	for (TrackChallengeList::iterator it = listChallengeRequests.begin(); it != listChallengeRequests.end();) {
 		TrackChallengeList::iterator it2 = it++;
@@ -298,7 +298,7 @@ bool CPacketTracking::IsLegacyChallenge(const CUInt128& challengeID, uint32_t ip
 
 bool CPacketTracking::HasActiveLegacyChallenge(uint32_t ip) const
 {
-	uint32_t now = ::GetTickCount();
+	uint64_t now = ::GetTickCount64();
 	for (TrackChallengeList::const_iterator it = listChallengeRequests.begin(); it != listChallengeRequests.end(); ++it) {
 		if (it->ip == ip && now - it->inserted <= SEC2MS(180)) {
 			return true;

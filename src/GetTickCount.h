@@ -27,23 +27,15 @@
 #ifndef GETTICKCOUNT_H
 #define GETTICKCOUNT_H
 
-#include "Types.h"		// Needed for uint32
+#include "Types.h"		// Needed for uint32, uint64
 
-#ifndef _WIN32
-	uint32 GetTickCount();
-#else
-	// System GetTickcount is lowres, so use fullres
-	#define GetTickCount GetTickCountFullRes
+#ifdef _WIN32
 	// GetTickCount64 is a system function in Vista so rename it
 	#define GetTickCount64 GetTickCount_64
 #endif
 
-// Ideally, same than GetTickCount.
-// However, on GUI, GetTickCount does only work in
-// 20 msecs increment, and some classes need better.
 
-uint32 GetTickCountFullRes();
-
+//return units are milliseconds, not seconds!!!
 uint64 GetTickCount64();
 
 // Functions used to init the timer on GUI
@@ -53,6 +45,7 @@ void StartTickTimer();
 void StopTickTimer();
 
 // A cheap global time (in s) without any function calls updated in OnCoreTimer
+// It counts from app startup, so uint32 shall be enough for a 136 years long session
 extern uint32 TheTime;
 
 #endif // GETTICKCOUNT_H

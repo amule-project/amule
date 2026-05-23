@@ -31,8 +31,8 @@
 
 #define	CLEANUPTIME			MIN2MS(60)
 
-#define BLOCKTIME		(::GetTickCount() + (m_bGlobalList ? MIN2MS(30) : MIN2MS(45)))
-#define BLOCKTIMEFW		(::GetTickCount() + (m_bGlobalList ? MIN2MS(45) : MIN2MS(60)))
+#define BLOCKTIME		(::GetTickCount64() + (m_bGlobalList ? MIN2MS(30) : MIN2MS(45)))
+#define BLOCKTIMEFW		(::GetTickCount64() + (m_bGlobalList ? MIN2MS(45) : MIN2MS(60)))
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //// CDeadSource
@@ -48,13 +48,13 @@ CDeadSourceList::CDeadSource::CDeadSource(uint32 ID, uint16 Port, uint32 ServerI
 }
 
 
-void CDeadSourceList::CDeadSource::SetTimeout( uint32 t )
+void CDeadSourceList::CDeadSource::SetTimeout( uint64 t )
 {
 	m_TimeStamp = t;
 }
 
 
-uint32 CDeadSourceList::CDeadSource::GetTimeout() const
+uint64 CDeadSourceList::CDeadSource::GetTimeout() const
 {
 	return m_TimeStamp;
 }
@@ -81,7 +81,7 @@ bool CDeadSourceList::CDeadSource::operator==(const CDeadSource& other) const
 
 CDeadSourceList::CDeadSourceList(bool isGlobal)
 {
-	m_dwLastCleanUp = ::GetTickCount();
+	m_dwLastCleanUp = ::GetTickCount64();
 	m_bGlobalList = isGlobal;
 }
 
@@ -106,7 +106,7 @@ bool CDeadSourceList::IsDeadSource(const CUpDownClient* client)
 	for ( ; range.first != range.second; range.first++ ) {
 		if ( range.first->second == source ) {
 			// Check if the entry is still valid
-			if ( range.first->second.GetTimeout() > GetTickCount() ) {
+			if ( range.first->second.GetTimeout() > GetTickCount64() ) {
 				return true;
 			}
 
@@ -145,7 +145,7 @@ void CDeadSourceList::AddDeadSource( const CUpDownClient* client )
 
 	// Check if we should cleanup the list. This is
 	// done to avoid a buildup of stale entries.
-	if ( GetTickCount() - m_dwLastCleanUp > CLEANUPTIME ) {
+	if ( GetTickCount64() - m_dwLastCleanUp > CLEANUPTIME ) {
 		CleanUp();
 	}
 }
@@ -153,7 +153,7 @@ void CDeadSourceList::AddDeadSource( const CUpDownClient* client )
 
 void CDeadSourceList::CleanUp()
 {
-	m_dwLastCleanUp = ::GetTickCount();
+	m_dwLastCleanUp = ::GetTickCount64();
 
 	DeadSourceIterator it = m_sources.begin();
 	for ( ; it != m_sources.end(); ) {

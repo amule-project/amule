@@ -160,7 +160,7 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect, bool bN
 	m_lstOpenSockets.push_back(newsocket);
 	newsocket->ConnectToServer(server, bNoCrypt);
 
-	connectionattemps[GetTickCount()] = newsocket;
+	connectionattemps[GetTickCount64()] = newsocket;
 }
 
 
@@ -454,7 +454,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender)
 
 void CServerConnect::CheckForTimeout()
 {
-	uint32 dwCurTick = GetTickCount();
+	uint64 dwCurTick = GetTickCount64();
 
 	ServerSocketMap::iterator it = connectionattemps.begin();
 	while ( it != connectionattemps.end() ){
@@ -465,7 +465,7 @@ void CServerConnect::CheckForTimeout()
 		}
 
 		if ( dwCurTick - it->first > CONSERVTIMEOUT) {
-			uint32 key = it->first;
+			uint64 key = it->first;
 			CServerSocket* value = it->second;
 			++it;
 			if (!value->IsSolving()) {
@@ -585,10 +585,10 @@ bool CServerConnect::IsLocalServer(uint32 dwIP, uint16 nPort)
 
 void CServerConnect::KeepConnectionAlive()
 {
-	uint32 dwServerKeepAliveTimeout = thePrefs::GetServerKeepAliveTimeout();
+	uint64 dwServerKeepAliveTimeout = thePrefs::GetServerKeepAliveTimeout();
 	if (dwServerKeepAliveTimeout && connected && connectedsocket &&
 	connectedsocket->connectionstate == CS_CONNECTED &&
-	GetTickCount() - connectedsocket->GetLastTransmission() >= dwServerKeepAliveTimeout) {
+	GetTickCount64() - connectedsocket->GetLastTransmission() >= dwServerKeepAliveTimeout) {
 		// "Ping" the server if the TCP connection was not used for the specified interval with
 		// an empty publish files packet -> recommended by lugdunummaster himself!
 

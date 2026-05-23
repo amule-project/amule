@@ -97,7 +97,6 @@ private:
 	CInternalList::const_iterator	m_serverpos;
 	CInternalList::const_iterator	m_statserverpos;
 
-	uint32		m_nLastED2KServerLinkCheck;// emanuelw(20030924) added
 	wxString	m_URLUpdate;
 	bool		m_initialized;
 };

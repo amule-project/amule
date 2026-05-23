@@ -60,10 +60,10 @@ public:
 	// CUpDownClient::TickDownloadAndMeasure.
 	void	WakeIfPaused();
 
-	virtual uint32	GetTimeOut() const;
-	virtual void	SetTimeOut(uint32 uTimeOut);
+	virtual uint64	GetTimeOut() const;
+	virtual void	SetTimeOut(uint64 uTimeOut);
 
-    uint32	GetLastCalledSend() { return lastCalledSend; }
+    uint64	GetLastCalledSend() { return lastCalledSend; }
 
     uint64	GetSentBytesCompleteFileSinceLastCallAndReset();
     uint64	GetSentBytesPartFileSinceLastCallAndReset();
@@ -150,9 +150,9 @@ private:
     bool m_currentPackageIsFromPartFile;
 
 	bool	m_bAccelerateUpload;
-	uint32	lastCalledSend;
-    uint32	lastSent;
-	uint32	lastFinishedStandard;
+	uint64	lastCalledSend;
+	uint64	lastSent;
+	uint64	lastFinishedStandard;
 
     uint32 m_actualPayloadSize;
     uint32 m_actualPayloadSizeSent;

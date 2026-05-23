@@ -112,14 +112,14 @@ bool CClientTCPSocket::InitNetworkData()
 
 void CClientTCPSocket::ResetTimeOutTimer()
 {
-	timeout_timer = ::GetTickCount();
+	timeout_timer = ::GetTickCount64();
 }
 
 
 bool CClientTCPSocket::CheckTimeOut()
 {
 	// 0.42x
-	uint32 uTimeout = GetTimeOut();
+	uint64 uTimeout = GetTimeOut();
 	if (m_client) {
 
 		if (m_client->GetKadState() == KS_CONNECTED_BUDDY) {
@@ -141,8 +141,9 @@ bool CClientTCPSocket::CheckTimeOut()
 		}
 	}
 
-	if (::GetTickCount() - timeout_timer > uTimeout){
-		timeout_timer = ::GetTickCount();
+	uint64 now = ::GetTickCount64();
+	if (now - timeout_timer > uTimeout){
+		timeout_timer = now;
 		Disconnect("Timeout");
 		return true;
 	}
@@ -1088,7 +1089,7 @@ bool CClientTCPSocket::ProcessExtPacket(const uint8_t* buffer, uint32 size, uint
 						//Although this shouldn't happen, it's a just in case to any Mods that mess with version numbers.
 
 						if (byRequestedVersion > 0 || m_client->GetSourceExchange1Version() > 1) {
-							uint32 dwTimePassed = ::GetTickCount() - m_client->GetLastSrcReqTime() + CONNECTION_LATENCY;
+							uint64 dwTimePassed = ::GetTickCount64() - m_client->GetLastSrcReqTime() + CONNECTION_LATENCY;
 							bool bNeverAskedBefore = m_client->GetLastSrcReqTime() == 0;
 							if(
 									//if not complete and file is rare
@@ -1403,7 +1404,7 @@ bool CClientTCPSocket::ProcessExtPacket(const uint8_t* buffer, uint32 size, uint
 					// part status which may get cleared with the call of 'SetUploadFileID'.
 					m_client->SetUploadFileID(file);
 
-					uint32 dwTimePassed = ::GetTickCount() - m_client->GetLastSrcReqTime() + CONNECTION_LATENCY;
+					uint64 dwTimePassed = ::GetTickCount64() - m_client->GetLastSrcReqTime() + CONNECTION_LATENCY;
 					bool bNeverAskedBefore = m_client->GetLastSrcReqTime() == 0;
 					if(
 					//if not complete and file is rare, allow once every 40 minutes

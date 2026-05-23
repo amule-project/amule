@@ -36,7 +36,7 @@
 #include "CommentDialogLst.h"	// Needed for CCommentDialogLst
 #include "DataToText.h"		// Needed for PriorityToStr
 #include "FileDetailDialog.h"	// Needed for CFileDetailDialog
-#include "GetTickCount.h"	// Needed for GetTickCount
+#include "GetTickCount.h"	// Needed for GetTickCount64
 #include "GuiEvents.h"		// Needed for CoreNotify_*
 #ifdef ENABLE_IP2COUNTRY
 	#include "IP2Country.h"	// Needed for IP2Country
@@ -82,7 +82,7 @@ struct ClientCtrlItem_Struct
 
 	void SetType(SourceItemType type) { m_type = type; }
 
-	uint32		dwUpdated;
+	uint64		dwUpdated;
 	wxBitmap*	status;
 
 private:
@@ -902,7 +902,7 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 				dc->SetClippingRegion(rect.GetX(), rect.GetY() + 1, iWidth, iHeight);
 
 				if ( item->GetType() != A4AF_SOURCE ) {
-					uint32 dwTicks = GetTickCount();
+					uint64 dwTicks = GetTickCount64();
 
 					wxMemoryDC cdcStatus;
 

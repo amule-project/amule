@@ -28,7 +28,7 @@
 #include <common/Format.h>		// Needed for CFormat
 
 #include "amule.h"			// Needed for theApp
-#include "GetTickCount.h"		// Needed for GetTickCountFullRes
+#include "GetTickCount.h"		// Needed for GetTickCount64
 #include "Logger.h"
 #include "PartFile.h"
 
@@ -113,7 +113,7 @@ void* CPartFileHashThread::Entry()
 		for (std::list<HashJob>::iterator it = workList.begin();
 			 it != workList.end() && m_bRun; ++it)
 		{
-			const uint32 startTick = GetTickCountFullRes();
+			const uint64 startTick = GetTickCount64();
 
 			// CPartFile::m_pendingHashes was incremented before enqueue
 			// and is the gate that ~CPartFile waits on, so the file
@@ -133,8 +133,8 @@ void* CPartFileHashThread::Entry()
 				std::lock_guard<std::mutex> lock(it->pFile->m_hpartfileMutex);
 				ok = it->pFile->HashSinglePart(it->partNumber);
 			}
-
-			const uint32 elapsedMs = GetTickCountFullRes() - startTick;
+			//uint32 shall be enough time to hash a file
+			const uint32 elapsedMs = GetTickCount64() - startTick;
 
 			AddDebugLogLineN(logPartFile, CFormat(
 				"Hash thread: part %u %s in %u ms for '%s'")

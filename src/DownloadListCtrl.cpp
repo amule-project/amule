@@ -69,7 +69,7 @@ struct FileCtrlItem_Struct
 		m_fileValue = file;
 	}
 
-	uint32		dwUpdated;
+	uint64		dwUpdated;
 	wxBitmap*	status;
 
 private:
@@ -976,7 +976,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 				int iHeight = rect.GetHeight() - 2;
 
 				// DO NOT DRAW IT ALL THE TIME
-				uint32 dwTicks = GetTickCount();
+				uint64 dwTicks = GetTickCount64();
 
 				wxMemoryDC cdcStatus;
 

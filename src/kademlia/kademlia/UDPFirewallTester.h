@@ -77,8 +77,8 @@ class CUDPFirewallTester
 	static bool	m_timedOut;
 	static uint8_t	m_fwChecksRunningUDP;
 	static uint8_t	m_fwChecksFinishedUDP;
-	static uint32_t	m_testStart;
-	static uint32_t	m_lastSucceededTime;
+	static uint64_t	m_testStart;
+	static uint64_t	m_lastSucceededTime;
 	typedef std::list<CContact> PossibleClientList;
 	typedef std::list<UsedClient_Struct> UsedClientList;
 	static PossibleClientList m_possibleTestClients;

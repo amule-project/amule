@@ -287,8 +287,9 @@ void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 	}
 
 	// We mustn't search more often than once every 2 secs
-	if ((GetTickCount() - m_last_search_time) > 2000) {
-		m_last_search_time = GetTickCount();
+	uint64 now = GetTickCount64();
+	if ((now - m_last_search_time) > 2000) {
+		m_last_search_time = now;
 		// Stop previous ED2K search state only (the server has a
 		// single in-flight search packet per session and m_searchPacket
 		// has to be reset).  Do NOT stop a previous Kad search: the

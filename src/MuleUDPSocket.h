@@ -184,7 +184,7 @@ private:
 		//! The packet, which at this point is owned by CMuleUDPSocket.
 		CPacket*	packet;
 		//! The timestamp of when the packet was queued.
-		uint32		time;
+		uint64		time;
 		//! Target IP address.
 		uint32		IP;
 		//! Target port.

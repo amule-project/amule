@@ -64,10 +64,13 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 
 	m_maxLineCount = 0;
 
+	struct timespec ts;
+	clock_gettime(CLOCK_REALTIME, &ts);
+
 	// Check if we have a previous DL max hit
 	double absoluteMaxDL = ( double ) ( prefs->Read ( WxCasCte::ABSOLUTE_MAX_DL_KEY, 0L ) ) / 1024.0; // Stored in bytes
 	wxDateTime absoluteMaxDlDate( ( time_t ) ( prefs->Read ( WxCasCte::ABSOLUTE_MAX_DL_DATE_KEY,
-	                              ( long ) ( wxDateTime::Now().GetTicks() ) ) ) ); // Stored in Ticks
+	                              ( long ) ( ts.tv_sec ) ) ) ); // Stored in Ticks
 
 	// Add Online Sig file
 	m_aMuleSig = new OnLineSig ( wxFileName( prefs->

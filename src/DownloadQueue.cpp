@@ -410,7 +410,7 @@ void CDownloadQueue::Process()
 {
 	// send src requests to local server
 	ProcessLocalRequests();
-
+	const uint64 curTick = ::GetTickCount64();
 	{
 		wxMutexLocker lock(m_mutex);
 
@@ -525,8 +525,8 @@ void CDownloadQueue::Process()
 
 		if (m_udcounter == 5) {
 			if (theApp->serverconnect->IsUDPSocketAvailable()) {
-				if( (::GetTickCount() - m_lastudpstattime) > UDPSERVERSTATTIME) {
-					m_lastudpstattime = ::GetTickCount();
+				if( (curTick - m_lastudpstattime) > UDPSERVERSTATTIME) {
+					m_lastudpstattime = curTick;
 
 					CMutexUnlocker unlocker(m_mutex);
 					theApp->serverlist->ServerStats();
@@ -537,13 +537,13 @@ void CDownloadQueue::Process()
 		if (m_udcounter == 10) {
 			m_udcounter = 0;
 			if (theApp->serverconnect->IsUDPSocketAvailable()) {
-				if ( (::GetTickCount() - m_lastudpsearchtime) > UDPSERVERREASKTIME) {
+				if ( (curTick - m_lastudpsearchtime) > UDPSERVERREASKTIME) {
 					SendNextUDPPacket();
 				}
 			}
 		}
 
-		if ( (::GetTickCount() - m_lastsorttime) > 10000 ) {
+		if ( (curTick - m_lastsorttime) > 10000 ) {
 			DoSortByPriority();
 		}
 		// Check if any paused files can be resumed
@@ -553,9 +553,9 @@ void CDownloadQueue::Process()
 
 
 	// Check for new links once per second.
-	if ((::GetTickCount() - m_nLastED2KLinkCheck) >= 1000) {
+	if ((curTick - m_nLastED2KLinkCheck) >= 1000) {
 		theApp->AddLinksFromFile();
-		m_nLastED2KLinkCheck = ::GetTickCount();
+		m_nLastED2KLinkCheck = curTick;
 	}
 }
 
@@ -984,7 +984,7 @@ void CDownloadQueue::DoStopUDPRequests()
 	RemoveObserver( &m_queueFiles );
 
 	m_udpserver = 0;
-	m_lastudpsearchtime = ::GetTickCount();
+	m_lastudpsearchtime = ::GetTickCount64();
 }
 
 
@@ -1016,7 +1016,7 @@ static bool ComparePartFiles(const CPartFile* file1, const CPartFile* file2) {
 
 void CDownloadQueue::DoSortByPriority()
 {
-	m_lastsorttime = ::GetTickCount();
+	m_lastsorttime = ::GetTickCount64();
 	sort( m_filelist.begin(), m_filelist.end(), ComparePartFiles );
 }
 
@@ -1052,13 +1052,13 @@ void CDownloadQueue::ProcessLocalRequests()
 									&& theApp->serverconnect->GetCurrentServer()
 									&& theApp->serverconnect->GetCurrentServer()->SupportsLargeFilesTCP();
 
-	if ( (!m_localServerReqQueue.empty()) && (m_dwNextTCPSrcReq < ::GetTickCount()) ) {
+	if ( (!m_localServerReqQueue.empty()) && (m_dwNextTCPSrcReq < ::GetTickCount64()) ) {
 		CMemFile dataTcpFrame(22);
 		const int iMaxFilesPerTcpFrame = 15;
 		int iFiles = 0;
 		while (!m_localServerReqQueue.empty() && iFiles < iMaxFilesPerTcpFrame) {
 			// find the file with the longest waitingtime
-			uint32 dwBestWaitTime = 0xFFFFFFFF;
+			uint64 dwBestWaitTime = 0xFFFFFFFFFFFFFFFF;
 
 			std::list<CPartFile*>::iterator posNextRequest = m_localServerReqQueue.end();
 			std::list<CPartFile*>::iterator it = m_localServerReqQueue.begin();
@@ -1089,7 +1089,7 @@ void CDownloadQueue::ProcessLocalRequests()
 			if (posNextRequest != m_localServerReqQueue.end()) {
 				CPartFile* cur_file = (*posNextRequest);
 				cur_file->SetLocalSrcRequestQueued(false);
-				cur_file->SetLastSearchTime(::GetTickCount());
+				cur_file->SetLastSearchTime(::GetTickCount64());
 				m_localServerReqQueue.erase(posNextRequest);
 				iFiles++;
 
@@ -1137,7 +1137,7 @@ void CDownloadQueue::ProcessLocalRequests()
 		}
 
 		// next TCP frame with up to 15 source requests is allowed to be sent in..
-		m_dwNextTCPSrcReq = ::GetTickCount() + SEC2MS(iMaxFilesPerTcpFrame*(16+4));
+		m_dwNextTCPSrcReq = ::GetTickCount64() + SEC2MS(iMaxFilesPerTcpFrame*(16+4));
 	}
 
 }
@@ -1241,11 +1241,12 @@ uint16 CDownloadQueue::GetPausedFileCount() const
 
 void CDownloadQueue::CheckDiskspace( const CPath& path )
 {
-	if ( ::GetTickCount() - m_lastDiskCheck < DISKSPACERECHECKTIME ) {
+	const uint64 curTick = ::GetTickCount64();
+	if ( curTick - m_lastDiskCheck < DISKSPACERECHECKTIME ) {
 		return;
 	}
 
-	m_lastDiskCheck = ::GetTickCount();
+	m_lastDiskCheck = curTick;
 
 	uint64 min = 0;
 	// Check if the user has set an explicit limit
@@ -1694,6 +1695,6 @@ CPartFile* CDownloadQueue::GetFileByKadFileSearchID(uint32 id) const
 
 bool CDownloadQueue::DoKademliaFileRequest()
 {
-	return ((::GetTickCount() - lastkademliafilerequest) > KADEMLIAASKTIME);
+	return ((::GetTickCount64() - lastkademliafilerequest) > KADEMLIAASKTIME);
 }
 // File_checked_for_headers

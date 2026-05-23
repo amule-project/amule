@@ -51,7 +51,7 @@
 #include "DataToText.h"			// Needed for GetSoftName()
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "Friend.h"
-#include "GetTickCount.h"	// Needed for GetTickCount
+#include "GetTickCount.h"	// Needed for GetTickCount64
 #include "GuiEvents.h"
 #ifdef ENABLE_IP2COUNTRY
 	#include "IP2Country.h"		// Needed for IP2Country
@@ -238,10 +238,11 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 	}
 
 	// Check for new links once per second.
-	static uint32 lastED2KLinkCheck = 0;
-	if (GetTickCount() - lastED2KLinkCheck >= 1000) {
+	static uint64 lastED2KLinkCheck = 0;
+	uint64 now = GetTickCount64();
+	if (now - lastED2KLinkCheck >= 1000) {
 		AddLinksFromFile();
-		lastED2KLinkCheck = GetTickCount();
+		lastED2KLinkCheck = now;
 	}
 }
 

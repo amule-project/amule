@@ -58,7 +58,6 @@ CServerList::CServerList()
 {
 	m_serverpos = m_servers.end();
 	m_statserverpos = m_servers.end();
-	m_nLastED2KServerLinkCheck = ::GetTickCount();
 	m_initialized = false;
 }
 
@@ -262,7 +261,7 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 
 void CServerList::ServerStats()
 {
-	uint32 tNow = ::GetTickCount();
+	uint64 tNow = ::GetTickCount64();
 
 	if (theApp->IsConnectedED2K() && !m_servers.empty()) {
 		CServer* ping_server = GetNextStatServer();
@@ -303,7 +302,7 @@ void CServerList::ServerStats()
 
 			ping_server->SetChallenge(dwChallenge);
 			ping_server->SetLastPinged(tNow);
-			ping_server->SetLastPingedTime((tNow - (uint32)UDPSERVSTATREASKTIME) + 20); // give it 20 seconds to respond
+			ping_server->SetLastPingedTime((tNow - (uint64)UDPSERVSTATREASKTIME) + 20); // give it 20 seconds to respond
 
 			AddDebugLogLineN(logServerUDP, CFormat(">> Sending OP__GlobServStatReq (obfuscated) to server %s:%u") % ping_server->GetAddress() % ping_server->GetPort());
 
@@ -769,7 +768,8 @@ bool CServerList::SaveServerMet()
 			CTagInt32( "users",  server->GetUsers()         ).WriteTagToFile( &servermet );
 			CTagInt32( "files",  server->GetFiles()         ).WriteTagToFile( &servermet );
 			CTagInt32( ST_PING,       server->GetPing()          ).WriteTagToFile( &servermet );
-			CTagInt32( ST_LASTPING,   server->GetLastPingedTime()).WriteTagToFile( &servermet );
+			//CTagInt32 will actually save an uint32 - safe until Y2106
+			CTagInt32( ST_LASTPING,   (uint32)server->GetLastPingedTime()).WriteTagToFile( &servermet );
 			CTagInt32( ST_MAXUSERS,   server->GetMaxUsers()      ).WriteTagToFile( &servermet );
 			CTagInt32( ST_SOFTFILES,  server->GetSoftFiles()     ).WriteTagToFile( &servermet );
 			CTagInt32( ST_HARDFILES,  server->GetHardFiles()     ).WriteTagToFile( &servermet );
@@ -1008,7 +1008,7 @@ void CServerList::CheckForExpiredUDPKeys() {
 	uint32 cKeysExpired = 0;
 	uint32 cPingDelayed = 0;
 	const uint32 dwIP = theApp->GetPublicIP();
-	const uint32 tNow = ::GetTickCount();
+	const uint64 tNow = ::GetTickCount64();
 	wxASSERT( dwIP != 0 );
 
 	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it) {
@@ -1019,7 +1019,7 @@ void CServerList::CheckForExpiredUDPKeys() {
 			if (tNow - pServer->GetRealLastPingedTime() < UDPSERVSTATMINREASKTIME){
 				cPingDelayed++;
 				// next ping: Now + (MinimumDelay - already elapsed time)
-				pServer->SetLastPingedTime((tNow - (uint32)UDPSERVSTATREASKTIME) + (UDPSERVSTATMINREASKTIME - (tNow - pServer->GetRealLastPingedTime())));
+				pServer->SetLastPingedTime((tNow - (uint64)UDPSERVSTATREASKTIME) + (UDPSERVSTATMINREASKTIME - (tNow - pServer->GetRealLastPingedTime())));
 			} else {
 				pServer->SetLastPingedTime(0);
 			}

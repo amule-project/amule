@@ -30,7 +30,7 @@
 #include <protocol/ed2k/Constants.h>
 
 #include "amule.h"                      // Needed for theApp
-#include "GetTickCount.h"               // Needed for GetTickCount()
+#include "GetTickCount.h"               // Needed for GetTickCount64()
 #include "Packet.h"                     // Needed for CPacket
 #include <common/StringFunctions.h>     // Needed for unicode2char
 #include "Proxy.h"                      // Needed for CDatagramSocketProxy
@@ -225,7 +225,7 @@ void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port, bool bE
 	newpending.IP = IP;
 	newpending.port = port;
 	newpending.packet = packet;
-	newpending.time = GetTickCount();
+	newpending.time = GetTickCount64();
 	newpending.bEncrypt = bEncrypt && (pachTargetClientHashORKadID != NULL || (bKad && nReceiverVerifyKey != 0))
 							&& thePrefs::IsClientCryptLayerSupported();
 	newpending.bKad = bKad;
@@ -260,7 +260,7 @@ SocketSentBytes CMuleUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend, u
 	while (!m_queue.empty() && !m_busy && (sentBytes < maxNumberOfBytesToSend)) {
 		UDPPack item = m_queue.front();
 		CPacket* packet = item.packet;
-		if (GetTickCount() - item.time < UDPMAXQUEUETIME) {
+		if (GetTickCount64() - item.time < UDPMAXQUEUETIME) {
 			uint32_t len = packet->GetPacketSize() + 2;
 			uint8_t *sendbuffer = new uint8_t [len];
 			memcpy(sendbuffer, packet->GetUDPHeader(), 2);

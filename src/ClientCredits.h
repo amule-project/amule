@@ -42,7 +42,7 @@ public:
 	CMD4Hash	key;
 	uint64		uploaded;		// uploaded TO him
 	uint64		downloaded;	// downloaded from him
-	uint32		nLastSeen;
+	uint32		nLastSeen; //uint32 stores seconds on disk, shall be good until Y2106
 	uint16		nReserved3;
 	uint8		nKeySize;
 	uint8_t		abySecureIdent[MAXPUBKEYSIZE];
@@ -79,7 +79,7 @@ public:
 	uint32	m_dwCryptRndChallengeFor;
 	uint32	m_dwCryptRndChallengeFrom;
 	EIdentState	GetCurrentIdentState(uint32 dwForIP) const; // can be != m_identState
-	uint32	GetSecureWaitStartTime(uint32 dwForIP);
+	uint64	GetSecureWaitStartTime(uint32 dwForIP);
 	void	SetSecWaitStartTime(uint32 dwForIP);
 	void	Verified(uint32 dwForIP);
 	EIdentState GetIdentState() const { return m_identState; }
@@ -92,8 +92,8 @@ private:
 	uint8_t			m_abyPublicKey[80];		// even keys which are not verified will be stored here, and - if verified - copied into the struct
 	uint8			m_nPublicKeyLen;
 	uint32			m_dwIdentIP;
-	uint32			m_dwSecureWaitTime;
-	uint32			m_dwUnSecureWaitTime;
+	uint64			m_dwSecureWaitTime;
+	uint64			m_dwUnSecureWaitTime;
 	uint32			m_dwWaitTimeIP;			   // client IP assigned to the waittime
 };
 

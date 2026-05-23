@@ -65,7 +65,7 @@ class CDeletedClient
 public:
 	CDeletedClient(CUpDownClient* pClient)
 	{
-		m_dwInserted = ::GetTickCount();
+		m_dwInserted = ::GetTickCount64();
 		PortAndHash porthash = { pClient->GetUserPort(), pClient->GetCreditsHash()};
 		m_ItemsList.push_back(porthash);
 	}
@@ -78,7 +78,7 @@ public:
 
 	typedef std::list<PortAndHash> PaHList;
 	PaHList	m_ItemsList;
-	uint32	m_dwInserted;
+	uint64	m_dwInserted;
 };
 
 
@@ -487,7 +487,7 @@ void CClientList::AddTrackClient(CUpDownClient* toadd)
 	if ( it != m_trackedClientsList.end() ) {
 		CDeletedClient* pResult = it->second;
 
-		pResult->m_dwInserted = ::GetTickCount();
+		pResult->m_dwInserted = ::GetTickCount64();
 
 		CDeletedClient::PaHList::iterator it2 = pResult->m_ItemsList.begin();
 		for ( ; it2 != pResult->m_ItemsList.end(); ++it2 ) {
@@ -521,7 +521,7 @@ uint16 CClientList::GetClientsFromIP(uint32 dwIP)
 
 void CClientList::Process()
 {
-	const uint32 cur_tick = ::GetTickCount();
+	const uint64 cur_tick = ::GetTickCount64();
 
 	if (m_dwLastBannCleanUp + BAN_CLEANUP_TIME < cur_tick) {
 		m_dwLastBannCleanUp = cur_tick;
@@ -726,7 +726,7 @@ void CClientList::Process()
 
 void CClientList::AddBannedClient(uint32 dwIP)
 {
-	m_bannedList[dwIP] = ::GetTickCount();
+	m_bannedList[dwIP] = ::GetTickCount64();
 	theStats::AddBannedClient();
 }
 
@@ -736,7 +736,7 @@ bool CClientList::IsBannedClient(uint32 dwIP)
 	ClientMap::iterator it = m_bannedList.find( dwIP );
 
 	if ( it != m_bannedList.end() ) {
-		if ( it->second + CLIENTBANTIME > ::GetTickCount() ) {
+		if ( it->second + CLIENTBANTIME > ::GetTickCount64() ) {
 			return true;
 		} else {
 			RemoveBannedClient(dwIP);
@@ -983,7 +983,7 @@ void CClientList::CleanUpClientList()
 	// no state for some code lines and the code is also not prepared that a client object gets
 	// invalid while working with it (aka setting a new state)
 	// so this way is just the easy and safe one to go (as long as amule is basically single threaded)
-	const uint32 cur_tick = ::GetTickCount();
+	const uint64 cur_tick = ::GetTickCount64();
 	if (m_dwLastClientCleanUp + CLIENTLIST_CLEANUP_TIME < cur_tick ){
 		m_dwLastClientCleanUp = cur_tick;
 		DEBUG_ONLY( uint32 cDeleted = 0; )
@@ -993,7 +993,7 @@ void CClientList::CleanUpClientList()
 			++current_it; // Won't be used till while loop again
 			// Don't delete sources coming from source seeds for 10 mins,
 			// to give them a chance to connect and become a useful source.
-			if (pCurClient->GetSourceFrom() == SF_SOURCE_SEEDS && cur_tick - (uint32)theStats::GetStartTime() < MIN2MS(10)) continue;
+			if (pCurClient->GetSourceFrom() == SF_SOURCE_SEEDS && cur_tick - theStats::GetStartTime() < MIN2MS(10)) continue;
 			if ((pCurClient->GetUploadState() == US_NONE || (pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned()))
 				&& pCurClient->GetDownloadState() == DS_NONE
 				&& pCurClient->GetChatState() == MS_NONE
@@ -1041,7 +1041,7 @@ void CClientList::CleanUpClientList()
 
 void CClientList::AddKadFirewallRequest(uint32 ip)
 {
-	uint32 ticks = ::GetTickCount();
+	uint64 ticks = ::GetTickCount64();
 	IpAndTicks add = { ip, ticks };
 	m_firewallCheckRequests.push_front(add);
 	while (!m_firewallCheckRequests.empty()) {
@@ -1055,7 +1055,7 @@ void CClientList::AddKadFirewallRequest(uint32 ip)
 
 bool CClientList::IsKadFirewallCheckIP(uint32 ip) const
 {
-	uint32 ticks = ::GetTickCount();
+	uint64 ticks = ::GetTickCount64();
 	for (IpAndTicksList::const_iterator it = m_firewallCheckRequests.begin(); it != m_firewallCheckRequests.end(); ++it) {
 		if (it->ip == ip && ticks - it->inserted < SEC2MS(180)) {
 			return true;
@@ -1082,7 +1082,7 @@ void CClientList::AddDirectCallbackClient(CUpDownClient* toAdd)
 void CClientList::ProcessDirectCallbackList()
 {
 	// we do check if any direct callbacks have timed out by now
-	const uint32_t cur_tick = ::GetTickCount();
+	const uint64_t cur_tick = ::GetTickCount64();
 	for (DirectCallbackList::iterator it = m_currentDirectCallbacks.begin(); it != m_currentDirectCallbacks.end();) {
 		DirectCallbackList::iterator it2 = it++;
 		CUpDownClient* curClient = it2->GetClient();
@@ -1100,7 +1100,7 @@ void CClientList::ProcessDirectCallbackList()
 
 void CClientList::AddTrackCallbackRequests(uint32_t ip)
 {
-	uint32_t now = ::GetTickCount();
+	uint64_t now = ::GetTickCount64();
 	IpAndTicks add = { ip, now };
 	m_directCallbackRequests.push_front(add);
 	while (!m_directCallbackRequests.empty()) {
@@ -1114,7 +1114,7 @@ void CClientList::AddTrackCallbackRequests(uint32_t ip)
 
 bool CClientList::AllowCallbackRequest(uint32_t ip) const
 {
-	uint32_t now = ::GetTickCount();
+	uint64_t now = ::GetTickCount64();
 	for (IpAndTicksList::const_iterator it = m_directCallbackRequests.begin(); it != m_directCallbackRequests.end(); ++it) {
 		if (it->ip == ip && now - it->inserted < MIN2MS(3)) {
 			return false;

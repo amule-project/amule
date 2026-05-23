@@ -23,7 +23,7 @@
 //
 
 #include "Timer.h"		// Interface declaration
-#include "GetTickCount.h"	// Needed for GetTickCountFullRes
+#include "GetTickCount.h"	// Needed for GetTickCount
 #include "MuleThread.h"		// Needed for CMuleThread
 
 
@@ -40,12 +40,12 @@ public:
 	void* Entry() {
 		CTimerEvent evt(m_id);
 
-		uint32 lastEvent = GetTickCountFullRes();
+		uint64 lastEvent = GetTickCount64();
 		do {
 			// current time
-			uint32 now = GetTickCountFullRes();
+			uint64 now = GetTickCount64();
 			// This is typically zero, because lastEvent was already incremented by one period.
-			sint32 delta = now - lastEvent;
+			sint64 delta = now - lastEvent;
 			if (delta > 100 * m_period) {
 				// We're way too far behind.  Probably what really happened is
 				// the system time was adjusted backwards a bit.  So,
@@ -55,7 +55,7 @@ public:
 			}
 
 			// Wait one period (adjusted by the difference just calculated)
-			sint32 timeout = ((m_period < delta) ? 0 : (m_period - delta));
+			sint64 timeout = ((m_period < delta) ? 0 : (m_period - delta));
 
 			// In normal operation, we will never actually acquire the
 			// semaphore; we will always timeout.  This is used to
@@ -76,7 +76,7 @@ public:
 		return NULL;
 	}
 
-	sint32			m_period;
+	sint64			m_period;
 	bool			m_oneShot;
 	wxEvtHandler*	m_owner;
 	int				m_id;
