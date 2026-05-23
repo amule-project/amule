@@ -153,6 +153,36 @@ int CamuleRemoteGuiApp::OnExit()
 }
 
 
+#if wxUSE_ON_FATAL_EXCEPTION
+// Gracefully handle fatal exceptions and print backtrace if possible.
+// Mirrors CamuleApp::OnFatalException (amule.cpp) -- without this
+// override amulegui crashes produce no symbolicated amule frames,
+// which makes diagnosing GTK-callback-into-stale-widget bugs like
+// #692 a guessing game.
+void CamuleRemoteGuiApp::OnFatalException()
+{
+	/* Print the backtrace */
+	wxString msg;
+	msg	<< "\n--------------------------------------------------------------------------------\n"
+		<< "A fatal error has occurred and amulegui has crashed.\n"
+		<< "Please assist us in fixing this problem by reporting the backtrace below as a\n"
+		<< "GitHub issue, including as much information as possible regarding the\n"
+		<< "circumstances of this crash. Issue tracker:\n"
+		<< "    https://github.com/amule-org/amule/issues\n"
+		<< "If possible, please try to generate a real backtrace of this crash:\n"
+		<< "    https://github.com/amule-org/amule/wiki/Backtraces\n\n"
+		<< "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n"
+		<< "Current version is: " << FullMuleVersion
+		<< "\nRunning on: " << OSDescription
+		<< "\n\n"
+		<< get_backtrace(1) // 1 == skip this function.
+		<< "\n--------------------------------------------------------------------------------\n";
+
+	theLogger.EmergencyLog(msg, true);
+}
+#endif
+
+
 void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 {
 	static int request_step = 0;
