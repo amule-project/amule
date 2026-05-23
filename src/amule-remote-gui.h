@@ -693,6 +693,13 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase, public CamuleAppC
 
 	int OnExit();
 
+#if wxUSE_ON_FATAL_EXCEPTION
+	// Print a libbfd/addr2line-resolved backtrace on fatal signal.
+	// Mirrors CamuleApp::OnFatalException so amulegui crashes (#692)
+	// produce the same symbolicated trace amule(d) already emit.
+	void OnFatalException();
+#endif
+
 	void OnPollTimer(wxTimerEvent& evt);
 	void OnConnectTimeout(wxTimerEvent& evt);
 
