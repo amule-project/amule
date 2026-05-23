@@ -993,8 +993,15 @@ CProgressImage::~CProgressImage()
 
 void CProgressImage::CreateSpan()
 {
-	// Step 1: get gap list
-	const Gap_Struct * gap_list = (const Gap_Struct *) &(m_file->m_Gaps[0]);
+	// Step 1: get gap list.  Use .data() rather than &m_Gaps[0] so the
+	// pointer is well-defined when the vector is empty (no gaps yet on
+	// a fresh partfile, or all gaps closed on a just-completed file).
+	// libstdc++ debug-mode catches the operator[]-on-empty case as a
+	// libstdc++ assertion -> SIGABRT; release builds previously got away
+	// with undefined behaviour.  The loop below is already bounded by
+	// gap_list_size, so when the vector is empty the pointer is never
+	// dereferenced.
+	const Gap_Struct * gap_list = (const Gap_Struct *) m_file->m_Gaps.data();
 	int gap_list_size = m_file->m_Gaps.size() / 2;
 
 	// allocate for worst case !
