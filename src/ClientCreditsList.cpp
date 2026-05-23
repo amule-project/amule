@@ -32,7 +32,7 @@
 #include <common/FileFunctions.h>	// Needed for GetFileSize
 
 
-#include "GetTickCount.h"	// Needed for GetTickCount
+#include "GetTickCount.h"	// Needed for GetTickCount64
 #include "Preferences.h"	// Needed for thePrefs
 #include "ClientCredits.h"	// Needed for CClientCredits
 #include "amule.h"		// Needed for theApp
@@ -48,7 +48,7 @@
 
 CClientCreditsList::CClientCreditsList()
 {
-	m_nLastSaved = ::GetTickCount();
+	m_nLastSaved = ::GetTickCount64();
 	LoadList();
 
 	InitalizeCrypting();
@@ -169,7 +169,7 @@ void CClientCreditsList::LoadList()
 void CClientCreditsList::SaveList()
 {
 	AddDebugLogLineN( logCredits, "Saved Credit list");
-	m_nLastSaved = ::GetTickCount();
+	m_nLastSaved = ::GetTickCount64();
 
 	wxString name(thePrefs::GetConfigDir() + CLIENTS_MET_FILENAME);
 	CFile file;
@@ -241,7 +241,7 @@ CClientCredits* CClientCreditsList::GetCredit(const CMD4Hash& key)
 
 void CClientCreditsList::Process()
 {
-	if (::GetTickCount() - m_nLastSaved > MIN2MS(13))
+	if (::GetTickCount64() - m_nLastSaved > MIN2MS(13))
 		SaveList();
 }
 

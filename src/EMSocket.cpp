@@ -85,10 +85,11 @@ CEMSocket::CEMSocket(const CProxyData *ProxyData)
     m_numberOfSentBytesPartFile = 0;
     m_numberOfSentBytesControlPacket = 0;
 
-    lastCalledSend = ::GetTickCount();
-    lastSent = ::GetTickCount()-1000;
+    const uint64 now = ::GetTickCount64();
+    lastCalledSend = now;
+    lastSent = now-1000;
 
-	m_bAccelerateUpload = false;
+    m_bAccelerateUpload = false;
 
     m_actualPayloadSize = 0;
     m_actualPayloadSizeSent = 0;
@@ -354,7 +355,7 @@ void CEMSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, 
 
             // reset timeout for the first time
             if (first) {
-                lastFinishedStandard = ::GetTickCount();
+                lastFinishedStandard = ::GetTickCount64();
                 m_bAccelerateUpload = true;	// Always accelerate first packet in a block
             }
 	    }
@@ -493,9 +494,10 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 
 		maxNumberOfBytesToSend = GetNextFragSize(maxNumberOfBytesToSend, minFragSize);
 
-		bool bWasLongTimeSinceSend = (::GetTickCount() - lastSent) > 1000;
+		uint64 now = ::GetTickCount64();
+		bool bWasLongTimeSinceSend = (now - lastSent) > 1000;
 
-		lastCalledSend = ::GetTickCount();
+		lastCalledSend = now;
 
 
 		while(sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall < maxNumberOfBytesToSend && anErrorHasOccured == false && // don't send more than allowed. Also, there should have been no error in earlier loop
@@ -572,9 +574,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 				}
 				wxASSERT(tosend != 0 && tosend <= sendblen-sent);
 
-				//DWORD tempStartSendTick = ::GetTickCount();
-
-				lastSent = ::GetTickCount();
+				lastSent = ::GetTickCount64();
 
 				uint32 result = CEncryptedStreamSocket::Write(sendbuffer+sent,tosend);
 
@@ -624,7 +624,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 					m_actualPayloadSizeSent += m_actualPayloadSize;
 					m_actualPayloadSize = 0;
 
-					lastFinishedStandard = ::GetTickCount(); // reset timeout
+					lastFinishedStandard = ::GetTickCount64(); // reset timeout
 					m_bAccelerateUpload = false; // Safe until told otherwise
 				}
 
@@ -667,7 +667,7 @@ uint32 CEMSocket::GetNextFragSize(uint32 current, uint32 minFragSize)
  */
 uint32 CEMSocket::GetNeededBytes()
 {
-	uint32 sendgap;
+	uint64 sendgap;
 
 	uint64 timetotal;
 	uint64 timeleft;
@@ -688,10 +688,11 @@ uint32 CEMSocket::GetNeededBytes()
 		if (((sendbuffer && !m_currentPacket_is_controlpacket)) && !m_control_queue.empty())
 			m_bAccelerateUpload = true;	// We might be trying to send a block request, accelerate packet
 
-		sendgap = ::GetTickCount() - lastCalledSend;
+		uint64 now = ::GetTickCount64();
+		sendgap = now - lastCalledSend;
 
 		timetotal = m_bAccelerateUpload?45000:90000;
-		timeleft = ::GetTickCount() - lastFinishedStandard;
+		timeleft = now - lastFinishedStandard;
 		if (sendbuffer && !m_currentPacket_is_controlpacket) {
 			sizeleft = sendblen-sent;
 			sizetotal = sendblen;
@@ -743,13 +744,13 @@ void CEMSocket::TruncateQueues()
 }
 
 
-uint32 CEMSocket::GetTimeOut() const
+uint64 CEMSocket::GetTimeOut() const
 {
 	return m_uTimeOut;
 }
 
 
-void CEMSocket::SetTimeOut(uint32 uTimeOut)
+void CEMSocket::SetTimeOut(uint64 uTimeOut)
 {
 	m_uTimeOut = uTimeOut;
 }

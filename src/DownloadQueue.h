@@ -28,7 +28,7 @@
 
 #include "MD4Hash.h"		// Needed for CMD4Hash
 #include "ObservableQueue.h"	// Needed for CObservableQueue
-#include "GetTickCount.h"	// Needed for GetTickCount
+#include "GetTickCount.h"	// Needed for GetTickCount64
 
 
 #include <deque>
@@ -314,7 +314,7 @@ public:
 
 	bool	DoKademliaFileRequest();
 
-	void	SetLastKademliaFileRequest()	{lastkademliafilerequest = ::GetTickCount();}
+	void	SetLastKademliaFileRequest()	{lastkademliafilerequest = ::GetTickCount64();}
 
 	uint32	GetRareFileThreshold() const { return m_rareFileThreshold; }
 	uint32	GetCommonFileThreshold() const { return m_commonFileThreshold; }
@@ -358,13 +358,13 @@ private:
 
 
 	uint32		m_datarate;
-	uint32		m_lastDiskCheck;
-	uint32		m_lastudpsearchtime;
-	uint32		m_lastsorttime;
-	uint32		m_lastudpstattime;
-	uint32		m_nLastED2KLinkCheck;
+	uint64		m_lastDiskCheck;
+	uint64		m_lastudpsearchtime;
+	uint64		m_lastsorttime;
+	uint64		m_lastudpstattime;
+	uint64		m_nLastED2KLinkCheck;
 	uint8		m_cRequestsSentToServer;
-	uint32		m_dwNextTCPSrcReq;
+	uint64		m_dwNextTCPSrcReq;
 	uint8		m_udcounter;
 	CServer*	m_udpserver;
 
@@ -404,7 +404,7 @@ private:
 	CQueueObserver<CPartFile*>	m_queueFiles;
 
 	/* Kad Stuff */
-	uint32		lastkademliafilerequest;
+	uint64		lastkademliafilerequest;
 
 	//! Threshold for rare files, dynamically based on the sources for each.
 	uint32		m_rareFileThreshold;

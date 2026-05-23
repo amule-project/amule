@@ -133,7 +133,7 @@ uint8		CPreferences::s_iSeeShares;
 uint8		CPreferences::s_iToolDelayTime;
 uint8		CPreferences::s_splitterbarPosition;
 uint16		CPreferences::s_deadserverretries;
-uint32		CPreferences::s_dwServerKeepAliveTimeoutMins;
+uint64		CPreferences::s_dwServerKeepAliveTimeoutMins;
 uint8		CPreferences::s_statsMax;
 uint8		CPreferences::s_statsAverageMinutes;
 bool		CPreferences::s_bpreviewprio;

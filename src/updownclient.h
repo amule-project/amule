@@ -27,7 +27,7 @@
 #define UPDOWNCLIENT_H
 
 #include "Constants.h"		// Needed for ESourceFrom
-#include "GetTickCount.h"	// Needed for GetTickCount
+#include "GetTickCount.h"	// Needed for GetTickCount64
 #include "MD4Hash.h"
 #include <common/StringFunctions.h>
 #include <common/Macros.h>
@@ -221,12 +221,12 @@ public:
 	bool		ProcessMuleInfoPacket(const uint8_t* pachPacket, uint32 nSize);
 	void		ProcessMuleCommentPacket(const uint8_t* pachPacket, uint32 nSize);
 	bool		Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash = false) const;
-	void		SetLastSrcReqTime()		{ m_dwLastSourceRequest = ::GetTickCount(); }
-	void		SetLastSrcAnswerTime()		{ m_dwLastSourceAnswer = ::GetTickCount(); }
-	void		SetLastAskedForSources()	{ m_dwLastAskedForSources = ::GetTickCount(); }
-	uint32		GetLastSrcReqTime() const	{ return m_dwLastSourceRequest; }
-	uint32		GetLastSrcAnswerTime() const	{ return m_dwLastSourceAnswer; }
-	uint32		GetLastAskedForSources() const	{ return m_dwLastAskedForSources; }
+	void		SetLastSrcReqTime()		{ m_dwLastSourceRequest = ::GetTickCount64(); }
+	void		SetLastSrcAnswerTime()		{ m_dwLastSourceAnswer = ::GetTickCount64(); }
+	void		SetLastAskedForSources()	{ m_dwLastAskedForSources = ::GetTickCount64(); }
+	uint64		GetLastSrcReqTime() const	{ return m_dwLastSourceRequest; }
+	uint64		GetLastSrcAnswerTime() const	{ return m_dwLastSourceAnswer; }
+	uint64		GetLastAskedForSources() const	{ return m_dwLastAskedForSources; }
 	bool		GetFriendSlot() const		{ return m_bFriendSlot; }
 	void		SetFriendSlot(bool bNV)		{ m_bFriendSlot = bNV; }
 	void		SetCommentDirty(bool bDirty = true)	{ m_bCommentDirty = bDirty; }
@@ -259,8 +259,8 @@ public:
 	uint32		GetUploadDatarate() const	{ return m_nUpDatarate; }
 
 	//uint32		GetWaitTime() const		{ return m_dwUploadTime - GetWaitStartTime(); }
-	uint32		GetUpStartTimeDelay() const	{ return ::GetTickCount() - m_dwUploadTime; }
-	uint32		GetWaitStartTime() const;
+	uint64		GetUpStartTimeDelay() const	{ return ::GetTickCount64() - m_dwUploadTime; }
+	uint64		GetWaitStartTime() const;
 
 	bool		IsDownloading()	const		{ return (m_nUploadState == US_UPLOADING); }
 
@@ -273,7 +273,7 @@ public:
 	uint16		GetNextRequestedPart() const;
 
 	void		AddReqBlock(Requested_Block_Struct* reqblock, bool bSignalIOThread = true);
-	void		SetUpStartTime()		{ m_dwUploadTime = ::GetTickCount(); }
+	void		SetUpStartTime()		{ m_dwUploadTime = ::GetTickCount64(); }
 	void		SetWaitStartTime();
 	void		ClearWaitStartTime();
 	void		SendHashsetPacket(const CMD4Hash& forfileid);
@@ -309,8 +309,8 @@ public:
 	void		ClearAskedCount()		{ m_cAsked = 1; }	// 1, because it's cleared *after* the first request...
 	void		FlushSendBlocks();	// call this when you stop upload,
 						// or the socket might be not able to send
-	void		SetLastUpRequest()		{ m_dwLastUpRequest = ::GetTickCount(); }
-	uint32		GetLastUpRequest() const	{ return m_dwLastUpRequest; }
+	void		SetLastUpRequest()		{ m_dwLastUpRequest = ::GetTickCount64(); }
+	uint64		GetLastUpRequest() const	{ return m_dwLastUpRequest; }
 	size_t		GetUpPartCount() const		{ return m_upPartStatus.size(); }
 
 
@@ -320,7 +320,7 @@ public:
 
 	uint8		GetDownloadState() const	{ return m_nDownloadState; }
 	void		SetDownloadState(uint8 byNewState);
-	uint32		GetLastAskedTime() const	{ return m_dwLastAskedTime; }
+	uint64		GetLastAskedTime() const	{ return m_dwLastAskedTime; }
 	void		ResetLastAskedTime()		{ m_dwLastAskedTime = 0; }
 
 	bool		IsPartAvailable(uint16 iPart) const
@@ -489,9 +489,9 @@ public:
 	uint16		GetBuddyPort() const		{ return m_nBuddyPort; }
 
 	//KadIPCheck
-	bool		SendBuddyPingPong()		{ return m_dwLastBuddyPingPongTime < ::GetTickCount(); }
-	bool		AllowIncomeingBuddyPingPong()	{ return m_dwLastBuddyPingPongTime < (::GetTickCount()-(3*60*1000)); }
-	void		SetLastBuddyPingPongTime()	{ m_dwLastBuddyPingPongTime = (::GetTickCount()+(10*60*1000)); }
+	bool		SendBuddyPingPong()		{ return m_dwLastBuddyPingPongTime < ::GetTickCount64(); }
+	bool		AllowIncomeingBuddyPingPong()	{ return m_dwLastBuddyPingPongTime < (::GetTickCount64()-(3*60*1000)); }
+	void		SetLastBuddyPingPongTime()	{ m_dwLastBuddyPingPongTime = (::GetTickCount64()+(10*60*1000)); }
 	EKadState	GetKadState() const		{ return m_nKadState; }
 	void		SetKadState(EKadState nNewS)	{ m_nKadState = nNewS; }
 	uint8		GetKadVersion()			{ return m_byKadVersion; }
@@ -559,8 +559,6 @@ public:
 
 	double		GetScoreRatio() const;
 
-	uint32		GetCreationTime() const { return m_nCreationTime; }
-
 	bool		SupportsLargeFiles() const { return m_fSupportsLargeFiles; }
 
 	EIdentState	GetCurrentIdentState() const { return credits ? credits->GetCurrentIdentState(GetIP()) : IS_NOTAVAILABLE; }
@@ -575,7 +573,7 @@ public:
 	bool		RequestsCryptLayer() const			{ return SupportsCryptLayer() && m_fRequestsCryptLayer; }
 	bool		RequiresCryptLayer() const			{ return RequestsCryptLayer() && m_fRequiresCryptLayer; }
 	bool		SupportsDirectUDPCallback() const		{ return m_fDirectUDPCallback != 0 && HasValidHash() && GetKadPort() != 0; }
-	uint32_t	GetDirectCallbackTimeout() const		{ return m_dwDirectCallbackTimeout; }
+	uint64_t	GetDirectCallbackTimeout() const		{ return m_dwDirectCallbackTimeout; }
 	bool		HasObfuscatedConnectionBeenEstablished() const	{ return m_hasbeenobfuscatinglately; }
 
 	void		SetCryptLayerSupport(bool bVal)			{ m_fSupportsCryptLayer = bVal ? 1 : 0; }
@@ -598,7 +596,7 @@ private:
 
 	struct TransferredData {
 		uint32	datalen;
-		uint32	timestamp;
+		uint64	timestamp;
 	};
 
 	//////////////////////////////////////////////////////////
@@ -616,7 +614,7 @@ private:
 		//! Signifies if this sources has needed parts for this file.
 		bool NeededParts;
 		//! This is set when we wish to avoid swapping to this file for a while.
-		uint32 timestamp;
+		uint64 timestamp;
 	};
 
 	//! I typedef in the name of readability!
@@ -668,9 +666,9 @@ private:
 	uint8		m_byAcceptCommentVer;
 	uint8		m_byExtendedRequestsVer;
 	uint8		m_clientSoft;
-	uint32		m_dwLastSourceRequest;
-	uint32		m_dwLastSourceAnswer;
-	uint32		m_dwLastAskedForSources;
+	uint64		m_dwLastSourceRequest;
+	uint64		m_dwLastSourceAnswer;
+	uint64		m_dwLastAskedForSources;
 	int		m_iFileListRequested;
 	bool		m_bFriendSlot;
 	bool		m_bCommentDirty;
@@ -692,15 +690,15 @@ private:
 
 	uint32		m_byCompatibleClient;
 	std::list<CPacket*>	m_WaitingPackets_list;
-	uint32		m_lastRefreshedDLDisplay;
+	uint64		m_lastRefreshedDLDisplay;
 
 	//upload
 	uint32 CalculateScoreInternal();
 
 	uint8		m_nUploadState;
-	uint32		m_dwUploadTime;
+	uint64		m_dwUploadTime;
 	uint32		m_cAsked;
-	uint32		m_dwLastUpRequest;
+	uint64		m_dwLastUpRequest;
 	uint32		m_nCurSessionUp;
 	uint16		m_nUpPartCount;
 	CMD4Hash	m_requpfileid;
@@ -728,12 +726,12 @@ private:
 	bool		m_bRemoteQueueFull;
 	uint8		m_nDownloadState;
 	uint16		m_nPartCount;
-	uint32		m_dwLastAskedTime;
+	uint64		m_dwLastAskedTime;
 	wxString	m_clientFilename;
 	uint64		m_nTransferredDown;
 	uint16		m_lastDownloadingPart;   // last Part that was downloading
 	uint16		m_cShowDR;
-	uint32		m_dwLastBlockReceived;
+	uint64		m_dwLastBlockReceived;
 	uint16		m_nRemoteQueueRank;
 	uint16		m_nOldRemoteQueueRank;
 	bool		m_bCompleteSource;
@@ -746,7 +744,7 @@ private:
 
 	// download speed calculation
 	float		kBpsDown;
-	uint32		msReceivedPrev;
+	uint64		msReceivedPrev;
 	uint32		bytesReceivedCycle;
 	// chat
 	wxString	m_strComment;
@@ -806,13 +804,13 @@ private:
 	EKadState	m_nKadState;
 
 	uint8		m_byKadVersion;
-	uint32		m_dwLastBuddyPingPongTime;
-	uint32_t	m_dwDirectCallbackTimeout;
+	uint64		m_dwLastBuddyPingPongTime;
+	uint64_t	m_dwDirectCallbackTimeout;
 
 	//! This keeps track of aggressive requests for files.
 	uint16		m_Aggressiveness;
 	//! This tracks the time of the last time since a file was requested
-	uint32		m_LastFileRequest;
+	uint64		m_LastFileRequest;
 
 	bool		m_OSInfo_sent;
 
@@ -834,12 +832,9 @@ private:
 	uint32		m_lastClientVersion;
 	wxString	m_lastOSInfo;
 
-	/* For buddies timeout */
-	uint32		m_nCreationTime;
-
 	/* Calculation of last average speed */
 	uint32		m_lastaverage;
-	uint32		m_last_block_start;
+	uint64		m_last_block_start;
 
 	/* Save the encryption status for display when disconnected */
 	bool		m_hasbeenobfuscatinglately;

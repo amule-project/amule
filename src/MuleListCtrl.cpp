@@ -34,7 +34,7 @@
 #include <common/MenuIDs.h>
 
 #include "MuleListCtrl.h"		// Interface declarations
-#include "GetTickCount.h"		// Needed for GetTickCount()
+#include "GetTickCount.h"		// Needed for GetTickCount64()
 #include "OtherFunctions.h"
 
 
@@ -679,6 +679,7 @@ void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 		return;
 	}
 
+	uint64 now = GetTickCount64();
 	// We wish to avoid handling shortcuts, with the exception of 'select-all'.
 	if (evt.AltDown() || evt.ControlDown() || evt.MetaDown()) {
 		if (evt.CmdDown() && (evt.GetKeyCode() == 0x01)) {
@@ -690,11 +691,11 @@ void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 
 		evt.Skip();
 		return;
-	} else if (m_tts_time + 1500u < GetTickCount()) {
+	} else if (m_tts_time + 1500u < now) {
 		m_tts_text.Clear();
 	}
 
-	m_tts_time = GetTickCount();
+	m_tts_time = now;
 	m_tts_text.Append(wxTolower(key));
 
 	// May happen if the subclass does not forward deletion events.

@@ -75,7 +75,7 @@ CUploadQueue::CUploadQueue()
 
 void CUploadQueue::SortGetBestClient(CClientRef * bestClient)
 {
-	uint32 tick = GetTickCount();
+	uint64 tick = GetTickCount64();
 	m_lastSort = tick;
 	CClientRefList::iterator it = m_waitinglist.begin();
 	for (; it != m_waitinglist.end(); ) {
@@ -240,7 +240,7 @@ void CUploadQueue::Process()
 {
 	// Check if someone's waiting, if there is a slot for him,
 	// or if we should try to free a slot for him
-	uint32 tick = GetTickCount();
+	uint64 tick = GetTickCount64();
 	// Nobody waiting or upload started recently
 	// (Actually instead of "empty" it should check for "no HighID clients queued",
 	//  but the cost for that outweighs the benefit. As it is, a slot will be freed
@@ -295,7 +295,7 @@ void CUploadQueue::Process()
 	}
 
 	// Periodically resort queue if it doesn't happen anyway
-	if ((sint32) (tick - m_lastSort) > MIN2MS(2)) {
+	if ((sint64) (tick - m_lastSort) > MIN2MS(2)) {
 		SortGetBestClient();
 	}
 }
@@ -511,7 +511,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 		return;
 	}
 
-	uint32 tick = GetTickCount();
+	uint64 tick = GetTickCount64();
 	client->ClearWaitStartTime();
 	// if possible start upload right away
 	if (m_waitinglist.empty() && tick - m_nLastStartUpload >= 1000
@@ -704,8 +704,8 @@ void CUploadQueue::RemoveFromWaitingQueue(CClientRefList::iterator pos)
 
 int CUploadQueue::PopulatePossiblyWaitingList()
 {
-	static uint32 lastPopulate = 0;
-	uint32 tick = GetTickCount();
+	static uint64 lastPopulate = 0;
+	uint64 tick = GetTickCount64();
 	int ret = m_possiblyWaitingList.size();
 	if (tick - lastPopulate > MIN2MS(15)) {
 		// repopulate in any case after this time

@@ -135,7 +135,7 @@ class CKeyEntry : public CEntry
 	typedef std::list<sPublishingIP>	PublishingIPList;
 	typedef std::map<uint32_t, uint32_t>	GlobalPublishIPMap;
 
-	uint32_t m_lastTrustValueCalc;
+	uint64_t m_lastTrustValueCalc;
 	double	 m_trustValue;
 	PublishingIPList *		m_publishingIPs;
 	static GlobalPublishIPMap	s_globalPublishIPs;	// tracks count of publishings for each 255.255.255.0/24 subnet

@@ -47,8 +47,8 @@ bool	CUDPFirewallTester::m_nodeSearchStarted		= false;
 bool	CUDPFirewallTester::m_timedOut			= false;
 uint8_t	CUDPFirewallTester::m_fwChecksRunningUDP	= 0;
 uint8_t	CUDPFirewallTester::m_fwChecksFinishedUDP	= 0;
-uint32_t CUDPFirewallTester::m_testStart		= 0;
-uint32_t CUDPFirewallTester::m_lastSucceededTime	= 0;
+uint64_t CUDPFirewallTester::m_testStart		= 0;
+uint64_t CUDPFirewallTester::m_lastSucceededTime	= 0;
 CUDPFirewallTester::PossibleClientList	CUDPFirewallTester::m_possibleTestClients;
 CUDPFirewallTester::UsedClientList	CUDPFirewallTester::m_usedTestClients;
 
@@ -59,7 +59,7 @@ bool CUDPFirewallTester::IsFirewalledUDP(bool lastStateIfTesting)
 		return false;
 	}
 	if (!m_timedOut && IsFWCheckUDPRunning()) {
-		if (!m_firewalledUDP && CKademlia::IsFirewalled() && m_testStart != 0 && ::GetTickCount() - m_testStart > MIN2MS(6)
+		if (!m_firewalledUDP && CKademlia::IsFirewalled() && m_testStart != 0 && ::GetTickCount64() - m_testStart > MIN2MS(6)
 			&& !m_isFWVerifiedUDP /*For now we don't allow to get firewalled by timeouts if we have succeeded a test before, might be changed later*/)
 		{
 			AddDebugLogLineN(logKadUdpFwTester, "Timeout: Setting UDP status to firewalled after being unable to get results for 6 minutes");
@@ -92,7 +92,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 	bool requested = false;
 	for (UsedClientList::iterator it = m_usedTestClients.begin(); it != m_usedTestClients.end(); ++it) {
 		if (it->contact.GetIPAddress() == fromIP) {
-			if (!IsFWCheckUDPRunning() && !m_firewalledUDP && m_isFWVerifiedUDP && m_lastSucceededTime + SEC2MS(10) > ::GetTickCount()
+			if (!IsFWCheckUDPRunning() && !m_firewalledUDP && m_isFWVerifiedUDP && m_lastSucceededTime + SEC2MS(10) > ::GetTickCount64()
 			    && incomingPort == CKademlia::GetPrefs()->GetInternKadPort() && CKademlia::GetPrefs()->GetUseExternKadPort()) {
 				// our test finished already in the last 10 seconds with being open because we received a proper result packet before
 				// however we now receive another answer packet on our incoming port (which is not unusual as both resultpackets are sent
@@ -197,7 +197,7 @@ void CUDPFirewallTester::ReCheckFirewallUDP(bool setUnverified)
 	m_fwChecksRunningUDP = 0;
 	m_fwChecksFinishedUDP = 0;
 	m_lastSucceededTime = 0;
-	m_testStart = ::GetTickCount();
+	m_testStart = ::GetTickCount64();
 	m_timedOut = false;
 	m_firewalledLastStateUDP = m_firewalledUDP;
 	m_isFWVerifiedUDP = (m_isFWVerifiedUDP && !setUnverified);
@@ -211,7 +211,7 @@ void CUDPFirewallTester::Connected()
 	if (!m_nodeSearchStarted && IsFWCheckUDPRunning()) {
 		CSearchManager::FindNodeFWCheckUDP(); // start a lookup for a random node to find suitable IPs
 		m_nodeSearchStarted = true;
-		m_testStart = ::GetTickCount();
+		m_testStart = ::GetTickCount64();
 		m_timedOut = false;
 	}
 }

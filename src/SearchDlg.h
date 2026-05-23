@@ -161,7 +161,7 @@ private:
 	 */
 	void		OnSearchPageChanged(wxBookCtrlEvent& evt);
 
-	uint32		m_last_search_time;
+	uint64		m_last_search_time;
 
 	wxGauge*	m_progressbar;
 

@@ -49,7 +49,7 @@ public:
 
 	void	ConnectToServer(CServer* server, bool bNoCrypt = false);
 	sint8	GetConnectionState()	const	{ return connectionstate; }
-	uint32  GetLastTransmission() const	{ return m_dwLastTransmission; }
+	uint64  GetLastTransmission() const	{ return m_dwLastTransmission; }
 	wxString info;
 
 	void	OnClose(int nErrorCode) override;
@@ -81,7 +81,7 @@ private:
 	int32	sizereceived;
 	char*	rbuffer;
 	bool	m_bIsDeleting;	// true: socket is already in deletion phase, don't destroy it in ::StopConnectionTry
-	uint32	m_dwLastTransmission;
+	uint64	m_dwLastTransmission;
 
 	bool m_IsSolving;
 

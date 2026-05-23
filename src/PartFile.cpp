@@ -760,7 +760,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 		m_hashsetneeded = true;
 		ClearMetDirty();
 		ClearStatsDirty();
-		m_lastMetSaveTick = ::GetTickCount();
+		m_lastMetSaveTick = ::GetTickCount64();
 		return true;
 	} else {
 		m_hashsetneeded = false;
@@ -809,7 +809,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	// from load time so the stats-heartbeat is measured from now.
 	ClearMetDirty();
 	ClearStatsDirty();
-	m_lastMetSaveTick = ::GetTickCount();
+	m_lastMetSaveTick = ::GetTickCount64();
 
 	return true;
 }
@@ -1046,7 +1046,7 @@ bool CPartFile::SavePartFile(bool Initial)
 
 	ClearMetDirty();
 	ClearStatsDirty();
-	m_lastMetSaveTick = ::GetTickCount();
+	m_lastMetSaveTick = ::GetTickCount64();
 	return true;
 }
 
@@ -1129,7 +1129,11 @@ void CPartFile::SaveSourceSeeds()
 		}
 
 		/* v2: Added to keep track of too old seeds */
-		file.WriteUInt32(wxDateTime::Now().GetTicks());
+		/* according to https://docs.wxwidgets.org/3.2/classwx_date_time.html#a99263946a9a2ece83421411081c02378
+		 * GetTicks() won't work after Jan 19, 2038, and suggest to use GetValue() instead and convert from ms
+		 * to seconds.
+		 * Since GetValue() returns a wxLongLong which is tagged obsolete, just use GetTickCount64()/1000*/
+		file.WriteUInt32((uint32)(GetTickCount64()/1000));
 
 		AddLogLineN(CFormat( wxPLURAL("Saved %i source seed for partfile: %s (%s)", "Saved %i source seeds for partfile: %s (%s)", n_sources) )
 			% n_sources
@@ -1204,7 +1208,7 @@ void CPartFile::LoadSourceSeeds()
 
 			// Time frame is 2 hours. More than enough to compile
 			// your new aMule version!.
-			if ((time + MIN2S(120)) >= wxDateTime::Now().GetTicks()) {
+			if ((time + MIN2S(120)) >= GetTickCount64()/1000) {
 				valid_sources = true;
 			}
 
@@ -1482,7 +1486,7 @@ void CPartFile::WriteCompleteSourcesCount(CMemFile* file)
 uint32 CPartFile::Process(uint8 m_icounter)
 {
 	uint16 old_trans;
-	uint32 dwCurTick = ::GetTickCount();
+	uint64 dwCurTick = ::GetTickCount64();
 
 	// Flush on buffer-full, time-limit, or pending hash drain.
 	// HasPendingHashWork() bypass drains Phase 3 at Process()-tick
@@ -2690,12 +2694,12 @@ bool CPartFile::CheckFreeDiskSpace( uint64 neededSpace )
 
 void CPartFile::SetLastAnsweredTime()
 {
-	m_ClientSrcAnswered = ::GetTickCount();
+	m_ClientSrcAnswered = ::GetTickCount64();
 }
 
 void CPartFile::SetLastAnsweredTimeTimeout()
 {
-	m_ClientSrcAnswered = 2 * CONNECTION_LATENCY + ::GetTickCount() - SOURCECLIENTREASKS;
+	m_ClientSrcAnswered = 2 * CONNECTION_LATENCY + ::GetTickCount64() - SOURCECLIENTREASKS;
 }
 
 CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byRequestedVersion, uint16 nRequestedOptions)
@@ -3098,7 +3102,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, uint8_t* data, uint64 start, ui
 	// real data arrival, not on every periodic FlushBuffer call, or
 	// idle/paused/stalled files will all read "now" and the column
 	// stops being useful for spotting hopeless downloads.
-	m_nLastBlockReceivedTick = GetTickCount();
+	m_nLastBlockReceivedTick = GetTickCount64();
 	m_lastDateChanged = wxDateTime::GetTimeNow();
 
 	// Create a new buffered queue entry
@@ -3152,7 +3156,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, uint8_t* data, uint64 start, ui
 
 void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 {
-	m_nLastBufferFlushTime = GetTickCount();
+	m_nLastBufferFlushTime = GetTickCount64();
 
 	uint32 partCount = GetPartCount();
 	// Persistent tracking of parts needing hash verification (eMule ref: m_aChangedPart).
@@ -3302,8 +3306,8 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 	} else {
 		// Quiescent guard: defer per-part hashing until 1 s of no new
 		// blocks, so the synchronous read+MD4 doesn't fire mid-burst.
-		const uint32 kHashQuiescentMs = 1000;
-		const uint32 nowTick = GetTickCount();
+		const uint64 kHashQuiescentMs = 1000;
+		const uint64 nowTick = GetTickCount64();
 		if (m_nLastBlockReceivedTick != 0 &&
 			(nowTick - m_nLastBlockReceivedTick) < kHashQuiescentMs) {
 			return;
@@ -3362,10 +3366,10 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 	//      save automatically resets it.
 	// If neither bit is dirty, no save fires.  An idle seeder with no
 	// activity at all writes nothing until shutdown.
-	const uint32 STATS_HEARTBEAT_MS = 10 * 60 * 1000;
+	const uint64 STATS_HEARTBEAT_MS = 10 * 60 * 1000;
 	if (IsMetDirty() ||
 		(IsStatsDirty() &&
-		 (::GetTickCount() - m_lastMetSaveTick > STATS_HEARTBEAT_MS))) {
+		 (::GetTickCount64() - m_lastMetSaveTick > STATS_HEARTBEAT_MS))) {
 		SavePartFile();
 	}
 
@@ -4039,7 +4043,7 @@ bool CPartFile::DelSource(CUpDownClient* client)
 
 void CPartFile::UpdateDisplayedInfo(bool force)
 {
-	uint32 curTick = ::GetTickCount();
+	uint64 curTick = ::GetTickCount64();
 
 	// Wait 1.5s between each redraw
 	if (force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE) {
@@ -4052,7 +4056,7 @@ void CPartFile::UpdateDisplayedInfo(bool force)
 void CPartFile::Init()
 {
 	m_lastsearchtime = 0;
-	lastpurgetime = ::GetTickCount();
+	lastpurgetime = ::GetTickCount64();
 	m_paused = false;
 	m_stopped = false;
 	m_insufficient = false;

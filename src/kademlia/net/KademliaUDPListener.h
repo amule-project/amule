@@ -60,7 +60,7 @@ class CKadClientSearcher;
 struct FetchNodeID_Struct {
 	uint32_t ip;
 	uint32_t tcpPort;
-	uint32_t expire;
+	uint64_t expire;
 	CKadClientSearcher* requester;
 };
 

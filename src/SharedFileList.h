@@ -135,7 +135,7 @@ private:
 	bool	reloading;
 
 	void	SendListToServer();
-	uint32 m_lastPublishED2K;
+	uint64 m_lastPublishED2K;
 	bool	 m_lastPublishED2KFlag;
 
 	CKnownFileList*	filelist;

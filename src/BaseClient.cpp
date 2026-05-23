@@ -267,9 +267,6 @@ void CUpDownClient::Init()
 	m_lastClientSoft = (uint32)(-1);
 	m_lastClientVersion = 0;
 
-	/* Creation time (for buddies timeout) */
-	m_nCreationTime = ::GetTickCount();
-
 	m_MaxBlockRequests = STANDARD_BLOCKS_REQUEST; // Safe starting amount
 
 	m_last_block_start = 0;
@@ -1505,7 +1502,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		// a direct callback is possible - since no other parties are involved and only one additional packet overhead
 		// is used we basically handle it like a normal connection try, no restrictions apply
 		// we already check above with !theApp->CanDoCallback(this) if any callback is possible at all
-		m_dwDirectCallbackTimeout = ::GetTickCount() + SEC2MS(45);
+		m_dwDirectCallbackTimeout = ::GetTickCount64() + SEC2MS(45);
 		theApp->clientlist->AddDirectCallbackClient(this);
 		AddDebugLogLineN(logClient, CFormat("Direct Callback on port %u to client on ip %s") % GetKadPort() % Uint32toStringIP(GetConnectIP()));
 

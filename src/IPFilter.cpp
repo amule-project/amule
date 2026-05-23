@@ -311,14 +311,14 @@ private:
 			uint32 IPAccessLevel = 0;
 			char * IPDescription;
 #ifdef __DEBUG__
-			uint32 time1 = GetTickCountFullRes();
+			uint64 time1 = GetTickCount64();
 #endif
 			while (yyiplex(IPStart, IPEnd, IPAccessLevel, IPDescription)) {
 				AddIPRange(IPStart, IPEnd, IPAccessLevel, IPDescription);
 				filtercount++;
 			}
 #ifdef __DEBUG__
-			uint32 time2 = GetTickCountFullRes();
+			uint64 time2 = GetTickCount64();
 			AddDebugLogLineN(logIPFilter, CFormat("time for lexer: %.3f") % ((time2-time1) / 1000.0));
 #endif
 		} else {

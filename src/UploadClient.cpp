@@ -107,7 +107,7 @@ uint32 CUpDownClient::CalculateScoreInternal()
 	}
 
 	// calculate score, based on waitingtime and other factors
-	float fBaseValue = (float)(::GetTickCount()-GetWaitStartTime())/1000;
+	float fBaseValue = (float)(::GetTickCount64()-GetWaitStartTime())/1000;
 
 	fBaseValue *= GetScoreRatio();	// credits
 
@@ -372,9 +372,9 @@ void CUpDownClient::AddReqBlock(Requested_Block_Struct* reqblock, bool bSignalIO
 }
 
 
-uint32 CUpDownClient::GetWaitStartTime() const
+uint64 CUpDownClient::GetWaitStartTime() const
 {
-	uint32 dwResult = 0;
+	uint64 dwResult = 0;
 
 	if ( credits ) {
 		dwResult = credits->GetSecureWaitStartTime(GetIP());
@@ -421,7 +421,7 @@ void CUpDownClient::ResetSessionUp()
 
 uint32 CUpDownClient::SendBlockData()
 {
-    uint32 curTick = ::GetTickCount();
+    uint64 curTick = ::GetTickCount64();
     uint64 sentBytesCompleteFile = 0;
     uint64 sentBytesPartFile = 0;
     uint64 sentBytesPayload = 0;
@@ -470,7 +470,7 @@ uint32 CUpDownClient::SendBlockData()
     while ((!m_AvarageUDR_list.empty()) && (curTick - m_AvarageUDR_list.front().timestamp) > 10*1000) {
         // keep sum of all values in list up to date
         m_nSumForAvgUpDataRate -= m_AvarageUDR_list.front().datalen;
-		m_AvarageUDR_list.pop_front();
+	m_AvarageUDR_list.pop_front();
     }
 
     // Calculate average speed for this slot
@@ -646,7 +646,7 @@ bool CUpDownClient::IsBanned() const
 
 void CUpDownClient::CheckForAggressive()
 {
-	uint32 cur_time = ::GetTickCount();
+	uint64 cur_time = ::GetTickCount64();
 
 	// First call, initialize
 	if ( !m_LastFileRequest ) {

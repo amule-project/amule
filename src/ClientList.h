@@ -183,8 +183,8 @@ public:
 	CUpDownClient* FindClientByECID(uint32 ecid) const;
 
 
-	//! The list-type used to store clients IPs and other information
-	typedef std::map<uint32, uint32> ClientMap;
+	//! The list-type used to store clients IPs and ban time information
+	typedef std::map<uint32, uint64> ClientMap;
 
 
 	/**
@@ -417,15 +417,15 @@ private:
 	//! This is the map of banned clients.
 	ClientMap m_bannedList;
 	//! This variable is used to keep track of the last time the banned-list was pruned.
-	uint32	m_dwLastBannCleanUp;
+	uint64	m_dwLastBannCleanUp;
 
 	//! This is the map of tracked clients.
 	std::map<uint32, CDeletedClient*> m_trackedClientsList;
 	//! This keeps track of the last time the tracked-list was pruned.
-	uint32	m_dwLastTrackedCleanUp;
+	uint64	m_dwLastTrackedCleanUp;
 
 	//! This keeps track of the last time the client-list was pruned.
-	uint32 m_dwLastClientCleanUp;
+	uint64 m_dwLastClientCleanUp;
 
 	//! List of unusable sources.
 	CDeadSourceList	m_deadSources;
@@ -437,7 +437,7 @@ private:
 
 	typedef struct {
 		uint32 ip;
-		uint32 inserted;
+		uint64 inserted;
 	} IpAndTicks;
 	typedef std::list<IpAndTicks>	IpAndTicksList;
 	IpAndTicksList			m_firewallCheckRequests;

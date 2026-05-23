@@ -301,8 +301,8 @@ public:
                                         return temp; }
 	static uint16		GetDeadserverRetries()		{ return s_deadserverretries; }
 	static void		SetDeadserverRetries(uint16 val) { s_deadserverretries = val; }
-	static uint32		GetServerKeepAliveTimeout()	{ return s_dwServerKeepAliveTimeoutMins*60000; }
-	static void		SetServerKeepAliveTimeout(uint32 val)	{ s_dwServerKeepAliveTimeoutMins = val/60000; }
+	static uint64		GetServerKeepAliveTimeout()	{ return s_dwServerKeepAliveTimeoutMins*60000; }
+	static void		SetServerKeepAliveTimeout(uint64 val)	{ s_dwServerKeepAliveTimeoutMins = val/60000; }
 
 	static const wxString&	GetLanguageID()			{ return s_languageID; }
 	static void		SetLanguageID(const wxString& new_id)	{ s_languageID = new_id; }
@@ -727,7 +727,7 @@ protected:
 	static uint8	s_iToolDelayTime;	// tooltip delay time in seconds
 	static uint8	s_splitterbarPosition;
 	static uint16	s_deadserverretries;
-	static uint32	s_dwServerKeepAliveTimeoutMins;
+	static uint64	s_dwServerKeepAliveTimeoutMins;
 
 	static uint8	s_statsMax;
 	static uint8	s_statsAverageMinutes;

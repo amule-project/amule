@@ -84,7 +84,7 @@ private:
 	void	ResetTimeOutTimer();
 	void	SetClient(CUpDownClient* client);
 
-	uint32	timeout_timer;
+	uint64	timeout_timer;
 	uint32	m_remoteip;
 };
 

@@ -1608,7 +1608,7 @@ bool CKademliaUDPListener::FindNodeIDByIP(CKadClientSearcher* requester, uint32_
 	AddDebugLogLineN(logClientKadUDP, "FindNodeIDByIP: Requesting NodeID from " + KadIPToString(ip) + " by sending Kad2HelloReq");
 	DebugSend(Kad2HelloReq, ip, udpPort);
 	SendMyDetails(KADEMLIA2_HELLO_REQ, ip, udpPort, 1, 0, NULL, false); // todo: we send this unobfuscated, which is not perfect, see this can be avoided in the future
-	FetchNodeID_Struct sRequest = { ip, tcpPort, ::GetTickCount() + SEC2MS(60), requester };
+	FetchNodeID_Struct sRequest = { ip, tcpPort, ::GetTickCount64() + SEC2MS(60), requester };
 	m_fetchNodeIDRequests.push_back(sRequest);
 	return true;
 }
@@ -1616,7 +1616,7 @@ bool CKademliaUDPListener::FindNodeIDByIP(CKadClientSearcher* requester, uint32_
 
 void CKademliaUDPListener::ExpireClientSearch(CKadClientSearcher* expireImmediately)
 {
-	uint32_t now = ::GetTickCount();
+	uint64_t now = ::GetTickCount64();
 	for (FetchNodeIDList::iterator it = m_fetchNodeIDRequests.begin(); it != m_fetchNodeIDRequests.end();) {
 		FetchNodeIDList::iterator it2 = it++;
 		if (it2->requester == expireImmediately) {

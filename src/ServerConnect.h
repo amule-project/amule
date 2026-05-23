@@ -53,7 +53,7 @@ class CServerUDPSocket;
 #define	CS_WAITFORLOGIN	3
 #define CS_RETRYCONNECTTIME  30 // seconds
 
-typedef std::map<uint32, CServerSocket*> ServerSocketMap;
+typedef std::map<uint64, CServerSocket*> ServerSocketMap;
 
 class CServerConnect {
 public:

@@ -153,7 +153,7 @@ bool CUpDownClient::AskForDownload()
 		}
 	}
 	m_bUDPPending = false;
-	m_dwLastAskedTime = ::GetTickCount();
+	m_dwLastAskedTime = ::GetTickCount64();
 	SetDownloadState(DS_CONNECTING);
 	SetSentCancelTransfer(0);
 	return TryToConnect();
@@ -180,9 +180,9 @@ bool CUpDownClient::IsSourceRequestAllowed()
 {
 	//#warning REWRITE - Source swapping from eMule.
 	// 0.42e
-	uint32 dwTickCount = ::GetTickCount() + CONNECTION_LATENCY;
-	uint32 nTimePassedClient = dwTickCount - GetLastSrcAnswerTime();
-	uint32 nTimePassedFile   = dwTickCount - m_reqfile->GetLastAnsweredTime();
+	uint64 dwTickCount = ::GetTickCount64() + CONNECTION_LATENCY;
+	uint64 nTimePassedClient = dwTickCount - GetLastSrcAnswerTime();
+	uint64 nTimePassedFile   = dwTickCount - m_reqfile->GetLastAnsweredTime();
 	bool bNeverAskedBefore = (GetLastAskedForSources() == 0);
 
 	uint32 uSources = m_reqfile->GetSourceCount();
@@ -532,7 +532,7 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 			}
 		}
 		if (byNewState == DS_DOWNLOADING) {
-			msReceivedPrev = GetTickCount();
+			msReceivedPrev = GetTickCount64();
 			theStats::AddDownloadingSource();
 		} else if (m_nDownloadState == DS_DOWNLOADING) {
 			theStats::RemoveDownloadingSource();
@@ -589,7 +589,7 @@ void CUpDownClient::ProcessHashSet(const uint8_t* packet, uint32 size)
 
 void CUpDownClient::SendBlockRequests()
 {
-	uint32 current_time = ::GetTickCount();
+	uint64 current_time = ::GetTickCount64();
 	if (GetVBTTags()) {
 
 		// Ask new blocks only when all completed
@@ -865,7 +865,7 @@ void CUpDownClient::ProcessBlockPacket(const uint8_t* packet, uint32 size, bool 
 	uint32 lenUnzipped = 0;
 
 	// Update stats
-	m_dwLastBlockReceived = ::GetTickCount();
+	m_dwLastBlockReceived = ::GetTickCount64();
 
 	try {
 
@@ -923,7 +923,7 @@ void CUpDownClient::ProcessBlockPacket(const uint8_t* packet, uint32 size, bool 
 
 				if (cur_block->block->StartOffset == nStartPos) {
 					// This block just started transferring. Set the start time.
-					m_last_block_start = ::GetTickCountFullRes();
+					m_last_block_start = ::GetTickCount64();
 				}
 
 				if (cur_block->fZStreamError){
@@ -1029,7 +1029,7 @@ void CUpDownClient::ProcessBlockPacket(const uint8_t* packet, uint32 size, bool 
 
 						// Save last average speed based on data and time.
 						// This should do bytes/sec.
-						uint32 average_time = (::GetTickCountFullRes() - m_last_block_start);
+						uint64 average_time = (::GetTickCount64() - m_last_block_start);
 
 						// Avoid divide by 0.
 						if (average_time == 0) {
@@ -1182,7 +1182,7 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, uint8_t *zipped, uint32 le
 float CUpDownClient::CalculateKBpsDown()
 {
 	const	float tAverage = 10.0;
-	uint32	msCur = GetTickCount();
+	uint64	msCur = GetTickCount64();
 
 	if (bytesReceivedCycle) {
 		float dt = (msCur - msReceivedPrev) / 1000.0; // time since last reception
@@ -1242,7 +1242,7 @@ void CUpDownClient::UDPReaskACK(uint16 nNewQR)
 	// 0.42e
 	m_bUDPPending = false;
 	SetRemoteQueueRank(nNewQR);
-	m_dwLastAskedTime = ::GetTickCount();
+	m_dwLastAskedTime = ::GetTickCount64();
 }
 
 void CUpDownClient::UDPReaskFNF()
@@ -1362,7 +1362,7 @@ uint16 CUpDownClient::GetNextRequestedPart() const
 
 void CUpDownClient::UpdateDisplayedInfo(bool force)
 {
-	uint32 curTick = ::GetTickCount();
+	uint64 curTick = ::GetTickCount64();
 	if (force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE) {
 		// Check if we actually need to notify of changes
 		bool update = m_reqfile && m_reqfile->ShowSources();
@@ -1508,7 +1508,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 				m_A4AF_list[m_reqfile].NeededParts = (GetDownloadState() != DS_NONEEDEDPARTS);
 
 				// Avoid swapping to this file for a while
-				m_A4AF_list[m_reqfile].timestamp = ::GetTickCount();
+				m_A4AF_list[m_reqfile].timestamp = ::GetTickCount64();
 
 				Notify_SourceCtrlAddSource(m_reqfile, CCLIENTREF(this, "CUpDownClient::SwapToAnotherFile Notify_SourceCtrlAddSource 1"), A4AF_SOURCE);
 			} else {
@@ -1546,7 +1546,7 @@ bool CUpDownClient::IsValidSwapTarget( A4AFList::iterator it, bool ignorenoneede
 
 	// Check if this file has been suspended
 	if ( !ignoresuspended ) {
-		if ( ::GetTickCount() - it->second.timestamp >= PURGESOURCESWAPSTOP ) {
+		if ( ::GetTickCount64() - it->second.timestamp >= PURGESOURCESWAPSTOP ) {
 			// The wait-time has been exceeded and the file is now a valid target
 			it->second.timestamp = 0;
 		} else {

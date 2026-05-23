@@ -35,6 +35,7 @@
 
 #include <vector>
 #include <list>
+#include "Types.h"
 
 /**
  * Enhanced wxListCtrl provided custom-drawing among other things.
@@ -376,7 +377,7 @@ private:
 	wxString		m_tts_text;
 
 	//! Timestamp for the last TTS event.
-	unsigned		m_tts_time;
+	uint64			m_tts_time;
 
 	//! The index of the last item selected via TTS.
 	int			m_tts_item;

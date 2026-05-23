@@ -132,7 +132,7 @@ void CServerSocket::OnReceive(int nErrorCode)
 		return;
 	}
 	CEMSocket::OnReceive(nErrorCode);
-	m_dwLastTransmission = GetTickCount();
+	m_dwLastTransmission = GetTickCount64();
 }
 
 bool CServerSocket::ProcessPacket(const uint8_t* packet, uint32 size, int8 opcode)
@@ -644,7 +644,7 @@ void CServerSocket::SetConnectionState(sint8 newstate)
 
 void CServerSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, uint32 actualPayloadSize)
 {
-	m_dwLastTransmission = GetTickCount();
+	m_dwLastTransmission = GetTickCount64();
 	CEMSocket::SendPacket(packet, delpacket, controlpacket, actualPayloadSize);
 }
 
