@@ -33,6 +33,7 @@
 #include <memory>		// Do_not_auto_remove (lionel's Mac, 10.3)
 #include <set>
 #include <vector>
+#include "DownloadQueue.h"	// Needed for theApp->downloadqueue access
 #include "PartFile.h"		// Needed for CPartFile
 #include "amule.h"
 #include "Logger.h"
@@ -162,21 +163,6 @@ bool CKnownFileList::Init()
 
 void CKnownFileList::Save()
 {
-	// Snapshot the currently-shared-files pointer set without holding
-	// our own lock -- CSharedFileList::CopyFileList briefly takes its
-	// own mutex (the reverse lock order from
-	// CSharedFileList::SafeAddKFile, which already does
-	// sharedfiles-lock -> knownfiles-lock; doing it the same way here
-	// would be a textbook ABBA). Anything in the snapshot is a
-	// pointer SharedFileList is currently holding; PruneDuplicates
-	// will never delete those.
-	std::vector<CKnownFile*> sharedSnapshot;
-	if (theApp && theApp->sharedfiles) {
-		theApp->sharedfiles->CopyFileList(sharedSnapshot);
-	}
-	std::unordered_set<CKnownFile*> inUse(
-		sharedSnapshot.begin(), sharedSnapshot.end());
-
 	// Acquire the lock before opening the .new file. Save() is called
 	// from both the main thread (on shutdown / scheduled persist) and
 	// the hashing worker thread (CHashingTask::OnLastTask). If two
@@ -189,6 +175,30 @@ void CKnownFileList::Save()
 	// .new lifecycle. The list itself is read-only inside, so this
 	// doesn't widen the existing critical section meaningfully.
 	wxMutexLocker sLock(list_mut);
+
+	// Snapshot the in-use set under our own lock. Taking the snapshot
+	// before locking left a TOCTOU window where the main thread could
+	// add a CKnownFile to sharedfiles between snapshot and prune; the
+	// prune then deleted a file that sharedfiles still indexed,
+	// leaving a dangling pointer that the EC encoder map kept feeding
+	// to Get_EC_Response_GetUpdate -> use-after-free crash (#685).
+	//
+	// Brief overlap of knownfiles -> sharedfiles / downloadqueue locks
+	// is safe: no code path acquires those in the reverse order while
+	// holding the first. sharedfiles never calls into knownfiles under
+	// its own lock, and downloadqueue never calls into knownfiles at
+	// all.
+	std::unordered_set<CKnownFile*> inUse;
+	if (theApp && theApp->sharedfiles) {
+		std::vector<CKnownFile*> sharedSnapshot;
+		theApp->sharedfiles->CopyFileList(sharedSnapshot);
+		inUse.insert(sharedSnapshot.begin(), sharedSnapshot.end());
+	}
+	if (theApp && theApp->downloadqueue) {
+		std::vector<CPartFile*> dqSnapshot;
+		theApp->downloadqueue->CopyFileList(dqSnapshot, true);
+		inUse.insert(dqSnapshot.begin(), dqSnapshot.end());
+	}
 
 	PruneDuplicates(inUse);
 
@@ -663,6 +673,23 @@ void CKnownFileList::PruneDuplicates(
 			continue;
 		}
 		CKnownFile * dead = kit->second;
+
+		// Final paranoid re-check: even though Save() now snapshots
+		// inUse under our own lock, the snapshot's sharedfiles /
+		// downloadqueue locks were released before the prune body
+		// ran. A concurrent SafeAddKFile (main thread) or RemoveFile
+		// (UploadDiskIOThread) could have changed membership in
+		// between. Re-query under the owner's lock, immediately
+		// before delete, to make this point-in-time correct (#685).
+		if (theApp && theApp->sharedfiles &&
+			theApp->sharedfiles->GetFileByID(*it) != NULL) {
+			continue;
+		}
+		if (theApp && theApp->downloadqueue &&
+			theApp->downloadqueue->GetFileByID(*it) != NULL) {
+			continue;
+		}
+
 		eraseFromSizeMap(m_knownSizeMap, dead);
 		delete dead;
 		m_knownFileMap.erase(kit);
