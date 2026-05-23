@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-05-11 16:37-0300\n"
-"PO-Revision-Date: 2021-02-12 21:15+0300\n"
+"PO-Revision-Date: 2026-05-23 19:48+0300\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
 "Language: tr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.9\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -45,35 +45,42 @@ msgid ""
 "\n"
 "Install desktop integration now?"
 msgstr ""
+"aMule, normal olarak kurulmuş bir uygulama gibi görünmesi için ev dizininize "
+"bir masaüstü başlatıcısı ve ikonu kurabilir. Bu, geri alınabilir — dosyalar "
+"~/.local/share/applications ile ~/.local/share/icons konumlarında bulunurlar "
+"ve ne zaman isterseniz onları kaldırabilirsiniz.\n"
+"\n"
+"Masaüstü birleşimi şimdi kurulsun mu?"
 
 #: src/AppImageIntegration.cpp:226
-#, fuzzy
 msgid "Add aMule to your application menu?"
-msgstr "Uygulama adından sonra"
+msgstr "aMule uygulama menünüze eklensin mi?"
 
 #: src/AppImageIntegration.cpp:228
 msgid "Install"
-msgstr ""
+msgstr "Kur"
 
 #: src/AppImageIntegration.cpp:228
 msgid "Not now"
-msgstr ""
+msgstr "Şimdi değil"
 
 #: src/AppImageIntegration.cpp:229
 msgid "Don't ask again"
-msgstr ""
+msgstr "Tekrar sorma"
 
 #: src/AppImageIntegration.cpp:248
 msgid ""
 "Cannot install desktop integration: the APPDIR environment variable is not "
 "set. This usually means the AppImage was launched in a non-standard way."
 msgstr ""
+"Masaüstü birleşimi kurulamaz: APPDIR ortam değişkeni tanımlı değil. Bu, "
+"genelde AppImage başlatılmasının standart olmayan bir yolla yapıldığı "
+"manasına gelir."
 
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
 #: src/AppImageIntegration.cpp:274
-#, fuzzy
 msgid "aMule integration failed"
-msgstr "Bağlantı başarısız "
+msgstr "aMule birleşimi başarısız"
 
 #: src/AppImageIntegration.cpp:259
 #, c-format
@@ -81,6 +88,8 @@ msgid ""
 "Cannot install desktop integration: failed to create %s. Check that your "
 "home directory is writable."
 msgstr ""
+"Masaüstü birleşimi kurulamaz: %s oluşturulması başarısız oldu. Ev "
+"dizininizin yazılabilir olduğundan emin olun."
 
 #: src/AppImageIntegration.cpp:271
 #, c-format
@@ -88,10 +97,12 @@ msgid ""
 "Cannot install desktop integration: failed to write %s. Check that your home "
 "directory is writable."
 msgstr ""
+"Masaüstü birleşimi kurulamaz: %s yazması başarısız oldu. Ev dizininizin "
+"yazılabilir olduğundan emin olun."
 
 #: src/AppImageIntegration.cpp:281
 msgid "AppImage integration: aMule added to your application menu."
-msgstr ""
+msgstr "AppImage birleşimi: aMule uygulama menünüze ilave edildi."
 
 #: src/AppImageIntegration.cpp:284
 msgid ""
@@ -104,18 +115,27 @@ msgid ""
 "\n"
 "Restart aMule now?"
 msgstr ""
+"aMule, uygulama menünüze eklendi. Artık onu uygulama listenizden "
+"başlatabilirsiniz, başlatıcı bu AppImage dosyasını çalıştıracaktır.\n"
+"\n"
+"Bazı masaüstlerinde, görev tepsisinin / çubuğunun ikonunun yeni başlatıcı "
+"unsuruyla ilişkilendirilmesi için aMule uygulamasının tekrar başlatılması "
+"gerekebilir. Çağdaş Wayland kompozitörleri bunu anında algılar fakat ikon "
+"jenerik olarak kaldıysa tekrar başlatma güvenli bir yedek çözümdür.\n"
+"\n"
+"aMule şimdi tekrar başlatılsın mı?"
 
 #: src/AppImageIntegration.cpp:287
 msgid "aMule installed"
-msgstr ""
+msgstr "aMule kuruldu"
 
 #: src/AppImageIntegration.cpp:289
 msgid "Restart now"
-msgstr ""
+msgstr "Şimdi tekrar başlat"
 
 #: src/AppImageIntegration.cpp:289
 msgid "Later"
-msgstr ""
+msgstr "Daha sonra"
 
 #: src/amuleAppCommon.cpp:172
 #, c-format
@@ -123,7 +143,9 @@ msgid "Could not add %u link from ED2KLinks file (see log for details)."
 msgid_plural ""
 "Could not add %u links from ED2KLinks file (see log for details)."
 msgstr[0] ""
+"ED2Links dosyasından %u bağlantı eklenemedi (ayrıntılar için kütüğe bakın)."
 msgstr[1] ""
+"ED2Links dosyasından %u bağlantı eklenemedi (ayrıntılar için kütüğe bakın)."
 
 #: src/amuleAppCommon.cpp:174 src/amule.cpp:830 src/amule.cpp:944
 #: src/amule.cpp:1239 src/amule-remote-gui.cpp:374 src/amule-remote-gui.cpp:402
@@ -207,24 +229,24 @@ msgid "WARNING"
 msgstr "UYARI"
 
 #: src/amule.cpp:731
-#, fuzzy
 msgid "eD2k server list (server.met)"
-msgstr "%i adet sunucu server.met dosyasında bulundu"
+msgstr "eD2k sunucu listesi (server.met)"
 
 #: src/amule.cpp:732
 msgid "Kad bootstrap nodes (nodes.dat)"
-msgstr ""
+msgstr "Kad başlangıç düğümleri (nodes.dat)"
 
 #: src/amule.cpp:739
 msgid ""
 "aMule has detected missing network bootstrap files.\n"
 "Select which ones to download:"
 msgstr ""
+"aMule, eksik ağ başlatma dosyaları olduğunu tespit etti.\n"
+"Hangilerinin indirileceklerini seçin:"
 
 #: src/amule.cpp:740
-#, fuzzy
 msgid "Network bootstrap"
-msgstr "Ağlar"
+msgstr "Ağ başlatması"
 
 #: src/amule.cpp:825
 #, c-format
@@ -454,7 +476,7 @@ msgstr "Kademlia ağına bağlanıldı (tamam)"
 
 #: src/amule.cpp:2190
 msgid "Connected to Kad (firewalled)"
-msgstr "Kademlia ağına bağlanıldı. (Güvenlik duvarı)"
+msgstr "Kademlia ağına bağlanıldı (Güvenlik duvarı arkasında)"
 
 #: src/amule.cpp:2193
 msgid "Disconnected from Kad"
@@ -485,7 +507,6 @@ msgstr ""
 "\"AcceptExternalConnections\" seçeneğini 1 olarak ayarlayın."
 
 #: src/amuled.cpp:159
-#, fuzzy
 msgid ""
 "ERROR: A valid password is required to use external connections, and aMule "
 "daemon cannot be used without external connections. To run aMule daemon, you "
@@ -876,6 +897,10 @@ msgid ""
 "Please check the host, port and that aMule is running with External "
 "Connections enabled."
 msgstr ""
+"Bağlantı zaman aşımına uğradı. Ayrılan vakit zarfında %s:%d ile irtibat "
+"kurulamadı.\n"
+"Lütfen adresi, bağlantı noktasını ve aMule'ün Harici Bağlantılar "
+"etkinleştirilmiş olarak çalıştırılıp çalıştırılmadığını kontrol edin."
 
 #: src/amule-remote-gui.cpp:509
 msgid "Ready"
@@ -1219,7 +1244,7 @@ msgstr "Kullanıcı %s (%u), %s dizinini paylaşıyor"
 #: src/ClientTCPSocket.cpp:963
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
-msgstr "Kullanıcı %s (%u) istenmeyen paylaşılmış dosya listesi gönderdi"
+msgstr "Kullanıcı %s (%u) istenmeyen paylaşılmış dosya listesi gönderdi."
 
 #: src/ClientTCPSocket.cpp:978
 #, c-format
@@ -1438,9 +1463,8 @@ msgid "In progress"
 msgstr "İşlem yapılıyor"
 
 #: src/DataToText.cpp:145
-#, fuzzy
 msgid "ERROR: Out of disk space"
-msgstr "HATA: Disk dolu"
+msgstr "HATA: disk alanı yetersiz"
 
 #: src/DataToText.cpp:146
 msgid "ERROR: Partmet not found"
@@ -1729,8 +1753,8 @@ msgstr "Bağlantı için bilinmeyen protokol: %s"
 #, c-format
 msgid "Could not add %u link (see log for details)."
 msgid_plural "Could not add %u links (see log for details)."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u bağlantı eklenemedi (teferruatlar için kütüğe bakın)."
+msgstr[1] "%u bağlantı eklenemedi (teferruatlar için kütüğe bakın)."
 
 #: src/DownloadQueue.cpp:1463
 #, c-format
@@ -1764,7 +1788,7 @@ msgstr "HATA: yeni bir dış bağlantı kabul edilemiyor"
 
 #: src/ExternalConn.cpp:433
 msgid "External connection refused due to empty password in preferences!"
-msgstr "Ayarlardaki boş şifre sebebiyle dışarıdan bağlantılar reddedildi."
+msgstr "Ayarlardaki boş şifre sebebiyle dışarıdan bağlantılar reddedildi!"
 
 #: src/ExternalConn.cpp:444
 #, c-format
@@ -1863,18 +1887,16 @@ msgid "eD2k is disabled in preferences."
 msgstr "pasifleştirilmiş."
 
 #: src/ExternalConn.cpp:1012
-#, fuzzy
 msgid "Friend not found."
-msgstr "Dosya bulunamadı."
+msgstr "Arkadaş bulunamadı."
 
 #: src/ExternalConn.cpp:1021
-#, fuzzy
 msgid "Client not found."
-msgstr "Dosya bulunamadı."
+msgstr "İstemci bulunamadı."
 
 #: src/ExternalConn.cpp:1026
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
-msgstr ""
+msgstr "EC_TAG_FRIEND_SHARED, EC_TAG_FRIEND veya EC_TAG_CLIENT gerektirir."
 
 #: src/ExternalConn.cpp:1135
 msgid "Search in progress. Refetch results in a moment!"
@@ -1906,9 +1928,11 @@ msgid "ExternalConn: adding link '%s'."
 msgstr "Dışarıdan Bağ.:'%s' bağlantısı ekleniyor."
 
 #: src/ExternalConn.cpp:1421
-#, fuzzy, c-format
+#, c-format
 msgid "%d of %d links failed (invalid or already on list)."
-msgstr "Geçersiz bağlantı veya zaten listede mevcut."
+msgstr ""
+"%d bağlantı, ki toplam %d üzerinden, başarısız oldu (geçersiz veya zaten "
+"listede)."
 
 #: src/ExternalConn.cpp:1489
 msgid "File not found."
@@ -1944,7 +1968,7 @@ msgstr "Kad ağına bağlanıyor..."
 
 #: src/ExternalConn.cpp:1860
 msgid "All networks are disabled."
-msgstr "Bütün ağlar devre dışı"
+msgstr "Bütün ağlar devre dışı."
 
 #: src/ExternalConn.cpp:1868
 msgid "Disconnected from eD2k."
@@ -2241,13 +2265,12 @@ msgid "Multiple selection"
 msgstr "Çoklu seçim"
 
 #: src/GenericClientListCtrl.cpp:528
-#, fuzzy
 msgid ""
 "You are not allowed to set more than one friend slot.\n"
 " Only one slot was assigned."
 msgstr ""
-"Birden fazla arkadaş slotu kuramazsınız.\n"
-"Sadece bir slot kuruldu."
+"Birden fazla arkadaş oluğu kurmanıza izin verilmez.\n"
+"Sadece bir oluk atandı."
 
 #: src/GenericClientListCtrl.cpp:545
 msgid "Send message to user"
@@ -2320,39 +2343,39 @@ msgid "The URL to download can't be empty"
 msgstr "İndirme bağlantısı boş olamaz."
 
 #: src/HTTPDownload.cpp:246
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to create HTTP request for %s"
-msgstr "'%s' kullanıcısının paylaşılmış dosyalarını alma başarısız"
+msgstr "'%s' için HTTP talebi oluşturulması başarısız oldu"
 
 #: src/HTTPDownload.cpp:337
 #, c-format
 msgid "HTTP download: empty response body for %s"
-msgstr ""
+msgstr "HTTP indirmesi: %s için boş cevap gövdesi"
 
 #: src/HTTPDownload.cpp:349
-#, fuzzy, c-format
+#, c-format
 msgid "Could not move downloaded file to %s"
-msgstr "Geçici dosyalar için dizin"
+msgstr "İndirilen dosyanın %s konumuna taşınması başarısız oldu."
 
 #: src/HTTPDownload.cpp:353
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %s (%llu bytes)"
-msgstr "%d bayt indirildi."
+msgstr "%s (%llu bayt) indirildi."
 
 #: src/HTTPDownload.cpp:358
-#, fuzzy, c-format
+#, c-format
 msgid "The URL %s returned: %i"
-msgstr "%s bağlantı adresi dönüşü: %i - Hata (%i)!"
+msgstr "%s bağlantısı şunu geri gönderdi: %i"
 
 #: src/HTTPDownload.cpp:365
-#, fuzzy, c-format
+#, c-format
 msgid "HTTP download failed for %s: %s"
-msgstr "HTTP aktarımı iptal edildi"
+msgstr "%s için HTTP indirmesi başarısız oldu: %s"
 
 #: src/HTTPDownload.cpp:380
 #, c-format
 msgid "HTTP 401 Unauthorized for %s"
-msgstr ""
+msgstr "%s için HTTP 401 Yetkisiz"
 
 #: src/IP2Country.cpp:98
 #, c-format
@@ -2361,16 +2384,19 @@ msgid ""
 "(a free MaxMind account is required) and place it at %s, or set the URL in "
 "Preferences."
 msgstr ""
+"Hiçbir GeoLite2 güncelleme bağlantısı yapılandırılmamış. GeoLite2-"
+"Country.mmdb dosyasını el ile indirin (bedava bir MaxMind hesabı gerektirir) "
+"ve onu %s konumuna taşıyın veya Tercihler'de URL'i ayarlayın."
 
 #: src/IP2Country.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid "Download new %s from %s"
-msgstr "%s kaynağından yeni bir GeoIP.dat indir"
+msgstr "Yeni %s unsurunu %s konumundan indir"
 
 #: src/IP2Country.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Download of %s file failed, aborting update."
-msgstr "GeoIP.dat dosyası indirilemedi. Güncelleme iptal edildi."
+msgstr "%s dosyasının indirilmesi başarısız oldu, güncelleme iptal ediliyor."
 
 #: src/IP2Country.cpp:137 src/IPFilter.cpp:500
 #, c-format
@@ -2388,9 +2414,9 @@ msgid "Successfully updated %s"
 msgstr "%s başarıyla güncellendi."
 
 #: src/IP2Country.cpp:151
-#, fuzzy, c-format
+#, c-format
 msgid "Error updating %s"
-msgstr "GeoIP.dat güncellemesinde hata oluştu."
+msgstr "%s unsurunun güncellemesinde hata oluştu"
 
 #: src/IP2Country.cpp:156 src/IPFilter.cpp:512 src/ServerList.cpp:862
 #, c-format
@@ -2565,7 +2591,7 @@ msgstr "Bilinen dosyalar listesinden girdi yüklenemedi. Dosya bozuk olabilir"
 #: src/KnownFileList.cpp:129
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
-"Bilinen dosyalar listesinde geçersiz girdi bulundu. Dosya bozuk olabilir:"
+"Bilinen dosyalar listesinde geçersiz girdi bulundu. Dosya bozuk olabilir: "
 
 #: src/libs/common/Format.cpp:306
 #, c-format
@@ -2689,39 +2715,32 @@ msgid "Select All"
 msgstr "Tümünü Seç"
 
 #: src/MuleTrayIcon.cpp:367
-#, fuzzy
 msgid "eD2k: "
-msgstr "eD2k"
+msgstr "eD2k: "
 
 #: src/MuleTrayIcon.cpp:370
-#, fuzzy
 msgid "Connected (LowID)"
-msgstr "Bağlandı"
+msgstr "Bağlandı (LowID)"
 
 #: src/MuleTrayIcon.cpp:371
-#, fuzzy
 msgid "Connected (HighID)"
-msgstr "Bağlandı"
+msgstr "Bağlandı (HighID)"
 
 #: src/MuleTrayIcon.cpp:380
-#, fuzzy
 msgid "Kad: "
-msgstr "Kad:"
+msgstr "Kad: "
 
 #: src/MuleTrayIcon.cpp:383
-#, fuzzy
 msgid "Connected (firewalled)"
-msgstr "Kademlia ağına bağlanıldı. (Güvenlik duvarı)"
+msgstr "Çevrim içi (Güvenlik duvarı arkasında)"
 
 #: src/MuleTrayIcon.cpp:393
-#, fuzzy
 msgid "Server: "
-msgstr "SunucuIP: "
+msgstr "Sunucu: "
 
 #: src/MuleTrayIcon.cpp:394
-#, fuzzy
 msgid "Server IP: "
-msgstr "Sunucu IP:"
+msgstr "Sunucu IP: "
 
 #: src/MuleTrayIcon.cpp:399 src/MuleTrayIcon.cpp:400 src/MuleTrayIcon.cpp:823
 #: src/MuleTrayIcon.cpp:837 src/TextClient.cpp:811 src/TextClient.cpp:824
@@ -3085,6 +3104,10 @@ msgid ""
 "next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing "
 "additional file matches that the search's initial alpha frontier missed."
 msgstr ""
+"Zaten cevap vermiş Kad eşlerinden aramayı genişletmelerini iste. Aramanın "
+"ilk alfa hududunun bulamadığı ilave dosya eşleşmelerini ortaya çıkarmak için "
+"her bir tıklama bir sonraki en yakın eşten daha fazla irtibat talep eder "
+"(KADEMLIA_FIND_VALUE_MORE)."
 
 #: src/muuli_wdr.cpp:330
 msgid "Stop"
@@ -3591,7 +3614,7 @@ msgstr "Standart TCP Portu "
 
 #: src/muuli_wdr.cpp:1345
 msgid "This is the standard eD2k port and cannot be disabled."
-msgstr "pasifleştirilmiş."
+msgstr "Bu, standart eD2k bağlantı noktasıdır ve devre dışı bırakılamaz."
 
 #: src/muuli_wdr.cpp:1348
 msgid "UDP port for server requests (TCP+3):"
@@ -3755,7 +3778,7 @@ msgstr "aMule'nin diskteki alanı denetlemesini istiyorsanız bunu seçiniz."
 
 #: src/muuli_wdr.cpp:1525
 msgid "Enter here the min disk space desired."
-msgstr "Buraya istenilen en az disk alanını giriniz"
+msgstr "Buraya istenilen en az disk alanını giriniz."
 
 #: src/muuli_wdr.cpp:1531
 msgid "Save 10 sources on rare files (< 20 sources)"
@@ -3814,7 +3837,6 @@ msgid "Upload graph scale:"
 msgstr "Gönderme grafik ölçüsü:"
 
 #: src/muuli_wdr.cpp:1635
-#, fuzzy
 msgid "Colors: "
 msgstr "Renkler: "
 
@@ -3855,9 +3877,8 @@ msgid "Active connections"
 msgstr "Aktif bağlantılar"
 
 #: src/muuli_wdr.cpp:1650
-#, fuzzy
 msgid "Systray Icon Speed Bar"
-msgstr "Sistem Tablası Simgesi Hız Göstergesi"
+msgstr "Sistem Tepsisi İkonu Hız Göstergesi"
 
 #: src/muuli_wdr.cpp:1651
 msgid "Kad-nodes current"
@@ -4243,8 +4264,8 @@ msgid ""
 "This option makes aMule only accept obfuscated connections. You will have "
 "less sources, but all your traffic will be obfuscated"
 msgstr ""
-"Bu seçenek aMule'nin sadece gizlenmiş bağlantıları kabul etmesini "
-"sağlar.Daha az kaynak bulursunuz;ancak tüm trafiğiniz de gizlenmiş olur."
+"Bu seçenek aMule'nin sadece gizlenmiş bağlantıları kabul etmesini sağlar. "
+"Daha az kaynak bulursunuz; ancak tüm trafiğiniz de karartılmış olur."
 
 #: src/muuli_wdr.cpp:2358
 msgid "Everybody"
@@ -4333,13 +4354,12 @@ msgid "Use system-wide ipfilter.dat if available"
 msgstr "Varsa, sistem geneli ipfilter.dat kullan"
 
 #: src/muuli_wdr.cpp:2414
-#, fuzzy
 msgid ""
 "If there's no local ipfilter.dat found, allow usage of a system-wide "
 "ipfilter file."
 msgstr ""
 "Yerel bir ipfilter.dat dosyası bulunamazsa, sistem geneli ipfilter "
-"kullanımına izin ver"
+"kullanımına izin ver."
 
 #: src/muuli_wdr.cpp:2431
 msgid "Enable Online-Signature"
@@ -4394,7 +4414,7 @@ msgstr "Şu içerikteki iletileri süz (ayraç olarak ','  kullanınız.):"
 #: src/muuli_wdr.cpp:2485 src/muuli_wdr.cpp:2496
 msgid "add here the words amule should filter and block messages including it"
 msgstr ""
-"Buraya ekleyeceğiniz sözcükleri içeren iletiler aMule tarafından engellenir."
+"buraya ekleyeceğiniz sözcükleri içeren iletiler aMule tarafından engellenir."
 
 #: src/muuli_wdr.cpp:2487
 msgid "Show received messages in the log"
@@ -4633,11 +4653,11 @@ msgstr "Gün"
 
 #: src/OtherFunctions.cpp:626
 msgid "all"
-msgstr "Tümü"
+msgstr "tümü"
 
 #: src/OtherFunctions.cpp:627
 msgid "all others"
-msgstr "Diğerleri"
+msgstr "diğerleri"
 
 #: src/OtherFunctions.cpp:628 src/TransferWnd.cpp:345
 msgid "Incomplete"
@@ -4733,11 +4753,11 @@ msgstr ""
 "taranacaktır.)"
 
 #: src/PartFileConvertDlg.cpp:206
-#, fuzzy
 msgid ""
 "Do you want the source files of successfully imported downloads be deleted?"
 msgstr ""
-"İçe aktarımı başarılı olan kaynak dosyalarının silinmesini ister misiniz?"
+"Başarılı bir şekilde içe aktarılan indirmelerin kaynak dosyalarının "
+"silinmelerini ister misiniz?"
 
 #: src/PartFileConvertDlg.cpp:207
 msgid "Remove sources?"
@@ -4914,6 +4934,9 @@ msgid ""
 "Part %u of '%s' marked complete but partfile is shorter than expected (have "
 "%llu bytes, need %llu); reopening gap for re-download."
 msgstr ""
+"%u kısmı ('%s' dosyasının) tamamlanmış olarak işaretlendi ama kısmi dosya "
+"beklenenden daha küçük (%llu bayt bulunduruyor halbuki %llu bayt "
+"gerektiriyor); yeniden indirme için boşluk tekrar açılıyor."
 
 #: src/PartFile.cpp:2411 src/PartFile.cpp:2416
 #, c-format
@@ -5212,6 +5235,8 @@ msgstr ""
 #: src/PrefsUnifiedDlg.cpp:269
 msgid "Tray icon support requires libayatana-appindicator3 at compile time."
 msgstr ""
+"Sistem tepsisi ikon desteği, derleme esnasında libayatana-appindicator3'e "
+"ihtiyaç duyar."
 
 #: src/PrefsUnifiedDlg.cpp:284
 msgid ""
@@ -5219,6 +5244,9 @@ msgid ""
 "minimized, so this option cannot intercept the system minimize button. "
 "Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
 msgstr ""
+"Wayland ile kullanılamaz: protokol bir pencere küçültüldüğünde bunu iletmez, "
+"yani bu seçenek sistemin küçült düğmesi tıklamasını yakalayamaz. Çözüm: "
+"yerine XWayland kullanmak için aMule'ü `GDK_BACKEND=x11` ile başlatın."
 
 #: src/PrefsUnifiedDlg.cpp:324
 msgid ""
@@ -5479,13 +5507,15 @@ msgstr "Arama hatası"
 
 #: src/SearchDlg.cpp:431
 msgid "Kad search: requested wider results from one more peer."
-msgstr ""
+msgstr "Kad araması: bir eşten daha daha geniş sonuçlar talep edildi."
 
 #: src/SearchDlg.cpp:437
 msgid ""
 "Kad search: no peer left to reask for more results (cap reached or no "
 "responses yet)."
 msgstr ""
+"Kad araması: daha fazla sonucu tekrar talep edecek eş kalmadı (sınıra "
+"ulaşıldı veya henüz cevap alınamadı)."
 
 #: src/SearchDlg.cpp:542
 msgid "Min size must be smaller than max size. Max size ignored."
@@ -5515,7 +5545,7 @@ msgstr "Kad araması için anahtar kelime yok - iptal ediliyor"
 
 #: src/SearchList.cpp:373
 msgid "Unexpected error while attempting Kad search: "
-msgstr "Kad araması sırasında beklenilmeyen hata oluştu."
+msgstr "Kad araması sırasında beklenilmeyen hata oluştu. "
 
 #: src/SearchListCtrl.cpp:91 src/SharedFilesCtrl.cpp:107
 msgid "FileID"
@@ -5578,7 +5608,7 @@ msgstr "Sunucu listesinde bağlanılabilecek geçerli bir sunucu yok"
 #: src/ServerConnect.cpp:198
 #, c-format
 msgid "Connected to %s (%s:%i)"
-msgstr " %s (%s:%i) sunucusuna bağlanıldı"
+msgstr " %s (%s:%i) unsuruna bağlanıldı"
 
 #: src/ServerConnect.cpp:274
 #, c-format
@@ -5677,7 +5707,7 @@ msgstr "Hata: 'server.met' dosyası bozuk: "
 
 #: src/ServerList.cpp:183
 msgid "IO error while reading 'server.met': "
-msgstr "'server.met' dosyası okumada IO hatası:"
+msgstr "'server.met' dosyası okumada IO hatası: "
 
 #: src/ServerList.cpp:196
 #, c-format
@@ -5951,7 +5981,7 @@ msgstr "protokol gizleme kullanılarak bağlanıyor."
 #: src/ServerSocket.cpp:765
 #, c-format
 msgid "Connecting to %s (%s - %s:%i) %s"
-msgstr "%s (%s - %s:%i) adresine %s ."
+msgstr "%s (%s - %s:%i) %s unsuruna bağlanılıyor."
 
 #: src/ServerSocket.cpp:778
 #, c-format
@@ -6045,15 +6075,15 @@ msgstr "Fihristlenen Kaynaklar:"
 
 #: src/ServerWnd.cpp:261
 msgid "Indexed keywords:"
-msgstr "Fihristlenen anahtar kelimeler: "
+msgstr "Fihristlenen anahtar kelimeler:"
 
 #: src/ServerWnd.cpp:263
 msgid "Indexed notes:"
-msgstr "Fihristlenen notlar: "
+msgstr "Fihristlenen notlar:"
 
 #: src/ServerWnd.cpp:265
 msgid "Indexed load:"
-msgstr "Fihristlenen yük: "
+msgstr "Fihristlenen yük:"
 
 #: src/ServerWnd.cpp:268
 msgid "Average Users:"
@@ -6483,7 +6513,7 @@ msgstr "`%s' komutu, pid `%d' içermekteydi ve durum kodu `%d' ile sona erdi."
 
 #: src/TextClient.cpp:207
 msgid "Execute <str> and exit."
-msgstr " <str> çalıştır ve çık."
+msgstr "<str> çalıştır ve çık."
 
 #: src/TextClient.cpp:282
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
@@ -6521,23 +6551,21 @@ msgstr "Geçerli bir adresleme değil (uzunluğu tam olarak 32 karakter olmalı)
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
 #: src/TextClient.cpp:613
-#, fuzzy
 msgid ""
 "Invalid search filter syntax.\n"
 "Type 'help search' to get more help.\n"
 msgstr ""
-"Hiçbir arama türü tanımlanmadı.\n"
+"Geçersiz arama filtresi söz dizimi.\n"
 "Daha fazla yardım için 'help search' yazınız.\n"
 
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
 #: src/TextClient.cpp:619
-#, fuzzy
 msgid ""
 "No search keyword provided.\n"
 "Type 'help search' to get more help.\n"
 msgstr ""
-"Hiçbir arama türü tanımlanmadı.\n"
+"Hiçbir arama anahtar kelimesi girilmedi.\n"
 "Daha fazla yardım için 'help search' yazınız.\n"
 
 #. TRANSLATORS:
@@ -6767,7 +6795,7 @@ msgstr "Sadece eD2k ağına bağlan."
 
 #: src/TextClient.cpp:1005
 msgid "Connect to Kad only."
-msgstr "Sadece Kad'a bağlan"
+msgstr "Sadece Kad'a bağlan."
 
 #: src/TextClient.cpp:1007
 msgid "Disconnect from the network."
@@ -6814,7 +6842,7 @@ msgstr "Bir ayar değeri girin."
 
 #: src/TextClient.cpp:1018
 msgid "Set IP filtering preferences."
-msgstr "IP Süzgeci ayarları girin"
+msgstr "IP Süzgeci ayarları girin."
 
 #: src/TextClient.cpp:1019
 msgid "Turn IP filtering on for both clients and servers."
@@ -6838,7 +6866,7 @@ msgstr "IP süzgecini kullanıcılar için kapat."
 
 #: src/TextClient.cpp:1024
 msgid "Enable/Disable IP filtering for servers."
-msgstr "IP süzgecini sunucular için Aç/Kapa"
+msgstr "IP süzgecini sunucular için Aç/Kapa."
 
 #: src/TextClient.cpp:1025
 msgid "Turn IP filtering on for servers."
@@ -6857,7 +6885,7 @@ msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
 msgstr ""
-"Geçerli süzme seviyeleri 0-255 aralığındadır.Varsayılan\n"
+"Geçerli süzme seviyeleri 0-255 aralığındadır. Varsayılan\n"
 "değer 127'dir.\n"
 
 #: src/TextClient.cpp:1030
@@ -6886,7 +6914,7 @@ msgstr "Bir ayar değerini al ve göster"
 
 #: src/TextClient.cpp:1040
 msgid "Get IP filtering preferences."
-msgstr "IP Süzgeci ayarlarını al"
+msgstr "IP Süzgeci ayarlarını al."
 
 #: src/TextClient.cpp:1041
 msgid "Get IP filtering state for both clients and servers."
@@ -6930,6 +6958,23 @@ msgid ""
 "Example: 'search global linux iso --type Iso --min-size 100M' returns\n"
 "results for \"linux iso\" of file-type Iso at least 100 MiB.\n"
 msgstr ""
+"Arama türü, türü girerek belirtilmelidir:\n"
+"    GLOBAL\n"
+"    LOCAL\n"
+"    KAD\n"
+"Örnek: 'search kad dosya', \"dosya\" için bir kad araması çalışıtırır.\n"
+"\n"
+"İsteğe dayalı filtreler arama anahtar kelimelerinden önce, sonra\n"
+"veya onların arasında eklenebilir:\n"
+"    --type <Audio|Video|Image|Doc|Pro|Arc|Iso>\n"
+"    --extension <uzantı>      (kısaltma: --ext)\n"
+"    --avail <N>            asgari kaynak sayısı\n"
+"    --min-size <N[KMG]>    asgari dosya boyutu; K=1024, M=K*1024, G=M*1024\n"
+"    --max-size <N[KMG]>    azami dosya boyutu; aynı son ekler\n"
+"\n"
+"Örnek: 'search global linux iso --type Iso --min-size 100M' şunu geri "
+"gönderir:\n"
+"\"linux iso\" için Iso dosya türünde asgari 100 MiB boyutunda sonuçlar.\n"
 
 #: src/TextClient.cpp:1066
 msgid "Execute a global search."
@@ -6953,7 +6998,7 @@ msgstr "Önceki aramanın sonuçlarına döner.\n"
 
 #: src/TextClient.cpp:1073
 msgid "Show the progress of a search."
-msgstr "Bir aramanın işleyişini göster"
+msgstr "Bir aramanın işleyişini göster."
 
 #: src/TextClient.cpp:1074
 msgid "Show the progress of a search.\n"
@@ -6975,11 +7020,11 @@ msgstr ""
 
 #: src/TextClient.cpp:1084
 msgid "Pause download."
-msgstr "Aktarımı duraklat"
+msgstr "Aktarımı duraklat."
 
 #: src/TextClient.cpp:1087
 msgid "Resume download."
-msgstr "Aktarıma devam et"
+msgstr "Aktarıma devam et."
 
 #: src/TextClient.cpp:1090
 msgid "Cancel download."
@@ -6987,7 +7032,7 @@ msgstr "Aktarım İptal."
 
 #: src/TextClient.cpp:1093
 msgid "Set download priority."
-msgstr "İndirme önceliği ayarla"
+msgstr "İndirme önceliği ayarla."
 
 #: src/TextClient.cpp:1094
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
@@ -7189,9 +7234,9 @@ msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
 msgstr "Parça dosyalarını sormuştunuz (Sadece 9.5 MB' tan büyük dosyalar)"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:80
-#, fuzzy, c-format
+#, c-format
 msgid "%s ---> Non existent file !\n"
-msgstr "%s ---> Var olmayan dosya !\n"
+msgstr "%s ---> Var olmayan dosya!\n"
 
 #: src/utils/aLinkCreator/src/alc.cpp:41
 msgid "aLinkCreator, the aMule eD2k link creator"
@@ -7305,7 +7350,7 @@ msgstr "Seçiniz"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:439
 msgid "Unable to open "
-msgstr "Açılamıyor"
+msgstr "Açılamıyor "
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:446
 #: src/utils/aLinkCreator/src/alcframe.cpp:571
@@ -7554,7 +7599,7 @@ msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1008
 msgid " has been running for "
-msgstr " çalışıyor"
+msgstr "  şu süredir çalışıyor: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1013
 msgid " is stopped !"
@@ -7575,12 +7620,12 @@ msgstr " garip şeyler yapıyor, denetleyiniz!"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1046
 msgid " is connected to "
-msgstr " şuna bağlandı:"
+msgstr " şuna bağlandı: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1047
 #: src/utils/wxCas/src/wxcasframe.cpp:1069
 msgid " Kad: "
-msgstr "Kad:"
+msgstr " Kad: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1053
 #: src/utils/wxCas/src/wxcasframe.cpp:1075
@@ -7589,7 +7634,7 @@ msgstr "bağlı değil"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1059
 msgid " is on "
-msgstr " bağlı"
+msgstr " bağlı "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1066
 msgid " with "
@@ -7622,7 +7667,7 @@ msgstr "Paylaşılan: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1120
 msgid " file(s), Clients on queue: "
-msgstr " dosya(lar), Sıradaki kullanıcılar:"
+msgstr " dosya(lar), sıradaki kullanıcılar: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1130
 msgid "Time: "
@@ -7662,9 +7707,8 @@ msgid "Enter here the directory where you want to generate the statistic image"
 msgstr "Buraya istatistik imajının oluşturulacağı dizini giriniz."
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:150
-#, fuzzy
 msgid "Upload periodically your stat image to FTP server"
-msgstr "Durum imajını düzenli olarak FTP sunucusuna gönder."
+msgstr "Durum imajını düzenli olarak FTP sunucusuna gönder"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:157
 msgid "FTP Url"
