@@ -538,11 +538,15 @@ typedef std::list<std::string>::iterator PHP_ARRAY_KEY_ITER_TYPE;
 // In php arrays are behave like hashes (i.e. associative) and are sortable.
 // STL std::map is not sortable.
 //
-typedef struct {
+struct PHP_ARRAY_TYPE {
 	std::map<std::string, PHP_VAR_NODE *> array;
 	std::list<std::string> sorted_keys;
 	PHP_ARRAY_KEY_ITER_TYPE current;
-} PHP_ARRAY_TYPE;
+	// Hint for array_push_back: integer key to start the
+	// next free-slot scan from. Avoids O(N) per push (-> O(N^2)
+	// for N pushes) which wedges amuleweb on large shared lists.
+	int push_next_hint = 0;
+};
 
 //
 // using std::string instead of "char *" so keys will be compared

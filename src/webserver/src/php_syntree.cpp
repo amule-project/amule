@@ -782,7 +782,26 @@ int array_get_size(PHP_VALUE_NODE *array)
 
 PHP_VAR_NODE *array_push_back(PHP_VALUE_NODE *array)
 {
-	for(int i = 0; i < 0xffff;i++) {
+	if ( array->type != PHP_VAL_ARRAY ) {
+		return 0;
+	}
+	PHP_ARRAY_TYPE *arr_ptr = (PHP_ARRAY_TYPE *)array->ptr_val;
+
+	// Resume the linear scan from a cached hint so back-to-back
+	// push_backs are O(1) instead of O(N) each. With N=43k+ shared
+	// files in amuleweb's amuleweb-main-shared.php this collapses
+	// the page-build from O(N^2) (~minutes) to O(N).
+	for(int i = arr_ptr->push_next_hint; i < 0xffff; i++) {
+		PHP_VAR_NODE *arr_var_node = array_get_by_int_key(array, i);
+		if ( arr_var_node->value.type == PHP_VAL_NONE ) {
+			arr_ptr->push_next_hint = i + 1;
+			return arr_var_node;
+		}
+	}
+	// Hint didn't pay off (gap below it from a delete). Fall back
+	// to scanning the low range so push_back keeps the same
+	// semantics as before for mixed insert/delete patterns.
+	for(int i = 0; i < arr_ptr->push_next_hint; i++) {
 		PHP_VAR_NODE *arr_var_node = array_get_by_int_key(array, i);
 		if ( arr_var_node->value.type == PHP_VAL_NONE ) {
 			return arr_var_node;
