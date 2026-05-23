@@ -600,8 +600,25 @@ bool CSharedFileList::Reload(ReloadYieldCb yieldCb)
 	reloading = true;
 	Notify_SharedFilesRemoveAllItems();
 
-	/* All Kad keywords must be removed */
-	m_keywords->RemoveAllKeywordReferences();
+	/* All Kad keywords must be removed.
+	 *
+	 * m_keywords has no internal locking; CSharedFileList::list_mut is
+	 * the outer lock for both m_Files_map and m_keywords (every other
+	 * AddFile / RemoveFile call takes it around m_keywords operations).
+	 * Without the lock here we race CUploadDiskIOThread, which calls
+	 * theApp->sharedfiles->RemoveFile(srcfile) from a worker thread when
+	 * a previously-shared file disappears under it (e.g. user renaming
+	 * a file in Incoming with shared-dir watching enabled, issue #685).
+	 * The worker holds list_mut while it mutates m_keywords via
+	 * RemoveKeywords; concurrent unlocked iteration over m_lstKeywords /
+	 * m_keywordIndex here invalidates iterators / uses freed
+	 * CPublishKeyword*.  Lock only around the keyword ops, NOT around
+	 * FindSharedFiles -- that walks the filesystem and would block the
+	 * worker pool for seconds at a time. */
+	{
+		wxMutexLocker lock(list_mut);
+		m_keywords->RemoveAllKeywordReferences();
+	}
 
 	/* Public identifiers must be erased as they might be invalid now */
 	m_PublicSharedDirNames.clear();
@@ -610,7 +627,10 @@ bool CSharedFileList::Reload(ReloadYieldCb yieldCb)
 	FindSharedFiles(yieldCb, aborted);
 
 	/* And now the unreferenced keywords must be removed also */
-	m_keywords->PurgeUnreferencedKeywords();
+	{
+		wxMutexLocker lock(list_mut);
+		m_keywords->PurgeUnreferencedKeywords();
+	}
 
 	Notify_SharedFilesShowFileList();
 
@@ -878,6 +898,16 @@ void CSharedFileList::Publish()
 		//We are connected to Kad. We are either open or have a buddy. And Kad is ready to start publishing.
 
 		if( Kademlia::CKademlia::GetTotalStoreKey() < KADEMLIATOTALSTOREKEY) {
+
+			// list_mut serialises CPublishKeywordList access against
+			// CUploadDiskIOThread's RemoveFile -> RemoveKeywords path,
+			// which mutates pPubKw->references and ref counts from a
+			// worker thread.  Without the lock the cursor advance and
+			// the GetReferences() iteration below race with that path
+			// (issue #685).  Kad's StartSearch / Go / GetClosestTo /
+			// SendFindValue do not re-enter list_mut, so the lock can
+			// be held across the Kad call.
+			wxMutexLocker lock(list_mut);
 
 			//We are not at the max simultaneous keyword publishes
 			if (tNow >= m_keywords->GetNextPublishTime()) {
