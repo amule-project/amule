@@ -178,7 +178,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 
 		int priority = file->IsAutoUpPriority() ? PR_AUTO : file->GetUpPriority();
 
-		prioMenu->Check(MP_PRIOVERYLOW,	priority == PR_VERYLOW);
+		prioMenu->Check(MP_PRIOVERYLOW,	priority == PR_VERY_LOW);
 		prioMenu->Check(MP_PRIOLOW,	priority == PR_LOW);
 		prioMenu->Check(MP_PRIONORMAL,	priority == PR_NORMAL);
 		prioMenu->Check(MP_PRIOHIGH,	priority == PR_HIGH);
@@ -273,7 +273,7 @@ void CSharedFilesCtrl::OnSetPriority( wxCommandEvent& event )
 	int priority = 0;
 
 	switch ( event.GetId() ) {
-		case MP_PRIOVERYLOW:	priority = PR_VERYLOW;	break;
+		case MP_PRIOVERYLOW:	priority = PR_VERY_LOW;	break;
 		case MP_PRIOLOW:		priority = PR_LOW;		break;
 		case MP_PRIONORMAL:		priority = PR_NORMAL;	break;
 		case MP_PRIOHIGH:		priority = PR_HIGH;		break;
@@ -386,8 +386,8 @@ int CSharedFilesCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortDa
 			int8 prioA = file1->GetUpPriority();
 			int8 prioB = file2->GetUpPriority();
 
-			// Work-around for PR_VERYLOW which has value 4. See KnownFile.h for that stupidity ...
-			return mod * CmpAny( ( prioB != PR_VERYLOW ? prioB : -1 ), ( prioA != PR_VERYLOW ? prioA : -1 ) );
+			// Work-around for PR_VERY_LOW which has value 4. See KnownFile.h for that stupidity ...
+			return mod * CmpAny( ( prioB != PR_VERY_LOW ? prioB : -1 ), ( prioA != PR_VERY_LOW ? prioA : -1 ) );
 		}
 
 		// Sort by fileID.

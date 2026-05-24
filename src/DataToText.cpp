@@ -38,7 +38,7 @@ wxString PriorityToStr( int priority, bool isAuto )
 		}
 	} else {
 		switch ( priority ) {
-			case PR_VERYLOW:	return _("Very low");
+			case PR_VERY_LOW:	return _("Very low");
 			case PR_LOW:		return _("Low");
 			case PR_NORMAL:		return _("Normal");
 			case PR_HIGH:		return _("High");

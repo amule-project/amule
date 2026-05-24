@@ -131,7 +131,7 @@ uint32 CUpDownClient::CalculateScoreInternal()
 		case PR_LOW:
 			filepriority = 0.6f;
 			break;
-		case PR_VERYLOW:
+		case PR_VERY_LOW:
 			filepriority = 0.2f;
 			break;
 		case PR_NORMAL:

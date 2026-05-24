@@ -376,7 +376,7 @@ std::ostream& operator<<(std::ostream& out, const CTag& tag)
 			   ) {
 			out << tag.GetInt() << ' ';
 			switch (tag.GetInt()) {
-				case PR_VERYLOW:	out << "PR_VERYLOW"; break;
+				case PR_VERY_LOW:	out << "PR_VERY_LOW"; break;
 				case PR_LOW:		out << "PR_LOW"; break;
 				case PR_NORMAL:		out << "PR_NORMAL"; break;
 				case PR_HIGH:		out << "PR_HIGH"; break;

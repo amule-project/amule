@@ -98,16 +98,16 @@ static uint8 GetHigherPrio(uint32 prio, bool autoprio)
 static uint8 GetHigherPrioShared(uint32 prio, bool autoprio)
 {
 	if (autoprio) {
-		return PR_VERYLOW;
+		return PR_VERY_LOW;
 	} else {
 		switch (prio) {
-			case PR_VERYLOW: return PR_LOW;
+			case PR_VERY_LOW: return PR_LOW;
 			case PR_LOW: return PR_NORMAL;
 			case PR_NORMAL: return PR_HIGH;
 			case PR_HIGH: return PR_VERYHIGH;
 			case PR_VERYHIGH: return PR_POWERSHARE;
 			case PR_POWERSHARE: return PR_AUTO;
-			case PR_AUTO: return PR_VERYLOW;
+			case PR_AUTO: return PR_VERY_LOW;
 			default: return PR_AUTO;
 		}
 	}
@@ -135,8 +135,8 @@ static uint8 GetLowerPrioShared(uint32 prio, bool autoprio)
 		return PR_POWERSHARE;
 	} else {
 		switch (prio) {
-			case PR_VERYLOW: return PR_AUTO;
-			case PR_LOW: return PR_VERYLOW;
+			case PR_VERY_LOW: return PR_AUTO;
+			case PR_LOW: return PR_VERY_LOW;
 			case PR_NORMAL: return PR_LOW;
 			case PR_HIGH: return PR_NORMAL;
 			case PR_VERYHIGH: return PR_HIGH;

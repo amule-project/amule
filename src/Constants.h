@@ -106,7 +106,7 @@ enum StatsGraphType {
 #define PS_ALLOCATING			10
 
 
-#define PR_VERYLOW			4 // I Had to change this because
+#define PR_VERY_LOW			4 // I Had to change this because
 					  // it didn't save negative number
 					  // correctly.. Had to modify the
 					  // sort function for this change..

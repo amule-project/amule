@@ -616,7 +616,7 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 					m_iUpPriority = PR_HIGH;
 					m_bAutoUpPriority = true;
 				} else {
-					if (	m_iUpPriority != PR_VERYLOW &&
+					if (	m_iUpPriority != PR_VERY_LOW &&
 						m_iUpPriority != PR_LOW &&
 						m_iUpPriority != PR_NORMAL &&
 						m_iUpPriority != PR_HIGH &&
