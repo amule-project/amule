@@ -1586,7 +1586,7 @@ wxString CDynStatisticImage::GetHTML()
 // of DrawSegment below: 0=top, 1=top-left, 2=top-right, 3=middle, 4=bottom-left,
 // 5=bottom-right, 6=bottom. Indices 0-9 are digits. Indices 10-13 are the
 // unit-prefix glyphs K, M, G, T used when the y-axis maximum exceeds 9999;
-// K and M are stylised approximations (7-segment has no clean K/M).
+// K and M are stylized approximations (7-segment has no clean K/M).
 //                                                 0     1     2     3     4     5     6     7     8     9     K     M     G     T
 const int CNumImageMask::m_num_to_7_decode[] = {0x77, 0x24, 0x5d, 0x6d, 0x2e, 0x6b, 0x7a, 0x25, 0x7f, 0x2f, 0x3a, 0x37, 0x7b, 0x5a};
 

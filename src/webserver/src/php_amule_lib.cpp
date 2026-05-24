@@ -40,7 +40,7 @@
 
 /*
  * Built-in php functions. Those are amule-specific functions, accessing EC and internal
- * datastructure
+ * data structure
  *
  */
 

@@ -409,7 +409,7 @@ void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
 	std::map<std::string, PHP_VAR_NODE *> &saved_vars)
 {
 	//
-	// Step 1: save origival vars
+	// Step 1: save original val vars
 	PHP_SCOPE_TABLE_TYPE *curr_scope_map = (PHP_SCOPE_TABLE_TYPE *)g_current_scope;
 	for(PHP_SCOPE_TABLE_TYPE::iterator i = curr_scope_map->begin(); i != curr_scope_map->end();++i) {
 		if ( (i->second->type == PHP_SCOPE_VAR) || (i->second->type == PHP_SCOPE_PARAM) ) {
@@ -1234,7 +1234,7 @@ void php_engine_free()
 }
 
 /*
- * Create reference. This is recoursive process, since operators []
+ * Create reference. This is recursive process, since operators []
  * can be stacked: $a[1][2][3] = & $b;
  * There's 3 valid cases in making reference:
  *  1,2. Target is scalar variable or variable by name ${xxx}
