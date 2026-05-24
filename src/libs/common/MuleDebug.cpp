@@ -68,7 +68,7 @@
 void OnUnhandledException()
 {
 	// Revert to the original exception handler, to avoid
-	// infinate recursion, in case something goes wrong in
+	// infinite recursion, in case something goes wrong in
 	// this function.
 	std::set_terminate(std::abort);
 
