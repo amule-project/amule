@@ -36,14 +36,14 @@
   <launchable type="desktop-id">org.amule.aMule.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/amule/amule/master/.github/amule-interface-search.png</image>
+      <image>https://raw.githubusercontent.com/amule-org/amule/master/.github/amule-interface-search.png</image>
       <caption>Screenshot of the aMule search interface</caption>
       <caption xml:lang="es">Captura de pantalla de la interfaz de búsqueda de aMule</caption>
       <caption xml:lang="fr">Capture d'écran de l'interface de recherche d'aMule</caption>
       <caption xml:lang="tr">aMule arama arayüzünün ekran fotoğrafı</caption>
     </screenshot>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/amule/amule/master/.github/amule-preferences.png</image>
+      <image>https://raw.githubusercontent.com/amule-org/amule/master/.github/amule-preferences.png</image>
       <caption>Screenshot of the aMule preferences interface</caption>
       <caption xml:lang="es">Captura de pantalla de la interfaz de preferencias de aMule</caption>
       <caption xml:lang="fr">Capture d'écran de l'interface des préférences d'aMule</caption>
