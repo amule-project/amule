@@ -95,7 +95,7 @@ enum StatsGraphType {
 
 #define	PS_READY			0
 #define	PS_EMPTY			1
-#define PS_WAITINGFORHASH		2
+#define PS_WAITING_FOR_HASH		2
 #define PS_HASHING			3
 #define PS_ERROR			4
 #define	PS_INSUFFICIENT			5

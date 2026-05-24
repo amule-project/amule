@@ -36,7 +36,7 @@ wxString CEC_PartFile_Tag::GetFileStatusString() const
 {
 	uint8 nFileStatus = FileStatus();
 
-        if ((nFileStatus == PS_HASHING) || (nFileStatus == PS_WAITINGFORHASH)) {
+        if ((nFileStatus == PS_HASHING) || (nFileStatus == PS_WAITING_FOR_HASH)) {
                 return _("Hashing");
         } else {
                 switch (nFileStatus) {

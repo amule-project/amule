@@ -396,7 +396,7 @@ void CDownloadListCtrl::OnCancelFile(wxCommandEvent& WXUNUSED(event))
 		CPartFile* file = (*it1)->GetFile();
 		if (file) {
 			switch (file->GetStatus()) {
-				case PS_WAITINGFORHASH:
+				case PS_WAITING_FOR_HASH:
 				case PS_HASHING:
 				case PS_COMPLETING:
 				case PS_COMPLETE:

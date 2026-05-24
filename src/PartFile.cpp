@@ -786,7 +786,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 					% m_PartPath
 					% (m_lastDateChanged - file_date) );
 				// rehash
-				SetStatus(PS_WAITINGFORHASH);
+				SetStatus(PS_WAITING_FOR_HASH);
 
 				CPath partFileName = m_partmetfilename.RemoveExt();
 				CThreadScheduler::AddTask(new CHashingTask(m_filePath, partFileName, this));
@@ -818,7 +818,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 bool CPartFile::SavePartFile(bool Initial)
 {
 	switch (status) {
-		case PS_WAITINGFORHASH:
+		case PS_WAITING_FOR_HASH:
 		case PS_HASHING:
 		case PS_COMPLETE:
 			return false;
@@ -3400,7 +3400,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		// CompleteFile is not idempotent — each call kicks off a fresh
 		// CHashingTask. Must guard:
 		//   - status PS_EMPTY or PS_READY: skip if already
-		//     PS_COMPLETING / PS_HASHING / PS_WAITINGFORHASH / PS_ERROR
+		//     PS_COMPLETING / PS_HASHING / PS_WAITING_FOR_HASH / PS_ERROR
 		//     (otherwise StopFile→FlushBuffer and PerformFileComplete→
 		//     FlushBuffer in the post-CompleteFile path would re-fire
 		//     and spawn duplicate hash tasks). Both PS_EMPTY and
@@ -4118,7 +4118,7 @@ wxString CPartFile::getPartfileStatus() const
 
 	wxString mybuffer;
 
-	if ((status == PS_HASHING) || (status == PS_WAITINGFORHASH)) {
+	if ((status == PS_HASHING) || (status == PS_WAITING_FOR_HASH)) {
 		mybuffer=_("Hashing");
 	} else if (status == PS_ALLOCATING) {
 		mybuffer = _("Allocating");
@@ -4162,7 +4162,7 @@ int CPartFile::getPartfileStatusRang() const
 	if (GetTransferingSrcCount()==0) tempstatus=1;
 	switch (GetStatus()) {
 		case PS_HASHING:
-		case PS_WAITINGFORHASH:
+		case PS_WAITING_FOR_HASH:
 			tempstatus=3;
 			break;
 		case PS_COMPLETING:
