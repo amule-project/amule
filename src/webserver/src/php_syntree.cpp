@@ -796,7 +796,11 @@ PHP_VAR_NODE *array_push_back(PHP_VALUE_NODE *array)
 	// push_backs are O(1) instead of O(N) each. With N=43k+ shared
 	// files in amuleweb's amuleweb-main-shared.php this collapses
 	// the page-build from O(N^2) (~minutes) to O(N).
-	for(int i = arr_ptr->push_next_hint; i < 0xffff; i++) {
+	// Proposed fix for issue #699: raised the upper bound from 0xffff (65535)
+	// to INT_MAX. PHP_ARRAY_TYPE uses std::map (unbounded), so the old cap
+	// was artificial. With the push_next_hint optimisation each call is still
+	// O(1) in the common sequential-push case regardless of array size.
+	for(int i = arr_ptr->push_next_hint; i < INT_MAX; i++) {
 		PHP_VAR_NODE *arr_var_node = array_get_by_int_key(array, i);
 		if ( arr_var_node->value.type == PHP_VAL_NONE ) {
 			arr_ptr->push_next_hint = i + 1;
@@ -812,7 +816,7 @@ PHP_VAR_NODE *array_push_back(PHP_VALUE_NODE *array)
 			return arr_var_node;
 		}
 	}
-	// array size reached 64K ?!
+	// integer key space exhausted — unreachable in practice
 	return 0;
 }
 
