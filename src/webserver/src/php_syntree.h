@@ -223,13 +223,13 @@ typedef void *PHP_SCOPE_STACK;
 /*
  Syntax tree node, representing 1 statement.
 */
-typedef enum PHP_STATMENT_TYPE {
+typedef enum PHP_STATEMENT_TYPE {
 	PHP_ST_EXPR, PHP_ST_IF,
 	PHP_ST_WHILE, PHP_ST_DO_WHILE, PHP_ST_FOR, PHP_ST_FOREACH, PHP_ST_SWITCH,
 	PHP_ST_CONTINUE, PHP_ST_BREAK, PHP_ST_RET,
 	PHP_ST_FUNC_DECL, PHP_ST_CLASS_DECL,
 	PHP_ST_ECHO
-} PHP_STATMENT_TYPE;
+} PHP_STATEMENT_TYPE;
 
 /*
  * Syntax tree constructs: regular statements and declarations
@@ -307,7 +307,7 @@ typedef struct PHP_SYN_CLASS_DECL_NODE {
 } PHP_SYN_CLASS_DECL_NODE;
 
 struct PHP_SYN_NODE {
-    PHP_STATMENT_TYPE type;
+    PHP_STATEMENT_TYPE type;
     union {
         PHP_EXP_NODE			*node_expr;
         PHP_SYN_IF_NODE			node_if;
@@ -338,7 +338,7 @@ typedef struct PHP_BLTIN_FUNC_DEF {
 } PHP_BLTIN_FUNC_DEF;
 
 typedef enum PHP_MSG_TYPE {
-	PHP_MESAGE, PHP_WARNING, PHP_ERROR, PHP_INTERNAL_ERROR
+	PHP_MESSAGE, PHP_WARNING, PHP_ERROR, PHP_INTERNAL_ERROR
 } PHP_MSG_TYPE;
 
 #ifdef __cplusplus
@@ -417,7 +417,7 @@ extern "C" {
 	extern PHP_SYN_NODE *g_syn_tree_top;
 
 	/* make syntax node for expression */
-	PHP_SYN_NODE *make_expr_syn_node(PHP_STATMENT_TYPE type, PHP_EXP_NODE *node);
+	PHP_SYN_NODE *make_expr_syn_node(PHP_STATEMENT_TYPE type, PHP_EXP_NODE *node);
 
 	PHP_SYN_NODE *make_ifelse_syn_node(PHP_EXP_NODE *expr,
 		PHP_SYN_NODE *then_node, PHP_SYN_NODE *elseif_list, PHP_SYN_NODE *else_node);

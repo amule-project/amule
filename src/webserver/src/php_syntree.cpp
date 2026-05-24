@@ -190,7 +190,7 @@ PHP_EXP_NODE *make_func_param(PHP_EXP_NODE *list, PHP_EXP_NODE *var_exp_node, ch
 /*
  * Syntax tree generation
  */
-PHP_SYN_NODE *make_expr_syn_node(PHP_STATMENT_TYPE type, PHP_EXP_NODE *expr)
+PHP_SYN_NODE *make_expr_syn_node(PHP_STATEMENT_TYPE type, PHP_EXP_NODE *expr)
 {
 	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
 	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
@@ -2040,7 +2040,7 @@ void php_report_error(PHP_MSG_TYPE err_type, const char *msg, ...)
 	char msgbuf[1024];
 	const char *type_msg = 0;
 	switch(err_type) {
-		case PHP_MESAGE:
+		case PHP_MESSAGE:
 			type_msg = "PHP:";
 			break;
 		case PHP_WARNING:
