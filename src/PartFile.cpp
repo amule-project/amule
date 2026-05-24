@@ -1132,8 +1132,8 @@ void CPartFile::SaveSourceSeeds()
 		/* according to https://docs.wxwidgets.org/3.2/classwx_date_time.html#a99263946a9a2ece83421411081c02378
 		 * GetTicks() won't work after Jan 19, 2038, and suggest to use GetValue() instead and convert from ms
 		 * to seconds.
-		 * Since GetValue() returns a wxLongLong which is tagged obsolete, just use GetTickCount64()/1000*/
-		file.WriteUInt32((uint32)(GetTickCount64()/1000));
+		 * Since GetValue() returns a wxLongLong which is tagged obsolete, just use time(NULL)*/
+		file.WriteUInt32((uint32) time(NULL));
 
 		AddLogLineN(CFormat( wxPLURAL("Saved %i source seed for partfile: %s (%s)", "Saved %i source seeds for partfile: %s (%s)", n_sources) )
 			% n_sources
@@ -1204,11 +1204,11 @@ void CPartFile::LoadSourceSeeds()
 		if (!file.Eof()) {
 
 			// v2: Added to keep track of too old seeds
-			time_t time = (time_t)file.ReadUInt32();
+			time_t timeFromFile = (time_t)file.ReadUInt32();
 
 			// Time frame is 2 hours. More than enough to compile
 			// your new aMule version!.
-			if ((time + MIN2S(120)) >= GetTickCount64()/1000) {
+			if ((timeFromFile + MIN2S(120)) >= (uint32) time(NULL)) {
 				valid_sources = true;
 			}
 

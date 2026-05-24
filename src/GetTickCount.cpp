@@ -73,7 +73,11 @@ uint64 GetTickCount64(void) {
 	uint64 msecs;
 
 	// Fetch time (Y2038-safe)
-	clock_gettime(CLOCK_REALTIME, &ts);
+	// CLOCK_MONOTONIC: tick count is for timeouts / deltas, must not
+	// jump when wall clock is adjusted. Callers that need a Unix
+	// timestamp (CClientCredits::SetLastSeen, partfile source-seeds
+	// serialization, wxCas defaults) should use time(NULL) instead.
+	clock_gettime(CLOCK_MONOTONIC, &ts);
 	msecs = (uint64) ts.tv_sec * 1000;
 	msecs += ts.tv_nsec / 1000000;
 	return msecs;
