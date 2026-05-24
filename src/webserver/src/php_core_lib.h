@@ -30,6 +30,8 @@
  */
 #ifdef __cplusplus
 
+#include "php_syntree.h"
+
 
 class CWriteStrBuffer {
 		std::list<char *> m_buf_list;

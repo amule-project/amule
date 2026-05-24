@@ -49,7 +49,6 @@
 #include "WebSocket.h"		// Needed for StopSockets()
 #include <amuleIPV4Address.h>
 
-#include "php_syntree.h"
 #include "php_core_lib.h"
 
 //-------------------------------------------------------------------
