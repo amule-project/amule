@@ -275,6 +275,12 @@ CaMuleExternalConnector::~CaMuleExternalConnector()
 {
 	delete m_configFile;
 	delete m_locale;
+	// new'd in ConnectAndRun, DestroySocket'd at the end of that
+	// method but never delete'd -- process-exit reclaimed it, LSan
+	// flags the ~3 KB one-shot leak (CRemoteConnect + CECSocket /
+	// CQueuedData buffers). Ctor sets this to NULL so the delete is
+	// a no-op when ConnectAndRun was never entered. #704.
+	delete m_ECClient;
 	free(m_strFullVersion);
 	free(m_strOSDescription);
 }
