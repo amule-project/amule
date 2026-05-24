@@ -163,7 +163,7 @@ float CClientCredits::GetScoreRatio(uint32 dwForIP, bool cryptoavail)
 
 void CClientCredits::SetLastSeen()
 {
-	m_pCredits->nLastSeen = GetTickCount64()/1000;
+	m_pCredits->nLastSeen = time(NULL);
 }
 
 
