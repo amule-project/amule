@@ -3549,6 +3549,17 @@ bool CPartFile::ReadData(CFileArea & area, uint64 offset, uint32 toread)
 		return false;
 	}
 
+	// Lock m_hpartfileMutex against the write/hash threads. ReadAt
+	// is Seek+Read on the underlying CFileAutoClose; CFile's internal
+	// recursive_mutex (#576) serialises the individual syscalls but
+	// not the Seek+Read composition. CPartFileWriteThread::Entry holds
+	// m_hpartfileMutex around its Seek+Write -- without the matching
+	// lock here, the upload reader (CUploadDiskIOThread::Entry calls
+	// this from a worker thread) can interleave its Seek with a write
+	// thread's Seek+Write, leaving fd_pos at the upload's seek target.
+	// The write thread's Write then lands at the wrong offset, and
+	// the read returns bytes from the post-write position. See #586.
+	std::lock_guard<std::mutex> lock(m_hpartfileMutex);
 	area.ReadAt(m_hpartfile, offset, toread);
 	// if it fails it throws (which the caller should catch)
 	return true;
@@ -3790,6 +3801,17 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	}
 	CAICHHashTree htOurHash(pVerifiedHash->GetNDataSize(), pVerifiedHash->GetIsLeftBranch(), pVerifiedHash->GetNBaseSize());
 	try {
+		// Lock m_hpartfileMutex against the write/hash/upload threads.
+		// CreateHashFromFile is a sequence of Seek+Read inside the
+		// CFileAutoClose wrapper, and CFile's recursive_mutex (#576)
+		// serialises individual syscalls but not the composition.
+		// Without the matching lock here, the AICH-recovery read can
+		// interleave with a concurrent Seek+Write from
+		// CPartFileWriteThread, fd_pos lands in the wrong place, the
+		// recovery hash is computed over the wrong bytes -- and the
+		// recovered part gets accepted as good even though it is not.
+		// See #586.
+		std::lock_guard<std::mutex> lock(m_hpartfileMutex);
 		CreateHashFromFile(m_hpartfile, PARTSIZE * nPart, length, NULL, &htOurHash);
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineC(logAICHRecovery,
