@@ -556,7 +556,7 @@ void php_set_amule_options(PHP_VALUE_NODE *)
 		CECEmptyTag webPrefs(EC_TAG_PREFS_REMOTECTRL);
 		php_2_ec_tag(&webPrefs, g_webserver_opt_defs, &opt_group_array->value);
 		req.AddTag(webPrefs);
-		// also apply settings localy
+		// also apply settings locally
 		PHP_VAR_NODE *pref = array_get_by_str_key(&opt_group_array->value, "use_gzip");
 		cast_value_dnum(&pref->value);
 		CPhPLibContext::g_curr_context->WebServer()->webInterface->m_UseGzip = pref->value.int_val != 0;
@@ -805,7 +805,7 @@ void amule_load_stats()
 /*
  * Convert CEC_StatTree_Node_Tag into php associative array
  *
- * Since data structure is recoursive - we need helper function
+ * Since data structure is recursive - we need helper function
  * to perform conversion
  */
 void ecstats2php(CEC_StatTree_Node_Tag *root, PHP_VALUE_NODE *result)
