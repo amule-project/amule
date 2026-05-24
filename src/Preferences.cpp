@@ -1820,10 +1820,26 @@ void CPreferences::SetPort(uint16 val)
 
 namespace {
 
-// Load one path per line from a CTextFile. Drops lines whose path
-// doesn't exist on disk (matches the existing shareddir.dat loader
-// behaviour). Logs each drop. Returns true if the file was opened
-// (even if empty); false if it didn't exist or couldn't be opened.
+// Load one path per line from a CTextFile. Returns true if the
+// file was opened (even if empty); false if it didn't exist or
+// couldn't be opened.
+//
+// Every line is kept regardless of whether the path currently
+// exists on disk. Previously the loader called DirExists() and
+// dropped non-existing entries here, but ReloadSharedFolders'
+// trailing SaveSharedFolders() then persisted the post-filter
+// list back to all three on-disk files -- so one transiently
+// inaccessible directory at load time (USB unmounted, NFS
+// hiccup, permission glitch) silently destroyed the user's
+// saved shared-dir configuration (#703).
+//
+// All downstream consumers of shareddir_list already handle
+// non-existing entries gracefully: AddFilesFromDirectory in
+// SharedFileList.cpp logs "Shared directory not found, skipping"
+// and returns; ExpandRecursiveRoot early-returns; the
+// SharedDirWatcher skips inaccessible roots. So keeping them in
+// the in-memory list and on disk is harmless and lets the user
+// recover automatically once the path is accessible again.
 bool LoadDirListFile(const wxString & path, CPreferences::PathList & out)
 {
 	out.clear();
@@ -1833,13 +1849,7 @@ bool LoadDirListFile(const wxString & path, CPreferences::PathList & out)
 	}
 	wxArrayString lines = file.ReadLines(txtReadDefault, wxConvUTF8);
 	for (size_t i = 0; i < lines.size(); ++i) {
-		CPath p(lines[i]);
-		if (p.DirExists()) {
-			out.push_back(p);
-		} else {
-			AddLogLineN(CFormat(_("Dropping non-existing shared directory: %s"))
-				% p.GetPrintable());
-		}
+		out.push_back(CPath(lines[i]));
 	}
 	return true;
 }
