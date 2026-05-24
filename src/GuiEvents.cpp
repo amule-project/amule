@@ -24,6 +24,8 @@
 
 #include "GuiEvents.h"
 #include "amule.h"
+#include <common/MenuIDs.h>		// MP_PAUSE/STOP/RESUME/CANCEL + MP_PRIO* for the
+					// CLIENT_GUI implementations of Download_Set_Cat_*
 #include "PartFile.h"
 #include "DownloadQueue.h"
 #include "ServerList.h"
@@ -346,12 +348,61 @@ namespace MuleNotify
 		theApp->sharedfiles->SetFileCommentRating(file, comment, rating);
 	}
 
-	void Download_Set_Cat_Prio(uint8, uint8)
+	void Download_Set_Cat_Prio(uint8 cat, uint8 newprio)
 	{
+		// EC has no per-category bulk priority opcode. Mirror the daemon's
+		// CDownloadQueue::SetCatPrio predicate (all files if cat == 0, else
+		// exact category match) and send one EC_OP_PARTFILE_PRIO_SET per
+		// file using the existing per-file helpers. Without this stub being
+		// filled in, amulegui's category-tab right-click priority items
+		// silently no-op'd (#697 sibling of the status case below).
+		std::vector<CPartFile*> targets;
+		for (CDownQueueRem::iterator it = theApp->downloadqueue->begin();
+				it != theApp->downloadqueue->end(); ++it) {
+			CPartFile *file = it->second;
+			if (!cat || file->GetCategory() == cat) {
+				targets.push_back(file);
+			}
+		}
+		for (std::vector<CPartFile*>::iterator it = targets.begin();
+				it != targets.end(); ++it) {
+			if (newprio == PR_AUTO) {
+				theApp->downloadqueue->AutoPrio(*it, true);
+			} else {
+				theApp->downloadqueue->Prio(*it, newprio);
+			}
+		}
 	}
 
-	void Download_Set_Cat_Status(uint8, int)
+	void Download_Set_Cat_Status(uint8 cat, int newstatus)
 	{
+		// EC has no per-category bulk status opcode. Mirror the daemon's
+		// CDownloadQueue::SetCatStatus: snapshot files that
+		// CheckShowItemInGivenCat() admits for this (cat, AllcatFilter)
+		// pair, then send one per-file EC command. Snapshot first so a
+		// late-arriving EC response can't mutate the queue mid-iteration.
+		// #697: previously empty -- tab-right-click Stop/Pause/Resume/
+		// Cancel silently no-op'd in amulegui (only the remote GUI, not
+		// the monolithic amule, hit this stub).
+		ec_tagname_t cmd = 0;
+		switch (newstatus) {
+			case MP_CANCEL:	cmd = EC_OP_PARTFILE_DELETE;	break;
+			case MP_PAUSE:	cmd = EC_OP_PARTFILE_PAUSE;	break;
+			case MP_STOP:	cmd = EC_OP_PARTFILE_STOP;	break;
+			case MP_RESUME:	cmd = EC_OP_PARTFILE_RESUME;	break;
+			default:	return;
+		}
+		std::vector<CPartFile*> targets;
+		for (CDownQueueRem::iterator it = theApp->downloadqueue->begin();
+				it != theApp->downloadqueue->end(); ++it) {
+			if (it->second->CheckShowItemInGivenCat(cat)) {
+				targets.push_back(it->second);
+			}
+		}
+		for (std::vector<CPartFile*>::iterator it = targets.begin();
+				it != targets.end(); ++it) {
+			theApp->downloadqueue->SendFileCommand(*it, cmd);
+		}
 	}
 
 	void Upload_Resort_Queue()
