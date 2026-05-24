@@ -840,7 +840,15 @@ bool CClientTCPSocket::ProcessPacket(const uint8_t* buffer, uint32 size, uint8 o
 			wxString strReqDir = data.ReadString((m_client->GetUnicodeSupport() != utf8strNone));
 			if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
 				AddLogLineC(CFormat(_("User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted")) % m_client->GetUserName() % m_client->GetUserIDHybrid() % strReqDir);
-				wxASSERT( data.GetPosition() == data.GetLength() );
+				if (data.GetPosition() != data.GetLength()) {
+					// eMule mods routinely append extra tag blocks at
+					// the end of OP packets specifically so older
+					// clients can ignore them. Log and continue (#708).
+					AddDebugLogLineN(logRemoteClient, CFormat(
+						"OP_ASKSHAREDFILESDIR: %u trailing byte(s) ignored from %s")
+						% (unsigned)(data.GetLength() - data.GetPosition())
+						% m_client->GetFullIP());
+				}
 				// send the list of shared files for the requested directory
 				m_client->SendSharedFilesOfDirectory(strReqDir);
 			} else {
@@ -875,7 +883,15 @@ bool CClientTCPSocket::ProcessPacket(const uint8_t* buffer, uint32 size, uint8 o
 					AddDebugLogLineN( logLocalClient, "Local Client: OP_ASKSHAREDFILESDIR to " + m_client->GetFullIP() );
 					SendPacket(replypacket, true, true);
 				}
-				wxASSERT( data.GetPosition() == data.GetLength() );
+				if (data.GetPosition() != data.GetLength()) {
+					// eMule mods routinely append extra tag blocks at
+					// the end of OP packets specifically so older
+					// clients can ignore them. Log and continue (#708).
+					AddDebugLogLineN(logRemoteClient, CFormat(
+						"OP_ASKSHAREDDIRSANS: %u trailing byte(s) ignored from %s")
+						% (unsigned)(data.GetLength() - data.GetPosition())
+						% m_client->GetFullIP());
+				}
 				m_client->SetFileListRequested(uDirs);
 			} else {
 				AddLogLineC(CFormat( _("User %s (%u) sent unrequested shared dirs.") )
