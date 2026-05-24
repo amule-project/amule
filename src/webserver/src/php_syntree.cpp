@@ -30,6 +30,11 @@
 	#include <map>
 	#include <list>
 	#include <stdarg.h>
+	#include <cassert>
+	#include <climits>
+	#include <cstdio>
+	#include <cstring>
+	#include <cstdlib>
 #else
 	#include "WebServer.h"
 #endif

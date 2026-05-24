@@ -532,6 +532,10 @@ extern "C" {
  */
 #ifdef __cplusplus
 
+#include <map>
+#include <list>
+#include <string>
+
 typedef std::map<std::string, PHP_VAR_NODE *>::iterator PHP_ARRAY_ITER_TYPE;
 typedef std::list<std::string>::iterator PHP_ARRAY_KEY_ITER_TYPE;
 //
