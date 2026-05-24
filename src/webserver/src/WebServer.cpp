@@ -709,19 +709,19 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 	} else {
 		lFileSpeed = 0;
 	}
-	CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
-	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
-	CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
+	CECTag *gap_tag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
+	CECTag *part_tag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
+	CECTag *req_tag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
 
-	if (gaptag) {
-		m_Encoder.DecodeGaps(gaptag, m_Gaps);
+	if (gap_tag) {
+		m_Encoder.DecodeGaps(gap_tag, m_Gaps);
 	}
-	if (parttag) {
-		m_Encoder.DecodeParts(parttag, m_PartInfo);
+	if (part_tag) {
+		m_Encoder.DecodeParts(part_tag, m_PartInfo);
 	}
-	if (reqtag) {
+	if (req_tag) {
 		ArrayOfUInts64 reqs;
-		m_Encoder.DecodeReqs(reqtag, reqs);
+		m_Encoder.DecodeReqs(req_tag, reqs);
 		int reqcount = reqs.size() / 2;
 		m_ReqParts.resize(reqcount);
 		for (int i = 0; i < reqcount;i++) {
