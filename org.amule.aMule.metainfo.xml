@@ -6,6 +6,7 @@
   <summary>P2P client based on eMule</summary>
   <summary xml:lang="es">Cliente P2P basado en eMule</summary>
   <summary xml:lang="fr">Client P2P ayant pour base eMule</summary>
+  <summary xml:lang="pt-BR">Cliente P2P baseado em eMule</summary>
   <summary xml:lang="tr">eMule programına dayalı P2P istemcisi</summary>
 
   <metadata_license>FSFAP</metadata_license>
@@ -20,6 +21,9 @@
     </p>
     <p xml:lang="fr">
       aMule est un client multiplateforme pour le réseau de partage de fichiers ED2K fondé sur le client eMUle pour Windows. aMule se veut aussi convivial et riche en fonctionnalités qu'eMule, tout en restant fidèle à son apparence et à son ergonomie afin que les utilisateurs familiarisés avec aMule ou eMule puissent basculer de l'un à l'autre facilement. Comme aMule repose sur le code source d'eMule, les nouvelles fonctionnalités d'eMule ont tendance à être incorporées dans aMule peu après leur inclusion dans eMule, les utilisateurs d'aMule peuvent donc compter sur un client à la pointe de la technologie ED2K.
+    </p>
+    <p xml:lang="pt-BR">
+      aMule é um cliente multi-plataforma para a rede de compartilhamento de arquivos ED2K, baseado no cliente eMule para Windows. aMule pretende ser tão amigável ao usuário e cheio de recursos quanto eMule e se manter fiel à aparência e sentimento de eMule de modo que usuários familiares com qualquer um dos dois serjam capazes de trocar entre os dois facilmente. Como aMule é baseado no código de eMule, novos recursos de eMule tendem a ser incorporados em aMule logo após sua inclusão em eMule de modo que os usuários de aMule podem esperar estar utilizando a mais nova tecnologia dos clientes ED2K.
     </p>
     <p xml:lang="tr">
       aMule, Windows için eMule istemcisine dayalı ve çoklu platform desteği bulunduran bir ED2K dosya paylaşım ağı istemcisidir. aMule, eMule kadar kullanıcı dostu ve zengin işlevli olacak şekilde tasarlanmıştır, aMule veya eMule programına aşina kullanıcılarının birinden diğerine kolay geçiş yapabilmeleri için eMule programının görünümüne sadık kalacaktır. aMule, eMule kaynak koduna dayalı olduğundan dolayı eMule programına eklenen yeni işlevler kısa bir süre sonra aMule programına da gelirler, yani aMule kullanıcıları ED2K istemcilerinin en yeni işlevlerinden istifade edebilirler.
@@ -40,6 +44,7 @@
       <caption>Screenshot of the aMule search interface</caption>
       <caption xml:lang="es">Captura de pantalla de la interfaz de búsqueda de aMule</caption>
       <caption xml:lang="fr">Capture d'écran de l'interface de recherche d'aMule</caption>
+      <caption xml:lang="pt-BR">Captura de tela da interface de busca de aMule</caption>
       <caption xml:lang="tr">aMule arama arayüzünün ekran fotoğrafı</caption>
     </screenshot>
     <screenshot type="default">
@@ -47,6 +52,7 @@
       <caption>Screenshot of the aMule preferences interface</caption>
       <caption xml:lang="es">Captura de pantalla de la interfaz de preferencias de aMule</caption>
       <caption xml:lang="fr">Capture d'écran de l'interface des préférences d'aMule</caption>
+      <caption xml:lang="pt-BR">Captura de tela da interface das preferências de aMule</caption>
       <caption xml:lang="tr">aMule tercihler arayüzünün ekran fotoğrafı</caption>
     </screenshot>
   </screenshots>
