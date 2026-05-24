@@ -213,7 +213,7 @@ static void init_pie_base()
 
 #ifdef HAVE_BFD
 
-static bfd* s_abfd;
+static bfd* s_a_bfd;
 static asymbol** s_symbol_list;
 static bool s_have_backtrace_symbols = false;
 static const char* s_file_name;
@@ -228,9 +228,9 @@ static int s_found;
 * Also return the number of actual symbols read
 * If there's any error, return -1
 */
-static int get_backtrace_symbols(bfd *abfd, asymbol ***symbol_list_ptr)
+static int get_backtrace_symbols(bfd *a_bfd, asymbol ***symbol_list_ptr)
 {
-	int vectorsize = bfd_get_symtab_upper_bound(abfd);
+	int vectorsize = bfd_get_symtab_upper_bound(a_bfd);
 
 	if (vectorsize < 0) {
 		fprintf (stderr, "Error while getting vector size for backtrace symbols : %s",
@@ -251,7 +251,7 @@ static int get_backtrace_symbols(bfd *abfd, asymbol ***symbol_list_ptr)
 		return -1;
 	}
 
-	vectorsize = bfd_canonicalize_symtab(abfd, *symbol_list_ptr);
+	vectorsize = bfd_canonicalize_symtab(a_bfd, *symbol_list_ptr);
 
 	if (vectorsize < 0) {
 		fprintf(stderr, "Error while getting symbol table : %s",
@@ -272,22 +272,22 @@ static int get_backtrace_symbols(bfd *abfd, asymbol ***symbol_list_ptr)
 void init_backtrace_info()
 {
 	bfd_init();
-	s_abfd = bfd_openr("/proc/self/exe", NULL);
+	s_a_bfd = bfd_openr("/proc/self/exe", NULL);
 
-	if (s_abfd == NULL) {
+	if (s_a_bfd == NULL) {
 		fprintf(stderr, "Error while opening file for backtrace symbols : %s",
 			bfd_errmsg(bfd_get_error()));
 		return;
 	}
 
-	if (!(bfd_check_format_matches(s_abfd, bfd_object, NULL))) {
+	if (!(bfd_check_format_matches(s_a_bfd, bfd_object, NULL))) {
 		fprintf (stderr, "Error while init. backtrace symbols : %s",
 			bfd_errmsg (bfd_get_error ()));
-		bfd_close(s_abfd);
+		bfd_close(s_a_bfd);
 		return;
 	}
 
-	s_have_backtrace_symbols = (get_backtrace_symbols(s_abfd, &s_symbol_list) > 0);
+	s_have_backtrace_symbols = (get_backtrace_symbols(s_a_bfd, &s_symbol_list) > 0);
 
 	// Same PIE-offset lookup the addr2line fallback uses; without
 	// translating backtrace() runtime PCs to link-time addresses,
@@ -299,7 +299,7 @@ void init_backtrace_info()
 }
 
 
-void get_file_line_info(bfd *abfd, asection *section, void* _address)
+void get_file_line_info(bfd *a_bfd, asection *section, void* _address)
 {
 	wxASSERT(s_symbol_list);
 
@@ -331,7 +331,7 @@ void get_file_line_info(bfd *abfd, asection *section, void* _address)
 		return;
 	}
 
-	s_found =  bfd_find_nearest_line(abfd, section, s_symbol_list,
+	s_found =  bfd_find_nearest_line(a_bfd, section, s_symbol_list,
 		address - vma, &s_file_name, &s_function_name, &s_line_number);
 }
 
@@ -448,7 +448,7 @@ wxString get_backtrace(unsigned n)
 		unsigned long addr;
 		address[i].ToULong(&addr,0); // As it's "0x" prepended, wx will read it as base 16. Hopefully.
 
-		bfd_map_over_sections(s_abfd, get_file_line_info, (void*)addr);
+		bfd_map_over_sections(s_a_bfd, get_file_line_info, (void*)addr);
 
 		if (s_found) {
 			wxString function = wxConvLibc.cMB2WX(s_function_name);
