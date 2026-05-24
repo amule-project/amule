@@ -14,8 +14,11 @@ name: "CodeQL Advanced"
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  # pull_request trigger intentionally omitted: a merged PR is just a push to
+  # master, so the push trigger above already covers it.
+  # Note: without a pull_request trigger, GitHub will not post a "Code scanning"
+  # status check on open PRs. If branch protection rules require that check,
+  # re-add the pull_request trigger.
   schedule:
     - cron: "30 21 * * 4"
 
