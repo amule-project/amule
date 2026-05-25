@@ -71,14 +71,23 @@ bool CServerList::Init()
 	m_staticServersConfig = thePrefs::GetConfigDir() + "staticservers.dat";
 	LoadStaticServers();
 
-	// Send the auto-update of server.met via HTTPThread requests
-	current_url_index = 0;
-	if ( thePrefs::AutoServerlist()) {
-		AutoUpdate();
-	}
+	// The HTTP auto-update of server.met used to be kicked from here, but
+	// that fires the libcurl request before the heavy local I/O (partfile
+	// load + shared-file scan) — the wxWebSession worker thread then
+	// competes with the saturated main thread for CPU, libcurl state
+	// machine advances less, and the DNS resolution can time out on
+	// slower setups. The kick now lives in CamuleApp::OnInit() after
+	// sharedfiles->Reload() finishes. See StartAutoUpdate() / #714.
 
 	m_initialized = true;
 	return bRes;
+}
+
+
+void CServerList::StartAutoUpdate()
+{
+	current_url_index = 0;
+	AutoUpdate();
 }
 
 
