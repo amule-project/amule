@@ -34,7 +34,7 @@
 
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
-#include <wx/url.h>			// Needed for wxURL
+#include <wx/uri.h>			// Needed for wxURI
 #include <wx/tokenzr.h>
 
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
@@ -878,8 +878,14 @@ void CServerList::AutoUpdate()
 	// Do current URL. Callback function will take care of the others.
 	while ( current_url_index < url_count ) {
 		wxString URI = theApp->glob_prefs->addresses_list[current_url_index];
-		// We use wxURL to validate the URI
-		if ( wxURL( URI ).GetError() == wxURL_NOERR ) {
+		// wxURL only registers protocol handlers for http and ftp, so
+		// any https URL would come back as wxURL_NOPROTO and be rejected
+		// here — but the download itself goes through wxWebRequest,
+		// which handles https fine (#714). Validate with wxURI (RFC
+		// 3986 parser) + an explicit scheme check instead.
+		wxURI uri(URI);
+		const wxString scheme = uri.HasScheme() ? uri.GetScheme().Lower() : wxString();
+		if ( uri.HasServer() && (scheme == "http" || scheme == "https") ) {
 			// Ok, got a valid URI
 			m_URLUpdate = URI;
 			wxString strTempFilename =
