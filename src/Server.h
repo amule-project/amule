@@ -92,11 +92,11 @@ public:
 	bool	HasDynIP() const		{return !dynip.IsEmpty() ;}
 	void	SetDynIP(const wxString& newdynip);
 
-	uint64	GetLastPingedTime() const				{return lastpingedtime;}
-	void	SetLastPingedTime(uint64 in_lastpingedtime)	{lastpingedtime = in_lastpingedtime;}
+	time_t	GetLastPingedTime() const				{return lastpingedtime;}
+	void	SetLastPingedTime(time_t in_lastpingedtime)	{lastpingedtime = in_lastpingedtime;}
 
-	uint64	GetRealLastPingedTime() const					{return m_dwRealLastPingedTime;} // last pinged time without any random modificator
-	void	SetRealLastPingedTime(uint64 in_lastpingedtime)	{m_dwRealLastPingedTime = in_lastpingedtime;}
+	time_t	GetRealLastPingedTime() const					{return m_dwRealLastPingedTime;} // last pinged time without any random modificator
+	void	SetRealLastPingedTime(time_t in_lastpingedtime)	{m_dwRealLastPingedTime = in_lastpingedtime;}
 
 	uint64	GetLastPinged() const		{return lastpinged;}
 	void	SetLastPinged(uint64 in_lastpinged) {lastpinged = in_lastpinged;}
@@ -158,7 +158,7 @@ public:
 private:
 	uint32		challenge;
 	uint64		lastpinged; //This is to get the ping delay.
-	uint64		lastpingedtime; //This is to decided when we retry the ping.
+	time_t		lastpingedtime; //This is to decide when we retry the ping.
 	uint32		files;
 	uint32		users;
 	uint32		maxusers;
@@ -194,7 +194,7 @@ private:
 	uint16		m_nObfuscationPortTCP;
 	uint16		m_nObfuscationPortUDP;
 
-	uint64		m_dwRealLastPingedTime;
+	time_t		m_dwRealLastPingedTime;
 
 	void Init();
 };

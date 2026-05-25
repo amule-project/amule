@@ -187,7 +187,7 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 		break;
 
 	case ST_LASTPING:
-		lastpinged = tag.GetInt();
+		lastpingedtime = tag.GetInt();
 		break;
 
 	case ST_MAXUSERS:

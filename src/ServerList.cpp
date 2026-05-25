@@ -262,6 +262,7 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 void CServerList::ServerStats()
 {
 	uint64 tNow = ::GetTickCount64();
+	time_t currentTime = time(NULL);
 
 	if (theApp->IsConnectedED2K() && !m_servers.empty()) {
 		CServer* ping_server = GetNextStatServer();
@@ -270,7 +271,7 @@ void CServerList::ServerStats()
 			return;
 		}
 
-		while (ping_server->GetLastPingedTime() && (tNow - ping_server->GetLastPingedTime()) < UDPSERVSTATREASKTIME) {
+		while (ping_server->GetLastPingedTime() && currentTime < (ping_server->GetLastPingedTime() + UDPSERVSTATREASKTIME)) {
 			ping_server = GetNextStatServer();
 			if (ping_server == test) {
 				return;
@@ -283,8 +284,8 @@ void CServerList::ServerStats()
 		}
 
 		srand((unsigned)time(NULL));
-		ping_server->SetRealLastPingedTime(tNow); // this is not used to calculate the next ping, but only to ensure a minimum delay for premature pings
-		if (!ping_server->GetCryptPingReplyPending() && (!ping_server->GetLastPingedTime() || (tNow - ping_server->GetLastPingedTime()) >= UDPSERVSTATREASKTIME) && theApp->GetPublicIP() && thePrefs::IsServerCryptLayerUDPEnabled()) {
+		ping_server->SetRealLastPingedTime(currentTime); // this is not used to calculate the next ping, but only to ensure a minimum delay for premature pings
+		if (!ping_server->GetCryptPingReplyPending() && (!ping_server->GetLastPingedTime() || currentTime >= (ping_server->GetLastPingedTime() + UDPSERVSTATREASKTIME)) && theApp->GetPublicIP() && thePrefs::IsServerCryptLayerUDPEnabled()) {
 			// We try a obfsucation ping first and wait 20 seconds for an answer
 			// if it doesn't get responded to, we don't count it as error but continue with a normal ping
 			ping_server->SetCryptPingReplyPending(true);
@@ -301,8 +302,8 @@ void CServerList::ServerStats()
 			}
 
 			ping_server->SetChallenge(dwChallenge);
-			ping_server->SetLastPinged(tNow);
-			ping_server->SetLastPingedTime((tNow - (uint64)UDPSERVSTATREASKTIME) + 20); // give it 20 seconds to respond
+			ping_server->SetLastPinged(tNow); //in milliseconds, to calculate the ping
+			ping_server->SetLastPingedTime((currentTime - UDPSERVSTATREASKTIME) + 20); //in seconds, give it 20 extra seconds to respond
 
 			AddDebugLogLineN(logServerUDP, CFormat(">> Sending OP__GlobServStatReq (obfuscated) to server %s:%u") % ping_server->GetAddress() % ping_server->GetPort());
 
@@ -327,7 +328,7 @@ void CServerList::ServerStats()
 			ping_server->SetChallenge(challenge);
 			packet->CopyUInt32ToDataBuffer(challenge);
 			ping_server->SetLastPinged(tNow);
-			ping_server->SetLastPingedTime(tNow - (rand() % HR2S(1)));
+			ping_server->SetLastPingedTime(currentTime - (rand() % HR2S(1)));
 			ping_server->AddFailedCount();
 			Notify_ServerRefresh(ping_server);
 			theStats::AddUpOverheadServer(packet->GetPacketSize());
@@ -1008,7 +1009,7 @@ void CServerList::CheckForExpiredUDPKeys() {
 	uint32 cKeysExpired = 0;
 	uint32 cPingDelayed = 0;
 	const uint32 dwIP = theApp->GetPublicIP();
-	const uint64 tNow = ::GetTickCount64();
+	const time_t currentTime = time(NULL);
 	wxASSERT( dwIP != 0 );
 
 	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it) {
@@ -1016,10 +1017,10 @@ void CServerList::CheckForExpiredUDPKeys() {
 		if (pServer->SupportsObfuscationUDP() && pServer->GetServerKeyUDP(true) != 0 && pServer->GetServerKeyUDPIP() != dwIP){
 			cKeysTotal++;
 			cKeysExpired++;
-			if (tNow - pServer->GetRealLastPingedTime() < UDPSERVSTATMINREASKTIME){
+			if (currentTime < pServer->GetRealLastPingedTime() + UDPSERVSTATMINREASKTIME){
 				cPingDelayed++;
 				// next ping: Now + (MinimumDelay - already elapsed time)
-				pServer->SetLastPingedTime((tNow - (uint64)UDPSERVSTATREASKTIME) + (UDPSERVSTATMINREASKTIME - (tNow - pServer->GetRealLastPingedTime())));
+				pServer->SetLastPingedTime((currentTime - UDPSERVSTATREASKTIME) + (UDPSERVSTATMINREASKTIME - (currentTime - pServer->GetRealLastPingedTime())));
 			} else {
 				pServer->SetLastPingedTime(0);
 			}
