@@ -1268,8 +1268,8 @@ void CPreferences::BuildItemList( const wxString& appdir )
 
 	s_MiscList.push_back( new Cfg_Bool( "/eMule/DropSlowSources",		s_DropSlowSources, false ) );
 
-	s_MiscList.push_back( new Cfg_Str(  "/eMule/KadNodesUrl",			s_KadURL, "http://upd.emule-security.org/nodes.dat" ) );
-	s_MiscList.push_back( new Cfg_Str(	"/eMule/Ed2kServersUrl",		s_Ed2kURL, "http://upd.emule-security.org/server.met" ) );
+	s_MiscList.push_back( new Cfg_Str(  "/eMule/KadNodesUrl",			s_KadURL, "https://upd.emule-security.org/nodes.dat" ) );
+	s_MiscList.push_back( new Cfg_Str(	"/eMule/Ed2kServersUrl",		s_Ed2kURL, "https://upd.emule-security.org/server.met" ) );
 	s_MiscList.push_back( MkCfg_Int( "/eMule/ShowRatesOnTitle",		s_showRatesOnTitle, 0 ));
 
 	// MaxMind requires a (free) license key for GeoLite2 downloads, and the
@@ -1282,7 +1282,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Str( "/WebServer/Path",				s_sWebPath, "amuleweb" ) );
 
 	s_MiscList.push_back( new Cfg_Str( "/eMule/StatsServerName",		s_StatsServerName,	"Shorty's ED2K stats" ) );
-	s_MiscList.push_back( new Cfg_Str( "/eMule/StatsServerURL",		s_StatsServerURL,	"http://ed2k.shortypower.dyndns.org/?hash=" ) );
+	s_MiscList.push_back( new Cfg_Str( "/eMule/StatsServerURL",		s_StatsServerURL,	"https://ed2k.shortypower.org/?hash=" ) );
 
 	s_MiscList.push_back( new Cfg_Bool( "/ExternalConnect/TransmitOnlyUploadingClients",	s_TransmitOnlyUploadingClients, false ) );
 	s_MiscList.push_back( new Cfg_Bool( "/eMule/CreateSparseFiles",		s_createFilesSparse, true ) );
