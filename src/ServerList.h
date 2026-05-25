@@ -82,6 +82,17 @@ public:
 	void		SetStaticServer(CServer* server, bool isStatic);
 	void		SetServerPrio(CServer* server, uint32 prio);
 
+	/**
+	 * Kick off the auto-update HTTP download of server.met.
+	 *
+	 * Split out of Init() so the caller can defer the HTTP request
+	 * until after the heavy startup I/O has finished, avoiding the
+	 * wxWebSession worker thread being starved by the main thread
+	 * (see #714). Caller is expected to gate this on the
+	 * AutoServerlist pref.
+	 */
+	void		StartAutoUpdate();
+
 private:
 	virtual void	ObserverAdded( ObserverType* );
 	void		AutoUpdate();

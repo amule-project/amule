@@ -660,20 +660,13 @@ bool CamuleApp::OnInit()
 		AddLogLineNS(msg);
 	}
 
-	// Test if there's any new version. The URL is the GitHub Releases
-	// "latest" endpoint, which returns JSON describing the most recent
-	// non-prerelease, non-draft Release.  We parse the `tag_name` field
-	// in CheckNewVersion() below.  This replaces the legacy SourceForge
-	// `lastversion` text file, which has been unmaintained since the
-	// project moved to GitHub years ago.
-	if (thePrefs::GetCheckNewVersion()) {
-		// We use the thread base because I don't want a dialog to pop up.
-		CHTTPDownloadThread* version_check =
-			new CHTTPDownloadThread("https://api.github.com/repos/amule-org/amule/releases/latest",
-				thePrefs::GetConfigDir() + "last_version_check", thePrefs::GetConfigDir() + "last_version", HTTP_VersionCheck, false, false);
-		version_check->Create();
-		version_check->Run();
-	}
+	// The GitHub version check and the server.met auto-update used to be
+	// fired from here, before the partfile load + 91k-shared-file scan
+	// run further down. On busy setups the wxWebSession worker thread
+	// then competes with the saturated main thread for CPU, libcurl's
+	// state machine advances less, and DNS resolution can time out
+	// (#714). Both startup HTTP downloads now fire after
+	// sharedfiles->Reload() returns below.
 
 	// Create main dialog, or fork to background (daemon).
 	InitGui(m_geometryEnabled, m_geometryString);
@@ -710,6 +703,26 @@ bool CamuleApp::OnInit()
 	}
 	downloadqueue->LoadMetFiles(thePrefs::GetTempDir());
 	sharedfiles->Reload();
+
+	// Fire the deferred startup HTTP downloads now that the heavy local
+	// I/O is done — see the comment in OnInit() further up.
+	if (thePrefs::GetCheckNewVersion()) {
+		// Test if there's any new version. The URL is the GitHub
+		// Releases "latest" endpoint, which returns JSON describing the
+		// most recent non-prerelease, non-draft Release.  We parse the
+		// `tag_name` field in CheckNewVersion() below. This replaces the
+		// legacy SourceForge `lastversion` text file, which has been
+		// unmaintained since the project moved to GitHub years ago.
+		// We use the thread base because I don't want a dialog to pop up.
+		CHTTPDownloadThread* version_check =
+			new CHTTPDownloadThread("https://api.github.com/repos/amule-org/amule/releases/latest",
+				thePrefs::GetConfigDir() + "last_version_check", thePrefs::GetConfigDir() + "last_version", HTTP_VersionCheck, false, false);
+		version_check->Create();
+		version_check->Run();
+	}
+	if (thePrefs::GetNetworkED2K() && thePrefs::AutoServerlist()) {
+		serverlist->StartAutoUpdate();
+	}
 
 	// Start the fs-watcher after the initial scan so directories exist
 	// in shareddir_list before Add() runs. The watcher itself is cheap
