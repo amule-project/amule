@@ -290,6 +290,11 @@ bool CamuleRemoteGuiApp::OnInit()
 	StartTickTimer();
 	amuledlg = NULL;
 	connect_timeout_timer = NULL;
+	// ShutDown() unconditionally deletes these, but Startup() — where they
+	// are allocated — only runs after a successful EC connect. Null them so
+	// a connect-timeout teardown doesn't delete an indeterminate pointer.
+	stattree = NULL;
+	m_allUploadingKnownFile = NULL;
 
 #if defined(__WXGTK__) && !defined(__APPLE__)
 	// Set the GTK program name to the canonical app id. On Wayland,
