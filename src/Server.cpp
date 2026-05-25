@@ -149,6 +149,7 @@ void CServer::Init() {
 
 bool CServer::AddTagFromFile(CFileDataIO* servermet)
 {
+	uint64_t val;
 	if (servermet == NULL) {
 		return false;
 	}
@@ -187,7 +188,9 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 		break;
 
 	case ST_LASTPING:
-		lastpingedtime = tag.GetInt();
+		val = tag.GetInt();
+		// Pre-fix aMule wrote ms-since-boot here; reject obviously-future values.
+		lastpingedtime = (val > (uint64_t)time(NULL)) ? 0 : (time_t)val;
 		break;
 
 	case ST_MAXUSERS:
