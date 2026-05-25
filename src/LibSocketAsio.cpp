@@ -1533,18 +1533,18 @@ void CAsioService::Stop()
  */
 
 amuleIPV4Address::amuleIPV4Address()
+	: m_endpoint(new CamuleIPV4Endpoint())
 {
-	m_endpoint = new CamuleIPV4Endpoint();
 }
 
 amuleIPV4Address::amuleIPV4Address(const amuleIPV4Address &a)
+	: m_endpoint(new CamuleIPV4Endpoint(*a.m_endpoint))
 {
-	*this = a;
 }
 
 amuleIPV4Address::amuleIPV4Address(const CamuleIPV4Endpoint &ep)
+	: m_endpoint(new CamuleIPV4Endpoint(ep))
 {
-	*this = ep;
 }
 
 amuleIPV4Address::~amuleIPV4Address()
@@ -1554,13 +1554,15 @@ amuleIPV4Address::~amuleIPV4Address()
 
 amuleIPV4Address& amuleIPV4Address::operator=(const amuleIPV4Address &a)
 {
-	m_endpoint = new CamuleIPV4Endpoint(* a.m_endpoint);
+	if (this != &a) {
+		*m_endpoint = *a.m_endpoint;
+	}
 	return *this;
 }
 
 amuleIPV4Address& amuleIPV4Address::operator=(const CamuleIPV4Endpoint &ep)
 {
-	m_endpoint = new CamuleIPV4Endpoint(ep);
+	*m_endpoint = ep;
 	return *this;
 }
 
