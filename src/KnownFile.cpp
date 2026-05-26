@@ -109,6 +109,21 @@ void CFileStatistic::AddTransferred(uint64 bytes)
 #endif // CLIENT_GUI
 
 
+/* Static storage for the process-wide EC change generation counter.
+ * See `CKnownFile::MarkECChanged()` doc in KnownFile.h. */
+std::atomic<uint64> CKnownFile::s_globalEcGen{0};
+
+void CKnownFile::MarkECChanged()
+{
+	// Single atomic pre-increment + atomic store. Generation values are
+	// strictly ascending across all files and all threads; readers
+	// (`Get_EC_Response_GetUpdate`) compare against the highest gen they
+	// have already sent and ignore lesser ones.
+	m_ecGen.store(s_globalEcGen.fetch_add(1, std::memory_order_relaxed) + 1,
+		std::memory_order_relaxed);
+}
+
+
 /* Abstract File (base class)*/
 
 CAbstractFile::CAbstractFile()
