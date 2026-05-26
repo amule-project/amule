@@ -4388,6 +4388,19 @@ bool CPartFile::IsDeadSource(const CUpDownClient* client)
 	return m_deadSources.IsDeadSource( client );
 }
 
+const wxString& CPartFile::GetCachedPartMetBasename() const
+{
+	if (m_cachedPartMetBasename.IsEmpty()) {
+		// One-shot evaluate: the partmet filename (e.g. "012.part.met")
+		// is set when the partfile is created and is stable for life,
+		// so cache after first use. The wxString cast collapses the
+		// CFormat round-trip that the EC tag constructor used to do
+		// per request.
+		m_cachedPartMetBasename = m_partmetfilename.RemoveExt().GetPrintable();
+	}
+	return m_cachedPartMetBasename;
+}
+
 void CPartFile::SetFileName(const CPath& fileName)
 {
 	CKnownFile* pFile = theApp->sharedfiles->GetFileByID(GetFileHash());

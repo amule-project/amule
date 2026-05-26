@@ -171,6 +171,17 @@ public:
 #endif
 	virtual void	UpdatePartsInfo();
 	const CPath& GetPartMetFileName() const { return m_partmetfilename; }
+
+	/**
+	 * Cached partmet basename (filename without `.met` extension) as a
+	 * wxString. Used by EC GET_SHARED_FILES / GET_UPDATE for the
+	 * EC_TAG_KNOWNFILE_FILENAME tag of partfiles — that path went through
+	 * `CFormat("%s") % GetPartMetFileName().RemoveExt()` on every call,
+	 * which allocates a CPath (two wxStrings via DeepCopy) plus a CFormat
+	 * round-trip per file per EC cycle. The basename never changes after
+	 * the partfile is created, so this is a populate-once cache.
+	 */
+	const wxString& GetCachedPartMetBasename() const;
 	uint16	GetPartMetNumber() const;
 	uint64	GetTransferred() const		{ return transferred; }
 	const CPath& GetFullName() const	{ return m_fullname; }
@@ -376,6 +387,10 @@ private:
 	CPath	m_fullname;			// path/name of the met file
 	CPath	m_partmetfilename;	// name of the met file
 	CPath	m_PartPath;		// path/name of the partfile
+	// Cache for EC EC_TAG_KNOWNFILE_FILENAME — see GetCachedPartMetBasename().
+	// Populate-once: m_partmetfilename never changes for the lifetime of
+	// the partfile (the basename is the partfile's allocation number).
+	mutable wxString m_cachedPartMetBasename;
 	bool	m_paused;
 	bool	m_stopped;
 	bool	m_insufficient;
