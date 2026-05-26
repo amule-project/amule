@@ -196,7 +196,7 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32_t ip, uint8_t opcode, bo
 					it->m_firstAdded = currentTick; // for the packet we just process
 				} else {
 					it->m_count -= removeCount;
-					it->m_firstAdded += SEC2MS(secondsPerPacket) * removeCount;
+					it->m_firstAdded += static_cast<uint64_t>(SEC2MS(secondsPerPacket)) * removeCount;
 				}
 			}
 			// we increase the counter in any case, even if we drop the packet later
