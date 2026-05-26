@@ -208,11 +208,11 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 // Sets m_FrameTitle
 void CamuleGuiBase::ResetTitle()
 {
-#ifdef SVNDATE
+#ifdef GITDATE
 	#ifdef CLIENT_GUI
-		m_FrameTitle = CFormat("aMule remote control %s %s") % VERSION % SVNDATE;
+		m_FrameTitle = CFormat("aMule remote control %s %s") % VERSION % GITDATE;
 	#else
-		m_FrameTitle = CFormat("aMule %s %s") % VERSION % SVNDATE;
+		m_FrameTitle = CFormat("aMule %s %s") % VERSION % GITDATE;
 	#endif
 #else
 	#ifdef CLIENT_GUI

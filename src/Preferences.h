@@ -35,7 +35,7 @@
 #include "Proxy.h"
 #include "OtherStructs.h"
 
-#include <common/ClientVersion.h>	// Needed for __SVN__
+#include <common/ClientVersion.h>	// Needed for __GIT__
 
 class CPreferences;
 class wxConfigBase;
@@ -532,7 +532,7 @@ public:
 	static void LoadAllItems(wxConfigBase* cfg);
 	static void SaveAllItems(wxConfigBase* cfg);
 
-#ifndef __SVN__
+#ifndef __GIT__
 	static bool		ShowVersionOnTitle()		{ return s_showVersionOnTitle; }
 #else
 	static bool		ShowVersionOnTitle()		{ return true; }
@@ -751,7 +751,7 @@ protected:
 	static bool	s_bDAP;
 	static bool	s_bUAP;
 
-#ifndef __SVN__
+#ifndef __GIT__
 	static bool	s_showVersionOnTitle;
 #endif
 	static uint8_t	s_showRatesOnTitle;	// 0=no, 1=after app name, 2=before app name

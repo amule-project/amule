@@ -530,7 +530,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	thePrefs::SetGeoIPEnabled(false);
 #endif
 
-#ifdef __SVN__
+#ifdef __GIT__
 	// Version is always shown on the title in development versions
 	CastChild(IDC_SHOWVERSIONONTITLE, wxCheckBox)->SetValue(true);
 	CastChild(IDC_SHOWVERSIONONTITLE, wxCheckBox)->Enable(false);

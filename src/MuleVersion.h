@@ -128,13 +128,13 @@ inline wxString GetMuleVersion()
 	// Describe Boost version, if compiled with Boost.Asio
 	MULEVERSION_BOOST_VERSION
 
-#if defined(__DEBUG__) || defined(SVNDATE)
+#if defined(__DEBUG__) || defined(GITDATE)
 	MULEVERSION_ADD_BEGIN
 #	ifdef __DEBUG__
 		" (Debugging)"
 #	endif
-#	ifdef SVNDATE
-		" (Snapshot: " SVNDATE ")"
+#	ifdef GITDATE
+		" (Snapshot: " GITDATE ")"
 #	endif
 	MULEVERSION_ADD_END
 #endif

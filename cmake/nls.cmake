@@ -64,7 +64,7 @@ endif()
 # find_package(Intl) populates Intl_FOUND / Intl_LIBRARIES / Intl_INCLUDE_DIRS
 # as ordinary (non-cache) variables, so on every fresh `cmake` configure
 # pass they evaporate unless re-derived.  The cache-gated upper branch
-# skips on subsequent configures (e.g. when a SVNDATE refresh triggers
+# skips on subsequent configures (e.g. when a GITDATE refresh triggers
 # CMAKE_CONFIGURE_DEPENDS), which silently dropped the libintl link
 # wiring in src/CMakeLists.txt's `if (ENABLE_NLS AND Intl_FOUND)` guard
 # and produced `_libintl_dgettext` undefined-symbol failures on the

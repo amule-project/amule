@@ -72,7 +72,7 @@ xgettext \
 	--add-comments=TRANSLATORS \
 	--copyright-holder='Free Software Foundation, Inc.' \
 	--package-name='aMule' \
-	--package-version='SVN' \
+	--package-version='GIT' \
 	--msgid-bugs-address='https://github.com/amule-org/amule/issues'
 die 30 "xgettext failed"
 
