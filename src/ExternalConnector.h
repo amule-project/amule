@@ -145,6 +145,7 @@ public:
 	void GetCommand(const wxString &prompt, char* buffer, size_t buffer_size);
 	const CECPacket *SendRecvMsg_v2(const CECPacket *request) { return m_ECClient->SendRecvPacket(request); }
 	void SendPacket(const CECPacket *request) { m_ECClient->SendPacket(request); }
+	bool IsServerPartialUpdateActive() const { return m_ECClient->ServerSupportsPartialUpdate(); }
 	void ConnectAndRun(const wxString &ProgName, const wxString& ProgVersion);
 	void ShowGreet();
 

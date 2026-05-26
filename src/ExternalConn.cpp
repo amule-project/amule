@@ -234,11 +234,18 @@ private:
 	// queue. See WriteDoneAndQueueEmpty for the full reasoning.
 	int		m_notification_dispatch_depth;
 
-	// EC INC_UPDATE skip-unchanged state. `m_lastEcGenSeen` is the highest
-	// `CKnownFile::s_globalEcGen` value already reflected in this
-	// connection's `m_obj_tagmap` — files with a smaller `m_ecGen` did
-	// not change since the last response and can be skipped this cycle.
+	// EC INC_UPDATE skip-unchanged state. `m_lastEcGenSeen*` values are
+	// the highest `CKnownFile::s_globalEcGen` already reflected in the
+	// client's view *for that particular request path* — files with a
+	// smaller `m_ecGen` did not change since the last response of that
+	// path and can be skipped this cycle. Three independent counters
+	// because the request paths interleave on different schedules:
+	//   * `m_lastEcGenSeen`        — `EC_OP_GET_UPDATE`        (amulegui)
+	//   * `m_lastEcGenSeenShared`  — `EC_OP_GET_SHARED_FILES`  (amuleweb)
+	//   * `m_lastEcGenSeenPart`    — `EC_OP_GET_DLOAD_QUEUE`   (amuleweb)
 	uint64		m_lastEcGenSeen;
+	uint64		m_lastEcGenSeenShared;
+	uint64		m_lastEcGenSeenPart;
 
 	// Client opted in to partial-update protocol at auth time (advertised
 	// `EC_TAG_CAN_PARTIAL_UPDATE`). When set, `Get_EC_Response_GetUpdate`
@@ -249,10 +256,16 @@ private:
 	// unchanged files so old clients (which infer deletion from absence)
 	// keep working unchanged — see `Get_EC_Response_GetUpdate`.
 	bool		m_partialUpdateActive;
-	// Set of file ECIDs sent in the previous INC_UPDATE response. Diffed
-	// against the current encoder snapshot each cycle to compute the
-	// removal list emitted to partial-update-capable clients.
+	// Set of file ECIDs sent in the previous response for each EC
+	// request path. Diffed against the current snapshot to compute the
+	// removal list emitted to partial-update-capable clients. Tracked
+	// per-path because amulegui uses `EC_OP_GET_UPDATE` (mixed shared +
+	// partfile, served by `Get_EC_Response_GetUpdate`) while amuleweb
+	// drives two separate INC_UPDATE streams via `EC_OP_GET_SHARED_FILES`
+	// and `EC_OP_GET_DLOAD_QUEUE` (each served by its own handler).
 	std::set<uint32> m_lastSentFileIds;
+	std::set<uint32> m_lastSentSharedFileIds;
+	std::set<uint32> m_lastSentPartFileIds;
 };
 
 
@@ -263,6 +276,8 @@ m_conn_state(CONN_INIT),
 m_passwd_salt(GetRandomUint64()),
 m_notification_dispatch_depth(0),
 m_lastEcGenSeen(0),
+m_lastEcGenSeenShared(0),
+m_lastEcGenSeenPart(0),
 m_partialUpdateActive(false)
 {
 	wxASSERT(theApp->ECServerHandler);
@@ -731,7 +746,9 @@ static CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerA
 	return response;
 }
 
-static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFileEncoderMap &encoders)
+static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFileEncoderMap &encoders,
+	uint64 &io_lastEcGenSeen,
+	bool partial_update_active, std::set<uint32> &io_lastSentFileIds)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_SHARED_FILES);
 
@@ -744,6 +761,18 @@ static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFile
 
 	encoders.UpdateEncoders();
 
+	// Skip-unchanged + EC_TAG_FILE_REMOVED is wired only for the
+	// `EC_DETAIL_UPDATE` polling path that amuleweb uses (`EC_OP_GET_
+	// SHARED_FILES` re-issued each cycle with an encoder-retained diff
+	// state) and only when the client opted into the partial-update
+	// protocol at auth. `EC_DETAIL_FULL` callers (amulecmd `show shared`,
+	// any one-shot query) still get every alive file as a full tag.
+	const bool skip_unchanged_path =
+		partial_update_active && detail_level == EC_DETAIL_UPDATE;
+	const uint64 ec_snapshot = skip_unchanged_path
+		? CKnownFile::GetGlobalECGen() : 0;
+	const uint64 ec_threshold = io_lastEcGenSeen;
+
 	// Snapshot the shared-file list once. GetFileByIndex() does an O(N)
 	// std::advance over the underlying std::map and re-acquires list_mut
 	// on every call -- looping it N times is O(N^2) and pegs the main
@@ -751,6 +780,10 @@ static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFile
 	// shared files (issue #666).
 	std::vector<CKnownFile*> snapshot;
 	theApp->sharedfiles->CopyFileList(snapshot);
+
+	// Snapshot the alive set for the partial-update removal diff below.
+	std::set<uint32> current_file_ids;
+
 	for (std::vector<CKnownFile*>::const_iterator it = snapshot.begin();
 		it != snapshot.end(); ++it) {
 		const CKnownFile *cur_file = *it;
@@ -758,14 +791,38 @@ static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFile
 		if ( !cur_file || (!queryitems.empty() && !queryitems.count(cur_file->ECID())) ) {
 			continue;
 		}
+		const uint32 ecid = cur_file->ECID();
+		if (skip_unchanged_path) {
+			current_file_ids.insert(ecid);
+			if (cur_file->GetECGen() <= ec_threshold) {
+				// Client already has the latest exported view of
+				// this file; absence here is "no change", not
+				// "deleted" — see `EC_TAG_FILE_REMOVED` emission
+				// below.
+				continue;
+			}
+		}
 
 		CEC_SharedFile_Tag filetag(cur_file, detail_level);
-		CKnownFile_Encoder *enc = encoders[cur_file->ECID()];
+		CKnownFile_Encoder *enc = encoders[ecid];
 		if ( detail_level != EC_DETAIL_UPDATE ) {
 			enc->ResetEncoder();
 		}
 		enc->Encode(&filetag);
 		response->AddTag(filetag);
+	}
+
+	if (skip_unchanged_path) {
+		// One EC_TAG_FILE_REMOVED per file that was in the previous
+		// response but is no longer alive on the server.
+		for (std::set<uint32>::const_iterator it = io_lastSentFileIds.begin();
+			it != io_lastSentFileIds.end(); ++it) {
+			if (!current_file_ids.count(*it)) {
+				response->AddTag(CECTag(EC_TAG_FILE_REMOVED, *it));
+			}
+		}
+		io_lastSentFileIds.swap(current_file_ids);
+		io_lastEcGenSeen = ec_snapshot;
 	}
 	return response;
 }
@@ -933,7 +990,9 @@ static CECPacket *Get_EC_Response_GetClientQueue(const CECPacket *request, CObjT
 }
 
 
-static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CFileEncoderMap &encoders)
+static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CFileEncoderMap &encoders,
+	uint64 &io_lastEcGenSeen,
+	bool partial_update_active, std::set<uint32> &io_lastSentFileIds)
 {
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
 
@@ -944,11 +1003,24 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CFi
 
 	encoders.UpdateEncoders();
 
+	// Skip-unchanged + EC_TAG_FILE_REMOVED is wired only for the
+	// `EC_DETAIL_UPDATE` polling path that amuleweb uses, and only when
+	// the client opted into the partial-update protocol at auth. Other
+	// callers still get every alive file as a full tag.
+	const bool skip_unchanged_path =
+		partial_update_active && detail_level == EC_DETAIL_UPDATE;
+	const uint64 ec_snapshot = skip_unchanged_path
+		? CKnownFile::GetGlobalECGen() : 0;
+	const uint64 ec_threshold = io_lastEcGenSeen;
+
 	// Snapshot once to avoid re-locking downloadqueue's mutex on every
 	// iteration (see Get_EC_Response_GetSharedFiles for the matching
 	// shared-files fix in issue #666).
 	std::vector<CPartFile*> snapshot;
 	theApp->downloadqueue->CopyFileList(snapshot);
+
+	std::set<uint32> current_file_ids;
+
 	for (std::vector<CPartFile*>::const_iterator it = snapshot.begin();
 		it != snapshot.end(); ++it) {
 		CPartFile *cur_file = *it;
@@ -956,16 +1028,38 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CFi
 		if ( !queryitems.empty() && !queryitems.count(cur_file->ECID()) ) {
 			continue;
 		}
+		const uint32 ecid = cur_file->ECID();
+		if (skip_unchanged_path) {
+			current_file_ids.insert(ecid);
+			if (cur_file->GetECGen() <= ec_threshold) {
+				// Client already has the latest exported view of
+				// this partfile; absence here is "no change",
+				// not "deleted" — see `EC_TAG_FILE_REMOVED`
+				// emission below.
+				continue;
+			}
+		}
 
 		CEC_PartFile_Tag filetag(cur_file, detail_level);
 
-		CPartFile_Encoder * enc = static_cast<CPartFile_Encoder *>(encoders[cur_file->ECID()]);
+		CPartFile_Encoder * enc = static_cast<CPartFile_Encoder *>(encoders[ecid]);
 		if ( detail_level != EC_DETAIL_UPDATE ) {
 			enc->ResetEncoder();
 		}
 		enc->Encode(&filetag);
 
 		response->AddTag(filetag);
+	}
+
+	if (skip_unchanged_path) {
+		for (std::set<uint32>::const_iterator it = io_lastSentFileIds.begin();
+			it != io_lastSentFileIds.end(); ++it) {
+			if (!current_file_ids.count(*it)) {
+				response->AddTag(CECTag(EC_TAG_FILE_REMOVED, *it));
+			}
+		}
+		io_lastSentFileIds.swap(current_file_ids);
+		io_lastEcGenSeen = ec_snapshot;
 	}
 	return response;
 }
@@ -1623,12 +1717,16 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		//
 		case EC_OP_GET_SHARED_FILES:
 			if ( request->GetDetailLevel() != EC_DETAIL_INC_UPDATE ) {
-				response = Get_EC_Response_GetSharedFiles(request, m_FileEncoder);
+				response = Get_EC_Response_GetSharedFiles(request, m_FileEncoder,
+					m_lastEcGenSeenShared,
+					m_partialUpdateActive, m_lastSentSharedFileIds);
 			}
 			break;
 		case EC_OP_GET_DLOAD_QUEUE:
 			if ( request->GetDetailLevel() != EC_DETAIL_INC_UPDATE ) {
-				response = Get_EC_Response_GetDownloadQueue(request, m_FileEncoder);
+				response = Get_EC_Response_GetDownloadQueue(request, m_FileEncoder,
+					m_lastEcGenSeenPart,
+					m_partialUpdateActive, m_lastSentPartFileIds);
 			}
 			break;
 		//
