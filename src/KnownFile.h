@@ -370,6 +370,37 @@ protected:
 
 	bool	m_showSources;
 	bool	m_showPeers;
+
+public:
+	/**
+	 * Returns the ed2k:// link for this file, cached for EC response building.
+	 *
+	 * `CreateED2kLink` is hot in EC response construction (the GUI / web /
+	 * cmd clients call GET_SHARED_FILES at FULL or INC_UPDATE levels and
+	 * the listener rebuilds every shared-file tag every cycle). Its CFormat
+	 * + filename Cleanup work was the single biggest CPU consumer on EC
+	 * dispatch in profiling (see #713). Cache the "no sources" base form
+	 * here; the optional |sources,IP:port|/ suffix is a tiny CFormat
+	 * appended at request time and depends on dynamic state
+	 * (IsConnected / IsFirewalled / GetID / GetPort) that the cache cannot
+	 * hold.
+	 *
+	 * Invalidated by `SetFileName` (the only user-facing event that
+	 * affects the link body — filename, size and hash are otherwise stable
+	 * across the lifetime of a CKnownFile / CPartFile).
+	 */
+	const wxString& GetCachedED2kLinkBase() const;
+
+	/**
+	 * Full ed2k:// link as needed by EC responses — cached base + the
+	 * source suffix when add_source is true. The caller decides
+	 * add_source from current ED2K connection state.
+	 */
+	wxString GetED2kLinkForEC(bool add_source) const;
+
+protected:
+	mutable wxString m_cachedED2kLinkBase;
+
 private:
 	/** Common initializations for constructors. */
 	void Init();

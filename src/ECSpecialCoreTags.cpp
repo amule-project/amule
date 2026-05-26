@@ -254,8 +254,12 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 
 	AddTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), valuemap);
 
+	// Cached path: ed2k:// link construction is the single hottest item on
+	// the EC dispatch chain for big shared-file libraries (#713 profile).
+	// The cache holds the rare-changing base form; the dynamic source
+	// suffix is appended live.
 	AddTag(EC_TAG_PARTFILE_ED2K_LINK,
-			theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), valuemap);
+			file->GetED2kLinkForEC(theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()), valuemap);
 
 	AddTag(EC_TAG_KNOWNFILE_COMMENT, file->GetFileComment(), valuemap);
 	AddTag(EC_TAG_KNOWNFILE_RATING, file->GetFileRating(), valuemap);
