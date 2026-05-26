@@ -81,6 +81,9 @@ void CFileStatistic::AddRequest()
 	if (fileParent && fileParent->IsPartFile()) {
 		static_cast<CPartFile*>(fileParent)->MarkStatsDirty();
 	}
+	if (fileParent) {
+		fileParent->MarkECChanged();
+	}
 	theApp->sharedfiles->UpdateItem(fileParent);
 }
 
@@ -92,6 +95,9 @@ void CFileStatistic::AddAccepted()
 	if (fileParent && fileParent->IsPartFile()) {
 		static_cast<CPartFile*>(fileParent)->MarkStatsDirty();
 	}
+	if (fileParent) {
+		fileParent->MarkECChanged();
+	}
 	theApp->sharedfiles->UpdateItem(fileParent);
 }
 
@@ -102,6 +108,9 @@ void CFileStatistic::AddTransferred(uint64 bytes)
 	theApp->knownfiles->transferred += bytes;
 	if (fileParent && fileParent->IsPartFile()) {
 		static_cast<CPartFile*>(fileParent)->MarkStatsDirty();
+	}
+	if (fileParent) {
+		fileParent->MarkECChanged();
 	}
 	theApp->sharedfiles->UpdateItem(fileParent);
 }
@@ -333,6 +342,14 @@ CKnownFile::CKnownFile(const CSearchFile &searchFile)
 
 void CKnownFile::Init()
 {
+	// Stamp the EC generation immediately so any newly-constructed file
+	// (search-result import, partfile creation, hashed-and-added shared
+	// file) is naturally `> 0` from every existing connection's
+	// `m_lastEcGenSeen` perspective. Without this, the first INC_UPDATE
+	// cycle within the 60 s backstop window after a file is added would
+	// skip it because its default-zero gen looked unchanged.
+	MarkECChanged();
+
 	m_showSources = false;
 	m_showPeers = false;
 	m_nCompleteSourcesTime = time(NULL);
@@ -479,6 +496,8 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client)
 	Notify_SharedCtrlAddClient(this, CCLIENTREF(client, "CKnownFile::AddUploadingClient Notify_SharedCtrlAddClient"), type);
 
 	UpdateAutoUpPriority();
+	// GetQueuedCount() = m_ClientUploadList.size() — exported via EC.
+	MarkECChanged();
 }
 
 
@@ -487,6 +506,7 @@ void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
 	if (m_ClientUploadList.erase(CCLIENTREF(client, ""))) {
 		Notify_SharedCtrlRemoveClient(client->ECID(), this);
 		UpdateAutoUpPriority();
+		MarkECChanged();
 	}
 }
 
@@ -528,6 +548,8 @@ CKnownFile::~CKnownFile()
 void CKnownFile::SetFilePath(const CPath& filePath)
 {
 	m_filePath = filePath;
+	// EC exports the path printable for non-partfiles (EC_TAG_KNOWNFILE_FILENAME).
+	MarkECChanged();
 }
 
 
@@ -657,6 +679,8 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 				wxASSERT(hashSizeOk);
 				if (hashSizeOk) {
 					m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
+					// EC exports GetAICHMasterHash() as a wxString tag.
+					MarkECChanged();
 				}
 				break;
 			}
@@ -1316,6 +1340,8 @@ void CKnownFile::SetFileCommentRating(const wxString& strNewComment, int8 iNewRa
 		for ( ; it != m_ClientUploadList.end(); ++it ) {
 			it->SetCommentDirty();
 		}
+		// EC exports both comment and rating.
+		MarkECChanged();
 	}
 }
 
@@ -1323,6 +1349,9 @@ void CKnownFile::SetFileCommentRating(const wxString& strNewComment, int8 iNewRa
 void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool m_bsave){
 	if (m_iUpPriority != iNewUpPriority && IsPartFile()) {
 		static_cast<CPartFile*>(this)->MarkMetDirty();
+	}
+	if (m_iUpPriority != iNewUpPriority) {
+		MarkECChanged();
 	}
 	m_iUpPriority = iNewUpPriority;
 	if( IsPartFile() && m_bsave ) {
@@ -1333,6 +1362,10 @@ void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool m_bsave){
 void CKnownFile::SetAutoUpPriority(bool flag){
 	if (m_bAutoUpPriority != flag && IsPartFile()) {
 		static_cast<CPartFile*>(this)->MarkMetDirty();
+	}
+	if (m_bAutoUpPriority != flag) {
+		// EC exports prio with the auto flag folded in (+10 offset for auto).
+		MarkECChanged();
 	}
 	m_bAutoUpPriority = flag;
 }
@@ -1485,6 +1518,9 @@ void CKnownFile::UpdatePartsInfo()
 			}
 		}
 		m_nCompleteSourcesTime = time(NULL) + (60);
+		// EC exports the three CompleteSourcesCount{,Lo,Hi} fields; they
+		// were just recomputed above.
+		MarkECChanged();
 	}
 
 	Notify_SharedFilesUpdateItem(this);
@@ -1557,6 +1593,9 @@ void CKnownFile::SetFileName(const CPath& filename)
 	// that affects the link body in normal operation. Lazy-rebuilt on
 	// the next GetCachedED2kLinkBase() call.
 	m_cachedED2kLinkBase.clear();
+	// EC exports the filename printable (EC_TAG_PARTFILE_NAME) and the
+	// ed2k:// link, which is filename-derived.
+	MarkECChanged();
 	wordlist.clear();
 	// Don't publish extension. That'd kill the node indexing e.g. "avi".
 	CPath tmpName = GetFileName();
