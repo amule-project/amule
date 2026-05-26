@@ -139,5 +139,24 @@ inline bool IsLowID(uint32 id)
  */
 bool IsLanIP(uint32_t ip) noexcept;
 
+
+/**
+ * Checks for the IPv4 loopback range 127.0.0.0/8.
+ *
+ * @param ip The IP-address to check (anti-host order, same convention as
+ *           StringIPtoUint32 and IsLanIP).
+ * @return True if it is a loopback address.
+ */
+bool IsLoopbackIP(uint32_t ip) noexcept;
+
+
+/**
+ * Checks for the IPv4 link-local range 169.254.0.0/16 (RFC3927 / zeroconf).
+ *
+ * @param ip The IP-address to check (anti-host order).
+ * @return True if it is a link-local address.
+ */
+bool IsLinkLocalIP(uint32_t ip) noexcept;
+
 #endif // NETWORK_FUNCTIONS_H
 // File_checked_for_headers
