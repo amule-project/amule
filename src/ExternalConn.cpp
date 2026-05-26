@@ -492,25 +492,28 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 				// So far ok, check capabilities of client
 				//
 				if (request->GetTagByName(EC_TAG_CAN_ZLIB)) {
-					// Suppress ZLIB compression on loopback / LAN /
-					// link-local peers: deflate + inflate is pure
-					// overhead on the local machine (no transit time,
-					// no bandwidth savings to recover) and on a gigabit
-					// LAN (~125 MB/s line rate, well past the ~37 MB/s
-					// break-even point for streaming zlib on general-
-					// purpose CPUs). Server-side enforcement covers
-					// every client version, old or new, without
-					// requiring an EC pref roundtrip.
+					m_my_flags |= EC_FLAG_ZLIB;
+				}
+				// Mark the connection as local (loopback / RFC1918 LAN /
+				// RFC3927 link-local) so CECSocket::WritePacket can skip
+				// ZLIB per-packet for small/medium responses. deflate +
+				// inflate is pure overhead on the local machine and on a
+				// gigabit LAN (~125 MB/s line rate, well past the
+				// ~37 MB/s break-even point for streaming zlib). The
+				// per-packet gate still falls back to ZLIB for packets
+				// above kLocalPeerZlibBypassMax so very large responses
+				// (e.g. show shared on a 90 k+ shared-file library)
+				// stay inside the receiver's 256 MB ReadHeader gate.
+				{
 					const uint32 peer_ip = GetPeerInt();
 					const bool is_local = peer_ip == 0
 						|| IsLoopbackIP(peer_ip)
 						|| IsLanIP(peer_ip)
 						|| IsLinkLocalIP(peer_ip);
-					if (!is_local) {
-						m_my_flags |= EC_FLAG_ZLIB;
-					} else {
+					SetLocalPeer(is_local);
+					if (is_local) {
 						AddDebugLogLineN(logEC,
-							CFormat("EC peer %s is local (loopback/LAN/link-local) — skipping ZLIB capability")
+							CFormat("EC peer %s is local (loopback/LAN/link-local) — bypassing ZLIB for small/medium packets")
 								% GetPeer());
 					}
 				}

@@ -94,6 +94,14 @@ private:
 protected:
 	uint32_t m_my_flags;
 	bool m_haveNotificationSupport;
+
+	// When true, the peer is on loopback / RFC1918 LAN / RFC3927
+	// link-local — i.e. the wire cost of an uncompressed response
+	// is irrelevant. WritePacket consults this to skip ZLIB on
+	// every packet up to a size threshold; large packets still
+	// compress so we never blow the receiver's 256 MB packet
+	// budget (ReadHeader gate). Default false (treat as remote).
+	bool m_isLocalPeer;
 public:
 	CECSocket(bool use_events);
 	virtual ~CECSocket();
@@ -103,6 +111,10 @@ public:
 	void CloseSocket() { InternalClose(); }
 
 	bool HaveNotificationSupport() const { return m_haveNotificationSupport; }
+
+	// Set by CECServerSocket::Authenticate once the peer IP is known.
+	// Affects the ZLIB-skip decision in WritePacket only.
+	void SetLocalPeer(bool isLocal) { m_isLocalPeer = isLocal; }
 
 	/**
 	 * Sends an EC packet and returns immediately.
