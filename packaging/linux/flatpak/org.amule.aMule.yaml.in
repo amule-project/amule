@@ -337,7 +337,7 @@ modules:
         # Default flatpak-builder fetch is a shallow clone, which strips
         # all tags. Without tags `git describe --tags` (called from
         # cmake/git-rev.cmake at configure time) returns empty, leaving
-        # the SVNDATE macro unset and the runtime banner showing
+        # the GITDATE macro unset and the runtime banner showing
         # "Snapshot: " with no rev. Disable the shallow optimisation so
         # tags are present and the banner reports the actual git rev.
         disable-shallow-clone: true

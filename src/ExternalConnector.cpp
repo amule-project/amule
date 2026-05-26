@@ -424,8 +424,8 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		return;
 	}
 
-	#ifdef SVNDATE
-		Show(CFormat(_("This is %s %s %s\n")) % wxString::FromAscii(m_appname) % VERSION % SVNDATE);
+	#ifdef GITDATE
+		Show(CFormat(_("This is %s %s %s\n")) % wxString::FromAscii(m_appname) % VERSION % GITDATE);
 	#else
 		Show(CFormat(_("This is %s %s\n")) % wxString::FromAscii(m_appname) % VERSION);
 	#endif

@@ -1,7 +1,7 @@
 /* Defined when CMake detected HEAD is on a release tag (set by the
    git-describe block in CMakeLists.txt). Used in ClientVersion.h to
-   suppress the __SVN__ dev marker so MOD_VERSION_LONG reflects the
-   release version instead of "aMule SVN". */
+   suppress the __GIT__ dev marker so MOD_VERSION_LONG reflects the
+   release version instead of "aMule GIT". */
 #cmakedefine AMULE_TAGGED_RELEASE
 
 /* Define to 1 if error_code handling should be handled internally */
@@ -172,8 +172,9 @@
 /* Define to 1 if strerror_r returns char *. */
 #cmakedefine STRERROR_R_CHAR_P
 
-/* The checkout date or svn revision number. */
-#cmakedefine SVNDATE "${SVNDATE}"
+/* The git describe output ("rev. <tag>-<N>-g<sha>") on snapshot builds;
+   unset on tagged releases (suppresses the runtime "(Snapshot: …)" trailer). */
+#cmakedefine GITDATE "${GITDATE}"
 
 /* There's no point in defining this on every cmd-line */
 #define USE_WX_EXTENSIONS

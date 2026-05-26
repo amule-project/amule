@@ -45,23 +45,23 @@
 
 // No more Mod Version unless we're cvs
 
-// __SVN__ marks dev builds (MOD_VERSION_LONG = "aMule SVN").  CMake
+// __GIT__ marks dev builds (MOD_VERSION_LONG = "aMule GIT").  CMake
 // derives AMULE_TAGGED_RELEASE from `git describe --tags --exact-match`
 // at configure time and forwards it via config.h, which makes the
-// __SVN__ flag self-managing: tagged release builds suppress it
+// __GIT__ flag self-managing: tagged release builds suppress it
 // automatically; source/dev builds keep it.  Manual override is still
 // possible by setting -DAMULE_TAGGED_RELEASE on the cmake command line
 // (e.g. when building from a tarball with no .git directory).
 #ifndef AMULE_TAGGED_RELEASE
-#define __SVN__
+#define __GIT__
 #endif
 
 #ifndef VERSION
 	#define VERSION "3.0.0-dev"
 #endif
 
-#ifdef __SVN__
-	#define	MOD_VERSION_LONG		"aMule SVN"
+#ifdef __GIT__
+	#define	MOD_VERSION_LONG		"aMule GIT"
 #else
 	#define	MOD_VERSION_LONG		("aMule " VERSION)
 #endif

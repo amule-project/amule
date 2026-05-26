@@ -468,7 +468,7 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 			% ( clientVersion ? clientVersion->GetStringData() : wxString(_("Unknown version")) ) );
 		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 #ifdef EC_VERSION_ID
-		// For SVN versions, both client and server must use SVNDATE, and they must be the same
+		// For snapshot builds, both client and server must use GITDATE, and they must be the same
 		CMD4Hash vhash;
 		if (!vhash.Decode(EC_VERSION_ID)) {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
@@ -477,7 +477,7 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 			response = new CECPacket(EC_OP_AUTH_FAIL);
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Incorrect EC version ID, there might be binary incompatibility. Use core and remote from same snapshot.")));
 #else
-		// For release versions, we don't want to allow connections from any arbitrary SVN client.
+		// For release versions, we don't want to allow connections from any arbitrary snapshot client.
 		if (request->GetTagByName(EC_TAG_VERSION_ID)) {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("You cannot connect to a release version from an arbitrary development snapshot! *sigh* possible crash prevented")));

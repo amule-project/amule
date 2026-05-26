@@ -8,10 +8,10 @@ set (MIN_WX_VERSION 3.2.0)
 set (PACKAGE "amule")
 set (PACKAGE_BUGREPORT "admin@amule.org")
 set (PACKAGE_NAME "aMule")
-set (PACKAGE_STRING "aMule SVN")
+set (PACKAGE_STRING "aMule GIT")
 set (PACKAGE_TARNAME "amule")
 set (PACKAGE_URL \"\")
-set (PACKAGE_VERSION "SVN")
+set (PACKAGE_VERSION "GIT")
 set (VERSION "GIT")
 set (DEFAULT_BUILD_TYPE "Release")
 set (RECONF_COMMAND ${CMAKE_COMMAND})
@@ -95,18 +95,18 @@ if (wx_NEEDED)
 endif()
 
 #
-# SVNDATE is consumed by config.h.cm (#define SVNDATE "...") and
+# GITDATE is consumed by config.h.cm (#define GITDATE "...") and
 # version.rc.in (Windows version resource), and ends up in the binary's
 # `--version` output and the amuled startup banner.
 #
 # Two modes:
 #   * Distro packagers building from a tarball (no .git) pass
-#     -DSVNDATE="rev. foo" on the cmake command line.  That value lands
+#     -DGITDATE="rev. foo" on the cmake command line.  That value lands
 #     in the cache and is respected here unconditionally.
 #   * Source builds derive the value from `git describe` on EVERY
 #     configure so subsequent commits show up in the banner without a
 #     full reconfigure.  The previous code wrapped this in
-#     `if (NOT SVNDATE)` and stored the result with `CACHE STRING FORCE`,
+#     `if (NOT GITDATE)` and stored the result with `CACHE STRING FORCE`,
 #     which froze the value at the first configure forever — every
 #     incremental rebuild thereafter embedded the stale revision string.
 #
@@ -125,7 +125,7 @@ endif()
 #     consolidate the branch ref file out of existence.  After a pack,
 #     the SHA lives only in packed-refs.
 #
-if (NOT DEFINED CACHE{SVNDATE})
+if (NOT DEFINED CACHE{GITDATE})
 	find_package (Git)
 	if (GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
 		execute_process (
@@ -135,16 +135,16 @@ if (NOT DEFINED CACHE{SVNDATE})
 			RESULT_VARIABLE GIT_INFO_RESULT
 			WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 		if (GIT_INFO_RESULT EQUAL 0 AND GIT_INFO_WC_REVISION)
-			set (SVNDATE "rev. ${GIT_INFO_WC_REVISION}")
-			message (STATUS "git revision ${SVNDATE} found")
+			set (GITDATE "rev. ${GIT_INFO_WC_REVISION}")
+			message (STATUS "git revision ${GITDATE} found")
 		endif()
-		# When HEAD sits exactly on a tag, override the SVN/GIT
-		# placeholders set above with the tag name so artifact
-		# filenames, the About dialog, the tray menu label, and the
-		# Windows version resource all reflect the release. Tagless
-		# builds keep "SVN"/"GIT" — the existing dev marker. The
-		# AMULE_TAGGED_RELEASE flag is also forwarded to config.h so
-		# ClientVersion.h can suppress the __SVN__ marker on releases.
+		# When HEAD sits exactly on a tag, override the GIT placeholder
+		# set above with the tag name so artifact filenames, the About
+		# dialog, the tray menu label, and the Windows version resource
+		# all reflect the release. Tagless builds keep "GIT" — the
+		# existing dev marker. The AMULE_TAGGED_RELEASE flag is also
+		# forwarded to config.h so ClientVersion.h can suppress the
+		# __GIT__ marker on releases.
 		execute_process (
 			COMMAND ${GIT_EXECUTABLE} describe --tags --exact-match HEAD
 			OUTPUT_VARIABLE GIT_TAG
@@ -158,17 +158,17 @@ if (NOT DEFINED CACHE{SVNDATE})
 			set (PACKAGE_STRING "aMule ${GIT_TAG}")
 			set (AMULE_TAGGED_RELEASE 1)
 			# Suppress the "(Snapshot: ...)" trailer that
-			# MuleVersion.h's `#ifdef SVNDATE` gate appends to
-			# GetMuleVersion(). On a tagged build the SVNDATE the
+			# MuleVersion.h's `#ifdef GITDATE` gate appends to
+			# GetMuleVersion(). On a tagged build the GITDATE the
 			# earlier git-describe block produced ("rev. <tag>")
 			# would render as "Initialising aMule <tag> ...
 			# (Snapshot: rev. <tag>)" — both redundant and
 			# inaccurate, since a tagged release isn't a snapshot.
 			# Pairs with the `#define` → `#cmakedefine` change in
-			# config.h.cm so an unset SVNDATE yields `#undef
-			# SVNDATE` instead of `#define SVNDATE ""`, which
+			# config.h.cm so an unset GITDATE yields `#undef
+			# GITDATE` instead of `#define GITDATE ""`, which
 			# otherwise leaves the empty parens in place.
-			unset (SVNDATE)
+			unset (GITDATE)
 			message (STATUS "building tagged release: ${PACKAGE_STRING}")
 		endif()
 	else()
@@ -200,8 +200,8 @@ if (NOT DEFINED CACHE{SVNDATE})
 					# Detect the off-tag form by the `-N-g<hex>`
 					# trailer; otherwise treat as a tagged release.
 					if (_describe MATCHES "-[0-9]+-g[0-9a-f]+$")
-						set (SVNDATE "rev. ${_describe}")
-						message (STATUS "git archival metadata: ${SVNDATE} found")
+						set (GITDATE "rev. ${_describe}")
+						message (STATUS "git archival metadata: ${GITDATE} found")
 					else()
 						set (VERSION "${_describe}")
 						set (PACKAGE_VERSION "${_describe}")
@@ -410,7 +410,7 @@ endif()
 
 message (STATUS "
 
-	Configured aMule ${PACKAGE_VERSION}${SVN_REVISION} for '${CMAKE_SYSTEM}' on '${CMAKE_SYSTEM_PROCESSOR}'.
+	Configured aMule ${PACKAGE_VERSION} for '${CMAKE_SYSTEM}' on '${CMAKE_SYSTEM_PROCESSOR}'.
 
 	aMule enabled options:
 

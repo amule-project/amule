@@ -42,7 +42,7 @@
 
 #include <common/EventIDs.h>
 
-#include "config.h"				// Needed for SVNDATE, PACKAGE, VERSION
+#include "config.h"				// Needed for GITDATE, PACKAGE, VERSION
 #include "amuleDlg.h"				// Interface declarations.
 
 #include <common/Format.h>			// Needed for CFormat
@@ -519,8 +519,8 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 	msg << "aMule " << VERSION;
 #endif
 	msg << " ";
-#ifdef SVNDATE
-	msg << _("Snapshot:") << "\n " << SVNDATE;
+#ifdef GITDATE
+	msg << _("Snapshot:") << "\n " << GITDATE;
 #endif
 	msg << "\n\n" << _("'All-Platform' p2p client based on eMule \n\n") <<
 		_("Website: https://amule-org.github.io \n") <<

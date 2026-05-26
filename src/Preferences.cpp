@@ -154,7 +154,7 @@ bool		CPreferences::s_bstartnextfilealpha;
 bool		CPreferences::s_bshowoverhead;
 bool		CPreferences::s_bDAP;
 bool		CPreferences::s_bUAP;
-#ifndef __SVN__
+#ifndef __GIT__
 bool		CPreferences::s_showVersionOnTitle;
 #endif
 uint8_t		CPreferences::s_showRatesOnTitle;
@@ -1161,7 +1161,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_SKIN,		(new Cfg_Skin(  "/SkinGUIOptions/Skin", s_Skin, "" )));
 	NewCfgItem(IDC_VERTTOOLBAR,	(new Cfg_Bool( "/eMule/VerticalToolbar", s_ToolbarOrientation, false )));
 	NewCfgItem(IDC_SHOW_COUNTRY_FLAGS,	(new Cfg_Bool( "/eMule/GeoIPEnabled", s_GeoIPEnabled, true )));
-#ifndef __SVN__
+#ifndef __GIT__
 	NewCfgItem(IDC_SHOWVERSIONONTITLE,	(new Cfg_Bool( "/eMule/ShowVersionOnTitle", s_showVersionOnTitle, false )));
 #endif
 
