@@ -259,7 +259,11 @@ public:
 
 	void	SetDownPriority(uint8 newDownPriority, bool bSave = true, bool bRefresh = true);
 	bool	IsAutoDownPriority() const	{ return m_bAutoDownPriority; }
-	void	SetAutoDownPriority(bool flag)	{ if (m_bAutoDownPriority != flag) { MarkMetDirty(); } m_bAutoDownPriority = flag; }
+	// EC exports the priority with the auto flag folded in via
+	// EC_TAG_PARTFILE_PRIO; mark the change so amulegui/amuleweb see
+	// it without waiting for the next Process() tick (and at all when
+	// the file is paused/stopped — Process() doesn't run then).
+	void	SetAutoDownPriority(bool flag)	{ if (m_bAutoDownPriority != flag) { MarkMetDirty(); MarkECChanged(); } m_bAutoDownPriority = flag; }
 	void	UpdateAutoDownPriority();
 	uint8	GetDownPriority() const		{ return m_iDownPriority; }
 	void	SetActive(bool bActive);
@@ -536,7 +540,8 @@ public:
 	void StopPausedFile();
 
 	// [sivka / Tarod] Imported from eMule 0.30c (Creteil) ...
-	void SetA4AFAuto(bool in)		{ m_is_A4AF_auto = in; }
+	// EC exports the flag via EC_TAG_PARTFILE_A4AFAUTO; mark on change.
+	void SetA4AFAuto(bool in)		{ if (m_is_A4AF_auto != in) { MarkECChanged(); } m_is_A4AF_auto = in; }
 	bool IsA4AFAuto() const			{ return m_is_A4AF_auto; }
 
 	// Kry -Sources seeds

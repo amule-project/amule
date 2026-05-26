@@ -2516,6 +2516,8 @@ void CPartFile::SetDownPriority(uint8 np, bool bSave, bool bRefresh )
 	if ( m_iDownPriority != np ) {
 		m_iDownPriority = np;
 		MarkMetDirty();
+		// EC exports the priority value via EC_TAG_PARTFILE_PRIO.
+		MarkECChanged();
 		if ( bRefresh )
 			UpdateDisplayedInfo(true);
 		if ( bSave )
@@ -2553,6 +2555,11 @@ void CPartFile::StopFile(bool bCancel)
 {
 	// Kry - Need to set it here to get into SetStatus(status) correctly
 	m_stopped = true;
+	// EC exports IsStopped() via EC_TAG_PARTFILE_STOPPED. Process() is
+	// gated to PS_READY/PS_EMPTY (see DownloadQueue::Process), so a
+	// stopped partfile no longer auto-marks each tick — the user action
+	// must mark explicitly or amulegui/amuleweb never see the new state.
+	MarkECChanged();
 
 	// Barry - Need to tell any connected clients to stop sending the file
 	PauseFile();
@@ -2630,6 +2637,8 @@ void CPartFile::PauseFile(bool bInsufficient)
 	m_insufficient = bInsufficient;
 	if (!m_paused) {
 		MarkMetDirty();
+		// EC exports IsStopped() / GetStatus(); see StopFile comment.
+		MarkECChanged();
 	}
 	m_paused = true;
 
@@ -2654,6 +2663,10 @@ void CPartFile::ResumeFile()
 
 	if (m_paused) {
 		MarkMetDirty();
+		// EC exports IsStopped() / GetStatus(); Process() resumes
+		// auto-marking after we leave the paused state but the
+		// transition itself needs to be visible immediately.
+		MarkECChanged();
 	}
 	m_paused = false;
 	m_stopped = false;
@@ -3616,6 +3629,11 @@ void CPartFile::UpdateFileRatingCommentAvail()
 
 	if ((prevComment != m_hasComment) || (prevRating != m_iUserRating)) {
 		UpdateDisplayedInfo();
+		// EC exports EC_TAG_PARTFILE_COMMENTS (rating + comments tag
+		// tree). Sources can deliver new comments at any time via
+		// OP_MESSAGE; without a mark here amulegui would only refresh
+		// when something else on the file changes.
+		MarkECChanged();
 	}
 }
 
@@ -3626,6 +3644,8 @@ void CPartFile::SetCategory(uint8 cat)
 
 	if (m_category != cat) {
 		MarkMetDirty();
+		// EC exports the category via EC_TAG_PARTFILE_CAT.
+		MarkECChanged();
 	}
 	m_category = cat;
 	SavePartFile();
@@ -4365,7 +4385,15 @@ uint16 CPartFile::GetPartMetNumber() const
 
 void CPartFile::SetHashingProgress(uint16 part) const
 {
-	m_hashingProgress = part;
+	if (m_hashingProgress != part) {
+		m_hashingProgress = part;
+		// EC exports the hashed-part count via
+		// EC_TAG_PARTFILE_HASHED_PART_COUNT. Hashing runs outside
+		// Process()'s PS_READY/PS_EMPTY gate, so the per-tick mark
+		// doesn't fire — explicit mark here keeps amulegui's
+		// progress bar live during hashing.
+		const_cast<CPartFile*>(this)->MarkECChanged();
+	}
 	Notify_DownloadCtrlUpdateItem(this);
 }
 
