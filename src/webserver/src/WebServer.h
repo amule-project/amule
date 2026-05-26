@@ -274,15 +274,38 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 
 		/*!
 		 * Process answer of update request, create list of new items for
-		 * full request later. Also remove items that no longer exist in core
+		 * full request later. Also remove items that no longer exist in core.
+		 *
+		 * Partial-update protocol negotiated at auth: when the server is
+		 * partial-update-capable, files unchanged since the last cycle
+		 * are simply absent from the response; deletions arrive as
+		 * explicit `EC_TAG_FILE_REMOVED` markers. The bulk "anything
+		 * missing == deleted" loop below would otherwise wipe most of
+		 * the library every cycle on big libraries (#713). When the
+		 * server is not partial-update-capable (or didn't echo the
+		 * capability), the encoder's per-file diff makes unchanged
+		 * tags effectively empty alive-markers and the bulk-deletion
+		 * loop stays correct.
 		 */
 		void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type)
 		{
-			std::set<I> core_files;
-			for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); ++it) {
-				G *tag = (G *) & *it;
+			const bool partial_update = this->m_webApp->IsServerPartialUpdateActive();
 
-				core_files.insert(tag->ID());
+			std::set<I> core_files;
+			std::set<I> removed_files;
+			for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); ++it) {
+				const CECTag *raw_tag = &*it;
+				if (raw_tag->GetTagName() == EC_TAG_FILE_REMOVED) {
+					// Explicit deletion marker from a partial-
+					// update-capable server.
+					removed_files.insert(raw_tag->GetInt());
+					continue;
+				}
+				G *tag = (G *) raw_tag;
+
+				if (!partial_update) {
+					core_files.insert(tag->ID());
+				}
 				if ( m_items_hash.count(tag->ID()) ) {
 					T *item = m_items_hash[tag->ID()];
 					item->ProcessUpdate(tag);
@@ -290,16 +313,32 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 					full_req->AddTag(CECTag(req_type, tag->ID()));
 				}
 			}
+
 			std::list<I> del_ids;
-			for(typename std::list<T>::iterator j = this->m_items.begin(); j != this->m_items.end(); ++j) {
-				if ( core_files.count(j->ID()) == 0 ) {
-					// item may contain data that need to be freed externally, before
-					// dtor is called and memory freed
+			if (partial_update) {
+				// Only delete what the server explicitly told us to
+				// delete. Skipped early when there's nothing to
+				// remove this cycle (the common case).
+				if (!removed_files.empty()) {
+					for(typename std::list<T>::iterator j = this->m_items.begin(); j != this->m_items.end(); ++j) {
+						if (removed_files.count(j->ID())) {
+							T *real_ptr = &*j;
+							this->ItemDeleted(real_ptr);
+							del_ids.push_back(j->ID());
+						}
+					}
+				}
+			} else {
+				for(typename std::list<T>::iterator j = this->m_items.begin(); j != this->m_items.end(); ++j) {
+					if ( core_files.count(j->ID()) == 0 ) {
+						// item may contain data that need to be freed externally, before
+						// dtor is called and memory freed
 
-					T *real_ptr = &*j;
-					this->ItemDeleted(real_ptr);
+						T *real_ptr = &*j;
+						this->ItemDeleted(real_ptr);
 
-					del_ids.push_back(j->ID());
+						del_ids.push_back(j->ID());
+					}
 				}
 			}
 			for(typename std::list<I>::iterator j = del_ids.begin(); j != del_ids.end(); ++j) {
