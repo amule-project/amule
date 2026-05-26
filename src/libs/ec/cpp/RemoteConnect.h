@@ -80,12 +80,22 @@ private:
 	bool m_canUTF8numbers;
 	bool m_canNotify;
 
+	// Set when the server echoed `EC_TAG_CAN_PARTIAL_UPDATE` in AUTH_OK,
+	// confirming it speaks the partial-update INC_UPDATE protocol: skip
+	// the bulk "anything missing == deleted" loop and instead delete only
+	// what arrives in explicit `EC_TAG_FILE_REMOVED` markers. Old daemons
+	// don't echo the tag; we then fall back to the legacy bulk-deletion
+	// path (server emits alive-marker tags so it still works).
+	bool m_serverPartialUpdate;
+
 	void WriteDoneAndQueueEmpty();
 public:
 	// The event handler is used for notifying connect/close
 	CRemoteConnect(wxEvtHandler* evt_handler);
 
 	void SetCapabilities(bool canZLIB, bool canUTF8numbers, bool canNotify);
+
+	bool ServerSupportsPartialUpdate() const { return m_serverPartialUpdate; }
 
 	bool ConnectToCore(
 		const wxString &host, int port,

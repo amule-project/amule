@@ -59,6 +59,13 @@ CECPacket(EC_OP_AUTH_REQ)
 	// from CECTag::WriteChildren (#199). Always advertised by new
 	// clients; old servers ignore the unknown tag.
 	AddTag(CECEmptyTag(EC_TAG_CAN_LARGE_TAG_COUNT));
+	// Client implements the partial-update INC_UPDATE protocol — server
+	// may skip unchanged files and signal deletions explicitly via
+	// `EC_TAG_FILE_REMOVED` instead of relying on absence-implies-
+	// deletion. Always advertised by new clients; old servers ignore
+	// the unknown tag and the server falls back to emitting alive-
+	// marker tags for unchanged files (still backward-compatible).
+	AddTag(CECEmptyTag(EC_TAG_CAN_PARTIAL_UPDATE));
 }
 
 CECAuthPacket::CECAuthPacket(const wxString& pass)
@@ -90,7 +97,8 @@ m_req_fifo_thr(20),
 m_notifier(evt_handler),
 m_canZLIB(false),
 m_canUTF8numbers(false),
-m_canNotify(false)
+m_canNotify(false),
+m_serverPartialUpdate(false)
 {
 }
 
@@ -279,6 +287,18 @@ bool CRemoteConnect::ProcessAuthPacket(const CECPacket *reply) {
 			// directions for the duration of this connection.
 			if (reply->GetTagByName(EC_TAG_CAN_LARGE_TAG_COUNT)) {
 				m_my_flags |= EC_FLAG_LARGE_TAG_COUNT;
+			}
+			// Server confirms it speaks the partial-update protocol:
+			// `Get_EC_Response_GetUpdate` may now omit unchanged files
+			// and emit explicit `EC_TAG_FILE_REMOVED` markers, and our
+			// INC_UPDATE handler must skip the bulk
+			// "missing-from-response == deleted" loop. Old daemons
+			// (#727 pre-fix or earlier) don't echo this tag and the
+			// client stays on the legacy bulk-deletion path, which
+			// the new server keeps compatible by emitting alive-marker
+			// tags for unchanged files (#713).
+			if (reply->GetTagByName(EC_TAG_CAN_PARTIAL_UPDATE)) {
+				m_serverPartialUpdate = true;
 			}
 		}else {
 			m_ec_state = EC_FAIL;

@@ -1261,7 +1261,18 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 	transferred = 0;
 	accepted = 0;
 
+	// Partial-update protocol negotiated at auth time (see
+	// CRemoteConnect::ServerSupportsPartialUpdate). When true, the server
+	// only sends tags for files that actually changed and signals
+	// deletions explicitly via top-level `EC_TAG_FILE_REMOVED` markers —
+	// the bulk "anything missing == deleted" loop below would silently
+	// wipe most of the library every cycle (#713). When false (old
+	// server), the server emits alive-marker tags for unchanged files
+	// so the bulk-deletion path stays correct.
+	const bool partial_update = m_conn->ServerSupportsPartialUpdate();
+
 	std::set<uint32> core_files;
+	std::set<uint32> removed_files;
 	for (CECPacket::const_iterator it = reply->begin(); it != reply->end(); ++it) {
 		const CECTag * curTag = &*it;
 		ec_tagname_t tagname = curTag->GetTagName();
@@ -1271,12 +1282,21 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 			theApp->serverlist->ProcessUpdate(curTag, NULL, EC_TAG_SERVER);
 		} else if (tagname == EC_TAG_FRIEND) {
 			theApp->friendlist->ProcessUpdate(curTag, NULL, EC_TAG_FRIEND);
+		} else if (tagname == EC_TAG_FILE_REMOVED) {
+			// Explicit deletion marker from a partial-update-capable
+			// server. Buffered and processed in one pass below so we
+			// only iterate the live list when there's actually
+			// something to remove. Outside the partial-update path
+			// the server never emits this tag.
+			removed_files.insert(curTag->GetInt());
 		} else if (tagname == EC_TAG_KNOWNFILE || tagname == EC_TAG_PARTFILE) {
 			const CEC_SharedFile_Tag *tag = static_cast<const CEC_SharedFile_Tag *>(curTag);
 			uint32 id = tag->ID();
 			bool isNew = true;
 			if (!m_initialUpdate) {
-				core_files.insert(id);
+				if (!partial_update) {
+					core_files.insert(id);
+				}
 				std::map<uint32, CKnownFile*>::iterator it2 = m_items_hash.find(id);
 				if (it2 != m_items_hash.end() ) {
 					// Item already known: update it
@@ -1310,8 +1330,23 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 	if (m_initialUpdate) {
 		theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFileList();
 		m_initialUpdate = false;
+	} else if (partial_update) {
+		// Apply explicit removals from `EC_TAG_FILE_REMOVED` markers.
+		// One linear pass over the live list, only when there's
+		// actually something to remove.
+		if (!removed_files.empty()) {
+			for(iterator it = begin(); it != end();) {
+				iterator it2 = it++;
+				if (removed_files.count(GetItemID(*it2))) {
+					RemoveItem(it2);
+				}
+			}
+		}
 	} else {
-		// remove items no longer present
+		// Legacy server: anything missing from the response is
+		// deleted. Server emits alive-marker tags for unchanged
+		// files so this remains correct without the per-file diff
+		// work that the partial-update path skips.
 		for(iterator it = begin(); it != end();) {
 			iterator it2 = it++;
 			if (!core_files.count(GetItemID(*it2))) {
