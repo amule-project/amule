@@ -231,7 +231,26 @@ private:
 	// WriteDoneAndQueueEmpty recursion chain that drains the notifier
 	// queue. See WriteDoneAndQueueEmpty for the full reasoning.
 	int		m_notification_dispatch_depth;
+
+	// EC INC_UPDATE skip-unchanged state. `m_lastEcGenSeen` is the highest
+	// `CKnownFile::s_globalEcGen` value already reflected in this
+	// connection's `m_obj_tagmap` — files with a smaller `m_ecGen` did
+	// not change since the last response and can be skipped this cycle.
+	// `m_lastFullEcSync` paces a periodic full sweep that overrides the
+	// skip; missed `MarkECChanged()` hook = bounded staleness ≈
+	// kFullEcSyncIntervalSeconds, not forever.
+	uint64		m_lastEcGenSeen;
+	time_t		m_lastFullEcSync;
 };
+
+// Paranoia margin: every connection runs an unconditional full
+// INC_UPDATE once per this interval regardless of per-file gen, so a
+// missed `MarkECChanged()` hook causes at most this much staleness
+// rather than indefinite drift. 5 min is short enough to be invisible
+// to a user watching the GUI and rare enough that the overhead is
+// negligible vs the per-cycle skip win (one full sweep per ~300 cycles
+// at amulegui's ~1 Hz INC_UPDATE rate).
+static const time_t kFullEcSyncIntervalSeconds = 5 * 60;
 
 
 CECServerSocket::CECServerSocket(ECNotifier *notifier)
@@ -239,7 +258,9 @@ CECServerSocket::CECServerSocket(ECNotifier *notifier)
 CECMuleSocket(true),
 m_conn_state(CONN_INIT),
 m_passwd_salt(GetRandomUint64()),
-m_notification_dispatch_depth(0)
+m_notification_dispatch_depth(0),
+m_lastEcGenSeen(0),
+m_lastFullEcSync(0)
 {
 	wxASSERT(theApp->ECServerHandler);
 	theApp->ECServerHandler->AddSocket(this);
@@ -729,13 +750,32 @@ static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFile
 	return response;
 }
 
-static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMap &tagmap)
+static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMap &tagmap,
+	uint64 &io_lastEcGenSeen, time_t &io_lastFullEcSync)
 {
 	CECPacket *response = new CECPacket(EC_OP_SHARED_FILES);
+
+	// Snapshot the global EC generation now. Any file whose `m_ecGen`
+	// exceeds the caller's `m_lastEcGenSeen` has been touched by a
+	// `MarkECChanged()` hook since the last response for this client and
+	// is sent through the encoder; anything older is unchanged from the
+	// client's point of view and skipped. Reading the snapshot before the
+	// iteration means files that change mid-loop are picked up on the
+	// next request (their `m_ecGen` will exceed our snapshot).
+	const uint64 ec_snapshot = CKnownFile::GetGlobalECGen();
+	const uint64 ec_threshold = io_lastEcGenSeen;
+	const time_t now = time(NULL);
+	// Force a full sweep periodically — bounded staleness if a Mark hook
+	// was missed somewhere. Treat every file as changed for one cycle.
+	const bool force_full = (now - io_lastFullEcSync) >= kFullEcSyncIntervalSeconds;
 
 	encoders.UpdateEncoders();
 	for (CFileEncoderMap::iterator it = encoders.begin(); it != encoders.end(); ++it) {
 		const CKnownFile *cur_file = it->second->GetFile();
+		if (!force_full && cur_file->GetECGen() <= ec_threshold) {
+			// Nothing exported has changed since the client's last view.
+			continue;
+		}
 		CValueMap &valuemap = tagmap.GetValueMap(cur_file->ECID());
 		// Completed cleared Partfiles are still stored as CPartfile,
 		// but encoded as KnownFile, so we have to check the encoder type
@@ -754,6 +794,10 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 			enc->Encode(&filetag);
 			response->AddTag(filetag);
 		}
+	}
+	io_lastEcGenSeen = ec_snapshot;
+	if (force_full) {
+		io_lastFullEcSync = now;
 	}
 
 	// Add clients
@@ -1533,7 +1577,8 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		//
 		case EC_OP_GET_UPDATE:
 			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
-				response = Get_EC_Response_GetUpdate(m_FileEncoder, m_obj_tagmap);
+				response = Get_EC_Response_GetUpdate(m_FileEncoder, m_obj_tagmap,
+					m_lastEcGenSeen, m_lastFullEcSync);
 			}
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:
