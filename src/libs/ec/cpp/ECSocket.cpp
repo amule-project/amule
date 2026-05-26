@@ -38,6 +38,12 @@ using namespace std;
 
 #define EC_COMPRESSION_LEVEL	Z_DEFAULT_COMPRESSION
 #define EC_MAX_UNCOMPRESSED	1024
+// Largest packet we'll send uncompressed to a local peer (loopback /
+// RFC1918 LAN / RFC3927 link-local) regardless of ZLIB negotiation.
+// Above this threshold we fall back to ZLIB so the wire size stays
+// inside ReadHeader's 256 MB post-auth packet gate even for very
+// large responses (e.g. show shared on a 90 k+ shared-file library).
+static const uint32 kLocalPeerZlibBypassMax = 256 * 1024 * 1024;
 
 #ifndef __GNUC__
 #define __attribute__(x)
@@ -273,7 +279,8 @@ CECSocket::CECSocket(bool use_events)
 	  m_in_header(true),
 	  m_curr_packet_len(0),
 	  m_my_flags(0x20),
-	  m_haveNotificationSupport(false)
+	  m_haveNotificationSupport(false),
+	  m_isLocalPeer(false)
 {}
 
 CECSocket::~CECSocket()
@@ -561,8 +568,16 @@ bool CECSocket::ReadHeader()
 	m_curr_rx_data->Read(&m_curr_packet_len, 4);
 	m_curr_packet_len = ENDIAN_NTOHL(m_curr_packet_len);
 	m_bytes_needed = m_curr_packet_len;
-	// packet bigger that 16Mb looks more like broken request
-	if (m_bytes_needed > 16*1024*1024) {
+	// Sanity bound on the announced packet size. Pre-auth stays at the
+	// historical 16 MB cap — limits the damage a malicious peer can do
+	// with a single bogus header before we know who they are. Post-auth
+	// raises to 256 MB so big uncompressed responses (e.g. show shared
+	// on a 90 k-file library against a local-peer client that skipped
+	// ZLIB negotiation, see #713 / #728) don't trip the gate.
+	const size_t max_packet_bytes = IsAuthorized()
+		? (size_t)256 * 1024 * 1024
+		: (size_t) 16 * 1024 * 1024;
+	if (m_bytes_needed > max_packet_bytes) {
 		AddDebugLogLineN(logEC, CFormat("ReadHeader: packet too big: %d") % m_bytes_needed);
 		CloseSocket();
 		return false;
@@ -767,8 +782,21 @@ uint32 CECSocket::WritePacket(const CECPacket *packet)
 
 	uint32_t flags = 0x20;
 
-	if (packet->GetPacketLength() > EC_MAX_UNCOMPRESSED
-		&& ((m_my_flags & EC_FLAG_ZLIB) > 0)) {
+	// ZLIB decision is per-packet. On a local peer (loopback / RFC1918
+	// LAN / RFC3927 link-local) the bandwidth saved by deflate is
+	// irrelevant — we'd just be paying compress/decompress CPU on both
+	// ends. Skip ZLIB for those connections up to the
+	// kLocalPeerZlibBypassMax cap; above the cap, fall back to ZLIB
+	// so the wire size stays under ReadHeader's 256 MB post-auth
+	// receiver gate. ZLIB still requires both the per-connection
+	// negotiation (`m_my_flags & EC_FLAG_ZLIB`) and a packet larger
+	// than EC_MAX_UNCOMPRESSED.
+	const uint32 packet_logical_len = packet->GetPacketLength();
+	const bool local_bypass_zlib = m_isLocalPeer
+		&& packet_logical_len <= kLocalPeerZlibBypassMax;
+	if (packet_logical_len > EC_MAX_UNCOMPRESSED
+		&& ((m_my_flags & EC_FLAG_ZLIB) > 0)
+		&& !local_bypass_zlib) {
 		flags |= EC_FLAG_ZLIB;
 	} else {
 		flags |= EC_FLAG_UTF8_NUMBERS;
