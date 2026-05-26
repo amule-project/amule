@@ -36,6 +36,7 @@
 #include <common/MD5Sum.h>
 
 #include "ExternalConn.h"			// Interface declarations
+#include "ECFullResponseCache.h"		// Needed for s_ec*FullCache
 #include "updownclient.h"			// Needed for CUpDownClient
 #include "Server.h"				// Needed for CServer
 #include "ServerList.h"				// Needed for CServerList
@@ -1042,6 +1043,72 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CFi
 }
 
 
+// Builder for the shared-files FULL response cache. Iterates every
+// known shared file and emits one CEC_SharedFile_Tag per file at
+// EC_DETAIL_FULL. Uses a fresh, function-local CFileEncoderMap — the
+// encoder is reset before each Encode in FULL mode (see
+// Get_EC_Response_GetSharedFiles), so per-connection encoder state
+// would be a no-op here anyway. Caller owns the returned packet.
+static CECPacket *BuildSharedFilesFullResponse()
+{
+	CFileEncoderMap encoders;
+	encoders.UpdateEncoders();
+
+	CECPacket *response = new CECPacket(EC_OP_SHARED_FILES);
+
+	std::vector<CKnownFile*> snapshot;
+	theApp->sharedfiles->CopyFileList(snapshot);
+	for (std::vector<CKnownFile*>::const_iterator it = snapshot.begin();
+		it != snapshot.end(); ++it) {
+		const CKnownFile *cur_file = *it;
+		if (!cur_file) {
+			continue;
+		}
+		CEC_SharedFile_Tag filetag(cur_file, EC_DETAIL_FULL);
+		CKnownFile_Encoder *enc = encoders[cur_file->ECID()];
+		enc->ResetEncoder();
+		enc->Encode(&filetag);
+		response->AddTag(filetag);
+	}
+	return response;
+}
+
+
+// Builder for the download-queue FULL response cache. Mirrors
+// BuildSharedFilesFullResponse for the partfile path.
+static CECPacket *BuildDownloadQueueFullResponse()
+{
+	CFileEncoderMap encoders;
+	encoders.UpdateEncoders();
+
+	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
+
+	std::vector<CPartFile*> snapshot;
+	theApp->downloadqueue->CopyFileList(snapshot);
+	for (std::vector<CPartFile*>::const_iterator it = snapshot.begin();
+		it != snapshot.end(); ++it) {
+		CPartFile *cur_file = *it;
+		if (!cur_file) {
+			continue;
+		}
+		CEC_PartFile_Tag filetag(cur_file, EC_DETAIL_FULL);
+		CPartFile_Encoder *enc = static_cast<CPartFile_Encoder *>(encoders[cur_file->ECID()]);
+		enc->ResetEncoder();
+		enc->Encode(&filetag);
+		response->AddTag(filetag);
+	}
+	return response;
+}
+
+
+// Two daemon-wide caches, keyed off CKnownFile::GetGlobalECGen().
+// Steady-state nodes hit the cache on every amulecmd `show shared` /
+// `show DL` invocation; any per-file change bumps the generation
+// counter and the next request rebuilds. Initialized at first use.
+static CECFullResponseCache s_sharedFilesFullCache(BuildSharedFilesFullResponse);
+static CECFullResponseCache s_downloadQueueFullCache(BuildDownloadQueueFullResponse);
+
+
 static CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 {
 	CECPacket *response = NULL;
@@ -1693,6 +1760,16 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		//
 		//
 		case EC_OP_GET_SHARED_FILES:
+			if ( request->GetDetailLevel() == EC_DETAIL_FULL
+				&& CTagSet<uint32, EC_TAG_KNOWNFILE>(request).empty() ) {
+				// Daemon-wide cache for the unfiltered FULL path
+				// (amulecmd `show shared`). Rebuilt only when
+				// CKnownFile::s_globalEcGen advances. Send directly
+				// and return NULL so the framework doesn't try to
+				// re-send / free the shared packet.
+				SendPacket(s_sharedFilesFullCache.Get().get());
+				return NULL;
+			}
 			if ( request->GetDetailLevel() != EC_DETAIL_INC_UPDATE ) {
 				response = Get_EC_Response_GetSharedFiles(request, m_FileEncoder,
 					m_lastEcGenSeenShared,
@@ -1700,6 +1777,16 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			}
 			break;
 		case EC_OP_GET_DLOAD_QUEUE:
+			if ( request->GetDetailLevel() == EC_DETAIL_FULL
+				&& CTagSet<uint32, EC_TAG_PARTFILE>(request).empty() ) {
+				// Same cache pattern as EC_OP_GET_SHARED_FILES;
+				// partfile counters do tick every Process() second,
+				// so this cache invalidates frequently when downloads
+				// are active. Still a win on idle / paused queues
+				// and for back-to-back amulecmd invocations.
+				SendPacket(s_downloadQueueFullCache.Get().get());
+				return NULL;
+			}
 			if ( request->GetDetailLevel() != EC_DETAIL_INC_UPDATE ) {
 				response = Get_EC_Response_GetDownloadQueue(request, m_FileEncoder,
 					m_lastEcGenSeenPart,
