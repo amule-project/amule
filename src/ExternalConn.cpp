@@ -492,7 +492,27 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 				// So far ok, check capabilities of client
 				//
 				if (request->GetTagByName(EC_TAG_CAN_ZLIB)) {
-					m_my_flags |= EC_FLAG_ZLIB;
+					// Suppress ZLIB compression on loopback / LAN /
+					// link-local peers: deflate + inflate is pure
+					// overhead on the local machine (no transit time,
+					// no bandwidth savings to recover) and on a gigabit
+					// LAN (~125 MB/s line rate, well past the ~37 MB/s
+					// break-even point for streaming zlib on general-
+					// purpose CPUs). Server-side enforcement covers
+					// every client version, old or new, without
+					// requiring an EC pref roundtrip.
+					const uint32 peer_ip = GetPeerInt();
+					const bool is_local = peer_ip == 0
+						|| IsLoopbackIP(peer_ip)
+						|| IsLanIP(peer_ip)
+						|| IsLinkLocalIP(peer_ip);
+					if (!is_local) {
+						m_my_flags |= EC_FLAG_ZLIB;
+					} else {
+						AddDebugLogLineN(logEC,
+							CFormat("EC peer %s is local (loopback/LAN/link-local) — skipping ZLIB capability")
+								% GetPeer());
+					}
 				}
 				if (request->GetTagByName(EC_TAG_CAN_UTF8_NUMBERS)) {
 					m_my_flags |= EC_FLAG_UTF8_NUMBERS;

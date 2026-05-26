@@ -150,3 +150,20 @@ bool IsLanIP(uint32_t ip) noexcept
 	}
 	return false;
 }
+
+
+bool IsLoopbackIP(uint32_t ip) noexcept
+{
+	// 127.0.0.0/8 in anti-host order — the first octet (127 = 0x7f) sits
+	// in the low byte of the uint32 (matches the encoding used by
+	// StringIPtoUint32 / IsLanIP).
+	return (ip & 0x000000ff) == 0x0000007f;
+}
+
+
+bool IsLinkLocalIP(uint32_t ip) noexcept
+{
+	// 169.254.0.0/16 in anti-host order: 169 = 0xa9 in the low byte,
+	// 254 = 0xfe in the next byte → 0x0000fea9 with mask 0x0000ffff.
+	return (ip & 0x0000ffff) == 0x0000fea9;
+}
