@@ -184,8 +184,16 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 
 	wxString sURL(char2unicode(path));
 	if ( is_post ) {
+		// Append the POST body to the URL so CParsedUrl picks up the
+		// form fields the same way it does for GET-style ?key=value
+		// pairs.  Use `&` rather than `?` when the URL already has a
+		// query string -- otherwise the combined string ends up as
+		// `/page?a=b?pass=XYZ`, and CParsedUrl's `?`-then-`&`-split
+		// truncates the first key's value to `b?pass=XYZ` and never
+		// registers a `pass` entry, breaking POST login on any URL
+		// that wasn't query-less (issue #724).
 		wxString sData(char2unicode(pData));
-		sURL += "?" + sData.Left(dwDataLen);
+		sURL += (sURL.Find('?') != wxNOT_FOUND ? "&" : "?") + sData.Left(dwDataLen);
 	}
 
 	//
