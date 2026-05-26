@@ -196,13 +196,13 @@ bool CPacketTracking::InTrackListIsAllowedPacket(uint32_t ip, uint8_t opcode, bo
 					it->m_firstAdded = currentTick; // for the packet we just process
 				} else {
 					it->m_count -= removeCount;
-					it->m_firstAdded += SEC2MS(secondsPerPacket) * removeCount;
+					it->m_firstAdded += static_cast<uint64_t>(SEC2MS(secondsPerPacket)) * removeCount;
 				}
 			}
 			// we increase the counter in any case, even if we drop the packet later
 			it->m_count++;
 			// remember only for easier cleanup
-			trackEntry->m_lastExpire = std::max(trackEntry->m_lastExpire, it->m_firstAdded + SEC2MS(secondsPerPacket) * it->m_count);
+			trackEntry->m_lastExpire = std::max(trackEntry->m_lastExpire, it->m_firstAdded + static_cast<uint64_t>(SEC2MS(secondsPerPacket)) * it->m_count);
 
 			if (CKademlia::IsRunningInLANMode() && ::IsLanIP(wxUINT32_SWAP_ALWAYS(ip))) {
 				return true;	// no flood detection in LAN mode
