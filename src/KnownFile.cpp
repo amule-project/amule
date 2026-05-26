@@ -1538,11 +1538,57 @@ static void GuessAndRemoveExt(CPath& name)
 void CKnownFile::SetFileName(const CPath& filename)
 {
 	CAbstractFile::SetFileName(filename);
+	// Invalidate the cached EC ed2k link; SetFileName is the only event
+	// that affects the link body in normal operation. Lazy-rebuilt on
+	// the next GetCachedED2kLinkBase() call.
+	m_cachedED2kLinkBase.clear();
 	wordlist.clear();
 	// Don't publish extension. That'd kill the node indexing e.g. "avi".
 	CPath tmpName = GetFileName();
 	GuessAndRemoveExt(tmpName);
 	Kademlia::CSearchManager::GetWords(tmpName.GetPrintable(), &wordlist);
+}
+
+const wxString& CKnownFile::GetCachedED2kLinkBase() const
+{
+	if (m_cachedED2kLinkBase.IsEmpty()) {
+		// theApp->CreateED2kLink with add_source=false produces just the
+		// base ed2k:// URI without the |sources,…| suffix. The expensive
+		// work (filename Cleanup, several CFormat substitutions) lives
+		// entirely in this build and is what we want to amortise across
+		// every EC GET_SHARED_FILES / GET_UPDATE response that touches
+		// this file.
+		m_cachedED2kLinkBase = theApp->CreateED2kLink(this, false /*add_source*/);
+	}
+	return m_cachedED2kLinkBase;
+}
+
+wxString CKnownFile::GetED2kLinkForEC(bool add_source) const
+{
+	const wxString& base = GetCachedED2kLinkBase();
+	if (!add_source) {
+		return base;
+	}
+	// Append the |sources,IP:port|/ suffix. Tiny CFormat — we don't cache
+	// this variant because IP / port / connection state can change
+	// independently of the file and the invalidation surface isn't worth
+	// it for one short CFormat. Mirrors the suffix branch of
+	// CamuleAppCommon::CreateED2kLink (kept consistent on purpose).
+	if (!theApp->IsConnected() || theApp->IsFirewalled()) {
+		// CreateED2kLink would log a warning here ("can't add yourself
+		// as a source ... while having a lowid"); the EC path is
+		// quiet — the caller already gated add_source on
+		// IsConnectedED2K && !IsLowID, so reaching here means the
+		// state shifted between those checks and now. Return the base.
+		return base;
+	}
+	uint32 clientID = theApp->GetID();
+	return base + CFormat("|sources,%u.%u.%u.%u:%u|/")
+		% (clientID & 0xff)
+		% ((clientID >> 8) & 0xff)
+		% ((clientID >> 16) & 0xff)
+		% ((clientID >> 24) & 0xff)
+		% thePrefs::GetPort();
 }
 
 #endif // CLIENT_GUI
