@@ -395,6 +395,10 @@ install (FILES org.amule.aMule.metainfo.xml
 	DESTINATION "${CMAKE_INSTALL_DATADIR}/metainfo"
 )
 
+install (FILES LICENSE.md
+	DESTINATION "${CMAKE_INSTALL_DATADIR}"
+)
+
 if (ENABLE_NLS)
 	include (FindGettext)
 	add_subdirectory (po)

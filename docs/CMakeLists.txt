@@ -7,6 +7,5 @@ install (FILES
 	IP2Country.md
 	README.md
 	amulesig.md
-	license.txt
 	DESTINATION "${CMAKE_INSTALL_DOCDIR}"
 )
