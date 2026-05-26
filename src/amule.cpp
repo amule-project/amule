@@ -1554,6 +1554,10 @@ void CamuleApp::OnFinishedAICHHashing(CHashingEvent& evt)
 
 		result->SetAICHHashset(oldSet);
 		oldSet->SetOwner(result.get());
+
+		// EC exports GetAICHMasterHash(); the swap above just made
+		// `owner`'s exported value change.
+		owner->MarkECChanged();
 	}
 }
 

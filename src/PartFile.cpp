@@ -580,6 +580,8 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 						wxASSERT(hashSizeOk);
 						if (hashSizeOk) {
 							m_pAICHHashSet->SetMasterHash(hash, AICH_VERIFIED);
+							// EC exports GetAICHMasterHash().
+							MarkECChanged();
 						}
 						break;
 					}
@@ -1485,6 +1487,14 @@ void CPartFile::WriteCompleteSourcesCount(CMemFile* file)
 
 uint32 CPartFile::Process(uint8 m_icounter)
 {
+	// Partfiles have ~20 EC-exported fields that change frequently and
+	// independently (status, speed, transfer counters, source counts, gap
+	// list, hashed-part count, …). Per-field hooks have diminishing
+	// returns when the file is actively transferring anyway, so use a
+	// coarse mark here — Process() runs once per second per partfile and
+	// the file genuinely has new state every tick during active download.
+	MarkECChanged();
+
 	uint16 old_trans;
 	uint64 dwCurTick = ::GetTickCount64();
 
