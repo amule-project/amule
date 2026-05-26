@@ -36,6 +36,7 @@
 
 #include "kademlia/kademlia/Indexed.h"
 #include <ec/cpp/ECID.h>	// Needed for CECID
+#include <atomic>		// Needed for std::atomic (m_ecGen)
 
 
 #ifdef CLIENT_GUI
@@ -172,6 +173,28 @@ public:
 	explicit CKnownFile(const CSearchFile &searchFile);
 
 	virtual ~CKnownFile();
+
+	/**
+	 * EC-change generation tracking. Each CKnownFile carries a monotonic
+	 * generation number that increments whenever any field exported via
+	 * `CEC_SharedFile_Tag` / `CEC_PartFile_Tag` mutates. Per-connection
+	 * INC_UPDATE handlers compare a file's `m_ecGen` against the
+	 * "highest gen they have already sent" and skip files that have not
+	 * changed since — turning the O(N) per-INC_UPDATE iteration on a 91k-
+	 * shareset node into O(files-actually-changed).
+	 *
+	 * The counter is a single process-wide atomic, so every Mark…() call
+	 * yields a unique-and-strictly-ascending gen across all files and
+	 * threads. Per-file `m_ecGen` reads/writes are atomic for the
+	 * upload-disk-IO / hashing-thread call sites that flow through
+	 * `CFileStatistic::Add{Request,Accepted,Transferred}()`.
+	 *
+	 * See ExternalConn / `Get_EC_Response_GetUpdate` for the consumer
+	 * side of this contract and #713 for context.
+	 */
+	void		MarkECChanged();
+	uint64		GetECGen() const		{ return m_ecGen.load(std::memory_order_relaxed); }
+	static uint64	GetGlobalECGen()		{ return s_globalEcGen.load(std::memory_order_relaxed); }
 
 	void SetFilePath(const CPath& filePath);
 	const CPath& GetFilePath() const { return m_filePath; }
@@ -404,6 +427,10 @@ protected:
 private:
 	/** Common initializations for constructors. */
 	void Init();
+
+	// EC change-generation tracking — see public MarkECChanged() doc above.
+	std::atomic<uint64> m_ecGen{0};
+	static std::atomic<uint64> s_globalEcGen;
 };
 
 #endif // KNOWNFILE_H
