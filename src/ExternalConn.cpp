@@ -26,6 +26,8 @@
 
 #include "config.h"				// Needed for VERSION
 
+#include <set>					// Needed for std::set (m_lastSentFileIds)
+
 #include <ec/cpp/ECMuleSocket.h>		// Needed for CECSocket
 
 #include <common/Format.h>			// Needed for CFormat
@@ -236,21 +238,22 @@ private:
 	// `CKnownFile::s_globalEcGen` value already reflected in this
 	// connection's `m_obj_tagmap` — files with a smaller `m_ecGen` did
 	// not change since the last response and can be skipped this cycle.
-	// `m_lastFullEcSync` paces a periodic full sweep that overrides the
-	// skip; missed `MarkECChanged()` hook = bounded staleness ≈
-	// kFullEcSyncIntervalSeconds, not forever.
 	uint64		m_lastEcGenSeen;
-	time_t		m_lastFullEcSync;
-};
 
-// Paranoia margin: every connection runs an unconditional full
-// INC_UPDATE once per this interval regardless of per-file gen, so a
-// missed `MarkECChanged()` hook causes at most this much staleness
-// rather than indefinite drift. 5 min is short enough to be invisible
-// to a user watching the GUI and rare enough that the overhead is
-// negligible vs the per-cycle skip win (one full sweep per ~300 cycles
-// at amulegui's ~1 Hz INC_UPDATE rate).
-static const time_t kFullEcSyncIntervalSeconds = 5 * 60;
+	// Client opted in to partial-update protocol at auth time (advertised
+	// `EC_TAG_CAN_PARTIAL_UPDATE`). When set, `Get_EC_Response_GetUpdate`
+	// skips unchanged files entirely and emits explicit `EC_TAG_FILE_REMOVED`
+	// markers for files that disappeared since the previous cycle; the
+	// client mirrors this by skipping its bulk deletion loop. When *not*
+	// set, the server falls back to emitting empty "alive marker" tags for
+	// unchanged files so old clients (which infer deletion from absence)
+	// keep working unchanged — see `Get_EC_Response_GetUpdate`.
+	bool		m_partialUpdateActive;
+	// Set of file ECIDs sent in the previous INC_UPDATE response. Diffed
+	// against the current encoder snapshot each cycle to compute the
+	// removal list emitted to partial-update-capable clients.
+	std::set<uint32> m_lastSentFileIds;
+};
 
 
 CECServerSocket::CECServerSocket(ECNotifier *notifier)
@@ -260,7 +263,7 @@ m_conn_state(CONN_INIT),
 m_passwd_salt(GetRandomUint64()),
 m_notification_dispatch_depth(0),
 m_lastEcGenSeen(0),
-m_lastFullEcSync(0)
+m_partialUpdateActive(false)
 {
 	wxASSERT(theApp->ECServerHandler);
 	theApp->ECServerHandler->AddSocket(this);
@@ -525,12 +528,23 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 					// and we keep the wire format capped at uint16.
 					m_my_flags |= EC_FLAG_LARGE_TAG_COUNT;
 				}
+				if (request->GetTagByName(EC_TAG_CAN_PARTIAL_UPDATE)) {
+					// Client understands the partial-update protocol:
+					// `Get_EC_Response_GetUpdate` may omit unchanged
+					// files and emit explicit `EC_TAG_FILE_REMOVED`
+					// markers instead of relying on absence-implies-
+					// deletion. Old clients omit this tag and we keep
+					// the backward-compat alive-marker path active for
+					// them — see `Get_EC_Response_GetUpdate`.
+					m_partialUpdateActive = true;
+				}
 				m_haveNotificationSupport = request->GetTagByName(EC_TAG_CAN_NOTIFY) != NULL;
-				AddDebugLogLineN(logEC, CFormat("Client capabilities: ZLIB: %s  UTF8 numbers: %s  Push notification: %s  Large tag count: %s" )
+				AddDebugLogLineN(logEC, CFormat("Client capabilities: ZLIB: %s  UTF8 numbers: %s  Push notification: %s  Large tag count: %s  Partial update: %s" )
 					% ((m_my_flags & EC_FLAG_ZLIB) ? "yes" : "no")
 					% ((m_my_flags & EC_FLAG_UTF8_NUMBERS) ? "yes" : "no")
 					% (m_haveNotificationSupport ? "yes" : "no")
-					% ((m_my_flags & EC_FLAG_LARGE_TAG_COUNT) ? "yes" : "no"));
+					% ((m_my_flags & EC_FLAG_LARGE_TAG_COUNT) ? "yes" : "no")
+					% (m_partialUpdateActive ? "yes" : "no"));
 			} else {
 				response = new CECPacket(EC_OP_AUTH_FAIL);
 				response->AddTag(CECTag(EC_TAG_STRING, wxString(wxTRANSLATE("Invalid protocol version."))
@@ -567,6 +581,12 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 				// per-packet headers (#199).
 				if (m_my_flags & EC_FLAG_LARGE_TAG_COUNT) {
 					response->AddTag(CECEmptyTag(EC_TAG_CAN_LARGE_TAG_COUNT));
+				}
+				if (m_partialUpdateActive) {
+					// Confirm partial-update mode so the client switches
+					// off its bulk "missing == deleted" fallback and
+					// expects explicit `EC_TAG_FILE_REMOVED` markers.
+					response->AddTag(CECEmptyTag(EC_TAG_CAN_PARTIAL_UPDATE));
 				}
 			} else {
 				wxString err;
@@ -728,7 +748,8 @@ static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFile
 }
 
 static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMap &tagmap,
-	uint64 &io_lastEcGenSeen, time_t &io_lastFullEcSync)
+	uint64 &io_lastEcGenSeen,
+	bool partial_update_active, std::set<uint32> &io_lastSentFileIds)
 {
 	CECPacket *response = new CECPacket(EC_OP_SHARED_FILES);
 
@@ -741,19 +762,45 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 	// next request (their `m_ecGen` will exceed our snapshot).
 	const uint64 ec_snapshot = CKnownFile::GetGlobalECGen();
 	const uint64 ec_threshold = io_lastEcGenSeen;
-	const time_t now = time(NULL);
-	// Force a full sweep periodically — bounded staleness if a Mark hook
-	// was missed somewhere. Treat every file as changed for one cycle.
-	const bool force_full = (now - io_lastFullEcSync) >= kFullEcSyncIntervalSeconds;
 
 	encoders.UpdateEncoders();
+
+	// Snapshot the IDs of all files currently alive on the server. Used
+	// by the partial-update path below to diff against the previous cycle
+	// and synthesize `EC_TAG_FILE_REMOVED` markers.
+	std::set<uint32> current_file_ids;
+
 	for (CFileEncoderMap::iterator it = encoders.begin(); it != encoders.end(); ++it) {
 		const CKnownFile *cur_file = it->second->GetFile();
-		if (!force_full && cur_file->GetECGen() <= ec_threshold) {
-			// Nothing exported has changed since the client's last view.
+		const uint32 ecid = cur_file->ECID();
+		current_file_ids.insert(ecid);
+
+		if (cur_file->GetECGen() <= ec_threshold) {
+			// Nothing exported has changed since the client's last
+			// view of this file. Two paths depending on whether the
+			// client negotiated partial-update at auth time:
+			if (partial_update_active) {
+				// New protocol: skip the file entirely. The client
+				// only deletes when it sees an explicit
+				// `EC_TAG_FILE_REMOVED` (emitted below), so absence
+				// here is correctly interpreted as "no change".
+				continue;
+			}
+			// Legacy clients (amulegui / amuleweb on master) treat
+			// any file missing from the response as deleted, then
+			// re-add it on the next full-sweep cycle — wedging the
+			// GUI on big libraries (#713). Emit a 5-byte alive
+			// marker (`EC_TAG_KNOWNFILE` / `EC_TAG_PARTFILE` with
+			// the ECID and no children); the client's
+			// `if (tag->HasChildTags()) ProcessItemUpdate(...)`
+			// already treats childless tags as a no-op update but
+			// still records the file as present.
+			const ec_tagname_t tagname = it->second->IsPartFile_Encoder()
+				? EC_TAG_PARTFILE : EC_TAG_KNOWNFILE;
+			response->AddTag(CECTag(tagname, ecid));
 			continue;
 		}
-		CValueMap &valuemap = tagmap.GetValueMap(cur_file->ECID());
+		CValueMap &valuemap = tagmap.GetValueMap(ecid);
 		// Completed cleared Partfiles are still stored as CPartfile,
 		// but encoded as KnownFile, so we have to check the encoder type
 		// instead of the file type.
@@ -762,20 +809,32 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 			// Add information if partfile is shared
 			filetag.AddTag(EC_TAG_PARTFILE_SHARED, it->second->IsShared(), &valuemap);
 
-			CPartFile_Encoder * enc = static_cast<CPartFile_Encoder *>(encoders[cur_file->ECID()]);
+			CPartFile_Encoder * enc = static_cast<CPartFile_Encoder *>(encoders[ecid]);
 			enc->Encode(&filetag);
 			response->AddTag(filetag);
 		} else {
 			CEC_SharedFile_Tag filetag(cur_file, EC_DETAIL_INC_UPDATE, &valuemap);
-			CKnownFile_Encoder * enc = encoders[cur_file->ECID()];
+			CKnownFile_Encoder * enc = encoders[ecid];
 			enc->Encode(&filetag);
 			response->AddTag(filetag);
 		}
 	}
-	io_lastEcGenSeen = ec_snapshot;
-	if (force_full) {
-		io_lastFullEcSync = now;
+
+	if (partial_update_active) {
+		// Partial-update protocol: emit one `EC_TAG_FILE_REMOVED` per
+		// file that was in the previous response but is no longer
+		// alive on the server. Replaces the legacy client's bulk
+		// "anything missing == deleted" inference.
+		for (std::set<uint32>::const_iterator it = io_lastSentFileIds.begin();
+			it != io_lastSentFileIds.end(); ++it) {
+			if (!current_file_ids.count(*it)) {
+				response->AddTag(CECTag(EC_TAG_FILE_REMOVED, *it));
+			}
+		}
+		io_lastSentFileIds.swap(current_file_ids);
 	}
+
+	io_lastEcGenSeen = ec_snapshot;
 
 	// Add clients
 	CECEmptyTag clients(EC_TAG_CLIENT);
@@ -1555,7 +1614,8 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		case EC_OP_GET_UPDATE:
 			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
 				response = Get_EC_Response_GetUpdate(m_FileEncoder, m_obj_tagmap,
-					m_lastEcGenSeen, m_lastFullEcSync);
+					m_lastEcGenSeen,
+					m_partialUpdateActive, m_lastSentFileIds);
 			}
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:
