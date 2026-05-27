@@ -1,4 +1,5 @@
 add_library (ec STATIC
+	ECMemSocket.cpp
 	ECMuleSocket.cpp
 	ECPacket.cpp
 	ECSpecialTags.cpp

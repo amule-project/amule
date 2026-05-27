@@ -142,6 +142,14 @@ class CECTag {
 
 		size_t			GetTagCount() const { return m_tagList.size(); }
 		bool			HasChildTags() const { return !m_tagList.empty(); }
+
+		// Serialize this tag (name + type + length + body + children) to a
+		// CECSocket using the wire format the receiver's matching ReadTag
+		// expects. Public so daemon-side code can pre-serialize per-file
+		// tag trees into a cache (used by the amulecmd FULL-fetch cache);
+		// inside the EC library itself this is the primitive invoked by
+		// `CECTag::WriteChildren` for each child of a packet.
+		bool			Serialize(CECSocket& socket) const { return WriteTag(socket); }
 		const void *	GetTagData() const {
 			EC_ASSERT(m_dataType == EC_TAGTYPE_CUSTOM);
 			return m_tagData;
