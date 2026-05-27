@@ -13,8 +13,10 @@ First major release in 5+ years (since 2.3.3, 2021-02-07). Headline changes are 
 
 - **Throughput rewrite.** Disk I/O moved off the main thread, ASIO/EPOLLET races fixed, throttlers replaced with proper token-bucket limiters. Peer-to-peer download on the same hardware sees **~100–380× speedups** across macOS / Linux / Windows over 2.3.3, plus aMule 3.0.0 sustains **~4.8×** the upload throughput of eMule 0.70b on Windows. See [Performance](#performance) for the full matrix and per-PR breakdown.
 - Both throttlers (`MaxUpload`, `MaxDownload`) were also broken pre-fix — `MaxUpload=0` capped at "current rate + 5 KB/s", `MaxDownload` was a ratio controller rather than a literal cap. Both rewritten (#461, #491). Important user-facing bug fixes, but secondary to the headline numbers.
+- **Big-library / big-shareset scaling.** Follow-up wave targeting nodes with 100 k+ shared files: per-file EC payload caches (#725, #736), skip-unchanged EC updates (#727), local-peer ZLIB bypass (#728), and a string of O(N²) → O(N log N) / O(1) algorithmic fixes across `SharedFileList`, `SharedFilesCtrl`, `KnownFileList`, `wxListCtrl`, `ExternalConn`, and amuleweb — the WebUI / amulegui stay responsive even on libraries where the previous GUI took minutes to redraw.
 - **CMake replaces autotools.** Single build system, modern toolchain — minimum CMake 3.10, minimum wxWidgets 3.2.0.
-- **Native binaries for every major desktop.** AppImage (x86_64 + aarch64), Flatpak (x86_64 + aarch64), macOS Universal2 .dmg, Windows portable .zip (x64 + ARM64). First-run desktop integration prompt for AppImage.
+- **Native binaries for every major desktop.** AppImage (x86_64 + aarch64), Flatpak (x86_64 + aarch64), macOS Universal2 .dmg (now bundling `aMuleGUI.app` alongside `aMule.app`, #529), Windows portable .zip **and NSIS installer** (x64 + ARM64, #740). First-run desktop integration prompt for AppImage; cross-platform autostart-on-login toggle (#744).
+- **Auto-rescan of shared folders.** `wxFileSystemWatcher`-driven (#591), with recursive vs explicit-share intent split (#606) and coverage of Incoming + per-category Incoming dirs (#743).
 - **HTTPS works again.** `CHTTPDownloadThread` rewritten on top of `wxWebRequest`; the hand-rolled stack had silently stopped working against modern TLS.
 - **Kad parallel searches** with alpha-frontier widening.
 - **MaxMindDB replaces deprecated GeoIP** for IP→country.
@@ -74,6 +76,28 @@ offload + #484 throttler-wake fix + #491 token-bucket cap) stacks another
 - **#467 — ASIO handler binding modernised.** `boost::bind` → C++11 lambda, `strand.wrap()` → `bind_executor()`, `deadline_timer` → `steady_timer`, `null_buffers` → `async_wait(wait_read)`. Fixes the long-standing `boost::bind` placeholder warning. Minimum Boost bumped 1.47 → 1.70.
 - **#504 — Fast-path bare-filename comparison** skips `wxGetCwd()`.
 
+#### Big-library / big-shareset scaling
+
+A follow-up wave targeting nodes with 100 k+ shared files, where the daemon ↔ GUI / WebUI / amuleweb traffic and several internal data structures were quadratic in the shareset size:
+
+- **EC payload caches.** Per-file `ed2k://` link and partmet basename cached on `CKnownFile` / `CPartFile` so EC enumeration stops rebuilding them on every tick (#725). Per-file byte cache covers the FULL `GET_SHARED_FILES` / `GET_DLOAD_QUEUE` paths so wire-marshalling cost drops by orders of magnitude on huge sharesets (#736).
+- **EC skip-unchanged.** Per-file change tracking infrastructure threaded through every field-change site so `INC_UPDATE` only re-sends what actually moved, with a backward-compatible partial-update protocol opt-in for amuleweb (#727 — landed as a 6-commit series). `MarkECChanged` gaps closed for paused / user-action setters.
+- **Local-peer EC bypass.** ZLIB compression skipped on local peers (#728) and receiver limit raised to 256 MB.
+- **O(N²) → O(N log N) / O(1) algorithmic fixes.**
+  - `SharedFilesCtrl` bulk-update API skips per-row repaints during `ClearED2KPublishInfo` (#561, #2bf9b8f34).
+  - `SharedFileList` keyword indexing in `Reload` (#566).
+  - `known2.met` AICH `SaveHashSet` dedup made O(1) (#581).
+  - `known.met` hash-collision dedup on Init dropped to O(N log N) (#584).
+  - `wxListCtrl::FindItem(data)` O(N) → O(1) via user-data hash map (#614).
+  - `ExternalConn` file-list enumeration snapshotted to avoid O(N²) `GetFileByIndex` loops (#687).
+  - amuleweb `array_push_back` made O(N) via cached scan hint (#689).
+  - `KnownFileList` indexes its size-map by `(size, mtime)` instead of size alone to cut false-positive collision-dedup walks (#593).
+- **Disk I/O.** `CFile` gains a 64 KB userspace write buffer to coalesce metadata-save syscalls (#573); the buffer was subsequently moved off the stack onto the heap so it survives musl's 128 KiB pthread stack, and an internal recursive_mutex was added to serialise buffer + fd access against the concurrent-corruption race surfaced on Alpine (#576). `SavePartFile` switched to atomic-rename (#670) and gated on an in-memory dirty flag so periodic ticks only touch disk when something actually changed (#671). Upload-stats persistence on 10-min heartbeat when only stats moved (#e8363bf42).
+- **Memory bounds.** `amuleIPV4Address::operator=` no longer leaks the endpoint copy on every assign (#716) — was 7 MB / 514 k objects per ~10 h of runtime on a busy node. `CKeyEntry::m_filenames` capped so the list can't grow unbounded (#652). `known.met` growth bounded by per-hash cap + 30-day TTL (#598, #f33c56b44). `KnownFileList::Append` only stamps `lastSeen=now` on actual sightings (#fafbb8a66). Wake-from-sleep SIGSEGV in asio socket impls fixed via `shared_from_this` (#596).
+- **Backpressure & yielding.** `ECSocket::OnOutput` yields when asio backpressures `Write` to zero bytes (#672). `CECServerSocket` notification-dispatch recursion capped so EC bursts no longer stall the event loop (#667). `HTTPDownload` bounds libcurl connect-phase via `GetNativeHandle()` (#565). Startup HTTP downloads deferred until after partfile + shared-file scan (#719) so cold-start UI is responsive while ipfilter.dat and friends are fetched.
+- **Recursive share walks** deferred + cancellable, with confirmation prompts for sensitive home-parent paths (#594, #599).
+- **macOS daemon shutdown** driven from `OnCoreTimer` to fix the long-standing hang (#563).
+
 ### Networking & Discovery
 
 - **Kad parallel searches** with alpha-frontier widening; new "More" button to ask additional peers for results (#505).
@@ -82,6 +106,13 @@ offload + #484 throttler-wake fix + #491 token-bucket cap) stacks another
 - Wire-parser hardening: `OP_SERVERMESSAGE` size validation (#447), buffer overflow fix in `ECSocket` (#421), uninitialized memory fix in `UInt128` (#424).
 - ed2k-link float tags endian-swapped correctly on big-endian hosts (#368).
 - Friend's shared list and search-result rating exposed via EC (#430, #452).
+- **Shared-folder watcher.** `wxFileSystemWatcher`-driven auto-rescan (#591), with recursive vs explicit-share intent split + cold-discover of subdirs created while offline (#606). Watcher also covers the Incoming dir + per-category Incoming dirs so completed downloads register without a manual reload (#743). macOS amuled now pumps `CFRunLoop` so FSEvents deliver (#975f60fb0).
+- **Kad index hygiene.** `CEntry::SetFileName` rejects empty filenames in the merge path (#675); `CKeyEntry::m_filenames` bounded (#652); `known2_64.met` orphan-pruned at sync startup (#605). Kad late UDP firewall responses dropped; Recheck assert downgraded (#afb9da010). SearchID collisions between Kad and ed2k searches no longer mix tab results (#530, #3008ada0f).
+- **Server protocol.** Future ping timestamps discarded from server.met (#3f70856a0); several server-ping fixes (#715). Control-traffic bypasses the download throttler (#615). `OP_IDCHANGE` sanity checks demoted to debug log (#613). `ServerUDPSocket` "additional packet" notice demoted to non-critical debug (#548). HTTP/HTTPS auto-update for `addresses.dat` accepts https URLs (#721); default eMule-security + shortypower URLs upgraded to HTTPS (#718).
+- **EC / WebUI / amuleweb.** 65535-children-per-tag wire-format ceiling lifted (#570). `FRIEND_REMOVE` made idempotent (#632); friend-slot flag persisted on `CFriend` so it survives disconnects (#633). amuleweb honours `amule_set_options()` nickname (#634); fixes POST body parsing when URL has a query string (#729); fixes `split()` byte/wide-char confusion on UTF-8 input (#619); fixes SIGSEGV rendering y-axis labels above 9999 (#618); fixes crash with >65535 shared files (#700). WebUI adds Kad + ed2k connect/disconnect controls (#660), Kad nodes-URL control, "Disconnect from current ed2k server" (#a82cd2e1a, #b5d83829a), and persistent ED2K / Kad enable checkboxes (#661, #8ce30f910); sends max upload/download rate as uint32 (#645). amulegui surfaces `EC_OP_FAILED` from `ADD_LINK` (#557), implements category-tab Stop/Pause/Resume/Cancel + Prio (#701), renders statistics graphs via `EC_OP_GET_STATSGRAPHS` (#639), and overrides `OnFatalException` with libbfd backtrace (#695). Aggregated single-popup AddLink error reporting (#577).
+- **UPnP.** Filter non-WAN device announcements before fetching description (#623). Cache failed XML fetches + demote routine discovery logs from critical to debug (#653, #627).
+- **ClientTCPSocket** strict "no trailing bytes" asserts demoted to debug log (#710).
+- **SharedFileList** emits the honest file count in `OP_OFFERFILES` (#556) and skips empty `OP_OFFERFILES` when nothing made the LF cut (#169910998).
 
 ### Build System & Dependencies
 
@@ -93,10 +124,15 @@ aMule 3.0 requires **CMake ≥ 3.10** and **wxWidgets ≥ 3.2.0**. Autotools is 
 - Boost 1.87 / 1.89 build fixes (#387, #429) — modern Boost ASIO no longer breaks the build.
 - CMake hard-fails when `ENABLE_X=YES` cannot be honored: UPnP (#511), NLS (#512), Boost (#513), IP2Country (#509). No more silent disable.
 - CMake mins / detection: minimum 3.10 and `version.rc` path fix (#490), `MIN_WX_VERSION` 3.2 with legacy `wx.cmake` retired (#459), default build type Release (#469), broken `UPNP.cmake` workaround (#439), BFD link fixes for modern binutils (#487, #489), `find_package(Intl)` outside `YYENABLE_NLS` gate (#495).
-- SVNDATE banner: stops freezing at first configure (#483); refreshes on `git reset` / commit (#493).
+- SVNDATE banner: stops freezing at first configure (#483); refreshes on `git reset` / commit (#493). **`SVN` macros / files renamed to `GIT` throughout the source tree (#726)** — `SVNDATE` → `GITDATE`, `__SVN__` → `__GIT__`, `config.h.cm` and Windows `version.rc.in` follow suit. No user-facing impact; reflects 5+ years of Git as the canonical SCM.
 - `compile_commands.json` generated (#441); `compile.sh` and `find_uncompiled.py` build/analysis scripts (#494, #501).
 - Loongarch64 architecture support (#286).
 - OpenSUSE platform fixes (#440); libupnp 1.18 compatibility (#448).
+- **boost::asio mandatory.** wxWidgets-sockets fallback path removed; `ENABLE_BOOST` and `DOWNLOAD_AND_BUILD_DEPS` escape hatches retired (#603).
+- **CMake polish (post-#518).** `wx_NEED_NET` kept on for BUILD_WEBSERVER-only (#620) and BUILD_AMULECMD-only (#630) configurations. `libatomic` linked directly on 32-bit targets where `std::atomic<int64_t>` needs it (#648, #662) — the heuristic atomic-probe is gone. `glib-2.0` hard-fail when missing for `amule` / `amuled` / `amulegui` (#571), but the dependency itself is dropped on macOS even under wxGTK (#647). `PACKAGE` / `PACKAGE_VERSION` pre-defined for the bfd.h probe (#545).
+- **license.txt** moved to project root (#730).
+- **CodeQL** alerts cleared (#732, #733); CI runs CodeQL on push to master only, not on PRs (#c02d5ec04). `actions/checkout` bumped (#446 in initial pass).
+- **README + docs polish.** Distro version and GitHub activity badges (#7a1b310b5); markdown / ortography sweep (#6e9a9fe5a); INSTALL.md MD012/MD060 markup warnings fixed (#31aff1499).
 
 ### Packaging
 
@@ -120,6 +156,9 @@ Other platform integration work:
 - Localization on macOS and Windows fixed — wxLocale lookup paths repaired (#492).
 - macOS spurious `wxGetCwd()` errors silenced (#480).
 - Flatpak `libupnp` install-libdir pinned for pkg-config (#515).
+- **macOS .dmg now bundles `aMuleGUI.app`** alongside `aMule.app` so installing the .dmg gives both the daemon-style and GUI binaries in `/Applications` (#529). Locale catalogs are bundled inside the `aMuleGUI.app` `Contents/Resources` tree so translated strings render correctly when run from the .dmg (#543).
+- **Windows NSIS installer** shipped alongside the existing portable .zip (#740), with un.SecRemoveUserData no longer appearing on the install Components page (#65178406a).
+- **Cross-platform autostart-on-login** toggle in Preferences (#744): Linux .desktop, macOS LaunchAgent, Windows registry under one checkbox.
 
 ### Internals & Refactoring
 
@@ -131,6 +170,26 @@ Other platform integration work:
 - Documentation transitioned to Markdown; staleness audit; broken README icon URL fixed (#514).
 - po4a config restored + optional CMake `po4a-update` target (#485).
 - Wiki content migrated into the repository (#496).
+- **Crash diagnostics.** `MuleDebug` PIE-translates runtime PCs back to link-time addresses for bfd (#677, #678), uses `popen()` instead of `wxExecute()` for the addr2line fallback (#682), and the `Do_not_auto_remove` marker is replaced with the modern `IWYU pragma: keep` (#679). amulegui's `OnFatalException` overridden with libbfd backtrace (#695). `wxcas` / `alc` disable wxSizerFlags consistency checks at startup (#694) — eliminates spurious assertion noise that broke the apps under wx 3.3.
+- **Tray-icon overhaul.** Unified Linux/macOS/Windows tray path (#574); dock icon dropped while hidden via tray on macOS (#a5a9a5866); `HideOnClose` decoupled from confirm-exit (#f1d0e85f0); iconize-aware menu + single-left toggle + robust ShowGUI (#0640373c8); `ServerWnd` sash anchored to top, persist-on-drag only (#47c811191); 'Enable Tray Icon' master placed before its dependents (#64b83e48e). Linux-specific tray-icon limitations gated separately (#2a0b874d7). 'Hide on close' exposed cross-platform behind the tray-icon gate (#e82b4bac5).
+- **Wayland.** amule-remote-gui binds `wl_app_id` via `g_set_prgname()` (#572).
+- **GUI dispatch polish.** `MuleNotebook` dispatches the right-click forward synchronously so PopupMenu's grab is fresh (#683). `ClientDetailDialog` binds Escape to Close (#681). Destructive YES_NO prompts no longer treat ESC as confirm (#612).
+- **amulecmd.** Search filters (type/extension/availability/size) now exposed via flags (#542) and documented (#544, #547). amulecmd.1 stops translating command names in section headers (#4296bbccf).
+- **amule** `--disable-fatal` also skips the assertion dialog (#549).
+- **First-run prompt** for nodes.dat alongside server.met (#558), with translations regenerated (#71542203f).
+- **Logger.** Sticky stdio EOF cleared on `CLoggerAccess` so EC log polls see new lines (#567). Control characters escaped in 'Invalid Kad tag type' log lines (#550). `ExternalConnector` console binaries respect `VerboseDebug` from amule.conf (#654) and `setlocale` at init so non-interactive output keeps accented chars (#629).
+- **Y2038.** Internal time-handling unified on `uint64 GetTickCount64()` to properly manage milliseconds past 2038 (#702). `CLOCK_REALTIME` → `CLOCK_MONOTONIC` for steady-state intervals (#56a369e95).
+- **EC ADD_LINK** aggregates per-link result into a single response (#551).
+- **Misc.** `asio` sets `FD_CLOEXEC` on listen + UDP sockets (#552). `FileFunctions` bails out when `wxZipInputStream` stalls on a bad entry (#553). `GuiEvents` NULL-guards `ECNotifier` before dereferencing on download notifies (#554). `StatTree` stops double-counting session bytes (#555) and guards total ratio div-by-zero on fresh installs (#585). `KnownFileList` takes list_mut before opening `known.met.new` (#546) and closes a TOCTOU UAF window in `Save()` / `PruneDuplicates` (#690). `SharedFileList` takes `list_mut` around `m_keywords` ops in `Reload` and `Publish` so concurrent Kad publishes don't iterate a mid-mutation map (#686). `PrefsUnifiedDlg` flags user-home parents as sensitive (#599). amuleweb URL migration to `amule-org` and dead `amule.org` refs removed (#526).
+- **Tooling / type cleanup.** `fileview` CLogger stub extended with `IsEnabled()` for Debug builds (#657). `muleunit` adds missing override keywords (#664). Sockets `override` keyword sweep on `CEMSocket`-derived classes (#625). `WebServer` uses `vector::data()` in `CProgressImage::CreateSpan` (#684). Constant rename: `PR_VERYLOW` → `PR_VERY_LOW` (#97fcd3ae8); `PS_WAITINGFORHASH` → `PS_WAITING_FOR_HASH` (#2ae100b56). Webserver internal renames: `gaptag` / `parttag` / `reqtag` → `gap_tag` / `part_tag` / `req_tag` (#412f5aa27); `autoprio` → `auto_priority` (#f0bca611b). Backtrace internal rename: `s_abfd` → `s_a_bfd` (#5a576c3c1). Webserver enum typo fixes (#5a0d13718). Spelling sweeps across webserver (#fd823eff8, #0cda3b03c) and backtrace (#bb76d0ad8).
+- **PartFile.** `m_lastDateChanged` stamped on data arrival, not flush (#638). `FlushBuffer` size-correction guarded against closed fd (#609). `m_hpartfile` locked in `ReadData` + `AICHRecoveryDataAvailable` (#709). `HashSinglePart` bound-checked against partfile length (#130b0f495). Async hash enqueue gated on `IsComplete` (#c660e1281). Per-part hashing hardened against gap/disk-state drift (#560).
+- **Preferences.** No longer drops inaccessible shared dirs on load (#707); preserves unknown WebServer Template across GUI Save (#621); prefs/directories surfaces that the Incoming folder is shared (#631). `ExternalConnector` deletes `m_ECClient` in dtor to stop one-shot leak (#706).
+- **Listctrl polish.** `RefreshLines` skipped when range is outside visible (#624). Unfocused selection visible on themes where `BTNSHADOW == LISTBOX` (#646). LTR cell paint forced to fix RTL-locale glyph mirroring (#540).
+- **Search dialog.** Clipped Min/Max Size + Availability spin controls on Linux (#607, #82626f2f3). 10px-tall extension input field (#569 / #971310402).
+- **Misc UI.** `amuleDlg` re-Realizes toolbar after Show() to fix wxMSW long-locale clipping (#532). Hardcoded 20px height on the FastEd2kLinks bar dropped (#534, #c710c08fe). Icons migrated from `XPM #include` to `wxArtProvider` + embedded PNG (#537, #59d718818). Gtk-CRITICAL warnings on Preferences + Networks tabs silenced (#739).
+- **PartFileConvertDlg** collects ids before removing rows so `GetNextItem` stays valid (#649).
+- **SafeFile** oversized-string assertion demoted to debug log (#617).
+- **KnownFile.** Skip notify when `SetPublishedED2K` value didn't change (#dde5294fc). `m_duplicateFileList` growth bounded with a per-hash cap (#f33c56b44).
 
 ### Translations
 
@@ -140,6 +199,11 @@ Other platform integration work:
 - Catalan updated (#425).
 - Simplified Chinese updated (#348).
 - Translation pipeline: `scripts/update-po.sh` introduced.
+- **AI-assisted gap-fill** for it / fr / de / es app strings (#582) and man pages (#580).
+- **Spanish** further updates (cpp + docs, manpages rebuilt) (#655).
+- **French + Turkish** updated (#691) and added to the AppStream info file (#698, #86a08ffc7).
+- **Brazilian Portuguese (pt-BR)** added to metainfo (#86bafee35); metainfo screenshot URLs fixed (`amule/amule` → `amule-org/amule`, #cf84ec2c6); TODO comment syntax fix (`shell` → `XML`, #fc205619f).
+- **po regeneration** from updated sources + msgmerge across all locales (#c2bbea0ed).
 
 ### Bug Fixes & Stability
 
@@ -151,6 +215,14 @@ Other platform integration work:
 - `PartFileWriteThread` catches `CIOFailureException` so disk-full doesn't kill the process (#499).
 - StatTree fix (#319); totalizers added to download/upload stats (#338, #339).
 - Doc / source-comment typos cleanup (#297); missing include (#360).
+- **amuleweb crash with >65535 shared files** fixed (#700) with regression test (#61276d70d).
+- **CFile musl SIGSEGV + concurrent corruption** caught and fixed (#576) — musl's 128 KiB pthread stack interacted badly with the 64 KB userspace write buffer added in #573; a separate concurrent-corruption race on a shared write buffer was also fixed in the same PR.
+- **macOS link error** caused by implicit AppKit framework dependency now resolved by naming it explicitly (#578).
+- **Wake-from-sleep SIGSEGV** in asio socket impls — root cause `shared_from_this` lifetime gap (#596). NULL `m_socket` also guarded in UDP DispatchClose (#82b5400dc).
+- **WebUI** rate-limit fields no longer truncate at 16 bits (#645).
+- **PartFileConvertDlg** iteration invalidation crash (#649).
+- **amulegui** EC connect-timeout shutdown crash (#717).
+- **ExternalConnector** one-shot `m_ECClient` leak on dtor (#706).
 
 ### CI
 
@@ -171,15 +243,23 @@ Known caveats users should be aware of for this release:
 
 ### Contributors
 
-This release reflects 5+ years of work across 98 merged PRs. Particular thanks to:
+This release reflects 5+ years of work across 234 merged PRs (98 initial + 136 follow-ups through to the tag). Particular thanks to:
 
-- **got3nks** — 57 PRs, 125 commits.
-- **Marcelo Jimenez** (mrjimenez) — 12 PRs, 52 commits.
+- **got3nks** — 182 PRs.
+- **Marcelo Jimenez** (mrjimenez) — 17 PRs.
 - **Werner Mahr** (Vollstrecker) — 38 commits.
 - **Pablo Barciela** (sc0w) — 3 PRs, 17 commits.
 - **Dévai Tamás** (GonoszTopi) — 16 commits.
+- **Daniele Marcocci** (danim7) — 5 PRs across the follow-up cycle (translations, server pings, y2038, cmake polish).
+- **cardpuncher** — French + Turkish translations and AppStream entries (#691, #698).
 
-Plus contributions from RealGreenDragon, frnjjq, Sergi Amoros, Stefano Picerno, Alexander Tsoy, sergiomb2, puleglot, mercu01, lggcs, comio, danim7, MPolleke, mike2718, joebonrichie, matoro, dependabot, tbo47, SevC10, topotech, minterior, luzpaz, loongson-zn.
+Plus contributions from RealGreenDragon, frnjjq, Sergi Amoros, Stefano Picerno, Alexander Tsoy, sergiomb2, puleglot, mercu01, lggcs, comio, MPolleke, mike2718, joebonrichie, matoro, dependabot, tbo47, SevC10, topotech, minterior, luzpaz, loongson-zn.
+
+### Merged PRs in this release
+
+Complete list of PRs that landed for 3.0.0, in numerical order. The narrative sections above call out the most impactful changes; this index gives the full traceback.
+
+#286, #294, #297, #319, #338, #339, #343, #348, #360, #367, #368, #379, #385, #387, #419, #421, #424, #425, #429, #430, #436, #438, #439, #440, #441, #443, #446, #447, #448, #449, #451, #452, #453, #454, #456, #457, #458, #459, #460, #461, #462, #463, #464, #465, #466, #467, #468, #469, #470, #473, #474, #475, #476, #477, #478, #480, #481, #482, #483, #484, #485, #487, #488, #489, #490, #491, #492, #493, #494, #495, #496, #497, #498, #499, #500, #501, #502, #504, #505, #506, #507, #508, #509, #510, #511, #512, #513, #514, #515, #518, #526, #529, #530, #532, #534, #537, #540, #542, #543, #544, #545, #546, #547, #548, #549, #550, #551, #552, #553, #554, #555, #556, #557, #558, #560, #561, #563, #565, #566, #567, #569, #570, #571, #572, #573, #574, #576, #577, #578, #580, #581, #582, #584, #585, #591, #593, #594, #596, #598, #599, #603, #605, #606, #607, #609, #612, #613, #614, #615, #617, #618, #619, #620, #621, #623, #624, #625, #627, #629, #630, #631, #632, #633, #634, #638, #639, #645, #646, #647, #648, #649, #652, #653, #654, #655, #657, #660, #661, #662, #664, #667, #670, #671, #672, #675, #677, #678, #679, #681, #682, #683, #684, #686, #687, #689, #690, #691, #694, #695, #698, #700, #701, #702, #706, #707, #709, #710, #715, #716, #717, #718, #719, #721, #725, #726, #727, #728, #729, #730, #732, #733, #736, #739, #740, #743, #744.
 
 
 ---
