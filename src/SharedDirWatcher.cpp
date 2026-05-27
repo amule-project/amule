@@ -37,8 +37,13 @@
 namespace {
 
 // Watcher event mask used by every Add()/AddTree() call below.
+// WARNING + ERROR are subscribed so the backend can signal overflow /
+// dropped events (inotify queue exhaust, kqueue race, Windows
+// ReadDirectoryChangesW buffer exhaust); on those we fall back to a
+// bulk Reload() because incremental state can't be trusted.
 constexpr int kWatchMask = wxFSW_EVENT_CREATE | wxFSW_EVENT_DELETE |
-	wxFSW_EVENT_RENAME | wxFSW_EVENT_MODIFY;
+	wxFSW_EVENT_RENAME | wxFSW_EVENT_MODIFY |
+	wxFSW_EVENT_WARNING | wxFSW_EVENT_ERROR;
 
 #ifdef __WXOSX__
 // Returns true if `inner` is a strict descendant of `outer` (i.e. `inner`
@@ -91,7 +96,8 @@ END_EVENT_TABLE()
 CSharedDirWatcher::CSharedDirWatcher(CSharedFileList * parent) :
 	m_parent(parent),
 	m_watcher(NULL),
-	m_debounceTimer(this, ID_FSWATCHER_DEBOUNCE)
+	m_debounceTimer(this, ID_FSWATCHER_DEBOUNCE),
+	m_fallbackPending(false)
 #ifdef __APPLE__
 	, m_macPumpTimer(this, ID_FSWATCHER_MAC_PUMP)
 #endif
@@ -290,6 +296,31 @@ void CSharedDirWatcher::OnFileSystemEvent(wxFileSystemWatcherEvent & event)
 	const int changeType = event.GetChangeType();
 	const wxFileName & path = event.GetPath();
 
+	AddDebugLogLineN(logKnownFiles,
+		CFormat("Shared-dir watcher: event 0x%x on '%s'")
+			% changeType % path.GetFullPath());
+
+	// Watcher-backend overflow / drop signal. inotify reports
+	// IN_Q_OVERFLOW when its per-instance queue exhausts (typical
+	// cause: a multi-million-file `cp -r` into a watched tree),
+	// kqueue can drop on rapid rename storms, and Windows
+	// ReadDirectoryChangesW reports buffer exhaust the same way. In
+	// all three cases the watcher's incremental view of the tree is
+	// now stale, so we have to fall back to a full bulk Reload().
+	// This is the only path that re-walks every shared dir on a
+	// huge shareset (#745); rare in normal operation.
+	if (changeType & (wxFSW_EVENT_WARNING | wxFSW_EVENT_ERROR)) {
+		AddLogLineC(CFormat(
+			_("Shared-dir watcher: backend overflow/error (%s); "
+			  "falling back to full reload"))
+				% (event.GetErrorDescription().IsEmpty()
+					? wxString("unspecified")
+					: event.GetErrorDescription()));
+		m_fallbackPending = true;
+		ScheduleProcessing();
+		return;
+	}
+
 	// Auto-share new subdirectories of any watched path. A user who has
 	// already shared /Music gets new subdirs of /Music auto-included
 	// without having to revisit the prefs dialog. Existing subdirs that
@@ -299,13 +330,26 @@ void CSharedDirWatcher::OnFileSystemEvent(wxFileSystemWatcherEvent & event)
 		RegisterNewSubdirectory(path.GetFullPath());
 	}
 
-	// Any other event class still indicates "something interesting
-	// happened" — schedule a debounced Reload so the new state is
-	// reflected in the shared file list.
-	if (changeType & (wxFSW_EVENT_CREATE | wxFSW_EVENT_DELETE |
-			wxFSW_EVENT_RENAME | wxFSW_EVENT_MODIFY)) {
-		ScheduleReload();
+	// Per-path event accumulation. Coalesces a CREATE → MODIFY × N →
+	// CLOSE_WRITE burst on a single file into one dispatch entry.
+	const wxString rawPath = path.GetFullPath();
+	if (rawPath.IsEmpty()) {
+		return;
 	}
+
+	const int interesting = changeType & (wxFSW_EVENT_CREATE | wxFSW_EVENT_DELETE |
+		wxFSW_EVENT_RENAME | wxFSW_EVENT_MODIFY);
+	if (!interesting) {
+		return;
+	}
+
+	PendingPathEvents & slot = m_pendingEvents[rawPath];
+	slot.flags |= interesting;
+	if (changeType & wxFSW_EVENT_RENAME) {
+		slot.renamedTo = event.GetNewPath().GetFullPath();
+	}
+
+	ScheduleProcessing();
 }
 
 
@@ -440,11 +484,13 @@ void CSharedDirWatcher::ColdDiscoverSubdirs()
 
 	// The initial share-scan already ran (amule.cpp invokes Reload
 	// before EnableDirectoryWatcher), so the in-memory shared file
-	// list doesn't yet reflect the newly-discovered subdirs. Match
-	// the HOT path's behaviour and schedule a debounced Reload to
-	// pick up the files under each new subdir without blocking
-	// Enable().
-	ScheduleReload();
+	// list doesn't yet reflect the newly-discovered subdirs. We
+	// can't enumerate them via per-file events (they happened while
+	// the watcher was offline), so route through the fallback path:
+	// FlushPendingEvents will see m_fallbackPending and call the
+	// bulk Reload() once the debounce fires.
+	m_fallbackPending = true;
+	ScheduleProcessing();
 }
 
 
@@ -473,19 +519,86 @@ void CSharedDirWatcher::WalkForUnknownSubdirs(
 }
 
 
-void CSharedDirWatcher::ScheduleReload()
+void CSharedDirWatcher::ScheduleProcessing()
 {
 	// Restart the timer on every event, so a burst of N events within
-	// the debounce window collapses into one Reload at the end.
+	// the debounce window collapses into one flush at the end.
 	m_debounceTimer.Start(kDebounceMs, wxTIMER_ONE_SHOT);
 }
 
 
 void CSharedDirWatcher::OnDebounceTimer(wxTimerEvent & WXUNUSED(event))
 {
+	FlushPendingEvents();
+}
+
+
+void CSharedDirWatcher::FlushPendingEvents()
+{
+	// Fallback path: the watcher backend signalled it dropped events
+	// since the last flush. We can't trust the per-path deltas in
+	// m_pendingEvents because some events may never have been
+	// delivered. Drop the queue and fall back to a full Reload, which
+	// re-syncs everything from scratch at the cost of one expensive
+	// re-walk. Log at error level so the user sees it.
+	if (m_fallbackPending) {
+		AddLogLineC(_("Shared-dir watcher: events dropped by backend, "
+			"forcing a full shared-files reload to resync"));
+		m_pendingEvents.clear();
+		m_fallbackPending = false;
+		m_parent->Reload();
+		return;
+	}
+
+	if (m_pendingEvents.empty()) {
+		return;
+	}
+
 	AddDebugLogLineN(logKnownFiles,
-		"Shared-dir watcher: triggering Reload after debounce");
-	m_parent->Reload();
+		CFormat("Shared-dir watcher: applying %zu incremental delta(s) after debounce")
+			% m_pendingEvents.size());
+
+	// Drain into a local copy first so an inline call back into the
+	// watcher (e.g. via a Notify_* macro that pumps the event loop on
+	// some backends) can't mutate the container while we iterate.
+	std::unordered_map<wxString, PendingPathEvents> drained;
+	drained.swap(m_pendingEvents);
+
+	for (const auto & entry : drained) {
+		const wxString & path = entry.first;
+		const PendingPathEvents & ev = entry.second;
+
+		// RENAME first: if the destination is the same as the
+		// CREATE path elsewhere in the batch, the destination's
+		// own event slot will handle the add. Treat the rename as
+		// (delete-old) then schedule new-path processing.
+		if (ev.flags & wxFSW_EVENT_RENAME) {
+			m_parent->NotifyPathRemoved(path);
+			if (!ev.renamedTo.IsEmpty()) {
+				m_parent->NotifyPathAdded(ev.renamedTo);
+			}
+			continue;
+		}
+
+		// DELETE dominates: if a file was created AND deleted in
+		// the same window we don't want to add then remove; the
+		// remove-effect is the net result. Same path can carry
+		// multiple flags because fs-watcher fires DELETE for the
+		// rename's source on some backends.
+		if (ev.flags & wxFSW_EVENT_DELETE) {
+			m_parent->NotifyPathRemoved(path);
+			continue;
+		}
+
+		// CREATE → add. MODIFY-only without CREATE → modify (which
+		// in NotifyPathModified is a stat-and-rehash-if-changed
+		// path; cheap when nothing actually moved).
+		if (ev.flags & wxFSW_EVENT_CREATE) {
+			m_parent->NotifyPathAdded(path);
+		} else if (ev.flags & wxFSW_EVENT_MODIFY) {
+			m_parent->NotifyPathModified(path);
+		}
+	}
 }
 
 

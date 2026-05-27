@@ -22,6 +22,7 @@
 #include <wx/fswatcher.h>
 
 #include <set>
+#include <unordered_map>
 #include <vector>
 
 #include "Types.h"
@@ -68,6 +69,14 @@ public:
 	// start firing.
 	void Refresh();
 
+	// Event-type flags accumulated for one pending path between
+	// fs-watcher delivery and debounce-flush. Stored as ints so we
+	// don't have to expose wxFSW_EVENT_* in the header to includers.
+	struct PendingPathEvents {
+		int flags;            // bitmask of wxFSW_EVENT_CREATE/DELETE/MODIFY
+		wxString renamedTo;   // populated for RENAME; empty otherwise
+	};
+
 private:
 	void OnFileSystemEvent(wxFileSystemWatcherEvent & event);
 	void OnDebounceTimer(wxTimerEvent & event);
@@ -85,10 +94,18 @@ private:
 	// max_user_watches refusal doesn't blank the whole watcher).
 	void RegisterAllPaths();
 
-	// Coalesce a burst of FS events into a single Reload. Resets the
-	// 5-second timer on every new event; Reload runs when the timer
-	// finally fires.
-	void ScheduleReload();
+	// Coalesce a burst of FS events into per-path deltas applied on
+	// the debounce-timer flush. Resets the 5-second timer on every
+	// new event; processing runs when the timer finally fires.
+	void ScheduleProcessing();
+
+	// Walk m_pendingEvents and apply each one to CSharedFileList via
+	// NotifyPathAdded/Removed/Modified. Skipped if m_fallbackPending
+	// was set by a wxFSW_EVENT_WARNING / _ERROR event since the last
+	// flush -- in that case we fall back to the bulk Reload() because
+	// the watcher backend has signalled it dropped events and we
+	// can't trust our incremental view of the tree any more.
+	void FlushPendingEvents();
 
 	// Append a newly-created directory to shareddir_list (if not
 	// already there) and start watching it. Used for Option A's
@@ -120,6 +137,19 @@ private:
 	CSharedFileList *      m_parent;
 	wxFileSystemWatcher *  m_watcher;
 	wxTimer                m_debounceTimer;
+
+	// Per-path accumulator. Keyed on the raw filesystem path. Events
+	// coalesce per-path: a CREATE followed by N MODIFYs followed by
+	// CLOSE_WRITE on the same file becomes a single dispatch on the
+	// debounce flush. RENAME stores the destination in `renamedTo`.
+	std::unordered_map<wxString, PendingPathEvents>  m_pendingEvents;
+
+	// Set when the watcher backend reports overflow / drop (inotify
+	// queue overflow, kqueue race, Windows ReadDirectoryChangesW
+	// buffer exhaust). FlushPendingEvents() responds by calling the
+	// bulk Reload() because incremental state can no longer be
+	// trusted. Cleared after the fallback fires.
+	bool                   m_fallbackPending;
 #ifdef __APPLE__
 	wxTimer                m_macPumpTimer;
 #endif
