@@ -36,6 +36,7 @@
 #include <common/MD5Sum.h>
 
 #include "ExternalConn.h"			// Interface declarations
+#include "ECFullResponseCache.h"		// Needed for s_ec*FullCache
 #include "updownclient.h"			// Needed for CUpDownClient
 #include "Server.h"				// Needed for CServer
 #include "ServerList.h"				// Needed for CServerList
@@ -1065,6 +1066,42 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CFi
 }
 
 
+// Build a CEC_SharedFile_Tag for the per-file cache. The output is
+// self-contained — the encoder is reset before each Encode call in
+// FULL mode (see Get_EC_Response_GetSharedFiles), so a local encoder
+// suffices. Caller owns the returned tag.
+static CECTag *BuildSharedFileCacheTag(const void *file_v)
+{
+	const CKnownFile *cur_file = static_cast<const CKnownFile *>(file_v);
+	CEC_SharedFile_Tag *filetag = new CEC_SharedFile_Tag(cur_file, EC_DETAIL_FULL);
+	CKnownFile_Encoder enc(cur_file);
+	enc.ResetEncoder();
+	enc.Encode(filetag);
+	return filetag;
+}
+
+
+// Same shape for partfiles.
+static CECTag *BuildPartFileCacheTag(const void *file_v)
+{
+	const CPartFile *cur_file = static_cast<const CPartFile *>(file_v);
+	CEC_PartFile_Tag *filetag = new CEC_PartFile_Tag(cur_file, EC_DETAIL_FULL);
+	CPartFile_Encoder enc(cur_file);
+	enc.ResetEncoder();
+	enc.Encode(filetag);
+	return filetag;
+}
+
+
+// Two daemon-wide caches. Each holds one pre-serialized blob per file
+// in its domain, freshness-stamped with the file's m_ecGen at build
+// time. A request rebuilds only entries whose file gen has advanced
+// past the cached gen — the same per-file freshness primitive the
+// INC_UPDATE path uses.
+static CECFullResponseCache s_sharedFilesFullCache(BuildSharedFileCacheTag);
+static CECFullResponseCache s_downloadQueueFullCache(BuildPartFileCacheTag);
+
+
 static CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 {
 	CECPacket *response = NULL;
@@ -1716,6 +1753,34 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 		//
 		//
 		case EC_OP_GET_SHARED_FILES:
+			if ( request->GetDetailLevel() == EC_DETAIL_FULL
+				&& CTagSet<uint32, EC_TAG_KNOWNFILE>(request).empty()
+				&& (m_my_flags & EC_FLAG_UTF8_NUMBERS)
+				&& (m_my_flags & EC_FLAG_LARGE_TAG_COUNT) ) {
+				// Per-file bytes cache. Daemon-wide map<ECID, bytes>
+				// keyed off CKnownFile::s_globalEcGen; rebuilds only
+				// per-file entries whose gen advanced since last use.
+				// Concatenated and written through the connection's
+				// socket with the same per-connection compression
+				// machinery WritePacket uses.
+				std::vector<CKnownFile*> snapshot;
+				theApp->sharedfiles->CopyFileList(snapshot);
+				std::vector<CECFullResponseCache::FileRef> refs;
+				refs.reserve(snapshot.size());
+				for (size_t i = 0; i < snapshot.size(); ++i) {
+					if (!snapshot[i]) continue;
+					CECFullResponseCache::FileRef r;
+					r.file = snapshot[i];
+					r.ecid = snapshot[i]->ECID();
+					r.gen = snapshot[i]->GetECGen();
+					refs.push_back(r);
+				}
+				std::vector<std::shared_ptr<const std::vector<unsigned char> > > blobs
+					= s_sharedFilesFullCache.GetBlobs(refs);
+				s_sharedFilesFullCache.PruneOutsideOf(refs);
+				SendCachedBodyResponse(EC_OP_SHARED_FILES, blobs);
+				return NULL;
+			}
 			if ( request->GetDetailLevel() != EC_DETAIL_INC_UPDATE ) {
 				response = Get_EC_Response_GetSharedFiles(request, m_FileEncoder,
 					m_lastEcGenSeenShared,
@@ -1723,6 +1788,28 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			}
 			break;
 		case EC_OP_GET_DLOAD_QUEUE:
+			if ( request->GetDetailLevel() == EC_DETAIL_FULL
+				&& CTagSet<uint32, EC_TAG_PARTFILE>(request).empty()
+				&& (m_my_flags & EC_FLAG_UTF8_NUMBERS)
+				&& (m_my_flags & EC_FLAG_LARGE_TAG_COUNT) ) {
+				std::vector<CPartFile*> snapshot;
+				theApp->downloadqueue->CopyFileList(snapshot);
+				std::vector<CECFullResponseCache::FileRef> refs;
+				refs.reserve(snapshot.size());
+				for (size_t i = 0; i < snapshot.size(); ++i) {
+					if (!snapshot[i]) continue;
+					CECFullResponseCache::FileRef r;
+					r.file = snapshot[i];
+					r.ecid = snapshot[i]->ECID();
+					r.gen = snapshot[i]->GetECGen();
+					refs.push_back(r);
+				}
+				std::vector<std::shared_ptr<const std::vector<unsigned char> > > blobs
+					= s_downloadQueueFullCache.GetBlobs(refs);
+				s_downloadQueueFullCache.PruneOutsideOf(refs);
+				SendCachedBodyResponse(EC_OP_DLOAD_QUEUE, blobs);
+				return NULL;
+			}
 			if ( request->GetDetailLevel() != EC_DETAIL_INC_UPDATE ) {
 				response = Get_EC_Response_GetDownloadQueue(request, m_FileEncoder,
 					m_lastEcGenSeenPart,

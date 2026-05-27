@@ -865,6 +865,132 @@ uint32 CECSocket::WritePacket(const CECPacket *packet)
 }
 
 
+void CECSocket::SendCachedBodyResponse(uint8_t opcode,
+	const std::vector<std::shared_ptr<const std::vector<unsigned char> > > &blobs)
+{
+	if (SocketRealError()) {
+		OnError();
+		return;
+	}
+
+	// Remember where in the output queue our bytes start, so the
+	// length-patch at the end touches the right CQueuedData.
+	std::list<CQueuedData*>::iterator outputStart = m_output_queue.begin();
+	uint32 outputQueueSize = m_output_queue.size();
+	for (uint32 i = 1; i < outputQueueSize; i++) {
+		++outputStart;
+	}
+
+	// Sum the pre-serialized body length. Used both for the local-ZLIB-
+	// bypass decision and as a budget hint — the actual on-wire length
+	// is computed from the queue after FlushBuffers below.
+	uint32 body_bytes = 0;
+	for (size_t i = 0; i < blobs.size(); ++i) {
+		if (blobs[i]) {
+			body_bytes += (uint32)blobs[i]->size();
+		}
+	}
+
+	// Same flag-byte logic as WritePacket. Cached blobs were
+	// serialized assuming UTF-8 numbers + LARGE_TAG_COUNT, so both
+	// bits must end up in the wire flag; we OR them in unconditionally
+	// and then mask against m_my_flags — callers should only invoke
+	// this method on connections that negotiated both capabilities.
+	uint32_t flags = 0x20;
+	const bool local_bypass_zlib = m_isLocalPeer
+		&& body_bytes <= kLocalPeerZlibBypassMax;
+	if (body_bytes > EC_MAX_UNCOMPRESSED
+		&& ((m_my_flags & EC_FLAG_ZLIB) > 0)
+		&& !local_bypass_zlib) {
+		flags |= EC_FLAG_ZLIB;
+	}
+	flags |= EC_FLAG_UTF8_NUMBERS;
+	flags |= EC_FLAG_LARGE_TAG_COUNT;
+	flags &= m_my_flags;
+	m_tx_flags = flags;
+
+	if (flags & EC_FLAG_ZLIB) {
+		m_z.zalloc = Z_NULL;
+		m_z.zfree = Z_NULL;
+		m_z.opaque = Z_NULL;
+		m_z.avail_in = 0;
+		m_z.next_in = &m_in_ptr[0];
+		int zerror = deflateInit(&m_z, EC_COMPRESSION_LEVEL);
+		if (zerror != Z_OK) {
+			flags &= ~EC_FLAG_ZLIB;
+			ShowZError(zerror, &m_z);
+		}
+	}
+
+	uint32_t tmp_flags = ENDIAN_HTONL(flags);
+	WriteBufferToSocket(&tmp_flags, sizeof(uint32));
+
+	// Length placeholder, patched below once we know the final body size.
+	uint32_t packet_len = 0;
+	WriteBufferToSocket(&packet_len, sizeof(uint32));
+
+	// Opcode (uint8). Goes through WriteNumber so UTF-8 encoding is
+	// applied consistent with the rest of the body.
+	WriteNumber(&opcode, sizeof(uint8_t));
+
+	// Children count framing mirrors CECTag::WriteChildren: under
+	// LARGE_TAG_COUNT use the sentinel-extended format for counts at
+	// or above 0xFFFF; otherwise emit uint16 directly (with the
+	// 0xFFFE cap that the spec uses for backward-compat).
+	const size_t count = blobs.size();
+	const bool useLargeCount = (flags & EC_FLAG_LARGE_TAG_COUNT) != 0;
+	const size_t writeCount = useLargeCount
+		? count
+		: std::min(count, (size_t)0xFFFE);
+	if (useLargeCount && count >= 0xFFFF) {
+		uint16 marker = 0xFFFF;
+		WriteNumber(&marker, sizeof(marker));
+		uint32 tmp32 = (uint32)count;
+		WriteNumber(&tmp32, sizeof(tmp32));
+	} else {
+		uint16 tmp16 = (uint16)writeCount;
+		WriteNumber(&tmp16, sizeof(tmp16));
+	}
+
+	// Per-file blobs are already wire-format byte streams (one full
+	// child tag each). Feed them through WriteBuffer in one call —
+	// WriteBuffer handles deflate when EC_FLAG_ZLIB is set in m_tx_flags.
+	size_t emitted = 0;
+	for (size_t i = 0; i < count && emitted < writeCount; ++i) {
+		if (blobs[i] && !blobs[i]->empty()) {
+			WriteBuffer(blobs[i]->data(), blobs[i]->size());
+		}
+		++emitted;
+	}
+
+	FlushBuffers();
+
+	if (outputQueueSize) {
+		++outputStart;
+	} else {
+		outputStart = m_output_queue.begin();
+	}
+	uint32 actual_len = 0;
+	for (std::list<CQueuedData*>::iterator it = outputStart;
+		it != m_output_queue.end(); ++it) {
+		actual_len += (uint32_t)(*it)->GetDataLength();
+	}
+	actual_len -= EC_HEADER_SIZE;
+	uint32 patch_len_E = ENDIAN_HTONL(actual_len);
+	(*outputStart)->WriteAt(&patch_len_E, 4, 4);
+
+	if (flags & EC_FLAG_ZLIB) {
+		int zerror = deflateEnd(&m_z);
+		if (zerror != Z_OK) {
+			AddDebugLogLineN(logEC, "SendCachedBodyResponse: ZLib error");
+			ShowZError(zerror, &m_z);
+		}
+	}
+
+	OnOutput();
+}
+
+
 const CECPacket *CECSocket::ReadPacket()
 {
 	CECPacket *packet = 0;

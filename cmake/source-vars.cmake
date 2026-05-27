@@ -18,6 +18,7 @@ if (BUILD_MONOLITHIC OR BUILD_DAEMON)
 		DownloadBandwidthThrottler.cpp
 		DownloadClient.cpp
 		DownloadQueue.cpp
+		ECFullResponseCache.cpp
 		ECSpecialCoreTags.cpp
 		EMSocket.cpp
 		EncryptedStreamSocket.cpp
