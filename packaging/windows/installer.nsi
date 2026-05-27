@@ -334,7 +334,12 @@ SectionEnd
 ; who installed; multi-user machines need each user to run the
 ; uninstaller themselves to clean their own profile (unavoidable, no
 ; way for an elevated process to enumerate every desktop session).
-Section /o "Remove user data (config, ED2K servers, Kad nodes, partfiles)" un.SecRemoveUserData
+; NSIS dispatch rule: the `un.` prefix on the DISPLAY NAME (first
+; arg) is what marks a Section as an uninstaller section — the ID
+; alone is not enough. NSIS strips `un.` from the rendered label, so
+; the user sees "Remove user data..." in the uninstaller's Components
+; page.
+Section /o "un.Remove user data (config, ED2K servers, Kad nodes, partfiles)" un.SecRemoveUserData
   SetShellVarContext current
   ${If} ${FileExists} "$APPDATA\aMule"
     DetailPrint "Removing user data at $APPDATA\aMule..."
