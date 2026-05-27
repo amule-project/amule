@@ -1,8 +1,13 @@
-# Windows portable .zip
+# Windows portable .zip + installer
 
 Builds a portable aMule directory tree (`bin/{amule,amuled,amulegui,
 amulecmd}.exe` + bundled MSYS2 DLLs + `ca-bundle.crt`) and zips it.
 Users extract the zip and run `amule.exe`; no installer required.
+
+An optional NSIS-driven installer .exe (see [Installer](#installer-exe)
+below) wraps the same portable tree with shortcuts, an Add/Remove
+Programs entry, and an opt-in "autostart on login" toggle for users
+who prefer that flow.
 
 ## One-shot build
 
@@ -78,6 +83,55 @@ packaging/windows/build.sh sign     # signs every .exe + .dll, re-zips
 
 When *either* var is unset, sign exits 0 silently. CI flips the
 switch by setting both as repo secrets.
+
+## Installer (.exe)
+
+Wraps the portable tree from the previous step into a single
+`aMule-<version>-Setup-<arch>.exe` driven by NSIS 3.x (MUI2). Produced
+on demand:
+
+```sh
+packaging/windows/build.sh              # build the portable tree first
+packaging/windows/build.sh installer    # then wrap it
+
+# Result: ./dist/aMule-<version>-Setup-<arch>.exe
+```
+
+Requires `makensis` on `PATH`. NSIS isn't packaged for every MSYS2
+environment (in particular there's no `clangarm64` build at the time
+of writing), so install the Windows-native NSIS 3.x from
+<https://nsis.sourceforge.io/> (or `choco install nsis`) and add its
+install dir — typically `C:\Program Files (x86)\NSIS` — to `PATH`
+before running the MSYS2 shell. The installer step re-uses the staged
+`amule-portable-<arch>/` directory verbatim as its payload; it does
+not re-resolve dependencies.
+
+What the installer does:
+
+- Stages the portable tree under `%ProgramFiles%\aMule` (default, user
+  overridable on the Directory page).
+- Creates Start Menu shortcuts for aMule (GUI), aMuleD (daemon),
+  aMuleGUI (remote), and the uninstaller.
+- Optional desktop shortcut (checked by default).
+- Optional "Start aMule when I log in" toggle (unchecked by default)
+  that writes `HKCU\…\Run\aMule` — per-user, so each user on a shared
+  machine decides independently.
+- Registers an Add/Remove Programs entry with publisher, version,
+  install location, estimated size, and a working uninstaller.
+- Uninstaller removes everything the installer placed, including the
+  HKCU Run value (only when it still points inside the install dir,
+  so a hand-set value isn't clobbered).
+
+Per-machine install (requires admin). Coexists with the portable .zip
+— different artifact name, different default install path; the two
+are independent shipping channels.
+
+Signing is the same one-switch flip as the .zip: set
+`WIN_CERT_PFX_BASE64` + `WIN_CERT_PASSWORD` and either let the
+`installer` subcommand sign the produced .exe inline (it does so
+automatically when both vars are set), or run
+`packaging/windows/build.sh sign` once — that subcommand signs both
+the portable .zip and the installer .exe when both exist in `dist/`.
 
 ## Updating tool / dep pins
 

@@ -9,12 +9,15 @@ set -euo pipefail
 
 usage() {
     cat >&2 <<EOF
-usage: $0 [build|sign]
+usage: $0 [build|installer|sign]
 
-  build   default action: cmake configure → build → install portable tree →
-          zip into dist/. Idempotent; reuses existing build/ if present.
-  sign    signtool the .exe files inside the produced zip (and re-zip).
-          Skipped automatically if WIN_CERT_* env vars aren't set.
+  build      default action: cmake configure → build → install portable tree →
+             zip into dist/. Idempotent; reuses existing build/ if present.
+  installer  build the NSIS installer .exe on top of an already-staged
+             portable tree (run \`$0\` first). Idempotent.
+  sign       signtool the .exe files inside the produced zip (and the
+             installer .exe if present). Skipped silently when WIN_CERT_*
+             env vars aren't set.
 EOF
     exit 64
 }
@@ -52,6 +55,7 @@ mkdir -p "${DIST_DIR}"
 
 VERSION=$(cd "${REPO_ROOT}" && git describe --tags --always 2>/dev/null || echo "snapshot")
 ZIP_NAME="aMule-${VERSION}-Windows-${ARCH}.zip"
+INSTALLER_NAME="aMule-${VERSION}-Setup-${ARCH}.exe"
 
 require_tool() {
     command -v "$1" >/dev/null || {
@@ -122,12 +126,76 @@ build() {
     echo "==> Produced ${DIST_DIR}/${ZIP_NAME} (${size_mb} MB)"
 }
 
-sign_zip() {
+installer() {
+    # NSIS isn't packaged for every MSYS2 environment (no clangarm64
+    # build at the time of writing), so the recommended path is the
+    # Windows-native installer from https://nsis.sourceforge.io/.
+    # MSYS2's default path-type=minimal drops the Windows PATH from
+    # the bash session — auto-discover at the standard install dir so
+    # callers (CI and dev machines alike) don't have to plumb $PATH.
+    if ! command -v makensis >/dev/null; then
+        for d in "/c/Program Files (x86)/NSIS" "/c/Program Files/NSIS"; do
+            if [[ -x "$d/makensis.exe" ]]; then
+                export PATH="$d:${PATH}"
+                break
+            fi
+        done
+    fi
+    if ! command -v makensis >/dev/null; then
+        echo "fatal: 'makensis' not on PATH and not found at standard install dirs." >&2
+        echo "       install NSIS 3.x from https://nsis.sourceforge.io/" >&2
+        echo "       (or 'choco install nsis'), then re-run." >&2
+        exit 1
+    fi
+
+    if [[ ! -d "${PORTABLE_DIR}" ]]; then
+        echo "fatal: portable tree ${PORTABLE_DIR} not found." >&2
+        echo "       run '$0' first to build the portable .zip payload." >&2
+        exit 1
+    fi
+    if [[ ! -x "${PORTABLE_DIR}/bin/amule.exe" ]]; then
+        echo "fatal: ${PORTABLE_DIR}/bin/amule.exe missing — portable tree is incomplete." >&2
+        exit 1
+    fi
+
+    # Copy the project license into the portable tree so the MUI2
+    # License page can reference a path under INSTROOT (keeps the
+    # installer self-contained and the .nsi relocatable).
+    cp "${REPO_ROOT}/docs/COPYING" "${PORTABLE_DIR}/COPYING.txt"
+
+    local out="${DIST_DIR}/${INSTALLER_NAME}"
+    rm -f "${out}"
+
+    echo "==> Producing ${INSTALLER_NAME}"
+    makensis \
+        "-DINSTROOT=${PORTABLE_DIR}" \
+        "-DARCH=${ARCH}" \
+        "-DVERSION=${VERSION}" \
+        "-DOUTFILE=${out}" \
+        "-DICONFILE=${REPO_ROOT}/amule.ico" \
+        "${SCRIPT_DIR}/installer.nsi"
+
+    local size_mb=$(( $(stat -c%s "${out}" 2>/dev/null || stat -f%z "${out}") / 1024 / 1024 ))
+    echo "==> Produced ${out} (${size_mb} MB)"
+
+    # Auto-sign when both secrets are populated; silent no-op otherwise.
+    if [[ -n "${WIN_CERT_PFX_BASE64:-}" && -n "${WIN_CERT_PASSWORD:-}" ]]; then
+        "${SCRIPT_DIR}/sign.sh" "${out}"
+    fi
+}
+
+sign_artifacts() {
     "${SCRIPT_DIR}/sign.sh" "${DIST_DIR}/${ZIP_NAME}"
+    # Sign the installer too when present, so a single `sign` covers
+    # both shipping artifacts.
+    if [[ -f "${DIST_DIR}/${INSTALLER_NAME}" ]]; then
+        "${SCRIPT_DIR}/sign.sh" "${DIST_DIR}/${INSTALLER_NAME}"
+    fi
 }
 
 case "${1:-build}" in
-    build) build ;;
-    sign)  sign_zip ;;
-    *)     usage ;;
+    build)     build ;;
+    installer) installer ;;
+    sign)      sign_artifacts ;;
+    *)         usage ;;
 esac
