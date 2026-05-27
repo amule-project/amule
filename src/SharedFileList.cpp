@@ -27,6 +27,7 @@
 #include "SharedDirWatcher.h"
 
 #include <map>
+#include <unordered_set>
 
 #include <protocol/Protocols.h>
 #include <protocol/kad/Constants.h>
@@ -1202,6 +1203,14 @@ bool CSharedFileList::IsShared(const CPath& path) const
 
 void CSharedFileList::CheckAICHHashes(const std::list<CAICHHash>& hashes)
 {
+	// Index the master-hash list up front: the inner check is otherwise a
+	// linear std::find over `hashes` for every shared file, making the whole
+	// loop O(N*M). On sharesets of 100 k+ files (issue #745) that walk holds
+	// `list_mut` long enough to freeze the GUI for minutes. An unordered_set
+	// keyed on CAICHHash (std::hash specialisation in SHAHashSet.h) makes
+	// each lookup O(1) average and drops the total to O(N + M).
+	const std::unordered_set<CAICHHash> hashIndex(hashes.begin(), hashes.end());
+
 	wxMutexLocker locker(list_mut);
 
 	// Now we check that all files which are in the sharedfilelist have a
@@ -1214,7 +1223,7 @@ void CSharedFileList::CheckAICHHashes(const std::list<CAICHHash>& hashes)
 			CAICHHashSet* hashset = file->GetAICHHashset();
 
 			if (hashset->GetStatus() == AICH_HASHSETCOMPLETE) {
-				if (std::find(hashes.begin(), hashes.end(), hashset->GetMasterHash()) != hashes.end()) {
+				if (hashIndex.count(hashset->GetMasterHash()) > 0) {
 					continue;
 				}
 			}
