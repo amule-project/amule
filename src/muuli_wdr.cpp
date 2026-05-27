@@ -2074,7 +2074,7 @@ wxSizer *ServerInfoLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
 
-    CMuleTextCtrl *item2 = new CMuleTextCtrl( parent, ID_SERVERINFO, "", wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL );
+    CMuleTextCtrl *item2 = new CMuleTextCtrl( parent, ID_SERVERINFO, "", wxDefaultPosition, wxSize(200, 100), wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL );
     item1->Add( item2, wxSizerFlags(1).Expand().CenterHorizontal() );
     wxButton *item3 = new wxButton( parent, ID_BTN_RESET_SERVER, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->SetToolTip( _("Click this button to reset the log.") );
@@ -2096,7 +2096,7 @@ wxSizer *aMuleLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
 
-    CMuleTextCtrl *item2 = new CMuleTextCtrl( parent, ID_LOGVIEW, "", wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL|wxTE_RICH2 );
+    CMuleTextCtrl *item2 = new CMuleTextCtrl( parent, ID_LOGVIEW, "", wxDefaultPosition, wxSize(200, 100), wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL|wxTE_RICH2 );
     item1->Add( item2, wxSizerFlags(1).Expand().CenterHorizontal() );
     wxButton *item3 = new wxButton( parent, ID_BTN_RESET, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->SetToolTip( _("Click this button to reset the log.") );
@@ -2156,7 +2156,7 @@ wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
     wxButton *item14 = new wxButton( parent, IDC_ED2KDISCONNECT, _("Disconnect"), wxDefaultPosition, wxDefaultSize, 0 );
     item5->Add( item14, wxSizerFlags().Center().Border(wxLEFT|wxRIGHT, 5) );
     item0->Add( item5, wxSizerFlags().Expand().CenterVertical() );
-    CServerListCtrl *item15 = new CServerListCtrl( parent, ID_SERVERLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
+    CServerListCtrl *item15 = new CServerListCtrl( parent, ID_SERVERLIST, wxDefaultPosition, wxSize(200, 100), wxLC_REPORT|wxSUNKEN_BORDER );
     item0->Add( item15, wxSizerFlags(1).Expand().CenterVertical() );
     if (set_sizer)
     {
@@ -2329,7 +2329,7 @@ wxSizer *ED2K_Info( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxListCtrl *item1 = new wxListCtrl( parent, ID_ED2KINFO, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_NO_HEADER|wxSUNKEN_BORDER );
+    wxListCtrl *item1 = new wxListCtrl( parent, ID_ED2KINFO, wxDefaultPosition, wxSize(200, 100), wxLC_REPORT|wxLC_NO_HEADER|wxSUNKEN_BORDER );
     item0->Add( item1, wxSizerFlags(1).Expand().CenterVertical().Border(wxALL, 5) );
     if (set_sizer)
     {
@@ -2704,7 +2704,7 @@ wxSizer *Kad_Info( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxListCtrl *item1 = new wxListCtrl( parent, ID_KADINFO, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_NO_HEADER|wxSUNKEN_BORDER );
+    wxListCtrl *item1 = new wxListCtrl( parent, ID_KADINFO, wxDefaultPosition, wxSize(200, 100), wxLC_REPORT|wxLC_NO_HEADER|wxSUNKEN_BORDER );
     item0->Add( item1, wxSizerFlags(1).Expand().CenterVertical().Border(wxALL, 5) );
     if (set_sizer)
     {
