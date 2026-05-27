@@ -240,10 +240,18 @@ Section "Desktop shortcut" SecDesktop
     "$INSTDIR\bin\amule.exe" "" "$INSTDIR\bin\amule.exe" 0
 SectionEnd
 
-; HKCU (per-user) so each user on a shared machine opts in independently.
+; Delegate to the same code path the Preferences → General checkbox
+; uses. AutostartManager owns the OS-specific store (HKCU Run on
+; Windows today; macOS LaunchAgent / Linux XDG .desktop on those
+; targets), so this section stays one line regardless of which
+; backend evolves how. Caveat preserved from the prior direct
+; WriteRegStr: HKCU resolves to the elevated context's hive — if a
+; non-admin user enters a different admin's password at UAC, the
+; entry goes to that admin's HKCU. Same behavior as before; fixing
+; it cleanly needs the UAC.dll plugin which isn't worth pulling in
+; for an opt-in single-machine convenience.
 Section /o "Start aMule when I log in" SecAutostart
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Run" \
-    "aMule" '"$INSTDIR\bin\amule.exe"'
+  ExecWait '"$INSTDIR\bin\amule.exe" --configure-autostart on'
 SectionEnd
 
 ; Component descriptions surfaced on the Components page.
