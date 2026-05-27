@@ -29,6 +29,7 @@
 #include <functional>
 #include <list>
 #include <map>
+#include <unordered_map>
 #include <wx/thread.h>		// Needed for wxMutex
 
 #include "Types.h"		// Needed for uint16 and uint64
@@ -122,10 +123,39 @@ public:
 	 */
 	void	EnableDirectoryWatcher(bool enable);
 
+	// Incremental-rescan entry points used by CSharedDirWatcher to apply
+	// a single fs-watcher event without re-walking every shared dir.
+	// fullPath is the raw filesystem path of the affected entry.
+	//
+	// NotifyPathAdded queues a hashing task for an unknown file, no-ops
+	// if the file is already shared. NotifyPathRemoved looks the path up
+	// in m_pathIndex and detaches the matching CKnownFile from the
+	// shared list. NotifyPathModified treats a content-change as
+	// remove-then-add when mtime/size have shifted (otherwise no-op).
+	//
+	// All three are safe to call from the wxFileSystemWatcher event
+	// thread (i.e. wx's main thread on every supported backend), and
+	// take list_mut internally via AddFile/RemoveFile.
+	void	NotifyPathAdded(const wxString& fullPath);
+	void	NotifyPathRemoved(const wxString& fullPath);
+	void	NotifyPathModified(const wxString& fullPath);
+
 private:
 	typedef std::list<CThreadTask *> TaskList;
 
 	bool	AddFile(CKnownFile* pFile);
+	// Per-path attach: stat fname under directory, look it up in
+	// known.met, and either AddFile() the existing CKnownFile or push
+	// a CHashingTask onto hashTasks. Shared between the bulk-Reload
+	// directory walk and the per-event watcher dispatch so the two
+	// paths agree on what counts as shareable.
+	enum AddPathResult {
+		kAddPathSkipped,    // broken link, zero size, stat failed
+		kAddPathKnown,      // matched a CKnownFile, attached (or already attached)
+		kAddPathQueued      // unknown file, CHashingTask pushed
+	};
+	AddPathResult	AddPathToShares(const CPath& directory, const CPath& fname,
+		TaskList & hashTasks);
 	// scanned/aborted are in/out: the caller passes a running count
 	// and a flag that the dir walker flips on abort. Lets a single
 	// counter span all paths in one Reload() pass.
@@ -141,6 +171,13 @@ private:
 	CKnownFileList*	filelist;
 
 	CKnownFileMap		m_Files_map;
+	// Secondary index keyed by full path so the watcher can resolve a
+	// DELETE/RENAME event to its CKnownFile* in O(1) without walking
+	// m_Files_map. Maintained alongside m_Files_map in AddFile() and
+	// RemoveFile(); both insertion and erase happen under list_mut so
+	// the two stay consistent. Key is the file's current
+	// GetFilePath().JoinPaths(GetFileName()) raw string.
+	std::unordered_map<wxString, CKnownFile*>  m_pathIndex;
 	mutable wxMutex		list_mut;
 
 	StringPathMap m_PublicSharedDirNames;  //! used for mapping strings to shared directories

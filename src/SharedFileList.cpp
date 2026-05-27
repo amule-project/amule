@@ -471,55 +471,11 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 		} else if (!yieldCb) {
 			++scanned;
 		}
-		CPath fullPath = directory.JoinPaths(fname);
 
-		if (!fullPath.FileExists()) {
-			AddDebugLogLineN(logKnownFiles,
-				CFormat("Shared file does not exist (possibly a broken link): %s") % fullPath);
-			continue;
-		}
-
-		AddDebugLogLineN(logKnownFiles,
-			CFormat("Found shared file: %s") % fullPath);
-
-		time_t fdate = CPath::GetModificationTime(fullPath);
-		sint64 fsize = fullPath.GetFileSize();
-
-		// This will also catch files with too strict permissions.
-		if ((fdate == (time_t)-1) || (fsize == wxInvalidOffset)) {
-			AddDebugLogLineN(logKnownFiles,
-				CFormat("Failed to retrieve modification time or size for '%s', skipping.") % fullPath);
-			continue;
-		}
-
-		if (fsize == 0) {
-			AddDebugLogLineN(logKnownFiles,
-				CFormat("Skip zero size file '%s'") % fullPath);
-			continue;
-		}
-
-
-		CKnownFile* toadd = filelist->FindKnownFile(fname, fdate, fsize);
-		if (toadd) {
-			knownFiles++;
-			if (AddFile(toadd)) {
-				AddDebugLogLineN(logKnownFiles,
-					CFormat("Added known file '%s' to shares")
-						% fname);
-
-				toadd->SetFilePath(directory);
-			} else {
-				AddDebugLogLineN(logKnownFiles,
-					CFormat("File already shared, skipping: %s")
-						% fname);
-			}
-		} else {
-			//not in knownfilelist - start adding thread to hash file
-			AddDebugLogLineN(logKnownFiles,
-				CFormat("Hashing new unknown shared file '%s'") % fname);
-
-			hashTasks.push_back(new CHashingTask(directory, fname));
-			addedFiles++;
+		switch (AddPathToShares(directory, fname, hashTasks)) {
+			case kAddPathQueued:  addedFiles++; break;
+			case kAddPathKnown:   knownFiles++; break;
+			case kAddPathSkipped: break;
 		}
 	}
 
@@ -529,6 +485,77 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 	}
 
 	return addedFiles;
+}
+
+
+// Per-path attach. Three outcomes:
+//   kAddPathSkipped — broken link, zero size, stat failed; do nothing.
+//   kAddPathKnown   — matched a CKnownFile in known.met and was either
+//                     newly attached to the shared list or already there.
+//   kAddPathQueued  — unknown file; a CHashingTask was pushed into
+//                     hashTasks. The shared-list attach happens later
+//                     when the hashing thread finishes and calls
+//                     SafeAddKFile() on the resulting CKnownFile.
+//
+// Shared between the bulk directory walk (AddFilesFromDirectory above)
+// and the incremental watcher path (NotifyPathAdded below) so the two
+// agree on shareability rules.
+CSharedFileList::AddPathResult
+CSharedFileList::AddPathToShares(const CPath& directory, const CPath& fname,
+	TaskList & hashTasks)
+{
+	CPath fullPath = directory.JoinPaths(fname);
+
+	if (!fullPath.FileExists()) {
+		AddDebugLogLineN(logKnownFiles,
+			CFormat("Shared file does not exist (possibly a broken link): %s") % fullPath);
+		return kAddPathSkipped;
+	}
+
+	AddDebugLogLineN(logKnownFiles,
+		CFormat("Found shared file: %s") % fullPath);
+
+	time_t fdate = CPath::GetModificationTime(fullPath);
+	sint64 fsize = fullPath.GetFileSize();
+
+	// This will also catch files with too strict permissions.
+	if ((fdate == (time_t)-1) || (fsize == wxInvalidOffset)) {
+		AddDebugLogLineN(logKnownFiles,
+			CFormat("Failed to retrieve modification time or size for '%s', skipping.") % fullPath);
+		return kAddPathSkipped;
+	}
+
+	if (fsize == 0) {
+		AddDebugLogLineN(logKnownFiles,
+			CFormat("Skip zero size file '%s'") % fullPath);
+		return kAddPathSkipped;
+	}
+
+	CKnownFile* toadd = filelist->FindKnownFile(fname, fdate, fsize);
+	if (toadd) {
+		// Set the path BEFORE AddFile so the path index that AddFile
+		// maintains keys off the file's current GetFilePath() rather
+		// than whatever stale path was stamped on the CKnownFile by
+		// a previous shared-list membership.
+		toadd->SetFilePath(directory);
+		if (AddFile(toadd)) {
+			AddDebugLogLineN(logKnownFiles,
+				CFormat("Added known file '%s' to shares")
+					% fname);
+		} else {
+			AddDebugLogLineN(logKnownFiles,
+				CFormat("File already shared, skipping: %s")
+					% fname);
+		}
+		return kAddPathKnown;
+	}
+
+	// Not in knownfilelist - start adding thread to hash file.
+	AddDebugLogLineN(logKnownFiles,
+		CFormat("Hashing new unknown shared file '%s'") % fname);
+
+	hashTasks.push_back(new CHashingTask(directory, fname));
+	return kAddPathQueued;
 }
 
 
@@ -543,6 +570,17 @@ bool CSharedFileList::AddFile(CKnownFile* pFile)
 		/* Keywords to publish on Kad */
 		m_keywords->AddKeywords(pFile);
 		theStats::AddSharedFile(pFile->GetFileSize());
+		// Mirror into the path index so the watcher's per-event
+		// dispatch can resolve DELETE / MODIFY events to the
+		// CKnownFile* in O(1). Empty key (e.g. a CPartFile whose
+		// SetFilePath has not run yet) is harmless: it lives in
+		// m_pathIndex under "" until SafeAddKFile attaches the real
+		// path via the post-completion path. Stale entries left
+		// over from a previous shared-list membership are
+		// overwritten here.
+		const wxString key =
+			pFile->GetFilePath().JoinPaths(pFile->GetFileName()).GetRaw();
+		m_pathIndex[key] = pFile;
 		return true;
 	}
 	return false;
@@ -572,8 +610,147 @@ void CSharedFileList::RemoveFile(CKnownFile* toremove){
 	if (m_Files_map.erase(toremove->GetFileHash()) > 0) {
 		theStats::RemoveSharedFile(toremove->GetFileSize());
 	}
+	// Same path key we wrote into the index in AddFile(). erase() is a
+	// no-op if the entry isn't present (e.g. the file was inserted
+	// before m_pathIndex existed in an older save snapshot).
+	const wxString key =
+		toremove->GetFilePath().JoinPaths(toremove->GetFileName()).GetRaw();
+	m_pathIndex.erase(key);
 	/* This file keywords must not be published to kad anymore */
 	m_keywords->RemoveKeywords(toremove);
+}
+
+
+// Incremental rescan entry points used by CSharedDirWatcher.
+//
+// These exist so the watcher can apply a single fs-watcher event
+// without firing the bulk Reload() path, which on a 100 k+ file
+// shareset blocks the GUI for minutes per event. See issue #745.
+
+void CSharedFileList::NotifyPathAdded(const wxString& fullPath)
+{
+	if (fullPath.IsEmpty()) {
+		return;
+	}
+
+	// Already shared? CPartFile::CompleteFile() and SafeAddKFile() are
+	// the canonical add paths for completed downloads — by the time
+	// the watcher's CREATE event fires for a freshly-renamed file in
+	// Incoming, the CKnownFile is usually already in m_Files_map and
+	// the path index. Nothing to do in that case. Scoped lock so we
+	// drop list_mut before doing any filesystem work.
+	{
+		wxMutexLocker existsCheck(list_mut);
+		if (m_pathIndex.find(fullPath) != m_pathIndex.end()) {
+			return;
+		}
+	}
+
+	CPath full(fullPath);
+	if (!full.IsOk()) {
+		return;
+	}
+	const CPath directory = full.GetPath();
+	const CPath fname = CPath(full.GetFullName());
+	if (!directory.IsOk() || !fname.IsOk()) {
+		return;
+	}
+
+	TaskList hashTasks;
+	switch (AddPathToShares(directory, fname, hashTasks)) {
+		case kAddPathQueued:
+			// Hand the new hashing task to the scheduler. The thread
+			// will call SafeAddKFile() when it finishes, which is
+			// what publishes the file to peers + the GUI.
+			for (TaskList::iterator it = hashTasks.begin(); it != hashTasks.end(); ++it) {
+				CThreadScheduler::AddTask(*it);
+			}
+			break;
+		case kAddPathKnown:
+		case kAddPathSkipped:
+			// AddPathToShares already wrote a debug log line; no
+			// further action needed.
+			break;
+	}
+}
+
+
+void CSharedFileList::NotifyPathRemoved(const wxString& fullPath)
+{
+	if (fullPath.IsEmpty()) {
+		return;
+	}
+
+	// RemoveFile re-acquires list_mut itself, so we hold list_mut
+	// only long enough to resolve the path → CKnownFile* lookup and
+	// then drop it before calling RemoveFile.
+	CKnownFile* file = NULL;
+	{
+		wxMutexLocker lock(list_mut);
+		auto it = m_pathIndex.find(fullPath);
+		if (it == m_pathIndex.end()) {
+			return;
+		}
+		file = it->second;
+	}
+
+	AddDebugLogLineN(logKnownFiles,
+		CFormat("Watcher: detaching deleted file '%s' from shares") % fullPath);
+	RemoveFile(file);
+}
+
+
+void CSharedFileList::NotifyPathModified(const wxString& fullPath)
+{
+	if (fullPath.IsEmpty()) {
+		return;
+	}
+
+	// MODIFY events fire on metadata touches (utime, chmod, etc.) as
+	// well as on content writes. Only a size/mtime delta warrants
+	// re-hashing. Look up the file in the path index and compare its
+	// known mtime/size against what's on disk.
+	CKnownFile* file = NULL;
+	{
+		wxMutexLocker lock(list_mut);
+		auto it = m_pathIndex.find(fullPath);
+		if (it == m_pathIndex.end()) {
+			// Path appeared via MODIFY but wasn't already shared
+			// — treat as add. List_mut is dropped at scope exit
+			// before NotifyPathAdded re-acquires it.
+			file = NULL;
+		} else {
+			file = it->second;
+		}
+	}
+	if (file == NULL) {
+		NotifyPathAdded(fullPath);
+		return;
+	}
+
+	CPath full(fullPath);
+	time_t fdiskDate = CPath::GetModificationTime(full);
+	sint64 fdiskSize = full.GetFileSize();
+
+	if (fdiskDate == (time_t)-1 || fdiskSize == wxInvalidOffset) {
+		// File vanished or unreadable. Treat as removal.
+		AddDebugLogLineN(logKnownFiles,
+			CFormat("Watcher: file '%s' became unreadable on MODIFY, detaching") % fullPath);
+		RemoveFile(file);
+		return;
+	}
+
+	if (fdiskDate == file->GetLastChangeDatetime() && fdiskSize == (sint64)file->GetFileSize()) {
+		// Same size, same mtime — content unchanged. Drop the event.
+		return;
+	}
+
+	// Size or mtime moved. Content has changed and the existing
+	// hashes are stale. Detach + re-add forces a fresh CHashingTask.
+	AddDebugLogLineN(logKnownFiles,
+		CFormat("Watcher: content changed on '%s' (size/mtime delta), re-hashing") % fullPath);
+	RemoveFile(file);
+	NotifyPathAdded(fullPath);
 }
 
 
