@@ -41,6 +41,7 @@
 #endif
 
 #include "amule.h"			// Interface declarations.
+#include "AutostartManager.h"		// Needed for --configure-autostart handling
 #include <common/Format.h>		// Needed for CFormat
 #include "CFile.h"			// Needed for CFile
 #include "ED2KLink.h"			// Needed for command line passing of links
@@ -272,6 +273,12 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	cmdline.AddSwitch("v", "version", "Displays the current version number.");
 	cmdline.AddSwitch("h", "help", "Displays this information.");
 	cmdline.AddOption("c", "config-dir", "read config from <dir> instead of home");
+	// One-shot autostart toggle. Called by the Windows installer's
+	// Components-page checkbox and by the Preferences UI; lives in
+	// AutostartManager so the OS-specific store (Windows registry,
+	// macOS LaunchAgent, Linux XDG .desktop) is hidden from callers.
+	cmdline.AddOption("", "configure-autostart",
+		"Enable or disable starting this binary on user login (on|off), then exit.");
 #ifdef AMULE_DAEMON
 	cmdline.AddSwitch("f", "full-daemon", "Fork to background.");
 	cmdline.AddOption("p", "pid-file", "After fork, create a pid-file in the given fullname file.");
@@ -326,6 +333,29 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	if ( cmdline.Found("version")) {
 		// This looks silly with logging macros that add a timestamp.
 		printf("%s\n", (const char*)unicode2char(wxString(CFormat("%s (OS: %s)") % FullMuleVersion % OSType)));
+		return false;
+	}
+
+	wxString autostart_arg;
+	if (cmdline.Found("configure-autostart", &autostart_arg)) {
+		autostart_arg.MakeLower();
+		bool ok = false;
+		if (autostart_arg == wxT("on") || autostart_arg == wxT("yes") || autostart_arg == wxT("true") || autostart_arg == wxT("1")) {
+			ok = AutostartManager::Enable();
+			printf(ok ? "autostart enabled\n" : "autostart enable FAILED\n");
+		} else if (autostart_arg == wxT("off") || autostart_arg == wxT("no") || autostart_arg == wxT("false") || autostart_arg == wxT("0")) {
+			ok = AutostartManager::Disable();
+			printf(ok ? "autostart disabled\n" : "autostart disable FAILED\n");
+		} else {
+			fprintf(stderr, "configure-autostart expects 'on' or 'off' (got '%s')\n",
+				(const char*)unicode2char(autostart_arg));
+		}
+		// Exit either way — this flag is a one-shot toggle, not a
+		// "run aMule WITH autostart enabled" combo. (Caller can chain:
+		// `amule --configure-autostart on && amule`.)
+		// Return-false here propagates to OnInit returning false, which
+		// makes wxApp terminate cleanly with exit code 0/1 per `ok`.
+		// Using exit() directly would skip wx destructors.
 		return false;
 	}
 
@@ -507,6 +537,14 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 		AddLogLineNS(CFormat("Using amuleweb in '%s'.") % amulewebPath);
 	}
 #endif
+
+	// If an autostart entry exists pointing at a stale path (user
+	// moved the AppImage / .app / install dir since they enabled the
+	// toggle), silently rewrite it to the current canonical path so
+	// the next login launches the right binary. No-op if no entry
+	// exists — disabling autostart is always a deliberate choice we
+	// don't second-guess.
+	AutostartManager::SelfHealOnStartup();
 
 	return true;
 }

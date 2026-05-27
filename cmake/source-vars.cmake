@@ -101,6 +101,7 @@ endif()
 if (BUILD_MONOLITHIC OR BUILD_DAEMON OR BUILD_REMOTEGUI)
 	set (COMMON_SOURCES
 		amuleAppCommon.cpp
+		AutostartManager.cpp
 		ClientRef.cpp
 		ECSpecialMuleTags.cpp
 		GetTickCount.cpp

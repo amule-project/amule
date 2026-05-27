@@ -1218,6 +1218,14 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     item7->SetToolTip( _("Enabling this will make aMule check for new version at startup") );
     item0->Add( item7, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
+    // Autostart-on-login toggle (per-OS backend: Windows registry,
+    // macOS LaunchAgent, Linux XDG .desktop). State is read live from
+    // the OS each time this page opens, never persisted in aMule.conf
+    // — the OS is the source of truth.
+    wxCheckBox *itemAutostart = new wxCheckBox( parent, IDC_AUTOSTART_LOGIN, _("Start aMule automatically when I log in"), wxDefaultPosition, wxDefaultSize, 0 );
+    itemAutostart->SetToolTip( _("Registers a per-user autostart entry with the OS so aMule launches at login. If you move the aMule binary, launch aMule once manually afterwards to refresh the entry.") );
+    item0->Add( itemAutostart, 0, wxALIGN_CENTER_VERTICAL, 0 );
+
     wxCheckBox *item8 = new wxCheckBox( parent, IDC_STARTMIN, _("Start minimized"), wxDefaultPosition, wxDefaultSize, 0 );
     item8->SetToolTip( _("Enabling this makes aMule minimize itself upon start.") );
     item0->Add( item8, 0, wxALIGN_CENTER_VERTICAL, 0 );
