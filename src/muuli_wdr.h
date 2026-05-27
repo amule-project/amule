@@ -219,6 +219,9 @@ wxSizer *clientDetails( wxWindow *parent, bool call_fit = TRUE, bool set_sizer =
 #define IDC_VIDEOPLAYER 10126
 #define IDC_BROWSEV 10127
 #define IDC_PREVIEW_NOTE 10128
+// Picked above the existing wxDesigner-generated range so a future
+// regeneration of muuli_wdr.* doesn't reuse this ID for something else.
+#define IDC_AUTOSTART_LOGIN 10334
 wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 #define IDC_MAXDOWN 10129

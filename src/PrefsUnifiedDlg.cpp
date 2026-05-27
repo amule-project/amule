@@ -37,6 +37,7 @@
 
 #include "amule.h"				// Needed for theApp
 #include "amuleDlg.h"
+#include "AutostartManager.h"			// Autostart-on-login toggle backend
 #include "MuleColour.h"
 #include "EditServerListDlg.h"
 #include "SharedFileList.h"		// Needed for CSharedFileList
@@ -96,6 +97,11 @@ wxBEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_NETWORKKAD,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_UPNP_ENABLED,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_UPNP_WEBSERVER_ENABLED,PrefsUnifiedDlg::OnCheckBoxChange)
+
+	// Autostart-on-login: state lives in the OS (registry / plist /
+	// .desktop), not aMule.conf, so it gets its own handler that
+	// writes immediately on toggle rather than waiting for OnOk.
+	EVT_CHECKBOX(IDC_AUTOSTART_LOGIN,	PrefsUnifiedDlg::OnAutostartToggle)
 
 
 	EVT_BUTTON(ID_PREFS_OK_TOP,		PrefsUnifiedDlg::OnOk)
@@ -447,6 +453,14 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	// user-selected.
 	m_ShareSelector->SetSharedDirectories(&theApp->glob_prefs->shareddir_explicit_list);
 	m_ShareSelector->SetRecursiveSharedDirectories(&theApp->glob_prefs->shareddir_recursive_list);
+
+	// Autostart checkbox: state lives in the OS, never aMule.conf, so
+	// read live each time the dialog opens. The thePrefs Cfg machinery
+	// above doesn't know about it.
+	wxCheckBox *autostartCb = static_cast<wxCheckBox *>(FindWindow(IDC_AUTOSTART_LOGIN));
+	if (autostartCb) {
+		autostartCb->SetValue(AutostartManager::IsEnabled());
+	}
 
 	for ( int i = 0; i < cntStatColors; i++ ) {
 		thePrefs::s_colors[i] = CMuleColour(CStatisticsDlg::acrStat[i]).GetULong();
@@ -870,6 +884,29 @@ void PrefsUnifiedDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
 			// Update the first tool (conn button)
 			theApp->amuledlg->ShowConnectionState();
 			theApp->amuledlg->Layout();
+	}
+}
+
+
+void PrefsUnifiedDlg::OnAutostartToggle(wxCommandEvent& event)
+{
+	// Apply immediately. The OS is the source of truth — we don't
+	// persist intent in aMule.conf, so there's no Apply-on-OK step
+	// for this widget. If the write fails (e.g. read-only LaunchAgent
+	// dir on a sandboxed macOS install), roll the checkbox back so
+	// the UI reflects reality.
+	bool wanted = event.IsChecked();
+	bool ok = wanted ? AutostartManager::Enable() : AutostartManager::Disable();
+	if (!ok) {
+		wxCheckBox *cb = static_cast<wxCheckBox *>(FindWindow(IDC_AUTOSTART_LOGIN));
+		if (cb) {
+			cb->SetValue(!wanted);
+		}
+		wxMessageBox(
+			wanted
+				? _("Could not register aMule for autostart at login. The autostart store may be read-only.")
+				: _("Could not remove the autostart-at-login entry."),
+			_("Autostart"), wxOK | wxICON_WARNING, this);
 	}
 }
 
