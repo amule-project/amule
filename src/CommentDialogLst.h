@@ -32,6 +32,7 @@
 class CMuleListCtrl;
 class wxCommandEvent;
 class CPartFile;
+class CKnownFile;
 
 /**
  * This dialog is used to display file-comments received from other clients.
@@ -46,6 +47,14 @@ public:
 	 * Sorter function for the CMuleListCtrl used to contain the lists.
 	 */
 	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortData);
+
+	/**
+	 * Drop every reference to `file` from any open instance of this
+	 * dialog before the CKnownFile / CPartFile is destroyed.
+	 * Pointer-value comparison only — `file` may already be freed.
+	 * Wired via MuleNotify::KnownFileBeingDestroyed (GuiEvents.cpp).
+	 */
+	static void DropReferencesTo(const CKnownFile* file);
 
 private:
 	void OnBnClickedApply(wxCommandEvent& evt);

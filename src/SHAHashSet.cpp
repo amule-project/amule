@@ -1017,6 +1017,34 @@ bool CAICHHashSet::IsClientRequestPending(const CPartFile* pForFile, uint16 nPar
 	return false;
 }
 
+
+void CAICHHashSet::DropReferencesTo(const CKnownFile* file)
+{
+	// Pointer-value strip of any in-flight AICH recovery request that
+	// names `file`. Called from MuleNotify::KnownFileBeingDestroyed
+	// (GuiEvents.cpp) before the CKnownFile / CPartFile is freed by
+	// CPartFile::Delete() or CKnownFileList::PruneDuplicates. Without
+	// this, the pending request would deref the dangling partfile
+	// when the recovery data eventually arrives (RequestAICHRecovery's
+	// existing IsPartFile() guard at line ~990 catches some cases
+	// but a freed-then-reused pointer can spoof that check and
+	// route recovery to the wrong file).
+	//
+	// CPartFile inherits from CKnownFile (single inheritance, same
+	// address), so the cast in the comparison is no-deref. Same-
+	// thread call (main thread) so no synchronisation needed on
+	// the static list beyond the normal amule single-threaded GUI
+	// contract.
+	for (CAICHRequestedDataList::iterator it = m_liRequestedData.begin();
+		it != m_liRequestedData.end(); /* manual ++ */) {
+		if (static_cast<const CKnownFile*>(it->m_pPartFile) == file) {
+			it = m_liRequestedData.erase(it);
+		} else {
+			++it;
+		}
+	}
+}
+
 CAICHRequestedData CAICHHashSet::GetAICHReqDetails(const  CUpDownClient* pClient)
 {
 	for (CAICHRequestedDataList::iterator it = m_liRequestedData.begin();it != m_liRequestedData.end(); ++it) {

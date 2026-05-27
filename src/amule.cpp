@@ -1545,6 +1545,22 @@ void CamuleApp::OnFinishedAICHHashing(CHashingEvent& evt)
 	CKnownFile* owner = const_cast<CKnownFile*>(evt.GetOwner());
 	CScopedPtr<CKnownFile> result(evt.GetResult());
 
+	// Validate the owner is still alive — AICH hashing of a multi-GB
+	// file can run for many seconds, during which the CKnownFile may
+	// have been TTL-evicted from CKnownFileList::PruneDuplicates or
+	// destroyed via CPartFile::Delete. Without this check we'd deref
+	// freed memory in the swap below. See the broadcast-hook PR
+	// (Notify_KnownFileBeingDestroyed) for the symmetric GUI-side
+	// fixes. Same defensive pattern as OnFinishedHashing above.
+	if (!owner ||
+		(!knownfiles->IsKnownFile(owner)
+			&& !downloadqueue->IsPartFile(owner))) {
+		AddDebugLogLineN(logKnownFiles,
+			"OnFinishedAICHHashing: owner CKnownFile was destroyed "
+			"while AICH hashing was in flight; dropping result");
+		return;
+	}
+
 	if (result->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE) {
 		CAICHHashSet* oldSet = owner->GetAICHHashset();
 		CAICHHashSet* newSet = result->GetAICHHashset();
@@ -1566,7 +1582,15 @@ void CamuleApp::OnFinishedCompletion(CCompletionEvent& evt)
 {
 	CPartFile* completed = const_cast<CPartFile*>(evt.GetOwner());
 	wxCHECK_RET(completed, "Completion event sent for unspecified file");
-	wxASSERT_MSG(downloadqueue->IsPartFile(completed), "CCompletionEvent for unknown partfile.");
+	// wxASSERT_MSG is a no-op in Release; the deref below would UAF
+	// silently if the partfile was cancelled while the completion
+	// worker was running. Convert to a real validate-before-deref.
+	if (!downloadqueue->IsPartFile(completed)) {
+		AddDebugLogLineN(logPartFile,
+			"OnFinishedCompletion: completed CPartFile was destroyed "
+			"while completion was in flight; dropping event");
+		return;
+	}
 
 	completed->CompleteFileEnded(evt.ErrorOccurred(), evt.GetFullPath());
 	if (evt.ErrorOccurred()) {
@@ -1581,7 +1605,17 @@ void CamuleApp::OnFinishedAllocation(CAllocFinishedEvent& evt)
 {
 	CPartFile *file = evt.GetFile();
 	wxCHECK_RET(file, "Allocation finished event sent for unspecified file");
-	wxASSERT_MSG(downloadqueue->IsPartFile(file), "CAllocFinishedEvent for unknown partfile");
+	// Preallocation can take 10+ seconds on slow disks (Windows VM
+	// full-prealloc of a 30 GB file is in this range). If the user
+	// cancels the download mid-preallocation, the CPartFile is freed
+	// before this completion event reaches the main thread. wxASSERT
+	// would be a no-op in Release; convert to a real check.
+	if (!downloadqueue->IsPartFile(file)) {
+		AddDebugLogLineN(logPartFile,
+			"OnFinishedAllocation: partfile was destroyed while "
+			"preallocation was in flight; dropping event");
+		return;
+	}
 
 	file->SetStatus(PS_EMPTY);
 

@@ -25,6 +25,18 @@
 #include "GuiEvents.h"
 #include "amule.h"
 #include <common/MenuIDs.h>		// MP_PAUSE/STOP/RESUME/CANCEL + MP_PRIO* for the
+#ifndef AMULE_DAEMON
+#include "CommentDialog.h"		// CCommentDialog::DropReferencesTo
+#include "CommentDialogLst.h"		// CCommentDialogLst::DropReferencesTo
+#include "FileDetailDialog.h"		// CFileDetailDialog::DropReferencesTo
+#include "GenericClientListCtrl.h"	// CGenericClientListCtrl::RemoveKnownFile
+#include "TransferWnd.h"		// access to m_transferwnd->clientlistctrl
+#include "SharedFilesWnd.h"		// access to m_sharedfileswnd->peerslistctrl
+#endif
+#ifndef CLIENT_GUI
+#include "SHAHashSet.h"			// CAICHHashSet::DropReferencesTo
+#include "PartFileWriteThread.h"	// CPartFileWriteThread::DropReferencesTo
+#endif
 					// CLIENT_GUI implementations of Download_Set_Cat_*
 #include "PartFile.h"
 #include "DownloadQueue.h"
@@ -879,6 +891,80 @@ namespace MuleNotify
 #endif	// #ifndef AMULE_DAEMON
 
 #endif	// #ifndef CLIENT_GUI
+
+
+// Broadcast called from every CKnownFile destruction site BEFORE
+// the `delete file`. Subscribers MUST only compare the file pointer
+// by value (==) to entries they already hold — never dereference it.
+// By the time a subscriber on the main thread processes this event
+// the bytes pointed at by `file` may already have been recycled.
+//
+// Defined outside the CLIENT_GUI / non-CLIENT_GUI split so the same
+// function compiles into both `amule` and `amulegui`. The branches
+// inside select the right subscriber set per target.
+//
+// Sites that fire this:
+//   - CPartFile::Delete()                  (user cancel)
+//   - CKnownFileList::PruneDuplicates       (TTL eviction)
+//   - CKnownFileList::~CKnownFileList       (shutdown / via Clear())
+//   - CSharedFileList::Reload()             (rebuild)
+//   - CKnownFilesRem::DeleteItem            (amulegui EC_TAG_FILE_REMOVED)
+void KnownFileBeingDestroyed(CKnownFile* file)
+{
+#ifndef AMULE_DAEMON
+	// GUI subscribers (linked into `amule` and `amulegui`).
+	if (theApp->amuledlg) {
+		// #1: CGenericClientListCtrl in the transfer window's
+		// downloads pane caches selected files in m_knownfiles;
+		// stale entries crash on the next selection change
+		// (issue #755).
+		if (theApp->amuledlg->m_transferwnd
+			&& theApp->amuledlg->m_transferwnd->clientlistctrl) {
+			theApp->amuledlg->m_transferwnd->clientlistctrl
+				->RemoveKnownFile(file);
+		}
+		// #2: CGenericClientListCtrl in the shared-files pane
+		// caches selected files the same way.
+		if (theApp->amuledlg->m_sharedfileswnd
+			&& theApp->amuledlg->m_sharedfileswnd->peerslistctrl) {
+			theApp->amuledlg->m_sharedfileswnd->peerslistctrl
+				->RemoveKnownFile(file);
+		}
+		// #3, #4, #5: open modal dialogs that captured the file
+		// pointer at construction time (CommentDialog,
+		// CommentDialogLst, FileDetailDialog). Each class keeps
+		// its own static registry of live instances so the
+		// broadcast can iterate without needing a friend.
+		CCommentDialog::DropReferencesTo(file);
+		CCommentDialogLst::DropReferencesTo(file);
+		CFileDetailDialog::DropReferencesTo(file);
+	}
+#endif
+#ifdef CLIENT_GUI
+	// Remote-GUI subscriber: null CUpDownClient::m_uploadingfile /
+	// m_reqfile on every client that points at this file (the #748
+	// crash flow). Pointer-value comparison only.
+	if (theApp->clientlist) {
+		theApp->clientlist->DropReferencesTo(file);
+	}
+#endif
+#ifndef CLIENT_GUI
+	// Daemon-side subscribers — drop pending requests/writes naming
+	// this file. Both lists are kept by background-thread machinery
+	// and would otherwise leave dangling pointers after the file is
+	// freed (see audit table in the PR description).
+	//
+	// #5: AICH static recovery-request list. Strip-by-pointer; the
+	// existing RequestAICHRecovery() guard at SHAHashSet.cpp:990 can
+	// be spoofed by allocator reuse, which this prevents.
+	CAICHHashSet::DropReferencesTo(file);
+	// #8: pending writes the CPartFileWriteThread hasn't drained yet.
+	// Without this, ~CPartFile would race the write loop.
+	if (theApp->partFileWriteThread) {
+		theApp->partFileWriteThread->DropReferencesTo(file);
+	}
+#endif
+}
 
 }
 // File_checked_for_headers

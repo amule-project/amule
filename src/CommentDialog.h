@@ -45,6 +45,14 @@ public:
 	void OnBnClickedApply(wxCommandEvent& evt);
 	void OnBnClickedClear(wxCommandEvent& evt);
 	void OnBnClickedCancel(wxCommandEvent& evt);
+	// Drop every reference to `file` from any open instance of this
+	// dialog before the CKnownFile is destroyed. Pointer-value
+	// comparison only (`file` may already be freed). Open dialogs
+	// whose m_file matches are dismissed because their state no
+	// longer corresponds to anything that exists on disk. Wired into
+	// MuleNotify::KnownFileBeingDestroyed (GuiEvents.cpp).
+	static void DropReferencesTo(const CKnownFile* file);
+
 private:
 	wxChoice* ratebox;
 	CKnownFile* m_file;

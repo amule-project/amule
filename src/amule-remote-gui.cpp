@@ -1168,6 +1168,14 @@ void CSharedFilesRem::CopyFileList(std::vector<CKnownFile*>& out_list) const
 void CKnownFilesRem::DeleteItem(CKnownFile * file)
 {
 	uint32 id = file->ECID();
+	// Broadcast to every subscriber that holds a raw CKnownFile* to
+	// this object — CUpDownClient::m_uploadingfile / m_reqfile (the
+	// #748 crash flow), CGenericClientListCtrl::m_knownfiles (#755),
+	// and the open-dialog registry. Subscribers strip their refs
+	// using pointer-value comparison only. See
+	// MuleNotify::KnownFileBeingDestroyed (GuiEvents.cpp).
+	Notify_KnownFileBeingDestroyed(file);
+
 	if (theApp->sharedfiles->count(id)) {
 		theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->RemoveFile(file);
 		theApp->sharedfiles->erase(id);
@@ -1177,6 +1185,30 @@ void CKnownFilesRem::DeleteItem(CKnownFile * file)
 		theApp->downloadqueue->erase(id);
 	}
 	delete file;
+}
+
+
+void CUpDownClientListRem::DropReferencesTo(const CKnownFile *file)
+{
+	// Null out CUpDownClient::m_uploadingfile / m_reqfile on every
+	// client still pointing at `file`. Called by
+	// MuleNotify::KnownFileBeingDestroyed (the broadcast handler in
+	// GuiEvents.cpp) which is itself fired from CKnownFilesRem::
+	// DeleteItem above before the file is freed. Pointer-value
+	// comparison only — `file` may already be freed by the time
+	// this runs on the main thread.
+	for (iterator it = begin(); it != end(); ++it) {
+		CUpDownClient *client = (*it)->GetClient();
+		if (!client) {
+			continue;
+		}
+		if (client->m_uploadingfile == file) {
+			client->m_uploadingfile = NULL;
+		}
+		if (client->m_reqfile == file) {
+			client->m_reqfile = NULL;
+		}
+	}
 }
 
 

@@ -103,6 +103,26 @@ namespace MuleNotify
 	void SharedCtrlRefreshClient(uint32 client, SourceItemType type);
 	void SharedCtrlRemoveClient(uint32 client, const CKnownFile* owner);
 
+	// Broadcast: a CKnownFile (or CPartFile, which is-a CKnownFile) is
+	// about to be destroyed. Every component that holds a raw
+	// CKnownFile* / CPartFile* outside the canonical owner containers
+	// (CKnownFileList / CSharedFileList / CDownloadQueue / EC mirrors)
+	// must subscribe and drop its reference before the delete returns.
+	//
+	// Contract for subscribers: handle the event using ONLY pointer-
+	// value comparison (==), never dereference the pointer. By the
+	// time a subscriber on the main thread sees the event, the file
+	// has typically already been freed by the destruction site that
+	// fired the broadcast. The pointer value is meaningful as a
+	// stable key; the bytes it points at are not.
+	//
+	// Fired from every CKnownFile / CPartFile destruction site BEFORE
+	// the delete: CKnownFileList::~CKnownFileList, PruneDuplicates,
+	// CPartFile::Delete(), CSharedFileList::Reload() (when destroying
+	// stale entries during rebuild), and CKnownFilesRem::DeleteItem
+	// in the amulegui build.
+	void KnownFileBeingDestroyed(CKnownFile* file);
+
 	void ServerAdd(CServer* server);
 	void ServerRemove(CServer* server);
 	void ServerRemoveDead();
@@ -488,6 +508,10 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define Notify_SharedCtrlAddClient(p0, p1, val)			MuleNotify::DoNotify(&MuleNotify::SharedCtrlAddClient, p0, p1, val)
 #define Notify_SharedCtrlRefreshClient(ptr, val)		MuleNotify::DoNotify(&MuleNotify::SharedCtrlRefreshClient, ptr, val)
 #define Notify_SharedCtrlRemoveClient(p0, p1)		MuleNotify::DoNotify(&MuleNotify::SharedCtrlRemoveClient, p0, p1)
+
+// CKnownFile/CPartFile destruction broadcast — see MuleNotify::
+// KnownFileBeingDestroyed doc-comment in this header.
+#define Notify_KnownFileBeingDestroyed(file)		MuleNotify::DoNotify(&MuleNotify::KnownFileBeingDestroyed, file)
 
 // server
 #define Notify_ServerAdd(ptr)				MuleNotify::DoNotify(&MuleNotify::ServerAdd, ptr)

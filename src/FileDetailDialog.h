@@ -26,9 +26,15 @@
 #ifndef FILEDETAILDIALOG_H
 #define FILEDETAILDIALOG_H
 
+#include <wx/dialog.h>
+#include <wx/event.h>
+#include <wx/listctrl.h>
+#include <wx/timer.h>
+
 #include <vector>
 
 class CPartFile;
+class CKnownFile;
 
 // CFileDetailDialog dialog
 
@@ -37,6 +43,17 @@ class CFileDetailDialog : public wxDialog
 public:
 	CFileDetailDialog(wxWindow *parent, std::vector<CPartFile *> & files, int index);
 	virtual ~CFileDetailDialog();
+
+	/**
+	 * Drop every reference to `file` from any open instance of this
+	 * dialog before the underlying CPartFile is destroyed. Stops the
+	 * update-timer's deref of `m_file`, walks `m_files` to scrub
+	 * matching entries, and dismisses the dialog if its currently
+	 * active file is the destroyed one. Pointer-value comparison
+	 * only — `file` may already be freed. Wired via
+	 * MuleNotify::KnownFileBeingDestroyed (GuiEvents.cpp).
+	 */
+	static void DropReferencesTo(const CKnownFile* file);
 
 protected:
 	void OnTimer(wxTimerEvent& evt);

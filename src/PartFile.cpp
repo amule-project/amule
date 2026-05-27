@@ -2368,6 +2368,15 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 void CPartFile::Delete()
 {
 	AddLogLineN(CFormat(_("Deleting file: %s")) % GetFileName());
+	// Notify every subscriber that holds a raw CKnownFile* / CPartFile*
+	// to this object — list ctrls, comment dialogs, file-detail dialog,
+	// AICH static request list, write/hash threads, and on amulegui
+	// the CUpDownClient::m_uploadingfile / m_reqfile fields. Subscribers
+	// strip their references using pointer-value comparison only (this
+	// object is still live when the notify fires; by the time main-
+	// thread queued subscribers run, this object may already have been
+	// freed). See MuleNotify::KnownFileBeingDestroyed (GuiEvents.cpp).
+	Notify_KnownFileBeingDestroyed(this);
 	// Barry - Need to tell any connected clients to stop sending the file
 	StopFile(true);
 	AddDebugLogLineN(logPartFile, "\tStopped");

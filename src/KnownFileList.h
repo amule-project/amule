@@ -50,6 +50,16 @@ public:
 		time_t in_date,
 		uint64 in_size);
 	CKnownFile* FindKnownFileByID(const CMD4Hash& hash);
+
+	// Returns true iff `file` is currently a member of the canonical
+	// known-file map. Pointer-value comparison only — `file` may
+	// already be freed when this is called, in which case the
+	// comparison reliably returns false without dereferencing it.
+	// Used by the async-task completion handlers (OnFinishedHashing,
+	// OnFinishedAICHHashing) to validate that an event's `owner`
+	// pointer is still live before dereffing it.
+	bool IsKnownFile(const CKnownFile* file) const;
+
 	void	PrepareIndex();
 	void	ReleaseIndex();
 
@@ -73,7 +83,7 @@ public:
 	uint16 accepted;
 
 private:
-	wxMutex	list_mut;
+	mutable wxMutex	list_mut;
 
 	bool	Append(CKnownFile*, bool afterHashing = false);
 
