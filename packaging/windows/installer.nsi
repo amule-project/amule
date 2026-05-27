@@ -91,6 +91,7 @@ Var StartMenuFolder
 !insertmacro MUI_PAGE_FINISH
 
 !insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_COMPONENTS
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
 
@@ -128,6 +129,34 @@ Function CheckRunningInstance
   ${EndIf}
 FunctionEnd
 
+; If a previous install exists at a recorded location, uninstall it
+; silently first so stale DLLs / removed files from the older version
+; don't linger. NSIS's File /r overwrites but never deletes; without
+; this an upgrade leaves orphaned binaries behind.
+Function CheckPriorInstall
+  ReadRegStr $0 HKLM "Software\aMule" "InstallLocation"
+  ${If} $0 != ""
+  ${AndIf} ${FileExists} "$0\Uninstall.exe"
+    DetailPrint "Removing previous aMule installation at $0..."
+    ; /S = silent; _?=$0 keeps the uninstaller from copying itself to
+    ; %TEMP% and detaching, so ExecWait actually waits and the user
+    ; data prompt is suppressed (silent runs default to the section's
+    ; default state — un.SecRemoveUserData is /o, i.e. unchecked).
+    ExecWait '"$0\Uninstall.exe" /S _?=$0' $1
+    ${If} $1 != 0
+      MessageBox MB_OK|MB_ICONSTOP \
+        "Could not remove the previous aMule installation at $0.$\r$\n\
+        Please close any running aMule processes and try again, or \
+        uninstall the previous version manually first."
+      Abort
+    ${EndIf}
+    ; The uninstaller can't delete its own .exe while running; clean
+    ; up the stub and its parent dir if it's now empty.
+    Delete "$0\Uninstall.exe"
+    RMDir  "$0"
+  ${EndIf}
+FunctionEnd
+
 Function .onInit
   ; $PROGRAMFILES64 must resolve correctly for both x64 and ARM64
   ; payloads; the installer always lays out under the 64-bit prefix.
@@ -152,6 +181,7 @@ FunctionEnd
 Section "aMule (required)" SecCore
   SectionIn RO
 
+  Call CheckPriorInstall
   Call CheckRunningInstance
 
   SetOutPath "$INSTDIR"
@@ -230,7 +260,13 @@ SectionEnd
 ; Uninstaller
 ; --------------------------------------------------------------------
 
-Section "Uninstall"
+; The first uninstaller section must be named "Uninstall" — NSIS uses
+; that as the entry point. `un.SecUninstall` ID lets the Components
+; page reference it for its description; SectionIn RO grays it out so
+; it can't be unchecked.
+Section "Uninstall" un.SecUninstall
+  SectionIn RO
+
   ; Refuse to uninstall if anything is still running.
   ${If} ${FileExists} "$INSTDIR\bin\amule.exe"
     ClearErrors
@@ -287,6 +323,32 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\aMule"
   DeleteRegKey HKLM "Software\aMule"
 SectionEnd
+
+; Opt-in: nuke %APPDATA%\aMule. Default off so a normal uninstall is
+; "remove the app, keep my data" (the common Windows convention). The
+; `un.` ID prefix associates this with the uninstaller block.
+;
+; SetShellVarContext current here resolves $APPDATA to the elevated
+; user's profile, NOT All Users (the latter is wrong for per-user
+; config). On a single-admin machine the elevated context IS the user
+; who installed; multi-user machines need each user to run the
+; uninstaller themselves to clean their own profile (unavoidable, no
+; way for an elevated process to enumerate every desktop session).
+Section /o "Remove user data (config, ED2K servers, Kad nodes, partfiles)" un.SecRemoveUserData
+  SetShellVarContext current
+  ${If} ${FileExists} "$APPDATA\aMule"
+    DetailPrint "Removing user data at $APPDATA\aMule..."
+    RMDir /r "$APPDATA\aMule"
+  ${EndIf}
+  SetShellVarContext all
+SectionEnd
+
+!insertmacro MUI_UNFUNCTION_DESCRIPTION_BEGIN
+  !insertmacro MUI_DESCRIPTION_TEXT ${un.SecUninstall} \
+    "Remove aMule application files, Start Menu / desktop shortcuts, autostart Run-key entry, and Add/Remove Programs entry (required)."
+  !insertmacro MUI_DESCRIPTION_TEXT ${un.SecRemoveUserData} \
+    "Permanently delete %APPDATA%\aMule for the current user (aMule.conf, ED2K server list, Kad nodes, partfiles, IP filters, friends list). Leave unchecked to keep your settings."
+!insertmacro MUI_UNFUNCTION_DESCRIPTION_END
 
 ; Tiny substring helper — returns the match position on the stack or
 ; empty string when needle isn't present. Used by the autostart-cleanup
