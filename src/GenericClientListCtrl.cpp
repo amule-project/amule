@@ -451,6 +451,52 @@ void CGenericClientListCtrl::ShowSources( const CKnownFileVector& files )
 	Thaw();
 }
 
+
+void CGenericClientListCtrl::RemoveKnownFile(CKnownFile* file)
+{
+	// Pure pointer-value comparison — `file` may already be freed by
+	// the destruction site that fired Notify_KnownFileBeingDestroyed.
+	// We must never dereference it; we only need its value as a key
+	// to drop from m_knownfiles and m_ListItems. See
+	// MuleNotify::KnownFileBeingDestroyed in GuiEvents.cpp.
+	if (file == NULL) {
+		return;
+	}
+
+	// Drop the cached "currently showing sources for" entry. This is
+	// #755's crash site: without this, the next ShowSources() loop
+	// at GenericClientListCtrl.cpp:355-359 walks the dangling entry
+	// and writes 1 byte into the recycled heap region via
+	// SetShowSources(file, false).
+	CKnownFileVector::iterator kf =
+		std::find(m_knownfiles.begin(), m_knownfiles.end(), file);
+	if (kf != m_knownfiles.end()) {
+		m_knownfiles.erase(kf);
+	}
+
+	// Strip any per-row state whose m_owner matches. We have to walk
+	// the multimap once because m_ListItems is keyed by client ECID,
+	// not by file. wxListCtrl rows associated with those items are
+	// removed in the same pass via DeleteItem.
+	for (ListItems::iterator it = m_ListItems.begin();
+		it != m_ListItems.end(); /* manual ++ */) {
+		ClientCtrlItem_Struct* item = it->second;
+		if (item && item->GetOwner() == file) {
+			// Drop the wx row first while the multimap entry is
+			// still valid, then erase the multimap entry.
+			long row = FindItem(-1, reinterpret_cast<wxUIntPtr>(item));
+			if (row != -1) {
+				DeleteItem(row);
+			}
+			delete item;
+			m_ListItems.erase(it++);
+		} else {
+			++it;
+		}
+	}
+}
+
+
 /**
  * Helper-function: This function is used to gather selected items.
  *

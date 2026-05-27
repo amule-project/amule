@@ -25,6 +25,7 @@
 
 
 #include "KnownFileList.h"	// Interface declarations
+#include "GuiEvents.h"		// Notify_KnownFileBeingDestroyed
 
 #include <common/DataFileVersion.h>
 
@@ -246,9 +247,48 @@ void CKnownFileList::Save()
 }
 
 
+bool CKnownFileList::IsKnownFile(const CKnownFile* file) const
+{
+	// Pointer-value scan over the canonical map; safe to call with a
+	// possibly-freed `file` pointer (no deref). Used by
+	// OnFinishedHashing / OnFinishedAICHHashing to validate the
+	// owner pointer survived hashing. m_knownFileMap is hash-keyed
+	// not pointer-keyed, so we walk it — linear in shareset size but
+	// invoked only on rare events (hash completion). For 100 k+
+	// sharesets this is the cost; a per-pointer index would speed
+	// it up but isn't justified for the call rate.
+	wxMutexLocker sLock(list_mut);
+	for (CKnownFileMap::const_iterator it = m_knownFileMap.begin();
+		it != m_knownFileMap.end(); ++it) {
+		if (it->second == file) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
 void CKnownFileList::Clear()
 {
 	wxMutexLocker sLock(list_mut);
+
+	// Fire Notify_KnownFileBeingDestroyed for every file we're about
+	// to delete, so subscribers (list ctrls, dialogs, AICH static
+	// list, write-thread flushList, EC client-side m_uploadingfile /
+	// m_reqfile fields, etc.) strip their references before the
+	// `delete`. Pointer-value comparison only; the objects are still
+	// alive at the time of the notify, but subscribers must not
+	// deref them on the main-thread dispatch (which may run after
+	// DeleteContents has freed them). See MuleNotify::
+	// KnownFileBeingDestroyed (GuiEvents.cpp).
+	for (CKnownFileMap::const_iterator it = m_knownFileMap.begin();
+		it != m_knownFileMap.end(); ++it) {
+		Notify_KnownFileBeingDestroyed(it->second);
+	}
+	for (KnownFileList::const_iterator it = m_duplicateFileList.begin();
+		it != m_duplicateFileList.end(); ++it) {
+		Notify_KnownFileBeingDestroyed(*it);
+	}
 
 	DeleteContents(m_knownFileMap);
 	DeleteContents(m_duplicateFileList);
@@ -655,6 +695,7 @@ void CKnownFileList::PruneDuplicates(
 		if (hashDead || ownStale) {
 			eraseFromSizeMap(m_duplicateSizeMap, record);
 			KnownFileList::iterator victim = it++;
+			Notify_KnownFileBeingDestroyed(record);
 			delete record;
 			m_duplicateFileList.erase(victim);
 			++droppedDupTTL;
@@ -691,6 +732,7 @@ void CKnownFileList::PruneDuplicates(
 		}
 
 		eraseFromSizeMap(m_knownSizeMap, dead);
+		Notify_KnownFileBeingDestroyed(dead);
 		delete dead;
 		m_knownFileMap.erase(kit);
 		++droppedLive;
@@ -735,6 +777,7 @@ void CKnownFileList::PruneDuplicates(
 			CKnownFile * dead = *prunable[i];
 			eraseFromSizeMap(m_duplicateSizeMap, dead);
 			m_duplicateFileList.erase(prunable[i]);
+			Notify_KnownFileBeingDestroyed(dead);
 			delete dead;
 			++droppedDupCap;
 		}

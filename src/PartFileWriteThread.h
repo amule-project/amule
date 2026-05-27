@@ -31,6 +31,7 @@
 #include <wx/thread.h>
 
 class CPartFile;
+class CKnownFile;
 class PartFileBufferedData;
 
 // eMule ref: PartFile.h:104-108
@@ -63,6 +64,14 @@ public:
 	void EndThread();                  // eMule ref: PartFileWriteThread.cpp:62
 	void QueueWrite(CPartFile* pFile, PartFileBufferedData* pBuffer);
 	bool IsRunning() const { return m_bRun; }
+
+	// Pointer-value strip of any pending writes whose pFile == `file`.
+	// Called by MuleNotify::KnownFileBeingDestroyed before the
+	// CPartFile is freed. Takes m_mutex so the write loop can't race
+	// with the strip. Pending PartFileBufferedData entries are
+	// deleted here because the partfile they were meant for is
+	// gone — the bytes are dropped, matching the cancel semantics.
+	void DropReferencesTo(const CKnownFile* file);
 
 private:
 	void* Entry() override;

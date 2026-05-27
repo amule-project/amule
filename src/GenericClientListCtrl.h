@@ -150,6 +150,22 @@ public:
 	void SetShowing( bool status ) { m_showing = status; }
 	bool GetShowing() const { return m_showing; }
 
+	/**
+	 * Drop every reference to `file` from this control before the
+	 * CKnownFile is destroyed. Called from
+	 * MuleNotify::KnownFileBeingDestroyed (see GuiEvents.cpp) for
+	 * every CKnownFile destruction site. The control walks
+	 * m_knownfiles by pointer-value comparison and erases matching
+	 * entries — does NOT dereference `file`, which by the time this
+	 * runs on the main thread is already freed. Also strips any
+	 * ClientCtrlItem_Struct rows whose m_owner matches.
+	 *
+	 * Without this, m_knownfiles would carry the dangling pointer
+	 * into the next ShowSources() call's `SetShowSources(_, false)`
+	 * loop and crash on the freed heap (issue #755).
+	 */
+	void RemoveKnownFile(CKnownFile* file);
+
 protected:
 	// The columns with their attributes; MUST be defined by the derived class.
 	GenericColumnInfo m_columndata;

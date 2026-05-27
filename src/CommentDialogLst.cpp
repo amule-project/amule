@@ -31,12 +31,26 @@
 #include "Preferences.h"
 #include "amule.h"                      // Needed for theApp
 
+#include <set>
+
 
 
 wxBEGIN_EVENT_TABLE(CCommentDialogLst,wxDialog)
 	EVT_BUTTON(IDCOK,CCommentDialogLst::OnBnClickedApply)
 	EVT_BUTTON(IDCREF,CCommentDialogLst::OnBnClickedRefresh)
 wxEND_EVENT_TABLE()
+
+namespace {
+// Registry of open CCommentDialogLst instances. See CCommentDialog.cpp
+// for the rationale — the broadcast handler in GuiEvents.cpp iterates
+// this on every CKnownFile destruction and dismisses any dialog whose
+// m_file has just been freed (UAF prevention; #755 / #748 family).
+std::set<CCommentDialogLst*>& OpenInstances()
+{
+	static std::set<CCommentDialogLst*> instances;
+	return instances;
+}
+} // namespace
 
 
 /*
@@ -59,12 +73,26 @@ m_file(file)
 	m_list->SetSortFunc(SortProc);
 
 	UpdateList();
+	OpenInstances().insert(this);
 }
 
 
 CCommentDialogLst::~CCommentDialogLst()
 {
+	OpenInstances().erase(this);
 	ClearList();
+}
+
+
+void CCommentDialogLst::DropReferencesTo(const CKnownFile* file)
+{
+	for (CCommentDialogLst* d : OpenInstances()) {
+		// m_file is a CPartFile* — compare against the up-cast.
+		if (static_cast<const CKnownFile*>(d->m_file) == file) {
+			d->m_file = NULL;
+			d->EndModal(0);
+		}
+	}
 }
 
 

@@ -75,6 +75,34 @@ void CPartFileWriteThread::QueueWrite(CPartFile* pFile, PartFileBufferedData* pB
 }
 
 
+void CPartFileWriteThread::DropReferencesTo(const CKnownFile* file)
+{
+	// Pointer-value strip of any pending write item whose pFile
+	// matches `file`. Called from MuleNotify::KnownFileBeingDestroyed
+	// before CPartFile is freed by CPartFile::Delete() — without this
+	// the write loop would deref the dangling pFile on the next tick.
+	//
+	// CPartFile inherits from CKnownFile (single inheritance, same
+	// address); the cast in the compare is no-deref.
+	//
+	// We do NOT delete pBuffer here. PartFileBufferedData ownership
+	// stays with CPartFile::m_BufferedData_list; QueueWrite() only
+	// added a reference here. `~CPartFile` (via DeleteContents on
+	// m_BufferedData_list, PartFile.cpp:334) frees the buffer; if
+	// we also deleted it, that would double-free.
+	wxMutexLocker lock(m_mutex);
+	for (std::list<ToWrite>::iterator it = m_flushList.begin();
+		it != m_flushList.end(); /* manual ++ */) {
+		if (static_cast<const CKnownFile*>(it->pFile) == file) {
+			it = m_flushList.erase(it);
+		} else {
+			++it;
+		}
+	}
+}
+
+
+
 // eMule ref: CPartFileWriteThread::RunInternal() — line 69
 // Replaces IOCP + overlapped WriteFile with synchronous CFileArea::FlushAt().
 // The thread is dedicated to writes, so blocking on disk I/O is acceptable —

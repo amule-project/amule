@@ -286,6 +286,14 @@ public:
 	static void ClientAICHRequestFailed(CUpDownClient* pClient);
 	static void RemoveClientAICHRequest(const CUpDownClient* pClient);
 	static bool IsClientRequestPending(const CPartFile* pForFile, uint16 nPart);
+
+	// Pointer-value strip of any pending AICH-recovery request entry
+	// whose m_pPartFile == `file`. Called from MuleNotify::
+	// KnownFileBeingDestroyed before a CKnownFile / CPartFile is
+	// freed so the existing IsPartFile() guard in
+	// ClientAICHRequestFailed can't be spoofed by allocator reuse of
+	// the same address.
+	static void DropReferencesTo(const CKnownFile* file);
 	static CAICHRequestedData GetAICHReqDetails(const  CUpDownClient* pClient);
 	void DbgTest();
 

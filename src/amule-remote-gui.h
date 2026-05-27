@@ -464,6 +464,14 @@ public:
 	void DeleteItem(CClientRef *);
 	uint32 GetItemID(CClientRef *);
 	void ProcessItemUpdate(const CEC_UpDownClient_Tag *, CClientRef *);
+
+	// Null out CUpDownClient::m_uploadingfile / m_reqfile on every
+	// client still pointing at `file`. Called by the broadcast
+	// handler MuleNotify::KnownFileBeingDestroyed before a
+	// CKnownFile is freed, so the dangling pointers don't get
+	// dereffed by a later CUpDownClientListRem::DeleteItem (the
+	// #748 / #755 UAF family). Pointer-value comparison only.
+	void DropReferencesTo(const CKnownFile *file);
 };
 
 class CDownQueueRem : public std::map<uint32, CPartFile*> {

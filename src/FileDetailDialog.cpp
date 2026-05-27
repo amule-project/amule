@@ -38,6 +38,8 @@
 #include "OtherFunctions.h"
 #include "MuleColour.h"
 
+#include <set>
+
 #define ID_MY_TIMER 1652
 
 //IMPLEMENT_DYNAMIC(CFileDetailDialog, CDialog)
@@ -55,6 +57,20 @@ wxBEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
 	EVT_TIMER(ID_MY_TIMER,CFileDetailDialog::OnTimer)
 wxEND_EVENT_TABLE()
 
+namespace {
+// Registry of open CFileDetailDialog instances. See CCommentDialog.cpp
+// for the rationale — the broadcast handler in GuiEvents.cpp iterates
+// this on every CKnownFile destruction. UAF would otherwise fire from
+// the 5-second update-timer's deref of m_file (issue #755, same family
+// as #748).
+std::set<CFileDetailDialog*>& OpenInstances()
+{
+	static std::set<CFileDetailDialog*> instances;
+	return instances;
+}
+} // namespace
+
+
 CFileDetailDialog::CFileDetailDialog(wxWindow *parent, std::vector<CPartFile *> & files, int index)
 :
 wxDialog(parent, -1, _("File Details"), wxDefaultPosition, wxDefaultSize,
@@ -70,11 +86,51 @@ m_filenameChanged(false)
 	UpdateData(true);
 	content->SetSizeHints(this);
 	content->Show(this, true);
+	OpenInstances().insert(this);
 }
 
 CFileDetailDialog::~CFileDetailDialog()
 {
+	OpenInstances().erase(this);
 	m_timer.Stop();
+}
+
+void CFileDetailDialog::DropReferencesTo(const CKnownFile* file)
+{
+	for (CFileDetailDialog* d : OpenInstances()) {
+		// Strip the file from m_files first so Next/Prev navigation
+		// doesn't re-select it. m_files is a reference to the
+		// caller's vector (CDownloadListCtrl's stack-allocated list
+		// of selected files), so erasing here mutates the caller's
+		// state too — that's fine; the caller holds it only for the
+		// duration of the modal dialog and the dialog is what owns
+		// the visible UI sourcing from it.
+		for (std::vector<CPartFile*>::iterator it = d->m_files.begin();
+			it != d->m_files.end(); /* manual ++ */) {
+			if (static_cast<const CKnownFile*>(*it) == file) {
+				ptrdiff_t offset = it - d->m_files.begin();
+				it = d->m_files.erase(it);
+				if (d->m_index > offset) {
+					--d->m_index;
+				} else if (d->m_index == offset) {
+					// The active file is the one being
+					// destroyed. The dialog will dismiss
+					// below, so the index value won't be
+					// read again.
+				}
+			} else {
+				++it;
+			}
+		}
+		// Dismiss if the active file vanished. Stop the update
+		// timer first so the next tick doesn't try to deref
+		// m_file before EndModal unwinds.
+		if (static_cast<const CKnownFile*>(d->m_file) == file) {
+			d->m_file = NULL;
+			d->m_timer.Stop();
+			d->EndModal(0);
+		}
+	}
 }
 
 void CFileDetailDialog::OnTimer(wxTimerEvent& WXUNUSED(evt))
