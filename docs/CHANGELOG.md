@@ -250,7 +250,7 @@ This release reflects 5+ years of work across 234 merged PRs (98 initial + 136 f
 - **Werner Mahr** (Vollstrecker) — 38 commits.
 - **Pablo Barciela** (sc0w) — 3 PRs, 17 commits.
 - **Dévai Tamás** (GonoszTopi) — 16 commits.
-- **Daniele Marcocci** (danim7) — 5 PRs across the follow-up cycle (translations, server pings, y2038, cmake polish).
+- **danim7** — 5 PRs across the follow-up cycle (translations, server pings, y2038, cmake polish).
 - **cardpuncher** — French + Turkish translations and AppStream entries (#691, #698).
 
 Plus contributions from RealGreenDragon, frnjjq, Sergi Amoros, Stefano Picerno, Alexander Tsoy, sergiomb2, puleglot, mercu01, lggcs, comio, MPolleke, mike2718, joebonrichie, matoro, dependabot, tbo47, SevC10, topotech, minterior, luzpaz, loongson-zn.
