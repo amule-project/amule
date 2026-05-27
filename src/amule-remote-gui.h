@@ -464,6 +464,15 @@ public:
 	void DeleteItem(CClientRef *);
 	uint32 GetItemID(CClientRef *);
 	void ProcessItemUpdate(const CEC_UpDownClient_Tag *, CClientRef *);
+
+	// Null out CUpDownClient::m_uploadingfile / m_reqfile on any
+	// client still pointing at `file`. Called by CKnownFilesRem
+	// before it deletes a CKnownFile, so the dangling references
+	// don't get deref'd by a later CUpDownClientListRem::DeleteItem
+	// (UAF on the freed CKnownFile::m_ClientUploadList). Friend
+	// access to CUpDownClient's private members lives here, not on
+	// CKnownFilesRem.
+	void DropReferencesTo(const CKnownFile *file);
 };
 
 class CDownQueueRem : public std::map<uint32, CPartFile*> {

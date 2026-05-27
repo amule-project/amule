@@ -1168,6 +1168,25 @@ void CSharedFilesRem::CopyFileList(std::vector<CKnownFile*>& out_list) const
 void CKnownFilesRem::DeleteItem(CKnownFile * file)
 {
 	uint32 id = file->ECID();
+
+	// Null out any CUpDownClient::m_uploadingfile / m_reqfile that
+	// still points at this CKnownFile. Without this, a later
+	// CUpDownClientListRem::DeleteItem on such a client walks into
+	// freed memory: line 1505 deref's m_uploadingfile (the now-freed
+	// CKnownFile) to call RemoveUploadingClient, which std::set::erase's
+	// the also-freed m_ClientUploadList — CClientRef::operator< then
+	// reads .m_client off a freed CClientRef node and SEGVs. Cost is
+	// O(N_clients) per file removal, bounded because file removals
+	// only happen on explicit EC_TAG_FILE_REMOVED markers (which are
+	// rare) — see CKnownFilesRem::ProcessUpdate's `removed_files`
+	// pass. Pre-EC_TAG_FILE_REMOVED (legacy) the bug existed in
+	// principle but the per-batch full sweep tended to clean clients
+	// out before the dangling pointer was touched; with explicit
+	// markers, clients can hold the stale pointer arbitrarily long.
+	if (theApp->clientlist) {
+		theApp->clientlist->DropReferencesTo(file);
+	}
+
 	if (theApp->sharedfiles->count(id)) {
 		theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->RemoveFile(file);
 		theApp->sharedfiles->erase(id);
@@ -1521,6 +1540,23 @@ void CUpDownClientListRem::DeleteItem(CClientRef *clientref)
 #endif
 
 	delete clientref;
+}
+
+
+void CUpDownClientListRem::DropReferencesTo(const CKnownFile *file)
+{
+	for (iterator it = begin(); it != end(); ++it) {
+		CUpDownClient *client = (*it)->GetClient();
+		if (!client) {
+			continue;
+		}
+		if (client->m_uploadingfile == file) {
+			client->m_uploadingfile = NULL;
+		}
+		if (client->m_reqfile == file) {
+			client->m_reqfile = NULL;
+		}
+	}
 }
 
 
