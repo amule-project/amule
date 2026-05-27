@@ -402,3 +402,103 @@ jobs:
           name: windows-${{ matrix.arch }}
           path: dist/aMule-*-Windows-${{ matrix.arch }}.zip
           if-no-files-found: error
+
+  # ------------------------------------------------------------------
+  # Windows — NSIS installer .exe for x64 (MINGW64) and ARM64 (CLANGARM64).
+  # Consumes the portable tree built by windows-zip rather than building
+  # it a second time. Coupling is correct here: with no payload there's
+  # nothing to wrap, so a windows-zip failure should skip the installer.
+  # ------------------------------------------------------------------
+  windows-installer:
+    name: Windows installer .exe (${{ matrix.arch }})
+    needs: windows-zip
+    if: >-
+      github.event_name != 'workflow_dispatch' ||
+      inputs.only == '' ||
+      contains(inputs.only, 'windows')
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            msystem: MINGW64
+            runs-on: windows-2025
+          - arch: arm64
+            msystem: CLANGARM64
+            runs-on: windows-11-arm
+    runs-on: ${{ matrix.runs-on }}
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Set up MSYS2
+        # Bare bash + git + unzip is all we need — the payload is
+        # already-built, so no compiler / wxwidgets / cmake required.
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{ matrix.msystem }}
+          update: true
+          install: git unzip
+      - name: Install NSIS
+        # NSIS isn't packaged for every MSYS2 environment (e.g. no
+        # clangarm64 build), so install the Windows-native NSIS via
+        # Chocolatey if it isn't already preinstalled on the runner.
+        # The NSIS toolchain itself runs fine under x64 emulation on
+        # Windows-on-ARM — it's a build tool, not a runtime payload.
+        # build.sh installer auto-discovers makensis at the standard
+        # install dir, so no $GITHUB_PATH plumbing is needed.
+        shell: pwsh
+        run: choco install -y --no-progress nsis
+      - name: Configure git safe.directory for MSYS2 git
+        run: git config --global --add safe.directory '*'
+      - name: Download portable .zip from windows-zip job
+        uses: actions/download-artifact@v8
+        with:
+          name: windows-${{ matrix.arch }}
+          path: dist/
+      - name: Unzip portable tree
+        # The .zip root is amule-portable-<arch>/, which is exactly
+        # where build.sh installer expects to find PORTABLE_DIR.
+        run: |
+          cd "${GITHUB_WORKSPACE}"
+          unzip -q "dist/aMule-"*"-Windows-${{ matrix.arch }}.zip"
+          test -x "amule-portable-${{ matrix.arch }}/bin/amule.exe"
+      - name: Build installer .exe
+        env:
+          WINDOWS_MSYSTEM: ${{ matrix.msystem }}
+        run: packaging/windows/build.sh installer
+      - name: Smoke-test installer (silent install + uninstall)
+        shell: cmd
+        run: |
+          for %%F in (dist\aMule-*-Setup-${{ matrix.arch }}.exe) do set INSTALLER=%%F
+          echo Installer: %INSTALLER%
+          rem /S = silent, /D=<path> = install dir (NSIS quirk: must be
+          rem the LAST argument and unquoted, even with spaces).
+          "%INSTALLER%" /S /D=C:\amule-installtest
+          if not exist "C:\amule-installtest\bin\amule.exe" (
+            echo amule.exe missing after silent install
+            exit /b 1
+          )
+          if not exist "C:\amule-installtest\Uninstall.exe" (
+            echo Uninstall.exe missing after silent install
+            exit /b 1
+          )
+          rem _? keeps the uninstaller from spawning a copy of itself
+          rem in %TEMP% and returning before the work is done.
+          "C:\amule-installtest\Uninstall.exe" /S _?=C:\amule-installtest
+          rem The uninstaller cannot delete itself while running; clean
+          rem the leftover stub here so the dir-gone assertion is meaningful.
+          if exist "C:\amule-installtest\Uninstall.exe" del "C:\amule-installtest\Uninstall.exe"
+          rmdir C:\amule-installtest 2>nul
+          if exist "C:\amule-installtest\bin" (
+            echo Uninstaller left files behind
+            exit /b 1
+          )
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows-installer-${{ matrix.arch }}
+          path: dist/aMule-*-Setup-${{ matrix.arch }}.exe
+          if-no-files-found: error
