@@ -198,7 +198,35 @@ void CSharedDirWatcher::Refresh()
 
 void CSharedDirWatcher::RegisterAllPaths()
 {
-	const thePrefs::PathList & shared = theApp->glob_prefs->shareddir_list;
+	// Build the effective watch list by mirroring what
+	// CSharedFileList::Reload() treats as shared (SharedFileList.cpp ~L370):
+	//   1) the global Incoming dir,
+	//   2) every category's Incoming dir,
+	//   3) the explicit shareddir_list.
+	// Without (1) and (2) the watcher misses new files dropped into
+	// Incoming -- a completed download notifies the scanner directly,
+	// but a file copied into Incoming manually (or by another tool)
+	// is only picked up the next time some unrelated CREATE event
+	// fires elsewhere in the shared tree (#741).
+	thePrefs::PathList shared = theApp->glob_prefs->shareddir_list;
+
+	auto append_unique = [&](const CPath & extra) {
+		if (!extra.IsOk()) {
+			return;
+		}
+		const wxString raw = extra.GetRaw();
+		for (size_t i = 0; i < shared.size(); ++i) {
+			if (shared[i].GetRaw() == raw) {
+				return;
+			}
+		}
+		shared.push_back(extra);
+	};
+
+	append_unique(thePrefs::GetIncomingDir());
+	for (unsigned int i = 1; i < theApp->glob_prefs->GetCatCount(); ++i) {
+		append_unique(theApp->glob_prefs->GetCatPath(i));
+	}
 
 #ifdef __WXOSX__
 	// macOS: route through AddTree() which uses FSEvents (kernel-level
