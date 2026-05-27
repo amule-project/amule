@@ -1248,7 +1248,7 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     item15->SetToolTip( _("The delay before showing tool-tips.") );
     item14->Add( item15, 1, wxALIGN_CENTER, 0 );
 
-    wxSpinCtrl *item16 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, "1", wxDefaultPosition, wxSize(40,-1), 0, 0, 9, 1 );
+    wxSpinCtrl *item16 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, "1", wxDefaultPosition, wxDefaultSize, 0, 0, 9, 1 );
     item16->SetToolTip( _("The delay before showing tool-tips.") );
     item14->Add( item16, wxSizerFlags().Center().Border(wxLEFT, 5) );
     wxStaticText *item17 = new wxStaticText( parent, -1, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1310,7 +1310,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item4 = new wxStaticText( parent, -1, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item4, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxSpinCtrl *item5 = new wxSpinCtrl( parent, IDC_MAXDOWN, "0", wxDefaultPosition, wxSize(140,-1), 0, 0, 1000000, 0 );
+    wxSpinCtrl *item5 = new wxSpinCtrl( parent, IDC_MAXDOWN, "0", wxDefaultPosition, wxDefaultSize, 0, 0, 1000000, 0 );
     item3->Add( item5, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
     wxStaticText *item6 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1318,14 +1318,14 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item7 = new wxStaticText( parent, -1, _("Upload"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item7, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxSpinCtrl *item8 = new wxSpinCtrl( parent, IDC_MAXUP, "10", wxDefaultPosition, wxSize(140,-1), 0, 0, 1000000, 10 );
+    wxSpinCtrl *item8 = new wxSpinCtrl( parent, IDC_MAXUP, "10", wxDefaultPosition, wxDefaultSize, 0, 0, 1000000, 10 );
     item3->Add( item8, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item9 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item9, wxSizerFlags().CenterVertical().Border(wxLEFT, 5) );
     wxStaticText *item10 = new wxStaticText( parent, -1, _("Slot Allocation"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item10, wxSizerFlags().CenterVertical().Border(wxLEFT, 20) );
-    wxSpinCtrl *item11 = new wxSpinCtrl( parent, IDC_SLOTALLOC, "4", wxDefaultPosition, wxSize(140,-1), 0, 1, 100000, 4 );
+    wxSpinCtrl *item11 = new wxSpinCtrl( parent, IDC_SLOTALLOC, "4", wxDefaultPosition, wxDefaultSize, 0, 1, 100000, 4 );
     item3->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item12 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1431,7 +1431,7 @@ wxSizer *PreferencesServerTab( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxCheckBox *item2 = new wxCheckBox( parent, IDC_REMOVEDEAD, _("Remove dead server after"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item2, wxSizerFlags().Center().Border(wxRIGHT, 5) );
-    wxSpinCtrl *item3 = new wxSpinCtrl( parent, IDC_SERVERRETRIES, "2", wxDefaultPosition, wxSize(40,-1), 0, 1, 10, 2 );
+    wxSpinCtrl *item3 = new wxSpinCtrl( parent, IDC_SERVERRETRIES, "2", wxDefaultPosition, wxDefaultSize, 0, 1, 10, 2 );
     item1->Add( item3, wxSizerFlags().CenterVertical().Right() );
     wxStaticText *item4 = new wxStaticText( parent, -1, _("retries"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item4, wxSizerFlags().CenterVertical().Border(wxLEFT, 5) );
@@ -2447,7 +2447,7 @@ wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit, bool set_size
 
     wxStaticText *item3 = new wxStaticText( parent, -1, _("Update Frequency (Secs):"), wxDefaultPosition, wxDefaultSize, 0 );
     item2->Add( item3, wxSizerFlags().Center().Border(wxALL, 0) );
-    wxSpinCtrl *item4 = new wxSpinCtrl( parent, IDC_OSUPDATE, "5", wxDefaultPosition, wxSize(60,-1), 0, 0, 600, 5 );
+    wxSpinCtrl *item4 = new wxSpinCtrl( parent, IDC_OSUPDATE, "5", wxDefaultPosition, wxDefaultSize, 0, 0, 600, 5 );
     item4->SetToolTip( _("Change the frequency (in seconds) of Online Signature updates.") );
     item4->Enable( false );
     item2->Add( item4, wxSizerFlags().Center().Border(wxALL, 0) );
