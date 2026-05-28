@@ -180,6 +180,13 @@ void CRemoteConnect::WriteDoneAndQueueEmpty()
 }
 
 void CRemoteConnect::OnConnect() {
+	// Apply the EC-tuned TCP keepalive timings now that the underlying
+	// asio socket is fully connected on the async path (sync clients
+	// got it inside CECMuleSocket::InternalConnect already; this is
+	// the amulegui / amuleweb side where InternalConnect returns before
+	// the connect actually completes).
+	ApplyEcKeepalive();
+
 	if (m_notifier) {
 		wxASSERT(m_ec_state == EC_CONNECT_SENT);
 		CECLoginPacket login_req(m_client, m_version, m_canZLIB, m_canUTF8numbers, m_canNotify);

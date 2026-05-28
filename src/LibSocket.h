@@ -116,6 +116,18 @@ public:
 	wxString	GetPeer();
 	uint32		GetPeerInt();
 
+	// Turn on TCP keepalive with per-socket timings so a half-open
+	// connection (peer gone, FIN/RST lost or never sent) gets torn
+	// down at the TCP layer instead of sitting idle forever. Used by
+	// the EC sockets on both ends — see CECMuleSocket / CECServerSocket.
+	// Idle seconds before the kernel starts probing, the interval
+	// between probes, and how many probes before declaring the peer
+	// dead.  Effective only on POSIX (TCP_KEEPIDLE / TCP_KEEPINTVL /
+	// TCP_KEEPCNT) and Windows (SIO_KEEPALIVE_VALS; only idle +
+	// interval are settable, count uses the system default). No-op if
+	// the underlying socket is not open.
+	void EnableTcpKeepalive(int idleSec, int probeIntervalSec, int probeCount);
+
 	// Handlers
 	virtual void OnConnect(int) {}
 	virtual void OnSend(int) {}

@@ -51,11 +51,36 @@ bool CECMuleSocket::ConnectSocket(amuleIPV4Address& address)
 }
 
 
+// EC-connection keepalive timings. With these values, a half-open
+// connection (peer crashed / network blip / FIN lost) is torn down at
+// the TCP layer in ~60s instead of sitting idle until the default
+// ~2h TCP retransmit timeout, so CECSocket::OnLost fires and the GUI
+// can flip to "Connection lost" instead of looking wedged. Same
+// constants used by CECServerSocket on the amuled side so detection
+// is symmetric. Numbers picked to balance responsiveness against the
+// keepalive packet overhead (one probe per 10s after 30s idle).
+namespace { const int EC_KEEPALIVE_IDLE_SEC      = 30; }
+namespace { const int EC_KEEPALIVE_INTERVAL_SEC  = 10; }
+namespace { const int EC_KEEPALIVE_PROBE_COUNT   = 3;  }
+
 bool CECMuleSocket::InternalConnect(uint32_t ip, uint16_t port, bool wait) {
 	amuleIPV4Address addr;
 	addr.Hostname(Uint32toStringIP(ip));
 	addr.Service(port);
-	return CLibSocket::Connect(addr, wait);
+	bool ok = CLibSocket::Connect(addr, wait);
+	if (ok) {
+		// Asio opens the socket fd during connect / async_connect, so
+		// setsockopt is valid here regardless of sync vs async mode.
+		ApplyEcKeepalive();
+	}
+	return ok;
+}
+
+void CECMuleSocket::ApplyEcKeepalive() {
+	CLibSocket::EnableTcpKeepalive(
+		EC_KEEPALIVE_IDLE_SEC,
+		EC_KEEPALIVE_INTERVAL_SEC,
+		EC_KEEPALIVE_PROBE_COUNT);
 }
 
 int CECMuleSocket::InternalGetLastError()
