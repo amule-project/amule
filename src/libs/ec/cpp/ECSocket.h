@@ -125,6 +125,20 @@ public:
 
 	void CloseSocket() { InternalClose(); }
 
+	// Locally-initiated abort: CloseSocket + OnLost. Use from the
+	// protocol-error paths in ReadHeader / ReadPacket where we close
+	// the socket ourselves. CAsioSocketImpl::Close sets m_closed = true
+	// before the asio close, which then suppresses the operation_aborted
+	// path through HandleRead → PostLostEvent (the m_closed gate at
+	// LibSocketAsio.cpp:695), so the wrapper's OnLost never fires from
+	// the asio side. Without an explicit dispatch the EC client (e.g.
+	// amulegui) never finds out the connection is gone — same #757
+	// "wedge" class of bug as the kernel-FIN miss, just on the
+	// self-close leg. Sites that already have their own UI-facing
+	// notification (CRemoteConnect::ProcessAuthPacket fires
+	// wxEVT_EC_CONNECTION directly) keep using plain CloseSocket.
+	void CloseAndDispatchLost() { InternalClose(); OnLost(); }
+
 	bool HaveNotificationSupport() const { return m_haveNotificationSupport; }
 
 	// Set by CECServerSocket::Authenticate once the peer IP is known.

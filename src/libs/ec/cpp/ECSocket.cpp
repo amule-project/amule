@@ -579,7 +579,7 @@ bool CECSocket::ReadHeader()
 		: (size_t) 16 * 1024 * 1024;
 	if (m_bytes_needed > max_packet_bytes) {
 		AddDebugLogLineN(logEC, CFormat("ReadHeader: packet too big: %d") % m_bytes_needed);
-		CloseSocket();
+		CloseAndDispatchLost();
 		return false;
 	}
 	m_curr_rx_data->Rewind();
@@ -595,7 +595,7 @@ bool CECSocket::ReadHeader()
 		// client with memory exhaustion.
 		if (!IsAuthorized()) {
 			AddDebugLogLineN(logEC, CFormat("ReadHeader: resize (%d -> %d) on non autorized socket") % currLength % m_bytes_needed);
-			CloseSocket();
+			CloseAndDispatchLost();
 			return false;
 		}
 		// Don't make buffer smaller than EC_SOCKET_BUFFER_SIZE
@@ -1001,7 +1001,7 @@ const CECPacket *CECSocket::ReadPacket()
 		// Protocol error - other end might use an older protocol
 		AddDebugLogLineN(logEC, "ReadPacket: protocol error");
 		cout << "ReadPacket: packet have invalid flags " << flags << endl;
-		CloseSocket();
+		CloseAndDispatchLost();
 		return 0;
 	}
 
@@ -1018,7 +1018,7 @@ const CECPacket *CECSocket::ReadPacket()
 			AddDebugLogLineN(logEC, "ReadPacket: zlib error");
 			ShowZError(zerror, &m_z);
 			cout << "ReadPacket: failed zlib init" << endl;
-			CloseSocket();
+			CloseAndDispatchLost();
 			return 0;
 		}
 	}
@@ -1031,7 +1031,7 @@ const CECPacket *CECSocket::ReadPacket()
 		cout << "ReadPacket: error in packet read" << endl;
 		delete packet;
 		packet = NULL;
-		CloseSocket();
+		CloseAndDispatchLost();
 	}
 
 	if (flags & EC_FLAG_ZLIB) {
@@ -1040,7 +1040,7 @@ const CECPacket *CECSocket::ReadPacket()
 			AddDebugLogLineN(logEC, "ReadPacket: zlib error");
 			ShowZError(zerror, &m_z);
 			cout << "ReadPacket: failed zlib free" << endl;
-			CloseSocket();
+			CloseAndDispatchLost();
 		}
 	}
 
