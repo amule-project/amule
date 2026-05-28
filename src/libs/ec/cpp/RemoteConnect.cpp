@@ -31,6 +31,12 @@
 #include "../../../amuleIPV4Address.h"
 
 #include <wx/intl.h>
+#include <common/StringFunctions.h>	// unicode2char for stderr message
+#ifdef __WINDOWS__
+	#include <process.h>		// _exit
+#else
+	#include <unistd.h>		// _exit
+#endif
 
 wxDEFINE_EVENT(wxEVT_EC_CONNECTION, wxEvent);
 CECLoginPacket::CECLoginPacket(const wxString& client, const wxString& version,
@@ -200,10 +206,27 @@ void CRemoteConnect::OnConnect() {
 
 void CRemoteConnect::OnLost() {
 	if (m_notifier) {
-		// Notify app of failure
+		// Notify app of failure — amulegui's wxEvent handler flips the
+		// UI to "disconnected" and stops trying to update.
 		wxECSocketEvent event(wxEVT_EC_CONNECTION,false,_("Connection failure"));
 		m_notifier->AddPendingEvent(event);
+		return;
 	}
+	// Headless EC clients (amulecmd, amuleweb) construct CRemoteConnect
+	// with NULL m_notifier. Continuing to run would mean serving stale
+	// data in amuleweb (HTTP requests still return the template shell
+	// without live amuled data, no error visible to the user) or
+	// sitting at the amulecmd prompt with a dead socket. Failing fast
+	// is the right semantic — supervisor (systemd unit / docker /
+	// shell loop) is the recovery layer and decides whether to restart.
+	fprintf(stderr, "%s\n",
+		(const char *)unicode2char(_("External Connection lost — exiting.")));
+	fflush(stderr);
+	// _exit instead of exit() because the asio worker thread that
+	// just fired this is mid-callback; racing static destructors
+	// against it risks the kind of use-after-free #748 was about.
+	// The OS reaps file descriptors / sockets on exit anyway.
+	_exit(1);
 }
 
 const CECPacket *CRemoteConnect::OnPacketReceived(const CECPacket *packet, uint32 trueSize)
