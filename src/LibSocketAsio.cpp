@@ -1772,7 +1772,7 @@ namespace MuleNotify
 			socket->OnProxyEvent(MULE_SOCKET_LOST);
 		} else {
 			AddDebugLogLineF(logAsio, CFormat("LibSocketLost %s") % socket->GetIP());
-			socket->OnLost();
+			socket->OnLost(0);
 		}
 	}
 

@@ -132,7 +132,14 @@ public:
 	virtual void OnConnect(int) {}
 	virtual void OnSend(int) {}
 	virtual void OnReceive(int) {}
-	virtual void OnLost() {}
+	// Int argument is unused — exists to give the CLibSocket-layer
+	// hook a different signature from CECSocket::OnLost(), so a class
+	// that multi-inherits from both (CECMuleSocket) can override the
+	// CLibSocket-side hook unambiguously and forward to the EC-layer
+	// OnLost().  Without that disambiguation, the Asio reactor's
+	// EOF-on-read dispatch lands on the empty CLibSocket::OnLost{}
+	// instead of CRemoteConnect / CECServerSocket overrides.
+	virtual void OnLost(int) {}
 	virtual void OnProxyEvent(int) {}
 
 private:

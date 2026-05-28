@@ -51,7 +51,7 @@ CWebSocket::CWebSocket(CWebServerBase *parent)
 
 }
 
-void CWebSocket::OnLost()
+void CWebSocket::OnLost(int)
 {
 	Close();
 	Destroy();

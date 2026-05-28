@@ -45,7 +45,7 @@ class CWebSocket : public CLibSocket {
 
 		virtual void OnSend(int);
 		virtual void OnReceive(int);
-		virtual void OnLost();
+		virtual void OnLost(int);
 
         void OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen);
 
