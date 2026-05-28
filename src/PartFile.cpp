@@ -3300,15 +3300,73 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 
 
 
+	// Destructor / shutdown gate (see m_inDestructor in PartFile.h).
+	// Hoisted above the m_iWrites check below so the first-share early
+	// path also respects it.
+	if (m_inDestructor || !theApp || !theApp->IsRunning()) {
+		return;
+	}
+
+	// First-share early path (#761). SafeAddKFile fires from
+	// OnAsyncHashComplete and is gated on status == PS_EMPTY -- so it
+	// only ever runs once per partfile lifetime, when the first part
+	// is verified. The bulk-drain gates below (m_iWrites > 0 and the
+	// 1 s quiescent window) sit engaged across an entire active
+	// download, which means a continuously-downloading file never
+	// gets that first verification and stays invisible in "Shared
+	// files" until the user pauses or it completes. Bypass both gates
+	// to enqueue exactly one safe candidate.
+	//
+	// Safety: m_aChangedPart[N] && IsComplete(N) means Phase 2 has
+	// already observed at least one PB_WRITTEN for N and the gaplist
+	// has no holes in N. But FillGap runs at queue time in
+	// WriteToBuffer (line 3160), so a queued PB_PENDING/PB_READY for
+	// the same part can still exist -- hashing then would read
+	// pre-write bytes. Scan m_BufferedData_list for overlap to skip
+	// any such part.
+	if (status == PS_EMPTY
+		&& GetHashCount() == GetED2KPartHashCount()
+		&& !m_hashsetneeded
+		&& m_pendingHashes == 0
+		&& !m_gaplist.IsComplete()) {
+		for (uint16 partNumber = 0; partNumber < partCount; ++partNumber) {
+			if (!m_aChangedPart[partNumber]) {
+				continue;
+			}
+			if (!IsComplete(partNumber)) {
+				continue;
+			}
+			const uint64 partStart = (uint64)partNumber * PARTSIZE;
+			const uint64 partEnd = std::min<uint64>(
+				partStart + PARTSIZE - 1, GetFileSize() - 1);
+			bool pendingWrite = false;
+			for (const PartFileBufferedData* item : m_BufferedData_list) {
+				if (item->flushed == PB_WRITTEN) {
+					continue;
+				}
+				if (item->start > partEnd || item->end < partStart) {
+					continue;
+				}
+				pendingWrite = true;
+				break;
+			}
+			if (pendingWrite) {
+				continue;
+			}
+			m_aChangedPart[partNumber] = false;
+			++m_pendingHashes;
+			theApp->partFileHashThread->QueueHashCheck(this, partNumber,
+				fromAICHRecoveryDataAvailable);
+			AddDebugLogLineN(logPartFile, CFormat(
+				"First-share: enqueued part %u of '%s' for hash") % partNumber % GetFileName());
+			break;
+		}
+	}
+
 	// Check each part of the file.
 	// Skip hash verification if writes are still in flight — data isn't on disk yet.
 	// Hashing will run on the next FlushBuffer() call once all writes complete.
 	if (m_iWrites > 0) {
-		return;
-	}
-
-	// Destructor / shutdown gate (see m_inDestructor in PartFile.h).
-	if (m_inDestructor || !theApp || !theApp->IsRunning()) {
 		return;
 	}
 
