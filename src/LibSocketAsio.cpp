@@ -72,8 +72,14 @@
 #include "ScopedPtr.h"
 #include <common/Macros.h>
 
-#ifndef __WINDOWS__
-#include <fcntl.h>		// FD_CLOEXEC
+#ifdef __WINDOWS__
+	// SIO_KEEPALIVE_VALS + struct tcp_keepalive for SetTcpKeepalive.
+	// winsock2.h is already brought in transitively by boost::asio.
+	#include <mstcpip.h>
+#else
+	#include <fcntl.h>		// FD_CLOEXEC
+	#include <netinet/tcp.h>	// TCP_KEEPIDLE / TCP_KEEPINTVL / TCP_KEEPCNT
+	#include <sys/socket.h>		// SO_KEEPALIVE
 #endif
 
 using namespace boost::asio;
@@ -103,6 +109,56 @@ static inline void SetCloexecOnSocket(Handle native)
 	(void) native;
 #endif
 }
+
+
+// Turn on TCP keepalive with per-socket timings. Used by the EC sockets
+// to detect a half-open connection (peer gone, FIN/RST lost or never
+// sent — common after a network blip, OOM-kill, etc.) instead of
+// sitting idle until the default ~2h TCP retransmit timeout kicks in.
+//
+// POSIX: SO_KEEPALIVE plus the three TCP-layer timing knobs. Linux
+// names (TCP_KEEPIDLE / TCP_KEEPINTVL / TCP_KEEPCNT) are the canonical
+// set; macOS / *BSD use TCP_KEEPALIVE for the idle time and inherit
+// the system defaults for interval and count, which is acceptable as
+// a fallback.
+//
+// Windows: SIO_KEEPALIVE_VALS via WSAIoctl. The Windows surface only
+// exposes idle and interval; the probe count uses the system default
+// (typically 10 on modern Windows).
+template <typename Handle>
+static inline void SetTcpKeepalive(Handle native, int idleSec, int intervalSec, int count)
+{
+#ifdef __WINDOWS__
+	struct tcp_keepalive ka = {};
+	ka.onoff = 1;
+	ka.keepalivetime = static_cast<ULONG>(idleSec) * 1000;
+	ka.keepaliveinterval = static_cast<ULONG>(intervalSec) * 1000;
+	DWORD bytesReturned = 0;
+	(void) count;	// SIO_KEEPALIVE_VALS doesn't expose count
+	::WSAIoctl(native, SIO_KEEPALIVE_VALS, &ka, sizeof(ka),
+		NULL, 0, &bytesReturned, NULL, NULL);
+#else
+	int yes = 1;
+	::setsockopt(native, SOL_SOCKET, SO_KEEPALIVE, &yes, sizeof(yes));
+	#ifdef TCP_KEEPIDLE
+		::setsockopt(native, IPPROTO_TCP, TCP_KEEPIDLE, &idleSec, sizeof(idleSec));
+	#elif defined(TCP_KEEPALIVE)
+		// macOS / *BSD spelling — idle-only, no separate INTVL/CNT knobs.
+		::setsockopt(native, IPPROTO_TCP, TCP_KEEPALIVE, &idleSec, sizeof(idleSec));
+	#endif
+	#ifdef TCP_KEEPINTVL
+		::setsockopt(native, IPPROTO_TCP, TCP_KEEPINTVL, &intervalSec, sizeof(intervalSec));
+	#else
+		(void) intervalSec;
+	#endif
+	#ifdef TCP_KEEPCNT
+		::setsockopt(native, IPPROTO_TCP, TCP_KEEPCNT, &count, sizeof(count));
+	#else
+		(void) count;
+	#endif
+#endif
+}
+
 
 // Number of threads in the Asio thread pool
 const int CAsioService::m_numberOfThreads = 4;
@@ -226,6 +282,17 @@ public:
 	bool IsOk() const
 	{
 		return m_OK;
+	}
+
+	// Apply TCP keepalive timings to the underlying socket if it's open.
+	// Caller is expected to invoke this after a successful connect (client
+	// side) or accept (server side) so the kernel native_handle is live.
+	void EnableTcpKeepalive(int idleSec, int probeIntervalSec, int probeCount)
+	{
+		if (!m_socket || !m_socket->is_open()) {
+			return;
+		}
+		SetTcpKeepalive(m_socket->native_handle(), idleSec, probeIntervalSec, probeCount);
 	}
 
 	bool IsDestroying() const
@@ -745,6 +812,12 @@ bool CLibSocket::IsConnected() const
 bool CLibSocket::IsOk() const
 {
 	return m_aSocket->IsOk();
+}
+
+
+void CLibSocket::EnableTcpKeepalive(int idleSec, int probeIntervalSec, int probeCount)
+{
+	m_aSocket->EnableTcpKeepalive(idleSec, probeIntervalSec, probeCount);
 }
 
 

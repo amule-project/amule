@@ -46,6 +46,15 @@ public:
 	virtual void OnSend(int)	{ OnOutput(); }
 	virtual void OnReceive(int)	{ OnInput(); }
 
+	// Apply EC-tuned TCP keepalive (idle=30s / probe=10s / count=3 →
+	// ~60s half-open detection). Called automatically from
+	// InternalConnect after a successful client-side connect; subclasses
+	// that take over OnConnect (CRemoteConnect) and the server-side
+	// accept path (ExternalConn.cpp::OnAccept on amuled) call this
+	// explicitly so detection is symmetric on both ends of every EC
+	// connection.
+	void ApplyEcKeepalive();
+
 private:
 	bool InternalConnect(uint32_t ip, uint16_t port, bool wait);
 
