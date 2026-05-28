@@ -781,7 +781,17 @@ void CAddLinkHandler::HandlePacket(const CECPacket *packet)
 		wxString msg = (tag && tag->IsString())
 			? wxGetTranslation(tag->GetStringData())
 			: wxGetTranslation(wxTRANSLATE("Invalid link or already on list."));
-		wxMessageBox(msg, _("ERROR"), wxOK | wxICON_ERROR);
+		// Defer the modal off the OnPacketReceived call stack: wxMessageBox
+		// spins a nested wx event loop, which dispatches CoreNotify_LibSocket*
+		// events that re-enter CECSocket::OnInput on the same socket and
+		// clobber its rx state (m_curr_rx_data / m_bytes_needed / m_in_header).
+		// Under heavy notification load — a batched-link add against a
+		// big shareset — the corrupted parse trips a protocol-error
+		// CloseSocket, which is the desync amuled logs as "External
+		// connection closed" right after the AddLink batch (#757 part 1).
+		wxTheApp->CallAfter([msg]() {
+			wxMessageBox(msg, _("ERROR"), wxOK | wxICON_ERROR);
+		});
 	}
 	delete this;
 }
@@ -800,12 +810,17 @@ void CCatHandler::HandlePacket(const CECPacket *packet)
 		if (catTag && pathTag && catTag->GetInt() < theApp->glob_prefs->GetCatCount()) {
 			int cat = catTag->GetInt();
 			Category_Struct* cs = theApp->glob_prefs->GetCategory(cat);
-			wxMessageBox(CFormat(_("Can't create directory '%s' for category '%s', keeping directory '%s'."))
-				% cs->path.GetPrintable() % cs->title % pathTag->GetStringData(),
-				_("ERROR"), wxOK);
+			wxString msg = CFormat(_("Can't create directory '%s' for category '%s', keeping directory '%s'."))
+				% cs->path.GetPrintable() % cs->title % pathTag->GetStringData();
 			cs->path = CPath(pathTag->GetStringData());
 			theApp->amuledlg->m_transferwnd->UpdateCategory(cat);
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->Refresh();
+			// Same re-entrancy hazard as CAddLinkHandler above: keep the
+			// modal off the OnPacketReceived stack so a nested wx event
+			// loop doesn't corrupt CECSocket rx state.
+			wxTheApp->CallAfter([msg]() {
+				wxMessageBox(msg, _("ERROR"), wxOK);
+			});
 		}
 	}
 	delete this;
