@@ -716,6 +716,9 @@ private:
 		error_code ec;
 		uint32 received = read(*m_socket, buffer(buf, bytesToRead), ec);
 		SetError(ec);
+		if (ec) {
+			DispatchSyncLost();
+		}
 		return received;
 	}
 
@@ -724,7 +727,30 @@ private:
 		error_code ec;
 		uint32 sent = write(*m_socket, buffer(buf, nbytes), ec);
 		SetError(ec);
+		if (ec) {
+			DispatchSyncLost();
+		}
 		return sent;
+	}
+
+	// Sync clients (amulecmd, amuleweb) don't have an async_read pending
+	// after auth, so the EOF that fires HandleRead → PostLostEvent for
+	// async clients never gets seen. Detection happens here instead, in
+	// ReadSync / WriteSync. PostLostEvent + wxQueueEvent would round-
+	// trip through the wx event loop — which amuleweb has (wxApp::OnRun)
+	// but amulecmd doesn't (its main thread is in fgets reading stdin,
+	// not in wxApp's event loop, so queued events are never processed).
+	// Direct synchronous dispatch through the same wrapper->OnLost(0)
+	// path the async reactor uses covers both: CECMuleSocket::OnLost(int)
+	// forwards to the EC-layer CECSocket::OnLost virtual, CRemoteConnect's
+	// override fires (NULL notifier → _exit fallback) and the headless
+	// EC client exits cleanly instead of serving stale data in limp mode.
+	void DispatchSyncLost()
+	{
+		CLibSocket * wrapper = m_libSocket.load(std::memory_order_acquire);
+		if (wrapper && !m_destroying.load(std::memory_order_acquire) && !m_closed) {
+			wrapper->OnLost(0);
+		}
 	}
 
 	//

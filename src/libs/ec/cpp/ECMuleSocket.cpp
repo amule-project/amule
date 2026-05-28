@@ -59,9 +59,11 @@ bool CECMuleSocket::ConnectSocket(amuleIPV4Address& address)
 // constants used by CECServerSocket on the amuled side so detection
 // is symmetric. Numbers picked to balance responsiveness against the
 // keepalive packet overhead (one probe per 10s after 30s idle).
-namespace { const int EC_KEEPALIVE_IDLE_SEC      = 30; }
-namespace { const int EC_KEEPALIVE_INTERVAL_SEC  = 10; }
-namespace { const int EC_KEEPALIVE_PROBE_COUNT   = 3;  }
+namespace {
+	const int EC_KEEPALIVE_IDLE_SEC      = 30;
+	const int EC_KEEPALIVE_INTERVAL_SEC  = 10;
+	const int EC_KEEPALIVE_PROBE_COUNT   = 3;
+}
 
 bool CECMuleSocket::InternalConnect(uint32_t ip, uint16_t port, bool wait) {
 	amuleIPV4Address addr;
