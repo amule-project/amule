@@ -18,6 +18,9 @@ platforms/Windows/*/libs/libGeoIP/GeoIP_X.c
 **/#*#
 .#*
 
+# msgfmt artifact
+*.mo
+
 # User files (should go into .git/info/exclude)
 Makefile.user
 *.vcxproj.user
