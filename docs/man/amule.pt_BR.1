@@ -1,0 +1,101 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULE 1 "Setembro de 2016" "aMule v3.0.0" aMule
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NOME
+aMule \- o cliente p2p eMule multi\-plataforma
+.SH SINOPSE
+.B_untranslated amule
+[\fB\-c\fP \fI<path>\fP] [\fB\-geometry\fP \fI<geom>\fP]
+.RB_untranslated [ \-o ]
+.RB_untranslated [ \-r ]
+[\fB\-w\fP \fI<path>\fP]
+.RB_untranslated [ \-d ]
+.RB_untranslated [ \-i ]
+[\fB\-t\fP \fI<num>\fP] [\fIlink eD2k\fP]
+
+.B_untranslated amule
+.RB_untranslated [ \-v ]
+
+.B_untranslated amule
+.RB_untranslated [ \-h ]
+
+.SH DESCRIÇÃO
+.TP 
+\fB[ \-c\fP \fI<path>\fP, \fB\-\-config\-dir\fP=\fI<path>\fP \fB]\fP
+Ler configuração de \fI<path>\fP ao invés de home
+.TP 
+\fB[ \-geometry \fP\fI<geom>\fP \fB]\fP
+Ajusta a geometria do aplicativo. \fI<geom>\fP usa o mesmo formato que
+aplicativos X11
+padrão:	[\fB=\fP][\fI<width>\fP{\fBxX\fP}\fI<height>\fP][{\fB+\-\fP}\fI<xoffset>\fP{\fB+\-\fP}\fI<yoffset>\fP]
+.TP 
+.B_untranslated [ \-o\fR, \fB\-\-log\-stdout ]\fR
+Imprime mensagens de log para stdout.
+.TP 
+.B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
+Reseta configuração para os valores padrão.
+.TP 
+\fB[ \-w\fP \fI<path>\fP, \fB\-\-use\-amuleweb\fP=\fI<path>\fP \fB]\fP
+Especifica o local do binário amuleweb para \fI<path>\fP.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
+Não captura exceções fatais e não bloqueia saída em assertivas. Útil para
+configurações "headless / supervisionadas" (systemd, scripts de watchdog)
+onde caso contrário, diálogos de assertivas modais previnem o recomeço
+automático.
+.TP 
+.B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
+Não desabilita stdin.
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
+Seta categoria para links eD2k para \fI<num>\fP
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Mostra o número de versão atual.
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Imprime uma descrição de uso curta.
+.TP 
+\fB[ link eD2k ]\fP
+Adiciona um link eD2k ao núcleo.
+.PP
+O link eD2k a ser adicionado pode ser:
+.RS 3
+.IP \(bu 2
+um link de arquivo (ed2k://|file|...), ele será adicionado à fila de
+download;
+.IP \(bu 2
+um link de servidor (ed2k://|server|...), ele será adicionado à lista de
+servidores;
+.IP \(bu 2
+um link de lista de servidores, neste caso, todos os servidores na lista
+serão adicionados à lista de servidores;
+.IP \(bu 2
+um link magnético.
+.RE
+.SH NOTAS
+.SS Caminhos
+Para todas as opções que recebem um valor \fI<path>\fP, se o \fIpath\fP
+não contém uma parte de diretório (i.e. apenas o nome de arquivo), então é
+considerado estar debaixo do diretório de configuração do aMule,
+\fI~/.aMule\fP.
+.SH ARQUIVOS
+~/.aMule/*
+.SH "RELATANDO BUGS"
+Por favor, relate bugs ou em nosso forum
+(\fIhttps://github.com/amule\-org/amule/discussions\fP), ou em nosso bugtracker
+(\fIhttps://github.com/amule\-org/amule/issues\fP). Por favor, não relate bugs
+por e\-mail, nem para nossa lista de e\-mail, nem diretamente para qualquer
+membro do time.
+.SH "DIREITOS DE CÓPIA"
+aMule e todos os seus utilitários relacionados são distribuídos sob a
+licença geral pública GNU.
+.SH "VEJA TAMBÉM"
+.B_untranslated alc\fR(1), \fBalcc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamulegui\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1), \fBxas\fR(1)
+.SH AUTOR
+Esta manpage foi escrita por Vollstrecker <amule@vollstreckernet.de>

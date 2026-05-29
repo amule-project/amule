@@ -102,7 +102,7 @@ msgstr "B<[ -c> I<E<lt>pathE<gt>>, B<--config-dir>=I<E<lt>pathE<gt>> B<]>"
 #: amule.1:28 amuled.1:29 amulegui.1:27 ed2k.1:24
 #: ../../src/utils/cas/docs/cas.1:29
 msgid "Read config from I<E<lt>pathE<gt>> instead of home"
-msgstr "Ler configuração de I<E<lt>pathE<gt> ao invés de home"
+msgstr "Ler configuração de I<E<lt>pathE<gt>> ao invés de home"
 
 #. type: TP
 #: amule.1:28 amulegui.1:27

@@ -1,0 +1,221 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULEWEB 1 "Setembro de 2016" "aMule webserver v3.0.0" "utilitários aMule"
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NOME
+amuleweb \- servidor web de aMule
+.SH SINOPSE
+.B_untranslated amuleweb
+[\fB\-h\fP \fI<anfitrião>\fP] [\fB\-p\fP \fI<porta>\fP] [\fB\-P\fP
+\fI<senha>\fP] [\fB\-f\fP \fI<path>\fP]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+[\fB\-l\fP \fI<língua>\fP]
+.RB_untranslated [ \-w ]
+[\fB\-t\fP \fI<nome>\fP] [\fB\-s\fP \fI<porta>\fP]
+.RB_untranslated [ \-u ]
+[\fB\-U\fP \fI<porta>\fP]
+.RB_untranslated [ \-z ]
+.RB_untranslated [ \-Z ]
+[\fB\-A\fP \fI<senha>\fP] [\fB\-G\fP \fI<senha>\fP]
+.RB_untranslated [ \-a " " | " " \-d ]
+.RB_untranslated [ \-L ]
+.RB_untranslated [ \-\-no\-php ]
+.RB_untranslated [ \-N ]
+
+.B_untranslated amuleweb
+[\fB\-\-create\-config\-from\fP=\fI<path>\fP]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-help ]
+
+.B_untranslated amuleweb
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amuleweb
+[\fB\-\-amule\-config\-file\fP=\fI<path>\fP]
+
+.SH DESCRIÇÃO
+\fBamuleweb\fP gerencia seu acesso ao aMule através de um navegador web. Você
+pode iniciar o amuleweb junto com o \fBamule\fP(1), ou separadamente, a
+qualquer momento depois. As opções podem ser especificadas via linha de
+comando ou via arquivo de configuração. Opções de linha de comando têm
+precedência sobre opções de arquivo de configuração.
+.TP 
+\fB[ \-h\fP \fI<anfitrião>\fP, \fB\-\-host\fP=\fI<anfitrião>\fP \fB]\fP
+Anfitrião onde o aMule está rodando (padrão: \fIlocalhost\fP).
+\fI<anfitrião>\fP pode ser um endereço IP ou um nome de DNS
+.TP 
+\fB[ \-p\fP \fI<porta>\fP, \fB\-\-port\fP=\fI<porta>\fP \fB]\fP
+Porta do aMule para conexões externas (EC), conforme configurado em
+Preferências\->Controles Remotos (padrão: \fI4712\fP)
+.TP 
+\fB[ \-P\fP \fI<senha>\fP, \fB\-\-password\fP=\fI<senha>\fP \fB]\fP
+Senha das Conexões Externas (EC).
+.TP 
+\fB[ \-f\fP \fI<path>\fP, \fB\-\-config\-file\fP=\fI<path>\fP \fB]\fP
+Use o arquivo de configuração dado. O arquivo de configuração padrão é
+\fI~/.aMule/remote.conf\fP
+.TP 
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+Não imprimir qualquer saída para stdout.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+Ser verborrágico \- mostrar mensagens de debug também.
+.TP 
+\fB[ \-l\fP \fI<língua>\fP, \fB\-\-locale\fP=\fI<língua>\fP \fB]\fP
+Configura o local do programa (linguagem). Veja a seção \fBNOTAS\fP para a
+descrição do parâmetro \fI<lang>\fP.
+.TP 
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+Escrever as opções da linha de comando para o arquivo de configuração e sair
+.TP 
+\fB[ \-t\fP \fI<nome>\fP, \fB\-\-template\fP=\fI<nome>\fP \fB]\fP
+Carrega o template chamado \fI<nome>\fP. Veja a seção \fBSKIN SUPPORT\fP
+para detalhes.
+.TP 
+\fB[ \-s\fP \fI<porta>\fP, \fB\-\-server\-port\fP=\fI<porta>\fP \fB]\fP
+Porta HTTP do servidor web. Esta é a porta para a qual você precisa apontar
+seu navegador web (padrão: \fI4711\fP).
+.TP 
+.B_untranslated [ \-u ]\fR
+.br
+Habilita UPnP.
+.TP 
+\fB[ \-U\fP \fI<porta>\fP, \fB\-\-upnp\-port\fP \fI<porta>\fP \fB]\fP
+Porta UPnP.
+.TP 
+.B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
+Habilita o uso de compressão gzip em tráfego HTTP para poupar largura de
+banda.
+.TP 
+.B_untranslated [ \-Z\fR, \fB\-\-disable\-gzip ]\fR
+Desabilita o uso de compressão gzip (este é o padrão).
+.TP 
+\fB[ \-A\fP \fI<passwd>\fP, \fB\-\-admin\-pass\fP=\fI<passwd>\fP \fB]\fP
+Senha de acesso total para o servidor web.
+.TP 
+\fB[ \-G\fP \fI<passwd>\fP, \fB\-\-guest\-pass\fP=\fI<passwd>\fP \fB]\fP
+Senha do convidado para o servidor web.
+.TP 
+.B_untranslated [ \-a\fR, \fB\-\-allow\-guest ]\fR
+Permite acesso do convidado.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-deny\-guest ]\fR
+Nega acesso ao convidado (padrão).
+.TP 
+.B_untranslated [ \-L\fR, \fB\-\-load\-settings ]\fR
+Carrega/salva a configuração do servidor web de/para o aMule remoto. Isto
+faz com que o amuleweb ignore configurações de linha de comando e de arquivo
+de configuração, e as carrega do aMule. Quando estiver salvando as
+preferências, nenhuma será escrita no arquivo de configuração, e sim para o
+aMule. (Claro que isto funciona apenas para as configurações que podem ser
+configuradas nas Preferências\->Controles Remotos do aMule.)
+.TP 
+.B_untranslated [ \-\-no\-php ]\fR
+Desabilita o interpretador PHP (obsoleto)
+.TP 
+.B_untranslated [ \-N\fR, \fB\-\-no\-script\-cache ]\fR
+Recompila as páginas PHP a cada pedido.
+.TP 
+\fB[ \-\-create\-config\-from\fP=\fI<path>\fP \fB]\fP
+Criar arquivo de configuração baseado em \fI<path>\fP, que precisa
+apontar para um arquivo válido de configuração do aMule, e então sair.
+.TP 
+.B_untranslated [ \-\-help ]\fR
+Imprime uma descrição de uso curta.
+.TP 
+.B_untranslated [ \-\-version ]\fR
+Mostra o número de versão atual.
+.TP 
+\fB[ \-\-amule\-config\-file\fP=\fI<path>\fP \fB]\fP
+Caminho do arquivo de configuração do aMule.  \fBNÃO USE DIRETAMENTE!\fP aMule
+usa esta opção quando inicia o amuleweb na inicialização. Esta opção faz com
+que todas as outras opções de linha de comando e de arquivo de configuração
+sejam ignoradas, preferências sejam lidas do arquivo de configuração dado, e
+também impica na escolha das opções \fB\-q \-L\fP.
+.SH NOTAS
+.SS Caminhos
+Para todas as opções que recebem um valor \fI<path>\fP, se o \fIpath\fP
+não contém uma parte de diretório (i.e. apenas o nome de arquivo), então é
+considerado estar debaixo do diretório de configuração do aMule,
+\fI~/.aMule\fP.
+.SS Línguas
+O parâmetro \fI<lang>\fP da opção \fB\-l\fP tem a seguinte forma:
+\fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP] onde \fIlang\fP é a
+linguagem principal, \fILANG\fP é a sub\-lingua/território, \fIencoding\fP é o
+conjunto de caracteres a ser utilizado e \fImodifier\fP permite ao usuário
+selecionar uma instância específica dos dados de localização dentro de uma
+única categoria.
+
+Por exemplo, as seguintes strings são válidas:
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+Apesar de todas as strings acima serem aceitas como definições de línguas
+válidas, \fIencoding\fP e \fImodifier\fP não são utilizados ainda.
+
+Além do formato acima, você pode também especificar nomes completos de
+linguagens em Inglês \- deste modo \fB\-l german\fP também é válido e é igual a
+\fB\-l de_DE\fP.
+
+Quando nenhum local está definido, seja na linha de comando ou no arquivo de
+configuração, a linguagem padrão do sistema será utilizada.
+.SH "SUPORTE À PELES"
+\fBamuleweb\fP é capaz de mostrar informação em peles diferentes. Estas peles
+são chamadas "templates", e você pode fazer o amuleweb carregar um template
+específico através da opção de linha de comando \fB\-t\fP. Templates são
+procurados em dois locais: primeiro em \fI~/.aMule/webserver/\fP e depois em
+\fI/usr/share/amule/webserver/\fP se você instalou com \-\-prefix=/usr.
+.PP
+Cada template precisa estar em um subdiretório do nome do template, e este
+diretório precisa conter todos os arquivos que o template necessita.
+.SH ARQUIVOS
+~/.aMule/remote.conf
+.br
+~/.aMule/webserver/
+.br
+\fI$(pkgdatadir)\fP/webserver/
+.SH EXEMPLO
+Tipicamente o amuleweb será rodado primeiro assim:
+.PP
+\fBamuleweb\fP \fB\-h\fP \fIhostname\fP \fB\-p\fP \fIECport\fP \fB\-P\fP \fIECpassword\fP \fB\-s\fP
+\fIHTTPport\fP \fB\-A\fP \fIAdminPassword\fP \fB\-w\fP
+.PP
+ou
+.PP
+\fBamuleweb\fP \fB\-\-create\-config\-from\fP=\fI/home/username/.aMule/amule.conf\fP
+.PP
+Estes savarão as configurações em \fI$HOME/.aMule/remote.conf\fP, e
+posteriormente você só precisa digitar:
+.PP
+.B_untranslated amuleweb
+.PP
+Claro que você pode especificar quaisquer opções a mais ou a menos na
+primeira linha de exemplo, e você pode também omiti\-las totalmente.
+.SH "RELATANDO BUGS"
+Por favor, relate bugs ou em nosso forum
+(\fIhttps://github.com/amule\-org/amule/discussions\fP), ou em nosso bugtracker
+(\fIhttps://github.com/amule\-org/amule/issues\fP). Por favor, não relate bugs
+por e\-mail, nem para nossa lista de e\-mail, nem diretamente para qualquer
+membro do time.
+.SH "DIREITOS DE CÓPIA"
+aMule e todos os seus utilitários relacionados são distribuídos sob a
+licença geral pública GNU.
+.SH "VEJA TAMBÉM"
+.B_untranslated amule\fR(1), \fBamulecmd\fR(1)
+.SH AUTOR
+Esta manpage foi escrita por Vollstrecker <amule@vollstreckernet.de>
