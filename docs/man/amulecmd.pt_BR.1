@@ -1,0 +1,313 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULECMD 1 "Setembro de 2016" "aMuleCmd v3.0.0" "utilitários aMule"
+.als B_untranslated B
+.als RB_untranslated RB
+.als SS_untranslated SS
+.SH NOME
+amulecmd \- Programa baseado em console para controlar o aMule
+.SH SINOPSE
+.B_untranslated amulecmd
+[\fB\-h\fP \fI<anfitrião>\fP] [\fB\-p\fP \fI<porta>\fP] [\fB\-P\fP
+\fI<senha>\fP] [\fB\-f\fP \fI<path>\fP]
+.RB_untranslated [ \-q ]
+.RB_untranslated [ \-v ]
+[\fB\-l\fP \fI<língua>\fP] {\fB \fP[\fB\-w\fP]\fB \fP|\fB \fP[\fB\-c\fP
+\fI<comando>\fP]\fB \fP}
+
+.B_untranslated amulecmd
+[\fB\-\-create\-config\-from\fP=\fI<path>\fP]
+
+.B_untranslated amulecmd
+.RB_untranslated [ \-\-version ]
+
+.B_untranslated amulecmd
+.RB_untranslated [ \-\-help ]
+.SH DESCRIÇÃO
+\fBamulecmd\fP é um programa baseado em console para rodar o núcleo do aMule
+sem IGU.
+.TP 
+\fB[ \-h\fP \fI<anfitrião>\fP, \fB\-\-host\fP=\fI<anfitrião>\fP \fB]\fP
+Anfitrião onde o aMule está rodando (padrão: \fIlocalhost\fP).
+\fI<anfitrião>\fP pode ser um endereço IP ou um nome de DNS
+.TP 
+\fB[ \-p\fP \fI<porta>\fP, \fB\-\-port\fP=\fI<porta>\fP \fB]\fP
+Porta do aMule para conexões externas (EC), conforme configurado em
+Preferências\->Controles Remotos (padrão: \fI4712\fP)
+.TP 
+\fB[ \-P\fP \fI<senha>\fP, \fB\-\-password\fP=\fI<senha>\fP \fB]\fP
+Senha das Conexões Externas (EC).
+.TP 
+\fB[ \-f\fP \fI<path>\fP, \fB\-\-config\-file\fP=\fI<path>\fP \fB]\fP
+Use o arquivo de configuração dado. O arquivo de configuração padrão é
+\fI~/.aMule/remote.conf\fP
+.TP 
+.B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
+Não imprimir qualquer saída para stdout.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
+Ser verborrágico \- mostrar mensagens de debug também.
+.TP 
+\fB[ \-l\fP \fI<língua>\fP, \fB\-\-locale\fP=\fI<língua>\fP \fB]\fP
+Configura o local do programa (linguagem). Veja a seção \fBNOTAS\fP para a
+descrição do parâmetro \fI<lang>\fP.
+.TP 
+.B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
+Escrever as opções da linha de comando para o arquivo de configuração e sair
+.TP 
+\fB[ \-c\fP \fI<commando>\fP, \fB\-\-command\fP=\fI<commando>\fP \fB]\fP
+Executar \fI<command>\fP como se fosse digitado no prompt do amulecmd e
+sair.
+.TP 
+\fB[ \-\-create\-config\-from\fP=\fI<path>\fP \fB]\fP
+Criar arquivo de configuração baseado em \fI<path>\fP, que precisa
+apontar para um arquivo válido de configuração do aMule, e então sair.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Mostra o número de versão atual.
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Imprime uma descrição de uso curta.
+.SH COMANDOS
+Todos os comandos são insensíveis a maiúsculas e minúsculas.
+.SS_untranslated Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
+Adiciona um link eD2k ou link magnético ao núcleo.
+
+O link eD2k a ser adicionado pode ser:
+.RS 3
+.IP \(bu 2
+um link de arquivo (ed2k://|file|...), ele será adicionado à fila de
+download;
+.IP \(bu 2
+um link de servidor (ed2k://|server|...), ele será adicionado à lista de
+servidores;
+.IP \(bu 2
+um link de lista de servidores, no qual todos os servidores na lista serão
+adicionados à lista de servidores.
+.RE
+
+O link magnético precisa conter o hash eD2k e o tamanho do arquivo.
+.SS_untranslated Cancel \fI<hash>\fP | \fI<number>\fP
+Cancela o download especificado por \fI<hash>\fP ou
+\fI<number>\fP. Para pegar o valor, use \fBshow\fP.
+.SS_untranslated Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
+Conecta à rede.
+
+Isto vai conectar à todas as redes que estiverem habilitadas nas
+preferências.
+
+Com o parâmetro opcional você pode especificar a que rede conectar. Ao dar
+um endereço de servidor na forma IP:Porta (onde IP é um endereço IPv4 ou um
+nome de DNS resolvível) o aMule vai conectar apenas a este servidor.
+.SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
+Desconectar de todas as redes que estiver conectado ou apenas desconectar da
+rede especificada.
+.SS_untranslated Download \fI<number>\fP
+Começar a baixar um arquivo.
+
+O \fI<numero>\fP de um arquivo da última busca tem que ser dado.
+Exemplo: `download 12' começará a baixar o arquivo com o número 12 da última
+busca.
+.SS_untranslated Exit
+Desconecta do amule/amuled e sai de amulecmd.
+.SS_untranslated Get \fI<what>\fP
+Pega e mostra um valor de preferência.
+
+Valores disponíveis para \fI<qual>\fP:
+.RS
+.IP BwLimits 10
+Pegar limites de banda.
+.IP IPFilter 10
+Pegar preferências de IPFilter.
+.RE
+.SS_untranslated Help [ \fI<command>\fP ]
+Imprime uma descrição de uso curta. Se chamado sem parâmetros, mostra a
+lista dos comandos disponíveis. Se chamado com \fI<command>\fP, mostra
+uma descrição curta do comando dado.
+.SS_untranslated Pause \fI<hash>\fP | \fI<number>\fP
+Pausa o download especificado por \fI<hash>\fP ou
+\fI<numero>\fP. Para pegar o número use \fBshow\fP.
+.SS_untranslated Priority \fI<priority>\fP \fI<hash>\fP | \fI<number>\fP
+Configura a prioridade de um download especificado por \fI<hash>\fP ou
+\fI<numero>\fP.
+
+Valores disponíveis para  \fI<prioridade>\fP:
+.RS
+.IP Auto 10
+Prioridade automática.
+.IP High 10
+Alta prioridade.
+.IP Low 10
+Baixa prioridade.
+.IP Normal 10
+Prioridade normal.
+.RE
+.SS_untranslated Progress
+Mostra o progresso de uma busca em andamento.
+.SS_untranslated Quit
+Um sinônimo para o comando \fBexit\fP.
+.SS_untranslated Reload \fI<what>\fP
+Recarrega um objeto dado.
+
+Valores disponíveis para \fI<qual>\fP:
+.RS
+.IP Shared 10
+Recarrega a lista de arquivos compartilhados.
+.IP IPFilter 10
+Recarrega as tabelas de filtragem de IP.
+.RE
+.SS_untranslated Reset
+Apaga o log.
+.SS_untranslated Results
+Mostra os resultados da última busca.
+.SS_untranslated Resume \fI<hash>\fP | \fI<number>\fP
+Retoma o download especificado por \fI<hash>\fP ou
+\fI<numero>\fP. Para pegar o valor, use \fBshow\fP.
+.SS_untranslated Search \fI<type>\fP [\fI<filters>\fP] \fI<keyword>\fR
+Faz uma busca pela \fI<palavra chave>\fP dada. Um tipo de busca e uma
+palavra chave são mandatórias para fazer isso. Exemplo: `search kad amule'
+executa uma busca kad por `amule'.
+
+Tipos de busca disponíveis:
+.RS
+.IP Global 10
+Executa uma busca global.
+.IP Kad 10
+Executa uma busca na rede Kademlia.
+.IP Local 10
+Executa uma busca local.
+.RE
+.PP
+Filtros opcionais podem ser colocado antes, depois ou intercalados com as
+palavras chaves de busca:
+.RS
+.IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
+Restringir os resultados ao tipo de arquivo dado.
+.IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
+Restringir os resultados ao tipo específico de extensão. (e.g. \ \fIiso\fP,
+\fImp3\fP).
+.IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
+Número mínimo de fontes que um resultado tem que reportar.
+.IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
+Menor tamanho de arquivo a ser retornado. Os sufixos usam multiplicadores
+binários (K = 1024, M = K\(mu1024, G = M\(mu1024); sem  sufixos significa
+bytes.
+.IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
+Maior tamanho de arquivo a ser retornado. Mesmos sufixos que \fB\-\-min\-size\fP.
+.RE
+.PP
+Exemplo: `earch global linux iso \-\-type Iso \-\-min\-size 100M' retorna
+resultados para \(lqlinux iso\(rq do tipo de arquivo Iso com no mínimo 100
+MiB.
+.SS_untranslated Set \fI<what>\fR
+Configura um dado valor de preferência.
+
+Valores disponíveis para \fI<qual>\fP:
+.RS
+.IP BwLimits 10
+Configura limites de banda.
+.IP IPFilter 10
+Configura preferências de IPFilter.
+.RE
+.SS_untranslated Show \fI<what>\fR
+Mostra a fila de upload/download, lista de servidores or lista de arquivos
+compartilhados.
+
+Valores disponíveis para \fI<qual>\fP:
+.RS
+.IP DL 10
+Mostra a fila de download.
+.IP Log 10
+Mostra o log.
+.IP Servers 10
+Mostra a lista de servidores.
+.IP Shared 10
+Mostra a lista de arquivos compartilhados.
+.IP UL 10
+Mostra a lista de upload.
+.RE
+.SS_untranslated Shutdown
+Desliga o núcleo rodando remotamente (amule/amuled). Isto também desligará o
+cliente modo texto, já que este é inútil sem um núcleo rodando.
+.SS_untranslated Statistics [ \fI<number>\fP ]
+Mostra a árvore de estatísticas.
+
+O \fI<numero>\fP opcional na faixa de 0\-255 pode ser passado como
+argumento para este comando, que diz quantas entradas da sub\-árvore de
+versão do cliente deve ser mostrada. Passar 0 ou omitir significa
+`ilimitado'.
+
+Exemplo: `statistics 5' vai mostrar apenas as 5 versões mais altas para cada
+tipo de cliente.
+.SS_untranslated Status
+Mostrar o estado das conexões, velocidades atuais de upload/download, etc.
+.SH NOTAS
+.SS Caminhos
+Para todas as opções que recebem um valor \fI<path>\fP, se o \fIpath\fP
+não contém uma parte de diretório (i.e. apenas o nome de arquivo), então é
+considerado estar debaixo do diretório de configuração do aMule,
+\fI~/.aMule\fP.
+.SS Línguas
+O parâmetro \fI<lang>\fP da opção \fB\-l\fP tem a seguinte forma:
+\fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP] onde \fIlang\fP é a
+linguagem principal, \fILANG\fP é a sub\-lingua/território, \fIencoding\fP é o
+conjunto de caracteres a ser utilizado e \fImodifier\fP permite ao usuário
+selecionar uma instância específica dos dados de localização dentro de uma
+única categoria.
+
+Por exemplo, as seguintes strings são válidas:
+.RS
+.RB_untranslated de
+.br
+.RB_untranslated de_DE
+.br
+.RB_untranslated de_DE.iso88591
+.br
+.RB_untranslated de_DE@euro
+.br
+.RB_untranslated de_DE.iso88591@euro
+.RE
+
+Apesar de todas as strings acima serem aceitas como definições de línguas
+válidas, \fIencoding\fP e \fImodifier\fP não são utilizados ainda.
+
+Além do formato acima, você pode também especificar nomes completos de
+linguagens em Inglês \- deste modo \fB\-l german\fP também é válido e é igual a
+\fB\-l de_DE\fP.
+
+Quando nenhum local está definido, seja na linha de comando ou no arquivo de
+configuração, a linguagem padrão do sistema será utilizada.
+.SH ARQUIVOS
+~/.aMule/remote.conf
+.SH EXEMPLO
+Tipicamente, amulecmd será inicialmente rodado assim:
+.PP
+\fBamulecmd\fP \fB\-h\fP \fInome do anfitrião\fP \fB\-p\fP \fIporta EC\fP \fB\-P\fP \fIsenha EC\fP
+\fB\-w\fP
+.PP
+ou
+.PP
+\fBamulecmd\fP \fB\-\-create\-config\-from\fP=\fI/home/username/.aMule/amule.conf\fP
+.PP
+Estes savarão as configurações em \fI$HOME/.aMule/remote.conf\fP, e
+posteriormente você só precisa digitar:
+
+.B_untranslated amulecmd
+
+Claro, você não precisa seguir este exemplo.
+.SH "RELATANDO BUGS"
+Por favor, relate bugs ou em nosso forum
+(\fIhttps://github.com/amule\-org/amule/discussions\fP), ou em nosso bugtracker
+(\fIhttps://github.com/amule\-org/amule/issues\fP). Por favor, não relate bugs
+por e\-mail, nem para nossa lista de e\-mail, nem diretamente para qualquer
+membro do time.
+.SH "DIREITOS DE CÓPIA"
+aMule e todos os seus utilitários relacionados são distribuídos sob a
+licença geral pública GNU.
+.SH "VEJA TAMBÉM"
+.B_untranslated amule\fR(1), \fBamuled\fR(1)
+.SH AUTOR
+Esta manpage foi escrita por Vollstrecker <amule@vollstreckernet.de>
