@@ -52,23 +52,23 @@ peut être une adresse IP ou un nom DNS.
 .TP 
 \fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
 Port d'aMule pour les Connexions Externes, tel que défini dans
-Préférences\->Contrôles à Distance (défaut: \fI4712\fP)
+Préférences\->Contrôles à Distance (par défaut: \fI4712\fP)
 .TP 
 \fB[ \-P\fP \fI<motdepasse>\fP, \fB\-\-password\fP=\fI<motdepasse>\fP \fB]\fP
 Mot de passe des connexions externes.
 .TP 
 \fB[ \-f\fP \fI<chemin>\fP, \fB\-\-config\-file\fP=\fI<chemin>\fP \fB]\fP
-Utiliser le fichier de configuration désigné. Le fichier de configuration
+Utiliser le fichier de configuration désigné.  Le fichier de configuration
 par défaut est \fI~/.aMule/remote.conf\fP
 .TP 
 .B_untranslated [ \-q\fR, \fB\-\-quiet ]\fR
 Ne pas afficher de sortie sur stdout.
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
-Mode bavard \- affiche aussi les messages de deboguage.
+Mode bavard \- affiche aussi les messages de débogage.
 .TP 
 \fB[ \-l\fP \fI<lang>\fP, \fB\-\-locale\fP=\fI<lang>\fP \fB]\fP
-Définir les paramètres régionaux (langage). Voir la section \fBNOTES\fP pour la
+Définir les paramètres régionaux (langue). Voir la section \fBNOTES\fP pour la
 description du paramètre \fI<lang>\fP.
 .TP 
 .B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
@@ -80,8 +80,8 @@ Charge le modèle nommé \fI<nom>\fP. Voir la section \fBSKIN SUPPORT\fP
 pour plus de détails.
 .TP 
 \fB[ \-s\fP \fI<port>\fP, \fB\-\-server\-port\fP=\fI<port>\fP \fB]\fP
-Port HTTP du serveur Web. Il s'agit du port dont votre navigateur doit
-pointer (par défaut : \fI4711\fP).
+Port HTTP du serveur Web. Il s'agit du port vers lequel votre navigateur
+doit pointer (par défaut : \fI4711\fP).
 .TP 
 .B_untranslated [ \-u ]\fR
 .br
@@ -107,7 +107,7 @@ Mot de passe invité pour le serveur web.
 Autoriser l'accès invité.
 .TP 
 .B_untranslated [ \-d\fR, \fB\-\-deny\-guest ]\fR
-Interdire l'accès invité (par défaut).
+Interdit l'accès invité (par défaut).
 .TP 
 .B_untranslated [ \-L\fR, \fB\-\-load\-settings ]\fR
 Charger/enregistrer les paramètres de serveur web à partir de/vers l'aMule
@@ -136,21 +136,23 @@ Affiche le numéro de la version actuelle.
 \fB[ \-\-amule\-config\-file\fP=\fI<chemin>\fP \fB]\fP
 Chemin du fichier de configuration d'aMule. \fBNE PAS UTILISER DIRECTEMENT !\fP
 aMule utilise cette option lors du démarrage d'amuleweb au démarrage
-d'aMule. Cette option permet d'ignorer toutes les autres commandes en ligne
-et les paramètres de fichier de configuration, et lit les préférences dans
-un fichier de configuration précisé, et implique également les options \fB\-q \-L\fP.
+d'aMule. Cette option permet d'ignorer toutes les autres options de ligne de
+commande et les paramètres de fichier de configuration, et lit les
+préférences dans un fichier de configuration précisé, et implique également
+les options \fB\-q \-L\fP.
 .SH NOTES
 .SS Chemins
 Pour toutes les options prenant en paramètre un \fI<chemin>\fP, si le
-\fIchemin\fP ne contient pas de répertoire (i.e. juste un nom de fichier),
-alors il sera considéré comme étant dans le répertoire de configuration
-d'aMule, \fI~/.aMule\fP.
-.SS Langages
+\fIchemin\fP ne contient pas de répertoire (c'est\-à\-dire juste un nom de
+fichier), alors il sera considéré comme étant dans le répertoire de
+configuration d'aMule, \fI~/.aMule\fP.
+.SS Langues
 Le paramètre \fI<lang>\fP pour \fB\-l\fP l'option a la forme suivante :
 \fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP] où \fIlang\fP est la
-langue principale, \fILANG\fP est is a dialecte, \fIencoding\fP est le caractère
-défini à utiliser et \fImodifier\fP permet à l'utilisateur de sélectionner une
-instance spécifique des données de localisation dans une seule catégorie.
+langue principale, \fILANG\fP est le dialecte, \fIencoding\fP est le jeu de
+caractères défini à utiliser et \fImodifier\fP permet à l'utilisateur de
+sélectionner une instance spécifique des données de localisation dans une
+seule catégorie.
 
 Par exemple, les chaînes de caractères suivantes sont valables :
 .RS
@@ -166,25 +168,25 @@ Par exemple, les chaînes de caractères suivantes sont valables :
 .RE
 
 Bien que toutes les chaînes ci\-dessus sont acceptées comme des définitions
-de langue valide,  \fIencoding\fP et \fImodifier\fP ne sont pas encore utilisé.
+de langue valide,  \fIencoding\fP et \fImodifier\fP ne sont pas encore utilisés.
 
 En plus du format ci\-dessus, vous pouvez également spécifier des noms entier
 de langue en anglais \- so \fB\-l german\fP est également valide et équivaut à
 \fB\-l de_DE\fP.
 
-En l'absence de paramètres linguistiques définie, soit sur ​​la ligne de
-commande ou dans le fichier de configuration, la langue utilisé par défaut
+En l'absence de paramètres linguistiques définis, soit sur ​​la ligne de
+commande ou dans le fichier de configuration, la langue utilisée par défaut
 sera celle du système d'exploitation.
-.SH "SUPPORT DE THEMES"
+.SH "PRISE EN CHARGE DES THÈMES"
 \fBamuleweb\fP est capable d'afficher des informations dans différents
 thèmes. Ces thèmes sont appelés modèles, et vous pouvez faire de charger à
-amuleweb un modèle spécifique via \fB\-t\fP l'option en ligne de commande. Les
+amuleweb un modèle spécifique via l'option en ligne de commande \fB\-t\fP. Les
 modèles sont recherchés dans deux endroits : d'abord dans :
 \fI~/.aMule/webserver/\fP puis dans \fI/usr/share/amule/webserver/\fP si vous
 l'avez installé avec \-\-prefix=/usr.
 .PP
 Chaque modèle doit être dans un sous répertoire du nom du modèle, et ce
-répertoire doit contenir tous les fichiers dont le modèle a besoins.
+répertoire doit contenir tous les fichiers dont le modèle a besoin.
 .SH FICHIERS
 ~/.aMule/remote.conf
 .br
@@ -192,7 +194,7 @@ répertoire doit contenir tous les fichiers dont le modèle a besoins.
 .br
 \fI$(pkgdatadir)\fP/webserver/
 .SH EXEMPLE
-Typiquement amuleweb sera lancé la premier ainsi :
+Typiquement amuleweb sera lancée la première fois ainsi :
 .PP
 \fBamuleweb\fP \fB\-h\fP \fInom de l'hôte\fP \fB\-p\fP \fIport EC\fP \fB\-P\fP \fImot de passe EC\fP
 \fB\-s\fP \fIport HTTP\fP \fB\-A\fP \fImot de passe Admin\fP \fB\-w\fP
@@ -210,15 +212,15 @@ Bien sûr, vous pouvez spécifier plus ou moins d'options sur la première
 ligne d'exemple, et vous pouvez également totalement le supprimer.
 .SH "RAPPORTER DES BOGUES"
 Veuillez rapporter les bogues sur notre forum
-(\fIhttps://github.com/amule\-org/amule/discussions\fP), ou sur notre bugtracker
-(\fIhttps://github.com/amule\-org/amule/issues\fP).  Veuillez ne pas rapporter
-les bogues par e\-mail, sur notre liste de diffusion ou directement à
-n'importe quel membre  de l'équipe.
+(\fIhttps://github.com/amule\-org/amule/discussions\fP), ou sur notre traqueur
+de bogues (\fIhttps://github.com/amule\-org/amule/issues\fP).  Veuillez ne pas
+rapporter les bogues par e\-mail, sur notre liste de diffusion ou directement
+aux membres de l'équipe.
 .SH COPYRIGHT
-aMule et tout ses outils sont distribués sous la licence GNU General Public
+aMule et tous ses outils sont distribués sous la licence GNU General Public
 License.
-.SH "VOIR AUSSI"
+.SH "VOIR ÉGALEMENT"
 .B_untranslated amule\fR(1), \fBamulecmd\fR(1)
 .SH AUTEUR
-Cette manpage a été écrite par Vollstrecker
+Cette page de manuel a été écrite par Vollstrecker
 <amule@vollstreckernet.de>
