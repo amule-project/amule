@@ -1,0 +1,4 @@
+# Vendored / generated subtree - lint signal is not actionable here.
+# Re-enable selectively if a specific check finds a real issue.
+
+Checks: '-*'
