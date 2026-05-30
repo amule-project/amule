@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule GIT\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-05-27 15:22+0200\n"
+"POT-Creation-Date: 2026-05-30 13:08-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,7 +124,7 @@ msgstr[1] ""
 #: src/amuleAppCommon.cpp:175 src/amule.cpp:851 src/amule.cpp:965
 #: src/amule.cpp:1260 src/amule-remote-gui.cpp:415 src/amule-remote-gui.cpp:443
 #: src/amule-remote-gui.cpp:445 src/amule-remote-gui.cpp:464
-#: src/amule-remote-gui.cpp:784 src/amule-remote-gui.cpp:805
+#: src/amule-remote-gui.cpp:793 src/amule-remote-gui.cpp:822
 #: src/DownloadQueue.cpp:1444
 msgid "ERROR"
 msgstr ""
@@ -302,137 +302,137 @@ msgstr ""
 msgid "Server hostname notified"
 msgstr ""
 
-#: src/amule.cpp:1595
+#: src/amule.cpp:1629
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr ""
 
-#: src/amule.cpp:1728
+#: src/amule.cpp:1762
 msgid "ERROR: can't open logfile"
 msgstr ""
 
-#: src/amule.cpp:1732
+#: src/amule.cpp:1766
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr ""
 
-#: src/amule.cpp:1749
+#: src/amule.cpp:1783
 msgid "Log has been reset"
 msgstr ""
 
-#: src/amule.cpp:1775
+#: src/amule.cpp:1809
 #, c-format
 msgid "ServerMessage: %s"
 msgstr ""
 
-#: src/amule.cpp:1817 src/IP2Country.cpp:154 src/IPFilter.cpp:510
+#: src/amule.cpp:1851 src/IP2Country.cpp:154 src/IPFilter.cpp:510
 #: src/ServerList.cpp:870
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr ""
 
-#: src/amule.cpp:1819
+#: src/amule.cpp:1853
 msgid "Failed to download the nodes list."
 msgstr ""
 
-#: src/amule.cpp:1839
+#: src/amule.cpp:1873
 msgid "Failed to open the downloaded version check file"
 msgstr ""
 
-#: src/amule.cpp:1842 src/amule.cpp:1861 src/amule.cpp:1892 src/amule.cpp:1913
+#: src/amule.cpp:1876 src/amule.cpp:1895 src/amule.cpp:1926 src/amule.cpp:1947
 msgid "Corrupted version check file"
 msgstr ""
 
-#: src/amule.cpp:1924
+#: src/amule.cpp:1958
 msgid "You are using an outdated version of aMule!"
 msgstr ""
 
-#: src/amule.cpp:1926
+#: src/amule.cpp:1960
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 
-#: src/amule.cpp:1927
+#: src/amule.cpp:1961
 msgid ""
 "The latest version can always be found at https://github.com/amule-org/amule/"
 "releases/latest"
 msgstr ""
 
-#: src/amule.cpp:1929
+#: src/amule.cpp:1963
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr ""
 
-#: src/amule.cpp:1933
+#: src/amule.cpp:1967
 msgid "Your copy of aMule is up to date."
 msgstr ""
 
-#: src/amule.cpp:1940
+#: src/amule.cpp:1974
 msgid "Failed to download the version check file"
 msgstr ""
 
-#: src/amule.cpp:2110 src/amule-remote-gui.cpp:662
+#: src/amule.cpp:2144 src/amule-remote-gui.cpp:662
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr ""
 
-#: src/amule.cpp:2111 src/amule-remote-gui.cpp:663
+#: src/amule.cpp:2145 src/amule-remote-gui.cpp:663
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr ""
 
-#: src/amule.cpp:2120 src/amule-remote-gui.cpp:672
+#: src/amule.cpp:2154 src/amule-remote-gui.cpp:672
 msgid "No networks selected"
 msgstr ""
 
-#: src/amule.cpp:2162 src/TextClient.cpp:806
+#: src/amule.cpp:2196 src/TextClient.cpp:806
 msgid "with LowID"
 msgstr ""
 
-#: src/amule.cpp:2162 src/TextClient.cpp:806
+#: src/amule.cpp:2196 src/TextClient.cpp:806
 msgid "with HighID"
 msgstr ""
 
-#: src/amule.cpp:2164
+#: src/amule.cpp:2198
 #, c-format
 msgid "Connected to %s %s"
 msgstr ""
 
-#: src/amule.cpp:2168
+#: src/amule.cpp:2202
 #, c-format
 msgid "Connecting to %s"
 msgstr ""
 
-#: src/amule.cpp:2170
+#: src/amule.cpp:2204
 msgid "Disconnected from eD2k"
 msgstr ""
 
-#: src/amule.cpp:2178
+#: src/amule.cpp:2212
 msgid "Kad started."
 msgstr ""
 
-#: src/amule.cpp:2180
+#: src/amule.cpp:2214
 msgid "Kad stopped."
 msgstr ""
 
-#: src/amule.cpp:2188
+#: src/amule.cpp:2222
 msgid "Connected to Kad (ok)"
 msgstr ""
 
-#: src/amule.cpp:2190
+#: src/amule.cpp:2224
 msgid "Connected to Kad (firewalled)"
 msgstr ""
 
-#: src/amule.cpp:2193
+#: src/amule.cpp:2227
 msgid "Disconnected from Kad"
 msgstr ""
 
-#: src/amule.cpp:2225
+#: src/amule.cpp:2259
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr ""
 
-#: src/amule.cpp:2228
+#: src/amule.cpp:2262
 msgid "Kad network disabled on preferences, not connecting."
 msgstr ""
 
@@ -830,28 +830,28 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:783 src/ExternalConn.cpp:1695
+#: src/amule-remote-gui.cpp:783 src/ExternalConn.cpp:1740
 msgid "Invalid link or already on list."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:803
+#: src/amule-remote-gui.cpp:813
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:1551 src/BaseClient.cpp:1772
+#: src/amule-remote-gui.cpp:1598 src/BaseClient.cpp:1772
 #: src/BaseClient.cpp:2311 src/BaseClient.cpp:2327 src/BaseClient.cpp:2603
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:86
 #: src/ClientDetailDialog.cpp:119 src/ClientDetailDialog.cpp:120
 #: src/ClientDetailDialog.cpp:130 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/DownloadListCtrl.cpp:1087 src/DownloadListCtrl.cpp:1100
-#: src/DownloadListCtrl.cpp:1111 src/ExternalConn.cpp:506
-#: src/FileDetailDialog.cpp:127 src/GenericClientListCtrl.cpp:1056
-#: src/GenericClientListCtrl.cpp:1067 src/GenericClientListCtrl.cpp:1077
+#: src/DownloadListCtrl.cpp:1111 src/ExternalConn.cpp:515
+#: src/FileDetailDialog.cpp:183 src/GenericClientListCtrl.cpp:1102
+#: src/GenericClientListCtrl.cpp:1113 src/GenericClientListCtrl.cpp:1123
 #: src/HTTPDownload.cpp:87 src/KnownFile.cpp:986 src/KnownFile.cpp:992
-#: src/MuleTrayIcon.cpp:410 src/MuleTrayIcon.cpp:846 src/PartFile.cpp:2741
-#: src/PartFile.cpp:2747 src/Server.cpp:133 src/Server.cpp:211
+#: src/MuleTrayIcon.cpp:410 src/MuleTrayIcon.cpp:846 src/PartFile.cpp:2750
+#: src/PartFile.cpp:2756 src/Server.cpp:133 src/Server.cpp:211
 #: src/Statistics.cpp:1060
 msgid "Unknown"
 msgstr ""
@@ -930,7 +930,7 @@ msgid ""
 "Ignored"
 msgstr ""
 
-#: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:111
+#: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:112
 #, c-format
 msgid "WARNING: %s cannot be opened."
 msgstr ""
@@ -939,12 +939,12 @@ msgstr ""
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
 msgstr ""
 
-#: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:157
+#: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:158
 #, c-format
 msgid "IO error while reading %s file: %s"
 msgstr ""
 
-#: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:243
+#: src/CanceledFileList.cpp:104 src/KnownFileList.cpp:244
 #, c-format
 msgid "Error while saving %s file: %s"
 msgstr ""
@@ -1024,7 +1024,7 @@ msgstr ""
 msgid "Close other tabs"
 msgstr ""
 
-#: src/ChatWnd.cpp:106 src/GenericClientListCtrl.cpp:585
+#: src/ChatWnd.cpp:106 src/GenericClientListCtrl.cpp:631
 msgid "Add to Friends"
 msgstr ""
 
@@ -1087,8 +1087,8 @@ msgid "Disconnected"
 msgstr ""
 
 #: src/ClientDetailDialog.cpp:160 src/ClientDetailDialog.cpp:164
-#: src/DownloadListCtrl.cpp:967 src/GenericClientListCtrl.cpp:880
-#: src/GenericClientListCtrl.cpp:891
+#: src/DownloadListCtrl.cpp:967 src/GenericClientListCtrl.cpp:926
+#: src/GenericClientListCtrl.cpp:937
 #, c-format
 msgid "%.1f kB/s"
 msgstr ""
@@ -1171,33 +1171,33 @@ msgstr ""
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr ""
 
-#: src/CommentDialog.cpp:35 src/CommentDialogLst.cpp:47
+#: src/CommentDialog.cpp:53 src/CommentDialogLst.cpp:61
 msgid "File Comments"
 msgstr ""
 
-#: src/CommentDialogLst.cpp:55 src/FriendListCtrl.cpp:60
+#: src/CommentDialogLst.cpp:69 src/FriendListCtrl.cpp:60
 msgid "Username"
 msgstr ""
 
-#: src/CommentDialogLst.cpp:56 src/DownloadListCtrl.cpp:159
+#: src/CommentDialogLst.cpp:70 src/DownloadListCtrl.cpp:159
 #: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:87
 #: src/SharedFilesCtrl.cpp:103
 msgid "File Name"
 msgstr ""
 
-#: src/CommentDialogLst.cpp:57
+#: src/CommentDialogLst.cpp:71
 msgid "Rating"
 msgstr ""
 
-#: src/CommentDialogLst.cpp:58
+#: src/CommentDialogLst.cpp:72
 msgid "Comment"
 msgstr ""
 
-#: src/CommentDialogLst.cpp:103 src/muuli_wdr.cpp:756
+#: src/CommentDialogLst.cpp:131 src/muuli_wdr.cpp:756
 msgid "No comments"
 msgstr ""
 
-#: src/CommentDialogLst.cpp:105
+#: src/CommentDialogLst.cpp:133
 #, c-format
 msgid "%u comment"
 msgid_plural "%u comments"
@@ -1260,17 +1260,17 @@ msgstr ""
 msgid "Connecting via server"
 msgstr ""
 
-#: src/DataToText.cpp:62 src/GenericClientListCtrl.cpp:987
+#: src/DataToText.cpp:62 src/GenericClientListCtrl.cpp:1033
 msgid "Queue Full"
 msgstr ""
 
-#: src/DataToText.cpp:62 src/GenericClientListCtrl.cpp:1003
+#: src/DataToText.cpp:62 src/GenericClientListCtrl.cpp:1049
 #: src/KnownFile.cpp:1699
 msgid "On Queue"
 msgstr ""
 
 #: src/DataToText.cpp:63 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:631 src/PartFile.cpp:4200 src/TransferWnd.cpp:348
+#: src/OtherFunctions.cpp:631 src/PartFile.cpp:4267 src/TransferWnd.cpp:348
 msgid "Downloading"
 msgstr ""
 
@@ -1414,7 +1414,7 @@ msgid "Progress"
 msgstr ""
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:4246 src/SearchListCtrl.cpp:89
+#: src/PartFile.cpp:4313 src/SearchListCtrl.cpp:89
 msgid "Sources"
 msgstr ""
 
@@ -1424,7 +1424,7 @@ msgstr ""
 msgid "Priority"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4248 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
 msgid "Status"
 msgstr ""
 
@@ -1536,8 +1536,8 @@ msgstr ""
 msgid "File rename"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:965 src/GenericClientListCtrl.cpp:878
-#: src/GenericClientListCtrl.cpp:889
+#: src/DownloadListCtrl.cpp:965 src/GenericClientListCtrl.cpp:924
+#: src/GenericClientListCtrl.cpp:935
 #, c-format
 msgid "%.1f MB/s"
 msgstr ""
@@ -1656,221 +1656,221 @@ msgstr[1] ""
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr ""
 
-#: src/ExternalConn.cpp:304
+#: src/ExternalConn.cpp:305
 msgid "Client sent packet after authentication failed."
 msgstr ""
 
-#: src/ExternalConn.cpp:322
+#: src/ExternalConn.cpp:323
 msgid "External connection closed."
 msgstr ""
 
-#: src/ExternalConn.cpp:391
+#: src/ExternalConn.cpp:392
 msgid "External connections disabled due to empty password!"
 msgstr ""
 
-#: src/ExternalConn.cpp:412
+#: src/ExternalConn.cpp:413
 msgid "External connections disabled in config file"
 msgstr ""
 
-#: src/ExternalConn.cpp:473
+#: src/ExternalConn.cpp:482
 msgid "New external connection accepted"
 msgstr ""
 
-#: src/ExternalConn.cpp:476
+#: src/ExternalConn.cpp:485
 msgid "ERROR: couldn't accept a new external connection"
 msgstr ""
 
-#: src/ExternalConn.cpp:494
+#: src/ExternalConn.cpp:503
 msgid "External connection refused due to empty password in preferences!"
 msgstr ""
 
-#: src/ExternalConn.cpp:505
+#: src/ExternalConn.cpp:514
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr ""
 
-#: src/ExternalConn.cpp:507
+#: src/ExternalConn.cpp:516
 msgid "Unknown version"
 msgstr ""
 
-#: src/ExternalConn.cpp:517
+#: src/ExternalConn.cpp:526
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
 msgstr ""
 
-#: src/ExternalConn.cpp:522
+#: src/ExternalConn.cpp:531
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
 "snapshot! *sigh* possible crash prevented"
 msgstr ""
 
-#: src/ExternalConn.cpp:588
+#: src/ExternalConn.cpp:597
 msgid "Invalid protocol version."
 msgstr ""
 
-#: src/ExternalConn.cpp:593
+#: src/ExternalConn.cpp:602
 msgid "Missing protocol version tag."
 msgstr ""
 
-#: src/ExternalConn.cpp:600
+#: src/ExternalConn.cpp:609
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr ""
 
-#: src/ExternalConn.cpp:632
+#: src/ExternalConn.cpp:641
 msgid "Authentication failed: wrong password."
 msgstr ""
 
-#: src/ExternalConn.cpp:634
+#: src/ExternalConn.cpp:643
 msgid "Authentication failed: missing password."
 msgstr ""
 
-#: src/ExternalConn.cpp:644
+#: src/ExternalConn.cpp:653
 msgid "Invalid request, please authenticate first."
 msgstr ""
 
-#: src/ExternalConn.cpp:649
+#: src/ExternalConn.cpp:658
 msgid "Access granted."
 msgstr ""
 
-#: src/ExternalConn.cpp:657
+#: src/ExternalConn.cpp:666
 #, c-format
 msgid "Sent error message \"%s\" to client."
 msgstr ""
 
-#: src/ExternalConn.cpp:660
+#: src/ExternalConn.cpp:669
 #, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
 msgstr ""
 
-#: src/ExternalConn.cpp:1082
+#: src/ExternalConn.cpp:1127
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr ""
 
-#: src/ExternalConn.cpp:1084
+#: src/ExternalConn.cpp:1129
 #, c-format
 msgid "FileHash not found: %s"
 msgstr ""
 
-#: src/ExternalConn.cpp:1131 src/ExternalConn.cpp:1213
-#: src/ExternalConn.cpp:1294
+#: src/ExternalConn.cpp:1176 src/ExternalConn.cpp:1258
+#: src/ExternalConn.cpp:1339
 msgid "OOPS! OpCode processing error!"
 msgstr ""
 
-#: src/ExternalConn.cpp:1159
+#: src/ExternalConn.cpp:1204
 msgid "Server not added"
 msgstr ""
 
-#: src/ExternalConn.cpp:1177
+#: src/ExternalConn.cpp:1222
 #, c-format
 msgid "server not found: %s"
 msgstr ""
 
-#: src/ExternalConn.cpp:1193
+#: src/ExternalConn.cpp:1238
 msgid "need to define server to be removed"
 msgstr ""
 
-#: src/ExternalConn.cpp:1207
+#: src/ExternalConn.cpp:1252
 msgid "eD2k is disabled in preferences."
 msgstr ""
 
-#: src/ExternalConn.cpp:1274
+#: src/ExternalConn.cpp:1319
 msgid "Friend not found."
 msgstr ""
 
-#: src/ExternalConn.cpp:1283
+#: src/ExternalConn.cpp:1328
 msgid "Client not found."
 msgstr ""
 
-#: src/ExternalConn.cpp:1288
+#: src/ExternalConn.cpp:1333
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
 msgstr ""
 
-#: src/ExternalConn.cpp:1397
+#: src/ExternalConn.cpp:1442
 msgid "Search in progress. Refetch results in a moment!"
 msgstr ""
 
-#: src/ExternalConn.cpp:1403
+#: src/ExternalConn.cpp:1448
 msgid "WebSearch from remote interface makes no sense."
 msgstr ""
 
-#: src/ExternalConn.cpp:1617
+#: src/ExternalConn.cpp:1662
 msgid "No points for graph."
 msgstr ""
 
-#: src/ExternalConn.cpp:1626
+#: src/ExternalConn.cpp:1671
 msgid "Your client is not configured for this detail level."
 msgstr ""
 
-#: src/ExternalConn.cpp:1653
+#: src/ExternalConn.cpp:1698
 msgid "External Connection: shutdown requested"
 msgstr ""
 
-#: src/ExternalConn.cpp:1665
+#: src/ExternalConn.cpp:1710
 msgid "Already shutting down."
 msgstr ""
 
-#: src/ExternalConn.cpp:1683
+#: src/ExternalConn.cpp:1728
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr ""
 
-#: src/ExternalConn.cpp:1699
+#: src/ExternalConn.cpp:1744
 #, c-format
 msgid "%d of %d links failed (invalid or already on list)."
 msgstr ""
 
-#: src/ExternalConn.cpp:1773
+#: src/ExternalConn.cpp:1868
 msgid "File not found."
 msgstr ""
 
-#: src/ExternalConn.cpp:1778
+#: src/ExternalConn.cpp:1873
 msgid "Invalid file name."
 msgstr ""
 
-#: src/ExternalConn.cpp:1786
+#: src/ExternalConn.cpp:1881
 msgid "Unable to rename file."
 msgstr ""
 
-#: src/ExternalConn.cpp:2084 src/ExternalConn.cpp:2111
+#: src/ExternalConn.cpp:2179 src/ExternalConn.cpp:2206
 msgid "Kad is disabled in preferences."
 msgstr ""
 
-#: src/ExternalConn.cpp:2123
+#: src/ExternalConn.cpp:2218
 msgid "Already connected to eD2k."
 msgstr ""
 
-#: src/ExternalConn.cpp:2126
+#: src/ExternalConn.cpp:2221
 msgid "Connecting to eD2k..."
 msgstr ""
 
-#: src/ExternalConn.cpp:2134
+#: src/ExternalConn.cpp:2229
 msgid "Already connected to Kad."
 msgstr ""
 
-#: src/ExternalConn.cpp:2137
+#: src/ExternalConn.cpp:2232
 msgid "Connecting to Kad..."
 msgstr ""
 
-#: src/ExternalConn.cpp:2144
+#: src/ExternalConn.cpp:2239
 msgid "All networks are disabled."
 msgstr ""
 
-#: src/ExternalConn.cpp:2152
+#: src/ExternalConn.cpp:2247
 msgid "Disconnected from eD2k."
 msgstr ""
 
-#: src/ExternalConn.cpp:2156
+#: src/ExternalConn.cpp:2251
 msgid "Disconnected from Kad."
 msgstr ""
 
-#: src/ExternalConn.cpp:2165
+#: src/ExternalConn.cpp:2260
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr ""
 
-#: src/ExternalConn.cpp:2168
+#: src/ExternalConn.cpp:2263
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr ""
 
@@ -2049,16 +2049,16 @@ msgstr ""
 msgid "Print program version."
 msgstr ""
 
-#: src/FileDetailDialog.cpp:60
+#: src/FileDetailDialog.cpp:76
 msgid "File Details"
 msgstr ""
 
-#: src/FileDetailDialog.cpp:111
+#: src/FileDetailDialog.cpp:167
 #, c-format
 msgid "%.1f%% done"
 msgstr ""
 
-#: src/FileDetailDialog.cpp:113 src/utils/wxCas/src/wxcasframe.cpp:1139
+#: src/FileDetailDialog.cpp:169 src/utils/wxCas/src/wxcasframe.cpp:1139
 #: src/utils/wxCas/src/wxcasframe.cpp:1149
 #, c-format
 msgid "%.2f kB/s"
@@ -2080,7 +2080,7 @@ msgstr ""
 msgid "Friends"
 msgstr ""
 
-#: src/FriendListCtrl.cpp:131 src/GenericClientListCtrl.cpp:584
+#: src/FriendListCtrl.cpp:131 src/GenericClientListCtrl.cpp:630
 msgid "Show &Details"
 msgstr ""
 
@@ -2096,11 +2096,11 @@ msgstr ""
 msgid "Send &Message"
 msgstr ""
 
-#: src/FriendListCtrl.cpp:140 src/GenericClientListCtrl.cpp:595
+#: src/FriendListCtrl.cpp:140 src/GenericClientListCtrl.cpp:641
 msgid "View Files"
 msgstr ""
 
-#: src/FriendListCtrl.cpp:141 src/GenericClientListCtrl.cpp:587
+#: src/FriendListCtrl.cpp:141 src/GenericClientListCtrl.cpp:633
 msgid "Establish Friend Slot"
 msgstr ""
 
@@ -2118,71 +2118,71 @@ msgid ""
 " Only one slot was assigned."
 msgstr ""
 
-#: src/FriendListCtrl.cpp:234 src/GenericClientListCtrl.cpp:528
+#: src/FriendListCtrl.cpp:234 src/GenericClientListCtrl.cpp:574
 msgid "Multiple selection"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:528
+#: src/GenericClientListCtrl.cpp:574
 msgid ""
 "You are not allowed to set more than one friend slot.\n"
 " Only one slot was assigned."
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:545
+#: src/GenericClientListCtrl.cpp:591
 msgid "Send message to user"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:546
+#: src/GenericClientListCtrl.cpp:592
 msgid "Message to send:"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:585
+#: src/GenericClientListCtrl.cpp:631
 msgid "Remove from friends"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:596
+#: src/GenericClientListCtrl.cpp:642
 msgid "Send message"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:598
+#: src/GenericClientListCtrl.cpp:644
 msgid "Swap to this file"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:949
+#: src/GenericClientListCtrl.cpp:995
 msgid "A4AF"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:1001
+#: src/GenericClientListCtrl.cpp:1047
 #, c-format
 msgid "On Queue: %u (%i)"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:1011 src/GenericClientListCtrl.cpp:1040
+#: src/GenericClientListCtrl.cpp:1057 src/GenericClientListCtrl.cpp:1086
 msgid "Asked for another file"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:1030
+#: src/GenericClientListCtrl.cpp:1076
 msgid "Waiting for upload slot"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:1032
+#: src/GenericClientListCtrl.cpp:1078
 #, c-format
 msgid "On Queue: %u"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:1035
+#: src/GenericClientListCtrl.cpp:1081
 msgid "Uploading"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:1037
+#: src/GenericClientListCtrl.cpp:1083
 msgid "None"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:1095 src/ServerListCtrl.cpp:243
+#: src/GenericClientListCtrl.cpp:1141 src/ServerListCtrl.cpp:243
 msgid "No"
 msgstr ""
 
-#: src/GenericClientListCtrl.cpp:1097 src/ServerListCtrl.cpp:243
+#: src/GenericClientListCtrl.cpp:1143 src/ServerListCtrl.cpp:243
 msgid "Yes"
 msgstr ""
 
@@ -2424,15 +2424,15 @@ msgstr ""
 msgid "Complete sources"
 msgstr ""
 
-#: src/KnownFileList.cpp:118
+#: src/KnownFileList.cpp:119
 msgid "WARNING: Known file list corrupted, contains invalid header."
 msgstr ""
 
-#: src/KnownFileList.cpp:145
+#: src/KnownFileList.cpp:146
 msgid "Failed to load entry in known file list, file may be corrupt"
 msgstr ""
 
-#: src/KnownFileList.cpp:154
+#: src/KnownFileList.cpp:155
 msgid "Invalid entry in known file list, file may be corrupt: "
 msgstr ""
 
@@ -2446,70 +2446,74 @@ msgstr ""
 msgid "Unable to get error description for error %d"
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:4178
+#: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:4245
 msgid "Hashing"
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:4184
+#: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:4251
 msgid "Completing"
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:4187
+#: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:4254
 msgid "Complete"
 msgstr ""
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:633
-#: src/PartFile.cpp:4190 src/TransferWnd.cpp:350
+#: src/PartFile.cpp:4257 src/TransferWnd.cpp:350
 msgid "Paused"
 msgstr ""
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:632
-#: src/PartFile.cpp:4193 src/TransferWnd.cpp:349
+#: src/PartFile.cpp:4260 src/TransferWnd.cpp:349
 msgid "Erroneous"
 msgstr ""
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:630
-#: src/PartFile.cpp:4202 src/TransferWnd.cpp:347
+#: src/PartFile.cpp:4269 src/TransferWnd.cpp:347
 msgid "Waiting"
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:129 src/libs/ec/cpp/RemoteConnect.cpp:137
+#: src/libs/ec/cpp/RemoteConnect.cpp:135 src/libs/ec/cpp/RemoteConnect.cpp:143
 msgid "You must specify a non-empty password."
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:134
+#: src/libs/ec/cpp/RemoteConnect.cpp:140
 msgid "Invalid password, not a MD5 hash!"
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:197
+#: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Connection failure"
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:257
+#: src/libs/ec/cpp/RemoteConnect.cpp:223
+msgid "External Connection lost — exiting."
+msgstr ""
+
+#: src/libs/ec/cpp/RemoteConnect.cpp:287
 msgid "EC connection failed. Empty reply."
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:268
+#: src/libs/ec/cpp/RemoteConnect.cpp:298
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:276
+#: src/libs/ec/cpp/RemoteConnect.cpp:306
 msgid "Succeeded! Connection established to aMule "
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:279
+#: src/libs/ec/cpp/RemoteConnect.cpp:309
 msgid "Succeeded! Connection established."
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:307
+#: src/libs/ec/cpp/RemoteConnect.cpp:337
 msgid "External Connection: Access denied because: "
 msgstr ""
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:310
+#: src/libs/ec/cpp/RemoteConnect.cpp:340
 msgid "External Connection: Handshake failed."
 msgstr ""
 
-#: src/LibSocketAsio.cpp:1486
+#: src/LibSocketAsio.cpp:1585
 #, c-format
 msgid "Asio thread %d started"
 msgstr ""
@@ -2522,11 +2526,11 @@ msgstr ""
 msgid "ERROR: Could not listen to TCP port."
 msgstr ""
 
-#: src/Logger.cpp:325
+#: src/Logger.cpp:329
 msgid "ERROR: "
 msgstr ""
 
-#: src/Logger.cpp:325
+#: src/Logger.cpp:329
 msgid "WARNING: "
 msgstr ""
 
@@ -4486,7 +4490,7 @@ msgstr ""
 msgid "Incomplete"
 msgstr ""
 
-#: src/OtherFunctions.cpp:634 src/PartFile.cpp:4207 src/TransferWnd.cpp:351
+#: src/OtherFunctions.cpp:634 src/PartFile.cpp:4274 src/TransferWnd.cpp:351
 msgid "Stopped"
 msgstr ""
 
@@ -4721,61 +4725,61 @@ msgstr ""
 msgid "Deleting file: %s"
 msgstr ""
 
-#: src/PartFile.cpp:2439
+#: src/PartFile.cpp:2448
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 
-#: src/PartFile.cpp:2444
+#: src/PartFile.cpp:2453
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
 
-#: src/PartFile.cpp:2465
+#: src/PartFile.cpp:2474
 #, c-format
 msgid ""
 "Part %u of '%s' marked complete but partfile is shorter than expected (have "
 "%llu bytes, need %llu); reopening gap for re-download."
 msgstr ""
 
-#: src/PartFile.cpp:2477 src/PartFile.cpp:2482
+#: src/PartFile.cpp:2486 src/PartFile.cpp:2491
 #, c-format
 msgid ""
 "EOF while hashing downloaded part %u with length %u (max %u) of partfile "
 "'%s' with length %u: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3199
+#: src/PartFile.cpp:3208
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3485
+#: src/PartFile.cpp:3552
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3535
+#: src/PartFile.cpp:3602
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 
-#: src/PartFile.cpp:4180
+#: src/PartFile.cpp:4247
 msgid "Allocating"
 msgstr ""
 
-#: src/PartFile.cpp:4196
+#: src/PartFile.cpp:4263
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/PartFile.cpp:4246 src/SearchListCtrl.cpp:1006
+#: src/PartFile.cpp:4313 src/SearchListCtrl.cpp:1006
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
 msgstr ""
 
-#: src/PartFile.cpp:4519
+#: src/PartFile.cpp:4586
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
 msgstr ""
@@ -5884,36 +5888,36 @@ msgstr ""
 msgid "Not running"
 msgstr ""
 
-#: src/SharedFileList.cpp:360
+#: src/SharedFileList.cpp:361
 #, c-format
 msgid "Adding file %s to shares"
 msgstr ""
 
-#: src/SharedFileList.cpp:403
+#: src/SharedFileList.cpp:404
 #, c-format
 msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/SharedFileList.cpp:409
+#: src/SharedFileList.cpp:410
 #, c-format
 msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/SharedFileList.cpp:418
+#: src/SharedFileList.cpp:419
 #, c-format
 msgid "ERROR: Attempted to share %s"
 msgstr ""
 
-#: src/SharedFileList.cpp:443
+#: src/SharedFileList.cpp:444
 #, c-format
 msgid "Shared directory not found, skipping: %s"
 msgstr ""
 
-#: src/SharedFileList.cpp:527
+#: src/SharedFileList.cpp:484
 #, c-format
 msgid "No shareable files found in directory: %s"
 msgstr ""
@@ -6889,7 +6893,7 @@ msgstr ""
 msgid "Suspending upload of file: %s"
 msgstr ""
 
-#: src/UserEvents.cpp:138
+#: src/UserEvents.cpp:154
 #, c-format
 msgid "Failed to execute command `%s' on `%s' event."
 msgstr ""
@@ -7126,7 +7130,7 @@ msgstr ""
 msgid "Unable to open %s"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/ed2khash.cpp:146
+#: src/utils/aLinkCreator/src/ed2khash.cpp:153
 msgid "Out of memory while calculating ed2k hash!"
 msgstr ""
 
