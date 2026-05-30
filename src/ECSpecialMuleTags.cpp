@@ -524,7 +524,12 @@ void CEC_Prefs_Packet::Apply() const
 		}
 	}
 
-	if ((thisTab = GetTagByName(EC_TAG_PREFS_STATISTICS)) != NULL) {
+	// EC_TAG_PREFS_STATISTICS arrives but is unhandled. The prior
+	// assignment to thisTab was dead-stored (caught on lint as
+	// clang-analyzer-deadcode.DeadStores) since thisTab is overwritten
+	// by the next if block. Keep the existence-check shape so future
+	// work has an obvious home.
+	if (GetTagByName(EC_TAG_PREFS_STATISTICS) != NULL) {
 		//#warning TODO
 	}
 
