@@ -52,63 +52,79 @@ static struct {
 #undef USEREVENTS_EVENT
 
 
-#ifdef __WXDEBUG__
+// Always defined: the wxCHECK_* macros below evaluate their condition in
+// both debug and release, unlike the wxASSERT_* family this used to be
+// paired with. Returns false for any out-of-range event so accessors below
+// can fall through to a safe sentinel instead of reading past s_EventList.
 inline bool CheckIndex(const unsigned int idx)
 {
 	return (idx < itemsof(s_EventList));
 }
-#endif
 
 unsigned int CUserEvents::GetCount()
 {
 	return itemsof(s_EventList);
 }
 
+// wxCHECK rather than wxASSERT in the accessors below: a release build
+// would otherwise read past s_EventList on a bad index instead of
+// aborting (wxASSERT is a no-op in release). Each accessor returns a
+// safe sentinel — entry [0] — when the index is out of range; the
+// debug-build behaviour (assert + abort on first mis-use) is unchanged.
+
 const wxString& CUserEvents::GetDisplayName(enum EventType event)
 {
-	wxASSERT(CheckIndex(event));
+	wxCHECK_MSG(CheckIndex(event), s_EventList[0].name,
+		"CUserEvents::GetDisplayName: event index out of range");
 	return s_EventList[event].name;
 }
 
 bool CUserEvents::IsCoreCommandEnabled(enum EventType event)
 {
-	wxASSERT(CheckIndex(event));
+	wxCHECK_MSG(CheckIndex(event), false,
+		"CUserEvents::IsCoreCommandEnabled: event index out of range");
 	return s_EventList[event].core_enabled;
 }
 
 bool CUserEvents::IsGUICommandEnabled(enum EventType event)
 {
-	wxASSERT(CheckIndex(event));
+	wxCHECK_MSG(CheckIndex(event), false,
+		"CUserEvents::IsGUICommandEnabled: event index out of range");
 	return s_EventList[event].gui_enabled;
 }
 
 const wxString& CUserEvents::GetKey(const unsigned int event)
 {
-	wxASSERT(CheckIndex(event));
+	wxCHECK_MSG(CheckIndex(event), s_EventList[0].key,
+		"CUserEvents::GetKey: event index out of range");
 	return s_EventList[event].key;
 }
 
 bool& CUserEvents::GetCoreEnableVar(const unsigned int event)
 {
-	wxASSERT(CheckIndex(event));
+	wxCHECK_MSG(CheckIndex(event), s_EventList[0].core_enabled,
+		"CUserEvents::GetCoreEnableVar: event index out of range");
 	return s_EventList[event].core_enabled;
 }
 
 wxString& CUserEvents::GetCoreCommandVar(const unsigned int event)
 {
-	wxASSERT(CheckIndex(event));
+	wxCHECK_MSG(CheckIndex(event), s_EventList[0].core_command,
+		"CUserEvents::GetCoreCommandVar: event index out of range");
 	return s_EventList[event].core_command;
 }
 
 bool& CUserEvents::GetGUIEnableVar(const unsigned int event)
 {
-	wxASSERT(CheckIndex(event));
+	wxCHECK_MSG(CheckIndex(event), s_EventList[0].gui_enabled,
+		"CUserEvents::GetGUIEnableVar: event index out of range");
 	return s_EventList[event].gui_enabled;
 }
 
 wxString& CUserEvents::GetGUICommandVar(const unsigned int event)
 {
-	wxASSERT(CheckIndex(event));
+	wxCHECK_MSG(CheckIndex(event), s_EventList[0].gui_command,
+		"CUserEvents::GetGUICommandVar: event index out of range");
 	return s_EventList[event].gui_command;
 }
 
@@ -143,8 +159,10 @@ static void ExecuteCommand(
 
 void CUserEvents::ProcessEvent(enum EventType event, const void* object)
 {
-	wxASSERT(CheckIndex(event));
-	wxASSERT(object != NULL);
+	wxCHECK_RET(CheckIndex(event),
+		"CUserEvents::ProcessEvent: event index out of range");
+	wxCHECK_RET(object != NULL,
+		"CUserEvents::ProcessEvent: NULL object");
 
 #ifndef CLIENT_GUI
 	if (s_EventList[event].core_enabled) {

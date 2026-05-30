@@ -184,7 +184,11 @@ void CLogger::AddLogLine(
 
 const CDebugCategory& CLogger::GetDebugCategory( int index )
 {
-	wxASSERT( index >= 0 && index < categoryCount );
+	// wxCHECK rather than wxASSERT so a release build returns a safe
+	// fallback on out-of-range instead of reading past the array; the
+	// debug-build behaviour (assert + abort) is unchanged.
+	wxCHECK_MSG( index >= 0 && index < categoryCount, g_debugcats[0],
+		"CLogger::GetDebugCategory: index out of range" );
 
 	return g_debugcats[ index ];
 }
