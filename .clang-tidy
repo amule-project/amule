@@ -1,0 +1,91 @@
+# Project baseline lint configuration.
+#
+# Goal: surface high-signal checks that point at real bugs (null derefs,
+# uninitialised reads, lifecycle errors, dead code, sign/size confusion)
+# while suppressing categories that misfire on this codebase's patterns
+# or fire constantly on long-standing idioms.
+#
+# A run against current master with this config produces ~100 warnings
+# across project code — ~40 bug-shape + ~60 low-priority perf hints —
+# vs. 226 with the analyzer defaults, 1669 with broad bugprone-* /
+# cppcoreguidelines-* enablement, or 7466 if performance-enum-size /
+# bugprone-reserved-identifier are added. That tighter signal is the
+# point: anything this config emits should be a real lead.
+#
+# Suppressed and why:
+#   clang-analyzer-security.insecureAPI.strcpy
+#     119 hits from one safe nstrdup call site
+#     (libs/common/StringFunctions.h:118 - new char[strlen(src)+1]; strcpy).
+#     Bounded by construction; the checker can't see the size relation.
+#   clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling
+#     Asks for the C11 *_s variants (vsnprintf_s, fprintf_s, ...). MSVC-only,
+#     so portable codebases will never adopt them. Pure noise.
+#   clang-analyzer-cplusplus.NewDeleteLeaks
+#     Doesn't model wxThread's detached-mode self-delete (new X; X->Create();
+#     X->Run() - thread frees itself when Entry() returns) or wx-takes-
+#     ownership sinks (wxLog::SetActiveTarget(new ...)). All 28 hits on
+#     master are this class.
+#   clang-analyzer-optin.cplusplus.VirtualCall
+#     Most fires are most-derived-class dtors (effectively safe) or inside
+#     wx 3.2 internal headers we don't control.
+#   clang-analyzer-optin.performance.Padding
+#     Stylistic struct-layout suggestions, no bug shape.
+#   cppcoreguidelines-* (entirely)
+#     The codebase predates the C++ Core Guidelines by 15+ years; enabling
+#     the group dumps ~1100 stylistic warnings that aren't bugs. Re-enable
+#     individually only when a specific check is shown to find real issues.
+#   bugprone-reserved-identifier
+#     Fires on __WINDOWS__ / __DEBUG__ / __TFILE__ and every other
+#     legitimate platform-define macro in the codebase. ~2000 noise hits.
+#   bugprone-assignment-in-if-condition / branch-clone / macro-parentheses
+#     Long-standing idioms in this codebase; hundreds of hits with low
+#     signal. Re-evaluate per-check if anyone wants to clean a category up.
+#   performance-enum-size
+#     ~5300 hits - every enum that could be smaller, including all of wx's
+#     and the EC protocol's enums. Stylistic, no bug shape.
+#   performance-no-int-to-ptr
+#     Hits intentional uintptr_t round-trips in handle-based APIs.
+#
+# Performance checks (avoid-endl, unnecessary-copy-initialization) are
+# kept on as a low-priority backlog - they don't point at bugs but are
+# small, mechanical wins worth surfacing.
+#
+# Header filter: only project headers (everything under src/), so wx /
+# boost / libc++ noise is suppressed.
+#
+# Three flex/bison-generated files in src/ are linted because they live
+# alongside hand-written source and can't be directory-excluded:
+#   src/Scanner.cpp           (flex output for the search-expression parser)
+#   src/Parser.cpp            (bison output for the same)
+#   src/IPFilterScanner.cpp   (flex output for ipfilter line parsing)
+# They emit warnings (multi-level pointer conversions, widening casts,
+# signed-char promotions, sizeof-in-pointer-arithmetic - all standard
+# generated-code patterns) that aren't actionable: regenerating from
+# the .l / .y sources would re-introduce them. Skip warnings on these
+# files when triaging output. Vendored / generated subdirectories are
+# excluded properly via per-directory .clang-tidy files at:
+#   src/extern/.clang-tidy        (vendored wx code)
+#   src/webserver/src/.clang-tidy (PHP interpreter, mostly generated)
+
+Checks: >
+  -*,
+  clang-analyzer-core.*,
+  clang-analyzer-cplusplus.StringChecker,
+  clang-analyzer-deadcode.*,
+  clang-analyzer-optin.core.*,
+  clang-analyzer-optin.cplusplus.UninitializedObject,
+  clang-analyzer-security.ArrayBound,
+  clang-analyzer-unix.*,
+  bugprone-misplaced-widening-cast,
+  bugprone-multi-level-implicit-pointer-conversion,
+  bugprone-signed-char-misuse,
+  bugprone-sizeof-expression,
+  bugprone-suspicious-include,
+  bugprone-too-small-loop-variable,
+  misc-redundant-expression,
+  performance-avoid-endl,
+  performance-unnecessary-copy-initialization
+
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*/src/.*\.(h|hpp)$'
+FormatStyle: none
