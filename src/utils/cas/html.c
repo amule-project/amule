@@ -87,6 +87,12 @@ int create_html(char *stats[20], char *lines[6], char template[120], char *path_
 	size_t len = 0;
 	int ler;
 	FILE *fTmpl = fopen(template,"r");
+	if (NULL == fTmpl)
+	{
+		perror("Could not open template");
+		free(mem);
+		exit(44);
+	}
 	while ((ler=fgetc(fTmpl)) != EOF && len+1 < size)
 	{
 		mem[len++] = ler;
