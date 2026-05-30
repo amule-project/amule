@@ -620,8 +620,14 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 	CheckSelection(event);
 
 	if (GetSelectedItemCount()) {
-		// Create the popup-menu
-		wxMenu menu(_("File"));
+		// Create the popup-menu. No title — wxMenu's title parameter
+		// is the label rendered when the menu is attached to a parent
+		// menubar; for a context popup it's either invisible (wxOSX,
+		// classic wxGTK) or rendered as a non-clickable header (KDE
+		// Plasma 6 with Qt-themed GTK / Wayland, issue #767). The
+		// generic "File" label provides no information either way,
+		// so drop it.
+		wxMenu menu;
 		menu.Append(MP_RESUME, _("Download"));
 
 		wxMenu* cats = new wxMenu(_("Category"));
