@@ -142,6 +142,10 @@ void* CPartFileHashThread::Entry()
 				% (ok ? wxT("ok") : wxT("CORRUPT"))
 				% elapsedMs
 				% it->pFile->GetFileName());
+			// Silence the unused-variable warning in release builds, where
+			// AddDebugLogLineN above compiles to a no-op.  Caught on lint
+			// as clang-analyzer-deadcode.DeadStores.
+			wxUnusedVar(elapsedMs);
 
 			// Post result back to the main thread.  Carries fileHash
 			// (not pointer) so the handler can drop the event safely if

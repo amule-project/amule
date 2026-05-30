@@ -89,8 +89,12 @@ class EC_IPv4_t {
 		}
 		#endif
 
-		uint8 m_ip[4];
-		uint16 m_port;
+		// Default member initialisers so a stack-allocated EC_IPv4_t
+		// constructed via the trivial ctor above starts with defined
+		// fields. Caught on lint as
+		// clang-analyzer-optin.cplusplus.UninitializedObject.
+		uint8 m_ip[4] = {0, 0, 0, 0};
+		uint16 m_port = 0;
 };
 
 

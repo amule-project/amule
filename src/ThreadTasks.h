@@ -75,9 +75,14 @@ public:
 
 protected:
 	//! Specifies which hashes should be calculated when the task is executed.
+	//! EH_MD4 and EH_AICH are bit flags; the combined value is named
+	//! explicitly so a bitwise OR cast doesn't produce a value outside
+	//! the enum's valid range (caught by
+	//! clang-analyzer-optin.core.EnumCastOutOfRange in the cpp ctor).
 	enum EHashes {
 		EH_AICH = 1,
-		EH_MD4 = 2
+		EH_MD4 = 2,
+		EH_MD4_AND_AICH = EH_MD4 | EH_AICH
 	};
 
 	//! @see CThreadTask::OnLastTask

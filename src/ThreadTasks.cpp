@@ -55,7 +55,7 @@ CHashingTask::CHashingTask(const CPath& path, const CPath& filename, const CPart
 	: CThreadTask("Hashing", path.JoinPaths(filename).GetPrintable(), (part ? ETP_High : ETP_Normal)),
 	  m_path(path),
 	  m_filename(filename),
-	  m_toHash((EHashes)(EH_MD4 | EH_AICH)),
+	  m_toHash(EH_MD4_AND_AICH),
 	  m_owner(part)
 {
 	// We can only create the AICH hashset if the file is a knownfile or
