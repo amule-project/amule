@@ -104,7 +104,11 @@ static string GetLinksFilePath(const string& configDir)
 
 #else
 
-	return string( getenv("HOME") ) + "/.aMule/ED2KLinks";
+	// Mirror the macOS branch above: getenv may return NULL if HOME is
+	// unset (rare in practice, but constructing std::string(NULL) is
+	// undefined behaviour).
+	const char* home = getenv("HOME");
+	return string(home ? home : "") + "/.aMule/ED2KLinks";
 
 #endif
 }

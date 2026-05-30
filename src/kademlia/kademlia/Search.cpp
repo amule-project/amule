@@ -238,7 +238,11 @@ void CSearch::PrepareToStop() noexcept
 void CSearch::JumpStart()
 {
 	// If we had a response within the last 3 seconds, no need to jumpstart the search.
-	if ((time_t)(m_lastResponse + SEC(3)) > time(NULL)) {
+	// Cast m_lastResponse to time_t before adding so the addition happens in
+	// time_t, not in uint32_t -- the latter would wrap near the 2106 32-bit
+	// time boundary and reorder the comparison silently.  Eighty years out,
+	// but cheap to write correctly.
+	if ((time_t)m_lastResponse + SEC(3) > time(NULL)) {
 		return;
 	}
 

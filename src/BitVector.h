@@ -141,7 +141,10 @@ public:
 	// get buffer
 	const void* GetBuffer() const { return m_vector; }
 	// set buffer
-	void SetBuffer(const void* src) { memcpy(m_vector, src, m_bytes); m_allTrue = 2; }
+	// Skip the copy when m_bytes == 0 -- after clear() that path leaves
+	// m_vector == NULL, and memcpy(NULL, src, 0) is C-standard UB even
+	// on real libcs that no-op it.  Matches SetAllTrue() above.
+	void SetBuffer(const void* src) { if (m_bytes) { memcpy(m_vector, src, m_bytes); } m_allTrue = 2; }
 
 private:
 	uint32	m_bits;			// number of bits

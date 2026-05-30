@@ -111,7 +111,14 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
                 }
               else
                 {
+		  // User cancelled via the progress hook -- release both the
+		  // per-buffer read scratch *and* the cumulative parthash buffer
+		  // grown by realloc() below.  Pre-fix this path freed only buf,
+		  // leaking tmpCharHash across every cancelled hash.
 		  delete [] buf;
+#ifndef WANT_STRING_IMPLEMENTATION
+		  free(tmpCharHash);
+#endif
                   return (false);
                 }
 

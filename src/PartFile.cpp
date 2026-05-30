@@ -3338,7 +3338,7 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		&& !m_hashsetneeded
 		&& m_pendingHashes == 0
 		&& !m_gaplist.IsComplete()) {
-		for (uint16 partNumber = 0; partNumber < partCount; ++partNumber) {
+		for (uint32 partNumber = 0; partNumber < partCount; ++partNumber) {
 			if (!m_aChangedPart[partNumber]) {
 				continue;
 			}
@@ -3416,8 +3416,8 @@ void CPartFile::FlushBuffer(bool fromAICHRecoveryDataAvailable)
 		// download.  The quiescent guard above (1 s no receives)
 		// guarantees writes have drained before we enqueue, so the
 		// contention case can't arise.
-		uint16 enqueued = 0;
-		for (uint16 partNumber = 0; partNumber < partCount; ++partNumber) {
+		uint32 enqueued = 0;
+		for (uint32 partNumber = 0; partNumber < partCount; ++partNumber) {
 			if (!m_aChangedPart[partNumber]) {
 				continue;
 			}
