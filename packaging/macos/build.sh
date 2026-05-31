@@ -81,6 +81,10 @@ build() {
         -DBUILD_AMULECMD=YES \
         -DBUILD_ED2K=YES \
         -DBUILD_WEBSERVER=YES \
+        -DBUILD_CAS=YES \
+        -DBUILD_WXCAS=YES \
+        -DBUILD_ALC=YES \
+        -DBUILD_ALCC=YES \
         -DBUILD_TESTING=NO \
         -DENABLE_NLS=YES \
         -DENABLE_UPNP=YES \
@@ -99,18 +103,36 @@ build() {
         bundle_dylibs "${GUI_BUNDLE}"
     fi
 
-    # Copy CLI binaries into aMule.app/Contents/MacOS so users have a
-    # single .app to install. amule.app/Contents/MacOS/aMule is the
-    # GUI entry point; others (amuled, amulecmd, amuleweb, ed2k) are
-    # next to it and runnable via `aMule.app/Contents/MacOS/amuled …`
-    # from a terminal.
-    echo "==> Copying CLI binaries into aMule.app"
-    for bin in amuled amulecmd amuleweb ed2k; do
-        local src="${BUILD_DIR}/src/${bin}"
+    # Copy auxiliary binaries into aMule.app/Contents/MacOS so users have
+    # a single .app to install. amule.app/Contents/MacOS/aMule is the
+    # GUI entry point; the rest are runnable from a terminal via
+    # `aMule.app/Contents/MacOS/<name>`.
+    #
+    # Includes the four GUI/CLI utility tools (cas, wxcas, alc, alcc)
+    # that ship in src/utils/ — they're built when BUILD_CAS/BUILD_WXCAS/
+    # BUILD_ALC/BUILD_ALCC are set on the cmake configure above.  Their
+    # sources live under src/utils/<tool>/[src/]<tool>, hence the explicit
+    # path list rather than the previous flat src/<bin> assumption.
+    echo "==> Copying auxiliary binaries into aMule.app"
+    local bin_paths=(
+        src/amuled
+        src/amulecmd
+        src/amuleweb
+        src/ed2k
+        src/utils/cas/cas
+        src/utils/wxCas/src/wxcas
+        src/utils/aLinkCreator/src/alc
+        src/utils/aLinkCreator/src/alcc
+    )
+    for bin_path in "${bin_paths[@]}"; do
+        local bin
+        bin="$(basename "${bin_path}")"
+        local src="${BUILD_DIR}/${bin_path}"
         if [[ -x "${src}" ]]; then
             cp -f "${src}" "${APP_BUNDLE}/Contents/MacOS/${bin}"
             # Bundle their dylib deps too — they may pull in libs that
-            # aMule itself doesn't (e.g. amulecmd → libreadline).
+            # aMule itself doesn't (e.g. amulecmd → libreadline,
+            # cas/wxcas/alc/alcc → libgd).
             dylibbundler -of -b -cd \
                 -x "${APP_BUNDLE}/Contents/MacOS/${bin}" \
                 -d "${APP_BUNDLE}/Contents/libs/" \

@@ -100,6 +100,11 @@ build() {
         -DBUILD_DAEMON=YES \
         -DBUILD_AMULECMD=YES \
         -DBUILD_ED2K=YES \
+        -DBUILD_WEBSERVER=YES \
+        -DBUILD_CAS=YES \
+        -DBUILD_WXCAS=YES \
+        -DBUILD_ALC=YES \
+        -DBUILD_ALCC=YES \
         -DBUILD_TESTING=NO \
         -DENABLE_IP2COUNTRY=YES
 
