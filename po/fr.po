@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-05-30 13:08-0300\n"
-"PO-Revision-Date: 2026-05-27 22:20+0300\n"
+"PO-Revision-Date: 2026-05-31 07:53+0300\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "Language: fr\n"
@@ -2706,9 +2706,8 @@ msgid "Connection failure"
 msgstr "Erreur de connexion"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:223
-#, fuzzy
 msgid "External Connection lost — exiting."
-msgstr "Connexion externe fermée."
+msgstr "Connexion externe perdue — fermeture du programme."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:287
 msgid "EC connection failed. Empty reply."
