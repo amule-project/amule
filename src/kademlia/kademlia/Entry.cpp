@@ -407,6 +407,42 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 			m_filenames.pop_front();
 		}
 
+		// Cap m_filenames so a single CKeyEntry can't accumulate
+		// unbounded filename variants. A popular file collects one
+		// sFileNameEntry per distinct publisher-chosen name (renames,
+		// language variants, mirror prefixes, trailing-paren copies,
+		// case differences); without a cap the list grows monotonically
+		// for the lifetime of the entry, which on a long-running
+		// shareset shows up as a steady ~MB/hour RSS climb in amuled.
+		// 100 matches the m_publishingIPs cap below and is comfortably
+		// above the count of variants any honest publisher set produces
+		// for a single hash — GetCommonFileName already picks the
+		// highest-popularity entry, so the cap is shaped to keep
+		// popularity-ordered survivors.
+		const size_t MAX_FILENAMES = 100;
+
+		// Compare-and-skip insertion (per irwir's review of #314): if
+		// we're already at the cap, only accept the new entry when its
+		// popularity beats the weakest survivor — otherwise drop it on
+		// the floor instead of pushing then immediately re-evicting.
+		// O(N) per insert via std::min_element; no global sort needed.
+		auto pushBounded = [&](const sFileNameEntry & candidate) {
+			if (m_filenames.size() < MAX_FILENAMES) {
+				m_filenames.push_back(candidate);
+				return;
+			}
+			FileNameList::iterator weakest = std::min_element(
+				m_filenames.begin(), m_filenames.end(),
+				[](const sFileNameEntry & a, const sFileNameEntry & b) {
+					return a.m_popularityIndex < b.m_popularityIndex;
+				});
+			if (candidate.m_popularityIndex > weakest->m_popularityIndex) {
+				*weakest = candidate;
+			}
+			// else: candidate's popularity is no better than the
+			// weakest already-kept entry; drop the candidate.
+		};
+
 		bool duplicate = false;
 		for (FileNameList::iterator it = fromEntry->m_filenames.begin(); it != fromEntry->m_filenames.end(); ++it) {
 			sFileNameEntry nameToCopy = *it;
@@ -424,33 +460,13 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 					nameToCopy.m_popularityIndex++;
 				}
 			}
-			m_filenames.push_back(nameToCopy);
+			pushBounded(nameToCopy);
 		}
 		if (!duplicate && !currentName.m_filename.IsEmpty()) {
 			// Skip the synthetic currentName = { "", 0 } default that
 			// happens when m_filenames was unexpectedly empty above
 			// (wxASSERT fires in Debug, but Release keeps going).
-			m_filenames.push_back(currentName);
-		}
-
-		// Cap m_filenames so a single CKeyEntry can't accumulate
-		// unbounded filename variants. A popular file collects one
-		// sFileNameEntry per distinct publisher-chosen name (renames,
-		// language variants, mirror prefixes, trailing-paren copies,
-		// case differences); without a cap the list grows monotonically
-		// for the lifetime of the entry, which on a long-running
-		// shareset shows up as a steady ~MB/hour RSS climb in amuled.
-		// 100 matches the m_publishingIPs cap below and is comfortably
-		// above the count of variants any honest publisher set produces
-		// for a single hash — GetCommonFileName already picks the
-		// highest-popularity entry, so the cap is shaped to keep
-		// popularity-ordered survivors.
-		const size_t MAX_FILENAMES = 100;
-		if (m_filenames.size() > MAX_FILENAMES) {
-			m_filenames.sort([](const sFileNameEntry& a, const sFileNameEntry& b) {
-				return a.m_popularityIndex > b.m_popularityIndex;
-			});
-			m_filenames.resize(MAX_FILENAMES);
+			pushBounded(currentName);
 		}
 	}
 
