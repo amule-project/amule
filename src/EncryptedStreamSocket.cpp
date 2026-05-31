@@ -434,7 +434,19 @@ void CEncryptedStreamSocket::StartNegotiation(bool bOutgoing)
 int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen)
 {
 	uint32_t nRead = 0;
-	wxASSERT( m_nReceiveBytesWanted > 0 );
+	// Hitting Negotiate() with m_nReceiveBytesWanted == 0 means the
+	// negotiation state machine has consumed everything it was expecting
+	// for the current step but somebody (the kernel buffer flushing on
+	// a teardown, late bytes from a server we're switching away from,
+	// etc.) still posted a Read on this socket while it's stuck in
+	// ECS_NEGOTIATING. wxASSERT used to abort debug builds and silently
+	// UB in release (entering the while loop below with bogus byte
+	// math). wxCHECK_MSG returns the same -1 sentinel both call sites
+	// already check for (see Read() at the ECS_NEGOTIATING case and the
+	// "non-normal header" branch), so the caller cleanly aborts the
+	// connection instead. #778.
+	wxCHECK_MSG(m_nReceiveBytesWanted > 0, -1,
+		"CEncryptedStreamSocket::Negotiate: called with m_nReceiveBytesWanted == 0");
 
 	//DumpMem(pBuffer, nLen, "Negotiate buffer: ");
 
