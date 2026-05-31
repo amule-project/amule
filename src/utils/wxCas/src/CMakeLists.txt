@@ -16,6 +16,7 @@ target_include_directories (wxcas
 if (WIN32)
 	target_sources (wxcas
 		PRIVATE ${CMAKE_BINARY_DIR}/version.rc
+			${CMAKE_CURRENT_SOURCE_DIR}/../wxcas.rc
 	)
 
 	set_target_properties (wxcas

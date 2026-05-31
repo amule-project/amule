@@ -1,3 +1,15 @@
 alc    ICON    "alc.ico"
 
-#include "wx/msw/wx.rc"
+// Custom application manifest with comctl32 v6 themed controls and
+// PerMonitorV2 DPI awareness.  Without this the widgets render in
+// the unthemed Win95 style reported on #792, because wx.rc on our
+// MinGW toolchain doesn't emit a Common-Controls v6 dependency.
+// wxUSE_RC_MANIFEST=0 prevents wx.rc from embedding a duplicate at
+// the same resource slot (ID 1, type 24 / RT_MANIFEST).
+1 24 "alc.manifest"
+
+#define wxUSE_RC_MANIFEST 0
+
+#ifndef _MSC_VER
+#include <wx/msw/wx.rc>
+#endif
