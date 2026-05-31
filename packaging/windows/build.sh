@@ -55,7 +55,7 @@ mkdir -p "${DIST_DIR}"
 
 VERSION=$(cd "${REPO_ROOT}" && git describe --tags --always 2>/dev/null || echo "snapshot")
 ZIP_NAME="aMule-${VERSION}-Windows-${ARCH}.zip"
-INSTALLER_NAME="aMule-${VERSION}-Setup-${ARCH}.exe"
+INSTALLER_NAME="aMule-${VERSION}-Windows-Setup-${ARCH}.exe"
 
 require_tool() {
     command -v "$1" >/dev/null || {

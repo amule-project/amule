@@ -81,7 +81,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: appimage-${{ matrix.arch }}
-          path: dist/aMule-*-${{ matrix.arch }}.AppImage
+          path: dist/aMule-*-Linux-*.AppImage
           if-no-files-found: error
 
   # ------------------------------------------------------------------
@@ -130,7 +130,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: flatpak-${{ matrix.arch }}
-          path: dist/aMule-*-${{ matrix.arch }}.flatpak
+          path: dist/aMule-*-Linux-*.flatpak
           if-no-files-found: error
 
   # ------------------------------------------------------------------
@@ -473,7 +473,7 @@ jobs:
       - name: Smoke-test installer (silent install + uninstall)
         shell: cmd
         run: |
-          for %%F in (dist\aMule-*-Setup-${{ matrix.arch }}.exe) do set INSTALLER=%%F
+          for %%F in (dist\aMule-*-Windows-Setup-${{ matrix.arch }}.exe) do set INSTALLER=%%F
           echo Installer: %INSTALLER%
           rem /S = silent, /D=<path> = install dir (NSIS quirk: must be
           rem the LAST argument and unquoted, even with spaces).
@@ -500,5 +500,5 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: windows-installer-${{ matrix.arch }}
-          path: dist/aMule-*-Setup-${{ matrix.arch }}.exe
+          path: dist/aMule-*-Windows-Setup-${{ matrix.arch }}.exe
           if-no-files-found: error
