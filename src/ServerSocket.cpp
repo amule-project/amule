@@ -307,7 +307,23 @@ bool CServerSocket::ProcessPacket(const uint8_t* packet, uint32 size, int8 opcod
 							thePrefs::SetSmartIdState(state);
 						}
 					}
-					break;
+					// The server explicitly assigned no client ID -- it
+					// gave up on its HighID-callback verification before
+					// we could complete it.  Pre-fix this silently broke
+					// out of OP_IDCHANGE without ever calling
+					// SetConnectionState(CS_CONNECTED), leaving the socket
+					// in limbo until the 15 s client-side timeout fired
+					// (#778).  Disconnect explicitly so the failure is
+					// surfaced as a clear log line and the next retry
+					// starts immediately instead of after the silent wait.
+					AddLogLineC(CFormat(
+						_("Server %s (%s) rejected our login (no client ID assigned). Disconnecting."))
+						% (pServer ? pServer->GetListName() : wxString(_("Server")))
+						% Uint32_16toStringIP_Port(cur_server->GetIP(), cur_server->GetPort()));
+					m_bIsDeleting = true;
+					SetConnectionState(CS_DISCONNECTED);
+					serverconnect->DestroySocket(this);
+					return true;
 				}
 				if(thePrefs::GetSmartIdCheck()) {
 					if (!IsLowID(new_id)) {
