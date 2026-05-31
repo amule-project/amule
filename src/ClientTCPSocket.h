@@ -72,6 +72,17 @@ public:
 	SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend) override;
 	SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend) override;
 
+	// Bypass the global download bandwidth throttler when the inbound
+	// peer is actually the ed2k server's HighID-callback probe (#778).
+	// CServerSocket already opts out by overriding to false; this
+	// extends the same shape to inbound peer connections whose source
+	// IP matches the connected (or currently-connecting) server, so a
+	// saturated peer-side budget doesn't delay the probe past the
+	// server's verification timer and leave us in permanent LowID.
+	// Implemented out-of-line in the .cpp because we need theApp /
+	// CServerConnect, which the header can't see.
+	bool		IsDownloadThrottled() const override;
+
 protected:
 	bool		PacketReceived(CPacket* packet) override;
 

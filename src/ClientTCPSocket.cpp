@@ -49,6 +49,7 @@
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "Server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
+#include "ServerConnect.h"	// Needed for CServerConnect::IsServerIP (#778)
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "ListenSocket.h"	// Needed for CListenSocket
 #include "GuiEvents.h"		// Needed for Notify_*
@@ -108,6 +109,24 @@ bool CClientTCPSocket::InitNetworkData()
 		AddDebugLogLineN(logClient, "Accepted connection from " + GetPeer());
 		return true;
 	}
+}
+
+
+bool CClientTCPSocket::IsDownloadThrottled() const
+{
+	// Inbound peer connection whose source IP is the ed2k server we're
+	// currently connected (or trying to connect) to -- this is the
+	// server's HighID-callback probe, not real peer download traffic.
+	// Skip the global download throttler so a saturated peer-side
+	// budget doesn't delay the probe's read path past the server's
+	// verification timer (#778). Same shape as CServerSocket's
+	// permanent bypass (#393 / 356a59c96), just gated on IP-match
+	// instead of being unconditional.
+	if (m_remoteip != 0 && theApp->serverconnect
+		&& theApp->serverconnect->IsServerIP(m_remoteip)) {
+		return false;
+	}
+	return true;
 }
 
 void CClientTCPSocket::ResetTimeOutTimer()
