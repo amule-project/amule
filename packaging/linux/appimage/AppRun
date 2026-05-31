@@ -49,7 +49,7 @@ NAME="${NAME%-aarch64}"
 NAME="${NAME%-Linux}"
 
 case "${NAME}" in
-    amuled|amulegui|amulecmd|amuleweb|ed2k)
+    amuled|amulegui|amulecmd|amuleweb|ed2k|cas|wxcas|alc|alcc)
         BIN="${HERE}/usr/bin/${NAME}"
         ;;
     *)
