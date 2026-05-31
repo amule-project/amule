@@ -179,9 +179,18 @@ build_flatpak() {
     # Bundle to a single .flatpak file in dist/. Includes the version
     # string + arch in the filename so dist/ ends up with one bundle
     # per (arch, version) combo, parallel to the AppImage layout.
+    # Filename uses the Windows-style x64 / arm64 arch label (#764) so
+    # automation can pin by string across platforms; the --arch flag
+    # passed to flatpak still uses the upstream x86_64 / aarch64 spelling.
     local version
     version=$(cd "${REPO_ROOT}" && git describe --tags --always --dirty 2>/dev/null || echo "snapshot")
-    local bundle="${artifact_dir}/aMule-${version}-${target_arch}.flatpak"
+    local arch_label
+    case "${target_arch}" in
+        x86_64)  arch_label=x64   ;;
+        aarch64) arch_label=arm64 ;;
+        *)       arch_label="${target_arch}" ;;
+    esac
+    local bundle="${artifact_dir}/aMule-${version}-Linux-${arch_label}.flatpak"
     echo "==> Bundling ${bundle}"
     flatpak build-bundle --arch="${target_arch}" \
         "${repodir}" "${bundle}" "${APP_ID}" "${AMULE_REVISION}"
@@ -273,8 +282,16 @@ validate_appimage() {
     # Find the matching AppImage in dist/ — accepts the version-bearing
     # filename produced by build_appimage. -t sorts by mtime newest-first
     # so iterating builds in the same dist/ always validates the latest.
+    # The release-asset filename uses x64 / arm64 (#764), not the uname
+    # spelling, so translate before matching.
+    local arch_label
+    case "${target_arch}" in
+        x86_64)  arch_label=x64   ;;
+        aarch64) arch_label=arm64 ;;
+        *)       arch_label="${target_arch}" ;;
+    esac
     local appimage
-    appimage=$(ls -t "${REPO_ROOT}/dist/aMule-"*"-${target_arch}.AppImage" 2>/dev/null | head -1)
+    appimage=$(ls -t "${REPO_ROOT}/dist/aMule-"*"-Linux-${arch_label}.AppImage" 2>/dev/null | head -1)
     [ -n "${appimage}" ] || {
         echo "fatal: no AppImage found in ${REPO_ROOT}/dist/ matching arch ${target_arch}" >&2
         echo "       run 'packaging/linux/build.sh appimage ${arch_in}' first" >&2

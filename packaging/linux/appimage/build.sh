@@ -6,6 +6,15 @@ set -euo pipefail
 
 REPO=/work
 ARCH=$(uname -m)
+# Release-asset architecture label. ARCH stays as uname -m for linuxdeploy
+# (which embeds it as AppImage metadata and validates against the host)
+# but the output filename uses the Windows-style x64 / arm64 spelling so
+# automation can pin by string across all OSes (#764).
+case "${ARCH}" in
+    x86_64)  ARCH_LABEL=x64   ;;
+    aarch64) ARCH_LABEL=arm64 ;;
+    *)       ARCH_LABEL="${ARCH}" ;;
+esac
 # Build tree lives inside the container, not under /work. This keeps each
 # run hermetic — cmake's check_cxx_source_compiles cache survives in
 # CMakeCache.txt, so a previous run with stale (e.g. pre-libcurl) wx
@@ -121,11 +130,11 @@ linuxdeploy \
 appimagetool \
     --no-appstream \
     "${APPDIR}" \
-    "${BUILD_DIR}/aMule-${VERSION}-${ARCH}.AppImage"
+    "${BUILD_DIR}/aMule-${VERSION}-Linux-${ARCH_LABEL}.AppImage"
 
 # Move the produced AppImage out to the bind-mounted artifact dir so
 # the host can pick it up.
-mv aMule-*-*.AppImage "${ARTIFACT_DIR}/"
+mv aMule-*-Linux-*.AppImage "${ARTIFACT_DIR}/"
 
 # The container runs as root; without this, ${ARTIFACT_DIR} and the
 # .AppImage end up root-owned on the host and the invoking user can't
@@ -135,4 +144,4 @@ if [ -n "${HOST_UID:-}" ] && [ -n "${HOST_GID:-}" ]; then
     chown -R "${HOST_UID}:${HOST_GID}" "${ARTIFACT_DIR}"
 fi
 
-echo "==> Produced ${ARTIFACT_DIR}/$(basename ${ARTIFACT_DIR}/aMule-*-*.AppImage)"
+echo "==> Produced ${ARTIFACT_DIR}/$(basename ${ARTIFACT_DIR}/aMule-*-Linux-*.AppImage)"

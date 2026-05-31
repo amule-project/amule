@@ -87,14 +87,14 @@ switch by setting both as repo secrets.
 ## Installer (.exe)
 
 Wraps the portable tree from the previous step into a single
-`aMule-<version>-Setup-<arch>.exe` driven by NSIS 3.x (MUI2). Produced
+`aMule-<version>-Windows-Setup-<arch>.exe` driven by NSIS 3.x (MUI2). Produced
 on demand:
 
 ```sh
 packaging/windows/build.sh              # build the portable tree first
 packaging/windows/build.sh installer    # then wrap it
 
-# Result: ./dist/aMule-<version>-Setup-<arch>.exe
+# Result: ./dist/aMule-<version>-Windows-Setup-<arch>.exe
 ```
 
 Requires `makensis` on `PATH`. NSIS isn't packaged for every MSYS2

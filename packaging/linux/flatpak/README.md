@@ -34,10 +34,10 @@ packaging/linux/build.sh flatpak
 packaging/linux/build.sh flatpak x86_64
 packaging/linux/build.sh flatpak aarch64
 
-# Result: ./dist/aMule-<version>-<arch>.flatpak (single bundle)
+# Result: ./dist/aMule-<version>-Linux-<arch>.flatpak (single bundle)
 
 # Optional: install + run via the local repo
-flatpak install --user --reinstall ./dist/aMule-<version>-<arch>.flatpak
+flatpak install --user --reinstall ./dist/aMule-<version>-Linux-<arch>.flatpak
 flatpak run org.amule.aMule
 ```
 

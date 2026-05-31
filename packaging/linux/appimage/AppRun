@@ -8,7 +8,7 @@
 # same pattern Krita and GIMP use to ship multiple tools in one bundle.
 #
 # Usage:
-#   ./aMule-x.y.z-x86_64.AppImage         # runs amule (monolithic GUI)
+#   ./aMule-x.y.z-Linux-x64.AppImage         # runs amule (monolithic GUI)
 #   ln -s aMule.AppImage amuled
 #   ./amuled                              # runs the daemon
 #   ln -s aMule.AppImage amulecmd
@@ -34,12 +34,19 @@ export LD_LIBRARY_PATH="${HERE}/usr/lib:${LD_LIBRARY_PATH:-}"
 # $0 for direct invocation (e.g. when extracted via --appimage-extract).
 INVOCATION="${ARGV0:-$0}"
 NAME="$(basename "${INVOCATION}")"
-# Strip a trailing .AppImage so renaming aMule-2.4.0-x86_64.AppImage
+# Strip a trailing .AppImage so renaming aMule-2.4.0-Linux-x64.AppImage
 # to amuled.AppImage still dispatches.
 NAME="${NAME%.AppImage}"
-# Some users keep arch suffixes; tolerate aMule-x86_64, amuled-aarch64, etc.
+# Tolerate either the release-asset spelling (-x64 / -arm64, #764) or
+# the legacy uname spelling (-x86_64 / -aarch64) when stripping the
+# arch tail from the invocation name.
+NAME="${NAME%-x64}"
+NAME="${NAME%-arm64}"
 NAME="${NAME%-x86_64}"
 NAME="${NAME%-aarch64}"
+# Strip the Linux marker introduced by the #764 naming scheme so
+# `aMule-3.0.0-Linux-x64.AppImage` collapses to `aMule` for dispatch.
+NAME="${NAME%-Linux}"
 
 case "${NAME}" in
     amuled|amulegui|amulecmd|amuleweb|ed2k)

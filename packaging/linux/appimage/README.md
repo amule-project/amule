@@ -14,7 +14,7 @@ is **native** (host arch — fast, no QEMU):
 # from repo root, build for the host's architecture
 packaging/linux/build.sh appimage
 
-# Result: ./dist/aMule-<version>-<arch>.AppImage
+# Result: ./dist/aMule-<version>-Linux-<arch>.AppImage
 ```
 
 The host only needs Docker. Everything else (Ubuntu base image, wxWidgets
@@ -31,7 +31,7 @@ packaging/linux/build.sh setup-cross-arch
 packaging/linux/build.sh appimage x86_64    # on aarch64 host
 packaging/linux/build.sh appimage aarch64   # on x86_64 host
 
-# Result: ./dist/aMule-<version>-x86_64.AppImage  +  ./dist/aMule-<version>-aarch64.AppImage
+# Result: ./dist/aMule-<version>-Linux-x64.AppImage  +  ./dist/aMule-<version>-Linux-arm64.AppImage
 ```
 
 Cross-arch via emulation is ~5-10× slower than native. Acceptable for one-off
@@ -57,7 +57,7 @@ on its native runner in parallel and finishes much faster.
    `AppDir/usr/` in the XDG layout the desktop file + icon hooks already
    produce.
 3. `linuxdeploy --plugin gtk` bundles wxGTK + GTK3 + every transitive .so,
-   generates the AppRun launcher, and emits `aMule-<version>-<arch>.AppImage`
+   generates the AppRun launcher, and emits `aMule-<version>-Linux-<arch>.AppImage`
    in `dist/`.
 
 The GTK plugin handles the wxGTK ↔ GTK3 ↔ glib ↔ pixman ↔ cairo dependency
