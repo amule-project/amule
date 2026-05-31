@@ -117,7 +117,7 @@ build() {
     local bin_paths=(
         src/amuled
         src/amulecmd
-        src/amuleweb
+        src/webserver/src/amuleweb
         src/ed2k
         src/utils/cas/cas
         src/utils/wxCas/src/wxcas
