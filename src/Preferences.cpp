@@ -878,7 +878,17 @@ public:
 		} else {
 			dataDir = wxStandardPaths::Get().GetResourcesDir();
 		}
-#if !defined(__WINDOWS__) && !defined(__WXMAC__)
+#if defined(__WINDOWS__)
+		// Windows portable layout puts amule.exe in bin\ and installable
+		// data (skins, webserver templates, ...) in ..\share\amule\.
+		// wxStandardPaths::GetDataDir() / GetResourcesDir() both return
+		// the exe directory on Windows, so relocate up one level and into
+		// the FHS-style share/amule/ tree the installer actually populates.
+		// Mirrors the BeforeLast('/') + "/amule" adjustment used on Linux
+		// below for the same purpose. (#783)
+		dataDir = JoinPaths(JoinPaths(dataDir, ".."), "share");
+		dataDir = JoinPaths(dataDir, "amule");
+#elif !defined(__WXMAC__)
 		dataDir = dataDir.BeforeLast('/') + "/amule";
 #endif
 		wxString systemDir(JoinPaths(dataDir,folder));
