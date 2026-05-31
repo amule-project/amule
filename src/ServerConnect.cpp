@@ -583,6 +583,32 @@ bool CServerConnect::IsLocalServer(uint32 dwIP, uint16 nPort)
 }
 
 
+bool CServerConnect::IsServerIP(uint32 ip) const
+{
+	if (ip == 0) {
+		return false;
+	}
+	// Match the live connection first -- cheapest, hottest case.
+	if (connectedsocket && connectedsocket->cur_server
+		&& connectedsocket->cur_server->GetIP() == ip) {
+		return true;
+	}
+	// Then any login still in flight.  m_lstOpenSockets includes
+	// connectedsocket too, but the early-out above keeps the common
+	// case to a single pointer chase; the loop only runs when we're
+	// actively trying multiple servers in parallel, which is bounded
+	// by max_simcons (typically 2-3) so it's negligible.
+	for (SocketsList::const_iterator it = m_lstOpenSockets.begin();
+		 it != m_lstOpenSockets.end(); ++it) {
+		const CServerSocket* sock = *it;
+		if (sock && sock->cur_server && sock->cur_server->GetIP() == ip) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
 void CServerConnect::KeepConnectionAlive()
 {
 	uint64 dwServerKeepAliveTimeout = thePrefs::GetServerKeepAliveTimeout();
