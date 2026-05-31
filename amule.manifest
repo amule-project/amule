@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
+  <assemblyIdentity type="win32" name="amule-project.aMule" version="1.0.0.0" processorArchitecture="*"/>
+  <description>aMule eDonkey/Kad client</description>
+
+  <!--
+    Themed Common Controls v6 so the app renders with the post-XP
+    visual styles (rounded buttons, themed list views).  wx.rc would
+    normally request this, but we disable wx's whole manifest to
+    embed our own (see amule.rc), so we have to include the
+    Common-Controls dependency here.
+  -->
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" processorArchitecture="*" publicKeyToken="6595b64144ccf1df" language="*"/>
+    </dependentAssembly>
+  </dependency>
+
+  <!--
+    DPI awareness.
+
+    wx.rc only declares the legacy "System DPI aware" level, so on
+    Windows installations with display scaling other than 100%
+    (or multi-monitor setups with mixed DPI) the desktop manager
+    applies its bitmap-scaling compatibility shim and the resulting
+    blur is exactly the symptom reported on #777.
+
+    Declare PerMonitorV2 (Win10 1703+) with a PerMonitor fallback
+    via the modern <dpiAwareness> entry, plus the legacy
+    <dpiAware>True/PM</dpiAware> for older Windows 10 builds and
+    earlier Windows versions that don't honour the 2016 manifest
+    namespace. Both forms are inert when not understood, so layering
+    them is safe.
+  -->
+  <asmv3:application>
+    <asmv3:windowsSettings>
+      <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitorV2,PerMonitor</dpiAwareness>
+      <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">True/PM</dpiAware>
+    </asmv3:windowsSettings>
+  </asmv3:application>
+</assembly>

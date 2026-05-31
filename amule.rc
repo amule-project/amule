@@ -1,6 +1,19 @@
 amule	ICON	"amule.ico"
 convert	ICON	"convert.ico"
 
+// Custom application manifest with PerMonitorV2 DPI awareness.
+// wx.rc would otherwise embed its own manifest at the same resource
+// slot (ID 1, type 24 / RT_MANIFEST) declaring only "system DPI
+// aware", which leaves Windows free to bitmap-scale the window on
+// non-system DPI monitors -- the blur reported on #777 at 150%
+// scaling.  Embedding our manifest *before* the wx include lets the
+// RC compiler keep the first-defined resource and ignore wx's
+// duplicate; defining wxUSE_RC_MANIFEST=0 below additionally tells
+// wx not to emit one to begin with on toolchains that respect it.
+1 24 "amule.manifest"
+
+#define wxUSE_RC_MANIFEST 0
+
 #ifndef _MSC_VER
 #include <wx/msw/wx.rc>
 #endif
