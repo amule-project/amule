@@ -1726,6 +1726,21 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 		}
 	}
 
+	// A LowID of zero has no callback semantics — server LowID
+	// assignments start at 1, so an OP_CALLBACKREQUEST aimed at LowID
+	// 0 can't be routed to anything. Source-exchange and server source
+	// lists skip the IsGoodIP filter for LowID ids, so such entries
+	// otherwise sail through, become a CUpDownClient, and burn ~60 s
+	// of idle-socket time inside listensocket's pool before
+	// CClientTCPSocket::CheckTimeOut cleans them up (#786).
+	//
+	// HighID 0 (IP 0.0.0.0) is intentionally left to the upstream
+	// IsGoodIP filter that already gates both callers; this guard is
+	// scoped narrowly to the LowID case.
+	if (IsLowID(hybridID) && hybridID == 0) {
+		return false;
+	}
+
 	// MOD Note: Do not change this part - Merkur
 	if (theApp->IsConnectedED2K()) {
 		if(::IsLowID(theApp->GetED2KID())) {
