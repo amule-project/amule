@@ -363,14 +363,22 @@ void CECServerSocket::WriteDoneAndQueueEmpty()
 		return;
 	}
 
-	CECPacket *packet = m_ec_notifier->GetNextPacket(this);
+	// ECNotifier::GetNextPacket returns a fresh new CECPacket(...) and
+	// the caller owns it; SendPacket(const CECPacket*) only serialises
+	// it into the per-socket output queue and never deletes.  Hand the
+	// raw pointer to a smart pointer so the CECPacket (and its CECTag
+	// tree) get freed at scope exit instead of leaking on every
+	// notification dispatch.  Pre-fix, the EC notification path was
+	// the dominant retained-bytes leak on long-running amuled with
+	// connected amulegui / amuleweb peers (#765).
+	CSmartPtr<CECPacket> packet(m_ec_notifier->GetNextPacket(this));
 	if (!packet) {
 		return;
 	}
 
 	m_notification_dispatch_depth++;
 	try {
-		SendPacket(packet);
+		SendPacket(packet.get());
 	} catch (...) {
 		m_notification_dispatch_depth--;
 		throw;
@@ -2668,10 +2676,14 @@ void ECNotifier::NextPacketToSocket()
 		CECServerSocket *sock = i->first;
 		if ( sock->HaveNotificationSupport() && !sock->DataPending() ) {
 			ECUpdateMsgSource **notifier_array = i->second;
-			CECPacket *packet = GetNextPacket(notifier_array);
-			if ( packet ) {
+			// Same ownership contract as WriteDoneAndQueueEmpty: the
+			// CECPacket from GetNextPacket is caller-owned and
+			// SendPacket only serialises it.  Wrap so it's freed at
+			// scope exit (#765).
+			CSmartPtr<CECPacket> packet(GetNextPacket(notifier_array));
+			if (packet) {
 				//printf("[EC] sending update packet; opcode=%x\n",packet->GetOpCode());
-				sock->SendPacket(packet);
+				sock->SendPacket(packet.get());
 			}
 		}
 	}
