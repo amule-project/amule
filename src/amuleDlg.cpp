@@ -1287,7 +1287,14 @@ bool CamuleDlg::Check_and_Init_Skin()
 
 	wxStandardPathsBase &spb(wxStandardPaths::Get());
 #ifdef __WINDOWS__
-	wxString dataDir(spb.GetPluginsDir());
+	// Windows portable layout: amule.exe lives in bin\ and installable
+	// data (skins, ...) in ..\share\amule\.  wx returns the exe directory
+	// for both GetPluginsDir() and GetDataDir() on Windows, so relocate
+	// to the FHS-style path the installer actually populates.  Has to
+	// match the Preferences enumeration above (Preferences.cpp::TransferToWindow)
+	// or the dropdown would offer a skin we can't load.  (#783)
+	wxString dataDir(JoinPaths(JoinPaths(spb.GetDataDir(), ".."), "share"));
+	dataDir = JoinPaths(dataDir, "amule");
 #elif defined(__WXMAC__)
 		wxString dataDir(spb.GetDataDir());
 #else
