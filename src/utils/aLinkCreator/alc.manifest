@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
+  <assemblyIdentity type="win32" name="amule-project.alc" version="1.0.0.0" processorArchitecture="*"/>
+  <description>aMule ED2K link creator</description>
+
+  <!--
+    Themed Common Controls v6 so the app renders with the post-XP
+    visual styles (rounded buttons, themed list views) rather than
+    the unthemed Win95-era look reported in #792.  wx.rc on our
+    MinGW toolchain doesn't carry the v6 Common-Controls dependency,
+    so we embed our own manifest and disable wx's (see alc.rc).
+  -->
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" processorArchitecture="*" publicKeyToken="6595b64144ccf1df" language="*"/>
+    </dependentAssembly>
+  </dependency>
+
+  <!--
+    PerMonitorV2 DPI awareness, mirroring amule.manifest (#780).
+    Without this, Windows applies its bitmap-scaling compatibility
+    shim at non-100% display scales and the result is the blur
+    reported on #777 for the main GUI.
+  -->
+  <asmv3:application>
+    <asmv3:windowsSettings>
+      <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitorV2,PerMonitor</dpiAwareness>
+      <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">True/PM</dpiAware>
+    </asmv3:windowsSettings>
+  </asmv3:application>
+</assembly>

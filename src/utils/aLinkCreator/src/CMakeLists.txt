@@ -44,6 +44,7 @@ if (BUILD_ALC)
 	if (WIN32)
 		target_sources (alc
 			PRIVATE ${CMAKE_BINARY_DIR}/version.rc
+				${CMAKE_CURRENT_SOURCE_DIR}/../alc.rc
 		)
 
 		set_target_properties (alc
