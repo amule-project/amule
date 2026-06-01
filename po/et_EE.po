@@ -565,7 +565,7 @@ msgstr "Foorum: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://amule-org.github.io/docs \n"
+"FAQ: https://amule-org.github.io/docs/manual/faq \n"
 "\n"
 msgstr ""
 "KKK: https://amule-org.github.io/docs \n"

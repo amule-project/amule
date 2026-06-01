@@ -560,7 +560,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://amule-org.github.io/docs \n"
+"FAQ: https://amule-org.github.io/docs/manual/faq \n"
 "\n"
 msgstr ""
 
