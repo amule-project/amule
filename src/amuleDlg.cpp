@@ -791,39 +791,44 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 
 		wxToolBarToolBase* toolbarTool = m_wndToolbar->FindById(ID_BUTTONCONNECT);
 
+		int bitmapIdx = 0;
 		switch (currentState) {
 			case ECS_Connecting:
 				toolbarTool->SetLabel(_("Cancel"));
 				toolbarTool->SetShortHelp(_("Stop the current connection attempts"));
-				toolbarTool->SetNormalBitmap(m_tblist.GetBitmap(2));
+				bitmapIdx = 2;
 				break;
 
 			case ECS_Connected:
 				toolbarTool->SetLabel(_("Disconnect"));
 				toolbarTool->SetShortHelp(_("Disconnect from the currently connected networks"));
-				toolbarTool->SetNormalBitmap(m_tblist.GetBitmap(1));
+				bitmapIdx = 1;
 				break;
 
 			default:
 				toolbarTool->SetLabel(_("Connect"));
 				toolbarTool->SetShortHelp(_("Connect to the currently enabled networks"));
-				toolbarTool->SetNormalBitmap(m_tblist.GetBitmap(0));
+				bitmapIdx = 0;
 		}
 
-		m_wndToolbar->EnableTool(ID_BUTTONCONNECT, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()) && theApp->ipfilter->IsReady());
-
-#ifdef __WXMSW__
-		// wxMSW's native toolbar caches per-tool bitmap state separately
-		// from the tool's enable state. Without an explicit Realize the
-		// next paint can render the old bitmap with the new enable state
-		// (or vice versa), which surfaces as the connect button
-		// alternately flashing between the red Disconnect icon and the
-		// greyscale disabled rendering during a state transition. The
-		// surrounding wxWindowUpdateLocker keeps the realize off-screen
-		// until it goes out of scope, so the user sees a single atomic
-		// paint with the correct bitmap + enable state. (#800)
-		m_wndToolbar->Realize();
+		// wxToolBarToolBase::SetNormalBitmap only updates the C++ tool
+		// data; on wxMSW the native control keeps showing the previous
+		// bitmap from its cached image list until the next full
+		// Realize(). The toolbar-level SetToolNormalBitmap() pushes the
+		// new bitmap into the native image list immediately, so the
+		// connect-state transition paints atomically with the new
+		// bitmap on the next redraw — without forcing a re-layout that
+		// would disrupt a vertical toolbar's orientation measurement.
+		// Same pattern as SetMessagesTool() just below. wxCocoa keeps
+		// the tool path because SetToolNormalBitmap isn't fully wired
+		// on the OS X NSToolbar backend. (#800)
+#ifdef __WXCOCOA__
+		toolbarTool->SetNormalBitmap(m_tblist.GetBitmap(bitmapIdx));
+#else
+		m_wndToolbar->SetToolNormalBitmap(ID_BUTTONCONNECT, m_tblist.GetBitmap(bitmapIdx));
 #endif
+
+		m_wndToolbar->EnableTool(ID_BUTTONCONNECT, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()) && theApp->ipfilter->IsReady());
 
 		s_oldState = currentState;
 	}
