@@ -28,13 +28,13 @@ msgstr ""
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1 ../../src/utils/cas/docs/cas.1:1
 #: ../../src/utils/wxCas/docs/wxcas.1:1
 #, no-wrap
-msgid "September 2016"
+msgid "@MAN_DATE@"
 msgstr ""
 
 #. type: TH
 #: amule.1:1
 #, no-wrap
-msgid "aMule v2.3.2"
+msgid "aMule v@PACKAGE_VERSION@"
 msgstr ""
 
 #. type: TH
@@ -319,7 +319,7 @@ msgstr ""
 #. type: TH
 #: amulecmd.1:1
 #, no-wrap
-msgid "aMuleCmd v2.3.2"
+msgid "aMuleCmd v@PACKAGE_VERSION@"
 msgstr ""
 
 #. type: TH
@@ -891,7 +891,7 @@ msgstr ""
 #. type: TH
 #: amuled.1:1
 #, no-wrap
-msgid "aMule Daemon v2.3.2"
+msgid "aMule Daemon v@PACKAGE_VERSION@"
 msgstr ""
 
 #. type: TH
@@ -947,7 +947,7 @@ msgstr ""
 #. type: TH
 #: amulegui.1:1
 #, no-wrap
-msgid "aMuleGUI v2.3.2"
+msgid "aMuleGUI v@PACKAGE_VERSION@"
 msgstr ""
 
 #. type: TH
@@ -1002,7 +1002,7 @@ msgstr ""
 #. type: TH
 #: amuleweb.1:1
 #, no-wrap
-msgid "aMule webserver v2.3.2"
+msgid "aMule webserver v@PACKAGE_VERSION@"
 msgstr ""
 
 #. type: Plain text

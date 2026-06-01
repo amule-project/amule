@@ -1,0 +1,71 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULEGUI 1 "Septiembre 2016" "aMuleGUI v@PACKAGE_VERSION@" aMuleGUI
+.als B_untranslated B
+.als RB_untranslated RB
+.SH NOMBRE
+amulegui \- Programa para controlar aMule con Interfaz Gráfica
+.SH SINOPSIS
+.B_untranslated amulegui
+[\fB\-c\fP \fI<path>\fP] [\fB\-geometry\fP \fI<geom>\fP]
+.RB_untranslated [ \-o ]
+.RB_untranslated [ \-r ]
+.RB_untranslated [ \-s ]
+[\fB\-t\fP \fI<num>\fP]
+
+.B_untranslated amulegui
+.RB_untranslated [ \-v ]
+
+.B_untranslated amulegui
+.RB_untranslated [ \-h ]
+.SH DESCRIPCIÓN
+\fBamulegui\fP es un programa cliente, y puede conectarse a amule o amuled
+usando EC. Permite gestionar remotamente la sesión amule(d). Proporciona
+casi la misma funcionalidad que amule, incluso cuando el núcleo funciona en
+un ordernador distante.
+.TP 
+\fB[ \-c\fP \fI<path>\fP, \fB\-\-config\-dir\fP=\fI<path>\fP \fB]\fP
+Leer configuración desde \fI<path>\fP en lugar de home
+.TP 
+\fB[ \-geometry \fP\fI<geom>\fP \fB]\fP
+Fija la geometría de la aplicación. \fI<geom>\fP usa el mismo formato
+estándar de las aplicaciones
+X11:	[\fB=\fP][\fI<width>\fP{\fBxX\fP}\fI<height>\fP][{\fB+\-\fP}\fI<xoffset>\fP{\fB+\-\fP}\fI<yoffset>\fP]
+.TP 
+.B_untranslated [ \-o\fR, \fB\-\-log\-stdout ]\fR
+Imprime mensajes de registro en la salida estándar
+.TP 
+.B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
+Reiniciar configuración a valores por defecto.
+.TP 
+.B_untranslated [ \-s\fR, \fB\-\-skip ]\fR
+Saltar diálogo de conexión.
+.TP 
+\fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
+Fijar categoría para enlace eD2k pasado a \fI<num>\fP
+.TP 
+.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+Imprime una breve descripción de uso.
+.TP 
+.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+Mostrar el número de la versión actual.
+.SH "INFORMANDO ERRORES"
+Por favor informa de fallos ya sea en nuestro foro
+(\fIhttps://github.com/amule\-org/amule/discussions\fP), o en nuestro bugtracker
+(\fIhttps://github.com/amule\-org/amule/issues\fP). Por favor no informe de
+fallos por correo, ni en nuestras listas, ni directamente al correo de algun
+miembro del equipo.
+.SH COPYRIGHT
+aMule y todas las demás utilidades relacionadas son distribuidas bajo la GNU
+General Public License.
+.SH "VÉASE TAMBIÉN"
+.B_untranslated alc\fR(1), \fBalcc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1), \fBxas\fR(1)
+.SH AUTOR
+Esta página de manual fue escrita por Julien Delange para Debian <julien
+AT gunnm DOT org>
+
+Esta página de manual fue reescrita por Vollstrecker
+<amule@vollstreckernet.de>
