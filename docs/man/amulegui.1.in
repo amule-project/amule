@@ -1,4 +1,4 @@
-.TH AMULEGUI 1 "@MAN_DATE@" "aMuleGUI v@PACKAGE_VERSION@" "aMuleGUI"
+.TH AMULEGUI 1 @MAN_DATE@ "aMuleGUI v@PACKAGE_VERSION@" "aMuleGUI"
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NAME

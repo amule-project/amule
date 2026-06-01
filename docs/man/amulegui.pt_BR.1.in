@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH AMULEGUI 1 "Setembro de 2016" "aMuleGUI v3.0.0" aMuleGUI
+.TH AMULEGUI 1 "Setembro de 2016" "aMuleGUI v@PACKAGE_VERSION@" aMuleGUI
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NOME
