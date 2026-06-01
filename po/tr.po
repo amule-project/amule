@@ -512,15 +512,14 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://github.com/amule-org/"
-"amule/wiki"
+"password. More information can be found at https://amule-org.github.io/docs"
 msgstr ""
 "HATA: Dış bağlantıların kullanılabilmesi için geçerli bir parola gerekilidir "
 "ve aMule uygulamacığı dış bağlantılar olmadan kullanılamaz. aMule "
 "uygulamacığını çalıştırmak için ~/.aMule/amule.conf dosyasında "
 "\"ECPassword\" kısmını uygun bir değerle doldurmalısınız. amuled' i --ec-"
 "config seçeneği ile çalıştırın ve parolanızı ayarlayın. Daha fazla bilgi "
-"https://github.com/amule-org/amule/wiki adresinde bulunabilir."
+"https://amule-org.github.io/docs adresinde bulunabilir."
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -587,10 +586,10 @@ msgstr "Forumumuz: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 msgstr ""
-"S.S.S.: https://github.com/amule-org/amule/wiki \n"
+"S.S.S.: https://amule-org.github.io/docs \n"
 "\n"
 
 #: src/amuleDlg.cpp:529
@@ -6027,10 +6026,8 @@ msgstr ""
 "\tBüyük ihtimalle bir güvenlik duvarı veya yönlendirici arkasındasınız."
 
 #: src/ServerSocket.cpp:350
-msgid ""
-"\tFor more information, please refer to https://github.com/amule-org/amule/"
-"wiki"
-msgstr "\tDaha fazla bilgi için: https://github.com/amule-org/amule/wiki"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
+msgstr "\tDaha fazla bilgi için: https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:406
 msgid "Unknown server info received! - too short"

@@ -32,7 +32,7 @@
 
   <url type="homepage">https://amule-org.github.io</url>
   <url type="bugtracker">https://github.com/amule-org/amule/issues</url>
-  <url type="help">https://github.com/amule-org/amule/wiki</url>
+  <url type="help">https://amule-org.github.io/docs</url>
 
   <!-- TODO: Auto generate me from changelog! -->
   <releases></releases>

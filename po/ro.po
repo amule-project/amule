@@ -499,15 +499,14 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://github.com/amule-org/"
-"amule/wiki"
+"password. More information can be found at https://amule-org.github.io/docs"
 msgstr ""
 "EROARE: Este necesară o parolă validă pentru utilizarea conexiunilor "
 "externe, iar demonul aMule nu se poate utiliza fără conexiuni externe. "
 "Pentru a rula demonul aMule, trebuie să configurați câmpul \"ECPassword\" în "
 "fișierul ~/.aMule/amule.conf cu o valoare corespunzătoare. Executați amuled "
 "cu marcajul --ec-config pentru configurarea parolei. Mai multe informații "
-"pot fi găsite la https://github.com/amule-org/amule/wiki"
+"pot fi găsite la https://amule-org.github.io/docs"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -574,10 +573,10 @@ msgstr "Forum: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 msgstr ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 
 #: src/amuleDlg.cpp:529
@@ -6085,12 +6084,8 @@ msgstr ""
 "router."
 
 #: src/ServerSocket.cpp:350
-msgid ""
-"\tFor more information, please refer to https://github.com/amule-org/amule/"
-"wiki"
-msgstr ""
-"\tPentru mai multe informații, consultați https://github.com/amule-org/amule/"
-"wiki"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
+msgstr "\tPentru mai multe informații, consultați https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:406
 msgid "Unknown server info received! - too short"

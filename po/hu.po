@@ -489,15 +489,13 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://github.com/amule-org/"
-"amule/wiki"
+"password. More information can be found at https://amule-org.github.io/docs"
 msgstr ""
 "HIBA: Egy érvényes jelszó szükséges a külső kapcsolatok használatához, és az "
 "aMule démon nem használható külső kapcsolatok nélkül. Az aMule démon "
 "futtatásához, az \"ECPassword\" nevű mezőt a ~/.aMule/amule.conf nevű "
 "fájlban egy megfelelő értékre kell állítanod. Indítsd az amuled-t a --ec-"
-"config paraméterrel, a jelszó beállításához. További információk https://"
-"github.com/amule-org/amule/wiki alatt találhatóak."
+"config paraméterrel, a jelszó beállításához. További információk https://amule-org.github.io/docs alatt találhatóak."
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -564,10 +562,10 @@ msgstr "Fórum: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 msgstr ""
-"GYIK: https://github.com/amule-org/amule/wiki \n"
+"GYIK: https://amule-org.github.io/docs \n"
 "\n"
 
 #: src/amuleDlg.cpp:529
@@ -5999,12 +5997,8 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\tLegvalószínűbb oka az lehet, hogy tűzfal vagy router mögött vagy."
 
 #: src/ServerSocket.cpp:350
-msgid ""
-"\tFor more information, please refer to https://github.com/amule-org/amule/"
-"wiki"
-msgstr ""
-"\tTovábbi információért, kérlek látogasd meg a https://github.com/amule-org/"
-"amule/wiki"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
+msgstr "\tTovábbi információért, kérlek látogasd meg a https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:406
 msgid "Unknown server info received! - too short"

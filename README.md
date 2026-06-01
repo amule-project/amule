@@ -7,8 +7,8 @@ aMule is an eMule-like client for the eDonkey and Kademlia networks.
 [Forum] | [Wiki] | [FAQ]
 
 [Forum]: https://github.com/amule-org/amule/discussions "aMule Forum"
-[Wiki]:  https://github.com/amule-org/amule/wiki "aMule Wiki"
-[FAQ]:   https://github.com/amule-org/amule/wiki/FAQ-aMule "FAQ on aMule"
+[Wiki]:  https://amule-org.github.io/docs "aMule Wiki"
+[FAQ]:   https://amule-org.github.io/docs/manual/faq "FAQ on aMule"
 
 ## Overview
 
@@ -88,9 +88,9 @@ However, to receive a [HighID] you need to open aMule's ports on your
 firewall and/or forward them on your router. The wiki has articles on
 [getting a HighID][2] and [setting up firewall rules][3].
 
-[HighID]: https://github.com/amule-org/amule/wiki/FAQ_eD2k‐Kademlia#what-is-lowid-and-highid "What is LowID and HighID?"
-[2]: https://github.com/amule-org/amule/wiki/Get-HighID "How to get HighID"
-[3]: https://github.com/amule-org/amule/wiki/Firewall "How to set up firewall rules for aMule"
+[HighID]: https://amule-org.github.io/docs/p2p-networks/high-id-low-id "What is LowID and HighID?"
+[2]: https://amule-org.github.io/docs/manual/configuration/get-high-id "How to get HighID"
+[3]: https://amule-org.github.io/docs/manual/configuration/firewall "How to set up firewall rules for aMule"
 
 ## Reporting Bugs
 
@@ -115,6 +115,6 @@ You can contribute to aMule in several ways:
   current behavior. Updating outdated pages is genuinely helpful.
 
 [6]: https://github.com/amule-org/amule/pulls "aMule Pull Requests"
-[7]: https://github.com/amule-org/amule/wiki/Translations "Translating aMule"
-[8]: https://github.com/amule-org/amule/wiki/Translating-Wiki "Translating the wiki"
-[9]: https://github.com/amule-org/amule/wiki/Translating-Docs "Translating the documentation"
+[7]: https://amule-org.github.io/docs/contributing/translations "Translating aMule"
+[8]: https://amule-org.github.io/docs/contributing/documentation#translations "Translating the wiki"
+[9]: https://amule-org.github.io/docs/contributing/documentation#translations "Translating the documentation"

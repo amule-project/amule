@@ -51,7 +51,7 @@ For comments and additions on this format please contact
 
 ## Links
 
-* [`amulesig.dat`](https://github.com/amule-org/amule/wiki/Amulesig.dat-file) on
+* [`amulesig.dat`](https://amule-org.github.io/docs/developer/file-formats#amulesigdat) on
   the wiki.
-* [`onlinesig.dat`](https://github.com/amule-org/amule/wiki/Onlinesig.dat-file)
+* [`onlinesig.dat`](https://amule-org.github.io/docs/developer/file-formats#onlinesigdat)
   on the wiki.

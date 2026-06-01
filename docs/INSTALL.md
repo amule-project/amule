@@ -156,6 +156,6 @@ place. Commit the resulting changes.
 
 ## Links
 
-* Detailed build and usage information: <https://github.com/amule-org/amule/wiki>
+* Detailed build and usage information: <https://amule-org.github.io/docs>
 * Forum for questions, bug reports, etc: <https://github.com/amule-org/amule/discussions>
 * Upstream issue tracker: <https://github.com/amule-org/amule/issues>

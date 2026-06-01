@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
-  <assemblyIdentity type="win32" name="amule-project.alc" version="1.0.0.0" processorArchitecture="*"/>
+  <assemblyIdentity type="win32" name="amule-org.alc" version="1.0.0.0" processorArchitecture="*"/>
   <description>aMule ED2K link creator</description>
 
   <!--
