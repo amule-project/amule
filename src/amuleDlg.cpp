@@ -525,7 +525,7 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 	msg << "\n\n" << _("'All-Platform' p2p client based on eMule \n\n") <<
 		_("Website: https://amule-org.github.io \n") <<
 		_("Forum: https://github.com/amule-org/amule/discussions \n") <<
-		_("FAQ: https://amule-org.github.io/docs \n\n") <<
+		_("FAQ: https://amule-org.github.io/docs/manual/faq \n\n") <<
 		_("Contact: admin@amule.org (administrative issues) \n") <<
 		_("Copyright (c) 2003-2019 aMule Team \n\n") <<
 		_("Part of aMule is based on \n") <<
