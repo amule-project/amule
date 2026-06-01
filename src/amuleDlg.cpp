@@ -812,6 +812,19 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 
 		m_wndToolbar->EnableTool(ID_BUTTONCONNECT, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()) && theApp->ipfilter->IsReady());
 
+#ifdef __WXMSW__
+		// wxMSW's native toolbar caches per-tool bitmap state separately
+		// from the tool's enable state. Without an explicit Realize the
+		// next paint can render the old bitmap with the new enable state
+		// (or vice versa), which surfaces as the connect button
+		// alternately flashing between the red Disconnect icon and the
+		// greyscale disabled rendering during a state transition. The
+		// surrounding wxWindowUpdateLocker keeps the realize off-screen
+		// until it goes out of scope, so the user sees a single atomic
+		// paint with the correct bitmap + enable state. (#800)
+		m_wndToolbar->Realize();
+#endif
+
 		s_oldState = currentState;
 	}
 
@@ -1467,6 +1480,28 @@ void CamuleDlg::Create_Toolbar(bool orientation)
 	Apply_Toolbar_Skin(m_wndToolbar);
 
 	Thaw();
+
+#ifdef __WXMSW__
+	// wxMSW's native toolbar control measures itself once, at the
+	// moment AddTool / Realize is called inside Apply_Toolbar_Skin.
+	// When Create_Toolbar runs from the preferences-OK path (vertical
+	// orientation toggle), the frame is at its current settled size
+	// but the new toolbar's internal measurement races against the
+	// outer sizer's pending re-layout — the toolbar ends up rendered
+	// at the wrong width and doesn't resize on its own until something
+	// (e.g. a ShowConnectionState update from an incoming connection)
+	// forces a paint. Defer Realize + Layout to the next event loop
+	// iteration so the toolbar measures against the post-layout
+	// geometry. (#800)
+	CallAfter([this]() {
+		if (m_wndToolbar) {
+			m_wndToolbar->Realize();
+			if (GetSizer()) {
+				GetSizer()->Layout();
+			}
+		}
+	});
+#endif
 }
 
 
