@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH AMULEWEB 1 "Septembrie 2016" "aMule webserver v@PACKAGE_VERSION@" "utilitare aMule"
+.TH AMULEWEB 1 @MAN_DATE@ "aMule webserver v@PACKAGE_VERSION@" "utilitare aMule"
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NUME

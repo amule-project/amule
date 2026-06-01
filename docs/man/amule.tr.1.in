@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH AMULE 1 "Eylül 2016" "aMule v@PACKAGE_VERSION@" aMule
+.TH AMULE 1 @MAN_DATE@ "aMule v@PACKAGE_VERSION@" aMule
 .als B_untranslated B
 .als RB_untranslated RB
 .SH İSİM
@@ -45,12 +45,13 @@ amuleweb çalıştırılabilir dosyasının konumunu \fI<yol>\fP olarak
 belirler.
 .TP 
 .B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
-Don't catch fatal exceptions and don't block exit on assertions.  Useful for
-headless / supervised setups (systemd, watchdog scripts)  where the
-otherwise\-modal assertion dialog prevents auto\-restart.
+Ölümcül istisnaları yakalama ve doğrulamalarda çıkmayı engelleme.  Otomatik
+yeniden başlatmayı engelleyen, normalde modal olan onay diyalog kutusunun
+bulunmadığı, başsız/denetimli kurulumlar (systemd, watchdog betikleri) için
+kullanışlıdır.
 .TP 
 .B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
-standart girdiyi devre dışı bırakmaz.
+Standart girdiyi (stdin) devre dışı bırakmaz.
 .TP 
 \fB[ \-t\fP, \fB\-\-category\fP=\fI<sayı>\fP \fB]\fP
 \fI<sayı>\fPya gönderilen eD2k bağlantılarının kategorilerini belirler.

@@ -32,7 +32,7 @@ msgstr "AMULE"
 #: ../../src/utils/wxCas/docs/wxcas.1:1
 #, no-wrap
 msgid "@MAN_DATE@"
-msgstr "сентябрь 2016"
+msgstr "@MAN_DATE@"
 
 #. type: TH
 #: amule.1:1

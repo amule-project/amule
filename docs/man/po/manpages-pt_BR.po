@@ -30,13 +30,13 @@ msgstr "AMULE"
 #: ../../src/utils/wxCas/docs/wxcas.1:1
 #, no-wrap
 msgid "@MAN_DATE@"
-msgstr "Setembro de 2016"
+msgstr "@MAN_DATE@"
 
 #. type: TH
 #: amule.1:1
 #, no-wrap
 msgid "aMule v@PACKAGE_VERSION@"
-msgstr "aMule v3.0.0"
+msgstr "aMule v@PACKAGE_VERSION@"
 
 #. type: TH
 #: amule.1:1
@@ -346,7 +346,7 @@ msgstr "AMULECMD"
 #: amulecmd.1:1
 #, no-wrap
 msgid "aMuleCmd v@PACKAGE_VERSION@"
-msgstr "aMuleCmd v3.0.0"
+msgstr "aMuleCmd v@PACKAGE_VERSION@"
 
 #. type: TH
 #: amulecmd.1:1 amuleweb.1:1 ed2k.1:1 ../../src/utils/aLinkCreator/docs/alc.1:1
@@ -1003,7 +1003,7 @@ msgstr "AMULED"
 #: amuled.1:1
 #, no-wrap
 msgid "aMule Daemon v@PACKAGE_VERSION@"
-msgstr "aMule Daemon v3.0.0"
+msgstr "aMule Daemon v@PACKAGE_VERSION@"
 
 #. type: TH
 #: amuled.1:1
@@ -1061,7 +1061,7 @@ msgstr "AMULEGUI"
 #: amulegui.1:1
 #, no-wrap
 msgid "aMuleGUI v@PACKAGE_VERSION@"
-msgstr "aMuleGUI v3.0.0"
+msgstr "aMuleGUI v@PACKAGE_VERSION@"
 
 #. type: TH
 #: amulegui.1:1
@@ -1122,7 +1122,7 @@ msgstr "AMULEWEB"
 #: amuleweb.1:1
 #, no-wrap
 msgid "aMule webserver v@PACKAGE_VERSION@"
-msgstr "aMule webserver v3.0.0"
+msgstr "aMule webserver v@PACKAGE_VERSION@"
 
 #. type: Plain text
 #: amuleweb.1:6
