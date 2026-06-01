@@ -19,6 +19,7 @@
 #include <set>
 
 #include <common/FileFunctions.h>		// CDirIterator
+#include "Preferences.h"		// thePrefs::FollowSymlinksInShares()
 
 wxDEFINE_EVENT(wxEVT_SHARED_DIRS_APPLY_PROGRESS, wxThreadEvent);
 wxDEFINE_EVENT(wxEVT_SHARED_DIRS_APPLY_DONE,     wxThreadEvent);
@@ -116,8 +117,9 @@ void CSharedDirsApplyTask::ExpandRecursive(const CPath & root)
 		// opened (permission denied, vanished, etc.), so a simple
 		// IsOk() check on the first result is enough to skip
 		// unreadable trees without aborting the whole task.
+		const int extraFlags = thePrefs::FollowSymlinksInShares() ? 0 : wxDIR_NO_FOLLOW;
 		CDirIterator finder(dir);
-		for (CPath sub = finder.GetFirstFile(CDirIterator::DirNoHidden);
+		for (CPath sub = finder.GetFirstFile(CDirIterator::DirNoHidden, wxEmptyString, extraFlags);
 			sub.IsOk();
 			sub = finder.GetNextFile())
 		{

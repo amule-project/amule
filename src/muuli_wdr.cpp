@@ -1599,6 +1599,12 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
     wxCheckBox *itemAutoRescan = new wxCheckBox( parent, IDC_AUTO_RESCAN_SHARED, _("Automatically rescan shared folders for changes"), wxDefaultPosition, wxDefaultSize, 0 );
     itemAutoRescan->SetValue( TRUE );
     item9->Add( itemAutoRescan, 0, wxALIGN_CENTER_VERTICAL, 0 );
+    // Follow-symlinks toggle. Default on to preserve historical
+    // behaviour; off makes the iterator pass wxDIR_NO_FOLLOW so symlinks
+    // (file or directory) are not traversed by the shared-folder walk.
+    wxCheckBox *itemFollowSymlinks = new wxCheckBox( parent, IDC_FOLLOW_SYMLINKS_SHARED, _("Follow symbolic links in shared folders"), wxDefaultPosition, wxDefaultSize, 0 );
+    itemFollowSymlinks->SetValue( TRUE );
+    item9->Add( itemFollowSymlinks, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
     item0->Add( item9, wxSizerFlags(1).Expand().CenterVertical().Border(wxALL, 0) );
     if (set_sizer)
