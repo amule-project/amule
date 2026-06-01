@@ -1354,6 +1354,21 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 				}
 			}
 			if (isNew) {
+				// An alive-marker tag carries only the ECID with no
+				// child tags; it's the compat-mode "this file still
+				// exists" signal and is only meaningful for files we
+				// already know. If we receive one for an ID we've never
+				// seen (race during bulk Reload, server diff baseline
+				// briefly out of step, etc.), constructing
+				// CKnownFile(tag) on an empty tag yields a ghost entry
+				// with no name and zero size (#808). Skip the marker
+				// and rely on a subsequent full-tag update to introduce
+				// the file.
+				if (!tag->HasChildTags()) {
+					AddDebugLogLineN(logEC,
+						CFormat(wxT("EC: alive-marker for unknown file ID %u; ignoring.")) % id);
+					continue;
+				}
 				CKnownFile * newFile;
 				if (tag->GetTagName() == EC_TAG_PARTFILE) {
 					CPartFile *file = new CPartFile(static_cast<const CEC_PartFile_Tag *>(tag));
