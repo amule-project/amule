@@ -1,4 +1,4 @@
-.TH AMULEWEB 1 "@MAN_DATE@" "aMule webserver v@PACKAGE_VERSION@" "aMule utilities"
+.TH AMULEWEB 1 @MAN_DATE@ "aMule webserver v@PACKAGE_VERSION@" "aMule utilities"
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NAME

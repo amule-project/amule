@@ -1,4 +1,4 @@
-.TH AMULE 1 "@MAN_DATE@" "aMule v@PACKAGE_VERSION@" "aMule"
+.TH AMULE 1 @MAN_DATE@ "aMule v@PACKAGE_VERSION@" "aMule"
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NAME

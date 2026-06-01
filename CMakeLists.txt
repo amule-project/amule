@@ -248,13 +248,25 @@ endif()
 # automatically, so reproducible builds (Debian etc.) get a stable value.
 # We assemble "Month Year" from a numeric month index so the output is
 # locale-neutral (strftime's %B is locale-dependent).
+#
+# The value embeds its own surrounding double-quotes so the substituted
+# `.TH` argument stays a single quoted field. po4a's man module elides
+# the outer quotes around single-token translatable values when it
+# regenerates a translated `.1.in`, so a master like
+#   .TH AMULE 1 "@MAN_DATE@" ...
+# becomes
+#   .TH AMULE 1 @MAN_DATE@ ...
+# in the translated copy. With the quotes carried by the value, the
+# masters use the unquoted form `@MAN_DATE@` directly and the final
+# substitution always lands as `"Month Year"` regardless of which file
+# configure_file processed.
 set (_AMULE_MONTHS January February March April May June July August
                   September October November December)
 string (TIMESTAMP _AMULE_MAN_MONTH_NUM "%m" UTC)
 math (EXPR _AMULE_MAN_MONTH_IDX "${_AMULE_MAN_MONTH_NUM} - 1")
 list (GET _AMULE_MONTHS ${_AMULE_MAN_MONTH_IDX} _AMULE_MAN_MONTH)
 string (TIMESTAMP _AMULE_MAN_YEAR "%Y" UTC)
-set (MAN_DATE "${_AMULE_MAN_MONTH} ${_AMULE_MAN_YEAR}")
+set (MAN_DATE "\"${_AMULE_MAN_MONTH} ${_AMULE_MAN_YEAR}\"")
 
 include (cmake/bfd.cmake)
 
