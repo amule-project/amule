@@ -244,6 +244,18 @@ if (NOT DEFINED CACHE{GITDATE})
 	endif()
 endif()
 
+# Man-page `.TH` date. `string(TIMESTAMP)` honours SOURCE_DATE_EPOCH
+# automatically, so reproducible builds (Debian etc.) get a stable value.
+# We assemble "Month Year" from a numeric month index so the output is
+# locale-neutral (strftime's %B is locale-dependent).
+set (_AMULE_MONTHS January February March April May June July August
+                  September October November December)
+string (TIMESTAMP _AMULE_MAN_MONTH_NUM "%m" UTC)
+math (EXPR _AMULE_MAN_MONTH_IDX "${_AMULE_MAN_MONTH_NUM} - 1")
+list (GET _AMULE_MONTHS ${_AMULE_MAN_MONTH_IDX} _AMULE_MAN_MONTH)
+string (TIMESTAMP _AMULE_MAN_YEAR "%Y" UTC)
+set (MAN_DATE "${_AMULE_MAN_MONTH} ${_AMULE_MAN_YEAR}")
+
 include (cmake/bfd.cmake)
 
 # DownloadBandwidthThrottler holds the shared byte budget as
