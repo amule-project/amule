@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH AMULED 1 "Septiembre 2016" "Demonio aMule v@PACKAGE_VERSION@" "Demonio aMule"
+.TH AMULED 1 @MAN_DATE@ "Demonio aMule v@PACKAGE_VERSION@" "Demonio aMule"
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NOMBRE

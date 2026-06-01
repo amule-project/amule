@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH ALCC 1 "Setembro de 2016" "Calculador de links eD2k do aMule" "utilitários aMule"
+.TH ALCC 1 @MAN_DATE@ "Calculador de links eD2k do aMule" "utilitários aMule"
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NOME

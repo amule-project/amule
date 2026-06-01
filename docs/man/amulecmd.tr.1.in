@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH AMULECMD 1 "Eylül 2016" "aMuleCmd v@PACKAGE_VERSION@" "aMule yardımcı araçları"
+.TH AMULECMD 1 @MAN_DATE@ "aMuleCmd v@PACKAGE_VERSION@" "aMule yardımcı araçları"
 .als B_untranslated B
 .als RB_untranslated RB
 .als SS_untranslated SS
@@ -37,7 +37,7 @@ aMule'ün dışarıya bağlandığında kullandığı port, Ayarlar\->Uzak
 Denetimler seçeneğinde belirlenir (varsayılan: \fI4712\fP)
 .TP 
 \fB[ \-P\fP \fI<şifre>\fP, \fB\-\-password\fP=\fI<şifre>\fP \fB]\fP
-Dışarıdan yapılan bağlantılar için şifre.
+Dışarıdan kurulan bağlantılar için şifre.
 .TP 
 \fB[ \-f\fP \fI<yol>\fP, \fB\-\-config\-file\fP=\fI<yol>\fP \fB]\fP
 Belirtilen yapılandırma dosyasını kullanır. Varsayılan yapılandırma dosyası
@@ -144,7 +144,7 @@ Normal öncelik.
 .SS_untranslated Progress
 Sürmekte olan bir aramanın ilerlemesini gösterir.
 .SS_untranslated Quit
-A synonym of the \fBexit\fP command.
+\fBexit\fP komutu ile eş anlamlıdır.
 .SS_untranslated Reload \fI<what>\fP
 Belirtilen değeri yeniden yükler.
 
@@ -177,24 +177,26 @@ Kad ağında arama yapar.
 Sunucuda arama yapar.
 .RE
 .PP
-Optional filters can be placed before, after, or interleaved with the search
-keyword(s):
+Seçime dayalı filtreler arama kelimelerinden evvel, sonra veya onların
+arasında konumlandırılabilir:
 .RS
 .IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
-Restrict results to the given file type.
+Sonuçları belirtilen dosya türüyle snırla.
 .IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
-Restrict results to a specific file extension (e.g.\ \fIiso\fP, \fImp3\fP).
+Sonuçları belli bir dosya uzantısı ile sınırla (mesela \ \fIiso\fP, \fImp3\fP).
 .IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
-Minimum number of sources a result must report.
+Bir sonucun bildirmesi gereken asgari kaynak sayısı.
 .IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
-Smallest file size to return. Suffixes use binary multipliers (K = 1024, M =
-K\(mu1024, G = M\(mu1024); no suffix means bytes.
+Geri gönderilecek asgari dosya boyutu. Uzantılar ikili çarpanlar kullanır
+(K = 1024, M = K\(mu1024, G = M\(mu1024); uzantı yoksa bayt anlamına gelir.
 .IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
-Largest file size to return. Same suffixes as \fB\-\-min\-size\fP.
+Geri gönderilecek azami dosya boyutu. \fB\-\-min\-size\fP ile aynı uzantılar
+geçerlidir.
 .RE
 .PP
-Example: `search global linux iso \-\-type Iso \-\-min\-size 100M' returns
-results for \(lqlinux iso\(rq of file\-type Iso at least 100 MiB.
+Örnek: `search global linux iso \-\-type Iso \-\-min\-size 100M', \(lqlinux
+iso\(rq için asgari 100 MiB boyutunda ve Iso dosya türünde sonuçlar geri
+gönderir.
 .SS_untranslated Set \fI<what>\fR
 Belirtilen değeri ayarlara girer.
 
@@ -218,7 +220,7 @@ Günlüğü (log) gösterir.
 .IP Servers 10
 Sunucu listesini gösterir.
 .IP Shared 10
-Show shared files list.
+Paylaşılan dosyalar listesini göster.
 .IP UL 10
 Aktarma (gönderilen dosyalar) kuyruğunu gösterir.
 .RE

@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH AMULEWEB 1 "Eylül 2016" "aMule webserver v@PACKAGE_VERSION@" "aMule yardımcı araçları"
+.TH AMULEWEB 1 @MAN_DATE@ "aMule webserver v@PACKAGE_VERSION@" "aMule yardımcı araçları"
 .als B_untranslated B
 .als RB_untranslated RB
 .SH İSİM
@@ -56,7 +56,7 @@ aMule'ün dışarıya bağlandığında kullandığı port, Ayarlar\->Uzak
 Denetimler seçeneğinde belirlenir (varsayılan: \fI4712\fP)
 .TP 
 \fB[ \-P\fP \fI<şifre>\fP, \fB\-\-password\fP=\fI<şifre>\fP \fB]\fP
-Dışarıdan yapılan bağlantılar için şifre.
+Dışarıdan kurulan bağlantılar için şifre.
 .TP 
 \fB[ \-f\fP \fI<yol>\fP, \fB\-\-config\-file\fP=\fI<yol>\fP \fB]\fP
 Belirtilen yapılandırma dosyasını kullanır. Varsayılan yapılandırma dosyası
@@ -109,11 +109,11 @@ Misafir erişimini etkinleştirir.
 Misafir erişimine izin vermez (varsayılan değer).
 .TP 
 .B_untranslated [ \-L\fR, \fB\-\-load\-settings ]\fR
-web sunucusu ayarlarını aMule'den/aMule'e yükler/kaydeder. Bu amuleweb'in
-komut satırı ve yapılandırma dosyası ayarlarını görmezden gelmesine yol
-açar. Ayarlar kaydedilirken hiçbiri yapılandırma dosyasına yazılmaz, aMule'e
-yazılır. (Tabii ki bu sadece aMule'ün Ayarlar\->Uzak Denetiminde
-kurulabilen değerler için geçerlidir.)
+Web sunucusu ayarlarını uzaktaki aMule'den/aMule'e yükler/kaydeder. Bu
+amuleweb'in komut satırı ve yapılandırma dosyası ayarlarını görmezden
+gelmesine yol açar. Ayarlar kaydedilirken hiçbiri yapılandırma dosyasına
+yazılmaz, aMule'e yazılır. (Tabii ki bu sadece aMule'ün Ayarlar\->Uzak
+Denetiminde kurulabilen değerler için geçerlidir.)
 .TP 
 .B_untranslated [ \-\-no\-php ]\fR
 PHP yorumlayıcısını devre dışı bırakır (eskimiş)

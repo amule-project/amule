@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH WXCAS 1 "Setembro de 2016" wxCas "utilitários aMule"
+.TH WXCAS 1 @MAN_DATE@ wxCas "utilitários aMule"
 .als B_untranslated B
 .SH NOME
 wxcas \- wx c aMule statistics

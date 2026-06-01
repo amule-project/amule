@@ -3,7 +3,7 @@
 .\" This file was generated with po4a. Translate the source file.
 .\"
 .\"*******************************************************************
-.TH ALC 1 "Setembro de 2016" aLinkCreator "utilitários aMule"
+.TH ALC 1 @MAN_DATE@ aLinkCreator "utilitários aMule"
 .als B_untranslated B
 .SH NOME
 aLinkCreator \- o criador de links eD2k do aMule
