@@ -494,8 +494,7 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://github.com/amule-org/"
-"amule/wiki"
+"password. More information can be found at https://amule-org.github.io/docs"
 msgstr ""
 
 #: src/amuled.cpp:161
@@ -561,7 +560,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 msgstr ""
 
@@ -6009,12 +6008,8 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\tMbase ngaqe ju jeni mbas nje firewalli ose routeri."
 
 #: src/ServerSocket.cpp:350
-msgid ""
-"\tFor more information, please refer to https://github.com/amule-org/amule/"
-"wiki"
-msgstr ""
-"\tPer me shume informacion ju lutem vizitoni https://github.com/amule-org/"
-"amule/wiki"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
+msgstr "\tPer me shume informacion ju lutem vizitoni https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:406
 msgid "Unknown server info received! - too short"

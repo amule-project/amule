@@ -493,15 +493,14 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://github.com/amule-org/"
-"amule/wiki"
+"password. More information can be found at https://amule-org.github.io/docs"
 msgstr ""
 "FOUT: Een geldig wachtwoord is nodig om gebruik te maken van externe "
 "verbindingen, en aMule daemon kan niet gebruikt worden zonder externe "
 "verbindingen. Om aMule daemon to draaien, moet u het veld \"ECPassword\" in "
 "het bestand ~/.aMule/amule.conf een juiste waarde geven. Voer amuled uit met "
 "de vlag --ec-config om het wachtwoord in te stellen. Meer informatie is te "
-"vinden op https://github.com/amule-org/amule/wiki"
+"vinden op https://amule-org.github.io/docs"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -568,10 +567,10 @@ msgstr "Forum: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 msgstr ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 
 #: src/amuleDlg.cpp:529
@@ -6018,10 +6017,8 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\tDit komt waarschijnlijk omdat u achter een firewall of router zit."
 
 #: src/ServerSocket.cpp:350
-msgid ""
-"\tFor more information, please refer to https://github.com/amule-org/amule/"
-"wiki"
-msgstr "\tVoor meer informatie, bekijk https://github.com/amule-org/amule/wiki"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
+msgstr "\tVoor meer informatie, bekijk https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:406
 msgid "Unknown server info received! - too short"

@@ -529,15 +529,13 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://github.com/amule-org/"
-"amule/wiki"
+"password. More information can be found at https://amule-org.github.io/docs"
 msgstr ""
 "ERRO: É necesario un contrasinal válido para usar conexións externas, e o "
 "daemon de aMule non se pode usar sen elas. Para executar o daemon de aMule "
 "indique un valor axeitado no campo «ECPassword» do ficheiro ~/.aMule/"
 "amule.conf. Execute amuled co parámetro --ec-config para definir o "
-"contrasinal. Pode atopar máis información en https://github.com/amule-org/"
-"amule/wiki"
+"contrasinal. Pode atopar máis información en https://amule-org.github.io/docs"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -571,7 +569,7 @@ msgid ""
 "Visit https://github.com/amule-org/amule/releases/latest to check if a new "
 "version is available."
 msgstr ""
-"Visite https://github.com/amule-org/amule/wiki para obter actualizacións."
+"Visite https://github.com/amule-org/amule/releases/latest para obter actualizacións."
 
 #: src/amuleDlg.cpp:276
 msgid "FATAL ERROR: Failed to create Timer"
@@ -603,10 +601,10 @@ msgstr "Foro: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 msgstr ""
-"Preguntas comúns: https://github.com/amule-org/amule/wiki \n"
+"Preguntas comúns: https://amule-org.github.io/docs \n"
 "\n"
 
 #: src/amuleDlg.cpp:529
@@ -6101,12 +6099,8 @@ msgstr ""
 "\tIsto sucede porque vostede se atopa detrás dunha devasa ou dun encamiñador."
 
 #: src/ServerSocket.cpp:350
-msgid ""
-"\tFor more information, please refer to https://github.com/amule-org/amule/"
-"wiki"
-msgstr ""
-"\tPara máis información, por favor consulte https://github.com/amule-org/"
-"amule/wiki"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
+msgstr "\tPara máis información, por favor consulte https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:406
 msgid "Unknown server info received! - too short"

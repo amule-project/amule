@@ -529,16 +529,14 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://github.com/amule-org/"
-"amule/wiki"
+"password. More information can be found at https://amule-org.github.io/docs"
 msgstr ""
 "ERREUR : Un mot de passe valide est requis pour utiliser les connexions "
 "externes, et le démon aMule ne peut pas être utilisé sans connexions "
 "externes. Pour exécuter le démon aMule, vous devez indiquer une valeur "
 "appropriée dans le champ \"ECPassword\" du fichier ~/.aMule/amule.conf. "
 "Lancez amuled avec l'option --ec-config pour configurer le mot de passe. "
-"Davantage d'informations sont disponibles sur https://github.com/amule-org/"
-"amule/wiki"
+"Davantage d'informations sont disponibles sur https://amule-org.github.io/docs"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -605,10 +603,10 @@ msgstr "Forum : https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 msgstr ""
-"FAQ : https://github.com/amule-org/amule/wiki \n"
+"FAQ : https://amule-org.github.io/docs \n"
 "\n"
 
 #: src/amuleDlg.cpp:529
@@ -6158,11 +6156,9 @@ msgstr ""
 "router."
 
 #: src/ServerSocket.cpp:350
-msgid ""
-"\tFor more information, please refer to https://github.com/amule-org/amule/"
-"wiki"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
 msgstr ""
-"\tPour plus d'informations, consultez https://github.com/amule-org/amule/wiki"
+"\tPour plus d'informations, consultez https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:406
 msgid "Unknown server info received! - too short"

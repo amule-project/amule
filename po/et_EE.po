@@ -493,15 +493,12 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://github.com/amule-org/"
-"amule/wiki"
+"password. More information can be found at https://amule-org.github.io/docs"
 msgstr ""
 "VIGA: Väliste ühenduste jaoks peab olema määratud kehtiv parool ning aMule "
 "deemonit ei saa kasutada ilma väliste ühendusteta. aMule deemoni "
 "kasutamiseks pead määrama konfiguratsioonifailis ~/.aMule/amule.conf  "
-"\"ECPassword\" väärtuseks kohase väärtuse.Parooli seadmiseks käivita amuled "
-"võtmega '--ec-config'. Lisainformatsiooni leiad https://github.com/amule-org/"
-"amule/wiki"
+"\"ECPassword\" väärtuseks kohase väärtuse.Parooli seadmiseks käivita amuled võtmega '--ec-config'. Lisainformatsiooni leiad https://amule-org.github.io/docs"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -568,10 +565,10 @@ msgstr "Foorum: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 msgstr ""
-"KKK: https://github.com/amule-org/amule/wiki \n"
+"KKK: https://amule-org.github.io/docs \n"
 "\n"
 
 #: src/amuleDlg.cpp:529
@@ -5981,11 +5978,9 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\tTõenäolisem põhjus on sinu asumine tulemüüri või ruuteri 'taga'."
 
 #: src/ServerSocket.cpp:350
-msgid ""
-"\tFor more information, please refer to https://github.com/amule-org/amule/"
-"wiki"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
 msgstr ""
-"\tTäpsemat informatsiooni leiad https://github.com/amule-org/amule/wiki"
+"\tTäpsemat informatsiooni leiad https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:406
 msgid "Unknown server info received! - too short"

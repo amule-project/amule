@@ -712,7 +712,7 @@ void CaMuleExternalConnector::OnFatalException()
 	fprintf(stderr, "circumstances of this crash. Issue tracker:\n");
 	fprintf(stderr, "    https://github.com/amule-org/amule/issues\n");
 	fprintf(stderr, "If possible, please try to generate a real backtrace of this crash:\n");
-	fprintf(stderr, "    https://github.com/amule-org/amule/wiki/Backtraces\n\n");
+	fprintf(stderr, "    https://amule-org.github.io/docs/contributing/bug-reports\n\n");
 	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n");
 	fprintf(stderr, "Current version is: %s %s\n", m_appname, m_strFullVersion);
 	fprintf(stderr, "Running on: %s\n\n", m_strOSDescription);

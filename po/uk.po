@@ -492,15 +492,13 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://github.com/amule-org/"
-"amule/wiki"
+"password. More information can be found at https://amule-org.github.io/docs"
 msgstr ""
 "ПОМИЛКА: необхідний вірний пароль, щоб використовувати зовнішні з'єднання, і "
 "демон aMule не може бути використаний без зовнішніх з'єднань. Щоб запустити "
 "демон aMule, ви маєте встановити відповідне значення у полі \"ECPassword\" у "
 "файлі ~/.aMule/amule.conf. Виконайте amuled  з параметром --ec-config, щоб "
-"встановити пароль. Більше інформації можете знайти на https://github.com/"
-"amule-org/amule/wiki"
+"встановити пароль. Більше інформації можете знайти на https://amule-org.github.io/docs"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -567,10 +565,10 @@ msgstr "Форум: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 msgstr ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 
 #: src/amuleDlg.cpp:529
@@ -6050,12 +6048,8 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\tНайбільш ймовірно це тому, що ви за фаєрволом або маршрутизатором."
 
 #: src/ServerSocket.cpp:350
-msgid ""
-"\tFor more information, please refer to https://github.com/amule-org/amule/"
-"wiki"
-msgstr ""
-"\tЗа додатковою інформацією, будь ласка, завітайте до https://github.com/"
-"amule-org/amule/wiki"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
+msgstr "\tЗа додатковою інформацією, будь ласка, завітайте до https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:406
 msgid "Unknown server info received! - too short"

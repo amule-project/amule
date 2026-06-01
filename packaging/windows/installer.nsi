@@ -218,7 +218,7 @@ Section "aMule (required)" SecCore
   WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\aMule" \
                 "Publisher"          "aMule Project"
   WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\aMule" \
-                "URLInfoAbout"       "https://www.amule.org"
+                "URLInfoAbout"       "https://amule-org.github.io/"
   WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\aMule" \
                 "DisplayIcon"        "$INSTDIR\bin\amule.exe"
   WriteRegStr   HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\aMule" \

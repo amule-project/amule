@@ -170,7 +170,7 @@ void CamuleRemoteGuiApp::OnFatalException()
 		<< "circumstances of this crash. Issue tracker:\n"
 		<< "    https://github.com/amule-org/amule/issues\n"
 		<< "If possible, please try to generate a real backtrace of this crash:\n"
-		<< "    https://github.com/amule-org/amule/wiki/Backtraces\n\n"
+		<< "    https://amule-org.github.io/docs/contributing/bug-reports\n\n"
 		<< "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n"
 		<< "Current version is: " << FullMuleVersion
 		<< "\nRunning on: " << OSDescription

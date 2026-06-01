@@ -479,13 +479,12 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://github.com/amule-org/"
-"amule/wiki"
+"password. More information can be found at https://amule-org.github.io/docs"
 msgstr ""
 "錯誤：需要有效的密碼以使用外部連線，且 aMule 背景服務程式要有外部連線才可使"
 "用。要執行 aMule 背景服務程式，您必須在檔案 ~/aMule/amule.conf 中將 "
 "「ECPassword」 設定值改為適當的數字。使用 --ec-config 參數啓動 amuled 以設定"
-"密碼。請到 https://github.com/amule-org/amule/wiki 取得更多資訊"
+"密碼。請到 https://amule-org.github.io/docs 取得更多資訊"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -550,10 +549,10 @@ msgstr "論壇：https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 msgstr ""
-"FAQ：https://github.com/amule-org/amule/wiki \n"
+"FAQ：https://amule-org.github.io/docs \n"
 "\n"
 
 #: src/amuleDlg.cpp:529
@@ -5842,10 +5841,8 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\t可能是因爲受到防火牆或網路分享器影響。"
 
 #: src/ServerSocket.cpp:350
-msgid ""
-"\tFor more information, please refer to https://github.com/amule-org/amule/"
-"wiki"
-msgstr "\t請參考 https://github.com/amule-org/amule/wiki 的資訊"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
+msgstr "\t請參考 https://amule-org.github.io/docs 的資訊"
 
 #: src/ServerSocket.cpp:406
 msgid "Unknown server info received! - too short"

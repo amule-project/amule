@@ -498,15 +498,13 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://github.com/amule-org/"
-"amule/wiki"
+"password. More information can be found at https://amule-org.github.io/docs"
 msgstr ""
 "ERROR: És obligatori l'ús d'una contrassenya vàlida per usar connexions "
 "externes, el dimoni de l'aMule no pot usar-se sense connexions externes. Per "
 "executar el dimoni aMule, el camp \"ECPassword\" del fitxer ~/.aMule/"
 "amule.conf ha de tenir un valor assignat. Executa amuled amb els paràmetres "
-"--ec-config per establir una contrassenya. Més informació a https://"
-"github.com/amule-org/amule/wiki"
+"--ec-config per establir una contrassenya. Més informació a https://amule-org.github.io/docs"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -571,10 +569,10 @@ msgstr "Fòrum: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 msgstr ""
-"PMF: https://github.com/amule-org/amule/wiki \n"
+"PMF: https://amule-org.github.io/docs \n"
 "\n"
 
 #: src/amuleDlg.cpp:529
@@ -6062,12 +6060,8 @@ msgstr ""
 "\tAixò normalment és perquè esteu darrere d'un tallafocs o un encaminador."
 
 #: src/ServerSocket.cpp:350
-msgid ""
-"\tFor more information, please refer to https://github.com/amule-org/amule/"
-"wiki"
-msgstr ""
-"\tPer a rebre més informació, si us plau visiteu https://github.com/amule-"
-"org/amule/wiki"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
+msgstr "\tPer a rebre més informació, si us plau visiteu https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:406
 msgid "Unknown server info received! - too short"

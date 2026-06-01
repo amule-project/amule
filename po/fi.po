@@ -492,15 +492,13 @@ msgid ""
 "daemon cannot be used without external connections. To run aMule daemon, you "
 "must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
 "appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://github.com/amule-org/"
-"amule/wiki"
+"password. More information can be found at https://amule-org.github.io/docs"
 msgstr ""
 "VIRHE: Kelvollinen salasana vaaditaan etäyhteyksien käyttämiseksi ja aMule-"
 "taustaprosessia ei voida käyttää ilman etäyhteyksiä. Käynnistääksesi aMule-"
 "taustaprosessin sinun pitää asettaa kenttään \"ECPassword\" tiedostossa "
 "~/.aMule/amule.conf kelvollinen arvo. Käynnistä amuled parametrilla --ec-"
-"config asettaaksesi salasanan. Lisää tiedoa löytyy osoitteesta at https://"
-"github.com/amule-org/amule/wiki"
+"config asettaaksesi salasanan. Lisää tiedoa löytyy osoitteesta at https://amule-org.github.io/docs"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -567,10 +565,10 @@ msgstr "Foorumi: https://github.com/amule-org/amule/discussions\n"
 
 #: src/amuleDlg.cpp:528
 msgid ""
-"FAQ: https://github.com/amule-org/amule/wiki \n"
+"FAQ: https://amule-org.github.io/docs \n"
 "\n"
 msgstr ""
-"UKK: https://github.com/amule-org/amule/wiki\n"
+"UKK: https://amule-org.github.io/docs\n"
 "\n"
 
 #: src/amuleDlg.cpp:529
@@ -6011,10 +6009,8 @@ msgstr ""
 "takana"
 
 #: src/ServerSocket.cpp:350
-msgid ""
-"\tFor more information, please refer to https://github.com/amule-org/amule/"
-"wiki"
-msgstr "\tLisätietoa https://github.com/amule-org/amule/wiki"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
+msgstr "\tLisätietoa https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:406
 msgid "Unknown server info received! - too short"
