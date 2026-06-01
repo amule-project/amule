@@ -911,8 +911,10 @@ public:
 			while (d.GetNext(&Filename));
 		}
 
+		bool placeholderAppended = false;
 		if ( skinSelector->GetCount() == 0 ) {
 			skinSelector->Append(_("no options available"));
+			placeholderAppended = true;
 		}
 
 		int id = skinSelector->FindString(m_value);
@@ -922,6 +924,20 @@ public:
 				// default visually.
 				id = 0;
 				m_value = defaultSelection;
+			} else if (placeholderAppended) {
+				// No real templates found and m_value doesn't match
+				// the placeholder we just appended. m_value is almost
+				// certainly a localized "no options available" string
+				// saved by a prior session under a different aMule
+				// locale (e.g. saved as "nessuna opzione disponibile"
+				// in Italian, now reopened with the locale set to
+				// English). Falling through to the cross-host preserve
+				// branch below would re-append the stale string and
+				// leave the dropdown showing two placeholders. Discard
+				// it instead — the placeholder is the only valid
+				// "selection" when no real templates exist. (#800)
+				id = 0;
+				m_value.Clear();
 			} else if (!m_value.IsEmpty()) {
 				// Template names are consumed by amuleweb, which may
 				// be running on a different host than amulegui or
