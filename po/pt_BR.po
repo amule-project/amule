@@ -54,9 +54,9 @@ msgid ""
 msgstr ""
 "aMule pode instalar um lançador de desktop e um ícone em seu diretório de "
 "usuário, de modo a aparecer em seu menu de aplicativos como um "
-"aplicativoinstalado regularmente. Esta ação é reversível — os arquivos vivem "
-"dentrodas pastas ~/.local/share/applications e ~/.local/share/icons e podem "
-"serremovidos em qualquer momento.\n"
+"aplicativo instalado regularmente. Esta ação é reversível — os arquivos vivem "
+"dentro das pastas ~/.local/share/applications e ~/.local/share/icons e podem "
+"ser removidos em qualquer momento.\n"
 "\n"
 "Deseja instalar agora a integração com o desktop?"
 
@@ -83,7 +83,7 @@ msgid ""
 msgstr ""
 "Não foi possível instalar a integração com o desktop: a variável de "
 "ambienteAPPDIR não está setada. Normalmente isto significa que a AppImage "
-"foi lançadade uma forma não padrão."
+"foi lançada de uma forma não padrão."
 
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
 #: src/AppImageIntegration.cpp:274
@@ -130,7 +130,7 @@ msgstr ""
 "Em alguns desktops, o aMule pode precisar reiniciar para que o ícone da doca "
 "ou barra de tarefas possa se ligar à nova entrada do lançador. Compositores "
 "Wayland modernos (GNOME, KDE) fazem isso enquanto rodam, mas um reinício é "
-"umcaminho seguro no caso do ícone permanecer genérico.\n"
+"um caminho seguro no caso do ícone permanecer genérico.\n"
 "\n"
 "Reiniciar agora o aMule?"
 
@@ -2663,7 +2663,7 @@ msgstr "Falha ao conectar"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:223
 msgid "External Connection lost — exiting."
-msgstr "Conexão externa encerrada — saíndo."
+msgstr "Conexão externa encerrada — saindo."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:287
 msgid "EC connection failed. Empty reply."
@@ -3590,7 +3590,7 @@ msgid ""
 "downloading."
 msgstr ""
 "Habilitar isto vai fazer com que o aMule mostre notificações quando "
-"terminarde baixar."
+"terminar de baixar."
 
 #: src/muuli_wdr.cpp:1255
 msgid "Tooltip delay time: "
@@ -5574,7 +5574,7 @@ msgid ""
 "The following folders look like system or sensitive locations:\n"
 "\n"
 msgstr ""
-"As seguintes pastas parecem ser de sistema ou locais sensiveis:\n"
+"As seguintes pastas parecem ser de sistema ou locais sensíveis:\n"
 "\n"
 
 #: src/PrefsUnifiedDlg.cpp:1564
@@ -5630,7 +5630,7 @@ msgid ""
 "responses yet)."
 msgstr ""
 "Busca Kad: nenhum par sobrou para pedir mais resultados novamente "
-"(capacidadeatingida ou ainda sem respostas)"
+"(capacidade atingida ou ainda sem respostas)"
 
 #: src/SearchDlg.cpp:543
 msgid "Min size must be smaller than max size. Max size ignored."
