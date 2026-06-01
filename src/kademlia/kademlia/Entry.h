@@ -128,6 +128,18 @@ class CKeyEntry : public CEntry
 	void	WriteTagListWithPublishInfo(CFileDataIO *data);
 	static void	ResetGlobalTrackingMap()	{ s_globalPublishIPs.clear(); }
 
+	// Popularity decay tick: every Nth real merge to a CKeyEntry,
+	// every entry's m_popularityIndex is decremented by 1 (floored
+	// at 0).  Combined with the zero-popularity escape hatch in the
+	// pushBounded path of MergeIPsAndFilenames, this lets stagnant
+	// incumbents age out so fresh popularity-1 candidates can
+	// eventually break in once m_filenames has saturated --
+	// otherwise the original strict `>` comparison kept fresh
+	// entries out forever once incumbents had any popularity ≥ 2
+	// (irwir's review on #795).  Only fires once the list has
+	// actually saturated; below the cap there's nothing to rotate.
+	static const uint32_t MERGES_PER_DECAY_TICK;
+
       protected:
 	void	ReCalculateTrustValue();
 	static void	AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wxString& dbgReason);
@@ -138,6 +150,10 @@ class CKeyEntry : public CEntry
 	uint64_t m_lastTrustValueCalc;
 	double	 m_trustValue;
 	PublishingIPList *		m_publishingIPs;
+	// Per-CKeyEntry counter driving the popularity-decay tick.
+	// Incremented on real merges only (fromEntry != NULL); the
+	// IP-init no-op path in MergeIPsAndFilenames does not count.
+	uint32_t			m_mergeCounter;
 	static GlobalPublishIPMap	s_globalPublishIPs;	// tracks count of publishings for each 255.255.255.0/24 subnet
 };
 
