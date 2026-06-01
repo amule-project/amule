@@ -135,11 +135,15 @@ wxString CEntry::GetCommonFileName() const
 	//
 	// Seed the running max from the first entry (rather than 0) so
 	// that an all-zero m_filenames still yields a non-empty result.
-	// CKeyEntry's popularity-decay tick (this PR) can drive every
-	// entry to popularity 0 simultaneously for diffusely-published
-	// keys with no clear winner.  The previous "highest > 0"-style
-	// loop would then leave the result iterator at end() and return
-	// an empty string -- silently dropping TAG_FILENAME from search
+	// Our own code never produces a popularity-0 entry -- SetFileName
+	// creates at 1 and the merge path only ever increments -- but two
+	// paths we don't control can land one in m_filenames anyway:
+	// (a) a remote publisher could send a popularity-0 entry over the
+	// wire (no validation on ReadUInt32), and (b) on-disk data from
+	// any node that ran an older build doing popularity decay can
+	// load back at 0 here.  The previous "highest > 0"-style loop
+	// would then leave the result iterator at end() and return an
+	// empty string -- silently dropping TAG_FILENAME from search
 	// responses (Entry.h GetTagCount), making SearchTermsMatch
 	// return false for every term, and tripping the
 	// GetCommonFileName().IsEmpty() reject path in
@@ -189,20 +193,11 @@ void CEntry::WriteTagListInc(CFileDataIO* data, uint32_t increaseTagNumber)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////// CKeyEntry
-
-// Popularity decay tick.  Every Nth real merge to a CKeyEntry, every
-// surviving entry's m_popularityIndex is decremented by 1 (floored at
-// 0).  Starting value is a reasonable guess for a busy publishing
-// node; tunable later if real-world rotation half-lives suggest
-// otherwise.
-const uint32_t CKeyEntry::MERGES_PER_DECAY_TICK = 20;
-
 CKeyEntry::CKeyEntry()
 {
 	m_publishingIPs = NULL;
 	m_trustValue = 0;
 	m_lastTrustValueCalc = 0;
-	m_mergeCounter = 0;
 }
 
 CKeyEntry::~CKeyEntry()
@@ -453,14 +448,6 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 		// popularity beats the weakest survivor — otherwise drop it on
 		// the floor instead of pushing then immediately re-evicting.
 		// O(N) per insert via std::min_element; no global sort needed.
-		//
-		// Zero-popularity escape hatch: once the popularity decay
-		// tick (see below) has reduced a slot to popularity 0, any
-		// candidate (including a fresh popularity-1 entry) can
-		// replace it.  This is what gives the list rotation after it
-		// saturates -- the original strict `>` kept fresh
-		// popularity-1 candidates out forever once incumbents had any
-		// popularity ≥ 2 (irwir's review on #795).
 		auto pushBounded = [&](const sFileNameEntry & candidate) {
 			if (m_filenames.size() < MAX_FILENAMES) {
 				m_filenames.push_back(candidate);
@@ -471,13 +458,11 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 				[](const sFileNameEntry & a, const sFileNameEntry & b) {
 					return a.m_popularityIndex < b.m_popularityIndex;
 				});
-			if (weakest->m_popularityIndex == 0
-				|| candidate.m_popularityIndex > weakest->m_popularityIndex) {
+			if (candidate.m_popularityIndex > weakest->m_popularityIndex) {
 				*weakest = candidate;
 			}
 			// else: candidate's popularity is no better than the
-			// weakest already-kept entry, and the weakest hasn't
-			// decayed out yet; drop the candidate.
+			// weakest already-kept entry; drop the candidate.
 		};
 
 		bool duplicate = false;
@@ -504,35 +489,6 @@ void CKeyEntry::MergeIPsAndFilenames(CKeyEntry* fromEntry)
 			// happens when m_filenames was unexpectedly empty above
 			// (wxASSERT fires in Debug, but Release keeps going).
 			pushBounded(currentName);
-		}
-
-		// Popularity decay tick: every MERGES_PER_DECAY_TICK real
-		// merges, decrement every surviving entry's popularity by 1
-		// (floored at 0).  Combined with the zero-popularity escape
-		// hatch in pushBounded above, this lets stagnant incumbents
-		// age out so fresh names can rotate in.  Popular names hold
-		// position because matching publishes bump them faster than
-		// they decay; one-shot variants drift to 0 within a few
-		// dozen publish cycles to the same hash.
-		//
-		// Only run decay once the list has actually saturated
-		// (size >= MAX_FILENAMES).  Under the cap, decay does no
-		// useful work -- there's nothing to rotate -- and would only
-		// drag popularity counts down, slightly distorting
-		// GetCommonFileName's winner pick before the list is even
-		// full.  Once saturated the list never shrinks below the cap
-		// (pushBounded only ever replaces in place), so the gate is
-		// "off until first saturation, then always on" for the
-		// lifetime of the CKeyEntry.
-		++m_mergeCounter;
-		if (m_filenames.size() >= MAX_FILENAMES
-			&& m_mergeCounter % MERGES_PER_DECAY_TICK == 0) {
-			for (FileNameList::iterator it = m_filenames.begin();
-				it != m_filenames.end(); ++it) {
-				if (it->m_popularityIndex > 0) {
-					--it->m_popularityIndex;
-				}
-			}
 		}
 	}
 
