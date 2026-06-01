@@ -499,8 +499,9 @@ void CSharedDirWatcher::WalkForUnknownSubdirs(
 	std::set<wxString> & known,
 	std::vector<CPath> & out)
 {
+	const int extraFlags = thePrefs::FollowSymlinksInShares() ? 0 : wxDIR_NO_FOLLOW;
 	CDirIterator dir(root);
-	for (CPath sub = dir.GetFirstFile(CDirIterator::Dir);
+	for (CPath sub = dir.GetFirstFile(CDirIterator::Dir, wxEmptyString, extraFlags);
 		sub.IsOk();
 		sub = dir.GetNextFile())
 	{

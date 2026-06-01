@@ -579,6 +579,13 @@ public:
 	static bool AutoRescanSharedDirs() { return s_AutoRescanSharedDirs; }
 	static void SetAutoRescanSharedDirs(bool val) { s_AutoRescanSharedDirs = val; }
 
+	// Whether shared-folder walks should descend into symbolic links.
+	// Default true to preserve historical behaviour; turning it off
+	// passes wxDIR_NO_FOLLOW to the iterator so symlinked files and
+	// directories are skipped entirely.
+	static bool FollowSymlinksInShares() { return s_FollowSymlinksInShares; }
+	static void SetFollowSymlinksInShares(bool val) { s_FollowSymlinksInShares = val; }
+
 	static bool AutoSortDownload()		{ return s_AutoSortDownload; }
 	static bool AutoSortDownload(bool val)	{ bool tmp = s_AutoSortDownload; s_AutoSortDownload = val; return tmp; }
 
@@ -840,6 +847,9 @@ protected:
 
 	// Auto-rescan of shared dirs via wxFileSystemWatcher.
 	static bool	s_AutoRescanSharedDirs;
+
+	// Follow symlinks while walking shared dirs.
+	static bool	s_FollowSymlinksInShares;
 
 	static bool s_AutoSortDownload;
 

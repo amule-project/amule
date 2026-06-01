@@ -58,14 +58,14 @@ CDirIterator::~CDirIterator()
 }
 
 
-CPath CDirIterator::GetFirstFile(FileType type, const wxString& mask)
+CPath CDirIterator::GetFirstFile(FileType type, const wxString& mask, int extraFlags)
 {
 	if (!IsOpened()) {
 		return CPath();
 	}
 
 	wxString fileName;
-	if (!GetFirst(&fileName, mask, type)) {
+	if (!GetFirst(&fileName, mask, type | extraFlags)) {
 		return CPath();
 	}
 

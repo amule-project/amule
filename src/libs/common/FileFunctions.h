@@ -49,7 +49,11 @@ public:
 	CDirIterator(const CPath& dir);
 	~CDirIterator();
 
-	CPath GetFirstFile(FileType type, const wxString& mask = "");
+	// extraFlags is OR'd into the wxDir search flags on top of `type`,
+	// so callers that need wxDIR_NO_FOLLOW (or any other wx flag) can
+	// pass it through without this common library knowing about
+	// application-level preferences.
+	CPath GetFirstFile(FileType type, const wxString& mask = "", int extraFlags = 0);
 	CPath GetNextFile();
 
 	bool HasSubDirs(const wxString& spec = "");

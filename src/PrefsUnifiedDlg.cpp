@@ -756,6 +756,14 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp->sharedfiles->EnableDirectoryWatcher(thePrefs::AutoRescanSharedDirs());
 	}
 
+	if (CfgChanged(IDC_FOLLOW_SYMLINKS_SHARED) && !sharedDirsCommitted) {
+		// Re-scan so the new symlink policy takes effect on the existing
+		// shared tree: turning the toggle off should drop symlinked
+		// entries already in the shareset, turning it on should pick
+		// them up.
+		theApp->sharedfiles->Reload();
+	}
+
 	if (CfgChanged(IDC_OSDIR) || CfgChanged(IDC_ONLINESIG)) {
 		wxTextCtrl* widget = CastChild( IDC_OSDIR, wxTextCtrl );
 

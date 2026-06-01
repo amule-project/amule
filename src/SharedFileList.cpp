@@ -452,6 +452,8 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 		 searchFor = CDirIterator::File;
 	}
 
+	const int extraFlags = thePrefs::FollowSymlinksInShares() ? 0 : wxDIR_NO_FOLLOW;
+
 	unsigned knownFiles = 0;
 	unsigned addedFiles = 0;
 
@@ -463,7 +465,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory, TaskList
 
 	CDirIterator SharedDir(directory);
 
-	for (CPath fname = SharedDir.GetFirstFile(searchFor); fname.IsOk(); fname = SharedDir.GetNextFile()) {
+	for (CPath fname = SharedDir.GetFirstFile(searchFor, wxEmptyString, extraFlags); fname.IsOk(); fname = SharedDir.GetNextFile()) {
 		if (yieldCb && ++scanned % kYieldEvery == 0) {
 			if (!yieldCb(scanned)) {
 				aborted = true;
