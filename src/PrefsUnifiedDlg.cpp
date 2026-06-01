@@ -69,7 +69,6 @@ wxBEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	// Proxy
 	EVT_CHECKBOX(ID_PROXY_ENABLE_PROXY,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(ID_PROXY_ENABLE_PASSWORD,	PrefsUnifiedDlg::OnCheckBoxChange)
-//	EVT_CHECKBOX(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY,	PrefsUnifiedDlg::OnCheckBoxChange)
 
 	// Connection
 	EVT_SPINCTRL(IDC_PORT,			PrefsUnifiedDlg::OnTCPClientPortChange)
@@ -482,8 +481,6 @@ bool PrefsUnifiedDlg::TransferToWindow()
 		FindWindow(ID_PROXY_USER)->Enable(false);
 		FindWindow(ID_PROXY_PASSWORD)->Enable(false);
 	}
-	// This option from the proxy tab is currently unused
-	FindWindow(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY)->Enable(false);
 
 	// Enable/Disable some controls
 	FindWindow( IDC_MINDISKSPACE )->Enable( thePrefs::IsCheckDiskspaceEnabled() );
@@ -1046,9 +1043,6 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 
 		case IDC_NOTIF:
 			FindWindow(IDC_NOTIF)->Enable(value);
-			break;
-
-		case ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY:
 			break;
 
 		case IDC_VERTTOOLBAR:

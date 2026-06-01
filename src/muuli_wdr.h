@@ -432,7 +432,6 @@ wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit = TRUE, bool s
 #define IDC_COMMENTWORD 10292
 wxSizer *PreferencesFilteringTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY 10293
 #define ID_PROXY_ENABLE_PASSWORD 10294
 #define ID_PROXY_USER 10295
 #define ID_PROXY_PASSWORD 10296

@@ -2529,8 +2529,6 @@ wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxCheckBox *item1 = new wxCheckBox( parent, ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY, _("Automatic server connect without proxy"), wxDefaultPosition, wxDefaultSize, 0 );
-    item0->Add( item1, wxSizerFlags().CenterVertical().Border(wxALL, 0) );
     wxFlexGridSizer *item2 = new wxFlexGridSizer( 2, 0, 0 );
     item2->AddGrowableCol( 1 );
 

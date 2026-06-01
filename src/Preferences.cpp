@@ -1079,8 +1079,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(ID_PROXY_ENABLE_PASSWORD,	(new Cfg_Bool( "/Proxy/ProxyEnablePassword", s_ProxyData.m_enablePassword, false )));
 	NewCfgItem(ID_PROXY_USER,		(new Cfg_Str( "/Proxy/ProxyUser", s_ProxyData.m_userName, "" )));
 	NewCfgItem(ID_PROXY_PASSWORD,		(new Cfg_Str( "/Proxy/ProxyPassword", s_ProxyData.m_password, "" )));
-// These were copied from eMule config file, maybe someone with windows can complete this?
-//	NewCfgItem(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY,	(new Cfg_Bool( "/Proxy/Proxy????", s_Proxy????, false )));
 
 	/**
 	 * Servers
