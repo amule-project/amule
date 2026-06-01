@@ -1,11 +1,16 @@
-.TH ALC 1 "September 2016" "aLinkCreator" "aMule utilities"
+.TH WXCAS 1 @MAN_DATE@ "wxCas" "aMule utilities"
 .als B_untranslated B
 .SH NAME
-aLinkCreator \- the aMule eD2k link creator
+wxcas \- wx c aMule statistics
 .SH SYNOPSIS
-.B_untranslated alc
+.B_untranslated wxcas
 .SH DESCRIPTION
-\fBalc\fR is a graphical utility to create an eD2k link to any file on your computer.
+\fBwxcas\fR is a program for displaying the contents of your 
+online signature file in a nice wx Window on your Desktop.
+For this to work, you must enable the "Online Signature" option in aMule's preferences.
+
+Based on Pedro de Oliveira's \fBcas\fR(1).
+\fBwxcas\fR was written by ThePolish <thepolish@vipmail.ru>
 
 This app doesn't take any arguments.
 .SH REPORTING BUGS
@@ -14,6 +19,6 @@ Please do not report bugs in e-mail, neither to our mailing list nor directly to
 .SH COPYRIGHT
 aMule and all of its related utilities are distributed under the GNU General Public License.
 .SH SEE ALSO
-.B_untranslated alcc\fR(1), \fBamule\fR(1)
+.B_untranslated amule\fR(1), \fBcas\fR(1)
 .SH AUTHOR
 This manpage was written by Vollstrecker <amule@vollstreckernet.de>
