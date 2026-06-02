@@ -245,9 +245,9 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 		_("Use UPnP port forwarding on web server port"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
-	amuleweb_parser.AddSwitch("U", "upnp-port",
+	amuleweb_parser.AddOption("U", "upnp-port",
 		_("UPnP port"),
-		wxCMD_LINE_PARAM_OPTIONAL);
+		wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL);
 
 	amuleweb_parser.AddSwitch("z", "enable-gzip",
 		_("Use gzip compression"),
