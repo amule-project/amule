@@ -525,9 +525,9 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 	msg << "\n\n" << _("'All-Platform' p2p client based on eMule \n\n") <<
 		_("Website: https://amule-org.github.io \n") <<
 		_("Forum: https://github.com/amule-org/amule/discussions \n") <<
-		_("FAQ: https://amule-org.github.io/docs/manual/faq \n\n") <<
-		_("Contact: admin@amule.org (administrative issues) \n") <<
-		_("Copyright (c) 2003-2019 aMule Team \n\n") <<
+		_("Documentation: https://amule-org.github.io/docs \n") <<
+		_("Issues: https://github.com/amule-org/amule/issues \n\n") <<
+		_("Copyright (c) 2003-2026 aMule Team \n\n") <<
 		_("Part of aMule is based on \n") <<
 		_("Kademlia: Peer-to-peer routing based on the XOR metric.\n") <<
                 _(" Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n") <<
