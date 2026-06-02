@@ -627,6 +627,12 @@ void CaMuleExternalConnector::SaveConfigFile()
 		m_configFile->Write("/EC/Host", m_host);
 		m_configFile->Write("/EC/Port", m_port);
 		m_configFile->WriteHash("/EC/Password", m_password);
+		// ZLIB was previously read in LoadConfigFile but never written
+		// here — toggling --disable-zlib at the command line would not
+		// persist, and any value in the config file silently reset to
+		// the 1 (enabled) default on every save. Persist it so the
+		// field actually round-trips. (#817)
+		m_configFile->Write("/EC/ZLIB", m_ZLIB ? 1l : 0l);
 	}
 }
 
