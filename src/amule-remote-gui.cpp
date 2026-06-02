@@ -1369,6 +1369,30 @@ void CKnownFilesRem::ProcessUpdate(const CECTag *reply, CECPacket *, int)
 						CFormat(wxT("EC: alive-marker for unknown file ID %u; ignoring.")) % id);
 					continue;
 				}
+				// Second variant of the same #808 ghost-entry pattern.
+				// CEC_SharedFile_Tag runs each metadata field through
+				// a per-connection CValueMap (ECSpecialTags.h) which
+				// suppresses tags whose value hasn't changed since the
+				// last cached send.  On an EC_DETAIL_INC_UPDATE for a
+				// file ID we've never seen, the server may already
+				// have cached + suppressed EC_TAG_PARTFILE_HASH /
+				// _NAME / _SIZE_FULL, in which case the tag has plenty
+				// of statistical child tags (request count, accepts,
+				// transferred, AICH masterhash, priority...) but no
+				// identifying metadata.  CKnownFile(tag) would then
+				// read empty hash + 0 size via GetTagByNameSafe and
+				// produce the same 0-byte unnamed ghost entry that the
+				// HasChildTags() guard above is shaped against -- with
+				// children but no identity.  Detect by the absence of
+				// the file hash (the canonical identity tag) and skip
+				// the same way; the next full-state poll picks the
+				// file up correctly once the server-side cache
+				// invalidation puts it back on the wire.
+				if (tag->GetTagByName(EC_TAG_PARTFILE_HASH) == NULL) {
+					AddDebugLogLineN(logEC,
+						CFormat(wxT("EC: incomplete INC_UPDATE tag (no PARTFILE_HASH) for unknown file ID %u; ignoring.")) % id);
+					continue;
+				}
 				CKnownFile * newFile;
 				if (tag->GetTagName() == EC_TAG_PARTFILE) {
 					CPartFile *file = new CPartFile(static_cast<const CEC_PartFile_Tag *>(tag));
