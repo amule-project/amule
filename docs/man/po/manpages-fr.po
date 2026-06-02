@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "POT-Creation-Date: 2026-05-11 13:24+0200\n"
-"PO-Revision-Date: 2026-05-27 21:04+0300\n"
+"PO-Revision-Date: 2026-06-02 11:23+0300\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "Language: fr\n"
@@ -116,19 +116,19 @@ msgid ""
 "apps:\t[B<=>][I<E<lt>widthE<gt>>{B<xX>}I<E<lt>heightE<gt>>][{B<+->}"
 "I<E<lt>xoffsetE<gt>>{B<+->}I<E<lt>yoffsetE<gt>>]"
 msgstr ""
-"Fixer la géométrie de l'application. I<E<lt>géomE<gt>> utilise le même format que "
-"les applications X11 standards :\t[B<=>][I<E<lt>largeurE<gt>>{B<xX>}"
-"I<E<lt>hauteurE<gt>>][{B<+->}I<E<lt>xoffsetE<gt>>{B<+->}I<E<lt>yoffsetE<gt>>]"
+"Fixe la géométrie de l'application. I<E<lt>géomE<gt>> utilise le même format que les "
+"applications X11 standards :\t[B<=>][I<E<lt>largeurE<gt>>{B<xX>}I<E<lt>hauteurE<gt>>]"
+"[{B<+->}I<E<lt>xoffsetE<gt>>{B<+->}I<E<lt>yoffsetE<gt>>]"
 
 #. type: Plain text
 #: amule.1:34 amuled.1:42 amulegui.1:33
 msgid "Prints log messages to stdout."
-msgstr "Afficher les messages du journal sur stdout."
+msgstr "Affiche les messages du journal sur stdout."
 
 #. type: Plain text
 #: amule.1:37 amuled.1:45 amulegui.1:36
 msgid "Resets config to default values."
-msgstr "Réinitialiser à la configuration par défaut."
+msgstr "Réinitialise à la configuration par défaut."
 
 #. type: TP
 #: amule.1:37 amuled.1:45
@@ -178,7 +178,7 @@ msgstr "Affiche le numéro de la version actuelle."
 #: amule.1:57 amulecmd.1:69 amuled.1:65 amulegui.1:45 amuleweb.1:123 ed2k.1:36
 #: ../../src/utils/aLinkCreator/docs/alcc.1:22 ../../src/utils/cas/docs/cas.1:32
 msgid "Prints a short usage description."
-msgstr "Afficher une court description d'utilisation."
+msgstr "Affiche une courte description d'utilisation."
 
 #. type: TP
 #: amule.1:57 amuled.1:65 ed2k.1:39
@@ -299,7 +299,7 @@ msgid ""
 "aMule and all of its related utilities are distributed under the GNU General Public "
 "License."
 msgstr ""
-"aMule et tous ses outils sont distribués sous la licence GNU General Public License."
+"aMule et tous ses outils sont distribués sous la Licence publique générale GNU."
 
 #. type: SH
 #: amule.1:84 amulecmd.1:283 amuled.1:87 amulegui.1:53 amuleweb.1:196 ed2k.1:67
@@ -391,7 +391,7 @@ msgid ""
 "Host where aMule is running (default: I<localhost>).  I<E<lt>hostE<gt>> might be an "
 "IP address or a DNS name"
 msgstr ""
-"Hôte où aMule fonctionne (par défaut : I<localhost>). I<E<lt>hôteE<gt>>  peut être "
+"Hôte où aMule fonctionne (par défaut : I<localhost>).  I<E<lt>hôteE<gt>>  peut être "
 "une adresse IP ou un nom DNS."
 
 #. type: TP
@@ -443,7 +443,7 @@ msgstr "Ne pas afficher de sortie sur stdout."
 #. type: Plain text
 #: amulecmd.1:50 amuleweb.1:67
 msgid "Be verbose - show also debug messages."
-msgstr "Mode bavard - affiche aussi les messages de débogage."
+msgstr "Mode bavard - afficher aussi les messages de débogage."
 
 #. type: TP
 #: amulecmd.1:50 amuleweb.1:67
@@ -457,15 +457,14 @@ msgid ""
 "Sets program locale (language).  See the B<NOTES> section for the description of the "
 "I<E<lt>langE<gt>> parameter."
 msgstr ""
-"Définir les paramètres régionaux (langue). Voir la section B<NOTES> pour la "
+"Définit les paramètres régionaux (langue). Voir la section B<NOTES> pour la "
 "description du paramètre I<E<lt>langE<gt>>."
 
 #. type: Plain text
 #: amulecmd.1:57 amuleweb.1:74
 msgid "Write command line options to config file and exit"
 msgstr ""
-"Écrire les options de la ligne de commande dans le fichier de configuration et "
-"quitter"
+"Écrire les options de la ligne de commande sur le fichier de configuration et quitter"
 
 #. type: TP
 #: amulecmd.1:57
@@ -494,7 +493,7 @@ msgid ""
 "config file, and then exit."
 msgstr ""
 "Créer un fichier de configuration basé sur I<E<lt>cheminE<gt>>, qui doit pointer sur "
-"un fichier de configration d'aMule valide, et quitter ensuite."
+"un fichier de configuration d'aMule valide, et quitter ensuite."
 
 #. type: SH
 #: amulecmd.1:69
@@ -510,7 +509,7 @@ msgstr "Toutes les commandes sont insensibles à la casse."
 #. type: Plain text
 #: amulecmd.1:73
 msgid "Adds an eD2k-link or a magnet-link to the core."
-msgstr "Ajoute un lien eD2k ou magnétique au noyau."
+msgstr "Ajoute un lien eD2k ou magnet au noyau."
 
 #. type: Plain text
 #: amulecmd.1:82
@@ -532,7 +531,7 @@ msgid ""
 "Cancels the download specified by I<E<lt>hashE<gt>> or I<E<lt>numberE<gt>>. To get "
 "the value use B<show>."
 msgstr ""
-"Annule le téléchargement spécifié par  le I<E<lt>hachageE<gt>> ou le "
+"Annule le téléchargement spécifié par le I<E<lt>hachageE<gt>> ou le "
 "I<E<lt>numéroE<gt>>. Pour obtenir la valeur utiliser B<show>."
 
 #. type: Plain text
@@ -589,7 +588,7 @@ msgstr "Déconnecter d'amule/amuled et quitter amulecmd."
 #. type: Plain text
 #: amulecmd.1:108
 msgid "Get and display a preference value."
-msgstr "Obtient et affiche une valeur de préférence."
+msgstr "Obtenir et afficher une valeur de préférence."
 
 #. type: Plain text
 #: amulecmd.1:110 amulecmd.1:144 amulecmd.1:193 amulecmd.1:203
@@ -613,8 +612,8 @@ msgid ""
 "available commands.  If called with I<E<lt>commandE<gt>>, it shows a short "
 "description of the given command."
 msgstr ""
-"Affiche une courte description d'utilisation. S'il est appelé sans paramètre, il "
-"affiche une liste des commandes disponibles. Lorsqu'il est appelé avec la "
+"Affiche une courte description d'utilisation.  S'il est appelé sans paramètre, il "
+"affiche une liste des commandes disponibles.  Lorsqu'il est appelé avec la "
 "I<E<lt>commandeE<gt>>, il affiche une courte description de la commande donnée."
 
 #. type: Plain text
@@ -700,7 +699,7 @@ msgid ""
 "Resumes the download specified by I<E<lt>hashE<gt>> or I<E<lt>numberE<gt>>. To get "
 "the value use B<show>."
 msgstr ""
-"Reprise du téléchargement spécifié par le I<E<lt>hachageE<gt>> ou le "
+"Reprend le téléchargement spécifié par le I<E<lt>hachageE<gt>> ou le "
 "I<E<lt>numéroE<gt>>. Pour obtenir la valeur utiliser B<show>."
 
 #. type: Plain text
@@ -710,8 +709,8 @@ msgid ""
 "search is mandatory to do this.  Example: `search kad amule' performs a kad search "
 "for `amule'."
 msgstr ""
-"Fait une recherche du I<E<lt>mot-clefE<gt>> donné. Un type de recherche et d'un mot "
-"clé de recherche sont obligatoires pour le faire. Exemple: `search kad amule' "
+"Fait une recherche du I<E<lt>mot-clefE<gt>> donné. Un type de recherche et d'un mot-"
+"clef de recherche sont obligatoires pour le faire. Exemple : `search kad amule' "
 "effectue une recherche kad pour `amule'."
 
 #. type: Plain text
@@ -902,8 +901,8 @@ msgid ""
 "Though all the above strings are accepted as valid language definitions, I<encoding> "
 "and I<modifier> are yet unused."
 msgstr ""
-"Bien que toutes les chaînes ci-dessus sont acceptées comme des définitions de langue "
-"valide,  I<encoding> et I<modifier> ne sont pas encore utilisés."
+"Bien que toutes les chaînes ci-dessus soient acceptées comme des définitions de "
+"langue valide,  I<encoding> et I<modifier> ne sont pas encore utilisés."
 
 #. type: Plain text
 #: amulecmd.1:259 amuleweb.1:162
@@ -911,8 +910,9 @@ msgid ""
 "In addition to the format above, you can also specify full language names in English "
 "- so B<-l german> is also valid and is equal to B<-l de_DE>."
 msgstr ""
-"En plus du format ci-dessus, vous pouvez également spécifier des noms entier de "
-"langue en anglais - so B<-l german> est également valide et équivaut à B<-l de_DE>."
+"En plus du format ci-dessus, vous pouvez également spécifier des noms entiers de "
+"langue en anglais - ainsi B<-l german> est également valide et équivaut à B<-l "
+"de_DE>."
 
 #. type: Plain text
 #: amulecmd.1:262 amuleweb.1:165
@@ -921,8 +921,8 @@ msgid ""
 "language will be used."
 msgstr ""
 "En l'absence de paramètres linguistiques définis, soit sur ​​la ligne de commande ou "
-"dans le fichier de configuration, la langue utilisée par défaut sera celle du "
-"système d'exploitation."
+"sur le fichier de configuration, la langue utilisée par défaut sera celle du système "
+"d'exploitation."
 
 #. type: Plain text
 #: amulecmd.1:264 amuleweb.1:173
@@ -1078,7 +1078,7 @@ msgid ""
 "This manpage was written by Julien Delange for Debian E<lt>julien AT gunnm DOT "
 "orgE<gt>"
 msgstr ""
-"Cette page de manuel a été rédigé par Julien Delange pour Debian E<lt>julien AT "
+"Cette page de manuel a été rédigée par Julien Delange pour Debian E<lt>julien AT "
 "gunnm DOT orgE<gt>"
 
 #. type: Plain text
@@ -1199,7 +1199,7 @@ msgstr ""
 #. type: Plain text
 #: amuleweb.1:93
 msgid "Disables using gzip compression (this is the default)."
-msgstr "Désactiver la compression gzip (par défaut)."
+msgstr "Désactive la compression gzip (c'est le réglage par défaut)."
 
 #. type: TP
 #: amuleweb.1:93
@@ -1242,12 +1242,12 @@ msgid ""
 "works only for those settings that can be set in aMule's Preferences-E<gt>Remote "
 "Controls.)"
 msgstr ""
-"Charger/enregistrer les paramètres de serveur web à partir de/vers l'aMule distant. "
+"Charger/enregistrer les paramètres de serveur web à partir de/vers l'aMule distant.  "
 "amuleweb ignorera la ligne de commande et les paramètres de fichier de "
 "configuration, et les chargera à partir aMule. Lors de la sauvegarde, aucune "
-"préférences seront écrites dans le fichier config, mais pour aMule. (Bien sûr, cela "
-"ne fonctionne que pour les paramètres qui peuvent être définies dans les préférences "
-"de -E<gt>Contrôle à distance d'aMule.)"
+"préférence ne sera écrite sur le fichier de configuration, mais sur aMule.  (Bien "
+"sûr, cela ne fonctionne que pour les paramètres qui peuvent être définis dans les "
+"préférences de -E<gt>Contrôle à distance d'aMule.)"
 
 #. type: Plain text
 #: amuleweb.1:114
@@ -1273,11 +1273,11 @@ msgid ""
 "config-file settings to be ignored, preferences to be read from the given config "
 "file, and also implies the B<-q -L> options."
 msgstr ""
-"Chemin du fichier de configuration d'aMule. B<NE PAS UTILISER DIRECTEMENT !> aMule "
-"utilise cette option lors du démarrage d'amuleweb au démarrage d'aMule. Cette option "
-"permet d'ignorer toutes les autres options de ligne de commande et les paramètres de "
-"fichier de configuration, et lit les préférences dans un fichier de configuration "
-"précisé, et implique également les options B<-q -L>."
+"Chemin du fichier de configuration d'aMule.  B<NE PAS UTILISER DIRECTEMENT !> aMule "
+"utilise cette option lors du démarrage d'amuleweb au démarrage d'aMule.  Cette "
+"option permet d'ignorer toutes les autres options de ligne de commande et les "
+"paramètres de fichier de configuration, et lit les préférences depuis le fichier de "
+"configuration précisé, et implique également les options B<-q -L>."
 
 #. type: SH
 #: amuleweb.1:165
@@ -1294,11 +1294,11 @@ msgid ""
 "webserver/> and then in I</usr/share/amule/webserver/> if you installed with --"
 "prefix=/usr."
 msgstr ""
-"B<amuleweb> est capable d'afficher des informations dans différents thèmes. Ces "
+"B<amuleweb> est capable d'afficher des informations dans différents thèmes.  Ces "
 "thèmes sont appelés modèles, et vous pouvez faire de charger à amuleweb un modèle "
-"spécifique via l'option en ligne de commande B<-t>. Les modèles sont recherchés dans "
-"deux endroits : d'abord dans : I<~/.aMule/webserver/> puis dans I</usr/share/amule/"
-"webserver/> si vous l'avez installé avec --prefix=/usr."
+"spécifique via l'option en ligne de commande B<-t>.  Les modèles sont recherchés "
+"dans deux endroits : d'abord dans : I<~/.aMule/webserver/> puis dans I</usr/share/"
+"amule/webserver/> si vous l'avez installé avec --prefix=/usr."
 
 #. type: Plain text
 #: amuleweb.1:171
@@ -1380,9 +1380,8 @@ msgid ""
 "Sends the given I<E<lt>eD2k-linkE<gt>> to aMule, i.e. writes it to the file ~/.aMule/"
 "ED2KLinks, which will be checked by aMule every second for links."
 msgstr ""
-"Envoie le I<E<lt>lien-eD2kE<gt>> à aMule, c'est à dire qu'il l'écrit dans le "
-"fichier  ~/.aMule/ED2KLinks, qui sera vérifié par aMule chaque seconde pour les "
-"liens."
+"Envoie le I<E<lt>lien-eD2kE<gt>> à aMule, c'est-à-dire qu'il l'écrit sur le fichier "
+"~/.aMule/ED2KLinks, qui sera vérifié par aMule chaque seconde pour les liens."
 
 #. type: Plain text
 #: ed2k.1:30
@@ -1417,7 +1416,7 @@ msgid ""
 "category and I<E<lt>link2E<gt>> in category 2."
 msgstr ""
 "B<Le ordre dans lequel vous donnez les paramètres est important.> Vous pouvez donner "
-"plus d'un lien, et chaque lien peut avoir ses propres paramètres. Par exemple, "
+"plus d'un lien, et chaque lien peut avoir ses propres paramètres.  Par exemple, "
 "B<ed2k E<lt>lien1E<gt> -t2 E<lt>lien2E<gt>> téléchargera I<E<lt>lien1E<gt>> dans la "
 "catégorie standard et I<E<lt>lien2E<gt>> dans la catégorie 2."
 
@@ -1495,7 +1494,7 @@ msgstr "Calcule et ajoute les parties de hachages aux liens eD2k calculés."
 #. type: Plain text
 #: ../../src/utils/aLinkCreator/docs/alcc.1:26
 msgid "Be verbose - show also calculation steps."
-msgstr "Mode bavard - affiche aussi les étapes de calculs."
+msgstr "Mode bavard - afficher aussi les étapes de calculs."
 
 #. type: TH
 #: ../../src/utils/cas/docs/cas.1:1
