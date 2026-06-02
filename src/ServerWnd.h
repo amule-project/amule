@@ -50,6 +50,11 @@ public:
 	// truncate (#813).
 	static void FitInfoListColumns(wxListCtrl* list);
 
+	// Copy currently-selected rows of one of the two info notebooks
+	// (or all rows when no selection) to the clipboard as
+	// tab-separated `<label>\t<value>` lines (#814).
+	static void CopyInfoListToClipboard(wxListCtrl* list);
+
 private:
 	void OnSashPositionChanging(wxSplitterEvent& evt);
 	void OnSashPositionChanged(wxSplitterEvent& evt);
@@ -58,6 +63,14 @@ private:
 	void OnBnClickedUpdateservermetfromurl(wxCommandEvent& evt);
 	void OnBnClickedResetLog(wxCommandEvent& evt);
 	void OnBnClickedResetServerLog(wxCommandEvent& evt);
+
+	// Copy handlers for ED2K Info / Kad Info notebook tabs (#814).
+	// Routed through wxEvtHandler bindings rather than the static
+	// event table so both list-control IDs can share the same code
+	// without a per-ID stanza.
+	void OnInfoListKeyDown(wxKeyEvent& evt);
+	void OnInfoListContextMenu(wxContextMenuEvent& evt);
+	void OnInfoListCopy(wxCommandEvent& evt);
 
 	// Set in OnSashPositionChanging (only fires while the user is
 	// actually dragging the sash); checked by OnSashPositionChanged
