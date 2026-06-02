@@ -607,7 +607,13 @@ void CaMuleExternalConnector::LoadConfigFile()
 	}
 	if (m_configFile) {
 		m_language = m_configFile->Read("/Locale", "");
-		m_host = m_configFile->Read("/EC/Host", "");
+		// amulegui (amule-remote-gui.cpp) reads this same key with a
+		// "localhost" default; match it here so amulecmd/amuleweb
+		// don't write an empty "Host=" line to remote.conf on first
+		// run. The OnCmdLineParsed runtime fallback below keeps the
+		// "no config file at all" path covered as a safety net.
+		// (#821)
+		m_host = m_configFile->Read("/EC/Host", "localhost");
 		m_port = m_configFile->Read("/EC/Port", 4712l);
 		m_configFile->ReadHash("/EC/Password", &m_password);
 		m_ZLIB = m_configFile->Read("/EC/ZLIB", 1l) != 0;
