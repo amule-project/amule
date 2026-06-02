@@ -25,6 +25,11 @@
 
 
 #include <algorithm>		// Needed for std::max
+#include <vector>		// Needed for std::vector
+
+#include <wx/clipbrd.h>		// Needed for wxTheClipboard
+#include <wx/dataobj.h>		// Needed for wxTextDataObject
+#include <wx/menu.h>		// Needed for wxMenu (context-menu)
 
 #include "muuli_wdr.h"		// Needed for ID_ADDTOLIST
 #include "ServerWnd.h"		// Interface declarations.
@@ -82,6 +87,14 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 	wxASSERT(KadInfoList);
 	KadInfoList->InsertColumn(0, "");
 	KadInfoList->InsertColumn(1, "");
+
+	// Wire Ctrl+C and right-click-to-copy on both info notebook
+	// list controls (#814). Bound dynamically so the same handler
+	// instance covers both ED2K Info and Kad Info.
+	for (wxListCtrl* list : {ED2KInfoList, KadInfoList}) {
+		list->Bind(wxEVT_KEY_DOWN, &CServerWnd::OnInfoListKeyDown, this);
+		list->Bind(wxEVT_CONTEXT_MENU, &CServerWnd::OnInfoListContextMenu, this);
+	}
 
 	sizer->Show(this,TRUE);
 }
@@ -304,6 +317,106 @@ void CServerWnd::FitInfoListColumns(wxListCtrl* list)
 	constexpr int kPad = 8;
 	constexpr int kCol1Min = 200;
 	list->SetColumnWidth(1, std::max(clientWidth - col0 - kPad, kCol1Min));
+}
+
+
+// Anonymous enum so the "Copy" context-menu item has a stable ID
+// scoped to this translation unit (it never escapes to the rest of
+// the main dialog's ID space).
+namespace {
+	enum { kInfoListMenuCopy = wxID_HIGHEST + 1 };
+}
+
+/* static */
+void CServerWnd::CopyInfoListToClipboard(wxListCtrl* list)
+{
+	if (!list || list->GetItemCount() == 0) {
+		return;
+	}
+
+	// If the user has rows selected, copy only those; otherwise copy
+	// the whole list. Matches the affordance most users expect from
+	// list-style read-only data panels.
+	std::vector<long> rows;
+	long sel = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	while (sel != -1) {
+		rows.push_back(sel);
+		sel = list->GetNextItem(sel, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	}
+	if (rows.empty()) {
+		for (long i = 0; i < list->GetItemCount(); ++i) {
+			rows.push_back(i);
+		}
+	}
+
+	wxString out;
+	for (long row : rows) {
+		const wxString label = list->GetItemText(row, 0);
+		const wxString value = list->GetItemText(row, 1);
+		out << label << '\t' << value << '\n';
+	}
+
+	// wxClipboard isn't always open by default; explicitly Open/Close.
+	// SetData takes ownership of the wxTextDataObject*.
+	if (wxTheClipboard->Open()) {
+		wxTheClipboard->SetData(new wxTextDataObject(out));
+		wxTheClipboard->Close();
+	}
+}
+
+
+void CServerWnd::OnInfoListKeyDown(wxKeyEvent& evt)
+{
+	// Ctrl+C (or Cmd+C on macOS, which wx maps to ControlDown for
+	// wxKeyEvent on standard menus). Anything else falls through to
+	// the default key handler so arrow navigation etc. still works.
+	if ((evt.GetKeyCode() == 'C' || evt.GetKeyCode() == 'c')
+		&& evt.ControlDown())
+	{
+		wxListCtrl* list = wxDynamicCast(evt.GetEventObject(), wxListCtrl);
+		CopyInfoListToClipboard(list);
+		return;
+	}
+	evt.Skip();
+}
+
+
+void CServerWnd::OnInfoListContextMenu(wxContextMenuEvent& evt)
+{
+	wxListCtrl* list = wxDynamicCast(evt.GetEventObject(), wxListCtrl);
+	if (!list) {
+		evt.Skip();
+		return;
+	}
+
+	wxMenu menu;
+	menu.Append(kInfoListMenuCopy, _("Copy"));
+
+	// Stash the target list on the menu's client-data slot so the
+	// EVT_MENU handler knows which list control fired the event
+	// without an extra member variable.
+	menu.SetClientData(list);
+	menu.Bind(wxEVT_MENU, &CServerWnd::OnInfoListCopy, this, kInfoListMenuCopy);
+
+	// Pop up at the event position (already in screen coords for
+	// wxContextMenuEvent); fall back to the list's centre if the
+	// event came from a keyboard menu key with no position.
+	const wxPoint pos = evt.GetPosition() != wxDefaultPosition
+		? list->ScreenToClient(evt.GetPosition())
+		: wxPoint(list->GetClientSize().GetWidth() / 2,
+				  list->GetClientSize().GetHeight() / 2);
+	list->PopupMenu(&menu, pos);
+}
+
+
+void CServerWnd::OnInfoListCopy(wxCommandEvent& evt)
+{
+	wxMenu* menu = wxDynamicCast(evt.GetEventObject(), wxMenu);
+	if (!menu) {
+		return;
+	}
+	wxListCtrl* list = static_cast<wxListCtrl*>(menu->GetClientData());
+	CopyInfoListToClipboard(list);
 }
 
 void CServerWnd::OnSashPositionChanging(wxSplitterEvent& evt)
