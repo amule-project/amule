@@ -1626,15 +1626,15 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
 
     wxStaticText *item3 = new wxStaticText( parent, IDC_SLIDERINFO, _("Update delay : 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item3, wxSizerFlags().Expand().CenterVertical().Border(wxTOP, 5) );
-    wxSlider *item4 = new wxSlider( parent, IDC_SLIDER, 5, 0, 120, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    wxSlider *item4 = new wxSlider( parent, IDC_SLIDER, 5, 0, 120, wxDefaultPosition, wxSize(100,24), wxSL_HORIZONTAL );
     item1->Add( item4, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item5 = new wxStaticText( parent, IDC_SLIDERINFO3, _("Time for average graph: 100 mins"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item5, wxSizerFlags().Expand().CenterVertical().Border(wxTOP, 5) );
-    wxSlider *item6 = new wxSlider( parent, IDC_SLIDER3, 100, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    wxSlider *item6 = new wxSlider( parent, IDC_SLIDER3, 100, 5, 100, wxDefaultPosition, wxSize(100,24), wxSL_HORIZONTAL );
     item1->Add( item6, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item7 = new wxStaticText( parent, IDC_SLIDERINFO4, _("Connections Graph Scale: 100 "), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item7, wxSizerFlags().Expand().CenterVertical().Border(wxTOP, 5) );
-    wxSlider *item8 = new wxSlider( parent, IDC_SLIDER4, 100, 2, 200, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    wxSlider *item8 = new wxSlider( parent, IDC_SLIDER4, 100, 2, 200, wxDefaultPosition, wxSize(100,24), wxSL_HORIZONTAL );
     item1->Add( item8, wxSizerFlags().Expand().CenterVertical() );
     wxFlexGridSizer *item9 = new wxFlexGridSizer( 3, 0, 0 );
     item9->AddGrowableCol( 0 );
@@ -1689,7 +1689,7 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item22 = new wxStaticText( parent, IDC_SLIDERINFO2, _("Update delay : 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
     item20->Add( item22, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSlider *item23 = new wxSlider( parent, IDC_SLIDER2, 5, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    wxSlider *item23 = new wxSlider( parent, IDC_SLIDER2, 5, 5, 100, wxDefaultPosition, wxSize(100,24), wxSL_HORIZONTAL );
     item20->Add( item23, wxSizerFlags().Expand().CenterVertical() );
     wxBoxSizer *item24 = new wxBoxSizer( wxHORIZONTAL );
 
@@ -1737,15 +1737,15 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
 
     wxStaticText *item8 = new wxStaticText( parent, IDC_FILEBUFFERSIZE_STATIC, _("File Buffer Size: 240000 bytes"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->Add( item8, wxSizerFlags().CenterVertical().Border(wxTOP, 5) );
-    wxSlider *item9 = new wxSlider( parent, IDC_FILEBUFFERSIZE, 16, 1, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    wxSlider *item9 = new wxSlider( parent, IDC_FILEBUFFERSIZE, 16, 1, 100, wxDefaultPosition, wxSize(100,24), wxSL_HORIZONTAL );
     item4->Add( item9, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item10 = new wxStaticText( parent, IDC_QUEUESIZE_STATIC, _("Upload Queue Size: 5000 clients"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->Add( item10, wxSizerFlags().CenterVertical().Border(wxTOP, 5) );
-    wxSlider *item11 = new wxSlider( parent, IDC_QUEUESIZE, 15, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    wxSlider *item11 = new wxSlider( parent, IDC_QUEUESIZE, 15, 5, 100, wxDefaultPosition, wxSize(100,24), wxSL_HORIZONTAL );
     item4->Add( item11, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item12 = new wxStaticText( parent, IDC_SERVERKEEPALIVE_LABEL, _("Server connection refresh interval: Disable"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->Add( item12, wxSizerFlags().CenterVertical().Border(wxTOP, 5) );
-    wxSlider *item13 = new wxSlider( parent, IDC_SERVERKEEPALIVE, 0, 0, 30, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    wxSlider *item13 = new wxSlider( parent, IDC_SERVERKEEPALIVE, 0, 0, 30, wxDefaultPosition, wxSize(100,24), wxSL_HORIZONTAL );
     item4->Add( item13, wxSizerFlags().Expand().CenterVertical() );
     wxCheckBox *item14 = new wxCheckBox( parent, IDC_PREVENT_SLEEP, _("Disable computer's timed standby mode"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->Add( item14, wxSizerFlags().CenterVertical().Border(wxTOP|wxBOTTOM, 5) );
@@ -1812,7 +1812,7 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
     item16->Add( item17, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item18 = new wxStaticText( parent, -1, _("Flat"), wxDefaultPosition, wxDefaultSize, 0 );
     item16->Add( item18, wxSizerFlags().CenterVertical().Border(wxLEFT, 5) );
-    wxSlider *item19 = new wxSlider( parent, IDC_3DDEPTH, 5, 0, 5, wxDefaultPosition, wxSize(200,-1), wxSL_HORIZONTAL );
+    wxSlider *item19 = new wxSlider( parent, IDC_3DDEPTH, 5, 0, 5, wxDefaultPosition, wxSize(200,24), wxSL_HORIZONTAL );
     item16->Add( item19, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item20 = new wxStaticText( parent, -1, _("Round"), wxDefaultPosition, wxDefaultSize, 0 );
     item16->Add( item20, wxSizerFlags().CenterVertical().Right().Border(wxRIGHT, 5) );
