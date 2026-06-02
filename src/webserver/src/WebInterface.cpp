@@ -434,17 +434,47 @@ void CamulewebApp::LoadConfigFile()
 {
 	CaMuleExternalConnector::LoadConfigFile();
 	if (m_configFile) {
-		wxString tmp;
-		m_WebserverPort = m_configFile->Read("/Webserver/Port", 4711l);
-		m_configFile->Read("/Webserver/UPnPWebServerEnabled",
-			&m_UPnPWebServerEnabled, false);
-		m_UPnPTCPPort = m_configFile->Read("/WebServer/UPnPTCPPort", 50001l);
-		m_TemplateName = m_configFile->Read("/Webserver/Template", "");
-		m_configFile->Read("/Webserver/UseGzip", &m_UseGzip, false);
-		m_configFile->Read("/Webserver/AllowGuest", &m_AllowGuest, false);
-		m_configFile->ReadHash("/Webserver/AdminPassword", &m_AdminPass);
-		m_configFile->ReadHash("/Webserver/GuestPassword", &m_GuestPass);
-		m_PageRefresh = m_configFile->Read("/Webserver/PageRefreshTime", 120l);
+		// amuleweb historically wrote most keys under [Webserver]
+		// (lowercase 's') but UPnPTCPPort under [WebServer] (capital
+		// S) — an old typo. amule.conf consistently uses [WebServer].
+		// Read from the canonical section first; if a key is missing
+		// there, fall back to the legacy [Webserver] for backward
+		// compatibility with existing installs. SaveConfigFile()
+		// writes only to [WebServer] and deletes the legacy group, so
+		// after one save round-trip the legacy section disappears.
+		// (#818)
+		auto readLong = [&](const wxString& k, long def) -> long {
+			return m_configFile->HasEntry("/WebServer/" + k)
+				? m_configFile->Read("/WebServer/" + k, def)
+				: m_configFile->Read("/Webserver/" + k, def);
+		};
+		auto readBool = [&](const wxString& k, bool* out, bool def) {
+			if (m_configFile->HasEntry("/WebServer/" + k))
+				m_configFile->Read("/WebServer/" + k, out, def);
+			else
+				m_configFile->Read("/Webserver/" + k, out, def);
+		};
+		auto readStr = [&](const wxString& k, const wxString& def) -> wxString {
+			return m_configFile->HasEntry("/WebServer/" + k)
+				? m_configFile->Read("/WebServer/" + k, def)
+				: m_configFile->Read("/Webserver/" + k, def);
+		};
+		auto readHash = [&](const wxString& k, CMD4Hash* h) {
+			if (m_configFile->HasEntry("/WebServer/" + k))
+				m_configFile->ReadHash("/WebServer/" + k, h);
+			else
+				m_configFile->ReadHash("/Webserver/" + k, h);
+		};
+
+		m_WebserverPort = readLong("Port", 4711l);
+		readBool("UPnPWebServerEnabled", &m_UPnPWebServerEnabled, false);
+		m_UPnPTCPPort   = readLong("UPnPTCPPort", 50001l);
+		m_TemplateName  = readStr("Template", "");
+		readBool("UseGzip", &m_UseGzip, false);
+		readBool("AllowGuest", &m_AllowGuest, false);
+		readHash("AdminPassword", &m_AdminPass);
+		readHash("GuestPassword", &m_GuestPass);
+		m_PageRefresh   = readLong("PageRefreshTime", 120l);
 	}
 }
 
@@ -453,15 +483,24 @@ void CamulewebApp::SaveConfigFile()
 {
 	CaMuleExternalConnector::SaveConfigFile();
 	if (m_configFile) {
-		m_configFile->Write("/Webserver/Port", m_WebserverPort);
-		m_configFile->Write("/Webserver/UPnPWebServerEnabled",
+		m_configFile->Write("/WebServer/Port", m_WebserverPort);
+		m_configFile->Write("/WebServer/UPnPWebServerEnabled",
 			m_UPnPWebServerEnabled);
 		m_configFile->Write("/WebServer/UPnPTCPPort", m_UPnPTCPPort);
-		m_configFile->Write("/Webserver/Template", m_TemplateName);
-		m_configFile->Write("/Webserver/UseGzip", m_UseGzip);
-		m_configFile->Write("/Webserver/AllowGuest", m_AllowGuest);
-		m_configFile->WriteHash("/Webserver/AdminPassword", m_AdminPass);
-		m_configFile->WriteHash("/Webserver/GuestPassword", m_GuestPass);
+		m_configFile->Write("/WebServer/Template", m_TemplateName);
+		m_configFile->Write("/WebServer/UseGzip", m_UseGzip);
+		m_configFile->Write("/WebServer/AllowGuest", m_AllowGuest);
+		m_configFile->WriteHash("/WebServer/AdminPassword", m_AdminPass);
+		m_configFile->WriteHash("/WebServer/GuestPassword", m_GuestPass);
+		// PageRefreshTime was previously read but never written —
+		// any value the user set in remote.conf was effectively
+		// reset to the default on next launch. Persist it now.
+		m_configFile->Write("/WebServer/PageRefreshTime", m_PageRefresh);
+
+		// Drop the legacy [Webserver] section (lowercase s) once the
+		// canonical [WebServer] has been written, so old + new keys
+		// don't drift apart on subsequent loads. (#818)
+		m_configFile->DeleteGroup("/Webserver");
 	}
 }
 
