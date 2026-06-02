@@ -24,6 +24,8 @@
 //
 
 
+#include <algorithm>		// Needed for std::max
+
 #include "muuli_wdr.h"		// Needed for ID_ADDTOLIST
 #include "ServerWnd.h"		// Interface declarations.
 #include "Server.h"		// Needed for CServer
@@ -170,33 +172,26 @@ void CServerWnd::UpdateED2KInfo()
 		ED2KInfoList->SetItem(0, 1, _("Connected"));
 
 		// Connection data
-
 		ED2KInfoList->InsertItem(1, _("IP:Port"));
-		ED2KInfoList->SetItem(1, 1, theApp->serverconnect->IsLowID() ?
-			 wxString(_("LowID")) : Uint32_16toStringIP_Port( theApp->GetED2KID(), thePrefs::GetPort()));
+		ED2KInfoList->SetItem(1, 1, theApp->serverconnect->IsLowID()
+			? wxString(_("Server"))
+			: Uint32_16toStringIP_Port(theApp->GetED2KID(), thePrefs::GetPort()));
 
 		ED2KInfoList->InsertItem(2, _("ID"));
 		// No need to test the server connect, it's already true
 		ED2KInfoList->SetItem(2, 1, CFormat("%u") % theApp->GetED2KID());
 
-		ED2KInfoList->InsertItem(3, "");
-
-		if (theApp->serverconnect->IsLowID()) {
-			ED2KInfoList->SetItem(1, 1, _("Server")); // LowID, unknown ip
-			ED2KInfoList->SetItem(3, 1, _("LowID"));
-		} else {
-			ED2KInfoList->SetItem(1, 1, Uint32_16toStringIP_Port(theApp->GetED2KID(), thePrefs::GetPort()));
-			ED2KInfoList->SetItem(3, 1, _("HighID"));
-		}
-
+		// Previously this row was inserted with an empty label and just
+		// "LowID"/"HighID" in column 1, leaving a value with no key.
+		// Give it an explicit label so the row is self-explanatory.
+		ED2KInfoList->InsertItem(3, _("Connection Type:"));
+		ED2KInfoList->SetItem(3, 1, theApp->serverconnect->IsLowID() ? _("LowID") : _("HighID"));
 	} else {
 		// No data
 		ED2KInfoList->SetItem(0, 1, _("Not Connected"));
 	}
 
-	// Fit the width of the columns
-	ED2KInfoList->SetColumnWidth(0, -1);
-	ED2KInfoList->SetColumnWidth(1, -1);
+	FitInfoListColumns(ED2KInfoList);
 }
 
 void CServerWnd::UpdateKadInfo()
@@ -276,9 +271,39 @@ void CServerWnd::UpdateKadInfo()
 		KadInfoList->SetItem(next_row, 1, _("Not running"));
 	}
 
-	// Fit the width of the columns
-	KadInfoList->SetColumnWidth(0, -1);
-	KadInfoList->SetColumnWidth(1, -1);
+	FitInfoListColumns(KadInfoList);
+}
+
+
+// Both info notebooks (ED2K Info, Kad Info) are two-column wxListCtrls
+// where column 0 holds short labels ("eD2k Status:", "Status:", ...) and
+// column 1 holds values that can grow wide (IP:port strings, hex client
+// IDs, firewall-state sentences). The previous code called
+// `SetColumnWidth(col, wxLIST_AUTOSIZE)` on both columns, which on
+// wxGTK ends up sizing column 1 to the *current* longest item in the
+// list -- and that was sometimes narrower than the actual content, so
+// the IP:Port value got truncated (#813) even though there was free
+// horizontal space in the panel.
+//
+// Pin column 0 to autosize (its content is short and predictable) and
+// let column 1 absorb whatever client width remains. Floored at a
+// reasonable minimum so the column stays usable while the panel is
+// being resized or before the first layout pass.
+/* static */
+void CServerWnd::FitInfoListColumns(wxListCtrl* list)
+{
+	if (!list) {
+		return;
+	}
+	list->SetColumnWidth(0, wxLIST_AUTOSIZE);
+	const int clientWidth = list->GetClientSize().GetWidth();
+	const int col0 = list->GetColumnWidth(0);
+	// Small breathing-room pad so the rightmost glyph isn't flush
+	// against the column border in GTK themes that draw cell padding
+	// asymmetrically.
+	constexpr int kPad = 8;
+	constexpr int kCol1Min = 200;
+	list->SetColumnWidth(1, std::max(clientWidth - col0 - kPad, kCol1Min));
 }
 
 void CServerWnd::OnSashPositionChanging(wxSplitterEvent& evt)
