@@ -39,11 +39,10 @@ get a *LowID*, which makes you reachable from far fewer sources.
   aMule (or use UPnP — `Preferences → Connection → UPnP enabled`).
 * **Behind a firewall**: allow inbound on those ports.
 
-The wiki has detailed walkthroughs for [getting a HighID][highid] and
-[firewall rules][firewall].
+The [network connectivity guide][network] has detailed walkthroughs for
+getting a HighID and setting up firewall rules.
 
-[highid]: https://amule-org.github.io/docs/manual/configuration/get-high-id
-[firewall]: https://amule-org.github.io/docs/manual/configuration/firewall
+[network]: https://amule-org.github.io/docs/manual/configuration/network-connectivity
 
 ### 2. Set realistic upload / download limits
 
@@ -94,7 +93,7 @@ amuled --full-daemon
 Connect to it from another machine with `amulegui`, `amuleweb`, or
 `amulecmd` using the same EC password.
 
-The wiki has detailed walkthroughs for
+The documentation has detailed walkthroughs for
 [amuled setup](https://amule-org.github.io/docs/manual/interfaces/amuled),
 [amuleweb](https://amule-org.github.io/docs/manual/interfaces/amuleweb), and
 [amulecmd](https://amule-org.github.io/docs/manual/interfaces/amulecmd).
@@ -151,16 +150,16 @@ type dropdown in the search panel.
   INSTALL.md](INSTALL.md#linux-only-icon-cache-step).
 * **AppImage doesn't appear in the application menu** — on first
   launch the AppImage will prompt to integrate itself; if you declined
-  ("Don't ask again"), the wiki documents the manual install of the
-  `.desktop` file.
+  ("Don't ask again"), the documentation describes the manual install of
+  the `.desktop` file.
 * **Tray icon invisible on GNOME** — you need an SNI host. On vanilla
   GNOME install
   [`gnome-shell-extension-appindicator`](https://extensions.gnome.org/extension/615/appindicator-support/);
   Ubuntu enables this by default.
 
-For anything else, the wiki and forum are the best places to look:
+For anything else, the documentation and forum are the best places to look:
 
-* Wiki: <https://amule-org.github.io/docs>
+* Documentation: <https://amule-org.github.io/docs>
 * Forum: <https://github.com/amule-org/amule/discussions>
 * GitHub Issues: <https://github.com/amule-org/amule/issues>
 

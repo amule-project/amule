@@ -4,11 +4,11 @@
 
 aMule is an eMule-like client for the eDonkey and Kademlia networks.
 
-[Forum] | [Wiki] | [FAQ]
+[Forum] | [Documentation] | [FAQ]
 
-[Forum]: https://github.com/amule-org/amule/discussions "aMule Forum"
-[Wiki]:  https://amule-org.github.io/docs "aMule Wiki"
-[FAQ]:   https://amule-org.github.io/docs/manual/faq "FAQ on aMule"
+[Forum]:         https://github.com/amule-org/amule/discussions "aMule Forum"
+[Documentation]: https://amule-org.github.io/docs "aMule Documentation"
+[FAQ]:           https://amule-org.github.io/docs/manual/faq "FAQ on aMule"
 
 ## Overview
 
@@ -85,36 +85,35 @@ on Linux, macOS, and Windows.
 
 aMule comes with reasonable default settings and should be usable as-is.
 However, to receive a [HighID] you need to open aMule's ports on your
-firewall and/or forward them on your router. The wiki has articles on
-[getting a HighID][2] and [setting up firewall rules][3].
+firewall and/or forward them on your router. See the [network connectivity
+guide][network] for details.
 
-[HighID]: https://amule-org.github.io/docs/p2p-networks/high-id-low-id "What is LowID and HighID?"
-[2]: https://amule-org.github.io/docs/manual/configuration/get-high-id "How to get HighID"
-[3]: https://amule-org.github.io/docs/manual/configuration/firewall "How to set up firewall rules for aMule"
+[HighID]:  https://amule-org.github.io/docs/p2p-networks/ed2k/high-id "What is LowID and HighID?"
+[network]: https://amule-org.github.io/docs/manual/configuration/network-connectivity "Network connectivity"
 
 ## Reporting Bugs
 
 If you find a bug or miss a feature, please open an issue on
 [GitHub][5] (preferred) or report it on the [forum]. A good bug report
 includes the exact aMule version (`amuled --version`), the platform you're
-on, and steps to reproduce.
+on, and steps to reproduce. See the [bug report guide][bug-report] for
+detailed instructions on attaching backtraces and reproducer steps.
 
-[5]: https://github.com/amule-org/amule/issues "aMule Issues"
+[5]:          https://github.com/amule-org/amule/issues "aMule Issues"
+[bug-report]: https://amule-org.github.io/docs/contributing/bug-report "Bug Report Instructions"
 
 ## Contributing
 
 *Contributions are always welcome!*
 
-You can contribute to aMule in several ways:
+See the [contributing guide][contributing] for how to get involved. In short:
 
 * **Code** — fix a bug, implement a feature, improve performance. The preferred
   path is a [pull request][6] on GitHub; patches on the [forum] also work.
-* **Translation** — [translate aMule][7], [translate the wiki][8], or
-  [translate aMule's documentation][9] into your language.
-* **Wiki** — aMule's wiki contains historical content that no longer matches
-  current behavior. Updating outdated pages is genuinely helpful.
+* **Translation** — translate aMule, its documentation, or its website into
+  your language.
+* **Documentation** — help improve the project documentation at
+  [amule-org.github.io/docs][Documentation].
 
-[6]: https://github.com/amule-org/amule/pulls "aMule Pull Requests"
-[7]: https://amule-org.github.io/docs/contributing/translations "Translating aMule"
-[8]: https://amule-org.github.io/docs/contributing/documentation#translations "Translating the wiki"
-[9]: https://amule-org.github.io/docs/contributing/documentation#translations "Translating the documentation"
+[6]:            https://github.com/amule-org/amule/pulls "aMule Pull Requests"
+[contributing]: https://amule-org.github.io/docs/contributing "Contributing to aMule"
