@@ -36,7 +36,6 @@
 	#endif
 	#include "CFile.h"		// Needed for CFile access
 	#include <common/Path.h>	// Needed for JoinPaths
-	#include <wx/config.h>		// Needed for wxConfig
 	#include "DataToText.h"		// Needed for GetSoftName()
 	#include "ListenSocket.h"	// (tree, GetAverageConnections)
 	#include "ServerList.h"		// Needed for CServerList (tree)
@@ -286,25 +285,6 @@ CStatistics::~CStatistics()
 }
 
 
-static uint64_t ReadUInt64FromCfg(wxConfigBase* cfg, const wxString& key)
-{
-	wxString buffer;
-
-	cfg->Read(key, &buffer, "0");
-
-	uint64 tmp = 0;
-	for (unsigned int i = 0; i < buffer.Length(); ++i) {
-		if ((buffer[i] >= wxChar('0')) &&(buffer[i] <= wxChar('9'))) {
-			tmp = tmp * 10 + (buffer[i] - wxChar('0'));
-		} else {
-			tmp = 0;
-			break;
-		}
-	}
-
-	return tmp;
-}
-
 void CStatistics::Load()
 {
 	CFile f;
@@ -322,25 +302,6 @@ void CStatistics::Load()
 		}
 	} catch (const CSafeIOException& e) {
 		AddLogLineN(e.what());
-	}
-
-	// Load old values from config
-	bool cfgChanged = false;
-	wxConfigBase* cfg = wxConfigBase::Get();
-	if (cfg->HasEntry("/Statistics/TotalUploadedBytes")) {
-		s_totalSent += ReadUInt64FromCfg(cfg, "/Statistics/TotalUploadedBytes");
-		cfg->DeleteEntry("/Statistics/TotalUploadedBytes");
-		cfgChanged = true;
-	}
-	if (cfg->HasEntry("/Statistics/TotalDownloadedBytes")) {
-		s_totalReceived += ReadUInt64FromCfg(cfg, "/Statistics/TotalDownloadedBytes");
-		cfg->DeleteEntry("/Statistics/TotalDownloadedBytes");
-		cfgChanged = true;
-	}
-	if (cfgChanged) {
-		cfg->Flush();
-		s_statsNeedSave = s_totalSent > 0 || s_totalReceived > 0;
-		Save();
 	}
 }
 
