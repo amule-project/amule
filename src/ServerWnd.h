@@ -27,6 +27,7 @@
 #define SERVERWND_H
 
 #include <wx/splitter.h>	// Needed for wxSplitter
+#include <wx/listctrl.h>	// Needed for wxListCtrl
 
 
 class CServerListCtrl;
@@ -42,6 +43,12 @@ public:
 	void UpdateKadInfo();
 
 	CServerListCtrl* serverlistctrl;
+
+	// Shared column-width helper for the two info notebooks (ED2K
+	// Info, Kad Info). Pins column 0 to autosize and fills column 1
+	// with the remaining client width so the value column doesn't
+	// truncate (#813).
+	static void FitInfoListColumns(wxListCtrl* list);
 
 private:
 	void OnSashPositionChanging(wxSplitterEvent& evt);
