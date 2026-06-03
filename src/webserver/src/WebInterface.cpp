@@ -497,10 +497,16 @@ void CamulewebApp::SaveConfigFile()
 		// reset to the default on next launch. Persist it now.
 		m_configFile->Write("/WebServer/PageRefreshTime", m_PageRefresh);
 
-		// Drop the legacy [Webserver] section (lowercase s) once the
-		// canonical [WebServer] has been written, so old + new keys
-		// don't drift apart on subsequent loads. (#818)
-		m_configFile->DeleteGroup("/Webserver");
+		// No DeleteGroup("/Webserver") needed: wxFileConfig group
+		// names are case-insensitive, so /Webserver/foo and
+		// /WebServer/foo are the same entry. A prior attempt added
+		// the DeleteGroup to migrate the section's case in the INI
+		// file, but case-insensitivity meant it actually wiped the
+		// just-written [WebServer] keys — confirmed via --write-config
+		// on amule-dev-vm where the section vanished entirely. The
+		// HasEntry/fallback path in LoadConfigFile above is dead
+		// code on Linux for the same reason but is kept as a defensive
+		// no-op for any future wx port that breaks the assumption.
 	}
 }
 
