@@ -174,6 +174,13 @@ protected:
 	wxString	m_host;
 	CMD4Hash	m_password;
 	bool		m_ZLIB;
+	// Force ZLIB regardless of dialed-IP locality (#728 follow-up).
+	// Set by `/EC/ForceZLIB=1` in the config or `--force-zlib` on the
+	// CLI. Use case: a WireGuard tunnel endpoint that resolves to an
+	// RFC1918 IP but whose transit is slow Internet — the locality
+	// check would otherwise strip ZLIB and the user loses the perf
+	// they actually want.
+	bool		m_forceZLIB;
 	bool		m_KeepQuiet;
 	bool		m_Verbose;
 	bool		m_interactive;

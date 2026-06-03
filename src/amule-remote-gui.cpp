@@ -89,10 +89,13 @@ wxDialog(theApp->amuledlg, -1, _("Connect to remote amule"), wxDefaultPosition)
 	wxConfig::Get()->Read("/EC/Host", &pref_host, "127.0.0.1");
 	wxConfig::Get()->Read("/EC/Port", &pref_port, "4712");
 	wxConfig::Get()->Read("/EC/Password", &pwd_hash);
+	long pref_force_zlib;
+	wxConfig::Get()->Read("/EC/ForceZLIB", &pref_force_zlib, 0);
 
 	CastChild(ID_REMOTE_HOST, wxTextCtrl)->SetValue(pref_host);
 	CastChild(ID_REMOTE_PORT, wxTextCtrl)->SetValue(pref_port);
 	CastChild(ID_EC_PASSWD, wxTextCtrl)->SetValue(pwd_hash);
+	CastChild(ID_EC_FORCE_ZLIB, wxCheckBox)->SetValue(pref_force_zlib != 0);
 
 	CentreOnParent();
 }
@@ -121,6 +124,7 @@ void CEConnectDlg::OnOK(wxCommandEvent& evt)
 		pwd_hash = MD5Sum(passwd).GetHash();
 	}
 	m_save_user_pass = CastChild(ID_EC_SAVE, wxCheckBox)->IsChecked();
+	m_force_zlib = CastChild(ID_EC_FORCE_ZLIB, wxCheckBox)->IsChecked();
 	evt.Skip();
 }
 
@@ -356,6 +360,9 @@ bool CamuleRemoteGuiApp::OnInit()
 	long enableZLIB;
 	wxConfig::Get()->Read("/EC/ZLIB", &enableZLIB, 1);
 	m_connect->SetCapabilities(enableZLIB != 0, true, false);	// ZLIB, UTF8 numbers, notification
+	// The ForceZLIB override is read from the connection dialog
+	// (see ShowConnectionDialog) so the user's checkbox choice in this
+	// session overrides the persisted /EC/ForceZLIB value.
 
 	InitCustomLanguages();
 	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
@@ -414,6 +421,7 @@ bool CamuleRemoteGuiApp::ShowConnectionDialog()
 		return false;
 	}
 	AddLogLineNS(_("Connecting..."));
+	m_connect->SetForceZlib(dialog->ForceZlib());
 	if (!m_connect->ConnectToCore(dialog->Host(), dialog->Port(),
 		dialog->Login(), dialog->PassHash(),
 		"amule-remote", "0x0001")) {
@@ -492,6 +500,7 @@ void CamuleRemoteGuiApp::Startup() {
 		wxConfig::Get()->Write("/EC/Host", dialog->Host());
 		wxConfig::Get()->Write("/EC/Port", dialog->Port());
 		wxConfig::Get()->Write("/EC/Password", dialog->PassHash());
+		wxConfig::Get()->Write("/EC/ForceZLIB", dialog->ForceZlib() ? 1l : 0l);
 	}
 	dialog->Destroy();
 	dialog = NULL;

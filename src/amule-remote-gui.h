@@ -62,6 +62,7 @@ class CEConnectDlg : public wxDialog {
 	wxString pwd_hash;
 	wxString login, passwd;
 	bool m_save_user_pass;
+	bool m_force_zlib;
 
 	wxDECLARE_EVENT_TABLE();
 public:
@@ -75,6 +76,7 @@ public:
 	wxString Login() { return login; }
 	wxString PassHash();
 	bool SaveUserPass() { return m_save_user_pass; }
+	bool ForceZlib() { return m_force_zlib; }
 };
 
 wxDECLARE_EVENT(wxEVT_EC_INIT_DONE, wxEvent);

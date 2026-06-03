@@ -41,7 +41,8 @@ class CECPacketHandlerBase {
 class CECLoginPacket : public CECPacket {
 	public:
 		CECLoginPacket(const wxString& client, const wxString& version,
-						bool canZLIB = true, bool canUTF8numbers = true, bool canNotify = false);
+						bool canZLIB = true, bool canUTF8numbers = true, bool canNotify = false,
+						bool preferNoZlib = false);
 };
 
 class CECAuthPacket : public CECPacket {
@@ -80,6 +81,22 @@ private:
 	bool m_canUTF8numbers;
 	bool m_canNotify;
 
+	// Set in ConnectToCore when the dialed server address resolves to
+	// a loopback / RFC1918 LAN / RFC3927 link-local IP. Drives the
+	// `EC_TAG_PREFER_NO_ZLIB` hint in the auth packet; see
+	// `CECLoginPacket` ctor and ECSocket.cpp's `m_isLocalPeer` per-
+	// packet bypass. Only meaningful when `m_canZLIB` is also true
+	// (no point sending the hint when the capability isn't advertised).
+	bool m_preferNoZlib;
+
+	// User override to always negotiate ZLIB regardless of dialed
+	// server locality. Use case: a WireGuard / Tailscale tunnel
+	// endpoint that resolves to an RFC1918 IP but whose underlying
+	// transit is slow Internet — the locality check would otherwise
+	// strip ZLIB and the user loses the perf they actually want.
+	// Set via SetForceZlib() from the caller's config/CLI plumbing.
+	bool m_forceZlib;
+
 	// Set when the server echoed `EC_TAG_CAN_PARTIAL_UPDATE` in AUTH_OK,
 	// confirming it speaks the partial-update INC_UPDATE protocol: skip
 	// the bulk "anything missing == deleted" loop and instead delete only
@@ -94,6 +111,12 @@ public:
 	CRemoteConnect(wxEvtHandler* evt_handler);
 
 	void SetCapabilities(bool canZLIB, bool canUTF8numbers, bool canNotify);
+
+	// Force-ZLIB override: when true, ConnectToCore skips the
+	// loopback/LAN-IP locality detection and never asks the server
+	// to bypass ZLIB. Call BEFORE ConnectToCore() — the flag is read
+	// during connect.
+	void SetForceZlib(bool force) noexcept { m_forceZlib = force; }
 
 	bool ServerSupportsPartialUpdate() const { return m_serverPartialUpdate; }
 

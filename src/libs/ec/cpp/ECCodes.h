@@ -146,6 +146,7 @@ enum ECTagNames {
 	EC_TAG_CAN_LARGE_TAG_COUNT                = 0x0011,
 	EC_TAG_CAN_PARTIAL_UPDATE                 = 0x0012,
 	EC_TAG_FILE_REMOVED                       = 0x0013,
+	EC_TAG_PREFER_NO_ZLIB                     = 0x0014,
 	EC_TAG_CLIENT_NAME                        = 0x0100,
 		EC_TAG_CLIENT_VERSION                     = 0x0101,
 		EC_TAG_CLIENT_MOD                         = 0x0102,
@@ -601,6 +602,7 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x0011: return "EC_TAG_CAN_LARGE_TAG_COUNT";
 		case 0x0012: return "EC_TAG_CAN_PARTIAL_UPDATE";
 		case 0x0013: return "EC_TAG_FILE_REMOVED";
+		case 0x0014: return "EC_TAG_PREFER_NO_ZLIB";
 		case 0x0100: return "EC_TAG_CLIENT_NAME";
 		case 0x0101: return "EC_TAG_CLIENT_VERSION";
 		case 0x0102: return "EC_TAG_CLIENT_MOD";

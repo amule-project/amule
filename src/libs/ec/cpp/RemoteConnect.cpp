@@ -29,6 +29,7 @@
 #include <common/MD5Sum.h>
 #include <common/Format.h>
 #include "../../../amuleIPV4Address.h"
+#include "../../../NetworkFunctions.h"	// IsLoopbackIP / IsLanIP / IsLinkLocalIP / StringIPtoUint32
 
 #include <wx/intl.h>
 #include <common/StringFunctions.h>	// unicode2char for stderr message
@@ -40,7 +41,8 @@
 
 wxDEFINE_EVENT(wxEVT_EC_CONNECTION, wxEvent);
 CECLoginPacket::CECLoginPacket(const wxString& client, const wxString& version,
-							   bool canZLIB, bool canUTF8numbers, bool canNotify)
+							   bool canZLIB, bool canUTF8numbers, bool canNotify,
+							   bool preferNoZlib)
 :
 CECPacket(EC_OP_AUTH_REQ)
 {
@@ -72,6 +74,15 @@ CECPacket(EC_OP_AUTH_REQ)
 	// the unknown tag and the server falls back to emitting alive-
 	// marker tags for unchanged files (still backward-compatible).
 	AddTag(CECEmptyTag(EC_TAG_CAN_PARTIAL_UPDATE));
+	// Client tells the server "we believe transit between us is fast
+	// (loopback / LAN), so skip per-packet ZLIB up to the receiver
+	// gate". The server honours this hint at WritePacket time; see
+	// ECSocket.cpp `m_isLocalPeer`. The decision lives on the client
+	// because only the client knows the IP it dialed — server-side
+	// peer-IP inspection would misclassify e.g. WireGuard tunnel
+	// endpoints as "local" when the underlying transit is anything but.
+	// Old servers ignore the unknown tag and fall back to always-zlib.
+	if (preferNoZlib)	AddTag(CECEmptyTag(EC_TAG_PREFER_NO_ZLIB));
 }
 
 CECAuthPacket::CECAuthPacket(const wxString& pass)
@@ -104,6 +115,8 @@ m_notifier(evt_handler),
 m_canZLIB(false),
 m_canUTF8numbers(false),
 m_canNotify(false),
+m_preferNoZlib(false),
+m_forceZlib(false),
 m_serverPartialUpdate(false)
 {
 }
@@ -150,10 +163,28 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	addr.Hostname(host);
 	addr.Service(port);
 
+	// Compute the prefer-no-ZLIB hint after host resolution: if we
+	// dialed a loopback / RFC1918 LAN / RFC3927 link-local IP, the
+	// transit is fast and per-packet ZLIB is pure overhead. Skip the
+	// check entirely if the user opted out of ZLIB via /EC/ZLIB=0
+	// (capability isn't advertised so the hint is moot) or set
+	// `/EC/ForceZLIB=1` / `--force-zlib` to handle e.g. a WireGuard
+	// tunnel endpoint that resolves to an RFC1918 IP but whose
+	// underlying transit is slow Internet.
+	m_preferNoZlib = false;
+	if (m_canZLIB && !m_forceZlib) {
+		uint32 resolved_ip = 0;
+		if (StringIPtoUint32(addr.IPAddress(), resolved_ip)) {
+			m_preferNoZlib = IsLoopbackIP(resolved_ip)
+				|| IsLanIP(resolved_ip)
+				|| IsLinkLocalIP(resolved_ip);
+		}
+	}
+
 	if (ConnectSocket(addr)) {
 		// We get here only in case of synchronous connect.
 		// Otherwise we continue in OnConnect.
-		CECLoginPacket login_req(m_client, m_version, m_canZLIB, m_canUTF8numbers, m_canNotify);
+		CECLoginPacket login_req(m_client, m_version, m_canZLIB, m_canUTF8numbers, m_canNotify, m_preferNoZlib);
 
 		CSmartPtr<const CECPacket> getSalt(SendRecvPacket(&login_req));
 		m_ec_state = EC_REQ_SENT;
@@ -195,7 +226,7 @@ void CRemoteConnect::OnConnect() {
 
 	if (m_notifier) {
 		wxASSERT(m_ec_state == EC_CONNECT_SENT);
-		CECLoginPacket login_req(m_client, m_version, m_canZLIB, m_canUTF8numbers, m_canNotify);
+		CECLoginPacket login_req(m_client, m_version, m_canZLIB, m_canUTF8numbers, m_canNotify, m_preferNoZlib);
 		CECSocket::SendPacket(&login_req);
 
 		m_ec_state = EC_REQ_SENT;
