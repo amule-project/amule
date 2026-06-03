@@ -1521,7 +1521,7 @@ msgstr "Jatorriak"
 msgid "Priority"
 msgstr "Lehentasuna"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "Egoera"
 
@@ -6109,16 +6109,16 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "Zerbitzaria ez da gehitu: Baliogabeko zerbitzari-ataka ezarririk."
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
-msgstr "eD2k egoera:"
+msgid "eD2k Status"
+msgstr "eD2k egoera"
 
 #: src/ServerWnd.cpp:178
 msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
-msgstr "Kademlia egoera:"
+msgid "Kademlia Status"
+msgstr "Kademlia egoera"
 
 #: src/ServerWnd.cpp:213
 msgid "Running in LAN mode"
@@ -6130,16 +6130,13 @@ msgstr "Martxan"
 
 #: src/ServerWnd.cpp:216
 #, fuzzy
-msgid "Kademlia client ID:"
-msgstr "Kademlia egoera:"
+msgid "Kademlia client ID"
+msgstr "Kademlia egoera"
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "Egoera:"
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
-msgstr "Konexio egoera:"
+msgid "Connection State"
+msgstr "Konexio egoera"
 
 #: src/ServerWnd.cpp:223
 #, c-format
@@ -6147,8 +6144,8 @@ msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr "Suebakirik - ireki %d TCP ataka zure router edo suebakian"
 
 #: src/ServerWnd.cpp:225
-msgid "UDP Connection State:"
-msgstr "UDP konexio egoera:"
+msgid "UDP Connection State"
+msgstr "UDP konexio egoera"
 
 #: src/ServerWnd.cpp:228
 #, c-format
@@ -6156,7 +6153,7 @@ msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr "Suebakirik - ireki %d UDP ataka zure router edo suebakian"
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr "Suebaki egoera: "
 
 #: src/ServerWnd.cpp:238

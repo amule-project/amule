@@ -1521,7 +1521,7 @@ msgstr "Fonts"
 msgid "Priority"
 msgstr "Prioritat"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "Estat"
 
@@ -6136,16 +6136,16 @@ msgstr ""
 "No s'ha afegit el servidor: El port del servidor especificat és invàlid."
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
-msgstr "Estat eD2k:"
+msgid "eD2k Status"
+msgstr "Estat eD2k"
 
 #: src/ServerWnd.cpp:178
 msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
-msgstr "Estat Kademlia:"
+msgid "Kademlia Status"
+msgstr "Estat Kademlia"
 
 #: src/ServerWnd.cpp:213
 msgid "Running in LAN mode"
@@ -6156,16 +6156,13 @@ msgid "Running"
 msgstr "Funcionant"
 
 #: src/ServerWnd.cpp:216
-msgid "Kademlia client ID:"
-msgstr "ID del client Kademlia:"
+msgid "Kademlia client ID"
+msgstr "ID del client Kademlia"
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "Estat:"
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
-msgstr "Estat de la connexió:"
+msgid "Connection State"
+msgstr "Estat de la connexió"
 
 #: src/ServerWnd.cpp:223
 #, c-format
@@ -6173,8 +6170,8 @@ msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr "Bloquejat - obre el port TCP %d en el teu encaminador o tallafocs"
 
 #: src/ServerWnd.cpp:225
-msgid "UDP Connection State:"
-msgstr "Estat de la connexió UDP:"
+msgid "UDP Connection State"
+msgstr "Estat de la connexió UDP"
 
 #: src/ServerWnd.cpp:228
 #, c-format
@@ -6182,7 +6179,7 @@ msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr "Bloquejat - obre el port UDP %d en el teu encaminador o tallafocs"
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr "Estat rere-tallafocs: "
 
 #: src/ServerWnd.cpp:238

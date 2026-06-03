@@ -1561,7 +1561,7 @@ msgstr "Sources"
 msgid "Priority"
 msgstr "Priorité"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "Statut"
 
@@ -6229,16 +6229,16 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "Serveur non ajouté : Port du serveur invalide."
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
-msgstr "État eD2k :"
+msgid "eD2k Status"
+msgstr "État eD2k "
 
 #: src/ServerWnd.cpp:178
 msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
-msgstr "Statut de Kademlia :"
+msgid "Kademlia Status"
+msgstr "Statut de Kademlia "
 
 #: src/ServerWnd.cpp:213
 msgid "Running in LAN mode"
@@ -6249,16 +6249,13 @@ msgid "Running"
 msgstr "En marche"
 
 #: src/ServerWnd.cpp:216
-msgid "Kademlia client ID:"
-msgstr "ID du client Kademlia :"
+msgid "Kademlia client ID"
+msgstr "ID du client Kademlia "
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "Statut :"
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
-msgstr "État de la connexion :"
+msgid "Connection State"
+msgstr "État de la connexion "
 
 #: src/ServerWnd.cpp:223
 #, c-format
@@ -6267,8 +6264,8 @@ msgstr ""
 "Derrière un pare-feu - Ouvrez le port TCP %d sur votre routeur ou pare-feu"
 
 #: src/ServerWnd.cpp:225
-msgid "UDP Connection State:"
-msgstr "État de la connexion UDP :"
+msgid "UDP Connection State"
+msgstr "État de la connexion UDP "
 
 #: src/ServerWnd.cpp:228
 #, c-format
@@ -6277,7 +6274,7 @@ msgstr ""
 "Derrière un pare-feu - Ouvrez le port UDP %d sur votre routeur ou pare-feu"
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr "État du pare-feu : "
 
 #: src/ServerWnd.cpp:238

@@ -1519,7 +1519,7 @@ msgstr "Viri"
 msgid "Priority"
 msgstr "Prednost"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "Stanje"
 
@@ -6147,16 +6147,16 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "Strežnik ni bil dodan: navedena so neveljavna vrata strežnika."
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
-msgstr "Stanje eD2k:"
+msgid "eD2k Status"
+msgstr "Stanje eD2k"
 
 #: src/ServerWnd.cpp:178
 msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
-msgstr "Stanje Kademlia:"
+msgid "Kademlia Status"
+msgstr "Stanje Kademlia"
 
 #: src/ServerWnd.cpp:213
 msgid "Running in LAN mode"
@@ -6167,16 +6167,13 @@ msgid "Running"
 msgstr "Teče"
 
 #: src/ServerWnd.cpp:216
-msgid "Kademlia client ID:"
-msgstr "Določilnik odjemalca Kademlia:"
+msgid "Kademlia client ID"
+msgstr "Določilnik odjemalca Kademlia"
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "Stanje:"
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
-msgstr "Stanje povezave:"
+msgid "Connection State"
+msgstr "Stanje povezave"
 
 #: src/ServerWnd.cpp:223
 #, c-format
@@ -6186,8 +6183,8 @@ msgstr ""
 "%d"
 
 #: src/ServerWnd.cpp:225
-msgid "UDP Connection State:"
-msgstr "Stanje povezave UDP:"
+msgid "UDP Connection State"
+msgstr "Stanje povezave UDP"
 
 #: src/ServerWnd.cpp:228
 #, c-format
@@ -6197,7 +6194,7 @@ msgstr ""
 "%d"
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr "Stanje za požarnim zidom: "
 
 #: src/ServerWnd.cpp:238

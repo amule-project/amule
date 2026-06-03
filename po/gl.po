@@ -1555,7 +1555,7 @@ msgstr "Fontes"
 msgid "Priority"
 msgstr "Prioridade"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "Estado"
 
@@ -6172,16 +6172,16 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "Servidor non engadido: Porto do servidor inválido."
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
-msgstr "Estado do eD2k:"
+msgid "eD2k Status"
+msgstr "Estado do eD2k"
 
 #: src/ServerWnd.cpp:178
 msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
-msgstr "Estado Kademlia:"
+msgid "Kademlia Status"
+msgstr "Estado Kademlia"
 
 #: src/ServerWnd.cpp:213
 msgid "Running in LAN mode"
@@ -6192,16 +6192,13 @@ msgid "Running"
 msgstr "Executando"
 
 #: src/ServerWnd.cpp:216
-msgid "Kademlia client ID:"
-msgstr "ID do cliente Kademlia:"
+msgid "Kademlia client ID"
+msgstr "ID do cliente Kademlia"
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "Estado:"
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
-msgstr "Estado de conexión:"
+msgid "Connection State"
+msgstr "Estado de conexión"
 
 #: src/ServerWnd.cpp:223
 #, c-format
@@ -6209,8 +6206,8 @@ msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr "Devasa atopada - abra o porto TCP %d no seu encamiñador ou devasa"
 
 #: src/ServerWnd.cpp:225
-msgid "UDP Connection State:"
-msgstr "Estado da conexión UDP:"
+msgid "UDP Connection State"
+msgstr "Estado da conexión UDP"
 
 #: src/ServerWnd.cpp:228
 #, c-format
@@ -6218,7 +6215,7 @@ msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr "Devasa atopada - abra o porto UDP %d no seu encamiñador ou devasa"
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr "Estado da devasa: "
 
 #: src/ServerWnd.cpp:238

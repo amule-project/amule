@@ -1447,7 +1447,7 @@ msgstr "מקורות"
 msgid "Priority"
 msgstr "עדיפות"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "מצב"
 
@@ -5894,7 +5894,7 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "שרת לא התווסף: צוינה מבואה לא תקפה."
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
+msgid "eD2k Status"
 msgstr ""
 
 #: src/ServerWnd.cpp:178
@@ -5902,8 +5902,8 @@ msgid "ID"
 msgstr "מ\"ז"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
-msgstr "סטטוס קאדימליה:"
+msgid "Kademlia Status"
+msgstr "סטטוס קאדימליה"
 
 #: src/ServerWnd.cpp:213
 #, fuzzy
@@ -5916,16 +5916,13 @@ msgstr "פועל"
 
 #: src/ServerWnd.cpp:216
 #, fuzzy
-msgid "Kademlia client ID:"
-msgstr "סטטוס קאדימליה:"
+msgid "Kademlia client ID"
+msgstr "סטטוס קאדימליה"
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "סטאטוס:"
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
-msgstr "מצב חיבור:"
+msgid "Connection State"
+msgstr "מצב חיבור"
 
 #: src/ServerWnd.cpp:223
 #, c-format
@@ -5934,8 +5931,8 @@ msgstr ""
 
 #: src/ServerWnd.cpp:225
 #, fuzzy
-msgid "UDP Connection State:"
-msgstr "מצב חיבור:"
+msgid "UDP Connection State"
+msgstr "מצב חיבור"
 
 #: src/ServerWnd.cpp:228
 #, c-format
@@ -5943,7 +5940,7 @@ msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr ""
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr "מצב חומת אש: "
 
 #: src/ServerWnd.cpp:238

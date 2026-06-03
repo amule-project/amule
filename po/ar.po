@@ -1443,7 +1443,7 @@ msgstr "مصدر"
 msgid "Priority"
 msgstr "أولوية"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "حالة"
 
@@ -5859,7 +5859,7 @@ msgid "Server not added: Invalid server-port specified."
 msgstr ""
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
+msgid "eD2k Status"
 msgstr ""
 
 #: src/ServerWnd.cpp:178
@@ -5867,7 +5867,7 @@ msgid "ID"
 msgstr "هوية"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
+msgid "Kademlia Status"
 msgstr ""
 
 #: src/ServerWnd.cpp:213
@@ -5879,15 +5879,12 @@ msgid "Running"
 msgstr ""
 
 #: src/ServerWnd.cpp:216
-msgid "Kademlia client ID:"
+msgid "Kademlia client ID"
 msgstr ""
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr ""
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
+msgid "Connection State"
 msgstr ""
 
 #: src/ServerWnd.cpp:223
@@ -5897,7 +5894,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:225
 #, fuzzy
-msgid "UDP Connection State:"
+msgid "UDP Connection State"
 msgstr "اعلى سرعة اتصال تقديرية"
 
 #: src/ServerWnd.cpp:228
@@ -5906,7 +5903,7 @@ msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr ""
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr ""
 
 #: src/ServerWnd.cpp:238

@@ -1489,7 +1489,7 @@ msgstr "ソース数"
 msgid "Priority"
 msgstr "優先度"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "ステータス"
 
@@ -6027,7 +6027,7 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "サーバは追加しませんでした：不正なサーバ・ポートが指示されました。"
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
+msgid "eD2k Status"
 msgstr ""
 
 #: src/ServerWnd.cpp:178
@@ -6035,7 +6035,7 @@ msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
+msgid "Kademlia Status"
 msgstr "Kademliaのステータス："
 
 #: src/ServerWnd.cpp:213
@@ -6049,15 +6049,12 @@ msgstr "走っています"
 
 #: src/ServerWnd.cpp:216
 #, fuzzy
-msgid "Kademlia client ID:"
+msgid "Kademlia client ID"
 msgstr "Kademliaのステータス："
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "ステータス："
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
+msgid "Connection State"
 msgstr "接続状況："
 
 #: src/ServerWnd.cpp:223
@@ -6067,7 +6064,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:225
 #, fuzzy
-msgid "UDP Connection State:"
+msgid "UDP Connection State"
 msgstr "接続状況："
 
 #: src/ServerWnd.cpp:228
@@ -6076,7 +6073,7 @@ msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr ""
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr "ファイアワォールされた状況："
 
 #: src/ServerWnd.cpp:238

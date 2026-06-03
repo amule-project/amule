@@ -1492,7 +1492,7 @@ msgstr "Kjelder"
 msgid "Priority"
 msgstr "Prioritet"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "Status"
 
@@ -6038,16 +6038,16 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "Tenar ikkje lagd til: Ikkje gangbar tenarport."
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
-msgstr "eD2k status:"
+msgid "eD2k Status"
+msgstr "eD2k status"
 
 #: src/ServerWnd.cpp:178
 msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
-msgstr "Kademlia status:"
+msgid "Kademlia Status"
+msgstr "Kademlia status"
 
 #: src/ServerWnd.cpp:213
 #, fuzzy
@@ -6060,16 +6060,13 @@ msgstr "Køyrer"
 
 #: src/ServerWnd.cpp:216
 #, fuzzy
-msgid "Kademlia client ID:"
+msgid "Kademlia client ID"
 msgstr "Kademlia status"
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "Status:"
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
-msgstr "Tilkoplingsstatus:"
+msgid "Connection State"
+msgstr "Tilkoplingsstatus"
 
 #: src/ServerWnd.cpp:223
 #, c-format
@@ -6078,8 +6075,8 @@ msgstr ""
 
 #: src/ServerWnd.cpp:225
 #, fuzzy
-msgid "UDP Connection State:"
-msgstr "Tilkoplingsstatus:"
+msgid "UDP Connection State"
+msgstr "Tilkoplingsstatus"
 
 #: src/ServerWnd.cpp:228
 #, c-format
@@ -6087,7 +6084,7 @@ msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr ""
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr "Brannmura status: "
 
 #: src/ServerWnd.cpp:238

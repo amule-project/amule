@@ -1522,7 +1522,7 @@ msgstr "Kaynaklar"
 msgid "Priority"
 msgstr "Öncelik"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "Durum"
 
@@ -6094,16 +6094,16 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "Sunucu eklenmedi: Geçersiz sunucu portu girildi."
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
-msgstr "eD2k Durumu:"
+msgid "eD2k Status"
+msgstr "eD2k Durumu"
 
 #: src/ServerWnd.cpp:178
 msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
-msgstr "Kademlia Durumu:"
+msgid "Kademlia Status"
+msgstr "Kademlia Durumu"
 
 #: src/ServerWnd.cpp:213
 msgid "Running in LAN mode"
@@ -6114,16 +6114,13 @@ msgid "Running"
 msgstr "Çalışıyor"
 
 #: src/ServerWnd.cpp:216
-msgid "Kademlia client ID:"
-msgstr "Kademlia istemci kimliği:"
+msgid "Kademlia client ID"
+msgstr "Kademlia istemci kimliği"
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "Durum:"
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
-msgstr "Bağlantı Durumu:"
+msgid "Connection State"
+msgstr "Bağlantı Durumu"
 
 #: src/ServerWnd.cpp:223
 #, c-format
@@ -6132,8 +6129,8 @@ msgstr ""
 "Güvenlik Duvarı - yönlendirici veya güvenlik duvarınızda %d TCP portunu açın"
 
 #: src/ServerWnd.cpp:225
-msgid "UDP Connection State:"
-msgstr "UDP Bağlantı Durumu:"
+msgid "UDP Connection State"
+msgstr "UDP Bağlantı Durumu"
 
 #: src/ServerWnd.cpp:228
 #, c-format
@@ -6142,7 +6139,7 @@ msgstr ""
 "Güvenlik Duvarı - yönlendirici veya güvenlik duvarınızda %d UDP portunu açın"
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr "Güvenlik duvarı durumu: "
 
 #: src/ServerWnd.cpp:238

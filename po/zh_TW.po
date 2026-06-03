@@ -1462,7 +1462,7 @@ msgstr "來源"
 msgid "Priority"
 msgstr "優先等級"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "狀態"
 
@@ -5908,7 +5908,7 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "伺服器未加入：無效的伺服器通訊埠。"
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
+msgid "eD2k Status"
 msgstr "eD2k 狀態："
 
 #: src/ServerWnd.cpp:178
@@ -5916,7 +5916,7 @@ msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
+msgid "Kademlia Status"
 msgstr "Kad 狀態："
 
 #: src/ServerWnd.cpp:213
@@ -5929,15 +5929,12 @@ msgstr "執行中"
 
 #: src/ServerWnd.cpp:216
 #, fuzzy
-msgid "Kademlia client ID:"
+msgid "Kademlia client ID"
 msgstr "Kad 狀態："
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "狀態："
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
+msgid "Connection State"
 msgstr "連線狀態："
 
 #: src/ServerWnd.cpp:223
@@ -5946,7 +5943,7 @@ msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr "防火牆內 - 請設定您的路由器或防火牆開啟 TCP 埠 %d "
 
 #: src/ServerWnd.cpp:225
-msgid "UDP Connection State:"
+msgid "UDP Connection State"
 msgstr "UDP 連線狀態："
 
 #: src/ServerWnd.cpp:228
@@ -5955,7 +5952,7 @@ msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr "防火牆內 - 請設定您的路由器或防火牆開啟 UDP 埠 %d "
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr "防火牆狀態："
 
 #: src/ServerWnd.cpp:238

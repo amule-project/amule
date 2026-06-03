@@ -1503,7 +1503,7 @@ msgstr "Šaltiniai"
 msgid "Priority"
 msgstr "Prioritetas"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "Būsena"
 
@@ -6106,16 +6106,16 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "Serveris neįdėtas: nurodytas neteisingas serverio prievadas."
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
-msgstr "eD2k būsena:"
+msgid "eD2k Status"
+msgstr "eD2k būsena"
 
 #: src/ServerWnd.cpp:178
 msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
-msgstr "Kademlia būsena:"
+msgid "Kademlia Status"
+msgstr "Kademlia būsena"
 
 #: src/ServerWnd.cpp:213
 #, fuzzy
@@ -6128,16 +6128,13 @@ msgstr "Dirbama"
 
 #: src/ServerWnd.cpp:216
 #, fuzzy
-msgid "Kademlia client ID:"
-msgstr "Kademlia būsena:"
+msgid "Kademlia client ID"
+msgstr "Kademlia būsena"
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "Būsena:"
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
-msgstr "Ryšio būklė:"
+msgid "Connection State"
+msgstr "Ryšio būklė"
 
 #: src/ServerWnd.cpp:223
 #, c-format
@@ -6146,8 +6143,8 @@ msgstr ""
 
 #: src/ServerWnd.cpp:225
 #, fuzzy
-msgid "UDP Connection State:"
-msgstr "Ryšio būklė:"
+msgid "UDP Connection State"
+msgstr "Ryšio būklė"
 
 #: src/ServerWnd.cpp:228
 #, c-format
@@ -6155,7 +6152,7 @@ msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr ""
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr "Ugniasienės būsena: "
 
 #: src/ServerWnd.cpp:238

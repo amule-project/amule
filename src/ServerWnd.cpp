@@ -164,7 +164,7 @@ void CServerWnd::UpdateED2KInfo()
 	wxListCtrl* ED2KInfoList = CastChild( ID_ED2KINFO, wxListCtrl );
 
 	ED2KInfoList->DeleteAllItems();
-	ED2KInfoList->InsertItem(0, _("eD2k Status:"));
+	ED2KInfoList->InsertItem(0, _("eD2k Status"));
 
 	if (theApp->IsConnectedED2K()) {
 		ED2KInfoList->SetItem(0, 1, _("Connected"));
@@ -207,29 +207,29 @@ void CServerWnd::UpdateKadInfo()
 
 	KadInfoList->DeleteAllItems();
 
-	KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
+	KadInfoList->InsertItem(next_row, _("Kademlia Status"));
 
 	if (theApp->IsKadRunning()) {
 		KadInfoList->SetItem(next_row++, 1, (theApp->IsKadRunningInLanMode() ? _("Running in LAN mode") : _("Running")));
 
 		// Connection data
-		KadInfoList->InsertItem(next_row, _("Kademlia client ID:"));
+		KadInfoList->InsertItem(next_row, _("Kademlia client ID"));
 		KadInfoList->SetItem(next_row++, 1, theApp->GetKadID().ToHexString());
-		KadInfoList->InsertItem(next_row, _("Status:"));
+		KadInfoList->InsertItem(next_row, _("Status"));
 		KadInfoList->SetItem(next_row++, 1, theApp->IsConnectedKad() ? _("Connected"): _("Disconnected"));
 		if (theApp->IsConnectedKad()) {
-			KadInfoList->InsertItem(next_row, _("Connection State:"));
+			KadInfoList->InsertItem(next_row, _("Connection State"));
 			KadInfoList->SetItem(next_row++, 1, theApp->IsFirewalledKad() ?
 				wxString(CFormat(_("Firewalled - open TCP port %d in your router or firewall")) % thePrefs::GetPort())
 				: wxString(_("OK")));
-			KadInfoList->InsertItem(next_row, _("UDP Connection State:"));
+			KadInfoList->InsertItem(next_row, _("UDP Connection State"));
 			bool UDPFirewalled = theApp->IsFirewalledKadUDP();
 			KadInfoList->SetItem(next_row++, 1, UDPFirewalled ?
 				wxString(CFormat(_("Firewalled - open UDP port %d in your router or firewall")) % thePrefs::GetUDPPort())
 				: wxString(_("OK")));
 
 			if (theApp->IsFirewalledKad() || UDPFirewalled) {
-				KadInfoList->InsertItem(next_row, _("Firewalled state: "));
+				KadInfoList->InsertItem(next_row, _("Firewalled state"));
 				wxString BuddyState;
 				switch ( theApp->GetBuddyStatus() )
 				{

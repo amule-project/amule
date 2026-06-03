@@ -1509,7 +1509,7 @@ msgstr "Джерела"
 msgid "Priority"
 msgstr "Перевага"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "Стан"
 
@@ -6121,16 +6121,16 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "Сервер не додано: неприпустимий порт."
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
-msgstr "Стан eD2k:"
+msgid "eD2k Status"
+msgstr "Стан eD2k"
 
 #: src/ServerWnd.cpp:178
 msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
-msgstr "Стан Kademlia:"
+msgid "Kademlia Status"
+msgstr "Стан Kademlia"
 
 #: src/ServerWnd.cpp:213
 #, fuzzy
@@ -6143,16 +6143,13 @@ msgstr "Працює"
 
 #: src/ServerWnd.cpp:216
 #, fuzzy
-msgid "Kademlia client ID:"
-msgstr "Стан Kademlia:"
+msgid "Kademlia client ID"
+msgstr "Стан Kademlia"
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "Стан:"
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
-msgstr "Стан з'єднання:"
+msgid "Connection State"
+msgstr "Стан з'єднання"
 
 #: src/ServerWnd.cpp:223
 #, c-format
@@ -6161,8 +6158,8 @@ msgstr ""
 "За фаерволом - відкрийте порт TCP:%d на вашому маршрутизаторі або фаерволі"
 
 #: src/ServerWnd.cpp:225
-msgid "UDP Connection State:"
-msgstr "Стан з'єднання UDP:"
+msgid "UDP Connection State"
+msgstr "Стан з'єднання UDP"
 
 #: src/ServerWnd.cpp:228
 #, c-format
@@ -6171,7 +6168,7 @@ msgstr ""
 "За фаерволом - відкрийте порт UDP:%d на вашому маршрутизаторі або фаерволі"
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr "Стан фаєрволу: "
 
 #: src/ServerWnd.cpp:238

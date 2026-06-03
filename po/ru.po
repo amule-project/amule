@@ -1526,7 +1526,7 @@ msgstr "Источники"
 msgid "Priority"
 msgstr "Приоритет"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "Состояние"
 
@@ -6127,16 +6127,16 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "Сервер не был добавлен: указан неверный порт сервера."
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
-msgstr "Статус eD2k:"
+msgid "eD2k Status"
+msgstr "Статус eD2k"
 
 #: src/ServerWnd.cpp:178
 msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
-msgstr "Статус Kademlia:"
+msgid "Kademlia Status"
+msgstr "Статус Kademlia"
 
 #: src/ServerWnd.cpp:213
 msgid "Running in LAN mode"
@@ -6148,16 +6148,13 @@ msgstr "Выполняется"
 
 #: src/ServerWnd.cpp:216
 #, fuzzy
-msgid "Kademlia client ID:"
-msgstr "Статус Kademlia:"
+msgid "Kademlia client ID"
+msgstr "Статус Kademlia"
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "Статус:"
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
-msgstr "Состояние соединения:"
+msgid "Connection State"
+msgstr "Состояние соединения"
 
 #: src/ServerWnd.cpp:223
 #, c-format
@@ -6166,8 +6163,8 @@ msgstr ""
 "За брандмауэром - откройте TCP порт %d на вашем роутере или брандмауэре"
 
 #: src/ServerWnd.cpp:225
-msgid "UDP Connection State:"
-msgstr "Состояние UDP соединения:"
+msgid "UDP Connection State"
+msgstr "Состояние UDP соединения"
 
 #: src/ServerWnd.cpp:228
 #, c-format
@@ -6176,8 +6173,8 @@ msgstr ""
 "За брандмауэром - откройте UDP порт %d на вашем роутере или брандмауэре"
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
-msgstr "Состояние брандмауэра:"
+msgid "Firewalled state"
+msgstr "Состояние брандмауэра"
 
 #: src/ServerWnd.cpp:238
 msgid "No buddy required - TCP port open"

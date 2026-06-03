@@ -1509,7 +1509,7 @@ msgstr "Fontes"
 msgid "Priority"
 msgstr "Prioridá"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "Estáu"
 
@@ -6114,16 +6114,16 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "Sirvidor non amestáu: Sirvidor-puertu especificáu non válidu."
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
-msgstr "Estáu de eD2k:"
+msgid "eD2k Status"
+msgstr "Estáu de eD2k"
 
 #: src/ServerWnd.cpp:178
 msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
-msgstr "Estáu Kademlia:"
+msgid "Kademlia Status"
+msgstr "Estáu Kademlia"
 
 #: src/ServerWnd.cpp:213
 #, fuzzy
@@ -6136,16 +6136,13 @@ msgstr "Executando"
 
 #: src/ServerWnd.cpp:216
 #, fuzzy
-msgid "Kademlia client ID:"
-msgstr "Estáu Kademlia:"
+msgid "Kademlia client ID"
+msgstr "Estáu Kademlia"
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "Estáu:"
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
-msgstr "Estáu de conexón:"
+msgid "Connection State"
+msgstr "Estáu de conexón"
 
 #: src/ServerWnd.cpp:223
 #, c-format
@@ -6153,8 +6150,8 @@ msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr "Tres torgafueos - abre'l puertu TCP %d nel to router o torgafueos"
 
 #: src/ServerWnd.cpp:225
-msgid "UDP Connection State:"
-msgstr "Estáu de conexón UDP:"
+msgid "UDP Connection State"
+msgstr "Estáu de conexón UDP"
 
 #: src/ServerWnd.cpp:228
 #, c-format
@@ -6162,8 +6159,8 @@ msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr "Tres torgafueos - abre'l puertu UDP %d nel to router o torgafueos"
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
-msgstr "Estáu tres tornafueos:"
+msgid "Firewalled state"
+msgstr "Estáu tres tornafueos"
 
 #: src/ServerWnd.cpp:238
 msgid "No buddy required - TCP port open"

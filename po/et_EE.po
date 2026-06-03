@@ -1502,7 +1502,7 @@ msgstr "Allikaid"
 msgid "Priority"
 msgstr "Prioriteet"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4315 src/SearchListCtrl.cpp:92 src/ServerWnd.cpp:218
 msgid "Status"
 msgstr "Olek"
 
@@ -6049,16 +6049,16 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "Serverit ei lisatud: Defineerisid vigase pordi."
 
 #: src/ServerWnd.cpp:167
-msgid "eD2k Status:"
-msgstr "eD2k Olek:"
+msgid "eD2k Status"
+msgstr "eD2k Olek"
 
 #: src/ServerWnd.cpp:178
 msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:210
-msgid "Kademlia Status:"
-msgstr "Kademlia Olek:"
+msgid "Kademlia Status"
+msgstr "Kademlia Olek"
 
 #: src/ServerWnd.cpp:213
 msgid "Running in LAN mode"
@@ -6070,16 +6070,13 @@ msgstr "Töötab"
 
 #: src/ServerWnd.cpp:216
 #, fuzzy
-msgid "Kademlia client ID:"
-msgstr "Kademlia Olek:"
+msgid "Kademlia client ID"
+msgstr "Kademlia Olek"
 
-#: src/ServerWnd.cpp:218
-msgid "Status:"
-msgstr "Olek:"
 
 #: src/ServerWnd.cpp:221
-msgid "Connection State:"
-msgstr "Ühenduse olek:"
+msgid "Connection State"
+msgstr "Ühenduse olek"
 
 #: src/ServerWnd.cpp:223
 #, c-format
@@ -6087,8 +6084,8 @@ msgid "Firewalled - open TCP port %d in your router or firewall"
 msgstr "Tulemüüriga - ava oma ruuteris või tulemüüris TCP%d port"
 
 #: src/ServerWnd.cpp:225
-msgid "UDP Connection State:"
-msgstr "UDP ühenduse olek:"
+msgid "UDP Connection State"
+msgstr "UDP ühenduse olek"
 
 #: src/ServerWnd.cpp:228
 #, c-format
@@ -6096,7 +6093,7 @@ msgid "Firewalled - open UDP port %d in your router or firewall"
 msgstr "Tulemüüriga - ava oma ruuteris või tulemüüris UDP %d port"
 
 #: src/ServerWnd.cpp:232
-msgid "Firewalled state: "
+msgid "Firewalled state"
 msgstr "Olek tulemüüriga: "
 
 #: src/ServerWnd.cpp:238
