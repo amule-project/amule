@@ -209,7 +209,17 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 #endif
 
 	dir = wxStandardPaths::Get().GetResourcesDir();	// Returns 'aMule' when we use 'amule' elsewhere
-#if !defined(__WINDOWS__) && !defined(__WXMAC__)
+#if defined(__WINDOWS__)
+	// Windows portable / installed layout puts amule.exe (and
+	// amuleweb.exe) in bin\ and installable data (webserver
+	// templates, skins, ...) in ..\share\amule\. wxStandardPaths
+	// returns the exe directory on Windows, so relocate up one
+	// level and into the FHS-style share/amule/ tree the installer
+	// actually populates. Mirrors the same adjustment Preferences.cpp
+	// applies for the skins lookup (#783). (#828)
+	dir = JoinPaths(JoinPaths(dir, ".."), "share");
+	dir = JoinPaths(dir, "amule");
+#elif !defined(__WXMAC__)
 	dir = dir.BeforeLast(wxFileName::GetPathSeparator());
 	dir = JoinPaths(dir, "amule");
 #endif
