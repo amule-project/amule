@@ -3,8 +3,9 @@
 This document covers the end-user side of aMule: how to launch each
 tool, what to configure on first run, and where the safety footguns
 are. For an overview of the project see the
-[top-level README](../README.md). For build / install instructions see
-[INSTALL.md](INSTALL.md).
+[top-level README](../README.md). For installing the pre-built
+binaries see [INSTALL_BINARIES.md](INSTALL_BINARIES.md); for building
+from source see [INSTALL.md](INSTALL.md).
 
 
 ## What you got
