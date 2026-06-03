@@ -176,6 +176,7 @@ EC_TAG_KAD_ID                             0x0010
 EC_TAG_CAN_LARGE_TAG_COUNT                0x0011
 EC_TAG_CAN_PARTIAL_UPDATE                 0x0012
 EC_TAG_FILE_REMOVED                       0x0013
+EC_TAG_PREFER_NO_ZLIB                     0x0014
 
 
 EC_TAG_CLIENT_NAME                        0x0100

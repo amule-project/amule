@@ -256,6 +256,7 @@ CaMuleExternalConnector::CaMuleExternalConnector()
 	: m_configFile(NULL),
 	  m_port(-1),
 	  m_ZLIB(false),
+	  m_forceZLIB(false),
 	  m_KeepQuiet(false),
 	  m_Verbose(false),
 	  m_interactive(false),
@@ -445,6 +446,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		Show(_("\nCreating client...\n"));
 		m_ECClient = new CRemoteConnect(NULL);
 		m_ECClient->SetCapabilities(m_ZLIB, true, false);	// ZLIB, UTF8 numbers, notification
+		m_ECClient->SetForceZlib(m_forceZLIB);
 
 		// ConnectToCore is blocking since m_ECClient was initialized with NULL
 		if (!m_ECClient->ConnectToCore(m_host, m_port, "foobar", m_password.Encode(), ProgName, ProgVersion)) {
@@ -513,6 +515,9 @@ void CaMuleExternalConnector::OnInitCmdLine(wxCmdLineParser& parser, const char*
 	parser.AddSwitch("", "version",
 		_("Print program version."),
 		wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddSwitch("", "force-zlib",
+		_("Force ZLIB compression regardless of dialed-IP locality (useful when the server is reachable over a VPN tunnel that resolves to a LAN IP)."),
+		wxCMD_LINE_PARAM_OPTIONAL);
 }
 
 bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
@@ -562,6 +567,10 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 		} else {
 			m_password.Clear();
 		}
+	}
+
+	if (parser.Found("force-zlib")) {
+		m_forceZLIB = true;
 	}
 
 	if (parser.Found("write-config")) {
@@ -620,6 +629,7 @@ void CaMuleExternalConnector::LoadConfigFile()
 		m_port = m_configFile->Read("/EC/Port", 4712l);
 		m_configFile->ReadHash("/EC/Password", &m_password);
 		m_ZLIB = m_configFile->Read("/EC/ZLIB", 1l) != 0;
+		m_forceZLIB = m_configFile->Read("/EC/ForceZLIB", 0l) != 0;
 	}
 }
 
@@ -642,6 +652,7 @@ void CaMuleExternalConnector::SaveConfigFile()
 		// the 1 (enabled) default on every save. Persist it so the
 		// field actually round-trips. (#817)
 		m_configFile->Write("/EC/ZLIB", m_ZLIB ? 1l : 0l);
+		m_configFile->Write("/EC/ForceZLIB", m_forceZLIB ? 1l : 0l);
 	}
 }
 

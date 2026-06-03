@@ -550,28 +550,23 @@ const CECPacket *CECServerSocket::Authenticate(const CECPacket *request)
 				if (request->GetTagByName(EC_TAG_CAN_ZLIB)) {
 					m_my_flags |= EC_FLAG_ZLIB;
 				}
-				// Mark the connection as local (loopback / RFC1918 LAN /
-				// RFC3927 link-local) so CECSocket::WritePacket can skip
-				// ZLIB per-packet for small/medium responses. deflate +
-				// inflate is pure overhead on the local machine and on a
-				// gigabit LAN (~125 MB/s line rate, well past the
-				// ~37 MB/s break-even point for streaming zlib). The
-				// per-packet gate still falls back to ZLIB for packets
-				// above kLocalPeerZlibBypassMax so very large responses
-				// (e.g. show shared on a 90 k+ shared-file library)
-				// stay inside the receiver's 256 MB ReadHeader gate.
-				{
-					const uint32 peer_ip = GetPeerInt();
-					const bool is_local = peer_ip == 0
-						|| IsLoopbackIP(peer_ip)
-						|| IsLanIP(peer_ip)
-						|| IsLinkLocalIP(peer_ip);
-					SetLocalPeer(is_local);
-					if (is_local) {
-						AddDebugLogLineN(logEC,
-							CFormat("EC peer %s is local (loopback/LAN/link-local) — bypassing ZLIB for small/medium packets")
-								% GetPeer());
-					}
+				// Honour the client's prefer-no-ZLIB hint: when set, the
+				// client believes transit between us is fast (loopback /
+				// LAN) and per-packet deflate/inflate is wasted CPU. The
+				// decision lives on the client because only the client
+				// knows the IP it dialed; the server's peer-IP view
+				// would misclassify e.g. WireGuard tunnel endpoints as
+				// "local" when the underlying transit is anything but.
+				// CECSocket::WritePacket honours the resulting
+				// `m_isLocalPeer` flag per packet, falling back to ZLIB
+				// for payloads above `kLocalPeerZlibBypassMax` so very
+				// large responses still stay inside the receiver's
+				// 256 MB ReadHeader gate.
+				if (request->GetTagByName(EC_TAG_PREFER_NO_ZLIB)) {
+					SetLocalPeer(true);
+					AddDebugLogLineN(logEC,
+						CFormat("EC peer %s asked to skip ZLIB (loopback/LAN hint) — bypassing for small/medium packets")
+							% GetPeer());
 				}
 				if (request->GetTagByName(EC_TAG_CAN_UTF8_NUMBERS)) {
 					m_my_flags |= EC_FLAG_UTF8_NUMBERS;

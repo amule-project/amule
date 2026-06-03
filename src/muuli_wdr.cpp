@@ -2622,6 +2622,8 @@ wxSizer *CoreConnect( wxWindow *parent, bool call_fit, bool set_sizer )
     wxCheckBox *item13 = new wxCheckBox( parent, ID_EC_SAVE, _("Remember those settings"), wxDefaultPosition, wxDefaultSize, 0 );
     item13->SetValue( TRUE );
     item0->Add( item13, wxSizerFlags().CenterVertical().Border(wxALL, 5) );
+    wxCheckBox *item13b = new wxCheckBox( parent, ID_EC_FORCE_ZLIB, _("Force ZLIB compression"), wxDefaultPosition, wxDefaultSize, 0 );
+    item0->Add( item13b, wxSizerFlags().CenterVertical().Border(wxALL, 5) );
     wxBoxSizer *item14 = new wxBoxSizer( wxHORIZONTAL );
 
     wxButton *item15 = new wxButton( parent, wxID_OK, _("Connect"), wxDefaultPosition, wxDefaultSize, 0 );
