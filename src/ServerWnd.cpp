@@ -197,7 +197,7 @@ void CServerWnd::UpdateED2KInfo()
 		// Previously this row was inserted with an empty label and just
 		// "LowID"/"HighID" in column 1, leaving a value with no key.
 		// Give it an explicit label so the row is self-explanatory.
-		ED2KInfoList->InsertItem(3, _("Connection Type"));
+		ED2KInfoList->InsertItem(3, _("Connection Type:"));
 		ED2KInfoList->SetItem(3, 1, theApp->serverconnect->IsLowID() ? _("LowID") : _("HighID"));
 	} else {
 		// No data
