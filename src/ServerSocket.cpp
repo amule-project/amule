@@ -441,7 +441,22 @@ bool CServerSocket::ProcessPacket(const uint8_t* packet, uint32 size, int8 opcod
 
 					uint32 nTags = data.ReadUInt32();
 					for (uint32 i = 0; i < nTags; i++){
-						CTag tag(data, update->GetUnicodeSupport());
+						// Force Unicode=true rather than relying on the
+						// server's SRV_TCPFLG_UNICODE bit: many
+						// real-world servers ship UTF-8 strings (emoji
+						// in names, non-ASCII descriptions) without
+						// advertising the capability flag, and parsing
+						// those bytes as non-Unicode mangles them.
+						// Matches the hardcoded Unicode=true already
+						// used for search-result parsing at the top
+						// of this file. The .met-file parse path
+						// (Server.cpp::AddTagFromFile) also uses
+						// hardcoded Unicode=true, so this aligns the
+						// runtime update with the load-time read and
+						// stops the "name correct on first display,
+						// garbled a few seconds later" regression.
+						// (#831)
+						CTag tag(data, true);
 						if (tag.GetNameID() == ST_SERVERNAME){
 							update->SetListName(tag.GetStr());
 						} else if (tag.GetNameID() == ST_DESCRIPTION){
