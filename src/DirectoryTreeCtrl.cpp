@@ -93,7 +93,14 @@ void CDirectoryTreeCtrl::ApplyRecursiveMark(wxTreeItemId hItem, bool isRecursive
 		// orthogonal axis (plain bold for explicit / inside-recursive
 		// shares); clearing the custom font here doesn't drop that
 		// attribute -- IsBold-based logic continues to work.
-		SetItemFont(hItem, wxNullFont);
+		//
+		// Pass GetFont() rather than wxNullFont: on wxMSW 3.2,
+		// wxTreeCtrl::SetItemFont calls wxFont::WXAdjustToPPI() on
+		// the supplied font for DPI adjustment, and WXAdjustToPPI
+		// dereferences the font's refdata without a null check.
+		// wxNullFont has no refdata -> access violation. The tree's
+		// own font has valid refdata, so we route through it. (#827)
+		SetItemFont(hItem, GetFont());
 	}
 }
 
