@@ -1712,9 +1712,20 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
 
 wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_sizer )
 {
-    wxFlexGridSizer *item0 = new wxFlexGridSizer( 1, 0, 0 );
-    item0->AddGrowableCol( 0 );
-    item0->AddGrowableRow( 1 );
+    // Plain vertical box (was a 1-col wxFlexGridSizer with AddGrowableRow(1)
+    // before #832). The flex grid was triggering hover-time GTK warnings
+    // ("Negative content height -15 (allocation 9, extents 12x12) while
+    // allocating gadget (node scale, owner GtkScale)" and the matching
+    // GtkCheckButton "for_size smaller than min-size (0 < 14)") on the
+    // three sliders and the IDC_PREVENT_SLEEP checkbox: GTK's hover
+    // re-layout pass on a tab inside a wxNotebook can query child sizes
+    // against a not-yet-realised parent, and a flex grid then
+    // redistributes sub-minimum vertical allocations to the growable
+    // row's static box, which the GtkScale trough and GtkCheckButton
+    // check node refuse with a g_warning. A wxBoxSizer (the same shape
+    // every other prefs tab uses) keeps each child at its intrinsic
+    // height instead, and the warnings stop.
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
     wxBoxSizer *item1 = new wxBoxSizer( wxVERTICAL );
 
