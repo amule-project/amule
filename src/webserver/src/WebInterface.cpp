@@ -446,45 +446,30 @@ void CamulewebApp::LoadConfigFile()
 	if (m_configFile) {
 		// amuleweb historically wrote most keys under [Webserver]
 		// (lowercase 's') but UPnPTCPPort under [WebServer] (capital
-		// S) — an old typo. amule.conf consistently uses [WebServer].
-		// Read from the canonical section first; if a key is missing
-		// there, fall back to the legacy [Webserver] for backward
-		// compatibility with existing installs. SaveConfigFile()
-		// writes only to [WebServer] and deletes the legacy group, so
-		// after one save round-trip the legacy section disappears.
-		// (#818)
-		auto readLong = [&](const wxString& k, long def) -> long {
-			return m_configFile->HasEntry("/WebServer/" + k)
-				? m_configFile->Read("/WebServer/" + k, def)
-				: m_configFile->Read("/Webserver/" + k, def);
-		};
-		auto readBool = [&](const wxString& k, bool* out, bool def) {
-			if (m_configFile->HasEntry("/WebServer/" + k))
-				m_configFile->Read("/WebServer/" + k, out, def);
-			else
-				m_configFile->Read("/Webserver/" + k, out, def);
-		};
-		auto readStr = [&](const wxString& k, const wxString& def) -> wxString {
-			return m_configFile->HasEntry("/WebServer/" + k)
-				? m_configFile->Read("/WebServer/" + k, def)
-				: m_configFile->Read("/Webserver/" + k, def);
-		};
-		auto readHash = [&](const wxString& k, CMD4Hash* h) {
-			if (m_configFile->HasEntry("/WebServer/" + k))
-				m_configFile->ReadHash("/WebServer/" + k, h);
-			else
-				m_configFile->ReadHash("/Webserver/" + k, h);
-		};
-
-		m_WebserverPort = readLong("Port", 4711l);
-		readBool("UPnPWebServerEnabled", &m_UPnPWebServerEnabled, false);
-		m_UPnPTCPPort   = readLong("UPnPTCPPort", 50001l);
-		m_TemplateName  = readStr("Template", "");
-		readBool("UseGzip", &m_UseGzip, false);
-		readBool("AllowGuest", &m_AllowGuest, false);
-		readHash("AdminPassword", &m_AdminPass);
-		readHash("GuestPassword", &m_GuestPass);
-		m_PageRefresh   = readLong("PageRefreshTime", 120l);
+		// S) — an old typo. amule.conf consistently uses [WebServer],
+		// so that's the canonical spelling here too. wxFileConfig
+		// group names are case-insensitive (verified in #822 on Linux
+		// and confirmed by the pre-PR INI shape, where /WebServer and
+		// /Webserver writes always merged into a single section), so
+		// reading `/WebServer/<key>` finds entries written by older
+		// builds that stored them under `/Webserver/<key>` — no
+		// fallback path needed.
+		//
+		// Reading `/Webserver/<key>` directly *would* register the
+		// lowercase section name in wxFileConfig's internal map and
+		// lock the section's case in the output file to lowercase
+		// (the bug @ngosang flagged on the #822 packaging build).
+		// Stick to /WebServer/ everywhere here. (#818)
+		m_WebserverPort = m_configFile->Read("/WebServer/Port", 4711l);
+		m_configFile->Read("/WebServer/UPnPWebServerEnabled",
+			&m_UPnPWebServerEnabled, false);
+		m_UPnPTCPPort  = m_configFile->Read("/WebServer/UPnPTCPPort", 50001l);
+		m_TemplateName = m_configFile->Read("/WebServer/Template", "");
+		m_configFile->Read("/WebServer/UseGzip", &m_UseGzip, false);
+		m_configFile->Read("/WebServer/AllowGuest", &m_AllowGuest, false);
+		m_configFile->ReadHash("/WebServer/AdminPassword", &m_AdminPass);
+		m_configFile->ReadHash("/WebServer/GuestPassword", &m_GuestPass);
+		m_PageRefresh  = m_configFile->Read("/WebServer/PageRefreshTime", 120l);
 	}
 }
 

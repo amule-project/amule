@@ -546,7 +546,7 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 
 	if ( !parser.Found("host", &m_host) ) {
 		if ( m_host.IsEmpty() ) {
-			m_host = "localhost";
+			m_host = "127.0.0.1";
 		}
 	}
 
@@ -592,7 +592,7 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 
 void CaMuleExternalConnector::LoadAmuleConfig(CECFileConfig& cfg)
 {
-	m_host = "localhost";
+	m_host = "127.0.0.1";
 	m_port = cfg.Read("/ExternalConnect/ECPort", 4712l);
 	cfg.ReadHash("/ExternalConnect/ECPassword", &m_password);
 	m_language = cfg.Read("/eMule/Language", "");
@@ -607,13 +607,16 @@ void CaMuleExternalConnector::LoadConfigFile()
 	}
 	if (m_configFile) {
 		m_language = m_configFile->Read("/Locale", "");
-		// amulegui (amule-remote-gui.cpp) reads this same key with a
-		// "localhost" default; match it here so amulecmd/amuleweb
-		// don't write an empty "Host=" line to remote.conf on first
-		// run. The OnCmdLineParsed runtime fallback below keeps the
-		// "no config file at all" path covered as a safety net.
-		// (#821)
-		m_host = m_configFile->Read("/EC/Host", "localhost");
+		// Match the default across amulecmd / amuleweb / amulegui.
+		// Use the literal loopback address rather than "localhost":
+		// on Windows, "localhost" lookups can fail intermittently
+		// (IPv4 vs IPv6 stack ordering, Hosts file shape, ...),
+		// reported on #822 — `Connection Failed. Unable to connect
+		// to localhost:4712`. 127.0.0.1 is portable across every
+		// supported OS and unambiguous. The OnCmdLineParsed runtime
+		// fallback below keeps the "no config file at all" path
+		// covered as a safety net. (#821, #822)
+		m_host = m_configFile->Read("/EC/Host", "127.0.0.1");
 		m_port = m_configFile->Read("/EC/Port", 4712l);
 		m_configFile->ReadHash("/EC/Password", &m_password);
 		m_ZLIB = m_configFile->Read("/EC/ZLIB", 1l) != 0;

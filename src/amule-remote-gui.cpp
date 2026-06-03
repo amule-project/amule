@@ -81,7 +81,12 @@ wxDialog(theApp->amuledlg, -1, _("Connect to remote amule"), wxDefaultPosition)
 	CoreConnect(this, true);
 
 	wxString pref_host, pref_port;
-	wxConfig::Get()->Read("/EC/Host", &pref_host, "localhost");
+	// Use the literal loopback address rather than "localhost":
+	// on Windows, "localhost" lookups can fail intermittently
+	// (IPv4 vs IPv6 stack ordering, hosts-file shape, ...).
+	// 127.0.0.1 is portable across every supported OS. Same default
+	// as amulecmd / amuleweb (CaMuleExternalConnector). (#822)
+	wxConfig::Get()->Read("/EC/Host", &pref_host, "127.0.0.1");
 	wxConfig::Get()->Read("/EC/Port", &pref_port, "4712");
 	wxConfig::Get()->Read("/EC/Password", &pwd_hash);
 
