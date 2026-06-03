@@ -261,20 +261,26 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 		// tree without having to expand them all from disk.
 		DelRecursiveShare(fullPath);
 		DelSharesUnder(fullPath);
-		// Drop the bold-italic font marker too; the underlying
-		// recursive intent is gone.
-		ApplyRecursiveMark(hItem, false);
 	} else {
 		AddRecursiveShare(fullPath);
-		// Apply the bold-italic marker so the user can tell at
-		// a glance which item carries the recursive intent (vs
-		// the descendants which inherit it visually as plain bold).
-		ApplyRecursiveMark(hItem, true);
 	}
 
 	// Walk only the *already-loaded* descendants so the in-tree
 	// visual stays consistent without forcing any disk I/O.
+	// CheckChanged inside this walk resets hItem's per-item font to
+	// match the new bold state (plain when unsharing, bold when
+	// sharing), so the recursive-off path needs no separate font
+	// revert.
 	MarkChildren(hItem, !wasBold, false);
+
+	if (!wasBold) {
+		// Overlay the bold-italic marker so the user can tell at a
+		// glance which item carries the recursive intent (vs the
+		// descendants which inherit it visually as plain bold).
+		// Must run *after* MarkChildren so CheckChanged's plain-bold
+		// per-item font on hItem doesn't clobber the italic marker.
+		ApplyRecursiveMark(hItem, true);
+	}
 	HasChanged = true;
 }
 
@@ -556,6 +562,15 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked, bool re
 {
 	if (IsBold(hItem) != bChecked) {
 		SetItemBold(hItem, bChecked);
+		// Mirror the bold state into the per-item font. wxMSW honors
+		// a per-item font over TVIS_BOLD, so leaving a plain-font
+		// override in place would make a subsequent SetItemBold(true)
+		// render as plain (#827 fallout: after the recursive marker
+		// is cleared the per-item font becomes plain GetFont(); a
+		// later double-click would set TVIS_BOLD but display unbold).
+		// No-op on wxGTK/wxOSX where TVIS_BOLD overlays the per-item
+		// font.
+		SetItemFont(hItem, bChecked ? GetFont().Bold() : GetFont());
 
 		const CPath fullPath = GetFullPath(hItem);
 		bool wasRecursive = false;
