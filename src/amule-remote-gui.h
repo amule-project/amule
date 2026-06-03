@@ -725,6 +725,12 @@ public:
 
 	bool ShowConnectionDialog();
 
+	// Tear down and recreate the EC client socket so a fresh
+	// ConnectToCore can run after a failed attempt left m_connect's
+	// auth state half-initialised. Called on retry from
+	// ShowConnectionDialog / OnECConnection / OnConnectTimeout.
+	void ResetEcConnect();
+
 	class CRemoteConnect *m_connect;
 
 	CEConnectDlg *dialog;

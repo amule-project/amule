@@ -368,13 +368,9 @@ bool CamuleRemoteGuiApp::OnInit()
 	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
 
 	if (ShowConnectionDialog()) {
-		// Watchdog on the EC connect. When the host is unreachable the TCP
-		// SYN can silently time out over several minutes while the main
-		// loop is running with no visible window, which the OS reports as
-		// "not responding". Fire a shorter timeout so we can show an error
-		// and shut down cleanly instead.
-		connect_timeout_timer = new wxTimer(this, ID_REMOTE_CONNECT_TIMEOUT_TIMER);
-		connect_timeout_timer->StartOnce(15000);
+		// The watchdog timer is armed inside ShowConnectionDialog right
+		// before each ConnectToCore call — the retry loop re-arms it on
+		// every attempt, so OnInit doesn't need to touch it here.
 		AddLogLineNS(_("Going to event loop..."));
 		return true;
 	}
@@ -410,27 +406,84 @@ bool CamuleRemoteGuiApp::CryptoAvailable() const
 
 bool CamuleRemoteGuiApp::ShowConnectionDialog()
 {
-	dialog = new CEConnectDlg;
-
-	if (m_skipConnectionDialog) {
-		wxCommandEvent evt;
-		dialog->OnOK(evt);
-	} else if (dialog->ShowModal() != wxID_OK) {
-		dialog->Destroy();
-
-		return false;
-	}
-	AddLogLineNS(_("Connecting..."));
-	m_connect->SetForceZlib(dialog->ForceZlib());
-	if (!m_connect->ConnectToCore(dialog->Host(), dialog->Port(),
-		dialog->Login(), dialog->PassHash(),
-		"amule-remote", "0x0001")) {
-		wxMessageBox(_("Connection failed "),_("ERROR"),wxOK);
-
-		return false;
+	// The dialog is kept alive across retry attempts so the values the
+	// user typed (host / port / password / Force-ZLIB) survive a wrong
+	// guess — they only need to fix the field that was wrong instead of
+	// re-typing everything. Destroyed in Startup() on success or below
+	// when the user cancels.
+	if (!dialog) {
+		dialog = new CEConnectDlg;
 	}
 
-	return true;
+	while (true) {
+		if (m_skipConnectionDialog) {
+			wxCommandEvent evt;
+			dialog->OnOK(evt);
+			// --skip is a one-shot: on retry the user must see the
+			// dialog so they can correct the bad values.
+			m_skipConnectionDialog = false;
+		} else if (dialog->ShowModal() != wxID_OK) {
+			dialog->Destroy();
+			dialog = NULL;
+			return false;
+		}
+
+		AddLogLineNS(_("Connecting..."));
+		// Watchdog on the EC connect. When the host is unreachable the
+		// TCP SYN can silently time out over several minutes while the
+		// main loop is running with no visible window, which the OS
+		// reports as "not responding". Fire a shorter timeout so we
+		// can show an error and re-prompt instead. Re-armed on every
+		// retry attempt so the user gets the same 15s budget each time.
+		delete connect_timeout_timer;
+		connect_timeout_timer = new wxTimer(this, ID_REMOTE_CONNECT_TIMEOUT_TIMER);
+		connect_timeout_timer->StartOnce(15000);
+
+		// Apply the dialog's Force-ZLIB checkbox state to the EC client
+		// before each ConnectToCore attempt (re-applied per retry so
+		// the user can toggle it between attempts if they need to).
+		m_connect->SetForceZlib(dialog->ForceZlib());
+		if (m_connect->ConnectToCore(dialog->Host(), dialog->Port(),
+			dialog->Login(), dialog->PassHash(),
+			"amule-remote", "0x0001")) {
+			// Sync part succeeded; async OnECConnection will
+			// resolve the auth outcome.
+			return true;
+		}
+
+		// Sync failure (DNS / immediate connect-refused). The async
+		// path won't fire — cancel the watchdog ourselves, show the
+		// error, recreate the EC client so its half-baked socket
+		// state is gone, and loop back to the dialog.
+		connect_timeout_timer->Stop();
+		delete connect_timeout_timer;
+		connect_timeout_timer = NULL;
+		wxMessageBox(_("Connection failed. Please check the host, port, and password."),
+			_("ERROR"), wxOK | wxICON_ERROR);
+		ResetEcConnect();
+	}
+}
+
+
+void CamuleRemoteGuiApp::ResetEcConnect()
+{
+	// Tear down the busted EC client and recreate a fresh one. The
+	// CRemoteConnect's socket / auth state isn't safe to reuse after
+	// a failed handshake. glob_prefs holds a reference to m_connect
+	// so it's reborn alongside. Both objects are only fully wired
+	// into the rest of the app by Startup(), which doesn't run until
+	// a successful connect — recreating them here is safe.
+	delete glob_prefs;
+	glob_prefs = NULL;
+	if (m_connect) {
+		m_connect->Destroy();
+		m_connect = NULL;
+	}
+	m_connect = new CRemoteConnect(this);
+	glob_prefs = new CPreferencesRem(m_connect);
+	long enableZLIB;
+	wxConfig::Get()->Read("/EC/ZLIB", &enableZLIB, 1);
+	m_connect->SetCapabilities(enableZLIB != 0, true, false);
 }
 
 
@@ -448,15 +501,30 @@ void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
 	if (evt.GetResult() == true) {
 		// Connected - go to next init step
 		glob_prefs->LoadRemote();
-	} else {
-		AddLogLineNS(_("Going down"));
-		if (dialog) {	// connect failed
-			wxMessageBox(
+	} else if (dialog) {
+		// Connect failed during the initial attempt or a previous
+		// retry (dialog is still alive — it's only destroyed in
+		// Startup() after a successful connect). Show the error,
+		// reset the EC client, and reopen the dialog with the
+		// previous values still in place so the user can fix the
+		// wrong field and try again. If the user cancels the retry,
+		// then we shut down.
+		wxMessageBox(
 			(CFormat(_("Connection Failed. Unable to connect to %s:%d\n")) % dialog->Host() % dialog->Port()) + reply,
-			_("ERROR"), wxOK);
-		} else {		// server disconnected (probably terminated) later
-			wxMessageBox(_("Connection closed - aMule has terminated probably."), _("ERROR"), wxOK);
+			_("ERROR"), wxOK | wxICON_ERROR);
+		ResetEcConnect();
+		if (!ShowConnectionDialog()) {
+			AddLogLineNS(_("Going down"));
+			wxCloseEvent ev;
+			ShutDown(ev);
+			ExitMainLoop();
 		}
+	} else {
+		// Server disconnected after Startup() already ran — the
+		// dialog is gone, the rest of the app is wired up, and we
+		// have no clean path back. Tell the user and shut down.
+		AddLogLineNS(_("Going down"));
+		wxMessageBox(_("Connection closed - aMule has terminated probably."), _("ERROR"), wxOK);
 		wxCloseEvent ev;
 		ShutDown(ev);
 		ExitMainLoop();
@@ -476,9 +544,14 @@ void CamuleRemoteGuiApp::OnConnectTimeout(wxTimerEvent&)
 			% host % port,
 		_("ERROR"), wxOK | wxICON_ERROR);
 
-	wxCloseEvent ev;
-	ShutDown(ev);
-	ExitMainLoop();
+	// Reset the EC client and reopen the dialog so the user can
+	// correct the host / port / etc. If they cancel, then quit.
+	ResetEcConnect();
+	if (!ShowConnectionDialog()) {
+		wxCloseEvent ev;
+		ShutDown(ev);
+		ExitMainLoop();
+	}
 }
 
 
