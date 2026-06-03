@@ -278,7 +278,16 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, uint32 ip, 
 
 						uint32 uTags = packet.ReadUInt32();
 						for (uint32 i = 0; i < uTags; ++i) {
-							CTag tag(packet, update->GetUnicodeSupport());
+							// Force Unicode=true rather than relying on the
+							// server's SRV_TCPFLG_UNICODE bit: many real-world
+							// servers ship UTF-8 strings (emoji in names,
+							// non-ASCII descriptions) without advertising the
+							// capability flag, and parsing as non-Unicode
+							// mangles them. The OP_SERVERIDENT handler in
+							// ServerSocket.cpp does the same, and the .met
+							// load-time parse uses hardcoded Unicode=true.
+							// (#831)
+							CTag tag(packet, true);
 							switch (tag.GetNameID()) {
 								case ST_SERVERNAME:
 									update->SetListName(tag.GetStr());
