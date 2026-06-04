@@ -649,8 +649,14 @@ bool CamuleApp::OnInit()
 	// bugfix - do this before creating the uploadqueue
 	downloadqueue	= new CDownloadQueue();
 	uploadqueue	= new CUploadQueue();
-	partFileWriteThread = new CPartFileWriteThread();
-	partFileHashThread = new CPartFileHashThread();
+	// partFileWriteThread / partFileHashThread are constructed AFTER
+	// InitGui() further down — both spawn a wxThread in their ctor,
+	// and the amuled `-f` fork only carries the calling thread to the
+	// child. Constructing them here (pre-fork) would leave the C++
+	// objects alive in the daemon child with their POSIX threads gone,
+	// so FlushBuffer's PB_PENDING items would never drain and the
+	// `.part` file would stay at 0 bytes despite the network side
+	// happily receiving chunks (#849).
 	ipfilter	= new CIPFilter();
 
 	// Creates all needed listening sockets
@@ -687,6 +693,15 @@ bool CamuleApp::OnInit()
 	// Start disk I/O thread — must be after uploadBandwidthThrottler.
 	// eMule ref: emule.cpp:748
 	uploadDiskIOThread = new CUploadDiskIOThread();
+
+	// Download disk-write and hashing threads. Same constraint as the
+	// upload disk I/O thread above: each ctor calls wxThread::Run(),
+	// and amuled's `-f` fork above only carries the calling thread to
+	// the child. Constructing them post-fork ensures the spawned
+	// POSIX threads belong to the daemon child and actually drain the
+	// PartFileBufferedData queue (#849).
+	partFileWriteThread = new CPartFileWriteThread();
+	partFileHashThread = new CPartFileHashThread();
 
 	m_AsioService = new CAsioService;
 
