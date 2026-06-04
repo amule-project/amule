@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-04 16:13+0200\n"
-"PO-Revision-Date: 2026-05-31 07:53+0300\n"
+"PO-Revision-Date: 2026-06-04 21:30+0300\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
 "Language: tr\n"
@@ -585,24 +585,21 @@ msgid "Forum: https://github.com/amule-org/amule/discussions \n"
 msgstr "Forumumuz: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
-#, fuzzy
 msgid "Documentation: https://amule-org.github.io/docs \n"
-msgstr "Web Sitemiz: https://amule-org.github.io \n"
+msgstr "Belgelendirme: https://amule-org.github.io/docs \n"
 
 #: src/amuleDlg.cpp:529
-#, fuzzy
 msgid ""
 "Issues: https://github.com/amule-org/amule/issues \n"
 "\n"
-msgstr "Forumumuz: https://github.com/amule-org/amule/discussions \n"
+msgstr "Hata raporları: https://github.com/amule-org/amule/issues \n"
 
 #: src/amuleDlg.cpp:530
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2026 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (c) 2003-2019 aMule Ekibi \n"
+"Copyright (c) 2003-2026 aMule Ekibi \n"
 "\n"
 
 #: src/amuleDlg.cpp:531
@@ -872,6 +869,8 @@ msgstr "Bağlanıyor…"
 #: src/amule-remote-gui.cpp:461
 msgid "Connection failed. Please check the host, port, and password."
 msgstr ""
+"Bağlantı başarısız oldu. Lütfen makine ismini, bağlantı noktasını ve "
+"parolayı kontrol edin."
 
 #: src/amule-remote-gui.cpp:498
 msgid "Remote GUI EC event handler"
@@ -2195,6 +2194,9 @@ msgid ""
 "Force ZLIB compression regardless of dialed-IP locality (useful when the "
 "server is reachable over a VPN tunnel that resolves to a LAN IP)."
 msgstr ""
+"Seçilen IP adresinin konumuna bakılmaksızın ZLIB sıkıştırmasını zorla "
+"(sunucuya, bir LAN IP adresine çözümlenen VPN tüneli üzerinden "
+"erişilebildiğinde kullanışlıdır)."
 
 #: src/FileDetailDialog.cpp:76
 msgid "File Details"
@@ -3867,7 +3869,7 @@ msgstr "Paylaşılan dizinleri değişiklikler için otomatik olarak tekrar tara
 
 #: src/muuli_wdr.cpp:1605
 msgid "Follow symbolic links in shared folders"
-msgstr ""
+msgstr "Paylaşılan dizinlerdeki simgesel bağlantıları takip et"
 
 #: src/muuli_wdr.cpp:1624
 msgid "Graphs"
@@ -4554,9 +4556,8 @@ msgid "Remember those settings"
 msgstr "Bu ayarları hatırla"
 
 #: src/muuli_wdr.cpp:2625
-#, fuzzy
 msgid "Force ZLIB compression"
-msgstr "Gzip sıkıştırması kullan"
+msgstr "ZLIB sıkıştırmasını zorla"
 
 #: src/muuli_wdr.cpp:2649
 msgid "Enable Verbose Debug-Logging."
@@ -6024,6 +6025,8 @@ msgstr "UYARI: %s (%s) - %s"
 msgid ""
 "Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
 msgstr ""
+"%s (%s) sunucusu oturum açmamızı reddetti (hiçbir istemci kimliği tahsis "
+"etmedi). Bağlantı kesiliyor."
 
 #: src/ServerSocket.cpp:362
 #, c-format
@@ -6114,9 +6117,8 @@ msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:200
-#, fuzzy
 msgid "Connection Type:"
-msgstr "Bağlantı Durumu:"
+msgstr "Bağlantı Türü:"
 
 #: src/ServerWnd.cpp:218
 msgid "Kademlia Status:"
