@@ -33,15 +33,15 @@ For building from source, see [INSTALL.md](INSTALL.md).
 ### AppImage (recommended)
 
 A single self-contained binary that runs on any modern distro
-(glibc ≥ 2.31). Both `x86_64` and `aarch64` builds are published.
+(glibc ≥ 2.31). Both `x64` and `arm64` builds are published.
 
-1. Download `aMule-<version>-<arch>.AppImage` from the
+1. Download `aMule-<version>-Linux-<arch>.AppImage` from the
    [Releases page][rel].
 2. Make it executable and run:
 
    ```sh
-   chmod +x aMule-*-*.AppImage
-   ./aMule-*-*.AppImage
+   chmod +x aMule-*-Linux-*.AppImage
+   ./aMule-*-Linux-*.AppImage
    ```
 
 On first launch aMule offers to install a `.desktop` entry into
@@ -57,10 +57,10 @@ your application menu (opt-in, reversible — declined runs and the
 
 ### Flatpak
 
-Sandboxed install via `flatpak`. Both `x86_64` and `aarch64` builds
+Sandboxed install via `flatpak`. Both `x64` and `arm64` builds
 are published.
 
-1. Download `aMule-<version>-<arch>.flatpak` from the
+1. Download `aMule-<version>-Linux-<arch>.flatpak` from the
    [Releases page][rel].
 2. Install and run:
 
@@ -138,7 +138,7 @@ and dependencies. Pick whichever fits your workflow.
 
 ### NSIS installer (recommended)
 
-1. Download `aMule-<version>-Setup-<arch>.exe` from the
+1. Download `aMule-<version>-Windows-Setup-<arch>.exe` from the
    [Releases page][rel].
 2. Run it. The wizard offers per-user (no admin) or all-users
    (admin elevation) install, an option to create desktop /
@@ -186,7 +186,7 @@ filename). To verify locally:
 sha256sum aMule-*-*.AppImage                   # Linux
 shasum -a 256 aMule-*-*.dmg                     # macOS
 certutil -hashfile aMule-*.zip SHA256           # Windows portable
-certutil -hashfile aMule-*-Setup-*.exe SHA256   # Windows installer
+certutil -hashfile aMule-*-Windows-Setup-*.exe SHA256   # Windows installer
 ```
 
 Compare against the value on the release page.
@@ -271,18 +271,19 @@ The AppImage dispatches on its own filename — symlink it to the
 tool name you want and invoke the symlink:
 
 ```sh
-ln -s aMule-3.0.0-x86_64.AppImage amuled
+ln -s aMule-3.0.0-Linux-x64.AppImage amuled
 ./amuled --full-daemon
 
-ln -s aMule-3.0.0-x86_64.AppImage amulecmd
+ln -s aMule-3.0.0-Linux-x64.AppImage amulecmd
 ./amulecmd -h 127.0.0.1 -p 4712 -P <password>
 
-ln -s aMule-3.0.0-x86_64.AppImage amulegui
+ln -s aMule-3.0.0-Linux-x64.AppImage amulegui
 ./amulegui
 ```
 
-Arch suffixes on the symlink are tolerated (`amuled-x86_64`,
-`amulecmd-aarch64`, etc.), as is a trailing `.AppImage`.
+Arch suffixes on the symlink are tolerated in both the release-asset
+spelling (`amuled-x64`, `amulecmd-arm64`) and the legacy uname spelling
+(`amuled-x86_64`, `amulecmd-aarch64`), as is a trailing `.AppImage`.
 
 ### Linux Flatpak
 
