@@ -530,8 +530,8 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 		_("Copyright (c) 2003-2026 aMule Team \n\n") <<
 		_("Part of aMule is based on \n") <<
 		_("Kademlia: Peer-to-peer routing based on the XOR metric.\n") <<
-                _(" Copyright (c) 2002-2011 Petar Maymounkov ( petar@post.harvard.edu )\n") <<
-		_("http://kademlia.scs.cs.nyu.edu\n");
+                _(" Copyright (c) 2002-2011 Petar Maymounkov ( petar@maymounkov.org )\n") <<
+		_("https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n");
 
 	if (m_is_safe_state) {
 		wxMessageBox(msg, _("Message"), wxOK | wxICON_INFORMATION, this);

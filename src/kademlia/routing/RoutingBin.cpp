@@ -21,8 +21,8 @@
 
 // This work is based on the java implementation of the Kademlia protocol.
 // Kademlia: Peer-to-peer routing based on the XOR metric
-// Copyright (c) 2002-2011  Petar Maymounkov ( petar@post.harvard.edu )
-// http://kademlia.scs.cs.nyu.edu
+// Copyright (c) 2002-2011  Petar Maymounkov ( petar@maymounkov.org )
+// https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf
 
 // Note To Mods //
 /*
