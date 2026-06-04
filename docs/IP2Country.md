@@ -139,10 +139,9 @@ If the feature is enabled but flags don't appear:
 
 * Confirm the file exists at the expected path and is non-empty.
 * Confirm `Show country flags for clients` is ticked under
-  `Preferences` → `GUI Tweaks`.
-* Confirm aMule was built with IP2Country support: at startup the
-  log line `aMule enabled options: …` reports `ENABLE_IP2COUNTRY` /
-  `libmaxminddb` and the configured library path.
+  `Preferences` → `GUI Tweaks`. The presence of this option (and of
+  the `IP2Country` settings page) implies the binary was built with
+  `ENABLE_IP2COUNTRY` — both UI surfaces are `#ifdef`-gated.
 * Restart aMule after changing the database file (it is opened with
   `MMDB_MODE_MMAP` and not re-checked on the fly).
 
