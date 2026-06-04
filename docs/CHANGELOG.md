@@ -5,7 +5,7 @@ The history of every aMule release. Versions are listed newest first.
 ---
 
 ## Version 3.0.0 — "alive again"
-2026-MM-DD
+2026-06-08
 
 First major release in 5+ years (since 2.3.3, 2021-02-07). Headline changes are dramatic throughput improvements, full build-system overhaul, modernized dependency stack, native binaries for Linux / macOS / Windows, and a broad legacy-API cleanup.
 
