@@ -35,7 +35,9 @@
   <url type="help">https://amule-org.github.io/docs</url>
 
   <!-- TODO: Auto generate me from changelog! -->
-  <releases></releases>
+  <releases>
+    <release version="3.0.0" date="2026-06-08"/>
+  </releases>
 
   <launchable type="desktop-id">org.amule.aMule.desktop</launchable>
   <screenshots>
