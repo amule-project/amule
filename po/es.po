@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-05 15:21+0200\n"
-"PO-Revision-Date: 2026-05-18 21:57+0200\n"
+"POT-Creation-Date: 2026-06-05 21:43+0200\n"
+"PO-Revision-Date: 2026-06-05 23:16+0200\n"
 "Last-Translator: micrococo\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -56,8 +56,8 @@ msgid ""
 msgstr ""
 "aMule puede instalar un lanzador de escritorio y un icono en su directorio "
 "personal para que aparezca en el menú de aplicaciones como una aplicación "
-"instalada normalmente. Esto es reversible — los archivos se guardan en "
-"~/.local/share/applications y ~/.local/share/icons y se pueden eliminar en "
+"instalada normalmente. Esto es reversible — los archivos se guardan en ~/."
+"local/share/applications y ~/.local/share/icons y se pueden eliminar en "
 "cualquier momento.\n"
 "\n"
 "¿Instalar la integración de escritorio ahora?"
@@ -160,7 +160,7 @@ msgstr "Reiniciar ahora"
 msgid "Later"
 msgstr "Más tarde"
 
-#: src/amuleAppCommon.cpp:173
+#: src/amuleAppCommon.cpp:174
 #, c-format
 msgid "Could not add %u link from ED2KLinks file (see log for details)."
 msgid_plural ""
@@ -172,7 +172,7 @@ msgstr[1] ""
 "No se pudieron añadir %u enlaces del archivo ED2KLinks (consulta el log para "
 "más detalles)"
 
-#: src/amuleAppCommon.cpp:175 src/amule.cpp:866 src/amule.cpp:980
+#: src/amuleAppCommon.cpp:176 src/amule.cpp:866 src/amule.cpp:980
 #: src/amule.cpp:1275 src/amule-remote-gui.cpp:462 src/amule-remote-gui.cpp:514
 #: src/amule-remote-gui.cpp:527 src/amule-remote-gui.cpp:545
 #: src/amule-remote-gui.cpp:880 src/amule-remote-gui.cpp:909
@@ -180,11 +180,11 @@ msgstr[1] ""
 msgid "ERROR"
 msgstr "ERROR"
 
-#: src/amuleAppCommon.cpp:178
+#: src/amuleAppCommon.cpp:179
 msgid "Failed to open ED2KLinks file."
 msgstr "Error al abrir el archivo de enlaces ED2K."
 
-#: src/amuleAppCommon.cpp:251
+#: src/amuleAppCommon.cpp:252
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -360,11 +360,11 @@ msgstr ""
 
 #: src/amule.cpp:1260
 msgid ""
-"at https://amule-org.github.io, or in our IRC channel #aMule at "
-"irc.libera.chat.\n"
+"at https://amule-org.github.io, or in our IRC channel #aMule at irc.libera."
+"chat.\n"
 msgstr ""
-"en https://amule-org.github.io, o en nuestro canal de IRC #aMule en "
-"irc.libera.chat.\n"
+"en https://amule-org.github.io, o en nuestro canal de IRC #aMule en irc."
+"libera.chat.\n"
 
 #: src/amule.cpp:1262
 msgid ""
@@ -547,8 +547,8 @@ msgid ""
 msgstr ""
 "ERROR: se requiere una contraseña para usar conexiones externas, y el "
 "servicio aMule no se puede usar sin conexiones externas. Para iniciar el "
-"servicio aMule, debe especificar en el campo \"ECPassword\" del archivo "
-"~/.aMule/amule.conf el valor apropiado. Ejecute amuled con el parámetro --ec-"
+"servicio aMule, debe especificar en el campo \"ECPassword\" del archivo ~/."
+"aMule/amule.conf el valor apropiado. Ejecute amuled con el parámetro --ec-"
 "config para especificar la contraseña. Se puede encontrar más información en "
 "https://amule-org.github.io/docs"
 
@@ -616,24 +616,25 @@ msgid "Forum: https://github.com/amule-org/amule/discussions \n"
 msgstr "Foro: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
-#, fuzzy
 msgid "Documentation: https://amule-org.github.io/docs \n"
-msgstr "Web: https://amule-org.github.io \n"
+msgstr ""
+"Documentación: https://amule-org.github.io/docs \n"
+"\n"
 
 #: src/amuleDlg.cpp:529
-#, fuzzy
 msgid ""
 "Issues: https://github.com/amule-org/amule/issues \n"
 "\n"
-msgstr "Foro: https://github.com/amule-org/amule/discussions \n"
+msgstr ""
+"Problemas: https://github.com/amule-org/amule/issues \n"
+"\n"
 
 #: src/amuleDlg.cpp:530
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2026 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (c) 2003-2019 El equipo de aMule \n"
+"Copyright (c) 2003-2026 El equipo de aMule \n"
 "\n"
 
 #: src/amuleDlg.cpp:531
@@ -903,7 +904,7 @@ msgstr "Conectando..."
 
 #: src/amule-remote-gui.cpp:461
 msgid "Connection failed. Please check the host, port, and password."
-msgstr ""
+msgstr "Conexión fallida. Por favor, comprueba el host, puerto y contraseña."
 
 #: src/amule-remote-gui.cpp:498
 msgid "Remote GUI EC event handler"
@@ -2265,6 +2266,9 @@ msgid ""
 "Force ZLIB compression regardless of dialed-IP locality (useful when the "
 "server is reachable over a VPN tunnel that resolves to a LAN IP)."
 msgstr ""
+"Forzar compresión ZLIB aunque se conecte a una IP local/LAN (útil cuando se "
+"conecta al servidor a través de un túnel VPN que se resuelve a una IP de "
+"LAN)."
 
 #: src/FileDetailDialog.cpp:76
 msgid "File Details"
@@ -2624,8 +2628,8 @@ msgstr[1] "Leídos %u contactos Kad"
 #: src/kademlia/routing/RoutingZone.cpp:287
 msgid "No contacts found, please bootstrap, or download a nodes.dat file."
 msgstr ""
-"Contactos no encontrados; por favor, inicialice o descargue un archivo "
-"nodes.dat."
+"Contactos no encontrados; por favor, inicialice o descargue un archivo nodes."
+"dat."
 
 #: src/kademlia/routing/RoutingZone.cpp:305
 #, c-format
@@ -2738,9 +2742,8 @@ msgid "Connection failure"
 msgstr "Error de conexión"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:254
-#, fuzzy
 msgid "External Connection lost — exiting."
-msgstr "Conexión externa cerrada."
+msgstr "Conexión Externa perdida - saliendo."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:318
 msgid "EC connection failed. Empty reply."
@@ -3621,7 +3624,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1225
 msgid "Start aMule automatically when I log in"
-msgstr ""
+msgstr "Iniciar aMule automáticamente al iniciar sesión"
 
 #: src/muuli_wdr.cpp:1226
 msgid ""
@@ -3629,6 +3632,9 @@ msgid ""
 "If you move the aMule binary, launch aMule once manually afterwards to "
 "refresh the entry."
 msgstr ""
+"Registra una entrada en el SO por usuario para arrancar automáticamente "
+"aMule al iniciar sesión. Si se mueve el binario de aMule, tras ello deberá "
+"lanzarse una vez manualmente para actualizar esa entrada."
 
 #: src/muuli_wdr.cpp:1229
 msgid "Start minimized"
@@ -3977,7 +3983,7 @@ msgstr "Buscar cambios automáticamente en los directorios compartidos"
 
 #: src/muuli_wdr.cpp:1605
 msgid "Follow symbolic links in shared folders"
-msgstr ""
+msgstr "Seguir enlaces simbólicos en las carpetas compartidas"
 
 #: src/muuli_wdr.cpp:1624
 msgid "Graphs"
@@ -4478,8 +4484,8 @@ msgstr "Filtrar los servidores"
 msgid ""
 "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
-"Habilitar el filtrado de las IP de servidores definidas en el archivo "
-"~/.aMule/ipfilter.dat"
+"Habilitar el filtrado de las IP de servidores definidas en el archivo ~/."
+"aMule/ipfilter.dat"
 
 #: src/muuli_wdr.cpp:2407
 msgid "Reload List"
@@ -4673,9 +4679,8 @@ msgid "Remember those settings"
 msgstr "Recordar estas opciones"
 
 #: src/muuli_wdr.cpp:2625
-#, fuzzy
 msgid "Force ZLIB compression"
-msgstr "Usar la compresión gzip"
+msgstr "Forzar compresión ZLIB"
 
 #: src/muuli_wdr.cpp:2649
 msgid "Enable Verbose Debug-Logging."
@@ -5021,6 +5026,8 @@ msgstr "Error de E/S al guardar el archivo de partes: "
 #, c-format
 msgid "Wrote 0/unknown bytes to '%s' -- preserving existing .part.met."
 msgstr ""
+"Se escribieron 0/desconocidos bytes a '%s' -- conservando .part.met "
+"existente."
 
 #: src/PartFile.cpp:1110
 #, c-format
@@ -5561,15 +5568,16 @@ msgid ""
 "Could not register aMule for autostart at login. The autostart store may be "
 "read-only."
 msgstr ""
+"No se pudo registrar aMule para arrancar automáticamente al iniciar sesión. "
+"El almacén de arranque automático podría ser de sólo lectura."
 
 #: src/PrefsUnifiedDlg.cpp:913
 msgid "Could not remove the autostart-at-login entry."
-msgstr ""
+msgstr "No se pudo eliminar la entrada de arranque automático."
 
 #: src/PrefsUnifiedDlg.cpp:914
-#, fuzzy
 msgid "Autostart"
-msgstr "Actualización automática iniciada"
+msgstr "Arranque automático"
 
 #: src/PrefsUnifiedDlg.cpp:979
 msgid ""
@@ -6169,6 +6177,8 @@ msgstr "AVISO: %s (%s) - %s"
 msgid ""
 "Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
 msgstr ""
+"El servidor %s (%s) rechazó nuestro login (no se asignó ID de cliente). "
+"Desconectando."
 
 #: src/ServerSocket.cpp:362
 #, c-format
@@ -6259,9 +6269,8 @@ msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:200
-#, fuzzy
 msgid "Connection Type:"
-msgstr "Estado de la conexión:"
+msgstr "Tipo de conexión:"
 
 #: src/ServerWnd.cpp:218
 msgid "Kademlia Status:"
