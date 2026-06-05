@@ -23,59 +23,7 @@
 
 #include <wx/fileconf.h>
 
-#include <clocale>
-#include <cstdlib>
-#include <cstring>
-
-
-// RAII helper that pins LC_CTYPE to "C" for the duration of its scope
-// and restores the previous value on destruction.
-//
-// Purpose: wxFileConfig's case-insensitive entry / group name lookups
-// go through wxString::CmpNoCase, which on POSIX bottoms out at the
-// libc case-folding family (strcasecmp / wcscasecmp). On glibc those
-// routines read LC_CTYPE — and in a Turkish locale (tr_TR) the
-// folding for 'I' / 'i' diverges from C / English. wxFileConfig's
-// in-memory entry tree is a sorted array; the sort order is fixed at
-// the locale active at parse time, and a session that subsequently
-// switches LC_CTYPE (which is what wxLocale::Init does internally,
-// since it calls setlocale(LC_ALL, ...)) silently desyncs the array
-// invariant from the comparator. The binary-search lookups then
-// misnavigate for some entries, FindEntry returns NULL, and Write
-// appends a duplicate to the section. The visible symptom is
-// duplicate `key=value` lines accumulating in `amule.conf` after a
-// session run under a non-C locale (#852).
-//
-// Locking LC_CTYPE to "C" only around wxConfig operations keeps
-// other LC_* categories (LC_MESSAGES for translations, LC_TIME for
-// date formatting, LC_NUMERIC for numbers, and LC_COLLATE for
-// non-config sort orders like filenames in list controls) intact.
-class CCtypeAsciiScope
-{
-public:
-	CCtypeAsciiScope() : m_saved(NULL)
-	{
-		const char* current = std::setlocale(LC_CTYPE, NULL);
-		if (current) {
-			m_saved = strdup(current);
-		}
-		std::setlocale(LC_CTYPE, "C");
-	}
-
-	~CCtypeAsciiScope()
-	{
-		if (m_saved) {
-			std::setlocale(LC_CTYPE, m_saved);
-			std::free(m_saved);
-		}
-	}
-
-	CCtypeAsciiScope(const CCtypeAsciiScope&) = delete;
-	CCtypeAsciiScope& operator=(const CCtypeAsciiScope&) = delete;
-
-private:
-	char* m_saved;
-};
+#include "CCtypeAsciiScope.h"
 
 
 // wxFileConfig subclass that wraps every read / write / flush /
