@@ -1508,6 +1508,24 @@ void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 	} else {
 		static uint64 bytecount = 0;
 
+		// CHashingTask runs against a stable file descriptor, so the
+		// hash completes even if the file is renamed or unlinked
+		// mid-hash. Re-check the path at completion: if the file is
+		// no longer where we hashed it from (move out of the watched
+		// tree, delete during hash, or an interim rename whose final
+		// destination is a different path), drop the result. Surfacing
+		// it would leave a shared-list entry under a filename that
+		// doesn't exist on disk, which peers cannot fetch chunks from.
+		const CPath hashedFullPath =
+			result->GetFilePath().JoinPaths(result->GetFileName());
+		if (!hashedFullPath.FileExists()) {
+			AddDebugLogLineN(logKnownFiles,
+				CFormat("Hashed file vanished before share, dropping: %s")
+					% hashedFullPath);
+			delete result;
+			return;
+		}
+
 		if (knownfiles->SafeAddKFile(result, true)) {
 			AddDebugLogLineN(logKnownFiles,
 				CFormat("Safe adding file to sharedlist: %s") % result->GetFileName());

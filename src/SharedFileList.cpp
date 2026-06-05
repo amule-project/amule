@@ -592,10 +592,45 @@ bool CSharedFileList::AddFile(CKnownFile* pFile)
 
 void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd)
 {
-	// TODO: Check if the file is already known - only with another date
-
+	// Straight insert first. If the hash isn't already in m_Files_map
+	// this succeeds and fires the notifier as before.
 	if (AddFile(toadd)) {
 		Notify_SharedFilesShowFile(toadd);
+	} else {
+		// AddFile failed because some CKnownFile under this hash is
+		// already in m_Files_map. Two possibilities:
+		//
+		//   1. The exact same pointer was re-added — no-op.
+		//   2. CKnownFileList::Append fired the rename-during-hash
+		//      branch (same hash, same size, different name): it
+		//      demoted the prior CKnownFile to m_duplicateFileList and
+		//      installed `toadd` as the canonical entry in
+		//      m_knownFileMap. The shared-files view still points at
+		//      the demoted pointer, which has a filename that no
+		//      longer matches disk and which the duplicate-list prune
+		//      may delete later (dangling pointer in m_Files_map /
+		//      m_pathIndex). Detach the stale entry and install the
+		//      live one so the view mirrors knownfiles.
+		CKnownFile *stale = NULL;
+		{
+			wxMutexLocker lock(list_mut);
+			CKnownFileMap::iterator it =
+				m_Files_map.find(toadd->GetFileHash());
+			if (it != m_Files_map.end() && it->second != toadd) {
+				stale = it->second;
+			}
+		}
+		if (stale) {
+			AddDebugLogLineN(logKnownFiles,
+				CFormat("SafeAddKFile: rename-during-hash swap, "
+					"detaching stale '%s' for live '%s'")
+					% stale->GetFilePath().JoinPaths(stale->GetFileName())
+					% toadd->GetFilePath().JoinPaths(toadd->GetFileName()));
+			RemoveFile(stale);
+			if (AddFile(toadd)) {
+				Notify_SharedFilesShowFile(toadd);
+			}
+		}
 	}
 
 	if (!bOnlyAdd && theApp->IsConnectedED2K()) {
