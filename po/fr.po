@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-05 15:21+0200\n"
-"PO-Revision-Date: 2026-06-05 18:07+0300\n"
+"PO-Revision-Date: 2026-06-05 20:39+0300\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "Language: fr\n"
@@ -325,7 +325,7 @@ msgstr "C'est la première fois que vous lancez aMule %s"
 #: src/amule.cpp:1252
 msgid "This version is a testing version, updated daily, and\n"
 msgstr ""
-"Cette version est une version de test, mis à jour quotidiennement, et\n"
+"Cette version est une version de test, mise à jour quotidiennement, et\n"
 
 #: src/amule.cpp:1253
 msgid "we give no warranty it won't break anything, burn your house,\n"
