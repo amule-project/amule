@@ -24,6 +24,7 @@
 
 #include "MaxMindDBDatabase.h"
 
+#include "CCtypeAsciiScope.h"
 #include "Logger.h"
 #include <common/Format.h>
 #include <common/StringFunctions.h>		// unicode2char
@@ -96,5 +97,14 @@ wxString CMaxMindDBDatabase::GetCountryCode(const wxString& ip) const
 
 	// utf8_string is NOT NUL-terminated; data_size is the byte length.
 	wxString code = wxString::FromUTF8(entry_data.utf8_string, entry_data.data_size);
+
+	// Lock LC_CTYPE to "C" so the lowercase ISO 3166-1 alpha-2 code
+	// stays ASCII. In tr_TR, wxString::Lower() folds 'I' to U+0131
+	// (dotless i) instead of 'i', which would turn "IT" into "ıt"
+	// and miss the embedded flag bitmap lookup (flag_<cc>) in
+	// CamuleArtProvider. SVN r10697 fixed the same bug in the old
+	// libGeoIP path in 2011; the fix was lost when GeoIP was
+	// replaced by libmaxminddb. See amule forum topic 19398.
+	CCtypeAsciiScope scope;
 	return code.Lower();
 }
