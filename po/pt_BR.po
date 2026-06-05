@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-05 15:21+0200\n"
-"PO-Revision-Date: 2026-05-30 16:55-0300\n"
+"PO-Revision-Date: 2026-06-05 19:30-0300\n"
 "Last-Translator: Marcelo Jimenez <mroberto@users.sourceforge.com>\n"
 "Language-Team: Português (Brasileiro) <pt@li.org>\n"
 "Language: pt_BR\n"
@@ -596,24 +596,24 @@ msgid "Forum: https://github.com/amule-org/amule/discussions \n"
 msgstr "Fórum: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
-#, fuzzy
 msgid "Documentation: https://amule-org.github.io/docs \n"
-msgstr "Página: https://amule-org.github.io \n"
+msgstr "Documentação: https://amule-org.github.io/docs \n"
 
 #: src/amuleDlg.cpp:529
-#, fuzzy
 msgid ""
 "Issues: https://github.com/amule-org/amule/issues \n"
 "\n"
-msgstr "Fórum: https://github.com/amule-org/amule/discussions \n"
+msgstr ""
+"Problemas: https://github.com/amule-org/amule/issues \n"
+"\n"
+"\n"
 
 #: src/amuleDlg.cpp:530
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2026 aMule Team \n"
 "\n"
 msgstr ""
-"Direitos Reservados (c) 2003-2019 Time aMule \n"
+"Direitos Reservados (c) 2003-2026 Equipe do aMule \n"
 "\n"
 
 #: src/amuleDlg.cpp:531
@@ -885,7 +885,7 @@ msgstr "Conectando..."
 
 #: src/amule-remote-gui.cpp:461
 msgid "Connection failed. Please check the host, port, and password."
-msgstr ""
+msgstr "A conexão falhou. Por favor, confira o anfitrião, porta e senha."
 
 #: src/amule-remote-gui.cpp:498
 msgid "Remote GUI EC event handler"
@@ -2212,6 +2212,8 @@ msgid ""
 "Force ZLIB compression regardless of dialed-IP locality (useful when the "
 "server is reachable over a VPN tunnel that resolves to a LAN IP)."
 msgstr ""
+"Força a compressão ZLIB independente da localidade IP discado (útil quando o "
+"servidor for alcançável por um túnel VPN que resolve para um IP de LAN)."
 
 #: src/FileDetailDialog.cpp:76
 msgid "File Details"
@@ -3889,7 +3891,7 @@ msgstr "Vasculha novamente automaticamente arquivos compartilhados que mudaram"
 
 #: src/muuli_wdr.cpp:1605
 msgid "Follow symbolic links in shared folders"
-msgstr ""
+msgstr "Segue links simbólicos em pastas compartilhadas"
 
 #: src/muuli_wdr.cpp:1624
 msgid "Graphs"
@@ -4576,9 +4578,8 @@ msgid "Remember those settings"
 msgstr "Lembrar essas definições"
 
 #: src/muuli_wdr.cpp:2625
-#, fuzzy
 msgid "Force ZLIB compression"
-msgstr "Utilizar compressão gzip"
+msgstr "Força compressão ZLIB"
 
 #: src/muuli_wdr.cpp:2649
 msgid "Enable Verbose Debug-Logging."
@@ -6042,6 +6043,8 @@ msgstr "CUIDADO: %s (%s) - %s"
 msgid ""
 "Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
 msgstr ""
+"O servidor %s (%s) rejeitou nosso login (nenhum ID de cliente atribuído). "
+"Desconectando."
 
 #: src/ServerSocket.cpp:362
 #, c-format
@@ -6132,9 +6135,8 @@ msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:200
-#, fuzzy
 msgid "Connection Type:"
-msgstr "Estado da Conexão:"
+msgstr "Tipo de Conexão:"
 
 #: src/ServerWnd.cpp:218
 msgid "Kademlia Status:"
