@@ -42,6 +42,7 @@
 
 #include "amule.h"			// Interface declarations.
 #include "AutostartManager.h"		// Needed for --configure-autostart handling
+#include "CamuleFileConfig.h"		// CamuleFileConfig + CCtypeAsciiScope (#852)
 #include <common/Format.h>		// Needed for CFormat
 #include "CFile.h"			// Needed for CFile
 #include "ED2KLink.h"			// Needed for command line passing of links
@@ -507,8 +508,20 @@ bool CamuleAppCommon::InitCommon(int argc, wxChar ** argv)
 	}
 #endif
 
-	// Create the CFG file we shall use and set the config object as the global cfg file
-	wxConfig::Set(new wxFileConfig( "", "", thePrefs::GetConfigDir() + m_configFile));
+	// Create the CFG file we shall use and set the config object as the
+	// global cfg file. CamuleFileConfig is a wxFileConfig subclass that
+	// wraps every entry / group lookup in an LC_CTYPE="C" scope so the
+	// case-insensitive sorted-array binary searches are locale-
+	// deterministic. The initial parse below also has to run under
+	// LC_CTYPE="C" so the in-memory sort order matches what subsequent
+	// Read / Write calls will use — otherwise a session that runs under
+	// a non-C locale silently accumulates duplicate key=value lines in
+	// amule.conf (#852).
+	{
+		CCtypeAsciiScope scope;
+		wxConfig::Set(new CamuleFileConfig("", "",
+			thePrefs::GetConfigDir() + m_configFile));
+	}
 
 	// Make a backup of the log file
 	CPath logfileName = CPath(thePrefs::GetConfigDir() + m_logFile);
