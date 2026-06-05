@@ -267,6 +267,21 @@ private:
 	std::set<uint32> m_lastSentFileIds;
 	std::set<uint32> m_lastSentSharedFileIds;
 	std::set<uint32> m_lastSentPartFileIds;
+
+	// Set of file ECIDs already sent to the client with full detail
+	// (EC_DETAIL_INC_UPDATE / EC_DETAIL_UPDATE payload, not the legacy
+	// childless alive-marker or the partial-update skip-silently path).
+	// Used by `Get_EC_Response_Get{Update,SharedFiles,DownloadQueue}` to
+	// gate the `m_ecGen <= ec_threshold` shortcut: that shortcut produces
+	// a ghost entry on the client (empty CKnownFile from a child-less tag,
+	// or silent absence in partial-update mode) when the client has never
+	// received the ECID's metadata. Per-path because each handler has its
+	// own `m_lastEcGenSeen*` cadence — once the ECID is seen on one path,
+	// the client only has the data for that path's view. Same rationale
+	// as `m_lastSent*FileIds` above.
+	std::set<uint32> m_sentWithDetailIds;
+	std::set<uint32> m_sentWithDetailIdsShared;
+	std::set<uint32> m_sentWithDetailIdsPart;
 };
 
 
@@ -760,7 +775,8 @@ static CECPacket *Get_EC_Response_StatRequest(const CECPacket *request, CLoggerA
 
 static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFileEncoderMap &encoders,
 	uint64 &io_lastEcGenSeen,
-	bool partial_update_active, std::set<uint32> &io_lastSentFileIds)
+	bool partial_update_active, std::set<uint32> &io_lastSentFileIds,
+	std::set<uint32> &io_sentWithDetailIds)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_SHARED_FILES);
 
@@ -806,11 +822,14 @@ static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFile
 		const uint32 ecid = cur_file->ECID();
 		if (skip_unchanged_path) {
 			current_file_ids.insert(ecid);
-			if (cur_file->GetECGen() <= ec_threshold) {
+			if (cur_file->GetECGen() <= ec_threshold
+				&& io_sentWithDetailIds.count(ecid)) {
 				// Client already has the latest exported view of
 				// this file; absence here is "no change", not
 				// "deleted" — see `EC_TAG_FILE_REMOVED` emission
-				// below.
+				// below. The `io_sentWithDetailIds` gate prevents
+				// silently skipping ECIDs the client has never
+				// received with full detail (#808-class ghost).
 				continue;
 			}
 		}
@@ -822,6 +841,9 @@ static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFile
 		}
 		enc->Encode(&filetag);
 		response->AddTag(filetag);
+		if (skip_unchanged_path) {
+			io_sentWithDetailIds.insert(ecid);
+		}
 	}
 
 	if (skip_unchanged_path) {
@@ -841,7 +863,8 @@ static CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CFile
 
 static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMap &tagmap,
 	uint64 &io_lastEcGenSeen,
-	bool partial_update_active, std::set<uint32> &io_lastSentFileIds)
+	bool partial_update_active, std::set<uint32> &io_lastSentFileIds,
+	std::set<uint32> &io_sentWithDetailIds)
 {
 	CECPacket *response = new CECPacket(EC_OP_SHARED_FILES);
 
@@ -867,10 +890,13 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 		const uint32 ecid = cur_file->ECID();
 		current_file_ids.insert(ecid);
 
-		if (cur_file->GetECGen() <= ec_threshold) {
+		if (cur_file->GetECGen() <= ec_threshold
+			&& io_sentWithDetailIds.count(ecid)) {
 			// Nothing exported has changed since the client's last
-			// view of this file. Two paths depending on whether the
-			// client negotiated partial-update at auth time:
+			// view of this file AND the client has previously
+			// received this ECID with full detail. Two paths
+			// depending on whether the client negotiated partial-
+			// update at auth time:
 			if (partial_update_active) {
 				// New protocol: skip the file entirely. The client
 				// only deletes when it sees an explicit
@@ -892,6 +918,12 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 			response->AddTag(CECTag(tagname, ecid));
 			continue;
 		}
+		// Fall-through path: either m_ecGen > ec_threshold (file
+		// changed since the client's last view) OR the ECID is new
+		// to this client. In both cases the client needs the full
+		// payload — alive-markers / silent skip would produce a
+		// ghost entry (#808) when the metadata never reached the
+		// client.
 		CValueMap &valuemap = tagmap.GetValueMap(ecid);
 		// Completed cleared Partfiles are still stored as CPartfile,
 		// but encoded as KnownFile, so we have to check the encoder type
@@ -910,6 +942,7 @@ static CECPacket *Get_EC_Response_GetUpdate(CFileEncoderMap &encoders, CObjTagMa
 			enc->Encode(&filetag);
 			response->AddTag(filetag);
 		}
+		io_sentWithDetailIds.insert(ecid);
 	}
 
 	if (partial_update_active) {
@@ -1004,7 +1037,8 @@ static CECPacket *Get_EC_Response_GetClientQueue(const CECPacket *request, CObjT
 
 static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CFileEncoderMap &encoders,
 	uint64 &io_lastEcGenSeen,
-	bool partial_update_active, std::set<uint32> &io_lastSentFileIds)
+	bool partial_update_active, std::set<uint32> &io_lastSentFileIds,
+	std::set<uint32> &io_sentWithDetailIds)
 {
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
 
@@ -1043,11 +1077,15 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CFi
 		const uint32 ecid = cur_file->ECID();
 		if (skip_unchanged_path) {
 			current_file_ids.insert(ecid);
-			if (cur_file->GetECGen() <= ec_threshold) {
+			if (cur_file->GetECGen() <= ec_threshold
+				&& io_sentWithDetailIds.count(ecid)) {
 				// Client already has the latest exported view of
 				// this partfile; absence here is "no change",
 				// not "deleted" — see `EC_TAG_FILE_REMOVED`
-				// emission below.
+				// emission below. The `io_sentWithDetailIds`
+				// gate prevents silently skipping ECIDs the
+				// client has never received with full detail
+				// (#808-class ghost).
 				continue;
 			}
 		}
@@ -1061,6 +1099,9 @@ static CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CFi
 		enc->Encode(&filetag);
 
 		response->AddTag(filetag);
+		if (skip_unchanged_path) {
+			io_sentWithDetailIds.insert(ecid);
+		}
 	}
 
 	if (skip_unchanged_path) {
@@ -1795,7 +1836,8 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			if ( request->GetDetailLevel() != EC_DETAIL_INC_UPDATE ) {
 				response = Get_EC_Response_GetSharedFiles(request, m_FileEncoder,
 					m_lastEcGenSeenShared,
-					m_partialUpdateActive, m_lastSentSharedFileIds);
+					m_partialUpdateActive, m_lastSentSharedFileIds,
+					m_sentWithDetailIdsShared);
 			}
 			break;
 		case EC_OP_GET_DLOAD_QUEUE:
@@ -1824,7 +1866,8 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			if ( request->GetDetailLevel() != EC_DETAIL_INC_UPDATE ) {
 				response = Get_EC_Response_GetDownloadQueue(request, m_FileEncoder,
 					m_lastEcGenSeenPart,
-					m_partialUpdateActive, m_lastSentPartFileIds);
+					m_partialUpdateActive, m_lastSentPartFileIds,
+					m_sentWithDetailIdsPart);
 			}
 			break;
 		//
@@ -1834,7 +1877,8 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
 				response = Get_EC_Response_GetUpdate(m_FileEncoder, m_obj_tagmap,
 					m_lastEcGenSeen,
-					m_partialUpdateActive, m_lastSentFileIds);
+					m_partialUpdateActive, m_lastSentFileIds,
+					m_sentWithDetailIds);
 			}
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:
