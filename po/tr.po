@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-05 15:21+0200\n"
-"PO-Revision-Date: 2026-06-04 21:30+0300\n"
+"PO-Revision-Date: 2026-06-05 18:07+0300\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
 "Language: tr\n"
@@ -334,7 +334,7 @@ msgid ""
 "at https://amule-org.github.io, or in our IRC channel #aMule at "
 "irc.libera.chat.\n"
 msgstr ""
-"https://amule-org.github.io veya IRC Kanalımız: irc.libera.chat sunucusunda "
+"https://amule-org.github.io veya IRC kanalımız: irc.libera.chat sunucusunda "
 "#aMule \n"
 
 #: src/amule.cpp:1262
@@ -350,7 +350,7 @@ msgid ""
 " OnlineSignature will be DISABLED until you fix it on preferences."
 msgstr ""
 "Belirlediğiniz Çevrim içi İmza dosyaları dizini GEÇERSİZ!\n"
-" Çevrim içi İmza, ayarlarınızda düzeltene kadar DEVREDIŞI bırakıldı."
+" Çevrim içi İmza, ayarlarınızda düzeltene kadar DEVRE DIŞI bırakıldı."
 
 #: src/amule.cpp:1338
 msgid "Server hostname notified"
@@ -1656,7 +1656,7 @@ msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
-"Her önizlemede bu uyarının gösterilemsini önlemek için,\n"
+"Her önizlemede bu uyarının gösterilmesini önlemek için,\n"
 "seçeneklerden tercih ettiğiniz video oynatıcısını ayarlayın. (öntanımlı "
 "mplayer)"
 
@@ -2020,7 +2020,7 @@ msgid ""
 "This command is incomplete, you must use one of the extensions below.\n"
 msgstr ""
 "\n"
-"Bu komut eksik.Aşağıdaki uzantılardan birini girmelisiniz.\n"
+"Bu komut eksik. Aşağıdaki uzantılardan birini girmelisiniz.\n"
 
 #: src/ExternalConnector.cpp:160
 msgid ""
@@ -3858,7 +3858,7 @@ msgstr "Paylaşılan dizinler"
 
 #: src/muuli_wdr.cpp:1587
 msgid "(Right click on folder icon for recursive share)"
-msgstr "(Sürekli paylaşım için dizin simgesine sağ tıklayınız.)"
+msgstr "(Özyinelemeli paylaşım için dizin simgesine sağ tıklayınız.)"
 
 #: src/muuli_wdr.cpp:1593
 msgid "Share hidden files"
@@ -4107,7 +4107,7 @@ msgstr "Tam hak şifresi"
 
 #: src/muuli_wdr.cpp:1892
 msgid "Enable Low rights User"
-msgstr "Düşük hakka sahip kullanıcıyı etki kıl."
+msgstr "Düşük hakka sahip kullanıcıyı etkin kıl."
 
 #: src/muuli_wdr.cpp:1897
 msgid "Low rights password"
@@ -4278,7 +4278,7 @@ msgstr "Kad Bağlantısını Kes"
 
 #: src/muuli_wdr.cpp:2362
 msgid "Use Secure User Identification"
-msgstr "Kullanıcı"
+msgstr "Güvenli Kullanıcı Kimlik Doğrulamasını Kullan"
 
 #: src/muuli_wdr.cpp:2364
 msgid ""
@@ -6089,12 +6089,12 @@ msgstr "Sunucu IP. %s (%s) süzüldü.  Bağlanılmıyor."
 
 #: src/ServerSocket.cpp:698
 msgid "using protocol obfuscation."
-msgstr "protokol gizleme kullanılarak bağlanıyor."
+msgstr "protokol gizleme kullanılarak."
 
 #: src/ServerSocket.cpp:707
 #, c-format
 msgid "Connecting to %s (%s - %s:%i) %s"
-msgstr "%s (%s - %s:%i) %s unsuruna bağlanılıyor."
+msgstr "Şuna bağlanılıyor: %s (%s - %s:%i) %s"
 
 #: src/ServerSocket.cpp:720
 #, c-format
@@ -7339,7 +7339,7 @@ msgstr "Disk bölümü."
 
 #: src/UserEvents.h:94
 msgid "Error on completion"
-msgstr "Tamamla sırasına hata"
+msgstr "Tamamlama sırasında hata"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:59
 #, c-format
@@ -7999,6 +7999,9 @@ msgstr "Çıkış istendi.\n"
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr "İstem işleniyor [yönlendirilmiş]: "
+
+#~ msgid "http://kademlia.scs.cs.nyu.edu\n"
+#~ msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #~ msgid ""
 #~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"

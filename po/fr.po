@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-05 15:21+0200\n"
-"PO-Revision-Date: 2026-06-04 21:24+0300\n"
+"PO-Revision-Date: 2026-06-05 18:07+0300\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "Language: fr\n"
@@ -212,8 +212,8 @@ msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
 msgstr ""
-"Votre localisation à été remise par défaut à cause d'un changement dans la "
-"configuration. Désolé."
+"Votre localisation a été remise à la valeur par défaut à cause d'un "
+"changement dans la configuration. Désolé."
 
 #: src/amule.cpp:574 src/amule.cpp:1264 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:355
@@ -314,8 +314,8 @@ msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
 msgstr ""
-"La localisation choisie semble ne pas être installer sur votre machine. "
-"(Note : Je tente de la forcer quant même)"
+"La localisation choisie semble ne pas être installée sur votre machine. "
+"(Note : Je tente de la forcer quand même)"
 
 #: src/amule.cpp:1250
 #, c-format
@@ -324,7 +324,8 @@ msgstr "C'est la première fois que vous lancez aMule %s"
 
 #: src/amule.cpp:1252
 msgid "This version is a testing version, updated daily, and\n"
-msgstr "Cette version est une version de test, mis à jour quotidienne, et\n"
+msgstr ""
+"Cette version est une version de test, mis à jour quotidiennement, et\n"
 
 #: src/amule.cpp:1253
 msgid "we give no warranty it won't break anything, burn your house,\n"
@@ -1292,8 +1293,7 @@ msgstr ""
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
 msgstr ""
-"L'utilisateur %s (%u) a terminé d'envoyer la liste liste des fichiers "
-"partagés"
+"L'utilisateur %s (%u) a terminé d'envoyer la liste des fichiers partagés"
 
 #: src/ClientTCPSocket.cpp:944
 #, c-format
@@ -1647,7 +1647,7 @@ msgstr "Afficher tous les commentaires"
 
 #: src/DownloadListCtrl.cpp:684
 msgid "Copy magnet URI to clipboard"
-msgstr "Copier le lien magnétique dans le presse-papiers"
+msgstr "Copier le lien magnet dans le presse-papiers"
 
 #: src/DownloadListCtrl.cpp:686 src/SharedFilesCtrl.cpp:165
 msgid "Copy eD2k &link to clipboard"
@@ -2017,7 +2017,7 @@ msgstr "Connexion à Kad…"
 
 #: src/ExternalConn.cpp:2242
 msgid "All networks are disabled."
-msgstr "Tout les réseaux sont désactivés."
+msgstr "Tous les réseaux sont désactivés."
 
 #: src/ExternalConn.cpp:2250
 msgid "Disconnected from eD2k."
@@ -2068,7 +2068,7 @@ msgid ""
 "This command is incomplete, you must use one of the extensions below.\n"
 msgstr ""
 "\n"
-"Cette commande est incomplète, vous devez utilisez une des extensions ci-"
+"Cette commande est incomplète, vous devez utiliser une des extensions ci-"
 "dessous.\n"
 
 #: src/ExternalConnector.cpp:160
@@ -2092,7 +2092,8 @@ msgid ""
 msgstr ""
 "\n"
 "Toutes les commandes sont insensibles à la casse.\n"
-"Tapez '%s <command>' pour avoir des informations détaillées sur <command>.\n"
+"Tapez '%s <commande>' pour avoir des informations détaillées sur "
+"<commande>.\n"
 
 #: src/ExternalConnector.cpp:291 src/ExternalConnector.cpp:292
 msgid "Exits from the application."
@@ -2109,7 +2110,7 @@ msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
 msgstr ""
-"Pour avoir de l'aide sur une commande, tapez 'help <command>'.\n"
+"Pour avoir de l'aide sur une commande, tapez 'help <commande>'.\n"
 "Pour avoir la liste complète des commandes, tapez 'help'.\n"
 
 #: src/ExternalConnector.cpp:317
@@ -2589,7 +2590,7 @@ msgid ""
 "anymore."
 msgstr ""
 "Impossible de lire le fichier nodes.dat - trop vieux. Cette version (0) "
-"n'est plus supporté."
+"n'est plus supportée."
 
 #: src/kademlia/routing/RoutingZone.cpp:209
 #: src/kademlia/routing/RoutingZone.cpp:283
@@ -2603,7 +2604,7 @@ msgstr[1] "%u contacts Kad lus"
 #: src/kademlia/routing/RoutingZone.cpp:287
 msgid "No contacts found, please bootstrap, or download a nodes.dat file."
 msgstr ""
-"Aucun contacts trouvé, veuillez lancer l'amorçage, ou télécharger un fichier "
+"Aucun contact trouvé, veuillez lancer l'amorçage, ou télécharger un fichier "
 "nodes.dat."
 
 #: src/kademlia/routing/RoutingZone.cpp:305
@@ -3336,7 +3337,7 @@ msgstr "OK"
 #: src/muuli_wdr.cpp:699
 msgid "Comment/Rate file (Text will be visible to all users)"
 msgstr ""
-"Commenter/Noter le fichier (Ce texte sera visible par tout les utilisateurs)"
+"Commenter/Noter le fichier (Ce texte sera visible par tous les utilisateurs)"
 
 #: src/muuli_wdr.cpp:705
 msgid ""
@@ -4159,7 +4160,7 @@ msgid ""
 "An empty field or 0.0.0.0 will mean any interface."
 msgstr ""
 "Entrer ici une adresse IP valide dans le format a.b.c.d pour l'interface "
-"d'écoute EC. Un champs vide ou 0.0.0.0 signifiera toutes les interfaces."
+"d'écoute EC. Un champ vide ou 0.0.0.0 signifiera toutes les interfaces."
 
 #: src/muuli_wdr.cpp:1858 src/muuli_wdr.cpp:1904
 msgid "TCP port:"
@@ -4522,7 +4523,7 @@ msgid ""
 "create signatures and the like."
 msgstr ""
 "Active l'écriture du fichier de signature en ligne, qui peut-être utilisé "
-"par des applications extérieurs pour créer des signatures, etc."
+"par des applications extérieures pour créer des signatures, etc."
 
 #: src/muuli_wdr.cpp:2462
 msgid "Update Frequency (Secs):"
@@ -5690,7 +5691,7 @@ msgid ""
 "\n"
 msgstr ""
 "Les répertoires suivants semblent être des répertoires système ou des "
-"emplacement sensibles.\n"
+"emplacements sensibles.\n"
 "\n"
 
 #: src/PrefsUnifiedDlg.cpp:1566
@@ -6133,7 +6134,7 @@ msgstr "Reconnexion au serveur"
 
 #: src/ServerListCtrl.cpp:526
 msgid "Are you sure that you wish to delete all servers?"
-msgstr "Êtes-vous sûr de vouloir supprimer tout les serveurs ?"
+msgstr "Êtes-vous sûr de vouloir supprimer tous les serveurs ?"
 
 #: src/ServerListCtrl.cpp:542
 msgid "Are you sure that you wish to delete the selected server?"
@@ -6466,7 +6467,7 @@ msgstr "Ajouter des fichiers de la collection à la liste de transferts"
 
 #: src/SharedFilesCtrl.cpp:164
 msgid "Copy magnet &URI to clipboard"
-msgstr "Copier le &lien magnétique dans le presse-papiers"
+msgstr "Copier le &lien magnet dans le presse-papiers"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy eD2k link to clipboard (&Source)"
@@ -6987,7 +6988,7 @@ msgstr ""
 "des clients\n"
 "affichés. Passer 0 ou ne rien mettre signifie 'illimité'.\n"
 "\n"
-"Exemple: 'statistics 5' montrera seulement les 5 premières versions pour "
+"Exemple : 'statistics 5' montrera seulement les 5 premières versions pour "
 "chaque type de client.\n"
 
 #: src/TextClient.cpp:991
@@ -7001,7 +7002,7 @@ msgid ""
 "running core.\n"
 msgstr ""
 "Arrêter le noyau distant actif (amule/amuled).\n"
-"Ceci coupera aussi le clien texte, puisqu'il est\n"
+"Ceci coupera aussi le client texte, puisqu'il est\n"
 "inutilisable sans noyau actif.\n"
 
 #: src/TextClient.cpp:994
@@ -7040,7 +7041,7 @@ msgid ""
 "that server only. The IP must be a dotted decimal IPv4 address,\n"
 "or a resolvable DNS name."
 msgstr ""
-"Ceci va vous connecter à tout les réseaux activés dans les Préférences.\n"
+"Ceci va vous connecter à tous les réseaux activés dans les Préférences.\n"
 "Vous pouvez aussi spécifier une adresse de serveur de la forme IP:Port, pour "
 "se connecter\n"
 "seulement à ce serveur. L'IP doit être une IPv4 décimal,\n"
@@ -7074,7 +7075,7 @@ msgstr "Se déconnecter de Kad uniquement."
 
 #: src/TextClient.cpp:1012
 msgid "Add an eD2k or magnet link to core."
-msgstr "Ajoute un lien eD2k ou magnétique au noyau."
+msgstr "Ajoute un lien eD2k ou magnet au noyau."
 
 #: src/TextClient.cpp:1013
 msgid ""
@@ -7279,7 +7280,7 @@ msgid ""
 "the previous search.\n"
 msgstr ""
 "Le rang du fichier de la dernière recherche doit être donné.\n"
-"Exemple: 'download 12' va télécharger le douzième fichier de la précédente "
+"Exemple : 'download 12' va télécharger le douzième fichier de la précédente "
 "recherche.\n"
 
 #: src/TextClient.cpp:1084
@@ -8159,6 +8160,9 @@ msgstr "Déconnexion demandée\n"
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr "Requête en cours [redirigée] : "
+
+#~ msgid "http://kademlia.scs.cs.nyu.edu\n"
+#~ msgstr "http://kademlia.scs.cs.nyu.edu\n"
 
 #~ msgid ""
 #~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
