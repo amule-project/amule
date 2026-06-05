@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-04 23:35+0200\n"
+"POT-Creation-Date: 2026-06-05 15:21+0200\n"
 "PO-Revision-Date: 2024-12-15 20:08+0100\n"
 "Last-Translator: Mike Akiba <mike2718@gmail.com>\n"
 "Language-Team: Chinese Simplified <kde-i18n-doc@kde.org>\n"
@@ -306,9 +306,9 @@ msgstr "如要获取使用信息、用户支持以及下载最新版本，请访
 #: src/amule.cpp:1260
 msgid ""
 "at https://amule-org.github.io, or in our IRC channel #aMule at "
-"irc.freenode.net.\n"
+"irc.libera.chat.\n"
 msgstr ""
-"https://amule-org.github.io，或进入我们在 irc.freenode.net 的 IRC 频道 "
+"https://amule-org.github.io，或进入我们在 irc.libera.chat 的 IRC 频道 "
 "#aMule。\n"
 
 #: src/amule.cpp:1262

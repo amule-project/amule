@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-04 23:35+0200\n"
+"POT-Creation-Date: 2026-06-05 15:21+0200\n"
 "PO-Revision-Date: 2026-05-30 13:21+0300\n"
 "Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"
 "Language-Team: Slovenian\n"
@@ -313,13 +313,12 @@ msgstr ""
 "strani,\n"
 
 #: src/amule.cpp:1260
-#, fuzzy
 msgid ""
 "at https://amule-org.github.io, or in our IRC channel #aMule at "
-"irc.freenode.net.\n"
+"irc.libera.chat.\n"
 msgstr ""
 "na https://amule-org.github.io, ali na kanalu IRC #aMule, na strežniku "
-"irc.freenode.net.\n"
+"irc.libera.chat.\n"
 
 #: src/amule.cpp:1262
 #, fuzzy
