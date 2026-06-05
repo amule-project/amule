@@ -1257,7 +1257,7 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 	// General info
 	info += "\n";
 	info += _("More information, support and new releases can found at our homepage,\n");
-	info += _("at https://amule-org.github.io, or in our IRC channel #aMule at irc.freenode.net.\n");
+	info += _("at https://amule-org.github.io, or in our IRC channel #aMule at irc.libera.chat.\n");
 	info += "\n";
 	info += _("Feel free to report any bugs to https://github.com/amule-org/amule/issues");
 

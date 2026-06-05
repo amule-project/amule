@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-04 23:35+0200\n"
+"POT-Creation-Date: 2026-06-05 15:21+0200\n"
 "PO-Revision-Date: 2026-06-04 21:30+0300\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
@@ -332,9 +332,9 @@ msgstr "Daha fazla bilgi, destek ve yeni sürümler ana sayfamızda bulunabilir\
 #: src/amule.cpp:1260
 msgid ""
 "at https://amule-org.github.io, or in our IRC channel #aMule at "
-"irc.freenode.net.\n"
+"irc.libera.chat.\n"
 msgstr ""
-"https://amule-org.github.io veya IRC Kanalımız: irc.freenode.net sunucusunda "
+"https://amule-org.github.io veya IRC Kanalımız: irc.libera.chat sunucusunda "
 "#aMule \n"
 
 #: src/amule.cpp:1262
