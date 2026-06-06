@@ -790,43 +790,66 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 	uint8_t op = bio.ReadUInt8();
 	if (op == 0x00) {
 		uint8_t boolop = bio.ReadUInt8();
+		// The recursive children below read from `bio` and can throw
+		// CEOFException on a truncated packet. Without a guard the
+		// parent node and the already-built left subtree (if any)
+		// leak during stack unwinding -- `~SSearchTerm` doesn't
+		// recurse into left/right, only the explicit `Free()` walk
+		// does, and `Free()` is only reached on the success/NULL-
+		// return paths. Wrap each boolean-node body so any throw
+		// frees the partial subtree before re-raising (#884).
 		if (boolop == 0x00) { // AND
 			SSearchTerm* pSearchTerm = new SSearchTerm;
 			pSearchTerm->type = SSearchTerm::AND;
-			if ((pSearchTerm->left = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
-				delete pSearchTerm;
-				return NULL;
-			}
-			if ((pSearchTerm->right = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
-				Free(pSearchTerm->left);
-				delete pSearchTerm;
-				return NULL;
+			try {
+				if ((pSearchTerm->left = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
+					delete pSearchTerm;
+					return NULL;
+				}
+				if ((pSearchTerm->right = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
+					Free(pSearchTerm->left);
+					delete pSearchTerm;
+					return NULL;
+				}
+			} catch (...) {
+				Free(pSearchTerm);
+				throw;
 			}
 			return pSearchTerm;
 		} else if (boolop == 0x01) { // OR
 			SSearchTerm* pSearchTerm = new SSearchTerm;
 			pSearchTerm->type = SSearchTerm::OR;
-			if ((pSearchTerm->left = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
-				delete pSearchTerm;
-				return NULL;
-			}
-			if ((pSearchTerm->right = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
-				Free(pSearchTerm->left);
-				delete pSearchTerm;
-				return NULL;
+			try {
+				if ((pSearchTerm->left = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
+					delete pSearchTerm;
+					return NULL;
+				}
+				if ((pSearchTerm->right = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
+					Free(pSearchTerm->left);
+					delete pSearchTerm;
+					return NULL;
+				}
+			} catch (...) {
+				Free(pSearchTerm);
+				throw;
 			}
 			return pSearchTerm;
 		} else if (boolop == 0x02) { // NOT
 			SSearchTerm* pSearchTerm = new SSearchTerm;
 			pSearchTerm->type = SSearchTerm::NOT;
-			if ((pSearchTerm->left = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
-				delete pSearchTerm;
-				return NULL;
-			}
-			if ((pSearchTerm->right = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
-				Free(pSearchTerm->left);
-				delete pSearchTerm;
-				return NULL;
+			try {
+				if ((pSearchTerm->left = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
+					delete pSearchTerm;
+					return NULL;
+				}
+				if ((pSearchTerm->right = CreateSearchExpressionTree(bio, iLevel)) == NULL) {
+					Free(pSearchTerm->left);
+					delete pSearchTerm;
+					return NULL;
+				}
+			} catch (...) {
+				Free(pSearchTerm);
+				throw;
 			}
 			return pSearchTerm;
 		} else {
