@@ -1365,19 +1365,36 @@ uint32 CDatagramSocketProxy::SendTo(const amuleIPV4Address& addr, const void* bu
 	m_lastUDPOverhead = PROXY_UDP_OVERHEAD_IPV4;
 	if (m_proxyTCPSocket.GetUseProxy()) {
 		if (m_udpSocketOk) {
-			m_proxyTCPSocket.GetBuffer()[0] = SOCKS5_RSV;	// Reserved
-			m_proxyTCPSocket.GetBuffer()[1] = SOCKS5_RSV;	// Reserved
-			m_proxyTCPSocket.GetBuffer()[2] = 0;		// FRAG
-			m_proxyTCPSocket.GetBuffer()[3] = SOCKS5_ATYP_IPV4_ADDRESS;
-			PokeUInt32( m_proxyTCPSocket.GetBuffer()+4, StringIPtoUint32(addr.IPAddress()));
-			RawPokeUInt16( m_proxyTCPSocket.GetBuffer()+8, ENDIAN_HTONS( addr.Service() ) );
-			memcpy(m_proxyTCPSocket.GetBuffer() + PROXY_UDP_OVERHEAD_IPV4, buf, nBytes);
+			// Mirror RecvFrom's dynamic-buffer fallback: the fixed
+			// PROXY_BUFFER_SIZE (5120) m_buffer can't hold the 10-byte
+			// SOCKS5 UDP request header plus a payload larger than
+			// PROXY_BUFFER_SIZE - PROXY_UDP_OVERHEAD_IPV4 (5110 B).
+			// Without this the memcpy below ran past the end of
+			// m_buffer for any oversized outbound datagram (#881).
+			char *bufUDP = NULL;
+			if (nBytes + PROXY_UDP_OVERHEAD_IPV4 > PROXY_BUFFER_SIZE) {
+				bufUDP = new char[nBytes + PROXY_UDP_OVERHEAD_IPV4];
+			} else {
+				bufUDP = m_proxyTCPSocket.GetBuffer();
+			}
+			bufUDP[0] = SOCKS5_RSV;	// Reserved
+			bufUDP[1] = SOCKS5_RSV;	// Reserved
+			bufUDP[2] = 0;		// FRAG
+			bufUDP[3] = SOCKS5_ATYP_IPV4_ADDRESS;
+			PokeUInt32( bufUDP+4, StringIPtoUint32(addr.IPAddress()));
+			RawPokeUInt16( bufUDP+8, ENDIAN_HTONS( addr.Service() ) );
+			memcpy(bufUDP + PROXY_UDP_OVERHEAD_IPV4, buf, nBytes);
 			nBytes += PROXY_UDP_OVERHEAD_IPV4;
 			sent = CLibUDPSocket::SendTo(
 				m_proxyTCPSocket.GetProxyBoundAddress(),
-				m_proxyTCPSocket.GetBuffer(), nBytes);
+				bufUDP, nBytes);
 			// Uncomment here to see the buffer contents on console
-			// DumpMem(m_proxyTCPSocket.GetBuffer(), nBytes, "SendTo", 3);
+			// DumpMem(bufUDP, nBytes, "SendTo", 3);
+
+			/* Only delete buffer if it was dynamically created */
+			if (bufUDP != m_proxyTCPSocket.GetBuffer()) {
+				delete [] bufUDP;
+			}
 		}
 	} else {
 		sent = CLibUDPSocket::SendTo(addr, buf, nBytes);
