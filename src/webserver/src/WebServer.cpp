@@ -2005,7 +2005,7 @@ void CNoTemplateWebServer::ProcessURL(ThreadData Data)
 			"<p>This probably means that there's a problem with your aMule installation </p>"
 			"<ul>"
 				"<li>Before installing new versions, please ensure that you uninstalled older versions of aMule.</li>"
-				"<li>If you are installing by compiling from source, check configuration and run &quot;make&quot; and &quot;make install&quot; again </li>"
+				"<li>If you are installing by compiling from source, check the configuration (e.g. that aMule was built with -DBUILD_WEBSERVER=YES) and re-run the install step.</li>"
 				"<li>If you are installing by using a precompiled package, you may need to contact the package maintainer </li>"
 			"</ul>"
 			"<p>For more information please visit</p>"
