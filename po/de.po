@@ -7,22 +7,22 @@
 # Stefan Baldus <stefanero@amule.org>, 2004, 2005.
 # Michael Weyershäuser <thedude0001@gmx.de>, 2005.
 # ihmselbst <griesotron@tiscalinet.de>, 2005, 2006.
-# Werner Mahr <werner@vollstreckernet.de>, 2007.
+# SPDX-FileCopyrightText: 2007, 2026 Werner Mahr <werner@vollstreckernet.de>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-05 15:21+0200\n"
-"PO-Revision-Date: 2020-03-04 12:18+0100\n"
-"Last-Translator: Stu Redman <sturedman@amule.org>\n"
-"Language-Team: <de@li.org>\n"
+"PO-Revision-Date: 2026-06-06 15:23+0200\n"
+"Last-Translator: Werner Mahr <werner@vollstreckernet.de>\n"
+"Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Lokalize 26.04.0\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -162,8 +162,8 @@ msgstr "Später"
 msgid "Could not add %u link from ED2KLinks file (see log for details)."
 msgid_plural ""
 "Could not add %u links from ED2KLinks file (see log for details)."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Konnte %u Link aus ED2KLinks nicht hinzufügen (Details: siehe Log)"
+msgstr[1] "Konnte %u Links aus ED2KLinks nicht hinzufügen (Details: siehe Log)"
 
 #: src/amuleAppCommon.cpp:175 src/amule.cpp:866 src/amule.cpp:980
 #: src/amule.cpp:1275 src/amule-remote-gui.cpp:462 src/amule-remote-gui.cpp:514
@@ -612,19 +612,18 @@ msgid "Forum: https://github.com/amule-org/amule/discussions \n"
 msgstr "Forum: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:528
-#, fuzzy
 msgid "Documentation: https://amule-org.github.io/docs \n"
-msgstr "Webseite: https://amule-org.github.io \n"
+msgstr "Webseite: https://amule-org.github.io/docs \n"
 
 #: src/amuleDlg.cpp:529
-#, fuzzy
 msgid ""
 "Issues: https://github.com/amule-org/amule/issues \n"
 "\n"
-msgstr "Forum: https://github.com/amule-org/amule/discussions \n"
+msgstr ""
+"Probleme: https://github.com/amule-org/amule/discussions \n"
+"\n"
 
 #: src/amuleDlg.cpp:530
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2026 aMule Team \n"
 "\n"
@@ -902,7 +901,7 @@ msgstr "Verbinde..."
 
 #: src/amule-remote-gui.cpp:461
 msgid "Connection failed. Please check the host, port, and password."
-msgstr ""
+msgstr "Verbindung fehlgeschlagen. Bitte Host, Port und Passwort prüfen."
 
 #: src/amule-remote-gui.cpp:498
 msgid "Remote GUI EC event handler"
@@ -1808,8 +1807,8 @@ msgstr "Unbekanntes Protokoll von Verweis: %s"
 #, c-format
 msgid "Could not add %u link (see log for details)."
 msgid_plural "Could not add %u links (see log for details)."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Konnte %u Link nicht hinzufügen (Details: siehe Log)"
+msgstr[1] "Konnte %u Links nicht hinzufügen (Details: siehe Log)"
 
 #: src/DownloadQueue.cpp:1464
 #, c-format
@@ -1988,9 +1987,10 @@ msgid "ExternalConn: adding link '%s'."
 msgstr "Externe Verbindungen: Füge hinzu Verweis '%s'."
 
 #: src/ExternalConn.cpp:1747
-#, fuzzy, c-format
+#, c-format
 msgid "%d of %d links failed (invalid or already on list)."
-msgstr "Ungültiger Verweis oder schon auf der Liste"
+msgstr ""
+"%d von %d Links fehlgeschlagen. Ungültiger Verweis oder schon auf der Liste"
 
 #: src/ExternalConn.cpp:1871
 msgid "File not found."
@@ -2253,6 +2253,8 @@ msgid ""
 "Force ZLIB compression regardless of dialed-IP locality (useful when the "
 "server is reachable over a VPN tunnel that resolves to a LAN IP)."
 msgstr ""
+"ZLIB Kompression unabhängig der Ziel-IP erzwingen (nützlich wenn der Server pe"
+"r VPN über eine LAN-IP aufgelöst wird)."
 
 #: src/FileDetailDialog.cpp:76
 msgid "File Details"
@@ -2729,9 +2731,8 @@ msgid "Connection failure"
 msgstr "Verbindungsfehler"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:254
-#, fuzzy
 msgid "External Connection lost — exiting."
-msgstr "Externe Verbindung getrennt."
+msgstr "Externe Verbindung getrennt — Beende."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:318
 msgid "EC connection failed. Empty reply."
@@ -3617,7 +3618,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1225
 msgid "Start aMule automatically when I log in"
-msgstr ""
+msgstr "aMule automatisch starten wenn ich mich einlogge"
 
 #: src/muuli_wdr.cpp:1226
 msgid ""
@@ -3625,6 +3626,9 @@ msgid ""
 "If you move the aMule binary, launch aMule once manually afterwards to "
 "refresh the entry."
 msgstr ""
+"Registriert einen Autostart pro Nutzer. "
+"Wenn du das Programm verschiebst musst du aMule manuell starten "
+"um den Eintrag zu aktualisieren."
 
 #: src/muuli_wdr.cpp:1229
 msgid "Start minimized"
@@ -3936,16 +3940,22 @@ msgid ""
 "If this folder also holds files you don't want to share, point it at an "
 "aMule-only sub-folder."
 msgstr ""
+"Vollständige Downloads werden hier gespeichert. Alle Dateien "
+"in diesem Ordner werden automatisch geteilt\n. "
+"Falls dieser Ordner Dateien enthält die du nicht teilen willst, "
+"wähle einen eigenen Ordner nur für aMule aus."
 
 #: src/muuli_wdr.cpp:1570
 msgid ""
 "Pick the folder where completed downloads will be stored. All files in that "
 "folder will be shared with other peers."
 msgstr ""
+"Wähle einen Ordner in dem vollständige Downloads gepeichert werden sollen. "
+"Dieser Ordner wird automatisch geteilt."
 
 #: src/muuli_wdr.cpp:1574
 msgid "(All files in this folder are shared with other peers)"
-msgstr ""
+msgstr "(Alle Dateien in diesem Ordner werden mit anderen Nutzern geteilt)"
 
 #: src/muuli_wdr.cpp:1576
 msgid "Folder for temporary download files"
@@ -3966,11 +3976,11 @@ msgstr "Versteckte Dateien freigeben"
 
 #: src/muuli_wdr.cpp:1599
 msgid "Automatically rescan shared folders for changes"
-msgstr ""
+msgstr "Ornder automatisch auf Änderungen überwachen"
 
 #: src/muuli_wdr.cpp:1605
 msgid "Follow symbolic links in shared folders"
-msgstr ""
+msgstr "Symbolischen Links in geteilten Ordnern folgen"
 
 #: src/muuli_wdr.cpp:1624
 msgid "Graphs"
@@ -4668,9 +4678,8 @@ msgid "Remember those settings"
 msgstr "Diese Einstellungen speichern"
 
 #: src/muuli_wdr.cpp:2625
-#, fuzzy
 msgid "Force ZLIB compression"
-msgstr "Benutze gzip-Kompression"
+msgstr "ZLIB-Kompression erzwingen"
 
 #: src/muuli_wdr.cpp:2649
 msgid "Enable Verbose Debug-Logging."
@@ -5012,6 +5021,7 @@ msgstr "Eingabe/Ausgabe-Fehler beim Speicher der unfertigen Dateien:"
 #, c-format
 msgid "Wrote 0/unknown bytes to '%s' -- preserving existing .part.met."
 msgstr ""
+"0/unbekannt Bytes nach '%s' geschrieben -- erhalte existierende .part.met."
 
 #: src/PartFile.cpp:1110
 #, c-format
@@ -5110,6 +5120,9 @@ msgid ""
 "Part %u of '%s' marked complete but partfile is shorter than expected (have "
 "%llu bytes, need %llu); reopening gap for re-download."
 msgstr ""
+"Teil %u von '%s' als vollständig markiert aber das Partfile ist kürzer als erw"
+"artet (%llu Bytes "
+"statt %llu); öffne Lücke für wiederholten Download."
 
 #: src/PartFile.cpp:2501 src/PartFile.cpp:2506
 #, c-format
@@ -5402,6 +5415,7 @@ msgstr ""
 #: src/PrefsUnifiedDlg.cpp:278
 msgid "Tray icon support requires libayatana-appindicator3 at compile time."
 msgstr ""
+"Tray-Icon unterstützung benötigt libayatana-appindicator3 beim kompilieren."
 
 #: src/PrefsUnifiedDlg.cpp:293
 msgid ""
@@ -5409,6 +5423,11 @@ msgid ""
 "minimized, so this option cannot intercept the system minimize button. "
 "Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
 msgstr ""
+"Auf Wayland nicht verfügbar: Das Protokoll meldet nicht wenn ein Fenster minim"
+"iert is, "
+"sodass diese Option nicht auf die Minimieren Schaltfläche des System reagieren"
+" kann. "
+"Workaround: aMule mit `GDK_BACKEND=x11 starten um XWayland zu verwenden."
 
 #: src/PrefsUnifiedDlg.cpp:333
 msgid ""
@@ -5545,15 +5564,16 @@ msgid ""
 "Could not register aMule for autostart at login. The autostart store may be "
 "read-only."
 msgstr ""
+"Konnte aMule nicht für Autostart registrieren. Der Ort dafür könnte nicht "
+"beschreibbar sein."
 
 #: src/PrefsUnifiedDlg.cpp:913
 msgid "Could not remove the autostart-at-login entry."
-msgstr ""
+msgstr "Konnte den Autostart-Bei-Login Eintrag nicht entfernen."
 
 #: src/PrefsUnifiedDlg.cpp:914
-#, fuzzy
 msgid "Autostart"
-msgstr "Automatische Aktualisierung begonnen"
+msgstr "Autostart"
 
 #: src/PrefsUnifiedDlg.cpp:979
 msgid ""
@@ -5685,41 +5705,42 @@ msgid ""
 "The following folders look like system or sensitive locations:\n"
 "\n"
 msgstr ""
+"Die folgenden Ordner sehen nach System oder Sensiblen Daten aus.\n"
+"\n"
 
 #: src/PrefsUnifiedDlg.cpp:1566
 msgid ""
 "Sharing them recursively will publish every file underneath on the eD2k/Kad "
 "networks. Do you really want to do this?"
 msgstr ""
+"Rekursives Teilen würde jede Datei im eD2k/Kad Netzwerk verfügbar machen. "
+"Willst du das wirklich?"
 
 #: src/PrefsUnifiedDlg.cpp:1568
-#, fuzzy
 msgid "Confirm shared folders"
-msgstr "Freigegebene Ordner"
+msgstr "Freigegebene Ordner bestätigen"
 
 #: src/PrefsUnifiedDlg.cpp:1601
-#, fuzzy
 msgid "Reloading shared files…"
-msgstr "Freigegebene Dateien neu laden"
+msgstr "Freigegebene Dateien neu laden..."
 
 #: src/PrefsUnifiedDlg.cpp:1602
 msgid "Scanning for subdirectories…"
-msgstr ""
+msgstr "Suche nach Unterverzeichnissen..."
 
 #: src/PrefsUnifiedDlg.cpp:1603
-#, fuzzy
 msgid "Updating shared folders"
-msgstr "Freigegebene Ordner"
+msgstr "Freigegebene Ordner werden aktualisiert"
 
 #: src/PrefsUnifiedDlg.cpp:1632
 #, c-format
 msgid "Scanned %u directories…"
-msgstr ""
+msgstr "%u Verzeichnisse durchsucht..."
 
 #: src/PrefsUnifiedDlg.cpp:1682
-#, fuzzy, c-format
+#, c-format
 msgid "Reloading shared files: %u files scanned"
-msgstr "Liste freigegebener Dateien neu laden."
+msgstr "Liste freigegebener Dateien neu laden: %u Dateien gelesen"
 
 # AI-GENERATED — please review.
 #: src/SearchDlg.cpp:282
@@ -6154,6 +6175,7 @@ msgstr "WARNUNG: %s (%s) - %s"
 msgid ""
 "Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
 msgstr ""
+"Server %s (%s) hat den Login abgelehnt (keine ClientID zugewiesen). Trenne."
 
 #: src/ServerSocket.cpp:362
 #, c-format
@@ -6246,9 +6268,8 @@ msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:200
-#, fuzzy
 msgid "Connection Type:"
-msgstr "Verbindungszustand:"
+msgstr "Verbindungstyp:"
 
 #: src/ServerWnd.cpp:218
 msgid "Kademlia Status:"
@@ -6791,28 +6812,24 @@ msgstr "Keine gültige Nummer\n"
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "Keine gültige Prüfsumme (sollte genau 32 Zeichen lang sein)\n"
 
-# AI-GENERATED — please review.
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
 #: src/TextClient.cpp:613
-#, fuzzy
 msgid ""
 "Invalid search filter syntax.\n"
 "Type 'help search' to get more help.\n"
 msgstr ""
-"Kein Suchtyp angegeben.\n"
+"Suchfiltersyntax falsch.\n"
 "Geben Sie 'help search' ein, um mehr Hilfe zu erhalten.\n"
 
-# AI-GENERATED — please review.
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
 #: src/TextClient.cpp:619
-#, fuzzy
 msgid ""
 "No search keyword provided.\n"
 "Type 'help search' to get more help.\n"
 msgstr ""
-"Kein Suchtyp angegeben.\n"
+"Kein Suchausdruck angegeben.\n"
 "Geben Sie 'help search' ein, um mehr Hilfe zu erhalten.\n"
 
 # AI-GENERATED — please review.
@@ -7212,6 +7229,21 @@ msgid ""
 "Example: 'search global linux iso --type Iso --min-size 100M' returns\n"
 "results for \"linux iso\" of file-type Iso at least 100 MiB.\n"
 msgstr ""
+"Einer der folgenden Suchtypen muss angegeben werden:\n"
+"    GLOBAL\n"
+"    LOCAL\n"
+"    KAD\n"
+"Beispiel: 'search kad Datei' führt eine kad-Suche nach 'Datei' aus.\n"
+"\n"
+"Optionale Filter können vorne, hinten oder dazwischen mit den folgenden\n"
+"Ausdrücken hinzugefügt werden:\n"
+"    --type <Audio|Video|Image|Doc|Pro|Arc|Iso>\n"
+"    --extension <ext>      (Alias: --ext)\n"
+"    --avail <N>            Mindestanzahl von Quellen\n"
+"    --min-size <N[KMG]>    Kleinste Dateigröße; K=1024, M=K*1024, G=M*1024\n"
+"    --max-size <N[KMG]>    Größte Dateigröße; gleiche Suffixe\n"
+"Beispiel: 'search global linux iso --type Iso --min-size 100M' ergibt\n"
+"Ergebnisse für \"linux iso\" vom Datei-Typ Iso mit mindestens 100 MiB.\n"
 
 #: src/TextClient.cpp:1066
 msgid "Execute a global search."
