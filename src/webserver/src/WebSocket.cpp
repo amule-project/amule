@@ -264,7 +264,22 @@ void CWebSocket::SendHttpHeaders(const char* szType, bool use_gzip, uint32 conte
 
 	char cookie[256];
 	if ( session_id ) {
-		snprintf(cookie, sizeof(cookie), "Set-Cookie: amuleweb_session_id=%llu\r\n",
+		// HttpOnly: the cookie isn't readable from JavaScript, which
+		// blunts the "steal the session via reflected XSS" path
+		// (the cookie still rides on every request the browser
+		// sends to amuleweb -- it just stops being readable from
+		// `document.cookie` and friends).
+		// SameSite=Strict: the browser refuses to attach this
+		// cookie to cross-site requests, which is the lever that
+		// CSRF needs in order to ride the authenticated session.
+		// `Secure` is NOT set here: amuleweb has no native TLS
+		// handling and doesn't know whether it's behind a TLS-
+		// terminating proxy. Setting `Secure` unconditionally
+		// would silently lock out every direct-HTTP user (browser
+		// refuses the cookie -> infinite login loop). Wiring this
+		// to a preference is a follow-up. (#871)
+		snprintf(cookie, sizeof(cookie),
+			"Set-Cookie: amuleweb_session_id=%llu; HttpOnly; SameSite=Strict\r\n",
 			static_cast<unsigned long long>(session_id));
 	} else {
 		cookie[0] = 0;
