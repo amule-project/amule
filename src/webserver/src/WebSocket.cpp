@@ -210,7 +210,11 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 	//
 	// Find session cookie.
 	//
-	int sessid = 0;
+	// 64-bit so the cookie value can hold a full
+	// AutoSeededRandomPool-sourced token; previously this was an
+	// `int` + `atoi()` which made server-side session IDs trivially
+	// guessable (#870).
+	uint64_t sessid = 0;
 	char *current_cookie = strstr(pHeader, "Cookie: ");
 	if ( current_cookie == NULL ) {
 		current_cookie = strstr(pHeader, "cookie: ");
@@ -220,7 +224,7 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 		if ( current_cookie ) {
 			char *value = strchr(current_cookie, '=');
 			if ( value ) {
-				sessid = atoi(++value);
+				sessid = strtoull(++value, NULL, 10);
 			}
 		}
 	}
@@ -254,13 +258,14 @@ void CWebSocket::SendContent(const char* szStdResponse, const void* pContent, ui
 	SendData(pContent, dwContentSize);
 }
 
-void CWebSocket::SendHttpHeaders(const char* szType, bool use_gzip, uint32 content_len, int session_id)
+void CWebSocket::SendHttpHeaders(const char* szType, bool use_gzip, uint32 content_len, uint64_t session_id)
 {
 	char szBuf[0x1000];
 
 	char cookie[256];
 	if ( session_id ) {
-		snprintf(cookie, sizeof(cookie), "Set-Cookie: amuleweb_session_id=%d\r\n", session_id);
+		snprintf(cookie, sizeof(cookie), "Set-Cookie: amuleweb_session_id=%llu\r\n",
+			static_cast<unsigned long long>(session_id));
 	} else {
 		cookie[0] = 0;
 	}

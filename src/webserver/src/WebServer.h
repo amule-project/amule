@@ -724,7 +724,13 @@ class CParsedUrl {
 struct ThreadData {
 	CParsedUrl	parsedURL;
 	wxString	sURL;
-	int		SessionID;
+	// Opaque 64-bit session token; 0 means "no session cookie yet".
+	// Sourced from the project CSPRNG (CryptoPP::AutoSeededRandomPool
+	// via GetRandomPool()) when a new session is created, see
+	// CScriptWebServer::CheckLoggedin in WebServer.cpp. Was `int`
+	// + rand() before #870, which made session IDs trivially
+	// guessable.
+	uint64_t	SessionID;
 	CWebSocket	*pSocket;
 };
 
@@ -834,7 +840,7 @@ class CScriptWebServer : public CWebServerBase {
 		char *GetErrorPage(const char *message, long &size);
 		char *Get_404_Page(long &size);
 
-		std::map<int, CSession> m_sessions;
+		std::map<uint64_t, CSession> m_sessions;
 
 		CSession *CheckLoggedin(ThreadData &);
 	protected:
