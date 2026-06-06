@@ -30,7 +30,7 @@ amulecmd \- Programa basado en consola para controlar aMule
 \fBamulecmd\fP es un cliente basado en consola para controlar aMule.
 .TP 
 \fB[ \-h\fP \fI<host>\fP, \fB\-\-host\fP=\fI<host>\fP \fB]\fP
-Host donde se está ejecutando aMule. (por defecto: \fIlocalhost\fP).
+Host donde se está ejecutando aMule (por defecto: \fIlocalhost\fP).
 \fI<host>\fP debe ser o una dirección IP o un nombre DNS
 .TP 
 \fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
@@ -59,8 +59,8 @@ Escribe opciones de la línea de comando al archivo de configuración y
 termina
 .TP 
 \fB[ \-c\fP \fI<command>\fP, \fB\-\-command\fP=\fI<command>\fP \fB]\fP
-Ejecuta \fI<comando>\fP y sal como si este fuera introducido en
-amulecmd.
+Ejecuta \fI<command>\fP como si se hubiera introducido en el prompt en
+amulecmd, y termina.
 .TP 
 \fB[ \-\-create\-config\-from\fP=\fI<path>\fP \fB]\fP
 Crear archivo de configuración basado en \fI<path>\fP, el cual debe
@@ -102,8 +102,8 @@ Con el parámetro opcional, puede especificar a qué red conectarse. Al dar
 una dirección en formato IP:puerto (siendo IP una dirección IPv4 numérica o
 un nombre DNS resoluble) aMule se conectará sólo a ese servidor.
 .SS_untranslated Disconnect [ \fIed2k\fP | \fIkad\fP ]
-Desconectar de todas las redes a las que estás conectado, o solamente
-desconecta de la red especificada.
+Desconectar de todas las redes a las que está conectado, o desconectar solo
+de la red especificada.
 .SS_untranslated Download \fI<number>\fP
 Comenzar a descargar un archivo.
 
@@ -186,9 +186,10 @@ palabra(s) clave de búsqueda:
 .IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
 Restringe los resultados al tipo de archivo indicado.
 .IP "\fB\-\-extension\fR \fI<ext>\fR (alias: \fB\-\-ext\fR)" 4
-Restringe los resultados a una extensión de archivo específica (p. ej.\ \fIiso\fP, \fImp3\fP).
+Restringe los resultados a una extensión de archivo específica (ej.\ \fIiso\fP,
+\fImp3\fP).
 .IP "\fB\-\-avail\fR \fI<N>\fR (alias: \fB\-\-availability\fR)" 4
-Número mínimo de fuentes que un resultado debe declarar.
+Número mínimo de fuentes que un resultado debe informar.
 .IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
 Tamaño mínimo de archivo a devolver. Los sufijos usan multiplicadores
 binarios (K = 1024, M = K\(mu1024, G = M\(mu1024); sin sufijo significa
@@ -252,7 +253,7 @@ El parámetro \fI<lang>\fP para la opción \fB\-l\fP tiene esta forma:
 \fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP] donde \fIlang\fP es el
 lenguaje primario, \fILANG\fP es un sublenguaje/territorio, \fIencoding\fP es el
 conjunto de caracteres a usar y \fImodifier\fP permite al usuario elegir una
-instancia específica de localización dentro un una única categoría.
+instancia específica de localización dentro de una única categoría.
 
 Por ejemplo, las siguientes cadenas son válidas:
 .RS
@@ -268,17 +269,17 @@ Por ejemplo, las siguientes cadenas son válidas:
 .RE
 
 Aunque todas las cadenas previas son aceptadas como definiciones de lenguaje
-válidas,  \fIencoding\fP y \fImodifier\fP aún no se usan.
+válidas, \fIencoding\fP y \fImodifier\fP aún no se usan.
 
 Además del formato previo, también se pueden especificar el nombre completo
-del idioma en inglés, por lo que  \fB\-l german\fP es válido y equivale a \fB\-l de_DE\fP.
+del idioma en inglés, por lo que \fB\-l german\fP es válido y equivale a \fB\-l de_DE\fP.
 
 Cuando no se define ninguna localización, ni por línea de comandos ni en
 fichero de configuración, se usará el lenguaje por defecto del sistema.
 .SH ARCHIVOS
 ~/.aMule/remote.conf
 .SH EJEMPLO
-Normalmente amulecmd se ejecutara primero como:
+Normalmente amulecmd se ejecutará primero como:
 .PP
 \fBamulecmd\fP \fB\-h\fP \fIhostname\fP \fB\-p\fP \fIECport\fP \fB\-P\fP \fIECpassword\fP \fB\-w\fP
 .PP
@@ -291,9 +292,9 @@ tiene que escribir:
 
 .B_untranslated amulecmd
 
-Por supuesto, no tiene por qué que seguir este ejemplo.
+Por supuesto, no tiene por qué seguir este ejemplo.
 .SH "INFORMANDO ERRORES"
-Por favor informa de fallos ya sea en nuestro foro
+Por favor informe de fallos ya sea en nuestro foro
 (\fIhttps://github.com/amule\-org/amule/discussions\fP), o en nuestro bugtracker
 (\fIhttps://github.com/amule\-org/amule/issues\fP). Por favor no informe de
 fallos por correo, ni en nuestras listas, ni directamente al correo de algun

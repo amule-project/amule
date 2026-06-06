@@ -13,9 +13,9 @@ aLinkCreator \- el creador de enlaces eD2k de aMule
 \fBalc\fP es una herramienta gráfica para crear enlaces eD2k de los archivos de
 su ordenador.
 
-Esta apli no tiene ningún argumento.
+Esta aplicación no recibe ningún argumento.
 .SH "INFORMANDO ERRORES"
-Por favor informa de fallos ya sea en nuestro foro
+Por favor informe de fallos ya sea en nuestro foro
 (\fIhttps://github.com/amule\-org/amule/discussions\fP), o en nuestro bugtracker
 (\fIhttps://github.com/amule\-org/amule/issues\fP). Por favor no informe de
 fallos por correo, ni en nuestras listas, ni directamente al correo de algun

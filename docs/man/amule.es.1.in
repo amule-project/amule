@@ -7,7 +7,7 @@
 .als B_untranslated B
 .als RB_untranslated RB
 .SH NOMBRE
-amule \-cliente p2p multiplataforma basado en eMule
+amule \- cliente p2p multiplataforma basado en eMule
 .SH SINOPSIS
 .B_untranslated amule
 [\fB\-c\fP \fI<path>\fP] [\fB\-geometry\fP \fI<geom>\fP]
@@ -41,13 +41,13 @@ Imprime mensajes de registro en la salida estándar
 Reiniciar configuración a valores por defecto.
 .TP 
 \fB[ \-w\fP \fI<path>\fP, \fB\-\-use\-amuleweb\fP=\fI<path>\fP \fB]\fP
-Especifica ubicacion del binario amuleweb en \fI<path>\fP.
+Especifica la ubicación del binario amuleweb en \fI<path>\fP.
 .TP 
 .B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
-No captura las excepciones fatales y no bloquea la salida en las
-aserciones.  Útil para configuraciones sin interfaz / supervisadas (systemd,
-scripts watchdog) donde el diálogo de aserción, que normalmente es modal,
-impide el reinicio automático.
+No captura las excepciones fatales y no bloquea la salida en los diálogos
+modales.  Útil para configuraciones sin interfaz / supervisadas (systemd,
+scripts watchdog) donde el cuadro de diálogo modal impide el reinicio
+automático.
 .TP 
 .B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
 No deshabilitar entrada estándar.
@@ -86,7 +86,7 @@ usará el directorio de la configuración, \fI~/.aMule\fP.
 .SH ARCHIVOS
 ~/.aMule/*
 .SH "INFORMANDO ERRORES"
-Por favor informa de fallos ya sea en nuestro foro
+Por favor informe de fallos ya sea en nuestro foro
 (\fIhttps://github.com/amule\-org/amule/discussions\fP), o en nuestro bugtracker
 (\fIhttps://github.com/amule\-org/amule/issues\fP). Por favor no informe de
 fallos por correo, ni en nuestras listas, ni directamente al correo de algun

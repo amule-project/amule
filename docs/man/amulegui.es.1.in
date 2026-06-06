@@ -25,7 +25,7 @@ amulegui \- Programa para controlar aMule con Interfaz Gráfica
 \fBamulegui\fP es un programa cliente, y puede conectarse a amule o amuled
 usando EC. Permite gestionar remotamente la sesión amule(d). Proporciona
 casi la misma funcionalidad que amule, incluso cuando el núcleo funciona en
-un ordernador distante.
+un ordenador remoto.
 .TP 
 \fB[ \-c\fP \fI<path>\fP, \fB\-\-config\-dir\fP=\fI<path>\fP \fB]\fP
 Leer configuración desde \fI<path>\fP en lugar de home
@@ -53,7 +53,7 @@ Imprime una breve descripción de uso.
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR
 Mostrar el número de la versión actual.
 .SH "INFORMANDO ERRORES"
-Por favor informa de fallos ya sea en nuestro foro
+Por favor informe de fallos ya sea en nuestro foro
 (\fIhttps://github.com/amule\-org/amule/discussions\fP), o en nuestro bugtracker
 (\fIhttps://github.com/amule\-org/amule/issues\fP). Por favor no informe de
 fallos por correo, ni en nuestras listas, ni directamente al correo de algun
