@@ -317,8 +317,7 @@ msgstr "Mais informação, suporte e novos lançamentos na nossa página,\n"
 msgid ""
 "at https://amule-org.github.io, or in our IRC channel #aMule at "
 "irc.libera.chat.\n"
-msgstr ""
-"em amule-org.github.io ou no canal de IRC #aMule em irc.libera.chat.\n"
+msgstr "em amule-org.github.io ou no canal de IRC #aMule em irc.libera.chat.\n"
 
 #: src/amule.cpp:1262
 msgid ""
@@ -8008,92 +8007,3 @@ msgstr "Saída do sistema pedida\n"
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr "A processar pedido [redireccionado]: "
-
-#~ msgid ""
-#~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
-#~ "\n"
-#~ msgstr ""
-#~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
-#~ "\n"
-
-#~ msgid "Contact: admin@amule.org (administrative issues) \n"
-#~ msgstr "Contacto: admin@amule.org (questões administrativas) \n"
-
-#~ msgid "Connection failed "
-#~ msgstr "A ligação falhou "
-
-#~ msgid "Automatic server connect without proxy"
-#~ msgstr "Ligação ao servidor automática sem proxy"
-
-#~ msgid "File"
-#~ msgstr "Ficheiro"
-
-#, c-format
-#~ msgid "Could not retrieve length of '%s' - using %s file."
-#~ msgstr "Não foi possível obter o tamanho de '%s' - a usar o ficheiro %s."
-
-#, c-format
-#~ msgid "'%s' is 0 size somehow - using %s file."
-#~ msgstr "'%s' está vazio - a usar o ficheiro %s."
-
-#, c-format
-#~ msgid "Dropping non-existing shared directory: %s"
-#~ msgstr "A ignorar pasta partilhada inexistente: %s"
-
-#~ msgid ""
-#~ "A search type has to be specified by giving the type:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Example: 'search kad file' will execute a kad search for \"file\".\n"
-#~ msgstr ""
-#~ "O tipo de pesquisa tem de ser definido com um tipo:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Exemplo: 'search kad file' fará uma pesquisa por \"file\" \n"
-
-#~ msgid ""
-#~ "You don't have any server in the server list.\n"
-#~ "Do you want aMule to download a new list now?"
-#~ msgstr ""
-#~ "Não tem nenhum servidor na lista de servidores.\n"
-#~ "Quer que o aMule faça o download de uma lista nova agora?"
-
-#~ msgid "Server list download"
-#~ msgstr "A fazer download da lista de servidores"
-
-#, c-format
-#~ msgid "Unable to create destination file %s for download!"
-#~ msgstr "Não é possível criar o ficheiro de destino %s para o download!"
-
-#~ msgid "Critical error while writing downloaded file"
-#~ msgstr "Erro crítico durante a escrita do ficheiro recebido"
-
-#, c-format
-#~ msgid "Expected %d bytes, but downloaded %d bytes"
-#~ msgstr "Esperavam-se %d bytes, mas foram transferidos %d"
-
-#~ msgid "Unable to connect to HTTP download server"
-#~ msgstr "Impossível ligar ao servidor HTTP"
-
-#~ msgid "Invalid response from HTTP download server"
-#~ msgstr "Resposta inválida do servidor HTTP"
-
-#~ msgid "Searches for more results on eD2k. Not supported for Kad yet."
-#~ msgstr "Pesquisa mais resultados na eD2k. Ainda não funciona para a Kad."
-
-#, c-format
-#~ msgid "Failed to open file (%s), removing from list of shared files."
-#~ msgstr ""
-#~ "Falha ao abrir ficheiro (%s), a remover da lista de ficheiros partilhados."
-
-#~ msgid ""
-#~ "Invalid URL for HTTP download or HTTP redirection (did you forget "
-#~ "'http://' ?)"
-#~ msgstr ""
-#~ "URL inválido para download HTTP ou redirecção HTTP (esqueceu-se do "
-#~ "'http://' ?)"
-
-#~ msgid "FileHash"
-#~ msgstr "Chave de Ficheiro"

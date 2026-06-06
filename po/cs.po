@@ -17,9 +17,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 2.3\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -7816,44 +7816,3 @@ msgstr "Bylo vyžádáno odhlášení\n"
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr "Zpracování požadavku [přesměrovaný]:"
-
-#~ msgid ""
-#~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
-#~ "\n"
-#~ msgstr ""
-#~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
-#~ "\n"
-
-#~ msgid "Connection failed "
-#~ msgstr "Připojení selhalo "
-
-#~ msgid "File"
-#~ msgstr "Soubor"
-
-#, c-format
-#~ msgid "'%s' is 0 size somehow - using %s file."
-#~ msgstr "'%s' má nulovou velikost - používám soubor %s."
-
-#, c-format
-#~ msgid "Dropping non-existing shared directory: %s"
-#~ msgstr "Ignoruji neexistující sdílený adresář: %s"
-
-#, fuzzy, c-format
-#~ msgid "Unable to create destination file %s for download!"
-#~ msgstr "Nemohu otevřít soubor se skinem %s pro čtení"
-
-#~ msgid "Critical error while writing downloaded file"
-#~ msgstr "Kritická chyba během zápisu staženého souboru"
-
-#, c-format
-#~ msgid "Expected %d bytes, but downloaded %d bytes"
-#~ msgstr "Očekáváno %d bytů, ale staženo %d bytů"
-
-#~ msgid "Unable to connect to HTTP download server"
-#~ msgstr "Nelze se připojit k HTTP serveru"
-
-#~ msgid "Invalid response from HTTP download server"
-#~ msgstr "Neplatná odpověď od HTTP serveru"
-
-#~ msgid "FileHash"
-#~ msgstr "FileHash"

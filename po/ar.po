@@ -17,8 +17,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: src/AddFriend.cpp:45
@@ -7683,10 +7683,3 @@ msgstr ""
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr ""
-
-#~ msgid "File"
-#~ msgstr "ملف"
-
-#, fuzzy
-#~ msgid "Unable to connect to HTTP download server"
-#~ msgstr "أنت غير متصل بي مستظيف!"

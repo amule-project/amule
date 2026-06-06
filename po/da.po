@@ -7706,10 +7706,3 @@ msgstr "Logout anmodning\n"
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr "Udfører forespørgsel [omledt]: "
-
-#~ msgid "File"
-#~ msgstr "Fil"
-
-#, fuzzy
-#~ msgid "Unable to connect to HTTP download server"
-#~ msgstr "Du er ikke forbundet til en server!"

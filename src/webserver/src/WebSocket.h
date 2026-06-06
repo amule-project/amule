@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2011 shakraw ( shakraw@users.sourceforge.net )
-// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2026 aMule Team ( https://amule-org.github.io )
 // Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -51,7 +51,7 @@ class CWebSocket : public CLibSocket {
 
 		void SendContent(const char* szStdResponse, const void* pContent, uint32 dwContentSize);
 		void SendData(const void* pData, uint32 dwDataSize);
-		void SendHttpHeaders(const char * szType, bool use_gzip, uint32 content_len, int session_id);
+		void SendHttpHeaders(const char * szType, bool use_gzip, uint32 content_len, uint64_t session_id);
 
 		CWebServerBase *m_pParent;
 

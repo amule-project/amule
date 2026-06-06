@@ -181,7 +181,22 @@ function formCommandSubmit(command)
                     </select></td>
                 </tr>
                 <tr> 
-                  <td align="center"><a href="amuleweb-main-search.php?search_sort=<?php echo($HTTP_GET_VARS["sort"]);?>">Click here to update the search results</a> </td>
+                  <td align="center"><a href="amuleweb-main-search.php?search_sort=<?php
+// Whitelist against the column keys my_cmp() actually understands
+// (line 234-236 of this file). Anything else is dropped to empty,
+// which falls through to the "no sort change" branch below. This
+// avoids reflecting an attacker-controlled string into the rendered
+// HTML (#869). Plain string-equality chain is the only matching
+// primitive amuleweb's bundled PHP interpreter supports -- the
+// classic `in_array()` / `htmlspecialchars()` builtins aren't
+// registered (see src/webserver/src/php_core_lib.cpp), and array
+// short syntax `[...]` doesn't parse either. The three whitelisted
+// values are static alphanumeric column keys; no escaping needed.
+$sort_raw = isset($HTTP_GET_VARS["sort"]) ? $HTTP_GET_VARS["sort"] : "";
+if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
+    echo($sort_raw);
+}
+?>">Click here to update the search results</a> </td>
                   <td align="right">Search type :</td>
                   <td> 
                     <select name="searchtype" id="select">

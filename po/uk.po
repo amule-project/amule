@@ -582,7 +582,7 @@ msgid ""
 "Copyright (c) 2003-2026 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (c) 2003-2019 aMule Team \n"
+"Copyright (c) 2003-2026 aMule Team \n"
 "\n"
 
 #: src/amuleDlg.cpp:531
@@ -8044,75 +8044,3 @@ msgstr "Запитано вихід\n"
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr "Обробляється запит [перенаправлений]:"
-
-#~ msgid ""
-#~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
-#~ "\n"
-#~ msgstr ""
-#~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
-#~ "\n"
-
-#~ msgid "Contact: admin@amule.org (administrative issues) \n"
-#~ msgstr "Контакт: admin@amule.org (адміністративні питання) \n"
-
-#~ msgid "Connection failed "
-#~ msgstr "З'єднання невдале "
-
-#~ msgid "Automatic server connect without proxy"
-#~ msgstr "Автоматичне з'єднання з сервером без проксі"
-
-#~ msgid "File"
-#~ msgstr "Файл"
-
-#, c-format
-#~ msgid "Could not retrieve length of '%s' - using %s file."
-#~ msgstr "Неможливо отримати довжину '%s' - використовується файл %s."
-
-#, c-format
-#~ msgid "'%s' is 0 size somehow - using %s file."
-#~ msgstr "'%s' чомусь має нульовий розмір - використовується файл %s."
-
-#, c-format
-#~ msgid "Dropping non-existing shared directory: %s"
-#~ msgstr "Усунення неіснуючих спільних тек: %s"
-
-#~ msgid ""
-#~ "A search type has to be specified by giving the type:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Example: 'search kad file' will execute a kad search for \"file\".\n"
-#~ msgstr ""
-#~ "Вид пошуку має бути визначений одним з наступних:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Наприклад: 'search kad file' виконає пошук файлу \"file\" в Kad.\n"
-
-#~ msgid ""
-#~ "You don't have any server in the server list.\n"
-#~ "Do you want aMule to download a new list now?"
-#~ msgstr ""
-#~ "Ви не маєте жодного серверу в переліку серверів.\n"
-#~ "Хочете, щоб aMule звантажив зараз новий?"
-
-#~ msgid "Server list download"
-#~ msgstr "Звантажити перелік серверів"
-
-#, fuzzy, c-format
-#~ msgid "Unable to create destination file %s for download!"
-#~ msgstr "Тека призначення для звантажень"
-
-#, fuzzy
-#~ msgid "Unable to connect to HTTP download server"
-#~ msgstr "Перез'єднатись з сервером"
-
-#~ msgid "Searches for more results on eD2k. Not supported for Kad yet."
-#~ msgstr "Для більших наслідків шукайте в eD2k. Ще не підтримується Kad."
-
-#, c-format
-#~ msgid "Failed to open file (%s), removing from list of shared files."
-#~ msgstr "Не вдалося відкрити файл (%s), видаляю з переліку спільних файлів."
-
-#~ msgid "FileHash"
-#~ msgstr "Хеш файлу"

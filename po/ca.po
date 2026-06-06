@@ -586,7 +586,7 @@ msgid ""
 "Copyright (c) 2003-2026 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (c) 2003-2019 aMule Team \n"
+"Copyright (c) 2003-2026 aMule Team \n"
 "\n"
 
 #: src/amuleDlg.cpp:531
@@ -8036,90 +8036,3 @@ msgstr "Eixida sol·licitada\n"
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr "S'està processant la petició [redirigit]: "
-
-#~ msgid ""
-#~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
-#~ "\n"
-#~ msgstr ""
-#~ "PMF: https://amule-org.github.io/docs \n"
-#~ "\n"
-
-#~ msgid "Contact: admin@amule.org (administrative issues) \n"
-#~ msgstr "Contacte: admin@amule.org (temes administratius) \n"
-
-#~ msgid "Connection failed "
-#~ msgstr "La connexió ha fallat "
-
-#~ msgid "Automatic server connect without proxy"
-#~ msgstr "Connexió automàtica al servidor sense servidor intermediari"
-
-#~ msgid "File"
-#~ msgstr "Fitxer"
-
-#, c-format
-#~ msgid "Could not retrieve length of '%s' - using %s file."
-#~ msgstr "No s'ha pogut recuperar la mida de '%s' - usant el fitxer %s."
-
-#, c-format
-#~ msgid "'%s' is 0 size somehow - using %s file."
-#~ msgstr "'%s' és buit - s'està usant el fitxer %s."
-
-#, c-format
-#~ msgid "Dropping non-existing shared directory: %s"
-#~ msgstr "Ignorant carpeta compartida inexistent: %s"
-
-#~ msgid ""
-#~ "A search type has to be specified by giving the type:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Example: 'search kad file' will execute a kad search for \"file\".\n"
-#~ msgstr ""
-#~ "S'ha d'especificat un tipus de cerca:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Exemple:'search kad fitxer' executarà una cerca kad per a \"fitxer\".\n"
-
-#~ msgid ""
-#~ "You don't have any server in the server list.\n"
-#~ "Do you want aMule to download a new list now?"
-#~ msgstr ""
-#~ "No teniu cap servidor a la llista de servidors.\n"
-#~ "Voleu que l'aMule baixi una llista nova?"
-
-#~ msgid "Server list download"
-#~ msgstr "Baixada de la llista de servidors"
-
-#, c-format
-#~ msgid "Unable to create destination file %s for download!"
-#~ msgstr "No s'ha pogut crear el fitxer de destí %s per descarregar!"
-
-#~ msgid "Critical error while writing downloaded file"
-#~ msgstr "Error crític en escriure el fitxer baixat"
-
-#, c-format
-#~ msgid "Expected %d bytes, but downloaded %d bytes"
-#~ msgstr "Esperats %d bytes, però %d bytes descarregats"
-
-#, c-format
-#~ msgid "Protocol not supported for HTTP download: %s"
-#~ msgstr "El protocol no és compatible per a la baixada HTTP: %s"
-
-#~ msgid "Unable to connect to HTTP download server"
-#~ msgstr "No s'ha pogut connectar amb el servidor de baixada HTTP"
-
-#~ msgid "Invalid response from HTTP download server"
-#~ msgstr "Resposta no vàlida del servidor de baixada HTTP"
-
-#~ msgid "Searches for more results on eD2k. Not supported for Kad yet."
-#~ msgstr "Cerca més resultats a eD2k. No disponible per a Kad encara."
-
-#, c-format
-#~ msgid "Failed to open file (%s), removing from list of shared files."
-#~ msgstr ""
-#~ "No s'ha pogut obrir el fitxer (%s), s'eliminarà de la llista de fitxers "
-#~ "compartits."
-
-#~ msgid "FileHash"
-#~ msgstr "Resum del fitxer"

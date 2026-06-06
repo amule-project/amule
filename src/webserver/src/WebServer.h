@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2011 Angel Vidal ( kry@amule.org )
-// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2026 aMule Team ( https://amule-org.github.io )
 // Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -56,7 +56,13 @@
 class CWebSocket;
 class CMD4Hash;
 
-#define SESSION_TIMEOUT_SECS	300	// 5 minutes session expiration
+// Idle window after which a CSession entry is dropped and the user is
+// asked to log in again. Has been a hardcoded 7200 (2 hours) in
+// CScriptWebServer::CheckLoggedin since forever; the named constant
+// existed but was never wired up (set to 300, but no `7200`-using site
+// referenced it). Keep the live behaviour (2 hours) and have the
+// macro own the value so the timeout can be changed in one place.
+#define SESSION_TIMEOUT_SECS	7200	// 2 hours session expiration
 #define SHORT_FILENAME_LENGTH	40	// Max size of file name.
 
 wxString _SpecialChars(wxString str);
@@ -717,8 +723,25 @@ class CParsedUrl {
 // Changing this to a typedef struct{} makes egcs compiler do it all wrong and crash on run
 struct ThreadData {
 	CParsedUrl	parsedURL;
+	// CParsedUrl of the *original* request URL, before
+	// CWebSocket::OnRequestReceived concatenated the POST body onto
+	// it (see comment at WebSocket.cpp:197-208). Used by the login
+	// handler to tell apart "param came from the POST body" from
+	// "param came from the URL query string"; we refuse to consume
+	// `pass` when it's reachable via the query, so attacker-crafted
+	// URLs like `/login.php?pass=XYZ` (or POST forms whose action
+	// carries `?pass=...`) can never authenticate (#872). The
+	// existing merged `parsedURL` above stays the source of truth
+	// for every non-credential parameter so #724's POST-on-
+	// query-URL fix isn't disturbed.
+	CParsedUrl	getOnlyParsedURL;
 	wxString	sURL;
-	int		SessionID;
+	// Opaque 64-bit session token; 0 means "no session cookie yet".
+	// Sourced from CryptoPP::AutoSeededRandomPool when a new session
+	// is created, see CScriptWebServer::CheckLoggedin in
+	// WebServer.cpp. Was `int` + rand() before #870, which made
+	// session IDs trivially guessable.
+	uint64_t	SessionID;
 	CWebSocket	*pSocket;
 };
 
@@ -828,7 +851,7 @@ class CScriptWebServer : public CWebServerBase {
 		char *GetErrorPage(const char *message, long &size);
 		char *Get_404_Page(long &size);
 
-		std::map<int, CSession> m_sessions;
+		std::map<uint64_t, CSession> m_sessions;
 
 		CSession *CheckLoggedin(ThreadData &);
 	protected:

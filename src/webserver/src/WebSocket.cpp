@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2011 shakraw ( shakraw@users.sourceforge.net )
-// Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2026 aMule Team ( https://amule-org.github.io )
 // Copyright (c) 2002-2011 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -36,7 +36,16 @@ CWebSocket::CWebSocket(CWebServerBase *parent)
 {
 	m_pHead = 0;
 	m_pTail = 0;
-	m_pBuf = new char [4096];
+	// Allocate one extra slot so the NUL terminator at the end of
+	// OnReceive() always has a home, even if Read() exactly fills the
+	// requested span and the grow loop is skipped (the off-by-one
+	// scenario in #873: first Read returns m_dwBufSize bytes AND
+	// LastError() is set, leaving m_dwRecv == m_dwBufSize when the
+	// loop exits). The allocation is +1 byte; m_dwBufSize keeps
+	// reflecting the *usable* span we hand to Read() so the
+	// `m_dwBufSize - m_dwRecv` reads below still leave the spare slot
+	// free for the terminator.
+	m_pBuf = new char [4096 + 1];
 	m_dwBufSize = 4096;
 	m_dwRecv = 0;
 	m_dwHttpHeaderLen = 0;
@@ -62,9 +71,11 @@ void CWebSocket::OnReceive(int)
 	uint32 read = Read(m_pBuf + m_dwRecv, m_dwBufSize - m_dwRecv);
 	m_dwRecv += read;
 	while ((m_dwRecv == m_dwBufSize) && (read != 0) && (!LastError())) {
-		// Buffer is too small. Make it bigger.
+		// Buffer is too small. Make it bigger. Allocate one extra
+		// slot for the NUL terminator written below, matching the
+		// `+1` overhead the ctor uses (see #873).
 		uint32 newsize = m_dwBufSize + (m_dwBufSize  >> 1);
-		char* newbuffer = new char[newsize];
+		char* newbuffer = new char[newsize + 1];
 		char* oldbuffer = m_pBuf;
 		memcpy(newbuffer, oldbuffer, m_dwBufSize);
 		delete[] oldbuffer;
@@ -183,6 +194,14 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 	*pHeader++ = 0;
 
 	wxString sURL(char2unicode(path));
+	// Capture the URL exactly as it was on the wire, before any
+	// POST-body concatenation below. The login handler in
+	// CScriptWebServer::ProcessURL needs to be able to distinguish
+	// "the `pass` param came from the POST body" from "the `pass`
+	// param came from the URL query string"; storing the pre-concat
+	// CParsedUrl gives it that signal without re-parsing or
+	// regex-on-string heuristics (#872).
+	wxString sOriginalURL = sURL;
 	if ( is_post ) {
 		// Append the POST body to the URL so CParsedUrl picks up the
 		// form fields the same way it does for GET-style ?key=value
@@ -199,7 +218,11 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 	//
 	// Find session cookie.
 	//
-	int sessid = 0;
+	// 64-bit so the cookie value can hold a full
+	// AutoSeededRandomPool-sourced token; previously this was an
+	// `int` + `atoi()` which made server-side session IDs trivially
+	// guessable (#870).
+	uint64_t sessid = 0;
 	char *current_cookie = strstr(pHeader, "Cookie: ");
 	if ( current_cookie == NULL ) {
 		current_cookie = strstr(pHeader, "cookie: ");
@@ -209,11 +232,11 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 		if ( current_cookie ) {
 			char *value = strchr(current_cookie, '=');
 			if ( value ) {
-				sessid = atoi(++value);
+				sessid = strtoull(++value, NULL, 10);
 			}
 		}
 	}
-	ThreadData Data = { CParsedUrl(sURL), sURL, sessid, this };
+	ThreadData Data = { CParsedUrl(sURL), CParsedUrl(sOriginalURL), sURL, sessid, this };
 
 	wxString sFile = Data.parsedURL.File();
 	if (sFile.Length() > 4 ) {
@@ -243,13 +266,29 @@ void CWebSocket::SendContent(const char* szStdResponse, const void* pContent, ui
 	SendData(pContent, dwContentSize);
 }
 
-void CWebSocket::SendHttpHeaders(const char* szType, bool use_gzip, uint32 content_len, int session_id)
+void CWebSocket::SendHttpHeaders(const char* szType, bool use_gzip, uint32 content_len, uint64_t session_id)
 {
 	char szBuf[0x1000];
 
 	char cookie[256];
 	if ( session_id ) {
-		snprintf(cookie, sizeof(cookie), "Set-Cookie: amuleweb_session_id=%d\r\n", session_id);
+		// HttpOnly: the cookie isn't readable from JavaScript, which
+		// blunts the "steal the session via reflected XSS" path
+		// (the cookie still rides on every request the browser
+		// sends to amuleweb -- it just stops being readable from
+		// `document.cookie` and friends).
+		// SameSite=Strict: the browser refuses to attach this
+		// cookie to cross-site requests, which is the lever that
+		// CSRF needs in order to ride the authenticated session.
+		// `Secure` is NOT set here: amuleweb has no native TLS
+		// handling and doesn't know whether it's behind a TLS-
+		// terminating proxy. Setting `Secure` unconditionally
+		// would silently lock out every direct-HTTP user (browser
+		// refuses the cookie -> infinite login loop). Wiring this
+		// to a preference is a follow-up. (#871)
+		snprintf(cookie, sizeof(cookie),
+			"Set-Cookie: amuleweb_session_id=%llu; HttpOnly; SameSite=Strict\r\n",
+			static_cast<unsigned long long>(session_id));
 	} else {
 		cookie[0] = 0;
 	}
