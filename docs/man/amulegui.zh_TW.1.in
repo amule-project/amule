@@ -56,7 +56,7 @@ amulegui \- 圖形介面的 aMule 控制程式
 .SH 版權
 aMule 與附加的工具程式都遵守 GNU 的 GPL 協定。
 .SH 參考
-.B_untranslated alc\fR(1), \fBalcc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1), \fBxas\fR(1)
+.B_untranslated alc\fR(1), \fBalcc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1)
 .SH 作者
 說明文件撰寫者： Julien Delange for Debian <julien AT gunnm DOT org>
 

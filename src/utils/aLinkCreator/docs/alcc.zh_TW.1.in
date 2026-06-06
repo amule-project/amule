@@ -34,6 +34,6 @@ alcc \- aMule 的文字介面 eD2k 連結計算程式
 .SH 版權
 aMule 與附加的工具程式都遵守 GNU 的 GPL 協定。
 .SH 參考
-.B_untranslated alc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1), \fBxas\fR(1)
+.B_untranslated alc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1)
 .SH 作者
 說明文件撰寫者： Vollstrecker <amule@vollstreckernet.de>

@@ -1616,37 +1616,6 @@ msgstr ""
 #~ msgid "Statistics [ I<E<lt>numberE<gt>> ]"
 #~ msgstr "statistics [ I<E<lt>號字E<gt>> ]"
 
-#, no-wrap
-#~ msgid "XAS"
-#~ msgstr "XAS"
-
-#, no-wrap
-#~ msgid "xas v1.9"
-#~ msgstr "xas v1.9"
-
-#~ msgid "xas - X-Chat aMule Statistics"
-#~ msgstr "xas - 用於 X-Chat 的 aMule 統計資訊程式"
-
 #~ msgid "B<none>"
 #~ msgstr "B<無>"
 
-#~ msgid ""
-#~ "B<xas> is a plugin for xchat. For loading see your xchat documentation. "
-#~ "After loading type /xas and it will send statistics to the channel you "
-#~ "are in. These are taken from your Online Signature file.  For this to "
-#~ "work, you must enable the \"Online Signature\" option in aMule's "
-#~ "preferences."
-#~ msgstr ""
-#~ "B<xas> 是 xchat 的插件，請參考你的 xchat 相關文件以瞭解如何載入。載入之"
-#~ "後，輸入 /xas 就會把從你的線上簽名識別檔取得統計資訊傳到你目前所在的頻道。"
-#~ "要使用這個功能，你必須在偏好設定裏啟用「線上簽名識別」。"
-
-#~ msgid ""
-#~ "To enable it on every startup of xchat you can just run the autostart-xas "
-#~ "script (in /usr/bin if you installed with --prefix=/usr)."
-#~ msgstr ""
-#~ "你可以執行 autostart-xas (如果是用 --prefix=/usr 安裝程式，就在 /usr/bin "
-#~ "下) 在每次啟動 xchat 時都啟用它。"
-
-#~ msgid "B<xas> was originally written by niet"
-#~ msgstr "B<xas> 的原作者：niet"
