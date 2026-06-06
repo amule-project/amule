@@ -194,6 +194,14 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 	*pHeader++ = 0;
 
 	wxString sURL(char2unicode(path));
+	// Capture the URL exactly as it was on the wire, before any
+	// POST-body concatenation below. The login handler in
+	// CScriptWebServer::ProcessURL needs to be able to distinguish
+	// "the `pass` param came from the POST body" from "the `pass`
+	// param came from the URL query string"; storing the pre-concat
+	// CParsedUrl gives it that signal without re-parsing or
+	// regex-on-string heuristics (#872).
+	wxString sOriginalURL = sURL;
 	if ( is_post ) {
 		// Append the POST body to the URL so CParsedUrl picks up the
 		// form fields the same way it does for GET-style ?key=value
@@ -228,7 +236,7 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 			}
 		}
 	}
-	ThreadData Data = { CParsedUrl(sURL), sURL, sessid, this };
+	ThreadData Data = { CParsedUrl(sURL), CParsedUrl(sOriginalURL), sURL, sessid, this };
 
 	wxString sFile = Data.parsedURL.File();
 	if (sFile.Length() > 4 ) {

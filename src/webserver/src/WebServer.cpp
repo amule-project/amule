@@ -1893,7 +1893,22 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	if ( !session->m_logged_in ) {
 		filename = "login.php";
 
-		wxString PwStr(Data.parsedURL.Param("pass"));
+		// Refuse to consume `pass` if it's reachable via the original
+		// (pre-POST-body-merge) URL query string. Passwords in URLs
+		// leak into proxy logs / browser history / Referer headers,
+		// and the GET-with-pass click-attack vector is exactly what
+		// #872 exists to close. Note that `getOnlyParsedURL` is
+		// always populated -- for GET requests it's identical to
+		// `parsedURL`; for POST requests it's the pre-concat copy,
+		// so `pass` only shows up there when an attacker put it
+		// into a POST form's `action=...?pass=XYZ`. Either way,
+		// presence means "don't trust this password attempt".
+		wxString PwStr;
+		if ( Data.getOnlyParsedURL.Param("pass").Length() ) {
+			Print(_("Refusing to read `pass` from URL query string\n"));
+		} else {
+			PwStr = Data.parsedURL.Param("pass");
+		}
 		if (webInterface->m_AdminPass.IsEmpty() && webInterface->m_GuestPass.IsEmpty()) {
 			session->m_vars["login_error"] = "No password specified, login will not be allowed.";
 			Print(_("No password specified, login will not be allowed."));
