@@ -723,13 +723,24 @@ class CParsedUrl {
 // Changing this to a typedef struct{} makes egcs compiler do it all wrong and crash on run
 struct ThreadData {
 	CParsedUrl	parsedURL;
+	// CParsedUrl of the *original* request URL, before
+	// CWebSocket::OnRequestReceived concatenated the POST body onto
+	// it (see comment at WebSocket.cpp:197-208). Used by the login
+	// handler to tell apart "param came from the POST body" from
+	// "param came from the URL query string"; we refuse to consume
+	// `pass` when it's reachable via the query, so attacker-crafted
+	// URLs like `/login.php?pass=XYZ` (or POST forms whose action
+	// carries `?pass=...`) can never authenticate (#872). The
+	// existing merged `parsedURL` above stays the source of truth
+	// for every non-credential parameter so #724's POST-on-
+	// query-URL fix isn't disturbed.
+	CParsedUrl	getOnlyParsedURL;
 	wxString	sURL;
 	// Opaque 64-bit session token; 0 means "no session cookie yet".
-	// Sourced from the project CSPRNG (CryptoPP::AutoSeededRandomPool
-	// via GetRandomPool()) when a new session is created, see
-	// CScriptWebServer::CheckLoggedin in WebServer.cpp. Was `int`
-	// + rand() before #870, which made session IDs trivially
-	// guessable.
+	// Sourced from CryptoPP::AutoSeededRandomPool when a new session
+	// is created, see CScriptWebServer::CheckLoggedin in
+	// WebServer.cpp. Was `int` + rand() before #870, which made
+	// session IDs trivially guessable.
 	uint64_t	SessionID;
 	CWebSocket	*pSocket;
 };
