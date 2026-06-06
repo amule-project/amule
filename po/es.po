@@ -44,7 +44,6 @@ msgstr "Información"
 msgid "The specified userhash is not valid!"
 msgstr "¡El hash de usuario especificado no es válido!"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:221
 msgid ""
 "aMule can install a desktop launcher and icon into your home directory so it "
@@ -54,51 +53,44 @@ msgid ""
 "\n"
 "Install desktop integration now?"
 msgstr ""
-"aMule puede instalar un lanzador de escritorio y un icono en su directorio "
-"personal para que aparezca en el menú de aplicaciones como una aplicación "
-"instalada normalmente. Esto es reversible — los archivos se guardan en ~/."
+"aMule puede instalar un acceso directo en el escritorio y un icono en su "
+"directorio personal para que aparezca en el menú de aplicaciones como una "
+"aplicación instalada. Esto es reversible — los archivos se guardan en ~/."
 "local/share/applications y ~/.local/share/icons y se pueden eliminar en "
 "cualquier momento.\n"
 "\n"
 "¿Instalar la integración de escritorio ahora?"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:226
 msgid "Add aMule to your application menu?"
 msgstr "¿Añadir aMule al menú de aplicaciones?"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:228
 msgid "Install"
 msgstr "Instalar"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:228
 msgid "Not now"
 msgstr "Ahora no"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:229
 msgid "Don't ask again"
 msgstr "No volver a preguntar"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:248
 msgid ""
 "Cannot install desktop integration: the APPDIR environment variable is not "
 "set. This usually means the AppImage was launched in a non-standard way."
 msgstr ""
 "No se puede instalar la integración de escritorio: la variable de entorno "
-"APPDIR no está definida. Esto generalmente significa que el AppImage se "
-"inició de una forma no estándar."
+"APPDIR no está definida. Esto generalmente significa que el AppImage no se "
+"inició de forma normal."
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
 #: src/AppImageIntegration.cpp:274
 msgid "aMule integration failed"
 msgstr "La integración de aMule ha fallado"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:259
 #, c-format
 msgid ""
@@ -108,7 +100,6 @@ msgstr ""
 "No se puede instalar la integración de escritorio: error al crear %s. "
 "Compruebe que su directorio personal tenga permisos de escritura."
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:271
 #, c-format
 msgid ""
@@ -118,12 +109,10 @@ msgstr ""
 "No se puede instalar la integración de escritorio: error al escribir %s. "
 "Compruebe que su directorio personal tenga permisos de escritura."
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:281
 msgid "AppImage integration: aMule added to your application menu."
 msgstr "Integración de AppImage: aMule se ha añadido al menú de aplicaciones."
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:284
 msgid ""
 "aMule has been added to your application menu. You can now launch it from "
@@ -145,17 +134,14 @@ msgstr ""
 "\n"
 "¿Reiniciar aMule ahora?"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:287
 msgid "aMule installed"
 msgstr "aMule instalado"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:289
 msgid "Restart now"
 msgstr "Reiniciar ahora"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:289
 msgid "Later"
 msgstr "Más tarde"
@@ -166,11 +152,11 @@ msgid "Could not add %u link from ED2KLinks file (see log for details)."
 msgid_plural ""
 "Could not add %u links from ED2KLinks file (see log for details)."
 msgstr[0] ""
-"No se pudo añadir %u enlace del archivo ED2KLinks (consulta el log para más "
-"detalles)"
-msgstr[1] ""
-"No se pudieron añadir %u enlaces del archivo ED2KLinks (consulta el log para "
+"No se pudo añadir %u enlace del archivo ED2KLinks (consulte el registro para "
 "más detalles)"
+msgstr[1] ""
+"No se pudieron añadir %u enlaces del archivo ED2KLinks (consulte el registro "
+"para más detalles)"
 
 #: src/amuleAppCommon.cpp:176 src/amule.cpp:866 src/amule.cpp:980
 #: src/amule.cpp:1275 src/amule-remote-gui.cpp:462 src/amule-remote-gui.cpp:514
@@ -253,17 +239,14 @@ msgstr "Contraseña fijada y conexiones externas habilitadas."
 msgid "WARNING"
 msgstr "AVISO"
 
-# AI-GENERATED — please review.
 #: src/amule.cpp:767
 msgid "eD2k server list (server.met)"
 msgstr "Lista de servidores eD2k (server.met)"
 
-# AI-GENERATED — please review.
 #: src/amule.cpp:768
 msgid "Kad bootstrap nodes (nodes.dat)"
 msgstr "Nodos de bootstrap Kad (nodes.dat)"
 
-# AI-GENERATED — please review.
 #: src/amule.cpp:775
 msgid ""
 "aMule has detected missing network bootstrap files.\n"
@@ -272,7 +255,6 @@ msgstr ""
 "aMule ha detectado archivos de bootstrap de red faltantes.\n"
 "Seleccione cuáles descargar:"
 
-# AI-GENERATED — please review.
 #: src/amule.cpp:776
 msgid "Network bootstrap"
 msgstr "Bootstrap de red"
@@ -904,7 +886,7 @@ msgstr "Conectando..."
 
 #: src/amule-remote-gui.cpp:461
 msgid "Connection failed. Please check the host, port, and password."
-msgstr "Conexión fallida. Por favor, comprueba el host, puerto y contraseña."
+msgstr "Conexión fallida. Por favor, compruebe el host, puerto y contraseña."
 
 #: src/amule-remote-gui.cpp:498
 msgid "Remote GUI EC event handler"
@@ -923,7 +905,6 @@ msgstr "Apagándose"
 msgid "Connection closed - aMule has terminated probably."
 msgstr "Conexión cerrada - Es probable que aMule se haya cerrado."
 
-# AI-GENERATED — please review.
 #: src/amule-remote-gui.cpp:543
 #, c-format
 msgid ""
@@ -934,7 +915,7 @@ msgstr ""
 "Tiempo de conexión agotado. No se ha podido contactar con %s:%d dentro del "
 "tiempo asignado.\n"
 "Compruebe el host, el puerto y que aMule esté en ejecución con las "
-"conexiones externas habilitadas."
+"Conexiones Externas habilitadas."
 
 #: src/amule-remote-gui.cpp:638
 msgid "Ready"
@@ -1813,9 +1794,9 @@ msgstr "Protocolo desconocido del enlace: %s"
 #, c-format
 msgid "Could not add %u link (see log for details)."
 msgid_plural "Could not add %u links (see log for details)."
-msgstr[0] "No se pudo añadir %u enlace (consulta el log para más detalles)"
+msgstr[0] "No se pudo añadir %u enlace (consulte el registro para más detalles)"
 msgstr[1] ""
-"No se pudieron añadir %u enlaces (consulta el log para más detalles)"
+"No se pudieron añadir %u enlaces (consulte el registro para más detalles)"
 
 #: src/DownloadQueue.cpp:1464
 #, c-format
@@ -1954,17 +1935,14 @@ msgstr "necesita definir el servidor que va a borrar"
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k está deshabilitado en las preferencias."
 
-# AI-GENERATED — please review.
 #: src/ExternalConn.cpp:1322
 msgid "Friend not found."
 msgstr "Amigo no encontrado."
 
-# AI-GENERATED — please review.
 #: src/ExternalConn.cpp:1331
 msgid "Client not found."
 msgstr "Cliente no encontrado."
 
-# AI-GENERATED — please review.
 #: src/ExternalConn.cpp:1336
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
 msgstr "EC_TAG_FRIEND_SHARED requiere EC_TAG_FRIEND o EC_TAG_CLIENT."
@@ -2423,49 +2401,41 @@ msgstr "Descarga HTTP cancelada"
 msgid "The URL to download can't be empty"
 msgstr "El URL a descargar no puede estar en blanco"
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:246
 #, c-format
 msgid "Failed to create HTTP request for %s"
 msgstr "No se ha podido crear la petición HTTP para %s"
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:337
 #, c-format
 msgid "HTTP download: empty response body for %s"
 msgstr "Descarga HTTP: cuerpo de respuesta vacío para %s"
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:349
 #, c-format
 msgid "Could not move downloaded file to %s"
 msgstr "No se ha podido mover el archivo descargado a %s"
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:353
 #, c-format
 msgid "Downloaded %s (%llu bytes)"
 msgstr "Descargado %s (%llu bytes)"
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:358
 #, c-format
 msgid "The URL %s returned: %i"
 msgstr "La URL %s ha devuelto: %i"
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:365
 #, c-format
 msgid "HTTP download failed for %s: %s"
 msgstr "Descarga HTTP fallida para %s: %s"
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:380
 #, c-format
 msgid "HTTP 401 Unauthorized for %s"
 msgstr "HTTP 401 No autorizado para %s"
 
-# AI-GENERATED — please review.
 #: src/IP2Country.cpp:98
 #, c-format
 msgid ""
@@ -2477,13 +2447,11 @@ msgstr ""
 "GeoLite2-Country.mmdb manualmente (se requiere una cuenta gratuita de "
 "MaxMind) y colóquelo en %s, o establezca la URL en Preferencias."
 
-# AI-GENERATED — please review.
 #: src/IP2Country.cpp:103
 #, c-format
 msgid "Download new %s from %s"
 msgstr "Descargar nuevo %s desde %s"
 
-# AI-GENERATED — please review.
 #: src/IP2Country.cpp:131
 #, c-format
 msgid "Download of %s file failed, aborting update."
@@ -2504,11 +2472,10 @@ msgstr "Error al renombrar el archivo %s, actualización cancelada."
 msgid "Successfully updated %s"
 msgstr "Se ha actualizado %s con éxito"
 
-# AI-GENERATED — please review.
 #: src/IP2Country.cpp:151
 #, c-format
 msgid "Error updating %s"
-msgstr "Error al actualizar %s"
+msgstr "Error actualizando %s"
 
 #: src/IP2Country.cpp:156 src/IPFilter.cpp:512 src/ServerList.cpp:872
 #, c-format
@@ -2819,37 +2786,30 @@ msgstr "Limpiar"
 msgid "Select All"
 msgstr "Seleccionar todo"
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:367
 msgid "eD2k: "
 msgstr "eD2k: "
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:370
 msgid "Connected (LowID)"
-msgstr "Conectado (LowID)"
+msgstr "Conectado (Id Baja)"
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:371
 msgid "Connected (HighID)"
-msgstr "Conectado (HighID)"
+msgstr "Conectado (Id Alta)"
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:380
 msgid "Kad: "
 msgstr "Kad: "
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:383
 msgid "Connected (firewalled)"
 msgstr "Conectado (tras cortafuegos)"
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:393
 msgid "Server: "
 msgstr "Servidor: "
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:394
 msgid "Server IP: "
 msgstr "IP del servidor: "
@@ -3213,14 +3173,13 @@ msgstr "Comenzar"
 msgid "More"
 msgstr "Más"
 
-# AI-GENERATED — please review.
 #: src/muuli_wdr.cpp:325
 msgid ""
 "Ask already-responded Kad peers to widen the search. Each click queries the "
 "next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing "
 "additional file matches that the search's initial alpha frontier missed."
 msgstr ""
-"Pide a los pares Kad que ya han respondido que amplien la búsqueda. Cada "
+"Pide a los pares Kad que ya han respondido que amplíen la búsqueda. Cada "
 "clic consulta al siguiente par más cercano para obtener más contactos "
 "(KADEMLIA_FIND_VALUE_MORE), revelando coincidencias de archivos adicionales "
 "que la frontera alfa inicial de la búsqueda no encontró."
@@ -5064,10 +5023,10 @@ msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
 msgstr[0] ""
-"Parte corrupta encontrada (%i) en %d archivo de partes %s - Resultado del "
+"Parte corrupta encontrada (%d) en %d archivo de partes %s - Resultado del "
 "hash del archivo |%s| Hash del archivo |%s|"
 msgstr[1] ""
-"Parte corrupta encontrada (%i) en %d partes del archivo %s - Resultado del "
+"Parte corrupta encontrada (%d) en %d partes del archivo %s - Resultado del "
 "hash del archivo |%s| Hash del archivo |%s|"
 
 #: src/PartFile.cpp:1294
@@ -5755,12 +5714,10 @@ msgstr "No se puede buscar con eD2K y Kademlia deshabilitadas."
 msgid "Search error"
 msgstr "Error de búsqueda"
 
-# AI-GENERATED — please review.
 #: src/SearchDlg.cpp:432
 msgid "Kad search: requested wider results from one more peer."
 msgstr "Búsqueda Kad: solicitados más resultados a otro par."
 
-# AI-GENERATED — please review.
 #: src/SearchDlg.cpp:438
 msgid ""
 "Kad search: no peer left to reask for more results (cap reached or no "

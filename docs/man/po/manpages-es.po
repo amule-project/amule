@@ -60,7 +60,7 @@ msgstr "NOMBRE"
 #. type: Plain text
 #: amule.1:6
 msgid "amule - the all-platform eMule p2p client"
-msgstr "amule -cliente p2p multiplataforma basado en eMule "
+msgstr "amule - cliente p2p multiplataforma basado en eMule"
 
 #. type: SH
 #: amule.1:6 amulecmd.1:7 amuled.1:6 amulegui.1:6 amuleweb.1:6 ed2k.1:6
@@ -144,9 +144,8 @@ msgstr "B<[ -w> I<E<lt>pathE<gt>>, B<--use-amuleweb>=I<E<lt>pathE<gt>> B<]>"
 #. type: Plain text
 #: amule.1:40 amuled.1:48
 msgid "Specify location of amuleweb binary to I<E<lt>pathE<gt>>."
-msgstr "Especifica ubicacion del binario amuleweb en I<E<lt>pathE<gt>>."
+msgstr "Especifica la ubicación del binario amuleweb en I<E<lt>pathE<gt>>."
 
-# AI-GENERATED — please review.
 #. type: Plain text
 #: amule.1:45 amuled.1:53
 msgid ""
@@ -154,10 +153,9 @@ msgid ""
 "headless / supervised setups (systemd, watchdog scripts)  where the otherwise-"
 "modal assertion dialog prevents auto-restart."
 msgstr ""
-"No captura las excepciones fatales y no bloquea la salida en las aserciones.  "
+"No captura las excepciones fatales y no bloquea la salida en los diálogos modales.  "
 "Útil para configuraciones sin interfaz / supervisadas (systemd, scripts "
-"watchdog) donde el diálogo de aserción, que normalmente es modal, impide el "
-"reinicio automático."
+"watchdog) donde el cuadro de diálogo modal impide el reinicio automático."
 
 #. type: Plain text
 #: amule.1:48 amuled.1:56
@@ -285,7 +283,7 @@ msgid ""
 "issues>).  Please do not report bugs in e-mail, neither to our mailing list "
 "nor directly to any team member."
 msgstr ""
-"Por favor informa de fallos ya sea en nuestro foro (I<https://github.com/"
+"Por favor informe de fallos ya sea en nuestro foro (I<https://github.com/"
 "amule-org/amule/discussions>), o en nuestro bugtracker (I<https://github.com/"
 "amule-org/amule/issues>). Por favor no informe de fallos por correo, ni en "
 "nuestras listas, ni directamente al correo de algun miembro del equipo."
@@ -405,7 +403,7 @@ msgid ""
 "Host where aMule is running (default: I<localhost>).  I<E<lt>hostE<gt>> might "
 "be an IP address or a DNS name"
 msgstr ""
-"Host donde se está ejecutando aMule. (por defecto: I<localhost>).  "
+"Host donde se está ejecutando aMule (por defecto: I<localhost>).  "
 "I<E<lt>hostE<gt>> debe ser o una dirección IP o un nombre DNS"
 
 #. type: TP
@@ -492,7 +490,8 @@ msgid ""
 "Execute I<E<lt>commandE<gt>> as if it was entered at amulecmd's prompt and "
 "exit."
 msgstr ""
-"Ejecuta I<E<lt>comandoE<gt>> y sal como si este fuera introducido en amulecmd."
+"Ejecuta I<E<lt>commandE<gt>> como si se hubiera introducido en el prompt en "
+"amulecmd, y termina."
 
 #. type: TP
 #: amulecmd.1:60 amuleweb.1:117
@@ -577,8 +576,8 @@ msgid ""
 "Disconnect from all networks you are connected to, or just disconnect from "
 "the specified network."
 msgstr ""
-"Desconectar de todas las redes a las que estás conectado, o solamente "
-"desconecta de la red especificada."
+"Desconectar de todas las redes a las que está conectado, o desconectar solo "
+"de la red especificada."
 
 #. type: Plain text
 #: amulecmd.1:100
@@ -750,7 +749,6 @@ msgstr "Realiza una búsqueda en la red Kademlia."
 msgid "Performs a local search."
 msgstr "Realiza una búsqueda local."
 
-# AI-GENERATED — please review.
 #. type: Plain text
 #: amulecmd.1:173
 msgid ""
@@ -760,27 +758,23 @@ msgstr ""
 "Pueden colocarse filtros opcionales antes, después o intercalados con la(s) "
 "palabra(s) clave de búsqueda:"
 
-# AI-GENERATED — please review.
 #. type: Plain text
 #: amulecmd.1:176
 msgid "Restrict results to the given file type."
 msgstr "Restringe los resultados al tipo de archivo indicado."
 
-# AI-GENERATED — please review.
 #. type: Plain text
 #: amulecmd.1:178
 msgid "Restrict results to a specific file extension (e.g.\\ I<iso>, I<mp3>)."
 msgstr ""
-"Restringe los resultados a una extensión de archivo específica (p. ej.\\ "
+"Restringe los resultados a una extensión de archivo específica (ej.\\ "
 "I<iso>, I<mp3>)."
 
-# AI-GENERATED — please review.
 #. type: Plain text
 #: amulecmd.1:180
 msgid "Minimum number of sources a result must report."
-msgstr "Número mínimo de fuentes que un resultado debe declarar."
+msgstr "Número mínimo de fuentes que un resultado debe informar."
 
-# AI-GENERATED — please review.
 #. type: Plain text
 #: amulecmd.1:183
 msgid ""
@@ -791,13 +785,11 @@ msgstr ""
 "binarios (K = 1024, M = K\\(mu1024, G = M\\(mu1024); sin sufijo significa "
 "bytes."
 
-# AI-GENERATED — please review.
 #. type: Plain text
 #: amulecmd.1:185
 msgid "Largest file size to return. Same suffixes as B<--min-size>."
 msgstr "Tamaño máximo de archivo a devolver. Mismos sufijos que B<--min-size>."
 
-# AI-GENERATED — please review.
 #. type: Plain text
 #: amulecmd.1:189
 msgid ""
@@ -845,7 +837,6 @@ msgstr "Mostrar registro."
 msgid "Show servers list."
 msgstr "Mostrar lista de servidores."
 
-# AI-GENERATED — please review.
 #. type: Plain text
 #: amulecmd.1:212
 msgid "Show shared files list."
@@ -915,7 +906,7 @@ msgstr ""
 "I<lang>[B<_>I<LANG>][B<.>I<encoding>][B<@>I<modifier>] donde I<lang> es el "
 "lenguaje primario, I<LANG> es un sublenguaje/territorio, I<encoding> es el "
 "conjunto de caracteres a usar y I<modifier> permite al usuario elegir una "
-"instancia específica de localización dentro un una única categoría."
+"instancia específica de localización dentro de una única categoría."
 
 #. type: Plain text
 #: amulecmd.1:242 amuleweb.1:145
@@ -929,7 +920,7 @@ msgid ""
 "I<encoding> and I<modifier> are yet unused."
 msgstr ""
 "Aunque todas las cadenas previas son aceptadas como definiciones de lenguaje "
-"válidas,  I<encoding> y I<modifier> aún no se usan."
+"válidas, I<encoding> y I<modifier> aún no se usan."
 
 #. type: Plain text
 #: amulecmd.1:259 amuleweb.1:162
@@ -938,7 +929,7 @@ msgid ""
 "English - so B<-l german> is also valid and is equal to B<-l de_DE>."
 msgstr ""
 "Además del formato previo, también se pueden especificar el nombre completo "
-"del idioma en inglés, por lo que  B<-l german> es válido y equivale a B<-l "
+"del idioma en inglés, por lo que B<-l german> es válido y equivale a B<-l "
 "de_DE>."
 
 #. type: Plain text
@@ -964,7 +955,7 @@ msgstr "EJEMPLO"
 #. type: Plain text
 #: amulecmd.1:266
 msgid "Typically amulecmd will be first run as:"
-msgstr "Normalmente amulecmd se ejecutara primero como:"
+msgstr "Normalmente amulecmd se ejecutará primero como:"
 
 #. type: Plain text
 #: amulecmd.1:268
@@ -993,7 +984,7 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1:278
 msgid "Of course, you don't have to follow this example."
-msgstr "Por supuesto, no tiene por qué que seguir este ejemplo."
+msgstr "Por supuesto, no tiene por qué seguir este ejemplo."
 
 #. type: TH
 #: amuled.1:1
@@ -1092,7 +1083,7 @@ msgstr ""
 "B<amulegui> es un programa cliente, y puede conectarse a amule o amuled "
 "usando EC. Permite gestionar remotamente la sesión amule(d). Proporciona casi "
 "la misma funcionalidad que amule, incluso cuando el núcleo funciona en un "
-"ordernador distante."
+"ordenador remoto."
 
 #. type: Plain text
 #: amulegui.1:39
@@ -1258,7 +1249,7 @@ msgstr "Permitir acceso invitado."
 #. type: Plain text
 #: amuleweb.1:105
 msgid "Denies guest access (default)."
-msgstr "Deniega el acceso invitado (defecto)"
+msgstr "Deniega el acceso invitado (por defecto)."
 
 #. type: Plain text
 #: amuleweb.1:111
@@ -1349,7 +1340,7 @@ msgstr "I<$(pkgdatadir)>/webserver/"
 #. type: Plain text
 #: amuleweb.1:179
 msgid "Typically amuleweb will be first run as:"
-msgstr "Normalmente amuleweb se ejecutara primero como:"
+msgstr "Normalmente amuleweb se ejecutará primero como:"
 
 #. type: Plain text
 #: amuleweb.1:181
@@ -1372,7 +1363,7 @@ msgid ""
 "line, and you may also totally omit it."
 msgstr ""
 "Por supuesto, puede especificar las opciones en el ejemplo de la primera "
-"linea, y también puede omitirlo."
+"línea, y también puede omitirlo."
 
 #. type: TH
 #: ed2k.1:1
@@ -1485,7 +1476,7 @@ msgstr ""
 #: ../../src/utils/aLinkCreator/docs/alc.1:11
 #: ../../src/utils/wxCas/docs/wxcas.1:16
 msgid "This app doesn't take any arguments."
-msgstr "Esta apli no tiene ningún argumento."
+msgstr "Esta aplicación no recibe ningún argumento."
 
 #. type: TH
 #: ../../src/utils/aLinkCreator/docs/alcc.1:1
@@ -1543,7 +1534,7 @@ msgstr "cas v0.8"
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1:6
 msgid "cas - c aMule statistics"
-msgstr "cas - c estadisticas de aMule"
+msgstr "cas - c estadísticas de aMule"
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1:18
@@ -1639,86 +1630,3 @@ msgid ""
 msgstr ""
 "Basado en B<cas>(1) de Pedro de Oliveira.  B<wxcas> fue escrito por ThePolish "
 "E<lt>thepolish@vipmail.ruE<gt>"
-
-#~ msgid "Does not handle fatal exception."
-#~ msgstr "No maneja excepción grave"
-
-#, no-wrap
-#~ msgid "Add I<E<lt>eD2k-linkE<gt>> | I<E<lt>magnet-linkE<gt>>"
-#~ msgstr "Añadir I<E<lt>eD2k-linkE<gt>> | I<E<lt>magnet-linkE<gt>>"
-
-#, no-wrap
-#~ msgid "Cancel I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
-#~ msgstr "Cancelar I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
-
-#, no-wrap
-#~ msgid "Connect [ I<kad> | I<ed2k> | I<E<lt>ip|nameE<gt>> ]"
-#~ msgstr "Conectar [ I<kad> | I<ed2k> | I<E<lt>ip|nameE<gt>> ]"
-
-#, no-wrap
-#~ msgid "Download I<E<lt>numberE<gt>>"
-#~ msgstr "Descarga I<E<lt>numberE<gt>>"
-
-#, no-wrap
-#~ msgid "Get I<E<lt>whatE<gt>>"
-#~ msgstr "Obtener I<E<lt>whatE<gt>>"
-
-#, no-wrap
-#~ msgid "Help [ I<E<lt>commandE<gt>> ]"
-#~ msgstr "Ayuda [ I<E<lt>commandE<gt>> ]"
-
-#, no-wrap
-#~ msgid "Pause I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
-#~ msgstr "Pausa I<E<lt>hashE<gt>> | I<E<lt>numberE<gt>>"
-
-#, no-wrap
-#~ msgid "Reload I<E<lt>whatE<gt>>"
-#~ msgstr "Recargar I<E<lt>whatE<gt>>"
-
-#, no-wrap
-#~ msgid "Set I<E<lt>whatE<gt>>"
-#~ msgstr "Fija I<E<lt>whatE<gt>>"
-
-#, no-wrap
-#~ msgid "Show I<E<lt>whatE<gt>>"
-#~ msgstr "Mostrar I<E<lt>whatE<gt>>"
-
-#, no-wrap
-#~ msgid "Statistics [ I<E<lt>numberE<gt>> ]"
-#~ msgstr "Estadísticas [ I<E<lt>numberE<gt>> ]"
-
-#, no-wrap
-#~ msgid "XAS"
-#~ msgstr "XAS"
-
-#, no-wrap
-#~ msgid "xas v1.9"
-#~ msgstr "xas v1.9"
-
-#~ msgid "xas - X-Chat aMule Statistics"
-#~ msgstr "xas - Estadísticas aMule para X-Chat"
-
-#~ msgid "B<none>"
-#~ msgstr "B<none>"
-
-#, fuzzy
-#~ msgid ""
-#~ "B<xas> is a plugin for xchat. For loading see your xchat documentation. "
-#~ "After loading type /xas and it will send statistics to the channel you are "
-#~ "in. These are taken from your Online Signature file.  For this to work, "
-#~ "you must enable the \"Online Signature\" option in aMule's preferences."
-#~ msgstr ""
-#~ "B<xas> es un plugin para xchat. Para cargar ver la documentación de xchat. "
-#~ "Después de cargar teclea /xas y esto enviará las estadísticas al canal en "
-#~ "el que tú estás. Se obtienen de tu archivo de firma Online. Para que esto "
-#~ "funcione, debes habilitar la opción \"Firma Online\" en las opciones de "
-#~ "aMule."
-
-#~ msgid "B<xas> was originally written by niet"
-#~ msgstr "B<xas> fué escrito originalmente por niet"
-
-#~ msgid "January 2010"
-#~ msgstr "Enero 2010"
-
-#~ msgid "When giving kad, it connects to Kad only."
-#~ msgstr "Al dar kad, solamente se conecta a Kad."

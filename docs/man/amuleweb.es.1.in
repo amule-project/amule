@@ -47,7 +47,7 @@ un fichero de configuración.  Las opciones de línea de comandos tienen
 prioridad sobre las del fichero de configuración.
 .TP 
 \fB[ \-h\fP \fI<host>\fP, \fB\-\-host\fP=\fI<host>\fP \fB]\fP
-Host donde se está ejecutando aMule. (por defecto: \fIlocalhost\fP).
+Host donde se está ejecutando aMule (por defecto: \fIlocalhost\fP).
 \fI<host>\fP debe ser o una dirección IP o un nombre DNS
 .TP 
 \fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
@@ -105,7 +105,7 @@ Contraseña de invitado al servidor web.
 Permitir acceso invitado.
 .TP 
 .B_untranslated [ \-d\fR, \fB\-\-deny\-guest ]\fR
-Deniega el acceso invitado (defecto)
+Deniega el acceso invitado (por defecto).
 .TP 
 .B_untranslated [ \-L\fR, \fB\-\-load\-settings ]\fR
 Cargar/Guardar del aMule remoto la configuración del servidor web.  Esto
@@ -147,7 +147,7 @@ El parámetro \fI<lang>\fP para la opción \fB\-l\fP tiene esta forma:
 \fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP] donde \fIlang\fP es el
 lenguaje primario, \fILANG\fP es un sublenguaje/territorio, \fIencoding\fP es el
 conjunto de caracteres a usar y \fImodifier\fP permite al usuario elegir una
-instancia específica de localización dentro un una única categoría.
+instancia específica de localización dentro de una única categoría.
 
 Por ejemplo, las siguientes cadenas son válidas:
 .RS
@@ -163,10 +163,10 @@ Por ejemplo, las siguientes cadenas son válidas:
 .RE
 
 Aunque todas las cadenas previas son aceptadas como definiciones de lenguaje
-válidas,  \fIencoding\fP y \fImodifier\fP aún no se usan.
+válidas, \fIencoding\fP y \fImodifier\fP aún no se usan.
 
 Además del formato previo, también se pueden especificar el nombre completo
-del idioma en inglés, por lo que  \fB\-l german\fP es válido y equivale a \fB\-l de_DE\fP.
+del idioma en inglés, por lo que \fB\-l german\fP es válido y equivale a \fB\-l de_DE\fP.
 
 Cuando no se define ninguna localización, ni por línea de comandos ni en
 fichero de configuración, se usará el lenguaje por defecto del sistema.
@@ -186,7 +186,7 @@ y este directorio debe contener todo los ficheros que la plantilla necesita.
 .br
 \fI$(pkgdatadir)\fP/webserver/
 .SH EJEMPLO
-Normalmente amuleweb se ejecutara primero como:
+Normalmente amuleweb se ejecutará primero como:
 .PP
 \fBamuleweb\fP \fB\-h\fP \fIhostname\fP \fB\-p\fP \fIECport\fP \fB\-P\fP \fIECpassword\fP \fB\-s\fP
 \fIHTTPport\fP \fB\-A\fP \fIAdminPassword\fP \fB\-w\fP
@@ -201,9 +201,9 @@ tiene que escribir:
 .B_untranslated amuleweb
 .PP
 Por supuesto, puede especificar las opciones en el ejemplo de la primera
-linea, y también puede omitirlo.
+línea, y también puede omitirlo.
 .SH "INFORMANDO ERRORES"
-Por favor informa de fallos ya sea en nuestro foro
+Por favor informe de fallos ya sea en nuestro foro
 (\fIhttps://github.com/amule\-org/amule/discussions\fP), o en nuestro bugtracker
 (\fIhttps://github.com/amule\-org/amule/issues\fP). Por favor no informe de
 fallos por correo, ni en nuestras listas, ni directamente al correo de algun
