@@ -429,6 +429,7 @@ void CServerUDPSocket::SendQueue()
 					CAsyncDNS* dns = new CAsyncDNS(item.addr, DNS_UDP, theApp, this);
 					if ((dns->Create() != wxTHREAD_NO_ERROR) || (dns->Run() != wxTHREAD_NO_ERROR)) {
 						// Not much we can do here, just drop the packet.
+						dns->Delete();
 						m_queue.pop_front();
 						continue;
 					}
