@@ -63,7 +63,7 @@ aux membres de l'équipe.
 aMule et tous ses outils sont distribués sous la licence GNU General Public
 License.
 .SH "VOIR ÉGALEMENT"
-.B_untranslated alc\fR(1), \fBalcc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1), \fBxas\fR(1)
+.B_untranslated alc\fR(1), \fBalcc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1)
 .SH AUTEUR
 Cette page de manuel a été rédigé par Julien Delange pour Debian <julien
 AT gunnm DOT org>

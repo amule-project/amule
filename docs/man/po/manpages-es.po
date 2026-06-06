@@ -1687,35 +1687,8 @@ msgstr ""
 #~ msgid "Statistics [ I<E<lt>numberE<gt>> ]"
 #~ msgstr "Estadísticas [ I<E<lt>numberE<gt>> ]"
 
-#, no-wrap
-#~ msgid "XAS"
-#~ msgstr "XAS"
-
-#, no-wrap
-#~ msgid "xas v1.9"
-#~ msgstr "xas v1.9"
-
-#~ msgid "xas - X-Chat aMule Statistics"
-#~ msgstr "xas - Estadísticas aMule para X-Chat"
-
 #~ msgid "B<none>"
 #~ msgstr "B<none>"
-
-#, fuzzy
-#~ msgid ""
-#~ "B<xas> is a plugin for xchat. For loading see your xchat documentation. "
-#~ "After loading type /xas and it will send statistics to the channel you are "
-#~ "in. These are taken from your Online Signature file.  For this to work, "
-#~ "you must enable the \"Online Signature\" option in aMule's preferences."
-#~ msgstr ""
-#~ "B<xas> es un plugin para xchat. Para cargar ver la documentación de xchat. "
-#~ "Después de cargar teclea /xas y esto enviará las estadísticas al canal en "
-#~ "el que tú estás. Se obtienen de tu archivo de firma Online. Para que esto "
-#~ "funcione, debes habilitar la opción \"Firma Online\" en las opciones de "
-#~ "aMule."
-
-#~ msgid "B<xas> was originally written by niet"
-#~ msgstr "B<xas> fué escrito originalmente por niet"
 
 #~ msgid "January 2010"
 #~ msgstr "Enero 2010"
