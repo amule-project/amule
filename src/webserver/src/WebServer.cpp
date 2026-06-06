@@ -1827,8 +1827,7 @@ CSession *CScriptWebServer::CheckLoggedin(ThreadData &Data)
 	CSession *session = 0;
 	if ( Data.SessionID && m_sessions.count(Data.SessionID) ) {
 		session = &m_sessions[Data.SessionID];
-		// session times out in 2 hours
-		if ( (curr_time - session->m_last_access) > 7200 ) {
+		if ( (curr_time - session->m_last_access) > SESSION_TIMEOUT_SECS ) {
 			Print(_("Session expired - requesting login\n"));
 			m_sessions.erase(Data.SessionID);
 			session = 0;
