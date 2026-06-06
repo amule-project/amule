@@ -37,7 +37,7 @@ Utiliser le fichier de config \fI<chemin>\fP à la place de celui par
 défaut
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
-Afficher une court description d'utilisation.
+Affiche une courte description d'utilisation.
 .P
 Sans aucune option, elle affiche des données de signature en ligne sur la
 sortie standard.
@@ -56,8 +56,8 @@ de bogues (\fIhttps://github.com/amule\-org/amule/issues\fP).  Veuillez ne pas
 rapporter les bogues par e\-mail, sur notre liste de diffusion ou directement
 aux membres de l'équipe.
 .SH COPYRIGHT
-aMule et tous ses outils sont distribués sous la licence GNU General Public
-License.
+aMule et tous ses outils sont distribués sous la Licence publique générale
+GNU.
 .SH "VOIR ÉGALEMENT"
 .B_untranslated amule\fR(1), \fBwxcas\fR(1)
 .SH AUTEUR

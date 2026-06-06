@@ -30,7 +30,7 @@ amulecmd \- Programme de contrôle d'aMule en mode texte
 \fBamulecmd\fP est un client en mode texte pour contrôler aMule.
 .TP 
 \fB[ \-h\fP \fI<hôte>\fP, \fB\-\-host\fP=\fI<hôte>\fP \fB]\fP
-Hôte où aMule fonctionne (par défaut : \fIlocalhost\fP). \fI<hôte>\fP
+Hôte où aMule fonctionne (par défaut : \fIlocalhost\fP).  \fI<hôte>\fP
 peut être une adresse IP ou un nom DNS.
 .TP 
 \fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
@@ -48,14 +48,14 @@ par défaut est \fI~/.aMule/remote.conf\fP
 Ne pas afficher de sortie sur stdout.
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
-Mode bavard \- affiche aussi les messages de débogage.
+Mode bavard \- afficher aussi les messages de débogage.
 .TP 
 \fB[ \-l\fP \fI<lang>\fP, \fB\-\-locale\fP=\fI<lang>\fP \fB]\fP
-Définir les paramètres régionaux (langue). Voir la section \fBNOTES\fP pour la
+Définit les paramètres régionaux (langue). Voir la section \fBNOTES\fP pour la
 description du paramètre \fI<lang>\fP.
 .TP 
 .B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
-Écrire les options de la ligne de commande dans le fichier de configuration
+Écrire les options de la ligne de commande sur le fichier de configuration
 et quitter
 .TP 
 \fB[ \-c\fP \fI<commande>\fP, \fB\-\-command\fP=\fI<commande>\fP \fB]\fP
@@ -64,17 +64,17 @@ l'invite de commande d'amulecmd et quitter.
 .TP 
 \fB[ \-\-create\-config\-from\fP=\fI<chemin>\fP \fB]\fP
 Créer un fichier de configuration basé sur \fI<chemin>\fP, qui doit
-pointer sur un fichier de configration d'aMule valide, et quitter ensuite.
+pointer sur un fichier de configuration d'aMule valide, et quitter ensuite.
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR
 Affiche le numéro de la version actuelle.
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
-Afficher une court description d'utilisation.
+Affiche une courte description d'utilisation.
 .SH COMMANDES
 Toutes les commandes sont insensibles à la casse.
 .SS_untranslated Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
-Ajoute un lien eD2k ou magnétique au noyau.
+Ajoute un lien eD2k ou magnet au noyau.
 
 Le lien eD2k à ajouter peut être :
 .RS 3
@@ -91,7 +91,7 @@ seront ajoutés à la liste des serveurs.
 
 Le lien magnet doit contenir le hachage eD2k et la longueur du fichier.
 .SS_untranslated Cancel \fI<hash>\fP | \fI<number>\fP
-Annule le téléchargement spécifié par  le \fI<hachage>\fP ou le
+Annule le téléchargement spécifié par le \fI<hachage>\fP ou le
 \fI<numéro>\fP. Pour obtenir la valeur utiliser \fBshow\fP.
 .SS_untranslated Connect [ \fIkad\fP | \fIed2k\fP | \fI<ip|name>\fP ]
 Se connecter au réseau.
@@ -114,7 +114,7 @@ avec le numéro 12 de la recherche précédente.
 .SS_untranslated Exit
 Déconnecter d'amule/amuled et quitter amulecmd.
 .SS_untranslated Get \fI<what>\fP
-Obtient et affiche une valeur de préférence.
+Obtenir et afficher une valeur de préférence.
 
 Valeurs disponibles pour \fI<quoi>\fP:
 .RS
@@ -124,8 +124,8 @@ Obtenir les limites de bande passante.
 Obtenir les préférences de filtrage IP.
 .RE
 .SS_untranslated Help [ \fI<command>\fP ]
-Affiche une courte description d'utilisation. S'il est appelé sans
-paramètre, il affiche une liste des commandes disponibles. Lorsqu'il est
+Affiche une courte description d'utilisation.  S'il est appelé sans
+paramètre, il affiche une liste des commandes disponibles.  Lorsqu'il est
 appelé avec la \fI<commande>\fP, il affiche une courte description de
 la commande donnée.
 .SS_untranslated Pause \fI<hash>\fP | \fI<number>\fP
@@ -165,12 +165,12 @@ Réinitialiser le journal.
 .SS_untranslated Results
 Vous montre les résultats de la dernière recherche.
 .SS_untranslated Resume \fI<hash>\fP | \fI<number>\fP
-Reprise du téléchargement spécifié par le \fI<hachage>\fP ou le
+Reprend le téléchargement spécifié par le \fI<hachage>\fP ou le
 \fI<numéro>\fP. Pour obtenir la valeur utiliser \fBshow\fP.
 .SS_untranslated Search \fI<type>\fP [\fI<filters>\fP] \fI<keyword>\fR
 Fait une recherche du \fI<mot\-clef>\fP donné. Un type de recherche et
-d'un mot clé de recherche sont obligatoires pour le faire. Exemple: `search
-kad amule' effectue une recherche kad pour `amule'.
+d'un mot\-clef de recherche sont obligatoires pour le faire. Exemple :
+`search kad amule' effectue une recherche kad pour `amule'.
 
 Types de recherche disponibles :
 .RS
@@ -272,15 +272,15 @@ Par exemple, les chaînes de caractères suivantes sont valables :
 .RB_untranslated de_DE.iso88591@euro
 .RE
 
-Bien que toutes les chaînes ci\-dessus sont acceptées comme des définitions
+Bien que toutes les chaînes ci\-dessus soient acceptées comme des définitions
 de langue valide,  \fIencoding\fP et \fImodifier\fP ne sont pas encore utilisés.
 
-En plus du format ci\-dessus, vous pouvez également spécifier des noms entier
-de langue en anglais \- so \fB\-l german\fP est également valide et équivaut à
-\fB\-l de_DE\fP.
+En plus du format ci\-dessus, vous pouvez également spécifier des noms
+entiers de langue en anglais \- ainsi \fB\-l german\fP est également valide et
+équivaut à \fB\-l de_DE\fP.
 
 En l'absence de paramètres linguistiques définis, soit sur ​​la ligne de
-commande ou dans le fichier de configuration, la langue utilisée par défaut
+commande ou sur le fichier de configuration, la langue utilisée par défaut
 sera celle du système d'exploitation.
 .SH FICHIERS
 ~/.aMule/remote.conf
@@ -307,8 +307,8 @@ de bogues (\fIhttps://github.com/amule\-org/amule/issues\fP).  Veuillez ne pas
 rapporter les bogues par e\-mail, sur notre liste de diffusion ou directement
 aux membres de l'équipe.
 .SH COPYRIGHT
-aMule et tous ses outils sont distribués sous la licence GNU General Public
-License.
+aMule et tous ses outils sont distribués sous la Licence publique générale
+GNU.
 .SH "VOIR ÉGALEMENT"
 .B_untranslated amule\fR(1), \fBamuled\fR(1)
 .SH AUTEUR

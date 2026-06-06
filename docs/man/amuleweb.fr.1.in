@@ -47,7 +47,7 @@ fichier de configuration. Les options passées en ligne de commande prévalent
 sur les options de fichier de configuration.
 .TP 
 \fB[ \-h\fP \fI<hôte>\fP, \fB\-\-host\fP=\fI<hôte>\fP \fB]\fP
-Hôte où aMule fonctionne (par défaut : \fIlocalhost\fP). \fI<hôte>\fP
+Hôte où aMule fonctionne (par défaut : \fIlocalhost\fP).  \fI<hôte>\fP
 peut être une adresse IP ou un nom DNS.
 .TP 
 \fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
@@ -65,14 +65,14 @@ par défaut est \fI~/.aMule/remote.conf\fP
 Ne pas afficher de sortie sur stdout.
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-verbose ]\fR
-Mode bavard \- affiche aussi les messages de débogage.
+Mode bavard \- afficher aussi les messages de débogage.
 .TP 
 \fB[ \-l\fP \fI<lang>\fP, \fB\-\-locale\fP=\fI<lang>\fP \fB]\fP
-Définir les paramètres régionaux (langue). Voir la section \fBNOTES\fP pour la
+Définit les paramètres régionaux (langue). Voir la section \fBNOTES\fP pour la
 description du paramètre \fI<lang>\fP.
 .TP 
 .B_untranslated [ \-w\fR, \fB\-\-write\-config ]\fR
-Écrire les options de la ligne de commande dans le fichier de configuration
+Écrire les options de la ligne de commande sur le fichier de configuration
 et quitter
 .TP 
 \fB[ \-t\fP \fI<nom>\fP, \fB\-\-template\fP=\fI<nom>\fP \fB]\fP
@@ -95,7 +95,7 @@ Activer la compression gzip pour le trafic HTTP pour économiser la bande
 passante.
 .TP 
 .B_untranslated [ \-Z\fR, \fB\-\-disable\-gzip ]\fR
-Désactiver la compression gzip (par défaut).
+Désactive la compression gzip (c'est le réglage par défaut).
 .TP 
 \fB[ \-A\fP \fI<motdepasse>\fP, \fB\-\-admin\-pass\fP=\fI<motdepasse>\fP \fB]\fP
 Mot de passe d'accès total pour le serveur web.
@@ -111,11 +111,12 @@ Interdit l'accès invité (par défaut).
 .TP 
 .B_untranslated [ \-L\fR, \fB\-\-load\-settings ]\fR
 Charger/enregistrer les paramètres de serveur web à partir de/vers l'aMule
-distant. amuleweb ignorera la ligne de commande et les paramètres de fichier
-de configuration, et les chargera à partir aMule. Lors de la sauvegarde,
-aucune préférences seront écrites dans le fichier config, mais pour
-aMule. (Bien sûr, cela ne fonctionne que pour les paramètres qui peuvent
-être définies dans les préférences de \->Contrôle à distance d'aMule.)
+distant.  amuleweb ignorera la ligne de commande et les paramètres de
+fichier de configuration, et les chargera à partir aMule. Lors de la
+sauvegarde, aucune préférence ne sera écrite sur le fichier de
+configuration, mais sur aMule.  (Bien sûr, cela ne fonctionne que pour les
+paramètres qui peuvent être définis dans les préférences de \->Contrôle à
+distance d'aMule.)
 .TP 
 .B_untranslated [ \-\-no\-php ]\fR
 Désactiver l'interpréteur PHP (obsolète)
@@ -125,21 +126,20 @@ Recompile les pages PHP à chaque requête.
 .TP 
 \fB[ \-\-create\-config\-from\fP=\fI<chemin>\fP \fB]\fP
 Créer un fichier de configuration basé sur \fI<chemin>\fP, qui doit
-pointer sur un fichier de configration d'aMule valide, et quitter ensuite.
+pointer sur un fichier de configuration d'aMule valide, et quitter ensuite.
 .TP 
 .B_untranslated [ \-\-help ]\fR
-Afficher une court description d'utilisation.
+Affiche une courte description d'utilisation.
 .TP 
 .B_untranslated [ \-\-version ]\fR
 Affiche le numéro de la version actuelle.
 .TP 
 \fB[ \-\-amule\-config\-file\fP=\fI<chemin>\fP \fB]\fP
-Chemin du fichier de configuration d'aMule. \fBNE PAS UTILISER DIRECTEMENT !\fP
-aMule utilise cette option lors du démarrage d'amuleweb au démarrage
-d'aMule. Cette option permet d'ignorer toutes les autres options de ligne de
-commande et les paramètres de fichier de configuration, et lit les
-préférences dans un fichier de configuration précisé, et implique également
-les options \fB\-q \-L\fP.
+Chemin du fichier de configuration d'aMule.  \fBNE PAS UTILISER DIRECTEMENT !\fP aMule utilise cette option lors du démarrage d'amuleweb au démarrage
+d'aMule.  Cette option permet d'ignorer toutes les autres options de ligne
+de commande et les paramètres de fichier de configuration, et lit les
+préférences depuis le fichier de configuration précisé, et implique
+également les options \fB\-q \-L\fP.
 .SH NOTES
 .SS Chemins
 Pour toutes les options prenant en paramètre un \fI<chemin>\fP, si le
@@ -167,23 +167,23 @@ Par exemple, les chaînes de caractères suivantes sont valables :
 .RB_untranslated de_DE.iso88591@euro
 .RE
 
-Bien que toutes les chaînes ci\-dessus sont acceptées comme des définitions
+Bien que toutes les chaînes ci\-dessus soient acceptées comme des définitions
 de langue valide,  \fIencoding\fP et \fImodifier\fP ne sont pas encore utilisés.
 
-En plus du format ci\-dessus, vous pouvez également spécifier des noms entier
-de langue en anglais \- so \fB\-l german\fP est également valide et équivaut à
-\fB\-l de_DE\fP.
+En plus du format ci\-dessus, vous pouvez également spécifier des noms
+entiers de langue en anglais \- ainsi \fB\-l german\fP est également valide et
+équivaut à \fB\-l de_DE\fP.
 
 En l'absence de paramètres linguistiques définis, soit sur ​​la ligne de
-commande ou dans le fichier de configuration, la langue utilisée par défaut
+commande ou sur le fichier de configuration, la langue utilisée par défaut
 sera celle du système d'exploitation.
 .SH "PRISE EN CHARGE DES THÈMES"
-\fBamuleweb\fP est capable d'afficher des informations dans différents
-thèmes. Ces thèmes sont appelés modèles, et vous pouvez faire de charger à
-amuleweb un modèle spécifique via l'option en ligne de commande \fB\-t\fP. Les
-modèles sont recherchés dans deux endroits : d'abord dans :
-\fI~/.aMule/webserver/\fP puis dans \fI/usr/share/amule/webserver/\fP si vous
-l'avez installé avec \-\-prefix=/usr.
+\fBamuleweb\fP est capable d'afficher des informations dans différents thèmes.
+Ces thèmes sont appelés modèles, et vous pouvez faire de charger à amuleweb
+un modèle spécifique via l'option en ligne de commande \fB\-t\fP.  Les modèles
+sont recherchés dans deux endroits : d'abord dans : \fI~/.aMule/webserver/\fP
+puis dans \fI/usr/share/amule/webserver/\fP si vous l'avez installé avec
+\-\-prefix=/usr.
 .PP
 Chaque modèle doit être dans un sous répertoire du nom du modèle, et ce
 répertoire doit contenir tous les fichiers dont le modèle a besoin.
@@ -217,8 +217,8 @@ de bogues (\fIhttps://github.com/amule\-org/amule/issues\fP).  Veuillez ne pas
 rapporter les bogues par e\-mail, sur notre liste de diffusion ou directement
 aux membres de l'équipe.
 .SH COPYRIGHT
-aMule et tous ses outils sont distribués sous la licence GNU General Public
-License.
+aMule et tous ses outils sont distribués sous la Licence publique générale
+GNU.
 .SH "VOIR ÉGALEMENT"
 .B_untranslated amule\fR(1), \fBamulecmd\fR(1)
 .SH AUTEUR

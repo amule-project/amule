@@ -43,10 +43,10 @@ Après l'embranchement, créer un fichier pid dans le
 Configurer les EC (Connexions Externes).
 .TP 
 .B_untranslated [ \-o\fR, \fB\-\-log\-stdout ]\fR
-Afficher les messages du journal sur stdout.
+Affiche les messages du journal sur stdout.
 .TP 
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
-Réinitialiser à la configuration par défaut.
+Réinitialise à la configuration par défaut.
 .TP 
 \fB[ \-w\fP \fI<chemin>\fP, \fB\-\-use\-amuleweb\fP=\fI<chemin>\fP \fB]\fP
 Préciser l'emplacement du binaire d'amuleweb \fI<chemin>\fP.
@@ -67,7 +67,7 @@ Définir la catégorie pour les liens eD2k passé à \fI<num>\fP
 Affiche le numéro de la version actuelle.
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
-Afficher une court description d'utilisation.
+Affiche une courte description d'utilisation.
 .TP 
 \fB[ lien eD2k ]\fP
 Ajoute un lien eD2k au noyau.
@@ -95,8 +95,8 @@ de bogues (\fIhttps://github.com/amule\-org/amule/issues\fP).  Veuillez ne pas
 rapporter les bogues par e\-mail, sur notre liste de diffusion ou directement
 aux membres de l'équipe.
 .SH COPYRIGHT
-aMule et tous ses outils sont distribués sous la licence GNU General Public
-License.
+aMule et tous ses outils sont distribués sous la Licence publique générale
+GNU.
 .SH "VOIR ÉGALEMENT"
 .B_untranslated alcc\fR(1), \fBamule\fR(1), \fBamulecmd\fR(1), \fBamulegui\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1)
 .SH AUTEUR
