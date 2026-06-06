@@ -583,7 +583,7 @@ msgid ""
 "Copyright (c) 2003-2026 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (c) 2003-2019 aMule Team \n"
+"Copyright (c) 2003-2026 aMule Team \n"
 "\n"
 
 #: src/amuleDlg.cpp:531
@@ -7980,98 +7980,3 @@ msgstr "Uitloggen aangevraagd\n"
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr "Aanvraag wordt verwerkt [omgeleid]: "
-
-#~ msgid ""
-#~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
-#~ "\n"
-#~ msgstr ""
-#~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
-#~ "\n"
-
-#~ msgid "Contact: admin@amule.org (administrative issues) \n"
-#~ msgstr "Contact: admin@amule.org (administratieve zaken) \n"
-
-#~ msgid "Connection failed "
-#~ msgstr "Verbinding mislukt "
-
-#~ msgid "Automatic server connect without proxy"
-#~ msgstr "Automatische verbinding met server zonder proxy"
-
-#~ msgid "File"
-#~ msgstr "Bestand"
-
-#, c-format
-#~ msgid "Could not retrieve length of '%s' - using %s file."
-#~ msgstr "Kon lengte van '%s' niet bepalen - gebruik %s bestand."
-
-#, c-format
-#~ msgid "'%s' is 0 size somehow - using %s file."
-#~ msgstr "'%s' heeft grootte 0 - %s bestand wordt gebruikt."
-
-#, c-format
-#~ msgid "Dropping non-existing shared directory: %s"
-#~ msgstr "Laten vallen van niet-bestaande gedeelde map: %s"
-
-#~ msgid ""
-#~ "A search type has to be specified by giving the type:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Example: 'search kad file' will execute a kad search for \"file\".\n"
-#~ msgstr ""
-#~ "Een zoektype moet opgegeven worden door het type te geven:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Voorbeeld: 'search kad bestand' voert een kad zoekopdracht uit naar "
-#~ "\"bestand\".\n"
-
-#~ msgid ""
-#~ "You don't have any server in the server list.\n"
-#~ "Do you want aMule to download a new list now?"
-#~ msgstr ""
-#~ "U heeft geen servers in de serverlijst.\n"
-#~ "Wilt u dat aMule nu een nieuwe lijst download?"
-
-#~ msgid "Server list download"
-#~ msgstr "Download van serverlijst"
-
-#, c-format
-#~ msgid "Unable to create destination file %s for download!"
-#~ msgstr "Kon doelbestand %s voor download niet aanmaken!"
-
-#~ msgid "Critical error while writing downloaded file"
-#~ msgstr "Kritieke fout bij het schrijven van gedownload bestand"
-
-#, c-format
-#~ msgid "Expected %d bytes, but downloaded %d bytes"
-#~ msgstr "Verwachtte %d bytes, maar %d bytes gedownload"
-
-#, c-format
-#~ msgid "Protocol not supported for HTTP download: %s"
-#~ msgstr "Protocol wordt niet ondersteund voor HTTP-download: %s"
-
-#~ msgid "Unable to connect to HTTP download server"
-#~ msgstr "Kon niet verbinden met HTTP-downloadserver"
-
-#~ msgid "Invalid response from HTTP download server"
-#~ msgstr "Ongeldig antwoord van HTTP-downloadserver"
-
-#~ msgid "Searches for more results on eD2k. Not supported for Kad yet."
-#~ msgstr "Zoekt naar meer resultaten op eD2K. Werkt nog niet voor Kad."
-
-#, c-format
-#~ msgid "Failed to open file (%s), removing from list of shared files."
-#~ msgstr ""
-#~ "Kon bestand niet openen (%s), wordt verwijderd uit de lijst van gedeelde "
-#~ "bestanden."
-
-#~ msgid ""
-#~ "Invalid URL for HTTP download or HTTP redirection (did you forget "
-#~ "'http://' ?)"
-#~ msgstr ""
-#~ "Ongeldige URL voor HTTP download of HTTP redirection (bent u 'http://' "
-#~ "vergeten?"
-
-#~ msgid "FileHash"
-#~ msgstr "BestandsHash"

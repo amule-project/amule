@@ -17,9 +17,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 2.0\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
+"X-Generator: Lokalize 2.0\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -8060,94 +8060,3 @@ msgstr "Deautentificare solicitată\n"
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr "Se procesează cererea [redirecționat]: "
-
-#~ msgid ""
-#~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
-#~ "\n"
-#~ msgstr ""
-#~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
-#~ "\n"
-
-#~ msgid "Contact: admin@amule.org (administrative issues) \n"
-#~ msgstr "Contact: admin@amule.org (probleme administrative) \n"
-
-#~ msgid "Connection failed "
-#~ msgstr "Conectare eșuată"
-
-#~ msgid "Automatic server connect without proxy"
-#~ msgstr "Conectare automată la server fără proxy"
-
-#~ msgid "File"
-#~ msgstr "Fișier"
-
-#, c-format
-#~ msgid "Could not retrieve length of '%s' - using %s file."
-#~ msgstr "Nu se poate obține lungimea a '%s' - utilizând fișierul %s ."
-
-#, c-format
-#~ msgid "'%s' is 0 size somehow - using %s file."
-#~ msgstr "'%s' este cumva de dimensiune 0 - utilizând fișierul %s ."
-
-#, c-format
-#~ msgid "Dropping non-existing shared directory: %s"
-#~ msgstr "Se aruncă directoarele partajate inexistente: %s"
-
-#~ msgid ""
-#~ "A search type has to be specified by giving the type:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Example: 'search kad file' will execute a kad search for \"file\".\n"
-#~ msgstr ""
-#~ "Un tip de căutare trebuie specificată dând tipul:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Exemplu: 'caută fișier kad' va executa o căutare kad pentru \"fișier\".\n"
-
-#~ msgid ""
-#~ "You don't have any server in the server list.\n"
-#~ "Do you want aMule to download a new list now?"
-#~ msgstr ""
-#~ "Nu aveți niciun server în lista serverelor.\n"
-#~ "Doriți ca aMule să descarce o nouă listă acum?"
-
-#~ msgid "Server list download"
-#~ msgstr "Lista serverelor s-a descărcat"
-
-#, c-format
-#~ msgid "Unable to create destination file %s for download!"
-#~ msgstr "Nu se poate crea fișierul destinație %s pentru descărcare!"
-
-#~ msgid "Critical error while writing downloaded file"
-#~ msgstr "Eroare critică în timpul scrierii fișierului descărcat"
-
-#, c-format
-#~ msgid "Expected %d bytes, but downloaded %d bytes"
-#~ msgstr "Se așteaptă %d octeți, dar s-au descărcat %d octeți"
-
-#~ msgid "Unable to connect to HTTP download server"
-#~ msgstr "Nu se poate conecta la serverul HTTP de descărcare"
-
-#~ msgid "Invalid response from HTTP download server"
-#~ msgstr "Răspuns nevalid de la serverul HTTP de descărcare"
-
-#~ msgid "Searches for more results on eD2k. Not supported for Kad yet."
-#~ msgstr ""
-#~ "Caută pentru mai multe rezultate pe eD2k. Kad nu este suportat încă."
-
-#, c-format
-#~ msgid "Failed to open file (%s), removing from list of shared files."
-#~ msgstr ""
-#~ "A eșuat deschiderea fișierului (%s), se elimină din lista fișierelor "
-#~ "partajate."
-
-#~ msgid ""
-#~ "Invalid URL for HTTP download or HTTP redirection (did you forget "
-#~ "'http://' ?)"
-#~ msgstr ""
-#~ "Adresă URL nevalidă pentru descărcare HTTP sau redirecționare HTTP (ați "
-#~ "uitat 'http://' ?)"
-
-#~ msgid "FileHash"
-#~ msgstr "Index fișier"

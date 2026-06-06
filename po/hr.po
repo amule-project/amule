@@ -7741,13 +7741,3 @@ msgstr ""
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr ""
-
-#~ msgid "Connection failed "
-#~ msgstr "Neuspjelo povezivanje"
-
-#~ msgid "File"
-#~ msgstr "Fajl"
-
-#, fuzzy
-#~ msgid "Unable to connect to HTTP download server"
-#~ msgstr "Nisi povezan sa serverom!"
