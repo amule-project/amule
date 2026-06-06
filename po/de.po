@@ -14,9 +14,9 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-05 15:21+0200\n"
-"PO-Revision-Date: 2026-06-06 15:23+0200\n"
+"PO-Revision-Date: 2026-06-06 16:27+0200\n"
 "Last-Translator: Werner Mahr <werner@vollstreckernet.de>\n"
-"Language-Team: German <kde-i18n-de@kde.org>\n"
+"Language-Team: German <>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +40,6 @@ msgstr "Information"
 msgid "The specified userhash is not valid!"
 msgstr "Die angegebene Benutzerprüfsumme ist nicht gültig!"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:221
 msgid ""
 "aMule can install a desktop launcher and icon into your home directory so it "
@@ -58,27 +57,22 @@ msgstr ""
 "\n"
 "Desktop-Integration jetzt installieren?"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:226
 msgid "Add aMule to your application menu?"
 msgstr "aMule zum Anwendungsmenü hinzufügen?"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:228
 msgid "Install"
 msgstr "Installieren"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:228
 msgid "Not now"
 msgstr "Nicht jetzt"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:229
 msgid "Don't ask again"
 msgstr "Nicht erneut fragen"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:248
 msgid ""
 "Cannot install desktop integration: the APPDIR environment variable is not "
@@ -88,13 +82,11 @@ msgstr ""
 "APPDIR ist nicht gesetzt. Dies bedeutet in der Regel, dass das AppImage auf "
 "eine nicht standardmäßige Weise gestartet wurde."
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
 #: src/AppImageIntegration.cpp:274
 msgid "aMule integration failed"
 msgstr "aMule-Integration fehlgeschlagen"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:259
 #, c-format
 msgid ""
@@ -104,7 +96,6 @@ msgstr ""
 "Desktop-Integration konnte nicht installiert werden: Erstellen von %s "
 "fehlgeschlagen. Prüfen Sie, ob Ihr persönliches Verzeichnis schreibbar ist."
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:271
 #, c-format
 msgid ""
@@ -114,12 +105,10 @@ msgstr ""
 "Desktop-Integration konnte nicht installiert werden: Schreiben von %s "
 "fehlgeschlagen. Prüfen Sie, ob Ihr persönliches Verzeichnis schreibbar ist."
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:281
 msgid "AppImage integration: aMule added to your application menu."
 msgstr "AppImage-Integration: aMule wurde zu Ihrem Anwendungsmenü hinzugefügt."
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:284
 msgid ""
 "aMule has been added to your application menu. You can now launch it from "
@@ -142,17 +131,14 @@ msgstr ""
 "\n"
 "aMule jetzt neu starten?"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:287
 msgid "aMule installed"
 msgstr "aMule installiert"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:289
 msgid "Restart now"
 msgstr "Jetzt neu starten"
 
-# AI-GENERATED — please review.
 #: src/AppImageIntegration.cpp:289
 msgid "Later"
 msgstr "Später"
@@ -246,17 +232,14 @@ msgstr "Passwort eingestellt und externe Verbindungen aktiviert."
 msgid "WARNING"
 msgstr "WARNUNG"
 
-# AI-GENERATED — please review.
 #: src/amule.cpp:767
 msgid "eD2k server list (server.met)"
 msgstr "eD2k-Serverliste (server.met)"
 
-# AI-GENERATED — please review.
 #: src/amule.cpp:768
 msgid "Kad bootstrap nodes (nodes.dat)"
 msgstr "Kad-Bootstrap-Knoten (nodes.dat)"
 
-# AI-GENERATED — please review.
 #: src/amule.cpp:775
 msgid ""
 "aMule has detected missing network bootstrap files.\n"
@@ -265,7 +248,6 @@ msgstr ""
 "aMule hat fehlende Netzwerk-Bootstrap-Dateien erkannt.\n"
 "Wählen Sie aus, welche heruntergeladen werden sollen:"
 
-# AI-GENERATED — please review.
 #: src/amule.cpp:776
 msgid "Network bootstrap"
 msgstr "Netzwerk-Bootstrap"
@@ -718,13 +700,11 @@ msgstr "Verbinden"
 msgid "Connect to the currently enabled networks"
 msgstr "Mit den aktuell aktivierten Netzwerken verbinden."
 
-# AI-GENERATED — please review.
 #: src/amuleDlg.cpp:888
 #, c-format
 msgid "Up: %.1f%s (%.1f) | Down: %.1f%s (%.1f)"
-msgstr "Hoch: %.1f%s (%.1f) | Herunter: %.1f%s (%.1f)"
+msgstr "Up: %.1f%s (%.1f) | Down: %.1f%s (%.1f)"
 
-# AI-GENERATED — please review.
 #: src/amuleDlg.cpp:889 src/amuleDlg.cpp:890 src/amuleDlg.cpp:893
 #: src/amuleDlg.cpp:894 src/amuleDlg.cpp:905 src/amuleDlg.cpp:906
 #: src/MuleTrayIcon.cpp:798 src/MuleTrayIcon.cpp:801
@@ -738,11 +718,10 @@ msgstr " MB/s"
 msgid " kB/s"
 msgstr " kB/s"
 
-# AI-GENERATED — please review.
 #: src/amuleDlg.cpp:892
 #, c-format
 msgid "Up: %.1f%s | Down: %.1f%s"
-msgstr "Hoch: %.1f%s | Herunter: %.1f%s"
+msgstr "Up: %.1f%s | Down: %.1f%s"
 
 #: src/amuleDlg.cpp:922
 #, c-format
@@ -920,7 +899,6 @@ msgstr "Beende..."
 msgid "Connection closed - aMule has terminated probably."
 msgstr "Verbindung getrennt - wahrscheinlich hat aMule sich beendet"
 
-# AI-GENERATED — please review.
 #: src/amule-remote-gui.cpp:543
 #, c-format
 msgid ""
@@ -1688,7 +1666,6 @@ msgstr "Einen neuen Namen für diese Datei eingeben:"
 msgid "File rename"
 msgstr "Datei umbenennen"
 
-# AI-GENERATED — please review.
 #: src/DownloadListCtrl.cpp:965 src/GenericClientListCtrl.cpp:924
 #: src/GenericClientListCtrl.cpp:935
 #, c-format
@@ -1942,17 +1919,14 @@ msgstr "Der zu entfernende Server muss angegeben sein"
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k ist in den Einstellungen deaktiviert."
 
-# AI-GENERATED — please review.
 #: src/ExternalConn.cpp:1322
 msgid "Friend not found."
 msgstr "Freund nicht gefunden."
 
-# AI-GENERATED — please review.
 #: src/ExternalConn.cpp:1331
 msgid "Client not found."
 msgstr "Client nicht gefunden."
 
-# AI-GENERATED — please review.
 #: src/ExternalConn.cpp:1336
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
 msgstr "EC_TAG_FRIEND_SHARED erfordert EC_TAG_FRIEND oder EC_TAG_CLIENT."
@@ -2409,49 +2383,41 @@ msgstr "HTTP-Download abgebrochen"
 msgid "The URL to download can't be empty"
 msgstr "Die Download-URL kann nicht leer sein."
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:246
 #, c-format
 msgid "Failed to create HTTP request for %s"
 msgstr "Konnte HTTP-Anfrage für %s nicht erstellen"
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:337
 #, c-format
 msgid "HTTP download: empty response body for %s"
 msgstr "HTTP-Download: leerer Antworttext für %s"
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:349
 #, c-format
 msgid "Could not move downloaded file to %s"
 msgstr "Konnte heruntergeladene Datei nicht nach %s verschieben"
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:353
 #, c-format
 msgid "Downloaded %s (%llu bytes)"
 msgstr "%s heruntergeladen (%llu Bytes)"
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:358
 #, c-format
 msgid "The URL %s returned: %i"
 msgstr "Die URL %s antwortet mit: %i"
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:365
 #, c-format
 msgid "HTTP download failed for %s: %s"
 msgstr "HTTP-Download für %s fehlgeschlagen: %s"
 
-# AI-GENERATED — please review.
 #: src/HTTPDownload.cpp:380
 #, c-format
 msgid "HTTP 401 Unauthorized for %s"
 msgstr "HTTP 401 Nicht autorisiert für %s"
 
-# AI-GENERATED — please review.
 #: src/IP2Country.cpp:98
 #, c-format
 msgid ""
@@ -2463,13 +2429,11 @@ msgstr ""
 "manuell herunter (ein kostenloses MaxMind-Konto ist erforderlich) und legen "
 "Sie sie unter %s ab, oder setzen Sie die URL in den Einstellungen."
 
-# AI-GENERATED — please review.
 #: src/IP2Country.cpp:103
 #, c-format
 msgid "Download new %s from %s"
 msgstr "Lade neues %s von %s"
 
-# AI-GENERATED — please review.
 #: src/IP2Country.cpp:131
 #, c-format
 msgid "Download of %s file failed, aborting update."
@@ -2493,7 +2457,6 @@ msgstr ""
 msgid "Successfully updated %s"
 msgstr "%s erfolgreich aktualisiert."
 
-# AI-GENERATED — please review.
 #: src/IP2Country.cpp:151
 #, c-format
 msgid "Error updating %s"
@@ -2760,7 +2723,6 @@ msgstr "Externe Verbindungen: Zugriff verweigert wegen:"
 msgid "External Connection: Handshake failed."
 msgstr "Externe Verbindungen: Verhandlung fehlgeschlagen."
 
-# AI-GENERATED — please review.
 #: src/LibSocketAsio.cpp:1585
 #, c-format
 msgid "Asio thread %d started"
@@ -2809,37 +2771,30 @@ msgstr "Leeren"
 msgid "Select All"
 msgstr "Alles auswählen"
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:367
 msgid "eD2k: "
 msgstr "eD2k: "
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:370
 msgid "Connected (LowID)"
 msgstr "Verbunden (LowID)"
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:371
 msgid "Connected (HighID)"
 msgstr "Verbunden (HighID)"
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:380
 msgid "Kad: "
 msgstr "Kad: "
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:383
 msgid "Connected (firewalled)"
 msgstr "Verbunden (firewalled)"
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:393
 msgid "Server: "
 msgstr "Server: "
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:394
 msgid "Server IP: "
 msgstr "Server-IP: "
@@ -2935,13 +2890,11 @@ msgstr "DL: Keine"
 msgid "DL: %u"
 msgstr "DL: %u"
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:797
 #, c-format
 msgid "Download speed: %.1f%s"
 msgstr "Download-Geschwindigkeit: %.1f%s"
 
-# AI-GENERATED — please review.
 #: src/MuleTrayIcon.cpp:800
 #, c-format
 msgid "Upload speed: %.1f%s"
@@ -3205,7 +3158,6 @@ msgstr "Start"
 msgid "More"
 msgstr "Mehr"
 
-# AI-GENERATED — please review.
 #: src/muuli_wdr.cpp:325
 msgid ""
 "Ask already-responded Kad peers to widen the search. Each click queries the "
@@ -3671,12 +3623,10 @@ msgstr ""
 "Wird dies aktiviert, minimiert sich aMule in den Infobereich, anstatt in die "
 "Taskleiste."
 
-# AI-GENERATED — please review.
 #: src/muuli_wdr.cpp:1249
 msgid "Show notifications when finished downloading"
 msgstr "Benachrichtigungen anzeigen, wenn Downloads abgeschlossen sind"
 
-# AI-GENERATED — please review.
 #: src/muuli_wdr.cpp:1250
 msgid ""
 "Enabling this will make aMule to show notifications when finished "
@@ -4006,7 +3956,6 @@ msgstr "Downloadgraphenskalierung:"
 msgid "Upload graph scale:"
 msgstr "Uploadgraphenskalierung:"
 
-# AI-GENERATED — please review.
 #: src/muuli_wdr.cpp:1660
 msgid "Colors: "
 msgstr "Farben: "
@@ -4685,7 +4634,6 @@ msgstr "ZLIB-Kompression erzwingen"
 msgid "Enable Verbose Debug-Logging."
 msgstr "Aktiviere ausführliche Debug-Protokollierung"
 
-# AI-GENERATED — please review.
 #: src/muuli_wdr.cpp:2651
 msgid "Only to Logfile"
 msgstr "Nur in Logdatei"
@@ -5035,7 +4983,6 @@ msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "%i Einstiegsquelle für Part-Datei %s (%s) gespeichert."
 msgstr[1] "%i Einstiegsquellen für Part-Datei %s (%s) gespeichert."
 
-# AI-GENERATED — please review.
 #: src/PartFile.cpp:1170
 #, c-format
 msgid "Can't read seeds file for Partfile %s (%s)"
@@ -5083,7 +5030,6 @@ msgstr ""
 msgid "Finished downloading: %s"
 msgstr "Herunterladen abgeschlossen: %s"
 
-# AI-GENERATED — please review.
 #: src/PartFile.cpp:2323
 #, c-format
 msgid ""
@@ -5498,7 +5444,6 @@ msgstr "- Akzeptanz externer Verbindung geändert.\n"
 msgid "- External connect interface changed.\n"
 msgstr "- Schnittstelle der externen Verbindung geändert.\n"
 
-# AI-GENERATED — please review.
 #: src/PrefsUnifiedDlg.cpp:702
 msgid "- Protocol obfuscation support changed.\n"
 msgstr "- Unterstützung für Protokollverschleierung geändert.\n"
@@ -5742,24 +5687,20 @@ msgstr "%u Verzeichnisse durchsucht..."
 msgid "Reloading shared files: %u files scanned"
 msgstr "Liste freigegebener Dateien neu laden: %u Dateien gelesen"
 
-# AI-GENERATED — please review.
 #: src/SearchDlg.cpp:282
 msgid "It's impossible to search when both eD2k and Kademlia are disabled."
 msgstr ""
 "Eine Suche ist nicht möglich, wenn sowohl eD2k als auch Kademlia deaktiviert "
 "sind."
 
-# AI-GENERATED — please review.
 #: src/SearchDlg.cpp:283
 msgid "Search error"
 msgstr "Suchfehler"
 
-# AI-GENERATED — please review.
 #: src/SearchDlg.cpp:432
 msgid "Kad search: requested wider results from one more peer."
 msgstr "Kad-Suche: weitere Ergebnisse von einem zusätzlichen Peer angefordert."
 
-# AI-GENERATED — please review.
 #: src/SearchDlg.cpp:438
 msgid ""
 "Kad search: no peer left to reask for more results (cap reached or no "
@@ -5789,7 +5730,6 @@ msgstr "Kad-Suche kann nicht ausgeführt werden, wenn Kad nicht läuft"
 msgid "eD2k search can't be done if eD2k is not connected"
 msgstr "eD2k-Suche kann nicht ausgeführt werden, wenn eD2k nicht verbunden ist"
 
-# AI-GENERATED — please review.
 #: src/SearchList.cpp:336
 msgid "No keyword for Kad search - aborting"
 msgstr "Kein Schlüsselwort für Kad-Suche – abgebrochen"
@@ -6283,7 +6223,6 @@ msgstr "Läuft im LAN Modus"
 msgid "Running"
 msgstr "Läuft"
 
-# AI-GENERATED — please review.
 #: src/ServerWnd.cpp:224
 msgid "Kademlia client ID:"
 msgstr "Kademlia-Client-ID:"
@@ -6502,7 +6441,6 @@ msgstr ""
 msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr "Kopiere eD2k-Verweis in die Zwischenablage (&AICH Info)"
 
-# AI-GENERATED — please review.
 #: src/SharedFilesCtrl.cpp:171
 msgid "Copy eD2k link to clipboard (&AICH info + Source)"
 msgstr "eD2k-Verweis in die Zwischenablage kopieren (&AICH-Info + Quelle)"
@@ -6832,7 +6770,6 @@ msgstr ""
 "Kein Suchausdruck angegeben.\n"
 "Geben Sie 'help search' ein, um mehr Hilfe zu erhalten.\n"
 
-# AI-GENERATED — please review.
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
 #: src/TextClient.cpp:631
@@ -6843,7 +6780,6 @@ msgstr ""
 "Kein Suchtyp angegeben.\n"
 "Geben Sie 'help search' ein, um mehr Hilfe zu erhalten.\n"
 
-# AI-GENERATED — please review.
 #: src/TextClient.cpp:650
 #, c-format
 msgid "Download File: %lu %s\n"
@@ -7351,7 +7287,6 @@ msgstr "Zeige Log."
 msgid "Show servers list."
 msgstr "Serverliste zeigen."
 
-# AI-GENERATED — please review.
 #: src/TextClient.cpp:1106
 msgid "Show shared files list."
 msgstr "Liste freigegebener Dateien anzeigen."
@@ -7696,7 +7631,6 @@ msgstr "Bitte keine leere URL eingeben"
 msgid "Unable to open %s"
 msgstr "Konnte '%s' nicht öffnen"
 
-# AI-GENERATED — please review.
 #: src/utils/aLinkCreator/src/ed2khash.cpp:153
 msgid "Out of memory while calculating ed2k hash!"
 msgstr "Nicht genügend Speicher zum Berechnen des eD2k-Hashes!"
