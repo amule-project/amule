@@ -181,7 +181,18 @@ function formCommandSubmit(command)
                     </select></td>
                 </tr>
                 <tr> 
-                  <td align="center"><a href="amuleweb-main-search.php?search_sort=<?php echo($HTTP_GET_VARS["sort"]);?>">Click here to update the search results</a> </td>
+                  <td align="center"><a href="amuleweb-main-search.php?search_sort=<?php
+// Whitelist against the column keys my_cmp() actually understands
+// (line 234-236 of this file). Anything else is dropped to empty,
+// which falls through to the "no sort change" branch below the link
+// is clicked. This avoids reflecting an attacker-controlled string
+// into the rendered HTML (#869). Defence-in-depth: htmlspecialchars
+// the survivor too, in case my_cmp gains a key that legitimately
+// needs HTML-special characters in its name down the line.
+$valid_sort_keys = ["size", "name", "sources"];
+$sort_raw = isset($HTTP_GET_VARS["sort"]) ? $HTTP_GET_VARS["sort"] : "";
+echo(in_array($sort_raw, $valid_sort_keys, true) ? htmlspecialchars($sort_raw, ENT_QUOTES) : "");
+?>">Click here to update the search results</a> </td>
                   <td align="right">Search type :</td>
                   <td> 
                     <select name="searchtype" id="select">
