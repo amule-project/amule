@@ -862,7 +862,7 @@ bool CamuleApp::OnInit()
 		} else {
 			delete p;
 			ShowAlert(_(
-				"You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or compile aMule using --enable-webserver and run make install"),
+				"You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or build aMule from source with -DBUILD_WEBSERVER=YES and install it."),
 				_("ERROR"), wxOK | wxICON_ERROR);
 		}
 	}
