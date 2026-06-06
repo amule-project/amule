@@ -1,7 +1,7 @@
 /*
  * This file is part of the aMule project.
  *
- * Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+ * Copyright (c) 2003-2026 aMule Team ( https://amule-org.github.io )
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
  * whitespace normalization), so only real code change will result
  * in md5sum change.
  *
- * Preprocessor code is written by Dévai Tamás (gonosztopi@amule.org)
+ * Preprocessor code is written by Dï¿½vai Tamï¿½s (gonosztopi@amule.org)
  * md5 code is taken from src/MD5Sum.cpp
  *
  * Usage: the program takes input from stdin and places output to stdout.

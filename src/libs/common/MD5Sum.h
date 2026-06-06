@@ -1,6 +1,6 @@
 // This file is part of the aMule Project.
  /*
- Copyright (c) 2003-2011 aMule Team ( admin@amule.org / http://www.amule.org )
+ Copyright (c) 2003-2026 aMule Team ( https://amule-org.github.io )
  Copyright (c) 1991-2011, RSA Data Security, Inc. Created 1991. All
  rights reserved.
 
