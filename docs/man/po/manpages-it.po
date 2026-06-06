@@ -1959,46 +1959,7 @@ msgstr ""
 #~ msgid "Statistics [ I<E<lt>numberE<gt>> ]"
 #~ msgstr "Statistics [ I<E<lt>numeroE<gt>> ]"
 
-# type: TH
-#, no-wrap
-#~ msgid "XAS"
-#~ msgstr "XAS"
-
-# type: TH
-#, no-wrap
-#~ msgid "xas v1.9"
-#~ msgstr "xas v1.9"
-
-# type: Plain text
-#~ msgid "xas - X-Chat aMule Statistics"
-#~ msgstr "xas - Statistiche di aMule per X-Chat"
-
 # type: Plain text
 #~ msgid "B<none>"
 #~ msgstr "B<nessuna>"
 
-# type: Plain text
-#~ msgid ""
-#~ "B<xas> is a plugin for xchat. For loading see your xchat documentation. "
-#~ "After loading type /xas and it will send statistics to the channel you "
-#~ "are in. These are taken from your Online Signature file.  For this to "
-#~ "work, you must enable the \"Online Signature\" option in aMule's "
-#~ "preferences."
-#~ msgstr ""
-#~ "B<xas> è un plugin per xchat. Per il caricamento vedere la documentazione "
-#~ "di xchat. Dopo il caricamento digitare /xas e le statistiche verranno "
-#~ "inviate sul canale a cui siete collegati. Queste sono prese dal file di "
-#~ "firma online. Per il funzionamento, dovete abilitare l'opzione della "
-#~ "\"firma online\" nelle preferenze di aMule."
-
-# type: Plain text
-#~ msgid ""
-#~ "To enable it on every startup of xchat you can just run the autostart-xas "
-#~ "script (in /usr/bin if you installed with --prefix=/usr)."
-#~ msgstr ""
-#~ "Per abilitarlo ad ogni avvio di xchat dovete eseguire lo script autostart-"
-#~ "xas (presente in /usr/bin se avete installato con --prefix=/usr)."
-
-# type: Plain text
-#~ msgid "B<xas> was originally written by niet"
-#~ msgstr "B<xas> è stato originalmente scritto da niet"

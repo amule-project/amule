@@ -1687,40 +1687,6 @@ msgstr ""
 #~ msgid "Statistics [ I<E<lt>numberE<gt>> ]"
 #~ msgstr "Statistici [ I<E<lt>numberE<gt>> ]"
 
-#, no-wrap
-#~ msgid "XAS"
-#~ msgstr "XAS"
-
-#, no-wrap
-#~ msgid "xas v1.9"
-#~ msgstr "xas v1.9"
-
-#~ msgid "xas - X-Chat aMule Statistics"
-#~ msgstr "xas - X-Chat aMule Statistici"
-
 #~ msgid "B<none>"
 #~ msgstr "B<nimic>"
 
-#~ msgid ""
-#~ "B<xas> is a plugin for xchat. For loading see your xchat documentation. "
-#~ "After loading type /xas and it will send statistics to the channel you "
-#~ "are in. These are taken from your Online Signature file.  For this to "
-#~ "work, you must enable the \"Online Signature\" option in aMule's "
-#~ "preferences."
-#~ msgstr ""
-#~ "B<xas> este un modul pentru xchat. Pentru încărcare vedeți documentația "
-#~ "xchat. După încărcare tastați /xas și va trimite statistici la canalul în "
-#~ "care vă aflați. Acestea sunt luate din fișierul Semnătură online. Pentru "
-#~ "a funcționa, trebuie să activați opțiunea \"Semnătură online\" în "
-#~ "preferințele aMule."
-
-#~ msgid ""
-#~ "To enable it on every startup of xchat you can just run the autostart-xas "
-#~ "script (in /usr/bin if you installed with --prefix=/usr)."
-#~ msgstr ""
-#~ "Pentru a fi activată la fiecare pornirea xchat puteți doar să rulați "
-#~ "scriptul autostart-xas (în /usr/bin dacă a fost instalat cu --prefix=/"
-#~ "usr)."
-
-#~ msgid "B<xas> was originally written by niet"
-#~ msgstr "B<xas> a fost scris inițial de niet"
