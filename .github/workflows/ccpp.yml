@@ -11,6 +11,9 @@ permissions:
   pull-requests: write
 
 env:
+  CCACHE_DIR: ${{ github.workspace }}/.ccache
+  CCACHE_MAXSIZE: 500M
+
   # The minus sign removes the trailing new line in the last line
   cmake_ubuntu_deps: |-
     binutils-dev \
@@ -30,6 +33,7 @@ env:
 
   cmake_macos_deps: |-
     boost \
+    ccache \
     cryptopp \
     gd \
     gettext \
@@ -40,6 +44,7 @@ env:
 
   cmake_mingw_w64_deps: |
     mingw-w64-x86_64-boost
+    mingw-w64-x86_64-ccache
     mingw-w64-x86_64-cmake
     mingw-w64-x86_64-crypto++
     mingw-w64-x86_64-gettext
@@ -96,6 +101,13 @@ jobs:
         build_type: [Debug, Release]
     steps:
       - uses: actions/checkout@v6
+      - name: restore ccache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.build_type }}-ccache-
+          save-always: true
       - name: install deps
         run: |
           sudo apt-get update
@@ -124,6 +136,13 @@ jobs:
         build_type: [Debug, Release]
     steps:
       - uses: actions/checkout@v6
+      - name: restore ccache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.build_type }}-ccache-
+          save-always: true
       - name: install deps
         run: |
           brew update
@@ -161,6 +180,13 @@ jobs:
         shell: msys2 {0}
     steps:
       - uses: actions/checkout@v6
+      - name: restore ccache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.build_type }}-ccache-
+          save-always: true
       - name: set up MSYS2 mingw-w64
         uses: msys2/setup-msys2@v2
         with:
