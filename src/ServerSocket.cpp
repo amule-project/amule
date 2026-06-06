@@ -473,15 +473,20 @@ bool CServerSocket::ProcessPacket(const uint8_t* packet, uint32 size, int8 opcod
 			case OP_SERVERLIST: {
 				AddDebugLogLineN(logServer, "Server: OP_SERVERLIST");
 
-				CMemFile* servers = new CMemFile(packet,size);
-				uint8 count = servers->ReadUInt8();
+				// Stack-allocated wrapper so a CEOFException out of any
+				// of the ReadUInt* calls below (empty or truncated
+				// payload from a malicious server) doesn't leak it on
+				// the way out to the function-level catch block at the
+				// end of ProcessPacket (#885).
+				CMemFile servers(packet, size);
+				uint8 count = servers.ReadUInt8();
 				if (((int32)(count*6 + 1) > size)) {
 					count = 0;
 				}
 				int addcount = 0;
 				while(count) {
-					uint32 ip	= servers->ReadUInt32();
-					uint16 port = servers->ReadUInt16();
+					uint32 ip	= servers.ReadUInt32();
+					uint16 port = servers.ReadUInt16();
 					CServer* srv = new CServer(
 								port ,				// Port
 								Uint32toStringIP(ip));	// Ip
@@ -493,7 +498,6 @@ bool CServerSocket::ProcessPacket(const uint8_t* packet, uint32 size, int8 opcod
 					}
 					count--;
 				}
-				delete servers;
 				if (addcount) {
 					AddLogLineN(CFormat(wxPLURAL("Received %d new server", "Received %d new servers", addcount)) % addcount);
 				}
