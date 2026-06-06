@@ -36,7 +36,16 @@ CWebSocket::CWebSocket(CWebServerBase *parent)
 {
 	m_pHead = 0;
 	m_pTail = 0;
-	m_pBuf = new char [4096];
+	// Allocate one extra slot so the NUL terminator at the end of
+	// OnReceive() always has a home, even if Read() exactly fills the
+	// requested span and the grow loop is skipped (the off-by-one
+	// scenario in #873: first Read returns m_dwBufSize bytes AND
+	// LastError() is set, leaving m_dwRecv == m_dwBufSize when the
+	// loop exits). The allocation is +1 byte; m_dwBufSize keeps
+	// reflecting the *usable* span we hand to Read() so the
+	// `m_dwBufSize - m_dwRecv` reads below still leave the spare slot
+	// free for the terminator.
+	m_pBuf = new char [4096 + 1];
 	m_dwBufSize = 4096;
 	m_dwRecv = 0;
 	m_dwHttpHeaderLen = 0;
@@ -62,9 +71,11 @@ void CWebSocket::OnReceive(int)
 	uint32 read = Read(m_pBuf + m_dwRecv, m_dwBufSize - m_dwRecv);
 	m_dwRecv += read;
 	while ((m_dwRecv == m_dwBufSize) && (read != 0) && (!LastError())) {
-		// Buffer is too small. Make it bigger.
+		// Buffer is too small. Make it bigger. Allocate one extra
+		// slot for the NUL terminator written below, matching the
+		// `+1` overhead the ctor uses (see #873).
 		uint32 newsize = m_dwBufSize + (m_dwBufSize  >> 1);
-		char* newbuffer = new char[newsize];
+		char* newbuffer = new char[newsize + 1];
 		char* oldbuffer = m_pBuf;
 		memcpy(newbuffer, oldbuffer, m_dwBufSize);
 		delete[] oldbuffer;
