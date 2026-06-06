@@ -210,7 +210,17 @@ EOL ("\r"|"\n"|"\r\n")
 	}
 
 {IDENT} {
-        strcpy(phplval.str_val, yytext);
+        /* {IDENT} is unbounded ([a-zA-Z_][a-zA-Z0-9_]*); flex grows yytext
+         * to hold the full match.  phplval.str_val is a fixed 256-byte field
+         * in YYSTYPE, so a >=256-char identifier in any processed .php template
+         * would walk strcpy off the end of the semantic-value object (#887).
+         * Cap the copy at sizeof(str_val)-1 and NUL-terminate explicitly. */
+        size_t n = (size_t)yyleng;
+        if (n >= sizeof(phplval.str_val)) {
+            n = sizeof(phplval.str_val) - 1;
+        }
+        memcpy(phplval.str_val, yytext, n);
+        phplval.str_val[n] = '\0';
         return IDENT;
 	}
 
