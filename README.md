@@ -10,6 +10,10 @@ aMule is an eMule-like client for the eDonkey and Kademlia networks.
 [Documentation]: https://amule-org.github.io/docs "aMule Documentation"
 [FAQ]:           https://amule-org.github.io/docs/manual/faq "FAQ on aMule"
 
+## Important Notice
+
+The work in aMule will continue in the new [aMule-org repo](https://github.com/amule-org/amule). The reason we had to create a new organization is that Gonosztopi, who is the single owner of [aMule Project](https://github.com/amule-project), has been unreachable. As a result, in the **aMule-project** organization we became unable to update the infrastructure to the project's needs.
+
 ## Overview
 
 aMule is a multi-platform client for the eD2k / Kad file-sharing network,
