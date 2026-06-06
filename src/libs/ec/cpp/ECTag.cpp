@@ -438,7 +438,15 @@ bool CECTag::ReadFromSocket(CECSocket& socket)
 	unsigned int tmp_len = m_dataLen;
 	m_dataLen = 0;
 	const bool useLargeCount = (socket.m_rx_flags & EC_FLAG_LARGE_TAG_COUNT) != 0;
-	m_dataLen = tmp_len - GetTagLen(useLargeCount);
+	const uint32_t childrenLen = GetTagLen(useLargeCount);
+	// Reject malformed tags whose declared length is smaller than the
+	// serialized size of the children we just parsed. Without this guard
+	// the unsigned subtraction below wraps to ~4 GB and drives an
+	// attacker-controlled oversized allocation in NewData().
+	if (tmp_len < childrenLen) {
+		return false;
+	}
+	m_dataLen = tmp_len - childrenLen;
 	if (m_dataLen > 0) {
 		NewData();
 		if (!socket.ReadBuffer(m_tagData, m_dataLen)) {
