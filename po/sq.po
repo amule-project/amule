@@ -13,7 +13,7 @@ msgstr ""
 "POT-Creation-Date: 2026-06-05 15:21+0200\n"
 "PO-Revision-Date: 2020-03-04 15:10+0100\n"
 "Last-Translator: Fation <dj_barthezz@linuxmail.org "
-"lushnja_corps@hotmail.Language-Team: \n"
+"lushnja_corps@hotmail.Language-Team:\n"
 "Language: sq\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -314,8 +314,7 @@ msgid ""
 "at https://amule-org.github.io, or in our IRC channel #aMule at "
 "irc.libera.chat.\n"
 msgstr ""
-"tek amule-org.github.io ose ne kanalin tone IRC #amule tek "
-"irc.libera.chat.\n"
+"tek amule-org.github.io ose ne kanalin tone IRC #amule tek irc.libera.chat.\n"
 
 #: src/amule.cpp:1262
 msgid ""
@@ -577,7 +576,7 @@ msgid ""
 "Copyright (c) 2003-2026 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (C) 2003-2019 aMule Team \n"
+"Copyright (C) 2003-2026 aMule Team \n"
 "\n"
 
 #: src/amuleDlg.cpp:531
@@ -7982,58 +7981,3 @@ msgstr "Dalja e kerkuar\n"
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr "Perpunimi i kerkeses [e ridrejtuar]: "
-
-#~ msgid "Connection failed "
-#~ msgstr "Lidhja deshtoi "
-
-#~ msgid "Automatic server connect without proxy"
-#~ msgstr "Lidhje automatike e serverit pa nevojen e Proksit(Proxy)"
-
-#~ msgid "File"
-#~ msgstr "Faile"
-
-#, c-format
-#~ msgid "Could not retrieve length of '%s' - using %s file."
-#~ msgstr "Nuk mund te merret gjatesia e '%s' - duke perdorur failin %s ."
-
-#, c-format
-#~ msgid "'%s' is 0 size somehow - using %s file."
-#~ msgstr "'%s' eshte 0 per ndonje motiv - po perdor failin  %s ."
-
-#~ msgid ""
-#~ "A search type has to be specified by giving the type:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Example: 'search kad file' will execute a kad search for \"file\".\n"
-#~ msgstr ""
-#~ "Eshte e nevojshme te specifikohet tipi i kerkimit qe mund te jete:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Shembull: 'search kad file' do te filloje kerkimin per \"fail\".\n"
-
-#~ msgid ""
-#~ "You don't have any server in the server list.\n"
-#~ "Do you want aMule to download a new list now?"
-#~ msgstr ""
-#~ "Ju nuk keni asnje server ne listen e serverave tuaj.\n"
-#~ "Deshironi qe aMule te shkarkoje nje liste te re tani?"
-
-#~ msgid "Server list download"
-#~ msgstr "Shkarkim per listen e serverave"
-
-#, fuzzy, c-format
-#~ msgid "Unable to create destination file %s for download!"
-#~ msgstr "Kujdes: E pamundur te lexohet skin nga faili '%s'"
-
-#, fuzzy
-#~ msgid "Unable to connect to HTTP download server"
-#~ msgstr "Rilidhu ne Server"
-
-#, c-format
-#~ msgid "Failed to open file (%s), removing from list of shared files."
-#~ msgstr "Deshtoi te hapi failin (%s). duke hequr nga lista failet e ndara."
-
-#~ msgid "FileHash"
-#~ msgstr "Hash-i i failit"

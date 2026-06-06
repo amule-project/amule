@@ -23,8 +23,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 2.3\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -5743,7 +5743,6 @@ msgstr "使用者"
 msgid "Static"
 msgstr "靜態"
 
-#
 #: src/ServerListCtrl.cpp:97 src/SharedFilePeersListCtrl.cpp:34
 #: src/SourceListCtrl.cpp:33 src/Statistics.cpp:1008
 msgid "Version"
@@ -7771,90 +7770,3 @@ msgstr "已要求登出\n"
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr "正在處理 [已重定向] 的要求："
-
-#~ msgid ""
-#~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
-#~ "\n"
-#~ msgstr ""
-#~ "FAQ：https://amule-org.github.io/docs \n"
-#~ "\n"
-
-#~ msgid "Contact: admin@amule.org (administrative issues) \n"
-#~ msgstr "聯絡：admin@amule.org (行政管理) \n"
-
-#~ msgid "Connection failed "
-#~ msgstr "無法連線 "
-
-#~ msgid "Automatic server connect without proxy"
-#~ msgstr "自動不經代理伺服器連線到伺服器"
-
-#~ msgid "File"
-#~ msgstr "檔案"
-
-#, c-format
-#~ msgid "Could not retrieve length of '%s' - using %s file."
-#~ msgstr "無法取得 %s 的大小 - 使用 %s 檔案。"
-
-#, c-format
-#~ msgid "'%s' is 0 size somehow - using %s file."
-#~ msgstr "%s 檔案大小爲 0 - 使用 %s 檔案。"
-
-#, c-format
-#~ msgid "Dropping non-existing shared directory: %s"
-#~ msgstr "正在放棄不存在的分享目錄：%s "
-
-#~ msgid ""
-#~ "A search type has to be specified by giving the type:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Example: 'search kad file' will execute a kad search for \"file\".\n"
-#~ msgstr ""
-#~ "搜尋類型必須為以下幾種之一：\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "\n"
-#~ "例如：「 search kad 關鍵字 」將在 Kad 網路搜尋該「關鍵字」。\n"
-
-#~ msgid ""
-#~ "You don't have any server in the server list.\n"
-#~ "Do you want aMule to download a new list now?"
-#~ msgstr ""
-#~ "在伺服器清單中沒有任何伺服器。\n"
-#~ "要讓 aMule 現在就下載一個新的嗎？"
-
-#~ msgid "Server list download"
-#~ msgstr "已下載伺服器清單"
-
-#, c-format
-#~ msgid "Unable to create destination file %s for download!"
-#~ msgstr "無法建立要下載的目標檔案 %s ！"
-
-#~ msgid "Critical error while writing downloaded file"
-#~ msgstr "寫入下載檔案時發生重大錯誤"
-
-#, c-format
-#~ msgid "Expected %d bytes, but downloaded %d bytes"
-#~ msgstr "原預計 %d B，但實際下載了 %d B"
-
-#~ msgid "Unable to connect to HTTP download server"
-#~ msgstr "無法連線到 HTTP 下載伺服器"
-
-#~ msgid "Invalid response from HTTP download server"
-#~ msgstr "HTTP 下載伺服器傳來無效的回應"
-
-#~ msgid "Searches for more results on eD2k. Not supported for Kad yet."
-#~ msgstr "在 eD2k 搜尋更多結果 (尚不支援 Kad)。"
-
-#, c-format
-#~ msgid "Failed to open file (%s), removing from list of shared files."
-#~ msgstr "無法開啟檔案 %s，從分享檔案清單移除。"
-
-#~ msgid ""
-#~ "Invalid URL for HTTP download or HTTP redirection (did you forget "
-#~ "'http://' ?)"
-#~ msgstr "無效的 HTTP 下載網址或 HTTP 轉址 (您是否忘了在前面加「http://」？"
-
-#~ msgid "FileHash"
-#~ msgstr "檔案 hash 值"

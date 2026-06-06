@@ -24,9 +24,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Language: es_ES\n"
 "X-Generator: Poedit 3.4.2\n"
+"X-Language: es_ES\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -56,8 +56,8 @@ msgid ""
 msgstr ""
 "aMule puede instalar un lanzador de escritorio y un icono en su directorio "
 "personal para que aparezca en el menú de aplicaciones como una aplicación "
-"instalada normalmente. Esto es reversible — los archivos se guardan en ~/."
-"local/share/applications y ~/.local/share/icons y se pueden eliminar en "
+"instalada normalmente. Esto es reversible — los archivos se guardan en "
+"~/.local/share/applications y ~/.local/share/icons y se pueden eliminar en "
 "cualquier momento.\n"
 "\n"
 "¿Instalar la integración de escritorio ahora?"
@@ -360,11 +360,11 @@ msgstr ""
 
 #: src/amule.cpp:1260
 msgid ""
-"at https://amule-org.github.io, or in our IRC channel #aMule at irc.libera."
-"chat.\n"
+"at https://amule-org.github.io, or in our IRC channel #aMule at "
+"irc.libera.chat.\n"
 msgstr ""
-"en https://amule-org.github.io, o en nuestro canal de IRC #aMule en irc."
-"libera.chat.\n"
+"en https://amule-org.github.io, o en nuestro canal de IRC #aMule en "
+"irc.libera.chat.\n"
 
 #: src/amule.cpp:1262
 msgid ""
@@ -547,8 +547,8 @@ msgid ""
 msgstr ""
 "ERROR: se requiere una contraseña para usar conexiones externas, y el "
 "servicio aMule no se puede usar sin conexiones externas. Para iniciar el "
-"servicio aMule, debe especificar en el campo \"ECPassword\" del archivo ~/."
-"aMule/amule.conf el valor apropiado. Ejecute amuled con el parámetro --ec-"
+"servicio aMule, debe especificar en el campo \"ECPassword\" del archivo "
+"~/.aMule/amule.conf el valor apropiado. Ejecute amuled con el parámetro --ec-"
 "config para especificar la contraseña. Se puede encontrar más información en "
 "https://amule-org.github.io/docs"
 
@@ -2628,8 +2628,8 @@ msgstr[1] "Leídos %u contactos Kad"
 #: src/kademlia/routing/RoutingZone.cpp:287
 msgid "No contacts found, please bootstrap, or download a nodes.dat file."
 msgstr ""
-"Contactos no encontrados; por favor, inicialice o descargue un archivo nodes."
-"dat."
+"Contactos no encontrados; por favor, inicialice o descargue un archivo "
+"nodes.dat."
 
 #: src/kademlia/routing/RoutingZone.cpp:305
 #, c-format
@@ -4242,7 +4242,10 @@ msgstr "Intervalo de actualización de la página (en segundos)"
 msgid "Enable Gzip compression"
 msgstr "Activar la compresión gzip"
 
-# Se usa tanto en la pestaña «Información de Kad», en Redes, como para el botón para cerrar el diálogo de Preferencias guardando los cambios. La traducción sería distinta en cada caso, así que hay que dejar el OK original.
+# Se usa tanto en la pestaña «Información de Kad», en Redes, como para el
+# botón para cerrar el diálogo de Preferencias guardando los cambios. La
+# traducción sería distinta en cada caso, así que hay que dejar el OK
+# original.
 #: src/muuli_wdr.cpp:1962 src/muuli_wdr.cpp:2045 src/ServerWnd.cpp:232
 #: src/ServerWnd.cpp:237
 msgid "OK"
@@ -4484,8 +4487,8 @@ msgstr "Filtrar los servidores"
 msgid ""
 "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
-"Habilitar el filtrado de las IP de servidores definidas en el archivo ~/."
-"aMule/ipfilter.dat"
+"Habilitar el filtrado de las IP de servidores definidas en el archivo "
+"~/.aMule/ipfilter.dat"
 
 #: src/muuli_wdr.cpp:2407
 msgid "Reload List"
@@ -8164,97 +8167,3 @@ msgstr "Desconexión solicitada\n"
 #: src/webserver/src/WebServer.cpp:1923
 msgid "Processing request [redirected]: "
 msgstr "Procesando solicitud [redirigida]: "
-
-#~ msgid ""
-#~ "FAQ: https://amule-org.github.io/docs/manual/faq \n"
-#~ "\n"
-#~ msgstr ""
-#~ "PUF: https://amule-org.github.io/docs \n"
-#~ "\n"
-
-#~ msgid "Contact: admin@amule.org (administrative issues) \n"
-#~ msgstr "Contacto: admin@amule.org (problemas administrativos) \n"
-
-#~ msgid "Connection failed "
-#~ msgstr "Error de conexión "
-
-#~ msgid "Automatic server connect without proxy"
-#~ msgstr "Conexión automática al servidor sin proxy"
-
-#~ msgid "File"
-#~ msgstr "Archivo"
-
-#, c-format
-#~ msgid "Could not retrieve length of '%s' - using %s file."
-#~ msgstr "No se puede obtener la longitud de '%s' - se usa el archivo %s."
-
-#, c-format
-#~ msgid "'%s' is 0 size somehow - using %s file."
-#~ msgstr "Por algún motivo, el tamaño de '%s' es 0 - se usa el archivo %s."
-
-#, c-format
-#~ msgid "Dropping non-existing shared directory: %s"
-#~ msgstr "Quitando el directorio compartido no existente: %s"
-
-#~ msgid ""
-#~ "A search type has to be specified by giving the type:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Example: 'search kad file' will execute a kad search for \"file\".\n"
-#~ msgstr ""
-#~ "Se debe especificar un tipo de búsqueda indicando el tipo:\n"
-#~ "    GLOBAL\n"
-#~ "    LOCAL\n"
-#~ "    KAD\n"
-#~ "Ejemplo: 'search kad archivo' ejecuta una búsqueda en kad de "
-#~ "\"archivo\".\n"
-
-#~ msgid ""
-#~ "You don't have any server in the server list.\n"
-#~ "Do you want aMule to download a new list now?"
-#~ msgstr ""
-#~ "No tiene ningún servidor en la lista de servidores.\n"
-#~ "¿Quiere que aMule descargue una lista nueva ahora?"
-
-#~ msgid "Server list download"
-#~ msgstr "Descarga de la lista de servidores"
-
-#, c-format
-#~ msgid "Unable to create destination file %s for download!"
-#~ msgstr "¡No se puede crear el archivo de destino %s para la descarga!"
-
-#~ msgid "Critical error while writing downloaded file"
-#~ msgstr "Error crítico al guardar el archivo descargado"
-
-#, c-format
-#~ msgid "Expected %d bytes, but downloaded %d bytes"
-#~ msgstr "Se esperaban %d bytes, pero se descargaron %d bytes"
-
-#, c-format
-#~ msgid "Protocol not supported for HTTP download: %s"
-#~ msgstr "Protocolo no admitido para descarga HTTP: %s"
-
-#~ msgid "Unable to connect to HTTP download server"
-#~ msgstr "No se puede conectar al servidor de descarga HTTP"
-
-#~ msgid "Invalid response from HTTP download server"
-#~ msgstr "Respuesta incorrecta desde el servidor de descarga HTTP"
-
-#~ msgid "Searches for more results on eD2k. Not supported for Kad yet."
-#~ msgstr "Busca más resultados en eD2k. Aún no disponible para Kad."
-
-#, c-format
-#~ msgid "Failed to open file (%s), removing from list of shared files."
-#~ msgstr ""
-#~ "Error al abrir el archivo (%s), se borra de la lista de compartidos."
-
-#~ msgid ""
-#~ "Invalid URL for HTTP download or HTTP redirection (did you forget "
-#~ "'http://' ?)"
-#~ msgstr ""
-#~ "URL inválido para la descarga o redirección HTTP (¿Ha olvidado el "
-#~ "'http://'?)"
-
-#~ msgid "FileHash"
-#~ msgstr "Hash del archivo"
