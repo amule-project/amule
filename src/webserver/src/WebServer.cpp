@@ -29,6 +29,8 @@
 #include <wx/math.h>	// Needed for cos, M_PI
 #include <string>	// Do_not_auto_remove (g++-4.0.1)
 
+#include <cryptopp/osrng.h>	// CryptoPP::AutoSeededRandomPool, for the session-token CSPRNG
+
 #include <wx/datetime.h>
 
 //-------------------------------------------------------------------
@@ -1843,9 +1845,24 @@ CSession *CScriptWebServer::CheckLoggedin(ThreadData &Data)
 		Print(_("No session opened - will request login\n"));
 	}
 	if ( !session ) {
-		while ( !Data.SessionID || m_sessions.count(Data.SessionID) ) {
-			Data.SessionID = rand();
-		}
+		// CSPRNG-sourced 64-bit session token. Was `rand()` into an
+		// `int` before #870, which is neither CSPRNG-quality nor
+		// seeded with anything an attacker can't observe; that made
+		// session IDs guessable in modest time without ever touching
+		// the cookie. AutoSeededRandomPool is the same primitive the
+		// EC stack already uses for DH key agreement, so we're not
+		// dragging in new crypto -- just spending it on a problem
+		// that needed it. Reuse the pool across calls so the OS-RNG
+		// seeding cost is paid once per process.
+		static CryptoPP::AutoSeededRandomPool s_sessionPool;
+		do {
+			uint64_t fresh = 0;
+			s_sessionPool.GenerateBlock(reinterpret_cast<CryptoPP::byte *>(&fresh), sizeof(fresh));
+			Data.SessionID = fresh;
+			// Loop on 0 (which means "no session" elsewhere in this
+			// file) or on the astronomically unlikely collision with
+			// an existing live session.
+		} while ( !Data.SessionID || m_sessions.count(Data.SessionID) );
 		session = &m_sessions[Data.SessionID];
 		session->m_last_access = curr_time;
 		session->m_logged_in = false;
