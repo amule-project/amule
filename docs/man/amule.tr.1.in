@@ -35,7 +35,7 @@ uygulamaları ile aynı biçimi
 kullanır:	[\fB=\fP][\fI<genişlik>\fP{\fBxX\fP}\fI<yükseklik>\fP][{\fB+\-\fP}\fI<xoffset>\fP{\fB+\-\fP}\fI<yoffset>\fP]
 .TP 
 .B_untranslated [ \-o\fR, \fB\-\-log\-stdout ]\fR
-Log mesajlarını standart çıktıya gönderir.
+Günlük mesajlarını standart çıktıya gönderir.
 .TP 
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 Yapılandırmayı varsayılan değerlere sıfırlar.
@@ -45,7 +45,7 @@ amuleweb çalıştırılabilir dosyasının konumunu \fI<yol>\fP olarak
 belirler.
 .TP 
 .B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
-Ölümcül istisnaları yakalama ve doğrulamalarda çıkmayı engelleme.  Otomatik
+Ölümcül istisnaları yakalama ve doğrulamalarda çıkmayı engellemez.  Otomatik
 yeniden başlatmayı engelleyen, normalde modal olan onay diyalog kutusunun
 bulunmadığı, başsız/denetimli kurulumlar (systemd, watchdog betikleri) için
 kullanışlıdır.

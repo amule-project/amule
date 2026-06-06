@@ -32,15 +32,15 @@ Utiliser le fichier de config \fI<chemin>\fP à la place de celui par
 défaut
 .TP 
 \fB[ \-geometry \fP\fI<géom>\fP \fB]\fP
-Fixer la géométrie de l'application. \fI<géom>\fP utilise le même
-format que les applications X11 standards
+Fixe la géométrie de l'application. \fI<géom>\fP utilise le même format
+que les applications X11 standards
 :	[\fB=\fP][\fI<largeur>\fP{\fBxX\fP}\fI<hauteur>\fP][{\fB+\-\fP}\fI<xoffset>\fP{\fB+\-\fP}\fI<yoffset>\fP]
 .TP 
 .B_untranslated [ \-o\fR, \fB\-\-log\-stdout ]\fR
-Afficher les messages du journal sur stdout.
+Affiche les messages du journal sur stdout.
 .TP 
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
-Réinitialiser à la configuration par défaut.
+Réinitialise à la configuration par défaut.
 .TP 
 .B_untranslated [ \-s\fR, \fB\-\-skip ]\fR
 Sauter la boîte de dialogue de connexion.
@@ -49,7 +49,7 @@ Sauter la boîte de dialogue de connexion.
 Définir la catégorie pour les liens eD2k passé à \fI<num>\fP
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
-Afficher une court description d'utilisation.
+Affiche une courte description d'utilisation.
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR
 Affiche le numéro de la version actuelle.
@@ -60,13 +60,13 @@ de bogues (\fIhttps://github.com/amule\-org/amule/issues\fP).  Veuillez ne pas
 rapporter les bogues par e\-mail, sur notre liste de diffusion ou directement
 aux membres de l'équipe.
 .SH COPYRIGHT
-aMule et tous ses outils sont distribués sous la licence GNU General Public
-License.
+aMule et tous ses outils sont distribués sous la Licence publique générale
+GNU.
 .SH "VOIR ÉGALEMENT"
 .B_untranslated alc\fR(1), \fBalcc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1)
 .SH AUTEUR
-Cette page de manuel a été rédigé par Julien Delange pour Debian <julien
-AT gunnm DOT org>
+Cette page de manuel a été rédigée par Julien Delange pour Debian
+<julien AT gunnm DOT org>
 
 Cette page de manuel a été réécrite par Vollstrecker
 <amule@vollstreckernet.de>

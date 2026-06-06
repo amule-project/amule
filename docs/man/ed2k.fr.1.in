@@ -21,8 +21,8 @@ ed2k \- analyseur de liens eD2k pour aMule
 .B_untranslated ed2k
 .RB_untranslated [ \-v ]
 .SH DESCRIPTION
-Envoie le \fI<lien\-eD2k>\fP à aMule, c'est à dire qu'il l'écrit dans le
-fichier  ~/.aMule/ED2KLinks, qui sera vérifié par aMule chaque seconde pour
+Envoie le \fI<lien\-eD2k>\fP à aMule, c'est\-à\-dire qu'il l'écrit sur le
+fichier ~/.aMule/ED2KLinks, qui sera vérifié par aMule chaque seconde pour
 les liens.
 .TP 
 \fB[ \-c\fP \fI<chemin>\fP, \fB\-\-config\-dir\fP=\fI<chemin>\fP \fB]\fP
@@ -41,7 +41,7 @@ Liste tous les liens trouvés dans l'emulecollection donnée dans
 \fI<lien\-eD2k>\fP
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
-Afficher une court description d'utilisation.
+Affiche une courte description d'utilisation.
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR
 Affiche le numéro de la version actuelle.
@@ -68,7 +68,7 @@ un fichier de collection emule.
 
 \fBLe ordre dans lequel vous donnez les paramètres est important.\fP Vous
 pouvez donner plus d'un lien, et chaque lien peut avoir ses propres
-paramètres. Par exemple, \fBed2k <lien1> \-t2 <lien2>\fP
+paramètres.  Par exemple, \fBed2k <lien1> \-t2 <lien2>\fP
 téléchargera \fI<lien1>\fP dans la catégorie standard et
 \fI<lien2>\fP dans la catégorie 2.
 .SH FICHIERS
@@ -80,8 +80,8 @@ de bogues (\fIhttps://github.com/amule\-org/amule/issues\fP).  Veuillez ne pas
 rapporter les bogues par e\-mail, sur notre liste de diffusion ou directement
 aux membres de l'équipe.
 .SH COPYRIGHT
-aMule et tous ses outils sont distribués sous la licence GNU General Public
-License.
+aMule et tous ses outils sont distribués sous la Licence publique générale
+GNU.
 .SH "VOIR ÉGALEMENT"
 .B_untranslated amule\fR(1)
 .SH AUTEUR
