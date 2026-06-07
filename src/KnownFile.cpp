@@ -1160,7 +1160,7 @@ void CKnownFile::CreateOfferedFilePacket(
 	// shared files to some other client. In each case we send our IP+Port only, if
 	// we have a HighID.
 
-	wxASSERT(!(pClient && pServer));
+	wxCHECK_RET(!(pClient && pServer), "pClient and pServer cannot both be non-null");
 
 	SetPublishedED2K(true);
 	files->WriteHash(GetFileHash());
@@ -1223,7 +1223,7 @@ void CKnownFile::CreateOfferedFilePacket(
 					tags.push_back(new CTagInt32(FT_FILESIZE_HI, (uint32)(GetFileSize() >> 32)));
 				}
 			} else {
-				if (pClient && (!pClient->SupportsLargeFiles())) {
+				if (!pClient->SupportsLargeFiles()) {
 					wxFAIL;
 					tags.push_back(new CTagInt32(FT_FILESIZE, 0));
 				} else {
