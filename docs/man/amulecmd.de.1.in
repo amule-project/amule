@@ -66,10 +66,16 @@ Eingabeaufforderung eingegeben worden, und beende dich.
 Konfigurationsdatei basierend auf \fI<Pfad>\fP, welche auf eine gültige
 aMule Konfigurationsdatei verweisen muss, erstellen und danach beenden.
 .TP 
-.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+.B_untranslated [ \-\-force\-zlib ]\fR
+Erzwingt ZLIB Kompression der externen Verbindung, unabhängig von der
+Lokalität der gewählten IP. Nützlich, wenn der Server über einen VPN Tunnel
+erreichbar ist, der eine LAN IP ist, und die Heuristik sonst Kompression
+deaktivieren würde.
+.TP 
+.B_untranslated [ \-\-version ]\fR
 Zeigt die derzeitige Versionsnummer an.
 .TP 
-.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+.B_untranslated [ \-\-help ]\fR
 Gibt eine kurze Nutzungsbeschreibung aus.
 .SH BEFEHLE
 Alle Befehle können groß oder klein geschrieben werden.
@@ -108,7 +114,7 @@ verbinden.
 Trennt die Verbindung zu allen Netzwerken mit denen du verbunden bist, oder
 nur zu dem, welches angegeben wurde.
 .SS_untranslated Download \fI<number>\fP
-Startet den Download einer Datei
+Startet den Download einer Datei.
 
 Die \fI<Nummer>\fP einer Datei aus der letzten Suche muss angegeben
 werden.  Beispiel: 'download 12' startet den Download der Datei, die in der
@@ -305,8 +311,8 @@ Bugtracker (\fIhttps://github.com/amule\-org/amule/issues\fP). Bitte meldet uns
 weder Fehler per E\-Mail, noch auf unsere Mailingliste oder direkt an unsere
 Teammitglieder.
 .SH COPYRIGHT
-aMule und alle seine zugehörigen Anwendungen werden verteilt unter der GNU
-General Public License
+aMule und alle seine zugehörigen Anwendungen werden unter der GNU General
+Public License verteilt.
 .SH "SIEHE AUCH"
 .B_untranslated amule\fR(1), \fBamuled\fR(1)
 .SH VERFASSER

@@ -26,8 +26,8 @@ Bugtracker (\fIhttps://github.com/amule\-org/amule/issues\fP). Bitte meldet uns
 weder Fehler per E\-Mail, noch auf unsere Mailingliste oder direkt an unsere
 Teammitglieder.
 .SH COPYRIGHT
-aMule und alle seine zugehörigen Anwendungen werden verteilt unter der GNU
-General Public License
+aMule und alle seine zugehörigen Anwendungen werden unter der GNU General
+Public License verteilt.
 .SH "SIEHE AUCH"
 .B_untranslated amule\fR(1), \fBcas\fR(1)
 .SH VERFASSER
