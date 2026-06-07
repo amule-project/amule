@@ -122,6 +122,8 @@ jobs:
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
             ${{ env.cmake_common_config_flags }} \
             ${{ env.cmake_ubuntu_config_flags }}
+      - name: zero ccache stats
+        run: ccache --zero-stats
       - name: make
         run: cmake --build build
       - name: save ccache
@@ -171,6 +173,8 @@ jobs:
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
             ${{ env.cmake_common_config_flags }} \
             ${{ env.cmake_macos_config_flags }}
+      - name: zero ccache stats
+        run: ccache --zero-stats
       - name: make
         run: cmake --build build
       - name: save ccache
@@ -215,6 +219,8 @@ jobs:
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
             ${{ env.cmake_common_config_flags }} \
             ${{ env.cmake_mingw_w64_config_flags }}
+      - name: zero ccache stats
+        run: ccache --zero-stats
       - name: make
         run: cmake --build build
       - name: save ccache
