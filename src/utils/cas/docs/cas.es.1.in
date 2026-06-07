@@ -22,14 +22,19 @@ por consola (en un formato legible para personas). Para funcionar, debe
 activarse la opción "Online Signature" en las preferencias de aMule.
 .TP 
 .B_untranslated [ \-o\fR, \fB\-\-picture\fR, \fB\-P ]\fR
-Escribe la imagen de la firma online.  Opcionalmente, se puede añadir
-\fI=<PATH>\fP a este parámetro para especificar dónde debería
-escribirse.
+Escribe la imagen de la firma online.  La forma larga \fB\-\-picture\fP acepta un
+\fI=<PATH>\fP opcional para especificar la ubicación de salida; las
+formas cortas \fB\-o\fP / \fB\-P\fP no lo aceptan (\fB\-P\fP requiere un argumento
+\fI<PATH>\fP inmediatamente a continuación, y \fB\-o\fP es un switch sin
+argumentos).  Requiere soporte GD en la compilación (\fI__GD__\fP); de lo
+contrario esta opción se ignora silenciosamente.
 .TP 
 .B_untranslated [ \-p\fR, \fB\-\-html\fR, \fB\-H ]\fR
-Página HTML con estadísticas e imagen.  Opcionalmente, se puede añadir
-\fI=<PATH>\fP a este parámetro para especificar dónde debería
-escribirse.
+Página HTML con estadísticas e imagen.  La forma larga \fB\-\-picture\fP acepta
+un \fI=<PATH>\fP opcional para especificar la ubicación de salida; las
+formas cortas \fB\-p\fP / \fB\-H\fP no lo aceptan (\fB\-H\fP requiere un argumento
+\fI<PATH>\fP inmediatamente a continuación, y \fB\-p\fP es un switch sin
+argumentos).
 .TP 
 \fB[ \-c\fP \fI<path>\fP, \fB\-\-config\-dir\fP=\fI<path>\fP \fB]\fP
 Leer configuración desde \fI<path>\fP en lugar de home
@@ -44,9 +49,10 @@ stdout.
 .SH ARCHIVOS
 ~/.aMule/casrc
 .br
-stat.png
+aMule\-online\-sign.png (o .jpg, cuando se usa \fB\-o\fP / \fB\-\-picture\fP y GD está
+disponible)
 .br
-tmp.html
+aMule\-online\-sign.html (cuando se usa \fB\-p\fP / \fB\-\-html\fP)
 .SH "INFORMANDO ERRORES"
 Por favor informe de fallos ya sea en nuestro foro
 (\fIhttps://github.com/amule\-org/amule/discussions\fP), o en nuestro bugtracker

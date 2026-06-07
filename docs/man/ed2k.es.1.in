@@ -27,16 +27,19 @@ fichero ~/.aMule/ED2KLinks, que aMule lee una vez por segundo.
 \fB[ \-c\fP \fI<path>\fP, \fB\-\-config\-dir\fP=\fI<path>\fP \fB]\fP
 Leer configuración desde \fI<path>\fP en lugar de home
 .TP 
-\fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
-Fijar categoría para enlace eD2k pasado a \fI<num>\fP
+\fB[ \-t\fP \fI<num>\fP, \fB\-\-category\fP \fI<num>\fP \fB]\fP
+Establece la categoría \fI<num>\fP para los enlaces eD2k introducidos.
+Al contrario que \fB\-\-config\-dir\fP, el parseador lee el valor como el
+siguiente argumento y no acepta  \fB\-\-category\fP=\fI<num>\fP como
+sintaxis.
 .TP 
 .B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
 Carga todos los enlaces encontrados en la emulecollection especificada como
-\fI<enlace ed2k>\fP
+\fI<ed2k\-link>\fP
 .TP 
 .B_untranslated [ \-l\fR, \fB\-\-list ]\fR
 Lista todos los enlaces encontrados en la emulecollection especificada como
-\fI<enlace ed2k>\fP
+\fI<ed2k\-link>\fP
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
 Imprime una breve descripción de uso.

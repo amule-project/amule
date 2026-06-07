@@ -86,7 +86,7 @@ navegador (por defecto: \fI4711\fP).
 .br
 Habilitar UPnP.
 .TP 
-\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP \fI<port>\fP \fB]\fP
+\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP=\fI<port>\fP \fB]\fP
 Puerto UPnP.
 .TP 
 .B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
@@ -124,6 +124,12 @@ Recompilar páginas PHP en cada solicitud.
 \fB[ \-\-create\-config\-from\fP=\fI<path>\fP \fB]\fP
 Crear archivo de configuración basado en \fI<path>\fP, el cual debe
 apuntar a un archivo de configuración válido, y entonces termina.
+.TP 
+.B_untranslated [ \-\-force\-zlib ]\fR
+Forzar la compresión ZLIB en el protocolo de Conexiones Externas aunque se
+esté conectando a una IP local/LAN. Esto es útil cuando la conexión al
+servidor se realiza a través de un túnel VPN que se resuelve a una IP de
+LAN, lo que por defecto desactivaría la compresión.
 .TP 
 .B_untranslated [ \-\-help ]\fR
 Imprime una breve descripción de uso.
