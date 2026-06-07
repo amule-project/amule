@@ -82,7 +82,7 @@ Webserver's HTTP port. This is the port you must point your browser to (default:
 .br
 Enable UPnP.
 .TP
-\fB[ \-U\fR \fI<port>\fR, \fB\-\-upnp\-port\fR \fI<port>\fR \fB]\fR
+\fB[ \-U\fR \fI<port>\fR, \fB\-\-upnp\-port\fR=\fI<port>\fR \fB]\fR
 UPnP port.
 .TP
 .B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
@@ -117,6 +117,10 @@ Recompiles PHP pages on each request.
 .TP
 \fB[ \-\-create\-config\-from\fR=\fI<path>\fR \fB]\fR
 Create config file based upon \fI<path>\fR, which must point to a valid aMule config file, and then exit.
+.TP
+.B_untranslated [ \-\-force\-zlib ]\fR
+Force ZLIB compression on the External Connection link regardless of the dialed-IP locality.
+Useful when the server side is reachable over a VPN tunnel that resolves to a LAN IP and the heuristic would otherwise skip compression.
 .TP
 .B_untranslated [ \-\-help ]\fR
 Prints a short usage description.

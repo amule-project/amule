@@ -18,11 +18,12 @@ must enable the "Online Signature" option in aMule's preferences.
 .TP
 .B_untranslated [ \-o\fR, \fB\-\-picture\fR, \fB\-P ]\fR
 Writes the online signature picture.
-You can optionally append \fI=<PATH>\fR to this option, to specify the location it should be written to.
+The long form \fB\-\-picture\fR accepts an optional \fI=<PATH>\fR to specify the output location; the short forms \fB\-o\fR / \fB\-P\fR do not (\fB\-P\fR requires an immediately following \fI<PATH>\fR argument, and \fB\-o\fR is a no-argument switch).
+Requires GD support compiled in (\fI__GD__\fR); this option is silently ignored otherwise.
 .TP
 .B_untranslated [ \-p\fR, \fB\-\-html\fR, \fB\-H ]\fR
 HTML page with stats and picture.
-You can optionally append \fI=<PATH>\fR to this option, to specify the location it should be written to.
+The long form \fB\-\-html\fR accepts an optional \fI=<PATH>\fR to specify the output location; the short forms \fB\-p\fR / \fB\-H\fR do not (\fB\-H\fR requires an immediately following \fI<PATH>\fR argument, and \fB\-p\fR is a no-argument switch).
 .TP
 \fB[ \-c\fR \fI<path>\fR, \fB\-\-config\-dir\fR=\fI<path>\fR \fB]\fR
 Read config from \fI<path>\fR instead of home
@@ -36,9 +37,9 @@ Without any options, it prints online signature data to stdout.
 .SH FILES
 ~/.aMule/casrc
 .br
-stat.png
+aMule-online-sign.png (or .jpg, when \fB\-o\fR / \fB\-\-picture\fR is used and GD is available)
 .br
-tmp.html
+aMule-online-sign.html (when \fB\-p\fR / \fB\-\-html\fR is used)
 .SH REPORTING BUGS
 Please report bugs either on our forum (\fIhttps://github.com/amule-org/amule/discussions\fR), or in our bugtracker (\fIhttps://github.com/amule-org/amule/issues\fR).
 Please do not report bugs in e-mail, neither to our mailing list nor directly to any team member.

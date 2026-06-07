@@ -11,6 +11,7 @@ amuled \- the all\-platform eMule p2p client \- daemonized version
 .RB_untranslated [ \-e ]
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
+.RB [ \-\-configure\-autostart " " \fI<on|off> ]
 .RB [ \-w " " \fI<path> ]
 .RB_untranslated [ \-d ]
 .RB_untranslated [ \-i ]
@@ -43,6 +44,10 @@ Prints log messages to stdout.
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 Resets config to default values.
 .TP
+\fB[ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Enable or disable starting amuled on user login, then exit.
+The OS\-specific store is selected automatically: Windows registry Run key, macOS LaunchAgent, Linux XDG \fI.desktop\fR autostart entry.
+.TP
 \fB[ \-w\fR \fI<path>\fR, \fB\-\-use\-amuleweb\fR=\fI<path>\fR \fB]\fR
 Specify location of amuleweb binary to \fI<path>\fR.
 .TP
@@ -54,7 +59,7 @@ where the otherwise-modal assertion dialog prevents auto-restart.
 .B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
 Does not disable stdin.
 .TP
-\fB[ \-t\fR, \fB\-\-category\fR=\fI<num>\fR \fB]\fR
+\fB[ \-t\fR \fI<num>\fR, \fB\-\-category\fR=\fI<num>\fR \fB]\fR
 Set category for passed eD2k links to \fI<num>\fR
 .TP
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR
