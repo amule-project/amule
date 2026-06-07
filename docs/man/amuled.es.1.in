@@ -16,6 +16,7 @@ amuled \- el cliente p2p eMule multi\-plataforma \- versión en segundo plano
 .RB_untranslated [ \-e ]
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
 [\fB\-w\fP \fI<path>\fP]
 .RB_untranslated [ \-d ]
 .RB_untranslated [ \-i ]
@@ -47,6 +48,12 @@ Imprime mensajes de registro en la salida estándar
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 Reiniciar configuración a valores por defecto.
 .TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Activa o desactiva el arranque automático del servicio de aMule (amuled) al
+iniciar sesión el usuario, y luego termina. Se seleccionará automáticamente
+el almacenamiento específico de cada SO: clave del registro en Windows,
+LaunchAgent en macOS, entrada en Linux XDG \fI.desktop\fP autostart.
+.TP 
 \fB[ \-w\fP \fI<path>\fP, \fB\-\-use\-amuleweb\fP=\fI<path>\fP \fB]\fP
 Especifica la ubicación del binario amuleweb en \fI<path>\fP.
 .TP 
@@ -59,7 +66,7 @@ automático.
 .B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
 No deshabilitar entrada estándar.
 .TP 
-\fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
+\fB[ \-t\fP \fI<num>\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
 Fijar categoría para enlace eD2k pasado a \fI<num>\fP
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR

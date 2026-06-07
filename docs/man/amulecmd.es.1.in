@@ -66,10 +66,16 @@ amulecmd, y termina.
 Crear archivo de configuración basado en \fI<path>\fP, el cual debe
 apuntar a un archivo de configuración válido, y entonces termina.
 .TP 
-.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+.B_untranslated [ \-\-force\-zlib ]\fR
+Forzar la compresión ZLIB en el protocolo de Conexiones Externas aunque se
+esté conectando a una IP local/LAN. Esto es útil cuando la conexión al
+servidor se realiza a través de un túnel VPN que se resuelve a una IP de
+LAN, lo que por defecto desactivaría la compresión.
+.TP 
+.B_untranslated [ \-\-version ]\fR
 Mostrar el número de la versión actual.
 .TP 
-.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+.B_untranslated [ \-\-help ]\fR
 Imprime una breve descripción de uso.
 .SH COMANDOS
 Todos los comandos ignoran las mayúsculas.

@@ -14,6 +14,9 @@ amulegui \- Programa para controlar aMule con Interfaz Gráfica
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
 .RB_untranslated [ \-s ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
+.RB_untranslated [ \-d ]
+.RB_untranslated [ \-i ]
 [\fB\-t\fP \fI<num>\fP]
 
 .B_untranslated amulegui
@@ -43,6 +46,21 @@ Reiniciar configuración a valores por defecto.
 .TP 
 .B_untranslated [ \-s\fR, \fB\-\-skip ]\fR
 Saltar diálogo de conexión.
+.TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Activa o desactiva el arranque automático de amulegui al iniciar sesión el
+usuario, y luego termina. Se seleccionará automáticamente el almacenamiento
+específico de cada SO: clave del registro en Windows, LaunchAgent en macOS,
+entrada en Linux XDG \fI.desktop\fP autostart.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
+No captura las excepciones fatales y no bloquea la salida en los diálogos
+modales.  Útil para configuraciones sin interfaz / supervisadas (systemd,
+scripts watchdog) donde el cuadro de diálogo modal impide el reinicio
+automático.
+.TP 
+.B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
+No deshabilitar entrada estándar.
 .TP 
 \fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
 Fijar categoría para enlace eD2k pasado a \fI<num>\fP
