@@ -9,7 +9,7 @@ amule \- the all\-platform eMule p2p client
 .RB [ \-geometry " " \fI<geom> ]
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
-.RB [ \-\-configure\-autostart " " \fI<on|off> ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
 .RB [ \-w " " \fI<path> ]
 .RB_untranslated [ \-d ]
 .RB_untranslated [ \-i ]
@@ -36,7 +36,7 @@ Prints log messages to stdout.
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 Resets config to default values.
 .TP
-\fB[ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
 Enable or disable starting aMule on user login, then exit.
 The OS\-specific store is selected automatically: Windows registry Run key, macOS LaunchAgent, Linux XDG \fI.desktop\fR autostart entry.
 .TP
