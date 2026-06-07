@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manpages-de\n"
 "POT-Creation-Date: 2026-06-07 14:45+0200\n"
-"PO-Revision-Date: 2026-06-07 21:24+0200\n"
+"PO-Revision-Date: 2026-06-07 21:15+0200\n"
 "Last-Translator: Balla Marcell <marcell.balla@gmx.at>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -86,7 +86,7 @@ msgstr "[B<-w> I<E<lt>PfadE<gt>>]"
 #. type: Plain text
 #: amule.1.in:18 amuled.1.in:20
 msgid "[B<-t> I<E<lt>numE<gt>>] [I<eD2k-link>]"
-msgstr "[B<-t> I<E<lt>numE<gt>>] [I<eD2k-Verweis>]"
+msgstr "[B<-t> I<E<lt>NumE<gt>>] [I<eD2k-Verweis>]"
 
 # type: SH
 #. type: SH
@@ -151,6 +151,10 @@ msgid ""
 "store is selected automatically: Windows registry Run key, macOS LaunchAgent, "
 "Linux XDG I<.desktop> autostart entry."
 msgstr ""
+"Aktiviert bzw. deaktiviert den automatischen Start von aMule beim "
+"Benutzerlogin, beendet danach.  Der betriebssystemspezifische Speicherort wird "
+"automatisch ausgewählt: Windows Registrierung run Schlüssel, macOS LaunchAgent, "
+"Linux XDG I<.desktop> Autostart Eintrag."
 
 # type: Plain text
 #. type: TP
@@ -346,8 +350,8 @@ msgid ""
 "aMule and all of its related utilities are distributed under the GNU General "
 "Public License."
 msgstr ""
-"aMule und alle seine zugehörigen Anwendungen werden verteilt unter der GNU "
-"General Public License"
+"aMule und alle seine zugehörigen Anwendungen werden unter der GNU General "
+"Public License verteilt."
 
 # type: SH
 #. type: SH
@@ -580,6 +584,10 @@ msgid ""
 "IP locality.  Useful when the server side is reachable over a VPN tunnel that "
 "resolves to a LAN IP and the heuristic would otherwise skip compression."
 msgstr ""
+"Erzwingt ZLIB Kompression der externen Verbindung, unabhängig von der Lokalität "
+"der gewählten IP. Nützlich, wenn der Server über einen VPN Tunnel erreichbar "
+"ist, der eine LAN IP ist, und die Heuristik sonst Kompression deaktivieren "
+"würde."
 
 # type: SH
 #. type: SH
@@ -665,7 +673,7 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1.in:104
 msgid "Start downloading a file."
-msgstr "Startet den Download einer Datei"
+msgstr "Startet den Download einer Datei."
 
 # type: Plain text
 #. type: Plain text
@@ -1164,7 +1172,7 @@ msgstr "[B<-p> I<E<lt>PfadE<gt>>]"
 #. type: Plain text
 #: amuled.1.in:33
 msgid "Forks to background."
-msgstr "Im Hintergrund ausführen"
+msgstr "Im Hintergrund ausführen."
 
 # type: Plain text
 #. type: TP
@@ -1195,14 +1203,17 @@ msgid ""
 "store is selected automatically: Windows registry Run key, macOS LaunchAgent, "
 "Linux XDG I<.desktop> autostart entry."
 msgstr ""
+"Aktiviert bzw. deaktiviert den automatischen Start von amuled beim "
+"Benutzerlogin, beendet danach.  Der betriebssystemspezifische Speicherort wird "
+"automatisch ausgewählt: Windows Registrierung run Schlüssel, macOS LaunchAgent, "
+"Linux XDG I<.desktop> Autostart Eintrag."
 
 # type: TP
 #. type: TP
 #: amuled.1.in:61
-#, fuzzy, no-wrap
-#| msgid "B<[ -t> I<E<lt>nameE<gt>>, B<--template>=I<E<lt>nameE<gt>> B<]>"
+#, no-wrap
 msgid "B<[ -t> I<E<lt>numE<gt>>, B<--category>=I<E<lt>numE<gt>> B<]>"
-msgstr "B<[ -t> I<E<lt>NameE<gt>>, B<--template>=I<E<lt>NameE<gt>> B<]>"
+msgstr "B<[ -t> I<E<lt>NumE<gt>>, B<--category>=I<E<lt>NumE<gt>> B<]>"
 
 # type: TH
 #. type: TH
@@ -1260,6 +1271,10 @@ msgid ""
 "store is selected automatically: Windows registry Run key, macOS LaunchAgent, "
 "Linux XDG I<.desktop> autostart entry."
 msgstr ""
+"Aktiviert bzw. deaktiviert den automatischen Start von amulegui beim "
+"Benutzerlogin, beendet danach.  Der betriebssystemspezifische Speicherort wird "
+"automatisch ausgewählt: Windows Registrierung run Schlüssel, macOS LaunchAgent, "
+"Linux XDG I<.desktop> Autostart Eintrag."
 
 #. type: Plain text
 #: amulegui.1.in:72
@@ -1385,10 +1400,9 @@ msgstr "Aktiviere UPnP."
 # type: TP
 #. type: TP
 #: amuleweb.1.in:84
-#, fuzzy, no-wrap
-#| msgid "B<[ -U> I<E<lt>portE<gt>>, B<--upnp-port> I<E<lt>portE<gt>> B<]>"
+#, no-wrap
 msgid "B<[ -U> I<E<lt>portE<gt>>, B<--upnp-port>=I<E<lt>portE<gt>> B<]>"
-msgstr "B<[ -U> I<E<lt>PortE<gt>>, B<--upnp-port> I<E<lt>PortE<gt>> B<]>"
+msgstr "B<[ -U> I<E<lt>PortE<gt>>, B<--upnp-port>=I<E<lt>PortE<gt>> B<]>"
 
 #. type: Plain text
 #: amuleweb.1.in:87
@@ -1399,7 +1413,7 @@ msgstr "UPnP Port."
 #. type: Plain text
 #: amuleweb.1.in:90
 msgid "Enables using gzip compression in HTTP traffic to save bandwidth."
-msgstr "Benutzt gzip Kompression für den HTTP Verkehr um Bandbreite zu sparen"
+msgstr "Benutzt gzip Kompression für den HTTP Verkehr um Bandbreite zu sparen."
 
 # type: Plain text
 #. type: Plain text
@@ -1437,7 +1451,7 @@ msgstr "Gäste Passwort für den Webserver"
 #. type: Plain text
 #: amuleweb.1.in:102
 msgid "Allows guest access."
-msgstr "Erlaubt den Zugriff als Gast"
+msgstr "Erlaubt den Zugriff als Gast."
 
 # type: Plain text
 #. type: Plain text
@@ -1470,7 +1484,7 @@ msgstr "Deaktiviert den PHP Interpreter (veraltet)"
 #. type: Plain text
 #: amuleweb.1.in:117
 msgid "Recompiles PHP pages on each request."
-msgstr "Erstellt die PHP-Seiten bei jedem Aufruf neu"
+msgstr "Erstellt die PHP-Seiten bei jedem Aufruf neu."
 
 # type: TP
 #. type: TP
@@ -1616,10 +1630,9 @@ msgstr ""
 # type: TP
 #. type: TP
 #: ed2k.1.in:24
-#, fuzzy, no-wrap
-#| msgid "B<[ -t> I<E<lt>nameE<gt>>, B<--template>=I<E<lt>nameE<gt>> B<]>"
+#, no-wrap
 msgid "B<[ -t> I<E<lt>numE<gt>>, B<--category> I<E<lt>numE<gt>> B<]>"
-msgstr "B<[ -t> I<E<lt>NameE<gt>>, B<--template>=I<E<lt>NameE<gt>> B<]>"
+msgstr "B<[ -t> I<E<lt>NumE<gt>>, B<--category>=I<E<lt>NumE<gt>> B<]>"
 
 #. type: Plain text
 #: ed2k.1.in:28
@@ -1628,12 +1641,12 @@ msgid ""
 "dir>, the parser reads the value as the next argument and does not accept B<--"
 "category>=I<E<lt>numE<gt>> syntax."
 msgstr ""
+"Setzt Kategorie für übergebene ed2K Links zu I<E<lt>NumE<gt>>.  Im Unterschied "
+"zu B<--config-dir> liest der Parser den Wert als das nächste Argument und "
+"akzeptiert das B<--category>=I<E<lt>numE<gt>> Syntax nicht."
 
 #. type: Plain text
 #: ed2k.1.in:31
-#, fuzzy
-#| msgid ""
-#| "Loads all link found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
 msgid ""
 "Loads all links found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
 msgstr ""
@@ -1642,14 +1655,11 @@ msgstr ""
 
 #. type: Plain text
 #: ed2k.1.in:34
-#, fuzzy
-#| msgid ""
-#| "Lists all link found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
 msgid ""
 "Lists all links found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
 msgstr ""
-"Listet alle Verweise in der emulecollection die als I<E<lt>eD2k_VerweisE<gt>> "
-"übergeben wurde auf."
+"Listet alle Verweise in der emulecollection, die als I<E<lt>eD2k_VerweisE<gt>> "
+"übergeben wurde, auf."
 
 #. type: Plain text
 #: ed2k.1.in:54
@@ -1800,6 +1810,12 @@ msgid ""
 "argument, and B<-o> is a no-argument switch).  Requires GD support compiled in "
 "(I<__GD__>); this option is silently ignored otherwise."
 msgstr ""
+"Schreibt das online Signatur Bild.  Die lange Form B<--picture> akzeptiert ein "
+"optionales I<=E<lt>PATHE<gt>> um den Ausgabeort zu bestimmen; die Kurzform B<-"
+"o> / B<-P> tut es nicht (B<-P> benötigt ein unmittelbar folgendes "
+"I<E<lt>PATHE<gt>> Argument, und B<-o> ist eine Option ohne Parameter).  Dafür "
+"muss Unterstützung für GD einkompiliert sein (I<__GD__>); ansonsten wird diese "
+"Option ohne Nachricht ignoriert."
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1.in:27
@@ -1809,6 +1825,10 @@ msgid ""
 "H> do not (B<-H> requires an immediately following I<E<lt>PATHE<gt>> argument, "
 "and B<-p> is a no-argument switch)."
 msgstr ""
+"HTML Seite with Status und Bild.  Die Langform B<--html> akzeptiert ein "
+"optionales I<=E<lt>PATHE<gt>> um den Ausgabeort zu bestimmen; die Kurzform B<-"
+"p> / B<-H> tut es nicht (B<-H> benötigt ein unmittelbar folgendes "
+"I<E<lt>PATHE<gt>> Argument, und B<-p> ist eine Option ohne Parameter)."
 
 # type: Plain text
 #. type: Plain text
@@ -1835,11 +1855,13 @@ msgid ""
 "aMule-online-sign.png (or .jpg, when B<-o> / B<--picture> is used and GD is "
 "available)"
 msgstr ""
+"aMule-online-sign.png (oder .jpg, wenn B<-o> / B<--picture> verwendet wird und "
+"GD verfügbar ist)"
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1.in:43
 msgid "aMule-online-sign.html (when B<-p> / B<--html> is used)"
-msgstr ""
+msgstr "aMule-online-sign.html (wenn B<-p> / B<--html> verwendet wird)"
 
 # type: TH
 #. type: TH
