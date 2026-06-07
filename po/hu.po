@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-05 15:21+0200\n"
+"POT-Creation-Date: 2026-06-07 14:34+0200\n"
 "PO-Revision-Date: 2021-02-01 22:01+0100\n"
 "Last-Translator: Dévai Tamás <gonosztopi@amule.org>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
@@ -116,14 +116,14 @@ msgstr ""
 msgid "Later"
 msgstr ""
 
-#: src/amuleAppCommon.cpp:173
+#: src/amuleAppCommon.cpp:174
 #, c-format
 msgid "Could not add %u link from ED2KLinks file (see log for details)."
 msgid_plural ""
 "Could not add %u links from ED2KLinks file (see log for details)."
 msgstr[0] ""
 
-#: src/amuleAppCommon.cpp:175 src/amule.cpp:866 src/amule.cpp:980
+#: src/amuleAppCommon.cpp:176 src/amule.cpp:866 src/amule.cpp:980
 #: src/amule.cpp:1275 src/amule-remote-gui.cpp:462 src/amule-remote-gui.cpp:514
 #: src/amule-remote-gui.cpp:527 src/amule-remote-gui.cpp:545
 #: src/amule-remote-gui.cpp:880 src/amule-remote-gui.cpp:909
@@ -131,11 +131,11 @@ msgstr[0] ""
 msgid "ERROR"
 msgstr "HIBA"
 
-#: src/amuleAppCommon.cpp:178
+#: src/amuleAppCommon.cpp:179
 msgid "Failed to open ED2KLinks file."
 msgstr "ED2KLinks fájl megnyitása sikertelen."
 
-#: src/amuleAppCommon.cpp:251
+#: src/amuleAppCommon.cpp:252
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -230,10 +230,11 @@ msgid "web server running on pid %d"
 msgstr "web kiszolgáló fut, pid=%d"
 
 #: src/amule.cpp:865
+#, fuzzy
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
-"be run. Please install the package containing aMule web server, or compile "
-"aMule using --enable-webserver and run make install"
+"be run. Please install the package containing aMule web server, or build "
+"aMule from source with -DBUILD_WEBSERVER=YES and install it."
 msgstr ""
 "A web kiszolgáló indítását kérted induláskor, de az amuleweb program nem "
 "futtatható. Kérlek telepítsd az aMule web kiszolgálót tartalmazó csomagot, "
@@ -331,56 +332,56 @@ msgstr ""
 msgid "Server hostname notified"
 msgstr "Szerver hostname értesítve"
 
-#: src/amule.cpp:1644
+#: src/amule.cpp:1662
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Lemezterület helyfoglalás a '%s' fájl számára sikertelen: %s"
 
-#: src/amule.cpp:1777
+#: src/amule.cpp:1795
 msgid "ERROR: can't open logfile"
 msgstr "HIBA: Nem tudom megnyitni a napló fájlt"
 
-#: src/amule.cpp:1781
+#: src/amule.cpp:1799
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "FIGYELEM: a napló üres. Valami nem stimmel."
 
-#: src/amule.cpp:1798
+#: src/amule.cpp:1816
 msgid "Log has been reset"
 msgstr "Napló törölve"
 
-#: src/amule.cpp:1824
+#: src/amule.cpp:1842
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "KiszolgálóÜzenet: %s"
 
-#: src/amule.cpp:1866 src/IP2Country.cpp:154 src/IPFilter.cpp:510
+#: src/amule.cpp:1884 src/IP2Country.cpp:154 src/IPFilter.cpp:510
 #: src/ServerList.cpp:870
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr "A %s letöltése kihagyva, mert a kívánt fájl nem újabb."
 
-#: src/amule.cpp:1868
+#: src/amule.cpp:1886
 msgid "Failed to download the nodes list."
 msgstr "Csomópont-lista letöltése sikertelen."
 
-#: src/amule.cpp:1888
+#: src/amule.cpp:1906
 msgid "Failed to open the downloaded version check file"
 msgstr "Nem sikerült megnyitni a letöltött verzió-ellenőrző fájlt"
 
-#: src/amule.cpp:1891 src/amule.cpp:1910 src/amule.cpp:1941 src/amule.cpp:1962
+#: src/amule.cpp:1909 src/amule.cpp:1928 src/amule.cpp:1959 src/amule.cpp:1980
 msgid "Corrupted version check file"
 msgstr "Sérült verzió-ellenőrző fájl"
 
-#: src/amule.cpp:1973
+#: src/amule.cpp:1991
 msgid "You are using an outdated version of aMule!"
 msgstr "Az aMule egy elavult verzióját használod!"
 
-#: src/amule.cpp:1975
+#: src/amule.cpp:1993
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "A te aMule verziód %i.%i.%i, a legújabb verzió pedig %li.%li.%li"
 
-#: src/amule.cpp:1976
+#: src/amule.cpp:1994
 msgid ""
 "The latest version can always be found at https://github.com/amule-org/amule/"
 "releases/latest"
@@ -388,76 +389,76 @@ msgstr ""
 "A legújabb verzió mindig megtalálható a https://github.com/amule-org/amule/"
 "releases/latest honlapon."
 
-#: src/amule.cpp:1978
+#: src/amule.cpp:1996
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "FIGYELEM: A te aMule verziód elavult: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1982
+#: src/amule.cpp:2000
 msgid "Your copy of aMule is up to date."
 msgstr "Az aMule verziód naprakész."
 
-#: src/amule.cpp:1989
+#: src/amule.cpp:2007
 msgid "Failed to download the version check file"
 msgstr "Verzió-ellenőrzés fájl letöltése sikertelen."
 
-#: src/amule.cpp:2159 src/amule-remote-gui.cpp:749
+#: src/amule.cpp:2177 src/amule-remote-gui.cpp:749
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Felhasználók: %s | Fájlok: %s"
 
-#: src/amule.cpp:2160 src/amule-remote-gui.cpp:750
+#: src/amule.cpp:2178 src/amule-remote-gui.cpp:750
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Felhasználók: E: %s K: %s | Fájlok: E: %s K: %s"
 
-#: src/amule.cpp:2169 src/amule-remote-gui.cpp:759
+#: src/amule.cpp:2187 src/amule-remote-gui.cpp:759
 msgid "No networks selected"
 msgstr "Nincs hálózat kiválasztva"
 
-#: src/amule.cpp:2211 src/TextClient.cpp:806
+#: src/amule.cpp:2229 src/TextClient.cpp:806
 msgid "with LowID"
 msgstr "LowID-val"
 
-#: src/amule.cpp:2211 src/TextClient.cpp:806
+#: src/amule.cpp:2229 src/TextClient.cpp:806
 msgid "with HighID"
 msgstr "HighID-val"
 
-#: src/amule.cpp:2213
+#: src/amule.cpp:2231
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Kapcsolódva ehhez %s %s"
 
-#: src/amule.cpp:2217
+#: src/amule.cpp:2235
 #, c-format
 msgid "Connecting to %s"
 msgstr "Kapcsolódás %s-hez"
 
-#: src/amule.cpp:2219
+#: src/amule.cpp:2237
 msgid "Disconnected from eD2k"
 msgstr "Leválasztva az eD2k-ról"
 
-#: src/amule.cpp:2227
+#: src/amule.cpp:2245
 msgid "Kad started."
 msgstr "Kad elindítva."
 
-#: src/amule.cpp:2229
+#: src/amule.cpp:2247
 msgid "Kad stopped."
 msgstr "Kad leállítva."
 
-#: src/amule.cpp:2237
+#: src/amule.cpp:2255
 msgid "Connected to Kad (ok)"
 msgstr "Kapcsolódva a Kad-hoz (rendben)"
 
-#: src/amule.cpp:2239
+#: src/amule.cpp:2257
 msgid "Connected to Kad (firewalled)"
 msgstr "Kapcsolódva a Kad-hoz (tűzfal mögül)"
 
-#: src/amule.cpp:2242
+#: src/amule.cpp:2260
 msgid "Disconnected from Kad"
 msgstr "Leválasztva a Kad-ról"
 
-#: src/amule.cpp:2274
+#: src/amule.cpp:2292
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -465,7 +466,7 @@ msgstr ""
 "A Kad hálózat nem használható, ha az UDP port le van tiltva a "
 "beállításokban, nem indítom."
 
-#: src/amule.cpp:2277
+#: src/amule.cpp:2295
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "A Kad hálózat le van tiltva  a beállításokban, nem kapcsolódom."
 
@@ -884,7 +885,7 @@ msgstr "Készen"
 msgid "All"
 msgstr "Mind"
 
-#: src/amule-remote-gui.cpp:870 src/ExternalConn.cpp:1743
+#: src/amule-remote-gui.cpp:870 src/ExternalConn.cpp:1784
 msgid "Invalid link or already on list."
 msgstr "Érvénytelen hivatkozás, vagy már rajta van a listán."
 
@@ -902,7 +903,7 @@ msgstr ""
 #: src/ClientDetailDialog.cpp:130 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/DownloadListCtrl.cpp:1087 src/DownloadListCtrl.cpp:1100
-#: src/DownloadListCtrl.cpp:1111 src/ExternalConn.cpp:523
+#: src/DownloadListCtrl.cpp:1111 src/ExternalConn.cpp:538
 #: src/FileDetailDialog.cpp:183 src/GenericClientListCtrl.cpp:1102
 #: src/GenericClientListCtrl.cpp:1113 src/GenericClientListCtrl.cpp:1123
 #: src/HTTPDownload.cpp:87 src/KnownFile.cpp:986 src/KnownFile.cpp:992
@@ -1748,44 +1749,44 @@ msgstr[0] ""
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Érvénytelen eD2k hivatkozás! HIBA: %s"
 
-#: src/ExternalConn.cpp:305
+#: src/ExternalConn.cpp:320
 msgid "Client sent packet after authentication failed."
 msgstr "Kliens csomagot küldött sikertelen hitelesítést követően."
 
-#: src/ExternalConn.cpp:323
+#: src/ExternalConn.cpp:338
 msgid "External connection closed."
 msgstr "Külső kapcsolat lezárva."
 
-#: src/ExternalConn.cpp:400
+#: src/ExternalConn.cpp:415
 msgid "External connections disabled due to empty password!"
 msgstr "A külső kapcsolatok letiltásra kerültek üres jelszó miatt!"
 
-#: src/ExternalConn.cpp:421
+#: src/ExternalConn.cpp:436
 msgid "External connections disabled in config file"
 msgstr "A külső kapcsolatok le vannak tiltva konfig fájlban"
 
-#: src/ExternalConn.cpp:490
+#: src/ExternalConn.cpp:505
 msgid "New external connection accepted"
 msgstr "Új külső kapcsolat elfogadva"
 
-#: src/ExternalConn.cpp:493
+#: src/ExternalConn.cpp:508
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "HIBA: nem tudtam fogadni egy új külső kapcsolatot"
 
-#: src/ExternalConn.cpp:511
+#: src/ExternalConn.cpp:526
 msgid "External connection refused due to empty password in preferences!"
 msgstr "Külső kapcsolat elutasítva, üres jelszó a beállításokban!"
 
-#: src/ExternalConn.cpp:522
+#: src/ExternalConn.cpp:537
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "Kapcsolódó kliens: %s %s"
 
-#: src/ExternalConn.cpp:524
+#: src/ExternalConn.cpp:539
 msgid "Unknown version"
 msgstr "Ismeretlen verzió"
 
-#: src/ExternalConn.cpp:534
+#: src/ExternalConn.cpp:549
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -1793,7 +1794,7 @@ msgstr ""
 "Helytelen EC verzió azonosító, összeférhetetlenség lehetséges. A fő- és a "
 "távoli programot ugyanabból a pillanatképből használd."
 
-#: src/ExternalConn.cpp:539
+#: src/ExternalConn.cpp:554
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
 "snapshot! *sigh* possible crash prevented"
@@ -1801,174 +1802,174 @@ msgstr ""
 "Nem kapcsolódhatsz egy kiadott verzióhoz egy tetszőleges fejlesztés alatti "
 "verzióval! *sóhaj* lehetséges összeomlás megelőzve"
 
-#: src/ExternalConn.cpp:600
+#: src/ExternalConn.cpp:615
 msgid "Invalid protocol version."
 msgstr "Érvénytelen protokoll verzió."
 
-#: src/ExternalConn.cpp:605
+#: src/ExternalConn.cpp:620
 msgid "Missing protocol version tag."
 msgstr "Hiányzó protokoll verzió azonosító."
 
-#: src/ExternalConn.cpp:612
+#: src/ExternalConn.cpp:627
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr "Hitelesítés sikertelen: az EC jelszóként megadott hash érvénytelen."
 
-#: src/ExternalConn.cpp:644
+#: src/ExternalConn.cpp:659
 msgid "Authentication failed: wrong password."
 msgstr "Hitelesítés sikertelen: rossz jelszó."
 
-#: src/ExternalConn.cpp:646
+#: src/ExternalConn.cpp:661
 msgid "Authentication failed: missing password."
 msgstr "Hitelesítés sikertelen: hiányzó jelszó."
 
-#: src/ExternalConn.cpp:656
+#: src/ExternalConn.cpp:671
 msgid "Invalid request, please authenticate first."
 msgstr "Érvénytelen kérés, először hitelesíteni kell."
 
-#: src/ExternalConn.cpp:661
+#: src/ExternalConn.cpp:676
 msgid "Access granted."
 msgstr "Hozzáférés elfogadva."
 
-#: src/ExternalConn.cpp:669
+#: src/ExternalConn.cpp:684
 #, c-format
 msgid "Sent error message \"%s\" to client."
 msgstr "Hibaüzenet elküldve a \"%s\" klienshez."
 
-#: src/ExternalConn.cpp:672
+#: src/ExternalConn.cpp:687
 #, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
 msgstr "Jogosulatlan hozzáférési kísérlet %s részéről. Kapcsolat lezárva."
 
-#: src/ExternalConn.cpp:1130
+#: src/ExternalConn.cpp:1171
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "Távoli PartFile parancs sikertelen: nem található FileHash: %s"
 
-#: src/ExternalConn.cpp:1132
+#: src/ExternalConn.cpp:1173
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "FileHash nem található: %s"
 
-#: src/ExternalConn.cpp:1179 src/ExternalConn.cpp:1261
-#: src/ExternalConn.cpp:1342
+#: src/ExternalConn.cpp:1220 src/ExternalConn.cpp:1302
+#: src/ExternalConn.cpp:1383
 msgid "OOPS! OpCode processing error!"
 msgstr "Hoppá! Opkód feldolgozási hiba!"
 
-#: src/ExternalConn.cpp:1207
+#: src/ExternalConn.cpp:1248
 msgid "Server not added"
 msgstr "Kiszolgáló nem lett hozzáadva"
 
-#: src/ExternalConn.cpp:1225
+#: src/ExternalConn.cpp:1266
 #, c-format
 msgid "server not found: %s"
 msgstr "kiszolgáló nem található: %s"
 
-#: src/ExternalConn.cpp:1241
+#: src/ExternalConn.cpp:1282
 msgid "need to define server to be removed"
 msgstr "ki kell jelölnöd a kiszolgálót az eltávolításhoz"
 
-#: src/ExternalConn.cpp:1255
+#: src/ExternalConn.cpp:1296
 msgid "eD2k is disabled in preferences."
 msgstr "Az eD2k le van tiltva a beállításokban."
 
-#: src/ExternalConn.cpp:1322
+#: src/ExternalConn.cpp:1363
 #, fuzzy
 msgid "Friend not found."
 msgstr "Fájl nem található."
 
-#: src/ExternalConn.cpp:1331
+#: src/ExternalConn.cpp:1372
 #, fuzzy
 msgid "Client not found."
 msgstr "Fájl nem található."
 
-#: src/ExternalConn.cpp:1336
+#: src/ExternalConn.cpp:1377
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
 msgstr ""
 
-#: src/ExternalConn.cpp:1445
+#: src/ExternalConn.cpp:1486
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Keresés folyamatban. Kérdezze le az eredményeket egy rövid idő múlva!"
 
-#: src/ExternalConn.cpp:1451
+#: src/ExternalConn.cpp:1492
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Webes keresésnek a távoli felületről nincs értelme."
 
-#: src/ExternalConn.cpp:1665
+#: src/ExternalConn.cpp:1706
 msgid "No points for graph."
 msgstr "Nincsenek pontok a grafikonhoz."
 
-#: src/ExternalConn.cpp:1674
+#: src/ExternalConn.cpp:1715
 msgid "Your client is not configured for this detail level."
 msgstr "A kliensed nincs beállítva ehhez a részletességi szinthez."
 
-#: src/ExternalConn.cpp:1701
+#: src/ExternalConn.cpp:1742
 msgid "External Connection: shutdown requested"
 msgstr "Külső kapcsolat: leállítás kérve"
 
-#: src/ExternalConn.cpp:1713
+#: src/ExternalConn.cpp:1754
 msgid "Already shutting down."
 msgstr "Kikapcsolás folyamatban."
 
-#: src/ExternalConn.cpp:1731
+#: src/ExternalConn.cpp:1772
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn: hivatkozás hozzáadása: '%s'."
 
-#: src/ExternalConn.cpp:1747
+#: src/ExternalConn.cpp:1788
 #, fuzzy, c-format
 msgid "%d of %d links failed (invalid or already on list)."
 msgstr "Érvénytelen hivatkozás, vagy már rajta van a listán."
 
-#: src/ExternalConn.cpp:1871
+#: src/ExternalConn.cpp:1915
 msgid "File not found."
 msgstr "Fájl nem található."
 
-#: src/ExternalConn.cpp:1876
+#: src/ExternalConn.cpp:1920
 msgid "Invalid file name."
 msgstr "Érvénytelen fájl név."
 
-#: src/ExternalConn.cpp:1884
+#: src/ExternalConn.cpp:1928
 msgid "Unable to rename file."
 msgstr "Nem tudom átnevezni a fájlt."
 
-#: src/ExternalConn.cpp:2182 src/ExternalConn.cpp:2209
+#: src/ExternalConn.cpp:2226 src/ExternalConn.cpp:2253
 msgid "Kad is disabled in preferences."
 msgstr "A Kad le van tiltva a beállításokban."
 
-#: src/ExternalConn.cpp:2221
+#: src/ExternalConn.cpp:2265
 msgid "Already connected to eD2k."
 msgstr "Már csatlakozva az eD2k-hoz."
 
-#: src/ExternalConn.cpp:2224
+#: src/ExternalConn.cpp:2268
 msgid "Connecting to eD2k..."
 msgstr "Kapcsolódás az eD2k-hoz..."
 
-#: src/ExternalConn.cpp:2232
+#: src/ExternalConn.cpp:2276
 msgid "Already connected to Kad."
 msgstr "Már kapcsolódva a Kad-hoz."
 
-#: src/ExternalConn.cpp:2235
+#: src/ExternalConn.cpp:2279
 msgid "Connecting to Kad..."
 msgstr "Kapcsolódás a Kad-hoz..."
 
-#: src/ExternalConn.cpp:2242
+#: src/ExternalConn.cpp:2286
 msgid "All networks are disabled."
 msgstr "Minden hálózat le van tiltva."
 
-#: src/ExternalConn.cpp:2250
+#: src/ExternalConn.cpp:2294
 msgid "Disconnected from eD2k."
 msgstr "Leválasztva az eD2k-ról."
 
-#: src/ExternalConn.cpp:2254
+#: src/ExternalConn.cpp:2298
 msgid "Disconnected from Kad."
 msgstr "Leválasztva a Kad-ról."
 
-#: src/ExternalConn.cpp:2263
+#: src/ExternalConn.cpp:2307
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Külső kapcsolat: érvénytelen opcode: %#x"
 
-#: src/ExternalConn.cpp:2266
+#: src/ExternalConn.cpp:2310
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Érvénytelen opcode (rossz protokoll verzió?)"
 
@@ -6023,50 +6024,50 @@ msgstr ""
 msgid "Unknown server info received! - too short"
 msgstr "Ismeretlen kiszolgáló infó fogadva! - túl rövid"
 
-#: src/ServerSocket.cpp:498
+#: src/ServerSocket.cpp:502
 #, c-format
 msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] "%d új kiszolgáló fogadva"
 
-#: src/ServerSocket.cpp:501
+#: src/ServerSocket.cpp:505
 msgid "Saving of server-list completed."
 msgstr "Kiszolgáló-lista mentése kész."
 
-#: src/ServerSocket.cpp:551
+#: src/ServerSocket.cpp:555
 msgid "Server rejected last command"
 msgstr "A kiszolgáló visszautasította az utolsó parancsot"
 
-#: src/ServerSocket.cpp:559 src/ServerSocket.cpp:561
+#: src/ServerSocket.cpp:563 src/ServerSocket.cpp:565
 #, c-format
 msgid "Bogus packet received from server: %s"
 msgstr "Hibás csomag érkezett a kiszolgálótól: %s"
 
-#: src/ServerSocket.cpp:563
+#: src/ServerSocket.cpp:567
 #, c-format
 msgid "Unhandled error while processing packet from server: %s"
 msgstr "Kezeletlen hiba a kiszolgálóról történő adatok feldolgozásánál: %s"
 
-#: src/ServerSocket.cpp:602 src/ServerSocket.cpp:606
+#: src/ServerSocket.cpp:606 src/ServerSocket.cpp:610
 #, c-format
 msgid "Cannot create DNS solving thread for connecting to %s"
 msgstr "A DNS feloldó szálat nem lehet létrehozni a %s-hez való kapcsolódáshoz"
 
-#: src/ServerSocket.cpp:688
+#: src/ServerSocket.cpp:692
 #, c-format
 msgid "Server IP %s (%s) is filtered.  Not connecting."
 msgstr "A %s IP-jű kiszolgáló (%s) ki van szűrve. Nem kapcsolódom."
 
-#: src/ServerSocket.cpp:698
+#: src/ServerSocket.cpp:702
 msgid "using protocol obfuscation."
 msgstr "protokoll zavarással."
 
-#: src/ServerSocket.cpp:707
+#: src/ServerSocket.cpp:711
 #, c-format
 msgid "Connecting to %s (%s - %s:%i) %s"
 msgstr "Kapcsolódás %s-hez (%s - %s:%i) %s"
 
-#: src/ServerSocket.cpp:720
+#: src/ServerSocket.cpp:724
 #, c-format
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "Nem tudom a DNS-t feloldani a %s kiszolgálóhoz: Nem tudok kapcsolódni!"
@@ -6671,7 +6672,7 @@ msgstr ""
 msgid "Download File: %lu %s\n"
 msgstr "Letöltöndő fájl: %lu %s\n"
 
-#: src/TextClient.cpp:742 src/webserver/src/WebServer.cpp:362
+#: src/TextClient.cpp:742 src/webserver/src/WebServer.cpp:364
 msgid "Request failed with an unknown error."
 msgstr "Kérés ismeretlen hibával sikertelen."
 
@@ -7891,75 +7892,158 @@ msgstr "PHP oldalak újrafordítása minden kérésnél"
 msgid "aMule Web Server"
 msgstr "aMule Web kiszolgáló"
 
-#: src/webserver/src/WebServer.cpp:310
+#: src/webserver/src/WebServer.cpp:312
 msgid "web client connection accepted\n"
 msgstr "web ügyfél kapcsolat elfogadva\n"
 
-#: src/webserver/src/WebServer.cpp:313
+#: src/webserver/src/WebServer.cpp:315
 msgid "ERROR: cannot accept web client connection\n"
 msgstr "HIBA: nem tudom fogadni a web ügyfél kapcsolatot\n"
 
-#: src/webserver/src/WebServer.cpp:359
+#: src/webserver/src/WebServer.cpp:361
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "A kérés sikertelen volt a következő hibával: %s."
 
-#: src/webserver/src/WebServer.cpp:1753
+#: src/webserver/src/WebServer.cpp:1755
 msgid "Index file not found: "
 msgstr "Index fájl nem található: "
 
-#: src/webserver/src/WebServer.cpp:1832
+#: src/webserver/src/WebServer.cpp:1833
 msgid "Session expired - requesting login\n"
 msgstr "Munkafolyamat időtúllépés - bejelentkezés kérése\n"
 
-#: src/webserver/src/WebServer.cpp:1837
+#: src/webserver/src/WebServer.cpp:1838
 msgid "Session ok, logged in\n"
 msgstr "Munkamenet rendben, bejelentkezve\n"
 
-#: src/webserver/src/WebServer.cpp:1839
+#: src/webserver/src/WebServer.cpp:1840
 msgid "Session ok, not logged in\n"
 msgstr "Munkamenet rendben, nincs bejelentkezve\n"
 
-#: src/webserver/src/WebServer.cpp:1844
+#: src/webserver/src/WebServer.cpp:1845
 msgid "No session opened - will request login\n"
 msgstr "Nincs munkafolyamat megnyitva - bejelentkezés kérése\n"
 
-#: src/webserver/src/WebServer.cpp:1853
+#: src/webserver/src/WebServer.cpp:1869
 msgid "Session created - requesting login\n"
 msgstr "Munkafolyamat létrehozva - bejelentkezés kérése\n"
 
-#: src/webserver/src/WebServer.cpp:1868
+#: src/webserver/src/WebServer.cpp:1884
 msgid "Processing request [original]: "
 msgstr "Kérés feldolgozása [eredeti]: "
 
-#: src/webserver/src/WebServer.cpp:1883
+#: src/webserver/src/WebServer.cpp:1908
+msgid "Refusing to read `pass` from URL query string\n"
+msgstr ""
+
+#: src/webserver/src/WebServer.cpp:1914
 msgid "No password specified, login will not be allowed."
 msgstr "Nincsen megadva jelszó, bejelentkezés nem lesz engedélyezve."
 
-#: src/webserver/src/WebServer.cpp:1885
+#: src/webserver/src/WebServer.cpp:1916
 msgid "Checking password\n"
 msgstr "Jelszó ellenőrzése\n"
 
-#: src/webserver/src/WebServer.cpp:1890
+#: src/webserver/src/WebServer.cpp:1921
 msgid "Password hash invalid\n"
 msgstr "Jelszó hash érvénytelen\n"
 
-#: src/webserver/src/WebServer.cpp:1905
+#: src/webserver/src/WebServer.cpp:1936
 msgid "Password ok\n"
 msgstr "Jelszó rendben\n"
 
-#: src/webserver/src/WebServer.cpp:1907
+#: src/webserver/src/WebServer.cpp:1938
 msgid "Password bad\n"
 msgstr "Hibás jelszó\n"
 
-#: src/webserver/src/WebServer.cpp:1910
+#: src/webserver/src/WebServer.cpp:1941
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Nem adtál meg jelszót. Üres jelszó nem megengedett.\n"
 
-#: src/webserver/src/WebServer.cpp:1918
+#: src/webserver/src/WebServer.cpp:1949
 msgid "Logout requested\n"
 msgstr "Kijelentkezés\n"
 
-#: src/webserver/src/WebServer.cpp:1923
+#: src/webserver/src/WebServer.cpp:1954
 msgid "Processing request [redirected]: "
 msgstr "Kérés feldolgozása [átirányított]: "
+
+#: packaging/windows/installer_strings.c:36
+msgid "aMule (required)"
+msgstr ""
+
+#: packaging/windows/installer_strings.c:37
+msgid "Desktop shortcut"
+msgstr ""
+
+#: packaging/windows/installer_strings.c:38
+msgid "Start aMule when I log in"
+msgstr ""
+
+#: packaging/windows/installer_strings.c:39
+msgid "Uninstall"
+msgstr ""
+
+#: packaging/windows/installer_strings.c:40
+msgid "Remove user data (config, ED2K servers, Kad nodes, partfiles)"
+msgstr ""
+
+#: packaging/windows/installer_strings.c:43
+#, fuzzy
+msgid "aMule application files (required)."
+msgstr "Kapcsolódás sikertelen "
+
+#: packaging/windows/installer_strings.c:44
+msgid "Place an aMule shortcut on the desktop."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:45
+msgid ""
+"Launch aMule automatically when the current user logs in (per-user setting)."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:46
+msgid ""
+"Remove aMule application files, Start Menu / desktop shortcuts, autostart "
+"Run-key entry, and Add/Remove Programs entry (required)."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:47
+msgid ""
+"Permanently delete %APPDATA%\\aMule for the current user (aMule.conf, ED2K "
+"server list, Kad nodes, partfiles, IP filters, friends list). Leave "
+"unchecked to keep your settings."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:53
+msgid ""
+"aMule appears to be running from $INSTDIR.\r\n"
+"Please close aMule (and aMuleD / aMuleGUI) and try again."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:54
+msgid ""
+"aMule daemon (amuled.exe) appears to be running from $INSTDIR.\r\n"
+"Please stop it and try again."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:55
+msgid "Removing previous aMule installation at $0..."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:56
+msgid ""
+"Could not remove the previous aMule installation at $0.\r\n"
+"Please close any running aMule processes and try again, or uninstall the "
+"previous version manually first."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:57
+msgid ""
+"aMule appears to be running. Please close it and re-run the uninstaller."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:58
+msgid "Removing user data at $APPDATA\\aMule..."
+msgstr ""
