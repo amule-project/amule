@@ -187,7 +187,7 @@ public:
 	 * Writes a text-string to the file.
 	 *
 	 * @param str The string to be written.
-	 * @param encoding The text-ecoding, see EUtf8Str.
+	 * @param encoding The text-encoding, see EUtf8Str.
 	 * @param lenBytes The number of bytes used to store the string length.
 	 *
 	 * Valid values for the 'lenBytes' parameters is 0 bytes (no length field),
