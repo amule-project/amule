@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule man pages\n"
 "POT-Creation-Date: 2026-06-07 14:45+0200\n"
-"PO-Revision-Date: 2026-05-29 15:33-0300\n"
+"PO-Revision-Date: 2026-06-07 17:22-0300\n"
 "Last-Translator: \n"
 "Language-Team: Marcelo Roberto Jimenez <mroberto@users.sourceforge.net>\n"
 "Language: pt_BR\n"
@@ -138,6 +138,10 @@ msgid ""
 "store is selected automatically: Windows registry Run key, macOS "
 "LaunchAgent, Linux XDG I<.desktop> autostart entry."
 msgstr ""
+"Habilita ou desabilita iniciar o aMule quando o usuário fizer login, então "
+"sair. O armazenamento específico do Sistema Operacional é selecionado "
+"automaticamente: chave Run do Registry do Windows, LaunchAgent do MacOS, XDG "
+"I<.desktop> autostart entry no Linux."
 
 #. type: TP
 #: amule.1.in:42 amuled.1.in:50
@@ -534,6 +538,10 @@ msgid ""
 "tunnel that resolves to a LAN IP and the heuristic would otherwise skip "
 "compression."
 msgstr ""
+"Força compressão ZLIB no link de Conexões Externas independente da "
+"localidade IP-discada. Útil quando o lado do servidor for alcançável com um "
+"túnel VPN que resolve para um IP de LAN e a heurística iria pular a "
+"compressão."
 
 #. type: SH
 #: amulecmd.1.in:73
@@ -1085,11 +1093,14 @@ msgid ""
 "store is selected automatically: Windows registry Run key, macOS "
 "LaunchAgent, Linux XDG I<.desktop> autostart entry."
 msgstr ""
+"Habilida ou desabilita iniciar o amuled quando o usuário fizer login e então "
+"sair. O armazenamento específico do Sistema Operacional é selecionado "
+"automaticamente: chave Run da registry do Windows, LaunchAgent do MacOS e a "
+"entrada XDG I<.desktop> autostart no Linux."
 
 #. type: TP
 #: amuled.1.in:61
-#, fuzzy, no-wrap
-#| msgid "B<[ -t> I<E<lt>nameE<gt>>, B<--template>=I<E<lt>nameE<gt>> B<]>"
+#, no-wrap
 msgid "B<[ -t> I<E<lt>numE<gt>>, B<--category>=I<E<lt>numE<gt>> B<]>"
 msgstr "B<[ -t> I<E<lt>nomeE<gt>>, B<--template>=I<E<lt>nomeE<gt>> B<]>"
 
@@ -1144,6 +1155,10 @@ msgid ""
 "specific store is selected automatically: Windows registry Run key, macOS "
 "LaunchAgent, Linux XDG I<.desktop> autostart entry."
 msgstr ""
+"Habilita ou desabilita iniciar o amulegui quando o usuário fizer login e "
+"sair. O armazenamento específico do Sistema Operacional é selecionado "
+"automaticamente: chave Run da registry do Windows, LaunchAgent do MacOS e a "
+"entrada XDG I<.desktop> autostart no Linux."
 
 #. type: Plain text
 #: amulegui.1.in:72
@@ -1255,8 +1270,7 @@ msgstr "Habilita UPnP."
 
 #. type: TP
 #: amuleweb.1.in:84
-#, fuzzy, no-wrap
-#| msgid "B<[ -U> I<E<lt>portE<gt>>, B<--upnp-port> I<E<lt>portE<gt>> B<]>"
+#, no-wrap
 msgid "B<[ -U> I<E<lt>portE<gt>>, B<--upnp-port>=I<E<lt>portE<gt>> B<]>"
 msgstr "B<[ -U> I<E<lt>portaE<gt>>, B<--upnp-port> I<E<lt>portaE<gt>> B<]>"
 
@@ -1463,8 +1477,7 @@ msgstr ""
 
 #. type: TP
 #: ed2k.1.in:24
-#, fuzzy, no-wrap
-#| msgid "B<[ -t> I<E<lt>nameE<gt>>, B<--template>=I<E<lt>nameE<gt>> B<]>"
+#, no-wrap
 msgid "B<[ -t> I<E<lt>numE<gt>>, B<--category> I<E<lt>numE<gt>> B<]>"
 msgstr "B<[ -t> I<E<lt>nomeE<gt>>, B<--template>=I<E<lt>nomeE<gt>> B<]>"
 
@@ -1475,13 +1488,12 @@ msgid ""
 "dir>, the parser reads the value as the next argument and does not accept "
 "B<--category>=I<E<lt>numE<gt>> syntax."
 msgstr ""
+"Categoria de conjunto para links eD2k passados para I<E<lt>numE<gt>>. Ao "
+"contrário de B<--config-dir>, o parser lê os valores como o próximo "
+"argumento e não aceita a sintaxe B<--category>=I<E<lt>numE<gt>>."
 
 #. type: Plain text
 #: ed2k.1.in:31
-#, fuzzy
-#| msgid ""
-#| "Loads all link found in the emulecollection given as I<E<lt>ed2k-"
-#| "linkE<gt>>"
 msgid ""
 "Loads all links found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
 msgstr ""
@@ -1490,10 +1502,6 @@ msgstr ""
 
 #. type: Plain text
 #: ed2k.1.in:34
-#, fuzzy
-#| msgid ""
-#| "Lists all link found in the emulecollection given as I<E<lt>ed2k-"
-#| "linkE<gt>>"
 msgid ""
 "Lists all links found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
 msgstr ""
@@ -1639,6 +1647,12 @@ msgid ""
 "I<E<lt>PATHE<gt>> argument, and B<-o> is a no-argument switch).  Requires GD "
 "support compiled in (I<__GD__>); this option is silently ignored otherwise."
 msgstr ""
+"Escreve a imagem da assinatura on-line. A forma longa B<--picture> aceita um "
+"parâmetro opcional I<=E<lt>PATHE<gt>> para especificar o local de saída; as "
+"formas curtas B<-o> / B<-P> não (B<-P> requer que imediatamente siga um "
+"argumento I<E<lt>PATHE<gt>>, e B<-o> é uma chave sem argumento). Requer "
+"suporte GD compilado em (I<__GD__>); esta opção é silenciosamente ignorada, "
+"caso contrário."
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1.in:27
@@ -1648,6 +1662,10 @@ msgid ""
 "B<-p> / B<-H> do not (B<-H> requires an immediately following "
 "I<E<lt>PATHE<gt>> argument, and B<-p> is a no-argument switch)."
 msgstr ""
+"Página HTML com estatísticas e imagem. A forma longa B<--html> aceita uma "
+"chave opcional I<=E<lt>PATHE<gt>> para especificar o local de saída; as "
+"formas curtas B<-p> / B<-H> não (B<-H> requer um argumento I<E<lt>PATHE<gt>> "
+"imediatamente seguinte, e B<-p> é uma chave sem argumentos)."
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1.in:35
@@ -1671,11 +1689,13 @@ msgid ""
 "aMule-online-sign.png (or .jpg, when B<-o> / B<--picture> is used and GD is "
 "available)"
 msgstr ""
+"aMule-online-sign.png (or .jpg, quando B<-o> / B<--picture> for usado e GD "
+"estiver disponível)"
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1.in:43
 msgid "aMule-online-sign.html (when B<-p> / B<--html> is used)"
-msgstr ""
+msgstr "aMule-online-sign.html (quando B<-p> / B<--html> for usado)"
 
 #. type: TH
 #: ../../src/utils/wxCas/docs/wxcas.1.in:1

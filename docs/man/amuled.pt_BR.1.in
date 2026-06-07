@@ -16,6 +16,7 @@ amuled \- o cliente p2p eMule multi\-platforma \- versão daemonizada
 .RB_untranslated [ \-e ]
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
 [\fB\-w\fP \fI<path>\fP]
 .RB_untranslated [ \-d ]
 .RB_untranslated [ \-i ]
@@ -47,6 +48,12 @@ Imprime mensagens de log para stdout.
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 Reseta configuração para os valores padrão.
 .TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Habilida ou desabilita iniciar o amuled quando o usuário fizer login e então
+sair. O armazenamento específico do Sistema Operacional é selecionado
+automaticamente: chave Run da registry do Windows, LaunchAgent do MacOS e a
+entrada XDG \fI.desktop\fP autostart no Linux.
+.TP 
 \fB[ \-w\fP \fI<path>\fP, \fB\-\-use\-amuleweb\fP=\fI<path>\fP \fB]\fP
 Especifica o local do binário amuleweb para \fI<path>\fP.
 .TP 
@@ -59,7 +66,7 @@ automático.
 .B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
 Não desabilita stdin.
 .TP 
-\fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
+\fB[ \-t\fP \fI<nome>\fP, \fB\-\-template\fP=\fI<nome>\fP \fB]\fP
 Seta categoria para links eD2k para \fI<num>\fP
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR

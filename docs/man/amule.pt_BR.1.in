@@ -13,6 +13,7 @@ aMule \- o cliente p2p eMule multi\-plataforma
 [\fB\-c\fP \fI<path>\fP] [\fB\-geometry\fP \fI<geom>\fP]
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
 [\fB\-w\fP \fI<path>\fP]
 .RB_untranslated [ \-d ]
 .RB_untranslated [ \-i ]
@@ -39,6 +40,12 @@ Imprime mensagens de log para stdout.
 .TP 
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 Reseta configuração para os valores padrão.
+.TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Habilita ou desabilita iniciar o aMule quando o usuário fizer login, então
+sair. O armazenamento específico do Sistema Operacional é selecionado
+automaticamente: chave Run do Registry do Windows, LaunchAgent do MacOS, XDG
+\&\fI.desktop\fP autostart entry no Linux.
 .TP 
 \fB[ \-w\fP \fI<path>\fP, \fB\-\-use\-amuleweb\fP=\fI<path>\fP \fB]\fP
 Especifica o local do binário amuleweb para \fI<path>\fP.

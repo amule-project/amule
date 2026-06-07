@@ -66,10 +66,16 @@ sair.
 Criar arquivo de configuração baseado em \fI<path>\fP, que precisa
 apontar para um arquivo válido de configuração do aMule, e então sair.
 .TP 
-.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+.B_untranslated [ \-\-force\-zlib ]\fR
+Força compressão ZLIB no link de Conexões Externas independente da
+localidade IP\-discada. Útil quando o lado do servidor for alcançável com um
+túnel VPN que resolve para um IP de LAN e a heurística iria pular a
+compressão.
+.TP 
+.B_untranslated [ \-\-version ]\fR
 Mostra o número de versão atual.
 .TP 
-.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+.B_untranslated [ \-\-help ]\fR
 Imprime uma descrição de uso curta.
 .SH COMANDOS
 Todos os comandos são insensíveis a maiúsculas e minúsculas.

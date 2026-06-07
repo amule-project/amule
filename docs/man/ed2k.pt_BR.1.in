@@ -28,8 +28,10 @@ para links novos.
 \fB[ \-c\fP \fI<path>\fP, \fB\-\-config\-dir\fP=\fI<path>\fP \fB]\fP
 Ler configuração de \fI<path>\fP ao invés de home
 .TP 
-\fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
-Seta categoria para links eD2k para \fI<num>\fP
+\fB[ \-t\fP \fI<nome>\fP, \fB\-\-template\fP=\fI<nome>\fP \fB]\fP
+Categoria de conjunto para links eD2k passados para \fI<num>\fP. Ao
+contrário de \fB\-\-config\-dir\fP, o parser lê os valores como o próximo
+argumento e não aceita a sintaxe \fB\-\-category\fP=\fI<num>\fP.
 .TP 
 .B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
 Carrega todos os links encontrados na emulecollection dada como \fI<link ed2k>\fP
