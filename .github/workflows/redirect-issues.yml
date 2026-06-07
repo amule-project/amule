@@ -1,0 +1,45 @@
+name: Redirect new issues to amule-org/amule
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  redirect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const newIssuesUrl = "https://github.com/amule-org/amule/issues";
+            const body = [
+              "👋 Thanks for the report.",
+              "",
+              `Please file new issues at the project's current home: **${newIssuesUrl}**`,
+              "",
+              "Issue tracking has moved off this repository; this one is kept as a mirror of the codebase only. New issues filed here are auto-closed and locked because nobody monitors them. The original text of your report is preserved above, so you can copy it across.",
+              "",
+              "Sorry for the friction.",
+            ].join("\n");
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: "closed",
+              state_reason: "not_planned",
+            });
+            await github.rest.issues.lock({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              lock_reason: "resolved",
+            });
