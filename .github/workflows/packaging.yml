@@ -52,6 +52,20 @@ on:
 permissions:
   contents: read
 
+# ccache wiring. Every compile job (appimage / flatpak / macos / windows-
+# zip) installs ccache and persists its cache across runs via
+# actions/cache. CMakeLists.txt auto-detects ccache and wraps cmake's
+# CMAKE_<LANG>_COMPILER_LAUNCHER; with the cache warm, the second build
+# of the same arch on the same branch skips most of the compile step.
+#
+# Skipped on workflow_call (release.yml tag builds) so the release
+# artifact set is always produced from a cold compile -- belt-and-
+# suspenders against any "could ccache be lying to me" worry on a binary
+# that's about to ship. PR / branch / dispatch runs use the cache.
+env:
+  CCACHE_DIR: ${{ github.workspace }}/.ccache
+  CCACHE_MAXSIZE: 1G
+
 jobs:
 
   # ------------------------------------------------------------------
@@ -74,10 +88,32 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0  # for git describe in build.sh
+      - name: Install ccache
+        if: github.event_name != 'workflow_call'
+        run: sudo apt-get update && sudo apt-get install -y ccache
+      - name: Restore ccache
+        if: github.event_name != 'workflow_call'
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-appimage-${{ matrix.arch }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
+          restore-keys: ${{ runner.os }}-appimage-${{ matrix.arch }}-ccache-
+      - name: Zero ccache stats
+        if: github.event_name != 'workflow_call'
+        run: ccache --zero-stats
       - name: Build AppImage
         run: packaging/linux/build.sh appimage
       - name: Validate via cross-distro Docker matrix
         run: packaging/linux/build.sh validate
+      - name: Save ccache
+        if: always() && github.event_name != 'workflow_call'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-appimage-${{ matrix.arch }}-ccache-${{ github.run_id }}
+      - name: ccache stats
+        if: always() && github.event_name != 'workflow_call'
+        run: ccache --show-stats
       - uses: actions/upload-artifact@v7
         with:
           name: appimage-${{ matrix.arch }}
@@ -125,8 +161,27 @@ jobs:
           flatpak install --user --noninteractive flathub \
               "org.gnome.Platform//${GNOME_RUNTIME_VERSION}" \
               "org.gnome.Sdk//${GNOME_RUNTIME_VERSION}"
+      # flatpak-builder's `--ccache` (passed by packaging/linux/build.sh)
+      # honours the host CCACHE_DIR env var when it's an absolute path
+      # (see builder_context_init_ccache in flatpak-builder/src/builder-context.c).
+      # The top-level env block sets CCACHE_DIR to ${workspace}/.ccache,
+      # so flatpak-builder writes its ccache state to the same shared
+      # path the other jobs use.
+      - name: Restore flatpak-builder ccache
+        if: github.event_name != 'workflow_call'
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-flatpak-${{ matrix.arch }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**', 'packaging/linux/flatpak/**.yml.in') }}
+          restore-keys: ${{ runner.os }}-flatpak-${{ matrix.arch }}-ccache-
       - name: Build Flatpak
         run: packaging/linux/build.sh flatpak
+      - name: Save flatpak-builder ccache
+        if: always() && github.event_name != 'workflow_call'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-flatpak-${{ matrix.arch }}-ccache-${{ github.run_id }}
       - uses: actions/upload-artifact@v7
         with:
           name: flatpak-${{ matrix.arch }}
@@ -178,13 +233,24 @@ jobs:
           BREW=${{ matrix.brew_prefix }}/bin/brew
           ${{ matrix.archcmd }} $BREW update
           ${{ matrix.archcmd }} $BREW install --quiet \
-              cmake wxwidgets cryptopp libupnp gd gettext boost dylibbundler libmaxminddb
+              cmake wxwidgets cryptopp libupnp gd gettext boost dylibbundler libmaxminddb \
+              ccache
           # Prepend the matrix-selected brew prefix to PATH so every
           # `brew --prefix` / `cmake` / `pkg-config` invocation in the
           # build script resolves against the right install. gettext
           # is keg-only on macOS; add msgfmt to PATH for the NLS probe.
           echo "${{ matrix.brew_prefix }}/bin" >> "$GITHUB_PATH"
           echo "${{ matrix.brew_prefix }}/opt/gettext/bin" >> "$GITHUB_PATH"
+      - name: Restore ccache
+        if: github.event_name != 'workflow_call'
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-macos-${{ matrix.arch }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
+          restore-keys: ${{ runner.os }}-macos-${{ matrix.arch }}-ccache-
+      - name: Zero ccache stats
+        if: github.event_name != 'workflow_call'
+        run: ccache --zero-stats
       - name: Build native-arch .app
         env:
           MACOS_ARCHITECTURES: ${{ matrix.arch }}
@@ -213,6 +279,15 @@ jobs:
           # BUILD_REMOTEGUI didn't actually produce a bundle.
           [ -d "${MNT}/aMuleGUI.app" ] || { echo "aMuleGUI.app missing from per-arch dmg" >&2; exit 1; }
           hdiutil detach "${MNT}"
+      - name: Save ccache
+        if: always() && github.event_name != 'workflow_call'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-macos-${{ matrix.arch }}-ccache-${{ github.run_id }}
+      - name: ccache stats
+        if: always() && github.event_name != 'workflow_call'
+        run: ccache --show-stats
       - uses: actions/upload-artifact@v7
         with:
           # Upload the produced .app tree (not the .dmg) so the merge
@@ -351,6 +426,7 @@ jobs:
           update: true
           install: >-
             ${{ matrix.pkg_prefix }}-boost
+            ${{ matrix.pkg_prefix }}-ccache
             ${{ matrix.pkg_prefix }}-cmake
             ${{ matrix.pkg_prefix }}-crypto++
             ${{ matrix.pkg_prefix }}-gettext
@@ -365,6 +441,16 @@ jobs:
             ${{ matrix.pkg_prefix }}-zlib
             git
             zip
+      - name: Restore ccache
+        if: github.event_name != 'workflow_call'
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-windows-${{ matrix.arch }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
+          restore-keys: ${{ runner.os }}-windows-${{ matrix.arch }}-ccache-
+      - name: Zero ccache stats
+        if: github.event_name != 'workflow_call'
+        run: ccache --zero-stats
       - name: Configure git safe.directory for MSYS2 git
         # MSYS2 git (now installed above) uses a global config separate
         # from the Windows git at C:\Program Files\Git\bin\git.exe that
@@ -397,6 +483,15 @@ jobs:
           # Pattern accepts the dev placeholder ("aMuleD GIT ...") and
           # any tagged-release banner ("aMuleD 3.0.0 ...", etc.).
           grep -q '^aMuleD ' /tmp/version.txt
+      - name: Save ccache
+        if: always() && github.event_name != 'workflow_call'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-windows-${{ matrix.arch }}-ccache-${{ github.run_id }}
+      - name: ccache stats
+        if: always() && github.event_name != 'workflow_call'
+        run: ccache --show-stats
       - uses: actions/upload-artifact@v7
         with:
           name: windows-${{ matrix.arch }}

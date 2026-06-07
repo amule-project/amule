@@ -104,6 +104,18 @@ build_appimage() {
     # HOST_UID/HOST_GID let the in-container script chown the produced
     # artifact back to the invoking user — Docker would otherwise leave
     # dist/ owned by root.
+    # CCACHE_DIR: if set on the host, mount it at /ccache inside the
+    # container and tell ccache (installed in the Dockerfile) to use
+    # that path. CMakeLists.txt auto-detects ccache and wraps cmake's
+    # CMAKE_<LANG>_COMPILER_LAUNCHER, so the build sees the cache
+    # without any further wiring. When CCACHE_DIR is unset (local dev
+    # users who haven't opted into caching), no mount happens and the
+    # container build runs without ccache — same wall-clock as before.
+    local -a ccache_args=()
+    if [[ -n "${CCACHE_DIR:-}" ]]; then
+        mkdir -p "${CCACHE_DIR}"
+        ccache_args+=(-v "${CCACHE_DIR}:/ccache" -e "CCACHE_DIR=/ccache")
+    fi
     docker run --rm \
         --platform "${docker_platform}" \
         --device /dev/fuse \
@@ -112,6 +124,7 @@ build_appimage() {
         -e "HOST_UID=$(id -u)" \
         -e "HOST_GID=$(id -g)" \
         -v "${REPO_ROOT}:/work" \
+        "${ccache_args[@]}" \
         "${image_tag}"
 }
 
@@ -171,8 +184,16 @@ build_flatpak() {
 
     echo "==> flatpak-builder --arch=${target_arch} ${manifest} (FLATPAK_BUILDER_N_JOBS=${jobs})"
     cd "${SCRIPT_DIR}/flatpak"
+    # --ccache enables ccache inside the sandbox; the cache lives at
+    # ${CCACHE_DIR} when that env var is an absolute path, otherwise at
+    # <state-dir>/ccache (default state-dir = <cwd>/.flatpak-builder).
+    # CI sets CCACHE_DIR to a workspace path shared with the other
+    # packaging jobs so a single actions/cache entry persists across runs.
+    # Without --ccache the sandbox build doesn't see ccache even if the
+    # host has one installed (the sandbox is intentionally isolated).
     FLATPAK_BUILDER_N_JOBS="${jobs}" flatpak-builder --user --force-clean \
         --arch="${target_arch}" \
+        --ccache \
         --repo="${repodir}" \
         "${statedir}" "${manifest}"
 
