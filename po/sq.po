@@ -2130,8 +2130,8 @@ msgid "Show this help text."
 msgstr "Trego kete tekstin ndihmues."
 
 #: src/ExternalConnector.cpp:489
-msgid "Host where aMule is running. (default: localhost)"
-msgstr "Host ne te cilin aMule vepron. (default: localhost)"
+msgid "Host where aMule is running. (default: 127.0.0.1)"
+msgstr "Host ne te cilin aMule vepron. (default: 127.0.0.1)"
 
 #: src/ExternalConnector.cpp:492
 msgid "aMule's port for External Connection. (default: 4712)"

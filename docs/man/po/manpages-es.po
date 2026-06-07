@@ -400,10 +400,10 @@ msgstr "B<[ -h> I<E<lt>hostE<gt>>, B<--host>=I<E<lt>hostE<gt>> B<]>"
 #. type: Plain text
 #: amulecmd.1:33 amuleweb.1:50
 msgid ""
-"Host where aMule is running (default: I<localhost>).  I<E<lt>hostE<gt>> might "
+"Host where aMule is running (default: I<127.0.0.1>).  I<E<lt>hostE<gt>> might "
 "be an IP address or a DNS name"
 msgstr ""
-"Host donde se está ejecutando aMule (por defecto: I<localhost>).  "
+"Host donde se está ejecutando aMule (por defecto: I<127.0.0.1>).  "
 "I<E<lt>hostE<gt>> debe ser o una dirección IP o un nombre DNS"
 
 #. type: TP

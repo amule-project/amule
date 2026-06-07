@@ -48,7 +48,7 @@ precedenza su quelle nel file di configurazione.
 .TP 
 \fB[ \-h\fP \fI<host>\fP, \fB\-\-host\fP=\fI<host>\fP \fB]\fP
 Computer dove è in esecuzione aMule (default:
-\fIlocalhost\fP). \fI<host>\fP può essere un indirizzo IP o un nome DNS
+\fI127.0.0.1\fP). \fI<host>\fP può essere un indirizzo IP o un nome DNS
 .TP 
 \fB[ \-p\fP \fI<porta>\fP, \fB\-\-port\fP=\fI<porta>\fP \fB]\fP
 porta di aMule per le connessioni esterne, come impostata nelle

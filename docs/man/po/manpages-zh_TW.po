@@ -388,10 +388,10 @@ msgstr "B<[ -h> I<E<lt>主機E<gt>>, B<--host>=I<E<lt>主機E<gt>> B<]>"
 #. type: Plain text
 #: amulecmd.1:33 amuleweb.1:50
 msgid ""
-"Host where aMule is running (default: I<localhost>).  I<E<lt>hostE<gt>> "
+"Host where aMule is running (default: I<127.0.0.1>).  I<E<lt>hostE<gt>> "
 "might be an IP address or a DNS name"
 msgstr ""
-"正在執行 aMule 核心的主機 (預設：I<本機>)， I<E<lt>主機E<gt>> 可以是 IP 位址"
+"正在執行 aMule 核心的主機 (預設：I<127.0.0.1>)， I<E<lt>主機E<gt>> 可以是 IP 位址"
 "或網域名稱"
 
 #. type: TP

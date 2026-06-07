@@ -47,7 +47,7 @@ comando ou via arquivo de configuração. Opções de linha de comando têm
 precedência sobre opções de arquivo de configuração.
 .TP 
 \fB[ \-h\fP \fI<anfitrião>\fP, \fB\-\-host\fP=\fI<anfitrião>\fP \fB]\fP
-Anfitrião onde o aMule está rodando (padrão: \fIlocalhost\fP).
+Anfitrião onde o aMule está rodando (padrão: \fI127.0.0.1\fP).
 \fI<anfitrião>\fP pode ser um endereço IP ou um nome de DNS
 .TP 
 \fB[ \-p\fP \fI<porta>\fP, \fB\-\-port\fP=\fI<porta>\fP \fB]\fP

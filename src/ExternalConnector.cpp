@@ -486,7 +486,7 @@ void CaMuleExternalConnector::OnInitCmdLine(wxCmdLineParser& parser, const char*
 		_("Show this help text."),
 		wxCMD_LINE_PARAM_OPTIONAL);
 	parser.AddOption("h", "host",
-		_("Host where aMule is running. (default: localhost)"),
+		_("Host where aMule is running. (default: 127.0.0.1)"),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 	parser.AddOption("p", "port",
 		_("aMule's port for External Connection. (default: 4712)"),

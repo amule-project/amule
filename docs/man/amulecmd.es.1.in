@@ -30,7 +30,7 @@ amulecmd \- Programa basado en consola para controlar aMule
 \fBamulecmd\fP es un cliente basado en consola para controlar aMule.
 .TP 
 \fB[ \-h\fP \fI<host>\fP, \fB\-\-host\fP=\fI<host>\fP \fB]\fP
-Host donde se está ejecutando aMule (por defecto: \fIlocalhost\fP).
+Host donde se está ejecutando aMule (por defecto: \fI127.0.0.1\fP).
 \fI<host>\fP debe ser o una dirección IP o un nombre DNS
 .TP 
 \fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP

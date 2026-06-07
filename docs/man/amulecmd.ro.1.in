@@ -30,7 +30,7 @@ amulecmd \- Program bazat pe terminal pentru controlat aMule
 \fBamulecmd\fP este un client bazat pe terminal pentru a controla aMule.
 .TP 
 \fB[ \-h\fP \fI<host>\fP, \fB\-\-host\fP=\fI<host>\fP \fB]\fP
-Gazda unde rulează aMule (implicit: \fIlocalhost\fP).  \fI<host>\fP ar
+Gazda unde rulează aMule (implicit: \fI127.0.0.1\fP).  \fI<host>\fP ar
 putea fi o adresă IP sau un nume DNS
 .TP 
 \fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP

@@ -2088,8 +2088,8 @@ msgid "Show this help text."
 msgstr "显示帮助信息。"
 
 #: src/ExternalConnector.cpp:489
-msgid "Host where aMule is running. (default: localhost)"
-msgstr "aMule 正在运行的主机(默认: localhost)。"
+msgid "Host where aMule is running. (default: 127.0.0.1)"
+msgstr "aMule 正在运行的主机(默认: 127.0.0.1)。"
 
 #: src/ExternalConnector.cpp:492
 msgid "aMule's port for External Connection. (default: 4712)"
