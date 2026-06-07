@@ -1060,7 +1060,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 **/
 	NewCfgItem(IDC_MAXUP,		(MkCfg_Int( "/eMule/MaxUpload", s_maxupload, 0 )));
 	NewCfgItem(IDC_MAXDOWN,		(MkCfg_Int( "/eMule/MaxDownload", s_maxdownload, 0 )));
-	NewCfgItem(IDC_SLOTALLOC,	(MkCfg_Int( "/eMule/SlotAllocation", s_slotallocation, 2 )));
+	NewCfgItem(IDC_SLOTALLOC,	(MkCfg_Int( "/eMule/SlotAllocation", s_slotallocation, 10 )));
 	NewCfgItem(IDC_PORT,		(MkCfg_Int( "/eMule/Port", s_port, DEFAULT_TCP_PORT )));
 	NewCfgItem(IDC_UDPPORT,		(MkCfg_Int( "/eMule/UDPPort", s_udpport, DEFAULT_UDP_PORT )));
 	NewCfgItem(IDC_UDPENABLE,	(new Cfg_Bool( "/eMule/UDPEnable", s_UDPEnable, true )));
