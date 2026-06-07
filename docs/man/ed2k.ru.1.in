@@ -28,14 +28,16 @@ ed2k \- aMule парсер ссылок eD2k
 Прочитать конфигурацию из места, указанного в \fI<пути>\fP, вместо
 домашнего каталога
 .TP 
-\fB[ \-t\fP, \fB\-\-category\fP=\fI<номер>\fP \fB]\fP
-Указать \fI<номер>\fP категории для eD2k ссылок
+\fB[ \-t\fP \fI<num>\fP, \fB\-\-category\fP \fI<num>\fP \fB]\fP
+Set category for passed eD2k links to \fI<num>\fP.  Unlike
+\fB\-\-config\-dir\fP, the parser reads the value as the next argument and does
+not accept \fB\-\-category\fP=\fI<num>\fP syntax.
 .TP 
 .B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
-Загружает все ссылки из emulecollection как \fI<ed2k\-ссылки>\fP
+Loads all links found in the emulecollection given as \fI<ed2k\-link>\fP
 .TP 
 .B_untranslated [ \-l\fR, \fB\-\-list ]\fR
-Перечисляет все ссылки из emulecollection как \fI<ed2k\-ссылки>\fP
+Lists all links found in the emulecollection given as \fI<ed2k\-link>\fP
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
 Выводит короткую помощь по использованию.

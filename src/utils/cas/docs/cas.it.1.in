@@ -23,14 +23,19 @@ funzionamento, devi abilitare l'opzione "firma online" nelle preferenze di
 aMule.
 .TP 
 .B_untranslated [ \-o\fR, \fB\-\-picture\fR, \fB\-P ]\fR
-Genera il disegno per la firma. Si può anche aggiungere
-\fI=<percorso>\fP a questa opzione per specificare il luogo dove deve
-essere scritta.
+Scrive l'immagine della firma online.  La forma estesa \fB\-\-picture\fP accetta
+un facoltativo \fI=<PERCORSO>\fP per specificare la posizione di
+output; le forme corte \fB\-o\fP / \fB\-P\fP no (\fB\-P\fP richiede un argomento
+\fI<PERCORSO>\fP immediatamente di seguito, e \fB\-o\fP è uno switch senza
+argomenti).  Richiede il supporto GD compilato (\fI__GD__\fP); in caso
+contrario l'opzione viene ignorata silenziosamente.
 .TP 
 .B_untranslated [ \-p\fR, \fB\-\-html\fR, \fB\-H ]\fR
-Pagina HTML con le statistiche e il disegno. Si può anche aggiungere
-\fI=<percorso>\fP a questa opzione per specificare il luogo dove deve
-essere scritta.
+Pagina HTML con statistiche e immagine.  La forma estesa \fB\-\-html\fP accetta
+un facoltativo \fI=<PERCORSO>\fP per specificare la posizione di
+output; le forme corte \fB\-p\fP / \fB\-H\fP no (\fB\-H\fP richiede un argomento
+\fI<PERCORSO>\fP immediatamente di seguito, e \fB\-p\fP è uno switch senza
+argomenti).
 .TP 
 \fB[ \-c\fP \fI<percorso>\fP, \fB\-\-config\-dir\fP=\fI<percorso>\fP \fB]\fP
 Legge la configurazione dal \fI<percorso>\fP invece che dalla directory
@@ -45,9 +50,10 @@ Senza opzioni, scrive i dati della firma nello stdout.
 .SH FILE
 ~/.aMule/casrc
 .br
-stat.png
+aMule\-online\-sign.png (o .jpg, quando si usa \fB\-o\fP / \fB\-\-picture\fP e GD è
+disponibile)
 .br
-tmp.html
+aMule\-online\-sign.html (quando si usa \fB\-p\fP / \fB\-\-html\fP)
 .SH "SEGNALARE I BUG"
 Per favore segnalare i bug nel nostro forum
 (\fIhttps://github.com/amule\-org/amule/discussions\fP) o nel nostro bugtracker

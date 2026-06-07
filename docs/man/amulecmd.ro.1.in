@@ -65,10 +65,16 @@ amulecmd și ieși.
 Creează fișierul de configurare bazat pe \fI<path>\fP, care trebuie să
 indice la un fișier de configurare aMule valid, iar apoi ieși.
 .TP 
-.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+.B_untranslated [ \-\-force\-zlib ]\fR
+Force ZLIB compression on the External Connection link regardless of the
+dialed\-IP locality.  Useful when the server side is reachable over a VPN
+tunnel that resolves to a LAN IP and the heuristic would otherwise skip
+compression.
+.TP 
+.B_untranslated [ \-\-version ]\fR
 Afișează numărul versiunii curente.
 .TP 
-.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+.B_untranslated [ \-\-help ]\fR
 Tipărește o scurtă descriere de utilizare.
 .SH COMENZI
 toate comenzile nu sunt sensibile la majuscule.

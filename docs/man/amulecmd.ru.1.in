@@ -65,10 +65,16 @@ amulecmd и выйти.
 Создать файл конфигурации на основе файла указанного в \fI<пути>\fP и
 выйти. Указанный файл должен быть валидным файлом конфигурации aMule.
 .TP 
-.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+.B_untranslated [ \-\-force\-zlib ]\fR
+Force ZLIB compression on the External Connection link regardless of the
+dialed\-IP locality.  Useful when the server side is reachable over a VPN
+tunnel that resolves to a LAN IP and the heuristic would otherwise skip
+compression.
+.TP 
+.B_untranslated [ \-\-version ]\fR
 Выводит информацию о версии.
 .TP 
-.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+.B_untranslated [ \-\-help ]\fR
 Выводит короткую помощь по использованию.
 .SH КОМАНДЫ
 Все команды чувствительны к регистру.

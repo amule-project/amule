@@ -27,14 +27,16 @@ ed2k \- aMule 的 eD2k 連結分析程式
 \fB[ \-c\fP \fI<路徑>\fP, \fB\-\-config\-dir\fP=\fI<路徑>\fP \fB]\fP
 從 \fI<path>\fP 讀取設定檔，而不是個人目錄
 .TP 
-\fB[ \-t\fP, \fB\-\-category\fP=\fI<號碼>\fP \fB]\fP
-給輸入成功的 eD2k 連結分類編號為 \fI<號碼>\fP
+\fB[ \-t\fP \fI<num>\fP, \fB\-\-category\fP \fI<num>\fP \fB]\fP
+Set category for passed eD2k links to \fI<num>\fP.  Unlike
+\fB\-\-config\-dir\fP, the parser reads the value as the next argument and does
+not accept \fB\-\-category\fP=\fI<num>\fP syntax.
 .TP 
 .B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
-載入所有以 \fI<eD2k 連結>\fP 方式指定的 eMule 收藏庫裏找到的連結
+Loads all links found in the emulecollection given as \fI<ed2k\-link>\fP
 .TP 
 .B_untranslated [ \-l\fR, \fB\-\-list ]\fR
-列出所有以 \fI<eD2k 連結>\fP 方式指定的 eMule 收藏庫裏找到的連結
+Lists all links found in the emulecollection given as \fI<ed2k\-link>\fP
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
 顯示簡短的使用說明。

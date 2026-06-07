@@ -29,7 +29,7 @@ amulecmd \- 終端機模式下控制 aMule 的程式
 \fBamulecmd\fP 是終端機模式下控制 aMule 的的客戶端程式。
 .TP 
 \fB[ \-h\fP \fI<主機>\fP, \fB\-\-host\fP=\fI<主機>\fP \fB]\fP
-正在執行 aMule 核心的主機 (預設：\fI本機\fP)， \fI<主機>\fP 可以是 IP 位址或網域名稱
+正在執行 aMule 核心的主機 (預設：\fI127.0.0.1\fP)， \fI<主機>\fP 可以是 IP 位址或網域名稱
 .TP 
 \fB[ \-p\fP \fI<通訊埠>\fP, \fB\-\-port\fP=\fI<通訊埠>\fP \fB]\fP
 aMule 外部連線用的通訊埠，在 偏好設定 >  遠端控制 設定 (預設：\fI4712\fP)
@@ -58,10 +58,16 @@ aMule 外部連線用的通訊埠，在 偏好設定 >  遠端控制 設定 (預
 \fB[ \-\-create\-config\-from\fP=\fI<路徑>\fP \fB]\fP
 參考 \fI<path>\fP 裏的資料來建立設定檔後離開。(\fI<path>\fP 裏必須有有效的 aMule 設定檔)
 .TP 
-.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+.B_untranslated [ \-\-force\-zlib ]\fR
+Force ZLIB compression on the External Connection link regardless of the
+dialed\-IP locality.  Useful when the server side is reachable over a VPN
+tunnel that resolves to a LAN IP and the heuristic would otherwise skip
+compression.
+.TP 
+.B_untranslated [ \-\-version ]\fR
 顯示目前的版本號碼。
 .TP 
-.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+.B_untranslated [ \-\-help ]\fR
 顯示簡短的使用說明。
 .SH 指令
 所有指令都不分大小寫。

@@ -22,12 +22,17 @@ aMule на консоль (в читаемой форме). Чтобы это р
 опцию "Онлайн подпись" в настройках aMule.
 .TP 
 .B_untranslated [ \-o\fR, \fB\-\-picture\fR, \fB\-P ]\fR
-Записывает картинку с онлайн\-подписью. Вы можете дополнительно указать
-\fI=<ПУТЬ>\fP, куда она будет сохранена.
+Writes the online signature picture.  The long form \fB\-\-picture\fP accepts an
+optional \fI=<PATH>\fP to specify the output location; the short forms
+\fB\-o\fP / \fB\-P\fP do not (\fB\-P\fP requires an immediately following
+\fI<PATH>\fP argument, and \fB\-o\fP is a no\-argument switch).  Requires GD
+support compiled in (\fI__GD__\fP); this option is silently ignored otherwise.
 .TP 
 .B_untranslated [ \-p\fR, \fB\-\-html\fR, \fB\-H ]\fR
-HTML страница со статистикой и картинкой. Вы можете дополнительно указать
-\fI=<ПУТЬ>\fP, куда она будет сохранена.
+HTML page with stats and picture.  The long form \fB\-\-html\fP accepts an
+optional \fI=<PATH>\fP to specify the output location; the short forms
+\fB\-p\fP / \fB\-H\fP do not (\fB\-H\fP requires an immediately following
+\fI<PATH>\fP argument, and \fB\-p\fP is a no\-argument switch).
 .TP 
 \fB[ \-c\fP \fI<путь>\fP, \fB\-\-config\-dir\fP=\fI<путь>\fP \fB]\fP
 Прочитать конфигурацию из места, указанного в \fI<пути>\fP, вместо
@@ -42,9 +47,10 @@ HTML страница со статистикой и картинкой. Вы м
 .SH ФАЙЛЫ
 ~/.aMule/casrc
 .br
-stat.png
+aMule\-online\-sign.png (or .jpg, when \fB\-o\fP / \fB\-\-picture\fP is used and GD is
+available)
 .br
-tmp.html
+aMule\-online\-sign.html (when \fB\-p\fP / \fB\-\-html\fP is used)
 .SH "СООБЩЕНИЕ ОБ ОШИБКАХ"
 Пожалуйста, сообщайте об ошибках либо на нашем форуме
 (\fIhttps://github.com/amule\-org/amule/discussions\fP), либо в багтрекере

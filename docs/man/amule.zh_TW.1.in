@@ -13,6 +13,7 @@ amule \- 跨平台的 eMule P2P 客戶端程式
 [\fB\-c\fP \fI<路徑>\fP] [\fB\-geometry\fP \fI<視窗狀態>\fP]
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
 [\fB\-w\fP \fI<路徑>\fP]
 .RB_untranslated [ \-d ]
 .RB_untranslated [ \-i ]
@@ -38,6 +39,11 @@ amule \- 跨平台的 eMule P2P 客戶端程式
 .TP 
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 將設定重設為預設值。
+.TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Enable or disable starting aMule on user login, then exit.  The OS\-specific
+store is selected automatically: Windows registry Run key, macOS
+LaunchAgent, Linux XDG \fI.desktop\fP autostart entry.
 .TP 
 \fB[ \-w\fP \fI<路徑>\fP, \fB\-\-use\-amuleweb\fP=\fI<路徑>\fP \fB]\fP
 設定 amuleweb 的執行檔位置在 \fI<路徑>\fP。

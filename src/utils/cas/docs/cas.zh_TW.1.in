@@ -20,10 +20,17 @@ cas \- 以 C 語言撰寫的 aMule 統計資訊程式
 \fBcas\fP 是可以在終端機界面以人類可閱讀的形式顯示你的 aMule 線上簽名識別檔的程式。要使用這個功能，你必須在偏好設定裏啟用「線上簽名識別」。
 .TP 
 .B_untranslated [ \-o\fR, \fB\-\-picture\fR, \fB\-P ]\fR
-除存線上簽名識別圖片。你也可以在選項中加入 \fI=<路徑>\fP 來指定要儲存的地方。
+Writes the online signature picture.  The long form \fB\-\-picture\fP accepts an
+optional \fI=<PATH>\fP to specify the output location; the short forms
+\fB\-o\fP / \fB\-P\fP do not (\fB\-P\fP requires an immediately following
+\fI<PATH>\fP argument, and \fB\-o\fP is a no\-argument switch).  Requires GD
+support compiled in (\fI__GD__\fP); this option is silently ignored otherwise.
 .TP 
 .B_untranslated [ \-p\fR, \fB\-\-html\fR, \fB\-H ]\fR
-有統計資訊與圖片的 HTML 檔案。你也可以在選項中加入 \fI=<路徑>\fP 來指定要儲存的地方。
+HTML page with stats and picture.  The long form \fB\-\-html\fP accepts an
+optional \fI=<PATH>\fP to specify the output location; the short forms
+\fB\-p\fP / \fB\-H\fP do not (\fB\-H\fP requires an immediately following
+\fI<PATH>\fP argument, and \fB\-p\fP is a no\-argument switch).
 .TP 
 \fB[ \-c\fP \fI<路徑>\fP, \fB\-\-config\-dir\fP=\fI<路徑>\fP \fB]\fP
 從 \fI<path>\fP 讀取設定檔，而不是個人目錄
@@ -37,9 +44,10 @@ cas \- 以 C 語言撰寫的 aMule 統計資訊程式
 .SH 檔案
 ~/.aMule/casrc
 .br
-stat.png
+aMule\-online\-sign.png (or .jpg, when \fB\-o\fP / \fB\-\-picture\fP is used and GD is
+available)
 .br
-tmp.html
+aMule\-online\-sign.html (when \fB\-p\fP / \fB\-\-html\fP is used)
 .SH 回報問題
 請到我們的論壇 (\fIhttps://github.com/amule\-org/amule/discussions\fP) 或錯誤追蹤網站
 (\fIhttps://github.com/amule\-org/amule/issues\fP) 回報發現的問題。請不要用 e\-mail

@@ -65,10 +65,16 @@ volna be, majd kilép.
 Konfigurációs fájl készítése a \fI<fájl>\fP alapján, amely az aMule
 érvényes konfigurációs fájlja kell legyen, majd utána kilép.
 .TP 
-.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+.B_untranslated [ \-\-force\-zlib ]\fR
+Force ZLIB compression on the External Connection link regardless of the
+dialed\-IP locality.  Useful when the server side is reachable over a VPN
+tunnel that resolves to a LAN IP and the heuristic would otherwise skip
+compression.
+.TP 
+.B_untranslated [ \-\-version ]\fR
 Megjeleníti a verziószámot.
 .TP 
-.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+.B_untranslated [ \-\-help ]\fR
 Egy rövid használati leírást jelenít meg.
 .SH PARANCSOK
 Minden parancs érzéketlen a kis/nagy betűkre.

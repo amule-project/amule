@@ -14,6 +14,9 @@ amulegui \- programma in interfaccia grafica per controllare aMule
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
 .RB_untranslated [ \-s ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
+.RB_untranslated [ \-d ]
+.RB_untranslated [ \-i ]
 [\fB\-t\fP \fI<numero>\fP]
 
 .B_untranslated amulegui
@@ -43,6 +46,21 @@ Reimposta la configurazione ai valori di default.
 .TP 
 .B_untranslated [ \-s\fR, \fB\-\-skip ]\fR
 Salta la finestra di connessione.
+.TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Abilita o disabilita l'avvio di amulegui all'accesso dell'utente, poi esce.
+L'archivio specifico del sistema operativo viene selezionato
+automaticamente: chiave Run del registro di Windows, LaunchAgent su macOS,
+voce di avvio automatico XDG \fI.desktop\fP su Linux.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
+Non intercettare le eccezioni fatali e non bloccare l'uscita sulle
+assertion.  Utile per installazioni headless / supervisionate (systemd,
+script watchdog)  dove la finestra di assertion altrimenti modale impedisce
+il riavvio automatico.
+.TP 
+.B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
+Non disabilita lo stdin.
 .TP 
 \fB[ \-t\fP, \fB\-\-category\fP=\fI<numero>\fP \fB]\fP
 Imposta la categoria per i collegamenti eD2k ricevuti a \fI<numero>\fP
