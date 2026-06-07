@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-05 15:21+0200\n"
+"POT-Creation-Date: 2026-06-07 14:34+0200\n"
 "PO-Revision-Date: 2020-03-04 14:46+0100\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -118,7 +118,7 @@ msgstr ""
 msgid "Later"
 msgstr ""
 
-#: src/amuleAppCommon.cpp:173
+#: src/amuleAppCommon.cpp:174
 #, c-format
 msgid "Could not add %u link from ED2KLinks file (see log for details)."
 msgid_plural ""
@@ -126,7 +126,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/amuleAppCommon.cpp:175 src/amule.cpp:866 src/amule.cpp:980
+#: src/amuleAppCommon.cpp:176 src/amule.cpp:866 src/amule.cpp:980
 #: src/amule.cpp:1275 src/amule-remote-gui.cpp:462 src/amule-remote-gui.cpp:514
 #: src/amule-remote-gui.cpp:527 src/amule-remote-gui.cpp:545
 #: src/amule-remote-gui.cpp:880 src/amule-remote-gui.cpp:909
@@ -134,12 +134,12 @@ msgstr[1] ""
 msgid "ERROR"
 msgstr ""
 
-#: src/amuleAppCommon.cpp:178
+#: src/amuleAppCommon.cpp:179
 #, fuzzy
 msgid "Failed to open ED2KLinks file."
 msgstr "%s(%s)을 열지 못했습니다."
 
-#: src/amuleAppCommon.cpp:251
+#: src/amuleAppCommon.cpp:252
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
@@ -237,8 +237,8 @@ msgstr ""
 #: src/amule.cpp:865
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
-"be run. Please install the package containing aMule web server, or compile "
-"aMule using --enable-webserver and run make install"
+"be run. Please install the package containing aMule web server, or build "
+"aMule from source with -DBUILD_WEBSERVER=YES and install it."
 msgstr ""
 
 #: src/amule.cpp:948
@@ -330,56 +330,56 @@ msgstr ""
 msgid "Server hostname notified"
 msgstr "서버 이름:"
 
-#: src/amule.cpp:1644
+#: src/amule.cpp:1662
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr ""
 
-#: src/amule.cpp:1777
+#: src/amule.cpp:1795
 msgid "ERROR: can't open logfile"
 msgstr "오류: 로그파일을 열 수 없음"
 
-#: src/amule.cpp:1781
+#: src/amule.cpp:1799
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "경고: 로그파일이 비어있습니다. 뭔가 잘못되어 있습니다."
 
-#: src/amule.cpp:1798
+#: src/amule.cpp:1816
 msgid "Log has been reset"
 msgstr "로그가 초기화되었습니다."
 
-#: src/amule.cpp:1824
+#: src/amule.cpp:1842
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "서버메시지: %s"
 
-#: src/amule.cpp:1866 src/IP2Country.cpp:154 src/IPFilter.cpp:510
+#: src/amule.cpp:1884 src/IP2Country.cpp:154 src/IPFilter.cpp:510
 #: src/ServerList.cpp:870
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr ""
 
-#: src/amule.cpp:1868
+#: src/amule.cpp:1886
 msgid "Failed to download the nodes list."
 msgstr "노드 목록을 내려받지 못했습니다."
 
-#: src/amule.cpp:1888
+#: src/amule.cpp:1906
 msgid "Failed to open the downloaded version check file"
 msgstr "내려받은 버젼 검사 파일을 열지 못했습니다."
 
-#: src/amule.cpp:1891 src/amule.cpp:1910 src/amule.cpp:1941 src/amule.cpp:1962
+#: src/amule.cpp:1909 src/amule.cpp:1928 src/amule.cpp:1959 src/amule.cpp:1980
 msgid "Corrupted version check file"
 msgstr "손상된 버젼 검사 파일"
 
-#: src/amule.cpp:1973
+#: src/amule.cpp:1991
 msgid "You are using an outdated version of aMule!"
 msgstr "오래된 어뮬 버젼을 사용하고 있습니다!"
 
-#: src/amule.cpp:1975
+#: src/amule.cpp:1993
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "어뮬 버젼은 %i.%i.%i이며 최신 버젼은 %li.%li.%li입니다."
 
-#: src/amule.cpp:1976
+#: src/amule.cpp:1994
 msgid ""
 "The latest version can always be found at https://github.com/amule-org/amule/"
 "releases/latest"
@@ -387,76 +387,76 @@ msgstr ""
 "최신 버젼은 항상 https://github.com/amule-org/amule/releases/latest 에서 찾"
 "을 수 있습니다."
 
-#: src/amule.cpp:1978
+#: src/amule.cpp:1996
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "경고: 어뮬 버젼은 오래되었습니다: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1982
+#: src/amule.cpp:2000
 msgid "Your copy of aMule is up to date."
 msgstr "어뮬은 최신 버전입니다."
 
-#: src/amule.cpp:1989
+#: src/amule.cpp:2007
 msgid "Failed to download the version check file"
 msgstr "버젼 검사 파일을 내려받지 못했습니다."
 
-#: src/amule.cpp:2159 src/amule-remote-gui.cpp:749
+#: src/amule.cpp:2177 src/amule-remote-gui.cpp:749
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr ""
 
-#: src/amule.cpp:2160 src/amule-remote-gui.cpp:750
+#: src/amule.cpp:2178 src/amule-remote-gui.cpp:750
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr ""
 
-#: src/amule.cpp:2169 src/amule-remote-gui.cpp:759
+#: src/amule.cpp:2187 src/amule-remote-gui.cpp:759
 msgid "No networks selected"
 msgstr ""
 
-#: src/amule.cpp:2211 src/TextClient.cpp:806
+#: src/amule.cpp:2229 src/TextClient.cpp:806
 msgid "with LowID"
 msgstr "낮은아이디로"
 
-#: src/amule.cpp:2211 src/TextClient.cpp:806
+#: src/amule.cpp:2229 src/TextClient.cpp:806
 msgid "with HighID"
 msgstr "높은아이디로"
 
-#: src/amule.cpp:2213
+#: src/amule.cpp:2231
 #, c-format
 msgid "Connected to %s %s"
 msgstr "%s %s에 연결되었음"
 
-#: src/amule.cpp:2217
+#: src/amule.cpp:2235
 #, c-format
 msgid "Connecting to %s"
 msgstr "%s에 연결중"
 
-#: src/amule.cpp:2219
+#: src/amule.cpp:2237
 msgid "Disconnected from eD2k"
 msgstr ""
 
-#: src/amule.cpp:2227
+#: src/amule.cpp:2245
 msgid "Kad started."
 msgstr "Kad를 시작했습니다."
 
-#: src/amule.cpp:2229
+#: src/amule.cpp:2247
 msgid "Kad stopped."
 msgstr "Kad를 멈췄습니다."
 
-#: src/amule.cpp:2237
+#: src/amule.cpp:2255
 msgid "Connected to Kad (ok)"
 msgstr "Kad에 연결됨 (양호)"
 
-#: src/amule.cpp:2239
+#: src/amule.cpp:2257
 msgid "Connected to Kad (firewalled)"
 msgstr "Kad에 연결됨 (방화벽)"
 
-#: src/amule.cpp:2242
+#: src/amule.cpp:2260
 msgid "Disconnected from Kad"
 msgstr "Kad로부터 연결이 끊김"
 
-#: src/amule.cpp:2274
+#: src/amule.cpp:2292
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -464,7 +464,7 @@ msgstr ""
 "Kad 네트워크는 UDP 포트가 비활성될 시 사용할 수 없으며, 따라서 시작하지 않습"
 "니다."
 
-#: src/amule.cpp:2277
+#: src/amule.cpp:2295
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad 네트워크가 환경설정에서 비활성되어, 연결하지 않습니다."
 
@@ -884,7 +884,7 @@ msgstr ""
 msgid "All"
 msgstr "전부"
 
-#: src/amule-remote-gui.cpp:870 src/ExternalConn.cpp:1743
+#: src/amule-remote-gui.cpp:870 src/ExternalConn.cpp:1784
 msgid "Invalid link or already on list."
 msgstr "유효하지 않은 링크거나 이미 목록에 존재합니다."
 
@@ -900,7 +900,7 @@ msgstr ""
 #: src/ClientDetailDialog.cpp:130 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/DownloadListCtrl.cpp:1087 src/DownloadListCtrl.cpp:1100
-#: src/DownloadListCtrl.cpp:1111 src/ExternalConn.cpp:523
+#: src/DownloadListCtrl.cpp:1111 src/ExternalConn.cpp:538
 #: src/FileDetailDialog.cpp:183 src/GenericClientListCtrl.cpp:1102
 #: src/GenericClientListCtrl.cpp:1113 src/GenericClientListCtrl.cpp:1123
 #: src/HTTPDownload.cpp:87 src/KnownFile.cpp:986 src/KnownFile.cpp:992
@@ -1720,45 +1720,45 @@ msgstr[1] ""
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr ""
 
-#: src/ExternalConn.cpp:305
+#: src/ExternalConn.cpp:320
 #, fuzzy
 msgid "Client sent packet after authentication failed."
 msgstr "인증에 실패했습니다."
 
-#: src/ExternalConn.cpp:323
+#: src/ExternalConn.cpp:338
 msgid "External connection closed."
 msgstr "외부연결 끊겼습니다."
 
-#: src/ExternalConn.cpp:400
+#: src/ExternalConn.cpp:415
 msgid "External connections disabled due to empty password!"
 msgstr "빈암호 때문에 외부연결이 불가능합니다."
 
-#: src/ExternalConn.cpp:421
+#: src/ExternalConn.cpp:436
 msgid "External connections disabled in config file"
 msgstr "이 환경설정에서 외부연결은 불가능합니다."
 
-#: src/ExternalConn.cpp:490
+#: src/ExternalConn.cpp:505
 msgid "New external connection accepted"
 msgstr "새로운 외부연결이 승인되었습니다."
 
-#: src/ExternalConn.cpp:493
+#: src/ExternalConn.cpp:508
 msgid "ERROR: couldn't accept a new external connection"
 msgstr ""
 
-#: src/ExternalConn.cpp:511
+#: src/ExternalConn.cpp:526
 msgid "External connection refused due to empty password in preferences!"
 msgstr "환경설정의 빈암호로 인해 외부연결이 거부되었습니다."
 
-#: src/ExternalConn.cpp:522
+#: src/ExternalConn.cpp:537
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "연결중인 클라이언트: %s %s"
 
-#: src/ExternalConn.cpp:524
+#: src/ExternalConn.cpp:539
 msgid "Unknown version"
 msgstr "알수없는 버젼"
 
-#: src/ExternalConn.cpp:534
+#: src/ExternalConn.cpp:549
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -1766,7 +1766,7 @@ msgstr ""
 "불확실한 외부연결 버젼 아이디, 이것은 바이너리와 호환되지 않습니다. 동일한 스"
 "냅삿으로부터 코어와 원격을 사용하세요."
 
-#: src/ExternalConn.cpp:539
+#: src/ExternalConn.cpp:554
 #, fuzzy
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
@@ -1775,177 +1775,177 @@ msgstr ""
 "비정식 CVS 버젼으로부터 릴리즈된 버젼에 연결할수없습니다! *휴우* 있을 수 있었"
 "던 충돌을 막았습니다."
 
-#: src/ExternalConn.cpp:600
+#: src/ExternalConn.cpp:615
 msgid "Invalid protocol version."
 msgstr "유효하지 않은 프로토콜 버젼입니다"
 
-#: src/ExternalConn.cpp:605
+#: src/ExternalConn.cpp:620
 msgid "Missing protocol version tag."
 msgstr "프로토콜 버젼 태그 없음"
 
-#: src/ExternalConn.cpp:612
+#: src/ExternalConn.cpp:627
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr ""
 
-#: src/ExternalConn.cpp:644
+#: src/ExternalConn.cpp:659
 #, fuzzy
 msgid "Authentication failed: wrong password."
 msgstr "인증에 실패했습니다."
 
-#: src/ExternalConn.cpp:646
+#: src/ExternalConn.cpp:661
 #, fuzzy
 msgid "Authentication failed: missing password."
 msgstr "인증에 실패했습니다."
 
-#: src/ExternalConn.cpp:656
+#: src/ExternalConn.cpp:671
 #, fuzzy
 msgid "Invalid request, please authenticate first."
 msgstr "유효하지않은 요청, 먼저 인증을 하세요."
 
-#: src/ExternalConn.cpp:661
+#: src/ExternalConn.cpp:676
 msgid "Access granted."
 msgstr "접근 허가되었습니다."
 
-#: src/ExternalConn.cpp:669
+#: src/ExternalConn.cpp:684
 #, fuzzy, c-format
 msgid "Sent error message \"%s\" to client."
 msgstr "알 수 없는 클라이언트로부터 메시지를 차단"
 
-#: src/ExternalConn.cpp:672
+#: src/ExternalConn.cpp:687
 #, fuzzy, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
 msgstr "허락되지않은 접속입니다. 연결이 끊깁니다."
 
-#: src/ExternalConn.cpp:1130
+#: src/ExternalConn.cpp:1171
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "원격 부분파일 명령 실패: 파일해시를 찾을 수 없음: %s "
 
-#: src/ExternalConn.cpp:1132
+#: src/ExternalConn.cpp:1173
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "파일해시를 찾을 수 없음: %s"
 
-#: src/ExternalConn.cpp:1179 src/ExternalConn.cpp:1261
-#: src/ExternalConn.cpp:1342
+#: src/ExternalConn.cpp:1220 src/ExternalConn.cpp:1302
+#: src/ExternalConn.cpp:1383
 msgid "OOPS! OpCode processing error!"
 msgstr "이런! 명령코드 처리 오류!"
 
-#: src/ExternalConn.cpp:1207
+#: src/ExternalConn.cpp:1248
 msgid "Server not added"
 msgstr "서버가 추가되지 않음"
 
-#: src/ExternalConn.cpp:1225
+#: src/ExternalConn.cpp:1266
 #, c-format
 msgid "server not found: %s"
 msgstr "서버가 발견되지 않음: %s"
 
-#: src/ExternalConn.cpp:1241
+#: src/ExternalConn.cpp:1282
 msgid "need to define server to be removed"
 msgstr "제거할 서버의 정의가 필요합니다."
 
-#: src/ExternalConn.cpp:1255
+#: src/ExternalConn.cpp:1296
 msgid "eD2k is disabled in preferences."
 msgstr ""
 
-#: src/ExternalConn.cpp:1322
+#: src/ExternalConn.cpp:1363
 #, fuzzy
 msgid "Friend not found."
 msgstr "파일을 찾을 수 없습니다."
 
-#: src/ExternalConn.cpp:1331
+#: src/ExternalConn.cpp:1372
 #, fuzzy
 msgid "Client not found."
 msgstr "파일을 찾을 수 없습니다."
 
-#: src/ExternalConn.cpp:1336
+#: src/ExternalConn.cpp:1377
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
 msgstr ""
 
-#: src/ExternalConn.cpp:1445
+#: src/ExternalConn.cpp:1486
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "검색중입니다. 금방 결과를 다시 가져옵니다."
 
-#: src/ExternalConn.cpp:1451
+#: src/ExternalConn.cpp:1492
 msgid "WebSearch from remote interface makes no sense."
 msgstr "원격 인터페이스로부터 웹검색은 좋지않은 선택입니다."
 
-#: src/ExternalConn.cpp:1665
+#: src/ExternalConn.cpp:1706
 msgid "No points for graph."
 msgstr "그래프가 비어있음."
 
-#: src/ExternalConn.cpp:1674
+#: src/ExternalConn.cpp:1715
 msgid "Your client is not configured for this detail level."
 msgstr "클라이언트는 세부 수준이 구성되지 않았습니다."
 
-#: src/ExternalConn.cpp:1701
+#: src/ExternalConn.cpp:1742
 msgid "External Connection: shutdown requested"
 msgstr ""
 
-#: src/ExternalConn.cpp:1713
+#: src/ExternalConn.cpp:1754
 msgid "Already shutting down."
 msgstr "이미 종료하는중입니다."
 
-#: src/ExternalConn.cpp:1731
+#: src/ExternalConn.cpp:1772
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "외부연결: '%s' 링크를 추가합니다."
 
-#: src/ExternalConn.cpp:1747
+#: src/ExternalConn.cpp:1788
 #, fuzzy, c-format
 msgid "%d of %d links failed (invalid or already on list)."
 msgstr "유효하지 않은 링크거나 이미 목록에 존재합니다."
 
-#: src/ExternalConn.cpp:1871
+#: src/ExternalConn.cpp:1915
 msgid "File not found."
 msgstr "파일을 찾을 수 없습니다."
 
-#: src/ExternalConn.cpp:1876
+#: src/ExternalConn.cpp:1920
 msgid "Invalid file name."
 msgstr "유효하지 않은 파일 이름입니다."
 
-#: src/ExternalConn.cpp:1884
+#: src/ExternalConn.cpp:1928
 msgid "Unable to rename file."
 msgstr "파일이름을 변경할 수 없습니다."
 
-#: src/ExternalConn.cpp:2182 src/ExternalConn.cpp:2209
+#: src/ExternalConn.cpp:2226 src/ExternalConn.cpp:2253
 msgid "Kad is disabled in preferences."
 msgstr "Kad는 환경설정에서 비활성화되어 있습니다."
 
-#: src/ExternalConn.cpp:2221
+#: src/ExternalConn.cpp:2265
 msgid "Already connected to eD2k."
 msgstr ""
 
-#: src/ExternalConn.cpp:2224
+#: src/ExternalConn.cpp:2268
 msgid "Connecting to eD2k..."
 msgstr ""
 
-#: src/ExternalConn.cpp:2232
+#: src/ExternalConn.cpp:2276
 msgid "Already connected to Kad."
 msgstr "이미 Kad에 연결되었습니다."
 
-#: src/ExternalConn.cpp:2235
+#: src/ExternalConn.cpp:2279
 msgid "Connecting to Kad..."
 msgstr "Kad에 연결중..."
 
-#: src/ExternalConn.cpp:2242
+#: src/ExternalConn.cpp:2286
 msgid "All networks are disabled."
 msgstr "모든 통신망을 사용할수 없습니다."
 
-#: src/ExternalConn.cpp:2250
+#: src/ExternalConn.cpp:2294
 msgid "Disconnected from eD2k."
 msgstr ""
 
-#: src/ExternalConn.cpp:2254
+#: src/ExternalConn.cpp:2298
 msgid "Disconnected from Kad."
 msgstr "Kad로부터 연결이 끊겼습니다."
 
-#: src/ExternalConn.cpp:2263
+#: src/ExternalConn.cpp:2307
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr ""
 
-#: src/ExternalConn.cpp:2266
+#: src/ExternalConn.cpp:2310
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "유효하지 않은 실행코드(잘못된 프로토콜 버젼?)"
 
@@ -5970,51 +5970,51 @@ msgstr "\t더 많은 정보는 https://amule-org.github.io/docs을 참조하세�
 msgid "Unknown server info received! - too short"
 msgstr "알수없는 서버 정보를 받았습니다! - 매우 짧음"
 
-#: src/ServerSocket.cpp:498
+#: src/ServerSocket.cpp:502
 #, fuzzy, c-format
 msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] "새로운 서버 %d개를 받음"
 msgstr[1] "새로운 서버 %d개를 받음"
 
-#: src/ServerSocket.cpp:501
+#: src/ServerSocket.cpp:505
 msgid "Saving of server-list completed."
 msgstr "서버목록 저장이 완료되었습니다."
 
-#: src/ServerSocket.cpp:551
+#: src/ServerSocket.cpp:555
 msgid "Server rejected last command"
 msgstr "서버가 마지막 명령을 거부함"
 
-#: src/ServerSocket.cpp:559 src/ServerSocket.cpp:561
+#: src/ServerSocket.cpp:563 src/ServerSocket.cpp:565
 #, c-format
 msgid "Bogus packet received from server: %s"
 msgstr "가짜 패킷을 서버로부터 받았습니다: %s"
 
-#: src/ServerSocket.cpp:563
+#: src/ServerSocket.cpp:567
 #, c-format
 msgid "Unhandled error while processing packet from server: %s"
 msgstr "서버로부터 패킷을 처리하는동안 조치할수 없는 오류가 생겼습니다: %s"
 
-#: src/ServerSocket.cpp:602 src/ServerSocket.cpp:606
+#: src/ServerSocket.cpp:606 src/ServerSocket.cpp:610
 #, c-format
 msgid "Cannot create DNS solving thread for connecting to %s"
 msgstr "%s에 연결하기 위한 DNS 해석 쓰레드를 만들수 없음"
 
-#: src/ServerSocket.cpp:688
+#: src/ServerSocket.cpp:692
 #, c-format
 msgid "Server IP %s (%s) is filtered.  Not connecting."
 msgstr "서버 IP %s(%s)가 차단되었습니다. 연결할수 없습니다."
 
-#: src/ServerSocket.cpp:698
+#: src/ServerSocket.cpp:702
 msgid "using protocol obfuscation."
 msgstr "프로토콜 난독화를 사용합니다."
 
-#: src/ServerSocket.cpp:707
+#: src/ServerSocket.cpp:711
 #, c-format
 msgid "Connecting to %s (%s - %s:%i) %s"
 msgstr "%s (%s - %s:%i) %s에 연결합니다."
 
-#: src/ServerSocket.cpp:720
+#: src/ServerSocket.cpp:724
 #, c-format
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "%s 서버에 대한 DNS를 해석 할 수 없음: 연결할수 없습니다!"
@@ -6624,7 +6624,7 @@ msgstr "더 많은 도움말을 위해서는 '%s'를 입력하세요.\n"
 msgid "Download File: %lu %s\n"
 msgstr "내려받기 (%i)"
 
-#: src/TextClient.cpp:742 src/webserver/src/WebServer.cpp:362
+#: src/TextClient.cpp:742 src/webserver/src/WebServer.cpp:364
 msgid "Request failed with an unknown error."
 msgstr "알 수 없는 오류로 요청이 실패함."
 
@@ -7829,75 +7829,158 @@ msgstr "각 요청의 PHP 페이지를 재컴파일함"
 msgid "aMule Web Server"
 msgstr "어뮬 웹 서버"
 
-#: src/webserver/src/WebServer.cpp:310
+#: src/webserver/src/WebServer.cpp:312
 msgid "web client connection accepted\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:313
+#: src/webserver/src/WebServer.cpp:315
 msgid "ERROR: cannot accept web client connection\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:359
+#: src/webserver/src/WebServer.cpp:361
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "다음과 같은 오류로 요청 실패함: %s."
 
-#: src/webserver/src/WebServer.cpp:1753
+#: src/webserver/src/WebServer.cpp:1755
 msgid "Index file not found: "
 msgstr "인덱스 파일을 찾을 수 없음:"
 
-#: src/webserver/src/WebServer.cpp:1832
+#: src/webserver/src/WebServer.cpp:1833
 msgid "Session expired - requesting login\n"
 msgstr "세션이 만료됨 - 로그인 요청중\n"
 
-#: src/webserver/src/WebServer.cpp:1837
+#: src/webserver/src/WebServer.cpp:1838
 msgid "Session ok, logged in\n"
 msgstr "세션 확인, 로그인 됨\n"
 
-#: src/webserver/src/WebServer.cpp:1839
+#: src/webserver/src/WebServer.cpp:1840
 msgid "Session ok, not logged in\n"
 msgstr "세션 확인, 로그인 안됨\n"
 
-#: src/webserver/src/WebServer.cpp:1844
+#: src/webserver/src/WebServer.cpp:1845
 msgid "No session opened - will request login\n"
 msgstr "열린 세션 없음 - 로그인을 요청할 것임\n"
 
-#: src/webserver/src/WebServer.cpp:1853
+#: src/webserver/src/WebServer.cpp:1869
 msgid "Session created - requesting login\n"
 msgstr "세션이 생성됨 - 로그인 요청중\n"
 
-#: src/webserver/src/WebServer.cpp:1868
+#: src/webserver/src/WebServer.cpp:1884
 msgid "Processing request [original]: "
 msgstr "요청 처리중 [원본]: "
 
-#: src/webserver/src/WebServer.cpp:1883
+#: src/webserver/src/WebServer.cpp:1908
+msgid "Refusing to read `pass` from URL query string\n"
+msgstr ""
+
+#: src/webserver/src/WebServer.cpp:1914
 msgid "No password specified, login will not be allowed."
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:1885
+#: src/webserver/src/WebServer.cpp:1916
 msgid "Checking password\n"
 msgstr "암호를 검사중\n"
 
-#: src/webserver/src/WebServer.cpp:1890
+#: src/webserver/src/WebServer.cpp:1921
 msgid "Password hash invalid\n"
 msgstr "암호 해시가 유효하지 않음\n"
 
-#: src/webserver/src/WebServer.cpp:1905
+#: src/webserver/src/WebServer.cpp:1936
 msgid "Password ok\n"
 msgstr "암호 맞음\n"
 
-#: src/webserver/src/WebServer.cpp:1907
+#: src/webserver/src/WebServer.cpp:1938
 msgid "Password bad\n"
 msgstr "암호 틀림\n"
 
-#: src/webserver/src/WebServer.cpp:1910
+#: src/webserver/src/WebServer.cpp:1941
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "암호를 입력하지 않았습니다. 빈암호는 사용할수 없습니다.\n"
 
-#: src/webserver/src/WebServer.cpp:1918
+#: src/webserver/src/WebServer.cpp:1949
 msgid "Logout requested\n"
 msgstr "로그아웃이 요청됨\n"
 
-#: src/webserver/src/WebServer.cpp:1923
+#: src/webserver/src/WebServer.cpp:1954
 msgid "Processing request [redirected]: "
 msgstr "요청 처리중[redirected]: "
+
+#: packaging/windows/installer_strings.c:36
+msgid "aMule (required)"
+msgstr ""
+
+#: packaging/windows/installer_strings.c:37
+msgid "Desktop shortcut"
+msgstr ""
+
+#: packaging/windows/installer_strings.c:38
+msgid "Start aMule when I log in"
+msgstr ""
+
+#: packaging/windows/installer_strings.c:39
+msgid "Uninstall"
+msgstr ""
+
+#: packaging/windows/installer_strings.c:40
+msgid "Remove user data (config, ED2K servers, Kad nodes, partfiles)"
+msgstr ""
+
+#: packaging/windows/installer_strings.c:43
+#, fuzzy
+msgid "aMule application files (required)."
+msgstr "연결 실패"
+
+#: packaging/windows/installer_strings.c:44
+msgid "Place an aMule shortcut on the desktop."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:45
+msgid ""
+"Launch aMule automatically when the current user logs in (per-user setting)."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:46
+msgid ""
+"Remove aMule application files, Start Menu / desktop shortcuts, autostart "
+"Run-key entry, and Add/Remove Programs entry (required)."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:47
+msgid ""
+"Permanently delete %APPDATA%\\aMule for the current user (aMule.conf, ED2K "
+"server list, Kad nodes, partfiles, IP filters, friends list). Leave "
+"unchecked to keep your settings."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:53
+msgid ""
+"aMule appears to be running from $INSTDIR.\r\n"
+"Please close aMule (and aMuleD / aMuleGUI) and try again."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:54
+msgid ""
+"aMule daemon (amuled.exe) appears to be running from $INSTDIR.\r\n"
+"Please stop it and try again."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:55
+msgid "Removing previous aMule installation at $0..."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:56
+msgid ""
+"Could not remove the previous aMule installation at $0.\r\n"
+"Please close any running aMule processes and try again, or uninstall the "
+"previous version manually first."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:57
+msgid ""
+"aMule appears to be running. Please close it and re-run the uninstaller."
+msgstr ""
+
+#: packaging/windows/installer_strings.c:58
+msgid "Removing user data at $APPDATA\\aMule..."
+msgstr ""
