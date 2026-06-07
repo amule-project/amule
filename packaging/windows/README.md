@@ -126,6 +126,63 @@ Per-machine install (requires admin). Coexists with the portable .zip
 — different artifact name, different default install path; the two
 are independent shipping channels.
 
+### Installer translations
+
+The installer registers every language NSIS 3.x ships a
+`Contrib/Language file` for (`!insertmacro MUI_LANGUAGE "<name>"` per
+language, near the top of `installer.nsi`). The Welcome / License /
+Components / Directory / Install / Finish pages, plus all standard
+buttons and error dialogs, come from NSIS's bundled `.nlf` files for
+every registered language — no translation work on our side. NSIS
+auto-detects the user's system locale at install / uninstall time and
+routes to the matching registered language; falls back to English
+otherwise.
+
+The aMule-specific user-visible strings (section names, component
+descriptions, MessageBox / DetailPrint texts) are declared as
+`LangString MYSTR_*` blocks. The `${LANG_ENGLISH}` bodies live
+inline in `installer.nsi` as the baseline; per-language bodies are
+auto-generated at installer build time by
+`packaging/windows/po-to-nsh.py`, which reads `po/<lang>.po` for
+every locale that maps to a NSIS language (the mapping table is at
+the top of the script) and emits a `LangString MYSTR_KEY
+${LANG_NSISNAME} "<translation>"` line for each translated entry.
+The output is written to `packaging/windows/installer_strings_generated.nsh`
+(git-ignored, build artifact) and pulled in via `!include /NONFATAL`
+in `installer.nsi`. The `/NONFATAL` means `makensis` still works for
+developers who invoke it directly without going through `build.sh`;
+in that case the custom strings stay English.
+
+**Contributing a translation.** Translators stay on the existing
+gettext workflow — edit `po/<lang>.po` as normal. The installer's
+strings appear in your .po next to the app strings, marked
+`#: packaging/windows/installer_strings.c:<line>`. Translate them
+the same way you'd translate any other entry. The next installer
+build picks them up automatically.
+
+**Adding or renaming an installer string.** Three places to update
+together so they stay in sync:
+- `packaging/windows/installer_strings.c` — the `_("...")` entry that
+  makes the string visible to `xgettext`.
+- `packaging/windows/installer.nsi` — the `LangString MYSTR_<KEY>
+  ${LANG_ENGLISH} "..."` declaration and the call site that uses
+  `$(MYSTR_<KEY>)`.
+- `packaging/windows/po-to-nsh.py` — the `KEYS` list (matches the
+  English msgid to the NSIS LangString key).
+
+Then regenerate `po/amule.pot` so the new string lands in
+translators' next `msgmerge` pass:
+
+```sh
+cd po
+xgettext --keyword=_ --keyword=wxTRANSLATE --keyword=wxPLURAL:1,2 \
+    --add-comments=TRANSLATORS: --files-from=POTFILES.in \
+    --from-code=UTF-8 -o amule.pot --directory=.. \
+    --package-name='aMule' --package-version='GIT' \
+    --copyright-holder='Free Software Foundation, Inc.' \
+    --msgid-bugs-address='https://github.com/amule-org/amule/issues'
+```
+
 Signing is the same one-switch flip as the .zip: set
 `WIN_CERT_PFX_BASE64` + `WIN_CERT_PASSWORD` and either let the
 `installer` subcommand sign the produced .exe inline (it does so

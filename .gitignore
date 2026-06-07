@@ -29,6 +29,9 @@ Makefile.user
 # CMake
 build
 
+# Windows installer build artifacts
+packaging/windows/installer_strings_generated.nsh
+
 # AI coding assistants
 *.local.md
 .claude/

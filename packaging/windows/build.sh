@@ -168,6 +168,18 @@ installer() {
     # installer self-contained and the .nsi relocatable).
     cp "${REPO_ROOT}/docs/COPYING" "${PORTABLE_DIR}/COPYING.txt"
 
+    # Generate the per-language LangString block from po/<lang>.po so
+    # the aMule-specific installer strings (section names, component
+    # descriptions, MessageBox / DetailPrint texts) show up translated
+    # in every language the .po has a matching msgstr for. Output is a
+    # build artifact -- not committed -- consumed by installer.nsi via
+    # an `!include /NONFATAL`. python3 is available in every CI build
+    # environment (MSYS2 ships it; Linux runners have it; macOS too).
+    echo "==> Generating installer_strings_generated.nsh from po/"
+    python3 "${SCRIPT_DIR}/po-to-nsh.py" \
+        "${REPO_ROOT}/po" \
+        "${SCRIPT_DIR}/installer_strings_generated.nsh"
+
     local out="${DIST_DIR}/${INSTALLER_NAME}"
     rm -f "${out}"
 
