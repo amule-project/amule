@@ -28,16 +28,18 @@ bağlantılar için sorgulanır.
 \fB[ \-c\fP \fI<yol>\fP, \fB\-\-config\-dir\fP=\fI<yol>\fP \fB]\fP
 Yapılandırmayı home yerine \fI<yol>\fPdan oku
 .TP 
-\fB[ \-t\fP, \fB\-\-category\fP=\fI<sayı>\fP \fB]\fP
-\fI<sayı>\fPya gönderilen eD2k bağlantılarının kategorilerini belirler.
+\fB[ \-t\fP \fI<num>\fP, \fB\-\-category\fP \fI<num>\fP \fB]\fP
+Kategori belirler, \fI<num>\fP unsuruna aktarılan eD2k bağlantıları
+için.   \fB\-\-config\-dir\fP aksine, ayrıştırıcı değeri sonraki argüman olarak
+okur ve \fB\-\-category\fP=\fI<num>\fP söz dizimini kabul etmez.
 .TP 
 .B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
-Bir emule koleksiyonunda \fI<ed2k\-bağlantısı>\fP şeklinde bulunan tüm
-bağlantıları yükler
+\fI<ed2k\-bağlantısı>\fP olarak aktarılan bir emule koleksiyonunda
+bulunan tüm bağlantıları yükler
 .TP 
 .B_untranslated [ \-l\fR, \fB\-\-list ]\fR
-Bir emule koleksiyonunda \fI<ed2k\-bağlantısı>\fP şeklinde bulunan tüm
-bağlantıları listeler
+\fI<ed2k\-bağlantısı>\fP olarak aktarılan bir emule koleksiyonunda
+bulunan tüm bağlantıları listeler
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
 Kısa bir kullanım açıklaması görüntüler.
@@ -83,4 +85,4 @@ dağıtılmaktadır.
 .B_untranslated amule\fR(1)
 .SH YAZAN
 Bu kılavuz sayfası Vollstrecker <amule@vollstreckernet.de>
-tarafından yazılmıştır.
+tarafından yazılmıştır

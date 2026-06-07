@@ -14,6 +14,9 @@ amulegui \- programme de contrôle d'aMule avec Interface Graphique
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
 .RB_untranslated [ \-s ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
+.RB_untranslated [ \-d ]
+.RB_untranslated [ \-i ]
 [\fB\-t\fP \fI<num>\fP]
 
 .B_untranslated amulegui
@@ -33,8 +36,8 @@ défaut
 .TP 
 \fB[ \-geometry \fP\fI<géom>\fP \fB]\fP
 Fixe la géométrie de l'application. \fI<géom>\fP utilise le même format
-que les applications X11 standards
-:	[\fB=\fP][\fI<largeur>\fP{\fBxX\fP}\fI<hauteur>\fP][{\fB+\-\fP}\fI<xoffset>\fP{\fB+\-\fP}\fI<yoffset>\fP]
+que les applications X11
+standards :	[\fB=\fP][\fI<largeur>\fP{\fBxX\fP}\fI<hauteur>\fP][{\fB+\-\fP}\fI<xoffset>\fP{\fB+\-\fP}\fI<yoffset>\fP]
 .TP 
 .B_untranslated [ \-o\fR, \fB\-\-log\-stdout ]\fR
 Affiche les messages du journal sur stdout.
@@ -44,6 +47,22 @@ Réinitialise à la configuration par défaut.
 .TP 
 .B_untranslated [ \-s\fR, \fB\-\-skip ]\fR
 Sauter la boîte de dialogue de connexion.
+.TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Activer ou désactiver le lancement d'amulegui à l'ouverture d'une session de
+l'utilisateur, puis quitter.  Le dépôt spécifique au système d'exploitation
+est sélectionné automatiquement : clef d'exécution (Run) du registre pour
+Windows, LaunchAgent pour macOS et élément de lancement automatique XDG
+\&\fI.desktop\fP pour GNU/Linux.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
+Ne pas intercepter les exceptions fatales et ne pas bloquer la sortie sur
+les assertions.  Utile pour les configurations sans interface / supervisées
+(systemd, scripts watchdog) où la boîte de dialogue d'assertion, autrement
+modale, empêche le redémarrage automatique.
+.TP 
+.B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
+Ne désactive pas stdin.
 .TP 
 \fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
 Définir la catégorie pour les liens eD2k passé à \fI<num>\fP

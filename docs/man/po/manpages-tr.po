@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "POT-Creation-Date: 2026-06-07 14:45+0200\n"
-"PO-Revision-Date: 2026-06-06 23:33+0300\n"
+"PO-Revision-Date: 2026-06-07 19:35+0300\n"
 "Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: \n"
 "Language: tr\n"
@@ -137,6 +137,10 @@ msgid ""
 "store is selected automatically: Windows registry Run key, macOS "
 "LaunchAgent, Linux XDG I<.desktop> autostart entry."
 msgstr ""
+"Kullanıcı oturum açtığında aMule'ün başlatılmasını etkinleştirir veya devre "
+"dışı bırakır.  İşletim sistemine has depo otomatik olarak seçilir: Windows "
+"için kayıt defteri (registry) Çalıştırma anahtarı, macOS için LaunchAgent, "
+"GNU/Linux için XDG I<.desktop> otomatik başlatma unsuru."
 
 #. type: TP
 #: amule.1.in:42 amuled.1.in:50
@@ -178,7 +182,7 @@ msgstr "B<[ -t>, B<--category>=I<E<lt>sayıE<gt>> B<]>"
 #: amule.1.in:56 amuled.1.in:64 amulegui.1.in:57
 msgid "Set category for passed eD2k links to I<E<lt>numE<gt>>"
 msgstr ""
-"I<E<lt>sayıE<gt>>ya gönderilen eD2k bağlantılarının kategorilerini belirler."
+"I<E<lt>sayıE<gt>>ya gönderilen eD2k bağlantılarının kategorilerini belirler"
 
 #. type: Plain text
 #: amule.1.in:59 amulecmd.1.in:70 amuled.1.in:67 amulegui.1.in:63
@@ -353,7 +357,7 @@ msgid ""
 "This manpage was written by Vollstrecker E<lt>amule@vollstreckernet.deE<gt>"
 msgstr ""
 "Bu kılavuz sayfası Vollstrecker E<lt>amule@vollstreckernet.deE<gt> "
-"tarafından yazılmıştır."
+"tarafından yazılmıştır"
 
 #. type: TH
 #: amulecmd.1.in:1
@@ -532,6 +536,10 @@ msgid ""
 "tunnel that resolves to a LAN IP and the heuristic would otherwise skip "
 "compression."
 msgstr ""
+"Seçilen IP adresinin konumuna bakılmaksızın Harici Bağlantı için ZLIB "
+"sıkıştırmasını zorlar.  Sunucuya, bir LAN IP adresine çözümlenen VPN tüneli "
+"üzerinden erişilebildiğinde ve aksi takdirde sezgisel algoritmanın "
+"sıkıştırmayı atlayacağı durumlarda kullanışlıdır."
 
 #. type: SH
 #: amulecmd.1.in:73
@@ -1076,13 +1084,16 @@ msgid ""
 "store is selected automatically: Windows registry Run key, macOS "
 "LaunchAgent, Linux XDG I<.desktop> autostart entry."
 msgstr ""
+"Kullanıcı oturum açtığında amuled'nin başlatılmasını etkinleştirir veya "
+"devre dışı bırakır.  İşletim sistemine has depo otomatik olarak seçilir: "
+"Windows için kayıt defteri (registry) Çalıştırma anahtarı, macOS için "
+"LaunchAgent, GNU/Linux için XDG I<.desktop> otomatik başlatma unsuru."
 
 #. type: TP
 #: amuled.1.in:61
-#, fuzzy, no-wrap
-#| msgid "B<[ -t> I<E<lt>nameE<gt>>, B<--template>=I<E<lt>nameE<gt>> B<]>"
+#, no-wrap
 msgid "B<[ -t> I<E<lt>numE<gt>>, B<--category>=I<E<lt>numE<gt>> B<]>"
-msgstr "B<[ -t> I<E<lt>isimE<gt>>, B<--template>=I<E<lt>isimE<gt>> B<]>"
+msgstr "B<[ -t> I<E<lt>numE<gt>>, B<--category>=I<E<lt>numE<gt>> B<]>"
 
 #. type: TH
 #: amulegui.1.in:1
@@ -1136,6 +1147,10 @@ msgid ""
 "specific store is selected automatically: Windows registry Run key, macOS "
 "LaunchAgent, Linux XDG I<.desktop> autostart entry."
 msgstr ""
+"Kullanıcı oturum açtığında amulegui'nin başlatılmasını etkinleştirir veya "
+"devre dışı bırakır.  İşletim sistemine has depo otomatik olarak seçilir: "
+"Windows için kayıt defteri (registry) Çalıştırma anahtarı, macOS için "
+"LaunchAgent, GNU/Linux için XDG I<.desktop> otomatik başlatma unsuru."
 
 #. type: Plain text
 #: amulegui.1.in:72
@@ -1247,10 +1262,9 @@ msgstr "UPnP'yi etkinleştirir."
 
 #. type: TP
 #: amuleweb.1.in:84
-#, fuzzy, no-wrap
-#| msgid "B<[ -U> I<E<lt>portE<gt>>, B<--upnp-port> I<E<lt>portE<gt>> B<]>"
+#, no-wrap
 msgid "B<[ -U> I<E<lt>portE<gt>>, B<--upnp-port>=I<E<lt>portE<gt>> B<]>"
-msgstr "B<[ -U> I<E<lt>portE<gt>>, B<--upnp-port> I<E<lt>portE<gt>> B<]>"
+msgstr "B<[ -U> I<E<lt>portE<gt>>, B<--upnp-port>=I<E<lt>portE<gt>> B<]>"
 
 #. type: Plain text
 #: amuleweb.1.in:87
@@ -1453,10 +1467,9 @@ msgstr ""
 
 #. type: TP
 #: ed2k.1.in:24
-#, fuzzy, no-wrap
-#| msgid "B<[ -t> I<E<lt>nameE<gt>>, B<--template>=I<E<lt>nameE<gt>> B<]>"
+#, no-wrap
 msgid "B<[ -t> I<E<lt>numE<gt>>, B<--category> I<E<lt>numE<gt>> B<]>"
-msgstr "B<[ -t> I<E<lt>isimE<gt>>, B<--template>=I<E<lt>isimE<gt>> B<]>"
+msgstr "B<[ -t> I<E<lt>numE<gt>>, B<--category> I<E<lt>numE<gt>> B<]>"
 
 #. type: Plain text
 #: ed2k.1.in:28
@@ -1465,30 +1478,25 @@ msgid ""
 "dir>, the parser reads the value as the next argument and does not accept "
 "B<--category>=I<E<lt>numE<gt>> syntax."
 msgstr ""
+"Kategori belirler, I<E<lt>numE<gt>> unsuruna aktarılan eD2k bağlantıları "
+"için.   B<--config-dir> aksine, ayrıştırıcı değeri sonraki argüman olarak "
+"okur ve B<--category>=I<E<lt>numE<gt>> söz dizimini kabul etmez."
 
 #. type: Plain text
 #: ed2k.1.in:31
-#, fuzzy
-#| msgid ""
-#| "Loads all link found in the emulecollection given as I<E<lt>ed2k-"
-#| "linkE<gt>>"
 msgid ""
 "Loads all links found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
 msgstr ""
-"Bir emule koleksiyonunda I<E<lt>ed2k-bağlantısıE<gt>> şeklinde bulunan tüm "
-"bağlantıları yükler"
+"I<E<lt>ed2k-bağlantısıE<gt>> olarak aktarılan bir emule koleksiyonunda "
+"bulunan tüm bağlantıları yükler"
 
 #. type: Plain text
 #: ed2k.1.in:34
-#, fuzzy
-#| msgid ""
-#| "Lists all link found in the emulecollection given as I<E<lt>ed2k-"
-#| "linkE<gt>>"
 msgid ""
 "Lists all links found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
 msgstr ""
-"Bir emule koleksiyonunda I<E<lt>ed2k-bağlantısıE<gt>> şeklinde bulunan tüm "
-"bağlantıları listeler"
+"I<E<lt>ed2k-bağlantısıE<gt>> olarak aktarılan bir emule koleksiyonunda "
+"bulunan tüm bağlantıları listeler"
 
 #. type: Plain text
 #: ed2k.1.in:54
@@ -1629,6 +1637,12 @@ msgid ""
 "I<E<lt>PATHE<gt>> argument, and B<-o> is a no-argument switch).  Requires GD "
 "support compiled in (I<__GD__>); this option is silently ignored otherwise."
 msgstr ""
+"Çevrim içi imza resmini yazar.  Uzun biçimli B<--picture> çıktı konumunu "
+"belirtmek için seçime dayalı bir I<=E<lt>YOLE<gt>> kabul eder, kısa biçimli "
+"B<-o> / B<-P> kendisini hemen izleyen bir I<E<lt>YOLE<gt>> argümanı "
+"gerektirmez (B<-P> ve B<-o> argümansız bir seçenektir.   (I<__GD__>) içinde "
+"derlenmiş GD desteğine ihtiyaç duyar; aksi takdirde bu seçenek sessizce "
+"görmezden gelinir."
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1.in:27
@@ -1638,6 +1652,10 @@ msgid ""
 "B<-p> / B<-H> do not (B<-H> requires an immediately following "
 "I<E<lt>PATHE<gt>> argument, and B<-p> is a no-argument switch)."
 msgstr ""
+"İstatistikler ve resim içeren HTML sayfası.  Uzun biçimli B<--html> çıktı "
+"konumunu belirtmek için seçime dayalı bir I<=E<lt>YOLE<gt>> kabul eder, kısa "
+"biçimli B<-p> / B<-H> kendisini hemen izleyen bir I<E<lt>YOLE<gt>> argümanı "
+"gerektirmez (B<-H> ve B<-p> argümansız bir seçenektir."
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1.in:35
@@ -1663,11 +1681,13 @@ msgid ""
 "aMule-online-sign.png (or .jpg, when B<-o> / B<--picture> is used and GD is "
 "available)"
 msgstr ""
+"aMule-online-sign.png (veya .jpg, B<-o> / B<--picture>kullanıldığında ve GD "
+"mevcut olduğunda)"
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1.in:43
 msgid "aMule-online-sign.html (when B<-p> / B<--html> is used)"
-msgstr ""
+msgstr "aMule-online-sign.html (B<-p> / B<--html> kullanıldığında)"
 
 #. type: TH
 #: ../../src/utils/wxCas/docs/wxcas.1.in:1

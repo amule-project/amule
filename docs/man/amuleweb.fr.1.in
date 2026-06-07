@@ -47,7 +47,7 @@ fichier de configuration. Les options passées en ligne de commande prévalent
 sur les options de fichier de configuration.
 .TP 
 \fB[ \-h\fP \fI<hôte>\fP, \fB\-\-host\fP=\fI<hôte>\fP \fB]\fP
-Hôte où aMule fonctionne (par défaut : \fI127.0.0.1\fP).  \fI<hôte>\fP
+Hôte où aMule fonctionne (par défaut : \fI127.0.0.1\fP).  \fI<hôte>\fP
 peut être une adresse IP ou un nom DNS.
 .TP 
 \fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
@@ -81,13 +81,13 @@ pour plus de détails.
 .TP 
 \fB[ \-s\fP \fI<port>\fP, \fB\-\-server\-port\fP=\fI<port>\fP \fB]\fP
 Port HTTP du serveur Web. Il s'agit du port vers lequel votre navigateur
-doit pointer (par défaut : \fI4711\fP).
+doit pointer (par défaut : \fI4711\fP).
 .TP 
 .B_untranslated [ \-u ]\fR
 .br
 Activer UPnP.
 .TP 
-\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP \fI<port>\fP \fB]\fP
+\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP=\fI<port>\fP \fB]\fP
 Port UPnP.
 .TP 
 .B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
@@ -128,6 +128,12 @@ Recompile les pages PHP à chaque requête.
 Créer un fichier de configuration basé sur \fI<chemin>\fP, qui doit
 pointer sur un fichier de configuration d'aMule valide, et quitter ensuite.
 .TP 
+.B_untranslated [ \-\-force\-zlib ]\fR
+Forcer la compression ZLIB sur le lien Connexion Externe quelle que soit
+l'adresse IP de destination.  Utile lorsque le serveur est accessible via un
+tunnel VPN qui se résout en une adresse IP du réseau local et que
+l'heuristique ignorerait autrement la compression.
+.TP 
 .B_untranslated [ \-\-help ]\fR
 Affiche une courte description d'utilisation.
 .TP 
@@ -135,10 +141,10 @@ Affiche une courte description d'utilisation.
 Affiche le numéro de la version actuelle.
 .TP 
 \fB[ \-\-amule\-config\-file\fP=\fI<chemin>\fP \fB]\fP
-Chemin du fichier de configuration d'aMule.  \fBNE PAS UTILISER DIRECTEMENT !\fP aMule utilise cette option lors du démarrage d'amuleweb au démarrage
-d'aMule.  Cette option permet d'ignorer toutes les autres options de ligne
-de commande et les paramètres de fichier de configuration, et lit les
-préférences depuis le fichier de configuration précisé, et implique
+Chemin du fichier de configuration d'aMule.  \fBNE PAS UTILISER DIRECTEMENT !\fP aMule utilise cette option lors du démarrage d'amuleweb au
+démarrage d'aMule.  Cette option permet d'ignorer toutes les autres options
+de ligne de commande et les paramètres de fichier de configuration, et lit
+les préférences depuis le fichier de configuration précisé, et implique
 également les options \fB\-q \-L\fP.
 .SH NOTES
 .SS Chemins
@@ -147,14 +153,14 @@ Pour toutes les options prenant en paramètre un \fI<chemin>\fP, si le
 fichier), alors il sera considéré comme étant dans le répertoire de
 configuration d'aMule, \fI~/.aMule\fP.
 .SS Langues
-Le paramètre \fI<lang>\fP pour \fB\-l\fP l'option a la forme suivante :
+Le paramètre \fI<lang>\fP pour \fB\-l\fP l'option a la forme suivante :
 \fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP] où \fIlang\fP est la
 langue principale, \fILANG\fP est le dialecte, \fIencoding\fP est le jeu de
 caractères défini à utiliser et \fImodifier\fP permet à l'utilisateur de
 sélectionner une instance spécifique des données de localisation dans une
 seule catégorie.
 
-Par exemple, les chaînes de caractères suivantes sont valables :
+Par exemple, les chaînes de caractères suivantes sont valables :
 .RS
 .RB_untranslated de
 .br
@@ -181,7 +187,7 @@ sera celle du système d'exploitation.
 \fBamuleweb\fP est capable d'afficher des informations dans différents thèmes.
 Ces thèmes sont appelés modèles, et vous pouvez faire de charger à amuleweb
 un modèle spécifique via l'option en ligne de commande \fB\-t\fP.  Les modèles
-sont recherchés dans deux endroits : d'abord dans : \fI~/.aMule/webserver/\fP
+sont recherchés dans deux endroits : d'abord dans : \fI~/.aMule/webserver/\fP
 puis dans \fI/usr/share/amule/webserver/\fP si vous l'avez installé avec
 \-\-prefix=/usr.
 .PP
@@ -194,7 +200,7 @@ répertoire doit contenir tous les fichiers dont le modèle a besoin.
 .br
 \fI$(pkgdatadir)\fP/webserver/
 .SH EXEMPLE
-Typiquement amuleweb sera lancée la première fois ainsi :
+Typiquement amuleweb sera lancée la première fois ainsi :
 .PP
 \fBamuleweb\fP \fB\-h\fP \fInom de l'hôte\fP \fB\-p\fP \fIport EC\fP \fB\-P\fP \fImot de passe EC\fP
 \fB\-s\fP \fIport HTTP\fP \fB\-A\fP \fImot de passe Admin\fP \fB\-w\fP
@@ -204,7 +210,7 @@ ou
 \fBamuleweb\fP \fB\-\-create\-config\-from\fP=\fI/home/username/.aMule/amule.conf\fP
 .PP
 Cela sauvegardera les options dans \fI$HOME/.aMule/remote.conf\fP, et il
-suffira de taper plus tard :
+suffira de taper plus tard :
 .PP
 .B_untranslated amuleweb
 .PP

@@ -23,14 +23,19 @@ l'homme). Pour que cela fonctionne, vous devez activer l'option "Online
 Signature" dans les préférences d'aMule.
 .TP 
 .B_untranslated [ \-o\fR, \fB\-\-picture\fR, \fB\-P ]\fR
-Écrit l'image de la signature en ligne.  Vous pouvez éventuellement ajouter
-\fI=<PATH>\fP à cette option, pour spécifier l'emplacement où elle doit
-être écrite.
+Écrit l'image de la signature en ligne.  La forme longue \fB\-\-picture\fP
+accepte un argument facultatif \fI=<CHEMIN>\fP pour spécifier
+l'emplacement de sortie ; la forme courte \fB\-o\fP / \fB\-P\fP ne nécessite pas
+(\fB\-P\fP un argument \fI<CHEMIN>\fP qui suivrait immédiatement et \fB\-o\fP
+est un commutateur sans argument.  Nécessite que le support de GD soit
+compilée dans (\fI__GD__\fP) ; cette option est silencieusement ignorée sinon.
 .TP 
 .B_untranslated [ \-p\fR, \fB\-\-html\fR, \fB\-H ]\fR
-Page HTML avec des statistiques et l'image. Vous pouvez éventuellement
-ajouter \fI=<PATH>\fP à cette option, pour spécifier l'emplacement où
-elle doit être écrite.
+Page HTML avec les statistiques et l'image.  La forme longue \fB\-\-html\fP
+accepte un argument facultatif \fI=<CHEMIN>\fP afin de spécifier
+l'emplacement de sortie ; la forme courte \fB\-p\fP / \fB\-H\fP ne nécessite pas
+(\fB\-H\fP un argument \fI<PATH>\fP qui suivrait immédiatement et \fB\-o\fP est
+un commutateur sans argument.
 .TP 
 \fB[ \-c\fP \fI<chemin>\fP, \fB\-\-config\-dir\fP=\fI<chemin>\fP \fB]\fP
 Utiliser le fichier de config \fI<chemin>\fP à la place de celui par
@@ -46,9 +51,10 @@ sortie standard.
 .SH FICHIERS
 ~/.aMule/casrc
 .br
-stat.png
+aMule\-online\-sign.png (ou bien .jpg, lorsque \fB\-o\fP / \fB\-\-picture\fP est
+utilisé et que GD est disponible)
 .br
-tmp.html
+aMule\-online\-sign.html (lorsque \fB\-p\fP / \fB\-\-html\fP est utilisé)
 .SH "RAPPORTER DES BOGUES"
 Veuillez rapporter les bogues sur notre forum
 (\fIhttps://github.com/amule\-org/amule/discussions\fP), ou sur notre traqueur
