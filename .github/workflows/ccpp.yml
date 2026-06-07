@@ -102,12 +102,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: restore ccache
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
           restore-keys: ${{ runner.os }}-${{ matrix.build_type }}-ccache-
-          save-always: true
       - name: install deps
         run: |
           sudo apt-get update
@@ -124,6 +123,12 @@ jobs:
             ${{ env.cmake_ubuntu_config_flags }}
       - name: make
         run: cmake --build build
+      - name: save ccache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
       - name: run tests
         run: ctest ${{ env.ctest_flags }}
 
@@ -137,12 +142,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: restore ccache
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
           restore-keys: ${{ runner.os }}-${{ matrix.build_type }}-ccache-
-          save-always: true
       - name: install deps
         run: |
           brew update
@@ -165,6 +169,12 @@ jobs:
             ${{ env.cmake_macos_config_flags }}
       - name: make
         run: cmake --build build
+      - name: save ccache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
       - name: run tests
         run: ctest ${{ env.ctest_flags }}
 
@@ -181,12 +191,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: restore ccache
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
           restore-keys: ${{ runner.os }}-${{ matrix.build_type }}-ccache-
-          save-always: true
       - name: set up MSYS2 mingw-w64
         uses: msys2/setup-msys2@v2
         with:
@@ -201,5 +210,11 @@ jobs:
             ${{ env.cmake_mingw_w64_config_flags }}
       - name: make
         run: cmake --build build
+      - name: save ccache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
       - name: run tests
         run: ctest ${{ env.ctest_flags }}
