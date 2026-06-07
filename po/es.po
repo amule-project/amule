@@ -270,10 +270,10 @@ msgid ""
 "be run. Please install the package containing aMule web server, or build "
 "aMule from source with -DBUILD_WEBSERVER=YES and install it."
 msgstr ""
-"Ha solicitado ejecutar el servidor web al inicio pero no se ha podido "
-"iniciar el binario de amuleweb. Por favor, instale el paquete que contenga "
-"el servidor web de aMule, o compile aMule usando -DBUILD_WEBSERVER=YES y "
-"ejecute make install"
+"Ha solicitado ejecutar el servidor web al inicio pero no se puede ejecutar "
+"el binario amuleweb. Por favor, instale el paquete que contiene el servidor "
+"web de aMule, o compile aMule desde el código fuente con -DBUILD_WEBSERVER="
+"YES e instálelo."
 
 #: src/amule.cpp:948
 #, c-format
@@ -8094,7 +8094,7 @@ msgstr "Procesando la solicitud [original]: "
 
 #: src/webserver/src/WebServer.cpp:1908
 msgid "Refusing to read `pass` from URL query string\n"
-msgstr "Rechazando leer `pass` en la URL de la petición\n"
+msgstr "Se rechaza leer `pass` de la cadena de consulta de la URL\n"
 
 #: src/webserver/src/WebServer.cpp:1914
 msgid "No password specified, login will not be allowed."
@@ -8132,15 +8132,15 @@ msgstr "Procesando solicitud [redirigida]: "
 
 #: packaging/windows/installer_strings.c:36
 msgid "aMule (required)"
-msgstr "aMule (requerido)"
+msgstr "aMule (obligatorio)"
 
 #: packaging/windows/installer_strings.c:37
 msgid "Desktop shortcut"
-msgstr "Acceso directo de escritorio"
+msgstr "Acceso directo en el escritorio"
 
 #: packaging/windows/installer_strings.c:38
 msgid "Start aMule when I log in"
-msgstr "Iniciar aMule automáticamente al iniciar sesión"
+msgstr "Iniciar aMule al iniciar sesión"
 
 #: packaging/windows/installer_strings.c:39
 msgid "Uninstall"
@@ -8149,22 +8149,22 @@ msgstr "Desinstalar"
 #: packaging/windows/installer_strings.c:40
 msgid "Remove user data (config, ED2K servers, Kad nodes, partfiles)"
 msgstr ""
-"Borrar datos de usuario (configuración, servidores ED2K, nodos Kad, archivos "
-"de partes)"
+"Eliminar datos de usuario (configuración, servidores ED2K, nodos Kad, "
+"archivos parciales)"
 
 #: packaging/windows/installer_strings.c:43
 msgid "aMule application files (required)."
-msgstr "Archivos de la aplicación aMule (requerido)."
+msgstr "Archivos de la aplicación aMule (obligatorio)."
 
 #: packaging/windows/installer_strings.c:44
 msgid "Place an aMule shortcut on the desktop."
-msgstr "Colocar un acceso directo a aMule en el escritorio."
+msgstr "Crea un acceso directo de aMule en el escritorio."
 
 #: packaging/windows/installer_strings.c:45
 msgid ""
 "Launch aMule automatically when the current user logs in (per-user setting)."
 msgstr ""
-"Arrancar aMule automáticamente cuando el usuario actual inicie sesión "
+"Inicia aMule automáticamente cuando el usuario actual inicia sesión "
 "(configuración por usuario)."
 
 #: packaging/windows/installer_strings.c:46
@@ -8172,9 +8172,9 @@ msgid ""
 "Remove aMule application files, Start Menu / desktop shortcuts, autostart "
 "Run-key entry, and Add/Remove Programs entry (required)."
 msgstr ""
-"Borrar archivos de la aplicación aMule, acceso directos del Menú Inicio / "
-"Escritorio, entrada de arranque automático, y entrada del Menú de Agregar o "
-"quitar programas (requerido)."
+"Elimina los archivos de la aplicación aMule, los accesos directos del menú "
+"Inicio y del escritorio, la entrada de inicio automático del registro (clave "
+"Run) y la entrada de Agregar o quitar programas (obligatorio)."
 
 #: packaging/windows/installer_strings.c:47
 msgid ""
@@ -8182,29 +8182,29 @@ msgid ""
 "server list, Kad nodes, partfiles, IP filters, friends list). Leave "
 "unchecked to keep your settings."
 msgstr ""
-"Borrar permanentemente %APPDATA%\\aMule del usuario actual (aMule.conf, "
-"lista de servidores ED2K, nodos Kad, archivos de partes, filtros de IP, "
-"lista de amigos). Dejar sin marcar para conservar la configuración."
+"Elimina permanentemente %APPDATA%\\aMule del usuario actual (aMule.conf, "
+"lista de servidores ED2K, nodos Kad, archivos parciales, filtros de IP, "
+"lista de amigos). Déjelo sin marcar para conservar su configuración."
 
 #: packaging/windows/installer_strings.c:53
 msgid ""
 "aMule appears to be running from $INSTDIR.\r\n"
 "Please close aMule (and aMuleD / aMuleGUI) and try again."
 msgstr ""
-"aMule parece estar corriendo desde $INSTDIR.\r\n"
-"Por favor cierre aMule (y aMuleD / aMuleGUI) y pruebe de nuevo."
+"aMule parece estar en ejecución desde $INSTDIR.\r\n"
+"Por favor, cierre aMule (y aMuleD / aMuleGUI) e inténtelo de nuevo."
 
 #: packaging/windows/installer_strings.c:54
 msgid ""
 "aMule daemon (amuled.exe) appears to be running from $INSTDIR.\r\n"
 "Please stop it and try again."
 msgstr ""
-"El servicio aMule (amuled.exe) parece estar corriendo desde $INSTDIR.\r\n"
-"Por favor, párelo y pruebe de nuevo."
+"El demonio de aMule (amuled.exe) parece estar en ejecución desde $INSTDIR."
+"\r\nPor favor, deténgalo e inténtelo de nuevo."
 
 #: packaging/windows/installer_strings.c:55
 msgid "Removing previous aMule installation at $0..."
-msgstr "Borrando instalación previa de aMule en $0..."
+msgstr "Eliminando la instalación anterior de aMule en $0..."
 
 #: packaging/windows/installer_strings.c:56
 msgid ""
@@ -8212,16 +8212,17 @@ msgid ""
 "Please close any running aMule processes and try again, or uninstall the "
 "previous version manually first."
 msgstr ""
-"No se puedo borrar la instalación previa de aMule en $0.\r\n"
-"Por favor, cierre cualquier proceso aMule en ejecución y pruebe de nuevo, o "
-"desinstale la versión previa manualmente."
+"No se pudo eliminar la instalación anterior de aMule en $0.\r\n"
+"Por favor, cierre los procesos de aMule en ejecución e inténtelo de nuevo, o "
+"desinstale primero la versión anterior manualmente."
 
 #: packaging/windows/installer_strings.c:57
 msgid ""
 "aMule appears to be running. Please close it and re-run the uninstaller."
 msgstr ""
-"aMule parece estar corriendo. Por favor, ciérrelo y relance el desinstalador."
+"aMule parece estar en ejecución. Por favor, ciérrelo y vuelva a ejecutar el "
+"desinstalador."
 
 #: packaging/windows/installer_strings.c:58
 msgid "Removing user data at $APPDATA\\aMule..."
-msgstr "Borrando datos de usuario en $APPDATA\\aMule..."
+msgstr "Eliminando los datos de usuario en $APPDATA\\aMule..."
