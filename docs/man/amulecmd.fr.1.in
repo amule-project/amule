@@ -30,7 +30,7 @@ amulecmd \- Programme de contrôle d'aMule en mode texte
 \fBamulecmd\fP est un client en mode texte pour contrôler aMule.
 .TP 
 \fB[ \-h\fP \fI<hôte>\fP, \fB\-\-host\fP=\fI<hôte>\fP \fB]\fP
-Hôte où aMule fonctionne (par défaut : \fI127.0.0.1\fP).  \fI<hôte>\fP
+Hôte où aMule fonctionne (par défaut : \fI127.0.0.1\fP).  \fI<hôte>\fP
 peut être une adresse IP ou un nom DNS.
 .TP 
 \fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
@@ -66,24 +66,30 @@ l'invite de commande d'amulecmd et quitter.
 Créer un fichier de configuration basé sur \fI<chemin>\fP, qui doit
 pointer sur un fichier de configuration d'aMule valide, et quitter ensuite.
 .TP 
-.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+.B_untranslated [ \-\-force\-zlib ]\fR
+Forcer la compression ZLIB sur le lien Connexion Externe quelle que soit
+l'adresse IP de destination.  Utile lorsque le serveur est accessible via un
+tunnel VPN qui se résout en une adresse IP du réseau local et que
+l'heuristique ignorerait autrement la compression.
+.TP 
+.B_untranslated [ \-\-version ]\fR
 Affiche le numéro de la version actuelle.
 .TP 
-.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+.B_untranslated [ \-\-help ]\fR
 Affiche une courte description d'utilisation.
 .SH COMMANDES
 Toutes les commandes sont insensibles à la casse.
 .SS_untranslated Add \fI<eD2k-link>\fP | \fI<magnet-link>\fP
 Ajoute un lien eD2k ou magnet au noyau.
 
-Le lien eD2k à ajouter peut être :
+Le lien eD2k à ajouter peut être :
 .RS 3
 .IP \(bu 2
 un lien fichier (ed2k://|fichier|…), il sera ajouté à la file des
-téléchargements ;
+téléchargements ;
 .IP \(bu 2
-un lien serveur (ed2k://|serveur|…), il sera ajouté à la liste des serveurs
-;
+un lien serveur (ed2k://|serveur|…), il sera ajouté à la liste des
+serveurs ;
 .IP \(bu 2
 un lien de liste de serveurs, dans ce cas tous les serveurs dans la liste
 seront ajoutés à la liste des serveurs.
@@ -109,7 +115,7 @@ déconnecter d'un réseau spécifié.
 Commencer à télécharger un fichier.
 
 Le \fI<numéro>\fP d'un fichier à partir de la dernière recherche doit
-être donné.  Exemple : `download 12' va commencer à télécharger le fichier
+être donné.  Exemple : `download 12' va commencer à télécharger le fichier
 avec le numéro 12 de la recherche précédente.
 .SS_untranslated Exit
 Déconnecter d'amule/amuled et quitter amulecmd.
@@ -135,7 +141,7 @@ Interrompt le téléchargement spécifié par le \fI<hachage>\fP ou le
 Définir la priorité d'un téléchargement spécifié par le \fI<hachage>\fP
 ou le \fI<numéro>\fP.
 
-Valeurs disponibles pour la \fI<priorité>\fP :
+Valeurs disponibles pour la \fI<priorité>\fP :
 .RS
 .IP Auto 10
 Priorité automatique.
@@ -169,10 +175,10 @@ Reprend le téléchargement spécifié par le \fI<hachage>\fP ou le
 \fI<numéro>\fP. Pour obtenir la valeur utiliser \fBshow\fP.
 .SS_untranslated Search \fI<type>\fP [\fI<filters>\fP] \fI<keyword>\fR
 Fait une recherche du \fI<mot\-clef>\fP donné. Un type de recherche et
-d'un mot\-clef de recherche sont obligatoires pour le faire. Exemple :
+d'un mot\-clef de recherche sont obligatoires pour le faire. Exemple :
 `search kad amule' effectue une recherche kad pour `amule'.
 
-Types de recherche disponibles :
+Types de recherche disponibles :
 .RS
 .IP Global 10
 Effectue une recherche globale.
@@ -183,7 +189,7 @@ Effectue une recherche locale.
 .RE
 .PP
 Des filtres facultatifs peuvent être placés avant, après ou intercalés avec
-le(s) mot(s)\-clé(s) de recherche :
+le(s) mot(s)\-clé(s) de recherche :
 .RS
 .IP "\fB\-\-type\fR \fI<Audio|Video|Image|Doc|Pro|Arc|Iso>\fR" 4
 Restreindre les résultats au type de fichier indiqué.
@@ -193,13 +199,13 @@ Restreindre les résultats à une extension de fichier spécifique (par ex.\ \fI
 Nombre minimum de sources qu'un résultat doit indiquer.
 .IP "\fB\-\-min\-size\fR \fI<N[KMG]>\fR" 4
 Taille minimale du fichier à renvoyer. Les suffixes utilisent des
-multiplicateurs binaires (K = 1024, M = K\(mu1024, G = M\(mu1024) ;
+multiplicateurs binaires (K = 1024, M = K\(mu1024, G = M\(mu1024) ;
 l'absence de suffixe signifie octets.
 .IP "\fB\-\-max\-size\fR \fI<N[KMG]>\fR" 4
 Taille maximale du fichier à renvoyer. Mêmes suffixes que \fB\-\-min\-size\fP.
 .RE
 .PP
-Exemple : `search global linux iso \-\-type Iso \-\-min\-size 100M' renvoie des
+Exemple : `search global linux iso \-\-type Iso \-\-min\-size 100M' renvoie des
 résultats pour \(lqlinux iso\(rq de type de fichier Iso d'au moins 100 MiB.
 .SS_untranslated Set \fI<what>\fR
 Définit une valeur compte tenu des préférences.
@@ -252,14 +258,14 @@ Pour toutes les options prenant en paramètre un \fI<chemin>\fP, si le
 fichier), alors il sera considéré comme étant dans le répertoire de
 configuration d'aMule, \fI~/.aMule\fP.
 .SS Langues
-Le paramètre \fI<lang>\fP pour \fB\-l\fP l'option a la forme suivante :
+Le paramètre \fI<lang>\fP pour \fB\-l\fP l'option a la forme suivante :
 \fIlang\fP[\fB_\fP\fILANG\fP][\fB.\fP\fIencoding\fP][\fB@\fP\fImodifier\fP] où \fIlang\fP est la
 langue principale, \fILANG\fP est le dialecte, \fIencoding\fP est le jeu de
 caractères défini à utiliser et \fImodifier\fP permet à l'utilisateur de
 sélectionner une instance spécifique des données de localisation dans une
 seule catégorie.
 
-Par exemple, les chaînes de caractères suivantes sont valables :
+Par exemple, les chaînes de caractères suivantes sont valables :
 .RS
 .RB_untranslated de
 .br
@@ -285,7 +291,7 @@ sera celle du système d'exploitation.
 .SH FICHIERS
 ~/.aMule/remote.conf
 .SH EXEMPLE
-Typiquement amulecmd sera lancée la première fois ainsi :
+Typiquement amulecmd sera lancée la première fois ainsi :
 .PP
 \fBamulecmd\fP \fB\-h\fP \fInom de l'hôte\fP \fB\-p\fP \fIport EC\fP \fB\-P\fP \fImot de passe EC\fP
 \fB\-w\fP
@@ -295,7 +301,7 @@ ou
 \fBamulecmd\fP \fB\-\-create\-config\-from\fP=\fI/home/username/.aMule/amule.conf\fP
 .PP
 Cela sauvegardera les options dans \fI$HOME/.aMule/remote.conf\fP, et il
-suffira de taper plus tard :
+suffira de taper plus tard :
 
 .B_untranslated amulecmd
 

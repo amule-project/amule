@@ -14,6 +14,9 @@ amulegui \- Grafik arayüzlü aMule yönetme programı
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
 .RB_untranslated [ \-s ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
+.RB_untranslated [ \-d ]
+.RB_untranslated [ \-i ]
 [\fB\-t\fP \fI<sayı>\fP]
 
 .B_untranslated amulegui
@@ -44,8 +47,23 @@ Yapılandırmayı varsayılan değerlere sıfırlar.
 .B_untranslated [ \-s\fR, \fB\-\-skip ]\fR
 Bağlantı diyaloğunu geç.
 .TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Kullanıcı oturum açtığında amulegui'nin başlatılmasını etkinleştirir veya
+devre dışı bırakır.  İşletim sistemine has depo otomatik olarak seçilir:
+Windows için kayıt defteri (registry) Çalıştırma anahtarı, macOS için
+LaunchAgent, GNU/Linux için XDG \fI.desktop\fP otomatik başlatma unsuru.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
+Ölümcül istisnaları yakalama ve doğrulamalarda çıkmayı engellemez.  Otomatik
+yeniden başlatmayı engelleyen, normalde modal olan onay diyalog kutusunun
+bulunmadığı, başsız/denetimli kurulumlar (systemd, watchdog betikleri) için
+kullanışlıdır.
+.TP 
+.B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
+Standart girdiyi (stdin) devre dışı bırakmaz.
+.TP 
 \fB[ \-t\fP, \fB\-\-category\fP=\fI<sayı>\fP \fB]\fP
-\fI<sayı>\fPya gönderilen eD2k bağlantılarının kategorilerini belirler.
+\fI<sayı>\fPya gönderilen eD2k bağlantılarının kategorilerini belirler
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
 Kısa bir kullanım açıklaması görüntüler.

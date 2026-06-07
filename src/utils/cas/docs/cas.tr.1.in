@@ -22,13 +22,18 @@ cas \- c aMule istatistikleri
 ayarlarında "Çevrim İçi İmza" seçeneğini etkinleştirmeniz gerekmektedir.
 .TP 
 .B_untranslated [ \-o\fR, \fB\-\-picture\fR, \fB\-P ]\fR
-Çevrimiçi imza resmini yazar. Yazılacağı konumu belirtmek için İsteğinize
-bağlı olarak bu seçeneğe \fI=<YOL>\fP ekleyebilirsiniz.
+Çevrim içi imza resmini yazar.  Uzun biçimli \fB\-\-picture\fP çıktı konumunu
+belirtmek için seçime dayalı bir \fI=<YOL>\fP kabul eder, kısa biçimli
+\fB\-o\fP / \fB\-P\fP kendisini hemen izleyen bir \fI<YOL>\fP argümanı
+gerektirmez (\fB\-P\fP ve \fB\-o\fP argümansız bir seçenektir.   (\fI__GD__\fP) içinde
+derlenmiş GD desteğine ihtiyaç duyar; aksi takdirde bu seçenek sessizce
+görmezden gelinir.
 .TP 
 .B_untranslated [ \-p\fR, \fB\-\-html\fR, \fB\-H ]\fR
-Resim ve istatistikleri bir HTML sayfasına yazar. Yazılacağı konumu
-belirtmek için İsteğinize bağlı olarak bu seçeneğe \fI=<YOL>\fP
-ekleyebilirsiniz.
+İstatistikler ve resim içeren HTML sayfası.  Uzun biçimli \fB\-\-html\fP çıktı
+konumunu belirtmek için seçime dayalı bir \fI=<YOL>\fP kabul eder, kısa
+biçimli \fB\-p\fP / \fB\-H\fP kendisini hemen izleyen bir \fI<YOL>\fP argümanı
+gerektirmez (\fB\-H\fP ve \fB\-p\fP argümansız bir seçenektir.
 .TP 
 \fB[ \-c\fP \fI<yol>\fP, \fB\-\-config\-dir\fP=\fI<yol>\fP \fB]\fP
 Yapılandırmayı home yerine \fI<yol>\fPdan oku
@@ -43,9 +48,10 @@ yazılmıştır
 .SH DOSYALAR
 ~/.aMule/casrc
 .br
-stat.png
+aMule\-online\-sign.png (veya .jpg, \fB\-o\fP / \fB\-\-picture\fPkullanıldığında ve GD
+mevcut olduğunda)
 .br
-tmp.html
+aMule\-online\-sign.html (\fB\-p\fP / \fB\-\-html\fP kullanıldığında)
 .SH GERİBİLDİRİM
 Hataları bildirmek için forumumuzu
 (\fIhttps://github.com/amule\-org/amule/discussions\fP) ya da hata takipçimizi
@@ -59,4 +65,4 @@ dağıtılmaktadır.
 .B_untranslated amule\fR(1), \fBwxcas\fR(1)
 .SH YAZAN
 Bu kılavuz sayfası Vollstrecker <amule@vollstreckernet.de>
-tarafından yazılmıştır.
+tarafından yazılmıştır

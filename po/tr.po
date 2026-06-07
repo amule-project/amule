@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-07 14:34+0200\n"
-"PO-Revision-Date: 2026-06-05 18:07+0300\n"
+"PO-Revision-Date: 2026-06-07 18:58+0300\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
 "Language: tr\n"
@@ -254,16 +254,14 @@ msgid "web server running on pid %d"
 msgstr "web sunucusu pid %d üzerinde çalışıyor"
 
 #: src/amule.cpp:865
-#, fuzzy
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or build "
 "aMule from source with -DBUILD_WEBSERVER=YES and install it."
 msgstr ""
-"Web sunucusunun başlangıçta çalışmasını istediniz. Fakat amuleweb "
-"çalıştırılamıyor. Lütfen, aMule web sunucusunu içeren paketi yükleyin veya "
-"aMule' yi --enable-webserver komutu ile derleyip make install komutunu "
-"çalıştırın"
+"Web sunucusunun başlangıçta çalışmasını istediniz, fakat amuleweb ikilisi "
+"çalıştırılamıyor. Lütfen aMule web sunucusunu içeren paketi yükleyin veya "
+"aMule' yi  -DBUILD_WEBSERVER=YES seçeneği ile derleyin ve kurun."
 
 #: src/amule.cpp:948
 #, c-format
@@ -2890,7 +2888,7 @@ msgstr "Çevrim içi İmza: Etkin"
 
 #: src/MuleTrayIcon.cpp:880
 msgid "Online Signature: Disabled"
-msgstr "Çevrim içi İmza: Devre dışı"
+msgstr "Çevrim içi İmza: devre dışı"
 
 #: src/MuleTrayIcon.cpp:887 src/Statistics.cpp:781
 #, c-format
@@ -3983,7 +3981,7 @@ msgstr "Gönderme Sıra Boyutu: 5000 kullanıcı"
 
 #: src/muuli_wdr.cpp:1746
 msgid "Server connection refresh interval: Disable"
-msgstr "Sunucu bağlantısı yenileme sıklığı :Devre dışı"
+msgstr "Sunucu bağlantısı yenileme sıklığı: devre dışı"
 
 #: src/muuli_wdr.cpp:1750
 msgid "Disable computer's timed standby mode"
@@ -7971,7 +7969,7 @@ msgstr "İstem işleniyor [özgün]: "
 
 #: src/webserver/src/WebServer.cpp:1908
 msgid "Refusing to read `pass` from URL query string\n"
-msgstr ""
+msgstr "URL sorgu dizesinden `pass` unsurunun okunması reddediliyor.\n"
 
 #: src/webserver/src/WebServer.cpp:1914
 msgid "No password specified, login will not be allowed."
@@ -8007,45 +8005,49 @@ msgstr "İstem işleniyor [yönlendirilmiş]: "
 
 #: packaging/windows/installer_strings.c:36
 msgid "aMule (required)"
-msgstr ""
+msgstr "aMule (gerekli)"
 
 #: packaging/windows/installer_strings.c:37
 msgid "Desktop shortcut"
-msgstr ""
+msgstr "Masaüstü kısayolu"
 
 #: packaging/windows/installer_strings.c:38
-#, fuzzy
 msgid "Start aMule when I log in"
-msgstr "aMule'ü oturum açtığımda otomatik olarak başlat"
+msgstr "aMule'ü oturum açtığımda başlat"
 
 #: packaging/windows/installer_strings.c:39
-#, fuzzy
 msgid "Uninstall"
-msgstr "Kur"
+msgstr "Kurulumu kaldır"
 
 #: packaging/windows/installer_strings.c:40
 msgid "Remove user data (config, ED2K servers, Kad nodes, partfiles)"
 msgstr ""
+"Kullanıcı verilerini sil (yapılandırma, ED2K sunucuları, Kad düğümleri, "
+"kısmi dosyalar)"
 
 #: packaging/windows/installer_strings.c:43
-#, fuzzy
 msgid "aMule application files (required)."
-msgstr "aMule birleşimi başarısız"
+msgstr "aMule uygulama dosyaları (gerekli)."
 
 #: packaging/windows/installer_strings.c:44
 msgid "Place an aMule shortcut on the desktop."
-msgstr ""
+msgstr "Masaüstünde bir aMule kısayolu oluştur."
 
 #: packaging/windows/installer_strings.c:45
 msgid ""
 "Launch aMule automatically when the current user logs in (per-user setting)."
 msgstr ""
+"Güncel kullanıcı oturum açtığında aMule'ü otomatik olarak başlat (kullanıcı "
+"başı ayar)."
 
 #: packaging/windows/installer_strings.c:46
 msgid ""
 "Remove aMule application files, Start Menu / desktop shortcuts, autostart "
 "Run-key entry, and Add/Remove Programs entry (required)."
 msgstr ""
+"aMule uygulama dosyalarını, Başlat Menüsü / masaüstü kısayollarını, otomatik "
+"başlatma çalıştırma anahtar unsurunu, Program Ekle/Kaldır unsurunu kaldır "
+"(gerekli)."
 
 #: packaging/windows/installer_strings.c:47
 msgid ""
@@ -8053,22 +8055,30 @@ msgid ""
 "server list, Kad nodes, partfiles, IP filters, friends list). Leave "
 "unchecked to keep your settings."
 msgstr ""
+"Güncel kullanıcı için %APPDATA%\\aMule unsurunu (aMule.conf, ED2K sunucu "
+"listesi, Kad düğümleri, kısmi dosyalar, IP filtreleri, arkadaş listesi) "
+"daimi olarak sil. Ayarlarınızı muhafaza etmek için şıkkı işaretlemeyin."
 
 #: packaging/windows/installer_strings.c:53
 msgid ""
 "aMule appears to be running from $INSTDIR.\r\n"
 "Please close aMule (and aMuleD / aMuleGUI) and try again."
 msgstr ""
+"aMule, $INSTDIR. konumundan çalışıyor gibi görünüyor.\r\n"
+"Lütfen aMule'ü (ve aMuleD ile aMuleGUI programlarını) kapatın ve tekrar "
+"deneyin."
 
 #: packaging/windows/installer_strings.c:54
 msgid ""
 "aMule daemon (amuled.exe) appears to be running from $INSTDIR.\r\n"
 "Please stop it and try again."
 msgstr ""
+"aMule daemon'u (amuled.exe) $INSTDIR konumundan çalışıyor gibi görünüyor.\r\n"
+"Lütfen onu durdurup tekrar deneyin."
 
 #: packaging/windows/installer_strings.c:55
 msgid "Removing previous aMule installation at $0..."
-msgstr ""
+msgstr "$0 konumundaki önceki aMule kurulumu kaldırılıyor…"
 
 #: packaging/windows/installer_strings.c:56
 msgid ""
@@ -8076,12 +8086,17 @@ msgid ""
 "Please close any running aMule processes and try again, or uninstall the "
 "previous version manually first."
 msgstr ""
+"$0 konumundaki önceki aMule kurulumu kaldırılamadı.\r\n"
+"Lütfen çalışmakta olan tüm aMule süreçlerini kapatın ve tekrar deneyin, veya "
+"evvela önceki kurulumu el ile kaldırın."
 
 #: packaging/windows/installer_strings.c:57
 msgid ""
 "aMule appears to be running. Please close it and re-run the uninstaller."
 msgstr ""
+"aMule çalışmakta gibi görünüyor. Lütfen onu kapatıp kurulum programını "
+"tekrar başlatın."
 
 #: packaging/windows/installer_strings.c:58
 msgid "Removing user data at $APPDATA\\aMule..."
-msgstr ""
+msgstr "Kullanıcı verileri $APPDATA\\aMule konumunda kaldırılıyor…"

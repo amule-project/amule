@@ -29,15 +29,18 @@ les liens.
 Utiliser le fichier de config \fI<chemin>\fP à la place de celui par
 défaut
 .TP 
-\fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
-Définir la catégorie pour les liens eD2k passé à \fI<num>\fP
+\fB[ \-t\fP \fI<num>\fP, \fB\-\-category\fP \fI<num>\fP \fB]\fP
+Définir la catégorie pour les liens eD2k transmis à \fI<num>\fP.
+Contrairement à \fB\-\-config\-dir\fP, l'analyseur lit la valeur en tant que
+prochain argument et n'accepte pas la syntaxe
+\fB\-\-category\fP=\fI<num>\fP.
 .TP 
 .B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
-Charge tous les liens trouvés dans l'emulecollection donnée dans
+Charge tous les liens trouvés dans l'emulecollection transmise en tant que
 \fI<lien\-eD2k>\fP
 .TP 
 .B_untranslated [ \-l\fR, \fB\-\-list ]\fR
-Liste tous les liens trouvés dans l'emulecollection donnée dans
+Liste tous les liens trouvés dans l'emulecollection transmise en tant que
 \fI<lien\-eD2k>\fP
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
@@ -49,19 +52,19 @@ Affiche le numéro de la version actuelle.
 \fB[ lien eD2k ]\fP
 Ajoute un lien eD2k au noyau.
 .PP
-Le lien eD2k à ajouter peut être :
+Le lien eD2k à ajouter peut être :
 .RS 3
 .IP \(bu 2
 un lien fichier (ed2k://|fichier|…), il sera ajouté à la file des
-téléchargements ;
+téléchargements ;
 .IP \(bu 2
-un lien serveur (ed2k://|serveur|…), il sera ajouté à la liste des serveurs
-;
+un lien serveur (ed2k://|serveur|…), il sera ajouté à la liste des
+serveurs ;
 .IP \(bu 2
 un lien de liste de serveurs, dans ce cas tous les serveurs dans la liste
-seront ajoutés à la liste des serveurs ;
+seront ajoutés à la liste des serveurs ;
 .IP \(bu 2
-un lien magnet ;
+un lien magnet ;
 .IP \(bu 2
 un fichier de collection emule.
 .RE

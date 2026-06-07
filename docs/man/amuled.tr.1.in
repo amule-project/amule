@@ -16,6 +16,7 @@ amuled \- her platformda çalışan eMule p2p istemcisi \- daemon sürümü
 .RB_untranslated [ \-e ]
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
 [\fB\-w\fP \fI<yol>\fP]
 .RB_untranslated [ \-d ]
 .RB_untranslated [ \-i ]
@@ -47,6 +48,12 @@ Günlük mesajlarını standart çıktıya gönderir.
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 Yapılandırmayı varsayılan değerlere sıfırlar.
 .TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Kullanıcı oturum açtığında amuled'nin başlatılmasını etkinleştirir veya
+devre dışı bırakır.  İşletim sistemine has depo otomatik olarak seçilir:
+Windows için kayıt defteri (registry) Çalıştırma anahtarı, macOS için
+LaunchAgent, GNU/Linux için XDG \fI.desktop\fP otomatik başlatma unsuru.
+.TP 
 \fB[ \-w\fP \fI<yol>\fP, \fB\-\-use\-amuleweb\fP=\fI<yol>\fP \fB]\fP
 amuleweb çalıştırılabilir dosyasının konumunu \fI<yol>\fP olarak
 belirler.
@@ -60,8 +67,8 @@ kullanışlıdır.
 .B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
 Standart girdiyi (stdin) devre dışı bırakmaz.
 .TP 
-\fB[ \-t\fP, \fB\-\-category\fP=\fI<sayı>\fP \fB]\fP
-\fI<sayı>\fPya gönderilen eD2k bağlantılarının kategorilerini belirler.
+\fB[ \-t\fP \fI<num>\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
+\fI<sayı>\fPya gönderilen eD2k bağlantılarının kategorilerini belirler
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR
 Geçerli sürüm numarasını görüntüler.
@@ -99,4 +106,4 @@ dağıtılmaktadır.
 .B_untranslated alcc\fR(1), \fBamule\fR(1), \fBamulecmd\fR(1), \fBamulegui\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1)
 .SH YAZAN
 Bu kılavuz sayfası Vollstrecker <amule@vollstreckernet.de>
-tarafından yazılmıştır.
+tarafından yazılmıştır

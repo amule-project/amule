@@ -64,10 +64,16 @@ Komut satırı seçeneklerini yapılandırma dosyasına yazıp çıkar
 \fI<yol>\fPa dayalı yapılandırma dosyası yaratır ve çıkar. Yolun
 geçerli bir aMule dosyasına işaret etmesi gerekir.
 .TP 
-.B_untranslated [ \-v\fR, \fB\-\-version ]\fR
+.B_untranslated [ \-\-force\-zlib ]\fR
+Seçilen IP adresinin konumuna bakılmaksızın Harici Bağlantı için ZLIB
+sıkıştırmasını zorlar.  Sunucuya, bir LAN IP adresine çözümlenen VPN tüneli
+üzerinden erişilebildiğinde ve aksi takdirde sezgisel algoritmanın
+sıkıştırmayı atlayacağı durumlarda kullanışlıdır.
+.TP 
+.B_untranslated [ \-\-version ]\fR
 Geçerli sürüm numarasını görüntüler.
 .TP 
-.B_untranslated [ \-h\fR, \fB\-\-help ]\fR
+.B_untranslated [ \-\-help ]\fR
 Kısa bir kullanım açıklaması görüntüler.
 .SH KOMUTLAR
 Tüm komutlar harf büyüklüğüne duyarsızdır.
@@ -301,4 +307,4 @@ dağıtılmaktadır.
 .B_untranslated amule\fR(1), \fBamuled\fR(1)
 .SH YAZAN
 Bu kılavuz sayfası Vollstrecker <amule@vollstreckernet.de>
-tarafından yazılmıştır.
+tarafından yazılmıştır

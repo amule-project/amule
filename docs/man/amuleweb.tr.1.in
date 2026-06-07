@@ -87,7 +87,7 @@ numarasıdır (varsayılan: \fI4711\fP).
 .br
 UPnP'yi etkinleştirir.
 .TP 
-\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP \fI<port>\fP \fB]\fP
+\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP=\fI<port>\fP \fB]\fP
 UPnP port numarası.
 .TP 
 .B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
@@ -124,6 +124,12 @@ PHP sayfalarını her sorguda yeniden derler.
 \fB[ \-\-create\-config\-from\fP=\fI<yol>\fP \fB]\fP
 \fI<yol>\fPa dayalı yapılandırma dosyası yaratır ve çıkar. Yolun
 geçerli bir aMule dosyasına işaret etmesi gerekir.
+.TP 
+.B_untranslated [ \-\-force\-zlib ]\fR
+Seçilen IP adresinin konumuna bakılmaksızın Harici Bağlantı için ZLIB
+sıkıştırmasını zorlar.  Sunucuya, bir LAN IP adresine çözümlenen VPN tüneli
+üzerinden erişilebildiğinde ve aksi takdirde sezgisel algoritmanın
+sıkıştırmayı atlayacağı durumlarda kullanışlıdır.
 .TP 
 .B_untranslated [ \-\-help ]\fR
 Kısa bir kullanım açıklaması görüntüler.
@@ -215,4 +221,4 @@ dağıtılmaktadır.
 .B_untranslated amule\fR(1), \fBamulecmd\fR(1)
 .SH YAZAN
 Bu kılavuz sayfası Vollstrecker <amule@vollstreckernet.de>
-tarafından yazılmıştır.
+tarafından yazılmıştır
