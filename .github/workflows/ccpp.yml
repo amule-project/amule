@@ -18,6 +18,7 @@ env:
   cmake_ubuntu_deps: |-
     binutils-dev \
     build-essential \
+    ccache \
     cmake \
     gettext \
     libboost-all-dev \
