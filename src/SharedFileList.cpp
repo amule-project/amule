@@ -1024,8 +1024,11 @@ void CSharedFileList::SendListToServer(){
 	// Limits for the server.
 
 	CServer* server = theApp->serverconnect->GetCurrentServer();
+	if (!server) {
+		return;
+	}
 
-	uint32 limit = server ? server->GetSoftFiles() : 0;
+	uint32 limit = server->GetSoftFiles();
 	if( limit == 0 || limit > 200 ) {
 		limit = 200;
 	}
