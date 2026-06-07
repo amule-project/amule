@@ -13,10 +13,11 @@ amule \- der alle\-Plattformen eMule p2p Client
 [\fB\-c\fP \fI<Pfad>\fP] [\fB\-geometry\fP \fI<geom>\fP]
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
 [\fB\-w\fP \fI<Pfad>\fP]
 .RB_untranslated [ \-d ]
 .RB_untranslated [ \-i ]
-[\fB\-t\fP \fI<num>\fP] [\fIeD2k\-Verweis\fP]
+[\fB\-t\fP \fI<Num>\fP] [\fIeD2k\-Verweis\fP]
 
 .B_untranslated amule
 .RB_untranslated [ \-v ]
@@ -39,6 +40,12 @@ Schreibt Log\-Meldungen auf die Standardausgabe.
 .TP 
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 Setzt die Konfiguration auf die Standardwerte zurück.
+.TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Aktiviert bzw. deaktiviert den automatischen Start von aMule beim
+Benutzerlogin, beendet danach.  Der betriebssystemspezifische Speicherort
+wird automatisch ausgewählt: Windows Registrierung run Schlüssel, macOS
+LaunchAgent, Linux XDG \fI.desktop\fP Autostart Eintrag.
 .TP 
 \fB[ \-w\fP \fI<Pfad>\fP, \fB\-\-use\-amuleweb\fP=\fI<Pfad>\fP \fB]\fP
 Setzt den Ort der ausführbaren Datei von amuleweb auf \fI<Pfad>\fP.
@@ -93,8 +100,8 @@ Bugtracker (\fIhttps://github.com/amule\-org/amule/issues\fP). Bitte meldet uns
 weder Fehler per E\-Mail, noch auf unsere Mailingliste oder direkt an unsere
 Teammitglieder.
 .SH COPYRIGHT
-aMule und alle seine zugehörigen Anwendungen werden verteilt unter der GNU
-General Public License
+aMule und alle seine zugehörigen Anwendungen werden unter der GNU General
+Public License verteilt.
 .SH "SIEHE AUCH"
 .B_untranslated alc\fR(1), \fBalcc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamulegui\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1)
 .SH VERFASSER

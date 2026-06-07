@@ -87,11 +87,11 @@ HTTP Port des Webservers. Der Port der im Browser angegeben werden muss
 .br
 Aktiviere UPnP.
 .TP 
-\fB[ \-U\fP \fI<Port>\fP, \fB\-\-upnp\-port\fP \fI<Port>\fP \fB]\fP
+\fB[ \-U\fP \fI<Port>\fP, \fB\-\-upnp\-port\fP=\fI<Port>\fP \fB]\fP
 UPnP Port.
 .TP 
 .B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
-Benutzt gzip Kompression für den HTTP Verkehr um Bandbreite zu sparen
+Benutzt gzip Kompression für den HTTP Verkehr um Bandbreite zu sparen.
 .TP 
 .B_untranslated [ \-Z\fR, \fB\-\-disable\-gzip ]\fR
 Schalten die gzip Kompression ab (Standard)
@@ -103,7 +103,7 @@ Passwort für vollen Zugriff auf den Webserver
 Gäste Passwort für den Webserver
 .TP 
 .B_untranslated [ \-a\fR, \fB\-\-allow\-guest ]\fR
-Erlaubt den Zugriff als Gast
+Erlaubt den Zugriff als Gast.
 .TP 
 .B_untranslated [ \-d\fR, \fB\-\-deny\-guest ]\fR
 Verbietet den Zugriff als Gast (Standard)
@@ -120,11 +120,17 @@ Einstellungen\->Fernsteuerung Dialog)
 Deaktiviert den PHP Interpreter (veraltet)
 .TP 
 .B_untranslated [ \-N\fR, \fB\-\-no\-script\-cache ]\fR
-Erstellt die PHP\-Seiten bei jedem Aufruf neu
+Erstellt die PHP\-Seiten bei jedem Aufruf neu.
 .TP 
 \fB[ \-\-create\-config\-from\fP=\fI<Pfad>\fP \fB]\fP
 Konfigurationsdatei basierend auf \fI<Pfad>\fP, welche auf eine gültige
 aMule Konfigurationsdatei verweisen muss, erstellen und danach beenden.
+.TP 
+.B_untranslated [ \-\-force\-zlib ]\fR
+Erzwingt ZLIB Kompression der externen Verbindung, unabhängig von der
+Lokalität der gewählten IP. Nützlich, wenn der Server über einen VPN Tunnel
+erreichbar ist, der eine LAN IP ist, und die Heuristik sonst Kompression
+deaktivieren würde.
 .TP 
 .B_untranslated [ \-\-help ]\fR
 Gibt eine kurze Nutzungsbeschreibung aus.
@@ -212,8 +218,8 @@ Bugtracker (\fIhttps://github.com/amule\-org/amule/issues\fP). Bitte meldet uns
 weder Fehler per E\-Mail, noch auf unsere Mailingliste oder direkt an unsere
 Teammitglieder.
 .SH COPYRIGHT
-aMule und alle seine zugehörigen Anwendungen werden verteilt unter der GNU
-General Public License
+aMule und alle seine zugehörigen Anwendungen werden unter der GNU General
+Public License verteilt.
 .SH "SIEHE AUCH"
 .B_untranslated amule\fR(1), \fBamulecmd\fR(1)
 .SH VERFASSER

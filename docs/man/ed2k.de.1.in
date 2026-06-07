@@ -28,16 +28,18 @@ Verweise geprüft wird.
 \fB[ \-c\fP \fI<Pfad>\fP, \fB\-\-config\-dir\fP=\fI<Pfad>\fP \fB]\fP
 Liest die Konfiguration <Pfad> anstelle des Home.
 .TP 
-\fB[ \-t\fP, \fB\-\-category\fP=\fI<Num>\fP \fB]\fP
-Setzt die Kategorie für den übergebenen eD2k Verweis \fI<Num>\fP
+\fB[ \-t\fP \fI<Num>\fP, \fB\-\-category\fP=\fI<Num>\fP \fB]\fP
+Setzt Kategorie für übergebene ed2K Links zu \fI<Num>\fP.  Im
+Unterschied zu \fB\-\-config\-dir\fP liest der Parser den Wert als das nächste
+Argument und akzeptiert das \fB\-\-category\fP=\fI<num>\fP Syntax nicht.
 .TP 
 .B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
 Lädt alle Verweise aus der als \fI<eD2k_Verweis>\fP übergebenen
 emulecollection.
 .TP 
 .B_untranslated [ \-l\fR, \fB\-\-list ]\fR
-Listet alle Verweise in der emulecollection die als
-\fI<eD2k_Verweis>\fP übergeben wurde auf.
+Listet alle Verweise in der emulecollection, die als
+\fI<eD2k_Verweis>\fP übergeben wurde, auf.
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
 Gibt eine kurze Nutzungsbeschreibung aus.
@@ -78,8 +80,8 @@ Bugtracker (\fIhttps://github.com/amule\-org/amule/issues\fP). Bitte meldet uns
 weder Fehler per E\-Mail, noch auf unsere Mailingliste oder direkt an unsere
 Teammitglieder.
 .SH COPYRIGHT
-aMule und alle seine zugehörigen Anwendungen werden verteilt unter der GNU
-General Public License
+aMule und alle seine zugehörigen Anwendungen werden unter der GNU General
+Public License verteilt.
 .SH "SIEHE AUCH"
 .B_untranslated amule\fR(1)
 .SH VERFASSER

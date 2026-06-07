@@ -23,13 +23,18 @@ funktioniert, musst du die "Online\-Signatur" Option in den aMule
 Einstellungen aktivieren.
 .TP 
 .B_untranslated [ \-o\fR, \fB\-\-picture\fR, \fB\-P ]\fR
-Erstellt das Bild der Online Signatur.  Optional kannst du
-\fI=<PFAD>\fP an diese Option anhängen, um anzugeben wohin es
-geschrieben werden soll.
+Schreibt das online Signatur Bild.  Die lange Form \fB\-\-picture\fP akzeptiert
+ein optionales \fI=<PATH>\fP um den Ausgabeort zu bestimmen; die
+Kurzform \fB\-o\fP / \fB\-P\fP tut es nicht (\fB\-P\fP benötigt ein unmittelbar
+folgendes \fI<PATH>\fP Argument, und \fB\-o\fP ist eine Option ohne
+Parameter).  Dafür muss Unterstützung für GD einkompiliert sein (\fI__GD__\fP);
+ansonsten wird diese Option ohne Nachricht ignoriert.
 .TP 
 .B_untranslated [ \-p\fR, \fB\-\-html\fR, \fB\-H ]\fR
-HTML Seite mit Statistiken und Bild.  Optional kannst du \fI=<PFAD>\fP
-an diese Option anhängen, um anzugeben wohin es geschrieben werden soll.
+HTML Seite with Status und Bild.  Die Langform \fB\-\-html\fP akzeptiert ein
+optionales \fI=<PATH>\fP um den Ausgabeort zu bestimmen; die Kurzform
+\fB\-p\fP / \fB\-H\fP tut es nicht (\fB\-H\fP benötigt ein unmittelbar folgendes
+\fI<PATH>\fP Argument, und \fB\-p\fP ist eine Option ohne Parameter).
 .TP 
 \fB[ \-c\fP \fI<Pfad>\fP, \fB\-\-config\-dir\fP=\fI<Pfad>\fP \fB]\fP
 Liest die Konfiguration <Pfad> anstelle des Home.
@@ -44,9 +49,10 @@ Ohne Optionen schreibt es die Online Signatur auf die Standardausgabe.
 .SH DATEIEN
 ~/.aMule/casrc
 .br
-stat.png
+aMule\-online\-sign.png (oder .jpg, wenn \fB\-o\fP / \fB\-\-picture\fP verwendet wird
+und GD verfügbar ist)
 .br
-tmp.html
+aMule\-online\-sign.html (wenn \fB\-p\fP / \fB\-\-html\fP verwendet wird)
 .SH "FEHLER MELDEN"
 Bitte meldet Fehler entweder in unserem Forum
 (\fIhttps://github.com/amule\-org/amule/discussions\fP), oder in unseren
@@ -54,8 +60,8 @@ Bugtracker (\fIhttps://github.com/amule\-org/amule/issues\fP). Bitte meldet uns
 weder Fehler per E\-Mail, noch auf unsere Mailingliste oder direkt an unsere
 Teammitglieder.
 .SH COPYRIGHT
-aMule und alle seine zugehörigen Anwendungen werden verteilt unter der GNU
-General Public License
+aMule und alle seine zugehörigen Anwendungen werden unter der GNU General
+Public License verteilt.
 .SH "SIEHE AUCH"
 .B_untranslated amule\fR(1), \fBwxcas\fR(1)
 .SH VERFASSER
