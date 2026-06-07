@@ -173,10 +173,24 @@ installer() {
     # descriptions, MessageBox / DetailPrint texts) show up translated
     # in every language the .po has a matching msgstr for. Output is a
     # build artifact -- not committed -- consumed by installer.nsi via
-    # an `!include /NONFATAL`. python3 is available in every CI build
-    # environment (MSYS2 ships it; Linux runners have it; macOS too).
-    echo "==> Generating installer_strings_generated.nsh from po/"
-    python3 "${SCRIPT_DIR}/po-to-nsh.py" \
+    # an `!include /NONFATAL`. MSYS2 ships the interpreter as `python`
+    # (no `python3` symlink in the base install), so try both names
+    # rather than hardcoding python3.
+    local PYTHON=""
+    for cand in python3 python; do
+        if command -v "$cand" >/dev/null 2>&1; then
+            PYTHON="$cand"
+            break
+        fi
+    done
+    if [[ -z "${PYTHON}" ]]; then
+        echo "fatal: 'python3' / 'python' not on PATH." >&2
+        echo "       MSYS2: 'pacman -S --needed python'" >&2
+        echo "       Debian/Ubuntu: 'apt install python3'" >&2
+        exit 1
+    fi
+    echo "==> Generating installer_strings_generated.nsh from po/ via ${PYTHON}"
+    "${PYTHON}" "${SCRIPT_DIR}/po-to-nsh.py" \
         "${REPO_ROOT}/po" \
         "${SCRIPT_DIR}/installer_strings_generated.nsh"
 

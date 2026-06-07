@@ -437,11 +437,14 @@ jobs:
       - name: Set up MSYS2
         # Bare bash + git + unzip is all we need — the payload is
         # already-built, so no compiler / wxwidgets / cmake required.
+        # `python` is for packaging/windows/build.sh installer's
+        # po-to-nsh bridge (generates the per-language LangString
+        # block from po/<lang>.po before makensis runs).
         uses: msys2/setup-msys2@v2
         with:
           msystem: ${{ matrix.msystem }}
           update: true
-          install: git unzip
+          install: git unzip python
       - name: Install NSIS
         # NSIS isn't packaged for every MSYS2 environment (e.g. no
         # clangarm64 build), so install the Windows-native NSIS via
