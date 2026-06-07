@@ -16,6 +16,7 @@ amuled \- мультиплатформенный p2p клиент eMule \- де�
 .RB_untranslated [ \-e ]
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
 [\fB\-w\fP \fI<путь>\fP]
 .RB_untranslated [ \-d ]
 .RB_untranslated [ \-i ]
@@ -48,6 +49,11 @@ amuled \- мультиплатформенный p2p клиент eMule \- де�
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 Сбрасывает конфигурацию в изначальную.
 .TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Enable or disable starting amuled on user login, then exit.  The OS\-specific
+store is selected automatically: Windows registry Run key, macOS
+LaunchAgent, Linux XDG \fI.desktop\fP autostart entry.
+.TP 
 \fB[ \-w\fP \fI<путь>\fP, \fB\-\-use\-amuleweb\fP=\fI<путь>\fP \fB]\fP
 Указать \fI<путь>\fP к исполняемому файлу amuleweb.
 .TP 
@@ -59,7 +65,7 @@ otherwise\-modal assertion dialog prevents auto\-restart.
 .B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
 Не отключать стандартный ввод.
 .TP 
-\fB[ \-t\fP, \fB\-\-category\fP=\fI<номер>\fP \fB]\fP
+\fB[ \-t\fP \fI<num>\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
 Указать \fI<номер>\fP категории для eD2k ссылок
 .TP 
 .B_untranslated [ \-v\fR, \fB\-\-version ]\fR

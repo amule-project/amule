@@ -29,14 +29,16 @@ hivatkozásokat keresve.
 A beállításokat az \fI<útvonal>\fP\-ból olvassa az alapértelmezett
 helyett.
 .TP 
-\fB[ \-t\fP, \fB\-\-category\fP=\fI<szám>\fP \fB]\fP
-A megadott eD2k hivatkozást a \fI<szám>\fP\-adik kategóriába tölti.
+\fB[ \-t\fP \fI<num>\fP, \fB\-\-category\fP \fI<num>\fP \fB]\fP
+Set category for passed eD2k links to \fI<num>\fP.  Unlike
+\fB\-\-config\-dir\fP, the parser reads the value as the next argument and does
+not accept \fB\-\-category\fP=\fI<num>\fP syntax.
 .TP 
 .B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
-A megadott gyűjtemény összes fájlját letölti.
+Loads all links found in the emulecollection given as \fI<ed2k\-link>\fP
 .TP 
 .B_untranslated [ \-l\fR, \fB\-\-list ]\fR
-Kilistázza a megadott gyűjtmény összes fájlját.
+Lists all links found in the emulecollection given as \fI<ed2k\-link>\fP
 .TP 
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
 Egy rövid használati leírást jelenít meg.

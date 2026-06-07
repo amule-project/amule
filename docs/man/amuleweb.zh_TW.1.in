@@ -44,7 +44,7 @@ amuleweb \- aMule 網頁伺服器
 amuleweb，也可以稍候再另外執行。可以在命令列或是用用設定檔指定參數，命令列參數會優先於設定檔的參數。
 .TP 
 \fB[ \-h\fP \fI<主機>\fP, \fB\-\-host\fP=\fI<主機>\fP \fB]\fP
-正在執行 aMule 核心的主機 (預設：\fI本機\fP)， \fI<主機>\fP 可以是 IP 位址或網域名稱
+正在執行 aMule 核心的主機 (預設：\fI127.0.0.1\fP)， \fI<主機>\fP 可以是 IP 位址或網域名稱
 .TP 
 \fB[ \-p\fP \fI<通訊埠>\fP, \fB\-\-port\fP=\fI<通訊埠>\fP \fB]\fP
 aMule 外部連線用的通訊埠，在 偏好設定 >  遠端控制 設定 (預設：\fI4712\fP)
@@ -77,7 +77,7 @@ aMule 外部連線用的通訊埠，在 偏好設定 >  遠端控制 設定 (預
 .br
 啟用 UPnP。
 .TP 
-\fB[ \-U\fP \fI<通訊埠>\fP, \fB\-\-upnp\-port\fP \fI<通訊埠>\fP \fB]\fP
+\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP=\fI<port>\fP \fB]\fP
 UPnP 通訊埠。
 .TP 
 .B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
@@ -111,6 +111,12 @@ UPnP 通訊埠。
 .TP 
 \fB[ \-\-create\-config\-from\fP=\fI<路徑>\fP \fB]\fP
 參考 \fI<path>\fP 裏的資料來建立設定檔後離開。(\fI<path>\fP 裏必須有有效的 aMule 設定檔)
+.TP 
+.B_untranslated [ \-\-force\-zlib ]\fR
+Force ZLIB compression on the External Connection link regardless of the
+dialed\-IP locality.  Useful when the server side is reachable over a VPN
+tunnel that resolves to a LAN IP and the heuristic would otherwise skip
+compression.
 .TP 
 .B_untranslated [ \-\-help ]\fR
 顯示簡短的使用說明。

@@ -14,6 +14,9 @@ amulegui \- aMule vezérlő program grafikus felülettel
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
 .RB_untranslated [ \-s ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
+.RB_untranslated [ \-d ]
+.RB_untranslated [ \-i ]
 [\fB\-t\fP \fI<szám>\fP]
 
 .B_untranslated amulegui
@@ -43,6 +46,19 @@ Beállítások visszaállítása az alapértelmezett értékekre.
 .TP 
 .B_untranslated [ \-s\fR, \fB\-\-skip ]\fR
 A kapcsolódási párbeszéd átugrása.
+.TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Enable or disable starting amulegui on user login, then exit.  The
+OS\-specific store is selected automatically: Windows registry Run key, macOS
+LaunchAgent, Linux XDG \fI.desktop\fP autostart entry.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
+Don't catch fatal exceptions and don't block exit on assertions.  Useful for
+headless / supervised setups (systemd, watchdog scripts)  where the
+otherwise\-modal assertion dialog prevents auto\-restart.
+.TP 
+.B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
+Nem zárja le a szabvány bemenetet.
 .TP 
 \fB[ \-t\fP, \fB\-\-category\fP=\fI<szám>\fP \fB]\fP
 A megadott eD2k hivatkozást a \fI<szám>\fP\-adik kategóriába tölti.

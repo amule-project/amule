@@ -29,8 +29,10 @@ collegamenti.
 Legge la configurazione dal \fI<percorso>\fP invece che dalla directory
 dell'utente
 .TP 
-\fB[ \-t\fP, \fB\-\-category\fP=\fI<numero>\fP \fB]\fP
-Imposta la categoria per i collegamenti eD2k ricevuti a \fI<numero>\fP
+\fB[ \-t\fP \fI<num>\fP, \fB\-\-category\fP \fI<num>\fP \fB]\fP
+Imposta a \fI<num>\fP la categoria per i collegamenti eD2k passati.  A
+differenza di \fB\-\-config\-dir\fP, il parser legge il valore come argomento
+successivo e non accetta la sintassi \fB\-\-category\fP=\fI<num>\fP.
 .TP 
 .B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
 Carica tutti i collegamenti trovati nel file emulecollection fornito come

@@ -13,6 +13,7 @@ amule \- il client p2p multipiattaforma basato su eMule
 [\fB\-c\fP \fI<percorso>\fP] [\fB\-geometry\fP \fI<geometria>\fP]
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
 [\fB\-w\fP \fI<percorso>\fP]
 .RB_untranslated [ \-d ]
 .RB_untranslated [ \-i ]
@@ -40,6 +41,12 @@ Scrive i messaggi di log nello stdout.
 .TP 
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 Reimposta la configurazione ai valori di default.
+.TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Abilita o disabilita l'avvio di aMule all'accesso dell'utente, poi esce.
+L'archivio specifico del sistema operativo viene selezionato
+automaticamente: chiave Run del registro di Windows, LaunchAgent su macOS,
+voce di avvio automatico XDG \fI.desktop\fP su Linux.
 .TP 
 \fB[ \-w\fP \fI<percorso>\fP, \fB\-\-use\-amuleweb\fP=\fI<percorso>\fP \fB]\fP
 Specifica la posizione dell'eseguibile di amuleweb in \fI<percorso>\fP.

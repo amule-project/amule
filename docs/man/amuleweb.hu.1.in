@@ -86,7 +86,7 @@ Web kiszolgáló HTTP port. Erre a portra kell irányítanod a böngésződet
 .br
 UPnP engedélyezése.
 .TP 
-\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP \fI<port>\fP \fB]\fP
+\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP=\fI<port>\fP \fB]\fP
 UPnP port.
 .TP 
 .B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
@@ -126,6 +126,12 @@ PHP oldalak újrafordítása minden kérésnél.
 \fB[ \-\-create\-config\-from\fP=\fI<fájl>\fP \fB]\fP
 Konfigurációs fájl készítése a \fI<fájl>\fP alapján, amely az aMule
 érvényes konfigurációs fájlja kell legyen, majd utána kilép.
+.TP 
+.B_untranslated [ \-\-force\-zlib ]\fR
+Force ZLIB compression on the External Connection link regardless of the
+dialed\-IP locality.  Useful when the server side is reachable over a VPN
+tunnel that resolves to a LAN IP and the heuristic would otherwise skip
+compression.
 .TP 
 .B_untranslated [ \-\-help ]\fR
 Egy rövid használati leírást jelenít meg.

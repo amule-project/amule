@@ -85,7 +85,7 @@ Porta HTTP del server web. Questa è la porta da indicare nel browser
 .br
 Abilita il supporto UPnP.
 .TP 
-\fB[ \-U\fP \fI<porta>\fP, \fB\-\-upnp\-port\fP \fI<porta>\fP \fB]\fP
+\fB[ \-U\fP \fI<porta>\fP, \fB\-\-upnp\-port\fP=\fI<porta>\fP \fB]\fP
 Porta per l'UPnP.
 .TP 
 .B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
@@ -123,6 +123,12 @@ Ricompila le pagine PHP ad ogni richiesta.
 \fB[ \-\-create\-config\-from\fP=\fI<percorso>\fP \fB]\fP
 Crea un file di configurazione basandosi sul \fI<percorso>\fP, che deve
 puntare ad un file di configurazione di aMule valido, e quindi esce.
+.TP 
+.B_untranslated [ \-\-force\-zlib ]\fR
+Forza la compressione ZLIB sulla connessione esterna indipendentemente dalla
+località dell'IP contattato.  Utile quando il server è raggiungibile
+attraverso un tunnel VPN che risolve a un IP di LAN e l'euristica salterebbe
+altrimenti la compressione.
 .TP 
 .B_untranslated [ \-\-help ]\fR
 Visualizza una breve descrizione dell'utilizzo.

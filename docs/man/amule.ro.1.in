@@ -13,6 +13,7 @@ amule \- client eMule p2p pentru toate platformele
 [\fB\-c\fP \fI<path>\fP] [\fB\-geometry\fP \fI<geom>\fP]
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
 [\fB\-w\fP \fI<path>\fP]
 .RB_untranslated [ \-d ]
 .RB_untranslated [ \-i ]
@@ -39,6 +40,11 @@ Tipărește jurnalul de mesaje la stdout.
 .TP 
 .B_untranslated [ \-r\fR, \fB\-\-reset\-config ]\fR
 Resetare configurări la valorile implicite.
+.TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Enable or disable starting aMule on user login, then exit.  The OS\-specific
+store is selected automatically: Windows registry Run key, macOS
+LaunchAgent, Linux XDG \fI.desktop\fP autostart entry.
 .TP 
 \fB[ \-w\fP \fI<path>\fP, \fB\-\-use\-amuleweb\fP=\fI<path>\fP \fB]\fP
 Specificați locația fișierului binar amuleweb la \fI<path>\fP.

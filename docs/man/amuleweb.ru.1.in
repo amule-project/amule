@@ -85,7 +85,7 @@ HTTP порт вебсервера. Этот порт должен быть ук
 .br
 Включить UPnP.
 .TP 
-\fB[ \-U\fP \fI<порт>\fP, \fB\-\-upnp\-port\fP \fI<порт>\fP \fB]\fP
+\fB[ \-U\fP \fI<port>\fP, \fB\-\-upnp\-port\fP=\fI<port>\fP \fB]\fP
 Порт UPnP.
 .TP 
 .B_untranslated [ \-z\fR, \fB\-\-enable\-gzip ]\fR
@@ -122,6 +122,12 @@ HTTP порт вебсервера. Этот порт должен быть ук
 \fB[ \-\-create\-config\-from\fP=\fI<путь>\fP \fB]\fP
 Создать файл конфигурации на основе файла указанного в \fI<пути>\fP и
 выйти. Указанный файл должен быть валидным файлом конфигурации aMule.
+.TP 
+.B_untranslated [ \-\-force\-zlib ]\fR
+Force ZLIB compression on the External Connection link regardless of the
+dialed\-IP locality.  Useful when the server side is reachable over a VPN
+tunnel that resolves to a LAN IP and the heuristic would otherwise skip
+compression.
 .TP 
 .B_untranslated [ \-\-help ]\fR
 Выводит короткую помощь по использованию.
