@@ -14,6 +14,9 @@ amulegui \- Programa de controle do aMule com IGU
 .RB_untranslated [ \-o ]
 .RB_untranslated [ \-r ]
 .RB_untranslated [ \-s ]
+.RB_untranslated [ \-\-configure\-autostart " " \fI<on|off> ]
+.RB_untranslated [ \-d ]
+.RB_untranslated [ \-i ]
 [\fB\-t\fP \fI<num>\fP]
 
 .B_untranslated amulegui
@@ -43,6 +46,21 @@ Reseta configuração para os valores padrão.
 .TP 
 .B_untranslated [ \-s\fR, \fB\-\-skip ]\fR
 Pular o diálogo de conexão.
+.TP 
+.B_untranslated [ \-\-configure\-autostart\fR=\fI<on|off>\fR \fB]\fR
+Habilita ou desabilita iniciar o amulegui quando o usuário fizer login e
+sair. O armazenamento específico do Sistema Operacional é selecionado
+automaticamente: chave Run da registry do Windows, LaunchAgent do MacOS e a
+entrada XDG \fI.desktop\fP autostart no Linux.
+.TP 
+.B_untranslated [ \-d\fR, \fB\-\-disable\-fatal ]\fR
+Não captura exceções fatais e não bloqueia saída em assertivas. Útil para
+configurações "headless / supervisionadas" (systemd, scripts de watchdog)
+onde caso contrário, diálogos de assertivas modais previnem o recomeço
+automático.
+.TP 
+.B_untranslated [ \-i\fR, \fB\-\-enable\-stdin ]\fR
+Não desabilita stdin.
 .TP 
 \fB[ \-t\fP, \fB\-\-category\fP=\fI<num>\fP \fB]\fP
 Seta categoria para links eD2k para \fI<num>\fP
