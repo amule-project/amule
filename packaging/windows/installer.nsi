@@ -155,7 +155,6 @@ Var StartMenuFolder
 !insertmacro MUI_LANGUAGE "Lithuanian"
 !insertmacro MUI_LANGUAGE "Luxembourgish"
 !insertmacro MUI_LANGUAGE "Macedonian"
-!insertmacro MUI_LANGUAGE "Malagasy"
 !insertmacro MUI_LANGUAGE "Malay"
 !insertmacro MUI_LANGUAGE "Mongolian"
 !insertmacro MUI_LANGUAGE "Norwegian"
@@ -180,11 +179,9 @@ Var StartMenuFolder
 !insertmacro MUI_LANGUAGE "TradChinese"
 !insertmacro MUI_LANGUAGE "Turkish"
 !insertmacro MUI_LANGUAGE "Ukrainian"
-!insertmacro MUI_LANGUAGE "Uyghur"
 !insertmacro MUI_LANGUAGE "Uzbek"
 !insertmacro MUI_LANGUAGE "Vietnamese"
 !insertmacro MUI_LANGUAGE "Welsh"
-!insertmacro MUI_LANGUAGE "Yiddish"
 
 ; --------------------------------------------------------------------
 ; LangString declarations -- aMule-specific user-facing strings
