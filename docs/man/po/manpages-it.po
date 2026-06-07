@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule SVN\n"
-"POT-Creation-Date: 2026-06-07 14:45+0200\n"
+"POT-Creation-Date: 2026-06-07 14:52+0200\n"
 "PO-Revision-Date: 2017-05-24 09:59+0200\n"
 "Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: none\n"
@@ -158,6 +158,10 @@ msgid ""
 "store is selected automatically: Windows registry Run key, macOS "
 "LaunchAgent, Linux XDG I<.desktop> autostart entry."
 msgstr ""
+"Abilita o disabilita l'avvio di aMule all'accesso dell'utente, poi esce.  "
+"L'archivio specifico del sistema operativo viene selezionato "
+"automaticamente: chiave Run del registro di Windows, LaunchAgent su macOS, "
+"voce di avvio automatico XDG I<.desktop> su Linux."
 
 # type: TP
 #. type: TP
@@ -608,6 +612,10 @@ msgid ""
 "tunnel that resolves to a LAN IP and the heuristic would otherwise skip "
 "compression."
 msgstr ""
+"Forza la compressione ZLIB sulla connessione esterna indipendentemente dalla "
+"località dell'IP contattato.  Utile quando il server è raggiungibile "
+"attraverso un tunnel VPN che risolve a un IP di LAN e l'euristica salterebbe "
+"altrimenti la compressione."
 
 # type: SH
 #. type: SH
@@ -1243,14 +1251,17 @@ msgid ""
 "store is selected automatically: Windows registry Run key, macOS "
 "LaunchAgent, Linux XDG I<.desktop> autostart entry."
 msgstr ""
+"Abilita o disabilita l'avvio di amuled all'accesso dell'utente, poi esce.  "
+"L'archivio specifico del sistema operativo viene selezionato "
+"automaticamente: chiave Run del registro di Windows, LaunchAgent su macOS, "
+"voce di avvio automatico XDG I<.desktop> su Linux."
 
 # type: TP
 #. type: TP
 #: amuled.1.in:61
-#, fuzzy, no-wrap
-#| msgid "B<[ -t> I<E<lt>nameE<gt>>, B<--template>=I<E<lt>nameE<gt>> B<]>"
+#, no-wrap
 msgid "B<[ -t> I<E<lt>numE<gt>>, B<--category>=I<E<lt>numE<gt>> B<]>"
-msgstr "B<[ -t> I<E<lt>nomeE<gt>>, B<--template>=I<E<lt>nomeE<gt>> B<]>"
+msgstr "B<[ -t> I<E<lt>numE<gt>>, B<--category>=I<E<lt>numE<gt>> B<]>"
 
 # type: TH
 #. type: TH
@@ -1310,6 +1321,10 @@ msgid ""
 "specific store is selected automatically: Windows registry Run key, macOS "
 "LaunchAgent, Linux XDG I<.desktop> autostart entry."
 msgstr ""
+"Abilita o disabilita l'avvio di amulegui all'accesso dell'utente, poi esce.  "
+"L'archivio specifico del sistema operativo viene selezionato "
+"automaticamente: chiave Run del registro di Windows, LaunchAgent su macOS, "
+"voce di avvio automatico XDG I<.desktop> su Linux."
 
 # type: Plain text
 #. type: Plain text
@@ -1438,10 +1453,9 @@ msgstr "Abilita il supporto UPnP."
 # type: TP
 #. type: TP
 #: amuleweb.1.in:84
-#, fuzzy, no-wrap
-#| msgid "B<[ -U> I<E<lt>portE<gt>>, B<--upnp-port> I<E<lt>portE<gt>> B<]>"
+#, no-wrap
 msgid "B<[ -U> I<E<lt>portE<gt>>, B<--upnp-port>=I<E<lt>portE<gt>> B<]>"
-msgstr "B<[ -U> I<E<lt>portaE<gt>>, B<--upnp-port> I<E<lt>portaE<gt>> B<]>"
+msgstr "B<[ -U> I<E<lt>portaE<gt>>, B<--upnp-port>=I<E<lt>portaE<gt>> B<]>"
 
 # type: Plain text
 #. type: Plain text
@@ -1675,10 +1689,9 @@ msgstr ""
 # type: TP
 #. type: TP
 #: ed2k.1.in:24
-#, fuzzy, no-wrap
-#| msgid "B<[ -t> I<E<lt>nameE<gt>>, B<--template>=I<E<lt>nameE<gt>> B<]>"
+#, no-wrap
 msgid "B<[ -t> I<E<lt>numE<gt>>, B<--category> I<E<lt>numE<gt>> B<]>"
-msgstr "B<[ -t> I<E<lt>nomeE<gt>>, B<--template>=I<E<lt>nomeE<gt>> B<]>"
+msgstr "B<[ -t> I<E<lt>numE<gt>>, B<--category> I<E<lt>numE<gt>> B<]>"
 
 #. type: Plain text
 #: ed2k.1.in:28
@@ -1687,14 +1700,13 @@ msgid ""
 "dir>, the parser reads the value as the next argument and does not accept "
 "B<--category>=I<E<lt>numE<gt>> syntax."
 msgstr ""
+"Imposta a I<E<lt>numE<gt>> la categoria per i collegamenti eD2k passati.  A "
+"differenza di B<--config-dir>, il parser legge il valore come argomento "
+"successivo e non accetta la sintassi B<--category>=I<E<lt>numE<gt>>."
 
 # type: Plain text
 #. type: Plain text
 #: ed2k.1.in:31
-#, fuzzy
-#| msgid ""
-#| "Loads all link found in the emulecollection given as I<E<lt>ed2k-"
-#| "linkE<gt>>"
 msgid ""
 "Loads all links found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
 msgstr ""
@@ -1704,10 +1716,6 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: ed2k.1.in:34
-#, fuzzy
-#| msgid ""
-#| "Lists all link found in the emulecollection given as I<E<lt>ed2k-"
-#| "linkE<gt>>"
 msgid ""
 "Lists all links found in the emulecollection given as I<E<lt>ed2k-linkE<gt>>"
 msgstr ""
@@ -1874,6 +1882,12 @@ msgid ""
 "I<E<lt>PATHE<gt>> argument, and B<-o> is a no-argument switch).  Requires GD "
 "support compiled in (I<__GD__>); this option is silently ignored otherwise."
 msgstr ""
+"Scrive l'immagine della firma online.  La forma estesa B<--picture> accetta "
+"un facoltativo I<=E<lt>PERCORSOE<gt>> per specificare la posizione di "
+"output; le forme corte B<-o> / B<-P> no (B<-P> richiede un argomento "
+"I<E<lt>PERCORSOE<gt>> immediatamente di seguito, e B<-o> è uno switch senza "
+"argomenti).  Richiede il supporto GD compilato (I<__GD__>); in caso "
+"contrario l'opzione viene ignorata silenziosamente."
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1.in:27
@@ -1883,6 +1897,11 @@ msgid ""
 "B<-p> / B<-H> do not (B<-H> requires an immediately following "
 "I<E<lt>PATHE<gt>> argument, and B<-p> is a no-argument switch)."
 msgstr ""
+"Pagina HTML con statistiche e immagine.  La forma estesa B<--html> accetta "
+"un facoltativo I<=E<lt>PERCORSOE<gt>> per specificare la posizione di "
+"output; le forme corte B<-p> / B<-H> no (B<-H> richiede un argomento "
+"I<E<lt>PERCORSOE<gt>> immediatamente di seguito, e B<-p> è uno switch senza "
+"argomenti)."
 
 # type: Plain text
 #. type: Plain text
@@ -1909,11 +1928,13 @@ msgid ""
 "aMule-online-sign.png (or .jpg, when B<-o> / B<--picture> is used and GD is "
 "available)"
 msgstr ""
+"aMule-online-sign.png (o .jpg, quando si usa B<-o> / B<--picture> e GD è "
+"disponibile)"
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1.in:43
 msgid "aMule-online-sign.html (when B<-p> / B<--html> is used)"
-msgstr ""
+msgstr "aMule-online-sign.html (quando si usa B<-p> / B<--html>)"
 
 # type: TH
 #. type: TH
