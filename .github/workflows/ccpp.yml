@@ -128,7 +128,10 @@ jobs:
         if: always()
         with:
           path: ${{ env.CCACHE_DIR }}
-          key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
+          key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ github.run_id }}
+      - name: ccache stats
+        if: always()
+        run: ccache --show-stats
       - name: run tests
         run: ctest ${{ env.ctest_flags }}
 
@@ -174,7 +177,10 @@ jobs:
         if: always()
         with:
           path: ${{ env.CCACHE_DIR }}
-          key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
+          key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ github.run_id }}
+      - name: ccache stats
+        if: always()
+        run: ccache --show-stats
       - name: run tests
         run: ctest ${{ env.ctest_flags }}
 
@@ -215,6 +221,9 @@ jobs:
         if: always()
         with:
           path: ${{ env.CCACHE_DIR }}
-          key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
+          key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ github.run_id }}
+      - name: ccache stats
+        if: always()
+        run: ccache --show-stats
       - name: run tests
         run: ctest ${{ env.ctest_flags }}
