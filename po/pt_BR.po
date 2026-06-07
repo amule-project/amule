@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-07 14:34+0200\n"
-"PO-Revision-Date: 2026-06-05 19:30-0300\n"
+"PO-Revision-Date: 2026-06-07 10:28-0300\n"
 "Last-Translator: Marcelo Jimenez <mroberto@users.sourceforge.com>\n"
 "Language-Team: Português (Brasileiro) <pt@li.org>\n"
 "Language: pt_BR\n"
@@ -265,15 +265,15 @@ msgid "web server running on pid %d"
 msgstr "web server rodando no pid %d"
 
 #: src/amule.cpp:865
-#, fuzzy
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or build "
 "aMule from source with -DBUILD_WEBSERVER=YES and install it."
 msgstr ""
-"Você requisitou rodar o web server na iniciação, mas o binário do amuleweb "
-"não pode ser rodado. Por favor instale o pacote contendo o aMule web server, "
-"ou compile o aMule usando --enable-webserver e rode make install"
+"Você pediu para rodar o servidor web na início, mas o binário do amuleweb "
+"não pode ser rodado. Por favor instale o pacote contendo o servidro web do "
+"aMule, ou compile o aMule a partir do código fonte usando "
+"-DBUILD_WEBSERVER=YES e instale-o."
 
 #: src/amule.cpp:948
 #, c-format
@@ -7982,7 +7982,7 @@ msgstr "Processando pedido [original]: "
 
 #: src/webserver/src/WebServer.cpp:1908
 msgid "Refusing to read `pass` from URL query string\n"
-msgstr ""
+msgstr "Recusando-se a ler `além` de uma URL query string\n"
 
 #: src/webserver/src/WebServer.cpp:1914
 msgid "No password specified, login will not be allowed."
@@ -8018,45 +8018,48 @@ msgstr "Processando solicitação [redirecionado]: "
 
 #: packaging/windows/installer_strings.c:36
 msgid "aMule (required)"
-msgstr ""
+msgstr "aMule (obrigatório)"
 
 #: packaging/windows/installer_strings.c:37
 msgid "Desktop shortcut"
-msgstr ""
+msgstr "Atalho de desktop"
 
 #: packaging/windows/installer_strings.c:38
-#, fuzzy
 msgid "Start aMule when I log in"
-msgstr "Iniciar o aMule automaticamente quando eu logar no sistema"
+msgstr "Iniciar o aMule quando eu logar no sistema"
 
 #: packaging/windows/installer_strings.c:39
-#, fuzzy
 msgid "Uninstall"
-msgstr "Instalar"
+msgstr "Desinstalar"
 
 #: packaging/windows/installer_strings.c:40
 msgid "Remove user data (config, ED2K servers, Kad nodes, partfiles)"
 msgstr ""
+"Remover dados do usuário (configuração, servidores eD2k, nós Kad, partfiles)"
 
 #: packaging/windows/installer_strings.c:43
-#, fuzzy
 msgid "aMule application files (required)."
-msgstr "A integração do aMule falhou"
+msgstr "Arquivos do aplicativo aMule (obrigatório)."
 
 #: packaging/windows/installer_strings.c:44
 msgid "Place an aMule shortcut on the desktop."
-msgstr ""
+msgstr "Coloca um atalho do aMule no desktop."
 
 #: packaging/windows/installer_strings.c:45
 msgid ""
 "Launch aMule automatically when the current user logs in (per-user setting)."
 msgstr ""
+"Inicia o aMule automaticamente quando o usuário atual faz login no sistema "
+"(configuração por usuário)."
 
 #: packaging/windows/installer_strings.c:46
 msgid ""
 "Remove aMule application files, Start Menu / desktop shortcuts, autostart "
 "Run-key entry, and Add/Remove Programs entry (required)."
 msgstr ""
+"Remove arquivos de aplicação do aMule, Menu Iniciar / atalhos de desktop, "
+"chaves de início automático e entradas de Adiciona/Remove Programas "
+"(obrigatório)."
 
 #: packaging/windows/installer_strings.c:47
 msgid ""
@@ -8064,22 +8067,29 @@ msgid ""
 "server list, Kad nodes, partfiles, IP filters, friends list). Leave "
 "unchecked to keep your settings."
 msgstr ""
+"Apaga permanentemente %APPDATA%\\aMule para o usuário atual (aMule.conf, "
+"lista de servidores eD2k, nós Kad, partfiles, Filtros de IP, lista de "
+"amigos). Deixe não-marcado para manter suas configurações."
 
 #: packaging/windows/installer_strings.c:53
 msgid ""
 "aMule appears to be running from $INSTDIR.\r\n"
 "Please close aMule (and aMuleD / aMuleGUI) and try again."
 msgstr ""
+"aMule parece estar rodando de $INSTDIR.\r\n"
+"Por favor, feche o aMule (e o aMuleD / aMuleGUI) e tente novamente."
 
 #: packaging/windows/installer_strings.c:54
 msgid ""
 "aMule daemon (amuled.exe) appears to be running from $INSTDIR.\r\n"
 "Please stop it and try again."
 msgstr ""
+"O daemon aMule (amuled.exe) parece estar rodando de $INSTDIR.\r\n"
+"Por favor, pare-o e tente novamente."
 
 #: packaging/windows/installer_strings.c:55
 msgid "Removing previous aMule installation at $0..."
-msgstr ""
+msgstr "Removendo a instalação anterior do aMule em $0..."
 
 #: packaging/windows/installer_strings.c:56
 msgid ""
@@ -8087,12 +8097,17 @@ msgid ""
 "Please close any running aMule processes and try again, or uninstall the "
 "previous version manually first."
 msgstr ""
+"Não foi possível remover a instalação anterior do aMule em $0.\r\n"
+"Por favor, feche todos os processos aMule rodando e tente novamente, ou "
+"desinstale as versões anteriores manualmente primeiro."
 
 #: packaging/windows/installer_strings.c:57
 msgid ""
 "aMule appears to be running. Please close it and re-run the uninstaller."
 msgstr ""
+"O aMule parece estar rodando. Por favor, feche-o e rode o desinstalador "
+"novamente."
 
 #: packaging/windows/installer_strings.c:58
 msgid "Removing user data at $APPDATA\\aMule..."
-msgstr ""
+msgstr "Removendo os dados do usuário em $APPDATA\\aMule..."
