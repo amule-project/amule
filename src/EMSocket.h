@@ -63,7 +63,7 @@ public:
 	virtual uint64	GetTimeOut() const;
 	virtual void	SetTimeOut(uint64 uTimeOut);
 
-    uint64	GetLastCalledSend() { return lastCalledSend; }
+    uint64	GetLastCalledSend() override { return lastCalledSend; }
 
     uint64	GetSentBytesCompleteFileSinceLastCallAndReset();
     uint64	GetSentBytesPartFileSinceLastCallAndReset();
@@ -72,10 +72,10 @@ public:
     uint64	PeekSentPayload();   // Non-resetting peek — for disk I/O thread buffer check
     void	TruncateQueues();
 
-    virtual SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize) { return Send(maxNumberOfBytesToSend, minFragSize, true); };
-    virtual SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize) { return Send(maxNumberOfBytesToSend, minFragSize, false); };
+    SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize) override { return Send(maxNumberOfBytesToSend, minFragSize, true); };
+    SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize) override { return Send(maxNumberOfBytesToSend, minFragSize, false); };
 
-    uint32	GetNeededBytes();
+    uint32	GetNeededBytes() override;
     bool    HasSent() { return m_hasSent; }  // eMule ref: used by CUploadDiskIOThread to detect socket starvation
     bool    HasQueues(bool bOnlyStandardPackets = false) const;
     bool    IsBusyQuickCheck() const { return m_bBusy; }
@@ -89,10 +89,21 @@ public:
 
 	//protected:
 	// these functions are public on our code because of the amuleDlg::socketHandler
-	virtual void	OnError(int WXUNUSED(nErrorCode)) { };
-	virtual void	OnSend(int nErrorCode);
-	virtual void	OnReceive(int nErrorCode);
-	virtual void	OnConnect(int nErrorCode) = 0;
+	void	OnError(int WXUNUSED(nErrorCode)) override { };
+	void	OnSend(int nErrorCode) override;
+	void	OnReceive(int nErrorCode) override;
+	void	OnConnect(int nErrorCode) override = 0;
+
+	// The Asio reactor's HandleRead dispatches peer FIN / RST via
+	// CLibSocket::OnLost(int), whose default is an empty no-op. Without
+	// an override on this path, the eD2k server socket (CServerSocket)
+	// and peer socket (CClientTCPSocket) never see the close event:
+	// CServerSocket stays at CS_CONNECTED after a server disappears
+	// (#905, #393), and peer sockets sit in CLOSE_WAIT forever as
+	// silent half-open sources. Forward to OnClose(int) so virtual
+	// dispatch reaches the per-class teardown that was already there
+	// for the (now-defunct) wxSocket close path.
+	void OnLost(int nErrorCode) override { OnClose(nErrorCode); }
 
 protected:
 
