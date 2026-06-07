@@ -9,6 +9,10 @@ permissions:
 
 jobs:
   redirect:
+    # No-op on forks (incl. amule-org/amule, which is the canonical
+    # destination — without this guard, syncing the workflow file there
+    # would make it auto-close its own issues with a redirect to itself).
+    if: github.repository == 'amule-project/amule'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v7

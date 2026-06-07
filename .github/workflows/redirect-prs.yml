@@ -1,0 +1,49 @@
+name: Notify on PRs that this repo is a mirror
+
+# Fires once when a PR is opened. Posts a single comment pointing the
+# contributor at amule-org/amule and stops. Does NOT close or lock the
+# PR — maintainers may still merge small fixes from this side.
+#
+# Why pull_request_target (not pull_request): we need write access to
+# call createComment on PRs opened from forks. `pull_request` runs in
+# the fork's context and gets a read-only token; `_target` runs in the
+# base repo's context with full token permissions. This is safe here
+# because the workflow only calls a hardcoded createComment — it does
+# NOT actions/checkout or execute any contributor code.
+#
+# Why the github.repository gate: the workflow file syncs to forks
+# (including amule-org/amule itself), where the redirect would point
+# contributors to the repo they're already on. The if-guard makes it a
+# no-op everywhere except amule-project/amule.
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  notify:
+    if: github.repository == 'amule-project/amule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const newPrsUrl = "https://github.com/amule-org/amule/pulls";
+            const body = [
+              "👋 Thanks for the contribution.",
+              "",
+              `Heads up — this repository is a mirror. Active development happens at the project's current home: **${newPrsUrl}**`,
+              "",
+              "If you re-open this pull request against amule-org/amule it will land in front of the active reviewers right away. We're leaving this PR open here too so it isn't lost — a maintainer may merge it directly from this side if it's a small fix, but the canonical place for follow-ups, review threads, and any related issues is the new repo.",
+              "",
+              "Sorry for the friction.",
+            ].join("\n");
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
