@@ -1333,7 +1333,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     item3->Add( item9, wxSizerFlags().CenterVertical().Border(wxLEFT, 5) );
     wxStaticText *item10 = new wxStaticText( parent, -1, _("Slot Allocation"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item10, wxSizerFlags().CenterVertical().Border(wxLEFT, 20) );
-    wxSpinCtrl *item11 = new wxSpinCtrl( parent, IDC_SLOTALLOC, "4", wxDefaultPosition, wxDefaultSize, 0, 1, 100000, 4 );
+    wxSpinCtrl *item11 = new wxSpinCtrl( parent, IDC_SLOTALLOC, "10", wxDefaultPosition, wxDefaultSize, 0, 1, 100000, 10 );
     item3->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item12 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
