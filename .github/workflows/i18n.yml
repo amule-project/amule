@@ -77,7 +77,23 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Installing tools
-        run: sudo apt-get install -y po4a
+        # ubuntu-latest (noble, 24.04) ships po4a 0.69, but the rendered
+        # docs/man/*.1.in on master were produced with po4a >= 0.74
+        # whose paragraph wrapping for the .man module differs. Pin to
+        # the 0.74-1 .deb -- Ubuntu's pool only goes up to 0.69-1, so
+        # pull directly from Debian trixie (po4a is arch-all / pure
+        # Perl, so the package installs cleanly on noble once its
+        # newer Perl-module deps are pulled via apt).
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y --no-install-recommends \
+            gettext libdata-section-perl libpod-parser-perl \
+            libsgmls-perl libsyntax-keyword-try-perl \
+            libtext-wrapi18n-perl libunicode-linebreak-perl \
+            libxs-parse-keyword-perl libyaml-tiny-perl opensp
+          wget -q http://deb.debian.org/debian/pool/main/p/po4a/po4a_0.74-1_all.deb
+          sudo dpkg -i po4a_0.74-1_all.deb || sudo apt-get install -fy
+          po4a --version
 
       - name: Regenerate rendered manpages
         working-directory: docs/man
