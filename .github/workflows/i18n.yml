@@ -26,3 +26,76 @@ jobs:
           for po in po/*.po docs/man/po/*.po; do
             msgfmt --check --statistics --verbose $po
           done
+
+  pot-sync:
+    name: App catalogs in sync with source
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Installing tools
+        run: sudo apt-get install -y gettext
+
+      - name: Regenerate pot + merge into po
+        run: ./scripts/update-po.sh
+
+      - name: Verify no real content drift
+        run: |
+          # xgettext / msgmerge always rewrite a few volatile header
+          # lines (POT-Creation-Date, PO-Revision-Date, Last-Translator,
+          # Language-Team) and re-flow source-reference comments
+          # (#: file:lineno) on any source-code line shift, even when
+          # no msgid / msgstr actually changed. Canonicalise the wrap
+          # width with msgcat first (its default depends on locale),
+          # then strip those metadata lines before diffing.
+          drift=0
+          for po in po/amule.pot po/*.po; do
+            diff <(git show HEAD:"$po" | msgcat --width=79 - \
+                     | grep -vE '^("(POT-Creation-Date|PO-Revision-Date|Last-Translator|Language-Team)|#: )') \
+                 <(msgcat --width=79 "$po" \
+                     | grep -vE '^("(POT-Creation-Date|PO-Revision-Date|Last-Translator|Language-Team)|#: )') \
+              > /tmp/po-drift.txt || drift=1
+            if [ -s /tmp/po-drift.txt ]; then
+              echo "::error file=$po::content drift detected"
+              echo "----- $po -----"
+              cat /tmp/po-drift.txt
+            fi
+          done
+          if [ "$drift" -ne 0 ]; then
+            echo
+            echo "::error::App translation catalogs out of sync with source."
+            echo "Run scripts/update-po.sh locally and commit the result."
+            exit 1
+          fi
+
+  manpages-sync:
+    name: Rendered manpages in sync with manpages-*.po
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Installing tools
+        run: sudo apt-get install -y po4a
+
+      - name: Regenerate rendered manpages
+        working-directory: docs/man
+        # po4a is mtime-incremental: if the rendered .1.in files are
+        # newer than the .po sources (always the case on a fresh
+        # checkout, because git materialises every file at the same
+        # moment), it skips regen entirely and the diff check below
+        # is a no-op. Touching the .po inputs forces a full pass.
+        run: |
+          touch po/manpages-*.po
+          po4a po4a.config
+
+      - name: Verify no rendered drift
+        run: |
+          if ! git diff --quiet -- 'docs/man/*.1.in' 'src/utils/**/*.1.in'; then
+            echo "::error::Rendered manpages out of sync with docs/man/po/manpages-*.po."
+            echo "Run: cd docs/man && touch po/manpages-*.po && po4a po4a.config"
+            echo "then commit the result."
+            git --no-pager diff --stat -- 'docs/man/*.1.in' 'src/utils/**/*.1.in'
+            exit 1
+          fi
