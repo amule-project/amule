@@ -28,10 +28,6 @@
 #include "WebSocket.h"
 
 
-#ifdef ENABLE_UPNP
-#	include "UPnPBase.h"
-#endif
-
 CWebSocket::CWebSocket(CWebServerBase *parent)
 	: m_dwBufSize(4096)
 	, m_dwRecv(0)

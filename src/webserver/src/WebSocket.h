@@ -32,10 +32,6 @@
 #include <LibSocket.h>
 
 
-#ifdef ENABLE_UPNP
-class CUPnPControlPoint;
-class CUPnPPortMapping;
-#endif
 class CWebServer;
 
 
