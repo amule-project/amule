@@ -45,7 +45,7 @@ Options can be specified via command-line or via config-file.
 Command-line options take precedence over config-file options.
 .TP
 \fB[ \-h\fR \fI<host>\fR, \fB\-\-host\fR=\fI<host>\fR \fB]\fR
-Host where aMule is running (default: \fIlocalhost\fR).
+Host where aMule is running (default: \fI127.0.0.1\fR).
 \fI<host>\fR might be an IP address or a DNS name
 .TP
 \fB[ \-p\fR \fI<port>\fR, \fB\-\-port\fR=\fI<port>\fR \fB]\fR

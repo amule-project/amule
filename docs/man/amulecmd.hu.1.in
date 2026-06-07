@@ -30,7 +30,7 @@ amulecmd \- Szöveges program az aMule "távvezérléséhez"
 Az amulecmd egy szöveges program az aMule vezérlésére.
 .TP 
 \fB[ \-h\fP \fI<gép>\fP, \fB\-\-host\fP=\fI<gép>\fP \fB]\fP
-A gép, amelyen az aMule fut (alapértelmezés: \fIlocalhost\fP). A
+A gép, amelyen az aMule fut (alapértelmezés: \fI127.0.0.1\fP). A
 \fI<gép>\fP lehet egy IP cím vagy egy DNS név.
 .TP 
 \fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP

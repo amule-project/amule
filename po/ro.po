@@ -2165,8 +2165,8 @@ msgid "Show this help text."
 msgstr "Arată acest text de ajutor."
 
 #: src/ExternalConnector.cpp:489
-msgid "Host where aMule is running. (default: localhost)"
-msgstr "Gazda unde aMule rulează. (implicit: localhost)"
+msgid "Host where aMule is running. (default: 127.0.0.1)"
+msgstr "Gazda unde aMule rulează. (implicit: 127.0.0.1)"
 
 #: src/ExternalConnector.cpp:492
 msgid "aMule's port for External Connection. (default: 4712)"

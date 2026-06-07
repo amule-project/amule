@@ -2165,7 +2165,7 @@ msgid "Show this help text."
 msgstr "Δείξε αυτό το αρχείο βοήθειας."
 
 #: src/ExternalConnector.cpp:489
-msgid "Host where aMule is running. (default: localhost)"
+msgid "Host where aMule is running. (default: 127.0.0.1)"
 msgstr ""
 "Υπολογιστής όπου το aMule τρέχει (προεπιλεγμένος: ο τοπικός υπολογιστής)"
 

@@ -47,7 +47,7 @@ fichier de configuration. Les options passées en ligne de commande prévalent
 sur les options de fichier de configuration.
 .TP 
 \fB[ \-h\fP \fI<hôte>\fP, \fB\-\-host\fP=\fI<hôte>\fP \fB]\fP
-Hôte où aMule fonctionne (par défaut : \fIlocalhost\fP).  \fI<hôte>\fP
+Hôte où aMule fonctionne (par défaut : \fI127.0.0.1\fP).  \fI<hôte>\fP
 peut être une adresse IP ou un nom DNS.
 .TP 
 \fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP

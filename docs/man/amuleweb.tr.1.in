@@ -49,7 +49,7 @@ seçenekler yapılandırma dosyası ile belirtilenlerden daha yüksek
 .TP 
 \fB[ \-h\fP \fI<sunucu>\fP, \fB\-\-host\fP=\fI<sunucu>\fP \fB]\fP
 aMule'ün çalıştığı sunucu ya da bilgisayar (varsayılan:
-\fIlocalhost\fP). \fI<sunucu>\fP bir IP adresi ya da DNS ismi olabilir
+\fI127.0.0.1\fP). \fI<sunucu>\fP bir IP adresi ya da DNS ismi olabilir
 .TP 
 \fB[ \-p\fP \fI<port>\fP, \fB\-\-port\fP=\fI<port>\fP \fB]\fP
 aMule'ün dışarıya bağlandığında kullandığı port, Ayarlar\->Uzak

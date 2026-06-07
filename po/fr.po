@@ -2201,8 +2201,8 @@ msgid "Show this help text."
 msgstr "Montre ce texte d'aide."
 
 #: src/ExternalConnector.cpp:489
-msgid "Host where aMule is running. (default: localhost)"
-msgstr "Hôte où aMule tourne. (défaut : localhost)"
+msgid "Host where aMule is running. (default: 127.0.0.1)"
+msgstr "Hôte où aMule tourne. (défaut : 127.0.0.1)"
 
 #: src/ExternalConnector.cpp:492
 msgid "aMule's port for External Connection. (default: 4712)"

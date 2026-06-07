@@ -47,7 +47,7 @@ Konfigurationsdatei angegeben werden. Kommandozeilenoptionen überschreiben
 die Werte aus der Konfigurationsdatei.
 .TP 
 \fB[ \-h\fP \fI<Host>\fP, \fB\-\-host\fP=\fI<Host>\fP \fB]\fP
-Der Rechner auf dem aMule läuft (Standard: \fIlocalhost\fP).  \fI<Host>\fP
+Der Rechner auf dem aMule läuft (Standard: \fI127.0.0.1\fP).  \fI<Host>\fP
 kann eine IP\-Adresse oder ein DNS\-Name sein.
 .TP 
 \fB[ \-p\fP \fI<Port>\fP, \fB\-\-port\fP=\fI<Port>\fP \fB]\fP

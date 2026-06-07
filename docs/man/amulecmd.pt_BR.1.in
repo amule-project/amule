@@ -31,7 +31,7 @@ amulecmd \- Programa baseado em console para controlar o aMule
 sem IGU.
 .TP 
 \fB[ \-h\fP \fI<anfitrião>\fP, \fB\-\-host\fP=\fI<anfitrião>\fP \fB]\fP
-Anfitrião onde o aMule está rodando (padrão: \fIlocalhost\fP).
+Anfitrião onde o aMule está rodando (padrão: \fI127.0.0.1\fP).
 \fI<anfitrião>\fP pode ser um endereço IP ou um nome de DNS
 .TP 
 \fB[ \-p\fP \fI<porta>\fP, \fB\-\-port\fP=\fI<porta>\fP \fB]\fP

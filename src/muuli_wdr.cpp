@@ -2596,7 +2596,7 @@ wxSizer *CoreConnect( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxStaticText *item2 = new wxStaticText( parent, -1, _("Connect to:"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item2, wxSizerFlags().Center().Border(wxALL, 5) );
-    CMuleTextCtrl *item3 = new CMuleTextCtrl( parent, ID_REMOTE_HOST, "localhost", wxDefaultPosition, wxSize(160,-1), 0 );
+    CMuleTextCtrl *item3 = new CMuleTextCtrl( parent, ID_REMOTE_HOST, "127.0.0.1", wxDefaultPosition, wxSize(160,-1), 0 );
     item1->Add( item3, wxSizerFlags().Center().Border(wxALL, 5) );
     wxStaticText *item4 = new wxStaticText( parent, -1, ":", wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item4, wxSizerFlags().Center().Border(wxALL, 5) );
