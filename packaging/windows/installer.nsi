@@ -155,6 +155,7 @@ Var StartMenuFolder
 !insertmacro MUI_LANGUAGE "Lithuanian"
 !insertmacro MUI_LANGUAGE "Luxembourgish"
 !insertmacro MUI_LANGUAGE "Macedonian"
+!insertmacro MUI_LANGUAGE "Malagasy"
 !insertmacro MUI_LANGUAGE "Malay"
 !insertmacro MUI_LANGUAGE "Mongolian"
 !insertmacro MUI_LANGUAGE "Norwegian"
