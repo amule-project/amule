@@ -22,14 +22,15 @@ Sends the given \fI<eD2k-link>\fR to aMule, i.e. writes it to the file ~/.aMule/
 \fB[ \-c\fR \fI<path>\fR, \fB\-\-config\-dir\fR=\fI<path>\fR \fB]\fR
 Read config from \fI<path>\fR instead of home
 .TP
-\fB[ \-t\fR, \fB\-\-category\fR=\fI<num>\fR \fB]\fR
-Set category for passed eD2k links to \fI<num>\fR
+\fB[ \-t\fR \fI<num>\fR, \fB\-\-category\fR \fI<num>\fR \fB]\fR
+Set category for passed eD2k links to \fI<num>\fR.
+Unlike \fB\-\-config\-dir\fR, the parser reads the value as the next argument and does not accept \fB\-\-category\fR=\fI<num>\fR syntax.
 .TP
 .B_untranslated [ \-e\fR, \fB\-\-emulecollection ]\fR
-Loads all link found in the emulecollection given as \fI<ed2k-link>\fR
+Loads all links found in the emulecollection given as \fI<ed2k-link>\fR
 .TP
 .B_untranslated [ \-l\fR, \fB\-\-list ]\fR
-Lists all link found in the emulecollection given as \fI<ed2k-link>\fR
+Lists all links found in the emulecollection given as \fI<ed2k-link>\fR
 .TP
 .B_untranslated [ \-h\fR, \fB\-\-help ]\fR
 Prints a short usage description.
