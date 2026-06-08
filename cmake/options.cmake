@@ -167,12 +167,20 @@ if (NEED_LIB_MULEAPPCOMMON)
 	option (ENABLE_IP2COUNTRY "compile with GeoIP IP2Country library")
 	option (ENABLE_MMAP "enable using mapped memory if supported")
 	option (ENABLE_NLS "enable national language support" ON)
+	# Backtrace symbol resolution: ON => use libbfd for in-process
+	# address→file:line resolution; OFF => fall back to
+	# backtrace_symbols() for function names + an external addr2line
+	# popen() for line info (MuleDebug.cpp). Off is intended for
+	# environments that ship libbfd in the SDK but not in the runtime
+	# (e.g. GNOME-Platform-based Flatpak builds, see #13).
+	option (ENABLE_BFD "use libbfd for in-process backtrace symbol resolution" ON)
 	set (NEED_LIB_MULEAPPCORE TRUE)
 	set (wx_NEED_BASE TRUE)
 else()
 	set (ENABLE_IP2COUNTRY FALSE)
 	set (ENABLE_MMAP FALSE)
 	set (ENABLE_NLS FALSE)
+	set (ENABLE_BFD FALSE)
 endif()
 
 if (NEED_LIB_MULEAPPGUI)

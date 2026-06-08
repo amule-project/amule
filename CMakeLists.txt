@@ -268,7 +268,12 @@ list (GET _AMULE_MONTHS ${_AMULE_MAN_MONTH_IDX} _AMULE_MAN_MONTH)
 string (TIMESTAMP _AMULE_MAN_YEAR "%Y" UTC)
 set (MAN_DATE "\"${_AMULE_MAN_MONTH} ${_AMULE_MAN_YEAR}\"")
 
-include (cmake/bfd.cmake)
+if (ENABLE_BFD)
+	include (cmake/bfd.cmake)
+else()
+	set (HAVE_BFD FALSE)
+	message (STATUS "ENABLE_BFD=NO; skipping libbfd detection. Backtraces fall back to addr2line + backtrace_symbols().")
+endif()
 
 # DownloadBandwidthThrottler holds the shared byte budget as
 # std::atomic<int64_t>. On 64-bit targets the compiler emits native

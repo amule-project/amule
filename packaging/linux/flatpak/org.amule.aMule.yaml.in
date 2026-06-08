@@ -315,6 +315,20 @@ modules:
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DBUILD_MONOLITHIC=YES
+      # The GNOME 49 SDK ships libbfd (in /usr/lib) and bfd.h (in
+      # /usr/include), so aMule's auto-detection at cmake/bfd.cmake
+      # finds it and links against libbfd-2.46.so. The GNOME 49
+      # *Runtime* (the tree shipped to end users) does NOT ship
+      # libbfd -- it's a development library -- so the installed
+      # flatpak aborts at startup with:
+      #     amule: error while loading shared libraries:
+      #     libbfd-2.46.so: cannot open shared object file
+      # (amule-org/amule#13). Disable libbfd for the flatpak build;
+      # MuleDebug.cpp's !HAVE_BFD path still emits backtraces via
+      # backtrace() + backtrace_symbols() and shells out to
+      # addr2line for line numbers when available. The native distro
+      # packages and the AppImage continue to use libbfd normally.
+      - -DENABLE_BFD=NO
       - -DBUILD_REMOTEGUI=YES
       - -DBUILD_DAEMON=YES
       - -DBUILD_AMULECMD=YES
