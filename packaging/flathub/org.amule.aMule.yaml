@@ -26,6 +26,22 @@ runtime-version: '49'
 sdk: org.gnome.Sdk
 command: amule
 
+# Ship all translation .mo files inside the main app instead of
+# splitting them into a sibling <app-id>.Locale extension. Default
+# flatpak-builder behaviour (`separate-locales: true`) extracts them
+# into the extension, but the resulting layout
+# (<lang>/share/<sub-lang>/LC_MESSAGES/amule.mo) doesn't match the
+# standard libintl lookup pattern, so wxLocale can't find the
+# catalogs even when the .Locale extension is installed — the UI
+# silently runs in English regardless of LANG.
+#
+# Keeping locales in the main app at the canonical
+# share/locale/<lang>/LC_MESSAGES/amule.mo path makes translations
+# load reliably on every distribution channel.
+#
+# Cost: ~8 MB added to the bundle (~30 .mo files).
+separate-locales: false
+
 build-options:
   env:
     MAKEFLAGS: "-j2"
