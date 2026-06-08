@@ -407,6 +407,10 @@ if (BUILD_MONOLITHIC)
 	install (FILES org.amule.aMule.png
 		DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps"
 	)
+	install (FILES org.amule.aMule-256.png
+		RENAME org.amule.aMule.png
+		DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/256x256/apps"
+	)
 endif()
 
 if (BUILD_REMOTEGUI)
