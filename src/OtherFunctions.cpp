@@ -1102,10 +1102,34 @@ void InitLocale(wxLocale& locale, int language)
 	// .mo catalogs live under <bundle>/Contents/Resources alongside the
 	// other bundle resources -- which is what GetResourcesDir() returns.
 	// On Windows both methods return the directory containing the .exe,
-	// so this is equivalent there.  Linux falls through to libintl's
-	// system search paths (share/locale).
+	// so this is equivalent there.
 	locale.AddCatalogLookupPathPrefix(JoinPaths(wxStandardPaths::Get().GetResourcesDir(), "locale"));
-#endif /* (!)(defined(__WXMAC__) || defined(__WINDOWS__)) */
+#elif defined(__WXGTK__) || defined(__UNIX__)
+	// On Linux/*BSD, .mo catalogs are installed under
+	//   ${CMAKE_INSTALL_PREFIX}/share/locale/<lang>/LC_MESSAGES/amule.mo
+	// (see po/CMakeLists.txt -- DESTINATION ${CMAKE_INSTALL_LOCALEDIR}).
+	//
+	// libintl's default lookup path is baked in at wxGTK's build time.
+	// For system installs that build the binary and wxGTK against the
+	// same prefix (typical Debian/Fedora/Arch packages), the default
+	// path matches and translations work without explicit help.
+	//
+	// In a Flatpak however, the bundle installs under prefix=/app while
+	// the wxGTK shipped inside the GNOME runtime was built against
+	// prefix=/usr -- so libintl looks for amule.mo under /usr/share/locale,
+	// and our catalogs sit at /app/share/locale, untouched. Net result:
+	// every gettext() lookup misses and the UI runs in English regardless
+	// of LANG. See amule-org/amule#18 (DaRkViVi verified the path
+	// mismatch on Fedora 44: ls /app/share/locale shows it/, ls
+	// /usr/share/locale/it/LC_MESSAGES/amule.mo is missing).
+	//
+	// Explicitly registering ${install_prefix}/share/locale as a wxLocale
+	// lookup prefix makes the binary self-sufficient: it tells libintl to
+	// also look under its own runtime install prefix, which matches the
+	// install path on Flatpak and is a harmless no-op on system installs
+	// (libintl already finds the catalog under /usr/share/locale).
+	locale.AddCatalogLookupPathPrefix(JoinPaths(JoinPaths(wxStandardPaths::Get().GetInstallPrefix(), "share"), "locale"));
+#endif
 
 	locale.AddCatalog(PACKAGE);
 }
