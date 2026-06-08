@@ -36,7 +36,14 @@
 
   <!-- TODO: Auto generate me from changelog! -->
   <releases>
-    <release version="3.0.0" date="2026-06-08"/>
+    <release version="3.0.0" date="2026-06-08">
+      <url>https://amule-org.github.io/blog/amule-3-0-0</url>
+      <description>
+        <p>
+          First major release in five years. Headline changes are dramatic throughput improvements (peer-to-peer downloads see ~100–380× speedups over 2.3.3 across macOS, Linux, and Windows), a full build-system overhaul (CMake replaces autotools), a modernized dependency stack, native binaries for Linux / macOS / Windows, and a broad legacy-API cleanup.
+        </p>
+      </description>
+    </release>
   </releases>
 
   <launchable type="desktop-id">org.amule.aMule.desktop</launchable>
