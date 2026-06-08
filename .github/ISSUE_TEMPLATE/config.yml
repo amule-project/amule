@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/amule-org/amule/discussions
+    about: |
+      Have a question, an idea, or want to chat with the community?
+      Try Discussions first — they're better suited to open-ended
+      topics than the issue tracker.
