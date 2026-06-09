@@ -26,6 +26,8 @@
 
 
 #include "WebSocket.h"
+#include <cerrno>
+#include <cctype>
 
 
 CWebSocket::CWebSocket(CWebServerBase *parent)
@@ -121,21 +123,31 @@ void CWebSocket::OnReceive(int)
 	//
 	// "POST" have "Content-Length"
 	if ( m_IsPost ) {
-		char *cont_len = strstr(m_pBuf, "Content-Length");
+		char *cont_len = strcasestr(m_pBuf, "Content-Length");
 		// do we have received all the line ?
 		if ( cont_len && strstr(cont_len, "\r\n\r\n") ) {
 			cont_len += strlen("Content-Length:");
 			// can be white space following
 			while ( isspace(*cont_len) ) cont_len++;
 			int len = atoi(cont_len);
-			if ( !len ) {
+			if ( len <= 0 ) {
 				Close();
 				return ;
 			}
 			// do we have all of data ?
 			char *cont = strstr(m_pBuf, "\r\n\r\n");
+			if ( !cont ) {
+				Close();
+				return ;
+			}
 			cont += 4;
-			if ( cont - m_pBuf + len <= (int)m_dwRecv ) {
+			if ( cont < m_pBuf ) {
+				Close();
+				return ;
+			}
+			uint32 bodyOffset = static_cast<uint32>(cont - m_pBuf);
+			uint32 bodyLen = static_cast<uint32>(len);
+			if ( bodyLen <= m_dwRecv && bodyOffset <= m_dwRecv - bodyLen ) {
 				OnRequestReceived(m_pBuf, cont, len);
 			}
 		}
@@ -228,7 +240,15 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 		if ( current_cookie ) {
 			char *value = strchr(current_cookie, '=');
 			if ( value ) {
-				sessid = strtoull(++value, NULL, 10);
+				++value;
+				errno = 0;
+				char *endptr = NULL;
+				unsigned long long parsed = strtoull(value, &endptr, 10);
+				if ( endptr != value && errno != ERANGE &&
+					(*endptr == '\0' || *endptr == ';' || *endptr == '\r' || *endptr == '\n' ||
+					 std::isspace(static_cast<unsigned char>(*endptr))) ) {
+					sessid = static_cast<uint64_t>(parsed);
+				}
 			}
 		}
 	}
