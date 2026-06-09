@@ -823,7 +823,7 @@ bool UploadsInfo::ReQuery()
 	return true;
 }
 
-SearchFile::SearchFile(CEC_SearchFile_Tag *tag)
+SearchFile::SearchFile(CEC_SearchFile_Tag *tag) : CECID(tag->ID())
 {
 	nHash = tag->FileHash();
 	sHash = nHash.Encode();

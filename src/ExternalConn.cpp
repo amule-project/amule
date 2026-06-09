@@ -267,6 +267,11 @@ private:
 	std::set<uint32> m_lastSentFileIds;
 	std::set<uint32> m_lastSentSharedFileIds;
 	std::set<uint32> m_lastSentPartFileIds;
+	// `EC_OP_SEARCH_RESULTS` at `EC_DETAIL_UPDATE` (amuleweb's polling
+	// path). amulegui takes the `EC_DETAIL_INC_UPDATE` overload which
+	// uses the always-bulk-delete `CRemoteContainer::ProcessUpdate` and
+	// needs no tombstones, so search-results tracking is amuleweb-only.
+	std::set<uint32> m_lastSentSearchIds;
 
 	// Set of file ECIDs already sent to the client with full detail
 	// (EC_DETAIL_INC_UPDATE / EC_DETAIL_UPDATE payload, not the legacy
@@ -1386,7 +1391,8 @@ static CECPacket *Get_EC_Response_Friend(const CECPacket *request)
 }
 
 
-static CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
+static CECPacket *Get_EC_Response_Search_Results(const CECPacket *request,
+	bool partial_update_active, std::set<uint32> &io_lastSentSearchIds)
 {
 	CECPacket *response = new CECPacket(EC_OP_SEARCH_RESULTS);
 
@@ -1395,6 +1401,22 @@ static CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 	// request can contain list of queried items
 	CTagSet<uint32, EC_TAG_SEARCHFILE> queryitems(request);
 
+	// `EC_TAG_FILE_REMOVED` tombstoning is wired only for the
+	// `EC_DETAIL_UPDATE` polling path that amuleweb uses, and only when
+	// the client opted into the partial-update protocol at auth. The
+	// `EC_DETAIL_INC_UPDATE` dispatch (amulegui) takes the tagmap
+	// overload below; `EC_DETAIL_FULL` callers (amulecmd `search` and
+	// amuleweb's Phase-3 follow-up `req_full`, which defaults to FULL)
+	// remain unchanged. The `queryitems.empty()` check excludes
+	// per-ID subset queries: tombstoning is meaningful only when the
+	// client is polling the whole set.
+	const bool tombstone_path =
+		partial_update_active
+		&& detail_level == EC_DETAIL_UPDATE
+		&& queryitems.empty();
+
+	std::set<uint32> current_ids;
+
 	const CSearchResultList& list = theApp->searchlist->GetSearchResults(0xffffffff);
 	CSearchResultList::const_iterator it = list.begin();
 	while (it != list.end()) {
@@ -1402,7 +1424,29 @@ static CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 		if ( !queryitems.empty() && !queryitems.count(sf->ECID()) ) {
 			continue;
 		}
+		if (tombstone_path) {
+			current_ids.insert(sf->ECID());
+		}
 		response->AddTag(CEC_SearchFile_Tag(sf, detail_level));
+	}
+
+	if (tombstone_path) {
+		// One `EC_TAG_FILE_REMOVED` per result that was in the previous
+		// response but is no longer in the daemon's searchlist —
+		// typically because the user started a new search, which clears
+		// the list via `EC_OP_SEARCH_START` → `searchlist->RemoveResults`.
+		// Without these markers, amuleweb's
+		// `UpdatableItemsContainer::ProcessUpdate` takes the partial-
+		// update branch (it expects explicit deletions) and sees no
+		// signal to drop the old results, so they accumulate across
+		// searches (#31, regression from ee1d92b75).
+		for (std::set<uint32>::const_iterator i = io_lastSentSearchIds.begin();
+			i != io_lastSentSearchIds.end(); ++i) {
+			if (!current_ids.count(*i)) {
+				response->AddTag(CECTag(EC_TAG_FILE_REMOVED, *i));
+			}
+		}
+		io_lastSentSearchIds.swap(current_ids);
 	}
 	return response;
 }
@@ -2059,7 +2103,8 @@ CECPacket *CECServerSocket::ProcessRequest2(const CECPacket *request)
 			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
 				response = Get_EC_Response_Search_Results(m_obj_tagmap);
 			} else {
-				response = Get_EC_Response_Search_Results(request);
+				response = Get_EC_Response_Search_Results(request,
+					m_partialUpdateActive, m_lastSentSearchIds);
 			}
 			break;
 
