@@ -162,10 +162,6 @@ void CWebSocket::OnReceive(int)
 			// do we have all of data ?
 			char *cont = strstr(m_pBuf, "\r\n\r\n");
 			cont += 4;
-			if ( cont < m_pBuf ) {
-				Close();
-				return ;
-			}
 			uint32 bodyOffset = static_cast<uint32>(cont - m_pBuf);
 			uint32 bodyLen = static_cast<uint32>(len);
 			if ( bodyLen <= m_dwRecv && bodyOffset <= m_dwRecv - bodyLen ) {
