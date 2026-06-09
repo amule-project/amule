@@ -29,6 +29,31 @@
 #include <cerrno>
 #include <cctype>
 
+namespace {
+
+char* FindHeaderCaseInsensitive(char* haystack, const char* needle)
+{
+	if ( haystack == NULL || needle == NULL ) {
+		return NULL;
+	}
+	size_t needle_len = strlen(needle);
+	if ( needle_len == 0 ) {
+		return haystack;
+	}
+	size_t haystack_len = strlen(haystack);
+	if ( needle_len > haystack_len ) {
+		return NULL;
+	}
+	for ( size_t i = 0; i <= haystack_len - needle_len; ++i ) {
+		if ( strncasecmp(haystack + i, needle, needle_len) == 0 ) {
+			return haystack + i;
+		}
+	}
+	return NULL;
+}
+
+}
+
 
 CWebSocket::CWebSocket(CWebServerBase *parent)
 	: m_dwBufSize(4096)
@@ -123,7 +148,7 @@ void CWebSocket::OnReceive(int)
 	//
 	// "POST" have "Content-Length"
 	if ( m_IsPost ) {
-		char *cont_len = strcasestr(m_pBuf, "Content-Length");
+		char *cont_len = FindHeaderCaseInsensitive(m_pBuf, "Content-Length");
 		// do we have received all the line ?
 		if ( cont_len && strstr(cont_len, "\r\n\r\n") ) {
 			cont_len += strlen("Content-Length:");
