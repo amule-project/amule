@@ -83,6 +83,17 @@ CWebSocket::CWebSocket(CWebServerBase *parent)
 
 }
 
+CWebSocket::~CWebSocket()
+{
+	CChunk* pChunk = m_pHead;
+	while (pChunk) {
+		CChunk* pNext = pChunk->m_pNext;
+		delete pChunk;
+		pChunk = pNext;
+	}
+	delete[] m_pBuf;
+}
+
 void CWebSocket::OnLost(int)
 {
 	Close();

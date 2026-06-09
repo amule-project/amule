@@ -38,6 +38,7 @@ class CWebServer;
 class CWebSocket : public CLibSocket {
 	public:
 		CWebSocket(CWebServerBase *parent);
+		~CWebSocket();
 
 		virtual void OnSend(int);
 		virtual void OnReceive(int);
@@ -53,15 +54,18 @@ class CWebSocket : public CLibSocket {
 
 		class CChunk {
 			public:
+				CChunk()
+					: m_pData(NULL), m_pToSend(NULL), m_dwSize(0), m_pNext(NULL)
+				{}
 				char* m_pData;
 				char* m_pToSend;
 				uint32 m_dwSize;
 
 				CChunk* m_pNext;
-				~CChunk() { if (m_pData) delete[] m_pData; }
+				~CChunk() { delete[] m_pData; }
 		};
 
-		CChunk *m_pHead; // tails of what has to be sent
+		CChunk *m_pHead; // head of what has to be sent
 		CChunk *m_pTail;
 
 		bool m_IsGet, m_IsPost;
