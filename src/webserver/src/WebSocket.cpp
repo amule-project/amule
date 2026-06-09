@@ -262,7 +262,7 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 				char *endptr = NULL;
 				unsigned long long parsed = strtoull(value, &endptr, 10);
 				if ( endptr != value && errno != ERANGE &&
-					(*endptr == '\0' || *endptr == ';' || *endptr == '\r' || *endptr == '\n' ||
+					(*endptr == '\0' || *endptr == ';' ||
 					 std::isspace(static_cast<unsigned char>(*endptr))) ) {
 					sessid = static_cast<uint64_t>(parsed);
 				}
