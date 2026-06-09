@@ -551,8 +551,29 @@ void CSearchList::ProcessSharedFileList(const uint8_t* in_packet, uint32 size,
 }
 
 
+// Symmetric counterpart to PR #36's Kad hard-stop on EC search-start.
+// Late ed2k server replies (TCP Local responses here, UDP Global responses
+// in ProcessUDPSearchAnswer below) keep arriving for seconds after the
+// search request is sent. When an EC client switches search type (ed2k ->
+// Kad) those late results would land in `m_results[m_currentSearch]` --
+// with the EC sentinel `0xffffffff` pinned across all EC searches, that
+// bucket is now the new Kad search's bucket, producing ed2k contamination
+// of a Kad result list. Drop late ed2k replies when the active search
+// type is no longer ed2k. Native-GUI parallel searches keep
+// `m_currentSearch` at bottom-half IDs and a Kad tab updates m_searchType
+// to KadSearch -- this gate makes late ed2k packets stop misrouting to
+// the Kad tab's bucket (a pre-existing GUI side bug that nobody noticed
+// because cross-protocol hits in a Kad tab look like noise).
+static inline bool IsActiveSearchTypeEd2k(SearchType t)
+{
+	return t == LocalSearch || t == GlobalSearch;
+}
+
 void CSearchList::ProcessSearchAnswer(const uint8_t* in_packet, uint32_t size, bool optUTF8, uint32_t serverIP, uint16_t serverPort)
 {
+	if (!IsActiveSearchTypeEd2k(m_searchType)) {
+		return;
+	}
 	CMemFile packet(in_packet, size);
 
 	uint32_t results = packet.ReadUInt32();
@@ -564,6 +585,9 @@ void CSearchList::ProcessSearchAnswer(const uint8_t* in_packet, uint32_t size, b
 
 void CSearchList::ProcessUDPSearchAnswer(const CMemFile& packet, bool optUTF8, uint32_t serverIP, uint16_t serverPort)
 {
+	if (!IsActiveSearchTypeEd2k(m_searchType)) {
+		return;
+	}
 	AddToList(new CSearchFile(packet, optUTF8, m_currentSearch, serverIP, serverPort), false);
 }
 
