@@ -161,10 +161,6 @@ void CWebSocket::OnReceive(int)
 			}
 			// do we have all of data ?
 			char *cont = strstr(m_pBuf, "\r\n\r\n");
-			if ( !cont ) {
-				Close();
-				return ;
-			}
 			cont += 4;
 			if ( cont < m_pBuf ) {
 				Close();
