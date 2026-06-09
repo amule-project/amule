@@ -223,6 +223,7 @@ wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen);
 unsigned int DecodeBase32(const wxString &base32Buffer, unsigned int base32BufLen, unsigned char *buffer);
 wxString EncodeBase64(const char* buffer, unsigned int bufLen);
 unsigned int DecodeBase64(const wxString &base64Buffer, unsigned int base64BufLen, unsigned char *buffer);
+void SetBase64Header(const wxString& header);
 
 // Converts the number of bytes to human readable form.
 wxString CastItoXBytes(uint64 count);

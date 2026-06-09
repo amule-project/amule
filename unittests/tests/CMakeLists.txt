@@ -213,3 +213,24 @@ target_include_directories (TextFileTest
 target_link_libraries (TextFileTest
 	muleunit
 )
+
+add_executable (OtherFunctionsTest
+	OtherFunctionsTest.cpp
+	${CMAKE_SOURCE_DIR}/src/OtherFunctions.cpp
+)
+
+add_test (NAME OtherFunctionsTest
+	COMMAND OtherFunctionsTest
+)
+
+target_include_directories (OtherFunctionsTest
+	PRIVATE ${CMAKE_BINARY_DIR}
+	PRIVATE ${CMAKE_SOURCE_DIR}/src
+	PRIVATE ${CMAKE_SOURCE_DIR}/src/include
+)
+
+target_link_libraries (OtherFunctionsTest
+	muleunit
+	mulecommon
+	CRYPTOPP::CRYPTOPP
+)

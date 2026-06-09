@@ -444,6 +444,8 @@ static unsigned int g_nCharsPerLine = 72;
 static wxString strHeaderLine;
 
 
+void SetBase64Header(const wxString& header) { strHeaderLine = header; }
+
 wxString EncodeBase64(const char *pbBufferIn, unsigned int bufLen)
 {
 	wxString pbBufferOut;
