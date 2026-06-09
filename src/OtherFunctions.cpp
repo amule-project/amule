@@ -265,13 +265,13 @@ static wxChar base16Lookup[BASE16_LOOKUP_MAX][2] = {
 	{ '7', 0x7 },
 	{ '8', 0x8 },
 	{ '9', 0x9 },
-	{ ':', 0x9 },
-	{ ';', 0x9 },
-	{ '<', 0x9 },
-	{ '=', 0x9 },
-	{ '>', 0x9 },
-	{ '?', 0x9 },
-	{ '@', 0x9 },
+	{ ':', 0xFF },
+	{ ';', 0xFF },
+	{ '<', 0xFF },
+	{ '=', 0xFF },
+	{ '>', 0xFF },
+	{ '?', 0xFF },
+	{ '@', 0xFF },
 	{ 'A', 0xA },
 	{ 'B', 0xB },
 	{ 'C', 0xC },
@@ -322,6 +322,7 @@ unsigned int DecodeBase16(const wxString &base16Buffer, unsigned int base16BufLe
 		// Check to make sure that the given word falls inside a valid range
 		uint8_t word = (lookup < 0 || lookup >= BASE16_LOOKUP_MAX) ?
 			0xFF : base16Lookup[lookup][1];
+		if (word == 0xFF) return 0;
 		unsigned idx = i >> 1;
 		buffer[idx] = (i & 1) ? // odd or even?
 			(buffer[idx] | word) : (word << 4);
@@ -527,7 +528,7 @@ wxString EncodeBase64(const char *pbBufferIn, unsigned int bufLen)
 	}
 
 	if( !strHeaderLine.IsEmpty() ) {
-		pbBufferOut = "-----END " + strHeaderLine + "-----";
+		pbBufferOut += "-----END " + strHeaderLine + "-----";
 		if( g_fUseCRLF ) {
 			pbBufferOut += "\r";
 		}
@@ -714,7 +715,6 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".3gpp",  ED2KFT_VIDEO));		// 3GPP Multimedia File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".asf",   ED2KFT_VIDEO));		// Advanced Systems Format (MS)
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".amv",   ED2KFT_VIDEO));		// Anime Music Video File
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".asf",   ED2KFT_VIDEO));		// Advanced Systems Format File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".avi",   ED2KFT_VIDEO));		// Audio Video Interleave File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".bik",   ED2KFT_VIDEO));		// BINK Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".divx",  ED2KFT_VIDEO));		// DivX-Encoded Movie File
