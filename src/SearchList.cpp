@@ -355,12 +355,25 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, CSearchP
 	}
 
 	m_searchType = type;
+
+	// EC clients reuse the sentinel `0xffffffff` for every search regardless
+	// of network type. `Get_EC_Response_Search` -> `RemoveResults(0xffffffff)`
+	// already soft-stops the previous Kad search via `PrepareToStop()` so it
+	// can drain in-flight packets, but those late `KademliaSearchKeyword(
+	// 0xffffffff, ...)` callbacks would then land in the *new* search's
+	// `m_results[0xffffffff]` bucket -- the Kad results contaminate an ed2k
+	// (or vice-versa) result list whenever an EC client switches search type
+	// without restarting the daemon. Hard-delete the previous Kad search
+	// before either a Kad `PrepareFindKeywords` or an ed2k server packet
+	// starts feeding the shared bucket. Native-GUI searches allocate
+	// distinct top/bottom-half IDs (`3008ada0f`) so `*searchID != 0xffffffff`
+	// for them and they are unaffected.
+	if (*searchID == 0xffffffff) {
+		Kademlia::CSearchManager::StopSearch(0xffffffff, false);
+	}
+
 	if (type == KadSearch) {
 		try {
-			if (*searchID == 0xffffffff) {
-				Kademlia::CSearchManager::StopSearch(0xffffffff, false);
-			}
-
 			// searchstring will get tokenized there
 			// The tab must be created with the Kad search ID, so searchID is updated.
 			Kademlia::CSearch* search = Kademlia::CSearchManager::PrepareFindKeywords(params.strKeyword, data->GetLength(), data->GetRawBuffer(), *searchID);
