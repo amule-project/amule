@@ -69,7 +69,6 @@ class CWebSocket : public CLibSocket {
 		CChunk *m_pTail;
 
 		bool m_IsGet, m_IsPost;
-		char *m_Cookie;
 		char *m_pBuf;
 		uint32 m_dwBufSize;
 		uint32 m_dwRecv;

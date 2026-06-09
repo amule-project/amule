@@ -73,7 +73,6 @@ CWebSocket::CWebSocket(CWebServerBase *parent)
 	// `m_dwBufSize - m_dwRecv` reads below still leave the spare slot
 	// free for the terminator.
 	m_pBuf = new char [4096 + 1];
-	m_Cookie = 0;
 	m_IsGet = false;
 	m_IsPost = false;
 
@@ -108,7 +107,7 @@ void CWebSocket::OnReceive(int)
 		// Buffer is too small. Make it bigger. Allocate one extra
 		// slot for the NUL terminator written below, matching the
 		// `+1` overhead the ctor uses (see #873).
-		uint32 newsize = m_dwBufSize + (m_dwBufSize  >> 1);
+		uint32 newsize = m_dwBufSize + (m_dwBufSize >> 1);
 		char* newbuffer = new char[newsize + 1];
 		char* oldbuffer = m_pBuf;
 		memcpy(newbuffer, oldbuffer, m_dwBufSize);
@@ -175,7 +174,7 @@ void CWebSocket::OnReceive(int)
 			cont += 4;
 			uint32 bodyOffset = static_cast<uint32>(cont - m_pBuf);
 			uint32 bodyLen = static_cast<uint32>(len);
-			if ( bodyLen <= m_dwRecv && bodyOffset <= m_dwRecv - bodyLen ) {
+			if ( bodyOffset <= m_dwRecv && bodyLen <= m_dwRecv - bodyOffset ) {
 				OnRequestReceived(m_pBuf, cont, len);
 			}
 		}
