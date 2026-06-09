@@ -22,7 +22,7 @@
 
 app-id: org.amule.aMule
 runtime: org.gnome.Platform
-runtime-version: '49'
+runtime-version: '50'
 sdk: org.gnome.Sdk
 command: amule
 
@@ -59,7 +59,6 @@ finish-args:
   # folder, save downloads to ~/Movies" — silently fail. This matches
   # qBittorrent / Transmission on Flathub for the same reason.
   - --filesystem=home
-  - --filesystem=xdg-config/mimeapps.list:ro
   - --talk-name=org.freedesktop.PowerManagement.Inhibit
   - --talk-name=org.kde.StatusNotifierWatcher
   - --talk-name=com.canonical.AppMenu.Registrar

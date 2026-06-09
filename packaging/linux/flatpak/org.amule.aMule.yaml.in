@@ -66,8 +66,6 @@ finish-args:
   # without needing --persist, and the Flatpak shares config with any
   # non-Flatpak aMule install side by side.
   - --filesystem=home
-  # MIME handler for ed2k:// links opened from a browser.
-  - --filesystem=xdg-config/mimeapps.list:ro
   # Wake-from-sleep (long-running daemon-ish behaviour).
   - --talk-name=org.freedesktop.PowerManagement.Inhibit
   # SNI (StatusNotifierItem) tray icon support. Flatpak denies all
