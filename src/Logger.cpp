@@ -271,7 +271,18 @@ void CLogger::DoLine(const wxString & line, bool toStdout, bool GUI_ONLY(toGUI))
 
 		// write to Stdout
 		if (m_StdoutLog || toStdout) {
-			printf("%s", (const char*)unicode2char(line));
+			// `utf8_str()` instead of `unicode2char()` so non-ASCII
+			// log content (filenames, server messages, etc.) survives
+			// in stdout regardless of the process locale. `unicode2char`
+			// uses `wxConvLibc`, which collapses non-ASCII to `?` /
+			// U+FFFD when running in the default `C` locale -- common
+			// in headless / containerized deployments where amuled is
+			// invoked without `LANG`/`LC_ALL` set and never calls
+			// `setlocale(LC_ALL, "")` itself (#40). The on-disk log
+			// path already uses `wxConvUTF8` via `FlushApplog`, so
+			// switching the stdout sink to `utf8_str()` makes the two
+			// sinks consistently UTF-8.
+			printf("%s", (const char*)line.utf8_str());
 		}
 	}
 #ifndef AMULE_DAEMON
@@ -285,7 +296,8 @@ void CLogger::DoLine(const wxString & line, bool toStdout, bool GUI_ONLY(toGUI))
 
 void CLogger::EmergencyLog(const wxString &message, bool closeLog)
 {
-	fprintf(stderr, "%s", (const char*)unicode2char(message));
+	// Same UTF-8 sink as DoLine's stdout path (#40).
+	fprintf(stderr, "%s", (const char*)message.utf8_str());
 	m_ApplogBuf += message;
 	FlushApplog();
 	if (closeLog && applog) {

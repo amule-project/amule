@@ -299,7 +299,13 @@ void CaMuleExternalConnector::OnInitCommandSet()
 void CaMuleExternalConnector::Show(const wxString &s)
 {
 	if( !m_KeepQuiet ) {
-		printf("%s", (const char *)unicode2char(s));
+		// `utf8_str()` instead of `unicode2char()` so non-ASCII output
+		// (server messages, file names) doesn't collapse to `?` /
+		// U+FFFD when the connector is invoked in a `C` locale (#40).
+		// Connectors do call `setlocale(LC_ALL, "")` below, but in
+		// minimal container environments without `LANG`/`LC_ALL`
+		// exported, the C locale still falls back to `C`.
+		printf("%s", (const char *)s.utf8_str());
 #ifdef __WINDOWS__
 		fflush(stdout);
 #endif
@@ -523,7 +529,7 @@ void CaMuleExternalConnector::OnInitCmdLine(wxCmdLineParser& parser, const char*
 bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 {
 	if (parser.Found("version")) {
-		printf("%s %s\n", m_appname, (const char *)unicode2char(GetMuleVersion()));
+		printf("%s %s\n", m_appname, (const char *)GetMuleVersion().utf8_str());
 		return false;
 	}
 
@@ -537,7 +543,7 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 	if (parser.Found("create-config-from", &aMuleConfigFile)) {
 		aMuleConfigFile = FinalizeFilename(aMuleConfigFile);
 		if (!::wxFileExists(aMuleConfigFile)) {
-			fprintf(stderr, "%s\n", (const char *)unicode2char("FATAL ERROR: File does not exist: " + aMuleConfigFile));
+			fprintf(stderr, "%s\n", (const char *)(wxString("FATAL ERROR: File does not exist: ") + aMuleConfigFile).utf8_str());
 			exit(1);
 		}
 		CECFileConfig aMuleConfig(aMuleConfigFile);
