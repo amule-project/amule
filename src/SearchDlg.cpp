@@ -572,12 +572,11 @@ void CSearchDlg::StartNewSearch()
 
 	int selection = CastChild( ID_SEARCHTYPE, wxChoice )->GetSelection();
 
+	// In muuli_wdr.cpp, Search Choices are inserted in this order: Local, Global, Kad.
+	// If ED2K is disabled, the only choice in the menu is Kad,
+	// but the starting value is 0 and we need a 2 for the switch
 	if (!thePrefs::GetNetworkED2K()) {
 		selection += 2;
-	}
-
-	if (!thePrefs::GetNetworkKademlia()) {
-		selection += 1;
 	}
 
 	switch (selection) {
