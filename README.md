@@ -20,8 +20,8 @@ aMule is a multi-platform client for the eD2k / Kad file-sharing network,
 originally a fork of the Windows client eMule (via xMule and lMule).
 aMule started in August 2003.
 
-Supported platforms today: Linux, FreeBSD, OpenBSD, macOS, and Windows
-(MSYS2 / mingw-w64), on both x86_64 and ARM64.
+Supported platforms today: Linux, FreeBSD, OpenBSD, NetBSD, macOS, and
+Windows (MSYS2 / mingw-w64), on both x86_64 and ARM64.
 
 aMule aims to stay close to eMule in look-and-feel so users moving between
 the two have minimal friction. New eMule protocol-level features are
