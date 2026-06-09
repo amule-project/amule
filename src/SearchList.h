@@ -214,7 +214,7 @@ private:
 	bool		m_searchInProgress;
 
 	//! The ID of the current search.
-	long		m_currentSearch;
+	wxUIntPtr	m_currentSearch;
 
 	//! The current packet used for searches.
 	CPacket*	m_searchPacket;
