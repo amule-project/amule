@@ -43,7 +43,7 @@ class CWebSocket : public CLibSocket {
 		virtual void OnReceive(int);
 		virtual void OnLost(int);
 
-        void OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen);
+		void OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen);
 
 		void SendContent(const char* szStdResponse, const void* pContent, uint32 dwContentSize);
 		void SendData(const void* pData, uint32 dwDataSize);
@@ -73,5 +73,5 @@ class CWebSocket : public CLibSocket {
 		uint32 m_dwHttpContentLen;
 };
 
-#endif //WEBSERVER_H
+#endif //WEBSOCKET_H
 // File_checked_for_headers
