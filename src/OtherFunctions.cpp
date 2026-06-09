@@ -687,7 +687,7 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mol",   ED2KFT_AUDIO));
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mp1",   ED2KFT_AUDIO));		// MPEG-1 Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mp2",   ED2KFT_AUDIO));		// MPEG-2 Audio File
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mp3",   ED2KFT_AUDIO));		// MPEG-3 Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mp3",   ED2KFT_AUDIO));		// MPEG-1/2 Audio Layer 3 File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mpa",   ED2KFT_AUDIO));		// MPEG Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mpc",   ED2KFT_AUDIO));		// Musepack Compressed Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mpp",   ED2KFT_AUDIO));
