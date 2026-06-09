@@ -262,7 +262,7 @@ modules:
         # tip-of-master pin past the release tag can only be commit-
         # only. The x-checker-data block below still drives auto-
         # update PRs against new aMule release tags.
-        commit: 5017da527d8e9d5a9a6da0ce954898289ad7fba5
+        commit: 843bd1206ba552dd79221ac4fcd3e0763fbeec21
         disable-shallow-clone: true
         x-checker-data:
           type: git
