@@ -62,7 +62,12 @@ if ! command -v msgmerge &>/dev/null; then
 fi
 
 echo "Extracting translatable strings into po/amule.pot ..."
+# --no-wrap: project policy is one msgid/msgstr per line, no width-based
+# wrapping. Keeps Weblate / msgmerge / hand-regen diffs to real content
+# changes instead of reflow noise. Weblate's "application" component is
+# configured to match.
 xgettext \
+	--no-wrap \
 	--keyword=_ \
 	--keyword=wxTRANSLATE \
 	--keyword=wxPLURAL:1,2 \
@@ -83,10 +88,16 @@ sed -e "1,5 s/^# Copyright (C) YEAR /# Copyright (C) ${YEAR} /" po/amule.pot > p
 die 32 "failed to substitute copyright year in po/amule.pot"
 
 echo "Merging po/amule.pot into each .po file ..."
+# Write via --output-file + mv rather than --update: msgmerge --update
+# treats the .po as up-to-date when only the pot's wrap differs from
+# the .po, and silently skips rewriting -- which defeats --no-wrap on
+# any .po that was previously committed in wrapped form.
 for PO_FILE in po/*.po; do
 	echo "  $PO_FILE"
-	msgmerge --update --backup=none "$PO_FILE" po/amule.pot
+	msgmerge --no-wrap "$PO_FILE" po/amule.pot --output-file="$PO_FILE.tmp"
 	die 31 "msgmerge failed for $PO_FILE"
+	mv "$PO_FILE.tmp" "$PO_FILE"
+	die 31 "failed to install merged $PO_FILE"
 done
 
 echo "Done."

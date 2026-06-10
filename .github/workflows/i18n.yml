@@ -46,14 +46,16 @@ jobs:
           # lines (POT-Creation-Date, PO-Revision-Date, Last-Translator,
           # Language-Team) and re-flow source-reference comments
           # (#: file:lineno) on any source-code line shift, even when
-          # no msgid / msgstr actually changed. Canonicalise the wrap
-          # width with msgcat first (its default depends on locale),
+          # no msgid / msgstr actually changed. Run msgcat --no-wrap on
+          # both sides to neutralise any incidental wrapping (project
+          # policy is --no-wrap, but normalising defensively keeps this
+          # check robust to a translator using a tool that re-wraps),
           # then strip those metadata lines before diffing.
           drift=0
           for po in po/amule.pot po/*.po; do
-            diff <(git show HEAD:"$po" | msgcat --width=79 - \
+            diff <(git show HEAD:"$po" | msgcat --no-wrap - \
                      | grep -vE '^("(POT-Creation-Date|PO-Revision-Date|Last-Translator|Language-Team)|#: )') \
-                 <(msgcat --width=79 "$po" \
+                 <(msgcat --no-wrap "$po" \
                      | grep -vE '^("(POT-Creation-Date|PO-Revision-Date|Last-Translator|Language-Team)|#: )') \
               > /tmp/po-drift.txt || drift=1
             if [ -s /tmp/po-drift.txt ]; then

@@ -8,7 +8,11 @@ subdir = po
 top_builddir = ..
 
 # These options get passed to xgettext.
-XGETTEXT_OPTIONS = --keyword=_ --keyword=wxTRANSLATE --keyword=wxPLURAL:1,2
+# --no-wrap matches the project policy enforced in scripts/update-po.sh
+# and the Weblate "application" component: one msgid/msgstr per line, no
+# width-based wrapping. Kept here for symmetry with the legacy autotools
+# update-po target, even though CMake doesn't currently invoke it.
+XGETTEXT_OPTIONS = --no-wrap --keyword=_ --keyword=wxTRANSLATE --keyword=wxPLURAL:1,2
 
 # This is the copyright holder that gets inserted into the header of the
 # $(DOMAIN).pot file.  Set this to the copyright holder of the surrounding
