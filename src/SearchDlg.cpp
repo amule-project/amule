@@ -323,7 +323,7 @@ void CSearchDlg::OnFieldChanged( wxEvent& WXUNUSED(evt) )
 	enable |= (CastChild(ID_AUTOCATASSIGN, wxChoice)->GetSelection() > 0);
 
 	// These are the IDs of the search-fields
-	int spinfields[] = { IDC_SPINSEARCHMIN, IDC_SPINSEARCHMAX, IDC_SPINSEARCHAVAIBILITY };
+	int spinfields[] = { IDC_SPINSEARCHMIN, IDC_SPINSEARCHMAX, IDC_SPINSEARCHAVAILABILITY };
 	for ( uint16 i = 0; i < itemsof(spinfields); i++ ) {
 		enable |= (CastChild( spinfields[i], wxSpinCtrl )->GetValue() > 0);
 	}
@@ -548,7 +548,7 @@ void CSearchDlg::StartNewSearch()
 		}
 
 		// Parameter Availability
-		params.availability = CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->GetValue();
+		params.availability = CastChild( IDC_SPINSEARCHAVAILABILITY, wxSpinCtrl )->GetValue();
 
 		switch ( CastChild( IDC_TypeSearch, wxChoice )->GetSelection() ) {
 		case 0:	params.typeText.Clear();	break;
@@ -646,7 +646,7 @@ void CSearchDlg::OnBnClickedReset(wxCommandEvent& WXUNUSED(evt))
 	CastChild( IDC_SEARCHMINSIZE, wxChoice )->SetSelection(2);
 	CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->SetValue(0);
 	CastChild( IDC_SEARCHMAXSIZE, wxChoice )->SetSelection(2);
-	CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->SetValue(0);
+	CastChild( IDC_SPINSEARCHAVAILABILITY, wxSpinCtrl )->SetValue(0);
 	CastChild( IDC_TypeSearch, wxChoice )->SetSelection(0);
 	CastChild( ID_AUTOCATASSIGN, wxChoice )->SetSelection(0);
 

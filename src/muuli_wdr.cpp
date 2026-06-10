@@ -288,7 +288,7 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item13->Add( item31, wxSizerFlags().Center().Border(wxALL, 5) );
     wxStaticText *item32 = new wxStaticText( parent, -1, _("Availability"), wxDefaultPosition, wxDefaultSize, 0 );
     item13->Add( item32, wxSizerFlags().CenterVertical().Border(wxALL, 5) );
-    wxSpinCtrl *item33 = new wxSpinCtrl( parent, IDC_SPINSEARCHAVAIBILITY, "0", wxDefaultPosition, wxDefaultSize, 0, 0, 1000, 0 );
+    wxSpinCtrl *item33 = new wxSpinCtrl( parent, IDC_SPINSEARCHAVAILABILITY, "0", wxDefaultPosition, wxDefaultSize, 0, 0, 1000, 0 );
     item13->Add( item33, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
     item1->Add( item13, 0, wxALIGN_CENTER, 5 );
 

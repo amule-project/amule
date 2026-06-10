@@ -75,7 +75,7 @@ extern wxSizer *s_extended_sizer;
 #define IDC_SEARCHMINSIZE 10010
 #define IDC_SPINSEARCHMAX 10011
 #define IDC_SEARCHMAXSIZE 10012
-#define IDC_SPINSEARCHAVAIBILITY 10013
+#define IDC_SPINSEARCHAVAILABILITY 10013
 extern wxSizer *s_filter_sizer;
 #define ID_FILTER_TEXT 10014
 #define ID_FILTER 10015
