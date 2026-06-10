@@ -242,8 +242,8 @@ void CSearchDlg::OnSearchClosing(wxBookCtrlEvent& evt)
 
 	// Do cleanups if this was the last tab
 	if ( m_notebook->GetPageCount() == 1 ) {
-		FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
-		FindWindow(IDC_CLEAR_RESULTS)->Enable(FALSE);
+		FindWindow(IDC_SDOWNLOAD)->Enable(false);
+		FindWindow(IDC_CLEAR_RESULTS)->Enable(false);
 	}
 }
 
@@ -498,9 +498,9 @@ void CSearchDlg::OnBnClickedClear(wxCommandEvent& WXUNUSED(ev))
 
 	m_notebook->DeleteAllPages();
 
-	FindWindow(IDC_CLEAR_RESULTS)->Enable(FALSE);
-	FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
-	FindWindow(IDC_SEARCHMORE)->Enable(FALSE);
+	FindWindow(IDC_CLEAR_RESULTS)->Enable(false);
+	FindWindow(IDC_SDOWNLOAD)->Enable(false);
+	FindWindow(IDC_SEARCHMORE)->Enable(false);
 }
 
 
@@ -650,7 +650,7 @@ void CSearchDlg::OnBnClickedReset(wxCommandEvent& WXUNUSED(evt))
 	CastChild( IDC_TypeSearch, wxChoice )->SetSelection(0);
 	CastChild( ID_AUTOCATASSIGN, wxChoice )->SetSelection(0);
 
-	FindWindow(IDC_SEARCH_RESET)->Enable(FALSE);
+	FindWindow(IDC_SEARCH_RESET)->Enable(false);
 }
 
 
@@ -668,7 +668,7 @@ void CSearchDlg::UpdateCatChoice()
 	c_cat->SetSelection( 0 );
 }
 
-void	CSearchDlg::UpdateProgress(uint32 new_value) {
+void CSearchDlg::UpdateProgress(uint32 new_value) {
 	m_progressbar->SetValue(new_value);
 }
 // File_checked_for_headers
