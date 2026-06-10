@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 16:42+0200\n"
+"POT-Creation-Date: 2026-06-10 21:14+0200\n"
 "PO-Revision-Date: 2026-06-10 09:37+0000\n"
 "Last-Translator: Diego Heras <ngosang@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/amule/amule-application/es/>\n"
@@ -148,13 +148,13 @@ msgstr "Ahora, saliendo de la aplicación principal..."
 
 #: src/amule.cpp:270
 #, c-format
-msgid "Terminating amuleweb instance with pid '%ld' ... "
-msgstr "Cerrando la instancia de amuleweb con pid '%ld'... "
+msgid "Terminating amuleweb instance with pid '%d' ... "
+msgstr "Cerrando la instancia de amuleweb con pid '%d'... "
 
 #: src/amule.cpp:273
 #, c-format
-msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "Matando la instancia de amuleweb con pid '%ld'... "
+msgid "Killing amuleweb instance with pid '%d' ... "
+msgstr "Matando la instancia de amuleweb con pid '%d'... "
 
 #: src/amule.cpp:275 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
@@ -6842,7 +6842,7 @@ msgstr ""
 "Este comando está obsoleto y puede ser borrado en el futuro.\n"
 "Use '%s' en su lugar.\n"
 
-#: src/TextClient.h:59
+#: src/TextClient.h:63
 msgid "aMule text client"
 msgstr "Cliente de texto de aMule"
 
@@ -7555,63 +7555,63 @@ msgstr "Solicitud fallida con el siguiente error: %s."
 msgid "Index file not found: "
 msgstr "Fichero de índice no encontrado: "
 
-#: src/webserver/src/WebServer.cpp:1833
+#: src/webserver/src/WebServer.cpp:1844
 msgid "Session expired - requesting login\n"
 msgstr "Sesión terminada - solicitando conexión\n"
 
-#: src/webserver/src/WebServer.cpp:1838
+#: src/webserver/src/WebServer.cpp:1849
 msgid "Session ok, logged in\n"
 msgstr "Sesión correcta, conectado\n"
 
-#: src/webserver/src/WebServer.cpp:1840
+#: src/webserver/src/WebServer.cpp:1851
 msgid "Session ok, not logged in\n"
 msgstr "Sesión correcta, no conectado\n"
 
-#: src/webserver/src/WebServer.cpp:1845
+#: src/webserver/src/WebServer.cpp:1856
 msgid "No session opened - will request login\n"
 msgstr "No hay ninguna sesión - se conectará de nuevo\n"
 
-#: src/webserver/src/WebServer.cpp:1869
+#: src/webserver/src/WebServer.cpp:1880
 msgid "Session created - requesting login\n"
 msgstr "Sesión creada - solicitando conexión\n"
 
-#: src/webserver/src/WebServer.cpp:1884
+#: src/webserver/src/WebServer.cpp:1895
 msgid "Processing request [original]: "
 msgstr "Procesando la solicitud [original]: "
 
-#: src/webserver/src/WebServer.cpp:1908
+#: src/webserver/src/WebServer.cpp:1919
 msgid "Refusing to read `pass` from URL query string\n"
 msgstr "Se rechaza leer `pass` de la cadena de consulta de la URL\n"
 
-#: src/webserver/src/WebServer.cpp:1914
+#: src/webserver/src/WebServer.cpp:1925
 msgid "No password specified, login will not be allowed."
 msgstr "Contraseña no especificada, el inicio de sesión no se permitirá."
 
-#: src/webserver/src/WebServer.cpp:1916
+#: src/webserver/src/WebServer.cpp:1927
 msgid "Checking password\n"
 msgstr "Comprobando la contraseña\n"
 
-#: src/webserver/src/WebServer.cpp:1921
+#: src/webserver/src/WebServer.cpp:1932
 msgid "Password hash invalid\n"
 msgstr "Hash de la contraseña incorrecto\n"
 
-#: src/webserver/src/WebServer.cpp:1936
+#: src/webserver/src/WebServer.cpp:1947
 msgid "Password ok\n"
 msgstr "Contraseña correcta\n"
 
-#: src/webserver/src/WebServer.cpp:1938
+#: src/webserver/src/WebServer.cpp:1949
 msgid "Password bad\n"
 msgstr "Contraseña errónea\n"
 
-#: src/webserver/src/WebServer.cpp:1941
+#: src/webserver/src/WebServer.cpp:1952
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "No ha introducido ninguna contraseña. No se permite una contraseña en blanco.\n"
 
-#: src/webserver/src/WebServer.cpp:1949
+#: src/webserver/src/WebServer.cpp:1960
 msgid "Logout requested\n"
 msgstr "Desconexión solicitada\n"
 
-#: src/webserver/src/WebServer.cpp:1954
+#: src/webserver/src/WebServer.cpp:1965
 msgid "Processing request [redirected]: "
 msgstr "Procesando solicitud [redirigida]: "
 

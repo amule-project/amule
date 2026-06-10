@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 16:42+0200\n"
+"POT-Creation-Date: 2026-06-10 21:14+0200\n"
 "PO-Revision-Date: 2020-03-04 14:51+0100\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team: <i18n-nn@lister.ping.uio.no>\n"
@@ -138,12 +138,12 @@ msgstr ""
 
 #: src/amule.cpp:270
 #, c-format
-msgid "Terminating amuleweb instance with pid '%ld' ... "
+msgid "Terminating amuleweb instance with pid '%d' ... "
 msgstr ""
 
 #: src/amule.cpp:273
 #, c-format
-msgid "Killing amuleweb instance with pid '%ld' ... "
+msgid "Killing amuleweb instance with pid '%d' ... "
 msgstr ""
 
 #: src/amule.cpp:275 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
@@ -6900,7 +6900,7 @@ msgstr ""
 "Dette er ein forelda kommando som ikkje lenger er tilrådd, og kan verte fjerna i framtida.\n"
 "Bruk '%s' i staden\n"
 
-#: src/TextClient.h:59
+#: src/TextClient.h:63
 msgid "aMule text client"
 msgstr "aMule tekstklient"
 
@@ -7615,63 +7615,63 @@ msgstr "Etterspurnaden mislukka med følgjande feil: %s."
 msgid "Index file not found: "
 msgstr "Registerfil ikkje funne: "
 
-#: src/webserver/src/WebServer.cpp:1833
+#: src/webserver/src/WebServer.cpp:1844
 msgid "Session expired - requesting login\n"
 msgstr "Økt utgått - ber om logginn\n"
 
-#: src/webserver/src/WebServer.cpp:1838
+#: src/webserver/src/WebServer.cpp:1849
 msgid "Session ok, logged in\n"
 msgstr "Økt ok, logga inn\n"
 
-#: src/webserver/src/WebServer.cpp:1840
+#: src/webserver/src/WebServer.cpp:1851
 msgid "Session ok, not logged in\n"
 msgstr "Økt ok, ikkje innlogga\n"
 
-#: src/webserver/src/WebServer.cpp:1845
+#: src/webserver/src/WebServer.cpp:1856
 msgid "No session opened - will request login\n"
 msgstr "Inga økt opna - vil be om logginn\n"
 
-#: src/webserver/src/WebServer.cpp:1869
+#: src/webserver/src/WebServer.cpp:1880
 msgid "Session created - requesting login\n"
 msgstr "Økt oppretta - ber om logginn\n"
 
-#: src/webserver/src/WebServer.cpp:1884
+#: src/webserver/src/WebServer.cpp:1895
 msgid "Processing request [original]: "
 msgstr "Handsamar etterspurnad [original]: "
 
-#: src/webserver/src/WebServer.cpp:1908
+#: src/webserver/src/WebServer.cpp:1919
 msgid "Refusing to read `pass` from URL query string\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:1914
+#: src/webserver/src/WebServer.cpp:1925
 msgid "No password specified, login will not be allowed."
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:1916
+#: src/webserver/src/WebServer.cpp:1927
 msgid "Checking password\n"
 msgstr "Sjekkar passord\n"
 
-#: src/webserver/src/WebServer.cpp:1921
+#: src/webserver/src/WebServer.cpp:1932
 msgid "Password hash invalid\n"
 msgstr "Passord hash feil\n"
 
-#: src/webserver/src/WebServer.cpp:1936
+#: src/webserver/src/WebServer.cpp:1947
 msgid "Password ok\n"
 msgstr "Passord ok\n"
 
-#: src/webserver/src/WebServer.cpp:1938
+#: src/webserver/src/WebServer.cpp:1949
 msgid "Password bad\n"
 msgstr "Feil passord\n"
 
-#: src/webserver/src/WebServer.cpp:1941
+#: src/webserver/src/WebServer.cpp:1952
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Du skreiv ikkje inn eit passord. Tomt passord er ikkje tillate.\n"
 
-#: src/webserver/src/WebServer.cpp:1949
+#: src/webserver/src/WebServer.cpp:1960
 msgid "Logout requested\n"
 msgstr "Utlogging etterspurt\n"
 
-#: src/webserver/src/WebServer.cpp:1954
+#: src/webserver/src/WebServer.cpp:1965
 msgid "Processing request [redirected]: "
 msgstr "Handsamar etterspurnad [omdirigert]: "
 

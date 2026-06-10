@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 16:42+0200\n"
+"POT-Creation-Date: 2026-06-10 21:14+0200\n"
 "PO-Revision-Date: 2020-03-04 12:06+0100\n"
 "Last-Translator: astur <malditoastur@gmail.com>\n"
 "Language-Team: Language ast <malditoastur@gmail.com>\n"
@@ -134,14 +134,14 @@ msgid "Now, exiting main app..."
 msgstr "Agora, saliendo de l'aplicación principal..."
 
 #: src/amule.cpp:270
-#, fuzzy, c-format
-msgid "Terminating amuleweb instance with pid '%ld' ... "
-msgstr "Matando instancia amuleweb con pid `%ld' ... "
+#, c-format
+msgid "Terminating amuleweb instance with pid '%d' ... "
+msgstr "Matando instancia amuleweb con pid `%d' ... "
 
 #: src/amule.cpp:273
-#, fuzzy, c-format
-msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "Matando instancia amuleweb con pid `%ld' ... "
+#, c-format
+msgid "Killing amuleweb instance with pid '%d' ... "
+msgstr "Matando instancia amuleweb con pid `%d' ... "
 
 #: src/amule.cpp:275 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
@@ -6888,7 +6888,7 @@ msgstr ""
 "Esti ye un comandu en desusu, y desaniciaráse nel futuru.\n"
 "Usa '%s' en so llugar.\n"
 
-#: src/TextClient.h:59
+#: src/TextClient.h:63
 msgid "aMule text client"
 msgstr "Veceru de testu aMule"
 
@@ -7603,63 +7603,63 @@ msgstr "Solicitú fallía col siguiente fallu: %s."
 msgid "Index file not found: "
 msgstr "Ficheru índiz non alcontráu: "
 
-#: src/webserver/src/WebServer.cpp:1833
+#: src/webserver/src/WebServer.cpp:1844
 msgid "Session expired - requesting login\n"
 msgstr "Sesión finada - solicitando conexón\n"
 
-#: src/webserver/src/WebServer.cpp:1838
+#: src/webserver/src/WebServer.cpp:1849
 msgid "Session ok, logged in\n"
 msgstr "Sesión ok, coneutáu\n"
 
-#: src/webserver/src/WebServer.cpp:1840
+#: src/webserver/src/WebServer.cpp:1851
 msgid "Session ok, not logged in\n"
 msgstr "Sesión ok, non coneutáu\n"
 
-#: src/webserver/src/WebServer.cpp:1845
+#: src/webserver/src/WebServer.cpp:1856
 msgid "No session opened - will request login\n"
 msgstr "Nun hai denguna sesión - coneute de nuevu\n"
 
-#: src/webserver/src/WebServer.cpp:1869
+#: src/webserver/src/WebServer.cpp:1880
 msgid "Session created - requesting login\n"
 msgstr "Sesión criada - solicitando conexón\n"
 
-#: src/webserver/src/WebServer.cpp:1884
+#: src/webserver/src/WebServer.cpp:1895
 msgid "Processing request [original]: "
 msgstr "Procesando solicitú [orixinal]: "
 
-#: src/webserver/src/WebServer.cpp:1908
+#: src/webserver/src/WebServer.cpp:1919
 msgid "Refusing to read `pass` from URL query string\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:1914
+#: src/webserver/src/WebServer.cpp:1925
 msgid "No password specified, login will not be allowed."
 msgstr "Nun s'especificó dengún password, nun se permite l'accesu."
 
-#: src/webserver/src/WebServer.cpp:1916
+#: src/webserver/src/WebServer.cpp:1927
 msgid "Checking password\n"
 msgstr "Comprobando contraseña\n"
 
-#: src/webserver/src/WebServer.cpp:1921
+#: src/webserver/src/WebServer.cpp:1932
 msgid "Password hash invalid\n"
 msgstr "Hash de la contraseña incorreutu\n"
 
-#: src/webserver/src/WebServer.cpp:1936
+#: src/webserver/src/WebServer.cpp:1947
 msgid "Password ok\n"
 msgstr "Contraseña ok\n"
 
-#: src/webserver/src/WebServer.cpp:1938
+#: src/webserver/src/WebServer.cpp:1949
 msgid "Password bad\n"
 msgstr "Contraseña incorreuta\n"
 
-#: src/webserver/src/WebServer.cpp:1941
+#: src/webserver/src/WebServer.cpp:1952
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Nun introduxisti denguna contraseña. Nun ta permitía una contraseña en blancu.\n"
 
-#: src/webserver/src/WebServer.cpp:1949
+#: src/webserver/src/WebServer.cpp:1960
 msgid "Logout requested\n"
 msgstr "Desconexón solicitada\n"
 
-#: src/webserver/src/WebServer.cpp:1954
+#: src/webserver/src/WebServer.cpp:1965
 msgid "Processing request [redirected]: "
 msgstr "Procesando solicitú [redirixía]: "
 

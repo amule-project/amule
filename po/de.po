@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 16:42+0200\n"
+"POT-Creation-Date: 2026-06-10 21:14+0200\n"
 "PO-Revision-Date: 2026-06-07 19:56+0200\n"
 "Last-Translator: Werner Mahr <werner@vollstreckernet.de>\n"
 "Language-Team: German <>\n"
@@ -144,13 +144,13 @@ msgstr "Beende nun Hauptanwendung ..."
 
 #: src/amule.cpp:270
 #, c-format
-msgid "Terminating amuleweb instance with pid '%ld' ... "
-msgstr "Beende amuleweb-Instanz mit pid '%ld' ... "
+msgid "Terminating amuleweb instance with pid '%d' ... "
+msgstr "Beende amuleweb-Instanz mit pid '%d' ... "
 
 #: src/amule.cpp:273
 #, c-format
-msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "Erzwinge Beenden der amuleweb-Instanz mit pid '%ld' ... "
+msgid "Killing amuleweb instance with pid '%d' ... "
+msgstr "Erzwinge Beenden der amuleweb-Instanz mit pid '%d' ... "
 
 #: src/amule.cpp:275 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
@@ -6834,7 +6834,7 @@ msgstr ""
 "Das ist ein veralteter Befehl und könnte in der Zukunft enfernt werden.\n"
 "Nutze stattdessen '%s'.\n"
 
-#: src/TextClient.h:59
+#: src/TextClient.h:63
 msgid "aMule text client"
 msgstr "aMule Textclient"
 
@@ -7548,63 +7548,63 @@ msgstr "Anfrage mit folgendem Fehler gescheitert: %s."
 msgid "Index file not found: "
 msgstr "Index-Datei nicht gefunden: "
 
-#: src/webserver/src/WebServer.cpp:1833
+#: src/webserver/src/WebServer.cpp:1844
 msgid "Session expired - requesting login\n"
 msgstr "Sitzung abgelaufen - fordere Anmeldung\n"
 
-#: src/webserver/src/WebServer.cpp:1838
+#: src/webserver/src/WebServer.cpp:1849
 msgid "Session ok, logged in\n"
 msgstr "Sitzung ok, angemeldet\n"
 
-#: src/webserver/src/WebServer.cpp:1840
+#: src/webserver/src/WebServer.cpp:1851
 msgid "Session ok, not logged in\n"
 msgstr "Sitzung ok, nicht angemeldet\n"
 
-#: src/webserver/src/WebServer.cpp:1845
+#: src/webserver/src/WebServer.cpp:1856
 msgid "No session opened - will request login\n"
 msgstr "Keine Sitzung geöffnet - fordere Anmeldung\n"
 
-#: src/webserver/src/WebServer.cpp:1869
+#: src/webserver/src/WebServer.cpp:1880
 msgid "Session created - requesting login\n"
 msgstr "Sitzung eröffnet - fordere Anmeldung\n"
 
-#: src/webserver/src/WebServer.cpp:1884
+#: src/webserver/src/WebServer.cpp:1895
 msgid "Processing request [original]: "
 msgstr "Anfrage verarbeiten [original]: "
 
-#: src/webserver/src/WebServer.cpp:1908
+#: src/webserver/src/WebServer.cpp:1919
 msgid "Refusing to read `pass` from URL query string\n"
 msgstr "Verweigere,  `pass`vom Parameterteil der URL zu lesen\n"
 
-#: src/webserver/src/WebServer.cpp:1914
+#: src/webserver/src/WebServer.cpp:1925
 msgid "No password specified, login will not be allowed."
 msgstr "Kein Passwort angegeben, Anmeldung wird nicht erlaubt."
 
-#: src/webserver/src/WebServer.cpp:1916
+#: src/webserver/src/WebServer.cpp:1927
 msgid "Checking password\n"
 msgstr "Prüfe Passwort\n"
 
-#: src/webserver/src/WebServer.cpp:1921
+#: src/webserver/src/WebServer.cpp:1932
 msgid "Password hash invalid\n"
 msgstr "Passwort-Prüfsumme ungültig\n"
 
-#: src/webserver/src/WebServer.cpp:1936
+#: src/webserver/src/WebServer.cpp:1947
 msgid "Password ok\n"
 msgstr "Passwort ok\n"
 
-#: src/webserver/src/WebServer.cpp:1938
+#: src/webserver/src/WebServer.cpp:1949
 msgid "Password bad\n"
 msgstr "Falsches Passwort\n"
 
-#: src/webserver/src/WebServer.cpp:1941
+#: src/webserver/src/WebServer.cpp:1952
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Du hast kein Passwort angegeben. Leeres Passwort ist nicht erlaubt.\n"
 
-#: src/webserver/src/WebServer.cpp:1949
+#: src/webserver/src/WebServer.cpp:1960
 msgid "Logout requested\n"
 msgstr "Fordere Abmeldung\n"
 
-#: src/webserver/src/WebServer.cpp:1954
+#: src/webserver/src/WebServer.cpp:1965
 msgid "Processing request [redirected]: "
 msgstr "Anfrage verarbeiten [umgeleitet]: "
 

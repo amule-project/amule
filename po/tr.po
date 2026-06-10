@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 16:42+0200\n"
+"POT-Creation-Date: 2026-06-10 21:14+0200\n"
 "PO-Revision-Date: 2026-06-07 18:58+0300\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
@@ -140,13 +140,13 @@ msgstr "Ana uygulamadan çıkılıyor…"
 
 #: src/amule.cpp:270
 #, c-format
-msgid "Terminating amuleweb instance with pid '%ld' ... "
-msgstr "Amuleweb oturumu pid `%ld' ile sonlandırılıyor… "
+msgid "Terminating amuleweb instance with pid '%d' ... "
+msgstr "Amuleweb oturumu pid `%d' ile sonlandırılıyor… "
 
 #: src/amule.cpp:273
 #, c-format
-msgid "Killing amuleweb instance with pid '%ld' ... "
-msgstr "Amuleweb oturumu pid `%ld' ile öldürülüyor… "
+msgid "Killing amuleweb instance with pid '%d' ... "
+msgstr "Amuleweb oturumu pid `%d' ile öldürülüyor… "
 
 #: src/amule.cpp:275 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
@@ -6827,7 +6827,7 @@ msgstr ""
 "Bu geçersiz bir komut, ve gelecekte belki çıkartılabilir.\n"
 "Bunun yerine '%s' kullanın.\n"
 
-#: src/TextClient.h:59
+#: src/TextClient.h:63
 msgid "aMule text client"
 msgstr "aMule metin aracı"
 
@@ -7540,63 +7540,63 @@ msgstr "İstem şu hatayla başarısız oldu: %s."
 msgid "Index file not found: "
 msgstr "Fihristleme dosyası bulunamadı: "
 
-#: src/webserver/src/WebServer.cpp:1833
+#: src/webserver/src/WebServer.cpp:1844
 msgid "Session expired - requesting login\n"
 msgstr "Oturum sona erdi - giriş gerekiyor\n"
 
-#: src/webserver/src/WebServer.cpp:1838
+#: src/webserver/src/WebServer.cpp:1849
 msgid "Session ok, logged in\n"
 msgstr "Oturum tamam, giriş yapıldı.\n"
 
-#: src/webserver/src/WebServer.cpp:1840
+#: src/webserver/src/WebServer.cpp:1851
 msgid "Session ok, not logged in\n"
 msgstr "Oturum tamam, giriş yapılmadı.\n"
 
-#: src/webserver/src/WebServer.cpp:1845
+#: src/webserver/src/WebServer.cpp:1856
 msgid "No session opened - will request login\n"
 msgstr "Hiç oturum açılmadı -  giriş gerekecek\n"
 
-#: src/webserver/src/WebServer.cpp:1869
+#: src/webserver/src/WebServer.cpp:1880
 msgid "Session created - requesting login\n"
 msgstr "Oturum oluşturuldu.-  giriş gerekiyor\n"
 
-#: src/webserver/src/WebServer.cpp:1884
+#: src/webserver/src/WebServer.cpp:1895
 msgid "Processing request [original]: "
 msgstr "İstem işleniyor [özgün]: "
 
-#: src/webserver/src/WebServer.cpp:1908
+#: src/webserver/src/WebServer.cpp:1919
 msgid "Refusing to read `pass` from URL query string\n"
 msgstr "URL sorgu dizesinden `pass` unsurunun okunması reddediliyor.\n"
 
-#: src/webserver/src/WebServer.cpp:1914
+#: src/webserver/src/WebServer.cpp:1925
 msgid "No password specified, login will not be allowed."
 msgstr "Bir parola belirtilmemiş. Giriş yapılamaz."
 
-#: src/webserver/src/WebServer.cpp:1916
+#: src/webserver/src/WebServer.cpp:1927
 msgid "Checking password\n"
 msgstr "Şifre denetleniyor\n"
 
-#: src/webserver/src/WebServer.cpp:1921
+#: src/webserver/src/WebServer.cpp:1932
 msgid "Password hash invalid\n"
 msgstr "Şifre adreslemesi geçersiz.\n"
 
-#: src/webserver/src/WebServer.cpp:1936
+#: src/webserver/src/WebServer.cpp:1947
 msgid "Password ok\n"
 msgstr "Şifre kabul edildi.\n"
 
-#: src/webserver/src/WebServer.cpp:1938
+#: src/webserver/src/WebServer.cpp:1949
 msgid "Password bad\n"
 msgstr "Şifre kötü.\n"
 
-#: src/webserver/src/WebServer.cpp:1941
+#: src/webserver/src/WebServer.cpp:1952
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Herhangi bir şifre girmediniz. Boş şifre kullanılamaz.\n"
 
-#: src/webserver/src/WebServer.cpp:1949
+#: src/webserver/src/WebServer.cpp:1960
 msgid "Logout requested\n"
 msgstr "Çıkış istendi.\n"
 
-#: src/webserver/src/WebServer.cpp:1954
+#: src/webserver/src/WebServer.cpp:1965
 msgid "Processing request [redirected]: "
 msgstr "İstem işleniyor [yönlendirilmiş]: "
 
