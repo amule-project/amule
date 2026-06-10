@@ -50,14 +50,15 @@ generally adopted into aMule shortly after.
 
 ---
 
-Development Statistics:
+## Development Statistics
 
-| [![Open Issues](https://img.shields.io/github/issues/amule-project/amule)](https://github.com/amule-project/amule/issues) | [![Open Pull Requests](https://img.shields.io/github/issues-pr/amule-project/amule)](https://github.com/amule-project/amule/pulls) |
-| --- | --- |
-| [![Bug](https://img.shields.io/github/issues/amule-project/amule/bug)](https://github.com/amule-project/amule/issues?q=is%3Aopen+is%3Aissue+label%3Abug) | |
-| [![Bug - Delayed Fix](https://img.shields.io/github/issues/amule-project/amule/bug%20-%20delayed%20fix)](https://github.com/amule-project/amule/issues?labels=bug%20-%20delayed+fix) | |
-| [![Feature Request](https://img.shields.io/github/issues/amule-project/amule/feature%20request)](https://github.com/amule-project/amule/issues?labels=feature+request) | |
-| [![Enhancement](https://img.shields.io/github/issues/amule-project/amule/enhancement)](https://github.com/amule-project/amule/issues?labels=enhancement) | |
+| aMule-project (frozen) | [aMule-org](https://github.com/amule-org/amule) |
+| ---------------------- | --------- |
+| [![Open Pull Requests](https://img.shields.io/github/issues-pr/amule-project/amule)](https://github.com/amule-project/amule/pulls) | [![Open Pull Requests](https://img.shields.io/github/issues-pr/amule-org/amule)](https://github.com/amule-org/amule/pulls) |
+| [![Open Issues](https://img.shields.io/github/issues/amule-project/amule)](https://github.com/amule-project/amule/issues) | [![Open Issues](https://img.shields.io/github/issues/amule-org/amule)](https://github.com/amule-org/amule/issues) |
+| [![Bug](https://img.shields.io/github/issues/amule-project/amule/bug)](https://github.com/amule-project/amule/issues?q=is%3Aopen+is%3Aissue+label%3Abug) | [![Bug](https://img.shields.io/github/issues/amule-org/amule/bug)](https://github.com/amule-org/amule/issues?q=is%3Aopen+is%3Aissue+label%3Abug) |
+| [![Feature Request](https://img.shields.io/github/issues/amule-project/amule/feature%20request)](https://github.com/amule-project/amule/issues?labels=feature+request) | [![Feature Request](https://img.shields.io/github/issues/amule-org/amule/feature%20request)](https://github.com/amule-org/amule/issues?labels=feature+request) |
+| [![Enhancement](https://img.shields.io/github/issues/amule-project/amule/enhancement)](https://github.com/amule-project/amule/issues?labels=enhancement) | [![Enhancement](https://img.shields.io/github/issues/amule-org/amule/enhancement)](https://github.com/amule-org/amule/issues?labels=enhancement) |
 
 ## Features
 
