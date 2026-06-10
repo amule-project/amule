@@ -709,8 +709,8 @@ void CamulecmdApp::ShowResults(CResultMap results_map)
 
 		output.Printf("%lu.      ", id);
 		output = output.SubString(0, nr_max).Append(file->sFileName).Append(' ', name_max);
-		mb.Printf("     %ld", file->lFileSize/1024/1024);
-		kb.Printf(".%03ld", file->lFileSize/1024%1024);
+		mb.Printf("     %llu", static_cast<unsigned long long>(file->lFileSize/1024/1024));
+		kb.Printf(".%03llu", static_cast<unsigned long long>(file->lFileSize/1024%1024));
 		output = output.SubString(0, nr_max + name_max + mb_max - mb.Length() ).Append(mb).Append(kb);
 		printf("%s     %ld\n",(const char*)unicode2char(output), file->lSourceCount );
 	}

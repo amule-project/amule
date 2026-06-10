@@ -275,10 +275,10 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 			unsigned partfilecount = 0;
 			CPath filePath = finder.GetFirstFile(CDirIterator::File, filepartindex + ".*.part");
 			while (filePath.IsOk()) {
-				long l;
+				unsigned long l = 0;
 				++partfilecount;
-				filePath.GetFullName().RemoveExt().GetExt().ToLong(&l);
-				fileindex = (unsigned)l;
+				filePath.GetFullName().RemoveExt().GetExt().ToULong(&l);
+				fileindex = static_cast<uint32>(l);
 				filePath = finder.GetNextFile();
 				if (fileindex > maxindex) maxindex = fileindex;
 			}
@@ -325,9 +325,9 @@ ConvStatus CPartFileConvert::performConvertToeMule(const CPath& fileName)
 
 				Notify_ConvertUpdateProgress(10 + (curindex * stepperpart), CFormat(_("Loading data from old download file (%u of %u)")) % curindex % partfilecount);
 
-				long l;
-				filename.GetFullName().RemoveExt().GetExt().ToLong(&l);
-				fileindex = (unsigned)l;
+				unsigned long l = 0;
+				filename.GetFullName().RemoveExt().GetExt().ToULong(&l);
+				fileindex = static_cast<uint32>(l);
 				if (fileindex == 0) {
 					filename = finder.GetNextFile();
 					continue;

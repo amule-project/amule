@@ -267,10 +267,10 @@ int CamuleApp::OnExit()
 
 	// Kill amuleweb if running
 	if (webserver_pid) {
-		AddLogLineNS(CFormat(_("Terminating amuleweb instance with pid '%ld' ... ")) % webserver_pid);
+		AddLogLineNS(CFormat(_("Terminating amuleweb instance with pid '%d' ... ")) % webserver_pid);
 		wxKillError rc;
 		if (wxKill(webserver_pid, wxSIGTERM, &rc) == -1) {
-			AddLogLineNS(CFormat(_("Killing amuleweb instance with pid '%ld' ... ")) % webserver_pid);
+			AddLogLineNS(CFormat(_("Killing amuleweb instance with pid '%d' ... ")) % webserver_pid);
 			if (wxKill(webserver_pid, wxSIGKILL, &rc) == -1) {
 				AddLogLineNS(_("Failed"));
 			}
@@ -855,7 +855,7 @@ bool CamuleApp::OnInit()
 			aMuleConfigFile +
 			QUOTE;
 		CTerminationProcessAmuleweb *p = new CTerminationProcessAmuleweb(cmd, &webserver_pid);
-		webserver_pid = wxExecute(cmd, wxEXEC_ASYNC, p);
+		webserver_pid = static_cast<int>(wxExecute(cmd, wxEXEC_ASYNC, p));
 		bool webserver_ok = webserver_pid > 0;
 		if (webserver_ok) {
 			AddLogLineC(CFormat(_("web server running on pid %d")) % webserver_pid);
@@ -1323,20 +1323,20 @@ void CamuleApp::OnAssertFailure(const wxChar* file, int line,
 void CamuleApp::OnUDPDnsDone(CMuleInternalEvent& evt)
 {
 	CServerUDPSocket* socket =reinterpret_cast<CServerUDPSocket*>(evt.GetClientData());
-	socket->OnHostnameResolved(evt.GetExtraLong());
+	socket->OnHostnameResolved(evt.GetExtraInt64());
 }
 
 
 void CamuleApp::OnSourceDnsDone(CMuleInternalEvent& evt)
 {
-	downloadqueue->OnHostnameResolved(evt.GetExtraLong());
+	downloadqueue->OnHostnameResolved(evt.GetExtraInt64());
 }
 
 
 void CamuleApp::OnServerDnsDone(CMuleInternalEvent& evt)
 {
 	AddLogLineNS(_("Server hostname notified"));
-	serverconnect->OnServerHostnameResolved(evt.GetClientData(), evt.GetExtraLong());
+	serverconnect->OnServerHostnameResolved(evt.GetClientData(), evt.GetExtraInt64());
 }
 
 
@@ -1848,23 +1848,23 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 {
 	switch (event.GetInt()) {
 		case HTTP_IPFilter:
-			ipfilter->DownloadFinished(event.GetExtraLong());
+			ipfilter->DownloadFinished(event.GetExtraInt64());
 			break;
 		case HTTP_ServerMet:
-			if (serverlist->DownloadFinished(event.GetExtraLong()) && !IsConnectedED2K()) {
+			if (serverlist->DownloadFinished(event.GetExtraInt64()) && !IsConnectedED2K()) {
 				// If successfully downloaded a server list, and are not connected at the moment, try to connect.
 				// This happens when no server met is available on startup.
 				serverconnect->ConnectToAnyServer();
 			}
 			break;
 		case HTTP_ServerMetAuto:
-			serverlist->AutoDownloadFinished(event.GetExtraLong());
+			serverlist->AutoDownloadFinished(event.GetExtraInt64());
 			break;
 		case HTTP_VersionCheck:
-			CheckNewVersion(event.GetExtraLong());
+			CheckNewVersion(event.GetExtraInt64());
 			break;
 		case HTTP_NodesDat:
-			if (event.GetExtraLong() == HTTP_Success) {
+			if (event.GetExtraInt64() == HTTP_Success) {
 
 				wxString file = thePrefs::GetConfigDir() + "nodes.dat";
 				if (wxFileExists(file)) {
@@ -1880,7 +1880,7 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 				Kademlia::CKademlia::Start();
 				theApp->ShowConnectionState();
 			// cppcheck-suppress duplicateBranch
-			} else if (event.GetExtraLong() == HTTP_Skipped) {
+			} else if (event.GetExtraInt64() == HTTP_Skipped) {
 				AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % "nodes.dat");
 			} else {
 				AddLogLineC(_("Failed to download the nodes list."));
@@ -1888,7 +1888,7 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 			break;
 #ifdef ENABLE_IP2COUNTRY
 		case HTTP_GeoIP:
-			theApp->amuledlg->IP2CountryDownloadFinished(event.GetExtraLong());
+			theApp->amuledlg->IP2CountryDownloadFinished(event.GetExtraInt64());
 			// If we updated, the dialog is already up. Redraw it to show the flags.
 			theApp->amuledlg->Refresh();
 			break;

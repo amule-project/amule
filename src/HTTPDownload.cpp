@@ -125,7 +125,7 @@ private:
 	}
 
 	void OnProgress(CMuleInternalEvent& evt) {
-		UpdateGauge(evt.GetExtraLong(), evt.GetInt());
+		UpdateGauge(evt.GetExtraInt64(), evt.GetInt());
 	}
 
 	void OnShutdown(CMuleInternalEvent& WXUNUSED(evt)) {
@@ -309,7 +309,7 @@ void CHTTPDownloadThread::OnStateEvent(wxWebRequestEvent& evt)
 				wxFileOffset expected = m_request.GetBytesExpectedToReceive();
 				CMuleInternalEvent prog(wxEVT_HTTP_PROGRESS);
 				prog.SetInt((int)m_request.GetBytesReceived());
-				prog.SetExtraLong((long)(expected > 0 ? expected : 0));
+				prog.SetExtraInt64(expected > 0 ? expected : 0);
 				wxQueueEvent(m_companion, (prog).Clone());
 #endif
 			}
@@ -414,7 +414,7 @@ void CHTTPDownloadThread::FinishAndDestroy(int result)
 	// feature-specific handler (ipfilter, serverlist, kad, ...) runs.
 	CMuleInternalEvent evt(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD);
 	evt.SetInt((int)m_file_id);
-	evt.SetExtraLong((long)m_result);
+	evt.SetExtraInt64(m_result);
 	wxQueueEvent(wxTheApp, (evt).Clone());
 
 	{

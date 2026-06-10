@@ -619,7 +619,16 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 		fclose(f);
 		return;
 	}
-	int size = ftell(f);
+	// ftell returns long, which is 32-bit on Win64 (LLP64) -- store in
+	// a 64-bit local first so a >2 GiB file (or a negative error
+	// return) doesn't silently wrap into a bogus allocation size.
+	const long long raw_size = ftell(f);
+	if (raw_size < 0 || raw_size > 0x7fffffffLL) {
+		printf("ERROR: php source file [%s] is too large or ftell failed\n", file);
+		fclose(f);
+		return;
+	}
+	int size = static_cast<int>(raw_size);
 	char *buf = new char [size+1];
 	rewind(f);
 	// fread may actually read less if it is a CR-LF-file in Windows

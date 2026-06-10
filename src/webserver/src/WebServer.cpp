@@ -1793,7 +1793,18 @@ char *CScriptWebServer::ProcessHtmlRequest(const char *filename, long &size)
 		return GetErrorPage("fseek failed", size);
 	}
 
-	size = ftell(f);
+	// ftell returns long, which is 32-bit on Win64 (LLP64); store the
+	// raw return in a 64-bit local so a >2 GiB file (or a negative
+	// ftell error return) doesn't silently wrap into a bogus
+	// allocation size. Templates are tiny in practice, but the
+	// truncation would still bite a user pointing aMuleweb at an
+	// oversized file on disk.
+	const long long raw_size = ftell(f);
+	if (raw_size < 0 || raw_size > 0x7fffffffLL) {
+		fclose(f);
+		return GetErrorPage("template file too large or ftell failed", size);
+	}
+	size = static_cast<long>(raw_size);
 	char *buf = new char [size+1];
 	rewind(f);
 	// fread may actually read less if it is a CR-LF-file in Windows

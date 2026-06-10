@@ -26,6 +26,9 @@
 #include <cstdlib>			// Needed for std::abort()
 #include <cstdio>			// Needed for popen/pclose/fgets in the addr2line fallback
 #include <cstring>			// Needed for strlen in the addr2line fallback
+#include <cstdint>			// uintptr_t for pointer subtraction in the bfd
+					// section-bounds check -- `unsigned long` is
+					// 4 bytes on LLP64 and would silently truncate.
 
 #include "config.h"			// Needed for HAVE_CXXABI and HAVE_EXECINFO
 
@@ -321,7 +324,7 @@ void get_file_line_info(bfd *a_bfd, asection *section, void* _address)
 	// the subtraction they're either negative-wrapped to huge unsigned
 	// values or still way outside, and the section-bounds check below
 	// continues to skip them as it did before.
-	unsigned long address = (unsigned long)_address - s_pie_base;
+	uintptr_t address = (uintptr_t)_address - s_pie_base;
 	if (address < vma) {
 		return;
 	}

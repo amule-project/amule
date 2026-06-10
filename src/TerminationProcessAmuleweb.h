@@ -36,10 +36,10 @@
 class CTerminationProcessAmuleweb : public CTerminationProcess
 {
 private:
-	long *m_webserver_pid;
+	int *m_webserver_pid;
 
 public:
-	CTerminationProcessAmuleweb(const wxString &cmd, long *webserver_pid);
+	CTerminationProcessAmuleweb(const wxString &cmd, int *webserver_pid);
 	virtual void OnTerminate(int pid, int status);
 };
 

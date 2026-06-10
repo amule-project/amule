@@ -372,7 +372,13 @@ protected:
 
 	uint32 m_dwPublicIP;
 
-	long webserver_pid;
+	// PID type: `int` is wide enough for any OS pid we run on -- POSIX
+	// pid_t is typically `int`, and Windows process IDs are 32-bit
+	// DWORDs but always fit in a positive int. `long` was wrong on
+	// LLP64 only by happy accident (long is also 32-bit there), but
+	// using `int` makes the intent explicit and avoids %ld for what
+	// is really an int-sized value.
+	int webserver_pid;
 
 	wxString server_msg;
 

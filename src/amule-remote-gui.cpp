@@ -259,7 +259,7 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 void CamuleRemoteGuiApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 {
 	if (event.GetInt() == HTTP_GeoIP) {
-		amuledlg->IP2CountryDownloadFinished(event.GetExtraLong());
+		amuledlg->IP2CountryDownloadFinished(event.GetExtraInt64());
 		// If we updated, the dialog is already up. Redraw it to show the flags.
 		amuledlg->Refresh();
 	}

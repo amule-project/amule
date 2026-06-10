@@ -297,8 +297,8 @@ void PromptAndInstall(wxWindow* parent)
 	// save partfiles, release the EC port, etc., before the new instance
 	// tries to grab the same locks.
 	const wxString relaunchCmd = wxString::Format(
-		wxT("sh -c 'while kill -0 %ld 2>/dev/null; do sleep 0.2; done; exec \"%s\"'"),
-		static_cast<long>(getpid()),
+		wxT("sh -c 'while kill -0 %d 2>/dev/null; do sleep 0.2; done; exec \"%s\"'"),
+		static_cast<int>(getpid()),
 		appimagePath);
 	wxExecute(relaunchCmd, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER);
 

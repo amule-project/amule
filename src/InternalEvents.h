@@ -28,6 +28,11 @@
 
 #include <wx/event.h>	// Needed for wxEvent
 
+#include <cstdint>		// int64_t for m_value -- `long` was 4 bytes on
+				// LLP64 (Win64) and silently truncated values
+				// like a wxFileOffset routed through SetExtraInt64
+				// (e.g. HTTPDownload's expected-bytes progress).
+
 
 wxDECLARE_EVENT(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, wxEvent);
 wxDECLARE_EVENT(wxEVT_CORE_SOURCE_DNS_DONE, wxEvent);
@@ -49,11 +54,11 @@ public:
 		return new CMuleInternalEvent(*this);
 	}
 
-	void SetExtraLong(long value) {
+	void SetExtraInt64(int64_t value) {
 		m_value = value;
 	}
 
-	long GetExtraLong() {
+	int64_t GetExtraInt64() {
 		return m_value;
 	}
 
@@ -75,8 +80,8 @@ public:
 
 private:
 	void*	m_ptr;
-	long	m_value;
-	int		m_commandInt;
+	int64_t	m_value;
+	int	m_commandInt;
 };
 
 

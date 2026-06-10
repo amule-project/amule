@@ -28,6 +28,9 @@
 
 #ifdef HAVE_ERRNO_H
 #include <errno.h>
+#include <stdint.h>		// uintptr_t for pointer arithmetic in the
+				// SIGBUS handler -- `unsigned long` is 4 bytes on
+				// LLP64 and would silently truncate pointers.
 #endif
 
 #ifdef HAVE_SIGNAL_H
@@ -117,7 +120,7 @@ void CFileAreaSigHandler::Handler(int sig, siginfo_t *info, void *ctx)
 	// mark error if found
 	if (cur && gs_pageSize > 0) {
 		cur->m_error = true;
-		char *start_addr = ((char *) info->si_addr) - (((unsigned long) info->si_addr) % gs_pageSize);
+		char *start_addr = ((char *) info->si_addr) - (((uintptr_t) info->si_addr) % gs_pageSize);
 		if (mmap(start_addr, gs_pageSize, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) != MAP_FAILED)
 			return;
 	}

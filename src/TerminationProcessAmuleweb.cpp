@@ -27,7 +27,7 @@
 #include "TerminationProcessAmuleweb.h"
 
 
-CTerminationProcessAmuleweb::CTerminationProcessAmuleweb(const wxString &cmd, long *webserver_pid)
+CTerminationProcessAmuleweb::CTerminationProcessAmuleweb(const wxString &cmd, int *webserver_pid)
 :
 CTerminationProcess(cmd),
 m_webserver_pid(webserver_pid)

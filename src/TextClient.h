@@ -37,7 +37,11 @@ class CEC_SearchFile_Tag;
 class SearchFile {
 	public:
 		wxString sFileName;
-		unsigned long lFileSize;
+		// lFileSize must be 64-bit -- `unsigned long` is 32 bits on
+		// LLP64 (Windows 64-bit), so amulecmd would mis-display the
+		// size of any shared file > 4 GiB. The search EC tag carries
+		// the size as uint64, so widen this carrier to match.
+		uint64 lFileSize;
 		CMD4Hash  nHash;
 		wxString  sHash;
 		long lSourceCount;
