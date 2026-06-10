@@ -20,7 +20,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 #
-# This file contains the options for en- or disabling parts of aMule, and
+# This file contains the options for enabling or disabling parts of aMule, and
 # sets the needed variables for them to compile
 #
 
@@ -208,11 +208,11 @@ if (wx_NEED_ADV OR wx_NEED_BASE OR wx_NEED_GUI OR wx_NEED_NET)
 	endif()
 endif()
 
-ADD_COMPILE_DEFINITIONS ($<$<CONFIG:DEBUG>:__DEBUG__>)
+add_compile_definitions ($<$<CONFIG:DEBUG>:__DEBUG__>)
 
-IF (WIN32)
-	ADD_COMPILE_DEFINITIONS ($<$<CONFIG:DEBUG>:wxDEBUG_LEVEL=0>)
-ENDIF (WIN32)
+if (WIN32)
+	add_compile_definitions ($<$<CONFIG:DEBUG>:wxDEBUG_LEVEL=0>)
+endif (WIN32)
 
 if (NEED_LIB_MULEAPPCOMMON OR BUILD_WEBSERVER)
 	option (ENABLE_UPNP "enable UPnP support in aMule" ON)
