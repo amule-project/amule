@@ -642,7 +642,8 @@ static LangInfo aMuleLanguages[] = {
 	{ wxLANGUAGE_CZECH,					false,	"",	wxTRANSLATE("Czech") },
 	{ wxLANGUAGE_DANISH,				false,	"",	wxTRANSLATE("Danish") },
 	{ wxLANGUAGE_DUTCH,					false,	"",	wxTRANSLATE("Dutch") },
-	{ wxLANGUAGE_ENGLISH,				false,	"",	wxTRANSLATE("English (U.K.)") },
+	{ wxLANGUAGE_ENGLISH_UK,			false,	"",	wxTRANSLATE("English (U.K.)") },
+	{ wxLANGUAGE_ENGLISH_US,			false,	"",	wxTRANSLATE("English (U.S.)") },
 	{ wxLANGUAGE_ESTONIAN,				false,	"",	wxTRANSLATE("Estonian") },
 	{ wxLANGUAGE_FINNISH,				false,	"",	wxTRANSLATE("Finnish") },
 	{ wxLANGUAGE_FRENCH,				false,	"",	wxTRANSLATE("French") },
@@ -752,7 +753,10 @@ public:
 					wxLogNull	logTarget;
 					wxLocale	locale_to_check;
 					InitLocale(locale_to_check, aMuleLanguages[i].id);
-					if (locale_to_check.IsOk() && locale_to_check.IsLoaded(PACKAGE)) {
+					// English (U.S.) is the source language for the .pot catalog,
+					// so it is always available even though no en_US.mo is shipped.
+					const bool isSourceLanguage = aMuleLanguages[i].id == wxLANGUAGE_ENGLISH_US;
+					if (locale_to_check.IsOk() && (locale_to_check.IsLoaded(PACKAGE) || isSourceLanguage)) {
 						aMuleLanguages[i].displayname = wxString(wxGetTranslation(aMuleLanguages[i].name)) + " [" + aMuleLanguages[i].name + "]";
 						aMuleLanguages[i].available = true;
 #if 0
