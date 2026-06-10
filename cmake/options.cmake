@@ -40,7 +40,7 @@ option (BUILD_MONOLITHIC "enable building of the monolithic aMule app" ON)
 option (BUILD_REMOTEGUI "compile aMule remote GUI")
 option (BUILD_WEBSERVER "compile aMule WebServer")
 option (BUILD_WXCAS "compile aMule GUI Statistics")
-option (BUILD_TESTING "Run Tests after compile" ON)
+option (BUILD_TESTING "Build unit tests" OFF)
 
 if (PREFIX)
 	set (CMAKE_INSTALL_PREFIX "${PREFIX}")
