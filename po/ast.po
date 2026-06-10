@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-07 14:34+0200\n"
+"POT-Creation-Date: 2026-06-10 16:32+0200\n"
 "PO-Revision-Date: 2020-03-04 12:06+0100\n"
 "Last-Translator: astur <malditoastur@gmail.com>\n"
 "Language-Team: Language ast <malditoastur@gmail.com>\n"
@@ -716,7 +716,7 @@ msgstr "Confirmar colar."
 msgid "Launch Command: "
 msgstr "Llanzar comandu:"
 
-#: src/amuleDlg.cpp:1300 src/muuli_wdr.cpp:1773 src/Preferences.cpp:846
+#: src/amuleDlg.cpp:1300 src/muuli_wdr.cpp:1773 src/Preferences.cpp:850
 msgid "- default -"
 msgstr "- Por defeutu -"
 
@@ -857,7 +857,7 @@ msgstr ""
 msgid "Remote GUI EC event handler"
 msgstr "Remanador d'eventu EC n'Interface Remota"
 
-#: src/amule-remote-gui.cpp:513 src/ExternalConnector.cpp:457
+#: src/amule-remote-gui.cpp:513 src/ExternalConnector.cpp:463
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr "Fallu de conexón. Nun ye dable coneutar a %s:%d\n"
@@ -886,7 +886,7 @@ msgstr "Llistu"
 msgid "All"
 msgstr "Toos"
 
-#: src/amule-remote-gui.cpp:870 src/ExternalConn.cpp:1784
+#: src/amule-remote-gui.cpp:870 src/ExternalConn.cpp:1828
 msgid "Invalid link or already on list."
 msgstr "Enllaz non válidu o yá ta na llista."
 
@@ -904,7 +904,7 @@ msgstr ""
 #: src/ClientDetailDialog.cpp:130 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/DownloadListCtrl.cpp:1087 src/DownloadListCtrl.cpp:1100
-#: src/DownloadListCtrl.cpp:1111 src/ExternalConn.cpp:538
+#: src/DownloadListCtrl.cpp:1111 src/ExternalConn.cpp:543
 #: src/FileDetailDialog.cpp:183 src/GenericClientListCtrl.cpp:1102
 #: src/GenericClientListCtrl.cpp:1113 src/GenericClientListCtrl.cpp:1123
 #: src/HTTPDownload.cpp:87 src/KnownFile.cpp:986 src/KnownFile.cpp:992
@@ -1125,12 +1125,12 @@ msgid "Client Details"
 msgstr "Detalles del veceru"
 
 #: src/ClientDetailDialog.cpp:105 src/ServerWnd.cpp:201
-#: src/utils/wxCas/src/onlinesig.cpp:260
+#: src/utils/wxCas/src/onlinesig.cpp:256
 msgid "LowID"
 msgstr "ID-Baxa"
 
 #: src/ClientDetailDialog.cpp:105 src/ServerWnd.cpp:201
-#: src/utils/wxCas/src/onlinesig.cpp:258
+#: src/utils/wxCas/src/onlinesig.cpp:254
 msgid "HighID"
 msgstr "ID-Alta"
 
@@ -1356,7 +1356,7 @@ msgid "On Queue"
 msgstr "Na cola"
 
 #: src/DataToText.cpp:63 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:631 src/PartFile.cpp:4282 src/TransferWnd.cpp:348
+#: src/OtherFunctions.cpp:634 src/PartFile.cpp:4282 src/TransferWnd.cpp:348
 msgid "Downloading"
 msgstr "Descargando"
 
@@ -1442,7 +1442,7 @@ msgid "Search Result"
 msgstr "Resultáu de la gueta"
 
 #: src/DataToText.cpp:143 src/DownloadListCtrl.cpp:162
-#: src/OtherFunctions.cpp:629 src/TransferWnd.cpp:346
+#: src/OtherFunctions.cpp:632 src/TransferWnd.cpp:346
 msgid "Completed"
 msgstr "Completáu"
 
@@ -1755,45 +1755,45 @@ msgstr[1] ""
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Enllaz eD2k inválidu! FALLU: %s"
 
-#: src/ExternalConn.cpp:320
+#: src/ExternalConn.cpp:325
 msgid "Client sent packet after authentication failed."
 msgstr "El veceru unvió un paquete dempués que falló l'autenticación."
 
-#: src/ExternalConn.cpp:338
+#: src/ExternalConn.cpp:343
 msgid "External connection closed."
 msgstr "Conexón esterna zarrada."
 
-#: src/ExternalConn.cpp:415
+#: src/ExternalConn.cpp:420
 msgid "External connections disabled due to empty password!"
 msgstr "¡Conexones esternas deshabilitaes darréu d'una contraseña en blanco!"
 
-#: src/ExternalConn.cpp:436
+#: src/ExternalConn.cpp:441
 msgid "External connections disabled in config file"
 msgstr "Conexones esternas deshabilitaes nel ficheru de configuración"
 
-#: src/ExternalConn.cpp:505
+#: src/ExternalConn.cpp:510
 msgid "New external connection accepted"
 msgstr "Nueva conexón esterna, aceutada"
 
-#: src/ExternalConn.cpp:508
+#: src/ExternalConn.cpp:513
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "FALLU: nun pudo aceutase una nueva conexón esterna"
 
-#: src/ExternalConn.cpp:526
+#: src/ExternalConn.cpp:531
 msgid "External connection refused due to empty password in preferences!"
 msgstr ""
 "¡Conexón esterna refugada darréu d'una contraseña en blanco nes opciones!"
 
-#: src/ExternalConn.cpp:537
+#: src/ExternalConn.cpp:542
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "Coneutando con veceru: %s %s"
 
-#: src/ExternalConn.cpp:539
+#: src/ExternalConn.cpp:544
 msgid "Unknown version"
 msgstr "Versión desconocía"
 
-#: src/ExternalConn.cpp:549
+#: src/ExternalConn.cpp:554
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -1801,7 +1801,7 @@ msgstr ""
 "EC Incorreutu na ID de versión, tien d'haber una incompatibilidá. Usa núcleu "
 "y remotu de la mesma versión."
 
-#: src/ExternalConn.cpp:554
+#: src/ExternalConn.cpp:559
 #, fuzzy
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
@@ -1810,177 +1810,177 @@ msgstr ""
 "¡Nun pues coneutar a una versión final dende una versión SVN cualesquiera! "
 "*sigh* dable fallu evitáu"
 
-#: src/ExternalConn.cpp:615
+#: src/ExternalConn.cpp:620
 msgid "Invalid protocol version."
 msgstr "Versión de protocolu non válida"
 
-#: src/ExternalConn.cpp:620
+#: src/ExternalConn.cpp:625
 msgid "Missing protocol version tag."
 msgstr "Marcador de versión de protocolu inesistente"
 
-#: src/ExternalConn.cpp:627
+#: src/ExternalConn.cpp:632
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr ""
 
-#: src/ExternalConn.cpp:659
+#: src/ExternalConn.cpp:664
 #, fuzzy
 msgid "Authentication failed: wrong password."
 msgstr "Autenticación fallía"
 
-#: src/ExternalConn.cpp:661
+#: src/ExternalConn.cpp:666
 #, fuzzy
 msgid "Authentication failed: missing password."
 msgstr "Autenticación fallía"
 
-#: src/ExternalConn.cpp:671
+#: src/ExternalConn.cpp:676
 msgid "Invalid request, please authenticate first."
 msgstr "Solicitú non válida, tendríes d'autenticate primero."
 
-#: src/ExternalConn.cpp:676
+#: src/ExternalConn.cpp:681
 msgid "Access granted."
 msgstr "Accesu concedíu."
 
-#: src/ExternalConn.cpp:684
+#: src/ExternalConn.cpp:689
 #, fuzzy, c-format
 msgid "Sent error message \"%s\" to client."
 msgstr "Fieltrar mensaxes de veceros desconocíos"
 
-#: src/ExternalConn.cpp:687
+#: src/ExternalConn.cpp:692
 #, fuzzy, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
 msgstr "Intentu d'accesu non autorizáu. Conexón zarrada."
 
-#: src/ExternalConn.cpp:1171
+#: src/ExternalConn.cpp:1176
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr ""
 "Fallu en comandu remotu del ficheru Part: Hash de ficheru non alcontráu: %s"
 
-#: src/ExternalConn.cpp:1173
+#: src/ExternalConn.cpp:1178
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "Hash de ficheru non alcontráu: %s"
 
-#: src/ExternalConn.cpp:1220 src/ExternalConn.cpp:1302
-#: src/ExternalConn.cpp:1383
+#: src/ExternalConn.cpp:1225 src/ExternalConn.cpp:1307
+#: src/ExternalConn.cpp:1388
 msgid "OOPS! OpCode processing error!"
 msgstr "¡OOPS! ¡Fallu procesando OpCode!"
 
-#: src/ExternalConn.cpp:1248
+#: src/ExternalConn.cpp:1253
 msgid "Server not added"
 msgstr "Sirvidor non amestáu"
 
-#: src/ExternalConn.cpp:1266
+#: src/ExternalConn.cpp:1271
 #, c-format
 msgid "server not found: %s"
 msgstr "sirvidor non amestáu: %s"
 
-#: src/ExternalConn.cpp:1282
+#: src/ExternalConn.cpp:1287
 msgid "need to define server to be removed"
 msgstr "necesites definir un sirvidor pa desanicialu"
 
-#: src/ExternalConn.cpp:1296
+#: src/ExternalConn.cpp:1301
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k ta desabilitáu nes preferencies"
 
-#: src/ExternalConn.cpp:1363
+#: src/ExternalConn.cpp:1368
 #, fuzzy
 msgid "Friend not found."
 msgstr "Ficheru non alcontráu"
 
-#: src/ExternalConn.cpp:1372
+#: src/ExternalConn.cpp:1377
 #, fuzzy
 msgid "Client not found."
 msgstr "Ficheru non alcontráu"
 
-#: src/ExternalConn.cpp:1377
+#: src/ExternalConn.cpp:1382
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
 msgstr ""
 
-#: src/ExternalConn.cpp:1486
+#: src/ExternalConn.cpp:1530
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Gueta en procesu. Resultaos obteníos aína! "
 
-#: src/ExternalConn.cpp:1492
+#: src/ExternalConn.cpp:1536
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Gueta web dende un interface remotu nun tien xacíu"
 
-#: src/ExternalConn.cpp:1706
+#: src/ExternalConn.cpp:1750
 msgid "No points for graph."
 msgstr "Ensin puntos pal gráficu."
 
-#: src/ExternalConn.cpp:1715
+#: src/ExternalConn.cpp:1759
 msgid "Your client is not configured for this detail level."
 msgstr "El to veceru nun ta configuráu pa esti nivel de detalle."
 
-#: src/ExternalConn.cpp:1742
+#: src/ExternalConn.cpp:1786
 msgid "External Connection: shutdown requested"
 msgstr "Conexón esterna: apagáu solicitáu"
 
-#: src/ExternalConn.cpp:1754
+#: src/ExternalConn.cpp:1798
 msgid "Already shutting down."
 msgstr "Yá tas zarrando."
 
-#: src/ExternalConn.cpp:1772
+#: src/ExternalConn.cpp:1816
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "Conexón esterna: amestando enllaz '%s'."
 
-#: src/ExternalConn.cpp:1788
+#: src/ExternalConn.cpp:1832
 #, fuzzy, c-format
 msgid "%d of %d links failed (invalid or already on list)."
 msgstr "Enllaz non válidu o yá ta na llista."
 
-#: src/ExternalConn.cpp:1915
+#: src/ExternalConn.cpp:1959
 msgid "File not found."
 msgstr "Ficheru non alcontráu"
 
-#: src/ExternalConn.cpp:1920
+#: src/ExternalConn.cpp:1964
 msgid "Invalid file name."
 msgstr "Nome de ficheru incorreutu"
 
-#: src/ExternalConn.cpp:1928
+#: src/ExternalConn.cpp:1972
 msgid "Unable to rename file."
 msgstr "Nun ye dable renomar ficheru"
 
-#: src/ExternalConn.cpp:2226 src/ExternalConn.cpp:2253
+#: src/ExternalConn.cpp:2271 src/ExternalConn.cpp:2298
 msgid "Kad is disabled in preferences."
 msgstr "Kad ta deshabilitáu n'opciones."
 
-#: src/ExternalConn.cpp:2265
+#: src/ExternalConn.cpp:2310
 msgid "Already connected to eD2k."
 msgstr "Yá tas coneutáu a eD2k."
 
-#: src/ExternalConn.cpp:2268
+#: src/ExternalConn.cpp:2313
 msgid "Connecting to eD2k..."
 msgstr "Coneutando a eD2k..."
 
-#: src/ExternalConn.cpp:2276
+#: src/ExternalConn.cpp:2321
 msgid "Already connected to Kad."
 msgstr "Yá tas coneutáu a Kad."
 
-#: src/ExternalConn.cpp:2279
+#: src/ExternalConn.cpp:2324
 msgid "Connecting to Kad..."
 msgstr "Coneutando a Kad..."
 
-#: src/ExternalConn.cpp:2286
+#: src/ExternalConn.cpp:2331
 msgid "All networks are disabled."
 msgstr "Toles redes tán deshabilitaes"
 
-#: src/ExternalConn.cpp:2294
+#: src/ExternalConn.cpp:2339
 msgid "Disconnected from eD2k."
 msgstr "Desconeutando de eD2k."
 
-#: src/ExternalConn.cpp:2298
+#: src/ExternalConn.cpp:2343
 msgid "Disconnected from Kad."
 msgstr "Desconeutando de Kad."
 
-#: src/ExternalConn.cpp:2307
+#: src/ExternalConn.cpp:2352
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "Conexón esterna: recibíu códigu d'operación inválidu: %#x"
 
-#: src/ExternalConn.cpp:2310
+#: src/ExternalConn.cpp:2355
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "opcode non válidu (¿versión de protocolu incorreuta?)"
 
@@ -2059,7 +2059,7 @@ msgstr ""
 "Pa tener aida d'un comandu, teclea 'help <comandu>'.\n"
 "Pa tener la llista completa de comandos, teclea 'help'.\n"
 
-#: src/ExternalConnector.cpp:317
+#: src/ExternalConnector.cpp:323
 #, c-format
 msgid ""
 "\n"
@@ -2070,48 +2070,48 @@ msgstr ""
 "Usa '%s' pa la llista de comandos\n"
 "\n"
 
-#: src/ExternalConnector.cpp:350
+#: src/ExternalConnector.cpp:356
 msgid "Syntax error!"
 msgstr "¡Fallu de sintaxis!"
 
-#: src/ExternalConnector.cpp:353
+#: src/ExternalConnector.cpp:359
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr ""
 "Fallu procesando'l comandu - ¡enxamás tendría de pasar! Informa del fallu, "
 "por favor\n"
 
-#: src/ExternalConnector.cpp:356
+#: src/ExternalConnector.cpp:362
 msgid "This command should not have any parameters."
 msgstr "Esti comandu nun tendría de tener dengún parámetru"
 
-#: src/ExternalConnector.cpp:359
+#: src/ExternalConnector.cpp:365
 msgid "This command must have a parameter."
 msgstr "Esti comandu tien de tener un parámetru."
 
-#: src/ExternalConnector.cpp:362
+#: src/ExternalConnector.cpp:368
 msgid "Invalid argument."
 msgstr "Argumentu non válidu."
 
-#: src/ExternalConnector.cpp:365
+#: src/ExternalConnector.cpp:371
 msgid "This is an incomplete command."
 msgstr "Esto ye un comandu incompletu."
 
-#: src/ExternalConnector.cpp:374
+#: src/ExternalConnector.cpp:380
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "Teclea '%s' pa tener más aida.\n"
 
-#: src/ExternalConnector.cpp:429
+#: src/ExternalConnector.cpp:435
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "Esto ye %s %s %s\n"
 
-#: src/ExternalConnector.cpp:431
+#: src/ExternalConnector.cpp:437
 #, c-format
 msgid "This is %s %s\n"
 msgstr "Esto ye %s %s\n"
 
-#: src/ExternalConnector.cpp:446
+#: src/ExternalConnector.cpp:452
 msgid ""
 "\n"
 "Creating client...\n"
@@ -2119,7 +2119,7 @@ msgstr ""
 "\n"
 "Criando veceru...\n"
 
-#: src/ExternalConnector.cpp:471
+#: src/ExternalConnector.cpp:477
 #, c-format
 msgid ""
 "\n"
@@ -2128,7 +2128,7 @@ msgstr ""
 "\n"
 "Ok, colando %s...\n"
 
-#: src/ExternalConnector.cpp:477
+#: src/ExternalConnector.cpp:483
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -2142,52 +2142,52 @@ msgstr ""
 "\n"
 "Colando...\n"
 
-#: src/ExternalConnector.cpp:486
+#: src/ExternalConnector.cpp:492
 msgid "Show this help text."
 msgstr "Amosar esta aida."
 
-#: src/ExternalConnector.cpp:489
+#: src/ExternalConnector.cpp:495
 msgid "Host where aMule is running. (default: 127.0.0.1)"
 msgstr "Host au ta executándose aMule. (por defeutu: 127.0.0.1)"
 
-#: src/ExternalConnector.cpp:492
+#: src/ExternalConnector.cpp:498
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "Puertu de conexón esterna de aMule. (por defeutu: 4712)"
 
-#: src/ExternalConnector.cpp:495
+#: src/ExternalConnector.cpp:501
 msgid "External Connection password."
 msgstr "Contraseña de conexones esternes"
 
-#: src/ExternalConnector.cpp:498
+#: src/ExternalConnector.cpp:504
 msgid "Read configuration from file."
 msgstr "Lleer configuración dende'l ficheru."
 
-#: src/ExternalConnector.cpp:501
+#: src/ExternalConnector.cpp:507
 msgid "Do not print any output to stdout."
 msgstr "Nun amueses denguna salida."
 
-#: src/ExternalConnector.cpp:504
+#: src/ExternalConnector.cpp:510
 msgid "Be verbose - show also debug messages."
 msgstr "Mou Estendíu - amuesa tamién los mensaxes de depuración"
 
-#: src/ExternalConnector.cpp:507
+#: src/ExternalConnector.cpp:513
 msgid "Sets program locale (language)."
 msgstr "Seleiciona la llingua del programa."
 
-#: src/ExternalConnector.cpp:510
+#: src/ExternalConnector.cpp:516
 msgid "Write command line options to config file."
 msgstr "Escribe opciones de la llinia de comandu al ficheru de configuración."
 
-#: src/ExternalConnector.cpp:513
+#: src/ExternalConnector.cpp:519
 msgid "Creates config file based on aMule's config file."
 msgstr ""
 "Criar ficheru de configuración basáu nel ficheru de configuración de aMule."
 
-#: src/ExternalConnector.cpp:516
+#: src/ExternalConnector.cpp:522
 msgid "Print program version."
 msgstr "Imprenta versión del programa."
 
-#: src/ExternalConnector.cpp:519
+#: src/ExternalConnector.cpp:525
 msgid ""
 "Force ZLIB compression regardless of dialed-IP locality (useful when the "
 "server is reachable over a VPN tunnel that resolves to a LAN IP)."
@@ -2618,17 +2618,17 @@ msgstr "Completando"
 msgid "Complete"
 msgstr "Completáu"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:633
+#: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:636
 #: src/PartFile.cpp:4272 src/TransferWnd.cpp:350
 msgid "Paused"
 msgstr "Posáu"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:632
+#: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:635
 #: src/PartFile.cpp:4275 src/TransferWnd.cpp:349
 msgid "Erroneous"
 msgstr "Erróneu"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:630
+#: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:633
 #: src/PartFile.cpp:4284 src/TransferWnd.cpp:347
 msgid "Waiting"
 msgstr "Aguardando"
@@ -2689,11 +2689,11 @@ msgstr "Socket d'escucha: Ok"
 msgid "ERROR: Could not listen to TCP port."
 msgstr "FALLU: Nun pue escuchase nel puertu TCP."
 
-#: src/Logger.cpp:329
+#: src/Logger.cpp:341
 msgid "ERROR: "
 msgstr "FALLU:"
 
-#: src/Logger.cpp:329
+#: src/Logger.cpp:341
 msgid "WARNING: "
 msgstr "AVISU:"
 
@@ -2882,7 +2882,7 @@ msgid "ServerIP: "
 msgstr "IP del sirvidor: "
 
 #: src/MuleTrayIcon.cpp:838 src/ServerWnd.cpp:204
-#: src/utils/wxCas/src/onlinesig.cpp:263
+#: src/utils/wxCas/src/onlinesig.cpp:259
 msgid "Not Connected"
 msgstr "Non coneutáu"
 
@@ -3034,17 +3034,17 @@ msgstr "Toos"
 msgid "Archives"
 msgstr "Archivos"
 
-#: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:154 src/OtherFunctions.cpp:636
+#: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:154 src/OtherFunctions.cpp:639
 #: src/TransferWnd.cpp:357
 msgid "Audio"
 msgstr "Audio"
 
-#: src/muuli_wdr.cpp:230 src/OtherFunctions.cpp:168 src/OtherFunctions.cpp:638
+#: src/muuli_wdr.cpp:230 src/OtherFunctions.cpp:168 src/OtherFunctions.cpp:641
 #: src/TransferWnd.cpp:359
 msgid "CD-Images"
 msgstr "Imáxenes de CD"
 
-#: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:175 src/OtherFunctions.cpp:639
+#: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:175 src/OtherFunctions.cpp:642
 #: src/TransferWnd.cpp:360
 msgid "Pictures"
 msgstr "Imáxenes"
@@ -4732,39 +4732,39 @@ msgstr "hores"
 msgid "Days"
 msgstr "Díes"
 
-#: src/OtherFunctions.cpp:626
+#: src/OtherFunctions.cpp:629
 msgid "all"
 msgstr "too"
 
-#: src/OtherFunctions.cpp:627
+#: src/OtherFunctions.cpp:630
 msgid "all others"
 msgstr "el restu"
 
-#: src/OtherFunctions.cpp:628 src/TransferWnd.cpp:345
+#: src/OtherFunctions.cpp:631 src/TransferWnd.cpp:345
 msgid "Incomplete"
 msgstr "Incompletu"
 
-#: src/OtherFunctions.cpp:634 src/PartFile.cpp:4289 src/TransferWnd.cpp:351
+#: src/OtherFunctions.cpp:637 src/PartFile.cpp:4289 src/TransferWnd.cpp:351
 msgid "Stopped"
 msgstr "Deteníu"
 
-#: src/OtherFunctions.cpp:635 src/TransferWnd.cpp:356
+#: src/OtherFunctions.cpp:638 src/TransferWnd.cpp:356
 msgid "Video"
 msgstr "Vídeu"
 
-#: src/OtherFunctions.cpp:637 src/TransferWnd.cpp:358
+#: src/OtherFunctions.cpp:640 src/TransferWnd.cpp:358
 msgid "Archive"
 msgstr "Ficheru"
 
-#: src/OtherFunctions.cpp:640 src/TransferWnd.cpp:361
+#: src/OtherFunctions.cpp:643 src/TransferWnd.cpp:361
 msgid "Text"
 msgstr "Testu"
 
-#: src/OtherFunctions.cpp:641 src/TransferWnd.cpp:352
+#: src/OtherFunctions.cpp:644 src/TransferWnd.cpp:352
 msgid "Active"
 msgstr "Activu"
 
-#: src/OtherFunctions.cpp:1059
+#: src/OtherFunctions.cpp:1061
 #, c-format
 msgid "Using config dir: %s"
 msgstr ""
@@ -5113,132 +5113,137 @@ msgid "English (U.K.)"
 msgstr "Inglés (U.K.)"
 
 #: src/Preferences.cpp:646
+#, fuzzy
+msgid "English (U.S.)"
+msgstr "Inglés (U.K.)"
+
+#: src/Preferences.cpp:647
 msgid "Estonian"
 msgstr "Estoniu"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:648
 msgid "Finnish"
 msgstr "Finlandés"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:649
 msgid "French"
 msgstr "Francés"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:650
 msgid "Galician"
 msgstr "Gallegu"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:651
 msgid "German"
 msgstr "Alemán"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:652
 msgid "Greek"
 msgstr "Griegu"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:653
 msgid "Hebrew"
 msgstr "Hebréu"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:654
 msgid "Hungarian"
 msgstr "Húngaru"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:655
 msgid "Italian"
 msgstr "Italianu"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:656
 msgid "Italian (Swiss)"
 msgstr "Italianu (Suizu)"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:657
 msgid "Japanese"
 msgstr "Xaponés"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:658
 msgid "Korean"
 msgstr "Coreanu"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:659
 msgid "Lithuanian"
 msgstr "Lituanu"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:660
 msgid "Norwegian (Nynorsk)"
 msgstr "Noruegu"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:661
 msgid "Polish"
 msgstr "Polacu"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:662
 msgid "Portuguese"
 msgstr "Portugués"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:663
 msgid "Portuguese (Brazilian)"
 msgstr "Portugués (Brasil)"
 
-#: src/Preferences.cpp:663
+#: src/Preferences.cpp:664
 #, fuzzy
 msgid "Romanian"
 msgstr "Albanés"
 
-#: src/Preferences.cpp:664
+#: src/Preferences.cpp:665
 msgid "Russian"
 msgstr "Rusu"
 
-#: src/Preferences.cpp:665
+#: src/Preferences.cpp:666
 msgid "Slovenian"
 msgstr "Eslovenu"
 
-#: src/Preferences.cpp:666
+#: src/Preferences.cpp:667
 msgid "Spanish"
 msgstr "Español"
 
-#: src/Preferences.cpp:667
+#: src/Preferences.cpp:668
 msgid "Swedish"
 msgstr "Suecu"
 
-#: src/Preferences.cpp:668
+#: src/Preferences.cpp:669
 msgid "Turkish"
 msgstr "Turcu"
 
-#: src/Preferences.cpp:669
+#: src/Preferences.cpp:670
 msgid "Ukrainian"
 msgstr "Ucranianu"
 
-#: src/Preferences.cpp:732
+#: src/Preferences.cpp:733
 #, fuzzy
 msgid "Change Language"
 msgstr "Llingua: "
 
-#: src/Preferences.cpp:775
+#: src/Preferences.cpp:779
 msgid "There are no translations installed for aMule"
 msgstr ""
 
-#: src/Preferences.cpp:775
+#: src/Preferences.cpp:779
 #, fuzzy
 msgid "No languages available"
 msgstr "Non disponible"
 
-#: src/Preferences.cpp:917
+#: src/Preferences.cpp:921
 msgid "no options available"
 msgstr "opciones non disponibles"
 
-#: src/Preferences.cpp:1662
+#: src/Preferences.cpp:1666
 msgid "Invalid category found, skipping"
 msgstr "Categoría inválida alcontrada, saltando"
 
-#: src/Preferences.cpp:1844
+#: src/Preferences.cpp:1848
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "Puertu TCP nun pue ser más altu de 65532 darréu que'l socket del sirvidor "
 "UDP ye TCP+3"
 
-#: src/Preferences.cpp:1845
+#: src/Preferences.cpp:1849
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Puertu por defeutu que s'usará (%d)"
@@ -5649,11 +5654,11 @@ msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 "El tamañu mínimu tien de ser menor al tamañu máximu. Tamañu máximu inoráu."
 
-#: src/SearchDlg.cpp:544 src/SearchDlg.cpp:603
+#: src/SearchDlg.cpp:544 src/SearchDlg.cpp:602
 msgid "Search warning"
 msgstr "Alerta de gueta"
 
-#: src/SearchDlg.cpp:663 src/SearchListCtrl.cpp:634
+#: src/SearchDlg.cpp:662 src/SearchListCtrl.cpp:634
 msgid "Main"
 msgstr "Principal"
 
@@ -5670,7 +5675,7 @@ msgstr "Nun pue facese una gueta en eD2k si nun se ta coneutáu a eD2k"
 msgid "No keyword for Kad search - aborting"
 msgstr "Pallabra clave pa gueta: %s"
 
-#: src/SearchList.cpp:373
+#: src/SearchList.cpp:386
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Fallu non esperáu mentantu tentaba guetar en Kad: "
 
@@ -7576,47 +7581,47 @@ msgstr ""
 msgid "%i day(s) %i hour(s) %i min %i s"
 msgstr "%i día(es) %i hora(es) %i min %i s"
 
-#: src/utils/wxCas/src/onlinesig.cpp:225
+#: src/utils/wxCas/src/onlinesig.cpp:221
 #, c-format
 msgid "%02uD %02uh %02umin %02us"
 msgstr "%02uD %02uh %02umin %02us"
 
-#: src/utils/wxCas/src/onlinesig.cpp:227
+#: src/utils/wxCas/src/onlinesig.cpp:223
 #, c-format
 msgid "%02uh %02umin %02us"
 msgstr "%02uh %02umin %02us"
 
-#: src/utils/wxCas/src/onlinesig.cpp:229
+#: src/utils/wxCas/src/onlinesig.cpp:225
 #, c-format
 msgid "%02umin %02us"
 msgstr "%02umin %02us"
 
-#: src/utils/wxCas/src/onlinesig.cpp:231
+#: src/utils/wxCas/src/onlinesig.cpp:227
 #, c-format
 msgid "%02us"
 msgstr "%02us"
 
-#: src/utils/wxCas/src/onlinesig.cpp:330
+#: src/utils/wxCas/src/onlinesig.cpp:326
 #, c-format
 msgid "%.0f B"
 msgstr "%.0f B"
 
-#: src/utils/wxCas/src/onlinesig.cpp:333
+#: src/utils/wxCas/src/onlinesig.cpp:329
 #, c-format
 msgid "%.2f KB"
 msgstr "%.2f KB"
 
-#: src/utils/wxCas/src/onlinesig.cpp:336
+#: src/utils/wxCas/src/onlinesig.cpp:332
 #, c-format
 msgid "%.2f MB"
 msgstr "%.2f MB"
 
-#: src/utils/wxCas/src/onlinesig.cpp:339
+#: src/utils/wxCas/src/onlinesig.cpp:335
 #, c-format
 msgid "%.2f GB"
 msgstr "%.2f GB"
 
-#: src/utils/wxCas/src/onlinesig.cpp:342
+#: src/utils/wxCas/src/onlinesig.cpp:338
 #, c-format
 msgid "%.2f TB"
 msgstr "%.2f TB"

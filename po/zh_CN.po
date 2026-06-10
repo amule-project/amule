@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-07 14:34+0200\n"
+"POT-Creation-Date: 2026-06-10 16:32+0200\n"
 "PO-Revision-Date: 2024-12-15 20:08+0100\n"
 "Last-Translator: Mike Akiba <mike2718@gmail.com>\n"
 "Language-Team: Chinese Simplified <kde-i18n-doc@kde.org>\n"
@@ -703,7 +703,7 @@ msgstr "退出确认"
 msgid "Launch Command: "
 msgstr "运行命令: "
 
-#: src/amuleDlg.cpp:1300 src/muuli_wdr.cpp:1773 src/Preferences.cpp:846
+#: src/amuleDlg.cpp:1300 src/muuli_wdr.cpp:1773 src/Preferences.cpp:850
 msgid "- default -"
 msgstr "- 默认 -"
 
@@ -843,7 +843,7 @@ msgstr ""
 msgid "Remote GUI EC event handler"
 msgstr "远程 GUI 外部连接事件处理程序"
 
-#: src/amule-remote-gui.cpp:513 src/ExternalConnector.cpp:457
+#: src/amule-remote-gui.cpp:513 src/ExternalConnector.cpp:463
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr "连接失败。不能连接到 %s:%d\n"
@@ -872,7 +872,7 @@ msgstr "准备"
 msgid "All"
 msgstr "全部"
 
-#: src/amule-remote-gui.cpp:870 src/ExternalConn.cpp:1784
+#: src/amule-remote-gui.cpp:870 src/ExternalConn.cpp:1828
 msgid "Invalid link or already on list."
 msgstr "非法链接或已经存在列表中。"
 
@@ -888,7 +888,7 @@ msgstr "不能为分类 '%2$s' 创建目录 '%1$s'，保持目录 '%3$s'。"
 #: src/ClientDetailDialog.cpp:130 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/DownloadListCtrl.cpp:1087 src/DownloadListCtrl.cpp:1100
-#: src/DownloadListCtrl.cpp:1111 src/ExternalConn.cpp:538
+#: src/DownloadListCtrl.cpp:1111 src/ExternalConn.cpp:543
 #: src/FileDetailDialog.cpp:183 src/GenericClientListCtrl.cpp:1102
 #: src/GenericClientListCtrl.cpp:1113 src/GenericClientListCtrl.cpp:1123
 #: src/HTTPDownload.cpp:87 src/KnownFile.cpp:986 src/KnownFile.cpp:992
@@ -1095,12 +1095,12 @@ msgid "Client Details"
 msgstr "客户端详细信息"
 
 #: src/ClientDetailDialog.cpp:105 src/ServerWnd.cpp:201
-#: src/utils/wxCas/src/onlinesig.cpp:260
+#: src/utils/wxCas/src/onlinesig.cpp:256
 msgid "LowID"
 msgstr "Low ID"
 
 #: src/ClientDetailDialog.cpp:105 src/ServerWnd.cpp:201
-#: src/utils/wxCas/src/onlinesig.cpp:258
+#: src/utils/wxCas/src/onlinesig.cpp:254
 msgid "HighID"
 msgstr "High ID"
 
@@ -1315,7 +1315,7 @@ msgid "On Queue"
 msgstr "正在排队"
 
 #: src/DataToText.cpp:63 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:631 src/PartFile.cpp:4282 src/TransferWnd.cpp:348
+#: src/OtherFunctions.cpp:634 src/PartFile.cpp:4282 src/TransferWnd.cpp:348
 msgid "Downloading"
 msgstr "正在下载"
 
@@ -1401,7 +1401,7 @@ msgid "Search Result"
 msgstr "搜索结果"
 
 #: src/DataToText.cpp:143 src/DownloadListCtrl.cpp:162
-#: src/OtherFunctions.cpp:629 src/TransferWnd.cpp:346
+#: src/OtherFunctions.cpp:632 src/TransferWnd.cpp:346
 msgid "Completed"
 msgstr "已完成"
 
@@ -1708,223 +1708,223 @@ msgstr[1] ""
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "非法 eD2k 链接！错误: %s"
 
-#: src/ExternalConn.cpp:320
+#: src/ExternalConn.cpp:325
 msgid "Client sent packet after authentication failed."
 msgstr "客户端在验证失败后发送包。"
 
-#: src/ExternalConn.cpp:338
+#: src/ExternalConn.cpp:343
 msgid "External connection closed."
 msgstr "已关闭远程连接。"
 
-#: src/ExternalConn.cpp:415
+#: src/ExternalConn.cpp:420
 msgid "External connections disabled due to empty password!"
 msgstr "密码未设置，远程连接已被禁止"
 
-#: src/ExternalConn.cpp:436
+#: src/ExternalConn.cpp:441
 msgid "External connections disabled in config file"
 msgstr "配置文件中已禁止远程连接"
 
-#: src/ExternalConn.cpp:505
+#: src/ExternalConn.cpp:510
 msgid "New external connection accepted"
 msgstr "新的远程连接已被接受"
 
-#: src/ExternalConn.cpp:508
+#: src/ExternalConn.cpp:513
 msgid "ERROR: couldn't accept a new external connection"
 msgstr "错误：不能接受新的远程连接"
 
-#: src/ExternalConn.cpp:526
+#: src/ExternalConn.cpp:531
 msgid "External connection refused due to empty password in preferences!"
 msgstr "由于未设置密码，远程连接已被拒绝！"
 
-#: src/ExternalConn.cpp:537
+#: src/ExternalConn.cpp:542
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "正在连接客户端：%s %s"
 
-#: src/ExternalConn.cpp:539
+#: src/ExternalConn.cpp:544
 msgid "Unknown version"
 msgstr "未知版本"
 
-#: src/ExternalConn.cpp:549
+#: src/ExternalConn.cpp:554
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
 msgstr "错误的远程连接版本号，可能会不兼容，请使用相同版本的核心和远程程序。"
 
-#: src/ExternalConn.cpp:554
+#: src/ExternalConn.cpp:559
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
 "snapshot! *sigh* possible crash prevented"
 msgstr "您无法从任意开发快照连接到发布版本！*sigh* 防止可能发生的崩溃"
 
-#: src/ExternalConn.cpp:615
+#: src/ExternalConn.cpp:620
 msgid "Invalid protocol version."
 msgstr "非法协议版本。"
 
-#: src/ExternalConn.cpp:620
+#: src/ExternalConn.cpp:625
 msgid "Missing protocol version tag."
 msgstr "缺失协议版本标签。"
 
-#: src/ExternalConn.cpp:627
+#: src/ExternalConn.cpp:632
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr "身份验证失败: 指定为 EC 密码的 MD5 哈希值无效。"
 
-#: src/ExternalConn.cpp:659
+#: src/ExternalConn.cpp:664
 msgid "Authentication failed: wrong password."
 msgstr "验证失败：密码错误。"
 
-#: src/ExternalConn.cpp:661
+#: src/ExternalConn.cpp:666
 msgid "Authentication failed: missing password."
 msgstr "验证失败: 没有密码"
 
-#: src/ExternalConn.cpp:671
+#: src/ExternalConn.cpp:676
 msgid "Invalid request, please authenticate first."
 msgstr "无效请求，请先验证。"
 
-#: src/ExternalConn.cpp:676
+#: src/ExternalConn.cpp:681
 msgid "Access granted."
 msgstr "登录成功。"
 
-#: src/ExternalConn.cpp:684
+#: src/ExternalConn.cpp:689
 #, c-format
 msgid "Sent error message \"%s\" to client."
 msgstr "发送错误消息喔 \"%s\"到客户端。"
 
-#: src/ExternalConn.cpp:687
+#: src/ExternalConn.cpp:692
 #, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
 msgstr "来自%s的非法登录尝试，已关闭连接。"
 
-#: src/ExternalConn.cpp:1171
+#: src/ExternalConn.cpp:1176
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "远程 Part 文件命令失败：文件校验码不存在：%s"
 
-#: src/ExternalConn.cpp:1173
+#: src/ExternalConn.cpp:1178
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "文件校验码不存在：%s"
 
-#: src/ExternalConn.cpp:1220 src/ExternalConn.cpp:1302
-#: src/ExternalConn.cpp:1383
+#: src/ExternalConn.cpp:1225 src/ExternalConn.cpp:1307
+#: src/ExternalConn.cpp:1388
 msgid "OOPS! OpCode processing error!"
 msgstr "OpCode 处理错误！"
 
-#: src/ExternalConn.cpp:1248
+#: src/ExternalConn.cpp:1253
 msgid "Server not added"
 msgstr "服务器没有被添加"
 
-#: src/ExternalConn.cpp:1266
+#: src/ExternalConn.cpp:1271
 #, c-format
 msgid "server not found: %s"
 msgstr "找不到服务器：%s"
 
-#: src/ExternalConn.cpp:1282
+#: src/ExternalConn.cpp:1287
 msgid "need to define server to be removed"
 msgstr "必须定义需删除的服务器"
 
-#: src/ExternalConn.cpp:1296
+#: src/ExternalConn.cpp:1301
 msgid "eD2k is disabled in preferences."
 msgstr "eD2k 在设置中已禁用。"
 
-#: src/ExternalConn.cpp:1363
+#: src/ExternalConn.cpp:1368
 #, fuzzy
 msgid "Friend not found."
 msgstr "文件未找到。"
 
-#: src/ExternalConn.cpp:1372
+#: src/ExternalConn.cpp:1377
 #, fuzzy
 msgid "Client not found."
 msgstr "文件未找到。"
 
-#: src/ExternalConn.cpp:1377
+#: src/ExternalConn.cpp:1382
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
 msgstr ""
 
-#: src/ExternalConn.cpp:1486
+#: src/ExternalConn.cpp:1530
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "正在搜索，请稍等然后重新获取结果！"
 
-#: src/ExternalConn.cpp:1492
+#: src/ExternalConn.cpp:1536
 msgid "WebSearch from remote interface makes no sense."
 msgstr "远程界面使用网络搜索没有意义。"
 
-#: src/ExternalConn.cpp:1706
+#: src/ExternalConn.cpp:1750
 msgid "No points for graph."
 msgstr "此图没有节点。"
 
-#: src/ExternalConn.cpp:1715
+#: src/ExternalConn.cpp:1759
 msgid "Your client is not configured for this detail level."
 msgstr "您的客户端没有为详细级别进行配置。"
 
-#: src/ExternalConn.cpp:1742
+#: src/ExternalConn.cpp:1786
 msgid "External Connection: shutdown requested"
 msgstr "远程连接：已请求关闭"
 
-#: src/ExternalConn.cpp:1754
+#: src/ExternalConn.cpp:1798
 msgid "Already shutting down."
 msgstr "已经在关闭。"
 
-#: src/ExternalConn.cpp:1772
+#: src/ExternalConn.cpp:1816
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "远程连接：正在添加链接 '%s'。"
 
-#: src/ExternalConn.cpp:1788
+#: src/ExternalConn.cpp:1832
 #, fuzzy, c-format
 msgid "%d of %d links failed (invalid or already on list)."
 msgstr "非法链接或已经存在列表中。"
 
-#: src/ExternalConn.cpp:1915
+#: src/ExternalConn.cpp:1959
 msgid "File not found."
 msgstr "文件未找到。"
 
-#: src/ExternalConn.cpp:1920
+#: src/ExternalConn.cpp:1964
 msgid "Invalid file name."
 msgstr "无效的文件名。"
 
-#: src/ExternalConn.cpp:1928
+#: src/ExternalConn.cpp:1972
 msgid "Unable to rename file."
 msgstr "无法重命名文件。"
 
-#: src/ExternalConn.cpp:2226 src/ExternalConn.cpp:2253
+#: src/ExternalConn.cpp:2271 src/ExternalConn.cpp:2298
 msgid "Kad is disabled in preferences."
 msgstr "Kad 在设置中被禁用。"
 
-#: src/ExternalConn.cpp:2265
+#: src/ExternalConn.cpp:2310
 msgid "Already connected to eD2k."
 msgstr "已经连接至 eD2k。"
 
-#: src/ExternalConn.cpp:2268
+#: src/ExternalConn.cpp:2313
 msgid "Connecting to eD2k..."
 msgstr "正在连接至 eD2k..."
 
-#: src/ExternalConn.cpp:2276
+#: src/ExternalConn.cpp:2321
 msgid "Already connected to Kad."
 msgstr "已连接至 Kad。"
 
-#: src/ExternalConn.cpp:2279
+#: src/ExternalConn.cpp:2324
 msgid "Connecting to Kad..."
 msgstr "正在连接至 Kad..."
 
-#: src/ExternalConn.cpp:2286
+#: src/ExternalConn.cpp:2331
 msgid "All networks are disabled."
 msgstr "全部网络都被禁用了。"
 
-#: src/ExternalConn.cpp:2294
+#: src/ExternalConn.cpp:2339
 msgid "Disconnected from eD2k."
 msgstr "已从 eD2k 断开连接。"
 
-#: src/ExternalConn.cpp:2298
+#: src/ExternalConn.cpp:2343
 msgid "Disconnected from Kad."
 msgstr "已从 Kad 断开连接。"
 
-#: src/ExternalConn.cpp:2307
+#: src/ExternalConn.cpp:2352
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr "远程连接：非法 opcode：%#x"
 
-#: src/ExternalConn.cpp:2310
+#: src/ExternalConn.cpp:2355
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "非法的 opcode（错误的协议版本？)"
 
@@ -2003,7 +2003,7 @@ msgstr ""
 "输入 'help <命令>' 可显示命令的帮助。\n"
 "输入 'help' 可显示全部命令列表。\n"
 
-#: src/ExternalConnector.cpp:317
+#: src/ExternalConnector.cpp:323
 #, c-format
 msgid ""
 "\n"
@@ -2014,46 +2014,46 @@ msgstr ""
 "使用 '%s' 列出所有命令\n"
 "\n"
 
-#: src/ExternalConnector.cpp:350
+#: src/ExternalConnector.cpp:356
 msgid "Syntax error!"
 msgstr "语法错误！"
 
-#: src/ExternalConnector.cpp:353
+#: src/ExternalConnector.cpp:359
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr "处理指令时发生意外错误 - 这不应该发生！请提交错误报告\n"
 
-#: src/ExternalConnector.cpp:356
+#: src/ExternalConnector.cpp:362
 msgid "This command should not have any parameters."
 msgstr "此命令不需要任何参数。"
 
-#: src/ExternalConnector.cpp:359
+#: src/ExternalConnector.cpp:365
 msgid "This command must have a parameter."
 msgstr "此命令必须有一个参数。"
 
-#: src/ExternalConnector.cpp:362
+#: src/ExternalConnector.cpp:368
 msgid "Invalid argument."
 msgstr "无效参数。"
 
-#: src/ExternalConnector.cpp:365
+#: src/ExternalConnector.cpp:371
 msgid "This is an incomplete command."
 msgstr "此命令不完整。"
 
-#: src/ExternalConnector.cpp:374
+#: src/ExternalConnector.cpp:380
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "输入 '%s' 显示更多帮助信息。\n"
 
-#: src/ExternalConnector.cpp:429
+#: src/ExternalConnector.cpp:435
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "这是 %s %s %s\n"
 
-#: src/ExternalConnector.cpp:431
+#: src/ExternalConnector.cpp:437
 #, c-format
 msgid "This is %s %s\n"
 msgstr "这是 %s %s\n"
 
-#: src/ExternalConnector.cpp:446
+#: src/ExternalConnector.cpp:452
 msgid ""
 "\n"
 "Creating client...\n"
@@ -2061,7 +2061,7 @@ msgstr ""
 "\n"
 "正在建立用户...\n"
 
-#: src/ExternalConnector.cpp:471
+#: src/ExternalConnector.cpp:477
 #, c-format
 msgid ""
 "\n"
@@ -2070,7 +2070,7 @@ msgstr ""
 "\n"
 "完成，正在退出 %s...\n"
 
-#: src/ExternalConnector.cpp:477
+#: src/ExternalConnector.cpp:483
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -2084,51 +2084,51 @@ msgstr ""
 "\n"
 "退出...\n"
 
-#: src/ExternalConnector.cpp:486
+#: src/ExternalConnector.cpp:492
 msgid "Show this help text."
 msgstr "显示帮助信息。"
 
-#: src/ExternalConnector.cpp:489
+#: src/ExternalConnector.cpp:495
 msgid "Host where aMule is running. (default: 127.0.0.1)"
 msgstr "aMule 正在运行的主机(默认: 127.0.0.1)。"
 
-#: src/ExternalConnector.cpp:492
+#: src/ExternalConnector.cpp:498
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "aMule 的远程连接端口。(默认：4712)"
 
-#: src/ExternalConnector.cpp:495
+#: src/ExternalConnector.cpp:501
 msgid "External Connection password."
 msgstr "远程连接密码。"
 
-#: src/ExternalConnector.cpp:498
+#: src/ExternalConnector.cpp:504
 msgid "Read configuration from file."
 msgstr "从文件读取设置。"
 
-#: src/ExternalConnector.cpp:501
+#: src/ExternalConnector.cpp:507
 msgid "Do not print any output to stdout."
 msgstr "不在控制台输出任何信息。"
 
-#: src/ExternalConnector.cpp:504
+#: src/ExternalConnector.cpp:510
 msgid "Be verbose - show also debug messages."
 msgstr "详细显示调试信息。"
 
-#: src/ExternalConnector.cpp:507
+#: src/ExternalConnector.cpp:513
 msgid "Sets program locale (language)."
 msgstr "设置程序地区(语言)。"
 
-#: src/ExternalConnector.cpp:510
+#: src/ExternalConnector.cpp:516
 msgid "Write command line options to config file."
 msgstr "把命令行参数写入设置文件。"
 
-#: src/ExternalConnector.cpp:513
+#: src/ExternalConnector.cpp:519
 msgid "Creates config file based on aMule's config file."
 msgstr "基于 aMule 的设置文件建立新设置文件。"
 
-#: src/ExternalConnector.cpp:516
+#: src/ExternalConnector.cpp:522
 msgid "Print program version."
 msgstr "输出程序版本。"
 
-#: src/ExternalConnector.cpp:519
+#: src/ExternalConnector.cpp:525
 msgid ""
 "Force ZLIB compression regardless of dialed-IP locality (useful when the "
 "server is reachable over a VPN tunnel that resolves to a LAN IP)."
@@ -2548,17 +2548,17 @@ msgstr "即将完成"
 msgid "Complete"
 msgstr "已完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:633
+#: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:636
 #: src/PartFile.cpp:4272 src/TransferWnd.cpp:350
 msgid "Paused"
 msgstr "已暂停"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:632
+#: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:635
 #: src/PartFile.cpp:4275 src/TransferWnd.cpp:349
 msgid "Erroneous"
 msgstr "已出错"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:630
+#: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:633
 #: src/PartFile.cpp:4284 src/TransferWnd.cpp:347
 msgid "Waiting"
 msgstr "等待中"
@@ -2617,11 +2617,11 @@ msgstr "监听 Socket: OK."
 msgid "ERROR: Could not listen to TCP port."
 msgstr "错误: 无法监听 TCP 端口。"
 
-#: src/Logger.cpp:329
+#: src/Logger.cpp:341
 msgid "ERROR: "
 msgstr "错误: "
 
-#: src/Logger.cpp:329
+#: src/Logger.cpp:341
 msgid "WARNING: "
 msgstr "警告: "
 
@@ -2810,7 +2810,7 @@ msgid "ServerIP: "
 msgstr "服务器 IP: "
 
 #: src/MuleTrayIcon.cpp:838 src/ServerWnd.cpp:204
-#: src/utils/wxCas/src/onlinesig.cpp:263
+#: src/utils/wxCas/src/onlinesig.cpp:259
 msgid "Not Connected"
 msgstr "未连接"
 
@@ -2952,17 +2952,17 @@ msgstr "任何"
 msgid "Archives"
 msgstr "归档"
 
-#: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:154 src/OtherFunctions.cpp:636
+#: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:154 src/OtherFunctions.cpp:639
 #: src/TransferWnd.cpp:357
 msgid "Audio"
 msgstr "音频"
 
-#: src/muuli_wdr.cpp:230 src/OtherFunctions.cpp:168 src/OtherFunctions.cpp:638
+#: src/muuli_wdr.cpp:230 src/OtherFunctions.cpp:168 src/OtherFunctions.cpp:641
 #: src/TransferWnd.cpp:359
 msgid "CD-Images"
 msgstr "CD 映像"
 
-#: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:175 src/OtherFunctions.cpp:639
+#: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:175 src/OtherFunctions.cpp:642
 #: src/TransferWnd.cpp:360
 msgid "Pictures"
 msgstr "图片"
@@ -4592,39 +4592,39 @@ msgstr "小时"
 msgid "Days"
 msgstr "日"
 
-#: src/OtherFunctions.cpp:626
+#: src/OtherFunctions.cpp:629
 msgid "all"
 msgstr "所有"
 
-#: src/OtherFunctions.cpp:627
+#: src/OtherFunctions.cpp:630
 msgid "all others"
 msgstr "其它"
 
-#: src/OtherFunctions.cpp:628 src/TransferWnd.cpp:345
+#: src/OtherFunctions.cpp:631 src/TransferWnd.cpp:345
 msgid "Incomplete"
 msgstr "未完成"
 
-#: src/OtherFunctions.cpp:634 src/PartFile.cpp:4289 src/TransferWnd.cpp:351
+#: src/OtherFunctions.cpp:637 src/PartFile.cpp:4289 src/TransferWnd.cpp:351
 msgid "Stopped"
 msgstr "已停止"
 
-#: src/OtherFunctions.cpp:635 src/TransferWnd.cpp:356
+#: src/OtherFunctions.cpp:638 src/TransferWnd.cpp:356
 msgid "Video"
 msgstr "视频"
 
-#: src/OtherFunctions.cpp:637 src/TransferWnd.cpp:358
+#: src/OtherFunctions.cpp:640 src/TransferWnd.cpp:358
 msgid "Archive"
 msgstr "归档"
 
-#: src/OtherFunctions.cpp:640 src/TransferWnd.cpp:361
+#: src/OtherFunctions.cpp:643 src/TransferWnd.cpp:361
 msgid "Text"
 msgstr "文本"
 
-#: src/OtherFunctions.cpp:641 src/TransferWnd.cpp:352
+#: src/OtherFunctions.cpp:644 src/TransferWnd.cpp:352
 msgid "Active"
 msgstr "活动"
 
-#: src/OtherFunctions.cpp:1059
+#: src/OtherFunctions.cpp:1061
 #, c-format
 msgid "Using config dir: %s"
 msgstr "使用配置目录：%s"
@@ -4961,127 +4961,132 @@ msgid "English (U.K.)"
 msgstr "英语（英国）"
 
 #: src/Preferences.cpp:646
+#, fuzzy
+msgid "English (U.S.)"
+msgstr "英语（英国）"
+
+#: src/Preferences.cpp:647
 msgid "Estonian"
 msgstr "爱斯托尼亚语"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:648
 msgid "Finnish"
 msgstr "芬兰语"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:649
 msgid "French"
 msgstr "法语"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:650
 msgid "Galician"
 msgstr "加利西亚语"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:651
 msgid "German"
 msgstr "德语"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:652
 msgid "Greek"
 msgstr "希腊语"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:653
 msgid "Hebrew"
 msgstr "希伯来语"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:654
 msgid "Hungarian"
 msgstr "匈牙利语"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:655
 msgid "Italian"
 msgstr "意大利语"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:656
 msgid "Italian (Swiss)"
 msgstr "意大利语（瑞士）"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:657
 msgid "Japanese"
 msgstr "日语"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:658
 msgid "Korean"
 msgstr "韩语"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:659
 msgid "Lithuanian"
 msgstr "立陶宛语"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:660
 msgid "Norwegian (Nynorsk)"
 msgstr "新挪威语"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:661
 msgid "Polish"
 msgstr "芬兰语"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:662
 msgid "Portuguese"
 msgstr "葡萄牙语"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:663
 msgid "Portuguese (Brazilian)"
 msgstr "葡萄牙语（巴西）"
 
-#: src/Preferences.cpp:663
+#: src/Preferences.cpp:664
 msgid "Romanian"
 msgstr "罗马尼亚语"
 
-#: src/Preferences.cpp:664
+#: src/Preferences.cpp:665
 msgid "Russian"
 msgstr "俄语"
 
-#: src/Preferences.cpp:665
+#: src/Preferences.cpp:666
 msgid "Slovenian"
 msgstr "斯洛文尼亚语"
 
-#: src/Preferences.cpp:666
+#: src/Preferences.cpp:667
 msgid "Spanish"
 msgstr "西班牙语"
 
-#: src/Preferences.cpp:667
+#: src/Preferences.cpp:668
 msgid "Swedish"
 msgstr "瑞典语"
 
-#: src/Preferences.cpp:668
+#: src/Preferences.cpp:669
 msgid "Turkish"
 msgstr "土耳其语"
 
-#: src/Preferences.cpp:669
+#: src/Preferences.cpp:670
 msgid "Ukrainian"
 msgstr "乌克兰"
 
-#: src/Preferences.cpp:732
+#: src/Preferences.cpp:733
 msgid "Change Language"
 msgstr "更改语言"
 
-#: src/Preferences.cpp:775
+#: src/Preferences.cpp:779
 msgid "There are no translations installed for aMule"
 msgstr "没有为 aMule 安装语言文件"
 
-#: src/Preferences.cpp:775
+#: src/Preferences.cpp:779
 msgid "No languages available"
 msgstr "语言文件不可用"
 
-#: src/Preferences.cpp:917
+#: src/Preferences.cpp:921
 msgid "no options available"
 msgstr "选项不可用"
 
-#: src/Preferences.cpp:1662
+#: src/Preferences.cpp:1666
 msgid "Invalid category found, skipping"
 msgstr "发现无效的分类，跳过"
 
-#: src/Preferences.cpp:1844
+#: src/Preferences.cpp:1848
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP端口不可高于65532，因为服务器UDP端口值为TCP端口值+3"
 
-#: src/Preferences.cpp:1845
+#: src/Preferences.cpp:1849
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "缺省端口将被使用（%d）"
@@ -5483,11 +5488,11 @@ msgstr ""
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "最小值必须小于最大值，最大值已被忽略。"
 
-#: src/SearchDlg.cpp:544 src/SearchDlg.cpp:603
+#: src/SearchDlg.cpp:544 src/SearchDlg.cpp:602
 msgid "Search warning"
 msgstr "搜索警告"
 
-#: src/SearchDlg.cpp:663 src/SearchListCtrl.cpp:634
+#: src/SearchDlg.cpp:662 src/SearchListCtrl.cpp:634
 msgid "Main"
 msgstr "主要"
 
@@ -5503,7 +5508,7 @@ msgstr "eD2k未连接时eD2k搜索无法进行"
 msgid "No keyword for Kad search - aborting"
 msgstr "Kad 搜索没有关键字 - 中止"
 
-#: src/SearchList.cpp:373
+#: src/SearchList.cpp:386
 msgid "Unexpected error while attempting Kad search: "
 msgstr "尝试Kad搜索时出现不可预料的错误："
 
@@ -7343,47 +7348,47 @@ msgstr "计算 ed2k 哈希时内存不足！"
 msgid "%i day(s) %i hour(s) %i min %i s"
 msgstr "%i 天 %i 小时 %i 分钟 %i 秒"
 
-#: src/utils/wxCas/src/onlinesig.cpp:225
+#: src/utils/wxCas/src/onlinesig.cpp:221
 #, c-format
 msgid "%02uD %02uh %02umin %02us"
 msgstr "%02u天 %02u小时 %02u分钟 %02u秒"
 
-#: src/utils/wxCas/src/onlinesig.cpp:227
+#: src/utils/wxCas/src/onlinesig.cpp:223
 #, c-format
 msgid "%02uh %02umin %02us"
 msgstr "%02u小时 %02u分钟 %02u秒"
 
-#: src/utils/wxCas/src/onlinesig.cpp:229
+#: src/utils/wxCas/src/onlinesig.cpp:225
 #, c-format
 msgid "%02umin %02us"
 msgstr "%02u分钟 %02u秒"
 
-#: src/utils/wxCas/src/onlinesig.cpp:231
+#: src/utils/wxCas/src/onlinesig.cpp:227
 #, c-format
 msgid "%02us"
 msgstr "%02u秒"
 
-#: src/utils/wxCas/src/onlinesig.cpp:330
+#: src/utils/wxCas/src/onlinesig.cpp:326
 #, c-format
 msgid "%.0f B"
 msgstr "%.0f B"
 
-#: src/utils/wxCas/src/onlinesig.cpp:333
+#: src/utils/wxCas/src/onlinesig.cpp:329
 #, c-format
 msgid "%.2f KB"
 msgstr "%.2f KB"
 
-#: src/utils/wxCas/src/onlinesig.cpp:336
+#: src/utils/wxCas/src/onlinesig.cpp:332
 #, c-format
 msgid "%.2f MB"
 msgstr "%.2f MB"
 
-#: src/utils/wxCas/src/onlinesig.cpp:339
+#: src/utils/wxCas/src/onlinesig.cpp:335
 #, c-format
 msgid "%.2f GB"
 msgstr "%.2f GB"
 
-#: src/utils/wxCas/src/onlinesig.cpp:342
+#: src/utils/wxCas/src/onlinesig.cpp:338
 #, c-format
 msgid "%.2f TB"
 msgstr "%.2f TB"

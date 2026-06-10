@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-07 14:34+0200\n"
+"POT-Creation-Date: 2026-06-10 16:32+0200\n"
 "PO-Revision-Date: 2020-03-04 14:46+0100\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -710,7 +710,7 @@ msgstr "종료 확인"
 msgid "Launch Command: "
 msgstr "명령: %s"
 
-#: src/amuleDlg.cpp:1300 src/muuli_wdr.cpp:1773 src/Preferences.cpp:846
+#: src/amuleDlg.cpp:1300 src/muuli_wdr.cpp:1773 src/Preferences.cpp:850
 msgid "- default -"
 msgstr ""
 
@@ -855,7 +855,7 @@ msgstr ""
 msgid "Remote GUI EC event handler"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:513 src/ExternalConnector.cpp:457
+#: src/amule-remote-gui.cpp:513 src/ExternalConnector.cpp:463
 #, c-format
 msgid "Connection Failed. Unable to connect to %s:%d\n"
 msgstr ""
@@ -884,7 +884,7 @@ msgstr ""
 msgid "All"
 msgstr "전부"
 
-#: src/amule-remote-gui.cpp:870 src/ExternalConn.cpp:1784
+#: src/amule-remote-gui.cpp:870 src/ExternalConn.cpp:1828
 msgid "Invalid link or already on list."
 msgstr "유효하지 않은 링크거나 이미 목록에 존재합니다."
 
@@ -900,7 +900,7 @@ msgstr ""
 #: src/ClientDetailDialog.cpp:130 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/DownloadListCtrl.cpp:1087 src/DownloadListCtrl.cpp:1100
-#: src/DownloadListCtrl.cpp:1111 src/ExternalConn.cpp:538
+#: src/DownloadListCtrl.cpp:1111 src/ExternalConn.cpp:543
 #: src/FileDetailDialog.cpp:183 src/GenericClientListCtrl.cpp:1102
 #: src/GenericClientListCtrl.cpp:1113 src/GenericClientListCtrl.cpp:1123
 #: src/HTTPDownload.cpp:87 src/KnownFile.cpp:986 src/KnownFile.cpp:992
@@ -1113,12 +1113,12 @@ msgid "Client Details"
 msgstr "클라이언트 세부내역"
 
 #: src/ClientDetailDialog.cpp:105 src/ServerWnd.cpp:201
-#: src/utils/wxCas/src/onlinesig.cpp:260
+#: src/utils/wxCas/src/onlinesig.cpp:256
 msgid "LowID"
 msgstr "낮은아이디"
 
 #: src/ClientDetailDialog.cpp:105 src/ServerWnd.cpp:201
-#: src/utils/wxCas/src/onlinesig.cpp:258
+#: src/utils/wxCas/src/onlinesig.cpp:254
 msgid "HighID"
 msgstr "높은아이디"
 
@@ -1332,7 +1332,7 @@ msgid "On Queue"
 msgstr "대기열에"
 
 #: src/DataToText.cpp:63 src/libs/ec/cpp/ECSpecialTags.cpp:53
-#: src/OtherFunctions.cpp:631 src/PartFile.cpp:4282 src/TransferWnd.cpp:348
+#: src/OtherFunctions.cpp:634 src/PartFile.cpp:4282 src/TransferWnd.cpp:348
 msgid "Downloading"
 msgstr "받는중"
 
@@ -1418,7 +1418,7 @@ msgid "Search Result"
 msgstr ""
 
 #: src/DataToText.cpp:143 src/DownloadListCtrl.cpp:162
-#: src/OtherFunctions.cpp:629 src/TransferWnd.cpp:346
+#: src/OtherFunctions.cpp:632 src/TransferWnd.cpp:346
 msgid "Completed"
 msgstr "완료됨"
 
@@ -1720,45 +1720,45 @@ msgstr[1] ""
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr ""
 
-#: src/ExternalConn.cpp:320
+#: src/ExternalConn.cpp:325
 #, fuzzy
 msgid "Client sent packet after authentication failed."
 msgstr "인증에 실패했습니다."
 
-#: src/ExternalConn.cpp:338
+#: src/ExternalConn.cpp:343
 msgid "External connection closed."
 msgstr "외부연결 끊겼습니다."
 
-#: src/ExternalConn.cpp:415
+#: src/ExternalConn.cpp:420
 msgid "External connections disabled due to empty password!"
 msgstr "빈암호 때문에 외부연결이 불가능합니다."
 
-#: src/ExternalConn.cpp:436
+#: src/ExternalConn.cpp:441
 msgid "External connections disabled in config file"
 msgstr "이 환경설정에서 외부연결은 불가능합니다."
 
-#: src/ExternalConn.cpp:505
+#: src/ExternalConn.cpp:510
 msgid "New external connection accepted"
 msgstr "새로운 외부연결이 승인되었습니다."
 
-#: src/ExternalConn.cpp:508
+#: src/ExternalConn.cpp:513
 msgid "ERROR: couldn't accept a new external connection"
 msgstr ""
 
-#: src/ExternalConn.cpp:526
+#: src/ExternalConn.cpp:531
 msgid "External connection refused due to empty password in preferences!"
 msgstr "환경설정의 빈암호로 인해 외부연결이 거부되었습니다."
 
-#: src/ExternalConn.cpp:537
+#: src/ExternalConn.cpp:542
 #, c-format
 msgid "Connecting client: %s %s"
 msgstr "연결중인 클라이언트: %s %s"
 
-#: src/ExternalConn.cpp:539
+#: src/ExternalConn.cpp:544
 msgid "Unknown version"
 msgstr "알수없는 버젼"
 
-#: src/ExternalConn.cpp:549
+#: src/ExternalConn.cpp:554
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -1766,7 +1766,7 @@ msgstr ""
 "불확실한 외부연결 버젼 아이디, 이것은 바이너리와 호환되지 않습니다. 동일한 스"
 "냅삿으로부터 코어와 원격을 사용하세요."
 
-#: src/ExternalConn.cpp:554
+#: src/ExternalConn.cpp:559
 #, fuzzy
 msgid ""
 "You cannot connect to a release version from an arbitrary development "
@@ -1775,177 +1775,177 @@ msgstr ""
 "비정식 CVS 버젼으로부터 릴리즈된 버젼에 연결할수없습니다! *휴우* 있을 수 있었"
 "던 충돌을 막았습니다."
 
-#: src/ExternalConn.cpp:615
+#: src/ExternalConn.cpp:620
 msgid "Invalid protocol version."
 msgstr "유효하지 않은 프로토콜 버젼입니다"
 
-#: src/ExternalConn.cpp:620
+#: src/ExternalConn.cpp:625
 msgid "Missing protocol version tag."
 msgstr "프로토콜 버젼 태그 없음"
 
-#: src/ExternalConn.cpp:627
+#: src/ExternalConn.cpp:632
 msgid "Authentication failed: invalid hash specified as EC password."
 msgstr ""
 
-#: src/ExternalConn.cpp:659
+#: src/ExternalConn.cpp:664
 #, fuzzy
 msgid "Authentication failed: wrong password."
 msgstr "인증에 실패했습니다."
 
-#: src/ExternalConn.cpp:661
+#: src/ExternalConn.cpp:666
 #, fuzzy
 msgid "Authentication failed: missing password."
 msgstr "인증에 실패했습니다."
 
-#: src/ExternalConn.cpp:671
+#: src/ExternalConn.cpp:676
 #, fuzzy
 msgid "Invalid request, please authenticate first."
 msgstr "유효하지않은 요청, 먼저 인증을 하세요."
 
-#: src/ExternalConn.cpp:676
+#: src/ExternalConn.cpp:681
 msgid "Access granted."
 msgstr "접근 허가되었습니다."
 
-#: src/ExternalConn.cpp:684
+#: src/ExternalConn.cpp:689
 #, fuzzy, c-format
 msgid "Sent error message \"%s\" to client."
 msgstr "알 수 없는 클라이언트로부터 메시지를 차단"
 
-#: src/ExternalConn.cpp:687
+#: src/ExternalConn.cpp:692
 #, fuzzy, c-format
 msgid "Unauthorized access attempt from %s. Connection closed."
 msgstr "허락되지않은 접속입니다. 연결이 끊깁니다."
 
-#: src/ExternalConn.cpp:1171
+#: src/ExternalConn.cpp:1176
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr "원격 부분파일 명령 실패: 파일해시를 찾을 수 없음: %s "
 
-#: src/ExternalConn.cpp:1173
+#: src/ExternalConn.cpp:1178
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "파일해시를 찾을 수 없음: %s"
 
-#: src/ExternalConn.cpp:1220 src/ExternalConn.cpp:1302
-#: src/ExternalConn.cpp:1383
+#: src/ExternalConn.cpp:1225 src/ExternalConn.cpp:1307
+#: src/ExternalConn.cpp:1388
 msgid "OOPS! OpCode processing error!"
 msgstr "이런! 명령코드 처리 오류!"
 
-#: src/ExternalConn.cpp:1248
+#: src/ExternalConn.cpp:1253
 msgid "Server not added"
 msgstr "서버가 추가되지 않음"
 
-#: src/ExternalConn.cpp:1266
+#: src/ExternalConn.cpp:1271
 #, c-format
 msgid "server not found: %s"
 msgstr "서버가 발견되지 않음: %s"
 
-#: src/ExternalConn.cpp:1282
+#: src/ExternalConn.cpp:1287
 msgid "need to define server to be removed"
 msgstr "제거할 서버의 정의가 필요합니다."
 
-#: src/ExternalConn.cpp:1296
+#: src/ExternalConn.cpp:1301
 msgid "eD2k is disabled in preferences."
 msgstr ""
 
-#: src/ExternalConn.cpp:1363
+#: src/ExternalConn.cpp:1368
 #, fuzzy
 msgid "Friend not found."
 msgstr "파일을 찾을 수 없습니다."
 
-#: src/ExternalConn.cpp:1372
+#: src/ExternalConn.cpp:1377
 #, fuzzy
 msgid "Client not found."
 msgstr "파일을 찾을 수 없습니다."
 
-#: src/ExternalConn.cpp:1377
+#: src/ExternalConn.cpp:1382
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
 msgstr ""
 
-#: src/ExternalConn.cpp:1486
+#: src/ExternalConn.cpp:1530
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "검색중입니다. 금방 결과를 다시 가져옵니다."
 
-#: src/ExternalConn.cpp:1492
+#: src/ExternalConn.cpp:1536
 msgid "WebSearch from remote interface makes no sense."
 msgstr "원격 인터페이스로부터 웹검색은 좋지않은 선택입니다."
 
-#: src/ExternalConn.cpp:1706
+#: src/ExternalConn.cpp:1750
 msgid "No points for graph."
 msgstr "그래프가 비어있음."
 
-#: src/ExternalConn.cpp:1715
+#: src/ExternalConn.cpp:1759
 msgid "Your client is not configured for this detail level."
 msgstr "클라이언트는 세부 수준이 구성되지 않았습니다."
 
-#: src/ExternalConn.cpp:1742
+#: src/ExternalConn.cpp:1786
 msgid "External Connection: shutdown requested"
 msgstr ""
 
-#: src/ExternalConn.cpp:1754
+#: src/ExternalConn.cpp:1798
 msgid "Already shutting down."
 msgstr "이미 종료하는중입니다."
 
-#: src/ExternalConn.cpp:1772
+#: src/ExternalConn.cpp:1816
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "외부연결: '%s' 링크를 추가합니다."
 
-#: src/ExternalConn.cpp:1788
+#: src/ExternalConn.cpp:1832
 #, fuzzy, c-format
 msgid "%d of %d links failed (invalid or already on list)."
 msgstr "유효하지 않은 링크거나 이미 목록에 존재합니다."
 
-#: src/ExternalConn.cpp:1915
+#: src/ExternalConn.cpp:1959
 msgid "File not found."
 msgstr "파일을 찾을 수 없습니다."
 
-#: src/ExternalConn.cpp:1920
+#: src/ExternalConn.cpp:1964
 msgid "Invalid file name."
 msgstr "유효하지 않은 파일 이름입니다."
 
-#: src/ExternalConn.cpp:1928
+#: src/ExternalConn.cpp:1972
 msgid "Unable to rename file."
 msgstr "파일이름을 변경할 수 없습니다."
 
-#: src/ExternalConn.cpp:2226 src/ExternalConn.cpp:2253
+#: src/ExternalConn.cpp:2271 src/ExternalConn.cpp:2298
 msgid "Kad is disabled in preferences."
 msgstr "Kad는 환경설정에서 비활성화되어 있습니다."
 
-#: src/ExternalConn.cpp:2265
+#: src/ExternalConn.cpp:2310
 msgid "Already connected to eD2k."
 msgstr ""
 
-#: src/ExternalConn.cpp:2268
+#: src/ExternalConn.cpp:2313
 msgid "Connecting to eD2k..."
 msgstr ""
 
-#: src/ExternalConn.cpp:2276
+#: src/ExternalConn.cpp:2321
 msgid "Already connected to Kad."
 msgstr "이미 Kad에 연결되었습니다."
 
-#: src/ExternalConn.cpp:2279
+#: src/ExternalConn.cpp:2324
 msgid "Connecting to Kad..."
 msgstr "Kad에 연결중..."
 
-#: src/ExternalConn.cpp:2286
+#: src/ExternalConn.cpp:2331
 msgid "All networks are disabled."
 msgstr "모든 통신망을 사용할수 없습니다."
 
-#: src/ExternalConn.cpp:2294
+#: src/ExternalConn.cpp:2339
 msgid "Disconnected from eD2k."
 msgstr ""
 
-#: src/ExternalConn.cpp:2298
+#: src/ExternalConn.cpp:2343
 msgid "Disconnected from Kad."
 msgstr "Kad로부터 연결이 끊겼습니다."
 
-#: src/ExternalConn.cpp:2307
+#: src/ExternalConn.cpp:2352
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
 msgstr ""
 
-#: src/ExternalConn.cpp:2310
+#: src/ExternalConn.cpp:2355
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "유효하지 않은 실행코드(잘못된 프로토콜 버젼?)"
 
@@ -2024,7 +2024,7 @@ msgstr ""
 "명령어에 대한 도움말은, 'help <명령어>'를 입력하세요.\n"
 "모든 명령어 목록을 보려면, 'help'를 입력하세요.\n"
 
-#: src/ExternalConnector.cpp:317
+#: src/ExternalConnector.cpp:323
 #, c-format
 msgid ""
 "\n"
@@ -2035,46 +2035,46 @@ msgstr ""
 "명령 목록을 위해 %s를 사용합니다.\n"
 "\n"
 
-#: src/ExternalConnector.cpp:350
+#: src/ExternalConnector.cpp:356
 msgid "Syntax error!"
 msgstr "문법 오류!"
 
-#: src/ExternalConnector.cpp:353
+#: src/ExternalConnector.cpp:359
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr "명령 처리에 오류 발생 - 일어나면 안 됩니다! 버그 리포트를 하세요\n"
 
-#: src/ExternalConnector.cpp:356
+#: src/ExternalConnector.cpp:362
 msgid "This command should not have any parameters."
 msgstr "이 명령은 어떤 변수도 필요하지 않습니다."
 
-#: src/ExternalConnector.cpp:359
+#: src/ExternalConnector.cpp:365
 msgid "This command must have a parameter."
 msgstr "이 명령은 반드시 변수가 있어야 합니다."
 
-#: src/ExternalConnector.cpp:362
+#: src/ExternalConnector.cpp:368
 msgid "Invalid argument."
 msgstr "유효하지 않은 인수입니다."
 
-#: src/ExternalConnector.cpp:365
+#: src/ExternalConnector.cpp:371
 msgid "This is an incomplete command."
 msgstr "불완전한 명령입니다."
 
-#: src/ExternalConnector.cpp:374
+#: src/ExternalConnector.cpp:380
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "더 많은 도움말을 위해서는 '%s'를 입력하세요.\n"
 
-#: src/ExternalConnector.cpp:429
+#: src/ExternalConnector.cpp:435
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "이것은 %s %s %s\n"
 
-#: src/ExternalConnector.cpp:431
+#: src/ExternalConnector.cpp:437
 #, c-format
 msgid "This is %s %s\n"
 msgstr "이것은 %s %s\n"
 
-#: src/ExternalConnector.cpp:446
+#: src/ExternalConnector.cpp:452
 msgid ""
 "\n"
 "Creating client...\n"
@@ -2082,7 +2082,7 @@ msgstr ""
 "\n"
 "클라이언트 생성중...\n"
 
-#: src/ExternalConnector.cpp:471
+#: src/ExternalConnector.cpp:477
 #, c-format
 msgid ""
 "\n"
@@ -2091,7 +2091,7 @@ msgstr ""
 "\n"
 "좋아, 나가는중 %s...\n"
 
-#: src/ExternalConnector.cpp:477
+#: src/ExternalConnector.cpp:483
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -2105,51 +2105,51 @@ msgstr ""
 "\n"
 "종료중...\n"
 
-#: src/ExternalConnector.cpp:486
+#: src/ExternalConnector.cpp:492
 msgid "Show this help text."
 msgstr "이 도움말을 보여줍니다."
 
-#: src/ExternalConnector.cpp:489
+#: src/ExternalConnector.cpp:495
 msgid "Host where aMule is running. (default: 127.0.0.1)"
 msgstr "어뮬이 실행중인 호스트. (기본: 127.0.0.1)"
 
-#: src/ExternalConnector.cpp:492
+#: src/ExternalConnector.cpp:498
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "외부연결을 위한 어뮬 포트. (기본: 4712)"
 
-#: src/ExternalConnector.cpp:495
+#: src/ExternalConnector.cpp:501
 msgid "External Connection password."
 msgstr "외부연결 암호"
 
-#: src/ExternalConnector.cpp:498
+#: src/ExternalConnector.cpp:504
 msgid "Read configuration from file."
 msgstr "파일로부터 환경설정을 읽습니다."
 
-#: src/ExternalConnector.cpp:501
+#: src/ExternalConnector.cpp:507
 msgid "Do not print any output to stdout."
 msgstr "표준출력으로는 어떤 출력도 하지 않습니다."
 
-#: src/ExternalConnector.cpp:504
+#: src/ExternalConnector.cpp:510
 msgid "Be verbose - show also debug messages."
 msgstr "상세하게 - 디버그 메시지도 보여줍니다."
 
-#: src/ExternalConnector.cpp:507
+#: src/ExternalConnector.cpp:513
 msgid "Sets program locale (language)."
 msgstr "프로그램 지역정보 (로케일, 언어)를 설정합니다."
 
-#: src/ExternalConnector.cpp:510
+#: src/ExternalConnector.cpp:516
 msgid "Write command line options to config file."
 msgstr "명령줄 설정을 환경설정 파일에 기록합니다."
 
-#: src/ExternalConnector.cpp:513
+#: src/ExternalConnector.cpp:519
 msgid "Creates config file based on aMule's config file."
 msgstr "어뮬의 설정 파일에 기초하여 설정 파일을 생성합니다."
 
-#: src/ExternalConnector.cpp:516
+#: src/ExternalConnector.cpp:522
 msgid "Print program version."
 msgstr "프로그램 버전을 출력합니다."
 
-#: src/ExternalConnector.cpp:519
+#: src/ExternalConnector.cpp:525
 msgid ""
 "Force ZLIB compression regardless of dialed-IP locality (useful when the "
 "server is reachable over a VPN tunnel that resolves to a LAN IP)."
@@ -2581,17 +2581,17 @@ msgstr "완료중"
 msgid "Complete"
 msgstr "완료"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:633
+#: src/libs/ec/cpp/ECSpecialTags.cpp:48 src/OtherFunctions.cpp:636
 #: src/PartFile.cpp:4272 src/TransferWnd.cpp:350
 msgid "Paused"
 msgstr "중지됨"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:632
+#: src/libs/ec/cpp/ECSpecialTags.cpp:50 src/OtherFunctions.cpp:635
 #: src/PartFile.cpp:4275 src/TransferWnd.cpp:349
 msgid "Erroneous"
 msgstr "오류투성이"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:630
+#: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:633
 #: src/PartFile.cpp:4284 src/TransferWnd.cpp:347
 msgid "Waiting"
 msgstr "대기중"
@@ -2652,11 +2652,11 @@ msgstr ""
 msgid "ERROR: Could not listen to TCP port."
 msgstr ""
 
-#: src/Logger.cpp:329
+#: src/Logger.cpp:341
 msgid "ERROR: "
 msgstr ""
 
-#: src/Logger.cpp:329
+#: src/Logger.cpp:341
 msgid "WARNING: "
 msgstr ""
 
@@ -2844,7 +2844,7 @@ msgid "ServerIP: "
 msgstr "서버 IP: "
 
 #: src/MuleTrayIcon.cpp:838 src/ServerWnd.cpp:204
-#: src/utils/wxCas/src/onlinesig.cpp:263
+#: src/utils/wxCas/src/onlinesig.cpp:259
 msgid "Not Connected"
 msgstr "아직 연결되지 않았습니다."
 
@@ -2991,17 +2991,17 @@ msgstr "어떤"
 msgid "Archives"
 msgstr "압축"
 
-#: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:154 src/OtherFunctions.cpp:636
+#: src/muuli_wdr.cpp:229 src/OtherFunctions.cpp:154 src/OtherFunctions.cpp:639
 #: src/TransferWnd.cpp:357
 msgid "Audio"
 msgstr "음악"
 
-#: src/muuli_wdr.cpp:230 src/OtherFunctions.cpp:168 src/OtherFunctions.cpp:638
+#: src/muuli_wdr.cpp:230 src/OtherFunctions.cpp:168 src/OtherFunctions.cpp:641
 #: src/TransferWnd.cpp:359
 msgid "CD-Images"
 msgstr "CD이미지"
 
-#: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:175 src/OtherFunctions.cpp:639
+#: src/muuli_wdr.cpp:231 src/OtherFunctions.cpp:175 src/OtherFunctions.cpp:642
 #: src/TransferWnd.cpp:360
 msgid "Pictures"
 msgstr "그림"
@@ -4657,39 +4657,39 @@ msgstr "시"
 msgid "Days"
 msgstr "일"
 
-#: src/OtherFunctions.cpp:626
+#: src/OtherFunctions.cpp:629
 msgid "all"
 msgstr "전부"
 
-#: src/OtherFunctions.cpp:627
+#: src/OtherFunctions.cpp:630
 msgid "all others"
 msgstr "다른 모두"
 
-#: src/OtherFunctions.cpp:628 src/TransferWnd.cpp:345
+#: src/OtherFunctions.cpp:631 src/TransferWnd.cpp:345
 msgid "Incomplete"
 msgstr "내려받음"
 
-#: src/OtherFunctions.cpp:634 src/PartFile.cpp:4289 src/TransferWnd.cpp:351
+#: src/OtherFunctions.cpp:637 src/PartFile.cpp:4289 src/TransferWnd.cpp:351
 msgid "Stopped"
 msgstr "멈춤"
 
-#: src/OtherFunctions.cpp:635 src/TransferWnd.cpp:356
+#: src/OtherFunctions.cpp:638 src/TransferWnd.cpp:356
 msgid "Video"
 msgstr "비디오"
 
-#: src/OtherFunctions.cpp:637 src/TransferWnd.cpp:358
+#: src/OtherFunctions.cpp:640 src/TransferWnd.cpp:358
 msgid "Archive"
 msgstr "압축"
 
-#: src/OtherFunctions.cpp:640 src/TransferWnd.cpp:361
+#: src/OtherFunctions.cpp:643 src/TransferWnd.cpp:361
 msgid "Text"
 msgstr "문자"
 
-#: src/OtherFunctions.cpp:641 src/TransferWnd.cpp:352
+#: src/OtherFunctions.cpp:644 src/TransferWnd.cpp:352
 msgid "Active"
 msgstr "활성화"
 
-#: src/OtherFunctions.cpp:1059
+#: src/OtherFunctions.cpp:1061
 #, c-format
 msgid "Using config dir: %s"
 msgstr ""
@@ -5029,131 +5029,136 @@ msgid "English (U.K.)"
 msgstr "영어(영국)"
 
 #: src/Preferences.cpp:646
+#, fuzzy
+msgid "English (U.S.)"
+msgstr "영어(영국)"
+
+#: src/Preferences.cpp:647
 msgid "Estonian"
 msgstr "에스토니아어"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:648
 msgid "Finnish"
 msgstr "필란드어"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:649
 msgid "French"
 msgstr "프랑스어"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:650
 msgid "Galician"
 msgstr "갈리시아어"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:651
 msgid "German"
 msgstr "독일어"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:652
 msgid "Greek"
 msgstr ""
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:653
 msgid "Hebrew"
 msgstr ""
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:654
 msgid "Hungarian"
 msgstr "헝가리어"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:655
 msgid "Italian"
 msgstr "이탈리아어"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:656
 msgid "Italian (Swiss)"
 msgstr "이탈리아어(스위스)"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:657
 msgid "Japanese"
 msgstr ""
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:658
 msgid "Korean"
 msgstr "한국어"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:659
 msgid "Lithuanian"
 msgstr ""
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:660
 msgid "Norwegian (Nynorsk)"
 msgstr ""
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:661
 msgid "Polish"
 msgstr "폴란드어"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:662
 msgid "Portuguese"
 msgstr "포르투갈어"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:663
 msgid "Portuguese (Brazilian)"
 msgstr "포르투갈어(브라질)"
 
-#: src/Preferences.cpp:663
+#: src/Preferences.cpp:664
 #, fuzzy
 msgid "Romanian"
 msgstr "크로티아어"
 
-#: src/Preferences.cpp:664
+#: src/Preferences.cpp:665
 msgid "Russian"
 msgstr "러시아어"
 
-#: src/Preferences.cpp:665
+#: src/Preferences.cpp:666
 msgid "Slovenian"
 msgstr "슬로베니아어"
 
-#: src/Preferences.cpp:666
+#: src/Preferences.cpp:667
 msgid "Spanish"
 msgstr "스페인어"
 
-#: src/Preferences.cpp:667
+#: src/Preferences.cpp:668
 msgid "Swedish"
 msgstr ""
 
-#: src/Preferences.cpp:668
+#: src/Preferences.cpp:669
 msgid "Turkish"
 msgstr "터키어"
 
-#: src/Preferences.cpp:669
+#: src/Preferences.cpp:670
 msgid "Ukrainian"
 msgstr ""
 
-#: src/Preferences.cpp:732
+#: src/Preferences.cpp:733
 #, fuzzy
 msgid "Change Language"
 msgstr "언어"
 
-#: src/Preferences.cpp:775
+#: src/Preferences.cpp:779
 msgid "There are no translations installed for aMule"
 msgstr ""
 
-#: src/Preferences.cpp:775
+#: src/Preferences.cpp:779
 #, fuzzy
 msgid "No languages available"
 msgstr "유효하지 않음"
 
-#: src/Preferences.cpp:917
+#: src/Preferences.cpp:921
 msgid "no options available"
 msgstr ""
 
-#: src/Preferences.cpp:1662
+#: src/Preferences.cpp:1666
 msgid "Invalid category found, skipping"
 msgstr ""
 
-#: src/Preferences.cpp:1844
+#: src/Preferences.cpp:1848
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "서버 UDP 소켓이 TCP+3이 되기위해서 TCP 포트가 65532보다 커서는 안됩니다."
 
-#: src/Preferences.cpp:1845
+#: src/Preferences.cpp:1849
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "기본 포트가 사용될 것입니다.(%d)"
@@ -5555,11 +5560,11 @@ msgstr ""
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "최소 크기가 최대 크기보다 작아야 합니다. 최대 크기는 무시됩니다.."
 
-#: src/SearchDlg.cpp:544 src/SearchDlg.cpp:603
+#: src/SearchDlg.cpp:544 src/SearchDlg.cpp:602
 msgid "Search warning"
 msgstr "검색 경고"
 
-#: src/SearchDlg.cpp:663 src/SearchListCtrl.cpp:634
+#: src/SearchDlg.cpp:662 src/SearchListCtrl.cpp:634
 msgid "Main"
 msgstr "주"
 
@@ -5575,7 +5580,7 @@ msgstr ""
 msgid "No keyword for Kad search - aborting"
 msgstr ""
 
-#: src/SearchList.cpp:373
+#: src/SearchList.cpp:386
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Kad 검색 시도 중에 예기치 못한 에러: "
 
@@ -7451,47 +7456,47 @@ msgstr ""
 msgid "%i day(s) %i hour(s) %i min %i s"
 msgstr "%i 일 %i 시간 %i 분 %i 초"
 
-#: src/utils/wxCas/src/onlinesig.cpp:225
+#: src/utils/wxCas/src/onlinesig.cpp:221
 #, c-format
 msgid "%02uD %02uh %02umin %02us"
 msgstr "%02u일 %02u시 %02u분 %02u초"
 
-#: src/utils/wxCas/src/onlinesig.cpp:227
+#: src/utils/wxCas/src/onlinesig.cpp:223
 #, c-format
 msgid "%02uh %02umin %02us"
 msgstr "%02u시 %02u분 %02u초"
 
-#: src/utils/wxCas/src/onlinesig.cpp:229
+#: src/utils/wxCas/src/onlinesig.cpp:225
 #, c-format
 msgid "%02umin %02us"
 msgstr "%02u분 %02u초"
 
-#: src/utils/wxCas/src/onlinesig.cpp:231
+#: src/utils/wxCas/src/onlinesig.cpp:227
 #, c-format
 msgid "%02us"
 msgstr "%02u초"
 
-#: src/utils/wxCas/src/onlinesig.cpp:330
+#: src/utils/wxCas/src/onlinesig.cpp:326
 #, c-format
 msgid "%.0f B"
 msgstr "%.0f B"
 
-#: src/utils/wxCas/src/onlinesig.cpp:333
+#: src/utils/wxCas/src/onlinesig.cpp:329
 #, c-format
 msgid "%.2f KB"
 msgstr "%.2f KB"
 
-#: src/utils/wxCas/src/onlinesig.cpp:336
+#: src/utils/wxCas/src/onlinesig.cpp:332
 #, c-format
 msgid "%.2f MB"
 msgstr "%.2f MB"
 
-#: src/utils/wxCas/src/onlinesig.cpp:339
+#: src/utils/wxCas/src/onlinesig.cpp:335
 #, c-format
 msgid "%.2f GB"
 msgstr "%.2f GB"
 
-#: src/utils/wxCas/src/onlinesig.cpp:342
+#: src/utils/wxCas/src/onlinesig.cpp:338
 #, c-format
 msgid "%.2f TB"
 msgstr "%.2f TB"
