@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 16:32+0200\n"
+"POT-Creation-Date: 2026-06-10 16:42+0200\n"
 "PO-Revision-Date: 2020-03-04 14:46+0100\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -40,10 +40,7 @@ msgstr "설정된 사용자 해시가 옳바르지 않습니다!"
 
 #: src/AppImageIntegration.cpp:221
 msgid ""
-"aMule can install a desktop launcher and icon into your home directory so it "
-"appears in your application menu like a regularly installed app. This is "
-"reversible — the files live under ~/.local/share/applications and ~/.local/"
-"share/icons and can be removed at any time.\n"
+"aMule can install a desktop launcher and icon into your home directory so it appears in your application menu like a regularly installed app. This is reversible — the files live under ~/.local/share/applications and ~/.local/share/icons and can be removed at any time.\n"
 "\n"
 "Install desktop integration now?"
 msgstr ""
@@ -65,9 +62,7 @@ msgid "Don't ask again"
 msgstr ""
 
 #: src/AppImageIntegration.cpp:248
-msgid ""
-"Cannot install desktop integration: the APPDIR environment variable is not "
-"set. This usually means the AppImage was launched in a non-standard way."
+msgid "Cannot install desktop integration: the APPDIR environment variable is not set. This usually means the AppImage was launched in a non-standard way."
 msgstr ""
 
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
@@ -78,16 +73,12 @@ msgstr "연결 실패"
 
 #: src/AppImageIntegration.cpp:259
 #, c-format
-msgid ""
-"Cannot install desktop integration: failed to create %s. Check that your "
-"home directory is writable."
+msgid "Cannot install desktop integration: failed to create %s. Check that your home directory is writable."
 msgstr ""
 
 #: src/AppImageIntegration.cpp:271
 #, c-format
-msgid ""
-"Cannot install desktop integration: failed to write %s. Check that your home "
-"directory is writable."
+msgid "Cannot install desktop integration: failed to write %s. Check that your home directory is writable."
 msgstr ""
 
 #: src/AppImageIntegration.cpp:281
@@ -96,12 +87,9 @@ msgstr ""
 
 #: src/AppImageIntegration.cpp:284
 msgid ""
-"aMule has been added to your application menu. You can now launch it from "
-"your applications list, and the launcher will run this same AppImage.\n"
+"aMule has been added to your application menu. You can now launch it from your applications list, and the launcher will run this same AppImage.\n"
 "\n"
-"On some desktops, aMule may need to restart for the dock / taskbar icon to "
-"bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick "
-"this up live, but a restart is the safe fallback if the icon stays generic.\n"
+"On some desktops, aMule may need to restart for the dock / taskbar icon to bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick this up live, but a restart is the safe fallback if the icon stays generic.\n"
 "\n"
 "Restart aMule now?"
 msgstr ""
@@ -121,8 +109,7 @@ msgstr ""
 #: src/amuleAppCommon.cpp:174
 #, c-format
 msgid "Could not add %u link from ED2KLinks file (see log for details)."
-msgid_plural ""
-"Could not add %u links from ED2KLinks file (see log for details)."
+msgid_plural "Could not add %u links from ED2KLinks file (see log for details)."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -140,9 +127,7 @@ msgid "Failed to open ED2KLinks file."
 msgstr "%s(%s)을 열지 못했습니다."
 
 #: src/amuleAppCommon.cpp:252
-msgid ""
-"WARNING: You can't add yourself as a source for an eD2k link while having a "
-"lowid."
+msgid "WARNING: You can't add yourself as a source for an eD2k link while having a lowid."
 msgstr ""
 
 #: src/amule.cpp:251
@@ -179,12 +164,8 @@ msgid "Memory debug results for aMule exit:"
 msgstr ""
 
 #: src/amule.cpp:574
-msgid ""
-"Your locale has been changed to System Default due to a configuration "
-"change. Sorry."
-msgstr ""
-"지역정보(로케일)가 설정 변경으로 인해 시스템 기본값으로 변경되었습니다. 죄송"
-"합니다."
+msgid "Your locale has been changed to System Default due to a configuration change. Sorry."
+msgstr "지역정보(로케일)가 설정 변경으로 인해 시스템 기본값으로 변경되었습니다. 죄송합니다."
 
 #: src/amule.cpp:574 src/amule.cpp:1264 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:355
@@ -235,10 +216,7 @@ msgid "web server running on pid %d"
 msgstr ""
 
 #: src/amule.cpp:865
-msgid ""
-"You requested to run web server on startup, but the amuleweb binary cannot "
-"be run. Please install the package containing aMule web server, or build "
-"aMule from source with -DBUILD_WEBSERVER=YES and install it."
+msgid "You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or build aMule from source with -DBUILD_WEBSERVER=YES and install it."
 msgstr ""
 
 #: src/amule.cpp:948
@@ -275,12 +253,8 @@ msgid "Failed to create aMule OnlineSig File"
 msgstr "어뮬 온라인서명 파일을 생성하지 못함"
 
 #: src/amule.cpp:1241
-msgid ""
-"The selected locale seems not to be installed on your box. (Note: I'll try "
-"to set it anyway)"
-msgstr ""
-"컴퓨터에 선택한 지역정보(로케일)가 설치 않된것 같습니다. (주의: 어쨌든 설정하"
-"겠습니다)"
+msgid "The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"
+msgstr "컴퓨터에 선택한 지역정보(로케일)가 설치 않된것 같습니다. (주의: 어쨌든 설정하겠습니다)"
 
 #: src/amule.cpp:1250
 #, c-format
@@ -297,24 +271,18 @@ msgstr "이 프로그램이 어느 것도 부수지 않는다고, 집을 태우�
 
 #: src/amule.cpp:1254
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
-msgstr ""
-"개를 죽이지 않는다고 보장하지 않습니다. 그렇지만 안전하게 사용할 수 있을 것입"
-"니다.\n"
+msgstr "개를 죽이지 않는다고 보장하지 않습니다. 그렇지만 안전하게 사용할 수 있을 것입니다.\n"
 
 #: src/amule.cpp:1259
 msgid "More information, support and new releases can found at our homepage,\n"
-msgstr ""
-"더 많은 정보, 지원, 새 릴리즈는 홈페이지 amule-org.github.io, 또는 IRC 채널\n"
+msgstr "더 많은 정보, 지원, 새 릴리즈는 홈페이지 amule-org.github.io, 또는 IRC 채널\n"
 
 #: src/amule.cpp:1260
-msgid ""
-"at https://amule-org.github.io, or in our IRC channel #aMule at "
-"irc.libera.chat.\n"
+msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.libera.chat.\n"
 msgstr "(irc.libera.chat의 #aMule)에서 찾을 수 있습니다.\n"
 
 #: src/amule.cpp:1262
-msgid ""
-"Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
 msgstr "버그는 https://github.com/amule-org/amule/issues로 보고해 주십시오."
 
 #: src/amule.cpp:1275
@@ -380,12 +348,8 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "어뮬 버젼은 %i.%i.%i이며 최신 버젼은 %li.%li.%li입니다."
 
 #: src/amule.cpp:1994
-msgid ""
-"The latest version can always be found at https://github.com/amule-org/amule/"
-"releases/latest"
-msgstr ""
-"최신 버젼은 항상 https://github.com/amule-org/amule/releases/latest 에서 찾"
-"을 수 있습니다."
+msgid "The latest version can always be found at https://github.com/amule-org/amule/releases/latest"
+msgstr "최신 버젼은 항상 https://github.com/amule-org/amule/releases/latest 에서 찾을 수 있습니다."
 
 #: src/amule.cpp:1996
 #, c-format
@@ -457,12 +421,8 @@ msgid "Disconnected from Kad"
 msgstr "Kad로부터 연결이 끊김"
 
 #: src/amule.cpp:2292
-msgid ""
-"Kad network cannot be used if UDP port is disabled on preferences, not "
-"starting."
-msgstr ""
-"Kad 네트워크는 UDP 포트가 비활성될 시 사용할 수 없으며, 따라서 시작하지 않습"
-"니다."
+msgid "Kad network cannot be used if UDP port is disabled on preferences, not starting."
+msgstr "Kad 네트워크는 UDP 포트가 비활성될 시 사용할 수 없으며, 따라서 시작하지 않습니다."
 
 #: src/amule.cpp:2295
 msgid "Kad network disabled on preferences, not connecting."
@@ -470,23 +430,11 @@ msgstr "Kad 네트워크가 환경설정에서 비활성되어, 연결하지 않
 
 #: src/amuled.cpp:142
 #, fuzzy
-msgid ""
-"ERROR: aMule daemon cannot be used when external connections are disabled. "
-"To enable External Connections, use either a normal aMule, start amuled with "
-"the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in "
-"the file ~/.aMule/amule.conf"
-msgstr ""
-"오류: 외부연결이 비활성화일때 어뮬 데몬은 사용할 수 없습니다. 외부연결을 활성"
-"화하기 위해서는 --ec-config를 사용하여 시작하거나 ~/.aMule/amule.conf 파일내"
-"에 \"AcceptExternalConnections\" 키를 1로 설정하여야 합니다."
+msgid "ERROR: aMule daemon cannot be used when external connections are disabled. To enable External Connections, use either a normal aMule, start amuled with the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf"
+msgstr "오류: 외부연결이 비활성화일때 어뮬 데몬은 사용할 수 없습니다. 외부연결을 활성화하기 위해서는 --ec-config를 사용하여 시작하거나 ~/.aMule/amule.conf 파일내에 \"AcceptExternalConnections\" 키를 1로 설정하여야 합니다."
 
 #: src/amuled.cpp:145
-msgid ""
-"ERROR: A valid password is required to use external connections, and aMule "
-"daemon cannot be used without external connections. To run aMule daemon, you "
-"must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
-"appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://amule-org.github.io/docs"
+msgid "ERROR: A valid password is required to use external connections, and aMule daemon cannot be used without external connections. To run aMule daemon, you must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an appropriate value. Execute amuled with the flag --ec-config to set the password. More information can be found at https://amule-org.github.io/docs"
 msgstr ""
 
 #: src/amuled.cpp:161
@@ -517,12 +465,8 @@ msgid "Running on %s"
 msgstr "%s에 동작중"
 
 #: src/amuleDlg.cpp:250
-msgid ""
-"Visit https://github.com/amule-org/amule/releases/latest to check if a new "
-"version is available."
-msgstr ""
-"https://github.com/amule-org/amule/releases/latest에 방문하셔서 새로운버젼이 "
-"있는지 확인하십시오."
+msgid "Visit https://github.com/amule-org/amule/releases/latest to check if a new version is available."
+msgstr "https://github.com/amule-org/amule/releases/latest에 방문하셔서 새로운버젼이 있는지 확인하십시오."
 
 #: src/amuleDlg.cpp:276
 msgid "FATAL ERROR: Failed to create Timer"
@@ -872,8 +816,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Connection timed out. Unable to reach %s:%d within the allotted time.\n"
-"Please check the host, port and that aMule is running with External "
-"Connections enabled."
+"Please check the host, port and that aMule is running with External Connections enabled."
 msgstr ""
 
 #: src/amule-remote-gui.cpp:638
@@ -950,24 +893,16 @@ msgstr "요청됨:"
 #: src/BaseClient.cpp:2018
 #, fuzzy, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
-"이 세션의 파일상태: %d가 수락되었습니다.(%d 요청의) %s에게 전달되었습니다.\n"
-msgstr[1] ""
-"이 세션의 파일상태: %d가 수락되었습니다.(%d 요청의) %s에게 전달되었습니다.\n"
+msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] "이 세션의 파일상태: %d가 수락되었습니다.(%d 요청의) %s에게 전달되었습니다.\n"
+msgstr[1] "이 세션의 파일상태: %d가 수락되었습니다.(%d 요청의) %s에게 전달되었습니다.\n"
 
 #: src/BaseClient.cpp:2021
 #, fuzzy, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
-"모든 세션의 파일상태: %d가 수락되었습니다.(%d 요청의) %s에게 전달되었습니"
-"다.\n"
-msgstr[1] ""
-"모든 세션의 파일상태: %d가 수락되었습니다.(%d 요청의) %s에게 전달되었습니"
-"다.\n"
+msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] "모든 세션의 파일상태: %d가 수락되었습니다.(%d 요청의) %s에게 전달되었습니다.\n"
+msgstr[1] "모든 세션의 파일상태: %d가 수락되었습니다.(%d 요청의) %s에게 전달되었습니다.\n"
 
 #: src/BaseClient.cpp:2024
 msgid "Requested unknown file"
@@ -985,9 +920,7 @@ msgstr "'%s'로부터 새로운 메시지 (IP:%s)"
 
 #: src/BaseClient.cpp:2880
 #, fuzzy, c-format
-msgid ""
-"User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
-"Ignored"
+msgid "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> Ignored"
 msgstr "사용자 %s(%u)가 폴더 %s의 공유파일 목록을 요청합니다. -> 거부됨"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:112
@@ -998,8 +931,7 @@ msgstr "경고: known.met을 열 수 없습니다."
 #: src/CanceledFileList.cpp:61
 #, fuzzy
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
-msgstr ""
-"경고: 알려진파일 목록이 손상됨, 유효하지 않는 머리말을 포함하고 있습니다."
+msgstr "경고: 알려진파일 목록이 손상됨, 유효하지 않는 머리말을 포함하고 있습니다."
 
 #: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:158
 #, fuzzy, c-format
@@ -1037,8 +969,7 @@ msgid "You must specify a path for the category!"
 msgstr "분류 경로를 정하세요"
 
 #: src/CatDialog.cpp:162
-msgid ""
-"Failed to create incoming dir for category. Please specify a valid path!"
+msgid "Failed to create incoming dir for category. Please specify a valid path!"
 msgstr "분류를 저장할 폴더를 생성하지 못했습니다. 유효한 경로를 지정하세요."
 
 #: src/ChatSelector.cpp:129
@@ -1059,15 +990,11 @@ msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "***클라이언트에 연결하지 못했습니다 / 연결이 끊어졌습니다***"
 
 #: src/ChatSelector.cpp:335
-msgid ""
-"*** You have passed the captcha check and the user has received your "
-"message. ***"
+msgid "*** You have passed the captcha check and the user has received your message. ***"
 msgstr ""
 
 #: src/ChatSelector.cpp:336
-msgid ""
-"*** Your response to the captcha was wrong and your message has been "
-"ignored. You can request a new captcha by sending a new message. ***"
+msgid "*** Your response to the captcha was wrong and your message has been ignored. You can request a new captcha by sending a new message. ***"
 msgstr ""
 
 #: src/ChatWnd.cpp:98
@@ -1193,14 +1120,12 @@ msgstr "사용자 %s(%u)가 공유폴더 목록을 요청합니다. -> 거부됨
 
 #: src/ClientTCPSocket.cpp:862
 #, fuzzy, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
+msgid "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
 msgstr "사용자 %s(%u)가 폴더 %s의 공유파일 목록을 요청합니다. -> 허락됨"
 
 #: src/ClientTCPSocket.cpp:875
 #, fuzzy, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
+msgid "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
 msgstr "사용자 %s(%u)가 폴더 %s의 공유파일 목록을 요청합니다. -> 거부됨"
 
 #: src/ClientTCPSocket.cpp:894
@@ -1268,8 +1193,7 @@ msgstr[1] "%s 의견"
 
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
-msgid ""
-"Banned client %s for sending %s corrupt data of %s total for the file '%s'"
+msgid "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
 msgstr ""
 
 #: src/DataToText.cpp:35
@@ -1650,9 +1574,7 @@ msgid "Loading PartFile %u of %u"
 msgstr "오래된 내려받은 파일로부터 데이터를 읽어들임 (%u (%u의))"
 
 #: src/DownloadQueue.cpp:150
-msgid ""
-"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/"
-"discussions for .part.met recovery solutions."
+msgid "ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions for .part.met recovery solutions."
 msgstr ""
 
 #: src/DownloadQueue.cpp:159
@@ -1759,21 +1681,13 @@ msgid "Unknown version"
 msgstr "알수없는 버젼"
 
 #: src/ExternalConn.cpp:554
-msgid ""
-"Incorrect EC version ID, there might be binary incompatibility. Use core and "
-"remote from same snapshot."
-msgstr ""
-"불확실한 외부연결 버젼 아이디, 이것은 바이너리와 호환되지 않습니다. 동일한 스"
-"냅삿으로부터 코어와 원격을 사용하세요."
+msgid "Incorrect EC version ID, there might be binary incompatibility. Use core and remote from same snapshot."
+msgstr "불확실한 외부연결 버젼 아이디, 이것은 바이너리와 호환되지 않습니다. 동일한 스냅삿으로부터 코어와 원격을 사용하세요."
 
 #: src/ExternalConn.cpp:559
 #, fuzzy
-msgid ""
-"You cannot connect to a release version from an arbitrary development "
-"snapshot! *sigh* possible crash prevented"
-msgstr ""
-"비정식 CVS 버젼으로부터 릴리즈된 버젼에 연결할수없습니다! *휴우* 있을 수 있었"
-"던 충돌을 막았습니다."
+msgid "You cannot connect to a release version from an arbitrary development snapshot! *sigh* possible crash prevented"
+msgstr "비정식 CVS 버젼으로부터 릴리즈된 버젼에 연결할수없습니다! *휴우* 있을 수 있었던 충돌을 막았습니다."
 
 #: src/ExternalConn.cpp:620
 msgid "Invalid protocol version."
@@ -2150,9 +2064,7 @@ msgid "Print program version."
 msgstr "프로그램 버전을 출력합니다."
 
 #: src/ExternalConnector.cpp:525
-msgid ""
-"Force ZLIB compression regardless of dialed-IP locality (useful when the "
-"server is reachable over a VPN tunnel that resolves to a LAN IP)."
+msgid "Force ZLIB compression regardless of dialed-IP locality (useful when the server is reachable over a VPN tunnel that resolves to a LAN IP)."
 msgstr ""
 
 #: src/FileDetailDialog.cpp:76
@@ -2351,10 +2263,7 @@ msgstr ""
 
 #: src/IP2Country.cpp:98
 #, c-format
-msgid ""
-"No GeoLite2 update URL configured. Download GeoLite2-Country.mmdb manually "
-"(a free MaxMind account is required) and place it at %s, or set the URL in "
-"Preferences."
+msgid "No GeoLite2 update URL configured. Download GeoLite2-Country.mmdb manually (a free MaxMind account is required) and place it at %s, or set the URL in Preferences."
 msgstr ""
 
 #: src/IP2Country.cpp:103
@@ -2416,19 +2325,15 @@ msgstr "ipfilter.dat 파일 '%s'을 읽지 못했습니다, 파일을 열 수 �
 #, fuzzy, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
-msgstr[0] ""
-"%u 개의 IP 범위를 '%s'로부터 읽었습니다. %u 개의 잘못된 줄은 무시했습니다."
-msgstr[1] ""
-"%u 개의 IP 범위를 '%s'로부터 읽었습니다. %u 개의 잘못된 줄은 무시했습니다."
+msgstr[0] "%u 개의 IP 범위를 '%s'로부터 읽었습니다. %u 개의 잘못된 줄은 무시했습니다."
+msgstr[1] "%u 개의 IP 범위를 '%s'로부터 읽었습니다. %u 개의 잘못된 줄은 무시했습니다."
 
 #: src/IPFilter.cpp:331
 #, fuzzy, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
-msgstr[0] ""
-"%u 개의 IP 범위를 '%s'로부터 읽었습니다. %u 개의 잘못된 줄은 무시했습니다."
-msgstr[1] ""
-"%u 개의 IP 범위를 '%s'로부터 읽었습니다. %u 개의 잘못된 줄은 무시했습니다."
+msgstr[0] "%u 개의 IP 범위를 '%s'로부터 읽었습니다. %u 개의 잘못된 줄은 무시했습니다."
+msgstr[1] "%u 개의 IP 범위를 '%s'로부터 읽었습니다. %u 개의 잘못된 줄은 무시했습니다."
 
 #: src/IPFilter.cpp:503
 #, c-format
@@ -2469,8 +2374,7 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "새로운 nodes.dat파일을 내려받으시겠습니까?\n"
 
 #: src/KadDlg.cpp:213
-msgid ""
-"Doing so will remove your current nodes and restart Kademlia connection."
+msgid "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr "현재노드는 제거되고 카뎀리아 연결이 다시 시작됩니다."
 
 #: src/KadDlg.cpp:214
@@ -2486,9 +2390,7 @@ msgid "Kademlia: Search keyword is already on search list: "
 msgstr ""
 
 #: src/kademlia/routing/RoutingZone.cpp:171
-msgid ""
-"Failed to read nodes.dat file - too old. This version (0) is not supported "
-"anymore."
+msgid "Failed to read nodes.dat file - too old. This version (0) is not supported anymore."
 msgstr ""
 
 #: src/kademlia/routing/RoutingZone.cpp:209
@@ -2890,17 +2792,12 @@ msgid "Commit"
 msgstr "확정"
 
 #: src/muuli_wdr.cpp:103
-msgid ""
-"Click here to add the eD2k link in the text control to your download queue."
+msgid "Click here to add the eD2k link in the text control to your download queue."
 msgstr ""
 
 #: src/muuli_wdr.cpp:109
-msgid ""
-"Events are displayed here. For a complete list of events, refer to the log "
-"in the Servers-tab."
-msgstr ""
-"사건은 이곳에 보여집니다. 사건 목록의 전체를 보기위해 서버텝에 있는 로그파일"
-"을 참조하세요"
+msgid "Events are displayed here. For a complete list of events, refer to the log in the Servers-tab."
+msgstr "사건은 이곳에 보여집니다. 사건 목록의 전체를 보기위해 서버텝에 있는 로그파일을 참조하세요"
 
 #: src/muuli_wdr.cpp:112
 msgid "Loading ..."
@@ -2915,9 +2812,7 @@ msgid "Users: 0"
 msgstr "사용자: 0"
 
 #: src/muuli_wdr.cpp:123
-msgid ""
-"Users connected to the current server and an estimate of the total number of "
-"users."
+msgid "Users connected to the current server and an estimate of the total number of users."
 msgstr "현재 서버에 연결된 사용자들과 총 사용자수를 측정합니다."
 
 #: src/muuli_wdr.cpp:131
@@ -2925,23 +2820,12 @@ msgid "Up: 0.0 | Down: 0.0"
 msgstr "올려주기: 0.0 | 내려받기: 0.0"
 
 #: src/muuli_wdr.cpp:132
-msgid ""
-"Current average upload and download rates. If enabled the numbers in the "
-"braces signify the overhead from client communication."
-msgstr ""
-"현재 올려주기와 내려받기 비율을 평균합니다. 가능하다면 괄호안의 수는 클라이언"
-"트 통신으로부터의 추가자원을 의미합니다."
+msgid "Current average upload and download rates. If enabled the numbers in the braces signify the overhead from client communication."
+msgstr "현재 올려주기와 내려받기 비율을 평균합니다. 가능하다면 괄호안의 수는 클라이언트 통신으로부터의 추가자원을 의미합니다."
 
 #: src/muuli_wdr.cpp:139
-msgid ""
-"Displays the connected status and active transfers. Red arrows signifies "
-"that you are currently not connected, yellow arrows signify that you have "
-"low ID (firewalled) and green arrows signify that you have high ID (The "
-"optimal connection type)."
-msgstr ""
-"연결상태와 활성화된 전송을 보여줍니다. 빨간 화살은 현재 연결되지 않았음을 의"
-"미하며, 노란 화살은 낮은아이디(방화벽)를 가지고 있다는 의미이고, 초록 화살은 "
-"높은아이디(최적의 연결 형태)를 가지고 있다는 의미입니다."
+msgid "Displays the connected status and active transfers. Red arrows signifies that you are currently not connected, yellow arrows signify that you have low ID (firewalled) and green arrows signify that you have high ID (The optimal connection type)."
+msgstr "연결상태와 활성화된 전송을 보여줍니다. 빨간 화살은 현재 연결되지 않았음을 의미하며, 노란 화살은 낮은아이디(방화벽)를 가지고 있다는 의미이고, 초록 화살은 높은아이디(최적의 연결 형태)를 가지고 있다는 의미입니다."
 
 #: src/muuli_wdr.cpp:142
 msgid "Not Connected ..."
@@ -3076,10 +2960,7 @@ msgid "More"
 msgstr "추가"
 
 #: src/muuli_wdr.cpp:325
-msgid ""
-"Ask already-responded Kad peers to widen the search. Each click queries the "
-"next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing "
-"additional file matches that the search's initial alpha frontier missed."
+msgid "Ask already-responded Kad peers to widen the search. Each click queries the next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing additional file matches that the search's initial alpha frontier missed."
 msgstr ""
 
 #: src/muuli_wdr.cpp:330
@@ -3229,9 +3110,7 @@ msgid "Comment/Rate file (Text will be visible to all users)"
 msgstr "파일에 대한 의견/등급(내용은 모든 사용자가 볼 수 있습니다.)"
 
 #: src/muuli_wdr.cpp:705
-msgid ""
-"For a film you can say its length, its story, language ...\\n\\nand if it's "
-"a fake, you can tell that to other users of aMule."
+msgid "For a film you can say its length, its story, language ...\\n\\nand if it's a fake, you can tell that to other users of aMule."
 msgstr ""
 
 #: src/muuli_wdr.cpp:713
@@ -3264,8 +3143,7 @@ msgstr "아주좋은"
 
 #: src/muuli_wdr.cpp:726
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr ""
-"만약 파일이 유용하지 않으면 파일 품질을 선택하거나 사용자에게 충고하세요."
+msgstr "만약 파일이 유용하지 않으면 파일 품질을 선택하거나 사용자에게 충고하세요."
 
 #: src/muuli_wdr.cpp:763
 msgid "Refresh"
@@ -3472,18 +3350,14 @@ msgstr "시작할때 새 버젼이 있는지 확인"
 
 #: src/muuli_wdr.cpp:1218
 msgid "Enabling this will make aMule check for new version at startup"
-msgstr ""
-"이것을 활성화하면 어뮬은 시작할때마다 새로운 버젼이 있는지 확인할것 입니다."
+msgstr "이것을 활성화하면 어뮬은 시작할때마다 새로운 버젼이 있는지 확인할것 입니다."
 
 #: src/muuli_wdr.cpp:1225
 msgid "Start aMule automatically when I log in"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1226
-msgid ""
-"Registers a per-user autostart entry with the OS so aMule launches at login. "
-"If you move the aMule binary, launch aMule once manually afterwards to "
-"refresh the entry."
+msgid "Registers a per-user autostart entry with the OS so aMule launches at login. If you move the aMule binary, launch aMule once manually afterwards to refresh the entry."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1229
@@ -3519,9 +3393,7 @@ msgid "Minimize to Tray Icon"
 msgstr "트레이 아이콘으로 최소화"
 
 #: src/muuli_wdr.cpp:1246
-msgid ""
-"Enabling this will make aMule minimize to the System Tray, rather than the "
-"taskbar."
+msgid "Enabling this will make aMule minimize to the System Tray, rather than the taskbar."
 msgstr "어뮬을 작업표시줄보다 시스템 트레이로 최소화 하도록 합니다."
 
 #: src/muuli_wdr.cpp:1249
@@ -3529,9 +3401,7 @@ msgid "Show notifications when finished downloading"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1250
-msgid ""
-"Enabling this will make aMule to show notifications when finished "
-"downloading."
+msgid "Enabling this will make aMule to show notifications when finished downloading."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1255
@@ -3547,9 +3417,7 @@ msgid "Browser Selection"
 msgstr "브라우저 선택"
 
 #: src/muuli_wdr.cpp:1272
-msgid ""
-"Enter your browser name here. Leave this field empty to use the system "
-"default browser."
+msgid "Enter your browser name here. Leave this field empty to use the system default browser."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1275 src/muuli_wdr.cpp:1292 src/muuli_wdr.cpp:1569
@@ -3624,9 +3492,7 @@ msgid "Bind local address to IP (empty for any):"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1385
-msgid ""
-"Advanced users only: If you have multiple network interfaces, enter the "
-"address of the interface to which aMule should be bound."
+msgid "Advanced users only: If you have multiple network interfaces, enter the address of the interface to which aMule should be bound."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1391
@@ -3738,9 +3604,7 @@ msgid "Preallocate disk space for new files"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1523
-msgid ""
-"For new files preallocates disk space for the whole file, thus reduces "
-"fragmentation"
+msgid "For new files preallocates disk space for the whole file, thus reduces fragmentation"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1528
@@ -3773,16 +3637,12 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1567
 msgid ""
-"Completed downloads are stored here. All files in this folder are "
-"automatically shared with other peers.\n"
-"If this folder also holds files you don't want to share, point it at an "
-"aMule-only sub-folder."
+"Completed downloads are stored here. All files in this folder are automatically shared with other peers.\n"
+"If this folder also holds files you don't want to share, point it at an aMule-only sub-folder."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1570
-msgid ""
-"Pick the folder where completed downloads will be stored. All files in that "
-"folder will be shared with other peers."
+msgid "Pick the folder where completed downloads will be stored. All files in that folder will be shared with other peers."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1574
@@ -4012,12 +3872,8 @@ msgid "IP of the listening interface:"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1852
-msgid ""
-"Enter here a valid ip in the a.b.c.d format for the listening EC interface. "
-"An empty field or 0.0.0.0 will mean any interface."
-msgstr ""
-"수신대기 외부연결 인터페이스에 a.b.c.d 형식의 유효한 IP를 입력하세요. 항목이 "
-"비었거나 0.0.0.0이면 모든 인터페이스를 의미합니다."
+msgid "Enter here a valid ip in the a.b.c.d format for the listening EC interface. An empty field or 0.0.0.0 will mean any interface."
+msgstr "수신대기 외부연결 인터페이스에 a.b.c.d 형식의 유효한 IP를 입력하세요. 항목이 비었거나 0.0.0.0이면 모든 인터페이스를 의미합니다."
 
 #: src/muuli_wdr.cpp:1858 src/muuli_wdr.cpp:1904
 msgid "TCP port:"
@@ -4129,12 +3985,8 @@ msgid "Server list"
 msgstr ""
 
 #: src/muuli_wdr.cpp:2144
-msgid ""
-"Enter the url to a server.met file here and press the button to the left to "
-"update the list of known servers."
-msgstr ""
-"알려진 서버의 목록을 갱신하기 위해서는 이곳에 server.met파일의 url을 입력하"
-"고 왼쪽편의 버튼을 누르세요."
+msgid "Enter the url to a server.met file here and press the button to the left to update the list of known servers."
+msgstr "알려진 서버의 목록을 갱신하기 위해서는 이곳에 server.met파일의 url을 입력하고 왼쪽편의 버튼을 누르세요."
 
 #: src/muuli_wdr.cpp:2149
 msgid "Add server manually: Name"
@@ -4185,12 +4037,8 @@ msgid "Nodes (0)"
 msgstr "노드 (0)"
 
 #: src/muuli_wdr.cpp:2243
-msgid ""
-"Enter the url to a nodes.dat file here and press the button to the left to "
-"update the list of known nodes."
-msgstr ""
-"알려진 노드의 목록을 갱신하기 위해서는 이곳에 nodes.dat파일의 url을 입력하고 "
-"왼쪽편의 버튼을 누르세요."
+msgid "Enter the url to a nodes.dat file here and press the button to the left to update the list of known nodes."
+msgstr "알려진 노드의 목록을 갱신하기 위해서는 이곳에 nodes.dat파일의 url을 입력하고 왼쪽편의 버튼을 누르세요."
 
 #: src/muuli_wdr.cpp:2246
 msgid "Nodes stats"
@@ -4228,9 +4076,7 @@ msgid "Use Secure User Identification"
 msgstr ""
 
 #: src/muuli_wdr.cpp:2364
-msgid ""
-"It is recommended to enable this option. You will not receive credits if SUI "
-"is not enabled."
+msgid "It is recommended to enable this option. You will not receive credits if SUI is not enabled."
 msgstr ""
 
 #: src/muuli_wdr.cpp:2366
@@ -4242,36 +4088,24 @@ msgid "Support Protocol Obfuscation"
 msgstr "프로토콜 난독화 지원"
 
 #: src/muuli_wdr.cpp:2371
-msgid ""
-"This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
-"connections from other clients."
-msgstr ""
-"이 선택은 프로토콜 난독화를 활성화하며, 어뮬이 다른 클라이언트로부터 난독화"
-"된 연결을 받아들이도록 합니다. "
+msgid "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated connections from other clients."
+msgstr "이 선택은 프로토콜 난독화를 활성화하며, 어뮬이 다른 클라이언트로부터 난독화된 연결을 받아들이도록 합니다. "
 
 #: src/muuli_wdr.cpp:2373
 msgid "Use obfuscation for outgoing connections"
 msgstr "나가는 연결에 난독화 사용"
 
 #: src/muuli_wdr.cpp:2375
-msgid ""
-"This option makes aMule use Protocol Obfuscation when connecting other "
-"clients/servers."
-msgstr ""
-"이 선택은 어뮬이 다른 서버나 클라이언트에 연결할때 프로토콜 난독화를 사용하"
-"게 합니다."
+msgid "This option makes aMule use Protocol Obfuscation when connecting other clients/servers."
+msgstr "이 선택은 어뮬이 다른 서버나 클라이언트에 연결할때 프로토콜 난독화를 사용하게 합니다."
 
 #: src/muuli_wdr.cpp:2377
 msgid "Accept only obfuscated connections"
 msgstr "난독화된 연결만 받음"
 
 #: src/muuli_wdr.cpp:2378
-msgid ""
-"This option makes aMule only accept obfuscated connections. You will have "
-"less sources, but all your traffic will be obfuscated"
-msgstr ""
-"이 선택은 어뮬이 난독화된 연결만 받아들이도록 합니다. 더 작은 자료를 가지지"
-"만 자료교환은 난독화됩니다."
+msgid "This option makes aMule only accept obfuscated connections. You will have less sources, but all your traffic will be obfuscated"
+msgstr "이 선택은 어뮬이 난독화된 연결만 받아들이도록 합니다. 더 작은 자료를 가지지만 자료교환은 난독화됩니다."
 
 #: src/muuli_wdr.cpp:2383
 msgid "Everybody"
@@ -4298,8 +4132,7 @@ msgid "Filter clients"
 msgstr "클라이언트 차단"
 
 #: src/muuli_wdr.cpp:2399
-msgid ""
-"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr "~/.aMule/ipfilter.dat에 기록된 클라이언트 IP의 차단을 활성화합니다."
 
 #: src/muuli_wdr.cpp:2401
@@ -4307,8 +4140,7 @@ msgid "Filter servers"
 msgstr "서버 차단"
 
 #: src/muuli_wdr.cpp:2403
-msgid ""
-"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr "~/.aMule/ipfilter.dat에 기록된 서버 IP의 차단을 활성화합니다."
 
 #: src/muuli_wdr.cpp:2407
@@ -4344,21 +4176,15 @@ msgid "Paranoid handling of non-matching IPs"
 msgstr ""
 
 #: src/muuli_wdr.cpp:2436
-msgid ""
-"Rejects packet if the client ip is different from the ip where the packet is "
-"received from. Use with caution."
-msgstr ""
-"클라이언트 IP가 패킷이 수신된 IP와 다르면 패킷을 거부합니다. 조심해서 사용하"
-"세요."
+msgid "Rejects packet if the client ip is different from the ip where the packet is received from. Use with caution."
+msgstr "클라이언트 IP가 패킷이 수신된 IP와 다르면 패킷을 거부합니다. 조심해서 사용하세요."
 
 #: src/muuli_wdr.cpp:2438
 msgid "Use system-wide ipfilter.dat if available"
 msgstr ""
 
 #: src/muuli_wdr.cpp:2439
-msgid ""
-"If there's no local ipfilter.dat found, allow usage of a system-wide "
-"ipfilter file."
+msgid "If there's no local ipfilter.dat found, allow usage of a system-wide ipfilter file."
 msgstr ""
 
 #: src/muuli_wdr.cpp:2456
@@ -4366,12 +4192,8 @@ msgid "Enable Online-Signature"
 msgstr "온라인서명을 활성화"
 
 #: src/muuli_wdr.cpp:2458
-msgid ""
-"Enables the writing of the OS file, which can be used by external apps to "
-"create signatures and the like."
-msgstr ""
-"서명을 생성할 수 있는 외부 응용프로그램에 의해 사용될 수 있는 운영체제 파일"
-"의 기록을 활성화합니다."
+msgid "Enables the writing of the OS file, which can be used by external apps to create signatures and the like."
+msgstr "서명을 생성할 수 있는 외부 응용프로그램에 의해 사용될 수 있는 운영체제 파일의 기록을 활성화합니다."
 
 #: src/muuli_wdr.cpp:2462
 msgid "Update Frequency (Secs):"
@@ -4386,8 +4208,7 @@ msgid "Save online signature file in: "
 msgstr ""
 
 #: src/muuli_wdr.cpp:2479
-msgid ""
-"Click here to select the directory containing the the Online Signature files."
+msgid "Click here to select the directory containing the the Online Signature files."
 msgstr "온라인서명 파일을 포함하는 폴더를 선택하려면 클릭하세요."
 
 #: src/muuli_wdr.cpp:2499
@@ -4751,15 +4572,12 @@ msgid "%s (Disk: %s)"
 msgstr "%s(디스크: %s)"
 
 #: src/PartFileConvertDlg.cpp:204
-msgid ""
-"Please choose a folder to search for temporary downloads! (subfolders will "
-"be included)"
+msgid "Please choose a folder to search for temporary downloads! (subfolders will be included)"
 msgstr "임시 내려받기를 위해 검색할 폴더를 선택하세요! (하위 폴더 포함)"
 
 #: src/PartFileConvertDlg.cpp:208
 #, fuzzy
-msgid ""
-"Do you want the source files of successfully imported downloads be deleted?"
+msgid "Do you want the source files of successfully imported downloads be deleted?"
 msgstr "성공적으로 가져온 내려받기 파일을 삭제하겠습니까?"
 
 #: src/PartFileConvertDlg.cpp:209
@@ -4794,8 +4612,7 @@ msgstr ""
 #: src/PartFile.cpp:664
 #, fuzzy, c-format
 msgid "Error: %s (%s) is corrupt (bad tags: %s), unable to load file."
-msgstr ""
-"오류: %s(%s)은 손상되었습니다. (잘못된 꼬리계수), 파일을 읽을수 없습니다."
+msgstr "오류: %s(%s)은 손상되었습니다. (잘못된 꼬리계수), 파일을 읽을수 없습니다."
 
 #: src/PartFile.cpp:675
 #, c-format
@@ -4867,18 +4684,10 @@ msgstr "부분파일의 핵심파일(%s - %s)을 읽는중 오류: %s"
 
 #: src/PartFile.cpp:1252 src/PartFile.cpp:1279
 #, fuzzy, c-format
-msgid ""
-"Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
-"%s|"
-msgid_plural ""
-"Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
-"|%s|"
-msgstr[0] ""
-"손상된 부분(%d)이 발견되었습니다. (%d부분 파일 %s에 있는) - 파일해시결과 |"
-"%s| 파일해시 |%s|"
-msgstr[1] ""
-"손상된 부분(%d)이 발견되었습니다. (%d부분 파일 %s에 있는) - 파일해시결과 |"
-"%s| 파일해시 |%s|"
+msgid "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |%s|"
+msgid_plural "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|"
+msgstr[0] "손상된 부분(%d)이 발견되었습니다. (%d부분 파일 %s에 있는) - 파일해시결과 |%s| 파일해시 |%s|"
+msgstr[1] "손상된 부분(%d)이 발견되었습니다. (%d부분 파일 %s에 있는) - 파일해시결과 |%s| 파일해시 |%s|"
 
 #: src/PartFile.cpp:1294
 #, c-format
@@ -4919,23 +4728,17 @@ msgstr ""
 
 #: src/PartFile.cpp:2468
 #, c-format
-msgid ""
-"ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
-"never happen"
+msgid "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"
 msgstr ""
 
 #: src/PartFile.cpp:2489
 #, c-format
-msgid ""
-"Part %u of '%s' marked complete but partfile is shorter than expected (have "
-"%llu bytes, need %llu); reopening gap for re-download."
+msgid "Part %u of '%s' marked complete but partfile is shorter than expected (have %llu bytes, need %llu); reopening gap for re-download."
 msgstr ""
 
 #: src/PartFile.cpp:2501 src/PartFile.cpp:2506
 #, c-format
-msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
-"'%s' with length %u: %s"
+msgid "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"
 msgstr ""
 
 #: src/PartFile.cpp:3223
@@ -5153,10 +4956,8 @@ msgid "Invalid category found, skipping"
 msgstr ""
 
 #: src/Preferences.cpp:1848
-msgid ""
-"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
-msgstr ""
-"서버 UDP 소켓이 TCP+3이 되기위해서 TCP 포트가 65532보다 커서는 안됩니다."
+msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgstr "서버 UDP 소켓이 TCP+3이 되기위해서 TCP 포트가 65532보다 커서는 안됩니다."
 
 #: src/Preferences.cpp:1849
 #, c-format
@@ -5227,10 +5028,7 @@ msgid "Tray icon support requires libayatana-appindicator3 at compile time."
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:293
-msgid ""
-"Not available on Wayland: the protocol does not report when a window is "
-"minimized, so this option cannot intercept the system minimize button. "
-"Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
+msgid "Not available on Wayland: the protocol does not report when a window is minimized, so this option cannot intercept the system minimize button. Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:333
@@ -5356,9 +5154,7 @@ msgstr ""
 "만일 재시작하지 않는다면, 나쁜 일이 일어나도 불평하지 마십시오.\n"
 
 #: src/PrefsUnifiedDlg.cpp:912
-msgid ""
-"Could not register aMule for autostart at login. The autostart store may be "
-"read-only."
+msgid "Could not register aMule for autostart at login. The autostart store may be read-only."
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:913
@@ -5503,9 +5299,7 @@ msgid ""
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1566
-msgid ""
-"Sharing them recursively will publish every file underneath on the eD2k/Kad "
-"networks. Do you really want to do this?"
+msgid "Sharing them recursively will publish every file underneath on the eD2k/Kad networks. Do you really want to do this?"
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1568
@@ -5551,9 +5345,7 @@ msgid "Kad search: requested wider results from one more peer."
 msgstr ""
 
 #: src/SearchDlg.cpp:438
-msgid ""
-"Kad search: no peer left to reask for more results (cap reached or no "
-"responses yet)."
+msgid "Kad search: no peer left to reask for more results (cap reached or no responses yet)."
 msgstr ""
 
 #: src/SearchDlg.cpp:543
@@ -5619,9 +5411,7 @@ msgid "New"
 msgstr ""
 
 #: src/ServerConnect.cpp:74
-msgid ""
-"Failed to connect to all obfuscated servers listed. Making another pass "
-"without obfuscation."
+msgid "Failed to connect to all obfuscated servers listed. Making another pass without obfuscation."
 msgstr "난독화된 서버들로의 연결이 모두 실패했습니다. 난독화없이 진행합니다."
 
 #: src/ServerConnect.cpp:79
@@ -5648,8 +5438,7 @@ msgstr "다음에 연결이 되었습니다: %s"
 
 #: src/ServerConnect.cpp:346
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr ""
-"연결하는 동안 치명적 오류가 발생하였습니다. 인터넷 연결이 끊긴것 같습니다."
+msgstr "연결하는 동안 치명적 오류가 발생하였습니다. 인터넷 연결이 끊긴것 같습니다."
 
 #: src/ServerConnect.cpp:350
 #, c-format
@@ -5716,8 +5505,7 @@ msgstr "server.met 파일을 열지 못했습니다!"
 #: src/ServerList.cpp:126
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
-msgstr ""
-"Server.met 파일이 손상됨, 유효하지 않는 버젼정보를 발견함: 0x%x, size %i"
+msgstr "Server.met 파일이 손상됨, 유효하지 않는 버젼정보를 발견함: 0x%x, size %i"
 
 #: src/ServerList.cpp:182
 #, fuzzy, c-format
@@ -5763,9 +5551,7 @@ msgid "Server added: Server at [%s:%d] using the name '%s'."
 msgstr "서버 추가됨: [%s:%d]서버 '%s'이름을 사용"
 
 #: src/ServerList.cpp:355
-msgid ""
-"You are connected to the server you are trying to delete. please disconnect "
-"first."
+msgid "You are connected to the server you are trying to delete. please disconnect first."
 msgstr "삭제하려고하는 서버에 접속되어있습니다. 부디 먼저 연결을 끊으세요."
 
 #: src/ServerList.cpp:527
@@ -5787,9 +5573,7 @@ msgid "Finished downloading the server list from %s"
 msgstr "%s로부터 서버 목록를 내려받지 못함"
 
 #: src/ServerList.cpp:884
-msgid ""
-"No server list address entry in 'addresses.dat' found. Please paste a valid "
-"server list address into this file in order to auto-update your server list"
+msgid "No server list address entry in 'addresses.dat' found. Please paste a valid server list address into this file in order to auto-update your server list"
 msgstr ""
 
 #: src/ServerList.cpp:903
@@ -5812,9 +5596,7 @@ msgid "Failed to download the server list from %s"
 msgstr "%s로부터 서버 목록를 내려받지 못함"
 
 #: src/ServerList.cpp:1006
-msgid ""
-"Local server is filtered by the IPFilters, reconnecting to a different "
-"server!"
+msgid "Local server is filtered by the IPFilters, reconnecting to a different server!"
 msgstr "지역 서버가 IPFilter에 의해 차단되어, 다른 서버로 재연결 합니다."
 
 #: src/ServerListCtrl.cpp:87
@@ -5851,12 +5633,8 @@ msgid "Version"
 msgstr "버젼"
 
 #: src/ServerListCtrl.cpp:149
-msgid ""
-"You are connected to a server you are trying to delete. Please disconnect "
-"first. The server was NOT deleted."
-msgstr ""
-"삭제하려는 서버에 연결되어 있습니다. 먼저 연결을 끊으세요. 서버는 삭제되지 않"
-"습니다."
+msgid "You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."
+msgstr "삭제하려는 서버에 연결되어 있습니다. 먼저 연결을 끊으세요. 서버는 삭제되지 않습니다."
 
 #: src/ServerListCtrl.cpp:152
 msgid "(Unknown name)"
@@ -5949,8 +5727,7 @@ msgstr ""
 
 #: src/ServerSocket.cpp:320
 #, c-format
-msgid ""
-"Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
+msgid "Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
 msgstr ""
 
 #: src/ServerSocket.cpp:362
@@ -5967,8 +5744,7 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\t이러한 대부분의 이유는 방화벽이나 라우터때문입니다."
 
 #: src/ServerSocket.cpp:366
-msgid ""
-"\tFor more information, please refer to https://amule-org.github.io/docs"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
 msgstr "\t더 많은 정보는 https://amule-org.github.io/docs을 참조하세요."
 
 #: src/ServerSocket.cpp:422
@@ -6570,9 +6346,7 @@ msgstr "유효하지 않은 IP 형식. xxx.xxx.xxx.xxx:xxxx를 사용하세요.\
 
 #: src/TextClient.cpp:399
 #, fuzzy
-msgid ""
-"This command requires an argument. Valid arguments: 'all', filename, or a "
-"number.\n"
+msgid "This command requires an argument. Valid arguments: 'all', filename, or a number.\n"
 msgstr "이 명령은 인수를 필요로합니다. 유효한 인수: 'all' 또는 숫자\n"
 
 #: src/TextClient.cpp:435
@@ -6762,14 +6536,11 @@ msgstr "전체 통계 구조도를 보여줍니다."
 
 #: src/TextClient.cpp:989
 msgid ""
-"Optionally, a number in the range 0-255 can be passed as an argument to "
-"this\n"
-"command, which tells how many entries of the client version subtrees should "
-"be\n"
+"Optionally, a number in the range 0-255 can be passed as an argument to this\n"
+"command, which tells how many entries of the client version subtrees should be\n"
 "shown. Passing 0 or omitting it means 'unlimited'.\n"
 "\n"
-"Example: 'statistics 5' will show only the top 5 versions for each client "
-"type.\n"
+"Example: 'statistics 5' will show only the top 5 versions for each client type.\n"
 msgstr ""
 "부가적으로, 0-255 범위에 있는 숫자를 이 명령의 인수로 넘길 수 있으며,\n"
 "얼마나 많은 항목을 클라이언트 버젼 하위구조에 보여줄 것인지 결정합니다.\n"
@@ -6823,8 +6594,7 @@ msgstr "통신망에 연결합니다."
 #: src/TextClient.cpp:1003
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
-"You may also optionally specify a server address in IP:Port form, to connect "
-"to\n"
+"You may also optionally specify a server address in IP:Port form, to connect to\n"
 "that server only. The IP must be a dotted decimal IPv4 address,\n"
 "or a resolvable DNS name."
 msgstr ""
@@ -6867,8 +6637,7 @@ msgid ""
 "The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
 "*) a server link (ed2k://|server|...), it will be added to the server list,\n"
-"*) or a serverlist link, in which case all servers in the list will be added "
-"to the\n"
+"*) or a serverlist link, in which case all servers in the list will be added to the\n"
 "   server list.\n"
 "\n"
 "The magnet link must contain the eD2k hash and file length.\n"
@@ -7047,12 +6816,10 @@ msgstr "파일의 내려받기를 시작"
 #: src/TextClient.cpp:1077
 msgid ""
 "The number of a file from the last search has to be given.\n"
-"Example: 'download 12' will start to download the file with the number 12 of "
-"the previous search.\n"
+"Example: 'download 12' will start to download the file with the number 12 of the previous search.\n"
 msgstr ""
 "마지막 검색으로부터 파일의 번호가 부여됩니다.\n"
-"예: 'download 12' 는 이전 검색에서 12번 번호를 가진 파일의 내려받기를 시작합"
-"니다.\n"
+"예: 'download 12' 는 이전 검색에서 12번 번호를 가진 파일의 내려받기를 시작합니다.\n"
 
 #: src/TextClient.cpp:1084
 msgid "Pause download."
@@ -7296,9 +7063,7 @@ msgid "Enter here the file you want to compute the eD2k link"
 msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:128
-msgid ""
-"Enter here the URL you want to add to the eD2k link: Add / at the end to let "
-"aLinkCreator append the current file name"
+msgid "Enter here the URL you want to add to the eD2k link: Add / at the end to let aLinkCreator append the current file name"
 msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144
@@ -7310,12 +7075,8 @@ msgid "Create link with part-hashes"
 msgstr "부분해시의 링크를 생성합니다."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:161
-msgid ""
-"Help to spread new and rare files faster, at the cost of an increased link "
-"size"
-msgstr ""
-"링크의 크기를 증가시키는 대신 새 파일 및 희귀한 파일을 빠르게 퍼지는 데에 도"
-"움을 줍니다."
+msgid "Help to spread new and rare files faster, at the cost of an increased link size"
+msgstr "링크의 크기를 증가시키는 대신 새 파일 및 희귀한 파일을 빠르게 퍼지는 데에 도움을 줍니다."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:187
 msgid "MD4 File Hash"
@@ -7941,21 +7702,15 @@ msgid "Place an aMule shortcut on the desktop."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:45
-msgid ""
-"Launch aMule automatically when the current user logs in (per-user setting)."
+msgid "Launch aMule automatically when the current user logs in (per-user setting)."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:46
-msgid ""
-"Remove aMule application files, Start Menu / desktop shortcuts, autostart "
-"Run-key entry, and Add/Remove Programs entry (required)."
+msgid "Remove aMule application files, Start Menu / desktop shortcuts, autostart Run-key entry, and Add/Remove Programs entry (required)."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:47
-msgid ""
-"Permanently delete %APPDATA%\\aMule for the current user (aMule.conf, ED2K "
-"server list, Kad nodes, partfiles, IP filters, friends list). Leave "
-"unchecked to keep your settings."
+msgid "Permanently delete %APPDATA%\\aMule for the current user (aMule.conf, ED2K server list, Kad nodes, partfiles, IP filters, friends list). Leave unchecked to keep your settings."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:53
@@ -7977,13 +7732,11 @@ msgstr ""
 #: packaging/windows/installer_strings.c:56
 msgid ""
 "Could not remove the previous aMule installation at $0.\r\n"
-"Please close any running aMule processes and try again, or uninstall the "
-"previous version manually first."
+"Please close any running aMule processes and try again, or uninstall the previous version manually first."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:57
-msgid ""
-"aMule appears to be running. Please close it and re-run the uninstaller."
+msgid "aMule appears to be running. Please close it and re-run the uninstaller."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:58

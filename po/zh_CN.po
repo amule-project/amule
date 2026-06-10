@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 16:32+0200\n"
+"POT-Creation-Date: 2026-06-10 16:42+0200\n"
 "PO-Revision-Date: 2024-12-15 20:08+0100\n"
 "Last-Translator: Mike Akiba <mike2718@gmail.com>\n"
 "Language-Team: Chinese Simplified <kde-i18n-doc@kde.org>\n"
@@ -42,10 +42,7 @@ msgstr "指定的用户哈希无效！"
 
 #: src/AppImageIntegration.cpp:221
 msgid ""
-"aMule can install a desktop launcher and icon into your home directory so it "
-"appears in your application menu like a regularly installed app. This is "
-"reversible — the files live under ~/.local/share/applications and ~/.local/"
-"share/icons and can be removed at any time.\n"
+"aMule can install a desktop launcher and icon into your home directory so it appears in your application menu like a regularly installed app. This is reversible — the files live under ~/.local/share/applications and ~/.local/share/icons and can be removed at any time.\n"
 "\n"
 "Install desktop integration now?"
 msgstr ""
@@ -68,9 +65,7 @@ msgid "Don't ask again"
 msgstr ""
 
 #: src/AppImageIntegration.cpp:248
-msgid ""
-"Cannot install desktop integration: the APPDIR environment variable is not "
-"set. This usually means the AppImage was launched in a non-standard way."
+msgid "Cannot install desktop integration: the APPDIR environment variable is not set. This usually means the AppImage was launched in a non-standard way."
 msgstr ""
 
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
@@ -81,16 +76,12 @@ msgstr "连接失败 "
 
 #: src/AppImageIntegration.cpp:259
 #, c-format
-msgid ""
-"Cannot install desktop integration: failed to create %s. Check that your "
-"home directory is writable."
+msgid "Cannot install desktop integration: failed to create %s. Check that your home directory is writable."
 msgstr ""
 
 #: src/AppImageIntegration.cpp:271
 #, c-format
-msgid ""
-"Cannot install desktop integration: failed to write %s. Check that your home "
-"directory is writable."
+msgid "Cannot install desktop integration: failed to write %s. Check that your home directory is writable."
 msgstr ""
 
 #: src/AppImageIntegration.cpp:281
@@ -99,12 +90,9 @@ msgstr ""
 
 #: src/AppImageIntegration.cpp:284
 msgid ""
-"aMule has been added to your application menu. You can now launch it from "
-"your applications list, and the launcher will run this same AppImage.\n"
+"aMule has been added to your application menu. You can now launch it from your applications list, and the launcher will run this same AppImage.\n"
 "\n"
-"On some desktops, aMule may need to restart for the dock / taskbar icon to "
-"bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick "
-"this up live, but a restart is the safe fallback if the icon stays generic.\n"
+"On some desktops, aMule may need to restart for the dock / taskbar icon to bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick this up live, but a restart is the safe fallback if the icon stays generic.\n"
 "\n"
 "Restart aMule now?"
 msgstr ""
@@ -124,8 +112,7 @@ msgstr ""
 #: src/amuleAppCommon.cpp:174
 #, c-format
 msgid "Could not add %u link from ED2KLinks file (see log for details)."
-msgid_plural ""
-"Could not add %u links from ED2KLinks file (see log for details)."
+msgid_plural "Could not add %u links from ED2KLinks file (see log for details)."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -142,9 +129,7 @@ msgid "Failed to open ED2KLinks file."
 msgstr "打开 ED2K 链接文件失败。"
 
 #: src/amuleAppCommon.cpp:252
-msgid ""
-"WARNING: You can't add yourself as a source for an eD2k link while having a "
-"lowid."
+msgid "WARNING: You can't add yourself as a source for an eD2k link while having a lowid."
 msgstr "警告：在 Low ID 的情况下，你不能添加自己作为 ed2k 链接的源。"
 
 #: src/amule.cpp:251
@@ -178,9 +163,7 @@ msgid "Memory debug results for aMule exit:"
 msgstr "对 aMule 退出的内存 Debug 结果："
 
 #: src/amule.cpp:574
-msgid ""
-"Your locale has been changed to System Default due to a configuration "
-"change. Sorry."
+msgid "Your locale has been changed to System Default due to a configuration change. Sorry."
 msgstr "对不起，由于配置变动，您的地区设置已经变为系统默认值。"
 
 #: src/amule.cpp:574 src/amule.cpp:1264 src/CatDialog.cpp:141
@@ -233,14 +216,8 @@ msgstr "web 服务器正在运行，pid 为 %d"
 
 #: src/amule.cpp:865
 #, fuzzy
-msgid ""
-"You requested to run web server on startup, but the amuleweb binary cannot "
-"be run. Please install the package containing aMule web server, or build "
-"aMule from source with -DBUILD_WEBSERVER=YES and install it."
-msgstr ""
-"您要求启动时运行 Web 服务器，但 amuleweb 程序无法 运行， 请先安装包含 Web 服"
-"务器的 aMule 版本，或者使用 --enable-webserver 选项编译 aMule，然后运行 make "
-"install 进行安装"
+msgid "You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or build aMule from source with -DBUILD_WEBSERVER=YES and install it."
+msgstr "您要求启动时运行 Web 服务器，但 amuleweb 程序无法 运行， 请先安装包含 Web 服务器的 aMule 版本，或者使用 --enable-webserver 选项编译 aMule，然后运行 make install 进行安装"
 
 #: src/amule.cpp:948
 #, c-format
@@ -276,12 +253,8 @@ msgid "Failed to create aMule OnlineSig File"
 msgstr "创建 aMule 在线统计文件失败"
 
 #: src/amule.cpp:1241
-msgid ""
-"The selected locale seems not to be installed on your box. (Note: I'll try "
-"to set it anyway)"
-msgstr ""
-"您所选择的地区设置在您的计算机上似乎没有安装。(注意：我还是会尝试您所选择的地"
-"区设置。)"
+msgid "The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"
+msgstr "您所选择的地区设置在您的计算机上似乎没有安装。(注意：我还是会尝试您所选择的地区设置。)"
 
 #: src/amule.cpp:1250
 #, c-format
@@ -305,16 +278,11 @@ msgid "More information, support and new releases can found at our homepage,\n"
 msgstr "如要获取使用信息、用户支持以及下载最新版本，请访问我们的首页\n"
 
 #: src/amule.cpp:1260
-msgid ""
-"at https://amule-org.github.io, or in our IRC channel #aMule at "
-"irc.libera.chat.\n"
-msgstr ""
-"https://amule-org.github.io，或进入我们在 irc.libera.chat 的 IRC 频道 "
-"#aMule。\n"
+msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.libera.chat.\n"
+msgstr "https://amule-org.github.io，或进入我们在 irc.libera.chat 的 IRC 频道 #aMule。\n"
 
 #: src/amule.cpp:1262
-msgid ""
-"Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
 msgstr "欢迎您到 https://github.com/amule-org/amule/issues 去提交错误报告"
 
 #: src/amule.cpp:1275
@@ -379,11 +347,8 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "您的 aMule 版本是 %i.%i.%i，最新版本是 %li.%li.%li"
 
 #: src/amule.cpp:1994
-msgid ""
-"The latest version can always be found at https://github.com/amule-org/amule/"
-"releases/latest"
-msgstr ""
-"最新版本可从这里下载：https://github.com/amule-org/amule/releases/latest"
+msgid "The latest version can always be found at https://github.com/amule-org/amule/releases/latest"
+msgstr "最新版本可从这里下载：https://github.com/amule-org/amule/releases/latest"
 
 #: src/amule.cpp:1996
 #, c-format
@@ -455,9 +420,7 @@ msgid "Disconnected from Kad"
 msgstr "已断开 Kad 连接"
 
 #: src/amule.cpp:2292
-msgid ""
-"Kad network cannot be used if UDP port is disabled on preferences, not "
-"starting."
+msgid "Kad network cannot be used if UDP port is disabled on preferences, not starting."
 msgstr "如果在设置中禁用了 UDP 端口，Kad 网络将不能使用，没有启动。"
 
 #: src/amule.cpp:2295
@@ -465,29 +428,13 @@ msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad 网络在设置中被禁用了，没有连接。"
 
 #: src/amuled.cpp:142
-msgid ""
-"ERROR: aMule daemon cannot be used when external connections are disabled. "
-"To enable External Connections, use either a normal aMule, start amuled with "
-"the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in "
-"the file ~/.aMule/amule.conf"
-msgstr ""
-"错误：当远程连接被禁用的时，aMule 服务程序无法使用。要启用远程连接，请使用普"
-"通的 aMule，或使用 --ec-config选项启动 amuled 或在文件 ~/aMule/amule.conf 中"
-"设置选项\"AcceptExternalConnections\"为1"
+msgid "ERROR: aMule daemon cannot be used when external connections are disabled. To enable External Connections, use either a normal aMule, start amuled with the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf"
+msgstr "错误：当远程连接被禁用的时，aMule 服务程序无法使用。要启用远程连接，请使用普通的 aMule，或使用 --ec-config选项启动 amuled 或在文件 ~/aMule/amule.conf 中设置选项\"AcceptExternalConnections\"为1"
 
 #: src/amuled.cpp:145
 #, fuzzy
-msgid ""
-"ERROR: A valid password is required to use external connections, and aMule "
-"daemon cannot be used without external connections. To run aMule daemon, you "
-"must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
-"appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://amule-org.github.io/docs"
-msgstr ""
-"错误：如果需要使用外部连接，必须设置一个可用的密码，aMule daemon不能在没有启"
-"用外部连接的情况下使用。要运行aMule daemon，你必须设置~/.aMule/amule.conf文件"
-"中的\"ECPassword\"字段，使它有一个合适的值。执行amuled --ce-config来设置这个"
-"密码。更多信息请访问https://amule-org.github.io/docs。"
+msgid "ERROR: A valid password is required to use external connections, and aMule daemon cannot be used without external connections. To run aMule daemon, you must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an appropriate value. Execute amuled with the flag --ec-config to set the password. More information can be found at https://amule-org.github.io/docs"
+msgstr "错误：如果需要使用外部连接，必须设置一个可用的密码，aMule daemon不能在没有启用外部连接的情况下使用。要运行aMule daemon，你必须设置~/.aMule/amule.conf文件中的\"ECPassword\"字段，使它有一个合适的值。执行amuled --ce-config来设置这个密码。更多信息请访问https://amule-org.github.io/docs。"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -517,11 +464,8 @@ msgid "Running on %s"
 msgstr "运行于 %s"
 
 #: src/amuleDlg.cpp:250
-msgid ""
-"Visit https://github.com/amule-org/amule/releases/latest to check if a new "
-"version is available."
-msgstr ""
-"访问 https://github.com/amule-org/amule/releases/latest 来检查 是否有新版本。"
+msgid "Visit https://github.com/amule-org/amule/releases/latest to check if a new version is available."
+msgstr "访问 https://github.com/amule-org/amule/releases/latest 来检查 是否有新版本。"
 
 #: src/amuleDlg.cpp:276
 msgid "FATAL ERROR: Failed to create Timer"
@@ -584,8 +528,7 @@ msgstr " 版权所有 (c) 2002-2011 Petar Maymounkov ( petar@maymounkov.org )\n"
 
 #: src/amuleDlg.cpp:534
 msgid "https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
-msgstr ""
-"https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
+msgstr "https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
 
 #: src/amuleDlg.cpp:537 src/KadDlg.cpp:193 src/PartFile.cpp:1032
 #: src/PrefsUnifiedDlg.cpp:712 src/PrefsUnifiedDlg.cpp:837
@@ -860,8 +803,7 @@ msgstr "连接关闭 - aMule 可能已经终止运行。"
 #, c-format
 msgid ""
 "Connection timed out. Unable to reach %s:%d within the allotted time.\n"
-"Please check the host, port and that aMule is running with External "
-"Connections enabled."
+"Please check the host, port and that aMule is running with External Connections enabled."
 msgstr ""
 
 #: src/amule-remote-gui.cpp:638
@@ -938,16 +880,14 @@ msgstr "已请求： %s\n"
 #: src/BaseClient.cpp:2018
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] "本次运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 msgstr[1] "本次运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 
 #: src/BaseClient.cpp:2021
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] "历史运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 msgstr[1] "历史运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
 
@@ -967,9 +907,7 @@ msgstr "新消息来自于 %s（IP：%s）"
 
 #: src/BaseClient.cpp:2880
 #, c-format
-msgid ""
-"User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
-"Ignored"
+msgid "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> Ignored"
 msgstr "用户 %s（%u）请求目录 %s 的共享文件列表 -> 已忽略"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:112
@@ -1017,8 +955,7 @@ msgid "You must specify a path for the category!"
 msgstr "必须定义分类路径！"
 
 #: src/CatDialog.cpp:162
-msgid ""
-"Failed to create incoming dir for category. Please specify a valid path!"
+msgid "Failed to create incoming dir for category. Please specify a valid path!"
 msgstr "无法建立该分类的接收文件夹，请给出一个有效的分类路径！"
 
 #: src/ChatSelector.cpp:129
@@ -1039,18 +976,12 @@ msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** 无法连接用户/连接丢失 ***"
 
 #: src/ChatSelector.cpp:335
-msgid ""
-"*** You have passed the captcha check and the user has received your "
-"message. ***"
+msgid "*** You have passed the captcha check and the user has received your message. ***"
 msgstr "*** 您已经通过了 captcha 检测，用户已经接收到你的信息了。***"
 
 #: src/ChatSelector.cpp:336
-msgid ""
-"*** Your response to the captcha was wrong and your message has been "
-"ignored. You can request a new captcha by sending a new message. ***"
-msgstr ""
-"*** 您输入了错误的 captcha 信息，您的信息已经被忽略。您可以通过重新发送一条信"
-"息来再一次请求一个captcha验证。***"
+msgid "*** Your response to the captcha was wrong and your message has been ignored. You can request a new captcha by sending a new message. ***"
+msgstr "*** 您输入了错误的 captcha 信息，您的信息已经被忽略。您可以通过重新发送一条信息来再一次请求一个captcha验证。***"
 
 #: src/ChatWnd.cpp:98
 msgid "Chat"
@@ -1175,14 +1106,12 @@ msgstr "用户 %s（%u）请求了您的共享文件夹列表 -> 已拒绝"
 
 #: src/ClientTCPSocket.cpp:862
 #, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
+msgid "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
 msgstr "用户 %s (%u) 请求目录“%s”的共享文件列表 -> 已接受"
 
 #: src/ClientTCPSocket.cpp:875
 #, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
+msgid "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
 msgstr "用户 %s (%u) 请求目录“%s”的共享文件列表 -> 已拒绝"
 
 #: src/ClientTCPSocket.cpp:894
@@ -1250,10 +1179,8 @@ msgstr[1] "%u 条评论"
 
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
-msgid ""
-"Banned client %s for sending %s corrupt data of %s total for the file '%s'"
-msgstr ""
-"封禁客户端 %1$s，因为向文件 '%4$s' 总共发送的 %3$s 中有 %2$s 的错误数据。"
+msgid "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
+msgstr "封禁客户端 %1$s，因为向文件 '%4$s' 总共发送的 %3$s 中有 %2$s 的错误数据。"
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1636,12 +1563,8 @@ msgid "Loading PartFile %u of %u"
 msgstr "载入 PartFile %u 之 %u"
 
 #: src/DownloadQueue.cpp:150
-msgid ""
-"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/"
-"discussions for .part.met recovery solutions."
-msgstr ""
-"错误：载入备份文件失败！请到 https://github.com/amule-org/amule/discussions "
-"搜索 .part 和 .met 文件的恢复方法。"
+msgid "ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions for .part.met recovery solutions."
+msgstr "错误：载入备份文件失败！请到 https://github.com/amule-org/amule/discussions 搜索 .part 和 .met 文件的恢复方法。"
 
 #: src/DownloadQueue.cpp:159
 msgid "All PartFiles Loaded."
@@ -1746,15 +1669,11 @@ msgid "Unknown version"
 msgstr "未知版本"
 
 #: src/ExternalConn.cpp:554
-msgid ""
-"Incorrect EC version ID, there might be binary incompatibility. Use core and "
-"remote from same snapshot."
+msgid "Incorrect EC version ID, there might be binary incompatibility. Use core and remote from same snapshot."
 msgstr "错误的远程连接版本号，可能会不兼容，请使用相同版本的核心和远程程序。"
 
 #: src/ExternalConn.cpp:559
-msgid ""
-"You cannot connect to a release version from an arbitrary development "
-"snapshot! *sigh* possible crash prevented"
+msgid "You cannot connect to a release version from an arbitrary development snapshot! *sigh* possible crash prevented"
 msgstr "您无法从任意开发快照连接到发布版本！*sigh* 防止可能发生的崩溃"
 
 #: src/ExternalConn.cpp:620
@@ -2129,9 +2048,7 @@ msgid "Print program version."
 msgstr "输出程序版本。"
 
 #: src/ExternalConnector.cpp:525
-msgid ""
-"Force ZLIB compression regardless of dialed-IP locality (useful when the "
-"server is reachable over a VPN tunnel that resolves to a LAN IP)."
+msgid "Force ZLIB compression regardless of dialed-IP locality (useful when the server is reachable over a VPN tunnel that resolves to a LAN IP)."
 msgstr ""
 
 #: src/FileDetailDialog.cpp:76
@@ -2325,10 +2242,7 @@ msgstr ""
 
 #: src/IP2Country.cpp:98
 #, c-format
-msgid ""
-"No GeoLite2 update URL configured. Download GeoLite2-Country.mmdb manually "
-"(a free MaxMind account is required) and place it at %s, or set the URL in "
-"Preferences."
+msgid "No GeoLite2 update URL configured. Download GeoLite2-Country.mmdb manually (a free MaxMind account is required) and place it at %s, or set the URL in Preferences."
 msgstr ""
 
 #: src/IP2Country.cpp:103
@@ -2436,8 +2350,7 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "确定要下载新的 node.dat 文件吗？\n"
 
 #: src/KadDlg.cpp:213
-msgid ""
-"Doing so will remove your current nodes and restart Kademlia connection."
+msgid "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr "这样将删除您当前节点并重启 Kad 连接。"
 
 #: src/KadDlg.cpp:214
@@ -2453,9 +2366,7 @@ msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kad：搜索关键词已经在搜索列表中："
 
 #: src/kademlia/routing/RoutingZone.cpp:171
-msgid ""
-"Failed to read nodes.dat file - too old. This version (0) is not supported "
-"anymore."
+msgid "Failed to read nodes.dat file - too old. This version (0) is not supported anymore."
 msgstr "无法读取 node.dat 档案 - 版本 （0） 太旧，已经不再支持了。"
 
 #: src/kademlia/routing/RoutingZone.cpp:209
@@ -2856,14 +2767,11 @@ msgid "Commit"
 msgstr "确定"
 
 #: src/muuli_wdr.cpp:103
-msgid ""
-"Click here to add the eD2k link in the text control to your download queue."
+msgid "Click here to add the eD2k link in the text control to your download queue."
 msgstr "点击此处将添加文本框中的 eD2k 链接至下载队列。"
 
 #: src/muuli_wdr.cpp:109
-msgid ""
-"Events are displayed here. For a complete list of events, refer to the log "
-"in the Servers-tab."
+msgid "Events are displayed here. For a complete list of events, refer to the log in the Servers-tab."
 msgstr "此处显示系统事件。如需完整事件列表，请到服务器分页。"
 
 #: src/muuli_wdr.cpp:112
@@ -2879,9 +2787,7 @@ msgid "Users: 0"
 msgstr "用户: 0"
 
 #: src/muuli_wdr.cpp:123
-msgid ""
-"Users connected to the current server and an estimate of the total number of "
-"users."
+msgid "Users connected to the current server and an estimate of the total number of users."
 msgstr "当前服务器上的用户和估算总用户数。"
 
 #: src/muuli_wdr.cpp:131
@@ -2889,20 +2795,12 @@ msgid "Up: 0.0 | Down: 0.0"
 msgstr "上传: 0.0 | 下载: 0.0"
 
 #: src/muuli_wdr.cpp:132
-msgid ""
-"Current average upload and download rates. If enabled the numbers in the "
-"braces signify the overhead from client communication."
+msgid "Current average upload and download rates. If enabled the numbers in the braces signify the overhead from client communication."
 msgstr "当前平均上传下载速度。括号中的值为于其他用户连接所消耗的带宽。"
 
 #: src/muuli_wdr.cpp:139
-msgid ""
-"Displays the connected status and active transfers. Red arrows signifies "
-"that you are currently not connected, yellow arrows signify that you have "
-"low ID (firewalled) and green arrows signify that you have high ID (The "
-"optimal connection type)."
-msgstr ""
-"显示当前连接状态及当前传送状态。红色箭头表示未连接，黄色箭头表示 Low ID (有防"
-"火墙)，绿色箭头表示正常连接(最佳连接方式)。"
+msgid "Displays the connected status and active transfers. Red arrows signifies that you are currently not connected, yellow arrows signify that you have low ID (firewalled) and green arrows signify that you have high ID (The optimal connection type)."
+msgstr "显示当前连接状态及当前传送状态。红色箭头表示未连接，黄色箭头表示 Low ID (有防火墙)，绿色箭头表示正常连接(最佳连接方式)。"
 
 #: src/muuli_wdr.cpp:142
 msgid "Not Connected ..."
@@ -3037,10 +2935,7 @@ msgid "More"
 msgstr "更多"
 
 #: src/muuli_wdr.cpp:325
-msgid ""
-"Ask already-responded Kad peers to widen the search. Each click queries the "
-"next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing "
-"additional file matches that the search's initial alpha frontier missed."
+msgid "Ask already-responded Kad peers to widen the search. Each click queries the next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing additional file matches that the search's initial alpha frontier missed."
 msgstr ""
 
 #: src/muuli_wdr.cpp:330
@@ -3189,12 +3084,8 @@ msgid "Comment/Rate file (Text will be visible to all users)"
 msgstr "评论/评价文件（文本将对全部用户可见）"
 
 #: src/muuli_wdr.cpp:705
-msgid ""
-"For a film you can say its length, its story, language ...\\n\\nand if it's "
-"a fake, you can tell that to other users of aMule."
-msgstr ""
-"像电影的话，您可以说明它的长度、情节和语言等等...\\n\\n如果文件是假冒的，您可"
-"以提醒其它 aMule 用户。"
+msgid "For a film you can say its length, its story, language ...\\n\\nand if it's a fake, you can tell that to other users of aMule."
+msgstr "像电影的话，您可以说明它的长度、情节和语言等等...\\n\\n如果文件是假冒的，您可以提醒其它 aMule 用户。"
 
 #: src/muuli_wdr.cpp:713
 msgid "File Quality"
@@ -3439,10 +3330,7 @@ msgid "Start aMule automatically when I log in"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1226
-msgid ""
-"Registers a per-user autostart entry with the OS so aMule launches at login. "
-"If you move the aMule binary, launch aMule once manually afterwards to "
-"refresh the entry."
+msgid "Registers a per-user autostart entry with the OS so aMule launches at login. If you move the aMule binary, launch aMule once manually afterwards to refresh the entry."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1229
@@ -3478,9 +3366,7 @@ msgid "Minimize to Tray Icon"
 msgstr "最小化至系统状态栏图标"
 
 #: src/muuli_wdr.cpp:1246
-msgid ""
-"Enabling this will make aMule minimize to the System Tray, rather than the "
-"taskbar."
+msgid "Enabling this will make aMule minimize to the System Tray, rather than the taskbar."
 msgstr "启用此选项将使 aMule 最小化到系统状态栏，而不是任务栏。"
 
 #: src/muuli_wdr.cpp:1249
@@ -3488,9 +3374,7 @@ msgid "Show notifications when finished downloading"
 msgstr "下载完成后通知"
 
 #: src/muuli_wdr.cpp:1250
-msgid ""
-"Enabling this will make aMule to show notifications when finished "
-"downloading."
+msgid "Enabling this will make aMule to show notifications when finished downloading."
 msgstr "启用此项将使 aMule 在下载完成时显示通知。"
 
 #: src/muuli_wdr.cpp:1255
@@ -3506,9 +3390,7 @@ msgid "Browser Selection"
 msgstr "浏览器"
 
 #: src/muuli_wdr.cpp:1272
-msgid ""
-"Enter your browser name here. Leave this field empty to use the system "
-"default browser."
+msgid "Enter your browser name here. Leave this field empty to use the system default browser."
 msgstr "在此处输入您的浏览器名称，如要使用系统默认浏览器则请留空。"
 
 #: src/muuli_wdr.cpp:1275 src/muuli_wdr.cpp:1292 src/muuli_wdr.cpp:1569
@@ -3583,9 +3465,7 @@ msgid "Bind local address to IP (empty for any):"
 msgstr "为本地地址绑定 IP (全部绑定则留空):"
 
 #: src/muuli_wdr.cpp:1385
-msgid ""
-"Advanced users only: If you have multiple network interfaces, enter the "
-"address of the interface to which aMule should be bound."
+msgid "Advanced users only: If you have multiple network interfaces, enter the address of the interface to which aMule should be bound."
 msgstr "只限高级用户：如果您有多个网络接口，请输入 aMule 将要绑定接口的地址。"
 
 #: src/muuli_wdr.cpp:1391
@@ -3697,9 +3577,7 @@ msgid "Preallocate disk space for new files"
 msgstr "为新文件预分配磁盘空间"
 
 #: src/muuli_wdr.cpp:1523
-msgid ""
-"For new files preallocates disk space for the whole file, thus reduces "
-"fragmentation"
+msgid "For new files preallocates disk space for the whole file, thus reduces fragmentation"
 msgstr "为新文件分配全部所需的磁盘空间，这样可以减少碎片"
 
 #: src/muuli_wdr.cpp:1528
@@ -3732,16 +3610,12 @@ msgstr "存放下载文件的文件夹"
 
 #: src/muuli_wdr.cpp:1567
 msgid ""
-"Completed downloads are stored here. All files in this folder are "
-"automatically shared with other peers.\n"
-"If this folder also holds files you don't want to share, point it at an "
-"aMule-only sub-folder."
+"Completed downloads are stored here. All files in this folder are automatically shared with other peers.\n"
+"If this folder also holds files you don't want to share, point it at an aMule-only sub-folder."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1570
-msgid ""
-"Pick the folder where completed downloads will be stored. All files in that "
-"folder will be shared with other peers."
+msgid "Pick the folder where completed downloads will be stored. All files in that folder will be shared with other peers."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1574
@@ -3971,12 +3845,8 @@ msgid "IP of the listening interface:"
 msgstr "监听接口的 IP:"
 
 #: src/muuli_wdr.cpp:1852
-msgid ""
-"Enter here a valid ip in the a.b.c.d format for the listening EC interface. "
-"An empty field or 0.0.0.0 will mean any interface."
-msgstr ""
-"在此输入正确的 IP(格式：a.b.c.d)用于监听远程连接接口。空着不填或者 0.0.0.0 表"
-"示任何接口。"
+msgid "Enter here a valid ip in the a.b.c.d format for the listening EC interface. An empty field or 0.0.0.0 will mean any interface."
+msgstr "在此输入正确的 IP(格式：a.b.c.d)用于监听远程连接接口。空着不填或者 0.0.0.0 表示任何接口。"
 
 #: src/muuli_wdr.cpp:1858 src/muuli_wdr.cpp:1904
 msgid "TCP port:"
@@ -4087,9 +3957,7 @@ msgid "Server list"
 msgstr "服务器列表"
 
 #: src/muuli_wdr.cpp:2144
-msgid ""
-"Enter the url to a server.met file here and press the button to the left to "
-"update the list of known servers."
+msgid "Enter the url to a server.met file here and press the button to the left to update the list of known servers."
 msgstr "输入 server.met 文件的地址，再按此按钮更新服务器列表。"
 
 #: src/muuli_wdr.cpp:2149
@@ -4141,9 +4009,7 @@ msgid "Nodes (0)"
 msgstr "节点 (0)"
 
 #: src/muuli_wdr.cpp:2243
-msgid ""
-"Enter the url to a nodes.dat file here and press the button to the left to "
-"update the list of known nodes."
+msgid "Enter the url to a nodes.dat file here and press the button to the left to update the list of known nodes."
 msgstr "输入 nodes.dat 文件的地址并按左边的按钮以更新已知节点列表"
 
 #: src/muuli_wdr.cpp:2246
@@ -4179,9 +4045,7 @@ msgid "Use Secure User Identification"
 msgstr "使用安全用户认证"
 
 #: src/muuli_wdr.cpp:2364
-msgid ""
-"It is recommended to enable this option. You will not receive credits if SUI "
-"is not enabled."
+msgid "It is recommended to enable this option. You will not receive credits if SUI is not enabled."
 msgstr "建议使用此选项，如果安全用户认证没有启用，将不会接收信用证明。"
 
 #: src/muuli_wdr.cpp:2366
@@ -4193,9 +4057,7 @@ msgid "Support Protocol Obfuscation"
 msgstr "支持模糊协议"
 
 #: src/muuli_wdr.cpp:2371
-msgid ""
-"This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
-"connections from other clients."
+msgid "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated connections from other clients."
 msgstr "此选项启用了模糊协议，可让aMule接受其他用户用迷糊协议的连接"
 
 #: src/muuli_wdr.cpp:2373
@@ -4203,9 +4065,7 @@ msgid "Use obfuscation for outgoing connections"
 msgstr "为传出连接使用模糊协议"
 
 #: src/muuli_wdr.cpp:2375
-msgid ""
-"This option makes aMule use Protocol Obfuscation when connecting other "
-"clients/servers."
+msgid "This option makes aMule use Protocol Obfuscation when connecting other clients/servers."
 msgstr "此选项使aMule在连接其他用户或服务器时使用模糊协议。"
 
 #: src/muuli_wdr.cpp:2377
@@ -4213,12 +4073,8 @@ msgid "Accept only obfuscated connections"
 msgstr "仅接受模糊协议连接"
 
 #: src/muuli_wdr.cpp:2378
-msgid ""
-"This option makes aMule only accept obfuscated connections. You will have "
-"less sources, but all your traffic will be obfuscated"
-msgstr ""
-"此选项让aMule只接受模糊协议连接，源相对来说会更少，但全部数据包都将进行迷惑处"
-"理"
+msgid "This option makes aMule only accept obfuscated connections. You will have less sources, but all your traffic will be obfuscated"
+msgstr "此选项让aMule只接受模糊协议连接，源相对来说会更少，但全部数据包都将进行迷惑处理"
 
 #: src/muuli_wdr.cpp:2383
 msgid "Everybody"
@@ -4245,8 +4101,7 @@ msgid "Filter clients"
 msgstr "过滤用户"
 
 #: src/muuli_wdr.cpp:2399
-msgid ""
-"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr "过滤在文件~/.aMule/ipfilter.dat中定义的用户IP"
 
 #: src/muuli_wdr.cpp:2401
@@ -4254,8 +4109,7 @@ msgid "Filter servers"
 msgstr "过滤服务器"
 
 #: src/muuli_wdr.cpp:2403
-msgid ""
-"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr "过滤在文件~/.aMule/ipfilter.dat中定义的服务器IP"
 
 #: src/muuli_wdr.cpp:2407
@@ -4291,9 +4145,7 @@ msgid "Paranoid handling of non-matching IPs"
 msgstr "处理不匹配的 IP"
 
 #: src/muuli_wdr.cpp:2436
-msgid ""
-"Rejects packet if the client ip is different from the ip where the packet is "
-"received from. Use with caution."
+msgid "Rejects packet if the client ip is different from the ip where the packet is received from. Use with caution."
 msgstr "拒绝用户IP不同于接收包中的IP的数据包，请谨慎使用。"
 
 #: src/muuli_wdr.cpp:2438
@@ -4302,9 +4154,7 @@ msgstr "在可用的情况下使用系统级别的 ipfilter.dat"
 
 #: src/muuli_wdr.cpp:2439
 #, fuzzy
-msgid ""
-"If there's no local ipfilter.dat found, allow usage of a system-wide "
-"ipfilter file."
+msgid "If there's no local ipfilter.dat found, allow usage of a system-wide ipfilter file."
 msgstr "如果没有找到本地 ipfilter.dat 文件，则允许使用系统级的IP过滤文件。"
 
 #: src/muuli_wdr.cpp:2456
@@ -4312,9 +4162,7 @@ msgid "Enable Online-Signature"
 msgstr "启用在线统计"
 
 #: src/muuli_wdr.cpp:2458
-msgid ""
-"Enables the writing of the OS file, which can be used by external apps to "
-"create signatures and the like."
+msgid "Enables the writing of the OS file, which can be used by external apps to create signatures and the like."
 msgstr "输出该文件以用于在线统计等等。"
 
 #: src/muuli_wdr.cpp:2462
@@ -4330,8 +4178,7 @@ msgid "Save online signature file in: "
 msgstr "保存在线统计文件在："
 
 #: src/muuli_wdr.cpp:2479
-msgid ""
-"Click here to select the directory containing the the Online Signature files."
+msgid "Click here to select the directory containing the the Online Signature files."
 msgstr "点击选择包含在线统计文件的目录。"
 
 #: src/muuli_wdr.cpp:2499
@@ -4686,15 +4533,12 @@ msgid "%s (Disk: %s)"
 msgstr "%s (磁盘：%s)"
 
 #: src/PartFileConvertDlg.cpp:204
-msgid ""
-"Please choose a folder to search for temporary downloads! (subfolders will "
-"be included)"
+msgid "Please choose a folder to search for temporary downloads! (subfolders will be included)"
 msgstr "请选择一个目录用于搜索临时下载文件！（子目录也将被包括）"
 
 #: src/PartFileConvertDlg.cpp:208
 #, fuzzy
-msgid ""
-"Do you want the source files of successfully imported downloads be deleted?"
+msgid "Do you want the source files of successfully imported downloads be deleted?"
 msgstr "要删除成功导入下载的源文件吗？"
 
 #: src/PartFileConvertDlg.cpp:209
@@ -4799,16 +4643,10 @@ msgstr "读取 part 文件的种子文件出错（%s - %s）：%s"
 
 #: src/PartFile.cpp:1252 src/PartFile.cpp:1279
 #, c-format
-msgid ""
-"Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
-"%s|"
-msgid_plural ""
-"Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
-"|%s|"
-msgstr[0] ""
-"发现损坏的数据块 (%d) 于%d段文件 %s - 文件结果校检码 |%s| 文件校检码 |%s|"
-msgstr[1] ""
-"发现损坏的数据块 (%d) 于%d段文件 %s - 文件结果校检码 |%s| 文件校检码 |%s|"
+msgid "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |%s|"
+msgid_plural "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|"
+msgstr[0] "发现损坏的数据块 (%d) 于%d段文件 %s - 文件结果校检码 |%s| 文件校检码 |%s|"
+msgstr[1] "发现损坏的数据块 (%d) 于%d段文件 %s - 文件结果校检码 |%s| 文件校检码 |%s|"
 
 #: src/PartFile.cpp:1294
 #, c-format
@@ -4851,24 +4689,17 @@ msgstr "警告：无法为已下载的数据段计算校检码 - 校检码集不
 
 #: src/PartFile.cpp:2468
 #, c-format
-msgid ""
-"ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
-"never happen"
-msgstr ""
-"警告：无法生成校检码 - 校检码集不完整（%s）， 正常情况下这是不应该发生的"
+msgid "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"
+msgstr "警告：无法生成校检码 - 校检码集不完整（%s）， 正常情况下这是不应该发生的"
 
 #: src/PartFile.cpp:2489
 #, c-format
-msgid ""
-"Part %u of '%s' marked complete but partfile is shorter than expected (have "
-"%llu bytes, need %llu); reopening gap for re-download."
+msgid "Part %u of '%s' marked complete but partfile is shorter than expected (have %llu bytes, need %llu); reopening gap for re-download."
 msgstr ""
 
 #: src/PartFile.cpp:2501 src/PartFile.cpp:2506
 #, c-format
-msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
-"'%s' with length %u: %s"
+msgid "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"
 msgstr "文件结束 当下载  %u 长度 %u (最大 %u) partfile '%s'长度 %u: %s"
 
 #: src/PartFile.cpp:3223
@@ -5082,8 +4913,7 @@ msgid "Invalid category found, skipping"
 msgstr "发现无效的分类，跳过"
 
 #: src/Preferences.cpp:1848
-msgid ""
-"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP端口不可高于65532，因为服务器UDP端口值为TCP端口值+3"
 
 #: src/Preferences.cpp:1849
@@ -5158,10 +4988,7 @@ msgid "Tray icon support requires libayatana-appindicator3 at compile time."
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:293
-msgid ""
-"Not available on Wayland: the protocol does not report when a window is "
-"minimized, so this option cannot intercept the system minimize button. "
-"Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
+msgid "Not available on Wayland: the protocol does not report when a window is minimized, so this option cannot intercept the system minimize button. Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:333
@@ -5286,9 +5113,7 @@ msgstr ""
 "如果现在不重启的话，出现任何问题可别怪别人。\n"
 
 #: src/PrefsUnifiedDlg.cpp:912
-msgid ""
-"Could not register aMule for autostart at login. The autostart store may be "
-"read-only."
+msgid "Could not register aMule for autostart at login. The autostart store may be read-only."
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:913
@@ -5432,9 +5257,7 @@ msgid ""
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1566
-msgid ""
-"Sharing them recursively will publish every file underneath on the eD2k/Kad "
-"networks. Do you really want to do this?"
+msgid "Sharing them recursively will publish every file underneath on the eD2k/Kad networks. Do you really want to do this?"
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1568
@@ -5479,9 +5302,7 @@ msgid "Kad search: requested wider results from one more peer."
 msgstr ""
 
 #: src/SearchDlg.cpp:438
-msgid ""
-"Kad search: no peer left to reask for more results (cap reached or no "
-"responses yet)."
+msgid "Kad search: no peer left to reask for more results (cap reached or no responses yet)."
 msgstr ""
 
 #: src/SearchDlg.cpp:543
@@ -5546,9 +5367,7 @@ msgid "New"
 msgstr "新建"
 
 #: src/ServerConnect.cpp:74
-msgid ""
-"Failed to connect to all obfuscated servers listed. Making another pass "
-"without obfuscation."
+msgid "Failed to connect to all obfuscated servers listed. Making another pass without obfuscation."
 msgstr "无法连接至列出的全部模糊协议服务器，尝试不使用模糊协议。"
 
 #: src/ServerConnect.cpp:79
@@ -5687,9 +5506,7 @@ msgid "Server added: Server at [%s:%d] using the name '%s'."
 msgstr "成功添加服务器：[%s:%d] 服务器名为 '%s'"
 
 #: src/ServerList.cpp:355
-msgid ""
-"You are connected to the server you are trying to delete. please disconnect "
-"first."
+msgid "You are connected to the server you are trying to delete. please disconnect first."
 msgstr "您在连接您已决定删除的服务器，请断开连接。"
 
 #: src/ServerList.cpp:527
@@ -5711,12 +5528,8 @@ msgid "Finished downloading the server list from %s"
 msgstr "从%s下载服务器列表完成"
 
 #: src/ServerList.cpp:884
-msgid ""
-"No server list address entry in 'addresses.dat' found. Please paste a valid "
-"server list address into this file in order to auto-update your server list"
-msgstr ""
-"addresses.dat文件内没有服务器列表地址，请粘贴一个有效服务器列表地址到该文件以"
-"自动更新服务器列表."
+msgid "No server list address entry in 'addresses.dat' found. Please paste a valid server list address into this file in order to auto-update your server list"
+msgstr "addresses.dat文件内没有服务器列表地址，请粘贴一个有效服务器列表地址到该文件以自动更新服务器列表."
 
 #: src/ServerList.cpp:903
 #, c-format
@@ -5738,9 +5551,7 @@ msgid "Failed to download the server list from %s"
 msgstr "无法从 %s 下载服务器列表"
 
 #: src/ServerList.cpp:1006
-msgid ""
-"Local server is filtered by the IPFilters, reconnecting to a different "
-"server!"
+msgid "Local server is filtered by the IPFilters, reconnecting to a different server!"
 msgstr "本地服务器被IP过滤器过滤掉了，正在重新连接至其他服务器！"
 
 #: src/ServerListCtrl.cpp:87
@@ -5777,9 +5588,7 @@ msgid "Version"
 msgstr "版本"
 
 #: src/ServerListCtrl.cpp:149
-msgid ""
-"You are connected to a server you are trying to delete. Please disconnect "
-"first. The server was NOT deleted."
+msgid "You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."
 msgstr "现在正连接在要删除的服务器。该服务器暂时无法删除。请先断开连接。"
 
 #: src/ServerListCtrl.cpp:152
@@ -5865,8 +5674,7 @@ msgstr "警告: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:320
 #, c-format
-msgid ""
-"Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
+msgid "Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
 msgstr ""
 
 #: src/ServerSocket.cpp:362
@@ -5883,8 +5691,7 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\t大概这是因为您处在防火墙或路由器后面。"
 
 #: src/ServerSocket.cpp:366
-msgid ""
-"\tFor more information, please refer to https://amule-org.github.io/docs"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
 msgstr "\t如需了解更多相关信息，请访问 https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:422
@@ -6470,9 +6277,7 @@ msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "无效 IP 地址格式，请使用 xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:399
-msgid ""
-"This command requires an argument. Valid arguments: 'all', filename, or a "
-"number.\n"
+msgid "This command requires an argument. Valid arguments: 'all', filename, or a number.\n"
 msgstr "此命令需要一个参数，合法参数为 'all'、文件名或一个数字。\n"
 
 #: src/TextClient.cpp:435
@@ -6665,14 +6470,11 @@ msgstr "显示全部统计树。"
 
 #: src/TextClient.cpp:989
 msgid ""
-"Optionally, a number in the range 0-255 can be passed as an argument to "
-"this\n"
-"command, which tells how many entries of the client version subtrees should "
-"be\n"
+"Optionally, a number in the range 0-255 can be passed as an argument to this\n"
+"command, which tells how many entries of the client version subtrees should be\n"
 "shown. Passing 0 or omitting it means 'unlimited'.\n"
 "\n"
-"Example: 'statistics 5' will show only the top 5 versions for each client "
-"type.\n"
+"Example: 'statistics 5' will show only the top 5 versions for each client type.\n"
 msgstr ""
 "可选，一个0-255之间的数字可作为此命令的参数， \n"
 "用于设置用户版本树显示的节点数量。 n参数设为0表示无限制。\n"
@@ -6723,8 +6525,7 @@ msgstr "连接至网络。"
 #: src/TextClient.cpp:1003
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
-"You may also optionally specify a server address in IP:Port form, to connect "
-"to\n"
+"You may also optionally specify a server address in IP:Port form, to connect to\n"
 "that server only. The IP must be a dotted decimal IPv4 address,\n"
 "or a resolvable DNS name."
 msgstr ""
@@ -6766,8 +6567,7 @@ msgid ""
 "The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
 "*) a server link (ed2k://|server|...), it will be added to the server list,\n"
-"*) or a serverlist link, in which case all servers in the list will be added "
-"to the\n"
+"*) or a serverlist link, in which case all servers in the list will be added to the\n"
 "   server list.\n"
 "\n"
 "The magnet link must contain the eD2k hash and file length.\n"
@@ -6938,8 +6738,7 @@ msgstr "开始下载文件"
 #: src/TextClient.cpp:1077
 msgid ""
 "The number of a file from the last search has to be given.\n"
-"Example: 'download 12' will start to download the file with the number 12 of "
-"the previous search.\n"
+"Example: 'download 12' will start to download the file with the number 12 of the previous search.\n"
 msgstr ""
 "必须指定上次搜索的文件数量。\n"
 "示例：'download 12' 将开始下载上次搜索结果中的12个文件。\n"
@@ -7183,9 +6982,7 @@ msgid "Enter here the file you want to compute the eD2k link"
 msgstr "在此处输入需要生成eD2k链接的文件名"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:128
-msgid ""
-"Enter here the URL you want to add to the eD2k link: Add / at the end to let "
-"aLinkCreator append the current file name"
+msgid "Enter here the URL you want to add to the eD2k link: Add / at the end to let aLinkCreator append the current file name"
 msgstr "在这里输入要添加的eD2k链接，在结尾加 '/' 以附加此文件名"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144
@@ -7197,9 +6994,7 @@ msgid "Create link with part-hashes"
 msgstr "创建有文件块校检码的链接"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:161
-msgid ""
-"Help to spread new and rare files faster, at the cost of an increased link "
-"size"
+msgid "Help to spread new and rare files faster, at the cost of an increased link size"
 msgstr "该选项可以帮助新文件和稀有文件更快散播，只是链接长度会增加"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:187
@@ -7832,21 +7627,15 @@ msgid "Place an aMule shortcut on the desktop."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:45
-msgid ""
-"Launch aMule automatically when the current user logs in (per-user setting)."
+msgid "Launch aMule automatically when the current user logs in (per-user setting)."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:46
-msgid ""
-"Remove aMule application files, Start Menu / desktop shortcuts, autostart "
-"Run-key entry, and Add/Remove Programs entry (required)."
+msgid "Remove aMule application files, Start Menu / desktop shortcuts, autostart Run-key entry, and Add/Remove Programs entry (required)."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:47
-msgid ""
-"Permanently delete %APPDATA%\\aMule for the current user (aMule.conf, ED2K "
-"server list, Kad nodes, partfiles, IP filters, friends list). Leave "
-"unchecked to keep your settings."
+msgid "Permanently delete %APPDATA%\\aMule for the current user (aMule.conf, ED2K server list, Kad nodes, partfiles, IP filters, friends list). Leave unchecked to keep your settings."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:53
@@ -7868,13 +7657,11 @@ msgstr ""
 #: packaging/windows/installer_strings.c:56
 msgid ""
 "Could not remove the previous aMule installation at $0.\r\n"
-"Please close any running aMule processes and try again, or uninstall the "
-"previous version manually first."
+"Please close any running aMule processes and try again, or uninstall the previous version manually first."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:57
-msgid ""
-"aMule appears to be running. Please close it and re-run the uninstaller."
+msgid "aMule appears to be running. Please close it and re-run the uninstaller."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:58

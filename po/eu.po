@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 16:32+0200\n"
+"POT-Creation-Date: 2026-06-10 16:42+0200\n"
 "PO-Revision-Date: 2020-03-04 12:26+0100\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <librezale@librezale.org>\n"
@@ -40,10 +40,7 @@ msgstr "Emandako erabiltzaile egiaztapena ez da baliozkoa!"
 
 #: src/AppImageIntegration.cpp:221
 msgid ""
-"aMule can install a desktop launcher and icon into your home directory so it "
-"appears in your application menu like a regularly installed app. This is "
-"reversible — the files live under ~/.local/share/applications and ~/.local/"
-"share/icons and can be removed at any time.\n"
+"aMule can install a desktop launcher and icon into your home directory so it appears in your application menu like a regularly installed app. This is reversible — the files live under ~/.local/share/applications and ~/.local/share/icons and can be removed at any time.\n"
 "\n"
 "Install desktop integration now?"
 msgstr ""
@@ -66,9 +63,7 @@ msgid "Don't ask again"
 msgstr ""
 
 #: src/AppImageIntegration.cpp:248
-msgid ""
-"Cannot install desktop integration: the APPDIR environment variable is not "
-"set. This usually means the AppImage was launched in a non-standard way."
+msgid "Cannot install desktop integration: the APPDIR environment variable is not set. This usually means the AppImage was launched in a non-standard way."
 msgstr ""
 
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
@@ -79,16 +74,12 @@ msgstr "Konexioak huts egin du "
 
 #: src/AppImageIntegration.cpp:259
 #, c-format
-msgid ""
-"Cannot install desktop integration: failed to create %s. Check that your "
-"home directory is writable."
+msgid "Cannot install desktop integration: failed to create %s. Check that your home directory is writable."
 msgstr ""
 
 #: src/AppImageIntegration.cpp:271
 #, c-format
-msgid ""
-"Cannot install desktop integration: failed to write %s. Check that your home "
-"directory is writable."
+msgid "Cannot install desktop integration: failed to write %s. Check that your home directory is writable."
 msgstr ""
 
 #: src/AppImageIntegration.cpp:281
@@ -97,12 +88,9 @@ msgstr ""
 
 #: src/AppImageIntegration.cpp:284
 msgid ""
-"aMule has been added to your application menu. You can now launch it from "
-"your applications list, and the launcher will run this same AppImage.\n"
+"aMule has been added to your application menu. You can now launch it from your applications list, and the launcher will run this same AppImage.\n"
 "\n"
-"On some desktops, aMule may need to restart for the dock / taskbar icon to "
-"bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick "
-"this up live, but a restart is the safe fallback if the icon stays generic.\n"
+"On some desktops, aMule may need to restart for the dock / taskbar icon to bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick this up live, but a restart is the safe fallback if the icon stays generic.\n"
 "\n"
 "Restart aMule now?"
 msgstr ""
@@ -122,8 +110,7 @@ msgstr ""
 #: src/amuleAppCommon.cpp:174
 #, c-format
 msgid "Could not add %u link from ED2KLinks file (see log for details)."
-msgid_plural ""
-"Could not add %u links from ED2KLinks file (see log for details)."
+msgid_plural "Could not add %u links from ED2KLinks file (see log for details)."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -140,11 +127,8 @@ msgid "Failed to open ED2KLinks file."
 msgstr "Huts ED2KLinks fitxategia irekitzerakoan."
 
 #: src/amuleAppCommon.cpp:252
-msgid ""
-"WARNING: You can't add yourself as a source for an eD2k link while having a "
-"lowid."
-msgstr ""
-"KONTUZ: Ezin duzu zure burua ezarri eD2k lotura batean Id baxua duzunean."
+msgid "WARNING: You can't add yourself as a source for an eD2k link while having a lowid."
+msgstr "KONTUZ: Ezin duzu zure burua ezarri eD2k lotura batean Id baxua duzunean."
 
 #: src/amule.cpp:251
 msgid "Now, exiting main app..."
@@ -177,12 +161,8 @@ msgid "Memory debug results for aMule exit:"
 msgstr "aMule ixtearen memoria arazte irteera:"
 
 #: src/amule.cpp:574
-msgid ""
-"Your locale has been changed to System Default due to a configuration "
-"change. Sorry."
-msgstr ""
-"Zure lokalak sistemako lehenetsira aldatu dira konfigurazio aldaketa bat "
-"dela eta. Barkatu."
+msgid "Your locale has been changed to System Default due to a configuration change. Sorry."
+msgstr "Zure lokalak sistemako lehenetsira aldatu dira konfigurazio aldaketa bat dela eta. Barkatu."
 
 #: src/amule.cpp:574 src/amule.cpp:1264 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:355
@@ -234,14 +214,8 @@ msgstr "web zerbitzaria abiarazirik %d pid-arekin"
 
 #: src/amule.cpp:865
 #, fuzzy
-msgid ""
-"You requested to run web server on startup, but the amuleweb binary cannot "
-"be run. Please install the package containing aMule web server, or build "
-"aMule from source with -DBUILD_WEBSERVER=YES and install it."
-msgstr ""
-"Abioan web-zerbitzaria exekutatzea eskatu duzu, baina amuleweb bitarra ezin "
-"da exekutatu. Mesedez instalatu amule web zerbitzaria duen paketea edo "
-"konpilatu ezazu amule --enable-webserver erabilian eta make install egin"
+msgid "You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or build aMule from source with -DBUILD_WEBSERVER=YES and install it."
+msgstr "Abioan web-zerbitzaria exekutatzea eskatu duzu, baina amuleweb bitarra ezin da exekutatu. Mesedez instalatu amule web zerbitzaria duen paketea edo konpilatu ezazu amule --enable-webserver erabilian eta make install egin"
 
 #: src/amule.cpp:948
 #, c-format
@@ -266,8 +240,7 @@ msgstr ""
 "\n"
 "Honek IDBaxua izango duzula esna nahi du.\n"
 "\n"
-"Egiaztatu zure sarea ataka sarrera eta irteerarako irekirik dagoela "
-"ziurtatzeko."
+"Egiaztatu zure sarea ataka sarrera eta irteerarako irekirik dagoela ziurtatzeko."
 
 #: src/amule.cpp:1061
 msgid "Failed to create OnlineSig File"
@@ -278,12 +251,8 @@ msgid "Failed to create aMule OnlineSig File"
 msgstr "Huts aMule online sinadura fitxategia sortzerakoan"
 
 #: src/amule.cpp:1241
-msgid ""
-"The selected locale seems not to be installed on your box. (Note: I'll try "
-"to set it anyway)"
-msgstr ""
-"Aukeratutako lokalak ez dirudi zure sisteman instalaturik. (Oharra: Hala ere "
-"erabiltzen saiatuko da)"
+msgid "The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"
+msgstr "Aukeratutako lokalak ez dirudi zure sisteman instalaturik. (Oharra: Hala ere erabiltzen saiatuko da)"
 
 #: src/amule.cpp:1250
 #, c-format
@@ -300,28 +269,19 @@ msgstr "ez gara ezer apurtu, zure etxea erre, edo zure zakurra akatzen\n"
 
 #: src/amule.cpp:1254
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
-msgstr ""
-"badu ere kargu egingo. Baina erabiltzeko ziurra izan *beharko* litzateke.\n"
+msgstr "badu ere kargu egingo. Baina erabiltzeko ziurra izan *beharko* litzateke.\n"
 
 #: src/amule.cpp:1259
 msgid "More information, support and new releases can found at our homepage,\n"
-msgstr ""
-"Argibide gehiago, laguntza eta bertsio berriak gure webgunean aurki "
-"ditzakezu,\n"
+msgstr "Argibide gehiago, laguntza eta bertsio berriak gure webgunean aurki ditzakezu,\n"
 
 #: src/amule.cpp:1260
-msgid ""
-"at https://amule-org.github.io, or in our IRC channel #aMule at "
-"irc.libera.chat.\n"
-msgstr ""
-"https://amule-org.github.io -en, edo irc.libera.chat IRC sareko #aMule "
-"kanalean.\n"
+msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.libera.chat.\n"
+msgstr "https://amule-org.github.io -en, edo irc.libera.chat IRC sareko #aMule kanalean.\n"
 
 #: src/amule.cpp:1262
-msgid ""
-"Feel free to report any bugs to https://github.com/amule-org/amule/issues"
-msgstr ""
-"Edozein akatsen berri emateko:https://github.com/amule-org/amule/issues"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgstr "Edozein akatsen berri emateko:https://github.com/amule-org/amule/issues"
 
 #: src/amule.cpp:1275
 msgid ""
@@ -385,12 +345,8 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Zure aMule bertsioa %i.%i.%i da eta azken bertsioa %li.%li.%li da"
 
 #: src/amule.cpp:1994
-msgid ""
-"The latest version can always be found at https://github.com/amule-org/amule/"
-"releases/latest"
-msgstr ""
-"Azken bertsioa beti https://github.com/amule-org/amule/releases/latest "
-"webgunean aurki daiteke"
+msgid "The latest version can always be found at https://github.com/amule-org/amule/releases/latest"
+msgstr "Azken bertsioa beti https://github.com/amule-org/amule/releases/latest webgunean aurki daiteke"
 
 #: src/amule.cpp:1996
 #, c-format
@@ -462,43 +418,21 @@ msgid "Disconnected from Kad"
 msgstr "Kad-etik deskonektatua"
 
 #: src/amule.cpp:2292
-msgid ""
-"Kad network cannot be used if UDP port is disabled on preferences, not "
-"starting."
-msgstr ""
-"Kad sarea ezin da erabili hobespenetan UDP ataka ezgaiturik badago, ez da "
-"abiaraziko."
+msgid "Kad network cannot be used if UDP port is disabled on preferences, not starting."
+msgstr "Kad sarea ezin da erabili hobespenetan UDP ataka ezgaiturik badago, ez da abiaraziko."
 
 #: src/amule.cpp:2295
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad sarea hobespenetan ezgaiturik, ez da konektatuko."
 
 #: src/amuled.cpp:142
-msgid ""
-"ERROR: aMule daemon cannot be used when external connections are disabled. "
-"To enable External Connections, use either a normal aMule, start amuled with "
-"the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in "
-"the file ~/.aMule/amule.conf"
-msgstr ""
-"ERROREA: aMule deabrua ezin da erabili kanpo konexioak ezgaiturik badaude. "
-"Kanpo konexioak gaitzeko aMule arrunta erabili, amuled --ec-config aukeraz "
-"abiarazi edo ezarri \"AcceptExternalConnections\" gakoa 1 balioaz ~/.aMule/"
-"amule.conf fitxategian"
+msgid "ERROR: aMule daemon cannot be used when external connections are disabled. To enable External Connections, use either a normal aMule, start amuled with the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf"
+msgstr "ERROREA: aMule deabrua ezin da erabili kanpo konexioak ezgaiturik badaude. Kanpo konexioak gaitzeko aMule arrunta erabili, amuled --ec-config aukeraz abiarazi edo ezarri \"AcceptExternalConnections\" gakoa 1 balioaz ~/.aMule/amule.conf fitxategian"
 
 #: src/amuled.cpp:145
 #, fuzzy
-msgid ""
-"ERROR: A valid password is required to use external connections, and aMule "
-"daemon cannot be used without external connections. To run aMule daemon, you "
-"must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
-"appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://amule-org.github.io/docs"
-msgstr ""
-"ERROREA: Pasahitz erabilgarri bat behar da kanpo konexioak onartzeko, eta "
-"aMule deabrua ezin da erabili kanpo konexiorik gabe. aMule deabrua "
-"abiarazteko \"ECPassword\" eremua dagokion balioarekin ezarri behar duzu "
-"~/.aMule/amule.conf fitxategian. Exekutatu amule --ec-config banderarekin "
-"pasahitza ezartzeko. Argibide gehiago https://amule-org.github.io/docs gunean"
+msgid "ERROR: A valid password is required to use external connections, and aMule daemon cannot be used without external connections. To run aMule daemon, you must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an appropriate value. Execute amuled with the flag --ec-config to set the password. More information can be found at https://amule-org.github.io/docs"
+msgstr "ERROREA: Pasahitz erabilgarri bat behar da kanpo konexioak onartzeko, eta aMule deabrua ezin da erabili kanpo konexiorik gabe. aMule deabrua abiarazteko \"ECPassword\" eremua dagokion balioarekin ezarri behar duzu ~/.aMule/amule.conf fitxategian. Exekutatu amule --ec-config banderarekin pasahitza ezartzeko. Argibide gehiago https://amule-org.github.io/docs gunean"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -528,12 +462,8 @@ msgid "Running on %s"
 msgstr "%s-n abiarazirik"
 
 #: src/amuleDlg.cpp:250
-msgid ""
-"Visit https://github.com/amule-org/amule/releases/latest to check if a new "
-"version is available."
-msgstr ""
-"Bisitatu https://github.com/amule-org/amule/releases/latest gunea bertsio "
-"berriagorik eskuragarri dagoen jakiteko."
+msgid "Visit https://github.com/amule-org/amule/releases/latest to check if a new version is available."
+msgstr "Bisitatu https://github.com/amule-org/amule/releases/latest gunea bertsio berriagorik eskuragarri dagoen jakiteko."
 
 #: src/amuleDlg.cpp:276
 msgid "FATAL ERROR: Failed to create Timer"
@@ -598,8 +528,7 @@ msgstr " Copyright (c) 2002-2011 Petar Maymounkov ( petar@maymounkov.org )\n"
 
 #: src/amuleDlg.cpp:534
 msgid "https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
-msgstr ""
-"https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
+msgstr "https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
 
 #: src/amuleDlg.cpp:537 src/KadDlg.cpp:193 src/PartFile.cpp:1032
 #: src/PrefsUnifiedDlg.cpp:712 src/PrefsUnifiedDlg.cpp:837
@@ -875,8 +804,7 @@ msgstr "Konexioa itxita - aMule itxi egin da ziurrenik."
 #, c-format
 msgid ""
 "Connection timed out. Unable to reach %s:%d within the allotted time.\n"
-"Please check the host, port and that aMule is running with External "
-"Connections enabled."
+"Please check the host, port and that aMule is running with External Connections enabled."
 msgstr ""
 
 #: src/amule-remote-gui.cpp:638
@@ -894,9 +822,7 @@ msgstr "Lotura baliogabea edo zerrendan dagoeneko."
 #: src/amule-remote-gui.cpp:900
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
-msgstr ""
-"Ezin da '%s' direktorioa sortu '%s' kategoriarentzat, '%s' direktorioa "
-"mantenduko da."
+msgstr "Ezin da '%s' direktorioa sortu '%s' kategoriarentzat, '%s' direktorioa mantenduko da."
 
 #: src/amule-remote-gui.cpp:1724 src/BaseClient.cpp:1772
 #: src/BaseClient.cpp:2311 src/BaseClient.cpp:2327 src/BaseClient.cpp:2603
@@ -955,26 +881,16 @@ msgstr "Eskaerak: %s\n"
 #: src/BaseClient.cpp:2018
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
-"Fitxategi estatistikak saio honentzat. Onarturik %d - eskakizun %d-etik, %s "
-"transferiturik\n"
-msgstr[1] ""
-"Fitxategi estatistikak saio honentzat. Onarturik %d - %d eskakizunetik, %s "
-"transferiturik\n"
+msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] "Fitxategi estatistikak saio honentzat. Onarturik %d - eskakizun %d-etik, %s transferiturik\n"
+msgstr[1] "Fitxategi estatistikak saio honentzat. Onarturik %d - %d eskakizunetik, %s transferiturik\n"
 
 #: src/BaseClient.cpp:2021
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
-"Fitxategi estatistikak saio guztientzat: Onarturik %d eskakizun %d-etik, %s "
-"transferiturik\n"
-msgstr[1] ""
-"Fitxategi estatistikak saio guztientzat: Onarturik %d %d eskakizunetik, %s "
-"transferiturik\n"
+msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] "Fitxategi estatistikak saio guztientzat: Onarturik %d eskakizun %d-etik, %s transferiturik\n"
+msgstr[1] "Fitxategi estatistikak saio guztientzat: Onarturik %d %d eskakizunetik, %s transferiturik\n"
 
 #: src/BaseClient.cpp:2024
 msgid "Requested unknown file"
@@ -992,12 +908,8 @@ msgstr "'%s'-ren mezu berria (IP:%s)"
 
 #: src/BaseClient.cpp:2880
 #, c-format
-msgid ""
-"User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
-"Ignored"
-msgstr ""
-"%s (%u) erabiltzaileak ez dagoen %s direktorioaren partekatutako fitxategi "
-"zerrenda eskatu du -> Ukatua"
+msgid "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> Ignored"
+msgstr "%s (%u) erabiltzaileak ez dagoen %s direktorioaren partekatutako fitxategi zerrenda eskatu du -> Ukatua"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:112
 #, c-format
@@ -1006,8 +918,7 @@ msgstr "Oharra: %s ezin da ireki."
 
 #: src/CanceledFileList.cpp:61
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
-msgstr ""
-"Abisua: Utzitako fitxategi zerrenda hondaturik dago, buru baliogabeak ditu."
+msgstr "Abisua: Utzitako fitxategi zerrenda hondaturik dago, buru baliogabeak ditu."
 
 #: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:158
 #, c-format
@@ -1045,11 +956,8 @@ msgid "You must specify a path for the category!"
 msgstr "Kategoriarentzat bide bat ezarri behar duzu!"
 
 #: src/CatDialog.cpp:162
-msgid ""
-"Failed to create incoming dir for category. Please specify a valid path!"
-msgstr ""
-"Huts kategoriarentzat sarrera karpeta sortzerakoan. Mesedez ezarri baliozko "
-"bide bat!"
+msgid "Failed to create incoming dir for category. Please specify a valid path!"
+msgstr "Huts kategoriarentzat sarrera karpeta sortzerakoan. Mesedez ezarri baliozko bide bat!"
 
 #: src/ChatSelector.cpp:129
 #, c-format
@@ -1069,19 +977,12 @@ msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Huts bezerora konektatzerakoan / Konexio galdua ***"
 
 #: src/ChatSelector.cpp:335
-msgid ""
-"*** You have passed the captcha check and the user has received your "
-"message. ***"
-msgstr ""
-"*** Kaptxa egiaztapena pasa duzu eta erabiltzaileak zure mezua jaso du. ***"
+msgid "*** You have passed the captcha check and the user has received your message. ***"
+msgstr "*** Kaptxa egiaztapena pasa duzu eta erabiltzaileak zure mezua jaso du. ***"
 
 #: src/ChatSelector.cpp:336
-msgid ""
-"*** Your response to the captcha was wrong and your message has been "
-"ignored. You can request a new captcha by sending a new message. ***"
-msgstr ""
-"*** Kaptxa egiaztapena huts egin du eta zure mezua baztertua izan da. Mezu "
-"berri bat bidaliaz kaptxa berri bat eskatu dezakezu. ***"
+msgid "*** Your response to the captcha was wrong and your message has been ignored. You can request a new captcha by sending a new message. ***"
+msgstr "*** Kaptxa egiaztapena huts egin du eta zure mezua baztertua izan da. Mezu berri bat bidaliaz kaptxa berri bat eskatu dezakezu. ***"
 
 #: src/ChatWnd.cpp:98
 msgid "Chat"
@@ -1187,46 +1088,32 @@ msgstr "Ez dago erabilgarri"
 #: src/ClientTCPSocket.cpp:778
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
-msgstr ""
-"%s (%u) erabiltzaileak zure partekatutako fitxategi zerrenda eskatu du -> "
-"Onartua"
+msgstr "%s (%u) erabiltzaileak zure partekatutako fitxategi zerrenda eskatu du -> Onartua"
 
 #: src/ClientTCPSocket.cpp:799
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
-msgstr ""
-"%s (%u) erabiltzaileak zure partekatutako fitxategi zerrenda eskatu du -> "
-"Ukatua"
+msgstr "%s (%u) erabiltzaileak zure partekatutako fitxategi zerrenda eskatu du -> Ukatua"
 
 #: src/ClientTCPSocket.cpp:831
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
-msgstr ""
-"%s (%u) erabiltzaileak zure partekatutako direktorioen zerrenda eskatu du -> "
-"Onarturik"
+msgstr "%s (%u) erabiltzaileak zure partekatutako direktorioen zerrenda eskatu du -> Onarturik"
 
 #: src/ClientTCPSocket.cpp:837
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
-msgstr ""
-"%s (%u) erabiltzaileak zure partekatutako direktorioen zerrenda eskatu du -> "
-"Ukaturik"
+msgstr "%s (%u) erabiltzaileak zure partekatutako direktorioen zerrenda eskatu du -> Ukaturik"
 
 #: src/ClientTCPSocket.cpp:862
 #, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
-msgstr ""
-"%s (%u) erabiltzaileak '%s' direktorioaren partekatutako fitxategi zerrenda "
-"eskatu du -> Onartua"
+msgid "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
+msgstr "%s (%u) erabiltzaileak '%s' direktorioaren partekatutako fitxategi zerrenda eskatu du -> Onartua"
 
 #: src/ClientTCPSocket.cpp:875
 #, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
-msgstr ""
-"%s (%u) erabiltzaileak '%s' direktorioaren partekatutako fitxategi zerrenda "
-"eskatu du -> Ukatua"
+msgid "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
+msgstr "%s (%u) erabiltzaileak '%s' direktorioaren partekatutako fitxategi zerrenda eskatu du -> Ukatua"
 
 #: src/ClientTCPSocket.cpp:894
 #, c-format
@@ -1236,35 +1123,27 @@ msgstr "%s (%u) erabiltzailearen '%s' partekatutako direktorioa"
 #: src/ClientTCPSocket.cpp:917
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
-msgstr ""
-"%s (%u) erabiltzailea eskatu gabeko partekatutako direktorioak bidali ditu."
+msgstr "%s (%u) erabiltzailea eskatu gabeko partekatutako direktorioak bidali ditu."
 
 #: src/ClientTCPSocket.cpp:932
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory '%s'"
-msgstr ""
-"%s (%u) erabiltzaileak '%s' direktorioko partekatutako fitxategi zerrenda "
-"bidali du"
+msgstr "%s (%u) erabiltzaileak '%s' direktorioko partekatutako fitxategi zerrenda bidali du"
 
 #: src/ClientTCPSocket.cpp:939
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
-msgstr ""
-"%s (%u) erabiltzaileak partekatutako fitxategi zerrenda bidaltzeaz bukatu du"
+msgstr "%s (%u) erabiltzaileak partekatutako fitxategi zerrenda bidaltzeaz bukatu du"
 
 #: src/ClientTCPSocket.cpp:944
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
-msgstr ""
-"%s (%u) erabiltzaileak eskatu gabeko partekatutako fitxategi zerrenda bidali "
-"du"
+msgstr "%s (%u) erabiltzaileak eskatu gabeko partekatutako fitxategi zerrenda bidali du"
 
 #: src/ClientTCPSocket.cpp:956
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
-msgstr ""
-"%s (%u) erabiltzaileak fitxategi/direktorio partekatuen zerrenda ikustea "
-"ukatu du"
+msgstr "%s (%u) erabiltzaileak fitxategi/direktorio partekatuen zerrenda ikustea ukatu du"
 
 #: src/CommentDialog.cpp:53 src/CommentDialogLst.cpp:61
 msgid "File Comments"
@@ -1301,11 +1180,8 @@ msgstr[1] "%u iruzkin"
 
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
-msgid ""
-"Banned client %s for sending %s corrupt data of %s total for the file '%s'"
-msgstr ""
-"Baztertutako %s bezeroa %s datu hondatu bidaltzeagatik '%s' fitxategiaren "
-"osotasunaren %s"
+msgid "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
+msgstr "Baztertutako %s bezeroa %s datu hondatu bidaltzeagatik '%s' fitxategiaren osotasunaren %s"
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1657,8 +1533,7 @@ msgid ""
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
 "Ohar hau aurreikuspen bakoitzean agertzea saihesteko,\n"
-"ezarri zure bideo erreproduzigailu gogokoena hobespen leihoan (lehenetsia "
-"mplayer da)."
+"ezarri zure bideo erreproduzigailu gogokoena hobespen leihoan (lehenetsia mplayer da)."
 
 #: src/DownloadListCtrl.cpp:1435
 msgid "File preview"
@@ -1667,8 +1542,7 @@ msgstr "Fitxategi aurreikuspena"
 #: src/DownloadListCtrl.cpp:1483
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
-msgstr ""
-"ERROREA: Huts kanpo bideo erreproduzigailua abiaraztean! Komandoa: `%s'"
+msgstr "ERROREA: Huts kanpo bideo erreproduzigailua abiaraztean! Komandoa: `%s'"
 
 #: src/DownloadQueue.cpp:99
 #, c-format
@@ -1690,13 +1564,8 @@ msgid "Loading PartFile %u of %u"
 msgstr "%u zati fitxategia kargatzen %u-tik"
 
 #: src/DownloadQueue.cpp:150
-msgid ""
-"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/"
-"discussions for .part.met recovery solutions."
-msgstr ""
-"ERROREA: Huts babeskopia fitxategia kargatzerakoan. Bilatu https://"
-"github.com/amule-org/amule/discussions -en .part.met fitxategi berreskuratze "
-"konponbideak."
+msgid "ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions for .part.met recovery solutions."
+msgstr "ERROREA: Huts babeskopia fitxategia kargatzerakoan. Bilatu https://github.com/amule-org/amule/discussions -en .part.met fitxategi berreskuratze konponbideak."
 
 #: src/DownloadQueue.cpp:159
 msgid "All PartFiles Loaded."
@@ -1715,13 +1584,11 @@ msgstr[1] "%u zati fitxategi aurkitu dira"
 
 #: src/DownloadQueue.cpp:240 src/DownloadQueue.cpp:1501
 msgid "Filesystem for Temp directory cannot handle large files."
-msgstr ""
-"Aldiroko direktorioaren fitxategi sistemak ez ditu fitxategi luzeak onartzen."
+msgstr "Aldiroko direktorioaren fitxategi sistemak ez ditu fitxategi luzeak onartzen."
 
 #: src/DownloadQueue.cpp:243 src/DownloadQueue.cpp:1504
 msgid "Filesystem for Incoming directory cannot handle large files."
-msgstr ""
-"Sarrera direktorioaren fitxategi sistemak ez ditu fitxategi luzeak onartzen."
+msgstr "Sarrera direktorioaren fitxategi sistemak ez ditu fitxategi luzeak onartzen."
 
 #: src/DownloadQueue.cpp:373
 #, c-format
@@ -1803,20 +1670,12 @@ msgid "Unknown version"
 msgstr "Bertsio ezezaguna"
 
 #: src/ExternalConn.cpp:554
-msgid ""
-"Incorrect EC version ID, there might be binary incompatibility. Use core and "
-"remote from same snapshot."
-msgstr ""
-"Okerreko bertsio ID-a, bitar bateratze ezintasuna dago. Erabili urruneko eta "
-"nagusi bertsio berdina."
+msgid "Incorrect EC version ID, there might be binary incompatibility. Use core and remote from same snapshot."
+msgstr "Okerreko bertsio ID-a, bitar bateratze ezintasuna dago. Erabili urruneko eta nagusi bertsio berdina."
 
 #: src/ExternalConn.cpp:559
-msgid ""
-"You cannot connect to a release version from an arbitrary development "
-"snapshot! *sigh* possible crash prevented"
-msgstr ""
-"Ezin zara argitaratutako bertsio batetara konektatu edozein garapen "
-"bertsiotik! *ikusi* apurketa aukera saihestua"
+msgid "You cannot connect to a release version from an arbitrary development snapshot! *sigh* possible crash prevented"
+msgstr "Ezin zara argitaratutako bertsio batetara konektatu edozein garapen bertsiotik! *ikusi* apurketa aukera saihestua"
 
 #: src/ExternalConn.cpp:620
 msgid "Invalid protocol version."
@@ -1828,8 +1687,7 @@ msgstr "Protokolo bertsio marka falta da."
 
 #: src/ExternalConn.cpp:632
 msgid "Authentication failed: invalid hash specified as EC password."
-msgstr ""
-"Autentifikazio errorea: okerreko egiaztapena ezarri da EC pasahitz gisa."
+msgstr "Autentifikazio errorea: okerreko egiaztapena ezarri da EC pasahitz gisa."
 
 #: src/ExternalConn.cpp:664
 msgid "Authentication failed: wrong password."
@@ -1860,9 +1718,7 @@ msgstr "Baimendu gabeko sarrera saiakera %s-tik. Konexioa itxia."
 #: src/ExternalConn.cpp:1176
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
-msgstr ""
-"Urruneko ZatiFitxategi komandoak huts egin du: Ez da %s fitxategi "
-"egiaztapena aurkitu"
+msgstr "Urruneko ZatiFitxategi komandoak huts egin du: Ez da %s fitxategi egiaztapena aurkitu"
 
 #: src/ExternalConn.cpp:1178
 #, c-format
@@ -2084,9 +1940,7 @@ msgstr "Sintaxi errorea!"
 
 #: src/ExternalConnector.cpp:359
 msgid "Error processing command - should never happen! Report bug, please\n"
-msgstr ""
-"Errorea komandoa prozesatzekoan - Ez zen inoiz pasa beharko! Mesedez "
-"zorriaren berri eman\n"
+msgstr "Errorea komandoa prozesatzekoan - Ez zen inoiz pasa beharko! Mesedez zorriaren berri eman\n"
 
 #: src/ExternalConnector.cpp:362
 msgid "This command should not have any parameters."
@@ -2188,18 +2042,14 @@ msgstr "Idatzi komando lerroko aukerak konfigurazio fitxategira."
 
 #: src/ExternalConnector.cpp:519
 msgid "Creates config file based on aMule's config file."
-msgstr ""
-"aMuleren konfigurazio fitxategian oinarriturik konfigurazio fitxategia "
-"sortzen du."
+msgstr "aMuleren konfigurazio fitxategian oinarriturik konfigurazio fitxategia sortzen du."
 
 #: src/ExternalConnector.cpp:522
 msgid "Print program version."
 msgstr "Programa bertsioa bistarazi."
 
 #: src/ExternalConnector.cpp:525
-msgid ""
-"Force ZLIB compression regardless of dialed-IP locality (useful when the "
-"server is reachable over a VPN tunnel that resolves to a LAN IP)."
+msgid "Force ZLIB compression regardless of dialed-IP locality (useful when the server is reachable over a VPN tunnel that resolves to a LAN IP)."
 msgstr ""
 
 #: src/FileDetailDialog.cpp:76
@@ -2219,8 +2069,7 @@ msgstr "%.2f kB/s"
 
 #: src/FriendList.cpp:123
 msgid "Failed to open friend list file 'emfriends.met' for reading!"
-msgstr ""
-"Huts 'emfriends.met' lagun zerrenda fitxategia irakurketarako irekitzean!"
+msgstr "Huts 'emfriends.met' lagun zerrenda fitxategia irakurketarako irekitzean!"
 
 #: src/FriendList.cpp:149
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
@@ -2394,10 +2243,7 @@ msgstr ""
 
 #: src/IP2Country.cpp:98
 #, c-format
-msgid ""
-"No GeoLite2 update URL configured. Download GeoLite2-Country.mmdb manually "
-"(a free MaxMind account is required) and place it at %s, or set the URL in "
-"Preferences."
+msgid "No GeoLite2 update URL configured. Download GeoLite2-Country.mmdb manually (a free MaxMind account is required) and place it at %s, or set the URL in Preferences."
 msgstr ""
 
 #: src/IP2Country.cpp:103
@@ -2447,16 +2293,12 @@ msgstr "'ipfilter.dat' eta 'ipfilter_static.dat' IP iragazkiak kargatzen."
 #: src/IPFilter.cpp:299
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
-msgstr ""
-"Huts egin du ipfilter.dat '%s' fitxategia kargatzerakoan, formatu ezezagunak "
-"aurkitu dira."
+msgstr "Huts egin du ipfilter.dat '%s' fitxategia kargatzerakoan, formatu ezezagunak aurkitu dira."
 
 #: src/IPFilter.cpp:325
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
-msgstr ""
-"Huts egin du ipfilter.dat '%s' fitxategia kargatzerakoan, ezin da fitxategia "
-"ireki."
+msgstr "Huts egin du ipfilter.dat '%s' fitxategia kargatzerakoan, ezin da fitxategia ireki."
 
 #: src/IPFilter.cpp:329
 #, c-format
@@ -2511,11 +2353,8 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Ziur zaude nodes.dat fitxategi berri bat deskargatu nahi duzula?\n"
 
 #: src/KadDlg.cpp:213
-msgid ""
-"Doing so will remove your current nodes and restart Kademlia connection."
-msgstr ""
-"Hau eginez zure nodo zerrenda ezabatu eta Kademlia konexioa berrabiaraziko "
-"da."
+msgid "Doing so will remove your current nodes and restart Kademlia connection."
+msgstr "Hau eginez zure nodo zerrenda ezabatu eta Kademlia konexioa berrabiaraziko da."
 
 #: src/KadDlg.cpp:214
 msgid "Continue?"
@@ -2530,12 +2369,8 @@ msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kademlia: Bilaketa gakoa dagoeneko bilaketa zerrendan dago: "
 
 #: src/kademlia/routing/RoutingZone.cpp:171
-msgid ""
-"Failed to read nodes.dat file - too old. This version (0) is not supported "
-"anymore."
-msgstr ""
-"Huts nodes.dat fitxategia irakurtzean - zaharregia. Bertsioa hau (0) ez da "
-"luzaroago onartzen."
+msgid "Failed to read nodes.dat file - too old. This version (0) is not supported anymore."
+msgstr "Huts nodes.dat fitxategia irakurtzean - zaharregia. Bertsioa hau (0) ez da luzaroago onartzen."
 
 #: src/kademlia/routing/RoutingZone.cpp:209
 #: src/kademlia/routing/RoutingZone.cpp:283
@@ -2548,17 +2383,14 @@ msgstr[1] "Irakurri %u Kad kontaktu"
 #: src/kademlia/routing/RoutingZone.cpp:221
 #: src/kademlia/routing/RoutingZone.cpp:287
 msgid "No contacts found, please bootstrap, or download a nodes.dat file."
-msgstr ""
-"Ez da kontakturik aurkitu, mesedez autoabiatu edo deskargatu nodes.dat "
-"fitxategi bat."
+msgstr "Ez da kontakturik aurkitu, mesedez autoabiatu edo deskargatu nodes.dat fitxategi bat."
 
 #: src/kademlia/routing/RoutingZone.cpp:305
 #, c-format
 msgid "Only %d Kad contact available, nodes.dat not written"
 msgid_plural "Only %d Kad contacts available, nodes.dat not written"
 msgstr[0] "Bakarrik Kad kontaktu %d dago eskuragarri, nodes.dat ez da idatziko"
-msgstr[1] ""
-"Bakarrik %d Kad kontaktu daude eskuragarri, nodes.dat ez da idatziko"
+msgstr[1] "Bakarrik %d Kad kontaktu daude eskuragarri, nodes.dat ez da idatziko"
 
 #: src/kademlia/routing/RoutingZone.cpp:336
 #, c-format
@@ -2598,20 +2430,15 @@ msgstr "Jatorri osoak"
 
 #: src/KnownFileList.cpp:119
 msgid "WARNING: Known file list corrupted, contains invalid header."
-msgstr ""
-"Abisua: Fitxategi ezagun zerrenda hondaturik dago, buru baliogabeak ditu."
+msgstr "Abisua: Fitxategi ezagun zerrenda hondaturik dago, buru baliogabeak ditu."
 
 #: src/KnownFileList.cpp:146
 msgid "Failed to load entry in known file list, file may be corrupt"
-msgstr ""
-"Huts fitxategi ezagunen zerrendako sarrera bat kargatzean, hondaturik egon "
-"liteke"
+msgstr "Huts fitxategi ezagunen zerrendako sarrera bat kargatzean, hondaturik egon liteke"
 
 #: src/KnownFileList.cpp:155
 msgid "Invalid entry in known file list, file may be corrupt: "
-msgstr ""
-"Okerreko sarrera fitxategi ezagunen zerrendako fitxategian, hondaturik egon "
-"liteke: "
+msgstr "Okerreko sarrera fitxategi ezagunen zerrendako fitxategian, hondaturik egon liteke: "
 
 #: src/libs/common/Format.cpp:306
 #, c-format
@@ -2673,9 +2500,7 @@ msgstr "EC konexioa huts egin du. Erantzun hutsa."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:329
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
-msgstr ""
-"Kanpo konexioa: Okerreko erantzuna, esku-emateak huts egin du. Konexioa "
-"itxirik."
+msgstr "Kanpo konexioa: Okerreko erantzuna, esku-emateak huts egin du. Konexioa itxirik."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:337
 msgid "Succeeded! Connection established to aMule "
@@ -2945,18 +2770,12 @@ msgid "Commit"
 msgstr "Burutu"
 
 #: src/muuli_wdr.cpp:103
-msgid ""
-"Click here to add the eD2k link in the text control to your download queue."
-msgstr ""
-"Hemen klikatu eD2k lotura deskarga ilararen testu kontrolean gehitzeko."
+msgid "Click here to add the eD2k link in the text control to your download queue."
+msgstr "Hemen klikatu eD2k lotura deskarga ilararen testu kontrolean gehitzeko."
 
 #: src/muuli_wdr.cpp:109
-msgid ""
-"Events are displayed here. For a complete list of events, refer to the log "
-"in the Servers-tab."
-msgstr ""
-"Gertaerak hemen agertuko dira. Gertaera zerrenda osorako, begiratu "
-"Zerbitzari fitxako erregistroan."
+msgid "Events are displayed here. For a complete list of events, refer to the log in the Servers-tab."
+msgstr "Gertaerak hemen agertuko dira. Gertaera zerrenda osorako, begiratu Zerbitzari fitxako erregistroan."
 
 #: src/muuli_wdr.cpp:112
 msgid "Loading ..."
@@ -2971,35 +2790,20 @@ msgid "Users: 0"
 msgstr "Erabiltzaile: 0"
 
 #: src/muuli_wdr.cpp:123
-msgid ""
-"Users connected to the current server and an estimate of the total number of "
-"users."
-msgstr ""
-"Uneko zerbitzarira konektaturiko erabiltzaileak eta guztirako erabiltzaile "
-"kalkulua."
+msgid "Users connected to the current server and an estimate of the total number of users."
+msgstr "Uneko zerbitzarira konektaturiko erabiltzaileak eta guztirako erabiltzaile kalkulua."
 
 #: src/muuli_wdr.cpp:131
 msgid "Up: 0.0 | Down: 0.0"
 msgstr "Gora: 0.0 | Behera: 0.0"
 
 #: src/muuli_wdr.cpp:132
-msgid ""
-"Current average upload and download rates. If enabled the numbers in the "
-"braces signify the overhead from client communication."
-msgstr ""
-"Unekoa igoera eta deskarga batez bestekoa. Gaiturik badago parentesi arteko "
-"zenbakiak bezero goiburu datuak dira."
+msgid "Current average upload and download rates. If enabled the numbers in the braces signify the overhead from client communication."
+msgstr "Unekoa igoera eta deskarga batez bestekoa. Gaiturik badago parentesi arteko zenbakiak bezero goiburu datuak dira."
 
 #: src/muuli_wdr.cpp:139
-msgid ""
-"Displays the connected status and active transfers. Red arrows signifies "
-"that you are currently not connected, yellow arrows signify that you have "
-"low ID (firewalled) and green arrows signify that you have high ID (The "
-"optimal connection type)."
-msgstr ""
-"Konexio egoera eta uneko transferentziak bistaratzen ditu. Gezi gorriak "
-"deskonektaturik zaudela adierazten du, horiak berriz ID baxua (suebakia) "
-"duzula eta berdeak ID altua (konexio mota hoberena)."
+msgid "Displays the connected status and active transfers. Red arrows signifies that you are currently not connected, yellow arrows signify that you have low ID (firewalled) and green arrows signify that you have high ID (The optimal connection type)."
+msgstr "Konexio egoera eta uneko transferentziak bistaratzen ditu. Gezi gorriak deskonektaturik zaudela adierazten du, horiak berriz ID baxua (suebakia) duzula eta berdeak ID altua (konexio mota hoberena)."
 
 #: src/muuli_wdr.cpp:142
 msgid "Not Connected ..."
@@ -3134,10 +2938,7 @@ msgid "More"
 msgstr "Gehiago"
 
 #: src/muuli_wdr.cpp:325
-msgid ""
-"Ask already-responded Kad peers to widen the search. Each click queries the "
-"next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing "
-"additional file matches that the search's initial alpha frontier missed."
+msgid "Ask already-responded Kad peers to widen the search. Each click queries the next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing additional file matches that the search's initial alpha frontier missed."
 msgstr ""
 
 #: src/muuli_wdr.cpp:330
@@ -3286,12 +3087,8 @@ msgid "Comment/Rate file (Text will be visible to all users)"
 msgstr "Iruzkin/tasa fitxategia (testua erabiltzaile guztiek ikusgarria)"
 
 #: src/muuli_wdr.cpp:705
-msgid ""
-"For a film you can say its length, its story, language ...\\n\\nand if it's "
-"a fake, you can tell that to other users of aMule."
-msgstr ""
-"Filma batentzat iraupena, istorioa, hizkuntza ...\\n\\neta faltsua den esan "
-"dezakezu, aMule beste erabiltzaileei esan diezaiekezu."
+msgid "For a film you can say its length, its story, language ...\\n\\nand if it's a fake, you can tell that to other users of aMule."
+msgstr "Filma batentzat iraupena, istorioa, hizkuntza ...\\n\\neta faltsua den esan dezakezu, aMule beste erabiltzaileei esan diezaiekezu."
 
 #: src/muuli_wdr.cpp:713
 msgid "File Quality"
@@ -3323,9 +3120,7 @@ msgstr "Hobezina"
 
 #: src/muuli_wdr.cpp:726
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr ""
-"Fitxategi kalifikazioa hartu edo fitxategia baliogabea bada besteak "
-"abisatu ..."
+msgstr "Fitxategi kalifikazioa hartu edo fitxategia baliogabea bada besteak abisatu ..."
 
 #: src/muuli_wdr.cpp:763
 msgid "Refresh"
@@ -3531,18 +3326,14 @@ msgstr "Arakatu bertsio berrien bila abiaraztean"
 
 #: src/muuli_wdr.cpp:1218
 msgid "Enabling this will make aMule check for new version at startup"
-msgstr ""
-"Hau gaitzean Amulek abiaraztean bertsio berririk dagoen arakatzea egingo du"
+msgstr "Hau gaitzean Amulek abiaraztean bertsio berririk dagoen arakatzea egingo du"
 
 #: src/muuli_wdr.cpp:1225
 msgid "Start aMule automatically when I log in"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1226
-msgid ""
-"Registers a per-user autostart entry with the OS so aMule launches at login. "
-"If you move the aMule binary, launch aMule once manually afterwards to "
-"refresh the entry."
+msgid "Registers a per-user autostart entry with the OS so aMule launches at login. If you move the aMule binary, launch aMule once manually afterwards to refresh the entry."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1229
@@ -3578,21 +3369,15 @@ msgid "Minimize to Tray Icon"
 msgstr "Txikitu ikono-barrara"
 
 #: src/muuli_wdr.cpp:1246
-msgid ""
-"Enabling this will make aMule minimize to the System Tray, rather than the "
-"taskbar."
-msgstr ""
-"Hau gaitzeak aMule zeregin-barrara beharrean sistema tresna-barrara "
-"txikitzea eragingo du."
+msgid "Enabling this will make aMule minimize to the System Tray, rather than the taskbar."
+msgstr "Hau gaitzeak aMule zeregin-barrara beharrean sistema tresna-barrara txikitzea eragingo du."
 
 #: src/muuli_wdr.cpp:1249
 msgid "Show notifications when finished downloading"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1250
-msgid ""
-"Enabling this will make aMule to show notifications when finished "
-"downloading."
+msgid "Enabling this will make aMule to show notifications when finished downloading."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1255
@@ -3608,12 +3393,8 @@ msgid "Browser Selection"
 msgstr "Nabigatzaile hautaketa"
 
 #: src/muuli_wdr.cpp:1272
-msgid ""
-"Enter your browser name here. Leave this field empty to use the system "
-"default browser."
-msgstr ""
-"Idatzi zure nabigatzaile izena hemen. Zurian utzi sisteman lehenetsitako "
-"nabigatzailea erabiltzeko."
+msgid "Enter your browser name here. Leave this field empty to use the system default browser."
+msgstr "Idatzi zure nabigatzaile izena hemen. Zurian utzi sisteman lehenetsitako nabigatzailea erabiltzeko."
 
 #: src/muuli_wdr.cpp:1275 src/muuli_wdr.cpp:1292 src/muuli_wdr.cpp:1569
 #: src/muuli_wdr.cpp:1581 src/muuli_wdr.cpp:2478
@@ -3687,12 +3468,8 @@ msgid "Bind local address to IP (empty for any):"
 msgstr "Lotu helbide lokala IP batetara (zurian edozeinentzat):"
 
 #: src/muuli_wdr.cpp:1385
-msgid ""
-"Advanced users only: If you have multiple network interfaces, enter the "
-"address of the interface to which aMule should be bound."
-msgstr ""
-"Erabiltzaile aurreratuak bakarrik: Sare interfaze anitz badituzu idatzi "
-"amulek erabili behar duen sare interfazearen helbidea."
+msgid "Advanced users only: If you have multiple network interfaces, enter the address of the interface to which aMule should be bound."
+msgstr "Erabiltzaile aurreratuak bakarrik: Sare interfaze anitz badituzu idatzi amulek erabili behar duen sare interfazearen helbidea."
 
 #: src/muuli_wdr.cpp:1391
 msgid "Max sources per downloading file:"
@@ -3772,8 +3549,7 @@ msgstr "Gaitu"
 
 #: src/muuli_wdr.cpp:1500
 msgid "Advanced I.C.H. trusts every hash (not recommended)"
-msgstr ""
-"I.C.H aurreratuak, egiaztapen bakoitza egiaztatzen du (ez da gomendatzen)"
+msgstr "I.C.H aurreratuak, egiaztapen bakoitza egiaztatzen du (ez da gomendatzen)"
 
 #: src/muuli_wdr.cpp:1507
 msgid "Add files to download in pause mode"
@@ -3804,12 +3580,8 @@ msgid "Preallocate disk space for new files"
 msgstr "Aurresleitu disko lekua fitxategi berrientzat"
 
 #: src/muuli_wdr.cpp:1523
-msgid ""
-"For new files preallocates disk space for the whole file, thus reduces "
-"fragmentation"
-msgstr ""
-"Fitxategi berrientzat fitxategi bakoitzarentzat disko leku osoa "
-"aurresleitzen du, honek fragmentazioa murrizten du"
+msgid "For new files preallocates disk space for the whole file, thus reduces fragmentation"
+msgstr "Fitxategi berrientzat fitxategi bakoitzarentzat disko leku osoa aurresleitzen du, honek fragmentazioa murrizten du"
 
 #: src/muuli_wdr.cpp:1528
 msgid "Stop downloads when free disk space reaches "
@@ -3841,16 +3613,12 @@ msgstr "Deskargentzat helburu karpeta"
 
 #: src/muuli_wdr.cpp:1567
 msgid ""
-"Completed downloads are stored here. All files in this folder are "
-"automatically shared with other peers.\n"
-"If this folder also holds files you don't want to share, point it at an "
-"aMule-only sub-folder."
+"Completed downloads are stored here. All files in this folder are automatically shared with other peers.\n"
+"If this folder also holds files you don't want to share, point it at an aMule-only sub-folder."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1570
-msgid ""
-"Pick the folder where completed downloads will be stored. All files in that "
-"folder will be shared with other peers."
+msgid "Pick the folder where completed downloads will be stored. All files in that folder will be shared with other peers."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1574
@@ -3867,8 +3635,7 @@ msgstr "Partekatutako karpetak"
 
 #: src/muuli_wdr.cpp:1587
 msgid "(Right click on folder icon for recursive share)"
-msgstr ""
-"(Egin klik eskuineko botoiaz karpeta ikono batean barnekoak ere partekatzeko)"
+msgstr "(Egin klik eskuineko botoiaz karpeta ikono batean barnekoak ere partekatzeko)"
 
 #: src/muuli_wdr.cpp:1593
 msgid "Share hidden files"
@@ -4081,13 +3848,8 @@ msgid "IP of the listening interface:"
 msgstr "Entzunean dagoen interfazearen IPa:"
 
 #: src/muuli_wdr.cpp:1852
-msgid ""
-"Enter here a valid ip in the a.b.c.d format for the listening EC interface. "
-"An empty field or 0.0.0.0 will mean any interface."
-msgstr ""
-"Idatzi hemen a.b.c.d formatuan entzun behar den interfazearen baliozko ip "
-"helbidea. Eremu huts batek edo 0.0.0.0 ezartzeak edozein interfazetan "
-"entzutea eragingo du."
+msgid "Enter here a valid ip in the a.b.c.d format for the listening EC interface. An empty field or 0.0.0.0 will mean any interface."
+msgstr "Idatzi hemen a.b.c.d formatuan entzun behar den interfazearen baliozko ip helbidea. Eremu huts batek edo 0.0.0.0 ezartzeak edozein interfazetan entzutea eragingo du."
 
 #: src/muuli_wdr.cpp:1858 src/muuli_wdr.cpp:1904
 msgid "TCP port:"
@@ -4198,12 +3960,8 @@ msgid "Server list"
 msgstr "Zerbitzari zerrenda"
 
 #: src/muuli_wdr.cpp:2144
-msgid ""
-"Enter the url to a server.met file here and press the button to the left to "
-"update the list of known servers."
-msgstr ""
-"Idatzi server.met fitxategiaren URL bat hemen eta gero ezkerreko botoia "
-"sakatu zerbitzari ezagunen zerrenda eguneratzeko."
+msgid "Enter the url to a server.met file here and press the button to the left to update the list of known servers."
+msgstr "Idatzi server.met fitxategiaren URL bat hemen eta gero ezkerreko botoia sakatu zerbitzari ezagunen zerrenda eguneratzeko."
 
 #: src/muuli_wdr.cpp:2149
 msgid "Add server manually: Name"
@@ -4254,12 +4012,8 @@ msgid "Nodes (0)"
 msgstr "Nodoak (0)"
 
 #: src/muuli_wdr.cpp:2243
-msgid ""
-"Enter the url to a nodes.dat file here and press the button to the left to "
-"update the list of known nodes."
-msgstr ""
-"nodes.dat fitxategi baten URL-a idatzi eta ezkerreko botoia sakatu nodo "
-"ezagunen zerrenda eguneratzeko."
+msgid "Enter the url to a nodes.dat file here and press the button to the left to update the list of known nodes."
+msgstr "nodes.dat fitxategi baten URL-a idatzi eta ezkerreko botoia sakatu nodo ezagunen zerrenda eguneratzeko."
 
 #: src/muuli_wdr.cpp:2246
 msgid "Nodes stats"
@@ -4294,12 +4048,8 @@ msgid "Use Secure User Identification"
 msgstr "Erabili erabiltzaile identifikazio segurua"
 
 #: src/muuli_wdr.cpp:2364
-msgid ""
-"It is recommended to enable this option. You will not receive credits if SUI "
-"is not enabled."
-msgstr ""
-"Gomendagarri da aukera hau gaitzea. Ez duzu krediturik jasoko EIS erabiltzen "
-"ez baduzu."
+msgid "It is recommended to enable this option. You will not receive credits if SUI is not enabled."
+msgstr "Gomendagarri da aukera hau gaitzea. Ez duzu krediturik jasoko EIS erabiltzen ez baduzu."
 
 #: src/muuli_wdr.cpp:2366
 msgid "Protocol Obfuscation"
@@ -4310,36 +4060,24 @@ msgid "Support Protocol Obfuscation"
 msgstr "Gaitu protokolo nahastea"
 
 #: src/muuli_wdr.cpp:2371
-msgid ""
-"This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
-"connections from other clients."
-msgstr ""
-"Aukera honek protokolo nahastea gaitzen du eta aMule-k beste bezeroetako "
-"konexio nahastuak onartzea eragite du."
+msgid "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated connections from other clients."
+msgstr "Aukera honek protokolo nahastea gaitzen du eta aMule-k beste bezeroetako konexio nahastuak onartzea eragite du."
 
 #: src/muuli_wdr.cpp:2373
 msgid "Use obfuscation for outgoing connections"
 msgstr "Erabili nahastea kanporako konexioetan"
 
 #: src/muuli_wdr.cpp:2375
-msgid ""
-"This option makes aMule use Protocol Obfuscation when connecting other "
-"clients/servers."
-msgstr ""
-"Aukera honek Amulek beste bezero/zerbitzarietara konektatzerakoan protokolo "
-"nahastea erabiltzea eragiten du."
+msgid "This option makes aMule use Protocol Obfuscation when connecting other clients/servers."
+msgstr "Aukera honek Amulek beste bezero/zerbitzarietara konektatzerakoan protokolo nahastea erabiltzea eragiten du."
 
 #: src/muuli_wdr.cpp:2377
 msgid "Accept only obfuscated connections"
 msgstr "Onartu nahasitako konexioak bakarrik"
 
 #: src/muuli_wdr.cpp:2378
-msgid ""
-"This option makes aMule only accept obfuscated connections. You will have "
-"less sources, but all your traffic will be obfuscated"
-msgstr ""
-"Aukera honek Amulek nahasitako konexioak bakarrik onartzea eragiten du. "
-"Jatorri gutxiago izango dituzu baina zure trafiko guztia nahasia egongo da"
+msgid "This option makes aMule only accept obfuscated connections. You will have less sources, but all your traffic will be obfuscated"
+msgstr "Aukera honek Amulek nahasitako konexioak bakarrik onartzea eragiten du. Jatorri gutxiago izango dituzu baina zure trafiko guztia nahasia egongo da"
 
 #: src/muuli_wdr.cpp:2383
 msgid "Everybody"
@@ -4366,20 +4104,16 @@ msgid "Filter clients"
 msgstr "Bezeroak iragazi"
 
 #: src/muuli_wdr.cpp:2399
-msgid ""
-"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr ""
-"~/.aMule/ipfilter.dat fitxategian ezarritako bezero IP iragazketa gaitu."
+msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr "~/.aMule/ipfilter.dat fitxategian ezarritako bezero IP iragazketa gaitu."
 
 #: src/muuli_wdr.cpp:2401
 msgid "Filter servers"
 msgstr "Zerbitzariak iragazi"
 
 #: src/muuli_wdr.cpp:2403
-msgid ""
-"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr ""
-"~/.aMule/ipfilter.dat fitxategian ezarritako zerbitzari IP iragazketa gaitu."
+msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr "~/.aMule/ipfilter.dat fitxategian ezarritako zerbitzari IP iragazketa gaitu."
 
 #: src/muuli_wdr.cpp:2407
 msgid "Reload List"
@@ -4387,8 +4121,7 @@ msgstr "Berritu zerrenda"
 
 #: src/muuli_wdr.cpp:2408
 msgid "Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat"
-msgstr ""
-"Berritu ~/.aMule/ipfilter.dat fitxategian ezarritako IP helbideen iragazkia"
+msgstr "Berritu ~/.aMule/ipfilter.dat fitxategian ezarritako IP helbideen iragazkia"
 
 #: src/muuli_wdr.cpp:2414
 msgid "URL:"
@@ -4415,12 +4148,8 @@ msgid "Paranoid handling of non-matching IPs"
 msgstr "Paranoia kudeaketa pareko ez diren IP helbideentzat"
 
 #: src/muuli_wdr.cpp:2436
-msgid ""
-"Rejects packet if the client ip is different from the ip where the packet is "
-"received from. Use with caution."
-msgstr ""
-"Paketea atzera bota bezero ip-a paketea jaso den ip-aren ezberdina bada. "
-"Kontu handiaz erabili."
+msgid "Rejects packet if the client ip is different from the ip where the packet is received from. Use with caution."
+msgstr "Paketea atzera bota bezero ip-a paketea jaso den ip-aren ezberdina bada. Kontu handiaz erabili."
 
 #: src/muuli_wdr.cpp:2438
 msgid "Use system-wide ipfilter.dat if available"
@@ -4428,24 +4157,16 @@ msgstr "Erabili sistemako ipfilter.dat eskuragarri badago"
 
 #: src/muuli_wdr.cpp:2439
 #, fuzzy
-msgid ""
-"If there's no local ipfilter.dat found, allow usage of a system-wide "
-"ipfilter file."
-msgstr ""
-"Ez bada ipfilter.dat fitxategi lokalik aurkitu, orduan onartu sistema "
-"ipfilter fitxategia erabiltzea."
+msgid "If there's no local ipfilter.dat found, allow usage of a system-wide ipfilter file."
+msgstr "Ez bada ipfilter.dat fitxategi lokalik aurkitu, orduan onartu sistema ipfilter fitxategia erabiltzea."
 
 #: src/muuli_wdr.cpp:2456
 msgid "Enable Online-Signature"
 msgstr "Gaitu sinadura linean"
 
 #: src/muuli_wdr.cpp:2458
-msgid ""
-"Enables the writing of the OS file, which can be used by external apps to "
-"create signatures and the like."
-msgstr ""
-"Gaitu sistemak fitxategiak idaztea, kanpo programek sinadurak sortu ahal "
-"izateko egiten da."
+msgid "Enables the writing of the OS file, which can be used by external apps to create signatures and the like."
+msgstr "Gaitu sistemak fitxategiak idaztea, kanpo programek sinadurak sortu ahal izateko egiten da."
 
 #: src/muuli_wdr.cpp:2462
 msgid "Update Frequency (Secs):"
@@ -4460,8 +4181,7 @@ msgid "Save online signature file in: "
 msgstr "Gorde sare sinadura fitxategia hemen: "
 
 #: src/muuli_wdr.cpp:2479
-msgid ""
-"Click here to select the directory containing the the Online Signature files."
+msgid "Click here to select the directory containing the the Online Signature files."
 msgstr "Klikatu hemen linean sinadurak dituen karpeta aukeratzeko."
 
 #: src/muuli_wdr.cpp:2499
@@ -4817,20 +4537,13 @@ msgid "%s (Disk: %s)"
 msgstr "%s (Diskoa: %s)"
 
 #: src/PartFileConvertDlg.cpp:204
-msgid ""
-"Please choose a folder to search for temporary downloads! (subfolders will "
-"be included)"
-msgstr ""
-"Mesedez ezarri aldiroko fitxategiak bilatuko diren karpeta! (azpikarpetak "
-"ere arakatuko dira)"
+msgid "Please choose a folder to search for temporary downloads! (subfolders will be included)"
+msgstr "Mesedez ezarri aldiroko fitxategiak bilatuko diren karpeta! (azpikarpetak ere arakatuko dira)"
 
 #: src/PartFileConvertDlg.cpp:208
 #, fuzzy
-msgid ""
-"Do you want the source files of successfully imported downloads be deleted?"
-msgstr ""
-"Behar bezala deskargaturiko fitxategien jatorri fitxategiak ezabatze nahi al "
-"duzu?"
+msgid "Do you want the source files of successfully imported downloads be deleted?"
+msgstr "Behar bezala deskargaturiko fitxategien jatorri fitxategiak ezabatze nahi al duzu?"
 
 #: src/PartFileConvertDlg.cpp:209
 msgid "Remove sources?"
@@ -4863,16 +4576,12 @@ msgstr "ERROREA: part.met fitxategi bertsio okerra: %s ==> %s"
 #: src/PartFile.cpp:664
 #, c-format
 msgid "Error: %s (%s) is corrupt (bad tags: %s), unable to load file."
-msgstr ""
-"Errorea: %s (%s) hondaturik dago (marka okerrak: %s), ezin da fitxategia "
-"kargatu."
+msgstr "Errorea: %s (%s) hondaturik dago (marka okerrak: %s), ezin da fitxategia kargatu."
 
 #: src/PartFile.cpp:675
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr ""
-"ERROREA: %s (%s) hondaturik dago (okerreko etiketa-kopurua), ezin da "
-"fitxategia kargatu."
+msgstr "ERROREA: %s (%s) hondaturik dago (okerreko etiketa-kopurua), ezin da fitxategia kargatu."
 
 #: src/PartFile.cpp:678
 msgid "Trying to recover file info..."
@@ -4880,15 +4589,11 @@ msgstr "Fitxategi informazioa berreskuratzen saiatzen..."
 
 #: src/PartFile.cpp:693
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
-msgstr ""
-"Izen gabeko fitxategia berreskuratzen - RecoveredFile.dat bezala "
-"berreskuratzen saiatuko da"
+msgstr "Izen gabeko fitxategia berreskuratzen - RecoveredFile.dat bezala berreskuratzen saiatuko da"
 
 #: src/PartFile.cpp:697
 msgid "Recovered all available file info :D - Trying to use it..."
-msgstr ""
-"Fitxategi informazio eskuragarri guztia berreskuraturik :D - Erabiltzen "
-"saiatzen..."
+msgstr "Fitxategi informazio eskuragarri guztia berreskuraturik :D - Erabiltzen saiatzen..."
 
 #: src/PartFile.cpp:699
 msgid "Unable to recover file info :("
@@ -4942,18 +4647,10 @@ msgstr "Errorea zati-fitxategi hazi fitxategia irakurtzerakoan (%s - %s): %s"
 
 #: src/PartFile.cpp:1252 src/PartFile.cpp:1279
 #, c-format
-msgid ""
-"Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
-"%s|"
-msgid_plural ""
-"Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
-"|%s|"
-msgstr[0] ""
-"Hondaturiko zatia (%d) aurkitu da %d zati %s zati fitxategian - "
-"FitxategiEgiaztapenEmaitza |%s| fitxategiEgiaztapena |%s|"
-msgstr[1] ""
-"Hondaturiko zatia (%d) aurkitu da %d zatitan %s zati fitxategian - "
-"FitxategiEgiaztapenEmaitza |%s| fitxategiEgiaztapena |%s|"
+msgid "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |%s|"
+msgid_plural "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|"
+msgstr[0] "Hondaturiko zatia (%d) aurkitu da %d zati %s zati fitxategian - FitxategiEgiaztapenEmaitza |%s| fitxategiEgiaztapena |%s|"
+msgstr[1] "Hondaturiko zatia (%d) aurkitu da %d zatitan %s zati fitxategian - FitxategiEgiaztapenEmaitza |%s| fitxategiEgiaztapena |%s|"
 
 #: src/PartFile.cpp:1294
 #, c-format
@@ -4990,34 +4687,22 @@ msgstr "fitxategia ezabatzen:%s"
 #: src/PartFile.cpp:2463
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr ""
-"ABISUA: Ezinda deskargaturiko zatia egiaztatu - egiaztapen-bilduma osatugabe "
-"'%s'-rentzat"
+msgstr "ABISUA: Ezinda deskargaturiko zatia egiaztatu - egiaztapen-bilduma osatugabe '%s'-rentzat"
 
 #: src/PartFile.cpp:2468
 #, c-format
-msgid ""
-"ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
-"never happen"
-msgstr ""
-"ERROREA: Ezin da deskargaturiko zatia egiaztatu - egiaztapen-bilduma "
-"osatugabea (%s). Hau ez zen inoiz gertatu beharko"
+msgid "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"
+msgstr "ERROREA: Ezin da deskargaturiko zatia egiaztatu - egiaztapen-bilduma osatugabea (%s). Hau ez zen inoiz gertatu beharko"
 
 #: src/PartFile.cpp:2489
 #, c-format
-msgid ""
-"Part %u of '%s' marked complete but partfile is shorter than expected (have "
-"%llu bytes, need %llu); reopening gap for re-download."
+msgid "Part %u of '%s' marked complete but partfile is shorter than expected (have %llu bytes, need %llu); reopening gap for re-download."
 msgstr ""
 
 #: src/PartFile.cpp:2501 src/PartFile.cpp:2506
 #, c-format
-msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
-"'%s' with length %u: %s"
-msgstr ""
-"Egiaztapenean fitxategi amaiera deskargaturiko %2$u tamaina duen %1$u zatian "
-"(geh. %3$u) %5$u tamaina duen '%4$s' zati-fitxategian: %6$s"
+msgid "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"
+msgstr "Egiaztapenean fitxategi amaiera deskargaturiko %2$u tamaina duen %1$u zatian (geh. %3$u) %5$u tamaina duen '%4$s' zati-fitxategian: %6$s"
 
 #: src/PartFile.cpp:3223
 #, c-format
@@ -5230,8 +4915,7 @@ msgid "Invalid category found, skipping"
 msgstr "Kategoria baliogabe aurkitua, baztertzen"
 
 #: src/Preferences.cpp:1848
-msgid ""
-"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP ataka ezin da 65532 baino altuagoa izan UDP socket-a TCP+3 bait da"
 
 #: src/Preferences.cpp:1849
@@ -5306,10 +4990,7 @@ msgid "Tray icon support requires libayatana-appindicator3 at compile time."
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:293
-msgid ""
-"Not available on Wayland: the protocol does not report when a window is "
-"minimized, so this option cannot intercept the system minimize button. "
-"Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
+msgid "Not available on Wayland: the protocol does not report when a window is minimized, so this option cannot intercept the system minimize button. Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:333
@@ -5435,9 +5116,7 @@ msgstr ""
 "Orain ez berrabiaraziaz gero ez kexatu ezer txarra gertatzen bada.\n"
 
 #: src/PrefsUnifiedDlg.cpp:912
-msgid ""
-"Could not register aMule for autostart at login. The autostart store may be "
-"read-only."
+msgid "Could not register aMule for autostart at login. The autostart store may be read-only."
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:913
@@ -5581,9 +5260,7 @@ msgid ""
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1566
-msgid ""
-"Sharing them recursively will publish every file underneath on the eD2k/Kad "
-"networks. Do you really want to do this?"
+msgid "Sharing them recursively will publish every file underneath on the eD2k/Kad networks. Do you really want to do this?"
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1568
@@ -5629,16 +5306,12 @@ msgid "Kad search: requested wider results from one more peer."
 msgstr ""
 
 #: src/SearchDlg.cpp:438
-msgid ""
-"Kad search: no peer left to reask for more results (cap reached or no "
-"responses yet)."
+msgid "Kad search: no peer left to reask for more results (cap reached or no responses yet)."
 msgstr ""
 
 #: src/SearchDlg.cpp:543
 msgid "Min size must be smaller than max size. Max size ignored."
-msgstr ""
-"Gutxienezko tamaina gehienezkoa baino txikiagoa izan behar da. Gehienezkoa "
-"alde batetara utziko da."
+msgstr "Gutxienezko tamaina gehienezkoa baino txikiagoa izan behar da. Gehienezkoa alde batetara utziko da."
 
 #: src/SearchDlg.cpp:544 src/SearchDlg.cpp:602
 msgid "Search warning"
@@ -5699,18 +5372,12 @@ msgid "New"
 msgstr "Berria"
 
 #: src/ServerConnect.cpp:74
-msgid ""
-"Failed to connect to all obfuscated servers listed. Making another pass "
-"without obfuscation."
-msgstr ""
-"Huts zerrendaturiko nahasitako zerbitzarietara konektatzean. Nahaste gabeko "
-"beste saiakera bat egiten."
+msgid "Failed to connect to all obfuscated servers listed. Making another pass without obfuscation."
+msgstr "Huts zerrendaturiko nahasitako zerbitzarietara konektatzean. Nahaste gabeko beste saiakera bat egiten."
 
 #: src/ServerConnect.cpp:79
 msgid "Failed to connect to all servers listed. Making another pass."
-msgstr ""
-"Huts zerrendako zerbitzari guztietara konektatzen saiatzerakoan. Berriz "
-"hasiko nahiz."
+msgstr "Huts zerrendako zerbitzari guztietara konektatzen saiatzerakoan. Berriz hasiko nahiz."
 
 #: src/ServerConnect.cpp:94 src/ServerConnect.cpp:148
 msgid "eD2k network disabled on preferences, not connecting."
@@ -5732,9 +5399,7 @@ msgstr "Konexioa sorturik: %s"
 
 #: src/ServerConnect.cpp:346
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr ""
-"Errore konponezina konektatzen saiatzean. Internet konexioa eroria egon "
-"daiteke"
+msgstr "Errore konponezina konektatzen saiatzean. Internet konexioa eroria egon daiteke"
 
 #: src/ServerConnect.cpp:350
 #, c-format
@@ -5755,10 +5420,8 @@ msgstr "%s (%s:%i) beterik dagoela dirudi."
 #, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
-msgstr[0] ""
-"Zerbitzariarekiko konexio automatikoa berriz saiatuko da segundo %d-etan"
-msgstr[1] ""
-"Zerbitzariarekiko konexio automatikoa berriz saiatuko da %d segundotan"
+msgstr[0] "Zerbitzariarekiko konexio automatikoa berriz saiatuko da segundo %d-etan"
+msgstr[1] "Zerbitzariarekiko konexio automatikoa berriz saiatuko da %d segundotan"
 
 #: src/ServerConnect.cpp:412
 msgid "Connection lost"
@@ -5794,8 +5457,7 @@ msgstr "Server.met fitxategia ez da aurkitu!"
 #: src/ServerList.cpp:109
 #, c-format
 msgid "Failed to load server.met file '%s', unknown format encountered."
-msgstr ""
-"Huts '%s' server.met fitxategi irakurtzerakoan, formatu ezezaguna aurkiturik."
+msgstr "Huts '%s' server.met fitxategi irakurtzerakoan, formatu ezezaguna aurkiturik."
 
 #: src/ServerList.cpp:115
 msgid "Failed to open server.met!"
@@ -5804,9 +5466,7 @@ msgstr "Huts server.met fitxategia irekitzerakoan!"
 #: src/ServerList.cpp:126
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
-msgstr ""
-"Server.met fitxategia hondaturik dago, bertsio marka baliogabea aurkitu da: "
-"0x%x, tamaina %i"
+msgstr "Server.met fitxategia hondaturik dago, bertsio marka baliogabea aurkitu da: 0x%x, tamaina %i"
 
 #: src/ServerList.cpp:182
 #, c-format
@@ -5838,16 +5498,12 @@ msgstr "Zerbitzaria ez da gehitu: [%s:%d] -ek ez du baliozko atakarik ezarri."
 #: src/ServerList.cpp:222
 #, c-format
 msgid "Server not added: The IP of [%s:%d] is filtered or invalid."
-msgstr ""
-"Zerbitzaria ez da gehitu: [%s:%d] -ren IP helbidea iragazirik dago edo "
-"baliogabea da."
+msgstr "Zerbitzaria ez da gehitu: [%s:%d] -ren IP helbidea iragazirik dago edo baliogabea da."
 
 #: src/ServerList.cpp:241
 #, c-format
 msgid "Server not added: Server with matching IP:Port [%s:%d] found in list."
-msgstr ""
-"Zerbitzaria ez da gehitu: [%s:%d] IP:Ataka dun zerbitzaria aurkitu da "
-"zerrendan."
+msgstr "Zerbitzaria ez da gehitu: [%s:%d] IP:Ataka dun zerbitzaria aurkitu da zerrendan."
 
 #: src/ServerList.cpp:259
 #, c-format
@@ -5855,12 +5511,8 @@ msgid "Server added: Server at [%s:%d] using the name '%s'."
 msgstr "Zerbitzaria gehiturik: [%s:%d] zerbitzaria '%s' izena erabiltzen."
 
 #: src/ServerList.cpp:355
-msgid ""
-"You are connected to the server you are trying to delete. please disconnect "
-"first."
-msgstr ""
-"Konektaturik zauden zerbitzaria ezabatu nahi duzu. Mesedez deskonektatu "
-"lehenik."
+msgid "You are connected to the server you are trying to delete. please disconnect first."
+msgstr "Konektaturik zauden zerbitzaria ezabatu nahi duzu. Mesedez deskonektatu lehenik."
 
 #: src/ServerList.cpp:527
 #, c-format
@@ -5881,13 +5533,8 @@ msgid "Finished downloading the server list from %s"
 msgstr "Amaituta zerbitzari zerrenda %s-tik deskargatzeaz"
 
 #: src/ServerList.cpp:884
-msgid ""
-"No server list address entry in 'addresses.dat' found. Please paste a valid "
-"server list address into this file in order to auto-update your server list"
-msgstr ""
-"Ez da zerbitzari zerrenda helbideri aurkitu 'addresses.dat' fitxategian. "
-"Mesedez itsatsi zerbitzari zerrenda erabilgarri bat fitxategi honetan "
-"zerbitzari-zerrenda eguneratu ahal izateko"
+msgid "No server list address entry in 'addresses.dat' found. Please paste a valid server list address into this file in order to auto-update your server list"
+msgstr "Ez da zerbitzari zerrenda helbideri aurkitu 'addresses.dat' fitxategian. Mesedez itsatsi zerbitzari zerrenda erabilgarri bat fitxategi honetan zerbitzari-zerrenda eguneratu ahal izateko"
 
 #: src/ServerList.cpp:903
 #, c-format
@@ -5901,9 +5548,7 @@ msgstr "OHARRA: URL baliogabea ezarri zerbitzari auto-eguneraketarako: %s"
 
 #: src/ServerList.cpp:916
 msgid "No valid server.met auto-download url on addresses.dat"
-msgstr ""
-"Ez da baliozko server.met auto-deskarga url helbiderik aurkitu addresses.dat "
-"fitxategian"
+msgstr "Ez da baliozko server.met auto-deskarga url helbiderik aurkitu addresses.dat fitxategian"
 
 #: src/ServerList.cpp:932
 #, c-format
@@ -5911,12 +5556,8 @@ msgid "Failed to download the server list from %s"
 msgstr "Huts zerbitzari zerrenda %s-tik deskargatzerakoan"
 
 #: src/ServerList.cpp:1006
-msgid ""
-"Local server is filtered by the IPFilters, reconnecting to a different "
-"server!"
-msgstr ""
-"Zerbitzari lokala IPIragazkiak iragazirik dago, beste zerbitzari batetara "
-"birkonektatzen!"
+msgid "Local server is filtered by the IPFilters, reconnecting to a different server!"
+msgstr "Zerbitzari lokala IPIragazkiak iragazirik dago, beste zerbitzari batetara birkonektatzen!"
 
 #: src/ServerListCtrl.cpp:87
 msgid "Server Name"
@@ -5952,12 +5593,8 @@ msgid "Version"
 msgstr "Bertsioa"
 
 #: src/ServerListCtrl.cpp:149
-msgid ""
-"You are connected to a server you are trying to delete. Please disconnect "
-"first. The server was NOT deleted."
-msgstr ""
-"Ezabatu naian zauden zerbitzarira konektaturik zaude. Mesedez deskonektatu "
-"zaitez aurretik. Zerbitzaria EZ da ezabatuko."
+msgid "You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."
+msgstr "Ezabatu naian zauden zerbitzarira konektaturik zaude. Mesedez deskonektatu zaitez aurretik. Zerbitzaria EZ da ezabatuko."
 
 #: src/ServerListCtrl.cpp:152
 msgid "(Unknown name)"
@@ -6042,8 +5679,7 @@ msgstr "ABISUA: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:320
 #, c-format
-msgid ""
-"Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
+msgid "Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
 msgstr ""
 
 #: src/ServerSocket.cpp:362
@@ -6060,8 +5696,7 @@ msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\tZiurrenik firewall edo router baten atzean zaudelako izan daiteke."
 
 #: src/ServerSocket.cpp:366
-msgid ""
-"\tFor more information, please refer to https://amule-org.github.io/docs"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
 msgstr "\tArgibide gehiagorako begiratu https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:422
@@ -6649,12 +6284,8 @@ msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "IP Formatu baliogabea. Erabili xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:399
-msgid ""
-"This command requires an argument. Valid arguments: 'all', filename, or a "
-"number.\n"
-msgstr ""
-"Komando honek argumentu bat behar du. Baliozko argumentuak: 'all' fitxategi-"
-"izena edo zenbaki bat.\n"
+msgid "This command requires an argument. Valid arguments: 'all', filename, or a number.\n"
+msgstr "Komando honek argumentu bat behar du. Baliozko argumentuak: 'all' fitxategi-izena edo zenbaki bat.\n"
 
 #: src/TextClient.cpp:435
 msgid "Processing by hash: "
@@ -6666,9 +6297,7 @@ msgstr "Izenez prozesatzen: "
 
 #: src/TextClient.cpp:471
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr ""
-"Komando honek argumentu bat behar du. Baliozko argumentuak: fitxategi "
-"egiaztapena.\n"
+msgstr "Komando honek argumentu bat behar du. Baliozko argumentuak: fitxategi egiaztapena.\n"
 
 #: src/TextClient.cpp:497
 msgid "Not a valid number\n"
@@ -6676,9 +6305,7 @@ msgstr "Ez da baliozko zenbaki bat\n"
 
 #: src/TextClient.cpp:501
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
-msgstr ""
-"Ez da baliozko egiaztapen bat (luzera zehazki 32 karakterekoa izan behar "
-"da)\n"
+msgstr "Ez da baliozko egiaztapen bat (luzera zehazki 32 karakterekoa izan behar da)\n"
 
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
@@ -6845,23 +6472,17 @@ msgstr "Estatistika zuhaitz osoa bistarazi."
 
 #: src/TextClient.cpp:989
 msgid ""
-"Optionally, a number in the range 0-255 can be passed as an argument to "
-"this\n"
-"command, which tells how many entries of the client version subtrees should "
-"be\n"
+"Optionally, a number in the range 0-255 can be passed as an argument to this\n"
+"command, which tells how many entries of the client version subtrees should be\n"
 "shown. Passing 0 or omitting it means 'unlimited'.\n"
 "\n"
-"Example: 'statistics 5' will show only the top 5 versions for each client "
-"type.\n"
+"Example: 'statistics 5' will show only the top 5 versions for each client type.\n"
 msgstr ""
-"Aukeran, 0-255 tarteko argumentu bat eman daiteke komando honi. Honekin "
-"bezero\n"
-"zuhaitzean ikusiko diren sarrera muga ezarri daiteke. 0 emanez edo ez emanez "
-"gero\n"
+"Aukeran, 0-255 tarteko argumentu bat eman daiteke komando honi. Honekin bezero\n"
+"zuhaitzean ikusiko diren sarrera muga ezarri daiteke. 0 emanez edo ez emanez gero\n"
 "'mugagabea' izango da.\n"
 "\n"
-"Adibidea: 'statistics 5' erabiliaz bezero mota bakoitzeko 5 bertsio nagusiak "
-"ikusiriko dira.\n"
+"Adibidea: 'statistics 5' erabiliaz bezero mota bakoitzeko 5 bertsio nagusiak ikusiriko dira.\n"
 
 #: src/TextClient.cpp:991
 msgid "Shut down aMule."
@@ -6908,16 +6529,13 @@ msgstr "Sarera konektatu."
 #: src/TextClient.cpp:1003
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
-"You may also optionally specify a server address in IP:Port form, to connect "
-"to\n"
+"You may also optionally specify a server address in IP:Port form, to connect to\n"
 "that server only. The IP must be a dotted decimal IPv4 address,\n"
 "or a resolvable DNS name."
 msgstr ""
 "Honek hobespenetan gaiturik dauden sare guztietara konektatuko du.\n"
-"Aukeran IP:Ataka formatuan zerbitzari helbide bat ezarri dezakezu "
-"zerbitzari\n"
-"horretara bakarrik konektatzeko. IP helbidea puntuaturiko IPv4 hamartar "
-"helbide\n"
+"Aukeran IP:Ataka formatuan zerbitzari helbide bat ezarri dezakezu zerbitzari\n"
+"horretara bakarrik konektatzeko. IP helbidea puntuaturiko IPv4 hamartar helbide\n"
 "bat izan behar da edo ebatzi daitekeen izen bat."
 
 #: src/TextClient.cpp:1004
@@ -6953,19 +6571,15 @@ msgid ""
 "The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
 "*) a server link (ed2k://|server|...), it will be added to the server list,\n"
-"*) or a serverlist link, in which case all servers in the list will be added "
-"to the\n"
+"*) or a serverlist link, in which case all servers in the list will be added to the\n"
 "   server list.\n"
 "\n"
 "The magnet link must contain the eD2k hash and file length.\n"
 msgstr ""
 "Gehitzeko eD2k lotura hauetako bat izan daiteke:\n"
-"*) fitxategi lotura bat (ed2k://|file|...), berau deskarga ilaran gehituko "
-"da,\n"
-"*) zerbitzari lotura bat (ed2k://|server|...), berau zerbitzari zerrendan "
-"gehituko da\n"
-"*) edo zerbitzari-zerrenda lotura bat, kasu honetan zerbitzari guztiak "
-"gehituko dira\n"
+"*) fitxategi lotura bat (ed2k://|file|...), berau deskarga ilaran gehituko da,\n"
+"*) zerbitzari lotura bat (ed2k://|server|...), berau zerbitzari zerrendan gehituko da\n"
+"*) edo zerbitzari-zerrenda lotura bat, kasu honetan zerbitzari guztiak gehituko dira\n"
 "   zerbitzari zerrendara.\n"
 "\n"
 "Lotura magnetikoak ed2k egiaztapena eta fitxategi tamaina eduki behar ditu.\n"
@@ -7129,12 +6743,10 @@ msgstr "Fitxategia deskargatzen hasi"
 #: src/TextClient.cpp:1077
 msgid ""
 "The number of a file from the last search has to be given.\n"
-"Example: 'download 12' will start to download the file with the number 12 of "
-"the previous search.\n"
+"Example: 'download 12' will start to download the file with the number 12 of the previous search.\n"
 msgstr ""
 "Azkenengo bilaketako fitxategiaren zenbakia eman behar da.\n"
-"Adibidez: 'download 12' erabiliaz azken bilaketako 12. emaitzaren deskarga "
-"abiaraziko da.\n"
+"Adibidez: 'download 12' erabiliaz azken bilaketako 12. emaitzaren deskarga abiaraziko da.\n"
 
 #: src/TextClient.cpp:1084
 msgid "Pause download."
@@ -7154,8 +6766,7 @@ msgstr "Deskarga lehentasuna ezarri."
 
 #: src/TextClient.cpp:1094
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
-msgstr ""
-"Deskarga baten lehentasuna ezarri Baxua, Normala, Altua edo Auto bezala.\n"
+msgstr "Deskarga baten lehentasuna ezarri Baxua, Normala, Altua edo Auto bezala.\n"
 
 #: src/TextClient.cpp:1095
 msgid "Set priority to low."
@@ -7179,9 +6790,7 @@ msgstr "Ilarak/zerrenda bistarazi."
 
 #: src/TextClient.cpp:1101
 msgid "Show upload/download queue, server list or shared files list.\n"
-msgstr ""
-"Igoera/deskarga- ilara, zerbitzari zerrenda edo partekatutako fitxategi "
-"zerrenda bistarazi.\n"
+msgstr "Igoera/deskarga- ilara, zerbitzari zerrenda edo partekatutako fitxategi zerrenda bistarazi.\n"
 
 #: src/TextClient.cpp:1102
 msgid "Show upload queue."
@@ -7234,20 +6843,16 @@ msgstr "'%s'-ko AICH egiaztapen zaharra 64b-ekoa bihurtzen '%s'-en."
 #: src/ThreadTasks.cpp:565
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
-msgstr ""
-"Oharra: '%s' fitxategi izena baliogabea da eta'%s' bezala berrizendatuko da."
+msgstr "Oharra: '%s' fitxategi izena baliogabea da eta'%s' bezala berrizendatuko da."
 
 #: src/ThreadTasks.cpp:577
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
-msgstr ""
-"Oharra: '%s' fitxategia badago dagoeneko eta'%s' bezala berrizendatuko da."
+msgstr "Oharra: '%s' fitxategia badago dagoeneko eta'%s' bezala berrizendatuko da."
 
 #: src/TransferWnd.cpp:209
 msgid "Are you sure you wish to cancel and delete all files in this category?"
-msgstr ""
-"Ziur zaude kategoria honetako fitxategi guztiak ezeztatu eta ezabatu nahi "
-"dituzula?"
+msgstr "Ziur zaude kategoria honetako fitxategi guztiak ezeztatu eta ezabatu nahi dituzula?"
 
 #: src/TransferWnd.cpp:209
 msgid "Confirmation Required"
@@ -7352,9 +6957,7 @@ msgstr "%u zenbakidun fitxategia prozesatzen: %s"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:63
 msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
-msgstr ""
-"Zati egiaztapenak eskatu dituzu (9.5 MB baino fitxategi txikiagoekin "
-"bakarrik)"
+msgstr "Zati egiaztapenak eskatu dituzu (9.5 MB baino fitxategi txikiagoekin bakarrik)"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:80
 #, fuzzy, c-format
@@ -7387,12 +6990,8 @@ msgid "Enter here the file you want to compute the eD2k link"
 msgstr "Sar hemen eD2k lotura konputatzea nahi duzun fitxategia"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:128
-msgid ""
-"Enter here the URL you want to add to the eD2k link: Add / at the end to let "
-"aLinkCreator append the current file name"
-msgstr ""
-"Sartu hemen eD2k loturara gehitzea nahi duzun URLa: Gehitu / amaieran "
-"aLinkCreator-ek uneko fitxategi izena gehitzeko"
+msgid "Enter here the URL you want to add to the eD2k link: Add / at the end to let aLinkCreator append the current file name"
+msgstr "Sartu hemen eD2k loturara gehitzea nahi duzun URLa: Gehitu / amaieran aLinkCreator-ek uneko fitxategi izena gehitzeko"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144
 msgid "Remove"
@@ -7403,12 +7002,8 @@ msgid "Create link with part-hashes"
 msgstr "Zati egiaztapenekin lotura bat sortu"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:161
-msgid ""
-"Help to spread new and rare files faster, at the cost of an increased link "
-"size"
-msgstr ""
-"Fitxategi berri eta arraroak zabaltzen laguntzen du, lotura tamaina "
-"handitzearen kostuarekin"
+msgid "Help to spread new and rare files faster, at the cost of an increased link size"
+msgstr "Fitxategi berri eta arraroak zabaltzen laguntzen du, lotura tamaina handitzearen kostuarekin"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:187
 msgid "MD4 File Hash"
@@ -7847,8 +7442,7 @@ msgstr "Sar hemen zure FTP zerbitzariaren helbidea"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:180
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr ""
-"Idatzi hemen estatistika irudiak FTP zerbitzarian gordeko diren karpeta"
+msgstr "Idatzi hemen estatistika irudiak FTP zerbitzarian gordeko diren karpeta"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:185
 msgid "User"
@@ -8041,21 +7635,15 @@ msgid "Place an aMule shortcut on the desktop."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:45
-msgid ""
-"Launch aMule automatically when the current user logs in (per-user setting)."
+msgid "Launch aMule automatically when the current user logs in (per-user setting)."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:46
-msgid ""
-"Remove aMule application files, Start Menu / desktop shortcuts, autostart "
-"Run-key entry, and Add/Remove Programs entry (required)."
+msgid "Remove aMule application files, Start Menu / desktop shortcuts, autostart Run-key entry, and Add/Remove Programs entry (required)."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:47
-msgid ""
-"Permanently delete %APPDATA%\\aMule for the current user (aMule.conf, ED2K "
-"server list, Kad nodes, partfiles, IP filters, friends list). Leave "
-"unchecked to keep your settings."
+msgid "Permanently delete %APPDATA%\\aMule for the current user (aMule.conf, ED2K server list, Kad nodes, partfiles, IP filters, friends list). Leave unchecked to keep your settings."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:53
@@ -8077,13 +7665,11 @@ msgstr ""
 #: packaging/windows/installer_strings.c:56
 msgid ""
 "Could not remove the previous aMule installation at $0.\r\n"
-"Please close any running aMule processes and try again, or uninstall the "
-"previous version manually first."
+"Please close any running aMule processes and try again, or uninstall the previous version manually first."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:57
-msgid ""
-"aMule appears to be running. Please close it and re-run the uninstaller."
+msgid "aMule appears to be running. Please close it and re-run the uninstaller."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:58

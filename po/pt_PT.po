@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 16:32+0200\n"
+"POT-Creation-Date: 2026-06-10 16:42+0200\n"
 "PO-Revision-Date: 2020-03-04 15:06+0100\n"
 "Last-Translator: Luís Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
@@ -46,10 +46,7 @@ msgstr "A chave de utilizador especificada não é válida!"
 
 #: src/AppImageIntegration.cpp:221
 msgid ""
-"aMule can install a desktop launcher and icon into your home directory so it "
-"appears in your application menu like a regularly installed app. This is "
-"reversible — the files live under ~/.local/share/applications and ~/.local/"
-"share/icons and can be removed at any time.\n"
+"aMule can install a desktop launcher and icon into your home directory so it appears in your application menu like a regularly installed app. This is reversible — the files live under ~/.local/share/applications and ~/.local/share/icons and can be removed at any time.\n"
 "\n"
 "Install desktop integration now?"
 msgstr ""
@@ -72,9 +69,7 @@ msgid "Don't ask again"
 msgstr ""
 
 #: src/AppImageIntegration.cpp:248
-msgid ""
-"Cannot install desktop integration: the APPDIR environment variable is not "
-"set. This usually means the AppImage was launched in a non-standard way."
+msgid "Cannot install desktop integration: the APPDIR environment variable is not set. This usually means the AppImage was launched in a non-standard way."
 msgstr ""
 
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
@@ -85,16 +80,12 @@ msgstr "A ligação falhou "
 
 #: src/AppImageIntegration.cpp:259
 #, c-format
-msgid ""
-"Cannot install desktop integration: failed to create %s. Check that your "
-"home directory is writable."
+msgid "Cannot install desktop integration: failed to create %s. Check that your home directory is writable."
 msgstr ""
 
 #: src/AppImageIntegration.cpp:271
 #, c-format
-msgid ""
-"Cannot install desktop integration: failed to write %s. Check that your home "
-"directory is writable."
+msgid "Cannot install desktop integration: failed to write %s. Check that your home directory is writable."
 msgstr ""
 
 #: src/AppImageIntegration.cpp:281
@@ -103,12 +94,9 @@ msgstr ""
 
 #: src/AppImageIntegration.cpp:284
 msgid ""
-"aMule has been added to your application menu. You can now launch it from "
-"your applications list, and the launcher will run this same AppImage.\n"
+"aMule has been added to your application menu. You can now launch it from your applications list, and the launcher will run this same AppImage.\n"
 "\n"
-"On some desktops, aMule may need to restart for the dock / taskbar icon to "
-"bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick "
-"this up live, but a restart is the safe fallback if the icon stays generic.\n"
+"On some desktops, aMule may need to restart for the dock / taskbar icon to bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick this up live, but a restart is the safe fallback if the icon stays generic.\n"
 "\n"
 "Restart aMule now?"
 msgstr ""
@@ -128,8 +116,7 @@ msgstr ""
 #: src/amuleAppCommon.cpp:174
 #, c-format
 msgid "Could not add %u link from ED2KLinks file (see log for details)."
-msgid_plural ""
-"Could not add %u links from ED2KLinks file (see log for details)."
+msgid_plural "Could not add %u links from ED2KLinks file (see log for details)."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -146,12 +133,8 @@ msgid "Failed to open ED2KLinks file."
 msgstr "Falha ao abrir ficheiro de ligações eD2k."
 
 #: src/amuleAppCommon.cpp:252
-msgid ""
-"WARNING: You can't add yourself as a source for an eD2k link while having a "
-"lowid."
-msgstr ""
-"AVISO: Não se pode adicionar a si próprio como fonte para um link eD2k "
-"enquanto tiver lowid."
+msgid "WARNING: You can't add yourself as a source for an eD2k link while having a lowid."
+msgstr "AVISO: Não se pode adicionar a si próprio como fonte para um link eD2k enquanto tiver lowid."
 
 #: src/amule.cpp:251
 msgid "Now, exiting main app..."
@@ -184,12 +167,8 @@ msgid "Memory debug results for aMule exit:"
 msgstr "Resultados da depuração de memória para a saída do aMule:"
 
 #: src/amule.cpp:574
-msgid ""
-"Your locale has been changed to System Default due to a configuration "
-"change. Sorry."
-msgstr ""
-"O seu idioma foi alterado para a predefinição do sistema devido a uma "
-"mudança de configuração. Desculpe."
+msgid "Your locale has been changed to System Default due to a configuration change. Sorry."
+msgstr "O seu idioma foi alterado para a predefinição do sistema devido a uma mudança de configuração. Desculpe."
 
 #: src/amule.cpp:574 src/amule.cpp:1264 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:355
@@ -241,14 +220,8 @@ msgstr "servidor web a executar no pid %d"
 
 #: src/amule.cpp:865
 #, fuzzy
-msgid ""
-"You requested to run web server on startup, but the amuleweb binary cannot "
-"be run. Please install the package containing aMule web server, or build "
-"aMule from source with -DBUILD_WEBSERVER=YES and install it."
-msgstr ""
-"Pediu para executar o servidor web no arranque, mas o executável não pode "
-"ser lançado. Por favor, instale o pacote que contém o servidor web ou "
-"compile o aMule com --enable-webserver e execute make install"
+msgid "You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or build aMule from source with -DBUILD_WEBSERVER=YES and install it."
+msgstr "Pediu para executar o servidor web no arranque, mas o executável não pode ser lançado. Por favor, instale o pacote que contém o servidor web ou compile o aMule com --enable-webserver e execute make install"
 
 #: src/amule.cpp:948
 #, c-format
@@ -273,8 +246,7 @@ msgstr ""
 "\n"
 "Isto significa que ficará com LOWID.\n"
 "\n"
-"Verifique a sua rede para se certificar de que o porto está aberto para "
-"leitura e escrita."
+"Verifique a sua rede para se certificar de que o porto está aberto para leitura e escrita."
 
 #: src/amule.cpp:1061
 msgid "Failed to create OnlineSig File"
@@ -285,12 +257,8 @@ msgid "Failed to create aMule OnlineSig File"
 msgstr "Erro a criar o ficheiro da Assinatura Online do aMule"
 
 #: src/amule.cpp:1241
-msgid ""
-"The selected locale seems not to be installed on your box. (Note: I'll try "
-"to set it anyway)"
-msgstr ""
-"O idioma seleccionado parece não estar instalado no seu computador. (Nota: "
-"de qualquer das formas, irei tentar activá-lo)"
+msgid "The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"
+msgstr "O idioma seleccionado parece não estar instalado no seu computador. (Nota: de qualquer das formas, irei tentar activá-lo)"
 
 #: src/amule.cpp:1250
 #, c-format
@@ -303,8 +271,7 @@ msgstr "Esta é uma versão de testes actualizada diariamente e\n"
 
 #: src/amule.cpp:1253
 msgid "we give no warranty it won't break anything, burn your house,\n"
-msgstr ""
-"não há qualquer garantia de que não irá partir nada, pegar fogo à sua casa,\n"
+msgstr "não há qualquer garantia de que não irá partir nada, pegar fogo à sua casa,\n"
 
 #: src/amule.cpp:1254
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
@@ -315,17 +282,12 @@ msgid "More information, support and new releases can found at our homepage,\n"
 msgstr "Mais informação, suporte e novos lançamentos na nossa página,\n"
 
 #: src/amule.cpp:1260
-msgid ""
-"at https://amule-org.github.io, or in our IRC channel #aMule at "
-"irc.libera.chat.\n"
+msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.libera.chat.\n"
 msgstr "em amule-org.github.io ou no canal de IRC #aMule em irc.libera.chat.\n"
 
 #: src/amule.cpp:1262
-msgid ""
-"Feel free to report any bugs to https://github.com/amule-org/amule/issues"
-msgstr ""
-"Esteja à vontade para comunicar erros para https://github.com/amule-org/"
-"amule/issues"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgstr "Esteja à vontade para comunicar erros para https://github.com/amule-org/amule/issues"
 
 #: src/amule.cpp:1275
 msgid ""
@@ -333,8 +295,7 @@ msgid ""
 " OnlineSignature will be DISABLED until you fix it on preferences."
 msgstr ""
 "A pasta para os ficheiros da Assinatura Online é INVÁLIDA!\n"
-" A Assinatura Online será DESACTIVADA até que resolva a situação nas "
-"preferências."
+" A Assinatura Online será DESACTIVADA até que resolva a situação nas preferências."
 
 #: src/amule.cpp:1338
 msgid "Server hostname notified"
@@ -366,9 +327,7 @@ msgstr "Mensagem do servidor: %s"
 #: src/ServerList.cpp:870
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
-msgstr ""
-"O download de %s não foi feito porque o ficheiro requisitado não é mais "
-"recente."
+msgstr "O download de %s não foi feito porque o ficheiro requisitado não é mais recente."
 
 #: src/amule.cpp:1886
 msgid "Failed to download the nodes list."
@@ -392,18 +351,13 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "A sua versão do aMule é %i.%i.%i e a última versão é %li.%li.%li"
 
 #: src/amule.cpp:1994
-msgid ""
-"The latest version can always be found at https://github.com/amule-org/amule/"
-"releases/latest"
-msgstr ""
-"A última versão pode ser sempre encontrada em https://github.com/amule-org/"
-"amule/releases/latest"
+msgid "The latest version can always be found at https://github.com/amule-org/amule/releases/latest"
+msgstr "A última versão pode ser sempre encontrada em https://github.com/amule-org/amule/releases/latest"
 
 #: src/amule.cpp:1996
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
-msgstr ""
-"AVISO: A sua versão do aMuled está desactualizada: %i.%i.%i < %li.%li.%li"
+msgstr "AVISO: A sua versão do aMuled está desactualizada: %i.%i.%i < %li.%li.%li"
 
 #: src/amule.cpp:2000
 msgid "Your copy of aMule is up to date."
@@ -470,44 +424,21 @@ msgid "Disconnected from Kad"
 msgstr "Desligado da Kad"
 
 #: src/amule.cpp:2292
-msgid ""
-"Kad network cannot be used if UDP port is disabled on preferences, not "
-"starting."
-msgstr ""
-"A rede Kad não pode ser usada se o porto UDP estiver desactivado nas "
-"preferências, inicialização não efectuada."
+msgid "Kad network cannot be used if UDP port is disabled on preferences, not starting."
+msgstr "A rede Kad não pode ser usada se o porto UDP estiver desactivado nas preferências, inicialização não efectuada."
 
 #: src/amule.cpp:2295
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Rede Kad desligada nas preferências, a ligação não será efectuada."
 
 #: src/amuled.cpp:142
-msgid ""
-"ERROR: aMule daemon cannot be used when external connections are disabled. "
-"To enable External Connections, use either a normal aMule, start amuled with "
-"the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in "
-"the file ~/.aMule/amule.conf"
-msgstr ""
-"ERRO: Não é possível usar o daemon do aMule quando as ligações externas "
-"estão desactivadas. Para activar as Ligações Externas use um aMule normal, "
-"inicie o amuled com a opção --ec-config ou mude a chave "
-"\"AcceptExternalConnections\" para 1 no ficheiro ~/.aMule/amule.conf"
+msgid "ERROR: aMule daemon cannot be used when external connections are disabled. To enable External Connections, use either a normal aMule, start amuled with the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf"
+msgstr "ERRO: Não é possível usar o daemon do aMule quando as ligações externas estão desactivadas. Para activar as Ligações Externas use um aMule normal, inicie o amuled com a opção --ec-config ou mude a chave \"AcceptExternalConnections\" para 1 no ficheiro ~/.aMule/amule.conf"
 
 #: src/amuled.cpp:145
 #, fuzzy
-msgid ""
-"ERROR: A valid password is required to use external connections, and aMule "
-"daemon cannot be used without external connections. To run aMule daemon, you "
-"must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
-"appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://amule-org.github.io/docs"
-msgstr ""
-"ERRO: É necessária uma palavra-passe para utilizar as ligações externas e o "
-"daemon do aMule não pode ser utilizado sem ligações externas. Para executar "
-"o daemon do aMule deve definir o campo \"ECPassword\" no ficheiro ~/.aMule/"
-"amule.conf com um valor adequado. Execute o amuled com o parâmetro --ec-"
-"config para definir a palavra-passe. Para mais informações consulte https://"
-"amule-org.github.io/docs"
+msgid "ERROR: A valid password is required to use external connections, and aMule daemon cannot be used without external connections. To run aMule daemon, you must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an appropriate value. Execute amuled with the flag --ec-config to set the password. More information can be found at https://amule-org.github.io/docs"
+msgstr "ERRO: É necessária uma palavra-passe para utilizar as ligações externas e o daemon do aMule não pode ser utilizado sem ligações externas. Para executar o daemon do aMule deve definir o campo \"ECPassword\" no ficheiro ~/.aMule/amule.conf com um valor adequado. Execute o amuled com o parâmetro --ec-config para definir a palavra-passe. Para mais informações consulte https://amule-org.github.io/docs"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -537,12 +468,8 @@ msgid "Running on %s"
 msgstr "A correr em %s"
 
 #: src/amuleDlg.cpp:250
-msgid ""
-"Visit https://github.com/amule-org/amule/releases/latest to check if a new "
-"version is available."
-msgstr ""
-"Visite https://github.com/amule-org/amule/releases/latest para verificar se "
-"há novas versões."
+msgid "Visit https://github.com/amule-org/amule/releases/latest to check if a new version is available."
+msgstr "Visite https://github.com/amule-org/amule/releases/latest para verificar se há novas versões."
 
 #: src/amuleDlg.cpp:276
 msgid "FATAL ERROR: Failed to create Timer"
@@ -607,8 +534,7 @@ msgstr " Copyright (C) 2002-2011 Petar Maymounkov ( petar@maymounkov.org )\n"
 
 #: src/amuleDlg.cpp:534
 msgid "https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
-msgstr ""
-"https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
+msgstr "https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
 
 #: src/amuleDlg.cpp:537 src/KadDlg.cpp:193 src/PartFile.cpp:1032
 #: src/PrefsUnifiedDlg.cpp:712 src/PrefsUnifiedDlg.cpp:837
@@ -884,8 +810,7 @@ msgstr "Ligação fechada - provavelmente o aMule foi terminado."
 #, c-format
 msgid ""
 "Connection timed out. Unable to reach %s:%d within the allotted time.\n"
-"Please check the host, port and that aMule is running with External "
-"Connections enabled."
+"Please check the host, port and that aMule is running with External Connections enabled."
 msgstr ""
 
 #: src/amule-remote-gui.cpp:638
@@ -903,9 +828,7 @@ msgstr "Ligação inválida ou já na lista."
 #: src/amule-remote-gui.cpp:900
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
-msgstr ""
-"Não é possível criar o directório '%s' para a categoria '%s', a manter "
-"directório '%s'."
+msgstr "Não é possível criar o directório '%s' para a categoria '%s', a manter directório '%s'."
 
 #: src/amule-remote-gui.cpp:1724 src/BaseClient.cpp:1772
 #: src/BaseClient.cpp:2311 src/BaseClient.cpp:2327 src/BaseClient.cpp:2603
@@ -964,23 +887,16 @@ msgstr "Pedido: %s\n"
 #: src/BaseClient.cpp:2018
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
-"Estatísticas para esta sessão: Aceite %d de %d pedido, %s transferido\n"
-msgstr[1] ""
-"Estatísticas para esta sessão: Aceites %d de %d pedidos, %s transferidos\n"
+msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] "Estatísticas para esta sessão: Aceite %d de %d pedido, %s transferido\n"
+msgstr[1] "Estatísticas para esta sessão: Aceites %d de %d pedidos, %s transferidos\n"
 
 #: src/BaseClient.cpp:2021
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
-"Estatísticas para todas as sessões: Aceite %d de %d pedido, %s transferido\n"
-msgstr[1] ""
-"Estatísticas para todas as sessões: Aceites %d de %d pedidos, %s "
-"transferidos\n"
+msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] "Estatísticas para todas as sessões: Aceite %d de %d pedido, %s transferido\n"
+msgstr[1] "Estatísticas para todas as sessões: Aceites %d de %d pedidos, %s transferidos\n"
 
 #: src/BaseClient.cpp:2024
 msgid "Requested unknown file"
@@ -998,12 +914,8 @@ msgstr "Nova mensagem de '%s' (IP:%s)"
 
 #: src/BaseClient.cpp:2880
 #, c-format
-msgid ""
-"User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
-"Ignored"
-msgstr ""
-"O utilizador %s (%u) pediu a sua lista de ficheiros partilhados para a pasta "
-"'%s' -> Ignorado"
+msgid "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> Ignored"
+msgstr "O utilizador %s (%u) pediu a sua lista de ficheiros partilhados para a pasta '%s' -> Ignorado"
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:112
 #, c-format
@@ -1012,8 +924,7 @@ msgstr "AVISO: %s não pode ser aberto."
 
 #: src/CanceledFileList.cpp:61
 msgid "WARNING: Canceled file list corrupted, contains invalid header."
-msgstr ""
-"AVISO: Lista de ficheiros cancelados corrompida, contém cabeçalho inválido."
+msgstr "AVISO: Lista de ficheiros cancelados corrompida, contém cabeçalho inválido."
 
 #: src/CanceledFileList.cpp:81 src/KnownFileList.cpp:158
 #, c-format
@@ -1051,11 +962,8 @@ msgid "You must specify a path for the category!"
 msgstr "Deve especificar um caminho para a categoria!"
 
 #: src/CatDialog.cpp:162
-msgid ""
-"Failed to create incoming dir for category. Please specify a valid path!"
-msgstr ""
-"Erro ao criar pasta de entrada para categoria. Por favor, especifique um "
-"caminho válido!"
+msgid "Failed to create incoming dir for category. Please specify a valid path!"
+msgstr "Erro ao criar pasta de entrada para categoria. Por favor, especifique um caminho válido!"
 
 #: src/ChatSelector.cpp:129
 #, c-format
@@ -1075,19 +983,12 @@ msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Erro na ligação ao cliente / Ligação perdida ***"
 
 #: src/ChatSelector.cpp:335
-msgid ""
-"*** You have passed the captcha check and the user has received your "
-"message. ***"
-msgstr ""
-"*** Passou o teste do 'captcha' e o utilizador recebeu a sua mensagem. ***"
+msgid "*** You have passed the captcha check and the user has received your message. ***"
+msgstr "*** Passou o teste do 'captcha' e o utilizador recebeu a sua mensagem. ***"
 
 #: src/ChatSelector.cpp:336
-msgid ""
-"*** Your response to the captcha was wrong and your message has been "
-"ignored. You can request a new captcha by sending a new message. ***"
-msgstr ""
-"*** A sua resposta ao 'captcha' estava errada e a sua mensagem foi ignorada. "
-"Pode solicitar um novo 'captcha' enviando uma nova mensagem. ***"
+msgid "*** Your response to the captcha was wrong and your message has been ignored. You can request a new captcha by sending a new message. ***"
+msgstr "*** A sua resposta ao 'captcha' estava errada e a sua mensagem foi ignorada. Pode solicitar um novo 'captcha' enviando uma nova mensagem. ***"
 
 #: src/ChatWnd.cpp:98
 msgid "Chat"
@@ -1193,14 +1094,12 @@ msgstr "Indisponível"
 #: src/ClientTCPSocket.cpp:778
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
-msgstr ""
-"O utilizador %s (%u) pediu a sua lista de ficheiros partilhados -> Aceite"
+msgstr "O utilizador %s (%u) pediu a sua lista de ficheiros partilhados -> Aceite"
 
 #: src/ClientTCPSocket.cpp:799
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
-msgstr ""
-"O utilizador %s (%u) pediu a sua lista de ficheiros partilhados -> Negado"
+msgstr "O utilizador %s (%u) pediu a sua lista de ficheiros partilhados -> Negado"
 
 #: src/ClientTCPSocket.cpp:831
 #, c-format
@@ -1214,19 +1113,13 @@ msgstr "O utilizador %s (%u) pediu a sua lista de pastas partilhadas -> Negado"
 
 #: src/ClientTCPSocket.cpp:862
 #, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
-msgstr ""
-"O utilizador %s (%u) pediu a sua lista de ficheiros partilhados para a pasta "
-"'%s' -> aceite"
+msgid "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
+msgstr "O utilizador %s (%u) pediu a sua lista de ficheiros partilhados para a pasta '%s' -> aceite"
 
 #: src/ClientTCPSocket.cpp:875
 #, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
-msgstr ""
-"O utilizador %s (%u) pediu a sua lista de ficheiros partilhados para a pasta "
-"'%s' -> negado"
+msgid "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
+msgstr "O utilizador %s (%u) pediu a sua lista de ficheiros partilhados para a pasta '%s' -> negado"
 
 #: src/ClientTCPSocket.cpp:894
 #, c-format
@@ -1241,27 +1134,22 @@ msgstr "O utilizador %s (%u) enviou pastas partilhadas não requisitadas."
 #: src/ClientTCPSocket.cpp:932
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory '%s'"
-msgstr ""
-"O utilizador %s (%u) enviou a lista de ficheiros partilhados para a pasta "
-"'%s'"
+msgstr "O utilizador %s (%u) enviou a lista de ficheiros partilhados para a pasta '%s'"
 
 #: src/ClientTCPSocket.cpp:939
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
-msgstr ""
-"O utilizador %s (%u) terminou o envio da lista de ficheiros partilhados"
+msgstr "O utilizador %s (%u) terminou o envio da lista de ficheiros partilhados"
 
 #: src/ClientTCPSocket.cpp:944
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
-msgstr ""
-"O utilizador %s (%u) enviou lista de ficheiros partilhados não desejada"
+msgstr "O utilizador %s (%u) enviou lista de ficheiros partilhados não desejada"
 
 #: src/ClientTCPSocket.cpp:956
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
-msgstr ""
-"O utilizador %s (%u) negou acesso à lista de pastas/ficheiros partilhados"
+msgstr "O utilizador %s (%u) negou acesso à lista de pastas/ficheiros partilhados"
 
 #: src/CommentDialog.cpp:53 src/CommentDialogLst.cpp:61
 msgid "File Comments"
@@ -1298,11 +1186,8 @@ msgstr[1] "%u comentários"
 
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
-msgid ""
-"Banned client %s for sending %s corrupt data of %s total for the file '%s'"
-msgstr ""
-"Cliente %s banido por ter enviado %s dados corrompidos de um total de %s "
-"para o ficheiro '%s'"
+msgid "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
+msgstr "Cliente %s banido por ter enviado %s dados corrompidos de um total de %s para o ficheiro '%s'"
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1685,12 +1570,8 @@ msgid "Loading PartFile %u of %u"
 msgstr "A carregar Ficheiro Parcial %u de %u"
 
 #: src/DownloadQueue.cpp:150
-msgid ""
-"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/"
-"discussions for .part.met recovery solutions."
-msgstr ""
-"ERRO: Falha ao carregar ficheiro de backup. Procure em https://github.com/"
-"amule-org/amule/discussions por soluções para recuperação de .part.met."
+msgid "ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions for .part.met recovery solutions."
+msgstr "ERRO: Falha ao carregar ficheiro de backup. Procure em https://github.com/amule-org/amule/discussions por soluções para recuperação de .part.met."
 
 #: src/DownloadQueue.cpp:159
 msgid "All PartFiles Loaded."
@@ -1709,15 +1590,11 @@ msgstr[1] "Encontrados %u ficheiros de partes"
 
 #: src/DownloadQueue.cpp:240 src/DownloadQueue.cpp:1501
 msgid "Filesystem for Temp directory cannot handle large files."
-msgstr ""
-"O sistema de ficheiros da pasta de ficheiros temporários não suporta "
-"ficheiros grandes."
+msgstr "O sistema de ficheiros da pasta de ficheiros temporários não suporta ficheiros grandes."
 
 #: src/DownloadQueue.cpp:243 src/DownloadQueue.cpp:1504
 msgid "Filesystem for Incoming directory cannot handle large files."
-msgstr ""
-"O sistema de ficheiros da pasta de ficheiros completos não suporta ficheiros "
-"grandes"
+msgstr "O sistema de ficheiros da pasta de ficheiros completos não suporta ficheiros grandes"
 
 #: src/DownloadQueue.cpp:373
 #, c-format
@@ -1787,9 +1664,7 @@ msgstr "ERRO: não foi possível aceitar uma nova ligação externa"
 
 #: src/ExternalConn.cpp:531
 msgid "External connection refused due to empty password in preferences!"
-msgstr ""
-"Ligação externa recusada devido a palavra-passe não preenchida nas "
-"preferências!"
+msgstr "Ligação externa recusada devido a palavra-passe não preenchida nas preferências!"
 
 #: src/ExternalConn.cpp:542
 #, c-format
@@ -1801,20 +1676,12 @@ msgid "Unknown version"
 msgstr "Versão desconhecida"
 
 #: src/ExternalConn.cpp:554
-msgid ""
-"Incorrect EC version ID, there might be binary incompatibility. Use core and "
-"remote from same snapshot."
-msgstr ""
-"Versão de LE incorrecta, pode haver incompatibilidade binária. Utilize "
-"núcleo e remoto da mesma versão."
+msgid "Incorrect EC version ID, there might be binary incompatibility. Use core and remote from same snapshot."
+msgstr "Versão de LE incorrecta, pode haver incompatibilidade binária. Utilize núcleo e remoto da mesma versão."
 
 #: src/ExternalConn.cpp:559
-msgid ""
-"You cannot connect to a release version from an arbitrary development "
-"snapshot! *sigh* possible crash prevented"
-msgstr ""
-"Não pode ligar-se a uma versão oficial a partir de uma versão de "
-"desenvolvimento arbitrária! *suspiro*... Prevenido potencial erro futuro"
+msgid "You cannot connect to a release version from an arbitrary development snapshot! *sigh* possible crash prevented"
+msgstr "Não pode ligar-se a uma versão oficial a partir de uma versão de desenvolvimento arbitrária! *suspiro*... Prevenido potencial erro futuro"
 
 #: src/ExternalConn.cpp:620
 msgid "Invalid protocol version."
@@ -1826,8 +1693,7 @@ msgstr "Elemento de versão de protocolo em falta."
 
 #: src/ExternalConn.cpp:632
 msgid "Authentication failed: invalid hash specified as EC password."
-msgstr ""
-"Falha de autenticação: chave inválida indicada como palavra-passe para LE"
+msgstr "Falha de autenticação: chave inválida indicada como palavra-passe para LE"
 
 #: src/ExternalConn.cpp:664
 msgid "Authentication failed: wrong password."
@@ -1858,8 +1724,7 @@ msgstr "Acesso não-autorizado de %s. Ligação fechada."
 #: src/ExternalConn.cpp:1176
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
-msgstr ""
-"Falha no comando de ficheiro de partes remoto: Chave não encontrada: %s"
+msgstr "Falha no comando de ficheiro de partes remoto: Chave não encontrada: %s"
 
 #: src/ExternalConn.cpp:1178
 #, c-format
@@ -2081,9 +1946,7 @@ msgstr "Erro de sintaxe!"
 
 #: src/ExternalConnector.cpp:359
 msgid "Error processing command - should never happen! Report bug, please\n"
-msgstr ""
-"Erro ao processar o comando - nunca deveria acontecer! Por favor, comunique "
-"o erro\n"
+msgstr "Erro ao processar o comando - nunca deveria acontecer! Por favor, comunique o erro\n"
 
 #: src/ExternalConnector.cpp:362
 msgid "This command should not have any parameters."
@@ -2181,22 +2044,18 @@ msgstr "Define a localização do programa (idioma)."
 
 #: src/ExternalConnector.cpp:516
 msgid "Write command line options to config file."
-msgstr ""
-"Escrever as opções da linha de comandos para o ficheiro de configuração."
+msgstr "Escrever as opções da linha de comandos para o ficheiro de configuração."
 
 #: src/ExternalConnector.cpp:519
 msgid "Creates config file based on aMule's config file."
-msgstr ""
-"Cria ficheiro de configuração baseado no ficheiro de configuração do aMule."
+msgstr "Cria ficheiro de configuração baseado no ficheiro de configuração do aMule."
 
 #: src/ExternalConnector.cpp:522
 msgid "Print program version."
 msgstr "Mostrar a versão do programa."
 
 #: src/ExternalConnector.cpp:525
-msgid ""
-"Force ZLIB compression regardless of dialed-IP locality (useful when the "
-"server is reachable over a VPN tunnel that resolves to a LAN IP)."
+msgid "Force ZLIB compression regardless of dialed-IP locality (useful when the server is reachable over a VPN tunnel that resolves to a LAN IP)."
 msgstr ""
 
 #: src/FileDetailDialog.cpp:76
@@ -2216,13 +2075,11 @@ msgstr "%.2f kB/s"
 
 #: src/FriendList.cpp:123
 msgid "Failed to open friend list file 'emfriends.met' for reading!"
-msgstr ""
-"Erro ao abrir o ficheiro de lista de amigos 'emfriends.met' para leitura!"
+msgstr "Erro ao abrir o ficheiro de lista de amigos 'emfriends.met' para leitura!"
 
 #: src/FriendList.cpp:149
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
-msgstr ""
-"Erro ao abrir o ficheiro de lista de amigos 'emfriends.met' para escrita!"
+msgstr "Erro ao abrir o ficheiro de lista de amigos 'emfriends.met' para escrita!"
 
 #: src/FriendList.cpp:266
 msgid "CRITICAL - no client on StartChatSession"
@@ -2392,10 +2249,7 @@ msgstr ""
 
 #: src/IP2Country.cpp:98
 #, c-format
-msgid ""
-"No GeoLite2 update URL configured. Download GeoLite2-Country.mmdb manually "
-"(a free MaxMind account is required) and place it at %s, or set the URL in "
-"Preferences."
+msgid "No GeoLite2 update URL configured. Download GeoLite2-Country.mmdb manually (a free MaxMind account is required) and place it at %s, or set the URL in Preferences."
 msgstr ""
 
 #: src/IP2Country.cpp:103
@@ -2445,16 +2299,12 @@ msgstr "A carregar os filtros de IPs 'ipfilter.dat' e 'ipfilter_static.dat'."
 #: src/IPFilter.cpp:299
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
-msgstr ""
-"Erro ao carregar o ficheiro ipfilter.dat '%s', formato desconhecido "
-"encontrado."
+msgstr "Erro ao carregar o ficheiro ipfilter.dat '%s', formato desconhecido encontrado."
 
 #: src/IPFilter.cpp:325
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
-msgstr ""
-"Erro ao carregar o ficheiro ipfilter.dat '%s', não foi possível abrir o "
-"ficheiro."
+msgstr "Erro ao carregar o ficheiro ipfilter.dat '%s', não foi possível abrir o ficheiro."
 
 #: src/IPFilter.cpp:329
 #, c-format
@@ -2509,10 +2359,8 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Tem a certeza que deseja transferir um novo ficheiro nodes.dat?\n"
 
 #: src/KadDlg.cpp:213
-msgid ""
-"Doing so will remove your current nodes and restart Kademlia connection."
-msgstr ""
-"Ao fazê-lo, irá remover os seus nós actuais e reiniciar a ligação à Kademlia."
+msgid "Doing so will remove your current nodes and restart Kademlia connection."
+msgstr "Ao fazê-lo, irá remover os seus nós actuais e reiniciar a ligação à Kademlia."
 
 #: src/KadDlg.cpp:214
 msgid "Continue?"
@@ -2527,12 +2375,8 @@ msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kademlia: A palavra-chave de pesquisa já está na lista de pesquisa: "
 
 #: src/kademlia/routing/RoutingZone.cpp:171
-msgid ""
-"Failed to read nodes.dat file - too old. This version (0) is not supported "
-"anymore."
-msgstr ""
-"Falha ao ler o ficheiro nodes.dat - demasiado antigo. Esta versão (0) já não "
-"é suportada."
+msgid "Failed to read nodes.dat file - too old. This version (0) is not supported anymore."
+msgstr "Falha ao ler o ficheiro nodes.dat - demasiado antigo. Esta versão (0) já não é suportada."
 
 #: src/kademlia/routing/RoutingZone.cpp:209
 #: src/kademlia/routing/RoutingZone.cpp:283
@@ -2545,9 +2389,7 @@ msgstr[1] "Lidos %u contactos Kad"
 #: src/kademlia/routing/RoutingZone.cpp:221
 #: src/kademlia/routing/RoutingZone.cpp:287
 msgid "No contacts found, please bootstrap, or download a nodes.dat file."
-msgstr ""
-"Não foram encontrados contactos. Por favor inicialize ou transfira um "
-"ficheiro nodes.dat."
+msgstr "Não foram encontrados contactos. Por favor inicialize ou transfira um ficheiro nodes.dat."
 
 #: src/kademlia/routing/RoutingZone.cpp:305
 #, c-format
@@ -2594,20 +2436,15 @@ msgstr "Fontes completas"
 
 #: src/KnownFileList.cpp:119
 msgid "WARNING: Known file list corrupted, contains invalid header."
-msgstr ""
-"AVISO: Lista de ficheiros conhecidos corrompida, contém cabeçalho inválido."
+msgstr "AVISO: Lista de ficheiros conhecidos corrompida, contém cabeçalho inválido."
 
 #: src/KnownFileList.cpp:146
 msgid "Failed to load entry in known file list, file may be corrupt"
-msgstr ""
-"Falhou ao carregar entrada na lista de ficheiros conhecidos, o ficheiro pode "
-"estar corrompido"
+msgstr "Falhou ao carregar entrada na lista de ficheiros conhecidos, o ficheiro pode estar corrompido"
 
 #: src/KnownFileList.cpp:155
 msgid "Invalid entry in known file list, file may be corrupt: "
-msgstr ""
-"Entrada inválida na lista de ficheiros conhecidos, o ficheiro pode estar "
-"corrompido"
+msgstr "Entrada inválida na lista de ficheiros conhecidos, o ficheiro pode estar corrompido"
 
 #: src/libs/common/Format.cpp:306
 #, c-format
@@ -2669,8 +2506,7 @@ msgstr "Ligação LE falhou. Resposta vazia."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:329
 msgid "External Connection: Bad reply, handshake failed. Connection closed."
-msgstr ""
-"Ligação Externa: Má resposta, negociação inicial falhou. Ligação fechada."
+msgstr "Ligação Externa: Má resposta, negociação inicial falhou. Ligação fechada."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:337
 msgid "Succeeded! Connection established to aMule "
@@ -2940,19 +2776,12 @@ msgid "Commit"
 msgstr "Adicionar"
 
 #: src/muuli_wdr.cpp:103
-msgid ""
-"Click here to add the eD2k link in the text control to your download queue."
-msgstr ""
-"Clique aqui para adicionar a ligação eD2k (na caixa de texto) à sua lista de "
-"downloads."
+msgid "Click here to add the eD2k link in the text control to your download queue."
+msgstr "Clique aqui para adicionar a ligação eD2k (na caixa de texto) à sua lista de downloads."
 
 #: src/muuli_wdr.cpp:109
-msgid ""
-"Events are displayed here. For a complete list of events, refer to the log "
-"in the Servers-tab."
-msgstr ""
-"Os eventos são mostrados aqui. Para uma lista completa de eventos, consulte "
-"o relatório no separador Servidores."
+msgid "Events are displayed here. For a complete list of events, refer to the log in the Servers-tab."
+msgstr "Os eventos são mostrados aqui. Para uma lista completa de eventos, consulte o relatório no separador Servidores."
 
 #: src/muuli_wdr.cpp:112
 msgid "Loading ..."
@@ -2967,36 +2796,20 @@ msgid "Users: 0"
 msgstr "Utilizadores: 0"
 
 #: src/muuli_wdr.cpp:123
-msgid ""
-"Users connected to the current server and an estimate of the total number of "
-"users."
-msgstr ""
-"Utilizadores ligados ao servidor actual e um estimativa do número total de "
-"utilizadores."
+msgid "Users connected to the current server and an estimate of the total number of users."
+msgstr "Utilizadores ligados ao servidor actual e um estimativa do número total de utilizadores."
 
 #: src/muuli_wdr.cpp:131
 msgid "Up: 0.0 | Down: 0.0"
 msgstr "Up: 0.0 | Down: 0.0"
 
 #: src/muuli_wdr.cpp:132
-msgid ""
-"Current average upload and download rates. If enabled the numbers in the "
-"braces signify the overhead from client communication."
-msgstr ""
-"Médias de entrada e saída actuais. Se activado, os números entre parêntesis "
-"representam a sobrecarga da comunicação do cliente."
+msgid "Current average upload and download rates. If enabled the numbers in the braces signify the overhead from client communication."
+msgstr "Médias de entrada e saída actuais. Se activado, os números entre parêntesis representam a sobrecarga da comunicação do cliente."
 
 #: src/muuli_wdr.cpp:139
-msgid ""
-"Displays the connected status and active transfers. Red arrows signifies "
-"that you are currently not connected, yellow arrows signify that you have "
-"low ID (firewalled) and green arrows signify that you have high ID (The "
-"optimal connection type)."
-msgstr ""
-"Mostra o estado da ligação e as transferências activas. Setas vermelhas "
-"significam que actualmente não está ligado, setas amarelas significam que "
-"tem LowID (atrás de firewall) e setas verdes significam que tem HighID (o "
-"tipo de ligação óptimo)."
+msgid "Displays the connected status and active transfers. Red arrows signifies that you are currently not connected, yellow arrows signify that you have low ID (firewalled) and green arrows signify that you have high ID (The optimal connection type)."
+msgstr "Mostra o estado da ligação e as transferências activas. Setas vermelhas significam que actualmente não está ligado, setas amarelas significam que tem LowID (atrás de firewall) e setas verdes significam que tem HighID (o tipo de ligação óptimo)."
 
 #: src/muuli_wdr.cpp:142
 msgid "Not Connected ..."
@@ -3131,10 +2944,7 @@ msgid "More"
 msgstr "Mais"
 
 #: src/muuli_wdr.cpp:325
-msgid ""
-"Ask already-responded Kad peers to widen the search. Each click queries the "
-"next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing "
-"additional file matches that the search's initial alpha frontier missed."
+msgid "Ask already-responded Kad peers to widen the search. Each click queries the next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing additional file matches that the search's initial alpha frontier missed."
 msgstr ""
 
 #: src/muuli_wdr.cpp:330
@@ -3283,12 +3093,8 @@ msgid "Comment/Rate file (Text will be visible to all users)"
 msgstr "Comentar/Avaliar ficheiro (Texto será visível a todos os utilizadores)"
 
 #: src/muuli_wdr.cpp:705
-msgid ""
-"For a film you can say its length, its story, language ...\\n\\nand if it's "
-"a fake, you can tell that to other users of aMule."
-msgstr ""
-"Para um filme pode dizer a sua duração, enredo, idioma ...\\n\\ne se for um "
-"ficheiro falso, pode transmiti-lo aos outros utilizadores."
+msgid "For a film you can say its length, its story, language ...\\n\\nand if it's a fake, you can tell that to other users of aMule."
+msgstr "Para um filme pode dizer a sua duração, enredo, idioma ...\\n\\ne se for um ficheiro falso, pode transmiti-lo aos outros utilizadores."
 
 #: src/muuli_wdr.cpp:713
 msgid "File Quality"
@@ -3320,9 +3126,7 @@ msgstr "Excelente"
 
 #: src/muuli_wdr.cpp:726
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr ""
-"Escolha a classificação ou avise os utilizadores se o ficheiro for "
-"inválido..."
+msgstr "Escolha a classificação ou avise os utilizadores se o ficheiro for inválido..."
 
 #: src/muuli_wdr.cpp:763
 msgid "Refresh"
@@ -3535,10 +3339,7 @@ msgid "Start aMule automatically when I log in"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1226
-msgid ""
-"Registers a per-user autostart entry with the OS so aMule launches at login. "
-"If you move the aMule binary, launch aMule once manually afterwards to "
-"refresh the entry."
+msgid "Registers a per-user autostart entry with the OS so aMule launches at login. If you move the aMule binary, launch aMule once manually afterwards to refresh the entry."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1229
@@ -3574,21 +3375,15 @@ msgid "Minimize to Tray Icon"
 msgstr "Minimizar para a área de notificação"
 
 #: src/muuli_wdr.cpp:1246
-msgid ""
-"Enabling this will make aMule minimize to the System Tray, rather than the "
-"taskbar."
-msgstr ""
-"Se activar isto o aMule vai minimizar para a área de notificação em vez de "
-"para a barra de tarefas."
+msgid "Enabling this will make aMule minimize to the System Tray, rather than the taskbar."
+msgstr "Se activar isto o aMule vai minimizar para a área de notificação em vez de para a barra de tarefas."
 
 #: src/muuli_wdr.cpp:1249
 msgid "Show notifications when finished downloading"
 msgstr ""
 
 #: src/muuli_wdr.cpp:1250
-msgid ""
-"Enabling this will make aMule to show notifications when finished "
-"downloading."
+msgid "Enabling this will make aMule to show notifications when finished downloading."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1255
@@ -3604,12 +3399,8 @@ msgid "Browser Selection"
 msgstr "Selecção de Navegador"
 
 #: src/muuli_wdr.cpp:1272
-msgid ""
-"Enter your browser name here. Leave this field empty to use the system "
-"default browser."
-msgstr ""
-"Indique aqui o nome do seu browser. Deixe este campo em branco para utilizar "
-"o browser por omissão do sistema."
+msgid "Enter your browser name here. Leave this field empty to use the system default browser."
+msgstr "Indique aqui o nome do seu browser. Deixe este campo em branco para utilizar o browser por omissão do sistema."
 
 #: src/muuli_wdr.cpp:1275 src/muuli_wdr.cpp:1292 src/muuli_wdr.cpp:1569
 #: src/muuli_wdr.cpp:1581 src/muuli_wdr.cpp:2478
@@ -3624,8 +3415,7 @@ msgstr "Abrir num novo separador se possível"
 
 #: src/muuli_wdr.cpp:1281
 msgid "Open the web page in a new tab instead of in a new window when possible"
-msgstr ""
-"Abrir a página num novo separador em vez de uma nova janela, quando possível"
+msgstr "Abrir a página num novo separador em vez de uma nova janela, quando possível"
 
 #: src/muuli_wdr.cpp:1285
 msgid "Video Player"
@@ -3684,12 +3474,8 @@ msgid "Bind local address to IP (empty for any):"
 msgstr "Associar endereço local ao IP (em branco para qualquer um):"
 
 #: src/muuli_wdr.cpp:1385
-msgid ""
-"Advanced users only: If you have multiple network interfaces, enter the "
-"address of the interface to which aMule should be bound."
-msgstr ""
-"Apenas para utilizadores avançados: Se possui múltiplos interfaces de rede "
-"indique o endereço do interface que o aMule deve usar."
+msgid "Advanced users only: If you have multiple network interfaces, enter the address of the interface to which aMule should be bound."
+msgstr "Apenas para utilizadores avançados: Se possui múltiplos interfaces de rede indique o endereço do interface que o aMule deve usar."
 
 #: src/muuli_wdr.cpp:1391
 msgid "Max sources per downloading file:"
@@ -3800,12 +3586,8 @@ msgid "Preallocate disk space for new files"
 msgstr "Reservar previamente espaço em disco para novos ficheiros"
 
 #: src/muuli_wdr.cpp:1523
-msgid ""
-"For new files preallocates disk space for the whole file, thus reduces "
-"fragmentation"
-msgstr ""
-"Para novos ficheiros, reserva o espaço em disco para o ficheiro completo, "
-"reduzindo assim a fragmentação"
+msgid "For new files preallocates disk space for the whole file, thus reduces fragmentation"
+msgstr "Para novos ficheiros, reserva o espaço em disco para o ficheiro completo, reduzindo assim a fragmentação"
 
 #: src/muuli_wdr.cpp:1528
 msgid "Stop downloads when free disk space reaches "
@@ -3837,16 +3619,12 @@ msgstr "Pasta de destino para downloads"
 
 #: src/muuli_wdr.cpp:1567
 msgid ""
-"Completed downloads are stored here. All files in this folder are "
-"automatically shared with other peers.\n"
-"If this folder also holds files you don't want to share, point it at an "
-"aMule-only sub-folder."
+"Completed downloads are stored here. All files in this folder are automatically shared with other peers.\n"
+"If this folder also holds files you don't want to share, point it at an aMule-only sub-folder."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1570
-msgid ""
-"Pick the folder where completed downloads will be stored. All files in that "
-"folder will be shared with other peers."
+msgid "Pick the folder where completed downloads will be stored. All files in that folder will be shared with other peers."
 msgstr ""
 
 #: src/muuli_wdr.cpp:1574
@@ -3863,9 +3641,7 @@ msgstr "Pastas partilhadas"
 
 #: src/muuli_wdr.cpp:1587
 msgid "(Right click on folder icon for recursive share)"
-msgstr ""
-"(Clique com o botão do lado direito no ícone da pasta para partilha "
-"recursiva)"
+msgstr "(Clique com o botão do lado direito no ícone da pasta para partilha recursiva)"
 
 #: src/muuli_wdr.cpp:1593
 msgid "Share hidden files"
@@ -4064,8 +3840,7 @@ msgstr "Ordenar ficheiros automaticamente (pode consumir muito CPU)"
 
 #: src/muuli_wdr.cpp:1822
 msgid "aMule will sort the columns in your download list automatically"
-msgstr ""
-"O aMule ordenará as colunas na sua lista de transferências automaticamente"
+msgstr "O aMule ordenará as colunas na sua lista de transferências automaticamente"
 
 #: src/muuli_wdr.cpp:1839
 msgid "External Connection Parameters"
@@ -4080,12 +3855,8 @@ msgid "IP of the listening interface:"
 msgstr "IP da interface a escutar:"
 
 #: src/muuli_wdr.cpp:1852
-msgid ""
-"Enter here a valid ip in the a.b.c.d format for the listening EC interface. "
-"An empty field or 0.0.0.0 will mean any interface."
-msgstr ""
-"Insira um endereço IP válido no formato a.b.c.d para a interface que irá "
-"aguardar as LE. Um campo vazio ou 0.0.0.0 significará qualquer interface."
+msgid "Enter here a valid ip in the a.b.c.d format for the listening EC interface. An empty field or 0.0.0.0 will mean any interface."
+msgstr "Insira um endereço IP válido no formato a.b.c.d para a interface que irá aguardar as LE. Um campo vazio ou 0.0.0.0 significará qualquer interface."
 
 #: src/muuli_wdr.cpp:1858 src/muuli_wdr.cpp:1904
 msgid "TCP port:"
@@ -4189,21 +3960,15 @@ msgstr "Clique para limpar o relatório."
 
 #: src/muuli_wdr.cpp:2136
 msgid "Click on this button to update the servers list from URL ..."
-msgstr ""
-"Clique neste botão para actualizar a lista de servidores a partir do "
-"endereço ..."
+msgstr "Clique neste botão para actualizar a lista de servidores a partir do endereço ..."
 
 #: src/muuli_wdr.cpp:2140
 msgid "Server list"
 msgstr "Lista de Servidores"
 
 #: src/muuli_wdr.cpp:2144
-msgid ""
-"Enter the url to a server.met file here and press the button to the left to "
-"update the list of known servers."
-msgstr ""
-"Insira a localização de um ficheiro server.met e pressione o botão à "
-"esquerda para actualizar a lista de servidores conhecidos."
+msgid "Enter the url to a server.met file here and press the button to the left to update the list of known servers."
+msgstr "Insira a localização de um ficheiro server.met e pressione o botão à esquerda para actualizar a lista de servidores conhecidos."
 
 #: src/muuli_wdr.cpp:2149
 msgid "Add server manually: Name"
@@ -4254,12 +4019,8 @@ msgid "Nodes (0)"
 msgstr "Nós (0)"
 
 #: src/muuli_wdr.cpp:2243
-msgid ""
-"Enter the url to a nodes.dat file here and press the button to the left to "
-"update the list of known nodes."
-msgstr ""
-"Insira o endereço de um ficheiro nodes.dat e pressione o botão à esquerda "
-"para actualizar a lista de nós conhecidos."
+msgid "Enter the url to a nodes.dat file here and press the button to the left to update the list of known nodes."
+msgstr "Insira o endereço de um ficheiro nodes.dat e pressione o botão à esquerda para actualizar a lista de nós conhecidos."
 
 #: src/muuli_wdr.cpp:2246
 msgid "Nodes stats"
@@ -4294,12 +4055,8 @@ msgid "Use Secure User Identification"
 msgstr "Utilizar Identificação Segura de Utilizador"
 
 #: src/muuli_wdr.cpp:2364
-msgid ""
-"It is recommended to enable this option. You will not receive credits if SUI "
-"is not enabled."
-msgstr ""
-"É recomendado activar esta opção. Não receberá créditos se a Identificação "
-"Segura de Utilizador não estiver activada."
+msgid "It is recommended to enable this option. You will not receive credits if SUI is not enabled."
+msgstr "É recomendado activar esta opção. Não receberá créditos se a Identificação Segura de Utilizador não estiver activada."
 
 #: src/muuli_wdr.cpp:2366
 msgid "Protocol Obfuscation"
@@ -4310,36 +4067,24 @@ msgid "Support Protocol Obfuscation"
 msgstr "Suportar a Ofuscação do Protocolo"
 
 #: src/muuli_wdr.cpp:2371
-msgid ""
-"This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
-"connections from other clients."
-msgstr ""
-"Esta opção activa a Ofuscação do Protocolo e faz com que o aMule aceite "
-"ligações ofuscadas de outros clientes."
+msgid "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated connections from other clients."
+msgstr "Esta opção activa a Ofuscação do Protocolo e faz com que o aMule aceite ligações ofuscadas de outros clientes."
 
 #: src/muuli_wdr.cpp:2373
 msgid "Use obfuscation for outgoing connections"
 msgstr "Usar ofuscação em ligações para o exterior"
 
 #: src/muuli_wdr.cpp:2375
-msgid ""
-"This option makes aMule use Protocol Obfuscation when connecting other "
-"clients/servers."
-msgstr ""
-"Esta opção faz com que o aMule use a Ofuscação do Protocolo quando ligado a "
-"outros clientes/servidores."
+msgid "This option makes aMule use Protocol Obfuscation when connecting other clients/servers."
+msgstr "Esta opção faz com que o aMule use a Ofuscação do Protocolo quando ligado a outros clientes/servidores."
 
 #: src/muuli_wdr.cpp:2377
 msgid "Accept only obfuscated connections"
 msgstr "Aceitar apenas ligações ofuscadas"
 
 #: src/muuli_wdr.cpp:2378
-msgid ""
-"This option makes aMule only accept obfuscated connections. You will have "
-"less sources, but all your traffic will be obfuscated"
-msgstr ""
-"Esta opção faz com que o aMUle aceite apenas ligações ofuscadas. Terá menos "
-"fontes, mas todo o tráfego será ofuscado"
+msgid "This option makes aMule only accept obfuscated connections. You will have less sources, but all your traffic will be obfuscated"
+msgstr "Esta opção faz com que o aMUle aceite apenas ligações ofuscadas. Terá menos fontes, mas todo o tráfego será ofuscado"
 
 #: src/muuli_wdr.cpp:2383
 msgid "Everybody"
@@ -4366,21 +4111,16 @@ msgid "Filter clients"
 msgstr "Filtrar clientes"
 
 #: src/muuli_wdr.cpp:2399
-msgid ""
-"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr ""
-"Activar filtragem por IPs dos clientes definidos no ficheiro ~/.aMule/"
-"ipfilter.dat."
+msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr "Activar filtragem por IPs dos clientes definidos no ficheiro ~/.aMule/ipfilter.dat."
 
 #: src/muuli_wdr.cpp:2401
 msgid "Filter servers"
 msgstr "Filtrar servidores"
 
 #: src/muuli_wdr.cpp:2403
-msgid ""
-"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr ""
-"Activar filtragem da lista de IPs definida no ficheiro ~/.aMule/ipfilter.dat."
+msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr "Activar filtragem da lista de IPs definida no ficheiro ~/.aMule/ipfilter.dat."
 
 #: src/muuli_wdr.cpp:2407
 msgid "Reload List"
@@ -4388,9 +4128,7 @@ msgstr "Recarregar a lista"
 
 #: src/muuli_wdr.cpp:2408
 msgid "Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat"
-msgstr ""
-"Recarregar a lista de IPs a filtrar a partir do ficheiro ~/.aMule/"
-"ipfilter.dat"
+msgstr "Recarregar a lista de IPs a filtrar a partir do ficheiro ~/.aMule/ipfilter.dat"
 
 #: src/muuli_wdr.cpp:2414
 msgid "URL:"
@@ -4417,12 +4155,8 @@ msgid "Paranoid handling of non-matching IPs"
 msgstr "Tratamento paranóico de IPs sem correspondência"
 
 #: src/muuli_wdr.cpp:2436
-msgid ""
-"Rejects packet if the client ip is different from the ip where the packet is "
-"received from. Use with caution."
-msgstr ""
-"Rejeitar pacotes se o IP do cliente é diferente do IP de onde o pacote é "
-"recebido. Usar com cautela."
+msgid "Rejects packet if the client ip is different from the ip where the packet is received from. Use with caution."
+msgstr "Rejeitar pacotes se o IP do cliente é diferente do IP de onde o pacote é recebido. Usar com cautela."
 
 #: src/muuli_wdr.cpp:2438
 msgid "Use system-wide ipfilter.dat if available"
@@ -4430,24 +4164,16 @@ msgstr "Utilizar ipfilter.dat global do sistema se disponível"
 
 #: src/muuli_wdr.cpp:2439
 #, fuzzy
-msgid ""
-"If there's no local ipfilter.dat found, allow usage of a system-wide "
-"ipfilter file."
-msgstr ""
-"Se não existir um ficheiro ipfilter.dat, permitir a utilização de um "
-"ficheiro ipfilter global do sistema."
+msgid "If there's no local ipfilter.dat found, allow usage of a system-wide ipfilter file."
+msgstr "Se não existir um ficheiro ipfilter.dat, permitir a utilização de um ficheiro ipfilter global do sistema."
 
 #: src/muuli_wdr.cpp:2456
 msgid "Enable Online-Signature"
 msgstr "Activar Assinatura Online"
 
 #: src/muuli_wdr.cpp:2458
-msgid ""
-"Enables the writing of the OS file, which can be used by external apps to "
-"create signatures and the like."
-msgstr ""
-"Activa a escrita do ficheiro da AO, o qual pode ser usado por aplicações "
-"externas para criar assinaturas e afins."
+msgid "Enables the writing of the OS file, which can be used by external apps to create signatures and the like."
+msgstr "Activa a escrita do ficheiro da AO, o qual pode ser usado por aplicações externas para criar assinaturas e afins."
 
 #: src/muuli_wdr.cpp:2462
 msgid "Update Frequency (Secs):"
@@ -4455,18 +4181,15 @@ msgstr "Frequência de Actualização (segundos):"
 
 #: src/muuli_wdr.cpp:2465
 msgid "Change the frequency (in seconds) of Online Signature updates."
-msgstr ""
-"Alterar a frequência (em segundos) das actualizações da assinatura Online."
+msgstr "Alterar a frequência (em segundos) das actualizações da assinatura Online."
 
 #: src/muuli_wdr.cpp:2473
 msgid "Save online signature file in: "
 msgstr "Gravar a assinatura Online em: "
 
 #: src/muuli_wdr.cpp:2479
-msgid ""
-"Click here to select the directory containing the the Online Signature files."
-msgstr ""
-"Clique para seleccionar a pasta que contém os ficheiros de Assinatura Online"
+msgid "Click here to select the directory containing the the Online Signature files."
+msgstr "Clique para seleccionar a pasta que contém os ficheiros de Assinatura Online"
 
 #: src/muuli_wdr.cpp:2499
 msgid "Filter incoming messages (except current chat):"
@@ -4490,9 +4213,7 @@ msgstr "Filtrar mensagens que contenham (usar ',' como separador):"
 
 #: src/muuli_wdr.cpp:2510 src/muuli_wdr.cpp:2521
 msgid "add here the words amule should filter and block messages including it"
-msgstr ""
-"adicione as palavras que o aMule deve filtrar e bloquear as mensagens que as "
-"contenham"
+msgstr "adicione as palavras que o aMule deve filtrar e bloquear as mensagens que as contenham"
 
 #: src/muuli_wdr.cpp:2512
 msgid "Show received messages in the log"
@@ -4614,9 +4335,7 @@ msgstr "Tipos de eventos"
 
 #: src/muuli_wdr.cpp:2784
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
-msgstr ""
-"Estatísticas e clientes em espera para o(s) ficheiro(s) seleccionado(s) : "
-"Sessão / Desde sempre"
+msgstr "Estatísticas e clientes em espera para o(s) ficheiro(s) seleccionado(s) : Sessão / Desde sempre"
 
 #: src/muuli_wdr.cpp:2808
 msgid "Active Uploads"
@@ -4825,20 +4544,13 @@ msgid "%s (Disk: %s)"
 msgstr "%s (Disco: %s)"
 
 #: src/PartFileConvertDlg.cpp:204
-msgid ""
-"Please choose a folder to search for temporary downloads! (subfolders will "
-"be included)"
-msgstr ""
-"Por favor escolha uma pasta para localizar downloads incompletos! (subpastas "
-"serão incluídas)"
+msgid "Please choose a folder to search for temporary downloads! (subfolders will be included)"
+msgstr "Por favor escolha uma pasta para localizar downloads incompletos! (subpastas serão incluídas)"
 
 #: src/PartFileConvertDlg.cpp:208
 #, fuzzy
-msgid ""
-"Do you want the source files of successfully imported downloads be deleted?"
-msgstr ""
-"Deseja que os ficheiros de origem dos downloads importados com sucesso sejam "
-"removidos?"
+msgid "Do you want the source files of successfully imported downloads be deleted?"
+msgstr "Deseja que os ficheiros de origem dos downloads importados com sucesso sejam removidos?"
 
 #: src/PartFileConvertDlg.cpp:209
 msgid "Remove sources?"
@@ -4871,16 +4583,12 @@ msgstr "ERRO: Versão inválida no ficheiro part.met: %s ==> %s"
 #: src/PartFile.cpp:664
 #, c-format
 msgid "Error: %s (%s) is corrupt (bad tags: %s), unable to load file."
-msgstr ""
-"Erro: %s (%s) está corrompido (elementos incorrectos: %s), não é possível "
-"carregar o ficheiro."
+msgstr "Erro: %s (%s) está corrompido (elementos incorrectos: %s), não é possível carregar o ficheiro."
 
 #: src/PartFile.cpp:675
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr ""
-"ERRO: %s (%s) está corrompido (contagem de elementos errada), não é possível "
-"carregar o ficheiro."
+msgstr "ERRO: %s (%s) está corrompido (contagem de elementos errada), não é possível carregar o ficheiro."
 
 #: src/PartFile.cpp:678
 msgid "Trying to recover file info..."
@@ -4888,14 +4596,11 @@ msgstr "A tentar recuperar a informação do ficheiro..."
 
 #: src/PartFile.cpp:693
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
-msgstr ""
-"A recuperar ficheiro sem nome - tentar-se-á recuperá-lo como "
-"'RecoveredFile.dat'"
+msgstr "A recuperar ficheiro sem nome - tentar-se-á recuperá-lo como 'RecoveredFile.dat'"
 
 #: src/PartFile.cpp:697
 msgid "Recovered all available file info :D - Trying to use it..."
-msgstr ""
-"Recuperada toda a informação disponível do ficheiro :D - A tentar usá-la..."
+msgstr "Recuperada toda a informação disponível do ficheiro :D - A tentar usá-la..."
 
 #: src/PartFile.cpp:699
 msgid "Unable to recover file info :("
@@ -4949,18 +4654,10 @@ msgstr "Erro ao ler o ficheiro de sementes de ficheiro de partes (%s - %s): %s"
 
 #: src/PartFile.cpp:1252 src/PartFile.cpp:1279
 #, c-format
-msgid ""
-"Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
-"%s|"
-msgid_plural ""
-"Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
-"|%s|"
-msgstr[0] ""
-"Encontrada parte corrompida (%d) no ficheiro de %d parte %s - FileResultHash "
-"|%s| FileHash |%s|"
-msgstr[1] ""
-"Encontrada parte corrompida (%d) no ficheiro de %d partes %s - "
-"FileResultHash |%s| FileHash |%s|"
+msgid "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |%s|"
+msgid_plural "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|"
+msgstr[0] "Encontrada parte corrompida (%d) no ficheiro de %d parte %s - FileResultHash |%s| FileHash |%s|"
+msgstr[1] "Encontrada parte corrompida (%d) no ficheiro de %d partes %s - FileResultHash |%s| FileHash |%s|"
 
 #: src/PartFile.cpp:1294
 #, c-format
@@ -4997,34 +4694,22 @@ msgstr "A eliminar o ficheiro: %s"
 #: src/PartFile.cpp:2463
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr ""
-"AVISO: Não é possível calcular a chave de uma parte recebida - conjunto de "
-"chaves incompleto para '%s'"
+msgstr "AVISO: Não é possível calcular a chave de uma parte recebida - conjunto de chaves incompleto para '%s'"
 
 #: src/PartFile.cpp:2468
 #, c-format
-msgid ""
-"ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
-"never happen"
-msgstr ""
-"ERRO: Impossível calcular a chave de uma parte recebida - conjunto de chaves "
-"incompleto (%s). Isto nunca deveria acontecer"
+msgid "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"
+msgstr "ERRO: Impossível calcular a chave de uma parte recebida - conjunto de chaves incompleto (%s). Isto nunca deveria acontecer"
 
 #: src/PartFile.cpp:2489
 #, c-format
-msgid ""
-"Part %u of '%s' marked complete but partfile is shorter than expected (have "
-"%llu bytes, need %llu); reopening gap for re-download."
+msgid "Part %u of '%s' marked complete but partfile is shorter than expected (have %llu bytes, need %llu); reopening gap for re-download."
 msgstr ""
 
 #: src/PartFile.cpp:2501 src/PartFile.cpp:2506
 #, c-format
-msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
-"'%s' with length %u: %s"
-msgstr ""
-"EOF ao gerar a chave da parte transferida %u de comprimento %u (máximo %u) "
-"do ficheiro de partes '%s' com comprimento %u: %s"
+msgid "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"
+msgstr "EOF ao gerar a chave da parte transferida %u de comprimento %u (máximo %u) do ficheiro de partes '%s' com comprimento %u: %s"
 
 #: src/PartFile.cpp:3223
 #, c-format
@@ -5238,11 +4923,8 @@ msgid "Invalid category found, skipping"
 msgstr "Categoria inválida encontrada, a ignorar"
 
 #: src/Preferences.cpp:1848
-msgid ""
-"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
-msgstr ""
-"O porto TCP não pode ser superior a 65532 porque o socket UDP do servidor "
-"tem de ser TCP+3"
+msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgstr "O porto TCP não pode ser superior a 65532 porque o socket UDP do servidor tem de ser TCP+3"
 
 #: src/Preferences.cpp:1849
 #, c-format
@@ -5316,10 +4998,7 @@ msgid "Tray icon support requires libayatana-appindicator3 at compile time."
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:293
-msgid ""
-"Not available on Wayland: the protocol does not report when a window is "
-"minimized, so this option cannot intercept the system minimize button. "
-"Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
+msgid "Not available on Wayland: the protocol does not report when a window is minimized, so this option cannot intercept the system minimize button. Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:333
@@ -5404,8 +5083,7 @@ msgid ""
 "External connections cannot be enabled unless a valid password is specified."
 msgstr ""
 "Activou as ligações externas mas não especificou uma palavra-passe.\n"
-"As ligações externas não podem ser activadas a menos que seja especificada "
-"uma palavra-passe válida."
+"As ligações externas não podem ser activadas a menos que seja especificada uma palavra-passe válida."
 
 #: src/PrefsUnifiedDlg.cpp:730
 msgid "- Language changed.\n"
@@ -5446,9 +5124,7 @@ msgstr ""
 "Se não o fizer, não se queixe se algo grave acontecer.\n"
 
 #: src/PrefsUnifiedDlg.cpp:912
-msgid ""
-"Could not register aMule for autostart at login. The autostart store may be "
-"read-only."
+msgid "Could not register aMule for autostart at login. The autostart store may be read-only."
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:913
@@ -5467,8 +5143,7 @@ msgid ""
 "Click on the button \"List\" by this checkbox to enter an URL."
 msgstr ""
 "A sua lista de actualização automática de servidores está vazia.\n"
-"Por favor, indique pelo menos uma localização que aponte para um ficheiro "
-"server.met válido.\n"
+"Por favor, indique pelo menos uma localização que aponte para um ficheiro server.met válido.\n"
 "Clique no botão \"Lista\" para inserir uma localização."
 
 #: src/PrefsUnifiedDlg.cpp:1120
@@ -5593,9 +5268,7 @@ msgid ""
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1566
-msgid ""
-"Sharing them recursively will publish every file underneath on the eD2k/Kad "
-"networks. Do you really want to do this?"
+msgid "Sharing them recursively will publish every file underneath on the eD2k/Kad networks. Do you really want to do this?"
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1568
@@ -5641,16 +5314,12 @@ msgid "Kad search: requested wider results from one more peer."
 msgstr ""
 
 #: src/SearchDlg.cpp:438
-msgid ""
-"Kad search: no peer left to reask for more results (cap reached or no "
-"responses yet)."
+msgid "Kad search: no peer left to reask for more results (cap reached or no responses yet)."
 msgstr ""
 
 #: src/SearchDlg.cpp:543
 msgid "Min size must be smaller than max size. Max size ignored."
-msgstr ""
-"O Tamanho mínimo tem de ser menor que o tamanho máximo. Tamanho máximo "
-"ignorado."
+msgstr "O Tamanho mínimo tem de ser menor que o tamanho máximo. Tamanho máximo ignorado."
 
 #: src/SearchDlg.cpp:544 src/SearchDlg.cpp:602
 msgid "Search warning"
@@ -5711,11 +5380,8 @@ msgid "New"
 msgstr "Novo"
 
 #: src/ServerConnect.cpp:74
-msgid ""
-"Failed to connect to all obfuscated servers listed. Making another pass "
-"without obfuscation."
-msgstr ""
-"Ligação a servidores ofuscados falhou. A tentar de novo, sem ofuscação."
+msgid "Failed to connect to all obfuscated servers listed. Making another pass without obfuscation."
+msgstr "Ligação a servidores ofuscados falhou. A tentar de novo, sem ofuscação."
 
 #: src/ServerConnect.cpp:79
 msgid "Failed to connect to all servers listed. Making another pass."
@@ -5741,8 +5407,7 @@ msgstr "Ligação estabelecida a: %s"
 
 #: src/ServerConnect.cpp:346
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr ""
-"Erro Fatal durante tentativa de ligação. A ligação à Internet pode ter caído"
+msgstr "Erro Fatal durante tentativa de ligação. A ligação à Internet pode ter caído"
 
 #: src/ServerConnect.cpp:350
 #, c-format
@@ -5800,9 +5465,7 @@ msgstr "Ficheiro server.met não encontrado!"
 #: src/ServerList.cpp:109
 #, c-format
 msgid "Failed to load server.met file '%s', unknown format encountered."
-msgstr ""
-"Falha ao carregar o ficheiro server.met '%s', formato desconhecido "
-"encontrado."
+msgstr "Falha ao carregar o ficheiro server.met '%s', formato desconhecido encontrado."
 
 #: src/ServerList.cpp:115
 msgid "Failed to open server.met!"
@@ -5811,8 +5474,7 @@ msgstr "Falha ao abrir server.met!"
 #: src/ServerList.cpp:126
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
-msgstr ""
-"Ficheiro server.met corrompido, versão inválida encontrada: 0x%x, tamanho %i"
+msgstr "Ficheiro server.met corrompido, versão inválida encontrada: 0x%x, tamanho %i"
 
 #: src/ServerList.cpp:182
 #, c-format
@@ -5849,9 +5511,7 @@ msgstr "Servidor não adicionado: O IP de [%s:%d] está filtrado ou é inválido
 #: src/ServerList.cpp:241
 #, c-format
 msgid "Server not added: Server with matching IP:Port [%s:%d] found in list."
-msgstr ""
-"Servidor não adicionado: Servidor com IP:Porto correspondente [%s:%d] "
-"encontrado na lista."
+msgstr "Servidor não adicionado: Servidor com IP:Porto correspondente [%s:%d] encontrado na lista."
 
 #: src/ServerList.cpp:259
 #, c-format
@@ -5859,12 +5519,8 @@ msgid "Server added: Server at [%s:%d] using the name '%s'."
 msgstr "Servidor adicionado: Servidor em [%s:%d] a usar o nome '%s'."
 
 #: src/ServerList.cpp:355
-msgid ""
-"You are connected to the server you are trying to delete. please disconnect "
-"first."
-msgstr ""
-"Está ligado ao servidor que está a tentar remover. Por favor, desligue-se "
-"primeiro."
+msgid "You are connected to the server you are trying to delete. please disconnect first."
+msgstr "Está ligado ao servidor que está a tentar remover. Por favor, desligue-se primeiro."
 
 #: src/ServerList.cpp:527
 #, c-format
@@ -5885,13 +5541,8 @@ msgid "Finished downloading the server list from %s"
 msgstr "Terminou a transferência da lista de servidores de %s"
 
 #: src/ServerList.cpp:884
-msgid ""
-"No server list address entry in 'addresses.dat' found. Please paste a valid "
-"server list address into this file in order to auto-update your server list"
-msgstr ""
-"Não foi encontrada nenhuma lista de servidores no 'addresses.dat'. Por favor "
-"indique um endereço correcto neste ficheiro para a auto-actualização da "
-"lista de servidores"
+msgid "No server list address entry in 'addresses.dat' found. Please paste a valid server list address into this file in order to auto-update your server list"
+msgstr "Não foi encontrada nenhuma lista de servidores no 'addresses.dat'. Por favor indique um endereço correcto neste ficheiro para a auto-actualização da lista de servidores"
 
 #: src/ServerList.cpp:903
 #, c-format
@@ -5901,15 +5552,11 @@ msgstr "Iniciar transferência de lista de servidores de %s"
 #: src/ServerList.cpp:912
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
-msgstr ""
-"AVISO: URL especificado inválido para a actualização automática de "
-"servidores: %s"
+msgstr "AVISO: URL especificado inválido para a actualização automática de servidores: %s"
 
 #: src/ServerList.cpp:916
 msgid "No valid server.met auto-download url on addresses.dat"
-msgstr ""
-"Não há nenhuma localização válida para download automático do server.met em "
-"addresses.dat"
+msgstr "Não há nenhuma localização válida para download automático do server.met em addresses.dat"
 
 #: src/ServerList.cpp:932
 #, c-format
@@ -5917,11 +5564,8 @@ msgid "Failed to download the server list from %s"
 msgstr "Erro ao obter a lista de servidores a partir de %s"
 
 #: src/ServerList.cpp:1006
-msgid ""
-"Local server is filtered by the IPFilters, reconnecting to a different "
-"server!"
-msgstr ""
-"Servidor local filtrado pelo Filtro de IPs, a ligar a um servidor diferente!"
+msgid "Local server is filtered by the IPFilters, reconnecting to a different server!"
+msgstr "Servidor local filtrado pelo Filtro de IPs, a ligar a um servidor diferente!"
 
 #: src/ServerListCtrl.cpp:87
 msgid "Server Name"
@@ -5957,12 +5601,8 @@ msgid "Version"
 msgstr "Versão"
 
 #: src/ServerListCtrl.cpp:149
-msgid ""
-"You are connected to a server you are trying to delete. Please disconnect "
-"first. The server was NOT deleted."
-msgstr ""
-"Encontra-se ligado a um servidor que está a tentar remover. Por favor, "
-"desligue-se primeiro. O servidor NÃO foi removido."
+msgid "You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."
+msgstr "Encontra-se ligado a um servidor que está a tentar remover. Por favor, desligue-se primeiro. O servidor NÃO foi removido."
 
 #: src/ServerListCtrl.cpp:152
 msgid "(Unknown name)"
@@ -6047,8 +5687,7 @@ msgstr "AVISO: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:320
 #, c-format
-msgid ""
-"Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
+msgid "Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
 msgstr ""
 
 #: src/ServerSocket.cpp:362
@@ -6062,15 +5701,11 @@ msgstr "AVISO: Recebeu LowID!"
 
 #: src/ServerSocket.cpp:365
 msgid "\tMost likely this is because you're behind a firewall or router."
-msgstr ""
-"\tMuito provavelmente, isto deve-se ao facto de estar por detrás de uma "
-"firewall ou router."
+msgstr "\tMuito provavelmente, isto deve-se ao facto de estar por detrás de uma firewall ou router."
 
 #: src/ServerSocket.cpp:366
-msgid ""
-"\tFor more information, please refer to https://amule-org.github.io/docs"
-msgstr ""
-"\tPara mais informação, por favor consulte https://amule-org.github.io/docs"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
+msgstr "\tPara mais informação, por favor consulte https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:422
 msgid "Unknown server info received! - too short"
@@ -6104,8 +5739,7 @@ msgstr "Erro não tratado ao processar pacote do servidor: %s"
 #: src/ServerSocket.cpp:606 src/ServerSocket.cpp:610
 #, c-format
 msgid "Cannot create DNS solving thread for connecting to %s"
-msgstr ""
-"Não é possível criar o processo leve de resolução de nomes para ligar a %s"
+msgstr "Não é possível criar o processo leve de resolução de nomes para ligar a %s"
 
 #: src/ServerSocket.cpp:692
 #, c-format
@@ -6363,8 +5997,7 @@ msgstr "Copiar ligação eD2k para a área de transferência (&Fonte)"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy eD2k link to clipboard (Source) (&With Crypt options)"
-msgstr ""
-"Copiar ligação eD2k para a área de transferência (Fonte) (Com opções C&rypt)"
+msgstr "Copiar ligação eD2k para a área de transferência (Fonte) (Com opções C&rypt)"
 
 #: src/SharedFilesCtrl.cpp:168
 msgid "Copy eD2k link to clipboard (&Hostname)"
@@ -6372,9 +6005,7 @@ msgstr "Copiar ligação eD2k para a área de transferência (&Hostname)"
 
 #: src/SharedFilesCtrl.cpp:169
 msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr ""
-"Copiar ligação eD2k para a área de transferência (Hostname) (Com opções "
-"Cr&ypt)"
+msgstr "Copiar ligação eD2k para a área de transferência (Hostname) (Com opções Cr&ypt)"
 
 #: src/SharedFilesCtrl.cpp:170
 msgid "Copy eD2k link to clipboard (&AICH info)"
@@ -6661,12 +6292,8 @@ msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "Formato de IP inválido. Use xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:399
-msgid ""
-"This command requires an argument. Valid arguments: 'all', filename, or a "
-"number.\n"
-msgstr ""
-"Este comando requer um argumento. Argumentos válidos: 'all', nome de "
-"ficheiro, ou um número.\n"
+msgid "This command requires an argument. Valid arguments: 'all', filename, or a number.\n"
+msgstr "Este comando requer um argumento. Argumentos válidos: 'all', nome de ficheiro, ou um número.\n"
 
 #: src/TextClient.cpp:435
 msgid "Processing by hash: "
@@ -6678,9 +6305,7 @@ msgstr "A processar por ficheiro: "
 
 #: src/TextClient.cpp:471
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr ""
-"Este comando requer um argumento. Argumentos válidos: uma chave de "
-"ficheiro.\n"
+msgstr "Este comando requer um argumento. Argumentos válidos: uma chave de ficheiro.\n"
 
 #: src/TextClient.cpp:497
 msgid "Not a valid number\n"
@@ -6855,23 +6480,17 @@ msgstr "Mostrar a árvore de estatísticas completa."
 
 #: src/TextClient.cpp:989
 msgid ""
-"Optionally, a number in the range 0-255 can be passed as an argument to "
-"this\n"
-"command, which tells how many entries of the client version subtrees should "
-"be\n"
+"Optionally, a number in the range 0-255 can be passed as an argument to this\n"
+"command, which tells how many entries of the client version subtrees should be\n"
 "shown. Passing 0 or omitting it means 'unlimited'.\n"
 "\n"
-"Example: 'statistics 5' will show only the top 5 versions for each client "
-"type.\n"
+"Example: 'statistics 5' will show only the top 5 versions for each client type.\n"
 msgstr ""
-"Opcionalmente, um número no intervalo 0-255 pode ser passado como parâmetro "
-"a este\n"
-"comando, que diz quantas entradas das sub-árvores de versão do cliente devem "
-"ser\n"
+"Opcionalmente, um número no intervalo 0-255 pode ser passado como parâmetro a este\n"
+"comando, que diz quantas entradas das sub-árvores de versão do cliente devem ser\n"
 "exibidas. Passar 0 ou omitir significa 'ilimitado'.\n"
 "\n"
-"Exemplo: 'statistics 5' exibirá apenas as 5 versões de topo para cada tipo "
-"de cliente.\n"
+"Exemplo: 'statistics 5' exibirá apenas as 5 versões de topo para cada tipo de cliente.\n"
 
 #: src/TextClient.cpp:991
 msgid "Shut down aMule."
@@ -6918,14 +6537,12 @@ msgstr "Religar à rede."
 #: src/TextClient.cpp:1003
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
-"You may also optionally specify a server address in IP:Port form, to connect "
-"to\n"
+"You may also optionally specify a server address in IP:Port form, to connect to\n"
 "that server only. The IP must be a dotted decimal IPv4 address,\n"
 "or a resolvable DNS name."
 msgstr ""
 "Isto irá ligar a todas as redes activadas nas Preferências.\n"
-"Pode também especificar opcionalmente um endereço de servidor na forma "
-"IP:Porto, para\n"
+"Pode também especificar opcionalmente um endereço de servidor na forma IP:Porto, para\n"
 "ligar apenas a esse servidor. O endereço IP deve ser na forma IPv4 ou um\n"
 "nome resolúvel por DNS."
 
@@ -6962,8 +6579,7 @@ msgid ""
 "The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
 "*) a server link (ed2k://|server|...), it will be added to the server list,\n"
-"*) or a serverlist link, in which case all servers in the list will be added "
-"to the\n"
+"*) or a serverlist link, in which case all servers in the list will be added to the\n"
 "   server list.\n"
 "\n"
 "The magnet link must contain the eD2k hash and file length.\n"
@@ -7136,12 +6752,10 @@ msgstr "Começar a transferir um ficheiro"
 #: src/TextClient.cpp:1077
 msgid ""
 "The number of a file from the last search has to be given.\n"
-"Example: 'download 12' will start to download the file with the number 12 of "
-"the previous search.\n"
+"Example: 'download 12' will start to download the file with the number 12 of the previous search.\n"
 msgstr ""
 "O número do ficheiro da última pesquisa tem de ser especificado.\n"
-"Exemplo: 'download 12' iniciará o download do ficheiro com o número 12 da "
-"última pesquisa.\n"
+"Exemplo: 'download 12' iniciará o download do ficheiro com o número 12 da última pesquisa.\n"
 
 #: src/TextClient.cpp:1084
 msgid "Pause download."
@@ -7185,9 +6799,7 @@ msgstr "Mostrar filas/listas."
 
 #: src/TextClient.cpp:1101
 msgid "Show upload/download queue, server list or shared files list.\n"
-msgstr ""
-"Mostra as filas de upload/download, listas de servidores ou ficheiros "
-"partilhados.\n"
+msgstr "Mostra as filas de upload/download, listas de servidores ou ficheiros partilhados.\n"
 
 #: src/TextClient.cpp:1102
 msgid "Show upload queue."
@@ -7245,14 +6857,11 @@ msgstr "AVISO: O nome do ficheiro '%s' é invalido e foi mudado para '%s'."
 #: src/ThreadTasks.cpp:577
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
-msgstr ""
-"AVISO: O ficheiro '%s' já existe, o novo ficheiro tem agora o nome '%s'."
+msgstr "AVISO: O ficheiro '%s' já existe, o novo ficheiro tem agora o nome '%s'."
 
 #: src/TransferWnd.cpp:209
 msgid "Are you sure you wish to cancel and delete all files in this category?"
-msgstr ""
-"Tem a certeza que deseja cancelar e apagar todos os ficheiros desta "
-"categoria?"
+msgstr "Tem a certeza que deseja cancelar e apagar todos os ficheiros desta categoria?"
 
 #: src/TransferWnd.cpp:209
 msgid "Confirmation Required"
@@ -7390,12 +6999,8 @@ msgid "Enter here the file you want to compute the eD2k link"
 msgstr "Indique aqui o ficheiro para o qual deseja obter o link eD2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:128
-msgid ""
-"Enter here the URL you want to add to the eD2k link: Add / at the end to let "
-"aLinkCreator append the current file name"
-msgstr ""
-"Indique aqui o URL onde pretende adicionar a ligação eD2k: Adicione / ao fim "
-"para permitir que o aLinkCreator acrescente o nome de ficheiro actual"
+msgid "Enter here the URL you want to add to the eD2k link: Add / at the end to let aLinkCreator append the current file name"
+msgstr "Indique aqui o URL onde pretende adicionar a ligação eD2k: Adicione / ao fim para permitir que o aLinkCreator acrescente o nome de ficheiro actual"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144
 msgid "Remove"
@@ -7406,12 +7011,8 @@ msgid "Create link with part-hashes"
 msgstr "Criar a ligação com chaves de partes"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:161
-msgid ""
-"Help to spread new and rare files faster, at the cost of an increased link "
-"size"
-msgstr ""
-"Ajudar a espalhar ficheiros novos e raros mais rapidamente, com o custo de "
-"um maior tamanho da ligação"
+msgid "Help to spread new and rare files faster, at the cost of an increased link size"
+msgstr "Ajudar a espalhar ficheiros novos e raros mais rapidamente, com o custo de um maior tamanho da ligação"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:187
 msgid "MD4 File Hash"
@@ -7614,8 +7215,7 @@ msgstr "Taxa máxima de download desde que o wxCas está em execução"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:119
 msgid "Absolute Maximum DL rate during wxCas previous runs"
-msgstr ""
-"Taxa absoluta de download máxima durante as execuções anteriores do wxCas"
+msgstr "Taxa absoluta de download máxima durante as execuções anteriores do wxCas"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:142
 msgid "System"
@@ -7835,8 +7435,7 @@ msgstr "Insira aqui a pasta onde deseja gerar a imagem das estatísticas"
 #: src/utils/wxCas/src/wxcasprefs.cpp:150
 #, fuzzy
 msgid "Upload periodically your stat image to FTP server"
-msgstr ""
-"Transferir periodicamente a imagem das estatísticas para o servidor FTP"
+msgstr "Transferir periodicamente a imagem das estatísticas para o servidor FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:157
 msgid "FTP Url"
@@ -7852,9 +7451,7 @@ msgstr "Insira aqui o URL do seu servidor FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:180
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr ""
-"Insira aqui a pasta do servidor FTP onde deseja colocar a sua imagem das "
-"estatísticas"
+msgstr "Insira aqui a pasta do servidor FTP onde deseja colocar a sua imagem das estatísticas"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:185
 msgid "User"
@@ -8007,8 +7604,7 @@ msgstr "Palavra-passe incorrecta\n"
 
 #: src/webserver/src/WebServer.cpp:1941
 msgid "You did not enter any password. Blank password is not allowed.\n"
-msgstr ""
-"Não forneceu uma palavra-passe. Palavras-passe vazias não são permitidas.\n"
+msgstr "Não forneceu uma palavra-passe. Palavras-passe vazias não são permitidas.\n"
 
 #: src/webserver/src/WebServer.cpp:1949
 msgid "Logout requested\n"
@@ -8048,21 +7644,15 @@ msgid "Place an aMule shortcut on the desktop."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:45
-msgid ""
-"Launch aMule automatically when the current user logs in (per-user setting)."
+msgid "Launch aMule automatically when the current user logs in (per-user setting)."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:46
-msgid ""
-"Remove aMule application files, Start Menu / desktop shortcuts, autostart "
-"Run-key entry, and Add/Remove Programs entry (required)."
+msgid "Remove aMule application files, Start Menu / desktop shortcuts, autostart Run-key entry, and Add/Remove Programs entry (required)."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:47
-msgid ""
-"Permanently delete %APPDATA%\\aMule for the current user (aMule.conf, ED2K "
-"server list, Kad nodes, partfiles, IP filters, friends list). Leave "
-"unchecked to keep your settings."
+msgid "Permanently delete %APPDATA%\\aMule for the current user (aMule.conf, ED2K server list, Kad nodes, partfiles, IP filters, friends list). Leave unchecked to keep your settings."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:53
@@ -8084,13 +7674,11 @@ msgstr ""
 #: packaging/windows/installer_strings.c:56
 msgid ""
 "Could not remove the previous aMule installation at $0.\r\n"
-"Please close any running aMule processes and try again, or uninstall the "
-"previous version manually first."
+"Please close any running aMule processes and try again, or uninstall the previous version manually first."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:57
-msgid ""
-"aMule appears to be running. Please close it and re-run the uninstaller."
+msgid "aMule appears to be running. Please close it and re-run the uninstaller."
 msgstr ""
 
 #: packaging/windows/installer_strings.c:58

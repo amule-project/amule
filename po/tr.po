@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 16:32+0200\n"
+"POT-Creation-Date: 2026-06-10 16:42+0200\n"
 "PO-Revision-Date: 2026-06-07 18:58+0300\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
@@ -38,17 +38,11 @@ msgstr "Belirlenen kullanıcı adreslemesi geçersiz!"
 
 #: src/AppImageIntegration.cpp:221
 msgid ""
-"aMule can install a desktop launcher and icon into your home directory so it "
-"appears in your application menu like a regularly installed app. This is "
-"reversible — the files live under ~/.local/share/applications and ~/.local/"
-"share/icons and can be removed at any time.\n"
+"aMule can install a desktop launcher and icon into your home directory so it appears in your application menu like a regularly installed app. This is reversible — the files live under ~/.local/share/applications and ~/.local/share/icons and can be removed at any time.\n"
 "\n"
 "Install desktop integration now?"
 msgstr ""
-"aMule, normal olarak kurulmuş bir uygulama gibi görünmesi için ev dizininize "
-"bir masaüstü başlatıcısı ve ikonu kurabilir. Bu, geri alınabilir — dosyalar "
-"~/.local/share/applications ile ~/.local/share/icons konumlarında bulunurlar "
-"ve ne zaman isterseniz onları kaldırabilirsiniz.\n"
+"aMule, normal olarak kurulmuş bir uygulama gibi görünmesi için ev dizininize bir masaüstü başlatıcısı ve ikonu kurabilir. Bu, geri alınabilir — dosyalar ~/.local/share/applications ile ~/.local/share/icons konumlarında bulunurlar ve ne zaman isterseniz onları kaldırabilirsiniz.\n"
 "\n"
 "Masaüstü birleşimi şimdi kurulsun mu?"
 
@@ -69,13 +63,8 @@ msgid "Don't ask again"
 msgstr "Tekrar sorma"
 
 #: src/AppImageIntegration.cpp:248
-msgid ""
-"Cannot install desktop integration: the APPDIR environment variable is not "
-"set. This usually means the AppImage was launched in a non-standard way."
-msgstr ""
-"Masaüstü birleşimi kurulamaz: APPDIR ortam değişkeni tanımlı değil. Bu, "
-"genelde AppImage başlatılmasının standart olmayan bir yolla yapıldığı "
-"manasına gelir."
+msgid "Cannot install desktop integration: the APPDIR environment variable is not set. This usually means the AppImage was launched in a non-standard way."
+msgstr "Masaüstü birleşimi kurulamaz: APPDIR ortam değişkeni tanımlı değil. Bu, genelde AppImage başlatılmasının standart olmayan bir yolla yapıldığı manasına gelir."
 
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
 #: src/AppImageIntegration.cpp:274
@@ -84,21 +73,13 @@ msgstr "aMule birleşimi başarısız"
 
 #: src/AppImageIntegration.cpp:259
 #, c-format
-msgid ""
-"Cannot install desktop integration: failed to create %s. Check that your "
-"home directory is writable."
-msgstr ""
-"Masaüstü birleşimi kurulamaz: %s oluşturulması başarısız oldu. Ev "
-"dizininizin yazılabilir olduğundan emin olun."
+msgid "Cannot install desktop integration: failed to create %s. Check that your home directory is writable."
+msgstr "Masaüstü birleşimi kurulamaz: %s oluşturulması başarısız oldu. Ev dizininizin yazılabilir olduğundan emin olun."
 
 #: src/AppImageIntegration.cpp:271
 #, c-format
-msgid ""
-"Cannot install desktop integration: failed to write %s. Check that your home "
-"directory is writable."
-msgstr ""
-"Masaüstü birleşimi kurulamaz: %s yazması başarısız oldu. Ev dizininizin "
-"yazılabilir olduğundan emin olun."
+msgid "Cannot install desktop integration: failed to write %s. Check that your home directory is writable."
+msgstr "Masaüstü birleşimi kurulamaz: %s yazması başarısız oldu. Ev dizininizin yazılabilir olduğundan emin olun."
 
 #: src/AppImageIntegration.cpp:281
 msgid "AppImage integration: aMule added to your application menu."
@@ -106,22 +87,15 @@ msgstr "AppImage birleşimi: aMule uygulama menünüze ilave edildi."
 
 #: src/AppImageIntegration.cpp:284
 msgid ""
-"aMule has been added to your application menu. You can now launch it from "
-"your applications list, and the launcher will run this same AppImage.\n"
+"aMule has been added to your application menu. You can now launch it from your applications list, and the launcher will run this same AppImage.\n"
 "\n"
-"On some desktops, aMule may need to restart for the dock / taskbar icon to "
-"bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick "
-"this up live, but a restart is the safe fallback if the icon stays generic.\n"
+"On some desktops, aMule may need to restart for the dock / taskbar icon to bind to the new launcher entry. Modern Wayland compositors (GNOME, KDE) pick this up live, but a restart is the safe fallback if the icon stays generic.\n"
 "\n"
 "Restart aMule now?"
 msgstr ""
-"aMule, uygulama menünüze eklendi. Artık onu uygulama listenizden "
-"başlatabilirsiniz, başlatıcı bu AppImage dosyasını çalıştıracaktır.\n"
+"aMule, uygulama menünüze eklendi. Artık onu uygulama listenizden başlatabilirsiniz, başlatıcı bu AppImage dosyasını çalıştıracaktır.\n"
 "\n"
-"Bazı masaüstlerinde, görev tepsisinin / çubuğunun ikonunun yeni başlatıcı "
-"unsuruyla ilişkilendirilmesi için aMule uygulamasının tekrar başlatılması "
-"gerekebilir. Çağdaş Wayland kompozitörleri bunu anında algılar fakat ikon "
-"jenerik olarak kaldıysa tekrar başlatma güvenli bir yedek çözümdür.\n"
+"Bazı masaüstlerinde, görev tepsisinin / çubuğunun ikonunun yeni başlatıcı unsuruyla ilişkilendirilmesi için aMule uygulamasının tekrar başlatılması gerekebilir. Çağdaş Wayland kompozitörleri bunu anında algılar fakat ikon jenerik olarak kaldıysa tekrar başlatma güvenli bir yedek çözümdür.\n"
 "\n"
 "aMule şimdi tekrar başlatılsın mı?"
 
@@ -140,12 +114,9 @@ msgstr "Daha sonra"
 #: src/amuleAppCommon.cpp:174
 #, c-format
 msgid "Could not add %u link from ED2KLinks file (see log for details)."
-msgid_plural ""
-"Could not add %u links from ED2KLinks file (see log for details)."
-msgstr[0] ""
-"ED2Links dosyasından %u bağlantı eklenemedi (ayrıntılar için kütüğe bakın)."
-msgstr[1] ""
-"ED2Links dosyasından %u bağlantı eklenemedi (ayrıntılar için kütüğe bakın)."
+msgid_plural "Could not add %u links from ED2KLinks file (see log for details)."
+msgstr[0] "ED2Links dosyasından %u bağlantı eklenemedi (ayrıntılar için kütüğe bakın)."
+msgstr[1] "ED2Links dosyasından %u bağlantı eklenemedi (ayrıntılar için kütüğe bakın)."
 
 #: src/amuleAppCommon.cpp:176 src/amule.cpp:866 src/amule.cpp:980
 #: src/amule.cpp:1275 src/amule-remote-gui.cpp:462 src/amule-remote-gui.cpp:514
@@ -160,12 +131,8 @@ msgid "Failed to open ED2KLinks file."
 msgstr "ED2KBağlantı dosyası açılamadı."
 
 #: src/amuleAppCommon.cpp:252
-msgid ""
-"WARNING: You can't add yourself as a source for an eD2k link while having a "
-"lowid."
-msgstr ""
-"UYARI: DüşükID olduğunuz sürece kendinizi bir kaynak olarak eD2k "
-"bağlantılarına ekleyemezsiniz."
+msgid "WARNING: You can't add yourself as a source for an eD2k link while having a lowid."
+msgstr "UYARI: DüşükID olduğunuz sürece kendinizi bir kaynak olarak eD2k bağlantılarına ekleyemezsiniz."
 
 #: src/amule.cpp:251
 msgid "Now, exiting main app..."
@@ -198,12 +165,8 @@ msgid "Memory debug results for aMule exit:"
 msgstr "aMule çıkışı için hafıza hata raporlama sonuçları:"
 
 #: src/amule.cpp:574
-msgid ""
-"Your locale has been changed to System Default due to a configuration "
-"change. Sorry."
-msgstr ""
-"Bir yapılandırma değişikliği nedeniyle dil ayarınız 'Sistem Varsayılanı'na "
-"çevrildi. Üzgünüm. Vallahi…"
+msgid "Your locale has been changed to System Default due to a configuration change. Sorry."
+msgstr "Bir yapılandırma değişikliği nedeniyle dil ayarınız 'Sistem Varsayılanı'na çevrildi. Üzgünüm. Vallahi…"
 
 #: src/amule.cpp:574 src/amule.cpp:1264 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:355
@@ -254,14 +217,8 @@ msgid "web server running on pid %d"
 msgstr "web sunucusu pid %d üzerinde çalışıyor"
 
 #: src/amule.cpp:865
-msgid ""
-"You requested to run web server on startup, but the amuleweb binary cannot "
-"be run. Please install the package containing aMule web server, or build "
-"aMule from source with -DBUILD_WEBSERVER=YES and install it."
-msgstr ""
-"Web sunucusunun başlangıçta çalışmasını istediniz, fakat amuleweb ikilisi "
-"çalıştırılamıyor. Lütfen aMule web sunucusunu içeren paketi yükleyin veya "
-"aMule' yi  -DBUILD_WEBSERVER=YES seçeneği ile derleyin ve kurun."
+msgid "You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or build aMule from source with -DBUILD_WEBSERVER=YES and install it."
+msgstr "Web sunucusunun başlangıçta çalışmasını istediniz, fakat amuleweb ikilisi çalıştırılamıyor. Lütfen aMule web sunucusunu içeren paketi yükleyin veya aMule' yi  -DBUILD_WEBSERVER=YES seçeneği ile derleyin ve kurun."
 
 #: src/amule.cpp:948
 #, c-format
@@ -286,8 +243,7 @@ msgstr ""
 "\n"
 "Bunun anlamı DÜŞÜKID alacağınızdır.\n"
 "\n"
-"Ağ ayarlarınıza göz atarak portun giriş ve çıkışlar için açık olup "
-"olmadığını denetleyiniz."
+"Ağ ayarlarınıza göz atarak portun giriş ve çıkışlar için açık olup olmadığını denetleyiniz."
 
 #: src/amule.cpp:1061
 msgid "Failed to create OnlineSig File"
@@ -298,12 +254,8 @@ msgid "Failed to create aMule OnlineSig File"
 msgstr "aMule Çevrim içi İmza dosyası oluşturma başarısız."
 
 #: src/amule.cpp:1241
-msgid ""
-"The selected locale seems not to be installed on your box. (Note: I'll try "
-"to set it anyway)"
-msgstr ""
-"Seçilen yerelleştirme görünüşe göre bilgisayarınızda yüklü değil. (Not: Bunu "
-"yine de yapmaya çalışacağım)"
+msgid "The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"
+msgstr "Seçilen yerelleştirme görünüşe göre bilgisayarınızda yüklü değil. (Not: Bunu yine de yapmaya çalışacağım)"
 
 #: src/amule.cpp:1250
 #, c-format
@@ -320,28 +272,19 @@ msgstr "bir şeyleri bozmayacağını veya evinizi yakmayacağını \n"
 
 #: src/amule.cpp:1254
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
-msgstr ""
-"yahut da köpeğinizi öldürmeyeceğini garanti edemeyiz. Fakat bir *sorun* "
-"yaratmayacağını da umuyoruz.\n"
+msgstr "yahut da köpeğinizi öldürmeyeceğini garanti edemeyiz. Fakat bir *sorun* yaratmayacağını da umuyoruz.\n"
 
 #: src/amule.cpp:1259
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr "Daha fazla bilgi, destek ve yeni sürümler ana sayfamızda bulunabilir\n"
 
 #: src/amule.cpp:1260
-msgid ""
-"at https://amule-org.github.io, or in our IRC channel #aMule at "
-"irc.libera.chat.\n"
-msgstr ""
-"https://amule-org.github.io veya IRC kanalımız: irc.libera.chat sunucusunda "
-"#aMule \n"
+msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.libera.chat.\n"
+msgstr "https://amule-org.github.io veya IRC kanalımız: irc.libera.chat sunucusunda #aMule \n"
 
 #: src/amule.cpp:1262
-msgid ""
-"Feel free to report any bugs to https://github.com/amule-org/amule/issues"
-msgstr ""
-"Her türlü hatayı bize bildirmekten çekinmeyin https://github.com/amule-org/"
-"amule/issues"
+msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
+msgstr "Her türlü hatayı bize bildirmekten çekinmeyin https://github.com/amule-org/amule/issues"
 
 #: src/amule.cpp:1275
 msgid ""
@@ -405,12 +348,8 @@ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "aMule sürümünüz %i.%i.%i ve en güncel sürüm %li.%li.%li"
 
 #: src/amule.cpp:1994
-msgid ""
-"The latest version can always be found at https://github.com/amule-org/amule/"
-"releases/latest"
-msgstr ""
-"En güncel sürüm her zaman https://github.com/amule-org/amule/releases/latest "
-"adresinde bulunabilir."
+msgid "The latest version can always be found at https://github.com/amule-org/amule/releases/latest"
+msgstr "En güncel sürüm her zaman https://github.com/amule-org/amule/releases/latest adresinde bulunabilir."
 
 #: src/amule.cpp:1996
 #, c-format
@@ -482,43 +421,20 @@ msgid "Disconnected from Kad"
 msgstr "Kademlia bağlantısı kesildi."
 
 #: src/amule.cpp:2292
-msgid ""
-"Kad network cannot be used if UDP port is disabled on preferences, not "
-"starting."
-msgstr ""
-"UDP portu ayarlarda devre dışı bırakılmışsa Kad ağı kullanılamaz. "
-"Başlatılmıyor."
+msgid "Kad network cannot be used if UDP port is disabled on preferences, not starting."
+msgstr "UDP portu ayarlarda devre dışı bırakılmışsa Kad ağı kullanılamaz. Başlatılmıyor."
 
 #: src/amule.cpp:2295
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad ağı ayarlarda devre dışı bırakılmış, bağlanılmıyor."
 
 #: src/amuled.cpp:142
-msgid ""
-"ERROR: aMule daemon cannot be used when external connections are disabled. "
-"To enable External Connections, use either a normal aMule, start amuled with "
-"the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in "
-"the file ~/.aMule/amule.conf"
-msgstr ""
-"HATA: aMule daemon dış bağlantılar devre dışı bırakıldığında kullanılamaz. "
-"Dış Bağlantıları etkinleştirmek için ya aMule'yi, --ec-config seçeneği ile "
-"birlikte amuledi başlatarak ya da ~/.aMule/amule.conf dosyasındaki "
-"\"AcceptExternalConnections\" seçeneğini 1 olarak ayarlayın."
+msgid "ERROR: aMule daemon cannot be used when external connections are disabled. To enable External Connections, use either a normal aMule, start amuled with the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf"
+msgstr "HATA: aMule daemon dış bağlantılar devre dışı bırakıldığında kullanılamaz. Dış Bağlantıları etkinleştirmek için ya aMule'yi, --ec-config seçeneği ile birlikte amuledi başlatarak ya da ~/.aMule/amule.conf dosyasındaki \"AcceptExternalConnections\" seçeneğini 1 olarak ayarlayın."
 
 #: src/amuled.cpp:145
-msgid ""
-"ERROR: A valid password is required to use external connections, and aMule "
-"daemon cannot be used without external connections. To run aMule daemon, you "
-"must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an "
-"appropriate value. Execute amuled with the flag --ec-config to set the "
-"password. More information can be found at https://amule-org.github.io/docs"
-msgstr ""
-"HATA: Dış bağlantıların kullanılabilmesi için geçerli bir parola gerekilidir "
-"ve aMule uygulamacığı dış bağlantılar olmadan kullanılamaz. aMule "
-"uygulamacığını çalıştırmak için ~/.aMule/amule.conf dosyasında "
-"\"ECPassword\" kısmını uygun bir değerle doldurmalısınız. amuled' i --ec-"
-"config seçeneği ile çalıştırın ve parolanızı ayarlayın. Daha fazla bilgi "
-"https://amule-org.github.io/docs adresinde bulunabilir."
+msgid "ERROR: A valid password is required to use external connections, and aMule daemon cannot be used without external connections. To run aMule daemon, you must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an appropriate value. Execute amuled with the flag --ec-config to set the password. More information can be found at https://amule-org.github.io/docs"
+msgstr "HATA: Dış bağlantıların kullanılabilmesi için geçerli bir parola gerekilidir ve aMule uygulamacığı dış bağlantılar olmadan kullanılamaz. aMule uygulamacığını çalıştırmak için ~/.aMule/amule.conf dosyasında \"ECPassword\" kısmını uygun bir değerle doldurmalısınız. amuled' i --ec-config seçeneği ile çalıştırın ve parolanızı ayarlayın. Daha fazla bilgi https://amule-org.github.io/docs adresinde bulunabilir."
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -548,12 +464,8 @@ msgid "Running on %s"
 msgstr "%s üzerinde çalışıyor"
 
 #: src/amuleDlg.cpp:250
-msgid ""
-"Visit https://github.com/amule-org/amule/releases/latest to check if a new "
-"version is available."
-msgstr ""
-"Yeni sürüm denetimi için https://github.com/amule-org/amule/releases/latest "
-"adresini ziyaret ediniz."
+msgid "Visit https://github.com/amule-org/amule/releases/latest to check if a new version is available."
+msgstr "Yeni sürüm denetimi için https://github.com/amule-org/amule/releases/latest adresini ziyaret ediniz."
 
 #: src/amuleDlg.cpp:276
 msgid "FATAL ERROR: Failed to create Timer"
@@ -615,8 +527,7 @@ msgstr " Copyright (c) 2002-2011 Petar Maymounkov ( petar@maymounkov.org )\n"
 
 #: src/amuleDlg.cpp:534
 msgid "https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
-msgstr ""
-"https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
+msgstr "https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
 
 #: src/amuleDlg.cpp:537 src/KadDlg.cpp:193 src/PartFile.cpp:1032
 #: src/PrefsUnifiedDlg.cpp:712 src/PrefsUnifiedDlg.cpp:837
@@ -868,9 +779,7 @@ msgstr "Bağlanıyor…"
 
 #: src/amule-remote-gui.cpp:461
 msgid "Connection failed. Please check the host, port, and password."
-msgstr ""
-"Bağlantı başarısız oldu. Lütfen makine ismini, bağlantı noktasını ve "
-"parolayı kontrol edin."
+msgstr "Bağlantı başarısız oldu. Lütfen makine ismini, bağlantı noktasını ve parolayı kontrol edin."
 
 #: src/amule-remote-gui.cpp:498
 msgid "Remote GUI EC event handler"
@@ -893,13 +802,10 @@ msgstr "Bağlantı kesildi - Muhtemelen aMule sonlandırıldı."
 #, c-format
 msgid ""
 "Connection timed out. Unable to reach %s:%d within the allotted time.\n"
-"Please check the host, port and that aMule is running with External "
-"Connections enabled."
+"Please check the host, port and that aMule is running with External Connections enabled."
 msgstr ""
-"Bağlantı zaman aşımına uğradı. Ayrılan vakit zarfında %s:%d ile irtibat "
-"kurulamadı.\n"
-"Lütfen adresi, bağlantı noktasını ve aMule'ün Harici Bağlantılar "
-"etkinleştirilmiş olarak çalıştırılıp çalıştırılmadığını kontrol edin."
+"Bağlantı zaman aşımına uğradı. Ayrılan vakit zarfında %s:%d ile irtibat kurulamadı.\n"
+"Lütfen adresi, bağlantı noktasını ve aMule'ün Harici Bağlantılar etkinleştirilmiş olarak çalıştırılıp çalıştırılmadığını kontrol edin."
 
 #: src/amule-remote-gui.cpp:638
 msgid "Ready"
@@ -975,24 +881,16 @@ msgstr "İstek: %s\n"
 #: src/BaseClient.cpp:2018
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
-"Bu oturum için dosya durumu: Kabul edilen istek %d, toplam %d, %s aktarıldı\n"
-msgstr[1] ""
-"Bu oturum için dosya durumu: Kabul edilen istek %d, toplam %d, %s aktarıldı\n"
+msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] "Bu oturum için dosya durumu: Kabul edilen istek %d, toplam %d, %s aktarıldı\n"
+msgstr[1] "Bu oturum için dosya durumu: Kabul edilen istek %d, toplam %d, %s aktarıldı\n"
 
 #: src/BaseClient.cpp:2021
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
-"Tüm oturumlar için dosya durumu: Kabul edilen istek %d, toplam %d, %s "
-"aktarıldı\n"
-msgstr[1] ""
-"Tüm oturumlar için dosya durumu: Kabul edilen istek %d, toplam %d, %s "
-"aktarıldı\n"
+msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] "Tüm oturumlar için dosya durumu: Kabul edilen istek %d, toplam %d, %s aktarıldı\n"
+msgstr[1] "Tüm oturumlar için dosya durumu: Kabul edilen istek %d, toplam %d, %s aktarıldı\n"
 
 #: src/BaseClient.cpp:2024
 msgid "Requested unknown file"
@@ -1010,12 +908,8 @@ msgstr "'%s' kullanıcısından yeni ileti geldi (IP: %s)"
 
 #: src/BaseClient.cpp:2880
 #, c-format
-msgid ""
-"User %s (%u) requested sharedfiles-list for not existing directory '%s' -> "
-"Ignored"
-msgstr ""
-"Kullanıcı %s (%u), var olmayan '%s' dizini için paylaşılmış dosya listenizi "
-"istedi. -> Görmezden gelindi."
+msgid "User %s (%u) requested sharedfiles-list for not existing directory '%s' -> Ignored"
+msgstr "Kullanıcı %s (%u), var olmayan '%s' dizini için paylaşılmış dosya listenizi istedi. -> Görmezden gelindi."
 
 #: src/CanceledFileList.cpp:54 src/KnownFileList.cpp:112
 #, c-format
@@ -1062,10 +956,8 @@ msgid "You must specify a path for the category!"
 msgstr "Sınıf için bir yol girmelisiniz!"
 
 #: src/CatDialog.cpp:162
-msgid ""
-"Failed to create incoming dir for category. Please specify a valid path!"
-msgstr ""
-"Sınıf için gelen dizini oluşturma başarısız. Lütfen geçerli bir yol giriniz!"
+msgid "Failed to create incoming dir for category. Please specify a valid path!"
+msgstr "Sınıf için gelen dizini oluşturma başarısız. Lütfen geçerli bir yol giriniz!"
 
 #: src/ChatSelector.cpp:129
 #, c-format
@@ -1085,18 +977,12 @@ msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Kullanıcıya bağlantı başarısız. / Bağlantı koptu.***"
 
 #: src/ChatSelector.cpp:335
-msgid ""
-"*** You have passed the captcha check and the user has received your "
-"message. ***"
+msgid "*** You have passed the captcha check and the user has received your message. ***"
 msgstr "*** Captcha denetiminden geçtiniz ve kullanıcı iletinizi aldı. ***"
 
 #: src/ChatSelector.cpp:336
-msgid ""
-"*** Your response to the captcha was wrong and your message has been "
-"ignored. You can request a new captcha by sending a new message. ***"
-msgstr ""
-"*** Captcha' ya cevabınız yanlıştı ve iletiniz yok sayıldı. Yeni bir ileti "
-"göndererek yeni bir captcha isteyebilirsiniz. ***"
+msgid "*** Your response to the captcha was wrong and your message has been ignored. You can request a new captcha by sending a new message. ***"
+msgstr "*** Captcha' ya cevabınız yanlıştı ve iletiniz yok sayıldı. Yeni bir ileti göndererek yeni bir captcha isteyebilirsiniz. ***"
 
 #: src/ChatWnd.cpp:98
 msgid "Chat"
@@ -1221,19 +1107,13 @@ msgstr "Kullanıcı %s (%u), paylaşılmış dizin listenizi istedi. -> Reddedil
 
 #: src/ClientTCPSocket.cpp:862
 #, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
-msgstr ""
-"Kullanıcı %s (%u), '%s' dizini için paylaşılmış dosya listenizi istedi. -> "
-"kabul edildi"
+msgid "User %s (%u) requested your sharedfiles-list for directory '%s' -> accepted"
+msgstr "Kullanıcı %s (%u), '%s' dizini için paylaşılmış dosya listenizi istedi. -> kabul edildi"
 
 #: src/ClientTCPSocket.cpp:875
 #, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
-msgstr ""
-"Kullanıcı %s (%u), '%s' dizini için paylaşılmış dosya listenizi istedi. -> "
-"reddedildi."
+msgid "User %s (%u) requested your sharedfiles-list for directory '%s' -> denied"
+msgstr "Kullanıcı %s (%u), '%s' dizini için paylaşılmış dosya listenizi istedi. -> reddedildi."
 
 #: src/ClientTCPSocket.cpp:894
 #, c-format
@@ -1248,8 +1128,7 @@ msgstr "Kullanıcı %s (%u) istenmeyen paylaşılmış dosya listesi gönderdi."
 #: src/ClientTCPSocket.cpp:932
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory '%s'"
-msgstr ""
-"Kullanıcı %s (%u) '%s' dizini için paylaşılmış dosya listesini gönderdi"
+msgstr "Kullanıcı %s (%u) '%s' dizini için paylaşılmış dosya listesini gönderdi"
 
 #: src/ClientTCPSocket.cpp:939
 #, c-format
@@ -1301,11 +1180,8 @@ msgstr[1] "%u adet yorum"
 
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
-msgid ""
-"Banned client %s for sending %s corrupt data of %s total for the file '%s'"
-msgstr ""
-"%s istemcisi %s kadar veriyi %s toplamda '%s' dosyasında gönderdiği için "
-"yasaklandı."
+msgid "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
+msgstr "%s istemcisi %s kadar veriyi %s toplamda '%s' dosyasında gönderdiği için yasaklandı."
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1656,8 +1532,7 @@ msgid ""
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
 "Her önizlemede bu uyarının gösterilmesini önlemek için,\n"
-"seçeneklerden tercih ettiğiniz video oynatıcısını ayarlayın. (öntanımlı "
-"mplayer)"
+"seçeneklerden tercih ettiğiniz video oynatıcısını ayarlayın. (öntanımlı mplayer)"
 
 #: src/DownloadListCtrl.cpp:1435
 msgid "File preview"
@@ -1688,12 +1563,8 @@ msgid "Loading PartFile %u of %u"
 msgstr "ParçaDosyası %u %u'dan yükleniyor"
 
 #: src/DownloadQueue.cpp:150
-msgid ""
-"ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/"
-"discussions for .part.met recovery solutions."
-msgstr ""
-"HATA: Yedekleme dosyası yüklenemedi. .part.met kurtarma çözümleri için "
-"https://github.com/amule-org/amule/discussions adresini ziyaret edin."
+msgid "ERROR: Failed to load backup file. Search https://github.com/amule-org/amule/discussions for .part.met recovery solutions."
+msgstr "HATA: Yedekleme dosyası yüklenemedi. .part.met kurtarma çözümleri için https://github.com/amule-org/amule/discussions adresini ziyaret edin."
 
 #: src/DownloadQueue.cpp:159
 msgid "All PartFiles Loaded."
@@ -1762,8 +1633,7 @@ msgstr "Geçersiz eD2k bağlantısı! HATA: %s"
 
 #: src/ExternalConn.cpp:325
 msgid "Client sent packet after authentication failed."
-msgstr ""
-"Kimlik kanıtlamadan sonra istemci tarafından gönderilen paket başarısız."
+msgstr "Kimlik kanıtlamadan sonra istemci tarafından gönderilen paket başarısız."
 
 #: src/ExternalConn.cpp:343
 msgid "External connection closed."
@@ -1799,20 +1669,12 @@ msgid "Unknown version"
 msgstr "Bilinmeyen sürüm"
 
 #: src/ExternalConn.cpp:554
-msgid ""
-"Incorrect EC version ID, there might be binary incompatibility. Use core and "
-"remote from same snapshot."
-msgstr ""
-"Yanlış EC sürüm ID, bir çift uyumsuzluğu olabilir. Aynı görüntüden çekirdek "
-"ve uzak kullanınız."
+msgid "Incorrect EC version ID, there might be binary incompatibility. Use core and remote from same snapshot."
+msgstr "Yanlış EC sürüm ID, bir çift uyumsuzluğu olabilir. Aynı görüntüden çekirdek ve uzak kullanınız."
 
 #: src/ExternalConn.cpp:559
-msgid ""
-"You cannot connect to a release version from an arbitrary development "
-"snapshot! *sigh* possible crash prevented"
-msgstr ""
-"Bir geliştirme sürümünden dengeli bir sürüme bağlanamazsınız! *muhtemel* bir "
-"çökme önlendi"
+msgid "You cannot connect to a release version from an arbitrary development snapshot! *sigh* possible crash prevented"
+msgstr "Bir geliştirme sürümünden dengeli bir sürüme bağlanamazsınız! *muhtemel* bir çökme önlendi"
 
 #: src/ExternalConn.cpp:620
 msgid "Invalid protocol version."
@@ -1824,9 +1686,7 @@ msgstr "Kayıp protokol sürüm eki."
 
 #: src/ExternalConn.cpp:632
 msgid "Authentication failed: invalid hash specified as EC password."
-msgstr ""
-"Kimlik doğrulama başarısız oldu: EC parolası olarak geçersiz adresleme "
-"girildi."
+msgstr "Kimlik doğrulama başarısız oldu: EC parolası olarak geçersiz adresleme girildi."
 
 #: src/ExternalConn.cpp:664
 msgid "Authentication failed: wrong password."
@@ -1930,9 +1790,7 @@ msgstr "Dışarıdan Bağ.:'%s' bağlantısı ekleniyor."
 #: src/ExternalConn.cpp:1832
 #, c-format
 msgid "%d of %d links failed (invalid or already on list)."
-msgstr ""
-"%d bağlantı, ki toplam %d üzerinden, başarısız oldu (geçersiz veya zaten "
-"listede)."
+msgstr "%d bağlantı, ki toplam %d üzerinden, başarısız oldu (geçersiz veya zaten listede)."
 
 #: src/ExternalConn.cpp:1959
 msgid "File not found."
@@ -2079,8 +1937,7 @@ msgstr "Söz dizimi hatası!"
 
 #: src/ExternalConnector.cpp:359
 msgid "Error processing command - should never happen! Report bug, please\n"
-msgstr ""
-"Komut çalıştırmada hata.- Bu hiç olmamalıydı! Lütfen hatayı bildiriniz.\n"
+msgstr "Komut çalıştırmada hata.- Bu hiç olmamalıydı! Lütfen hatayı bildiriniz.\n"
 
 #: src/ExternalConnector.cpp:362
 msgid "This command should not have any parameters."
@@ -2182,21 +2039,15 @@ msgstr "Komut satırı seçeneklerini yapılandırma dosyasına yaz."
 
 #: src/ExternalConnector.cpp:519
 msgid "Creates config file based on aMule's config file."
-msgstr ""
-"aMule'nin yapılandırma dosyasını temel alan yapılandırma dosyası oluşturur."
+msgstr "aMule'nin yapılandırma dosyasını temel alan yapılandırma dosyası oluşturur."
 
 #: src/ExternalConnector.cpp:522
 msgid "Print program version."
 msgstr "Yazılım sürümünü yazdır."
 
 #: src/ExternalConnector.cpp:525
-msgid ""
-"Force ZLIB compression regardless of dialed-IP locality (useful when the "
-"server is reachable over a VPN tunnel that resolves to a LAN IP)."
-msgstr ""
-"Seçilen IP adresinin konumuna bakılmaksızın ZLIB sıkıştırmasını zorla "
-"(sunucuya, bir LAN IP adresine çözümlenen VPN tüneli üzerinden "
-"erişilebildiğinde kullanışlıdır)."
+msgid "Force ZLIB compression regardless of dialed-IP locality (useful when the server is reachable over a VPN tunnel that resolves to a LAN IP)."
+msgstr "Seçilen IP adresinin konumuna bakılmaksızın ZLIB sıkıştırmasını zorla (sunucuya, bir LAN IP adresine çözümlenen VPN tüneli üzerinden erişilebildiğinde kullanışlıdır)."
 
 #: src/FileDetailDialog.cpp:76
 msgid "File Details"
@@ -2388,14 +2239,8 @@ msgstr "%s için HTTP 401 Yetkisiz"
 
 #: src/IP2Country.cpp:98
 #, c-format
-msgid ""
-"No GeoLite2 update URL configured. Download GeoLite2-Country.mmdb manually "
-"(a free MaxMind account is required) and place it at %s, or set the URL in "
-"Preferences."
-msgstr ""
-"Hiçbir GeoLite2 güncelleme bağlantısı yapılandırılmamış. GeoLite2-"
-"Country.mmdb dosyasını el ile indirin (bedava bir MaxMind hesabı gerektirir) "
-"ve onu %s konumuna taşıyın veya Tercihler'de URL'i ayarlayın."
+msgid "No GeoLite2 update URL configured. Download GeoLite2-Country.mmdb manually (a free MaxMind account is required) and place it at %s, or set the URL in Preferences."
+msgstr "Hiçbir GeoLite2 güncelleme bağlantısı yapılandırılmamış. GeoLite2-Country.mmdb dosyasını el ile indirin (bedava bir MaxMind hesabı gerektirir) ve onu %s konumuna taşıyın veya Tercihler'de URL'i ayarlayın."
 
 #: src/IP2Country.cpp:103
 #, c-format
@@ -2444,8 +2289,7 @@ msgstr "IP süzgeçleri 'ipfilter.dat' ve 'ipfilter_static.dat' yükleniyor."
 #: src/IPFilter.cpp:299
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
-msgstr ""
-"ipfilter.dat dosyasını '%s' yükleme başarısız. bilinmeyen format algılandı."
+msgstr "ipfilter.dat dosyasını '%s' yükleme başarısız. bilinmeyen format algılandı."
 
 #: src/IPFilter.cpp:325
 #, c-format
@@ -2505,11 +2349,8 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Yeni bir nodes.dat dosyası indirmek istediğinizden emin misiniz?\n"
 
 #: src/KadDlg.cpp:213
-msgid ""
-"Doing so will remove your current nodes and restart Kademlia connection."
-msgstr ""
-"Bunu yapmanız şu anki düğümleri silecek ve Kademlia bağlantısını baştan "
-"başlatacaktır."
+msgid "Doing so will remove your current nodes and restart Kademlia connection."
+msgstr "Bunu yapmanız şu anki düğümleri silecek ve Kademlia bağlantısını baştan başlatacaktır."
 
 #: src/KadDlg.cpp:214
 msgid "Continue?"
@@ -2524,12 +2365,8 @@ msgid "Kademlia: Search keyword is already on search list: "
 msgstr "Kademlia: Arama anahtar sözcüğü zaten arama listesinde var. "
 
 #: src/kademlia/routing/RoutingZone.cpp:171
-msgid ""
-"Failed to read nodes.dat file - too old. This version (0) is not supported "
-"anymore."
-msgstr ""
-"Nodes.dat dosyası okunamadı- dosya çok eski. Bu sürüm (0) artık "
-"desteklenmiyor."
+msgid "Failed to read nodes.dat file - too old. This version (0) is not supported anymore."
+msgstr "Nodes.dat dosyası okunamadı- dosya çok eski. Bu sürüm (0) artık desteklenmiyor."
 
 #: src/kademlia/routing/RoutingZone.cpp:209
 #: src/kademlia/routing/RoutingZone.cpp:283
@@ -2542,9 +2379,7 @@ msgstr[1] "%u adet Kademlia bağlantısı okundu"
 #: src/kademlia/routing/RoutingZone.cpp:221
 #: src/kademlia/routing/RoutingZone.cpp:287
 msgid "No contacts found, please bootstrap, or download a nodes.dat file."
-msgstr ""
-"Hiç bağlantı bulunamadı. Lütfen, ön yükleme veya nodes.dat dosyası indirmeyi "
-"deneyin."
+msgstr "Hiç bağlantı bulunamadı. Lütfen, ön yükleme veya nodes.dat dosyası indirmeyi deneyin."
 
 #: src/kademlia/routing/RoutingZone.cpp:305
 #, c-format
@@ -2599,8 +2434,7 @@ msgstr "Bilinen dosyalar listesinden girdi yüklenemedi. Dosya bozuk olabilir"
 
 #: src/KnownFileList.cpp:155
 msgid "Invalid entry in known file list, file may be corrupt: "
-msgstr ""
-"Bilinen dosyalar listesinde geçersiz girdi bulundu. Dosya bozuk olabilir: "
+msgstr "Bilinen dosyalar listesinde geçersiz girdi bulundu. Dosya bozuk olabilir: "
 
 #: src/libs/common/Format.cpp:306
 #, c-format
@@ -2924,19 +2758,12 @@ msgid "Commit"
 msgstr "Onayla"
 
 #: src/muuli_wdr.cpp:103
-msgid ""
-"Click here to add the eD2k link in the text control to your download queue."
-msgstr ""
-"Metin denetimindeki eD2k bağlantısını indirme sırasına eklemek için burayı "
-"tıklayın."
+msgid "Click here to add the eD2k link in the text control to your download queue."
+msgstr "Metin denetimindeki eD2k bağlantısını indirme sırasına eklemek için burayı tıklayın."
 
 #: src/muuli_wdr.cpp:109
-msgid ""
-"Events are displayed here. For a complete list of events, refer to the log "
-"in the Servers-tab."
-msgstr ""
-"Olaylar burada gösterilir. Olayların tam listesi için Sunucu sekmesine "
-"bakınız."
+msgid "Events are displayed here. For a complete list of events, refer to the log in the Servers-tab."
+msgstr "Olaylar burada gösterilir. Olayların tam listesi için Sunucu sekmesine bakınız."
 
 #: src/muuli_wdr.cpp:112
 msgid "Loading ..."
@@ -2951,9 +2778,7 @@ msgid "Users: 0"
 msgstr "Kullanıcılar: 0"
 
 #: src/muuli_wdr.cpp:123
-msgid ""
-"Users connected to the current server and an estimate of the total number of "
-"users."
+msgid "Users connected to the current server and an estimate of the total number of users."
 msgstr "Şu anki sunucuya bağlı kullanıcılar ve kullanıcıların yaklaşık sayısı."
 
 #: src/muuli_wdr.cpp:131
@@ -2961,23 +2786,12 @@ msgid "Up: 0.0 | Down: 0.0"
 msgstr "Gön: 0.0 | İnd: 0.0"
 
 #: src/muuli_wdr.cpp:132
-msgid ""
-"Current average upload and download rates. If enabled the numbers in the "
-"braces signify the overhead from client communication."
-msgstr ""
-"Şu anki ortalama gönderim ve aktarım oranları. Etkinleştirilirse, ızgaralar "
-"üzerindeki rakamlar kullanıcı iletişiminden kaynaklanan ek yükü gösterir."
+msgid "Current average upload and download rates. If enabled the numbers in the braces signify the overhead from client communication."
+msgstr "Şu anki ortalama gönderim ve aktarım oranları. Etkinleştirilirse, ızgaralar üzerindeki rakamlar kullanıcı iletişiminden kaynaklanan ek yükü gösterir."
 
 #: src/muuli_wdr.cpp:139
-msgid ""
-"Displays the connected status and active transfers. Red arrows signifies "
-"that you are currently not connected, yellow arrows signify that you have "
-"low ID (firewalled) and green arrows signify that you have high ID (The "
-"optimal connection type)."
-msgstr ""
-"Bağlantı durumu ve aktif aktarımları gösterir. Kırmızı ok henüz "
-"bağlanmadığınızı, sarı ok düşük ID (güvenlik duvarı)aldığınızı ve yeşil ok "
-"ise yüksek ID (En verimli bağlantı türü) aldığınızı simgeler."
+msgid "Displays the connected status and active transfers. Red arrows signifies that you are currently not connected, yellow arrows signify that you have low ID (firewalled) and green arrows signify that you have high ID (The optimal connection type)."
+msgstr "Bağlantı durumu ve aktif aktarımları gösterir. Kırmızı ok henüz bağlanmadığınızı, sarı ok düşük ID (güvenlik duvarı)aldığınızı ve yeşil ok ise yüksek ID (En verimli bağlantı türü) aldığınızı simgeler."
 
 #: src/muuli_wdr.cpp:142
 msgid "Not Connected ..."
@@ -3112,15 +2926,8 @@ msgid "More"
 msgstr "Daha Fazla"
 
 #: src/muuli_wdr.cpp:325
-msgid ""
-"Ask already-responded Kad peers to widen the search. Each click queries the "
-"next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing "
-"additional file matches that the search's initial alpha frontier missed."
-msgstr ""
-"Zaten cevap vermiş Kad eşlerinden aramayı genişletmelerini iste. Aramanın "
-"ilk alfa hududunun bulamadığı ilave dosya eşleşmelerini ortaya çıkarmak için "
-"her bir tıklama bir sonraki en yakın eşten daha fazla irtibat talep eder "
-"(KADEMLIA_FIND_VALUE_MORE)."
+msgid "Ask already-responded Kad peers to widen the search. Each click queries the next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing additional file matches that the search's initial alpha frontier missed."
+msgstr "Zaten cevap vermiş Kad eşlerinden aramayı genişletmelerini iste. Aramanın ilk alfa hududunun bulamadığı ilave dosya eşleşmelerini ortaya çıkarmak için her bir tıklama bir sonraki en yakın eşten daha fazla irtibat talep eder (KADEMLIA_FIND_VALUE_MORE)."
 
 #: src/muuli_wdr.cpp:330
 msgid "Stop"
@@ -3268,12 +3075,8 @@ msgid "Comment/Rate file (Text will be visible to all users)"
 msgstr "Dosyayı Yorumla/Puanla (İçerik tüm kullanıcılara gösterilecektir.)"
 
 #: src/muuli_wdr.cpp:705
-msgid ""
-"For a film you can say its length, its story, language ...\\n\\nand if it's "
-"a fake, you can tell that to other users of aMule."
-msgstr ""
-"Bir film için süresini, öyküsünü, dilini …\\n\\nve sahte bir dosya ise bunu "
-"diğer aMule kullanıcılarına bildirebilirsiniz."
+msgid "For a film you can say its length, its story, language ...\\n\\nand if it's a fake, you can tell that to other users of aMule."
+msgstr "Bir film için süresini, öyküsünü, dilini …\\n\\nve sahte bir dosya ise bunu diğer aMule kullanıcılarına bildirebilirsiniz."
 
 #: src/muuli_wdr.cpp:713
 msgid "File Quality"
@@ -3305,8 +3108,7 @@ msgstr "Mükemmel"
 
 #: src/muuli_wdr.cpp:726
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr ""
-"Dosya puanlaması seçiniz veya geçersiz ise diğer kullanıcıları uyarınız."
+msgstr "Dosya puanlaması seçiniz veya geçersiz ise diğer kullanıcıları uyarınız."
 
 #: src/muuli_wdr.cpp:763
 msgid "Refresh"
@@ -3519,14 +3321,8 @@ msgid "Start aMule automatically when I log in"
 msgstr "aMule'ü oturum açtığımda otomatik olarak başlat"
 
 #: src/muuli_wdr.cpp:1226
-msgid ""
-"Registers a per-user autostart entry with the OS so aMule launches at login. "
-"If you move the aMule binary, launch aMule once manually afterwards to "
-"refresh the entry."
-msgstr ""
-"Oturum açıldığında aMule'ün çalıştırılması için işletim sistemine kullanıcı "
-"başı bir otomatik başlatma unsuru kaydeder. Eğer aMule ikilisini taşırsanız, "
-"sonrasında onu bir kere el ile başlatın ki bu unsur güncellensin."
+msgid "Registers a per-user autostart entry with the OS so aMule launches at login. If you move the aMule binary, launch aMule once manually afterwards to refresh the entry."
+msgstr "Oturum açıldığında aMule'ün çalıştırılması için işletim sistemine kullanıcı başı bir otomatik başlatma unsuru kaydeder. Eğer aMule ikilisini taşırsanız, sonrasında onu bir kere el ile başlatın ki bu unsur güncellensin."
 
 #: src/muuli_wdr.cpp:1229
 msgid "Start minimized"
@@ -3550,9 +3346,7 @@ msgstr "Sistem tablası simgesini etkinleştir."
 
 #: src/muuli_wdr.cpp:1239
 msgid "This Enables/Disables the system tray (or taskbar) icon."
-msgstr ""
-"Bu, sistem tablası (ya da görev çubuğu) simgesini Etkinleştirir/Devre dışı "
-"bırakır."
+msgstr "Bu, sistem tablası (ya da görev çubuğu) simgesini Etkinleştirir/Devre dışı bırakır."
 
 #: src/muuli_wdr.cpp:1242
 msgid "Hide application window when close button is pressed"
@@ -3563,9 +3357,7 @@ msgid "Minimize to Tray Icon"
 msgstr "Sistem tablasına küçült."
 
 #: src/muuli_wdr.cpp:1246
-msgid ""
-"Enabling this will make aMule minimize to the System Tray, rather than the "
-"taskbar."
+msgid "Enabling this will make aMule minimize to the System Tray, rather than the taskbar."
 msgstr "Bu, aMule'nin görev çubuğu yerine sistem tablasına küçülmesini sağlar."
 
 #: src/muuli_wdr.cpp:1249
@@ -3573,12 +3365,8 @@ msgid "Show notifications when finished downloading"
 msgstr "İndirme sona erdiğinde bildirimleri göster"
 
 #: src/muuli_wdr.cpp:1250
-msgid ""
-"Enabling this will make aMule to show notifications when finished "
-"downloading."
-msgstr ""
-"Bu şık etkinleştirilirse, indirmeler sona erdiğinde aMule bildirimleri "
-"gösterecektir."
+msgid "Enabling this will make aMule to show notifications when finished downloading."
+msgstr "Bu şık etkinleştirilirse, indirmeler sona erdiğinde aMule bildirimleri gösterecektir."
 
 #: src/muuli_wdr.cpp:1255
 msgid "Tooltip delay time: "
@@ -3593,12 +3381,8 @@ msgid "Browser Selection"
 msgstr "Tarayıcı Seçimi"
 
 #: src/muuli_wdr.cpp:1272
-msgid ""
-"Enter your browser name here. Leave this field empty to use the system "
-"default browser."
-msgstr ""
-"Tarayıcı adını buraya giriniz. Sisteminizin ön tanımlı tarayıcısını "
-"kullanmak için boş bırakınız."
+msgid "Enter your browser name here. Leave this field empty to use the system default browser."
+msgstr "Tarayıcı adını buraya giriniz. Sisteminizin ön tanımlı tarayıcısını kullanmak için boş bırakınız."
 
 #: src/muuli_wdr.cpp:1275 src/muuli_wdr.cpp:1292 src/muuli_wdr.cpp:1569
 #: src/muuli_wdr.cpp:1581 src/muuli_wdr.cpp:2478
@@ -3672,12 +3456,8 @@ msgid "Bind local address to IP (empty for any):"
 msgstr "Yerel adresi IP' ye bağla (herhangi biri için boş bırakın):"
 
 #: src/muuli_wdr.cpp:1385
-msgid ""
-"Advanced users only: If you have multiple network interfaces, enter the "
-"address of the interface to which aMule should be bound."
-msgstr ""
-"Sadece ileri düzey kullanıcılar: Birden fazla ağ arayüzünüz varsa; aMule'nin "
-"izleyeceği arayüz adresini giriniz."
+msgid "Advanced users only: If you have multiple network interfaces, enter the address of the interface to which aMule should be bound."
+msgstr "Sadece ileri düzey kullanıcılar: Birden fazla ağ arayüzünüz varsa; aMule'nin izleyeceği arayüz adresini giriniz."
 
 #: src/muuli_wdr.cpp:1391
 msgid "Max sources per downloading file:"
@@ -3788,12 +3568,8 @@ msgid "Preallocate disk space for new files"
 msgstr "Yeni dosyalar için diskte yer ayır"
 
 #: src/muuli_wdr.cpp:1523
-msgid ""
-"For new files preallocates disk space for the whole file, thus reduces "
-"fragmentation"
-msgstr ""
-"Yeni dosyalarda, dosyanın tamamı için sabit diskte yer ayrılarak parçalanma "
-"azaltılır"
+msgid "For new files preallocates disk space for the whole file, thus reduces fragmentation"
+msgstr "Yeni dosyalarda, dosyanın tamamı için sabit diskte yer ayrılarak parçalanma azaltılır"
 
 #: src/muuli_wdr.cpp:1528
 msgid "Stop downloads when free disk space reaches "
@@ -3825,23 +3601,15 @@ msgstr "İndirmeler için hedef dizin"
 
 #: src/muuli_wdr.cpp:1567
 msgid ""
-"Completed downloads are stored here. All files in this folder are "
-"automatically shared with other peers.\n"
-"If this folder also holds files you don't want to share, point it at an "
-"aMule-only sub-folder."
+"Completed downloads are stored here. All files in this folder are automatically shared with other peers.\n"
+"If this folder also holds files you don't want to share, point it at an aMule-only sub-folder."
 msgstr ""
-"Tamamlanmış indirmeler burada muhafaza edilir. Bu dizindeki tüm dosyalar "
-"otomatik olarak diğer eşler ile paylaşılır.\n"
-"Şayet bu dizin paylaşmak istemediğiniz dosyalar da içeriyorsa, aMule'e özel "
-"bir alt dizini seçin."
+"Tamamlanmış indirmeler burada muhafaza edilir. Bu dizindeki tüm dosyalar otomatik olarak diğer eşler ile paylaşılır.\n"
+"Şayet bu dizin paylaşmak istemediğiniz dosyalar da içeriyorsa, aMule'e özel bir alt dizini seçin."
 
 #: src/muuli_wdr.cpp:1570
-msgid ""
-"Pick the folder where completed downloads will be stored. All files in that "
-"folder will be shared with other peers."
-msgstr ""
-"Tamamlanmış indirmelerin muhafaza edilecekleri dizini seçin. Bu dizindeki "
-"tüm dosyalar diğer eşler ile paylaşılacaktır."
+msgid "Pick the folder where completed downloads will be stored. All files in that folder will be shared with other peers."
+msgstr "Tamamlanmış indirmelerin muhafaza edilecekleri dizini seçin. Bu dizindeki tüm dosyalar diğer eşler ile paylaşılacaktır."
 
 #: src/muuli_wdr.cpp:1574
 msgid "(All files in this folder are shared with other peers)"
@@ -4068,12 +3836,8 @@ msgid "IP of the listening interface:"
 msgstr "Dinlenen arayüzün IP' si:"
 
 #: src/muuli_wdr.cpp:1852
-msgid ""
-"Enter here a valid ip in the a.b.c.d format for the listening EC interface. "
-"An empty field or 0.0.0.0 will mean any interface."
-msgstr ""
-"Dinleme EC arayüzü için a.b.c.d biçiminde geçerli bir ip giriniz. Boş "
-"bırakılan alan veya 0.0.0.0 arayüz yok demektir."
+msgid "Enter here a valid ip in the a.b.c.d format for the listening EC interface. An empty field or 0.0.0.0 will mean any interface."
+msgstr "Dinleme EC arayüzü için a.b.c.d biçiminde geçerli bir ip giriniz. Boş bırakılan alan veya 0.0.0.0 arayüz yok demektir."
 
 #: src/muuli_wdr.cpp:1858 src/muuli_wdr.cpp:1904
 msgid "TCP port:"
@@ -4184,12 +3948,8 @@ msgid "Server list"
 msgstr "Sunucu"
 
 #: src/muuli_wdr.cpp:2144
-msgid ""
-"Enter the url to a server.met file here and press the button to the left to "
-"update the list of known servers."
-msgstr ""
-"Adresi server.met dosyasına buradan giriniz. Sonra, bilinen sunucuları "
-"güncellemek için soldaki düğmeye tıklayınız."
+msgid "Enter the url to a server.met file here and press the button to the left to update the list of known servers."
+msgstr "Adresi server.met dosyasına buradan giriniz. Sonra, bilinen sunucuları güncellemek için soldaki düğmeye tıklayınız."
 
 #: src/muuli_wdr.cpp:2149
 msgid "Add server manually: Name"
@@ -4240,12 +4000,8 @@ msgid "Nodes (0)"
 msgstr "Düğümler (0)"
 
 #: src/muuli_wdr.cpp:2243
-msgid ""
-"Enter the url to a nodes.dat file here and press the button to the left to "
-"update the list of known nodes."
-msgstr ""
-"Bilinen düğümleri güncellemek için buraya adresi giriniz ve soldaki düğmeye "
-"tıklayınız."
+msgid "Enter the url to a nodes.dat file here and press the button to the left to update the list of known nodes."
+msgstr "Bilinen düğümleri güncellemek için buraya adresi giriniz ve soldaki düğmeye tıklayınız."
 
 #: src/muuli_wdr.cpp:2246
 msgid "Nodes stats"
@@ -4280,11 +4036,8 @@ msgid "Use Secure User Identification"
 msgstr "Güvenli Kullanıcı Kimlik Doğrulamasını Kullan"
 
 #: src/muuli_wdr.cpp:2364
-msgid ""
-"It is recommended to enable this option. You will not receive credits if SUI "
-"is not enabled."
-msgstr ""
-"Bu seçeneği aktifleştirmeniz önerilir. SUI aktif değilse, kredi alamazsınız."
+msgid "It is recommended to enable this option. You will not receive credits if SUI is not enabled."
+msgstr "Bu seçeneği aktifleştirmeniz önerilir. SUI aktif değilse, kredi alamazsınız."
 
 #: src/muuli_wdr.cpp:2366
 msgid "Protocol Obfuscation"
@@ -4295,36 +4048,24 @@ msgid "Support Protocol Obfuscation"
 msgstr "Protokol Gizleme etkin"
 
 #: src/muuli_wdr.cpp:2371
-msgid ""
-"This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
-"connections from other clients."
-msgstr ""
-"Bu seçenek Protokol Gizleme'yi etkinleştirir ve aMule'nin gizlenmiş "
-"bağlantıları kabul etmesini sağlar."
+msgid "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated connections from other clients."
+msgstr "Bu seçenek Protokol Gizleme'yi etkinleştirir ve aMule'nin gizlenmiş bağlantıları kabul etmesini sağlar."
 
 #: src/muuli_wdr.cpp:2373
 msgid "Use obfuscation for outgoing connections"
 msgstr "Giden bağlantılar için gizleme kullan"
 
 #: src/muuli_wdr.cpp:2375
-msgid ""
-"This option makes aMule use Protocol Obfuscation when connecting other "
-"clients/servers."
-msgstr ""
-"Bu seçenek diğer kullanıcı veya sunucularla olan bağlantılarda Protokol "
-"Gizleme'yi etkinleştirir."
+msgid "This option makes aMule use Protocol Obfuscation when connecting other clients/servers."
+msgstr "Bu seçenek diğer kullanıcı veya sunucularla olan bağlantılarda Protokol Gizleme'yi etkinleştirir."
 
 #: src/muuli_wdr.cpp:2377
 msgid "Accept only obfuscated connections"
 msgstr "Sadece gizlenmiş bağlantıları kabul et"
 
 #: src/muuli_wdr.cpp:2378
-msgid ""
-"This option makes aMule only accept obfuscated connections. You will have "
-"less sources, but all your traffic will be obfuscated"
-msgstr ""
-"Bu seçenek aMule'nin sadece gizlenmiş bağlantıları kabul etmesini sağlar. "
-"Daha az kaynak bulursunuz; ancak tüm trafiğiniz de karartılmış olur."
+msgid "This option makes aMule only accept obfuscated connections. You will have less sources, but all your traffic will be obfuscated"
+msgstr "Bu seçenek aMule'nin sadece gizlenmiş bağlantıları kabul etmesini sağlar. Daha az kaynak bulursunuz; ancak tüm trafiğiniz de karartılmış olur."
 
 #: src/muuli_wdr.cpp:2383
 msgid "Everybody"
@@ -4351,22 +4092,16 @@ msgid "Filter clients"
 msgstr "Kullanıcıları Süz"
 
 #: src/muuli_wdr.cpp:2399
-msgid ""
-"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr ""
-"~/.aMule/ipfilter.dat dosyasında tanımlanan kullanıcı IP'lerini süzmeyi "
-"etkinleştir."
+msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr "~/.aMule/ipfilter.dat dosyasında tanımlanan kullanıcı IP'lerini süzmeyi etkinleştir."
 
 #: src/muuli_wdr.cpp:2401
 msgid "Filter servers"
 msgstr "Sunucuları süz"
 
 #: src/muuli_wdr.cpp:2403
-msgid ""
-"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr ""
-"~/.aMule/ipfilter.dat dosyasında tanımlanan sunucu IP'lerini süzmeyi "
-"etkinleştir."
+msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr "~/.aMule/ipfilter.dat dosyasında tanımlanan sunucu IP'lerini süzmeyi etkinleştir."
 
 #: src/muuli_wdr.cpp:2407
 msgid "Reload List"
@@ -4401,36 +4136,24 @@ msgid "Paranoid handling of non-matching IPs"
 msgstr "Uyuşmayan IP'lere şüpheci yaklaşım."
 
 #: src/muuli_wdr.cpp:2436
-msgid ""
-"Rejects packet if the client ip is different from the ip where the packet is "
-"received from. Use with caution."
-msgstr ""
-"Paketin alındığı ip ile kullanıcı ip numarası farklıysa paket reddedilir. "
-"Dikkatli kullanın."
+msgid "Rejects packet if the client ip is different from the ip where the packet is received from. Use with caution."
+msgstr "Paketin alındığı ip ile kullanıcı ip numarası farklıysa paket reddedilir. Dikkatli kullanın."
 
 #: src/muuli_wdr.cpp:2438
 msgid "Use system-wide ipfilter.dat if available"
 msgstr "Varsa, sistem geneli ipfilter.dat kullan"
 
 #: src/muuli_wdr.cpp:2439
-msgid ""
-"If there's no local ipfilter.dat found, allow usage of a system-wide "
-"ipfilter file."
-msgstr ""
-"Yerel bir ipfilter.dat dosyası bulunamazsa, sistem geneli ipfilter "
-"kullanımına izin ver."
+msgid "If there's no local ipfilter.dat found, allow usage of a system-wide ipfilter file."
+msgstr "Yerel bir ipfilter.dat dosyası bulunamazsa, sistem geneli ipfilter kullanımına izin ver."
 
 #: src/muuli_wdr.cpp:2456
 msgid "Enable Online-Signature"
 msgstr "Çevrimiçi-İmza' yı Etkinleştir"
 
 #: src/muuli_wdr.cpp:2458
-msgid ""
-"Enables the writing of the OS file, which can be used by external apps to "
-"create signatures and the like."
-msgstr ""
-"Diğer uygulamaların imzalar ve benzerlerini  oluşturabilmesi için "
-"kullanabileceği Çev.İmza dosyasını yazmayı etkinleştirir."
+msgid "Enables the writing of the OS file, which can be used by external apps to create signatures and the like."
+msgstr "Diğer uygulamaların imzalar ve benzerlerini  oluşturabilmesi için kullanabileceği Çev.İmza dosyasını yazmayı etkinleştirir."
 
 #: src/muuli_wdr.cpp:2462
 msgid "Update Frequency (Secs):"
@@ -4438,16 +4161,14 @@ msgstr "Güncelleme Sıklığı (Sn.):"
 
 #: src/muuli_wdr.cpp:2465
 msgid "Change the frequency (in seconds) of Online Signature updates."
-msgstr ""
-"Çevrim içi İmza güncellemeleri için (saniye bazında) sıklığı değiştirir."
+msgstr "Çevrim içi İmza güncellemeleri için (saniye bazında) sıklığı değiştirir."
 
 #: src/muuli_wdr.cpp:2473
 msgid "Save online signature file in: "
 msgstr "Çevrim içi imza dosyasını buraya sakla: "
 
 #: src/muuli_wdr.cpp:2479
-msgid ""
-"Click here to select the directory containing the the Online Signature files."
+msgid "Click here to select the directory containing the the Online Signature files."
 msgstr "Çevrim içi İmza dosyalarını içeren dizini seçiniz."
 
 #: src/muuli_wdr.cpp:2499
@@ -4472,8 +4193,7 @@ msgstr "Şu içerikteki iletileri süz (ayraç olarak ','  kullanınız.):"
 
 #: src/muuli_wdr.cpp:2510 src/muuli_wdr.cpp:2521
 msgid "add here the words amule should filter and block messages including it"
-msgstr ""
-"buraya ekleyeceğiniz sözcükleri içeren iletiler aMule tarafından engellenir."
+msgstr "buraya ekleyeceğiniz sözcükleri içeren iletiler aMule tarafından engellenir."
 
 #: src/muuli_wdr.cpp:2512
 msgid "Show received messages in the log"
@@ -4593,9 +4313,7 @@ msgstr "Olay Türleri"
 
 #: src/muuli_wdr.cpp:2784
 msgid "Statistics and queued clients for selected file(s) : Session / All time"
-msgstr ""
-"Seçili dosya(lar) için kuyruktaki istemciler ve istatistikler: Oturum / "
-"Bütün zamanlar"
+msgstr "Seçili dosya(lar) için kuyruktaki istemciler ve istatistikler: Oturum / Bütün zamanlar"
 
 #: src/muuli_wdr.cpp:2808
 msgid "Active Uploads"
@@ -4804,19 +4522,12 @@ msgid "%s (Disk: %s)"
 msgstr "%s (Disk: %s)"
 
 #: src/PartFileConvertDlg.cpp:204
-msgid ""
-"Please choose a folder to search for temporary downloads! (subfolders will "
-"be included)"
-msgstr ""
-"Lütfen geçici aktarım dosyaları için bir dizin seçiniz. (Alt dizinler de "
-"taranacaktır.)"
+msgid "Please choose a folder to search for temporary downloads! (subfolders will be included)"
+msgstr "Lütfen geçici aktarım dosyaları için bir dizin seçiniz. (Alt dizinler de taranacaktır.)"
 
 #: src/PartFileConvertDlg.cpp:208
-msgid ""
-"Do you want the source files of successfully imported downloads be deleted?"
-msgstr ""
-"Başarılı bir şekilde içe aktarılan indirmelerin kaynak dosyalarının "
-"silinmelerini ister misiniz?"
+msgid "Do you want the source files of successfully imported downloads be deleted?"
+msgstr "Başarılı bir şekilde içe aktarılan indirmelerin kaynak dosyalarının silinmelerini ister misiniz?"
 
 #: src/PartFileConvertDlg.cpp:209
 msgid "Remove sources?"
@@ -4862,8 +4573,7 @@ msgstr "Dosya bilgisi kurtarılmaya çalışılıyor…"
 
 #: src/PartFile.cpp:693
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
-msgstr ""
-"İsimsiz dosya kurtarılmaya çalışılıyor-RecoveredFile.dat olarak kaydedilecek."
+msgstr "İsimsiz dosya kurtarılmaya çalışılıyor-RecoveredFile.dat olarak kaydedilecek."
 
 #: src/PartFile.cpp:697
 msgid "Recovered all available file info :D - Trying to use it..."
@@ -4895,9 +4605,7 @@ msgstr "Parçadosyası kaydedilirken girdi-çıktı hatası: "
 #: src/PartFile.cpp:1030
 #, c-format
 msgid "Wrote 0/unknown bytes to '%s' -- preserving existing .part.met."
-msgstr ""
-"'%s' konumuna 0/bilinmeyen bayt yazıldı -- mevcut .part.met muhafaza "
-"ediliyor."
+msgstr "'%s' konumuna 0/bilinmeyen bayt yazıldı -- mevcut .part.met muhafaza ediliyor."
 
 #: src/PartFile.cpp:1110
 #, c-format
@@ -4923,18 +4631,10 @@ msgstr "Parça dosyasına ait girdi dosyası  (%s - %s): %s okunamıyor."
 
 #: src/PartFile.cpp:1252 src/PartFile.cpp:1279
 #, c-format
-msgid ""
-"Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
-"%s|"
-msgid_plural ""
-"Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
-"|%s|"
-msgstr[0] ""
-"Bozuk parça (%d) %d parça dosyası %s içinde bulundu -Dosya sonuç adreslemesi "
-"|%s| Dosya adreslemesi |%s|"
-msgstr[1] ""
-"Bozuk parça (%d) %d parça dosyası %s içinde bulundu -Dosya sonuç adreslemesi "
-"|%s| Dosya adreslemesi |%s|"
+msgid "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |%s|"
+msgid_plural "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|"
+msgstr[0] "Bozuk parça (%d) %d parça dosyası %s içinde bulundu -Dosya sonuç adreslemesi |%s| Dosya adreslemesi |%s|"
+msgstr[1] "Bozuk parça (%d) %d parça dosyası %s içinde bulundu -Dosya sonuç adreslemesi |%s| Dosya adreslemesi |%s|"
 
 #: src/PartFile.cpp:1294
 #, c-format
@@ -4977,31 +4677,18 @@ msgstr "UYARI: İndirilen parça adreslenemiyor - adresleme seti '%s' için eksi
 
 #: src/PartFile.cpp:2468
 #, c-format
-msgid ""
-"ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
-"never happen"
-msgstr ""
-"HATA: Aktarılan parça adreslenemiyor.- adres seti tamamlanmamış (%s). Bu hiç "
-"olmamalıydı"
+msgid "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should never happen"
+msgstr "HATA: Aktarılan parça adreslenemiyor.- adres seti tamamlanmamış (%s). Bu hiç olmamalıydı"
 
 #: src/PartFile.cpp:2489
 #, c-format
-msgid ""
-"Part %u of '%s' marked complete but partfile is shorter than expected (have "
-"%llu bytes, need %llu); reopening gap for re-download."
-msgstr ""
-"%u kısmı ('%s' dosyasının) tamamlanmış olarak işaretlendi ama kısmi dosya "
-"beklenenden daha küçük (%llu bayt bulunduruyor halbuki %llu bayt "
-"gerektiriyor); yeniden indirme için boşluk tekrar açılıyor."
+msgid "Part %u of '%s' marked complete but partfile is shorter than expected (have %llu bytes, need %llu); reopening gap for re-download."
+msgstr "%u kısmı ('%s' dosyasının) tamamlanmış olarak işaretlendi ama kısmi dosya beklenenden daha küçük (%llu bayt bulunduruyor halbuki %llu bayt gerektiriyor); yeniden indirme için boşluk tekrar açılıyor."
 
 #: src/PartFile.cpp:2501 src/PartFile.cpp:2506
 #, c-format
-msgid ""
-"EOF while hashing downloaded part %u with length %u (max %u) of partfile "
-"'%s' with length %u: %s"
-msgstr ""
-"İndirilen %u bölümünün %u uzunluğunda (maksimum %u) parçasının ('%s' parça "
-"dosyasına ait (%u uzunluğunda)), adreslenmesinde EOF: %s"
+msgid "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"
+msgstr "İndirilen %u bölümünün %u uzunluğunda (maksimum %u) parçasının ('%s' parça dosyasına ait (%u uzunluğunda)), adreslenmesinde EOF: %s"
 
 #: src/PartFile.cpp:3223
 #, c-format
@@ -5016,9 +4703,7 @@ msgstr "İndirilen %i parçası %s dosyasındaydı ve bozuk."
 #: src/PartFile.cpp:3617
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
-msgstr ""
-"ICH: Bozulan %i parçası %s dosyasındaydı ve kurtarıldı -> Kaydedilen miktar: "
-"%s bayt"
+msgstr "ICH: Bozulan %i parçası %s dosyasındaydı ve kurtarıldı -> Kaydedilen miktar: %s bayt"
 
 #: src/PartFile.cpp:4262
 msgid "Allocating"
@@ -5216,10 +4901,8 @@ msgid "Invalid category found, skipping"
 msgstr "Geçersiz sınıf bulundu, atlanıyor"
 
 #: src/Preferences.cpp:1848
-msgid ""
-"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
-msgstr ""
-"TCP portu numarası, UDP soketi TCP+3 olduğundan 65532' den yüksek olamaz"
+msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgstr "TCP portu numarası, UDP soketi TCP+3 olduğundan 65532' den yüksek olamaz"
 
 #: src/Preferences.cpp:1849
 #, c-format
@@ -5290,19 +4973,11 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:278
 msgid "Tray icon support requires libayatana-appindicator3 at compile time."
-msgstr ""
-"Sistem tepsisi ikon desteği, derleme esnasında libayatana-appindicator3'e "
-"ihtiyaç duyar."
+msgstr "Sistem tepsisi ikon desteği, derleme esnasında libayatana-appindicator3'e ihtiyaç duyar."
 
 #: src/PrefsUnifiedDlg.cpp:293
-msgid ""
-"Not available on Wayland: the protocol does not report when a window is "
-"minimized, so this option cannot intercept the system minimize button. "
-"Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
-msgstr ""
-"Wayland ile kullanılamaz: protokol bir pencere küçültüldüğünde bunu iletmez, "
-"yani bu seçenek sistemin küçült düğmesi tıklamasını yakalayamaz. Çözüm: "
-"yerine XWayland kullanmak için aMule'ü `GDK_BACKEND=x11` ile başlatın."
+msgid "Not available on Wayland: the protocol does not report when a window is minimized, so this option cannot intercept the system minimize button. Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
+msgstr "Wayland ile kullanılamaz: protokol bir pencere küçültüldüğünde bunu iletmez, yani bu seçenek sistemin küçült düğmesi tıklamasını yakalayamaz. Çözüm: yerine XWayland kullanmak için aMule'ü `GDK_BACKEND=x11` ile başlatın."
 
 #: src/PrefsUnifiedDlg.cpp:333
 msgid ""
@@ -5385,8 +5060,7 @@ msgid ""
 "External connections cannot be enabled unless a valid password is specified."
 msgstr ""
 "Dışarıdan bağlantıları aktifleştirmiş ama bir şifre belirlememişsiniz.\n"
-"Geçerli bir şifre belirlenmedikçe dışarıdan bağlantılar devre dışı "
-"kalacaktır."
+"Geçerli bir şifre belirlenmedikçe dışarıdan bağlantılar devre dışı kalacaktır."
 
 #: src/PrefsUnifiedDlg.cpp:730
 msgid "- Language changed.\n"
@@ -5427,12 +5101,8 @@ msgstr ""
 "Şimdi yeniden başlatmazsanız, kötü şeyler olabilir.\n"
 
 #: src/PrefsUnifiedDlg.cpp:912
-msgid ""
-"Could not register aMule for autostart at login. The autostart store may be "
-"read-only."
-msgstr ""
-"Oturum açıldığında otomatik başlatma için aMule kaydedilemedi. Otomatik "
-"başlatma deposu salt okunur olabilir."
+msgid "Could not register aMule for autostart at login. The autostart store may be read-only."
+msgstr "Oturum açıldığında otomatik başlatma için aMule kaydedilemedi. Otomatik başlatma deposu salt okunur olabilir."
 
 #: src/PrefsUnifiedDlg.cpp:913
 msgid "Could not remove the autostart-at-login entry."
@@ -5576,12 +5246,8 @@ msgstr ""
 "\n"
 
 #: src/PrefsUnifiedDlg.cpp:1566
-msgid ""
-"Sharing them recursively will publish every file underneath on the eD2k/Kad "
-"networks. Do you really want to do this?"
-msgstr ""
-"Bunları yinelemeli olarak paylaşmanız, kapsadıkları her dosyayı eD2k/Kad "
-"ağlarında yayınlayacaktır. Bunu hakikaten yapmak istiyor musunuz?"
+msgid "Sharing them recursively will publish every file underneath on the eD2k/Kad networks. Do you really want to do this?"
+msgstr "Bunları yinelemeli olarak paylaşmanız, kapsadıkları her dosyayı eD2k/Kad ağlarında yayınlayacaktır. Bunu hakikaten yapmak istiyor musunuz?"
 
 #: src/PrefsUnifiedDlg.cpp:1568
 msgid "Confirm shared folders"
@@ -5611,9 +5277,7 @@ msgstr "Paylaşılmış dosyalar yeniden yükleniyor: %u dosya tarandı"
 
 #: src/SearchDlg.cpp:282
 msgid "It's impossible to search when both eD2k and Kademlia are disabled."
-msgstr ""
-"Hem eD2k hem de Kademlia devre dışı bırakıldığında arama yapmak mümkün "
-"değildir."
+msgstr "Hem eD2k hem de Kademlia devre dışı bırakıldığında arama yapmak mümkün değildir."
 
 #: src/SearchDlg.cpp:283
 msgid "Search error"
@@ -5624,18 +5288,12 @@ msgid "Kad search: requested wider results from one more peer."
 msgstr "Kad araması: bir eşten daha daha geniş sonuçlar talep edildi."
 
 #: src/SearchDlg.cpp:438
-msgid ""
-"Kad search: no peer left to reask for more results (cap reached or no "
-"responses yet)."
-msgstr ""
-"Kad araması: daha fazla sonucu tekrar talep edecek eş kalmadı (sınıra "
-"ulaşıldı veya henüz cevap alınamadı)."
+msgid "Kad search: no peer left to reask for more results (cap reached or no responses yet)."
+msgstr "Kad araması: daha fazla sonucu tekrar talep edecek eş kalmadı (sınıra ulaşıldı veya henüz cevap alınamadı)."
 
 #: src/SearchDlg.cpp:543
 msgid "Min size must be smaller than max size. Max size ignored."
-msgstr ""
-"En küçük boyut, en büyük boyuttan küçük olmalıdır. En büyük boyut göz ardı "
-"ediliyor."
+msgstr "En küçük boyut, en büyük boyuttan küçük olmalıdır. En büyük boyut göz ardı ediliyor."
 
 #: src/SearchDlg.cpp:544 src/SearchDlg.cpp:602
 msgid "Search warning"
@@ -5695,17 +5353,12 @@ msgid "New"
 msgstr "Yeni"
 
 #: src/ServerConnect.cpp:74
-msgid ""
-"Failed to connect to all obfuscated servers listed. Making another pass "
-"without obfuscation."
-msgstr ""
-"Listelenen gizlenmiş bağlantılı tüm sunuculara bağlanma başarısız. Gizlenmiş "
-"bağlantı olmadan geçiş yapılacak."
+msgid "Failed to connect to all obfuscated servers listed. Making another pass without obfuscation."
+msgstr "Listelenen gizlenmiş bağlantılı tüm sunuculara bağlanma başarısız. Gizlenmiş bağlantı olmadan geçiş yapılacak."
 
 #: src/ServerConnect.cpp:79
 msgid "Failed to connect to all servers listed. Making another pass."
-msgstr ""
-"Listelenen sunucuların hiç birine bağlanılamadı. Başka bir geçiş yapılıyor."
+msgstr "Listelenen sunucuların hiç birine bağlanılamadı. Başka bir geçiş yapılıyor."
 
 #: src/ServerConnect.cpp:94 src/ServerConnect.cpp:148
 msgid "eD2k network disabled on preferences, not connecting."
@@ -5727,8 +5380,7 @@ msgstr "%s sunucusuna bağlanıldı"
 
 #: src/ServerConnect.cpp:346
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr ""
-"Önemli Hata: Bağlantı sağlanamıyor. İnternet bağlantınız kopmuş olabilir."
+msgstr "Önemli Hata: Bağlantı sağlanamıyor. İnternet bağlantınız kopmuş olabilir."
 
 #: src/ServerConnect.cpp:350
 #, c-format
@@ -5840,12 +5492,8 @@ msgid "Server added: Server at [%s:%d] using the name '%s'."
 msgstr "Sunucu eklendi: [%s:%d] adresindeki sunucu '%s' adını kullanıyor."
 
 #: src/ServerList.cpp:355
-msgid ""
-"You are connected to the server you are trying to delete. please disconnect "
-"first."
-msgstr ""
-"Silmeye çalıştığınız sunucuya bağlı durumdasınız. Lütfen, öncelikle "
-"bağlantıyı kesiniz."
+msgid "You are connected to the server you are trying to delete. please disconnect first."
+msgstr "Silmeye çalıştığınız sunucuya bağlı durumdasınız. Lütfen, öncelikle bağlantıyı kesiniz."
 
 #: src/ServerList.cpp:527
 #, c-format
@@ -5866,13 +5514,8 @@ msgid "Finished downloading the server list from %s"
 msgstr "%s adresinden sunucu listesi aktarımı tamamlandı."
 
 #: src/ServerList.cpp:884
-msgid ""
-"No server list address entry in 'addresses.dat' found. Please paste a valid "
-"server list address into this file in order to auto-update your server list"
-msgstr ""
-"'addresses.dat' dosyasında hiç sunucu listesi adresi bulunamadı. Lütfen "
-"sunucu listenizi otomatik güncellemek için bu bu dosyaya sunucu listesi "
-"dosyası yapıştırın"
+msgid "No server list address entry in 'addresses.dat' found. Please paste a valid server list address into this file in order to auto-update your server list"
+msgstr "'addresses.dat' dosyasında hiç sunucu listesi adresi bulunamadı. Lütfen sunucu listenizi otomatik güncellemek için bu bu dosyaya sunucu listesi dosyası yapıştırın"
 
 #: src/ServerList.cpp:903
 #, c-format
@@ -5882,13 +5525,11 @@ msgstr "Sunucu listesini %s adresinden indirmeye başla."
 #: src/ServerList.cpp:912
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
-msgstr ""
-"UYARI: sunucuların otomatik güncellenmesi için geçersiz URL girildi: %s"
+msgstr "UYARI: sunucuların otomatik güncellenmesi için geçersiz URL girildi: %s"
 
 #: src/ServerList.cpp:916
 msgid "No valid server.met auto-download url on addresses.dat"
-msgstr ""
-"address.dat üzerinde, geçerli bir server.met güncelleme adresi bulunamadı."
+msgstr "address.dat üzerinde, geçerli bir server.met güncelleme adresi bulunamadı."
 
 #: src/ServerList.cpp:932
 #, c-format
@@ -5896,12 +5537,8 @@ msgid "Failed to download the server list from %s"
 msgstr "%s adresinden sunucu listesi alınamadı."
 
 #: src/ServerList.cpp:1006
-msgid ""
-"Local server is filtered by the IPFilters, reconnecting to a different "
-"server!"
-msgstr ""
-"Yerel sunucu IP Süzgeci tarafından engellendi, başka bir sunucuya "
-"bağlanılıyor!"
+msgid "Local server is filtered by the IPFilters, reconnecting to a different server!"
+msgstr "Yerel sunucu IP Süzgeci tarafından engellendi, başka bir sunucuya bağlanılıyor!"
 
 #: src/ServerListCtrl.cpp:87
 msgid "Server Name"
@@ -5937,12 +5574,8 @@ msgid "Version"
 msgstr "Sürüm"
 
 #: src/ServerListCtrl.cpp:149
-msgid ""
-"You are connected to a server you are trying to delete. Please disconnect "
-"first. The server was NOT deleted."
-msgstr ""
-"Silmeye çalıştığınız bir sunucuya bağlısınız. Lütfen önce bağlantıyı "
-"kesiniz. Sunucu SİLİNMEDİ."
+msgid "You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."
+msgstr "Silmeye çalıştığınız bir sunucuya bağlısınız. Lütfen önce bağlantıyı kesiniz. Sunucu SİLİNMEDİ."
 
 #: src/ServerListCtrl.cpp:152
 msgid "(Unknown name)"
@@ -6027,11 +5660,8 @@ msgstr "UYARI: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:320
 #, c-format
-msgid ""
-"Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
-msgstr ""
-"%s (%s) sunucusu oturum açmamızı reddetti (hiçbir istemci kimliği tahsis "
-"etmedi). Bağlantı kesiliyor."
+msgid "Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
+msgstr "%s (%s) sunucusu oturum açmamızı reddetti (hiçbir istemci kimliği tahsis etmedi). Bağlantı kesiliyor."
 
 #: src/ServerSocket.cpp:362
 #, c-format
@@ -6044,12 +5674,10 @@ msgstr "UYARI: Düşük ID aldınız!"
 
 #: src/ServerSocket.cpp:365
 msgid "\tMost likely this is because you're behind a firewall or router."
-msgstr ""
-"\tBüyük ihtimalle bir güvenlik duvarı veya yönlendirici arkasındasınız."
+msgstr "\tBüyük ihtimalle bir güvenlik duvarı veya yönlendirici arkasındasınız."
 
 #: src/ServerSocket.cpp:366
-msgid ""
-"\tFor more information, please refer to https://amule-org.github.io/docs"
+msgid "\tFor more information, please refer to https://amule-org.github.io/docs"
 msgstr "\tDaha fazla bilgi için: https://amule-org.github.io/docs"
 
 #: src/ServerSocket.cpp:422
@@ -6152,8 +5780,7 @@ msgstr "Bağlantı Durumu:"
 #: src/ServerWnd.cpp:231
 #, c-format
 msgid "Firewalled - open TCP port %d in your router or firewall"
-msgstr ""
-"Güvenlik Duvarı - yönlendirici veya güvenlik duvarınızda %d TCP portunu açın"
+msgstr "Güvenlik Duvarı - yönlendirici veya güvenlik duvarınızda %d TCP portunu açın"
 
 #: src/ServerWnd.cpp:233
 msgid "UDP Connection State:"
@@ -6162,8 +5789,7 @@ msgstr "UDP Bağlantı Durumu:"
 #: src/ServerWnd.cpp:236
 #, c-format
 msgid "Firewalled - open UDP port %d in your router or firewall"
-msgstr ""
-"Güvenlik Duvarı - yönlendirici veya güvenlik duvarınızda %d UDP portunu açın"
+msgstr "Güvenlik Duvarı - yönlendirici veya güvenlik duvarınızda %d UDP portunu açın"
 
 #: src/ServerWnd.cpp:240
 msgid "Firewalled state: "
@@ -6342,9 +5968,7 @@ msgstr "eD2k bağlantısını panoya kopyala (&Kaynak)"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy eD2k link to clipboard (Source) (&With Crypt options)"
-msgstr ""
-"eD2k bağlantısını panoya kopyala (Kaynak) (&Şifreleme seçenekleriyle "
-"birlikte)"
+msgstr "eD2k bağlantısını panoya kopyala (Kaynak) (&Şifreleme seçenekleriyle birlikte)"
 
 #: src/SharedFilesCtrl.cpp:168
 msgid "Copy eD2k link to clipboard (&Hostname)"
@@ -6352,9 +5976,7 @@ msgstr "eD2k bağlantısını panoya kopyala (&Makine Adı)"
 
 #: src/SharedFilesCtrl.cpp:169
 msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr ""
-"eD2k bağlantısını panoya kopyala (Makine adı) (&Şifreleme seçenekleriyle "
-"birlikte)"
+msgstr "eD2k bağlantısını panoya kopyala (Makine adı) (&Şifreleme seçenekleriyle birlikte)"
 
 #: src/SharedFilesCtrl.cpp:170
 msgid "Copy eD2k link to clipboard (&AICH info)"
@@ -6366,8 +5988,7 @@ msgstr "eD2k bağlantısını panoya kopyala (&AICH bilgisi + Kaynak)"
 
 #: src/SharedFilesCtrl.cpp:319
 msgid "You need a HighID to create a valid sourcelink"
-msgstr ""
-"Geçerli bir kaynak bağlantısı oluşturmak için YüksekID almanız gerekiyor"
+msgstr "Geçerli bir kaynak bağlantısı oluşturmak için YüksekID almanız gerekiyor"
 
 #: src/SharedFilesCtrl.cpp:493
 #, c-format
@@ -6641,12 +6262,8 @@ msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "Geçersiz IP biçimi. xxx.xxx.xxx.xxx:xxxx kullanınız.\n"
 
 #: src/TextClient.cpp:399
-msgid ""
-"This command requires an argument. Valid arguments: 'all', filename, or a "
-"number.\n"
-msgstr ""
-"Bu komut bir argüman gerektiriyor. Geçerli argümanlar: 'all', dosya adı veya "
-"bir sayı.\n"
+msgid "This command requires an argument. Valid arguments: 'all', filename, or a number.\n"
+msgstr "Bu komut bir argüman gerektiriyor. Geçerli argümanlar: 'all', dosya adı veya bir sayı.\n"
 
 #: src/TextClient.cpp:435
 msgid "Processing by hash: "
@@ -6658,8 +6275,7 @@ msgstr "Dosya adı ile işleniyor: "
 
 #: src/TextClient.cpp:471
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr ""
-"Bu komut bir argüman gerektirir. Geçerli argümanlar: bir dosya adreslemesi.\n"
+msgstr "Bu komut bir argüman gerektirir. Geçerli argümanlar: bir dosya adreslemesi.\n"
 
 #: src/TextClient.cpp:497
 msgid "Not a valid number\n"
@@ -6837,23 +6453,18 @@ msgstr "Tüm istatistik ağacını göster."
 
 #: src/TextClient.cpp:989
 msgid ""
-"Optionally, a number in the range 0-255 can be passed as an argument to "
-"this\n"
-"command, which tells how many entries of the client version subtrees should "
-"be\n"
+"Optionally, a number in the range 0-255 can be passed as an argument to this\n"
+"command, which tells how many entries of the client version subtrees should be\n"
 "shown. Passing 0 or omitting it means 'unlimited'.\n"
 "\n"
-"Example: 'statistics 5' will show only the top 5 versions for each client "
-"type.\n"
+"Example: 'statistics 5' will show only the top 5 versions for each client type.\n"
 msgstr ""
-"İsteğe bağlı olarak, yazılım alt dallarının kaç girdisinin gösterilmesi "
-"gerektiğini söyleyen\n"
+"İsteğe bağlı olarak, yazılım alt dallarının kaç girdisinin gösterilmesi gerektiğini söyleyen\n"
 "bu komuta 0-255 aralığında bir sayı, argüman olarak\n"
 "verilebilir.\n"
 "Boş bırakma veya 0 değerini verme 'sınırsız' demektir.\n"
 "\n"
-"Örnek: 'istatistik 5 sadece her yazılım türünün en üstteki 5 sürümünü "
-"gösterecektir.\n"
+"Örnek: 'istatistik 5 sadece her yazılım türünün en üstteki 5 sürümünü gösterecektir.\n"
 
 #: src/TextClient.cpp:991
 msgid "Shut down aMule."
@@ -6900,8 +6511,7 @@ msgstr "Ağa bağlan."
 #: src/TextClient.cpp:1003
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
-"You may also optionally specify a server address in IP:Port form, to connect "
-"to\n"
+"You may also optionally specify a server address in IP:Port form, to connect to\n"
 "that server only. The IP must be a dotted decimal IPv4 address,\n"
 "or a resolvable DNS name."
 msgstr ""
@@ -6943,8 +6553,7 @@ msgid ""
 "The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
 "*) a server link (ed2k://|server|...), it will be added to the server list,\n"
-"*) or a serverlist link, in which case all servers in the list will be added "
-"to the\n"
+"*) or a serverlist link, in which case all servers in the list will be added to the\n"
 "   server list.\n"
 "\n"
 "The magnet link must contain the eD2k hash and file length.\n"
@@ -7093,8 +6702,7 @@ msgstr ""
 "    --min-size <N[KMG]>    asgari dosya boyutu; K=1024, M=K*1024, G=M*1024\n"
 "    --max-size <N[KMG]>    azami dosya boyutu; aynı son ekler\n"
 "\n"
-"Örnek: 'search global linux iso --type Iso --min-size 100M' şunu geri "
-"gönderir:\n"
+"Örnek: 'search global linux iso --type Iso --min-size 100M' şunu geri gönderir:\n"
 "\"linux iso\" için Iso dosya türünde asgari 100 MiB boyutunda sonuçlar.\n"
 
 #: src/TextClient.cpp:1066
@@ -7132,12 +6740,10 @@ msgstr "Dosyayı indirmeye başla."
 #: src/TextClient.cpp:1077
 msgid ""
 "The number of a file from the last search has to be given.\n"
-"Example: 'download 12' will start to download the file with the number 12 of "
-"the previous search.\n"
+"Example: 'download 12' will start to download the file with the number 12 of the previous search.\n"
 msgstr ""
 "Son arama sonucunda elde edilen dosya numarası verilmelidir.\n"
-"Örnek: '12 İndir' bir önceki aramadaki 12 numaralı dosyayı indirmeye "
-"başlayacaktır.\n"
+"Örnek: '12 İndir' bir önceki aramadaki 12 numaralı dosyayı indirmeye başlayacaktır.\n"
 
 #: src/TextClient.cpp:1084
 msgid "Pause download."
@@ -7181,9 +6787,7 @@ msgstr "Sıra/liste göster."
 
 #: src/TextClient.cpp:1101
 msgid "Show upload/download queue, server list or shared files list.\n"
-msgstr ""
-"Gönderme/indirme sırasını,sunucu listesini veya paylaşılmış dosya listesini "
-"gösterir.\n"
+msgstr "Gönderme/indirme sırasını,sunucu listesini veya paylaşılmış dosya listesini gösterir.\n"
 
 #: src/TextClient.cpp:1102
 msgid "Show upload queue."
@@ -7230,8 +6834,7 @@ msgstr "aMule metin aracı"
 #: src/ThreadTasks.cpp:484
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
-msgstr ""
-"'%s' içindeki eski AICH adresleme setleri '%s' içindeki 64 b'ye çevriliyor."
+msgstr "'%s' içindeki eski AICH adresleme setleri '%s' içindeki 64 b'ye çevriliyor."
 
 #: src/ThreadTasks.cpp:565
 #, c-format
@@ -7245,9 +6848,7 @@ msgstr "UYARI: '%s' dosyası zaten var ve '%s' olarak yeniden adlandırıldı."
 
 #: src/TransferWnd.cpp:209
 msgid "Are you sure you wish to cancel and delete all files in this category?"
-msgstr ""
-"Bu sınıf içindeki bütün dosyaları iptal edip silmek istediğinizden emin "
-"misiniz?"
+msgstr "Bu sınıf içindeki bütün dosyaları iptal edip silmek istediğinizden emin misiniz?"
 
 #: src/TransferWnd.cpp:209
 msgid "Confirmation Required"
@@ -7385,12 +6986,8 @@ msgid "Enter here the file you want to compute the eD2k link"
 msgstr "eD2k bağlantısının hesaplanmasını istediğiniz dosyayı buraya girin"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:128
-msgid ""
-"Enter here the URL you want to add to the eD2k link: Add / at the end to let "
-"aLinkCreator append the current file name"
-msgstr ""
-"eD2k bağlantısına eklenecek URL' yi girin: aLinkCreator' ün geçerli dosya "
-"adını ekleyebilmesi için sonuna / ekleyin"
+msgid "Enter here the URL you want to add to the eD2k link: Add / at the end to let aLinkCreator append the current file name"
+msgstr "eD2k bağlantısına eklenecek URL' yi girin: aLinkCreator' ün geçerli dosya adını ekleyebilmesi için sonuna / ekleyin"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144
 msgid "Remove"
@@ -7401,12 +6998,8 @@ msgid "Create link with part-hashes"
 msgstr "Parça adreslemesi içeren bağlantı oluştur."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:161
-msgid ""
-"Help to spread new and rare files faster, at the cost of an increased link "
-"size"
-msgstr ""
-"Yeni ve nadir dosyaların yayılmasına yardımcı olun;bunun bedeli ise artan "
-"bağlantı boyutu olacaktır."
+msgid "Help to spread new and rare files faster, at the cost of an increased link size"
+msgstr "Yeni ve nadir dosyaların yayılmasına yardımcı olun;bunun bedeli ise artan bağlantı boyutu olacaktır."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:187
 msgid "MD4 File Hash"
@@ -7683,8 +7276,7 @@ msgstr ""
 "\n"
 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
 "\n"
-" Pedro de Oliveira' nın <falso@rdk.homeip.net> geliştirdiği CAS üzerine "
-"kurulmuştur.\n"
+" Pedro de Oliveira' nın <falso@rdk.homeip.net> geliştirdiği CAS üzerine kurulmuştur.\n"
 "\n"
 "GPL kapsamında dağıtımı yapılır."
 
@@ -8026,9 +7618,7 @@ msgstr "Kurulumu kaldır"
 
 #: packaging/windows/installer_strings.c:40
 msgid "Remove user data (config, ED2K servers, Kad nodes, partfiles)"
-msgstr ""
-"Kullanıcı verilerini sil (yapılandırma, ED2K sunucuları, Kad düğümleri, "
-"kısmi dosyalar)"
+msgstr "Kullanıcı verilerini sil (yapılandırma, ED2K sunucuları, Kad düğümleri, kısmi dosyalar)"
 
 #: packaging/windows/installer_strings.c:43
 msgid "aMule application files (required)."
@@ -8039,30 +7629,16 @@ msgid "Place an aMule shortcut on the desktop."
 msgstr "Masaüstünde bir aMule kısayolu oluştur."
 
 #: packaging/windows/installer_strings.c:45
-msgid ""
-"Launch aMule automatically when the current user logs in (per-user setting)."
-msgstr ""
-"Güncel kullanıcı oturum açtığında aMule'ü otomatik olarak başlat (kullanıcı "
-"başı ayar)."
+msgid "Launch aMule automatically when the current user logs in (per-user setting)."
+msgstr "Güncel kullanıcı oturum açtığında aMule'ü otomatik olarak başlat (kullanıcı başı ayar)."
 
 #: packaging/windows/installer_strings.c:46
-msgid ""
-"Remove aMule application files, Start Menu / desktop shortcuts, autostart "
-"Run-key entry, and Add/Remove Programs entry (required)."
-msgstr ""
-"aMule uygulama dosyalarını, Başlat Menüsü / masaüstü kısayollarını, otomatik "
-"başlatma çalıştırma anahtar unsurunu, Program Ekle/Kaldır unsurunu kaldır "
-"(gerekli)."
+msgid "Remove aMule application files, Start Menu / desktop shortcuts, autostart Run-key entry, and Add/Remove Programs entry (required)."
+msgstr "aMule uygulama dosyalarını, Başlat Menüsü / masaüstü kısayollarını, otomatik başlatma çalıştırma anahtar unsurunu, Program Ekle/Kaldır unsurunu kaldır (gerekli)."
 
 #: packaging/windows/installer_strings.c:47
-msgid ""
-"Permanently delete %APPDATA%\\aMule for the current user (aMule.conf, ED2K "
-"server list, Kad nodes, partfiles, IP filters, friends list). Leave "
-"unchecked to keep your settings."
-msgstr ""
-"Güncel kullanıcı için %APPDATA%\\aMule unsurunu (aMule.conf, ED2K sunucu "
-"listesi, Kad düğümleri, kısmi dosyalar, IP filtreleri, arkadaş listesi) "
-"daimi olarak sil. Ayarlarınızı muhafaza etmek için şıkkı işaretlemeyin."
+msgid "Permanently delete %APPDATA%\\aMule for the current user (aMule.conf, ED2K server list, Kad nodes, partfiles, IP filters, friends list). Leave unchecked to keep your settings."
+msgstr "Güncel kullanıcı için %APPDATA%\\aMule unsurunu (aMule.conf, ED2K sunucu listesi, Kad düğümleri, kısmi dosyalar, IP filtreleri, arkadaş listesi) daimi olarak sil. Ayarlarınızı muhafaza etmek için şıkkı işaretlemeyin."
 
 #: packaging/windows/installer_strings.c:53
 msgid ""
@@ -8070,8 +7646,7 @@ msgid ""
 "Please close aMule (and aMuleD / aMuleGUI) and try again."
 msgstr ""
 "aMule, $INSTDIR. konumundan çalışıyor gibi görünüyor.\r\n"
-"Lütfen aMule'ü (ve aMuleD ile aMuleGUI programlarını) kapatın ve tekrar "
-"deneyin."
+"Lütfen aMule'ü (ve aMuleD ile aMuleGUI programlarını) kapatın ve tekrar deneyin."
 
 #: packaging/windows/installer_strings.c:54
 msgid ""
@@ -8088,19 +7663,14 @@ msgstr "$0 konumundaki önceki aMule kurulumu kaldırılıyor…"
 #: packaging/windows/installer_strings.c:56
 msgid ""
 "Could not remove the previous aMule installation at $0.\r\n"
-"Please close any running aMule processes and try again, or uninstall the "
-"previous version manually first."
+"Please close any running aMule processes and try again, or uninstall the previous version manually first."
 msgstr ""
 "$0 konumundaki önceki aMule kurulumu kaldırılamadı.\r\n"
-"Lütfen çalışmakta olan tüm aMule süreçlerini kapatın ve tekrar deneyin, veya "
-"evvela önceki kurulumu el ile kaldırın."
+"Lütfen çalışmakta olan tüm aMule süreçlerini kapatın ve tekrar deneyin, veya evvela önceki kurulumu el ile kaldırın."
 
 #: packaging/windows/installer_strings.c:57
-msgid ""
-"aMule appears to be running. Please close it and re-run the uninstaller."
-msgstr ""
-"aMule çalışmakta gibi görünüyor. Lütfen onu kapatıp kurulum programını "
-"tekrar başlatın."
+msgid "aMule appears to be running. Please close it and re-run the uninstaller."
+msgstr "aMule çalışmakta gibi görünüyor. Lütfen onu kapatıp kurulum programını tekrar başlatın."
 
 #: packaging/windows/installer_strings.c:58
 msgid "Removing user data at $APPDATA\\aMule..."
