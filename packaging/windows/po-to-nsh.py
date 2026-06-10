@@ -101,6 +101,15 @@ NSIS_LANG_TO_LOCALE = {}
 for _loc, _nsis in LOCALE_TO_NSIS_LANG.items():
     NSIS_LANG_TO_LOCALE.setdefault(_nsis, _loc)
 
+# NSIS exposes two Spanish variants -- SPANISH (LCID 0x040a, "Spanish,
+# Traditional Sort") and SPANISHINTERNATIONAL (LCID 0x0c0a, "Spanish,
+# Modern Sort" / Latin America). Modern Windows and Wine both report
+# es_ES as the Modern variant, so the installer's MUI auto-detect
+# routes those users to SPANISHINTERNATIONAL. Without this alias the
+# generated block falls back to English (issue #55). aMule ships a
+# single es.po that serves both variants correctly.
+NSIS_LANG_TO_LOCALE.setdefault("SPANISHINTERNATIONAL", "es")
+
 # (NSIS LangString key, English msgid). Order matches the LangString
 # block in installer.nsi and the array in installer_strings.c. Update
 # all three together when adding or renaming an installer string. The
