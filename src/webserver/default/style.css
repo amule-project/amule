@@ -31,6 +31,48 @@ td {
 	font-size: 12px;
 	font-weight: normal;
 }
+a.navbutton {
+	display: block;
+	width: 52px;
+	height: 50px;
+	background-repeat: no-repeat;
+}
+a.nav-transfer {
+	background-image: url(images/transf_0.png);
+}
+a.nav-transfer:hover {
+	background-image: url(images/transf_1.png);
+}
+a.nav-shared {
+	background-image: url(images/shared_0.png);
+}
+a.nav-shared:hover {
+	background-image: url(images/shared_1.png);
+}
+a.nav-search {
+	background-image: url(images/search_0.png);
+}
+a.nav-search:hover {
+	background-image: url(images/search_1.png);
+}
+a.nav-servers {
+	background-image: url(images/edkserv_0.png);
+}
+a.nav-servers:hover {
+	background-image: url(images/edkserv_1.png);
+}
+a.nav-kad {
+	background-image: url(images/sheserv_0.png);
+}
+a.nav-kad:hover {
+	background-image: url(images/sheserv_1.png);
+}
+a.nav-stats {
+	background-image: url(images/stats_0.png);
+}
+a.nav-stats:hover {
+	background-image: url(images/stats_1.png);
+}
 .texte {
 	font-family: Helvetica;
 	font-size: 12px;
