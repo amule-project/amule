@@ -1998,8 +1998,20 @@ void CPreferences::ReloadSharedFolders()
 		// external writer intended them as recursive (they didn't
 		// touch shareddir-recursive.dat), so the safe default is
 		// explicit.
+		//
+		// DirExists() gate: skip on-disk entries whose directory no
+		// longer exists. Those are stale runtime-expansion remnants
+		// of recursive subdirs that have since been deleted (the
+		// watcher persisted them to shareddir.dat in a previous
+		// session). Without this gate they would be promoted to
+		// shareddir_explicit_list and re-attempted on every restart.
+		// The check is safe because shareddir-explicit/recursive.dat
+		// are loaded above without an existence filter (#703), so a
+		// temporarily-offline network share marked as explicit or
+		// recursive persists across restarts regardless.
 		for (size_t i = 0; i < onDisk.size(); ++i) {
-			if (expected.find(onDisk[i].GetRaw()) == expected.end()) {
+			if (expected.find(onDisk[i].GetRaw()) == expected.end()
+				&& onDisk[i].DirExists()) {
 				shareddir_explicit_list.push_back(onDisk[i]);
 				expected.insert(onDisk[i].GetRaw());
 			}
