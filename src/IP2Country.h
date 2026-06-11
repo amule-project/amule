@@ -69,9 +69,20 @@ public:
 	const CountryData& GetCountryData(const wxString& ip);
 	void Enable();
 	void Disable();
-	void Update();
+	// Refresh the on-disk MMDB from the configured source.
+	// manualUpdate=true is set by the prefs "Update now" button so that
+	// failures (no credential, bad URL, HTTP error) surface as a popup
+	// in addition to the network log; auto-update (startup) stays
+	// silent so users don't get a popup every cold boot if their
+	// chosen source is briefly down.
+	void Update(bool manualUpdate = false);
 	bool IsEnabled();
 	void DownloadFinished(uint32 result);
+
+	// Path of the on-disk MMDB file. Exposed so the IP2Country
+	// preferences panel can show the status line ("Loaded — <path>"),
+	// without re-deriving the config-dir + filename convention.
+	const wxString& GetDatabasePath() const { return m_DataBasePath; }
 
 private:
 	CMaxMindDBDatabase* m_db;
@@ -79,7 +90,20 @@ private:
 	wxString m_DataBaseName;
 	wxString m_DataBasePath;
 
+	// DB-IP fallback retry tracking. The first attempt fetches the
+	// current month's URL; if that fails (commonly a 404 in the first
+	// few days of a month before DB-IP publishes the new dataset), the
+	// download callback retries with monthOffset=-1. Reset to false on
+	// every Update() entry.
+	bool m_TriedPreviousMonth;
+
+	// Set by Update(true) (the "Update now" button) so the failure
+	// paths in StartDownload + DownloadFinished know to surface a
+	// popup, not just a log line.
+	bool m_ManualUpdate;
+
 	void LoadFlags();
+	void StartDownload(int monthOffset);
 };
 
 #endif // IP2COUNTRY_H

@@ -45,3 +45,4 @@ packaging/windows/installer_strings_generated.nsh
 .devin/
 .aider*
 
+.cache/

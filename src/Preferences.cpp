@@ -229,6 +229,11 @@ uint8		CPreferences::s_byCryptTCPPaddingLength;
 wxString	CPreferences::s_Ed2kURL;
 wxString	CPreferences::s_KadURL;
 bool		CPreferences::s_GeoIPEnabled;
+wxString	CPreferences::s_GeoIPSource;
+wxString	CPreferences::s_GeoIPLoadedSource;
+wxString	CPreferences::s_GeoIPMaxMindLicense;
+wxString	CPreferences::s_GeoIPCustomUrl;
+bool		CPreferences::s_GeoIPAutoUpdate;
 wxString	CPreferences::s_GeoIPUpdateUrl;
 bool		CPreferences::s_preventSleepWhileDownloading;
 wxString	CPreferences::s_StatsServerName;
@@ -1206,7 +1211,19 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_PERCENT,		(new Cfg_Bool( "/ExternalConnect/ShowPercent", s_Percent, true )));
 	NewCfgItem(IDC_SKIN,		(new Cfg_Skin(  "/SkinGUIOptions/Skin", s_Skin, "" )));
 	NewCfgItem(IDC_VERTTOOLBAR,	(new Cfg_Bool( "/eMule/VerticalToolbar", s_ToolbarOrientation, false )));
-	NewCfgItem(IDC_SHOW_COUNTRY_FLAGS,	(new Cfg_Bool( "/eMule/GeoIPEnabled", s_GeoIPEnabled, true )));
+#ifdef ENABLE_IP2COUNTRY
+	// The IP2Country tab and its widgets only exist when libmaxminddb is
+	// present at compile time (PreferencesIP2CountryTab in muuli_wdr.cpp
+	// is the only place IDC_SHOW_COUNTRY_FLAGS / IDC_GEOIP_* are created).
+	// The Cfg_* bindings must live under the same gate -- binding them
+	// when the widgets don't exist would surface "Failed to connect Cfg
+	// to widget" log spam in TransferToWindow plus null-pointer crashes
+	// on any later FindWindow access.
+	NewCfgItem(IDC_SHOW_COUNTRY_FLAGS,	(new Cfg_Bool( "/eMule/GeoIPEnabled",        s_GeoIPEnabled,        true )));
+	NewCfgItem(IDC_GEOIP_MAXMIND_LIC,	(new Cfg_Str(  "/eMule/GeoIPMaxMindLicense", s_GeoIPMaxMindLicense, "" )));
+	NewCfgItem(IDC_GEOIP_CUSTOM_URL,	(new Cfg_Str(  "/eMule/GeoIPCustomUrl",      s_GeoIPCustomUrl,      "" )));
+	NewCfgItem(IDC_GEOIP_AUTOUPDATE,	(new Cfg_Bool( "/eMule/GeoIPAutoUpdate",     s_GeoIPAutoUpdate,     true )));
+#endif
 #ifndef __GIT__
 	NewCfgItem(IDC_SHOWVERSIONONTITLE,	(new Cfg_Bool( "/eMule/ShowVersionOnTitle", s_showVersionOnTitle, false )));
 #endif
@@ -1325,11 +1342,26 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Str(	"/eMule/Ed2kServersUrl",		s_Ed2kURL, "https://upd.emule-security.org/server.met" ) );
 	s_MiscList.push_back( MkCfg_Int( "/eMule/ShowRatesOnTitle",		s_showRatesOnTitle, 0 ));
 
-	// MaxMind requires a (free) license key for GeoLite2 downloads, and the
-	// official URL returns .tar.gz which the existing UnpackArchive does not
-	// handle. Default empty: users either configure their own URL+key here
-	// or drop GeoLite2-Country.mmdb manually into the config directory.
-	s_MiscList.push_back( new Cfg_Str(  "/eMule/GeoLiteCountryUpdateUrl",		s_GeoIPUpdateUrl, "" ) );
+	// IP2Country / GeoIP database — three sources, all delivering the same
+	// MMDB binary format that geoip/MaxMindDBDatabase reads via libmaxminddb.
+	// DB-IP is the no-account default; MaxMind needs only the License Key
+	// (license-key URL form, no Account ID required); Custom is a
+	// user-supplied URL (escape hatch).
+	s_MiscList.push_back( new Cfg_Str(  "/eMule/GeoIPSource",			s_GeoIPSource,            "dbip" ) );
+	s_MiscList.push_back( new Cfg_Str(  "/eMule/GeoIPLoadedSource",		s_GeoIPLoadedSource,      "" ) );
+	s_MiscList.push_back( new Cfg_Str(  "/eMule/GeoIPMaxMindLicense",	s_GeoIPMaxMindLicense,    "" ) );
+	s_MiscList.push_back( new Cfg_Str(  "/eMule/GeoIPCustomUrl",		s_GeoIPCustomUrl,         "" ) );
+	s_MiscList.push_back( new Cfg_Bool( "/eMule/GeoIPAutoUpdate",		s_GeoIPAutoUpdate,        true ) );
+
+	// Drop the v3.0.x-WIP /eMule/GeoIPMaxMindAccount key if a previous
+	// fork build wrote one — never released, kept only to avoid clutter.
+	wxConfigBase::Get()->DeleteEntry("/eMule/GeoIPMaxMindAccount");
+
+	// Legacy single-URL setting — preserved on disk for the one-shot
+	// migration that runs from LoadPreferences(); after that the value is
+	// surfaced as Custom URL in the new UI (with source forced to
+	// "custom" so the user's URL isn't silently dropped).
+	s_MiscList.push_back( new Cfg_Str(  "/eMule/GeoLiteCountryUpdateUrl",	s_GeoIPUpdateUrl, "" ) );
 	wxConfigBase::Get()->DeleteEntry("/eMule/GeoIPUpdateUrl"); // get rid of the old one for a while
 
 	s_MiscList.push_back( new Cfg_Str( "/WebServer/Path",				s_sWebPath, "amuleweb" ) );
@@ -1654,6 +1686,89 @@ void CPreferences::SaveCats()
 void CPreferences::LoadPreferences()
 {
 	LoadCats();
+
+	// One-shot migration of the v2.x GeoLiteCountryUpdateUrl into the new
+	// three-source model. Triggers only when the user had a non-empty URL
+	// configured *and* hasn't yet touched the new GeoIPSource selector
+	// (which defaults to "dbip"). The URL becomes the Custom URL and the
+	// source flips to "custom" so the user's setting carries forward.
+	// Subsequent loads see GeoIPSource == "custom" and skip the migration.
+	if (!s_GeoIPUpdateUrl.IsEmpty() && s_GeoIPSource == "dbip" && s_GeoIPCustomUrl.IsEmpty()) {
+		s_GeoIPCustomUrl = s_GeoIPUpdateUrl;
+		s_GeoIPSource    = "custom";
+		s_GeoIPUpdateUrl.clear();
+	}
+}
+
+
+CPreferences::GeoIPSource CPreferences::GetGeoIPSource()
+{
+	if (s_GeoIPSource == "maxmind") return GeoIPSourceMaxMind;
+	if (s_GeoIPSource == "custom")  return GeoIPSourceCustom;
+	return GeoIPSourceDBIP;
+}
+
+
+void CPreferences::SetGeoIPSource(GeoIPSource v)
+{
+	switch (v) {
+	case GeoIPSourceMaxMind: s_GeoIPSource = "maxmind"; break;
+	case GeoIPSourceCustom:  s_GeoIPSource = "custom";  break;
+	case GeoIPSourceDBIP:
+	default:                 s_GeoIPSource = "dbip";    break;
+	}
+}
+
+
+void CPreferences::SetGeoIPLoadedSource(GeoIPSource v)
+{
+	switch (v) {
+	case GeoIPSourceMaxMind: s_GeoIPLoadedSource = "maxmind"; break;
+	case GeoIPSourceCustom:  s_GeoIPLoadedSource = "custom";  break;
+	case GeoIPSourceDBIP:
+	default:                 s_GeoIPLoadedSource = "dbip";    break;
+	}
+}
+
+
+wxString CPreferences::GetGeoIPResolvedDownloadUrl(int monthOffset)
+{
+	switch (GetGeoIPSource()) {
+	case GeoIPSourceDBIP: {
+		// DB-IP publishes a fresh dataset per calendar month at a
+		// predictable URL. Substitute YYYY-MM at request time;
+		// monthOffset lets the caller retry the previous month when
+		// the new month's file hasn't published yet (commonly the
+		// first few days after a month boundary). DB-IP retains the
+		// previous month's file at the same URL scheme so the
+		// fallback resolves cleanly.
+		wxDateTime when = wxDateTime::Now();
+		if (monthOffset != 0) {
+			when = wxDateTime::Now() + wxDateSpan::Months(monthOffset);
+		}
+		return wxString::Format(
+			"https://download.db-ip.com/free/dbip-country-lite-%04d-%02d.mmdb.gz",
+			when.GetYear(), when.GetMonth() + 1);
+	}
+	case GeoIPSourceMaxMind: {
+		// License-key-only URL form. MaxMind also publishes a
+		// basic-auth URL that pairs the License Key with an Account
+		// ID, but the License Key alone is sufficient for the public
+		// GeoLite2 endpoint, so we keep the UX to a single field.
+		// Users who specifically need the basic-auth form can fall
+		// back to Custom URL.
+		if (s_GeoIPMaxMindLicense.IsEmpty()) {
+			return wxEmptyString;
+		}
+		return wxString::Format(
+			"https://download.maxmind.com/app/geoip_download"
+			"?edition_id=GeoLite2-Country&license_key=%s&suffix=tar.gz",
+			s_GeoIPMaxMindLicense);
+	}
+	case GeoIPSourceCustom:
+		return s_GeoIPCustomUrl;
+	}
+	return wxEmptyString;
 }
 
 

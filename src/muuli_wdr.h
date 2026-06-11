@@ -284,6 +284,22 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit = TRUE, bool set_s
 #define IDC_FOLLOW_SYMLINKS_SHARED 10343
 wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
+// IP2Country (GeoIP) preferences tab. 10400+ leaves a clear gap above
+// the existing toolbar / button IDs that crowd the 10350-10354 range
+// (ID_BUTTONMESSAGES, ID_BUTTONSTATISTICS, etc. — sharing an ID with a
+// toolbar button gets the wrong event delivered into the prefs panel).
+#define IDC_GEOIP_SOURCE         10400
+#define IDC_GEOIP_MAXMIND_LIC    10401
+#define IDC_GEOIP_CUSTOM_URL     10402
+#define IDC_GEOIP_AUTOUPDATE     10403
+#define IDC_GEOIP_UPDATE_NOW     10404
+#define IDC_GEOIP_STATUS         10405
+#define IDC_GEOIP_SOURCE_PANEL   10406
+#define IDC_GEOIP_INFO_DBIP      10407
+#define IDC_GEOIP_INFO_MAXMIND   10408
+#define IDC_GEOIP_INFO_CUSTOM    10409
+wxSizer *PreferencesIP2CountryTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
+
 #define IDC_SLIDERINFO 10177
 #define IDC_SLIDER 10178
 #define IDC_SLIDERINFO3 10179

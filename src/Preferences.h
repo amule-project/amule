@@ -628,10 +628,57 @@ public:
 	static void		SetClientCryptLayerRequested(bool v)	{s_bCryptLayerRequested = v; }
 	static void		SetClientCryptLayerRequired(bool v)		{s_IsClientCryptLayerRequired = v;}
 
-	// GeoIP
-	static bool				IsGeoIPEnabled()		{return s_GeoIPEnabled;}
-	static void				SetGeoIPEnabled(bool v)	{s_GeoIPEnabled = v;}
-	static const wxString&	GetGeoIPUpdateUrl()		{return s_GeoIPUpdateUrl;}
+	// GeoIP / IP2Country
+	//
+	// Source selector — choose which provider supplies the .mmdb. Values
+	// are persisted as strings ("dbip", "maxmind", "custom") so the config
+	// file stays human-readable across releases. See Preferences.cpp for
+	// the legacy GeoLiteCountryUpdateUrl → custom migration.
+	enum GeoIPSource {
+		GeoIPSourceDBIP    = 0,
+		GeoIPSourceMaxMind = 1,
+		GeoIPSourceCustom  = 2
+	};
+
+	static bool				IsGeoIPEnabled()			{return s_GeoIPEnabled;}
+	static void				SetGeoIPEnabled(bool v)		{s_GeoIPEnabled = v;}
+	static GeoIPSource		GetGeoIPSource();
+	static void				SetGeoIPSource(GeoIPSource v);
+	// "Source of the currently-loaded geoip.mmdb" — distinct from
+	// GetGeoIPSource() which is the *next-download* selector. Updated
+	// by CIP2Country::DownloadFinished on success so the status line
+	// can correctly attribute a loaded DB even after the user flips
+	// the dropdown to a different source they haven't yet downloaded
+	// from. Empty string ("") means the file was hand-installed by the
+	// user (or migrated from the legacy GeoLite2-Country.mmdb path), in
+	// which case the status line shows "Loaded" with no attribution.
+	static const wxString&	GetGeoIPLoadedSource()		{return s_GeoIPLoadedSource;}
+	static void				SetGeoIPLoadedSource(GeoIPSource v);
+	static const wxString&	GetGeoIPMaxMindLicense()	{return s_GeoIPMaxMindLicense;}
+	static void				SetGeoIPMaxMindLicense(const wxString& v) {s_GeoIPMaxMindLicense = v;}
+	static const wxString&	GetGeoIPCustomUrl()			{return s_GeoIPCustomUrl;}
+	static void				SetGeoIPCustomUrl(const wxString& v) {s_GeoIPCustomUrl = v;}
+	static bool				IsGeoIPAutoUpdate()			{return s_GeoIPAutoUpdate;}
+	static void				SetGeoIPAutoUpdate(bool v)	{s_GeoIPAutoUpdate = v;}
+
+	// Computes the resolved download URL from the selected source: DB-IP
+	// gets a month substituted into the template; MaxMind has credentials
+	// inserted at the URL-userinfo position; Custom is the stored URL
+	// verbatim. Returns empty if the selected source has not been
+	// configured (e.g. MaxMind with empty credentials, Custom with empty
+	// URL).
+	//
+	// monthOffset (DB-IP only) shifts the templated month — 0 = current,
+	// -1 = previous, etc. DB-IP often publishes the new month's file a
+	// few days late, so the IP2Country update path retries with -1 on a
+	// download failure to ride out the early-of-month gap. Ignored by
+	// MaxMind and Custom (their URLs aren't month-templated).
+	static wxString GetGeoIPResolvedDownloadUrl(int monthOffset = 0);
+
+	// Legacy: the v2.x single-URL setting. Kept only for the one-shot
+	// migration in CPreferences::LoadPreferences(). Do not use in new
+	// code; query GetGeoIPResolvedDownloadUrl() instead.
+	static const wxString&	GetGeoIPUpdateUrl()			{return s_GeoIPUpdateUrl;}
 
 	// Stats server
 	static const wxString&	GetStatsServerName()		{return s_StatsServerName;}
@@ -876,9 +923,14 @@ protected:
 	static uint32	s_dwKadUDPKey;
 	static uint8 s_byCryptTCPPaddingLength;
 
-	// GeoIP
-	static bool s_GeoIPEnabled;
-	static wxString s_GeoIPUpdateUrl;
+	// GeoIP / IP2Country
+	static bool		s_GeoIPEnabled;
+	static wxString	s_GeoIPSource;          // serialised enum: "dbip" / "maxmind" / "custom" — next-download selector
+	static wxString	s_GeoIPLoadedSource;    // same shape — provenance of the currently-loaded geoip.mmdb
+	static wxString	s_GeoIPMaxMindLicense;
+	static wxString	s_GeoIPCustomUrl;
+	static bool		s_GeoIPAutoUpdate;
+	static wxString	s_GeoIPUpdateUrl;       // legacy v2.x single-URL, kept for migration only
 
 	// Sleep vetoing
 	static bool s_preventSleepWhileDownloading;

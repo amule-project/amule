@@ -61,12 +61,28 @@
 
 #include "IP2Country.h"
 #include "geoip/MaxMindDBDatabase.h"
+#include "PrefsUnifiedDlg.h"		// For NotifyIP2CountryUpdateFailedIfOpen
 
 CIP2Country::CIP2Country(const wxString& configDir)
-	: m_db(new CMaxMindDBDatabase())
+	: m_db(new CMaxMindDBDatabase()),
+	  m_TriedPreviousMonth(false),
+	  m_ManualUpdate(false)
 {
-	m_DataBaseName = "GeoLite2-Country.mmdb";
+	m_DataBaseName = "geoip.mmdb";
 	m_DataBasePath = configDir + m_DataBaseName;
+
+	// One-shot migration: the v2.x file lived at GeoLite2-Country.mmdb.
+	// If that legacy file exists and the new canonical geoip.mmdb does
+	// not, move it across so an upgrading user doesn't lose flag display
+	// silently. If both exist (e.g. they followed the new docs while
+	// keeping the old file around) leave each alone.
+	const wxString legacyPath = configDir + "GeoLite2-Country.mmdb";
+	if (CPath::FileExists(legacyPath) && !CPath::FileExists(m_DataBasePath)) {
+		if (wxRenameFile(legacyPath, m_DataBasePath)) {
+			AddLogLineN(CFormat(_("Migrated existing GeoLite2-Country.mmdb to %s"))
+				% m_DataBasePath);
+		}
+	}
 }
 
 bool CIP2Country::IsEnabled()
@@ -88,15 +104,53 @@ void CIP2Country::Enable()
 	}
 
 	m_db->Open(m_DataBasePath);
+
+	// One-shot backfill: files written by builds older than the
+	// source-aware prefs have no LoadedSource recorded, which would
+	// leave the prefs status line attribution-less. Best-effort guess:
+	// attribute the existing file to the currently configured source
+	// so the status line shows *something* meaningful. The user can
+	// always click "Update now" to overwrite with the real source.
+	if (m_db->IsOpen() && thePrefs::GetGeoIPLoadedSource().IsEmpty()) {
+		thePrefs::SetGeoIPLoadedSource(thePrefs::GetGeoIPSource());
+	}
 }
 
-void CIP2Country::Update()
+void CIP2Country::Update(bool manualUpdate)
 {
-	const wxString& url = thePrefs::GetGeoIPUpdateUrl();
+	m_TriedPreviousMonth = false;
+	m_ManualUpdate = manualUpdate;
+	StartDownload(0);
+}
+
+void CIP2Country::StartDownload(int monthOffset)
+{
+	const wxString url = thePrefs::GetGeoIPResolvedDownloadUrl(monthOffset);
 	if (url.IsEmpty()) {
-		AddLogLineC(CFormat(
-			_("No GeoLite2 update URL configured. Download GeoLite2-Country.mmdb manually (a free MaxMind account is required) and place it at %s, or set the URL in Preferences."))
-			% m_DataBasePath);
+		wxString msg;
+		switch (thePrefs::GetGeoIPSource()) {
+		case CPreferences::GeoIPSourceMaxMind:
+			msg = _(
+				"IP2Country: MaxMind selected as the GeoIP source but no License Key "
+				"configured. Open Preferences → IP2Country, paste your free MaxMind "
+				"License Key and click 'Update now'.");
+			break;
+		case CPreferences::GeoIPSourceCustom:
+			msg = _(
+				"IP2Country: Custom URL selected as the GeoIP source but no URL "
+				"configured. Open Preferences → IP2Country and supply a URL that "
+				"points to an .mmdb (or .gz / .tar.gz containing one).");
+			break;
+		default:
+			msg = _(
+				"IP2Country: failed to resolve a GeoIP download URL.");
+			break;
+		}
+		AddLogLineC(msg);
+		if (m_ManualUpdate) {
+			PrefsUnifiedDlg::NotifyIP2CountryUpdateFailedIfOpen(msg);
+		}
+		m_ManualUpdate = false;
 		thePrefs::SetGeoIPEnabled(false);
 		return;
 	}
@@ -115,6 +169,12 @@ void CIP2Country::Disable()
 
 void CIP2Country::DownloadFinished(uint32 result)
 {
+	// Snapshot + clear the manual flag up front so any early return
+	// below doesn't leave it set for the next StartDownload (e.g. a
+	// subsequent auto-update would inherit the popup behaviour).
+	const bool manual = m_ManualUpdate;
+	m_ManualUpdate = false;
+
 	if (result == HTTP_Success) {
 		Disable();
 		// download succeeded. Switch over to new database.
@@ -128,32 +188,75 @@ void CIP2Country::DownloadFinished(uint32 result)
 		};
 
 		if (UnpackArchive(CPath(newDat), geoip_files).second == EFT_Error) {
-			AddLogLineC(CFormat(_("Download of %s file failed, aborting update.")) % m_DataBaseName);
+			const wxString msg = CFormat(_("Download of %s file failed, aborting update.")) % m_DataBaseName;
+			AddLogLineC(msg);
+			if (manual) {
+				PrefsUnifiedDlg::NotifyIP2CountryUpdateFailedIfOpen(msg);
+			}
 			return;
 		}
 
 		if (wxFileExists(m_DataBasePath)) {
 			if (!wxRemoveFile(m_DataBasePath)) {
-				AddLogLineC(CFormat(_("Failed to remove %s file, aborting update.")) % m_DataBaseName);
+				const wxString msg = CFormat(_("Failed to remove %s file, aborting update.")) % m_DataBaseName;
+				AddLogLineC(msg);
+				if (manual) {
+					PrefsUnifiedDlg::NotifyIP2CountryUpdateFailedIfOpen(msg);
+				}
 				return;
 			}
 		}
 
 		if (!wxRenameFile(newDat, m_DataBasePath)) {
-			AddLogLineC(CFormat(_("Failed to rename %s file, aborting update.")) % m_DataBaseName);
+			const wxString msg = CFormat(_("Failed to rename %s file, aborting update.")) % m_DataBaseName;
+			AddLogLineC(msg);
+			if (manual) {
+				PrefsUnifiedDlg::NotifyIP2CountryUpdateFailedIfOpen(msg);
+			}
 			return;
 		}
 
 		Enable();
 		if (IsEnabled()) {
 			AddLogLineN(CFormat(_("Successfully updated %s")) % m_DataBaseName);
+			// Record which source actually wrote the file so the prefs
+			// status line can attribute it correctly even after the
+			// user flips the source dropdown to a different provider
+			// they haven't downloaded from yet.
+			thePrefs::SetGeoIPLoadedSource(thePrefs::GetGeoIPSource());
 		} else {
-			AddLogLineC(CFormat(_("Error updating %s")) % m_DataBaseName);
+			const wxString msg = CFormat(_("Error updating %s")) % m_DataBaseName;
+			AddLogLineC(msg);
+			if (manual) {
+				PrefsUnifiedDlg::NotifyIP2CountryUpdateFailedIfOpen(msg);
+			}
 		}
 	} else if (result == HTTP_Skipped) {
 		AddLogLineN(CFormat(_("Skipped download of %s, because requested file is not newer.")) % m_DataBaseName);
 	} else {
-		AddLogLineC(CFormat(_("Failed to download %s from %s")) % m_DataBaseName % thePrefs::GetGeoIPUpdateUrl());
+		// DB-IP early-month fallback: the new month's file frequently
+		// 404s for the first few days while DB-IP publishes it. Retry
+		// once with monthOffset=-1 so the previous (definitely-published)
+		// month carries the user through the gap. MaxMind / Custom URLs
+		// aren't month-templated, so the fallback is gated on source.
+		// Re-arm the manual flag so the retry's eventual outcome still
+		// surfaces a popup; we only cleared it as a one-shot guard.
+		if (thePrefs::GetGeoIPSource() == CPreferences::GeoIPSourceDBIP
+			&& !m_TriedPreviousMonth) {
+			m_TriedPreviousMonth = true;
+			m_ManualUpdate = manual;
+			AddLogLineN(_(
+				"DB-IP download failed for the current month - retrying with "
+				"the previous month's URL."));
+			StartDownload(-1);
+			return;
+		}
+		const wxString msg = CFormat(_("Failed to download %s from %s")) % m_DataBaseName
+			% thePrefs::GetGeoIPResolvedDownloadUrl(m_TriedPreviousMonth ? -1 : 0);
+		AddLogLineC(msg);
+		if (manual) {
+			PrefsUnifiedDlg::NotifyIP2CountryUpdateFailedIfOpen(msg);
+		}
 		// if it failed and there is no database, turn it off
 		if (!wxFileExists(m_DataBasePath)) {
 			thePrefs::SetGeoIPEnabled(false);

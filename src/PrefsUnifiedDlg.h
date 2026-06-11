@@ -62,6 +62,21 @@ public:
 	 * created at one time.
 	 */
 	PrefsUnifiedDlg(wxWindow* parent);
+#ifdef ENABLE_IP2COUNTRY
+	~PrefsUnifiedDlg();
+
+	// Public module hook: CamuleDlg::IP2CountryDownloadFinished calls
+	// this so an open Preferences dialog refreshes its status block as
+	// soon as the new database is loaded. No-op if no dialog is open.
+	static void RefreshIP2CountryStatusIfOpen();
+
+	// Public module hook: CIP2Country calls this on a *manual* update
+	// failure (the "Update now" button) so the user sees a modal popup,
+	// not just a buried log line. No-op if the prefs dialog isn't
+	// open — caller is expected to have already logged the same
+	// message via AddLogLineC so the failure is still recorded.
+	static void NotifyIP2CountryUpdateFailedIfOpen(const wxString& msg);
+#endif
 
 	/**
 	 * Updates the widgets with the values of the preference-variables.
@@ -114,6 +129,40 @@ protected:
 	void OnButtonColorChange(wxCommandEvent &event);
 	void OnButtonIPFilterReload(wxCommandEvent &event);
 	void OnButtonIPFilterUpdate(wxCommandEvent &event);
+#ifdef ENABLE_IP2COUNTRY
+	void OnGeoIPSourceChange(wxCommandEvent &event);
+	void OnGeoIPUpdateNow(wxCommandEvent &event);
+	void OnGeoIPMasterToggle(wxCommandEvent &event);
+	// Show/hide the three source-specific sub-panels based on the
+	// dropdown index; called from OnGeoIPSourceChange and from
+	// TransferToWindow on dialog open.
+	void UpdateGeoIPSourcePanel();
+	// Re-render the status line from the current CIP2Country state +
+	// selected source. Called whenever the dropdown changes, after a
+	// successful Update Now, and from RefreshIP2CountryStatusIfOpen.
+	void UpdateGeoIPStatus();
+	// Grey out the source selector + everything downstream when the
+	// master "Show country flags for clients" checkbox is unchecked.
+	// Called from OnGeoIPMasterToggle and TransferToWindow.
+	void UpdateGeoIPControlsEnabled();
+
+private:
+	// Set in the ctor / cleared in dtor so the IP2Country download
+	// callback can find an open dialog without a global pointer chain.
+	static PrefsUnifiedDlg *s_activeInstance;
+
+	// Snapshots taken at TransferToWindow so OnOk can detect "the user
+	// switched GeoIP source / pasted a new license / changed the URL
+	// during this dialog session" and kick off a download — otherwise
+	// the user has to remember to click Update now after each change.
+	// The Cfg system only tracks credential fields bound through
+	// NewCfgItem; the source dropdown is committed live, so we have
+	// to compare it manually.
+	int		m_GeoIPSourceAtOpen;
+	wxString	m_GeoIPMaxMindLicenseAtOpen;
+	wxString	m_GeoIPCustomUrlAtOpen;
+public:
+#endif
 	void OnColorCategorySelected(wxCommandEvent &event);
 	void OnCheckBoxChange(wxCommandEvent &event);
 	void OnAutostartToggle(wxCommandEvent &event);
