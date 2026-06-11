@@ -166,3 +166,12 @@ See the [contributing guide][contributing] for how to get involved. In short:
 
 [6]:            https://github.com/amule-org/amule/pulls "aMule Pull Requests"
 [contributing]: https://amule-org.github.io/docs/contributing "Contributing to aMule"
+
+## Translations
+
+The translations of the application interface and the man pages live in this
+repository and can be edited either by opening a pull request — see the
+[Translations guide](https://amule-org.github.io/docs/developer/translations) —
+or through [Weblate](https://hosted.weblate.org/projects/amule/), a translation
+tool that stays in sync with git — see the
+[Weblate guide](https://amule-org.github.io/docs/developer/translations/weblate).
