@@ -35,7 +35,6 @@ INSTALL (FILES
 		login.php
 		logo.png
 		log.php
-		maquette.dwt
 		ok.png
 		pause.png
 		play.png
