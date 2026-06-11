@@ -225,7 +225,7 @@ function formCommandSubmit(command)
 
 			echo "<td class='texte'>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
 
-			echo "<td class='texte texte-full-name'>", $file->name, "</td>";
+			echo "<td class='texte texte-full-name'>", htmlspecialchars($file->name), "</td>";
 			echo "<td class='texte al-center'>", CastToXBytes($file->xfer), " (", CastToXBytes($file->xfer_all),")</td>";
 
 			echo "<td class='texte al-center'>", $file->req, " (", $file->req_all, ")</td>";

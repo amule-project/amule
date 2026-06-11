@@ -68,22 +68,22 @@ function print_ident($i)
 function print_item($it, $ident)
 {
 	print_ident($ident);
-	echo "<img src=\"tree-leaf.gif\">", $it, "<br>\n";
+	echo "<img src=\"tree-leaf.gif\">", htmlspecialchars($it), "<br>\n";
 }
 
 function print_folder($key, &$arr, $ident)
 {
 	print_ident($ident);
 	echo "<span class=\"trigger\" onClick=\"showBranch('br_",
-		$key, "');swapFolder('fl_", $key, "')\">\n";
+		htmlspecialchars($key), "');swapFolder('fl_", htmlspecialchars($key), "')\">\n";
 	print_ident($ident+1);
-	echo "<img src=\"tree-open.gif\" id=\"fl_", $key, "\">\n";
+	echo "<img src=\"tree-open.gif\" id=\"fl_", htmlspecialchars($key), "\">\n";
 	print_ident($ident+1);
-	echo $key, "<br>\n";
+	echo htmlspecialchars($key), "<br>\n";
 	print_ident($ident);
 	echo "</span>\n";
 	print_ident($ident);
-	echo "<span class=\"branch\" id=\"br_", $key, "\">\n";
+	echo "<span class=\"branch\" id=\"br_", htmlspecialchars($key), "\">\n";
 
 	foreach ($arr as $k => $v) {
 		if ( count(&$v) ) {

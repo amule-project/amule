@@ -150,9 +150,9 @@
 					"</td>";
 			}
 
-			echo "<td class='texte'>", $srv->name, "</td>";
-			echo "<td class='texte'>", $srv->desc, "</td>";
-			echo "<td class='texte al-center'>", $srv->addr, "</td>";
+			echo "<td class='texte'>", htmlspecialchars($srv->name), "</td>";
+			echo "<td class='texte'>", htmlspecialchars($srv->desc), "</td>";
+			echo "<td class='texte al-center'>", htmlspecialchars($srv->addr), "</td>";
 			echo "<td class='texte al-center'>", $srv->users, "</td>";
 			echo "<td class='texte al-center'>", $srv->files, "</td>";
 

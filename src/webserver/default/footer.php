@@ -35,7 +35,7 @@
 		}
 
 		foreach($cats as $c) {
-			echo  '<option>', $c, '</option>';
+			echo  '<option>', htmlspecialchars($c), '</option>';
 		}
 	?>
         </select>

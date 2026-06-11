@@ -26,9 +26,9 @@ body {
 <pre>
 <?php
 	if ("srv" == $HTTP_GET_VARS['show'] || 1 == $HTTP_GET_VARS['rstsrv']) {
-		echo amule_get_serverinfo($HTTP_GET_VARS['rstsrv']);
+		echo htmlspecialchars(amule_get_serverinfo($HTTP_GET_VARS['rstsrv']));
 	 }else {
-		echo amule_get_log($HTTP_GET_VARS['rstlog']);
+		echo htmlspecialchars(amule_get_log($HTTP_GET_VARS['rstlog']));
 	}
 ?>
 </pre>

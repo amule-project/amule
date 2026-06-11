@@ -24,7 +24,7 @@
     		echo "Connecting ...";
     	} else {
     		echo "Connected with ", (($stats["id"] < 16777216) ? "low" : "high"), " ID to ",
-    			$stats["serv_name"], "  ", $stats["serv_addr"];
+    			htmlspecialchars($stats["serv_name"]), "  ", htmlspecialchars($stats["serv_addr"]);
     	}
     ?>
     </td>

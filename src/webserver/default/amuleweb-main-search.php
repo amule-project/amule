@@ -81,12 +81,11 @@ function formCommandSubmit(command)
 // (line 234-236 of this file). Anything else is dropped to empty,
 // which falls through to the "no sort change" branch below. This
 // avoids reflecting an attacker-controlled string into the rendered
-// HTML (#869). Plain string-equality chain is the only matching
-// primitive amuleweb's bundled PHP interpreter supports -- the
-// classic `in_array()` / `htmlspecialchars()` builtins aren't
-// registered (see src/webserver/src/php_core_lib.cpp), and array
-// short syntax `[...]` doesn't parse either. The three whitelisted
-// values are static alphanumeric column keys; no escaping needed.
+// HTML (#869). A whitelist is stricter than escaping here: only the
+// three known column keys are ever echoed, so the reflected value is
+// guaranteed safe regardless of context. The plain string-equality
+// chain is the only matching primitive the bundled interpreter offers
+// (no `in_array()`, and `[...]` short array syntax doesn't parse).
 $sort_raw = isset($HTTP_GET_VARS["sort"]) ? $HTTP_GET_VARS["sort"] : "";
 if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
     echo($sort_raw);
@@ -231,7 +230,7 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
 
 			echo "<td class='texte'>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
 
-			echo "<td class='texte texte-full-name texte-full-name-search'>", $file->name, "</td>";
+			echo "<td class='texte texte-full-name texte-full-name-search'>", htmlspecialchars($file->name), "</td>";
 			
 			echo "<td class='texte al-center'>", CastToXBytes($file->size), "</td>";
 
@@ -248,7 +247,7 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
           <?php
                 	$cats = amule_get_categories();
                 	foreach($cats as $c) {
-                		echo "<option>", $c, "</option>";
+                		echo "<option>", htmlspecialchars($c), "</option>";
                 	}
                 ?>
         </select></td>

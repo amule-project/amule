@@ -62,14 +62,17 @@ var initvals = new Object;
 	}
 	$opts = amule_get_options();
 	//var_dump($opts);
-	echo 'initvals["nick"] = "', $opts["nick"], '";';
+	// These values are emitted into double-quoted JS string literals inside
+	// the <script> block, so they are escaped with addslashes (JS-string
+	// context), not htmlspecialchars (which would show literal entities).
+	echo 'initvals["nick"] = "', addslashes($opts["nick"]), '";';
 	$opt_groups = array("connection", "files", "webserver");
 	//var_dump($opt_groups);
 	foreach ($opt_groups as $group) {
 		$curr_opts = $opts[$group];
 		//var_dump($curr_opts);
 		foreach ($curr_opts as $opt_name => $opt_val) {
-			echo 'initvals["', $opt_name, '"] = "', $opt_val, '";';
+			echo 'initvals["', addslashes($opt_name), '"] = "', addslashes($opt_val), '";';
 		}
 	}
 ?>

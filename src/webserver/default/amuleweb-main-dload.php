@@ -88,7 +88,7 @@ function formCommandSubmit(command)
         	echo '<select name="category" id="category">';
 			$cats = amule_get_categories();
 			foreach($cats as $c) {
-				echo (($c == $_SESSION["filter_cat"]) ? '<option selected>' : '<option>'), $c, '</option>';
+				echo (($c == $_SESSION["filter_cat"]) ? '<option selected>' : '<option>'), htmlspecialchars($c), '</option>';
 			}
 			echo '</select>';
         ?>
@@ -278,7 +278,7 @@ function formCommandSubmit(command)
 	
 				echo "<td class='texte h22'>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
 	
-				echo "<td class='texte texte-full-name h22'>", $file->name, "</td>";
+				echo "<td class='texte texte-full-name h22'>", htmlspecialchars($file->name), "</td>";
 				
 				echo "<td class='texte h22 al-center'>", CastToXBytes($file->size, $countSize), "</td>";
 
@@ -380,9 +380,9 @@ function formCommandSubmit(command)
 	
 				echo "<td class='texte h22 al-center'>", "</td>";
 				
-				echo "<td class='texte texte-full-name texte-full-name-upload h22'>", $file->name, "</td>";
+				echo "<td class='texte texte-full-name texte-full-name-upload h22'>", htmlspecialchars($file->name), "</td>";
 
-				echo "<td class='texte h22 al-center'>", $file->user_name, "</td>";
+				echo "<td class='texte h22 al-center'>", htmlspecialchars($file->user_name), "</td>";
 	
 				echo "<td class='texte h22 al-center'>", CastToXBytes($file->xfer_up, $countUploadDimension), "</td>";
 				echo "<td class='texte h22 al-center'>", CastToXBytes($file->xfer_down, $countDownloadDimension), "</td>";
