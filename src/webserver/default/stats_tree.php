@@ -13,7 +13,6 @@
 <style type="text/css">
 .trigger{
 	cursor: pointer;
-	cursor: hand;
 	font-family: Tahoma;
 	font-size: small;
 }
@@ -23,7 +22,6 @@
 	font-family: Tahoma;
 	font-size: small;
 }
-<!--
 body {
 	margin-left: 0px;
 	margin-top: 0px;
@@ -31,7 +29,6 @@ body {
 	margin-bottom: 0px;
 	background-color: #ffffff;
 }
--->
 </style>
 </head>
 <script language="JavaScript" type="text/JavaScript">

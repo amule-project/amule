@@ -10,7 +10,6 @@
 
 ?>
 <style type="text/css">
-<!--
 body {
 	margin-left: 0px;
 	margin-top: 0px;
@@ -18,10 +17,9 @@ body {
 	margin-bottom: 0px;
 	background-color: #FFFFFF;
 	font-size: small;
-	font-family: Fixed;
+	font-family: monospace;
 	color: #000000;
 }
--->
 </style>
 </head>
 <body>

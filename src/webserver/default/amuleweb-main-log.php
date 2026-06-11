@@ -41,8 +41,7 @@
             <td>
 
             <table class="w100p">
-                <!--DWLayoutTable-->
-                <tr class="va-top"> 
+                <tr class="va-top">
                   <td>
 		<h1 style="display:inline;">aMule log</h1>
 		<a href="log.php?rstlog=1" target="logframe" onclick="return confirm('Do you really want to reset aMule log?')">(Reset log)</a><br>

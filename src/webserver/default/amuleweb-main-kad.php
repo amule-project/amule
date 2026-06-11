@@ -100,8 +100,7 @@ function formCommandSubmit(command)
           <tr> 
             <td>&nbsp;</td>
             <td><table class="w100p">
-                <!--DWLayoutTable-->
-                <tr class="va-top"> 
+                <tr class="va-top">
                   <td class="h200"><img src="amule_stats_kad.png" width="500" height="200" alt="" title="" /></td>
                   <td class="va-top"> <table class="kadnewnode">
                       <tr>
