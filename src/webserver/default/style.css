@@ -7,7 +7,6 @@ caption {
 th {
 	font-family: Helvetica;
 	font-size: 14px;
-	font-height: 22px;
 	font-weight: bold;
 	color: #003161;
 }
@@ -24,7 +23,7 @@ a:visited {
 	text-decoration: none;
 }
 a:hover {
-	color: #FFFFFF;
+	color: #c0c0c0;
 	text-decoration: underline;
 }
 td {
@@ -32,15 +31,25 @@ td {
 	font-size: 12px;
 	font-weight: normal;
 }
-label {
-	font-family: Helvetica;
-	font-size: 14px;
-	font-weight: bold;
-}
 .texte {
 	font-family: Helvetica;
 	font-size: 12px;
 	font-weight: normal;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	word-wrap: break-word;
+}
+.texte-full-name {
+	max-width: 0;
+	width: 45%;
+}
+.texte-full-name-upload {
+	width: 55%;
+}
+.texte-full-name-search {
+	width: 75%;
 }
 .texteinv {
 	font-family: Helvetica;
@@ -67,8 +76,8 @@ select, option {
 }
 textarea {
 	border: 1px solid #003161;
-	background-color: white;
+	background-color: #90B6DB;
 	font-family: "trebuchet ms", sans-serif;
 	font-size: 12px;
-	color: #003161;
+	color: white;
 }

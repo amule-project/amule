@@ -30,87 +30,7 @@ function MM_swapImage() { //v3.0
 }
 //-->
 </script>
-<link href="style.css" rel="stylesheet" type="text/css"><style type="text/css">
-<!--
-caption {
-	font-family: Helvetica;
-	font-size: 18px;
-	font-weight: bold;
-	color: #003161;
-}
-th {
-	font-family: Helvetica;
-	font-size: 14px;
-	font-height: 22px;
-	font-weight: bold;
-	color: #003161;
-}
-a:link {
-	color: #003161;
-	text-decoration: none;
-}
-a:active {
-	color: #003161;
-	text-decoration: none;
-}
-a:visited {
-	color: #003161;
-	text-decoration: none;
-}
-a:hover {
-	color: #c0c0c0;
-	text-decoration: underline;
-}
-td {
-	font-family: Helvetica;
-	font-size: 12px;
-	font-weight: normal;
-}
-label {
-	font-family: Helvetica;
-	font-size: 14px;
-	font-weight: bold;
-}
-.texte {
-	font-family: Helvetica;
-	font-size: 12px;
-	font-weight: normal;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	word-break: break-all;
-	word-wrap: break-word;
-}
-.texte-full-name{
-	max-width: 0;
-	width: 75%;
-}
-label {
-font-family:"trebuchet ms",sans-serif;
-font-size: 12px;
-font-weight:bold
-}
-input {
-border:1px solid #003161;
-background-color:  white;
-font-family:"trebuchet ms",sans-serif;
-font-size: 12px;
-color: #003161;
-}
-select, option {
-background-color:  white;
-font-size: 12px;
-color: #003161;
-}
-textarea {
-border:1px solid #003161;
-background-color: #90B6DB;
-font-family:"trebuchet ms",sans-serif;
-font-size: 12px;
-color: white;
-}
--->
-</style>
+<link href="style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/JavaScript">
 function formCommandSubmit(command)
 {
@@ -337,7 +257,7 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
 
 			echo "<td class='texte'>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
 
-			echo "<td class='texte texte-full-name'>", $file->name, "</td>";
+			echo "<td class='texte texte-full-name texte-full-name-search'>", $file->name, "</td>";
 			
 			echo "<td class='texte' align='center'>", CastToXBytes($file->size), "</td>";
 
