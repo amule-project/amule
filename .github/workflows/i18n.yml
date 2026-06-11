@@ -71,49 +71,56 @@ jobs:
             exit 1
           fi
 
-  manpages-sync:
-    name: Rendered manpages in sync with manpages-*.po
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Installing tools
-        # ubuntu-latest (noble, 24.04) ships po4a 0.69, but the rendered
-        # docs/man/*.1.in on master were produced with po4a >= 0.74
-        # whose paragraph wrapping for the .man module differs. Pin to
-        # the 0.74-1 .deb -- Ubuntu's pool only goes up to 0.69-1, so
-        # pull directly from Debian trixie (po4a is arch-all / pure
-        # Perl, so the package installs cleanly on noble once its
-        # newer Perl-module deps are pulled via apt).
-        run: |
-          sudo apt-get update -q
-          sudo apt-get install -y --no-install-recommends \
-            gettext libdata-section-perl libpod-parser-perl \
-            libsgmls-perl libsyntax-keyword-try-perl \
-            libtext-wrapi18n-perl libunicode-linebreak-perl \
-            libxs-parse-keyword-perl libyaml-tiny-perl opensp
-          wget -q http://deb.debian.org/debian/pool/main/p/po4a/po4a_0.74-1_all.deb
-          sudo dpkg -i po4a_0.74-1_all.deb || sudo apt-get install -fy
-          po4a --version
-
-      - name: Regenerate rendered manpages
-        working-directory: docs/man
-        # po4a is mtime-incremental: if the rendered .1.in files are
-        # newer than the .po sources (always the case on a fresh
-        # checkout, because git materialises every file at the same
-        # moment), it skips regen entirely and the diff check below
-        # is a no-op. Touching the .po inputs forces a full pass.
-        run: |
-          touch po/manpages-*.po
-          po4a po4a.config
-
-      - name: Verify no rendered drift
-        run: |
-          if ! git diff --quiet -- 'docs/man/*.1.in' 'src/utils/**/*.1.in'; then
-            echo "::error::Rendered manpages out of sync with docs/man/po/manpages-*.po."
-            echo "Run: cd docs/man && touch po/manpages-*.po && po4a po4a.config"
-            echo "then commit the result."
-            git --no-pager diff --stat -- 'docs/man/*.1.in' 'src/utils/**/*.1.in'
-            exit 1
-          fi
+  # Disabled: Weblate PRs update docs/man/po/manpages-*.po but cannot run
+  # po4a, so the rendered *.{lang}.1.in tracked in git always drift and this
+  # check turned every Weblate translation PR red (e.g. PR #66). Until the
+  # rendered manpages are removed from the repository and generated at build
+  # time with CMake + po4a, the tracked renders are deliberately allowed to
+  # lag behind the .po files. Re-enable by uncommenting once that lands.
+  #
+  # manpages-sync:
+  #   name: Rendered manpages in sync with manpages-*.po
+  #   runs-on: ubuntu-latest
+  #
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #
+  #     - name: Installing tools
+  #       # ubuntu-latest (noble, 24.04) ships po4a 0.69, but the rendered
+  #       # docs/man/*.1.in on master were produced with po4a >= 0.74
+  #       # whose paragraph wrapping for the .man module differs. Pin to
+  #       # the 0.74-1 .deb -- Ubuntu's pool only goes up to 0.69-1, so
+  #       # pull directly from Debian trixie (po4a is arch-all / pure
+  #       # Perl, so the package installs cleanly on noble once its
+  #       # newer Perl-module deps are pulled via apt).
+  #       run: |
+  #         sudo apt-get update -q
+  #         sudo apt-get install -y --no-install-recommends \
+  #           gettext libdata-section-perl libpod-parser-perl \
+  #           libsgmls-perl libsyntax-keyword-try-perl \
+  #           libtext-wrapi18n-perl libunicode-linebreak-perl \
+  #           libxs-parse-keyword-perl libyaml-tiny-perl opensp
+  #         wget -q http://deb.debian.org/debian/pool/main/p/po4a/po4a_0.74-1_all.deb
+  #         sudo dpkg -i po4a_0.74-1_all.deb || sudo apt-get install -fy
+  #         po4a --version
+  #
+  #     - name: Regenerate rendered manpages
+  #       working-directory: docs/man
+  #       # po4a is mtime-incremental: if the rendered .1.in files are
+  #       # newer than the .po sources (always the case on a fresh
+  #       # checkout, because git materialises every file at the same
+  #       # moment), it skips regen entirely and the diff check below
+  #       # is a no-op. Touching the .po inputs forces a full pass.
+  #       run: |
+  #         touch po/manpages-*.po
+  #         po4a po4a.config
+  #
+  #     - name: Verify no rendered drift
+  #       run: |
+  #         if ! git diff --quiet -- 'docs/man/*.1.in' 'src/utils/**/*.1.in'; then
+  #           echo "::error::Rendered manpages out of sync with docs/man/po/manpages-*.po."
+  #           echo "Run: cd docs/man && touch po/manpages-*.po && po4a po4a.config"
+  #           echo "then commit the result."
+  #           git --no-pager diff --stat -- 'docs/man/*.1.in' 'src/utils/**/*.1.in'
+  #           exit 1
+  #         fi
