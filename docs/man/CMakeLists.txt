@@ -108,9 +108,14 @@ if (TRANSLATED_MANPAGES)
 			"${CMAKE_CURRENT_SOURCE_DIR}/po/manpages.pot"
 		)
 
+		# --no-update: render translated manpages from the existing .po
+		# files but do NOT regenerate manpages.pot or msgmerge into
+		# manpages-*.po. Keeping these source-tree files unmodified is
+		# what scripts/update-manpages-po.sh is for; a plain `cmake
+		# --build` should never dirty the working tree.
 		add_custom_command (
 			OUTPUT ${PO4A_RAW_OUTPUTS}
-			COMMAND ${PO4A_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/po4a.config"
+			COMMAND ${PO4A_EXECUTABLE} --no-update "${CMAKE_CURRENT_BINARY_DIR}/po4a.config"
 			DEPENDS
 				${PO4A_PO_INPUTS}
 				"${CMAKE_CURRENT_BINARY_DIR}/po4a.config"
