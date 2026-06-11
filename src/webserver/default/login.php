@@ -11,18 +11,59 @@ function login_init()
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="style.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+/* This page is shown to unauthenticated clients, and the webserver only
+   serves style.css to a logged-in session (anything else gets the login
+   page HTML instead) -- so every rule this page needs must live inline
+   here. The class names match style.css on purpose. */
+body.main {
+	margin: 0;
+	background-image: url(images/fond.gif);
+}
+img {
+	border: 0;
+}
+.al-center {
+	text-align: center;
+}
+.va-middle {
+	vertical-align: middle;
+}
+.va-top {
+	vertical-align: top;
+}
+.center-table {
+	margin-left: auto;
+	margin-right: auto;
+}
+.bg-white {
+	background-color: #FFFFFF;
+}
+.bg-black {
+	background-color: #000000;
+}
+.h180 {
+	height: 180px;
+}
+th.login-banner {
+	height: 180px;
+	text-align: right;
+	vertical-align: middle;
+	background-image: url(images/loginfond_haut.png);
+}
+</style>
 </head>
 
-<body  onload="login_init();" background="images/fond.gif" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<table width="100%" height="180" border="0" cellpadding="0" cellspacing="0" valign="middle">
+<body class="main" onload="login_init();">
+<table width="100%" height="180" cellpadding="0" cellspacing="0">
   <tr>
-    <td align="center" valign="middle"> 
-      <table width="70%" height="90%" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#000000">
-        <tr> 
-          <td><table width="100%" height="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
-              <tr valign="top"> 
-               <th width="366" height="180"><img src="images/loginlogo.jpg" width="366" height="180" border="0"></th>
-                <th width="100% "height="180" align="right" valign="middle" background="images/loginfond_haut.png"> 
+    <td class="al-center va-middle">
+      <table width="70%" height="90%" class="center-table bg-black" cellpadding="0" cellspacing="1">
+        <tr>
+          <td><table width="100%" height="100%" class="bg-white" cellpadding="0" cellspacing="0">
+              <tr class="va-top">
+               <th width="366" class="h180"><img src="images/loginlogo.jpg" width="366" height="180"></th>
+                <th width="100%" class="login-banner">
                   <form action="" method="post" name="login">
                     Enter password : 
                     <input name="pass" size="20" value="" type="password">

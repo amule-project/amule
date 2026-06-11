@@ -66,11 +66,11 @@ function formCommandSubmit(command)
 }
 
 </script>
-<body background="images/fond.gif" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr valign="top"> 
-    <td width="143" height="64"><img src="images/logo.png" width="143" height="64"></td>
-    <td width="100%" height="64" align="right" background="images/fond_haut.png"> <table border="0" cellspacing="0" cellpadding="0">
+<body class="main">
+<table width="100%" height="100%" cellpadding="0" cellspacing="0">
+  <tr class="va-top"> 
+    <td width="143" class="logo-cell"><img src="images/logo.png" width="143" height="64"></td>
+    <td width="100%" class="navbar-cell"> <table class="navbar-table" cellspacing="0" cellpadding="0">
         <tr> 
           <td><a class="navbutton nav-transfer" href="amuleweb-main-dload.php" title="Transfers"></a></td>
           <td><a class="navbutton nav-shared" href="amuleweb-main-shared.php" title="Shared files"></a></td>
@@ -80,35 +80,35 @@ function formCommandSubmit(command)
           <td><a class="navbutton nav-stats" href="amuleweb-main-stats.php" title="Statistics"></a></td>
           <td><img src="images/col.png"></td>
           <td width="10"></td>
-          <td width="190" align="right" class="texteinv"><a href="login.php">exit</a><br> 
+          <td width="190" class="texteinv al-right"><a href="login.php">exit</a><br> 
             <a href="amuleweb-main-log.php">log &bull;</a> <a href="amuleweb-main-prefs.php">configuration</a></td>
           <td width="10"></td>
         </tr>
       </table></td>
   </tr>
-  <tr align="center" valign="top"> 
+  <tr class="al-center va-top"> 
     <td colspan="2"><form name="mainform" action="amuleweb-main-kad.php" method="post">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <table width="100%" cellspacing="0" cellpadding="0">
           <caption>
           KADEMLIA 
           </caption>
           <tr> 
             <td width="24"><img src="images/tab_top_left.png" width="24" height="24"></td>
-            <td background="images/tab_top.png">&nbsp;</td>
+            <td class="tab-top">&nbsp;</td>
             <td width="24"><img src="images/tab_top_right.png" width="24" height="24"></td>
           </tr>
           <tr> 
-            <td width="24" background="images/tab_left.png">&nbsp;</td>
-            <td bgcolor="#FFFFFF"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+            <td width="24" class="tab-left">&nbsp;</td>
+            <td class="bg-white"><table width="100%" cellpadding="0" cellspacing="0">
                 <!--DWLayoutTable-->
-                <tr valign="top"> 
-                  <td height="200"><img src="amule_stats_kad.png" width="500" height="200" border="0" alt="" title="" /></td>
-                  <td valign="top"> <table  border="0" align="center" cellpadding="0" cellspacing="6" class="kadnewnode">
+                <tr class="va-top"> 
+                  <td class="h200"><img src="amule_stats_kad.png" width="500" height="200" alt="" title="" /></td>
+                  <td class="va-top"> <table class="kadnewnode center-table" cellpadding="0" cellspacing="6">
                       <tr>
                         <th colspan="2">Network</th>
                       </tr>
                       <tr>
-                        <td colspan="2" align="center">
+                        <td colspan="2" class="al-center">
                           <button type="submit" name="kad_action" value="connect_known">Connect from known peers</button>
                           &nbsp;
                           <button type="submit" name="kad_action" value="disconnect">Disconnect</button>
@@ -118,42 +118,42 @@ function formCommandSubmit(command)
                         <th colspan="2">Bootstrap from node</th>
                       </tr>
                       <tr>
-                        <td align="right">IP :</td><td align="left"><input name="ip3" type="text" id="ip32" size="3" maxlength="3">
+                        <td class="al-right">IP :</td><td class="al-left"><input name="ip3" type="text" id="ip32" size="3" maxlength="3">
                           &nbsp; <input name="ip2" type="text" id="ip23" size="3" maxlength="3">
                           &nbsp; <input name="ip1" type="text" id="ip13" size="3" maxlength="3">
                           &nbsp; <input name="ip0" type="text" id="ip03" size="3" maxlength="3"></td>
                       </tr>
                       <tr>
-                        <td align="right">Port :</td><td align="left"><input name="port" type="text" id="port3" size="4" maxlength="5">
+                        <td class="al-right">Port :</td><td class="al-left"><input name="port" type="text" id="port3" size="4" maxlength="5">
                           &nbsp; <button type="submit" name="kad_action" value="connect_ip">Connect</button></td>
                       </tr>
                       <tr>
                         <th colspan="2">Update bootstrap from URL</th>
                       </tr>
                       <tr>
-                        <td align="right">URL :</td><td align="left"><input name="nodes_url" type="text" id="nodes_url" size="32">
+                        <td class="al-right">URL :</td><td class="al-left"><input name="nodes_url" type="text" id="nodes_url" size="32">
                           &nbsp; <button type="submit" name="kad_action" value="update_url">Update</button></td>
                       </tr>
                     </table></td>
                 </tr>
-                <tr valign="top"> 
-                  <td height="20" width="500" align="center">Number of nodes</td>
+                <tr class="va-top"> 
+                  <td class="h20 al-center" width="500">Number of nodes</td>
                   <td></td>
                 </tr>
               </table></td>
-            <td width="24" background="images/tab_right.png">&nbsp;</td>
+            <td width="24" class="tab-right">&nbsp;</td>
           </tr>
           <tr> 
             <td width="24"><img src="images/tab_bottom_left.png" width="24" height="24"></td>
-            <td background="images/tab_bottom.png">&nbsp;</td>
+            <td class="tab-bottom">&nbsp;</td>
             <td width="24"><img src="images/tab_bottom_right.png" width="24" height="24"></td>
           </tr>
         </table>
         </form></td>
   </tr>
-  <tr valign="bottom"> 
-    <td height="25" colspan="2"> <table width="100%" height="40" border="0" cellpadding="0" cellspacing="0">
-        <tr align="center" valign="middle"> 
+  <tr class="va-bottom"> 
+    <td class="h25" colspan="2"> <table width="100%" height="40" cellpadding="0" cellspacing="0">
+        <tr class="al-center va-middle"> 
           <td width="50%"> <iframe name="stats" src="footer.php" height="35" width="100%" scrolling="no" frameborder="0">edklink</iframe> 
           </td>
           <td width="50%"> <iframe name="stats" src="stats.php" height="35" width="100%" scrolling="no" frameborder="0">connection</iframe> 

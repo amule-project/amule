@@ -34,11 +34,11 @@ function formCommandSubmit(command)
 
 </script>
 </head>
-<body background="images/fond.gif" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr valign="top"> 
-    <td width="143" height="64"><img src="images/logo.png" width="143" height="64"></td>
-    <td width="100%" height="64" align="right" background="images/fond_haut.png"> <table border="0" cellspacing="0" cellpadding="0">
+<body class="main">
+<table width="100%" height="100%" cellpadding="0" cellspacing="0">
+  <tr class="va-top"> 
+    <td width="143" class="logo-cell"><img src="images/logo.png" width="143" height="64"></td>
+    <td width="100%" class="navbar-cell"> <table class="navbar-table" cellspacing="0" cellpadding="0">
         <tr> 
           <td><a class="navbutton nav-transfer" href="amuleweb-main-dload.php" title="Transfers"></a></td>
           <td><a class="navbutton nav-shared" href="amuleweb-main-shared.php" title="Shared files"></a></td>
@@ -48,26 +48,26 @@ function formCommandSubmit(command)
           <td><a class="navbutton nav-stats" href="amuleweb-main-stats.php" title="Statistics"></a></td>
           <td><img src="images/col.png"></td>
           <td width="10"></td>
-          <td width="190" align="right" class="texteinv"><a href="login.php">exit</a><br>
+          <td width="190" class="texteinv al-right"><a href="login.php">exit</a><br>
             <a href="amuleweb-main-log.php">log &bull;</a> <a href="amuleweb-main-prefs.php">configuration</a>
             </td>
           <td width="10"></td>
         </tr>
       </table></td>
   </tr>
-  <tr align="center" valign="top"> 
+  <tr class="al-center va-top"> 
     <td colspan="2"><form action="amuleweb-main-dload.php" method="post" name="mainform">
-        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
-      <td align="center"><table border="0" cellpadding="0" cellspacing="0">
+      <td><table class="center-table" cellpadding="0" cellspacing="0">
           <tr> 
             <td><input type="hidden" name="command"></td>
-            <td><a href="javascript:formCommandSubmit('pause');"><img name="pause" src="images/pause.png" alt="pause" border="0"></a></td>
-            <td><a href="javascript:formCommandSubmit('resume');"><img name="resume" src="images/play.png" alt="resume" border="0"></a></td>
-        		<td><a href="javascript:formCommandSubmit('prioup');"><img name="prioup" src="images/up.png" alt="prioup" border="0"></a></td>
-        		<td><a href="javascript:formCommandSubmit('priodown');"><img name="priodown" src="images/down.png" alt="priodown" border="0"></a></td>
-        		<td><a href="javascript:formCommandSubmit('cancel');"><img name="cancel" src="images/close.png" alt="cancel" border="0"></a></td>
-      <td><table border="0" cellpadding="0" cellspacing="0">
+            <td><a href="javascript:formCommandSubmit('pause');"><img name="pause" src="images/pause.png" alt="pause"></a></td>
+            <td><a href="javascript:formCommandSubmit('resume');"><img name="resume" src="images/play.png" alt="resume"></a></td>
+        		<td><a href="javascript:formCommandSubmit('prioup');"><img name="prioup" src="images/up.png" alt="prioup"></a></td>
+        		<td><a href="javascript:formCommandSubmit('priodown');"><img name="priodown" src="images/down.png" alt="priodown"></a></td>
+        		<td><a href="javascript:formCommandSubmit('cancel');"><img name="cancel" src="images/close.png" alt="cancel"></a></td>
+      <td><table cellpadding="0" cellspacing="0">
                 <tr> 
                   <td> 
                     <?php
@@ -93,7 +93,7 @@ function formCommandSubmit(command)
 			echo '</select>';
         ?>
                   </td>
-                  			<td><a href="javascript:formCommandSubmit('filter');"><img src="images/filter.png" border="0" alt="Apply" name="resume"></a></td>
+                  			<td><a href="javascript:formCommandSubmit('filter');"><img src="images/filter.png" alt="Apply" name="resume"></a></td>
                   <td>&nbsp;</td>
                   <td>&nbsp;</td>
                   <td> 
@@ -109,20 +109,20 @@ function formCommandSubmit(command)
         </table></td>
     </tr>
     <tr> 
-      <td height="10" align="center"> </td>
+      <td class="h10"> </td>
     </tr>
     <tr> 
-      <td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0"> <caption>
+      <td colspan="2"><table width="100%" cellspacing="0" cellpadding="0"> <caption>
           DOWNLOAD 
           </caption>
   <tr>
     <td width="24"><img src="images/tab_top_left.png" width="24" height="24"></td>
-    <td background="images/tab_top.png">&nbsp;</td>
+    <td class="tab-top">&nbsp;</td>
     <td width="24"><img src="images/tab_top_right.png" width="24" height="24"></td>
   </tr>
   <tr>
-    <td width="24" background="images/tab_left.png">&nbsp;</td>
-    <td bgcolor="#FFFFFF"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+    <td width="24" class="tab-left">&nbsp;</td>
+    <td class="bg-white"><table width="100%" cellpadding="0" cellspacing="0">
                      
           <tr> 
                   <th>&nbsp;</th>
@@ -134,7 +134,7 @@ function formCommandSubmit(command)
                   <th><a href="amuleweb-main-dload.php?sort=srccount">Sources</a></th>
                   <th><a href="amuleweb-main-dload.php?sort=status">Status</a></th>
                   <th><a href="amuleweb-main-dload.php?sort=prio">Priority</a></th>
-          </tr><tr><td colspan="9" height="1" bgcolor="#000000"></td></tr>
+          </tr><tr><td colspan="9" class="sep-dark"></td></tr>
           <?php
 		function CastToXBytes($size, &$count) {
 			$count += $size;
@@ -263,20 +263,20 @@ function formCommandSubmit(command)
 			if ( $filter_status_result and $filter_cat_result) {
 				print "<tr>";
 	
-				echo "<td class='texte' height='22'>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
+				echo "<td class='texte h22'>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
 	
-				echo "<td class='texte texte-full-name' height='22'>", $file->name, "</td>";
+				echo "<td class='texte texte-full-name h22'>", $file->name, "</td>";
 				
-				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->size, $countSize), "</td>";
+				echo "<td class='texte h22 al-center'>", CastToXBytes($file->size, $countSize), "</td>";
 
-				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->size_done, $countCompleted), "&nbsp;(",
+				echo "<td class='texte h22 al-center'>", CastToXBytes($file->size_done, $countCompleted), "&nbsp;(",
 					($file->size > 0) ? (((float)$file->size_done*100)/((float)$file->size)) : 0, "%)</td>";
 
-				echo "<td class='texte' height='22' align='center'>", ($file->speed > 0) ? (CastToXBytes($file->speed, $countSpeed) . "/s") : "-", "</td>";
+				echo "<td class='texte h22 al-center'>", ($file->speed > 0) ? (CastToXBytes($file->speed, $countSpeed) . "/s") : "-", "</td>";
 
-				echo "<td class='texte' height='22' align='center' align='center'>", $file->progress, "</td>";
+				echo "<td class='texte h22 al-center'>", $file->progress, "</td>";
 	
-				echo "<td class='texte' height='22' align='center'>";
+				echo "<td class='texte h22 al-center'>";
 				if ( $file->src_count_not_curr != 0 ) {
 					echo $file->src_count - $file->src_count_not_curr, " / ";
 				}
@@ -286,21 +286,21 @@ function formCommandSubmit(command)
 				}
 				echo "</td>";
 	
-				echo "<td class='texte' height='22' align='center'>", StatusString($file), "</td>";
+				echo "<td class='texte h22 al-center'>", StatusString($file), "</td>";
 				
-				echo "<td class='texte' height='22' align='center'>", PrioString($file), "</td>";
+				echo "<td class='texte h22 al-center'>", PrioString($file), "</td>";
 				
-				print "</tr><tr><td colspan='9' height='1' bgcolor='#c0c0c0'></td></tr>";
+				print "</tr><tr><td colspan='9' class='sep-light'></td></tr>";
 			}
 		}
 		if (count($downloads)>0) {
 			echo "<tr>";
 			echo "<td style='padding-bottom:0;'></td>";
-			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;text-align: right;padding-right: 20px;' height='22' align='center'>Total</td>";
-			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countSize, $fakevar), "</td>";
-			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countCompleted, $fakevar), "&nbsp;(",
+			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;text-align: right;padding-right: 20px;' class='h22 al-center'>Total</td>";
+			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' class='h22 al-center'>", CastToXBytes($countSize, $fakevar), "</td>";
+			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' class='h22 al-center'>", CastToXBytes($countCompleted, $fakevar), "&nbsp;(",
 				($countSize > 0) ? (((float)$countCompleted*100)/((float)$countSize)) : 0, "%)</td>";
-			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", ($countSpeed > 0) ? (CastToXBytes($countSpeed, $fakevar) . "/s" ) : "", "</td>";
+			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' class='h22 al-center'>", ($countSpeed > 0) ? (CastToXBytes($countSpeed, $fakevar) . "/s" ) : "", "</td>";
 			echo "<td style='padding-bottom:0;'></td>";
 			echo "<td style='padding-bottom:0;'></td>";
 			echo "<td style='padding-bottom:0;'></td>";
@@ -309,28 +309,28 @@ function formCommandSubmit(command)
 		}
 	  ?>
         </table></td>
-    <td width="24" background="images/tab_right.png">&nbsp;</td>
+    <td width="24" class="tab-right">&nbsp;</td>
   </tr>
   <tr>
     <td width="24"><img src="images/tab_bottom_left.png" width="24" height="24"></td>
-    <td background="images/tab_bottom.png">&nbsp;</td>
+    <td class="tab-bottom">&nbsp;</td>
     <td width="24"><img src="images/tab_bottom_right.png" width="24" height="24"></td>
   </tr>
 </table></td>
     </tr>
   </table>
 </form>
-      <table width="100%" border="0" cellspacing="0" cellpadding="0"><caption>
+      <table width="100%" cellspacing="0" cellpadding="0"><caption>
         UPLOAD 
         </caption>
         <tr> 
           <td width="24"><img src="images/tab_top_left.png" width="24" height="24"></td>
-          <td background="images/tab_top.png">&nbsp;</td>
+          <td class="tab-top">&nbsp;</td>
           <td width="24"><img src="images/tab_top_right.png" width="24" height="24"></td>
         </tr>
         <tr> 
-          <td width="24" background="images/tab_left.png">&nbsp;</td>
-          <td bgcolor="#FFFFFF"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="doad-table">
+          <td width="24" class="tab-left">&nbsp;</td>
+          <td class="bg-white"><table width="100%" cellpadding="0" cellspacing="0" class="doad-table">
               
         <tr> 
                 <td>&nbsp;</td>
@@ -342,7 +342,7 @@ function formCommandSubmit(command)
                 <th>&nbsp;</th>
                 <th>Speed</th>
                 <td>&nbsp;</td>
-        </tr><tr><td colspan="9" height="1" bgcolor="#000000"></td></tr>
+        </tr><tr><td colspan="9" class="sep-dark"></td></tr>
         <?php
 			function CastToXBytes($size, &$count) {
 				$count += $size;
@@ -365,47 +365,47 @@ function formCommandSubmit(command)
 			foreach ($uploads as $file) {
 				echo "<tr>";
 	
-				echo "<td class='texte' height='22' align='center'>", "</td>";
+				echo "<td class='texte h22 al-center'>", "</td>";
 				
-				echo "<td class='texte texte-full-name texte-full-name-upload' height='22'>", $file->name, "</td>";
+				echo "<td class='texte texte-full-name texte-full-name-upload h22'>", $file->name, "</td>";
 
-				echo "<td class='texte' height='22' align='center'>", $file->user_name, "</td>";
+				echo "<td class='texte h22 al-center'>", $file->user_name, "</td>";
 	
-				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->xfer_up, $countUploadDimension), "</td>";
-				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->xfer_down, $countDownloadDimension), "</td>";
-				echo "<td class='texte' height='22' align='center'>", "</td>";
-				echo "<td class='texte' height='22' align='center'>", "</td>";
-				echo "<td class='texte' height='22' align='center'>", ($file->xfer_speed > 0) ? (CastToXBytes($file->xfer_speed, $countSpeed) . "/s") : "-", "</td>";
-				echo "<td class='texte' height='22' align='center'>", "</td>";
-				echo "</tr><tr><td colspan='9' height='1' bgcolor='#c0c0c0'></td></tr>";
+				echo "<td class='texte h22 al-center'>", CastToXBytes($file->xfer_up, $countUploadDimension), "</td>";
+				echo "<td class='texte h22 al-center'>", CastToXBytes($file->xfer_down, $countDownloadDimension), "</td>";
+				echo "<td class='texte h22 al-center'>", "</td>";
+				echo "<td class='texte h22 al-center'>", "</td>";
+				echo "<td class='texte h22 al-center'>", ($file->xfer_speed > 0) ? (CastToXBytes($file->xfer_speed, $countSpeed) . "/s") : "-", "</td>";
+				echo "<td class='texte h22 al-center'>", "</td>";
+				echo "</tr><tr><td colspan='9' class='sep-light'></td></tr>";
 			}
 			if (count($uploads)>0) {
 				echo "<tr>";
 				echo "<td style='padding-bottom:0;'></td>";
 				echo "<td style='padding-bottom:0;'></td>";
-				echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;text-align: right;padding-right: 20px;' height='22' align='center'>Total</td>";
-				echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countUploadDimension, $fakevar), "</td>";
-				echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countDownloadDimension, $fakevar), "</td>";
+				echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;text-align: right;padding-right: 20px;' class='h22 al-center'>Total</td>";
+				echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' class='h22 al-center'>", CastToXBytes($countUploadDimension, $fakevar), "</td>";
+				echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' class='h22 al-center'>", CastToXBytes($countDownloadDimension, $fakevar), "</td>";
 				echo "<td style='padding-bottom:0;'></td>";
 				echo "<td style='padding-bottom:0;'></td>";
-				echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countSpeed, $fakevar) . "/s", "</td>";
+				echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' class='h22 al-center'>", CastToXBytes($countSpeed, $fakevar) . "/s", "</td>";
 			}
 		?>
       </table></td>
-          <td width="24" background="images/tab_right.png">&nbsp;</td>
+          <td width="24" class="tab-right">&nbsp;</td>
         </tr>
         <tr> 
           <td width="24"><img src="images/tab_bottom_left.png" width="24" height="24"></td>
-          <td background="images/tab_bottom.png">&nbsp;</td>
+          <td class="tab-bottom">&nbsp;</td>
           <td width="24"><img src="images/tab_bottom_right.png" width="24" height="24"></td>
         </tr>
       </table>
       
     </td>
   </tr>
-  <tr valign="bottom"> 
-    <td height="25" colspan="2"> <table width="100%" height="40" border="0" cellpadding="0" cellspacing="0">
-        <tr align="center" valign="middle"> 
+  <tr class="va-bottom"> 
+    <td class="h25" colspan="2"> <table width="100%" height="40" cellpadding="0" cellspacing="0">
+        <tr class="al-center va-middle"> 
           <td width="50%"> <iframe name="stats" src="footer.php" height="35" width="100%" scrolling="no" frameborder="0">ed2klink</iframe> 
           </td>
           <td width="50%"> <iframe name="stats" src="stats.php" height="35" width="100%" scrolling="no" frameborder="0">connection</iframe> 

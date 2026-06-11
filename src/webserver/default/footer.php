@@ -9,9 +9,9 @@
 
 <body>
 
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+<table width="100%" cellpadding="0" cellspacing="0">
   <tr>
-    <td width="50%" align="center" valign="bottom"> 
+    <td width="50%" class="al-center va-bottom"> 
       <form name="formlink" method="post" action="footer.php">
         <input name="ed2klink" type="text" id="ed2klink" size="50">
         <select name="selectcat" id="selectcat">

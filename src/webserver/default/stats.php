@@ -13,8 +13,8 @@
 <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<table width="100%" height="30" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr valign="top"> 
+<table width="100%" height="30" cellpadding="0" cellspacing="0">
+  <tr class="va-top"> 
     <td width="65%"><strong>Ed2k : </strong> 
       <?php
     	$stats = amule_get_stats();

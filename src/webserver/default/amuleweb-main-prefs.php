@@ -106,11 +106,11 @@ function init_data()
 
 </script>
 </head>
-<body background="images/fond.gif" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="init_data();">
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr valign="top"> 
-    <td width="143" height="64"><img src="images/logo.png" width="143" height="64"></td>
-    <td width="100%" height="64" align="right" background="images/fond_haut.png"> <table border="0" cellspacing="0" cellpadding="0">
+<body class="main" onLoad="init_data();">
+<table width="100%" height="100%" cellpadding="0" cellspacing="0">
+  <tr class="va-top"> 
+    <td width="143" class="logo-cell"><img src="images/logo.png" width="143" height="64"></td>
+    <td width="100%" class="navbar-cell"> <table class="navbar-table" cellspacing="0" cellpadding="0">
         <tr> 
           <td><a class="navbutton nav-transfer" href="amuleweb-main-dload.php" title="Transfers"></a></td>
           <td><a class="navbutton nav-shared" href="amuleweb-main-shared.php" title="Shared files"></a></td>
@@ -120,253 +120,253 @@ function init_data()
           <td><a class="navbutton nav-stats" href="amuleweb-main-stats.php" title="Statistics"></a></td>
           <td><img src="images/col.png"></td>
           <td width="10"></td>
-          <td width="190" align="right" class="texteinv"><a href="login.php">exit</a><br> 
+          <td width="190" class="texteinv al-right"><a href="login.php">exit</a><br> 
             <a href="amuleweb-main-log.php">log &bull;</a> <a href="amuleweb-main-prefs.php">configuration</a></td>
           <td width="10"></td>
         </tr>
       </table></td>
   </tr>
-  <tr align="center" valign="top"> 
+  <tr class="al-center va-top"> 
     <td colspan="2">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <table width="100%" cellspacing="0" cellpadding="0">
           <caption>PREFERENCES</caption>
           <tr> 
             <td width="24"><img src="images/tab_top_left.png" width="24" height="24"></td>
-            <td background="images/tab_top.png">&nbsp;</td>
+            <td class="tab-top">&nbsp;</td>
             <td width="24"><img src="images/tab_top_right.png" width="24" height="24"></td>
           </tr>
           <tr> 
-            <td width="24" background="images/tab_left.png">&nbsp;</td>
+            <td width="24" class="tab-left">&nbsp;</td>
             
-      <td bgcolor="#FFFFFF"><form name="mainform" action="amuleweb-main-prefs.php" method="post">
-              <table border="0" align="center" cellpadding="0" cellspacing="6">
+      <td class="bg-white"><form name="mainform" action="amuleweb-main-prefs.php" method="post">
+              <table class="center-table" cellpadding="0" cellspacing="6">
                
-    <tr align="center" valign="top">
+    <tr class="al-center va-top">
       <td>
-        <table width="350" border="0" align="center" cellpadding="0" cellspacing="0" >
+        <table width="350" class="center-table" cellpadding="0" cellspacing="0">
           <tr>
             <td width="22">&nbsp;</td>
             <th>General</th>
             <td width="63">&nbsp;</td>
           </tr>
           <tr>
-            <td width="22" height="25">&nbsp;</td>
-            <td height="25">Nickname</td>
-            <td width="63" height="25">
+            <td width="22" class="h25">&nbsp;</td>
+            <td class="h25">Nickname</td>
+            <td width="63" class="h25">
 <input name="nick" type="text" id="nick0" size="20"></td>
           </tr>
         </table>
-        <table width="350" border="0" align="center" cellpadding="0" cellspacing="0" >
+        <table width="350" class="center-table" cellpadding="0" cellspacing="0">
           <tr>
             <td width="22">&nbsp;</td>
             <th>Webserver</th>
             <td width="63">&nbsp;</td>
           </tr>
           <tr>
-            <td width="22" height="25">&nbsp;</td>
-            <td height="25">Page refresh interval </td>
-            <td width="63" height="25">
+            <td width="22" class="h25">&nbsp;</td>
+            <td class="h25">Page refresh interval </td>
+            <td width="63" class="h25">
 <input name="autorefresh_time" type="text" id="autorefresh_time7" size="4"></td>
           </tr>
           <tr> 
-            <td width="22" height="25">
+            <td width="22" class="h25">
 <input name="use_gzip" type="checkbox" id="use_gzip5"></td>
-            <td height="25"> Use gzip compression </td>
-            <td width="63" height="25">&nbsp;</td>
+            <td class="h25"> Use gzip compression </td>
+            <td width="63" class="h25">&nbsp;</td>
           </tr>
         </table></td>
       <td width="50%"> 
-        <table width="350" border="0" align="center" cellpadding="0" cellspacing="0" >
+        <table width="350" class="center-table" cellpadding="0" cellspacing="0">
           <tr> 
             <td width="22">&nbsp;</td>
             <th>Line capacity (for statistics only)</th>
             <td width="63">&nbsp;</td>
           </tr>
           <tr> 
-            <td width="22" height="25">&nbsp;</td>
-            <td height="25">Max download rate </td>
-            <td width="63" height="25">
+            <td width="22" class="h25">&nbsp;</td>
+            <td class="h25">Max download rate </td>
+            <td width="63" class="h25">
 <input name="max_line_down_cap" type="text" id="max_line_down_cap6" size="4"></td>
           </tr>
           <tr> 
-            <td width="22" height="25">&nbsp;</td>
-            <td height="25">Max upload rate </td>
-            <td width="63" height="25">
+            <td width="22" class="h25">&nbsp;</td>
+            <td class="h25">Max upload rate </td>
+            <td width="63" class="h25">
 <input name="max_line_up_cap" type="text" id="max_line_up_cap7" size="4"></td>
           </tr>
         </table></td>
     </tr>
-    <tr align="center" valign="top"> 
+    <tr class="al-center va-top"> 
       <td> 
-        <table width="350" border="0" align="center" cellpadding="0" cellspacing="0" >
+        <table width="350" class="center-table" cellpadding="0" cellspacing="0">
           <tr> 
-            <td width="22" height="19">&nbsp;</td>
+            <td width="22" class="h19">&nbsp;</td>
             <th>Bandwidth limits</th>
             <td width="63">&nbsp;</td>
           </tr>
           <tr> 
-            <td width="22" height="25">&nbsp;</td>
-            <td height="25">Max download rate </td>
-            <td width="63" height="25">
+            <td width="22" class="h25">&nbsp;</td>
+            <td class="h25">Max download rate </td>
+            <td width="63" class="h25">
 <input name="max_down_limit" type="text" id="max_down_limit6" size="4"></td>
           </tr>
           <tr> 
-            <td width="22" height="25">&nbsp;</td>
-            <td height="25">Max upload rate </td>
-            <td width="63" height="25">
+            <td width="22" class="h25">&nbsp;</td>
+            <td class="h25">Max upload rate </td>
+            <td width="63" class="h25">
 <input name="max_up_limit" type="text" id="max_up_limit6" size="4"></td>
           </tr>
           <tr> 
-            <td width="22" height="25">&nbsp;</td>
-            <td height="25">Slot allocation </td>
-            <td width="63" height="25">
+            <td width="22" class="h25">&nbsp;</td>
+            <td class="h25">Slot allocation </td>
+            <td width="63" class="h25">
 <input name="slot_alloc" type="text" id="slot_alloc6" size="4"></td>
           </tr>
         </table></td>
       <td width="50%" rowspan="3"> 
-        <table width="350" border="0" align="center" cellpadding="0" cellspacing="0" >
+        <table width="350" class="center-table" cellpadding="0" cellspacing="0">
           <tr> 
             <td width="22">&nbsp;</td>
             <th> File settings </th>
             <td width="63">&nbsp;</td>
           </tr>
           <tr> 
-            <td width="22" height="25">&nbsp;</td>
-            <td height="25">&nbsp; </td>
-            <td width="63" height="25"></td>
+            <td width="22" class="h25">&nbsp;</td>
+            <td class="h25">&nbsp; </td>
+            <td width="63" class="h25"></td>
           </tr>
           <tr> 
-            <td width="22" height="25"> 
+            <td width="22" class="h25"> 
               <input name="check_free_space" type="checkbox" id="check_free_space5"></td>
-            <td height="25"> Check free space =&gt; Minimum free space (Mb) </td>
-            <td width="63" height="25"> 
+            <td class="h25"> Check free space =&gt; Minimum free space (Mb) </td>
+            <td width="63" class="h25"> 
               <input name="min_free_space" type="text" id="min_free_space4" size="4"></td>
           </tr>
           <tr> 
-            <td width="22" height="25"> 
+            <td width="22" class="h25"> 
               <input name="new_files_auto_dl_prio" type="checkbox" id="new_files_auto_dl_prio4"></td>
-            <td height="25"> Added download files have auto priority</td>
-            <td width="63" height="25"></td>
+            <td class="h25"> Added download files have auto priority</td>
+            <td width="63" class="h25"></td>
           </tr>
           <tr> 
-            <td width="22" height="25"> 
+            <td width="22" class="h25"> 
               <input name="new_files_auto_ul_prio" type="checkbox" id="new_files_auto_ul_prio4"></td>
-            <td height="25"> New shared files have auto priority</td>
-            <td width="63" height="25"></td>
+            <td class="h25"> New shared files have auto priority</td>
+            <td width="63" class="h25"></td>
           </tr>
           <tr> 
-            <td width="22" height="25"> 
+            <td width="22" class="h25"> 
               <input name="ich_en" type="checkbox" id="ich_en5"></td>
-            <td height="25"> I.C.H. active</td>
-            <td width="63" height="25"></td>
+            <td class="h25"> I.C.H. active</td>
+            <td width="63" class="h25"></td>
           </tr>
           <tr> 
-            <td width="22" height="25"> 
+            <td width="22" class="h25"> 
               <input name="aich_trust" type="checkbox" id="aich_trust4"></td>
-            <td height="25"> AICH trusts every hash (not recommended)</td>
-            <td width="63" height="25"></td>
+            <td class="h25"> AICH trusts every hash (not recommended)</td>
+            <td width="63" class="h25"></td>
           </tr>
           <tr> 
-            <td width="22" height="25"> 
+            <td width="22" class="h25"> 
               <input name="alloc_full_chunks" type="checkbox" id="alloc_full_chunks4"></td>
-            <td height="25"> Alloc full chunks of .part files</td>
-            <td width="63" height="25"></td>
+            <td class="h25"> Alloc full chunks of .part files</td>
+            <td width="63" class="h25"></td>
           </tr>
           <tr> 
-            <td width="22" height="25"> 
+            <td width="22" class="h25"> 
               <input name="alloc_full" type="checkbox" id="alloc_full4"></td>
-            <td height="25"> Alloc full disk space for .part files</td>
-            <td width="63" height="25"></td>
+            <td class="h25"> Alloc full disk space for .part files</td>
+            <td width="63" class="h25"></td>
           </tr>
           <tr> 
-            <td width="22" height="25"> 
+            <td width="22" class="h25"> 
               <input name="new_files_paused" type="checkbox" id="new_files_paused4"></td>
-            <td height="25"> Add files to download queue in pause mode</td>
-            <td width="63" height="25"></td>
+            <td class="h25"> Add files to download queue in pause mode</td>
+            <td width="63" class="h25"></td>
           </tr>
           <tr> 
-            <td width="22" height="25"> 
+            <td width="22" class="h25"> 
               <input name="extract_metadata" type="checkbox" id="extract_metadata4"></td>
-            <td height="25"> Extract metadata tags </td>
-            <td width="63" height="25"></td>
+            <td class="h25"> Extract metadata tags </td>
+            <td width="63" class="h25"></td>
           </tr>
         </table></td>
     </tr>
-    <tr align="center" valign="top"> 
+    <tr class="al-center va-top"> 
       <td> 
-        <table width="350" border="0" align="center" cellpadding="0" cellspacing="0" >
+        <table width="350" class="center-table" cellpadding="0" cellspacing="0">
           <tr> 
             <td width="22">&nbsp;</td>
             <th>Connection settings</th>
             <td width="63">&nbsp;</td>
           </tr>
           <tr> 
-            <td width="22" height="25">&nbsp;</td>
-            <td height="25">Max total connections (total) </td>
-            <td width="63" height="25">
+            <td width="22" class="h25">&nbsp;</td>
+            <td class="h25">Max total connections (total) </td>
+            <td width="63" class="h25">
 <input name="max_conn_total" type="text" id="max_conn_total8" size="4"></td>
           </tr>
           <tr> 
-            <td width="22" height="25">&nbsp;</td>
-            <td height="25">Max sources per file </td>
-            <td width="63" height="25">
+            <td width="22" class="h25">&nbsp;</td>
+            <td class="h25">Max sources per file </td>
+            <td width="63" class="h25">
 <input name="max_file_src" type="text" id="max_file_src7" size="4"></td>
           </tr>
           <tr> 
-            <td width="22" height="25">
+            <td width="22" class="h25">
 <input name="autoconn_en" type="checkbox" id="autoconn_en6"></td>
-            <td height="25"> Autoconnect at startup </td>
-            <td width="63" height="25">&nbsp;</td>
+            <td class="h25"> Autoconnect at startup </td>
+            <td width="63" class="h25">&nbsp;</td>
           </tr>
           <tr>
-            <td width="22" height="25">
+            <td width="22" class="h25">
 <input name="reconn_en" type="checkbox" id="reconn_en6"></td>
-            <td height="25"> Reconnect when connection lost </td>
-            <td width="63" height="25">&nbsp;</td>
+            <td class="h25"> Reconnect when connection lost </td>
+            <td width="63" class="h25">&nbsp;</td>
           </tr>
           <tr>
-            <td width="22" height="25">
+            <td width="22" class="h25">
 <input name="network_ed2k" type="checkbox" id="network_ed2k6"></td>
-            <td height="25"> Enable ED2K network </td>
-            <td width="63" height="25">&nbsp;</td>
+            <td class="h25"> Enable ED2K network </td>
+            <td width="63" class="h25">&nbsp;</td>
           </tr>
           <tr>
-            <td width="22" height="25">
+            <td width="22" class="h25">
 <input name="network_kad" type="checkbox" id="network_kad6"></td>
-            <td height="25"> Enable Kademlia network </td>
-            <td width="63" height="25">&nbsp;</td>
+            <td class="h25"> Enable Kademlia network </td>
+            <td width="63" class="h25">&nbsp;</td>
           </tr>
         </table></td>
     </tr>
-    <tr align="center" valign="top">
+    <tr class="al-center va-top">
       <td>
-        <table width="350" border="0" align="center" cellpadding="0" cellspacing="0" >
+        <table width="350" class="center-table" cellpadding="0" cellspacing="0">
           <tr>
             <td width="22">&nbsp;</td>
             <th>Network settings</th>
             <td width="63">&nbsp;</td>
           </tr>
           <tr> 
-            <td width="22" height="25">&nbsp;</td>
-            <td height="25">TCP port </td>
-            <td width="63" height="25">
+            <td width="22" class="h25">&nbsp;</td>
+            <td class="h25">TCP port </td>
+            <td width="63" class="h25">
 <input name="tcp_port" type="text" id="tcp_port6" size="4"></td>
           </tr>
           <tr> 
-            <td width="22" height="25">&nbsp;</td>
-            <td height="25">UDP port </td>
-            <td width="63" height="25">
+            <td width="22" class="h25">&nbsp;</td>
+            <td class="h25">UDP port </td>
+            <td width="63" class="h25">
 <input name="udp_port" type="text" id="udp_port6" size="4"></td>
           </tr>
           <tr> 
-            <td width="22" height="25">
+            <td width="22" class="h25">
 <input name="udp_dis" type="checkbox" id="udp_dis5"></td>
-            <td height="25"> Disable UDP connections </td>
-            <td width="63" height="25">&nbsp;</td>
+            <td class="h25"> Disable UDP connections </td>
+            <td width="63" class="h25">&nbsp;</td>
           </tr>
         </table></td>
     </tr>
-    <tr align="center"> 
+    <tr class="al-center"> 
       <td colspan="2"> 
         <?php
 			if ($_SESSION["guest_login"] == 0) {
@@ -379,18 +379,18 @@ function init_data()
     </tr>
   </table>
   </form></td>
-            <td width="24" background="images/tab_right.png">&nbsp;</td>
+            <td width="24" class="tab-right">&nbsp;</td>
           </tr>
           <tr> 
             <td width="24"><img src="images/tab_bottom_left.png" width="24" height="24"></td>
-            <td background="images/tab_bottom.png">&nbsp;</td>
+            <td class="tab-bottom">&nbsp;</td>
             <td width="24"><img src="images/tab_bottom_right.png" width="24" height="24"></td>
           </tr>
         </table></td>
   </tr>
-  <tr valign="bottom"> 
-    <td height="25" colspan="2"> <table width="100%" height="40" border="0" cellpadding="0" cellspacing="0">
-        <tr align="center" valign="middle"> 
+  <tr class="va-bottom"> 
+    <td class="h25" colspan="2"> <table width="100%" height="40" cellpadding="0" cellspacing="0">
+        <tr class="al-center va-middle"> 
           <td width="50%"> <iframe name="stats" src="footer.php" height="35" width="100%" scrolling="no" frameborder="0">edklink</iframe> 
           </td>
           <td width="50%"> <iframe name="stats" src="stats.php" height="35" width="100%" scrolling="no" frameborder="0">connection</iframe> 

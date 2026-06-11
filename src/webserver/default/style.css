@@ -123,3 +123,98 @@ textarea {
 	font-size: 12px;
 	color: white;
 }
+body.main {
+	margin: 0;
+	background-image: url(images/fond.gif);
+}
+img {
+	border: 0;
+}
+.al-left {
+	text-align: left;
+}
+.al-center {
+	text-align: center;
+}
+.al-right {
+	text-align: right;
+}
+.va-top {
+	vertical-align: top;
+}
+.va-middle {
+	vertical-align: middle;
+}
+.va-bottom {
+	vertical-align: bottom;
+}
+.center-table {
+	margin-left: auto;
+	margin-right: auto;
+}
+td.logo-cell {
+	height: 64px;
+}
+td.navbar-cell {
+	height: 64px;
+	background-image: url(images/fond_haut.png);
+}
+table.navbar-table {
+	margin-left: auto;
+}
+td.tab-top {
+	background-image: url(images/tab_top.png);
+}
+td.tab-left {
+	background-image: url(images/tab_left.png);
+}
+td.tab-right {
+	background-image: url(images/tab_right.png);
+}
+td.tab-bottom {
+	background-image: url(images/tab_bottom.png);
+}
+.bg-white {
+	background-color: #FFFFFF;
+}
+.bg-black {
+	background-color: #000000;
+}
+td.sep-dark {
+	height: 1px;
+	background-color: #000000;
+}
+td.sep-light {
+	height: 1px;
+	background-color: #c0c0c0;
+}
+.h10 {
+	height: 10px;
+}
+.h15 {
+	height: 15px;
+}
+.h19 {
+	height: 19px;
+}
+.h20 {
+	height: 20px;
+}
+.h22 {
+	height: 22px;
+}
+.h25 {
+	height: 25px;
+}
+.h180 {
+	height: 180px;
+}
+.h200 {
+	height: 200px;
+}
+th.login-banner {
+	height: 180px;
+	text-align: right;
+	vertical-align: middle;
+	background-image: url(images/loginfond_haut.png);
+}

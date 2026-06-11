@@ -6,11 +6,11 @@
 
 <link href="style.css" rel="stylesheet" type="text/css">
 </head>
-<body background="images/fond.gif" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr valign="top"> 
-    <td width="143" height="64"><img src="images/logo.png" width="143" height="64"></td>
-    <td width="100%" height="64" align="right" background="images/fond_haut.png"> <table border="0" cellspacing="0" cellpadding="0">
+<body class="main">
+<table width="100%" height="100%" cellpadding="0" cellspacing="0">
+  <tr class="va-top"> 
+    <td width="143" class="logo-cell"><img src="images/logo.png" width="143" height="64"></td>
+    <td width="100%" class="navbar-cell"> <table class="navbar-table" cellspacing="0" cellpadding="0">
         <tr> 
           <td><a class="navbutton nav-transfer" href="amuleweb-main-dload.php" title="Transfers"></a></td>
           <td><a class="navbutton nav-shared" href="amuleweb-main-shared.php" title="Shared files"></a></td>
@@ -20,27 +20,27 @@
           <td><a class="navbutton nav-stats" href="amuleweb-main-stats.php" title="Statistics"></a></td>
           <td><img src="images/col.png"></td>
           <td width="10"></td>
-          <td width="190" align="right" class="texteinv"><a href="login.php">exit</a><br> 
+          <td width="190" class="texteinv al-right"><a href="login.php">exit</a><br> 
             <a href="amuleweb-main-log.php">log &bull;</a> <a href="amuleweb-main-prefs.php">configuration</a></td>
           <td width="10"></td>
         </tr>
       </table></td>
   </tr>
-  <tr align="center" valign="top"> 
+  <tr class="al-center va-top"> 
     <td colspan="2">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <table width="100%" cellspacing="0" cellpadding="0">
           <caption>
         SERVERS 
         </caption>
           <tr> 
             <td width="24"><img src="images/tab_top_left.png" width="24" height="24"></td>
-            <td background="images/tab_top.png">&nbsp;</td>
+            <td class="tab-top">&nbsp;</td>
             <td width="24"><img src="images/tab_top_right.png" width="24" height="24"></td>
           </tr>
           <tr> 
-            <td width="24" background="images/tab_left.png">&nbsp;</td>
+            <td width="24" class="tab-left">&nbsp;</td>
             
-      <td bgcolor="#FFFFFF"><table width="100%"  border="0" align="center" cellpadding="0" cellspacing="0">
+      <td class="bg-white"><table width="100%"  cellpadding="0" cellspacing="0">
               <?php
                 // Network-level disconnect button, admin only. Statements
                 // must be syntactically complete within one PHP block;
@@ -49,7 +49,7 @@
                 // Kad page styling and give a proper clickable button
                 // rather than a plain text link.
                 if ($_SESSION["guest_login"] == 0) {
-                    echo '<tr><td colspan="6" align="right" style="padding:4px 8px;">',
+                    echo '<tr><td colspan="6" class="al-right" style="padding:4px 8px;">',
                          '<form action="amuleweb-main-servers.php" method="get" style="display:inline;">',
                          '<input type="hidden" name="server_action" value="disconnect">',
                          '<button type="submit">Disconnect from current ed2k server</button>',
@@ -64,7 +64,7 @@
                 <th width="19%">Address</th>
                 <th width="7%"><a href="amuleweb-main-servers.php?sort=users">Users</a></th>
                 <th width="7%"><a href="amuleweb-main-servers.php?sort=files">Files</a></th>
-		</tr><tr><td colspan="8" height="1" bgcolor="#000000"></td></tr>
+		</tr><tr><td colspan="8" class="sep-dark"></td></tr>
               <?php
 
 
@@ -129,40 +129,40 @@
 			echo "<tr>";
 			
 			if ($_SESSION["guest_login"] != 0) {
-				echo "<td class='texte' align='center'></td>";
+				echo "<td class='texte al-center'></td>";
 			} else {
-				echo "<td class='texte' align='center'>",
+				echo "<td class='texte al-center'>",
 					'<a href="amuleweb-main-servers.php?cmd=connect&ip=', $srv->ip,
 					'&port=', $srv->port, '">',
-					'<img src="images/connect.gif" width="16" height="16" border="0">','</a>',
+					'<img src="images/connect.gif" width="16" height="16">','</a>',
 					'<a href="amuleweb-main-servers.php?cmd=remove&ip=', $srv->ip,
 					'&port=', $srv->port, '">',
-					'<img src="images/cancel.gif" width="16" height="16" border="0">','</a>',
+					'<img src="images/cancel.gif" width="16" height="16">','</a>',
 					"</td>";
 			}
 
 			echo "<td class='texte'>", $srv->name, "</td>";
 			echo "<td class='texte'>", $srv->desc, "</td>";
-			echo "<td class='texte' align='center'>", $srv->addr, "</td>";
-			echo "<td class='texte' align='center'>", $srv->users, "</td>";
-			echo "<td class='texte' align='center'>", $srv->files, "</td>";
+			echo "<td class='texte al-center'>", $srv->addr, "</td>";
+			echo "<td class='texte al-center'>", $srv->users, "</td>";
+			echo "<td class='texte al-center'>", $srv->files, "</td>";
 
-			echo "</tr><tr><td colspan='9' height='1' bgcolor='#c0c0c0'></td></tr>";
+			echo "</tr><tr><td colspan='9' class='sep-light'></td></tr>";
 		}
 	  ?>
             </table></td>
-            <td width="24" background="images/tab_right.png">&nbsp;</td>
+            <td width="24" class="tab-right">&nbsp;</td>
           </tr>
           <tr> 
             <td width="24"><img src="images/tab_bottom_left.png" width="24" height="24"></td>
-            <td background="images/tab_bottom.png">&nbsp;</td>
+            <td class="tab-bottom">&nbsp;</td>
             <td width="24"><img src="images/tab_bottom_right.png" width="24" height="24"></td>
           </tr>
         </table></td>
   </tr>
-  <tr valign="bottom"> 
-    <td height="25" colspan="2"> <table width="100%" height="40" border="0" cellpadding="0" cellspacing="0">
-        <tr align="center" valign="middle"> 
+  <tr class="va-bottom"> 
+    <td class="h25" colspan="2"> <table width="100%" height="40" cellpadding="0" cellspacing="0">
+        <tr class="al-center va-middle"> 
           <td width="50%"> <iframe name="stats" src="footer.php" height="35" width="100%" scrolling="no" frameborder="0">edklink</iframe> 
           </td>
           <td width="50%"> <iframe name="stats" src="stats.php" height="35" width="100%" scrolling="no" frameborder="0">connection</iframe> 

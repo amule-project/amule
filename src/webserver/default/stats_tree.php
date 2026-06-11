@@ -80,7 +80,7 @@ function print_folder($key, &$arr, $ident)
 	echo "<span class=\"trigger\" onClick=\"showBranch('br_",
 		$key, "');swapFolder('fl_", $key, "')\">\n";
 	print_ident($ident+1);
-	echo "<img src=\"tree-open.gif\" border=\"0\" id=\"fl_", $key, "\">\n";
+	echo "<img src=\"tree-open.gif\" id=\"fl_", $key, "\">\n";
 	print_ident($ident+1);
 	echo $key, "<br>\n";
 	print_ident($ident);

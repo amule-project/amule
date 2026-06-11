@@ -21,11 +21,11 @@ function formCommandSubmit(command)
 
 </script>
 </head>
-<body background="images/fond.gif" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr valign="top"> 
-    <td width="143" height="64"><img src="images/logo.png" width="143" height="64"></td>
-    <td width="100%" height="64" align="right" background="images/fond_haut.png"> <table border="0" cellspacing="0" cellpadding="0">
+<body class="main">
+<table width="100%" height="100%" cellpadding="0" cellspacing="0">
+  <tr class="va-top"> 
+    <td width="143" class="logo-cell"><img src="images/logo.png" width="143" height="64"></td>
+    <td width="100%" class="navbar-cell"> <table class="navbar-table" cellspacing="0" cellpadding="0">
         <tr> 
           <td><a class="navbutton nav-transfer" href="amuleweb-main-dload.php" title="Transfers"></a></td>
           <td><a class="navbutton nav-shared" href="amuleweb-main-shared.php" title="Shared files"></a></td>
@@ -35,38 +35,38 @@ function formCommandSubmit(command)
           <td><a class="navbutton nav-stats" href="amuleweb-main-stats.php" title="Statistics"></a></td>
           <td><img src="images/col.png"></td>
           <td width="10"></td>
-          <td width="190" align="right" class="texteinv"><a href="login.php">exit</a><br> 
+          <td width="190" class="texteinv al-right"><a href="login.php">exit</a><br> 
             <a href="amuleweb-main-log.php">log &bull;</a> <a href="amuleweb-main-prefs.php">configuration</a></td>
           <td width="10"></td>
         </tr>
       </table></td>
   </tr>
-  <tr align="center" valign="top"> 
+  <tr class="al-center va-top"> 
     <td colspan="2">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <table width="100%" cellspacing="0" cellpadding="0">
           <caption>
         SEARCH
         </caption>
           <tr> 
             <td width="24"><img src="images/tab_top_left.png" width="24" height="24"></td>
-            <td background="images/tab_top.png">&nbsp;</td>
+            <td class="tab-top">&nbsp;</td>
             <td width="24"><img src="images/tab_top_right.png" width="24" height="24"></td>
           </tr>
           <tr> 
-            <td width="24" background="images/tab_left.png">&nbsp;</td>
+            <td width="24" class="tab-left">&nbsp;</td>
             
-      <td bgcolor="#FFFFFF"><form name="mainform" action="amuleweb-main-search.php" method="post">
-              <table width="100%" border="0" align="center" cellpadding="4" cellspacing="0">
-                <tr align="center"> 
-                  <td align="center">
+      <td class="bg-white"><form name="mainform" action="amuleweb-main-search.php" method="post">
+              <table width="100%" cellpadding="4" cellspacing="0">
+                <tr class="al-center"> 
+                  <td class="al-center">
 <input type="hidden" name="command" value=""> 
                     <input name="searchval" type="text" id="searchval4" size="60"> 
                     <input name="Search" type="submit" id="Search4" value="Search" onClick="javascript:formCommandSubmit('search');"></td>
-                  <td align="right">Availability :</td>
-                  <td align="left"> 
+                  <td class="al-right">Availability :</td>
+                  <td class="al-left"> 
                     <input name="avail" type="text" id="avail13" size="6"></td>
-                  <td align="left">Min Size : </td>
-                  <td align="left">
+                  <td class="al-left">Min Size : </td>
+                  <td class="al-left">
 <input name="minsize" type="text" id="minsize2" size="5"> 
                     <select name="minsizeu" id="select8">
                       <option>Byte</option>
@@ -76,7 +76,7 @@ function formCommandSubmit(command)
                     </select></td>
                 </tr>
                 <tr> 
-                  <td align="center"><a href="amuleweb-main-search.php?search_sort=<?php
+                  <td class="al-center"><a href="amuleweb-main-search.php?search_sort=<?php
 // Whitelist against the column keys my_cmp() actually understands
 // (line 234-236 of this file). Anything else is dropped to empty,
 // which falls through to the "no sort change" branch below. This
@@ -92,7 +92,7 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
     echo($sort_raw);
 }
 ?>">Click here to update the search results</a> </td>
-                  <td align="right">Search type :</td>
+                  <td class="al-right">Search type :</td>
                   <td> 
                     <select name="searchtype" id="select">
                       <option selected>Local</option>
@@ -110,13 +110,13 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
                     </select></td>
                 </tr>
               </table>
-              <table width="100%"  border="0" align="center" cellpadding="0" cellspacing="0">
+              <table width="100%"  cellpadding="0" cellspacing="0">
                 <tr>
                   <th>&nbsp;</th>
                   <th><a href="amuleweb-main-search.php?sort=name">File Name</a></th>
                   <th><a href="amuleweb-main-search.php?sort=size">Size</a></th>
                   <th><a href="amuleweb-main-search.php?sort=sources">Sources</a></th>
-    </tr><tr><td colspan="9" height="1" bgcolor="#000000"></td></tr>
+    </tr><tr><td colspan="9" class="sep-dark"></td></tr>
     <?php
 		function CastToXBytes($size)
 		{
@@ -233,15 +233,15 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
 
 			echo "<td class='texte texte-full-name texte-full-name-search'>", $file->name, "</td>";
 			
-			echo "<td class='texte' align='center'>", CastToXBytes($file->size), "</td>";
+			echo "<td class='texte al-center'>", CastToXBytes($file->size), "</td>";
 
-			echo "<td class='texte' align='center'>", $file->sources, "</td>";
+			echo "<td class='texte al-center'>", $file->sources, "</td>";
 
-			print "</tr><tr><td colspan='9' height='1' bgcolor='#c0c0c0'></td></tr>";
+			print "</tr><tr><td colspan='9' class='sep-light'></td></tr>";
 		}
 
 	  ?>
-    <tr align="right"> 
+    <tr class="al-right"> 
       <td colspan="4" scope="col">
         <input name="Download" type="submit" id="Download6" value="Download" onClick="javascript:formCommandSubmit('download');" >
         <select name="targetcat" id="select32">
@@ -254,18 +254,18 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
         </select></td>
   </table>
 </form></td>
-            <td width="24" background="images/tab_right.png">&nbsp;</td>
+            <td width="24" class="tab-right">&nbsp;</td>
           </tr>
           <tr> 
             <td width="24"><img src="images/tab_bottom_left.png" width="24" height="24"></td>
-            <td background="images/tab_bottom.png">&nbsp;</td>
+            <td class="tab-bottom">&nbsp;</td>
             <td width="24"><img src="images/tab_bottom_right.png" width="24" height="24"></td>
           </tr>
         </table></td>
   </tr>
-  <tr valign="bottom"> 
-    <td height="25" colspan="2"> <table width="100%" height="40" border="0" cellpadding="0" cellspacing="0">
-        <tr align="center" valign="middle"> 
+  <tr class="va-bottom"> 
+    <td class="h25" colspan="2"> <table width="100%" height="40" cellpadding="0" cellspacing="0">
+        <tr class="al-center va-middle"> 
           <td width="50%"> <iframe name="stats" src="footer.php" height="35" width="100%" scrolling="no" frameborder="0">edklink</iframe> 
           </td>
           <td width="50%"> <iframe name="stats" src="stats.php" height="35" width="100%" scrolling="no" frameborder="0">connection</iframe> 
