@@ -264,8 +264,8 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
 			switch($str) {
 				case "Byte":	$result = 1; break;
 				case "KByte":	$result = 1024; break;		
-				case "MByte":	$result = 1012*1024; break;
-				case "GByte":	$result = 1012*1024*1024; break;
+				case "MByte":	$result = 1024*1024; break;
+				case "GByte":	$result = 1024*1024*1024; break;
 			}
 			return $result;
 		}
