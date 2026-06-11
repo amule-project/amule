@@ -51,6 +51,14 @@ th.login-banner {
 	vertical-align: middle;
 	background-image: url(images/loginfond_haut.png);
 }
+.login-error {
+	display: inline-block;
+	margin-top: 6px;
+	padding: 3px 10px;
+	background-color: #c00000;
+	color: white;
+	font-weight: bold;
+}
 </style>
 </head>
 
@@ -72,7 +80,7 @@ th.login-banner {
                     &nbsp;&nbsp;
 <?php
 	if ( $_SESSION["login_error"] != "" ) {
-		echo "<br><span style=\"color: #c00000; font-weight: bold;\">", $_SESSION["login_error"], "</span>&nbsp;&nbsp;";
+		echo "<br><span class=\"login-error\">", $_SESSION["login_error"], "</span>&nbsp;&nbsp;";
 	}
 ?>
                     </form></th>
