@@ -119,6 +119,10 @@ textarea {
 	font-size: 12px;
 	color: white;
 }
+html,
+body.main {
+	height: 100%;
+}
 body.main {
 	margin: 0;
 	background-image: url(images/fond.gif);
@@ -156,7 +160,6 @@ table.page > tbody > tr:first-child {
 	vertical-align: top;
 }
 table.page > tbody > tr:nth-child(2) {
-	text-align: center;
 	vertical-align: top;
 }
 table.page > tbody > tr:last-child {
@@ -168,6 +171,9 @@ table.page > tbody > tr:last-child > td {
 td.logo-cell {
 	width: 143px;
 	height: 64px;
+}
+td.logo-cell > img {
+	display: block;
 }
 td.navbar-cell {
 	width: 100%;
@@ -199,7 +205,7 @@ table.prefs-grid {
 	margin-right: auto;
 	border-spacing: 6px;
 }
-table.prefs-grid > tbody > tr {
+table.prefs-grid > tbody > tr:last-child {
 	text-align: center;
 }
 table.prefs-grid > tbody > tr:not(:last-child) {
@@ -239,6 +245,10 @@ table.footer-bar iframe {
 }
 table.tab {
 	width: 100%;
+}
+table.tab > tbody > tr:first-child > td > img,
+table.tab > tbody > tr:last-child > td > img {
+	display: block;
 }
 table.tab > tbody > tr > td:first-child,
 table.tab > tbody > tr > td:last-child {
