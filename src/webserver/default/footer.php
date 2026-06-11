@@ -77,15 +77,6 @@ color: white;
 -->
 </style>
 </head>
-<script language="JavaScript" type="text/JavaScript">
-
-function refreshFrames()
-{
-	location = "amuleweb-main-dload.php"
-	location.reload();
-}
-
-</script>
 
 <body>
 
@@ -119,8 +110,13 @@ function refreshFrames()
 		}
 	?>
         </select>
-        <input type="submit" name="Submit" value="Download link" onClick="refreshFrames()">
+        <input type="submit" name="Submit" value="Download link">
       </form></td>
 </table>
+<?php
+	if ( $HTTP_GET_VARS["Submit"] != "" ) {
+		echo '<script type="text/javascript">window.top.location = "amuleweb-main-dload.php";</script>';
+	}
+?>
 </body>
 </html>
