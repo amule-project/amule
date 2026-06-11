@@ -154,7 +154,7 @@ color: white;
 }
 -->
 </style>
-</head><script language="JavaScript" type="text/JavaScript">
+<script language="JavaScript" type="text/JavaScript">
 function formCommandSubmit(command)
 {
 	if ( command == "cancel" ) {
@@ -177,6 +177,7 @@ function formCommandSubmit(command)
 }
 
 </script>
+</head>
 <body background="images/fond.gif" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="MM_preloadImages('images/transf_1.png','images/shared_1.png','images/search_1.png','images/edkserv_1.png','images/sheserv_1.png','images/stats_1.png')">
 <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
   <tr valign="top"> 
