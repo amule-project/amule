@@ -39,9 +39,79 @@ jobs:
     name: Build artifacts
     uses: ./.github/workflows/packaging.yml
 
+  source-bundle:
+    name: Build source bundle with pre-rendered manpages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Resolve tag
+        id: tag
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "tag=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install po4a + gettext
+        run: sudo apt-get install -y po4a gettext
+
+      - name: Render translated manpages into the working tree
+        # CMake's build-time renderer writes translated manpages into the
+        # build dir, not the source tree. For the source bundle we want
+        # them next to the English masters so downstream packagers don't
+        # need po4a. Materialise a docs/man-relative po4a.config from the
+        # CMake-templated po4a.config.in (same substitution as
+        # scripts/update-manpages-po.sh, just without --no-translations).
+        run: |
+          TMP=$(mktemp)
+          sed \
+            -e 's|@CMAKE_CURRENT_SOURCE_DIR@/||g' \
+            -e 's|@CMAKE_CURRENT_BINARY_DIR@/||g' \
+            -e 's|@CMAKE_SOURCE_DIR@|../..|g' \
+            -e 's|@CMAKE_BINARY_DIR@|../..|g' \
+            docs/man/po4a.config.in > "$TMP"
+          (cd docs/man && po4a --force "$TMP")
+          rm "$TMP"
+          # Sanity-check that po4a actually produced the renders.
+          count=$(find docs/man src/utils \
+                    \( -name '*.[a-z][a-z].1.in' -o -name '*.[a-z][a-z]_[A-Z][A-Z].1.in' \) | wc -l)
+          if [ "$count" -lt 90 ]; then
+            echo "::error::Expected ~100 rendered manpages, got $count"
+            exit 1
+          fi
+
+      - name: Create source tarball
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+          # Strip a leading 'v' from the tarball stem so the directory name
+          # matches autotools convention (aMule-2.4.0/ not aMule-v2.4.0/).
+          STEM="aMule-${TAG#v}"
+          mkdir -p dist
+          # `git ls-files` covers every tracked file; append the rendered
+          # manpages on top. The two lists are unioned with sort -u in
+          # case a translation was somehow already tracked.
+          {
+            git ls-files
+            find docs/man src/utils \
+              \( -name '*.[a-z][a-z].1.in' -o -name '*.[a-z][a-z]_[A-Z][A-Z].1.in' \)
+          } | sort -u > /tmp/sources.txt
+          tar -czf "dist/${STEM}-src.tar.gz" \
+            --transform "s|^|${STEM}/|" \
+            --files-from=/tmp/sources.txt
+
+      - name: Upload source bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-bundle
+          path: dist/aMule-*-src.tar.gz
+
   release:
     name: Assemble draft Release
-    needs: build
+    needs: [build, source-bundle]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v6
@@ -74,6 +144,11 @@ jobs:
           pattern: windows-*
           path: dist/
           merge-multiple: true
+      - name: Download source bundle
+        uses: actions/download-artifact@v8
+        with:
+          name: source-bundle
+          path: dist/
 
       - name: List artifacts
         run: ls -la dist/

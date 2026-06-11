@@ -1,0 +1,14 @@
+[po4a_langs] de es fr hu it pt_BR ro ru tr zh_TW
+[po4a_paths] @CMAKE_CURRENT_SOURCE_DIR@/po/manpages.pot $lang:@CMAKE_CURRENT_SOURCE_DIR@/po/manpages-$lang.po
+[options] --master-charset UTF-8 --localized-charset UTF-8 --addendum-charset UTF-8 --wrap-po no --msgmerge-opt "--no-wrap"
+[po4a_alias:man] man opt:"-o untranslated=als,B_untranslated,RB_untranslated,IP,SS_untranslated"
+[type: man] @CMAKE_CURRENT_SOURCE_DIR@/amule.1.in $lang:@CMAKE_CURRENT_BINARY_DIR@/amule.$lang.1.in add_$lang:?@CMAKE_CURRENT_SOURCE_DIR@/po/manpages-$lang.add
+[type: man] @CMAKE_CURRENT_SOURCE_DIR@/amulecmd.1.in $lang:@CMAKE_CURRENT_BINARY_DIR@/amulecmd.$lang.1.in add_$lang:?@CMAKE_CURRENT_SOURCE_DIR@/po/manpages-$lang.add
+[type: man] @CMAKE_CURRENT_SOURCE_DIR@/amuled.1.in $lang:@CMAKE_CURRENT_BINARY_DIR@/amuled.$lang.1.in add_$lang:?@CMAKE_CURRENT_SOURCE_DIR@/po/manpages-$lang.add
+[type: man] @CMAKE_CURRENT_SOURCE_DIR@/amulegui.1.in $lang:@CMAKE_CURRENT_BINARY_DIR@/amulegui.$lang.1.in add_$lang:?@CMAKE_CURRENT_SOURCE_DIR@/po/manpages-$lang.add
+[type: man] @CMAKE_CURRENT_SOURCE_DIR@/amuleweb.1.in $lang:@CMAKE_CURRENT_BINARY_DIR@/amuleweb.$lang.1.in add_$lang:?@CMAKE_CURRENT_SOURCE_DIR@/po/manpages-$lang.add
+[type: man] @CMAKE_CURRENT_SOURCE_DIR@/ed2k.1.in $lang:@CMAKE_CURRENT_BINARY_DIR@/ed2k.$lang.1.in add_$lang:?@CMAKE_CURRENT_SOURCE_DIR@/po/manpages-$lang.add
+[type: man] @CMAKE_SOURCE_DIR@/src/utils/aLinkCreator/docs/alc.1.in $lang:@CMAKE_BINARY_DIR@/src/utils/aLinkCreator/docs/alc.$lang.1.in add_$lang:?@CMAKE_CURRENT_SOURCE_DIR@/po/manpages-$lang.add
+[type: man] @CMAKE_SOURCE_DIR@/src/utils/aLinkCreator/docs/alcc.1.in $lang:@CMAKE_BINARY_DIR@/src/utils/aLinkCreator/docs/alcc.$lang.1.in add_$lang:?@CMAKE_CURRENT_SOURCE_DIR@/po/manpages-$lang.add
+[type: man] @CMAKE_SOURCE_DIR@/src/utils/cas/docs/cas.1.in $lang:@CMAKE_BINARY_DIR@/src/utils/cas/docs/cas.$lang.1.in add_$lang:?@CMAKE_CURRENT_SOURCE_DIR@/po/manpages-$lang.add
+[type: man] @CMAKE_SOURCE_DIR@/src/utils/wxCas/docs/wxcas.1.in $lang:@CMAKE_BINARY_DIR@/src/utils/wxCas/docs/wxcas.$lang.1.in add_$lang:?@CMAKE_CURRENT_SOURCE_DIR@/po/manpages-$lang.add
