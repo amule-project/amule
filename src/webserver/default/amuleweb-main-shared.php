@@ -187,7 +187,22 @@ function formCommandSubmit(command)
 		}
 		$shared = amule_load_vars("shared");
 
-		$sort_order = $HTTP_GET_VARS["sort"];
+		// Whitelist against the column keys my_cmp() actually understands
+		// (the switch() above). Anything not in the list is dropped to "",
+		// which falls through to the "no sort change" branch below.
+		// This prevents an attacker-controlled value from being stored in
+		// $_SESSION["shared_sort"] and later reflected into rendered HTML
+		// if any future template change prints that variable (#869 follow-up).
+		// Plain string-equality chain is the only matching primitive the
+		// bundled PHP interpreter supports (no in_array(), no htmlspecialchars()).
+		$sort_raw = isset($HTTP_GET_VARS["sort"]) ? $HTTP_GET_VARS["sort"] : "";
+		if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "xfer" ||
+		    $sort_raw == "xfer_all" || $sort_raw == "acc" || $sort_raw == "acc_all" ||
+		    $sort_raw == "req" || $sort_raw == "req_all" || $sort_raw == "prio") {
+			$sort_order = $sort_raw;
+		} else {
+			$sort_order = "";
+		}
 
 		if ( $sort_order == "" ) {
 			$sort_order = $_SESSION["shared_sort"];

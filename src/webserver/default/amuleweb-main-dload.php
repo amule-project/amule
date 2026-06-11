@@ -226,7 +226,20 @@ function formCommandSubmit(command)
 		$countSpeed = 0;
 		$downloads = amule_load_vars("downloads");
 		$fakevar=0;
-		$sort_order = $HTTP_GET_VARS["sort"];
+		// Whitelist against the column keys my_cmp() actually understands
+		// (the switch() above). Anything not in the list is dropped to "",
+		// which falls through to the "no sort change" branch below.
+		// This prevents an attacker-controlled value from being stored in
+		// $_SESSION["download_sort"] and later reflected into rendered HTML
+		// (#869 follow-up; same fix applied to shared and servers pages).
+		$sort_raw = isset($HTTP_GET_VARS["sort"]) ? $HTTP_GET_VARS["sort"] : "";
+		if ($sort_raw == "size" || $sort_raw == "size_done" || $sort_raw == "progress" ||
+		    $sort_raw == "name" || $sort_raw == "speed" || $sort_raw == "srccount" ||
+		    $sort_raw == "status" || $sort_raw == "prio") {
+			$sort_order = $sort_raw;
+		} else {
+			$sort_order = "";
+		}
 
 		if ( $sort_order == "" ) {
 			$sort_order = $_SESSION["download_sort"];

@@ -91,7 +91,16 @@
 
 		$servers = amule_load_vars("servers");
 
-		$sort_order = $HTTP_GET_VARS["sort"];
+		// Whitelist against the column keys my_cmp() actually understands
+		// (the switch() above). Anything not in the list is dropped to "",
+		// which falls through to the "no sort change" branch below (#869 follow-up).
+		$sort_raw = isset($HTTP_GET_VARS["sort"]) ? $HTTP_GET_VARS["sort"] : "";
+		if ($sort_raw == "name" || $sort_raw == "desc" ||
+		    $sort_raw == "users" || $sort_raw == "files") {
+			$sort_order = $sort_raw;
+		} else {
+			$sort_order = "";
+		}
 
 		//
 		// perform command before processing content

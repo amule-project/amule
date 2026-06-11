@@ -509,6 +509,12 @@ bool CWebServerBase::Send_DownloadEd2k_Cmd(wxString link, uint8 cat)
 	link_tag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
 	req.AddTag(link_tag);
 	const CECPacket *response = webInterface->SendRecvMsg_v2(&req);
+	// SendRecvMsg_v2 returns null on EC connection failure.
+	// Treat a missing response as a failed command (same as EC_OP_FAILED)
+	// so the PHP caller gets a defined bool rather than a crash.
+	if (!response) {
+		return true;
+	}
 	bool result = (response->GetOpCode() == EC_OP_FAILED);
 	delete response;
 	return result;
@@ -1325,17 +1331,34 @@ void CStatsCollection::ReQuery()
 
 	const CECPacket *response = m_iface->SendRecvMsg_v2(&request);
 
+	// Guard against a lost EC connection: SendRecvMsg_v2 returns null
+	// on socket error. Without this the dereference below crashes amuleweb.
+	if (!response) {
+		return;
+	}
+
 	m_LastTimeStamp = response->GetTagByNameSafe(EC_TAG_STATSGRAPH_LAST)->GetDoubleData();
 
 	const CECTag *dataTag = response->GetTagByName(EC_TAG_STATSGRAPH_DATA);
+	// Guard against a well-formed response that simply omits the data tag
+	// (e.g. amuled returned EC_OP_FAILED or the daemon has no samples yet).
+	if (!dataTag) {
+		delete response;
+		return;
+	}
 	const uint32 *data = (const uint32 *)dataTag->GetTagData();
 	unsigned int count = dataTag->GetTagDataLen() / sizeof(uint32);
+	// Each sample group is exactly 4 uint32 values (down, up, conn, kad).
+	// A truncated or malformed tag could leave count % 4 != 0; clamp to
+	// the largest multiple of 4 that fits so we never read past the buffer.
+	count -= count % 4;
 	for (unsigned int i = 0; i < count; i += 4) {
 		m_down_speed->PushSample(ENDIAN_NTOHL(data[i+0]));
 		m_up_speed->PushSample(ENDIAN_NTOHL(data[i+1]));
 		m_conn_number->PushSample(ENDIAN_NTOHL(data[i+2]));
 		m_kad_count->PushSample(ENDIAN_NTOHL(data[i+3]));
 	}
+	delete response;
 }
 
 //
@@ -2004,7 +2027,13 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 
 	if (isUseGzip)	{
 		bool bOk = false;
-		uLongf destLen = httpOutLen + 1024;
+		// zlib's deflate worst-case expansion is sourceLen + (sourceLen/1000) + 12 bytes.
+		// GzipCompress adds an 18-byte gzip wrapper (10-byte header + 8-byte trailer).
+		// The previous fixed +1024 slack was technically correct for the template sizes
+		// amuleweb serves today, but violated zlib's documented contract for large or
+		// maximally-incompressible payloads. Use the formula from the zlib manual so
+		// the buffer is always sufficient regardless of content size.
+		uLongf destLen = httpOutLen + (httpOutLen / 1000) + 30;
 		char *gzipOut = new char[destLen];
 		if( GzipCompress((Bytef*)gzipOut, &destLen,
 		   (const Bytef*)httpOut, httpOutLen, Z_DEFAULT_COMPRESSION) == Z_OK) {
