@@ -53,7 +53,7 @@ function swapFolder(img){
 }
 
 </script>
-<body onLoad="showBranch('br_Stats');swapFolder('fl_Stats')">
+<body>
 <?php
 
 function print_ident($i)
