@@ -990,7 +990,24 @@ CPreferences::CPreferences()
 			RawPokeUInt16(s_userhash.GetHash() + (i * 2), rand());
 		}
 
-		Save();
+		// Persist only preferences.dat and amule.conf here. A full
+		// Save() would also call SaveSharedFolders() against
+		// still-empty in-memory lists (ReloadSharedFolders runs
+		// below), truncating any shareddir-*.dat files a pre-launch
+		// script may have populated.
+		CFile preffile;
+		if (!wxFileExists(fullpath)) {
+			preffile.Create(fullpath);
+		}
+		if (preffile.Open(fullpath, CFile::read_write)) {
+			try {
+				preffile.WriteUInt8(PREFFILE_VERSION);
+				preffile.WriteHash(s_userhash);
+			} catch (const CIOFailureException& e) {
+				AddDebugLogLineC(logGeneral, "IO failure while saving user-hash: " + e.what());
+			}
+		}
+		SavePreferences();
 	}
 
 	// Mark hash as an eMule-type hash
