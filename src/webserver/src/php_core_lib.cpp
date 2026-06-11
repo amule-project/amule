@@ -278,6 +278,33 @@ void php_native_substr(PHP_VALUE_NODE * /*result*/)
 
 }
 
+void php_native_htmlspecialchars(PHP_VALUE_NODE *result)
+{
+	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
+	if ( !si_str ) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 'string' for 'htmlspecialchars'");
+		return;
+	}
+	PHP_VALUE_NODE *str = &si_str->var->value;
+	cast_value_str(str);
+	if ( result ) {
+		cast_value_dnum(result);
+		std::string escaped;
+		for(const char *p = str->str_val; *p; p++) {
+			switch(*p) {
+				case '&': escaped += "&amp;"; break;
+				case '<': escaped += "&lt;"; break;
+				case '>': escaped += "&gt;"; break;
+				case '"': escaped += "&quot;"; break;
+				case '\'': escaped += "&#039;"; break;
+				default: escaped += *p;
+			}
+		}
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup(escaped.c_str());
+	}
+}
+
 
 void php_native_split(PHP_VALUE_NODE *result)
 {
@@ -480,6 +507,10 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		"split",
 		3,
 		php_native_split,
+	},
+	{
+		"htmlspecialchars",
+		1, php_native_htmlspecialchars,
 	},
 #ifdef ENABLE_NLS
 	{
