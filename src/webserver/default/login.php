@@ -11,55 +11,6 @@ function login_init()
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="style.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-/* This page is shown to unauthenticated clients, and the webserver only
-   serves style.css to a logged-in session (anything else gets the login
-   page HTML instead) -- so every rule this page needs must live inline
-   here. The class names match style.css on purpose. */
-body.main {
-	margin: 0;
-	background-image: url(images/fond.gif);
-}
-img {
-	border: 0;
-}
-.al-center {
-	text-align: center;
-}
-.va-middle {
-	vertical-align: middle;
-}
-.va-top {
-	vertical-align: top;
-}
-.center-table {
-	margin-left: auto;
-	margin-right: auto;
-}
-.bg-white {
-	background-color: #FFFFFF;
-}
-.bg-black {
-	background-color: #000000;
-}
-.h180 {
-	height: 180px;
-}
-th.login-banner {
-	height: 180px;
-	text-align: right;
-	vertical-align: middle;
-	background-image: url(images/loginfond_haut.png);
-}
-.login-error {
-	display: inline-block;
-	margin-top: 6px;
-	padding: 3px 10px;
-	background-color: #c00000;
-	color: white;
-	font-weight: bold;
-}
-</style>
 </head>
 
 <body class="main" onload="login_init();">

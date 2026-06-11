@@ -1901,7 +1901,12 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	CSession *session = CheckLoggedin(Data);
 
 	session->m_vars["login_error"] = "";
-	if ( !session->m_logged_in ) {
+	// Stylesheets and scripts are public static assets, like the template
+	// images ProcessImgFileReq() already serves without a login. They are
+	// served statically from the template directory, never through the
+	// PHP interpreter.
+	bool public_asset = filename.EndsWith(wxT(".css")) || filename.EndsWith(wxT(".js"));
+	if ( !session->m_logged_in && !public_asset ) {
 		filename = "login.php";
 
 		// Refuse to consume `pass` if it's reachable via the original
