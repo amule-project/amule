@@ -816,3 +816,25 @@ if (WIN32 AND MINGW AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.16)
 			"re-run cmake to populate this.")
 	endif()
 endif()
+
+# `gettext_process_po_files` puts the per-language `.gmo` builds in the
+# `all` target but adds no dependency to any specific binary target.
+# Building one binary in isolation (e.g. `cmake --build build --target
+# amuled`) therefore skips the `.gmo` step, and the subsequent `cmake
+# --install build` errors with "file INSTALL cannot find
+# /.../build/po/<lang>.gmo: No such file or directory" because the
+# `install (FILES ${gmo})` rules issued from `po/CMakeLists.txt` expect
+# them to exist.
+#
+# Make every NLS-aware executable take a hard dependency on the
+# CMake-internal `pofiles` aggregator that `gettext_process_po_files`
+# maintains. A partial-target build now transitively builds the catalogs
+# it would later install. Skipped under ENABLE_NLS=OFF because
+# `pofiles` is only created when `add_subdirectory(po)` runs.
+if (ENABLE_NLS AND TARGET pofiles)
+	foreach (_bin amule amuled amulecmd amulegui amuleweb ed2k alc alcc cas wxcas fileview)
+		if (TARGET ${_bin})
+			add_dependencies (${_bin} pofiles)
+		endif()
+	endforeach()
+endif()
