@@ -8,7 +8,6 @@
 	}
 ?><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<script type="text/javascript" src="common.js"></script>
 
 <link href="style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/JavaScript">
@@ -63,11 +62,11 @@ function formCommandSubmit(command)
       <td align="center"><table border="0" cellpadding="0" cellspacing="0">
           <tr> 
             <td><input type="hidden" name="command"></td>
-            <td><a href="javascript:formCommandSubmit('pause');" onClick="MM_nbGroup('down','group1','pause','',1)" onMouseOver="MM_nbGroup('over','pause','','',1)" onMouseOut="MM_nbGroup('out')"><img name="pause" src="images/pause.png" alt="pause" border="0"></a></td>
-            <td><a href="javascript:formCommandSubmit('resume');" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img name="resume" src="images/play.png" alt="resume" border="0"></a></td>
-        		<td><a href="javascript:formCommandSubmit('prioup');" onClick="MM_nbGroup('down','group1','up','',1)" onMouseOver="MM_nbGroup('over','up','','',1)" onMouseOut="MM_nbGroup('out')"><img name="prioup" src="images/up.png" alt="prioup" border="0"></a></td>
-        		<td><a href="javascript:formCommandSubmit('priodown');" onClick="MM_nbGroup('down','group1','down','',1)" onMouseOver="MM_nbGroup('over','down','','',1)" onMouseOut="MM_nbGroup('out')"><img name="priodown" src="images/down.png" alt="priodown" border="0"></a></td>
-        		<td><a href="javascript:formCommandSubmit('cancel');" onClick="MM_nbGroup('down','group1','cancel','',1)" onMouseOver="MM_nbGroup('over','delete','','',1)" onMouseOut="MM_nbGroup('out')"><img name="cancel" src="images/close.png" alt="cancel" border="0"></a></td>
+            <td><a href="javascript:formCommandSubmit('pause');"><img name="pause" src="images/pause.png" alt="pause" border="0"></a></td>
+            <td><a href="javascript:formCommandSubmit('resume');"><img name="resume" src="images/play.png" alt="resume" border="0"></a></td>
+        		<td><a href="javascript:formCommandSubmit('prioup');"><img name="prioup" src="images/up.png" alt="prioup" border="0"></a></td>
+        		<td><a href="javascript:formCommandSubmit('priodown');"><img name="priodown" src="images/down.png" alt="priodown" border="0"></a></td>
+        		<td><a href="javascript:formCommandSubmit('cancel');"><img name="cancel" src="images/close.png" alt="cancel" border="0"></a></td>
       <td><table border="0" cellpadding="0" cellspacing="0">
                 <tr> 
                   <td> 
@@ -94,7 +93,7 @@ function formCommandSubmit(command)
 			echo '</select>';
         ?>
                   </td>
-                  			<td><a href="javascript:formCommandSubmit('filter');" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img src="images/filter.png" border="0" alt="Apply" name="resume"></a></td>
+                  			<td><a href="javascript:formCommandSubmit('filter');"><img src="images/filter.png" border="0" alt="Apply" name="resume"></a></td>
                   <td>&nbsp;</td>
                   <td>&nbsp;</td>
                   <td> 

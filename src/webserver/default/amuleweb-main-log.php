@@ -4,7 +4,6 @@
 <title>aMule control panel</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<script type="text/javascript" src="common.js"></script>
 <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body background="images/fond.gif" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">

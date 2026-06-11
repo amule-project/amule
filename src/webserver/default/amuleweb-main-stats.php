@@ -11,7 +11,6 @@
 	amule_load_vars("stats_graph");
 
 ?>
-<script type="text/javascript" src="common.js"></script>
 <link href="style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/JavaScript">
 var openImg = new Image();

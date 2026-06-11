@@ -18,7 +18,6 @@ INSTALL (FILES
 		cancel.gif
 		close.png
 		col.png
-		common.js
 		connect.gif
 		down.png
 		edkserv_0.png

@@ -42,7 +42,6 @@
 
 	amule_load_vars("stats_graph");
 ?>
-<script type="text/javascript" src="common.js"></script>
 <link href="style.css" rel="stylesheet" type="text/css">
 </head><script language="JavaScript" type="text/JavaScript">
 function formCommandSubmit(command)

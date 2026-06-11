@@ -4,7 +4,6 @@
 <title>aMule control panel</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<script type="text/javascript" src="common.js"></script>
 <link href="style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/JavaScript">
 function formCommandSubmit(command)
@@ -48,10 +47,10 @@ function formCommandSubmit(command)
                 <tr>
                   <td><input type="hidden" name="command"></td>
                   
-            <td><a href="javascript:formCommandSubmit('reload');" onClick="MM_nbGroup('down','group1','reload','',1)" onMouseOver="MM_nbGroup('over','reload','','',1)" onMouseOut="MM_nbGroup('out')"><img src="images/refresh.png" alt="Reload shared files" name="reload" border="0" onload=""></a></td>
-				  <td><a href="javascript:formCommandSubmit('prioup');" onClick="MM_nbGroup('down','group1','up','',1)" onMouseOver="MM_nbGroup('over','up','','',1)" onMouseOut="MM_nbGroup('out')"><img name="up" src="images/up.png" border="0" alt="Raise priority" onLoad=""></a></td>
+            <td><a href="javascript:formCommandSubmit('reload');"><img src="images/refresh.png" alt="Reload shared files" name="reload" border="0" onload=""></a></td>
+				  <td><a href="javascript:formCommandSubmit('prioup');"><img name="up" src="images/up.png" border="0" alt="Raise priority" onLoad=""></a></td>
                   
-            <td><a href="javascript:formCommandSubmit('priodown');" onClick="MM_nbGroup('down','group1','down','',1)" onMouseOver="MM_nbGroup('over','down','','',1)" onMouseOut="MM_nbGroup('out')"><img src="images/down.png" alt="Lower priority" name="down" border="0" onload=""></a></td>
+            <td><a href="javascript:formCommandSubmit('priodown');"><img src="images/down.png" alt="Lower priority" name="down" border="0" onload=""></a></td>
                   <td><select name="select">
                       <option selected>Select prio</option>
                       <option>Low</option>
@@ -59,7 +58,7 @@ function formCommandSubmit(command)
                       <option>High</option>
                     </select> </td>
                   
-            <td><a href="javascript:formCommandSubmit('setprio');" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img src="images/ok.png" alt="Set priority" name="resume" border="0" onload=""></a></td>
+            <td><a href="javascript:formCommandSubmit('setprio');"><img src="images/ok.png" alt="Set priority" name="resume" border="0" onload=""></a></td>
               
                   <td> 
                     <?php

@@ -4,7 +4,6 @@
 <title>aMule control panel</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<script type="text/javascript" src="common.js"></script>
 <link href="style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/JavaScript">
 function formCommandSubmit(command)
