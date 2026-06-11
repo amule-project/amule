@@ -99,7 +99,13 @@ color: white;
                     <input name="pass" size="20" value="" type="password">
                     &nbsp; 
                     <input name="submit" type="submit" value="Submit">
-                    &nbsp;&nbsp; </form></th>
+                    &nbsp;&nbsp;
+<?php
+	if ( $_SESSION["login_error"] != "" ) {
+		echo "<br><span style=\"color: #c00000; font-weight: bold;\">", $_SESSION["login_error"], "</span>&nbsp;&nbsp;";
+	}
+?>
+                    </form></th>
               </tr>
             </table></td>
         </tr>
