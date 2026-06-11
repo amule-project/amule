@@ -1129,6 +1129,21 @@ void php_exp_tree_free(PHP_EXP_NODE *tree)
                 }
 			}
 			break;
+		case PHP_OP_LIST: {
+				// Comma-separated expression list (e.g. the three clauses of
+				// a for() header). The payload of each node lives in exp_node,
+				// not in tree_node.left/right, so the default branch below would
+				// delete the list spine but leak every payload subtree. Walk the
+				// ->next chain and free both, like echo / switch do inline.
+				PHP_EXP_NODE *curr = tree;
+				while (curr) {
+					PHP_EXP_NODE *next = curr->next;
+					php_exp_tree_free(curr->exp_node);
+					delete curr;
+					curr = next;
+				}
+			}
+			return;
 		case PHP_OP_MUX:
 			php_exp_tree_free(tree->exp_node);
 		/* fall through */
