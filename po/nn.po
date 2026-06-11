@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 21:14+0200\n"
+"POT-Creation-Date: 2026-06-11 07:28+0200\n"
 "PO-Revision-Date: 2020-03-04 14:51+0100\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team: <i18n-nn@lister.ping.uio.no>\n"
@@ -3105,7 +3105,9 @@ msgid "Comment/Rate file (Text will be visible to all users)"
 msgstr "Kommentér/verdigjé fila (Teksten vert synleg for alle brukarar)"
 
 #: src/muuli_wdr.cpp:705
-msgid "For a film you can say its length, its story, language ...\\n\\nand if it's a fake, you can tell that to other users of aMule."
+msgid ""
+"For a film you can say its length, its story, language ...\n"
+"and if it's a fake, you can tell that to other users of aMule."
 msgstr ""
 
 #: src/muuli_wdr.cpp:713

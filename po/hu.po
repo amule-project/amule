@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 21:14+0200\n"
+"POT-Creation-Date: 2026-06-11 07:28+0200\n"
 "PO-Revision-Date: 2021-02-01 22:01+0100\n"
 "Last-Translator: Dévai Tamás <gonosztopi@amule.org>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
@@ -3070,8 +3070,12 @@ msgid "Comment/Rate file (Text will be visible to all users)"
 msgstr "Megjegyzés/Értékelés ehhez a fájlhoz (ezt az összes felhasználó látni fogja)"
 
 #: src/muuli_wdr.cpp:705
-msgid "For a film you can say its length, its story, language ...\\n\\nand if it's a fake, you can tell that to other users of aMule."
-msgstr "Megadhatod egy film hosszát, történetét, nyelvét...\\n\\nés ha a fájl hamis, elmondhatod ezt a többi aMule felhasználónak."
+msgid ""
+"For a film you can say its length, its story, language ...\n"
+"and if it's a fake, you can tell that to other users of aMule."
+msgstr ""
+"Megadhatod egy film hosszát, történetét, nyelvét...\n"
+"és ha a fájl hamis, elmondhatod ezt a többi aMule felhasználónak."
 
 #: src/muuli_wdr.cpp:713
 msgid "File Quality"

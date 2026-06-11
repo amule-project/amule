@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 21:14+0200\n"
+"POT-Creation-Date: 2026-06-11 07:28+0200\n"
 "PO-Revision-Date: 2020-03-04 12:31+0100\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <https://github.com/amule-org/amule>\n"
@@ -3087,8 +3087,12 @@ msgid "Comment/Rate file (Text will be visible to all users)"
 msgstr "Kommentoi/luokittele tiedosto (Teksti näkyy kaikille käyttäjille)"
 
 #: src/muuli_wdr.cpp:705
-msgid "For a film you can say its length, its story, language ...\\n\\nand if it's a fake, you can tell that to other users of aMule."
-msgstr "Elokuvalle voit kertoa sen pituuden, tarinan, kielen ...\\n\\nja mikäli se on väärennös, voit kertoa sen muille aMulen käyttäjille."
+msgid ""
+"For a film you can say its length, its story, language ...\n"
+"and if it's a fake, you can tell that to other users of aMule."
+msgstr ""
+"Elokuvalle voit kertoa sen pituuden, tarinan, kielen ...\n"
+"ja mikäli se on väärennös, voit kertoa sen muille aMulen käyttäjille."
 
 #: src/muuli_wdr.cpp:713
 msgid "File Quality"

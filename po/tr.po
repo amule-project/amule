@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-10 21:14+0200\n"
+"POT-Creation-Date: 2026-06-11 07:28+0200\n"
 "PO-Revision-Date: 2026-06-07 18:58+0300\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
@@ -3075,8 +3075,12 @@ msgid "Comment/Rate file (Text will be visible to all users)"
 msgstr "Dosyayı Yorumla/Puanla (İçerik tüm kullanıcılara gösterilecektir.)"
 
 #: src/muuli_wdr.cpp:705
-msgid "For a film you can say its length, its story, language ...\\n\\nand if it's a fake, you can tell that to other users of aMule."
-msgstr "Bir film için süresini, öyküsünü, dilini …\\n\\nve sahte bir dosya ise bunu diğer aMule kullanıcılarına bildirebilirsiniz."
+msgid ""
+"For a film you can say its length, its story, language ...\n"
+"and if it's a fake, you can tell that to other users of aMule."
+msgstr ""
+"Bir film için süresini, öyküsünü, dilini …\n"
+"ve sahte bir dosya ise bunu diğer aMule kullanıcılarına bildirebilirsiniz."
 
 #: src/muuli_wdr.cpp:713
 msgid "File Quality"

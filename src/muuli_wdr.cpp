@@ -702,7 +702,7 @@ wxSizer *commentDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
 
     CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, IDC_CMT_TEXT, "", wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
-    item4->SetToolTip( _("For a film you can say its length, its story, language ...\\n\\nand if it's a fake, you can tell that to other users of aMule.") );
+    item4->SetToolTip( _("For a film you can say its length, its story, language ...\nand if it's a fake, you can tell that to other users of aMule.") );
     item3->Add( item4, wxSizerFlags(1).CenterVertical().Border(wxALL, 5) );
     wxButton *item5 = new wxButton( parent, IDC_FC_CLEAR, _("Clear"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item5, wxSizerFlags().Center().Border(wxALL, 5) );
