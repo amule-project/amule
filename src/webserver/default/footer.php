@@ -112,6 +112,7 @@ color: white;
         </select>
         <input type="submit" name="Submit" value="Download link">
       </form></td>
+  </tr>
 </table>
 <?php
 	if ( $HTTP_GET_VARS["Submit"] != "" ) {

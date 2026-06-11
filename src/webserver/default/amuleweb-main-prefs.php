@@ -259,6 +259,7 @@ function init_data()
             <th>Webserver</th>
             <td width="63">&nbsp;</td>
           </tr>
+          <tr>
             <td width="22" height="25">&nbsp;</td>
             <td height="25">Page refresh interval </td>
             <td width="63" height="25">

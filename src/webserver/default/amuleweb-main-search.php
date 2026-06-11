@@ -217,6 +217,7 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
                 </tr>
               </table>
               <table width="100%"  border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr>
                   <th>&nbsp;</th>
                   <th><a href="amuleweb-main-search.php?sort=name">File Name</a></th>
                   <th><a href="amuleweb-main-search.php?sort=size">Size</a></th>
@@ -342,7 +343,7 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
 
 			echo "<td class='texte' align='center'>", $file->sources, "</td>";
 
-			print "</tr></tr><tr><td colspan='9' height='1' bgcolor='#c0c0c0'></td></tr>";
+			print "</tr><tr><td colspan='9' height='1' bgcolor='#c0c0c0'></td></tr>";
 		}
 
 	  ?>

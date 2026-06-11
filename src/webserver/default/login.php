@@ -84,7 +84,7 @@ color: white;
 </style>
 </head>
 
-<body  onload="login_init();" background="images/fond.gif" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" valign="middle">
+<body  onload="login_init();" background="images/fond.gif" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" height="180" border="0" cellpadding="0" cellspacing="0" valign="middle">
   <tr>
     <td align="center" valign="middle"> 

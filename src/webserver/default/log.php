@@ -3,7 +3,6 @@
 <html><head>
 <title>aMule control panel</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="pragmas" content="no-cache">
 <?php
 	if ( $_SESSION["auto_refresh"] > 0 ) {
 		echo "<meta http-equiv=\"refresh\" content=\"", $_SESSION["auto_refresh"], '">';
@@ -26,7 +25,7 @@ body {
 </style>
 </head>
 <body>
-<code><pre>
+<pre>
 <?php
 	if ("srv" == $HTTP_GET_VARS['show'] || 1 == $HTTP_GET_VARS['rstsrv']) {
 		echo amule_get_serverinfo($HTTP_GET_VARS['rstsrv']);
@@ -34,6 +33,6 @@ body {
 		echo amule_get_log($HTTP_GET_VARS['rstlog']);
 	}
 ?>
-</pre></code>
+</pre>
 </body>
 </html>
