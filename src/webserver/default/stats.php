@@ -12,10 +12,10 @@
 ?>
 <link href="style.css" rel="stylesheet" type="text/css">
 </head>
-<body>
-<table width="100%" height="30" cellpadding="0" cellspacing="0">
+<body class="frame">
+<table class="w100p h30">
   <tr class="va-top"> 
-    <td width="65%"><strong>Ed2k : </strong> 
+    <td class="w65p"><strong>Ed2k : </strong> 
       <?php
     	$stats = amule_get_stats();
     	if ( $stats["id"] == 0 ) {

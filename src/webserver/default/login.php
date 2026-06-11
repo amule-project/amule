@@ -14,15 +14,15 @@ function login_init()
 </head>
 
 <body class="main" onload="login_init();">
-<table width="100%" height="180" cellpadding="0" cellspacing="0">
+<table class="w100p h180">
   <tr>
     <td class="al-center va-middle">
-      <table width="70%" height="90%" class="center-table bg-black" cellpadding="0" cellspacing="1">
+      <table class="w70p h90p center-table bg-black spacing1">
         <tr>
-          <td><table width="100%" height="100%" class="bg-white" cellpadding="0" cellspacing="0">
+          <td><table class="w100p h100p bg-white">
               <tr class="va-top">
-               <th width="366" class="h180"><img src="images/loginlogo.jpg" width="366" height="180"></th>
-                <th width="100%" class="login-banner">
+               <th class="w366 h180"><img src="images/loginlogo.jpg" width="366" height="180"></th>
+                <th class="w100p login-banner">
                   <form action="" method="post" name="login">
                     Enter password : 
                     <input name="pass" size="20" value="" type="password">

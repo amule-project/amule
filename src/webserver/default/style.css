@@ -9,6 +9,7 @@ th {
 	font-size: 14px;
 	font-weight: bold;
 	color: #003161;
+	padding: 0;
 }
 a:link {
 	color: #003161;
@@ -30,6 +31,7 @@ td {
 	font-family: Helvetica;
 	font-size: 12px;
 	font-weight: normal;
+	padding: 0;
 }
 a.navbutton {
 	display: block;
@@ -93,12 +95,6 @@ a.nav-stats:hover {
 .texte-full-name-search {
 	width: 75%;
 }
-.texteinv {
-	font-family: Helvetica;
-	font-size: 12px;
-	font-weight: bold;
-	color: white;
-}
 label {
 	font-family: "trebuchet ms", sans-serif;
 	font-size: 12px;
@@ -152,26 +148,115 @@ img {
 	margin-left: auto;
 	margin-right: auto;
 }
+table.page {
+	width: 100%;
+	height: 100%;
+}
+table.page > tbody > tr:first-child {
+	vertical-align: top;
+}
+table.page > tbody > tr:nth-child(2) {
+	text-align: center;
+	vertical-align: top;
+}
+table.page > tbody > tr:last-child {
+	vertical-align: bottom;
+}
+table.page > tbody > tr:last-child > td {
+	height: 25px;
+}
 td.logo-cell {
+	width: 143px;
 	height: 64px;
 }
 td.navbar-cell {
+	width: 100%;
 	height: 64px;
 	background-image: url(images/fond_haut.png);
 }
 table.navbar-table {
 	margin-left: auto;
 }
-td.tab-top {
+table.navbar-table > tbody > tr > td:nth-last-child(1),
+table.navbar-table > tbody > tr > td:nth-last-child(3) {
+	width: 10px;
+}
+table.navbar-table > tbody > tr > td:nth-last-child(2) {
+	width: 190px;
+	text-align: right;
+	font-family: Helvetica;
+	font-size: 12px;
+	font-weight: bold;
+	color: white;
+}
+table.kadnewnode {
+	margin-left: auto;
+	margin-right: auto;
+	border-spacing: 6px;
+}
+table.prefs-grid {
+	margin-left: auto;
+	margin-right: auto;
+	border-spacing: 6px;
+}
+table.prefs-grid > tbody > tr {
+	text-align: center;
+}
+table.prefs-grid > tbody > tr:not(:last-child) {
+	vertical-align: top;
+}
+table.prefs-grid > tbody > tr > td:nth-child(2) {
+	width: 50%;
+}
+table.prefs-pane {
+	width: 350px;
+	margin-left: auto;
+	margin-right: auto;
+}
+table.prefs-pane > tbody > tr > td:first-child {
+	width: 22px;
+}
+table.prefs-pane > tbody > tr > td:last-child {
+	width: 63px;
+}
+table.prefs-pane > tbody > tr:not(:first-child) > td {
+	height: 25px;
+}
+table.footer-bar {
+	width: 100%;
+	height: 40px;
+}
+table.footer-bar > tbody > tr {
+	text-align: center;
+	vertical-align: middle;
+}
+table.footer-bar > tbody > tr > td {
+	width: 50%;
+}
+table.footer-bar iframe {
+	width: 100%;
+	border: 0;
+}
+table.tab {
+	width: 100%;
+}
+table.tab > tbody > tr > td:first-child,
+table.tab > tbody > tr > td:last-child {
+	width: 24px;
+}
+table.tab > tbody > tr:first-child > td:nth-child(2) {
 	background-image: url(images/tab_top.png);
 }
-td.tab-left {
+table.tab > tbody > tr:nth-child(2) > td:first-child {
 	background-image: url(images/tab_left.png);
 }
-td.tab-right {
+table.tab > tbody > tr:nth-child(2) > td:nth-child(2) {
+	background-color: #FFFFFF;
+}
+table.tab > tbody > tr:nth-child(2) > td:last-child {
 	background-image: url(images/tab_right.png);
 }
-td.tab-bottom {
+table.tab > tbody > tr:last-child > td:nth-child(2) {
 	background-image: url(images/tab_bottom.png);
 }
 .bg-white {
@@ -203,14 +288,68 @@ td.sep-light {
 .h22 {
 	height: 22px;
 }
-.h25 {
-	height: 25px;
+.h30 {
+	height: 30px;
 }
 .h180 {
 	height: 180px;
 }
 .h200 {
 	height: 200px;
+}
+.h90p {
+	height: 90%;
+}
+.h100p {
+	height: 100%;
+}
+.w366 {
+	width: 366px;
+}
+.w500 {
+	width: 500px;
+}
+.w3p {
+	width: 3%;
+}
+.w7p {
+	width: 7%;
+}
+.w19p {
+	width: 19%;
+}
+.w22p {
+	width: 22%;
+}
+.w42p {
+	width: 42%;
+}
+.w50p {
+	width: 50%;
+}
+.w65p {
+	width: 65%;
+}
+.w70p {
+	width: 70%;
+}
+.w100p {
+	width: 100%;
+}
+table {
+	border-spacing: 0;
+}
+table.spacing1 {
+	border-spacing: 1px;
+}
+table.pad4 > tbody > tr > td {
+	padding: 4px;
+}
+iframe.noborder {
+	border: 0;
+}
+body.frame {
+	overflow: hidden;
 }
 th.login-banner {
 	height: 180px;

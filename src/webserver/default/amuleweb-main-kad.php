@@ -67,10 +67,10 @@ function formCommandSubmit(command)
 
 </script>
 <body class="main">
-<table width="100%" height="100%" cellpadding="0" cellspacing="0">
-  <tr class="va-top"> 
-    <td width="143" class="logo-cell"><img src="images/logo.png" width="143" height="64"></td>
-    <td width="100%" class="navbar-cell"> <table class="navbar-table" cellspacing="0" cellpadding="0">
+<table class="page">
+  <tr> 
+    <td class="logo-cell"><img src="images/logo.png" width="143" height="64"></td>
+    <td class="navbar-cell"> <table class="navbar-table">
         <tr> 
           <td><a class="navbutton nav-transfer" href="amuleweb-main-dload.php" title="Transfers"></a></td>
           <td><a class="navbutton nav-shared" href="amuleweb-main-shared.php" title="Shared files"></a></td>
@@ -79,31 +79,31 @@ function formCommandSubmit(command)
           <td><a class="navbutton nav-kad" href="amuleweb-main-kad.php" title="Kad"></a></td>
           <td><a class="navbutton nav-stats" href="amuleweb-main-stats.php" title="Statistics"></a></td>
           <td><img src="images/col.png"></td>
-          <td width="10"></td>
-          <td width="190" class="texteinv al-right"><a href="login.php">exit</a><br> 
+          <td></td>
+          <td><a href="login.php">exit</a><br> 
             <a href="amuleweb-main-log.php">log &bull;</a> <a href="amuleweb-main-prefs.php">configuration</a></td>
-          <td width="10"></td>
+          <td></td>
         </tr>
       </table></td>
   </tr>
-  <tr class="al-center va-top"> 
+  <tr> 
     <td colspan="2"><form name="mainform" action="amuleweb-main-kad.php" method="post">
-        <table width="100%" cellspacing="0" cellpadding="0">
+        <table class="tab">
           <caption>
           KADEMLIA 
           </caption>
           <tr> 
-            <td width="24"><img src="images/tab_top_left.png" width="24" height="24"></td>
-            <td class="tab-top">&nbsp;</td>
-            <td width="24"><img src="images/tab_top_right.png" width="24" height="24"></td>
+            <td><img src="images/tab_top_left.png" width="24" height="24"></td>
+            <td>&nbsp;</td>
+            <td><img src="images/tab_top_right.png" width="24" height="24"></td>
           </tr>
           <tr> 
-            <td width="24" class="tab-left">&nbsp;</td>
-            <td class="bg-white"><table width="100%" cellpadding="0" cellspacing="0">
+            <td>&nbsp;</td>
+            <td><table class="w100p">
                 <!--DWLayoutTable-->
                 <tr class="va-top"> 
                   <td class="h200"><img src="amule_stats_kad.png" width="500" height="200" alt="" title="" /></td>
-                  <td class="va-top"> <table class="kadnewnode center-table" cellpadding="0" cellspacing="6">
+                  <td class="va-top"> <table class="kadnewnode">
                       <tr>
                         <th colspan="2">Network</th>
                       </tr>
@@ -137,26 +137,26 @@ function formCommandSubmit(command)
                     </table></td>
                 </tr>
                 <tr class="va-top"> 
-                  <td class="h20 al-center" width="500">Number of nodes</td>
+                  <td class="h20 al-center w500">Number of nodes</td>
                   <td></td>
                 </tr>
               </table></td>
-            <td width="24" class="tab-right">&nbsp;</td>
+            <td>&nbsp;</td>
           </tr>
           <tr> 
-            <td width="24"><img src="images/tab_bottom_left.png" width="24" height="24"></td>
-            <td class="tab-bottom">&nbsp;</td>
-            <td width="24"><img src="images/tab_bottom_right.png" width="24" height="24"></td>
+            <td><img src="images/tab_bottom_left.png" width="24" height="24"></td>
+            <td>&nbsp;</td>
+            <td><img src="images/tab_bottom_right.png" width="24" height="24"></td>
           </tr>
         </table>
         </form></td>
   </tr>
-  <tr class="va-bottom"> 
-    <td class="h25" colspan="2"> <table width="100%" height="40" cellpadding="0" cellspacing="0">
-        <tr class="al-center va-middle"> 
-          <td width="50%"> <iframe name="stats" src="footer.php" height="35" width="100%" scrolling="no" frameborder="0">edklink</iframe> 
+  <tr> 
+    <td colspan="2"> <table class="footer-bar">
+        <tr> 
+          <td> <iframe name="stats" src="footer.php" height="35">edklink</iframe> 
           </td>
-          <td width="50%"> <iframe name="stats" src="stats.php" height="35" width="100%" scrolling="no" frameborder="0">connection</iframe> 
+          <td> <iframe name="stats" src="stats.php" height="35">connection</iframe> 
           </td>
         </tr>
       </table></td>
