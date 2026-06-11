@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-11 07:28+0200\n"
-"PO-Revision-Date: 2026-06-11 06:18+0000\n"
+"PO-Revision-Date: 2026-06-11 13:12+0000\n"
 "Last-Translator: Diego Heras <ngosang@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/amule/amule-application/es/>\n"
 "Language: es\n"
@@ -4800,9 +4800,8 @@ msgid "English (U.K.)"
 msgstr "Inglés (Reino Unido)"
 
 #: src/Preferences.cpp:646
-#, fuzzy
 msgid "English (U.S.)"
-msgstr "Inglés (Reino Unido)"
+msgstr "Inglés (EE.UU.)"
 
 #: src/Preferences.cpp:647
 msgid "Estonian"

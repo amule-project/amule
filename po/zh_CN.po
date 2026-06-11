@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-11 07:28+0200\n"
-"PO-Revision-Date: 2026-06-11 06:11+0000\n"
+"PO-Revision-Date: 2026-06-11 13:12+0000\n"
 "Last-Translator: Mike Akiba <mike2718@gmail.com>\n"
 "Language-Team: Chinese Simplified <kde-i18n-doc@kde.org>\n"
 "Language: zh_CN\n"
@@ -615,7 +615,7 @@ msgstr " MB/s"
 #: src/MuleTrayIcon.cpp:798 src/MuleTrayIcon.cpp:801
 #: src/utils/wxCas/src/wxcasframe.cpp:1110
 msgid " kB/s"
-msgstr " KB/s"
+msgstr " kB/s"
 
 #: src/amuleDlg.cpp:892
 #, c-format
@@ -1065,7 +1065,7 @@ msgstr "断开连接"
 #: src/GenericClientListCtrl.cpp:937
 #, c-format
 msgid "%.1f kB/s"
-msgstr "%.1f KB/s"
+msgstr "%.1f kB/s"
 
 #: src/ClientRef.cpp:196
 msgid "Not complete"
@@ -2063,7 +2063,7 @@ msgstr "%.1f%% 已完成"
 #: src/utils/wxCas/src/wxcasframe.cpp:1149
 #, c-format
 msgid "%.2f kB/s"
-msgstr "%.2f KB/s"
+msgstr "%.2f kB/s"
 
 #: src/FriendList.cpp:123
 msgid "Failed to open friend list file 'emfriends.met' for reading!"
