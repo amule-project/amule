@@ -413,7 +413,7 @@ function formCommandSubmit(command)
 				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->size, $countSize), "</td>";
 
 				echo "<td class='texte' height='22' align='center'>", CastToXBytes($file->size_done, $countCompleted), "&nbsp;(",
-					((float)$file->size_done*100)/((float)$file->size), "%)</td>";
+					($file->size > 0) ? (((float)$file->size_done*100)/((float)$file->size)) : 0, "%)</td>";
 
 				echo "<td class='texte' height='22' align='center'>", ($file->speed > 0) ? (CastToXBytes($file->speed, $countSpeed) . "/s") : "-", "</td>";
 
@@ -442,7 +442,7 @@ function formCommandSubmit(command)
 			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;text-align: right;padding-right: 20px;' height='22' align='center'>Total</td>";
 			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countSize, $fakevar), "</td>";
 			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", CastToXBytes($countCompleted, $fakevar), "&nbsp;(",
-				((float)$countCompleted*100)/((float)$countSize), "%)</td>";
+				($countSize > 0) ? (((float)$countCompleted*100)/((float)$countSize)) : 0, "%)</td>";
 			echo "<td style='font-size:12px;color:#908c8c;padding-bottom:0;' height='22' align='center'>", ($countSpeed > 0) ? (CastToXBytes($countSpeed, $fakevar) . "/s" ) : "", "</td>";
 			echo "<td style='padding-bottom:0;'></td>";
 			echo "<td style='padding-bottom:0;'></td>";
