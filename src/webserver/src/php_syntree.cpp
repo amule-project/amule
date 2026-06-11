@@ -869,6 +869,19 @@ void var_node_free(PHP_VAR_NODE *var)
 	}
 }
 
+// Free an array value: every element var node, then the container itself.
+// Shared by value_value_free() and the cast functions, which all must
+// dispose of an array before overwriting the value (deleting only the
+// PHP_ARRAY_TYPE would leak the element nodes it points to).
+static void free_array_value(PHP_VALUE_NODE *val)
+{
+	PHP_ARRAY_TYPE *arr = (PHP_ARRAY_TYPE *)val->ptr_val;
+	for(PHP_ARRAY_ITER_TYPE i = arr->array.begin(); i != arr->array.end(); ++i) {
+		var_node_free(i->second);
+	}
+	delete arr;
+}
+
 void value_value_free(PHP_VALUE_NODE *val)
 {
 	switch(val->type) {
@@ -883,12 +896,7 @@ void value_value_free(PHP_VALUE_NODE *val)
 			break;
 		}
 		case PHP_VAL_ARRAY: {
-			for(PHP_ARRAY_ITER_TYPE i = ((PHP_ARRAY_TYPE *)val->ptr_val)->array.begin();
-				i != ((PHP_ARRAY_TYPE *)val->ptr_val)->array.end(); ++i) {
-					PHP_VAR_NODE *var_i = i->second;
-					var_node_free(var_i);
-				}
-			delete ((PHP_ARRAY_TYPE *)val->ptr_val);
+			free_array_value(val);
 			break;
 		}
 		case PHP_VAL_OBJECT: break;
@@ -913,7 +921,7 @@ void cast_value_dnum(PHP_VALUE_NODE *val)
 			free(str);
 			break;
 		}
-		case PHP_VAL_ARRAY:
+		case PHP_VAL_ARRAY: free_array_value(val); val->int_val = 0; break;
 		case PHP_VAL_OBJECT: val->int_val = 0; break;
 		case PHP_VAL_VAR_NODE:
 		case PHP_VAL_INT_DATA: assert(0); break;
@@ -940,7 +948,7 @@ void cast_value_fnum(PHP_VALUE_NODE *val)
 			free(str);
 			break;
 		}
-		case PHP_VAL_ARRAY:
+		case PHP_VAL_ARRAY: free_array_value(val); val->float_val = 0; break;
 		case PHP_VAL_OBJECT: val->float_val = 0; break;
 		case PHP_VAL_VAR_NODE:
 		case PHP_VAL_INT_DATA: assert(0); break;
@@ -958,7 +966,7 @@ void cast_value_str(PHP_VALUE_NODE *val)
 		case PHP_VAL_FLOAT: snprintf(buff, sizeof(buff), "%.02f", val->float_val); break;
 		case PHP_VAL_STRING: return;
 		case PHP_VAL_ARRAY: {
-			delete ((PHP_ARRAY_TYPE *)val->ptr_val);
+			free_array_value(val);
 			strcpy(buff, "Array"); break;
 		}
 		case PHP_VAL_OBJECT: strcpy(buff, "Object"); break;
