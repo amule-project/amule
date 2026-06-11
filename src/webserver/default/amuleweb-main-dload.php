@@ -330,7 +330,7 @@ function formCommandSubmit(command)
 				case "progress": $result = (((float)$a->size_done)/((float)$a->size)) > (((float)$b->size_done)/((float)$b->size)); break;
 				case "name": $result = $a->name > $b->name; break;
 				case "speed": $result = $a->speed > $b->speed; break;
-				case "scrcount": $result = $a->src_count > $b->src_count; break;
+				case "srccount": $result = $a->src_count > $b->src_count; break;
 				case "status": $result = StatusString($a) > StatusString($b); break;
 				case "prio": $result = $a->prio < $b->prio; break;
 			}
