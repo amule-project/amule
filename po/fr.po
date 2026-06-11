@@ -16,14 +16,14 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-11 07:28+0200\n"
-"PO-Revision-Date: 2026-06-07 17:15+0300\n"
+"PO-Revision-Date: 2026-06-11 06:09+0000\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Poedit 3.9\n"
 
 #: src/AddFriend.cpp:45
@@ -4793,9 +4793,8 @@ msgid "English (U.K.)"
 msgstr "Anglais (U.K.)"
 
 #: src/Preferences.cpp:646
-#, fuzzy
 msgid "English (U.S.)"
-msgstr "Anglais (U.K.)"
+msgstr "Anglais (É-U)"
 
 #: src/Preferences.cpp:647
 msgid "Estonian"

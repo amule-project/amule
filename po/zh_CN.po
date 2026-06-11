@@ -14,14 +14,14 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-11 07:28+0200\n"
-"PO-Revision-Date: 2024-12-15 20:08+0100\n"
+"PO-Revision-Date: 2026-06-11 06:11+0000\n"
 "Last-Translator: Mike Akiba <mike2718@gmail.com>\n"
 "Language-Team: Chinese Simplified <kde-i18n-doc@kde.org>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.5\n"
 
 #: src/AddFriend.cpp:45
@@ -48,9 +48,8 @@ msgid ""
 msgstr ""
 
 #: src/AppImageIntegration.cpp:226
-#, fuzzy
 msgid "Add aMule to your application menu?"
-msgstr "在应用程序名称之后"
+msgstr "添加 aMule 到程序菜单吗？"
 
 #: src/AppImageIntegration.cpp:228
 msgid "Install"
@@ -70,9 +69,8 @@ msgstr ""
 
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
 #: src/AppImageIntegration.cpp:274
-#, fuzzy
 msgid "aMule integration failed"
-msgstr "连接失败 "
+msgstr "aMule 集成失败"
 
 #: src/AppImageIntegration.cpp:259
 #, c-format
@@ -215,9 +213,8 @@ msgid "web server running on pid %d"
 msgstr "web 服务器正在运行，pid 为 %d"
 
 #: src/amule.cpp:865
-#, fuzzy
 msgid "You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or build aMule from source with -DBUILD_WEBSERVER=YES and install it."
-msgstr "您要求启动时运行 Web 服务器，但 amuleweb 程序无法 运行， 请先安装包含 Web 服务器的 aMule 版本，或者使用 --enable-webserver 选项编译 aMule，然后运行 make install 进行安装"
+msgstr "您要求启动时运行 Web 服务器，但 amuleweb 程序无法运行， 请先安装包含 amule web 服务器的 aMule 包，或者使用 -DBUILD_WEBSERVER=YES 选项从源码构建 aMule 并安装它。"
 
 #: src/amule.cpp:948
 #, c-format
@@ -432,9 +429,8 @@ msgid "ERROR: aMule daemon cannot be used when external connections are disabled
 msgstr "错误：当远程连接被禁用的时，aMule 服务程序无法使用。要启用远程连接，请使用普通的 aMule，或使用 --ec-config选项启动 amuled 或在文件 ~/aMule/amule.conf 中设置选项\"AcceptExternalConnections\"为1"
 
 #: src/amuled.cpp:145
-#, fuzzy
 msgid "ERROR: A valid password is required to use external connections, and aMule daemon cannot be used without external connections. To run aMule daemon, you must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an appropriate value. Execute amuled with the flag --ec-config to set the password. More information can be found at https://amule-org.github.io/docs"
-msgstr "错误：如果需要使用外部连接，必须设置一个可用的密码，aMule daemon不能在没有启用外部连接的情况下使用。要运行aMule daemon，你必须设置~/.aMule/amule.conf文件中的\"ECPassword\"字段，使它有一个合适的值。执行amuled --ce-config来设置这个密码。更多信息请访问https://amule-org.github.io/docs。"
+msgstr "错误：如果需要使用外部连接，必须设置一个可用的密码，aMule daemon不能在没有启用外部连接的情况下使用。要运行aMule daemon，你必须设置~/.aMule/amule.conf文件中的\"ECPassword\"字段，使它有一个合适的值。执行amuled --ce-config来设置这个密码。更多信息请访问https://amule-org.github.io/docs"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -483,7 +479,9 @@ msgstr "Snapshot:"
 msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
-msgstr "基于 eMule 的“全平台” P2P客户端\n"
+msgstr ""
+"基于 eMule 的“全平台” P2P客户端 \n"
+"\n"
 
 #: src/amuleDlg.cpp:526
 msgid "Website: https://amule-org.github.io \n"
@@ -499,11 +497,12 @@ msgid "Documentation: https://amule-org.github.io/docs \n"
 msgstr "网站：https://amule-org.github.io \n"
 
 #: src/amuleDlg.cpp:529
-#, fuzzy
 msgid ""
 "Issues: https://github.com/amule-org/amule/issues \n"
 "\n"
-msgstr "论坛：https://github.com/amule-org/amule/discussions \n"
+msgstr ""
+"提交问题：https://github.com/amule-org/amule/issues \n"
+"\n"
 
 #: src/amuleDlg.cpp:530
 #, fuzzy
@@ -821,7 +820,7 @@ msgstr "非法链接或已经存在列表中。"
 #: src/amule-remote-gui.cpp:900
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
-msgstr "不能为分类 '%2$s' 创建目录 '%1$s'，保持目录 '%3$s'。"
+msgstr "不能为分类“%2$s”创建目录“%1$s”，保留目录“%3$s”。"
 
 #: src/amule-remote-gui.cpp:1724 src/BaseClient.cpp:1772
 #: src/BaseClient.cpp:2311 src/BaseClient.cpp:2327 src/BaseClient.cpp:2603
@@ -847,7 +846,7 @@ msgstr "无法获取用户 %s 的共享文件"
 
 #: src/BaseClient.cpp:1575
 msgid "Searching buddy for lowid connection"
-msgstr "正在搜索以 Low ID 连接的好友"
+msgstr "正在搜索好友进行 Low ID 连接"
 
 #: src/BaseClient.cpp:1789
 #, c-format
@@ -881,15 +880,15 @@ msgstr "已请求： %s\n"
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "本次运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
-msgstr[1] "本次运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
+msgstr[0] "本次会话运行文件统计：接受了 %d 个请求（总请求数 %d），已传输 %s\n"
+msgstr[1] "本次会话运行文件统计：接受了 %d 个请求（总请求数 %d），已传输 %s\n"
 
 #: src/BaseClient.cpp:2021
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "历史运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
-msgstr[1] "历史运行文件统计：接受了 %d 个请求（总请求数 %d），已传送 %s\n"
+msgstr[0] "所有会话文件统计：接受了 %d 个请求（总请求数 %d），已传输 %s\n"
+msgstr[1] "所有会话文件统计：接受了 %d 个请求（总请求数 %d），已传输 %s\n"
 
 #: src/BaseClient.cpp:2024
 msgid "Requested unknown file"
@@ -1014,8 +1013,8 @@ msgstr[1] "积分文件已载入，%u个已知用户"
 #, c-format
 msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
-msgstr[0] " - %u 个用户的积分已过期！"
-msgstr[1] " - %u 个用户的积分已过期！"
+msgstr[0] " - %u 个客户端的积分已过期！"
+msgstr[1] " - %u 个客户端的积分已过期！"
 
 #: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
@@ -1122,7 +1121,7 @@ msgstr "用户 %s (%u) 共享了目录“%s”"
 #: src/ClientTCPSocket.cpp:917
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
-msgstr "用户 %s（%u）发送了未经请求的共享文件夹列表"
+msgstr "用户 %s（%u）发送了未经请求的共享目录。"
 
 #: src/ClientTCPSocket.cpp:932
 #, c-format
@@ -1641,7 +1640,7 @@ msgstr "已关闭远程连接。"
 
 #: src/ExternalConn.cpp:420
 msgid "External connections disabled due to empty password!"
-msgstr "密码未设置，远程连接已被禁止"
+msgstr "密码未设置，已禁止远程连接！"
 
 #: src/ExternalConn.cpp:441
 msgid "External connections disabled in config file"
@@ -1694,7 +1693,7 @@ msgstr "验证失败：密码错误。"
 
 #: src/ExternalConn.cpp:666
 msgid "Authentication failed: missing password."
-msgstr "验证失败: 没有密码"
+msgstr "认证失败: 没有密码。"
 
 #: src/ExternalConn.cpp:676
 msgid "Invalid request, please authenticate first."
@@ -1790,9 +1789,9 @@ msgid "ExternalConn: adding link '%s'."
 msgstr "远程连接：正在添加链接 '%s'。"
 
 #: src/ExternalConn.cpp:1832
-#, fuzzy, c-format
+#, c-format
 msgid "%d of %d links failed (invalid or already on list)."
-msgstr "非法链接或已经存在列表中。"
+msgstr "%d 个链接失败，共 %d 个（无效或已经在列表中）。"
 
 #: src/ExternalConn.cpp:1959
 msgid "File not found."
@@ -2009,7 +2008,7 @@ msgstr "显示帮助信息。"
 
 #: src/ExternalConnector.cpp:495
 msgid "Host where aMule is running. (default: 127.0.0.1)"
-msgstr "aMule 正在运行的主机(默认: 127.0.0.1)。"
+msgstr "aMule 正在运行的主机 (默认: 127.0.0.1)"
 
 #: src/ExternalConnector.cpp:498
 msgid "aMule's port for External Connection. (default: 4712)"
@@ -2166,7 +2165,7 @@ msgstr "在队列中: %u (%i)"
 
 #: src/GenericClientListCtrl.cpp:1057 src/GenericClientListCtrl.cpp:1086
 msgid "Asked for another file"
-msgstr "已要求其它文件 (A4AF)"
+msgstr "已要求其它文件"
 
 #: src/GenericClientListCtrl.cpp:1076
 msgid "Waiting for upload slot"
@@ -2216,24 +2215,24 @@ msgid "HTTP download: empty response body for %s"
 msgstr ""
 
 #: src/HTTPDownload.cpp:349
-#, fuzzy, c-format
+#, c-format
 msgid "Could not move downloaded file to %s"
-msgstr "存放临时下载文件的文件夹"
+msgstr "无法移动已下载文件到 %s"
 
 #: src/HTTPDownload.cpp:353
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %s (%llu bytes)"
-msgstr "已下载 %d 字节"
+msgstr "已下载 %s （%llu 字节）"
 
 #: src/HTTPDownload.cpp:358
-#, fuzzy, c-format
+#, c-format
 msgid "The URL %s returned: %i"
-msgstr "地址%s已经返回：%i - 错误（%i）！"
+msgstr "URL %s 返回了：%i"
 
 #: src/HTTPDownload.cpp:365
-#, fuzzy, c-format
+#, c-format
 msgid "HTTP download failed for %s: %s"
-msgstr "HTTP 下载已经取消"
+msgstr "%s HTTP 下载失败：%s"
 
 #: src/HTTPDownload.cpp:380
 #, c-format
@@ -2246,14 +2245,14 @@ msgid "No GeoLite2 update URL configured. Download GeoLite2-Country.mmdb manuall
 msgstr ""
 
 #: src/IP2Country.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid "Download new %s from %s"
-msgstr "从 %s 下载新的 GeoIP.dat"
+msgstr "下载新的 %s，来源 %s"
 
 #: src/IP2Country.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Download of %s file failed, aborting update."
-msgstr "下载 GeoIP.dat 文件失败，放弃更新。"
+msgstr "%s 文件下载失败，更新终止。"
 
 #: src/IP2Country.cpp:137 src/IPFilter.cpp:500
 #, c-format
@@ -2271,9 +2270,9 @@ msgid "Successfully updated %s"
 msgstr "成功更新 %s"
 
 #: src/IP2Country.cpp:151
-#, fuzzy, c-format
+#, c-format
 msgid "Error updating %s"
-msgstr "更新 GeoIP.dat 时发生错误"
+msgstr "更新 %s 出错"
 
 #: src/IP2Country.cpp:156 src/IPFilter.cpp:512 src/ServerList.cpp:872
 #, c-format
@@ -2283,7 +2282,7 @@ msgstr "从%s下载%s失败"
 #: src/IP2Country.cpp:192
 #, c-format
 msgid "Failed to load country data for '%s'."
-msgstr "为“%s”载入国家数据失败"
+msgstr "加载 \"%s\" 的地区数据失败。"
 
 #: src/IPFilter.cpp:113
 msgid "Loading IP filters 'ipfilter.dat' and 'ipfilter_static.dat'."

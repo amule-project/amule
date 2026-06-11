@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-11 07:28+0200\n"
-"PO-Revision-Date: 2026-06-10 09:37+0000\n"
+"PO-Revision-Date: 2026-06-11 06:18+0000\n"
 "Last-Translator: Diego Heras <ngosang@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/amule/amule-application/es/>\n"
 "Language: es\n"
@@ -158,7 +158,7 @@ msgstr "Matando la instancia de amuleweb con pid '%d'... "
 
 #: src/amule.cpp:275 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
-msgstr "Errores"
+msgstr "Falló"
 
 #: src/amule.cpp:281
 msgid "aMule OnExit: Terminating core."
@@ -174,7 +174,7 @@ msgstr "Resultados de depuración de memoria en la salida de aMule:"
 
 #: src/amule.cpp:574
 msgid "Your locale has been changed to System Default due to a configuration change. Sorry."
-msgstr "Su configuración regional ha cambiado a la predefinida del sistema debido a un cambio en la configuración. Perdone."
+msgstr "Su configuración regional se ha cambiado a la predefinida del sistema debido a un cambio en la configuración. Disculpe."
 
 #: src/amule.cpp:574 src/amule.cpp:1264 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:355
@@ -236,7 +236,7 @@ msgstr "No se pueden asociar los puertos con la dirección especificada: %s"
 #: src/amule.cpp:972
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
-msgstr "El puerto %u no está disponible. Tendrá Id Baja\n"
+msgstr "El puerto %u no está disponible. Tendrás Id Baja\n"
 
 #: src/amule.cpp:978
 #, c-format
@@ -249,26 +249,26 @@ msgid ""
 msgstr ""
 "¡El puerto %u no está disponible!\n"
 "\n"
-"Eso significa que tendrá Id Baja.\n"
+"Eso significa que tendrás Id Baja.\n"
 "\n"
-"Compruebe la red y asegúrese de que el puerto está abierto para salida y entrada."
+"Comprueba la red y asegúrate de que el puerto está abierto para salida y entrada."
 
 #: src/amule.cpp:1061
 msgid "Failed to create OnlineSig File"
-msgstr "Error al crear el archivo de firma Online"
+msgstr "Error al crear el archivo de firma online"
 
 #: src/amule.cpp:1069
 msgid "Failed to create aMule OnlineSig File"
-msgstr "Error al crear el archivo de firma Online aMule"
+msgstr "Error al crear el archivo de firma online de aMule"
 
 #: src/amule.cpp:1241
 msgid "The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"
-msgstr "El idioma seleccionado no parece estar instalado (nota: intentaré ponerlo de todos modos)"
+msgstr "El idioma seleccionado no parece estar instalado en tu sistema. (Nota: intentaré configurarlo de todos modos)"
 
 #: src/amule.cpp:1250
 #, c-format
 msgid "This is the first time you run aMule %s"
-msgstr "Es la primera vez que inicia aMule %s"
+msgstr "Es la primera vez que inicias aMule %s"
 
 #: src/amule.cpp:1252
 msgid "This version is a testing version, updated daily, and\n"
@@ -348,7 +348,7 @@ msgstr "Archivo de comprobación de versión dañado"
 
 #: src/amule.cpp:1991
 msgid "You are using an outdated version of aMule!"
-msgstr "¡Está usando una versión obsoleta de aMule!"
+msgstr "¡Estás usando una versión desactualizada de aMule!"
 
 #: src/amule.cpp:1993
 #, c-format
@@ -362,7 +362,7 @@ msgstr "La última versión siempre se puede encontrar en https://github.com/amu
 #: src/amule.cpp:1996
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
-msgstr "AVISO: su versión de aMuled está obsoleta: %i.%i.%i < %li.%li.%li"
+msgstr "AVISO: su versión de aMuled está desactualizada: %i.%i.%i < %li.%li.%li"
 
 #: src/amule.cpp:2000
 msgid "Your copy of aMule is up to date."
@@ -434,15 +434,15 @@ msgstr "La red Kad no se puede usar si el puerto UDP está deshabilitado en las 
 
 #: src/amule.cpp:2295
 msgid "Kad network disabled on preferences, not connecting."
-msgstr "Red Kad deshabilitada en las preferencias, no se hace la conexión."
+msgstr "Red Kad deshabilitada en las preferencias, no se conecta."
 
 #: src/amuled.cpp:142
 msgid "ERROR: aMule daemon cannot be used when external connections are disabled. To enable External Connections, use either a normal aMule, start amuled with the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf"
-msgstr "ERROR: el servicio de aMule no se puede usar cuando están desactivadas las conexiones externas. Para activarlas, use o bien un aMule normal, inicie amuled con la opción --ec-config, o bien, establezca \"AcceptExternalConnections\" a 1, en el archivo ~/.aMule/amule.conf"
+msgstr "ERROR: el demonio de aMule no se puede usar cuando están desactivadas las conexiones externas. Para activarlas, use un aMule normal, inicie amuled con la opción --ec-config, o bien, establezca \"AcceptExternalConnections\" a 1, en el archivo ~/.aMule/amule.conf"
 
 #: src/amuled.cpp:145
 msgid "ERROR: A valid password is required to use external connections, and aMule daemon cannot be used without external connections. To run aMule daemon, you must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an appropriate value. Execute amuled with the flag --ec-config to set the password. More information can be found at https://amule-org.github.io/docs"
-msgstr "ERROR: se requiere una contraseña para usar conexiones externas, y el servicio aMule no se puede usar sin conexiones externas. Para iniciar el servicio aMule, debe especificar en el campo \"ECPassword\" del archivo ~/.aMule/amule.conf el valor apropiado. Ejecute amuled con el parámetro --ec-config para especificar la contraseña. Se puede encontrar más información en https://amule-org.github.io/docs"
+msgstr "ERROR: se requiere una contraseña válida para usar conexiones externas, y el demonio de aMule no se puede usar sin conexiones externas. Para iniciar el demonio de aMule, debe especificar en el campo \"ECPassword\" del archivo ~/.aMule/amule.conf el valor apropiado. Ejecute amuled con el parámetro --ec-config para especificar la contraseña. Se puede encontrar más información en https://amule-org.github.io/docs"
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
