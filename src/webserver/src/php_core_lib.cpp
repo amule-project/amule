@@ -305,6 +305,42 @@ void php_native_htmlspecialchars(PHP_VALUE_NODE *result)
 	}
 }
 
+// Escape a string for safe inclusion inside a quoted JavaScript string
+// literal that lives in an HTML <script> element. On top of the classic PHP
+// addslashes() set (\ " ') this also escapes '<' as \x3C so an embedded
+// "</script>" cannot terminate the <script> block (the HTML parser scans
+// raw-text script content for that literal sequence regardless of JS
+// syntax), and CR/LF as \r/\n so a multi-line value can't break the literal.
+// Every escape decodes back to the original character in JS, so the value is
+// displayed verbatim when assigned to a form field.
+void php_native_addslashes(PHP_VALUE_NODE *result)
+{
+	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
+	if ( !si_str ) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 'string' for 'addslashes'");
+		return;
+	}
+	PHP_VALUE_NODE *str = &si_str->var->value;
+	cast_value_str(str);
+	if ( result ) {
+		cast_value_dnum(result);
+		std::string escaped;
+		for(const char *p = str->str_val; *p; p++) {
+			switch(*p) {
+				case '\\': escaped += "\\\\"; break;
+				case '"':  escaped += "\\\""; break;
+				case '\'': escaped += "\\'"; break;
+				case '<':  escaped += "\\x3C"; break;
+				case '\n': escaped += "\\n"; break;
+				case '\r': escaped += "\\r"; break;
+				default: escaped += *p;
+			}
+		}
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup(escaped.c_str());
+	}
+}
+
 
 void php_native_split(PHP_VALUE_NODE *result)
 {
@@ -511,6 +547,10 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
 		"htmlspecialchars",
 		1, php_native_htmlspecialchars,
+	},
+	{
+		"addslashes",
+		1, php_native_addslashes,
 	},
 #ifdef ENABLE_NLS
 	{
