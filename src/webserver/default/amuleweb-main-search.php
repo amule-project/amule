@@ -207,7 +207,18 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
 		}		
 		$search = amule_load_vars("searchresult");
 
-		$sort_order = $HTTP_GET_VARS["sort"];
+		// Whitelist against the column keys my_cmp() understands, same
+		// pattern as the dload/shared/servers pages. This prevents an
+		// attacker-controlled value from being stored in
+		// $_SESSION["search_sort"] and later reflected into rendered
+		// HTML (#869 follow-up). Anything unknown drops to "", which
+		// falls through to the "keep current sort" branch below.
+		$sort_raw = isset($HTTP_GET_VARS["sort"]) ? $HTTP_GET_VARS["sort"] : "";
+		if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
+			$sort_order = $sort_raw;
+		} else {
+			$sort_order = "";
+		}
 
 		if ( $sort_order == "" ) {
 			$sort_order = $_SESSION["search_sort"];
