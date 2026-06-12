@@ -236,17 +236,25 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 			if (searchlist->m_curr_search != -1) {
 				searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
 			}
-		} else if (amuledlg->m_statisticswnd->IsShown()) {
+		}
+		// Stats polling is always on, even when the Statistics dialog
+		// isn't the active tab. statgraphs->HandlePacket() also feeds
+		// the Kad node-count graph on the Network -> Kad sub-tab via
+		// m_kademliawnd->UpdateGraph(); gating on m_statisticswnd left
+		// the Kad graph empty whenever the user wasn't sitting on
+		// Statistics, and produced a visible gap in the Statistics
+		// graph itself across any tab switch. Both requests are cheap
+		// deltas: the graph sends m_lastTimestamp and the daemon
+		// returns only points newer than that (or EC_OP_FAILED "No
+		// points for graph."); the tree request honors
+		// thePrefs::GetStatsInterval().
+		{
 			int sStatsUpdate = thePrefs::GetStatsInterval();
 			uint32 msCur = theStats::GetUptimeMillis();
 			if ((sStatsUpdate > 0) && ((int)(msCur - msPrevStats) > sStatsUpdate*1000)) {
 				msPrevStats = msCur;
 				stattree->DoRequery();
 			}
-			// Pull graph history every poll cycle while the dialog is
-			// visible. The handler asks only for points newer than the
-			// last timestamp the daemon reported, so the EC pipe carries
-			// just the delta even on a 1 Hz timer.
 			statgraphs->DoRequery();
 		}
 		// Back to the roots
