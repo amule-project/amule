@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-11 23:02+0200\n"
-"PO-Revision-Date: 2026-06-11 13:12+0000\n"
+"PO-Revision-Date: 2026-06-12 15:28+0000\n"
 "Last-Translator: Mike Akiba <mike2718@gmail.com>\n"
 "Language-Team: Chinese Simplified <kde-i18n-doc@kde.org>\n"
 "Language: zh_CN\n"
@@ -53,15 +53,15 @@ msgstr "添加 aMule 到程序菜单吗？"
 
 #: src/AppImageIntegration.cpp:228
 msgid "Install"
-msgstr ""
+msgstr "安装"
 
 #: src/AppImageIntegration.cpp:228
 msgid "Not now"
-msgstr ""
+msgstr "不是现在"
 
 #: src/AppImageIntegration.cpp:229
 msgid "Don't ask again"
-msgstr ""
+msgstr "不要再提醒我"
 
 #: src/AppImageIntegration.cpp:248
 msgid "Cannot install desktop integration: the APPDIR environment variable is not set. This usually means the AppImage was launched in a non-standard way."
@@ -97,22 +97,22 @@ msgstr ""
 
 #: src/AppImageIntegration.cpp:287
 msgid "aMule installed"
-msgstr ""
+msgstr "aMule 已安装"
 
 #: src/AppImageIntegration.cpp:289
 msgid "Restart now"
-msgstr ""
+msgstr "立即重启"
 
 #: src/AppImageIntegration.cpp:289
 msgid "Later"
-msgstr ""
+msgstr "稍后重启"
 
 #: src/amuleAppCommon.cpp:174
 #, c-format
 msgid "Could not add %u link from ED2KLinks file (see log for details)."
 msgid_plural "Could not add %u links from ED2KLinks file (see log for details)."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "无法添加 ED2KLinks 文件的 %u 个链接（详情见日志）。"
+msgstr[1] "无法添加 ED2KLinks 文件的 %u 个链接（详情见日志）。"
 
 #: src/amuleAppCommon.cpp:176 src/amule.cpp:866 src/amule.cpp:980
 #: src/amule.cpp:1275 src/amule-remote-gui.cpp:462 src/amule-remote-gui.cpp:514
@@ -137,7 +137,7 @@ msgstr "现在，正在退出主程序..."
 #: src/amule.cpp:270
 #, c-format
 msgid "Terminating amuleweb instance with pid '%d' ... "
-msgstr "终止 pid 为“%d”的 amuleweb 实例 ... "
+msgstr "正在终止 pid 为“%d”的 amuleweb 实例 ... "
 
 #: src/amule.cpp:273
 #, c-format
@@ -188,9 +188,8 @@ msgid "WARNING"
 msgstr "警告"
 
 #: src/amule.cpp:767
-#, fuzzy
 msgid "eD2k server list (server.met)"
-msgstr "server.met 中找到%i个服务器"
+msgstr "eD2k 服务器列表 (server.met)"
 
 #: src/amule.cpp:768
 msgid "Kad bootstrap nodes (nodes.dat)"
@@ -203,9 +202,8 @@ msgid ""
 msgstr ""
 
 #: src/amule.cpp:776
-#, fuzzy
 msgid "Network bootstrap"
-msgstr "网络"
+msgstr "网络引导"
 
 #: src/amule.cpp:861
 #, c-format
@@ -492,9 +490,8 @@ msgid "Forum: https://github.com/amule-org/amule/discussions \n"
 msgstr "论坛：https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:543
-#, fuzzy
 msgid "Documentation: https://amule-org.github.io/docs \n"
-msgstr "网站：https://amule-org.github.io \n"
+msgstr "文档： https://amule-org.github.io/docs \n"
 
 #: src/amuleDlg.cpp:544
 msgid ""
@@ -505,12 +502,11 @@ msgstr ""
 "\n"
 
 #: src/amuleDlg.cpp:545
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2026 aMule Team \n"
 "\n"
 msgstr ""
-"版权所有 (c) 2003-2019 aMule 团队 \n"
+"版权所有 (c) 2003-2026 aMule 团队 \n"
 "\n"
 
 #: src/amuleDlg.cpp:546
@@ -820,7 +816,7 @@ msgstr "非法链接或已经存在列表中。"
 #: src/amule-remote-gui.cpp:900
 #, c-format
 msgid "Can't create directory '%s' for category '%s', keeping directory '%s'."
-msgstr "不能为分类“%2$s”创建目录“%1$s”，保留目录“%3$s”。"
+msgstr "无法创建 “%s” 目录用于 “%s” 分类，保留 “%s” 目录。"
 
 #: src/amule-remote-gui.cpp:1724 src/BaseClient.cpp:1772
 #: src/BaseClient.cpp:2311 src/BaseClient.cpp:2327 src/BaseClient.cpp:2603
@@ -1179,7 +1175,7 @@ msgstr[1] "%u 条评论"
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
 msgid "Banned client %s for sending %s corrupt data of %s total for the file '%s'"
-msgstr "封禁客户端 %1$s，因为向文件 '%4$s' 总共发送的 %3$s 中有 %2$s 的错误数据。"
+msgstr "封禁了客户端 %s，发送了 %s 受损的数据，共发送 %s （文件 “%s”）"
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1336,7 +1332,6 @@ msgid "In progress"
 msgstr "正在处理"
 
 #: src/DataToText.cpp:145
-#, fuzzy
 msgid "ERROR: Out of disk space"
 msgstr "错误：磁盘空间不足"
 
@@ -1746,14 +1741,12 @@ msgid "eD2k is disabled in preferences."
 msgstr "eD2k 在设置中已禁用。"
 
 #: src/ExternalConn.cpp:1368
-#, fuzzy
 msgid "Friend not found."
-msgstr "文件未找到。"
+msgstr "未找到好友。"
 
 #: src/ExternalConn.cpp:1377
-#, fuzzy
 msgid "Client not found."
-msgstr "文件未找到。"
+msgstr "未找到客户端。"
 
 #: src/ExternalConn.cpp:1382
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
@@ -2126,13 +2119,12 @@ msgid "Multiple selection"
 msgstr "多选"
 
 #: src/GenericClientListCtrl.cpp:574
-#, fuzzy
 msgid ""
 "You are not allowed to set more than one friend slot.\n"
 " Only one slot was assigned."
 msgstr ""
 "不允许设置超过一个好友通道。\n"
-" 只能指定一个通道。"
+" 只分配了一个通道。"
 
 #: src/GenericClientListCtrl.cpp:591
 msgid "Send message to user"
@@ -2205,9 +2197,9 @@ msgid "The URL to download can't be empty"
 msgstr "要下载的地址不能为空"
 
 #: src/HTTPDownload.cpp:246
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to create HTTP request for %s"
-msgstr "无法获取用户 %s 的共享文件"
+msgstr "创建 %s 的 HTTP 请求失败"
 
 #: src/HTTPDownload.cpp:337
 #, c-format
@@ -2318,8 +2310,8 @@ msgstr "载入 ipfilter.dat 文件 '%s' 失败，无法打开文件。"
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
-msgstr[0] "自 %2$s 载入 %1$u 个IP段。"
-msgstr[1] "载入 %u 个IP段自 %s。"
+msgstr[0] "载入了 %u 个 IP 段，来源为 “%s”。"
+msgstr[1] "载入了 %u 个 IP 段，来源为 “%s”。"
 
 #: src/IPFilter.cpp:331
 #, c-format
@@ -2378,7 +2370,7 @@ msgstr "Kad：搜索关键词太短"
 
 #: src/kademlia/kademlia/SearchManager.cpp:167
 msgid "Kademlia: Search keyword is already on search list: "
-msgstr "Kad：搜索关键词已经在搜索列表中："
+msgstr "Kademila：搜索关键词已经在搜索列表中： "
 
 #: src/kademlia/routing/RoutingZone.cpp:171
 msgid "Failed to read nodes.dat file - too old. This version (0) is not supported anymore."
@@ -2502,9 +2494,8 @@ msgid "Connection failure"
 msgstr "连接失败"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:254
-#, fuzzy
 msgid "External Connection lost — exiting."
-msgstr "已关闭远程连接。"
+msgstr "外部连接丢失 — 正在退出。"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:318
 msgid "EC connection failed. Empty reply."
@@ -2516,7 +2507,7 @@ msgstr "远程连接：错误回应，握手失败。连接已经关闭。"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:337
 msgid "Succeeded! Connection established to aMule "
-msgstr "成功！已连接至 aMule"
+msgstr "成功！已建立到 aMule 的连接 "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:340
 msgid "Succeeded! Connection established."
@@ -2537,7 +2528,7 @@ msgstr "Asio 线程 %d 已启动"
 
 #: src/ListenSocket.cpp:63
 msgid "ListenSocket: Ok."
-msgstr "监听 Socket: OK."
+msgstr "ListenSocket: Ok."
 
 #: src/ListenSocket.cpp:65
 msgid "ERROR: Could not listen to TCP port."
@@ -2579,39 +2570,32 @@ msgid "Select All"
 msgstr "全选"
 
 #: src/MuleTrayIcon.cpp:367
-#, fuzzy
 msgid "eD2k: "
-msgstr "eD2k"
+msgstr "eD2k： "
 
 #: src/MuleTrayIcon.cpp:370
-#, fuzzy
 msgid "Connected (LowID)"
-msgstr "已连接"
+msgstr "已连接 (LowID)"
 
 #: src/MuleTrayIcon.cpp:371
-#, fuzzy
 msgid "Connected (HighID)"
-msgstr "已连接"
+msgstr "已连接 (HighID)"
 
 #: src/MuleTrayIcon.cpp:380
-#, fuzzy
 msgid "Kad: "
-msgstr " Kad: "
+msgstr "Kad: "
 
 #: src/MuleTrayIcon.cpp:383
-#, fuzzy
 msgid "Connected (firewalled)"
-msgstr "已连接至 Kad 网络 (有防火墙)"
+msgstr "已连接 (有防火墙)"
 
 #: src/MuleTrayIcon.cpp:393
-#, fuzzy
 msgid "Server: "
-msgstr "服务器 IP: "
+msgstr "服务器： "
 
 #: src/MuleTrayIcon.cpp:394
-#, fuzzy
 msgid "Server IP: "
-msgstr "服务器 IP:"
+msgstr "服务器 IP: "
 
 #: src/MuleTrayIcon.cpp:399 src/MuleTrayIcon.cpp:400 src/MuleTrayIcon.cpp:823
 #: src/MuleTrayIcon.cpp:837 src/TextClient.cpp:811 src/TextClient.cpp:824
@@ -3690,9 +3674,8 @@ msgid "Upload graph scale:"
 msgstr "上传图表尺寸："
 
 #: src/muuli_wdr.cpp:1660
-#, fuzzy
 msgid "Colors: "
-msgstr "颜色: "
+msgstr "颜色： "
 
 #: src/muuli_wdr.cpp:1664
 msgid "Background"
@@ -3731,7 +3714,6 @@ msgid "Active connections"
 msgstr "活跃连接"
 
 #: src/muuli_wdr.cpp:1675
-#, fuzzy
 msgid "Systray Icon Speed Bar"
 msgstr "系统状态栏图标速度显示"
 
@@ -4161,14 +4143,13 @@ msgstr "处理不匹配的 IP"
 
 #: src/muuli_wdr.cpp:2438
 msgid "Rejects packet if the client ip is different from the ip where the packet is received from. Use with caution."
-msgstr "拒绝用户IP不同于接收包中的IP的数据包，请谨慎使用。"
+msgstr "如果客户端 ip 和发送数据包的 ip 不同则拒绝数据包。请谨慎使用。"
 
 #: src/muuli_wdr.cpp:2440
 msgid "Use system-wide ipfilter.dat if available"
 msgstr "在可用的情况下使用系统级别的 ipfilter.dat"
 
 #: src/muuli_wdr.cpp:2441
-#, fuzzy
 msgid "If there's no local ipfilter.dat found, allow usage of a system-wide ipfilter file."
 msgstr "如果没有找到本地 ipfilter.dat 文件，则允许使用系统级的IP过滤文件。"
 
@@ -4382,9 +4363,8 @@ msgid "Remember those settings"
 msgstr "记住这些设置"
 
 #: src/muuli_wdr.cpp:2766
-#, fuzzy
 msgid "Force ZLIB compression"
-msgstr "使用 gzip 压缩"
+msgstr "强制使用 ZLIB 压缩"
 
 #: src/muuli_wdr.cpp:2790
 msgid "Enable Verbose Debug-Logging."
@@ -4633,9 +4613,8 @@ msgid "Please choose a folder to search for temporary downloads! (subfolders wil
 msgstr "请选择一个目录用于搜索临时下载文件！（子目录也将被包括）"
 
 #: src/PartFileConvertDlg.cpp:208
-#, fuzzy
 msgid "Do you want the source files of successfully imported downloads be deleted?"
-msgstr "要删除成功导入下载的源文件吗？"
+msgstr "要删除成功导入的下载项的源文件吗？"
 
 #: src/PartFileConvertDlg.cpp:209
 msgid "Remove sources?"
@@ -4724,8 +4703,8 @@ msgstr "%s 的 part.met.seeds 文件存盘失败"
 #, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
-msgstr[0] "保存了 %i 个源：part 文件 %s（%s）"
-msgstr[1] "保存了 %i 个源：part 文件 %s（%s）"
+msgstr[0] "保存了 part 文件的 %i 个源种子：%s (%s)"
+msgstr[1] "保存了 part 文件的 %i 个源种子：%s (%s)"
 
 #: src/PartFile.cpp:1170
 #, c-format
@@ -4796,7 +4775,7 @@ msgstr ""
 #: src/PartFile.cpp:2501 src/PartFile.cpp:2506
 #, c-format
 msgid "EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"
-msgstr "文件结束 当下载  %u 长度 %u (最大 %u) partfile '%s'长度 %u: %s"
+msgstr "计算已下载部分 %u (长度 %u，最多 %u) 的哈希值时出现 EOF 错误，它属于part 文件 “%s”（长度 %u）：%s"
 
 #: src/PartFile.cpp:3223
 #, c-format
@@ -4888,9 +4867,8 @@ msgid "English (U.K.)"
 msgstr "英语（英国）"
 
 #: src/Preferences.cpp:651
-#, fuzzy
 msgid "English (U.S.)"
-msgstr "英语（英国）"
+msgstr "英语（美国）"
 
 #: src/Preferences.cpp:652
 msgid "Estonian"
@@ -5059,7 +5037,7 @@ msgstr "远程控制"
 
 #: src/PrefsUnifiedDlg.cpp:214
 msgid "Online Signature"
-msgstr "在线统计"
+msgstr "在线签名"
 
 #: src/PrefsUnifiedDlg.cpp:215
 msgid "Advanced"
@@ -5145,14 +5123,12 @@ msgid "- External connect port changed.\n"
 msgstr "- 外部连接端口已更改。\n"
 
 #: src/PrefsUnifiedDlg.cpp:753
-#, fuzzy
 msgid "- External connect acceptance changed.\n"
-msgstr "新的远程连接已被接受"
+msgstr "- 更改了外部连接接受。\n"
 
 #: src/PrefsUnifiedDlg.cpp:757
-#, fuzzy
 msgid "- External connect interface changed.\n"
-msgstr "已关闭远程连接。"
+msgstr "- 更改了外部连接接口。\n"
 
 #: src/PrefsUnifiedDlg.cpp:761
 msgid "- Protocol obfuscation support changed.\n"
@@ -5221,9 +5197,8 @@ msgid "Could not remove the autostart-at-login entry."
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1013
-#, fuzzy
 msgid "Autostart"
-msgstr "自动刷新已开始"
+msgstr "自启动"
 
 #: src/PrefsUnifiedDlg.cpp:1078
 msgid ""
@@ -5245,7 +5220,7 @@ msgstr "传入文件"
 
 #: src/PrefsUnifiedDlg.cpp:1229
 msgid "Online Signatures"
-msgstr "在线统计"
+msgstr "在线签名"
 
 #: src/PrefsUnifiedDlg.cpp:1242
 #, c-format
@@ -5396,23 +5371,20 @@ msgid "Sharing them recursively will publish every file underneath on the eD2k/K
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1874
-#, fuzzy
 msgid "Confirm shared folders"
-msgstr "共享的文件夹"
+msgstr "确认共享的文件夹"
 
 #: src/PrefsUnifiedDlg.cpp:1907
-#, fuzzy
 msgid "Reloading shared files…"
-msgstr "刷新共享文件"
+msgstr "正重新加载共享文件…"
 
 #: src/PrefsUnifiedDlg.cpp:1908
 msgid "Scanning for subdirectories…"
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1909
-#, fuzzy
 msgid "Updating shared folders"
-msgstr "共享的文件夹"
+msgstr "正在上传共享的文件夹"
 
 #: src/PrefsUnifiedDlg.cpp:1938
 #, c-format
@@ -5420,9 +5392,9 @@ msgid "Scanned %u directories…"
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1988
-#, fuzzy, c-format
+#, c-format
 msgid "Reloading shared files: %u files scanned"
-msgstr "重新载入共享文件列表。"
+msgstr "正重新加载共享文件：扫描了 %u 个文件"
 
 #: src/SearchDlg.cpp:282
 msgid "It's impossible to search when both eD2k and Kademlia are disabled."
@@ -5591,7 +5563,7 @@ msgstr "载入 server.met 文件 '%s' 失败，遇到未知格式。"
 
 #: src/ServerList.cpp:115
 msgid "Failed to open server.met!"
-msgstr "无法打开 server.met 文件"
+msgstr "未能打开 server.met 文件!"
 
 #: src/ServerList.cpp:126
 #, c-format
@@ -5623,7 +5595,7 @@ msgstr "读取“server.met”时发生 IO 错误: "
 #: src/ServerList.cpp:204
 #, c-format
 msgid "Server not added: [%s:%d] does not specify a valid port."
-msgstr "没有添加服务器：[%s：%d] 端口无效"
+msgstr "没有添加服务器：[%s:%d] 未指定有效端口。"
 
 #: src/ServerList.cpp:222
 #, c-format
@@ -5880,7 +5852,7 @@ msgstr "正在连接至 %s (%s - %s:%i) %s"
 #: src/ServerSocket.cpp:724
 #, c-format
 msgid "Could not solve dns for server %s: Unable to connect!"
-msgstr "无法查找服务器%s的DNS记录： 无法连接！"
+msgstr "无法解析服务器 %s 的 DNS： 无法连接！"
 
 #: src/ServerWnd.cpp:124
 msgid "Server not added: No IP or hostname specified."
@@ -5899,9 +5871,8 @@ msgid "ID"
 msgstr "ID"
 
 #: src/ServerWnd.cpp:200
-#, fuzzy
 msgid "Connection Type:"
-msgstr "连接状态:"
+msgstr "连接类型："
 
 #: src/ServerWnd.cpp:218
 msgid "Kademlia Status:"
@@ -6438,23 +6409,21 @@ msgstr "无效的校验值（长度必须为32个字符）\n"
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
 #: src/TextClient.cpp:613
-#, fuzzy
 msgid ""
 "Invalid search filter syntax.\n"
 "Type 'help search' to get more help.\n"
 msgstr ""
-"未定义搜索类型。\n"
+"无效的搜索筛选语法。\n"
 "输入“help search”以获得更多帮助。\n"
 
 #. TRANSLATORS:
 #. 'help search' is a command to the program, do not translate it.
 #: src/TextClient.cpp:619
-#, fuzzy
 msgid ""
 "No search keyword provided.\n"
 "Type 'help search' to get more help.\n"
 msgstr ""
-"未定义搜索类型。\n"
+"未提供搜索关键词。\n"
 "输入“help search”以获得更多帮助。\n"
 
 #. TRANSLATORS:
@@ -6611,10 +6580,11 @@ msgid ""
 "\n"
 "Example: 'statistics 5' will show only the top 5 versions for each client type.\n"
 msgstr ""
-"可选，一个0-255之间的数字可作为此命令的参数， \n"
-"用于设置用户版本树显示的节点数量。 n参数设为0表示无限制。\n"
+"可将 0〜255 之间的一个数字作为\n"
+"变量传递到这条命令，表示应显示多少项客户端版本子树。\n"
+"传递 0 或者不传递代表“无限制”。\n"
 "\n"
-"示例： 'statistics 5' 将显示每个用户软件的5个版本。\n"
+"比如：“statistics 5” 只显示每个客户端类型的前 5 大版本。\n"
 
 #: src/TextClient.cpp:991
 msgid "Shut down aMule."
@@ -7087,7 +7057,7 @@ msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
 msgstr "您要求了 part 文件哈希（只用于大于 9.5 MB 的文件）"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:80
-#, fuzzy, c-format
+#, c-format
 msgid "%s ---> Non existent file !\n"
 msgstr "%s ---> 文件不存在！\n"
 
@@ -7551,9 +7521,8 @@ msgid "Enter here the directory where you want to generate the statistic image"
 msgstr "输入存放所产生的统计图的目录"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:150
-#, fuzzy
 msgid "Upload periodically your stat image to FTP server"
-msgstr "周期性上传统计图到 FTP 服务器"
+msgstr "定期上传统计图到 FTP 服务器"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:157
 msgid "FTP Url"
@@ -7753,9 +7722,8 @@ msgid "Remove user data (config, ED2K servers, Kad nodes, partfiles)"
 msgstr ""
 
 #: packaging/windows/installer_strings.c:43
-#, fuzzy
 msgid "aMule application files (required)."
-msgstr "连接失败 "
+msgstr "aMule 程序文件（必需）。"
 
 #: packaging/windows/installer_strings.c:44
 msgid "Place an aMule shortcut on the desktop."

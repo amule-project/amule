@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: aMule 2.3.3\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-11 23:02+0200\n"
-"PO-Revision-Date: 2026-06-11 06:06+0000\n"
+"PO-Revision-Date: 2026-06-12 15:33+0000\n"
 "Last-Translator: got3nks <got3nks@users.noreply.github.com>\n"
 "Language-Team: SebastianoPistore.info@protonmail.ch\n"
 "Language: it\n"
@@ -156,7 +156,7 @@ msgstr "Sto terminando l'istanza di amuleweb con pid `%d' ... "
 #: src/amule.cpp:273
 #, c-format
 msgid "Killing amuleweb instance with pid '%d' ... "
-msgstr "Sto terminando l'istanza di amuleweb con pid `%d' ... "
+msgstr "Sto terminando forzatamente l'istanza di amuleweb con pid `%d' ... "
 
 #: src/amule.cpp:275 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
@@ -3112,7 +3112,7 @@ msgid ""
 "and if it's a fake, you can tell that to other users of aMule."
 msgstr ""
 "In un film puoi specificare ad esempio durata, trama, lingua... \n"
-"e se è diverso dal titolo che ha, puoi avvisare gli altri utenti di aMule, in modo che NON LO SCARICHINO."
+"e se è fake, puoi avvisare gli altri utenti di aMule, in modo che NON LO SCARICHINO."
 
 #: src/muuli_wdr.cpp:713
 msgid "File Quality"
@@ -4893,9 +4893,8 @@ msgid "English (U.K.)"
 msgstr "Inglese (Regno Unito)"
 
 #: src/Preferences.cpp:651
-#, fuzzy
 msgid "English (U.S.)"
-msgstr "Inglese (Regno Unito)"
+msgstr "Inglese (U.S.)"
 
 #: src/Preferences.cpp:652
 msgid "Estonian"
