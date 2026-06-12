@@ -386,6 +386,7 @@ enum ECTagNames {
 			EC_TAG_DIRECTORIES_SHARED                 = 0x1A03,
 			EC_TAG_DIRECTORIES_SHARE_HIDDEN           = 0x1A04,
 			EC_TAG_DIRECTORIES_AUTO_RESCAN            = 0x1A05,
+			EC_TAG_DIRECTORIES_FOLLOW_SYMLINKS        = 0x1A06,
 		EC_TAG_PREFS_STATISTICS                   = 0x1B00,
 			EC_TAG_STATSGRAPH_WIDTH                   = 0x1B01,
 			EC_TAG_STATSGRAPH_SCALE                   = 0x1B02,
@@ -841,6 +842,8 @@ wxString GetDebugNameECTagNames(uint16 arg)
 		case 0x1A02: return "EC_TAG_DIRECTORIES_TEMP";
 		case 0x1A03: return "EC_TAG_DIRECTORIES_SHARED";
 		case 0x1A04: return "EC_TAG_DIRECTORIES_SHARE_HIDDEN";
+		case 0x1A05: return "EC_TAG_DIRECTORIES_AUTO_RESCAN";
+		case 0x1A06: return "EC_TAG_DIRECTORIES_FOLLOW_SYMLINKS";
 		case 0x1B00: return "EC_TAG_PREFS_STATISTICS";
 		case 0x1B01: return "EC_TAG_STATSGRAPH_WIDTH";
 		case 0x1B02: return "EC_TAG_STATSGRAPH_SCALE";

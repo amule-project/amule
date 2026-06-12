@@ -280,6 +280,7 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 		dirPrefs.AddTag(dirtag);
 		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_SHARE_HIDDEN, thePrefs::ShareHiddenFiles()));
 		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_AUTO_RESCAN, thePrefs::AutoRescanSharedDirs()));
+		dirPrefs.AddTag(CECTag(EC_TAG_DIRECTORIES_FOLLOW_SYMLINKS, thePrefs::FollowSymlinksInShares()));
 		AddTag(dirPrefs);
 	}
 
@@ -516,6 +517,7 @@ void CEC_Prefs_Packet::Apply() const
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetShareHiddenFiles, EC_TAG_DIRECTORIES_SHARE_HIDDEN);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetAutoRescanSharedDirs, EC_TAG_DIRECTORIES_AUTO_RESCAN);
+		ApplyBoolean(use_tag, thisTab, thePrefs::SetFollowSymlinksInShares, EC_TAG_DIRECTORIES_FOLLOW_SYMLINKS);
 		// Apply the new auto-rescan state immediately on amuled so a
 		// remote toggle from amulegui doesn't need a daemon restart to
 		// take effect.

@@ -583,6 +583,43 @@ bool PrefsUnifiedDlg::TransferToWindow()
 		FindWindow(IDC_SELINCDIR)->Enable(false);
 		FindWindow(IDC_SELTEMPDIR)->Enable(false);
 	}
+
+	// Hide preferences that are persisted only to amulegui's local
+	// remote.conf but never sent to amuled via EC_OP_SET_PREFERENCES
+	// (i.e. not packed by CEC_Prefs_Packet at all). The widget would
+	// otherwise show amulegui's stale local default -- not amuled's
+	// real value -- and editing it would silently affect nothing on
+	// the daemon side. Same gap holds whether amulegui is on a
+	// loopback or remote connection: amuled never reads remote.conf,
+	// so the control is dead in both cases. Hide unconditionally for
+	// CLIENT_GUI. Proxy settings (ID_PROXY_*) are deliberately *not*
+	// in this list -- they're consumed by amulegui's own HTTP client
+	// in ApplyProxyToDefaultSession() for the GeoIP database fetch,
+	// so they remain meaningful in CLIENT_GUI builds.
+	const int amuledOnlyPrefs[] = {
+		IDC_ADDRESS,
+		IDC_UPNP_ENABLED,
+		IDC_UPNPTCPPORT,
+		IDC_UPNPTCPPORTTEXT,
+		IDC_UPNP_WEBSERVER_ENABLED,
+		IDC_WEBUPNPTCPPORT,
+		IDC_WEBUPNPTCPPORTTEXT,
+		IDC_UPNP_EC_ENABLED,
+		IDC_OSDIR,
+		IDC_OSUPDATE,
+		IDC_EXT_CONN_ACCEPT,
+		IDC_EXT_CONN_IP,
+		IDC_EXT_CONN_TCP_PORT,
+		IDC_EXT_CONN_PASSWD,
+		IDC_PARANOID,
+		IDC_IPFILTERSYS,
+		IDC_STARTNEXTFILE_ALPHA,
+	};
+	for (int id : amuledOnlyPrefs) {
+		if (wxWindow* w = FindWindow(id)) {
+			w->Hide();
+		}
+	}
 #endif
 
 	// Protocol obfuscation
