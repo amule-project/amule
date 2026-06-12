@@ -1579,9 +1579,12 @@ void CamuleDlg::DoNetworkRearrange()
 	}
 
 	if (thePrefs::GetNetworkED2K()) {
-#ifndef CLIENT_GUI
+		// "Server Info" sub-panel. Previously CLIENT_GUI-gated because
+		// amulegui had no way to populate ID_SERVERINFO from amuled;
+		// the EC_OP_GET_SERVERINFO / EC_OP_CLEAR_SERVERINFO polling
+		// in CamuleRemoteGuiApp now mirrors the server_msg buffer, so
+		// the tab is shown unconditionally as in the monolithic build.
 		logs_notebook->AddPage(m_logpages[1].page, m_logpages[1].name);
-#endif
 		logs_notebook->AddPage(m_logpages[2].page, m_logpages[2].name);
 	}
 

@@ -643,6 +643,19 @@ public:
 	CStatsUpdaterRem() {}
 };
 
+// Server-message log mirror. amuled accumulates ed2k server messages in
+// CamuleApp::server_msg and serves them as one EC_TAG_STRING tag on
+// EC_OP_GET_SERVERINFO. We poll periodically while the network/servers
+// tab is visible, keep the last-seen snapshot in m_seenSoFar, and feed
+// only the new tail through CamuleDlg::AddServerMessageLine so the GUI
+// text control behaves the same as the monolithic build (append-only,
+// no scroll reset). EC_OP_CLEAR_SERVERINFO is used on the Reset button.
+class CServerInfoHandlerRem : public CECPacketHandlerBase {
+public:
+	wxString m_seenSoFar;
+	virtual void HandlePacket(const CECPacket *);
+};
+
 class CStatTreeRem : public CECPacketHandlerBase {
 	virtual void HandlePacket(const CECPacket *);
 	CRemoteConnect *m_conn;
@@ -719,6 +732,7 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase, public CamuleAppC
 	void OnFinishedHTTPDownload(CMuleInternalEvent& event);
 
 	CStatsUpdaterRem m_stats_updater;
+	CServerInfoHandlerRem m_serverinfo_handler;
 public:
 
 	void Startup();

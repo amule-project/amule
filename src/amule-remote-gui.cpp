@@ -218,6 +218,17 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 			|| amuledlg->m_serverwnd->IsShown()) {
 			// update downloads, shared files and servers
 			knownfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
+			// Server-message log mirror: pull the cumulative
+			// server_msg buffer while the Network tab is up so the
+			// "Server Info" sub-panel reaches feature parity with
+			// the monolithic build. ed2k server messages are bursty
+			// (one-off on connect, the occasional ID-change notice,
+			// disconnect) so the natural ~3 s cadence of step 2 is
+			// plenty.
+			if (amuledlg->m_serverwnd->IsShown()) {
+				CECPacket srvinfo_req(EC_OP_GET_SERVERINFO);
+				m_connect->SendRequest(&m_serverinfo_handler, &srvinfo_req);
+			}
 		} else if (amuledlg->m_transferwnd->IsShown()) {
 			// update both downloads and shared files
 			knownfiles->DoRequery(EC_OP_GET_UPDATE, EC_TAG_KNOWNFILE);
@@ -663,9 +674,63 @@ wxString CamuleRemoteGuiApp::GetLog(bool reset)
 }
 
 
-wxString CamuleRemoteGuiApp::GetServerLog(bool)
+wxString CamuleRemoteGuiApp::GetServerLog(bool reset)
 {
+	if (reset) {
+		// Mirror the GetLog reset path: clear the remote buffer, the
+		// local snapshot we diff against, and the on-screen text ctrl.
+		CECPacket req(EC_OP_CLEAR_SERVERINFO);
+		m_connect->SendPacket(&req);
+		m_serverinfo_handler.m_seenSoFar.clear();
+		amuledlg->ResetLog(ID_SERVERINFO);
+	}
 	return "";
+}
+
+
+void CamuleRemoteGuiApp::AddServerMessageLine(wxString &msg)
+{
+	// Drives the same CamuleDlg::AddServerMessageLine the monolithic
+	// build calls -- ID_SERVERINFO text ctrl + 500-char truncation +
+	// auto-scroll. Cumulative-log diffing happens in
+	// CServerInfoHandlerRem::HandlePacket; by the time we land here
+	// `msg` is a single new line, ready to append.
+	amuledlg->AddServerMessageLine(msg);
+}
+
+
+void CServerInfoHandlerRem::HandlePacket(const CECPacket *packet)
+{
+	// amuled answers EC_OP_GET_SERVERINFO with one EC_TAG_STRING
+	// carrying the full cumulative server_msg buffer. Diff against
+	// what we've already shown so the text ctrl receives only new
+	// lines (preserves scroll position and avoids re-rendering tens
+	// of KB on every poll).
+	const CECTag *tag = packet->GetFirstTagSafe();
+	if (!tag || !tag->IsString()) {
+		return;
+	}
+	const wxString fullLog = tag->GetStringData();
+
+	wxString delta;
+	if (fullLog.StartsWith(m_seenSoFar)) {
+		delta = fullLog.Mid(m_seenSoFar.length());
+	} else {
+		// amuled was restarted, or someone else issued a clear, so the
+		// remote cumulative buffer is shorter or unrelated. Wipe the
+		// local view and start fresh from the current snapshot.
+		theApp->amuledlg->ResetLog(ID_SERVERINFO);
+		delta = fullLog;
+	}
+	m_seenSoFar = fullLog;
+
+	while (!delta.IsEmpty()) {
+		wxString line = delta.BeforeFirst('\n');
+		delta = delta.AfterFirst('\n');
+		if (!line.IsEmpty()) {
+			theApp->AddServerMessageLine(line);
+		}
+	}
 }
 
 
