@@ -236,17 +236,25 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 			if (searchlist->m_curr_search != -1) {
 				searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
 			}
-		} else if (amuledlg->m_statisticswnd->IsShown()) {
+		}
+		// Stats polling is always on, even when the Statistics dialog
+		// isn't the active tab. statgraphs->HandlePacket() also feeds
+		// the Kad node-count graph on the Network -> Kad sub-tab via
+		// m_kademliawnd->UpdateGraph(); gating on m_statisticswnd left
+		// the Kad graph empty whenever the user wasn't sitting on
+		// Statistics, and produced a visible gap in the Statistics
+		// graph itself across any tab switch. Both requests are cheap
+		// deltas: the graph sends m_lastTimestamp and the daemon
+		// returns only points newer than that (or EC_OP_FAILED "No
+		// points for graph."); the tree request honors
+		// thePrefs::GetStatsInterval().
+		{
 			int sStatsUpdate = thePrefs::GetStatsInterval();
 			uint32 msCur = theStats::GetUptimeMillis();
 			if ((sStatsUpdate > 0) && ((int)(msCur - msPrevStats) > sStatsUpdate*1000)) {
 				msPrevStats = msCur;
 				stattree->DoRequery();
 			}
-			// Pull graph history every poll cycle while the dialog is
-			// visible. The handler asks only for points newer than the
-			// last timestamp the daemon reported, so the EC pipe carries
-			// just the delta even on a 1 Hz timer.
 			statgraphs->DoRequery();
 		}
 		// Back to the roots
@@ -2820,6 +2828,34 @@ void CStatGraphRem::HandlePacket(const CECPacket * p)
 		theApp->amuledlg->m_statisticswnd->UpdateStatGraphs(
 			m_peakConnections, update);
 		theApp->amuledlg->m_kademliawnd->UpdateGraph(update);
+
+		// Mirror the decoded point into the client-side history ring
+		// so COScopeCtrl::PlotHistory (now shared with monolithic) can
+		// replay across tab switches and auto-rescale wipes without
+		// another daemon round-trip. Field mapping mirrors
+		// CStatistics::GetPointsForUpdate so the same GetHistory +
+		// ComputeAverages code paths read it back correctly:
+		//   kBytes{Received,Sent} / kadNodesTotal are stored as
+		//   (session rate * timestamp) so ComputeAverages's
+		//   "kValueRun / sTimestamp" recovers the session-avg trend.
+		// Per-point timestamps are reconstructed from the batch by
+		// stepping back from m_lastTimestamp at 1 s spacing (matches
+		// the scale we request in DoRequery).
+		const double sStep = 1.0;
+		const double pointTs = m_lastTimestamp - (double)(numPoints - 1 - i) * sStep;
+		HR hr = {
+			/* kBytesSent     */ (double)sessionUl  * pointTs,
+			/* kBytesReceived */ (double)sessionDl  * pointTs,
+			/* kBpsUpCur      */ ul_kbps,
+			/* kBpsDownCur    */ dl_kbps,
+			/* sTimestamp     */ pointTs,
+			/* cntDownloads   */ (uint16)cntDown,
+			/* cntUploads     */ (uint16)cntUp,
+			/* cntConnections */ (uint16)conn,
+			/* kadNodesCur    */ (uint16)kad,
+			/* kadNodesTotal  */ (uint64)((double)sessionKad * pointTs)
+		};
+		theApp->m_statistics->AddHistoryRecord(hr);
 	}
 }
 

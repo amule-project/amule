@@ -29,6 +29,7 @@
 
 #include "Constants.h"		// Needed for StatsGraphType
 #include "StatTree.h"		// Needed for CStatTreeItem* classes
+#include "GetTickCount.h"	// Needed for GetTickCount64 in CPreciseRateCounter ctor
 
 #include <deque>		// Needed for std::deque
 
@@ -54,7 +55,10 @@ typedef struct HistoryRecord {
 } HR;
 
 
-#ifndef CLIENT_GUI
+// CPreciseRateCounter is the only history-bookkeeping primitive that
+// CLIENT_GUI needs (for the runAvg trend on remote stats graphs), so
+// it lives outside the #ifndef CLIENT_GUI gate even though the
+// CStatTree* derivatives below are monolithic-only.
 
 /**
  * Counts precise rate/average on added bytes/values.
@@ -139,6 +143,8 @@ class CPreciseRateCounter {
 	bool		m_count_average;
 };
 
+
+#ifndef CLIENT_GUI
 
 class CECTag;
 
@@ -531,9 +537,35 @@ private:
 	static uint64 s_statData[sdTotalItems];
 	uint8 average_minutes;
 
+	// History ring for the Statistics + Network->Kad graphs. Filled by
+	// CStatGraphRem::HandlePacket (one HR per decoded point) so the
+	// shared COScopeCtrl::PlotHistory path can replay across tab
+	// switches and auto-rescale events without a daemon round-trip.
+	std::list<HR>				listHR;
+	typedef std::list<HR>::iterator		listPOS;
+	typedef std::list<HR>::reverse_iterator	listRPOS;
+	HR					hrInit;
+	CPreciseRateCounter			m_graphRunningAvgDown;
+	CPreciseRateCounter			m_graphRunningAvgUp;
+	CPreciseRateCounter			m_graphRunningAvgKad;
+
  public:
 	CStatistics(CRemoteConnect &conn);
 	~CStatistics();
+
+	// Shared with the monolithic build (definitions outside any
+	// CLIENT_GUI gate in Statistics.cpp): assemble a contiguous arrays
+	// of sample points from listHR for the requested graph_type, and
+	// fold the per-trend running averages on top.
+	unsigned GetHistory(unsigned cntPoints, double sStep, double sFinal,
+		const std::vector<float *> &ppf, StatsGraphType which_graph);
+
+	// CLIENT_GUI-only producer (no analogue on monolithic, where
+	// RecordHistory() does the equivalent push from local counters).
+	// Appends one HR record to listHR and caps the ring at
+	// kHistoryCap so memory stays bounded across long sessions.
+	void AddHistoryRecord(const HR& hr);
+	static const size_t kHistoryCap = 1800;	// ~30 min @ 1 Hz
 
 	static	uint64	GetUptimeMillis();
 	static	uint64	GetUptimeSeconds();
@@ -576,6 +608,10 @@ private:
 
  private:
 	static	CStatTreeItemBase*	GetTreeRoot()		{ return s_statTree; }
+
+	// Helper for GetHistory(); shared with the monolithic build.
+	void ComputeAverages(HR **pphr, listRPOS pos, unsigned cntFilled,
+		double sStep, const std::vector<float *> &ppf, StatsGraphType which_graph);
 };
 
 #endif /* !CLIENT_GUI / CLIENT_GUI */
