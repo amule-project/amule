@@ -416,7 +416,7 @@ wxSizer *transferBottomPane( wxWindow *parent, bool call_fit, bool set_sizer )
     item3->Add( item4, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item5 = new wxStaticText( parent, ID_CLIENTCOUNT, "0", wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
-    item5->SetForegroundColour( *wxBLUE );
+    item5->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item3->Add( item5, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT, 5) );
     item1->Add( item3, 0, wxALIGN_CENTER, 5 );
 
@@ -472,7 +472,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     item3->Add( item4, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item5 = new wxStaticText( parent, IDC_FNAME, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->SetForegroundColour( *wxBLUE );
+    item5->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item3->Add( item5, wxSizerFlags().CenterVertical().Border(wxLEFT, 5) );
     item1->Add( item3, wxSizerFlags().Expand().CenterVertical() );
     wxBoxSizer *item6 = new wxBoxSizer( wxHORIZONTAL );
@@ -480,7 +480,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item7 = new wxStaticText( parent, -1, _("met-File :"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->Add( item7, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item8 = new wxStaticText( parent, IDC_METFILE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->SetForegroundColour( *wxBLUE );
+    item8->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item6->Add( item8, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item1->Add( item6, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 0) );
     wxBoxSizer *item9 = new wxBoxSizer( wxHORIZONTAL );
@@ -488,7 +488,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item10 = new wxStaticText( parent, -1, _("Hash :"), wxDefaultPosition, wxDefaultSize, 0 );
     item9->Add( item10, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item11 = new wxStaticText( parent, IDC_FHASH, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->SetForegroundColour( *wxBLUE );
+    item11->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item9->Add( item11, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item1->Add( item9, wxSizerFlags().Expand().CenterVertical() );
     wxFlexGridSizer *item12 = new wxFlexGridSizer( 2, 0, 0 );
@@ -500,7 +500,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item14 = new wxStaticText( parent, -1, _("Filesize :"), wxDefaultPosition, wxDefaultSize, 0 );
     item13->Add( item14, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item15 = new wxStaticText( parent, IDC_FSIZE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item15->SetForegroundColour( *wxBLUE );
+    item15->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item13->Add( item15, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item12->Add( item13, wxSizerFlags().Expand().CenterVertical() );
     wxBoxSizer *item16 = new wxBoxSizer( wxHORIZONTAL );
@@ -508,7 +508,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item17 = new wxStaticText( parent, -1, _("Partfilestatus :"), wxDefaultPosition, wxDefaultSize, 0 );
     item16->Add( item17, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item18 = new wxStaticText( parent, IDC_PFSTATUS, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->SetForegroundColour( *wxBLUE );
+    item18->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item16->Add( item18, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item12->Add( item16, wxSizerFlags().Expand().CenterVertical() );
     wxBoxSizer *item19 = new wxBoxSizer( wxHORIZONTAL );
@@ -516,7 +516,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item20 = new wxStaticText( parent, -1, _("Last seen complete :"), wxDefaultPosition, wxDefaultSize, 0 );
     item19->Add( item20, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item21 = new wxStaticText( parent, IDC_LASTSEENCOMPL, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item21->SetForegroundColour( *wxBLUE );
+    item21->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item19->Add( item21, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item12->Add( item19, wxSizerFlags().Expand().CenterVertical() );
     item1->Add( item12, wxSizerFlags().Expand().CenterVertical() );
@@ -533,7 +533,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item26 = new wxStaticText( parent, -1, _("Found Sources :"), wxDefaultPosition, wxDefaultSize, 0 );
     item25->Add( item26, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item27 = new wxStaticText( parent, IDC_SOURCECOUNT, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item27->SetForegroundColour( *wxBLUE );
+    item27->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item25->Add( item27, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item24->Add( item25, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 0) );
     wxBoxSizer *item28 = new wxBoxSizer( wxHORIZONTAL );
@@ -541,7 +541,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item29 = new wxStaticText( parent, -1, _("Transferring Sources :"), wxDefaultPosition, wxDefaultSize, 0 );
     item28->Add( item29, wxSizerFlags().Expand().CenterVertical().Border(wxLEFT, 5) );
     wxStaticText *item30 = new wxStaticText( parent, IDC_SOURCECOUNT2, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item30->SetForegroundColour( *wxBLUE );
+    item30->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item28->Add( item30, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item24->Add( item28, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 0) );
     wxBoxSizer *item31 = new wxBoxSizer( wxHORIZONTAL );
@@ -549,7 +549,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item32 = new wxStaticText( parent, -1, _("Filepart-Count :"), wxDefaultPosition, wxDefaultSize, 0 );
     item31->Add( item32, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item33 = new wxStaticText( parent, IDC_PARTCOUNT, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item33->SetForegroundColour( *wxBLUE );
+    item33->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item31->Add( item33, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item24->Add( item31, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 0) );
     wxBoxSizer *item34 = new wxBoxSizer( wxHORIZONTAL );
@@ -557,7 +557,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item35 = new wxStaticText( parent, -1, _("Available :"), wxDefaultPosition, wxDefaultSize, 0 );
     item34->Add( item35, wxSizerFlags().Expand().CenterVertical().Border(wxLEFT, 5) );
     wxStaticText *item36 = new wxStaticText( parent, IDC_PARTAVAILABLE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item36->SetForegroundColour( *wxBLUE );
+    item36->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item34->Add( item36, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item24->Add( item34, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 0) );
     wxBoxSizer *item37 = new wxBoxSizer( wxHORIZONTAL );
@@ -565,7 +565,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item38 = new wxStaticText( parent, -1, _("Datarate :"), wxDefaultPosition, wxDefaultSize, 0 );
     item37->Add( item38, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item39 = new wxStaticText( parent, IDC_DATARATE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item39->SetForegroundColour( *wxBLUE );
+    item39->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item37->Add( item39, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item24->Add( item37, wxSizerFlags().Expand().CenterVertical() );
     wxBoxSizer *item40 = new wxBoxSizer( wxHORIZONTAL );
@@ -573,7 +573,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item41 = new wxStaticText( parent, -1, _("Download Active Time: "), wxDefaultPosition, wxDefaultSize, 0 );
     item40->Add( item41, wxSizerFlags().Expand().CenterVertical().Border(wxLEFT, 5) );
     wxStaticText *item42 = new wxStaticText( parent, IDC_DLACTIVETIME, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item42->SetForegroundColour( *wxBLUE );
+    item42->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item40->Add( item42, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item24->Add( item40, wxSizerFlags().Expand().CenterVertical() );
     wxBoxSizer *item43 = new wxBoxSizer( wxHORIZONTAL );
@@ -581,7 +581,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item44 = new wxStaticText( parent, -1, _("Transferred :"), wxDefaultPosition, wxDefaultSize, 0 );
     item43->Add( item44, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item45 = new wxStaticText( parent, IDC_TRANSFERRED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item45->SetForegroundColour( *wxBLUE );
+    item45->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item43->Add( item45, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item24->Add( item43, wxSizerFlags().Expand().CenterVertical() );
     wxBoxSizer *item46 = new wxBoxSizer( wxHORIZONTAL );
@@ -591,14 +591,14 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxBoxSizer *item48 = new wxBoxSizer( wxHORIZONTAL );
 
     wxStaticText *item49 = new wxStaticText( parent, IDC_COMPLSIZE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item49->SetForegroundColour( *wxBLUE );
+    item49->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item48->Add( item49, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item50 = new wxStaticText( parent, -1, " / (", wxDefaultPosition, wxDefaultSize, 0 );
     item48->Add( item50, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item51 = new wxStaticText( parent, IDC_PROCCOMPL, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item51->SetForegroundColour( *wxBLUE );
+    item51->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item48->Add( item51, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item52 = new wxStaticText( parent, -1, ")", wxDefaultPosition, wxDefaultSize, 0 );
@@ -620,7 +620,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item57 = new wxStaticText( parent, -1, _("Lost to corruption :"), wxDefaultPosition, wxDefaultSize, 0 );
     item56->Add( item57, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item58 = new wxStaticText( parent, IDC_FD_STATS1, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item58->SetForegroundColour( *wxBLUE );
+    item58->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item56->Add( item58, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item55->Add( item56, wxSizerFlags().Expand().CenterVertical() );
     wxBoxSizer *item59 = new wxBoxSizer( wxHORIZONTAL );
@@ -628,7 +628,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item60 = new wxStaticText( parent, -1, _("Gained by compression :"), wxDefaultPosition, wxDefaultSize, 0 );
     item59->Add( item60, wxSizerFlags().Expand().CenterVertical().Border(wxLEFT, 5) );
     wxStaticText *item61 = new wxStaticText( parent, IDC_FD_STATS2, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item61->SetForegroundColour( *wxBLUE );
+    item61->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item59->Add( item61, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item55->Add( item59, wxSizerFlags().Expand().CenterVertical() );
     wxBoxSizer *item62 = new wxBoxSizer( wxHORIZONTAL );
@@ -636,7 +636,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item63 = new wxStaticText( parent, -1, _("Packages saved by I.C.H. :"), wxDefaultPosition, wxDefaultSize, 0 );
     item62->Add( item63, wxSizerFlags().Expand().CenterVertical() );
     wxStaticText *item64 = new wxStaticText( parent, IDC_FD_STATS3, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item64->SetForegroundColour( *wxBLUE );
+    item64->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item62->Add( item64, wxSizerFlags().Center().Border(wxLEFT, 5) );
     item55->Add( item62, wxSizerFlags().Expand().CenterVertical() );
     item53->Add( item55, wxSizerFlags().Expand().CenterVertical() );
@@ -754,7 +754,7 @@ wxSizer *commentLstDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item3 = new wxStaticText( parent, -1, "(", wxDefaultPosition, wxDefaultSize, 0 );
     item2->Add( item3, wxSizerFlags().CenterVertical().Border(wxLEFT, 5) );
     wxStaticText *item4 = new wxStaticText( parent, IDC_CMSTATUS, _("No comments"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->SetForegroundColour( *wxBLUE );
+    item4->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item2->Add( item4, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item5 = new wxStaticText( parent, -1, ")", wxDefaultPosition, wxDefaultSize, 0 );
@@ -1030,10 +1030,10 @@ wxSizer *clientDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxBoxSizer *item7 = new wxBoxSizer( wxVERTICAL );
 
     wxStaticText *item8 = new wxStaticText( parent, ID_DNAME, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->SetForegroundColour( *wxBLUE );
+    item8->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item7->Add( item8, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
     wxStaticText *item9 = new wxStaticText( parent, ID_DHASH, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item9->SetForegroundColour( *wxBLUE );
+    item9->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item7->Add( item9, wxSizerFlags().Expand().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     item3->Add( item7, 0, wxALIGN_CENTER, 5 );
 
@@ -1045,50 +1045,50 @@ wxSizer *clientDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item11 = new wxStaticText( parent, -1, _("Client software:"), wxDefaultPosition, wxDefaultSize, 0 );
     item10->Add( item11, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item12 = new wxStaticText( parent, ID_DSOFT, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->SetForegroundColour( *wxBLUE );
+    item12->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item10->Add( item12, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     item10->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item13 = new wxStaticText( parent, -1, _("Client version:"), wxDefaultPosition, wxDefaultSize, 0 );
     item10->Add( item13, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item14 = new wxStaticText( parent, ID_DVERSION, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->SetForegroundColour( *wxBLUE );
+    item14->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item10->Add( item14, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item15 = new wxStaticText( parent, -1, _("IP address:"), wxDefaultPosition, wxDefaultSize, 0 );
     item10->Add( item15, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item16 = new wxStaticText( parent, ID_DIP, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->SetForegroundColour( *wxBLUE );
+    item16->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item10->Add( item16, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     item10->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item17 = new wxStaticText( parent, -1, _("User ID:"), wxDefaultPosition, wxDefaultSize, 0 );
     item10->Add( item17, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item18 = new wxStaticText( parent, ID_DID, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->SetForegroundColour( *wxBLUE );
+    item18->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item10->Add( item18, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item19 = new wxStaticText( parent, -1, _("Server IP:"), wxDefaultPosition, wxDefaultSize, 0 );
     item10->Add( item19, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item20 = new wxStaticText( parent, ID_DSIP, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item20->SetForegroundColour( *wxBLUE );
+    item20->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item10->Add( item20, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     item10->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item21 = new wxStaticText( parent, -1, _("Server name:"), wxDefaultPosition, wxDefaultSize, 0 );
     item10->Add( item21, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item22 = new wxStaticText( parent, ID_DSNAME, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item22->SetForegroundColour( *wxBLUE );
+    item22->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item10->Add( item22, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item23 = new wxStaticText( parent, -1, _("Obfuscation:"), wxDefaultPosition, wxDefaultSize, 0 );
     item10->Add( item23, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item24 = new wxStaticText( parent, IDT_OBFUSCATION, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item24->SetForegroundColour( *wxBLUE );
+    item24->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item10->Add( item24, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     item10->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item25 = new wxStaticText( parent, -1, _("Kad:"), wxDefaultPosition, wxDefaultSize, 0 );
     item10->Add( item25, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item26 = new wxStaticText( parent, IDT_KAD, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item26->SetForegroundColour( *wxBLUE );
+    item26->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item10->Add( item26, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     item1->Add( item10, wxSizerFlags().Expand().CenterVertical() );
     item0->Add( item1, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
@@ -1100,7 +1100,7 @@ wxSizer *clientDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item30 = new wxStaticText( parent, -1, _("Current request:"), wxDefaultPosition, wxDefaultSize, 0 );
     item29->Add( item30, wxSizerFlags().CenterVertical().Border(wxALL, 5) );
     wxStaticText *item31 = new wxStaticText( parent, ID_DDOWNLOADING, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item31->SetForegroundColour( *wxBLUE );
+    item31->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item29->Add( item31, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
     item27->Add( item29, wxSizerFlags().Expand().CenterVertical() );
     wxFlexGridSizer *item32 = new wxFlexGridSizer( 5, 0, 0 );
@@ -1110,38 +1110,38 @@ wxSizer *clientDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item33 = new wxStaticText( parent, -1, _("Average upload rate:"), wxDefaultPosition, wxDefaultSize, 0 );
     item32->Add( item33, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item34 = new wxStaticText( parent, ID_DAVDR, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item34->SetForegroundColour( *wxBLUE );
+    item34->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item32->Add( item34, wxSizerFlags().Expand().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     item32->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item35 = new wxStaticText( parent, -1, _("Average download rate:"), wxDefaultPosition, wxDefaultSize, 0 );
     item32->Add( item35, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item36 = new wxStaticText( parent, ID_DAVUR, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item36->SetForegroundColour( *wxBLUE );
+    item36->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item32->Add( item36, wxSizerFlags().Expand().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item37 = new wxStaticText( parent, -1, _("Uploaded (session):"), wxDefaultPosition, wxDefaultSize, 0 );
     item32->Add( item37, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item38 = new wxStaticText( parent, ID_DDOWN, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item38->SetForegroundColour( *wxBLUE );
+    item38->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item32->Add( item38, wxSizerFlags().Expand().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     item32->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item39 = new wxStaticText( parent, -1, _("Downloaded (session):"), wxDefaultPosition, wxDefaultSize, 0 );
     item32->Add( item39, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item40 = new wxStaticText( parent, ID_DDUP, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item40->SetForegroundColour( *wxBLUE );
+    item40->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item32->Add( item40, wxSizerFlags().Expand().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item41 = new wxStaticText( parent, -1, _("Uploaded (total):"), wxDefaultPosition, wxDefaultSize, 0 );
     item32->Add( item41, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item42 = new wxStaticText( parent, ID_DDOWNTOTAL, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item42->SetForegroundColour( *wxBLUE );
+    item42->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item32->Add( item42, wxSizerFlags().Expand().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     item32->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item43 = new wxStaticText( parent, -1, _("Downloaded (total):"), wxDefaultPosition, wxDefaultSize, 0 );
     item32->Add( item43, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item44 = new wxStaticText( parent, ID_DUPTOTAL, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item44->SetForegroundColour( *wxBLUE );
+    item44->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item32->Add( item44, wxSizerFlags().Expand().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     item27->Add( item32, wxSizerFlags().Expand().CenterVertical() );
     item0->Add( item27, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
@@ -1155,26 +1155,26 @@ wxSizer *clientDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item48 = new wxStaticText( parent, -1, _("DL/UP modifier:"), wxDefaultPosition, wxDefaultSize, 0 );
     item47->Add( item48, wxSizerFlags().CenterVertical().Border(wxALL, 5) );
     wxStaticText *item49 = new wxStaticText( parent, ID_DRATIO, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item49->SetForegroundColour( *wxBLUE );
+    item49->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item47->Add( item49, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
     item47->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item50 = new wxStaticText( parent, -1, _("Secure ident:"), wxDefaultPosition, wxDefaultSize, 0 );
     item47->Add( item50, wxSizerFlags().CenterVertical().Border(wxALL, 5) );
     wxStaticText *item51 = new wxStaticText( parent, IDC_CDIDENT, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item51->SetForegroundColour( *wxBLUE );
+    item51->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item47->Add( item51, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
     wxStaticText *item52 = new wxStaticText( parent, -1, _("Queue rank:"), wxDefaultPosition, wxDefaultSize, 0 );
     item47->Add( item52, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item53 = new wxStaticText( parent, ID_QUEUERANK, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item53->SetForegroundColour( *wxBLUE );
+    item53->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item47->Add( item53, wxSizerFlags().Expand().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     item47->Add( 20, 20, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item54 = new wxStaticText( parent, -1, _("Queue score:"), wxDefaultPosition, wxDefaultSize, 0 );
     item47->Add( item54, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     wxStaticText *item55 = new wxStaticText( parent, ID_DSCORE, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item55->SetForegroundColour( *wxBLUE );
+    item55->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item47->Add( item55, wxSizerFlags().Expand().CenterVertical().Border(wxLEFT|wxRIGHT|wxBOTTOM, 5) );
     item45->Add( item47, wxSizerFlags().Expand().CenterVertical() );
     item0->Add( item45, wxSizerFlags().Expand().CenterVertical().Border(wxALL, 5) );
@@ -2941,7 +2941,7 @@ wxSizer *sharedfilesBottomDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item5 = new wxStaticText( parent, -1, _("Requested"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->Add( item5, wxSizerFlags().Center().Border(wxLEFT|wxRIGHT, 5) );
     wxStaticText *item6 = new wxStaticText( parent, IDC_SREQUESTED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->SetForegroundColour( *wxBLUE );
+    item6->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item4->Add( item6, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT, 5) );
     item2->Add( item4, wxSizerFlags().Center().Border(wxALL, 5) );
     wxFlexGridSizer *item7 = new wxFlexGridSizer( 3, 0, 0 );
@@ -2949,7 +2949,7 @@ wxSizer *sharedfilesBottomDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item8 = new wxStaticText( parent, -1, _("Active Uploads"), wxDefaultPosition, wxDefaultSize, 0 );
     item7->Add( item8, wxSizerFlags().Center().Border(wxLEFT|wxRIGHT, 5) );
     wxStaticText *item9 = new wxStaticText( parent, IDC_SACCEPTED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item9->SetForegroundColour( *wxBLUE );
+    item9->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item7->Add( item9, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT, 5) );
     item2->Add( item7, wxSizerFlags().Center().Border(wxALL, 5) );
     wxFlexGridSizer *item10 = new wxFlexGridSizer( 3, 0, 0 );
@@ -2957,7 +2957,7 @@ wxSizer *sharedfilesBottomDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item11 = new wxStaticText( parent, -1, _("Transferred"), wxDefaultPosition, wxDefaultSize, 0 );
     item10->Add( item11, wxSizerFlags().Center().Border(wxLEFT|wxRIGHT, 5) );
     wxStaticText *item12 = new wxStaticText( parent, IDC_STRANSFERRED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->SetForegroundColour( *wxBLUE );
+    item12->SetForegroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_HOTLIGHT) );
     item10->Add( item12, wxSizerFlags().CenterVertical().Border(wxLEFT|wxRIGHT, 5) );
     item2->Add( item10, wxSizerFlags().Center().Border(wxALL, 5) );
     wxStaticText *item13 = new wxStaticText( parent, -1, _("Percent of total files"), wxDefaultPosition, wxDefaultSize, 0 );
