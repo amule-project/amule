@@ -353,6 +353,15 @@ protected:
 	void OnItemDeleted(wxListEvent& evt);
 	void OnAllItemsDeleted(wxListEvent& evt);
 
+	/**
+         * Get column index by name.
+         *
+         * @param[in] name Internal name of the colunm whose index is needed.
+         *
+         * @return The column index, or -1 in case the name was invalid.
+         */
+        int GetColumnIndex(const wxString& name) const;
+
 private:
 	/**
 	 * Resets the current TTS session.
@@ -431,15 +440,6 @@ private:
 	 * (out of range), or the column name hasn't been set.
 	 */
 	int GetColumnDefaultWidth(int column) const;
-
-	/**
-	 * Get column index by name.
-	 *
-	 * @param[in] name Internal name of the colunm whose index is needed.
-	 *
-	 * @return The column index, or -1 in case the name was invalid.
-	 */
-	int GetColumnIndex(const wxString& name) const;
 
 	/**
 	 * Find out the new index of the column by the old index.
