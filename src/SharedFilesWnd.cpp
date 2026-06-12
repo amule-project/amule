@@ -73,7 +73,7 @@ CSharedFilesWnd::CSharedFilesWnd( wxWindow* pParent )
 	peerslistctrl->SetShowing(show);
 	// Load the last used splitter position
 	m_splitter = config->Read( "/GUI/SharedWnd/Splitter", 463l );
-	m_clientShow = (EClientShow) config->Read("/GUI/SharedWnd/ClientShowMode", ClientShowSelected);
+	m_clientShow = (EClientShow) config->Read("/GUI/SharedWnd/ClientShowMode", ClientShowAll);
 	m_radioClientMode->SetSelection(m_clientShow);
 }
 
