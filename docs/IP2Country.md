@@ -13,9 +13,10 @@ auto-update from inside aMule — no `amule.conf` editing required.
 
 ## Build prerequisites
 
-`libmaxminddb` must be installed and discoverable by CMake's
-`find_path(maxminddb.h)` and `find_library(maxminddb)` for the
-IP2Country feature to be compiled in.
+`ENABLE_IP2COUNTRY` defaults to `ON`. `libmaxminddb` must be installed
+for the configure step to succeed; if it isn't, CMake emits a fatal
+error pointing to this page. Users who don't want the country-flag
+feature can opt out with `-DENABLE_IP2COUNTRY=NO`.
 
 | Platform               | Install                                                  |
 |------------------------|----------------------------------------------------------|
@@ -26,9 +27,8 @@ IP2Country feature to be compiled in.
 | MSYS2 (Windows clang)  | `pacman -S mingw-w64-clang-aarch64-libmaxminddb` (ARM64) |
 | MSYS2 (Windows MinGW)  | `pacman -S mingw-w64-x86_64-libmaxminddb` (x64)          |
 
-If the library is not present at configure time, `ENABLE_IP2COUNTRY` is
-set to `OFF`, the feature is omitted from the build with a status
-message, and the `IP2Country` preferences tab is hidden.
+This matches the pattern used by `ENABLE_NLS`, `ENABLE_BFD`, and
+`ENABLE_UPNP` — defaulted on, hard-fail on missing dep, explicit opt-out.
 
 
 ## The IP2Country preferences tab

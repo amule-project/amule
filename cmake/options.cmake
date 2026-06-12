@@ -164,21 +164,7 @@ if (NEED_LIB_MULECOMMON)
 endif()
 
 if (NEED_LIB_MULEAPPCOMMON)
-	# Auto-default ENABLE_IP2COUNTRY based on whether libmaxminddb is
-	# discoverable. The probe also runs from cmake/ip2country.cmake when
-	# the feature is actually wired up, but this pre-check lets the
-	# option default to ON whenever the user has the library installed —
-	# avoiding the silent-no-feature surprise where a distro shipping
-	# libmaxminddb-dev still produced an aMule build with no country-
-	# flag UI because no one passed -DENABLE_IP2COUNTRY=YES. Users can
-	# still force the feature off with -DENABLE_IP2COUNTRY=NO.
-	find_path    (MAXMINDDB_INCLUDE_DIR maxminddb.h)
-	find_library (MAXMINDDB_LIB         maxminddb)
-	if (MAXMINDDB_INCLUDE_DIR AND MAXMINDDB_LIB)
-		option (ENABLE_IP2COUNTRY "compile with GeoIP IP2Country library" ON)
-	else()
-		option (ENABLE_IP2COUNTRY "compile with GeoIP IP2Country library" OFF)
-	endif()
+	option (ENABLE_IP2COUNTRY "compile with GeoIP IP2Country library" ON)
 	option (ENABLE_MMAP "enable using mapped memory if supported")
 	option (ENABLE_NLS "enable national language support" ON)
 	# Backtrace symbol resolution: ON => use libbfd for in-process

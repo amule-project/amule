@@ -131,7 +131,7 @@ Common `-D` options (`YES` / `NO`):
 | `BUILD_FILEVIEW`     | NO      | console file viewer (experimental)                               |
 | `ENABLE_NLS`         | YES     | native-language support (gettext)                                |
 | `ENABLE_UPNP`        | YES     | UPnP port forwarding                                             |
-| `ENABLE_IP2COUNTRY`  | NO      | libmaxminddb country flags ([docs/IP2Country.md](IP2Country.md)) |
+| `ENABLE_IP2COUNTRY`  | YES     | libmaxminddb country flags ([docs/IP2Country.md](IP2Country.md)) |
 
 For the full list:
 
