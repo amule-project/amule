@@ -433,7 +433,6 @@ void COScopeCtrl::DrawPoints(const std::vector<float *> &apf, unsigned cntPoints
 }
 
 
-#ifndef CLIENT_GUI
 void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefresh)
 {
 	wxASSERT(graph_type != GRAPH_INVALID);
@@ -477,12 +476,6 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 		// No history (yet) for Kad.
 	}
 }
-#else
-//#warning CORE/GUI -- EC needed
-void COScopeCtrl::PlotHistory(unsigned, bool, bool)
-{
-}
-#endif
 
 
 void COScopeCtrl::RecreateGraph(bool bRefresh)

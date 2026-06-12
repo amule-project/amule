@@ -2828,6 +2828,34 @@ void CStatGraphRem::HandlePacket(const CECPacket * p)
 		theApp->amuledlg->m_statisticswnd->UpdateStatGraphs(
 			m_peakConnections, update);
 		theApp->amuledlg->m_kademliawnd->UpdateGraph(update);
+
+		// Mirror the decoded point into the client-side history ring
+		// so COScopeCtrl::PlotHistory (now shared with monolithic) can
+		// replay across tab switches and auto-rescale wipes without
+		// another daemon round-trip. Field mapping mirrors
+		// CStatistics::GetPointsForUpdate so the same GetHistory +
+		// ComputeAverages code paths read it back correctly:
+		//   kBytes{Received,Sent} / kadNodesTotal are stored as
+		//   (session rate * timestamp) so ComputeAverages's
+		//   "kValueRun / sTimestamp" recovers the session-avg trend.
+		// Per-point timestamps are reconstructed from the batch by
+		// stepping back from m_lastTimestamp at 1 s spacing (matches
+		// the scale we request in DoRequery).
+		const double sStep = 1.0;
+		const double pointTs = m_lastTimestamp - (double)(numPoints - 1 - i) * sStep;
+		HR hr = {
+			/* kBytesSent     */ (double)sessionUl  * pointTs,
+			/* kBytesReceived */ (double)sessionDl  * pointTs,
+			/* kBpsUpCur      */ ul_kbps,
+			/* kBpsDownCur    */ dl_kbps,
+			/* sTimestamp     */ pointTs,
+			/* cntDownloads   */ (uint16)cntDown,
+			/* cntUploads     */ (uint16)cntUp,
+			/* cntConnections */ (uint16)conn,
+			/* kadNodesCur    */ (uint16)kad,
+			/* kadNodesTotal  */ (uint64)((double)sessionKad * pointTs)
+		};
+		theApp->m_statistics->AddHistoryRecord(hr);
 	}
 }
 

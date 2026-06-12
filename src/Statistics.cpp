@@ -59,9 +59,10 @@
 #endif /* __BSD__ */
 
 
-#ifndef CLIENT_GUI
-
 /*----- CPreciseRateCounter -----*/
+// Shared with CLIENT_GUI: used by the runAvg trend ([1]) in
+// CStatistics::ComputeAverages, which both builds drive through
+// CStatistics::GetHistory.
 
 void CPreciseRateCounter::CalculateRate(uint64_t now)
 {
@@ -99,6 +100,8 @@ void CPreciseRateCounter::CalculateRate(uint64_t now)
 	}
 }
 
+
+#ifndef CLIENT_GUI
 
 /*----- CStatTreeItemRateCounter -----*/
 
@@ -420,6 +423,10 @@ void CStatistics::RecordHistory()
 }
 
 
+#endif // !CLIENT_GUI -- GetHistory + ComputeAverages are shared with
+       // CLIENT_GUI's CStatistics so COScopeCtrl::PlotHistory has a
+       // single implementation for both builds.
+
 unsigned CStatistics::GetHistory(	// Assemble arrays of sample points for a graph
 	unsigned cntPoints,		// number of sample points to assemble
 	double sStep,			// time difference between sample points
@@ -494,6 +501,7 @@ unsigned CStatistics::GetHistory(	// Assemble arrays of sample points for a grap
 	return cntFilled;
 }
 
+#ifndef CLIENT_GUI
 
 unsigned CStatistics::GetHistoryForWeb(  // Assemble arrays of sample points for the webserver
 	unsigned cntPoints,		// maximum number of sample points to assemble
@@ -645,6 +653,8 @@ unsigned CStatistics::GetHistoryForGui(
 }
 
 
+#endif // !CLIENT_GUI -- ComputeAverages is shared too.
+
 void CStatistics::ComputeAverages(
 	HR		**pphr,		// pointer to (end of) array of assembled history records
 	listRPOS	pos,		// position in history list from which to backtrack
@@ -733,6 +743,7 @@ void CStatistics::ComputeAverages(
 	}
 }
 
+#ifndef CLIENT_GUI
 
 GraphUpdateInfo CStatistics::GetPointsForUpdate()
 {
@@ -1065,9 +1076,18 @@ void CStatistics::RemoveKnownClient(uint32 clientSoft, uint32 clientVersion, con
 #else /* CLIENT_GUI */
 
 CStatistics::CStatistics(CRemoteConnect &conn)
-	: m_conn(conn)
+	: m_conn(conn),
+	  m_graphRunningAvgDown(thePrefs::GetStatsAverageMinutes() * 60 * 1000, true),
+	  m_graphRunningAvgUp(thePrefs::GetStatsAverageMinutes() * 60 * 1000, true),
+	  m_graphRunningAvgKad(thePrefs::GetStatsAverageMinutes() * 60 * 1000, true)
 {
 	s_start_time = GetTickCount64();
+	average_minutes = thePrefs::GetStatsAverageMinutes();
+
+	// Sentinel HR used by GetHistory when sTarget underflows past the
+	// beginning of listHR; matches the monolithic ctor's hrInit.
+	HR hr = {0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0};
+	hrInit = hr;
 
 	// Init Tree
 	s_statTree = new CStatTreeItemBase(_("Statistics"), 0);
@@ -1081,7 +1101,17 @@ CStatistics::CStatistics(CRemoteConnect &conn)
 
 CStatistics::~CStatistics()
 {
+	listHR.clear();
 	delete s_statTree;
+}
+
+
+void CStatistics::AddHistoryRecord(const HR& hr)
+{
+	listHR.push_back(hr);
+	while (listHR.size() > kHistoryCap) {
+		listHR.pop_front();
+	}
 }
 
 
