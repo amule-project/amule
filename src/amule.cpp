@@ -2301,6 +2301,12 @@ void CamuleApp::StopKad()
 	// Stop Kad if it's running
 	if (Kademlia::CKademlia::IsRunning()) {
 		Kademlia::CKademlia::Stop();
+		// Refresh the status-bar Kad indicator immediately; the
+		// symmetric BootstrapKad() path already does this after
+		// Start(). Without it the "Disconnect Kad" button in
+		// KadDlg leaves a stale "Connected to Kad" indicator
+		// until the next periodic refresh in the main timer.
+		ShowConnectionState();
 	}
 }
 
