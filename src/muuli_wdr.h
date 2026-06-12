@@ -282,6 +282,16 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit = TRUE, bool set_s
 // regeneration of muuli_wdr.* doesn't reuse this ID for something else.
 #define IDC_AUTO_RESCAN_SHARED 10333
 #define IDC_FOLLOW_SYMLINKS_SHARED 10343
+// 10344..10354 are ID_BUTTON* toolbar IDs; 10355..10399 free. The
+// IDs below name orphan labels / static boxes so amulegui can hide
+// them via PrefsUnifiedDlg's amuledOnlyPrefs[].
+#define IDC_ADDRESSTEXT 10355
+#define IDC_EXT_CONN_PARAMS_BOX 10356
+#define IDC_EXT_CONN_IPTEXT 10357
+#define IDC_EXT_CONN_TCPPORTTEXT 10358
+#define IDC_EXT_CONN_PASSWDTEXT 10359
+#define IDC_OSDIRTEXT 10360
+#define IDC_OSUPDATETEXT 10361
 wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 // IP2Country (GeoIP) preferences tab. 10400+ leaves a clear gap above

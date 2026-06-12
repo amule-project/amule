@@ -1379,7 +1379,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxFlexGridSizer *item25 = new wxFlexGridSizer( 2, 0, 0 );
     item25->AddGrowableCol( 1 );
 
-    wxStaticText *item26 = new wxStaticText( parent, -1, _("Bind local address to IP (empty for any):"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item26 = new wxStaticText( parent, IDC_ADDRESSTEXT, _("Bind local address to IP (empty for any):"), wxDefaultPosition, wxDefaultSize, 0 );
     item25->Add( item26, wxSizerFlags().CenterVertical().Border(wxRIGHT, 5) );
     wxTextCtrl *item27 = new wxTextCtrl( parent, IDC_ADDRESS, "", wxDefaultPosition, wxSize(80,-1), 0 );
     item27->SetToolTip( _("Advanced users only: If you have multiple network interfaces, enter the address of the interface to which aMule should be bound.") );
@@ -1838,7 +1838,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("External Connection Parameters") );
+    wxStaticBox *item2 = new wxStaticBox( parent, IDC_EXT_CONN_PARAMS_BOX, _("External Connection Parameters") );
     wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
     wxCheckBox *item3 = new wxCheckBox( parent, IDC_EXT_CONN_ACCEPT, _("Accept external connections"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1848,7 +1848,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     item4->AddGrowableCol( 0 );
     item4->AddGrowableCol( 1 );
 
-    wxStaticText *item5 = new wxStaticText( parent, -1, _("IP of the listening interface:"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+    wxStaticText *item5 = new wxStaticText( parent, IDC_EXT_CONN_IPTEXT, _("IP of the listening interface:"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
     item4->Add( item5, wxSizerFlags().Expand().CenterVertical().Border(wxLEFT, 5) );
     CMuleTextCtrl *item6 = new CMuleTextCtrl( parent, IDC_EXT_CONN_IP, "", wxDefaultPosition, wxDefaultSize, 0 );
     item6->SetToolTip( _("Enter here a valid ip in the a.b.c.d format for the listening EC interface. An empty field or 0.0.0.0 will mean any interface.") );
@@ -1857,7 +1857,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     wxFlexGridSizer *item7 = new wxFlexGridSizer( 2, 0, 0 );
     item7->AddGrowableCol( 0 );
 
-    wxStaticText *item8 = new wxStaticText( parent, -1, _("TCP port:"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item8 = new wxStaticText( parent, IDC_EXT_CONN_TCPPORTTEXT, _("TCP port:"), wxDefaultPosition, wxDefaultSize, 0 );
     item7->Add( item8, wxSizerFlags(1).CenterVertical().Border(wxRIGHT, 0) );
     wxSpinCtrl *item9 = new wxSpinCtrl( parent, IDC_EXT_CONN_TCP_PORT, "10000", wxDefaultPosition, wxDefaultSize, 0, 1025, 65535, 10000 );
     item7->Add( item9, 0, wxALIGN_CENTER, 5 );
@@ -1867,7 +1867,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     item1->Add( item10, wxSizerFlags().CenterVertical().Border(wxLEFT, 5) );
     wxBoxSizer *item11 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item12 = new wxStaticText( parent, -1, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item12 = new wxStaticText( parent, IDC_EXT_CONN_PASSWDTEXT, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
     item11->Add( item12, wxSizerFlags().Center().Border(wxLEFT|wxRIGHT, 5) );
     CMuleTextCtrl *item13 = new CMuleTextCtrl( parent, IDC_EXT_CONN_PASSWD, "", wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
     item11->Add( item13, wxSizerFlags(1).Center().Border(wxLEFT, 5) );
@@ -2461,7 +2461,7 @@ wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit, bool set_size
     item0->Add( item1, wxSizerFlags().Expand().CenterVertical().Border(wxTOP, 0) );
     wxBoxSizer *item2 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Update Frequency (Secs):"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item3 = new wxStaticText( parent, IDC_OSUPDATETEXT, _("Update Frequency (Secs):"), wxDefaultPosition, wxDefaultSize, 0 );
     item2->Add( item3, wxSizerFlags().Center().Border(wxALL, 0) );
     wxSpinCtrl *item4 = new wxSpinCtrl( parent, IDC_OSUPDATE, "5", wxDefaultPosition, wxDefaultSize, 0, 0, 600, 5 );
     item4->SetToolTip( _("Change the frequency (in seconds) of Online Signature updates.") );
@@ -2472,7 +2472,7 @@ wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit, bool set_size
     wxFlexGridSizer *item5 = new wxFlexGridSizer( 3, 0, 0 );
     item5->AddGrowableCol( 1 );
 
-    wxStaticText *item6 = new wxStaticText( parent, -1, _("Save online signature file in: "), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item6 = new wxStaticText( parent, IDC_OSDIRTEXT, _("Save online signature file in: "), wxDefaultPosition, wxDefaultSize, 0 );
     item5->Add( item6, wxSizerFlags().CenterVertical().Border(wxALL, 0) );
     CMuleTextCtrl *item7 = new CMuleTextCtrl( parent, IDC_OSDIR, "", wxDefaultPosition, wxSize(80,-1), 0 );
     item5->Add( item7, 0, wxALIGN_CENTER, 5 );
