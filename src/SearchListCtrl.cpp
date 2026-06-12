@@ -792,11 +792,15 @@ void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 	if (thePrefs::GetNetworkED2K() && theApp->serverconnect->GetCurrentServer() != NULL
 			&& theApp->serverconnect->GetCurrentServer()->GetRelatedSearchSupport()) {
 
-		CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(item));
 		theApp->searchlist->StopSearch(true);
 		theApp->amuledlg->m_searchwnd->ResetControls();
-		CastByID( IDC_SEARCHNAME, theApp->amuledlg->m_searchwnd, wxTextCtrl )->
-			SetValue("related::" + file->GetFileHash().Encode());
+		wxString keyword("related");
+		do {
+			CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(item));
+			keyword << "::" << file->GetFileHash().Encode();
+			item = GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		} while (item > -1);
+		CastByID( IDC_SEARCHNAME, theApp->amuledlg->m_searchwnd, wxTextCtrl )->SetValue(keyword);
 		wxChoice* searchtype = CastByID( ID_SEARCHTYPE, theApp->amuledlg->m_searchwnd, wxChoice );
 		searchtype->SetSelection(searchtype->FindString(_("Local")));
 		theApp->amuledlg->m_searchwnd->StartNewSearch();

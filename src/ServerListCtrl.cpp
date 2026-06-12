@@ -99,9 +99,11 @@ CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPo
 #if !defined(CLIENT_GUI)
 	InsertColumn( COLUMN_SERVER_TCPFLAGS,	_("TCP Flags"),		wxLIST_FORMAT_LEFT,  80, "t" );
 	InsertColumn( COLUMN_SERVER_UDPFLAGS,	_("UDP Flags"),		wxLIST_FORMAT_LEFT,  80, "u" );
-	#ifndef __DEBUG__
-	SetColumnWidth(GetColumnIndex(_("TCP Flags")), 0);
-	SetColumnWidth(GetColumnIndex(_("UDP Flags")), 0);
+	#if !defined(__DEBUG__)
+	//InsertColumn created the columns with their default 80 width, which is required to unhide
+	//them on the context menu. Now, for Release builds, we will hide them by default
+	SetColumnWidth(GetColumnIndex("t"), 0);
+	SetColumnWidth(GetColumnIndex("u"), 0);
 	#endif
 #endif
 
