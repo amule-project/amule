@@ -232,8 +232,48 @@ wxDialog(parent, -1, _("Preferences"),
 	preferencesDlgTop(this, false);
 
 	m_PrefsIcons = CastChild(ID_PREFSLISTCTRL, wxListCtrl);
-	wxImageList *icon_list = new wxImageList(16, 16);
+	// Pad the tab icons so they don't sit flush against the cell label
+	// and (on Mac) so they don't drop to the row baseline. wxOSX
+	// NSTableView draws the image with zero native horizontal gap and
+	// vertically centres the bitmap; wxGTK and wxMSW already insert a
+	// few pixels of horizontal padding natively and align top-to-top.
+	//
+	// Two-dimensional padding gated on Mac only:
+	//  * Right pad — visible gap between icon and the cell text.
+	//  * Bottom pad — taller bitmap; with the 16x16 source pinned to
+	//    the bitmap's top, NSTableView's vertical centring then lifts
+	//    the icon up to sit alongside the text baseline instead of
+	//    falling to the bottom of the row.
+	const int kPrefsIconW = 16;
+	const int kPrefsIconH = 16;
+#ifdef __WXOSX__
+	const int kPrefsIconRightPad  = 14;
+	const int kPrefsIconBottomPad = 9;
+#else
+	const int kPrefsIconRightPad  = 0;
+	const int kPrefsIconBottomPad = 0;
+#endif
+	const int kPrefsImageW = kPrefsIconW + kPrefsIconRightPad;
+	const int kPrefsImageH = kPrefsIconH + kPrefsIconBottomPad;
+	wxImageList *icon_list = new wxImageList(kPrefsImageW, kPrefsImageH);
 	m_PrefsIcons->AssignImageList(icon_list, wxIMAGE_LIST_SMALL);
+
+	// Wrap a 16x16 source bitmap into a kPrefsImageW x kPrefsImageH
+	// canvas with the source pinned to the top-left, right and bottom
+	// pads transparent. No-op when both pads are 0.
+	auto padIcon = [&](const wxBitmap& src) -> wxBitmap {
+		if (kPrefsIconRightPad == 0 && kPrefsIconBottomPad == 0) {
+			return src;
+		}
+		wxImage img = src.ConvertToImage();
+		if (!img.HasAlpha()) {
+			img.InitAlpha();
+		}
+		wxImage padded = img.Size(
+			wxSize(kPrefsImageW, kPrefsImageH),
+			wxPoint(0, 0));
+		return wxBitmap(padded);
+	};
 
 	// Add the single column used
 	m_PrefsIcons->InsertColumn(
@@ -253,12 +293,12 @@ wxDialog(parent, -1, _("Preferences"),
 		// migration; new tabs should prefer the PNG path.
 #ifdef ENABLE_IP2COUNTRY
 		if (pages[i].m_function == PreferencesIP2CountryTab) {
-			icon_list->Add(wxArtProvider::GetBitmap(
-				"amule:prefs_ip2country", wxART_OTHER, wxSize(16, 16)));
+			icon_list->Add(padIcon(wxArtProvider::GetBitmap(
+				"amule:prefs_ip2country", wxART_OTHER, wxSize(kPrefsIconW, kPrefsIconH))));
 		} else
 #endif
 		{
-			icon_list->Add(amuleSpecial(pages[i].m_imageidx));
+			icon_list->Add(padIcon(amuleSpecial(pages[i].m_imageidx)));
 		}
 		m_PrefsIcons->InsertItem(i, wxGetTranslation(pages[i].m_title), i);
 	}
