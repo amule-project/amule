@@ -372,9 +372,6 @@ void php_native_split(PHP_VALUE_NODE *result)
 		PHP_VALUE_NODE *limit_node = &si->var->value;
 		cast_value_dnum(limit_node);
 		split_limit = limit_node->int_val;
-		if ( split_limit <= 0 ) {
-			php_report_error(PHP_ERROR, "Invalid argument: limit");
-		}
 	}
 #ifdef PHP_STANDALONE_EN
 	regex_t preg;
