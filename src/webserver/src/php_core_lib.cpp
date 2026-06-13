@@ -350,7 +350,7 @@ void php_native_split(PHP_VALUE_NODE *result)
 		return;
 	}
 	PHP_VALUE_NODE *pattern, *string_to_split;
-	unsigned int split_limit = 0;
+	int split_limit = -1;
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	if ( si ) {
 		pattern = &si->var->value;
@@ -372,6 +372,9 @@ void php_native_split(PHP_VALUE_NODE *result)
 		PHP_VALUE_NODE *limit_node = &si->var->value;
 		cast_value_dnum(limit_node);
 		split_limit = limit_node->int_val;
+		if ( split_limit <= 0 ) {
+			php_report_error(PHP_ERROR, "Invalid argument: limit");
+		}
 	}
 #ifdef PHP_STANDALONE_EN
 	regex_t preg;
