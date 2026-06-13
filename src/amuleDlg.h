@@ -190,6 +190,15 @@ public:
 
 	int			m_srv_split_pos;
 
+	// Last frame geometry seen while NOT iconized. SaveGUIPrefs uses
+	// it as the fallback when the user exits from a minimized state
+	// (otherwise the iconized GetPosition() returns sentinel values
+	// like -32000,-32000 on Windows and the saved pos is unusable).
+	wxPoint		m_lastShownPos;
+	wxSize		m_lastShownSize;
+	bool		m_lastShownMaximized;
+	bool		m_lastShownValid;
+
 	wxImageList m_imagelist;
 	wxImageList m_tblist;
 
@@ -203,6 +212,11 @@ protected:
 	void OnBnClickedFast(wxCommandEvent& evt);
 	void OnGUITimer(wxTimerEvent& evt);
 	void OnMainGUISizeChange(wxSizeEvent& evt);
+	void OnMainGUIMove(wxMoveEvent& evt);
+	// Stash the current (non-iconized) pos / size / maximized state so
+	// SaveGUIPrefs can fall back to the last good geometry if the user
+	// exits from a minimized window.
+	void CacheLastShownGeometry();
 	void OnExit(wxCommandEvent& evt);
 
 private:
