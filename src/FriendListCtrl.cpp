@@ -57,7 +57,13 @@ wxEND_EVENT_TABLE()
 CFriendListCtrl::CFriendListCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags)
 : CMuleListCtrl(parent, id, pos, siz, flags)
 {
-  InsertColumn(0, _("Username"), wxLIST_FORMAT_LEFT, siz.GetWidth() - 4);
+  // Column gets a one-letter name so CMuleListCtrl::SaveSettings has
+  // something to write under /eMule/TableWidthsFriend. Without it the
+  // base-class persistence path short-circuits at "if (!m_name.IsEmpty())"
+  // -- the dtor would never have a column to record.
+  InsertColumn(0, _("Username"), wxLIST_FORMAT_LEFT, siz.GetWidth() - 4, "N");
+  SetTableName("Friend");
+  LoadSettings();
 }
 
 CFriendListCtrl::~CFriendListCtrl()

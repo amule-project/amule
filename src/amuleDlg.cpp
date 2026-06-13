@@ -145,6 +145,7 @@ wxBEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_TIMER(ID_GUI_TIMER_EVENT, CamuleDlg::OnGUITimer)
 
 	EVT_SIZE(CamuleDlg::OnMainGUISizeChange)
+	EVT_MOVE(CamuleDlg::OnMainGUIMove)
 
 	EVT_KEY_UP(CamuleDlg::OnKeyPressed)
 
@@ -177,6 +178,10 @@ m_statisticswnd(NULL),
 m_kademliawnd(NULL),
 m_prefsDialog(NULL),
 m_srv_split_pos(0),
+m_lastShownPos(wxDefaultPosition),
+m_lastShownSize(wxDefaultSize),
+m_lastShownMaximized(false),
+m_lastShownValid(false),
 m_imagelist(16,16),
 m_tblist(32,32),
 m_prefsVisible(false),
@@ -1093,20 +1098,31 @@ bool CamuleDlg::SaveGUIPrefs()
 	// The section where to save in in file
 	wxString section = "/Razor_Preferences/";
 
+	// Prefer the live frame geometry; fall back to the last cached
+	// non-iconized snapshot when the user exits from a minimized
+	// window (iconized GetPosition() returns sentinel values on
+	// Windows that aren't safe to round-trip).
+	wxPoint pos;
+	wxSize size;
+	bool maximized;
+	bool haveGeom = false;
 	if (!IsIconized()) {
-		// Main window location and size
-		int x1, y1, x2, y2;
-		GetPosition(&x1, &y1);
-		GetSize(&x2, &y2);
-
-		// Saving window size and position
-		config->Write(section+"MAIN_X_POS", (long) x1);
-		config->Write(section+"MAIN_Y_POS", (long) y1);
-
-		config->Write(section+"MAIN_X_SIZE", (long) x2);
-		config->Write(section+"MAIN_Y_SIZE", (long) y2);
-
-		config->Write(section+"Maximized", (long) (IsMaximized() ? 1 : 0));
+		pos = GetPosition();
+		size = GetSize();
+		maximized = IsMaximized();
+		haveGeom = true;
+	} else if (m_lastShownValid) {
+		pos = m_lastShownPos;
+		size = m_lastShownSize;
+		maximized = m_lastShownMaximized;
+		haveGeom = true;
+	}
+	if (haveGeom) {
+		config->Write(section+"MAIN_X_POS", (long) pos.x);
+		config->Write(section+"MAIN_Y_POS", (long) pos.y);
+		config->Write(section+"MAIN_X_SIZE", (long) size.x);
+		config->Write(section+"MAIN_Y_SIZE", (long) size.y);
+		config->Write(section+"Maximized", (long) (maximized ? 1 : 0));
 	}
 
 	// Saving sash position of splitter in server window
@@ -1525,8 +1541,32 @@ void CamuleDlg::Create_Toolbar(bool orientation)
 }
 
 
+void CamuleDlg::CacheLastShownGeometry()
+{
+	// Iconized frames report sentinel positions (e.g. -32000,-32000 on
+	// Windows) and meaningless sizes; only snapshot real geometry. The
+	// snapshot lets SaveGUIPrefs persist a usable layout even when the
+	// user quits straight from the taskbar without restoring first.
+	if (IsIconized()) {
+		return;
+	}
+	m_lastShownPos = GetPosition();
+	m_lastShownSize = GetSize();
+	m_lastShownMaximized = IsMaximized();
+	m_lastShownValid = true;
+}
+
+
+void CamuleDlg::OnMainGUIMove(wxMoveEvent& evt)
+{
+	CacheLastShownGeometry();
+	evt.Skip();
+}
+
+
 void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt)
 {
+	CacheLastShownGeometry();
 	wxFrame::OnSize(evt);
 	if (m_transferwnd && m_transferwnd->clientlistctrl) {
 		// Transfer window's splitter set again if it's hidden.
