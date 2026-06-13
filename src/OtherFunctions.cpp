@@ -121,6 +121,61 @@ wxString CastSecondsToHM(uint32 count, uint16 msecs)
 }
 
 
+// Codec FOURCC -> human-readable name. Mapping inspired by eMule AI's
+// MediaInfo.cpp (GPL v2+). Implementation rewritten for wx + a small
+// initial set; extend as needed. Unknown / unrecognised codec IDs
+// pass through unchanged so something useful still shows in the UI.
+wxString FormatMediaCodec(const wxString& raw)
+{
+	if (raw.IsEmpty()) {
+		return wxEmptyString;
+	}
+	struct CodecEntry { const wxChar *fcc; const wxChar *display; };
+	static const CodecEntry kMap[] = {
+		// Video
+		{ wxT("H264"), wxT("H.264")          },
+		{ wxT("X264"), wxT("x264")           },
+		{ wxT("AVC1"), wxT("H.264")          },
+		{ wxT("HEVC"), wxT("H.265 / HEVC")   },
+		{ wxT("HVC1"), wxT("H.265 / HEVC")   },
+		{ wxT("XVID"), wxT("Xvid")           },
+		{ wxT("DIVX"), wxT("DivX")           },
+		{ wxT("DX50"), wxT("DivX 5")         },
+		{ wxT("DIV3"), wxT("DivX 3")         },
+		{ wxT("DIV4"), wxT("DivX 4")         },
+		{ wxT("FMP4"), wxT("MPEG-4")         },
+		{ wxT("MP4V"), wxT("MPEG-4")         },
+		{ wxT("MPG4"), wxT("MS MPEG-4 v1")   },
+		{ wxT("MP42"), wxT("MS MPEG-4 v2")   },
+		{ wxT("MP43"), wxT("MS MPEG-4 v3")   },
+		{ wxT("WMV1"), wxT("WMV 7")          },
+		{ wxT("WMV2"), wxT("WMV 8")          },
+		{ wxT("WMV3"), wxT("WMV 9")          },
+		{ wxT("MJPG"), wxT("Motion JPEG")    },
+		{ wxT("VP90"), wxT("VP9")            },
+		{ wxT("VP80"), wxT("VP8")            },
+		{ wxT("AV01"), wxT("AV1")            },
+		// Audio
+		{ wxT("MP3"),  wxT("MP3")            },
+		{ wxT("AAC"),  wxT("AAC")            },
+		{ wxT("AC3"),  wxT("AC-3")           },
+		{ wxT("FLAC"), wxT("FLAC")           },
+		{ wxT("OPUS"), wxT("Opus")           },
+		{ wxT("VORB"), wxT("Vorbis")         },
+		{ wxT("WMA1"), wxT("WMA 1")          },
+		{ wxT("WMA2"), wxT("WMA 2")          },
+	};
+
+	const wxString upper = raw.Upper();
+	for (const auto& entry : kMap) {
+		if (upper == entry.fcc) {
+			return entry.display;
+		}
+	}
+	return raw;
+}
+
+
 // Examines a filename and determines the filetype
 FileType GetFiletype(const CPath& filename)
 {

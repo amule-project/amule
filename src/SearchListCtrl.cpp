@@ -26,6 +26,8 @@
 #include "SearchListCtrl.h"	// Interface declarations
 
 #include <common/MenuIDs.h>
+#include <common/Format.h>	// Needed for CFormat
+#include <tags/FileTags.h>	// Needed for FT_MEDIA_LENGTH / _BITRATE / _CODEC
 
 #include "amule.h"			// Needed for theApp
 #include "KnownFileList.h"	// Needed for CKnownFileList
@@ -63,7 +65,10 @@ enum SearchListColumns {
 	ID_SEARCH_COL_TYPE,
 	ID_SEARCH_COL_FILEID,
 	ID_SEARCH_COL_STATUS,
-	ID_SEARCH_COL_DIRECTORY
+	ID_SEARCH_COL_DIRECTORY,
+	ID_SEARCH_COL_LENGTH,
+	ID_SEARCH_COL_BITRATE,
+	ID_SEARCH_COL_CODEC
 };
 
 
@@ -91,6 +96,13 @@ m_filterEnabled(false)
 	InsertColumn( ID_SEARCH_COL_FILEID,  _("FileID"),    wxLIST_FORMAT_LEFT, 280, "I" );
 	InsertColumn( ID_SEARCH_COL_STATUS,  _("Status"),    wxLIST_FORMAT_LEFT, 100, "S" );
 	InsertColumn( ID_SEARCH_COL_DIRECTORY,  _("Directories"),    wxLIST_FORMAT_LEFT, 280, "D" );  // I would have preferred "Directory" but this is already translated
+	// Media tag columns: ed2k/Kad publishers (eMule, eMule AI, aMule) can
+	// advertise per-file media metadata in FT_MEDIA_LENGTH / _BITRATE /
+	// _CODEC. Display them as columns when present; cells stay empty for
+	// non-media results or for files whose owner didn't populate the tags.
+	InsertColumn( ID_SEARCH_COL_LENGTH,  _("Length"),  wxLIST_FORMAT_LEFT,  80, "L" );
+	InsertColumn( ID_SEARCH_COL_BITRATE, _("Bitrate"), wxLIST_FORMAT_LEFT,  80, "B" );
+	InsertColumn( ID_SEARCH_COL_CODEC,   _("Codec"),   wxLIST_FORMAT_LEFT,  80, "C" );
 
 	m_nResultsID = 0;
 
@@ -245,6 +257,19 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 
 	// Directory where file is located (has a value when search file comes from a "view shared files" request)
 	SetItem(newid, ID_SEARCH_COL_DIRECTORY, toshow->GetDirectory());
+
+	// Media tags (only set when the publishing client populated them):
+	if (uint32 lenSec = toshow->GetIntTagValue(FT_MEDIA_LENGTH)) {
+		SetItem(newid, ID_SEARCH_COL_LENGTH, CastSecondsToHM(lenSec));
+	}
+	if (uint32 bitrate = toshow->GetIntTagValue(FT_MEDIA_BITRATE)) {
+		SetItem(newid, ID_SEARCH_COL_BITRATE,
+			CFormat(wxT("%u kbps")) % bitrate);
+	}
+	const wxString& codec = toshow->GetStrTagValue(FT_MEDIA_CODEC);
+	if (!codec.IsEmpty()) {
+		SetItem(newid, ID_SEARCH_COL_CODEC, FormatMediaCodec(codec));
+	}
 
 	// Set the color of the item
 	UpdateItemColor( newid );
@@ -558,6 +583,42 @@ int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, wxIntPtr sortDat
 				result = CmpAny(file1->GetFileName(), file2->GetFileName());
 			}
 			break;
+
+		// Sort by media length / bitrate / codec. Files whose owner
+		// didn't populate the tag always cluster at the bottom of the
+		// list, regardless of ascending/descending direction — early
+		// returns bypass the `modifier *` flip at the end of the
+		// function so the undefined-at-bottom rule is direction-
+		// independent.
+		case ID_SEARCH_COL_LENGTH: {
+			uint32 v1 = file1->GetIntTagValue(FT_MEDIA_LENGTH);
+			uint32 v2 = file2->GetIntTagValue(FT_MEDIA_LENGTH);
+			if (!v1 && !v2) break;
+			if (!v1) return 1;
+			if (!v2) return -1;
+			result = CmpAny(v1, v2);
+			break;
+		}
+
+		case ID_SEARCH_COL_BITRATE: {
+			uint32 v1 = file1->GetIntTagValue(FT_MEDIA_BITRATE);
+			uint32 v2 = file2->GetIntTagValue(FT_MEDIA_BITRATE);
+			if (!v1 && !v2) break;
+			if (!v1) return 1;
+			if (!v2) return -1;
+			result = CmpAny(v1, v2);
+			break;
+		}
+
+		case ID_SEARCH_COL_CODEC: {
+			const wxString c1 = FormatMediaCodec(file1->GetStrTagValue(FT_MEDIA_CODEC));
+			const wxString c2 = FormatMediaCodec(file2->GetStrTagValue(FT_MEDIA_CODEC));
+			if (c1.IsEmpty() && c2.IsEmpty()) break;
+			if (c1.IsEmpty()) return 1;
+			if (c2.IsEmpty()) return -1;
+			result = CmpAny(c1, c2);
+			break;
+		}
 	}
 
 	return modifier * result;

@@ -233,6 +233,11 @@ wxString CastItoIShort(uint64 number);
 wxString CastItoSpeed(uint32 bytes);
 // Converts an amount of seconds to human readable time.
 wxString CastSecondsToHM(uint32 seconds, uint16 msecs = 0);
+// Maps an ed2k FT_MEDIA_CODEC FOURCC / format string to a friendlier
+// display name (e.g. "H264" -> "H.264", "XVID" -> "Xvid"). Unknown
+// values pass through unchanged. Used by SearchListCtrl to render the
+// Codec column.
+wxString FormatMediaCodec(const wxString& raw);
 // Returns the amount of Bytes the provided size-type represents
 uint32 GetTypeSize(uint8 type);
 // Returns the string associated with a file-rating value.
