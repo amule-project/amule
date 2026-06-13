@@ -65,10 +65,10 @@ enum SearchListColumns {
 	ID_SEARCH_COL_TYPE,
 	ID_SEARCH_COL_FILEID,
 	ID_SEARCH_COL_STATUS,
-	ID_SEARCH_COL_DIRECTORY,
 	ID_SEARCH_COL_LENGTH,
 	ID_SEARCH_COL_BITRATE,
-	ID_SEARCH_COL_CODEC
+	ID_SEARCH_COL_CODEC,
+	ID_SEARCH_COL_DIRECTORY
 };
 
 
@@ -95,7 +95,6 @@ m_filterEnabled(false)
 	InsertColumn( ID_SEARCH_COL_TYPE,    _("Type"),      wxLIST_FORMAT_LEFT,  65, "Y" );
 	InsertColumn( ID_SEARCH_COL_FILEID,  _("FileID"),    wxLIST_FORMAT_LEFT, 280, "I" );
 	InsertColumn( ID_SEARCH_COL_STATUS,  _("Status"),    wxLIST_FORMAT_LEFT, 100, "S" );
-	InsertColumn( ID_SEARCH_COL_DIRECTORY,  _("Directories"),    wxLIST_FORMAT_LEFT, 280, "D" );  // I would have preferred "Directory" but this is already translated
 	// Media tag columns: ed2k/Kad publishers (eMule, eMule AI, aMule) can
 	// advertise per-file media metadata in FT_MEDIA_LENGTH / _BITRATE /
 	// _CODEC. Display them as columns when present; cells stay empty for
@@ -103,6 +102,10 @@ m_filterEnabled(false)
 	InsertColumn( ID_SEARCH_COL_LENGTH,  _("Length"),  wxLIST_FORMAT_LEFT,  80, "L" );
 	InsertColumn( ID_SEARCH_COL_BITRATE, _("Bitrate"), wxLIST_FORMAT_LEFT,  80, "B" );
 	InsertColumn( ID_SEARCH_COL_CODEC,   _("Codec"),   wxLIST_FORMAT_LEFT,  80, "C" );
+	// Directories is almost always empty (only populated when the result
+	// came from a "view shared files" request, rare in practice), so put
+	// it at the end with the other usually-empty columns.
+	InsertColumn( ID_SEARCH_COL_DIRECTORY,  _("Directories"),    wxLIST_FORMAT_LEFT, 280, "D" );  // I would have preferred "Directory" but this is already translated
 
 	m_nResultsID = 0;
 
