@@ -251,6 +251,17 @@ int CamuleApp::OnExit()
 		AddLogLineNS(_("Now, exiting main app..."));
 	}
 
+	// Flush wx's pending-delete queue before tearing down wxConfig:
+	// CamuleGuiApp::ShutDown calls amuledlg->Destroy(), which is lazy
+	// (it schedules deletion on the main-loop tail). On the CMD+Q path
+	// the event loop drains that queue naturally before OnExit runs;
+	// on the macOS Dock right-click → Quit path CamuleGuiApp::OnEndSession
+	// reaches OnExit directly, so without an explicit drain here the
+	// CamuleDlg destructor chain (and CMuleListCtrl::SaveSettings inside
+	// it) never runs against a live wxConfig, and column widths /
+	// sort orders silently fail to persist.
+	DeletePendingObjects();
+
 	// From wxWidgets docs, wxConfigBase:
 	// ...
 	// Note that you must delete this object (usually in wxApp::OnExit)
