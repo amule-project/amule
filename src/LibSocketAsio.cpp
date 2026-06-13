@@ -1447,6 +1447,13 @@ private:
 			// without binding".
 			m_socket = new ip::udp::socket(s_io_service);
 			m_socket->open(endpoint.protocol());
+			// SO_REUSEADDR so a post-suspend rebind (DestroySocket +
+			// CreateSocket in CMuleUDPSocket::OnReceive when a read
+			// callback returns an error) doesn't hit EADDRINUSE while
+			// the kernel still considers the previous binding live.
+			// Without this Kad and the ed2k client UDP stay broken
+			// until the user restarts amule — see #103.
+			m_socket->set_option(socket_base::reuse_address(true));
 			SetCloexecOnSocket(m_socket->native_handle());
 			m_socket->bind(endpoint);
 			AddDebugLogLineN(logAsio, CFormat("Created UDP socket %s %d") % m_address.IPAddress() % m_address.Service());
