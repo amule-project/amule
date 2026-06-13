@@ -350,6 +350,7 @@ void php_native_split(PHP_VALUE_NODE *result)
 		return;
 	}
 	PHP_VALUE_NODE *pattern, *string_to_split;
+	unsigned int split_limit = 0;
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	if ( si ) {
 		pattern = &si->var->value;
@@ -368,11 +369,9 @@ void php_native_split(PHP_VALUE_NODE *result)
 	}
 	si = get_scope_item(g_current_scope, "__param_2");
 	if ( si ) {
-		PHP_VALUE_NODE *split_limit = &si->var->value;
-		cast_value_dnum(split_limit);
-	} else {
-		php_report_error(PHP_ERROR, "Invalid or missing argument: string");
-		return;
+		PHP_VALUE_NODE *limit_node = &si->var->value;
+		cast_value_dnum(limit_node);
+		split_limit = limit_node->int_val;
 	}
 #ifdef PHP_STANDALONE_EN
 	regex_t preg;
@@ -384,15 +383,23 @@ void php_native_split(PHP_VALUE_NODE *result)
 		return;
 	}
 
-	size_t nmatch = strlen(string_to_split->str_val);
+	size_t nmatch = 1; // only pmatch[0] used
 	regmatch_t *pmatch = new regmatch_t[nmatch];
 	char *str_2_match = string_to_split->str_val;
 	char *tmp_buff = new char[strlen(string_to_split->str_val)+1];
 
+	int piece_count = 0;
 	while ( 1 ) {
+		if ( split_limit > 0 && piece_count >= split_limit - 1 ) {
+			break;
+		}
 		reg_result = regexec(&preg, str_2_match, nmatch, pmatch, 0);
 		if ( reg_result ) {
 			// no match
+			break;
+		}
+		if ( pmatch[0].rm_eo == pmatch[0].rm_so ) {
+			// zero-length match
 			break;
 		}
 		// I will use only first match, since I don't see any sense to have more
@@ -405,6 +412,7 @@ void php_native_split(PHP_VALUE_NODE *result)
 		PHP_VAR_NODE *match_val = array_push_back(result);
 		match_val->value.type = PHP_VAL_STRING;
 		match_val->value.str_val = strdup(tmp_buff);
+		piece_count++;
 
 		str_2_match += pmatch[0].rm_eo;
 	}
@@ -428,16 +436,26 @@ void php_native_split(PHP_VALUE_NODE *result)
 		return;
 	}
 
+	int piece_count = 0;
 	wxString remaining(char2unicode(string_to_split->str_val));
 	while (preg.Matches(remaining)) {
+		if ( split_limit > 0 && piece_count >= split_limit - 1 ) {
+			break;
+		}
 		size_t start, len;
-		if (!preg.GetMatch(&start, &len)) {
+		if ( !preg.GetMatch(&start, &len) ) {
+			// no match
+			break;
+		}
+		if ( len == 0 ) {
+			// zero-length match
 			break;
 		}
 		PHP_VAR_NODE *match_val = array_push_back(result);
 		match_val->value.type = PHP_VAL_STRING;
 		match_val->value.str_val = strdup(unicode2UTF8(remaining.Mid(0, start)));
 		remaining = remaining.Mid(start + len);
+		piece_count++;
 	}
 
 	PHP_VAR_NODE *tail = array_push_back(result);
