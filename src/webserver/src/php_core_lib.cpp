@@ -478,7 +478,7 @@ void php_native_ngettext(PHP_VALUE_NODE *result)
 	PHP_SCOPE_ITEM *si_msgid = get_scope_item(g_current_scope, "__param_0");
 	PHP_VALUE_NODE *msgid;
 	if ( si_msgid ) {
-		msgid = &si_msgid->var->value
+		msgid = &si_msgid->var->value;
 		cast_value_str(msgid);
 	} else {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 'msgid' for 'ngettext'");
@@ -487,7 +487,7 @@ void php_native_ngettext(PHP_VALUE_NODE *result)
 	PHP_SCOPE_ITEM *si_msgid_plural = get_scope_item(g_current_scope, "__param_1");
 	PHP_VALUE_NODE *msgid_plural;
 	if ( si_msgid_plural ) {
-		msgid_plural = &si_msgid_plural->var->value
+		msgid_plural = &si_msgid_plural->var->value;
 		cast_value_str(msgid_plural);
 	} else {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 'msgid_plural' for 'ngettext'");
@@ -496,7 +496,7 @@ void php_native_ngettext(PHP_VALUE_NODE *result)
 	PHP_SCOPE_ITEM *si_count = get_scope_item(g_current_scope, "__param_2");
 	PHP_VALUE_NODE *count;
 	if ( si_count ) {
-		count = &si_count->var->value
+		count = &si_count->var->value;
 		cast_value_dnum(count);
 	} else {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 'count' for 'ngettext'");
