@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-13 10:42+0200\n"
-"PO-Revision-Date: 2026-06-12 15:28+0000\n"
+"PO-Revision-Date: 2026-06-14 06:11+0000\n"
 "Last-Translator: Mike Akiba <mike2718@gmail.com>\n"
 "Language-Team: Chinese Simplified <kde-i18n-doc@kde.org>\n"
 "Language: zh_CN\n"
@@ -4171,11 +4171,11 @@ msgstr "更改在线统计文件的更新频率 (秒) 。"
 
 #: src/muuli_wdr.cpp:2475
 msgid "Save online signature file in: "
-msgstr "保存在线统计文件在："
+msgstr "保存在线签名位置： "
 
 #: src/muuli_wdr.cpp:2481
 msgid "Click here to select the directory containing the the Online Signature files."
-msgstr "点击选择包含在线统计文件的目录。"
+msgstr "单击此处选择包含在线签名文件的目录。"
 
 #: src/muuli_wdr.cpp:2514
 msgid "Show country flags for clients"
@@ -4186,14 +4186,12 @@ msgid "Render the country flag column in the transfers, queue and search views. 
 msgstr ""
 
 #: src/muuli_wdr.cpp:2520
-#, fuzzy
 msgid "Database"
-msgstr "数据率 :"
+msgstr "数据库"
 
 #: src/muuli_wdr.cpp:2536
-#, fuzzy
 msgid "Source:"
-msgstr "源"
+msgstr "源："
 
 #: src/muuli_wdr.cpp:2539
 msgid "DB-IP (free, no account)"
@@ -4234,9 +4232,8 @@ msgid ""
 msgstr ""
 
 #: src/muuli_wdr.cpp:2595
-#, fuzzy
 msgid "Download URL:"
-msgstr "下载: "
+msgstr "下载地址："
 
 #: src/muuli_wdr.cpp:2601
 msgid ""
@@ -4250,9 +4247,8 @@ msgid "Download the GeoIP database from the selected source."
 msgstr ""
 
 #: src/muuli_wdr.cpp:2616
-#, fuzzy
 msgid "Auto-update on startup"
-msgstr "启动后自动更新IP 地址过滤列表"
+msgstr "启动后自动更新"
 
 #: src/muuli_wdr.cpp:2617
 msgid "Re-download the GeoIP database from the selected source every time aMule starts."
@@ -5108,7 +5104,9 @@ msgstr "通过ID %d和密匙%s把数据从小插件转移到Cfg失败"
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
-msgstr "重启aMule后设置才能生效：\n"
+msgstr ""
+"重启aMule后这些更改才能生效：\n"
+"\n"
 
 #: src/PrefsUnifiedDlg.cpp:824
 msgid "- TCP port changed.\n"
@@ -5249,8 +5247,8 @@ msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
 msgstr ""
-"加入下载 server.met 文件的网址，每行只限一个网址。\n"
-" "
+"在此添加下载 server.met 文件的地址\n"
+"每行只限一个。"
 
 #: src/PrefsUnifiedDlg.cpp:1431
 msgid "IP2Country update failed"
@@ -5261,23 +5259,22 @@ msgid "Data by MaxMind GeoLite2"
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1568
-#, fuzzy
 msgid "Custom source"
-msgstr "完成的源"
+msgstr "自定义源"
 
 #: src/PrefsUnifiedDlg.cpp:1570
 msgid "Data by DB-IP.com"
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1590
-#, fuzzy, c-format
+#, c-format
 msgid "Status: Loaded%s"
-msgstr "状态:"
+msgstr "状态：已加载%s"
 
 #: src/PrefsUnifiedDlg.cpp:1593
-#, fuzzy, c-format
+#, c-format
 msgid "Status: Loaded%s - %s"
-msgstr "状态:"
+msgstr "状态：已加载%s~%s"
 
 #: src/PrefsUnifiedDlg.cpp:1598
 msgid "Status: Failed to load - click 'Update now' to refresh."
@@ -5291,8 +5288,8 @@ msgstr ""
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
-msgstr[0] "刷新时间：%d秒"
-msgstr[1] "刷新时间：%d秒"
+msgstr[0] "更新延迟：%d秒"
+msgstr[1] "更新延迟：%d秒"
 
 #: src/PrefsUnifiedDlg.cpp:1652
 #, c-format
@@ -5438,7 +5435,7 @@ msgstr "Kad 搜索没有关键字 - 中止"
 
 #: src/SearchList.cpp:386
 msgid "Unexpected error while attempting Kad search: "
-msgstr "尝试Kad搜索时出现不可预料的错误："
+msgstr "尝试Kad搜索时出现未预料的错误： "
 
 #: src/SearchListCtrl.cpp:96 src/SharedFilesCtrl.cpp:107
 msgid "FileID"
@@ -5449,9 +5446,8 @@ msgid "Length"
 msgstr ""
 
 #: src/SearchListCtrl.cpp:104
-#, fuzzy
 msgid "Bitrate"
-msgstr "未评价"
+msgstr "比特率"
 
 #: src/SearchListCtrl.cpp:105
 msgid "Codec"
@@ -5567,7 +5563,7 @@ msgstr "正在载入 server.met 文件：%s"
 
 #: src/ServerList.cpp:101
 msgid "Server.met file not found!"
-msgstr "找不到 server.met 文件"
+msgstr "没找到 server.met 文件！"
 
 #: src/ServerList.cpp:109
 #, c-format
@@ -5613,7 +5609,7 @@ msgstr "没有添加服务器：[%s:%d] 未指定有效端口。"
 #: src/ServerList.cpp:222
 #, c-format
 msgid "Server not added: The IP of [%s:%d] is filtered or invalid."
-msgstr "没有添加服务器：[%s：%d] IP 地址无效"
+msgstr "没有添加服务器：[%s:%d] IP 地址无效或被过滤。"
 
 #: src/ServerList.cpp:241
 #, c-format
@@ -5663,7 +5659,7 @@ msgstr "警告：自动下载服务器列表的地址错误：%s"
 
 #: src/ServerList.cpp:916
 msgid "No valid server.met auto-download url on addresses.dat"
-msgstr "addresses.dat 文件中没有有效的自动更新服务器列表URL"
+msgstr "addresses.dat 文件中没有有效的自动更新 server.met 的地址"
 
 #: src/ServerList.cpp:932
 #, c-format
@@ -5841,7 +5837,7 @@ msgstr "从服务器接收到虚假数据包: %s"
 #: src/ServerSocket.cpp:567
 #, c-format
 msgid "Unhandled error while processing packet from server: %s"
-msgstr "在处理从服务器接收的数据有无法处理的错误 : %s "
+msgstr "处理来自服务器的数据包时出现未处理的错误 ： %s"
 
 #: src/ServerSocket.cpp:606 src/ServerSocket.cpp:610
 #, c-format
@@ -5869,11 +5865,11 @@ msgstr "无法解析服务器 %s 的 DNS： 无法连接！"
 
 #: src/ServerWnd.cpp:124
 msgid "Server not added: No IP or hostname specified."
-msgstr "没有添加服务器： 没有 IP 地址或主机名"
+msgstr "没有添加服务器： 没有指定 IP 地址或主机名。"
 
 #: src/ServerWnd.cpp:129
 msgid "Server not added: Invalid server-port specified."
-msgstr "没有添加服务器： 服务器端口无效"
+msgstr "没有添加服务器： 指定的服务器端口组合无效。"
 
 #: src/ServerWnd.cpp:182
 msgid "eD2k Status:"
@@ -6948,7 +6944,7 @@ msgstr "aMule 文本客户端"
 #: src/ThreadTasks.cpp:484
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
-msgstr "正在转换在 '%s'在 '%s' 中旧的 AICH 校验集至64b"
+msgstr "正把 “%s” 中旧的 AICH 校验和集转换为 “%s” 中的 64b。"
 
 #: src/ThreadTasks.cpp:565
 #, c-format

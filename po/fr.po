@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-13 10:42+0200\n"
-"PO-Revision-Date: 2026-06-12 15:44+0000\n"
+"PO-Revision-Date: 2026-06-13 22:36+0000\n"
 "Last-Translator: Dylan Aïssi <bob.dybian@gmail.com>\n"
 "Language-Team: Français\n"
 "Language: fr\n"
@@ -445,11 +445,11 @@ msgstr "ERREUR : Un mot de passe valide est requis pour utiliser les connexions
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
-msgstr "amuled: OnInit - démarrage du timer"
+msgstr "amuled : OnInit - démarrage du timer"
 
 #: src/amuled.cpp:176
 msgid "amuled: forking to background - see you"
-msgstr "amuled: passage en arrière plan - à bientôt"
+msgstr "amuled : passage en arrière plan - à bientôt"
 
 #: src/amuled.cpp:207
 msgid "Cannot Create Pid File"
@@ -512,7 +512,6 @@ msgid ""
 "\n"
 msgstr ""
 "Bugs : https://github.com/amule-org/amule/issues \n"
-"\n"
 "\n"
 
 #: src/amuleDlg.cpp:550
@@ -1684,7 +1683,7 @@ msgstr "ID de version de EC incorrecte, Il peut y avoir des incompatibilités en
 
 #: src/ExternalConn.cpp:559
 msgid "You cannot connect to a release version from an arbitrary development snapshot! *sigh* possible crash prevented"
-msgstr "Vous ne pouvez pas connecter une version stable depuis une version de développement! *pfff* un crash potentiel a été évité"
+msgstr "Vous ne pouvez pas connecter une version stable depuis une version de développement ! *pfff* un crash potentiel a été évité"
 
 #: src/ExternalConn.cpp:620
 msgid "Invalid protocol version."
@@ -1800,7 +1799,7 @@ msgstr "ConnExt : ajout du lien '%s'."
 #: src/ExternalConn.cpp:1832
 #, c-format
 msgid "%d of %d links failed (invalid or already on list)."
-msgstr "Échec de %d liens sur %d (invalides ou déjà sur la liste)"
+msgstr "Échec de %d liens sur %d (invalides ou déjà sur la liste)."
 
 #: src/ExternalConn.cpp:1959
 msgid "File not found."
@@ -2006,7 +2005,8 @@ msgid ""
 "Exiting...\n"
 msgstr ""
 "Connexion impossible sans mot de passe.\n"
-"Vous devez spécifier un mot de passe, soit dans le fichier de configuration, soit sur la ligne de commande ; ou l'entrer lorsque l'on vous le demande.\n"
+"Vous devez spécifier un mot de passe, soit dans le fichier de\n"
+"configuration, soit sur la ligne de commande ; ou l'entrer lorsque l'on vous le demande.\n"
 "\n"
 "Fin d'exécution…\n"
 
@@ -2249,19 +2249,19 @@ msgstr "HTTP 401 non autorisé pour %s"
 #: src/IP2Country.cpp:82
 #, c-format
 msgid "Migrated existing GeoLite2-Country.mmdb to %s"
-msgstr ""
+msgstr "Le fichier GeoLite2-Country.mmdb existant a été migré vers %s"
 
 #: src/IP2Country.cpp:134
 msgid "IP2Country: MaxMind selected as the GeoIP source but no License Key configured. Open Preferences → IP2Country, paste your free MaxMind License Key and click 'Update now'."
-msgstr ""
+msgstr "IP2COuntry : MaxMind a été sélectionné en tant que source de GeoIP mais aucune clef de licence n'a été configurée. Ouvrez Préférences → IP2Country, collez votre clef de licence MaxMind gratuit et cliquez sur « Mettre à jour maintenant »."
 
 #: src/IP2Country.cpp:140
 msgid "IP2Country: Custom URL selected as the GeoIP source but no URL configured. Open Preferences → IP2Country and supply a URL that points to an .mmdb (or .gz / .tar.gz containing one)."
-msgstr ""
+msgstr "IP2Country : un lien (URL) personnalisé est sélectionné comme source de GeoIP, mais aucun lien n'est configuré. Ouvrez Préférences → IP2Country et fournissez un lien qui pointe vers un mmdb (ou bien un .gz / .tar.gz qui en contiendrait un)."
 
 #: src/IP2Country.cpp:146
 msgid "IP2Country: failed to resolve a GeoIP download URL."
-msgstr ""
+msgstr "IP2Country : échec de la résolution de'lURL de téléchargement GeoIP."
 
 #: src/IP2Country.cpp:157
 #, c-format
@@ -2295,7 +2295,7 @@ msgstr "Erreur lors de la mise à jour de %s"
 
 #: src/IP2Country.cpp:249
 msgid "DB-IP download failed for the current month - retrying with the previous month's URL."
-msgstr ""
+msgstr "Échec du téléchargement DB-IP pour le mois actuel - essai à nouveau avec l'URL du mois précédent."
 
 #: src/IP2Country.cpp:254 src/IPFilter.cpp:512 src/ServerList.cpp:872
 #, c-format
@@ -4086,7 +4086,7 @@ msgstr "Avec cette option, aMule utilise le brouillage de protocole lors des con
 
 #: src/muuli_wdr.cpp:2379
 msgid "Accept only obfuscated connections"
-msgstr "Accepter seulement les connexions brouillées."
+msgstr "Accepter seulement les connexions brouillées"
 
 #: src/muuli_wdr.cpp:2380
 msgid "This option makes aMule only accept obfuscated connections. You will have less sources, but all your traffic will be obfuscated"
@@ -4202,33 +4202,31 @@ msgstr "Voir les drapeaux des pays pour les clients"
 
 #: src/muuli_wdr.cpp:2515
 msgid "Render the country flag column in the transfers, queue and search views. Requires a valid MMDB GeoIP database (see below)."
-msgstr ""
+msgstr "Afficher la colonne des drapeaux des pays dans les vues des transferts, des files d'attente et de recherche. Nécessite une base de données MMDB GeoIP valide (cf. ci-dessous)."
 
 #: src/muuli_wdr.cpp:2520
-#, fuzzy
 msgid "Database"
-msgstr "Taux de transfert :"
+msgstr "Base de données"
 
 #: src/muuli_wdr.cpp:2536
-#, fuzzy
 msgid "Source:"
-msgstr "Sources"
+msgstr "Source :"
 
 #: src/muuli_wdr.cpp:2539
 msgid "DB-IP (free, no account)"
-msgstr ""
+msgstr "DB-IP (gratuit, pas de compte)"
 
 #: src/muuli_wdr.cpp:2540
 msgid "MaxMind GeoLite2 (free, account required)"
-msgstr ""
+msgstr "MaxMind GeoLite2 (gratuit, compte nécessaire)"
 
 #: src/muuli_wdr.cpp:2541
 msgid "Custom URL"
-msgstr ""
+msgstr "URL personnalisé"
 
 #: src/muuli_wdr.cpp:2544
 msgid "Choose which provider supplies the GeoIP MMDB database. DB-IP is the default - no account required. MaxMind requires a free account + license key. Use Custom URL to point at any other MMDB host (e.g. a local mirror)."
-msgstr ""
+msgstr "Choisissez quel fournisseur procure la base de données GeoIP MMDB. DB-IP est la valeur par défaut - ne nécessite pas de compte. MaxMind nécessite un compte gratuit + une clef de licence. Utilisez un URL personnalisé pour pointer vers tout autre hôte MMDB (par exemple un miroir local)."
 
 #: src/muuli_wdr.cpp:2561
 msgid ""
@@ -4237,10 +4235,14 @@ msgid ""
 "IP-to-Country data by DB-IP.com - https://db-ip.com\n"
 "License: Creative Commons BY 4.0 - https://creativecommons.org/licenses/by/4.0/"
 msgstr ""
+"Aucune configuration nécessaire\n"
+"\n"
+"Les données IP vers pays par DB-IP.com - https://db-ip.com\n"
+"Licence : Creative Commons Attribution 4.0 - https://creativecommons.org/licenses/by/4.0/deed.fr"
 
 #: src/muuli_wdr.cpp:2574
 msgid "License key:"
-msgstr ""
+msgstr "Clef de licence :"
 
 #: src/muuli_wdr.cpp:2580
 msgid ""
@@ -4251,11 +4253,16 @@ msgid ""
 "License: MaxMind GeoLite2 EULA - https://www.maxmind.com/en/geolite2/eula\n"
 "Requires attribution and account registration; refresh at least every 30 days."
 msgstr ""
+"Créez un compte MaxMind gratuit, puis générez une clef de licence :\n"
+"https://www.maxmind.com/en/geolite2/signup\n"
+"\n"
+"Ce produit comprend des données GeoLite2 créées par MaxMind - https://www.maxmind.com\n"
+"Licence : CLUF MaxMind GeoLite2 - https://www.maxmind.com/en/geolite2/eula\n"
+"Nécessite une attribution et la création d'un compte ; actualisez au moins tous les 30 jours."
 
 #: src/muuli_wdr.cpp:2595
-#, fuzzy
 msgid "Download URL:"
-msgstr "Réception : "
+msgstr "URL de téléchargement :"
 
 #: src/muuli_wdr.cpp:2601
 msgid ""
@@ -4263,19 +4270,21 @@ msgid ""
 "URL may include credentials (https://user:pass@host/...).\n"
 "License and attribution terms are set by the upstream URL - you are responsible."
 msgstr ""
+"Doit pointer vers un fichier .mmdb ou un .gz / tar.gz qui en contiendrait un.\n"
+"L'URL peut contenir un identifiant et mot de passe (https://utilisateur:motdepasse@hôte/...) \n"
+"La licence et les conditions d'attribution sont définies par l'URL d'origine - vous en êtes responsable."
 
 #: src/muuli_wdr.cpp:2614
 msgid "Download the GeoIP database from the selected source."
-msgstr ""
+msgstr "Télécharger la base de données GeoIP depuis la source sélectionnée."
 
 #: src/muuli_wdr.cpp:2616
-#, fuzzy
 msgid "Auto-update on startup"
-msgstr "Mise à jour d' IPFilter au démarrage"
+msgstr "Mise à jour automatique au démarrage"
 
 #: src/muuli_wdr.cpp:2617
 msgid "Re-download the GeoIP database from the selected source every time aMule starts."
-msgstr ""
+msgstr "Télécharger à nouveau la base de données GeoIP depuis la source sélectionnée chaque fois qu'aMule démarre."
 
 #: src/muuli_wdr.cpp:2640
 msgid "Filter incoming messages (except current chat):"
@@ -4661,7 +4670,7 @@ msgstr "ERREUR : Le fichier part.met est de taille nulle : %s ==> %s"
 #: src/PartFile.cpp:426
 #, c-format
 msgid "ERROR: Invalid part.met file version: %s ==> %s"
-msgstr "ERREUR : Version du fichier part.met invalide: %s ==> %s"
+msgstr "ERREUR : Version du fichier part.met invalide : %s ==> %s"
 
 #: src/PartFile.cpp:664
 #, c-format
@@ -4697,7 +4706,7 @@ msgstr "Échec de l'ouverture de %s (%s)"
 #: src/PartFile.cpp:787
 #, c-format
 msgid "WARNING: %s might be corrupted (%i)"
-msgstr "AVERTISSEMENT :  %s a pu être corrompu (%i)"
+msgstr "AVERTISSEMENT : %s a pu être corrompu (%i)"
 
 #: src/PartFile.cpp:1006
 #, c-format
@@ -5040,7 +5049,7 @@ msgstr "Interface"
 
 #: src/PrefsUnifiedDlg.cpp:208
 msgid "IP2Country"
-msgstr ""
+msgstr "IP2Country"
 
 #: src/PrefsUnifiedDlg.cpp:211
 msgid "Proxy"
@@ -5275,38 +5284,37 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1431
 msgid "IP2Country update failed"
-msgstr ""
+msgstr "Échec de la mise à jour IP2Country"
 
 #: src/PrefsUnifiedDlg.cpp:1566
 msgid "Data by MaxMind GeoLite2"
-msgstr ""
+msgstr "Données fournies par MaxMind GeoLite2"
 
 #: src/PrefsUnifiedDlg.cpp:1568
-#, fuzzy
 msgid "Custom source"
-msgstr "Sources complètes"
+msgstr "Source personnalisée"
 
 #: src/PrefsUnifiedDlg.cpp:1570
 msgid "Data by DB-IP.com"
-msgstr ""
+msgstr "Données fournies par DB-IP.com"
 
 #: src/PrefsUnifiedDlg.cpp:1590
-#, fuzzy, c-format
+#, c-format
 msgid "Status: Loaded%s"
-msgstr "Statut :"
+msgstr "État : %s chargé"
 
 #: src/PrefsUnifiedDlg.cpp:1593
-#, fuzzy, c-format
+#, c-format
 msgid "Status: Loaded%s - %s"
-msgstr "Statut :"
+msgstr "État : %s - %s chargé"
 
 #: src/PrefsUnifiedDlg.cpp:1598
 msgid "Status: Failed to load - click 'Update now' to refresh."
-msgstr ""
+msgstr "État : échec du chargement - cliquez sur « Mettre à jour maintenant » pour actualiser."
 
 #: src/PrefsUnifiedDlg.cpp:1600
 msgid "Status: Not found - click 'Update now' to download."
-msgstr ""
+msgstr "État : introuvable - cliquez sur « Mettre à jour maintenant » pour télécharger."
 
 #: src/PrefsUnifiedDlg.cpp:1645 src/PrefsUnifiedDlg.cpp:1664
 #, c-format
@@ -5672,7 +5680,7 @@ msgstr "Téléchargement terminé de la liste de serveur depuis %s"
 
 #: src/ServerList.cpp:884
 msgid "No server list address entry in 'addresses.dat' found. Please paste a valid server list address into this file in order to auto-update your server list"
-msgstr "Aucune entrée trouvée d'adresses de liste de serveurs dans 'addresses.dat'. Veuillez coller une liste de serveurs valide dans ce fichier afin de mettre à jour automatiquement votre liste de serveurs."
+msgstr "Aucune entrée trouvée d'adresses de liste de serveurs dans 'addresses.dat'. Veuillez coller une liste de serveurs valide dans ce fichier afin de mettre à jour automatiquement votre liste de serveurs"
 
 #: src/ServerList.cpp:903
 #, c-format
@@ -5732,7 +5740,7 @@ msgstr "Version"
 
 #: src/ServerListCtrl.cpp:149
 msgid "You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."
-msgstr "Vous êtes connecté au serveur que vous tentez de supprimer. Déconnectez-vous d'abord s'il  vous plaît . Le serveur n'a PAS été supprimé."
+msgstr "Vous êtes connecté au serveur que vous tentez de supprimer. Déconnectez-vous d'abord s'il vous plaît . Le serveur n'a PAS été supprimé."
 
 #: src/ServerListCtrl.cpp:152
 msgid "(Unknown name)"
@@ -5818,7 +5826,7 @@ msgstr "AVERTISSEMENT : %s (%s) - %s"
 #: src/ServerSocket.cpp:320
 #, c-format
 msgid "Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
-msgstr "Le serveur %s (%s)  a rejeté notre identifiant (aucune identité de client attribuée). Déconnexion."
+msgstr "Le serveur %s (%s) a rejeté notre identifiant (aucune identité de client attribuée). Déconnexion."
 
 #: src/ServerSocket.cpp:362
 #, c-format
@@ -7295,7 +7303,7 @@ msgstr "Impossible d'ouvrir %s"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:153
 msgid "Out of memory while calculating ed2k hash!"
-msgstr "Dépassement de mémoire lors du calcul du hachage eD2k!"
+msgstr "Dépassement de mémoire lors du calcul du hachage eD2k !"
 
 #: src/utils/wxCas/src/linuxmon.cpp:77
 #, c-format
