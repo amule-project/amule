@@ -782,7 +782,7 @@ void CWriteStrBuffer::Write(const char *s, int len)
 	while ( len ) {
 		if ( (len + 1) <= m_curr_buf_left ) {
 			memcpy(m_buf_ptr, s, len);
-			s[len] = '\0';
+			m_buf_ptr[len] = '\0';
 			m_buf_ptr += len;
 			m_curr_buf_left -= len;
 			len = 0;
