@@ -702,7 +702,7 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 	fclose(f);
 	char *scan_ptr = buf;
 	char *curr_code_end = buf;
-	while ( strlen(scan_ptr) ) {
+	while ( *scan_ptr ) {
 		scan_ptr = strstr(scan_ptr, "<?php");
 		if ( !scan_ptr ) {
 			buff->Write(curr_code_end);
