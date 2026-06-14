@@ -316,22 +316,22 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 	speed = array_get_by_str_key(result, "speed_up");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
-	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_UL_SPEED)->GetInt();
+	speed->value.int_val = stats->GetTagByNameSafe(EC_TAG_STATS_UL_SPEED)->GetInt();
 
 	speed = array_get_by_str_key(result, "speed_down");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
-	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_DL_SPEED)->GetInt();
+	speed->value.int_val = stats->GetTagByNameSafe(EC_TAG_STATS_DL_SPEED)->GetInt();
 
 	speed = array_get_by_str_key(result, "speed_limit_up");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
-	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_UL_SPEED_LIMIT)->GetInt();
+	speed->value.int_val = stats->GetTagByNameSafe(EC_TAG_STATS_UL_SPEED_LIMIT)->GetInt();
 
 	speed = array_get_by_str_key(result, "speed_limit_down");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
-	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_DL_SPEED_LIMIT)->GetInt();
+	speed->value.int_val = stats->GetTagByNameSafe(EC_TAG_STATS_DL_SPEED_LIMIT)->GetInt();
 
 	delete stats;
 }
