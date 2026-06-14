@@ -375,7 +375,7 @@ void php_native_ed2k_download_cmd(PHP_VALUE_NODE *result)
 	cast_value_dnum(&si->var->value);
 	int cat = si->var->value.int_val;
 
-	printf("php_native_search_download_cmd: hash=%s category=%d\n", str_link, cat);
+	printf("php_native_ed2k_download_cmd: file_link=%s category=%d\n", str_link, cat);
 }
 
 
