@@ -249,35 +249,6 @@ void php_native_isset(PHP_VALUE_NODE *result)
 	}
 }
 
-void php_native_substr(PHP_VALUE_NODE * /*result*/)
-{
-	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
-	PHP_VALUE_NODE *str = &si_str->var->value;
-	if ( si_str ) {
-		cast_value_str(str);
-	} else {
-		php_report_error(PHP_ERROR, "Invalid or missing argument 'str' for 'substr'");
-		return;
-	}
-	PHP_SCOPE_ITEM *si_start = get_scope_item(g_current_scope, "__param_1");
-	PHP_VALUE_NODE *start = &si_start->var->value;
-	if ( si_start ) {
-		cast_value_dnum(start);
-	} else {
-		php_report_error(PHP_ERROR, "Invalid or missing argument 'start' for 'substr'");
-		return;
-	}
-	// 3-rd is optional
-	PHP_SCOPE_ITEM *si_end = get_scope_item(g_current_scope, "__param_2");
-	PHP_VALUE_NODE end = { PHP_VAL_INT, { 0 } };
-	if ( si_end ) {
-		end = si_end->var->value;
-	}
-	cast_value_dnum(&end);
-
-
-}
-
 void php_native_htmlspecialchars(PHP_VALUE_NODE *result)
 {
 	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
