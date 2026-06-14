@@ -350,7 +350,7 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 	if (cats_tag->HasChildTags()) {
 		int i = 0;
 		for (CECTag::const_iterator it = cats_tag->begin(); it != cats_tag->end(); ++it) {
-			const CECTag *categoryTitle = it->GetTagByName(EC_TAG_CATEGORY_TITLE);
+			const CECTag *categoryTitle = it->GetTagByNameSafe(EC_TAG_CATEGORY_TITLE);
 			PHP_VAR_NODE *cat = array_get_by_int_key(result, i++);
 			value_value_free(&cat->value);
 			cat->value.type = PHP_VAL_STRING;
@@ -841,6 +841,10 @@ void amule_load_stats_tree(PHP_VALUE_NODE *result)
 		return;
 	}
 	const CEC_StatTree_Node_Tag *stats_root = static_cast<const CEC_StatTree_Node_Tag *>(response->GetTagByName(EC_TAG_STATTREE_NODE));
+	if ( !stats_root ) {
+		delete response;
+		return;
+	}
 	//ecstats2php(stats_root, result);
 	for (CECTag::const_iterator it = stats_root->begin(); it != stats_root->end(); ++it) {
 		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*) & *it;
