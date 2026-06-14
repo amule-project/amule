@@ -35,7 +35,6 @@
 
 #define PACKAGE_VERSION "standalone"
 
-#include <map>
 #include <list>
 #include <stdarg.h>
 
