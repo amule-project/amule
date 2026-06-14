@@ -95,11 +95,17 @@ CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPo
 	InsertColumn( COLUMN_SERVER_FAILS,	_("Failed"),		wxLIST_FORMAT_LEFT,  40, "f" );
 	InsertColumn( COLUMN_SERVER_STATIC,	_("Static"),		wxLIST_FORMAT_LEFT,  40, "S" );
 	InsertColumn( COLUMN_SERVER_VERSION,	_("Version"),		wxLIST_FORMAT_LEFT,  80, "V" );
-	#ifdef __DEBUG__
-	InsertColumn( COLUMN_SERVER_TCPFLAGS,	"TCP Flags",	wxLIST_FORMAT_LEFT,  80, "t" );
-	InsertColumn( COLUMN_SERVER_UDPFLAGS,	"UDP Flags",	wxLIST_FORMAT_LEFT,  80, "u" );
-	#endif
 
+#if !defined(CLIENT_GUI)
+	InsertColumn( COLUMN_SERVER_TCPFLAGS,	_("TCP Flags"),		wxLIST_FORMAT_LEFT,  80, "t" );
+	InsertColumn( COLUMN_SERVER_UDPFLAGS,	_("UDP Flags"),		wxLIST_FORMAT_LEFT,  80, "u" );
+	#if !defined(__DEBUG__)
+	//InsertColumn created the columns with their default 80 width, which is required to unhide
+	//them on the context menu. Now, for Release builds, we will hide them by default
+	SetColumnWidth(GetColumnIndex("t"), 0);
+	SetColumnWidth(GetColumnIndex("u"), 0);
+	#endif
+#endif
 
 	LoadSettings();
 }
@@ -243,7 +249,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	SetItem( itemnr, COLUMN_SERVER_STATIC, ( server->IsStaticMember() ? _("Yes") : _("No") ) );
 	SetItem( itemnr, COLUMN_SERVER_VERSION, server->GetVersion() );
 
-	#if defined(__DEBUG__) && !defined(CLIENT_GUI)
+#if !defined(CLIENT_GUI)
 	wxString flags;
 	/* TCP */
 	if (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION) {
@@ -298,7 +304,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	}
 	SetItem( itemnr, COLUMN_SERVER_UDPFLAGS, flags );
 
-	#endif
+#endif
 
 	// Deletions of items causes rather large amount of flicker, so to
 	// avoid this, we resort the list to ensure correct ordering.

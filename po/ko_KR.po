@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-13 10:42+0200\n"
+"POT-Creation-Date: 2026-06-14 15:17+0200\n"
 "PO-Revision-Date: 2026-06-13 22:28+0000\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -113,8 +113,8 @@ msgid_plural "Could not add %u links from ED2KLinks file (see log for details)."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/amuleAppCommon.cpp:176 src/amule.cpp:866 src/amule.cpp:980
-#: src/amule.cpp:1275 src/amule-remote-gui.cpp:481 src/amule-remote-gui.cpp:533
+#: src/amuleAppCommon.cpp:176 src/amule.cpp:877 src/amule.cpp:991
+#: src/amule.cpp:1286 src/amule-remote-gui.cpp:481 src/amule-remote-gui.cpp:533
 #: src/amule-remote-gui.cpp:546 src/amule-remote-gui.cpp:564
 #: src/amule-remote-gui.cpp:953 src/amule-remote-gui.cpp:982
 #: src/DownloadQueue.cpp:1444
@@ -137,99 +137,99 @@ msgstr ""
 "\n"
 "좋아, 나가는중 %s...\n"
 
-#: src/amule.cpp:270
+#: src/amule.cpp:281
 #, c-format
 msgid "Terminating amuleweb instance with pid '%d' ... "
 msgstr ""
 
-#: src/amule.cpp:273
+#: src/amule.cpp:284
 #, c-format
 msgid "Killing amuleweb instance with pid '%d' ... "
 msgstr ""
 
-#: src/amule.cpp:275 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
+#: src/amule.cpp:286 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
 msgstr "실패"
 
-#: src/amule.cpp:281
+#: src/amule.cpp:292
 msgid "aMule OnExit: Terminating core."
 msgstr ""
 
-#: src/amule.cpp:383
+#: src/amule.cpp:394
 msgid "aMule shutdown completed."
 msgstr ""
 
-#: src/amule.cpp:387
+#: src/amule.cpp:398
 msgid "Memory debug results for aMule exit:"
 msgstr ""
 
-#: src/amule.cpp:574
+#: src/amule.cpp:585
 msgid "Your locale has been changed to System Default due to a configuration change. Sorry."
 msgstr "지역정보(로케일)가 설정 변경으로 인해 시스템 기본값으로 변경되었습니다. 죄송합니다."
 
-#: src/amule.cpp:574 src/amule.cpp:1264 src/CatDialog.cpp:141
+#: src/amule.cpp:585 src/amule.cpp:1275 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:355
-#: src/ServerListCtrl.cpp:149
+#: src/ServerListCtrl.cpp:155
 msgid "Info"
 msgstr "정보"
 
-#: src/amule.cpp:580
+#: src/amule.cpp:591
 #, fuzzy
 msgid ""
 "\n"
 "EC configuration"
 msgstr "종료 확인"
 
-#: src/amule.cpp:583
+#: src/amule.cpp:594
 #, fuzzy
 msgid "Password set and external connections enabled."
 msgstr "새로운 외부연결이 승인되었습니다."
 
-#: src/amule.cpp:594 src/KadDlg.cpp:183 src/KadDlg.cpp:189
+#: src/amule.cpp:605 src/KadDlg.cpp:183 src/KadDlg.cpp:189
 #: src/PrefsUnifiedDlg.cpp:1034 src/SharedFilesCtrl.cpp:319
 msgid "WARNING"
 msgstr "경고"
 
-#: src/amule.cpp:767
+#: src/amule.cpp:778
 #, fuzzy
 msgid "eD2k server list (server.met)"
 msgstr "server.met에서 %i개의 서버가 발견됨"
 
-#: src/amule.cpp:768
+#: src/amule.cpp:779
 msgid "Kad bootstrap nodes (nodes.dat)"
 msgstr ""
 
-#: src/amule.cpp:775
+#: src/amule.cpp:786
 msgid ""
 "aMule has detected missing network bootstrap files.\n"
 "Select which ones to download:"
 msgstr ""
 
-#: src/amule.cpp:776
+#: src/amule.cpp:787
 #, fuzzy
 msgid "Network bootstrap"
 msgstr "통신망"
 
-#: src/amule.cpp:861
+#: src/amule.cpp:872
 #, c-format
 msgid "web server running on pid %d"
 msgstr ""
 
-#: src/amule.cpp:865
+#: src/amule.cpp:876
 msgid "You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or build aMule from source with -DBUILD_WEBSERVER=YES and install it."
 msgstr ""
 
-#: src/amule.cpp:948
+#: src/amule.cpp:959
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr ""
 
-#: src/amule.cpp:972
+#: src/amule.cpp:983
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "포트 %u는 사용할 수 없습니다. 낮은아이디를 가질것입니다.\n"
 
-#: src/amule.cpp:978
+#: src/amule.cpp:989
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -244,48 +244,48 @@ msgstr ""
 "\n"
 "나가고 들어오는것에 대해 포트가 열려있는지 통신망을 체크하세요. "
 
-#: src/amule.cpp:1061
+#: src/amule.cpp:1072
 msgid "Failed to create OnlineSig File"
 msgstr "온라인서명 파일을 생성하지 못함"
 
-#: src/amule.cpp:1069
+#: src/amule.cpp:1080
 msgid "Failed to create aMule OnlineSig File"
 msgstr "어뮬 온라인서명 파일을 생성하지 못함"
 
-#: src/amule.cpp:1241
+#: src/amule.cpp:1252
 msgid "The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"
 msgstr "컴퓨터에 선택한 지역정보(로케일)가 설치 않된것 같습니다. (주의: 어쨌든 설정하겠습니다)"
 
-#: src/amule.cpp:1250
+#: src/amule.cpp:1261
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "이번에 어뮬 %s를 처음 실행했습니다."
 
-#: src/amule.cpp:1252
+#: src/amule.cpp:1263
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "이 버전은 테스트 버젼으로, 매일 업데이트되며, \n"
 
-#: src/amule.cpp:1253
+#: src/amule.cpp:1264
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "이 프로그램이 어느 것도 부수지 않는다고, 집을 태우지 않는다고, 혹은 \n"
 
-#: src/amule.cpp:1254
+#: src/amule.cpp:1265
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "개를 죽이지 않는다고 보장하지 않습니다. 그렇지만 안전하게 사용할 수 있을 것입니다.\n"
 
-#: src/amule.cpp:1259
+#: src/amule.cpp:1270
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr "더 많은 정보, 지원, 새 릴리즈는 홈페이지 amule-org.github.io, 또는 IRC 채널\n"
 
-#: src/amule.cpp:1260
+#: src/amule.cpp:1271
 msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.libera.chat.\n"
 msgstr "(irc.libera.chat의 #aMule)에서 찾을 수 있습니다.\n"
 
-#: src/amule.cpp:1262
+#: src/amule.cpp:1273
 msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
 msgstr "버그는 https://github.com/amule-org/amule/issues로 보고해 주십시오."
 
-#: src/amule.cpp:1275
+#: src/amule.cpp:1286
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -293,138 +293,138 @@ msgstr ""
 "지정한 온라인 서명 파일을 위한 폴더가 유효하지 않습니다.\n"
 " 온라인 서명은 환경설정에서 수정될 때까지 비활성화 됩니다."
 
-#: src/amule.cpp:1338
+#: src/amule.cpp:1349
 #, fuzzy
 msgid "Server hostname notified"
 msgstr "서버 이름:"
 
-#: src/amule.cpp:1662
+#: src/amule.cpp:1673
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr ""
 
-#: src/amule.cpp:1795
+#: src/amule.cpp:1806
 msgid "ERROR: can't open logfile"
 msgstr "오류: 로그파일을 열 수 없음"
 
-#: src/amule.cpp:1799
+#: src/amule.cpp:1810
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "경고: 로그파일이 비어있습니다. 뭔가 잘못되어 있습니다."
 
-#: src/amule.cpp:1816
+#: src/amule.cpp:1827
 msgid "Log has been reset"
 msgstr "로그가 초기화되었습니다."
 
-#: src/amule.cpp:1842
+#: src/amule.cpp:1853
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "서버메시지: %s"
 
-#: src/amule.cpp:1884 src/IP2Country.cpp:235 src/IPFilter.cpp:510
+#: src/amule.cpp:1895 src/IP2Country.cpp:235 src/IPFilter.cpp:510
 #: src/ServerList.cpp:870
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr ""
 
-#: src/amule.cpp:1886
+#: src/amule.cpp:1897
 msgid "Failed to download the nodes list."
 msgstr "노드 목록을 내려받지 못했습니다."
 
-#: src/amule.cpp:1906
+#: src/amule.cpp:1917
 msgid "Failed to open the downloaded version check file"
 msgstr "내려받은 버젼 검사 파일을 열지 못했습니다."
 
-#: src/amule.cpp:1909 src/amule.cpp:1928 src/amule.cpp:1959 src/amule.cpp:1980
+#: src/amule.cpp:1920 src/amule.cpp:1939 src/amule.cpp:1970 src/amule.cpp:1991
 msgid "Corrupted version check file"
 msgstr "손상된 버젼 검사 파일"
 
-#: src/amule.cpp:1991
+#: src/amule.cpp:2002
 msgid "You are using an outdated version of aMule!"
 msgstr "오래된 어뮬 버젼을 사용하고 있습니다!"
 
-#: src/amule.cpp:1993
+#: src/amule.cpp:2004
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "어뮬 버젼은 %i.%i.%i이며 최신 버젼은 %li.%li.%li입니다."
 
-#: src/amule.cpp:1994
+#: src/amule.cpp:2005
 msgid "The latest version can always be found at https://github.com/amule-org/amule/releases/latest"
 msgstr "최신 버젼은 항상 https://github.com/amule-org/amule/releases/latest 에서 찾을 수 있습니다."
 
-#: src/amule.cpp:1996
+#: src/amule.cpp:2007
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "경고: 어뮬 버젼은 오래되었습니다: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:2000
+#: src/amule.cpp:2011
 msgid "Your copy of aMule is up to date."
 msgstr "어뮬은 최신 버전입니다."
 
-#: src/amule.cpp:2007
+#: src/amule.cpp:2018
 msgid "Failed to download the version check file"
 msgstr "버젼 검사 파일을 내려받지 못했습니다."
 
-#: src/amule.cpp:2177 src/amule-remote-gui.cpp:822
+#: src/amule.cpp:2188 src/amule-remote-gui.cpp:822
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr ""
 
-#: src/amule.cpp:2178 src/amule-remote-gui.cpp:823
+#: src/amule.cpp:2189 src/amule-remote-gui.cpp:823
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr ""
 
-#: src/amule.cpp:2187 src/amule-remote-gui.cpp:832
+#: src/amule.cpp:2198 src/amule-remote-gui.cpp:832
 msgid "No networks selected"
 msgstr ""
 
-#: src/amule.cpp:2229 src/TextClient.cpp:806
+#: src/amule.cpp:2240 src/TextClient.cpp:806
 msgid "with LowID"
 msgstr "낮은아이디로"
 
-#: src/amule.cpp:2229 src/TextClient.cpp:806
+#: src/amule.cpp:2240 src/TextClient.cpp:806
 msgid "with HighID"
 msgstr "높은아이디로"
 
-#: src/amule.cpp:2231
+#: src/amule.cpp:2242
 #, c-format
 msgid "Connected to %s %s"
 msgstr "%s %s에 연결되었음"
 
-#: src/amule.cpp:2235
+#: src/amule.cpp:2246
 #, c-format
 msgid "Connecting to %s"
 msgstr "%s에 연결중"
 
-#: src/amule.cpp:2237
+#: src/amule.cpp:2248
 msgid "Disconnected from eD2k"
 msgstr ""
 
-#: src/amule.cpp:2245
+#: src/amule.cpp:2256
 msgid "Kad started."
 msgstr "Kad를 시작했습니다."
 
-#: src/amule.cpp:2247
+#: src/amule.cpp:2258
 msgid "Kad stopped."
 msgstr "Kad를 멈췄습니다."
 
-#: src/amule.cpp:2255
+#: src/amule.cpp:2266
 msgid "Connected to Kad (ok)"
 msgstr "Kad에 연결됨 (양호)"
 
-#: src/amule.cpp:2257
+#: src/amule.cpp:2268
 msgid "Connected to Kad (firewalled)"
 msgstr "Kad에 연결됨 (방화벽)"
 
-#: src/amule.cpp:2260
+#: src/amule.cpp:2271
 msgid "Disconnected from Kad"
 msgstr "Kad로부터 연결이 끊김"
 
-#: src/amule.cpp:2292
+#: src/amule.cpp:2303
 msgid "Kad network cannot be used if UDP port is disabled on preferences, not starting."
 msgstr "Kad 네트워크는 UDP 포트가 비활성될 시 사용할 수 없으며, 따라서 시작하지 않습니다."
 
-#: src/amule.cpp:2295
+#: src/amule.cpp:2306
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad 네트워크가 환경설정에서 비활성되어, 연결하지 않습니다."
 
@@ -574,8 +574,8 @@ msgstr " Kad: "
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:185
 #: src/muuli_wdr.cpp:681 src/muuli_wdr.cpp:732 src/muuli_wdr.cpp:794
 #: src/muuli_wdr.cpp:846 src/muuli_wdr.cpp:1968 src/muuli_wdr.cpp:2050
-#: src/muuli_wdr.cpp:2773 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
-#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/muuli_wdr.cpp:2773 src/ServerListCtrl.cpp:160 src/ServerListCtrl.cpp:534
+#: src/ServerListCtrl.cpp:553 src/TransferWnd.cpp:375
 #: src/utils/wxCas/src/wxcasprefs.cpp:266
 msgid "Cancel"
 msgstr "취소"
@@ -948,7 +948,7 @@ msgid "Enter Captcha"
 msgstr ""
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:693 src/muuli_wdr.cpp:240
-#: src/SearchListCtrl.cpp:694 src/TransferWnd.cpp:335
+#: src/SearchListCtrl.cpp:699 src/TransferWnd.cpp:335
 msgid "Category"
 msgstr "분류"
 
@@ -1167,7 +1167,7 @@ msgid "Username"
 msgstr "사용자이름"
 
 #: src/CommentDialogLst.cpp:70 src/DownloadListCtrl.cpp:159
-#: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:92
+#: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:94
 #: src/SharedFilesCtrl.cpp:103
 msgid "File Name"
 msgstr "파일 이름"
@@ -1213,19 +1213,19 @@ msgid "Very low"
 msgstr "매우 낮음"
 
 #: src/DataToText.cpp:42 src/DownloadListCtrl.cpp:646 src/muuli_wdr.cpp:2019
-#: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
+#: src/ServerListCtrl.cpp:242 src/ServerListCtrl.cpp:405
 #: src/SharedFilesCtrl.cpp:139
 msgid "Low"
 msgstr "낮음"
 
 #: src/DataToText.cpp:43 src/DownloadListCtrl.cpp:647 src/muuli_wdr.cpp:2020
-#: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:400
+#: src/ServerListCtrl.cpp:243 src/ServerListCtrl.cpp:406
 #: src/SharedFilesCtrl.cpp:140
 msgid "Normal"
 msgstr "보통"
 
 #: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:648 src/muuli_wdr.cpp:2021
-#: src/ServerListCtrl.cpp:238 src/ServerListCtrl.cpp:401
+#: src/ServerListCtrl.cpp:244 src/ServerListCtrl.cpp:407
 #: src/SharedFilesCtrl.cpp:141
 msgid "High"
 msgstr "높음"
@@ -1366,7 +1366,7 @@ msgstr ""
 msgid "ERROR: Failed!"
 msgstr ""
 
-#: src/DataToText.cpp:149 src/SearchListCtrl.cpp:1078
+#: src/DataToText.cpp:149 src/SearchListCtrl.cpp:1099
 msgid "Queued"
 msgstr "대기열에 있음"
 
@@ -1383,7 +1383,7 @@ msgid "Part"
 msgstr ""
 
 #: src/DownloadListCtrl.cpp:160 src/PartFileConvertDlg.cpp:95
-#: src/SearchListCtrl.cpp:93 src/SharedFilesCtrl.cpp:104
+#: src/SearchListCtrl.cpp:95 src/SharedFilesCtrl.cpp:104
 msgid "Size"
 msgstr "크기"
 
@@ -1400,17 +1400,17 @@ msgid "Progress"
 msgstr "진척"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:94
+#: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:96
 msgid "Sources"
 msgstr "자료"
 
 #: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:651
-#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:403
+#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:409
 #: src/SharedFilesCtrl.cpp:106 src/SharedFilesCtrl.cpp:146
 msgid "Priority"
 msgstr "우선권"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4330 src/SearchListCtrl.cpp:97
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4330 src/SearchListCtrl.cpp:99
 msgid "Status"
 msgstr "상태"
 
@@ -2206,11 +2206,11 @@ msgstr "올려주기"
 msgid "None"
 msgstr "아무도"
 
-#: src/GenericClientListCtrl.cpp:1141 src/ServerListCtrl.cpp:243
+#: src/GenericClientListCtrl.cpp:1141 src/ServerListCtrl.cpp:249
 msgid "No"
 msgstr "아니오"
 
-#: src/GenericClientListCtrl.cpp:1143 src/ServerListCtrl.cpp:243
+#: src/GenericClientListCtrl.cpp:1143 src/ServerListCtrl.cpp:249
 msgid "Yes"
 msgstr "예"
 
@@ -2557,7 +2557,7 @@ msgstr ""
 msgid "External Connection: Handshake failed."
 msgstr "외부연결 암호"
 
-#: src/LibSocketAsio.cpp:1585
+#: src/LibSocketAsio.cpp:1592
 #, fuzzy, c-format
 msgid "Asio thread %d started"
 msgstr "동기화 스레드가 시작되었습니다."
@@ -2859,11 +2859,11 @@ msgstr "검색"
 msgid "Name:"
 msgstr "이름:"
 
-#: src/muuli_wdr.cpp:198 src/SearchListCtrl.cpp:95 src/SharedFilesCtrl.cpp:105
+#: src/muuli_wdr.cpp:198 src/SearchListCtrl.cpp:97 src/SharedFilesCtrl.cpp:105
 msgid "Type"
 msgstr "종류"
 
-#: src/muuli_wdr.cpp:202 src/SearchDlg.cpp:109
+#: src/muuli_wdr.cpp:202 src/SearchDlg.cpp:109 src/SearchListCtrl.cpp:805
 msgid "Local"
 msgstr "지역"
 
@@ -2983,7 +2983,7 @@ msgstr ""
 msgid "Stop"
 msgstr "멈춤"
 
-#: src/muuli_wdr.cpp:335 src/muuli_wdr.cpp:1318 src/SearchListCtrl.cpp:692
+#: src/muuli_wdr.cpp:335 src/muuli_wdr.cpp:1318 src/SearchListCtrl.cpp:697
 msgid "Download"
 msgstr "내려받기"
 
@@ -4859,7 +4859,7 @@ msgstr ""
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:1073
+#: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:1094
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
 msgstr ""
@@ -5063,7 +5063,7 @@ msgstr "기본 포트가 사용될 것입니다.(%d)"
 msgid "Connection"
 msgstr "연결"
 
-#: src/PrefsUnifiedDlg.cpp:197 src/SearchListCtrl.cpp:98
+#: src/PrefsUnifiedDlg.cpp:197 src/SearchListCtrl.cpp:110
 msgid "Directories"
 msgstr "폴더"
 
@@ -5469,7 +5469,7 @@ msgstr "공유된 파일 목록을 다시 읽어들입니다."
 msgid "It's impossible to search when both eD2k and Kademlia are disabled."
 msgstr ""
 
-#: src/SearchDlg.cpp:283
+#: src/SearchDlg.cpp:283 src/SearchListCtrl.cpp:809
 #, fuzzy
 msgid "Search error"
 msgstr "검색"
@@ -5490,7 +5490,7 @@ msgstr "최소 크기가 최대 크기보다 작아야 합니다. 최대 크기�
 msgid "Search warning"
 msgstr "검색 경고"
 
-#: src/SearchDlg.cpp:662 src/SearchListCtrl.cpp:695
+#: src/SearchDlg.cpp:662 src/SearchListCtrl.cpp:700
 msgid "Main"
 msgstr "주"
 
@@ -5510,50 +5510,55 @@ msgstr ""
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Kad 검색 시도 중에 예기치 못한 에러: "
 
-#: src/SearchListCtrl.cpp:96 src/SharedFilesCtrl.cpp:107
+#: src/SearchListCtrl.cpp:98 src/SharedFilesCtrl.cpp:107
 msgid "FileID"
 msgstr "파일아이디"
 
-#: src/SearchListCtrl.cpp:103
+#: src/SearchListCtrl.cpp:104
 msgid "Length"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:104
+#: src/SearchListCtrl.cpp:105
 #, fuzzy
 msgid "Bitrate"
 msgstr "선택되지 않은"
 
-#: src/SearchListCtrl.cpp:105
+#: src/SearchListCtrl.cpp:106
 msgid "Codec"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:701
+#: src/SearchListCtrl.cpp:706
 msgid "Download in category"
 msgstr "분류내 내려받기"
 
-#: src/SearchListCtrl.cpp:706
+#: src/SearchListCtrl.cpp:711
 #, fuzzy, c-format
 msgid "Get %s for this file"
 msgstr "이 파일의 추가주소를 더합니다."
 
-#: src/SearchListCtrl.cpp:710
+#: src/SearchListCtrl.cpp:715
 msgid "Search related files (eD2k, local server)"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:715
+#: src/SearchListCtrl.cpp:720
 msgid "Mark as known file"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:719 src/ServerListCtrl.cpp:427
+#: src/SearchListCtrl.cpp:724 src/ServerListCtrl.cpp:433
 msgid "Copy eD2k link to clipboard"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:1081
+#: src/SearchListCtrl.cpp:808
+#, fuzzy
+msgid "You are not currently connected to a server supporting the Related Files search function"
+msgstr "삭제하려고하는 서버에 접속되어있습니다. 부디 먼저 연결을 끊으세요."
+
+#: src/SearchListCtrl.cpp:1102
 #, fuzzy
 msgid "Canceled"
 msgstr "취소"
 
-#: src/SearchListCtrl.cpp:1084
+#: src/SearchListCtrl.cpp:1105
 msgid "New"
 msgstr ""
 
@@ -5779,85 +5784,93 @@ msgstr "정적"
 msgid "Version"
 msgstr "버젼"
 
-#: src/ServerListCtrl.cpp:149
+#: src/ServerListCtrl.cpp:100
+msgid "TCP Flags"
+msgstr ""
+
+#: src/ServerListCtrl.cpp:101
+msgid "UDP Flags"
+msgstr ""
+
+#: src/ServerListCtrl.cpp:155
 msgid "You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."
 msgstr "삭제하려는 서버에 연결되어 있습니다. 먼저 연결을 끊으세요. 서버는 삭제되지 않습니다."
 
-#: src/ServerListCtrl.cpp:152
+#: src/ServerListCtrl.cpp:158
 msgid "(Unknown name)"
 msgstr "(알수없는 이름)"
 
-#: src/ServerListCtrl.cpp:154
+#: src/ServerListCtrl.cpp:160
 #, c-format
 msgid "Are you sure you want to delete the static server %s"
 msgstr "정적 서버 %s를 삭제하시겠습니까?"
 
-#: src/ServerListCtrl.cpp:348
+#: src/ServerListCtrl.cpp:354
 #, c-format
 msgid "Servers (%i)"
 msgstr "서버 (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:184 src/ServerSocket.cpp:199
+#: src/ServerListCtrl.cpp:403 src/ServerSocket.cpp:184 src/ServerSocket.cpp:199
 #: src/ServerSocket.cpp:321 src/ServerWnd.cpp:190
 msgid "Server"
 msgstr "서버"
 
-#: src/ServerListCtrl.cpp:402
+#: src/ServerListCtrl.cpp:408
 msgid "Connect to server"
 msgstr "서버에 연결함"
 
-#: src/ServerListCtrl.cpp:408
+#: src/ServerListCtrl.cpp:414
 #, fuzzy
 msgid "Mark server as static"
 msgstr "정적인 서버를 만듦"
 
-#: src/ServerListCtrl.cpp:409
+#: src/ServerListCtrl.cpp:415
 #, fuzzy
 msgid "Mark server as non-static"
 msgstr "비정적인 서버를 만듦"
 
-#: src/ServerListCtrl.cpp:411
+#: src/ServerListCtrl.cpp:417
 #, fuzzy
 msgid "Mark servers as static"
 msgstr "정적인 서버를 만듦"
 
-#: src/ServerListCtrl.cpp:412
+#: src/ServerListCtrl.cpp:418
 #, fuzzy
 msgid "Mark servers as non-static"
 msgstr "비정적인 서버를 만듦"
 
-#: src/ServerListCtrl.cpp:418
+#: src/ServerListCtrl.cpp:424
 #, fuzzy
 msgid "Remove server"
 msgstr "서버를 삭제"
 
-#: src/ServerListCtrl.cpp:420
+#: src/ServerListCtrl.cpp:426
 #, fuzzy
 msgid "Remove servers"
 msgstr "서버를 삭제"
 
-#: src/ServerListCtrl.cpp:422
+#: src/ServerListCtrl.cpp:428
 msgid "Remove all servers"
 msgstr "모든 서버를 삭제"
 
-#: src/ServerListCtrl.cpp:429
+#: src/ServerListCtrl.cpp:435
 msgid "Copy eD2k links to clipboard"
 msgstr ""
 
-#: src/ServerListCtrl.cpp:437
+#: src/ServerListCtrl.cpp:443
 msgid "Reconnect to server"
 msgstr "서버에 재접속"
 
-#: src/ServerListCtrl.cpp:526
+#: src/ServerListCtrl.cpp:532
 msgid "Are you sure that you wish to delete all servers?"
 msgstr "모든 서버를 삭제하시겠습니까?"
 
-#: src/ServerListCtrl.cpp:542
+#: src/ServerListCtrl.cpp:548
 #, fuzzy
 msgid "Are you sure that you wish to delete the selected server?"
 msgstr "선택된 서버를 삭제하시겠습니까?"
 
-#: src/ServerListCtrl.cpp:544
+#: src/ServerListCtrl.cpp:550
 #, fuzzy
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr "선택된 서버를 삭제하시겠습니까?"

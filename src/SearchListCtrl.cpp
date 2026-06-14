@@ -29,7 +29,9 @@
 #include <common/Format.h>	// Needed for CFormat
 #include <tags/FileTags.h>	// Needed for FT_MEDIA_LENGTH / _BITRATE / _CODEC
 
-#include "amule.h"			// Needed for theApp
+#include "amule.h"		// Needed for theApp
+#include "Server.h"		// Needed for CServer
+#include "ServerConnect.h"	// Needed for CServerConnect
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "SearchList.h"		// Needed for CSearchFile
 #include "SearchDlg.h"		// Needed for CSearchDlg
@@ -787,12 +789,28 @@ void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 		return;
 	}
 
-	CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(item));
-	theApp->searchlist->StopSearch(true);
-	theApp->amuledlg->m_searchwnd->ResetControls();
-	CastByID( IDC_SEARCHNAME, theApp->amuledlg->m_searchwnd, wxTextCtrl )->
-		SetValue("related::" + file->GetFileHash().Encode());
-	theApp->amuledlg->m_searchwnd->StartNewSearch();
+	if (thePrefs::GetNetworkED2K() && theApp->serverconnect->GetCurrentServer() != NULL
+			&& theApp->serverconnect->GetCurrentServer()->GetRelatedSearchSupport()) {
+
+		theApp->searchlist->StopSearch(true);
+		theApp->amuledlg->m_searchwnd->ResetControls();
+		wxString keyword("related");
+		do {
+			CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(item));
+			keyword << "::" << file->GetFileHash().Encode();
+			item = GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		} while (item > -1);
+		CastByID( IDC_SEARCHNAME, theApp->amuledlg->m_searchwnd, wxTextCtrl )->SetValue(keyword);
+		wxChoice* searchtype = CastByID( ID_SEARCHTYPE, theApp->amuledlg->m_searchwnd, wxChoice );
+		searchtype->SetSelection(searchtype->FindString(_("Local")));
+		theApp->amuledlg->m_searchwnd->StartNewSearch();
+	} else {
+		wxMessageBox(_("You are not currently connected to a server supporting the Related Files search function"),
+				_("Search error"),
+				wxOK|wxCENTRE|wxICON_ERROR
+				);
+		return;
+	}
 }
 
 
