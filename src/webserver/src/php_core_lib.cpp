@@ -69,7 +69,7 @@ void php_var_dump(PHP_VALUE_NODE *node, int ident, int ref)
 	if ( ref ) printf("&");
 	switch(node->type) {
 		case PHP_VAL_BOOL: printf("bool(%s)\n", node->int_val ? "true" : "false"); break;
-		case PHP_VAL_INT: printf("int(%" PRIu64 ")\n", node->int_val); break;
+		case PHP_VAL_INT: printf("int(%" PRId64 ")\n", node->int_val); break;
 		case PHP_VAL_FLOAT: printf("float(%f)\n", node->float_val); break;
 		case PHP_VAL_STRING: printf("string(%d) \"%s\"\n", (int)strlen(node->str_val), node->str_val); break;
 		case PHP_VAL_OBJECT: printf("Object(%s)\n", node->obj_val.class_name); break;
@@ -247,35 +247,6 @@ void php_native_isset(PHP_VALUE_NODE *result)
 	} else {
 		php_report_error(PHP_ERROR, "Invalid or missing argument");
 	}
-}
-
-void php_native_substr(PHP_VALUE_NODE * /*result*/)
-{
-	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
-	PHP_VALUE_NODE *str = &si_str->var->value;
-	if ( si_str ) {
-		cast_value_str(str);
-	} else {
-		php_report_error(PHP_ERROR, "Invalid or missing argument 'str' for 'substr'");
-		return;
-	}
-	PHP_SCOPE_ITEM *si_start = get_scope_item(g_current_scope, "__param_1");
-	PHP_VALUE_NODE *start = &si_start->var->value;
-	if ( si_start ) {
-		cast_value_dnum(start);
-	} else {
-		php_report_error(PHP_ERROR, "Invalid or missing argument 'start' for 'substr'");
-		return;
-	}
-	// 3-rd is optional
-	PHP_SCOPE_ITEM *si_end = get_scope_item(g_current_scope, "__param_2");
-	PHP_VALUE_NODE end = { PHP_VAL_INT, { 0 } };
-	if ( si_end ) {
-		end = si_end->var->value;
-	}
-	cast_value_dnum(&end);
-
-
 }
 
 void php_native_htmlspecialchars(PHP_VALUE_NODE *result)
@@ -469,8 +440,9 @@ void php_native_split(PHP_VALUE_NODE *result)
 void php_native_gettext(PHP_VALUE_NODE *result)
 {
 	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
-	PHP_VALUE_NODE *str = &si_str->var->value;
+	PHP_VALUE_NODE *str;
 	if ( si_str ) {
+		str = &si_str->var->value;
 		cast_value_str(str);
 	} else {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 'msgid' for 'gettext'");
@@ -486,8 +458,9 @@ void php_native_gettext(PHP_VALUE_NODE *result)
 void php_native_gettext_noop(PHP_VALUE_NODE *result)
 {
 	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
-	PHP_VALUE_NODE *str = &si_str->var->value;
+	PHP_VALUE_NODE *str;
 	if ( si_str ) {
+		str = &si_str->var->value;
 		cast_value_str(str);
 	} else {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 'msgid' for 'gettext_noop'");
@@ -503,24 +476,27 @@ void php_native_gettext_noop(PHP_VALUE_NODE *result)
 void php_native_ngettext(PHP_VALUE_NODE *result)
 {
 	PHP_SCOPE_ITEM *si_msgid = get_scope_item(g_current_scope, "__param_0");
-	PHP_VALUE_NODE *msgid = &si_msgid->var->value;
+	PHP_VALUE_NODE *msgid;
 	if ( si_msgid ) {
+		msgid = &si_msgid->var->value;
 		cast_value_str(msgid);
 	} else {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 'msgid' for 'ngettext'");
 		return;
 	}
 	PHP_SCOPE_ITEM *si_msgid_plural = get_scope_item(g_current_scope, "__param_1");
-	PHP_VALUE_NODE *msgid_plural = &si_msgid_plural->var->value;
+	PHP_VALUE_NODE *msgid_plural;
 	if ( si_msgid_plural ) {
+		msgid_plural = &si_msgid_plural->var->value;
 		cast_value_str(msgid_plural);
 	} else {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 'msgid_plural' for 'ngettext'");
 		return;
 	}
 	PHP_SCOPE_ITEM *si_count = get_scope_item(g_current_scope, "__param_2");
-	PHP_VALUE_NODE *count = &si_count->var->value;
+	PHP_VALUE_NODE *count;
 	if ( si_count ) {
+		count = &si_count->var->value;
 		cast_value_dnum(count);
 	} else {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 'count' for 'ngettext'");
@@ -726,7 +702,7 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 	fclose(f);
 	char *scan_ptr = buf;
 	char *curr_code_end = buf;
-	while ( strlen(scan_ptr) ) {
+	while ( *scan_ptr ) {
 		scan_ptr = strstr(scan_ptr, "<?php");
 		if ( !scan_ptr ) {
 			buff->Write(curr_code_end);
