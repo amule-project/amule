@@ -316,22 +316,22 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 	speed = array_get_by_str_key(result, "speed_up");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
-	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_UL_SPEED)->GetInt();
+	speed->value.int_val = stats->GetTagByNameSafe(EC_TAG_STATS_UL_SPEED)->GetInt();
 
 	speed = array_get_by_str_key(result, "speed_down");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
-	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_DL_SPEED)->GetInt();
+	speed->value.int_val = stats->GetTagByNameSafe(EC_TAG_STATS_DL_SPEED)->GetInt();
 
 	speed = array_get_by_str_key(result, "speed_limit_up");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
-	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_UL_SPEED_LIMIT)->GetInt();
+	speed->value.int_val = stats->GetTagByNameSafe(EC_TAG_STATS_UL_SPEED_LIMIT)->GetInt();
 
 	speed = array_get_by_str_key(result, "speed_limit_down");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
-	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_DL_SPEED_LIMIT)->GetInt();
+	speed->value.int_val = stats->GetTagByNameSafe(EC_TAG_STATS_DL_SPEED_LIMIT)->GetInt();
 
 	delete stats;
 }
@@ -350,7 +350,7 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 	if (cats_tag->HasChildTags()) {
 		int i = 0;
 		for (CECTag::const_iterator it = cats_tag->begin(); it != cats_tag->end(); ++it) {
-			const CECTag *categoryTitle = it->GetTagByName(EC_TAG_CATEGORY_TITLE);
+			const CECTag *categoryTitle = it->GetTagByNameSafe(EC_TAG_CATEGORY_TITLE);
 			PHP_VAR_NODE *cat = array_get_by_int_key(result, i++);
 			value_value_free(&cat->value);
 			cat->value.type = PHP_VAL_STRING;
@@ -580,11 +580,10 @@ void php_native_search_download_cmd(PHP_VALUE_NODE *)
 	char *str_hash = si->var->value.str_val;
 
 	si = get_scope_item(g_current_scope, "__param_1");
-	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
+	if ( !si ) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 2 (category)");
 		return;
 	}
-
 	cast_value_dnum(&si->var->value);
 	int cat = si->var->value.int_val;
 
@@ -841,6 +840,10 @@ void amule_load_stats_tree(PHP_VALUE_NODE *result)
 		return;
 	}
 	const CEC_StatTree_Node_Tag *stats_root = static_cast<const CEC_StatTree_Node_Tag *>(response->GetTagByName(EC_TAG_STATTREE_NODE));
+	if ( !stats_root ) {
+		delete response;
+		return;
+	}
 	//ecstats2php(stats_root, result);
 	for (CECTag::const_iterator it = stats_root->begin(); it != stats_root->end(); ++it) {
 		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*) & *it;
