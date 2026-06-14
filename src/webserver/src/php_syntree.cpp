@@ -984,7 +984,7 @@ void cast_value_array(PHP_VALUE_NODE *val)
 		case PHP_VAL_BOOL:
 		case PHP_VAL_INT:
 		case PHP_VAL_FLOAT: break;
-		case PHP_VAL_STRING: free(val->str_val);
+		case PHP_VAL_STRING: free(val->str_val); break;
 		case PHP_VAL_ARRAY: return;
 		case PHP_VAL_OBJECT: ;/* must call to free_obj() */
 		case PHP_VAL_VAR_NODE:
