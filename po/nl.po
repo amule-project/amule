@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-13 10:42+0200\n"
+"POT-Creation-Date: 2026-06-14 15:17+0200\n"
 "PO-Revision-Date: 2026-06-13 22:35+0000\n"
 "Last-Translator: Marcel Pol <marcel@timelord.nl>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -115,8 +115,8 @@ msgid_plural "Could not add %u links from ED2KLinks file (see log for details)."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/amuleAppCommon.cpp:176 src/amule.cpp:866 src/amule.cpp:980
-#: src/amule.cpp:1275 src/amule-remote-gui.cpp:481 src/amule-remote-gui.cpp:533
+#: src/amuleAppCommon.cpp:176 src/amule.cpp:877 src/amule.cpp:991
+#: src/amule.cpp:1286 src/amule-remote-gui.cpp:481 src/amule-remote-gui.cpp:533
 #: src/amule-remote-gui.cpp:546 src/amule-remote-gui.cpp:564
 #: src/amule-remote-gui.cpp:953 src/amule-remote-gui.cpp:982
 #: src/DownloadQueue.cpp:1444
@@ -135,43 +135,43 @@ msgstr "WAARSCHUWING: U kunt uzelf niet toevoegen als bron voor een eD2k-link te
 msgid "Now, exiting main app..."
 msgstr "Hoofdapp wordt nu afgesloten..."
 
-#: src/amule.cpp:270
+#: src/amule.cpp:281
 #, c-format
 msgid "Terminating amuleweb instance with pid '%d' ... "
 msgstr "Amuleweb-instantie met pid '%d' wordt afgesloten ... "
 
-#: src/amule.cpp:273
+#: src/amule.cpp:284
 #, c-format
 msgid "Killing amuleweb instance with pid '%d' ... "
 msgstr "Amuleweb-instantie met pid '%d' wordt gedood ... "
 
-#: src/amule.cpp:275 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
+#: src/amule.cpp:286 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
 msgstr "Mislukt"
 
-#: src/amule.cpp:281
+#: src/amule.cpp:292
 msgid "aMule OnExit: Terminating core."
 msgstr "aMule OnExit: Kern wordt afgesloten."
 
-#: src/amule.cpp:383
+#: src/amule.cpp:394
 msgid "aMule shutdown completed."
 msgstr "aMule is afgesloten."
 
-#: src/amule.cpp:387
+#: src/amule.cpp:398
 msgid "Memory debug results for aMule exit:"
 msgstr "Geheugen debug resultaten voor het afsluiten van aMule:"
 
-#: src/amule.cpp:574
+#: src/amule.cpp:585
 msgid "Your locale has been changed to System Default due to a configuration change. Sorry."
 msgstr "De taalinstelling is veranderd naar de systeemstandaard vanwege een configuratiewijziging. Sorry."
 
-#: src/amule.cpp:574 src/amule.cpp:1264 src/CatDialog.cpp:141
+#: src/amule.cpp:585 src/amule.cpp:1275 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:355
-#: src/ServerListCtrl.cpp:149
+#: src/ServerListCtrl.cpp:155
 msgid "Info"
 msgstr "Info"
 
-#: src/amule.cpp:580
+#: src/amule.cpp:591
 msgid ""
 "\n"
 "EC configuration"
@@ -179,56 +179,56 @@ msgstr ""
 "\n"
 "EV-configuratie"
 
-#: src/amule.cpp:583
+#: src/amule.cpp:594
 msgid "Password set and external connections enabled."
 msgstr "Wachtwoord ingesteld en externe verbindingen ingeschakeld."
 
-#: src/amule.cpp:594 src/KadDlg.cpp:183 src/KadDlg.cpp:189
+#: src/amule.cpp:605 src/KadDlg.cpp:183 src/KadDlg.cpp:189
 #: src/PrefsUnifiedDlg.cpp:1034 src/SharedFilesCtrl.cpp:319
 msgid "WARNING"
 msgstr "WAARSCHUWING"
 
-#: src/amule.cpp:767
+#: src/amule.cpp:778
 #, fuzzy
 msgid "eD2k server list (server.met)"
 msgstr "%i server in server.met gevonden"
 
-#: src/amule.cpp:768
+#: src/amule.cpp:779
 msgid "Kad bootstrap nodes (nodes.dat)"
 msgstr ""
 
-#: src/amule.cpp:775
+#: src/amule.cpp:786
 msgid ""
 "aMule has detected missing network bootstrap files.\n"
 "Select which ones to download:"
 msgstr ""
 
-#: src/amule.cpp:776
+#: src/amule.cpp:787
 #, fuzzy
 msgid "Network bootstrap"
 msgstr "Netwerken"
 
-#: src/amule.cpp:861
+#: src/amule.cpp:872
 #, c-format
 msgid "web server running on pid %d"
 msgstr "webserver draait met pid %d"
 
-#: src/amule.cpp:865
+#: src/amule.cpp:876
 #, fuzzy
 msgid "You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or build aMule from source with -DBUILD_WEBSERVER=YES and install it."
 msgstr "U heeft ingesteld om de webserver te starten bij het opstarten, maar amuleweb kan niet gestart worden. Installeer het pakket met de aMule webserver, of compileer aMule met --enable-webserver en draai make install"
 
-#: src/amule.cpp:948
+#: src/amule.cpp:959
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "Kon geen poorten koppelen aan het opgegeven adres: %s"
 
-#: src/amule.cpp:972
+#: src/amule.cpp:983
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Poort %u is niet beschikbaar. U krijgt een LAAG ID\n"
 
-#: src/amule.cpp:978
+#: src/amule.cpp:989
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -243,48 +243,48 @@ msgstr ""
 "\n"
 "Controleer uw netwerk en zorg ervoor dat de poort open is voor in- en uitgaand verkeer."
 
-#: src/amule.cpp:1061
+#: src/amule.cpp:1072
 msgid "Failed to create OnlineSig File"
 msgstr "Kon bestand met online handtekening niet maken"
 
-#: src/amule.cpp:1069
+#: src/amule.cpp:1080
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Kon aMule OnlineHandtekening Bestand niet maken"
 
-#: src/amule.cpp:1241
+#: src/amule.cpp:1252
 msgid "The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"
 msgstr "De gekozen taalinstelling lijkt niet geïnstalleerd te zijn op uw pc. (Let op: Ik probeer het toch in te stellen)"
 
-#: src/amule.cpp:1250
+#: src/amule.cpp:1261
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Dit is de eerste keer dat u aMule %s draait"
 
-#: src/amule.cpp:1252
+#: src/amule.cpp:1263
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Dit is een testversie, dagelijks geupdatet, en\n"
 
-#: src/amule.cpp:1253
+#: src/amule.cpp:1264
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "we geven geen garantie dat het niks kapot maakt of uw huis in brand steekt,\n"
 
-#: src/amule.cpp:1254
+#: src/amule.cpp:1265
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "of uw hond doodt. Maar het *zou* veilig moeten zijn om het te gebruiken.\n"
 
-#: src/amule.cpp:1259
+#: src/amule.cpp:1270
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr "Meer informatie, ondersteuning en niuwe versies kunnen gevonden worden op onze homepage,\n"
 
-#: src/amule.cpp:1260
+#: src/amule.cpp:1271
 msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.libera.chat.\n"
 msgstr "op https://amule-org.github.io, of op ons IRC-kanaal #amule op irc.libera.chat.\n"
 
-#: src/amule.cpp:1262
+#: src/amule.cpp:1273
 msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
 msgstr "Bugs kunt u altijd melden op https://github.com/amule-org/amule/issues"
 
-#: src/amule.cpp:1275
+#: src/amule.cpp:1286
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -292,137 +292,137 @@ msgstr ""
 "De map voor online-handtekeningbestanden die u heeft opgegeven is ONGELDIG!\n"
 " OnlineSignature is UITGESCHAKELD totdat u dit verbetert in voorkeuren."
 
-#: src/amule.cpp:1338
+#: src/amule.cpp:1349
 msgid "Server hostname notified"
 msgstr "Server-hostnaam geïnformeerd"
 
-#: src/amule.cpp:1662
+#: src/amule.cpp:1673
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "Toewijzen schijfruimte voor bestand '%s' mislukt: %s"
 
-#: src/amule.cpp:1795
+#: src/amule.cpp:1806
 msgid "ERROR: can't open logfile"
 msgstr "FOUT: kan logbestand niet openen"
 
-#: src/amule.cpp:1799
+#: src/amule.cpp:1810
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "WAARSCHUWING: logboekbestand is leeg. Er is iets mis."
 
-#: src/amule.cpp:1816
+#: src/amule.cpp:1827
 msgid "Log has been reset"
 msgstr "Logboek is gewist"
 
-#: src/amule.cpp:1842
+#: src/amule.cpp:1853
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Server-bericht: %s"
 
-#: src/amule.cpp:1884 src/IP2Country.cpp:235 src/IPFilter.cpp:510
+#: src/amule.cpp:1895 src/IP2Country.cpp:235 src/IPFilter.cpp:510
 #: src/ServerList.cpp:870
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr "Download van %s overgeslagen, omdat gevraagd bestand niet nieuwer is."
 
-#: src/amule.cpp:1886
+#: src/amule.cpp:1897
 msgid "Failed to download the nodes list."
 msgstr "Kon nodelijst niet downloaden."
 
-#: src/amule.cpp:1906
+#: src/amule.cpp:1917
 msgid "Failed to open the downloaded version check file"
 msgstr "Kon gedownload versie controle bestand niet openen"
 
-#: src/amule.cpp:1909 src/amule.cpp:1928 src/amule.cpp:1959 src/amule.cpp:1980
+#: src/amule.cpp:1920 src/amule.cpp:1939 src/amule.cpp:1970 src/amule.cpp:1991
 msgid "Corrupted version check file"
 msgstr "Beschadigd bestand voor versiecontrole"
 
-#: src/amule.cpp:1991
+#: src/amule.cpp:2002
 msgid "You are using an outdated version of aMule!"
 msgstr "U gebruikt een verouderde versie van aMule!"
 
-#: src/amule.cpp:1993
+#: src/amule.cpp:2004
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Uw aMule-versie is %i.%i.%i en de nieuwste versie is %li.%li.%li"
 
-#: src/amule.cpp:1994
+#: src/amule.cpp:2005
 msgid "The latest version can always be found at https://github.com/amule-org/amule/releases/latest"
 msgstr "De nieuwste versie kan altijd gevonden worden op https://github.com/amule-org/amule/releases/latest"
 
-#: src/amule.cpp:1996
+#: src/amule.cpp:2007
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "WAARSCHUWING: Uw aMuled-versie is verouderd: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:2000
+#: src/amule.cpp:2011
 msgid "Your copy of aMule is up to date."
 msgstr "U heeft de nieuwste aMule-versie."
 
-#: src/amule.cpp:2007
+#: src/amule.cpp:2018
 msgid "Failed to download the version check file"
 msgstr "Kon bestand voor versiecontrole niet downloaden"
 
-#: src/amule.cpp:2177 src/amule-remote-gui.cpp:822
+#: src/amule.cpp:2188 src/amule-remote-gui.cpp:822
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "Gebruikers: %s | Bestanden: %s"
 
-#: src/amule.cpp:2178 src/amule-remote-gui.cpp:823
+#: src/amule.cpp:2189 src/amule-remote-gui.cpp:823
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "Gebruikers: E: %s K: %s | Bestanden: E: %s K: %s"
 
-#: src/amule.cpp:2187 src/amule-remote-gui.cpp:832
+#: src/amule.cpp:2198 src/amule-remote-gui.cpp:832
 msgid "No networks selected"
 msgstr "Geen netwerken geselecteerd"
 
-#: src/amule.cpp:2229 src/TextClient.cpp:806
+#: src/amule.cpp:2240 src/TextClient.cpp:806
 msgid "with LowID"
 msgstr "met Laag ID"
 
-#: src/amule.cpp:2229 src/TextClient.cpp:806
+#: src/amule.cpp:2240 src/TextClient.cpp:806
 msgid "with HighID"
 msgstr "met Hoog ID"
 
-#: src/amule.cpp:2231
+#: src/amule.cpp:2242
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Verbonden met %s %s"
 
-#: src/amule.cpp:2235
+#: src/amule.cpp:2246
 #, c-format
 msgid "Connecting to %s"
 msgstr "Verbinden met %s"
 
-#: src/amule.cpp:2237
+#: src/amule.cpp:2248
 msgid "Disconnected from eD2k"
 msgstr "Verbinding verbroken met eD2K"
 
-#: src/amule.cpp:2245
+#: src/amule.cpp:2256
 msgid "Kad started."
 msgstr "Kad gestart."
 
-#: src/amule.cpp:2247
+#: src/amule.cpp:2258
 msgid "Kad stopped."
 msgstr "Kad gestopt."
 
-#: src/amule.cpp:2255
+#: src/amule.cpp:2266
 msgid "Connected to Kad (ok)"
 msgstr "Verbonden met Kad (ok)"
 
-#: src/amule.cpp:2257
+#: src/amule.cpp:2268
 msgid "Connected to Kad (firewalled)"
 msgstr "Verbonden met Kad (firewalled)"
 
-#: src/amule.cpp:2260
+#: src/amule.cpp:2271
 msgid "Disconnected from Kad"
 msgstr "Verbinding met Kad verbroken"
 
-#: src/amule.cpp:2292
+#: src/amule.cpp:2303
 msgid "Kad network cannot be used if UDP port is disabled on preferences, not starting."
 msgstr "Kad-netwerk kan niet gebruikt worden als de UDP-poort is uitgeschakeld in voorkeuren, wordt niet gestart."
 
-#: src/amule.cpp:2295
+#: src/amule.cpp:2306
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad-netwerk is uitgeschakeld in voorkeuren, wordt niet mee verbonden."
 
@@ -573,8 +573,8 @@ msgstr "Kad: Uitgeschakeld"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:185
 #: src/muuli_wdr.cpp:681 src/muuli_wdr.cpp:732 src/muuli_wdr.cpp:794
 #: src/muuli_wdr.cpp:846 src/muuli_wdr.cpp:1968 src/muuli_wdr.cpp:2050
-#: src/muuli_wdr.cpp:2773 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
-#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/muuli_wdr.cpp:2773 src/ServerListCtrl.cpp:160 src/ServerListCtrl.cpp:534
+#: src/ServerListCtrl.cpp:553 src/TransferWnd.cpp:375
 #: src/utils/wxCas/src/wxcasprefs.cpp:266
 msgid "Cancel"
 msgstr "Annuleren"
@@ -935,7 +935,7 @@ msgid "Enter Captcha"
 msgstr "Voer captcha in"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:693 src/muuli_wdr.cpp:240
-#: src/SearchListCtrl.cpp:694 src/TransferWnd.cpp:335
+#: src/SearchListCtrl.cpp:699 src/TransferWnd.cpp:335
 msgid "Category"
 msgstr "Categorie"
 
@@ -1154,7 +1154,7 @@ msgid "Username"
 msgstr "Gebruikersnaam"
 
 #: src/CommentDialogLst.cpp:70 src/DownloadListCtrl.cpp:159
-#: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:92
+#: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:94
 #: src/SharedFilesCtrl.cpp:103
 msgid "File Name"
 msgstr "Bestandsnaam"
@@ -1200,19 +1200,19 @@ msgid "Very low"
 msgstr "Heel laag"
 
 #: src/DataToText.cpp:42 src/DownloadListCtrl.cpp:646 src/muuli_wdr.cpp:2019
-#: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
+#: src/ServerListCtrl.cpp:242 src/ServerListCtrl.cpp:405
 #: src/SharedFilesCtrl.cpp:139
 msgid "Low"
 msgstr "Laag"
 
 #: src/DataToText.cpp:43 src/DownloadListCtrl.cpp:647 src/muuli_wdr.cpp:2020
-#: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:400
+#: src/ServerListCtrl.cpp:243 src/ServerListCtrl.cpp:406
 #: src/SharedFilesCtrl.cpp:140
 msgid "Normal"
 msgstr "Normaal"
 
 #: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:648 src/muuli_wdr.cpp:2021
-#: src/ServerListCtrl.cpp:238 src/ServerListCtrl.cpp:401
+#: src/ServerListCtrl.cpp:244 src/ServerListCtrl.cpp:407
 #: src/SharedFilesCtrl.cpp:141
 msgid "High"
 msgstr "Hoog"
@@ -1354,7 +1354,7 @@ msgstr "FOUT: IO-fout!"
 msgid "ERROR: Failed!"
 msgstr "FOUT: Mislukt!"
 
-#: src/DataToText.cpp:149 src/SearchListCtrl.cpp:1078
+#: src/DataToText.cpp:149 src/SearchListCtrl.cpp:1099
 msgid "Queued"
 msgstr "In wachtrij"
 
@@ -1371,7 +1371,7 @@ msgid "Part"
 msgstr "Deel"
 
 #: src/DownloadListCtrl.cpp:160 src/PartFileConvertDlg.cpp:95
-#: src/SearchListCtrl.cpp:93 src/SharedFilesCtrl.cpp:104
+#: src/SearchListCtrl.cpp:95 src/SharedFilesCtrl.cpp:104
 msgid "Size"
 msgstr "Grootte"
 
@@ -1388,17 +1388,17 @@ msgid "Progress"
 msgstr "Voortgang"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:94
+#: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:96
 msgid "Sources"
 msgstr "Bronnen"
 
 #: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:651
-#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:403
+#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:409
 #: src/SharedFilesCtrl.cpp:106 src/SharedFilesCtrl.cpp:146
 msgid "Priority"
 msgstr "Prioriteit"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4330 src/SearchListCtrl.cpp:97
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4330 src/SearchListCtrl.cpp:99
 msgid "Status"
 msgstr "Status"
 
@@ -2188,11 +2188,11 @@ msgstr "Aan het uploaden"
 msgid "None"
 msgstr "Geen"
 
-#: src/GenericClientListCtrl.cpp:1141 src/ServerListCtrl.cpp:243
+#: src/GenericClientListCtrl.cpp:1141 src/ServerListCtrl.cpp:249
 msgid "No"
 msgstr "Nee"
 
-#: src/GenericClientListCtrl.cpp:1143 src/ServerListCtrl.cpp:243
+#: src/GenericClientListCtrl.cpp:1143 src/ServerListCtrl.cpp:249
 msgid "Yes"
 msgstr "Ja"
 
@@ -2536,7 +2536,7 @@ msgstr "Externe verbinding: toegang geweigerd omdat: "
 msgid "External Connection: Handshake failed."
 msgstr "Externe verbinding: handshake mislukt."
 
-#: src/LibSocketAsio.cpp:1585
+#: src/LibSocketAsio.cpp:1592
 #, c-format
 msgid "Asio thread %d started"
 msgstr "Asio-download thread %d gestart"
@@ -2840,11 +2840,11 @@ msgstr "Zoeken"
 msgid "Name:"
 msgstr "Naam:"
 
-#: src/muuli_wdr.cpp:198 src/SearchListCtrl.cpp:95 src/SharedFilesCtrl.cpp:105
+#: src/muuli_wdr.cpp:198 src/SearchListCtrl.cpp:97 src/SharedFilesCtrl.cpp:105
 msgid "Type"
 msgstr "Type"
 
-#: src/muuli_wdr.cpp:202 src/SearchDlg.cpp:109
+#: src/muuli_wdr.cpp:202 src/SearchDlg.cpp:109 src/SearchListCtrl.cpp:805
 msgid "Local"
 msgstr "Lokaal"
 
@@ -2964,7 +2964,7 @@ msgstr ""
 msgid "Stop"
 msgstr "Stop"
 
-#: src/muuli_wdr.cpp:335 src/muuli_wdr.cpp:1318 src/SearchListCtrl.cpp:692
+#: src/muuli_wdr.cpp:335 src/muuli_wdr.cpp:1318 src/SearchListCtrl.cpp:697
 msgid "Download"
 msgstr "Download"
 
@@ -4828,7 +4828,7 @@ msgstr "Toewijzen"
 msgid "Insufficient disk space"
 msgstr "Onvoldoende schijfruimte"
 
-#: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:1073
+#: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:1094
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
 msgstr "Gedownload"
@@ -5028,7 +5028,7 @@ msgstr "Standaard poort zal worden gebruikt (%d)"
 msgid "Connection"
 msgstr "Verbinding"
 
-#: src/PrefsUnifiedDlg.cpp:197 src/SearchListCtrl.cpp:98
+#: src/PrefsUnifiedDlg.cpp:197 src/SearchListCtrl.cpp:110
 msgid "Directories"
 msgstr "Mappen"
 
@@ -5435,7 +5435,7 @@ msgstr "Laad gedeelde-bestandenlijst opnieuw."
 msgid "It's impossible to search when both eD2k and Kademlia are disabled."
 msgstr "Er kan niet gezocht worden wanneer eD2k en Kademlia uitgeschakeld zijn."
 
-#: src/SearchDlg.cpp:283
+#: src/SearchDlg.cpp:283 src/SearchListCtrl.cpp:809
 msgid "Search error"
 msgstr "Fout tijdens zoeken"
 
@@ -5455,7 +5455,7 @@ msgstr "Min grootte moet kleiner zijn dan max grootte. Max grootte wordt genegee
 msgid "Search warning"
 msgstr "Zoekwaarschuwing"
 
-#: src/SearchDlg.cpp:662 src/SearchListCtrl.cpp:695
+#: src/SearchDlg.cpp:662 src/SearchListCtrl.cpp:700
 msgid "Main"
 msgstr "Standaard"
 
@@ -5475,49 +5475,54 @@ msgstr "Geen zoekwoord opgegeven voor zoeken in Kad - afbreken"
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Onverwachte fout bij Kad-zoekopdracht: "
 
-#: src/SearchListCtrl.cpp:96 src/SharedFilesCtrl.cpp:107
+#: src/SearchListCtrl.cpp:98 src/SharedFilesCtrl.cpp:107
 msgid "FileID"
 msgstr "Bestands-ID"
 
-#: src/SearchListCtrl.cpp:103
+#: src/SearchListCtrl.cpp:104
 msgid "Length"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:104
+#: src/SearchListCtrl.cpp:105
 #, fuzzy
 msgid "Bitrate"
 msgstr "Niet beoordeeld"
 
-#: src/SearchListCtrl.cpp:105
+#: src/SearchListCtrl.cpp:106
 msgid "Codec"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:701
+#: src/SearchListCtrl.cpp:706
 msgid "Download in category"
 msgstr "Download in categorie"
 
-#: src/SearchListCtrl.cpp:706
+#: src/SearchListCtrl.cpp:711
 #, c-format
 msgid "Get %s for this file"
 msgstr "Verkrijg %s voor dit bestand"
 
-#: src/SearchListCtrl.cpp:710
+#: src/SearchListCtrl.cpp:715
 msgid "Search related files (eD2k, local server)"
 msgstr "Zoek gelijkwaardige bestanden (eD2k, lokale server)"
 
-#: src/SearchListCtrl.cpp:715
+#: src/SearchListCtrl.cpp:720
 msgid "Mark as known file"
 msgstr "Markeer als bekend bestand"
 
-#: src/SearchListCtrl.cpp:719 src/ServerListCtrl.cpp:427
+#: src/SearchListCtrl.cpp:724 src/ServerListCtrl.cpp:433
 msgid "Copy eD2k link to clipboard"
 msgstr "Kopieer eD2k-link naar klembord"
 
-#: src/SearchListCtrl.cpp:1081
+#: src/SearchListCtrl.cpp:808
+#, fuzzy
+msgid "You are not currently connected to a server supporting the Related Files search function"
+msgstr "U bent verbonden met de server die u probeert te verwijderen. Vebreek eerst de verbinding."
+
+#: src/SearchListCtrl.cpp:1102
 msgid "Canceled"
 msgstr "Geannuleerd"
 
-#: src/SearchListCtrl.cpp:1084
+#: src/SearchListCtrl.cpp:1105
 msgid "New"
 msgstr "Nieuw"
 
@@ -5742,78 +5747,86 @@ msgstr "Statisch"
 msgid "Version"
 msgstr "Versie"
 
-#: src/ServerListCtrl.cpp:149
+#: src/ServerListCtrl.cpp:100
+msgid "TCP Flags"
+msgstr ""
+
+#: src/ServerListCtrl.cpp:101
+msgid "UDP Flags"
+msgstr ""
+
+#: src/ServerListCtrl.cpp:155
 msgid "You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."
 msgstr "U bent verbonden met een server die u probeert te verwijderen. Verbreek eerst de verbinding. De server is NIET verwijderd."
 
-#: src/ServerListCtrl.cpp:152
+#: src/ServerListCtrl.cpp:158
 msgid "(Unknown name)"
 msgstr "(Onbekende naam)"
 
-#: src/ServerListCtrl.cpp:154
+#: src/ServerListCtrl.cpp:160
 #, c-format
 msgid "Are you sure you want to delete the static server %s"
 msgstr "Weet u zeker dat u de statische server %s wilt verwijderen"
 
-#: src/ServerListCtrl.cpp:348
+#: src/ServerListCtrl.cpp:354
 #, c-format
 msgid "Servers (%i)"
 msgstr "Servers (%i)"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:184 src/ServerSocket.cpp:199
+#: src/ServerListCtrl.cpp:403 src/ServerSocket.cpp:184 src/ServerSocket.cpp:199
 #: src/ServerSocket.cpp:321 src/ServerWnd.cpp:190
 msgid "Server"
 msgstr "Server"
 
-#: src/ServerListCtrl.cpp:402
+#: src/ServerListCtrl.cpp:408
 msgid "Connect to server"
 msgstr "Verbind met server"
 
-#: src/ServerListCtrl.cpp:408
+#: src/ServerListCtrl.cpp:414
 msgid "Mark server as static"
 msgstr "Markeer server als statisch"
 
-#: src/ServerListCtrl.cpp:409
+#: src/ServerListCtrl.cpp:415
 msgid "Mark server as non-static"
 msgstr "Markeer server als niet-statisch"
 
-#: src/ServerListCtrl.cpp:411
+#: src/ServerListCtrl.cpp:417
 msgid "Mark servers as static"
 msgstr "Markeer servers als statisch"
 
-#: src/ServerListCtrl.cpp:412
+#: src/ServerListCtrl.cpp:418
 msgid "Mark servers as non-static"
 msgstr "Markeer servers als niet-statisch"
 
-#: src/ServerListCtrl.cpp:418
+#: src/ServerListCtrl.cpp:424
 msgid "Remove server"
 msgstr "Verwijder server"
 
-#: src/ServerListCtrl.cpp:420
+#: src/ServerListCtrl.cpp:426
 msgid "Remove servers"
 msgstr "Verwijder servers"
 
-#: src/ServerListCtrl.cpp:422
+#: src/ServerListCtrl.cpp:428
 msgid "Remove all servers"
 msgstr "Verwijder alle servers"
 
-#: src/ServerListCtrl.cpp:429
+#: src/ServerListCtrl.cpp:435
 msgid "Copy eD2k links to clipboard"
 msgstr "Kopieer eD2k-links naar klembord"
 
-#: src/ServerListCtrl.cpp:437
+#: src/ServerListCtrl.cpp:443
 msgid "Reconnect to server"
 msgstr "Verbind opnieuw met server"
 
-#: src/ServerListCtrl.cpp:526
+#: src/ServerListCtrl.cpp:532
 msgid "Are you sure that you wish to delete all servers?"
 msgstr "Weet u zeker dat u alle servers wilt verwijderen?"
 
-#: src/ServerListCtrl.cpp:542
+#: src/ServerListCtrl.cpp:548
 msgid "Are you sure that you wish to delete the selected server?"
 msgstr "Weet u zeker dat u de geselecteerde server wilt verwijderen?"
 
-#: src/ServerListCtrl.cpp:544
+#: src/ServerListCtrl.cpp:550
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr "Weet u zeker dat u de geselecteerde servers wilt verwijderen?"
 

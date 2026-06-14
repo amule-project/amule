@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
-"POT-Creation-Date: 2026-06-13 10:42+0200\n"
+"POT-Creation-Date: 2026-06-14 15:17+0200\n"
 "PO-Revision-Date: 2026-06-13 22:41+0000\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
@@ -110,8 +110,8 @@ msgid "Could not add %u link from ED2KLinks file (see log for details)."
 msgid_plural "Could not add %u links from ED2KLinks file (see log for details)."
 msgstr[0] ""
 
-#: src/amuleAppCommon.cpp:176 src/amule.cpp:866 src/amule.cpp:980
-#: src/amule.cpp:1275 src/amule-remote-gui.cpp:481 src/amule-remote-gui.cpp:533
+#: src/amuleAppCommon.cpp:176 src/amule.cpp:877 src/amule.cpp:991
+#: src/amule.cpp:1286 src/amule-remote-gui.cpp:481 src/amule-remote-gui.cpp:533
 #: src/amule-remote-gui.cpp:546 src/amule-remote-gui.cpp:564
 #: src/amule-remote-gui.cpp:953 src/amule-remote-gui.cpp:982
 #: src/DownloadQueue.cpp:1444
@@ -134,100 +134,100 @@ msgstr ""
 "\n"
 "OK、%s を終了中です…\n"
 
-#: src/amule.cpp:270
+#: src/amule.cpp:281
 #, c-format
 msgid "Terminating amuleweb instance with pid '%d' ... "
 msgstr ""
 
-#: src/amule.cpp:273
+#: src/amule.cpp:284
 #, c-format
 msgid "Killing amuleweb instance with pid '%d' ... "
 msgstr ""
 
-#: src/amule.cpp:275 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
+#: src/amule.cpp:286 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
 msgstr "失敗しました"
 
-#: src/amule.cpp:281
+#: src/amule.cpp:292
 msgid "aMule OnExit: Terminating core."
 msgstr ""
 
-#: src/amule.cpp:383
+#: src/amule.cpp:394
 #, fuzzy
 msgid "aMule shutdown completed."
 msgstr "ダウンロード完了"
 
-#: src/amule.cpp:387
+#: src/amule.cpp:398
 msgid "Memory debug results for aMule exit:"
 msgstr ""
 
-#: src/amule.cpp:574
+#: src/amule.cpp:585
 msgid "Your locale has been changed to System Default due to a configuration change. Sorry."
 msgstr "申し訳ありませんが、設定の変更を行ったため、あなたのロケールはシステム標準に変更されました。"
 
-#: src/amule.cpp:574 src/amule.cpp:1264 src/CatDialog.cpp:141
+#: src/amule.cpp:585 src/amule.cpp:1275 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:355
-#: src/ServerListCtrl.cpp:149
+#: src/ServerListCtrl.cpp:155
 msgid "Info"
 msgstr "情報"
 
-#: src/amule.cpp:580
+#: src/amule.cpp:591
 #, fuzzy
 msgid ""
 "\n"
 "EC configuration"
 msgstr "終了の確認"
 
-#: src/amule.cpp:583
+#: src/amule.cpp:594
 #, fuzzy
 msgid "Password set and external connections enabled."
 msgstr "新しい外部接続を認められました"
 
-#: src/amule.cpp:594 src/KadDlg.cpp:183 src/KadDlg.cpp:189
+#: src/amule.cpp:605 src/KadDlg.cpp:183 src/KadDlg.cpp:189
 #: src/PrefsUnifiedDlg.cpp:1034 src/SharedFilesCtrl.cpp:319
 msgid "WARNING"
 msgstr "警告"
 
-#: src/amule.cpp:767
+#: src/amule.cpp:778
 #, fuzzy
 msgid "eD2k server list (server.met)"
 msgstr "server.metに%i個のサーバが見つかりました"
 
-#: src/amule.cpp:768
+#: src/amule.cpp:779
 msgid "Kad bootstrap nodes (nodes.dat)"
 msgstr ""
 
-#: src/amule.cpp:775
+#: src/amule.cpp:786
 msgid ""
 "aMule has detected missing network bootstrap files.\n"
 "Select which ones to download:"
 msgstr ""
 
-#: src/amule.cpp:776
+#: src/amule.cpp:787
 #, fuzzy
 msgid "Network bootstrap"
 msgstr "ネットワーク"
 
-#: src/amule.cpp:861
+#: src/amule.cpp:872
 #, c-format
 msgid "web server running on pid %d"
 msgstr ""
 
-#: src/amule.cpp:865
+#: src/amule.cpp:876
 msgid "You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or build aMule from source with -DBUILD_WEBSERVER=YES and install it."
 msgstr ""
 
-#: src/amule.cpp:948
+#: src/amule.cpp:959
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "指定したアドレスにポートをバインドできませんでした: %s"
 
-#: src/amule.cpp:972
+#: src/amule.cpp:983
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "ポート%uは利用できません。あなたにはLOWIDが与えられます\n"
 
-#: src/amule.cpp:978
+#: src/amule.cpp:989
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -242,48 +242,48 @@ msgstr ""
 "\n"
 "ネットワークを調べ、ポートが入出力に対して開いているか確認してください。"
 
-#: src/amule.cpp:1061
+#: src/amule.cpp:1072
 msgid "Failed to create OnlineSig File"
 msgstr "オンライン証明ファイルの生成に失敗しました"
 
-#: src/amule.cpp:1069
+#: src/amule.cpp:1080
 msgid "Failed to create aMule OnlineSig File"
 msgstr "aMuleのオンライン証明ファイルの生成に失敗しました"
 
-#: src/amule.cpp:1241
+#: src/amule.cpp:1252
 msgid "The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"
 msgstr "選択したロケールはあなたのシステムにインストールされていないようです。（注意：いずれにせよ設定を試みます）"
 
-#: src/amule.cpp:1250
+#: src/amule.cpp:1261
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "初めてaMule %sを起動しています"
 
-#: src/amule.cpp:1252
+#: src/amule.cpp:1263
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "このバージョンはテスト・バージョンで、毎日更新されているものです。\n"
 
-#: src/amule.cpp:1253
+#: src/amule.cpp:1264
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "あなたに損害を与えないということは保証できません。家を焼いてしまうかも知れないし、\n"
 
-#: src/amule.cpp:1254
+#: src/amule.cpp:1265
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "犬を殺してしまうかも知れません。しかし、安全に使用できる「はず」です。\n"
 
-#: src/amule.cpp:1259
+#: src/amule.cpp:1270
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr "私たちのホームページamule-org.github.io、またはIRCチャネルirc.libera.chatの#aMuleには、\n"
 
-#: src/amule.cpp:1260
+#: src/amule.cpp:1271
 msgid "at https://amule-org.github.io, or in our IRC channel #aMule at irc.libera.chat.\n"
 msgstr "詳細な情報、サポートや新しいリリースがあります。\n"
 
-#: src/amule.cpp:1262
+#: src/amule.cpp:1273
 msgid "Feel free to report any bugs to https://github.com/amule-org/amule/issues"
 msgstr "バグはhttps://github.com/amule-org/amule/issuesに気楽に報告してください"
 
-#: src/amule.cpp:1275
+#: src/amule.cpp:1286
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -291,138 +291,138 @@ msgstr ""
 "あなたが指定したオンライン証明ファイルのフォルダは不正です！\n"
 "設定で訂正するまでオンライン証明を無効にします。"
 
-#: src/amule.cpp:1338
+#: src/amule.cpp:1349
 #, fuzzy
 msgid "Server hostname notified"
 msgstr "サーバ名："
 
-#: src/amule.cpp:1662
+#: src/amule.cpp:1673
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
 msgstr "ファイル '%s' のディスク領域の事前確保が失敗しました: %s"
 
-#: src/amule.cpp:1795
+#: src/amule.cpp:1806
 msgid "ERROR: can't open logfile"
 msgstr "エラー：ログファイルを開くことはできません"
 
-#: src/amule.cpp:1799
+#: src/amule.cpp:1810
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "注意：ログファイルは空です。何かがおかしいです。"
 
-#: src/amule.cpp:1816
+#: src/amule.cpp:1827
 msgid "Log has been reset"
 msgstr "ログはリセットされました"
 
-#: src/amule.cpp:1842
+#: src/amule.cpp:1853
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "サーバ・メッセージ：%s"
 
-#: src/amule.cpp:1884 src/IP2Country.cpp:235 src/IPFilter.cpp:510
+#: src/amule.cpp:1895 src/IP2Country.cpp:235 src/IPFilter.cpp:510
 #: src/ServerList.cpp:870
 #, c-format
 msgid "Skipped download of %s, because requested file is not newer."
 msgstr ""
 
-#: src/amule.cpp:1886
+#: src/amule.cpp:1897
 msgid "Failed to download the nodes list."
 msgstr "ノード・リストをダウンロードのに失敗しました。"
 
-#: src/amule.cpp:1906
+#: src/amule.cpp:1917
 msgid "Failed to open the downloaded version check file"
 msgstr "ダウンロードされたバージョン確認ファイルを開くのに失敗しました。"
 
-#: src/amule.cpp:1909 src/amule.cpp:1928 src/amule.cpp:1959 src/amule.cpp:1980
+#: src/amule.cpp:1920 src/amule.cpp:1939 src/amule.cpp:1970 src/amule.cpp:1991
 msgid "Corrupted version check file"
 msgstr "破損されたバージョン確認ファイル"
 
-#: src/amule.cpp:1991
+#: src/amule.cpp:2002
 msgid "You are using an outdated version of aMule!"
 msgstr "あなたは古いバージョンのaMuleを使用しています！"
 
-#: src/amule.cpp:1993
+#: src/amule.cpp:2004
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "あなたのaMuleバージョンは%i.%i.%iで、最新バージョンは%li.%li.%liです"
 
-#: src/amule.cpp:1994
+#: src/amule.cpp:2005
 msgid "The latest version can always be found at https://github.com/amule-org/amule/releases/latest"
 msgstr "最新バージョンはいつもhttps://github.com/amule-org/amule/releases/latestにあります"
 
-#: src/amule.cpp:1996
+#: src/amule.cpp:2007
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "警告：あなたのaMuledバージョンは古くなっています：%i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:2000
+#: src/amule.cpp:2011
 msgid "Your copy of aMule is up to date."
 msgstr "あなたのaMuleは最新のバージョンです。"
 
-#: src/amule.cpp:2007
+#: src/amule.cpp:2018
 msgid "Failed to download the version check file"
 msgstr "バージョン確認ファイルのダウンロードに失敗しました"
 
-#: src/amule.cpp:2177 src/amule-remote-gui.cpp:822
+#: src/amule.cpp:2188 src/amule-remote-gui.cpp:822
 #, c-format
 msgid "Users: %s | Files: %s"
 msgstr "ユーザ: %s | ファイル: %s"
 
-#: src/amule.cpp:2178 src/amule-remote-gui.cpp:823
+#: src/amule.cpp:2189 src/amule-remote-gui.cpp:823
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
 msgstr "ユーザ: E: %s K: %s | ファイル: E: %s K: %s"
 
-#: src/amule.cpp:2187 src/amule-remote-gui.cpp:832
+#: src/amule.cpp:2198 src/amule-remote-gui.cpp:832
 msgid "No networks selected"
 msgstr "ネットワークが選択されていません"
 
-#: src/amule.cpp:2229 src/TextClient.cpp:806
+#: src/amule.cpp:2240 src/TextClient.cpp:806
 msgid "with LowID"
 msgstr "LowIDを持っています"
 
-#: src/amule.cpp:2229 src/TextClient.cpp:806
+#: src/amule.cpp:2240 src/TextClient.cpp:806
 msgid "with HighID"
 msgstr "HighIDを持っています"
 
-#: src/amule.cpp:2231
+#: src/amule.cpp:2242
 #, c-format
 msgid "Connected to %s %s"
 msgstr "接続しています：%s %s"
 
-#: src/amule.cpp:2235
+#: src/amule.cpp:2246
 #, c-format
 msgid "Connecting to %s"
 msgstr "%sに接続中です"
 
-#: src/amule.cpp:2237
+#: src/amule.cpp:2248
 msgid "Disconnected from eD2k"
 msgstr ""
 
-#: src/amule.cpp:2245
+#: src/amule.cpp:2256
 msgid "Kad started."
 msgstr "Kadを開始しました。"
 
-#: src/amule.cpp:2247
+#: src/amule.cpp:2258
 msgid "Kad stopped."
 msgstr "Kadを中止しました。"
 
-#: src/amule.cpp:2255
+#: src/amule.cpp:2266
 msgid "Connected to Kad (ok)"
 msgstr "Kadに接続しています（OK）"
 
-#: src/amule.cpp:2257
+#: src/amule.cpp:2268
 msgid "Connected to Kad (firewalled)"
 msgstr "Kadに接続しています（ファイアウォール）"
 
-#: src/amule.cpp:2260
+#: src/amule.cpp:2271
 msgid "Disconnected from Kad"
 msgstr "Kadから切断しています"
 
-#: src/amule.cpp:2292
+#: src/amule.cpp:2303
 msgid "Kad network cannot be used if UDP port is disabled on preferences, not starting."
 msgstr "UDPポートが設定で無効にされていると、Kadネットワークを使用できないため、開始しません。"
 
-#: src/amule.cpp:2295
+#: src/amule.cpp:2306
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kadネットワークは設定で無効にされているため、接続はしません。"
 
@@ -571,8 +571,8 @@ msgstr "Kad: オフ"
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:185
 #: src/muuli_wdr.cpp:681 src/muuli_wdr.cpp:732 src/muuli_wdr.cpp:794
 #: src/muuli_wdr.cpp:846 src/muuli_wdr.cpp:1968 src/muuli_wdr.cpp:2050
-#: src/muuli_wdr.cpp:2773 src/ServerListCtrl.cpp:154 src/ServerListCtrl.cpp:528
-#: src/ServerListCtrl.cpp:547 src/TransferWnd.cpp:375
+#: src/muuli_wdr.cpp:2773 src/ServerListCtrl.cpp:160 src/ServerListCtrl.cpp:534
+#: src/ServerListCtrl.cpp:553 src/TransferWnd.cpp:375
 #: src/utils/wxCas/src/wxcasprefs.cpp:266
 msgid "Cancel"
 msgstr "キャンセル"
@@ -939,7 +939,7 @@ msgid "Enter Captcha"
 msgstr ""
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:693 src/muuli_wdr.cpp:240
-#: src/SearchListCtrl.cpp:694 src/TransferWnd.cpp:335
+#: src/SearchListCtrl.cpp:699 src/TransferWnd.cpp:335
 msgid "Category"
 msgstr "カテゴリ"
 
@@ -1156,7 +1156,7 @@ msgid "Username"
 msgstr "ユーザ名"
 
 #: src/CommentDialogLst.cpp:70 src/DownloadListCtrl.cpp:159
-#: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:92
+#: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:94
 #: src/SharedFilesCtrl.cpp:103
 msgid "File Name"
 msgstr "ファイル名"
@@ -1201,19 +1201,19 @@ msgid "Very low"
 msgstr "非常に低い"
 
 #: src/DataToText.cpp:42 src/DownloadListCtrl.cpp:646 src/muuli_wdr.cpp:2019
-#: src/ServerListCtrl.cpp:236 src/ServerListCtrl.cpp:399
+#: src/ServerListCtrl.cpp:242 src/ServerListCtrl.cpp:405
 #: src/SharedFilesCtrl.cpp:139
 msgid "Low"
 msgstr "低い"
 
 #: src/DataToText.cpp:43 src/DownloadListCtrl.cpp:647 src/muuli_wdr.cpp:2020
-#: src/ServerListCtrl.cpp:237 src/ServerListCtrl.cpp:400
+#: src/ServerListCtrl.cpp:243 src/ServerListCtrl.cpp:406
 #: src/SharedFilesCtrl.cpp:140
 msgid "Normal"
 msgstr "普通"
 
 #: src/DataToText.cpp:44 src/DownloadListCtrl.cpp:648 src/muuli_wdr.cpp:2021
-#: src/ServerListCtrl.cpp:238 src/ServerListCtrl.cpp:401
+#: src/ServerListCtrl.cpp:244 src/ServerListCtrl.cpp:407
 #: src/SharedFilesCtrl.cpp:141
 msgid "High"
 msgstr "高い"
@@ -1355,7 +1355,7 @@ msgstr ""
 msgid "ERROR: Failed!"
 msgstr ""
 
-#: src/DataToText.cpp:149 src/SearchListCtrl.cpp:1078
+#: src/DataToText.cpp:149 src/SearchListCtrl.cpp:1099
 msgid "Queued"
 msgstr "キューに追加しました"
 
@@ -1372,7 +1372,7 @@ msgid "Part"
 msgstr ""
 
 #: src/DownloadListCtrl.cpp:160 src/PartFileConvertDlg.cpp:95
-#: src/SearchListCtrl.cpp:93 src/SharedFilesCtrl.cpp:104
+#: src/SearchListCtrl.cpp:95 src/SharedFilesCtrl.cpp:104
 msgid "Size"
 msgstr "サイズ"
 
@@ -1389,17 +1389,17 @@ msgid "Progress"
 msgstr "進捗状況"
 
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
-#: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:94
+#: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:96
 msgid "Sources"
 msgstr "ソース数"
 
 #: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:651
-#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:403
+#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:409
 #: src/SharedFilesCtrl.cpp:106 src/SharedFilesCtrl.cpp:146
 msgid "Priority"
 msgstr "優先度"
 
-#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4330 src/SearchListCtrl.cpp:97
+#: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4330 src/SearchListCtrl.cpp:99
 msgid "Status"
 msgstr "ステータス"
 
@@ -2187,11 +2187,11 @@ msgstr "アップロード"
 msgid "None"
 msgstr "誰も許可しない"
 
-#: src/GenericClientListCtrl.cpp:1141 src/ServerListCtrl.cpp:243
+#: src/GenericClientListCtrl.cpp:1141 src/ServerListCtrl.cpp:249
 msgid "No"
 msgstr "いいえ"
 
-#: src/GenericClientListCtrl.cpp:1143 src/ServerListCtrl.cpp:243
+#: src/GenericClientListCtrl.cpp:1143 src/ServerListCtrl.cpp:249
 msgid "Yes"
 msgstr "はい"
 
@@ -2533,7 +2533,7 @@ msgstr ""
 msgid "External Connection: Handshake failed."
 msgstr "外接続用のパスワード。"
 
-#: src/LibSocketAsio.cpp:1585
+#: src/LibSocketAsio.cpp:1592
 #, fuzzy, c-format
 msgid "Asio thread %d started"
 msgstr "同期化スレドを始めました。"
@@ -2835,11 +2835,11 @@ msgstr "検索"
 msgid "Name:"
 msgstr "名前："
 
-#: src/muuli_wdr.cpp:198 src/SearchListCtrl.cpp:95 src/SharedFilesCtrl.cpp:105
+#: src/muuli_wdr.cpp:198 src/SearchListCtrl.cpp:97 src/SharedFilesCtrl.cpp:105
 msgid "Type"
 msgstr "タイプ"
 
-#: src/muuli_wdr.cpp:202 src/SearchDlg.cpp:109
+#: src/muuli_wdr.cpp:202 src/SearchDlg.cpp:109 src/SearchListCtrl.cpp:805
 msgid "Local"
 msgstr "ローカル"
 
@@ -2959,7 +2959,7 @@ msgstr ""
 msgid "Stop"
 msgstr "中止"
 
-#: src/muuli_wdr.cpp:335 src/muuli_wdr.cpp:1318 src/SearchListCtrl.cpp:692
+#: src/muuli_wdr.cpp:335 src/muuli_wdr.cpp:1318 src/SearchListCtrl.cpp:697
 msgid "Download"
 msgstr "ダウンロード"
 
@@ -4830,7 +4830,7 @@ msgstr "領域確保中"
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:1073
+#: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:1094
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
 msgstr "ダウンロード済み"
@@ -5034,7 +5034,7 @@ msgstr "デフォルトポートを使用します (%d)"
 msgid "Connection"
 msgstr "接続"
 
-#: src/PrefsUnifiedDlg.cpp:197 src/SearchListCtrl.cpp:98
+#: src/PrefsUnifiedDlg.cpp:197 src/SearchListCtrl.cpp:110
 msgid "Directories"
 msgstr "ディレクトリ"
 
@@ -5433,7 +5433,7 @@ msgstr "共有ファイル・リストを再ロードします。"
 msgid "It's impossible to search when both eD2k and Kademlia are disabled."
 msgstr ""
 
-#: src/SearchDlg.cpp:283
+#: src/SearchDlg.cpp:283 src/SearchListCtrl.cpp:809
 #, fuzzy
 msgid "Search error"
 msgstr "検索"
@@ -5454,7 +5454,7 @@ msgstr "最小サイズは最大サイズより小さくなければなりませ
 msgid "Search warning"
 msgstr "検索の注意"
 
-#: src/SearchDlg.cpp:662 src/SearchListCtrl.cpp:695
+#: src/SearchDlg.cpp:662 src/SearchListCtrl.cpp:700
 msgid "Main"
 msgstr "メイン"
 
@@ -5474,50 +5474,55 @@ msgstr ""
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Kadを検索する間に不明なエラーが発生しました： "
 
-#: src/SearchListCtrl.cpp:96 src/SharedFilesCtrl.cpp:107
+#: src/SearchListCtrl.cpp:98 src/SharedFilesCtrl.cpp:107
 msgid "FileID"
 msgstr "ファイルID"
 
-#: src/SearchListCtrl.cpp:103
+#: src/SearchListCtrl.cpp:104
 msgid "Length"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:104
+#: src/SearchListCtrl.cpp:105
 #, fuzzy
 msgid "Bitrate"
 msgstr "評価されていません"
 
-#: src/SearchListCtrl.cpp:105
+#: src/SearchListCtrl.cpp:106
 msgid "Codec"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:701
+#: src/SearchListCtrl.cpp:706
 msgid "Download in category"
 msgstr "カテゴリにダウンロードする"
 
-#: src/SearchListCtrl.cpp:706
+#: src/SearchListCtrl.cpp:711
 #, fuzzy, c-format
 msgid "Get %s for this file"
 msgstr "このファイルにオプショナルURLを追加する"
 
-#: src/SearchListCtrl.cpp:710
+#: src/SearchListCtrl.cpp:715
 msgid "Search related files (eD2k, local server)"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:715
+#: src/SearchListCtrl.cpp:720
 msgid "Mark as known file"
 msgstr "既知ファイルとしてマークする"
 
-#: src/SearchListCtrl.cpp:719 src/ServerListCtrl.cpp:427
+#: src/SearchListCtrl.cpp:724 src/ServerListCtrl.cpp:433
 msgid "Copy eD2k link to clipboard"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:1081
+#: src/SearchListCtrl.cpp:808
+#, fuzzy
+msgid "You are not currently connected to a server supporting the Related Files search function"
+msgstr "削除しようとするサーバには現在接続しています。先に切断を行ってください。"
+
+#: src/SearchListCtrl.cpp:1102
 #, fuzzy
 msgid "Canceled"
 msgstr "キャンセル"
 
-#: src/SearchListCtrl.cpp:1084
+#: src/SearchListCtrl.cpp:1105
 msgid "New"
 msgstr ""
 
@@ -5740,78 +5745,86 @@ msgstr "スタティック"
 msgid "Version"
 msgstr "バージョン"
 
-#: src/ServerListCtrl.cpp:149
+#: src/ServerListCtrl.cpp:100
+msgid "TCP Flags"
+msgstr ""
+
+#: src/ServerListCtrl.cpp:101
+msgid "UDP Flags"
+msgstr ""
+
+#: src/ServerListCtrl.cpp:155
 msgid "You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."
 msgstr "接続中のサーバを削除しようとしています。先に切断してください。 このサーバは削除されませんでした。"
 
-#: src/ServerListCtrl.cpp:152
+#: src/ServerListCtrl.cpp:158
 msgid "(Unknown name)"
 msgstr "（不明な名前）"
 
-#: src/ServerListCtrl.cpp:154
+#: src/ServerListCtrl.cpp:160
 #, c-format
 msgid "Are you sure you want to delete the static server %s"
 msgstr "スタティックサーバ %s を本当に削除しますか？"
 
-#: src/ServerListCtrl.cpp:348
+#: src/ServerListCtrl.cpp:354
 #, c-format
 msgid "Servers (%i)"
 msgstr "サーバ （%i）"
 
-#: src/ServerListCtrl.cpp:397 src/ServerSocket.cpp:184 src/ServerSocket.cpp:199
+#: src/ServerListCtrl.cpp:403 src/ServerSocket.cpp:184 src/ServerSocket.cpp:199
 #: src/ServerSocket.cpp:321 src/ServerWnd.cpp:190
 msgid "Server"
 msgstr "サーバ"
 
-#: src/ServerListCtrl.cpp:402
+#: src/ServerListCtrl.cpp:408
 msgid "Connect to server"
 msgstr "サーバへ接続する"
 
-#: src/ServerListCtrl.cpp:408
+#: src/ServerListCtrl.cpp:414
 msgid "Mark server as static"
 msgstr "サーバをスタティックとしてマークする"
 
-#: src/ServerListCtrl.cpp:409
+#: src/ServerListCtrl.cpp:415
 msgid "Mark server as non-static"
 msgstr "サーバを非スタティックとしてマークする"
 
-#: src/ServerListCtrl.cpp:411
+#: src/ServerListCtrl.cpp:417
 msgid "Mark servers as static"
 msgstr "サーバをスタティックとしてマークする"
 
-#: src/ServerListCtrl.cpp:412
+#: src/ServerListCtrl.cpp:418
 msgid "Mark servers as non-static"
 msgstr "サーバを非スタティックとしてマークする"
 
-#: src/ServerListCtrl.cpp:418
+#: src/ServerListCtrl.cpp:424
 msgid "Remove server"
 msgstr "サーバを削除する"
 
-#: src/ServerListCtrl.cpp:420
+#: src/ServerListCtrl.cpp:426
 msgid "Remove servers"
 msgstr "サーバを削除する"
 
-#: src/ServerListCtrl.cpp:422
+#: src/ServerListCtrl.cpp:428
 msgid "Remove all servers"
 msgstr "全てのサーバを削除する"
 
-#: src/ServerListCtrl.cpp:429
+#: src/ServerListCtrl.cpp:435
 msgid "Copy eD2k links to clipboard"
 msgstr ""
 
-#: src/ServerListCtrl.cpp:437
+#: src/ServerListCtrl.cpp:443
 msgid "Reconnect to server"
 msgstr "サーバへ再接続する"
 
-#: src/ServerListCtrl.cpp:526
+#: src/ServerListCtrl.cpp:532
 msgid "Are you sure that you wish to delete all servers?"
 msgstr "全てのサーバを本当に削除しますか？"
 
-#: src/ServerListCtrl.cpp:542
+#: src/ServerListCtrl.cpp:548
 msgid "Are you sure that you wish to delete the selected server?"
 msgstr "全ての選択されたサーバを本当に削除しますか？"
 
-#: src/ServerListCtrl.cpp:544
+#: src/ServerListCtrl.cpp:550
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr "全ての選択されたサーバを本当に削除しますか？"
 

@@ -806,11 +806,10 @@ void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 		theApp->amuledlg->m_searchwnd->StartNewSearch();
 	} else {
 		wxMessageBox(_("You are not currently connected to a server supporting the Related Files search function"),
-                             _("Search error"),
-                             wxOK|wxCENTRE|wxICON_ERROR
-                             );
-                return;
-
+				_("Search error"),
+				wxOK|wxCENTRE|wxICON_ERROR
+				);
+		return;
 	}
 }
 

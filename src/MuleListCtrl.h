@@ -354,13 +354,13 @@ protected:
 	void OnAllItemsDeleted(wxListEvent& evt);
 
 	/**
-         * Get column index by name.
-         *
-         * @param[in] name Internal name of the colunm whose index is needed.
-         *
-         * @return The column index, or -1 in case the name was invalid.
-         */
-        int GetColumnIndex(const wxString& name) const;
+	 * Get column index by name.
+	 *
+	 * @param[in] name Internal name of the colunm whose index is needed.
+	 *
+	 * @return The column index, or -1 in case the name was invalid.
+	 */
+	int GetColumnIndex(const wxString& name) const;
 
 private:
 	/**
