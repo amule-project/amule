@@ -411,24 +411,34 @@ int CamuleApp::OnExit()
 
 	StopTickTimer();
 
-#if defined(__APPLE__)
-	// wx 3.3.2 has a bug in wxWebSessionURLSession::~wxWebSessionURLSession:
-	// it releases the NSURLSession and the delegate separately without
-	// first calling -invalidateAndCancel. NSURLSession retains its
-	// delegate strongly, so the session's dealloc already drops the
-	// delegate ref — wx's subsequent release hits a freed object and the
-	// process aborts with "pointer being freed was not allocated". This
-	// fires in wx module cleanup / atexit / __cxa_finalize on any Mac
-	// build after any HTTP download (version check, server.met, ...).
+	// wxWebSession's destructor is unsafe to run at wx module cleanup
+	// time on every platform we ship:
 	//
-	// By this point in OnExit we have saved state, joined threads, and
-	// flushed logs — nothing aMule-owned remains to clean up. _Exit
-	// bypasses atexit and static destructors, so the buggy wx dtor never
-	// runs and the process terminates cleanly. Linux / Windows continue
-	// through wx's normal cleanup; remove this block once the upstream
-	// fix lands in a wx release we depend on.
+	//   macOS (wxWebSessionURLSession, wx 3.3.2): releases the
+	//     NSURLSession and its delegate separately without first
+	//     calling -invalidateAndCancel. NSURLSession retains the
+	//     delegate strongly, so the session's dealloc already drops
+	//     the delegate ref; wx's subsequent release hits a freed
+	//     object and aborts with "pointer being freed was not
+	//     allocated".
+	//
+	//   Linux (wxWebSessionCURL, wx 3.2.6): the dtor calls
+	//     curl_multi_cleanup, which invokes the registered socket
+	//     callback (wxWebSessionCURL::SocketCallback) to drop tracked
+	//     sockets. That callback dereferences session state that the
+	//     dtor's earlier steps have already torn down; a wxASSERT
+	//     fires and the fatal-signal handler raise(SIGABRT)s. Reported
+	//     in amule-org/amule#18 with a fully symbolicated backtrace.
+	//
+	//   Windows (wxWebSessionWinHTTP): not observed to crash but the
+	//     same class of cleanup-time race is plausible.
+	//
+	// By this point in OnExit we have saved state, joined threads,
+	// and flushed logs — nothing aMule-owned remains to clean up.
+	// _Exit bypasses atexit and static destructors, so the buggy wx
+	// dtor never runs and the process terminates cleanly. Remove this
+	// once the upstream wx fix lands in a release we depend on.
 	std::_Exit(0);
-#endif
 
 	// Return 0 for successful program termination
 	return AMULE_APP_BASE::OnExit();
