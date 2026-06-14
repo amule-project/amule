@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-13 10:42+0200\n"
-"PO-Revision-Date: 2026-06-12 15:34+0000\n"
+"PO-Revision-Date: 2026-06-13 22:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
 "Language: tr\n"
@@ -218,7 +218,7 @@ msgstr "web sunucusu pid %d üzerinde çalışıyor"
 
 #: src/amule.cpp:865
 msgid "You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or build aMule from source with -DBUILD_WEBSERVER=YES and install it."
-msgstr "Web sunucusunun başlangıçta çalışmasını istediniz, fakat amuleweb ikilisi çalıştırılamıyor. Lütfen aMule web sunucusunu içeren paketi yükleyin veya aMule' yi  -DBUILD_WEBSERVER=YES seçeneği ile derleyin ve kurun."
+msgstr "Web sunucusunun başlangıçta çalışmasını istediniz, fakat amuleweb ikilisi çalıştırılamıyor. Lütfen aMule web sunucusunu içeren paketi yükleyin veya aMule' yi -DBUILD_WEBSERVER=YES seçeneği ile derleyin ve kurun."
 
 #: src/amule.cpp:948
 #, c-format
@@ -484,7 +484,7 @@ msgid ""
 "'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
-"eMule üzerine kurulu 'Sistem-Üstü' p2p  yazılımı \n"
+"eMule üzerine kurulu 'Sistem-Üstü' p2p yazılımı \n"
 "\n"
 
 #: src/amuleDlg.cpp:546
@@ -503,7 +503,9 @@ msgstr "Belgelendirme: https://amule-org.github.io/docs \n"
 msgid ""
 "Issues: https://github.com/amule-org/amule/issues \n"
 "\n"
-msgstr "Hata raporları: https://github.com/amule-org/amule/issues \n"
+msgstr ""
+"Hata raporları: https://github.com/amule-org/amule/issues \n"
+"\n"
 
 #: src/amuleDlg.cpp:550
 msgid ""
@@ -1541,7 +1543,7 @@ msgstr "Dosya ön izlemesi"
 #: src/DownloadListCtrl.cpp:1483
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
-msgstr "Hata: Ortam oynatıcısını çalıştırma başarısız! Komut :  `%s'"
+msgstr "Hata: Ortam oynatıcısını çalıştırma başarısız! Komut : `%s'"
 
 #: src/DownloadQueue.cpp:99
 #, c-format
@@ -1707,7 +1709,7 @@ msgstr "Giriş izni verildi."
 #: src/ExternalConn.cpp:689
 #, c-format
 msgid "Sent error message \"%s\" to client."
-msgstr "\"%s\"  hata iletisi makineye gönderildi."
+msgstr "\"%s\" hata iletisi istemciye gönderildi."
 
 #: src/ExternalConn.cpp:692
 #, c-format
@@ -1744,7 +1746,7 @@ msgstr "çıkarılacak sunucunun tanımlanması gerekli"
 
 #: src/ExternalConn.cpp:1301
 msgid "eD2k is disabled in preferences."
-msgstr "pasifleştirilmiş."
+msgstr "eD2k ayarlarda devre dışı bırakılmış."
 
 #: src/ExternalConn.cpp:1368
 msgid "Friend not found."
@@ -2066,11 +2068,11 @@ msgstr "%.2f kB/s"
 
 #: src/FriendList.cpp:123
 msgid "Failed to open friend list file 'emfriends.met' for reading!"
-msgstr "Arkadaş listesi  'emfriends.met'  dosyası okunamıyor!"
+msgstr "Arkadaş listesi 'emfriends.met' dosyası okunamıyor!"
 
 #: src/FriendList.cpp:149
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
-msgstr "Arkadaş listesi  'emfriends.met'  dosyasına yazılamıyor!"
+msgstr "Arkadaş listesi 'emfriends.met' dosyasına yazılamıyor!"
 
 #: src/FriendList.cpp:266
 msgid "CRITICAL - no client on StartChatSession"
@@ -2240,19 +2242,19 @@ msgstr "%s için HTTP 401 Yetkisiz"
 #: src/IP2Country.cpp:82
 #, c-format
 msgid "Migrated existing GeoLite2-Country.mmdb to %s"
-msgstr ""
+msgstr "Mevcut GeoLite2-Country.mmdb dosyası %s unsuruna taşındı"
 
 #: src/IP2Country.cpp:134
 msgid "IP2Country: MaxMind selected as the GeoIP source but no License Key configured. Open Preferences → IP2Country, paste your free MaxMind License Key and click 'Update now'."
-msgstr ""
+msgstr "IP2Country: MaxMind GeoIP kaynağı olarak seçilmiştir fakat hiçbir Lisans Anahtarı yapılandırılmamıştır. Ayarlar → IP2Country menülerine gidin, ücretsiz MaxMind Lisans Anahtarınızı yapıştırın ve 'Şimdi güncelle' düğmesine tıklayın."
 
 #: src/IP2Country.cpp:140
 msgid "IP2Country: Custom URL selected as the GeoIP source but no URL configured. Open Preferences → IP2Country and supply a URL that points to an .mmdb (or .gz / .tar.gz containing one)."
-msgstr ""
+msgstr "IP2Country: kişiselleştirilmiş bir URL (bağlantı) GeoIP kaynağı olarak seçilmiştir fakat hiçbir URL yapılandırılmamıştır. Ayarlar → IP2Country menülerine gidin ve bir .mmdb dosyasına (veya onu içeren bir .gz / .tar.gz dosyasına) işaret eden bir URL girin."
 
 #: src/IP2Country.cpp:146
 msgid "IP2Country: failed to resolve a GeoIP download URL."
-msgstr ""
+msgstr "IP2Country: bir GeoIP indirme bağlantısının çözümlenmesi başarısız oldu."
 
 #: src/IP2Country.cpp:157
 #, c-format
@@ -2286,7 +2288,7 @@ msgstr "%s unsurunun güncellemesinde hata oluştu"
 
 #: src/IP2Country.cpp:249
 msgid "DB-IP download failed for the current month - retrying with the previous month's URL."
-msgstr ""
+msgstr "DB-IP indirmesi güncel ay için başarısız oldu - önceki ayın bağlantısıyla tekrar deneniyor."
 
 #: src/IP2Country.cpp:254 src/IPFilter.cpp:512 src/ServerList.cpp:872
 #, c-format
@@ -2316,8 +2318,8 @@ msgstr "ipfilter.dat dosyasını '%s' yükleme başarısız. Dosya açılamıyor
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
-msgstr[0] "%u adet IP-aralığı '%s' den  yüklendi."
-msgstr[1] "%u adet IP-aralığı '%s' den  yüklendi."
+msgstr[0] "%u adet IP-aralığı '%s' unsurundan yüklendi."
+msgstr[1] "%u adet IP-aralığı '%s' unsurundan yüklendi."
 
 #: src/IPFilter.cpp:331
 #, c-format
@@ -3541,7 +3543,7 @@ msgstr "Güvenli Bağlantı"
 
 #: src/muuli_wdr.cpp:1473
 msgid "Autoconnect to servers in static list only"
-msgstr "Sadece statik listesindeki sunuculara otomatikman  bağlan"
+msgstr "Sadece statik listesindeki sunuculara otomatikman bağlan"
 
 #: src/muuli_wdr.cpp:1476
 msgid "Set manually added servers to High Priority"
@@ -4169,7 +4171,7 @@ msgstr "Çevrimiçi-İmza' yı Etkinleştir"
 
 #: src/muuli_wdr.cpp:2460
 msgid "Enables the writing of the OS file, which can be used by external apps to create signatures and the like."
-msgstr "Diğer uygulamaların imzalar ve benzerlerini  oluşturabilmesi için kullanabileceği Çev.İmza dosyasını yazmayı etkinleştirir."
+msgstr "Diğer uygulamaların imzalar ve benzerlerini oluşturabilmesi için kullanabileceği Çev.İmza dosyasını yazmayı etkinleştirir."
 
 #: src/muuli_wdr.cpp:2464
 msgid "Update Frequency (Secs):"
@@ -4193,33 +4195,31 @@ msgstr "İstemciler için ülke bayraklarını göster"
 
 #: src/muuli_wdr.cpp:2515
 msgid "Render the country flag column in the transfers, queue and search views. Requires a valid MMDB GeoIP database (see below)."
-msgstr ""
+msgstr "Transferler, kuyruklar ve arama görünümlerinde ülkelerin bayrakları sütununu görüntüle. Geçerli bir MMDB GeoIP veri tabanı gerektirir (aşağıya bakınız)."
 
 #: src/muuli_wdr.cpp:2520
-#, fuzzy
 msgid "Database"
-msgstr "Veri Oranı:"
+msgstr "Veri Tabanı"
 
 #: src/muuli_wdr.cpp:2536
-#, fuzzy
 msgid "Source:"
-msgstr "Kaynaklar"
+msgstr "Kaynak:"
 
 #: src/muuli_wdr.cpp:2539
 msgid "DB-IP (free, no account)"
-msgstr ""
+msgstr "DB-IP (ücretsiz, hesap gerektirmez)"
 
 #: src/muuli_wdr.cpp:2540
 msgid "MaxMind GeoLite2 (free, account required)"
-msgstr ""
+msgstr "MaxMind GeoLite2 (ücretsiz, hesap gerektirir)"
 
 #: src/muuli_wdr.cpp:2541
 msgid "Custom URL"
-msgstr ""
+msgstr "Kişiselleştirilmiş URL"
 
 #: src/muuli_wdr.cpp:2544
 msgid "Choose which provider supplies the GeoIP MMDB database. DB-IP is the default - no account required. MaxMind requires a free account + license key. Use Custom URL to point at any other MMDB host (e.g. a local mirror)."
-msgstr ""
+msgstr "Hangi tedarikçinin GeoIP MMDB veri tabanını sağlayacağını seçin. DB-IP varsayılan değerdir - hesap gerektirmez. MaxMind ücretsiz bir hesap + lisans anahtarı gerektirir. Herhangi başka bir MMDB makinesine (mesela yerel bir yansıya) yönlendirme yapmak için kişiselleştirilmiş URL kullanın."
 
 #: src/muuli_wdr.cpp:2561
 msgid ""
@@ -4228,10 +4228,14 @@ msgid ""
 "IP-to-Country data by DB-IP.com - https://db-ip.com\n"
 "License: Creative Commons BY 4.0 - https://creativecommons.org/licenses/by/4.0/"
 msgstr ""
+"Hiçbir yapılandırma gerekli değildir.\n"
+"\n"
+"IP-Ülke verileri DB-IP.com tarafından sağlanmaktadır - https://db-ip.com\n"
+"Lisans: Creative Commons Atıf 4.0 - https://creativecommons.org/licenses/by/4.0/deed.tr"
 
 #: src/muuli_wdr.cpp:2574
 msgid "License key:"
-msgstr ""
+msgstr "Lisans anahtarı:"
 
 #: src/muuli_wdr.cpp:2580
 msgid ""
@@ -4242,11 +4246,16 @@ msgid ""
 "License: MaxMind GeoLite2 EULA - https://www.maxmind.com/en/geolite2/eula\n"
 "Requires attribution and account registration; refresh at least every 30 days."
 msgstr ""
+"Ücretsiz bir MaxMind hesabı açın, ardından bir lisans anahtarı oluşturun:\n"
+"https://www.maxmind.com/en/geolite2/signup\n"
+"\n"
+"Bu ürün, MaxMind tarafından oluşturulmuş GeoLite2 verileri içermektedir - https://www.maxmind.com\n"
+"Lisans: MaxMind GeoLite2 Kullanıcı Lisans Anlaşması - https://www.maxmind.com/en/geolite2/eula\n"
+"Atıf ve hesap oluşturulması gerektirir; en az her 30 günde bir güncelleyin."
 
 #: src/muuli_wdr.cpp:2595
-#, fuzzy
 msgid "Download URL:"
-msgstr "Aktarım: "
+msgstr "İndirme Bağlantısı:"
 
 #: src/muuli_wdr.cpp:2601
 msgid ""
@@ -4254,23 +4263,25 @@ msgid ""
 "URL may include credentials (https://user:pass@host/...).\n"
 "License and attribution terms are set by the upstream URL - you are responsible."
 msgstr ""
+"Bir .mmdb dosyasına veya onu içeren bir .gz / .tar.gz dosyasına işaret etmelidir.\n"
+"Bağlantı kimlik doğrulama bilgileri içerebilir (https://kullanıcı:parola@makine/…)\n"
+"Lisans ve atıf koşulları kaynak URL tarafından belirlenir - bunlardan siz sorumlu olursunuz."
 
 #: src/muuli_wdr.cpp:2614
 msgid "Download the GeoIP database from the selected source."
-msgstr ""
+msgstr "Seçili kaynaktan GeoIP veri tabanını indir."
 
 #: src/muuli_wdr.cpp:2616
-#, fuzzy
 msgid "Auto-update on startup"
-msgstr "Ip süzgecini başlangıçta otomatikman güncelle."
+msgstr "Başlangıçta otomatik olarak güncelle"
 
 #: src/muuli_wdr.cpp:2617
 msgid "Re-download the GeoIP database from the selected source every time aMule starts."
-msgstr ""
+msgstr "aMule her başladığında, GeoIP veri tabanını seçili kaynaktan tekrar indir."
 
 #: src/muuli_wdr.cpp:2640
 msgid "Filter incoming messages (except current chat):"
-msgstr "Gelen iletileri süz (o anki sohbet dışında.)"
+msgstr "Gelen iletileri süz (o anki sohbet dışında):"
 
 #: src/muuli_wdr.cpp:2642
 msgid "Filter all messages"
@@ -4286,7 +4297,7 @@ msgstr "Bilinmeyen yazılımlardan gelenleri süz."
 
 #: src/muuli_wdr.cpp:2648
 msgid "Filter messages containing (use ',' as separator):"
-msgstr "Şu içerikteki iletileri süz (ayraç olarak ','  kullanınız.):"
+msgstr "Şu içerikteki iletileri süz (ayraç olarak ',' kullanınız.):"
 
 #: src/muuli_wdr.cpp:2651 src/muuli_wdr.cpp:2662
 msgid "add here the words amule should filter and block messages including it"
@@ -4586,12 +4597,12 @@ msgstr "Hedef dosya oluşturuluyor."
 #: src/PartFileConvert.cpp:326
 #, c-format
 msgid "Loading data from old download file (%u of %u)"
-msgstr "Eski aktarım dosyasından veri yükleniyor.  (%u of %u)"
+msgstr "Eski aktarım dosyasından veri yükleniyor (%u, %u üzerinden)"
 
 #: src/PartFileConvert.cpp:344
 #, c-format
 msgid "Saving data block into new single download file (%u of %u)"
-msgstr "Yeni tek aktarım dosyasına veri bloku kaydediliyor.  (%u of %u)"
+msgstr "Yeni tek aktarım dosyasına veri bloku kaydediliyor (%u, %u üzerinden)"
 
 #: src/PartFileConvert.cpp:408
 msgid "Retrieving source downloadfile information"
@@ -4724,7 +4735,7 @@ msgstr "Kısmi dosya %s (%s) için tohum dosyası okunamadı"
 #: src/PartFile.cpp:1229
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
-msgstr "Parça dosyasına ait girdi dosyası  (%s - %s): %s okunamıyor."
+msgstr "Parça dosyasına ait girdi dosyası (%s - %s): %s okunamıyor."
 
 #: src/PartFile.cpp:1252 src/PartFile.cpp:1279
 #, c-format
@@ -5031,7 +5042,7 @@ msgstr "Arayüz"
 
 #: src/PrefsUnifiedDlg.cpp:208
 msgid "IP2Country"
-msgstr ""
+msgstr "IP2Country"
 
 #: src/PrefsUnifiedDlg.cpp:211
 msgid "Proxy"
@@ -5250,7 +5261,7 @@ msgstr "Tarayıcı Seçiniz"
 #: src/PrefsUnifiedDlg.cpp:1357
 #, c-format
 msgid "Executable%s"
-msgstr "Çalıştırılabilir  %s"
+msgstr "Çalıştırılabilir %s"
 
 #: src/PrefsUnifiedDlg.cpp:1378
 msgid "Edit server list"
@@ -5266,38 +5277,37 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1431
 msgid "IP2Country update failed"
-msgstr ""
+msgstr "IP2Country güncellemesi başarısız oldu"
 
 #: src/PrefsUnifiedDlg.cpp:1566
 msgid "Data by MaxMind GeoLite2"
-msgstr ""
+msgstr "Veriler MaxMind GeoLite2 tarafından sağlanmıştır"
 
 #: src/PrefsUnifiedDlg.cpp:1568
-#, fuzzy
 msgid "Custom source"
-msgstr "Tamamlandı"
+msgstr "Kişiselleştirilmiş kaynak"
 
 #: src/PrefsUnifiedDlg.cpp:1570
 msgid "Data by DB-IP.com"
-msgstr ""
+msgstr "Veriler DB-IP.com tarafından sağlanmıştır"
 
 #: src/PrefsUnifiedDlg.cpp:1590
-#, fuzzy, c-format
+#, c-format
 msgid "Status: Loaded%s"
-msgstr "Durum:"
+msgstr "Durum: %s yüklendi"
 
 #: src/PrefsUnifiedDlg.cpp:1593
-#, fuzzy, c-format
+#, c-format
 msgid "Status: Loaded%s - %s"
-msgstr "Durum:"
+msgstr "Durum: %s - %s yüklendi"
 
 #: src/PrefsUnifiedDlg.cpp:1598
 msgid "Status: Failed to load - click 'Update now' to refresh."
-msgstr ""
+msgstr "Durum: yükleme başarısız oldu - güncellemek için 'Şimdi güncelle' düğmesine tıklayın."
 
 #: src/PrefsUnifiedDlg.cpp:1600
 msgid "Status: Not found - click 'Update now' to download."
-msgstr ""
+msgstr "Durum: bulunamadı - indirmek için 'Şimdi güncelle' düğmesine tıklayın."
 
 #: src/PrefsUnifiedDlg.cpp:1645 src/PrefsUnifiedDlg.cpp:1664
 #, c-format
@@ -5420,7 +5430,7 @@ msgstr "Arama hatası"
 
 #: src/SearchDlg.cpp:432
 msgid "Kad search: requested wider results from one more peer."
-msgstr "Kad araması: bir eşten daha daha geniş sonuçlar talep edildi."
+msgstr "Kad araması: bir eşten daha, daha geniş sonuçlar talep edildi."
 
 #: src/SearchDlg.cpp:438
 msgid "Kad search: no peer left to reask for more results (cap reached or no responses yet)."
@@ -5519,7 +5529,7 @@ msgstr "Sunucu listesinde bağlanılabilecek geçerli bir sunucu yok"
 #: src/ServerConnect.cpp:198
 #, c-format
 msgid "Connected to %s (%s:%i)"
-msgstr " %s (%s:%i) unsuruna bağlanıldı"
+msgstr "%s (%s:%i) unsuruna bağlanıldı"
 
 #: src/ServerConnect.cpp:274
 #, c-format
@@ -5663,7 +5673,7 @@ msgstr "%s adresinden sunucu listesi aktarımı tamamlandı."
 
 #: src/ServerList.cpp:884
 msgid "No server list address entry in 'addresses.dat' found. Please paste a valid server list address into this file in order to auto-update your server list"
-msgstr "'addresses.dat' dosyasında hiç sunucu listesi adresi bulunamadı. Lütfen sunucu listenizi otomatik güncellemek için bu bu dosyaya sunucu listesi dosyası yapıştırın"
+msgstr "'addresses.dat' dosyasında hiç sunucu listesi adresi bulunamadı. Lütfen sunucu listenizi otomatik güncellemek için bu dosyaya sunucu listesi dosyası yapıştırın"
 
 #: src/ServerList.cpp:903
 #, c-format
@@ -5732,7 +5742,7 @@ msgstr "(Bilinmeyen ad)"
 #: src/ServerListCtrl.cpp:154
 #, c-format
 msgid "Are you sure you want to delete the static server %s"
-msgstr "Statik sunucu %s'i silmek istediğinizden emin misiniz?"
+msgstr "Statik sunucu %s'i silmek istediğinizden emin misiniz"
 
 #: src/ServerListCtrl.cpp:348
 #, c-format
@@ -6607,9 +6617,8 @@ msgid ""
 "\n"
 "Example: 'statistics 5' will show only the top 5 versions for each client type.\n"
 msgstr ""
-"İsteğe bağlı olarak, yazılım alt dallarının kaç girdisinin gösterilmesi gerektiğini söyleyen\n"
-"bu komuta 0-255 aralığında bir sayı, argüman olarak\n"
-"verilebilir.\n"
+"İsteğe bağlı olarak, yazılım sürüm alt dallarının kaç girdisinin gösterilmesi gerektiğini\n"
+"belirten bu komuta 0-255 aralığında bir sayı, argüman olarak verilebilir.\n"
 "Boş bırakma veya 0 değerini verme 'sınırsız' demektir.\n"
 "\n"
 "Örnek: 'istatistik 5 sadece her yazılım türünün en üstteki 5 sürümünü gösterecektir.\n"
@@ -6728,7 +6737,7 @@ msgstr "IP süzgecini hem kullanıcılar hem de sunucular için aç."
 
 #: src/TextClient.cpp:1020
 msgid "Turn IP filtering off for both clients and servers."
-msgstr "IP süzgecini hem kullanıcılar hem de sunucular için  kapat."
+msgstr "IP süzgecini hem kullanıcılar hem de sunucular için kapat."
 
 #: src/TextClient.cpp:1021
 msgid "Enable/Disable IP filtering for clients."
@@ -6849,7 +6858,6 @@ msgstr ""
 "    --avail <N>            asgari kaynak sayısı\n"
 "    --min-size <N[KMG]>    asgari dosya boyutu; K=1024, M=K*1024, G=M*1024\n"
 "    --max-size <N[KMG]>    azami dosya boyutu; aynı son ekler\n"
-"\n"
 "Örnek: 'search global linux iso --type Iso --min-size 100M' şunu geri gönderir:\n"
 "\"linux iso\" için Iso dosya türünde asgari 100 MiB boyutunda sonuçlar.\n"
 
@@ -7460,7 +7468,7 @@ msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1008
 msgid " has been running for "
-msgstr "  şu süredir çalışıyor: "
+msgstr " şu süredir çalışıyor: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1013
 msgid " is stopped !"
@@ -7669,7 +7677,7 @@ msgstr "Her istemde PHP sayfalarını yeniden oluştur"
 
 #: src/webserver/src/WebInterface.cpp:413
 msgid "aMule Web Server"
-msgstr "aMule Web  Sunucusu"
+msgstr "aMule Web Sunucusu"
 
 #: src/webserver/src/WebServer.cpp:312
 msgid "web client connection accepted\n"
@@ -7702,11 +7710,11 @@ msgstr "Oturum tamam, giriş yapılmadı.\n"
 
 #: src/webserver/src/WebServer.cpp:1879
 msgid "No session opened - will request login\n"
-msgstr "Hiç oturum açılmadı -  giriş gerekecek\n"
+msgstr "Hiç oturum açılmadı - giriş gerekecek\n"
 
 #: src/webserver/src/WebServer.cpp:1903
 msgid "Session created - requesting login\n"
-msgstr "Oturum oluşturuldu.-  giriş gerekiyor\n"
+msgstr "Oturum oluşturuldu - giriş gerekiyor\n"
 
 #: src/webserver/src/WebServer.cpp:1918
 msgid "Processing request [original]: "
