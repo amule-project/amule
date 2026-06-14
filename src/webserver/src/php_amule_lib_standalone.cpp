@@ -288,6 +288,7 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 		return;
 	}
 	cast_value_dnum(&si->var->value);
+	int search_type = si->var->value.int_val;
 
 	if ( !(si = get_scope_item(g_current_scope, "__param_4")) ) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 5 (availability)");
@@ -310,8 +311,8 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 	cast_value_dnum(&si->var->value);
 	int max_size = si->var->value.int_val;
 
-	printf("php_native_search_start_cmd:\nsearch=%s\next=%s\ntype=%s\navail=%d\nmin_size=%d\nmax_size=%d\n",
-	       search, ext, type, avail, min_size, max_size);
+	printf("php_native_search_start_cmd:\nsearch=%s\next=%s\nfile_type=%s\nsearch_type=%d\navail=%d\nmin_size=%d\nmax_size=%d\n",
+	       search, ext, type, search_type, avail, min_size, max_size);
 }
 
 /*
