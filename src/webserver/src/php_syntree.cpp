@@ -962,7 +962,7 @@ void cast_value_str(PHP_VALUE_NODE *val)
 	switch(val->type) {
 		case PHP_VAL_NONE: buff[0] = 0; break;
 		case PHP_VAL_BOOL:
-		case PHP_VAL_INT: snprintf(buff, sizeof(buff), "%" PRIu64, val->int_val); break;
+		case PHP_VAL_INT: snprintf(buff, sizeof(buff), "%" PRId64, val->int_val); break;
 		case PHP_VAL_FLOAT: snprintf(buff, sizeof(buff), "%.02f", val->float_val); break;
 		case PHP_VAL_STRING: return;
 		case PHP_VAL_ARRAY: {
@@ -984,7 +984,7 @@ void cast_value_array(PHP_VALUE_NODE *val)
 		case PHP_VAL_BOOL:
 		case PHP_VAL_INT:
 		case PHP_VAL_FLOAT: break;
-		case PHP_VAL_STRING: free(val->str_val);
+		case PHP_VAL_STRING: free(val->str_val); break;
 		case PHP_VAL_ARRAY: return;
 		case PHP_VAL_OBJECT: ;/* must call to free_obj() */
 		case PHP_VAL_VAR_NODE:
