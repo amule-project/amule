@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-14 15:17+0200\n"
-"PO-Revision-Date: 2026-06-15 06:03+0000\n"
+"PO-Revision-Date: 2026-06-15 11:48+0000\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
 "Language: tr\n"
@@ -5502,9 +5502,8 @@ msgid "Copy eD2k link to clipboard"
 msgstr "eD2k bağlantısını panoya kopyala"
 
 #: src/SearchListCtrl.cpp:808
-#, fuzzy
 msgid "You are not currently connected to a server supporting the Related Files search function"
-msgstr "Silmeye çalıştığınız sunucuya bağlı durumdasınız. Lütfen, öncelikle bağlantıyı kesiniz."
+msgstr "Şu anda İlgili Dosyalar arama işlevini destekleyen bir sunucuya bağlı değilsiniz"
 
 #: src/SearchListCtrl.cpp:1102
 msgid "Canceled"
@@ -5737,11 +5736,11 @@ msgstr "Sürüm"
 
 #: src/ServerListCtrl.cpp:100
 msgid "TCP Flags"
-msgstr ""
+msgstr "TCP Bayrakları"
 
 #: src/ServerListCtrl.cpp:101
 msgid "UDP Flags"
-msgstr ""
+msgstr "UDP Bayrakları"
 
 #: src/ServerListCtrl.cpp:155
 msgid "You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."
