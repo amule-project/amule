@@ -784,6 +784,10 @@ public:
 	wxString GetServerLog(bool reset = false);
 
 	void AddServerMessageLine(wxString &msg);
+	// Wipe the daemon's cumulative buffer, the local diff snapshot, and
+	// the on-screen log. Called on ed2k disconnect so the Server Info
+	// tab doesn't keep showing messages from the disconnected server.
+	void ClearServerInfo();
 	void AddRemoteLogLine(const wxString& line);
 
 	void SetOSFiles(wxString ) { /* onlinesig is created on remote side */ }
