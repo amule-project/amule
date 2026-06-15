@@ -69,7 +69,6 @@ cleanup:
   - /lib/pkgconfig
   - /lib/cmake
   - /share/man
-  - /share/doc
   - '*.la'
   - '*.a'
 

@@ -85,7 +85,11 @@ cleanup:
   - /lib/pkgconfig
   - /lib/cmake
   - /share/man
-  - /share/doc
+  # NOTE: /share/doc intentionally NOT cleaned -- aMule's LICENSE.md
+  # installs to share/doc/amule/ (FHS-conventional, GNUInstallDirs
+  # CMAKE_INSTALL_DOCDIR). The few KB of third-party READMEs from
+  # cryptopp/boost/libupnp landing under /app/share/doc/ are
+  # negligible bundle bloat relative to losing the licence file.
   - '*.la'
   - '*.a'
 
