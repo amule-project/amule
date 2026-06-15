@@ -308,10 +308,6 @@ public:
 
 	bool AddServer(CServer *srv, bool fromUser = false);
 	void AddServerMessageLine(wxString &msg);
-	// Wipe the cumulative server-message buffer + the on-screen log.
-	// Called on ed2k disconnect so the Server Info tab doesn't keep
-	// showing messages from the disconnected server.
-	void ClearServerInfo();
 #ifdef __DEBUG__
 	void AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time);
 #endif

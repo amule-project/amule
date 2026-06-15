@@ -1864,15 +1864,6 @@ void CamuleApp::AddServerMessageLine(wxString &msg)
 }
 
 
-void CamuleApp::ClearServerInfo()
-{
-	// Data-only clear; the on-screen ID_SERVERINFO text ctrl is wiped
-	// from the dialog side (CamuleDlg::ShowConnectionState) so this
-	// stays compilable in the daemon build too.
-	server_msg.Clear();
-}
-
-
 
 void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 {
@@ -2241,6 +2232,32 @@ void CamuleApp::ShowConnectionState(bool forceUpdate)
 		} else {
 			state |= CONNECTED_KAD_NOT;
 		}
+	}
+
+	// Wipe the cumulative server-message buffer when the connected
+	// ed2k server changes (either disconnected, or switched A -> B).
+	// Without this the Server Info tab keeps showing messages from the
+	// server we just left. We do the data clear here so amulegui sees
+	// the cleared buffer on its next EC_OP_GET_SERVERINFO poll without
+	// any extra round trip — the existing else branch in
+	// CServerInfoHandlerRem::HandlePacket resets the local view when
+	// fullLog shortens. The on-screen text ctrl in monolithic builds
+	// is cleared from CamuleDlg::ShowConnectionState's matching
+	// detection.
+	static CServer* s_lastConnectedServer = NULL;
+	CServer* nowConnectedServer = (state & CONNECTED_ED2K)
+		? theApp->serverconnect->GetCurrentServer() : NULL;
+	if (s_lastConnectedServer != NULL
+		&& (!(state & CONNECTED_ED2K)
+			|| (nowConnectedServer && nowConnectedServer != s_lastConnectedServer))) {
+		server_msg.Clear();
+	}
+	if (nowConnectedServer) {
+		s_lastConnectedServer = nowConnectedServer;
+	} else if (!(state & CONNECTED_ED2K)) {
+		// Truly disconnected — drop the cached pointer so a reconnect
+		// to the same server doesn't spuriously clear next time.
+		s_lastConnectedServer = NULL;
 	}
 
 	if (old_state != state) {
