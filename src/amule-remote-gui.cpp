@@ -707,6 +707,18 @@ void CamuleRemoteGuiApp::AddServerMessageLine(wxString &msg)
 }
 
 
+void CamuleRemoteGuiApp::ClearServerInfo()
+{
+	// Data-only clear, symmetric with CamuleApp::ClearServerInfo: wipe
+	// the daemon's cumulative buffer + the local diff snapshot. The
+	// on-screen text ctrl is wiped from the dialog side
+	// (CamuleDlg::ShowConnectionState).
+	CECPacket req(EC_OP_CLEAR_SERVERINFO);
+	m_connect->SendPacket(&req);
+	m_serverinfo_handler.m_seenSoFar.clear();
+}
+
+
 void CServerInfoHandlerRem::HandlePacket(const CECPacket *packet)
 {
 	// amuled answers EC_OP_GET_SERVERINFO with one EC_TAG_STRING

@@ -1864,6 +1864,15 @@ void CamuleApp::AddServerMessageLine(wxString &msg)
 }
 
 
+void CamuleApp::ClearServerInfo()
+{
+	// Data-only clear; the on-screen ID_SERVERINFO text ctrl is wiped
+	// from the dialog side (CamuleDlg::ShowConnectionState) so this
+	// stays compilable in the daemon build too.
+	server_msg.Clear();
+}
+
+
 
 void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 {

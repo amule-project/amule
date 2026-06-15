@@ -714,6 +714,21 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 		}
 	}
 
+	// Detect ed2k connected -> disconnected transition and wipe the
+	// Server Info tab so it doesn't keep displaying messages from the
+	// server we just dropped. ClearServerInfo() clears the data side
+	// (server_msg on monolithic, EC_OP_CLEAR_SERVERINFO + the diff
+	// snapshot on amulegui); the on-screen text ctrl gets wiped here
+	// via ResetLog so it works in both builds without having to make
+	// amuledlg accessible from CamuleApp.
+	static bool s_wasConnectedED2K = false;
+	bool nowConnectedED2K = theApp->IsConnectedED2K();
+	if (s_wasConnectedED2K && !nowConnectedED2K) {
+		theApp->ClearServerInfo();
+		ResetLog(ID_SERVERINFO);
+	}
+	s_wasConnectedED2K = nowConnectedED2K;
+
 	m_serverwnd->UpdateED2KInfo();
 	m_serverwnd->UpdateKadInfo();
 
