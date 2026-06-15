@@ -158,13 +158,34 @@ if (NOT CRYPTOPP_VERSION)# AND CRYPTO_COMPLETE)
 		RUN_OUTPUT_VARIABLE CRYPTOPP_VERSION
 	)
 
-	string (REGEX REPLACE "([0-9])([0-9])([0-9])" "\\1.\\2.\\3" CRYPTOPP_VERSION "${CRYPTOPP_VERSION}")
-
-	if (${CRYPTOPP_VERSION} VERSION_LESS ${MIN_CRYPTOPP_VERSION})
-		message (FATAL_ERROR "crypto++ version ${CRYPTOPP_VERSION} is too old")
+	# Two CRYPTOPP_VERSION encodings exist in the wild:
+	#
+	#   - Classic Crypto++ (weidai11/cryptopp/config_ver.h:53):
+	#         MAJOR*100 + MINOR*10 + REVISION
+	#     so 8.9.0 → 890, max for v1.x..v9.x is 999.
+	#
+	#   - cryptopp-modern (cryptopp-modern/cryptopp-modern, calendar
+	#     versioning per their config_ver.h:50 doc comment):
+	#         YEAR*10000 + MONTH*100 + INCREMENT
+	#     so the 2026.6 build is 20260600. Always ≥ 20,240,000 for any
+	#     release from 2024 onwards.
+	#
+	# The gap between 9,999 and 20,000,000 is enormous, so a single
+	# numeric threshold disambiguates without risk of collision either
+	# now or in any realistic future (and would also gracefully accept
+	# a hypothetical classic Crypto++ 10.x.y in the 1000-9999 range as
+	# "clearly newer than MIN_CRYPTOPP_VERSION").
+	if (CRYPTOPP_VERSION GREATER_EQUAL 10000)
+		MESSAGE (STATUS "crypto++ version ${CRYPTOPP_VERSION} (calendar / cryptopp-modern variant) -- OK")
 	else()
-		MESSAGE (STATUS "crypto++ version ${CRYPTOPP_VERSION} -- OK")
-		set (CRYPTOPP_CONFIG_FILE ${CRYPTOPP_CONFIG_FILE} CACHE STRING "Path to config.h of crypto-lib" FORCE)
-		set (CRYPTOPP_VERSION ${CRYPTOPP_VERSION} CACHE STRING "Version of cryptopp" FORCE)
+		string (REGEX REPLACE "([0-9])([0-9])([0-9])" "\\1.\\2.\\3" CRYPTOPP_VERSION "${CRYPTOPP_VERSION}")
+
+		if (${CRYPTOPP_VERSION} VERSION_LESS ${MIN_CRYPTOPP_VERSION})
+			message (FATAL_ERROR "crypto++ version ${CRYPTOPP_VERSION} is too old")
+		else()
+			MESSAGE (STATUS "crypto++ version ${CRYPTOPP_VERSION} -- OK")
+		endif()
 	endif()
+	set (CRYPTOPP_CONFIG_FILE ${CRYPTOPP_CONFIG_FILE} CACHE STRING "Path to config.h of crypto-lib" FORCE)
+	set (CRYPTOPP_VERSION ${CRYPTOPP_VERSION} CACHE STRING "Version of cryptopp" FORCE)
 endif()
