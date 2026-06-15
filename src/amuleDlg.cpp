@@ -714,20 +714,40 @@ void CamuleDlg::ShowConnectionState(bool skinChanged)
 		}
 	}
 
-	// Detect ed2k connected -> disconnected transition and wipe the
-	// Server Info tab so it doesn't keep displaying messages from the
-	// server we just dropped. ClearServerInfo() clears the data side
-	// (server_msg on monolithic, EC_OP_CLEAR_SERVERINFO + the diff
-	// snapshot on amulegui); the on-screen text ctrl gets wiped here
-	// via ResetLog so it works in both builds without having to make
-	// amuledlg accessible from CamuleApp.
+	// Wipe the Server Info text ctrl on any transition that leaves it
+	// showing messages from a server we're no longer talking to:
+	//   1) connected -> disconnected
+	//   2) connected to A -> connected to B (server switch)
+	// The data side (amuled's server_msg, shared with the monolithic
+	// build) is wiped in the matching block inside
+	// CamuleApp::ShowConnectionState; here we only ResetLog the text
+	// ctrl. We deliberately don't touch the amulegui side's
+	// CServerInfoHandlerRem::m_seenSoFar snapshot: if we cleared it
+	// locally and amuled's cleanup hadn't landed yet, the next poll
+	// would replay the stale buffer through the "fullLog starts with
+	// empty seenSoFar" path. Leaving the snapshot alone lets
+	// HandlePacket's existing StartsWith-vs-else logic handle the
+	// transition naturally -- once amuled's server_msg shortens
+	// after its own clear, the prefix mismatches and the else branch
+	// resets the local view properly.
 	static bool s_wasConnectedED2K = false;
+	static CServer* s_lastConnectedServer = NULL;
 	bool nowConnectedED2K = theApp->IsConnectedED2K();
-	if (s_wasConnectedED2K && !nowConnectedED2K) {
-		theApp->ClearServerInfo();
+	CServer* nowConnectedServer = nowConnectedED2K
+		? theApp->serverconnect->GetCurrentServer() : NULL;
+
+	if (s_wasConnectedED2K
+		&& (!nowConnectedED2K
+			|| (nowConnectedServer && s_lastConnectedServer
+				&& nowConnectedServer != s_lastConnectedServer))) {
 		ResetLog(ID_SERVERINFO);
 	}
 	s_wasConnectedED2K = nowConnectedED2K;
+	if (nowConnectedServer) {
+		s_lastConnectedServer = nowConnectedServer;
+	} else if (!nowConnectedED2K) {
+		s_lastConnectedServer = NULL;
+	}
 
 	m_serverwnd->UpdateED2KInfo();
 	m_serverwnd->UpdateKadInfo();
