@@ -1427,15 +1427,32 @@ void CDownloadListCtrl::DrawFileStatusBar(
 void CDownloadListCtrl::PreviewFile(CPartFile* file)
 {
 	wxString command;
-	// If no player set in preferences, use mplayer.
-	// And please, do a warning also :P
 	if (thePrefs::GetVideoPlayer().IsEmpty()) {
-		wxMessageBox(_(
-			"To prevent this warning to show up in every preview,\nset your preferred video player in preferences (default is mplayer)."),
+		// Fall back to the platform's default file-association opener
+		// (xdg-open on Linux/BSD, open on macOS, default shell handler
+		// on Windows). The legacy `xterm -e mplayer` fallback assumed
+		// mplayer was installed; the OS-native helpers below are
+		// present out of the box on every supported platform and pick
+		// up the user's registered application for the file type. A
+		// custom player from Preferences -> Misc -> Video player still
+		// takes precedence.
+		// Command names (open / xdg-open) intentionally stay untranslated
+		// -- they're literal tool names the user would type on a shell.
+		// The Windows phrasing IS translatable since it's English prose.
+		wxString defaultPreview;
+#if defined(__WXMAC__) || defined(__APPLE__)
+		defaultPreview = "open";
+		command = "open " QUOTE "$file" QUOTE;
+#elif defined(__WXMSW__) || defined(_WIN32)
+		defaultPreview = _("the default Windows shell handler");
+		command = "cmd /c start \"\" " QUOTE "$file" QUOTE;
+#else
+		defaultPreview = "xdg-open";
+		command = "xdg-open " QUOTE "$file" QUOTE;
+#endif
+		wxMessageBox(CFormat(_(
+			"To prevent this warning to show up in every preview,\nset your preferred video player in preferences (default is %s).")) % defaultPreview,
 			_("File preview"), wxOK, this);
-		// Since newer versions for some reason mplayer does not automatically
-		// select video output device and needs a parameter, go figure...
-		command = "xterm -T \"aMule Preview\" -iconic -e mplayer " QUOTE "$file" QUOTE;
 	} else {
 		command = thePrefs::GetVideoPlayer();
 	}

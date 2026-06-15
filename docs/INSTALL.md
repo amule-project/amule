@@ -10,8 +10,13 @@ following packages:
 | CMake     | 3.10            |                                   |
 | zlib      | 1.2.3           |                                   |
 | wxWidgets | 3.2.0           | 3.2 branch or newer               |
-| Crypto++  | 5.6             |                                   |
+| Crypto++  | 5.6             | classic or cryptopp-modern        |
 | Boost     | 1.47            | headers only; only `asio` is used |
+
+The Crypto++ row accepts either the classic
+[weidai11/cryptopp](https://github.com/weidai11/cryptopp) library (minimum
+5.6) or the [cryptopp-modern](https://github.com/cryptopp-modern/cryptopp-modern)
+fork (any release). The cmake check disambiguates the two by `CRYPTOPP_VERSION`.
 
 For `amuleweb` you'll also need a POSIX-compliant regex library — part of
 the standard C library on most GNU systems.
@@ -114,24 +119,26 @@ without the manual command.
 
 ## Build options
 
-Common `-D` options (`YES` / `NO`):
+Common `-D` options (`YES` / `NO` unless noted otherwise):
 
-| Option               | Default | Effect                                                           |
-| -------------------- | ------- | ---------------------------------------------------------------- |
-| `BUILD_MONOLITHIC`   | YES     | aMule GUI                                                        |
-| `BUILD_REMOTEGUI`    | NO      | `amulegui` — remote control GUI                                  |
-| `BUILD_DAEMON`       | NO      | `amuled` — headless daemon                                       |
-| `BUILD_AMULECMD`     | NO      | `amulecmd` — CLI client for the daemon                           |
-| `BUILD_WEBSERVER`    | NO      | `amuleweb` — HTTP interface for the daemon                       |
-| `BUILD_ED2K`         | NO      | `ed2k` — handle `ed2k://` links                                  |
-| `BUILD_CAS`          | NO      | `cas` — C statistics tool                                        |
-| `BUILD_WXCAS`        | NO      | `wxCas` — GUI statistics tool                                    |
-| `BUILD_ALC`          | NO      | aMuleLinkCreator GUI                                             |
-| `BUILD_ALCC`         | NO      | aMuleLinkCreator console                                         |
-| `BUILD_FILEVIEW`     | NO      | console file viewer (experimental)                               |
-| `ENABLE_NLS`         | YES     | native-language support (gettext)                                |
-| `ENABLE_UPNP`        | YES     | UPnP port forwarding                                             |
-| `ENABLE_IP2COUNTRY`  | YES     | libmaxminddb country flags ([docs/IP2Country.md](IP2Country.md)) |
+| Option                   | Default | Effect                                                                   |
+| ------------------------ | ------- | ------------------------------------------------------------------------ |
+| `BUILD_MONOLITHIC`       | YES     | aMule GUI                                                                |
+| `BUILD_REMOTEGUI`        | NO      | `amulegui` — remote control GUI                                          |
+| `BUILD_DAEMON`           | NO      | `amuled` — headless daemon                                               |
+| `BUILD_AMULECMD`         | NO      | `amulecmd` — CLI client for the daemon                                   |
+| `BUILD_WEBSERVER`        | NO      | `amuleweb` — HTTP interface for the daemon                               |
+| `BUILD_ED2K`             | NO      | `ed2k` — handle `ed2k://` links                                          |
+| `BUILD_CAS`              | NO      | `cas` — C statistics tool                                                |
+| `BUILD_WXCAS`            | NO      | `wxCas` — GUI statistics tool                                            |
+| `BUILD_ALC`              | NO      | aMuleLinkCreator GUI                                                     |
+| `BUILD_ALCC`             | NO      | aMuleLinkCreator console                                                 |
+| `BUILD_FILEVIEW`         | NO      | console file viewer (experimental)                                       |
+| `ENABLE_NLS`             | YES     | native-language support (gettext)                                        |
+| `ENABLE_UPNP`            | YES     | UPnP port forwarding                                                     |
+| `ENABLE_IP2COUNTRY`      | YES     | libmaxminddb country flags ([docs/IP2Country.md](IP2Country.md))         |
+| `ENABLE_CCACHE`          | AUTO    | use ccache as compiler launcher when found (`AUTO`/`ON`/`OFF`); set `OFF` for distro builds that manage ccache themselves, `ON` to hard-fail if ccache is missing |
+| `DEFAULT_VERSION_CHECK`  | ON      | initial state of the in-app "Check for new aMule version" preference on fresh installs; packagers shipping aMule via an OS package manager typically want `OFF` |
 
 For the full list:
 
