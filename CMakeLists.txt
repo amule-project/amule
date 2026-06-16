@@ -290,10 +290,15 @@ endif()
 # require libatomic unconditionally on 32-bit builds.
 set (LIBATOMIC "")
 if (CMAKE_SIZEOF_VOID_P EQUAL 4)
-	find_library (LIBATOMIC_LIBRARY NAMES atomic)
+	# Accept either the unversioned `libatomic.so` (Debian / Fedora /
+	# Arch ship it via the -dev / -devel package) or the versioned-only
+	# `libatomic.so.1` (openSUSE ships only the latter -- there's no
+	# separate -devel package). Listing the unversioned name first keeps
+	# the canonical path preferred when both are present.
+	find_library (LIBATOMIC_LIBRARY NAMES atomic libatomic.so.1)
 	if (LIBATOMIC_LIBRARY)
 		set (LIBATOMIC atomic)
-		message (STATUS "32-bit target: linking libatomic for std::atomic<int64_t>")
+		message (STATUS "32-bit target: linking libatomic for std::atomic<int64_t> (${LIBATOMIC_LIBRARY})")
 	else()
 		message (FATAL_ERROR
 			"32-bit target detected (sizeof(void*) == 4). aMule's "
