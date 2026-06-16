@@ -678,6 +678,47 @@ static LangInfo aMuleLanguages[] = {
 
 typedef Cfg_Int<int> Cfg_PureInt;
 
+// Returns true if aMule's translation catalog (PACKAGE.mo) exists on
+// disk for the given wxWidgets language id, using the same lookup
+// prefixes that InitLocale() registers. Used as an additional gate
+// in the language-picker probe below: the standard wxLocale::IsAvailable
+// / locale_to_check.IsOk() path depends on glibc-locale data being
+// present for each candidate language, which is *not* the case inside
+// Flatpak sandboxes — the GNOME runtime ships only the user's preferred
+// locale, so every other language fails the probe even when our .mo
+// files are reachable. Treating "catalog file is on disk" as also-OK
+// makes the picker show every language we actually ship a translation
+// for, regardless of sandbox glibc state.
+static bool HasAMuleCatalogForLanguage(int wxLanguageId)
+{
+	const wxLanguageInfo* info = wxLocale::GetLanguageInfo(wxLanguageId);
+	if (!info) {
+		return false;
+	}
+	const wxString canonical = info->CanonicalName;
+	if (canonical.IsEmpty()) {
+		return false;
+	}
+
+	// Same prefixes as InitLocale (OtherFunctions.cpp) — keep in sync.
+	wxArrayString prefixes;
+#if defined(__WXMAC__) || defined(__WINDOWS__)
+	prefixes.Add(JoinPaths(wxStandardPaths::Get().GetResourcesDir(), "locale"));
+#elif defined(__WXGTK__) || defined(__UNIX__)
+	prefixes.Add(JoinPaths(JoinPaths(wxStandardPaths::Get().GetInstallPrefix(), "share"), "locale"));
+#endif
+
+	const wxString catalog = wxString(PACKAGE) + ".mo";
+	for (size_t i = 0; i < prefixes.GetCount(); ++i) {
+		const wxString candidate = JoinPaths(JoinPaths(JoinPaths(prefixes[i], canonical), "LC_MESSAGES"), catalog);
+		if (wxFileExists(candidate)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
 class Cfg_Lang : public Cfg_PureInt, public Cfg_Lang_Base
 {
 public:
@@ -754,14 +795,29 @@ public:
 
 			// This suppresses error-messages about invalid locales
 			for (unsigned int i = 1; i < itemsof(aMuleLanguages); ++i) {
-				if ((aMuleLanguages[i].id > wxLANGUAGE_USER_DEFINED) || wxLocale::IsAvailable(aMuleLanguages[i].id)) {
+				// Outer gate: glibc-locale-data path OR aMule .mo catalog on
+				// disk. The catalog path is required for Flatpak sandboxes
+				// where the GNOME runtime ships only the user's preferred
+				// glibc locale, so wxLocale::IsAvailable returns false for
+				// every other language despite the .mo being present.
+				const bool hasCatalog = HasAMuleCatalogForLanguage(aMuleLanguages[i].id);
+				if ((aMuleLanguages[i].id > wxLANGUAGE_USER_DEFINED)
+				    || wxLocale::IsAvailable(aMuleLanguages[i].id)
+				    || hasCatalog) {
 					wxLogNull	logTarget;
 					wxLocale	locale_to_check;
 					InitLocale(locale_to_check, aMuleLanguages[i].id);
 					// English (U.S.) is the source language for the .pot catalog,
 					// so it is always available even though no en_US.mo is shipped.
 					const bool isSourceLanguage = aMuleLanguages[i].id == wxLANGUAGE_ENGLISH_US;
-					if (locale_to_check.IsOk() && (locale_to_check.IsLoaded(PACKAGE) || isSourceLanguage)) {
+					// Inner gate: same Flatpak rationale — InitLocale() can
+					// fail with IsOk()==false when glibc lacks the locale
+					// data for the candidate, but our .mo is still on disk
+					// and will be applied correctly when the user actually
+					// switches to this language. Accept `hasCatalog` here as
+					// well so those entries surface in the picker.
+					if ((locale_to_check.IsOk() && (locale_to_check.IsLoaded(PACKAGE) || isSourceLanguage))
+					    || hasCatalog) {
 						aMuleLanguages[i].displayname = wxString(wxGetTranslation(aMuleLanguages[i].name)) + " [" + aMuleLanguages[i].name + "]";
 						aMuleLanguages[i].available = true;
 #if 0
