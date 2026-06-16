@@ -107,7 +107,7 @@ jobs:
             --files-from=/tmp/sources.txt
 
       - name: Upload source bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: source-bundle
           path: dist/aMule-*-src.tar.gz
