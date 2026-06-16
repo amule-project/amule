@@ -390,7 +390,7 @@ bool CDownloadQueue::IsFileExisting( const CMD4Hash& fileid ) const
 				return false;
 			}
 
-			AddLogLineC(CFormat( _("You already have the file '%s'") ) % file->GetFileName());
+			AddLogLineC(CFormat( _("You already have the file '%s'") ) % fullpath);
 		}
 
 		return true;
