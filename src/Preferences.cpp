@@ -1358,9 +1358,12 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 NewCfgItem(IDC_AUTOSORT,	 (new Cfg_Bool( "/eMule/AutoSortDownloads", s_AutoSortDownload, false )));
 
 	/**
-	 * Version check
-	 **/
-	 NewCfgItem(IDC_NEWVERSION,	(new Cfg_Bool( "/eMule/NewVersionCheck", s_NewVersionCheck, true )));
+	 * Version check.
+	 * Default value is set at configure time via -DDEFAULT_VERSION_CHECK
+	 * (ON by default, OFF for OS-package builds that don't want the
+	 * in-app updater to compete with the distro's package manager).
+	 */
+	 NewCfgItem(IDC_NEWVERSION,	(new Cfg_Bool( "/eMule/NewVersionCheck", s_NewVersionCheck, DEFAULT_VERSION_CHECK )));
 
 	 /**
 	  * Obfuscation
