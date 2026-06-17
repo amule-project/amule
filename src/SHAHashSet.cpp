@@ -862,6 +862,10 @@ bool CAICHHashSet::LoadHashSet()
 		uint32 nHashCount;
 		bool cacheFallbackTriggered = false;
 		while (file.GetPosition() < nExistingSize) {
+			// Position of the root-hash at the start of the entry we're
+			// about to examine — captured pre-read so we can stamp it
+			// back into the cache when a stale-cache rewind succeeds.
+			const uint64 entryStartPos = file.GetPosition();
 			CurrentHash.Read(&file);
 			if (m_pHashTree.m_Hash == CurrentHash) {
 				// found Hashset
@@ -885,6 +889,14 @@ bool CAICHHashSet::LoadHashSet()
 				if (CurrentHash != m_pHashTree.m_Hash) {
 					AddDebugLogLineC(logSHAHashSet, "Failed to load HashSet: Calculated Masterhash differs from given Masterhash - hashset corrupt!");
 					return false;
+				}
+				// Self-heal: if we got here via the stale-cache rewind,
+				// update the cache so future lookups for this root hash
+				// go straight to the new correct offset instead of
+				// paying the linear-scan penalty every time.
+				if (cacheFallbackTriggered) {
+					wxMutexLocker lock(s_rootHashCacheMutex);
+					s_rootHashCache[m_pHashTree.m_Hash] = entryStartPos;
 				}
 				return true;
 			}
