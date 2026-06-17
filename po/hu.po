@@ -1526,13 +1526,13 @@ msgid "the default Windows shell handler"
 msgstr ""
 
 #: src/DownloadListCtrl.cpp:1454
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is %s)."
 msgstr ""
 "Állítsd be a kedvenc videó-lejátszódat a beállításoknál,\n"
-" hogy ezt a figyemeztetést ne kapd minden előnézetnél (alapértelmezett az mplayer)."
+" hogy ezt a figyemeztetést ne kapd minden előnézetnél (alapértelmezett az %s)."
 
 #: src/DownloadListCtrl.cpp:1455
 msgid "File preview"

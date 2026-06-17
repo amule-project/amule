@@ -1531,13 +1531,13 @@ msgid "the default Windows shell handler"
 msgstr ""
 
 #: src/DownloadListCtrl.cpp:1454
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is %s)."
 msgstr ""
 "Et seda viga eelvaatuse ajal rohkem mitte näitdata \n"
-"määra oma seadetes eelistatud video mängija (vaikimisi mplayer)."
+"määra oma seadetes eelistatud video mängija (vaikimisi %s)."
 
 #: src/DownloadListCtrl.cpp:1455
 msgid "File preview"
