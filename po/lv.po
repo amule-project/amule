@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aMule GIT\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-14 15:17+0200\n"
-"PO-Revision-Date: 2026-06-17 08:01+0000\n"
+"PO-Revision-Date: 2026-06-17 10:12+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: none\n"
 "Language: lv\n"
@@ -1252,7 +1252,7 @@ msgstr ""
 
 #: src/DataToText.cpp:71
 msgid "Banned"
-msgstr ""
+msgstr "Bloķēts, Aizliegts, Izraidīts, Izslēgts"
 
 #: src/DataToText.cpp:72
 msgid "Connection Error"
@@ -3344,7 +3344,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1272
 msgid "Enter your browser name here. Leave this field empty to use the system default browser."
-msgstr ""
+msgstr "Ievadiet šeit sava pārlūka nosaukumu. Atstājiet šo lauku tukšu, ja vēlaties izmantot sistēmas noklusējuma pārlūku."
 
 #: src/muuli_wdr.cpp:1275 src/muuli_wdr.cpp:1292 src/muuli_wdr.cpp:1569
 #: src/muuli_wdr.cpp:1581 src/muuli_wdr.cpp:2480
