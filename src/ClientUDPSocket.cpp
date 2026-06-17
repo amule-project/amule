@@ -192,6 +192,14 @@ void CClientUDPSocket::ProcessPacket(uint8_t* packet, int16 size, int8 opcode, u
 
 			if (sender){
 				sender->CheckForAggressive();
+				if (sender->IsBanned()) {
+					// CheckForAggressive can call Ban() on score >= 10.
+					// Mirror the TCP file-request path at
+					// ClientTCPSocket.cpp:539 and short-circuit so a
+					// freshly-banned client cannot keep the seeder
+					// processing UDP file-info packets.
+					break;
+				}
 
 				//Make sure we are still thinking about the same file
 				if (reqfilehash == sender->GetUploadFileID()) {
