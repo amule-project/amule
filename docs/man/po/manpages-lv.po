@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2026-06-10 16:45+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2026-06-17 08:01+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: none\n"
 "Language: lv\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: amule.1.in:1
 #, no-wrap
 msgid "AMULE"
-msgstr ""
+msgstr "AMULE"
 
 #. type: TH
 #: amule.1.in:1 amulecmd.1.in:1 amuled.1.in:1 amulegui.1.in:1 amuleweb.1.in:1
@@ -29,19 +29,19 @@ msgstr ""
 #: ../../src/utils/cas/docs/cas.1.in:1 ../../src/utils/wxCas/docs/wxcas.1.in:1
 #, no-wrap
 msgid "@MAN_DATE@"
-msgstr ""
+msgstr "@MAN_DATE@"
 
 #. type: TH
 #: amule.1.in:1
 #, no-wrap
 msgid "aMule v@PACKAGE_VERSION@"
-msgstr ""
+msgstr "aMule v@PACKAGE_VERSION@"
 
 #. type: TH
 #: amule.1.in:1
 #, no-wrap
 msgid "aMule"
-msgstr ""
+msgstr "aMule"
 
 #. type: SH
 #: amule.1.in:4 amulecmd.1.in:5 amuled.1.in:4 amulegui.1.in:4 amuleweb.1.in:4
@@ -50,12 +50,12 @@ msgstr ""
 #: ../../src/utils/cas/docs/cas.1.in:4 ../../src/utils/wxCas/docs/wxcas.1.in:3
 #, no-wrap
 msgid "NAME"
-msgstr ""
+msgstr "NOSAUKUMS"
 
 #. type: Plain text
 #: amule.1.in:6
 msgid "amule - the all-platform eMule p2p client"
-msgstr ""
+msgstr "aMule - daudzplatformu eMule P2P klients"
 
 #. type: SH
 #: amule.1.in:6 amulecmd.1.in:7 amuled.1.in:6 amulegui.1.in:6 amuleweb.1.in:6
@@ -74,7 +74,7 @@ msgstr ""
 #. type: Plain text
 #: amule.1.in:14 amuled.1.in:16
 msgid "[B<-w> I<E<lt>pathE<gt>>]"
-msgstr ""
+msgstr "[B<-w> I<E<lt>ceļšE<gt>>]"
 
 #. type: Plain text
 #: amule.1.in:18 amuled.1.in:20
@@ -88,7 +88,7 @@ msgstr ""
 #: ../../src/utils/cas/docs/cas.1.in:14 ../../src/utils/wxCas/docs/wxcas.1.in:7
 #, no-wrap
 msgid "DESCRIPTION"
-msgstr ""
+msgstr "APRAKSTS"
 
 #. type: TP
 #: amule.1.in:26 amuled.1.in:27 amulegui.1.in:27 ed2k.1.in:21
@@ -122,7 +122,7 @@ msgstr ""
 #. type: Plain text
 #: amule.1.in:38 amuled.1.in:46 amulegui.1.in:39
 msgid "Resets config to default values."
-msgstr ""
+msgstr "Atiestata konfigurācijas iestatījumus uz to noklusējuma vērtībām."
 
 #. type: Plain text
 #: amule.1.in:42
@@ -215,13 +215,13 @@ msgstr ""
 #: amule.1.in:77 amulecmd.1.in:233 amuleweb.1.in:136
 #, no-wrap
 msgid "NOTES"
-msgstr ""
+msgstr "PIEZĪMES"
 
 #. type: SS
 #: amule.1.in:78 amulecmd.1.in:234 amuleweb.1.in:137
 #, no-wrap
 msgid "Paths"
-msgstr ""
+msgstr "Ceļi"
 
 #. type: Plain text
 #: amule.1.in:82 amulecmd.1.in:238 amuleweb.1.in:141
@@ -233,12 +233,12 @@ msgstr ""
 #: ed2k.1.in:61 ../../src/utils/cas/docs/cas.1.in:37
 #, no-wrap
 msgid "FILES"
-msgstr ""
+msgstr "DATNES"
 
 #. type: Plain text
 #: amule.1.in:84 amuled.1.in:87
 msgid "~/.aMule/*"
-msgstr ""
+msgstr "~/.aMule/*"
 
 #. type: SH
 #: amule.1.in:84 amulecmd.1.in:282 amuled.1.in:87 amulegui.1.in:63
@@ -267,7 +267,7 @@ msgstr ""
 #: ../../src/utils/wxCas/docs/wxcas.1.in:19
 #, no-wrap
 msgid "COPYRIGHT"
-msgstr ""
+msgstr "AUTORTIESĪBAS"
 
 #. type: Plain text
 #: amule.1.in:89 amulecmd.1.in:287 amuled.1.in:92 amulegui.1.in:68
@@ -296,7 +296,7 @@ msgstr ""
 #: ../../src/utils/wxCas/docs/wxcas.1.in:23
 #, no-wrap
 msgid "AUTHOR"
-msgstr ""
+msgstr "AUTORS"
 
 #. type: Plain text
 #: amule.1.in:92 amulecmd.1.in:290 amuled.1.in:95 amuleweb.1.in:203
@@ -311,7 +311,7 @@ msgstr ""
 #: amulecmd.1.in:1
 #, no-wrap
 msgid "AMULECMD"
-msgstr ""
+msgstr "AMULECMD"
 
 #. type: TH
 #: amulecmd.1.in:1
@@ -346,7 +346,7 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1.in:20 amuleweb.1.in:31
 msgid "[B<--create-config-from>=I<E<lt>pathE<gt>>]"
-msgstr ""
+msgstr "[B<--create-config-from>=I<E<lt>ceļšE<gt>>]"
 
 #. type: Plain text
 #: amulecmd.1.in:29
@@ -454,7 +454,7 @@ msgstr ""
 #: amulecmd.1.in:73
 #, no-wrap
 msgid "COMMANDS"
-msgstr ""
+msgstr "KOMANDAS"
 
 #. type: Plain text
 #: amulecmd.1.in:75
@@ -750,7 +750,7 @@ msgstr ""
 #: amulecmd.1.in:238 amuleweb.1.in:141
 #, no-wrap
 msgid "Languages"
-msgstr ""
+msgstr "Valodas"
 
 #. type: Plain text
 #: amulecmd.1.in:244 amuleweb.1.in:147
@@ -780,13 +780,13 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1.in:268 amuleweb.1.in:177
 msgid "~/.aMule/remote.conf"
-msgstr ""
+msgstr "~/.aMule/remote.conf"
 
 #. type: SH
 #: amulecmd.1.in:268 amuleweb.1.in:181
 #, no-wrap
 msgid "EXAMPLE"
-msgstr ""
+msgstr "PIEMĒRS"
 
 #. type: Plain text
 #: amulecmd.1.in:270
@@ -801,7 +801,7 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1.in:274 amuleweb.1.in:187
 msgid "or"
-msgstr ""
+msgstr "vai"
 
 #. type: Plain text
 #: amulecmd.1.in:276
@@ -822,7 +822,7 @@ msgstr ""
 #: amuled.1.in:1
 #, no-wrap
 msgid "AMULED"
-msgstr ""
+msgstr "AMULED"
 
 #. type: TH
 #: amuled.1.in:1
@@ -887,7 +887,7 @@ msgstr ""
 #: amulegui.1.in:1
 #, no-wrap
 msgid "AMULEGUI"
-msgstr ""
+msgstr "AMULEGUI"
 
 #. type: TH
 #: amulegui.1.in:1

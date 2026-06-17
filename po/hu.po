@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-14 15:17+0200\n"
-"PO-Revision-Date: 2026-06-15 06:05+0000\n"
+"PO-Revision-Date: 2026-06-17 08:01+0000\n"
 "Last-Translator: Dévai Tamás <gonosztopi@amule.org>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "Language: hu\n"
@@ -41,47 +41,48 @@ msgid ""
 "\n"
 "Install desktop integration now?"
 msgstr ""
+"aMule képes egy indító és egy ikon telepítésére a home könyvtárba, hogy mint rendesen installált alkalmazás jelenjen meg az alkalmazások menüjében. Ezt vissza lehet vonni - a fájlok a ~/.local/share/applications és ~/.local/share/icons könyvtárakban találhatóak és ezeket bármikor törölni lehet.\n"
+"\n"
+"Installálásra kerüljön az asztal integráció?"
 
 #: src/AppImageIntegration.cpp:226
-#, fuzzy
 msgid "Add aMule to your application menu?"
-msgstr "Az alkalmazás neve után"
+msgstr "aMule hozzáadása az alkalmazások menüjéhez?"
 
 #: src/AppImageIntegration.cpp:228
 msgid "Install"
-msgstr ""
+msgstr "Telepítés"
 
 #: src/AppImageIntegration.cpp:228
 msgid "Not now"
-msgstr ""
+msgstr "Most nem"
 
 #: src/AppImageIntegration.cpp:229
 msgid "Don't ask again"
-msgstr ""
+msgstr "Ne kérdezze újra"
 
 #: src/AppImageIntegration.cpp:248
 msgid "Cannot install desktop integration: the APPDIR environment variable is not set. This usually means the AppImage was launched in a non-standard way."
-msgstr ""
+msgstr "Asztal integráció nem telepíthető: az APPDIR környezeti változónak nincs értéke. Ez általában azt jelenti, hogy az AppImage egy szokatlan módon került indításra."
 
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
 #: src/AppImageIntegration.cpp:274
-#, fuzzy
 msgid "aMule integration failed"
-msgstr "Kapcsolódás sikertelen "
+msgstr "aMule integráció sikertelen"
 
 #: src/AppImageIntegration.cpp:259
 #, c-format
 msgid "Cannot install desktop integration: failed to create %s. Check that your home directory is writable."
-msgstr ""
+msgstr "Az asztal integráció telepítése sikertelen: %s létrehozása nem sikerült. Elleőrizze hogy a home könyvtár írható."
 
 #: src/AppImageIntegration.cpp:271
 #, c-format
 msgid "Cannot install desktop integration: failed to write %s. Check that your home directory is writable."
-msgstr ""
+msgstr "Az asztal integráció telepítése sikertelen: %s írása nem sikerült. Elleőrizze hogy a home könyvtár írható."
 
 #: src/AppImageIntegration.cpp:281
 msgid "AppImage integration: aMule added to your application menu."
-msgstr ""
+msgstr "AppImage integráció: aMule hozzá lett adva az alkalmazások menüjéhez."
 
 #: src/AppImageIntegration.cpp:284
 msgid ""
@@ -91,18 +92,23 @@ msgid ""
 "\n"
 "Restart aMule now?"
 msgstr ""
+"aMule hozzá lett adva az alkalmazások menüjéhez. Most indítható az alkalmazások listájából és az indító ugyanezt az AppImage-t indítja.\n"
+"\n"
+"Egyes asztalokon aMule-t újra kell indítani, hogy a dock / taskbar ikon hozzá legyen rendelve az új indító bejegyzéshez. Modern Wayland kompozitorok (GNOME, KDE) ezt élőben teszik, de az újraindítás a biztos út, amennyiben az ikon általános maradna.\n"
+"\n"
+"aMule újraindítása most?"
 
 #: src/AppImageIntegration.cpp:287
 msgid "aMule installed"
-msgstr ""
+msgstr "aMule telepítve"
 
 #: src/AppImageIntegration.cpp:289
 msgid "Restart now"
-msgstr ""
+msgstr "Újraindítás most"
 
 #: src/AppImageIntegration.cpp:289
 msgid "Later"
-msgstr ""
+msgstr "Később"
 
 #: src/amuleAppCommon.cpp:174
 #, c-format
@@ -184,24 +190,24 @@ msgid "WARNING"
 msgstr "FIGYELEM"
 
 #: src/amule.cpp:778
-#, fuzzy
 msgid "eD2k server list (server.met)"
-msgstr "%i kiszolgálót találtam a server.met fájlban"
+msgstr "eD2k szerver lista (server.met)"
 
 #: src/amule.cpp:779
 msgid "Kad bootstrap nodes (nodes.dat)"
-msgstr ""
+msgstr "Kad bootstrap csomópontok (nodes.dat)"
 
 #: src/amule.cpp:786
 msgid ""
 "aMule has detected missing network bootstrap files.\n"
 "Select which ones to download:"
 msgstr ""
+"aMule hiányzó hálózati bootstrap fájlokat észlelt.\n"
+"Válassza ki a letölteni kivántakat:"
 
 #: src/amule.cpp:787
-#, fuzzy
 msgid "Network bootstrap"
-msgstr "Hálózatok"
+msgstr "Hálózati bootstrap"
 
 #: src/amule.cpp:872
 #, c-format
@@ -209,9 +215,8 @@ msgid "web server running on pid %d"
 msgstr "web kiszolgáló fut, pid=%d"
 
 #: src/amule.cpp:876
-#, fuzzy
 msgid "You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or build aMule from source with -DBUILD_WEBSERVER=YES and install it."
-msgstr "A web kiszolgáló indítását kérted induláskor, de az amuleweb program nem futtatható. Kérlek telepítsd az aMule web kiszolgálót tartalmazó csomagot, vagy fordítsd az aMule-t a --enable-webserver kapcsolóval és futtasd a make install parancsot."
+msgstr "A web szerver futtatását kérte induláskor, de az amuleweb program nem futtatható. Kérem telepítse az aMule web szervert tartalmazó csomagot, vagy építse az aMule-t a forráskódból a -DBUILD_WEBSERVER=YES paraméterrel és installálja azt."
 
 #: src/amule.cpp:959
 #, c-format
@@ -426,9 +431,8 @@ msgid "ERROR: aMule daemon cannot be used when external connections are disabled
 msgstr "HIBA: az aMule démon nem használható, ha a külső kapcsolatok le vannak tiltva. A Külső Kapcsolatok engedélyezéséhez használd a normál aMule-t, vagy indítsd az amuled-t a --ec-config paraméterrel, vagy állítsd az \"AcceptExternalConnections\" kulcs értékét 1-re a ~/.aMule/amule.conf fájlban."
 
 #: src/amuled.cpp:145
-#, fuzzy
 msgid "ERROR: A valid password is required to use external connections, and aMule daemon cannot be used without external connections. To run aMule daemon, you must set the \"ECPassword\" field in the file ~/.aMule/amule.conf with an appropriate value. Execute amuled with the flag --ec-config to set the password. More information can be found at https://amule-org.github.io/docs"
-msgstr "HIBA: Egy érvényes jelszó szükséges a külső kapcsolatok használatához, és az aMule démon nem használható külső kapcsolatok nélkül. Az aMule démon futtatásához, az \"ECPassword\" nevű mezőt a ~/.aMule/amule.conf nevű fájlban egy megfelelő értékre kell állítanod. Indítsd az amuled-t a --ec-config paraméterrel, a jelszó beállításához. További információk https://amule-org.github.io/docs alatt találhatóak."
+msgstr "HIBA: Egy érvényes jelszó szükséges a külső kapcsolatok használatához, és az aMule démon nem használható külső kapcsolatok nélkül. Az aMule démon futtatásához az \"ECPassword\" nevű mezőt a ~/.aMule/amule.conf nevű fájlban egy megfelelő értékre kell állítani. Indítsa az amuled-t a --ec-config paraméterrel, a jelszó beállításához. További információk https://amule-org.github.io/docs alatt találhatóak."
 
 #: src/amuled.cpp:161
 msgid "amuled: OnInit - starting timer"
@@ -490,24 +494,23 @@ msgid "Forum: https://github.com/amule-org/amule/discussions \n"
 msgstr "Fórum: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:548
-#, fuzzy
 msgid "Documentation: https://amule-org.github.io/docs \n"
-msgstr "Honlap: https://amule-org.github.io \n"
+msgstr "Dokumentáció: https://amule-org.github.io/docs \n"
 
 #: src/amuleDlg.cpp:549
-#, fuzzy
 msgid ""
 "Issues: https://github.com/amule-org/amule/issues \n"
 "\n"
-msgstr "Fórum: https://github.com/amule-org/amule/discussions \n"
+msgstr ""
+"Gondok: https://github.com/amule-org/amule/issues \n"
+"\n"
 
 #: src/amuleDlg.cpp:550
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2026 aMule Team \n"
 "\n"
 msgstr ""
-"Copyright (c) 2003-2026 aMule Team \n"
+"Szerzői jog (c) 2003-2026 aMule csapat \n"
 "\n"
 
 #: src/amuleDlg.cpp:551
@@ -776,7 +779,7 @@ msgstr "Kapcsolódás..."
 
 #: src/amule-remote-gui.cpp:480
 msgid "Connection failed. Please check the host, port, and password."
-msgstr ""
+msgstr "Kapcsolat sikertelen. Kerém ellenőrizze a host, port és jelszó értékeket."
 
 #: src/amule-remote-gui.cpp:517
 msgid "Remote GUI EC event handler"
@@ -801,6 +804,8 @@ msgid ""
 "Connection timed out. Unable to reach %s:%d within the allotted time.\n"
 "Please check the host, port and that aMule is running with External Connections enabled."
 msgstr ""
+"Kapcsolat időtúllépés. Képtelen a %s:%d elérése a megadott időn bellül.\n"
+"Kérem ellenőrízze a host, port értékeket, és hogy a külső kapcsolatok aktiválva vannak az aMule-ban."
 
 #: src/amule-remote-gui.cpp:657
 msgid "Ready"
@@ -1328,7 +1333,6 @@ msgid "In progress"
 msgstr "Folyamatban"
 
 #: src/DataToText.cpp:145
-#, fuzzy
 msgid "ERROR: Out of disk space"
 msgstr "HIBA: Elfogyott a szabad lemezterület"
 
@@ -1736,18 +1740,16 @@ msgid "eD2k is disabled in preferences."
 msgstr "Az eD2k le van tiltva a beállításokban."
 
 #: src/ExternalConn.cpp:1368
-#, fuzzy
 msgid "Friend not found."
-msgstr "Fájl nem található."
+msgstr "Barát nem található."
 
 #: src/ExternalConn.cpp:1377
-#, fuzzy
 msgid "Client not found."
-msgstr "Fájl nem található."
+msgstr "Kliens nem található."
 
 #: src/ExternalConn.cpp:1382
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
-msgstr ""
+msgstr "EC_TAG_FRIEND_SHARED igényel EC_TAG_FRIEND vagy EC_TAG_CLIENT értéket."
 
 #: src/ExternalConn.cpp:1530
 msgid "Search in progress. Refetch results in a moment!"
@@ -1779,9 +1781,9 @@ msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn: hivatkozás hozzáadása: '%s'."
 
 #: src/ExternalConn.cpp:1832
-#, fuzzy, c-format
+#, c-format
 msgid "%d of %d links failed (invalid or already on list)."
-msgstr "Érvénytelen hivatkozás, vagy már rajta van a listán."
+msgstr "%d link %d linkből sikertelen (érvénytelen vagy már a listán van)."
 
 #: src/ExternalConn.cpp:1959
 msgid "File not found."
@@ -2038,7 +2040,7 @@ msgstr "A program verziójának kiírása."
 
 #: src/ExternalConnector.cpp:525
 msgid "Force ZLIB compression regardless of dialed-IP locality (useful when the server is reachable over a VPN tunnel that resolves to a LAN IP)."
-msgstr ""
+msgstr "ZLIB tömörítés kikényszerítése a tárcsázott IP-cím helyétől függetlenül (hasznos, ha a szerver egy VPN-alagúton keresztül érhető el, amely LAN IP-címre kerül feloldásra)."
 
 #: src/FileDetailDialog.cpp:76
 msgid "File Details"
@@ -2116,13 +2118,12 @@ msgid "Multiple selection"
 msgstr "Többszörös kiválasztás"
 
 #: src/GenericClientListCtrl.cpp:574
-#, fuzzy
 msgid ""
 "You are not allowed to set more than one friend slot.\n"
 " Only one slot was assigned."
 msgstr ""
-"Nem lehet egynél több barát slot-ot létrehozni.\n"
-"Csak egy slot lett hozzárendelve."
+"Nem szabad egynél több baráti csatlakozást létesíteni.\n"
+" Csak egy csatlakozás lett hozzárendelve."
 
 #: src/GenericClientListCtrl.cpp:591
 msgid "Send message to user"
@@ -2195,29 +2196,29 @@ msgid "The URL to download can't be empty"
 msgstr "A letöltendő URL nem lehet üres"
 
 #: src/HTTPDownload.cpp:246
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to create HTTP request for %s"
-msgstr "Megosztott fájlok lehozatala sikertelen a(z) '%s' felhasználótól"
+msgstr "A %s iránti HTTP kérés létrehozása sikertelen"
 
 #: src/HTTPDownload.cpp:337
 #, c-format
 msgid "HTTP download: empty response body for %s"
-msgstr ""
+msgstr "HTTP letöltés: a %s válasz tartalma üres"
 
 #: src/HTTPDownload.cpp:349
-#, fuzzy, c-format
+#, c-format
 msgid "Could not move downloaded file to %s"
-msgstr "Könyvtár az ideiglenes letöltési fájloknak"
+msgstr "A letöltött fájlok eltolása %s helyre sikertelen"
 
 #: src/HTTPDownload.cpp:353
-#, fuzzy, c-format
+#, c-format
 msgid "Downloaded %s (%llu bytes)"
-msgstr "%d bájt letöltve"
+msgstr "Letöltve %s (%llu bájt)"
 
 #: src/HTTPDownload.cpp:358
-#, fuzzy, c-format
+#, c-format
 msgid "The URL %s returned: %i"
-msgstr "Az %s URL válasza: %i - Hiba (%i)!"
+msgstr "Válasz a %s URL-tól: %i"
 
 #: src/HTTPDownload.cpp:365
 #, fuzzy, c-format
