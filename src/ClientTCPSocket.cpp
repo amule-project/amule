@@ -1548,6 +1548,16 @@ bool CClientTCPSocket::ProcessExtPacket(const uint8_t* buffer, uint32 size, uint
 		case OP_AICHREQUEST: {
 			AddDebugLogLineN( logRemoteClient, "Remote Client: OP_AICHREQUEST from " + m_client->GetFullIP()  );
 			theStats::AddDownOverheadOther(size);
+			// Each OP_AICHREQUEST triggers an O(N) walk of known2.met
+			// via ProcessAICHRequest -> CreatePartRecoveryData ->
+			// LoadHashSet. Without rate-limiting, a hostile peer can
+			// hammer this with 16-byte packets and force the seeder to
+			// burn disk + CPU on each one. Treat repeated requests the
+			// same way the file-request paths do.
+			m_client->CheckForAggressive();
+			if ( m_client->IsBanned() ) {
+				break;
+			}
 			m_client->ProcessAICHRequest(buffer, size);
 			break;
 		}
