@@ -350,43 +350,46 @@ void CSearchListCtrl::UpdateItemColor(long index)
 		wxLIST_MASK_FORMAT);
 
 	if (GetItem(item)) {
-		CMuleColour newcol(wxSYS_COLOUR_WINDOWTEXT);
-
 		CSearchFile* file = reinterpret_cast<CSearchFile*>(GetItemData(index));
 
-		int red		= newcol.Red();
-		int green	= newcol.Green();
-		int blue	= newcol.Blue();
+		// Theme-aware state palette. The previous logic started from
+		// wxSYS_COLOUR_WINDOWTEXT and overlaid per-channel tints
+		// (`green = 255`, `red = 255` etc.). On light themes the base
+		// is black so the tints produce green / red / magenta; on dark
+		// themes the base is white-ish, so setting a channel that is
+		// already 255 is a no-op and every state collapses to the same
+		// colour -- the cue was invisible. Two hand-tuned palettes
+		// instead, chosen at draw time via IsDark().
+		const bool isDark = wxSystemSettings::GetAppearance().IsDark();
+		wxColour colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
 
 		switch (file->GetDownloadStatus()) {
 		case CSearchFile::DOWNLOADED:
-			// File has already been downloaded. Mark as green.
-			green = 255;
+			// Already downloaded -- green.
+			colour = isDark ? wxColour( 80, 220,  80) : wxColour(  0, 160,   0);
 			break;
 		case CSearchFile::QUEUED:
-			// File is downloading.
 		case CSearchFile::QUEUEDCANCELED:
-			// File is downloading and has been canceled before.
-			// Mark as red
-			red = 255;
+			// Currently downloading (or was, then cancelled) -- red.
+			colour = isDark ? wxColour(255, 100, 100) : wxColour(220,   0,   0);
 			break;
 		case CSearchFile::CANCELED:
-			// File has been canceled. Mark as magenta.
-			red = 255;
-			blue = 255;
+			// Cancelled -- magenta.
+			colour = isDark ? wxColour(255, 120, 200) : wxColour(180,   0, 180);
 			break;
-		default:
-			// File is new, colour after number of files
-			blue += file->GetSourceCount() * 5;
-			if ( blue > 255 ) {
-				blue = 255;
-			}
+		default: {
+			// New result -- blue-tinted gradient by source count.
+			const int shift = std::min((int)file->GetSourceCount() * 5, 255);
+			colour = isDark ? wxColour(255 - shift, 255 - shift, 255)
+			                : wxColour(0,           0,           shift);
+			break;
+		}
 		}
 
 		// don't forget to set the item data back...
 		wxListItem newitem;
 		newitem.SetId( index );
-		newitem.SetTextColour( wxColour( red, green, blue ) );
+		newitem.SetTextColour( colour );
 		SetItem( newitem );
 	}
 }

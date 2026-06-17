@@ -1001,11 +1001,14 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 
 					dc->GetTextExtent(buffer, &txtwidth, &txtheight);
 
-					dc->SetTextForeground(*wxBLACK);
+					// Theme-aware text + border colour (was *wxBLACK / *wxBLACK_PEN
+					// which was invisible on dark themes -- the badge sits on
+					// the row stripe, not on a known light background).
+					const wxColour badgeColour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
+					dc->SetTextForeground(badgeColour);
 					dc->DrawText(buffer, wxMax(rect.GetX() + 2, mid_x - (txtwidth >> 1)), mid_y - (txtheight >> 1));
 
-					// Draw black border
-					dc->SetPen( *wxBLACK_PEN );
+					dc->SetPen(wxPen(badgeColour));
 					dc->SetBrush( *wxTRANSPARENT_BRUSH );
 					dc->DrawRectangle( rect.GetX(), rect.GetY() + 1, iWidth, iHeight );
 				}
@@ -1038,11 +1041,15 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 						if (qrDiff == rank) {
 							qrDiff = 0;
 						}
+						// Queue rank change cue: down (good) = blue, up (bad) = red.
+						// Pure *wxBLUE / *wxRED were unreadable on dark themes;
+						// swap to a hand-tuned palette that contrasts on both.
+						const bool isDark = wxSystemSettings::GetAppearance().IsDark();
 						if ( qrDiff < 0 ) {
-							dc->SetTextForeground(*wxBLUE);
+							dc->SetTextForeground(isDark ? wxColour(120, 170, 255) : wxColour(0, 80, 200));
 						}
 						if ( qrDiff > 0 ) {
-							dc->SetTextForeground(*wxRED);
+							dc->SetTextForeground(isDark ? wxColour(255, 100, 100) : wxColour(220, 0, 0));
 						}
 						buffer = CFormat(_("On Queue: %u (%i)")) % rank % qrDiff;
 					} else {
@@ -1127,7 +1134,11 @@ void CGenericClientListCtrl::DrawClientItem(wxDC* dc, int nColumn, const wxRect&
 				const CPartFile * pf = client.GetRequestFile();
 				if (pf && (pf->GetFileName().GetPrintable().CmpNoCase(buffer) != 0)) {
 					nameMismatch = true;
-					dc->SetTextForeground(*wxRED);
+					// "watch out: peer is advertising a different name for
+					// this hash" warning cue. Pure *wxRED was unreadable on
+					// dark themes.
+					const bool isDark = wxSystemSettings::GetAppearance().IsDark();
+					dc->SetTextForeground(isDark ? wxColour(255, 100, 100) : wxColour(220, 0, 0));
 				}
 			}
 			dc->DrawText(buffer, rect.GetX(), rect.GetY() + iTextOffset);
