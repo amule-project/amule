@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aMule GIT\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-14 15:17+0200\n"
-"PO-Revision-Date: 2026-06-16 07:26+0000\n"
+"PO-Revision-Date: 2026-06-17 08:01+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: none\n"
 "Language: lv\n"
@@ -23,11 +23,11 @@ msgstr ""
 
 #: src/AddFriend.cpp:61
 msgid "You have to enter a valid IP and port!"
-msgstr ""
+msgstr "Jums jāievada derīga IP adrese un ports!"
 
 #: src/AddFriend.cpp:61 src/AddFriend.cpp:67
 msgid "Information"
-msgstr ""
+msgstr "Informācija"
 
 #: src/AddFriend.cpp:67
 msgid "The specified userhash is not valid!"
@@ -46,7 +46,7 @@ msgstr ""
 
 #: src/AppImageIntegration.cpp:228
 msgid "Install"
-msgstr ""
+msgstr "Uzstādīt"
 
 #: src/AppImageIntegration.cpp:228
 msgid "Not now"
@@ -90,15 +90,15 @@ msgstr ""
 
 #: src/AppImageIntegration.cpp:287
 msgid "aMule installed"
-msgstr ""
+msgstr "aMule uzstādīts"
 
 #: src/AppImageIntegration.cpp:289
 msgid "Restart now"
-msgstr ""
+msgstr "Palaist no jauna tagad"
 
 #: src/AppImageIntegration.cpp:289
 msgid "Later"
-msgstr ""
+msgstr "Vēlāk"
 
 #: src/amuleAppCommon.cpp:174
 #, c-format
@@ -139,7 +139,7 @@ msgstr ""
 
 #: src/amule.cpp:286 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
-msgstr ""
+msgstr "Neizdevās"
 
 #: src/amule.cpp:292
 msgid "aMule OnExit: Terminating core."
@@ -161,13 +161,15 @@ msgstr ""
 #: src/CatDialog.cpp:151 src/CatDialog.cpp:163 src/ServerList.cpp:355
 #: src/ServerListCtrl.cpp:155
 msgid "Info"
-msgstr ""
+msgstr "Informācija"
 
 #: src/amule.cpp:591
 msgid ""
 "\n"
 "EC configuration"
 msgstr ""
+"\n"
+"EC iestatījumi"
 
 #: src/amule.cpp:594
 msgid "Password set and external connections enabled."
@@ -180,7 +182,7 @@ msgstr "BRĪDINĀJUMS"
 
 #: src/amule.cpp:778
 msgid "eD2k server list (server.met)"
-msgstr ""
+msgstr "eD2k serveru saraksts (server.met)"
 
 #: src/amule.cpp:779
 msgid "Kad bootstrap nodes (nodes.dat)"
@@ -283,11 +285,11 @@ msgstr ""
 
 #: src/amule.cpp:1806
 msgid "ERROR: can't open logfile"
-msgstr ""
+msgstr "KĻŪDA: nevar atvērt žurnāldatni"
 
 #: src/amule.cpp:1810
 msgid "WARNING: logfile is empty. Something is wrong."
-msgstr ""
+msgstr "BRĪDINĀJUMS: žurnāldatne ir tukša. Te kaut kas nav kā vajag :-(."
 
 #: src/amule.cpp:1827
 msgid "Log has been reset"
@@ -345,12 +347,12 @@ msgstr ""
 #: src/amule.cpp:2188 src/amule-remote-gui.cpp:822
 #, c-format
 msgid "Users: %s | Files: %s"
-msgstr ""
+msgstr "Lietotāji: %s | Datnes: %s"
 
 #: src/amule.cpp:2189 src/amule-remote-gui.cpp:823
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
-msgstr ""
+msgstr "Lietotāji: E: %s K: %s | Datnes: E: %s K: %s"
 
 #: src/amule.cpp:2198 src/amule-remote-gui.cpp:832
 msgid "No networks selected"
@@ -358,11 +360,11 @@ msgstr ""
 
 #: src/amule.cpp:2240 src/TextClient.cpp:806
 msgid "with LowID"
-msgstr ""
+msgstr "ar zemu ID"
 
 #: src/amule.cpp:2240 src/TextClient.cpp:806
 msgid "with HighID"
-msgstr ""
+msgstr "ar augstu ID"
 
 #: src/amule.cpp:2242
 #, c-format
@@ -429,7 +431,7 @@ msgstr ""
 #: src/amuled.cpp:263
 #, c-format
 msgid "ERROR: %s"
-msgstr ""
+msgstr "KĻŪDA: %s"
 
 #: src/amuleDlg.cpp:266
 #, c-format
@@ -465,27 +467,31 @@ msgstr ""
 
 #: src/amuleDlg.cpp:546
 msgid "Website: https://amule-org.github.io \n"
-msgstr ""
+msgstr "Vietne: https://amule-org.github.io \n"
 
 #: src/amuleDlg.cpp:547
 msgid "Forum: https://github.com/amule-org/amule/discussions \n"
-msgstr ""
+msgstr "Forums: https://github.com/amule-org/amule/discussions \n"
 
 #: src/amuleDlg.cpp:548
 msgid "Documentation: https://amule-org.github.io/docs \n"
-msgstr ""
+msgstr "Dokumentācija: https://amule-org.github.io/docs \n"
 
 #: src/amuleDlg.cpp:549
 msgid ""
 "Issues: https://github.com/amule-org/amule/issues \n"
 "\n"
 msgstr ""
+"Problēmas: https://github.com/amule-org/amule/issues \n"
+"\n"
 
 #: src/amuleDlg.cpp:550
 msgid ""
 "Copyright (c) 2003-2026 aMule Team \n"
 "\n"
 msgstr ""
+"Autortiesības (c) 2003-2026 aMule Team \n"
+"\n"
 
 #: src/amuleDlg.cpp:551
 msgid "Part of aMule is based on \n"
@@ -497,11 +503,11 @@ msgstr ""
 
 #: src/amuleDlg.cpp:553
 msgid " Copyright (c) 2002-2011 Petar Maymounkov ( petar@maymounkov.org )\n"
-msgstr ""
+msgstr " Autortiesības (c) 2002-2011 Petars Majmunkovs ( petar@maymounkov.org )\n"
 
 #: src/amuleDlg.cpp:554
 msgid "https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
-msgstr ""
+msgstr "https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf\n"
 
 #: src/amuleDlg.cpp:557 src/KadDlg.cpp:193 src/PartFile.cpp:1032
 #: src/PrefsUnifiedDlg.cpp:856 src/PrefsUnifiedDlg.cpp:981
@@ -539,7 +545,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:770
 msgid "Kad: Off"
-msgstr ""
+msgstr "Kad: Izslēgts"
 
 #: src/amuleDlg.cpp:817 src/DownloadListCtrl.cpp:415
 #: src/DownloadListCtrl.cpp:652 src/FriendListCtrl.cpp:185
@@ -549,7 +555,7 @@ msgstr ""
 #: src/ServerListCtrl.cpp:553 src/TransferWnd.cpp:375
 #: src/utils/wxCas/src/wxcasprefs.cpp:266
 msgid "Cancel"
-msgstr ""
+msgstr "Atcelt"
 
 #: src/amuleDlg.cpp:818
 msgid "Stop the current connection attempts"
@@ -582,14 +588,14 @@ msgstr ""
 #: src/amuleDlg.cpp:914 src/amuleDlg.cpp:925 src/amuleDlg.cpp:926
 #: src/MuleTrayIcon.cpp:798 src/MuleTrayIcon.cpp:801
 msgid " MB/s"
-msgstr ""
+msgstr " MB/s"
 
 #: src/amuleDlg.cpp:909 src/amuleDlg.cpp:910 src/amuleDlg.cpp:913
 #: src/amuleDlg.cpp:914 src/amuleDlg.cpp:925 src/amuleDlg.cpp:926
 #: src/MuleTrayIcon.cpp:798 src/MuleTrayIcon.cpp:801
 #: src/utils/wxCas/src/wxcasframe.cpp:1110
 msgid " kB/s"
-msgstr ""
+msgstr " kB/s"
 
 #: src/amuleDlg.cpp:912
 #, c-format
@@ -636,7 +642,7 @@ msgstr ""
 #: src/amuleDlg.cpp:1465 src/amuleDlg.cpp:1648 src/muuli_wdr.cpp:1402
 #: src/muuli_wdr.cpp:3104
 msgid "Networks"
-msgstr ""
+msgstr "Tīkli"
 
 #: src/amuleDlg.cpp:1465 src/muuli_wdr.cpp:3104
 msgid "Networks Window"
@@ -653,15 +659,15 @@ msgstr ""
 #: src/amuleDlg.cpp:1467 src/DownloadListCtrl.cpp:643 src/muuli_wdr.cpp:379
 #: src/muuli_wdr.cpp:1504 src/muuli_wdr.cpp:3106 src/Statistics.cpp:817
 msgid "Downloads"
-msgstr ""
+msgstr "Lejupielādes"
 
 #: src/amuleDlg.cpp:1467 src/muuli_wdr.cpp:3106
 msgid "Downloads Window"
-msgstr ""
+msgstr "Lejupielādes logs"
 
 #: src/amuleDlg.cpp:1468 src/muuli_wdr.cpp:2997
 msgid "Shared files"
-msgstr ""
+msgstr "Kopīgotās datnes"
 
 #: src/amuleDlg.cpp:1468 src/muuli_wdr.cpp:3108
 msgid "Shared Files Window"
@@ -670,7 +676,7 @@ msgstr ""
 #: src/amuleDlg.cpp:1469 src/muuli_wdr.cpp:2637 src/muuli_wdr.cpp:3062
 #: src/muuli_wdr.cpp:3109
 msgid "Messages"
-msgstr ""
+msgstr "Ziņojumi"
 
 #: src/amuleDlg.cpp:1469 src/muuli_wdr.cpp:3109
 msgid "Messages Window"
@@ -679,7 +685,7 @@ msgstr ""
 #: src/amuleDlg.cpp:1470 src/muuli_wdr.cpp:3110 src/PrefsUnifiedDlg.cpp:210
 #: src/Statistics.cpp:787 src/Statistics.cpp:1093
 msgid "Statistics"
-msgstr ""
+msgstr "Statistika"
 
 #: src/amuleDlg.cpp:1470 src/muuli_wdr.cpp:3110
 msgid "Statistics Graph Window"
@@ -688,7 +694,7 @@ msgstr ""
 #: src/amuleDlg.cpp:1472 src/muuli_wdr.cpp:3112 src/PrefsUnifiedDlg.cpp:225
 #: src/utils/wxCas/src/wxcasprefs.cpp:41
 msgid "Preferences"
-msgstr ""
+msgstr "Iestatījumi"
 
 #: src/amuleDlg.cpp:1472 src/muuli_wdr.cpp:3112
 msgid "Preferences Settings Window"
@@ -705,19 +711,19 @@ msgstr ""
 #: src/amuleDlg.cpp:1476 src/muuli_wdr.cpp:3114
 #: src/utils/aLinkCreator/src/alcframe.cpp:265
 msgid "About"
-msgstr ""
+msgstr "Par programmu"
 
 #: src/amuleDlg.cpp:1476 src/muuli_wdr.cpp:3114
 msgid "About/Help"
-msgstr ""
+msgstr "Par programmu/Palīdzība"
 
 #: src/amuleDlg.cpp:1652
 msgid "eD2k network"
-msgstr ""
+msgstr "eD2k tīkls"
 
 #: src/amuleDlg.cpp:1656
 msgid "Kad network"
-msgstr ""
+msgstr "Kad tīkls"
 
 #: src/amuleDlg.cpp:1656
 msgid "No network"
@@ -729,7 +735,7 @@ msgstr ""
 
 #: src/amule-gui.cpp:221 src/utils/wxCas/src/wxcasframe.cpp:111
 msgid "aMule"
-msgstr ""
+msgstr "aMule"
 
 #: src/amule-gui.cpp:357
 msgid "Fatal Error: Failed to create Core Timer"
@@ -781,7 +787,7 @@ msgstr ""
 
 #: src/amule-remote-gui.cpp:657
 msgid "Ready"
-msgstr ""
+msgstr "Gatavs"
 
 #: src/amule-remote-gui.cpp:888 src/TransferWnd.cpp:340
 msgid "All"
@@ -811,7 +817,7 @@ msgstr ""
 #: src/PartFile.cpp:2771 src/Server.cpp:133 src/Server.cpp:211
 #: src/Statistics.cpp:1032
 msgid "Unknown"
-msgstr ""
+msgstr "Nezināms"
 
 #: src/BaseClient.cpp:1363
 #, c-format
@@ -825,7 +831,7 @@ msgstr ""
 #: src/BaseClient.cpp:1789
 #, c-format
 msgid " (Fake eMule version %#x)"
-msgstr ""
+msgstr " (Viltus eMule %#x versija)"
 
 #: src/BaseClient.cpp:1800
 msgid " (Fake eMule)"
@@ -848,7 +854,7 @@ msgstr ""
 #: src/BaseClient.cpp:2016
 #, c-format
 msgid "Requested: %s\n"
-msgstr ""
+msgstr "Pieprasīts: %s\n"
 
 #: src/BaseClient.cpp:2018
 #, c-format
@@ -904,20 +910,20 @@ msgstr ""
 
 #: src/CaptchaDialog.cpp:44
 msgid "Enter Captcha"
-msgstr ""
+msgstr "Ievadiet Captcha"
 
 #: src/CatDialog.cpp:60 src/DownloadListCtrl.cpp:693 src/muuli_wdr.cpp:240
 #: src/SearchListCtrl.cpp:699 src/TransferWnd.cpp:335
 msgid "Category"
-msgstr ""
+msgstr "Kategorija"
 
 #: src/CatDialog.cpp:87
 msgid "New Category"
-msgstr ""
+msgstr "Jauna kategorija"
 
 #: src/CatDialog.cpp:125
 msgid "Choose a folder for incoming files"
-msgstr ""
+msgstr "Atlasiet mapi, kur saglabāt ienākošās datnes"
 
 #: src/CatDialog.cpp:140
 msgid "You must specify a name for the category!"
@@ -962,15 +968,15 @@ msgstr ""
 
 #: src/ChatWnd.cpp:100 src/MuleNotebook.cpp:182
 msgid "Close tab"
-msgstr ""
+msgstr "Aizvērt cilni"
 
 #: src/ChatWnd.cpp:101 src/MuleNotebook.cpp:183
 msgid "Close all tabs"
-msgstr ""
+msgstr "Aizvērt visas cilnes"
 
 #: src/ChatWnd.cpp:102 src/MuleNotebook.cpp:184
 msgid "Close other tabs"
-msgstr ""
+msgstr "Aizvērt pārējās cilnes"
 
 #: src/ChatWnd.cpp:106 src/GenericClientListCtrl.cpp:631
 msgid "Add to Friends"
@@ -1001,12 +1007,12 @@ msgstr ""
 #: src/ClientDetailDialog.cpp:105 src/ServerWnd.cpp:201
 #: src/utils/wxCas/src/onlinesig.cpp:256
 msgid "LowID"
-msgstr ""
+msgstr "Zems ID"
 
 #: src/ClientDetailDialog.cpp:105 src/ServerWnd.cpp:201
 #: src/utils/wxCas/src/onlinesig.cpp:254
 msgid "HighID"
-msgstr ""
+msgstr "Augsts ID"
 
 #: src/ClientDetailDialog.cpp:126
 msgid "Enabled"
@@ -1119,36 +1125,37 @@ msgstr ""
 
 #: src/CommentDialog.cpp:53 src/CommentDialogLst.cpp:61
 msgid "File Comments"
-msgstr ""
+msgstr "Datnes komentāri"
 
 #: src/CommentDialogLst.cpp:69 src/FriendListCtrl.cpp:64
 msgid "Username"
-msgstr ""
+msgstr "Lietotājvārds"
 
 #: src/CommentDialogLst.cpp:70 src/DownloadListCtrl.cpp:159
 #: src/FileDetailListCtrl.cpp:42 src/SearchListCtrl.cpp:94
 #: src/SharedFilesCtrl.cpp:103
 msgid "File Name"
-msgstr ""
+msgstr "Datnes nosaukums"
 
 #: src/CommentDialogLst.cpp:71
 msgid "Rating"
-msgstr ""
+msgstr "Vērtējums"
 
 #: src/CommentDialogLst.cpp:72
 msgid "Comment"
-msgstr ""
+msgstr "Komentārs"
 
 #: src/CommentDialogLst.cpp:131 src/muuli_wdr.cpp:756
 msgid "No comments"
-msgstr ""
+msgstr "Nav komentāru"
 
 #: src/CommentDialogLst.cpp:133
 #, c-format
 msgid "%u comment"
 msgid_plural "%u comments"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u komentāri"
+msgstr[1] "%u komentārs"
+msgstr[2] "%u komentāri"
 
 #: src/CorruptionBlackBox.cpp:227
 #, c-format
@@ -1207,17 +1214,17 @@ msgstr ""
 
 #: src/DataToText.cpp:62 src/GenericClientListCtrl.cpp:1033
 msgid "Queue Full"
-msgstr ""
+msgstr "Rinda pilna"
 
 #: src/DataToText.cpp:62 src/GenericClientListCtrl.cpp:1049
 #: src/KnownFile.cpp:1699
 msgid "On Queue"
-msgstr ""
+msgstr "Rindā"
 
 #: src/DataToText.cpp:63 src/libs/ec/cpp/ECSpecialTags.cpp:53
 #: src/OtherFunctions.cpp:689 src/PartFile.cpp:4282 src/TransferWnd.cpp:348
 msgid "Downloading"
-msgstr ""
+msgstr "Lejupielādē"
 
 #: src/DataToText.cpp:64
 msgid "Receiving hashset"
@@ -1225,7 +1232,7 @@ msgstr ""
 
 #: src/DataToText.cpp:65
 msgid "No needed parts"
-msgstr ""
+msgstr "Nav vajadzīgo daļu"
 
 #: src/DataToText.cpp:66
 msgid "Cannot connect LowID to LowID"
@@ -1233,7 +1240,7 @@ msgstr ""
 
 #: src/DataToText.cpp:67
 msgid "Too many connections"
-msgstr ""
+msgstr "Pārāk daudz savienojumu"
 
 #: src/DataToText.cpp:69
 msgid "Connecting via Kad"
@@ -1249,7 +1256,7 @@ msgstr ""
 
 #: src/DataToText.cpp:72
 msgid "Connection Error"
-msgstr ""
+msgstr "Savienojuma kļūda"
 
 #: src/DataToText.cpp:73
 msgid "Remote Queue Full"
@@ -1278,7 +1285,7 @@ msgstr ""
 #: src/DataToText.cpp:128 src/muuli_wdr.cpp:204 src/muuli_wdr.cpp:2890
 #: src/SearchDlg.cpp:110 src/TextClient.cpp:813
 msgid "Kad"
-msgstr ""
+msgstr "Kad"
 
 #: src/DataToText.cpp:129
 msgid "Source Exchange"
@@ -1290,7 +1297,7 @@ msgstr ""
 
 #: src/DataToText.cpp:131
 msgid "Link"
-msgstr ""
+msgstr "Saite"
 
 #: src/DataToText.cpp:132
 msgid "Source Seeds"
@@ -1303,7 +1310,7 @@ msgstr ""
 #: src/DataToText.cpp:143 src/DownloadListCtrl.cpp:162
 #: src/OtherFunctions.cpp:687 src/TransferWnd.cpp:346
 msgid "Completed"
-msgstr ""
+msgstr "Pabeigta"
 
 #: src/DataToText.cpp:144
 msgid "In progress"
@@ -1311,27 +1318,27 @@ msgstr ""
 
 #: src/DataToText.cpp:145
 msgid "ERROR: Out of disk space"
-msgstr ""
+msgstr "KĻŪDA: Krātuvē vairs nav vietas"
 
 #: src/DataToText.cpp:146
 msgid "ERROR: Partmet not found"
-msgstr ""
+msgstr "KĻŪDA: part.met datne nav atrasta"
 
 #: src/DataToText.cpp:147
 msgid "ERROR: IO error!"
-msgstr ""
+msgstr "KĻŪDA: ievadizvades (I/O) kļūda!"
 
 #: src/DataToText.cpp:148
 msgid "ERROR: Failed!"
-msgstr ""
+msgstr "KĻŪDA: Neizdevās!"
 
 #: src/DataToText.cpp:149 src/SearchListCtrl.cpp:1099
 msgid "Queued"
-msgstr ""
+msgstr "Rindā"
 
 #: src/DataToText.cpp:150
 msgid "Already downloading"
-msgstr ""
+msgstr "Jau lejupielādē"
 
 #: src/DataToText.cpp:151
 msgid "Unknown or bad tempfile format."
@@ -1339,12 +1346,12 @@ msgstr ""
 
 #: src/DownloadListCtrl.cpp:158
 msgid "Part"
-msgstr ""
+msgstr "Daļa"
 
 #: src/DownloadListCtrl.cpp:160 src/PartFileConvertDlg.cpp:95
 #: src/SearchListCtrl.cpp:95 src/SharedFilesCtrl.cpp:104
 msgid "Size"
-msgstr ""
+msgstr "Izmērs"
 
 #: src/DownloadListCtrl.cpp:161 src/muuli_wdr.cpp:2957
 msgid "Transferred"
@@ -1352,7 +1359,7 @@ msgstr ""
 
 #: src/DownloadListCtrl.cpp:163 src/SourceListCtrl.cpp:30
 msgid "Speed"
-msgstr ""
+msgstr "Ātrums"
 
 #: src/DownloadListCtrl.cpp:164
 msgid "Progress"
@@ -1361,25 +1368,25 @@ msgstr ""
 #: src/DownloadListCtrl.cpp:165 src/FileDetailListCtrl.cpp:43
 #: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:96
 msgid "Sources"
-msgstr ""
+msgstr "Avoti"
 
 #: src/DownloadListCtrl.cpp:166 src/DownloadListCtrl.cpp:651
 #: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:409
 #: src/SharedFilesCtrl.cpp:106 src/SharedFilesCtrl.cpp:146
 msgid "Priority"
-msgstr ""
+msgstr "Prioritāte"
 
 #: src/DownloadListCtrl.cpp:167 src/PartFile.cpp:4330 src/SearchListCtrl.cpp:99
 msgid "Status"
-msgstr ""
+msgstr "Statuss"
 
 #: src/DownloadListCtrl.cpp:168
 msgid "Time Remaining"
-msgstr ""
+msgstr "Atlikušais laiks"
 
 #: src/DownloadListCtrl.cpp:169
 msgid "Last Seen Complete"
-msgstr ""
+msgstr "Pēdējo reizi datne bija pilnībā pieejama"
 
 #: src/DownloadListCtrl.cpp:170
 msgid "Last Reception"
@@ -1439,7 +1446,7 @@ msgstr ""
 
 #: src/DownloadListCtrl.cpp:677 src/DownloadListCtrl.cpp:737
 msgid "Preview"
-msgstr ""
+msgstr "Priekšskatījums"
 
 #: src/DownloadListCtrl.cpp:678
 msgid "Show file &details"
@@ -1447,7 +1454,7 @@ msgstr ""
 
 #: src/DownloadListCtrl.cpp:679 src/muuli_wdr.cpp:656
 msgid "Show all comments"
-msgstr ""
+msgstr "Rādīt visus komentārus"
 
 #: src/DownloadListCtrl.cpp:684
 msgid "Copy magnet URI to clipboard"
@@ -1463,7 +1470,7 @@ msgstr ""
 
 #: src/DownloadListCtrl.cpp:697
 msgid "unassign"
-msgstr ""
+msgstr "Atsaukt piešķirto kategoriju"
 
 #: src/DownloadListCtrl.cpp:704
 msgid "Assign to category"
@@ -1485,16 +1492,16 @@ msgstr ""
 #: src/GenericClientListCtrl.cpp:935
 #, c-format
 msgid "%.1f MB/s"
-msgstr ""
+msgstr "%.1f MB/s"
 
 #: src/DownloadListCtrl.cpp:1098 src/DownloadListCtrl.cpp:1109
 msgid "%y/%m/%d %H:%M:%S"
-msgstr ""
+msgstr "%y.%m.%d %H:%M:%S"
 
 #: src/DownloadListCtrl.cpp:1279
 #, c-format
 msgid "Downloads (%i)"
-msgstr ""
+msgstr "Lejupielādes (%i)"
 
 #: src/DownloadListCtrl.cpp:1434
 msgid ""
@@ -1504,7 +1511,7 @@ msgstr ""
 
 #: src/DownloadListCtrl.cpp:1435
 msgid "File preview"
-msgstr ""
+msgstr "Datnes priekšskatījums"
 
 #: src/DownloadListCtrl.cpp:1483
 #, c-format
@@ -1560,7 +1567,7 @@ msgstr ""
 #: src/DownloadQueue.cpp:373
 #, c-format
 msgid "Downloading %s"
-msgstr ""
+msgstr "Lejupielādē no %s"
 
 #: src/DownloadQueue.cpp:381
 #, c-format
@@ -1634,7 +1641,7 @@ msgstr ""
 
 #: src/ExternalConn.cpp:544
 msgid "Unknown version"
-msgstr ""
+msgstr "Nezināma versija"
 
 #: src/ExternalConn.cpp:554
 msgid "Incorrect EC version ID, there might be binary incompatibility. Use core and remote from same snapshot."
@@ -1646,11 +1653,11 @@ msgstr ""
 
 #: src/ExternalConn.cpp:620
 msgid "Invalid protocol version."
-msgstr ""
+msgstr "Nederīga protokola versija."
 
 #: src/ExternalConn.cpp:625
 msgid "Missing protocol version tag."
-msgstr ""
+msgstr "Trūkst protokola versijas birka."
 
 #: src/ExternalConn.cpp:632
 msgid "Authentication failed: invalid hash specified as EC password."
@@ -1849,7 +1856,7 @@ msgstr ""
 
 #: src/ExternalConnector.cpp:162
 msgid "Available commands:\n"
-msgstr ""
+msgstr "Pieejamās komandas:\n"
 
 #: src/ExternalConnector.cpp:179
 #, c-format
@@ -1994,7 +2001,7 @@ msgstr ""
 
 #: src/FileDetailDialog.cpp:76
 msgid "File Details"
-msgstr ""
+msgstr "Datnes informācija"
 
 #: src/FileDetailDialog.cpp:167
 #, c-format
@@ -2021,7 +2028,7 @@ msgstr ""
 
 #: src/FriendListCtrl.cpp:133 src/muuli_wdr.cpp:2386 src/muuli_wdr.cpp:3038
 msgid "Friends"
-msgstr ""
+msgstr "Draugi"
 
 #: src/FriendListCtrl.cpp:137 src/GenericClientListCtrl.cpp:630
 msgid "Show &Details"
@@ -2033,15 +2040,15 @@ msgstr ""
 
 #: src/FriendListCtrl.cpp:144
 msgid "Remove Friend"
-msgstr ""
+msgstr "Noņemt no draugu saraksta"
 
 #: src/FriendListCtrl.cpp:145
 msgid "Send &Message"
-msgstr ""
+msgstr "Sūtīt ziņoju&mu"
 
 #: src/FriendListCtrl.cpp:146 src/GenericClientListCtrl.cpp:641
 msgid "View Files"
-msgstr ""
+msgstr "Skatīt datnes"
 
 #: src/FriendListCtrl.cpp:147 src/GenericClientListCtrl.cpp:633
 msgid "Establish Friend Slot"
@@ -2085,7 +2092,7 @@ msgstr ""
 
 #: src/GenericClientListCtrl.cpp:642
 msgid "Send message"
-msgstr ""
+msgstr "Sūtīt ziņojumu"
 
 #: src/GenericClientListCtrl.cpp:644
 msgid "Swap to this file"
@@ -2115,7 +2122,7 @@ msgstr ""
 
 #: src/GenericClientListCtrl.cpp:1081
 msgid "Uploading"
-msgstr ""
+msgstr "Augšupielādē"
 
 #: src/GenericClientListCtrl.cpp:1083
 msgid "None"
@@ -2123,11 +2130,11 @@ msgstr ""
 
 #: src/GenericClientListCtrl.cpp:1141 src/ServerListCtrl.cpp:249
 msgid "No"
-msgstr ""
+msgstr "Nē"
 
 #: src/GenericClientListCtrl.cpp:1143 src/ServerListCtrl.cpp:249
 msgid "Yes"
-msgstr ""
+msgstr "Jā"
 
 #: src/HTTPDownload.cpp:58
 msgid "Downloading..."
@@ -2307,7 +2314,7 @@ msgstr ""
 
 #: src/KadDlg.cpp:214
 msgid "Continue?"
-msgstr ""
+msgstr "Vai turpināt?"
 
 #: src/kademlia/kademlia/SearchManager.cpp:154
 msgid "Kademlia: search keyword too short"
@@ -2350,11 +2357,11 @@ msgstr[1] ""
 
 #: src/KnownFile.cpp:1693 src/PartFileConvertDlg.cpp:93
 msgid "File name"
-msgstr ""
+msgstr "Datnes nosaukums"
 
 #: src/KnownFile.cpp:1694
 msgid "File size"
-msgstr ""
+msgstr "Datnes izmērs"
 
 #: src/KnownFile.cpp:1695
 msgid "Share ratio"
@@ -2363,7 +2370,7 @@ msgstr ""
 #: src/KnownFile.cpp:1696 src/SharedFilePeersListCtrl.cpp:31
 #: src/SourceListCtrl.cpp:31
 msgid "Uploaded"
-msgstr ""
+msgstr "Augšupielādēts"
 
 #: src/KnownFile.cpp:1697 src/muuli_wdr.cpp:2941
 msgid "Requested"
@@ -2401,11 +2408,11 @@ msgstr ""
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:40 src/PartFile.cpp:4260
 msgid "Hashing"
-msgstr ""
+msgstr "Skaitļo kontrolsummu"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:44 src/PartFile.cpp:4266
 msgid "Completing"
-msgstr ""
+msgstr "Pabeidz"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:46 src/PartFile.cpp:4269
 msgid "Complete"
@@ -2424,7 +2431,7 @@ msgstr ""
 #: src/libs/ec/cpp/ECSpecialTags.cpp:55 src/OtherFunctions.cpp:688
 #: src/PartFile.cpp:4284 src/TransferWnd.cpp:347
 msgid "Waiting"
-msgstr ""
+msgstr "Gaida"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:148 src/libs/ec/cpp/RemoteConnect.cpp:156
 msgid "You must specify a non-empty password."
@@ -2481,42 +2488,42 @@ msgstr ""
 
 #: src/Logger.cpp:341
 msgid "ERROR: "
-msgstr ""
+msgstr "KĻŪDA: "
 
 #: src/Logger.cpp:341
 msgid "WARNING: "
-msgstr ""
+msgstr "BRĪDINĀJUMS: "
 
 #: src/MuleNotebook.cpp:181 src/muuli_wdr.cpp:765 src/muuli_wdr.cpp:1181
 #: src/muuli_wdr.cpp:2845 src/muuli_wdr.cpp:3078
 msgid "Close"
-msgstr ""
+msgstr "Aizvērt"
 
 #: src/MuleTextCtrl.cpp:79
 msgid "Cut"
-msgstr ""
+msgstr "Izgriezt"
 
 #: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:388 src/ServerWnd.cpp:393
 #: src/utils/aLinkCreator/src/alcframe.cpp:257
 msgid "Copy"
-msgstr ""
+msgstr "Kopēt"
 
 #: src/MuleTextCtrl.cpp:81
 msgid "Paste"
-msgstr ""
+msgstr "Ielīmēt"
 
 #: src/MuleTextCtrl.cpp:82 src/muuli_wdr.cpp:345 src/muuli_wdr.cpp:707
 #: src/utils/aLinkCreator/src/alcframe.cpp:146
 msgid "Clear"
-msgstr ""
+msgstr "Notīrīt"
 
 #: src/MuleTextCtrl.cpp:86
 msgid "Select All"
-msgstr ""
+msgstr "Atlasīt visas"
 
 #: src/MuleTrayIcon.cpp:367
 msgid "eD2k: "
-msgstr ""
+msgstr "eD2k: "
 
 #: src/MuleTrayIcon.cpp:370
 msgid "Connected (LowID)"
@@ -2528,7 +2535,7 @@ msgstr ""
 
 #: src/MuleTrayIcon.cpp:380
 msgid "Kad: "
-msgstr ""
+msgstr "Kad: "
 
 #: src/MuleTrayIcon.cpp:383
 msgid "Connected (firewalled)"
@@ -2536,11 +2543,11 @@ msgstr ""
 
 #: src/MuleTrayIcon.cpp:393
 msgid "Server: "
-msgstr ""
+msgstr "Serveris: "
 
 #: src/MuleTrayIcon.cpp:394
 msgid "Server IP: "
-msgstr ""
+msgstr "Servera IP adrese: "
 
 #: src/MuleTrayIcon.cpp:399 src/MuleTrayIcon.cpp:400 src/MuleTrayIcon.cpp:823
 #: src/MuleTrayIcon.cpp:837 src/TextClient.cpp:811 src/TextClient.cpp:824
@@ -2550,25 +2557,25 @@ msgstr ""
 #: src/MuleTrayIcon.cpp:407 src/MuleTrayIcon.cpp:846
 #, c-format
 msgid "IP: %s"
-msgstr ""
+msgstr "IP adrese: %s"
 
 #: src/MuleTrayIcon.cpp:414 src/MuleTrayIcon.cpp:855
 #, c-format
 msgid "TCP port: %d"
-msgstr ""
+msgstr "TCP ports: %d"
 
 #: src/MuleTrayIcon.cpp:415 src/MuleTrayIcon.cpp:857
 msgid "TCP port: Not ready"
-msgstr ""
+msgstr "TCP ports: Nav gatavs"
 
 #: src/MuleTrayIcon.cpp:418 src/MuleTrayIcon.cpp:866
 #, c-format
 msgid "UDP port: %d"
-msgstr ""
+msgstr "UDP ports: %d"
 
 #: src/MuleTrayIcon.cpp:419 src/MuleTrayIcon.cpp:868
 msgid "UDP port: Not ready"
-msgstr ""
+msgstr "UDP ports: Nav gatavs"
 
 #: src/MuleTrayIcon.cpp:423 src/MuleTrayIcon.cpp:807
 msgid "Client Information"
@@ -2576,11 +2583,11 @@ msgstr ""
 
 #: src/MuleTrayIcon.cpp:441 src/MuleTrayIcon.cpp:924
 msgid "Upload limit"
-msgstr ""
+msgstr "Augšupielādes ātruma ierob."
 
 #: src/MuleTrayIcon.cpp:454 src/MuleTrayIcon.cpp:928
 msgid "Download limit"
-msgstr ""
+msgstr "Lejupielādes ātruma ierob."
 
 #: src/MuleTrayIcon.cpp:480 src/MuleTrayIcon.cpp:491 src/MuleTrayIcon.cpp:990
 msgid "Show aMule"
@@ -2593,14 +2600,14 @@ msgstr ""
 #: src/MuleTrayIcon.cpp:501 src/MuleTrayIcon.cpp:997
 #: src/utils/aLinkCreator/src/alcframe.cpp:229
 msgid "Exit"
-msgstr ""
+msgstr "Iziet"
 
 #: src/MuleTrayIcon.cpp:569 src/MuleTrayIcon.cpp:945 src/MuleTrayIcon.cpp:966
 #: src/muuli_wdr.cpp:1324 src/muuli_wdr.cpp:1332 src/muuli_wdr.cpp:1339
 #: src/muuli_wdr.cpp:1648 src/muuli_wdr.cpp:1654 src/OtherFunctions.cpp:94
 #: src/StatisticsDlg.cpp:101 src/StatisticsDlg.cpp:103
 msgid "kB/s"
-msgstr ""
+msgstr "kB/s"
 
 #: src/MuleTrayIcon.cpp:584 src/MuleTrayIcon.cpp:603 src/MuleTrayIcon.cpp:932
 #: src/MuleTrayIcon.cpp:953
@@ -2613,40 +2620,40 @@ msgstr ""
 
 #: src/MuleTrayIcon.cpp:775
 msgid "Speed limits:"
-msgstr ""
+msgstr "Ātruma ierobežojumi:"
 
 #: src/MuleTrayIcon.cpp:780
 msgid "UL: None"
-msgstr ""
+msgstr "Augšupielādes ierob.: Nav"
 
 #: src/MuleTrayIcon.cpp:783
 #, c-format
 msgid "UL: %u"
-msgstr ""
+msgstr "Augšupielādes ierob.: %u"
 
 #: src/MuleTrayIcon.cpp:790
 msgid "DL: None"
-msgstr ""
+msgstr "Lejupielādes ierob.: Nav"
 
 #: src/MuleTrayIcon.cpp:793
 #, c-format
 msgid "DL: %u"
-msgstr ""
+msgstr "Lejupielādes ierob.: %u"
 
 #: src/MuleTrayIcon.cpp:797
 #, c-format
 msgid "Download speed: %.1f%s"
-msgstr ""
+msgstr "Lejupielādes ātrums: %.1f%s"
 
 #: src/MuleTrayIcon.cpp:800
 #, c-format
 msgid "Upload speed: %.1f%s"
-msgstr ""
+msgstr "Augšupielādes ātrums: %.1f%s"
 
 #: src/MuleTrayIcon.cpp:811
 #, c-format
 msgid "Nickname: %s"
-msgstr ""
+msgstr "Iesauka: %s"
 
 #: src/MuleTrayIcon.cpp:811
 msgid "No Nickname Selected!"
@@ -2654,15 +2661,15 @@ msgstr ""
 
 #: src/MuleTrayIcon.cpp:818
 msgid "ClientID: "
-msgstr ""
+msgstr "Klienta ID: "
 
 #: src/MuleTrayIcon.cpp:830
 msgid "ServerName: "
-msgstr ""
+msgstr "Servera nosaukums: "
 
 #: src/MuleTrayIcon.cpp:831
 msgid "ServerIP: "
-msgstr ""
+msgstr "Servera IP adrese: "
 
 #: src/MuleTrayIcon.cpp:838 src/ServerWnd.cpp:204
 #: src/utils/wxCas/src/onlinesig.cpp:259
@@ -2704,7 +2711,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:97
 msgid "eD2k Link: "
-msgstr ""
+msgstr "eD2k saite: "
 
 #: src/muuli_wdr.cpp:102
 msgid "Commit"
@@ -2728,7 +2735,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:122
 msgid "Users: 0"
-msgstr ""
+msgstr "Lietotāji: 0"
 
 #: src/muuli_wdr.cpp:123
 msgid "Users connected to the current server and an estimate of the total number of users."
@@ -2756,11 +2763,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:186
 msgid "Search"
-msgstr ""
+msgstr "Meklēt"
 
 #: src/muuli_wdr.cpp:192
 msgid "Name:"
-msgstr ""
+msgstr "Nosaukums:"
 
 #: src/muuli_wdr.cpp:198 src/SearchListCtrl.cpp:97 src/SharedFilesCtrl.cpp:105
 msgid "Type"
@@ -2823,15 +2830,15 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:247
 msgid "Extension"
-msgstr ""
+msgstr "Paplašinājums"
 
 #: src/muuli_wdr.cpp:251
 msgid "Min Size"
-msgstr ""
+msgstr "Minimālais izmērs"
 
 #: src/muuli_wdr.cpp:259 src/muuli_wdr.cpp:278
 msgid "Bytes"
-msgstr ""
+msgstr "Baiti"
 
 #: src/muuli_wdr.cpp:260 src/muuli_wdr.cpp:279
 msgid "KB"
@@ -2848,7 +2855,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:270
 msgid "Max Size"
-msgstr ""
+msgstr "Maksimālais izmērs"
 
 #: src/muuli_wdr.cpp:289
 msgid "Availability"
@@ -2896,7 +2903,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:350
 msgid "Results"
-msgstr ""
+msgstr "Rezultāti"
 
 #: src/muuli_wdr.cpp:376
 msgid "Clears completed downloads"
@@ -2941,7 +2948,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:500
 msgid "Filesize :"
-msgstr ""
+msgstr "Datnes izmērs :"
 
 #: src/muuli_wdr.cpp:508
 msgid "Partfilestatus :"
@@ -3025,7 +3032,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:699
 msgid "Comment/Rate file (Text will be visible to all users)"
-msgstr ""
+msgstr "Komentārs/Datnes vērtējums (teksts būs redzams visiem lietotājiem)"
 
 #: src/muuli_wdr.cpp:705
 msgid ""
@@ -3035,31 +3042,31 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:713
 msgid "File Quality"
-msgstr ""
+msgstr "Datnes kvalitāte"
 
 #: src/muuli_wdr.cpp:718 src/OtherFunctions.cpp:271 src/OtherFunctions.cpp:277
 msgid "Not rated"
-msgstr ""
+msgstr "Nav novērtēta"
 
 #: src/muuli_wdr.cpp:719 src/OtherFunctions.cpp:272
 msgid "Invalid / Corrupt / Fake"
-msgstr ""
+msgstr "Nederīga / Bojāta / Viltota"
 
 #: src/muuli_wdr.cpp:720 src/OtherFunctions.cpp:273
 msgid "Poor"
-msgstr ""
+msgstr "Slikta"
 
 #: src/muuli_wdr.cpp:721 src/OtherFunctions.cpp:274
 msgid "Fair"
-msgstr ""
+msgstr "Pienācīga"
 
 #: src/muuli_wdr.cpp:722 src/OtherFunctions.cpp:275
 msgid "Good"
-msgstr ""
+msgstr "Laba"
 
 #: src/muuli_wdr.cpp:723 src/OtherFunctions.cpp:276
 msgid "Excellent"
-msgstr ""
+msgstr "Izcila"
 
 #: src/muuli_wdr.cpp:726
 msgid "Choose the file rating or advice users if the file is invalid ..."
@@ -3067,7 +3074,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:763
 msgid "Refresh"
-msgstr ""
+msgstr "Atsvaidzināt"
 
 #: src/muuli_wdr.cpp:786
 msgid "Downloading, please wait ..."
@@ -3075,7 +3082,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:790
 msgid "Unknown size"
-msgstr ""
+msgstr "Nezināms izmērs"
 
 #: src/muuli_wdr.cpp:811
 msgid "Required Information"
@@ -3083,11 +3090,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:816
 msgid "IP Address :"
-msgstr ""
+msgstr "IP adrese :"
 
 #: src/muuli_wdr.cpp:820
 msgid "Port :"
-msgstr ""
+msgstr "Ports :"
 
 #: src/muuli_wdr.cpp:826
 msgid "Additional Information"
@@ -3095,7 +3102,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:831
 msgid "Username :"
-msgstr ""
+msgstr "Lietotājvārds :"
 
 #: src/muuli_wdr.cpp:835
 msgid "Userhash :"
@@ -3104,43 +3111,43 @@ msgstr ""
 #: src/muuli_wdr.cpp:843 src/muuli_wdr.cpp:2167
 #: src/utils/aLinkCreator/src/alcframe.cpp:139
 msgid "Add"
-msgstr ""
+msgstr "Pievienot"
 
 #: src/muuli_wdr.cpp:886
 msgid "Download-Speed"
-msgstr ""
+msgstr "Lejupielādes ātrums"
 
 #: src/muuli_wdr.cpp:902 src/muuli_wdr.cpp:939 src/muuli_wdr.cpp:2265
 msgid "Current"
-msgstr ""
+msgstr "Pašreizējais"
 
 #: src/muuli_wdr.cpp:910 src/muuli_wdr.cpp:947 src/muuli_wdr.cpp:2273
 msgid "Running average"
-msgstr ""
+msgstr "Visu laiku vidējais"
 
 #: src/muuli_wdr.cpp:918 src/muuli_wdr.cpp:955 src/muuli_wdr.cpp:2281
 msgid "Session average"
-msgstr ""
+msgstr "Sesijas vidējais"
 
 #: src/muuli_wdr.cpp:923
 msgid "Upload-Speed"
-msgstr ""
+msgstr "Augšupielādes ātrums"
 
 #: src/muuli_wdr.cpp:960
 msgid "Connections"
-msgstr ""
+msgstr "Savienojumi"
 
 #: src/muuli_wdr.cpp:976 src/muuli_wdr.cpp:1673
 msgid "Active downloads"
-msgstr ""
+msgstr "Aktīvās lejupielādes"
 
 #: src/muuli_wdr.cpp:984
 msgid "Active connections (1:1)"
-msgstr ""
+msgstr "Aktīvie savienojumi (1:1)"
 
 #: src/muuli_wdr.cpp:992 src/muuli_wdr.cpp:1674
 msgid "Active uploads"
-msgstr ""
+msgstr "Aktīvās augšupielādes"
 
 #: src/muuli_wdr.cpp:997
 msgid "Statistics Tree"
@@ -3148,7 +3155,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1024
 msgid "Username:"
-msgstr ""
+msgstr "Lietotājvārds:"
 
 #: src/muuli_wdr.cpp:1026
 msgid "Userhash:"
@@ -3156,27 +3163,27 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1045
 msgid "Client software:"
-msgstr ""
+msgstr "Klienta programma:"
 
 #: src/muuli_wdr.cpp:1052
 msgid "Client version:"
-msgstr ""
+msgstr "Klienta programmas versija:"
 
 #: src/muuli_wdr.cpp:1057 src/ServerWnd.cpp:263
 msgid "IP address:"
-msgstr ""
+msgstr "IP adrese:"
 
 #: src/muuli_wdr.cpp:1064
 msgid "User ID:"
-msgstr ""
+msgstr "Lietotāja ID:"
 
 #: src/muuli_wdr.cpp:1069
 msgid "Server IP:"
-msgstr ""
+msgstr "Servera IP adrese:"
 
 #: src/muuli_wdr.cpp:1076
 msgid "Server name:"
-msgstr ""
+msgstr "Servera nosaukums:"
 
 #: src/muuli_wdr.cpp:1081
 msgid "Obfuscation:"
@@ -3184,7 +3191,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1088
 msgid "Kad:"
-msgstr ""
+msgstr "Kad:"
 
 #: src/muuli_wdr.cpp:1095
 msgid "Transfers to client"
@@ -3196,27 +3203,27 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1110
 msgid "Average upload rate:"
-msgstr ""
+msgstr "Vidējais augšupielādes ātrums:"
 
 #: src/muuli_wdr.cpp:1117
 msgid "Average download rate:"
-msgstr ""
+msgstr "Vidējais lejupielādes ātrums:"
 
 #: src/muuli_wdr.cpp:1122
 msgid "Uploaded (session):"
-msgstr ""
+msgstr "Augšupielādēti (šajā sesijā):"
 
 #: src/muuli_wdr.cpp:1129
 msgid "Downloaded (session):"
-msgstr ""
+msgstr "Lejupielādēti (šajā sesijā):"
 
 #: src/muuli_wdr.cpp:1134
 msgid "Uploaded (total):"
-msgstr ""
+msgstr "Augšupielādēti (pavisam kopā):"
 
 #: src/muuli_wdr.cpp:1141
 msgid "Downloaded (total):"
-msgstr ""
+msgstr "Lejupielādēti (pavisam kopā):"
 
 #: src/muuli_wdr.cpp:1148
 msgid "Scores"
@@ -3240,7 +3247,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1198
 msgid "Nick"
-msgstr ""
+msgstr "Iesauka"
 
 #: src/muuli_wdr.cpp:1201
 msgid "https://amule-org.github.io - the multi-platform Mule"
@@ -3265,7 +3272,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1217
 msgid "Check for new version at startup"
-msgstr ""
+msgstr "Kad palaiž, pārbaudīt, vai nav pieejama jauna versija"
 
 #: src/muuli_wdr.cpp:1218
 msgid "Enabling this will make aMule check for new version at startup"
@@ -3329,7 +3336,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1262
 msgid "seconds"
-msgstr ""
+msgstr "sekundes"
 
 #: src/muuli_wdr.cpp:1266
 msgid "Browser Selection"
@@ -3356,7 +3363,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1285
 msgid "Video Player"
-msgstr ""
+msgstr "Video atskaņotājs"
 
 #: src/muuli_wdr.cpp:1312
 msgid "Bandwidth limits"
@@ -3372,7 +3379,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1343
 msgid "Ports"
-msgstr ""
+msgstr "Porti"
 
 #: src/muuli_wdr.cpp:1349
 msgid "Standard TCP Port "
@@ -3388,7 +3395,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1358
 msgid "4665"
-msgstr ""
+msgstr "4665"
 
 #: src/muuli_wdr.cpp:1361
 msgid "Extended UDP port (Kad / global search) "
@@ -3444,7 +3451,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1444
 msgid "retries"
-msgstr ""
+msgstr "mēģinājumiem"
 
 #: src/muuli_wdr.cpp:1449
 msgid "Auto-update server list at startup"
@@ -3452,7 +3459,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1452
 msgid "List"
-msgstr ""
+msgstr "Saraksts"
 
 #: src/muuli_wdr.cpp:1455
 msgid "Update server list when connecting to a server"
@@ -3594,7 +3601,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1624
 msgid "Graphs"
-msgstr ""
+msgstr "Grafiki"
 
 #: src/muuli_wdr.cpp:1627 src/muuli_wdr.cpp:1689
 msgid "Update delay : 5 secs"
@@ -3618,15 +3625,15 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1660
 msgid "Colors: "
-msgstr ""
+msgstr "Krāsas: "
 
 #: src/muuli_wdr.cpp:1664
 msgid "Background"
-msgstr ""
+msgstr "Fons"
 
 #: src/muuli_wdr.cpp:1665
 msgid "Grid"
-msgstr ""
+msgstr "Režģis"
 
 #: src/muuli_wdr.cpp:1666
 msgid "Download current"
@@ -3674,7 +3681,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1682 src/muuli_wdr.cpp:2040
 msgid "Select"
-msgstr ""
+msgstr "Atlasīt"
 
 #: src/muuli_wdr.cpp:1686
 msgid "Tree"
@@ -3758,11 +3765,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1815
 msgid "Flat"
-msgstr ""
+msgstr "Plakana"
 
 #: src/muuli_wdr.cpp:1819
 msgid "Round"
-msgstr ""
+msgstr "Apaļa"
 
 #: src/muuli_wdr.cpp:1822
 msgid "Auto-sort files (high CPU)"
@@ -3790,7 +3797,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1860 src/muuli_wdr.cpp:1906
 msgid "TCP port:"
-msgstr ""
+msgstr "TCP ports:"
 
 #: src/muuli_wdr.cpp:1866
 msgid "Enable UPnP port forwarding on the EC port"
@@ -3799,7 +3806,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1870 src/muuli_wdr.cpp:2757
 #: src/utils/wxCas/src/wxcasprefs.cpp:188
 msgid "Password"
-msgstr ""
+msgstr "Parole"
 
 #: src/muuli_wdr.cpp:1876
 msgid "Web server parameters"
@@ -3839,12 +3846,12 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1933
 msgid "Enable Gzip compression"
-msgstr ""
+msgstr "Iespējot Gzip saspiešanu"
 
 #: src/muuli_wdr.cpp:1964 src/muuli_wdr.cpp:2047 src/ServerWnd.cpp:232
 #: src/ServerWnd.cpp:237
 msgid "OK"
-msgstr ""
+msgstr "Labi"
 
 #: src/muuli_wdr.cpp:1966
 msgid "Click here to apply any changes made to the preferences."
@@ -3860,7 +3867,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1998
 msgid "Comment :"
-msgstr ""
+msgstr "Komentārs :"
 
 #: src/muuli_wdr.cpp:2005
 msgid "Incoming Dir :"
@@ -3882,7 +3889,7 @@ msgstr ""
 #: src/utils/wxCas/src/wxcasframe.cpp:133
 #: src/utils/wxCas/src/wxcasframe.cpp:137
 msgid "Reset"
-msgstr ""
+msgstr "Atiestatīt"
 
 #: src/muuli_wdr.cpp:2096 src/muuli_wdr.cpp:2118
 msgid "Click this button to reset the log."
@@ -3910,7 +3917,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2156 src/ServerWnd.cpp:188
 msgid "IP:Port"
-msgstr ""
+msgstr "IP:Ports"
 
 #: src/muuli_wdr.cpp:2159
 msgid "Enter the IP of the server here, using the x.x.x.x format."
@@ -3970,7 +3977,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2316
 msgid "Port:"
-msgstr ""
+msgstr "Ports:"
 
 #: src/muuli_wdr.cpp:2327
 msgid "Bootstrap from known clients"
@@ -4130,7 +4137,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2520
 msgid "Database"
-msgstr ""
+msgstr "Datubāze"
 
 #: src/muuli_wdr.cpp:2536
 msgid "Source:"
@@ -4227,7 +4234,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2656
 msgid "Comments"
-msgstr ""
+msgstr "Komentāri"
 
 #: src/muuli_wdr.cpp:2659
 msgid "Filter comments containing (use ',' as separator):"
@@ -4243,23 +4250,23 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2686
 msgid "Username: "
-msgstr ""
+msgstr "Lietotājvārds: "
 
 #: src/muuli_wdr.cpp:2689
 msgid "The username to use to connect to the proxy"
-msgstr ""
+msgstr "Lietotājvārds, ko lietot, kad izmanto starpniekserveri"
 
 #: src/muuli_wdr.cpp:2691
 msgid "Password:"
-msgstr ""
+msgstr "Parole:"
 
 #: src/muuli_wdr.cpp:2694
 msgid "The password to use to connect to the proxy"
-msgstr ""
+msgstr "Parole, ko lietot, kad izmanto starpniekserveri"
 
 #: src/muuli_wdr.cpp:2696
 msgid "Enable Proxy"
-msgstr ""
+msgstr "Izmantot starpniekserveri"
 
 #: src/muuli_wdr.cpp:2697
 msgid "Enable/disable proxy support"
@@ -4267,23 +4274,23 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2700
 msgid "Proxy type:"
-msgstr ""
+msgstr "Starpniekservera tips:"
 
 #: src/muuli_wdr.cpp:2711
 msgid "Proxy host:"
-msgstr ""
+msgstr "Starpniekserveris:"
 
 #: src/muuli_wdr.cpp:2714
 msgid "The proxy host name"
-msgstr ""
+msgstr "Starpniekservera resursdatora nosaukums"
 
 #: src/muuli_wdr.cpp:2716
 msgid "Proxy port:"
-msgstr ""
+msgstr "Starpniekservera ports:"
 
 #: src/muuli_wdr.cpp:2719
 msgid "The proxy port"
-msgstr ""
+msgstr "Starpniekservera ports"
 
 #: src/muuli_wdr.cpp:2738
 msgid "Connect to:"
@@ -4375,7 +4382,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3074
 msgid "Send"
-msgstr ""
+msgstr "Sūtīt"
 
 #: src/muuli_wdr.cpp:3075
 msgid "Sends the specified message."
@@ -4406,53 +4413,54 @@ msgstr[1] ""
 
 #: src/OtherFunctions.cpp:63
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 #: src/OtherFunctions.cpp:69
 msgid "TB"
-msgstr ""
+msgstr "TB"
 
 #: src/OtherFunctions.cpp:79
 msgid "k"
-msgstr ""
+msgstr "k"
 
 #: src/OtherFunctions.cpp:81
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: src/OtherFunctions.cpp:83
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: src/OtherFunctions.cpp:85
 msgid "T"
-msgstr ""
+msgstr "T"
 
 #: src/OtherFunctions.cpp:92
 msgid "byte/sec"
 msgid_plural "bytes/sec"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "baiti sekundē"
+msgstr[1] "baits sekundē"
+msgstr[2] "baiti sekundē"
 
 #: src/OtherFunctions.cpp:96
 msgid "MB/s"
-msgstr ""
+msgstr "MB/s"
 
 #: src/OtherFunctions.cpp:105 src/OtherFunctions.cpp:108
 msgid "secs"
-msgstr ""
+msgstr "sekundes"
 
 #: src/OtherFunctions.cpp:112
 msgid "mins"
-msgstr ""
+msgstr "minūtes"
 
 #: src/OtherFunctions.cpp:115 src/OtherFunctions.cpp:119
 msgid "hours"
-msgstr ""
+msgstr "stundas"
 
 #: src/OtherFunctions.cpp:118
 msgid "Days"
-msgstr ""
+msgstr "Dienas"
 
 #: src/OtherFunctions.cpp:684
 msgid "all"
@@ -4740,7 +4748,7 @@ msgstr ""
 #: src/PartFile.cpp:4328 src/SearchListCtrl.cpp:1094
 #: src/SharedFilePeersListCtrl.cpp:29 src/SourceListCtrl.cpp:29
 msgid "Downloaded"
-msgstr ""
+msgstr "Lejupielādēta"
 
 #: src/PartFile.cpp:4601
 #, c-format
@@ -4749,171 +4757,171 @@ msgstr ""
 
 #: src/Preferences.cpp:637
 msgid "System default"
-msgstr ""
+msgstr "Sistēmas"
 
 #: src/Preferences.cpp:638
 msgid "Albanian"
-msgstr ""
+msgstr "Albāņu"
 
 #: src/Preferences.cpp:639
 msgid "Arabic"
-msgstr ""
+msgstr "Arābu"
 
 #: src/Preferences.cpp:640
 msgid "Asturian"
-msgstr ""
+msgstr "Astūriešu"
 
 #: src/Preferences.cpp:641
 msgid "Basque"
-msgstr ""
+msgstr "Basku"
 
 #: src/Preferences.cpp:642
 msgid "Bulgarian"
-msgstr ""
+msgstr "Bulgāru"
 
 #: src/Preferences.cpp:643
 msgid "Catalan"
-msgstr ""
+msgstr "Katalāņu"
 
 #: src/Preferences.cpp:644
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "Ķīniešu (vienkāršotā)"
 
 #: src/Preferences.cpp:645
 msgid "Chinese (Traditional)"
-msgstr ""
+msgstr "Ķīniešu (tradicionālā)"
 
 #: src/Preferences.cpp:646
 msgid "Croatian"
-msgstr ""
+msgstr "Horvātu"
 
 #: src/Preferences.cpp:647
 msgid "Czech"
-msgstr ""
+msgstr "Čehu"
 
 #: src/Preferences.cpp:648
 msgid "Danish"
-msgstr ""
+msgstr "Dāņu"
 
 #: src/Preferences.cpp:649
 msgid "Dutch"
-msgstr ""
+msgstr "Nīderlandiešu"
 
 #: src/Preferences.cpp:650
 msgid "English (U.K.)"
-msgstr ""
+msgstr "Angļu (Apvienotās Karalistes)"
 
 #: src/Preferences.cpp:651
 msgid "English (U.S.)"
-msgstr ""
+msgstr "Angļu (ASV)"
 
 #: src/Preferences.cpp:652
 msgid "Estonian"
-msgstr ""
+msgstr "Igauņu"
 
 #: src/Preferences.cpp:653
 msgid "Finnish"
-msgstr ""
+msgstr "Somu"
 
 #: src/Preferences.cpp:654
 msgid "French"
-msgstr ""
+msgstr "Franču"
 
 #: src/Preferences.cpp:655
 msgid "Galician"
-msgstr ""
+msgstr "Galisiešu"
 
 #: src/Preferences.cpp:656
 msgid "German"
-msgstr ""
+msgstr "Vācu"
 
 #: src/Preferences.cpp:657
 msgid "Greek"
-msgstr ""
+msgstr "Grieķu"
 
 #: src/Preferences.cpp:658
 msgid "Hebrew"
-msgstr ""
+msgstr "Ivrits"
 
 #: src/Preferences.cpp:659
 msgid "Hungarian"
-msgstr ""
+msgstr "Ungāru"
 
 #: src/Preferences.cpp:660
 msgid "Italian"
-msgstr ""
+msgstr "Itāļu"
 
 #: src/Preferences.cpp:661
 msgid "Italian (Swiss)"
-msgstr ""
+msgstr "Itāļu (Šveices)"
 
 #: src/Preferences.cpp:662
 msgid "Japanese"
-msgstr ""
+msgstr "Japāņu"
 
 #: src/Preferences.cpp:663
 msgid "Korean"
-msgstr ""
+msgstr "Korejiešu"
 
 #: src/Preferences.cpp:664
 msgid "Lithuanian"
-msgstr ""
+msgstr "Lietuviešu"
 
 #: src/Preferences.cpp:665
 msgid "Norwegian (Nynorsk)"
-msgstr ""
+msgstr "Norvēģu (Jaunnorvēģu)"
 
 #: src/Preferences.cpp:666
 msgid "Polish"
-msgstr ""
+msgstr "Poļu"
 
 #: src/Preferences.cpp:667
 msgid "Portuguese"
-msgstr ""
+msgstr "Portugāļu"
 
 #: src/Preferences.cpp:668
 msgid "Portuguese (Brazilian)"
-msgstr ""
+msgstr "Portugāļu (Brazīlijas)"
 
 #: src/Preferences.cpp:669
 msgid "Romanian"
-msgstr ""
+msgstr "Rumāņu"
 
 #: src/Preferences.cpp:670
 msgid "Russian"
-msgstr ""
+msgstr "Krievu"
 
 #: src/Preferences.cpp:671
 msgid "Slovenian"
-msgstr ""
+msgstr "Slovēņu"
 
 #: src/Preferences.cpp:672
 msgid "Spanish"
-msgstr ""
+msgstr "Spāņu"
 
 #: src/Preferences.cpp:673
 msgid "Swedish"
-msgstr ""
+msgstr "Zviedru"
 
 #: src/Preferences.cpp:674
 msgid "Turkish"
-msgstr ""
+msgstr "Turku"
 
 #: src/Preferences.cpp:675
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukraiņu"
 
 #: src/Preferences.cpp:738
 msgid "Change Language"
-msgstr ""
+msgstr "Mainīt valodu"
 
 #: src/Preferences.cpp:784
 msgid "There are no translations installed for aMule"
-msgstr ""
+msgstr "aMule nav uzstādīta neviena valodas datne"
 
 #: src/Preferences.cpp:784
 msgid "No languages available"
-msgstr ""
+msgstr "Nav pieejama neviena valoda"
 
 #: src/Preferences.cpp:926
 msgid "no options available"
@@ -4934,7 +4942,7 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:196 src/Statistics.cpp:836
 msgid "Connection"
-msgstr ""
+msgstr "Savienojums"
 
 #: src/PrefsUnifiedDlg.cpp:197 src/SearchListCtrl.cpp:110
 msgid "Directories"
@@ -4942,19 +4950,19 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:198 src/Statistics.cpp:862
 msgid "Servers"
-msgstr ""
+msgstr "Serveri"
 
 #: src/PrefsUnifiedDlg.cpp:199 src/ServerListCtrl.cpp:93
 msgid "Files"
-msgstr ""
+msgstr "Datnes"
 
 #: src/PrefsUnifiedDlg.cpp:200
 msgid "Security"
-msgstr ""
+msgstr "Drošība"
 
 #: src/PrefsUnifiedDlg.cpp:201
 msgid "Interface"
-msgstr ""
+msgstr "Saskarne"
 
 #: src/PrefsUnifiedDlg.cpp:208
 msgid "IP2Country"
@@ -4962,7 +4970,7 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:211
 msgid "Proxy"
-msgstr ""
+msgstr "Starpniekserveris"
 
 #: src/PrefsUnifiedDlg.cpp:212
 msgid "Filters"
@@ -4982,7 +4990,7 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:216
 msgid "Events"
-msgstr ""
+msgstr "Notikumi"
 
 #: src/PrefsUnifiedDlg.cpp:218
 msgid "Debugging"
@@ -5156,7 +5164,7 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1378
 msgid "Edit server list"
-msgstr ""
+msgstr "Rediģēt serveru sarakstu"
 
 #: src/PrefsUnifiedDlg.cpp:1379
 msgid ""
@@ -5353,11 +5361,11 @@ msgstr ""
 
 #: src/SearchListCtrl.cpp:98 src/SharedFilesCtrl.cpp:107
 msgid "FileID"
-msgstr ""
+msgstr "Datnes ID"
 
 #: src/SearchListCtrl.cpp:104
 msgid "Length"
-msgstr ""
+msgstr "Ilgums"
 
 #: src/SearchListCtrl.cpp:105
 msgid "Bitrate"
@@ -5365,7 +5373,7 @@ msgstr "Bitu pārraides ātrums"
 
 #: src/SearchListCtrl.cpp:106
 msgid "Codec"
-msgstr ""
+msgstr "Kodeks"
 
 #: src/SearchListCtrl.cpp:706
 msgid "Download in category"
@@ -5386,7 +5394,7 @@ msgstr ""
 
 #: src/SearchListCtrl.cpp:724 src/ServerListCtrl.cpp:433
 msgid "Copy eD2k link to clipboard"
-msgstr ""
+msgstr "Kopēt eD2k saiti starpliktuvē"
 
 #: src/SearchListCtrl.cpp:808
 msgid "You are not currently connected to a server supporting the Related Files search function"
@@ -5590,27 +5598,27 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:87
 msgid "Server Name"
-msgstr ""
+msgstr "Servera nosaukums"
 
 #: src/ServerListCtrl.cpp:88
 msgid "Address"
-msgstr ""
+msgstr "Adrese"
 
 #: src/ServerListCtrl.cpp:89
 msgid "Port"
-msgstr ""
+msgstr "Ports"
 
 #: src/ServerListCtrl.cpp:90
 msgid "Description"
-msgstr ""
+msgstr "Apraksts"
 
 #: src/ServerListCtrl.cpp:91
 msgid "Ping"
-msgstr ""
+msgstr "Ping atbildes laiks"
 
 #: src/ServerListCtrl.cpp:92
 msgid "Users"
-msgstr ""
+msgstr "Lietotāji"
 
 #: src/ServerListCtrl.cpp:96
 msgid "Static"
@@ -5619,7 +5627,7 @@ msgstr ""
 #: src/ServerListCtrl.cpp:97 src/SharedFilePeersListCtrl.cpp:34
 #: src/SourceListCtrl.cpp:33 src/Statistics.cpp:1019
 msgid "Version"
-msgstr ""
+msgstr "Versija"
 
 #: src/ServerListCtrl.cpp:100
 msgid "TCP Flags"
@@ -5645,12 +5653,12 @@ msgstr ""
 #: src/ServerListCtrl.cpp:354
 #, c-format
 msgid "Servers (%i)"
-msgstr ""
+msgstr "Serveri (%i)"
 
 #: src/ServerListCtrl.cpp:403 src/ServerSocket.cpp:184 src/ServerSocket.cpp:199
 #: src/ServerSocket.cpp:321 src/ServerWnd.cpp:190
 msgid "Server"
-msgstr ""
+msgstr "Serveris"
 
 #: src/ServerListCtrl.cpp:408
 msgid "Connect to server"
@@ -5803,7 +5811,7 @@ msgstr ""
 
 #: src/ServerWnd.cpp:193
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: src/ServerWnd.cpp:200
 msgid "Connection Type:"
@@ -5960,7 +5968,7 @@ msgstr ""
 
 #: src/SharedFilePeersListCtrl.cpp:37 src/SourceListCtrl.cpp:35
 msgid "Origin"
-msgstr ""
+msgstr "Izcelsme"
 
 #: src/SharedFilePeersListCtrl.cpp:38 src/SourceListCtrl.cpp:36
 msgid "Local File Name"
@@ -5972,7 +5980,7 @@ msgstr ""
 
 #: src/SharedFilesCtrl.cpp:108
 msgid "Requests"
-msgstr ""
+msgstr "Pieprasījumi"
 
 #: src/SharedFilesCtrl.cpp:109
 msgid "Accepted Requests"
@@ -6000,15 +6008,15 @@ msgstr ""
 
 #: src/SharedFilesCtrl.cpp:151
 msgid "Add Comment/Rating"
-msgstr ""
+msgstr "Pievienot komentāru/vērtējumu"
 
 #: src/SharedFilesCtrl.cpp:153
 msgid "Edit Comment/Rating"
-msgstr ""
+msgstr "Rediģēt komentāru/vērtējumu"
 
 #: src/SharedFilesCtrl.cpp:157
 msgid "Rename"
-msgstr ""
+msgstr "Pārdēvēt"
 
 #: src/SharedFilesCtrl.cpp:161
 msgid "Add files in collection to transfer list"
@@ -6394,7 +6402,7 @@ msgstr ""
 
 #: src/TextClient.cpp:767 src/TextClient.cpp:773
 msgid "ON"
-msgstr ""
+msgstr "IESLĒGTS"
 
 #: src/TextClient.cpp:772
 #, c-format
@@ -6413,7 +6421,7 @@ msgstr ""
 
 #: src/TextClient.cpp:798
 msgid "eD2k"
-msgstr ""
+msgstr "eD2k"
 
 #: src/TextClient.cpp:803
 #, c-format
@@ -6991,7 +6999,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144
 msgid "Remove"
-msgstr ""
+msgstr "Noņemt"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:155
 msgid "Create link with part-hashes"
@@ -7011,19 +7019,19 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:210
 msgid "eD2k link"
-msgstr ""
+msgstr "eD2k saite"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:225
 msgid "Save"
-msgstr ""
+msgstr "Saglabāt"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:227
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "Kopēt starpliktuvē"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:254
 msgid "Open"
-msgstr ""
+msgstr "Atvērt"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:255
 msgid "Open a file to compute its eD2k link"
@@ -7035,7 +7043,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Save as"
-msgstr ""
+msgstr "Saglabāt kā"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:261
 msgid "Save computed eD2k link to file"
@@ -7157,32 +7165,32 @@ msgstr ""
 #: src/utils/wxCas/src/onlinesig.cpp:227
 #, c-format
 msgid "%02us"
-msgstr ""
+msgstr "%02usek."
 
 #: src/utils/wxCas/src/onlinesig.cpp:326
 #, c-format
 msgid "%.0f B"
-msgstr ""
+msgstr "%.0f B"
 
 #: src/utils/wxCas/src/onlinesig.cpp:329
 #, c-format
 msgid "%.2f KB"
-msgstr ""
+msgstr "%.2f KB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:332
 #, c-format
 msgid "%.2f MB"
-msgstr ""
+msgstr "%.2f MB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:335
 #, c-format
 msgid "%.2f GB"
-msgstr ""
+msgstr "%.2f GB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:338
 #, c-format
 msgid "%.2f TB"
-msgstr ""
+msgstr "%.2f TB"
 
 #: src/utils/wxCas/src/wxcas.cpp:78
 msgid "wxCas, aMule Online Statistics"
@@ -7236,7 +7244,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:348
 msgid "Save Statistics Image"
-msgstr ""
+msgstr "Saglabāt statistikas attēlu"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:386
 msgid "aMule Online Statistics"
@@ -7291,11 +7299,11 @@ msgstr ""
 #: src/utils/wxCas/src/wxcasframe.cpp:1019
 #: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid "aMule "
-msgstr ""
+msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1008
 msgid " has been running for "
-msgstr ""
+msgstr " darbojas "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1013
 msgid " is stopped !"
@@ -7326,7 +7334,7 @@ msgstr ""
 #: src/utils/wxCas/src/wxcasframe.cpp:1053
 #: src/utils/wxCas/src/wxcasframe.cpp:1075
 msgid "off"
-msgstr ""
+msgstr "izslēgts"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1059
 msgid " is on "
@@ -7334,7 +7342,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1066
 msgid " with "
-msgstr ""
+msgstr " ar "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1084
 msgid "Total Download: "
@@ -7367,7 +7375,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1130
 msgid "Time: "
-msgstr ""
+msgstr "Laiks: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1140
 #: src/utils/wxCas/src/wxcasframe.cpp:1150
@@ -7424,7 +7432,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:185
 msgid "User"
-msgstr ""
+msgstr "Lietotājs"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:198
 msgid "Enter here the User name to log into your FTP server"
@@ -7464,7 +7472,7 @@ msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:259
 msgid "UPnP port"
-msgstr ""
+msgstr "UPnP ports"
 
 #: src/webserver/src/WebInterface.cpp:263
 msgid "Use gzip compression"
@@ -7597,7 +7605,7 @@ msgstr ""
 
 #: packaging/windows/installer_strings.c:39
 msgid "Uninstall"
-msgstr ""
+msgstr "Noņemt"
 
 #: packaging/windows/installer_strings.c:40
 msgid "Remove user data (config, ED2K servers, Kad nodes, partfiles)"
