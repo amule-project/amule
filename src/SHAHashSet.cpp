@@ -47,9 +47,11 @@
 
 CAICHRequestedDataList CAICHHashSet::m_liRequestedData;
 
-// Lazily-built dedup index over known2.met. See SaveHashSet for usage.
+// Lazily-built index mapping root hash → file offset in known2.met.
+// See SaveHashSet (dedup-on-append) and LoadHashSet (O(1) lookup for
+// incoming AICH requests) for usage.
 wxMutex CAICHHashSet::s_rootHashCacheMutex;
-std::unordered_set<CAICHHash> CAICHHashSet::s_rootHashCache;
+std::unordered_map<CAICHHash, uint64> CAICHHashSet::s_rootHashCache;
 bool CAICHHashSet::s_rootHashCacheLoaded = false;
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -668,6 +670,10 @@ void CAICHHashSet::LoadRootHashCacheLocked()
 			return;
 		}
 		while (file.GetPosition() < nFileSize) {
+			// Remember the byte offset of the root-hash position so
+			// LoadHashSet can seek straight here later instead of
+			// rewalking the file.
+			const uint64 entryOffset = file.GetPosition();
 			CAICHHash rootHash;
 			rootHash.Read(&file);
 			const uint32 nHashCount = file.ReadUInt32();
@@ -681,7 +687,7 @@ void CAICHHashSet::LoadRootHashCacheLocked()
 				break;
 			}
 			file.Seek(static_cast<wxFileOffset>(skipBytes), wxFromCurrent);
-			s_rootHashCache.insert(rootHash);
+			s_rootHashCache.emplace(rootHash, entryOffset);
 		}
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineC(logSHAHashSet,
@@ -715,6 +721,11 @@ bool CAICHHashSet::SaveHashSet()
 		return true;
 	}
 
+	// Byte offset at which the new entry's root hash will be appended.
+	// Captured inside the try block and used after it to update the
+	// cache once the write has succeeded.
+	uint64 newEntryOffset = 0;
+
 	try {
 		const wxString fullpath = thePrefs::GetConfigDir() + KNOWN2_MET_FILENAME;
 		const bool exists = wxFile::Exists(fullpath);
@@ -741,6 +752,11 @@ bool CAICHHashSet::SaveHashSet()
 			nExistingSize += 1;
 		}
 
+		// This is the byte offset at which the new entry's root hash
+		// will land — capture it for the cache so LoadHashSet can
+		// seek straight here later.
+		newEntryOffset = nExistingSize;
+
 		// write hashset
 		m_pHashTree.m_Hash.Write(&file);
 		uint32 nHashCount = (PARTSIZE/EMBLOCKSIZE + ((PARTSIZE % EMBLOCKSIZE != 0)? 1 : 0)) * (m_pHashTree.m_nDataSize/PARTSIZE);
@@ -766,9 +782,10 @@ bool CAICHHashSet::SaveHashSet()
 		return false;
 	}
 
-	// Append succeeded — record in the cache so the next SaveHashSet for
-	// the same root hash dedups in O(1).
-	s_rootHashCache.insert(m_pHashTree.m_Hash);
+	// Append succeeded — record offset in the cache so the next
+	// SaveHashSet for this root hash dedups in O(1), and LoadHashSet
+	// can seek straight to it.
+	s_rootHashCache.emplace(m_pHashTree.m_Hash, newEntryOffset);
 	return true;
 }
 
@@ -783,6 +800,31 @@ bool CAICHHashSet::LoadHashSet()
 		wxFAIL;
 		return false;
 	}
+
+	// O(1) cache lookup: ask the offset index where this root hash
+	// lives in known2.met. The cache was the dedup-on-write index
+	// before; here we reuse it to skip the linear scan that used to
+	// happen on every incoming OP_AICHREQUEST (issue #166). If the
+	// cache miss-and-cold-load path is taken we still pay the one-shot
+	// walk, but only once across all subsequent calls.
+	uint64 cachedOffset = 0;
+	bool haveCachedOffset = false;
+	{
+		wxMutexLocker lock(s_rootHashCacheMutex);
+		if (!s_rootHashCacheLoaded) {
+			LoadRootHashCacheLocked();
+		}
+		auto it = s_rootHashCache.find(m_pHashTree.m_Hash);
+		if (it != s_rootHashCache.end()) {
+			cachedOffset = it->second;
+			haveCachedOffset = true;
+		} else if (s_rootHashCacheLoaded) {
+			// Cache is authoritative and the hash isn't there.
+			// known2.met genuinely doesn't contain it; skip the I/O.
+			return false;
+		}
+	}
+
 	wxString fullpath = thePrefs::GetConfigDir() + KNOWN2_MET_FILENAME;
 	CFile file(fullpath, CFile::read);
 	if (!file.IsOpened()) {
@@ -798,6 +840,13 @@ bool CAICHHashSet::LoadHashSet()
 		if (header != KNOWN2_MET_VERSION) {
 			AddDebugLogLineC(logSHAHashSet, "Loading failed: Current file is not a met-file!");
 			return false;
+		}
+
+		// Fast path: seek straight to the cached entry. If the hash at
+		// that offset doesn't match, the cache is stale -- fall through
+		// to the linear scan from the start as a defensive recovery.
+		if (haveCachedOffset) {
+			file.Seek(static_cast<wxFileOffset>(cachedOffset), wxFromStart);
 		}
 
 		CAICHHash CurrentHash;

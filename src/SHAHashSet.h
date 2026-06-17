@@ -74,7 +74,7 @@ Version 2 of AICH also supports 32bit identifiers to support large files, check 
 
 #include <deque>
 #include <set>
-#include <unordered_set>
+#include <unordered_map>
 
 #include <wx/thread.h>		// Needed for wxMutex
 
@@ -305,12 +305,22 @@ public:
 	static void InvalidateRootHashCache();
 
 private:
-	// Cache of every root hash currently stored in known2.met. Populated
-	// lazily on first SaveHashSet call (or refilled after invalidation).
-	// Replaces the per-call linear file walk that made SaveHashSet O(N)
-	// per call / O(N^2) over a bulk-hash batch.
+	// Cache mapping every root hash currently stored in known2.met to
+	// the byte offset of its entry's root-hash position in the file.
+	// Populated lazily on first SaveHashSet or LoadHashSet call (or
+	// refilled after invalidation).
+	//
+	// - For SaveHashSet: replaces the per-call linear file walk that
+	//   made the dedup check O(N) per call / O(N^2) over a bulk-hash
+	//   batch.
+	// - For LoadHashSet (and the AICH request path that calls it):
+	//   replaces the per-call linear file walk that turned each
+	//   incoming OP_AICHREQUEST into an O(N) disk-backed scan. The
+	//   cached offset lets LoadHashSet seek straight to the matching
+	//   entry, making the AICH request path O(1) and closing the DoS
+	//   amplification noted in #166.
 	static wxMutex			s_rootHashCacheMutex;
-	static std::unordered_set<CAICHHash> s_rootHashCache;
+	static std::unordered_map<CAICHHash, uint64> s_rootHashCache;
 	static bool			s_rootHashCacheLoaded;
 
 	// Caller must hold s_rootHashCacheMutex.
