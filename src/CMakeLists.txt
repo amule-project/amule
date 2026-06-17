@@ -351,6 +351,37 @@ if (BUILD_MONOLITHIC)
 				)
 			endforeach()
 		endif()
+
+		# Bundle the default webserver template into the .app at
+		# Contents/Resources/webserver/default/. amuleweb's macOS
+		# template lookup in WebInterface.cpp::GetTemplateDir uses
+		# LSCopyApplicationURLsForBundleIdentifier("org.amule.aMule")
+		# to find the bundle, then expects login.php and friends under
+		# Contents/Resources/webserver/<templateName>/. The unix-style
+		# INSTALL rule in src/webserver/default/CMakeLists.txt writes
+		# to ${PKGDATADIR}/webserver/default which is outside the .app
+		# bundle scope, so without this bundling step every macOS user
+		# enabling the web server gets a fatal "Cannot find template:
+		# default" at amuleweb startup. The file list is the one set
+		# in src/webserver/default/CMakeLists.txt so the bundle stays
+		# in sync with the unix INSTALL rule automatically.
+		if (BUILD_WEBSERVER AND WEBSERVER_DEFAULT_TEMPLATE_FILES)
+			set (_tmpl_src "${CMAKE_SOURCE_DIR}/src/webserver/default")
+			set (_tmpl_dst
+				"$<TARGET_BUNDLE_CONTENT_DIR:amule>/Resources/webserver/default")
+			add_custom_command (TARGET amule POST_BUILD
+				COMMAND ${CMAKE_COMMAND} -E make_directory "${_tmpl_dst}"
+				COMMENT "Bundling default webserver template into aMule.app"
+				VERBATIM
+			)
+			foreach (_tmpl IN LISTS WEBSERVER_DEFAULT_TEMPLATE_FILES)
+				add_custom_command (TARGET amule POST_BUILD
+					COMMAND ${CMAKE_COMMAND} -E copy_if_different
+						"${_tmpl_src}/${_tmpl}" "${_tmpl_dst}/"
+					VERBATIM
+				)
+			endforeach()
+		endif()
 	endif()
 
 	install (TARGETS amule
