@@ -1,4 +1,8 @@
-INSTALL (FILES
+# Canonical list of files in the default web template. Cached so the
+# macOS .app bundle step in src/CMakeLists.txt can copy the same set
+# into aMule.app/Contents/Resources/webserver/default/ without
+# duplicating the list.
+set (WEBSERVER_DEFAULT_TEMPLATE_FILES
 		amuleweb-main-dload.php
 		amuleweb-main-kad.php
 		amuleweb-main-log.php
@@ -66,5 +70,10 @@ INSTALL (FILES
 		tree-open.gif
 		up.png
 		yellow.gif
+	CACHE INTERNAL "Default webserver template file list"
+)
+
+INSTALL (FILES
+		${WEBSERVER_DEFAULT_TEMPLATE_FILES}
 	DESTINATION "${PKGDATADIR}/webserver/default"
 )
