@@ -712,7 +712,9 @@ public:
 	CED2KFileTypes()
 	{
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".669",   ED2KFT_AUDIO));		// 8 channel tracker module
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".aa",    ED2KFT_AUDIO));		// Audible Audiobook File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".aac",   ED2KFT_AUDIO));		// Advanced Audio Coding File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".aax",   ED2KFT_AUDIO));		// Audible Enhanced Audiobook File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ac3",   ED2KFT_AUDIO));		// Audio Codec 3 File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".aif",   ED2KFT_AUDIO));		// Audio Interchange File Format
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".aifc",  ED2KFT_AUDIO));		// Audio Interchange File Format
@@ -724,9 +726,12 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".au",    ED2KFT_AUDIO));		// Audio File (Sun, Unix)
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".aud",   ED2KFT_AUDIO));		// General Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".audio", ED2KFT_AUDIO));		// General Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".caf",   ED2KFT_AUDIO));		// Apple Core Audio Format File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".cda",   ED2KFT_AUDIO));		// CD Audio Track
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".dbm",   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".dff",   ED2KFT_AUDIO));		// DSDIFF Audio File (high-res)
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".dmf",   ED2KFT_AUDIO));		// Delusion Digital Music File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".dsf",   ED2KFT_AUDIO));		// DSD Stream Audio File (high-res)
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".dsm",   ED2KFT_AUDIO));		// Digital Sound Module
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".dts",   ED2KFT_AUDIO));		// DTS Encoded Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".far",   ED2KFT_AUDIO));		// Farandole Composer Module
@@ -735,6 +740,7 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".m1a",   ED2KFT_AUDIO));		// MPEG-1 Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".m2a",   ED2KFT_AUDIO));		// MPEG-2 Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".m4a",   ED2KFT_AUDIO));		// MPEG-4 Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".m4b",   ED2KFT_AUDIO));		// MPEG-4 Audiobook File (M4A audio with chapters)
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mdl",   ED2KFT_AUDIO));		// DigiTrakker Module
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".med",   ED2KFT_AUDIO));		// Amiga MED Sound File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mid",   ED2KFT_AUDIO));		// MIDI File
@@ -750,8 +756,10 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mpp",   ED2KFT_AUDIO));
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mtm",   ED2KFT_AUDIO));		// MultiTracker Module
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".nst",   ED2KFT_AUDIO));		// NoiseTracker
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".oga",   ED2KFT_AUDIO));		// Ogg Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ogg",   ED2KFT_AUDIO));		// Ogg Vorbis Compressed Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".okt",   ED2KFT_AUDIO));		// Oktalyzer Module (Amiga)
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".opus",  ED2KFT_AUDIO));		// Opus Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".psm",   ED2KFT_AUDIO));		// Protracker Studio Module
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ptm",   ED2KFT_AUDIO));		// PolyTracker Module
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ra",    ED2KFT_AUDIO));		// Real Audio File
@@ -762,8 +770,10 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ult",   ED2KFT_AUDIO));		// UltraTracker
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".umx",   ED2KFT_AUDIO));		// Unreal Music Package
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".wav",   ED2KFT_AUDIO));		// WAVE Audio File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".weba",  ED2KFT_AUDIO));		// WebM Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".wma",   ED2KFT_AUDIO));		// Windows Media Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".wow",   ED2KFT_AUDIO));		// Grave Composer audio tracker
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".wv",    ED2KFT_AUDIO));		// WavPack Lossless Audio File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xm",    ED2KFT_AUDIO));		// Fasttracker 2 Extended Module
 
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".3g2",   ED2KFT_VIDEO));		// 3GPP Multimedia File
@@ -776,31 +786,36 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".bik",   ED2KFT_VIDEO));		// BINK Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".divx",  ED2KFT_VIDEO));		// DivX-Encoded Movie File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".dvr-ms",ED2KFT_VIDEO));		// Microsoft Digital Video Recording
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".f4v",   ED2KFT_VIDEO));		// Flash MP4 Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".flc",   ED2KFT_VIDEO));		// FLIC Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".fli",   ED2KFT_VIDEO));		// FLIC Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".flic",  ED2KFT_VIDEO));		// FLIC Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".flv",   ED2KFT_VIDEO));		// Flash Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".h264",  ED2KFT_VIDEO));		// H.264 Raw Video Stream
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".h265",  ED2KFT_VIDEO));		// H.265 Raw Video Stream
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".hdmov", ED2KFT_VIDEO));		// High-Definition QuickTime Movie
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".hevc",  ED2KFT_VIDEO));		// HEVC Raw Video Stream
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ifo",   ED2KFT_VIDEO));		// DVD-Video Disc Information File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".m1v",   ED2KFT_VIDEO));		// MPEG-1 Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".m2t",   ED2KFT_VIDEO));		// MPEG-2 Video Transport Stream
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".m2ts",  ED2KFT_VIDEO));		// MPEG-2 Video Transport Stream
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".m2v",   ED2KFT_VIDEO));		// MPEG-2 Video File
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".m4b",   ED2KFT_VIDEO));		// MPEG-4 Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".m4v",   ED2KFT_VIDEO));		// MPEG-4 Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mkv",   ED2KFT_VIDEO));		// Matroska Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mov",   ED2KFT_VIDEO));		// QuickTime Movie File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".movie", ED2KFT_VIDEO));		// QuickTime Movie File
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mp1v",  ED2KFT_VIDEO));		// QuickTime Movie File
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mp2v",  ED2KFT_VIDEO));		// MPEG-1 Video File
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mp4",   ED2KFT_VIDEO));		// MPEG-2 Video File
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mpe",   ED2KFT_VIDEO));		// MPEG-4 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mp1v",  ED2KFT_VIDEO));		// MPEG-1 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mp2v",  ED2KFT_VIDEO));		// MPEG-2 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mp4",   ED2KFT_VIDEO));		// MPEG-4 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mpe",   ED2KFT_VIDEO));		// MPEG-1 Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mpeg",  ED2KFT_VIDEO));		// MPEG Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mpg",   ED2KFT_VIDEO));		// MPEG Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mps",   ED2KFT_VIDEO));		// MPEG Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mpv",   ED2KFT_VIDEO));		// MPEG Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mpv1",  ED2KFT_VIDEO));		// MPEG-1 Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mpv2",  ED2KFT_VIDEO));		// MPEG-2 Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mts",   ED2KFT_VIDEO));		// AVCHD Video File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mxf",   ED2KFT_VIDEO));		// Material Exchange Format File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ogm",   ED2KFT_VIDEO));		// Ogg Media File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ogv",   ED2KFT_VIDEO));		// Ogg Theora Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".pva",   ED2KFT_VIDEO));		// MPEG Video File
@@ -827,15 +842,28 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".wmv",   ED2KFT_VIDEO));		// Windows Media Video File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xvid",  ED2KFT_VIDEO));		// Xvid-Encoded Video File
 
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".apng",  ED2KFT_IMAGE));		// Animated PNG File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".arw",   ED2KFT_IMAGE));		// Sony Alpha RAW Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".avif",  ED2KFT_IMAGE));		// AV1 Image File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".bmp",   ED2KFT_IMAGE));		// Bitmap Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".cr2",   ED2KFT_IMAGE));		// Canon RAW 2 Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".cr3",   ED2KFT_IMAGE));		// Canon RAW 3 Image
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".dcx",   ED2KFT_IMAGE));		// FAXserve Fax Document
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".dng",   ED2KFT_IMAGE));		// Digital Negative RAW Image
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".emf",   ED2KFT_IMAGE));		// Enhanced Windows Metafile
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".gif",   ED2KFT_IMAGE));		// Graphical Interchange Format File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".heic",  ED2KFT_IMAGE));		// High Efficiency Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".heif",  ED2KFT_IMAGE));		// High Efficiency Image Format File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ico",   ED2KFT_IMAGE));		// Icon File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".j2k",   ED2KFT_IMAGE));		// JPEG 2000 Code Stream
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".jfif",  ED2KFT_IMAGE));		// JPEG File Interchange Format
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".jp2",   ED2KFT_IMAGE));		// JPEG 2000 Image File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".jpe",   ED2KFT_IMAGE));		// JPEG Image File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".jpeg",  ED2KFT_IMAGE));		// JPEG Image File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".jpg",   ED2KFT_IMAGE));		// JPEG Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".jxl",   ED2KFT_IMAGE));		// JPEG XL Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".nef",   ED2KFT_IMAGE));		// Nikon Electronic Format RAW Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".orf",   ED2KFT_IMAGE));		// Olympus RAW Image
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".pct",   ED2KFT_IMAGE));		// PICT Picture File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".pcx",   ED2KFT_IMAGE));		// Paintbrush Bitmap Image File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".pic",   ED2KFT_IMAGE));		// PICT Picture File
@@ -843,6 +871,9 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".png",   ED2KFT_IMAGE));		// Portable Network Graphic
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".psd",   ED2KFT_IMAGE));		// Photoshop Document
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".psp",   ED2KFT_IMAGE));		// Paint Shop Pro Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".raf",   ED2KFT_IMAGE));		// Fujifilm RAW Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".rw2",   ED2KFT_IMAGE));		// Panasonic RAW Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".svg",   ED2KFT_IMAGE));		// Scalable Vector Graphics File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".tga",   ED2KFT_IMAGE));		// Targa Graphic
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".tif",   ED2KFT_IMAGE));		// Tagged Image File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".tiff",  ED2KFT_IMAGE));		// Tagged Image File
@@ -850,6 +881,7 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".webp",  ED2KFT_IMAGE));		// Weppy Photo File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".wmf",   ED2KFT_IMAGE));		// Windows Metafile
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".wmp",   ED2KFT_IMAGE));		// Windows Media Photo File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xcf",   ED2KFT_IMAGE));		// GIMP Image File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xif",   ED2KFT_IMAGE));		// ScanSoft Pagis Extended Image Format File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xpm",   ED2KFT_IMAGE));		// X-Windows Pixmap
 
@@ -860,14 +892,18 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".arj",   ED2KFT_ARCHIVE));	// ARJ Compressed File Archive
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".bz2",   ED2KFT_ARCHIVE));	// Bzip Compressed File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".cab",   ED2KFT_ARCHIVE));	// Cabinet File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".cb7",   ED2KFT_ARCHIVE));	// Comic Book 7-Zip Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".cba",   ED2KFT_ARCHIVE));	// Comic Book ACE Archive
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".cbr",   ED2KFT_ARCHIVE));	// Comic Book RAR Archive
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".cbt",   ED2KFT_ARCHIVE));	// Comic Book Tarball
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".cbz",   ED2KFT_ARCHIVE));	// Comic Book ZIP Archive
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".gz",    ED2KFT_ARCHIVE));	// Gnu Zipped File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".hqx",   ED2KFT_ARCHIVE));	// BinHex 4.0 Encoded File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".lha",   ED2KFT_ARCHIVE));	// LHARC Compressed Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".lz",    ED2KFT_ARCHIVE));	// Lzip Compressed File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".lz4",   ED2KFT_ARCHIVE));	// LZ4 Compressed File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".lzh",   ED2KFT_ARCHIVE));	// LZH Compressed File
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".msi",   ED2KFT_ARCHIVE));	// Microsoft Installer File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".lzma",  ED2KFT_ARCHIVE));	// LZMA Compressed File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".pak",   ED2KFT_ARCHIVE));	// PAK (Packed) File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".par",   ED2KFT_ARCHIVE));	// Parchive Index File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".par2",  ED2KFT_ARCHIVE));	// Parchive 2 Index File
@@ -878,63 +914,116 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".tar",   ED2KFT_ARCHIVE));	// Consolidated Unix File Archive
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".tbz2",  ED2KFT_ARCHIVE));	// Tar BZip 2 Compressed File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".tgz",   ED2KFT_ARCHIVE));	// Gzipped Tar File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".tlz",   ED2KFT_ARCHIVE));	// Tar LZMA Compressed File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".txz",   ED2KFT_ARCHIVE));	// Tar XZ Compressed File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".uc2",   ED2KFT_ARCHIVE));	// UltraCompressor 2 Archive
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xpi",   ED2KFT_ARCHIVE));	// Mozilla Installer Package
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xz",    ED2KFT_ARCHIVE));	// XZ Compressed File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".z",     ED2KFT_ARCHIVE));	// Unix Compressed File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".zip",   ED2KFT_ARCHIVE));	// Zipped File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".zoo",   ED2KFT_ARCHIVE));	// Zoo Archive
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".zst",   ED2KFT_ARCHIVE));	// Zstandard Compressed File
 
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".apk",   ED2KFT_PROGRAM));	// Android Application Package
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".app",   ED2KFT_PROGRAM));	// macOS Application Bundle
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".appimage", ED2KFT_PROGRAM));	// Linux AppImage Application
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".appx",  ED2KFT_PROGRAM));	// Windows App Package
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".bat",   ED2KFT_PROGRAM));	// Batch File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".cmd",   ED2KFT_PROGRAM));	// Command File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".com",   ED2KFT_PROGRAM));	// COM File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".cpl",   ED2KFT_PROGRAM));	// Windows Control Panel Applet
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".deb",   ED2KFT_PROGRAM));	// Debian Software Package
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".exe",   ED2KFT_PROGRAM));	// Executable File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".flatpak", ED2KFT_PROGRAM));	// Flatpak Application Package
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".hta",   ED2KFT_PROGRAM));	// HTML Application
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".jar",   ED2KFT_PROGRAM));	// Java Archive (application/library)
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".js",    ED2KFT_PROGRAM));	// Java Script
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".jse",   ED2KFT_PROGRAM));	// Encoded  Java Script
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".msc",   ED2KFT_PROGRAM));	// Microsoft Common Console File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".msi",   ED2KFT_PROGRAM));	// Microsoft Installer Package
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".msix",  ED2KFT_PROGRAM));	// Windows App Package
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ps1",   ED2KFT_PROGRAM));	// PowerShell Script
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".psd1",  ED2KFT_PROGRAM));	// PowerShell Data File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".psm1",  ED2KFT_PROGRAM));	// PowerShell Module File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".rpm",   ED2KFT_PROGRAM));	// RPM Software Package
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".scr",   ED2KFT_PROGRAM));	// Windows Screensaver Executable
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".sh",    ED2KFT_PROGRAM));	// Unix Shell Script
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".snap",  ED2KFT_PROGRAM));	// Snap Application Package
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".vbe",   ED2KFT_PROGRAM));	// Encoded Visual Basic Script File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".vbs",   ED2KFT_PROGRAM));	// Visual Basic Script File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".wsf",   ED2KFT_PROGRAM));	// Windows Script File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".wsh",   ED2KFT_PROGRAM));	// Windows Scripting Host File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xpi",   ED2KFT_PROGRAM));	// Mozilla browser extension package
 
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".b5t",   ED2KFT_CDIMAGE));	// BlindWrite 5 Disc Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".b6t",   ED2KFT_CDIMAGE));	// BlindWrite 6 Disc Image
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".bin",   ED2KFT_CDIMAGE));	// CD Image
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".bwa",   ED2KFT_CDIMAGE));	// BlindWrite Disk Information File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".bwi",   ED2KFT_CDIMAGE));	// BlindWrite CD/DVD Disc Image
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".bws",   ED2KFT_CDIMAGE));	// BlindWrite Sub Code File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".bwt",   ED2KFT_CDIMAGE));	// BlindWrite 4 Disk Image
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ccd",   ED2KFT_CDIMAGE));	// CloneCD Disk Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".cdi",   ED2KFT_CDIMAGE));	// DiscJuggler Disc Image
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".cue",   ED2KFT_CDIMAGE));	// Cue Sheet File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".daa",   ED2KFT_CDIMAGE));	// PowerISO Disc Image
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".dmg",   ED2KFT_CDIMAGE));	// Mac OS X Disk Image
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".dmz",   ED2KFT_CDIMAGE));
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".img",   ED2KFT_CDIMAGE));	// Disk Image Data File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".iso",   ED2KFT_CDIMAGE));	// Disc Image File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".isz",   ED2KFT_CDIMAGE));	// Compressed ISO Disc Image
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mdf",   ED2KFT_CDIMAGE));	// Media Disc Image File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mds",   ED2KFT_CDIMAGE));	// Media Descriptor File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mdx",   ED2KFT_CDIMAGE));	// DAEMON Tools Disc Image
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".nrg",   ED2KFT_CDIMAGE));	// Nero CD/DVD Image File
-		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".sub",   ED2KFT_CDIMAGE));	// Subtitle File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".qcow2", ED2KFT_CDIMAGE));	// QEMU Copy-On-Write Disk Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".sub",   ED2KFT_CDIMAGE));	// CloneCD subchannel data file
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".toast", ED2KFT_CDIMAGE));	// Toast Disc Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".uif",   ED2KFT_CDIMAGE));	// MagicISO Disc Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".vcd",   ED2KFT_CDIMAGE));	// Virtual CD Disc Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".vdi",   ED2KFT_CDIMAGE));	// VirtualBox Virtual Disk Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".vhd",   ED2KFT_CDIMAGE));	// Virtual Hard Disk Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".vhdx",  ED2KFT_CDIMAGE));	// Hyper-V Virtual Hard Disk Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".vmdk",  ED2KFT_CDIMAGE));	// VMware Virtual Disk Image
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".wim",   ED2KFT_CDIMAGE));	// Windows Imaging Format File
 
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".azw",   ED2KFT_DOCUMENT));	// EBook File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".azw3",  ED2KFT_DOCUMENT));	// Amazon Kindle KF8 E-Book
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".chm",   ED2KFT_DOCUMENT));	// Compiled HTML Help File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".css",   ED2KFT_DOCUMENT));	// Cascading Style Sheet
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".csv",   ED2KFT_DOCUMENT));	// Comma-Separated Values File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".diz",   ED2KFT_DOCUMENT));	// Description in Zip File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".djvu",  ED2KFT_DOCUMENT));	// DjVu Document
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".doc",   ED2KFT_DOCUMENT));	// Document File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".docm",  ED2KFT_DOCUMENT));	// Microsoft Word Macro-Enabled Document
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".docx",  ED2KFT_DOCUMENT));	// Microsoft Word Document (OOXML)
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".dot",   ED2KFT_DOCUMENT));	// Document Template File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".dotx",  ED2KFT_DOCUMENT));	// Microsoft Word Template (OOXML)
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".epub",  ED2KFT_DOCUMENT));	// EBook File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".fb2",   ED2KFT_DOCUMENT));	// FictionBook 2 E-Book
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".hlp",   ED2KFT_DOCUMENT));	// Help File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".htm",   ED2KFT_DOCUMENT));	// HTML File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".html",  ED2KFT_DOCUMENT));	// HTML File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".json",  ED2KFT_DOCUMENT));	// JSON File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".key",   ED2KFT_DOCUMENT));	// Apple Keynote Presentation
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".kfx",   ED2KFT_DOCUMENT));	// Amazon Kindle KFX E-Book
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".markdown", ED2KFT_DOCUMENT));	// Markdown Document
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".md",    ED2KFT_DOCUMENT));	// Markdown Document
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".mobi",  ED2KFT_DOCUMENT));	// EBook File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".nfo",   ED2KFT_DOCUMENT));	// Warez Information File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".numbers", ED2KFT_DOCUMENT));	// Apple Numbers Spreadsheet
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".odp",   ED2KFT_DOCUMENT));	// OpenDocument Presentation
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ods",   ED2KFT_DOCUMENT));	// OpenDocument Spreadsheet
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".odt",   ED2KFT_DOCUMENT));	// OpenDocument File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".otp",   ED2KFT_DOCUMENT));	// OpenDocument Presentation Template
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ott",   ED2KFT_DOCUMENT));	// OpenDocument Template File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ots",   ED2KFT_DOCUMENT));	// OpenDocument Spreadsheet Template
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".oxps",  ED2KFT_DOCUMENT));	// OpenXPS Document
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".pages", ED2KFT_DOCUMENT));	// Apple Pages Document
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".pdf",   ED2KFT_DOCUMENT));	// Portable Document Format File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".potx",  ED2KFT_DOCUMENT));	// Microsoft PowerPoint Template (OOXML)
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".pps",   ED2KFT_DOCUMENT));	// PowerPoint Slide Show
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ppsx",  ED2KFT_DOCUMENT));	// Microsoft PowerPoint Slide Show (OOXML)
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ppt",   ED2KFT_DOCUMENT));	// PowerPoint Presentation
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".pptm",  ED2KFT_DOCUMENT));	// Microsoft PowerPoint Macro-Enabled Presentation
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".pptx",  ED2KFT_DOCUMENT));	// Microsoft PowerPoint Presentation (OOXML)
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".ps",    ED2KFT_DOCUMENT));	// PostScript File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".rtf",   ED2KFT_DOCUMENT));	// Rich Text Format File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".stc",   ED2KFT_DOCUMENT));	// OpenOffice.org 1.0 Spreadsheet Template
@@ -943,12 +1032,19 @@ public:
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".sxc",   ED2KFT_DOCUMENT));	// OpenOffice.org 1.0 Spreadsheet
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".sxi",   ED2KFT_DOCUMENT));	// OpenOffice.org 1.0 Presentation
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".sxw",   ED2KFT_DOCUMENT));	// OpenOffice.org 1.0 Document File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".tex",   ED2KFT_DOCUMENT));	// LaTeX Source Document
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".text",  ED2KFT_DOCUMENT));	// General Text File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".txt",   ED2KFT_DOCUMENT));	// Text File
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".wri",   ED2KFT_DOCUMENT));	// Windows Write Document
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xls",   ED2KFT_DOCUMENT));	// Microsoft Excel Spreadsheet
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xlsm",  ED2KFT_DOCUMENT));	// Microsoft Excel Macro-Enabled Spreadsheet
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xlsx",  ED2KFT_DOCUMENT));	// Microsoft Excel Spreadsheet (OOXML)
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xlt",   ED2KFT_DOCUMENT));	// Microsoft Excel Template
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xltx",  ED2KFT_DOCUMENT));	// Microsoft Excel Template (OOXML)
 		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xml",   ED2KFT_DOCUMENT));	// XML File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".xps",   ED2KFT_DOCUMENT));	// XML Paper Specification Document
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".yaml",  ED2KFT_DOCUMENT));	// YAML File
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(".yml",   ED2KFT_DOCUMENT));	// YAML File
 	}
 };
 
