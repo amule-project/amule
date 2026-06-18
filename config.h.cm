@@ -10,6 +10,10 @@
 /* Define this to the include prefix of crypto++ */
 #cmakedefine CRYPTOPP_INCLUDE_PREFIX ${CRYPTOPP_INCLUDE_PREFIX}
 
+/* Initial value of the "Check for new aMule version" preference (1 = on,
+   0 = off). Controlled at configure time by -DDEFAULT_VERSION_CHECK. */
+#cmakedefine01 DEFAULT_VERSION_CHECK
+
 /* Define if upnp was found. */
 #cmakedefine ENABLE_UPNP
 

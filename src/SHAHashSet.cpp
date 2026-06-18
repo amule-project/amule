@@ -842,17 +842,30 @@ bool CAICHHashSet::LoadHashSet()
 			return false;
 		}
 
-		// Fast path: seek straight to the cached entry. If the hash at
-		// that offset doesn't match, the cache is stale -- fall through
-		// to the linear scan from the start as a defensive recovery.
+		uint64 nExistingSize = file.GetLength();
+
+		// Fast path: seek straight to the cached entry. If the offset
+		// turns out to be stale -- past EOF, or first read at that
+		// position doesn't match our root hash -- rewind once to just
+		// past the version header and fall through to a true linear
+		// scan from the top as defensive recovery against external
+		// modification of known2.met between cache load and now.
 		if (haveCachedOffset) {
-			file.Seek(static_cast<wxFileOffset>(cachedOffset), wxFromStart);
+			if (cachedOffset >= nExistingSize) {
+				haveCachedOffset = false;
+			} else {
+				file.Seek(static_cast<wxFileOffset>(cachedOffset), wxFromStart);
+			}
 		}
 
 		CAICHHash CurrentHash;
-		uint64 nExistingSize = file.GetLength();
 		uint32 nHashCount;
+		bool cacheFallbackTriggered = false;
 		while (file.GetPosition() < nExistingSize) {
+			// Position of the root-hash at the start of the entry we're
+			// about to examine — captured pre-read so we can stamp it
+			// back into the cache when a stale-cache rewind succeeds.
+			const uint64 entryStartPos = file.GetPosition();
 			CurrentHash.Read(&file);
 			if (m_pHashTree.m_Hash == CurrentHash) {
 				// found Hashset
@@ -877,7 +890,26 @@ bool CAICHHashSet::LoadHashSet()
 					AddDebugLogLineC(logSHAHashSet, "Failed to load HashSet: Calculated Masterhash differs from given Masterhash - hashset corrupt!");
 					return false;
 				}
+				// Self-heal: if we got here via the stale-cache rewind,
+				// update the cache so future lookups for this root hash
+				// go straight to the new correct offset instead of
+				// paying the linear-scan penalty every time.
+				if (cacheFallbackTriggered) {
+					wxMutexLocker lock(s_rootHashCacheMutex);
+					s_rootHashCache[m_pHashTree.m_Hash] = entryStartPos;
+				}
 				return true;
+			}
+			// First read after seeking to the cached offset didn't match
+			// our root hash. The cache must be stale -- known2.met was
+			// modified externally between cache load and now. Rewind once
+			// to just past the version header and restart as a true linear
+			// scan from the top.
+			if (haveCachedOffset && !cacheFallbackTriggered) {
+				cacheFallbackTriggered = true;
+				haveCachedOffset = false;
+				file.Seek(1, wxFromStart);
+				continue;
 			}
 			nHashCount = file.ReadUInt32();
 			if (file.GetPosition() + nHashCount*HASHSIZE > nExistingSize) {

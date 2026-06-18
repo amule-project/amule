@@ -217,3 +217,12 @@ endif (WIN32)
 if (NEED_LIB_MULEAPPCOMMON OR BUILD_WEBSERVER)
 	option (ENABLE_UPNP "enable UPnP support in aMule" ON)
 endif()
+
+# Initial value of the "Check for new aMule version" preference for fresh
+# installs (the user can still flip it in Preferences after first launch).
+# Packagers shipping aMule via an OS package manager typically want OFF so
+# the daemon-side updater doesn't conflict with the distro's own update
+# mechanism. Standalone / portable / AppImage builds want ON. Existing
+# users' saved amule.conf is unaffected -- only the per-install default
+# applies on first launch or after a config reset.
+option (DEFAULT_VERSION_CHECK "default state of the 'Check for new aMule version' preference" ON)

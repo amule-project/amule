@@ -35,15 +35,22 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	)
 endif()
 
-# Try to use ccache
-find_program(CCACHE_PROGRAM ccache)
-if(CCACHE_PROGRAM)
-    message(STATUS "ccache found: ${CCACHE_PROGRAM}")
-    set(CMAKE_C_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
-    set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
-    # Add other languages if needed, e.g., CMAKE_CUDA_COMPILER_LAUNCHER
-else()
-    message(STATUS "ccache not found.")
+# ccache auto-detection (AUTO = use if found, ON = require, OFF = skip).
+# Distros that run their own ccache wrapper (FreeBSD ports, Gentoo, etc.)
+# should pass -DENABLE_CCACHE=OFF so we don't double-wrap the compiler.
+set (ENABLE_CCACHE "AUTO" CACHE STRING "Use ccache compiler launcher (AUTO/ON/OFF)")
+set_property (CACHE ENABLE_CCACHE PROPERTY STRINGS "AUTO" "ON" "OFF")
+if (NOT ENABLE_CCACHE STREQUAL "OFF")
+    find_program(CCACHE_PROGRAM ccache)
+    if(CCACHE_PROGRAM)
+        message(STATUS "ccache found: ${CCACHE_PROGRAM}")
+        set(CMAKE_C_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
+        set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
+    elseif (ENABLE_CCACHE STREQUAL "ON")
+        message(FATAL_ERROR "ccache requested via -DENABLE_CCACHE=ON but not found")
+    else()
+        message(STATUS "ccache not found.")
+    endif()
 endif()
 
 include (cmake/CmDaB.cmake)
@@ -434,7 +441,7 @@ install (FILES org.amule.aMule.metainfo.xml
 )
 
 install (FILES LICENSE.md
-	DESTINATION "${CMAKE_INSTALL_DATADIR}"
+	DESTINATION "${CMAKE_INSTALL_DOCDIR}"
 )
 
 if (ENABLE_NLS)
