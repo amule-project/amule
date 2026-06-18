@@ -1617,8 +1617,8 @@ msgstr "未知链接协议：%s"
 #, c-format
 msgid "Could not add %u link (see log for details)."
 msgid_plural "Could not add %u links (see log for details)."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "无法添加 %u 个链接（详情请查看日志）"
+msgstr[1] "无法添加 %u 个链接（详情请查看日志）"
 
 #: src/DownloadQueue.cpp:1464
 #, c-format
