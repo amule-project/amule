@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aMule GIT\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-14 15:17+0200\n"
-"PO-Revision-Date: 2026-06-17 10:12+0000\n"
+"PO-Revision-Date: 2026-06-18 19:07+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: none\n"
 "Language: lv\n"
@@ -90,7 +90,7 @@ msgstr ""
 
 #: src/AppImageIntegration.cpp:287
 msgid "aMule installed"
-msgstr "aMule uzstādīts"
+msgstr "aMule uzstādīta"
 
 #: src/AppImageIntegration.cpp:289
 msgid "Restart now"
@@ -125,17 +125,17 @@ msgstr ""
 
 #: src/amule.cpp:251
 msgid "Now, exiting main app..."
-msgstr ""
+msgstr "Pašlaik aizver galveno programmu…"
 
 #: src/amule.cpp:281
 #, c-format
 msgid "Terminating amuleweb instance with pid '%d' ... "
-msgstr ""
+msgstr "Pārtrauc amuleweb procesu ar pid '%d' … "
 
 #: src/amule.cpp:284
 #, c-format
 msgid "Killing amuleweb instance with pid '%d' ... "
-msgstr ""
+msgstr "Iznīcina amuleweb procesu ar pid '%d' … "
 
 #: src/amule.cpp:286 src/ClientRef.cpp:194 src/ServerListCtrl.cpp:95
 msgid "Failed"
@@ -205,7 +205,7 @@ msgstr ""
 
 #: src/amule.cpp:876
 msgid "You requested to run web server on startup, but the amuleweb binary cannot be run. Please install the package containing aMule web server, or build aMule from source with -DBUILD_WEBSERVER=YES and install it."
-msgstr ""
+msgstr "Jūs esiet iespējojuši 'Kad palaiž, palaist arī tīmekļa serveri' iestatījumu, taču amuleweb izpildāmo (bināro) datni nevar palaist. Lūdzu, uzstādiet pakotni, kas satur aMule tīmekļa serveri (amuleweb), vai pārkompilējiet aMule no pirmkoda ar -DBUILD_WEBSERVER=YES parametru un uzstādiet to."
 
 #: src/amule.cpp:959
 #, c-format
@@ -374,7 +374,7 @@ msgstr ""
 #: src/amule.cpp:2246
 #, c-format
 msgid "Connecting to %s"
-msgstr ""
+msgstr "Pieslēdzas %s"
 
 #: src/amule.cpp:2248
 msgid "Disconnected from eD2k"
@@ -406,7 +406,7 @@ msgstr ""
 
 #: src/amule.cpp:2306
 msgid "Kad network disabled on preferences, not connecting."
-msgstr ""
+msgstr "Kad tīkls ir atspējots iestatījumos, nepieslēdzas tīklam."
 
 #: src/amuled.cpp:142
 msgid "ERROR: aMule daemon cannot be used when external connections are disabled. To enable External Connections, use either a normal aMule, start amuled with the option --ec-config or set the key \"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf"
@@ -521,11 +521,11 @@ msgstr ""
 
 #: src/amuleDlg.cpp:618 src/DataToText.cpp:59 src/IPFilter.cpp:544
 msgid "Connecting"
-msgstr ""
+msgstr "Pieslēdzas"
 
 #: src/amuleDlg.cpp:747
 msgid "eD2k: Connecting"
-msgstr ""
+msgstr "eD2k: Pieslēdzas"
 
 #: src/amuleDlg.cpp:751
 msgid "eD2k: Disconnected"
@@ -541,7 +541,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:766
 msgid "Kad: Connecting"
-msgstr ""
+msgstr "Kad: Pieslēdzas"
 
 #: src/amuleDlg.cpp:770
 msgid "Kad: Off"
@@ -755,7 +755,7 @@ msgstr ""
 
 #: src/amule-remote-gui.cpp:450
 msgid "Connecting..."
-msgstr ""
+msgstr "Pieslēdzas…"
 
 #: src/amule-remote-gui.cpp:480
 msgid "Connection failed. Please check the host, port, and password."
@@ -948,7 +948,7 @@ msgstr ""
 
 #: src/ChatSelector.cpp:251
 msgid "*** Connecting to Client ***"
-msgstr ""
+msgstr "*** Pieslēdzas klientam ***"
 
 #: src/ChatSelector.cpp:282
 msgid "*** Failed to Connect to client / Connection lost ***"
@@ -1210,7 +1210,7 @@ msgstr ""
 
 #: src/DataToText.cpp:61
 msgid "Connecting via server"
-msgstr ""
+msgstr "Pieslēdzas caur serveri"
 
 #: src/DataToText.cpp:62 src/GenericClientListCtrl.cpp:1033
 msgid "Queue Full"
@@ -1244,7 +1244,7 @@ msgstr "Pārāk daudz savienojumu"
 
 #: src/DataToText.cpp:69
 msgid "Connecting via Kad"
-msgstr ""
+msgstr "Pieslēdzas caur Kad"
 
 #: src/DataToText.cpp:70
 msgid "Too many Kad connections"
@@ -1637,7 +1637,7 @@ msgstr ""
 #: src/ExternalConn.cpp:542
 #, c-format
 msgid "Connecting client: %s %s"
-msgstr ""
+msgstr "Pieslēdzas klientam: %s %s"
 
 #: src/ExternalConn.cpp:544
 msgid "Unknown version"
@@ -1789,7 +1789,7 @@ msgstr ""
 
 #: src/ExternalConn.cpp:2313
 msgid "Connecting to eD2k..."
-msgstr ""
+msgstr "Pieslēdzas eD2k…"
 
 #: src/ExternalConn.cpp:2321
 msgid "Already connected to Kad."
@@ -1797,7 +1797,7 @@ msgstr ""
 
 #: src/ExternalConn.cpp:2324
 msgid "Connecting to Kad..."
-msgstr ""
+msgstr "Pieslēdzas Kad…"
 
 #: src/ExternalConn.cpp:2331
 msgid "All networks are disabled."
@@ -2138,7 +2138,7 @@ msgstr "Jā"
 
 #: src/HTTPDownload.cpp:58
 msgid "Downloading..."
-msgstr ""
+msgstr "Lejupielādē…"
 
 #: src/HTTPDownload.cpp:122
 msgid "HTTP download cancelled"
@@ -2727,11 +2727,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:112
 msgid "Loading ..."
-msgstr ""
+msgstr "Ielādē…"
 
 #: src/muuli_wdr.cpp:119
 msgid "Number of users on the server you are connected to ..."
-msgstr ""
+msgstr "Lietotāju skaits serverī, kam esiet pieslēdzies …"
 
 #: src/muuli_wdr.cpp:122
 msgid "Users: 0"
@@ -3070,7 +3070,7 @@ msgstr "Izcila"
 
 #: src/muuli_wdr.cpp:726
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr ""
+msgstr "Novērtēt datni vai dot citiem lietotājiem mājienu, ka datnes nosaukums ir maldinošs un tā saturs neatbilst nosaukumam …"
 
 #: src/muuli_wdr.cpp:763
 msgid "Refresh"
@@ -3078,7 +3078,7 @@ msgstr "Atsvaidzināt"
 
 #: src/muuli_wdr.cpp:786
 msgid "Downloading, please wait ..."
-msgstr ""
+msgstr "Lejupielādē, lūdzu, uzgaidiet …"
 
 #: src/muuli_wdr.cpp:790
 msgid "Unknown size"
@@ -3255,7 +3255,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1202
 msgid "This is the name that other users will see when connecting to you."
-msgstr ""
+msgstr "Vārds, kas tiks rādīts lietotājiem, kad pieslēdzas jums."
 
 #: src/muuli_wdr.cpp:1208
 msgid "Language: "
@@ -3276,7 +3276,7 @@ msgstr "Kad palaiž, pārbaudīt, vai nav pieejama jauna versija"
 
 #: src/muuli_wdr.cpp:1218
 msgid "Enabling this will make aMule check for new version at startup"
-msgstr ""
+msgstr "Iespējojot šo, tiks veikta aMule jaunākās versijas pārbaude, kad palaiž programmu"
 
 #: src/muuli_wdr.cpp:1225
 msgid "Start aMule automatically when I log in"
@@ -3439,7 +3439,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1415
 msgid "Autoconnect on startup"
-msgstr ""
+msgstr "Kad palaiž, automātiski pieslēgties"
 
 #: src/muuli_wdr.cpp:1418
 msgid "Reconnect on loss"
@@ -3455,7 +3455,7 @@ msgstr "mēģinājumiem"
 
 #: src/muuli_wdr.cpp:1449
 msgid "Auto-update server list at startup"
-msgstr ""
+msgstr "Kad palaiž, automātiski atjaunināt serveru sarakstu"
 
 #: src/muuli_wdr.cpp:1452
 msgid "List"
@@ -3463,7 +3463,7 @@ msgstr "Saraksts"
 
 #: src/muuli_wdr.cpp:1455
 msgid "Update server list when connecting to a server"
-msgstr ""
+msgstr "Atjaunināt serveru sarakstu, kad pieslēdzas serverim"
 
 #: src/muuli_wdr.cpp:1458
 msgid "Update server list when a client connects"
@@ -3814,7 +3814,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1879
 msgid "Run webserver on startup"
-msgstr ""
+msgstr "Kad palaiž, palaist arī tīmekļa serveri"
 
 #: src/muuli_wdr.cpp:1885
 msgid "Web template"
@@ -4198,7 +4198,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2616
 msgid "Auto-update on startup"
-msgstr ""
+msgstr "Kad palaiž, automātiski atjaunināt"
 
 #: src/muuli_wdr.cpp:2617
 msgid "Re-download the GeoIP database from the selected source every time aMule starts."
@@ -4326,7 +4326,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2818 src/PartFileConvertDlg.cpp:155
 msgid "Waiting..."
-msgstr ""
+msgstr "Gaida…"
 
 #: src/muuli_wdr.cpp:2838
 msgid "Add imports"
@@ -5075,6 +5075,8 @@ msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup' will be disabled."
 msgstr ""
+"Jūsu automātiskās atjaunināšanas serveru saraksts ir tukšs.\n"
+"'Kad palaiž, automātiski atjaunināt serveru sarakstu' iestatījums tiks atspējots."
 
 #: src/PrefsUnifiedDlg.cpp:862
 msgid ""
@@ -5418,7 +5420,7 @@ msgstr ""
 
 #: src/ServerConnect.cpp:94 src/ServerConnect.cpp:148
 msgid "eD2k network disabled on preferences, not connecting."
-msgstr ""
+msgstr "eD2k tīkls ir atspējots iestatījumos, nepieslēdzas tīklam."
 
 #: src/ServerConnect.cpp:122 src/ServerConnect.cpp:135
 msgid "No valid servers to which to connect found in server list"
@@ -5467,7 +5469,7 @@ msgstr ""
 #: src/ServerConnect.cpp:419
 #, c-format
 msgid "Connecting to %s (%s:%i) failed."
-msgstr ""
+msgstr "Pieslēgties %s (%s:%i) neizdevās."
 
 #: src/ServerConnect.cpp:462
 msgid "ERROR: Socket invalid at timeout check"
@@ -5790,7 +5792,7 @@ msgstr ""
 #: src/ServerSocket.cpp:711
 #, c-format
 msgid "Connecting to %s (%s - %s:%i) %s"
-msgstr ""
+msgstr "Pieslēdzas %s (%s - %s:%i) %s"
 
 #: src/ServerSocket.cpp:724
 #, c-format
@@ -5861,24 +5863,24 @@ msgstr ""
 
 #: src/ServerWnd.cpp:246
 msgid "No buddy required - TCP port open"
-msgstr ""
+msgstr "Nav nepieciešams draugs - TCP ports ir atvērts"
 
 #: src/ServerWnd.cpp:248
 msgid "No buddy required - UDP port open"
-msgstr ""
+msgstr "Nav nepieciešams draugs - UDP ports ir atvērts"
 
 #: src/ServerWnd.cpp:250
 msgid "No buddy"
-msgstr ""
+msgstr "Nav neviena drauga"
 
 #: src/ServerWnd.cpp:254
 msgid "Connecting to buddy"
-msgstr ""
+msgstr "Pieslēdzas draugam"
 
 #: src/ServerWnd.cpp:257
 #, c-format
 msgid "Connected to buddy at %s"
-msgstr ""
+msgstr "Savienots ar draugu %s"
 
 #: src/ServerWnd.cpp:267
 msgid "Indexed sources:"
@@ -6430,7 +6432,7 @@ msgstr ""
 
 #: src/TextClient.cpp:809
 msgid "Now connecting"
-msgstr ""
+msgstr "Pašlaik pieslēdzas"
 
 #: src/TextClient.cpp:818 src/utils/wxCas/src/wxcasframe.cpp:1051
 #: src/utils/wxCas/src/wxcasframe.cpp:1073
@@ -7099,7 +7101,7 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:502
 #: src/utils/aLinkCreator/src/alcframe.cpp:508
 msgid "Hashing..."
-msgstr ""
+msgstr "Skaitļo kontrolsummu…"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:506
 #: src/utils/aLinkCreator/src/alcframe.cpp:521
@@ -7287,7 +7289,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:931
 msgid "aMule is connecting..."
-msgstr ""
+msgstr "aMule pieslēdzas…"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:935
 msgid "Oh Oh, aMule status is unknown..."
@@ -7316,7 +7318,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1021
 msgid " is connecting..."
-msgstr ""
+msgstr " pieslēdzas…"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1025
 msgid " is doing something strange, check it !"
