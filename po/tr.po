@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-17 20:13+0200\n"
-"PO-Revision-Date: 2026-06-15 11:48+0000\n"
+"PO-Revision-Date: 2026-06-18 22:08+0000\n"
 "Last-Translator: \n"
 "Language-Team: Turkish <li@li.org>\n"
 "Language: tr\n"
@@ -1530,7 +1530,7 @@ msgstr "İndirmeler (%i)"
 
 #: src/DownloadListCtrl.cpp:1447
 msgid "the default Windows shell handler"
-msgstr ""
+msgstr "varsayılan Windows kabuk işleyicisi"
 
 #: src/DownloadListCtrl.cpp:1454
 #, c-format
@@ -1539,7 +1539,7 @@ msgid ""
 "set your preferred video player in preferences (default is %s)."
 msgstr ""
 "Her önizlemede bu uyarının gösterilmesini önlemek için,\n"
-"seçeneklerden tercih ettiğiniz video oynatıcısını ayarlayın. (öntanımlı %s)"
+"seçeneklerden tercih ettiğiniz video oynatıcısını ayarlayın (varsayılan %s)."
 
 #: src/DownloadListCtrl.cpp:1455
 msgid "File preview"
