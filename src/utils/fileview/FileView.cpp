@@ -30,6 +30,7 @@
 #include "KadFiles.h"
 #include "Print.h"
 #include "../../CFile.h"
+#include <common/LocaleInit.h>
 
 #define VERSION_MAJOR	0
 #define VERSION_MINOR	10
@@ -78,6 +79,12 @@ IMPLEMENT_APP(CFileView);
 
 void CFileView::OnInitCmdLine(wxCmdLineParser& parser)
 {
+	// Pull LC_CTYPE etc. from the environment so unicode2char() emits
+	// real UTF-8 instead of mangling non-ASCII filenames under the
+	// default "C" locale (see #203). CFileView has no OnInit override,
+	// so this is the earliest hook wxApp calls after construction.
+	aMuleInitLocale();
+
 	parser.AddSwitch("h", "help", "Show help", wxCMD_LINE_OPTION_HELP);
 	parser.AddSwitch("v", "version", "Show program version", wxCMD_LINE_PARAM_OPTIONAL);
 	parser.AddOption("s", "strings", "String decoding mode: display (default), safe, utf8, none", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);

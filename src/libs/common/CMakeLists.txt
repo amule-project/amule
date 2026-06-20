@@ -1,6 +1,7 @@
 add_library (mulecommon STATIC
 	FileFunctions.cpp
 	Format.cpp
+	LocaleInit.cpp
 	MD5Sum.cpp
 	MuleDebug.cpp
 	Path.cpp

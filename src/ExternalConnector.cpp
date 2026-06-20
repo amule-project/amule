@@ -24,8 +24,8 @@
 
 #include "ExternalConnector.h"
 #include "config.h"		// Needed for VERSION and readline detection
-#include <clocale>		// For setlocale()
 #include <common/Format.h>	// Needed for CFormat
+#include <common/LocaleInit.h>	// Needed for aMuleInitLocale()
 #include <wx/tokenzr.h>		// For wxStringTokenizer
 
 // For readline
@@ -678,7 +678,9 @@ bool CaMuleExternalConnector::OnInit()
 	// readline does its own setlocale on first read, so paths that go
 	// through readline appear to work; non-interactive paths (e.g.
 	// amulecmd -c "...") don't and need the explicit init here.
-	setlocale(LC_ALL, "");
+	// The helper also forces LC_NUMERIC back to "C" so libc printf/scanf
+	// decimal handling stays portable.
+	aMuleInitLocale();
 
 	// If we didn't know that OnInit is called only once when creating the
 	// object, it could cause a memory leak. The two pointers below should

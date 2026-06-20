@@ -47,6 +47,7 @@
 
 #include <wx/utils.h>
 
+#include <common/LocaleInit.h>		// Needed for aMuleInitLocale()
 #include "Preferences.h"		// Needed for CPreferences
 #include "PartFile.h"			// Needed for CPartFile
 #include "PartFileHashThread.h"	// Needed for EVT_PARTFILE_HASH_RESULT
@@ -218,6 +219,11 @@ bool CamuleDaemonApp::Initialize(int& argc_, wxChar **argv_)
 	if ( !wxAppConsole::Initialize(argc_, argv_) ) {
 		return false;
 	}
+
+	// Pull LC_CTYPE etc. from the environment so unicode2char() emits
+	// real UTF-8 instead of mangling non-ASCII bytes under the default
+	// "C" locale (see #203).
+	aMuleInitLocale();
 
 #ifdef __UNIX__
 	wxString encName;

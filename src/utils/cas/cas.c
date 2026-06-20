@@ -24,6 +24,7 @@
  *  Free Software Foundation, Inc.,
  *  51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
  */
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -152,6 +153,15 @@ return getopt(argc,argv,optstring);
 
 int main(int argc, char *argv[])
 {
+	/* Pull LC_CTYPE etc. from the environment so non-ASCII paths and
+	 * config values come through correctly under the default "C" locale
+	 * (see amule-org/amule#203). Force LC_NUMERIC back to "C" so
+	 * sprintf("%f") and friends stay portable across user locales. cas
+	 * is plain C, so we call libc setlocale directly rather than the
+	 * C++ aMuleInitLocale() helper used by the other binaries. */
+	setlocale(LC_ALL, "");
+	setlocale(LC_NUMERIC, "C");
+
 	/* Declaration of variables */
 	FILE *amulesig;
 	int use_page = 0;
