@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: aMule 2.3.3\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-17 20:13+0200\n"
-"PO-Revision-Date: 2026-06-18 22:05+0000\n"
+"PO-Revision-Date: 2026-06-20 02:01+0000\n"
 "Last-Translator: got3nks <got3nks@users.noreply.github.com>\n"
 "Language-Team: SebastianoPistore.info@protonmail.ch\n"
 "Language: it\n"
@@ -1544,7 +1544,7 @@ msgstr "Download (%i)"
 
 #: src/DownloadListCtrl.cpp:1447
 msgid "the default Windows shell handler"
-msgstr ""
+msgstr "il gestore di shell predefinito di Windows"
 
 #: src/DownloadListCtrl.cpp:1454
 #, c-format
@@ -4254,7 +4254,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2574
 msgid "License key:"
-msgstr "Chiave di licenza:"
+msgstr "License key:"
 
 #: src/muuli_wdr.cpp:2580
 msgid ""
@@ -5488,16 +5488,15 @@ msgstr "ID File"
 
 #: src/SearchListCtrl.cpp:104
 msgid "Length"
-msgstr ""
+msgstr "Durata"
 
 #: src/SearchListCtrl.cpp:105
-#, fuzzy
 msgid "Bitrate"
-msgstr "Senza voto"
+msgstr "Bitrate"
 
 #: src/SearchListCtrl.cpp:106
 msgid "Codec"
-msgstr ""
+msgstr "Codec"
 
 #: src/SearchListCtrl.cpp:709
 msgid "Download in category"
@@ -5521,9 +5520,8 @@ msgid "Copy eD2k link to clipboard"
 msgstr "Copia il collegamento eD2k negli appunti"
 
 #: src/SearchListCtrl.cpp:811
-#, fuzzy
 msgid "You are not currently connected to a server supporting the Related Files search function"
-msgstr "Sei connesso al server che vuoi eliminare. Disconnettiti prima."
+msgstr "Al momento non sei connesso ad un server che supporta la Ricerca di File Correlati"
 
 #: src/SearchListCtrl.cpp:1105
 msgid "Canceled"
@@ -5756,11 +5754,11 @@ msgstr "Versione"
 
 #: src/ServerListCtrl.cpp:100
 msgid "TCP Flags"
-msgstr ""
+msgstr "TCP Flags"
 
 #: src/ServerListCtrl.cpp:101
 msgid "UDP Flags"
-msgstr ""
+msgstr "UDP Flags"
 
 #: src/ServerListCtrl.cpp:155
 msgid "You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."

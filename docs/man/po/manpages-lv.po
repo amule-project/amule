@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2026-06-10 16:45+0200\n"
-"PO-Revision-Date: 2026-06-18 22:22+0000\n"
+"PO-Revision-Date: 2026-06-20 02:01+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: none\n"
 "Language: lv\n"
@@ -69,7 +69,7 @@ msgstr ""
 #. type: Plain text
 #: amule.1.in:10 amulegui.1.in:10
 msgid "[B<-c> I<E<lt>pathE<gt>>] [B<-geometry> I<E<lt>geomE<gt>>]"
-msgstr ""
+msgstr "[B<-c> I<E<lt>ceļšE<gt>>] [B<-geometry> I<E<lt>ģeometrijaE<gt>>]"
 
 #. type: Plain text
 #: amule.1.in:14 amuled.1.in:16
@@ -79,7 +79,7 @@ msgstr "[B<-w> I<E<lt>ceļšE<gt>>]"
 #. type: Plain text
 #: amule.1.in:18 amuled.1.in:20
 msgid "[B<-t> I<E<lt>numE<gt>>] [I<eD2k-link>]"
-msgstr ""
+msgstr "[B<-t> I<E<lt>numursE<gt>>] [I<eD2k-saite>]"
 
 #. type: SH
 #: amule.1.in:25 amulecmd.1.in:26 amuled.1.in:26 amulegui.1.in:23
@@ -95,7 +95,7 @@ msgstr "APRAKSTS"
 #: ../../src/utils/cas/docs/cas.1.in:27
 #, no-wrap
 msgid "B<[ -c> I<E<lt>pathE<gt>>, B<--config-dir>=I<E<lt>pathE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ -c> I<E<lt>ceļšE<gt>>, B<--config-dir>=I<E<lt>ceļšE<gt>> B<]>"
 
 #. type: Plain text
 #: amule.1.in:29 amuled.1.in:30 amulegui.1.in:30 ed2k.1.in:24
@@ -107,7 +107,7 @@ msgstr ""
 #: amule.1.in:29 amulegui.1.in:30
 #, no-wrap
 msgid "B<[ -geometry >I<E<lt>geomE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ -geometry >I<E<lt>ģeometrijaE<gt>> B<]>"
 
 #. type: Plain text
 #: amule.1.in:32 amulegui.1.in:33
@@ -133,7 +133,7 @@ msgstr ""
 #: amule.1.in:42 amuled.1.in:50
 #, no-wrap
 msgid "B<[ -w> I<E<lt>pathE<gt>>, B<--use-amuleweb>=I<E<lt>pathE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ -w> I<E<lt>ceļšE<gt>>, B<--use-amuleweb>=I<E<lt>ceļšE<gt>> B<]>"
 
 #. type: Plain text
 #: amule.1.in:45 amuled.1.in:53
@@ -154,7 +154,7 @@ msgstr ""
 #: amule.1.in:53 amulegui.1.in:54
 #, no-wrap
 msgid "B<[ -t>, B<--category>=I<E<lt>numE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ -t>, B<--category>=I<E<lt>numursE<gt>> B<]>"
 
 #. type: Plain text
 #: amule.1.in:56 amuled.1.in:64 amulegui.1.in:57
@@ -165,7 +165,7 @@ msgstr ""
 #: amule.1.in:59 amulecmd.1.in:70 amuled.1.in:67 amulegui.1.in:63
 #: amuleweb.1.in:130 ed2k.1.in:40
 msgid "Displays the current version number."
-msgstr ""
+msgstr "Parāda pašreizējo versijas numuru."
 
 #. type: Plain text
 #: amule.1.in:62 amulecmd.1.in:73 amuled.1.in:70 amulegui.1.in:60
@@ -209,7 +209,7 @@ msgstr ""
 #. type: Plain text
 #: amule.1.in:76 amuled.1.in:84
 msgid "a magnet link."
-msgstr ""
+msgstr "magnētsaite."
 
 #. type: SH
 #: amule.1.in:77 amulecmd.1.in:233 amuleweb.1.in:136
@@ -317,7 +317,7 @@ msgstr "AMULECMD"
 #: amulecmd.1.in:1
 #, no-wrap
 msgid "aMuleCmd v@PACKAGE_VERSION@"
-msgstr ""
+msgstr "aMuleCmd v@PACKAGE_VERSION@"
 
 #. type: TH
 #: amulecmd.1.in:1 amuleweb.1.in:1 ed2k.1.in:1
@@ -331,7 +331,7 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1.in:7
 msgid "amulecmd - Console-based program to control aMule"
-msgstr ""
+msgstr "amulecmd - komandrindas programma aMule vadīšanai"
 
 #. type: Plain text
 #: amulecmd.1.in:13 amuleweb.1.in:12
@@ -341,7 +341,7 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1.in:17
 msgid "[B<-l> I<E<lt>langE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> I<E<lt>commandE<gt>>]B< >}"
-msgstr ""
+msgstr "[B<-l> I<E<lt>valodaE<gt>>] {B< >[B<-w>]B< >|B< >[B<-c> I<E<lt>komandaE<gt>>]B< >}"
 
 #. type: Plain text
 #: amulecmd.1.in:20 amuleweb.1.in:31
@@ -351,13 +351,13 @@ msgstr "[B<--create-config-from>=I<E<lt>ceļšE<gt>>]"
 #. type: Plain text
 #: amulecmd.1.in:29
 msgid "B<amulecmd> is a console-based client to control aMule."
-msgstr ""
+msgstr "B<amulecmd> ir komandrindas programma aMule vadīšanai."
 
 #. type: TP
 #: amulecmd.1.in:29 amuleweb.1.in:46
 #, no-wrap
 msgid "B<[ -h> I<E<lt>hostE<gt>>, B<--host>=I<E<lt>hostE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ -h> I<E<lt>resursdatorsE<gt>>, B<--host>=I<E<lt>resursdatorsE<gt>> B<]>"
 
 #. type: Plain text
 #: amulecmd.1.in:33 amuleweb.1.in:50
@@ -368,7 +368,7 @@ msgstr ""
 #: amulecmd.1.in:33 amuleweb.1.in:50
 #, no-wrap
 msgid "B<[ -p> I<E<lt>portE<gt>>, B<--port>=I<E<lt>portE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ -p> I<E<lt>portsE<gt>>, B<--port>=I<E<lt>portsE<gt>> B<]>"
 
 #. type: Plain text
 #: amulecmd.1.in:36 amuleweb.1.in:53
@@ -379,7 +379,7 @@ msgstr ""
 #: amulecmd.1.in:36 amuleweb.1.in:53
 #, no-wrap
 msgid "B<[ -P> I<E<lt>passwordE<gt>>, B<--password>=I<E<lt>passwordE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ -P> I<E<lt>paroleE<gt>>, B<--password>=I<E<lt>paroleE<gt>> B<]>"
 
 #. type: Plain text
 #: amulecmd.1.in:39 amuleweb.1.in:56
@@ -390,7 +390,7 @@ msgstr ""
 #: amulecmd.1.in:39 amuleweb.1.in:56
 #, no-wrap
 msgid "B<[ -f> I<E<lt>pathE<gt>>, B<--config-file>=I<E<lt>pathE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ -f> I<E<lt>ceļšE<gt>>, B<--config-file>=I<E<lt>ceļšE<gt>> B<]>"
 
 #. type: Plain text
 #: amulecmd.1.in:43 amuleweb.1.in:60
@@ -411,7 +411,7 @@ msgstr ""
 #: amulecmd.1.in:50 amuleweb.1.in:67
 #, no-wrap
 msgid "B<[ -l> I<E<lt>langE<gt>>, B<--locale>=I<E<lt>langE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ -l> I<E<lt>valodaE<gt>>, B<--locale>=I<E<lt>valodaE<gt>> B<]>"
 
 #. type: Plain text
 #: amulecmd.1.in:54 amuleweb.1.in:71
@@ -421,13 +421,13 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1.in:57 amuleweb.1.in:74
 msgid "Write command line options to config file and exit"
-msgstr ""
+msgstr "Ierakstīt komandrindas parametrus konfigurācijas iestatījumu datnē un iziet"
 
 #. type: TP
 #: amulecmd.1.in:57
 #, no-wrap
 msgid "B<[ -c> I<E<lt>commandE<gt>>, B<--command>=I<E<lt>commandE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ -c> I<E<lt>komandaE<gt>>, B<--command>=I<E<lt>komandaE<gt>> B<]>"
 
 #. type: Plain text
 #: amulecmd.1.in:60
@@ -438,7 +438,7 @@ msgstr ""
 #: amulecmd.1.in:60 amuleweb.1.in:117
 #, no-wrap
 msgid "B<[ --create-config-from>=I<E<lt>pathE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ --create-config-from>=I<E<lt>ceļšE<gt>> B<]>"
 
 #. type: Plain text
 #: amulecmd.1.in:63 amuleweb.1.in:120
@@ -459,7 +459,7 @@ msgstr "KOMANDAS"
 #. type: Plain text
 #: amulecmd.1.in:75
 msgid "All commands are case insensitive."
-msgstr ""
+msgstr "Visas komandas ir reģistrnejutīgas - var rakstīt ar lielajiem vai mazajiem burtiem."
 
 #. type: Plain text
 #: amulecmd.1.in:77
@@ -484,7 +484,7 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1.in:93
 msgid "Connect to the network."
-msgstr ""
+msgstr "Pieslēgties tīklam."
 
 #. type: Plain text
 #: amulecmd.1.in:95
@@ -519,7 +519,7 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1.in:112
 msgid "Get and display a preference value."
-msgstr ""
+msgstr "Iegūt un parādīt iestatījuma vērtību."
 
 #. type: Plain text
 #: amulecmd.1.in:114 amulecmd.1.in:148 amulecmd.1.in:197 amulecmd.1.in:207
@@ -554,27 +554,27 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1.in:130
 msgid "Available values for I<E<lt>priorityE<gt>>:"
-msgstr ""
+msgstr "Pieejamās I<E<lt>prioritātesE<gt>> vērtības:"
 
 #. type: Plain text
 #: amulecmd.1.in:133
 msgid "Automatic priority."
-msgstr ""
+msgstr "Automātiska prioritāte."
 
 #. type: Plain text
 #: amulecmd.1.in:135
 msgid "High priority."
-msgstr ""
+msgstr "Augsta prioritāte."
 
 #. type: Plain text
 #: amulecmd.1.in:137
 msgid "Low priority."
-msgstr ""
+msgstr "Zema prioritāte."
 
 #. type: Plain text
 #: amulecmd.1.in:139
 msgid "Normal priority."
-msgstr ""
+msgstr "Normāla prioritāte."
 
 #. type: Plain text
 #: amulecmd.1.in:142
@@ -634,7 +634,7 @@ msgstr ""
 #. type: Plain text
 #: amulecmd.1.in:171
 msgid "Performs a search on the Kademlia network."
-msgstr ""
+msgstr "Veic meklēšanu Kademlia tīklā."
 
 #. type: Plain text
 #: amulecmd.1.in:173
@@ -828,13 +828,13 @@ msgstr "AMULED"
 #: amuled.1.in:1
 #, no-wrap
 msgid "aMule Daemon v@PACKAGE_VERSION@"
-msgstr ""
+msgstr "aMule fona programma v@PACKAGE_VERSION@"
 
 #. type: TH
 #: amuled.1.in:1
 #, no-wrap
 msgid "aMule Daemon"
-msgstr ""
+msgstr "aMule fona programma"
 
 #. type: Plain text
 #: amuled.1.in:6
@@ -844,12 +844,12 @@ msgstr ""
 #. type: Plain text
 #: amuled.1.in:9 ../../src/utils/cas/docs/cas.1.in:11
 msgid "[B<-c> I<E<lt>pathE<gt>>]"
-msgstr ""
+msgstr "[B<-c> I<E<lt>ceļšE<gt>>]"
 
 #. type: Plain text
 #: amuled.1.in:11
 msgid "[B<-p> I<E<lt>pathE<gt>>]"
-msgstr ""
+msgstr "[B<-p> I<E<lt>ceļšE<gt>>]"
 
 #. type: Plain text
 #: amuled.1.in:33
@@ -893,23 +893,23 @@ msgstr "AMULEGUI"
 #: amulegui.1.in:1
 #, no-wrap
 msgid "aMuleGUI v@PACKAGE_VERSION@"
-msgstr ""
+msgstr "aMuleGUI v@PACKAGE_VERSION@"
 
 #. type: TH
 #: amulegui.1.in:1
 #, no-wrap
 msgid "aMuleGUI"
-msgstr ""
+msgstr "aMuleGUI"
 
 #. type: Plain text
 #: amulegui.1.in:6
 msgid "amulegui - aMule control program with GUI"
-msgstr ""
+msgstr "amulegui - aMule vadības programma ar grafisko lietotāja saskarni (GUI)"
 
 #. type: Plain text
 #: amulegui.1.in:17
 msgid "[B<-t> I<E<lt>numE<gt>>]"
-msgstr ""
+msgstr "[B<-t> I<E<lt>numursE<gt>>]"
 
 #. type: Plain text
 #: amulegui.1.in:27
@@ -940,23 +940,23 @@ msgstr ""
 #: amuleweb.1.in:1
 #, no-wrap
 msgid "AMULEWEB"
-msgstr ""
+msgstr "AMULEWEB"
 
 #. type: TH
 #: amuleweb.1.in:1
 #, no-wrap
 msgid "aMule webserver v@PACKAGE_VERSION@"
-msgstr ""
+msgstr "aMule tīmekļa serveris v@PACKAGE_VERSION@"
 
 #. type: Plain text
 #: amuleweb.1.in:6
 msgid "amuleweb - aMule web server"
-msgstr ""
+msgstr "amuleweb - aMule tīmekļa serveris"
 
 #. type: Plain text
 #: amuleweb.1.in:15
 msgid "[B<-l> I<E<lt>langE<gt>>]"
-msgstr ""
+msgstr "[B<-l> I<E<lt>valodaE<gt>>]"
 
 #. type: Plain text
 #: amuleweb.1.in:18
@@ -966,17 +966,17 @@ msgstr ""
 #. type: Plain text
 #: amuleweb.1.in:20
 msgid "[B<-U> I<E<lt>portE<gt>>]"
-msgstr ""
+msgstr "[B<-U> I<E<lt>portsE<gt>>]"
 
 #. type: Plain text
 #: amuleweb.1.in:24
 msgid "[B<-A> I<E<lt>passwordE<gt>>] [B<-G> I<E<lt>passwordE<gt>>]"
-msgstr ""
+msgstr "[B<-A> I<E<lt>paroleE<gt>>] [B<-G> I<E<lt>paroleE<gt>>]"
 
 #. type: Plain text
 #: amuleweb.1.in:40
 msgid "[B<--amule-config-file>=I<E<lt>pathE<gt>>]"
-msgstr ""
+msgstr "[B<--amule-config-file>=I<E<lt>ceļšE<gt>>]"
 
 #. type: Plain text
 #: amuleweb.1.in:46
@@ -1014,12 +1014,12 @@ msgstr ""
 #: amuleweb.1.in:84
 #, no-wrap
 msgid "B<[ -U> I<E<lt>portE<gt>>, B<--upnp-port>=I<E<lt>portE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ -U> I<E<lt>portsE<gt>>, B<--upnp-port>=I<E<lt>portsE<gt>> B<]>"
 
 #. type: Plain text
 #: amuleweb.1.in:87
 msgid "UPnP port."
-msgstr ""
+msgstr "UPnP ports."
 
 #. type: Plain text
 #: amuleweb.1.in:90
@@ -1035,7 +1035,7 @@ msgstr ""
 #: amuleweb.1.in:93
 #, no-wrap
 msgid "B<[ -A> I<E<lt>passwdE<gt>>, B<--admin-pass>=I<E<lt>passwdE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ -A> I<E<lt>paroleE<gt>>, B<--admin-pass>=I<E<lt>paroleE<gt>> B<]>"
 
 #. type: Plain text
 #: amuleweb.1.in:96
@@ -1046,7 +1046,7 @@ msgstr ""
 #: amuleweb.1.in:96
 #, no-wrap
 msgid "B<[ -G> I<E<lt>passwdE<gt>>, B<--guest-pass>=I<E<lt>passwdE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ -G> I<E<lt>paroleE<gt>>, B<--guest-pass>=I<E<lt>paroleE<gt>> B<]>"
 
 #. type: Plain text
 #: amuleweb.1.in:99
@@ -1082,7 +1082,7 @@ msgstr ""
 #: amuleweb.1.in:130
 #, no-wrap
 msgid "B<[ --amule-config-file>=I<E<lt>pathE<gt>> B<]>"
-msgstr ""
+msgstr "B<[ --amule-config-file>=I<E<lt>ceļšE<gt>> B<]>"
 
 #. type: Plain text
 #: amuleweb.1.in:136
@@ -1108,12 +1108,12 @@ msgstr ""
 #. type: Plain text
 #: amuleweb.1.in:179
 msgid "~/.aMule/webserver/"
-msgstr ""
+msgstr "~/.aMule/webserver/"
 
 #. type: Plain text
 #: amuleweb.1.in:181
 msgid "I<$(pkgdatadir)>/webserver/"
-msgstr ""
+msgstr "I<$(pkgdatadir)>/webserver/"
 
 #. type: Plain text
 #: amuleweb.1.in:183
@@ -1139,7 +1139,7 @@ msgstr ""
 #: ed2k.1.in:1
 #, no-wrap
 msgid "ED2K"
-msgstr ""
+msgstr "ED2K"
 
 #. type: TH
 #: ed2k.1.in:1
@@ -1155,12 +1155,12 @@ msgstr ""
 #. type: Plain text
 #: ed2k.1.in:10
 msgid "[B<-c> I<E<lt>pathE<gt>>] [B<-t> I<E<lt>numE<gt>>]"
-msgstr ""
+msgstr "[B<-c> I<E<lt>ceļšE<gt>>] [B<-t> I<E<lt>numursE<gt>>]"
 
 #. type: Plain text
 #: ed2k.1.in:13
 msgid "I<E<lt>eD2k-linkE<gt>>"
-msgstr ""
+msgstr "I<E<lt>eD2k-saiteE<gt>>"
 
 #. type: Plain text
 #: ed2k.1.in:21
@@ -1191,7 +1191,7 @@ msgstr ""
 #. type: Plain text
 #: ed2k.1.in:54
 msgid "a magnet link;"
-msgstr ""
+msgstr "magnētsaite;"
 
 #. type: Plain text
 #: ed2k.1.in:56
@@ -1206,7 +1206,7 @@ msgstr ""
 #. type: Plain text
 #: ed2k.1.in:63
 msgid "~/.aMule/ED2KLinks"
-msgstr ""
+msgstr "~/.aMule/ED2KLinks"
 
 #. type: TH
 #: ../../src/utils/aLinkCreator/docs/alc.1.in:1
@@ -1218,7 +1218,7 @@ msgstr ""
 #: ../../src/utils/aLinkCreator/docs/alc.1.in:1
 #, no-wrap
 msgid "aLinkCreator"
-msgstr ""
+msgstr "aLinkCreator"
 
 #. type: Plain text
 #: ../../src/utils/aLinkCreator/docs/alc.1.in:5
@@ -1246,7 +1246,7 @@ msgstr ""
 #: ../../src/utils/aLinkCreator/docs/alcc.1.in:1
 #, no-wrap
 msgid "aMule eD2k links calculator"
-msgstr ""
+msgstr "aMule eD2k saišu kalkulators"
 
 #. type: Plain text
 #: ../../src/utils/aLinkCreator/docs/alcc.1.in:6
@@ -1256,7 +1256,7 @@ msgstr ""
 #. type: Plain text
 #: ../../src/utils/aLinkCreator/docs/alcc.1.in:11
 msgid "I<E<lt>inputfiles_listE<gt>>"
-msgstr ""
+msgstr "I<E<lt>ievaddatņu_sarakstsE<gt>>"
 
 #. type: Plain text
 #: ../../src/utils/aLinkCreator/docs/alcc.1.in:16
@@ -1283,7 +1283,7 @@ msgstr ""
 #: ../../src/utils/cas/docs/cas.1.in:1
 #, no-wrap
 msgid "cas v0.8"
-msgstr ""
+msgstr "cas v0.8"
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1.in:6
@@ -1318,7 +1318,7 @@ msgstr ""
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1.in:39
 msgid "~/.aMule/casrc"
-msgstr ""
+msgstr "~/.aMule/casrc"
 
 #. type: Plain text
 #: ../../src/utils/cas/docs/cas.1.in:41

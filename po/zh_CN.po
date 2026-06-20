@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-17 20:13+0200\n"
-"PO-Revision-Date: 2026-06-18 22:12+0000\n"
+"PO-Revision-Date: 2026-06-20 02:01+0000\n"
 "Last-Translator: Mike Akiba <mike2718@gmail.com>\n"
 "Language-Team: Chinese Simplified <kde-i18n-doc@kde.org>\n"
 "Language: zh_CN\n"
@@ -46,6 +46,9 @@ msgid ""
 "\n"
 "Install desktop integration now?"
 msgstr ""
+"aMule 可以在主目录中安装桌面启动器和图标，以便它像常规安装的应用程序一样显示在应用菜单中。此操作是可逆的—— 相关文件存放在 ~/.local/share/applications 和 ~/.local/share/icons 目录下，你可以随时将其删除。\n"
+"\n"
+"现在立即安装桌面集成吗？"
 
 #: src/AppImageIntegration.cpp:226
 msgid "Add aMule to your application menu?"
@@ -65,7 +68,7 @@ msgstr "不要再提醒我"
 
 #: src/AppImageIntegration.cpp:248
 msgid "Cannot install desktop integration: the APPDIR environment variable is not set. This usually means the AppImage was launched in a non-standard way."
-msgstr ""
+msgstr "无法安装桌面集成：APPDIR 环境变量未设置。这通常表明 AppImage 以非标准的形式启动。"
 
 #: src/AppImageIntegration.cpp:250 src/AppImageIntegration.cpp:262
 #: src/AppImageIntegration.cpp:274
@@ -75,16 +78,16 @@ msgstr "aMule 集成失败"
 #: src/AppImageIntegration.cpp:259
 #, c-format
 msgid "Cannot install desktop integration: failed to create %s. Check that your home directory is writable."
-msgstr ""
+msgstr "无法安装桌面集成：创建 %s 失败。请检查主目录是可写入的。"
 
 #: src/AppImageIntegration.cpp:271
 #, c-format
 msgid "Cannot install desktop integration: failed to write %s. Check that your home directory is writable."
-msgstr ""
+msgstr "无法安装桌面集成。写入 %s 失败。请检查主目录是可写入的。"
 
 #: src/AppImageIntegration.cpp:281
 msgid "AppImage integration: aMule added to your application menu."
-msgstr ""
+msgstr "AppImage 集成：aMule 已添加到你的应用程序菜单。"
 
 #: src/AppImageIntegration.cpp:284
 msgid ""
@@ -94,6 +97,11 @@ msgid ""
 "\n"
 "Restart aMule now?"
 msgstr ""
+"aMule 已添加到你的应用菜单中。现在可以从应用列表中启动它，该启动器将运行同一个 AppImage。\n"
+"\n"
+"在某些桌面环境下，aMule 可能需要重启，以便让 Dock 栏 / 任务栏图标与新的启动器项正确绑定。现代 Wayland 合成器（如 GNOME、KDE）可以实时识别这一变化，但如果图标仍然显示为通用图标，重启软件是最稳妥的解决办法。\n"
+"\n"
+"现在立即重启 aMule 吗？"
 
 #: src/AppImageIntegration.cpp:287
 msgid "aMule installed"
@@ -193,13 +201,15 @@ msgstr "eD2k 服务器列表 (server.met)"
 
 #: src/amule.cpp:789
 msgid "Kad bootstrap nodes (nodes.dat)"
-msgstr ""
+msgstr "Kad 引导节点 (nodes.dat)"
 
 #: src/amule.cpp:796
 msgid ""
 "aMule has detected missing network bootstrap files.\n"
 "Select which ones to download:"
 msgstr ""
+"aMule 检测到缺少网络引导文件。\n"
+"请选择需要下载的文件："
 
 #: src/amule.cpp:797
 msgid "Network bootstrap"
@@ -775,7 +785,7 @@ msgstr "正在连接..."
 
 #: src/amule-remote-gui.cpp:480
 msgid "Connection failed. Please check the host, port, and password."
-msgstr ""
+msgstr "连接失败。请检查主机、端口和密码。"
 
 #: src/amule-remote-gui.cpp:517
 msgid "Remote GUI EC event handler"
@@ -800,6 +810,8 @@ msgid ""
 "Connection timed out. Unable to reach %s:%d within the allotted time.\n"
 "Please check the host, port and that aMule is running with External Connections enabled."
 msgstr ""
+"连接超时。无法在指定时间内连接到 %s:%d。\n"
+"请检查主机、端口，并确保 aMule 正在运行且已启用外部连接。"
 
 #: src/amule-remote-gui.cpp:657
 msgid "Ready"
@@ -1755,7 +1767,7 @@ msgstr "未找到客户端。"
 
 #: src/ExternalConn.cpp:1382
 msgid "EC_TAG_FRIEND_SHARED requires EC_TAG_FRIEND or EC_TAG_CLIENT."
-msgstr ""
+msgstr "EC_TAG_FRIEND_SHARED 需要 EC_TAG_FRIEND 或 EC_TAG_CLIENT。"
 
 #: src/ExternalConn.cpp:1530
 msgid "Search in progress. Refetch results in a moment!"
@@ -2046,7 +2058,7 @@ msgstr "输出程序版本。"
 
 #: src/ExternalConnector.cpp:525
 msgid "Force ZLIB compression regardless of dialed-IP locality (useful when the server is reachable over a VPN tunnel that resolves to a LAN IP)."
-msgstr ""
+msgstr "强制使用 ZLIB 压缩，忽略目标 IP 的地域属性（适用于服务器可通过解析为局域网 IP 的 VPN 隧道访问场景）。"
 
 #: src/FileDetailDialog.cpp:76
 msgid "File Details"
@@ -2209,7 +2221,7 @@ msgstr "创建 %s 的 HTTP 请求失败"
 #: src/HTTPDownload.cpp:337
 #, c-format
 msgid "HTTP download: empty response body for %s"
-msgstr ""
+msgstr "HTTP 下载：%s 返回的响应体为空"
 
 #: src/HTTPDownload.cpp:349
 #, c-format
@@ -2234,24 +2246,24 @@ msgstr "%s HTTP 下载失败：%s"
 #: src/HTTPDownload.cpp:380
 #, c-format
 msgid "HTTP 401 Unauthorized for %s"
-msgstr ""
+msgstr "HTTP 401 未授权访问 %s"
 
 #: src/IP2Country.cpp:82
 #, c-format
 msgid "Migrated existing GeoLite2-Country.mmdb to %s"
-msgstr ""
+msgstr "已将现有的 GeoLite2-Country.mmdb 迁移至 %s"
 
 #: src/IP2Country.cpp:134
 msgid "IP2Country: MaxMind selected as the GeoIP source but no License Key configured. Open Preferences → IP2Country, paste your free MaxMind License Key and click 'Update now'."
-msgstr ""
+msgstr "IP2Country：已选择 MaxMind 作为 GeoIP 源，但未配置许可证密钥。请打开偏好设置 → IP2Country，粘贴您的免费 MaxMind 许可证密钥，然后点击“立即更新”。"
 
 #: src/IP2Country.cpp:140
 msgid "IP2Country: Custom URL selected as the GeoIP source but no URL configured. Open Preferences → IP2Country and supply a URL that points to an .mmdb (or .gz / .tar.gz containing one)."
-msgstr ""
+msgstr "IP2Country：已选择自定义 URL 作为 GeoIP 源，但未配置 URL。请打开偏好设置 → IP2Country，并提供指向 .mmdb 文件（或包含该文件的.gz/.tar.gz 压缩包）的 URL。"
 
 #: src/IP2Country.cpp:146
 msgid "IP2Country: failed to resolve a GeoIP download URL."
-msgstr ""
+msgstr "IP2Country：无法解析 GeoIP 下载链接。"
 
 #: src/IP2Country.cpp:157
 #, c-format
@@ -2285,7 +2297,7 @@ msgstr "更新 %s 出错"
 
 #: src/IP2Country.cpp:249
 msgid "DB-IP download failed for the current month - retrying with the previous month's URL."
-msgstr ""
+msgstr "当前月份的 DB-IP 下载失败，正在尝试使用上个月的 URL 重试。"
 
 #: src/IP2Country.cpp:254 src/IPFilter.cpp:512 src/ServerList.cpp:872
 #, c-format
@@ -2940,7 +2952,7 @@ msgstr "更多"
 
 #: src/muuli_wdr.cpp:325
 msgid "Ask already-responded Kad peers to widen the search. Each click queries the next-closest peer for more contacts (KADEMLIA_FIND_VALUE_MORE), surfacing additional file matches that the search's initial alpha frontier missed."
-msgstr ""
+msgstr "向已响应的 Kad 节点请求扩大搜索范围。每次点击都会查询下一个最近的节点，以获取更多联系人（KADEMLIA_FIND_VALUE_MORE），从而显示搜索初始 alpha 边界遗漏的其他文件匹配项。"
 
 #: src/muuli_wdr.cpp:330
 msgid "Stop"
@@ -3335,11 +3347,11 @@ msgstr "启用此选项将让 aMule 启动时检查新版本"
 
 #: src/muuli_wdr.cpp:1225
 msgid "Start aMule automatically when I log in"
-msgstr ""
+msgstr "登录时自动启动 aMule"
 
 #: src/muuli_wdr.cpp:1226
 msgid "Registers a per-user autostart entry with the OS so aMule launches at login. If you move the aMule binary, launch aMule once manually afterwards to refresh the entry."
-msgstr ""
+msgstr "在操作系统中注册一个按用户自动启动的条目，以便在登录时启动 aMule。如果移动了 aMule 的可执行文件，之后请手动启动一次 aMule 以刷新该条目。"
 
 #: src/muuli_wdr.cpp:1229
 msgid "Start minimized"
@@ -3621,14 +3633,16 @@ msgid ""
 "Completed downloads are stored here. All files in this folder are automatically shared with other peers.\n"
 "If this folder also holds files you don't want to share, point it at an aMule-only sub-folder."
 msgstr ""
+"已完成下载的文件存储在此处。此文件夹中的所有文件将自动与其他对等点共享。\n"
+"如果此文件夹中还包含您不想共享的文件，请为 aMule 选择一个专用子文件夹。"
 
 #: src/muuli_wdr.cpp:1570
 msgid "Pick the folder where completed downloads will be stored. All files in that folder will be shared with other peers."
-msgstr ""
+msgstr "选择完成下载文件的存储文件夹。该文件夹中的所有文件都将与其他对等节点共享。"
 
 #: src/muuli_wdr.cpp:1574
 msgid "(All files in this folder are shared with other peers)"
-msgstr ""
+msgstr "（此文件夹中的所有文件均与其他对等方共享）"
 
 #: src/muuli_wdr.cpp:1576
 msgid "Folder for temporary download files"
@@ -3648,11 +3662,11 @@ msgstr "共享隐藏文件"
 
 #: src/muuli_wdr.cpp:1599
 msgid "Automatically rescan shared folders for changes"
-msgstr ""
+msgstr "自动重新扫描共享文件夹以检测更改"
 
 #: src/muuli_wdr.cpp:1605
 msgid "Follow symbolic links in shared folders"
-msgstr ""
+msgstr "在共享文件夹中跟踪符号链接"
 
 #: src/muuli_wdr.cpp:1624
 msgid "Graphs"
@@ -4188,7 +4202,7 @@ msgstr "为客户端显示国旗"
 
 #: src/muuli_wdr.cpp:2515
 msgid "Render the country flag column in the transfers, queue and search views. Requires a valid MMDB GeoIP database (see below)."
-msgstr ""
+msgstr "在传输、队列和搜索视图中渲染国家旗帜列。需要有效的 MMDB GeoIP 数据库（见下文）。"
 
 #: src/muuli_wdr.cpp:2520
 msgid "Database"
@@ -4200,19 +4214,19 @@ msgstr "源："
 
 #: src/muuli_wdr.cpp:2539
 msgid "DB-IP (free, no account)"
-msgstr ""
+msgstr "DB-IP（免费，无需账户）"
 
 #: src/muuli_wdr.cpp:2540
 msgid "MaxMind GeoLite2 (free, account required)"
-msgstr ""
+msgstr "MaxMind GeoLite2（免费，需注册账户）"
 
 #: src/muuli_wdr.cpp:2541
 msgid "Custom URL"
-msgstr ""
+msgstr "自定义 URL"
 
 #: src/muuli_wdr.cpp:2544
 msgid "Choose which provider supplies the GeoIP MMDB database. DB-IP is the default - no account required. MaxMind requires a free account + license key. Use Custom URL to point at any other MMDB host (e.g. a local mirror)."
-msgstr ""
+msgstr "选择哪个提供商提供 GeoIP MMDB 数据库。DB-IP 是默认选项，无需账户。MaxMind 需要一个免费账户和许可证密钥。使用自定义 URL 指向任何其他 MMDB 主机（例如本地镜像）。"
 
 #: src/muuli_wdr.cpp:2561
 msgid ""
@@ -4221,10 +4235,14 @@ msgid ""
 "IP-to-Country data by DB-IP.com - https://db-ip.com\n"
 "License: Creative Commons BY 4.0 - https://creativecommons.org/licenses/by/4.0/"
 msgstr ""
+"无需配置。\n"
+"\n"
+"IP-to-Country 数据由 DB-IP.com 提供 - https://db-ip.com\n"
+"许可证：知识共享署名 4.0 国际版 - https://creativecommons.org/licenses/by/4.0/"
 
 #: src/muuli_wdr.cpp:2574
 msgid "License key:"
-msgstr ""
+msgstr "许可证密钥："
 
 #: src/muuli_wdr.cpp:2580
 msgid ""
@@ -4235,6 +4253,12 @@ msgid ""
 "License: MaxMind GeoLite2 EULA - https://www.maxmind.com/en/geolite2/eula\n"
 "Requires attribution and account registration; refresh at least every 30 days."
 msgstr ""
+"注册一个免费的 MaxMind 账户，然后生成一个许可证密钥：\n"
+"https://www.maxmind.com/en/geolite2/signup\n"
+"\n"
+"本产品包含由 MaxMind 创建的 GeoLite2 数据 - https://www.maxmind.com\n"
+"许可证：MaxMind GeoLite2 最终用户许可协议 - https://www.maxmind.com/en/geolite2/eula\n"
+"需要注明出处并注册账户；至少每 30 天刷新一次。"
 
 #: src/muuli_wdr.cpp:2595
 msgid "Download URL:"
@@ -4246,10 +4270,13 @@ msgid ""
 "URL may include credentials (https://user:pass@host/...).\n"
 "License and attribution terms are set by the upstream URL - you are responsible."
 msgstr ""
+"必须指向一个 .mmdb 文件，或包含该文件的 .gz / .tar.gz 压缩包。\n"
+"URL 可包含凭据（例如 https://user:pass@host/...）。\n"
+"许可和署名条款由上游 URL 决定——你需自行负责。"
 
 #: src/muuli_wdr.cpp:2614
 msgid "Download the GeoIP database from the selected source."
-msgstr ""
+msgstr "从所选源下载 GeoIP 数据库。"
 
 #: src/muuli_wdr.cpp:2616
 msgid "Auto-update on startup"
@@ -4257,7 +4284,7 @@ msgstr "启动后自动更新"
 
 #: src/muuli_wdr.cpp:2617
 msgid "Re-download the GeoIP database from the selected source every time aMule starts."
-msgstr ""
+msgstr "每次启动 aMule 时，从所选源重新下载 GeoIP 数据库。"
 
 #: src/muuli_wdr.cpp:2640
 msgid "Filter incoming messages (except current chat):"
@@ -4693,7 +4720,7 @@ msgstr "保存 part 文件时，发生 IO 错误: "
 #: src/PartFile.cpp:1030
 #, c-format
 msgid "Wrote 0/unknown bytes to '%s' -- preserving existing .part.met."
-msgstr ""
+msgstr "已向 '%s' 写入 0/未知字节——保留现有 .part.met 文件。"
 
 #: src/PartFile.cpp:1110
 #, c-format
@@ -4771,7 +4798,7 @@ msgstr "警告：无法生成校检码 - 校检码集不完整（%s）， 正常
 #: src/PartFile.cpp:2489
 #, c-format
 msgid "Part %u of '%s' marked complete but partfile is shorter than expected (have %llu bytes, need %llu); reopening gap for re-download."
-msgstr ""
+msgstr "分块 %u（属于文件 '%s'）标记为已完成，但该分片文件大小小于预期（现有 %llu 字节，需要 %llu 字节）；正在重新开放该区间以重新下载。"
 
 #: src/PartFile.cpp:2501 src/PartFile.cpp:2506
 #, c-format
@@ -5022,7 +5049,7 @@ msgstr "界面"
 
 #: src/PrefsUnifiedDlg.cpp:208
 msgid "IP2Country"
-msgstr ""
+msgstr "IP2Country"
 
 #: src/PrefsUnifiedDlg.cpp:211
 msgid "Proxy"
@@ -5064,11 +5091,11 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:351
 msgid "Tray icon support requires libayatana-appindicator3 at compile time."
-msgstr ""
+msgstr "系统托盘图标支持在编译时需要 libayatana-appindicator3。"
 
 #: src/PrefsUnifiedDlg.cpp:366
 msgid "Not available on Wayland: the protocol does not report when a window is minimized, so this option cannot intercept the system minimize button. Workaround: launch aMule with `GDK_BACKEND=x11` to use XWayland instead."
-msgstr ""
+msgstr "在 Wayland 上不可用：该协议无法报告窗口何时被最小化，因此此选项无法拦截系统的最小化按钮。解决方法：使用 `GDK_BACKEND=x11` 启动 aMule，以改用 XWayland。"
 
 #: src/PrefsUnifiedDlg.cpp:406
 msgid ""
@@ -5193,11 +5220,11 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1096
 msgid "Could not register aMule for autostart at login. The autostart store may be read-only."
-msgstr ""
+msgstr "无法将 aMule 注册为登录时自动启动。自动启动存储可能为只读。"
 
 #: src/PrefsUnifiedDlg.cpp:1097
 msgid "Could not remove the autostart-at-login entry."
-msgstr ""
+msgstr "无法移除登录时自动启动的条目。"
 
 #: src/PrefsUnifiedDlg.cpp:1098
 msgid "Autostart"
@@ -5257,11 +5284,11 @@ msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:1431
 msgid "IP2Country update failed"
-msgstr ""
+msgstr "IP2Country 更新失败"
 
 #: src/PrefsUnifiedDlg.cpp:1566
 msgid "Data by MaxMind GeoLite2"
-msgstr ""
+msgstr "数据来自 MaxMind GeoLite2"
 
 #: src/PrefsUnifiedDlg.cpp:1568
 msgid "Custom source"
@@ -5269,7 +5296,7 @@ msgstr "自定义源"
 
 #: src/PrefsUnifiedDlg.cpp:1570
 msgid "Data by DB-IP.com"
-msgstr ""
+msgstr "数据来源：DB-IP.com"
 
 #: src/PrefsUnifiedDlg.cpp:1590
 #, c-format
@@ -5283,11 +5310,11 @@ msgstr "状态：已加载%s~%s"
 
 #: src/PrefsUnifiedDlg.cpp:1598
 msgid "Status: Failed to load - click 'Update now' to refresh."
-msgstr ""
+msgstr "状态：加载失败 - 点击“立即更新”以刷新。"
 
 #: src/PrefsUnifiedDlg.cpp:1600
 msgid "Status: Not found - click 'Update now' to download."
-msgstr ""
+msgstr "状态：未找到 - 点击“立即更新”进行下载。"
 
 #: src/PrefsUnifiedDlg.cpp:1645 src/PrefsUnifiedDlg.cpp:1664
 #, c-format
@@ -5367,10 +5394,12 @@ msgid ""
 "The following folders look like system or sensitive locations:\n"
 "\n"
 msgstr ""
+"以下文件夹看起来像是系统或敏感位置：\n"
+"\n"
 
 #: src/PrefsUnifiedDlg.cpp:1957
 msgid "Sharing them recursively will publish every file underneath on the eD2k/Kad networks. Do you really want to do this?"
-msgstr ""
+msgstr "递归共享会将每个子文件发布到 eD2k/Kad 网络上。您确定要这样做吗？"
 
 #: src/PrefsUnifiedDlg.cpp:1959
 msgid "Confirm shared folders"
@@ -5382,7 +5411,7 @@ msgstr "正重新加载共享文件…"
 
 #: src/PrefsUnifiedDlg.cpp:1993
 msgid "Scanning for subdirectories…"
-msgstr ""
+msgstr "正在扫描子目录…"
 
 #: src/PrefsUnifiedDlg.cpp:1994
 msgid "Updating shared folders"
@@ -5391,7 +5420,7 @@ msgstr "正在上传共享的文件夹"
 #: src/PrefsUnifiedDlg.cpp:2023
 #, c-format
 msgid "Scanned %u directories…"
-msgstr ""
+msgstr "已扫描 %u 个目录……"
 
 #: src/PrefsUnifiedDlg.cpp:2073
 #, c-format
@@ -5408,11 +5437,11 @@ msgstr "搜索错误"
 
 #: src/SearchDlg.cpp:432
 msgid "Kad search: requested wider results from one more peer."
-msgstr ""
+msgstr "Kad 搜索：向另一个节点请求了更广泛的结果。"
 
 #: src/SearchDlg.cpp:438
 msgid "Kad search: no peer left to reask for more results (cap reached or no responses yet)."
-msgstr ""
+msgstr "Kad 搜索：没有剩余节点可重新请求更多结果（已达上限或尚无响应）。"
 
 #: src/SearchDlg.cpp:543
 msgid "Min size must be smaller than max size. Max size ignored."
@@ -5448,7 +5477,7 @@ msgstr "文件 ID"
 
 #: src/SearchListCtrl.cpp:104
 msgid "Length"
-msgstr ""
+msgstr "长度"
 
 #: src/SearchListCtrl.cpp:105
 msgid "Bitrate"
@@ -5456,7 +5485,7 @@ msgstr "比特率"
 
 #: src/SearchListCtrl.cpp:106
 msgid "Codec"
-msgstr ""
+msgstr "编解码器"
 
 #: src/SearchListCtrl.cpp:709
 msgid "Download in category"
@@ -5714,11 +5743,11 @@ msgstr "版本"
 
 #: src/ServerListCtrl.cpp:100
 msgid "TCP Flags"
-msgstr ""
+msgstr "TCP 标志"
 
 #: src/ServerListCtrl.cpp:101
 msgid "UDP Flags"
-msgstr ""
+msgstr "UDP 标志"
 
 #: src/ServerListCtrl.cpp:155
 msgid "You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."
@@ -5808,7 +5837,7 @@ msgstr "警告: %s (%s) - %s"
 #: src/ServerSocket.cpp:320
 #, c-format
 msgid "Server %s (%s) rejected our login (no client ID assigned). Disconnecting."
-msgstr ""
+msgstr "服务器 %s（%s）拒绝了我们的登录（未分配客户端 ID）。正在断开连接。"
 
 #: src/ServerSocket.cpp:362
 #, c-format

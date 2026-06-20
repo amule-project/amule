@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aMule GIT\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-17 20:13+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2026-06-20 02:01+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: none\n"
 "Language: ta\n"
@@ -1278,7 +1278,7 @@ msgstr ""
 #: src/DataToText.cpp:128 src/muuli_wdr.cpp:204 src/muuli_wdr.cpp:2890
 #: src/SearchDlg.cpp:110 src/TextClient.cpp:813
 msgid "Kad"
-msgstr ""
+msgstr "காட்"
 
 #: src/DataToText.cpp:129
 msgid "Source Exchange"
