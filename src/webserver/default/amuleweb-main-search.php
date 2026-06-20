@@ -28,6 +28,16 @@ function formCommandSubmit(command)
 				echo "return;";
 		}
 	?>
+	if ( command == "download" ) {
+		var boxchecked = document.querySelectorAll('input[type="checkbox"]:checked');
+		var selectedFiles = Object.values(boxchecked).filter(selected => selected.name != 'selectAllFiles').length;
+		if (selectedFiles == 0)
+			return;
+		var res = confirm("Download selected " + (selectedFiles) + " files ?")
+		if ( res == false ) {
+			return;
+		}
+	}
 	var frm=document.forms.mainform
 	frm.command.value=command
 	frm.submit()
@@ -275,7 +285,7 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
 	  ?>
     <tr class="al-right"> 
       <td colspan="4" scope="col">
-        <input name="Download" type="submit" id="Download6" value="Download" onClick="javascript:formCommandSubmit('download');" >
+        <input name="Download" type="submit" id="Download6" value="Download" onClick="javascript:formCommandSubmit('download'); return false;" >
         <select name="targetcat" id="select32">
           <?php
                 	$cats = amule_get_categories();

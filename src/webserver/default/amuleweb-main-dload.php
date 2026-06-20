@@ -23,7 +23,11 @@
 function formCommandSubmit(command)
 {
 	if ( command == "cancel" ) {
-		var res = confirm("Delete selected files ?")
+		var boxchecked = document.querySelectorAll('input[type="checkbox"]:checked');
+		var selectedFiles = Object.values(boxchecked).filter(selected => selected.name != 'selectAllFiles').length;
+		if (selectedFiles == 0)
+			return;
+		var res = confirm("Delete selected " + (selectedFiles) + " files ?")
 		if ( res == false ) {
 			return;
 		}
