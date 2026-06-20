@@ -13,8 +13,8 @@
 </head>
 <body class="frame">
 <table class="w100p h30">
-  <tr class="va-top"> 
-    <td class="w65p"><strong>Ed2k : </strong> 
+  <tr class="va-top">
+    <td class="w65p"><strong>Ed2k : </strong>
       <?php
     	$stats = amule_get_stats();
     	if ( $stats["id"] == 0 ) {
@@ -27,7 +27,7 @@
     	}
     ?>
     </td>
-    <td><strong>Kad :</strong> 
+    <td><strong>Kad :</strong>
       <?php
     	$stats = amule_get_stats();
     	if ( $stats["kad_connected"] == 1 ) {

@@ -236,6 +236,7 @@ table.prefs-pane > tbody > tr:not(:first-child) > td {
 table.footer-bar {
 	width: 100%;
 	height: 40px;
+	background-color: #FFFFFF;
 }
 table.footer-bar > tbody > tr {
 	text-align: center;
@@ -243,9 +244,12 @@ table.footer-bar > tbody > tr {
 }
 table.footer-bar > tbody > tr > td {
 	width: 50%;
+	background-color: #FFFFFF;
 }
 table.footer-bar iframe {
 	width: 100%;
+	height: 35px;
+	display: block;
 	border: 0;
 }
 table.tab {
@@ -371,6 +375,7 @@ select[name="status"] {
 }
 body.frame {
 	overflow: hidden;
+	background-color: #FFFFFF;
 }
 th.login-banner {
 	height: 180px;
