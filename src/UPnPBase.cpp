@@ -54,6 +54,11 @@
 #include "UPnPBase.h"
 
 #include <algorithm>		// For transform()
+#include "CCtypeAsciiScope.h"	// Needed to pin LC_CTYPE = C around the
+				// ASCII-only tolower() comparisons below
+				// (Turkish-i: tolower('I') = U+0131 under
+				// tr_TR.UTF-8, breaks UPnP direction /
+				// device-type matching).
 
 #ifdef BROKEN_DEBIAN_LIBUPNP
   #define GET_UPNP_STRING(a) UpnpString_get_String(a)
@@ -81,6 +86,10 @@ const char s_deviceList[] = "deviceList";
  */
 static bool stdStringIsEqualCI(const std::string &s1, const std::string &s2)
 {
+	// Pin LC_CTYPE = C so tolower() is ASCII-deterministic regardless of
+	// the user's locale (tr_TR turns 'I' into U+0131, breaking this
+	// comparison's intended semantics).
+	CCtypeAsciiScope scope;
 	std::string ns1(s1);
 	std::string ns2(s2);
 	std::transform(ns1.begin(), ns1.end(), ns1.begin(), tolower);
@@ -94,6 +103,8 @@ static bool stdStringStartsWithCI(const std::string &s, const std::string &prefi
 	if (s.size() < prefix.size()) {
 		return false;
 	}
+	// Same reason as stdStringIsEqualCI: tolower() must be ASCII here.
+	CCtypeAsciiScope scope;
 	std::string head = s.substr(0, prefix.size());
 	std::string p = prefix;
 	std::transform(head.begin(), head.end(), head.begin(), tolower);
@@ -650,6 +661,9 @@ bool CUPnPService::Execute(
 			return false;
 		}
 		const CUPnPArgument &argument = *(itArg->second);
+		// Direction is "in" or "out" — ASCII-only. Pin LC_CTYPE = C so
+		// tolower() doesn't fold 'I' to U+0131 under tr_TR.
+		CCtypeAsciiScope direction_scope;
 		if (tolower(argument.GetDirection()[0]) != 'i' ||
 		    tolower(argument.GetDirection()[1]) != 'n') {
 			msg << "Invalid direction for argument '" <<
@@ -1379,7 +1393,13 @@ upnpDiscovery:
 #endif
 		// Check for an InternetGatewayDevice and removes it from the list
 
-		std::transform(devType.begin(), devType.end(), devType.begin(), tolower);
+		{
+			// devType is a UPnP URN ("urn:schemas-upnp-org:device:...")
+			// — ASCII-only. Pin LC_CTYPE = C around the tolower
+			// transform so 'I' stays 'i' under tr_TR.
+			CCtypeAsciiScope devtype_scope;
+			std::transform(devType.begin(), devType.end(), devType.begin(), tolower);
+		}
 
 		if (stdStringIsEqualCI(devType, UPnP::Device::IGW)) {
 #if UPNP_VERSION >= 10800
