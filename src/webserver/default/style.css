@@ -174,7 +174,7 @@ td.logo-cell {
 	width: 143px;
 	height: 64px;
 }
-td.logo-cell > img {
+td.logo-cell img {
 	display: block;
 }
 td.navbar-cell {

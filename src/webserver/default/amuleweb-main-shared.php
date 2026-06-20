@@ -24,7 +24,7 @@ function formCommandSubmit(command)
 <body class="main">
 <table class="page">
   <tr> 
-    <td class="logo-cell"><img src="images/logo.png" width="143" height="64"></td>
+    <td class="logo-cell"><a href="amuleweb-main-dload.php" title="Home"><img src="images/logo.png" width="143" height="64" alt="aMule"></a></td>
     <td class="navbar-cell"> <table class="navbar-table">
         <tr> 
           <td><a class="navbutton nav-transfer" href="amuleweb-main-dload.php" title="Transfers"></a></td>
