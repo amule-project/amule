@@ -83,11 +83,11 @@ function selectAll(check)
       <td><table class="center-table">
           <tr> 
             <td><input type="hidden" name="command"></td>
-            <td><a href="javascript:formCommandSubmit('pause');"><img name="pause" src="images/pause.png" alt="pause"></a></td>
-            <td><a href="javascript:formCommandSubmit('resume');"><img name="resume" src="images/play.png" alt="resume"></a></td>
-        		<td><a href="javascript:formCommandSubmit('prioup');"><img name="prioup" src="images/up.png" alt="prioup"></a></td>
-        		<td><a href="javascript:formCommandSubmit('priodown');"><img name="priodown" src="images/down.png" alt="priodown"></a></td>
-        		<td><a href="javascript:formCommandSubmit('cancel');"><img name="cancel" src="images/close.png" alt="cancel"></a></td>
+            <td><a href="javascript:formCommandSubmit('pause');" title="Pause selected downloads"><img name="pause" src="images/pause.png" alt="Pause"></a></td>
+            <td><a href="javascript:formCommandSubmit('resume');" title="Resume selected downloads"><img name="resume" src="images/play.png" alt="Resume"></a></td>
+        		<td><a href="javascript:formCommandSubmit('prioup');" title="Increase priority of selected downloads"><img name="prioup" src="images/up.png" alt="Increase priority"></a></td>
+        		<td><a href="javascript:formCommandSubmit('priodown');" title="Decrease priority of selected downloads"><img name="priodown" src="images/down.png" alt="Decrease priority"></a></td>
+        		<td><a href="javascript:formCommandSubmit('cancel');" title="Cancel/delete selected downloads"><img name="cancel" src="images/close.png" alt="Cancel"></a></td>
       <td><table>
                 <tr> 
                   <td> 
@@ -118,7 +118,7 @@ function selectAll(check)
 			echo '</select>';
         ?>
                   </td>
-                  			<td><a href="javascript:formCommandSubmit('filter');"><img src="images/filter.png" alt="Apply" name="resume"></a></td>
+                  			<td><a href="javascript:formCommandSubmit('filter');" title="Apply status and category filter"><img src="images/filter.png" alt="Apply filter" name="resume"></a></td>
                   <td>&nbsp;</td>
                   <td>&nbsp;</td>
                   <td> 

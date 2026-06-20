@@ -66,7 +66,7 @@
                     echo '<tr><td colspan="6" class="al-right" style="padding:4px 8px;">',
                          '<form action="amuleweb-main-servers.php" method="get" style="display:inline;">',
                          '<input type="hidden" name="server_action" value="disconnect">',
-                         '<button type="submit">Disconnect from current ed2k server</button>',
+                         '<button type="submit" title="Disconnect from the current ed2k server">Disconnect from current ed2k server</button>',
                          '</form>',
                          '</td></tr>';
                 }
@@ -156,11 +156,11 @@
 			} else {
 				echo "<td class='texte al-center'>",
 					'<a href="amuleweb-main-servers.php?cmd=connect&ip=', $srv->ip,
-					'&port=', $srv->port, '">',
-					'<img src="images/connect.gif" width="16" height="16">','</a>',
+					'&port=', $srv->port, '" title="Connect to this server">',
+					'<img src="images/connect.gif" width="16" height="16" alt="Connect">','</a>',
 					'<a href="amuleweb-main-servers.php?cmd=remove&ip=', $srv->ip,
-					'&port=', $srv->port, '">',
-					'<img src="images/cancel.gif" width="16" height="16">','</a>',
+					'&port=', $srv->port, '" title="Remove this server">',
+					'<img src="images/cancel.gif" width="16" height="16" alt="Remove">','</a>',
 					"</td>";
 			}
 

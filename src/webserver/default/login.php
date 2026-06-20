@@ -28,7 +28,7 @@ function login_init()
                     &nbsp; 
                     <input name="pass" size="20" value="" type="password">
                     &nbsp; 
-                    <input name="submit" type="submit" value="Submit">
+                    <input name="submit" type="submit" value="Submit" title="Log in">
                     &nbsp;&nbsp;
 <?php
 	if ( $_SESSION["login_error"] != "" ) {

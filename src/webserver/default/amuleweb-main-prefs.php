@@ -373,7 +373,7 @@ function init_data()
       <td colspan="2"> 
         <?php
 			if ($_SESSION["guest_login"] == 0) {
-				echo '<input type="submit" name="Submit" value="Apply">';
+				echo '<input type="submit" name="Submit" value="Apply" title="Save preferences">';
 			} else {
 				echo "<b>&nbsp;You can not change options - logged in as guest</b>";
 			}

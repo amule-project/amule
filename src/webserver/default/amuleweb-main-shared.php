@@ -69,10 +69,10 @@ function selectAll(check)
                 <tr>
                   <td><input type="hidden" name="command"></td>
                   
-            <td><a href="javascript:formCommandSubmit('reload');"><img src="images/refresh.png" alt="Reload shared files" name="reload" onload=""></a></td>
-				  <td><a href="javascript:formCommandSubmit('prioup');"><img name="up" src="images/up.png" alt="Raise priority" onLoad=""></a></td>
-                  
-            <td><a href="javascript:formCommandSubmit('priodown');"><img src="images/down.png" alt="Lower priority" name="down" onload=""></a></td>
+            <td><a href="javascript:formCommandSubmit('reload');" title="Reload shared files"><img src="images/refresh.png" alt="Reload shared files" name="reload" onload=""></a></td>
+				  <td><a href="javascript:formCommandSubmit('prioup');" title="Raise priority of selected files"><img name="up" src="images/up.png" alt="Raise priority" onLoad=""></a></td>
+
+            <td><a href="javascript:formCommandSubmit('priodown');" title="Lower priority of selected files"><img src="images/down.png" alt="Lower priority" name="down" onload=""></a></td>
                   <td><select name="select">
                       <option selected>Change priority</option>
                       <option>Auto</option>
@@ -84,7 +84,7 @@ function selectAll(check)
                       <option>Release</option>
                     </select> </td>
                   
-            <td><a href="javascript:formCommandSubmit('setprio');"><img src="images/ok.png" alt="Set priority" name="resume" onload=""></a></td>
+            <td><a href="javascript:formCommandSubmit('setprio');" title="Apply selected priority"><img src="images/ok.png" alt="Set priority" name="resume" onload=""></a></td>
               
                   <td> 
                     <?php

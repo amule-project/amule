@@ -39,7 +39,7 @@
 		}
 	?>
         </select>
-        <input type="submit" name="Submit" value="Download link">
+        <input type="submit" name="Submit" value="Download link" title="Add the ed2k link to downloads">
       </form></td>
   </tr>
 </table>

@@ -93,7 +93,7 @@ function selectAll(check)
                   <td class="al-center">
 <input type="hidden" name="command" value=""> 
                     <input name="searchval" type="text" id="searchval4" size="60"> 
-                    <input name="Search" type="submit" id="Search4" value="Search" onClick="javascript:formCommandSubmit('search');"></td>
+                    <input name="Search" type="submit" id="Search4" value="Search" title="Start the search" onClick="javascript:formCommandSubmit('search');"></td>
                   <td class="al-right">Availability :</td>
                   <td class="al-left"> 
                     <input name="avail" type="text" id="avail13" size="6"></td>
@@ -130,7 +130,7 @@ function selectAll(check)
               <table class="w100p">
                 <tr class="al-right">
                   <td colspan="4" scope="col">
-                    <input name="Download" type="submit" id="Download6" value="Download" onClick="javascript:formCommandSubmit('download'); return false;" >
+                    <input name="Download" type="submit" id="Download6" value="Download" title="Download selected files" onClick="javascript:formCommandSubmit('download'); return false;" >
                     <select name="targetcat" id="select32">
                       <?php
                 	$cats = amule_get_categories();

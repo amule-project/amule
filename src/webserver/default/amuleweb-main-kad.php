@@ -117,9 +117,9 @@ function formCommandSubmit(command)
                       </tr>
                       <tr>
                         <td colspan="2" class="al-center">
-                          <button type="submit" name="kad_action" value="connect_known">Connect from known peers</button>
+                          <button type="submit" name="kad_action" value="connect_known" title="Bootstrap Kad from known peers">Connect from known peers</button>
                           &nbsp;
-                          <button type="submit" name="kad_action" value="disconnect">Disconnect</button>
+                          <button type="submit" name="kad_action" value="disconnect" title="Disconnect from the Kad network">Disconnect</button>
                         </td>
                       </tr>
                       <tr>
@@ -133,14 +133,14 @@ function formCommandSubmit(command)
                       </tr>
                       <tr>
                         <td class="al-right">Port :</td><td class="al-left"><input name="port" type="text" id="port3" size="4" maxlength="5">
-                          &nbsp; <button type="submit" name="kad_action" value="connect_ip">Connect</button></td>
+                          &nbsp; <button type="submit" name="kad_action" value="connect_ip" title="Bootstrap Kad from this node">Connect</button></td>
                       </tr>
                       <tr>
                         <th colspan="2">Update bootstrap from URL</th>
                       </tr>
                       <tr>
                         <td class="al-right">URL :</td><td class="al-left"><input name="nodes_url" type="text" id="nodes_url" size="32">
-                          &nbsp; <button type="submit" name="kad_action" value="update_url">Update</button></td>
+                          &nbsp; <button type="submit" name="kad_action" value="update_url" title="Update bootstrap nodes from this URL">Update</button></td>
                       </tr>
                     </table></td>
                 </tr>
