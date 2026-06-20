@@ -96,26 +96,28 @@ a.nav-stats:hover {
 	width: 75%;
 }
 label {
-	font-family: "trebuchet ms", sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
 }
 input {
 	border: 1px solid #003161;
 	background-color: white;
-	font-family: "trebuchet ms", sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	color: #003161;
 }
 select, option {
+	border: 1px solid #003161;
 	background-color: white;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	color: #003161;
 }
 textarea {
 	border: 1px solid #003161;
 	background-color: #90B6DB;
-	font-family: "trebuchet ms", sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	color: white;
 }
@@ -360,6 +362,12 @@ table.pad4 > tbody > tr > td {
 }
 iframe.noborder {
 	border: 0;
+}
+iframe[name="logframe"], iframe[name="srvframe"] {
+	border: 1px solid #003161;
+}
+select[name="status"] {
+	margin-right: 6px;
 }
 body.frame {
 	overflow: hidden;
