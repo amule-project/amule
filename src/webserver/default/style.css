@@ -180,6 +180,9 @@ td.navbar-cell {
 	height: 64px;
 	background-image: url(images/fond_haut.png);
 }
+td.navbar-cell img {
+	display: block;
+}
 table.navbar-table {
 	margin-left: auto;
 }
@@ -366,6 +369,10 @@ th.login-banner {
 	text-align: right;
 	vertical-align: middle;
 	background-image: url(images/loginfond_haut.png);
+	color: #000000;
+}
+th.login-logo > img {
+	display: block;
 }
 .login-error {
 	display: inline-block;

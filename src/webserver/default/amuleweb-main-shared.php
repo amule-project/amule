@@ -69,9 +69,10 @@ function formCommandSubmit(command)
                   </td>
                 </tr>
               </table>
+        <table class="w100p"><tr><td class="h10"></td></tr></table>
         <table class="tab">
           <caption>
-        SHARED FILES 
+        SHARED FILES
         </caption>
           <tr> 
             <td><img src="images/tab_top_left.png" width="24" height="24"></td>

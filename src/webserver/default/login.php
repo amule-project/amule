@@ -21,10 +21,11 @@ function login_init()
         <tr>
           <td><table class="w100p h100p bg-white">
               <tr class="va-top">
-               <th class="w366 h180"><img src="images/loginlogo.jpg" width="366" height="180"></th>
+               <th class="w366 h180 login-logo"><img src="images/loginlogo.jpg" width="366" height="180"></th>
                 <th class="w100p login-banner">
                   <form action="" method="post" name="login">
-                    Enter password : 
+                    Enter password
+                    &nbsp; 
                     <input name="pass" size="20" value="" type="password">
                     &nbsp; 
                     <input name="submit" type="submit" value="Submit">
