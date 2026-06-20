@@ -108,21 +108,7 @@ function selectAll(check)
                     </select></td>
                 </tr>
                 <tr> 
-                  <td class="al-center"><a href="amuleweb-main-search.php?search_sort=<?php
-// Whitelist against the column keys my_cmp() actually understands
-// (line 234-236 of this file). Anything else is dropped to empty,
-// which falls through to the "no sort change" branch below. This
-// avoids reflecting an attacker-controlled string into the rendered
-// HTML (#869). A whitelist is stricter than escaping here: only the
-// three known column keys are ever echoed, so the reflected value is
-// guaranteed safe regardless of context. The plain string-equality
-// chain is the only matching primitive the bundled interpreter offers
-// (no `in_array()`, and `[...]` short array syntax doesn't parse).
-$sort_raw = isset($HTTP_GET_VARS["sort"]) ? $HTTP_GET_VARS["sort"] : "";
-if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
-    echo($sort_raw);
-}
-?>">Click here to update the search results</a> </td>
+                  <td class="al-center"><input name="UpdateResults" type="button" value="Update results" title="Update the search results" onClick="window.location.href='amuleweb-main-search.php'"></td>
                   <td class="al-right">Search type :</td>
                   <td> 
                     <select name="searchtype" id="select">
@@ -142,6 +128,21 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
                 </tr>
               </table>
               <table class="w100p">
+                <tr class="al-right">
+                  <td colspan="4" scope="col">
+                    <input name="Download" type="submit" id="Download6" value="Download" onClick="javascript:formCommandSubmit('download'); return false;" >
+                    <select name="targetcat" id="select32">
+                      <?php
+                	$cats = amule_get_categories();
+                	foreach($cats as $c) {
+                		$label = ($c == 'all') ? 'No category' : $c;
+                		echo '<option value="', htmlspecialchars($c), '">', htmlspecialchars($label), '</option>';
+                	}
+                ?>
+                    </select></td>
+                </tr>
+                <tr><td colspan="9" class="h10"></td></tr>
+                <tr><td colspan="9" class="sep-dark"></td></tr>
                 <tr>
                   <th class="al-left"><input type="checkbox" name="selectAllFiles" onclick="selectAll(this)"></th>
                   <th><a href="amuleweb-main-search.php?sort=name">File Name</a></th>
@@ -239,27 +240,26 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
 		}		
 		$search = amule_load_vars("searchresult");
 
-		// Whitelist against the column keys my_cmp() understands, same
-		// pattern as the dload/shared/servers pages. This prevents an
-		// attacker-controlled value from being stored in
-		// $_SESSION["search_sort"] and later reflected into rendered
-		// HTML (#869 follow-up). Anything unknown drops to "", which
-		// falls through to the "keep current sort" branch below.
+		// Column-header links use ?sort=<key> and TOGGLE the sort
+		// direction on each click. Any request without a (valid) sort
+		// key — including the "Update results" refresh, which just
+		// reloads the page — falls through to the order remembered in
+		// the session, so refreshing the streamed results keeps the
+		// current order without flipping it. The key is whitelisted
+		// against the keys my_cmp() understands, same pattern as the
+		// dload/shared/servers pages: this prevents an attacker-
+		// controlled value from being stored in $_SESSION["search_sort"]
+		// and later reflected into rendered HTML (#869 follow-up).
 		$sort_raw = isset($HTTP_GET_VARS["sort"]) ? $HTTP_GET_VARS["sort"] : "";
 		if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
 			$sort_order = $sort_raw;
-		} else {
-			$sort_order = "";
-		}
-
-		if ( $sort_order == "" ) {
-			$sort_order = $_SESSION["search_sort"];
-		} else {
 			if ( $_SESSION["search_sort_reverse"] == "" ) {
 				$_SESSION["search_sort_reverse"] = 0;
 			} else {
 				$_SESSION["search_sort_reverse"] = !$_SESSION["search_sort_reverse"];
 			}
+		} else {
+			$sort_order = $_SESSION["search_sort"];
 		}
 
 		$sort_reverse = $_SESSION["search_sort_reverse"];
@@ -283,18 +283,6 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
 		}
 
 	  ?>
-    <tr class="al-right"> 
-      <td colspan="4" scope="col">
-        <input name="Download" type="submit" id="Download6" value="Download" onClick="javascript:formCommandSubmit('download'); return false;" >
-        <select name="targetcat" id="select32">
-          <?php
-                	$cats = amule_get_categories();
-                	foreach($cats as $c) {
-                		$label = ($c == 'all') ? 'All categories' : $c;
-                		echo '<option value="', htmlspecialchars($c), '">', htmlspecialchars($label), '</option>';
-                	}
-                ?>
-        </select></td>
   </table>
 </form></td>
             <td>&nbsp;</td>
