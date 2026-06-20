@@ -258,7 +258,8 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
           <?php
                 	$cats = amule_get_categories();
                 	foreach($cats as $c) {
-                		echo "<option>", htmlspecialchars($c), "</option>";
+                		$label = ($c == 'all') ? 'All categories' : $c;
+                		echo '<option value="', htmlspecialchars($c), '">', htmlspecialchars($label), '</option>';
                 	}
                 ?>
         </select></td>

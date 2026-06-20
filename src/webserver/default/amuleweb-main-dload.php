@@ -81,14 +81,18 @@ function formCommandSubmit(command)
 
         	echo '<select name="status"> ';
         	foreach ($all_status as $s) {
-        		echo (($s == $_SESSION["filter_status"]) ? '<option selected>' : '<option>'), $s, '</option>';
+        		$label = ($s == 'all') ? 'All status' : $s;
+        		$sel = ($s == $_SESSION["filter_status"]) ? ' selected' : '';
+        		echo '<option value="', htmlspecialchars($s), '"', $sel, '>', htmlspecialchars($label), '</option>';
         	}
         	echo '</select>';
         	//var_dump($_SESSION["filter_cat"]);
         	echo '<select name="category" id="category">';
 			$cats = amule_get_categories();
 			foreach($cats as $c) {
-				echo (($c == $_SESSION["filter_cat"]) ? '<option selected>' : '<option>'), htmlspecialchars($c), '</option>';
+				$label = ($c == 'all') ? 'All categories' : $c;
+				$sel = ($c == $_SESSION["filter_cat"]) ? ' selected' : '';
+				echo '<option value="', htmlspecialchars($c), '"', $sel, '>', htmlspecialchars($label), '</option>';
 			}
 			echo '</select>';
         ?>

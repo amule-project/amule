@@ -34,7 +34,8 @@
 		}
 
 		foreach($cats as $c) {
-			echo  '<option>', htmlspecialchars($c), '</option>';
+			$label = ($c == 'all') ? 'No category' : $c;
+			echo  '<option value="', htmlspecialchars($c), '">', htmlspecialchars($label), '</option>';
 		}
 	?>
         </select>

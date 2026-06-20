@@ -52,7 +52,7 @@ function formCommandSubmit(command)
                   
             <td><a href="javascript:formCommandSubmit('priodown');"><img src="images/down.png" alt="Lower priority" name="down" onload=""></a></td>
                   <td><select name="select">
-                      <option selected>Select prio</option>
+                      <option selected>Change priority</option>
                       <option>Low</option>
                       <option>Normal</option>
                       <option>High</option>
