@@ -19,6 +19,14 @@ function formCommandSubmit(command)
 	frm.submit()
 }
 
+function selectAll(check)
+{
+	var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+	checkboxes.forEach(function(checkbox) {
+		checkbox.checked = check.checked;
+	});
+}
+
 </script>
 </head>
 <body class="main">
@@ -111,7 +119,7 @@ if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
               </table>
               <table class="w100p">
                 <tr>
-                  <th>&nbsp;</th>
+                  <th class="al-left"><input type="checkbox" name="selectAllFiles" onclick="selectAll(this)"></th>
                   <th><a href="amuleweb-main-search.php?sort=name">File Name</a></th>
                   <th><a href="amuleweb-main-search.php?sort=size">Size</a></th>
                   <th><a href="amuleweb-main-search.php?sort=sources">Sources</a></th>

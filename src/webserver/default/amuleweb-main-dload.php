@@ -32,6 +32,14 @@ function formCommandSubmit(command)
 	frm.submit()
 }
 
+function selectAll(check)
+{
+	var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+	checkboxes.forEach(function(checkbox) {
+		checkbox.checked = check.checked;
+	});
+}
+
 </script>
 </head>
 <body class="main">
@@ -128,8 +136,8 @@ function formCommandSubmit(command)
     <td>&nbsp;</td>
     <td><table class="w100p">
                      
-          <tr> 
-                  <th>&nbsp;</th>
+          <tr>
+                  <th class="al-left"><input type="checkbox" name="selectAllFiles" onclick="selectAll(this)"></th>
                   <th><a href="amuleweb-main-dload.php?sort=name">File name</a></th>
                   <th><a href="amuleweb-main-dload.php?sort=size">Size</a></th>
                   <th><a href="amuleweb-main-dload.php?sort=size_done">Completed</a></th>
