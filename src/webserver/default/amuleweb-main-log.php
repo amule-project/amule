@@ -43,14 +43,24 @@
             <table class="w100p">
                 <tr class="va-top">
                   <td>
-		<h1 style="display:inline;">aMule log</h1>
-		<a href="log.php?rstlog=1" target="logframe" onclick="return confirm('Do you really want to reset aMule log?')">(Reset log)</a><br>
+		<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+			<h1 style="display:inline; margin:0;">aMule log</h1>
+			<form action="log.php" method="get" target="logframe" onsubmit="return confirm('Do you really want to reset aMule log?')">
+				<input type="hidden" name="rstlog" value="1">
+				<button type="submit" title="Reset aMule log">Reset log</button>
+			</form>
+		</div>
 	<iframe class="w100p" height="400" name="logframe" src="log.php"></iframe>
                   </td>
                   </tr><tr>
                   <td>
-		<h1 style="display:inline;">Serverinfo</h1>
-		<a href="log.php?rstsrv=1" target="srvframe" onclick="return confirm('Do you really want to reset Serverinfo?')">(Reset Serverinfo)</a>
+		<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+			<h1 style="display:inline; margin:0;">Serverinfo</h1>
+			<form action="log.php" method="get" target="srvframe" onsubmit="return confirm('Do you really want to reset Serverinfo?')">
+				<input type="hidden" name="rstsrv" value="1">
+				<button type="submit" title="Reset Serverinfo">Reset Serverinfo</button>
+			</form>
+		</div>
 <iframe class="w100p" height="200" name="srvframe" src="log.php?show=srv"></iframe>
                   </td>
                   </tr>

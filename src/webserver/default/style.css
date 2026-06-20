@@ -100,7 +100,7 @@ label {
 	font-size: 12px;
 	font-weight: bold;
 }
-input {
+input, button {
 	border: 1px solid #003161;
 	background-color: white;
 	font-family: Helvetica, Arial, sans-serif;
