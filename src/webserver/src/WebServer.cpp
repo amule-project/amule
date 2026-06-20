@@ -98,8 +98,11 @@ static uint8 GetHigherPrio(uint32 prio, bool auto_priority)
 
 static uint8 GetHigherPrioShared(uint32 prio, bool auto_priority)
 {
+	// The arrows walk the manual scale only; they never set or pass
+	// through Auto (that mode can only be chosen from the selector).
+	// Raising while in Auto leaves it for the manual scale at High.
 	if (auto_priority) {
-		return PR_VERY_LOW;
+		return PR_HIGH;
 	} else {
 		switch (prio) {
 			case PR_VERY_LOW: return PR_LOW;
@@ -107,9 +110,8 @@ static uint8 GetHigherPrioShared(uint32 prio, bool auto_priority)
 			case PR_NORMAL: return PR_HIGH;
 			case PR_HIGH: return PR_VERYHIGH;
 			case PR_VERYHIGH: return PR_POWERSHARE;
-			case PR_POWERSHARE: return PR_AUTO;
-			case PR_AUTO: return PR_VERY_LOW;
-			default: return PR_AUTO;
+			case PR_POWERSHARE: return PR_POWERSHARE;
+			default: return PR_NORMAL;
 		}
 	}
 }
@@ -132,18 +134,20 @@ static uint8 GetLowerPrio(uint32 prio, bool auto_priority)
 
 static uint8 GetLowerPrioShared(uint32 prio, bool auto_priority)
 {
+	// The arrows walk the manual scale only; they never set or pass
+	// through Auto (that mode can only be chosen from the selector).
+	// Lowering while in Auto leaves it for the manual scale at Low.
 	if (auto_priority) {
-		return PR_POWERSHARE;
+		return PR_LOW;
 	} else {
 		switch (prio) {
-			case PR_VERY_LOW: return PR_AUTO;
-			case PR_LOW: return PR_VERY_LOW;
-			case PR_NORMAL: return PR_LOW;
-			case PR_HIGH: return PR_NORMAL;
-			case PR_VERYHIGH: return PR_HIGH;
 			case PR_POWERSHARE: return PR_VERYHIGH;
-			case PR_AUTO: return PR_POWERSHARE;
-			default: return PR_AUTO;
+			case PR_VERYHIGH: return PR_HIGH;
+			case PR_HIGH: return PR_NORMAL;
+			case PR_NORMAL: return PR_LOW;
+			case PR_LOW: return PR_VERY_LOW;
+			case PR_VERY_LOW: return PR_VERY_LOW;
+			default: return PR_NORMAL;
 		}
 	}
 }

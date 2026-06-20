@@ -53,9 +53,13 @@ function formCommandSubmit(command)
             <td><a href="javascript:formCommandSubmit('priodown');"><img src="images/down.png" alt="Lower priority" name="down" onload=""></a></td>
                   <td><select name="select">
                       <option selected>Change priority</option>
+                      <option>Auto</option>
+                      <option>Very low</option>
                       <option>Low</option>
                       <option>Normal</option>
                       <option>High</option>
+                      <option>Very high</option>
+                      <option>Release</option>
                     </select> </td>
                   
             <td><a href="javascript:formCommandSubmit('setprio');"><img src="images/ok.png" alt="Set priority" name="resume" onload=""></a></td>
@@ -175,14 +179,25 @@ function formCommandSubmit(command)
 		//var_dump($HTTP_GET_VARS);
 		if (($HTTP_GET_VARS["command"] != "") && ($_SESSION["guest_login"] == 0)) {
 			//amule_do_download_cmd($HTTP_GET_VARS["command"]);
+			$cmd = $HTTP_GET_VARS["command"];
+			// Dropdown label -> priority constant (src/Constants.h)
+			$prio_values = array("Low" => 0, "Normal" => 1, "High" => 2,
+				"Very high" => 3, "Very low" => 4, "Auto" => 5, "Release" => 6);
 			foreach ( $HTTP_GET_VARS as $name => $val) {
 				// this is file checkboxes
 				if ( (strlen($name) == 32) and ($val == "on") ) {
 					//var_dump($name);var_dump($val);
-					amule_do_shared_cmd($name, $HTTP_GET_VARS["command"]);
+					if ( $cmd == "setprio" ) {
+						$sel = $HTTP_GET_VARS["select"];
+						if ( isset($prio_values[$sel]) ) {
+							amule_do_shared_cmd($name, "prio", $prio_values[$sel]);
+						}
+					} else {
+						amule_do_shared_cmd($name, $cmd);
+					}
 				}
 			}
-			if ($HTTP_GET_VARS["command"] == "reload") {
+			if ($cmd == "reload") {
 				amule_do_reload_shared_cmd();
 			}
 		}
