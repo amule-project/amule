@@ -3,6 +3,20 @@
 <head>
 <title>aMule control panel</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<?php
+	// Auto-refresh: reload on a timer, but skip while any checkbox is
+	// checked so the user's selection isn't wiped.
+	if ( $_SESSION["auto_refresh"] > 0 ) {
+		echo "<script type=\"text/JavaScript\">
+	setInterval(function() {
+		if (document.querySelectorAll('input[type=\"checkbox\"]:checked').length > 0) {
+			return;
+		}
+		location.reload();
+	}, 1000 * ", $_SESSION["auto_refresh"], ");
+</script>";
+	}
+?>
 
 <link href="style.css" rel="stylesheet" type="text/css">
 </head>
