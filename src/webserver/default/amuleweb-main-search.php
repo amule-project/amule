@@ -152,16 +152,9 @@ function selectAll(check)
     <?php
 		function CastToXBytes($size)
 		{
-			if ( $size < 1024 ) {
-				$result = $size . " b";
-			} elseif ( $size < 1048576 ) {
-				$result = ($size / 1024.0) . "kb";
-			} elseif ( $size < 1073741824 ) {
-				$result = ($size / 1048576.0) . "mb";
-			} else {
-				$result = ($size / 1073741824.0) . "gb";
-			}
-			return $result;
+			// Emit the raw byte count; the unit formatting is done
+			// client-side (see the js-size script at the end of the page).
+			return '<span class="js-size">' . $size . '</span>';
 		}
 
 		//
@@ -305,5 +298,24 @@ function selectAll(check)
       </table></td>
   </tr>
 </table>
+<script type="text/JavaScript">
+// Format the raw byte counts emitted by the backend (spans with class
+// "js-size") into human-readable units. Done here in the browser because
+// the webserver's PHP interpreter lacks sprintf/round.
+function formatBytes(value) {
+	var b = parseFloat(value);
+	if ( isNaN(b) ) return value;
+	if ( b < 1024 ) return b + " Bytes";
+	if ( b < 1048576 ) return (b / 1024).toFixed(2) + " KB";
+	if ( b < 1073741824 ) return (b / 1048576).toFixed(2) + " MB";
+	return (b / 1073741824).toFixed(2) + " GB";
+}
+(function() {
+	var els = document.getElementsByClassName("js-size");
+	for ( var i = 0; i < els.length; i++ ) {
+		els[i].textContent = formatBytes(els[i].textContent);
+	}
+})();
+</script>
 </body>
 </html>
