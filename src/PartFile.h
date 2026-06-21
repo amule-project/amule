@@ -45,6 +45,10 @@ class CED2KFileLink;
 //#define BUFFER_SIZE_LIMIT	500000 // Max bytes before forcing a flush
 #define BUFFER_TIME_LIMIT	60000   // Max milliseconds before forcing a flush
 
+// When the remaining bytes to download are less than this, Endgame mode triggers.
+// In Endgame mode, we allow redundant requests to prevent a stall at 99%.
+const uint64 ENDGAME_TRIGGER_SIZE = 37 * 1024 * 1024; // 37 MB
+
 // Ok, eMule and aMule are building incompatible backup files because
 // of the different name. aMule was using ".BAK" and eMule ".bak".
 // This should fix it.
@@ -368,7 +372,7 @@ private:
 	void	AddGap(uint16 part);
 	void	FillGap(uint64 start, uint64 end);
 	void	FillGap(uint16 part);
-	bool	GetNextEmptyBlockInPart(uint16 partnumber,Requested_Block_Struct* result);
+	bool	GetNextEmptyBlockInPart(uint16 partnumber,Requested_Block_Struct* result, const CUpDownClient* sender = NULL);
 	bool	IsAlreadyRequested(uint64 start, uint64 end);
 	void	CompleteFile(bool hashingdone);
 	void	CreatePartFile(bool isImporting = false);
