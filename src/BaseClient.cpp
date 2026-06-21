@@ -1243,6 +1243,34 @@ void CUpDownClient::ClearDownloadBlockRequests()
 	}
 }
 
+/**
+ * Checks if this client has already requested a specific block range.
+ * This is primarily used in Endgame Mode to prevent a client from requesting
+ * the same redundant block multiple times from itself.
+ *
+ * @param start The starting offset of the block.
+ * @param end The ending offset of the block.
+ * @return true if the block is already in the pending or downloading queue.
+ */
+bool CUpDownClient::HasRequestedBlock(uint64 start, uint64 end) const
+{
+	std::list<Pending_Block_Struct*>::const_iterator it1 = m_PendingBlocks_list.begin();
+	for (; it1 != m_PendingBlocks_list.end(); ++it1) {
+		if (start <= (*it1)->block->EndOffset && end >= (*it1)->block->StartOffset) {
+			return true;
+		}
+	}
+
+	std::list<Requested_Block_Struct*>::const_iterator it2 = m_DownloadBlocks_list.begin();
+	for (; it2 != m_DownloadBlocks_list.end(); ++it2) {
+		if (start <= (*it2)->EndOffset && end >= (*it2)->StartOffset) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 bool CUpDownClient::Disconnected(const wxString& DEBUG_ONLY(strReason), bool bFromSocket)
 {

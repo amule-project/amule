@@ -202,6 +202,7 @@ public:
 	uint32		GetCompatibleClient() const	{ return m_byCompatibleClient; }
 
 	void		ClearDownloadBlockRequests();
+	bool		HasRequestedBlock(uint64 start, uint64 end) const;
 	void		RequestSharedFileList();
 	void		ProcessSharedFileList(const uint8_t* pachPacket, uint32 nSize, wxString& pszDirectory);
 	void		SendSharedDirectories();

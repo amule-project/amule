@@ -1366,7 +1366,20 @@ bool CPartFile::IsAlreadyRequested(uint64 start, uint64 end)
 	return false;
 }
 
-bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struct *result)
+/**
+ * Finds the next available empty block (gap) within a given part.
+ *
+ * In normal operation, it exclusively assigns blocks to prevent redundant downloads.
+ * In Endgame Mode (when the file is nearly complete), it allows multiple clients
+ * to request the same block simultaneously to prevent the download from stalling
+ * at 99% due to a slow source.
+ *
+ * @param partNumber The part to search within.
+ * @param result Pointer to store the resulting requested block details.
+ * @param sender The client requesting the block, used to prevent self-redundant requests in Endgame mode.
+ * @return true if a block was successfully assigned, false otherwise.
+ */
+bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struct *result, const CUpDownClient* sender)
 {
 	// Find start of this part
 	uint64 partStart = (PARTSIZE * partNumber);
@@ -1410,8 +1423,19 @@ bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struc
 		if (end > partEnd) {
 			end = partEnd;
 		}
-		// If this gap has not already been requested, we have found a valid entry
-		if (!IsAlreadyRequested(start, end)) {
+		// In Endgame mode, allow requesting the same block multiple times, but NOT from the same sender
+		bool isEndgame = ((GetFileSize() - completedsize) < ENDGAME_TRIGGER_SIZE);
+		bool alreadyRequestedGlobally = IsAlreadyRequested(start, end);
+		bool canRequest = false;
+
+		if (!alreadyRequestedGlobally) {
+			canRequest = true; // Block is completely free
+		} else if (isEndgame && sender && !sender->HasRequestedBlock(start, end)) {
+			canRequest = true; // Block is requested by others, but we race them in Endgame!
+		}
+
+		// If this gap is valid for us to request
+		if (canRequest) {
 			// Was this block to be returned
 			if (result != NULL) {
 				result->StartOffset = start;
@@ -2038,7 +2062,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender,
 		// Create a request block structure if a chunk has been previously selected
 		if(sender->GetLastPartAsked() != 0xffff) {
 			Requested_Block_Struct* pBlock = new Requested_Block_Struct;
-			if(GetNextEmptyBlockInPart(sender->GetLastPartAsked(), pBlock) == true) {
+			if(GetNextEmptyBlockInPart(sender->GetLastPartAsked(), pBlock, sender) == true) {
 				// Keep a track of all pending requested blocks
 				m_requestedblocks_list.push_back(pBlock);
 				// Update list of blocks to return
@@ -2061,7 +2085,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender,
 			if(chunksList.empty()) {
 				// Identify the locally missing part(s) that this source has
 				for(uint16 i=0; i < partCount; ++i) {
-					if(sender->IsPartAvailable(i) == true && GetNextEmptyBlockInPart(i, NULL) == true) {
+					if(sender->IsPartAvailable(i) == true && GetNextEmptyBlockInPart(i, NULL, sender) == true) {
 						// Create a new entry for this chunk and add it to the list
 						Chunk newEntry;
 						newEntry.part = i;
