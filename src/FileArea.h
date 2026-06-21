@@ -64,6 +64,10 @@ public:
 	 */
 	void ReadAt(CFileAutoClose& file, uint64 offset, size_t count);
 
+#ifdef USE_IO_URING
+	bool ReadAtWithIOUring(CFileAutoClose& file, uint64 offset, size_t count, uint8_t* buffer);
+#endif
+
 	/**
 	 * Start a new write
 	 */

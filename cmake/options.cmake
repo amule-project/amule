@@ -209,3 +209,7 @@ ENDIF (WIN32)
 if (NEED_LIB_MULEAPPCOMMON OR BUILD_WEBSERVER)
 	option (ENABLE_UPNP "enable UPnP support in aMule" ON)
 endif()
+
+if(NEED_LIB_MULEAPPCORE)
+	option(ENABLE_IO_URING "Enable io_uring support" ON)
+endif()
