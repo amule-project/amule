@@ -645,14 +645,11 @@ if (NEED_LIB_MULEAPPCORE)
 	)
 
 	if (ENABLE_IO_URING AND HAVE_IO_URING)
-		target_include_directories(muleappcore
-			PRIVATE ${LIBURING_INCLUDE_DIRS}
-		)
 		target_link_libraries(muleappcore
-			PRIVATE ${LIBURING_LIBRARIES}
+			PUBLIC PkgConfig::LIBURING
 		)
 		target_compile_definitions(muleappcore
-			PRIVATE USE_IO_URING
+			PUBLIC USE_IO_URING
 		)
 	endif()
 
