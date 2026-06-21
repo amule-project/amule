@@ -123,6 +123,10 @@ public:
 	 */
 	void ReadAt(void* buffer, uint64 offset, size_t count);
 
+	#ifdef USE_IO_URING
+	bool ReadAtIOUring(void* buffer, uint64 offset, size_t count);
+	#endif
+
 	/**
 	 * Write 'count' bytes from 'buffer' into the file.
 	 *
@@ -134,6 +138,9 @@ public:
 	 */
 	void WriteAt(const void* buffer, uint64 offset, size_t count);
 
+	#ifdef USE_IO_URING
+	bool WriteAtIOUring(const void* buffer, uint64 offset, size_t count);
+	#endif
 	/**
 	 * Returns true when the file-position is past or at the end of the file.
 	 */

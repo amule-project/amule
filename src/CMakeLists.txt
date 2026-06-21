@@ -188,6 +188,8 @@ if (BUILD_DAEMON)
 		)
 	endif()
 
+	
+
 	install (TARGETS amuled
 		RUNTIME DESTINATION bin
 	)
@@ -641,6 +643,15 @@ if (NEED_LIB_MULEAPPCORE)
 		PRIVATE ${INCLUDE_INCLUDE_DIR}
 		PRIVATE ${LIBS_INCLUDE_DIR}
 	)
+
+	if (ENABLE_IO_URING AND HAVE_IO_URING)
+		target_link_libraries(muleappcore
+			PUBLIC PkgConfig::LIBURING
+		)
+		target_compile_definitions(muleappcore
+			PUBLIC USE_IO_URING
+		)
+	endif()
 
 	if (ENABLE_UPNP)
 		target_include_directories (muleappcore

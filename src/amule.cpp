@@ -97,6 +97,9 @@
 #ifdef ENABLE_UPNP
 #include "UPnPBase.h"			// Needed for UPnP
 #endif
+#ifdef USE_IO_URING
+#include <liburing.h>
+#endif
 
 #ifdef __WXMAC__
 #include <wx/sysopt.h>			// Do_not_auto_remove
@@ -250,6 +253,7 @@ int CamuleApp::OnExit()
 	if (m_app_state!=APP_STATE_STARTING) {
 		AddLogLineNS(_("Now, exiting main app..."));
 	}
+
 
 	// From wxWidgets docs, wxConfigBase:
 	// ...
@@ -440,6 +444,7 @@ bool CamuleApp::OnInit()
 	AddLogLineNS("Checkpoint set on app init for memory debug");	// debug output
 	wxDebugContext::SetCheckpoint();
 #endif
+
 
 #if defined(__WXGTK__) && !defined(__APPLE__)
 	// Set the GTK program name to the canonical app id. On Wayland,
@@ -877,6 +882,24 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 
 	if (!firstTime) {
 		// TODO: Destroy previously created sockets
+		if (ECServerHandler) {
+			delete ECServerHandler;
+			ECServerHandler = NULL;
+		}
+		if (serverconnect) {
+			delete serverconnect;
+			serverconnect = NULL;
+		}
+		if (listensocket) {
+			listensocket->Close();
+			listensocket->KillAllSockets();
+			delete listensocket;
+			listensocket = NULL;
+		}
+		if (clientudp) {
+			delete clientudp;
+			clientudp = NULL;
+		}
 	}
 	firstTime = false;
 
@@ -1484,6 +1507,23 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 
 	// Recommended by lugdunummaster himself - from emule 0.30c
 	serverconnect->KeepConnectionAlive();
+
+	#ifdef ENABLE_UPNP
+	static uint64 upnp_last_retry = 0;
+	uint64 now = ::GetTickCount64();
+
+	if (IsFirewalled() && thePrefs::GetUPnPEnabled() && m_upnp) {
+		if (now - upnp_last_retry > 300000) { // Retry every 300 seconds
+			AddDebugLogLineN(logGeneral, wxT("🔁 UPnP: Firewalled detected, recreating UPnP port mappings..."));
+			
+			m_upnp->DeletePortMappings(m_upnpMappings);					
+			m_upnp->AddPortMappings(m_upnpMappings); // esto está en aMule para crear los puertos
+			upnp_last_retry = now;
+		}
+	}
+	#endif
+
+
 
 	// Disarm recursion protection
 	recurse = false;

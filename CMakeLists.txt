@@ -68,7 +68,24 @@ if (BUILD_WEBSERVER)
 	include (cmake/png.cmake)
 endif()
 
-include (cmake/boost.cmake)
+# Detectamos manualmente la librería
+if (ENABLE_IO_URING)
+    find_package(PkgConfig)
+    pkg_check_modules(LIBURING liburing IMPORTED_TARGET)
+
+    if (LIBURING_FOUND)
+        message(STATUS "✔️  liburing found via pkg-config")
+        set(HAVE_IO_URING TRUE)
+    else()
+        message(FATAL_ERROR "❌ io_uring requested but liburing not found!")
+    endif()
+else()
+    message(STATUS "io_uring support disabled via CMake option")
+endif()
+
+if (ENABLE_BOOST)
+	include (cmake/boost.cmake)
+endif()
 
 if (ENABLE_IP2COUNTRY)
 	include (cmake/ip2country.cmake)
