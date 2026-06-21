@@ -28,6 +28,7 @@
 #define AMULE_H
 
 
+
 #include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>			// Needed for wxLocale
 
@@ -68,6 +69,9 @@ class CIPFilter;
 class UploadBandwidthThrottler;
 class CUploadDiskIOThread;
 class CAsioService;
+#ifdef USE_IO_URING
+#include <liburing.h>
+#endif
 #ifdef ENABLE_UPNP
 class CUPnPControlPoint;
 class CUPnPPortMapping;

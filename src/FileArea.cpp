@@ -40,6 +40,10 @@
 #include "FileArea.h"		// Interface declarations.
 #include "FileAutoClose.h"	// Needed for CFileAutoClose
 
+#ifdef USE_IO_URING
+#include <liburing.h>
+#endif
+
 #ifndef ENABLE_MMAP
 #	define ENABLE_MMAP	0
 #endif
@@ -225,7 +229,14 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 {
 	Close();
 
-#ifdef USE_MMAP
+	m_buffer = new uint8_t[count];
+
+#ifdef USE_IO_URING
+	if (ReadAtWithIOUring(file, offset, count, m_buffer)) {
+		return;
+	}
+#else
+	#ifdef USE_MMAP
 	uint64 offEnd = offset + count;
 	if (gs_pageSize > 0 && offEnd < 0x100000000ull) {
 		uint64 offStart = offset & (~((uint64)gs_pageSize-1));
@@ -233,7 +244,7 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 		void *p = mmap(NULL, m_length, PROT_READ, MAP_SHARED, file.fd(), offStart);
 		if (p != MAP_FAILED) {
 			m_file = &file;
-			m_mmap_buffer = (uint8_t*) p;
+			m_mmap_buffer = static_cast<uint8_t*>(p);
 			m_buffer = m_mmap_buffer + (offset - offStart);
 
 			// add to list to catch errors correctly
@@ -242,10 +253,66 @@ void CFileArea::ReadAt(CFileAutoClose& file, uint64 offset, size_t count)
 		}
 	}
 	file.Unlock();
-#endif
-	m_buffer = new uint8_t[count];
+	#endif // USE_MMAP
+#endif // USE_IO_URING
+
+	// Fallback clásico si io_uring y mmap fallan o están desactivados
 	file.ReadAt(m_buffer, offset, count);
 }
+
+
+#ifdef USE_IO_URING
+struct ThreadLocalRingArea {
+    io_uring ring;
+    bool initialized;
+
+    ThreadLocalRingArea() : initialized(false) {
+        if (io_uring_queue_init(8, &ring, 0) == 0) {
+            initialized = true;
+        }
+    }
+
+    ~ThreadLocalRingArea() {
+        if (initialized) {
+            io_uring_queue_exit(&ring);
+        }
+    }
+};
+
+thread_local ThreadLocalRingArea tl_ring_area;
+
+bool CFileArea::ReadAtWithIOUring(CFileAutoClose& file, uint64 offset, size_t count, uint8_t* buffer)
+{
+	if (!tl_ring_area.initialized) {
+		return false;
+	}
+
+	int fd = file.fd();  // Aumenta m_locked
+	struct io_uring_sqe* sqe = io_uring_get_sqe(&tl_ring_area.ring);
+	if (!sqe) {
+		file.Unlock();
+		return false;
+	}
+
+	io_uring_prep_read(sqe, fd, buffer, count, offset);
+
+	if (io_uring_submit(&tl_ring_area.ring) < 1) {
+		file.Unlock();
+		return false;
+	}
+
+	struct io_uring_cqe* cqe;
+	int ret = io_uring_wait_cqe(&tl_ring_area.ring, &cqe);
+	bool success = (ret == 0 && cqe->res == (int)count);
+	
+	if (ret >= 0) {
+		io_uring_cqe_seen(&tl_ring_area.ring, cqe);
+	}
+
+	file.Unlock();
+	return success;
+}
+#endif
 
 #ifdef USE_MMAP
 void CFileArea::StartWriteAt(CFileAutoClose& file, uint64 offset, size_t count)

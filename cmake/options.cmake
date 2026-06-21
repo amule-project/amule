@@ -226,3 +226,7 @@ endif()
 # users' saved amule.conf is unaffected -- only the per-install default
 # applies on first launch or after a config reset.
 option (DEFAULT_VERSION_CHECK "default state of the 'Check for new aMule version' preference" ON)
+
+if(NEED_LIB_MULEAPPCORE)
+	option(ENABLE_IO_URING "Enable io_uring support" ON)
+endif()

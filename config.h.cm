@@ -17,6 +17,9 @@
 /* Define if upnp was found. */
 #cmakedefine ENABLE_UPNP
 
+/* Define if io_uring was found. */
+#cmakedefine ENABLE_IO_URING
+
 /* Define to 1  if translation of program messages to the user's
    native language is requested. */
 #cmakedefine ENABLE_NLS 1
