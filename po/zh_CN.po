@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: https://github.com/amule-org/amule/issues\n"
 "POT-Creation-Date: 2026-06-17 20:13+0200\n"
-"PO-Revision-Date: 2026-06-20 02:01+0000\n"
+"PO-Revision-Date: 2026-06-20 17:13+0000\n"
 "Last-Translator: Mike Akiba <mike2718@gmail.com>\n"
 "Language-Team: Chinese Simplified <kde-i18n-doc@kde.org>\n"
 "Language: zh_CN\n"
@@ -4202,7 +4202,7 @@ msgstr "为客户端显示国旗"
 
 #: src/muuli_wdr.cpp:2515
 msgid "Render the country flag column in the transfers, queue and search views. Requires a valid MMDB GeoIP database (see below)."
-msgstr "在传输、队列和搜索视图中渲染国家旗帜列。需要有效的 MMDB GeoIP 数据库（见下文）。"
+msgstr "在传输、队列和搜索视图中渲染地区旗帜列。需要有效的 MMDB GeoIP 数据库（见下文）。"
 
 #: src/muuli_wdr.cpp:2520
 msgid "Database"
