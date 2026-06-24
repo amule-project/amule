@@ -103,7 +103,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: restore ccache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
@@ -127,7 +127,7 @@ jobs:
       - name: make
         run: cmake --build build
       - name: save ccache
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         if: always()
         with:
           path: ${{ env.CCACHE_DIR }}
@@ -148,7 +148,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: restore ccache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
@@ -178,7 +178,7 @@ jobs:
       - name: make
         run: cmake --build build
       - name: save ccache
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         if: always()
         with:
           path: ${{ env.CCACHE_DIR }}
@@ -202,7 +202,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: restore ccache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-${{ matrix.build_type }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
@@ -224,7 +224,7 @@ jobs:
       - name: make
         run: cmake --build build
       - name: save ccache
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         if: always()
         with:
           path: ${{ env.CCACHE_DIR }}
