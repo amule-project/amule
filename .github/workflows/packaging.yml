@@ -85,7 +85,7 @@ jobs:
           - { arch: aarch64, runs-on: ubuntu-22.04-arm }
     runs-on: ${{ matrix.runs-on }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0  # for git describe in build.sh
       - name: Install ccache
@@ -146,7 +146,7 @@ jobs:
           - { arch: aarch64, runs-on: ubuntu-24.04-arm }
     runs-on: ${{ matrix.runs-on }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Install flatpak + flatpak-builder + GNOME runtime
@@ -218,7 +218,7 @@ jobs:
             brew_prefix: /usr/local
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Bootstrap x86_64 Homebrew (Rosetta)
@@ -317,7 +317,7 @@ jobs:
       contains(inputs.only, 'macos')
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v8
         with:
           name: macos-app-arm64
@@ -416,7 +416,7 @@ jobs:
       run:
         shell: msys2 {0}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Set up MSYS2
@@ -526,7 +526,7 @@ jobs:
       run:
         shell: msys2 {0}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Set up MSYS2
