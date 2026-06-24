@@ -93,7 +93,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y ccache
       - name: Restore ccache
         if: github.event_name != 'workflow_call'
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-appimage-${{ matrix.arch }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
@@ -107,7 +107,7 @@ jobs:
         run: packaging/linux/build.sh validate
       - name: Save ccache
         if: always() && github.event_name != 'workflow_call'
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-appimage-${{ matrix.arch }}-ccache-${{ github.run_id }}
@@ -169,7 +169,7 @@ jobs:
       # path the other jobs use.
       - name: Restore flatpak-builder ccache
         if: github.event_name != 'workflow_call'
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-flatpak-${{ matrix.arch }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**', 'packaging/linux/flatpak/**.yml.in') }}
@@ -178,7 +178,7 @@ jobs:
         run: packaging/linux/build.sh flatpak
       - name: Save flatpak-builder ccache
         if: always() && github.event_name != 'workflow_call'
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-flatpak-${{ matrix.arch }}-ccache-${{ github.run_id }}
@@ -243,7 +243,7 @@ jobs:
           echo "${{ matrix.brew_prefix }}/opt/gettext/bin" >> "$GITHUB_PATH"
       - name: Restore ccache
         if: github.event_name != 'workflow_call'
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-macos-${{ matrix.arch }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
@@ -281,7 +281,7 @@ jobs:
           hdiutil detach "${MNT}"
       - name: Save ccache
         if: always() && github.event_name != 'workflow_call'
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-macos-${{ matrix.arch }}-ccache-${{ github.run_id }}
@@ -443,7 +443,7 @@ jobs:
             zip
       - name: Restore ccache
         if: github.event_name != 'workflow_call'
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-windows-${{ matrix.arch }}-ccache-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
@@ -485,7 +485,7 @@ jobs:
           grep -q '^aMuleD ' /tmp/version.txt
       - name: Save ccache
         if: always() && github.event_name != 'workflow_call'
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-windows-${{ matrix.arch }}-ccache-${{ github.run_id }}
