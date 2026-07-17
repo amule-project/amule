@@ -22,8 +22,6 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
-
-
 #include "amule.h"			// Interface declarations.
 
 #include <csignal>
@@ -78,6 +76,9 @@
 #include "UploadBandwidthThrottler.h"
 #include "UserEvents.h"
 #include "ScopedPtr.h"
+#include "amule_json_connector.h"
+
+#define JSON_CONNECTOR_PORT 2828
 
 #ifdef ENABLE_UPNP
 #include "UPnPBase.h"			// Needed for UPnP
@@ -190,6 +191,7 @@ CamuleApp::CamuleApp()
 	downloadqueue	= NULL;
 	uploadqueue	= NULL;
 	ipfilter	= NULL;
+   json_connector = nullptr;
 	ECServerHandler = NULL;
 	glob_prefs	= NULL;
 	m_statistics	= NULL;
@@ -301,6 +303,11 @@ int CamuleApp::OnExit()
 	delete ipfilter;
 	ipfilter = NULL;
 
+   if(json_connector) {
+      delete json_connector;
+      json_connector = nullptr;
+   }
+
 #ifdef ENABLE_UPNP
 	delete m_upnp;
 	m_upnp = NULL;
@@ -356,7 +363,6 @@ int CamuleApp::InitGui(bool, wxString &)
 {
 	return 0;
 }
-
 
 //
 // Application initialization
@@ -516,6 +522,8 @@ bool CamuleApp::OnInit()
 	downloadqueue	= new CDownloadQueue();
 	uploadqueue	= new CUploadQueue();
 	ipfilter	= new CIPFilter();
+
+   //json_connector = new hpms::JSON_Connector(JSON_CONNECTOR_PORT, *this);
 
 	// Creates all needed listening sockets
 	wxString msg;
@@ -1379,6 +1387,10 @@ void CamuleApp::ShutDown()
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTTINGDOWN;
 
+   if(json_connector) {
+      delete json_connector;
+      json_connector = nullptr;
+   }
 	// Stop ASIO thread
 #ifdef ASIO_SOCKETS			// only needed to suppress the log message in non-Asio build
 	AddDebugLogLineN(logGeneral, wxT("Terminate ASIO thread."));

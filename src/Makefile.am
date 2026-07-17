@@ -138,6 +138,7 @@ libmuleappgui_a_CPPFLAGS = $(AM_CPPFLAGS) $(WX_CPPFLAGS) -I$(srcdir)/libs -I$(sr
 
 core_sources = \
 	amule.cpp \
+	amule_json_connector.cpp \
 	BaseClient.cpp \
 	ClientList.cpp \
 	ClientCreditsList.cpp \

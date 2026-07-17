@@ -22,8 +22,6 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
-
-
 #ifndef AMULE_H
 #define AMULE_H
 
@@ -39,6 +37,10 @@
 #endif // __WINDOWS__
 
 #include "config.h"			// Needed for ASIO_SOCKETS
+
+namespace hpms {
+   class JSON_Connector;
+}
 
 class CAbstractFile;
 class CKnownFile;
@@ -271,6 +273,7 @@ public:
 	CStatistics*		m_statistics;
 	CIPFilter*		ipfilter;
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
+   hpms::JSON_Connector * json_connector;
 #ifdef ASIO_SOCKETS
 	CAsioService*		m_AsioService;
 #endif
